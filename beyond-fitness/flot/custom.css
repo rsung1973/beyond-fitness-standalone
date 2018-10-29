@@ -1,0 +1,81 @@
+.stack-container {
+	box-sizing: border-box;
+	width: auto;
+	height: 450px;
+	padding: 20px 15px 15px 15px;
+	margin: 15px auto 30px auto;
+	border: 1px solid #ddd;
+	background: #DDD;
+	background: linear-gradient(#eee 0, #DDD 50px);
+	background: -o-linear-gradient(#eee 0, #DDD 50px);
+	background: -ms-linear-gradient(#eee 0, #DDD 50px);
+	background: -moz-linear-gradient(#eee 0, #DDD 50px);
+	background: -webkit-linear-gradient(#eee 0, #DDD 50px);
+	box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+	-o-box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+	-ms-box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+	-moz-box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+	-webkit-box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+
+.stack-placeholder {
+	width: 100%;
+	height: 100%;
+	font-size: 14px;
+	line-height: 1.2em;
+}
+
+.legend table {
+	border-spacing: 5px;
+}
+
+.data-point-label {
+    font-size: 14px;
+    color: #000;
+}
+.chart-legend {
+    width: 40%;
+    margin: 5px auto; 
+}
+.legendLabel {
+    padding-right: 10px;
+}
+
+.pie-container {
+	box-sizing: border-box;
+	width: auto;
+	height: 400px;
+	padding: 20px 15px 15px 15px;
+	margin: 15px auto 30px auto;
+	border: 1px solid #ddd;
+	background: #DDD;
+	background: linear-gradient(#eee 0, #DDD 50px);
+	background: -o-linear-gradient(#eee 0, #DDD 50px);
+	background: -ms-linear-gradient(#eee 0, #DDD 50px);
+	background: -moz-linear-gradient(#eee 0, #DDD 50px);
+	background: -webkit-linear-gradient(#eee 0, #DDD 50px);
+	box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+	-o-box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+	-ms-box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+	-moz-box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+	-webkit-box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+
+.pie-placeholder {
+	width: 100%;
+	height: 100%;
+	font-size: 14px;
+	line-height: 1.2em;
+}
+
+/*無派圖資料*/
+ .pie-placeholder .pie_light{
+ text-align:center;color:#808080;font-size:15px; border:1px solid #dedede;
+ line-height:1.6em;margin:20px auto; padding:50px 0;
+ vertical-align:middle;width:310px; height:310px;
+ box-shadow:0px 0px 20px #eef1f3 inset;
+ display:block;
+ -webkit-border-radius: 222px;
+ -moz-border-radius: 222px;
+ border-radius: 222px;}
+ .pie-placeholder .pie_light span{ font-weight:bold;}

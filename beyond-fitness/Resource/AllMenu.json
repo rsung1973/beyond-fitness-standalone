@@ -1,0 +1,70 @@
+﻿[
+    {
+        "Id": "home",
+        "Url": "~/Account/Index",
+        "Name": "首頁",
+        "MenuItem": null
+    },
+    {
+        "Id": "professional",
+        "Url": "~/Information/Professional",
+        "Name": "專業體能訓練"
+    },
+    {
+        "Id": "blog",
+        "Url": "~/Information/Blog",
+        "Name": "專業知識"
+    },
+    {
+        "Id": "rental",
+        "Url": "~/Information/Rental",
+        "Name": "場地租借"
+    },
+    {
+        "Id": "products",
+        "Url": "~/Information/Products",
+        "Name": "相關商品"
+    },
+    {
+        "Id": "cooperation",
+        "Url": "~/Information/Cooperation",
+        "Name": "相關合作"
+    },
+    {
+        "Id": "contactUs",
+        "Url": "~/Information/ContactUs",
+        "Name": "聯絡我們"
+    },
+    {
+        "Id": "vip",
+        "Url": "~/Account/Login",
+        "Name": "會員專區"
+    },
+    {
+        "Id": "vip",
+        "Url": "#",
+        "Name": "會員專區",
+        "MenuItem": [
+            {
+                "Id": "coach",
+                "Url": "coach.htm",
+                "Name": "教練專區"
+            },
+            {
+                "Id": "member",
+                "Url": "~/Member/ListAll",
+                "Name": "人員管理"
+            },
+            {
+                "Id": "pub",
+                "Url": "~/Information/Publish",
+                "Name": "知識上稿"
+            }
+        ]
+    },
+    {
+        "Id": "logout",
+        "Url": "~/Account/Logout",
+        "Name": "登出"
+    }
+]

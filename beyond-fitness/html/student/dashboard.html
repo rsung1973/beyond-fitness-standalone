@@ -1,0 +1,2445 @@
+<!DOCTYPE html>
+<html lang="en-us">
+   <head>
+      <meta charset="utf-8">
+      <!--<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">-->
+      <title>BEYOND FITNESS</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+      <!-- Basic Styles -->
+      <link rel="stylesheet" type="text/css" media="screen" href="../../css/bootstrap.min.css">
+      <link rel="stylesheet" type="text/css" media="screen" href="../../css/font-awesome.min.css">
+      <!-- SmartAdmin Styles : Caution! DO NOT change the order -->
+      <link rel="stylesheet" type="text/css" media="screen" href="../../css/smartadmin-production-plugins.min.css">
+      <link rel="stylesheet" type="text/css" media="screen" href="../../css/smartadmin-production.min.css">
+      <link rel="stylesheet" type="text/css" media="screen" href="../../css/smartadmin-skins.min.css">
+      <!-- SmartAdmin RTL Support -->
+      <link rel="stylesheet" type="text/css" media="screen" href="../../css/smartadmin-rtl.min.css">
+      <!-- lockScreen CSS Styles  -->
+      <link rel="stylesheet" type="text/css" media="screen" href="../../css/app.css">
+      <!-- DateTimePicker : plugin -->
+      <link rel="stylesheet" type="text/css" media="screen" href="../../css/bootstrap-datetimepicker.min.css">         
+      <!-- We recommend you use "your_style.css" to override SmartAdmin
+         specific styles this will also ensure you retrain your customization with each SmartAdmin update.-->
+      <link rel="stylesheet" type="text/css" media="screen" href="../../css/beyond_style.css">
+      <!-- FAVICONS -->
+      <link rel="shortcut icon" href="../../img/favicon/favicon.ico" type="image/x-icon">
+      <link rel="icon" href="../../img/favicon/favicon.ico" type="image/x-icon">
+      <!-- GOOGLE FONT -->
+      <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300,400,700">
+      <!-- Specifying a Webpage Icon for Web Clip 
+         Ref: https://developer.apple.com/library/ios/documentation/AppleApplications/Reference/SafariWebContent/ConfiguringWebApplications/ConfiguringWebApplications.html -->
+      <link rel="apple-touch-icon" href="../../img/splash/sptouch-icon-iphone.png">
+      <link rel="apple-touch-icon" sizes="76x76" href="../../img/splash/touch-icon-ipad.png">
+      <link rel="apple-touch-icon" sizes="120x120" href="../../img/splash/touch-icon-iphone-retina.png">
+      <link rel="apple-touch-icon" sizes="152x152" href="../../img/splash/touch-icon-ipad-retina.png">
+      <!-- iOS web-app metas : hides Safari UI Components and Changes Status Bar Appearance -->
+      <meta name="apple-mobile-web-app-capable" content="yes">
+      <meta name="apple-mobile-web-app-status-bar-style" content="black">
+      <!-- Startup image for web apps -->
+      <link rel="apple-touch-startup-image" href="../../img/splash/ipad-landscape.png" media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:landscape)">
+      <link rel="apple-touch-startup-image" href="../../img/splash/ipad-portrait.png" media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:portrait)">
+      <link rel="apple-touch-startup-image" href="../../img/splash/iphone.png" media="screen and (max-device-width: 320px)">
+      <!--[if IE 9]>
+      <style>
+         .error-text {
+         color: #333 !important;
+         }
+      </style>
+      <![endif]-->
+      <meta property="fb:app_id" content="1027299250717597">
+   </head>
+   <!--
+      TABLE OF CONTENTS.
+      
+      Use search to find needed section.
+      
+      ===================================================================
+      
+      |  01. #CSS Links                |  all CSS links and file paths  |
+      |  02. #FAVICONS                 |  Favicon links and file paths  |
+      |  03. #GOOGLE FONT              |  Google font link              |
+      |  04. #APP SCREEN / ICONS       |  app icons, screen backdrops   |
+      |  05. #BODY                     |  body tag                      |
+      |  06. #HEADER                   |  header tag                    |
+      |  07. #PROJECTS                 |  project lists                 |
+      |  08. #TOGGLE LAYOUT BUTTONS    |  layout buttons and actions    |
+      |  09. #MOBILE                   |  mobile view dropdown          |
+      |  10. #SEARCH                   |  search field                  |
+      |  11. #NAVIGATION               |  left panel & navigation       |
+      |  12. #RIGHT PANEL              |  right panel userlist          |
+      |  13. #MAIN PANEL               |  main panel                    |
+      |  14. #MAIN CONTENT             |  content holder                |
+      |  15. #PAGE FOOTER              |  page footer                   |
+      |  16. #SHORTCUT AREA            |  dropdown shortcuts area       |
+      |  17. #PLUGINS                  |  all scripts and plugins       |
+      
+      ===================================================================
+      
+      -->
+   <!-- #BODY -->
+   <!-- Possible Classes
+      * 'smart-style-{SKIN#}'
+      * 'smart-rtl'         - Switch theme mode to RTL
+      * 'menu-on-top'       - Switch to top navigation (no DOM change required)
+      * 'no-menu'             - Hides the menu completely
+      * 'hidden-menu'       - Hides the main menu but still accessable by hovering over left edge
+      * 'fixed-header'      - Fixes the header
+      * 'fixed-navigation'  - Fixes the main menu
+      * 'fixed-ribbon'      - Fixes breadcrumb
+      * 'fixed-page-footer' - Fixes footer
+      * 'container'         - boxed layout mode (non-responsive: will not work with fixed-navigation & fixed-ribbon)
+      -->
+   <body class="smart-style-7 no-menu">
+      <!-- HEADER -->
+      <header id="header">
+         <div id="logo-group">
+            <!-- PLACE YOUR LOGO HERE -->
+            <span id="logo"> <img src="../../img/logo.png" alt="Beyond-Fitness"> </span>
+            <!-- END LOGO PLACEHOLDER -->
+         </div>
+         <!-- pulled right: nav area -->
+         <div class="pull-right">
+            <!-- #MOBILE -->
+            <!-- Top menu profile link : this shows only when top menu is active -->
+            <ul id="mobile-profile-img" class="header-dropdown-list hidden-xs padding-5">
+               <li class="">
+                  <a href="../login.html" title="Sign Out" data-action="userLogout" data-logout-msg="為了安全起見，建議您登出後將網頁關閉！"><i class="fa fa-power-off"></i> Sign out</a> 
+               </li>
+            </ul>
+         </div>
+         <!-- end pulled right: nav area -->
+      </header>
+      <!-- END HEADER -->
+      <!-- MAIN PANEL -->
+      <div id="main" role="main">
+      <!-- MAIN CONTENT -->
+      <div id="content">
+         <!-- row -->
+         <div class="row">
+            <article class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+               <div class="row">
+                  <div class="col-sm-12 block block-drop-shadow">
+                     <div class="head bg-dot30 np tac">
+                        <div class="user_taurus">
+                           <div class="info">                                                                                
+                              <a class="informer informer-one">
+                                 <span><font color="red">5</font> / 75</span>
+                              </a>                            
+                              <a href="#" class="informer informer-two" id="bonus_link">
+                                 <span class="fa fa-quora ">&nbsp;&nbsp;<b><u>5</u></b></span>
+                              </a> 
+                              <a href="#calendar" class="informer informer-three" id="undolistDialog_link">
+                                 <span class="fa fa-check-square-o">&nbsp;&nbsp;<b><u>5</u></b></span>
+                              </a> 
+                              <a href="#chatboard" class="informer informer-four">
+                                 <span class="fa fa-envelope">&nbsp;&nbsp;<b><u>3</u></b></span>
+                              </a>                                                   
+                              <a href="" ><img src="../../img/avatars/garfaild.png" class="img-circle img-thumbnail" width="100px"></a>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="list-group list-group-icons bg-color-darken">
+                        <a href="#" class="list-group-item" id="diagnosisDialog_link"><i class="fa fa-child"></i>&nbsp;&nbsp;Fitness Diagnosis<i class="fa fa-angle-right pull-right"></i></a>
+                        <a href="#" class="list-group-item" id="updateProfile_link"><i class="fa fa-cogs"></i>&nbsp;&nbsp;Profile<i class="fa fa-angle-right pull-right"></i></a>                                             
+                        <a href="#" class="list-group-item" id="healthlist_link"><i class="fa fa-history"></i>&nbsp;&nbsp;Health<i class="fa fa-angle-right  pull-right"></i></a>                           
+                        <a href="#calendar" class="list-group-item"><i class="fa fa-calendar"></i>&nbsp;&nbsp;Calendar<i class="fa fa-angle-right pull-right"></i></a>
+                        <a href="#" class="list-group-item bg-color-redLight" id="questionnaire_link"><i class="fa fa-volume-up"></i>&nbsp;&nbsp;Questionnaire<i class="fa fa-angle-right pull-right"></i></a>
+                     </div>
+                  </div>
+               </div>
+               <div class="row hidden-xs hidden-sm">
+                  <div class="caption text-center">肌力總訓練</div>
+                  <div id="strengthGraph" class="chart no-padding"></div>
+               </div>
+               <div class="row hidden-xs hidden-sm">
+                  <div class="caption text-center">能量/肌力系統強度</div>
+                  <div id="energyGraph" class="chart no-padding"></div>
+               </div>               
+            </article>
+            <article class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+               <div class="row">
+                  <div class="col-md-12">
+                     <!-- Widget ID (each widget will need unique ID)-->
+                     <div class="jarviswidget" data-widget-editbutton="false" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-togglebutton="false" data-widget-deletebutton="false">
+                        <header>
+                           <span class="widget-icon"> <i class="fa fa-calendar"></i> </span>
+                           <h2>劉加菲 Calendar</h2>
+                           <div class="widget-toolbar">
+                           </div>
+                        </header>
+                        <!-- widget div-->
+                        <div>
+                           <div class="widget-body bg-color-darken txt-color-white no-padding">
+                              <!-- content goes here -->
+                              <div class="widget-body-toolbar">
+                                 <div id="calendar-buttons">
+                                    <div class="btn-group">
+                                       <a href="#" class="btn btn-default btn-xs" id="addEventDialog_link"><i class="fa fa-plus"></i> Event</a>
+                                    </div>                                 
+                                    <div class="btn-group">
+                                       <a href="javascript:void(0)" class="btn btn-default btn-xs" id="btn-prev"><i class="fa fa-chevron-left"></i> Previous</a>
+                                       <a href="javascript:void(0)" class="btn btn-default btn-xs" id="btn-next">Next <i class="fa fa-chevron-right"></i></a>
+                                    </div>
+                                 </div>
+                              </div>
+                              <div id="calendar"></div>
+                              <!-- end content -->
+                           </div>
+                        </div>
+                        <!-- end widget div -->                     
+                     </div>
+                     <div class="col-md-12 block block-drop-shadow" id="chatboard">
+                        <div class="header">
+                           <h2><i class="fa fa-envelope"></i>&nbsp;&nbsp; MESSAGING</h2>
+                        </div>
+                        <div class="footer">
+                           <div class="input-group">
+                              <span class="input-group-addon"><i class="fa fa-comments"></i></span>
+                              <input type="text" class="form-control" placeholder="message ..">
+                              <span class="input-group-btn">
+                              <button class="btn"><span class="fa fa-chevron-up"></span></button>
+                              </span>
+                           </div>
+                        </div>                        
+                        <div class="content messages npr npb">
+                           <div class="scroll oh">
+                              <div class="messages-item">
+                                 <img src="../../img/avatars/Kelly.png" class="img-circle img-thumbnail" width="50px" />
+                                 <div class="messages-item-text">Duis eu libero pellentesque, dapibus ante eu, vehicula leo. Nulla gravida rutrum neque</div>
+                                 <div class="messages-item-date">14:33 30.08.2013</div>
+                              </div>
+                              <div class="messages-item inbox">
+                                 <img src="../../img/avatars/bill.png" class="img-circle img-thumbnail" width="50px"/>
+                                 <div class="messages-item-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque condimentum nisl velit</div>
+                                 <div class="messages-item-date">14:32 30.08.2013</div>
+                              </div>
+                              <div class="messages-item">
+                                 <img src="../../img/avatars/Kelly.png" class="img-circle img-thumbnail" width="50px"/>
+                                 <div class="messages-item-text">Duis eu libero pellentesque, dapibus ante eu, vehicula leo. Nulla gravida rutrum neque</div>
+                                 <div class="messages-item-date">14:20 30.08.2013</div>
+                              </div>
+                              <div class="messages-item inbox">
+                                 <img src="../../img/avatars/bill.png" class="img-circle img-thumbnail" width="50px"/>
+                                 <div class="messages-item-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque condimentum nisl velit</div>
+                                 <div class="messages-item-date">14:19 30.08.2013</div>
+                              </div>
+                              <div class="messages-item">
+                                 <img src="../../img/avatars/Rose.png" class="img-circle img-thumbnail" width="50px"/>
+                                 <div class="messages-item-text">Duis eu libero pellentesque, dapibus ante eu, vehicula leo. Nulla gravida rutrum neque</div>
+                                 <div class="messages-item-date">14:15 30.08.2013</div>
+                              </div>
+                              <div class="messages-item inbox">
+                                 <img src="../../img/avatars/bill.png" class="img-circle img-thumbnail" width="50px"/>
+                                 <div class="messages-item-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque condimentum nisl velit</div>
+                                 <div class="messages-item-date">14:10 30.08.2013</div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+            </article>
+          </div>
+          <div class="row hidden-md hidden-lg">
+            <article class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+               <div class="row">
+                  <div class="caption text-center">肌力總訓練</div>
+                  <div id="strengthGraph" class="chart no-padding"></div>
+               </div>
+               <div class="row">
+                  <div class="caption text-center">能量/肌力系統強度</div>
+                  <div id="energyGraph" class="chart no-padding"></div>
+               </div>            
+            </article>
+          </div>
+            <!-- end row -->
+            <!-- ui-dialog -->
+            <div id="undolistDialog" title="待辦事項" class="bg-color-darken">
+               <!-- content -->
+               <table id="undolist_dt" class="table table-striped table-bordered table-hover" width="100%" autofocus>
+                  <thead>
+                     <tr>
+                        <th data-class="expand">日期</th>
+                        <th data-hide="phone">時間</th>
+                        <th data-hide="phone">教練</th>
+                        <th>上課打卡</th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     <tr>
+                        <td>2016/02/03</td>
+                        <td>7:00~8:00</td>
+                        <td>邱鈺烘 Jack Chu</td>
+                        <td>                        
+                           <a href="#" class="btn btn-circle bg-color-green"><i class="fa fa-fw fa fa-lg fa-check" aria-hidden="true"></i> </a>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td>2016/02/03</td>
+                        <td>7:00~8:00</td>
+                        <td>邱鈺烘 Jack Chu</td>
+                        <td>                        
+                           <a href="#" class="btn btn-circle bg-color-green"><i class="fa fa-fw fa fa-lg fa-check" aria-hidden="true"></i> </a>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td>2016/02/03</td>
+                        <td>7:00~8:00</td>
+                        <td>邱鈺烘 Jack Chu</td>
+                        <td>                        
+                           <a href="#" class="btn btn-circle bg-color-green"><i class="fa fa-fw fa fa-lg fa-check" aria-hidden="true"></i> </a>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td>2016/02/03</td>
+                        <td>7:00~8:00</td>
+                        <td>邱鈺烘 Jack Chu</td>
+                        <td>                        
+                           <a href="#" class="btn btn-circle bg-color-green"><i class="fa fa-fw fa fa-lg fa-check" aria-hidden="true"></i> </a>
+                        </td>
+                     </tr>
+                  </tbody>
+               </table>
+               <!-- end content -->
+            </div>
+            <!-- dialog-message -->   
+            <!-- ui-dialog -->
+            <div id="healthlistDialog" title="維護健康指數" class="bg-color-darken">
+               <!-- content -->
+               <div class="row padding-10" >
+                  <form action="#" class="form-horizontal" autofocus>
+                     <fieldset>
+                        <div class="form-group">
+                           <div class="col col-sm-12">
+                              <label class="input input-group date form_date" data-date-format="yyyy/mm/dd" data-link-field="dtp_input1">
+                                    <input type="text" name="healthdate" id="healthdate" class="form-control" placeholder="請選擇日期" readonly="readonly">
+                              </label>
+                           </div>
+                     </fieldset>
+                     <fieldset>
+                        <div class="form-group">
+                           <div class="col col-sm-6 col-md-4">
+                              <div class="input-group">
+                                 <span class="input-group-addon">腰</span>
+                                 <input class="form-control" type="number" placeholder="請輸入純數字">
+                                 <span class="input-group-addon">CM</span>
+                              </div>
+                           </div>
+                           <div class="col col-sm-6 col-md-4">
+                              <div class="input-group">
+                                 <span class="input-group-addon">腿</span>
+                                 <input class="form-control" type="number" placeholder="請輸入純數字">
+                                 <span class="input-group-addon">CM</span>
+                              </div>
+                           </div>
+                           <div class="col col-sm-6 col-md-4">
+                              <div class="input-group">
+                                 <span class="input-group-addon">臂</span>
+                                 <input class="form-control" type="number" placeholder="請輸入純數字">
+                                 <span class="input-group-addon">CM</span>
+                              </div>
+                           </div>
+                        </div>
+                     </fieldset>
+                     <fieldset>
+                        <div class="form-group">
+                           <div class="col col-sm-6 col-md-4">
+                              <div class="input-group">
+                                 <span class="input-group-addon">體重</span>
+                                 <input class="form-control" type="number" placeholder="請輸入純數字">
+                                 <span class="input-group-addon">KG</span>
+                              </div>
+                           </div>
+                           <div class="col col-sm-6 col-md-4">
+                              <div class="input-group">
+                                 <span class="input-group-addon">皮脂厚度</span>
+                                 <input class="form-control" type="number" placeholder="請輸入純數字">
+                                 <span class="input-group-addon">MM</span>
+                              </div>
+                           </div>
+                           <div class="col col-sm-6 col-md-4">
+                              <div class="input-group">
+                                 <span class="input-group-addon">體脂率</span>
+                                 <input class="form-control" type="number" placeholder="請輸入純數字">
+                                 <span class="input-group-addon">%</span>
+                              </div>
+                           </div>
+                        </div>
+                     </fieldset>
+                     <div class="form-actions">
+                        <div class="row">
+                           <div class="col-md-12">
+                              <button class="btn btn-primary" type="submit">
+                              <i class="fa fa fa-reply"></i> 更新
+                              </button>
+                           </div>
+                        </div>
+                     </div>
+                  </form>
+               </div>
+               <div class="row">
+                  <table id="health_dt" class="table table-striped table-bordered table-hover" width="100%">
+                     <thead>
+                        <tr>
+                           <th data-class="expand">日期</th>
+                           <th>體重</th>
+                           <th data-hide="phone">腰</th>
+                           <th data-hide="phone">腿</th>
+                           <th data-hide="phone">臂</th>
+                           <th data-hide="phone">皮脂厚度</th>
+                           <th>體脂率</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <tr>
+                           <td>            
+                              <a href="#" class="btn btn-circle bg-color-redLight delete"><i class="fa fa-fw fa fa-lg fa-trash-o" aria-hidden="true"></i> </a> 
+                              2016/7/20
+                           </td>
+                           <td>--</td>
+                           <td>--</td>
+                           <td>--</td>
+                           <td>60</td>
+                           <td>20 MM</td>
+                           <td>30%</td>
+                        </tr>
+                        <tr>
+                           <td>                   
+                              <a href="#" class="btn btn-circle bg-color-redLight delete"><i class="fa fa-fw fa fa-lg fa-trash-o" aria-hidden="true"></i> </a> 
+                              2016/7/20
+                           </td>
+                           <td>--</td>
+                           <td>--</td>
+                           <td>--</td>
+                           <td>60</td>
+                           <td>20 MM</td>
+                           <td>30%</td>
+                        </tr>
+                        <tr>
+                           <td>                  
+                              <a href="#" class="btn btn-circle bg-color-redLight delete"><i class="fa fa-fw fa fa-lg fa-trash-o" aria-hidden="true"></i> </a> 
+                              2016/7/20
+                           </td>
+                           <td>--</td>
+                           <td>--</td>
+                           <td>--</td>
+                           <td>60</td>
+                           <td>20 MM</td>
+                           <td>30%</td>
+                        </tr>
+                        <tr>
+                           <td>                    
+                              <a href="#" class="btn btn-circle bg-color-redLight delete"><i class="fa fa-fw fa fa-lg fa-trash-o" aria-hidden="true"></i> </a> 
+                              2016/7/20
+                           </td>
+                           <td>--</td>
+                           <td>--</td>
+                           <td>--</td>
+                           <td>60</td>
+                           <td>20 MM</td>
+                           <td>30%</td>
+                        </tr>
+                        <tr>
+                           <td>                  
+                              <a href="#" class="btn btn-circle bg-color-redLight delete"><i class="fa fa-fw fa fa-lg fa-trash-o" aria-hidden="true"></i> </a> 
+                              2016/7/20
+                           </td>
+                           <td>--</td>
+                           <td>--</td>
+                           <td>--</td>
+                           <td>60</td>
+                           <td>20 MM</td>
+                           <td>30%</td>
+                        </tr>
+                        <tr>
+                           <td>                       
+                              <a href="#" class="btn btn-circle bg-color-redLight delete"><i class="fa fa-fw fa fa-lg fa-trash-o" aria-hidden="true"></i> </a> 
+                              2016/7/20
+                           </td>
+                           <td>--</td>
+                           <td>--</td>
+                           <td>--</td>
+                           <td>60</td>
+                           <td>20 MM</td>
+                           <td>30%</td>
+                        </tr>
+                        <tr>
+                           <td>                     
+                              <a href="#" class="btn btn-circle bg-color-redLight delete"><i class="fa fa-fw fa fa-lg fa-trash-o" aria-hidden="true"></i> </a> 
+                              2016/7/20
+                           </td>
+                           <td>--</td>
+                           <td>--</td>
+                           <td>--</td>
+                           <td>60</td>
+                           <td>20 MM</td>
+                           <td>30%</td>
+                        </tr>
+                        <tr>
+                           <td>             
+                              <a href="#" class="btn btn-circle bg-color-redLight delete"><i class="fa fa-fw fa fa-lg fa-trash-o" aria-hidden="true"></i> </a> 
+                              2016/7/20
+                           </td>
+                           <td>--</td>
+                           <td>--</td>
+                           <td>--</td>
+                           <td>60</td>
+                           <td>20 MM</td>
+                           <td>30%</td>
+                        </tr>
+                        <tr>
+                           <td>                  
+                              <a href="#" class="btn btn-circle bg-color-redLight delete"><i class="fa fa-fw fa fa-lg fa-trash-o" aria-hidden="true"></i> </a> 
+                              2016/7/20
+                           </td>
+                           <td>--</td>
+                           <td>--</td>
+                           <td>--</td>
+                           <td>60</td>
+                           <td>20 MM</td>
+                           <td>30%</td>
+                        </tr>
+                        <tr>
+                           <td>                 
+                              <a href="#" class="btn btn-circle bg-color-redLight delete"><i class="fa fa-fw fa fa-lg fa-trash-o" aria-hidden="true"></i> </a> 
+                              2016/7/20
+                           </td>
+                           <td>--</td>
+                           <td>--</td>
+                           <td>--</td>
+                           <td>60</td>
+                           <td>20 MM</td>
+                           <td>30%</td>
+                        </tr>
+                        <tr>
+                           <td>             
+                              <a href="#" class="btn btn-circle bg-color-redLight delete"><i class="fa fa-fw fa fa-lg fa-trash-o" aria-hidden="true"></i> </a> 
+                              2016/7/20
+                           </td>
+                           <td>--</td>
+                           <td>--</td>
+                           <td>--</td>
+                           <td>60</td>
+                           <td>20 MM</td>
+                           <td>30%</td>
+                        </tr>
+                        <tr>
+                           <td>                     
+                              <a href="#" class="btn btn-circle bg-color-redLight delete"><i class="fa fa-fw fa fa-lg fa-trash-o" aria-hidden="true"></i> </a> 
+                              2016/7/20
+                           </td>
+                           <td>--</td>
+                           <td>--</td>
+                           <td>--</td>
+                           <td>60</td>
+                           <td>20 MM</td>
+                           <td>30%</td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </div>
+               <!-- end content -->
+            </div>
+            <!-- dialog-message -->    
+            <!-- ui-dialog -->
+            <div id="questionnaireDialog" title="階段性調整計劃" class="bg-color-darken">
+               <div class="panel panel-default bg-color-darken">
+                  <div class="panel-body status smart-form vote no-padding">
+                     <div class="alert alert-warning">
+                        <i class="fa fa-info-circle">
+                        為了讓您的教練做出更優化的階段性調整，下方提供 <六個小問題> 請您回答補充，資料僅提供訓練使用，不會外洩，敬請放心填寫！
+                        </i>
+                     </div>                  
+                     <form action="#" method="post" class="smart-form">
+                        <fieldset>
+                           <div class="row">
+                              <section class="col col-6">
+                                 <label class="label"><i class="fa-fw fa fa-quora"></i>1.在教練訓練中，您最喜歡整體規劃的哪一方面</label>
+                                 <label class="input"> <i class="icon-append fa fa-comments"></i>
+                                    <input type="text" placeholder="請輸入簡短描述即可" maxlength="100" size="60">
+                                 </label>
+                              </section>
+                              <section class="col col-6">
+                                 <label class="label"><i class="fa-fw fa fa-quora"></i>2.您在於每次訓練後的感覺跟想法？</label>
+                                 <label class="input"> <i class="icon-append fa fa-comments"></i>
+                                    <input type="text" placeholder="請輸入簡短描述即可" maxlength="100" size="60">
+                                 </label>
+                              </section>
+                           </div>
+                           <div class="row">
+                              <section class="col col-6">
+                                 <label class="label"><i class="fa-fw fa fa-quora"></i>3. 是否有您所期待或任何想達成但尚未完成的事？</label>
+                                 <label class="input"> <i class="icon-append fa fa-comments"></i>
+                                    <input type="text" placeholder="請輸入簡短描述即可" maxlength="100" size="60">
+                                 </label>
+                              </section>
+                              <section class="col col-6">
+                                 <label class="label"><i class="fa-fw fa fa-quora"></i>4. 您認為目前所提供的訓練和服務在1-10(1是最差，10是最佳)分範圍中應得幾分？</label>
+                                 <label class="select">
+                                    <select>
+                                       <option value="1">1</option>
+                                       <option value="2">2</option>
+                                       <option value="3">3</option>
+                                       <option value="4">4</option>
+                                       <option value="5">5</option>
+                                       <option value="6">6</option>
+                                       <option value="7">7</option>
+                                       <option value="8">8</option>
+                                       <option value="9">9</option>
+                                       <option value="10">10</option>
+                                    </select>
+                                    <i></i> 
+                                 </label>
+                              </section>
+                           </div>
+                           <div class="row">
+                              <section class="col col-6">
+                                 <label class="label"><i class="fa-fw fa fa-quora"></i>5. 您覺得有什麼更好的方法才能獲得更好的體驗？</label>
+                                 <label class="input"> <i class="icon-append fa fa-comments"></i>
+                                    <input type="text" placeholder="請輸入簡短描述即可" maxlength="100" size="60">
+                                 </label>
+                              </section>
+                              
+                              <section class="col col-6">
+                                 <label class="label"><i class="fa-fw fa fa-quora"></i>6. 在接下來30天，您期望可實現最重要的目標或成果是什麼？並請同時說明為什麼？</label>
+                                 <label class="input"> <i class="icon-append fa fa-comments"></i>
+                                    <input type="text" placeholder="請輸入簡短描述即可" maxlength="100" size="60">
+                                 </label>
+                              </section>
+                           </div>
+                        </fieldset>
+                        <footer>                           
+                           <button type="submit" name="submit" class="btn btn-primary">
+                              填寫完成並送出 <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                           </button>
+                           <button type="submit" name="submit" class="btn bg-color-blueDark">
+                             不方便作答
+                           </button>
+                        </footer>
+                        <div class="message">
+                           <i class="fa fa-check fa-lg"></i>
+                           <p>
+                              Your comment was successfully added!
+                           </p>
+                        </div>
+                     </form>
+                  </div>
+               </div>
+            </div>
+            <!-- dialog-message --> 
+            <!-- ui-dialog -->
+            <div id="updateProfileDialog" title="修改個人資料" class="bg-color-darken">
+               <div class="panel panel-default bg-color-darken">
+                  <form action="#" id="login-form" class="smart-form">
+                     <fieldset>
+                        <div class="row">
+                           <section class="col col-6">
+                              <label class="input">
+                              <i class="icon-append fa fa-envelope-o "></i>
+                              <input class="form-control input-lg" maxlength="30" placeholder="請輸入註冊時的E-mail" type="email" name="email" id="email">
+                              </label>
+                           </section>
+                           <section class="col col-6">
+                              <label class="input">
+                              <i class="icon-append fa fa-user "></i>
+                              <input class="form-control input-lg" maxlength="20" placeholder="請輸入暱稱" type="text" name="nickname" id="nickname">
+                              </label>
+                           </section>
+                        </div>
+                     </fieldset>
+                     <fieldset>
+                        <div class="row">
+                           <div class="col col-12">
+                              <img src="../../img/avatars/male.png" alt="親愛的" class="online" />
+                              <div class="input input-file">
+                                 <span class="button">
+                                 <input type="file" id="file" name="file" onchange="this.parentNode.nextSibling.value = this.value">瀏覽
+                                 </span>
+                                 <input type="text" placeholder="請選擇圖片" readonly="">
+                              </div>
+                           </div>
+                        </div>
+                     </fieldset>
+                     <fieldset>
+                        <ul id="myTab1" class="nav nav-tabs bordered">
+                           <li class="active">
+                              <a href="#pw1" data-toggle="tab"><i class="fa fa-picture-o  fa-lg fa-gear"></i> 圖形密碼</a>
+                           </li>
+                           <li>
+                              <a href="#pw2" data-toggle="tab"><i class="fa fa-keyboard-o  fa-lg fa-gear"></i> 文字密碼</a>
+                           </li>
+                        </ul>
+                        <div id="myTabContent1" class="tab-content padding-10">
+                           <div class="tab-pane fade in active" id="pw1">
+                              <button type="button" name="rest" id="reset-button" class="btn bg-color-red btn-lg btn-block"><i class="fa fa-eraser" aria-hidden="true"></i> 重設密碼</button>
+                              <div id="lock-screen-container">
+                                 <div id="lock-screen" /></div>
+                              </div>
+                           </div>
+                           <div class="tab-pane fade" id="pw2">
+                              <fieldset>
+                                 <section>
+                                    <label class="input">
+                                    <i class="icon-append fa fa-lock "></i>
+                                    <input class="form-control input-lg" maxlength="10" placeholder="請輸入密碼" type="password" name="passwd" id="passwd">
+                                    </label>
+                                 </section>
+                              </fieldset>
+                              <fieldset>
+                                 <section>
+                                    <label class="input">
+                                    <i class="icon-append fa fa-lock "></i>
+                                    <input class="form-control input-lg" maxlength="10" placeholder="請再次密碼" type="password" name="passwdconfirm" id="passwdconfirm">
+                                    </label>
+                                 </section>
+                              </fieldset>
+                           </div>
+                        </div>
+                     </fieldset>
+                     <footer class="text-right">                                    
+                        <button type="submit" name="submit" class="btn btn-primary">
+                        送出 <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                        </button>
+                        <button type="button" name="cancle" class="btn bg-color-blueLight">
+                        取消
+                        </button>
+                     </footer>
+                  </form>
+               </div>
+            </div>
+            <!-- dialog-message -->   
+            <!-- ui-dialog -->
+            <div id="viewClassDialog" title="檢視上課內容" class="bg-color-darken">
+               <div class="panel panel-default bg-color-darken">
+                  <div class="row">
+                     <div class="col-sm-12">
+                        <div class="padding-10">
+                           <ul class="nav nav-tabs tabs-pull-right">
+                              <li class="active">
+                                 <a data-toggle="tab" href="#trainingview_tab"><i class="fa fa-heartbeat"></i> <span>訓練內容</span></a>
+                              </li>
+                              <li>
+                                 <a data-toggle="tab" href="#peiview_tab"><i class="fa fa-pie-chart"></i> <span>評量指數</span></a>
+                              </li>
+                           </ul>
+                           <div class="tab-content padding-top-10">
+                              <div class="tab-pane fade in active" id="trainingview_tab">
+                                 <table id="training_dt" class="table" width="100%">
+                                    <thead>
+                                       <tr>
+                                          <th data-class="expand" class="col-xs-2 col-sm-2">動作</th>
+                                          <th class="col-xs-2 col-sm-2">實際/目標次數</th>
+                                          <th data-hide="phone" class="col-xs-2 col-sm-2">實際/目標強度</th>
+                                          <th data-hide="phone">加強說明/評論</th>
+                                       </tr>
+                                    </thead>
+                                    <tbody>
+                                       <tr>
+                                          <td>
+                                             <span class="whole_body">全身【敏捷梯】</span>
+                                          </td>
+                                          <td>12/15</td>
+                                          <td>70/60秒</td>
+                                          <td>強調控制，搭配多方向移動與蹦跳</td>
+                                       </tr>
+                                       <tr class="line_btm">
+                                          <td>休息時間 90-120秒
+                                          </td>
+                                          <td>以上項目重複5-8組</td>
+                                          <td></td>
+                                          <td>每次都做，慢慢讓反應更好</td>
+                                       </tr>
+                                       <tr>
+                                          <td>
+                                             <span>上肢 【Push Up】</span>
+                                          </td>
+                                          <td>5 / 5</td>
+                                          <td>10kg / 10kg背心</td>
+                                          <td>85%</td>
+                                       </tr>
+                                       <tr>
+                                          <td>
+                                             <span>下肢 【Hop垂直蹦跳】</span>
+                                          </td>
+                                          <td>-- / 6</td>
+                                          <td>-- / 6下</td>
+                                          <td>訓練在爆發點位置，身體能繃緊，並快速發力。</td>
+                                       </tr>
+                                       <tr class="line_btm">
+                                          <td>休息時間 90-120秒
+                                          </td>
+                                          <td>以上項目重複4-6組</td>
+                                          <td></td>
+                                          <td>每次都做，慢慢讓反應更好</td>
+                                       </tr>
+                                       <tr>
+                                          <td>
+                                             <span>核心【Plank】</span>
+                                          </td>
+                                          <td>10/10</td>
+                                          <td>70%</td>
+                                          <td></td>
+                                       </tr>
+                                       <tr>
+                                          <td>
+                                             <span>能量系統【跳繩】</span>
+                                          </td>
+                                          <td>10/10</td>
+                                          <td>70%</td>
+                                          <td></td>
+                                       </tr>
+                                       <tr>
+                                          <td>
+                                             <span>柔軟度【拉筋】</span>
+                                          </td>
+                                          <td>10/10</td>
+                                          <td>70%</td>
+                                          <td></td>
+                                       </tr>
+                                       <tr class="line_btm">
+                                          <td> 
+                                             休息時間 90-120秒
+                                          </td>
+                                          <td>以上項目重複4-6組</td>
+                                          <td></td>
+                                          <td></td>
+                                       </tr>
+                                    </tbody>
+                                 </table>
+                              </div>
+                              <div class="tab-pane fade" id="peiview_tab">
+                                 <div class="row">
+                                    <div class="col-sm-12 col-md-6">
+                                       <div id="pie-chart" class="chart-large has-legend-unique"></div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-6">
+                                       <div id="pie-chart1" class="chart-large has-legend-unique"></div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <!-- dialog-message -->     
+            <!-- ui-dialog -->
+            <div id="questionDialog" title="每日問與答" class="bg-color-darken">
+               <div class="panel panel-default bg-color-darken">
+                  <form action="#" method="post" id="question-form" class="smart-form">
+                           <div class="panel-body status smart-form vote">
+                              <div class="who clearfix">
+                                 <img src="../../img/avatars/bill.png" alt="img" class="busy">
+                                 <span class="name font-lg"><b>黃比爾</b></span>
+                                 <span class="from font-md"><b>Hi, 劉加菲</b> 請試試回答以下問的答案，答對會有意想不到的驚喜喔！</span>
+                              </div>
+                              <div class="image font-md">
+                                 <strong>營養素裡面一公克脂質為幾大卡（仟卡）的熱量？</strong>
+                              </div>
+                              <ul class="comments">
+                                 <li>
+                                    <label class="radio font-md">
+                                    <input type="radio" name="radio">
+                                    <i></i>4大卡</label>
+                                 </li>
+                                 <li>
+                                    <label class="radio font-md">
+                                    <input type="radio" name="radio">
+                                    <i></i>7大卡</label>
+                                 </li>
+                                 <li>
+                                    <label class="radio font-md">
+                                    <input type="radio" name="radio">
+                                    <i></i>9大卡</label>
+                                 </li>
+                                 <li>
+                                    <label class="radio font-md">
+                                    <input type="radio" name="radio">
+                                    <i></i>脂質沒有熱量</label>
+                                 </li>
+                              </ul>
+                              <div class="message" style="display:block">
+                                 <i class="fa fa-check fa-lg"></i>
+                                 <p class="text-center">
+                                    恭喜你答對囉，可獲得點數1點，集滿一定點數後有意想不到的驚喜喔！
+                                 </p>
+                              </div>
+                              <div class="errormessage" style="display:block">
+                                 <i class="fa fa-times fa-lg"></i>
+                                 <p class="text-center">
+                                    抱歉你答錯囉，再接再勵喔！
+                                 </p>
+                              </div>
+                              <!--<div class="errormessage" style="display:block">
+                                 <i class="fa fa-times fa-lg"></i>
+                                     <p class="text-center">
+                                         非常可惜答錯囉！試著再次請教黃比爾正確答案吧！
+                                     </p>
+                                 </div>-->
+                           </div>
+                        </form>
+               </div>
+            </div>
+            <!-- dialog-message -->    
+            <!-- ui-dialog -->
+            <div id="bonusDialog" title="點數兌換" class="bg-color-darken">
+                     <div class="panel-body status smart-form vote">
+                        <div class="who clearfix">
+                           <img src="../../img/avatars/bill.png" alt="img" class="busy">
+                              <span class="name font-lg"><b>黃比爾</b></span>
+                              <span class="from font-md"><b>Hi, 劉加菲</b>您現在已經累積點數<b>26點</b>，截至目前為止已兌換的商品如下</span>
+                        </div>
+                        <ul class="comments">
+                           <li>
+                               <label class="radio font-md">
+                                 <i class="fa fa-check-square"></i>按摩棒：9點
+                              </label>
+                           </li>
+                        </ul>
+                        <div class="image font-md">
+                              <strong>若您仍有足夠點數可參考以下商品，若有興趣可至各分店與兌換喔！</strong>
+                        </div>                            
+                     </div>            
+                     <div class="product-content product-wrap clearfix bg-color-darken">                 
+                        <div class="row">
+                              <div class="col-sm-6 col-md-6 col-lg-4">
+                                 <!-- product -->
+                                 <div class="product-content product-wrap clearfix">
+                                    <div class="row">
+                                          <div class="col-md-5 col-sm-6 col-xs-6">
+                                             <div class="product-image" style="min-height: auto;"> 
+                                                <img src="../../img/bonus/bonus_01.png" alt="194x228" class="img-responsive"> 
+                                                <span class="tag2 hot">
+                                                   HOT
+                                                </span> 
+                                             </div>
+                                          </div>
+                                          <div class="col-md-7 col-sm-6 col-xs-6">
+                                             <div class="product-deatil">
+                                                   <h5 class="name">
+                                                      <a href="#">
+                                                         教練課
+                                                      </a>
+                                                   </h5>
+                                                   <p class="price-container">
+                                                      <span>20點</span>
+                                                   </p>
+                                                   <span class="tag1"></span> 
+                                                   <a href="javascript:void(0);" class="btn bg-color-redLight">兌換</a>
+                                             </div>
+                                          </div>
+                                    </div>
+                                 </div>                                 
+                                 <!-- end product -->
+                              </div>         
+
+                              <div class="col-sm-6 col-md-6 col-lg-4">
+                                 <!-- product -->
+                                 <div class="product-content product-wrap clearfix">
+                                    <div class="row">
+                                          <div class="col-md-5 col-sm-6 col-xs-6">
+                                             <div class="product-image" style="min-height: auto;"> 
+                                                <img src="../../img/bonus/bonus_02.jpg" alt="194x228" class="img-responsive"> 
+                                                <span class="tag2 hot">
+                                                   HOT
+                                                </span> 
+                                             </div>
+                                          </div>
+                                          <div class="col-md-7 col-sm-6 col-xs-6">
+                                             <div class="product-deatil">
+                                                   <h5 class="name">
+                                                      <a href="#">
+                                                         按摩棒
+                                                      </a>
+                                                   </h5>
+                                                   <p class="price-container">
+                                                      <span>9點</span>
+                                                   </p>
+                                                   <span class="tag1"></span> 
+                                             </div>
+                                          </div>
+                                    </div>
+                                 </div>
+                                 <!-- end product -->
+                              </div> 
+                              <div class="col-sm-6 col-md-6 col-lg-4">
+                                 <!-- product -->
+                                 <div class="product-content product-wrap clearfix">
+                                    <div class="row">
+                                          <div class="col-md-5 col-sm-6 col-xs-6">
+                                             <div class="product-image" style="min-height: auto;"> 
+                                                <img src="../../img/bonus/bonus_03.jpg" alt="194x228" class="img-responsive"> 
+                                                <span class="tag2 hot">
+                                                   HOT
+                                                </span> 
+                                             </div>
+                                          </div>
+                                          <div class="col-md-7 col-sm-6 col-xs-6">
+                                             <div class="product-deatil">
+                                                   <h5 class="name">
+                                                      <a href="#">
+                                                         帽子
+                                                      </a>
+                                                   </h5>
+                                                   <p class="price-container">
+                                                      <span>10點</span>
+                                                   </p>
+                                                   <span class="tag1"></span> 
+                                             </div>
+                                          </div>
+                                    </div>
+                                 </div>
+                                 <!-- end product -->
+                              </div> 
+                              <div class="col-sm-6 col-md-6 col-lg-4">
+                                 <!-- product -->
+                                 <div class="product-content product-wrap clearfix">
+                                    <div class="row">
+                                          <div class="col-md-5 col-sm-6 col-xs-6">
+                                             <div class="product-image" style="min-height: auto;"> 
+                                                <img src="../../img/bonus/bonus_04.jpg" alt="194x228" class="img-responsive"> 
+                                                <span class="tag2 hot">
+                                                   HOT
+                                                </span> 
+                                             </div>
+                                          </div>
+                                          <div class="col-md-7 col-sm-6 col-xs-6">
+                                             <div class="product-deatil">
+                                                   <h5 class="name">
+                                                      <a href="#">
+                                                         T恤
+                                                      </a>
+                                                   </h5>
+                                                   <p class="price-container">
+                                                      <span>10點</span>
+                                                   </p>
+                                                   <span class="tag1"></span> 
+                                             </div>
+                                          </div>
+                                    </div>
+                                 </div>
+                                 <!-- end product -->
+                              </div>     
+                              <div class="col-sm-6 col-md-6 col-lg-4">
+                                 <!-- product -->
+                                 <div class="product-content product-wrap clearfix">
+                                    <div class="row">
+                                          <div class="col-md-5 col-sm-6 col-xs-6">
+                                             <div class="product-image" style="min-height: auto;"> 
+                                                <img src="../../img/bonus/bonus_05.jpg" alt="194x228" class="img-responsive"> 
+                                                <span class="tag2 hot">
+                                                   HOT
+                                                </span> 
+                                             </div>
+                                          </div>
+                                          <div class="col-md-7 col-sm-6 col-xs-6">
+                                             <div class="product-deatil" style="min-height: auto;">
+                                                   <h5 class="name">
+                                                      <a href="#">
+                                                         短滾筒
+                                                      </a>
+                                                   </h5>
+                                                   <p class="price-container">
+                                                      <span>18點</span>
+                                                   </p>
+                                                   <span class="tag1"></span> 
+                                             </div>
+                                          </div>
+                                    </div>
+                                 </div>
+                                 <!-- end product -->
+                              </div>                                     
+                              <div class="col-sm-6 col-md-6 col-lg-4">
+                                 <!-- product -->
+                                 <div class="product-content product-wrap clearfix">
+                                    <div class="row">
+                                          <div class="col-md-5 col-sm-6 col-xs-6">
+                                             <div class="product-image" style="min-height: auto;"> 
+                                                <img src="../../img/bonus/bonus_06.jpg" alt="194x228" class="img-responsive"> 
+                                                <span class="tag2 hot">
+                                                   HOT
+                                                </span> 
+                                             </div>
+                                          </div>
+                                          <div class="col-md-7 col-sm-6 col-xs-6">
+                                             <div class="product-deatil">
+                                                   <h5 class="name">
+                                                      <a href="#">
+                                                         帽T
+                                                      </a>
+                                                   </h5>
+                                                   <p class="price-container">
+                                                      <span>20點</span>
+                                                   </p>
+                                                   <span class="tag1"></span> 
+                                             </div>
+                                          </div>
+                                    </div>
+                                 </div>
+                                 <!-- end product -->
+                              </div>   
+                              <div class="col-sm-6 col-md-6 col-lg-4">
+                                 <!-- product -->
+                                 <div class="product-content product-wrap clearfix">
+                                    <div class="row">
+                                          <div class="col-md-5 col-sm-6 col-xs-6">
+                                             <div class="product-image" style="min-height: auto;"> 
+                                                <img src="../../img/bonus/bonus_07.jpg" alt="194x228" class="img-responsive"> 
+                                                <span class="tag2 hot">
+                                                   HOT
+                                                </span> 
+                                             </div>
+                                          </div>
+                                          <div class="col-md-7 col-sm-6 col-xs-6">
+                                             <div class="product-deatil">
+                                                   <h5 class="name">
+                                                      <a href="#">
+                                                         長滾筒
+                                                      </a>
+                                                   </h5>
+                                                   <p class="price-container">
+                                                      <span>30點</span>
+                                                   </p>
+                                                   <span class="tag1"></span> 
+                                             </div>
+                                          </div>
+                                    </div>
+                                 </div>
+                                 <!-- end product -->
+                              </div>                                                                                                            
+                        </div>
+                     </div>
+            </div>
+            <!-- dialog-message -->        
+            <!-- ui-dialog -->
+            <div id="addEventDialog" title="新增行事曆" class="bg-color-darken">
+               <form action="#" class="smart-form">
+                  <fieldset>
+                     <div>
+                        <section>
+                           <label class="label">請輸入行事曆內容</label>
+                           <label class="input"> <i class="icon-append fa fa-file-word-o"></i>
+                           <input type="text" name="eventcontent" maxlength="10" placeholder="請輸入行事曆內容">
+                           </label>
+                        </section>
+                     </div>
+                  </fieldset>
+                  <fieldset>
+                     <div class="row">
+                        <section class="col col-6">
+                           <label class="label">請選擇開始時間</label>
+                           <label class="select">
+                              <select class="input-lg">
+                                 <option value="0">2016/04/26 07:00</option>
+                                 <option value="1">2016/04/26 07:30</option>
+                                 <option value="2">2016/04/26 08:00</option>
+                              </select>
+                              <i class="icon-append fa fa-clock-o"></i>
+                           </label>
+                        </section>
+                        <section class="col col-6">
+                           <label class="label">請選擇結束時間</label>
+                           <label class="select">
+                              <select class="input-lg">
+                                 <option value="0">2016/04/30 07:00</option>
+                                 <option value="1">2016/04/30 07:30</option>
+                                 <option value="2">2016/04/30 08:00</option>
+                              </select>
+                              <i class="icon-append fa fa-clock-o"></i>
+                           </label>
+                        </section>
+                     </div>
+                  </fieldset>
+               </form>
+            </div>
+            <!-- dialog-message -->  
+            <!-- ui-dialog -->
+            <div id="diagnosisDialog" title="Fitness Diagnosis" class="bg-color-darken">
+                <div class="jarviswidget" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-togglebutton="false" data-widget-deletebutton="false">
+                  <header>
+                     <h2>日期：2017/05/15</h2>
+                     <div class="widget-toolbar">
+                        <div class="btn-group">
+                           <button class="btn dropdown-toggle btn-xs btn-warning" data-toggle="dropdown">
+                           診斷日期 <i class="fa fa-caret-down"></i>
+                           </button>
+                           <ul class="dropdown-menu pull-right">
+                              <li>
+                                 <a href="javascript:void(0);">2017/05/05</a>
+                              </li>
+                              <li>
+                                 <a href="javascript:void(0);">2017/06/05</a>
+                              </li>
+                              <li>
+                                 <a href="javascript:void(0);">2017/08/05</a>
+                              </li>
+                           </ul>
+                        </div>
+                     </div>
+                  </header>
+                  <!-- widget div-->
+                  <div>
+                     <div class="widget-body bg-color-darken txt-color-white padding-5">
+                        <div class="row">
+                           <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                              <div class="row">
+                                 <div class="col-sm-6 body_show text-center">
+                                    <div class="body-thumbnail">
+                                       <a href="#" class="informer-rightwrist warning"></a>
+                                       <a href="#" class="informer-chest warning"></a>
+                                       <a href="#" class="informer-waist warning"></a>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+                              <!-- new widget -->
+                              <div class="jarviswidget" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-togglebutton="false" data-widget-deletebutton="false">
+                                 <header>
+                                    <span class="widget-icon"> <i class="fa fa-user-circle-o"></i> </span>
+                                    <h2>體能顧問：黃比爾</h2>
+                                 </header>
+                                 <!-- widget div-->
+                                 <div>
+                                    <div class="widget-body bg-color-darken txt-color-white no-padding">
+                                       <p class="alert alert-info">
+                                          <strong>目標：</strong>致力不成為活死人 <br/>
+                                          <strong>診斷內容：</strong>基本上就是個活死人
+                                       </p>
+                                       <!-- content goes here -->
+                                       <table id="testing_dt" class="table" width="100%">
+                                          <thead>
+                                             <tr>
+                                                <th data-class="expand" class="col-xs-3 col-sm-3">Item</th>
+                                                <th class="col-xs-3 col-sm-3">Level</th>
+                                                <th class="col-xs-3 col-sm-3">Action</th>
+                                                <th data-hide="phone">Description</th>
+                                             </tr>
+                                          </thead>
+                                          <tbody>
+                                             <tr>
+                                                <td>
+                                                   上肢(Push Up)
+                                                </td>
+                                                <td><a href="#" id="pushupStandardDialog_link"><u>差（5次）</u></a></td>
+                                                <td>動肩膀</td>
+                                                <td>五十肩狀況明顯</td>
+                                             </tr>
+                                             <tr>
+                                                <td>
+                                                   下肢(Squat)
+                                                </td>
+                                                <td><a href="#" id="squatStandardDialog_link"><u>一般（15次）</u></a></td>
+                                                <td>拉筋</td>
+                                                <td>完全拉不動</td>
+                                             </tr>
+                                             <tr>
+                                                <td>
+                                                   下肢(Lunge)
+                                                </td>
+                                                <td><a href="#"><u>良好（25次）</u></a></td>
+                                                <td>深蹲</td>
+                                                <td>下盤不穩</td>
+                                             </tr>
+                                              <tr>
+                                                <td>
+                                                   心肺
+                                                </td>
+                                                <td><a href="#" id="cardioStandardDialog_link"><u>差（180次）</u></a></td>
+                                                <td>跑步</td>
+                                                <td>喘不過氣</td>
+                                             </tr>
+                                          </tbody>
+                                       </table>
+                                       <!-- end content -->
+                                    </div>
+                                 </div>
+                                 <!-- end widget div -->
+                              </div>
+                              <!-- end widget -->     
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <!-- end widget div -->
+               </div>
+             </div>
+            <!-- dialog-message -->   
+            <!-- ui-dialog -->
+            <div id="squatStandardDialog" title="Sqaut/Lunge評量標準" class="bg-color-darken">
+                <div class="row bg-color-darken txt-color-white padding-10">
+                   <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                      <table class="table table-striped table-bordered table-hover" width="100%">
+                         <thead>
+                            <tr>
+                               <th class="text-center">年齡</th>
+                               <th colspan="3" class="text-center">Squat/ Lunge 標準(次數)</th>
+                            </tr>
+                            <tr>
+                               <th class="bg-color-blueLight" rowspan="2">男性</th>
+                               <th class="text-center">良好</th>
+                               <th class="text-center">一般</th>
+                               <th class="text-center">稍差</th>
+                            </tr>
+                         </thead>
+                         <tbody>
+                            <tr>
+                               <td class="bg-color-blueLight">18-25</td>
+                               <td>＞ 43</td>
+                               <td>35~43</td>
+                               <td>＜ 35</td>
+                            </tr>
+                            <tr>
+                               <td class="bg-color-blueLight">26-35</td>
+                               <td>＞ 39</td>
+                               <td>31~39</td>
+                               <td>＜ 31</td>
+                            </tr>
+                            <tr>
+                               <td class="bg-color-blueLight">36-45</td>
+                               <td>＞ 34</td>
+                               <td>27~34</td>
+                               <td>＜ 27</td>
+                            </tr>
+                            <tr>
+                               <td class="bg-color-blueLight">46-55</td>
+                               <td>＞ 28</td>
+                               <td>22~28</td>
+                               <td>＜ 22</td>
+                            </tr>
+                            <tr>
+                               <td class="bg-color-blueLight">56~65</td>
+                               <td>＞ 24</td>
+                               <td>17~24</td>
+                               <td>＜ 17</td>
+                            </tr>
+                            <tr>
+                               <td class="bg-color-blueLight">65+</td>
+                               <td>＞ 21</td>
+                               <td>15~21</td>
+                               <td>＜ 15</td>
+                            </tr>
+                         </tbody>
+                      </table>
+                   </div>
+                   <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                      <table id="standard_dt" class="table table-striped table-bordered table-hover" width="100%">
+                         <thead>
+                            <tr>
+                               <th class="text-center">年齡</th>
+                               <th colspan="3" class="text-center">Squat/ Lunge  標準(次數)</th>
+                            </tr>
+                            <tr>
+                               <th class="bg-color-pink" rowspan="2">女性</th>
+                               <th class="text-center">良好</th>
+                               <th class="text-center">一般</th>
+                               <th class="text-center">稍差</th>
+                            </tr>
+                         </thead>
+                         <tbody>
+                            <tr>
+                               <td class="bg-color-pink">18-25</td>
+                               <td>＞ 36</td>
+                               <td>29~36</td>
+                               <td>＜ 29</td>
+                            </tr>
+                            <tr>
+                               <td class="bg-color-pink">26-35</td>
+                               <td>＞ 32</td>
+                               <td>25~32</td>
+                               <td>＜ 25</td>
+                            </tr>
+                            <tr>
+                               <td class="bg-color-pink">36-45</td>
+                               <td>＞ 26</td>
+                               <td>19~26</td>
+                               <td>＜ 19</td>
+                            </tr>
+                            <tr>
+                               <td class="bg-color-pink">46-55</td>
+                               <td>＞ 21</td>
+                               <td>14~21</td>
+                               <td>＜ 21</td>
+                            </tr>
+                            <tr>
+                               <td class="bg-color-pink">56-65</td>
+                               <td>＞ 17</td>
+                               <td>10~17</td>
+                               <td>＜ 10</td>
+                            </tr>
+                            <tr>
+                               <td class="bg-color-pink">65+</td>
+                               <td>＞ 16</td>
+                               <td>11~16</td>
+                               <td>＜ 11</td>
+                            </tr>
+                         </tbody>
+                      </table>
+                   </div>
+                </div>
+            </div>
+            <!-- dialog-message -->                     
+            <!-- ui-dialog -->
+            <div id="pushupStandardDialog" title="Push Up評量標準" class="bg-color-darken">
+                <div class="row bg-color-darken txt-color-white padding-10">
+                   <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                      <table class="table table-striped table-bordered table-hover" width="100%">
+                         <thead>
+                            <tr>
+                               <th class="text-center">年齡</th>
+                               <th colspan="3" class="text-center">Push Up 標準(次數)</th>
+                            </tr>
+                            <tr>
+                               <th class="bg-color-blueLight" rowspan="2">男性</th>
+                               <th class="text-center">良好</th>
+                               <th class="text-center">一般</th>
+                               <th class="text-center">稍差</th>
+                            </tr>
+                         </thead>
+                         <tbody>
+                            <tr>
+                               <td class="bg-color-blueLight">20~29</td>
+                               <td>＞ 44</td>
+                               <td>35~44</td>
+                               <td>＜ 35</td>
+                            </tr>
+                            <tr>
+                               <td class="bg-color-blueLight">30~39</td>
+                               <td>＞ 34</td>
+                               <td>24~34</td>
+                               <td>＜ 24</td>
+                            </tr>
+                            <tr>
+                               <td class="bg-color-blueLight">40~49</td>
+                               <td>＞ 29</td>
+                               <td>20~29</td>
+                               <td>＜ 20</td>
+                            </tr>
+                            <tr>
+                               <td class="bg-color-blueLight">50~59</td>
+                               <td>＞ 24</td>
+                               <td>15~24</td>
+                               <td>＜ 15</td>
+                            </tr>
+                            <tr>
+                               <td class="bg-color-blueLight">60+</td>
+                               <td>＞ 19</td>
+                               <td>10~19</td>
+                               <td>＜ 10</td>
+                            </tr>
+                         </tbody>
+                      </table>
+                   </div>
+                   <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                      <table id="standard_dt" class="table table-striped table-bordered table-hover" width="100%">
+                         <thead>
+                            <tr>
+                               <th class="text-center">年齡</th>
+                               <th colspan="3" class="text-center">Push Up 標準(次數)</th>
+                            </tr>
+                            <tr>
+                               <th class="bg-color-pink" rowspan="2">女性</th>
+                               <th class="text-center">良好</th>
+                               <th class="text-center">一般</th>
+                               <th class="text-center">稍差</th>
+                            </tr>
+                         </thead>
+                         <tbody>
+                            <tr>
+                               <td class="bg-color-pink">20~29</td>
+                               <td>＞ 33</td>
+                               <td>17~33</td>
+                               <td>＜ 17</td>
+                            </tr>
+                            <tr>
+                               <td class="bg-color-pink">30~39</td>
+                               <td>＞ 24</td>
+                               <td>12~24</td>
+                               <td>＜ 12</td>
+                            </tr>
+                            <tr>
+                               <td class="bg-color-pink">40~49</td>
+                               <td>＞ 19</td>
+                               <td>8~19</td>
+                               <td>＜ 8</td>
+                            </tr>
+                            <tr>
+                               <td class="bg-color-pink">50~59</td>
+                               <td>＞ 14</td>
+                               <td>6~14</td>
+                               <td>＜ 6</td>
+                            </tr>
+                            <tr>
+                               <td class="bg-color-pink">60+</td>
+                               <td>＞ 4</td>
+                               <td>3~4</td>
+                               <td>＜ 3</td>
+                            </tr>
+                         </tbody>
+                      </table>
+                   </div>
+                </div>
+            </div>
+            <!-- dialog-message -->   
+            <!-- ui-dialog -->
+            <div id="cardioStandardDialog" title="心肺評量標準" class="bg-color-darken">
+                <div class="bg-color-darken txt-color-white padding-10">
+                    <table class="table table-striped table-bordered table-hover" width="100%">
+                         <thead>
+                            <tr>
+                               <th class="text-center">心肺</th>
+                               <th class="text-center">標準(持續時間五分鐘)</th>
+                            </tr>
+                            <tr>
+                                <th>儲備心律 = 220-年齡-安靜心跳</th>
+                                <th>有效訓練心跳率 = 220-年齡-安靜心跳率)*70%+安靜心跳率</th>
+                             </tr>
+                         </thead>
+                         <tbody>
+                            <tr>
+                               <td>100</td>
+                               <td>145</td>
+                            </tr>
+                         </tbody>
+                      </table>               
+                </div>
+            </div>
+            <!-- dialog-message -->                 
+            <!-- END MAIN CONTENT -->
+         </div>
+      </div>
+      <!-- END MAIN PANEL -->
+      <!-- PAGE FOOTER -->
+      <div class="page-footer">
+         <div class="row">
+            <div class="col-xs-12 col-sm-6">
+               <span class="txt-color-white">BEYOND FITNESS <span class="hidden-xs"> - ALL RIGHTS RESERVED</span> © 2017</span>
+            </div>
+            <div class="col-xs-6 col-sm-6 text-right hidden-xs">
+               <div class="txt-color-white inline-block">
+                  <i class="txt-color-blueLight hidden-mobile">Last update time <i class="fa fa-clock-o"></i>  <strong>2016/07/23 PM 20:03 &nbsp;</strong> 
+                  </i>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- END PAGE FOOTER -->
+      <!--================================================== -->
+      <!-- PACE LOADER - turn this on if you want ajax loading to show (caution: uses lots of memory on iDevices)-->
+      <script data-pace-options='{ "restartOnRequestAfter": true }' src="../../js/plugin/pace/pace.min.js"></script>
+      <!-- Link to Google CDN's jQuery + jQueryUI; fall back to local -->
+      <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+      <script>
+         if (!window.jQuery) {
+             document.write('<script src="../../js/libs/jquery-2.1.1.min.js"><\/script>');
+         }
+      </script>
+      <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+      <script>
+         if (!window.jQuery.ui) {
+             document.write('<script src="../../js/libs/jquery-ui-1.10.3.min.js"><\/script>');
+         }
+      </script>
+      <!-- IMPORTANT: APP CONFIG -->
+      <script src="../../js/app.config.js"></script>
+      <!-- JS TOUCH : include this plugin for mobile drag / drop touch events-->
+      <script src="../../js/plugin/jquery-touch/jquery.ui.touch-punch.min.js"></script>
+      <!-- BOOTSTRAP JS -->
+      <script src="../../js/bootstrap/bootstrap.min.js"></script>
+      <!-- CUSTOM NOTIFICATION -->
+      <script src="../../js/notification/SmartNotification.min.js"></script>
+      <!-- JARVIS WIDGETS -->
+      <script src="../../js/smartwidgets/jarvis.widget.min.js"></script>
+      <!-- EASY PIE CHARTS -->
+      <script src="../../js/plugin/easy-pie-chart/jquery.easy-pie-chart.min.js"></script>
+      <!-- SPARKLINES -->
+      <script src="../../js/plugin/sparkline/jquery.sparkline.min.js"></script>
+      <!-- JQUERY VALIDATE -->
+      <script src="../../js/plugin/jquery-validate/jquery.validate.min.js"></script>
+      <!-- JQUERY MASKED INPUT -->
+      <script src="../../js/plugin/masked-input/jquery.maskedinput.min.js"></script>
+      <!-- JQUERY SELECT2 INPUT -->
+      <script src="../../js/plugin/select2/select2.min.js"></script>
+      <!-- JQUERY UI + Bootstrap Slider -->
+      <script src="../../js/plugin/bootstrap-slider/bootstrap-slider.min.js"></script>
+      <!-- browser msie issue fix -->
+      <script src="../../js/plugin/msie-fix/jquery.mb.browser.min.js"></script>
+      <!-- FastClick: For mobile devices -->
+      <script src="../../js/plugin/fastclick/fastclick.min.js"></script>
+      <!--[if IE 8]>
+      <h1>Your browser is out of date, please update your browser by going to www.microsoft.com/download</h1>
+      <![endif]-->
+      <!-- MAIN APP JS FILE -->
+      <script src="../../js/app.min.js"></script>
+      <!-- ENHANCEMENT PLUGINS : NOT A REQUIREMENT -->
+      <!-- Voice command : plugin -->
+      <script src="../../js/speech/voicecommand.min.js"></script>
+      <!-- SmartChat UI : plugin -->
+      <script src="../../js/smart-chat-ui/smart.chat.ui.min.js"></script>
+      <script src="../../js/smart-chat-ui/smart.chat.manager.min.js"></script>
+      <!--scrollup plugin-->
+      <script src="../../js/plugin/scrollup-master/jquery.scrollUp.min.js"></script>
+      <!-- PAGE RELATED PLUGIN(S) -->
+      <script src="../../js/plugin/superbox/superbox.min.js"></script>
+      <!-- PAGE RELATED PLUGIN(S) -->
+      <script src="../../js/plugin/datatables/jquery.dataTables.min.js"></script>
+      <script src="../../js/plugin/datatables/dataTables.colVis.min.js"></script>
+      <script src="../../js/plugin/datatables/dataTables.tableTools.min.js"></script>
+      <script src="../../js/plugin/datatables/dataTables.bootstrap.min.js"></script>
+      <script src="../../js/plugin/datatable-responsive/datatables.responsive.min.js"></script>
+      <!-- Full Calendar -->
+      <script src="../../js/plugin/moment/moment.min.js"></script>
+      <script src="../../js/plugin/fullcalendar/jquery.fullcalendar.min.js"></script>
+      <script src="../../js/plugin/fullcalendar/lang-all.js"></script>
+      <!-- Morris Chart Dependencies -->
+      <script src="../../js/plugin/morris/raphael.min.js"></script>
+      <script src="../../js/plugin/morris/morris.min.js"></script>
+      <!-- Flot Chart Plugin: Flot Engine, Flot Resizer, Flot Tooltip -->
+      <script src="../../js/plugin/flot/jquery.flot.cust.min.js"></script>
+      <script src="../../js/plugin/flot/jquery.flot.resize.min.js"></script>
+      <script src="../../js/plugin/flot/jquery.flot.fillbetween.min.js"></script>
+      <script src="../../js/plugin/flot/jquery.flot.orderBar.min.js"></script>
+      <script src="../../js/plugin/flot/jquery.flot.pie.min.js"></script>
+      <script src="../../js/plugin/flot/jquery.flot.time.min.js"></script>
+      <script src="../../js/plugin/flot/jquery.flot.tooltip.min.js"></script> 
+      <!-- LockScreen : plugin -->
+      <script src="../../js/plugin/lockscreen/kinetic-v4.6.js"></script>
+      <script src="../../js/plugin/lockscreen/html5-android-pattern-lockScreen.js"></script>    
+    <!-- DateTimePicker : plugin -->
+    <script src="../../js/plugin/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script>
+    <script src="../../js/plugin/bootstrap-datetimepicker/locales/bootstrap-datetimepicker.zh-TW.js"></script>                    
+      <!-- PAGE RELATED PLUGIN(S) 
+         <script src="..."></script>-->
+      <script type="text/javascript">
+         // DO NOT REMOVE : GLOBAL FUNCTIONS!
+         $(document).ready(function() {
+             pageSetUp();
+         
+             // initialize sortable
+             $(function() {
+         
+                 $.scrollUp({
+                     //animation: 'slide',
+                     //activeOverlay: '#00FFFF',
+                     scrollText: '',
+                     scrollImg: true,
+                 });        
+
+                 $('#questionnaireDialog').dialog('open');   
+                 $('#questionDialog').dialog('open');                        
+             });               
+
+             
+             /*
+              * FULL CALENDAR JS
+              */
+         
+             if ($("#calendar").length) {
+                 var date = new Date();
+                 var d = date.getDate();
+                 var m = date.getMonth();
+                 var y = date.getFullYear();
+         
+                 var calendar = $('#calendar').fullCalendar({
+                     lang: 'zh-TW',
+                     editable: false,
+                     draggable: false,
+                     selectable: false,
+                     selectHelper: true,
+                     unselectAuto: false,
+                     disableResizing: false,
+                     height: "auto",
+         
+                     header: {
+                         left: 'title', //,today
+                         center: 'prev, next, today',
+                         right: 'month, agendaWeek, agenDay' //month, agendaDay,
+                     },
+         
+                     select: function(start, end, allDay) {
+                         var title = prompt('Event Title:');
+                         if (title) {
+                             calendar.fullCalendar('renderEvent', {
+                                     title: title,
+                                     start: start,
+                                     end: end,
+                                     allDay: allDay
+                                 }, true // make the event "stick"
+                             );
+                         }
+                         calendar.fullCalendar('unselect');
+                     },
+         
+                     events: [{
+                         title: '',
+                         start: new Date(y, m, d - 3),
+                         description: '體驗課程',
+                         allDay: true,
+                         className: ["event", "bg-color-pink"],
+                         icon: 'fa-check-circle'
+                     }, {
+                         title: '',
+                         start: new Date(y, m, d + 4),
+                         description: '1 VS 1',
+                         allDay: true,
+                         className: ["event", "bg-color-blue"],
+                         icon: 'fa-check-circle'
+                     }, {
+                         title: '',
+                         start: new Date(y, m, d + 6),
+                         description: '自主訓練',
+                         allDay: true,
+                         className: ["event", "bg-color-red"]
+                     }, {
+                         title: '',
+                         start: new Date(y, m, d + 8),
+                         description: '1 VS 2',
+                         allDay: true,
+                         className: ["event", "bg-color-blue"]
+                     }, {
+                         title: '',
+                         start: new Date(y, m, d - 10),
+                         description: '阿甘盃第八屆嘉年華路跑',
+                         allDay: true,
+                         className: ["event", "bg-color-greenLight"]
+                     }],
+         
+         
+                     eventRender: function(event, element, icon) {
+                         if (!event.description == "") {
+                             element.find('.fc-title').append("<br/><span class='ultra-light'>" + event.description + "</span>");
+                         }
+                         if (!event.icon == "") {
+                             element.find('.fc-title').append("<i class='air air-top-right fa " + event.icon + " '></i>");
+                         }
+                     },
+                     eventClick:  function(event, jsEvent, view) {
+                        $('#viewClassDialog').dialog('open');   
+                     },
+
+                     dayClick: function (date, allDay, jsEvent, view) {
+                        var formattedDate = date.toString().replace(" GMT+0000",""); 
+                        $('#addEventDialog').dialog('open');
+                        //alert("see, I can get " + formattedDate + " if I _left click_, but try doing this with a right click");
+                     },
+                     windowResize: function (event, ui) {
+                         $('#calendar').fullCalendar('render');
+                     },                                
+                 });
+         
+             };
+         
+             /* hide default buttons */
+             $('.fc-toolbar .fc-right, .fc-toolbar .fc-center').hide();
+         
+             // calendar prev
+             $('#calendar-buttons #btn-prev').click(function() {
+                 $('.fc-prev-button').click();
+                 return false;
+             });
+         
+             // calendar next
+             $('#calendar-buttons #btn-next').click(function() {
+                 $('.fc-next-button').click();
+                 return false;
+             });
+         
+             // calendar today
+             $('#calendar-buttons #btn-today').click(function() {
+                 $('.fc-button-today').click();
+                 return false;
+             });
+         
+             // calendar month
+             $('#mt').click(function() {
+                 $('#calendar').fullCalendar('changeView', 'month');
+             });
+         
+             // calendar agenda week
+             $('#ag').click(function() {
+                 $('#calendar').fullCalendar('changeView', 'agendaWeek');
+             });
+         
+             // calendar agenda day
+             $('#td').click(function() {
+                 $('#calendar').fullCalendar('changeView', 'agendaDay');
+             });
+         
+            $('#viewclass').on('shown.bs.modal', function() {
+                $(this).find('.modal-dialog').css({
+                     width: '100%',
+                     height: 'auto',
+                     'max-height': '100%'
+                });      
+            });  
+         
+             /* BASIC ;*/
+             var responsiveHelper_dt_basic = undefined;
+             var responsiveHelper_dt_basic2 = undefined;
+             var responsiveHelper_dt_basic3 = undefined;
+         
+             var responsiveHelper_datatable_fixed_column = undefined;
+             var responsiveHelper_datatable_col_reorder = undefined;
+             var responsiveHelper_datatable_tabletools = undefined;
+         
+             var breakpointDefinition = {
+                 tablet: 1024,
+                 phone: 480
+             };
+          
+         
+             $('#health_dt').dataTable({
+                 "sDom": "<'dt-toolbar'<'col-xs-12 col-sm-6'f><'col-sm-6 col-xs-12 hidden-xs'l>r>" +
+                         "t" +
+                         "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-xs-12 col-sm-6'p>>",
+                 "autoWidth": true,
+                 "order": [],
+                 "oLanguage": {
+                 "sSearch": '<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>'
+                 },
+                 "preDrawCallback": function() {
+                     // Initialize the responsive datatables helper once.
+                     if (!responsiveHelper_dt_basic2) {
+                         responsiveHelper_dt_basic2 = new ResponsiveDatatablesHelper($('#health_dt'), breakpointDefinition);
+                     }
+                 },
+                 "rowCallback": function(nRow) {
+                     responsiveHelper_dt_basic2.createExpandIcon(nRow);
+                 },
+                 "drawCallback": function(oSettings) {
+                     responsiveHelper_dt_basic2.respond();
+                 }
+             });   
+         
+             $('#training_dt').dataTable({
+                    "sDom": "",
+                    "autoWidth": true,
+                    "bDestroy": true,
+                    "ordering": false,
+                    "bPaginate": false,
+                    "oLanguage": {
+                        "sSearch": '<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>'
+                  },
+                 "preDrawCallback": function() {
+                     // Initialize the responsive datatables helper once.
+                     if (!responsiveHelper_dt_basic3) {
+                         responsiveHelper_dt_basic3 = new ResponsiveDatatablesHelper($('#training_dt'), breakpointDefinition);
+                     }
+                 },
+                 "rowCallback": function(nRow) {
+                     responsiveHelper_dt_basic3.createExpandIcon(nRow);
+                 },
+                 "drawCallback": function(oSettings) {
+                     responsiveHelper_dt_basic3.respond();
+                 }
+             });              
+         
+             // Dialog click
+             $('#undolistDialog_link').click(function() {
+               $('#undolistDialog').dialog('open');
+               return false;
+         
+             });                         
+         
+             $('#undolistDialog').dialog({
+                  autoOpen : false,
+                  width: "auto",
+                  height: "auto",
+                  resizable : true,
+                  modal : true,
+                  closeText: "關閉",
+                  title : "<h4 class='modal-title'><i class='icon-append fa fa-list-ol'></i> 上課未打卡</h4>"
+             }); 
+         
+            // Modal Link
+            $('#healthlist_link').click(function() {
+               $('#healthlistDialog').dialog('open');
+               return false;
+            });
+                   
+         
+            $('#healthlistDialog').dialog({
+               autoOpen : false,
+               resizable : true,
+               modal : true,
+               width: "auto",
+               height: "auto",
+               title: "<h4 class='modal-title'><i class='fa-fw fa fa-history'></i>  維護健康指數</h4>"
+            });
+
+
+            $('#questionnaire_link').click(function() {
+               $('#questionnaireDialog').dialog('open');
+               return false;
+            });
+         
+            $('#questionnaireDialog').dialog({
+               autoOpen : false,
+               resizable : true,
+               modal : true,
+               width: "auto",
+               height: "auto",    
+               title: "<h4 class='modal-title'><i class='fa fa-fw fa-volume-up'></i>  階段性調整計劃</h4>"
+            });     
+
+            $('#questionDialog').dialog({
+               autoOpen : false,
+               resizable : true,
+               modal : true,
+               width: "auto",
+               height: "auto",    
+               title: "<h4 class='modal-title'><i class='fa fa-fw fa-quora'></i>  每日問與答</h4>"
+            });                                  
+         
+            $('#updateProfile_link').click(function() {
+               $('#updateProfileDialog').dialog('open');
+               return false;
+            });
+         
+            $('#updateProfileDialog').dialog({
+               autoOpen : false,
+               resizable : true,
+               modal : true,
+               width: "auto",
+               height: "auto",    
+               title: "<h4 class='modal-title'><i class='fa fa-fw fa-cogs'></i>  修改個人資料</h4>"
+            });
+         
+         
+            $('#viewClassDialog').dialog({
+               autoOpen : false,
+               resizable : true,
+               modal : true,
+               width: "auto",
+               height: "auto",    
+               title: "<h4 class='modal-title'><i class='fa fa-fw fa-eye'></i>  檢視上課內容</h4>"
+            });   
+
+            $('#bonus_link').click(function() {
+               $('#bonusDialog').dialog('open');
+               return false;
+            });
+         
+            $('#bonusDialog').dialog({
+               autoOpen : false,
+               resizable : true,
+               modal : true,
+               width: "auto",
+               height: "auto",    
+               title: "<h4 class='modal-title'><i class='fa fa-fw fa-volume-up'></i>  點數兌換</h4>"
+            });                       
+         
+
+            $('#addEventDialog_link').click(function() {
+               $('#addEventDialog').dialog('open');
+               return false;
+            });
+         
+            $('#addEventDialog').dialog({
+               autoOpen : false,
+               resizable : true,
+               modal : true,
+               width: "auto",
+               height: "auto",    
+               title: "<h4 class='modal-title'><i class='fa fa-fw fa-plus'></i>  新增行事曆</h4>",
+               buttons : [{
+                     html : "<i class='fa fa-send'></i>&nbsp;確定",
+                     "class" : "btn btn-primary",
+                      click : function() {                         
+                         $(this).dialog("close");
+                     }
+                  }]
+            }); 
+             
+            $('#diagnosisDialog_link').click(function() {
+               $('#diagnosisDialog').dialog('open');
+               return false;
+            });
+                   
+         
+            $('#diagnosisDialog').dialog({
+               autoOpen : false,
+               resizable : true,
+               modal : true,
+               width: "auto",
+               title: "<h4 class='modal-title'><i class='fa-fw fa fa-child'></i> Fitness Diagnosis</h4>"
+            }); 
+
+            $('#squatStandardDialog_link').click(function() {
+               $('#squatStandardDialog').dialog('open');
+               return false;
+            });
+                   
+         
+            $('#squatStandardDialog').dialog({
+               autoOpen : false,
+               resizable : true,
+               modal : true,
+               width: "auto",
+               title: "<h4 class='modal-title'><i class='fa-fw fa fa-anchor'></i>  Sqaut / Lunge 評量標準</h4>"
+            });  
+             
+            $('#pushupStandardDialog_link').click(function() {
+               $('#pushupStandardDialog').dialog('open');
+               return false;
+            });
+                   
+         
+            $('#pushupStandardDialog').dialog({
+               autoOpen : false,
+               resizable : true,
+               modal : true,
+               width: "auto",
+               title: "<h4 class='modal-title'><i class='fa-fw fa fa-anchor'></i>  Push Up評量標準</h4>"
+            });        
+             
+            $('#cardioStandardDialog_link').click(function() {
+               $('#cardioStandardDialog').dialog('open');
+               return false;
+            });
+                   
+         
+            $('#cardioStandardDialog').dialog({
+               autoOpen : false,
+               resizable : true,
+               modal : true,
+               width: "auto",
+               title: "<h4 class='modal-title'><i class='fa-fw fa fa-anchor'></i>  心肺評量標準</h4>"
+            });               
+         
+            /* pie chart */
+            if ($('#pie-chart').length) {
+         
+                var data_pie = [];
+                data_pie[0] = {
+                    label: "肌力訓練 25分鐘",
+                    data: 25
+                }
+         
+                data_pie[1] = {
+                    label: "爆發力訓練 20分鐘",
+                    data: 20
+                }
+         
+                data_pie[2] = {
+                    label: "其他訓練 10分鐘",
+                    data: 10
+                }
+         
+                data_pie[3] = {
+                    label: "核心訓練 3分鐘",
+                    data: 3
+                }
+         
+                data_pie[4] = {
+                    label: "反應時間訓練 2分鐘",
+                    data: 2
+                }
+         
+                $.plot($("#pie-chart"), data_pie, {
+                    series: {
+                        pie: {
+                            show: true,
+                            innerRadius: 0.5,
+                            radius: 1,
+                            label: {
+                                show: true,
+                                radius: 2 / 3,
+                                formatter: function(label, series) {
+                                    return '<div style="font-size:11px;text-align:center;padding:4px;color:white;">' + label + '<br/>' + Math.round(series.percent) + '%</div>';
+                                },
+                                //threshold: 0.1
+                                background: {
+                                    opacity: 0.5,
+                                    color: "#000"
+                                }
+                            }
+                        }
+                    },
+                    legend: {
+                        show: true,
+                        noColumns: 1, // number of colums in legend table
+                        labelFormatter: null, // fn: string -> string
+                        labelBoxBorderColor: "#000", // border color for the little label boxes
+                        container: null, // container (as jQuery object) to put legend in, null means default on top of graph
+                        position: "ne", // position of default legend container within plot
+                        margin: [5, 10], // distance from grid edge to default legend container within plot
+                        backgroundColor: "#efefef", // null means auto-detect
+                        backgroundOpacity: 1 // set to 0 to avoid background
+                    },
+                    grid: {
+                        hoverable: true,
+                        clickable: true
+                    },
+                });
+         
+            }
+         
+            /* pie chart */
+            if ($('#pie-chart1').length) {
+         
+                var data_pie = [];
+                data_pie[0] = {
+                    label: "肌力訓練 1000KG",
+                    data: 25
+                }
+         
+                data_pie[1] = {
+                    label: "爆發力訓練 200KG",
+                    data: 20
+                }
+         
+                $.plot($("#pie-chart1"), data_pie, {
+                    series: {
+                        pie: {
+                            show: true,
+                            innerRadius: 0.5,
+                            radius: 1,
+                            label: {
+                                show: true,
+                                radius: 2 / 3,
+                                formatter: function(label, series) {
+                                    return '<div style="font-size:11px;text-align:center;padding:4px;color:white;">' + label + '<br/>' + Math.round(series.percent) + '%</div>';
+                                },
+                                //threshold: 0.1
+                                background: {
+                                    opacity: 0.5,
+                                    color: "#000"
+                                }
+                            }
+                        }
+                    },
+                    legend: {
+                        show: true,
+                        noColumns: 1, // number of colums in legend table
+                        labelFormatter: null, // fn: string -> string
+                        labelBoxBorderColor: "#000", // border color for the little label boxes
+                        container: null, // container (as jQuery object) to put legend in, null means default on top of graph
+                        position: "ne", // position of default legend container within plot
+                        margin: [5, 10], // distance from grid edge to default legend container within plot
+                        backgroundColor: "#efefef", // null means auto-detect
+                        backgroundOpacity: 1 // set to 0 to avoid background
+                    },
+                    grid: {
+                        hoverable: true,
+                        clickable: true
+                    },
+                });
+         
+            }
+            /* pie chart */
+         
+            if ($('#pie-chart2').length) {
+         
+                var data_pie = [];
+                data_pie[0] = {
+                    label: "下肢推",
+                    data: 1000
+                }
+         
+                data_pie[1] = {
+                    label: "上肢水平推",
+                    data: 50
+                }
+         
+                data_pie[2] = {
+                    label: "上肢垂直推",
+                    data: 990
+                }
+         
+                data_pie[3] = {
+                    label: "上肢垂直拉",
+                    data: 450
+                }
+         
+                $.plot($("#pie-chart2"), data_pie, {
+                    series: {
+                        pie: {
+                            show: true,
+                            innerRadius: 0.5,
+                            radius: 1,
+                            label: {
+                                show: true,
+                                radius: 2 / 3,
+                                formatter: function(label, series) {
+                                    return '<div style="font-size:11px;text-align:center;padding:4px;color:white;">' + label + '<br/>' + Math.round(series.percent) + '%</div>';
+                                },
+                                //threshold: 0.1
+                                background: {
+                                    opacity: 0.5,
+                                    color: "#000"
+                                }
+                            }
+                        }
+                    },
+                    legend: {
+                        show: true,
+                        noColumns: 1, // number of colums in legend table
+                        labelFormatter: null, // fn: string -> string
+                        labelBoxBorderColor: "#000", // border color for the little label boxes
+                        container: null, // container (as jQuery object) to put legend in, null means default on top of graph
+                        position: "ne", // position of default legend container within plot
+                        margin: [5, 10], // distance from grid edge to default legend container within plot
+                        backgroundColor: "#efefef", // null means auto-detect
+                        backgroundOpacity: 1 // set to 0 to avoid background
+                    },
+                    grid: {
+                        hoverable: true,
+                        clickable: true
+                    },
+                });
+            }
+         
+            if ($('#pie-chart3').length) {
+         
+                var data_pie = [];
+                data_pie[0] = {
+                    label: "壺鈴爆發次數",
+                    data: 300
+                }
+         
+                data_pie[1] = {
+                    label: "增強式訓練次數",
+                    data: 3300
+                }
+         
+                data_pie[2] = {
+                    label: "奧林匹克爆發",
+                    data: 300
+                }
+         
+                data_pie[3] = {
+                    label: "跳繩總次數",
+                    data: 4400
+                }
+         
+                $.plot($("#pie-chart3"), data_pie, {
+                    series: {
+                        pie: {
+                            show: true,
+                            innerRadius: 0.5,
+                            radius: 1,
+                            label: {
+                                show: true,
+                                radius: 2 / 3,
+                                formatter: function(label, series) {
+                                    return '<div style="font-size:11px;text-align:center;padding:4px;color:white;">' + label + '<br/>' + Math.round(series.percent) + '%</div>';
+                                },
+                                //threshold: 0.1
+                                background: {
+                                    opacity: 0.5,
+                                    color: "#000"
+                                }
+                            }
+                        }
+                    },
+                    legend: {
+                        show: true,
+                        noColumns: 1, // number of colums in legend table
+                        labelFormatter: null, // fn: string -> string
+                        labelBoxBorderColor: "#000", // border color for the little label boxes
+                        container: null, // container (as jQuery object) to put legend in, null means default on top of graph
+                        position: "ne", // position of default legend container within plot
+                        margin: [5, 10], // distance from grid edge to default legend container within plot
+                        backgroundColor: "#efefef", // null means auto-detect
+                        backgroundOpacity: 1 // set to 0 to avoid background
+                    },
+                    grid: {
+                        hoverable: true,
+                        clickable: true
+                    },
+                });
+            }
+         
+            if ($('#pie-chart4').length) {
+         
+                var data_pie = [];
+                data_pie[0] = {
+                    label: "敏捷度次數",
+                    data: 60
+                }
+         
+                data_pie[1] = {
+                    label: "平衡次數",
+                    data: 20
+                }
+         
+                data_pie[2] = {
+                    label: "速度訓練次數",
+                    data: 500
+                }
+         
+                $.plot($("#pie-chart4"), data_pie, {
+                    series: {
+                        pie: {
+                            show: true,
+                            innerRadius: 0.5,
+                            radius: 1,
+                            label: {
+                                show: true,
+                                radius: 2 / 3,
+                                formatter: function(label, series) {
+                                    return '<div style="font-size:11px;text-align:center;padding:4px;color:white;">' + label + '<br/>' + Math.round(series.percent) + '%</div>';
+                                },
+                                //threshold: 0.1
+                                background: {
+                                    opacity: 0.5,
+                                    color: "#000"
+                                }
+                            }
+                        }
+                    },
+                    legend: {
+                        show: true,
+                        noColumns: 1, // number of colums in legend table
+                        labelFormatter: null, // fn: string -> string
+                        labelBoxBorderColor: "#000", // border color for the little label boxes
+                        container: null, // container (as jQuery object) to put legend in, null means default on top of graph
+                        position: "ne", // position of default legend container within plot
+                        margin: [5, 10], // distance from grid edge to default legend container within plot
+                        backgroundColor: "#efefef", // null means auto-detect
+                        backgroundOpacity: 1 // set to 0 to avoid background
+                    },
+                    grid: {
+                        hoverable: true,
+                        clickable: true
+                    },
+                });
+            }  
+         
+            if ($('#strengthGraph').length) {
+                var day_data = [{
+                    "period": "2015-07-21",
+                    "up": 400,
+                    "down": 1000,
+                    "olympic": 300
+                }, {
+                    "period": "2015-08-05",
+                    "up": 420,
+                    "olympic": 200
+                }, {
+                    "period": "2015-08-27",
+                    "down": 800
+                }, {
+                    "period": "2015-09-28",
+                    "up": 500,
+                    "down": 1200,
+                    "olympic": 800
+                }];
+                Morris.Line({
+                    element: 'strengthGraph',
+                    data: day_data,
+                    xkey: 'period',
+                    xLabelAngle: 30.0,
+                    yLabelFormat: function(y) {
+                        if (typeof(y) != 'undefined') {
+                            return parseFloat(y) + ' KG';
+                        } else {
+                            return '-- KG';
+                        }
+         
+                    },
+                    ykeys: ['up', 'down', 'olympic'],
+                    resize: true,
+                    labels: ['上肢', '下肢', '奧林匹克爆發']
+                })
+            }         
+         
+            /* data stolen from http://howmanyleft.co.uk/vehicle/jaguar_'e'_type */
+            if ($('#energyGraph').length) {
+                var day_data = [{
+                    "period": "2015-07-21",
+                    "energy": 42,
+                    "muscle": 38,
+                }, {
+                    "period": "2015-08-01",
+                    "energy": 40,
+                    "muscle": 50,
+                }, {
+                    "period": "2015-08-21",
+                    "energy": 38,
+                    "muscle": 52,
+                }, {
+                    "period": "2015-08-30",
+                    "energy": 41,
+                    "muscle": 58,
+                }, {
+                    "period": "2015-09-03",
+                    "energy": 46,
+                    "muscle": 45,
+                }, {
+                    "period": "2015-09-15",
+                    "energy": 45,
+                    "muscle": 44,
+                }, {
+                    "period": "2015-09-21",
+                    "energy": 50,
+                    "muscle": 48,
+                }];
+                Morris.Line({
+                    element: 'energyGraph',
+                    data: day_data,
+                    xkey: 'period',
+                    yLabelFormat: function(y) {
+                        return parseFloat(y) + '%';
+                    },
+                    xLabelAngle: 30.0,
+                    ykeys: ['energy', 'muscle'],
+                    resize: true,
+                    labels: ['能量', '肌力']
+                })
+            }         
+         })
+      </script>
+      <script>
+         /*
+          * CONVERT DIALOG TITLE TO HTML
+          * REF: http://stackoverflow.com/questions/14488774/using-html-in-a-dialogs-title-in-jquery-ui-1-10
+          */
+         $.widget("ui.dialog", $.extend({}, $.ui.dialog.prototype, {
+            _title : function(title) {
+               if (!this.options.title) {
+                  title.html("&#160;");
+               } else {
+                  title.html(this.options.title);
+               }
+            }
+         }));    
+         
+      </script>      
+      <div id="fb-root"></div>
+      <script>
+         window.fbAsyncInit = function() {
+           FB.init({
+             appId      : '1027299250717597',
+             xfbml      : true,
+             version    : 'v2.8'
+           });
+           FB.AppEvents.logPageView();
+         };
+         
+         (function(d, s, id){
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) {return;}
+            js = d.createElement(s); js.id = id;
+            js.src = "//connect.facebook.net/en_US/sdk.js";
+            fjs.parentNode.insertBefore(js, fjs);
+          }(document, 'script', 'facebook-jssdk'));
+      </script>    
+      <!-- Your GOOGLE ANALYTICS CODE Below -->
+      <script type="text/javascript">
+         var _gaq = _gaq || [];
+         _gaq.push(['_setAccount', 'UA-XXXXXXXX-X']);
+         _gaq.push(['_trackPageview']);
+         
+         (function() {
+             var ga = document.createElement('script');
+             ga.type = 'text/javascript';
+             ga.async = true;
+             ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+             var s = document.getElementsByTagName('script')[0];
+             s.parentNode.insertBefore(ga, s);
+         })();
+      </script>
+   </body>
+</html>

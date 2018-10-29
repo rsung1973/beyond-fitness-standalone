@@ -1,0 +1,412 @@
+/*
+
+	INSTRUCTIONS ---------------------------------------------------------------------------------
+  
+  1. link this stylesheet in the head of your HTML
+  	 <link href="YOUR PATH/navy-blue.css" rel="stylesheet" type="text/css" />
+     
+  2. Set the file name as data-theme attribute on your input
+  	 <input data-theme="navy-blue" />
+     
+  3. That's it!
+  
+  When you run script the style will be automatically applied.
+
+*/
+div.datedropper.navy-blue {
+  border-radius: 8px;
+  width: 180px;
+}
+div.datedropper.navy-blue .picker {
+  border-radius: 8px;
+  box-shadow: 0 0 32px 0px rgba(0, 0, 0, 0.1);
+}
+div.datedropper.navy-blue .pick-l {
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+div.datedropper.navy-blue:before,
+div.datedropper.navy-blue .pick-submit,
+div.datedropper.navy-blue .pick-lg-b .pick-sl:before,
+div.datedropper.navy-blue .pick-m,
+div.datedropper.navy-blue .pick-lg-h {
+  background-color: #0061d2;
+}
+div.datedropper.navy-blue .pick-y.pick-jump,
+div.datedropper.navy-blue .pick li span,
+div.datedropper.navy-blue .pick-lg-b .pick-wke,
+div.datedropper.navy-blue .pick-btn {
+  color: #0061d2;
+}
+div.datedropper.navy-blue .picker,
+div.datedropper.navy-blue .pick-l {
+  background-color: #FFF;
+}
+div.datedropper.navy-blue .picker,
+div.datedropper.navy-blue .pick-arw,
+div.datedropper.navy-blue .pick-l {
+  color: #4D4D4D;
+}
+div.datedropper.navy-blue .pick-m,
+div.datedropper.navy-blue .pick-m .pick-arw,
+div.datedropper.navy-blue .pick-lg-h,
+div.datedropper.navy-blue .pick-lg-b .pick-sl,
+div.datedropper.navy-blue .pick-submit {
+  color: #FFF;
+}
+div.datedropper.navy-blue.picker-tiny:before,
+div.datedropper.navy-blue.picker-tiny .pick-m {
+  background-color: #FFF;
+}
+div.datedropper.navy-blue.picker-tiny .pick-m,
+div.datedropper.navy-blue.picker-tiny .pick-m .pick-arw {
+  color: #4D4D4D;
+}
+div.datedropper.navy-blue.picker-lkd .pick-submit {
+  background-color: #FFF;
+  color: #4D4D4D;
+}
+
+/*
+
+	INSTRUCTIONS ---------------------------------------------------------------------------------
+  
+  1. link this stylesheet in the head of your HTML
+  	 <link href="YOUR PATH/light-cyan.css" rel="stylesheet" type="text/css" />
+     
+  2. Set the file name as data-theme attribute on your input
+  	 <input data-theme="light-cyan" />
+     
+  3. That's it!
+  
+  When you run script the style will be automatically applied.
+
+*/
+div.datedropper.light-cyan {
+  border-radius: 8px;
+  width: 180px;
+}
+div.datedropper.light-cyan .picker {
+  border-radius: 8px;
+  box-shadow: 0 0 32px 0px rgba(0, 0, 0, 0.1);
+}
+div.datedropper.light-cyan .pick-l {
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+div.datedropper.light-cyan:before,
+div.datedropper.light-cyan .pick-submit,
+div.datedropper.light-cyan .pick-lg-b .pick-sl:before,
+div.datedropper.light-cyan .pick-m,
+div.datedropper.light-cyan .pick-lg-h {
+  background-color: #74DBD1;
+}
+div.datedropper.light-cyan .pick-y.pick-jump,
+div.datedropper.light-cyan .pick li span,
+div.datedropper.light-cyan .pick-lg-b .pick-wke,
+div.datedropper.light-cyan .pick-btn {
+  color: #74DBD1;
+}
+div.datedropper.light-cyan .picker,
+div.datedropper.light-cyan .pick-l {
+  background-color: #FFF;
+}
+div.datedropper.light-cyan .picker,
+div.datedropper.light-cyan .pick-arw,
+div.datedropper.light-cyan .pick-l {
+  color: #4D4D4D;
+}
+div.datedropper.light-cyan .pick-m,
+div.datedropper.light-cyan .pick-m .pick-arw,
+div.datedropper.light-cyan .pick-lg-h,
+div.datedropper.light-cyan .pick-lg-b .pick-sl,
+div.datedropper.light-cyan .pick-submit {
+  color: #FFF;
+}
+div.datedropper.light-cyan.picker-tiny:before,
+div.datedropper.light-cyan.picker-tiny .pick-m {
+  background-color: #FFF;
+}
+div.datedropper.light-cyan.picker-tiny .pick-m,
+div.datedropper.light-cyan.picker-tiny .pick-m .pick-arw {
+  color: #4D4D4D;
+}
+div.datedropper.light-cyan.picker-lkd .pick-submit {
+  background-color: #FFF;
+  color: #4D4D4D;
+}
+
+/*
+
+	INSTRUCTIONS ---------------------------------------------------------------------------------
+  
+  1. link this stylesheet in the head of your HTML
+  	 <link href="YOUR PATH/gray.css" rel="stylesheet" type="text/css" />
+     
+  2. Set the file name as data-theme attribute on your input
+  	 <input data-theme="gray" />
+     
+  3. That's it!
+  
+  When you run script the style will be automatically applied.
+
+*/
+div.datedropper.gray {
+  border-radius: 8px;
+  width: 180px;
+}
+div.datedropper.gray .picker {
+  border-radius: 8px;
+  box-shadow: 0 0 32px 0px rgba(0, 0, 0, 0.1);
+}
+div.datedropper.gray .pick-l {
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+div.datedropper.gray:before,
+div.datedropper.gray .pick-submit,
+div.datedropper.gray .pick-lg-b .pick-sl:before,
+div.datedropper.gray .pick-m,
+div.datedropper.gray .pick-lg-h {
+  background-color: #4a4a4a;
+}
+div.datedropper.gray .pick-y.pick-jump,
+div.datedropper.gray .pick li span,
+div.datedropper.gray .pick-lg-b .pick-wke,
+div.datedropper.gray .pick-btn {
+  color: #4a4a4a;
+}
+div.datedropper.gray .picker,
+div.datedropper.gray .pick-l {
+  background-color: #FFF;
+}
+div.datedropper.gray .picker,
+div.datedropper.gray .pick-arw,
+div.datedropper.gray .pick-l {
+  color: #4D4D4D;
+}
+div.datedropper.gray .pick-m,
+div.datedropper.gray .pick-m .pick-arw,
+div.datedropper.gray .pick-lg-h,
+div.datedropper.gray .pick-lg-b .pick-sl,
+div.datedropper.gray .pick-submit {
+  color: #FFF;
+}
+div.datedropper.gray.picker-tiny:before,
+div.datedropper.gray.picker-tiny .pick-m {
+  background-color: #FFF;
+}
+div.datedropper.gray.picker-tiny .pick-m,
+div.datedropper.gray.picker-tiny .pick-m .pick-arw {
+  color: #4D4D4D;
+}
+div.datedropper.gray.picker-lkd .pick-submit {
+  background-color: #FFF;
+  color: #4D4D4D;
+}
+
+/*
+
+	INSTRUCTIONS ---------------------------------------------------------------------------------
+  
+  1. link this stylesheet in the head of your HTML
+  	 <link href="YOUR PATH/black.css" rel="stylesheet" type="text/css" />
+     
+  2. Set the file name as data-theme attribute on your input
+  	 <input data-theme="black" />
+     
+  3. That's it!
+  
+  When you run script the style will be automatically applied.
+
+*/
+div.datedropper.black {
+  border-radius: 8px;
+  width: 180px;
+}
+div.datedropper.black .picker {
+  border-radius: 8px;
+  box-shadow: 0 0 32px 0px rgba(0, 0, 0, 0.1);
+}
+div.datedropper.black .pick-l {
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+div.datedropper.black:before,
+div.datedropper.black .pick-submit,
+div.datedropper.black .pick-lg-b .pick-sl:before,
+div.datedropper.black .pick-m,
+div.datedropper.black .pick-lg-h {
+  background-color: #000;
+}
+div.datedropper.black .pick-y.pick-jump,
+div.datedropper.black .pick li span,
+div.datedropper.black .pick-lg-b .pick-wke,
+div.datedropper.black .pick-btn {
+  color: #000;
+}
+div.datedropper.black .picker,
+div.datedropper.black .pick-l {
+  background-color: #FFF;
+}
+div.datedropper.black .picker,
+div.datedropper.black .pick-arw,
+div.datedropper.black .pick-l {
+  color: #4D4D4D;
+}
+div.datedropper.black .pick-m,
+div.datedropper.black .pick-m .pick-arw,
+div.datedropper.black .pick-lg-h,
+div.datedropper.black .pick-lg-b .pick-sl,
+div.datedropper.black .pick-submit {
+  color: #FFF;
+}
+div.datedropper.black.picker-tiny:before,
+div.datedropper.black.picker-tiny .pick-m {
+  background-color: #FFF;
+}
+div.datedropper.black.picker-tiny .pick-m,
+div.datedropper.black.picker-tiny .pick-m .pick-arw {
+  color: #4D4D4D;
+}
+div.datedropper.black.picker-lkd .pick-submit {
+  background-color: #FFF;
+  color: #4D4D4D;
+}
+/*
+
+	INSTRUCTIONS ---------------------------------------------------------------------------------
+  
+  1. link this stylesheet in the head of your HTML
+  	 <link href="YOUR PATH/teal-momo.css" rel="stylesheet" type="text/css" />
+     
+  2. Set the file name as data-theme attribute on your input
+  	 <input data-theme="teal-momo" />
+     
+  3. That's it!
+  
+  When you run script the style will be automatically applied.
+
+*/
+div.datedropper.teal-momo {
+  border-radius: 8px;
+  width: 180px;
+}
+div.datedropper.teal-momo .picker {
+  border-radius: 8px;
+  box-shadow: 0 0 32px 0px rgba(0, 0, 0, 0.1);
+}
+div.datedropper.teal-momo .pick-l {
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+div.datedropper.teal-momo:before,
+div.datedropper.teal-momo .pick-submit,
+div.datedropper.teal-momo .pick-lg-b .pick-sl:before,
+div.datedropper.teal-momo .pick-m,
+div.datedropper.teal-momo .pick-lg-h {
+  background-color: #05232d;
+}
+div.datedropper.teal-momo .pick-y.pick-jump,
+div.datedropper.teal-momo .pick li span,
+div.datedropper.teal-momo .pick-lg-b .pick-wke,
+div.datedropper.teal-momo .pick-btn {
+  color: #05232d;
+}
+div.datedropper.teal-momo .picker,
+div.datedropper.teal-momo .pick-l {
+  background-color: #FFF;
+}
+div.datedropper.teal-momo .picker,
+div.datedropper.teal-momo .pick-arw,
+div.datedropper.teal-momo .pick-l {
+  color: #f58a97;
+}
+div.datedropper.teal-momo .pick-m,
+div.datedropper.teal-momo .pick-m .pick-arw,
+div.datedropper.teal-momo .pick-lg-h,
+div.datedropper.teal-momo .pick-lg-b .pick-sl,
+div.datedropper.teal-momo .pick-submit {
+  color: #eee;
+}
+div.datedropper.teal-momo.picker-tiny:before,
+div.datedropper.teal-momo.picker-tiny .pick-m {
+  background-color: #FFF;
+}
+div.datedropper.teal-momo.picker-tiny .pick-m,
+div.datedropper.teal-momo.picker-tiny .pick-m .pick-arw {
+  color: #f58a97;
+}
+div.datedropper.teal-momo.picker-lkd .pick-submit {
+  background-color: #FFF;
+  color: #f58a97;
+}
+/*
+
+	INSTRUCTIONS ---------------------------------------------------------------------------------
+  
+  1. link this stylesheet in the head of your HTML
+  	 <link href="YOUR PATH/teal-navy.css" rel="stylesheet" type="text/css" />
+     
+  2. Set the file name as data-theme attribute on your input
+  	 <input data-theme="teal-navy" />
+     
+  3. That's it!
+  
+  When you run script the style will be automatically applied.
+
+*/
+div.datedropper.teal-navy {
+  border-radius: 8px;
+  width: 180px;
+}
+div.datedropper.teal-navy .picker {
+  border-radius: 8px;
+  box-shadow: 0 0 32px 0px rgba(0, 0, 0, 0.1);
+}
+div.datedropper.teal-navy .pick-l {
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+div.datedropper.teal-navy:before,
+div.datedropper.teal-navy .pick-submit,
+div.datedropper.teal-navy .pick-lg-b .pick-sl:before,
+div.datedropper.teal-navy .pick-m,
+div.datedropper.teal-navy .pick-lg-h {
+  background-color: #05232d;
+}
+div.datedropper.teal-navy .pick-y.pick-jump,
+div.datedropper.teal-navy .pick li span,
+div.datedropper.teal-navy .pick-lg-b .pick-wke,
+div.datedropper.teal-navy .pick-btn {
+  color: #05232d;
+}
+div.datedropper.teal-navy .picker,
+div.datedropper.teal-navy .pick-l {
+  background-color: #FFF;
+}
+div.datedropper.teal-navy .picker,
+div.datedropper.teal-navy .pick-arw,
+div.datedropper.teal-navy .pick-l {
+  color: #0061d2;
+}
+div.datedropper.teal-navy .pick-m,
+div.datedropper.teal-navy .pick-m .pick-arw,
+div.datedropper.teal-navy .pick-lg-h,
+div.datedropper.teal-navy .pick-lg-b .pick-sl,
+div.datedropper.teal-navy .pick-submit {
+  color: #eee;
+}
+div.datedropper.teal-navy.picker-tiny:before,
+div.datedropper.teal-navy.picker-tiny .pick-m {
+  background-color: #FFF;
+}
+div.datedropper.teal-navy.picker-tiny .pick-m,
+div.datedropper.teal-navy.picker-tiny .pick-m .pick-arw {
+  color: #0061d2;
+}
+div.datedropper.teal-navy.picker-lkd .pick-submit {
+  background-color: #FFF;
+  color: #0061d2;
+}
+

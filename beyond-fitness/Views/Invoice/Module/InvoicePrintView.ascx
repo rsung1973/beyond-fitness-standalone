@@ -1,0 +1,158 @@
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="System.Web.Mvc.ViewUserControl" %>
+<%@ Import Namespace="System.IO" %>
+<%@ Import Namespace="System.Linq.Expressions" %>
+<%@ Import Namespace="System.Web.Mvc.Html" %>
+<%@ Import Namespace="WebHome.Helper" %>
+<%@ Import Namespace="WebHome.Models.Locale" %>
+<%@ Import Namespace="WebHome.Models.Locale" %>
+<%@ Import Namespace="WebHome.Models.ViewModel" %>
+<%@ Import Namespace="WebHome.Models.DataEntity" %>
+<%@ Import Namespace="WebHome.Controllers" %>
+<%@ Import Namespace="Newtonsoft.Json" %>
+
+<div style="page-break-after: always; width: 5.7cm; margin-left: 0cm; margin-right: 0cm">
+
+    <div class="container" style="page-break-after: always; border-top: 0px; border-bottom: 0px">
+        <table>
+            <tr>
+                <td>
+                    <div class="cutfield" style="/*width: 5cm;*/ border-top: 0px; border: 0px; /*font-weight: bold;*/">
+                        <%  if (_seller!=null && _seller.LogoURL != null)
+                        { %>
+                        <img style="width: 200px; height: auto;" src='<%= WebHome.Properties.Settings.Default.HostDomain + VirtualPathUtility.ToAbsolute("~/" + _seller.LogoURL) %>' />
+                        <%      }
+                        else
+                        { %>
+                            <div style="text-align:left; width:4.4cm">
+                                <h3 style="width: 4.2cm; padding-top: 0px; font-weight: bold; height: 1.3cm;"><%=_seller.CompanyName  %></h3>
+                            </div>
+                        <%  } %>
+                        <h2>電子發票證明聯</h2>
+                        <h2><%= _model.InvoiceDate.Value.Year-1911 %>年<%= (_model.InvoiceDate.Value.Month % 2).Equals(0) ? String.Format("{0:00}-{1:00}", _model.InvoiceDate.Value.Month - 1, _model.InvoiceDate.Value.Month) : String.Format("{0:00}-{1:00}", _model.InvoiceDate.Value.Month, _model.InvoiceDate.Value.Month+1)%>月 </h2>
+                        <h2><%= _model.TrackCode + "-" + _model.No %></h2>
+                        <p>
+                            <%= String.Format("{0:yyyy-MM-dd HH:mm:ss}", _model.InvoiceDate.Value)%> <%= _isB2C ? "" : "格式 25" %><br />
+                            隨機碼 <%= _model.RandomNo %> &nbsp;&nbsp;&nbsp;&nbsp; 總計 <%= String.Format("{0:##,###,###,###}",_model.InvoiceAmountType.TotalAmount) %><br />
+                            賣方 <%= _model.InvoiceSeller.ReceiptNo %> <%= _isB2C ? null : "買方 " + _model.InvoiceBuyer.ReceiptNo %>
+                        </p>
+                        <div class="code1">
+                            <%  Html.RenderPartial("~/Views/Invoice/Module/InvoiceBarCode.ascx",_model); %>
+                        </div>
+                        <div class="code2">
+                            <%  Html.RenderPartial("~/Views/Invoice/Module/InvoiceQRCode.ascx",_model); %>
+                        </div>
+                        <p>
+                            <%= _model.Organization.BranchStore!=null ? _model.Organization.BranchStore.BranchName : null %>
+                            <br />
+                            退貨請憑電子發票證明聯辦理
+                        </p>
+                    </div>
+                </td>
+
+            </tr>
+        </table>
+    </div>
+
+    <%--<div class="listfield" style="border-top: 0px; border-bottom: 0px">
+        <table style="width: 4.8cm; font-size: 8pt; font-weight: bold;">
+             <tr>
+                <td colspan="3">
+                            <p style="	display: inline-block;padding: 2px 0px;margin: 0;font-size:8pt;line-height: 1.5">品名</p>
+                </td>
+             </tr>
+            <tr>
+                <td style="width:20%">
+                    <p style="	display: inline-block;padding: 2px 0px;margin: 0;font-size:8pt;line-height: 1.5">數量</p>
+                    </td>
+                <td style="width:40%">
+                    <p style="	display: inline-block;padding: 2px 0px;margin: 0;font-size:8pt;line-height: 1.5">單價</p>
+                    </td>
+                <td style="width:40%">
+                    <p style="	display: inline-block;padding: 2px 0px;margin: 0;font-size:8pt;line-height: 1.5">小計</p>
+                </td>
+            </tr>
+
+            <%  if (_model.InvoiceDetails.Count>0)
+                {
+                    foreach (var product in _model.InvoiceDetails.Select(d=>d.InvoiceProduct))
+                    {
+                        foreach (var item in product.InvoiceProductItem)
+                        {   %>
+        <tr>
+            <td colspan="3" height="15" valign="top"><%= product.Brief %></td>
+        </tr>
+            <tr>
+                <td align="right" valign="top"><%= String.Format("{0:##,###,###,###}", item.Piece)%></td>
+                <td align="right" valign="top"><%= String.Format("{0:##,###,###,###}", item.UnitCost) %></td>
+                <td align="right" valign="top"><%= String.Format("{0:##,###,###,###}", item.CostAmount)%></td>
+            </tr>
+            <%          }
+                    }
+                } %>
+            <tr>
+                <td colspan="3" style="font-size: 8pt;">
+
+                    <p style="border-top: 1px dotted #808080;">
+                        <span style="font-size: 8pt;">總計：<%=_model.InvoiceDetails.Sum(d=>d.InvoiceProduct.InvoiceProductItem.Count) %>項&nbsp;&nbsp;金額：<%= String.Format("{0:##,###,###,##0}", _model.InvoiceAmountType.TotalAmount)%></span><br />
+                        課稅別：<%= (_model.InvoiceAmountType.TaxType == 2 || _model.InvoiceAmountType.TaxType == 3) ? "TZ" : "TX"%><br />
+                <%  if (!_isB2C)
+                    {
+                        decimal? salesAmt = 0;
+                        decimal? zeroTaxAmt = 0;
+                        decimal? freeTaxAmt = 0;
+                        switch ((Naming.TaxTypeDefinition)_model.InvoiceAmountType.TaxType)
+                        {
+                            case Naming.TaxTypeDefinition.應稅:
+                                salesAmt = _model.InvoiceAmountType.SalesAmount;
+                                break;
+                            case Naming.TaxTypeDefinition.零稅率:
+                                zeroTaxAmt = _model.InvoiceAmountType.SalesAmount;
+                                break;
+                            case Naming.TaxTypeDefinition.免稅:
+                                freeTaxAmt = _model.InvoiceAmountType.SalesAmount;
+                                break;
+                        }
+                %>
+                        應稅銷售額：<%= String.Format("{0:##,###,###,##0}",salesAmt) %><br />
+                        零稅率銷售額：<%= String.Format("{0:##,###,###,##0}",zeroTaxAmt) %><br />
+                        免稅銷售額：<%= String.Format("{0:##,###,###,##0}",freeTaxAmt) %><br />
+                        稅額：<%= String.Format("{0:##,###,###,##0}",_model.InvoiceAmountType.TaxAmount) %><br />
+                        <%  } %>
+                        備註：<%= String.Join(";", _model.InvoiceDetails.Select(d => d.InvoiceProduct.InvoiceProductItem.FirstOrDefault().Remark))%>
+                    </p>
+                </td>
+            </tr>
+        </table>
+    </div>--%>
+</div>
+<%--<%      if ((bool?)ViewBag.PrintBuyerAddr == true)
+        { %>
+            <div style="page-break-after: always; width: 4.8cm; margin-left: 0cm; margin-right: 0cm; padding-top: 0px;">
+                <span style="font-family: Microsoft JhengHei; font-size: 1.2em; font-weight: bold;"><%= _buyer.PostCode %></span><br>
+                <span style="font-family: Microsoft JhengHei; font-size: 1.2em; font-weight: bold;"><%= _buyer.Address %></span><br>
+                <br>
+                <span style="font-family: Microsoft JhengHei; font-size: 1.2em; font-weight: bold;"><%= _buyer.ContactName %> 鈞啟</span><br>
+                <span style="font-size: 1.2em; font-weight: bold;">(No:<%=_model.No.Substring(0,5)+"***" %>)</span>
+            </div>
+<%      } %>--%>
+
+<script runat="server">
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    InvoiceItem _model;
+    Organization _seller;
+    
+    bool _isB2C;
+
+    protected override void OnInit(EventArgs e)
+    {
+        base.OnInit(e);
+        _modelState = (ModelStateDictionary)ViewBag.ModelState;
+        models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+        _model = (InvoiceItem)this.Model;
+        _seller = _model.Organization;
+        _isB2C = String.IsNullOrEmpty(_model.InvoiceBuyer.ReceiptNo) || _model.InvoiceBuyer.ReceiptNo == "0000000000";
+    }
+
+</script>

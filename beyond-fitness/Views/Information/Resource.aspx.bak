@@ -1,0 +1,62 @@
+﻿<%@ Page Title="" Language="C#" AutoEventWireup="true" Inherits="System.Web.Mvc.ViewPage" %>
+
+<%@ Import Namespace="System.IO" %>
+<%@ Import Namespace="System.Linq.Expressions" %>
+<%@ Import Namespace="System.Web.Mvc.Html" %>
+<%@ Import Namespace="WebHome.Helper" %>
+<%@ Import Namespace="WebHome.Models.Locale" %>
+<%@ Import Namespace="WebHome.Models.ViewModel" %>
+<%@ Import Namespace="WebHome.Models.DataEntity" %>
+<%@ Import Namespace="WebHome.Controllers" %>
+<%@ Register Src="~/Views/Shared/PageBanner.ascx" TagPrefix="uc1" TagName="PageBanner" %>
+
+<% if (_attachment != null && _attachment.Count() > 0)
+    { %>
+
+<label class="control-label" for="nickname">圖片(鏈結網址)：</label>
+<ul>
+    <asp:repeater id="rpList" runat="server" itemtype="WebHome.Models.DataEntity.Attachment">
+        <ItemTemplate>
+            <li>
+                <div class="row">
+                    <div class="col-md-1"><img src="<%# VirtualPathUtility.ToAbsolute("~/Information/GetResource/"+Item.AttachmentID) %>" /></div>
+                    <div class="col-md-4">
+                        ( <%# VirtualPathUtility.ToAbsolute("~/Information/GetResource/"+Item.AttachmentID) %> ) <br />
+                        <input type="radio" name="rbTitleImg" value="<%# Item.AttachmentID %>" /> 設成主題圖片 &nbsp;&nbsp;
+                        <a  onclick="javascript:deleteResource(<%# Item.AttachmentID %>)" class="btn btn-system btn-small">刪除 <i class="fa fa-times" aria-hidden="true"></i></a>
+                    </div>
+                </div>
+                </li>
+        </ItemTemplate>
+    </asp:repeater>
+</ul>
+<% if (_item.Illustration.HasValue)
+    { %>
+<script>
+    $(function () {
+        $('input[name="rbTitleImg"][value="<%= _item.Illustration %>"]:radio').prop('checked',true);
+    });
+</script>
+<%  } %>
+<% } %>
+
+<script runat="server">
+
+    ModelSource<Article> models;
+    Article _item;
+    IEnumerable<Attachment> _attachment;
+
+    protected override void OnInit(EventArgs e)
+    {
+        base.OnInit(e);
+        models = ((SampleController<Article>)ViewContext.Controller).DataSource;
+        _item = (Article)this.Model;
+        if (_item != null)
+        {
+            _attachment = _item.Document.Attachments;
+            rpList.DataSource = _attachment;
+            rpList.DataBind();
+        }
+    }
+
+</script>

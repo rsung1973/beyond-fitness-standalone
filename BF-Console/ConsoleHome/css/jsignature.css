@@ -1,0 +1,74 @@
+h2 {
+	letter-spacing: -1px;
+	font-size: 22px;
+	margin: 20px 0;
+	line-height: normal;
+}
+
+.well {
+	padding: 0px;
+	margin: 0 0 0 0;
+	border-radius: 2px;
+	background-color: #fff;
+	border: 1px solid #ddd;
+	-webkit-box-shadow: 0 1px 1px #ececec;
+	font-weight: 600;
+}
+
+.table>tbody>tr>td,
+.table>tbody>tr>th,
+.table>tfoot>tr>td,
+.table>tfoot>tr>th,
+.table>thead>tr>td,
+.table>thead>tr>th {
+	padding: 7px 8px;
+	border-top: 0px;
+}
+
+.seal {
+	background-image: url("images/sign/seal.png");
+	background-repeat: no-repeat;
+	background-position: center center;
+}
+
+
+/*
+         div {
+         margin-top: 1em;
+         margin-bottom: 1em;
+         }
+         */
+
+#signatureparent {
+	color: darkblue;
+	background-color: darkgrey;
+	/*max-width:600px;*/
+	padding: 20px;
+}
+
+
+/*This is the div within which the signature canvas is fitted*/
+
+#signature {
+	border: 2px dotted black;
+	background-color: lightgrey;
+}
+
+
+/* Drawing the 'gripper' for touch-enabled devices */
+
+html.touch #content {
+	float: left;
+	width: 92%;
+}
+
+html.touch #scrollgrabber {
+	float: right;
+	width: 4%;
+	margin-right: 2%;
+	background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAFCAAAAACh79lDAAAAAXNSR0IArs4c6QAAABJJREFUCB1jmMmQxjCT4T/DfwAPLgOXlrt3IwAAAABJRU5ErkJggg==)
+}
+
+html.borderradius #scrollgrabber {
+	border-radius: 1em;
+}

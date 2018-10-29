@@ -1,0 +1,516 @@
+2018/09/25 21:43:57
+SELECT TOP (1) [t0].[UID], [t0].[UserName], [t0].[PID], [t0].[Password], [t0].[ExternalID], [t0].[Expiration], [t0].[Creator], [t0].[AuthID], [t0].[LevelID], [t0].[ThemeName], [t0].[Password2], [t0].[MemberCode], [t0].[PictureID], [t0].[RealName], [t0].[Address], [t0].[Phone], [t0].[RecentStatus], [t0].[Birthday], [t0].[Nickname], [t0].[BirthdateIndex]
+FROM [dbo].[UserProfile] AS [t0]
+WHERE ([t0].[PID] = @p0) AND ([t0].[LevelID] = @p1)
+-- @p0: Input NVarChar (Size = 4000; Prec = 0; Scale = 0) [info@beyond-fitness.tw]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [1003]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT [t0].[UID], [t0].[RoleID]
+FROM [dbo].[UserRole] AS [t0]
+WHERE [t0].[UID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT [t0].[RoleID], [t0].[SiteMenu], [t0].[Role]
+FROM [dbo].[UserRoleDefinition] AS [t0]
+WHERE [t0].[RoleID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT [t0].[UID], [t0].[RoleID]
+FROM [dbo].[UserRoleAuthorization] AS [t0]
+WHERE [t0].[UID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT [t0].[RoleID], [t0].[SiteMenu], [t0].[Role]
+FROM [dbo].[UserRoleDefinition] AS [t0]
+WHERE [t0].[RoleID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [6]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT [t0].[RoleID], [t0].[SiteMenu], [t0].[Role]
+FROM [dbo].[UserRoleDefinition] AS [t0]
+WHERE [t0].[RoleID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [7]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT [t0].[RoleID], [t0].[SiteMenu], [t0].[Role]
+FROM [dbo].[UserRoleDefinition] AS [t0]
+WHERE [t0].[RoleID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [8]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+
+2018/09/25 21:43:59
+SELECT TOP (1) [t0].[CoachID], [t0].[Description], [t0].[LevelID], [t0].[EmploymentDate]
+FROM [dbo].[ServingCoach] AS [t0]
+WHERE ([t0].[CoachID]) = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT TOP (1) [t0].[UID], [t0].[UserName], [t0].[PID], [t0].[Password], [t0].[ExternalID], [t0].[Expiration], [t0].[Creator], [t0].[AuthID], [t0].[LevelID], [t0].[ThemeName], [t0].[Password2], [t0].[MemberCode], [t0].[PictureID], [t0].[RealName], [t0].[Address], [t0].[Phone], [t0].[RecentStatus], [t0].[Birthday], [t0].[Nickname], [t0].[BirthdateIndex]
+FROM [dbo].[UserProfile] AS [t0]
+WHERE [t0].[UID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT [t0].[UID], [t0].[RoleID]
+FROM [dbo].[UserRole] AS [t0]
+WHERE [t0].[UID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+
+2018/09/25 21:44:13
+
+2018/09/25 21:47:02
+SELECT TOP (1) [t0].[UID], [t0].[UserName], [t0].[PID], [t0].[Password], [t0].[ExternalID], [t0].[Expiration], [t0].[Creator], [t0].[AuthID], [t0].[LevelID], [t0].[ThemeName], [t0].[Password2], [t0].[MemberCode], [t0].[PictureID], [t0].[RealName], [t0].[Address], [t0].[Phone], [t0].[RecentStatus], [t0].[Birthday], [t0].[Nickname], [t0].[BirthdateIndex]
+FROM [dbo].[UserProfile] AS [t0]
+WHERE [t0].[PID] = @p0
+-- @p0: Input NVarChar (Size = 4000; Prec = 0; Scale = 0) [info@beyond-fitness.tw]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT [t0].[UID], [t0].[RoleID]
+FROM [dbo].[UserRole] AS [t0]
+WHERE [t0].[UID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT [t0].[RoleID], [t0].[SiteMenu], [t0].[Role]
+FROM [dbo].[UserRoleDefinition] AS [t0]
+WHERE [t0].[RoleID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT [t0].[UID], [t0].[RoleID]
+FROM [dbo].[UserRoleAuthorization] AS [t0]
+WHERE [t0].[UID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT [t0].[RoleID], [t0].[SiteMenu], [t0].[Role]
+FROM [dbo].[UserRoleDefinition] AS [t0]
+WHERE [t0].[RoleID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [6]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT [t0].[RoleID], [t0].[SiteMenu], [t0].[Role]
+FROM [dbo].[UserRoleDefinition] AS [t0]
+WHERE [t0].[RoleID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [7]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT [t0].[RoleID], [t0].[SiteMenu], [t0].[Role]
+FROM [dbo].[UserRoleDefinition] AS [t0]
+WHERE [t0].[RoleID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [8]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+
+2018/09/25 21:47:03
+
+2018/09/25 21:52:45
+
+2018/09/25 21:54:24
+
+2018/09/25 22:13:01
+SELECT TOP (1) [t0].[UID], [t0].[UserName], [t0].[PID], [t0].[Password], [t0].[ExternalID], [t0].[Expiration], [t0].[Creator], [t0].[AuthID], [t0].[LevelID], [t0].[ThemeName], [t0].[Password2], [t0].[MemberCode], [t0].[PictureID], [t0].[RealName], [t0].[Address], [t0].[Phone], [t0].[RecentStatus], [t0].[Birthday], [t0].[Nickname], [t0].[BirthdateIndex]
+FROM [dbo].[UserProfile] AS [t0]
+WHERE [t0].[PID] = @p0
+-- @p0: Input NVarChar (Size = 4000; Prec = 0; Scale = 0) [info@beyond-fitness.tw]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT [t0].[UID], [t0].[RoleID]
+FROM [dbo].[UserRole] AS [t0]
+WHERE [t0].[UID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT [t0].[RoleID], [t0].[SiteMenu], [t0].[Role]
+FROM [dbo].[UserRoleDefinition] AS [t0]
+WHERE [t0].[RoleID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT [t0].[UID], [t0].[RoleID]
+FROM [dbo].[UserRoleAuthorization] AS [t0]
+WHERE [t0].[UID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT [t0].[RoleID], [t0].[SiteMenu], [t0].[Role]
+FROM [dbo].[UserRoleDefinition] AS [t0]
+WHERE [t0].[RoleID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [6]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT [t0].[RoleID], [t0].[SiteMenu], [t0].[Role]
+FROM [dbo].[UserRoleDefinition] AS [t0]
+WHERE [t0].[RoleID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [7]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT [t0].[RoleID], [t0].[SiteMenu], [t0].[Role]
+FROM [dbo].[UserRoleDefinition] AS [t0]
+WHERE [t0].[RoleID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [8]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+
+2018/09/25 22:13:02
+SELECT TOP (1) [t0].[UID], [t0].[UserName], [t0].[PID], [t0].[Password], [t0].[ExternalID], [t0].[Expiration], [t0].[Creator], [t0].[AuthID], [t0].[LevelID], [t0].[ThemeName], [t0].[Password2], [t0].[MemberCode], [t0].[PictureID], [t0].[RealName], [t0].[Address], [t0].[Phone], [t0].[RecentStatus], [t0].[Birthday], [t0].[Nickname], [t0].[BirthdateIndex]
+FROM [dbo].[UserProfile] AS [t0]
+WHERE [t0].[UID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+
+2018/09/25 22:13:03
+SELECT TOP (1) [t0].[AttachmentID], [t0].[StoredPath], [t0].[DocID]
+FROM [dbo].[Attachment] AS [t0]
+WHERE [t0].[AttachmentID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1155]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+
+2018/09/25 22:18:34
+SELECT TOP (1) [t0].[UID], [t0].[UserName], [t0].[PID], [t0].[Password], [t0].[ExternalID], [t0].[Expiration], [t0].[Creator], [t0].[AuthID], [t0].[LevelID], [t0].[ThemeName], [t0].[Password2], [t0].[MemberCode], [t0].[PictureID], [t0].[RealName], [t0].[Address], [t0].[Phone], [t0].[RecentStatus], [t0].[Birthday], [t0].[Nickname], [t0].[BirthdateIndex]
+FROM [dbo].[UserProfile] AS [t0]
+WHERE [t0].[UID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+
+2018/09/25 22:18:35
+SELECT TOP (1) [t0].[AttachmentID], [t0].[StoredPath], [t0].[DocID]
+FROM [dbo].[Attachment] AS [t0]
+WHERE [t0].[AttachmentID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1155]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+
+2018/09/25 22:19:47
+SELECT TOP (1) [t0].[UID], [t0].[UserName], [t0].[PID], [t0].[Password], [t0].[ExternalID], [t0].[Expiration], [t0].[Creator], [t0].[AuthID], [t0].[LevelID], [t0].[ThemeName], [t0].[Password2], [t0].[MemberCode], [t0].[PictureID], [t0].[RealName], [t0].[Address], [t0].[Phone], [t0].[RecentStatus], [t0].[Birthday], [t0].[Nickname], [t0].[BirthdateIndex]
+FROM [dbo].[UserProfile] AS [t0]
+WHERE ([t0].[PID] = @p0) AND ([t0].[LevelID] = @p1)
+-- @p0: Input NVarChar (Size = 4000; Prec = 0; Scale = 0) [bbbbbillhuang@gmail.com]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [1003]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT [t0].[UID], [t0].[RoleID]
+FROM [dbo].[UserRole] AS [t0]
+WHERE [t0].[UID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [2083]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT [t0].[RoleID], [t0].[SiteMenu], [t0].[Role]
+FROM [dbo].[UserRoleDefinition] AS [t0]
+WHERE [t0].[RoleID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [2]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT [t0].[RoleID], [t0].[SiteMenu], [t0].[Role]
+FROM [dbo].[UserRoleDefinition] AS [t0]
+WHERE [t0].[RoleID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [7]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT [t0].[UID], [t0].[RoleID]
+FROM [dbo].[UserRoleAuthorization] AS [t0]
+WHERE [t0].[UID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [2083]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+
+2018/09/25 22:19:47
+SELECT TOP (1) [t0].[CoachID], [t0].[Description], [t0].[LevelID], [t0].[EmploymentDate]
+FROM [dbo].[ServingCoach] AS [t0]
+WHERE ([t0].[CoachID]) = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [2083]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT TOP (1) [t0].[UID], [t0].[UserName], [t0].[PID], [t0].[Password], [t0].[ExternalID], [t0].[Expiration], [t0].[Creator], [t0].[AuthID], [t0].[LevelID], [t0].[ThemeName], [t0].[Password2], [t0].[MemberCode], [t0].[PictureID], [t0].[RealName], [t0].[Address], [t0].[Phone], [t0].[RecentStatus], [t0].[Birthday], [t0].[Nickname], [t0].[BirthdateIndex]
+FROM [dbo].[UserProfile] AS [t0]
+WHERE [t0].[UID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [2083]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+
+2018/09/25 22:19:55
+SELECT TOP (1) [t0].[UID], [t0].[UserName], [t0].[PID], [t0].[Password], [t0].[ExternalID], [t0].[Expiration], [t0].[Creator], [t0].[AuthID], [t0].[LevelID], [t0].[ThemeName], [t0].[Password2], [t0].[MemberCode], [t0].[PictureID], [t0].[RealName], [t0].[Address], [t0].[Phone], [t0].[RecentStatus], [t0].[Birthday], [t0].[Nickname], [t0].[BirthdateIndex]
+FROM [dbo].[UserProfile] AS [t0]
+WHERE [t0].[UID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [2083]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+
+2018/09/25 22:19:55
+SELECT TOP (1) [t0].[AttachmentID], [t0].[StoredPath], [t0].[DocID]
+FROM [dbo].[Attachment] AS [t0]
+WHERE [t0].[AttachmentID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [7134]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+
+2018/09/25 22:28:37
+SELECT TOP (1) [t0].[UID], [t0].[UserName], [t0].[PID], [t0].[Password], [t0].[ExternalID], [t0].[Expiration], [t0].[Creator], [t0].[AuthID], [t0].[LevelID], [t0].[ThemeName], [t0].[Password2], [t0].[MemberCode], [t0].[PictureID], [t0].[RealName], [t0].[Address], [t0].[Phone], [t0].[RecentStatus], [t0].[Birthday], [t0].[Nickname], [t0].[BirthdateIndex]
+FROM [dbo].[UserProfile] AS [t0]
+WHERE [t0].[UID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [2083]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT SUM([t0].[DurationInMinutes]) AS [value]
+FROM [dbo].[LessonTime] AS [t0]
+WHERE ([t0].[ClassTime] >= @p0) AND ([t0].[ClassTime] < @p1) AND ([t0].[AttendingCoach] = @p2)
+-- @p0: Input DateTime (Size = -1; Prec = 0; Scale = 0) [9/1/2018 12:00:00 AM]
+-- @p1: Input DateTime (Size = -1; Prec = 0; Scale = 0) [10/1/2018 12:00:00 AM]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [2083]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+
+2018/09/25 22:28:38
+SELECT TOP (1) [t0].[AttachmentID], [t0].[StoredPath], [t0].[DocID]
+FROM [dbo].[Attachment] AS [t0]
+WHERE [t0].[AttachmentID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [7134]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+
+2018/09/25 23:13:47
+SELECT TOP (1) [t0].[UID], [t0].[UserName], [t0].[PID], [t0].[Password], [t0].[ExternalID], [t0].[Expiration], [t0].[Creator], [t0].[AuthID], [t0].[LevelID], [t0].[ThemeName], [t0].[Password2], [t0].[MemberCode], [t0].[PictureID], [t0].[RealName], [t0].[Address], [t0].[Phone], [t0].[RecentStatus], [t0].[Birthday], [t0].[Nickname], [t0].[BirthdateIndex]
+FROM [dbo].[UserProfile] AS [t0]
+WHERE [t0].[UID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [2083]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+
+2018/09/25 23:14:21
+SELECT TOP (1) [t0].[UID], [t0].[UserName], [t0].[PID], [t0].[Password], [t0].[ExternalID], [t0].[Expiration], [t0].[Creator], [t0].[AuthID], [t0].[LevelID], [t0].[ThemeName], [t0].[Password2], [t0].[MemberCode], [t0].[PictureID], [t0].[RealName], [t0].[Address], [t0].[Phone], [t0].[RecentStatus], [t0].[Birthday], [t0].[Nickname], [t0].[BirthdateIndex]
+FROM [dbo].[UserProfile] AS [t0]
+WHERE [t0].[UID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [2083]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT SUM([t0].[DurationInMinutes]) AS [value]
+FROM [dbo].[LessonTime] AS [t0]
+WHERE ([t0].[ClassTime] >= @p0) AND ([t0].[ClassTime] < @p1) AND ([t0].[AttendingCoach] = @p2)
+-- @p0: Input DateTime (Size = -1; Prec = 0; Scale = 0) [9/1/2018 12:00:00 AM]
+-- @p1: Input DateTime (Size = -1; Prec = 0; Scale = 0) [10/1/2018 12:00:00 AM]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [2083]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[LessonTime] AS [t0]
+WHERE ([t0].[ClassTime] >= @p0) AND ([t0].[ClassTime] < @p1) AND ([t0].[AttendingCoach] = @p2)
+-- @p0: Input DateTime (Size = -1; Prec = 0; Scale = 0) [9/24/2018 12:00:00 AM]
+-- @p1: Input DateTime (Size = -1; Prec = 0; Scale = 0) [9/25/2018 12:00:00 AM]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [2083]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[LessonTime] AS [t0]
+WHERE ([t0].[ClassTime] >= @p0) AND ([t0].[ClassTime] < @p1) AND ([t0].[AttendingCoach] = @p2)
+-- @p0: Input DateTime (Size = -1; Prec = 0; Scale = 0) [9/25/2018 12:00:00 AM]
+-- @p1: Input DateTime (Size = -1; Prec = 0; Scale = 0) [9/26/2018 12:00:00 AM]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [2083]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[LessonTime] AS [t0]
+WHERE ([t0].[ClassTime] >= @p0) AND ([t0].[ClassTime] < @p1) AND ([t0].[AttendingCoach] = @p2)
+-- @p0: Input DateTime (Size = -1; Prec = 0; Scale = 0) [9/26/2018 12:00:00 AM]
+-- @p1: Input DateTime (Size = -1; Prec = 0; Scale = 0) [9/27/2018 12:00:00 AM]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [2083]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[LessonTime] AS [t0]
+WHERE ([t0].[ClassTime] >= @p0) AND ([t0].[ClassTime] < @p1) AND ([t0].[AttendingCoach] = @p2)
+-- @p0: Input DateTime (Size = -1; Prec = 0; Scale = 0) [9/27/2018 12:00:00 AM]
+-- @p1: Input DateTime (Size = -1; Prec = 0; Scale = 0) [9/28/2018 12:00:00 AM]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [2083]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[LessonTime] AS [t0]
+WHERE ([t0].[ClassTime] >= @p0) AND ([t0].[ClassTime] < @p1) AND ([t0].[AttendingCoach] = @p2)
+-- @p0: Input DateTime (Size = -1; Prec = 0; Scale = 0) [9/28/2018 12:00:00 AM]
+-- @p1: Input DateTime (Size = -1; Prec = 0; Scale = 0) [9/29/2018 12:00:00 AM]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [2083]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[LessonTime] AS [t0]
+WHERE ([t0].[ClassTime] >= @p0) AND ([t0].[ClassTime] < @p1) AND ([t0].[AttendingCoach] = @p2)
+-- @p0: Input DateTime (Size = -1; Prec = 0; Scale = 0) [9/29/2018 12:00:00 AM]
+-- @p1: Input DateTime (Size = -1; Prec = 0; Scale = 0) [9/30/2018 12:00:00 AM]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [2083]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[LessonTime] AS [t0]
+WHERE ([t0].[ClassTime] >= @p0) AND ([t0].[ClassTime] < @p1) AND ([t0].[AttendingCoach] = @p2)
+-- @p0: Input DateTime (Size = -1; Prec = 0; Scale = 0) [9/30/2018 12:00:00 AM]
+-- @p1: Input DateTime (Size = -1; Prec = 0; Scale = 0) [10/1/2018 12:00:00 AM]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [2083]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[LessonTime] AS [t0]
+LEFT OUTER JOIN (
+    SELECT 1 AS [test], [t1].[LessonID]
+    FROM [dbo].[LessonAttendance] AS [t1]
+    ) AS [t2] ON [t2].[LessonID] = [t0].[LessonID]
+WHERE ([t2].[test] IS NULL) AND ([t0].[ClassTime] >= @p0) AND ([t0].[ClassTime] < @p1) AND ([t0].[AttendingCoach] = @p2)
+-- @p0: Input DateTime (Size = -1; Prec = 0; Scale = 0) [10/1/2018 12:00:00 AM]
+-- @p1: Input DateTime (Size = -1; Prec = 0; Scale = 0) [11/1/2018 12:00:00 AM]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [2083]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[LessonTime] AS [t0]
+LEFT OUTER JOIN (
+    SELECT 1 AS [test], [t1].[LessonID]
+    FROM [dbo].[LessonAttendance] AS [t1]
+    ) AS [t2] ON [t2].[LessonID] = [t0].[LessonID]
+WHERE ([t2].[test] IS NOT NULL) AND ([t0].[ClassTime] >= @p0) AND ([t0].[ClassTime] < @p1) AND ([t0].[AttendingCoach] = @p2)
+-- @p0: Input DateTime (Size = -1; Prec = 0; Scale = 0) [10/1/2018 12:00:00 AM]
+-- @p1: Input DateTime (Size = -1; Prec = 0; Scale = 0) [11/1/2018 12:00:00 AM]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [2083]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[LessonTime] AS [t0]
+LEFT OUTER JOIN [dbo].[LessonPlan] AS [t1] ON [t1].[LessonID] = [t0].[LessonID]
+WHERE (NOT ([t1].[CommitAttendance] IS NOT NULL)) AND ([t0].[ClassTime] < @p0) AND ([t0].[ClassTime] >= @p1) AND ([t0].[ClassTime] < @p2) AND ([t0].[AttendingCoach] = @p3)
+-- @p0: Input DateTime (Size = -1; Prec = 0; Scale = 0) [9/26/2018 12:00:00 AM]
+-- @p1: Input DateTime (Size = -1; Prec = 0; Scale = 0) [10/1/2018 12:00:00 AM]
+-- @p2: Input DateTime (Size = -1; Prec = 0; Scale = 0) [11/1/2018 12:00:00 AM]
+-- @p3: Input Int (Size = -1; Prec = 0; Scale = 0) [2083]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+
+2018/09/25 23:14:22
+SELECT TOP (1) [t0].[AttachmentID], [t0].[StoredPath], [t0].[DocID]
+FROM [dbo].[Attachment] AS [t0]
+WHERE [t0].[AttachmentID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [7134]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+
+2018/09/25 23:18:41
+SELECT TOP (1) [t0].[UID], [t0].[UserName], [t0].[PID], [t0].[Password], [t0].[ExternalID], [t0].[Expiration], [t0].[Creator], [t0].[AuthID], [t0].[LevelID], [t0].[ThemeName], [t0].[Password2], [t0].[MemberCode], [t0].[PictureID], [t0].[RealName], [t0].[Address], [t0].[Phone], [t0].[RecentStatus], [t0].[Birthday], [t0].[Nickname], [t0].[BirthdateIndex]
+FROM [dbo].[UserProfile] AS [t0]
+WHERE [t0].[UID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [2083]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT SUM([t0].[DurationInMinutes]) AS [value]
+FROM [dbo].[LessonTime] AS [t0]
+WHERE ([t0].[ClassTime] >= @p0) AND ([t0].[ClassTime] < @p1) AND ([t0].[AttendingCoach] = @p2)
+-- @p0: Input DateTime (Size = -1; Prec = 0; Scale = 0) [9/1/2018 12:00:00 AM]
+-- @p1: Input DateTime (Size = -1; Prec = 0; Scale = 0) [10/1/2018 12:00:00 AM]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [2083]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[LessonTime] AS [t0]
+WHERE ([t0].[ClassTime] >= @p0) AND ([t0].[ClassTime] < @p1) AND ([t0].[AttendingCoach] = @p2)
+-- @p0: Input DateTime (Size = -1; Prec = 0; Scale = 0) [9/24/2018 12:00:00 AM]
+-- @p1: Input DateTime (Size = -1; Prec = 0; Scale = 0) [9/25/2018 12:00:00 AM]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [2083]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[LessonTime] AS [t0]
+WHERE ([t0].[ClassTime] >= @p0) AND ([t0].[ClassTime] < @p1) AND ([t0].[AttendingCoach] = @p2)
+-- @p0: Input DateTime (Size = -1; Prec = 0; Scale = 0) [9/25/2018 12:00:00 AM]
+-- @p1: Input DateTime (Size = -1; Prec = 0; Scale = 0) [9/26/2018 12:00:00 AM]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [2083]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[LessonTime] AS [t0]
+WHERE ([t0].[ClassTime] >= @p0) AND ([t0].[ClassTime] < @p1) AND ([t0].[AttendingCoach] = @p2)
+-- @p0: Input DateTime (Size = -1; Prec = 0; Scale = 0) [9/26/2018 12:00:00 AM]
+-- @p1: Input DateTime (Size = -1; Prec = 0; Scale = 0) [9/27/2018 12:00:00 AM]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [2083]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[LessonTime] AS [t0]
+WHERE ([t0].[ClassTime] >= @p0) AND ([t0].[ClassTime] < @p1) AND ([t0].[AttendingCoach] = @p2)
+-- @p0: Input DateTime (Size = -1; Prec = 0; Scale = 0) [9/27/2018 12:00:00 AM]
+-- @p1: Input DateTime (Size = -1; Prec = 0; Scale = 0) [9/28/2018 12:00:00 AM]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [2083]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[LessonTime] AS [t0]
+WHERE ([t0].[ClassTime] >= @p0) AND ([t0].[ClassTime] < @p1) AND ([t0].[AttendingCoach] = @p2)
+-- @p0: Input DateTime (Size = -1; Prec = 0; Scale = 0) [9/28/2018 12:00:00 AM]
+-- @p1: Input DateTime (Size = -1; Prec = 0; Scale = 0) [9/29/2018 12:00:00 AM]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [2083]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[LessonTime] AS [t0]
+WHERE ([t0].[ClassTime] >= @p0) AND ([t0].[ClassTime] < @p1) AND ([t0].[AttendingCoach] = @p2)
+-- @p0: Input DateTime (Size = -1; Prec = 0; Scale = 0) [9/29/2018 12:00:00 AM]
+-- @p1: Input DateTime (Size = -1; Prec = 0; Scale = 0) [9/30/2018 12:00:00 AM]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [2083]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[LessonTime] AS [t0]
+WHERE ([t0].[ClassTime] >= @p0) AND ([t0].[ClassTime] < @p1) AND ([t0].[AttendingCoach] = @p2)
+-- @p0: Input DateTime (Size = -1; Prec = 0; Scale = 0) [9/30/2018 12:00:00 AM]
+-- @p1: Input DateTime (Size = -1; Prec = 0; Scale = 0) [10/1/2018 12:00:00 AM]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [2083]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[LessonTime] AS [t0]
+LEFT OUTER JOIN (
+    SELECT 1 AS [test], [t1].[LessonID]
+    FROM [dbo].[LessonAttendance] AS [t1]
+    ) AS [t2] ON [t2].[LessonID] = [t0].[LessonID]
+WHERE ([t2].[test] IS NULL) AND ([t0].[ClassTime] >= @p0) AND ([t0].[ClassTime] < @p1) AND ([t0].[AttendingCoach] = @p2)
+-- @p0: Input DateTime (Size = -1; Prec = 0; Scale = 0) [9/1/2018 12:00:00 AM]
+-- @p1: Input DateTime (Size = -1; Prec = 0; Scale = 0) [10/1/2018 12:00:00 AM]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [2083]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[LessonTime] AS [t0]
+LEFT OUTER JOIN (
+    SELECT 1 AS [test], [t1].[LessonID]
+    FROM [dbo].[LessonAttendance] AS [t1]
+    ) AS [t2] ON [t2].[LessonID] = [t0].[LessonID]
+WHERE ([t2].[test] IS NOT NULL) AND ([t0].[ClassTime] >= @p0) AND ([t0].[ClassTime] < @p1) AND ([t0].[AttendingCoach] = @p2)
+-- @p0: Input DateTime (Size = -1; Prec = 0; Scale = 0) [9/1/2018 12:00:00 AM]
+-- @p1: Input DateTime (Size = -1; Prec = 0; Scale = 0) [10/1/2018 12:00:00 AM]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [2083]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[LessonTime] AS [t0]
+LEFT OUTER JOIN [dbo].[LessonPlan] AS [t1] ON [t1].[LessonID] = [t0].[LessonID]
+WHERE (NOT ([t1].[CommitAttendance] IS NOT NULL)) AND ([t0].[ClassTime] < @p0) AND ([t0].[ClassTime] >= @p1) AND ([t0].[ClassTime] < @p2) AND ([t0].[AttendingCoach] = @p3)
+-- @p0: Input DateTime (Size = -1; Prec = 0; Scale = 0) [9/26/2018 12:00:00 AM]
+-- @p1: Input DateTime (Size = -1; Prec = 0; Scale = 0) [9/1/2018 12:00:00 AM]
+-- @p2: Input DateTime (Size = -1; Prec = 0; Scale = 0) [10/1/2018 12:00:00 AM]
+-- @p3: Input Int (Size = -1; Prec = 0; Scale = 0) [2083]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+
+2018/09/25 23:18:41
+SELECT TOP (1) [t0].[AttachmentID], [t0].[StoredPath], [t0].[DocID]
+FROM [dbo].[Attachment] AS [t0]
+WHERE [t0].[AttachmentID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [7134]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+

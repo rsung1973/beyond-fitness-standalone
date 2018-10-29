@@ -1,0 +1,651 @@
+.theme-purple .profile-page .profile-sub-header .box-list ul li a:hover,
+.theme-purple .menu>ul>li>ul.normal-sub>li a:hover,
+.theme-purple .menu>ul>li>ul>li>ul>li a:hover {
+	background-color: #9c27b0
+}
+
+.theme-purple .navbar-brand {
+	color: #9c27b0 !important
+}
+
+.theme-purple .navbar-brand:hover,
+.theme-purple .navbar-brand:active,
+.theme-purple .navbar-brand:focus {
+	color: #9c27b0
+}
+
+.theme-purple .navbar {
+	background: linear-gradient(45deg, #edbae7, #a890d3)
+}
+
+.theme-purple .nav>li>a {
+	color: #fff
+}
+
+.theme-purple .nav>li>a:hover,
+.theme-purple .nav>li>a:focus {
+	background-color: transparent
+}
+
+.theme-purple .nav .open>a {
+	background-color: transparent
+}
+
+.theme-purple .nav .open>a:hover,
+.theme-purple .nav .open>a:focus {
+	background-color: transparent
+}
+
+.theme-purple .bars {
+	color: #fff
+}
+
+.theme-purple .sidebar .menu .list li.active {
+	background-color: transparent
+}
+
+.theme-purple .sidebar .menu .list li.active>:first-child i,
+.theme-purple .sidebar .menu .list li.active>:first-child span {
+	color: #9c27b0
+}
+
+.theme-purple .sidebar .menu .list a:hover {
+	color: #9c27b0
+}
+
+.theme-purple .checkbox input[type="checkbox"]:checked+label::after {
+	border: 1px solid #9c27b0
+}
+
+.theme-purple .inbox-widget .inbox-inner:hover .inbox-img img {
+	border: 2px solid #9c27b0;
+	transition: all 150ms linear
+}
+
+.theme-purple .nav-tabs .nav-link.active {
+	border: 1px solid #9c27b0 !important
+}
+
+.theme-purple .card .header h2:before {
+	background: #8e24aa
+}
+
+.theme-purple .card .header h2 strong {
+	color: #8e24aa
+}
+
+.theme-purple .blog-page .single-blog-post .img-holder .date-box {
+	background-color: #9c27b0
+}
+
+.theme-blue .profile-page .profile-sub-header .box-list ul li a:hover,
+.theme-blue .menu>ul>li>ul.normal-sub>li a:hover,
+.theme-blue .menu>ul>li>ul>li>ul>li a:hover {
+	background-color: #2196f3
+}
+
+.theme-blue .navbar-brand {
+	color: #2196f3 !important
+}
+
+.theme-blue .navbar-brand:hover,
+.theme-blue .navbar-brand:active,
+.theme-blue .navbar-brand:focus {
+	color: #2196f3
+}
+
+.theme-blue .navbar {
+	background: linear-gradient(45deg, #64b5f6, #42a5f5)
+}
+
+.theme-blue .nav>li>a {
+	color: #fff
+}
+
+.theme-blue .nav>li>a:hover,
+.theme-blue .nav>li>a:focus {
+	background-color: transparent
+}
+
+.theme-blue .nav .open>a {
+	background-color: transparent
+}
+
+.theme-blue .nav .open>a:hover,
+.theme-blue .nav .open>a:focus {
+	background-color: transparent
+}
+
+.theme-blue .bars {
+	color: #fff
+}
+
+.theme-blue .sidebar .menu .list li.active {
+	background-color: transparent
+}
+
+.theme-blue .sidebar .menu .list li.active>:first-child i,
+.theme-blue .sidebar .menu .list li.active>:first-child span {
+	color: #2196f3
+}
+
+.theme-blue .sidebar .menu .list a:hover {
+	color: #2196f3
+}
+
+.theme-blue .checkbox input[type="checkbox"]:checked+label::after {
+	border: 1px solid #2196f3
+}
+
+.theme-blue .inbox-widget .inbox-inner:hover .inbox-img img {
+	border: 2px solid #2196f3;
+	transition: all 150ms linear
+}
+
+.theme-blue .nav-tabs .nav-link.active {
+	border: 1px solid #2196f3 !important
+}
+
+.theme-blue .card .header h2:before {
+	background: #1e88e5
+}
+
+.theme-blue .card .header h2 strong {
+	color: #1e88e5
+}
+
+.theme-blue .blog-page .single-blog-post .img-holder .date-box {
+	background-color: #2196f3
+}
+
+.theme-cyan .profile-page .profile-sub-header .box-list ul li a:hover,
+.theme-cyan .menu>ul>li>ul.normal-sub>li a:hover,
+.theme-cyan .menu>ul>li>ul>li>ul>li a:hover {
+	background-color: #00bcd4
+}
+
+.theme-cyan .navbar-brand {
+	color: #00bcd4 !important
+}
+
+.theme-cyan .navbar-brand:hover,
+.theme-cyan .navbar-brand:active,
+.theme-cyan .navbar-brand:focus {
+	color: #00bcd4
+}
+
+.theme-cyan .navbar {
+	background: linear-gradient(45deg, #49cdd0, #00bcd4)
+}
+
+.theme-cyan .nav>li>a {
+	color: #fff
+}
+
+.theme-cyan .nav>li>a:hover,
+.theme-cyan .nav>li>a:focus {
+	background-color: transparent
+}
+
+.theme-cyan .nav .open>a {
+	background-color: transparent
+}
+
+.theme-cyan .nav .open>a:hover,
+.theme-cyan .nav .open>a:focus {
+	background-color: transparent
+}
+
+.theme-cyan .bars {
+	color: #fff
+}
+
+.theme-cyan .sidebar .menu .list li.active {
+	background-color: transparent
+}
+
+.theme-cyan .sidebar .menu .list li.active>:first-child i,
+.theme-cyan .sidebar .menu .list li.active>:first-child span {
+	color: #00bcd4
+}
+
+.theme-cyan .sidebar .menu .list a:hover {
+	color: #00bcd4
+}
+
+.theme-cyan .checkbox input[type="checkbox"]:checked+label::after {
+	border: 1px solid #00bcd4
+}
+
+.theme-cyan .inbox-widget .inbox-inner:hover .inbox-img img {
+	border: 2px solid #00bcd4;
+	transition: all 150ms linear
+}
+
+.theme-cyan .nav-tabs .nav-link.active {
+	border: 1px solid #00bcd4 !important
+}
+
+.theme-cyan .card .header h2:before {
+	background: #00acc1
+}
+
+.theme-cyan .card .header h2 strong {
+	color: #00acc1
+}
+
+.theme-cyan .blog-page .single-blog-post .img-holder .date-box {
+	background-color: #00bcd4
+}
+
+.theme-green .profile-page .profile-sub-header .box-list ul li a:hover,
+.theme-green .menu>ul>li>ul.normal-sub>li a:hover,
+.theme-green .menu>ul>li>ul>li>ul>li a:hover {
+	background-color: #4CAF50
+}
+
+.theme-green .navbar-brand {
+	color: #4CAF50 !important
+}
+
+.theme-green .navbar-brand:hover,
+.theme-green .navbar-brand:active,
+.theme-green .navbar-brand:focus {
+	color: #4CAF50
+}
+
+.theme-green .navbar {
+	background: linear-gradient(45deg, #66bb6a, #4CAF50)
+}
+
+.theme-green .nav>li>a {
+	color: #fff
+}
+
+.theme-green .nav>li>a:hover,
+.theme-green .nav>li>a:focus {
+	background-color: transparent
+}
+
+.theme-green .nav .open>a {
+	background-color: transparent
+}
+
+.theme-green .nav .open>a:hover,
+.theme-green .nav .open>a:focus {
+	background-color: transparent
+}
+
+.theme-green .bars {
+	color: #fff
+}
+
+.theme-green .sidebar .menu .list li.active {
+	background-color: transparent
+}
+
+.theme-green .sidebar .menu .list li.active>:first-child i,
+.theme-green .sidebar .menu .list li.active>:first-child span {
+	color: #4CAF50
+}
+
+.theme-green .sidebar .menu .list a:hover {
+	color: #4CAF50
+}
+
+.theme-green .checkbox input[type="checkbox"]:checked+label::after {
+	border: 1px solid #4CAF50
+}
+
+.theme-green .inbox-widget .inbox-inner:hover .inbox-img img {
+	border: 2px solid #4CAF50;
+	transition: all 150ms linear
+}
+
+.theme-green .nav-tabs .nav-link.active {
+	border: 1px solid #4CAF50 !important
+}
+
+.theme-green .card .header h2:before {
+	background: #43a047
+}
+
+.theme-green .card .header h2 strong {
+	color: #43a047
+}
+
+.theme-green .blog-page .single-blog-post .img-holder .date-box {
+	background-color: #4CAF50
+}
+
+.theme-orange .profile-page .profile-sub-header .box-list ul li a:hover,
+.theme-orange .menu>ul>li>ul.normal-sub>li a:hover,
+.theme-orange .menu>ul>li>ul>li>ul>li a:hover {
+	background-color: #ff9800
+}
+
+.theme-orange .navbar-brand {
+	color: #ff9800 !important
+}
+
+.theme-orange .navbar-brand:hover,
+.theme-orange .navbar-brand:active,
+.theme-orange .navbar-brand:focus {
+	color: #ff9800
+}
+
+.theme-orange .navbar {
+	background: linear-gradient(45deg, #ffb74d, #ffa726)
+}
+
+.theme-orange .nav>li>a {
+	color: #fff
+}
+
+.theme-orange .nav>li>a:hover,
+.theme-orange .nav>li>a:focus {
+	background-color: transparent
+}
+
+.theme-orange .nav .open>a {
+	background-color: transparent
+}
+
+.theme-orange .nav .open>a:hover,
+.theme-orange .nav .open>a:focus {
+	background-color: transparent
+}
+
+.theme-orange .bars {
+	color: #fff
+}
+
+.theme-orange .sidebar .menu .list li.active {
+	background-color: transparent
+}
+
+.theme-orange .sidebar .menu .list li.active>:first-child i,
+.theme-orange .sidebar .menu .list li.active>:first-child span {
+	color: #ff9800
+}
+
+.theme-orange .sidebar .menu .list a:hover {
+	color: #ff9800
+}
+
+.theme-orange .checkbox input[type="checkbox"]:checked+label::after {
+	border: 1px solid #ff9800
+}
+
+.theme-orange .inbox-widget .inbox-inner:hover .inbox-img img {
+	border: 2px solid #ff9800;
+	transition: all 150ms linear
+}
+
+.theme-orange .nav-tabs .nav-link.active {
+	border: 1px solid #ff9800
+}
+
+.theme-orange .card .header h2:before {
+	background: #ff9800
+}
+
+.theme-orange .card .header h2 strong {
+	color: #455a64
+}
+
+.theme-orange .blog-page .single-blog-post .img-holder .date-box {
+	background-color: #ff9800
+}
+
+.theme-blush .profile-page .profile-sub-header .box-list ul li a:hover,
+.theme-blush .menu>ul>li>ul.normal-sub>li a:hover,
+.theme-blush .menu>ul>li>ul>li>ul>li a:hover {
+	background-color: #ffafbd
+}
+
+.theme-blush .navbar-brand {
+	color: #ff6681 !important
+}
+
+.theme-blush .navbar-brand:hover,
+.theme-blush .navbar-brand:active,
+.theme-blush .navbar-brand:focus {
+	color: #ffafbd
+}
+
+.theme-blush .navbar {
+	background: linear-gradient(45deg, #ffafbd, #ffc2a0)
+}
+
+.theme-blush .nav>li>a {
+	color: #fff
+}
+
+.theme-blush .nav>li>a:hover,
+.theme-blush .nav>li>a:focus {
+	background-color: transparent
+}
+
+.theme-blush .nav .open>a {
+	background-color: transparent
+}
+
+.theme-blush .nav .open>a:hover,
+.theme-blush .nav .open>a:focus {
+	background-color: transparent
+}
+
+.theme-blush .bars {
+	color: #fff
+}
+
+.theme-blush .sidebar .menu .list li.active {
+	background-color: transparent
+}
+
+.theme-blush .sidebar .menu .list li.active>:first-child i,
+.theme-blush .sidebar .menu .list li.active>:first-child span {
+	color: #ff6681
+}
+
+.theme-blush .sidebar .menu .list a:hover {
+	color: #ff6681
+}
+
+.theme-blush .checkbox input[type="checkbox"]:checked+label::after {
+	border: 1px solid #ffafbd
+}
+
+.theme-blush .inbox-widget .inbox-inner:hover .inbox-img img {
+	border: 2px solid #ffafbd;
+	transition: all 150ms linear
+}
+
+.theme-blush .nav-tabs .nav-link.active {
+	border: 1px solid #ff6681 !important
+}
+
+.theme-blush .card .header h2:before {
+	background: #ff6681
+}
+
+.theme-blush .card .header h2 strong {
+	color: #ff6681
+}
+
+.theme-blush .blog-page .single-blog-post .img-holder .date-box {
+	background-color: #ff6681
+}
+
+.theme-darkteal .profile-page .profile-sub-header .box-list ul li a:hover,
+.theme-darkteal .menu>ul>li>ul.normal-sub>li a:hover,
+.theme-darkteal .menu>ul>li>ul>li>ul>li a:hover {
+	background-color: #05232d
+}
+
+.theme-darkteal .navbar-brand {
+	color: #0f244a !important
+}
+
+.theme-darkteal .navbar-brand:hover,
+.theme-darkteal .navbar-brand:active,
+.theme-darkteal .navbar-brand:focus {
+	color: #05232d
+}
+
+.theme-darkteal .navbar {
+	background: linear-gradient(#052333, #052333), linear-gradient(to bottom, rgba(255, 255, 255, 0.5), rgba(0, 0, 0, 0.5))
+}
+
+.theme-darkteal .nav>li>a {
+	color: #fff
+}
+
+.theme-darkteal .nav>li>a:hover,
+.theme-darkteal .nav>li>a:focus {
+	background-color: transparent
+}
+
+.theme-darkteal .nav .open>a {
+	background-color: transparent
+}
+
+.theme-darkteal .nav .open>a:hover,
+.theme-darkteal .nav .open>a:focus {
+	background-color: transparent
+}
+
+.theme-darkteal .bars {
+	color: #fff
+}
+
+.theme-darkteal .sidebar .menu .list li.active {
+	background-color: transparent
+}
+
+.theme-darkteal .sidebar .menu .list li.active>:first-child i,
+.theme-darkteal .sidebar .menu .list li.active>:first-child span {
+	color: rgba(255, 255, 255, .9);
+}
+
+.theme-darkteal .sidebar .menu .list a:hover {
+	color: rgba(5, 25, 35, .9);
+}
+
+.theme-darkteal .checkbox input[type="checkbox"]:checked+label::after {
+	border: 1px solid #05232d
+}
+
+.theme-darkteal .inbox-widget .inbox-inner:hover .inbox-img img {
+	border: 2px solid #05232d;
+	transition: all 150ms linear
+}
+
+.theme-darkteal .nav-tabs .nav-link.active {
+	border: 1px solid #0f244a !important
+}
+
+.theme-darkteal .card .header h2:before {
+	background: rgba(5, 25, 35, .9);
+}
+
+.theme-darkteal .card .header h2 strong {
+	color: rgba(5, 25, 35, .9);
+}
+
+.theme-darkteal .blog-page .single-blog-post .img-holder .date-box {
+	background-color: #0f244a
+}
+
+.theme-white .profile-page .profile-sub-header .box-list ul li a:hover,
+.theme-white .menu>ul>li>ul.normal-sub>li a:hover,
+.theme-white .menu>ul>li>ul>li>ul>li a:hover {
+	background-color: #f4f6f9
+}
+
+.theme-white .navbar-brand {
+	color: #052333 !important
+}
+
+.theme-white .navbar-brand:hover,
+.theme-white .navbar-brand:active,
+.theme-white .navbar-brand:focus {
+	color: #052333
+}
+
+.theme-white .navbar {
+/*	background: linear-gradient(#052333, #052333), linear-gradient(to bottom, rgba(255, 255, 255, 0.5), rgba(0, 0, 0, 0.5))*/
+    background-color: #fff;
+}
+
+.theme-white .nav>li>a {
+	color: #4a4a4a
+}
+
+.theme-white .nav>li>a:hover,
+.theme-white .nav>li>a:focus {
+	background-color: transparent
+}
+
+.theme-white .nav .open>a {
+	background-color: transparent
+}
+
+.theme-white .nav .open>a:hover,
+.theme-white .nav .open>a:focus {
+	background-color: transparent
+}
+
+.theme-white .navbar a:not(.btn):not(.dropdown-item) {
+	color: #052333
+}
+.theme-white .bars {
+	color: #4a4a4a
+}
+
+.theme-white .sidebar .menu .list li.active {
+	background-color: transparent
+}
+
+.theme-white .sidebar .menu .list li.active>:first-child i,
+.theme-white .sidebar .menu .list li.active>:first-child span {
+	color: rgba(5, 35, 45, .9);
+}
+
+.theme-white .sidebar .menu .list a:hover {
+	color: rgba(5, 35, 45, .9);
+}
+
+.theme-white .checkbox input[type="checkbox"]:checked+label::after {
+	border: 1px solid #05232d
+}
+
+.theme-white .inbox-widget .inbox-inner:hover .inbox-img img {
+	border: 2px solid #05232d;
+	transition: all 150ms linear
+}
+
+.theme-white .nav-tabs>.nav-item>.nav-link {
+    color: #05232d!important;
+    font-weight: 800!important;
+}
+
+.theme-white .nav-tabs .nav-link.active {
+	border: 1px solid #eee !important;
+    background: #05232d !important;
+    font-weight: 800!important;
+    color: #fff!important;
+}
+
+.theme-white .card .header h2:before {
+	background: rgba(5, 35, 45, .9);
+}
+
+.theme-white .card .header h2 strong {
+	color: rgba(5, 35, 45, .9);
+}
+
+.theme-white .blog-page .single-blog-post .img-holder .date-box {
+	background-color: #0f244a
+}

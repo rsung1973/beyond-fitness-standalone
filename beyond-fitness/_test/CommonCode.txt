@@ -1,0 +1,49 @@
+﻿1.課程時間
+<%= _model.ClassTime.Value.ToString("yyyy/M/d HH:mm") %>~<%= _model.ClassTime.Value.AddMinutes(_model.DurationInMinutes.Value).ToString("HH:mm") %> 
+
+2.validation
+        $(function () {
+
+            $pageFormValidator.settings.submitHandler = function (form) {
+
+
+                if ($('input[name="registerID"]').length <= 0
+                    && $('input[name="UID"]').length<=0) {
+                    $('#registerID-error').css('display', 'block');
+                    $('#registerID-error').text('請選擇上課學員!!');
+                    return;
+                }
+
+
+                //$(form).submit();
+                return true;
+            };
+
+            $('#coachID').rules('add', {
+                'required': true
+            });
+
+            $('#classDate').rules('add', {
+                'required': true,
+                'date': true
+            });
+
+            //$('#classTime').rules('add', {
+            //    'required': true
+            //});
+        });
+
+3.Sever side validation                
+	ModelState.AddModelError("pid", "登入資料錯誤!!");
+    ViewBag.ModelState = ModelState;
+    return View("LoginByMail");
+
+4.invoke modal
+        showLoading();
+        $.post('<%= Url.Action("LearnerRecentLessons","Report") %>', { 'uid': uid, 'lessonID': lessonID,'cloneLesson': <%= ViewBag.CloneLesson==true ? "true" : "false"  %> }, function (data) {
+            $(data).appendTo($('#content'));
+            hideLoading();
+        });
+
+5.Month picker
+	<input type="text" name="dateFrom" id="dateFrom" readonly="readonly" class="form-control input-lg date form_month" data-date-format="yyyy/mm/dd" placeholder="請輸入查詢起月" value="<%= _viewModel.HasQuery==true ? String.Format("{0:yyyy/MM/dd}", _viewModel.DateFrom) : null %>" />

@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="en-us">
+   <head>
+      <meta charset="utf-8">
+      <!--<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">-->
+      <title>BEYOND FITNESS</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+      <!-- Basic Styles -->
+      <link rel="stylesheet" type="text/css" media="screen" href="../../css/bootstrap.min.css">
+      <link rel="stylesheet" type="text/css" media="screen" href="../../css/font-awesome.min.css">
+      <!-- SmartAdmin Styles : Caution! DO NOT change the order -->
+      <link rel="stylesheet" type="text/css" media="screen" href="../../css/smartadmin-production-plugins.min.css">
+      <link rel="stylesheet" type="text/css" media="screen" href="../../css/smartadmin-production.min.css">
+      <link rel="stylesheet" type="text/css" media="screen" href="../../css/smartadmin-skins.min.css">
+      <!-- SmartAdmin RTL Support -->
+      <link rel="stylesheet" type="text/css" media="screen" href="../../css/smartadmin-rtl.min.css">
+      <!-- lockScreen CSS Styles  -->
+      <link rel="stylesheet" type="text/css" media="screen" href="../../css/app.css">      
+      <!-- We recommend you use "your_style.css" to override SmartAdmin
+         specific styles this will also ensure you retrain your customization with each SmartAdmin update.-->
+      <link rel="stylesheet" type="text/css" media="screen" href="../../css/beyond_style.css">
+      <!-- FAVICONS -->
+      <link rel="shortcut icon" href="favicons/favicon_16x16.ico" type="image/x-icon">
+      <link rel="icon" href="favicons/favicon_96x96.png">
+      <!-- GOOGLE FONT -->
+      <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300,400,700">
+      <!-- Specifying a Webpage Icon for Web Clip 
+         Ref: https://developer.apple.com/library/ios/documentation/AppleApplications/Reference/SafariWebContent/ConfiguringWebApplications/ConfiguringWebApplications.html -->
+      <link rel="apple-touch-icon" href="favicons/favicon_57x57.png">
+      <link rel="apple-touch-icon" sizes="76x76" href="favicons/favicon_72x72.png">
+      <link rel="apple-touch-icon" sizes="120x120" href="favicons/favicon_114x114.png">
+      <link rel="apple-touch-icon" sizes="152x152" href="favicons/favicon_180x180.png">
+      <!-- iOS web-app metas : hides Safari UI Components and Changes Status Bar Appearance -->
+      <meta name="apple-mobile-web-app-capable" content="yes">
+      <meta name="apple-mobile-web-app-status-bar-style" content="black">
+      <!-- Startup image for web apps -->
+      <link rel="apple-touch-startup-image" href="favicons/favicon_180x180.png" media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:landscape)">
+      <link rel="apple-touch-startup-image" href="favicons/favicon_180x180.png" media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:portrait)">
+      <link rel="apple-touch-startup-image" href="favicons/favicon_180x180.png" media="screen and (max-device-width: 320px)">
+      <!--[if IE 9]>
+      <style>
+         .error-text {
+         color: #333 !important;
+         }
+      </style>
+      <![endif]-->
+      <meta property="fb:app_id" content="1027299250717597">
+   </head>
+   <!--
+      TABLE OF CONTENTS.
+      
+      Use search to find needed section.
+      
+      ===================================================================
+      
+      |  01. #CSS Links                |  all CSS links and file paths  |
+      |  02. #FAVICONS                 |  Favicon links and file paths  |
+      |  03. #GOOGLE FONT              |  Google font link              |
+      |  04. #APP SCREEN / ICONS       |  app icons, screen backdrops   |
+      |  05. #BODY                     |  body tag                      |
+      |  06. #HEADER                   |  header tag                    |
+      |  07. #PROJECTS                 |  project lists                 |
+      |  08. #TOGGLE LAYOUT BUTTONS    |  layout buttons and actions    |
+      |  09. #MOBILE                   |  mobile view dropdown          |
+      |  10. #SEARCH                   |  search field                  |
+      |  11. #NAVIGATION               |  left panel & navigation       |
+      |  12. #RIGHT PANEL              |  right panel userlist          |
+      |  13. #MAIN PANEL               |  main panel                    |
+      |  14. #MAIN CONTENT             |  content holder                |
+      |  15. #PAGE FOOTER              |  page footer                   |
+      |  16. #SHORTCUT AREA            |  dropdown shortcuts area       |
+      |  17. #PLUGINS                  |  all scripts and plugins       |
+      
+      ===================================================================
+      
+      -->
+   <!-- #BODY -->
+   <!-- Possible Classes
+      * 'smart-style-{SKIN#}'
+      * 'smart-rtl'         - Switch theme mode to RTL
+      * 'menu-on-top'       - Switch to top navigation (no DOM change required)
+      * 'no-menu'             - Hides the menu completely
+      * 'hidden-menu'       - Hides the main menu but still accessable by hovering over left edge
+      * 'fixed-header'      - Fixes the header
+      * 'fixed-navigation'  - Fixes the main menu
+      * 'fixed-ribbon'      - Fixes breadcrumb
+      * 'fixed-page-footer' - Fixes footer
+      * 'container'         - boxed layout mode (non-responsive: will not work with fixed-navigation & fixed-ribbon)
+      -->
+   <body class="smart-style-5 no-menu">
+      <!-- HEADER -->
+      <header id="header">
+         <div id="logo-group">
+            <!-- PLACE YOUR LOGO HERE -->
+            <span id="logo"> <img src="../../img/logo.png" alt="Beyond-Fitness"> </span>
+            <!-- END LOGO PLACEHOLDER -->
+         </div>
+         <!-- pulled right: nav area -->
+         <div class="pull-right">
+            <!-- #MOBILE -->
+            <!-- Top menu profile link : this shows only when top menu is active -->
+            <ul id="mobile-profile-img" class="header-dropdown-list hidden-xs padding-5">
+               <li class="">
+                  <a href="../login.html" title="Sign Out" data-action="userLogout" data-logout-msg="為了安全起見，建議您登出後將網頁關閉！"><i class="fa fa-power-off"></i> Sign out</a> 
+               </li>
+            </ul>
+         </div>
+         <!-- end pulled right: nav area -->
+      </header>
+      <!-- END HEADER -->
+      <!-- Left panel : Navigation area -->
+      <!-- Note: This width of the aside area can be adjusted through LESS variables -->
+      <!-- MAIN PANEL -->
+      <div id="main" role="main">
+         <!-- MAIN CONTENT -->
+         <div id="content">
+            <!-- widget grid -->
+            <section id="widget-grid" class="">
+               <div class="row">
+                  <div class="col-sm-12 block block-drop-shadow">
+                     <div class="head bg-dot30 np tac">
+                        <div class="user_taurus">
+                           <div class="info">                                                                                   
+                              <a href="#" class="informer informer-three">
+                                 <span>20 / 100</span>
+                                 剩餘/購買小時
+                              </a>      
+                              <a href="#" class="informer informer-four" id="updateProfile_link">
+                                 <span class="fa fa-cogs">&nbsp;&nbsp;</span>
+                                 <u>修改資料</u>
+                              </a>                                          
+                              <img src="../../img/avatars/female.png" class="img-circle img-thumbnail" width="100px">
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>            
+               <!-- row -->
+               <div class="row">
+                  <!-- NEW WIDGET START -->
+                  <article class="col-md-12 col-lg-12">
+                     <!-- new widget -->
+                     <div class="jarviswidget" data-widget-editbutton="false" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-togglebutton="false" data-widget-deletebutton="false">
+                        <header>
+                           <span class="widget-icon"> <i class="fa fa-calendar"></i> </span>
+                           <h2>我的行事曆：全部</h2>
+                        </header>
+                        <!-- widget div-->
+                        <div>
+                           <div class="widget-body bg-color-darken txt-color-white no-padding">
+                              <!-- content goes here -->
+                              <div class="widget-body-toolbar">
+                                 <div id="calendar-buttons">
+                                    <div class="btn-group">
+                                       <a href="javascript:void(0)" class="btn btn-default" id="today">今日</a>
+                                       <a href="javascript:void(0)" class="btn btn-default" id="td">天</a>
+                                       <a href="javascript:void(0)" class="btn btn-default" id="ag">週</a>
+                                       <a href="javascript:void(0)" class="btn btn-default" id="mt">月</a>
+                                    </div>
+                                    <div class="btn-group">
+                                       <a href="javascript:void(0)" class="btn btn-default" id="btn-prev"><i class="fa fa-chevron-left fa-lg"></i> </a>
+                                       <a href="javascript:void(0)" class="btn btn-default" id="btn-next"><i class="fa fa-chevron-right fa-lg"></i></a>
+                                    </div>
+                                 </div>
+                              </div>
+                              <div id="calendar"></div>
+                              <!-- end content -->
+                           </div>
+                        </div>
+                        <!-- end widget div -->
+                     </div>
+                     <!-- end widget -->
+                  </article>
+                  <!-- WIDGET END -->
+               </div>
+               <!-- end row -->
+            </section>
+            <!-- end widget grid -->               
+            <!-- ui-dialog -->
+            <div id="bookingDialog" title="預約課程" class="bg-color-darken">
+               <form action="classlist.html" class="smart-form" autofocus>
+                  <fieldset>
+                     <div class="row">
+                        <section>
+                           <label class="label">請選擇開始時間</label>
+                           <label class="select">
+                              <select class="input-lg">
+                                 <option value="0">07:00</option>
+                                 <option value="1">07:30</option>
+                                 <option value="2">08:00</option>
+                              </select>
+                              <i class="icon-append fa fa-clock-o"></i>
+                           </label>
+                        </section>
+                     </div>
+                  </fieldset>
+                  <fieldset>
+                     <div class="row">
+                        <section class="col col-6">
+                           <label class="label">請選擇上課長度</label>
+                           <label class="select">
+                              <select class="input-lg">
+                                 <option value="1">60分鐘</option>
+                                 <option value="2">90分鐘</option>
+                              </select>
+                              <i class="icon-append fa fa-file-word-o"></i>
+                           </label>
+                        </section>
+                        <section class="col col-6">
+                           <label class="label">請選擇上課地點</label>
+                           <label class="select">
+                              <select class="input-lg">
+                                 <option value="1">小巨蛋</option>
+                                 <option value="2">１０１</option>
+                              </select>
+                              <i class="icon-append fa fa-file-word-o"></i>
+                           </label>
+                        </section>
+                     </div>
+                  </fieldset>
+               </form>
+            </div>
+            <!-- dialog-message -->         
+            <!-- ui-dialog -->
+            <div id="modifyBookingDialog" title="行事曆" class="bg-color-darken">
+               <div class="panel panel-default bg-color-darken">
+                  <div class="panel-body status smart-form vote">
+                     <div class="who clearfix">
+                        <span class="from font-md text-warning">預約場地時間：2016/02/28 11:30~13:30</span>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <!-- dialog-message -->         
+         </div>
+            <!-- ui-dialog -->
+            <div id="updateProfileDialog" title="修改個人資料" class="bg-color-darken">
+               <div class="panel panel-default bg-color-darken">
+                  <form action="#" id="login-form" class="smart-form">
+                     <fieldset>
+                        <div class="row">
+                           <section class="col col-6">
+                              <label class="input">
+                              <i class="icon-append fa fa-envelope-o "></i>
+                              <input class="form-control input-lg" maxlength="30" placeholder="請輸入註冊時的E-mail" type="email" name="email" id="email">
+                              </label>
+                           </section>
+                           <section class="col col-6">
+                              <label class="input">
+                              <i class="icon-append fa fa-user "></i>
+                              <input class="form-control input-lg" maxlength="20" placeholder="請輸入暱稱" type="text" name="nickname" id="nickname">
+                              </label>
+                           </section>
+                        </div>
+                     </fieldset>
+                     <fieldset>
+                        <div class="row">
+                           <div class="col col-12">
+                              <img src="../../img/avatars/male.png" alt="親愛的" class="online" />
+                              <div class="input input-file">
+                                 <span class="button">
+                                 <input type="file" id="file" name="file" onchange="this.parentNode.nextSibling.value = this.value">瀏覽
+                                 </span>
+                                 <input type="text" placeholder="請選擇圖片" readonly="">
+                              </div>
+                           </div>
+                        </div>
+                     </fieldset>
+                     <fieldset>
+                        <ul id="myTab1" class="nav nav-tabs bordered">
+                           <li class="active">
+                              <a href="#pw1" data-toggle="tab"><i class="fa fa-picture-o  fa-lg fa-gear"></i> 圖形密碼</a>
+                           </li>
+                           <li>
+                              <a href="#pw2" data-toggle="tab"><i class="fa fa-keyboard-o  fa-lg fa-gear"></i> 文字密碼</a>
+                           </li>
+                        </ul>
+                        <div id="myTabContent1" class="tab-content padding-10">
+                           <div class="tab-pane fade in active" id="pw1">
+                              <button type="button" name="rest" id="reset-button" class="btn bg-color-red btn-lg btn-block"><i class="fa fa-eraser" aria-hidden="true"></i> 重設密碼</button>
+                              <div id="lock-screen-container">
+                                 <div id="lock-screen" /></div>
+                              </div>
+                           </div>
+                           <div class="tab-pane fade" id="pw2">
+                              <fieldset>
+                                 <section>
+                                    <label class="input">
+                                    <i class="icon-append fa fa-lock "></i>
+                                    <input class="form-control input-lg" maxlength="10" placeholder="請輸入密碼" type="password" name="passwd" id="passwd">
+                                    </label>
+                                 </section>
+                              </fieldset>
+                              <fieldset>
+                                 <section>
+                                    <label class="input">
+                                    <i class="icon-append fa fa-lock "></i>
+                                    <input class="form-control input-lg" maxlength="10" placeholder="請再次密碼" type="password" name="passwdconfirm" id="passwdconfirm">
+                                    </label>
+                                 </section>
+                              </fieldset>
+                           </div>
+                        </div>
+                     </fieldset>
+                     <footer class="text-right">                                    
+                        <button type="submit" name="submit" class="btn btn-primary">
+                        送出 <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                        </button>
+                        <button type="button" name="cancle" class="btn bg-color-blueLight">
+                        取消
+                        </button>
+                     </footer>
+                  </form>
+               </div>
+            </div>
+            <!-- dialog-message -->            
+      </div>
+      <!-- END MAIN PANEL -->
+      <!-- PAGE FOOTER -->
+      <div class="page-footer">
+         <div class="row">
+            <div class="col-xs-12 col-sm-6">
+               <span class="txt-color-white">BEYOND FITNESS <span class="hidden-xs"> - ALL RIGHTS RESERVED</span> © 2017</span>
+            </div>
+            <div class="col-xs-6 col-sm-6 text-right hidden-xs">
+               <div class="txt-color-white inline-block">
+                  <i class="txt-color-blueLight hidden-mobile">Last update time <i class="fa fa-clock-o"></i>  <strong>2016/07/23 PM 20:03 &nbsp;</strong> 
+                  </i>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- END PAGE FOOTER -->
+      <!--================================================== -->
+      <!-- PACE LOADER - turn this on if you want ajax loading to show (caution: uses lots of memory on iDevices)-->
+      <script data-pace-options='{ "restartOnRequestAfter": true }' src="../../js/plugin/pace/pace.min.js"></script>
+      <!-- Link to Google CDN's jQuery + jQueryUI; fall back to local -->
+      <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+      <script>
+         if (!window.jQuery) {
+             document.write('<script src="../../js/libs/jquery-2.1.1.min.js"><\/script>');
+         }
+      </script>
+      <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+      <script>
+         if (!window.jQuery.ui) {
+             document.write('<script src="../../js/libs/jquery-ui-1.10.3.min.js"><\/script>');
+         }
+      </script>
+      <!-- IMPORTANT: APP CONFIG -->
+      <script src="../../js/app.config.js"></script>
+      <!-- JS TOUCH : include this plugin for mobile drag / drop touch events-->
+      <script src="../../js/plugin/jquery-touch/jquery.ui.touch-punch.min.js"></script>
+      <!-- BOOTSTRAP JS -->
+      <script src="../../js/bootstrap/bootstrap.min.js"></script>
+      <!-- CUSTOM NOTIFICATION -->
+      <script src="../../js/notification/SmartNotification.min.js"></script>
+      <!-- JARVIS WIDGETS -->
+      <script src="../../js/smartwidgets/jarvis.widget.min.js"></script>
+      <!-- EASY PIE CHARTS -->
+      <script src="../../js/plugin/easy-pie-chart/jquery.easy-pie-chart.min.js"></script>
+      <!-- SPARKLINES -->
+      <script src="../../js/plugin/sparkline/jquery.sparkline.min.js"></script>
+      <!-- JQUERY VALIDATE -->
+      <script src="../../js/plugin/jquery-validate/jquery.validate.min.js"></script>
+      <!-- JQUERY MASKED INPUT -->
+      <script src="../../js/plugin/masked-input/jquery.maskedinput.min.js"></script>
+      <!-- JQUERY SELECT2 INPUT -->
+      <script src="../../js/plugin/select2/select2.min.js"></script>
+      <!-- JQUERY UI + Bootstrap Slider -->
+      <script src="../../js/plugin/bootstrap-slider/bootstrap-slider.min.js"></script>
+      <!-- browser msie issue fix -->
+      <script src="../../js/plugin/msie-fix/jquery.mb.browser.min.js"></script>
+      <!-- FastClick: For mobile devices -->
+      <script src="../../js/plugin/fastclick/fastclick.min.js"></script>
+      <!--[if IE 8]>
+      <h1>Your browser is out of date, please update your browser by going to www.microsoft.com/download</h1>
+      <![endif]-->
+      <!-- MAIN APP JS FILE -->
+      <script src="../../js/app.min.js"></script>
+      <!-- ENHANCEMENT PLUGINS : NOT A REQUIREMENT -->
+      <!-- Voice command : plugin -->
+      <script src="../../js/speech/voicecommand.min.js"></script>
+      <!-- SmartChat UI : plugin -->
+      <script src="../../js/smart-chat-ui/smart.chat.ui.min.js"></script>
+      <script src="../../js/smart-chat-ui/smart.chat.manager.min.js"></script>
+      <!--scrollup plugin-->
+      <script src="../../js/plugin/scrollup-master/jquery.scrollUp.min.js"></script>
+      <!-- PAGE RELATED PLUGIN(S) -->
+      <script src="../../js/plugin/superbox/superbox.min.js"></script>
+      <!-- PAGE RELATED PLUGIN(S) -->
+      <script src="../../js/plugin/datatables/jquery.dataTables.min.js"></script>
+      <script src="../../js/plugin/datatables/dataTables.colVis.min.js"></script>
+      <script src="../../js/plugin/datatables/dataTables.tableTools.min.js"></script>
+      <script src="../../js/plugin/datatables/dataTables.bootstrap.min.js"></script>
+      <script src="../../js/plugin/datatable-responsive/datatables.responsive.min.js"></script>
+      <!-- Full Calendar -->
+      <script src="../../js/plugin/moment/moment.min.js"></script>
+      <script src="../../js/plugin/fullcalendar/jquery.fullcalendar.min.js"></script>
+      <script src="../../js/plugin/fullcalendar/lang-all.js"></script>
+      <!-- Morris Chart Dependencies -->
+      <script src="../../js/plugin/morris/raphael.min.js"></script>
+      <script src="../../js/plugin/morris/morris.min.js"></script>
+      <!-- LockScreen : plugin -->
+      <script src="../../js/plugin/lockscreen/kinetic-v4.6.js"></script>
+      <script src="../../js/plugin/lockscreen/html5-android-pattern-lockScreen.js"></script>       
+      <!-- PAGE RELATED PLUGIN(S) 
+         <script src="..."></script>-->
+      <script type="text/javascript">
+         // DO NOT REMOVE : GLOBAL FUNCTIONS!
+         $(document).ready(function() {
+         
+             $("#includedNav").load("nav.html"); 
+         
+             pageSetUp();
+         
+             // initialize sortable
+             $(function() {
+         
+                 $.scrollUp({
+                     //animation: 'slide',
+                     //activeOverlay: '#00FFFF',
+                     scrollText: '',
+                     scrollImg: true,
+                 });                
+             });      
+         
+             $('#bookingDialog').dialog({
+                  autoOpen : false,
+                  resizable : false,
+                  modal : true,                  
+                  width: 600,
+                  title : "<div class='modal-title'><h4><i class='fa fa-warning'></i> 預約課程</h4></div>",
+                  buttons : [{
+                     html : "<i class='fa fa-send'></i>&nbsp;確定",
+                     "class" : "btn btn-primary",
+                      click : function() {                         
+                         $(this).dialog("close");
+                     }
+                  }]
+             });    
+                        
+         
+            $('#modifyBookingDialog').dialog({
+               autoOpen : false,
+               resizable : true,
+               modal : true,
+               width: "auto",
+               height: "auto",    
+               title: "<h4 class='modal-title'><i class='fa fa-fw fa-calendar'></i>  行事曆</h4>",
+               buttons : [{
+                     html : "<i class='fa fa-trash-o'></i>&nbsp;刪除",
+                     "class" : "btn bg-color-red",
+                      click : function() {                                                   
+                         $(this).dialog("close");
+                     }
+               }]
+            });     
+         
+            $('#updateProfile_link').click(function() {
+               $('#updateProfileDialog').dialog('open');
+               return false;
+            });
+         
+            $('#updateProfileDialog').dialog({
+               autoOpen : false,
+               resizable : true,
+               modal : true,
+               width: "auto",
+               height: "auto",    
+               title: "<h4 class='modal-title'><i class='fa fa-fw fa-cogs'></i>  修改個人資料</h4>"
+            });         
+            
+             /*
+              * FULL CALENDAR JS
+              */
+         
+             if ($("#calendar").length) {
+                 var date = new Date();
+                 var d = date.getDate();
+                 var m = date.getMonth();
+                 var y = date.getFullYear();
+         
+                 var calendar = $('#calendar').fullCalendar({
+                     lang: 'zh-TW',
+                     draggable: true,
+                     selectable: false,
+                     selectHelper: true,
+                     unselectAuto: false,
+                     disableResizing: false,
+                     allDaySlot: false,
+                     editable: false,
+                     height: "auto",
+                     defaultView: "agendaWeek",
+                     businessHours: {
+                        start: '08:00',
+                        end:   '22:00',
+                        dow: [ 1, 2, 3, 4, 5, 6, 0]
+                     },
+                     minTime: "07:00:00",
+                     maxTime: "23:00:00",
+                     header: {
+                         left: 'title', //,today
+                         //left: 'prev, next, today',
+                         //right: 'month, agendaWeek, agenDay' //month, agendaDay,
+                     },                 
+                     events: [{
+                         title: '5',
+                         start: new Date(y, m, 1),
+                         description: '場租教練',
+                         allDay: true,
+                         className: ["event", "bg-color-yellow"],
+                         icon: 'fa-tag'
+                     }, {
+                         title: '6',
+                         start: new Date(y, m, d - 3),
+                         description: '場租教練',
+                         allDay: true,
+                         className: ["event", "bg-color-yello"],
+                         icon: 'fa-tag'
+                     }, {
+                         title: '5',
+                         start: new Date(y, m, d + 4),
+                         description: '場租教練',
+                         allDay: true,
+                         className: ["event", "bg-color-yellow"],
+                         icon: 'fa-tag'
+                     }, {
+                         title: '場租教練',
+                         start: new Date(y, m, d + 0, 12, 30),
+                         end: new Date(y, m, d + 0, 14, 0),
+                         allDay: false,
+                         className: ["event", "bg-color-yello"],
+                         icon: 'fa-clock-o',
+                         editable:true
+                     }, {
+                         title: '場租教練',
+                         start: new Date(y, m, d + 0, 12, 30),
+                         end: new Date(y, m, d + 0, 13, 30),
+                         allDay: false,
+                         className: ["event", "bg-color-yello"],
+                         icon: 'fa-clock-o',
+                         editable:true
+         
+                     }, {
+                         title: '場租教練',
+                         start: new Date(y, m, d + 0, 12, 00),
+                         end: new Date(y, m, d + 0, 13, 0),
+                         allDay: false,
+                         className: ["event", "bg-color-blue"],
+                         icon: 'fa-clock-o',
+                         editable:true
+                     }, {
+                         title: '場租教練',
+                         start: new Date(y, m, d + 0, 12, 20),
+                         end: new Date(y, m, d + 0, 13, 40),
+                         allDay: false,
+                         className: ["event", "bg-color-blue"],
+                         icon: 'fa-clock-o',
+                         editable:true
+                     }],
+         
+         
+                     eventRender: function(event, element, icon) {
+                         if (!event.description == "") {
+                             element.find('.fc-title').append("<br/><span class='ultra-light'>" + event.description + "</span>");
+                         }
+                         if (!event.icon == "") {
+                             element.find('.fc-title').append("<i class='air air-top-right fa " + event.icon + " '></i>");
+                         }
+                     },
+         
+                     eventClick:  function(event, jsEvent, view) {
+                        if (event._allDay == true) {
+                           $('#undolistDialog').dialog('open');
+                        } else {
+                           $('#modifyBookingDialog').dialog('open');
+                        }
+                     } ,
+         
+                     dayClick: function (date, allDay, jsEvent, view) {
+                        var formattedDate = date.toString().replace(" GMT+0000",""); 
+                        $('#bookingDialog').dialog('open');
+                        //alert("see, I can get " + formattedDate + " if I _left click_, but try doing this with a right click");
+                     },
+                     windowResize: function (event, ui) {
+                         $('#calendar').fullCalendar('render');
+                     },                                              
+                 });
+         
+             }
+         
+         
+             /* hide default buttons */
+             $('.fc-toolbar .fc-right, .fc-toolbar .fc-center').hide();
+         
+             // calendar prev
+             $('#calendar-buttons #btn-prev').click(function() {
+                 $('.fc-prev-button').click();
+                 return false;
+             });
+         
+             // calendar next
+             $('#calendar-buttons #btn-next').click(function() {
+                 $('.fc-next-button').click();
+                 return false;
+             });
+         
+             // calendar today
+             $('#calendar-buttons #btn-today').click(function() {
+                 $('.fc-button-today').click();
+                 return false;
+             });
+         
+             // calendar month
+             $('#mt').click(function() {
+                 $('#calendar').fullCalendar('changeView', 'month');
+             });
+         
+             // calendar agenda week
+             $('#ag').click(function() {
+                 $('#calendar').fullCalendar('changeView', 'agendaWeek');
+             });
+         
+             // calendar agenda day
+             $('#td').click(function() {
+                 $('#calendar').fullCalendar('changeView', 'agendaDay');
+             });
+         
+             $('#mt').click(function () {
+                $('#calendar').fullCalendar('changeView', 'month');                
+             });
+            
+             $('#ag').click(function () {
+                $('#calendar').fullCalendar('changeView', 'agendaWeek');
+             });
+            
+             $('#td').click(function () {
+                $('#calendar').fullCalendar('changeView', 'agendaDay');
+             });                        
+         
+             /* BASIC ;*/
+             var responsiveHelper_dt_basic = undefined;
+             var responsiveHelper_dt_basic2 = undefined;
+             var responsiveHelper_dt_basic3 = undefined;
+             var responsiveHelper_dt_basic4 = undefined;
+             var responsiveHelper_dt_basic5 = undefined;
+         
+             var responsiveHelper_datatable_fixed_column = undefined;
+             var responsiveHelper_datatable_col_reorder = undefined;
+             var responsiveHelper_datatable_tabletools = undefined;
+         
+             var breakpointDefinition = {
+                 tablet: 1024,
+                 phone: 480
+             };
+         
+             $('#todoist_dt').dataTable({
+                 "sDom": "",
+                 "autoWidth": true,
+                 "bDestroy": true,
+                 "bPaginate": false,
+                 "bSort": false,
+                 "oLanguage": {
+                     "sSearch": '<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>'
+                 },
+                 "preDrawCallback": function() {
+                     // Initialize the responsive datatables helper once.
+                     if (!responsiveHelper_dt_basic) {
+                         responsiveHelper_dt_basic = new ResponsiveDatatablesHelper($('#todoist_dt'), breakpointDefinition);
+                     }
+                 },
+                 "rowCallback": function(nRow) {
+                     responsiveHelper_dt_basic.createExpandIcon(nRow);
+                 },
+                 "drawCallback": function(oSettings) {
+                     responsiveHelper_dt_basic.respond();
+                 }
+             });
+         
+             $('#classlist_dt').dataTable({
+                 "sDom": "<'dt-toolbar'<'col-xs-12 col-sm-6'f><'col-sm-6 col-xs-12 hidden-xs'l>r>" +
+                         "t" +
+                         "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-xs-12 col-sm-6'p>>",
+                 "autoWidth": true,
+                 "order": [],
+                 "oLanguage": {
+                 "sSearch": '<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>'
+                 },
+                 "preDrawCallback": function() {
+                     // Initialize the responsive datatables helper once.
+                     if (!responsiveHelper_dt_basic2) {
+                         responsiveHelper_dt_basic2 = new ResponsiveDatatablesHelper($('#classlist_dt'), breakpointDefinition);
+                     }
+                 },
+                 "rowCallback": function(nRow) {
+                     responsiveHelper_dt_basic2.createExpandIcon(nRow);
+                 },
+                 "drawCallback": function(oSettings) {
+                     responsiveHelper_dt_basic2.respond();
+                 }
+             });
+         
+             $('#undolist_dt').dataTable({
+                 "sDom": "<'dt-toolbar'<'col-xs-12 col-sm-6'f><'col-sm-6 col-xs-12 hidden-xs'l>r>" +
+                         "t" +
+                         "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-xs-12 col-sm-6'p>>",
+                 "autoWidth": true,
+                 "order": [],
+                 "oLanguage": {
+                 "sSearch": '<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>'
+                 },
+                 "preDrawCallback": function() {
+                     // Initialize the responsive datatables helper once.
+                     if (!responsiveHelper_dt_basic3) {
+                         responsiveHelper_dt_basic3 = new ResponsiveDatatablesHelper($('#undolist_dt'), breakpointDefinition);
+                     }
+                 },
+                 "rowCallback": function(nRow) {
+                     responsiveHelper_dt_basic3.createExpandIcon(nRow);
+                 },
+                 "drawCallback": function(oSettings) {
+                     responsiveHelper_dt_basic3.respond();
+                 }
+             });
+         
+             $('#questionnairelist_dt').dataTable({
+                 "sDom": "<'dt-toolbar'<'col-xs-12 col-sm-6'f><'col-sm-6 col-xs-12 hidden-xs'l>r>" +
+                         "t" +
+                         "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-xs-12 col-sm-6'p>>",
+                 "autoWidth": true,
+                 "order": [],
+                 "oLanguage": {
+                 "sSearch": '<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>'
+                 },
+                 "preDrawCallback": function() {
+                     // Initialize the responsive datatables helper once.
+                     if (!responsiveHelper_dt_basic4) {
+                         responsiveHelper_dt_basic4 = new ResponsiveDatatablesHelper($('#questionnairelist_dt'), breakpointDefinition);
+                     }
+                 },
+                 "rowCallback": function(nRow) {
+                     responsiveHelper_dt_basic4.createExpandIcon(nRow);
+                 },
+                 "drawCallback": function(oSettings) {
+                     responsiveHelper_dt_basic4.respond();
+                 }
+             });
+         
+             $('#health_dt').dataTable({
+                 "sDom": "<'dt-toolbar'<'col-xs-12 col-sm-6'f><'col-sm-6 col-xs-12 hidden-xs'l>r>" +
+                         "t" +
+                         "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-xs-12 col-sm-6'p>>",
+                 "autoWidth": true,
+                 "order": [],
+                 "oLanguage": {
+                 "sSearch": '<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>'
+                 },
+                 "preDrawCallback": function() {
+                     // Initialize the responsive datatables helper once.
+                     if (!responsiveHelper_dt_basic5) {
+                         responsiveHelper_dt_basic5 = new ResponsiveDatatablesHelper($('#health_dt'), breakpointDefinition);
+                     }
+                 },
+                 "rowCallback": function(nRow) {
+                     responsiveHelper_dt_basic5.createExpandIcon(nRow);
+                 },
+                 "drawCallback": function(oSettings) {
+                     responsiveHelper_dt_basic5.respond();
+                 }
+             });             
+             /* data stolen from http://howmanyleft.co.uk/vehicle/jaguar_'e'_type */
+             if ($('#strengthGraph').length) {
+                 var day_data = [{
+                     "period": "2015-07-21",
+                     "up": 400,
+                     "down": 1000,
+                     "olympic": 300
+                 }, {
+                     "period": "2015-08-05",
+                     "up": 420,
+                     "olympic": 200
+                 }, {
+                     "period": "2015-08-27",
+                     "down": 800
+                 }, {
+                     "period": "2015-09-28",
+                     "up": 500,
+                     "down": 1200,
+                     "olympic": 800
+                 }];
+                 Morris.Line({
+                     element: 'strengthGraph',
+                     data: day_data,
+                     xkey: 'period',
+                     xLabelAngle: 30.0,
+                     yLabelFormat: function(y) {
+                         if (typeof(y) != 'undefined') {
+                             return parseFloat(y) + ' KG';
+                         } else {
+                             return '-- KG';
+                         }
+         
+                     },
+                     ykeys: ['up', 'down', 'olympic'],
+                     resize: true,
+                     labels: ['上肢', '下肢', '奧林匹克爆發']
+                 })
+             }
+         
+                         /* data stolen from http://howmanyleft.co.uk/vehicle/jaguar_'e'_type */
+             if ($('#upstrengthGraph').length) {
+                 var day_data = [{
+                     "period": "2015-07-21",
+                     "downpush": 400,
+                     "downpull": 660
+                 }, {
+                     "period": "2015-08-05",
+                     "downpush": 420
+                 }, {
+                     "period": "2015-08-27",
+                     "downpush": 450,
+                     "downpull": 680
+                 }];
+                 Morris.Line({
+                     element: 'upstrengthGraph',
+                     data: day_data,
+                     xkey: 'period',
+                     xLabelAngle: 30.0,
+                     yLabelFormat: function(y) {
+                         return parseFloat(y) + ' KG';
+                     },
+                     ykeys: ['downpush', 'downpull'],
+                     resize: true,
+                     labels: ['下肢推', '下肢拉']
+                 })
+             }
+             /* data stolen from http://howmanyleft.co.uk/vehicle/jaguar_'e'_type */
+             if ($('#downstrengthGraph').length) {
+                 var day_data = [{
+                     "period": "2015-07-21",
+                     "uphpush": 200,
+                     "uphpull": 150,
+                     "upvpush": 300,
+                     "upvpull": 185
+                 }, {
+                     "period": "2015-08-01",
+                     "uphpush": 180,
+                     "uphpull": 160,
+                     "upvpull": 200
+                 }, {
+                     "period": "2015-08-21",
+                     "uphpush": 180,
+                     "uphpull": 120,
+                     "upvpush": 200,
+                     "upvpull": 160
+                 }];
+                 Morris.Line({
+                     element: 'downstrengthGraph',
+                     data: day_data,
+                     xkey: 'period',
+                     xLabelAngle: 30.0,
+                     yLabelFormat: function(y) {
+                         return parseFloat(y) + ' KG';
+                     },
+                     ykeys: ['uphpush', 'uphpull', 'upvpush', 'upvpull'],
+                     resize: true,
+                     labels: ['上肢水平推', '上肢水平拉', '上肢垂直推', '上肢垂直拉']
+                 })
+             }
+         
+             /* data stolen from http://howmanyleft.co.uk/vehicle/jaguar_'e'_type */
+             if ($('#energyGraph').length) {
+                 var day_data = [{
+                     "period": "2015-07-21",
+                     "energy": 42
+                 }, {
+                     "period": "2015-08-01",
+                     "energy": 40
+                 }, {
+                     "period": "2015-08-21",
+                     "energy": 38
+                 }, {
+                     "period": "2015-08-30",
+                     "energy": 41
+                 }, {
+                     "period": "2015-09-03",
+                     "energy": 46
+                 }, {
+                     "period": "2015-09-15",
+                     "energy": 45
+                 }, {
+                     "period": "2015-09-21",
+                     "energy": 50
+                 }];
+                 Morris.Line({
+                     element: 'energyGraph',
+                     data: day_data,
+                     xkey: 'period',
+                     yLabelFormat: function(y) {
+                         return parseFloat(y) + '%';
+                     },
+                     xLabelAngle: 30.0,
+                     ykeys: ['energy'],
+                     resize: true,
+                     labels: ['能量系統訓練強度']
+                 })
+             }
+             /* data stolen from http://howmanyleft.co.uk/vehicle/jaguar_'e'_type */
+             if ($('#strength2Graph').length) {
+                 var day_data = [{
+                     "period": "2015-07-21",
+                     "strength2": 42
+                 }, {
+                     "period": "2015-08-01",
+                     "strength2": 40
+                 }, {
+                     "period": "2015-08-21",
+                     "strength2": 38
+                 }, {
+                     "period": "2015-08-30",
+                     "strength2": 41
+                 }, {
+                     "period": "2015-09-03",
+                     "strength2": 46
+                 }, {
+                     "period": "2015-09-15",
+                     "strength2": 45
+                 }, {
+                     "period": "2015-09-21",
+                     "strength2": 50
+                 }];
+                 Morris.Line({
+                     element: 'strength2Graph',
+                     data: day_data,
+                     xkey: 'period',
+                     yLabelFormat: function(y) {
+                         return parseFloat(y) + '%';
+                     },
+                     xLabelAngle: 30.0,
+                     ykeys: ['strength2'],
+                     resize: true,
+                     labels: ['肌力系統訓練強度']
+                 })
+             }
+         
+             /* data stolen from http://howmanyleft.co.uk/vehicle/jaguar_'e'_type */
+             if ($('#enhancedGraph').length) {
+                 var day_data = [{
+                     "period": "2015-07-21",
+                     "enhanced": 5
+                 }, {
+                     "period": "2015-08-01",
+                     "enhanced": 10
+                 }, {
+                     "period": "2015-08-21",
+                     "enhanced": 8
+                 }, {
+                     "period": "2015-08-30",
+                     "enhanced": 15
+                 }, {
+                     "period": "2015-09-03",
+                     "enhanced": 12
+                 }, {
+                     "period": "2015-09-15",
+                     "enhanced": 14
+                 }, {
+                     "period": "2015-09-21",
+                     "enhanced": 20
+                 }];
+                 Morris.Line({
+                     element: 'enhancedGraph',
+                     data: day_data,
+                     xkey: 'period',
+                     yLabelFormat: function(y) {
+                         return parseFloat(y) + '次';
+                     },
+                     xLabelAngle: 30.0,
+                     ykeys: ['enhanced'],
+                     resize: true,
+                     labels: ['增強式訓練次數']
+                 })
+             }  
+         
+             // With Buttons
+             $(".delete").click(function(e) {
+         
+                 $.SmartMessageBox({
+                     title: "<i class=\"fa fa-fw fa fa-trash-o\" aria-hidden=\"true\"></i> 刪除確認",
+                     content: "請確認是否刪除此筆資料",
+                     buttons: '[刪除][取消]'
+                 });
+         
+                 e.preventDefault();
+             })
+         
+         })
+      </script>
+      <div id="fb-root"></div>
+      <script>
+         window.fbAsyncInit = function() {
+           FB.init({
+             appId      : '1027299250717597',
+             xfbml      : true,
+             version    : 'v2.8'
+           });
+           FB.AppEvents.logPageView();
+         };
+         
+         (function(d, s, id){
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) {return;}
+            js = d.createElement(s); js.id = id;
+            js.src = "//connect.facebook.net/en_US/sdk.js";
+            fjs.parentNode.insertBefore(js, fjs);
+          }(document, 'script', 'facebook-jssdk'));
+      </script>    
+      <script>
+         /*
+          * CONVERT DIALOG TITLE TO HTML
+          * REF: http://stackoverflow.com/questions/14488774/using-html-in-a-dialogs-title-in-jquery-ui-1-10
+          */
+         $.widget("ui.dialog", $.extend({}, $.ui.dialog.prototype, {
+            _title : function(title) {
+               if (!this.options.title) {
+                  title.html("&#160;");
+               } else {
+                  title.html(this.options.title);
+               }
+            }
+         }));    
+         
+      </script>
+      <!-- Your GOOGLE ANALYTICS CODE Below -->
+      <script type="text/javascript">
+         var _gaq = _gaq || [];
+         _gaq.push(['_setAccount', 'UA-XXXXXXXX-X']);
+         _gaq.push(['_trackPageview']);
+         
+         (function() {
+             var ga = document.createElement('script');
+             ga.type = 'text/javascript';
+             ga.async = true;
+             ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+             var s = document.getElementsByTagName('script')[0];
+             s.parentNode.insertBefore(ga, s);
+         })();
+      </script>
+   </body>
+</html>

@@ -1,0 +1,770 @@
+﻿<!doctype html>
+<html>
+
+<head>
+    <!-- Basic Page Needs -->
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta charset="utf-8">
+    <title>BEYOND FITNESS</title>
+    <meta name="description" content="Beyond Fitness Professional">
+    <meta name="keywords" content="HTML, CSS, JavaScript">
+    <!-- Mobile Specific Metas-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="telephone=no" name="format-detection">
+    <meta property="og:image" content="https://www.beyond-fitness.com.tw/front-end/images/feature/demo2.png" />
+    <!-- Fonts -->
+    <!-- Open Sans -->
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300,400italic,600,700italic,400,700,800italic' rel='stylesheet' type='text/css'>
+    <!-- VarelaRound -->
+    <link href='https://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'>
+    <!-- Icon Font - Font Awesome -->
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.2/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Stylesheets -->
+    <!-- External -->
+    <!-- Mobile menu -->
+    <link href="external/z-nav/z-nav.css" rel="stylesheet">
+    <link href="external/animated-header/css/component.css" rel="stylesheet" />
+    <!-- Touch slider - Swiper -->
+    <link href="external/swiper/idangerous.swiper.css" rel="stylesheet" />
+    <!-- mCustomScrollbar -->
+    <link href="external/mCustomScrollbar/jquery.mCustomScrollbar.css" rel="stylesheet" />
+    <!-- Custom -->
+    <link href="css/style.css?v=1" rel="stylesheet" />
+    <!-- *** Favicons *** -->
+    <!--[if IE]><link rel="icon"  href="favicons/favicon_16x16.ico" /><![endif]-->
+    <link rel="icon" href="favicons/favicon_96x96.png">
+    <!-- Specifying a Webpage Icon for Web Clip -->
+    <link rel="apple-touch-icon-precomposed" href="favicons/favicon_57x57.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="favicons/favicon_72x72.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="favicons/favicon_114x114.png">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="favicons/favicon_144x144.png">
+    <link rel="apple-touch-icon-precomposed" sizes="180x180" href="favicons/favicon_180x180.png">
+    <!-- Basic JavaScript-->
+    <!-- Modernizr -->
+    <script src="external/modernizr/modernizr.custom.js"></script>
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]> 
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.js"></script> 
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.3.0/respond.js"></script>       
+    <![endif]-->
+    <!--[if lte IE 9]>
+        <link href="css/ie9.css?v=1" rel="stylesheet" />
+    <![endif]-->
+    <!-- Facebook Pixel Code -->
+    <script>
+        (function (f, b, e, v, n, t, s) {
+            if (f.fbq) return;
+            n = f.fbq = function () {
+                n.callMethod ?
+                    n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+            };
+            if (!f._fbq) f._fbq = n;
+            n.push = n;
+            n.loaded = !0;
+            n.version = '2.0';
+            n.queue = [];
+            t = b.createElement(e);
+            t.async = !0;
+            t.src = v;
+            s = b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t, s)
+        })(window, document, 'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '139380543390363');
+        fbq('track', 'PageView');
+    </script>
+    <script type="application/javascript">(function(w,d,t,r,u){w[u]=w[u]||[];w[u].push({'projectId':'10000','properties':{'pixelId':'10056180'}});var s=d.createElement(t);s.src=r;s.async=true;s.onload=s.onreadystatechange=function(){var y,rs=this.readyState,c=w[u];if(rs&&rs!="complete"&&rs!="loaded"){return}try{y=YAHOO.ywa.I13N.fireBeacon;w[u]=[];w[u].push=function(p){y([p])};y(c)}catch(e){}};var scr=d.getElementsByTagName(t)[0],par=scr.parentNode;par.insertBefore(s,scr)})(window,document,"script","https://s.yimg.com/wi/ytc.js","dotq");</script>
+    <noscript>
+        <img height="1" width="1" src="https://www.facebook.com/tr?id=139380543390363&ev=PageView&noscript=1" / >
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+</head>
+
+<body class="place-shrink">
+    <div class="wrapper" id="top">
+        <header class="header-placement" style="background-image: url('external/animated-header/img/demo-1-bg.jpg');">
+            <div class="content waypoint" data-animate-down="header-up" data-animate-up="header-down">
+                <div class="header-fixed header-down">
+                    <div class="container">
+                        <!--  Logo  -->
+                        <a class="logo" href="index.html">
+                            <!-- <img src="images/logo_white.png" alt=""> -->
+<!--
+                            <svg class="logo__svg" width="32" height="32" xmlns="https://www.w3.org/2000/svg" xmlns:svg="https://www.w3.org/2000/svg">
+                                <style type="text/css">
+                                    .st0{fill:#FFFFFF;}
+                                </style>
+                                <g>
+                                    <g>
+                                        <path class="st0" d="M14.2,12c0,0-3.5-0.7-5.4-1.7C4.2,7.7,0.4,4,0.4,4c2,2.2,8.6,6.7,7.1,10c-1,2.2-6.1,2-7.5,1.9v0
+                                            c14.1,1.9,4.4,8.1,0.8,12.1c1.6-1.7,6.4-4.9,8.7-5.9c3-1.3,4.7-1.3,4.7-1.3C13.4,19.8,13.1,13.6,14.2,12z"/>
+                                        <path class="st0" d="M32,16L32,16c-1.5,0.1-6.5,0.2-7.5-1.9c-1.6-3.3,5.1-7.9,7.1-10c0,0-4.5,4.2-8.4,6.3C20,12,17.8,12,16.6,12.1
+                                            v0c1.5-0.1,2.1,1.2,2,2.5c-0.1,0.8-0.7,1.4-1.5,1.6v0c1.4-0.1,1.8,1.2,1.8,1.9c0,2.8-2.2,2.6-2.4,2.6v0c0.9,0,3.4,0,6,1.3
+                                            c2.3,1.1,7.1,4.2,8.7,5.9C27.6,24.1,17.9,17.9,32,16z"/>
+                                    </g>
+                                </g>
+                            </svg>
+                            <h1 class="logo__text">BEYOND FITNESS</h1>
+-->
+                        </a>
+                        <!-- End Logo -->
+                        <!-- Navigation section -->
+                        <nav class="z-nav">
+                            <!-- Toggle for menu mobile view -->
+                            <a href="#" class="z-nav__toggle">
+                                <span class="menu-icon"></span>
+                                <span class="menu-text">navigation</span>
+                                <div class="menu-head"></div>
+                            </a>
+                            <div class="z-nav-inner">
+                                <ul class="z-nav__list">
+                                    <li class="z-nav__item">
+                                        <a onclick="fbq('track', 'CompleteRegistration');" class="z-nav__link z-nav__link--simple current-position" href="index.html#top">Home</a>
+                                    </li>
+                                    <li class="z-nav__item">
+                                        <a onclick="fbq('track', 'Search');" class="z-nav__link z-nav__link--simple" href="index.html#about">About</a>
+                                    </li>
+                                    <li class="z-nav__item">
+                                        <a onclick="fbq('track', 'AddToWishlist');" class="z-nav__link z-nav__link--simple" href="index.html#ourteam">Team</a>
+                                    </li>
+                                    <li class="z-nav__item">
+                                        <a onclick="fbq('track', 'AddToCart');" class="z-nav__link z-nav__link--simple" href="index.html#support">Q＆A</a>
+                                    </li>
+                                    <li class="z-nav__item">
+                                        <a onclick="fbq('track', 'ViewContent');" class="z-nav__link z-nav__link--simple" href="blog.html#blog">Blog</a>
+                                    </li>
+                                    <li class="z-nav__item">
+                                        <a onclick="fbq('track', 'AddToPaymentInfo');" class="z-nav__link z-nav__link--simple" href="index.html#contact">Contact</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!-- end list menu inner container -->
+                            <!-- end list menu item -->
+                        </nav>
+                        <!-- end navigation section -->
+                    </div>
+                    <!-- end container -->
+                </div>
+                <!-- end fixed top block -->
+                <div id="large-header" class="large-header space-header">
+                    <canvas id="demo-canvas"></canvas>              
+                    <h1 class="main-title">   
+                        <img src="images/logo-white.png" alt="">
+                    </h1>
+                    <h2 class="main-title-helper">Relax To Beyond</h2>
+                </div>
+                <a class="scroll-next" href="#about"></a>
+            </div>
+        </header>
+        <!-- /header -->
+        <section class="container">
+            <h2 class="block-title block-title--top-larger" id="about">About Beyond Fitness</h2>
+            <div class="text-plus">
+                <h3 class="text-plus__heading">Beyond Fitness is Made with Professional to Serve You</h3>
+                <p class="text-plus__info">A Lot of Features You May Love</p>
+            </div>
+            <div class="row">
+                <div class="col-sm-4 hidden-xs">
+                    <div class="feature">
+                        <div class="feature__image feature__image--responsive animated fadeInUpStart start-1">
+                            <img src="images/feature/demo1.png" alt="">
+                        </div>
+                        <h3 class="feature__heading">量身訂做規劃 Customization</h3>
+                        <p class="feature__info">一對一的訓練方式，透過數據紀錄分析以及貼身建議給予真正適合您的訓練。</p>
+                    </div>
+                </div>
+                <!-- end col -->
+                <div class="col-sm-4 hidden-xs">
+                    <div class="feature">
+                        <div class="feature__image feature__image--responsive animated fadeInUpStart start-2">
+                            <img src="images/feature/demo2.png" alt="">
+                        </div>
+                        <h3 class="feature__heading">專業訓練品質 Professional</h3>
+                        <p class="feature__info">以國際認證專業的知識技能為基礎，給予您真正需要的專業運動效果。</p>
+                    </div>
+                </div>
+                <!-- end col -->
+                <div class="col-sm-4 hidden-xs">
+                    <div class="feature">
+                        <div class="feature__image feature__image--responsive animated fadeInUpStart start-3">
+                            <img src="images/feature/demo3.png" alt="">
+                        </div>
+                        <h3 class="feature__heading">科學化 Scientific</h3>
+                        <p class="feature__info">數據化的雲端監控，由用心的角度著手的專業訓練，無論是身材以及您的心境。</p>
+                    </div>
+                </div>
+                <!-- end col -->
+            </div>
+            <!-- end row -->
+            <div class="swiper-container fearure-slider">
+                <div class="swiper-wrapper">
+                    <!--Slide-->
+                    <div class="swiper-slide">
+                        <div class="feature">
+                            <div class="feature__image">
+                                <img src="images/feature/demo1.png" alt="">
+                            </div>
+                            <h3 class="feature__heading">量身訂做規劃 Customization</h3>
+                            <p class="feature__info">一對一的訓練方式，透過數據紀錄分析以及貼身建議給予真正適合您的訓練。</p>
+                        </div>
+                    </div>
+                    <!--Slide-->
+                    <div class="swiper-slide">
+                        <div class="feature">
+                            <div class="feature__image">
+                                <img src="images/feature/demo2.png" alt="">
+                            </div>
+                            <h3 class="feature__heading">專業訓練品質 Professional</h3>
+                            <p class="feature__info">以國際認證專業的知識技能為基礎，給予您真正需要的專業運動效果。</p>
+                        </div>
+                    </div>
+                    <!--Slide-->
+                    <div class="swiper-slide">
+                        <div class="feature">
+                            <div class="feature__image">
+                                <img src="images/feature/demo3.png" alt="">
+                            </div>
+                            <h3 class="feature__heading">科學化 Scientific</h3>
+                            <p class="feature__info">數據化的雲端監控，由用心的角度著手的專業訓練，無論是身材以及您的心境。</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-slider-pagination feature-pagination"></div>
+            </div>
+            <div class="divider-brand divider--top2x"></div>
+        </section>
+        <!-- end container -->
+
+        <div class="promo promo--secondary promo--clean" id="ourteam">
+            <h3 class="promo__heading">Join Us</h3>
+            <p class="promo__describe">I DON'T make EXCUSES, I make RESULTS</p>
+            <a class="btn btn-warning btn--decorated promo__btn animated fadeInUpStart" href="../CornerKick/Index">Login Now</a>
+        </div>
+
+        <!-- Section show current page and breadcrumb -->
+        <section class="page-indecator">
+            <div class="container">
+                <h2 class="heading">Our Team</h2><Br/>
+                <!-- Breadcrumb pattern -->
+                <ol class="breadcrumb">
+                    <li><a href="team-arena.html"><u>南京小巨蛋</u></a></li>
+                    <li><a href="team-101.html"><u>Enhanced 101</u></a></li>
+                    <li><a href="team-sogo.html"><u>忠孝</u></a></li>
+                </ol>
+                <!-- Default one color divider -->
+                <div class="divider top-space"></div>
+            </div>
+        </section>
+        <!-- end section show current page and breadcrumb -->
+        <section class="container">
+            <div class="service-step">
+                <div class="row service-step__line">
+                    <div class="col-sm-6">
+                        <div class="service-step__info">
+                            <span class="service-step__number">Arena</span>
+                            <a href="team-arena.html"><h2 class="service-step__heading">南京小巨蛋 <i class="fa fa-paper-plane-o"></i></h2></a>
+                            <p class="service-step__descript">位於台北松山區專業私人訓練中心；鄰近台北小巨蛋捷運站 1號出口走路1分鐘即可抵達。<br/><br/>寬敞活動空間，結合專業運動草皮，不受室內場地侷限，增加訓練種類多元化。<br/><br/>設有獨立衛浴空間、安全密碼置物櫃、舒適休息會談空間。<br/><br/>專業私人顧問；運動科學數據管理；雲端管理客製訓練。無論是下班還是休假，這都是可以最能讓你找到質感質量的訓練中心。</p>
+                        </div>
+                    </div>
+                    <!-- end col -->
+                    <div class="col-sm-3">
+                        <a class="post post--preview-link staff" href="team-arena.html">
+                            <div class="image-container image-container--max image-container--border-inner">
+                                <img src="images/gallery/thumbs-full/Arena-01.png" alt="">
+                            </div>
+                        </a>
+                    </div>
+                    <!-- end col -->
+                    <div class="col-sm-3">
+                        <a class="post post--preview-link staff" href="team-arena.html">
+                            <div class="image-container image-container--max image-container--border-inner">
+                                <img src="images/gallery/thumbs-full/Arena-02.jpg" alt="">
+                            </div>
+                        </a>
+                    </div>
+                    <!-- end col -->
+                </div>
+                <!-- end row -->
+                <div class="row service-step__line">
+                    <div class="col-sm-6 col-sm-push-6">
+                        <div class="service-step__info">
+                            <span class="service-step__number">101</span>
+                            <a href="team-101.html"><h2 class="service-step__heading">Enhanced 101 <i class="fa fa-paper-plane-o"></i></h2></a>
+                            <p class="service-step__descript">位於台北中心信義區高級私人訓練中心；鄰近台北101捷運站 3號出口走路1分鐘即可抵達。<br/><br/>獨立具隱私空間，室內區-五星飯店等級VIP專屬，人數監督，舒適隱密。戶外區-運動草皮結合獨立PU跑道 提高訓練專業化。獨家景觀，仰望國際地標！<br/><br/>獨特隔間衛浴設備、方便輕取置物櫃、吧檯交流空間。專業私人顧問；運動科學數據管理；雲端整合專屬訓練 。</p>
+                        </div>
+                    </div>
+                    <!-- end col -->
+                    <div class="col-sm-3 col-sm-pull-6">
+                        <a class="post post--preview-link staff" href="team-101.html">
+                            <div class="image-container image-container--max image-container--border-inner">
+                                <img src="images/gallery/thumbs-full/101-01.jpg" alt="">
+                            </div>
+                        </a>
+                    </div>
+                    <!-- end col -->
+                    <div class="col-sm-3 col-sm-pull-6">
+                        <a class="post post--preview-link staff" href="team-101.html">
+                            <div class="image-container image-container--max image-container--border-inner">
+                                <img src="images/gallery/thumbs-full/101-02.jpg" alt="">
+                            </div>
+                        </a>
+                    </div>
+                    <!-- end col -->
+                </div>
+                <!-- end row -->
+                <div class="row service-step__line">
+                    <div class="col-sm-6">
+                        <div class="service-step__info">
+                            <span class="service-step__number">忠孝</span>
+                            <a href="team-sogo.html"><h2 class="service-step__heading">忠孝 <i class="fa fa-paper-plane-o"></i></h2></a>                            
+                            <p class="service-step__descript">位於台北大安區正東區體能私人訓練中心；鄰近台北忠孝復興捷運站，3號出口 地下街14號出口 走路即可抵達。<br/><br/>挑高寬敞訓練空間，結合專業運動草皮，特有設計木質訓練地板，多元化運動模式。獨立質感衛浴設備、安全密碼置物櫃、舒適會談空間。<br/><br/>專業私人顧問；運動科學數據整合；雲端研擬客製訓練。結合時尚性，文化性及方便性為一體的專業會所。</p>
+                        </div>
+                    </div>
+                    <!-- end col -->
+                    <div class="col-sm-3">
+                        <a class="post post--preview-link staff" href="team-sogo.html">
+                            <div class="image-container image-container--max image-container--border-inner">
+                                <img src="images/gallery/thumbs-full/Sogo-01.jpg" alt="">
+                            </div>
+                        </a>
+                    </div>
+                    <!-- end col -->
+                    <div class="col-sm-3">
+                        <a class="post post--preview-link staff" href="team-sogo.html">
+                            <div class="image-container image-container--max image-container--border-inner">
+                                <img src="images/gallery/thumbs-full/Sogo-02.jpg" alt="">
+                            </div>
+                        </a>
+                    </div>
+                    <!-- end col -->
+
+                </div>
+                <!-- end row -->                
+            </div>
+        </section>
+        <!-- end container -->
+
+        <!-- end section show current page and breadcrumb -->
+        <section class="container">
+            <h2 class="block-title block-title--top-larger" id="support">Q＆A</h2>
+            <div class="row">
+                <div class="col-sm-7 col-md-8 cut-section">
+                    <!-- Accordion blocks -->
+                    <div class="panel-group accordion accordion--blocks" id="accordion">
+                        <!-- Accordion panel -->
+                        <div class="panel panel-default">
+                            <!-- accordion panel heading -->
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a class="accordion-link" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                                        <span class="marker">
+                                            <span class="marker__close"><i class="fa fa-plus"></i></span>
+                                            <span class="marker__open"><i class="fa fa-minus"></i></span>
+                                        </span>
+                                      是否有體驗課程？其內容是什麼呢？如何預約呢？
+                                    </a>
+                                  </h4>
+                            </div>
+                            <!-- end accordion panel heading -->
+                            <!-- accordion panel body -->
+                            <div id="collapseOne" class="panel-collapse collapse in">
+                                <div class="panel-body">
+                                    有的！體驗課程需要提前預約，其課程內容專業教練會根據每個人狀況的不同而規劃，我們會為您做到最好的專業以及最大的體貼。無倫您是什麼樣的健康狀況 、年齡以及需求 ，BeyondFitness 專業的團隊都能為您達到您的目標。<br/><br/>體驗課程的內容如網站上所顯示，BeyondFitness將您的目標以及需求放在第一優先，瞭解後以「專業化」、「客制化」以及科學數據化的方式為您服務。您將能在這裡得到任何您需要的信任與成效。<br/><br/>您可以直接電話聯繫我們，也可以在臉書或是網站上留下您的聯絡方式，我們會請專人與您服務。若您不方便留下聯絡電話的話也可以在網站上與我們對談，我們會細心地解決您所有的疑問：）。<br/>BeyondFitness認為所有人都值得瞭解自己也同時瞭解我們的環境，但必須提前預約，才能為您做好最妥善的安排。<br/><br/>體驗課程將讓客戶更能達到自己的各項體能狀況（肌力、心肺、柔軟度和活動度），並且一同討論私人客製化的專業建議與目標規劃。
+                                </div>
+                            </div>
+                            <!-- end accordion panel body -->
+                        </div>
+                        <!-- end accordion panel -->
+                        <!-- Accordion panel -->
+                        <div class="panel panel-default">
+                            <!-- accordion panel heading -->
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a class="collapsed accordion-link" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                                        <span class="marker">
+                                            <span class="marker__close"><i class="fa fa-plus"></i></span>
+                                            <span class="marker__open"><i class="fa fa-minus"></i></span>
+                                        </span>
+                                      會收取入會費、手續費及月費嗎？
+                                    </a>
+                                  </h4>
+                            </div>
+                            <!-- end accordion panel heading -->
+                            <!-- accordion panel body -->
+                            <div id="collapseTwo" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    不會。<br/><br/>BeyondFitness專注於一對一的客製化專業訓練，所以只需專業客製的訓練費用，無須再繳交任何其他相關費用。
+                                </div>
+                            </div>
+                            <!-- end accordion panel body -->
+                        </div>
+                        <!-- end accordion panel -->
+                        <!-- Accordion panel -->
+                        <div class="panel panel-default">
+                            <!-- accordion panel heading -->
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a class="collapsed accordion-link" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+                                        <span class="marker">
+                                            <span class="marker__close"><i class="fa fa-plus"></i></span>
+                                            <span class="marker__open"><i class="fa fa-minus"></i></span>
+                                        </span>
+                                     收費方式為何？
+                                    </a>
+                                  </h4>
+                            </div>
+                            <!-- end accordion panel heading -->
+                            <!-- accordion panel body -->
+                            <div id="collapseThree" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    BeyondFitness以堂數做收費計算，價格會依照您的目標、規劃的時間長短及堂數而有所不同。<br/><br/>分別有短程計畫、中長程計畫以及長程計畫，而教練會依照您個人身體狀況與各方面的身體能力，針對您的目標規劃做最有效率的訓練課程。                                    
+                                </div>
+                            </div>
+                            <!-- end accordion panel body -->
+                        </div>
+                        <!-- end accordion panel -->
+                        <!-- Accordion panel -->
+                        <div class="panel panel-default">
+                            <!-- accordion panel heading -->
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a class="collapsed accordion-link" data-toggle="collapse" data-parent="#accordion" href="#collapseFour">
+                                        <span class="marker">
+                                            <span class="marker__close"><i class="fa fa-plus"></i></span>
+                                            <span class="marker__open"><i class="fa fa-minus"></i></span>
+                                        </span>
+                                      請問我是女生想指定女教練可以嗎？若上課後覺得教練不適合可以換教練嗎？
+                                    </a>
+                                  </h4>
+                            </div>
+                            <!-- end accordion panel heading -->
+                            <!-- accordion panel body -->
+                            <div id="collapseFour" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    當然可以為您安排女教練，讓您自在的運動。<br/><br/>BeyondFitness是非常重視您感受的團隊，所以您若覺得教練不合適是可以重新安排其他教練配合，且更換教練時會將您的運動狀況向新任教練說明清楚，BeyondFitness完全將您的訓練放在最重要的位置。
+                                </div>
+                            </div>
+                            <!-- end accordion panel body -->
+                        </div>
+                        <!-- end accordion panel -->
+                        <!-- Accordion panel -->
+                        <div class="panel panel-default">
+                            <!-- accordion panel heading -->
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a class="collapsed accordion-link" data-toggle="collapse" data-parent="#accordion" href="#collapseFive">
+                                        <span class="marker">
+                                            <span class="marker__close"><i class="fa fa-plus"></i></span>
+                                            <span class="marker__open"><i class="fa fa-minus"></i></span>
+                                        </span>
+                                      私人教練跟團課教練差在哪邊？
+                                    </a>
+                                  </h4>
+                            </div>
+                            <!-- end accordion panel heading -->
+                            <!-- accordion panel body -->
+                            <div id="collapseFive" class="panel-collapse collapse">
+                                <div class="panel-body">                                    
+                                    私人教練是針對學生的目標、生活作息、運動狀況及飲食習慣，做出客製化的訓練安排以及真正將心比心的瞭解客戶的需求，專業的私人教練會給您您需要的建議，以及幫您規劃您生活中其餘非運動時間需要注意的事項，擁有一個瞭解您的私人教練是一件非常美好的事情。<br/><br/>相較於團體課程的教練，私人教練更能針對學生的目的去做訓練以及訓練得更具有實際效益哦！
+                                </div>
+                            </div>
+                            <!-- end accordion panel body -->
+                        </div>
+                        <!-- end accordion panel -->
+                        <!-- Accordion panel -->
+                        <div class="panel panel-default">
+                            <!-- accordion panel heading -->
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a class="collapsed accordion-link" data-toggle="collapse" data-parent="#accordion" href="#collapseSix">
+                                        <span class="marker">
+                                            <span class="marker__close"><i class="fa fa-plus"></i></span>
+                                            <span class="marker__open"><i class="fa fa-minus"></i></span>
+                                        </span>
+                                      請問如果我平常沒有運動的習慣或是已經很久沒運動了，適合教練課程嗎？
+                                    </a>
+                                  </h4>
+                            </div>
+                            <!-- end accordion panel heading -->
+                            <!-- accordion panel body -->
+                            <div id="collapseSix" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    當然適合！<br/><br/>BeyondFitnes教練會針對您現階段的體能狀況(肌力、心肺、柔軟度和活動度)給予私人客製化的課程編排與訓練內容來達到訓練最佳的效益，並以循序漸進的方式達到客戶的目標。訓練期間如有任何不適都能夠隨時向教練反應以隨時做出調整，無論您的狀況為初學者或是任何特殊的狀況，我們都有把握給您最優良以及最好的開始。
+                                </div>
+                            </div>
+                            <!-- end accordion panel body -->
+                        </div>
+                        <!-- end accordion panel -->
+                        <!-- Accordion panel -->
+                        <div class="panel panel-default">
+                            <!-- accordion panel heading -->
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a class="collapsed accordion-link" data-toggle="collapse" data-parent="#accordion" href="#collapseSeven">
+                                        <span class="marker">
+                                            <span class="marker__close"><i class="fa fa-plus"></i></span>
+                                            <span class="marker__open"><i class="fa fa-minus"></i></span>
+                                        </span>
+                                      請問你們這裡可以自己去運動嗎？
+                                    </a>
+                                  </h4>
+                            </div>
+                            <!-- end accordion panel heading -->
+                            <!-- accordion panel body -->
+                            <div id="collapseSeven" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    我們只提供BeyondFitness的客戶登記使用，經由規劃專業自主訓練P.I Session，並且進行人數的管控以維持場地以及最好的運動品質。
+                                </div>
+                            </div>
+                            <!-- end accordion panel body -->
+                        </div>
+                        <!-- end accordion panel -->
+                        <!-- Accordion panel -->
+                        <div class="panel panel-default">
+                            <!-- accordion panel heading -->
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a class="collapsed accordion-link" data-toggle="collapse" data-parent="#accordion" href="#collapseEight">
+                                        <span class="marker">
+                                            <span class="marker__close"><i class="fa fa-plus"></i></span>
+                                            <span class="marker__open"><i class="fa fa-minus"></i></span>
+                                        </span>
+                                      我跟我的朋友想一起運動，但是體力跟肌力狀況不一樣，可以一起運動嗎？
+                                    </a>
+                                  </h4>
+                            </div>
+                            <!-- end accordion panel heading -->
+                            <!-- accordion panel body -->
+                            <div id="collapseEight" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    當然可以。<br/><br/>教練會依據你們的身體狀況給予不同的強度訓練，課表也會有所調整相互配合，不用擔心！
+                                </div>
+                            </div>
+                            <!-- end accordion panel body -->
+                        </div>
+                        <!-- end accordion panel -->
+                    </div>
+                    <!-- end accordion blocks -->
+                </div>
+                <!-- end col -->
+                <aside class="col-sm-5 col-md-4">
+                    <div class="question-wrapper">
+                        <div class="form-error alert alert-danger">
+                            <span class="alert-market">
+                                    <i class="fa fa-ban"></i>
+                                </span>
+                            <div class="form-error__holder"></div>
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true"><i class="fa fa-times"></i></button>
+                        </div>
+                        <div class="question-inner">
+                            <form class="contact question" id="question-form" name="contact-form" method="post" action="FrontEnd/ContactUs" novalidate>
+                                <h3 class="heading-helper heading-helper--large">Make A Reservation</h3>
+                                <input class="contact__field" name="contact-name" type="text" placeholder="full name">
+                                <input class="contact__field" name="contact-email" type="email" placeholder="email">
+                                <input class="contact__field" name="contact-subject" type="text" placeholder="subject">
+                                <textarea class="contact__field contact__area" name="contact-message" placeholder="details"></textarea>
+                                <button class="btn btn--decorated btn-warning btn-submit btn-support" type="submit">Submit</button>
+                            </form>
+                        </div>
+                    </div>
+                </aside>
+                <!-- end col -->
+            </div>
+            <!-- end row -->
+        </section>
+
+        <div class="promo promo--primary promo--clean">
+            <h3 class="promo__heading">Customization Solutions Here</h3>
+            <p class="promo__describe">You’re <span class="mark mark--special">satisfied</span>. We’re <span class="mark mark--special">happy</span></p>
+            <a class="btn btn-warning btn--decorated promo__btn" href="../CornerKick/Index">Apply NOW</a>
+        </div> 
+        
+        <!-- Colored divider -->
+        <div class="divider divider--icon present-divider-last"></div>
+
+        <!-- Footer section -->
+        <footer class="footer footer--expand">
+            <div class="footer-inner">
+                <div class="container" id="contact">
+                    <h2 class="block-title block-title--simple block-title--inverse block-title--top-large-s block-title--bottom-l">Contact Us</h2>
+                    <!-- Contact information about company -->
+                    <address class="contact-info contact-info--primary">
+                        <a href="https://maps.google.com/?q=台北市松山區南京東路四段17號B1" class="contact-info__item" target="_blank">
+                            <i class="fa fa-location-arrow"></i> 小巨蛋：台北市松山區南京東路四段17號B1
+                        </a>
+                        <a class="contact-info__item" href="tel://+886-2-2715-2733">
+                            <i class="fa fa-mobile"></i> +886-2-2715-2733
+                        </a>
+                    </address>
+                    <address class="contact-info contact-info--primary">
+                        <a href="https://maps.google.com/?q=台北市信義區信義路五段16號2樓之2" class="contact-info__item" target="_blank">
+                            <i class="fa fa-location-arrow"></i> Enhanced 101：台北市信義區信義路五段16號2樓之2
+                        </a>                     
+                        <a class="contact-info__item" href="tel://+886-2-2720-0530">
+                            <i class="fa fa-mobile"></i> +886-2-2720-0530
+                        </a>
+                    </address>
+                    <address class="contact-info contact-info--primary">
+                        <a href="https://maps.google.com/?q=台北市大安區大安路一段75巷21號B1" class="contact-info__item" target="_blank">
+                            <i class="fa fa-location-arrow"></i> 忠孝：台北市大安區大安路一段75巷21號B1
+                        </a>                     
+                        <a class="contact-info__item" href="tel://+886-2-2776-9932">
+                            <i class="fa fa-mobile"></i> +886-2-2776-9932
+                        </a>
+                    </address>
+                   <address class="contact-info contact-info--primary">
+                        <a class="contact-info__item" href="mailto:info@beyond-fitness.com.tw?subject=Email from website">
+                            <i class="fa fa-envelope"></i> info@beyond-fitness.com.tw
+                        </a>
+                    </address>                    
+                    <!-- end contact information -->
+                    <div class="social social--default">
+                        <!-- List with social icons -->
+                        <ul>
+                            <li class="social__item"><a class="social__link" href="https://www.facebook.com/beyond.fitness.pro/" target="_blank"><i class="social__icon fa fa-facebook"></i></a></li>
+                            <li class="social__item"><a class="social__link" href="https://www.instagram.com/beyond_ft/#" target="_blank"><i class="social__icon fa fa-instagram"></i></a></li>
+                            <li class="social__item"><a class="social__link" href="line://ti/p/@itj9410x" target="_blank"><i class="social__icon fa fa-comment-o"></i></a></li>
+                        </ul>
+                    </div>
+                    <h3 class="heading-marker">By the way, we are here</h3>
+                </div>
+                <div id='map' class="map map--fullwidht"></div>
+                <div class="container">
+                    <h3 class="heading-marker">Drop us a line</h3>
+                    <div class="col-sm-6 col-sm-offset-3">
+                        <div class="">
+                            <div class="form-error alert alert-danger">
+                                <span class="alert-market">
+                                        <i class="fa fa-ban"></i>
+                                    </span>
+                                <div class="form-error__holder"></div>
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true"><i class="fa fa-times"></i></button>
+                            </div>
+                            <form class="contact" id="contact-form" name="contact-form" method="post" action="FrontEnd/ContactUs" novalidate>
+                                <div class="row">
+                                    <div class="col-sm-6 col-left">
+                                        <input class="contact__field" name="contact-name" type="text" placeholder="full name">
+                                    </div>
+                                    <div class="col-sm-6 col-right">
+                                        <input class="contact__field" name="contact-email" type="email" placeholder="email">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-left">
+                                        <input class="contact__field" name="contact-subject" type="text" placeholder="subject">
+                                    </div>
+                                </div>
+                                <textarea class="contact__field contact__area" name="contact-message" placeholder="message"></textarea>
+                                <button onclick="fbq('track', 'Purchase');" class="btn btn--decorated btn-warning btn-submit" type="submit">Send Message</button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="copy copy--space">
+                    &copy; Beyond Fitness, 2017. All rights reserved.
+                </div>
+            </div>
+            <!-- end container -->
+        </footer>
+        <!-- end footer section -->
+        <div class="top-scroll"><i class="fa fa-angle-up"></i></div>
+    </div>
+    <div class="animationload">
+        <div class="preloader"></div>
+    </div>
+    <!-- JavaScript-->
+    <!-- External-->
+    <!-- jQuery 1.10.1-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+    <script>
+    window.jQuery || document.write('<script src="external/jquery/jquery-1.10.1.min.js"><\/script>')
+    </script>
+    <!-- Bootstrap 3-->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <!-- Header -->
+    <script src="external/animated-header/js/TweenLite.min.js"></script>
+    <script src="external/animated-header/js/EasePack.min.js"></script>
+    <script src="external/animated-header/js/rAF.js"></script>
+    <script src="external/animated-header/js/header-animate.js"></script>
+    <!-- Mobile menu -->
+    <script src="external/z-nav/jquery.mobile.menu.js"></script>
+    <!-- Touch slider - Swiper -->
+    <script src="external/swiper/idangerous.swiper.js"></script>
+    <!--*** Google map  ***-->
+    <script src="https://maps.google.com/maps/api/js?sensor=true&key=AIzaSyCJ5bT3aIIHynb5dsFuKnmhncpvf-SlWGo"></script>   
+    <!-- <script src="https://maps.google.com/maps/api/js?"></script>     -->
+    <!-- Scroll to piugin -->
+    <script src="external/scrollto/jquery.scrollTo.min.js"></script>
+    <!-- mCustomScrollbar -->
+    <script src="external/mCustomScrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
+    <!-- Smooth Scroll -->
+    <script src="external/SmoothScroll/SmoothScroll.js"></script>
+    <!-- Event that will trigger when the element is scrolled in to the viewport.-->
+    <script src="external/inview/jquery.inview.js"></script>
+    <!-- Custom -->
+    <script src="js/custom.js"></script>
+
+    <script src="js/form.js"></script>
+    <script>
+    $(document).ready(function() {
+        scrollSlider();
+        initMapLocation();
+        //smoothScrollInit();
+        preloader();
+
+
+        $('.feature .feature__heading').one('inview', function(event, visible) {
+            if (visible == true) {
+                $('.feature__image.start-1').addClass('fadeInUp');
+                $('.feature__image.start-2').addClass('fadeInUp stage2');
+                $('.feature__image.start-3').addClass('fadeInUp stage3');
+            }
+        });
+
+        $('.achivement-item').one('inview', function(event, visible) {
+            if (visible == true) {
+                $('.achivement-item__marker.start-1').addClass('zoomIn');
+                $('.achivement-item__marker.start-2').addClass('zoomIn stage2');
+                $('.achivement-item__marker.start-3').addClass('zoomIn stage3');
+            }
+        });
+
+        $('.promo__btn').one('inview', function(event, visible) {
+            if (visible == true) {
+                $('.promo__btn').addClass('fadeInUp');
+
+                setTimeout(function() {
+                    $('.promo__btn').removeClass('fadeInUpStart');
+                }, 1000);
+            }
+        });
+
+        $('.about ').one('inview', function(event, visible) {
+            if (visible == true) {
+                $('.about-img').addClass('fadeInUp');
+            }
+        });
+
+ 
+
+    });
+    </script>
+</body>
+
+</html>
+<script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-84335528-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function () {
+        var ga = document.createElement('script');
+        ga.type = 'text/javascript';
+        ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'https://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(ga, s);
+    })();
+
+</script>

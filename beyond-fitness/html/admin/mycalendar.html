@@ -1,0 +1,2677 @@
+<!DOCTYPE html>
+<html lang="en-us">
+   <head>
+      <meta charset="utf-8">
+      <!--<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">-->
+      <title>BEYOND FITNESS</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+      <!-- Basic Styles -->
+      <link rel="stylesheet" type="text/css" media="screen" href="../../css/bootstrap.min.css">
+      <link rel="stylesheet" type="text/css" media="screen" href="../../css/font-awesome.min.css">
+      <!-- SmartAdmin Styles : Caution! DO NOT change the order -->
+      <link rel="stylesheet" type="text/css" media="screen" href="../../css/smartadmin-production-plugins.min.css">
+      <link rel="stylesheet" type="text/css" media="screen" href="../../css/smartadmin-production.min.css">
+      <link rel="stylesheet" type="text/css" media="screen" href="../../css/smartadmin-skins.min.css">
+      <!-- SmartAdmin RTL Support -->
+      <link rel="stylesheet" type="text/css" media="screen" href="../../css/smartadmin-rtl.min.css">
+      <!-- We recommend you use "your_style.css" to override SmartAdmin
+         specific styles this will also ensure you retrain your customization with each SmartAdmin update.-->
+      <link rel="stylesheet" type="text/css" media="screen" href="../../css/beyond_style.css">
+      <!-- FAVICONS -->
+      <link rel="shortcut icon" href="favicons/favicon_16x16.ico" type="image/x-icon">
+      <link rel="icon" href="favicons/favicon_96x96.png">
+      <!-- GOOGLE FONT -->
+      <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300,400,700">
+      <!-- Specifying a Webpage Icon for Web Clip 
+         Ref: https://developer.apple.com/library/ios/documentation/AppleApplications/Reference/SafariWebContent/ConfiguringWebApplications/ConfiguringWebApplications.html -->
+      <link rel="apple-touch-icon" href="favicons/favicon_57x57.png">
+      <link rel="apple-touch-icon" sizes="76x76" href="favicons/favicon_72x72.png">
+      <link rel="apple-touch-icon" sizes="120x120" href="favicons/favicon_114x114.png">
+      <link rel="apple-touch-icon" sizes="152x152" href="favicons/favicon_180x180.png">
+      <!-- iOS web-app metas : hides Safari UI Components and Changes Status Bar Appearance -->
+      <meta name="apple-mobile-web-app-capable" content="yes">
+      <meta name="apple-mobile-web-app-status-bar-style" content="black">
+      <!-- Startup image for web apps -->
+      <link rel="apple-touch-startup-image" href="favicons/favicon_180x180.png" media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:landscape)">
+      <link rel="apple-touch-startup-image" href="favicons/favicon_180x180.png" media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:portrait)">
+      <link rel="apple-touch-startup-image" href="favicons/favicon_180x180.png" media="screen and (max-device-width: 320px)">
+      <!--[if IE 9]>
+      <style>
+         .error-text {
+         color: #333 !important;
+         }
+      </style>
+      <![endif]-->
+      <meta property="fb:app_id" content="1027299250717597">
+   </head>
+   <!--
+      TABLE OF CONTENTS.
+      
+      Use search to find needed section.
+      
+      ===================================================================
+      
+      |  01. #CSS Links                |  all CSS links and file paths  |
+      |  02. #FAVICONS                 |  Favicon links and file paths  |
+      |  03. #GOOGLE FONT              |  Google font link              |
+      |  04. #APP SCREEN / ICONS       |  app icons, screen backdrops   |
+      |  05. #BODY                     |  body tag                      |
+      |  06. #HEADER                   |  header tag                    |
+      |  07. #PROJECTS                 |  project lists                 |
+      |  08. #TOGGLE LAYOUT BUTTONS    |  layout buttons and actions    |
+      |  09. #MOBILE                   |  mobile view dropdown          |
+      |  10. #SEARCH                   |  search field                  |
+      |  11. #NAVIGATION               |  left panel & navigation       |
+      |  12. #RIGHT PANEL              |  right panel userlist          |
+      |  13. #MAIN PANEL               |  main panel                    |
+      |  14. #MAIN CONTENT             |  content holder                |
+      |  15. #PAGE FOOTER              |  page footer                   |
+      |  16. #SHORTCUT AREA            |  dropdown shortcuts area       |
+      |  17. #PLUGINS                  |  all scripts and plugins       |
+      
+      ===================================================================
+      
+      -->
+   <!-- #BODY -->
+   <!-- Possible Classes
+      * 'smart-style-{SKIN#}'
+      * 'smart-rtl'         - Switch theme mode to RTL
+      * 'menu-on-top'       - Switch to top navigation (no DOM change required)
+      * 'no-menu'             - Hides the menu completely
+      * 'hidden-menu'       - Hides the main menu but still accessable by hovering over left edge
+      * 'fixed-header'      - Fixes the header
+      * 'fixed-navigation'  - Fixes the main menu
+      * 'fixed-ribbon'      - Fixes breadcrumb
+      * 'fixed-page-footer' - Fixes footer
+      * 'container'         - boxed layout mode (non-responsive: will not work with fixed-navigation & fixed-ribbon)
+      -->
+   <body class="smart-style-5 menu-on-top fixed-header">
+      <!-- HEADER -->
+      <header id="header">
+         <div id="logo-group">
+            <!-- PLACE YOUR LOGO HERE -->
+            <span id="logo"> <img src="../../img/logo.png" alt="Beyond-Fitness"> </span>
+            <!-- END LOGO PLACEHOLDER -->
+            <!-- Note: The activity badge color changes when clicked and resets the number to 0
+               Suggestion: You may want to set a flag when this happens to tick off all checked messages / notifications -->
+            <span id="activity" class="activity-dropdown"> <i class="fa fa-user"></i> <b class="badge"> 21 </b> </span>
+            <!-- AJAX-DROPDOWN : control this dropdown height, look and feel from the LESS variable file -->
+            <div class="ajax-dropdown">
+               <!-- the ID links are fetched via AJAX to the ajax container "ajax-notifications" -->
+               <div class="btn-group btn-group-justified" data-toggle="buttons">
+                  <label class="btn btn-default">
+                  <input type="radio" name="activity" id="../../ajax/notify/message.html">運動留言板 (14)</label>
+                  <label class="btn btn-default">
+                  <input type="radio" name="activity" id="../../ajax/notify/questioniare.html">階段性調整計劃 (3)</label>
+               </div>
+               <!-- notification content -->
+               <div class="ajax-notifications custom-scroll">
+                  <div class="alert alert-transparent">
+                     <h4>在這邊有許多有趣的訊息喔！為了保護您的訊息不被他人所直接觀看，請您點選上方類別後才可查看相關訊息！</h4>
+                  </div>
+                  <i class="fa fa-lock fa-4x fa-border"></i>
+               </div>
+               <!-- end notification content -->
+               <!-- footer: refresh area -->
+               <span> 最後更新時間: 2016/07/23 9:43AM
+               <button type="button" data-loading-text="<i class='fa fa-refresh fa-spin'></i> Loading..." class="btn btn-xs btn-default pull-right">
+               <i class="fa fa-refresh"></i>
+               </button> </span>
+               <!-- end footer -->
+            </div>
+            <!-- END AJAX-DROPDOWN -->
+         </div>
+         <!-- pulled right: nav area -->
+         <div class="pull-right">
+            <!-- collapse menu button -->
+            <div id="hide-menu" class="btn-header pull-right">
+               <span> <a href="javascript:void(0);" data-action="toggleMenu" title="Collapse Menu"><i class="fa fa-reorder"></i></a> </span>
+            </div>
+            <!-- end collapse menu -->
+            <!-- #MOBILE -->
+            <!-- Top menu profile link : this shows only when top menu is active -->
+            <ul id="mobile-profile-img" class="header-dropdown-list hidden-xs padding-5">
+               <li class="">
+                  <a href="#" class="dropdown-toggle no-margin userdropdown" data-toggle="dropdown">
+                  <img src="../../img/avatars/male.png" alt="親愛的" class="online" />
+                  </a>
+                  <ul class="dropdown-menu pull-right">
+                     <li>
+                        <a href="login.html" class="padding-10 padding-top-5 padding-bottom-5"><i class="fa fa-sign-in fa-lg"></i> <strong><u>L</u>ogin</strong></a>
+                     </li>
+                  </ul>
+               </li>
+            </ul>
+            <!-- logout button -->
+            <div id="logout" class="btn-header transparent pull-right">
+               <span> <a href="login.html" title="Sign Out" data-action="userLogout" data-logout-msg="為了安全起見，建議您登出後將網頁關閉！"><i class="fa fa-sign-out"></i></a> </span>
+            </div>
+            <!-- end logout button -->
+            <!-- FB mobile button (this is hidden till mobile view port) -->
+            <div class="btn-header transparent pull-right">
+               <span> <a href="#" title="Facebook"><i class="fa fa-facebook"></i></a> </span>
+            </div>
+            <!-- end FB mobile button -->
+            <!-- multiple lang dropdown : find all flags in the flags page -->
+            <ul class="header-dropdown-list hidden-xs">
+               <li>
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                  <img src="../../img/blank.gif" class="flag flag-tw" alt="中文"> <span> 中文 </span>  <i class="fa fa-angle-down"></i> 
+                  </a>
+               </li>
+            </ul>
+            <!-- end multiple lang -->
+         </div>
+         <!-- end pulled right: nav area -->
+      </header>
+      <!-- END HEADER -->
+      <!-- Left panel : Navigation area -->
+      <!-- Note: This width of the aside area can be adjusted through LESS variables -->
+      <aside id="left-panel">
+         <!-- User info -->
+         <div class="login-info">
+            <span>
+               <!-- User image size is adjusted inside CSS, it should stay as it --> 
+               <a href="javascript:void(0);" id="show-shortcut" data-action="toggleShortcut">
+               <img src="../../img/avatars/male.png" alt="me" class="online" /> 
+               <span>
+               親愛的 
+               </span>
+               <i class="fa fa-angle-down"></i>
+               </a>
+            </span>
+         </div>
+         <!-- end user info -->
+         <!-- NAVIGATION : This navigation is also responsive-->
+         <div id="includedNav"/>
+         <span class="minifyme" data-action="minifyMenu"> 
+         <i class="fa fa-arrow-circle-left hit"></i>
+         </span>
+      </aside>
+      <!-- END NAVIGATION -->
+      <!-- MAIN PANEL -->
+      <div id="main" role="main">
+         <!-- RIBBON -->
+         <div id="ribbon">
+            <span class="ribbon-button-alignment"> 
+               <span id="refresh" class="btn btn-ribbon">
+                  <i class="fa fa-calendar-o"></i>
+               </span> 
+            </span>
+            <!-- breadcrumb -->
+            <ol class="breadcrumb">
+               <li>BEYOND FITNESS 行事曆</li>
+            </ol>
+            <!-- end breadcrumb -->
+            <span class="ribbon-button-alignment pull-right">
+               <h5><span class="txt-color-blue">
+                  <a href="javascript:void(0);" rel="tooltip" data-placement="top" data-original-title="<h1><em>好的開始是成功的一半</em></h1>" data-html="true">好的開始是成功的一半...</a>
+                  </span>
+               </h5>
+            </span>
+         </div>
+         <!-- END RIBBON -->
+         <!-- MAIN CONTENT -->
+         <div id="content">
+            <!-- widget grid -->
+            <section id="widget-grid" class="">
+               <!-- row -->
+               <div class="row">
+                  <!-- NEW WIDGET START -->
+                  <article class="col-md-6 col-lg-6 hidden-xs hidden-sm">
+                     <!-- new widget -->
+                     <div class="jarviswidget" data-widget-editbutton="false" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-togglebutton="false" data-widget-deletebutton="false">
+                        <header>
+                           <span class="widget-icon"> <i class="fa fa-calendar"></i> </span>
+                           <h2>我的行事曆：101</h2>
+                           <div class="widget-toolbar">
+<!--                               <div class="btn-group">
+                                 <button class="btn dropdown-toggle btn-xs bg-color-blue" data-toggle="dropdown">
+                                 新增行事曆 <i class="fa fa-caret-down"></i>
+                                 </button>
+                                 <ul class="dropdown-menu pull-right">
+                                    <li>
+                                       <a href="addBeyondFitnessEvent.html"><i class="fa fa-fw fa-users"></i> BeyondFitness的行事曆</a>
+                                    </li>
+                                    <li>
+                                       <a href="addPersonalEvent.html"><i class="fa fa-fw fa-user-o"></i> 自己的行事曆</a>
+                                    </li>
+                                 </ul>
+                              </div> -->
+                              <div class="btn-group">
+                                 <button class="btn dropdown-toggle btn-xs btn-warning" data-toggle="dropdown">
+                                 上課地點 <i class="fa fa-caret-down"></i>
+                                 </button>
+                                 <ul class="dropdown-menu pull-right">
+                                    <li>
+                                       <a href="javascript:void(0);">全部</a>
+                                    </li>
+                                    <li>
+                                       <a href="javascript:void(0);">小巨蛋</a>
+                                    </li>
+                                    <li>
+                                       <a href="javascript:void(0);">101</a>
+                                    </li>
+                                 </ul>
+                              </div>
+                              <div class="btn-group">
+                                 <button class="btn dropdown-toggle btn-xs bg-color-pinkDark" data-toggle="dropdown">
+                                 上課教練 <i class="fa fa-caret-down"></i>
+                                 </button>
+                                 <ul class="dropdown-menu pull-right">
+                                    <li>
+                                       <a href="#"> 全部</a>
+                                    </li>
+                                    <li>
+                                       <a href="#">黃比爾</a>
+                                    </li>
+                                    <li>
+                                       <a href="#">邱鈺烘</a>
+                                    </li>
+                                 </ul>
+                              </div>
+                           </div>
+                        </header>
+                        <!-- widget div-->
+                        <div>
+                           <div class="widget-body bg-color-darken txt-color-white no-padding">
+                              <!-- content goes here -->
+                              <div class="widget-body-toolbar">
+                                 <div id="calendar-buttons">
+                                    <div class="btn-group">
+                                       <a href="javascript:void(0)" class="btn btn-default" id="today">今日</a>
+                                       <a href="javascript:void(0)" class="btn btn-default" id="td">天</a>
+                                       <a href="javascript:void(0)" class="btn btn-default" id="ag">週</a>
+                                       <a href="javascript:void(0)" class="btn btn-default" id="mt">月</a>
+                                    </div>
+                                    <div class="btn-group">
+                                       <a href="javascript:void(0)" class="btn btn-default" id="btn-prev"><i class="fa fa-chevron-left fa-lg"></i> </a>
+                                       <a href="javascript:void(0)" class="btn btn-default" id="btn-next"><i class="fa fa-chevron-right fa-lg"></i></a>
+                                    </div>
+                                 </div>
+                              </div>
+                              <div id="calendar"></div>
+                              <!-- end content -->
+                           </div>
+                        </div>
+                        <!-- end widget div -->
+                     </div>
+                     <!-- end widget -->
+                  </article>
+                  <!-- WIDGET END -->
+                  <article class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                     <!-- Widget ID (each widget will need unique ID)-->
+                     <div class="jarviswidget" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-togglebutton="false" data-widget-deletebutton="false">
+                        <header>
+                           <span class="widget-icon"> <i class="fa fa-address-book"></i> </span>
+                           <h2></h2>
+                           <div class="widget-toolbar">
+                           </div>
+                        </header>
+                        <!-- widget div-->
+                        <div>
+                           <!-- widget content -->
+                           <div class="widget-body txt-color-white no-padding">
+                              <div class="row">
+                                 <div class="col-sm-12">
+                                    <div class="row">
+                                       <div class="col-sm-3 profile-pic">
+                                          <img src="../../img/avatars/bill.png">
+                                          <div class="padding-10">
+                                             <h4 class="font-md"><strong>8堂</strong>
+                                                <br>
+                                                <small>今日上課</small>
+                                             </h4>
+                                          </div>
+                                       </div>
+                                       <div class="col-sm-6">
+                                          <h3>黃政浩 Bill Huang
+                                             <span class="label label-success" rel="tooltip" data-placement="bottom" data-original-title="<span class='label bg-color-darken font-md'>180堂 / 9,800,000元</span>" data-html="true">Level 3 <i class="fa fa-fw fa fa-info-circle"></i></span>
+                                          </h3> 
+                                       </div>
+                                       <div class="col-sm-3">
+                                          <h1><small>今日上課學員</small></h1>
+                                          <ul class="list-inline friends-list">
+                                             <li><a href="editclass.html"><img src="../../img/avatars/garfaild.png" alt="劉加菲"></a></li>
+                                             <li><a href="editclass.html"><img src="../../img/avatars/jack.png"></a></li>
+                                             <li><a href="editclass.html"><img src="../../img/avatars/female.png"></a></li>
+                                             <li><a href="editclass.html"><img src="../../img/avatars/male.png"></a></li>
+                                             <li><a href="editclass.html"><img src="../../img/avatars/female.png"></a></li>
+                                             <li><a href="editclass.html"><img src="../../img/avatars/male.png"></a></li>
+                                          </ul>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="row">
+                                 <div class="col-sm-12">
+                                    <hr>
+                                    <div class="padding-10">
+                                       <ul class="nav nav-tabs tabs-pull-right">
+                                          <li>
+                                             <a href="#todolist_tab" data-toggle="tab">待辦事項</a>
+                                          </li>
+                                          <li>
+                                             <a href="#mystudentlist_tab" data-toggle="tab">學員清單</a>
+                                          </li>
+                                          <li class="active">
+                                             <a href="#birthdaylist_tab" data-toggle="tab">生日提醒</a>
+                                          </li>
+                                          <li>
+                                             <a href="#mycalendar_tab" data-toggle="tab" class="hidden-md hidden-lg">行事曆</a>
+                                          </li>
+                                          <li class="pull-left">
+                                             <span class="margin-top-10 display-inline"><i class="fa fa-rss text-success"></i> Activity</span>
+                                          </li>
+                                       </ul>
+                                       <div class="tab-content padding-top-10">
+                                          <div class="tab-pane fade" id="todolist_tab">
+                                             <!-- Widget ID (each widget will need unique ID)-->
+                                             <div class="jarviswidget" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-togglebutton="false" data-widget-deletebutton="false">
+                                                <header>
+                                                   <span class="widget-icon"> <i class="fa fa-check"></i> </span>
+                                                   <h2>我的待辦事項：全部</h2>
+                                                   <div class="widget-toolbar">
+                                                      <div class="btn-group">
+                                                         <button class="btn dropdown-toggle btn-xs btn-warning" data-toggle="dropdown">
+                                                         查詢月份 <i class="fa fa-caret-down"></i>
+                                                         </button>
+                                                         <ul class="dropdown-menu pull-right">
+                                                            <li>
+                                                               <a href="javascript:void(0);">全部</a>
+                                                            </li>
+                                                            <li>
+                                                               <a href="javascript:void(0);">2017/01</a>
+                                                            </li>
+                                                            <li>
+                                                               <a href="javascript:void(0);">2016/12</a>
+                                                            </li>
+                                                            <li>
+                                                               <a href="javascript:void(0);">2016/11</a>
+                                                            </li>
+                                                         </ul>
+                                                      </div>
+                                                      <div class="btn-group">
+                                                         <button class="btn dropdown-toggle btn-xs bg-color-pinkDark" data-toggle="dropdown">
+                                                         上課教練 <i class="fa fa-caret-down"></i>
+                                                         </button>
+                                                         <ul class="dropdown-menu pull-right">
+                                                            <li>
+                                                               <a href="#"> 全部</a>
+                                                            </li>
+                                                            <li>
+                                                               <a href="#">黃比爾</a>
+                                                            </li>
+                                                            <li>
+                                                               <a href="#">邱鈺烘</a>
+                                                            </li>
+                                                         </ul>
+                                                      </div>
+                                                   </div>
+                                                </header>
+                                                <!-- widget div-->
+                                                <div>
+                                                   <!-- widget content -->
+                                                   <div class="widget-body txt-color-white no-padding">
+                                                      <!-- content -->
+                                                      <table id="todoist_dt" class="table table-striped table-bordered table-hover" width="100%">
+                                                         <thead>
+                                                            <tr>
+                                                               <th data-class="expand">項目</th>
+                                                               <th class="text-center">教練已完成</th>
+                                                               <th data-hide="phone" class="text-center">教練未完成</th>
+                                                               <th data-hide="phone" class="text-center">學員已完成</th>
+                                                               <th data-hide="phone" class="text-center">學員未完成</th>
+                                                            </tr>
+                                                         </thead>
+                                                         <tbody>
+                                                            <tr>
+                                                               <td>一般課程(15)</td>
+                                                               <td class="text-center">(5)</td>
+                                                               <td class="text-center"><a href="#" class="undolistDialog_link"><u>(10)</u></a></td>
+                                                               <td class="text-center"><a href="#" class="undolistDialog_link"><u>(2)</u></a></td>
+                                                               <td class="text-center"><a href="#" class="undolistDialog_link"><u>(10)</u></a></td>
+                                                            </tr>
+                                                            <tr>
+                                                               <td>自主訓練(5)</td>
+                                                               <td class="text-center">(0)</td>
+                                                               <td class="text-center"><a href="#" class="undolistDialog_link"s><u>(5)</u></a></td>
+                                                               <td class="text-center">--</td>
+                                                               <td class="text-center">--</td>
+                                                            </tr>
+                                                            <tr>
+                                                               <td>體驗課程(1)</td>
+                                                               <td class="text-center">(1)</td>
+                                                               <td class="text-center"><a href="#" class="undolistDialog_link"><u>(1)</u></a></td>
+                                                               <td class="text-center">--</td>
+                                                               <td class="text-center">--</td>
+                                                            </tr>
+                                                            <tr>
+                                                               <td>內部訓練(5)</td>
+                                                               <td class="text-center">(2)</td>
+                                                               <td class="text-center">(3)</td>
+                                                               <td class="text-center">--</td>
+                                                               <td class="text-center">--</td>
+                                                            </tr>
+                                                            <tr>
+                                                               <td>階段性調整計劃(25)</td>
+                                                               <td class="text-center">--</td>
+                                                               <td class="text-center">--</td>
+                                                               <td class="text-center"><a href="#" class="questionnairelist_link"><u>(5)</u></a></td>
+                                                               <td class="text-center"><a href="#" class="questionnairelist_link"><u>(20)</u></a></td>
+                                                            </tr>
+                                                         </tbody>
+                                                      </table>
+                                                      <!-- end content -->                                                                                                        
+                                                   </div>
+                                                   <!-- end widget content -->
+                                                </div>
+                                                <!-- end widget div -->
+                                             </div>
+                                             <!-- end widget -->                           
+                                          </div>
+                                          <div class="tab-pane fade" id="mystudentlist_tab">
+                                             <!-- Widget ID (each widget will need unique ID)-->
+                                             <div class="jarviswidget" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-togglebutton="false" data-widget-deletebutton="false">
+                                                <header class="bg-color-yellow">
+                                                   <span class="widget-icon"> <i class="fa fa-bell"></i> </span>
+                                                   <h2>尚有8個學員已超過7天無上課記錄!</h2>
+                                                </header>
+                                                <!-- widget div-->
+                                                <div>
+                                                   <!-- widget content -->
+                                                   <div class="widget-body txt-color-white padding-5">
+                                                      <!-- content -->
+                                                      <div class="user" title="email@company.com">
+                                                         <a href="editclass.html"><img src="../../img/avatars/female.png"><i class="fa fa-bell text-warning"> Jenn Wilson</i></a>
+                                                         <div class="email">
+                                                            <a href="http://line.me/R/msg/text/?ξ( ✿＞◡❛)" target="_blank"><span class="label label-success">Line it! <i class="fa fa-fw fa fa-send"></i></span></a>
+                                                         </div>
+                                                      </div>
+                                                      <div class="user" title="email@company.com">
+                                                         <a href="editclass.html"><img src="../../img/avatars/female.png"><i class="fa fa-bell text-warning"> Marshall Hitt</i></a>
+                                                         <div class="email">
+                                                            <a href="http://line.me/R/msg/text/?ξ( ✿＞◡❛)" target="_blank"><span class="label label-success">Line it! <i class="fa fa-fw fa fa-send"></i></span></a>
+                                                         </div>
+                                                      </div>
+                                                      <div class="user" title="email@company.com">
+                                                         <a href="editclass.html"><img src="../../img/avatars/female.png"><i class="fa fa-bell text-warning"> Joe Cadena</i></a>
+                                                         <div class="email">
+                                                            <a href="http://line.me/R/msg/text/?ξ( ✿＞◡❛)" target="_blank"><span class="label label-success">Line it! <i class="fa fa-fw fa fa-send"></i></span></a>
+                                                         </div>
+                                                      </div>
+                                                      <div class="user" title="email@company.com">
+                                                         <a href="editclass.html"><img src="../../img/avatars/female.png"><i class="fa fa-bell text-warning"> Mike McBride</i></a>
+                                                         <div class="email">
+                                                            <a href="http://line.me/R/msg/text/?ξ( ✿＞◡❛)" target="_blank"><span class="label label-success">Line it! <i class="fa fa-fw fa fa-send"></i></span></a>
+                                                         </div>
+                                                      </div>
+                                                      <div class="user" title="email@company.com">
+                                                         <a href="editclass.html"><img src="../../img/avatars/female.png"><i class="fa fa-bell text-warning"> Travis Wilson</i></a>
+                                                         <div class="email">
+                                                            <a href="http://line.me/R/msg/text/?ξ( ✿＞◡❛)" target="_blank"><span class="label label-success">Line it! <i class="fa fa-fw fa fa-send"></i></span></a>
+                                                         </div>
+                                                      </div>
+                                                      <div class="user" title="email@company.com">
+                                                         <a href="editclass.html"><img src="../../img/avatars/female.png"><i class="fa fa-bell text-warning"> Marshall Hitt</i></a>
+                                                         <div class="email">
+                                                            <a href="http://line.me/R/msg/text/?ξ( ✿＞◡❛)" target="_blank"><span class="label label-success">Line it! <i class="fa fa-fw fa fa-send"></i></span></a>
+                                                         </div>
+                                                      </div>
+                                                      <div class="user" title="Joe Cadena joe@company.com">
+                                                         <a href="editclass.html"><img src="../../img/avatars/female.png"><i class="fa fa-bell text-warning"> Joe Cadena</i></a>
+                                                         <div class="email">
+                                                            <a href="http://line.me/R/msg/text/?ξ( ✿＞◡❛)" target="_blank"><span class="label label-success">Line it! <i class="fa fa-fw fa fa-send"></i></span></a>
+                                                         </div>
+                                                      </div>
+                                                      <div class="user" title="email@company.com">
+                                                         <a href="editclass.html"><img src="../../img/avatars/female.png">Mike McBride</a>
+                                                         <div class="email">
+                                                            <a href="http://line.me/R/msg/text/?(♛‿♛)" target="_blank"><span class="label label-success">Line it! <i class="fa fa-fw fa fa-send"></i></span></a>
+                                                         </div>
+                                                      </div>
+                                                      <div class="user" title="email@company.com">
+                                                         <a href="editclass.html"><img src="../../img/avatars/female.png">Marshall Hitt</a>
+                                                         <div class="email">
+                                                            <a href="http://line.me/R/msg/text/?(♛‿♛)" target="_blank"><span class="label label-success">Line it! <i class="fa fa-fw fa fa-send"></i></span></a>
+                                                         </div>
+                                                      </div>
+                                                      <div class="user" title="email@company.com">
+                                                         <a href="editclass.html"><img src="../../img/avatars/female.png">Joe Cadena</a>
+                                                         <div class="email">
+                                                            <a href="http://line.me/R/msg/text/?(♛‿♛)" target="_blank"><span class="label label-success">Line it! <i class="fa fa-fw fa fa-send"></i></span></a>
+                                                         </div>
+                                                      </div>
+                                                      <div class="user" title="email@company.com">
+                                                         <a href="editclass.html"><img src="../../img/avatars/female.png">Mike McBride</a>
+                                                         <div class="email">
+                                                            <a href="http://line.me/R/msg/text/?(♛‿♛)" target="_blank"><span class="label label-success">Line it! <i class="fa fa-fw fa fa-send"></i></span></a>
+                                                         </div>
+                                                      </div>
+                                                      <!-- end content -->                                                                                                        
+                                                   </div>
+                                                   <!-- end widget content -->
+                                                </div>
+                                                <!-- end widget div -->
+                                             </div>
+                                             <!-- end widget -->                                               
+                                          </div>
+                                          <div class="tab-pane fade in active" id="birthdaylist_tab">
+                                             <!-- Widget ID (each widget will need unique ID)-->
+                                             <div class="jarviswidget" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-togglebutton="false" data-widget-deletebutton="false">
+                                                <header class="bg-color-redLight">
+                                                   <span class="widget-icon"> <i class="fa fa-birthday-cake"></i> </span>
+                                                   <h2>今天有8個學員生日喔!</h2>
+                                                </header>
+                                                <!-- widget div-->
+                                                <div>
+                                                   <!-- widget content -->
+                                                   <div class="widget-body txt-color-white padding-5">
+                                                      <!-- content -->
+                                                      <div class="user">
+                                                         <a href="http://line.me/R/msg/text/?｡◕‿◕｡╔ ░ⒽⒶⓅⓅⓎ░ ⒷⒾⓇⓉⒽ ⒹⒶⓎ░ ╗(◕‿◕✿)" target="_blank">
+                                                            <img src="../../img/avatars/female.png">劉加菲
+                                                            <div class="email">
+                                                               <label class="label bg-color-red">今天生日喔 <i class="fa fa-birthday-cake"></i></label>                                        
+                                                            </div>
+                                                         </a>
+                                                      </div>
+                                                      <div class="user">
+                                                         <a href="http://line.me/R/msg/text/??｡◕‿◕｡╔ ░ⒽⒶⓅⓅⓎ░ ⒷⒾⓇⓉⒽ ⒹⒶⓎ░ ╗(◕‿◕✿)" target="_blank">
+                                                            <img src="../../img/avatars/female.png">陳小瓦
+                                                            <div class="email">
+                                                               <label class="label bg-color-red">今天生日喔  <i class="fa fa-birthday-cake"></i></label>                                                                                                      
+                                                            </div>
+                                                         </a>
+                                                      </div>
+                                                      <div class="user">
+                                                         <a href="profile.html"> <img src="../../img/avatars/female.png">胡志達 Peter Hu</a>
+                                                         <div class="email">
+                                                            2/28生日喔！                                                  
+                                                         </div>
+                                                      </div>
+                                                      <div class="user">
+                                                         <a href="profile.html"> <img src="../../img/avatars/female.png">宋胖子</a>
+                                                         <div class="email">
+                                                            2/28生日喔！                                                  
+                                                         </div>
+                                                      </div>
+                                                      <div class="user">
+                                                         <a href="profile.html"> <img src="../../img/avatars/female.png">宋胖子</a>
+                                                         <div class="email">
+                                                            2/28生日喔！                                                  
+                                                         </div>
+                                                      </div>
+                                                      <div class="user">
+                                                         <a href="profile.html"> <img src="../../img/avatars/female.png">宋胖子</a>
+                                                         <div class="email">
+                                                            2/28生日喔！                                                  
+                                                         </div>
+                                                      </div>
+                                                      <div class="user">
+                                                         <a href="profile.html"> <img src="../../img/avatars/female.png">宋胖子</a>
+                                                         <div class="email">
+                                                            2/28生日喔！                                                  
+                                                         </div>
+                                                      </div>
+                                                      <!-- end content -->                                                                                                        
+                                                   </div>
+                                                   <!-- end widget content -->
+                                                </div>
+                                                <!-- end widget div -->
+                                             </div>
+                                             <!-- end widget -->                                               
+                                          </div>
+                                          <div class="tab-pane fade hidden-md hidden-lg" id="mycalendar_tab">
+                                             <!-- new widget -->
+                                             <div class="jarviswidget" data-widget-editbutton="false" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-togglebutton="false" data-widget-deletebutton="false">
+                                                <header>
+                                                   <span class="widget-icon"> <i class="fa fa-calendar"></i> </span>
+                                                   <h2>我的行事曆：101</h2>
+                                                   <div class="widget-toolbar">
+<!--                                                       <div class="btn-group">
+                                                         <button class="btn dropdown-toggle btn-xs bg-color-blue" data-toggle="dropdown">
+                                                         新增行事曆 <i class="fa fa-caret-down"></i>
+                                                         </button>
+                                                         <ul class="dropdown-menu pull-right">
+                                                            <li>
+                                                               <a href="addBeyondFitnessEvent.html"><i class="fa fa-fw fa-users"></i> BeyondFitness的行事曆</a>
+                                                            </li>
+                                                            <li>
+                                                               <a href="addPersonalEvent.html"><i class="fa fa-fw fa-user-o"></i> 自己的行事曆</a>
+                                                            </li>
+                                                         </ul>
+                                                      </div> -->
+                                                      <div class="btn-group">
+                                                         <button class="btn dropdown-toggle btn-xs btn-warning" data-toggle="dropdown">
+                                                         上課地點 <i class="fa fa-caret-down"></i>
+                                                         </button>
+                                                         <ul class="dropdown-menu pull-right">
+                                                            <li>
+                                                               <a href="javascript:void(0);">全部</a>
+                                                            </li>
+                                                            <li>
+                                                               <a href="javascript:void(0);">小巨蛋</a>
+                                                            </li>
+                                                            <li>
+                                                               <a href="javascript:void(0);">101</a>
+                                                            </li>
+                                                         </ul>
+                                                      </div>
+                                                      <div class="btn-group">
+                                                         <button class="btn dropdown-toggle btn-xs bg-color-pinkDark" data-toggle="dropdown">
+                                                         上課教練 <i class="fa fa-caret-down"></i>
+                                                         </button>
+                                                         <ul class="dropdown-menu pull-right">
+                                                            <li>
+                                                               <a href="#"> 全部</a>
+                                                            </li>
+                                                            <li>
+                                                               <a href="#">黃比爾</a>
+                                                            </li>
+                                                            <li>
+                                                               <a href="#">邱鈺烘</a>
+                                                            </li>
+                                                         </ul>
+                                                      </div>
+                                                   </div>
+                                                </header>
+                                                <!-- widget div-->
+                                                <div>
+                                                   <div class="widget-body bg-color-darken txt-color-white no-padding">
+                                                      <!-- content goes here -->
+                                                      <div class="widget-body-toolbar">
+                                                         <div id="calendar-buttons">
+                                                            <div class="btn-group">
+                                                               <a href="javascript:void(0)" class="btn btn-default" id="today">今日</a>
+                                                               <a href="javascript:void(0)" class="btn btn-default" id="td">天</a>
+                                                               <a href="javascript:void(0)" class="btn btn-default" id="ag">週</a>
+                                                               <a href="javascript:void(0)" class="btn btn-default" id="mt">月</a>
+                                                            </div>
+                                                            <div class="btn-group">
+                                                               <a href="javascript:void(0)" class="btn btn-default" id="btn-prev"><i class="fa fa-chevron-left fa-lg"></i> </a>
+                                                               <a href="javascript:void(0)" class="btn btn-default" id="btn-next"><i class="fa fa-chevron-right fa-lg"></i></a>
+                                                            </div>
+                                                         </div>
+                                                      </div>
+                                                      <div id="calendar_sm"></div>
+                                                      <!-- end content -->
+                                                   </div>
+                                                </div>
+                                                <!-- end widget div -->
+                                             </div>
+                                             <!-- end widget -->                                       
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                              <!-- end row -->                                                                                                      
+                           </div>
+                           <!-- end widget content -->
+                        </div>
+                        <!-- end widget div -->
+                     </div>
+                     <!-- end widget -->   
+                  </article>
+               </div>
+               <!-- end row -->
+            </section>
+            <!-- end widget grid -->    
+            <!-- ui-dialog -->
+            <div id="undolistDialog" title="待辦事項" class="bg-color-darken">
+               <!-- content -->
+               <table id="undolist_dt" class="table table-striped table-bordered table-hover" width="100%" autofocus>
+                  <thead>
+                     <tr>
+                        <th data-class="expand">日期</th>
+                        <th>時間</th>
+                        <th>類別</th>
+                        <th>學員</th>
+                        <th data-hide="phone">教練</th>
+                        <th data-hide="phone">目前狀態</th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     <tr>
+                        <td>2016/02/03</td>
+                        <td>7:00~8:00</td>
+                        <td>一般課程</td>
+                        <td>張大哥</td>
+                        <td>邱鈺烘 Jack Chu</td>
+                        <td>                        
+                           <a href="editclass.html" class="btn btn-circle bg-color-yellow"><i class="fa fa-fw fa fa-lg fa-edit" aria-hidden="true"></i> </a>                        
+                           <a href="#" class="btn btn-circle bg-color-red"><i class="fa fa-fw fa fa-lg fa-check-square-o" aria-hidden="true"></i> </a>           
+                           已完成課程
+                        </td>
+                     </tr>
+                     <tr>
+                        <td>2016/02/03</td>
+                        <td>8:00~9:00</td>
+                        <td>自主訓練</td>
+                        <td>劉加菲</td>
+                        <td>邱鈺烘 Jack Chu</td>
+                        <td>
+                           <a href="editclass.html" class="btn btn-circle bg-color-yellow"><i class="fa fa-fw fa fa-lg fa-edit" aria-hidden="true"></i> </a>                        
+                           已完成課程(學員已打卡)
+                        </td>
+                     </tr>
+                     <tr>
+                        <td>2016/02/03</td>
+                        <td>14:00~15:00</td>
+                        <td>一般課程</td>
+                        <td>宋胖子/劉加菲</td>
+                        <td>邱鈺烘 Jack Chu</td>
+                        <td>
+                           <a href="editclass.html" class="btn btn-circle bg-color-yellow"><i class="fa fa-fw fa fa-lg fa-edit" aria-hidden="true"></i> </a>                        
+                            <a href="#" class="btn btn-circle bg-color-red"><i class="fa fa-fw fa fa-lg fa-check-square-o" aria-hidden="true"></i> </a>           
+                           已完成課程
+                        </td>
+                     </tr>
+                     <tr>
+                        <td>2016/02/03</td>
+                        <td>14:00~15:00</td>
+                        <td>一般課程</td>
+                        <td>宋胖子/劉加菲</td>
+                        <td>邱鈺烘 Jack Chu</td>
+                        <td>
+                           <a href="editclass.html" class="btn btn-circle bg-color-yellow"><i class="fa fa-fw fa fa-lg fa-edit" aria-hidden="true"></i> </a>                        
+                           已完成課程(學員已打卡)
+                        </td>
+                     </tr>
+                     <tr>
+                        <td>2016/02/03</td>
+                        <td>14:00~15:00</td>
+                        <td>一般課程</td>
+                        <td>宋胖子/劉加菲</td>
+                        <td>邱鈺烘 Jack Chu</td>
+                        <td>
+                           <a href="editclass.html" class="btn btn-circle bg-color-yellow"><i class="fa fa-fw fa fa-lg fa-edit" aria-hidden="true"></i> </a> 
+                            <a href="#" class="btn btn-circle bg-color-red"><i class="fa fa-fw fa fa-lg fa-check-square-o" aria-hidden="true"></i> </a>           
+                           已完成課程
+                        </td>
+                     </tr>
+                     <tr>
+                        <td>2016/02/03</td>
+                        <td>14:00~15:00</td>
+                        <td>一般課程</td>
+                        <td>宋胖子/劉加菲</td>
+                        <td>邱鈺烘 Jack Chu</td>
+                        <td>
+                           <a href="editclass.html" class="btn btn-circle bg-color-yellow"><i class="fa fa-fw fa fa-lg fa-edit" aria-hidden="true"></i> </a>                        
+                            <a href="#" class="btn btn-circle bg-color-red"><i class="fa fa-fw fa fa-lg fa-check-square-o" aria-hidden="true"></i> </a>           
+                           已完成課程
+                        </td>
+                     </tr>
+                     <tr>
+                        <td>2016/02/03</td>
+                        <td>14:00~15:00</td>
+                        <td>一般課程</td>
+                        <td>宋胖子/劉加菲</td>
+                        <td>邱鈺烘 Jack Chu</td>
+                        <td>
+                           <a href="editclass.html" class="btn btn-circle bg-color-yellow"><i class="fa fa-fw fa fa-lg fa-edit" aria-hidden="true"></i> </a>                        
+                            <a href="#" class="btn btn-circle bg-color-red"><i class="fa fa-fw fa fa-lg fa-check-square-o" aria-hidden="true"></i> </a>           
+                           已完成課程
+                        </td>
+                     </tr>
+                     <tr>
+                        <td>2016/02/03</td>
+                        <td>14:00~15:00</td>
+                        <td>一般課程</td>
+                        <td>宋胖子/劉加菲</td>
+                        <td>邱鈺烘 Jack Chu</td>
+                        <td>
+                           <a href="editclass.html" class="btn btn-circle bg-color-yellow"><i class="fa fa-fw fa fa-lg fa-edit" aria-hidden="true"></i> </a>                        
+                           已完成課程
+                        </td>
+                     </tr>
+                     <tr>
+                        <td>2016/02/03</td>
+                        <td>14:00~15:00</td>
+                        <td>一般課程</td>
+                        <td>宋胖子/劉加菲</td>
+                        <td>邱鈺烘 Jack Chu</td>
+                        <td>
+                           <a href="editclass.html" class="btn btn-circle bg-color-yellow"><i class="fa fa-fw fa fa-lg fa-edit" aria-hidden="true"></i> </a>                        
+                            <a href="#" class="btn btn-circle bg-color-red"><i class="fa fa-fw fa fa-lg fa-check-square-o" aria-hidden="true"></i> </a>           
+                           已完成課程
+                        </td>
+                     </tr>
+                     <tr>
+                        <td>2016/02/03</td>
+                        <td>14:00~15:00</td>
+                        <td>一般課程</td>
+                        <td>宋胖子/劉加菲</td>
+                        <td>邱鈺烘 Jack Chu</td>
+                        <td>
+                           <a href="editclass.html" class="btn btn-circle bg-color-yellow"><i class="fa fa-fw fa fa-lg fa-edit" aria-hidden="true"></i> </a>                        
+                            <a href="#" class="btn btn-circle bg-color-red"><i class="fa fa-fw fa fa-lg fa-check-square-o" aria-hidden="true"></i> </a>           
+                           已完成課程
+                        </td>
+                     </tr>
+                     <tr>
+                        <td>2016/02/03</td>
+                        <td>14:00~15:00</td>
+                        <td>一般課程</td>
+                        <td>宋胖子/劉加菲</td>
+                        <td>邱鈺烘 Jack Chu</td>
+                        <td>
+                           <a href="editclass.html" class="btn btn-circle bg-color-yellow"><i class="fa fa-fw fa fa-lg fa-edit" aria-hidden="true"></i> </a>                        
+                            <a href="#" class="btn btn-circle bg-color-red"><i class="fa fa-fw fa fa-lg fa-check-square-o" aria-hidden="true"></i> </a>           
+                           已完成課程
+                        </td>
+                     </tr>
+                     <tr>
+                        <td>2016/02/03</td>
+                        <td>14:00~15:00</td>
+                        <td>一般課程</td>
+                        <td>宋胖子/劉加菲</td>
+                        <td>邱鈺烘 Jack Chu</td>
+                        <td>
+                           <a href="editclass.html" class="btn btn-circle bg-color-yellow"><i class="fa fa-fw fa fa-lg fa-edit" aria-hidden="true"></i> </a>                        
+                            <a href="#" class="btn btn-circle bg-color-red"><i class="fa fa-fw fa fa-lg fa-check-square-o" aria-hidden="true"></i> </a>           
+                           已完成課程
+                        </td>
+                     </tr>
+                     <tr>
+                        <td>2016/02/03</td>
+                        <td>14:00~15:00</td>
+                        <td>一般課程</td>
+                        <td>宋胖子/劉加菲</td>
+                        <td>邱鈺烘 Jack Chu</td>
+                        <td>
+                           <a href="editclass.html" class="btn btn-circle bg-color-yellow"><i class="fa fa-fw fa fa-lg fa-edit" aria-hidden="true"></i> </a>                        
+                            <a href="#" class="btn btn-circle bg-color-red"><i class="fa fa-fw fa fa-lg fa-check-square-o" aria-hidden="true"></i> </a>           
+                           已完成課程
+                        </td>
+                     </tr>
+                     <tr>
+                        <td>2016/02/03</td>
+                        <td>14:00~15:00</td>
+                        <td>一般課程</td>
+                        <td>宋胖子/劉加菲</td>
+                        <td>邱鈺烘 Jack Chu</td>
+                        <td>
+                           <a href="editclass.html" class="btn btn-circle bg-color-yellow"><i class="fa fa-fw fa fa-lg fa-edit" aria-hidden="true"></i> </a> 
+                            <a href="#" class="btn btn-circle bg-color-red"><i class="fa fa-fw fa fa-lg fa-check-square-o" aria-hidden="true"></i> </a>           
+                           已完成課程
+                        </td>
+                     </tr>
+                     <tr>
+                        <td>2016/02/03</td>
+                        <td>14:00~15:00</td>
+                        <td>一般課程</td>
+                        <td>宋胖子/劉加菲</td>
+                        <td>邱鈺烘 Jack Chu</td>
+                        <td>
+                           <a href="editclass.html" class="btn btn-circle bg-color-yellow"><i class="fa fa-fw fa fa-lg fa-edit" aria-hidden="true"></i> </a> 
+                            <a href="#" class="btn btn-circle bg-color-red"><i class="fa fa-fw fa fa-lg fa-check-square-o" aria-hidden="true"></i> </a>           
+                           已完成課程
+                        </td>
+                     </tr>
+                  </tbody>
+               </table>
+               <!-- end content -->
+            </div>
+            <!-- dialog-message -->            
+            <!-- ui-dialog -->
+            <div id="bookingDialog" title="新增行事曆" class="bg-color-darken">
+               <div class="row padding-10" >
+                  <ul class="nav nav-tabs">
+                     <li class="active">
+                        <a href="#bookingclass_tab" data-toggle="tab">預約課程</a>
+                     </li>
+                     <li>
+                        <a href="#selfevent_tab" data-toggle="tab">個人行程</a>
+                     </li>
+                  </ul>
+                  <div class="tab-content padding-top-10">
+                     <div class="tab-pane fade in active" id="bookingclass_tab">
+                        <form action="classlist.html" class="smart-form" autofocus>
+                           <fieldset>
+                              <div class="row">
+                                 <section class="col col-6">
+                                    <label class="label">請選擇課程類別</label>
+                                    <label class="select">
+                                       <select class="input-lg">
+                                          <option value="0">一般課程</option>
+                                          <option value="1">自主訓練</option>
+                                          <option value="2">內部訓練</option>
+                                          <option value="3">體驗課程</option>
+                                       </select>
+                                       <i class="icon-append fa fa-clock-o"></i>
+                                    </label>
+                                 </section>
+                                 <section class="col col-6">
+                                    <label class="label">請選擇開始時間</label>
+                                    <label class="select">
+                                       <select class="input-lg">
+                                          <option value="0">07:00</option>
+                                          <option value="1">07:30</option>
+                                          <option value="2">08:00</option>
+                                       </select>
+                                       <i class="icon-append fa fa-clock-o"></i>
+                                    </label>
+                                 </section>
+                              </div>
+                           </fieldset>
+                           <fieldset>
+                              <div class="row">
+                                 <section class="col col-6">
+                                    <label class="label">請選擇上課長度</label>
+                                    <label class="select">
+                                       <select class="input-lg">
+                                          <option value="1">60分鐘</option>
+                                          <option value="2">90分鐘</option>
+                                       </select>
+                                       <i class="icon-append fa fa-file-word-o"></i>
+                                    </label>
+                                 </section>
+                                 <section class="col col-6">
+                                    <label class="label">請選擇上課地點</label>
+                                    <label class="select">
+                                       <select class="input-lg">
+                                          <option value="1">小巨蛋</option>
+                                          <option value="2">１０１</option>
+                                       </select>
+                                       <i class="icon-append fa fa-file-word-o"></i>
+                                    </label>
+                                 </section>
+                              </div>
+                           </fieldset>
+                           <fieldset>
+                                 <div class="row">
+                                    <section class="col col-8"> 
+                                          <label class="input">
+                                                <i class="icon-append fa fa-search"></i>
+                                                <input type="text" name="name" maxlength="20" id="searchStudentInput" placeholder="請輸入學員姓名">
+                                          </label>
+                                       </section>
+                                    <section class="col col-4">   
+                                       <button class="btn bg-color-blue btn-sm" type="button">查詢</button>
+                                    </section>
+                                 </div>
+                                 <div class="row" id="searchStudentResult" style="display: none">
+                                    <section class="col col-12">
+                                       <label class="label">依您輸入的關鍵字，搜尋結果如下：</label>
+                                       <label class="radio state-disabled">
+                                          <input type="radio" name="searchNameRadio">
+                                          <i></i>劉加菲「50堂-1 小時(2015)」
+                                          <li class="fa fa-child"></li>
+                                          個人(剩餘2堂,已預約1堂, 已預約過期2堂)
+                                       </label>
+                                       <label class="radio state-disabled">
+                                          <input type="radio" name="searchNameRadio">
+                                          <i></i>劉加菲「50堂-1 小時(2015)」
+                                          <li class="fa fa-group"></li>
+                                          團體《鄭胖子·陳小瓦》(剩餘2堂,已預約1堂)
+                                       </label>
+                                       <label class="radio state-disabled">
+                                          <input type="radio" name="searchNameRadio" disabled="disabled">
+                                          <i></i>劉加菲「50堂-1 小時(2015)」
+                                          <li class="fa fa-group"></li>
+                                          團體《鄭胖子·陳小瓦》(剩餘2堂,已預約1堂)
+                                          <span class="label label-danger">
+                                             <li class="fa fa-exclamation-triangle"></li>
+                                             PDQ尚未登打或登打不完全!!!
+                                          </span>
+                                          <span class="label label-danger">
+                                             <li class="fa fa-exclamation-triangle"></li>
+                                             未有付款紀錄!!!
+                                          </span>
+                                          <span class="label label-warning">
+                                             <li class="fa fa-exclamation-triangle"></li>
+                                             階段性調整計劃未填寫，請通知學員登入系統完成滿意度問卷調查。
+                                          </span>
+                                       </label>
+                                       <label class="radio">
+                                          <input type="radio" name="searchNameRadio">
+                                          <i></i>立即新增體驗學員
+                                       </label>
+                                       <div class="row"> 
+                                          <section class="col col-4">
+                                             <label class="label">請輸入體驗學員姓名</label>
+                                             <label class="input">
+                                                <input type="text" name="name" maxlength="20" placeholder="請輸入體驗學員姓名">
+                                             </label>
+                                          </section> 
+                                          <section class="col col-4">
+                                             <label class="label">請輸入電話號碼</label>
+                                             <label class="input">
+                                                <input type="tel" name="phone" maxlength="20" placeholder="請輸入手機號碼或市話">
+                                             </label>
+                                          </section>  
+                                          <section class="col col-4">
+                                             <label class="label">請選擇性別</label>
+                                             <label class="select">
+                                                <select>
+                                                   <option value="1">男</option>
+                                                   <option value="2">女</option>
+                                                </select>
+                                                <i class="icon-append fa fa-file-word-o"></i>
+                                             </label>
+                                          </section>                                                            
+                                       </div>                              
+                                    </section>
+                                    <section  class="col col-12">
+                                       <div class="inline-group">
+                                          <label class="radio">
+                                             <input type="radio" name="radio-inline" checked="">
+                                             <i></i>劉加菲</label>
+                                          <label class="radio">
+                                             <input type="radio" name="radio-inline">
+                                             <i></i>宋胖胖</label>
+                                          <label class="radio">
+                                             <input type="radio" name="radio-inline">
+                                             <i></i>陳小瓦</label>
+                                       </div>
+                                    </section>
+                                 </div>
+                           </fieldset>
+                        </form>                           
+                     </div>
+                     <div class="tab-pane fade" id="selfevent_tab">
+                        <form action="#" class="smart-form">
+                           <fieldset>
+                              <div class="row">
+                                 <section class="col col-6">
+                                    <label class="label">請選擇個人行程類別</label>
+                                    <label class="select">
+                                       <select class="input-lg">
+                                          <option value="0">會議</option>
+                                          <option value="1">團練</option>
+                                          <option value="2">休假</option>
+                                          <option value="3">其他</option>
+                                       </select>
+                                       <i class="icon-append fa fa-clock-o"></i>
+                                    </label>
+                                 </section>  
+                                 <section class="col col-6">
+                                    <label class="label">請選擇地點</label>
+                                    <label class="select">
+                                       <select class="input-lg">
+                                          <option value="1">小巨蛋</option>
+                                          <option value="2">１０１</option>
+                                       </select>
+                                       <i class="icon-append fa fa-file-word-o"></i>
+                                    </label>
+                                 </section>                                                                                            
+                              </div>  
+                              <div>
+                                 <section>
+                                    <label class="label">請輸入行事曆內容</label>
+                                    <label class="input"> <i class="icon-append fa fa-file-word-o"></i>
+                                          <input type="text" name="eventcontent" maxlength="10" placeholder="請輸入行事曆內容">
+                                    </label>
+                                 </section>                               
+                              </div>                            
+                           </fieldset>
+                           <fieldset>
+                              <div class="row">                                 
+                                 <section class="col col-6">
+                                    <label class="label">請選擇開始時間</label>
+                                    <label class="select">
+                                       <select class="input-lg">
+                                          <option value="0">07:00</option>
+                                          <option value="1">07:30</option>
+                                          <option value="2">08:00</option>
+                                       </select>
+                                       <i class="icon-append fa fa-clock-o"></i>
+                                    </label>
+                                 </section>
+                                 <section class="col col-6">
+                                    <label class="label">請選擇結束時間</label>
+                                    <label class="select">
+                                       <select class="input-lg">
+                                          <option value="0">07:00</option>
+                                          <option value="1">07:30</option>
+                                          <option value="2">08:00</option>
+                                       </select>
+                                       <i class="icon-append fa fa-clock-o"></i>
+                                    </label>
+                                 </section>
+                                 
+                              </div>
+                           </fieldset>
+                           <fieldset>
+                              <div class="row">
+                                 <label class="label">請選擇與會人員：</label>
+                                 <div class="col col-4">
+                                    <label class="checkbox">
+                                    <input type="checkbox" name="checkbox" checked="checked">
+                                    <i></i>黃比爾 Bill Hung</label>
+                                    <label class="checkbox">
+                                    <input type="checkbox" name="checkbox">
+                                    <i></i>邱鈺烘 Jack Chu</label>
+                                    <label class="checkbox">
+                                    <input type="checkbox" name="checkbox">
+                                    <i></i>胡志達 Peter Hu</label>
+                                 </div>
+                                 <div class="col col-4">
+                                    <label class="checkbox">
+                                    <input type="checkbox" name="checkbox">
+                                    <i></i>戴悟修 Bryant Dai</label>
+                                    <label class="checkbox">
+                                    <input type="checkbox" name="checkbox">
+                                    <i></i>林哲儀 Joei Lin</label>
+                                    <label class="checkbox">
+                                    <input type="checkbox" name="checkbox">
+                                    <i></i>黃伊婷 Doreen Huang</label>
+                                 </div>
+                                 <div class="col col-4">
+                                    <label class="checkbox">
+                                    <input type="checkbox" name="checkbox">
+                                    <i></i>黃伊涵 Sabrina Huang</label>
+                                    <label class="checkbox">
+                                    <input type="checkbox" name="checkbox">
+                                    <i></i>沈柏宇 Shen</label>
+                                    <label class="checkbox">
+                                    <input type="checkbox" name="checkbox">
+                                    <i></i>陳嘉敏 Charming Chen</label>
+                                 </div>
+                                 <div class="col col-4">
+                                    <label class="checkbox">
+                                    <input type="checkbox" name="checkbox">
+                                    <i></i>宋智強 Galai Sung</label>
+                                    <label class="checkbox">
+                                    <input type="checkbox" name="checkbox">
+                                    <i></i>游念儒 Vic</label>
+                                    <label class="checkbox">
+                                    <input type="checkbox" name="checkbox">
+                                    <i></i>陳芷榆 Genie</label>
+                                 </div>
+                              </div>
+                              <div class="row">
+                                 <div class="col col-2">
+                                    <label class="checkbox">
+                                    <input type="checkbox" name="checkbox">
+                                    <i></i>其他</label>
+                                 </div>
+                                 <div class="col col-10">
+                                    <label class="input">
+                                          <input type="text" name="eventcontent" maxlength="50" placeholder="請輸入與會人員" width="100">
+                                    </label>   
+                                 </div>
+                              </div>
+                           </fieldset>
+                        </form>                            
+                     </div>
+                  </div>                
+               </div>
+              
+            </div>
+            <!-- dialog-message -->   
+            <!-- ui-dialog -->
+            <div id="modifyEventDialog" title="修改行事曆" class="bg-color-darken">
+               <div class="row padding-10" >
+                        <form action="#" class="smart-form">
+                           <fieldset>
+                              <div class="row">
+                                 <section class="col col-6">
+                                    <label class="label">請選擇個人行程類別</label>
+                                    <label class="select">
+                                       <select class="input-lg">
+                                          <option value="0">會議</option>
+                                          <option value="1">團練</option>
+                                          <option value="2">休假</option>
+                                          <option value="3">其他</option>
+                                       </select>
+                                       <i class="icon-append fa fa-clock-o"></i>
+                                    </label>
+                                 </section>  
+                                 <section class="col col-6">
+                                    <label class="label">請選擇地點</label>
+                                    <label class="select">
+                                       <select class="input-lg">
+                                          <option value="1">小巨蛋</option>
+                                          <option value="2">１０１</option>
+                                       </select>
+                                       <i class="icon-append fa fa-file-word-o"></i>
+                                    </label>
+                                 </section>                                                                                            
+                              </div>  
+                              <div>
+                                 <section>
+                                    <label class="label">請輸入行事曆內容</label>
+                                    <label class="input"> <i class="icon-append fa fa-file-word-o"></i>
+                                          <input type="text" name="eventcontent" maxlength="10" placeholder="請輸入行事曆內容">
+                                    </label>
+                                 </section>                               
+                              </div>                            
+                           </fieldset>
+                           <fieldset>
+                              <div class="row">                                 
+                                 <section class="col col-6">
+                                    <label class="label">請選擇開始時間</label>
+                                    <label class="select">
+                                       <select class="input-lg">
+                                          <option value="0">07:00</option>
+                                          <option value="1">07:30</option>
+                                          <option value="2">08:00</option>
+                                       </select>
+                                       <i class="icon-append fa fa-clock-o"></i>
+                                    </label>
+                                 </section>
+                                 <section class="col col-6">
+                                    <label class="label">請選擇結束時間</label>
+                                    <label class="select">
+                                       <select class="input-lg">
+                                          <option value="0">07:00</option>
+                                          <option value="1">07:30</option>
+                                          <option value="2">08:00</option>
+                                       </select>
+                                       <i class="icon-append fa fa-clock-o"></i>
+                                    </label>
+                                 </section>
+                                 
+                              </div>
+                           </fieldset>
+                           <fieldset>
+                              <div class="row">
+                                 <label class="label">請選擇與會人員：</label>
+                                 <div class="col col-4">
+                                    <label class="checkbox">
+                                    <input type="checkbox" name="checkbox" checked="checked">
+                                    <i></i>黃比爾 Bill Hung</label>
+                                    <label class="checkbox">
+                                    <input type="checkbox" name="checkbox">
+                                    <i></i>邱鈺烘 Jack Chu</label>
+                                    <label class="checkbox">
+                                    <input type="checkbox" name="checkbox">
+                                    <i></i>胡志達 Peter Hu</label>
+                                 </div>
+                                 <div class="col col-4">
+                                    <label class="checkbox">
+                                    <input type="checkbox" name="checkbox">
+                                    <i></i>戴悟修 Bryant Dai</label>
+                                    <label class="checkbox">
+                                    <input type="checkbox" name="checkbox">
+                                    <i></i>林哲儀 Joei Lin</label>
+                                    <label class="checkbox">
+                                    <input type="checkbox" name="checkbox">
+                                    <i></i>黃伊婷 Doreen Huang</label>
+                                 </div>
+                                 <div class="col col-4">
+                                    <label class="checkbox">
+                                    <input type="checkbox" name="checkbox">
+                                    <i></i>黃伊涵 Sabrina Huang</label>
+                                    <label class="checkbox">
+                                    <input type="checkbox" name="checkbox">
+                                    <i></i>沈柏宇 Shen</label>
+                                    <label class="checkbox">
+                                    <input type="checkbox" name="checkbox">
+                                    <i></i>陳嘉敏 Charming Chen</label>
+                                 </div>
+                                 <div class="col col-4">
+                                    <label class="checkbox">
+                                    <input type="checkbox" name="checkbox">
+                                    <i></i>宋智強 Galai Sung</label>
+                                    <label class="checkbox">
+                                    <input type="checkbox" name="checkbox">
+                                    <i></i>游念儒 Vic</label>
+                                    <label class="checkbox">
+                                    <input type="checkbox" name="checkbox">
+                                    <i></i>陳芷榆 Genie</label>
+                                 </div>
+                              </div>
+                              <div class="row">
+                                 <div class="col col-2">
+                                    <label class="checkbox">
+                                    <input type="checkbox" name="checkbox">
+                                    <i></i>其他</label>
+                                 </div>
+                                 <div class="col col-10">
+                                    <label class="input">
+                                          <input type="text" name="eventcontent" maxlength="50" placeholder="請輸入與會人員" width="100">
+                                    </label>   
+                                 </div>
+                              </div>
+                           </fieldset>
+                        </form>                             
+               </div>
+              
+            </div>
+            <!-- dialog-message -->             
+            <!-- ui-dialog -->
+            <div id="healthlistDialog" title="維護健康指數" class="bg-color-darken">
+               <!-- content -->
+               <div class="row padding-10" >
+                  <h6 class="modal-title text-warning">2016/02/27 健康指數</h6>
+                  <form action="#" class="form-horizontal" autofocus>
+                     <fieldset>
+                        <div class="form-group">
+                           <div class="col col-sm-6 col-md-6">
+                              <div class="input-group">
+                                 <span class="input-group-addon">疲勞指數</span>
+                                 <input class="form-control" type="number" placeholder="請輸入1-10">
+                                 <span class="input-group-addon">指數</span>
+                              </div>
+                           </div>
+                           <div class="col col-sm-6 col-md-6">
+                              <div class="input-group">
+                                 <span class="input-group-addon">睡眠時間</span>
+                                 <input class="form-control" type="number" placeholder="請輸入純數字">
+                                 <span class="input-group-addon">小時</span>
+                              </div>
+                           </div>
+                        </div>
+                     </fieldset>
+                     <fieldset>
+                        <div class="form-group">
+                           <div class="col col-sm-6 col-md-4">
+                              <div class="input-group">
+                                 <span class="input-group-addon">腰</span>
+                                 <input class="form-control" type="number" placeholder="請輸入純數字">
+                                 <span class="input-group-addon">CM</span>
+                              </div>
+                           </div>
+                           <div class="col col-sm-6 col-md-4">
+                              <div class="input-group">
+                                 <span class="input-group-addon">腿</span>
+                                 <input class="form-control" type="number" placeholder="請輸入純數字">
+                                 <span class="input-group-addon">CM</span>
+                              </div>
+                           </div>
+                           <div class="col col-sm-6 col-md-4">
+                              <div class="input-group">
+                                 <span class="input-group-addon">臂</span>
+                                 <input class="form-control" type="number" placeholder="請輸入純數字">
+                                 <span class="input-group-addon">CM</span>
+                              </div>
+                           </div>
+                        </div>
+                     </fieldset>
+                     <fieldset>
+                        <div class="form-group">
+                           <div class="col col-sm-6 col-md-4">
+                              <div class="input-group">
+                                 <span class="input-group-addon">體重</span>
+                                 <input class="form-control" type="number" placeholder="請輸入純數字">
+                                 <span class="input-group-addon">KG</span>
+                              </div>
+                           </div>
+                           <div class="col col-sm-6 col-md-4">
+                              <div class="input-group">
+                                 <span class="input-group-addon">皮脂厚度</span>
+                                 <input class="form-control" type="number" placeholder="請輸入純數字">
+                                 <span class="input-group-addon">MM</span>
+                              </div>
+                           </div>
+                           <div class="col col-sm-6 col-md-4">
+                              <div class="input-group">
+                                 <span class="input-group-addon">體脂率</span>
+                                 <input class="form-control" type="number" placeholder="請輸入純數字">
+                                 <span class="input-group-addon">%</span>
+                              </div>
+                           </div>
+                        </div>
+                     </fieldset>
+                     <div class="form-actions">
+                        <div class="row">
+                           <div class="col-md-12">
+                              <button class="btn btn-primary" type="submit">
+                              <i class="fa fa fa-reply"></i> 更新
+                              </button>
+                           </div>
+                        </div>
+                     </div>
+                  </form>
+               </div>
+               <div class="row">
+                  <table id="health_dt" class="table table-striped table-bordered table-hover" width="100%">
+                     <thead>
+                        <tr>
+                           <th data-class="expand">日期</th>
+                           <th>疲勞指數</th>
+                           <th>睡眠時間</th>
+                           <th>體重</th>
+                           <th data-hide="phone">腰</th>
+                           <th data-hide="phone">腿</th>
+                           <th data-hide="phone">臂</th>
+                           <th data-hide="phone">皮脂厚度</th>
+                           <th data-hide="phone">體脂率</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <tr>
+                           <td>
+                              <a href="#" class="btn btn-circle bg-color-orange"><i class="fa fa-fw fa fa-lg fa-pencil-square-o" aria-hidden="true"></i> </a>                        
+                              <a href="#" class="btn btn-circle bg-color-redLight delete"><i class="fa fa-fw fa fa-lg fa-trash-o" aria-hidden="true"></i> </a> 
+                              2016/7/20
+                           </td>
+                           <td>2</td>
+                           <td>8 小時</td>
+                           <td>--</td>
+                           <td>--</td>
+                           <td>--</td>
+                           <td>60</td>
+                           <td>20 MM</td>
+                           <td>30%</td>
+                        </tr>
+                        <tr>
+                           <td>
+                              <a href="#" class="btn btn-circle bg-color-orange"><i class="fa fa-fw fa fa-lg fa-pencil-square-o" aria-hidden="true"></i> </a>                        
+                              <a href="#" class="btn btn-circle bg-color-redLight delete"><i class="fa fa-fw fa fa-lg fa-trash-o" aria-hidden="true"></i> </a> 
+                              2016/7/20
+                           </td>
+                           <td>2</td>
+                           <td>8 小時</td>
+                           <td>--</td>
+                           <td>--</td>
+                           <td>--</td>
+                           <td>60</td>
+                           <td>20 MM</td>
+                           <td>30%</td>
+                        </tr>
+                        <tr>
+                           <td>
+                              <a href="#" class="btn btn-circle bg-color-orange"><i class="fa fa-fw fa fa-lg fa-pencil-square-o" aria-hidden="true"></i> </a>                        
+                              <a href="#" class="btn btn-circle bg-color-redLight delete"><i class="fa fa-fw fa fa-lg fa-trash-o" aria-hidden="true"></i> </a> 
+                              2016/7/20
+                           </td>
+                           <td>2</td>
+                           <td>8 小時</td>
+                           <td>--</td>
+                           <td>--</td>
+                           <td>--</td>
+                           <td>60</td>
+                           <td>20 MM</td>
+                           <td>30%</td>
+                        </tr>
+                        <tr>
+                           <td>
+                              <a href="#" class="btn btn-circle bg-color-orange"><i class="fa fa-fw fa fa-lg fa-pencil-square-o" aria-hidden="true"></i> </a>                        
+                              <a href="#" class="btn btn-circle bg-color-redLight delete"><i class="fa fa-fw fa fa-lg fa-trash-o" aria-hidden="true"></i> </a> 
+                              2016/7/20
+                           </td>
+                           <td>2</td>
+                           <td>8 小時</td>
+                           <td>--</td>
+                           <td>--</td>
+                           <td>--</td>
+                           <td>60</td>
+                           <td>20 MM</td>
+                           <td>30%</td>
+                        </tr>
+                        <tr>
+                           <td>
+                              <a href="#" class="btn btn-circle bg-color-orange"><i class="fa fa-fw fa fa-lg fa-pencil-square-o" aria-hidden="true"></i> </a>                        
+                              <a href="#" class="btn btn-circle bg-color-redLight delete"><i class="fa fa-fw fa fa-lg fa-trash-o" aria-hidden="true"></i> </a> 
+                              2016/7/20
+                           </td>
+                           <td>2</td>
+                           <td>8 小時</td>
+                           <td>--</td>
+                           <td>--</td>
+                           <td>--</td>
+                           <td>60</td>
+                           <td>20 MM</td>
+                           <td>30%</td>
+                        </tr>
+                        <tr>
+                           <td>
+                              <a href="#" class="btn btn-circle bg-color-orange"><i class="fa fa-fw fa fa-lg fa-pencil-square-o" aria-hidden="true"></i> </a>                        
+                              <a href="#" class="btn btn-circle bg-color-redLight delete"><i class="fa fa-fw fa fa-lg fa-trash-o" aria-hidden="true"></i> </a> 
+                              2016/7/20
+                           </td>
+                           <td>2</td>
+                           <td>8 小時</td>
+                           <td>--</td>
+                           <td>--</td>
+                           <td>--</td>
+                           <td>60</td>
+                           <td>20 MM</td>
+                           <td>30%</td>
+                        </tr>
+                        <tr>
+                           <td>
+                              <a href="#" class="btn btn-circle bg-color-orange"><i class="fa fa-fw fa fa-lg fa-pencil-square-o" aria-hidden="true"></i> </a>                        
+                              <a href="#" class="btn btn-circle bg-color-redLight delete"><i class="fa fa-fw fa fa-lg fa-trash-o" aria-hidden="true"></i> </a> 
+                              2016/7/20
+                           </td>
+                           <td>2</td>
+                           <td>8 小時</td>
+                           <td>--</td>
+                           <td>--</td>
+                           <td>--</td>
+                           <td>60</td>
+                           <td>20 MM</td>
+                           <td>30%</td>
+                        </tr>
+                        <tr>
+                           <td>
+                              <a href="#" class="btn btn-circle bg-color-orange"><i class="fa fa-fw fa fa-lg fa-pencil-square-o" aria-hidden="true"></i> </a>                        
+                              <a href="#" class="btn btn-circle bg-color-redLight delete"><i class="fa fa-fw fa fa-lg fa-trash-o" aria-hidden="true"></i> </a> 
+                              2016/7/20
+                           </td>
+                           <td>2</td>
+                           <td>8 小時</td>
+                           <td>--</td>
+                           <td>--</td>
+                           <td>--</td>
+                           <td>60</td>
+                           <td>20 MM</td>
+                           <td>30%</td>
+                        </tr>
+                        <tr>
+                           <td>
+                              <a href="#" class="btn btn-circle bg-color-orange"><i class="fa fa-fw fa fa-lg fa-pencil-square-o" aria-hidden="true"></i> </a>                        
+                              <a href="#" class="btn btn-circle bg-color-redLight delete"><i class="fa fa-fw fa fa-lg fa-trash-o" aria-hidden="true"></i> </a> 
+                              2016/7/20
+                           </td>
+                           <td>2</td>
+                           <td>8 小時</td>
+                           <td>--</td>
+                           <td>--</td>
+                           <td>--</td>
+                           <td>60</td>
+                           <td>20 MM</td>
+                           <td>30%</td>
+                        </tr>
+                        <tr>
+                           <td>
+                              <a href="#" class="btn btn-circle bg-color-orange"><i class="fa fa-fw fa fa-lg fa-pencil-square-o" aria-hidden="true"></i> </a>                        
+                              <a href="#" class="btn btn-circle bg-color-redLight delete"><i class="fa fa-fw fa fa-lg fa-trash-o" aria-hidden="true"></i> </a> 
+                              2016/7/20
+                           </td>
+                           <td>2</td>
+                           <td>8 小時</td>
+                           <td>--</td>
+                           <td>--</td>
+                           <td>--</td>
+                           <td>60</td>
+                           <td>20 MM</td>
+                           <td>30%</td>
+                        </tr>
+                        <tr>
+                           <td>
+                              <a href="#" class="btn btn-circle bg-color-orange"><i class="fa fa-fw fa fa-lg fa-pencil-square-o" aria-hidden="true"></i> </a>                        
+                              <a href="#" class="btn btn-circle bg-color-redLight delete"><i class="fa fa-fw fa fa-lg fa-trash-o" aria-hidden="true"></i> </a> 
+                              2016/7/20
+                           </td>
+                           <td>2</td>
+                           <td>8 小時</td>
+                           <td>--</td>
+                           <td>--</td>
+                           <td>--</td>
+                           <td>60</td>
+                           <td>20 MM</td>
+                           <td>30%</td>
+                        </tr>
+                        <tr>
+                           <td>
+                              <a href="#" class="btn btn-circle bg-color-orange"><i class="fa fa-fw fa fa-lg fa-pencil-square-o" aria-hidden="true"></i> </a>                        
+                              <a href="#" class="btn btn-circle bg-color-redLight delete"><i class="fa fa-fw fa fa-lg fa-trash-o" aria-hidden="true"></i> </a> 
+                              2016/7/20
+                           </td>
+                           <td>2</td>
+                           <td>8 小時</td>
+                           <td>--</td>
+                           <td>--</td>
+                           <td>--</td>
+                           <td>60</td>
+                           <td>20 MM</td>
+                           <td>30%</td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </div>
+               <!-- end content -->
+            </div>
+            <!-- dialog-message -->    
+            <!-- ui-dialog -->
+            <div id="questionnairelistDialog" title="待辦事項：階段性調整計劃" class="bg-color-darken">
+               <!-- content -->
+               <table id="questionnairelist_dt" class="table table-striped table-bordered table-hover" width="100%">
+                  <thead>
+                     <tr>
+                        <th>學員</th>
+                        <th>目前狀態</th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     <tr>
+                        <td>張大哥</td>
+                        <td>
+                           已於回覆不方便填寫
+                        </td>
+                     </tr>
+                     <tr>
+                        <td>劉加菲</td>
+                        <td>
+                           <a href="#" class="btn btn-circle bg-color-redLight"><i class="fa fa-fw fa fa-lg fa-times" aria-hidden="true"></i> </a> 
+                            <a href="http://line.me/R/msg/text/?Hi 劉加菲, 請記得登入http%3A%2F%2Fwww.beyond-fitness.tw%2F填寫階段性調整計劃喔！" target="_blank" class="btn btn-circle bg-color-greenLight">LINE</a> 
+                           尚未填寫
+                        </td>
+                     </tr>
+                     <tr>
+                        <td>宋小胖</td>
+                        <td>
+                           <a href="#" class="btn btn-circle bg-color-redLight"><i class="fa fa-fw fa fa-lg fa-times" aria-hidden="true"></i> </a> 
+                            <a href="http://line.me/R/msg/text/?Hi 劉加菲, 請記得登入http%3A%2F%2Fwww.beyond-fitness.tw%2F填寫階段性調整計劃喔！" target="_blank" class="btn btn-circle bg-color-greenLight">LINE</a> 
+                           尚未填寫
+                        </td>
+                     </tr>
+                     <tr>
+                        <td>張大哥</td>
+                        <td>
+                           <a href="#" class="btn bg-color-blueLight btn-circle questionnaire_link"><i class="fa fa-volume-up fa-lg"></i></a>
+                           已於2016/02/03填寫                                 
+                        </td>
+                     </tr>
+                  </tbody>
+               </table>
+               <!-- end content -->          
+            </div>
+            <!-- dialog-message -->     
+            <!-- ui-dialog -->
+            <div id="questionnaireDialog" title="階段性調整計劃" class="bg-color-darken">
+               <div class="panel panel-default bg-color-darken">
+                  <div class="panel-body status smart-form vote">
+                     <div class="who clearfix">
+                        <img src="../../img/avatars/male.png" alt="img" class="busy">
+                        <span class="name font-lg"><b>劉加菲</b></span><br/>
+                        <span class="from font-md">已於 2016/01/05 填寫階段性調整計劃！</span>
+                     </div>
+                     <div class="image font-md">
+                        <span class="text-warning"><i class="fa-fw fa fa-quora"></i>1. 在幫助學員進行訓練的過程中，學員最喜歡哪一方面？</span><br/>
+                        <i class="fa-fw fa fa-hand-o-right"></i>&nbsp;&nbsp;&nbsp;休息
+                     </div>
+                     <div class="image font-md">
+                        <span class="text-warning"><i class="fa-fw fa fa-quora"></i>2. 學員在訓練過後有什麼感覺或想法？</span><br/>
+                        <i class="fa-fw fa fa-hand-o-right"></i>&nbsp;&nbsp;&nbsp;累
+                     </div>
+                     <div class="image font-md">
+                        <span class="text-warning"><i class="fa-fw fa fa-quora"></i>3. 是否有學員所期待或任何學員想達成但尚未完成的事？</span><br/>
+                        <i class="fa-fw fa fa-hand-o-right"></i>&nbsp;&nbsp;&nbsp;打教練
+                     </div>
+                     <div class="image font-md">
+                        <span class="text-warning"><i class="fa-fw fa fa-quora"></i>4. 學員覺得有什麼更好的方法才能讓學員獲得更好的體驗？</span><br/>
+                        <i class="fa-fw fa fa-hand-o-right"></i>&nbsp;&nbsp;&nbsp;持續放鬆
+                     </div>
+                     <div class="image font-md">
+                        <span class="text-warning"><i class="fa-fw fa fa-quora"></i>5. 學員認為目前所提供的訓練和服務在1-10(1是最差，10是最佳)分範圍中應得幾分？</span><br/>
+                        <i class="fa-fw fa fa-hand-o-right"></i>&nbsp;&nbsp;&nbsp;8分
+                     </div>
+                     <div class="image font-md">
+                        <span class="text-warning"><i class="fa-fw fa fa-quora"></i>6. 在接下來30天，學員期望可實現最重要的目標或成果是什麼？並請同時說明為什麼？</span><br/>
+                        <i class="fa-fw fa fa-hand-o-right"></i>&nbsp;&nbsp;&nbsp;放鬆
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <!-- dialog-message -->   
+            <!-- ui-dialog -->
+            <div id="modifyBookingDialog" title="行事曆" class="bg-color-darken">
+               <div class="panel panel-default bg-color-darken">
+                  <div class="panel-body status smart-form vote">
+                     <div class="who clearfix">
+                        <img src="../../img/avatars/male.png" alt="img" class="busy">
+                        <span class="name font-lg"><b>劉加菲</b></span><br/>
+                        <span class="from font-md text-warning">自主訓練：2016/02/28 11:30~13:30</span>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <!-- dialog-message -->    
+            <!-- ui-dialog -->
+            <div id="modifySelfEventDialog" title="行事曆" class="bg-color-darken">
+               <div class="panel panel-default bg-color-darken">
+                  <div class="panel-body status smart-form vote">
+                     <div class="who clearfix">                        
+                        <span class="name font-lg"><b>會議</b></span><br/>
+                        <span class="from font-md text-warning">時間：2016/02/28 11:30~13:30</span><br/>
+                        <span class="from font-md text-warning">參與人員：劉加菲、戴悟修</span>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <!-- dialog-message -->                
+            <!-- ui-dialog -->
+            <div id="messagereplyDialog" title="運動行事曆" class="bg-color-darken">
+               <div class="panel panel-default bg-color-darken">
+                  <div class="footer">
+
+                        <div class="input-group input-group-lg">
+                                 <div class="icon-addon addon-lg">
+                                       <input type="text" class="form-control" placeholder="在此留言..">
+                                       <label class="fa fa-comments"></label>
+                                 </div>
+                                 <span class="input-group-btn">
+                                       <button class="btn btn-primary" type="button"><i class="fa fa-send"></i></button>
+                                 </span>
+                        </div>                  
+                        <div class="content messages npr npb">
+                           <div class="scroll oh">
+                              <div class="messages-item">
+                                 <img src="../../img/avatars/Kelly.png" class="img-circle img-thumbnail" width="50px" />
+                                 <div class="messages-item-text">Duis eu libero pellentesque, dapibus ante eu, vehicula leo. Nulla gravida rutrum neque</div>
+                                 <div class="messages-item-date">14:33 30.08.2013</div>
+                              </div>
+                              <div class="messages-item inbox">
+                                 <img src="../../img/avatars/bill.png" class="img-circle img-thumbnail" width="50px"/>
+                                 <div class="messages-item-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque condimentum nisl velit</div>
+                                 <div class="messages-item-date">14:32 30.08.2013</div>
+                              </div>
+                              <div class="messages-item">
+                                 <img src="../../img/avatars/Kelly.png" class="img-circle img-thumbnail" width="50px"/>
+                                 <div class="messages-item-text">Duis eu libero pellentesque, dapibus ante eu, vehicula leo. Nulla gravida rutrum neque</div>
+                                 <div class="messages-item-date">14:20 30.08.2013</div>
+                              </div>
+                              <div class="messages-item inbox">
+                                 <img src="../../img/avatars/bill.png" class="img-circle img-thumbnail" width="50px"/>
+                                 <div class="messages-item-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque condimentum nisl velit</div>
+                                 <div class="messages-item-date">14:19 30.08.2013</div>
+                              </div>
+                              <div class="messages-item">
+                                 <img src="../../img/avatars/Rose.png" class="img-circle img-thumbnail" width="50px"/>
+                                 <div class="messages-item-text">Duis eu libero pellentesque, dapibus ante eu, vehicula leo. Nulla gravida rutrum neque</div>
+                                 <div class="messages-item-date">14:15 30.08.2013</div>
+                              </div>
+                              <div class="messages-item inbox">
+                                 <img src="../../img/avatars/bill.png" class="img-circle img-thumbnail" width="50px"/>
+                                 <div class="messages-item-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque condimentum nisl velit</div>
+                                 <div class="messages-item-date">14:10 30.08.2013</div>
+                              </div>
+                           </div>
+                        </div>
+               </div>
+            </div>
+            <!-- dialog-message -->                
+         </div>
+      </div>
+      <!-- END MAIN PANEL -->
+      <!-- PAGE FOOTER -->
+      <div class="page-footer">
+         <div class="row">
+            <div class="col-xs-12 col-sm-6">
+               <span class="txt-color-white">BEYOND FITNESS <span class="hidden-xs"> - ALL RIGHTS RESERVED</span> © 2017</span>
+            </div>
+            <div class="col-xs-6 col-sm-6 text-right hidden-xs">
+               <div class="txt-color-white inline-block">
+                  <i class="txt-color-blueLight hidden-mobile">Last update time <i class="fa fa-clock-o"></i>  <strong>2016/07/23 PM 20:03 &nbsp;</strong> 
+                  </i>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- END PAGE FOOTER -->
+      <!--================================================== -->
+      <!-- PACE LOADER - turn this on if you want ajax loading to show (caution: uses lots of memory on iDevices)-->
+      <script data-pace-options='{ "restartOnRequestAfter": true }' src="../../js/plugin/pace/pace.min.js"></script>
+      <!-- Link to Google CDN's jQuery + jQueryUI; fall back to local -->
+      <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+      <script>
+         if (!window.jQuery) {
+             document.write('<script src="../../js/libs/jquery-2.1.1.min.js"><\/script>');
+         }
+      </script>
+      <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+      <script>
+         if (!window.jQuery.ui) {
+             document.write('<script src="../../js/libs/jquery-ui-1.10.3.min.js"><\/script>');
+         }
+      </script>
+      <!-- IMPORTANT: APP CONFIG -->
+      <script src="../../js/app.config.js"></script>
+      <!-- JS TOUCH : include this plugin for mobile drag / drop touch events-->
+      <script src="../../js/plugin/jquery-touch/jquery.ui.touch-punch.min.js"></script>
+      <!-- BOOTSTRAP JS -->
+      <script src="../../js/bootstrap/bootstrap.min.js"></script>
+      <!-- CUSTOM NOTIFICATION -->
+      <script src="../../js/notification/SmartNotification.min.js"></script>
+      <!-- JARVIS WIDGETS -->
+      <script src="../../js/smartwidgets/jarvis.widget.min.js"></script>
+      <!-- EASY PIE CHARTS -->
+      <script src="../../js/plugin/easy-pie-chart/jquery.easy-pie-chart.min.js"></script>
+      <!-- SPARKLINES -->
+      <script src="../../js/plugin/sparkline/jquery.sparkline.min.js"></script>
+      <!-- JQUERY VALIDATE -->
+      <script src="../../js/plugin/jquery-validate/jquery.validate.min.js"></script>
+      <!-- JQUERY MASKED INPUT -->
+      <script src="../../js/plugin/masked-input/jquery.maskedinput.min.js"></script>
+      <!-- JQUERY SELECT2 INPUT -->
+      <script src="../../js/plugin/select2/select2.min.js"></script>
+      <!-- JQUERY UI + Bootstrap Slider -->
+      <script src="../../js/plugin/bootstrap-slider/bootstrap-slider.min.js"></script>
+      <!-- browser msie issue fix -->
+      <script src="../../js/plugin/msie-fix/jquery.mb.browser.min.js"></script>
+      <!-- FastClick: For mobile devices -->
+      <script src="../../js/plugin/fastclick/fastclick.min.js"></script>
+      <!--[if IE 8]>
+      <h1>Your browser is out of date, please update your browser by going to www.microsoft.com/download</h1>
+      <![endif]-->
+      <!-- MAIN APP JS FILE -->
+      <script src="../../js/app.min.js"></script>
+      <!-- ENHANCEMENT PLUGINS : NOT A REQUIREMENT -->
+      <!-- Voice command : plugin -->
+      <script src="../../js/speech/voicecommand.min.js"></script>
+      <!-- SmartChat UI : plugin -->
+      <script src="../../js/smart-chat-ui/smart.chat.ui.min.js"></script>
+      <script src="../../js/smart-chat-ui/smart.chat.manager.min.js"></script>
+      <!--scrollup plugin-->
+      <script src="../../js/plugin/scrollup-master/jquery.scrollUp.min.js"></script>
+      <!-- PAGE RELATED PLUGIN(S) -->
+      <script src="../../js/plugin/superbox/superbox.min.js"></script>
+      <!-- PAGE RELATED PLUGIN(S) -->
+      <script src="../../js/plugin/datatables/jquery.dataTables.min.js"></script>
+      <script src="../../js/plugin/datatables/dataTables.colVis.min.js"></script>
+      <script src="../../js/plugin/datatables/dataTables.tableTools.min.js"></script>
+      <script src="../../js/plugin/datatables/dataTables.bootstrap.min.js"></script>
+      <script src="../../js/plugin/datatable-responsive/datatables.responsive.min.js"></script>
+      <!-- Full Calendar -->
+      <script src="../../js/plugin/moment/moment.min.js"></script>
+      <script src="../../js/plugin/fullcalendar/jquery.fullcalendar.min.js"></script>
+      <script src="../../js/plugin/fullcalendar/lang-all.js"></script>
+      <!-- Morris Chart Dependencies -->
+      <script src="../../js/plugin/morris/raphael.min.js"></script>
+      <script src="../../js/plugin/morris/morris.min.js"></script>
+      <script src='../../js/plugin/knob/jquery.knob.js'></script>
+      <!-- PAGE RELATED PLUGIN(S) 
+         <script src="..."></script>-->
+      <script type="text/javascript">
+         // DO NOT REMOVE : GLOBAL FUNCTIONS!
+         $(document).ready(function() {
+         
+             $("#includedNav").load("nav.html"); 
+         
+             pageSetUp();
+         
+             /* knob plugin */
+             if($(".knob").length > 0) $(".knob input").knob();
+             /* eof knob plugin */
+
+             // initialize sortable
+             $(function() {
+         
+                 $.scrollUp({
+                     //animation: 'slide',
+                     //activeOverlay: '#00FFFF',
+                     scrollText: '',
+                     scrollImg: true,
+                 });                
+             });      
+         
+             $('#bookingDialog').dialog({
+                  autoOpen : false,
+                  resizable : false,
+                  modal : true,                  
+                  width: 600,
+                  title : "<div class='modal-title'><h4><i class='fa fa-warning'></i> 新增行事曆</h4></div>",
+                  buttons : [{
+                     html : "<i class='fa fa-send'></i>&nbsp;確定",
+                     "class" : "btn btn-primary",
+                      click : function() {                         
+                         $(this).dialog("close");
+                     }
+                  }]
+             });                                                 
+         
+             // Dialog click
+             $('.undolistDialog_link').click(function() {
+               $('#undolistDialog').dialog('open');
+               return false;
+         
+             });
+         
+             $('#undolistDialog').dialog({
+                  autoOpen : false,
+                  width: "auto",
+                  height: "auto",
+                  resizable : true,
+                  modal : true,
+                  closeText: "關閉",
+                  title : "<h4 class='modal-title'><i class='icon-append fa fa-list-ol'></i> 待辦事項：一般課程(學員未完成)</h4>"
+             });  
+         
+            // // Modal Link
+            $('#healthlist_link').click(function() {
+               $('#healthlistDialog').dialog('open');
+               return false;
+            });
+                   
+         
+            $('#healthlistDialog').dialog({
+               autoOpen : false,
+               resizable : true,
+               modal : true,
+               width: "auto",
+               height: "auto",
+               title: "<h4 class='modal-title'><i class='fa-fw fa fa-history'></i>  維護健康指數</h4>"
+            });
+         
+            $('.questionnairelist_link').click(function() {
+               $('#questionnairelistDialog').dialog('open');
+               return false;
+            });            
+         
+            $('#questionnairelistDialog').dialog({
+               autoOpen : false,               
+               resizable : true,
+               modal : true,
+               width: "auto",
+               height: "auto",               
+               title: "<h4 class='modal-title'><i class='fa-fw fa fa-list-ol'></i>  待辦事項：階段性調整計劃(學員已完成)</h4>"
+            });    
+         
+         
+            $('.questionnaire_link').click(function() {
+               $('#questionnaireDialog').dialog('open');
+               return false;
+            });
+         
+            $('#modifyBookingDialog').dialog({
+               autoOpen : false,
+               resizable : true,
+               modal : true,
+               width: "auto",
+               height: "auto",    
+               title: "<h4 class='modal-title'><i class='fa fa-fw fa-calendar'></i>  行事曆</h4>",
+               buttons : [{
+                     html : "<i class='fa fa-edit'></i>&nbsp;編輯",
+                     "class" : "btn btn-primary",
+                      click : function() { 
+                         window.location.href = "editclass.html";                        
+                         $(this).dialog("close");
+                     }
+               }, {
+                     html : "<i class='fa fa-trash-o'></i>&nbsp;刪除",
+                     "class" : "btn bg-color-red",
+                      click : function() {                                                   
+                         $(this).dialog("close");
+                     }
+               }]
+            });     
+
+            $('#modifySelfEventDialog').dialog({
+               autoOpen : false,
+               resizable : true,
+               modal : true,
+               width: "auto",
+               height: "auto",    
+               title: "<h4 class='modal-title'><i class='fa fa-fw fa-calendar'></i>  行事曆</h4>",
+               buttons : [{
+                     html : "<i class='fa fa-edit'></i>&nbsp;編輯",
+                     "class" : "btn btn-primary",
+                      click : function() { 
+                        $('#modifyEventDialog').dialog('open');                                           
+                         $(this).dialog("close");
+                     }
+               }, {
+                     html : "<i class='fa fa-trash-o'></i>&nbsp;刪除",
+                     "class" : "btn bg-color-red",
+                      click : function() {                                                   
+                         $(this).dialog("close");
+                     }
+               }]
+            });  
+
+
+            $('#modifyEventDialog').dialog({
+               autoOpen : false,
+               resizable : true,
+               modal : true,
+               width: "auto",
+               height: "auto",    
+               title: "<h4 class='modal-title'><i class='fa fa-fw fa-calendar'></i>  行事曆</h4>",
+               buttons : [{
+                     html : "<i class='fa fa-send'></i>&nbsp;確定",
+                     "class" : "btn btn-primary",
+                      click : function() {                         
+                         $(this).dialog("close");
+                     }
+                  }]
+            });              
+         
+         
+         
+            $('#questionnaireDialog').dialog({
+               autoOpen : false,
+               resizable : true,
+               modal : true,
+               width: "auto",
+               height: "auto",    
+               title: "<h4 class='modal-title'><i class='fa fa-fw fa-volume-up'></i>  階段性調整計劃</h4>"
+            });          
+         
+            
+            $("#searchStudentInput" ).keydown(function() {
+              $('#searchStudentResult').show();
+              return false;
+            });   
+
+            $('#messagereplyDialog_link').click(function() {
+               $('#messagereplyDialog').dialog('open');
+               return false;
+            });
+
+            $('#messagereplyDialog').dialog({
+               autoOpen : false,
+               resizable : true,
+               modal : true,
+               width: "auto",
+               height: "auto",    
+               title: "<h4 class='modal-title'><i class='fa fa-fw fa-envelope'></i>  運動留言板</h4>"
+            });          
+         
+                 
+            
+             /*
+              * FULL CALENDAR JS
+              */
+         
+             if ($("#calendar").length) {
+                 var date = new Date();
+                 var d = date.getDate();
+                 var m = date.getMonth();
+                 var y = date.getFullYear();
+         
+                 var calendar = $('#calendar').fullCalendar({
+                     lang: 'zh-TW',
+                     draggable: true,
+                     selectable: false,
+                     selectHelper: true,
+                     unselectAuto: false,
+                     disableResizing: false,
+                     allDaySlot: true,
+                     editable: false,
+                     height: "auto",
+                     defaultView: "agendaWeek",
+                     businessHours: {
+                        start: '08:00',
+                        end:   '22:00',
+                        dow: [ 1, 2, 3, 4, 5, 6, 0]
+                     },
+                     minTime: "07:00:00",
+                     maxTime: "23:00:00",
+                     header: {
+                         left: 'title', //,today
+                         //left: 'prev, next, today',
+                         //right: 'month, agendaWeek, agenDay' //month, agendaDay,
+                     },                 
+                     events: [{
+                         title: '5',
+                         start: new Date(y, m, 1),
+                         description: '課程訓練',
+                         allDay: true,
+                         className: ["event", "bg-color-gray"],
+                         icon: ''
+                     }, {
+                         title: '6',
+                         start: new Date(y, m, d - 3),
+                         description: '課程訓練',
+                         allDay: true,
+                         className: ["event", "bg-color-blue"],
+                         icon: ''
+                     }, {
+                         title: '1',
+                         start: new Date(y, m, d - 3),
+                         description: '體驗課程',
+                         allDay: true,
+                         className: ["event", "bg-color-pink"],
+                         icon: ''
+                     }, {
+                         title: '5',
+                         start: new Date(y, m, d + 4),
+                         description: '課程訓練',
+                         allDay: true,
+                         className: ["event", "bg-color-blue"],
+                         icon: ''
+                     }, {
+                         title: '3',
+                         start: new Date(y, m, d + 4),
+                         description: '自主訓練',
+                         allDay: true,
+                         className: ["event", "bg-color-red"],
+                         icon: ''
+                     }, {
+                         title: '1',
+                         start: new Date(y, m, d + 3),
+                         description: '體驗課程',
+                         allDay: true,
+                         className: ["event", "bg-color-pink"],
+                         icon: ''
+                     }, {
+                         title: '1',
+                         start: new Date(y, m, d + 4),
+                         description: '內部訓練',
+                         allDay: true,
+                         className: ["event", "bg-color-teal"],
+                         icon: ''
+                     }, {
+                         title: '劉加菲',
+                         start: new Date(y, m, d + 0, 12, 30),
+                         end: new Date(y, m, d + 0, 14, 0),
+                         description: '課程訓練',
+                         allDay: false,
+                         className: ["event", "bg-color-blue"],
+                         icon: '',
+                         editable:true
+                     }, {
+                         title: '宋胖子',
+                         start: new Date(y, m, d + 0, 12, 30),
+                         end: new Date(y, m, d + 0, 13, 30),
+                         description: '課程訓練',
+                         allDay: false,
+                         className: ["event", "bg-color-blue"],
+                         icon: '',
+                         editable:true
+         
+                     }, {
+                         title: '陳小瓦',
+                         start: new Date(y, m, d + 0, 12, 00),
+                         end: new Date(y, m, d + 0, 13, 0),
+                         description: '課程訓練',
+                         allDay: false,
+                         className: ["event", "bg-color-blue"],
+                         icon: '',
+                         editable:true
+                     }, {
+                         title: '鄭胖子',
+                         start: new Date(y, m, d + 0, 12, 20),
+                         end: new Date(y, m, d + 0, 13, 40),
+                         description: '課程訓練',
+                         allDay: false,
+                         className: ["event", "bg-color-gray"],
+                         icon: 'fa-check-square-o',
+                         editable:false
+                     }, {
+                         title: '會議',
+                         start: new Date(y, m, d + 5, 12, 20),
+                         end: new Date(y, m, d + 5, 13, 40),
+                         description: '',
+                         allDay: false,
+                         className: ["event", "bg-color-green"],
+                         icon: '',
+                         editable: true
+                     }],
+         
+         
+                     eventRender: function(event, element, icon) {
+                         if (!event.description == "") {
+                             element.find('.fc-title').append("<br/><span class='ultra-light'>" + event.description + "</span>");
+                         }
+                         if (!event.icon == "") {
+                             element.find('.fc-title').append("<i class='air air-top-right fa " + event.icon + " '></i>");
+                         }
+                     },
+         
+                     eventClick:  function(event, jsEvent, view) {
+                        if (event._allDay == true) {
+                           $('#undolistDialog').dialog('open');
+                        } else {
+                           $('#modifySelfEventDialog').dialog('open');
+                        }
+                     } ,
+         
+                     dayClick: function (date, allDay, jsEvent, view) {
+                        var formattedDate = date.toString().replace(" GMT+0000",""); 
+                        $('#bookingDialog').dialog('open');
+                        //alert("see, I can get " + formattedDate + " if I _left click_, but try doing this with a right click");
+                     },
+                     windowResize: function (event, ui) {
+                         $('#calendar').fullCalendar('render');
+                     },                                              
+                 });
+         
+             }
+         
+         
+             /* hide default buttons */
+             $('.fc-toolbar .fc-right, .fc-toolbar .fc-center').hide();
+         
+             // calendar prev
+             $('#calendar-buttons #btn-prev').click(function() {
+                 $('.fc-prev-button').click();
+                 return false;
+             });
+         
+             // calendar next
+             $('#calendar-buttons #btn-next').click(function() {
+                 $('.fc-next-button').click();
+                 return false;
+             });
+         
+             // calendar today
+             $('#calendar-buttons #btn-today').click(function() {
+                 $('.fc-button-today').click();
+                 return false;
+             });
+         
+             // calendar month
+             $('#mt').click(function() {
+                 $('#calendar').fullCalendar('changeView', 'month');
+             });
+         
+             // calendar agenda week
+             $('#ag').click(function() {
+                 $('#calendar').fullCalendar('changeView', 'agendaWeek');
+             });
+         
+             // calendar agenda day
+             $('#td').click(function() {
+                 $('#calendar').fullCalendar('changeView', 'agendaDay');
+             });
+         
+             $('#mt').click(function () {
+                $('#calendar').fullCalendar('changeView', 'month');                
+             });
+            
+             $('#ag').click(function () {
+                $('#calendar').fullCalendar('changeView', 'agendaWeek');
+             });
+            
+             $('#td').click(function () {
+                $('#calendar').fullCalendar('changeView', 'agendaDay');
+             });                        
+         
+             /* BASIC ;*/
+             var responsiveHelper_dt_basic = undefined;
+             var responsiveHelper_dt_basic2 = undefined;
+             var responsiveHelper_dt_basic3 = undefined;
+             var responsiveHelper_dt_basic4 = undefined;
+             var responsiveHelper_dt_basic5 = undefined;
+         
+             var responsiveHelper_datatable_fixed_column = undefined;
+             var responsiveHelper_datatable_col_reorder = undefined;
+             var responsiveHelper_datatable_tabletools = undefined;
+         
+             var breakpointDefinition = {
+                 tablet: 1024,
+                 phone: 480
+             };
+         
+             $('#todoist_dt').dataTable({
+                 "sDom": "",
+                 "autoWidth": true,
+                 "bDestroy": true,
+                 "bPaginate": false,
+                 "bSort": false,
+                 "oLanguage": {
+                     "sSearch": '<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>'
+                 },
+                 "preDrawCallback": function() {
+                     // Initialize the responsive datatables helper once.
+                     if (!responsiveHelper_dt_basic) {
+                         responsiveHelper_dt_basic = new ResponsiveDatatablesHelper($('#todoist_dt'), breakpointDefinition);
+                     }
+                 },
+                 "rowCallback": function(nRow) {
+                     responsiveHelper_dt_basic.createExpandIcon(nRow);
+                 },
+                 "drawCallback": function(oSettings) {
+                     responsiveHelper_dt_basic.respond();
+                 }
+             });
+         
+             $('#classlist_dt').dataTable({
+                 "sDom": "<'dt-toolbar'<'col-xs-12 col-sm-6'f><'col-sm-6 col-xs-12 hidden-xs'l>r>" +
+                         "t" +
+                         "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-xs-12 col-sm-6'p>>",
+                 "autoWidth": true,
+                 "order": [],
+                 "oLanguage": {
+                 "sSearch": '<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>'
+                 },
+                 "preDrawCallback": function() {
+                     // Initialize the responsive datatables helper once.
+                     if (!responsiveHelper_dt_basic2) {
+                         responsiveHelper_dt_basic2 = new ResponsiveDatatablesHelper($('#classlist_dt'), breakpointDefinition);
+                     }
+                 },
+                 "rowCallback": function(nRow) {
+                     responsiveHelper_dt_basic2.createExpandIcon(nRow);
+                 },
+                 "drawCallback": function(oSettings) {
+                     responsiveHelper_dt_basic2.respond();
+                 }
+             });
+         
+             $('#undolist_dt').dataTable({
+                 "sDom": "<'dt-toolbar'<'col-xs-12 col-sm-6'f><'col-sm-6 col-xs-12 hidden-xs'l>r>" +
+                         "t" +
+                         "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-xs-12 col-sm-6'p>>",
+                 "autoWidth": true,
+                 "order": [],
+                 "oLanguage": {
+                 "sSearch": '<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>'
+                 },
+                 "preDrawCallback": function() {
+                     // Initialize the responsive datatables helper once.
+                     if (!responsiveHelper_dt_basic3) {
+                         responsiveHelper_dt_basic3 = new ResponsiveDatatablesHelper($('#undolist_dt'), breakpointDefinition);
+                     }
+                 },
+                 "rowCallback": function(nRow) {
+                     responsiveHelper_dt_basic3.createExpandIcon(nRow);
+                 },
+                 "drawCallback": function(oSettings) {
+                     responsiveHelper_dt_basic3.respond();
+                 }
+             });
+         
+             $('#questionnairelist_dt').dataTable({
+                 "sDom": "<'dt-toolbar'<'col-xs-12 col-sm-6'f><'col-sm-6 col-xs-12 hidden-xs'l>r>" +
+                         "t" +
+                         "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-xs-12 col-sm-6'p>>",
+                 "autoWidth": true,
+                 "order": [],
+                 "oLanguage": {
+                 "sSearch": '<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>'
+                 },
+                 "preDrawCallback": function() {
+                     // Initialize the responsive datatables helper once.
+                     if (!responsiveHelper_dt_basic4) {
+                         responsiveHelper_dt_basic4 = new ResponsiveDatatablesHelper($('#questionnairelist_dt'), breakpointDefinition);
+                     }
+                 },
+                 "rowCallback": function(nRow) {
+                     responsiveHelper_dt_basic4.createExpandIcon(nRow);
+                 },
+                 "drawCallback": function(oSettings) {
+                     responsiveHelper_dt_basic4.respond();
+                 }
+             });
+         
+             $('#health_dt').dataTable({
+                 "sDom": "<'dt-toolbar'<'col-xs-12 col-sm-6'f><'col-sm-6 col-xs-12 hidden-xs'l>r>" +
+                         "t" +
+                         "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-xs-12 col-sm-6'p>>",
+                 "autoWidth": true,
+                 "order": [],
+                 "oLanguage": {
+                 "sSearch": '<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>'
+                 },
+                 "preDrawCallback": function() {
+                     // Initialize the responsive datatables helper once.
+                     if (!responsiveHelper_dt_basic5) {
+                         responsiveHelper_dt_basic5 = new ResponsiveDatatablesHelper($('#health_dt'), breakpointDefinition);
+                     }
+                 },
+                 "rowCallback": function(nRow) {
+                     responsiveHelper_dt_basic5.createExpandIcon(nRow);
+                 },
+                 "drawCallback": function(oSettings) {
+                     responsiveHelper_dt_basic5.respond();
+                 }
+             });             
+             /* data stolen from http://howmanyleft.co.uk/vehicle/jaguar_'e'_type */
+             if ($('#strengthGraph').length) {
+                 var day_data = [{
+                     "period": "2015-07-21",
+                     "up": 400,
+                     "down": 1000,
+                     "olympic": 300
+                 }, {
+                     "period": "2015-08-05",
+                     "up": 420,
+                     "olympic": 200
+                 }, {
+                     "period": "2015-08-27",
+                     "down": 800
+                 }, {
+                     "period": "2015-09-28",
+                     "up": 500,
+                     "down": 1200,
+                     "olympic": 800
+                 }];
+                 Morris.Line({
+                     element: 'strengthGraph',
+                     data: day_data,
+                     xkey: 'period',
+                     xLabelAngle: 30.0,
+                     yLabelFormat: function(y) {
+                         if (typeof(y) != 'undefined') {
+                             return parseFloat(y) + ' KG';
+                         } else {
+                             return '-- KG';
+                         }
+         
+                     },
+                     ykeys: ['up', 'down', 'olympic'],
+                     resize: true,
+                     labels: ['上肢', '下肢', '奧林匹克爆發']
+                 })
+             }
+         
+                         /* data stolen from http://howmanyleft.co.uk/vehicle/jaguar_'e'_type */
+             if ($('#upstrengthGraph').length) {
+                 var day_data = [{
+                     "period": "2015-07-21",
+                     "downpush": 400,
+                     "downpull": 660
+                 }, {
+                     "period": "2015-08-05",
+                     "downpush": 420
+                 }, {
+                     "period": "2015-08-27",
+                     "downpush": 450,
+                     "downpull": 680
+                 }];
+                 Morris.Line({
+                     element: 'upstrengthGraph',
+                     data: day_data,
+                     xkey: 'period',
+                     xLabelAngle: 30.0,
+                     yLabelFormat: function(y) {
+                         return parseFloat(y) + ' KG';
+                     },
+                     ykeys: ['downpush', 'downpull'],
+                     resize: true,
+                     labels: ['下肢推', '下肢拉']
+                 })
+             }
+             /* data stolen from http://howmanyleft.co.uk/vehicle/jaguar_'e'_type */
+             if ($('#downstrengthGraph').length) {
+                 var day_data = [{
+                     "period": "2015-07-21",
+                     "uphpush": 200,
+                     "uphpull": 150,
+                     "upvpush": 300,
+                     "upvpull": 185
+                 }, {
+                     "period": "2015-08-01",
+                     "uphpush": 180,
+                     "uphpull": 160,
+                     "upvpull": 200
+                 }, {
+                     "period": "2015-08-21",
+                     "uphpush": 180,
+                     "uphpull": 120,
+                     "upvpush": 200,
+                     "upvpull": 160
+                 }];
+                 Morris.Line({
+                     element: 'downstrengthGraph',
+                     data: day_data,
+                     xkey: 'period',
+                     xLabelAngle: 30.0,
+                     yLabelFormat: function(y) {
+                         return parseFloat(y) + ' KG';
+                     },
+                     ykeys: ['uphpush', 'uphpull', 'upvpush', 'upvpull'],
+                     resize: true,
+                     labels: ['上肢水平推', '上肢水平拉', '上肢垂直推', '上肢垂直拉']
+                 })
+             }
+         
+             /* data stolen from http://howmanyleft.co.uk/vehicle/jaguar_'e'_type */
+             if ($('#energyGraph').length) {
+                 var day_data = [{
+                     "period": "2015-07-21",
+                     "energy": 42
+                 }, {
+                     "period": "2015-08-01",
+                     "energy": 40
+                 }, {
+                     "period": "2015-08-21",
+                     "energy": 38
+                 }, {
+                     "period": "2015-08-30",
+                     "energy": 41
+                 }, {
+                     "period": "2015-09-03",
+                     "energy": 46
+                 }, {
+                     "period": "2015-09-15",
+                     "energy": 45
+                 }, {
+                     "period": "2015-09-21",
+                     "energy": 50
+                 }];
+                 Morris.Line({
+                     element: 'energyGraph',
+                     data: day_data,
+                     xkey: 'period',
+                     yLabelFormat: function(y) {
+                         return parseFloat(y) + '%';
+                     },
+                     xLabelAngle: 30.0,
+                     ykeys: ['energy'],
+                     resize: true,
+                     labels: ['能量系統訓練強度']
+                 })
+             }
+             /* data stolen from http://howmanyleft.co.uk/vehicle/jaguar_'e'_type */
+             if ($('#strength2Graph').length) {
+                 var day_data = [{
+                     "period": "2015-07-21",
+                     "strength2": 42
+                 }, {
+                     "period": "2015-08-01",
+                     "strength2": 40
+                 }, {
+                     "period": "2015-08-21",
+                     "strength2": 38
+                 }, {
+                     "period": "2015-08-30",
+                     "strength2": 41
+                 }, {
+                     "period": "2015-09-03",
+                     "strength2": 46
+                 }, {
+                     "period": "2015-09-15",
+                     "strength2": 45
+                 }, {
+                     "period": "2015-09-21",
+                     "strength2": 50
+                 }];
+                 Morris.Line({
+                     element: 'strength2Graph',
+                     data: day_data,
+                     xkey: 'period',
+                     yLabelFormat: function(y) {
+                         return parseFloat(y) + '%';
+                     },
+                     xLabelAngle: 30.0,
+                     ykeys: ['strength2'],
+                     resize: true,
+                     labels: ['肌力系統訓練強度']
+                 })
+             }
+         
+             /* data stolen from http://howmanyleft.co.uk/vehicle/jaguar_'e'_type */
+             if ($('#enhancedGraph').length) {
+                 var day_data = [{
+                     "period": "2015-07-21",
+                     "enhanced": 5
+                 }, {
+                     "period": "2015-08-01",
+                     "enhanced": 10
+                 }, {
+                     "period": "2015-08-21",
+                     "enhanced": 8
+                 }, {
+                     "period": "2015-08-30",
+                     "enhanced": 15
+                 }, {
+                     "period": "2015-09-03",
+                     "enhanced": 12
+                 }, {
+                     "period": "2015-09-15",
+                     "enhanced": 14
+                 }, {
+                     "period": "2015-09-21",
+                     "enhanced": 20
+                 }];
+                 Morris.Line({
+                     element: 'enhancedGraph',
+                     data: day_data,
+                     xkey: 'period',
+                     yLabelFormat: function(y) {
+                         return parseFloat(y) + '次';
+                     },
+                     xLabelAngle: 30.0,
+                     ykeys: ['enhanced'],
+                     resize: true,
+                     labels: ['增強式訓練次數']
+                 })
+             }  
+         
+             // With Buttons
+             $(".delete").click(function(e) {
+         
+                 $.SmartMessageBox({
+                     title: "<i class=\"fa fa-fw fa fa-trash-o\" aria-hidden=\"true\"></i> 刪除確認",
+                     content: "請確認是否刪除此筆資料",
+                     buttons: '[刪除][取消]'
+                 });
+         
+                 e.preventDefault();
+             })
+         
+         })
+      </script>
+      <div id="fb-root"></div>
+      <script>
+         window.fbAsyncInit = function() {
+           FB.init({
+             appId      : '1027299250717597',
+             xfbml      : true,
+             version    : 'v2.8'
+           });
+           FB.AppEvents.logPageView();
+         };
+         
+         (function(d, s, id){
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) {return;}
+            js = d.createElement(s); js.id = id;
+            js.src = "//connect.facebook.net/en_US/sdk.js";
+            fjs.parentNode.insertBefore(js, fjs);
+          }(document, 'script', 'facebook-jssdk'));
+      </script>    
+      <script>
+         /*
+          * CONVERT DIALOG TITLE TO HTML
+          * REF: http://stackoverflow.com/questions/14488774/using-html-in-a-dialogs-title-in-jquery-ui-1-10
+          */
+         $.widget("ui.dialog", $.extend({}, $.ui.dialog.prototype, {
+            _title : function(title) {
+               if (!this.options.title) {
+                  title.html("&#160;");
+               } else {
+                  title.html(this.options.title);
+               }
+            }
+         }));    
+         
+      </script>
+      <!-- Your GOOGLE ANALYTICS CODE Below -->
+      <script type="text/javascript">
+         var _gaq = _gaq || [];
+         _gaq.push(['_setAccount', 'UA-XXXXXXXX-X']);
+         _gaq.push(['_trackPageview']);
+         
+         (function() {
+             var ga = document.createElement('script');
+             ga.type = 'text/javascript';
+             ga.async = true;
+             ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+             var s = document.getElementsByTagName('script')[0];
+             s.parentNode.insertBefore(ga, s);
+         })();
+      </script>
+   </body>
+</html>
