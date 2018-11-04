@@ -23369,17 +23369,17 @@
 
     .page-calendar .b-PE {
         background: linear-gradient(90deg, rgba(243, 231, 240, 1) 0%, rgba(243, 231, 240, 1) 100%);
-        border-color: #F00A68 !important
+        border-color: #F00A68 !important;
     }
-
+    
     .page-calendar .b-custom {
         background: linear-gradient(90deg, rgba(232, 242, 251, 1) 0%, rgba(232, 242, 251, 1) 100%);
-        border-color: #4A90E2 !important
+        border-color: #4A90E2 !important;
     }
 
     .page-calendar .b-finish {
         background: linear-gradient(90deg, rgba(179, 179, 179, .6) 0%, rgba(179, 179, 179, .6) 100%);
-        border-color: #4a4a4a !important
+        border-color: #4a4a4a !important;
     }
 
     .page-calendar #calendar {
