@@ -45,18 +45,19 @@
 $(function(){
             $('#article-slider').royalSlider({
                 autoHeight: true,
-                arrowsNav: false,
+                arrowsNav: true,
+                arrowsNavAutoHide: false,
                 fadeinLoadedSlide: false,
                 controlNavigationSpacing: 0,
-                controlNavigation: 'tabs',
+                controlNavigation: 'none',
                 imageScaleMode: 'none',
                 imageAlignCenter: false,
                 loop: true,
                 loopRewind: true,
                 numImagesToPreload: 5,
                 keyboardNavEnabled: true,
-                usePreloader: false,                
-                startSlideId: 2
+                usePreloader: false,
+                transitionType: 'fade'
             }).resize();
 });
 </script>
