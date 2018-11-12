@@ -499,7 +499,8 @@
 }
 
 .theme-darkteal .nav>li>a {
-	color: #fff
+/*	color: #05232d*/
+    color: #888;
 }
 
 .theme-darkteal .nav>li>a:hover,
@@ -517,7 +518,7 @@
 }
 
 .theme-darkteal .bars {
-	color: #fff
+	color: #05232d;
 }
 
 .theme-darkteal .sidebar .menu .list li.active {
@@ -534,7 +535,7 @@
 }
 
 .theme-darkteal .checkbox input[type="checkbox"]:checked+label::after {
-	border: 1px solid #05232d
+	border: 1px solid #00bcd4
 }
 
 .theme-darkteal .inbox-widget .inbox-inner:hover .inbox-img img {
@@ -543,7 +544,7 @@
 }
 
 .theme-darkteal .nav-tabs .nav-link.active {
-	border: 1px solid #0f244a !important
+	border: 1px solid #888 !important
 }
 
 .theme-darkteal .card .header h2:before {
