@@ -20871,7 +20871,7 @@ section.content {
     position: relative;
     overflow: hidden;
     width: 100%;
-    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.1)
+    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.3)
 }
 
     .parallax-card .body {
@@ -20912,7 +20912,7 @@ section.content {
     position: relative;
     overflow: hidden;
     width: 100%;
-    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.1)
+    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.3)
 }
 
     .parallax-img-card .body {
