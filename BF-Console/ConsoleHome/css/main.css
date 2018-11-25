@@ -25416,8 +25416,14 @@ section.content {
 .patients-list .patients-img {
     width: 40px;
     height: 40px;
-    border-radius: 50%;
     object-fit: cover;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    border-radius: 50%;
+    vertical-align: bottom !important;
+    border: 3px solid #fff;
+    box-shadow: 0px 5px 25px 0px rgba(0, 0, 0, 0.2)
 }
 
 .patients-list .table tbody tr td {
@@ -25470,13 +25476,20 @@ section.content {
 /*發票顯示*/
 .invoice1 .logo, .invoice1 .clientlogo {
     float: left;
-    width: 70px;
+    width: 40px;
 }
 
     .invoice1 .logo, .invoice1 .clientlogo img.fit {
         object-fit: cover;
-        height: 60px;
-        width: 60px;
+        height: 40px;
+        width: 40px;
+        -webkit-border-radius: 50%;
+        -moz-border-radius: 50%;
+        -ms-border-radius: 50%;
+        border-radius: 50%;
+        vertical-align: bottom !important;
+        border: 1px solid #fff;
+        box-shadow: 0px 5px 25px 0px rgba(0, 0, 0, 0.2)
     }
 
 .invoice1 .info {
