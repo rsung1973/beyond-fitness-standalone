@@ -59,12 +59,12 @@
     <script src="plugins/moment/moment.min.js"></script>
     <script src="js/common.js"></script>
 </head>
-<body class="theme-darkteal">
+<body class="theme-darkteal menu_darkteal">
     <!-- Page Loader -->
     <div class="page-loader-wrapper">
         <div class="loader">
             <div class="m-t-30">
-                <img class="zmdi-hc-spin" src="plugins/livIconsevo/svg/loader-16.svg" width="48" height="48" alt="BEYOND FITNESS"></div>
+                <img class="zmdi-hc-spin" src="plugins/livIconsevo/svg/loader-11.svg" width="48" height="48" alt="BEYOND FITNESS"></div>
             <p>快馬加鞭處理中...</p>
         </div>
     </div>
