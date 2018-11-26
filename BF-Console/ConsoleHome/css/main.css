@@ -883,6 +883,24 @@
     color: #0061d2
 }
 
+.table-custom.table th {
+    background-color: #052333;
+    color: #f4f6f9
+}
+
+.table-custom.table tbody tr:hover {
+    background-color: #ced7e4
+}
+
+.table.table-striped td {
+    border-color: #999999;
+}
+
+table.DTFC_Cloned th {
+    background-color: #052333;
+    margin-bottom: 0;
+}
+
 .table-condensed > tbody > tr > td,
 .table-condensed > tbody > tr > th,
 .table-condensed > tfoot > tr > td,
@@ -5094,6 +5112,7 @@ img {
     border: none;
     box-shadow: 0px 10px 50px 0px rgba(0, 0, 0, 0.5)
 */
+    background: #eceeef;
     border-radius: .55rem;
     box-shadow: 0px 2px 20px 0px rgba(0, 0, 0, 0.5);
     border: 0
@@ -5164,7 +5183,7 @@ img {
         margin-top: 5px;
         margin-bottom: 0;
         font-weight: 800;
-        color: #0061d2;
+        color: #05232d;
         font-size: 18px;
     }
 
@@ -25506,4 +25525,4 @@ section.content {
 
 .invoice .table tr td {
     vertical-align: middle
-}
+}.
