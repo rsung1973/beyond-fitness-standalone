@@ -26,7 +26,7 @@
                     label: "分佈圖",
                     backgroundColor: "rgba(179,214,255,.8)",
                     pointBackgroundColor: "rgba(230,241,255,1)",
-                    data: <%= JsonConvert.SerializeObject(exerciseItems.Select(x=>x.ExerciseGameRank.Where(r=>r.UID==_item.UID).Select(r=>r.RankingScore).FirstOrDefault()).ToArray()) %>,
+                    data: <%= JsonConvert.SerializeObject(exerciseItems.Select(x=>x.ExerciseGameRank.Where(r=>r.UID==_item.UID).Select(r=>r.RankingScore).FirstOrDefault() ?? 0).ToArray()) %>,
                 }]
             },
             options: {
@@ -42,7 +42,7 @@
                         beginAtZero: true,
                         backdropColor: '#e6f1ff',
                         maxTicksLimit: 5,
-                        max: 10,
+                        //max: 100,
                         fontSize: 5,
                         backdropPaddingX: 5,
                         backdropPaddingY: 5

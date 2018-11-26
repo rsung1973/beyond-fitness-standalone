@@ -13,9 +13,11 @@
 
 <asp:Content ID="CustomHeader" ContentPlaceHolderID="CustomHeader" runat="server">
     <!-- royalslider -->
-    <link href="plugins/royalslider/royalslider.css" rel="stylesheet">
-    <link href="plugins/royalslider/skins/default/rs-default.css" rel="stylesheet">
-    <link href="css/royalslider.css" rel="stylesheet">
+    <link href="plugins/royalslider/royalslider.css" rel="stylesheet"/>
+    <link href="plugins/royalslider/skins/default/rs-default.css" rel="stylesheet"/>
+    <link href="css/royalslider.css?1.0" rel="stylesheet"/>
+    <!-- charts-c3 -->
+    <link href="plugins/charts-c3/plugin.css" rel="stylesheet" />
 </asp:Content>
 
 <asp:Content ID="MainContent" ContentPlaceHolderID="MainContent" runat="server">
@@ -96,7 +98,7 @@
                                                                 || (t.StartDate < weekday && t.EndDate >= endDate)).Count());
                                                         }
                                                 %>
-                                                <li class="<%= weekday==DateTime.Today ? "col-pink" : null %>">
+                                                <li class="<%= weekday==DateTime.Today ? "col-pink" : null %>" onclick="window.location.href = '<%= Url.Action("Calendar","ConsoleHome",new { DateFrom = weekday, DateTo = endDate }) %>';">
                                                     <h5><%= $"{weekday:M/d}" %></h5>
                                                     <img src="<%= lessonCount<3 
                                                   ? "images/facesmile/easy.jpg"
@@ -253,10 +255,10 @@
         <!--我的學生-->
         <%  if (_model.IsCoach())
             {
-                Html.RenderPartial("~/Views/ConsoleHome/Module/AboutLearners.ascx", _model);
+                Html.RenderPartial("~/Views/ConsoleHome/Module/AboutLearners_1.ascx", _model);
             }   %>        <!--我的分店業績卡片-->        <%  if (_model.IsOfficer() || _model.IsManager() || _model.IsViceManager())
             {
-                Html.RenderPartial("~/Views/ConsoleHome/Module/AboutAchievement.ascx", _model);
+                Html.RenderPartial("~/Views/ConsoleHome/Module/AboutAchievementC3.ascx", _model);
             }   %>        <!--我的業績&我的比賽-->        <%  if (_model.IsCoach())
             {
                 Html.RenderPartial("~/Views/ConsoleHome/Module/AboutCoach.ascx", _model);
@@ -308,7 +310,7 @@
                 Html.RenderPartial("~/Views/ConsoleHome/Module/AboutInvoice.ascx", _model);
             }           %>        <!--專業文章&我的比賽-->        <%  if (_model.IsAssistant() || _model.IsAuthorizedSysAdmin() || _model.IsServitor())
             {
-                Html.RenderPartial("~/Views/ConsoleHome/Module/AboutArticle.ascx", _model);
+                Html.RenderPartial("~/Views/ConsoleHome/Module/AboutStaff.ascx", _model);
             }           %>    </section>
 </asp:Content>
 
@@ -319,6 +321,8 @@
     <script src="bundles/chartscripts.bundle.js"></script>
     <!-- royalslider Plugin Js-->
     <script src="plugins/royalslider/jquery.royalslider.min.js" class="rs-file"></script>
+    <!-- ChartC3 Js -->
+    <script src="bundles/cs.bundles.js"></script>
 
     <script>
 
@@ -328,9 +332,9 @@
   
         });
         //行事曆
-        $(".calendar").on('click', function (event) {
-            window.location.href = 'calendar.html';
-        });
+        //$(".calendar").on('click', function (event) {
+        //    window.location.href = 'calendar.html';
+        //});
 
         //本月運動時間卡片
         $(".exerciserank").on('click', function (event) {
@@ -372,7 +376,7 @@
             .Union(items.TrialLesson());
 
 
-        items = models.GetTable<LessonTime>().FilterByUserRoleScope(models, _model);
+        //items = models.GetTable<LessonTime>().FilterByUserRoleScope(models, _model);
         _editableLessons = items.PTLesson()
             .Union(items.Where(l => l.TrainingBySelf == 1))
             .Union(items.TrialLesson());

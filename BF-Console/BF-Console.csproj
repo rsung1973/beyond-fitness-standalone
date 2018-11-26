@@ -1,4 +1,4 @@
-﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -6,6 +6,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>
     </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{40D91196-7058-4A31-BEFA-DDF19098ECD9}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
@@ -42,22 +43,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="beyond-fitness, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\beyond-fitness.dll</HintPath>
-    </Reference>
-    <Reference Include="CommonLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\CommonLib.dll</HintPath>
-    </Reference>
-    <Reference Include="CommonLib.Logger, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\CommonLib.Logger.dll</HintPath>
-    </Reference>
-    <Reference Include="CommonLib.PlugInAdapter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\CommonLib.PlugInAdapter.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=2.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
@@ -119,6 +104,7 @@
   <ItemGroup>
     <Content Include="ConsoleHome\bundles\chartscripts.bundle.js" />
     <Content Include="ConsoleHome\bundles\countTo.bundle.js" />
+    <Content Include="ConsoleHome\bundles\cs.bundles.js" />
     <Content Include="ConsoleHome\bundles\datatablescripts.bundle.js" />
     <Content Include="ConsoleHome\bundles\flotchartsscripts.bundle.js" />
     <Content Include="ConsoleHome\bundles\flotscripts.bundle.js" />
@@ -528,6 +514,7 @@
     <Content Include="ConsoleHome\plugins\chartjs\Chart.js" />
     <Content Include="ConsoleHome\plugins\chartjs\Chart.min.js" />
     <Content Include="ConsoleHome\plugins\chartjs\polar_area_chart.js" />
+    <Content Include="ConsoleHome\plugins\charts-c3\plugin.css" />
     <Content Include="ConsoleHome\plugins\chosen\chosen-sprite%402x.png" />
     <Content Include="ConsoleHome\plugins\chosen\chosen-sprite.png" />
     <Content Include="ConsoleHome\plugins\chosen\chosen.css" />
@@ -4465,11 +4452,29 @@
     <Content Include="ConsoleHome\plugins\waitme\waitMe.min.css" />
     <Content Include="ConsoleHome\plugins\waitme\waitMe.min.js" />
     <Content Include="Global.asax" />
+    <Content Include="Views\ConsoleEvent\EventModal\BookingCustomEvent.ascx" />
+    <Content Include="Views\ConsoleEvent\EventModal\BookingCoachPI.ascx" />
+    <Content Include="Views\ConsoleEvent\EventModal\BookingLesson.ascx" />
+    <Content Include="Views\ConsoleEvent\EventModal\AttendeeSelector.ascx" />
+    <Content Include="Views\ConsoleEvent\EventModal\AddEvent.ascx" />
+    <Content Include="Views\ConsoleEvent\EventModal\CoachPI.ascx" />
+    <Content Include="Views\ConsoleEvent\EventModal\UserEvent.ascx" />
+    <Content Include="Views\ConsoleEvent\EventModal\OtherLesson.ascx" />
+    <Content Include="Views\ConsoleEvent\EventModal\LearnerLesson.ascx" />
+    <Content Include="Views\ConsoleEvent\EventModal\LessonItem.ascx" />
+    <Content Include="Views\ConsoleEvent\Module\RevokeLesson.ascx" />
+    <Content Include="Views\ConsoleEvent\Module\LessonEmphasis.ascx" />
     <Content Include="Views\ConsoleHome\ExerciseBillboard.aspx" />
     <Content Include="Views\ConsoleHome\Calendar.aspx" />
     <Content Include="Views\ConsoleHome\Index.aspx" />
+    <Content Include="Views\ConsoleHome\LearnerLesson.ascx" />
+    <Content Include="Views\ConsoleHome\Module\AboutAchievementC3.ascx" />
     <Content Include="Views\ConsoleHome\Module\AboutAchievement.ascx" />
     <Content Include="Views\ConsoleHome\Module\AboutArticle.ascx" />
+    <Content Include="Views\ConsoleHome\Module\AboutLearners_1.ascx" />
+    <Content Include="Views\ConsoleHome\Module\AboutStaff.ascx" />
+    <Content Include="Views\ConsoleHome\Module\DailyEventItems.ascx" />
+    <Content Include="Views\ConsoleHome\Module\FocusItemToday.ascx" />
     <Content Include="Views\ConsoleHome\Module\RenderLessonCheck.ascx" />
     <Content Include="Views\ConsoleHome\Module\EventItems.ascx" />
     <Content Include="Views\ConsoleHome\Module\EventDetails.ascx" />
@@ -4484,172 +4489,23 @@
     <Content Include="Views\ConsoleHome\Module\ExerciseDonutChart.ascx" />
     <Content Include="Views\ConsoleHome\Module\CurrentExerciseBillboard.ascx" />
     <Content Include="Views\ConsoleHome\Module\AboutLearners.ascx" />
+    <Content Include="Views\ConsoleHome\Module\TodayLessonsBarChartC3.ascx" />
     <Content Include="Views\ConsoleHome\Module\TodayLessonsBarChart.ascx" />
     <Content Include="Views\ConsoleHome\Module\GameRankRadarChart.ascx" />
     <Content Include="Views\ConsoleHome\Module\ProfileImage.ascx" />
     <Content Include="Views\ConsoleHome\Module\InspirationalTitle.ascx" />
     <Content Include="Views\ConsoleHome\Module\BlockHeader.ascx" />
+    <Content Include="Views\ConsoleHome\Shared\Knob.ascx" />
+    <Content Include="Views\ConsoleHome\Shared\BSModalScript.ascx" />
+    <Content Include="Views\ConsoleHome\Shared\AlertMessage.ascx" />
     <Content Include="Views\ConsoleHome\Shared\InitBarChartNoRegister.ascx" />
+    <Content Include="Views\ConsoleHome\Shared\ReportInputError.ascx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="ConsoleHome\css\smartcalendar-2.css" />
-    <Content Include="ConsoleHome\css\smartcalendar.css" />
-    <Content Include="ConsoleHome\fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="ConsoleHome\fonts\glyphicons-halflings-regular.svg" />
-    <Content Include="ConsoleHome\fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="ConsoleHome\fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\css\bootstrap-datepicker3.min.css" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\css\bootstrap-datetimepicker.min.css" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\css\bootstrap.min.css" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\css\calendar-2-date.css" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\css\calendar-2-inline.css" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\css\calendar-2.css" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\css\calendar-date.css" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\css\calendar.css" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\css\font-awesome.min.css" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\bootstrap-datepicker.min.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\bootstrap-datetimepicker.min.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\calendar-3-24hours.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\calendar-3.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\calendar-fr.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\calendar.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\index-date-2.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\index-date-3.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\index-date-fr.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\index-date.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\jquery-3.2.1.min.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker-en-CA.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.ar-tn.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.ar.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.az.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.bg.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.bn.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.br.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.bs.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.ca.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.cs.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.cy.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.da.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.de.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.el.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.en-AU.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.en-CA.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.en-GB.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.en-IE.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.en-NZ.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.en-ZA.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.eo.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.es.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.et.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.eu.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.fa.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.fi.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.fo.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.fr-CH.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.fr.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.gl.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.he.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.hi.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.hr.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.hu.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.hy.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.id.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.is.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.it-CH.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.it.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.ja.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.ka.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.kh.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.kk.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.km.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.ko.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.kr.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.lt.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.lv.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.me.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.mk.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.mn.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.ms.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.nb.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.nl-BE.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.nl.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.no.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.oc.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.pl.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.pt-BR.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.pt.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.ro.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.rs-latin.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.rs.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.ru.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.si.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.sk.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.sl.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.sq.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.sr-latin.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.sr.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.sv.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.sw.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.ta.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.tg.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.th.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.tk.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.tr.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.uk.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.uz-cyrl.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.uz-latn.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.vi.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.zh-CN.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datepicker\bootstrap-datepicker.zh-TW.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datetimepicker\bootstrap-datetimepicker.ar.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datetimepicker\bootstrap-datetimepicker.az.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datetimepicker\bootstrap-datetimepicker.bg.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datetimepicker\bootstrap-datetimepicker.bn.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datetimepicker\bootstrap-datetimepicker.ca.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datetimepicker\bootstrap-datetimepicker.cs.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datetimepicker\bootstrap-datetimepicker.da.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datetimepicker\bootstrap-datetimepicker.de.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datetimepicker\bootstrap-datetimepicker.ee.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datetimepicker\bootstrap-datetimepicker.el.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datetimepicker\bootstrap-datetimepicker.es.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datetimepicker\bootstrap-datetimepicker.fi.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datetimepicker\bootstrap-datetimepicker.fr.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datetimepicker\bootstrap-datetimepicker.he.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datetimepicker\bootstrap-datetimepicker.hr.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datetimepicker\bootstrap-datetimepicker.hu.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datetimepicker\bootstrap-datetimepicker.hy.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datetimepicker\bootstrap-datetimepicker.id.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datetimepicker\bootstrap-datetimepicker.is.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datetimepicker\bootstrap-datetimepicker.it.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datetimepicker\bootstrap-datetimepicker.ja.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datetimepicker\bootstrap-datetimepicker.ka.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datetimepicker\bootstrap-datetimepicker.ko.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datetimepicker\bootstrap-datetimepicker.lt.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datetimepicker\bootstrap-datetimepicker.lv.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datetimepicker\bootstrap-datetimepicker.ms.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datetimepicker\bootstrap-datetimepicker.nb.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datetimepicker\bootstrap-datetimepicker.nl.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datetimepicker\bootstrap-datetimepicker.no.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datetimepicker\bootstrap-datetimepicker.pl.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datetimepicker\bootstrap-datetimepicker.pt-BR.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datetimepicker\bootstrap-datetimepicker.pt.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datetimepicker\bootstrap-datetimepicker.ro.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datetimepicker\bootstrap-datetimepicker.rs-latin.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datetimepicker\bootstrap-datetimepicker.rs.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datetimepicker\bootstrap-datetimepicker.ru.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datetimepicker\bootstrap-datetimepicker.sk.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datetimepicker\bootstrap-datetimepicker.sl.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datetimepicker\bootstrap-datetimepicker.sv.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datetimepicker\bootstrap-datetimepicker.sw.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datetimepicker\bootstrap-datetimepicker.th.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datetimepicker\bootstrap-datetimepicker.tr.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datetimepicker\bootstrap-datetimepicker.ua.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datetimepicker\bootstrap-datetimepicker.uk.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datetimepicker\bootstrap-datetimepicker.zh-CN.js" />
-    <Content Include="ConsoleHome\plugins\smartcalendar\js\locales-datetimepicker\bootstrap-datetimepicker.zh-TW.js" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\ConsoleEventController.cs" />
     <Compile Include="Controllers\ConsoleHomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -4898,11 +4754,24 @@
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
-    <None Include="ConsoleHome\fonts\glyphicons-halflings-regular.woff2" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="App_Start\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\beyond-fitness\beyond-fitness.csproj">
+      <Project>{c49821ff-96c8-466b-aef4-137ec84fdefc}</Project>
+      <Name>beyond-fitness</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CommonLib.Logger\CommonLib.Logger.csproj">
+      <Project>{8146e629-552a-4b36-8711-08ae8245b8fa}</Project>
+      <Name>CommonLib.Logger</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CommonLib\CommonLib.csproj">
+      <Project>{c0ad239c-2ac4-46d2-ae7c-5e97266ef4ea}</Project>
+      <Name>CommonLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -4928,11 +4797,6 @@
         </WebProjectProperties>
       </FlavorProperties>
     </VisualStudio>
-    <MonoDevelop>
-      <Properties>
-        <XspParameters Port="8080" Address="127.0.0.1" SslMode="None" SslProtocol="Default" KeyType="None" CertFile="" KeyFile="" PasswordOptions="None" Password="" Verbose="True" />
-      </Properties>
-    </MonoDevelop>
   </ProjectExtensions>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

@@ -35,7 +35,7 @@ namespace WebHome.Helper
                 items = models.GetTable<RegisterLesson>();
 
             items = items.Join(models.GetTable<LessonPriceType>()
-                            .Where(p => p.Status == (int)Naming.DocumentLevelDefinition.教練PI || p.IsWelfareGiftLesson != null),
+                            .Where(p => p.Status == (int)Naming.LessonPriceStatus.教練PI || p.IsWelfareGiftLesson != null),
                             r => r.ClassLevel, p => p.PriceID, (r, p) => r);
 
             return items;

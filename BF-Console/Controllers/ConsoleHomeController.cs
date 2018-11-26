@@ -33,20 +33,24 @@ namespace BFConsole.Controllers
     [RoleAuthorize(RoleID = new int[] { (int)Naming.RoleID.Administrator, (int)Naming.RoleID.Assistant, (int)Naming.RoleID.Officer, (int)Naming.RoleID.Coach, (int)Naming.RoleID.Servitor })]
     public class ConsoleHomeController : SampleController<UserProfile>
     {
+        public const String InputErrorView = "~/Views/ConsoleHome/Shared/ReportInputError.ascx";
+
         [RoleAuthorize(RoleID = new int[] { (int)Naming.RoleID.Administrator, (int)Naming.RoleID.Assistant, (int)Naming.RoleID.Officer, (int)Naming.RoleID.Coach, (int)Naming.RoleID.Servitor })]
         public ActionResult Index()
         {
-            var profile = HttpContext.GetUser().LoadInstance(models);
-            return View(profile);
+            var profile = HttpContext.GetUser();
+            profile.ReportInputError = InputErrorView;
+            return View(profile.LoadInstance(models));
         }
 
         [RoleAuthorize(RoleID = new int[] { (int)Naming.RoleID.Administrator, (int)Naming.RoleID.Assistant, (int)Naming.RoleID.Officer, (int)Naming.RoleID.Coach, (int)Naming.RoleID.Servitor })]
         public ActionResult Calendar(DailyBookingQueryViewModel viewModel)
         {
             ViewBag.ViewModel = viewModel;
-            var profile = HttpContext.GetUser().LoadInstance(models);
+            var profile = HttpContext.GetUser();
+            profile.ReportInputError = InputErrorView;
             viewModel.KeyID = profile.UID.EncryptKey();
-            return View(profile);
+            return View(profile.LoadInstance(models));
         }
 
         public ActionResult CalendarEventItems(FullCalendarViewModel viewModel)
@@ -76,7 +80,7 @@ namespace BFConsole.Controllers
 
 
             IQueryable<LessonTime> dataItems = models.GetTable<LessonTime>();
-            IQueryable<UserEvent> eventItems = models.GetTable<UserEvent>().Where(e => e.EventType == 1);
+            IQueryable<UserEvent> eventItems = models.GetTable<UserEvent>().Where(e => !e.SystemEventID.HasValue);
             if (viewModel.DateFrom.HasValue && viewModel.DateTo.HasValue)
             {
                 dataItems = dataItems.Where(t => t.ClassTime >= viewModel.DateFrom.Value

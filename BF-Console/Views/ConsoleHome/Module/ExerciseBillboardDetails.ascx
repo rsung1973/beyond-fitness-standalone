@@ -71,7 +71,7 @@
     {
         return profile.PictureID.HasValue
                               ? VirtualPathUtility.ToAbsolute("~/Information/GetResource/") + profile.PictureID + "?stretch=true"
-                              : "images/avatars/noname.png";
+                              : "images/avatar/noname.png";
     }
 
     String workPlace(int uid)

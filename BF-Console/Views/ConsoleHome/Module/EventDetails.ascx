@@ -30,13 +30,89 @@
         });
     }
 
+    function deleteLesson(keyID) {
+        deleteData(function (onSuccess) {
+            showLoading();
+            $.post('<%= Url.Action("RevokeBooking", "ConsoleEvent") %>', { 'keyID': keyID }, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    if (data.result) {
+                        if ($global.target) {
+                            $global.target.remove();
+                        } else {
+                            refreshEvents();
+                        }
+                        refetchCalendarEvents();
+                        $global.closeAllModal();
+                        onSuccess();
+                    } else {
+                        swal(data.message);
+                    }
+                } else {
+                    $(data).appendTo($('body'));
+                }
+            });
+        });
+    }
+
+    function deleteUserEvent(keyID) {
+        deleteData(function (onSuccess) {
+            showLoading();
+            $.post('<%= Url.Action("RevokeCoachEvent", "ConsoleEvent") %>', { 'keyID': keyID }, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    if (data.result) {
+                        if ($global.target && $global.target.length > 0) {
+                            $global.target.remove();
+                        } else {
+                            refreshEvents();
+                        }
+                        refetchCalendarEvents();
+                        $global.closeAllModal();
+                        onSuccess();
+                    } else {
+                        swal(data.message);
+                    }
+                } else {
+                    $(data).appendTo($('body'));
+                }
+            });
+        });
+    }
+
+    function bookingCustomEvent(args) {
+        showLoading();
+        $.post('<%= Url.Action("BookingCustomEvent", "ConsoleEvent") %>', args, function (data) {
+            hideLoading();
+            if ($.isPlainObject(data)) {
+                swal(data.message);
+            } else {
+                $(data).appendTo($('body'));
+            }
+        });
+    }
+
+    var refreshEvents;
+
     $(function () {
-        debugger;
+        var eventStart = moment('<%= $"{startDate:yyyy-MM-dd}" %>');
         var dateFrom = moment('<%= $"{startDate:yyyy-MM-dd}" %>');
         var dateTo = moment('<%= $"{startDate:yyyy-MM-dd}" %>');
-        loadEvents(dateFrom.format('YYYY-MM-DD'), dateTo.format('YYYY-MM-DD'));
+
+        refreshEvents = function () {
+            $('#open-events .event-name').remove();
+            $('#open-events hr').remove();
+            loadEvents(eventStart.format('YYYY-MM-DD'), dateTo.format('YYYY-MM-DD'));
+<%--            dateFrom = moment('<%= $"{startDate:yyyy-MM-dd}" %>');
+            dateTo = moment('<%= $"{startDate:yyyy-MM-dd}" %>');
+            loadEvents(dateFrom.format('YYYY-MM-DD'), dateTo.format('YYYY-MM-DD'));
             dateFrom.add(1, 'd');
-            dateTo.add(1, 'd');
+            dateTo.add(1, 'd');--%>
+        };
+
+        loadEvents(dateFrom.format('YYYY-MM-DD'), dateTo.format('YYYY-MM-DD'));
+        dateFrom.add(1, 'd');
+        dateTo.add(1, 'd');
 
         $('#btnLoadEvents').click(function () {
             loadEvents(dateFrom.format('YYYY-MM-DD'), dateTo.format('YYYY-MM-DD'));
@@ -52,6 +128,7 @@
     ModelSource<UserProfile> models;
     UserProfile _model;
     DateTime? startDate;
+    DailyBookingQueryViewModel _viewModel;
     
     protected override void OnInit(EventArgs e)
     {
@@ -59,7 +136,8 @@
         _modelState = (ModelStateDictionary)ViewBag.ModelState;
         models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
         _model = (UserProfile)this.Model;
-        startDate = ((DateTime?)ViewBag.StartDate) ?? DateTime.Today;
+        _viewModel = (DailyBookingQueryViewModel)ViewBag.ViewModel;
+        startDate = _viewModel.DateFrom ?? DateTime.Today;
     }
 
 

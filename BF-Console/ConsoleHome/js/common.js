@@ -1,7 +1,12 @@
 ﻿
+var loading = 0;
 function showLoading() {
     //$('.page-loader-wrapper').css('display', 'block');
-    $('.page-loader-wrapper').fadeIn();
+    var current = (new Date()).getTime();
+    if ((current-loading) > 3000) {
+        $('.page-loader-wrapper').fadeIn();
+        loading = current;
+    }
 }
 
 function hideLoading() {
@@ -16,8 +21,8 @@ function loadScript(url, callback) {
 
     if (script.readyState) {  //IE
         script.onreadystatechange = function () {
-            if (script.readyState == "loaded" ||
-                script.readyState == "complete") {
+            if (script.readyState === "loaded" ||
+                script.readyState === "complete") {
                 script.onreadystatechange = null;
                 callback();
             }
@@ -31,6 +36,84 @@ function loadScript(url, callback) {
     script.src = url;
     document.getElementsByTagName("head")[0].appendChild(script);
 }
+
+function smartAlert(message) {
+    swal(message);
+}
+
+ function deleteData(doDelete) {
+    swal({
+        title: "不後悔?",
+        text: "刪除後資料將無法回覆!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "確定, 不後悔",
+        cancelButtonText: "不, 點錯了",
+        closeOnConfirm: false,
+        closeOnCancel: false
+    }, function (isConfirm) {
+        if (isConfirm) {
+            doDelete(function () {
+                swal("刪除成功!", "資料已經刪除 Bye!", "success");
+            });
+        } else {
+            swal("取消成功", "你的資料現在非常安全 :)", "error");
+            if ($global.closeAllModal)
+                $global.closeAllModal();
+        }
+    });
+}
+
+function clearErrors() {
+    $('label.help-error-text').remove();
+}
+
+$.fn.serializeObject = function () {
+    var o = {};
+    var a = this.serializeArray();
+    $.each(a, function () {
+        if (o[this.name] !== undefined) {
+            if (!o[this.name].push) {
+                o[this.name] = [o[this.name]];
+            }
+            o[this.name].push(this.value || '');
+        } else {
+            o[this.name] = this.value || '';
+        }
+    });
+    return o;
+};
+
+$.fn.launchDownload = function (url, params, target) {
+
+    var data = this.serializeObject();
+    if (params) {
+        $.extend(data, params);
+    }
+
+    var form = $('<form></form>').attr('action', url).attr('method', 'post');//.attr('target', '_blank');
+    if (target) {
+        form.attr('target', target);
+    }
+
+    Object.keys(data).forEach(function (key) {
+        var value = data[key];
+
+        if (value instanceof Array) {
+            value.forEach(function (v) {
+                form.append($("<input></input>").attr('type', 'hidden').attr('name', key).attr('value', v));
+            });
+        } else {
+            form.append($("<input></input>").attr('type', 'hidden').attr('name', key).attr('value', value));
+        }
+
+    });
+
+    //send request
+    form.appendTo('body').submit().remove();
+};
+
 
 var $global = {
     'onReady': [],

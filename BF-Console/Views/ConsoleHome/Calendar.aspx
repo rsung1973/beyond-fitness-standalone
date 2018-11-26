@@ -14,7 +14,13 @@
 <asp:Content ID="CustomHeader" ContentPlaceHolderID="CustomHeader" runat="server">
     <!-- Fullcalendar -->
     <link href="plugins/fullcalendar/fullcalendar.min.css" rel="stylesheet">
-
+    <!-- Bootstrap Datetimepick -->
+    <link href="plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+    <link href="css/datetimepicker.css" rel="stylesheet" />
+    <!-- Inbox -->
+    <link href="css/inbox.css" rel="stylesheet">
+    <!-- Multi Select Css -->
+    <link href="plugins/multi-select/css/multi-select.css" rel="stylesheet">
 </asp:Content>
 
 <asp:Content ID="MainContent" ContentPlaceHolderID="MainContent" runat="server">
@@ -22,11 +28,11 @@
         $(function () {
             $global.viewModel = <%= JsonConvert.SerializeObject(_viewModel) %>;
 
-            for(var i=0;i<$global.onReady.length;i++) {
+            for (var i = 0; i < $global.onReady.length; i++) {
                 $global.onReady[i]();
             }
         });
-    </script>  
+    </script>
     <section class="content page-calendar">
         <%  ViewBag.BlockHeader = "我的行事曆";
             Html.RenderPartial("~/Views/ConsoleHome/Module/BlockHeader.ascx", _model); %>
@@ -93,14 +99,89 @@
     <!-- Fullcalendar Plugin js -->
     <script src="bundles/fullcalendarscripts.bundle.js"></script>
     <script src="plugins/fullcalendar/locale/zh-tw.js"></script>
-    <!-- SweetAlert Plugin Js -->
-    <script src="plugins/sweetalert/sweetalert.min.js"></script>
     <!-- Bootstrap datetimepicker Plugin Js -->
     <script src="plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
     <script src="plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-TW.js"></script>
     <!-- Multi Select Plugin Js -->
     <script src="plugins/multi-select/js/jquery.multi-select.js"></script>
-  
+
+    <script>
+        function showLessonEventModal(keyID, event) {
+            var event = event || window.event;
+            $global.target = $(event.target).closest('div.event-name');
+            showLoading();
+            $.post('<%= Url.Action("ShowLessonEventModal", "ConsoleEvent") %>', { 'keyID': keyID }, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    alert(data.message);
+                } else {
+                    $(data).appendTo($('body'));
+                }
+            });
+        }
+
+        function showUserEventModal(keyID, event) {
+            var event = event || window.event;
+            $global.target = $(event.target).closest('div.event-name');
+            showLoading();
+            $.post('<%= Url.Action("ShowUserEventModal", "ConsoleEvent") %>', { 'keyID': keyID }, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    alert(data.message);
+                } else {
+                    $(data).appendTo($('body'));
+                }
+            });
+        }
+
+        function equipDatetimePicker() {
+            $('.date').datetimepicker({
+                language: 'zh-TW',
+                weekStart: 1,
+                todayBtn: 0,
+                clearBtn: 1,
+                autoclose: 1,
+                todayHighlight: 1,
+                startView: 2,
+                minView: 2,
+                defaultView: 2,
+                forceParse: 0,
+                startDate: '<%= String.Format("{0:yyyy-MM-dd}",DateTime.Today) %>',
+                defaultDate: '<%= String.Format("{0:yyyy-MM-dd}",DateTime.Today) %>',
+            });
+            $('.time').datetimepicker({
+                language: 'zh-TW',
+                weekStart: 1,
+                todayBtn: 0,
+                clearBtn: 1,
+                autoclose: 1,
+                todayHighlight: 1,
+                startView: 1,
+                minView: 1,
+                defaultView: 1,
+                minuteStep: 30,
+                forceParse: 0
+            });
+            $('.datetime').datetimepicker({
+                language: 'zh-TW',
+                weekStart: 1,
+                todayBtn: 0,
+                clearBtn: 1,
+                autoclose: 1,
+                todayHighlight: 1,
+                startView: 2,
+                minView: 0,
+                defaultView: 2,
+                minuteStep: 30,
+                forceParse: 0,
+                startDate: '<%= String.Format("{0:yyyy-MM-dd}",DateTime.Today) %>',
+<%--                useCurrent: 'hour',
+                format: 'yyyy-mm-dd hh:ii',
+                defaultDate: '<%= String.Format("{0:yyyy-MM-dd} 08:00",DateTime.Today) %>',--%>
+            });
+        }
+    </script>
+
 </asp:Content>
 
 <script runat="server">

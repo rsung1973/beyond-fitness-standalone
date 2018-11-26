@@ -11,7 +11,7 @@
     <div class="row clearfix">
         <div class="col-lg-12 col-md-12">
             <div class="row clearfix">
-                <div class="col-sm-6 col-12 achivement">
+                <div class="col-sm-4 col-12 achivement">
                     <h4 class="card-outbound-header">我的業績</h4>
                     <div class="parallax-img-card">
                         <div class="body">
@@ -30,7 +30,10 @@
                             <img src="images/carousel/level-background.jpg"></div>
                     </div>
                 </div>
-                <%  Html.RenderPartial("~/Views/ConsoleHome/Module/AboutContest.ascx", _model); %>
+                <%  ViewBag.Allotment = 3;
+                    Html.RenderPartial("~/Views/ConsoleHome/Module/AboutContest.ascx", _model);
+                    Html.RenderPartial("~/Views/ConsoleHome/Module/AboutArticle.ascx", _model);
+                    %>
             </div>
         </div>
     </div>

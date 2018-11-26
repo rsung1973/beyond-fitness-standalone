@@ -12,4 +12,15 @@ namespace WebHome.Models.ViewModel
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
     }
+
+    public class CalendarEventQueryViewModel : UserEventViewModel 
+    {
+        public int? LessonID { get; set; }
+        public String UserName { get; set; }
+    }
+
+    public class CalendarEventViewModel : CalendarEventQueryViewModel
+    {
+    }
+
 }

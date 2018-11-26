@@ -35,7 +35,7 @@
                             <ul class="header-dropdown">
                                 <li class="dropdown">
                                     <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="zmdi zmdi-more"></i></a>
-                                    <ul class="dropdown-menu dropdown-menu-right slideUp float-right">
+                                    <ul class="dropdown-menu dropdown-menu-right slideUp float-right xl-blue">
                                         <li><a href="javascript:inquireBillboard();">全部</a></li>
                                         <%  foreach (var b in models.GetTable<BranchStore>())
                                             {   %>
