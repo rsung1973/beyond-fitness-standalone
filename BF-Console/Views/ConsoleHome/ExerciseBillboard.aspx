@@ -77,14 +77,14 @@
                                 <span class="m-r-20"><i class="zmdi zmdi-label col-yellow m-r-5"></i>恢復</span>
                             </div>
                             <div class="table-responsive">
-                                <table class="table m-b-0 table-hover nowrap dataTable-exerciserankList" style="width: 100%">
-                                    <thead class="bg-darkteal">
+                                <table class="table table-striped table-custom m-b-0 nowrap dataTable-exerciserankList" style="width: 100%">
+                                    <thead>
                                         <tr>
-                                            <th class="xl-blue col-darkteal">姓名</th>
+                                            <th>姓名</th>
                                             <th>分店</th>
                                             <th>本月運動 <small>小時:分鐘</small></th>
                                             <th>階段佔比</th>
-                                            <th class="xl-blue col-darkteal">排名</th>
+                                            <th>排名</th>
                                         </tr>
                                     </thead>
                                 </table>
@@ -139,8 +139,7 @@
                 scrollX: true,
                 scrollCollapse: true,
                 fixedColumns: {
-                    leftColumns: 1,
-                    rightColumns: 1
+                    leftColumns: 1
                 },
                 "columnDefs": [
                     {
