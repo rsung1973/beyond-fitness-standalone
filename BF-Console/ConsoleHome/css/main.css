@@ -329,6 +329,12 @@
     width: 0
 }
 
+.noUi-bottom {
+    position: absolute;
+    bottom: 10px;
+}
+
+
 .noUi-handle {
     position: relative;
     z-index: 1
@@ -2590,7 +2596,7 @@ table.DTFC_Cloned th {
     -ms-transition: color 0.3s ease-in-out, border-color 0.3s ease-in-out, background-color 0.3s ease-in-out;
     transition: color 0.3s ease-in-out, border-color 0.3s ease-in-out, background-color 0.3s ease-in-out;
     -webkit-box-shadow: none;
-    box-shadow: none
+    box-shadow: none;
 }
 
 .has-success .form-control {
@@ -2963,7 +2969,8 @@ textarea.form-control {
         border-radius: 3px;
         top: 0;
         background-color: transparent;
-        border: 1px solid #E3E3E3;
+        /*    border: 1px solid #E3E3E3;*/
+        border: 1px solid #00bcd4;
         -webkit-transition: opacity 0.3s linear;
         -moz-transition: opacity 0.3s linear;
         -o-transition: opacity 0.3s linear;
@@ -3635,6 +3642,7 @@ body {
     }
 
 .nav.nav-tabs-new2 {
+    /*    padding-bottom: 15px;*/
     border-bottom: 1px solid #eee
 }
 
@@ -3658,6 +3666,18 @@ body {
             background-color: transparent;
             color: #49c5b6
         }
+
+    .nav.nav-tabs-new2.darkteal > li > a:hover,
+    .nav.nav-tabs-new2.darkteal > li > a:focus {
+        color: #052333;
+        border-bottom: 2px solid #052333 !important
+    }
+
+    .nav.nav-tabs-new2.darkteal > li > a.active {
+        border-bottom: 2px solid #052333 !important;
+        background-color: transparent;
+        color: #052333
+    }
 
 .dropdown-toggle:after,
 .bootstrap-switch-label:before {
@@ -4392,16 +4412,25 @@ img {
     box-shadow: 0px 10px 25px 0px rgba(0, 0, 0, 0.3)
 }
 
+    .img-raised.popfit {
+        object-fit: cover;
+        width: 100px;
+        height: 100px;
+        object-position: center center;
+    }
+
     .img-raised.notifacation-fit {
         width: 36px;
         height: 36px;
         object-fit: cover;
+        object-position: center center;
     }
 
 .img-thumbnail.popfit {
     object-fit: cover;
     width: 100px;
     height: 100px;
+    object-position: center center;
 }
 
 .popover {
@@ -5112,7 +5141,8 @@ img {
     border: none;
     box-shadow: 0px 10px 50px 0px rgba(0, 0, 0, 0.5)
 */
-    background: #eceeef;
+    /*    background: #eceeef;*/
+    background: #f4f6f9;
     border-radius: .55rem;
     box-shadow: 0px 2px 20px 0px rgba(0, 0, 0, 0.5);
     border: 0
@@ -5134,6 +5164,7 @@ img {
         padding: 12px 10px;
         width: 90px;
         height: 44px;
+        color: #f4f6f9
     }
 
         .modal-content .closebutton:before {
@@ -18412,6 +18443,8 @@ img {
     .chat-wrapper .card .input-group,
     .project_list .table,
     .weather .city h3,
+    .weather6 p,
+    .top_counter .content .number,
     .inbox-widget .inbox-inner:last-child,
     .inbox-widget .inbox-inner .inbox-item-info .inbox-date,
     .inbox-widget .inbox-inner .inbox-item-info .author,
@@ -18419,6 +18452,7 @@ img {
     .members_profiles .table,
     .profile_state li h4,
     .social_media_table .table,
+    .feeds_widget,
     .new_friend_list,
     .new_friend_list li .users_name,
     .contact .action_bar .delete_all,
@@ -18450,6 +18484,7 @@ img {
     }
 
 .m-b-5,
+.new_timeline .bullet,
 .weather .days li img {
     margin-bottom: 5px
 }
@@ -18471,6 +18506,7 @@ img {
 
 .m-r-10,
 .right-sidebar .right_chat .media .media-object,
+.top_counter .icon,
 .chat-widget .chat-scroll-list {
     margin-right: 10px
 }
@@ -18491,6 +18527,7 @@ img {
 }
 
 .m-r-15,
+.new_timeline .header .color-overlay .day-number,
 .product-report .icon {
     margin-right: 15px
 }
@@ -18907,6 +18944,9 @@ img {
     .chat-wrapper .card,
     .project_widget .pw_content .pw_header h6,
     .weather2 .city-selected .temp h2,
+    .new_timeline > ul,
+    .new_timeline h3,
+    .new_timeline h4,
     .agent .agent-content .agent-name h4,
     .agent .agent-content .agent-contact-details,
     .agent .agent-content .social-icons,
@@ -18919,12 +18959,20 @@ img {
         margin: 0 !important
     }
 
-    .p-l-0,
-    .sidebar .menu .list,
-    .sidebar .menu .list .ml-menu,
-    .invoice .nav-tabs {
-        padding-left: 0px
-    }
+.p-0 {
+    padding: 0px !important
+}
+
+.p-10 {
+    padding: 10px !important
+}
+
+.p-l-0,
+.sidebar .menu .list,
+.sidebar .menu .list .ml-menu,
+.invoice .nav-tabs {
+    padding-left: 0px
+}
 
 .p-t-0 {
     padding-top: 0px
@@ -19360,6 +19408,8 @@ section.content {
 .right-sidebar .nav-tabs + .tab-content,
 .card .header .header-dropdown,
 .chat-widget .chat-scroll-list,
+.weather3 .bottom .forecast,
+.new_timeline .header,
 .agent .agent-content .agent-contact-details,
 .profile_state,
 .profile_state li,
@@ -19556,6 +19606,8 @@ section.content {
     .sidebar .menu .list a i,
     .activity li a i,
     .weather .days li,
+    .weather3 .top,
+    .top_counter .icon,
     .weather2 .days-list .day,
     .product-report .icon,
     .member-card,
@@ -19655,8 +19707,13 @@ section.content {
         -webkit-border-radius: 50px;
         -moz-border-radius: 50px;
         -ms-border-radius: 50px;
-        border-radius: 50px
+        border-radius: 50px;
+        background: #d5dadc
     }
+
+        .block-header .breadcrumb a {
+            color: #052333;
+        }
 
 .bg-red {
     background-color: #ec3b57 !important;
@@ -19880,11 +19937,22 @@ section.content {
 
 .bg-white {
     background-color: #fff !important;
-    color: #fff
+    color: #9E9E9E
 }
 
     .bg-white .content .text,
     .bg-white .content .number {
+        color: #fff !important
+    }
+
+.bg-secondary {
+    background-color: #6c757d !important;
+    color: #fff
+}
+
+    .bg-secondary .body,
+    .bg-secondary .content .text,
+    .bg-secondary .content .number {
         color: #fff !important
     }
 
@@ -20453,67 +20521,85 @@ section.content {
     background: #F4F6F9 !important
 }
 
-.inlineblock,
-.navbar-header,
-.navbar-nav.navbar-left,
-.navbar-nav.navbar-right,
-.navbar-nav.navbar-left > li,
-.navbar-nav.navbar-right > li,
-.navbar-nav > li > a,
-.sidebar,
-.right-sidebar .choose-skin li,
-.right-sidebar .choose-skin li div,
-.right-sidebar .right_chat .media .message,
-.right-sidebar .right_chat .media .status,
-.right-sidebar .theme-light-dark li,
-.card,
-.card .header .header-dropdown li,
-.dropdown-menu ul.menu .icon-circle,
-.dropdown-menu ul.menu .menu-info,
-.team-info li,
-.chat-widget .chat-scroll-list li.left .chat-info,
-.chat-widget .chat-scroll-list li.right .chat-info,
-.weather .days li,
-.agent .agent-content .agent-contact-details li span,
-.agent .agent-content .social-icons li,
-.agent .agent-content .social-icons li a,
-.member-card .social-links li,
-.social_icon,
-.w_calender ul li,
-.contact .c_list .checkbox,
-.contact .c_list .c_name {
-    display: inline-block
+    .inlineblock,
+    .navbar-header,
+    .navbar-nav.navbar-left,
+    .navbar-nav.navbar-right,
+    .navbar-nav.navbar-left > li,
+    .navbar-nav.navbar-right > li,
+    .navbar-nav > li > a,
+    .sidebar,
+    .right-sidebar .choose-skin li,
+    .right-sidebar .choose-skin li div,
+    .right-sidebar .right_chat .media .message,
+    .right-sidebar .right_chat .media .status,
+    .right-sidebar .theme-light-dark li,
+    .card,
+    .card .header .header-dropdown li,
+    .dropdown-menu ul.menu .icon-circle,
+    .dropdown-menu ul.menu .menu-info,
+    .new_timeline .header .color-overlay .day-number,
+    .new_timeline .header .color-overlay .date-right,
+    .new_timeline li div,
+    .team-info li,
+    .chat-widget .chat-scroll-list li.left .chat-info,
+    .chat-widget .chat-scroll-list li.right .chat-info,
+    .weather .days li,
+    .weather3 .top .wrapper .temp .temp-value,
+    .weather3 .top .wrapper .temp .deg,
+    .agent .agent-content .agent-contact-details li span,
+    .agent .agent-content .social-icons li,
+    .agent .agent-content .social-icons li a,
+    .member-card .social-links li,
+    .social_icon,
+    .w_calender ul li,
+    .contact .c_list .checkbox,
+    .contact .c_list .c_name {
+        display: inline-block
+    }
+
+        .displayblock,
+        .sidebar .menu .list a,
+        .card .card-inside-title,
+        .card .card-inside-title small,
+        .card .header .header-dropdown li a,
+        .card .header h2 small,
+        .dropdown-menu ul.menu li a,
+        .dropdown-menu .footer a,
+        .dropdown-menu > li > a,
+        .page-calendar .event-name h4 span,
+        .chat-widget .chat-scroll-list li .message,
+        .project_widget .pw_img:before,
+        .project_widget .pw_content .pw_meta small,
+        .project_widget .pw_content .pw_meta span,
+        .twitter-feed p,
+        .weather .days li .degrees,
+        .weather2 .city-selected .temp h2,
+        .agent .agent-avatar a,
+        .agent .agent-content .agent-contact-details,
+        .inbox-widget .inbox-inner:hover .hover_action,
+        .inbox-widget .inbox-inner .inbox-item-info .inbox-message,
+        .member-card .text-pink,
+        .social_media_table .list-name,
+        .new_friend_list li .join_date,
+        .w_calender span,
+        .w_calender span + span,
+        .feeds_widget li .feeds-body,
+        .feeds_widget li .feeds-body > small,
+        .file_manager .file .file-name small,
+        .invoice1 .info {
+            display: block
+        }
+
+.displaynone {
+    display: none
 }
 
-    .displayblock,
-    .sidebar .menu .list a,
-    .card .card-inside-title,
-    .card .card-inside-title small,
-    .card .header .header-dropdown li a,
-    .card .header h2 small,
-    .dropdown-menu ul.menu li a,
-    .dropdown-menu .footer a,
-    .dropdown-menu > li > a,
-    .page-calendar .event-name h4 span,
-    .chat-widget .chat-scroll-list li .message,
-    .project_widget .pw_img:before,
-    .project_widget .pw_content .pw_meta small,
-    .project_widget .pw_content .pw_meta span,
-    .twitter-feed p,
-    .weather .days li .degrees,
-    .weather2 .city-selected .temp h2,
-    .agent .agent-avatar a,
-    .agent .agent-content .agent-contact-details,
-    .inbox-widget .inbox-inner:hover .hover_action,
-    .inbox-widget .inbox-inner .inbox-item-info .inbox-message,
-    .member-card .text-pink,
-    .social_media_table .list-name,
-    .new_friend_list li .join_date,
-    .w_calender span,
-    .w_calender span + span,
-    .file_manager .file .file-name small {
-        display: block
-    }
+.overflowhidden,
+.member-card {
+    overflow: hidden
+}
+
 
 .fullscreen.is-fullscreen .zmdi-fullscreen::before {
     content: '\f16c'
@@ -20940,23 +21026,40 @@ section.content {
         left: 0;
     }
 
-        .parallax-img-card .body h4 {
-            margin: 12px 20px;
-            text-align: left;
-            font-size: 20px;
-            line-height: 26px;
-            font-weight: 800;
-            color: #fff
-        }
+    .parallax-img-card .lesson-box {
+        display: inline-grid;
+        line-height: 25px;
+    }
 
-        .parallax-img-card .body p {
-            margin: 12px 5px;
-            text-align: left;
-            font-size: 14px;
-            line-height: 26px;
-            font-weight: 800;
-            color: #fff
-        }
+    .parallax-img-card .royalSlider .rsTextSlide .image img {
+        -webkit-border-radius: 50%;
+        -moz-border-radius: 50%;
+        -ms-border-radius: 50%;
+        border-radius: 50%;
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        border: 3px solid #fff;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23)
+    }
+
+    .parallax-img-card .body h4 {
+        margin: 12px 20px;
+        text-align: left;
+        font-size: 20px;
+        line-height: 26px;
+        font-weight: 800;
+        color: #fff
+    }
+
+    .parallax-img-card .body p {
+        margin: 12px 5px;
+        text-align: left;
+        font-size: 14px;
+        line-height: 26px;
+        font-weight: 800;
+        color: #fff
+    }
 
     .parallax-img-card .parallax {
         position: absolute;
@@ -21013,6 +21116,16 @@ section.content {
     width: 100%;
     box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.3)
 }
+
+    .card.fullheight {
+        height: 94%;
+    }
+
+    .card.square {
+        border-radius: .15rem;
+        margin-bottom: 10px;
+        box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1)
+    }
 
     .card .card-inside-title {
         font-size: 15px;
@@ -21335,6 +21448,7 @@ section.content {
         padding: 20px;
         font-weight: 600
     }
+
 
 /* 長條圖*/
 
@@ -22170,8 +22284,6 @@ section.content {
     margin-bottom: 1px
 }
 
-
-
     .panel-group .panel .panel-title {
         font-weight: normal;
         font-size: 18px;
@@ -22423,6 +22535,62 @@ section.content {
         background-color: #fb483a
     }
 
+.progress-transparent.custom-color-blue {
+    background-color: rgba(14, 155, 226, 0.2)
+}
+
+    .progress-transparent.custom-color-blue .progress-bar {
+        background-color: #0E9BE2
+    }
+
+.progress-transparent.custom-color-green {
+    background-color: rgba(124, 172, 37, 0.2)
+}
+
+    .progress-transparent.custom-color-green .progress-bar {
+        background-color: #7CAC25
+    }
+
+.progress-transparent.custom-color-orange {
+    background-color: rgba(255, 68, 2, 0.2)
+}
+
+    .progress-transparent.custom-color-orange .progress-bar {
+        background-color: #FF4402
+    }
+
+.progress-transparent.custom-color-purple {
+    background-color: rgba(171, 125, 246, 0.2)
+}
+
+    .progress-transparent.custom-color-purple .progress-bar {
+        background-color: #AB7DF6
+    }
+
+.progress-transparent.custom-color-yellow {
+    background-color: rgba(243, 187, 35, 0.2)
+}
+
+    .progress-transparent.custom-color-yellow .progress-bar {
+        background-color: #F3BB23
+    }
+
+.progress-transparent.custom-color-lightseagreen {
+    background-color: rgba(32, 178, 170, 0.2)
+}
+
+    .progress-transparent.custom-color-lightseagreen .progress-bar {
+        background-color: #20b2aa
+    }
+
+.progress-transparent.custom-color-blush {
+    background: rgba(241, 95, 121, 0.1)
+}
+
+    .progress-transparent.custom-color-blush .progress-bar {
+        background: linear-gradient(45deg, #dd5e89, #f7bb97) !important;
+    }
+
 .sr-only {
     position: relative;
     color: #05232d;
@@ -22526,8 +22694,8 @@ section.content {
     -moz-border-radius: 0;
     -ms-border-radius: 0;
     border-radius: 0;
-    border-bottom-left-radius: .55em;
-    border-bottom-right-radius: .55em;
+    border-bottom-left-radius: .15em;
+    border-bottom-right-radius: .15em;
 }
 
 .list-group .list-group-item .list-group-item-heading {
@@ -23525,26 +23693,34 @@ section.content {
     text-align: center
 }
 
+/*
 .dd-handle {
     background-color: #f9f9f9 !important
 }
 
-    .dd-handle:hover {
-        color: #2196F3
-    }
+.dd-handle:hover {
+    background: #ccc
+}
+*/
 
+/*
 .nestable-dark-theme .dd-handle {
     background: #ccc !important;
     border: 1px solid #999 !important
 }
+*/
 
+/*
 .dd3-handle {
     background: #999 !important
 }
+*/
 
+/*
 .dd3-content:hover {
     color: #2196F3
 }
+*/
 
 .page-calendar .event-name {
     padding: 10px;
@@ -24147,6 +24323,123 @@ section.content {
     border: 1px solid #eee
 }
 
+.new_timeline .header {
+    /*    background: url(http://via.placeholder.com/275x120);*/
+    background-size: cover;
+    color: #fff;
+    position: relative
+}
+
+    .new_timeline .header .color-overlay {
+        padding: .75em;
+        box-sizing: border-box;
+        background: rgba(123, 94, 155, 0.5);
+        line-height: normal
+    }
+
+        .new_timeline .header .color-overlay img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            -webkit-border-radius: 50%;
+            -moz-border-radius: 50%;
+            -ms-border-radius: 50%;
+            border-radius: 50%;
+            vertical-align: bottom !important;
+            border: 2px solid #fff;
+            box-shadow: 0px 5px 25px 0px rgba(0, 0, 0, 0.2)
+        }
+
+        .new_timeline .header .color-overlay .day-number {
+            font-size: 4em
+        }
+
+        .new_timeline .header .color-overlay .day-name {
+            font-size: 18px
+        }
+
+        .new_timeline .header .color-overlay .month {
+            text-transform: uppercase;
+            font-weight: 300;
+            letter-spacing: 2px;
+            margin-top: 2px
+        }
+
+.new_timeline > ul {
+    padding: 1em 0 0 2em;
+    list-style: none;
+    position: relative
+}
+
+    .new_timeline > ul::before {
+        content: ' ';
+        height: 100%;
+        width: 1px;
+        background-color: #f0f0f0;
+        position: absolute;
+        top: 0;
+        left: 2.5em;
+        z-index: 1
+    }
+
+.new_timeline li div {
+    margin: 1em 0;
+    vertical-align: top
+}
+
+.new_timeline .bullet {
+    width: 1em;
+    height: 1em;
+    box-sizing: border-box;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    background: #fff;
+    z-index: 2;
+    position: relative
+}
+
+    .new_timeline .bullet.pink {
+        border: 2px solid #e47297
+    }
+
+    .new_timeline .bullet.green {
+        border: 2px solid #50d38a
+    }
+
+    .new_timeline .bullet.orange {
+        border: 2px solid #ffce4b
+    }
+
+.new_timeline .time {
+    width: 20%;
+    font-size: 0.75em;
+    padding-top: 0.25em
+}
+
+.new_timeline .desc {
+    width: 65%
+}
+
+.new_timeline h3 {
+    font-size: 16px;
+    font-weight: 400
+}
+
+.new_timeline h4 {
+    font-size: 13px;
+    font-weight: 400;
+    color: #999
+}
+
+.new_timeline .people img {
+    width: 30px;
+    height: 30px;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%
+}
+
 .team-info li + li {
     margin-left: -10px
 }
@@ -24312,7 +24605,7 @@ section.content {
 }
 
 .widget_2 h2 {
-    font-weight: 300;
+    /*    font-weight: 300;*/
     color: #bdbdbd;
     margin-top: -10px
 }
@@ -24521,6 +24814,184 @@ section.content {
 
 .weather2 .carousel .carousel-inner {
     box-shadow: none
+}
+
+.weather3 {
+    overflow: hidden
+}
+
+    .weather3 .top {
+        position: relative;
+        height: 430px;
+        width: 100%;
+        overflow: hidden;
+        background: url("../img/weather_img.jpg") no-repeat;
+        background-size: cover;
+        background-position: center center
+    }
+
+        .weather3 .top::after {
+            content: "";
+            height: 100%;
+            width: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: rgba(0, 0, 0, 0.5)
+        }
+
+        .weather3 .top .wrapper {
+            padding: 30px;
+            position: relative;
+            z-index: 1;
+            color: #fff
+        }
+
+            .weather3 .top .wrapper .mynav {
+                height: 20px
+            }
+
+            .weather3 .top .wrapper .heading {
+                font-size: 35px;
+                font-weight: 400
+            }
+
+            .weather3 .top .wrapper .location {
+                font-size: 21px;
+                font-weight: 400
+            }
+
+            .weather3 .top .wrapper .temp .temp-value {
+                font-size: 85px;
+                font-weight: 600
+            }
+
+            .weather3 .top .wrapper .temp .deg {
+                font-size: 35px;
+                font-weight: 600;
+                vertical-align: top
+            }
+
+            .weather3 .top .wrapper .temp .temp-type {
+                font-size: 85px;
+                color: #fff
+            }
+
+    .weather3 .bottom {
+        padding: 20px;
+        background: #fff
+    }
+
+        .weather3 .bottom .forecast {
+            overflow: hidden;
+            font-size: 0;
+            max-height: 155px
+        }
+
+            .weather3 .bottom .forecast li {
+                font-size: 18px;
+                color: #bdbdbd;
+                line-height: 2em
+            }
+
+                .weather3 .bottom .forecast li.active {
+                    color: #777
+                }
+
+                .weather3 .bottom .forecast li .condition {
+                    float: right;
+                    line-height: 2em
+                }
+
+    .weather4 i {
+        font-size: 35px
+    }
+
+.weather5 {
+    overflow: hidden
+}
+
+    .weather5 .widget {
+        display: flex;
+        flex-wrap: wrap
+    }
+
+    .weather5 .weatherIcon {
+        flex: 1 100%;
+        height: 60%;
+        background: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        font-size: 80px;
+        padding: 20px 0
+    }
+
+        .weather5 .weatherIcon i {
+            padding-top: 20px
+        }
+
+    .weather5 .weatherInfo {
+        flex: 0 0 70%;
+        height: 40%;
+        background: #17191c;
+        display: flex;
+        align-items: center;
+        color: #fff
+    }
+
+        .weather5 .weatherInfo .temperature {
+            flex: 0 0 40%;
+            width: 100%;
+            font-size: 65px;
+            display: flex;
+            justify-content: space-around
+        }
+
+        .weather5 .weatherInfo .description {
+            flex: 0 60%;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            height: 100%;
+            justify-content: center
+        }
+
+    .weather5 .date {
+        flex: 0 0 30%;
+        height: 40%;
+        background: #49c5b6;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        color: #fff;
+        font-size: 28px;
+        line-height: 97px
+    }
+
+.weather6 {
+    text-align: center
+}
+
+    .weather6 .temp {
+        font-size: 30px
+    }
+
+.top_counter .icon {
+    float: left;
+    width: 50px;
+    height: 50px;
+    background: #f7f7f7;
+    border-radius: .55rem
+}
+
+    .top_counter .icon i {
+        font-size: 25px;
+        line-height: 50px
+    }
+
+.top_counter .content {
+    height: 50px
 }
 
 .agent .agent-avatar {
@@ -24798,6 +25269,50 @@ section.content {
             font-size: 18px
         }
 
+.feeds_widget li {
+    padding: 12px 15px;
+    border: 1px solid #f0f0f0;
+    margin: 4px 0
+}
+
+    .feeds_widget li:hover {
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.14), 0 2px 10px rgba(0, 0, 0, 0.1);
+        transition: box-shadow 0.2s cubic-bezier(0.4, 0, 1, 1), background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        cursor: pointer
+    }
+
+    .feeds_widget li .feeds-left {
+        float: left;
+        width: 20px;
+        font-size: 18px
+    }
+
+    .feeds_widget li .feeds-body {
+        width: auto
+    }
+
+        .feeds_widget li .feeds-body h4 {
+            font-family: inherit;
+            font-weight: 500;
+            line-height: 1.2;
+            color: inherit;
+            margin: 5px !important;
+        }
+
+
+        .feeds_widget li .feeds-body .title {
+            font-size: 16px
+        }
+
+        .feeds_widget li .feeds-body > small {
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            width: 80%;
+            font-size: 13px;
+            color: #777
+        }
+
 .profile_state li {
     border-right: 1px solid #eee
 }
@@ -24964,22 +25479,26 @@ section.content {
 @media only screen and (min-device-width: 1024px) {
     .parallax-card {
         min-height: 205px;
+        /*        min-height: 260px;*/
     }
 
     .parallax-img-card {
         min-height: 205px;
+        /*        min-height: 260px;*/
     }
 
     .rsDefault .rsOverflow {
         height: 205px !important;
+        /*        height: 260px !important;*/
     }
 
     img.rsImg {
         height: 205px !important;
+        /*        height: 260px !important;*/
     }
 
     .rsTextSlide .valign-wrapper {
-        margin: 0px 0;
+        margin: 60px 0;
     }
 }
 
@@ -25014,7 +25533,7 @@ section.content {
     }
 
     .rsTextSlide .valign-wrapper {
-        margin: 0px 0;
+        margin: 25px 0;
     }
 }
 
@@ -25101,6 +25620,12 @@ section.content {
         border: 3px solid #fff;
         box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23)
     }
+
+        .profile-page .profile-header .profile-image img.small {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+        }
 
     .profile-page .profile-header .social-icon a {
         margin: 0 5px
@@ -25360,11 +25885,22 @@ section.content {
 
     .file_manager .file .image,
     .file_manager .file .icon {
-        height: 150px;
+        /*    height: 150px;*/
+        height: 100px;
         overflow: hidden;
         background-size: cover;
-        background-position: top
+        background-position: top;
+        text-align: center;
     }
+
+        .file_manager .file .image .img-fluid {
+            max-width: 100%;
+            height: 100px;
+            object-fit: cover;
+            vertical-align: bottom !important;
+            border: 3px solid #fff;
+            box-shadow: 0px 5px 25px 0px rgba(0, 0, 0, 0.2)
+        }
 
     .file_manager .file .hover {
         position: absolute;
@@ -25393,10 +25929,23 @@ section.content {
             color: #757575
         }
 
+            .file_manager .file .icon i.livicon {
+                display: inline-grid;
+                font-size: 30px;
+                vertical-align: middle;
+                color: #757575
+            }
+
     .file_manager .file .file-name {
         padding: 10px;
         border-top: 1px solid #eceff1
     }
+
+        .file_manager .file .file-name.selected {
+            background: #eaeaea;
+            color: #052333;
+        }
+
 
         .file_manager .file .file-name small .date {
             float: right
@@ -25492,6 +26041,21 @@ section.content {
         box-shadow: 0px 5px 25px 0px rgba(0, 0, 0, 0.2)
     }
 
+    .mylearner .user-info .icon img {
+        height: 50px;
+    }
+
+/*規律運動*/
+.regular-info {
+    padding: 5px 15px 8px 15px;
+    position: relative;
+}
+
+    .regular-info .icon img {
+        height: 80px;
+    }
+
+
 /*發票顯示*/
 .invoice1 .logo, .invoice1 .clientlogo {
     float: left;
@@ -25525,4 +26089,235 @@ section.content {
 
 .invoice .table tr td {
     vertical-align: middle
+}
+
+/*accordion*/
+
+/* 下拉 小標＋項目 */
+
+.accordion.custom ul.lesson-box {
+    margin-right: 0px;
+    /*    margin-bottom: 0px;*/
+}
+
+    .accordion.custom ul.lesson-box li {
+        padding: 5px 0;
+    }
+
+.accordion.custom ul:not(.browser-default) > li {
+    list-style-type: none;
+}
+
+.accordion.custom ul.lesson-box li.lesson-spot {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+    .accordion.custom ul.lesson-box li.lesson-spot span {
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+.accordion.custom ul.lesson-box li.lesson-item {
+    font-size: 18px;
+    font-weight: normal;
+    line-height: 23px;
+}
+
+/* 課程下方 項目清單 */
+.accordion.custom span.badge {
+    /*    color: #fff;*/
+    border-radius: 20px;
+    font-size: 14px;
+    height: 25px;
+    line-height: 25px;
+    padding: 0px 15px;
+    margin-right: 8px;
+    margin-left: 0;
+    border-bottom: 1px solid #eee !important;
+}
+
+    .accordion.custom span.badge.tag-line {
+        background-color: #fff !important;
+        border-radius: 20px;
+        font-size: 14px;
+        height: 25px;
+        line-height: 25px;
+        padding: 0px 15px;
+        margin-right: 8px;
+        margin-left: 0;
+        border: 1px solid rgba(0, 0, 0, 0.4);
+        color: #656565;
+    }
+
+        .accordion.custom span.badge.tag-line:after {
+            content: none;
+        }
+
+    .accordion.custom span.badge.tag-repet {
+        background-color: #f9f1d8 !important;
+        border-radius: 20px;
+        font-size: 14px;
+        height: 25px;
+        line-height: 25px;
+        padding: 0px 15px;
+        margin-right: 8px;
+        margin-left: 0;
+        border: 1px solid rgba(0, 0, 0, 0.4);
+        color: #656565;
+        position: absolute;
+        top: -12px;
+        right: 15%;
+    }
+
+/* 編輯課程下方 項目清單 */
+
+.accordion.custom ol.lesson-list {
+    padding: 0px 0px;
+    /*  background: #0f244a;*/
+    /*  border-bottom: 1px solid #eee;*/
+}
+
+    .accordion.custom ol.lesson-list li {
+        padding: 5px 0;
+        line-height: 23px;
+        color: #4a4a4a;
+        display: -webkit-box;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+    }
+
+        .accordion.custom ol.lesson-list li .list-item {
+            font-size: 18px;
+            color: #f4f6f9;
+            line-height: 25px;
+            width: 100%;
+        }
+
+        .accordion.custom ol.lesson-list li.list-line {
+            padding: 0;
+            height: 1px;
+            background: #f9f1d8;
+            position: relative;
+            margin-bottom: 10px;
+            margin-top: 5px;
+            min-height: 0px !important;
+        }
+
+.accordion ol.lesson-list li .list-intro {
+    font-size: 14px;
+    font-weight: normal;
+    color: #cacaca;
+    padding: 3px 0;
+    display: block;
+}
+
+.accordion.custom {
+    width: 100%;
+}
+
+    .accordion.custom .card-header {
+        background: transparent;
+        /*    border-color: #f0f0f0;*/
+        border-color: #656565;
+        background: linear-gradient(#052333, #052333), linear-gradient(to bottom, rgba(255, 255, 255, 0.5), rgba(0, 0, 0, 0.5)) !important;
+        padding: .25rem 1.25rem;
+    }
+
+.accordion .accordion-header {
+    padding: 1.1em 1.5em;
+    background: #cccccc;
+    text-transform: uppercase;
+    color: #4a4a4a;
+    cursor: pointer;
+    font-size: .8em;
+    letter-spacing: .1em;
+    transition: all .3s;
+}
+
+    .accordion .accordion-header .chart {
+        width: auto;
+        display: inline-block;
+    }
+
+.accordion.custom .card-header .btn {
+    /*    color: #666*/
+    color: #f4f6f9;
+}
+
+.accordion.custom .card-header .img-thumbnail {
+    border: 0px !important;
+    background: transparent !important;
+}
+
+    .accordion.custom .card-header .img-thumbnail.popfit {
+        object-fit: cover;
+        width: 100px;
+        height: 100px;
+    }
+
+
+.accordion.custom .card-header .btn:hover,
+.accordion.custom .card-header .btn:focus {
+    text-decoration: none
+}
+
+.accordion.custom .card-body {
+    font-size: 15px;
+    line-height: 28px;
+    color: #777;
+    padding: 1.75rem;
+    background: linear-gradient(#052333, #052333), linear-gradient(to bottom, rgba(255, 255, 255, 0.5), rgba(0, 0, 0, 0.5)) !important;
+}
+
+.myfavaroit:before {
+    display: inline-block;
+    font: normal normal normal 14px/1 'Material-Design-Iconic-Font';
+    font-size: 20px;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    vertical-align: middle;
+    content: '\f15e';
+}
+
+.myfavaroit:hover:before {
+    color: #E91E63;
+}
+
+.myfavaroit:active:before {
+    color: #E91E63;
+    content: '\f15f';
+}
+
+.myfavaroit.like:before {
+    color: #E91E63;
+    content: '\f15f';
+}
+
+    /*
+.myfavaroit.like:hover:before {
+    color: #E91E63;
+    content: '\f15e';
+}
+*/
+
+    .myfavaroit.like:active:before {
+        color: #999;
+        content: '\f15e';
+    }
+
+.dropify-wrapper .dropify-preview .dropify-render img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    border-radius: 50%;
+    vertical-align: bottom !important;
+    border: 3px solid #fff;
+    box-shadow: 0px 5px 25px 0px rgba(0, 0, 0, 0.2);
 }
