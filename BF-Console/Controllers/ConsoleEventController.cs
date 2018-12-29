@@ -181,10 +181,23 @@ namespace BFConsole.Controllers
 
         }
 
-        public ActionResult BookingCoachPI(CalendarEventViewModel viewModel)
+        public ActionResult BookingCoachPI(LessonTimeViewModel viewModel)
         {
             ViewBag.ViewModel = viewModel;
-            return View("~/Views/ConsoleEvent/EventModal/BookingCoachPI.ascx");
+            if(viewModel.KeyID!=null)
+            {
+                viewModel.LessonID = viewModel.DecryptKeyValue();
+            }
+            var item = models.GetTable<LessonTime>().Where(l => l.LessonID == viewModel.LessonID).FirstOrDefault();
+            if (item != null)
+            {
+                viewModel.AttendeeID = item.GroupingLesson.RegisterLesson.Select(r => r.UID).ToArray();
+                viewModel.BranchID = item.BranchID;
+                viewModel.ClassDate = item.ClassTime;
+                viewModel.CoachID = item.AttendingCoach;
+                viewModel.RegisterID = item.RegisterID;
+            }
+            return View("~/Views/ConsoleEvent/EventModal/BookingCoachPI.ascx", item);
 
         }
 

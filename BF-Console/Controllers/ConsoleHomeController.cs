@@ -44,6 +44,13 @@ namespace BFConsole.Controllers
         }
 
         [RoleAuthorize(RoleID = new int[] { (int)Naming.RoleID.Administrator, (int)Naming.RoleID.Assistant, (int)Naming.RoleID.Officer, (int)Naming.RoleID.Coach, (int)Naming.RoleID.Servitor })]
+        public ActionResult CrossBranchIndex(ExerciseBillboardQueryViewModel viewModel)
+        {
+            var profile = HttpContext.GetUser();
+            return View(profile.LoadInstance(models));
+        }
+
+        [RoleAuthorize(RoleID = new int[] { (int)Naming.RoleID.Administrator, (int)Naming.RoleID.Assistant, (int)Naming.RoleID.Officer, (int)Naming.RoleID.Coach, (int)Naming.RoleID.Servitor })]
         public ActionResult Calendar(DailyBookingQueryViewModel viewModel)
         {
             ViewBag.ViewModel = viewModel;
@@ -52,6 +59,16 @@ namespace BFConsole.Controllers
             viewModel.KeyID = profile.UID.EncryptKey();
             return View(profile.LoadInstance(models));
         }
+
+        public ActionResult ContractIndex(CourseContractQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            var profile = HttpContext.GetUser();
+            profile.ReportInputError = InputErrorView;
+            viewModel.KeyID = profile.UID.EncryptKey();
+            return View(profile.LoadInstance(models));
+        }
+
 
         public ActionResult CalendarEventItems(FullCalendarViewModel viewModel)
         {
@@ -201,7 +218,6 @@ namespace BFConsole.Controllers
             Response.ContentType = "application/json";
             return View("~/Views/ConsoleHome/Module/ExerciseBillboardDetails.ascx", items);
         }
-
 
 
     }

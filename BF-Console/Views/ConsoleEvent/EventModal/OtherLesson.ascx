@@ -10,10 +10,10 @@
 <div class="modal fade" id="<%= _dialogID %>" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
-            <div class="card member-card">
+            <div class="member-card">
                 <a class="closebutton" data-dismiss="modal"></a>
                 <div class="header g-bg-darkteal">
-                    <h4 class="m-t-10"><%= _model.RegisterLesson.UserProfile.FullName() %></h4>
+                    <h4 class="m-t-0 p-t-10"><%= _model.RegisterLesson.UserProfile.FullName() %></h4>
                 </div>
                 <div class="member-img">
                     <a href="profile.html" class="">

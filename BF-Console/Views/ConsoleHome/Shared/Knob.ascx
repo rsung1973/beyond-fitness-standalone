@@ -2,6 +2,12 @@
 <input type="text" class="knob" data-linecap="round" data-width="90" data-height="90" data-thickness="0.25" data-anglearc="250" data-angleoffset="-125" data-fgcolor="#ec74a1" readonly id="<%= _dialogID %>"/>
 <script>
     $(function () {
+        drawKnob($("#<%= _dialogID %>"),<%= _model %>, 3800);
+    });
+</script>
+<%  Html.RenderPartial("~/Views/ConsoleHome/Shared/KnobJS.ascx"); %>
+<%--<script>
+    $(function () {
 
         function drawKnob() {
             $("#<%= _dialogID %>").knob();
@@ -28,7 +34,7 @@
         }
     });
 
-</script>
+</script>--%>
 <script runat="server">
 
     int? _model;

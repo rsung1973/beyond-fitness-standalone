@@ -35,7 +35,7 @@
                             <ul class="header-dropdown">
                                 <li class="dropdown">
                                     <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="zmdi zmdi-more"></i></a>
-                                    <ul class="dropdown-menu dropdown-menu-right slideUp float-right">
+                                    <ul class="dropdown-menu dropdown-menu-right slideUp float-right xl-blue">
                                         <li><a href="javascript:inquireBillboard();">全部</a></li>
                                         <%  foreach (var b in models.GetTable<BranchStore>())
                                             {   %>
@@ -77,14 +77,14 @@
                                 <span class="m-r-20"><i class="zmdi zmdi-label col-yellow m-r-5"></i>恢復</span>
                             </div>
                             <div class="table-responsive">
-                                <table class="table table-striped table-custom m-b-0 nowrap dataTable-exerciserankList" style="width: 100%">
-                                    <thead>
+                                <table class="table m-b-0 table-hover nowrap dataTable-exerciserankList" style="width: 100%">
+                                    <thead class="bg-darkteal">
                                         <tr>
-                                            <th>姓名</th>
+                                            <th class="xl-blue col-darkteal">姓名</th>
                                             <th>分店</th>
                                             <th>本月運動 <small>小時:分鐘</small></th>
                                             <th>階段佔比</th>
-                                            <th>排名</th>
+                                            <th class="xl-blue col-darkteal">排名</th>
                                         </tr>
                                     </thead>
                                 </table>
@@ -139,7 +139,8 @@
                 scrollX: true,
                 scrollCollapse: true,
                 fixedColumns: {
-                    leftColumns: 1
+                    leftColumns: 1,
+                    rightColumns: 1
                 },
                 "columnDefs": [
                     {

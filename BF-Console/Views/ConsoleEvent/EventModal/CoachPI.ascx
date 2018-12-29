@@ -10,10 +10,10 @@
 <div class="modal fade" id="<%= _dialogID %>" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
-            <div class="card member-card">
+            <div class="member-card">
                 <a class="closebutton" data-dismiss="modal"></a>
                 <div class="header g-bg-darkteal">
-                    <h4 class="m-t-10"><%= _proposedLesson.UserProfile.FullName() %></h4>
+                    <h4 class="m-t-0 p-t-10"><%= _proposedLesson.UserProfile.FullName() %></h4>
                 </div>
                 <div class="member-img">
                     <a href="profile.html" class="">
@@ -37,17 +37,37 @@
                         <%  } %>
                     </div>
                     <hr>
-                    <%  Html.RenderPartial("~/Views/ConsoleEvent/Module/LessonEmphasis.ascx", _model); %>
+                    <%--<%  Html.RenderPartial("~/Views/ConsoleEvent/Module/LessonEmphasis.ascx", _model); %>--%>
+                    <div class="col-12 align-left">
+                        <p class="col-red">課表重點：<%= (_model.TrainingPlan.FirstOrDefault()?.TrainingExecution.Emphasis) ?? "重點一片空 ..." %></p>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-darkteal btn-round waves-effect"><i class="zmdi zmdi-edit"></i></button>
-                <button type="button" class="btn btn-simple btn-round waves-effect" onclick="commitEmphasis('<%= plan.ExecutionID.EncryptKey() %>');">更新重點</button>
+                <%--<button type="button" class="btn btn-simple btn-round waves-effect" onclick="commitEmphasis('<%= plan.ExecutionID.EncryptKey() %>');">更新重點</button>--%>
+                <%  if (_model.RegisterLesson.MasterRegistration == true)
+                    {   %>
+                <button type="button" class="btn btn-simple btn-round waves-effect" onclick="bookingCoachPI();">修改成員</button>
+                <%  } %>
                 <%  Html.RenderPartial("~/Views/ConsoleEvent/Module/RevokeLesson.ascx", _model); %>
             </div>
         </div>
     </div>
     <%  Html.RenderPartial("~/Views/ConsoleHome/Shared/BSModalScript.ascx", model: _dialogID); %>
+    <script>
+        function bookingCoachPI() {
+            showLoading();
+            $.post('<%= Url.Action("BookingCoachPI", "ConsoleEvent", new { keyID = _model.LessonID.EncryptKey() }) %>', {}, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    swal(data.message);
+                } else {
+                    $(data).appendTo($('body'));
+                }
+            });
+        }
+    </script>
 </div>
 <script runat="server">
 

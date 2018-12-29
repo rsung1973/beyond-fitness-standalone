@@ -67,7 +67,7 @@
                                     </div>--%>
                                     <div class="col-lg-6 col-md-6 col-sm-6 col-12 single">
                                         <div class="input-group">
-                                            <input type="text" class="form-control datetime" data-date-format="yyyy/mm/dd hh:ii" readonly="readonly" placeholder="開始時間" name="ClassDate" value="<%= $"{_viewModel.StartDate:yyyy/MM/dd HH:mm}" %>" />
+                                            <input type="text" class="form-control datetime" data-date-format="yyyy/mm/dd hh:ii" readonly="readonly" placeholder="開始時間" name="ClassDate" value="<%= $"{_viewModel.ClassDate:yyyy/MM/dd HH:mm}" %>" />
                                             <span class="input-group-addon xl-slategray">
                                                 <i class="zmdi zmdi-time"></i>
                                             </span>
@@ -78,7 +78,7 @@
                                             <select class="form-control show-tick" name="BranchID">
                                                 <option value="">-- 請選擇地點 --</option>
                                                 <%  var workPlace = models.GetTable<CoachWorkplace>().Where(c => c.CoachID == _profile.UID); %>
-                                                <%  Html.RenderPartial("~/Views/SystemInfo/BranchStoreOptions.ascx", model: workPlace.Count()==1 ? workPlace.First().BranchID : -1);    %>
+                                                <%  Html.RenderPartial("~/Views/SystemInfo/BranchStoreOptions.ascx", model: _viewModel.BranchID ?? (workPlace.Count()==1 ? workPlace.First().BranchID : -1));    %>
                                             </select>
                                         </div>
                                     </div>
@@ -86,29 +86,7 @@
                                         <label>與誰同行?</label>
                                         <div class="row clearfix">
                                             <div class="col-sm-12">
-                                                <select name="AttendeeID" class="ms employeegroup" multiple="multiple">
-                                                    <%--<optgroup label="其他">
-                                                        <%  var roles = models.GetTable<UserRoleAuthorization>().Where(r => r.RoleID == (int)Naming.RoleID.Assistant);
-                                                            var users = models.GetTable<UserProfile>()
-                                                                    .Where(u => u.LevelID == (int)Naming.MemberStatusDefinition.Checked)
-                                                                    .Where(u => roles.Any(r => r.UID == u.UID));
-                                                            foreach (var u in users)
-                                                            {   %>
-                                                        <option value="<%= u.UID %>"><%= u.FullName() %></option>
-                                                        <%  }   %>
-                                                    </optgroup>--%>
-                                                    <%  foreach (var branch in models.GetTable<BranchStore>())
-                                                        {   %>
-                                                    <optgroup label="<%= branch.BranchName %>">
-                                                        <%  var items = models.GetTable<CoachWorkplace>().Where(w => w.BranchID == branch.BranchID)
-                                                                .Select(w => w.ServingCoach)
-                                                                .Where(s => s.CoachID != _profile.UID)
-                                                                .Where(s => s.UserProfile.LevelID == (int)Naming.MemberStatusDefinition.Checked);
-                                                            Html.RenderPartial("~/Views/SystemInfo/ServingCoachOptions.ascx",items);
-                                                            %>
-                                                    </optgroup>
-                                                    <%  }   %>
-                                                </select>
+                                                <%  Html.RenderPartial("~/Views/ConsoleEvent/Module/CoachPIAttendeeSelector.ascx", _viewModel.AttendeeID); %>
                                             </div>
                                         </div>
                                     </div>
@@ -133,7 +111,9 @@
             var $formData = $('#<%= _dialogID %> input,select,textarea').serializeObject();
             clearErrors();
             showLoading();
-            $.post('<%= Url.Action("CommitBookingSelfTraining","Lessons") %>', $formData, function (data) {
+            $.post('<%= _viewModel.LessonID.HasValue
+                ? Url.Action("UpdateBookingByCoach","ClassFacet",new { _viewModel.KeyID,_viewModel.CoachID })
+                : Url.Action("CommitBookingSelfTraining","Lessons") %>', $formData, function (data) {
                 hideLoading();
                 if ($.isPlainObject(data)) {
                     if (data.result) {
@@ -150,7 +130,6 @@
 
         $(function () {
             equipDatetimePicker();
-             $('.employeegroup').multiSelect();
         });
     </script>
 </div>
@@ -158,7 +137,7 @@
 
     ModelStateDictionary _modelState;
     ModelSource<UserProfile> models;
-    CalendarEventViewModel _viewModel;
+    LessonTimeViewModel _viewModel;
     String _dialogID = $"coachPI{DateTime.Now.Ticks}";
     UserProfile _profile;
 
@@ -167,7 +146,7 @@
         base.OnInit(e);
         _modelState = (ModelStateDictionary)ViewBag.ModelState;
         models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
-        _viewModel = (CalendarEventViewModel)ViewBag.ViewModel;
+        _viewModel = (LessonTimeViewModel)ViewBag.ViewModel;
         _profile = Context.GetUser();
     }
 

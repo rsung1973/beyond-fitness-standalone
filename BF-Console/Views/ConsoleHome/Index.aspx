@@ -74,10 +74,7 @@
                                         <div class="col-md-6 col-12 weather calendar">
                                             <ul class="row days list-unstyled m-t-20">
                                                 <%
-                                                    int offsetDays = (int)DateTime.Today.DayOfWeek;
-                                                    offsetDays = offsetDays == 0 ? 6 : offsetDays - 1;
-                                                    DateTime weekStart = DateTime.Today.AddDays(-offsetDays);
-                                                    DateTime weekday = weekStart;
+                                                    DateTime weekday = DateTime.Today.FirstDayOfWeek();
 
                                                     bool includeUserEvent = _model.IsAssistant() || _model.IsSysAdmin() || _model.IsOfficer();
                                                     IQueryable<UserEvent> userEvents = null;
@@ -113,23 +110,22 @@
                                         </div>
                                         <div class="col-md-6 col-12">
                                             <ul class="row profile_state list-unstyled">
-                                                <li class="col-sm-6 col-6 calendar-todolist">
-                                                    <div class="body">
-                                                        <i class="zmdi livicon-evo" data-options="name: pencil.svg; size: 40px; style: original; strokeWidth:2px;"></i>
-                                                        <h4><%= _editableLessons
-                                                                    .Where(l => l.ClassTime >= weekStart && l.ClassTime < weekStart.AddDays(7))
-                                                                    .Where(l=>l.LessonAttendance==null).Count() %></h4>
-                                                        <span>本週編輯中</span>
-                                                    </div>
-                                                </li>
-                                                <li class="col-sm-6 col-6 calendar-todolist">
-                                                    <div class="body">
-                                                        <i class="zmdi livicon-evo" data-options="name: remove.svg; size: 40px; style: original; strokeWidth:2px; autoPlay:true"></i>
-                                                        <h4><%= _learnerLessons.Where(l => l.ClassTime >= monthStart && l.ClassTime < monthStart.AddMonths(1))
-                                                                    .GetLearnerUncheckedLessons().Count() %></h4>
-                                                        <span>本月未打卡</span>
-                                                    </div>
-                                                </li>
+                                                <%  if (_model.IsViceManager() || _model.IsManager())
+                                                    {
+                                                        ViewBag.Allotment = 3;
+                                                    }
+                                                    else
+                                                    {
+                                                        ViewBag.Allotment = 2;
+                                                    }
+                                                    %>
+                                                <%  Html.RenderPartial("~/Views/ConsoleHome/Module/AboutEditableLessons.ascx", _model); %>
+                                                <%  Html.RenderPartial("~/Views/ConsoleHome/Module/AboutLearnerUncheckedLessons.ascx", _model); %>
+                                                <%  if (_model.IsViceManager() || _model.IsManager())
+                                                    {
+                                                        Html.RenderPartial("~/Views/ConsoleHome/Module/AboutToApprovePreferredLessons.ascx", _model);
+                                                    }
+                                                    %>
                                             </ul>
                                         </div>
                                     </div>
@@ -146,81 +142,13 @@
             <div class="card widget_2">
                 <ul class="row clearfix list-unstyled m-b-0">
                     <li class="col-lg-3 col-md-6 col-sm-12 contract">
-                        <div class="body">
-                            <div class="row">
-                                <div class="col-8">
-                                    <h5 class="m-t-0">即將過期</h5>
-                                    <%  var effectiveItems = models.PromptEffectiveContract().FilterByUserRoleScope(models, _model);
-                                        var contractItems = models.PromptExpiringContract().FilterByUserRoleScope(models, _model);
-                                        var expiringItems = contractItems.Where(c => c.Expiration >= DateTime.Today);
-                                        var expiredItems = contractItems.FilterByExpired(models); %>
-                                    <p class="text-small">
-                                        已過期：<a href="javascript:void(0);"><%= expiredItems.Count() %></a><br />
-                                        生效中：<%= effectiveItems.Count() %>
-                                    </p>
-                                </div>
-                                <div class="col-4 text-right">
-                                    <a href="javascript:void(0);">
-                                        <h2 class="col-red"><%= expiringItems.Count() %></h2>
-                                    </a>
-                                    <small class="info">合約</small>
-                                </div>
-                            </div>
-                        </div>
+                        <%  Html.RenderPartial("~/Views/ContractConsole/Module/AboutExpiring.ascx", _model); %>
                     </li>
                     <li class="col-lg-3 col-md-6 col-sm-12 contract">
-                        <div class="body">
-                            <div class="row">
-                                <div class="col-8">
-                                    <%  
-                                        var editingItems = models.GetContractInEditingByAgent(_model);
-                                        var toConfirmItems = models.GetContractToConfirmByAgent(_model);
-                                        var toSignItems = models.GetContractToSignByAgent(_model);
-                                    %>
-                                    <h5 class="m-t-0">賀成交</h5>
-                                    <p class="text-small">
-                                        編輯中：<a href="javascript:void(0);"><%= editingItems.Count() %></a>
-                                        <br />
-                                        待簽名：<a href="javascript:void(0);"><%= toSignItems.Count() %></a>
-                                        <br />
-                                        待審核：<a href="javascript:void(0);"><%= toConfirmItems.Count() %></a>
-                                    </p>
-                                </div>
-                                <div class="col-4 text-right">
-                                    <a href="javascript:void(0);">
-                                        <h2><%= models.PromptEffectiveContract()
-                                                    .Where(c=>c.EffectiveDate>=monthStart && c.EffectiveDate<monthStart.AddMonths(1))
-                                                    .FilterByUserRoleScope(models,_model).Count() %></h2>
-                                    </a>
-                                    <small class="info">本月</small>
-                                </div>
-                            </div>
-                        </div>
+                        <%  Html.RenderPartial("~/Views/ContractConsole/Module/AboutNewContracts.ascx", _model); %>
                     </li>
                     <li class="col-lg-3 col-md-6 col-sm-12 contract">
-                        <div class="body">
-                            <div class="row">
-                                <div class="col-8">
-                                    <%  var revisions = models.GetApplyingAmendmentByAgent(_model);
-                                        var toConfirmRevisions = models.GetAmendmentToAllowByAgent(_model);
-                                        var toSignRevisions = models.GetAmendmentToSignByAgent(_model);
-                                    %>
-                                    <h5 class="m-t-0">服務申請</h5>
-                                    <p class="text-small">
-                                        編輯中：0<br />
-                                        待簽名：<a href="javascript:void(0);"><%= toSignRevisions.Count() %></a><br />
-                                        待審核：<a href="javascript:void(0);"><%= toConfirmRevisions.Count() %></a>
-                                    </p>
-                                </div>
-                                <div class="col-4 text-right">
-                                    <a href="javascript:void(0);">
-                                        <h2><%= models.PromptEffectiveRevision(monthStart,monthStart.AddMonths(1))
-                                                    .FilterByUserRoleScope(models,_model).Count() %></h2>
-                                    </a>
-                                    <small class="info">本月</small>
-                                </div>
-                            </div>
-                        </div>
+                        <%  Html.RenderPartial("~/Views/ContractConsole/Module/AboutContractServices.ascx", _model); %>
                     </li>
                     <li class="col-lg-3 col-md-6 col-sm-12">
                         <div class="body">
@@ -232,7 +160,7 @@
                                         var voidToday = models.GetTable<VoidPayment>().Where(v => v.VoidDate >= DateTime.Today)
                                                 .Join(payment, v => v.VoidID, p => p.PaymentID, (v, p) => p);
                                     %>
-                                    <h5 class="m-t-0">本日收付</h5>
+                                    <h5 class="m-t-0">本日收款</h5>
                                     <p class="text-small">
                                         收款：<a href="javascript:void(0);"><%= paymentToday.Count() %></a>
                                         <br />
@@ -344,14 +272,37 @@
         $(".calendar-todolist").on('click', function (event) {
             window.location.href = 'calendar-todolist.html';
         });
-        //我的合約與收款
-        $(".contract").on('click', function (event) {
-            window.location.href = 'contract&payment.html';
-        });
         //我的業績
         $(".achivement").on('click', function (event) {
             window.location.href = 'achivement-self.html';
         });
+
+        function showContractList(viewModel, alertCount) {
+            viewModel.scrollToView = false;
+            if (alertCount && alertCount > 300) {
+                swal({
+                    title: "繼續載入?",
+                    text: "讀取大量資料，將影響系統效能!",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "確定, 不後悔",
+                    cancelButtonText: "不, 點錯了",
+                    closeOnConfirm: true,
+                    closeOnCancel: true,
+                }, function (isConfirm) {
+                    if (isConfirm) {
+                        showLoading();
+                        $('').launchDownload('<%= Url.Action("ShowContractList","ContractConsole") %>', viewModel);
+                    } else {
+                    }
+                });
+            } else {
+                showLoading();
+                $('').launchDownload('<%= Url.Action("ShowContractList","ContractConsole") %>', viewModel);
+            }
+        }
+
     </script>
 </asp:Content>
 
@@ -360,9 +311,6 @@
     ModelStateDictionary _modelState;
     UserProfile _model;
     IQueryable<LessonTime> _lessons;
-    IQueryable<LessonTime> _editableLessons;
-    IQueryable<LessonTime> _learnerLessons;
-
 
     protected override void OnInit(EventArgs e)
     {
@@ -370,19 +318,16 @@
         models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
         _modelState = (ModelStateDictionary)ViewBag.ModelState;
         _model = (UserProfile)this.Model;
-        var items = models.GetTable<LessonTime>().Where(l => l.AttendingCoach == _model.UID);
+
+        IQueryable<LessonTime> items = models.GetTable<LessonTime>().Where(l => l.AttendingCoach == _model.UID);
+        //.FilterByUserRoleScope(models, _model);
+        ViewBag.LessonTimeItems = items;
+
         _lessons = items.PTLesson()
             .Union(items.Where(l => l.TrainingBySelf == 1))
             .Union(items.TrialLesson());
 
-
         //items = models.GetTable<LessonTime>().FilterByUserRoleScope(models, _model);
-        _editableLessons = items.PTLesson()
-            .Union(items.Where(l => l.TrainingBySelf == 1))
-            .Union(items.TrialLesson());
-
-        _learnerLessons = items.PTLesson()
-            .Union(items.Where(l => l.TrainingBySelf == 1));
     }
 
 </script>

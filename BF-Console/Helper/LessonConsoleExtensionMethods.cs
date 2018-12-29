@@ -23,11 +23,6 @@ namespace WebHome.Helper
 {
     public static class LessonConsoleExtensionMethods
     {
-        public static DateTime FirstDayOfMonth(this DateTime date)
-        {
-            return new DateTime(date.Year, date.Month, 1);
-        }
-
         public static IQueryable<RegisterLesson> PromptMemberExerciseRegisterLesson<TEntity>(this ModelSource<TEntity> models, IQueryable<RegisterLesson> items = null)
                 where TEntity : class, new()
         {

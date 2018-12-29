@@ -40,7 +40,7 @@
     <asp:ContentPlaceHolder ID="CustomHeader" runat="server">
     </asp:ContentPlaceHolder>
     <!-- Custom Css -->
-    <link rel="stylesheet" href="css/main.css?4.4">
+    <link rel="stylesheet" href="css/main.css?4.5">
     <link rel="stylesheet" href="css/color_skins.css">
     <!-- Jquery Core Js -->
     <script src="bundles/libscripts.bundle.js"></script>
@@ -63,7 +63,7 @@
     <script src="plugins/moment/moment.min.js"></script>
     <!-- SweetAlert Plugin Js -->
     <script src="plugins/sweetalert/sweetalert.min.js"></script>
-    <script src="js/common.js?1.1"></script>
+    <script src="js/common.js?1.2"></script>
 </head>
 <body class="theme-darkteal">
     <!-- Page Loader -->
@@ -89,7 +89,17 @@
             <a class="navbar-brand" href="<%= VirtualPathUtility.ToAbsolute("~/ConsoleHome/Index") %>">
                 <img src="images/logo.png" width="80" alt="BeyondFitness"></a>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="<%= Url.Action("Calendar","ConsoleHome") %>" class="mega-menu" data-close="true"><i class="zmdi livicon-evo" data-options="name: calendar.svg; size: 24px; style: lines; strokeColor:#fff; strokeWidth:2px; autoPlay:true"></i></a></li>
+                <li class="hidden-sm-down">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="搜尋學生..." id="searchLearner">
+                        <span class="input-group-addon">
+                            <i class="zmdi zmdi-search"></i>
+                        </span>
+                    </div>
+                </li>
+                <li>
+                    <a href="<%= Url.Action("Calendar","ConsoleHome") %>" class="mega-menu" data-close="true"><i class="zmdi livicon-evo" data-options="name: calendar.svg; size: 24px; style: lines; strokeColor:#fff; strokeWidth:2px; autoPlay:true"></i></a>
+                </li>
             </ul>
         </div>
     </nav>
@@ -109,7 +119,7 @@
                     </div>
                 </li>
                 <li>
-                    <a href="javascript:void(0);"><i class="zmdi zmdi-file-text"></i><span>我的合約與收款</span> </a>
+                    <a href="<%= Url.Action("ContractIndex","ConsoleHome") %>"><i class="zmdi zmdi-file-text"></i><span>我的合約與收款</span> </a>
                 </li>
                 <li>
                     <a href="javascript:void(0);"><i class="zmdi zmdi-file-text"></i><span>我的分店業績</span> </a>

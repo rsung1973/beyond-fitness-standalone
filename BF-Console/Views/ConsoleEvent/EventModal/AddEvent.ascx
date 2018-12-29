@@ -78,7 +78,7 @@
 
         function bookingCoachPI() {
             showLoading();
-            $.post('<%= Url.Action("BookingCoachPI", "ConsoleEvent", new { _viewModel.StartDate }) %>', {}, function (data) {
+            $.post('<%= Url.Action("BookingCoachPI", "ConsoleEvent", new { ClassDate = _viewModel.StartDate }) %>', {}, function (data) {
                 hideLoading();
                 if ($.isPlainObject(data)) {
                     swal(data.message);

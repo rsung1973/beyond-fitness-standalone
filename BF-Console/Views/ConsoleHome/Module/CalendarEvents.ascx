@@ -38,24 +38,27 @@
                     title = g.RegisterLesson.LessonPriceType.Status == (int)Naming.DocumentLevelDefinition.教練PI
                         ? g.GroupingLesson.RegisterLesson.Where(r=>r.MasterRegistration==true)
                             .Select(r => r.UserProfile).FirstOrDefault()?.RealName
-                        : String.Join("、", g.GroupingLesson.RegisterLesson.Select(r => r.UserProfile.RealName)),
+                        : String.Join("、", g.GroupingLesson.RegisterLesson.Select(r => r.UserProfile.RealName)) 
+                            + (g.PreferredLessonTime!=null && !g.PreferredLessonTime.ApprovalDate.HasValue ? "(待審核)" : ""),
                     start = String.Format("{0:O}", g.ClassTime),
                     end = String.Format("{0:O}", g.ClassTime.Value.AddMinutes(g.DurationInMinutes.Value)),
                     //description = "自由教練",
                     allDay = false,
-                    className = g.LessonAttendance != null
-                    ? new String[] { "b-l b-2x b-finish" }
-                    : g.IsPTSession() || g.RegisterLesson.LessonPriceType.IsWelfareGiftLesson != null
-                        ? new string[] { "b-l b-2x b-PT" }
-                        : g.IsPISession()
-                            ? new string[] { "b-l b-2x b-PI" }
-                            : g.IsTrialLesson()
-                                ? new string[] { "b-l b-2x b-PE" }
-                                : g.RegisterLesson.LessonPriceType.Status == (int)Naming.DocumentLevelDefinition.教練PI
-                                    ? new String[] { "b-l b-2x b-CoachPI" }
-                                        : g.IsSTSession()
-                                            ? new string[] { "b-l b-2x b-ST" }
-                                            : null,
+                    className = g.PreferredLessonTime!=null && !g.PreferredLessonTime.ApprovalDate.HasValue
+                    ? new String[] { "b-l b-2x b-approve" }
+                    : g.LessonAttendance != null
+                        ? new String[] { "b-l b-2x b-finish" }
+                        : g.IsPTSession() || g.RegisterLesson.LessonPriceType.IsWelfareGiftLesson != null
+                            ? new string[] { "b-l b-2x b-PT" }
+                            : g.IsPISession()
+                                ? new string[] { "b-l b-2x b-PI" }
+                                : g.IsTrialLesson()
+                                    ? new string[] { "b-l b-2x b-PE" }
+                                    : g.RegisterLesson.LessonPriceType.Status == (int)Naming.DocumentLevelDefinition.教練PI
+                                        ? new String[] { "b-l b-2x b-CoachPI" }
+                                            : g.IsSTSession()
+                                                ? new string[] { "b-l b-2x b-ST" }
+                                                : null,
                     editable = g.LessonAttendance == null,
                     icon = g.LessonAttendance != null
                             ? g.LessonPlan.CommitAttendance.HasValue
