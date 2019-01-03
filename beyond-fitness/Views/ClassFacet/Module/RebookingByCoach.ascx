@@ -15,7 +15,16 @@
                 <section class="col col-4">
                     <label class="label">體能顧問</label>
                     <label class="select">
-                        <% Html.RenderPartial("~/Views/Lessons/SimpleCoachSelector.ascx", new InputViewModel { Id = "CoachID", Name = "CoachID", DefaultValue = _viewModel.CoachID }); %>
+                        <%  if (_model.IsCoachPISession())
+                            {   %>
+                        <select name="coachID" id="coachID">
+                            <option value="<%= _model.AttendingCoach %>"><%= _model.AsAttendingCoach.UserProfile.FullName() %></option>
+                        </select>
+                        <%  }
+                            else
+                            {
+                                Html.RenderPartial("~/Views/Lessons/SimpleCoachSelector.ascx", new InputViewModel { Id = "CoachID", Name = "CoachID", DefaultValue = _viewModel.CoachID }); 
+                            }   %>
                         <i class="icon-append fa fa-user"></i>
                     </label>
                 </section>

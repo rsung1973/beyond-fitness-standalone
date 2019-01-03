@@ -18,6 +18,7 @@
             <th>學員姓名</th>
             <th data-hide="phone">生效日期</th>
             <th>合約名稱</th>
+            <th data-hide="phone">應收期限</th>
             <th data-hide="phone">剩餘/購買堂數</th>
             <th data-hide="phone">合約總金額</th>
             <th data-hide="phone">已收金額</th>

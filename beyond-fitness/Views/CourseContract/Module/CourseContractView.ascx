@@ -76,7 +76,7 @@
                             <td colspan="3">顧問服務使用期限：自 <%= String.Format("{0:yyyy/MM/dd}",_model.ValidFrom) %> 起，至 <%= String.Format("{0:yyyy/MM/dd}",_model.Expiration) %> 止。</td>
                         </tr>
                         <tr>
-                            <td colspan="3" style="height: <%= _model.CourseContractType.IsGroup==true ? "1cm" : "2cm" %>">備註：<%= _model.Remark %></td>
+                            <td colspan="3" style="height: <%= _model.CourseContractType.IsGroup==true ? "1cm" : "2cm" %>">備註：<%= _model.Remark %><%= _model.PayoffDue.HasValue ? $"帳款應付期限{_model.PayoffDue:yyyy/MM/dd}。" : null %></td>
                         </tr>
                     </tbody>
                 </table>

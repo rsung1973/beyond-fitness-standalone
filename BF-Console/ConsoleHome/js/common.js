@@ -41,8 +41,8 @@ function smartAlert(message) {
     swal(message);
 }
 
- function deleteData(doDelete) {
-    swal({
+function deleteData(doDelete, options) {
+    var defaultOptions = {
         title: "不後悔?",
         text: "刪除後資料將無法回覆!",
         type: "warning",
@@ -51,14 +51,30 @@ function smartAlert(message) {
         confirmButtonText: "確定, 不後悔",
         cancelButtonText: "不, 點錯了",
         closeOnConfirm: false,
-        closeOnCancel: false
-    }, function (isConfirm) {
+        closeOnCancel: false,
+        confirmed: ['刪除成功!', '資料已經刪除 Bye!','success'],
+        cancelled: ['取消成功', '你的資料現在非常安全 :)', 'error'],
+        afterConfirmed: null,
+    };
+    if (options) {
+        $.extend(defaultOptions, options);
+    }
+
+    swal(defaultOptions, function (isConfirm) {
         if (isConfirm) {
             doDelete(function () {
-                swal("刪除成功!", "資料已經刪除 Bye!", "success");
+                if (defaultOptions.afterConfirmed instanceof Function) {
+                    swal({
+                        'title': defaultOptions.confirmed[0],
+                        'text': defaultOptions.confirmed[1],
+                        'confirmButtonText': defaultOptions.confirmed[2]
+                    }, defaultOptions.afterConfirmed);
+                } else {
+                    swal(defaultOptions.confirmed[0], defaultOptions.confirmed[1], defaultOptions.confirmed[2]);
+                }
             });
         } else {
-            swal("取消成功", "你的資料現在非常安全 :)", "error");
+            swal(defaultOptions.cancelled[0], defaultOptions.cancelled[1], defaultOptions.cancelled[2]);
             if ($global.closeAllModal)
                 $global.closeAllModal();
         }

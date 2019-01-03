@@ -46,6 +46,7 @@ namespace WebHome.Helper
                 {
                     r.RegisterLesson.Attended = (int)Naming.LessonStatus.課程結束;
                 }
+                contract.Status = (int)Naming.CourseContractStatus.已履行;
                 models.SubmitChanges();
             }
         }
@@ -767,7 +768,7 @@ namespace WebHome.Helper
             where TEntity : class, new()
         {
             IQueryable<TuitionAchievement> items = models.GetTable<TuitionAchievement>()
-                .Where(t => t.Payment.VoidPayment == null);
+                .Where(t => t.Payment.VoidPayment == null || t.Payment.AllowanceID.HasValue);
             Expression<Func<TuitionAchievement, bool>> queryExpr = c => true;
 
             DateTime? queryDateTo = dateTo;
@@ -1058,20 +1059,25 @@ namespace WebHome.Helper
 
         //}
 
+        public static IQueryable<CourseContract> PromptContractInEditing<TEntity>(this ModelSource<TEntity> models)
+            where TEntity : class, new()
+        {
+            return models.PromptContract()
+                .Where(c => c.Status == (int)Naming.CourseContractStatus.草稿);
+
+        }
+
         public static IQueryable<CourseContract> GetContractInEditingByAgent<TEntity>(this ModelSource<TEntity> models, UserProfile agent)
             where TEntity : class, new()
         {
             if (agent.IsAssistant())
             {
-                return models.GetTable<CourseContract>()
-                    .Where(c => c.CourseContractRevision == null)
-                    .Where(c => c.Status == (int)Naming.CourseContractStatus.草稿);
+                return models.PromptContractInEditing();
             }
             else
             {
-                return models.GetTable<CourseContract>()
-                    .Where(c => c.CourseContractRevision == null)
-                    .Where(c => (c.AgentID == agent.UID || c.FitnessConsultant == agent.UID) && c.Status == (int)Naming.CourseContractStatus.草稿);
+                return models.PromptContractInEditing()
+                    .Where(c => c.AgentID == agent.UID || c.FitnessConsultant == agent.UID);
             }
         }
 
@@ -1081,14 +1087,26 @@ namespace WebHome.Helper
             return models.GetTable<UserProfile>().Where(u => u.UID == profile.UID).First();
         }
 
-        public static IQueryable<CourseContract> GetApplyingContractByAgent<TEntity>(this ModelSource<TEntity> models, UserProfile agent)
+        public static IQueryable<CourseContract> PromptContract<TEntity>(this ModelSource<TEntity> models)
             where TEntity : class, new()
         {
             var items = models.GetTable<CourseContract>()
-                .Where(c => c.CourseContractRevision == null)
-                .Where(c => c.RegisterLessonContract.Count == 0);
-            items = models.filterContractByAgent(agent, items);
+                .Where(c => c.CourseContractRevision == null);
             return items;
+        }
+
+        public static IQueryable<CourseContract> PromptApplyingContract<TEntity>(this ModelSource<TEntity> models)
+            where TEntity : class, new()
+        {
+            var items = models.PromptContract()
+                .Where(c => c.RegisterLessonContract.Count == 0);
+            return items;
+        }
+
+        public static IQueryable<CourseContract> GetApplyingContractByAgent<TEntity>(this ModelSource<TEntity> models, UserProfile agent)
+            where TEntity : class, new()
+        {
+            return models.PromptApplyingContract().filterContractByAgent(models,agent);
         }
 
         public static IQueryable<CourseContractRevision> GetApplyingAmendmentByAgent<TEntity>(this ModelSource<TEntity> models, UserProfile agent)
@@ -1103,18 +1121,29 @@ namespace WebHome.Helper
         public static IQueryable<CourseContract> FilterByBranchStoreManager<TEntity>(this ModelSource<TEntity> models, IQueryable<CourseContract> items, UserProfile agent)
             where TEntity : class, new()
         {
+            return models.FilterByBranchStoreManager(items, agent.UID);
+        }
+
+        public static IQueryable<CourseContract> FilterByBranchStoreManager<TEntity>(this ModelSource<TEntity> models, IQueryable<CourseContract> items, int? agentID)
+            where TEntity : class, new()
+        {
             return items.Join(models.GetTable<CourseContractExtension>()
                     .Join(models.GetTable<BranchStore>()
-                            .Where(b => b.ManagerID == agent.UID || b.ViceManagerID == agent.UID),
+                            .Where(b => b.ManagerID == agentID || b.ViceManagerID == agentID),
                         p => p.BranchID, b => b.BranchID, (p, b) => p),
                 c => c.ContractID, p => p.ContractID, (c, p) => c);
+        }
+
+        public static IQueryable<CourseContract> FilterByBranchStoreManager<TEntity>(this IQueryable<CourseContract> items, ModelSource<TEntity> models, int? agentID)
+            where TEntity : class, new()
+        {
+            return models.FilterByBranchStoreManager(items, agentID);
         }
 
         public static IQueryable<CourseContract> GetContractToAllowByAgent<TEntity>(this ModelSource<TEntity> models, UserProfile agent)
             where TEntity : class, new()
         {
-            var items = models.GetTable<CourseContract>()
-                .Where(c => c.CourseContractRevision == null)
+            var items = models.PromptContract()
                 .Where(c => c.Status == (int)Naming.CourseContractStatus.待確認);
             if (agent.IsManager() || agent.IsViceManager())
             {
@@ -1158,13 +1187,18 @@ namespace WebHome.Helper
             return items;
         }
 
+        public static IQueryable<CourseContract> PromptContractToSign<TEntity>(this ModelSource<TEntity> models)
+            where TEntity : class, new()
+        {
+            var items = models.PromptContract()
+                .Where(c => c.Status == (int)Naming.CourseContractStatus.待簽名);
+            return items;
+        }
+
         public static IQueryable<CourseContract> GetContractToSignByAgent<TEntity>(this ModelSource<TEntity> models, UserProfile agent)
             where TEntity : class, new()
         {
-            var items = models.GetTable<CourseContract>()
-                .Where(c => c.CourseContractRevision == null)
-                .Where(c => c.Status == (int)Naming.CourseContractStatus.待簽名);
-            items = models.filterContractByAgent(agent, items);
+            var items = models.PromptContractToSign().filterContractByAgent(models, agent);
             return items;
         }
 
@@ -1177,7 +1211,7 @@ namespace WebHome.Helper
             return items;
         }
 
-        private static IQueryable<CourseContract> filterContractByAgent<TEntity>(this ModelSource<TEntity> models, UserProfile agent, IQueryable<CourseContract> items)
+        private static IQueryable<CourseContract> filterContractByAgent<TEntity>(this IQueryable<CourseContract> items, ModelSource<TEntity> models, UserProfile agent)
                         where TEntity : class, new()
         {
             if (agent.IsManager() || agent.IsViceManager())
@@ -1224,12 +1258,19 @@ namespace WebHome.Helper
             return items;
         }
 
+        public static IQueryable<CourseContract> PromptContractToConfirm<TEntity>(this ModelSource<TEntity> models)
+            where TEntity : class, new()
+        {
+            var items = models.PromptContract()
+                .Where(c => c.Status == (int)Naming.CourseContractStatus.待審核);
+
+            return items;
+        }
+
         public static IQueryable<CourseContract> GetContractToConfirmByAgent<TEntity>(this ModelSource<TEntity> models, UserProfile agent)
             where TEntity : class, new()
         {
-            var items = models.GetTable<CourseContract>()
-                .Where(c => c.CourseContractRevision == null)
-                .Where(c => c.Status == (int)Naming.CourseContractStatus.待審核);
+            var items = models.PromptContractToConfirm();
             if (agent.IsManager())
             {
                 items = models.FilterByBranchStoreManager(items, agent);
@@ -1429,7 +1470,7 @@ namespace WebHome.Helper
             return items;
         }
 
-        public static CourseContract InitiateCourseContract<TEntity>(this ModelSource<TEntity> models, CourseContractViewModel viewModel, UserProfile profile, LessonPriceType lessonPrice)
+        public static CourseContract InitiateCourseContract<TEntity>(this ModelSource<TEntity> models, CourseContractViewModel viewModel, UserProfile profile, LessonPriceType lessonPrice,int? installmentID=null)
             where TEntity : class, new()
         {
             var item = models.GetTable<CourseContract>().Where(c => c.ContractID == viewModel.ContractID).FirstOrDefault();
@@ -1467,6 +1508,27 @@ namespace WebHome.Helper
             item.Remark = viewModel.Remark;
             item.FitnessConsultant = viewModel.FitnessConsultant.Value;
             item.Renewal = viewModel.Renewal;
+
+            if (viewModel.InstallmentPlan == true)
+            {
+                if (installmentID.HasValue)
+                {
+                    item.InstallmentID = installmentID.Value;
+                }
+                else
+                {
+                    if (item.ContractInstallment == null)
+                    {
+                        item.ContractInstallment = new ContractInstallment { };
+                    }
+                    item.ContractInstallment.Installments = viewModel.Installments.Value;
+                }
+            }
+            else
+            {
+                models.DeleteAllOnSubmit<ContractInstallment>(t => t.InstallmentID == item.InstallmentID);
+            }
+
             //item.Status = viewModel.Status;
             if (viewModel.UID != null && viewModel.UID.Length > 0)
             {
@@ -1615,8 +1677,8 @@ namespace WebHome.Helper
 
                             case "X":
                             case "S":
-                                contractTrustSettlement.TotalTrustAmount += trust.Payment.PayoffAmount ?? 0;
-                                contractTrustSettlement.BookingTrustAmount += trust.Payment.PayoffAmount ?? 0;
+                                contractTrustSettlement.TotalTrustAmount -= trust.ReturnAmount ?? 0;
+                                contractTrustSettlement.BookingTrustAmount -= trust.ReturnAmount ?? 0;
                                 break;
 
                             case "V":

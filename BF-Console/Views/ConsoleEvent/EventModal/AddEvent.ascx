@@ -36,10 +36,10 @@
              var keycode = (event.keyCode ? event.keyCode : event.which);
             if (keycode == '13') {
                 clearErrors();
-                if (userName.length == 0) {
+                if (userName.length < 2) {
                     swal({
                         title: "Opps！",
-                        text: "你忘了學生的姓名嗎？!",
+                        text: "你忘了學生的姓名嗎？!(至少2個中、英文字)",
                         type: "warning",
                         showCancelButton: false,
                         confirmButtonColor: "#DD6B55",

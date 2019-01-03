@@ -17,8 +17,11 @@
     <link href="plugins/jquery-datatable/Responsive-2.2.2/css/responsive.bootstrap4.min.css" rel="stylesheet">
     <link href="plugins/jquery-datatable/FixedColumns-3.2.5/css/fixedColumns.bootstrap4.min.css" rel="stylesheet">
     <!-- Bootstrap Datetimepick -->
-    <link href="plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
-    <link href="css/datetimepicker.css" rel="stylesheet" />
+<%--    <link href="plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+    <link href="css/datetimepicker.css" rel="stylesheet" />--%>
+    <link href="plugins/smartcalendar/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+    <link href="css/smartcalendar-2.css" rel="stylesheet" />
+
     <!-- Custom Css -->
     <link rel="stylesheet" href="css/customelist.css?2" />
 
@@ -116,8 +119,10 @@
     <script src="plugins/jquery-datatable/Responsive-2.2.2/js/dataTables.responsive.min.js"></script>
     <script src="plugins/jquery-datatable/FixedColumns-3.2.5/js/dataTables.fixedColumns.min.js"></script>
     <!-- Bootstrap datetimepicker Plugin Js -->
-    <script src="plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
-    <script src="plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-TW.js"></script>
+<%--    <script src="plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-TW.js"></script>--%>
+    <script src="plugins/smartcalendar/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="plugins/smartcalendar/js/locales-datetimepicker/bootstrap-datetimepicker.zh-TW.js"></script>
 
     <%  Html.RenderPartial("~/Views/ConsoleHome/Shared/KnobJS.ascx"); %>
 
@@ -183,11 +188,6 @@
             });
         });
 
-        //更多查詢條件
-        this.moreContractQuery = function() {
-            $("#moreQueryModal").modal('show');
-        };
-
         //點選刪除功能
         this.deleteData = function() {
             swal({
@@ -212,12 +212,6 @@
         //搜尋體能顧問
         this.showSearchCoach = function() {
             $("#searchCoachModal").modal('show');
-        };
-
-
-        //點選合約詳細資料
-        this.showContractDetail = function() {
-            $("#detailContractModal").modal('show');
         };
 
         //顯示合約學生清單
@@ -350,6 +344,18 @@
 
     <script>
 
+        function processContract(keyID) {
+            showLoading();
+            $.post('<%= Url.Action("ProcessContract", "ContractConsole") %>', { 'keyID': keyID }, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    alert(data.message);
+                } else {
+                    $(data).appendTo($('body'));
+                }
+            });
+        }
+
         function equipDatetimePicker() {
             $('.date').datetimepicker({
                 language: 'zh-TW',
@@ -382,6 +388,7 @@
                 language: 'zh-TW',
                 weekStart: 1,
                 todayBtn: 0,
+                showMeridian: 1,
                 clearBtn: 1,
                 autoclose: 1,
                 todayHighlight: 1,

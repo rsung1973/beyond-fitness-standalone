@@ -13,10 +13,9 @@
         <div class="col-8">
             <h5 class="m-t-0">即將過期</h5>
             <%  var effectiveItems = models.PromptEffectiveContract()
-                    .Where(c => c.Expiration >= DateTime.Today)
                     .Where(c => c.FitnessConsultant == _model.UID);
-                var expiringItems = models.PromptExpiringContract().Where(c => c.FitnessConsultant == _model.UID);;
-                var expiredItems = models.PromptEffectiveContract()
+                var expiringItems = models.PromptExpiringContract().Where(c => c.FitnessConsultant == _model.UID);
+                var expiredItems = models.PromptRegisterLessonContract()
                     .FilterByExpired(models)
                     .Where(c => c.FitnessConsultant == _model.UID); %>
             <p class="text-small">
@@ -26,7 +25,7 @@
                                     FitnessConsultant = _model.UID,
                                     IsExpired = true,
                                     ContractQueryMode = Naming.ContractServiceMode.ContractOnly,
-                                    Status = (int)Naming.CourseContractStatus.已生效,
+                                    Status = (int)Naming.CourseContractStatus.已過期,
                                 }) %>,<%= expiredItems.Count() %>);'><%= expiredItems.Count() %></a><br />
                 生效中：<a href='javascript:showContractList(<%= JsonConvert.SerializeObject(
                                 new 
@@ -47,7 +46,7 @@
                                     Status = (int)Naming.CourseContractStatus.已生效,
                                     ExpirationFrom = DateTime.Today,
                                     ExpirationTo = DateTime.Today.AddMonths(1),
-                                }) %>);'>
+                                }) %>,<%= expiringItems.Count() %>);'>
                 <h2 class="col-red"><%= expiringItems.Count() %></h2>
             </a>
             <small class="info">合約</small>

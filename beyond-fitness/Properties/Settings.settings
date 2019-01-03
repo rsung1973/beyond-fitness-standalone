@@ -23,17 +23,6 @@
     <Setting Name="EINVTurnKeyPath" Type="System.String" Scope="Application">
       <Value Profile="(Default)">C:\EINVTurnkey\UpCast\B2CSTORAGE</Value>
     </Setting>
-    <Setting Name="BFDbConnection" Type="(Connection string)" Scope="Application">
-      <DesignTimeValue Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
-&lt;SerializableConnectionString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
-  &lt;ConnectionString&gt;Data Source=.\sqlexpress;Initial Catalog=BeyondFitnessProd2;Integrated Security=True&lt;/ConnectionString&gt;
-  &lt;ProviderName&gt;System.Data.SqlClient&lt;/ProviderName&gt;
-&lt;/SerializableConnectionString&gt;</DesignTimeValue>
-      <Value Profile="(Default)">Data Source=.\sqlexpress;Initial Catalog=BeyondFitnessProd2;Integrated Security=True</Value>
-    </Setting>
-    <Setting Name="HostDomain" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">http://10.0.1.201</Value>
-    </Setting>
     <Setting Name="EINVTurnKeyB2P" Type="System.String" Scope="Application">
       <Value Profile="(Default)">C:\EINVTurnkey\UpCast\B2PMESSAGE</Value>
     </Setting>
@@ -45,6 +34,20 @@
     </Setting>
     <Setting Name="ChannelToken" Type="System.String" Scope="Application">
       <Value Profile="(Default)">9cKb6ExKnQMNeUiOk02agKk8c+yforhhQ2KO1wqnoGQ7A7qfzo8TgpNaSiw4ZwWqCNjk7ds8gFK38hE0ac2Bfxjja2tPFvkzzVF5J3G4Klj1fxcrBBYwC7L9wi3Xbx5e95oyFRCIPeUKgq/pgwOfzgdB04t89/1O/w1cDnyilFU=</Value>
+    </Setting>
+    <Setting Name="BFDbConnection" Type="(Connection string)" Scope="Application">
+      <DesignTimeValue Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;SerializableConnectionString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;ConnectionString&gt;Data Source=VM-Venus\sqlexpress,1433;Initial Catalog=BeyondFitnessProd2;Integrated Security=True&lt;/ConnectionString&gt;
+  &lt;ProviderName&gt;System.Data.SqlClient&lt;/ProviderName&gt;
+&lt;/SerializableConnectionString&gt;</DesignTimeValue>
+      <Value Profile="(Default)">Data Source=VM-Venus\sqlexpress,1433;Initial Catalog=BeyondFitnessProd2;Integrated Security=True</Value>
+    </Setting>
+    <Setting Name="HostDomain" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.worthitstudio.idv.tw:8100</Value>
+    </Setting>
+    <Setting Name="ReportInputError" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">~/Views/Shared/ReportInputError.ascx</Value>
     </Setting>
   </Settings>
 </SettingsFile>

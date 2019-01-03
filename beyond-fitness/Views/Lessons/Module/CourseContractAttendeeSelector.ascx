@@ -126,9 +126,7 @@
 
     bool completePDQ(RegisterLesson lesson)
     {
-        return lesson.UserProfile.PDQTask
-            .Select(t => t.PDQQuestion)
-            .Where(q => q.PDQQuestionExtension == null).Count() >= 20;
+        return lesson.UserProfile.IsCompletePDQ();
     }
 
     bool hasPayment(RegisterLesson lesson)

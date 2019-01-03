@@ -236,7 +236,7 @@ namespace WebHome.Models.ViewModel
 
     }
 
-    public class LessonTimeViewModel
+    public class LessonTimeViewModel : QueryViewModel
     {
         public LessonTimeViewModel()
         {
@@ -248,13 +248,11 @@ namespace WebHome.Models.ViewModel
         [Display(Name = "學員姓名")]
         public int? RegisterID { get; set; }
 
-        [Required]
         [Display(Name = "體能顧問姓名")]
-        public int CoachID { get; set; }
+        public int? CoachID { get; set; }
 
-        [Required]
         [Display(Name = "上課日期")]
-        public DateTime ClassDate { get; set; }
+        public DateTime? ClassDate { get; set; }
 
         //[Required]
         //[Display(Name = "上課時段")]
@@ -268,13 +266,13 @@ namespace WebHome.Models.ViewModel
 
         public int? TrainingBySelf { get; set; }
 
-        [Required]
         [Display(Name = "上課地點")]
-        public int BranchID { get; set; }
+        public int? BranchID { get; set; }
 
         public int? LessonID { get; set; }
         public int? CurrentTrial { get; set; }
         public Naming.LessonPriceStatus? SessionStatus { get; set; }
+        public int[] AttendeeID { get; set; }
 
     }
 
@@ -286,7 +284,7 @@ namespace WebHome.Models.ViewModel
         public int LessonID { get; set; }
     }
 
-    public class TrainingExecutionViewModel
+    public class TrainingExecutionViewModel : QueryViewModel
     {
 
         [Display(Name = "組數")]
@@ -318,7 +316,7 @@ namespace WebHome.Models.ViewModel
         [Display(Name = "評論")]
         public String Conclusion { get; set; }
 
-        public int ExecutionID { get; set; }
+        public int? ExecutionID { get; set; }
         public String Emphasis { get; set; }
     }
 
@@ -605,10 +603,11 @@ namespace WebHome.Models.ViewModel
         public String ActivityProgram { get; set; }
         public int[] MemberID { get; set; }
         public String Accompanist { get; set; }
-        public int? BranchID { get; set; }
+        public Naming.BranchName? BranchID { get; set; }
         public TimeSpan? StartTime { get; set; }
         public TimeSpan? EndTime { get; set; }
         public bool? CreateNew { get; set; }
+        public String Place { get; set; }
 
     }
 

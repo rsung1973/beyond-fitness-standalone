@@ -14,6 +14,7 @@ using System.Web.Mvc;
 using CommonLib.DataAccess;
 using MessagingToolkit.QRCode.Codec;
 using Utility;
+using WebHome.Controllers;
 using WebHome.Models.DataEntity;
 using WebHome.Models.Locale;
 using WebHome.Models.Timeline;
@@ -273,6 +274,20 @@ namespace WebHome.Helper
                         (int)Naming.LessonPriceStatus.已刪除,
                         (int)Naming.LessonPriceStatus.點數兌換課程 };
 
+        public static IQueryable<LessonTime> PTorPILesson(this IQueryable<LessonTime> items)
+        {
+            return items.Where(l => PTScope.Contains(l.RegisterLesson.LessonPriceType.Status.Value)
+                    || l.TrainingBySelf == 1
+                    || (l.RegisterLesson.RegisterLessonEnterprise != null
+                            && (new int?[]
+                                {
+                                    (int)Naming.EnterpriseLessonTypeDefinition.自主訓練,
+                                    (int)Naming.EnterpriseLessonTypeDefinition.體能顧問1對1課程,
+                                    (int)Naming.EnterpriseLessonTypeDefinition.體能顧問1對2課程,
+                                }).Contains(l.RegisterLesson.RegisterLessonEnterprise.TypeID)));
+        }
+
+
         public static IQueryable<LessonTime> PTLesson(this IQueryable<LessonTime> items)
         {
             return items.Where(l => PTScope.Contains(l.RegisterLesson.LessonPriceType.Status.Value)
@@ -306,6 +321,12 @@ namespace WebHome.Helper
                                 }).Contains(item.RegisterLesson.RegisterLessonEnterprise.EnterpriseCourseContent.EnterpriseLessonType.Status));
         }
 
+        public static IQueryable<LessonTime> PILesson(this IQueryable<LessonTime> items)
+        {
+            return items.Where(l => l.TrainingBySelf == 1);
+        }
+
+
         public static bool IsPISession(this LessonTime item)
         {
             return item.TrainingBySelf == 1;
@@ -321,6 +342,12 @@ namespace WebHome.Helper
             return item.RegisterLesson.LessonPriceType.Status == (int)Naming.LessonPriceStatus.體驗課程
                                     || (item.RegisterLesson.RegisterLessonEnterprise != null && item.RegisterLesson.RegisterLessonEnterprise.EnterpriseCourseContent.EnterpriseLessonType.Status == (int)Naming.LessonPriceStatus.體驗課程);
         }
+
+        public static bool IsCoachPISession(this LessonTime item)
+        {
+            return item.RegisterLesson.LessonPriceType.Status == (int)Naming.LessonPriceStatus.教練PI;
+        }
+
         public static IQueryable<LessonTime> TrialLesson(this IQueryable<LessonTime> items)
         {
             return items.Where(l => l.RegisterLesson.LessonPriceType.Status == (int)Naming.LessonPriceStatus.體驗課程
@@ -345,6 +372,184 @@ namespace WebHome.Helper
                 //.Where(t => t.RegisterLesson.LessonPriceType.Status != (int)Naming.DocumentLevelDefinition.體驗課程)
                 //.Where(t => t.RegisterLesson.LessonPriceType.Status != (int)Naming.DocumentLevelDefinition.點數兌換課程)
                 .Where(t => t.LessonAttendance != null || t.LessonPlan.CommitAttendance.HasValue);
+        }
+
+        public static TrainingPlan AssertTrainingPlan<TEntity>(this LessonTime item, ModelSource<TEntity> models)
+            where TEntity : class, new()
+        {
+            var plan = item.TrainingPlan.FirstOrDefault();
+            if (plan == null)
+            {
+                plan = new TrainingPlan
+                {
+                    TrainingExecution = new TrainingExecution
+                    {
+                    }
+                };
+
+                item.TrainingPlan.Add(plan);
+                models.SubmitChanges();
+            }
+
+            return plan;
+
+        }
+
+        public static bool CouldBeCancelled(this LessonTime item,UserProfile profile)
+        {
+            if (item.IsSTSession())
+                return true;
+
+            if (!item.ContractTrustTrack.Any(s => s.SettlementID.HasValue))
+            {
+                if (item.GroupingLesson.RegisterLesson.Any(r => r.RegisterLessonContract != null && r.RegisterLessonContract.CourseContract.RevisionList.Where(v => v.Reason != "展延").Count() > 0))
+                {
+                    return false;
+                }
+                if (profile.IsAssistant() || profile.IsAuthorizedSysAdmin())
+                    return true;
+                if (item.LessonAttendance == null && !item.LessonPlan.CommitAttendance.HasValue && item.ClassTime.Value >= DateTime.Today.AddDays(-3))
+                    return true;
+            }
+            return false;
+        }
+
+        public static void RevokeBooking<TEntity>(this LessonTime item, ModelSource<TEntity> models)
+            where TEntity : class, new()
+        {
+            var registerLesson = item.RegisterLesson;
+            if (item.IsCoachPISession())
+            {
+                if (item.RegisterLesson.MasterRegistration == true)
+                {
+                    models.ExecuteCommand("delete LessonTime where GroupID={0}", item.GroupID);
+                    models.ExecuteCommand("delete RegisterLesson where RegisterGroupID={0}", item.GroupID);
+                    models.ExecuteCommand("delete GroupingLesson where GroupID={0}", item.GroupID);
+                }
+                else
+                {
+                    models.ExecuteCommand("delete LessonTime where LessonID={0}", item.LessonID);
+                    models.ExecuteCommand("delete RegisterLesson where RegisterID={0}", item.RegisterID);
+                }
+            }
+            else
+            {
+                var contract = registerLesson.RegisterLessonContract?.CourseContract;
+                if (contract != null)
+                {
+                    models.ExecuteCommand(@"UPDATE       CourseContract
+                            SET                Status = {0}
+                            WHERE     ContractID = {1} and Status = {0}",
+                        (int)Naming.CourseContractStatus.已生效, contract.ContractID, (int)Naming.CourseContractStatus.已履行);
+                }
+                if (contract != null && contract.CourseContractType.ContractCode == "CFA")
+                {
+                    models.ExecuteCommand(@"UPDATE RegisterLesson
+                    SET                Attended = {2}
+                    FROM            RegisterLessonContract INNER JOIN
+                                                RegisterLesson ON RegisterLessonContract.RegisterID = RegisterLesson.RegisterID
+                    WHERE        (RegisterLesson.Attended = {1}) AND (RegisterLessonContract.ContractID = {0})", contract.ContractID, (int)Naming.LessonStatus.課程結束, (int)Naming.LessonStatus.上課中);
+                }
+                else
+                {
+                    models.ExecuteCommand(@"UPDATE RegisterLesson
+                    SET        Attended = {2}
+                    FROM     LessonTime INNER JOIN
+                                   GroupingLesson ON LessonTime.GroupID = GroupingLesson.GroupID INNER JOIN
+                                   RegisterLesson ON GroupingLesson.GroupID = RegisterLesson.RegisterGroupID
+                    WHERE   (LessonTime.LessonID = {0}) AND (RegisterLesson.Attended = {1})", item.LessonID, (int)Naming.LessonStatus.課程結束, (int)Naming.LessonStatus.上課中);
+                }
+
+                models.DeleteAny<LessonTime>(l => l.LessonID == item.LessonID);
+                if (registerLesson.UserProfile.LevelID == (int)Naming.MemberStatusDefinition.Anonymous //團體課
+                    || registerLesson.LessonPriceType.Status == (int)Naming.DocumentLevelDefinition.自主訓練  /*自主訓練*/
+                    || registerLesson.LessonPriceType.Status == (int)Naming.DocumentLevelDefinition.教練PI
+                    || registerLesson.LessonPriceType.Status == (int)Naming.DocumentLevelDefinition.體驗課程)
+                {
+                    models.DeleteAny<RegisterLesson>(l => l.RegisterID == item.RegisterID);
+                }
+            }
+
+        }
+
+        public static IQueryable<RegisterLesson> PromptLearnerRegisterLessons<TEntity>(this UserProfile profile, ModelSource<TEntity> models)
+            where TEntity : class, new()
+        {
+            return models.GetTable<RegisterLesson>()
+                .Where(r => r.RegisterLessonContract != null)
+                .Where(l => l.Attended != (int)Naming.LessonStatus.課程結束
+                    && l.UID == profile.UID)
+                .Where(l => l.Lessons > l.GroupingLesson.LessonTime.Count)
+                .Where(l => l.RegisterGroupID.HasValue);
+        }
+
+        public static IQueryable<RegisterLesson> PromptLearnerEnterpriseLessons<TEntity>(this UserProfile profile, ModelSource<TEntity> models)
+            where TEntity : class, new()
+        {
+            return models.GetTable<RegisterLesson>()
+                .Where(l => l.Attended != (int)Naming.LessonStatus.課程結束
+                    && (l.UID == profile.UID))
+                .Where(l => l.Lessons > l.GroupingLesson.LessonTime.Count)
+                .Where(l => l.RegisterGroupID.HasValue)
+                .Join(models.GetTable<RegisterLessonEnterprise>(), r => r.RegisterID, t => t.RegisterID, (r, t) => r);
+        }
+
+        public static IQueryable<QuestionnaireRequest> PromptLessonQuestionnaireRequest<TEntity>(this IQueryable<RegisterLesson> items, ModelSource<TEntity> models)
+            where TEntity : class, new()
+        {
+            return items
+                .Join(models.GetTable<QuestionnaireRequest>(),
+                    r => r.RegisterID, q => q.RegisterID, (r, q) => q)
+                .Where(q => !q.Status.HasValue && !q.PDQTask.Any());
+        }
+
+        public static void ProcessBookingWhenCrossBranch<TEntity>(this LessonTime item, ModelSource<TEntity> models)
+            where TEntity : class, new()
+        {
+            if (!models.GetTable<CoachWorkplace>()
+                            .Any(c => c.BranchID == item.BranchID
+                                && c.CoachID == item.AttendingCoach))
+            {
+                if (item.PreferredLessonTime == null)
+                {
+                    item.PreferredLessonTime = new PreferredLessonTime { };
+                    models.SubmitChanges();
+                }
+            }
+        }
+
+        public static void AllowBookingWhenCrossBranch<TEntity>(this LessonTime item, ModelSource<TEntity> models,UserProfile approver)
+            where TEntity : class, new()
+        {
+            models.ExecuteCommand(@"
+                UPDATE       PreferredLessonTime
+                SET                ApprovalDate = {0}, ApproverID = {1}
+                WHERE        (LessonID = {2})", DateTime.Now, approver.UID, item.LessonID);
+        }
+
+        public static IQueryable<LessonTime> ConcurrentLessons<TEntity>(this LessonTimeExpansion item, ModelSource<TEntity> models)
+            where TEntity : class, new()
+        {
+            var branchID = item.LessonTime.BranchID;
+            return models.GetTable<LessonTimeExpansion>().Where(t => t.ClassDate == item.ClassDate && t.Hour == item.Hour)
+                    .Join(models.GetTable<LessonTime>().Where(l => l.BranchID == branchID), t => t.LessonID, i => i.LessonID, (t, i) => i);
+        }
+
+        public static IQueryable<RegisterLesson> ConcurrentRegisterLessons<TEntity>(this IQueryable<LessonTime> items, ModelSource<TEntity> models)
+            where TEntity : class, new()
+        {
+            return items.Join(models.GetTable<GroupingLesson>(), l => l.GroupID, g => g.GroupID, (l, g) => g)
+                    .Join(models.GetTable<RegisterLesson>(), g => g.GroupID, r => r.RegisterGroupID, (g, r) => r);
+        }
+
+        public static IQueryable<LessonTime> PreferredLessonTimeToApprove<TEntity>(this UserProfile manager, ModelSource<TEntity> models)
+            where TEntity : class, new()
+        {
+            return models.GetTable<LessonTime>()
+                    .Join(models.GetTable<BranchStore>().Where(b => b.ManagerID == manager.UID || b.ViceManagerID == manager.UID),
+                        l => l.BranchID, b => b.BranchID, (l, b) => l)
+                    .Join(models.GetTable<PreferredLessonTime>().Where(p => !p.ApprovalDate.HasValue),
+                        l => l.LessonID, p => p.LessonID, (l, p) => l);
         }
 
     }

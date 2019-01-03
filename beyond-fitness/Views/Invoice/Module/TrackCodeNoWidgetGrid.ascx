@@ -59,6 +59,10 @@
                                         <label class="select">
                                             <select class="input" name="Year">
                                                 <option value="">全部</option>
+                                                <%  if (DateTime.Today.Month == 12)
+                                                    {   %>
+                                                <option value="<%= DateTime.Today.Year+1 %>"><%= DateTime.Today.Year+1 %></option>
+                                                <%  } %>
                                                 <%  for (int year = DateTime.Today.Year; year >= 2017; year--)
                                                     { %>
                                                 <option value="<%= year %>"><%= year %></option>

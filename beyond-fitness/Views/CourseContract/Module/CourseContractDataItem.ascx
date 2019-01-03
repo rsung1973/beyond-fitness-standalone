@@ -25,16 +25,17 @@
     </td>
     <td nowrap="noWrap"><%= String.Format("{0:yyyy/MM/dd}", _model.EffectiveDate) %></td>
     <td><%= _model.CourseContractType.TypeName %>(<%= _model.LessonPriceType.DurationInMinutes %>分鐘)</td>
-    <td><%  if(_model.SequenceNo==0)
+    <td><%= $"{_model.PayoffDue:yyyy/MM/dd}" %></td>
+    <td><%  if (_model.SequenceNo == 0)
             { %>
-        <%= _model.Status==(int)Naming.CourseContractStatus.已生效 ? _model.RemainedLessonCount().ToString() : "--" %>/<%= _model.Lessons %>
+        <%= _model.Status == (int)Naming.CourseContractStatus.已生效 ? _model.RemainedLessonCount().ToString() : "--" %>/<%= _model.Lessons %>
         <%  }
             else
             { %>
                 --/--
         <%  } %>
     </td>
-    <td nowrap="noWrap" class="text-right"><%= _model.Status<=(int)Naming.CourseContractStatus.已生效 ? String.Format("{0:##,###,###,###}",_model.TotalCost) : "--" %></td>
+    <td nowrap="noWrap" class="text-right"><%= _model.Status>=(int)Naming.CourseContractStatus.已生效 ? String.Format("{0:##,###,###,###}",_model.TotalCost) : "--" %></td>
     <td nowrap="noWrap" class="text-right"><%  var revision = _model.CourseContractRevision; %>
         <%  if(revision==null)
             { %>

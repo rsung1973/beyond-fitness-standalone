@@ -216,11 +216,35 @@ namespace WebHome.Models.Locale
             待簽名 = 1203,
             待審核 = 1204,
             已生效 = 1205,
-            已完成 = 1206,
+            已履行 = 1206,
             已終止 = 1207,
             已轉讓 = 1208,
             已轉點 = 1209,
+            已過期 = 1210,
         }
+
+        public enum ContractQueryStatus
+        {
+            編輯中 = 1201,
+            待確認 = 1202,
+            待簽名 = 1203,
+            待審核 = 1204,
+            生效中 = 1205,
+            已履行 = 1206,
+            已終止 = 1207,
+            已轉讓 = 1208,
+            已轉點 = 1209,
+            已過期 = 1210,
+        }
+
+        public enum ContractServiceStatus
+        {
+            待簽名 = 1203,
+            待審核 = 1204,
+            已生效 = 1205,
+        }
+
+
 
         public enum VoidPaymentStatus
         {
@@ -309,10 +333,44 @@ namespace WebHome.Models.Locale
 
         public enum BranchName
         {
+            請選擇 = 0,
             南京 = 1,
             信義 = 2,
-            忠孝 = 3
+            忠孝 = 3,
+            其他 = 4,
+            璞真,
+            甜蜜的家,
         }
-            
+
+        public enum ContractTypeDefinition
+        {
+            CPA = 1,
+            CFA,
+            CPB,
+            CPC
+        }
+
+        public enum EnterpriseLessonTypeDefinition
+        {
+            體驗課程 = 1,
+            體能顧問1對1課程,
+            體能顧問1對2課程,
+            自主訓練
+        }
+
+        public enum ContractServiceMode
+        {
+            ContractOnly = 1,
+            ServiceOnly,
+            All,
+        }
+
+        public enum ContractPayoffMode
+        {
+            Unpaid = 0,
+            Paid = 1,
+            All,
+        }
+
     }
 }

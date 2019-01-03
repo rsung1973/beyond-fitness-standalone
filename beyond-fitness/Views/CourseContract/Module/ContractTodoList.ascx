@@ -13,10 +13,15 @@
     <table id="<%= _tableId %>" class="table table-striped table-bordered table-hover" width="100%">
         <thead>
             <tr>
+                <%  if (_viewModel.Status == (int)Naming.CourseContractStatus.待審核)
+                    {   %>
+                <th>合約編號</th>
+                <%  } %>
                 <th data-class="expand">分店</th>
                 <th data-hide="phone">體能顧問</th>
                 <th>學員</th>
                 <th>編輯日期</th>
+                <th>應收期限</th>
                 <th>合約名稱</th>
                 <th>購買堂數</th>
                 <th>合約總金額</th>
@@ -26,6 +31,11 @@
             <%  foreach (var item in _model)
                 { %>
             <tr>
+                <%  if (_viewModel.Status == (int)Naming.CourseContractStatus.待審核)
+                    {   %>
+                <td nowrap="noWrap"><%= item.ContractNo() %></td>
+                <%  } %>
+
                 <td nowrap="noWrap"><%= item.CourseContractExtension.BranchStore.BranchName %></td>
                 <td nowrap="noWrap"><%= item.ServingCoach.UserProfile.FullName() %></td>
                 <td nowrap="noWrap">
@@ -39,6 +49,7 @@
                     <%  } %>
                 </td>
                 <td nowrap="noWrap"><%= String.Format("{0:yyyy/MM/dd}", item.ContractDate) %></td>
+                <td nowrap="noWrap"><%= String.Format("{0:yyyy/MM/dd}", item.PayoffDue) %></td>
                 <td nowrap="noWrap">
                     <%  if (_viewModel.Status == (int)Naming.CourseContractStatus.草稿)
                         { %>

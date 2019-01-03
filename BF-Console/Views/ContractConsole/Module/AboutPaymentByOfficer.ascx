@@ -28,7 +28,7 @@
                                     PayoffDueFrom = dateFrom,
                                     PayoffDueTo = dateTo,
                                     IncludeTotalUnpaid = true,
-                                }) %>);'><%= items.Count() %></a>
+                                }) %>,<%= items.Count() %>);'><%= items.Count() %></a>
                 <br />
                 <%
                     for (int i = 1; i < 5; i++)
@@ -45,7 +45,7 @@
                                     PayoffMode = Naming.ContractPayoffMode.Unpaid,
                                     PayoffDueFrom = dateFrom,
                                     PayoffDueTo = dateTo,
-                                }) %>);'><%= items.Count() %></a>
+                                }) %>,<%= items.Count() %>);'><%= items.Count() %></a>
                 <br />
                 <%      
                     }
@@ -59,7 +59,7 @@
                                     ManagerID = _model.UID,
                                     ContractQueryMode = Naming.ContractServiceMode.ContractOnly,
                                     PayoffMode = Naming.ContractPayoffMode.Unpaid,
-                                }) %>);'>
+                                }) %>,<%= toPay.Count() %>);'>
                 <h2 class="col-red"><%= toPay.Count() %></h2>
             </a>
             <small class="info">全部</small>
@@ -79,8 +79,7 @@
         _modelState = (ModelStateDictionary)ViewBag.ModelState;
         models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
         _model = (UserProfile)this.Model;
-        _contractItems = models.PromptRegisterLessonContract()
-                    .Where(c => c.Status == (int)Naming.CourseContractStatus.已生效);
+        _contractItems = models.PromptAccountingContract();
 
 
     }

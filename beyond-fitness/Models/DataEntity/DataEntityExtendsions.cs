@@ -33,24 +33,51 @@ namespace WebHome.Models.DataEntity
                                         : "編輯課程內容中";
         }
 
-        public static int RemainedLessonCount(this RegisterLesson item)
+        public static int RemainedLessonCount(this RegisterLesson item,bool onlyAttended = false)
         {
             //return item.Lessons
             //        - item.GroupingLesson.LessonTime.Count(/*l=>l.LessonAttendance!= null*/);
-            return item.Lessons - (item.AttendedLessons ?? 0)
+            if (onlyAttended)
+            {
+                return item.Lessons - (item.AttendedLessons ?? 0)
+                        - (item.RegisterGroupID.HasValue ? item.GroupingLesson.LessonTime.Count(l => l.LessonAttendance != null) : item.LessonTime.Count(l => l.LessonAttendance != null));
+            }
+            else
+            {
+                return item.Lessons - (item.AttendedLessons ?? 0)
                     - (item.RegisterGroupID.HasValue ? item.GroupingLesson.LessonTime.Count : item.LessonTime.Count);
+            }
         }
 
-        public static int RemainedLessonCount(this CourseContract item)
+        public static int RemainedLessonCount(this CourseContract item, bool onlyAttended = false)
         {
-            return item.RegisterLessonContract.Count > 0
-                    ? item.CourseContractType.ContractCode == "CFA"
-                        ? (item.Lessons ?? 0)
-                            - item.RegisterLessonContract.Sum(c => c.RegisterLesson.LessonTime.Count())
-                            - (item.RegisterLessonContract.Sum(c => c.RegisterLesson.AttendedLessons) ?? 0)
-                        : item.RegisterLessonContract.First().RegisterLesson.RemainedLessonCount()
-                    : item.Lessons.Value;
+            if (onlyAttended)
+            {
+                return item.RegisterLessonContract.Count > 0
+                        ? item.CourseContractType.ContractCode == "CFA"
+                            ? (item.Lessons ?? 0)
+                                - item.RegisterLessonContract.Sum(c => c.RegisterLesson.LessonTime.Count(l => l.LessonAttendance != null))
+                                - (item.RegisterLessonContract.Sum(c => c.RegisterLesson.AttendedLessons) ?? 0)
+                            : item.RegisterLessonContract.First().RegisterLesson.RemainedLessonCount(onlyAttended)
+                        : item.Lessons.Value;
+            }
+            else
+            {
+                return item.RegisterLessonContract.Count > 0
+                        ? item.CourseContractType.ContractCode == "CFA"
+                            ? (item.Lessons ?? 0)
+                                - item.RegisterLessonContract.Sum(c => c.RegisterLesson.LessonTime.Count())
+                                - (item.RegisterLessonContract.Sum(c => c.RegisterLesson.AttendedLessons) ?? 0)
+                            : item.RegisterLessonContract.First().RegisterLesson.RemainedLessonCount()
+                        : item.Lessons.Value;
+            }
         }
+
+        public static int UnfinishedLessonCount(this CourseContract item)
+        {
+            return item.RegisterLessonContract.Sum(c => c.RegisterLesson.LessonTime.Count(l => l.LessonAttendance == null));
+        }
+
 
 
         public static String FullName(this UserProfile item, bool mask = false)
@@ -82,6 +109,24 @@ namespace WebHome.Models.DataEntity
             return contract.ContractNo != null ? String.Format("{0}-{1:00}", contract.ContractNo, contract.SequenceNo) : "--";
         }
 
+        public static String ContractName(this CourseContract item)
+        {
+            return $"{item.CourseContractType.TypeName}({item.LessonPriceType.DurationInMinutes}分鐘)";
+        }
+
+        public static String ContractLearner(this CourseContract item, String separator = "/")
+        {
+            if (item.CourseContractType.IsGroup == true)
+            {
+                return String.Join(separator, item.CourseContractMember.Select(m => m.UserProfile).ToArray().Select(u => u.FullName()));
+            }
+            else
+            {
+                return item.ContractOwner.FullName();
+            }
+        }
+
+
         public static DateTime? Expiration(this CourseContract contract)
         {
             var revision = contract.RevisionList.Where(r => r.Reason == "展期").FirstOrDefault();
@@ -100,7 +145,7 @@ namespace WebHome.Models.DataEntity
                 .Where(p => p.TransactionType == (int)Naming.PaymentTransactionType.體能顧問費
                     || p.TransactionType == (int)Naming.PaymentTransactionType.合約轉讓餘額
                     || p.TransactionType == (int)Naming.PaymentTransactionType.合約轉點餘額)
-                .Where(p => p.VoidPayment == null)
+                .Where(p => p.VoidPayment == null || p.AllowanceID.HasValue)
                 .Sum(c => c.PayoffAmount);
         }
 
@@ -135,6 +180,14 @@ namespace WebHome.Models.DataEntity
             }
         }
 
+        public static String LessonTypeStatus(this LessonTime item)
+        {
+            return item.RegisterLesson.RegisterLessonEnterprise == null
+                    ? item.RegisterLesson.LessonPriceType.Status.LessonTypeStatus()
+                    : item.RegisterLesson.RegisterLessonEnterprise.EnterpriseCourseContent.EnterpriseLessonType.Status.LessonTypeStatus() + "(企)";
+        }
+
+
         public static decimal? EffectiveAchievement(this Payment item)
         {
             if (item.VoidPayment != null)
@@ -151,6 +204,18 @@ namespace WebHome.Models.DataEntity
             }
         }
 
+        public static String FullLessonDuration(this LessonTime item)
+        {
+            return $"{item.ClassTime:yyyy/MM/dd HH:mm}~{item.ClassTime.Value.AddMinutes(item.DurationInMinutes.Value):HH:mm}";
+        }
+
+        public static bool IsCompletePDQ(this UserProfile profile)
+        {
+            return profile.PDQTask
+                .Select(t => t.PDQQuestion)
+                .Where(q => q.PDQQuestionExtension == null).Count() >= 20;
+        }
+
     }
 
     public partial class UserProfile
@@ -165,5 +230,13 @@ namespace WebHome.Models.DataEntity
 
         public int? DailyQuestionID { get; set; }
 
+        public String ReportInputError { get; set; } = WebHome.Properties.Settings.Default.ReportInputError;
+
+    }
+
+    public class CourseContractPayment
+    {
+        public CourseContract Contract { get; set; }
+        public decimal? TotalPaidAmount { get; set; }
     }
 }

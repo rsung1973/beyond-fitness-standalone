@@ -74,6 +74,11 @@ namespace WebHome.Controllers
                 viewModel.UID = item.CourseContractMember.Select(m => m.UID).ToArray();
                 viewModel.BranchID = item.CourseContractExtension.BranchID;
                 viewModel.Renewal = item.Renewal;
+                if(item.InstallmentID.HasValue)
+                {
+                    viewModel.InstallmentPlan = true;
+                    viewModel.Installments = item.ContractInstallment.Installments;
+                }
             }
 
             ViewBag.ViewModel = viewModel;
@@ -456,6 +461,14 @@ namespace WebHome.Controllers
                 ModelState.AddModelError("BranchID", "該分店未指定店長!!");
             }
 
+            if(viewModel.InstallmentPlan==true)
+            {
+                if(!viewModel.Installments.HasValue)
+                {
+                    ModelState.AddModelError("Installments", "請選擇分期!!");
+                }
+            }
+
             if (!ModelState.IsValid)
             {
                 ViewBag.ModelState = this.ModelState;
@@ -472,6 +485,43 @@ namespace WebHome.Controllers
             }
 
             item = models.InitiateCourseContract(viewModel, profile, lessonPrice);
+
+            if (item.InstallmentID.HasValue)
+            {
+                int totalLessons = item.Lessons.Value;
+                int installment = totalLessons / item.ContractInstallment.Installments;
+                DateTime payoffDue = item.ContractDate.Value.AddMonths(1).FirstDayOfMonth();
+                //if(item.Remark!=null)
+                //{
+                //    var idx = item.Remark.IndexOf("本合約分期轉開次數");
+                //    if (idx >= 0)
+                //    {
+                //        item.Remark = item.Remark.Substring(0, idx);
+                //    }
+                //}
+
+                //viewModel.Remark = item.Remark = $"{item.Remark}本合約分期轉開次數{item.ContractInstallment.Installments}次。";
+                item.Lessons = installment + (totalLessons % item.ContractInstallment.Installments);
+                item.TotalCost = item.TotalCost * item.Lessons / totalLessons;
+                item.PayoffDue = payoffDue.AddDays(-1);
+                //item.Remark = $"{item.Remark}帳款應付期限{payoffDue:yyyy/MM/dd}。";
+                models.SubmitChanges();
+
+                totalLessons -= item.Lessons.Value;
+                payoffDue = payoffDue.AddMonths(1);
+                viewModel.ContractID = null;
+                while (totalLessons > 0)
+                {
+                    viewModel.Lessons = Math.Min(installment, totalLessons);
+                    var c = models.InitiateCourseContract(viewModel, profile, lessonPrice, item.InstallmentID);
+                    c.PayoffDue = payoffDue.AddDays(-1);
+                    //c.Remark = $"{c.Remark}帳款應付期限{payoffDue:yyyy/MM/dd}。";
+                    models.SubmitChanges();
+
+                    payoffDue = payoffDue.AddMonths(1);
+                    totalLessons -= installment;
+                }
+            }
 
             return Json(new { result = true, status = item.Status, contractID = item.ContractID });
         }
@@ -500,6 +550,14 @@ namespace WebHome.Controllers
             if (lessonPrice != null && !lessonPrice.BranchStore.ManagerID.HasValue)
             {
                 ModelState.AddModelError("BranchID", "該分店未指定店長!!");
+            }
+
+            if (viewModel.InstallmentPlan == true)
+            {
+                if (!viewModel.Installments.HasValue)
+                {
+                    ModelState.AddModelError("Installments", "請選擇分期!!");
+                }
             }
 
             if (!ModelState.IsValid)
@@ -544,6 +602,16 @@ namespace WebHome.Controllers
             item.Remark = viewModel.Remark;
             item.FitnessConsultant = viewModel.FitnessConsultant.Value;
             item.Renewal = viewModel.Renewal;
+            if (viewModel.InstallmentPlan == true)
+            {
+                if (item.ContractInstallment == null)
+                    item.ContractInstallment = new ContractInstallment { };
+                item.ContractInstallment.Installments = viewModel.Installments.Value;
+            }
+            else
+            {
+                models.DeleteAllOnSubmit<ContractInstallment>(t => t.InstallmentID == item.InstallmentID);
+            }
             //item.Status = viewModel.Status;
             if (viewModel.UID != null && viewModel.UID.Length > 0)
             {
@@ -814,6 +882,35 @@ namespace WebHome.Controllers
                     {
                         item.ContractNo = null;
                         models.DeleteAllOnSubmit<CourseContractSignature>(s => s.ContractID == item.ContractID);
+
+                        if(item.InstallmentID.HasValue)
+                        {
+                            if (viewModel.Status == (int)Naming.CourseContractStatus.草稿)
+                            {
+                                var totalLessons = item.ContractInstallment.CourseContract.Sum(c => c.Lessons);
+                                item.TotalCost = item.TotalCost * totalLessons / item.Lessons;
+                                item.Lessons = totalLessons;
+                                models.DeleteAllOnSubmit<CourseContract>(t => t.ContractID != item.ContractID && t.InstallmentID == item.InstallmentID);
+
+                                //var idx = item.Remark.IndexOf("本合約分期轉開次數");
+                                //if (idx >= 0)
+                                //{
+                                //    item.Remark = item.Remark.Substring(0, idx);
+                                //}
+                            }
+                            else
+                            {
+                                foreach (var c in item.ContractInstallment.CourseContract)
+                                {
+                                    if (c.ContractID == item.ContractID)
+                                        continue;
+                                    executeContractStatus(profile, c, (Naming.CourseContractStatus)viewModel.Status.Value, viewModel.FromStatus);
+                                    c.ContractNo = null;
+                                    models.DeleteAllOnSubmit<CourseContractSignature>(s => s.ContractID == c.ContractID);
+                                }
+                            }
+                        }
+
                     }
                     models.SubmitChanges();
 
@@ -1104,6 +1201,7 @@ namespace WebHome.Controllers
             if (!executeContractStatus(profile, item.CourseContract, Naming.CourseContractStatus.已生效, Naming.CourseContractStatus.待簽名, false))
                 return false;
 
+            item.CourseContract.EffectiveDate = DateTime.Now;
             models.SubmitChanges();
 
             foreach (var m in item.CourseContract.CourseContractMember)
@@ -1568,7 +1666,7 @@ namespace WebHome.Controllers
                 + item.LessonPriceType.DurationInMinutes + " 分鐘)";
             if (item.SequenceNo == 0)
             {
-                if (item.Status == (int)Naming.CourseContractStatus.已生效)
+                if (item.Status >= (int)Naming.CourseContractStatus.已生效)
                     r[7] = item.RemainedLessonCount();
                 r[8] = item.Lessons;
             }
@@ -1585,6 +1683,11 @@ namespace WebHome.Controllers
             r[13] = ((Naming.CourseContractStatus)item.Status).ToString();
 
             r[14] = item.Remark;
+            if (item.SequenceNo == 0)
+            {
+                if (item.Status >= (int)Naming.CourseContractStatus.已生效)
+                    r[15] = item.UnfinishedLessonCount();
+            }
 
             table.Rows.Add(r);
 
@@ -1612,6 +1715,7 @@ namespace WebHome.Controllers
             table.Columns.Add(new DataColumn("服務項目", typeof(String)));
             table.Columns.Add(new DataColumn("狀態", typeof(String)));
             table.Columns.Add(new DataColumn("備註", typeof(String)));
+            table.Columns.Add(new DataColumn("未完成堂數", typeof(int)));
 
             foreach (var item in items)
             {
@@ -1656,6 +1760,12 @@ namespace WebHome.Controllers
                 .Select(c => new { ContractNo = c.ContractNo(), c.TotalCost, c.Installment })
             }, JsonRequestBehavior.AllowGet);
 
+        }
+
+        public ActionResult LoadInstallmentPlan(CourseContractQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            return View("~/Views/CourseContract/Module/InstallmentPlan.ascx");
         }
 
     }

@@ -28,22 +28,24 @@
                                 {
                                     ContractQueryMode = Naming.ContractServiceMode.ServiceOnly,
                                     Status = (int)Naming.CourseContractStatus.草稿,
-                                }) %>);'><%= editingItems.Count() %></a><br />
+                                }) %>,<%= editingItems.Count() %>);'><%= editingItems.Count() %></a><br />
                 待簽名：<a href='javascript:showContractList(<%= JsonConvert.SerializeObject(
                                 new 
                                 {
                                     ContractQueryMode = Naming.ContractServiceMode.ServiceOnly,
                                     Status = (int)Naming.CourseContractStatus.待簽名,
-                                }) %>);'><%= toSignItems.Count() %></a><br />
+                                }) %>,<%= toSignItems.Count() %>);'><%= toSignItems.Count() %></a><br />
                 待審核：<a href='javascript:showContractList(<%= JsonConvert.SerializeObject(
                                 new 
                                 {
                                     ContractQueryMode = Naming.ContractServiceMode.ServiceOnly,
                                     Status = (int)Naming.CourseContractStatus.待審核,
-                                }) %>);'><%= toConfirmItems.Count() %></a>
+                                }) %>,<%= toConfirmItems.Count() %>);'><%= toConfirmItems.Count() %></a>
             </p>
         </div>
         <div class="col-4 text-right">
+            <%  var totalCount = models.PromptContractService().FilterByEffective(models)
+                            .Where(c => c.EffectiveDate >= monthStart && c.EffectiveDate < monthStart.AddMonths(1)).Count(); %>
             <a href='javascript:showContractList(<%= JsonConvert.SerializeObject(
                                 new 
                                 {
@@ -51,9 +53,8 @@
                                     Status = (int)Naming.CourseContractStatus.已生效,
                                     EffectiveDateFrom = monthStart,
                                     EffectiveDateTo = monthStart.AddMonths(1),
-                                }) %>);'>
-                <h2><%= models.PromptContractService().FilterByEffective(models)
-                            .Where(c=>c.EffectiveDate>=monthStart && c.EffectiveDate<monthStart.AddMonths(1)).Count() %></h2>
+                                }) %>,<%= totalCount %>);'>
+                <h2><%= totalCount %></h2>
             </a>
             <small class="info">本月</small>
         </div>

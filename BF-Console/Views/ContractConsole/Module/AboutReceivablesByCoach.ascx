@@ -9,7 +9,7 @@
 <%@ Import Namespace="WebHome.Controllers" %>
 <%@ Import Namespace="Newtonsoft.Json" %>
 
-<%  Html.RenderPartial("~/Views/ContractConsole/Module/AboutReceivables.ascx", models.PromptEffectiveContract().Where(c => c.FitnessConsultant == _model.UID)); %>
+<%  Html.RenderPartial("~/Views/ContractConsole/Module/AboutReceivables.ascx", models.PromptAccountingContract().Where(c => c.FitnessConsultant == _model.UID)); %>
 
 <script runat="server">
 

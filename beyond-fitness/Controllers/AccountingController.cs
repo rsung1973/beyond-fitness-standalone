@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Linq;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
@@ -40,8 +41,7 @@ namespace WebHome.Controllers
 
         public ActionResult InquireAccountsReceivable(CourseContractQueryViewModel viewModel)
         {
-            IQueryable<CourseContract> items = models.GetTable<CourseContract>()
-                .Where(c => c.SequenceNo == 0 && c.Status == (int)Naming.CourseContractStatus.已生效);
+            IQueryable<CourseContract> items = models.PromptAccountingContract();
 
             var profile = HttpContext.GetUser();
 
@@ -266,7 +266,7 @@ namespace WebHome.Controllers
             ViewBag.ViewModel = viewModel;
 
             IQueryable<TuitionAchievement> items = models.GetTable<TuitionAchievement>()
-                .Where(t => t.Payment.VoidPayment == null);
+                .Where(t => t.Payment.VoidPayment == null || t.Payment.AllowanceID.HasValue);
 
             var profile = HttpContext.GetUser();
 
@@ -450,7 +450,7 @@ namespace WebHome.Controllers
                             /*+ (item.ContractTrustTrack.Where(t => t.TrustType == "V")
                                 .Select(t => t.VoidPayment.Payment)
                                 .Sum(p => p.PayoffAmount) ?? 0)*/).AdjustTrustAmount(),
-                    S_終止 = (-item.ContractTrustTrack.Where(t => t.TrustType == "S").Sum(t => t.Payment.PayoffAmount)).AdjustTrustAmount(),
+                    S_終止 = (item.ContractTrustTrack.Where(t => t.TrustType == "S").Sum(t => t.ReturnAmount)).AdjustTrustAmount(),
                     X_轉讓 = (-item.ContractTrustTrack.Where(t => t.TrustType == "X").Sum(t => t.Payment.PayoffAmount)).AdjustTrustAmount(),
                     收_付金額 = (item.ContractTrustSettlement.Sum(s => s.BookingTrustAmount) - item.ContractTrustSettlement.Sum(s => s.InitialTrustAmount)).AdjustTrustAmount(),
                     信託期末金額 = item.ContractTrustSettlement.Sum(s => s.BookingTrustAmount).AdjustTrustAmount(),
@@ -542,7 +542,7 @@ namespace WebHome.Controllers
                         headerItem = reportItem;
                 }
 
-                amt = -item.Where(t => t.TrustType == "S").Sum(t => t.Payment.PayoffAmount);
+                amt = item.Where(t => t.TrustType == "S").Sum(t => t.ReturnAmount);
                 if (amt.HasValue && amt > 0)
                 {
                     _TrustTrackReportItem reportItem = newReportItem(contract);
@@ -609,6 +609,44 @@ namespace WebHome.Controllers
                 //應入信託金額 = null,
                 代墊信託金額 = null,
             };
+        }
+
+        public ActionResult CreateTrustContractZip(TrustQueryViewModel viewModel)
+        {
+            ViewResult result = (ViewResult)InquireContractTrust(viewModel);
+            IQueryable<ContractTrustTrack> items = (IQueryable<ContractTrustTrack>)result.Model;
+
+            var contractID = items.Where(t => t.TrustType == "B")
+                .Select(t => t.ContractID);
+            var contractItems = models.GetTable<CourseContract>().Where(c => contractID.Contains(c.ContractID));
+
+            String temp = Server.MapPath("~/temp");
+
+            if (!Directory.Exists(temp))
+            {
+                Directory.CreateDirectory(temp);
+            }
+            String outFile = Path.Combine(temp, Guid.NewGuid().ToString() + ".zip");
+            using (var zipOut = System.IO.File.Create(outFile))
+            {
+                using (ZipArchive zip = new ZipArchive(zipOut, ZipArchiveMode.Create))
+                {
+                    foreach (var item in contractItems)
+                    {
+                        var pdfFile = item.CreateContractPDF();
+                        ZipArchiveEntry entry = zip.CreateEntry(Path.GetFileName(pdfFile));
+                        using (Stream outStream = entry.Open())
+                        {
+                            using (FileStream stream = System.IO.File.OpenRead(pdfFile))
+                            {
+                                stream.CopyTo(outStream);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return File(outFile, "application/x-zip-compressed", $"({DateTime.Now:yyyy-MM-dd HH-mm-ss})信託合約.zip");
         }
 
         public ActionResult CreateTrustLessonXlsx(TrustQueryViewModel viewModel)
@@ -689,6 +727,71 @@ namespace WebHome.Controllers
                 {
                     xls.Worksheets.ElementAt(0).Name = "上課明細表" + String.Format("{0:yyyy-MM-dd}~{1:yyyy-MM-dd}", viewModel.TrustDateFrom, viewModel.TrustDateFrom.Value.AddMonths(1).AddDays(-1));
 
+                    xls.SaveAs(Response.OutputStream);
+                }
+            }
+
+            return new EmptyResult();
+        }
+
+        public ActionResult CreateContractTrustSummaryXlsx(TrustQueryViewModel viewModel)
+        {
+            var settlement = models.GetTable<Settlement>()
+                .OrderByDescending(s => s.SettlementID).FirstOrDefault();
+
+            if (settlement == null)
+            {
+                ViewBag.GoBack = true;
+                return View("~/Views/Shared/JsAlert.ascx", model: "無任何信託結算資料!!");
+            }
+
+            var items = models.GetTable<ContractTrustSettlement>()
+                    .Where(t => t.SettlementID == settlement.SettlementID);
+
+            DataTable table = new DataTable();
+            table.Columns.Add(new DataColumn("入會契約編號", typeof(String)));
+            table.Columns.Add(new DataColumn("買受人證號", typeof(String)));
+            table.Columns.Add(new DataColumn("姓名", typeof(String)));
+            table.Columns.Add(new DataColumn("電話", typeof(String)));
+            table.Columns.Add(new DataColumn("信託餘額", typeof(int)));
+            table.Columns.Add(new DataColumn("契約總價金", typeof(int)));
+            table.Columns.Add(new DataColumn("契約起日", typeof(String)));
+            table.Columns.Add(new DataColumn("契約迄日", typeof(String)));
+            table.Columns.Add(new DataColumn("代墊信託金額", typeof(int)));
+            table.TableName = $"信託盤點表{settlement.StartDate:yyyy-MM}截止";
+
+            foreach (var item in items)
+            {
+                var contract = item.CourseContract;
+
+                var r = table.NewRow();
+                r[0] = $"{contract.ContractNo()}";
+                r[1] = contract.ContractOwner.UserProfileExtension?.IDNo;
+                r[2] = contract.ContractOwner.RealName;
+                r[3] = contract.ContractOwner.Phone;
+                r[4] = item.BookingTrustAmount.AdjustTrustAmount();
+                r[5] = contract.TotalCost.AdjustTrustAmount();
+                r[6] = $"{contract.EffectiveDate:yyyy/MM/dd}";
+                r[7] = $"{contract.Expiration:yyyy/MM/dd}";
+                r[8] = item.CurrentLiableAmount.AdjustTrustAmount();
+
+                table.Rows.Add(r);
+            }
+
+            Response.Clear();
+            Response.ClearContent();
+            Response.ClearHeaders();
+            Response.AddHeader("Cache-control", "max-age=1");
+            Response.ContentType = "application/vnd.ms-excel";
+            Response.AddHeader("Content-Disposition", String.Format("attachment;filename=({1:yyyy-MM-dd HH-mm-ss}){0}", HttpUtility.UrlEncode("ContractTrust.xlsx"), DateTime.Now));
+
+            using (DataSet ds = new DataSet())
+            {
+                ds.Tables.Add(table);
+
+                using (var xls = ds.ConvertToExcel())
+                {
+                    //xls.Worksheets.ElementAt(0).Name = "上課明細表" + String.Format("{0:yyyy-MM-dd}~{1:yyyy-MM-dd}", viewModel.TrustDateFrom, viewModel.TrustDateFrom.Value.AddMonths(1).AddDays(-1));
                     xls.SaveAs(Response.OutputStream);
                 }
             }

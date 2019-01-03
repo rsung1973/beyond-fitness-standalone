@@ -278,6 +278,8 @@
         });
 
         function showContractList(viewModel, alertCount) {
+            if (alertCount == 0)
+                return;
             viewModel.scrollToView = false;
             if (alertCount && alertCount > 300) {
                 swal({

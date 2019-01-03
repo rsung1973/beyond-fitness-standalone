@@ -22,6 +22,8 @@ namespace WebHome.Models.ViewModel
         public String icon { get; set; }
         public int? lessonID { get; set; }
         public bool editable { get; set; }
+        public String keyID { get; set; }
+             
     }
 
     public class CalendarEventItem

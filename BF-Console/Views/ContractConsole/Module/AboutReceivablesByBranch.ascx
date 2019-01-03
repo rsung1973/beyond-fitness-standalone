@@ -9,7 +9,7 @@
 <%@ Import Namespace="WebHome.Controllers" %>
 <%@ Import Namespace="Newtonsoft.Json" %>
 
-<%  Html.RenderPartial("~/Views/ContractConsole/Module/AboutReceivables.ascx", models.PromptEffectiveContract().FilterByBranchStoreManager(models, _model.UID)); %>
+<%  Html.RenderPartial("~/Views/ContractConsole/Module/AboutReceivables.ascx", models.PromptAccountingContract().FilterByBranchStoreManager(models, _model.UID)); %>
 
 <script runat="server">
 

@@ -55,7 +55,7 @@
                 <%= totalAmt.HasValue && totalAmt!=0 ? String.Format("({0:##,###,###,##0})",totalAmt.AdjustTrustAmount()) : "--" %>
             </td>
             <td nowrap="noWrap" class="text-right">
-                <%  totalAmt = -item.ContractTrustTrack.Where(t => t.TrustType == "S").Sum(t => t.Payment.PayoffAmount);
+                <%  totalAmt = item.ContractTrustTrack.Where(t => t.TrustType == "S").Sum(t => t.ReturnAmount);
                     int S_Amt = totalAmt ?? 0;  %>
                 <%= totalAmt.HasValue && totalAmt!=0  ? String.Format("({0:##,###,###,##0})",totalAmt.AdjustTrustAmount()) : "--" %>
             </td>

@@ -107,6 +107,7 @@
         var $form = $(event.target).closest('form');
         var formData = $form.serializeObject();
         $('#btnDownloadTrustTrack').css('display', 'none');
+        $('#btnDownloadTrustContract').css('display', 'none');
         $('#btnDownloadTrustSummary').css('display', 'none');
         //$('#btnDownloadTrustLesson').css('display', 'none');
 
@@ -121,6 +122,11 @@
         $('#queryForm').launchDownload('<%= Url.Action("CreateTrustTrackXlsx","Accounting") %>');
     }
 
+    function downloadTrustContract() {
+        $('#queryForm').launchDownload('<%= Url.Action("CreateTrustContractZip","Accounting") %>');
+    }
+
+
     function downloadTrustSummary() {
         $('#queryForm').launchDownload('<%= Url.Action("CreateTrustSummaryXlsx","Accounting") %>');
     }
@@ -129,6 +135,9 @@
         $('#queryForm').launchDownload('<%= Url.Action("CreateTrustLessonXlsx","Accounting") %>');
     }
 
+    function downloadContractTrustSummary() {
+        $('#queryForm').launchDownload('<%= Url.Action("CreateContractTrustSummaryXlsx","Accounting") %>');
+    }
     
 
 </script>

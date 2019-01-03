@@ -39,10 +39,11 @@ namespace WebHome.Controllers
             }
 
             var profile = HttpContext.GetUser();
-            //if (!viewModel.CoachID.HasValue && !profile.IsAssistant())
-            //{
-            //    viewModel.CoachID = profile.UID;
-            //}
+            if (!viewModel.CoachID.HasValue)
+            {
+                if (profile.IsCoach() || profile.IsAssistant())
+                    viewModel.CoachID = profile.UID;
+            }
 
             ViewBag.ViewModel = viewModel;
             ViewBag.CurrentCoach = models.GetTable<ServingCoach>().Where(s => s.CoachID == viewModel.CoachID).FirstOrDefault();
@@ -255,9 +256,16 @@ namespace WebHome.Controllers
         }
 
         [RoleAuthorize(RoleID = new int[] { (int)Naming.RoleID.Administrator, (int)Naming.RoleID.Assistant, (int)Naming.RoleID.Officer,(int)Naming.RoleID.Coach })]
-        public ActionResult RevokeBooking(int lessonID)
+        public ActionResult RevokeBooking(LessonTimeBookingViewModel viewModel)
         {
-            LessonTime item = models.GetTable<LessonTime>().Where(l => l.LessonID == lessonID).FirstOrDefault();
+            ViewBag.ViewModel = viewModel;
+
+            if(viewModel.KeyID!=null)
+            {
+                viewModel.LessonID = viewModel.DecryptKeyValue();
+            }
+
+            LessonTime item = models.GetTable<LessonTime>().Where(l => l.LessonID == viewModel.LessonID).FirstOrDefault();
             if (item == null)
             {
                 return View("~/Views/Shared/MessageView.ascx", model: "課程資料錯誤!!");
@@ -271,34 +279,7 @@ namespace WebHome.Controllers
             //    ViewBag.Message = "請先刪除預編課程!!";
             //    return RedirectToAction("Coach", "Account", new { lessonDate = lessonDate, message= "請先刪除預編課程!!" });
             //}
-            var registerLesson = item.RegisterLesson;
-            var contract = registerLesson.RegisterLessonContract?.CourseContract;
-            if (contract != null && contract.CourseContractType.ContractCode == "CFA")
-            {
-                models.ExecuteCommand(@"UPDATE RegisterLesson
-                    SET                Attended = {2}
-                    FROM            RegisterLessonContract INNER JOIN
-                                                RegisterLesson ON RegisterLessonContract.RegisterID = RegisterLesson.RegisterID
-                    WHERE        (RegisterLesson.Attended = {1}) AND (RegisterLessonContract.ContractID = {0})", contract.ContractID, (int)Naming.LessonStatus.課程結束, (int)Naming.LessonStatus.上課中);
-            }
-            else
-            {
-                models.ExecuteCommand(@"UPDATE RegisterLesson
-                    SET        Attended = {2}
-                    FROM     LessonTime INNER JOIN
-                                   GroupingLesson ON LessonTime.GroupID = GroupingLesson.GroupID INNER JOIN
-                                   RegisterLesson ON GroupingLesson.GroupID = RegisterLesson.RegisterGroupID
-                    WHERE   (LessonTime.LessonID = {0}) AND (RegisterLesson.Attended = {1})", lessonID, (int)Naming.LessonStatus.課程結束, (int)Naming.LessonStatus.上課中);
-            }
-
-            models.DeleteAny<LessonTime>(l => l.LessonID == lessonID);
-            if (registerLesson.UserProfile.LevelID == (int)Naming.MemberStatusDefinition.Anonymous //團體課
-                || registerLesson.LessonPriceType.Status == (int)Naming.DocumentLevelDefinition.自主訓練  /*自主訓練*/
-                || registerLesson.LessonPriceType.Status == (int)Naming.DocumentLevelDefinition.教練PI
-                || registerLesson.LessonPriceType.Status == (int)Naming.DocumentLevelDefinition.體驗課程)
-            {
-                models.DeleteAny<RegisterLesson>(l => l.RegisterID == item.RegisterID);
-            }
+            item.RevokeBooking(models);
 
             return View("~/Views/Shared/MessageView.ascx", model: "課程預約已取消!!");
 
@@ -330,13 +311,14 @@ namespace WebHome.Controllers
 
         public ActionResult AttendeeSelector(String userName)
         {
+            var profile = HttpContext.GetUser();
             IEnumerable<RegisterLesson> items;
             userName = userName.GetEfficientString();
             if (userName == null)
             {
                 this.ModelState.AddModelError("userName", "請輸學員名稱!!");
                 ViewBag.ModelState = this.ModelState;
-                return View("~/Views/Shared/ReportInputError.ascx");
+                return View(profile.ReportInputError);
             }
             else
             {
@@ -367,7 +349,7 @@ namespace WebHome.Controllers
             {
                 //this.ModelState.AddModelError("userName", "請輸學員名稱!!");
                 //ViewBag.ModelState = this.ModelState;
-                //return View("~/Views/Shared/ReportInputError.ascx");
+                //return View(profile.ReportInputError);
             }
             else
             {
@@ -385,7 +367,7 @@ namespace WebHome.Controllers
             //{
             //    this.ModelState.AddModelError("userName", "請輸學員名稱!!");
             //    ViewBag.ModelState = this.ModelState;
-            //    return View("~/Views/Shared/ReportInputError.ascx");
+            //    return View(profile.ReportInputError);
             //}
             //else
             //{
@@ -422,7 +404,7 @@ namespace WebHome.Controllers
             {
                 //this.ModelState.AddModelError("userName", "請輸學員名稱!!");
                 //ViewBag.ModelState = this.ModelState;
-                //return View("~/Views/Shared/ReportInputError.ascx");
+                //return View(profile.ReportInputError);
                 items = models.GetTable<UserProfile>().Where(u => u.UserProfileExtension.CurrentTrial.HasValue)
                     .OrderBy(l => l.RealName);
 
@@ -441,6 +423,7 @@ namespace WebHome.Controllers
 
         public ActionResult VipSelector(String userName,bool? forCalendar)
         {
+            var profile = HttpContext.GetUser();
 
             IEnumerable<UserProfile> items;
             userName = userName.GetEfficientString();
@@ -448,7 +431,7 @@ namespace WebHome.Controllers
             {
                 this.ModelState.AddModelError("userName", "請輸學員名稱!!");
                 ViewBag.ModelState = this.ModelState;
-                return View("~/Views/Shared/ReportInputError.ascx");
+                return View(profile.ReportInputError);
             }
             else
             {
@@ -473,18 +456,28 @@ namespace WebHome.Controllers
 
         public ActionResult CommitTrialLesson(LessonTimeViewModel viewModel, TrialLearnerViewModel newTrialLearner)
         {
+            var profile = HttpContext.GetUser();
 
             ViewBag.ViewModel = viewModel;
 
-            if (viewModel.ClassDate < DateTime.Today)
+            if (!viewModel.ClassDate.HasValue)
+            {
+                ModelState.AddModelError("ClassDate", "請選擇上課日期!!");
+            } 
+            else if (viewModel.ClassDate < DateTime.Today)
             {
                 ModelState.AddModelError("ClassDate", "預約時間不可早於今天!!");
+            }
+
+            if (!viewModel.BranchID.HasValue)
+            {
+                ModelState.AddModelError("BranchID", "請選擇上課地點!!");
             }
 
             if (!this.ModelState.IsValid)
             {
                 ViewBag.ModelState = this.ModelState;
-                return View("~/Views/Shared/ReportInputError.ascx");
+                return View(profile.ReportInputError);
             }
 
             var coach = models.GetTable<ServingCoach>().Where(s => s.CoachID == viewModel.CoachID).FirstOrDefault();
@@ -502,11 +495,11 @@ namespace WebHome.Controllers
                 {
                     this.ModelState.AddModelError("realName", "請輸入學員姓名!!");
                     ViewBag.ModelState = this.ModelState;
-                    return View("~/Views/Shared/ReportInputError.ascx");
+                    return View(profile.ReportInputError);
                 }
                 else
                 {
-                    var profile = models.CreateLearner(new LearnerViewModel
+                    var profileItem = models.CreateLearner(new LearnerViewModel
                     {
                         RealName = newTrialLearner.RealName,
                         Phone = newTrialLearner.Phone.GetEfficientString(),
@@ -515,7 +508,7 @@ namespace WebHome.Controllers
                         RoleID = Naming.RoleID.Preliminary
                     });
 
-                    if (profile == null)
+                    if (profileItem == null)
                     {
                         return View("~/Views/Shared/MessageView.ascx", model: "無法新增體驗學員!!");
                     }
@@ -583,8 +576,8 @@ namespace WebHome.Controllers
                 }
             };
 
-            if (models.GetTable<DailyWorkingHour>().Any(d => d.Hour == viewModel.ClassDate.Hour))
-                timeItem.HourOfClassTime = viewModel.ClassDate.Hour;
+            if (models.GetTable<DailyWorkingHour>().Any(d => d.Hour == viewModel.ClassDate.Value.Hour))
+                timeItem.HourOfClassTime = viewModel.ClassDate.Value.Hour;
 
             timeItem.GroupID = lesson.RegisterGroupID;
             timeItem.LessonFitnessAssessment.Add(new LessonFitnessAssessment
@@ -612,6 +605,7 @@ namespace WebHome.Controllers
             try
             {
                 models.SubmitChanges();
+                timeItem.ProcessBookingWhenCrossBranch(models);
             }
             catch (Exception ex)
             {
@@ -628,10 +622,20 @@ namespace WebHome.Controllers
 
             ViewBag.ViewModel = viewModel;
 
+            if (viewModel.KeyID != null)
+            {
+                viewModel.LessonID = viewModel.DecryptKeyValue();
+            }
+
             LessonTime item = models.GetTable<LessonTime>().Where(l => l.LessonID == viewModel.LessonID).FirstOrDefault();
             if (item == null)
             {
                 return View("~/Views/Shared/MessageView.ascx", model: "修改上課時間資料不存在!!");
+            }
+
+            if (item.LessonAttendance != null)
+            {
+                return View("~/Views/Shared/MessageView.ascx", model: "已完成上課，不可修改!!");
             }
 
             if (item.ContractTrustTrack.Any(t => t.SettlementID.HasValue))
@@ -878,7 +882,16 @@ namespace WebHome.Controllers
                 viewModel.Accompanist = item.Accompanist;
                 viewModel.ActivityProgram = item.ActivityProgram;
                 viewModel.MemberID = item.GroupEvent.Select(v => v.UID).ToArray();
-                viewModel.BranchID = item.BranchID;
+                if (item.BranchID.HasValue)
+                    viewModel.BranchID = (Naming.BranchName)item.BranchID;
+                else
+                {
+                    Naming.BranchName branch;
+                    if (Enum.TryParse<Naming.BranchName>(item.Place, out branch))
+                    {
+                        viewModel.BranchID = branch;
+                    }
+                }
             }
 
             return View("~/Views/CoachFacet/Module/EditCoachEvent.ascx");
@@ -910,15 +923,29 @@ namespace WebHome.Controllers
             {
                 ModelState.AddModelError("EndDate", "請選擇結束時間!!");
             }
-            if (String.IsNullOrEmpty(viewModel.Title) && String.IsNullOrEmpty(viewModel.ActivityProgram))
+            else if(viewModel.StartDate.HasValue && viewModel.StartDate.Value>=viewModel.EndDate.Value)
+            {
+                ModelState.AddModelError("EndDate", "結束時間需晚於開始時間!!");
+            }
+
+            if ((String.IsNullOrEmpty(viewModel.Title) || viewModel.Title== "請選擇") && String.IsNullOrEmpty(viewModel.ActivityProgram))
             {
                 ModelState.AddModelError("ActivityProgram", "請輸入行事曆內容!!");
             }
+            if (viewModel.BranchID == (int)Naming.BranchName.請選擇)
+            {
+                ModelState.AddModelError("BranchID", "請選擇地點!!");
+            }
+            if (viewModel.Title == "請選擇")
+            {
+                ModelState.AddModelError("Title", "請選擇行程類別!!");
+            }
+
 
             if (!ModelState.IsValid)
             {
                 ViewBag.ModelState = ModelState;
-                return View("~/Views/Shared/ReportInputError.ascx");
+                return View(HttpContext.GetUser().ReportInputError);
             }
 
             var item = models.GetTable<UserEvent>().Where(u => u.EventID == viewModel.EventID).FirstOrDefault();
@@ -937,14 +964,20 @@ namespace WebHome.Controllers
             item.ActivityProgram = viewModel.ActivityProgram;
             item.Accompanist = viewModel.Accompanist;
             item.EventType = 1;
-            item.BranchID = viewModel.BranchID;
+            if (viewModel.BranchID.HasValue)
+            {
+                if ((int)viewModel.BranchID <= (int)Naming.BranchName.忠孝)
+                    item.BranchID = (int)viewModel.BranchID;
+                else
+                    item.Place = viewModel.BranchID.ToString();
+            }
 
             models.SubmitChanges();
 
             models.ExecuteCommand("delete GroupEvent where EventID = {0} ", item.EventID);
             if (viewModel.MemberID != null && viewModel.MemberID.Length > 0)
             {
-                foreach (var memberID in viewModel.MemberID)
+                foreach (var memberID in viewModel.MemberID.Distinct())
                 {
                     models.ExecuteCommand("insert GroupEvent(EventID,UID) values ({0},{1}) ", item.EventID, memberID);
                 }
@@ -959,7 +992,7 @@ namespace WebHome.Controllers
             ViewBag.ViewModel = viewModel;
             if (viewModel.KeyID != null)
             {
-                viewModel.UID = viewModel.DecryptKeyValue();
+                viewModel.EventID = viewModel.DecryptKeyValue();
             }
 
             UserEvent item = models.GetTable<UserEvent>().Where(l => l.EventID == viewModel.EventID).FirstOrDefault();

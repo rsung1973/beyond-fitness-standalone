@@ -160,7 +160,7 @@
                 <td nowrap="noWrap"><%= String.Format("{0:yyyy/MM/dd}", contract.Expiration) %></td>
             </tr>
             <%  } %>
-            <%  amt = -item.Where(t => t.TrustType == "S").Sum(t => t.Payment.PayoffAmount);
+            <%  amt = item.Where(t => t.TrustType == "S").Sum(t => t.ReturnAmount);
                 if (amt.HasValue && amt > 0)
                 { %>
             <tr>
@@ -231,6 +231,7 @@
 <%  if(_model.Count()>0)
     {  %>
         $('#btnDownloadTrustTrack').css('display', 'inline');
+        $('#btnDownloadTrustContract').css('display', 'inline');
         //$('#btnDownloadTrustLesson').css('display', 'inline');
 <%  }  %>
 

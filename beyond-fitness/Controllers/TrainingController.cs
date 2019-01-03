@@ -234,6 +234,11 @@ namespace WebHome.Controllers
         {
             ViewBag.ViewModel = viewModel;
 
+            if (viewModel.KeyID != null)
+            {
+                viewModel.ExecutionID = viewModel.DecryptKeyValue();
+            }
+
             var item = models.GetTable<TrainingExecution>().Where(t => t.ExecutionID == viewModel.ExecutionID).FirstOrDefault();
             if(item==null)
             {
@@ -253,9 +258,13 @@ namespace WebHome.Controllers
             }
 
             viewModel.Emphasis = viewModel.Emphasis.GetEfficientString();
-            if(viewModel.Emphasis==null || viewModel.Emphasis.Length>30)
+            if(viewModel.Emphasis==null)
             {
-                return View("~/Views/Shared/JsAlert.ascx", model: "請輸入上課課表重點（至多30個中英文字）!!");
+                return Json(new { result = false, message = "重點一片空？!" });
+            }
+            else if (viewModel.Emphasis.Length > 20)
+            {
+                return Json(new { result = false, message = "太長了！超過20個中英文字" });
             }
             model.Emphasis = viewModel.Emphasis;
             models.SubmitChanges();

@@ -3231,6 +3231,7 @@
     <Content Include="Views\CornerKick\TrainingAnalysis.aspx" />
     <Content Include="Views\CourseContract\ApplyAmendment.aspx" />
     <Content Include="Views\CourseContract\CourseContractAmendmentView.aspx" />
+    <Content Include="Views\CourseContract\Module\InstallmentPlan.ascx" />
     <Content Include="Views\CourseContract\SampleCourseContractView.aspx" />
     <Content Include="Views\CourseContract\CreateContract.aspx" />
     <Content Include="Views\CourseContract\ContractIndex.aspx" />
@@ -3813,6 +3814,7 @@
     <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\EnterpriseProgramController.cs" />
     <Compile Include="Controllers\ExerciseGameController.cs" />
+    <Compile Include="Controllers\LessonEventController.cs" />
     <Compile Include="Controllers\LineEventsController.cs" />
     <Compile Include="Controllers\PromotionController.cs" />
     <Compile Include="Controllers\PublishedController.cs" />
@@ -3841,6 +3843,7 @@
     <Compile Include="Helper\AppResource.cs" />
     <Compile Include="Helper\B2CExtensionMethods.cs" />
     <Compile Include="Helper\CourseContractExtensionMethods.cs" />
+    <Compile Include="Helper\Jobs\DailyJob.cs" />
     <Compile Include="Helper\PaymentExtensionMethods.cs" />
     <Compile Include="Helper\PromotionExtensionMethods.cs" />
     <Compile Include="Helper\BulletinExtensionMethods.cs" />
@@ -3964,6 +3967,7 @@
     <Folder Include="img\realestate\thumbs\" />
     <Folder Include="js\plugin\tableDnD\" />
     <Folder Include="Views\Employee\" />
+    <Folder Include="Views\LessonEvent\" />
     <Folder Include="Views\LineEvents\" />
   </ItemGroup>
   <ItemGroup>

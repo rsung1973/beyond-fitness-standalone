@@ -94,6 +94,16 @@ namespace WebHome.Helper.Jobs
                 });
             }
 
+            if (jobList == null || !jobList.Any(j => j.AssemblyQualifiedName == typeof(DailyJob).AssemblyQualifiedName))
+            {
+                JobScheduler.AddJob(new JobItem
+                {
+                    AssemblyQualifiedName = typeof(DailyJob).AssemblyQualifiedName,
+                    Description = "每日檢查過期合約",
+                    Schedule = DateTime.Today.Add(new TimeSpan(0, 0, 0))
+                });
+            }
+
         }
     }
 }

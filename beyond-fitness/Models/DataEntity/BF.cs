@@ -4,7 +4,7 @@ namespace WebHome.Models.DataEntity
     {
         partial void OnCreated()
         {
-            //this.CommandTimeout = 300;
+            this.CommandTimeout = 300;
         }
 
     }

@@ -66,7 +66,7 @@ namespace WebHome.Helper
         }
 
 
-        public static void RenderUserPicture(this int? pictureID, HtmlTextWriter writer, Object htmlAttributes)
+        public static void RenderUserPicture(this int? pictureID, HtmlTextWriter writer, Object htmlAttributes,String noName = null)
         {
             if (htmlAttributes != null)
             {
@@ -76,7 +76,9 @@ namespace WebHome.Helper
                 }
             }
 
-            writer.AddAttribute("src", pictureID.HasValue ? VirtualPathUtility.ToAbsolute("~/Information/GetResource/") + pictureID + "?stretch=true" : VirtualPathUtility.ToAbsolute("~/img/avatars/male.png"));
+            writer.AddAttribute("src", pictureID.HasValue 
+                ? VirtualPathUtility.ToAbsolute("~/Information/GetResource/") + pictureID + "?stretch=true" 
+                : (noName ?? VirtualPathUtility.ToAbsolute("~/img/avatars/male.png")));
             writer.RenderBeginTag(HtmlTextWriterTag.Img);
             writer.RenderEndTag();
 

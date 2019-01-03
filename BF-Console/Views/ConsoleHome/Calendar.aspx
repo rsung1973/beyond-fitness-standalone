@@ -15,8 +15,11 @@
     <!-- Fullcalendar -->
     <link href="plugins/fullcalendar/fullcalendar.min.css" rel="stylesheet">
     <!-- Bootstrap Datetimepick -->
-    <link href="plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
-    <link href="css/datetimepicker.css" rel="stylesheet" />
+<%--    <link href="plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />--%>
+    <%--<link href="css/datetimepicker.css" rel="stylesheet" />--%>
+<!-- SmartCalendar Datetimepick -->
+    <link href="plugins/smartcalendar/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+    <link href="css/smartcalendar-2.css" rel="stylesheet" />
     <!-- Inbox -->
     <link href="css/inbox.css" rel="stylesheet">
     <!-- Multi Select Css -->
@@ -100,8 +103,10 @@
     <script src="bundles/fullcalendarscripts.bundle.js"></script>
     <script src="plugins/fullcalendar/locale/zh-tw.js"></script>
     <!-- Bootstrap datetimepicker Plugin Js -->
-    <script src="plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
-    <script src="plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-TW.js"></script>
+<%--    <script src="plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-TW.js"></script>--%>
+    <script src="plugins/smartcalendar/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="plugins/smartcalendar/js/locales-datetimepicker/bootstrap-datetimepicker.zh-TW.js"></script>
     <!-- Multi Select Plugin Js -->
     <script src="plugins/multi-select/js/jquery.multi-select.js"></script>
 
@@ -166,6 +171,7 @@
                 language: 'zh-TW',
                 weekStart: 1,
                 todayBtn: 0,
+                showMeridian: 1,
                 clearBtn: 1,
                 autoclose: 1,
                 todayHighlight: 1,

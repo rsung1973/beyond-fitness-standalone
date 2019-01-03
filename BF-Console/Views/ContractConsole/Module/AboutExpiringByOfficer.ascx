@@ -12,10 +12,9 @@
     <div class="row">
         <div class="col-8">
             <h5 class="m-t-0">即將過期</h5>
-            <%  var effectiveItems = models.PromptEffectiveContract()
-                    .Where(c => c.Expiration >= DateTime.Today);
+            <%  var effectiveItems = models.PromptEffectiveContract();
                 var expiringItems = models.PromptExpiringContract();
-                var expiredItems = models.PromptEffectiveContract()
+                var expiredItems = models.PromptRegisterLessonContract()
                     .FilterByExpired(models); %>
             <p class="text-small">
                 已過期：<a href='javascript:showContractList(<%= JsonConvert.SerializeObject(
@@ -23,7 +22,7 @@
                                 {
                                     IsExpired = true,
                                     ContractQueryMode = Naming.ContractServiceMode.ContractOnly,
-                                    Status = (int)Naming.CourseContractStatus.已生效,
+                                    Status = (int)Naming.CourseContractStatus.已過期,
                                 }) %>,<%= expiredItems.Count() %>);'><%= expiredItems.Count() %></a><br />
                 生效中：<a href='javascript:showContractList(<%= JsonConvert.SerializeObject(
                                 new 
@@ -42,7 +41,7 @@
                                     Status = (int)Naming.CourseContractStatus.已生效,
                                     ExpirationFrom = DateTime.Today,
                                     ExpirationTo = DateTime.Today.AddMonths(1),
-                                }) %>);'>
+                                }) %>,<%= expiringItems.Count() %>);'>
                 <h2 class="col-red"><%= expiringItems.Count() %></h2>
             </a>
             <small class="info">合約</small>

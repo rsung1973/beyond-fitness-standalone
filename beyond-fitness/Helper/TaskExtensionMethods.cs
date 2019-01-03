@@ -298,6 +298,11 @@ namespace WebHome.Helper
                         ///
                         var original = item.SourceContract;
                         var remained = original.RemainedLessonCount();
+                        var returnAmt = original.TotalPaidAmount() - (original.Lessons - remained)
+                                * original.LessonPriceType.ListPrice
+                                * original.CourseContractType.GroupingMemberCount
+                                * original.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount / 100;
+
                         var balance = original.TotalPaidAmount() - (original.Lessons - original.RemainedLessonCount())
                                 * item.CourseContract.CourseContractExtension.SettlementPrice
                                 * original.CourseContractType.GroupingMemberCount
@@ -332,8 +337,8 @@ namespace WebHome.Helper
                             {
                                 ContractID = item.OriginalContract.Value,
                                 EventDate = balancedPayment.PayoffDate.Value,
-                                Payment = balancedPayment,
-                                TrustType = Naming.TrustType.S.ToString()
+                                TrustType = Naming.TrustType.S.ToString(),
+                                ReturnAmount = returnAmt,
                             });
 
                             //Logger.Debug("RevisionID: " + item.RevisionID);

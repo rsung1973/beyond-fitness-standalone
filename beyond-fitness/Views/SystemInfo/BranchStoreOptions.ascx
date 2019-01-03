@@ -32,7 +32,7 @@
         base.OnInit(e);
         _modelState = (ModelStateDictionary)ViewBag.ModelState;
         models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
-        _model = (int?)this.Model;
+        _model = this.Model as int?;
     }
 
 </script>

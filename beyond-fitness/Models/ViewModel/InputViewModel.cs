@@ -22,7 +22,7 @@ namespace WebHome.Models.ViewModel
         public String Href { get; set; }
     }
 
-    public class CourseContractViewModel
+    public class CourseContractViewModel : QueryViewModel
     {
         public int? ContractID { get; set; }
         public int? ContractType { get; set; } = 1;
@@ -47,6 +47,8 @@ namespace WebHome.Models.ViewModel
         public bool? Drawback { get; set; }
         public int? SettlementPrice { get; set; }
         public bool? Renewal { get; set; }
+        public bool? InstallmentPlan { get; set; }
+        public int? Installments { get; set; }
     }
 
     public class CourseContractQueryViewModel : CourseContractViewModel
@@ -60,6 +62,20 @@ namespace WebHome.Models.ViewModel
         public DateTime? ContractDateFrom { get; set; }
         public DateTime? ContractDateTo { get; set; }
         public String ContractNo { get; set; }
+        public bool? IsExpired { get; set; }
+        public Naming.ContractServiceMode? ContractQueryMode { get; set; }
+        public DateTime? ExpirationFrom { get; set; }
+        public DateTime? ExpirationTo { get; set; }
+        public DateTime? EffectiveDateFrom { get; set; }
+        public DateTime? EffectiveDateTo { get; set; }
+        public Naming.ContractPayoffMode? PayoffMode { get; set; }
+        public DateTime? PayoffDueFrom { get; set; }
+        public DateTime? PayoffDueTo { get; set; }
+        public int? ManagerID { get; set; }
+        public int? OfficerID { get; set; }
+        public bool? ScrollToView { get; set; }
+        public bool? ByCustom { get; set; }
+        public bool? IncludeTotalUnpaid { get; set; }
 
     }
 

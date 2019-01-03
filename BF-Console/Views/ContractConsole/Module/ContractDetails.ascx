@@ -29,7 +29,24 @@
     </div>
 </div>
 <script>
-    function showContractList(viewModel,alertCount) {
+
+        //更多查詢條件
+    function moreContractQuery() {
+        showLoading();
+        $.post('<%= Url.Action("InvokeContractQuery", "ContractConsole") %>', {}, function (data) {
+            hideLoading();
+            if ($.isPlainObject(data)) {
+                alert(data.message);
+            } else {
+                $(data).appendTo($('body'));
+            }
+        });
+    }
+
+    function showContractList(viewModel, alertCount) {
+        if (alertCount == 0)
+            return;
+        clearErrors();
         if (alertCount && alertCount > 300) {
             swal({
                 title: "繼續載入?",
@@ -51,6 +68,7 @@
                         } else {
                             $('#<%= _viewID %>').empty()
                                 .append(data);
+                            $('#<%= _viewID %>').resize();
                         }
                     });
                 } else {
@@ -65,9 +83,23 @@
                 } else {
                     $('#<%= _viewID %>').empty()
                         .append(data);
+                    $('#<%= _viewID %>').resize();
                 }
             });
         }
+    }
+
+        //點選合約詳細資料
+    function showContractDetails(keyID) {
+            showLoading();
+            $.post('<%= Url.Action("ShowContractDetails", "ContractConsole") %>', { 'keyID': keyID }, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    alert(data.message);
+                } else {
+                    $(data).appendTo($('body'));
+                }
+        });
     }
 </script>
 

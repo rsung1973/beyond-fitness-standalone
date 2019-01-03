@@ -799,8 +799,7 @@ namespace WebHome.Controllers
 
         public ActionResult ListContractByContractNo(PaymentViewModel viewModel)
         {
-            IQueryable<CourseContract> items = models.GetTable<CourseContract>()
-                    .Where(c => c.Status == (int)Naming.CourseContractStatus.已生效);
+            IQueryable<CourseContract> items = models.PromptAccountingContract();
 
             viewModel.ContractNo = viewModel.ContractNo.GetEfficientString();
             if (viewModel.ContractNo != null)
@@ -1738,7 +1737,7 @@ namespace WebHome.Controllers
             ViewResult result = (ViewResult)InquirePayment(viewModel);
 
             IQueryable<Payment> items = (IQueryable<Payment>)result.Model;
-            items = items.Where(p => p.VoidPayment == null);
+            items = items.Where(p => p.VoidPayment == null || p.AllowanceID.HasValue);
 
             return View("~/Views/Payment/Module/PaymentAchievementList.ascx", items);
         }

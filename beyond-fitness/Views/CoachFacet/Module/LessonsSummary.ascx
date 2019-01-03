@@ -26,7 +26,9 @@
                     <li>
                         <a href="javascript:selectQueryInterval('<%= currentMonth.ToString("yyyy/MM/dd") %>','<%= currentMonth.ToString("yyyy/MM") %>');"><%= currentMonth.ToString("yyyy/MM") %></a>
                     </li>
-                    <%  for (int i = 0; i < 5; i++)
+                    <%  DateTime endDate = new DateTime(2018, 2, 1);
+                        //for (int i = 0; i < 5; i++)
+                        while(currentMonth > endDate)
                         {
                             currentMonth = currentMonth.AddMonths(-1);%>
                     <li>

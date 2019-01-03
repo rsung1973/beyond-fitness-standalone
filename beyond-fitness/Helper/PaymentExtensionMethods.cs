@@ -49,5 +49,24 @@ namespace WebHome.Helper
             }
         }
 
+        public static IQueryable<Payment> FilterByAccountingPayment<TEntity>(this IQueryable<Payment> items, ModelSource<TEntity> models)
+                    where TEntity : class, new()
+        {
+            return items
+                .Where(p => p.TransactionType == (int)Naming.PaymentTransactionType.體能顧問費
+                    || p.TransactionType == (int)Naming.PaymentTransactionType.合約轉讓餘額
+                    || p.TransactionType == (int)Naming.PaymentTransactionType.合約轉點餘額)
+                .Where(p => p.VoidPayment == null || p.AllowanceID.HasValue);
+        }
+
+        public static IEnumerable<Payment> FilterByAccountingPayment(this IEnumerable<Payment> items)
+        {
+            return items
+                .Where(p => p.TransactionType == (int)Naming.PaymentTransactionType.體能顧問費
+                    || p.TransactionType == (int)Naming.PaymentTransactionType.合約轉讓餘額
+                    || p.TransactionType == (int)Naming.PaymentTransactionType.合約轉點餘額)
+                .Where(p => p.VoidPayment == null || p.AllowanceID.HasValue);
+        }
+
     }
 }

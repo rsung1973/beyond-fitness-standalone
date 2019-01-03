@@ -12,7 +12,7 @@
 <div class="jarviswidget" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-togglebutton="false" data-widget-deletebutton="false">
     <header class="bg-color-red">
         <span class="widget-icon"><i class="fa fa-exclamation-triangle"></i></span>
-        <h2>尚有<%= _items.Where(c=>c.Expiration>=DateTime.Today).Count() %>張合約即將過期，<%= _items.Where(c=>c.Expiration<DateTime.Today).Count() %>張已過期!</h2>
+        <h2>尚有<%= _items.Where(c=>c.Expiration>=DateTime.Today).Count() %>張合約即將過期，<%= _contrtacts.Where(c=>c.Expiration<DateTime.Today).Count() %>張已過期!</h2>
     </header>
     <!-- widget div-->
     <div>
@@ -40,6 +40,17 @@
                         <td class="text-center"><%= item.Expiration<DateTime.Today ? "是" : "否" %></td>
                     </tr>
                     <%  } %>
+                    <%  foreach (var item in _contrtacts)
+                        { %>
+                    <tr>
+                        <td><%= item.ContractNo() %></td>
+                        <td><%= String.Join("/",item.CourseContractMember.Select(m=>m.UserProfile).ToArray().Select(u=>u.FullName())) %></td>
+                        <td><%= item.ServingCoach.UserProfile.FullName() %></td>
+                        <td class="text-center"><%= String.Format("{0:yyyy/MM/dd}",item.Expiration) %></td>
+                        <td class="text-center">是</td>
+                    </tr>
+                    <%  } %>
+
                 </tbody>
             </table>
             <!-- end content -->
@@ -96,6 +107,7 @@
     ModelStateDictionary _modelState;
     ModelSource<UserProfile> models;
     IQueryable<CourseContract> _items;
+    IQueryable<CourseContract> _contrtacts;
     String _tableId = "expiringContract" + DateTime.Now.Ticks;
 
     protected override void OnInit(EventArgs e)
@@ -105,26 +117,37 @@
         models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
         var profile = Context.GetUser();
         _items = models.PromptExpiringContract();
+        _contrtacts = models.PromptRegisterLessonContract()
+                    .FilterByExpired(models);
+                        //.Join(models.GetTable<RegisterLesson>()
+                        //    .Where(r => r.Attended != (int)Naming.LessonStatus.課程結束)
+                        //    .Join(models.GetTable<RegisterLessonContract>(),
+                        //        r => r.RegisterID, t => t.RegisterID, (r, t) => t),
+                        //    c => c.ContractID, t => t.ContractID, (c, t) => c);
 
-        if (profile.IsAssistant())
+        ServingCoach coach = ViewBag.CurrentCoach as ServingCoach;
+        if (coach != null && coach.CoachID!=profile.UID)
+        {
+            _items = _items.Where(c => c.FitnessConsultant == coach.CoachID);
+            _contrtacts = _contrtacts.Where(c => c.FitnessConsultant == coach.CoachID);
+        }
+        else if (profile.IsAssistant())
         {
 
         }
         else if (profile.IsManager() || profile.IsViceManager())
         {
-            var coaches = profile.GetServingCoachInSameStore(models);
-            _items = _items.Join(coaches, c => c.FitnessConsultant, h => h.CoachID, (c, h) => c);
+            //var coaches = profile.GetServingCoachInSameStore(models);
+            //_items = _items.Join(coaches, c => c.FitnessConsultant, h => h.CoachID, (c, h) => c);
+            _items = _items.FilterByBranchStoreManager(models, profile.UID);
+            _contrtacts = _contrtacts.FilterByBranchStoreManager(models, profile.UID);
         }
         else if (profile.IsCoach())
         {
             _items = _items.Where(c => c.FitnessConsultant == profile.UID);
+            _contrtacts = _contrtacts.Where(c => c.FitnessConsultant == profile.UID);
         }
 
-        ServingCoach coach = (ServingCoach)ViewBag.CurrentCoach;
-        if(coach!=null)
-        {
-            _items = _items.Where(c => c.FitnessConsultant == coach.CoachID);
-        }
     }
 
 </script>

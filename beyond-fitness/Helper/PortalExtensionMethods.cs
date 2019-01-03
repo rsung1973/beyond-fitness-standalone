@@ -24,6 +24,19 @@ namespace WebHome.Helper
 {
     public static class PortalExtensionMethods
     {
+        public static DateTime FirstDayOfMonth(this DateTime date)
+        {
+            return new DateTime(date.Year, date.Month, 1);
+        }
+
+        public static DateTime FirstDayOfWeek(this DateTime date)
+        {
+            int offsetDays = (int)date.DayOfWeek;
+            offsetDays = offsetDays == 0 ? 6 : offsetDays - 1;
+            return date.AddDays(-offsetDays);
+        }
+
+
         public static String ProcessLogin(this Controller controller, UserProfile item,bool fromLine = false)
         {
             UrlHelper url = new UrlHelper(controller.ControllerContext.RequestContext);
@@ -140,27 +153,27 @@ namespace WebHome.Helper
             return item;
         }
 
-        public static IQueryable<CourseContract> PromptContract<TEntity>(this ModelSource<TEntity> models)
-            where TEntity : class, new()
-        {
-            var expansionID = models.GetTable<CourseContractRevision>().Where(r => r.Reason == "展延")
-                .Select(r => r.OriginalContract);
+        //public static IQueryable<CourseContract> PromptContract<TEntity>(this ModelSource<TEntity> models)
+        //    where TEntity : class, new()
+        //{
+        //    var expansionID = models.GetTable<CourseContractRevision>().Where(r => r.Reason == "展延")
+        //        .Select(r => r.OriginalContract);
 
-            var closedID = models.GetTable<CourseContractRevision>().Where(r => r.Reason == "終止")
-                .Select(r => r.OriginalContract);
+        //    var closedID = models.GetTable<CourseContractRevision>().Where(r => r.Reason == "終止")
+        //        .Select(r => r.OriginalContract);
 
-            var terminationID = models.GetTable<CourseContractRevision>().Where(r => r.Reason == "終止")
-                .Select(r => r.RevisionID);
+        //    var terminationID = models.GetTable<CourseContractRevision>().Where(r => r.Reason == "終止")
+        //        .Select(r => r.RevisionID);
 
-            var items = models.GetTable<CourseContract>()
-                .Where(c => c.Expiration >= DateTime.Today || c.RegisterLessonContract.Any())
-                .Where(c => !c.RegisterLessonContract.Any(r => r.RegisterLesson.Attended == (int)Naming.LessonStatus.課程結束))
-                .Where(c => !expansionID.Any(r => r == c.ContractID))
-                .Where(c => !terminationID.Any(r => r == c.ContractID))
-                .Where(c => !closedID.Any(r => r == c.ContractID));
+        //    var items = models.GetTable<CourseContract>()
+        //        .Where(c => c.Expiration >= DateTime.Today || c.RegisterLessonContract.Any())
+        //        .Where(c => !c.RegisterLessonContract.Any(r => r.RegisterLesson.Attended == (int)Naming.LessonStatus.課程結束))
+        //        .Where(c => !expansionID.Any(r => r == c.ContractID))
+        //        .Where(c => !terminationID.Any(r => r == c.ContractID))
+        //        .Where(c => !closedID.Any(r => r == c.ContractID));
 
-            return items;
-        }
+        //    return items;
+        //}
 
 
         public static LessonAttendanceCheckEvent CheckLessonAttendanceEvent<TEntity>(this UserProfile profile, ModelSource<TEntity> models, bool includeAfterToday = false)
@@ -235,7 +248,9 @@ namespace WebHome.Helper
         public static PromptContractEvent CheckPromptContractEvent<TEntity>(this UserProfile profile, ModelSource<TEntity> models, bool includeAfterToday = false)
             where TEntity : class, new()
         {
-            var items = models.PromptContract().Where(c => c.CourseContractMember.Any(m => m.UID == profile.UID));
+            var items = models.PromptEffectiveContract()
+                .Where(c => c.Expiration >= DateTime.Today)
+                .Where(c => c.CourseContractMember.Any(m => m.UID == profile.UID));
             if (items.Count()>0)
             {
                 return new PromptContractEvent
