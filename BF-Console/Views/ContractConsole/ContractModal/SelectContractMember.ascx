@@ -10,20 +10,17 @@
 
 <%  ViewBag.SelectMember = (Func<UserProfile, String>)(item =>
         {
-            return $"showBookEvent('{item.UID.EncryptKey()}');";
+            return $"commitContractMember({item.UID});";
         });
     Html.RenderPartial("~/Views/ConsoleEvent/EventModal/MemberSelector.ascx", _model); %>
     <script>
-        function showBookEvent(keyID) {
-            showLoading();
-            $.post('<%= Url.Action("BookingLesson", "ConsoleEvent", new { _viewModel.StartDate }) %>', { 'keyID': keyID }, function (data) {
-                hideLoading();
-                if ($.isPlainObject(data)) {
-                    alert(data.message);
-                } else {
-                    $(data).appendTo($('body'));
-                }
-            });
+        function commitContractMember(uid) {
+            if (!$global.viewModel.UID) {
+                $global.viewModel.UID = [];
+            }
+            $global.viewModel.UID.push(uid);
+            loadMemberList();
+            $global.closeAllModal();
         }
     </script>
 <script runat="server">

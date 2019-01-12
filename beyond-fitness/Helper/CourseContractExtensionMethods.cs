@@ -14,6 +14,7 @@ using System.Web.Mvc;
 using CommonLib.DataAccess;
 using MessagingToolkit.QRCode.Codec;
 using Utility;
+using WebHome.Controllers;
 using WebHome.Models.DataEntity;
 using WebHome.Models.Locale;
 using WebHome.Models.Timeline;
@@ -239,6 +240,30 @@ namespace WebHome.Helper
         {
             return item.Status==(int)Naming.CourseContractStatus.已生效
                     && !models.GetTable<CourseContractRevision>().Any(r => r.OriginalContract == item.ContractID && r.CourseContract.Status < (int)Naming.CourseContractStatus.已生效);
+        }
+
+        public static IQueryable<LessonPriceType> PromptEffectiveLessonPrice<TEntity>(this ModelSource<TEntity> models)
+                where TEntity : class, new()
+        {
+            return models.GetTable<LessonPriceType>()
+                .Where(l => l.Status == (int)Naming.LessonSeriesStatus.已啟用)
+                .Where(l => l.LowerLimit.HasValue && (!l.SeriesID.HasValue || l.CurrentPriceSeries.Status == (int)Naming.LessonSeriesStatus.已啟用));
+        }
+
+        public static IQueryable<UserProfile> PromptContractMembers<TEntity>(this int[] uid, ModelSource<TEntity> models)
+                where TEntity : class, new()
+        {
+            IQueryable<UserProfile> items = models.GetTable<UserProfile>();
+
+            if (uid != null && uid.Length > 0)
+            {
+                items = items.Where(u => uid.Contains(u.UID));
+            }
+            else
+            {
+                items = items.Where(u => false);
+            }
+            return items;
         }
 
 

@@ -49,6 +49,11 @@ namespace WebHome.Models.ViewModel
         public bool? Renewal { get; set; }
         public bool? InstallmentPlan { get; set; }
         public int? Installments { get; set; }
+        public int? DurationInMinutes { get; set; }
+        public int? TotalCost { get; set; }
+        public bool? Extension { get; set; }
+        public bool? Booking { get; set; }
+        public bool? Cancel { get; set; }
     }
 
     public class CourseContractQueryViewModel : CourseContractViewModel
@@ -91,10 +96,9 @@ namespace WebHome.Models.ViewModel
         public int? OwnerID { get; set; }
         public int? ContractType { get; set; }
         public string Nickname { get; set; }
-
     }
 
-    public class UserSignatureViewModel
+    public class UserSignatureViewModel : QueryViewModel
     {
         public int? UID { get; set; }
         public String Signature { get; set; }

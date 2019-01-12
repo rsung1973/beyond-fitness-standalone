@@ -7,20 +7,13 @@
 <%@ Import Namespace="WebHome.Models.ViewModel" %>
 <%@ Import Namespace="WebHome.Models.DataEntity" %>
 <%@ Import Namespace="WebHome.Controllers" %>
-<div class="block-header">
-    <div class="row">
-        <div class="col-lg-7 col-md-6 col-sm-12">
-            <h2><%= ViewBag.BlockHeader %><small class="col-cyan"><%  Html.RenderPartial("~/Views/ConsoleHome/Module/InspirationalTitle.ascx", _model); %></small>
-            </h2>
-        </div>
-        <%  Action insertPartial = ViewBag.InsertPartial as Action;
-            if (insertPartial != null)
-            {
-                insertPartial();
-            }
-        %>
-    </div>
+
+<div class="col-lg-5 col-md-6 col-sm-12">
+    <ul class="breadcrumb float-md-right">
+        <li class="breadcrumb-item"><a href="<%= Url.Action("ContractIndex","ConsoleHome") %>"><i class="zmdi zmdi-file-text"></i>我的合約</a></li>
+    </ul>
 </div>
+
 <script runat="server">
 
     ModelStateDictionary _modelState;

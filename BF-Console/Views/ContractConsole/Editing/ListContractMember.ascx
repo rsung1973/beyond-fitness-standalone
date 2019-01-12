@@ -7,16 +7,28 @@
 <%@ Import Namespace="WebHome.Models.ViewModel" %>
 <%@ Import Namespace="WebHome.Models.DataEntity" %>
 <%@ Import Namespace="WebHome.Controllers" %>
+<%@ Import Namespace="Newtonsoft.Json" %>
 
-<%  ViewBag.SelectMember = (Func<UserProfile, String>)(item =>
-        {
-            return $"showBookEvent('{item.UID.EncryptKey()}');";
-        });
-    Html.RenderPartial("~/Views/ConsoleEvent/EventModal/MemberSelector.ascx", _model); %>
-    <script>
-        function showBookEvent(keyID) {
+<div class="table-responsive">
+    <%  ViewBag.OwnerID = _viewModel.OwnerID;
+        Html.RenderPartial("~/Views/ContractConsole/Module/ContractMemberList.ascx", _viewModel.UID.PromptContractMembers(models)); %>
+</div>
+
+<script>
+
+    $(function () {
+        $global.viewModel.UID = <%= JsonConvert.SerializeObject(_viewModel.UID) %>;
+        $global.contractMemberInitComplete = function (dt) {
+            var api = dt.api();
+            api.$('tr').click(function () {
+                var id = $(this).data('id');
+                processMember(id);
+            });
+        };
+
+        function processMember(uid) {
             showLoading();
-            $.post('<%= Url.Action("BookingLesson", "ConsoleEvent", new { _viewModel.StartDate }) %>', { 'keyID': keyID }, function (data) {
+            $.post('<%= Url.Action("ProcessContractMember", "ContractConsole") %>', { 'uid': uid }, function (data) {
                 hideLoading();
                 if ($.isPlainObject(data)) {
                     alert(data.message);
@@ -25,24 +37,23 @@
                 }
             });
         }
-    </script>
+
+    });
+
+</script>
+
 <script runat="server">
 
     ModelStateDictionary _modelState;
     ModelSource<UserProfile> models;
-    IQueryable<UserProfile> _model;
-    CalendarEventQueryViewModel _viewModel;
-    String _dialogID = $"attendee{DateTime.Now.Ticks}";
-    UserProfile _profile;
+    CourseContractQueryViewModel _viewModel;
 
     protected override void OnInit(EventArgs e)
     {
         base.OnInit(e);
         _modelState = (ModelStateDictionary)ViewBag.ModelState;
         models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
-        _model = (IQueryable<UserProfile>)this.Model;
-        _viewModel = (CalendarEventQueryViewModel)ViewBag.ViewModel;
-        _profile = Context.GetUser();
+        _viewModel = (CourseContractQueryViewModel)ViewBag.ViewModel;
     }
 
 

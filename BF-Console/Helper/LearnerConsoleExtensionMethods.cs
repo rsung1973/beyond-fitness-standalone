@@ -58,5 +58,18 @@ namespace WebHome.Helper
             }
         }
 
+        public static IQueryable<UserProfile> PromptLearnerByName<TEntity>(this String userName, ModelSource<TEntity> models)
+                where TEntity : class, new()
+        {
+            var items = models.GetTable<UserProfile>()
+                    .Where(l => (l.RealName.Contains(userName) || l.Nickname.Contains(userName))
+                        && (l.UserProfileExtension != null))
+                    .Where(l => models.GetTable<UserRole>().Any(r => r.RoleID == (int)Naming.RoleID.Learner && r.UID == l.UID)
+                        || models.GetTable<UserRoleAuthorization>().Any(r => r.RoleID == (int)Naming.RoleID.Learner && r.UID == l.UID));
+
+            return items;
+        }
+
+
     }
 }

@@ -19,16 +19,16 @@
                 <div class="list-group">
                     <%  if (_model.IsEditable(models,_profile))
                         {   %>
-                    <a href="contract-edit.html" class="list-group-item">編輯資料</a>
+                    <a href="<%= Url.Action("EditCourseContract","ConsoleHome",new { KeyID = _model.ContractID.EncryptKey() }) %>" class="list-group-item">編輯資料</a>
                     <a href="javascript:deleteData();" class="list-group-item">刪除資料</a>
                     <%  }
                         else if(_model.IsSignable(models,_profile))
                         {   %>
-                    <a href="contract-sign.html" class="list-group-item">學生簽名</a>
+                    <a href="<%= Url.Action("SignCourseContract","ConsoleHome",new { KeyID = _model.ContractID.EncryptKey() }) %>" class="list-group-item">學生簽名</a>
                     <%  }
                         else if(_model.IsApprovable(models,_profile))
                         {   %>
-                    <a href="contract-approve.html" class="list-group-item">主管審核</a>
+                    <a href="<%= Url.Action("SignCourseContract","ConsoleHome",new { KeyID = _model.ContractID.EncryptKey() }) %>" class="list-group-item">主管審核</a>
                     <%  }
                         else if(_model.IsPayable(models))
                         {   %>
@@ -39,7 +39,10 @@
                     <a href="contract-apply.html" class="list-group-item">服務申請</a>
                     <%  }   %>
                     <a href="javascript:showContractDetails('<%= _model.ContractID.EncryptKey() %>');" class="list-group-item">詳細資訊</a>
-                    <a href="contract-pdf.html" target="_blank" class="list-group-item">列印電子合約</a>
+                    <%  if (_model.Status > (int)Naming.CourseContractStatus.待審核 && _model.ContractID > 1045)
+                        { %>
+                    <a href="<%= Url.Action("GetContractPdf", "CourseContract", new { KeyID = _model.ContractID.EncryptKey() }) %>" target="_blank" class="list-group-item">列印電子合約</a>
+                    <%  } %>
                 </div>
             </div>
         </div>

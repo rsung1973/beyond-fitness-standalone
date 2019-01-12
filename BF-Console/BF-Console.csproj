@@ -43,22 +43,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="beyond-fitness, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\beyond-fitness.dll</HintPath>
-    </Reference>
-    <Reference Include="CommonLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\CommonLib.dll</HintPath>
-    </Reference>
-    <Reference Include="CommonLib.Logger, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\CommonLib.Logger.dll</HintPath>
-    </Reference>
-    <Reference Include="CommonLib.PlugInAdapter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\CommonLib.PlugInAdapter.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=2.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
@@ -4626,6 +4610,8 @@
     <Content Include="ConsoleHome\plugins\waitme\waitMe.min.css" />
     <Content Include="ConsoleHome\plugins\waitme\waitMe.min.js" />
     <Content Include="Global.asax" />
+    <Content Include="Views\ConsoleEvent\EventModal\MemberSelector.ascx" />
+    <Content Include="Views\ConsoleEvent\Module\SearchLearner.ascx" />
     <Content Include="Views\ConsoleEvent\Module\CoachPIAttendeeSelector.ascx" />
     <Content Include="Views\ConsoleEvent\EventModal\BookingCustomEvent.ascx" />
     <Content Include="Views\ConsoleEvent\EventModal\BookingCoachPI.ascx" />
@@ -4639,6 +4625,8 @@
     <Content Include="Views\ConsoleEvent\EventModal\LessonItem.ascx" />
     <Content Include="Views\ConsoleEvent\Module\RevokeLesson.ascx" />
     <Content Include="Views\ConsoleEvent\Module\LessonEmphasis.ascx" />
+    <Content Include="Views\ConsoleHome\SignCourseContract.aspx" />
+    <Content Include="Views\ConsoleHome\EditCourseContract.aspx" />
     <Content Include="Views\ConsoleHome\ContractIndex.aspx" />
     <Content Include="Views\ConsoleHome\ExerciseBillboard.aspx" />
     <Content Include="Views\ConsoleHome\Calendar.aspx" />
@@ -4675,6 +4663,7 @@
     <Content Include="Views\ConsoleHome\Module\ProfileImage.ascx" />
     <Content Include="Views\ConsoleHome\Module\InspirationalTitle.ascx" />
     <Content Include="Views\ConsoleHome\Module\BlockHeader.ascx" />
+    <Content Include="Views\ConsoleHome\Shared\MyContractHeader.ascx" />
     <Content Include="Views\ConsoleHome\Shared\KnobJS.ascx" />
     <Content Include="Views\ConsoleHome\Shared\Knob.ascx" />
     <Content Include="Views\ConsoleHome\Shared\BSModalScript.ascx" />
@@ -4682,8 +4671,23 @@
     <Content Include="Views\ConsoleHome\Shared\InitBarChartNoRegister.ascx" />
     <Content Include="Views\ConsoleHome\Shared\ReportInputError.ascx" />
     <Content Include="Views\ContractConsole\ContractModal\AboutContractDetails.ascx" />
+    <Content Include="Views\ContractConsole\ContractModal\EditContractMember.ascx" />
+    <Content Include="Views\ContractConsole\ContractModal\ProcessContractMember.ascx" />
+    <Content Include="Views\ContractConsole\ContractModal\SignaturePanel.ascx" />
+    <Content Include="Views\ContractConsole\ContractModal\SelectContractMember.ascx" />
+    <Content Include="Views\ContractConsole\ContractModal\ListLessonPrice.ascx" />
+    <Content Include="Views\ContractConsole\ContractModal\SelectCoach.ascx" />
     <Content Include="Views\ContractConsole\ContractModal\ProcessContract.ascx" />
     <Content Include="Views\ContractConsole\ContractModal\ContractQuery.ascx" />
+    <Content Include="Views\ContractConsole\Editing\CourseContractSigned.ascx" />
+    <Content Include="Views\ContractConsole\Editing\CourseContractCommitted.ascx" />
+    <Content Include="Views\ContractConsole\Editing\ContractStatusChanged.ascx" />
+    <Content Include="Views\ContractConsole\Editing\CourseContractSaved.ascx" />
+    <Content Include="Views\ContractConsole\Editing\ListContractMember.ascx" />
+    <Content Include="Views\ContractConsole\Editing\ContractMemberCommitted.ascx" />
+    <Content Include="Views\ContractConsole\Editing\TotalCostSummary.ascx" />
+    <Content Include="Views\ContractConsole\Editing\SelectLessonPrice.ascx" />
+    <Content Include="Views\ContractConsole\Editing\SelectConsultant.ascx" />
     <Content Include="Views\ContractConsole\Module\AboutContractServicesByCoach.ascx" />
     <Content Include="Views\ContractConsole\Module\AboutContractServicesByBranch.ascx" />
     <Content Include="Views\ContractConsole\Module\AboutContractServicesByOfficer.ascx" />
@@ -4709,6 +4713,7 @@
     <Content Include="Views\ContractConsole\Module\ContractPaymentList.ascx" />
     <Content Include="Views\ContractConsole\Module\ContractInstallmentList.ascx" />
     <Content Include="Views\ContractConsole\Module\ContractMemberList.ascx" />
+    <Content Include="Views\ContractConsole\Module\CourseContractView.ascx" />
     <Content Include="Views\ContractConsole\Module\CustomContractList.ascx" />
     <Content Include="Views\ContractConsole\Module\ContractList.ascx" />
     <Content Include="Views\ContractConsole\Module\AboutNewContractsByCoach.ascx" />
@@ -4980,6 +4985,20 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="App_Start\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\beyond-fitness\beyond-fitness.csproj">
+      <Project>{c49821ff-96c8-466b-aef4-137ec84fdefc}</Project>
+      <Name>beyond-fitness</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CommonLib.Logger\CommonLib.Logger.csproj">
+      <Project>{8146e629-552a-4b36-8711-08ae8245b8fa}</Project>
+      <Name>CommonLib.Logger</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CommonLib\CommonLib.csproj">
+      <Project>{c0ad239c-2ac4-46d2-ae7c-5e97266ef4ea}</Project>
+      <Name>CommonLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

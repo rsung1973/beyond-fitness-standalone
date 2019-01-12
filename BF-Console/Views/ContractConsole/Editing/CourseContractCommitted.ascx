@@ -7,32 +7,34 @@
 <%@ Import Namespace="WebHome.Models.ViewModel" %>
 <%@ Import Namespace="WebHome.Models.DataEntity" %>
 <%@ Import Namespace="WebHome.Controllers" %>
-<div class="block-header">
-    <div class="row">
-        <div class="col-lg-7 col-md-6 col-sm-12">
-            <h2><%= ViewBag.BlockHeader %><small class="col-cyan"><%  Html.RenderPartial("~/Views/ConsoleHome/Module/InspirationalTitle.ascx", _model); %></small>
-            </h2>
-        </div>
-        <%  Action insertPartial = ViewBag.InsertPartial as Action;
-            if (insertPartial != null)
-            {
-                insertPartial();
-            }
-        %>
-    </div>
-</div>
+<%@ Import Namespace="Newtonsoft.Json" %>
+
+<script>
+    $(function () {
+<%--        $('').launchDownload('<%= Url.Action("SignCourseContract","ConsoleHome") %>', { 'contractID':<%= _model.ContractID %>});--%>
+        $('').launchDownload('<%= Url.Action("ShowContractList","ContractConsole") %>',
+            <%= JsonConvert.SerializeObject(new CourseContractQueryViewModel
+                {
+                    //FitnessConsultant = _model.FitnessConsultant,
+                    //ContractQueryMode = Naming.ContractServiceMode.ContractOnly,
+                    //Status = (int)Naming.CourseContractStatus.待簽名,
+                    KeyID = _model.ContractID.EncryptKey(),
+                }) %>);
+    });
+</script>
+
 <script runat="server">
 
     ModelStateDictionary _modelState;
     ModelSource<UserProfile> models;
-    UserProfile _model;
+    CourseContract _model;
 
     protected override void OnInit(EventArgs e)
     {
         base.OnInit(e);
         _modelState = (ModelStateDictionary)ViewBag.ModelState;
         models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
-        _model = (UserProfile)this.Model;
+        _model = (CourseContract)this.Model;
     }
 
 

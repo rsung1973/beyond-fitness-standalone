@@ -73,6 +73,9 @@
                 <h2><%= totalCount %></h2>
             </a>
             <small class="info">本月</small>
+            <p>
+                <button class="btn btn-darkteal btn-icon btn-icon-mini btn-round waves-effect float-right" id="editcontract"><i class="zmdi zmdi-plus"></i></button>
+            </p>
         </div>
     </div>
 </div>

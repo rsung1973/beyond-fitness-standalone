@@ -7,32 +7,23 @@
 <%@ Import Namespace="WebHome.Models.ViewModel" %>
 <%@ Import Namespace="WebHome.Models.DataEntity" %>
 <%@ Import Namespace="WebHome.Controllers" %>
-<div class="block-header">
-    <div class="row">
-        <div class="col-lg-7 col-md-6 col-sm-12">
-            <h2><%= ViewBag.BlockHeader %><small class="col-cyan"><%  Html.RenderPartial("~/Views/ConsoleHome/Module/InspirationalTitle.ascx", _model); %></small>
-            </h2>
-        </div>
-        <%  Action insertPartial = ViewBag.InsertPartial as Action;
-            if (insertPartial != null)
-            {
-                insertPartial();
-            }
-        %>
-    </div>
-</div>
+
+<p><b>專業顧問建置與諮詢費：</b> <%= $"{(_viewModel.TotalCost*8+5)/10:##,###,###}" %></p>
+<p>教練課程費：<%= $"{(_viewModel.TotalCost*2+5)/10:##,###,###}" %></p>
+<h3 class="text-right col-blush">專業顧問服務總費用：<%= String.Format("{0:##,###,###,###}",_viewModel.TotalCost) %></h3>
+
 <script runat="server">
 
     ModelStateDictionary _modelState;
     ModelSource<UserProfile> models;
-    UserProfile _model;
+    CourseContractQueryViewModel _viewModel;
 
     protected override void OnInit(EventArgs e)
     {
         base.OnInit(e);
         _modelState = (ModelStateDictionary)ViewBag.ModelState;
         models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
-        _model = (UserProfile)this.Model;
+        _viewModel = (CourseContractQueryViewModel)ViewBag.ViewModel;
     }
 
 

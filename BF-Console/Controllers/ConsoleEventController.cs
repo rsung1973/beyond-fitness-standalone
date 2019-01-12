@@ -151,11 +151,7 @@ namespace BFConsole.Controllers
             //        .Where(l => l.Lessons > l.GroupingLesson.LessonTime.Count)
             //        .Where(l => l.RegisterGroupID.HasValue);
 
-            var items = models.GetTable<UserProfile>()
-                .Where(l => (l.RealName.Contains(viewModel.UserName) || l.Nickname.Contains(viewModel.UserName))
-                    && (l.UserProfileExtension != null))
-                .Where(l => models.GetTable<UserRole>().Any(r => r.RoleID == (int)Naming.RoleID.Learner && r.UID == l.UID)
-                    || models.GetTable<UserRoleAuthorization>().Any(r => r.RoleID == (int)Naming.RoleID.Learner && r.UID == l.UID));
+            var items = viewModel.UserName.PromptLearnerByName(models);
 
             if (items.Count() > 0)
                 return View("~/Views/ConsoleEvent/EventModal/AttendeeSelector.ascx", items);

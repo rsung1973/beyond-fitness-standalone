@@ -10,6 +10,7 @@ namespace WebHome.Models.ViewModel
     public class QueryViewModel
     {
         public String KeyID { get; set; }
+        public String DialogID { get; set; }
     }
 
     public class LoginViewModel
@@ -113,7 +114,7 @@ namespace WebHome.Models.ViewModel
         public Guid? UUID { get; set; }
     }
 
-    public class LearnerViewModel
+    public class LearnerViewModel : QueryViewModel
     {
         //public LearnerViewModel()
         //{

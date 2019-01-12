@@ -11,7 +11,7 @@
 
 <%  if (_viewModel.Lessons.HasValue)
     {   %>
-<option value="">分期轉開次數</option>
+<option value="">-- 請選擇分期轉開次數 --</option>
 <option value="2" <%= _viewModel.Installments==2 ? "selected" : null %>>2次</option>
 <option value="3" <%= _viewModel.Installments==3 ? "selected" : null %>>3次</option>
 <%

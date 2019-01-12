@@ -21,6 +21,7 @@ using Newtonsoft.Json;
 using Utility;
 using WebHome.Controllers;
 using WebHome.Helper;
+using WebHome.Helper.BusinessOperation;
 using WebHome.Models.DataEntity;
 using WebHome.Models.Locale;
 using WebHome.Models.Timeline;
@@ -188,6 +189,17 @@ namespace BFConsole.Controllers
                 items = items.Where(c => c.Expiration < viewModel.ExpirationTo.Value);
             }
 
+            if (viewModel.KeyID != null)
+            {
+                viewModel.ContractID = viewModel.DecryptKeyValue();
+            }
+            if (viewModel.ContractID.HasValue)
+            {
+                hasConditon = true;
+                items = items.Where(c => c.ContractID == viewModel.ContractID);
+            }
+
+
             if (hasConditon)
             {
 
@@ -350,6 +362,248 @@ namespace BFConsole.Controllers
 
             return View("~/Views/ContractConsole/ContractModal/AboutContractDetails.ascx", item);
         }
+
+        public ActionResult SelectCoach()
+        {
+            var profile = HttpContext.GetUser();
+            IQueryable<ServingCoach> items = models.GetTable<ServingCoach>();
+            if (profile.IsOfficer() || profile.IsAssistant() || profile.IsSysAdmin())
+            {
+
+            }
+            else if (profile.IsManager() || profile.IsViceManager())
+            {
+                items = profile.GetServingCoachInSameStore(models);
+            }
+            else if (profile.IsCoach())
+            {
+                items = items.Where(c => c.CoachID == profile.UID);
+            }
+            else
+            {
+                items = items.Where(c => false);
+            }
+
+            return View("~/Views/ContractConsole/ContractModal/SelectCoach.ascx", items);
+        }
+
+        public ActionResult CommitContract(CourseContractViewModel viewModel)
+        {
+            var item = viewModel.CommitCourseContract(this, out String alertMessage);
+            if (item == null)
+            {
+                if (!ModelState.IsValid)
+                {
+                    return View(ConsoleHomeController.InputErrorView);
+                }
+                else
+                {
+                    return View("~/Views/ConsoleHome/Shared/AlertMessage.ascx", model: alertMessage);
+                }
+            }
+
+            return View("~/Views/ContractConsole/Editing/CourseContractCommitted.ascx", item);
+        }
+
+        public ActionResult SaveContract(CourseContractViewModel viewModel)
+        {
+            var item = viewModel.SaveCourseContract(this, out String alertMessage);
+            if (item == null)
+            {
+                if (!ModelState.IsValid)
+                {
+                    return View(ConsoleHomeController.InputErrorView);
+                }
+                else
+                {
+                    return View("~/Views/ConsoleHome/Shared/AlertMessage.ascx", model: alertMessage);
+                }
+            }
+
+            return View("~/Views/ContractConsole/Editing/CourseContractSaved.ascx", item);
+        }
+
+        public ActionResult ListLessonPrice(CourseContractQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            if (!viewModel.BranchID.HasValue)
+            {
+                ModelState.AddModelError("BranchID", "請選擇上課場所");
+            }
+            if (!viewModel.DurationInMinutes.HasValue)
+            {
+                ModelState.AddModelError("DurationInMinutes", "請選擇上課時間長度");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                ViewBag.ModelState = ModelState;
+                return View(ConsoleHomeController.InputErrorView);
+            }
+
+            IQueryable<LessonPriceType> items = models.PromptEffectiveLessonPrice()
+                .Where(p => p.BranchID == viewModel.BranchID)
+                .Where(l => !l.DurationInMinutes.HasValue || l.DurationInMinutes == viewModel.DurationInMinutes);
+
+            return View("~/Views/ContractConsole/ContractModal/ListLessonPrice.ascx", items);
+        }
+
+        public ActionResult CalculateTotalCost(CourseContractQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+
+            var item = models.GetTable<LessonPriceType>().Where(p => p.PriceID == viewModel.PriceID).FirstOrDefault();
+            viewModel.TotalCost = item?.ListPrice * viewModel.Lessons;
+
+            return View("~/Views/ContractConsole/Editing/TotalCostSummary.ascx");
+        }
+
+        public ActionResult ListContractMember(CourseContractQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            if (viewModel.UID != null && viewModel.UID.Length > 0)
+            {
+                viewModel.UID = viewModel.UID.Distinct().ToArray();
+            }
+
+            return View("~/Views/ContractConsole/Editing/ListContractMember.ascx");
+        }
+
+        public ActionResult SearchContractMember(String userName)
+        {
+            userName = userName.GetEfficientString();
+            if (userName == null)
+            {
+                this.ModelState.AddModelError("userName", "請輸入查詢學員!!");
+                ViewBag.ModelState = this.ModelState;
+                return View("~/Views/ConsoleHome/Shared/ReportInputError.ascx");
+            }
+
+            var items = userName.PromptLearnerByName(models);
+
+            if (items.Count() > 0)
+                return View("~/Views/ContractConsole/ContractModal/SelectContractMember.ascx", items);
+            else
+                return View("~/Views/ConsoleHome/Shared/AlertMessage.ascx", model: "Opps！您確定您輸入的資料正確嗎！？");
+        }
+
+        public ActionResult ProcessContractMember(int uid)
+        {
+            return View("~/Views/ContractConsole/ContractModal/ProcessContractMember.ascx", uid);
+        }
+
+        public ActionResult EditContractMember(ContractMemberViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+
+            UserProfile item = models.GetTable<UserProfile>().Where(u => u.UID == viewModel.UID).FirstOrDefault();
+            if (item == null)
+            {
+                return View("~/Views/ConsoleHome/Shared/AlertMessage.ascx", model: "Opps！您確定您輸入的資料正確嗎！？");
+            }
+
+            viewModel.Gender = item.UserProfileExtension.Gender;
+            viewModel.EmergencyContactPhone = item.UserProfileExtension.EmergencyContactPhone;
+            viewModel.EmergencyContactPerson = item.UserProfileExtension.EmergencyContactPerson;
+            viewModel.Relationship = item.UserProfileExtension.Relationship;
+            viewModel.AdministrativeArea = item.UserProfileExtension.AdministrativeArea;
+            viewModel.IDNo = item.UserProfileExtension.IDNo;
+            viewModel.Phone = item.Phone;
+            viewModel.Birthday = item.Birthday;
+            viewModel.AthleticLevel = item.UserProfileExtension.AthleticLevel;
+            viewModel.RealName = item.RealName;
+            viewModel.Address = item.Address;
+            viewModel.Nickname = item.Nickname;
+
+            return View("~/Views/ContractConsole/ContractModal/EditContractMember.ascx");
+        }
+
+        public ActionResult CommitContractMember(ContractMemberViewModel viewModel)
+        {
+            var item = viewModel.CommitContractMember(this, out String alertMessage);
+            if (item == null)
+            {
+                if (!ModelState.IsValid)
+                {
+                    return View(ConsoleHomeController.InputErrorView);
+                }
+                else
+                {
+                    return View("~/Views/ConsoleHome/Shared/AlertMessage.ascx", model: alertMessage);
+                }
+            }
+
+            return View("~/Views/ContractConsole/Editing/ContractMemberCommitted.ascx", item);
+
+        }
+
+        public ActionResult SignaturePanel(CourseContractSignatureViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            return View("~/Views/ContractConsole/ContractModal/SignaturePanel.ascx");
+        }
+
+        public ActionResult ExecuteContractStatus(CourseContractViewModel viewModel)
+        {
+            var profile = HttpContext.GetUser();
+            var item = viewModel.ExecuteContractStatus(this, out String alertMessage);
+            if (item == null)
+            {
+                if (!ModelState.IsValid)
+                {
+                    return View(ConsoleHomeController.InputErrorView);
+                }
+                else
+                {
+                    return View("~/Views/ConsoleHome/Shared/AlertMessage.ascx", model: alertMessage);
+                }
+            }
+
+            return View("~/Views/ContractConsole/Editing/ContractStatusChanged.ascx", item);
+        }
+
+        public ActionResult ConfirmSignature(CourseContractViewModel viewModel)
+        {
+            var item = viewModel.ConfirmContractSignature(this, out String alertMessage,out String pdfFile);
+            if (item == null)
+            {
+                if (!ModelState.IsValid)
+                {
+                    return View(ConsoleHomeController.InputErrorView);
+                }
+                else
+                {
+                    return View("~/Views/ConsoleHome/Shared/AlertMessage.ascx", model: alertMessage);
+                }
+            }
+
+            return View("~/Views/ContractConsole/Editing/CourseContractSigned.ascx", item);
+        }
+
+        public ActionResult EnableContractStatus(CourseContractViewModel viewModel)
+        {
+            var profile = HttpContext.GetUser();
+            if (viewModel.KeyID != null)
+            {
+                viewModel.ContractID = viewModel.DecryptKeyValue();
+            }
+            var item = models.GetTable<CourseContract>().Where(c => c.ContractID == viewModel.ContractID).FirstOrDefault();
+            if (item != null)
+            {
+                var pdfFile = item.MakeContractEffective(models, profile, Naming.CourseContractStatus.待審核);
+                if (pdfFile == null)
+                {
+                    return View("~/Views/ConsoleHome/Shared/AlertMessage.ascx", model: "合約狀態錯誤，請重新檢查!!");
+                }
+                else
+                {
+                    return View("~/Views/ContractConsole/Editing/CourseContractSigned.ascx", item);
+                }
+            }
+            else
+                return View("~/Views/ConsoleHome/Shared/AlertMessage.ascx", model: "合約資料錯誤!!");
+        }
+
 
     }
 }

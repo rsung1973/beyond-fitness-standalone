@@ -69,6 +69,68 @@ namespace BFConsole.Controllers
             return View(profile.LoadInstance(models));
         }
 
+        [RoleAuthorize(RoleID = new int[] { (int)Naming.RoleID.Administrator, (int)Naming.RoleID.Assistant, (int)Naming.RoleID.Officer, (int)Naming.RoleID.Coach, (int)Naming.RoleID.Servitor })]
+        public ActionResult EditCourseContract(CourseContractQueryViewModel viewModel)
+        {
+            var profile = HttpContext.GetUser();
+            var item = models.GetTable<CourseContract>().Where(c => c.ContractID == viewModel.ContractID).FirstOrDefault();
+            if (item != null)
+            {
+                viewModel.AgentID = item.AgentID;
+                viewModel.ContractType = item.ContractType;
+                viewModel.ContractDate = item.ContractDate;
+                viewModel.Subject = item.Subject;
+                viewModel.ValidFrom = item.ValidFrom;
+                viewModel.Expiration = item.Expiration;
+                viewModel.OwnerID = item.OwnerID;
+                viewModel.SequenceNo = item.SequenceNo;
+                viewModel.Lessons = item.Lessons;
+                viewModel.PriceID = item.PriceID;
+                viewModel.Remark = item.Remark;
+                viewModel.FitnessConsultant = item.FitnessConsultant;
+                viewModel.Status = item.Status;
+                viewModel.UID = item.CourseContractMember.Select(m => m.UID).ToArray();
+                viewModel.BranchID = item.CourseContractExtension.BranchID;
+                viewModel.Renewal = item.Renewal;
+                viewModel.TotalCost = item.TotalCost;
+                if (item.InstallmentID.HasValue)
+                {
+                    viewModel.InstallmentPlan = true;
+                    viewModel.Installments = item.ContractInstallment.Installments;
+                }
+                viewModel.UID = item.CourseContractMember.Select(m => m.UID).ToArray();
+            }
+            else
+            {
+                viewModel.UID = new int[] { };
+                viewModel.AgentID = profile.UID;
+                if(profile.IsCoach())
+                {
+                    viewModel.FitnessConsultant = profile.UID;
+                }
+            }
+
+            ViewBag.ViewModel = viewModel;
+            return View(profile.LoadInstance(models));
+        }
+
+        [RoleAuthorize(RoleID = new int[] { (int)Naming.RoleID.Administrator, (int)Naming.RoleID.Assistant, (int)Naming.RoleID.Officer, (int)Naming.RoleID.Coach, (int)Naming.RoleID.Servitor })]
+        public ActionResult SignCourseContract(CourseContractQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            var profile = HttpContext.GetUser();
+
+            var item = models.GetTable<CourseContract>().Where(c => c.ContractID == viewModel.ContractID).FirstOrDefault();
+
+            if (item == null)
+            {
+                return View("~/Views/ConsoleHome/Shared/AlertMessage.ascx", model: "合約資料錯誤!!");
+            }
+
+            ViewBag.DataItem = item;
+
+            return View(profile.LoadInstance(models));
+        }
 
         public ActionResult CalendarEventItems(FullCalendarViewModel viewModel)
         {

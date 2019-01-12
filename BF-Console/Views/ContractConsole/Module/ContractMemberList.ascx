@@ -23,10 +23,11 @@
         </tr>
     </thead>
     <tbody>
-        <%  foreach (var item in _model)
+        <%  
+            foreach (var item in _model)
             { %>
-        <tr>
-            <td><%= item.FullName() %></td>
+        <tr data-id="<%= item.UID %>">
+            <td><%= item.UID==ViewBag.OwnerID ? "*" : null %><%= item.FullName() %></td>
             <td><%= item.UserProfileExtension.IDNo %></td>
             <td><%= item.UserProfileExtension.Gender == "F" ? "女" : "男" %></td>
             <td><%= String.Format("{0:yyyy/MM/dd}",item.Birthday) %></td>
@@ -34,18 +35,20 @@
             <td><%= item.UserProfileExtension.EmergencyContactPerson %></td>
             <td><%= item.UserProfileExtension.EmergencyContactPhone %></td>
             <td><%= item.UserProfileExtension.Relationship %></td>
-            <td><%= item.Address() %></td>
+            <td><%= item.Address() %><i class="zmdi zmdi-more-vert float-right"></i></td>
         </tr>
         <%  } %>
     </tbody>
 </table>
 
 <script>
+
+    debugger;
     $(function () {
 
         var theDataTable = null;
         function buildDataTable() {
-            theDataTable = $('#<%= _tableId %>').dataTable({
+            theDataTable = $('#<%= _tableId %>').DataTable({
                 "filter": false,
                 "bPaginate": false,
                 "info": false,
@@ -73,12 +76,17 @@
                 scrollCollapse: true,
                 fixedColumns: {
                     leftColumns: 1,
-                }
+                },
+                "initComplete": function () {
+                    if ($global.contractMemberInitComplete) {
+                        $global.contractMemberInitComplete(this);
+                    }
+                },
             });
         }
 
         var $collapse = $('#<%= _tableId %>').closest('.panel-collapse');
-        if ($collapse) {
+        if ($collapse.length > 0) {
             $collapse.on('shown.bs.collapse', function (event) {
                 if (!theDataTable) {
                     buildDataTable();
@@ -88,6 +96,7 @@
             buildDataTable();
         }
     });
+
 </script>
 
 <script runat="server">

@@ -356,53 +356,6 @@
             });
         }
 
-        function equipDatetimePicker() {
-            $('.date').datetimepicker({
-                language: 'zh-TW',
-                weekStart: 1,
-                todayBtn: 0,
-                clearBtn: 1,
-                autoclose: 1,
-                todayHighlight: 1,
-                startView: 2,
-                minView: 2,
-                defaultView: 2,
-                forceParse: 0,
-                startDate: '<%= String.Format("{0:yyyy-MM-dd}",DateTime.Today) %>',
-                defaultDate: '<%= String.Format("{0:yyyy-MM-dd}",DateTime.Today) %>',
-            });
-            $('.time').datetimepicker({
-                language: 'zh-TW',
-                weekStart: 1,
-                todayBtn: 0,
-                clearBtn: 1,
-                autoclose: 1,
-                todayHighlight: 1,
-                startView: 1,
-                minView: 1,
-                defaultView: 1,
-                minuteStep: 30,
-                forceParse: 0
-            });
-            $('.datetime').datetimepicker({
-                language: 'zh-TW',
-                weekStart: 1,
-                todayBtn: 0,
-                showMeridian: 1,
-                clearBtn: 1,
-                autoclose: 1,
-                todayHighlight: 1,
-                startView: 2,
-                minView: 0,
-                defaultView: 2,
-                minuteStep: 30,
-                forceParse: 0,
-                startDate: '<%= String.Format("{0:yyyy-MM-dd}",DateTime.Today) %>',
-<%--                useCurrent: 'hour',
-                format: 'yyyy-mm-dd hh:ii',
-                defaultDate: '<%= String.Format("{0:yyyy-MM-dd} 08:00",DateTime.Today) %>',--%>
-            });
-        }
     </script>
 
 </asp:Content>

@@ -506,7 +506,7 @@ namespace WebHome.Controllers
             }
 
             var item = models.GetTable<PDQQuestion>().Where(q => q.QuestionID == viewModel.QuestionID).FirstOrDefault();
-            if (item == null)
+            if (item == null || !viewModel.SuggestionID.HasValue)
             {
                 return AnswerDailyQuestion();
             }

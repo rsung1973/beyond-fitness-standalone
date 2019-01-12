@@ -48,18 +48,6 @@
       <HintPath>..\packages\ClosedXML.0.88.0\lib\net452\ClosedXML.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="CommonLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\CommonLib.dll</HintPath>
-    </Reference>
-    <Reference Include="CommonLib.Logger, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\CommonLib.Logger.dll</HintPath>
-    </Reference>
-    <Reference Include="CommonLib.PlugInAdapter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\CommonLib.PlugInAdapter.dll</HintPath>
-    </Reference>
     <Reference Include="DocumentFormat.OpenXml, Version=2.7.2.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
       <HintPath>..\packages\DocumentFormat.OpenXml.2.7.2\lib\net46\DocumentFormat.OpenXml.dll</HintPath>
       <Private>True</Private>
@@ -3842,6 +3830,7 @@
     </Compile>
     <Compile Include="Helper\AppResource.cs" />
     <Compile Include="Helper\B2CExtensionMethods.cs" />
+    <Compile Include="Helper\BusinessOperation\ContractProcessExtensions.cs" />
     <Compile Include="Helper\CourseContractExtensionMethods.cs" />
     <Compile Include="Helper\Jobs\DailyJob.cs" />
     <Compile Include="Helper\PaymentExtensionMethods.cs" />
@@ -3969,6 +3958,16 @@
     <Folder Include="Views\Employee\" />
     <Folder Include="Views\LessonEvent\" />
     <Folder Include="Views\LineEvents\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CommonLib.Logger\CommonLib.Logger.csproj">
+      <Project>{8146e629-552a-4b36-8711-08ae8245b8fa}</Project>
+      <Name>CommonLib.Logger</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CommonLib\CommonLib.csproj">
+      <Project>{c0ad239c-2ac4-46d2-ae7c-5e97266ef4ea}</Project>
+      <Name>CommonLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
