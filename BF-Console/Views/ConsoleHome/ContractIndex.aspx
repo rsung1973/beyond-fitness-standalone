@@ -61,7 +61,7 @@
                         <%  Html.RenderPartial("~/Views/ContractConsole/Module/AboutPaymentByCoach.ascx", _model); %>
                     </li>
                 </ul>
-                <ul class="row clearfix list-unstyled m-b-0">
+                <ul class="row clearfix list-unstyled m-b-0"> 
                     <%
                         var newContracts = _effectiveItems
                             .Where(c=>c.Expiration>=DateTime.Today)
@@ -100,45 +100,11 @@
                         </div>
                     </li>
                     <li class="col-lg-3 col-md-3 col-sm-6">
-                        <div class="body">
-                            <div class="row">
-                                <div class="col-12 text-center">
-                                    <%  Html.RenderPartial("~/Views/ContractConsole/Module/AboutInstallment.ascx", _effectiveItems); %>                                    
-                                </div>
-                            </div>
-                        </div>
+                        <%  Html.RenderPartial("~/Views/ContractConsole/Module/AboutInstallment.ascx", _effectiveItems); %>                                    
                     </li>
                     <li class="col-lg-3 col-md-3 col-sm-6">
-                        <div class="body">
-                            <div class="row">
-                                <div class="col-12 text-center">
-                                    <%  Html.RenderPartial("~/Views/ContractConsole/Module/AboutReceivablesByCoach.ascx", _model); %>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                    
-<!--                    <li class="col-lg-9 col-md-6 col-sm-12">
-                        <div class="body">
-                            <div class="row">
-                                <div class="col-lg-6 col-md-6 col-12">
-                                    <div class="info-box-2">
-                                        <div class="content">
-                                            <div class="sparkline-pie"><%= newContracts.Count() %>,<%= renewContracts.Count() %></div>
-                                            <h6 class="m-t-20">新約 V.S. 續約</h6>
-                                            <p class="displayblock m-b-0"><span class="col-amber"><%= newContracts.Count() %></span> / <span class="col-grey"><%= renewContracts.Count() %></span></p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 col-md-6 col-12">
-                                    <%  Html.RenderPartial("~/Views/ContractConsole/Module/AboutInstallment.ascx", _effectiveItems); %>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="col-lg-3 col-md-6 col-sm-12">
                         <%  Html.RenderPartial("~/Views/ContractConsole/Module/AboutReceivablesByCoach.ascx", _model); %>
-                    </li>-->
+                    </li>                    
                 </ul>
             </div>
         </div>
