@@ -24,17 +24,13 @@
             </li>
         </ul>
         <ul class="row clearfix list-unstyled m-b-0">
-            <li class="col-lg-8 col-md-6 col-sm-12">
-                <div class="body">
-                    <div class="row">
-                        <div class="col-lg-6 col-md-6 col-12">
-                            <%  Html.RenderPartial("~/Views/ContractConsole/Module/AboutCompleteLessons.ascx", _effectiveItems); %>
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-12">
-                            <%  Html.RenderPartial("~/Views/ContractConsole/Module/AboutInstallment.ascx", _effectiveItems); %>
-                        </div>
-                    </div>
-                </div>
+            <li class="col-lg-3 col-md-3 col-sm-6">
+            </li>
+            <li class="col-lg-3 col-md-3 col-sm-6">
+                <%  Html.RenderPartial("~/Views/ContractConsole/Module/AboutCompleteLessons.ascx", _effectiveItems); %>
+            </li>
+            <li class="col-lg-3 col-md-3 col-sm-6">
+                <%  Html.RenderPartial("~/Views/ContractConsole/Module/AboutInstallment.ascx", _effectiveItems); %>
             </li>
             <li class="col-lg-4 col-md-6 col-sm-12">
                 <%  Html.RenderPartial("~/Views/ContractConsole/Module/AboutReceivablesByBranch.ascx", _model); %>

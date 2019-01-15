@@ -20,15 +20,17 @@
 
     var ratio = completeLessons * 100 / Math.Max(totalLessons, 1);
 %>
-<div class="info-box-2">
-    <div class="content">
-        <input type="text" class="knob knobRate3" data-linecap="round" data-width="90" data-height="90" data-thickness="0.25" data-anglearc="250" data-angleoffset="-125" data-fgcolor="#FFC107" readonly id="<%= _knobID %>"/>
-        <script>
-            $(function () {
-                drawKnob($("#<%= _knobID %>"),<%= ratio %>, 3800);
-            });
-        </script>
-        <h6 class="m-t-20">合約上課比例</h6>
+<div class="body">
+    <div class="row">
+        <div class="col-12 text-center">
+            <input type="text" class="knob knobRate3" data-linecap="round" data-width="90" data-height="90" data-thickness="0.25" data-anglearc="250" data-angleoffset="-125" data-fgcolor="#FFC107" readonly id="<%= _knobID %>"/>
+            <script>
+                $(function () {
+                    drawKnob($("#<%= _knobID %>"),<%= ratio %>, 3800);
+                });
+            </script>
+            <h6 class="m-t-20">合約上課比例</h6>
+         </div>
     </div>
 </div>
 

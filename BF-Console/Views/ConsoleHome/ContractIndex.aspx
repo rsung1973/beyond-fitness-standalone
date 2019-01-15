@@ -69,7 +69,56 @@
                         var renewContracts = _effectiveItems
                             .Where(c=>c.Expiration>=DateTime.Today)
                             .Where(c => c.Renewal.HasValue && c.Renewal == true);%>
-                    <li class="col-lg-9 col-md-6 col-sm-12">
+                    <li class="col-lg-3 col-md-3 col-sm-6">
+                        <div class="body top_counter">
+                            <div class="icon">
+                                <i class="zmdi livicon-evo" data-options="name:users.svg; size: 40px; style: solid; strokeWidth:2px; autoPlay:true"></i>
+                            </div>
+                            <div class="content">
+                                <div class="text">待續約 <span class="col-grey float-right">人</span></div>
+                                <h5 class="number">2</h5>
+                            </div>
+                            <hr>
+                            <div class="icon">
+                                <i class="zmdi livicon-evo" data-options="name:battery-charge.svg; size: 40px; style: solid; strokeWidth:2px; autoPlay:true"></i>
+                            </div>
+                            <div class="content">
+                                <div class="text">待續約 <span class="col-grey float-right">合約</span></div>
+                                <h5 class="number"><a href="javascript:showContractList();">2</a></h5>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="col-lg-3 col-md-3 col-sm-6">
+                        <div class="body">
+                            <div class="row">
+                                <div class="col-12 text-center">
+                                    <div class="sparkline-pie"><%= newContracts.Count() %>,<%= renewContracts.Count() %></div>
+                                     <h6 class="m-t-20">新約 V.S. 續約</h6>
+                                      <p class="displayblock m-b-0"><span class="col-amber"><%= newContracts.Count() %></span> / <span class="col-grey"><%= renewContracts.Count() %></span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="col-lg-3 col-md-3 col-sm-6">
+                        <div class="body">
+                            <div class="row">
+                                <div class="col-12 text-center">
+                                    <%  Html.RenderPartial("~/Views/ContractConsole/Module/AboutInstallment.ascx", _effectiveItems); %>                                    
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="col-lg-3 col-md-3 col-sm-6">
+                        <div class="body">
+                            <div class="row">
+                                <div class="col-12 text-center">
+                                    <%  Html.RenderPartial("~/Views/ContractConsole/Module/AboutReceivablesByCoach.ascx", _model); %>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    
+<!--                    <li class="col-lg-9 col-md-6 col-sm-12">
                         <div class="body">
                             <div class="row">
                                 <div class="col-lg-6 col-md-6 col-12">
@@ -89,7 +138,7 @@
                     </li>
                     <li class="col-lg-3 col-md-6 col-sm-12">
                         <%  Html.RenderPartial("~/Views/ContractConsole/Module/AboutReceivablesByCoach.ascx", _model); %>
-                    </li>
+                    </li>-->
                 </ul>
             </div>
         </div>
@@ -119,8 +168,6 @@
     <script src="plugins/jquery-datatable/Responsive-2.2.2/js/dataTables.responsive.min.js"></script>
     <script src="plugins/jquery-datatable/FixedColumns-3.2.5/js/dataTables.fixedColumns.min.js"></script>
     <!-- Bootstrap datetimepicker Plugin Js -->
-<%--    <script src="plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
-    <script src="plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-TW.js"></script>--%>
     <script src="plugins/smartcalendar/js/bootstrap-datetimepicker.min.js"></script>
     <script src="plugins/smartcalendar/js/locales-datetimepicker/bootstrap-datetimepicker.zh-TW.js"></script>
 
@@ -147,7 +194,7 @@
             offset: 90,
             width: '100px',
             height: '100px',
-            sliceColors: ['#ffe6aa', '#cbd1d9']
+            sliceColors: ['#f8b500', '#5c636e']
         })
 
         //開啟小日曆
