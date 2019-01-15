@@ -32,7 +32,7 @@
             <li class="col-lg-3 col-md-3 col-sm-6">
                 <%  Html.RenderPartial("~/Views/ContractConsole/Module/AboutInstallment.ascx", _effectiveItems); %>
             </li>
-            <li class="col-lg-4 col-md-6 col-sm-12">
+            <li class="col-lg-3 col-md-6 col-sm-12">
                 <%  Html.RenderPartial("~/Views/ContractConsole/Module/AboutReceivablesByBranch.ascx", _model); %>
             </li>
         </ul>
