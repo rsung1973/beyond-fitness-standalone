@@ -65,7 +65,7 @@
     <script src="plugins/sweetalert/sweetalert.min.js"></script>
     <script src="js/common.js?1.3"></script>
 </head>
-<body class="theme-darkteal">
+<body class="theme-darkteal menu_darkteal">
     <!-- Page Loader -->
     <div class="page-loader-wrapper">
         <div class="loader">
