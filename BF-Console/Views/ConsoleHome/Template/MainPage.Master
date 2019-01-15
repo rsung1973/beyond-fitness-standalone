@@ -40,8 +40,8 @@
     <asp:ContentPlaceHolder ID="CustomHeader" runat="server">
     </asp:ContentPlaceHolder>
     <!-- Custom Css -->
-    <link rel="stylesheet" href="css/main.css?4.5">
-    <link rel="stylesheet" href="css/color_skins.css">
+    <link rel="stylesheet" href="css/main.css?4.6">
+    <link rel="stylesheet" href="css/color_skins.css?1.1">
     <!-- Jquery Core Js -->
     <script src="bundles/libscripts.bundle.js"></script>
     <!-- Lib Scripts Plugin Js -->
