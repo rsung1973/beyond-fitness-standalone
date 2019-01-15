@@ -45,18 +45,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="beyond-fitness, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\beyond-fitness.dll</HintPath>
-    </Reference>
-    <Reference Include="CommonLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\CommonLib.dll</HintPath>
-    </Reference>
-    <Reference Include="CommonLib.Logger, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\CommonLib.Logger.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=2.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
@@ -132,6 +120,18 @@
     <Reference Include="Antlr3.Runtime">
       <Private>True</Private>
       <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="beyond-fitness">
+      <HintPath>bin\beyond-fitness.dll</HintPath>
+    </Reference>
+    <Reference Include="CommonLib">
+      <HintPath>bin\CommonLib.dll</HintPath>
+    </Reference>
+    <Reference Include="CommonLib.Logger">
+      <HintPath>bin\CommonLib.Logger.dll</HintPath>
+    </Reference>
+    <Reference Include="CommonLib.PlugInAdapter">
+      <HintPath>bin\CommonLib.PlugInAdapter.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -1014,6 +1014,20 @@
     <Content Include="images\staff\Shen.png" />
     <Content Include="images\staff\Ted.png" />
     <Content Include="images\staff\Vic.png" />
+    <Content Include="Alan.html" />
+    <Content Include="Annie.html" />
+    <Content Include="Ben.html" />
+    <Content Include="Billy.html" />
+    <Content Include="Hardy.html" />
+    <Content Include="Neil.html" />
+    <Content Include="Peter-sogo.html" />
+    <Content Include="images\staff\Alan.png" />
+    <Content Include="images\staff\Annie.png" />
+    <Content Include="images\staff\Ben.png" />
+    <Content Include="images\staff\Billy.png" />
+    <Content Include="images\staff\Hardy.png" />
+    <Content Include="images\staff\Neil.png" />
+    <Content Include="images\staff\Peter-sogo.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

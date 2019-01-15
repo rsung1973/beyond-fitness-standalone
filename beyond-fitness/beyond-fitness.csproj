@@ -145,6 +145,12 @@
       <HintPath>bin\ThoughtWorks.QRCode.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
+    <Reference Include="CommonLib">
+      <HintPath>bin\CommonLib.dll</HintPath>
+    </Reference>
+    <Reference Include="CommonLib.Logger">
+      <HintPath>bin\CommonLib.Logger.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Web.Infrastructure">
@@ -3960,16 +3966,6 @@
     <Folder Include="Views\LineEvents\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CommonLib.Logger\CommonLib.Logger.csproj">
-      <Project>{8146e629-552a-4b36-8711-08ae8245b8fa}</Project>
-      <Name>CommonLib.Logger</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CommonLib\CommonLib.csproj">
-      <Project>{c0ad239c-2ac4-46d2-ae7c-5e97266ef4ea}</Project>
-      <Name>CommonLib</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
   </ItemGroup>
   <PropertyGroup>
@@ -3996,6 +3992,11 @@
         </WebProjectProperties>
       </FlavorProperties>
     </VisualStudio>
+    <MonoDevelop>
+      <Properties>
+        <XspParameters Port="8080" Address="127.0.0.1" SslMode="None" SslProtocol="Default" KeyType="None" CertFile="" KeyFile="" PasswordOptions="None" Password="" Verbose="True" />
+      </Properties>
+    </MonoDevelop>
   </ProjectExtensions>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
