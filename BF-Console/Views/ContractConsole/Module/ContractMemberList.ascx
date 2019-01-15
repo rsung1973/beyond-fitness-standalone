@@ -35,7 +35,7 @@
             <td><%= item.UserProfileExtension.EmergencyContactPerson %></td>
             <td><%= item.UserProfileExtension.EmergencyContactPhone %></td>
             <td><%= item.UserProfileExtension.Relationship %></td>
-            <td><%= item.Address() %><i class="zmdi zmdi-more-vert float-right"></i></td>
+            <td><%= item.Address() %></td>
         </tr>
         <%  } %>
     </tbody>
