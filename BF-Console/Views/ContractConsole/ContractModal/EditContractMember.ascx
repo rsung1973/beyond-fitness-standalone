@@ -19,8 +19,10 @@
                             <div class="card">
                                 <div class="header">
                                     <h2><strong>基本資料</strong>
-                                        <input id="checkbox22" type="checkbox" name="OwnerID" value="<%= _viewModel.UID  %>" <%= _viewModel.OwnerID==_viewModel.UID ? "checked" : null %> />
-                                        <label for="checkbox22" class="col-red">主簽約人</label>
+                                        <label class="fancy-checkbox custom-bgcolor-pink">
+                                                <input type="checkbox" name="OwnerID" value="<%= _viewModel.UID  %>" <%= _viewModel.OwnerID==_viewModel.UID ? "checked" : null %> />
+                                                <span  class="col-red">主簽約人</span>
+                                        </label>
                                     </h2>
                                 </div>
                                 <div class="body">
