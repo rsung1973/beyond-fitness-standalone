@@ -2603,7 +2603,7 @@ table.DTFC_Cloned th {
                     margin-right: 10px;
                     content: "";
                     border: 1px solid #ccc;
-                    border-radius: 3px
+                    border-radius: 3px;
                 }
 
             .fancy-checkbox input[type="checkbox"]:checked + span:before {
@@ -2614,6 +2614,7 @@ table.DTFC_Cloned th {
                 text-align: center;
                 line-height: 21px;
                 background: #052333;
+                border-radius: 3px;
             }
 
         .fancy-checkbox.custom-color-pink input[type="checkbox"]:checked + span:before {
@@ -3728,16 +3729,11 @@ p {
 .blockquote {
     border-left: none;
     border: 1px solid #888;
-    padding: 20px;
-    font-size: 1.1em;
-    line-height: 1.8
+    padding: 10px;
+    font-size: 16px;
+    line-height: 1.8;
+    text-transform: uppercase
 }
-
-    .blockquote small {
-        color: #888;
-        font-size: .8571em;
-        text-transform: uppercase
-    }
 
     .blockquote.blockquote-primary {
         border-color: #0061d2;
@@ -3763,9 +3759,7 @@ p {
     }
 
     .blockquote.blockquote-aliceblue {
-        font-size: .8571em;
-        border-color: #eee;
-        color: #052333
+        border-color: #bfbfbf;
     }
 
     .blockquote.blockquote-white small {
@@ -26602,6 +26596,15 @@ section.content {
         display: inline-block;
         vertical-align: top;
         padding-right: 10px
+    }
+
+.testimonial3.aliceblue .testimonial-section {
+    background: #F4F6F9;
+    border-color: #bfbfbf;
+}
+
+    .testimonial3.aliceblue .testimonial-section::after {
+        border-top-color: #bfbfbf;
     }
 
 .testimonial3.default .testimonial-section {
