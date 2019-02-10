@@ -120,4 +120,19 @@
   <data name="AboutUs" xml:space="preserve">
     <value>About Us</value>
   </data>
+  <data name="FindUs" xml:space="preserve">
+    <value>Find Us</value>
+  </data>
+  <data name="FAQ" xml:space="preserve">
+    <value>Qamp;A</value>
+  </data> 
+  <data name="Blog" xml:space="preserve">
+    <value>Blog</value>
+  </data>  
+  <data name="JoinUs" xml:space="preserve">
+    <value>Join Us</value>
+  </data>
+  <data name="BookNow" xml:space="preserve">
+    <value>Book now</value>
+  </data>    
 </root>

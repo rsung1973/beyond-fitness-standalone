@@ -120,4 +120,19 @@
   <data name="AboutUs" xml:space="preserve">
     <value>關於我們</value>
   </data>
+  <data name="FindUs" xml:space="preserve">
+    <value>分店一覽</value>
+  </data>  
+  <data name="FAQ" xml:space="preserve">
+    <value>常見問題</value>
+  </data> 
+  <data name="Blog" xml:space="preserve">
+    <value>知識分享</value>
+  </data>  
+  <data name="JoinUs" xml:space="preserve">
+    <value>加入團隊</value>
+  </data>
+  <data name="BookNow" xml:space="preserve">
+    <value>預約諮詢</value>
+  </data>    
 </root>

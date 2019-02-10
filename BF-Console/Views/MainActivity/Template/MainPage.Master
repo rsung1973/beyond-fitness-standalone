@@ -74,18 +74,22 @@
                 <div class="logo"><a href="index.html"><img src="images/logo.png" alt="BeyondFitness"></a></div>
                 <ul>
                     <li><a href="about.html"><%: NamingItem.AboutUs %></a></li>
-                    <li><a href="branch.html">分店一覽</a></li>
-<!--
-                    <li class="submenu"><a href="team-arena.html">南京店</a></li>
-                    <li class="submenu"><a href="team-101.html">信義店</a></li>
-                    <li class="submenu"><a href="team-sogo.html">忠孝店</a></li>
--->
-                    <li><a href="faq.html">常見問題</a></li>
-                    <li><a href="bloglist.html">知識分享</a></li>
-                    <li><a href="join.html">加入團隊</a></li>
-                    <li><a href="index-en.html" class="btn-link2">EN <i class="zmdi zmdi-globe-alt"></i></a></li>
+                    <li><a href="branch.html"><%: NamingItem.FindUs %></a></li>
+                    <li><a href="faq.html"><%: NamingItem.FAQ %></a></li>
+                    <li><a href="bloglist.html"><%: NamingItem.Blog %></a></li>
+                    <li><a href="join.html"><%: NamingItem.JoinUs %></a></li>
                     <li>
-                        <a href="contact.html" class="btn btn-default btn-round">預約諮詢</a>
+                            <%  if (ViewBag.Lang == null || ViewBag.Lang == "zh-TW")
+                                {   %>
+                            <a href="javascript:changeLanguage('en-US');" class="btn-link2">EN <i class="zmdi zmdi-globe-alt"></i></a>
+                            <%  }
+                                else
+                                {   %>
+                            <a href="javascript:changeLanguage('zh-TW');" class="btn-link2">繁 <i class="zmdi zmdi-globe-alt"></i></a>
+                            <%  } %>
+                       
+                    <li>
+                        <a href="contact.html" class="btn btn-default btn-round"><%: NamingItem.BookNow %></a>
                     </li>
                 </ul>
                 <div class="slide_out_menu_footer">
@@ -104,10 +108,10 @@
                 <div class="col-md-10 col-sm-10 col-xs-12">
                     <ul class="left nav-active">
                         <li><a href="about.html"><%: NamingItem.AboutUs %></a></li>
-                        <li><a href="branch.html">分店一覽</a></li>                        
-                        <li><a href="faq.html">常見問題</a></li>
-                        <li><a href="bloggrid.html">知識分享</a></li>
-                        <li><a href="join.html">加入團隊</a></li>
+                        <li><a href="branch.html"><%: NamingItem.FindUs %></a></li>                        
+                        <li><a href="faq.html"><%: NamingItem.FAQ %></a></li>
+                        <li><a href="bloggrid.html"><%: NamingItem.Blog %></a></li>
+                        <li><a href="join.html"><%: NamingItem.JoinUs %></a></li>
                         <li class="pull-right">
                             <%  if (ViewBag.Lang == null || ViewBag.Lang == "zh-TW")
                                 {   %>
@@ -117,7 +121,7 @@
                                 {   %>
                             <a href="javascript:changeLanguage('zh-TW');" class="btn-link2">繁 <i class="zmdi zmdi-globe-alt"></i></a>
                             <%  } %>
-                            <a href="contact.html" class="btn btn-default btn-round">預約諮詢</a>
+                            <a href="contact.html" class="btn btn-default btn-round"><%: NamingItem.BookNow %></a>
                         </li>
                     </ul>
                     <script>
