@@ -17,32 +17,52 @@
             </div>
             <div class="modal-popmenu-body">
                 <div class="list-group">
-                    <%  if (_model.IsEditable(models,_profile))
+                    <%  if (_model.CourseContractRevision == null)
                         {   %>
-                    <a href="<%= Url.Action("EditCourseContract","ConsoleHome",new { KeyID = _model.ContractID.EncryptKey() }) %>" class="list-group-item">編輯資料</a>
-                    <a href="javascript:deleteData();" class="list-group-item">刪除資料</a>
-                    <%  }
-                        else if(_model.IsSignable(models,_profile))
-                        {   %>
-                    <a href="<%= Url.Action("SignCourseContract","ConsoleHome",new { KeyID = _model.ContractID.EncryptKey() }) %>" class="list-group-item">學生簽名</a>
-                    <%  }
-                        else if(_model.IsApprovable(models,_profile))
-                        {   %>
-                    <a href="<%= Url.Action("SignCourseContract","ConsoleHome",new { KeyID = _model.ContractID.EncryptKey() }) %>" class="list-group-item">主管審核</a>
-                    <%  }
-                        else if(_model.IsPayable(models))
-                        {   %>
-                    <a href="payment-edit-type1.html" class="list-group-item">新增收款</a>
-                    <%  }
-                        if (_model.CanApplyContractAmendment(models))
-                        {   %>
-                    <a href="contract-apply.html" class="list-group-item">服務申請</a>
-                    <%  }   %>
-                    <a href="javascript:showContractDetails('<%= _model.ContractID.EncryptKey() %>');" class="list-group-item">詳細資訊</a>
-                    <%  if (_model.Status > (int)Naming.CourseContractStatus.待審核 && _model.ContractID > 1045)
-                        { %>
-                    <a href="<%= Url.Action("GetContractPdf", "CourseContract", new { KeyID = _model.ContractID.EncryptKey() }) %>" target="_blank" class="list-group-item">列印電子合約</a>
-                    <%  } %>
+                        <%  if (_model.IsEditable(models, _profile))
+                            {   %>
+                        <a href="<%= Url.Action("EditCourseContract", "ConsoleHome", new { KeyID = _model.ContractID.EncryptKey() }) %>" class="list-group-item">編輯資料</a>
+                        <a href="javascript:deleteData();" class="list-group-item">刪除資料</a>
+                        <%  }
+                            else if (_model.IsSignable(models, _profile))
+                            {   %>
+                        <a href="<%= Url.Action("SignCourseContract", "ConsoleHome", new { KeyID = _model.ContractID.EncryptKey() }) %>" class="list-group-item">學生簽名</a>
+                        <%  }
+                            else if (_model.IsApprovable(models, _profile))
+                            {   %>
+                        <a href="<%= Url.Action("SignCourseContract", "ConsoleHome", new { KeyID = _model.ContractID.EncryptKey() }) %>" class="list-group-item">主管審核</a>
+                        <%  }
+                            else if (_model.IsPayable(models))
+                            {   %>
+                        <a href="payment-edit-type1.html" class="list-group-item">新增收款</a>
+                        <%  }
+                            if (_model.Status == (int)Naming.CourseContractStatus.已生效 && _model.SequenceNo == 0)
+                            {   %>
+                        <a href="<%= Url.Action("ApplyContractService", "ConsoleHome", new { KeyID = _model.ContractID.EncryptKey() }) %>" class="list-group-item">服務申請</a>
+                        <%  }   %>
+                        <a href="javascript:$global.showContractDetails('<%= _model.ContractID.EncryptKey() %>');" class="list-group-item">詳細資訊</a>
+                        <%  Html.RenderPartial("~/Views/ContractConsole/Indication/ContractDetails.ascx", _model); %>
+                        <%  if (_model.Status > (int)Naming.CourseContractStatus.待審核 && _model.ContractID > 1045)
+                            { %>
+                        <a href="<%= Url.Action("GetContractPdf", "CourseContract", new { KeyID = _model.ContractID.EncryptKey() }) %>" target="_blank" class="list-group-item">列印電子合約</a>
+                        <%  }
+                        }
+                        else
+                        {
+                            var revision = _model.CourseContractRevision;
+                            if (_model.IsServiceApprovable(models, _profile))
+                            {   %>
+                                <a href="<%= Url.Action("SignContractService","ConsoleHome",new { KeyID = _model.ContractID.EncryptKey() }) %>" class="list-group-item">主管審核（<%= revision.Reason %>）</a>
+                        <%  }
+                            else if (_model.IsServiceSignable(models, _profile))
+                            {   %>
+                                <a href="<%= Url.Action("SignContractService","ConsoleHome",new { KeyID = _model.ContractID.EncryptKey() }) %>" class="list-group-item">學生簽名（<%= revision.Reason %>）</a>
+                        <%  }
+                            if (_model.Status == (int)Naming.CourseContractStatus.已生效)
+                            {   %>
+                                <a href="<%= Url.Action("GetContractAmendmentPdf","CourseContract",new { KeyID = _model.ContractID.EncryptKey() }) %>" target="_blank" class="list-group-item">查看電子合約（<%= revision.Reason %>）</a>
+                        <%  }
+                        } %>
                 </div>
             </div>
         </div>

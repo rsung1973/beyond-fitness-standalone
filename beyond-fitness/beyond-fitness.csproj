@@ -145,12 +145,6 @@
       <HintPath>bin\ThoughtWorks.QRCode.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
-    <Reference Include="CommonLib">
-      <HintPath>bin\CommonLib.dll</HintPath>
-    </Reference>
-    <Reference Include="CommonLib.Logger">
-      <HintPath>bin\CommonLib.Logger.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Web.Infrastructure">
@@ -2400,6 +2394,7 @@
     <Content Include="js\plugin\chartjs\chart.min.js" />
     <Content Include="js\plugin\ckeditor\adapters\jquery.js" />
     <Content Include="js\plugin\ckeditor\build-config.js" />
+    <Content Include="js\plugin\ckeditor\CHANGES.md" />
     <Content Include="js\plugin\ckeditor\ckeditor.js" />
     <Content Include="js\plugin\ckeditor\config.js" />
     <Content Include="js\plugin\ckeditor\contents.css" />
@@ -2468,6 +2463,7 @@
     <Content Include="js\plugin\ckeditor\lang\vi.js" />
     <Content Include="js\plugin\ckeditor\lang\zh-cn.js" />
     <Content Include="js\plugin\ckeditor\lang\zh.js" />
+    <Content Include="js\plugin\ckeditor\LICENSE.md" />
     <Content Include="js\plugin\ckeditor\plugins\a11yhelp\dialogs\a11yhelp.js" />
     <Content Include="js\plugin\ckeditor\plugins\a11yhelp\dialogs\lang\ar.js" />
     <Content Include="js\plugin\ckeditor\plugins\a11yhelp\dialogs\lang\bg.js" />
@@ -2561,6 +2557,8 @@
     <Content Include="js\plugin\ckeditor\plugins\preview\preview.html" />
     <Content Include="js\plugin\ckeditor\plugins\scayt\dialogs\options.js" />
     <Content Include="js\plugin\ckeditor\plugins\scayt\dialogs\toolbar.css" />
+    <Content Include="js\plugin\ckeditor\plugins\scayt\LICENSE.md" />
+    <Content Include="js\plugin\ckeditor\plugins\scayt\README.md" />
     <Content Include="js\plugin\ckeditor\plugins\showblocks\images\block_address.png" />
     <Content Include="js\plugin\ckeditor\plugins\showblocks\images\block_blockquote.png" />
     <Content Include="js\plugin\ckeditor\plugins\showblocks\images\block_div.png" />
@@ -2654,40 +2652,9 @@
     <Content Include="js\plugin\ckeditor\plugins\wsc\dialogs\wsc.css" />
     <Content Include="js\plugin\ckeditor\plugins\wsc\dialogs\wsc.js" />
     <Content Include="js\plugin\ckeditor\plugins\wsc\dialogs\wsc_ie.js" />
-    <Content Include="js\plugin\ckeditor\samples\ajax.html" />
-    <Content Include="js\plugin\ckeditor\samples\api.html" />
-    <Content Include="js\plugin\ckeditor\samples\appendto.html" />
-    <Content Include="js\plugin\ckeditor\samples\assets\inlineall\logo.png" />
-    <Content Include="js\plugin\ckeditor\samples\assets\outputxhtml\outputxhtml.css" />
-    <Content Include="js\plugin\ckeditor\samples\assets\sample.css" />
-    <Content Include="js\plugin\ckeditor\samples\assets\sample.jpg" />
-    <Content Include="js\plugin\ckeditor\samples\assets\uilanguages\languages.js" />
-    <Content Include="js\plugin\ckeditor\samples\datafiltering.html" />
-    <Content Include="js\plugin\ckeditor\samples\divreplace.html" />
-    <Content Include="js\plugin\ckeditor\samples\index.html" />
-    <Content Include="js\plugin\ckeditor\samples\inlineall.html" />
-    <Content Include="js\plugin\ckeditor\samples\inlinebycode.html" />
-    <Content Include="js\plugin\ckeditor\samples\inlinetextarea.html" />
-    <Content Include="js\plugin\ckeditor\samples\jquery.html" />
-    <Content Include="js\plugin\ckeditor\samples\plugins\dialog\assets\my_dialog.js" />
-    <Content Include="js\plugin\ckeditor\samples\plugins\dialog\dialog.html" />
-    <Content Include="js\plugin\ckeditor\samples\plugins\enterkey\enterkey.html" />
-    <Content Include="js\plugin\ckeditor\samples\plugins\htmlwriter\assets\outputforflash\outputforflash.swf" />
-    <Content Include="js\plugin\ckeditor\samples\plugins\htmlwriter\assets\outputforflash\swfobject.js" />
-    <Content Include="js\plugin\ckeditor\samples\plugins\htmlwriter\outputforflash.html" />
-    <Content Include="js\plugin\ckeditor\samples\plugins\htmlwriter\outputhtml.html" />
-    <Content Include="js\plugin\ckeditor\samples\plugins\magicline\magicline.html" />
-    <Content Include="js\plugin\ckeditor\samples\plugins\toolbar\toolbar.html" />
-    <Content Include="js\plugin\ckeditor\samples\plugins\wysiwygarea\fullpage.html" />
-    <Content Include="js\plugin\ckeditor\samples\readonly.html" />
-    <Content Include="js\plugin\ckeditor\samples\replacebyclass.html" />
-    <Content Include="js\plugin\ckeditor\samples\replacebycode.html" />
-    <Content Include="js\plugin\ckeditor\samples\sample.css" />
-    <Content Include="js\plugin\ckeditor\samples\sample.js" />
-    <Content Include="js\plugin\ckeditor\samples\tabindex.html" />
-    <Content Include="js\plugin\ckeditor\samples\uicolor.html" />
-    <Content Include="js\plugin\ckeditor\samples\uilanguages.html" />
-    <Content Include="js\plugin\ckeditor\samples\xhtmlstyle.html" />
+    <Content Include="js\plugin\ckeditor\plugins\wsc\LICENSE.md" />
+    <Content Include="js\plugin\ckeditor\plugins\wsc\README.md" />
+    <Content Include="js\plugin\ckeditor\README.md" />
     <Content Include="js\plugin\ckeditor\skins\moono\dialog.css" />
     <Content Include="js\plugin\ckeditor\skins\moono\dialog_ie.css" />
     <Content Include="js\plugin\ckeditor\skins\moono\dialog_ie7.css" />
@@ -2711,6 +2678,7 @@
     <Content Include="js\plugin\ckeditor\skins\moono\images\lock-open.png" />
     <Content Include="js\plugin\ckeditor\skins\moono\images\lock.png" />
     <Content Include="js\plugin\ckeditor\skins\moono\images\refresh.png" />
+    <Content Include="js\plugin\ckeditor\skins\moono\readme.md" />
     <Content Include="js\plugin\ckeditor\styles.js" />
     <Content Include="js\plugin\clockpicker\clockpicker.min.js" />
     <Content Include="js\plugin\colorpicker\bootstrap-colorpicker.min.js" />
@@ -2819,6 +2787,7 @@
     <Content Include="js\plugin\jqgrid\grid.locale-en.min.js" />
     <Content Include="js\plugin\jqgrid\jquery.jqGrid.min.js" />
     <Content Include="js\plugin\jquery-blockui\jquery.blockUI.js" />
+    <Content Include="js\plugin\jquery-cookie\jquery.cookie.js" />
     <Content Include="js\plugin\jquery-form\jquery-form.min.js" />
     <Content Include="js\plugin\jquery-nestable\jquery.nestable.min.js" />
     <Content Include="js\plugin\jquery-touch\jquery.ui.touch-punch.min.js" />
@@ -2894,17 +2863,6 @@
     <Content Include="img\blogbox\.DS_Store" />
     <Content Include="js\plugin\.DS_Store" />
     <Content Include="js\plugin\bootstrap-tags\dist\bootstrap-tagsinput.min.js.map" />
-    <Content Include="js\plugin\ckeditor\CHANGES.md" />
-    <Content Include="js\plugin\ckeditor\LICENSE.md" />
-    <Content Include="js\plugin\ckeditor\plugins\scayt\LICENSE.md" />
-    <Content Include="js\plugin\ckeditor\plugins\scayt\README.md" />
-    <Content Include="js\plugin\ckeditor\plugins\wsc\LICENSE.md" />
-    <Content Include="js\plugin\ckeditor\plugins\wsc\README.md" />
-    <Content Include="js\plugin\ckeditor\README.md" />
-    <Content Include="js\plugin\ckeditor\samples\assets\posteddata.php" />
-    <Content Include="js\plugin\ckeditor\samples\plugins\htmlwriter\assets\outputforflash\outputforflash.fla" />
-    <Content Include="js\plugin\ckeditor\samples\sample_posteddata.php" />
-    <Content Include="js\plugin\ckeditor\skins\moono\readme.md" />
     <Content Include="js\plugin\lockscreen\.DS_Store" />
     <None Include="Models\DataEntity\BF.dbml.layout">
       <DependentUpon>BF.dbml</DependentUpon>
@@ -3225,6 +3183,7 @@
     <Content Include="Views\CornerKick\TrainingAnalysis.aspx" />
     <Content Include="Views\CourseContract\ApplyAmendment.aspx" />
     <Content Include="Views\CourseContract\CourseContractAmendmentView.aspx" />
+    <Content Include="Views\CourseContract\Module\ContractConsultantReassignmentView.ascx" />
     <Content Include="Views\CourseContract\Module\InstallmentPlan.ascx" />
     <Content Include="Views\CourseContract\SampleCourseContractView.aspx" />
     <Content Include="Views\CourseContract\CreateContract.aspx" />
@@ -3837,8 +3796,11 @@
     <Compile Include="Helper\AppResource.cs" />
     <Compile Include="Helper\B2CExtensionMethods.cs" />
     <Compile Include="Helper\BusinessOperation\ContractProcessExtensions.cs" />
+    <Compile Include="Helper\BusinessOperation\DataQueryExtensions.cs" />
     <Compile Include="Helper\CourseContractExtensionMethods.cs" />
+    <Compile Include="Helper\DataOperation\DataProcessExtensions.cs" />
     <Compile Include="Helper\Jobs\DailyJob.cs" />
+    <Compile Include="Helper\UserProfileExtensions.cs" />
     <Compile Include="Helper\PaymentExtensionMethods.cs" />
     <Compile Include="Helper\PromotionExtensionMethods.cs" />
     <Compile Include="Helper\BulletinExtensionMethods.cs" />
@@ -3966,6 +3928,16 @@
     <Folder Include="Views\LineEvents\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CommonLib.Logger\CommonLib.Logger.csproj">
+      <Project>{8146e629-552a-4b36-8711-08ae8245b8fa}</Project>
+      <Name>CommonLib.Logger</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CommonLib\CommonLib.csproj">
+      <Project>{c0ad239c-2ac4-46d2-ae7c-5e97266ef4ea}</Project>
+      <Name>CommonLib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
   </ItemGroup>
   <PropertyGroup>
@@ -3992,11 +3964,6 @@
         </WebProjectProperties>
       </FlavorProperties>
     </VisualStudio>
-    <MonoDevelop>
-      <Properties>
-        <XspParameters Port="8080" Address="127.0.0.1" SslMode="None" SslProtocol="Default" KeyType="None" CertFile="" KeyFile="" PasswordOptions="None" Password="" Verbose="True" />
-      </Properties>
-    </MonoDevelop>
   </ProjectExtensions>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

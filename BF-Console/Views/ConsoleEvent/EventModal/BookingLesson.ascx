@@ -198,9 +198,7 @@
                                                                     continue;
 
                                                                 var validContract = contract.Expiration.Value >= DateTime.Today;
-                                                                var bookingCount = contract.CourseContractType.ContractCode == "CFA"
-                                                                        ? contract.RegisterLessonContract.Sum(c => c.RegisterLesson.GroupingLesson.LessonTime.Count())
-                                                                        : item.GroupingLesson.LessonTime.Count;
+                                                                var bookingCount = contract.AttendedLessonCount();
                                                                 var totalPaid = contract.TotalPaidAmount();
                                                                 var payoffStatus = contract.TotalCost / contract.Lessons * (bookingCount + 1) <= totalPaid;
                                                                 bool revisionStatus = contract.RevisionList.Any(c => c.CourseContract.Status < (int)Naming.CourseContractStatus.已生效);

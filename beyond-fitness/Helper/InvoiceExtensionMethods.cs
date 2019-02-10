@@ -103,7 +103,7 @@ namespace WebHome.Helper
             for (int i = 0; totalAmt > 0 && i < paymentItems.Length; i++)
             {
                 var allowanceAmt = Math.Min(totalAmt, paymentItems[i].PayoffAmount.Value);
-                models.PrepareAllowanceForPayment(paymentItems[i], allowanceAmt, "合約終止沖銷", allowanceDate);
+                models.PrepareAllowanceForPayment(paymentItems[i], allowanceAmt, "終止退款", allowanceDate);
                 totalAmt -= allowanceAmt;
             }
         }

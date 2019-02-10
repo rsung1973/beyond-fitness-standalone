@@ -61,9 +61,7 @@ namespace WebHome.Controllers
             viewModel.ByName = byName;
 
             models.Items = models.EntityList    //.Where(u => u.LevelID != (int)Naming.MemberStatusDefinition.Deleted)
-                .Join(models.GetTable<UserRole>()
-                    .Where(r => r.RoleID == (int)Naming.RoleID.Learner),
-                u => u.UID, r => r.UID, (u, r) => u)
+                .FilterByLearner(models)
                 .OrderByDescending(u => u.UID);
 
             if (!String.IsNullOrEmpty(byName))

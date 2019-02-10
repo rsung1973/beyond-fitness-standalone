@@ -58,6 +58,9 @@
                 },
                 scrollX: true,
                 scrollCollapse: true,
+                fixedColumns: {
+                    leftColumns: 1,
+                },
                 "columnDefs": [{
                     targets: [1, 2],
                     className: "align-center"

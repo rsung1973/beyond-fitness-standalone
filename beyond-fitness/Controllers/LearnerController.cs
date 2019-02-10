@@ -41,9 +41,7 @@ namespace WebHome.Controllers
         public ActionResult InquireLearner(LearnerQueryViewModel viewModel)
         {
             IQueryable<UserProfile> items = models.EntityList
-                        .Where(u =>
-                            u.UserRole.Any(r => r.RoleID == (int)Naming.RoleID.Learner
-                                    || r.RoleID == (int)Naming.RoleID.Preliminary));
+                        .FilterByLearner(models, true);
 
             Expression<Func<UserProfile, bool>> queryExpr = u => false;
 

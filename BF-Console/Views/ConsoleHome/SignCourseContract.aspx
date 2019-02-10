@@ -88,7 +88,7 @@
 
         function confirmSignature() {
             showLoading();
-            $.post('<%= Url.Action("ConfirmSignature","ContractConsole",new { _item.ContractID }) %>',
+            $.post('<%= Url.Action("ConfirmSignature","ContractConsole",new { KeyID = _item.ContractID.EncryptKey() }) %>',
                 {
                     'Extension': $('input[name="extension"]').is(':checked'),
                     'Booking': $('input[name="booking"]').is(':checked'),
@@ -106,7 +106,7 @@
 
         function enableContract() {
             showLoading();
-            $.post('<%= Url.Action("EnableContractStatus","ContractConsole",new { _item.ContractID, Status = (int)Naming.CourseContractStatus.待簽名 }) %>', {}, function (data) {
+            $.post('<%= Url.Action("EnableContractStatus","ContractConsole",new { KeyID = _item.ContractID.EncryptKey(), Status = (int)Naming.CourseContractStatus.待簽名 }) %>', {}, function (data) {
                 hideLoading();
                 hideLoading();
                 if ($.isPlainObject(data)) {
@@ -120,7 +120,7 @@
 
         function rejectSignature() {
             showLoading();
-            $.post('<%= Url.Action("ExecuteContractStatus","ContractConsole",new { _item.ContractID, Status = (int)Naming.CourseContractStatus.草稿,FromStatus = (int)Naming.CourseContractStatus.待簽名,  Drawback=true }) %>', {}, function (data) {
+            $.post('<%= Url.Action("ExecuteContractStatus","ContractConsole",new {KeyID = _item.ContractID.EncryptKey(), Status = (int)Naming.CourseContractStatus.草稿,FromStatus = (int)Naming.CourseContractStatus.待簽名,  Drawback=true }) %>', {}, function (data) {
                 hideLoading();
                 if ($.isPlainObject(data)) {
                     swal(data.message);

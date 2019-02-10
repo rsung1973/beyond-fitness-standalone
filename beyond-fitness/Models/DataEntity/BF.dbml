@@ -884,6 +884,8 @@
       <Column Name="Renewal" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
       <Column Name="InstallmentID" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="PayoffDue" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="ValidTo" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Entrusted" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
       <Association Name="CourseContract_RegisterLessonContract" Member="RegisterLessonContract" ThisKey="ContractID" OtherKey="ContractID" Type="RegisterLessonContract" />
       <Association Name="CourseContract_CourseContractMember" Member="CourseContractMember" ThisKey="ContractID" OtherKey="ContractID" Type="CourseContractMember" />
       <Association Name="CourseContract_CourseContractRevision" Member="CourseContractRevision" ThisKey="ContractID" OtherKey="RevisionID" Type="CourseContractRevision" Cardinality="One" />
@@ -895,6 +897,7 @@
       <Association Name="CourseContract_CourseContractLevel" Member="CourseContractLevel" ThisKey="ContractID" OtherKey="ContractID" Type="CourseContractLevel" />
       <Association Name="CourseContract_ContractTrustTrack" Member="ContractTrustTrack" ThisKey="ContractID" OtherKey="ContractID" Type="ContractTrustTrack" />
       <Association Name="CourseContract_ContractElement" Member="ContractElements" ThisKey="ContractID" OtherKey="ContractID" Type="ContractElement" />
+      <Association Name="CourseContract_ContractMonthlySummary" Member="ContractMonthlySummary" ThisKey="ContractID" OtherKey="ContractID" Type="ContractMonthlySummary" />
       <Association Name="LessonPriceType_CourseContract" Member="LessonPriceType" ThisKey="PriceID" OtherKey="PriceID" Type="LessonPriceType" IsForeignKey="true" />
       <Association Name="LevelExpression_CourseContract" Member="LevelExpression" ThisKey="Status" OtherKey="LevelID" Type="LevelExpression" IsForeignKey="true" />
       <Association Name="ServingCoach_CourseContract" Member="ServingCoach" ThisKey="FitnessConsultant" OtherKey="CoachID" Type="ServingCoach" IsForeignKey="true" />
@@ -1726,6 +1729,7 @@
       <Column Name="TransactionType" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="Remark" Type="System.String" DbType="NVarChar(256)" CanBeNull="true" />
       <Column Name="AllowanceID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="AdjustmentAmount" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Association Name="Payment_ContractPayment" Member="ContractPayment" ThisKey="PaymentID" OtherKey="PaymentID" Type="ContractPayment" Cardinality="One" />
       <Association Name="Payment_TuitionInstallment" Member="TuitionInstallment" ThisKey="PaymentID" OtherKey="InstallmentID" Type="TuitionInstallment" Cardinality="One" />
       <Association Name="Payment_PaymentTransaction" Member="PaymentTransaction" ThisKey="PaymentID" OtherKey="PaymentID" Type="PaymentTransaction" Cardinality="One" />
@@ -2016,6 +2020,17 @@
       <Column Name="ApprovalDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Association Name="LessonTime_PreferredLessonTime" Member="LessonTime" ThisKey="LessonID" OtherKey="LessonID" Type="LessonTime" IsForeignKey="true" />
       <Association Name="UserProfile_PreferredLessonTime" Member="UserProfile" ThisKey="ApproverID" OtherKey="UID" Type="UserProfile" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ContractMonthlySummary" Member="ContractMonthlySummary">
+    <Type Name="ContractMonthlySummary">
+      <Column Name="ContractID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="SettlementDate" Type="System.DateTime" DbType="DateTime NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="TotalPrepaid" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TotalLessonCost" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="RemainedAmount" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TotalAllowanceAmount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="CourseContract_ContractMonthlySummary" Member="CourseContract" ThisKey="ContractID" OtherKey="ContractID" Type="CourseContract" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
   <Function Name="dbo.InquireVacantNo" Method="InquireVacantNo">

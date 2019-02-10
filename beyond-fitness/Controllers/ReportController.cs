@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
@@ -14,6 +15,7 @@ using System.Web.Security;
 
 using Utility;
 using WebHome.Helper;
+using WebHome.Helper.BusinessOperation;
 using WebHome.Models.DataEntity;
 using WebHome.Models.Locale;
 using WebHome.Models.ViewModel;
@@ -496,6 +498,101 @@ namespace WebHome.Controllers
             return View("~/Views/Report/Module/QuestionnaireList.ascx", items);
         }
 
+        public ActionResult GetContractLessonsSummary(CourseContractQueryViewModel viewModel)
+        {
+            CourseContract item = null;
+            var resultItems = viewModel.InquireContractByCustom(this, out string alertMessage);
+            if (resultItems != null)
+            {
+                item = resultItems.FirstOrDefault();
+            }
+
+            if (item == null)
+            {
+                return View("~/Views/Shared/JsAlert.ascx", model: "資料錯誤!!");
+            }
+
+            var items = item.AttendedLessonList();
+
+            DataTable getSummary()
+            {
+                DataTable table = new DataTable();
+                table.Columns.Add(new DataColumn("合約編號", typeof(String)));
+                table.Columns.Add(new DataColumn("姓名", typeof(String)));
+                table.Columns.Add(new DataColumn("月份", typeof(String)));
+                table.Columns.Add(new DataColumn("課程單價", typeof(int)));
+                table.Columns.Add(new DataColumn("上課數", typeof(int)));
+                table.Columns.Add(new DataColumn("上課金額", typeof(int)));
+
+                foreach (var g in items.GroupBy(l => new { l.ClassTime.Value.Year, l.ClassTime.Value.Month }))
+                {
+                    var r = table.NewRow();
+                    r[0] = item.ContractNo();
+                    r[1] = item.ContractLearner();
+                    r[2] = $"{g.Key.Year:0000}{g.Key.Month:00}";
+                    r[3] = item.LessonPriceType.ListPrice;
+                    var count = g.Count();
+                    r[4] = count;
+                    r[5] = count * item.LessonPriceType.ListPrice * item.CourseContractType.GroupingMemberCount * item.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount / 100;
+                    table.Rows.Add(r);
+                }
+
+                table.TableName = $"截至{DateTime.Today:yyyy-MM-dd}-匯總表";
+                return table;
+            }
+
+            DataTable getDetails()
+            {
+                //上課日期	上課時間	上課地點	上課時間長度	體能顧問姓名	姓名	簽到時間
+
+                DataTable table = new DataTable();
+                table.Columns.Add(new DataColumn("上課日期", typeof(String)));
+                table.Columns.Add(new DataColumn("上課時間", typeof(String)));
+                table.Columns.Add(new DataColumn("上課地點", typeof(String)));
+                table.Columns.Add(new DataColumn("上課時間長度", typeof(int)));
+                table.Columns.Add(new DataColumn("體能顧問姓名", typeof(String)));
+                table.Columns.Add(new DataColumn("姓名", typeof(String)));
+                table.Columns.Add(new DataColumn("簽到時間", typeof(DateTime)));
+
+                foreach (var lesson in items.OrderBy(l => l.ClassTime))
+                {
+                    var r = table.NewRow();
+                    r[0] = $"{lesson.ClassTime:yyyy/MM/dd}";
+                    r[1] = $"{lesson.ClassTime:HH:mm}~{lesson.ClassTime.Value.AddMinutes(lesson.DurationInMinutes.Value):HH:mm}";
+                    r[2] = lesson.BranchStore?.BranchName;
+                    r[3] = lesson.DurationInMinutes;
+                    r[4] = lesson.AsAttendingCoach.UserProfile.FullName();
+                    r[5] = String.Join("/", lesson.GroupingLesson.RegisterLesson.Select(g => g.UserProfile).ToArray().Select(u => u.FullName()));
+                    r[6] = lesson.LessonPlan.CommitAttendance;
+                    table.Rows.Add(r);
+                }
+
+                table.TableName = $"截至{DateTime.Today:yyyy-MM-dd}-明細";
+                return table;
+            }
+
+
+            Response.Clear();
+            Response.ClearContent();
+            Response.ClearHeaders();
+            Response.AppendCookie(new HttpCookie("fileDownloadToken", viewModel.FileDownloadToken));
+            Response.AddHeader("Cache-control", "max-age=1");
+            Response.ContentType = "application/vnd.ms-excel";
+            Response.AddHeader("Content-Disposition", String.Format("attachment;filename=LessonsInventoryByContract({0:yyyy-MM-dd HH-mm-ss}).xlsx", DateTime.Now));
+
+            using (DataSet ds = new DataSet())
+            {
+                ds.Tables.Add(getSummary());
+                ds.Tables.Add(getDetails());
+
+                using (var xls = ds.ConvertToExcel())
+                {
+                    xls.SaveAs(Response.OutputStream);
+                }
+            }
+
+            return new EmptyResult();
+        }
 
 
     }

@@ -50,7 +50,7 @@ namespace WebHome.Helper
         }
 
         private static int __InvoiceBusyCount = 0;
-        public static void ProcessContractTranference(this CourseContractRevision item)
+        public static void ProcessContractTransference(this CourseContractRevision item)
         {
             ThreadPool.QueueUserWorkItem(t =>
             {
@@ -63,6 +63,7 @@ namespace WebHome.Helper
                         ///1.變更狀態
                         ///
                         item.SourceContract.Status = (int)Naming.CourseContractStatus.已轉讓;
+                        item.SourceContract.ValidTo = DateTime.Now;
                         item.CourseContract.EffectiveDate = DateTime.Now;
                         foreach (var lesson in item.SourceContract.RegisterLessonContract)
                         {
@@ -87,7 +88,7 @@ namespace WebHome.Helper
                                 PaymentAudit = new Models.DataEntity.PaymentAudit { },
                                 PayoffAmount = -balance,
                                 PayoffDate = DateTime.Today,
-                                Remark = "繳款餘額沖銷",
+                                Remark = $"轉讓",
                                 HandlerID = item.CourseContract.AgentID,
                                 PaymentType = "現金",
                                 TransactionType = (int)Naming.PaymentTransactionType.合約轉讓沖銷
@@ -145,7 +146,7 @@ namespace WebHome.Helper
                                 PaymentAudit = new Models.DataEntity.PaymentAudit { },
                                 PayoffAmount = balance,
                                 PayoffDate = DateTime.Today,
-                                Remark = "餘額轉讓",
+                                Remark = $"轉讓({item.SourceContract.ContractNo()})",
                                 HandlerID = item.CourseContract.AgentID,
                                 PaymentType = "現金",
                                 TransactionType = (int)Naming.PaymentTransactionType.合約轉讓餘額,
@@ -209,7 +210,7 @@ namespace WebHome.Helper
                                 PaymentAudit = new Models.DataEntity.PaymentAudit { },
                                 PayoffAmount = -balance,
                                 PayoffDate = DateTime.Today,
-                                Remark = "繳款餘額沖銷",
+                                Remark = $"轉點",
                                 HandlerID = item.CourseContract.AgentID,
                                 PaymentType = "現金",
                                 TransactionType = (int)Naming.PaymentTransactionType.合約轉點沖銷
@@ -259,7 +260,7 @@ namespace WebHome.Helper
                                 PaymentAudit = new Models.DataEntity.PaymentAudit { },
                                 PayoffAmount = balance,
                                 PayoffDate = DateTime.Today,
-                                Remark = "餘額轉點",
+                                Remark = $"轉點({item.SourceContract.ContractNo()})",
                                 HandlerID = item.CourseContract.AgentID,
                                 PaymentType = "現金",
                                 TransactionType = (int)Naming.PaymentTransactionType.合約轉點餘額,
@@ -290,6 +291,7 @@ namespace WebHome.Helper
                         ///1.變更狀態
                         ///
                         item.SourceContract.Status = (int)Naming.CourseContractStatus.已終止;
+                        item.SourceContract.ValidTo = DateTime.Now;
                         item.CourseContract.EffectiveDate = DateTime.Now;
                         foreach (var lesson in item.SourceContract.RegisterLessonContract)
                         {
@@ -299,12 +301,13 @@ namespace WebHome.Helper
                         ///
                         var original = item.SourceContract;
                         var remained = original.RemainedLessonCount();
-                        var returnAmt = original.TotalPaidAmount() - (original.Lessons - remained)
+                        var calculated = original.Lessons - remained;
+                        var returnAmt = original.TotalPaidAmount() - calculated
                                 * original.LessonPriceType.ListPrice
                                 * original.CourseContractType.GroupingMemberCount
                                 * original.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount / 100;
 
-                        var balance = original.TotalPaidAmount() - (original.Lessons - original.RemainedLessonCount())
+                        var balance = original.TotalPaidAmount() - calculated
                                 * item.CourseContract.CourseContractExtension.SettlementPrice
                                 * original.CourseContractType.GroupingMemberCount
                                 * original.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount / 100;
@@ -324,10 +327,14 @@ namespace WebHome.Helper
                                 PaymentAudit = new Models.DataEntity.PaymentAudit { },
                                 PayoffAmount = -balance,
                                 PayoffDate = DateTime.Today,
-                                Remark = "繳款餘額沖銷",
-                                HandlerID = handler!=null ? handler.UID : item.CourseContract.AgentID,
+                                Remark = "終止退款",
+                                HandlerID = handler != null ? handler.UID : item.CourseContract.AgentID,
                                 PaymentType = "現金",
-                                TransactionType = (int)Naming.PaymentTransactionType.合約終止沖銷
+                                TransactionType = (int)Naming.PaymentTransactionType.合約終止沖銷,
+                                AdjustmentAmount = calculated
+                                        * (item.CourseContract.CourseContractExtension.SettlementPrice- original.LessonPriceType.ListPrice)
+                                        * original.CourseContractType.GroupingMemberCount
+                                        * original.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount / 100,
                             };
                             balancedPayment.ContractPayment.ContractID = item.OriginalContract.Value;
                             if (dummyInvoice != null)

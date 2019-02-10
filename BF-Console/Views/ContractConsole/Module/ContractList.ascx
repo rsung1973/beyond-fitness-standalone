@@ -52,9 +52,7 @@
             <td><%= String.Format("{0:yyyy/MM/dd}", item.EffectiveDate) %></td>
             <td><%= String.Format("{0:yyyy/MM/dd}", item.Expiration) %></td>
             <td>
-                <%= item.IsContractService()
-                        ? ((Naming.ContractServiceStatus)item.Status).ToString()
-                        : ((Naming.ContractQueryStatus)item.Status).ToString() %>
+                <%= item.ContractCurrentStatus() %>
                 <i class='zmdi zmdi-more-vert float-right'></i>
             </td>
         </tr>

@@ -1089,7 +1089,7 @@ namespace WebHome.Controllers
                     {
                         voidPaymentForInvoice(item);
 
-                        item.VoidPayment = new Models.DataEntity.VoidPayment
+                        item.VoidPayment = new VoidPayment
                         {
                             HandlerID = profile.UID,
                             Remark = viewModel.Remark,
@@ -1261,6 +1261,11 @@ namespace WebHome.Controllers
 
             Expression<Func<Payment, bool>> queryExpr = c => false;
             bool hasConditon = false;
+            if(viewModel.BypassCondition==true)
+            {
+                hasConditon = true;
+                queryExpr = c => true;
+            }
 
             viewModel.UserName = viewModel.UserName.GetEfficientString();
             if (viewModel.UserName != null)
@@ -1512,7 +1517,7 @@ namespace WebHome.Controllers
             Response.ClearHeaders();
             Response.AddHeader("Cache-control", "max-age=1");
             Response.ContentType = "application/vnd.ms-excel";
-            Response.AddHeader("Content-Disposition", String.Format("attachment;filename=({1:yyyy-MM-dd HH-mm-ss}){0}", HttpUtility.UrlEncode("PaymentDetails.xlsx"), DateTime.Now));
+            Response.AddHeader("Content-Disposition", String.Format("attachment;filename={0}({1:yyyy-MM-dd HH-mm-ss}).xlsx", HttpUtility.UrlEncode("PaymentDetails"), DateTime.Now));
 
             using (DataSet ds = new DataSet())
             {
@@ -1538,6 +1543,11 @@ namespace WebHome.Controllers
         {
             ViewResult result = (ViewResult)InquirePayment(viewModel);
             IQueryable<Payment> items = (IQueryable<Payment>)result.Model;
+
+            if (items.Count() == 0)
+            {
+                return View("~/Views/Shared/JsAlert.ascx", model: "資料不存在!!");
+            }
 
             var details = items
                 .OrderByDescending(i => i.PayoffDate)
@@ -1568,12 +1578,12 @@ namespace WebHome.Controllers
                     收款金額 = i.PayoffAmount,
                     發票金額 = i.InvoiceItem.InvoiceBuyer.IsB2C() ? i.InvoiceItem.InvoiceAmountType.TotalAmount : i.InvoiceItem.InvoiceAmountType.SalesAmount,
                     收款未稅金額 = Math.Round((decimal)i.PayoffAmount / 1.05m),
-                    作廢或折讓未稅金額 = i.InvoiceItem.InvoiceCancellation != null && i.VoidPayment != null
+                    營業稅 = i.PayoffAmount - Math.Round((decimal)i.PayoffAmount / 1.05m),
+                    作廢金額 = i.InvoiceItem.InvoiceCancellation != null && i.VoidPayment != null
                         ? i.PayoffAmount
-                        : i.InvoiceAllowance != null
-                            ? i.InvoiceAllowance.TotalAmount
-                            : null,
-                    營業稅 = i.InvoiceItem.InvoiceBuyer.IsB2C() ? (decimal?)null : i.InvoiceItem.InvoiceAmountType.TaxAmount,
+                        : null,
+                    折讓金額 = i.InvoiceAllowance?.TotalAmount,
+                    折讓稅額 = i.InvoiceAllowance?.TaxAmount,
                     收款方式 = i.PaymentType,
                     發票類型 = i.InvoiceID.HasValue
                         ? i.InvoiceItem.InvoiceType == (int)Naming.InvoiceTypeDefinition.一般稅額計算之電子發票
@@ -1610,14 +1620,22 @@ namespace WebHome.Controllers
             Response.Clear();
             Response.ClearContent();
             Response.ClearHeaders();
+            Response.AppendCookie(new HttpCookie("fileDownloadToken", viewModel.FileDownloadToken));
             Response.AddHeader("Cache-control", "max-age=1");
             Response.ContentType = "application/vnd.ms-excel";
-            Response.AddHeader("Content-Disposition", String.Format("attachment;filename=({1:yyyy-MM-dd HH-mm-ss}){0}", HttpUtility.UrlEncode("PaymentDetails.xlsx"), DateTime.Now));
+            Response.AddHeader("Content-Disposition", String.Format("attachment;filename={0}({1:yyyy-MM-dd HH-mm-ss}).xlsx", HttpUtility.UrlEncode("PaymentDetails"), DateTime.Now));
 
             using (DataSet ds = new DataSet())
             {
                 DataTable table = details.ToDataTable();
-                table.TableName = "收款資料明細";
+                if (viewModel.PayoffDateFrom.HasValue)
+                {
+                    table.TableName = $"收款資料明細{viewModel.PayoffDateFrom:yyyy-MM-dd}~{viewModel.PayoffDateTo:yyyy-MM-dd}";
+                }
+                else
+                {
+                    table.TableName = "收款資料明細";
+                }
                 ds.Tables.Add(table);
 
                 foreach (var r in table.Select("買受人統編 = '0000000000'"))
@@ -1882,6 +1900,161 @@ namespace WebHome.Controllers
             ViewBag.ViewModel = viewModel;
             return View("~/Views/Payment/Module/ApplyPaymentAchievement.ascx", item);
         }
+
+        class _PaymentMonthlyReportItem
+        {
+            public String 日期 { get; set; }
+            public String 分店 { get; set; }
+            public String 買受人統編 { get; set; }
+            public String 摘要 { get; set; }
+            public int? 退款金額_含稅 { get; set; }
+            public int? 收款金額_含稅 { get; set; }
+            public int? 借方金額 { get; set; }
+            public int? 貸方金額 { get; set; }
+            public String 發票號碼 { get; set; }
+            public String 姓名 { get; set; }
+            public String 合約編號 { get; set; }
+            public String 信託 { get; set; }
+        }
+
+        public ActionResult CreateMonthlyPaymentReportXlsx(PaymentQueryViewModel viewModel)
+        {
+            if(viewModel.SettlementDate.HasValue)
+            {
+                viewModel.SettlementDate = viewModel.SettlementDate.Value.FirstDayOfMonth();
+            }
+            else
+            {
+                viewModel.SettlementDate = DateTime.Today.FirstDayOfMonth();
+            }
+            viewModel.PayoffDateTo = viewModel.SettlementDate.Value.AddMonths(1);
+            viewModel.BypassCondition = true;
+
+            IQueryable<Payment> items = models.GetTable<Payment>().Where(p => p.ContractPayment != null);
+
+            //收款(不含終止沖銷)
+            IEnumerable<_PaymentMonthlyReportItem> details = items
+                .Where(p => p.PayoffDate >= viewModel.PayoffDateFrom && p.PayoffDate < viewModel.PayoffDateTo)
+                .Where(p => p.TransactionType != (int)Naming.PaymentTransactionType.合約終止沖銷 || p.AdjustmentAmount.HasValue)
+                .ToArray()
+                    .Select(i => new _PaymentMonthlyReportItem
+                    {
+                        日期 = $"{i.PayoffDate:yyyyMMdd}",
+                        發票號碼 = i.InvoiceID.HasValue ? i.InvoiceItem.TrackCode + i.InvoiceItem.No : null,
+                        分店 = i.PaymentTransaction.BranchStore.BranchName,
+                        買受人統編 = i.InvoiceID.HasValue
+                                  ? i.InvoiceItem.InvoiceBuyer.IsB2C() ? "--" : i.InvoiceItem.InvoiceBuyer.ReceiptNo
+                                  : "--",
+                        姓名 = i.ContractPayment.CourseContract.ContractLearner("/"),
+                        合約編號 = i.ContractPayment.CourseContract.ContractNo(),
+                        信託 = i.ContractPayment.CourseContract.Entrusted == true
+                                  ? "是"
+                                  : i.ContractPayment.CourseContract.Entrusted == false
+                                      ? "否"
+                                      : "",
+                        摘要 = i.TransactionType==(int)Naming.PaymentTransactionType.合約終止沖銷
+                                ? i.AdjustmentAmount>0
+                                    ? $"(沖:終止轉收)課程顧問費用-{i.ContractPayment.CourseContract.ContractNo()}-{i.ContractPayment.CourseContract.ContractLearnerName("/")}"    
+                                    //(沖:終止轉收)課程顧問費用-CPA201801290752-00-陳筱鈴
+                                    : $"(沖:終止減收)課程顧問費用-{i.ContractPayment.CourseContract.ContractNo()}-{i.ContractPayment.CourseContract.ContractLearnerName("/")}"
+                                : i.TransactionType==(int)Naming.PaymentTransactionType.體能顧問費 
+                                    ? $"課程顧問費用-{i.ContractPayment.CourseContract.ContractNo()}-{i.ContractPayment.CourseContract.ContractLearnerName("/")}({i.PaymentType})"
+                                    //(沖:轉讓)課程顧問費用-CPA201706277998-00-陳潔
+                                    : i.TransactionType == (int)Naming.PaymentTransactionType.合約轉讓餘額
+                                            || i.TransactionType == (int)Naming.PaymentTransactionType.合約轉點餘額
+                                        ? $"{i.Remark}-課程顧問費用-{i.ContractPayment.CourseContract.ContractNo()}-{i.ContractPayment.CourseContract.ContractLearnerName("/")}"
+                                        : $"(沖:{i.Remark})-課程顧問費用-{i.ContractPayment.CourseContract.ContractNo()}-{i.ContractPayment.CourseContract.ContractLearnerName("/")}",
+                        退款金額_含稅 =  i.TransactionType==(int)Naming.PaymentTransactionType.合約終止沖銷
+                                            ? i.AdjustmentAmount
+                                            : !(i.TransactionType == (int)Naming.PaymentTransactionType.體能顧問費
+                                                || i.TransactionType == (int)Naming.PaymentTransactionType.合約轉讓餘額
+                                                || i.TransactionType == (int)Naming.PaymentTransactionType.合約轉點餘額)
+                                                ? -i.PayoffAmount
+                                                : null,
+                        收款金額_含稅 = i.TransactionType == (int)Naming.PaymentTransactionType.體能顧問費
+                                            || i.TransactionType == (int)Naming.PaymentTransactionType.合約轉讓餘額
+                                            || i.TransactionType == (int)Naming.PaymentTransactionType.合約轉點餘額
+                                        ? i.PayoffAmount
+                                        : null,
+                        借方金額 = i.TransactionType==(int)Naming.PaymentTransactionType.合約終止沖銷
+                                    ? (int?)Math.Round(i.AdjustmentAmount.Value / 1.05m, MidpointRounding.AwayFromZero)
+                                    : !(i.TransactionType == (int)Naming.PaymentTransactionType.體能顧問費
+                                            || i.TransactionType == (int)Naming.PaymentTransactionType.合約轉讓餘額
+                                            || i.TransactionType == (int)Naming.PaymentTransactionType.合約轉點餘額)
+                                        ? (int?)Math.Round(-i.PayoffAmount.Value / 1.05m,MidpointRounding.AwayFromZero)
+                                        : null,
+                        貸方金額 = i.TransactionType == (int)Naming.PaymentTransactionType.體能顧問費
+                                            || i.TransactionType == (int)Naming.PaymentTransactionType.合約轉讓餘額
+                                            || i.TransactionType == (int)Naming.PaymentTransactionType.合約轉點餘額
+                                        ? (int?)Math.Round(i.PayoffAmount.Value / 1.05m, MidpointRounding.AwayFromZero)
+                                        : null,
+                    });
+
+            //作廢或折讓(含終止)
+            details = details.Concat(
+                    items.Join(models.GetTable<VoidPayment>()
+                                .Where(v => v.VoidDate >= viewModel.PayoffDateFrom && v.VoidDate < viewModel.PayoffDateTo),
+                            p => p.PaymentID, v => v.VoidID, (p, v) => p)
+                        .ToArray()
+                            .Select(i => new _PaymentMonthlyReportItem
+                            {
+                                日期 = $"{i.VoidPayment.VoidDate:yyyyMMdd}",
+                                發票號碼 = i.InvoiceID.HasValue ? i.InvoiceItem.TrackCode + i.InvoiceItem.No : null,
+                                分店 = i.PaymentTransaction.BranchStore.BranchName,
+                                買受人統編 = i.InvoiceID.HasValue
+                                          ? i.InvoiceItem.InvoiceBuyer.IsB2C() ? "--" : i.InvoiceItem.InvoiceBuyer.ReceiptNo
+                                          : "--",
+                                姓名 = i.ContractPayment.CourseContract.ContractLearner("/"),
+                                合約編號 = i.ContractPayment.CourseContract.ContractNo(),
+                                信託 = i.ContractPayment.CourseContract.Entrusted == true
+                                          ? "是"
+                                          : i.ContractPayment.CourseContract.Entrusted == false
+                                              ? "否"
+                                              : "",
+                                摘要 = i.InvoiceItem.InvoiceCancellation != null
+                                        ? $"(沖:{i.PayoffDate:yyyyMMdd}-作廢)課程顧問費用-{i.ContractPayment.CourseContract.ContractNo()}-{i.ContractPayment.CourseContract.ContractLearnerName("/")}"
+                                        //(沖:20190104-作廢)課程顧問費用-CFA201810091870-00-林妍君
+                                        : i.VoidPayment.Remark == "終止退款"
+                                            ? $"(沖:{i.PayoffDate:yyyyMMdd}-終止退款)課程顧問費用-{i.ContractPayment.CourseContract.ContractNo()}-{i.ContractPayment.CourseContract.ContractLearnerName("/")}"
+                                            : $"(沖:{i.PayoffDate:yyyyMMdd}-折讓)課程顧問費用-{i.ContractPayment.CourseContract.ContractNo()}-{i.ContractPayment.CourseContract.ContractLearnerName("/")}",
+                                退款金額_含稅 = i.AllowanceID.HasValue
+                                                ? (int?)(i.InvoiceAllowance.TotalAmount + i.InvoiceAllowance.TaxAmount)
+                                                : i.PayoffAmount,
+                                收款金額_含稅 = null,
+                                借方金額 = i.AllowanceID.HasValue
+                                                ? (int?)(i.InvoiceAllowance.TotalAmount)
+                                                : (int?)Math.Round(i.PayoffAmount.Value / 1.05m, MidpointRounding.AwayFromZero),
+                                貸方金額 = null,
+                            }
+                                ))
+                                .OrderBy(d => d.日期).ThenByDescending(d => d.收款金額_含稅)
+                                    .ThenByDescending(d => d.退款金額_含稅);
+
+            Response.Clear();
+            Response.ClearContent();
+            Response.ClearHeaders();
+            Response.AppendCookie(new HttpCookie("fileDownloadToken", viewModel.FileDownloadToken));
+            Response.AddHeader("Cache-control", "max-age=1");
+            Response.ContentType = "application/vnd.ms-excel";
+            Response.AddHeader("Content-Disposition", String.Format("attachment;filename={0}({1:yyyy-MM-dd HH-mm-ss}).xlsx", HttpUtility.UrlEncode("DiaryLedger"), DateTime.Now));
+
+            using (DataSet ds = new DataSet())
+            {
+                DataTable table = details.ToDataTable();
+                table.TableName = $"課程顧問費用{viewModel.SettlementDate:yyyyMM}";
+                table.Columns[4].ColumnName = "退款金額(含稅)";
+                table.Columns[5].ColumnName = "收款金額(含稅)";
+                ds.Tables.Add(table);
+                
+                using (var xls = ds.ConvertToExcel())
+                {
+                    xls.SaveAs(Response.OutputStream);
+                }
+            }
+
+            return new EmptyResult();
+        }
+
 
     }
 }

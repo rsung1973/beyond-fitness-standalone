@@ -67,6 +67,10 @@
                 {
                     Html.RenderPartial("~/Views/CourseContract/Module/CourseContractTerminationView.ascx", _model);
                 }
+                else if (_model.Reason == "轉換體能顧問")
+                {
+                    Html.RenderPartial("~/Views/CourseContract/Module/ContractConsultantReassignmentView.ascx", _model);
+                }
                 else if (_model.Reason == "其他")
                 {
                     Html.RenderPartial("~/Views/CourseContract/Module/CourseContractOtherAmendmentView.ascx", _model);

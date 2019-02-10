@@ -199,6 +199,12 @@ namespace BFConsole.Controllers
                 items = items.Where(c => c.ContractID == viewModel.ContractID);
             }
 
+            if(viewModel.AlarmCount.HasValue)
+            {
+                hasConditon = true;
+                items = items.FilterByAlarmedContract(models, viewModel.AlarmCount.Value);
+            }
+
 
             if (hasConditon)
             {
@@ -217,108 +223,16 @@ namespace BFConsole.Controllers
 
         public ActionResult InquireContractByCustom(CourseContractQueryViewModel viewModel)
         {
-            ViewBag.ViewModel = viewModel;
-
-            bool hasConditon = false;
-            var profile = HttpContext.GetUser();
-
-            IQueryable<CourseContract> items;
-
-            if (viewModel.ContractQueryMode == Naming.ContractServiceMode.ContractOnly)
+            IQueryable<CourseContract> items = viewModel.InquireContractByCustom(this, out String alertMessage);
+            if (items == null)
             {
-                items = models.PromptContract();
-            }
-            else if (viewModel.ContractQueryMode == Naming.ContractServiceMode.ServiceOnly)
-            {
-                items = models.PromptContractService();
-            }
-            else
-            {
-                items = models.GetTable<CourseContract>();
-            }
-
-            if (viewModel.ContractDateFrom.HasValue)
-            {
-                hasConditon = true;
-                items = items.Where(c => c.ContractDate >= viewModel.ContractDateFrom);
-            }
-
-            if (viewModel.ContractDateTo.HasValue)
-            {
-                hasConditon = true;
-                items = items.Where(c => c.ContractDate < viewModel.ContractDateTo.Value);
-            }
-
-            Expression<Func<CourseContract, bool>> queryExpr = c => false;
-            bool subCondition = false;
-
-            viewModel.ContractNo = viewModel.ContractNo.GetEfficientString();
-            if (viewModel.ContractNo != null)
-            {
-                subCondition = true;
-                var no = viewModel.ContractNo.Split('-');
-                int seqNo;
-                if (no.Length > 1)
+                if (!ModelState.IsValid)
                 {
-                    int.TryParse(no[1], out seqNo);
-                    queryExpr = queryExpr.Or(c => c.ContractNo.StartsWith(no[0])
-                        && c.SequenceNo == seqNo);
+                    return View(ConsoleHomeController.InputErrorView);
                 }
                 else
                 {
-                    queryExpr = queryExpr.Or(c => c.ContractNo.StartsWith(viewModel.ContractNo));
-                }
-            }
-
-            viewModel.RealName = viewModel.RealName.GetEfficientString();
-            if (viewModel.RealName != null)
-            {
-                subCondition = true;
-                queryExpr = queryExpr.Or(c => c.CourseContractMember.Any(m => m.UserProfile.RealName.Contains(viewModel.RealName) || m.UserProfile.Nickname.Contains(viewModel.RealName)));
-            }
-
-            if (hasConditon)
-            {
-                if (subCondition)
-                {
-                    items = items.Where(queryExpr);
-                }
-                else
-                {
-                    if (viewModel.FitnessConsultant.HasValue)
-                    {
-                        hasConditon = true;
-                        items = items.Where(c => c.FitnessConsultant == viewModel.FitnessConsultant);
-                    }
-
-                    if (viewModel.ManagerID.HasValue)
-                    {
-                        hasConditon = true;
-                        items = items.FilterByBranchStoreManager(models, viewModel.ManagerID);
-                    }
-
-                    if (viewModel.OfficerID.HasValue)
-                    {
-                        hasConditon = true;
-                    }
-                }
-            }
-            else
-            {
-                if (subCondition)
-                {
-                    items = items.Where(queryExpr);
-                }
-                else
-                {
-                    //items = items.Where(c => false);
-                    //return Json(new { result = false, message = "請設定查詢條件!!" });
-                    this.ModelState.AddModelError("RealName", "請輸入查詢學生姓名(暱稱)!!");
-                    this.ModelState.AddModelError("ContractNo", "請輸入查詢合約編號!!");
-                    this.ModelState.AddModelError("ContractDateFrom", "請輸入查詢合約起日!!");
-                    this.ModelState.AddModelError("ContractDateTo", "請輸入查詢合約迄日!!");
-                    ViewBag.ModelState = this.ModelState;
-                    return View("~/Views/ConsoleHome/Shared/ReportInputError.ascx");
+                    return View("~/Views/ConsoleHome/Shared/AlertMessage.ascx", model: alertMessage);
                 }
             }
 
@@ -349,6 +263,18 @@ namespace BFConsole.Controllers
 
             return View("~/Views/ContractConsole/ContractModal/ProcessContract.ascx", item);
         }
+
+        public ActionResult ProcessContractService(CourseContractQueryViewModel viewModel)
+        {
+            ViewResult result = (ViewResult)ProcessContract(viewModel);
+            CourseContract item = result.Model as CourseContract;
+            if(item!=null)
+            {
+                result.ViewName = "~/Views/ContractConsole/ContractModal/ProcessContractService.ascx";
+            }
+            return result;
+        }
+
 
         public ActionResult ShowContractDetails(CourseContractQueryViewModel viewModel)
         {
@@ -580,6 +506,24 @@ namespace BFConsole.Controllers
             return View("~/Views/ContractConsole/Editing/CourseContractSigned.ascx", item);
         }
 
+        public ActionResult ConfirmContractServiceSignature(CourseContractViewModel viewModel)
+        {
+            var item = viewModel.ConfirmContractServiceSignature(this, out String alertMessage, out String pdfFile);
+            if (item == null)
+            {
+                if (!ModelState.IsValid)
+                {
+                    return View(ConsoleHomeController.InputErrorView);
+                }
+                else
+                {
+                    return View("~/Views/ConsoleHome/Shared/AlertMessage.ascx", model: alertMessage);
+                }
+            }
+
+            return View("~/Views/ContractConsole/Editing/CourseContractSigned.ascx", item);
+        }
+
         public ActionResult EnableContractStatus(CourseContractViewModel viewModel)
         {
             var profile = HttpContext.GetUser();
@@ -602,6 +546,37 @@ namespace BFConsole.Controllers
             }
             else
                 return View("~/Views/ConsoleHome/Shared/AlertMessage.ascx", model: "合約資料錯誤!!");
+        }
+
+        public ActionResult CommitContractService(CourseContractViewModel viewModel)
+        {
+            var item = viewModel.CommitContractService(this, out String alertMessage);
+            if (item == null)
+            {
+                if (!ModelState.IsValid)
+                {
+                    return View(ConsoleHomeController.InputErrorView);
+                }
+                else
+                {
+                    return View("~/Views/ConsoleHome/Shared/AlertMessage.ascx", model: alertMessage);
+                }
+            }
+
+            return View("~/Views/ContractConsole/Editing/ContractServiceCommitted.ascx", item);
+        }
+
+        public ActionResult SearchContractOwner(String userName)
+        {
+            ViewResult result = (ViewResult)SearchContractMember(userName);
+
+            if (result.Model is IQueryable<UserProfile> items)
+            {
+                result.ViewName = "~/Views/ContractConsole/ContractModal/SelectContractOwner.ascx";
+            }
+
+            return result;
+
         }
 
 

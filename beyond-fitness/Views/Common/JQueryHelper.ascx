@@ -87,7 +87,7 @@
         return o;
     };
 
-    $.fn.launchDownload = function (url, params,target) {
+    $.fn.launchDownload = function (url, params, target) {
 
         var data = this.serializeObject();
         if (params) {
@@ -97,6 +97,9 @@
         var form = $('<form></form>').attr('action', url).attr('method', 'post');//.attr('target', '_blank');
         if (target) {
             form.attr('target', target);
+            if (window.frames[target] == null) {
+                $('<iframe>').attr('name', target).appendTo($('body'));
+            }
         }
 
         Object.keys(data).forEach(function (key) {

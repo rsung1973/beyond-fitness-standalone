@@ -17,7 +17,7 @@
                                     .Where(c => c.FitnessConsultant == _model.UID)
                                     .Where(c => c.Status == (int)Naming.CourseContractStatus.草稿);
                 var toConfirmItems = contracts
-                                    .Where(c => c.Status == (int)Naming.CourseContractStatus.待審核);
+                                    .Where(c => c.Status == (int)Naming.CourseContractStatus.待確認);
                 var toSignItems = contracts
                                     .Where(c => c.Status == (int)Naming.CourseContractStatus.待簽名);
             %>
@@ -39,7 +39,7 @@
                                 new 
                                 {
                                     ContractQueryMode = Naming.ContractServiceMode.ServiceOnly,
-                                    Status = (int)Naming.CourseContractStatus.待審核,
+                                    Status = (int)Naming.CourseContractStatus.待確認,
                                 }) %>,<%= toConfirmItems.Count() %>);'><%= toConfirmItems.Count() %></a>
             </p>
         </div>

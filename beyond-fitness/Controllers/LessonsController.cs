@@ -1398,8 +1398,7 @@ namespace WebHome.Controllers
                     .Where(u => u.LevelID != (int)Naming.MemberStatusDefinition.Deleted
                         && u.LevelID != (int)Naming.MemberStatusDefinition.Anonymous)
                     .Where(l => l.RealName.Contains(userName) || l.Nickname.Contains(userName))
-                    .Where(l => l.UserRole.Any(r => r.RoleID == (int)Naming.RoleID.Learner)
-                        || l.UserRoleAuthorization.Any(r => r.RoleID == (int)Naming.RoleID.Learner))
+                    .FilterByLearner(models)
                     .Where(u => u.UserProfileExtension != null && !u.UserProfileExtension.CurrentTrial.HasValue)
                     .OrderBy(l => l.UID);
             }

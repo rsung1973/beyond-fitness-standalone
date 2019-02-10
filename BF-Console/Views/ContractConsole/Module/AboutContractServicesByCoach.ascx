@@ -18,7 +18,7 @@
                                     .Where(c => c.Status == (int)Naming.CourseContractStatus.草稿);
                 var toConfirmItems = contracts
                                     .Where(c => c.FitnessConsultant == _model.UID)
-                                    .Where(c => c.Status == (int)Naming.CourseContractStatus.待審核);
+                                    .Where(c => c.Status == (int)Naming.CourseContractStatus.待確認);
                 //if(_model.IsManager() || _model.IsViceManager())
                 //{
                 //    toConfirmItems = toConfirmItems.FilterByBranchStoreManager(models, _model.UID);
@@ -53,7 +53,7 @@
                                 {
                                     FitnessConsultant = _model.UID,
                                     ContractQueryMode = Naming.ContractServiceMode.ServiceOnly,
-                                    Status = (int)Naming.CourseContractStatus.待審核,
+                                    Status = (int)Naming.CourseContractStatus.待確認,
                                 }) %>,<%= toConfirmItems.Count() %>);'><%= toConfirmItems.Count() %></a>
             </p>
         </div>

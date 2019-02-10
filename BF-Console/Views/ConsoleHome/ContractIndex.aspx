@@ -55,7 +55,7 @@
                         <%  Html.RenderPartial("~/Views/ContractConsole/Module/AboutNewContractsByCoach.ascx", _model); %>
                     </li>
                     <li class="col-lg-3 col-md-6 col-sm-12">
-                        <%  Html.RenderPartial("~/Views/ContractConsole/Module/AboutContractServicesByCoach.ascx", _model); %>
+                        <%  Html.RenderPartial("~/Views/ContractConsole/Module/AboutContractServices.ascx", _model); %>
                     </li>
                     <li class="col-lg-3 col-md-6 col-sm-12">
                         <%  Html.RenderPartial("~/Views/ContractConsole/Module/AboutPaymentByCoach.ascx", _model); %>
@@ -64,29 +64,14 @@
                 <ul class="row clearfix list-unstyled m-b-0"> 
                     <%
                         var newContracts = _effectiveItems
-                            .Where(c=>c.Expiration>=DateTime.Today)
+                            .Where(c => c.Expiration >= DateTime.Today)
                             .Where(c => !c.Renewal.HasValue || c.Renewal == false);
                         var renewContracts = _effectiveItems
-                            .Where(c=>c.Expiration>=DateTime.Today)
-                            .Where(c => c.Renewal.HasValue && c.Renewal == true);%>
+                            .Where(c => c.Expiration >= DateTime.Today)
+                            .Where(c => c.Renewal.HasValue && c.Renewal == true);
+                        %>
                     <li class="col-lg-3 col-md-3 col-sm-6">
-                        <div class="body top_counter">
-                            <div class="icon">
-                                <i class="zmdi livicon-evo" data-options="name:users.svg; size: 40px; style: solid; strokeWidth:2px; autoPlay:true"></i>
-                            </div>
-                            <div class="content">
-                                <div class="text">待續約 <span class="col-grey float-right">人</span></div>
-                                <h5 class="number">2</h5>
-                            </div>
-                            <hr>
-                            <div class="icon">
-                                <i class="zmdi livicon-evo" data-options="name:battery-charge.svg; size: 40px; style: solid; strokeWidth:2px; autoPlay:true"></i>
-                            </div>
-                            <div class="content">
-                                <div class="text">待續約 <span class="col-grey float-right">合約</span></div>
-                                <h5 class="number"><a href="javascript:showContractList();">2</a></h5>
-                            </div>
-                        </div>
+                        <%  Html.RenderPartial("~/Views/ContractConsole/Module/ToRenewByCoach.ascx", _model); %>
                     </li>
                     <li class="col-lg-3 col-md-3 col-sm-6">
                         <div class="body">

@@ -35,6 +35,10 @@
 	display: block
 }
 
+.product_item.selected {
+    background: #eaeaea;
+    color: #052333;
+}
 .product_item:hover .cp_img {
 	top: -40px
 }
@@ -65,6 +69,16 @@
 .product_item .cp_img img {
 	transition: all 0.2s ease-in-out;
 	border-radius: 6px
+}
+
+.product_item .cp_img img.img-fluid2 {
+    max-width: 100%;
+    object-fit: cover;
+    vertical-align: bottom !important;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
 }
 
 .product_item .cp_img .hover {

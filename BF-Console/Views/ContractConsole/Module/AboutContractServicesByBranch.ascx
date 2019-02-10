@@ -18,7 +18,7 @@
                                     .Where(c => c.Status == (int)Naming.CourseContractStatus.草稿);
                 var toConfirmItems = contracts
                                     .FilterByBranchStoreManager(models, _model.UID)
-                                    .Where(c => c.Status == (int)Naming.CourseContractStatus.待審核);
+                                    .Where(c => c.Status == (int)Naming.CourseContractStatus.待確認);
                 var toSignItems = contracts
                                     .FilterByBranchStoreManager(models, _model.UID)
                                     .Where(c => c.Status == (int)Naming.CourseContractStatus.待簽名);
@@ -44,7 +44,7 @@
                                 {
                                     ManagerID = _model.UID,
                                     ContractQueryMode = Naming.ContractServiceMode.ServiceOnly,
-                                    Status = (int)Naming.CourseContractStatus.待審核,
+                                    Status = (int)Naming.CourseContractStatus.待確認,
                                 }) %>,<%= toConfirmItems.Count() %>);'><%= toConfirmItems.Count() %></a>
             </p>
         </div>

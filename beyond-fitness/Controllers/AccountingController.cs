@@ -47,7 +47,11 @@ namespace WebHome.Controllers
 
             Expression<Func<CourseContract, bool>> queryExpr = c => false;
             bool hasConditon = false;
-
+            if (viewModel.BypassCondition == true)
+            {
+                hasConditon = true;
+                queryExpr = c => true;
+            }
             viewModel.RealName = viewModel.RealName.GetEfficientString();
             if (viewModel.RealName != null)
             {
@@ -150,9 +154,10 @@ namespace WebHome.Controllers
             Response.Clear();
             Response.ClearContent();
             Response.ClearHeaders();
+            Response.AppendCookie(new HttpCookie("fileDownloadToken", viewModel.FileDownloadToken));
             Response.AddHeader("Cache-control", "max-age=1");
             Response.ContentType = "application/vnd.ms-excel";
-            Response.AddHeader("Content-Disposition", String.Format("attachment;filename=({1:yyyy-MM-dd HH-mm-ss}){0}", HttpUtility.UrlEncode("AccountsReceivable.xlsx"), DateTime.Now));
+            Response.AddHeader("Content-Disposition", String.Format("attachment;filename={0}({1:yyyy-MM-dd HH-mm-ss}).xlsx", HttpUtility.UrlEncode("AccountsReceivable"), DateTime.Now));
 
             using (DataSet ds = new DataSet())
             {
@@ -171,6 +176,10 @@ namespace WebHome.Controllers
 
         public ActionResult AchievementIndex(AchievementQueryViewModel viewModel)
         {
+            viewModel.AchievementDateFrom = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+            viewModel.AchievementDateTo = viewModel.AchievementDateFrom;
+            viewModel.AchievementYearMonthTo = viewModel.AchievementYearMonthFrom = String.Format("{0:yyyy/MM}", viewModel.AchievementDateFrom);
+
             ViewBag.ViewModel = viewModel;
             return View();
         }
@@ -178,6 +187,10 @@ namespace WebHome.Controllers
         public ActionResult TrustIndex(TrustQueryViewModel viewModel)
         {
             ViewBag.ViewModel = viewModel;
+            viewModel.TrustDateFrom = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+            viewModel.TrustDateTo = viewModel.TrustDateFrom;
+            viewModel.TrustYearMonth = String.Format("{0:yyyy/MM}", viewModel.TrustDateFrom);
+
             return View();
         }
 
@@ -187,10 +200,27 @@ namespace WebHome.Controllers
         {
             ViewBag.ViewModel = viewModel;
 
-            if(String.IsNullOrEmpty(viewModel.AchievementYearMonthFrom))
+            if (!viewModel.AchievementDateFrom.HasValue)
             {
-                ModelState.AddModelError("AchievementYearMonthFrom", "請選擇查詢月份");
+                if (!String.IsNullOrEmpty(viewModel.AchievementYearMonthFrom))
+                {
+                    viewModel.AchievementDateFrom = DateTime.ParseExact(viewModel.AchievementYearMonthFrom, "yyyy/MM", System.Globalization.CultureInfo.CurrentCulture);
+                }
+                else
+                {
+                    ModelState.AddModelError("AchievementYearMonthFrom", "請選擇查詢月份");
+                }
             }
+
+            if (!viewModel.AchievementDateTo.HasValue)
+            {
+
+                if (!String.IsNullOrEmpty(viewModel.AchievementYearMonthTo))
+                {
+                    viewModel.AchievementDateTo = DateTime.ParseExact(viewModel.AchievementYearMonthTo, "yyyy/MM", System.Globalization.CultureInfo.CurrentCulture);
+                }
+            }
+
 
             if (!ModelState.IsValid)
             {
@@ -203,6 +233,10 @@ namespace WebHome.Controllers
             var profile = HttpContext.GetUser();
 
             bool hasConditon = false;
+            if (viewModel.BypassCondition == true)
+            {
+                hasConditon = true;
+            }
 
             if (viewModel.CoachID.HasValue)
             {
@@ -242,19 +276,17 @@ namespace WebHome.Controllers
                 }
             }
 
-            if (!String.IsNullOrEmpty(viewModel.AchievementYearMonthFrom))
+            if (viewModel.AchievementDateFrom.HasValue)
             {
-                viewModel.AchievementDateFrom = DateTime.ParseExact(viewModel.AchievementYearMonthFrom, "yyyy/MM", System.Globalization.CultureInfo.CurrentCulture);
                 items = items.Where(c => c.ClassTime >= viewModel.AchievementDateFrom);
 
-                viewModel.AchievementDateTo = viewModel.AchievementDateFrom;
-                items = items.Where(c => c.ClassTime < viewModel.AchievementDateTo.Value.AddMonths(1));
+                if (!viewModel.AchievementDateTo.HasValue)
+                    viewModel.AchievementDateTo = viewModel.AchievementDateFrom;
 
             }
 
-            if (!String.IsNullOrEmpty(viewModel.AchievementYearMonthTo))
+            if (viewModel.AchievementDateTo.HasValue)
             {
-                viewModel.AchievementDateTo = DateTime.ParseExact(viewModel.AchievementYearMonthTo, "yyyy/MM", System.Globalization.CultureInfo.CurrentCulture);
                 items = items.Where(c => c.ClassTime < viewModel.AchievementDateTo.Value.AddMonths(1));
             }
 
@@ -265,12 +297,34 @@ namespace WebHome.Controllers
         {
             ViewBag.ViewModel = viewModel;
 
+            if (!viewModel.AchievementDateFrom.HasValue)
+            {
+                if (!String.IsNullOrEmpty(viewModel.AchievementYearMonthFrom))
+                {
+                    viewModel.AchievementDateFrom = DateTime.ParseExact(viewModel.AchievementYearMonthFrom, "yyyy/MM", System.Globalization.CultureInfo.CurrentCulture);
+                }
+            }
+
+            if (!viewModel.AchievementDateTo.HasValue)
+            {
+
+                if (!String.IsNullOrEmpty(viewModel.AchievementYearMonthTo))
+                {
+                    viewModel.AchievementDateTo = DateTime.ParseExact(viewModel.AchievementYearMonthTo, "yyyy/MM", System.Globalization.CultureInfo.CurrentCulture);
+                }
+            }
+
+
             IQueryable<TuitionAchievement> items = models.GetTable<TuitionAchievement>()
                 .Where(t => t.Payment.VoidPayment == null || t.Payment.AllowanceID.HasValue);
 
             var profile = HttpContext.GetUser();
 
             bool hasConditon = false;
+            if (viewModel.BypassCondition == true)
+            {
+                hasConditon = true;
+            }
 
             if (viewModel.CoachID.HasValue)
             {
@@ -311,18 +365,16 @@ namespace WebHome.Controllers
                 }
             }
 
-            if (!String.IsNullOrEmpty(viewModel.AchievementYearMonthFrom))
+            if (viewModel.AchievementDateFrom.HasValue)
             {
-                viewModel.AchievementDateFrom = DateTime.ParseExact(viewModel.AchievementYearMonthFrom, "yyyy/MM", System.Globalization.CultureInfo.CurrentCulture);
                 items = items.Where(c => c.Payment.PayoffDate >= viewModel.AchievementDateFrom);
 
-                viewModel.AchievementDateTo = viewModel.AchievementDateFrom;
-                items = items.Where(c => c.Payment.PayoffDate < viewModel.AchievementDateTo.Value.AddMonths(1));
+                if (!viewModel.AchievementDateTo.HasValue)
+                    viewModel.AchievementDateTo = viewModel.AchievementDateFrom;
             }
 
-            if (!String.IsNullOrEmpty(viewModel.AchievementYearMonthTo))
+            if (viewModel.AchievementDateTo.HasValue)
             {
-                viewModel.AchievementDateTo = DateTime.ParseExact(viewModel.AchievementYearMonthTo, "yyyy/MM", System.Globalization.CultureInfo.CurrentCulture);
                 items = items.Where(c => c.Payment.PayoffDate < viewModel.AchievementDateTo.Value.AddMonths(1));
             }
 
@@ -348,13 +400,17 @@ namespace WebHome.Controllers
         {
             ViewBag.ViewModel = viewModel;
 
-            if (String.IsNullOrEmpty(viewModel.TrustYearMonth))
+
+            if (!viewModel.TrustDateFrom.HasValue)
             {
-                ModelState.AddModelError("TrustYearMonth", "請輸入查詢月份!!");
-            }
-            else
-            {
-                viewModel.TrustDateFrom = DateTime.ParseExact(viewModel.TrustYearMonth, "yyyy/MM", System.Globalization.CultureInfo.CurrentCulture);
+                if (!String.IsNullOrEmpty(viewModel.TrustYearMonth))
+                {
+                    viewModel.TrustDateFrom = DateTime.ParseExact(viewModel.TrustYearMonth, "yyyy/MM", System.Globalization.CultureInfo.CurrentCulture);
+                }
+                else
+                {
+                    ModelState.AddModelError("TrustYearMonth", "請輸入查詢月份!!");
+                }
             }
 
             if (!ModelState.IsValid)
@@ -434,6 +490,13 @@ namespace WebHome.Controllers
             IQueryable<ContractTrustTrack> items = (IQueryable<ContractTrustTrack>)result.Model;
 
             IQueryable<Settlement> settlementItems = (IQueryable<Settlement>)ViewBag.DataItems;
+
+            if (items.Count() == 0)
+            {
+                ViewBag.GoBack = true;
+                return View("~/Views/Shared/JsAlert.ascx", model: "無任何信託資料!!");
+            }
+
             var summary = settlementItems.ToArray()
                 .Select(item => new _TrustSummaryReportItem
                 {
@@ -567,9 +630,10 @@ namespace WebHome.Controllers
             Response.Clear();
             Response.ClearContent();
             Response.ClearHeaders();
+            Response.AppendCookie(new HttpCookie("fileDownloadToken", viewModel.FileDownloadToken));
             Response.AddHeader("Cache-control", "max-age=1");
             Response.ContentType = "application/vnd.ms-excel";
-            Response.AddHeader("Content-Disposition", String.Format("attachment;filename=({1:yyyy-MM-dd HH-mm-ss}){0}", HttpUtility.UrlEncode("TrustReport.xlsx"), DateTime.Now));
+            Response.AddHeader("Content-Disposition", String.Format("attachment;filename={0}({1:yyyy-MM-dd HH-mm-ss}).xlsx", HttpUtility.UrlEncode("TrustReport"), DateTime.Now));
 
             using (DataSet ds = new DataSet())
             {
@@ -646,18 +710,22 @@ namespace WebHome.Controllers
                 }
             }
 
+            Response.AppendCookie(new HttpCookie("fileDownloadToken", viewModel.FileDownloadToken));
             return File(outFile, "application/x-zip-compressed", $"({DateTime.Now:yyyy-MM-dd HH-mm-ss})信託合約.zip");
         }
 
         public ActionResult CreateTrustLessonXlsx(TrustQueryViewModel viewModel)
         {
-            if (String.IsNullOrEmpty(viewModel.TrustYearMonth))
+            if (!viewModel.TrustDateFrom.HasValue)
             {
-                ModelState.AddModelError("TrustYearMonth", "請輸入查詢月份!!");
-            }
-            else
-            {
-                viewModel.TrustDateFrom = DateTime.ParseExact(viewModel.TrustYearMonth, "yyyy/MM", System.Globalization.CultureInfo.CurrentCulture);
+                if (!String.IsNullOrEmpty(viewModel.TrustYearMonth))
+                {
+                    viewModel.TrustDateFrom = DateTime.ParseExact(viewModel.TrustYearMonth, "yyyy/MM", System.Globalization.CultureInfo.CurrentCulture);
+                }
+                else
+                {
+                    ModelState.AddModelError("TrustYearMonth", "請輸入查詢月份!!");
+                }
             }
 
             if (!ModelState.IsValid)
@@ -715,9 +783,10 @@ namespace WebHome.Controllers
             Response.Clear();
             Response.ClearContent();
             Response.ClearHeaders();
+            Response.AppendCookie(new HttpCookie("fileDownloadToken", viewModel.FileDownloadToken));
             Response.AddHeader("Cache-control", "max-age=1");
             Response.ContentType = "application/vnd.ms-excel";
-            Response.AddHeader("Content-Disposition", String.Format("attachment;filename=({1:yyyy-MM-dd HH-mm-ss}){0}", HttpUtility.UrlEncode("TrustLessons.xlsx"), DateTime.Now));
+            Response.AddHeader("Content-Disposition", String.Format("attachment;filename={0}({1:yyyy-MM-dd HH-mm-ss}).xlsx", HttpUtility.UrlEncode("TrustLessons"), DateTime.Now));
 
             using (DataSet ds = new DataSet())
             {
@@ -781,9 +850,10 @@ namespace WebHome.Controllers
             Response.Clear();
             Response.ClearContent();
             Response.ClearHeaders();
+            Response.AppendCookie(new HttpCookie("fileDownloadToken", viewModel.FileDownloadToken));
             Response.AddHeader("Cache-control", "max-age=1");
             Response.ContentType = "application/vnd.ms-excel";
-            Response.AddHeader("Content-Disposition", String.Format("attachment;filename=({1:yyyy-MM-dd HH-mm-ss}){0}", HttpUtility.UrlEncode("ContractTrust.xlsx"), DateTime.Now));
+            Response.AddHeader("Content-Disposition", String.Format("attachment;filename={0}({1:yyyy-MM-dd HH-mm-ss}).xlsx", HttpUtility.UrlEncode("ContractTrust"), DateTime.Now));
 
             using (DataSet ds = new DataSet())
             {
@@ -809,6 +879,34 @@ namespace WebHome.Controllers
             DateTime execDate = settlementDate.Value.AddMonths(-1);
             DateTime startDate = new DateTime(execDate.Year, execDate.Month, 1);
             models.ExecuteSettlement(startDate, startDate.AddMonths(1));
+
+            return Json(new { result = true }, JsonRequestBehavior.AllowGet);
+        }
+
+        public async Task<ActionResult> ExecuteMonthlySettlement(ContractSettlementViewModel viewModel)
+        {
+            if (!viewModel.SettlementDate.HasValue)
+            {
+                viewModel.SettlementDate = DateTime.Today;
+            }
+
+            await Task.Run(() =>
+            {
+                if (viewModel.SettlementFrom.HasValue)
+                {
+                    //bool effective = viewModel.Effective ?? true;
+                    for (DateTime settlementDate = viewModel.SettlementFrom.Value; settlementDate <= viewModel.SettlementDate; settlementDate = settlementDate.AddMonths(1))
+                    {
+                        models.ExecuteMonthlySettlement(settlementDate);
+                        //effective = true;
+                    }
+                }
+                else
+                {
+                    models.ExecuteMonthlySettlement(viewModel.SettlementDate.Value);
+                }
+
+            });
 
             return Json(new { result = true }, JsonRequestBehavior.AllowGet);
         }
@@ -850,8 +948,322 @@ namespace WebHome.Controllers
             return Json(new { result = true }, JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult GetMonthlySettlement(DateTime? settlementDate,DateTime? initialDate,String fileDownloadToken)
+        {
+            if (!settlementDate.HasValue)
+            {
+                settlementDate = DateTime.Today;
+            }
+
+            bool initial = false;
+            var calcDate = settlementDate.Value.FirstDayOfMonth();
+            if (initialDate.HasValue)
+            {
+                initial = initialDate.Value.FirstDayOfMonth() == calcDate;
+            }
+
+            IQueryable<ContractMonthlySummary> items = models.GetTable<ContractMonthlySummary>().Where(c => c.SettlementDate == calcDate);
+
+            //										
+
+            DataTable table = new DataTable();
+            table.Columns.Add(new DataColumn("合約編號", typeof(String)));
+            table.Columns.Add(new DataColumn("身分證字號", typeof(String)));
+            table.Columns.Add(new DataColumn("姓名", typeof(String)));
+            table.Columns.Add(new DataColumn("合約狀態", typeof(String)));
+            table.Columns.Add(new DataColumn("是否信託", typeof(String)));
+            table.Columns.Add(new DataColumn("合約總價金", typeof(int)));
+            table.Columns.Add(new DataColumn("累計收款金額", typeof(int)));
+            table.Columns.Add(new DataColumn("累計上課金額", typeof(int)));
+            table.Columns.Add(new DataColumn("折退金額", typeof(int)));
+            table.Columns.Add(new DataColumn("合約餘額", typeof(int)));
+            table.Columns.Add(new DataColumn("累計上課數", typeof(int)));
+            table.Columns.Add(new DataColumn("合約生效起日", typeof(String)));
+            table.Columns.Add(new DataColumn("合約生效迄日", typeof(String)));
+
+            DateTime validTo = calcDate.AddMonths(-1);
+
+            foreach (var item in items)
+            {
+                if (!initial)
+                {
+                    if (item.CourseContract.ValidTo.HasValue
+                            && item.CourseContract.ValidTo < validTo)
+                        continue;
+                }
+                var r = table.NewRow();
+                var c = item.CourseContract;
+                r[0] = c.ContractNo();
+                r[1] = c.ContractOwner.UserProfileExtension.IDNo;
+                r[2] = c.ContractOwner.RealName;
+                r[3] = $"{(Naming.ContractQueryStatus)c.Status}";
+                r[4] = c.ContractTrustSettlement.Any() ? "是" : "否";
+                r[5] = c.TotalCost;
+                r[6] = item.TotalPrepaid;
+                r[7] = item.TotalLessonCost;
+                if (item.TotalAllowanceAmount.HasValue)
+                    r[8] = item.TotalAllowanceAmount;
+                r[9] = item.RemainedAmount;
+                r[10] = c.AttendedLessonCount(calcDate);
+                r[11] = $"{c.EffectiveDate:yyyyMMdd}";
+                r[12] = $"{c.Expiration:yyyyMMdd}";
+                table.Rows.Add(r);
+            }
+
+            table.TableName = $"合約盤點表{calcDate.AddDays(-1):yyyy-MM-dd}截止";
+
+            Response.Clear();
+            Response.ClearContent();
+            Response.ClearHeaders();
+            Response.AppendCookie(new HttpCookie("fileDownloadToken", fileDownloadToken));
+            Response.AddHeader("Cache-control", "max-age=1");
+            Response.ContentType = "application/vnd.ms-excel";
+            Response.AddHeader("Content-Disposition", String.Format("attachment;filename={0}({1:yyyy-MM-dd HH-mm-ss}).xlsx", HttpUtility.UrlEncode("合約盤點表"), DateTime.Now));
+
+            using (DataSet ds = new DataSet())
+            {
+                ds.Tables.Add(table);
+
+                using (var xls = ds.ConvertToExcel())
+                {
+                    xls.SaveAs(Response.OutputStream);
+                }
+            }
+
+            return new EmptyResult();
+        }
+
+        public ActionResult GetMonthlyLessonsSummary(DateTime? settlementDate,String fileDownloadToken)
+        {
+            if (!settlementDate.HasValue)
+            {
+                settlementDate = DateTime.Today;
+            }
+
+            var dateFrom = settlementDate.Value.FirstDayOfMonth();
+            var dateTo = dateFrom.AddMonths(1);
+
+
+            IQueryable<int> items = models.GetTable<LessonTime>().Where(l => l.ClassTime >= dateFrom && l.ClassTime < dateTo)
+                    .Join(models.GetTable<GroupingLesson>(), l => l.GroupID, g => g.GroupID, (l, g) => g)
+                    .Join(models.GetTable<RegisterLesson>(), g => g.GroupID, r => r.RegisterGroupID, (g, r) => r)
+                    .Join(models.GetTable<RegisterLessonContract>(), r => r.RegisterID, c => c.RegisterID, (r, c) => c.ContractID)
+                    .Distinct();
+
+            //										
+            //           累計上課金額
+
+            DataTable table = new DataTable();
+            table.Columns.Add(new DataColumn("合約編號", typeof(String)));
+            table.Columns.Add(new DataColumn("分店", typeof(String)));
+            table.Columns.Add(new DataColumn("姓名", typeof(String)));
+            table.Columns.Add(new DataColumn("是否信託", typeof(String)));
+            table.Columns.Add(new DataColumn("課程單價", typeof(int)));
+            table.Columns.Add(new DataColumn("本月上課堂數", typeof(int)));
+            table.Columns.Add(new DataColumn("累計上課金額", typeof(int)));
+
+            foreach (var item in items)
+            {
+                var c = models.GetTable<CourseContract>().Where(t => t.ContractID == item).First();
+     
+                var r = table.NewRow();
+                r[0] = c.ContractNo();
+                r[1] = c.CourseContractExtension.BranchStore.BranchName;
+                r[2] = c.ContractLearner();
+                r[3] = c.ContractTrustSettlement.Any() ? "是" : "否";
+                r[4] = c.LessonPriceType.ListPrice;
+                var count = c.AttendedLessonList().Where(l => l.ClassTime >= dateFrom && l.ClassTime < dateTo).Count();
+                r[5] = count;
+                r[6] = count * c.LessonPriceType.ListPrice * c.CourseContractType.GroupingMemberCount * c.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount / 100;
+                table.Rows.Add(r);
+            }
+
+            table.TableName = $"上課盤點清單{dateFrom:yyyy-MM}";
+
+            Response.Clear();
+            Response.ClearContent();
+            Response.ClearHeaders();
+            Response.AppendCookie(new HttpCookie("fileDownloadToken", fileDownloadToken));
+            Response.AddHeader("Cache-control", "max-age=1");
+            Response.ContentType = "application/vnd.ms-excel";
+            Response.AddHeader("Content-Disposition", String.Format("attachment;filename=LessonsInventory({0:yyyy-MM-dd HH-mm-ss}).xlsx", DateTime.Now));
+
+            using (DataSet ds = new DataSet())
+            {
+                ds.Tables.Add(table);
+
+                using (var xls = ds.ConvertToExcel())
+                {
+                    xls.SaveAs(Response.OutputStream);
+                }
+            }
+
+            return new EmptyResult();
+        }
+
+        class _AchievementGroupItem
+        {
+            public int? CoachID { get; set; }
+            public IGrouping<int?, LessonTime> LessonGroup { get; set; }
+            public IGrouping<int, TuitionAchievement> AchievementGroup { get; set; }
+        }
+
+        public ActionResult CreateFullAchievementXlsx(AchievementQueryViewModel viewModel)
+        {
+            ViewResult result = (ViewResult)InquireAchievement(viewModel);
+            IQueryable<LessonTime> items = (IQueryable<LessonTime>)result.Model;
+
+            var lessonDetails = items.GroupBy(t => t.AttendingCoach);
+
+            ViewResult tuitionResult = (ViewResult)InquireTuitionAchievement(viewModel);
+            IQueryable<TuitionAchievement> achievementItems = (IQueryable<TuitionAchievement>)tuitionResult.Model;
+
+            var achievementDetails = achievementItems.GroupBy(t => t.CoachID);
+
+            var details = lessonDetails.Select(g => new _AchievementGroupItem
+            {
+                CoachID = g.Key.Value,
+                LessonGroup = g
+            }).ToList();
+
+            foreach (var g in achievementDetails)
+            {
+                var item = details.Where(d => d.CoachID == g.Key).FirstOrDefault();
+                if (item == null)
+                {
+                    item = new _AchievementGroupItem
+                    {
+                        CoachID = g.Key
+                    };
+                    details.Add(item);
+                }
+                item.AchievementGroup = g;
+            }
+
+
+            DataTable table = new DataTable();
+            table.Columns.Add(new DataColumn("姓名", typeof(String)));
+            table.Columns.Add(new DataColumn("總終點課數", typeof(decimal)));
+            table.Columns.Add(new DataColumn("總鐘點費用", typeof(int)));
+            table.Columns.Add(new DataColumn("等級", typeof(String)));
+            table.Columns.Add(new DataColumn("實際抽成費用(含稅)", typeof(int)));
+            table.Columns.Add(new DataColumn("實際抽成費用", typeof(decimal)));
+            table.Columns.Add(new DataColumn("業績金額(含稅)", typeof(int)));
+            table.Columns.Add(new DataColumn("業績金額", typeof(decimal)));
+
+            foreach (var g in details)
+            {
+                var r = table.NewRow();
+                var coach = models.GetTable<ServingCoach>().Where(u => u.CoachID == g.CoachID).First();
+                r[0] = coach.UserProfile.RealName;
+                if (g.LessonGroup != null)
+                {
+                    var item = g.LessonGroup;
+                    var lesson = item.First();
+                    r[1] = item.Count() - (decimal)(item
+                                        .Where(t => t.RegisterLesson.LessonPriceType.Status == (int)Naming.DocumentLevelDefinition.自主訓練
+                                            || (t.RegisterLesson.RegisterLessonEnterprise != null
+                                                && t.RegisterLesson.RegisterLessonEnterprise.EnterpriseCourseContent.EnterpriseLessonType.Status == (int)Naming.DocumentLevelDefinition.自主訓練)).Count()) / 2m;
+                    var lessons = item
+                            .Where(t => t.RegisterLesson.LessonPriceType.Status != (int)Naming.DocumentLevelDefinition.自主訓練)
+                            .Where(t => t.RegisterLesson.RegisterLessonEnterprise == null
+                                || t.RegisterLesson.RegisterLessonEnterprise.EnterpriseCourseContent.EnterpriseLessonType.Status != (int)Naming.DocumentLevelDefinition.自主訓練);
+                    r[2] = models.CalcAchievement(lessons, out int shares);
+                    r[3] = lesson.LessonTimeSettlement.ProfessionalLevel.LevelName;
+                    r[4] = shares;
+                    r[5] = Math.Round(shares / 1.05m);
+                }
+                if (g.AchievementGroup != null)
+                {
+                    IGrouping<int, TuitionAchievement> achievementItem = g.AchievementGroup;
+                    r[6] = achievementItem.Sum(l => l.ShareAmount);
+                    r[7] = Math.Round((int)r[6] / 1.05m);
+                }
+
+                table.Rows.Add(r);
+            }
+            table.TableName = "業績統計表" + String.Format("{0:yyyy-MM-dd}~{1:yyyy-MM-dd}", viewModel.AchievementDateFrom, viewModel.AchievementDateTo.Value.AddMonths(1).AddDays(-1));
+
+            Response.Clear();
+            Response.ClearContent();
+            Response.ClearHeaders();
+            Response.AppendCookie(new HttpCookie("fileDownloadToken", viewModel.FileDownloadToken));
+            Response.AddHeader("Cache-control", "max-age=1");
+            Response.ContentType = "application/vnd.ms-excel";
+            Response.AddHeader("Content-Disposition", String.Format("attachment;filename={0}({1:yyyy-MM-dd HH-mm-ss}).xlsx", HttpUtility.UrlEncode("AchievementReport"), DateTime.Now));
+
+            using (DataSet ds = new DataSet())
+            {
+                ds.Tables.Add(table);
+
+                table = createTuitionAchievementDetailsXlsx(viewModel);
+                ds.Tables.Add(table);
+
+                using (var xls = ds.ConvertToExcel())
+                {
+                    xls.SaveAs(Response.OutputStream);
+                }
+            }
+
+            return new EmptyResult();
+        }
+
 
         public ActionResult CreateAchievementXlsx(AchievementQueryViewModel viewModel)
+        {
+            DataTable table;
+
+            Response.Clear();
+            Response.ClearContent();
+            Response.ClearHeaders();
+            Response.AppendCookie(new HttpCookie("fileDownloadToken", viewModel.FileDownloadToken));
+            Response.AddHeader("Cache-control", "max-age=1");
+            Response.ContentType = "application/vnd.ms-excel";
+            Response.AddHeader("Content-Disposition", String.Format("attachment;filename={0}({1:yyyy-MM-dd HH-mm-ss}).xlsx", HttpUtility.UrlEncode("AchievementReport"), DateTime.Now));
+
+            using (DataSet ds = new DataSet())
+            {
+                if (viewModel.DetailsOnly != true)
+                {
+                    table = createAchievementXlsx(viewModel);
+                    if (viewModel.AchievementDateFrom.HasValue && viewModel.AchievementDateTo.HasValue)
+                    {
+                        table.TableName = "上課統計表" + String.Format("{0:yyyy-MM-dd}~{1:yyyy-MM-dd}", viewModel.AchievementDateFrom, viewModel.AchievementDateTo.Value.AddMonths(1).AddDays(-1));
+                    }
+                    ds.Tables.Add(table);
+                    table = createTuitionAchievementXlsx(viewModel);
+                    if (viewModel.AchievementDateFrom.HasValue && viewModel.AchievementDateTo.HasValue)
+                    {
+                        table.TableName = "業績統計表" + String.Format("{0:yyyy-MM-dd}~{1:yyyy-MM-dd}", viewModel.AchievementDateFrom, viewModel.AchievementDateTo.Value.AddMonths(1).AddDays(-1));
+                    }
+                    ds.Tables.Add(table);
+                }
+                if (viewModel.DetailsOnly != false)
+                {
+                    table = createAchievementDetailsXlsx(viewModel);
+                    ds.Tables.Add(table);
+                }
+                if (viewModel.DetailsOnly != true)
+                {
+                    table = createTuitionAchievementDetailsXlsx(viewModel);
+                    ds.Tables.Add(table);
+                }
+
+                using (var xls = ds.ConvertToExcel())
+                {
+                    //if (viewModel.AchievementDateFrom.HasValue && viewModel.AchievementDateTo.HasValue)
+                    //{
+                    //    xls.Worksheets.ElementAt(0).Name = "上課統計表" + String.Format("{0:yyyy-MM-dd}~{1:yyyy-MM-dd}", viewModel.AchievementDateFrom, viewModel.AchievementDateTo.Value.AddMonths(1).AddDays(-1));
+                    //    xls.Worksheets.ElementAt(1).Name = "業績統計表" + String.Format("{0:yyyy-MM-dd}~{1:yyyy-MM-dd}", viewModel.AchievementDateFrom, viewModel.AchievementDateTo.Value.AddMonths(1).AddDays(-1));
+                    //}
+                    xls.SaveAs(Response.OutputStream);
+                }
+            }
+
+            return new EmptyResult();
+        }
+
+        private DataTable createAchievementXlsx(AchievementQueryViewModel viewModel)
         {
             ViewResult result = (ViewResult)InquireAchievement(viewModel);
             IQueryable<LessonTime> items = (IQueryable<LessonTime>)result.Model;
@@ -888,36 +1300,7 @@ namespace WebHome.Controllers
             }
 
             table.TableName = "上課統計表";
-
-            Response.Clear();
-            Response.ClearContent();
-            Response.ClearHeaders();
-            Response.AddHeader("Cache-control", "max-age=1");
-            Response.ContentType = "application/vnd.ms-excel";
-            Response.AddHeader("Content-Disposition", String.Format("attachment;filename=({1:yyyy-MM-dd HH-mm-ss}){0}", HttpUtility.UrlEncode("AchievementReport.xlsx"), DateTime.Now));
-
-            using (DataSet ds = new DataSet())
-            {
-                ds.Tables.Add(table);
-                table = createTuitionAchievementXlsx(viewModel);
-                ds.Tables.Add(table);
-                table = createAchievementDetailsXlsx(viewModel);
-                ds.Tables.Add(table);
-                table = createTuitionAchievementDetailsXlsx(viewModel);
-                ds.Tables.Add(table);
-
-                using (var xls = ds.ConvertToExcel())
-                {
-                    if (viewModel.AchievementDateFrom.HasValue && viewModel.AchievementDateTo.HasValue)
-                    {
-                        xls.Worksheets.ElementAt(0).Name = "上課統計表" + String.Format("{0:yyyy-MM-dd}~{1:yyyy-MM-dd}", viewModel.AchievementDateFrom, viewModel.AchievementDateTo.Value.AddMonths(1).AddDays(-1));
-                        xls.Worksheets.ElementAt(1).Name = "業績統計表" + String.Format("{0:yyyy-MM-dd}~{1:yyyy-MM-dd}", viewModel.AchievementDateFrom, viewModel.AchievementDateTo.Value.AddMonths(1).AddDays(-1));
-                    }
-                    xls.SaveAs(Response.OutputStream);
-                }
-            }
-
-            return new EmptyResult();
+            return table;
         }
 
         private DataTable createAchievementDetailsXlsx(AchievementQueryViewModel viewModel)

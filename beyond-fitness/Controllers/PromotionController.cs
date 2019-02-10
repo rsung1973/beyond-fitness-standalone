@@ -323,8 +323,7 @@ namespace WebHome.Controllers
             {
                 items = models.GetTable<UserProfile>()
                     .Where(l => l.RealName.Contains(viewModel.UserName) || l.Nickname.Contains(viewModel.UserName))
-                    .Where(l => l.UserRole.Any(r => r.RoleID == (int)Naming.RoleID.Learner
-                            || r.RoleID == (int)Naming.RoleID.Preliminary))
+                    .FilterByLearner(models, true)
                     .OrderBy(l => l.RealName);
             }
 

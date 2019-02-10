@@ -239,8 +239,8 @@ namespace WebHome.Models.Locale
 
         public enum ContractServiceStatus
         {
+            待審核 = 1202,
             待簽名 = 1203,
-            待審核 = 1204,
             已生效 = 1205,
         }
 

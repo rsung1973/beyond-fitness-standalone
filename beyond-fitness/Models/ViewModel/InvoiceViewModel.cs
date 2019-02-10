@@ -6,7 +6,7 @@ using WebHome.Models.Locale;
 
 namespace WebHome.Models.ViewModel
 {
-    public class InvoiceViewModel
+    public class InvoiceViewModel : QueryViewModel
     {
         public InvoiceViewModel()
         {

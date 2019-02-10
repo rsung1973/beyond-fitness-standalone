@@ -36,29 +36,34 @@ namespace WebHome.Controllers
         // GET: Achievement
         public ActionResult LessonIndex(AchievementQueryViewModel viewModel)
         {
-            viewModel.AchievementDateFrom = viewModel.AchievementDateTo = DateTime.Today;
             ViewBag.ViewModel = viewModel;
+
+            viewModel.AchievementDateFrom = viewModel.AchievementDateTo = DateTime.Today;
+            viewModel.AchievementYearMonthTo = viewModel.AchievementYearMonthFrom = String.Format("{0:yyyy/MM}", viewModel.AchievementDateFrom);
             return View();
         }
 
         public ActionResult PerformanceIndex(AchievementQueryViewModel viewModel)
         {
             ViewBag.ViewModel = viewModel;
-            viewModel.AchievementDateTo = DateTime.Today;
+            viewModel.AchievementDateFrom = viewModel.AchievementDateTo = DateTime.Today;
+            viewModel.AchievementYearMonthTo = viewModel.AchievementYearMonthFrom = String.Format("{0:yyyy/MM}", viewModel.AchievementDateFrom);
             return View();
         }
 
         public ActionResult ContributionIndex(AchievementQueryViewModel viewModel)
         {
             ViewBag.ViewModel = viewModel;
-            viewModel.AchievementDateTo = DateTime.Today;
+            viewModel.AchievementDateFrom = viewModel.AchievementDateTo = DateTime.Today;
+            viewModel.AchievementYearMonthTo = viewModel.AchievementYearMonthFrom = String.Format("{0:yyyy/MM}", viewModel.AchievementDateFrom);
             return View();
         }
 
         public ActionResult BranchContributionIndex(AchievementQueryViewModel viewModel)
         {
             ViewBag.ViewModel = viewModel;
-            viewModel.AchievementDateTo = DateTime.Today;
+            viewModel.AchievementDateFrom = viewModel.AchievementDateTo = DateTime.Today;
+            viewModel.AchievementYearMonthTo = viewModel.AchievementYearMonthFrom = String.Format("{0:yyyy/MM}", viewModel.AchievementDateFrom);
             return View();
         }
 

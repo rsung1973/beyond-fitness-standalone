@@ -30,7 +30,6 @@
     IQueryable<UserProfile> _model;
     CalendarEventQueryViewModel _viewModel;
     String _dialogID = $"attendee{DateTime.Now.Ticks}";
-    UserProfile _profile;
 
     protected override void OnInit(EventArgs e)
     {
@@ -39,7 +38,6 @@
         models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
         _model = (IQueryable<UserProfile>)this.Model;
         _viewModel = (CalendarEventQueryViewModel)ViewBag.ViewModel;
-        _profile = Context.GetUser();
     }
 
 

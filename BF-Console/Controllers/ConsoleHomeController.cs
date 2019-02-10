@@ -63,15 +63,31 @@ namespace BFConsole.Controllers
         public ActionResult ContractIndex(CourseContractQueryViewModel viewModel)
         {
             ViewBag.ViewModel = viewModel;
+            viewModel.ContractDateFrom = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+            viewModel.ContractDateTo = viewModel.ContractDateFrom.Value.AddMonths(1).AddDays(-1);
+
             var profile = HttpContext.GetUser();
             profile.ReportInputError = InputErrorView;
             viewModel.KeyID = profile.UID.EncryptKey();
             return View(profile.LoadInstance(models));
         }
 
+        public ActionResult ReportIndex(CourseContractQueryViewModel viewModel)
+        {
+            ViewResult result = (ViewResult)ContractIndex(viewModel);
+            result.ViewName = "ReportIndex";
+            return result;
+
+        }
+
         [RoleAuthorize(RoleID = new int[] { (int)Naming.RoleID.Administrator, (int)Naming.RoleID.Assistant, (int)Naming.RoleID.Officer, (int)Naming.RoleID.Coach, (int)Naming.RoleID.Servitor })]
         public ActionResult EditCourseContract(CourseContractQueryViewModel viewModel)
         {
+            ViewBag.ViewModel = viewModel;
+            if(viewModel.KeyID!=null)
+            {
+                viewModel.ContractID = viewModel.DecryptKeyValue();
+            }
             var profile = HttpContext.GetUser();
             var item = models.GetTable<CourseContract>().Where(c => c.ContractID == viewModel.ContractID).FirstOrDefault();
             if (item != null)
@@ -118,18 +134,37 @@ namespace BFConsole.Controllers
         public ActionResult SignCourseContract(CourseContractQueryViewModel viewModel)
         {
             ViewBag.ViewModel = viewModel;
+            if (viewModel.KeyID != null)
+            {
+                viewModel.ContractID = viewModel.DecryptKeyValue();
+            }
+
             var profile = HttpContext.GetUser();
 
             var item = models.GetTable<CourseContract>().Where(c => c.ContractID == viewModel.ContractID).FirstOrDefault();
 
             if (item == null)
             {
-                return View("~/Views/ConsoleHome/Shared/AlertMessage.ascx", model: "合約資料錯誤!!");
+                ViewBag.GoBack = true;
+                return View("~/Views/Shared/JsAlert.ascx", model: "合約資料錯誤!!");
             }
 
             ViewBag.DataItem = item;
 
             return View(profile.LoadInstance(models));
+        }
+
+        [RoleAuthorize(RoleID = new int[] { (int)Naming.RoleID.Administrator, (int)Naming.RoleID.Assistant, (int)Naming.RoleID.Officer, (int)Naming.RoleID.Coach, (int)Naming.RoleID.Servitor })]
+        public ActionResult SignContractService(CourseContractQueryViewModel viewModel)
+        {
+            ViewResult result = (ViewResult)SignCourseContract(viewModel);
+
+            if (ViewBag.DataItem is CourseContract item)
+            {
+                result.ViewName = "SignContractService";
+            }
+
+            return result;
         }
 
         public ActionResult CalendarEventItems(FullCalendarViewModel viewModel)
@@ -281,6 +316,65 @@ namespace BFConsole.Controllers
             return View("~/Views/ConsoleHome/Module/ExerciseBillboardDetails.ascx", items);
         }
 
+        [RoleAuthorize(RoleID = new int[] { (int)Naming.RoleID.Administrator, (int)Naming.RoleID.Assistant, (int)Naming.RoleID.Officer, (int)Naming.RoleID.Coach, (int)Naming.RoleID.Servitor })]
+        public ActionResult ApplyContractService(CourseContractQueryViewModel viewModel)
+        {
+            ViewResult result = (ViewResult)SignCourseContract(viewModel);
+            CourseContract item = (CourseContract)ViewBag.DataItem;
+            if (item != null)
+            {
+                result.ViewName = "ApplyContractService";
+            }
+            return result;
+        }
+
+        [RoleAuthorize(RoleID = new int[] { (int)Naming.RoleID.Administrator, (int)Naming.RoleID.Assistant, (int)Naming.RoleID.Officer, (int)Naming.RoleID.Coach, (int)Naming.RoleID.Servitor })]
+        public ActionResult ReassignFitnessConsultant(CourseContractQueryViewModel viewModel)
+        {
+            ViewResult result = (ViewResult)SignCourseContract(viewModel);
+            CourseContract item = (CourseContract)ViewBag.DataItem;
+            if (item != null)
+            {
+                result.ViewName = "ReassignFitnessConsultant";
+            }
+            return result;
+        }
+
+        [RoleAuthorize(RoleID = new int[] { (int)Naming.RoleID.Administrator, (int)Naming.RoleID.Assistant, (int)Naming.RoleID.Officer, (int)Naming.RoleID.Coach, (int)Naming.RoleID.Servitor })]
+        public ActionResult PostponeContractExpiration(CourseContractQueryViewModel viewModel)
+        {
+            ViewResult result = (ViewResult)SignCourseContract(viewModel);
+            CourseContract item = (CourseContract)ViewBag.DataItem;
+            if (item != null)
+            {
+                result.ViewName = "PostponeContractExpiration";
+            }
+            return result;
+        }
+
+        [RoleAuthorize(RoleID = new int[] { (int)Naming.RoleID.Administrator, (int)Naming.RoleID.Assistant, (int)Naming.RoleID.Officer, (int)Naming.RoleID.Coach, (int)Naming.RoleID.Servitor })]
+        public ActionResult TransferContract(CourseContractQueryViewModel viewModel)
+        {
+            ViewResult result = (ViewResult)SignCourseContract(viewModel);
+            CourseContract item = (CourseContract)ViewBag.DataItem;
+            if (item != null)
+            {
+                result.ViewName = "TransferContract";
+            }
+            return result;
+        }
+
+        [RoleAuthorize(RoleID = new int[] { (int)Naming.RoleID.Administrator, (int)Naming.RoleID.Assistant, (int)Naming.RoleID.Officer, (int)Naming.RoleID.Coach, (int)Naming.RoleID.Servitor })]
+        public ActionResult TerminateContract(CourseContractQueryViewModel viewModel)
+        {
+            ViewResult result = (ViewResult)SignCourseContract(viewModel);
+            CourseContract item = (CourseContract)ViewBag.DataItem;
+            if (item != null)
+            {
+                result.ViewName = "TerminateContract";
+            }
+            return result;
+        }
 
     }
 }

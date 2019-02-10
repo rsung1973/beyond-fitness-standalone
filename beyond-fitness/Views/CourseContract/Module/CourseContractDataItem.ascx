@@ -44,7 +44,7 @@
     </td>
     <td>
         <%= revision==null ? "新合約" : revision.Reason %></td>
-    <td nowrap="noWrap"><%= ((Naming.CourseContractStatus)_model.Status).ToString() %>
+    <td nowrap="noWrap"><%= ((Naming.ContractQueryStatus)_model.Status).ToString() %>
         <%= _model.Expiration.HasValue && _model.Expiration.Value<DateTime.Today ? "(*)" : null %>
     </td>
     <td nowrap="noWrap">

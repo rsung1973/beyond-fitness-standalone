@@ -623,7 +623,7 @@ namespace WebHome.Helper.BusinessOperation
             }
         }
 
-        public static void MarkContractNo<TEntity>(this CourseContract item,ModelSource<TEntity> models)
+        public static void MarkContractNo<TEntity>(this CourseContract item, ModelSource<TEntity> models)
             where TEntity : class, new()
         {
             if (item.ContractNo == null)
@@ -637,7 +637,7 @@ namespace WebHome.Helper.BusinessOperation
             }
         }
 
-        public static String MakeContractEffective<TEntity>(this CourseContract item,ModelSource<TEntity> models, UserProfile profile, Naming.CourseContractStatus fromStatus)
+        public static String MakeContractEffective<TEntity>(this CourseContract item, ModelSource<TEntity> models, UserProfile profile, Naming.CourseContractStatus fromStatus)
             where TEntity : class, new()
         {
             if (!item.ExecuteContractStatus(profile, Naming.CourseContractStatus.已生效, fromStatus))
@@ -704,7 +704,7 @@ namespace WebHome.Helper.BusinessOperation
         }
 
 
-        public static CourseContract ConfirmContractSignature<TEntity>(this CourseContractViewModel viewModel, SampleController<TEntity> controller, out String alertMessage,out String pdfFile)
+        public static CourseContract ConfirmContractSignature<TEntity>(this CourseContractViewModel viewModel, SampleController<TEntity> controller, out String alertMessage, out String pdfFile)
             where TEntity : class, new()
         {
             alertMessage = null;
@@ -817,6 +817,319 @@ namespace WebHome.Helper.BusinessOperation
                 alertMessage = "合約資料錯誤!!";
                 return null;
             }
+        }
+
+        public static CourseContract ConfirmContractServiceSignature<TEntity>(this CourseContractViewModel viewModel, SampleController<TEntity> controller, out String alertMessage, out String pdfFile)
+            where TEntity : class, new()
+        {
+            alertMessage = null;
+            pdfFile = null;
+            var ModelState = controller.ModelState;
+            var ViewBag = controller.ViewBag;
+            var HttpContext = controller.HttpContext;
+            var models = controller.DataSource;
+
+            ViewBag.ViewModel = viewModel;
+            var profile = HttpContext.GetUser();
+
+            if (viewModel.KeyID != null)
+            {
+                viewModel.ContractID = viewModel.DecryptKeyValue();
+            }
+
+            var item = models.GetTable<CourseContractRevision>().Where(c => c.RevisionID == viewModel.ContractID).FirstOrDefault();
+            if (item != null)
+            {
+                CourseContract contract = item.CourseContract;
+                var owner = contract.CourseContractMember.Where(m => m.UID == contract.OwnerID).First();
+
+                if (contract.CourseContractType.ContractCode == "CFA")
+                {
+                    if (owner.CourseContractSignature.Count(s => s.SignatureName.StartsWith("Signature") && s.Signature != null) < 1)
+                    {
+                        alertMessage = "未完成簽名!!";
+                        return null;
+                    }
+                }
+                else
+                {
+
+                    if (owner.CourseContractSignature.Count(s => s.SignatureName.StartsWith("Signature") && s.Signature != null) < 1)
+                    {
+                        alertMessage = "未完成簽名!!";
+                        return null;
+                    }
+
+                    //if (contract.CourseContractType.IsGroup == true)
+                    //{
+                    //    if (contract.CourseContractMember.Any(m => m.CourseContractSignature.Count(s => s.SignatureName.StartsWith("Signature") && s.Signature != null) < 1))
+                    //    {
+                    //        return View("~/Views/Shared/JsAlert.ascx", model: "未完成簽名!!");
+                    //    }
+
+                    //    foreach (var m in contract.CourseContractMember)
+                    //    {
+                    //        if (m.UserProfile.CurrentYearsOld() < 18 && owner.CourseContractSignature.Count(s => s.SignatureName.StartsWith("Guardian") && s.Signature != null) < 1)
+                    //        {
+                    //            return View("~/Views/Shared/JsAlert.ascx", model: "家長/監護人未完成簽名!!");
+                    //        }
+                    //    }
+                    //}
+                }
+
+                if (viewModel.Extension != true)
+                {
+                    alertMessage = "請勾選合約聲明!!";
+                    return null;
+                }
+
+                if (item.Reason == "展延")
+                {
+                    if (viewModel.Booking != true || viewModel.Cancel!=true)
+                    {
+                        alertMessage = "請勾選合約聲明!!";
+                        return null;
+                    }
+                }
+
+                if (!item.EnableContractAmendment(models, profile))
+                {
+                    alertMessage = "服務狀態錯誤，請重新檢查!!";
+                    return null;
+                }
+
+                pdfFile = item.CreateContractAmendmentPDF(true);
+                return contract;
+            }
+            else
+            {
+                alertMessage = "合約資料錯誤!!";
+                return null;
+            }
+        }
+
+        public static bool EnableContractAmendment<TEntity>(this CourseContractRevision item,ModelSource<TEntity> models, UserProfile profile,Naming.CourseContractStatus? fromStatus = Naming.CourseContractStatus.待簽名)
+            where TEntity : class, new()
+        {
+            if (!item.CourseContract.ExecuteContractStatus(profile, Naming.CourseContractStatus.已生效, fromStatus, false))
+                return false;
+
+            item.CourseContract.EffectiveDate = DateTime.Now;
+            models.SubmitChanges();
+
+            foreach (var m in item.CourseContract.CourseContractMember)
+            {
+                models.ExecuteCommand(@"
+                        UPDATE UserRole
+                        SET        RoleID = {2}
+                        WHERE   (UID = {0}) AND (RoleID = {1})", m.UID, (int)Naming.RoleID.Preliminary, (int)Naming.RoleID.Learner);
+            }
+
+            switch (item.Reason)
+            {
+                case "展延":
+                    item.SourceContract.Expiration = item.CourseContract.Expiration;
+                    models.SubmitChanges();
+                    break;
+                case "轉點":
+                    item.ProcessContractMigration();
+                    break;
+                case "轉讓":
+                    item.ProcessContractTransference();
+                    break;
+                case "終止":
+                    item.ProcessContractTermination(profile);
+                    break;
+                case "轉換體能顧問":
+                    item.SourceContract.FitnessConsultant = item.CourseContract.FitnessConsultant;
+                    models.SubmitChanges();
+                    break;
+
+            }
+
+            return true;
+
+        }
+
+
+        public static CourseContract CommitContractService<TEntity>(this CourseContractViewModel viewModel, SampleController<TEntity> controller, out String alertMessage)
+            where TEntity : class, new()
+        {
+            alertMessage = null;
+            var ModelState = controller.ModelState;
+            var ViewBag = controller.ViewBag;
+            var HttpContext = controller.HttpContext;
+            var models = controller.DataSource;
+
+            ViewBag.ViewModel = viewModel;
+            var profile = HttpContext.GetUser();
+
+            if (viewModel.KeyID != null)
+            {
+                viewModel.ContractID = viewModel.DecryptKeyValue();
+            }
+            var item = models.GetTable<CourseContract>().Where(c => c.ContractID == viewModel.ContractID).FirstOrDefault();
+            if (item == null)
+            {
+                alertMessage = "合約資料錯誤!!";
+                return null;
+            }
+
+            CourseContract newItem;
+
+            if (!viewModel.FitnessConsultant.HasValue)
+            {
+                ModelState.AddModelError("FitnessConsultant", "請選擇體能顧問!!");
+            }
+
+            if (String.IsNullOrEmpty(viewModel.Reason))
+            {
+                ModelState.AddModelError("Reason", "請選擇申請項目!!");
+            }
+
+            if (viewModel.Reason == "終止")
+            {
+                if (!viewModel.SettlementPrice.HasValue)
+                    ModelState.AddModelError("SettlementPrice", "請填入課程單價!!");
+            }
+            else if (viewModel.Reason == "轉讓")
+            {
+                if (viewModel.UID == null || viewModel.UID.Length < 1 || viewModel.UID[0] <= 0)
+                {
+                    ModelState.AddModelError("UID", "請選擇上課學員!!");
+                }
+            }
+            else if (viewModel.Reason == "展延")
+            {
+                if (!viewModel.MonthExtension.HasValue)
+                {
+                    ModelState.AddModelError("MonthExtension", "請選擇展延期間!!");
+                }
+            }
+            else if (viewModel.Reason == "轉點")
+            {
+                if (!viewModel.PriceID.HasValue)
+                {
+                    ModelState.AddModelError("PriceID", "請選擇課程單價!!");
+                }
+            }
+
+            if (!ModelState.IsValid)
+            {
+                ViewBag.ModelState = ModelState;
+                return null;
+            }
+
+            newItem = new CourseContract
+            {
+                AgentID = profile.UID,  //item.LessonPriceType.BranchStore.ManagerID.Value,
+                CourseContractExtension = new Models.DataEntity.CourseContractExtension
+                {
+                    BranchID = item.CourseContractExtension.BranchID
+                }
+            };
+            models.GetTable<CourseContract>().InsertOnSubmit(newItem);
+
+            newItem.ContractType = item.ContractType;
+            newItem.ContractDate = DateTime.Now;
+            newItem.Subject = item.Subject;
+            newItem.ValidFrom = item.ValidFrom;
+            newItem.Expiration = item.Expiration;
+            newItem.OwnerID = item.OwnerID;
+            newItem.Lessons = item.Lessons;
+            newItem.PriceID = item.PriceID;
+            newItem.Remark = viewModel.Remark;
+            newItem.FitnessConsultant = viewModel.FitnessConsultant.Value;
+            newItem.TotalCost = item.TotalCost;
+            newItem.CourseContractRevision = new CourseContractRevision
+            {
+                OriginalContract = item.ContractID,
+                Reason = viewModel.Reason,
+                RevisionNo = item.RevisionList.Count + 1
+            };
+            newItem.SequenceNo = newItem.CourseContractRevision.RevisionNo;
+            newItem.ContractNo = item.ContractNo;   // + "-" + String.Format("{0:00}", newItem.CourseContractRevision.RevisionNo);
+
+            if (viewModel.Reason != "轉換體能顧問")
+            {
+                newItem.ExecuteContractStatus(profile, Naming.CourseContractStatus.待確認, null);
+                if (profile.IsManager())
+                {
+                    newItem.ExecuteContractStatus(profile, Naming.CourseContractStatus.待簽名, null);
+                }
+            }
+
+            switch (viewModel.Reason)
+            {
+                case "展延":
+
+                    newItem.CourseContractMember.AddRange(item.CourseContractMember.Select(u => new CourseContractMember
+                    {
+                        UID = u.UID
+                    }));
+
+                    newItem.Expiration = newItem.Expiration.Value.AddMonths(viewModel.MonthExtension.Value);
+                    break;
+
+                case "轉點":
+
+                    newItem.CourseContractMember.AddRange(item.CourseContractMember.Select(u => new CourseContractMember
+                    {
+                        UID = u.UID
+                    }));
+
+                    var price = models.GetTable<LessonPriceType>().Where(p => p.PriceID == viewModel.PriceID).First();
+                    newItem.PriceID = viewModel.PriceID.Value;
+                    newItem.Lessons = item.RemainedLessonCount();
+                    newItem.TotalCost = newItem.Lessons * price.ListPrice;
+                    if (item.CourseContractType.GroupingLessonDiscount != null)
+                    {
+                        newItem.TotalCost = newItem.TotalCost * item.CourseContractType.GroupingLessonDiscount.GroupingMemberCount * item.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount / 100;
+                    }
+                    newItem.CourseContractExtension.BranchID = price.BranchID.Value;
+
+                    break;
+
+                case "轉讓":
+                    newItem.OwnerID = viewModel.UID[0];
+                    newItem.CourseContractMember.Clear();
+                    newItem.CourseContractMember.Add(new CourseContractMember
+                    {
+                        UID = viewModel.UID[0]
+                    });
+                    break;
+
+                case "終止":
+
+                    newItem.CourseContractMember.AddRange(item.CourseContractMember.Select(u => new CourseContractMember
+                    {
+                        UID = u.UID
+                    }));
+
+                    newItem.CourseContractExtension.SettlementPrice = viewModel.SettlementPrice;
+                    break;
+
+                case "轉換體能顧問":
+
+                    newItem.CourseContractMember.AddRange(item.CourseContractMember.Select(u => new CourseContractMember
+                    {
+                        UID = u.UID
+                    }));
+
+                    newItem.FitnessConsultant = viewModel.FitnessConsultant.Value;
+                    if(profile.IsManager())
+                    {
+                        newItem.CourseContractRevision.EnableContractAmendment(models, profile, null);
+                    }
+                    else
+                    {
+                        newItem.ExecuteContractStatus(profile, Naming.CourseContractStatus.待確認, null);
+                    }
+                    break;
+            }
+
+            models.SubmitChanges();
+            return newItem;
         }
     }
 }

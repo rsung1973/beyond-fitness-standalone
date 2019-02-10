@@ -75,12 +75,12 @@
                                             if (_model.ContractType == 1
                                                 && totalPaid >= _model.TotalCost)
                                             { %>
-                                    <option value="轉讓">轉讓</option>
+                                    <%--<option value="轉讓">轉讓</option>--%>
                                         <%  }
                                             if (_model.CourseContractExtension.BranchID != 2
                                                 && totalPaid >= contractCost)
                                             { %>
-                                    <option value="轉點">轉點</option>
+                                    <%--<option value="轉點">轉點</option>--%>
                                     <%      }
                                         }
                                     } %>

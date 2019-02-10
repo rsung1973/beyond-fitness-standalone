@@ -7,6 +7,7 @@
 <%@ Import Namespace="WebHome.Models.ViewModel" %>
 <%@ Import Namespace="WebHome.Models.DataEntity" %>
 <%@ Import Namespace="WebHome.Controllers" %>
+<%@ Import Namespace="Newtonsoft.Json" %>
 
 <!--我的分店合約-->
 <div class="container-fluid">
@@ -25,6 +26,7 @@
         </ul>
         <ul class="row clearfix list-unstyled m-b-0">
             <li class="col-lg-3 col-md-3 col-sm-6">
+                <%  Html.RenderPartial("~/Views/ContractConsole/Module/ToRenewByBranch.ascx", _model); %>
             </li>
             <li class="col-lg-3 col-md-3 col-sm-6">
                 <%  Html.RenderPartial("~/Views/ContractConsole/Module/AboutCompleteLessons.ascx", _effectiveItems); %>

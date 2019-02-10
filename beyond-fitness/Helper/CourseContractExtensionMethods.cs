@@ -208,23 +208,42 @@ namespace WebHome.Helper
             return item.CourseContractRevision != null;
         }
 
+        public static String ContractCurrentStatus(this CourseContract item)
+        {
+            return item.IsContractService()
+                        ? ((Naming.ContractServiceStatus)item.Status).ToString()
+                        : ((Naming.ContractQueryStatus)item.Status).ToString();
+        }
+
         public static bool IsEditable<TEntity>(this CourseContract item, ModelSource<TEntity> models, UserProfile agent)
                 where TEntity : class, new()
         {
             return models.GetContractInEditingByAgent(agent).Any(c => c.ContractID == item.ContractID); ;
-            
+
         }
 
         public static bool IsSignable<TEntity>(this CourseContract item, ModelSource<TEntity> models, UserProfile agent)
                 where TEntity : class, new()
         {
-            return models.GetContractToSignByAgent(agent).Any(c => c.ContractID == item.ContractID); ;
+            return models.GetContractToSignByAgent(agent).Any(c => c.ContractID == item.ContractID);
         }
 
         public static bool IsApprovable<TEntity>(this CourseContract item, ModelSource<TEntity> models, UserProfile agent)
                 where TEntity : class, new()
         {
-            return models.GetContractToConfirmByAgent(agent).Any(c => c.ContractID == item.ContractID); ;
+            return models.GetContractToConfirmByAgent(agent).Any(c => c.ContractID == item.ContractID);
+        }
+
+        public static bool IsServiceApprovable<TEntity>(this CourseContract item, ModelSource<TEntity> models, UserProfile agent)
+                where TEntity : class, new()
+        {
+            return models.GetAmendmentToAllowByAgent(agent).Any(c => c.RevisionID == item.ContractID);
+        }
+
+        public static bool IsServiceSignable<TEntity>(this CourseContract item, ModelSource<TEntity> models, UserProfile agent)
+                where TEntity : class, new()
+        {
+            return models.GetAmendmentToSignByAgent(agent).Any(c => c.RevisionID == item.ContractID);
         }
 
         public static bool IsPayable<TEntity>(this CourseContract item, ModelSource<TEntity> models)
@@ -238,9 +257,17 @@ namespace WebHome.Helper
         public static bool CanApplyContractAmendment<TEntity>(this CourseContract item, ModelSource<TEntity> models)
                 where TEntity : class, new()
         {
-            return item.Status==(int)Naming.CourseContractStatus.已生效
-                    && !models.GetTable<CourseContractRevision>().Any(r => r.OriginalContract == item.ContractID && r.CourseContract.Status < (int)Naming.CourseContractStatus.已生效);
+            return (item.Status == (int)Naming.CourseContractStatus.已生效
+                        || item.Status == (int)Naming.CourseContractStatus.已過期)
+                    && !item.IsContractServiceInProgress(models);
         }
+
+        public static bool IsContractServiceInProgress<TEntity>(this CourseContract item, ModelSource<TEntity> models)
+                where TEntity : class, new()
+        {
+            return models.GetTable<CourseContractRevision>().Any(r => r.OriginalContract == item.ContractID && r.CourseContract.Status < (int)Naming.CourseContractStatus.已生效);
+        }
+
 
         public static IQueryable<LessonPriceType> PromptEffectiveLessonPrice<TEntity>(this ModelSource<TEntity> models)
                 where TEntity : class, new()
@@ -264,6 +291,23 @@ namespace WebHome.Helper
                 items = items.Where(u => false);
             }
             return items;
+        }
+
+        public static IQueryable<CourseContract> FilterByAlarmedContract<TEntity>(this IQueryable<CourseContract> items, ModelSource<TEntity> models, int alarmCount)
+            where TEntity : class, new()
+        {
+            var c0 = items.Where(c => c.ContractType == (int)Naming.ContractTypeDefinition.CFA);
+            var c1 = items.Where(c => c.ContractType != (int)Naming.ContractTypeDefinition.CFA);
+
+            var c2 = c0.Select(c => new { Contract = c, RemainedCount = c.Lessons - c.RegisterLessonContract.Sum(l => l.RegisterLesson.LessonTime.Count()) })
+                        .Concat(c1.Select(c => new { Contract = c, RemainedCount = c.Lessons - c.RegisterLessonContract.First().RegisterLesson.GroupingLesson.LessonTime.Count }));
+            return c2.Where(c => c.RemainedCount <= alarmCount).Select(c => c.Contract);
+        }
+
+        public static IQueryable<CourseContract> PromptAlarmedContract<TEntity>(this ModelSource<TEntity> models, int alarmCount)
+            where TEntity : class, new()
+        {
+            return models.PromptEffectiveContract().FilterByAlarmedContract(models, alarmCount);
         }
 
 

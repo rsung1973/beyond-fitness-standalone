@@ -519,6 +519,9 @@ namespace WebHome.Models.DataEntity
     partial void InsertPreferredLessonTime(PreferredLessonTime instance);
     partial void UpdatePreferredLessonTime(PreferredLessonTime instance);
     partial void DeletePreferredLessonTime(PreferredLessonTime instance);
+    partial void InsertContractMonthlySummary(ContractMonthlySummary instance);
+    partial void UpdateContractMonthlySummary(ContractMonthlySummary instance);
+    partial void DeleteContractMonthlySummary(ContractMonthlySummary instance);
     #endregion
 		
 		public BFDataContext() : 
@@ -1860,6 +1863,14 @@ namespace WebHome.Models.DataEntity
 			get
 			{
 				return this.GetTable<PreferredLessonTime>();
+			}
+		}
+		
+		public System.Data.Linq.Table<ContractMonthlySummary> ContractMonthlySummary
+		{
+			get
+			{
+				return this.GetTable<ContractMonthlySummary>();
 			}
 		}
 		
@@ -21053,6 +21064,10 @@ namespace WebHome.Models.DataEntity
 		
 		private System.Nullable<System.DateTime> _PayoffDue;
 		
+		private System.Nullable<System.DateTime> _ValidTo;
+		
+		private System.Nullable<bool> _Entrusted;
+		
 		private EntitySet<RegisterLessonContract> _RegisterLessonContract;
 		
 		private EntitySet<CourseContractMember> _CourseContractMember;
@@ -21074,6 +21089,8 @@ namespace WebHome.Models.DataEntity
 		private EntitySet<ContractTrustTrack> _ContractTrustTrack;
 		
 		private EntitySet<ContractElement> _ContractElements;
+		
+		private EntitySet<ContractMonthlySummary> _ContractMonthlySummary;
 		
 		private EntityRef<LessonPriceType> _LessonPriceType;
 		
@@ -21135,6 +21152,10 @@ namespace WebHome.Models.DataEntity
     partial void OnInstallmentIDChanged();
     partial void OnPayoffDueChanging(System.Nullable<System.DateTime> value);
     partial void OnPayoffDueChanged();
+    partial void OnValidToChanging(System.Nullable<System.DateTime> value);
+    partial void OnValidToChanged();
+    partial void OnEntrustedChanging(System.Nullable<bool> value);
+    partial void OnEntrustedChanged();
     #endregion
 		
 		public CourseContract()
@@ -21150,6 +21171,7 @@ namespace WebHome.Models.DataEntity
 			this._CourseContractLevel = new EntitySet<CourseContractLevel>(new Action<CourseContractLevel>(this.attach_CourseContractLevel), new Action<CourseContractLevel>(this.detach_CourseContractLevel));
 			this._ContractTrustTrack = new EntitySet<ContractTrustTrack>(new Action<ContractTrustTrack>(this.attach_ContractTrustTrack), new Action<ContractTrustTrack>(this.detach_ContractTrustTrack));
 			this._ContractElements = new EntitySet<ContractElement>(new Action<ContractElement>(this.attach_ContractElements), new Action<ContractElement>(this.detach_ContractElements));
+			this._ContractMonthlySummary = new EntitySet<ContractMonthlySummary>(new Action<ContractMonthlySummary>(this.attach_ContractMonthlySummary), new Action<ContractMonthlySummary>(this.detach_ContractMonthlySummary));
 			this._LessonPriceType = default(EntityRef<LessonPriceType>);
 			this._LevelExpression = default(EntityRef<LevelExpression>);
 			this._ServingCoach = default(EntityRef<ServingCoach>);
@@ -21608,6 +21630,46 @@ namespace WebHome.Models.DataEntity
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ValidTo", DbType="DateTime")]
+		public System.Nullable<System.DateTime> ValidTo
+		{
+			get
+			{
+				return this._ValidTo;
+			}
+			set
+			{
+				if ((this._ValidTo != value))
+				{
+					this.OnValidToChanging(value);
+					this.SendPropertyChanging();
+					this._ValidTo = value;
+					this.SendPropertyChanged("ValidTo");
+					this.OnValidToChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Entrusted", DbType="Bit")]
+		public System.Nullable<bool> Entrusted
+		{
+			get
+			{
+				return this._Entrusted;
+			}
+			set
+			{
+				if ((this._Entrusted != value))
+				{
+					this.OnEntrustedChanging(value);
+					this.SendPropertyChanging();
+					this._Entrusted = value;
+					this.SendPropertyChanged("Entrusted");
+					this.OnEntrustedChanged();
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="CourseContract_RegisterLessonContract", Storage="_RegisterLessonContract", ThisKey="ContractID", OtherKey="ContractID")]
 		public EntitySet<RegisterLessonContract> RegisterLessonContract
 		{
@@ -21796,6 +21858,19 @@ namespace WebHome.Models.DataEntity
 			set
 			{
 				this._ContractElements.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="CourseContract_ContractMonthlySummary", Storage="_ContractMonthlySummary", ThisKey="ContractID", OtherKey="ContractID")]
+		public EntitySet<ContractMonthlySummary> ContractMonthlySummary
+		{
+			get
+			{
+				return this._ContractMonthlySummary;
+			}
+			set
+			{
+				this._ContractMonthlySummary.Assign(value);
 			}
 		}
 		
@@ -22148,6 +22223,18 @@ namespace WebHome.Models.DataEntity
 		}
 		
 		private void detach_ContractElements(ContractElement entity)
+		{
+			this.SendPropertyChanging();
+			entity.CourseContract = null;
+		}
+		
+		private void attach_ContractMonthlySummary(ContractMonthlySummary entity)
+		{
+			this.SendPropertyChanging();
+			entity.CourseContract = this;
+		}
+		
+		private void detach_ContractMonthlySummary(ContractMonthlySummary entity)
 		{
 			this.SendPropertyChanging();
 			entity.CourseContract = null;
@@ -39988,6 +40075,8 @@ namespace WebHome.Models.DataEntity
 		
 		private System.Nullable<int> _AllowanceID;
 		
+		private System.Nullable<int> _AdjustmentAmount;
+		
 		private EntityRef<ContractPayment> _ContractPayment;
 		
 		private EntityRef<TuitionInstallment> _TuitionInstallment;
@@ -40036,6 +40125,8 @@ namespace WebHome.Models.DataEntity
     partial void OnRemarkChanged();
     partial void OnAllowanceIDChanging(System.Nullable<int> value);
     partial void OnAllowanceIDChanged();
+    partial void OnAdjustmentAmountChanging(System.Nullable<int> value);
+    partial void OnAdjustmentAmountChanged();
     #endregion
 		
 		public Payment()
@@ -40267,6 +40358,26 @@ namespace WebHome.Models.DataEntity
 					this._AllowanceID = value;
 					this.SendPropertyChanged("AllowanceID");
 					this.OnAllowanceIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AdjustmentAmount", DbType="Int")]
+		public System.Nullable<int> AdjustmentAmount
+		{
+			get
+			{
+				return this._AdjustmentAmount;
+			}
+			set
+			{
+				if ((this._AdjustmentAmount != value))
+				{
+					this.OnAdjustmentAmountChanging(value);
+					this.SendPropertyChanging();
+					this._AdjustmentAmount = value;
+					this.SendPropertyChanged("AdjustmentAmount");
+					this.OnAdjustmentAmountChanged();
 				}
 			}
 		}
@@ -46682,6 +46793,229 @@ namespace WebHome.Models.DataEntity
 						this._ApproverID = default(Nullable<int>);
 					}
 					this.SendPropertyChanged("UserProfile");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ContractMonthlySummary")]
+	public partial class ContractMonthlySummary : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _ContractID;
+		
+		private System.DateTime _SettlementDate;
+		
+		private int _TotalPrepaid;
+		
+		private int _TotalLessonCost;
+		
+		private int _RemainedAmount;
+		
+		private System.Nullable<int> _TotalAllowanceAmount;
+		
+		private EntityRef<CourseContract> _CourseContract;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnContractIDChanging(int value);
+    partial void OnContractIDChanged();
+    partial void OnSettlementDateChanging(System.DateTime value);
+    partial void OnSettlementDateChanged();
+    partial void OnTotalPrepaidChanging(int value);
+    partial void OnTotalPrepaidChanged();
+    partial void OnTotalLessonCostChanging(int value);
+    partial void OnTotalLessonCostChanged();
+    partial void OnRemainedAmountChanging(int value);
+    partial void OnRemainedAmountChanged();
+    partial void OnTotalAllowanceAmountChanging(System.Nullable<int> value);
+    partial void OnTotalAllowanceAmountChanged();
+    #endregion
+		
+		public ContractMonthlySummary()
+		{
+			this._CourseContract = default(EntityRef<CourseContract>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ContractID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int ContractID
+		{
+			get
+			{
+				return this._ContractID;
+			}
+			set
+			{
+				if ((this._ContractID != value))
+				{
+					if (this._CourseContract.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnContractIDChanging(value);
+					this.SendPropertyChanging();
+					this._ContractID = value;
+					this.SendPropertyChanged("ContractID");
+					this.OnContractIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SettlementDate", DbType="DateTime NOT NULL", IsPrimaryKey=true)]
+		public System.DateTime SettlementDate
+		{
+			get
+			{
+				return this._SettlementDate;
+			}
+			set
+			{
+				if ((this._SettlementDate != value))
+				{
+					this.OnSettlementDateChanging(value);
+					this.SendPropertyChanging();
+					this._SettlementDate = value;
+					this.SendPropertyChanged("SettlementDate");
+					this.OnSettlementDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TotalPrepaid", DbType="Int NOT NULL")]
+		public int TotalPrepaid
+		{
+			get
+			{
+				return this._TotalPrepaid;
+			}
+			set
+			{
+				if ((this._TotalPrepaid != value))
+				{
+					this.OnTotalPrepaidChanging(value);
+					this.SendPropertyChanging();
+					this._TotalPrepaid = value;
+					this.SendPropertyChanged("TotalPrepaid");
+					this.OnTotalPrepaidChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TotalLessonCost", DbType="Int NOT NULL")]
+		public int TotalLessonCost
+		{
+			get
+			{
+				return this._TotalLessonCost;
+			}
+			set
+			{
+				if ((this._TotalLessonCost != value))
+				{
+					this.OnTotalLessonCostChanging(value);
+					this.SendPropertyChanging();
+					this._TotalLessonCost = value;
+					this.SendPropertyChanged("TotalLessonCost");
+					this.OnTotalLessonCostChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RemainedAmount", DbType="Int NOT NULL")]
+		public int RemainedAmount
+		{
+			get
+			{
+				return this._RemainedAmount;
+			}
+			set
+			{
+				if ((this._RemainedAmount != value))
+				{
+					this.OnRemainedAmountChanging(value);
+					this.SendPropertyChanging();
+					this._RemainedAmount = value;
+					this.SendPropertyChanged("RemainedAmount");
+					this.OnRemainedAmountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TotalAllowanceAmount", DbType="Int")]
+		public System.Nullable<int> TotalAllowanceAmount
+		{
+			get
+			{
+				return this._TotalAllowanceAmount;
+			}
+			set
+			{
+				if ((this._TotalAllowanceAmount != value))
+				{
+					this.OnTotalAllowanceAmountChanging(value);
+					this.SendPropertyChanging();
+					this._TotalAllowanceAmount = value;
+					this.SendPropertyChanged("TotalAllowanceAmount");
+					this.OnTotalAllowanceAmountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="CourseContract_ContractMonthlySummary", Storage="_CourseContract", ThisKey="ContractID", OtherKey="ContractID", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public CourseContract CourseContract
+		{
+			get
+			{
+				return this._CourseContract.Entity;
+			}
+			set
+			{
+				CourseContract previousValue = this._CourseContract.Entity;
+				if (((previousValue != value) 
+							|| (this._CourseContract.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._CourseContract.Entity = null;
+						previousValue.ContractMonthlySummary.Remove(this);
+					}
+					this._CourseContract.Entity = value;
+					if ((value != null))
+					{
+						value.ContractMonthlySummary.Add(this);
+						this._ContractID = value.ContractID;
+					}
+					else
+					{
+						this._ContractID = default(int);
+					}
+					this.SendPropertyChanged("CourseContract");
 				}
 			}
 		}

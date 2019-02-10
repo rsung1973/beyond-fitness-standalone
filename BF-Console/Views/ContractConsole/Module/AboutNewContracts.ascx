@@ -19,6 +19,7 @@
     }
     else
     {
+        ViewBag.EnableToCreate = false;
         Html.RenderPartial("~/Views/ContractConsole/Module/AboutNewContractsByCoach.ascx", _model);
     }
     %>

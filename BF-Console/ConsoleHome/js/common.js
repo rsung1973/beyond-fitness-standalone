@@ -101,16 +101,25 @@ $.fn.serializeObject = function () {
     return o;
 };
 
-$.fn.launchDownload = function (url, params, target) {
+var fileDownloadCheckTimer;
+$.fn.launchDownload = function (url, params, target, loading) {
 
     var data = this.serializeObject();
     if (params) {
         $.extend(data, params);
     }
 
+    if (loading) {
+        token = (new Date()).getTime();
+        data.fileDownloadToken = token;
+    }
+
     var form = $('<form></form>').attr('action', url).attr('method', 'post');//.attr('target', '_blank');
     if (target) {
         form.attr('target', target);
+        if (window.frames[target] == null) {
+            $('<iframe>').attr('name', target).appendTo($('body'));
+        }
     }
 
     Object.keys(data).forEach(function (key) {
@@ -126,9 +135,25 @@ $.fn.launchDownload = function (url, params, target) {
 
     });
 
+    if (loading) {
+        showLoading();
+        fileDownloadCheckTimer = window.setInterval(function () {
+            var cookieValue = $.cookie('fileDownloadToken');
+            if (cookieValue == token)
+                finishDownload();
+        }, 1000);
+    }
+
     //send request
     form.appendTo('body').submit().remove();
 };
+
+function finishDownload() {
+    window.clearInterval(fileDownloadCheckTimer);
+    $.removeCookie('fileDownloadToken'); //clears this cookie value
+    hideLoading();
+}
+
 
 
 var $global = {

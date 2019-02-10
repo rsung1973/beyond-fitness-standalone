@@ -64,7 +64,7 @@
 <script>
     function confirmSignature() {
         showLoading();
-        $.post('<%= Url.Action("ConfirmSignatureForAmendment","CourseContract",new { _model.RevisionID }) %>',
+        $.post('<%= Url.Action("ConfirmSignatureForAmendment","CourseContract",new { KeyID = _model.RevisionID.EncryptKey() }) %>',
             {
                 'extension': $('input[name="extension"]').is(':checked')
             }, function (data) {

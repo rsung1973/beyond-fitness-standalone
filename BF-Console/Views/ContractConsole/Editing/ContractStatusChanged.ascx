@@ -16,7 +16,7 @@
         $('').launchDownload('<%= Url.Action("EditCourseContract", "ConsoleHome") %>',
             <%= JsonConvert.SerializeObject(new 
             {
-                _model.ContractID
+                KeyID = _model.ContractID.EncryptKey()
             }) %>);
     });
 </script>
@@ -27,11 +27,12 @@
     $(function () {
         $('').launchDownload('<%= Url.Action("ShowContractList", "ContractConsole") %>',
             <%= JsonConvert.SerializeObject(new CourseContractQueryViewModel
-            {
-                FitnessConsultant = _model.FitnessConsultant,
-                ContractQueryMode = Naming.ContractServiceMode.ContractOnly,
-                Status = (int)Naming.CourseContractStatus.草稿,
-            }) %>);
+                {
+                    //FitnessConsultant = _model.FitnessConsultant,
+                    //ContractQueryMode = Naming.ContractServiceMode.ContractOnly,
+                    //Status = (int)Naming.CourseContractStatus.草稿,
+                    KeyID = _model.ContractID.EncryptKey(),
+                }) %>);
     });
 </script>
 <%  }   %>

@@ -11,6 +11,7 @@ namespace WebHome.Models.ViewModel
     {
         public String KeyID { get; set; }
         public String DialogID { get; set; }
+        public String FileDownloadToken { get; set; }
     }
 
     public class LoginViewModel

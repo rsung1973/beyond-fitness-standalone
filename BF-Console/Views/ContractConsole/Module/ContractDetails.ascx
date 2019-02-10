@@ -88,19 +88,7 @@
             });
         }
     }
-
-        //點選合約詳細資料
-    function showContractDetails(keyID) {
-            showLoading();
-            $.post('<%= Url.Action("ShowContractDetails", "ContractConsole") %>', { 'keyID': keyID }, function (data) {
-                hideLoading();
-                if ($.isPlainObject(data)) {
-                    alert(data.message);
-                } else {
-                    $(data).appendTo($('body'));
-                }
-        });
-    }
+    
 </script>
 
 <script runat="server">

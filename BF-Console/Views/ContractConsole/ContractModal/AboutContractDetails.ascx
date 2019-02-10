@@ -22,11 +22,11 @@
                                         <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordionDetail_contract" href="#collapseDetail_contract" aria-expanded="false" aria-controls="collapseDetail_contract"><i class="material-icons">subject</i> 合約詳細資訊 
                                             <%  if (_model.Status <= (int)Naming.ContractQueryStatus.待審核)
                                                 {   %>
-                                            <span class="badge bg-orange"><%= (Naming.ContractQueryStatus)_model.Status %></span>
+                                            <span class="badge bg-orange"><%= _model.ContractCurrentStatus() %></span>
                                             <%  }
                                                 else if (_model.Status == (int)Naming.CourseContractStatus.已生效)
                                                 {   %>
-                                            <span class="badge bg-green">生效中</span>
+                                            <span class="badge bg-green"><%= _model.ContractCurrentStatus() %></span>
                                             <%  }
                                                 else if (_model.Status == (int)Naming.CourseContractStatus.已過期)
                                                 {   %>
@@ -256,6 +256,23 @@
                                                             models.GetTable<ContractPayment>()
                                                                 .Where(c => c.ContractID == _model.ContractID)
                                                                 .Select(c=>c.Payment)); %>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel xl-slategray">
+                                <div class="panel-heading" role="tab" id="headingLessonList">
+                                    <%  var attended = _model.ContractType == (int)Naming.ContractTypeDefinition.CFA
+                                                                ? _model.RegisterLessonContract.Select(r => r.RegisterLesson).Sum(r => r.AttendedLessons)
+                                                                : _model.RegisterLessonContract.First().RegisterLesson.AttendedLessons; %>
+                                    <h4 class="panel-title material-icons"><a role="button" data-toggle="collapse" data-parent="#accordionDetail_contract" href="#collapseLessonList" aria-expanded="true" aria-controls="collapseLessonList"><i class="material-icons">subject</i> 上課詳細資訊 <%= attended>0 ? $"({attended})" : null %></a></h4>
+                                </div>
+                                <div id="collapseLessonList" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingLessonList">
+                                    <div class="panel-body no-padding">
+                                        <div class="row">
+                                            <div class="col-md-12 col-12">
+                                                <%  Html.RenderPartial("~/Views/ContractConsole/Module/ContractLessonList.ascx", _model.AttendedLessonList()); %>
                                             </div>
                                         </div>
                                     </div>

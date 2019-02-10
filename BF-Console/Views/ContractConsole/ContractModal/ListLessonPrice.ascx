@@ -24,11 +24,7 @@
                             <div class="list_tb tb2">
                                 <div class="list_tr">
                                     <div class="list_td">
-                                        <%= item.SeriesID.HasValue 
-                                                ? item.LowerLimit==1 
-                                                    ? "單堂"
-                                                    : item.LowerLimit + "堂"
-                                                : item.Description %>
+                                        <%= item.PriceTypeBundle() %>
                                         <%= item.LessonPriceProperty.Any(p=>p.PropertyID==(int)Naming.LessonPriceFeature.舊會員續約) ? "(舊會員續約)" : null %>
                                         <span class="badge bg-blush float-right"><%= String.Format("{0,5:##,###,###,###}",item.ListPrice) %></span></div>
                                 </div>

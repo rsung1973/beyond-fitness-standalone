@@ -7,11 +7,12 @@
 <%@ Import Namespace="WebHome.Models.ViewModel" %>
 <%@ Import Namespace="WebHome.Models.DataEntity" %>
 <%@ Import Namespace="WebHome.Controllers" %>
+<%@ Import Namespace="Newtonsoft.Json" %>
 
 <!--我的分店合約-->
 <div class="container-fluid">
     <h4 class="card-outbound-header">我的分店合約</h4>
-    <div class="card widget_3">
+    <div class="card widget_2">
         <ul class="row clearfix list-unstyled m-b-0">
             <li class="col-lg-4 col-md-6 col-sm-12">
                 <%  Html.RenderPartial("~/Views/ContractConsole/Module/AboutExpiringByOfficer.ascx", _model); %>
@@ -25,6 +26,7 @@
         </ul>
         <ul class="row clearfix list-unstyled m-b-0">
             <li class="col-lg-3 col-md-3 col-sm-6">
+                <%  Html.RenderPartial("~/Views/ContractConsole/Module/ToRenewByOfficer.ascx", _model); %>
             </li>
             <li class="col-lg-3 col-md-3 col-sm-6">
                 <%  Html.RenderPartial("~/Views/ContractConsole/Module/AboutCompleteLessons.ascx", _effectiveItems); %>

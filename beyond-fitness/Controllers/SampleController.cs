@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -62,5 +63,23 @@ namespace WebHome.Controllers
                 base.OnException(filterContext);
             }
         }
+
+        protected override IAsyncResult BeginExecuteCore(AsyncCallback callback, object state)
+        {
+            HttpCookie cookie = Request.Cookies["cLang"];
+            if (cookie != null)
+            {
+                var lang = cookie.Value;
+                if (lang != null)
+                {
+                    var cultureInfo = new CultureInfo(lang);
+                    Thread.CurrentThread.CurrentUICulture = cultureInfo;
+                    Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture(cultureInfo.Name);
+                    ViewBag.Lang = lang;
+                }
+            }
+            return base.BeginExecuteCore(callback, state);
+        }
+
     }
 }

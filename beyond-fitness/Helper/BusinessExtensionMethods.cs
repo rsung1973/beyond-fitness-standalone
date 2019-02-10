@@ -47,6 +47,7 @@ namespace WebHome.Helper
                     r.RegisterLesson.Attended = (int)Naming.LessonStatus.課程結束;
                 }
                 contract.Status = (int)Naming.CourseContractStatus.已履行;
+                contract.ValidTo = DateTime.Now;
                 models.SubmitChanges();
             }
         }
@@ -1536,6 +1537,7 @@ namespace WebHome.Helper
                 foreach (var item in items.GroupBy(t => t.ContractID))
                 {
                     var contract = models.GetTable<CourseContract>().Where(t => t.ContractID == item.Key).First();
+                    contract.Entrusted = true;
                     ContractTrustSettlement contractTrustSettlement;
                     bool toUpdateTrustSettlement = false;
                     if (contract.CourseContractTrust == null)
@@ -1709,6 +1711,208 @@ namespace WebHome.Helper
                 .Join(models.GetTable<TrainingItem>(), x => x.ExecutionID, i => i.ExecutionID, (x, i) => i)
                 .Join(models.GetTable<TrainingItemAids>(), x => x.ItemID, s => s.ItemID, (x, s) => s);
         }
+
+        public static void ExecuteMonthlySettlement<TEntity>(this ModelSource<TEntity> models, DateTime settlementDate)
+            where TEntity : class, new()
+        {
+            var calcDate = settlementDate.FirstDayOfMonth();
+            models.ExecuteCommand(@"DELETE FROM ContractMonthlySummary
+                                    WHERE        (SettlementDate = {0})", calcDate);
+
+            var table = models.GetTable<ContractMonthlySummary>();
+            var items = models.GetTable<CourseContract>()
+                    .Where(c => c.CourseContractRevision == null)
+                    .Where(c => c.EffectiveDate < calcDate)
+                    .Where(c => c.Status >= (int)Naming.CourseContractStatus.已生效);
+
+            foreach (var c in items)
+            {
+                try
+                {
+                    bool hasItem = false;
+
+                    ContractMonthlySummary item = new ContractMonthlySummary
+                    {
+                        ContractID = c.ContractID,
+                        SettlementDate = calcDate,
+                    };
+
+                    var paymentItems = c.ContractPayment.Select(p => p.Payment)
+                            .Where(p => p.TransactionType != (int)Naming.PaymentTransactionType.合約終止沖銷)
+                            .Where(p => p.PayoffDate < calcDate)
+                            .Where(p => p.VoidPayment == null || p.AllowanceID.HasValue);
+
+                    if (paymentItems.Count() > 0)
+                    {
+                        hasItem = true;
+                        item.TotalPrepaid = (paymentItems.Sum(p => p.PayoffAmount) ?? 0);
+                        //- ((int?)paymentItems.Where(p => p.AllowanceID.HasValue)
+                        //    .Select(p => p.InvoiceAllowance).Sum(a => a.TotalAmount + a.TaxAmount) ?? 0);
+                    }
+
+                    var lessons = c.AttendedLessonCount(calcDate);
+                    if (lessons > 0)
+                    {
+                        hasItem = true;
+                        item.TotalLessonCost = lessons * c.LessonPriceType.ListPrice.Value;
+                        if (c.CourseContractType.GroupingLessonDiscount != null)
+                        {
+                            item.TotalLessonCost = item.TotalLessonCost * c.CourseContractType.GroupingLessonDiscount.GroupingMemberCount * (c.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount ?? 100) / 100;
+                        }
+                    }
+                    else
+                    {
+                        item.TotalLessonCost = 0;
+                    }
+
+                    var allowanceItems = c.ContractPayment.Select(p => p.Payment)
+                            //.Where(p => p.TransactionType == (int)Naming.PaymentTransactionType.體能顧問費
+                            //            || p.TransactionType == (int)Naming.PaymentTransactionType.合約轉讓餘額
+                            //            || p.TransactionType == (int)Naming.PaymentTransactionType.合約轉點餘額)
+                            .Where(p => p.AllowanceID.HasValue)
+                            .Select(p => p.InvoiceAllowance)
+                            .Where(p => p.AllowanceDate < calcDate);
+
+                    if (allowanceItems.Count() > 0)
+                    {
+                        hasItem = true;
+                        item.TotalAllowanceAmount = (int)(allowanceItems.Sum(p => p.TotalAmount + p.TaxAmount) ?? 0);
+                    }
+
+                    if (hasItem)
+                    {
+                        item.RemainedAmount = item.TotalPrepaid - item.TotalLessonCost - (item.TotalAllowanceAmount ?? 0);
+                        if ((c.Status == (int)Naming.CourseContractStatus.已終止 || c.Status == (int)Naming.CourseContractStatus.已轉讓 || c.Status == (int)Naming.CourseContractStatus.已轉點)
+                            && c.ValidTo < calcDate)
+                        {
+                            item.RemainedAmount = 0;
+                        }
+                        table.InsertOnSubmit(item);
+                        models.SubmitChanges();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error(ex);
+                    //Console.WriteLine($"{c.ContractID}:{c.ContractID} => {ex}");
+                }
+            }
+        }
+
+
+        //public static void ExecuteMonthlySettlement<TEntity>(this ModelSource<TEntity> models, DateTime settlementDate,bool onlyEffective = true)
+        //    where TEntity : class, new()
+        //{
+        //    var calcDate = settlementDate.FirstDayOfMonth();
+        //    models.ExecuteCommand(@"DELETE FROM ContractMonthlySummary
+        //                            WHERE        (SettlementDate = {0})", calcDate);
+
+        //    var table = models.GetTable<ContractMonthlySummary>();
+        //    var items = models.GetTable<CourseContract>()
+        //            .Where(c => c.CourseContractRevision == null)
+        //            .Where(c => c.EffectiveDate < calcDate)
+        //            .Where(c => c.Status >= (int)Naming.CourseContractStatus.已生效);
+
+        //    if (onlyEffective)
+        //    {
+        //        var lastSettlement = table.Where(s => s.SettlementDate < calcDate)
+        //                .OrderByDescending(s => s.SettlementDate).FirstOrDefault();
+
+        //        if (lastSettlement != null)
+        //        {
+        //            items = items.Where(c => !c.ValidTo.HasValue || c.ValidTo >= lastSettlement.SettlementDate);
+        //        }
+        //    }
+
+        //    foreach(var c in items)
+        //    {
+        //        try
+        //        {
+
+        //            bool hasItem = false;
+
+        //            ContractMonthlySummary item = new ContractMonthlySummary
+        //            {
+        //                ContractID = c.ContractID,
+        //                SettlementDate = calcDate,
+        //            };
+
+        //            var paymentItems = c.ContractPayment.Select(p => p.Payment)
+        //                    .Where(p => p.TransactionType == (int)Naming.PaymentTransactionType.體能顧問費
+        //                                || p.TransactionType == (int)Naming.PaymentTransactionType.合約轉讓餘額
+        //                                || p.TransactionType == (int)Naming.PaymentTransactionType.合約轉點餘額)
+        //                    .Where(p => p.PayoffDate < calcDate)
+        //                    .Where(p => p.VoidPayment == null || p.AllowanceID.HasValue);
+
+        //            if (paymentItems.Count() > 0)
+        //            {
+        //                hasItem = true;
+        //                item.TotalPrepaid = (paymentItems.Sum(p => p.PayoffAmount) ?? 0);
+        //                    //- ((int?)paymentItems.Where(p => p.AllowanceID.HasValue)
+        //                    //    .Select(p => p.InvoiceAllowance).Sum(a => a.TotalAmount + a.TaxAmount) ?? 0);
+        //            }
+
+        //            var lessons = c.AttendedLessonCount(calcDate);
+        //            if (lessons > 0)
+        //            {
+        //                hasItem = true;
+        //                item.TotalLessonCost = lessons * c.LessonPriceType.ListPrice.Value;
+        //                if (c.CourseContractType.GroupingLessonDiscount != null)
+        //                {
+        //                    item.TotalLessonCost = item.TotalLessonCost * c.CourseContractType.GroupingLessonDiscount.GroupingMemberCount * (c.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount ?? 100) / 100;
+        //                }
+        //            }
+        //            else
+        //            {
+        //                item.TotalLessonCost = 0;
+        //            }
+
+        //            var allowanceItems = c.ContractPayment.Select(p => p.Payment)
+        //                    .Where(p => p.TransactionType == (int)Naming.PaymentTransactionType.體能顧問費
+        //                                || p.TransactionType == (int)Naming.PaymentTransactionType.合約轉讓餘額
+        //                                || p.TransactionType == (int)Naming.PaymentTransactionType.合約轉點餘額)
+        //                    .Where(p => p.AllowanceID.HasValue)
+        //                    .Select(p => p.InvoiceAllowance)
+        //                    .Where(p => p.AllowanceDate < calcDate);
+
+        //            if (allowanceItems.Count() > 0)
+        //            {
+        //                hasItem = true;
+        //                item.TotalAllowanceAmount = (int)(allowanceItems.Sum(p => p.TotalAmount+p.TaxAmount) ?? 0);
+        //            }
+
+        //            if (hasItem)
+        //            {
+        //                item.RemainedAmount = item.TotalPrepaid - item.TotalLessonCost;
+        //                if ((c.Status == (int)Naming.CourseContractStatus.已終止 || c.Status == (int)Naming.CourseContractStatus.已轉讓 || c.Status == (int)Naming.CourseContractStatus.已轉點)
+        //                    && c.ValidTo < calcDate)
+        //                {
+        //                    item.RemainedAmount = 0;
+        //                }
+        //                table.InsertOnSubmit(item);
+        //                models.SubmitChanges();
+        //            }
+        //            else
+        //            {
+        //                var lastItem = table.Where(m => m.ContractID == c.ContractID).OrderByDescending(m => m.SettlementDate).FirstOrDefault();
+        //                if (lastItem != null)
+        //                {
+        //                    item.TotalPrepaid = lastItem.TotalPrepaid;
+        //                    item.TotalLessonCost = lastItem.TotalLessonCost;
+        //                    item.RemainedAmount = lastItem.RemainedAmount;
+        //                    table.InsertOnSubmit(item);
+        //                    models.SubmitChanges();
+        //                }
+        //            }
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            Logger.Error(ex);
+        //            //Console.WriteLine($"{c.ContractID}:{c.ContractID} => {ex}");
+        //        }
+        //    }
+        //}
+
 
     }
 }

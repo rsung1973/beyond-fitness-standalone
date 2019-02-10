@@ -60,8 +60,8 @@ namespace WebHome.Models.ViewModel
     {
         public CourseContractQueryViewModel()
         {
-            ContractDateFrom = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
-            ContractDateTo = ContractDateFrom.Value.AddMonths(1).AddDays(-1);
+            //ContractDateFrom = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+            //ContractDateTo = ContractDateFrom.Value.AddMonths(1).AddDays(-1);
         }
         public String RealName { get; set; }
         public DateTime? ContractDateFrom { get; set; }
@@ -81,6 +81,8 @@ namespace WebHome.Models.ViewModel
         public bool? ScrollToView { get; set; }
         public bool? ByCustom { get; set; }
         public bool? IncludeTotalUnpaid { get; set; }
+        public int? AlarmCount { get; set; }
+        public bool? BypassCondition { get; set; }
 
     }
 
@@ -168,16 +170,19 @@ namespace WebHome.Models.ViewModel
         public bool? IsCancelled { get; set; }
         public DateTime? PayoffDateFrom { get; set; }
         public DateTime? PayoffDateTo { get; set; }
-
+        public bool? Entrusting { get; set; }
+        public DateTime? SettlementDate
+        {
+            get => PayoffDateFrom;
+            set => PayoffDateFrom = value;
+        }
+        public bool? BypassCondition { get; set; }
     }
 
-    public class AchievementQueryViewModel
+    public class AchievementQueryViewModel : QueryViewModel
     {
         public AchievementQueryViewModel()
         {
-            AchievementDateFrom = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
-            AchievementDateTo = AchievementDateFrom;
-            AchievementYearMonthTo = AchievementYearMonthFrom = String.Format("{0:yyyy/MM}", AchievementDateFrom);
         }
         public int? BranchID { get; set; }
         public int? CoachID { get; set; }
@@ -189,6 +194,8 @@ namespace WebHome.Models.ViewModel
         public DateTime? ClassTime { get; set; }
         public Naming.LessonQueryType? QueryType { get; set; }
         public Naming.QueryIntervalDefinition? QueryInterval { get; set; }
+        public bool? BypassCondition { get; set; }
+        public bool? DetailsOnly { get; set; }
     }
 
     public class QuestionnaireQueryViewModel : AchievementQueryViewModel
@@ -201,13 +208,10 @@ namespace WebHome.Models.ViewModel
         public int? Status { get; set; }
     }
 
-    public class TrustQueryViewModel
+    public class TrustQueryViewModel : QueryViewModel
     {
         public TrustQueryViewModel()
         {
-            TrustDateFrom = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
-            TrustDateTo = TrustDateFrom;
-            TrustYearMonth = String.Format("{0:yyyy/MM}", TrustDateFrom);
         }
         public int? BranchID { get; set; }
         public String TrustType { get; set; }
@@ -342,6 +346,19 @@ namespace WebHome.Models.ViewModel
         public int? TaskID { get; set; }
         public String UserName { get; set; }
         public int? UID { get; set; }
+    }
+
+    public class ContractSettlementViewModel
+    {
+        public DateTime? SettlementDate { get; set; }
+        public DateTime? SettlementFrom { get; set; }
+        public DateTime? SettlementTo
+        {
+            get => SettlementDate;
+            set => SettlementDate = value;
+        }
+        public bool? Effective { get; set; }
+
     }
 
 }

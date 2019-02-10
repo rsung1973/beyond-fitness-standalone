@@ -22,9 +22,7 @@
         var incomingReserved = item.LessonTime.Count(l => l.ClassTime >= DateTime.Today);
 
         var validContract = contract.Expiration.Value >= DateTime.Today;
-        var bookingCount = contract.CourseContractType.ContractCode == "CFA"
-                ? contract.RegisterLessonContract.Sum(c => c.RegisterLesson.GroupingLesson.LessonTime.Count())
-                : item.GroupingLesson.LessonTime.Count;
+        var bookingCount = contract.AttendedLessonCount();
         var totalPaid = contract.TotalPaidAmount();
         var payoffStatus = contract.TotalCost / contract.Lessons * (bookingCount + 1) <= totalPaid;
 

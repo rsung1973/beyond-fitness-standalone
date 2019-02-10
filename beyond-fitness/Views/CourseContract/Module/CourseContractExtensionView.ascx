@@ -50,6 +50,30 @@
                 </table>
                 <table class="table" style="font-size: 16px">
                     <tr>
+                        <td colspan="3">
+                            <%  if (_contract.Status >= (int)Naming.CourseContractStatus.待審核)
+                                { %>
+                                ☑
+                            <%  }
+                                else
+                                { %>
+                            <input type="checkbox" name="booking" value="<%= true %>" />
+                            <%  } %>
+                            合約僅能展延乙次，逾期失效。</td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <%  if (_contract.Status >= (int)Naming.CourseContractStatus.待審核)
+                                { %>
+                                ☑
+                            <%  }
+                                else
+                                { %>
+                            <input type="checkbox" name="cancel" value="<%= true %>" />
+                            <%  } %>
+                            展延後不得申請轉讓及退費</td>
+                    </tr>
+                    <tr>
                         <td colspan="3">備註：各項申請內容皆應依體能顧問聘請合約之規定辦理並經雙方簽署後始生效力</td>
                     </tr>
                     <tr>
