@@ -1,0 +1,3118 @@
+2019/02/02 21:15:00
+SELECT TOP (1) [t0].[UID], [t0].[UserName], [t0].[PID], [t0].[Password], [t0].[ExternalID], [t0].[Expiration], [t0].[Creator], [t0].[AuthID], [t0].[LevelID], [t0].[ThemeName], [t0].[Password2], [t0].[MemberCode], [t0].[PictureID], [t0].[RealName], [t0].[Address], [t0].[Phone], [t0].[RecentStatus], [t0].[Birthday], [t0].[Nickname], [t0].[BirthdateIndex]
+FROM [dbo].[UserProfile] AS [t0]
+WHERE [t0].[PID] = @p0
+-- @p0: Input NVarChar (Size = 4000; Prec = 0; Scale = 0) [info@beyond-fitness.tw]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT [t0].[UID], [t0].[RoleID]
+FROM [dbo].[UserRole] AS [t0]
+WHERE [t0].[UID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT [t0].[RoleID], [t0].[SiteMenu], [t0].[Role]
+FROM [dbo].[UserRoleDefinition] AS [t0]
+WHERE [t0].[RoleID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT [t0].[UID], [t0].[RoleID]
+FROM [dbo].[UserRoleAuthorization] AS [t0]
+WHERE [t0].[UID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT [t0].[RoleID], [t0].[SiteMenu], [t0].[Role]
+FROM [dbo].[UserRoleDefinition] AS [t0]
+WHERE [t0].[RoleID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [6]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT [t0].[RoleID], [t0].[SiteMenu], [t0].[Role]
+FROM [dbo].[UserRoleDefinition] AS [t0]
+WHERE [t0].[RoleID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [7]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT [t0].[RoleID], [t0].[SiteMenu], [t0].[Role]
+FROM [dbo].[UserRoleDefinition] AS [t0]
+WHERE [t0].[RoleID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [8]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+
+2019/02/02 21:15:13
+SELECT TOP (1) [t0].[UID], [t0].[UserName], [t0].[PID], [t0].[Password], [t0].[ExternalID], [t0].[Expiration], [t0].[Creator], [t0].[AuthID], [t0].[LevelID], [t0].[ThemeName], [t0].[Password2], [t0].[MemberCode], [t0].[PictureID], [t0].[RealName], [t0].[Address], [t0].[Phone], [t0].[RecentStatus], [t0].[Birthday], [t0].[Nickname], [t0].[BirthdateIndex]
+FROM [dbo].[UserProfile] AS [t0]
+WHERE [t0].[UID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[Document] AS [t0]
+LEFT OUTER JOIN [dbo].[Article] AS [t1] ON [t1].[DocID] = [t0].[DocID]
+LEFT OUTER JOIN [dbo].[Publication] AS [t2] ON [t2].[DocID] = [t1].[DocID]
+WHERE ([t2].[StartDate] < @p0) AND ((NOT ([t2].[EndDate] IS NOT NULL)) OR ([t2].[EndDate] >= @p1)) AND ([t0].[DocType] = @p2)
+-- @p0: Input Date (Size = -1; Prec = 0; Scale = 0) [2/3/2019 12:00:00 AM]
+-- @p1: Input Date (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [7]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT TOP (1) [t4].[DocID], [t4].[Title], [t4].[ArticleContent], [t4].[AuthorID], [t4].[Illustration], [t4].[Subtitle]
+FROM (
+    SELECT [t3].[DocID], [t3].[Title], [t3].[ArticleContent], [t3].[AuthorID], [t3].[Illustration], [t3].[Subtitle], [t3].[ROW_NUMBER]
+    FROM (
+        SELECT ROW_NUMBER() OVER (ORDER BY [t1].[DocID]) AS [ROW_NUMBER], [t1].[DocID], [t1].[Title], [t1].[ArticleContent], [t1].[AuthorID], [t1].[Illustration], [t1].[Subtitle]
+        FROM [dbo].[Document] AS [t0]
+        LEFT OUTER JOIN [dbo].[Article] AS [t1] ON [t1].[DocID] = [t0].[DocID]
+        LEFT OUTER JOIN [dbo].[Publication] AS [t2] ON [t2].[DocID] = [t1].[DocID]
+        WHERE ([t2].[StartDate] < @p0) AND ((NOT ([t2].[EndDate] IS NOT NULL)) OR ([t2].[EndDate] >= @p1)) AND ([t0].[DocType] = @p2)
+        ) AS [t3]
+    WHERE [t3].[ROW_NUMBER] BETWEEN @p3 + 1 AND @p3 + @p4
+    ) AS [t4]
+ORDER BY [t4].[ROW_NUMBER]
+-- @p0: Input Date (Size = -1; Prec = 0; Scale = 0) [2/3/2019 12:00:00 AM]
+-- @p1: Input Date (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [7]
+-- @p3: Input Int (Size = -1; Prec = 0; Scale = 0) [47]
+-- @p4: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT [t0].[UID], [t0].[UserName], [t0].[PID], [t0].[Password], [t0].[ExternalID], [t0].[Expiration], [t0].[Creator], [t0].[AuthID], [t0].[LevelID], [t0].[ThemeName], [t0].[Password2], [t0].[MemberCode], [t0].[PictureID], [t0].[RealName], [t0].[Address], [t0].[Phone], [t0].[RecentStatus], [t0].[Birthday], [t0].[Nickname], [t0].[BirthdateIndex]
+FROM [dbo].[UserProfile] AS [t0]
+WHERE [t0].[UID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [2083]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT SUM([t5].[DurationInMinutes]) AS [value]
+FROM [dbo].[RegisterLesson] AS [t0]
+INNER JOIN ([dbo].[LessonPriceType] AS [t1]
+    LEFT OUTER JOIN (
+        SELECT 1 AS [test], [t2].[PriceID]
+        FROM [dbo].[IsWelfareGiftLesson] AS [t2]
+        ) AS [t3] ON [t3].[PriceID] = [t1].[PriceID]) ON [t0].[ClassLevel] = ([t1].[PriceID])
+INNER JOIN [dbo].[GroupingLesson] AS [t4] ON [t0].[RegisterGroupID] = ([t4].[GroupID])
+INNER JOIN [dbo].[LessonTime] AS [t5] ON ([t4].[GroupID]) = [t5].[GroupID]
+LEFT OUTER JOIN (
+    SELECT 1 AS [test], [t6].[LessonID]
+    FROM [dbo].[LessonAttendance] AS [t6]
+    ) AS [t7] ON [t7].[LessonID] = [t5].[LessonID]
+WHERE ([t5].[ClassTime] >= @p0) AND ([t5].[ClassTime] < @p1) AND ([t7].[test] IS NOT NULL) AND ([t0].[UID] = @p2) AND (([t1].[Status] = @p3) OR ([t3].[test] IS NOT NULL))
+-- @p0: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/1/2019 12:00:00 AM]
+-- @p1: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/3/2019 12:00:00 AM]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p3: Input Int (Size = -1; Prec = 0; Scale = 0) [1005]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT SUM([t5].[DurationInMinutes]) AS [value]
+FROM [dbo].[RegisterLesson] AS [t0]
+INNER JOIN ([dbo].[LessonPriceType] AS [t1]
+    LEFT OUTER JOIN (
+        SELECT 1 AS [test], [t2].[PriceID]
+        FROM [dbo].[IsWelfareGiftLesson] AS [t2]
+        ) AS [t3] ON [t3].[PriceID] = [t1].[PriceID]) ON [t0].[ClassLevel] = ([t1].[PriceID])
+INNER JOIN [dbo].[GroupingLesson] AS [t4] ON [t0].[RegisterGroupID] = ([t4].[GroupID])
+INNER JOIN [dbo].[LessonTime] AS [t5] ON ([t4].[GroupID]) = [t5].[GroupID]
+LEFT OUTER JOIN (
+    SELECT 1 AS [test], [t6].[LessonID]
+    FROM [dbo].[LessonAttendance] AS [t6]
+    ) AS [t7] ON [t7].[LessonID] = [t5].[LessonID]
+WHERE ([t5].[ClassTime] >= @p0) AND ([t5].[ClassTime] < @p1) AND ([t7].[test] IS NOT NULL) AND ([t0].[UID] = @p2) AND (([t1].[Status] = @p3) OR ([t3].[test] IS NOT NULL))
+-- @p0: Input DateTime (Size = -1; Prec = 0; Scale = 0) [1/1/2019 12:00:00 AM]
+-- @p1: Input DateTime (Size = -1; Prec = 0; Scale = 0) [1/3/2019 12:00:00 AM]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p3: Input Int (Size = -1; Prec = 0; Scale = 0) [1005]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT [t0].[UID], [t0].[RoleID]
+FROM [dbo].[UserRole] AS [t0]
+WHERE [t0].[UID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT [t0].[UID], [t0].[RoleID]
+FROM [dbo].[UserRoleAuthorization] AS [t0]
+WHERE [t0].[UID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM (
+    SELECT [t16].[ClassTime]
+    FROM (
+        SELECT [t8].[LessonID], [t8].[RegisterID], [t8].[ClassTime], [t8].[DurationInMinutes], [t8].[InvitedCoach], [t8].[AttendingCoach], [t8].[GroupID], [t8].[TrainingBySelf], [t8].[BranchID], [t8].[HourOfClassTime], [t8].[Place]
+        FROM (
+            SELECT [t0].[LessonID], [t0].[RegisterID], [t0].[ClassTime], [t0].[DurationInMinutes], [t0].[InvitedCoach], [t0].[AttendingCoach], [t0].[GroupID], [t0].[TrainingBySelf], [t0].[BranchID], [t0].[HourOfClassTime], [t0].[Place]
+            FROM [dbo].[LessonTime] AS [t0]
+            INNER JOIN [dbo].[RegisterLesson] AS [t1] ON [t1].[RegisterID] = [t0].[RegisterID]
+            LEFT OUTER JOIN [dbo].[LessonPriceType] AS [t2] ON [t2].[PriceID] = [t1].[ClassLevel]
+            LEFT OUTER JOIN (
+                SELECT 1 AS [test], [t3].[RegisterID], [t3].[ContractID], [t3].[TypeID]
+                FROM [dbo].[RegisterLessonEnterprise] AS [t3]
+                ) AS [t4] ON [t4].[RegisterID] = [t1].[RegisterID]
+            LEFT OUTER JOIN [dbo].[EnterpriseCourseContent] AS [t5] ON ([t5].[ContractID] = [t4].[ContractID]) AND ([t5].[TypeID] = [t4].[TypeID])
+            LEFT OUTER JOIN [dbo].[EnterpriseLessonType] AS [t6] ON [t6].[TypeID] = [t5].[TypeID]
+            WHERE ((([t2].[Status]) IN (@p0, @p1, @p2)) OR (([t4].[test] IS NOT NULL) AND ([t6].[Status] IN (@p3, @p4)))) AND ([t0].[AttendingCoach] = @p5)
+            UNION
+            SELECT [t7].[LessonID], [t7].[RegisterID], [t7].[ClassTime], [t7].[DurationInMinutes], [t7].[InvitedCoach], [t7].[AttendingCoach], [t7].[GroupID], [t7].[TrainingBySelf], [t7].[BranchID], [t7].[HourOfClassTime], [t7].[Place]
+            FROM [dbo].[LessonTime] AS [t7]
+            WHERE ([t7].[TrainingBySelf] = @p6) AND ([t7].[AttendingCoach] = @p7)
+            ) AS [t8]
+        UNION
+        SELECT [t9].[LessonID], [t9].[RegisterID], [t9].[ClassTime], [t9].[DurationInMinutes], [t9].[InvitedCoach], [t9].[AttendingCoach], [t9].[GroupID], [t9].[TrainingBySelf], [t9].[BranchID], [t9].[HourOfClassTime], [t9].[Place]
+        FROM [dbo].[LessonTime] AS [t9]
+        INNER JOIN [dbo].[RegisterLesson] AS [t10] ON [t10].[RegisterID] = [t9].[RegisterID]
+        LEFT OUTER JOIN [dbo].[LessonPriceType] AS [t11] ON [t11].[PriceID] = [t10].[ClassLevel]
+        LEFT OUTER JOIN (
+            SELECT 1 AS [test], [t12].[RegisterID], [t12].[ContractID], [t12].[TypeID]
+            FROM [dbo].[RegisterLessonEnterprise] AS [t12]
+            ) AS [t13] ON [t13].[RegisterID] = [t10].[RegisterID]
+        LEFT OUTER JOIN [dbo].[EnterpriseCourseContent] AS [t14] ON ([t14].[ContractID] = [t13].[ContractID]) AND ([t14].[TypeID] = [t13].[TypeID])
+        LEFT OUTER JOIN [dbo].[EnterpriseLessonType] AS [t15] ON [t15].[TypeID] = [t14].[TypeID]
+        WHERE (([t11].[Status] = @p8) OR (([t13].[test] IS NOT NULL) AND ([t15].[Status] = @p9))) AND ([t9].[AttendingCoach] = @p10)
+        ) AS [t16]
+    ) AS [t17]
+WHERE ([t17].[ClassTime] >= @p11) AND ([t17].[ClassTime] < @p12)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [0]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [1007]
+-- @p3: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p4: Input Int (Size = -1; Prec = 0; Scale = 0) [1008]
+-- @p5: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p6: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p7: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p8: Input Int (Size = -1; Prec = 0; Scale = 0) [1006]
+-- @p9: Input Int (Size = -1; Prec = 0; Scale = 0) [1006]
+-- @p10: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p11: Input DateTime (Size = -1; Prec = 0; Scale = 0) [1/28/2019 12:00:00 AM]
+-- @p12: Input DateTime (Size = -1; Prec = 0; Scale = 0) [1/29/2019 12:00:00 AM]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[UserEvent] AS [t0]
+WHERE ((([t0].[StartDate] >= @p0) AND ([t0].[StartDate] < @p1)) OR (([t0].[EndDate] >= @p2) AND ([t0].[EndDate] < @p3)) OR (([t0].[StartDate] < @p4) AND ([t0].[EndDate] >= @p5))) AND (([t0].[UID] = @p6) OR (EXISTS(
+    SELECT NULL AS [EMPTY]
+    FROM [dbo].[GroupEvent] AS [t1]
+    WHERE ([t1].[UID] = @p7) AND ([t1].[EventID] = [t0].[EventID])
+    ))) AND ([t0].[EventType] = @p8)
+-- @p0: Input DateTime (Size = -1; Prec = 0; Scale = 0) [1/28/2019 12:00:00 AM]
+-- @p1: Input DateTime (Size = -1; Prec = 0; Scale = 0) [1/29/2019 12:00:00 AM]
+-- @p2: Input DateTime (Size = -1; Prec = 0; Scale = 0) [1/28/2019 12:00:00 AM]
+-- @p3: Input DateTime (Size = -1; Prec = 0; Scale = 0) [1/29/2019 12:00:00 AM]
+-- @p4: Input DateTime (Size = -1; Prec = 0; Scale = 0) [1/28/2019 12:00:00 AM]
+-- @p5: Input DateTime (Size = -1; Prec = 0; Scale = 0) [1/29/2019 12:00:00 AM]
+-- @p6: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p7: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p8: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM (
+    SELECT [t16].[ClassTime]
+    FROM (
+        SELECT [t8].[LessonID], [t8].[RegisterID], [t8].[ClassTime], [t8].[DurationInMinutes], [t8].[InvitedCoach], [t8].[AttendingCoach], [t8].[GroupID], [t8].[TrainingBySelf], [t8].[BranchID], [t8].[HourOfClassTime], [t8].[Place]
+        FROM (
+            SELECT [t0].[LessonID], [t0].[RegisterID], [t0].[ClassTime], [t0].[DurationInMinutes], [t0].[InvitedCoach], [t0].[AttendingCoach], [t0].[GroupID], [t0].[TrainingBySelf], [t0].[BranchID], [t0].[HourOfClassTime], [t0].[Place]
+            FROM [dbo].[LessonTime] AS [t0]
+            INNER JOIN [dbo].[RegisterLesson] AS [t1] ON [t1].[RegisterID] = [t0].[RegisterID]
+            LEFT OUTER JOIN [dbo].[LessonPriceType] AS [t2] ON [t2].[PriceID] = [t1].[ClassLevel]
+            LEFT OUTER JOIN (
+                SELECT 1 AS [test], [t3].[RegisterID], [t3].[ContractID], [t3].[TypeID]
+                FROM [dbo].[RegisterLessonEnterprise] AS [t3]
+                ) AS [t4] ON [t4].[RegisterID] = [t1].[RegisterID]
+            LEFT OUTER JOIN [dbo].[EnterpriseCourseContent] AS [t5] ON ([t5].[ContractID] = [t4].[ContractID]) AND ([t5].[TypeID] = [t4].[TypeID])
+            LEFT OUTER JOIN [dbo].[EnterpriseLessonType] AS [t6] ON [t6].[TypeID] = [t5].[TypeID]
+            WHERE ((([t2].[Status]) IN (@p0, @p1, @p2)) OR (([t4].[test] IS NOT NULL) AND ([t6].[Status] IN (@p3, @p4)))) AND ([t0].[AttendingCoach] = @p5)
+            UNION
+            SELECT [t7].[LessonID], [t7].[RegisterID], [t7].[ClassTime], [t7].[DurationInMinutes], [t7].[InvitedCoach], [t7].[AttendingCoach], [t7].[GroupID], [t7].[TrainingBySelf], [t7].[BranchID], [t7].[HourOfClassTime], [t7].[Place]
+            FROM [dbo].[LessonTime] AS [t7]
+            WHERE ([t7].[TrainingBySelf] = @p6) AND ([t7].[AttendingCoach] = @p7)
+            ) AS [t8]
+        UNION
+        SELECT [t9].[LessonID], [t9].[RegisterID], [t9].[ClassTime], [t9].[DurationInMinutes], [t9].[InvitedCoach], [t9].[AttendingCoach], [t9].[GroupID], [t9].[TrainingBySelf], [t9].[BranchID], [t9].[HourOfClassTime], [t9].[Place]
+        FROM [dbo].[LessonTime] AS [t9]
+        INNER JOIN [dbo].[RegisterLesson] AS [t10] ON [t10].[RegisterID] = [t9].[RegisterID]
+        LEFT OUTER JOIN [dbo].[LessonPriceType] AS [t11] ON [t11].[PriceID] = [t10].[ClassLevel]
+        LEFT OUTER JOIN (
+            SELECT 1 AS [test], [t12].[RegisterID], [t12].[ContractID], [t12].[TypeID]
+            FROM [dbo].[RegisterLessonEnterprise] AS [t12]
+            ) AS [t13] ON [t13].[RegisterID] = [t10].[RegisterID]
+        LEFT OUTER JOIN [dbo].[EnterpriseCourseContent] AS [t14] ON ([t14].[ContractID] = [t13].[ContractID]) AND ([t14].[TypeID] = [t13].[TypeID])
+        LEFT OUTER JOIN [dbo].[EnterpriseLessonType] AS [t15] ON [t15].[TypeID] = [t14].[TypeID]
+        WHERE (([t11].[Status] = @p8) OR (([t13].[test] IS NOT NULL) AND ([t15].[Status] = @p9))) AND ([t9].[AttendingCoach] = @p10)
+        ) AS [t16]
+    ) AS [t17]
+WHERE ([t17].[ClassTime] >= @p11) AND ([t17].[ClassTime] < @p12)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [0]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [1007]
+-- @p3: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p4: Input Int (Size = -1; Prec = 0; Scale = 0) [1008]
+-- @p5: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p6: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p7: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p8: Input Int (Size = -1; Prec = 0; Scale = 0) [1006]
+-- @p9: Input Int (Size = -1; Prec = 0; Scale = 0) [1006]
+-- @p10: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p11: Input DateTime (Size = -1; Prec = 0; Scale = 0) [1/29/2019 12:00:00 AM]
+-- @p12: Input DateTime (Size = -1; Prec = 0; Scale = 0) [1/30/2019 12:00:00 AM]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[UserEvent] AS [t0]
+WHERE ((([t0].[StartDate] >= @p0) AND ([t0].[StartDate] < @p1)) OR (([t0].[EndDate] >= @p2) AND ([t0].[EndDate] < @p3)) OR (([t0].[StartDate] < @p4) AND ([t0].[EndDate] >= @p5))) AND (([t0].[UID] = @p6) OR (EXISTS(
+    SELECT NULL AS [EMPTY]
+    FROM [dbo].[GroupEvent] AS [t1]
+    WHERE ([t1].[UID] = @p7) AND ([t1].[EventID] = [t0].[EventID])
+    ))) AND ([t0].[EventType] = @p8)
+-- @p0: Input DateTime (Size = -1; Prec = 0; Scale = 0) [1/29/2019 12:00:00 AM]
+-- @p1: Input DateTime (Size = -1; Prec = 0; Scale = 0) [1/30/2019 12:00:00 AM]
+-- @p2: Input DateTime (Size = -1; Prec = 0; Scale = 0) [1/29/2019 12:00:00 AM]
+-- @p3: Input DateTime (Size = -1; Prec = 0; Scale = 0) [1/30/2019 12:00:00 AM]
+-- @p4: Input DateTime (Size = -1; Prec = 0; Scale = 0) [1/29/2019 12:00:00 AM]
+-- @p5: Input DateTime (Size = -1; Prec = 0; Scale = 0) [1/30/2019 12:00:00 AM]
+-- @p6: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p7: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p8: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM (
+    SELECT [t16].[ClassTime]
+    FROM (
+        SELECT [t8].[LessonID], [t8].[RegisterID], [t8].[ClassTime], [t8].[DurationInMinutes], [t8].[InvitedCoach], [t8].[AttendingCoach], [t8].[GroupID], [t8].[TrainingBySelf], [t8].[BranchID], [t8].[HourOfClassTime], [t8].[Place]
+        FROM (
+            SELECT [t0].[LessonID], [t0].[RegisterID], [t0].[ClassTime], [t0].[DurationInMinutes], [t0].[InvitedCoach], [t0].[AttendingCoach], [t0].[GroupID], [t0].[TrainingBySelf], [t0].[BranchID], [t0].[HourOfClassTime], [t0].[Place]
+            FROM [dbo].[LessonTime] AS [t0]
+            INNER JOIN [dbo].[RegisterLesson] AS [t1] ON [t1].[RegisterID] = [t0].[RegisterID]
+            LEFT OUTER JOIN [dbo].[LessonPriceType] AS [t2] ON [t2].[PriceID] = [t1].[ClassLevel]
+            LEFT OUTER JOIN (
+                SELECT 1 AS [test], [t3].[RegisterID], [t3].[ContractID], [t3].[TypeID]
+                FROM [dbo].[RegisterLessonEnterprise] AS [t3]
+                ) AS [t4] ON [t4].[RegisterID] = [t1].[RegisterID]
+            LEFT OUTER JOIN [dbo].[EnterpriseCourseContent] AS [t5] ON ([t5].[ContractID] = [t4].[ContractID]) AND ([t5].[TypeID] = [t4].[TypeID])
+            LEFT OUTER JOIN [dbo].[EnterpriseLessonType] AS [t6] ON [t6].[TypeID] = [t5].[TypeID]
+            WHERE ((([t2].[Status]) IN (@p0, @p1, @p2)) OR (([t4].[test] IS NOT NULL) AND ([t6].[Status] IN (@p3, @p4)))) AND ([t0].[AttendingCoach] = @p5)
+            UNION
+            SELECT [t7].[LessonID], [t7].[RegisterID], [t7].[ClassTime], [t7].[DurationInMinutes], [t7].[InvitedCoach], [t7].[AttendingCoach], [t7].[GroupID], [t7].[TrainingBySelf], [t7].[BranchID], [t7].[HourOfClassTime], [t7].[Place]
+            FROM [dbo].[LessonTime] AS [t7]
+            WHERE ([t7].[TrainingBySelf] = @p6) AND ([t7].[AttendingCoach] = @p7)
+            ) AS [t8]
+        UNION
+        SELECT [t9].[LessonID], [t9].[RegisterID], [t9].[ClassTime], [t9].[DurationInMinutes], [t9].[InvitedCoach], [t9].[AttendingCoach], [t9].[GroupID], [t9].[TrainingBySelf], [t9].[BranchID], [t9].[HourOfClassTime], [t9].[Place]
+        FROM [dbo].[LessonTime] AS [t9]
+        INNER JOIN [dbo].[RegisterLesson] AS [t10] ON [t10].[RegisterID] = [t9].[RegisterID]
+        LEFT OUTER JOIN [dbo].[LessonPriceType] AS [t11] ON [t11].[PriceID] = [t10].[ClassLevel]
+        LEFT OUTER JOIN (
+            SELECT 1 AS [test], [t12].[RegisterID], [t12].[ContractID], [t12].[TypeID]
+            FROM [dbo].[RegisterLessonEnterprise] AS [t12]
+            ) AS [t13] ON [t13].[RegisterID] = [t10].[RegisterID]
+        LEFT OUTER JOIN [dbo].[EnterpriseCourseContent] AS [t14] ON ([t14].[ContractID] = [t13].[ContractID]) AND ([t14].[TypeID] = [t13].[TypeID])
+        LEFT OUTER JOIN [dbo].[EnterpriseLessonType] AS [t15] ON [t15].[TypeID] = [t14].[TypeID]
+        WHERE (([t11].[Status] = @p8) OR (([t13].[test] IS NOT NULL) AND ([t15].[Status] = @p9))) AND ([t9].[AttendingCoach] = @p10)
+        ) AS [t16]
+    ) AS [t17]
+WHERE ([t17].[ClassTime] >= @p11) AND ([t17].[ClassTime] < @p12)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [0]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [1007]
+-- @p3: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p4: Input Int (Size = -1; Prec = 0; Scale = 0) [1008]
+-- @p5: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p6: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p7: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p8: Input Int (Size = -1; Prec = 0; Scale = 0) [1006]
+-- @p9: Input Int (Size = -1; Prec = 0; Scale = 0) [1006]
+-- @p10: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p11: Input DateTime (Size = -1; Prec = 0; Scale = 0) [1/30/2019 12:00:00 AM]
+-- @p12: Input DateTime (Size = -1; Prec = 0; Scale = 0) [1/31/2019 12:00:00 AM]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[UserEvent] AS [t0]
+WHERE ((([t0].[StartDate] >= @p0) AND ([t0].[StartDate] < @p1)) OR (([t0].[EndDate] >= @p2) AND ([t0].[EndDate] < @p3)) OR (([t0].[StartDate] < @p4) AND ([t0].[EndDate] >= @p5))) AND (([t0].[UID] = @p6) OR (EXISTS(
+    SELECT NULL AS [EMPTY]
+    FROM [dbo].[GroupEvent] AS [t1]
+    WHERE ([t1].[UID] = @p7) AND ([t1].[EventID] = [t0].[EventID])
+    ))) AND ([t0].[EventType] = @p8)
+-- @p0: Input DateTime (Size = -1; Prec = 0; Scale = 0) [1/30/2019 12:00:00 AM]
+-- @p1: Input DateTime (Size = -1; Prec = 0; Scale = 0) [1/31/2019 12:00:00 AM]
+-- @p2: Input DateTime (Size = -1; Prec = 0; Scale = 0) [1/30/2019 12:00:00 AM]
+-- @p3: Input DateTime (Size = -1; Prec = 0; Scale = 0) [1/31/2019 12:00:00 AM]
+-- @p4: Input DateTime (Size = -1; Prec = 0; Scale = 0) [1/30/2019 12:00:00 AM]
+-- @p5: Input DateTime (Size = -1; Prec = 0; Scale = 0) [1/31/2019 12:00:00 AM]
+-- @p6: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p7: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p8: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM (
+    SELECT [t16].[ClassTime]
+    FROM (
+        SELECT [t8].[LessonID], [t8].[RegisterID], [t8].[ClassTime], [t8].[DurationInMinutes], [t8].[InvitedCoach], [t8].[AttendingCoach], [t8].[GroupID], [t8].[TrainingBySelf], [t8].[BranchID], [t8].[HourOfClassTime], [t8].[Place]
+        FROM (
+            SELECT [t0].[LessonID], [t0].[RegisterID], [t0].[ClassTime], [t0].[DurationInMinutes], [t0].[InvitedCoach], [t0].[AttendingCoach], [t0].[GroupID], [t0].[TrainingBySelf], [t0].[BranchID], [t0].[HourOfClassTime], [t0].[Place]
+            FROM [dbo].[LessonTime] AS [t0]
+            INNER JOIN [dbo].[RegisterLesson] AS [t1] ON [t1].[RegisterID] = [t0].[RegisterID]
+            LEFT OUTER JOIN [dbo].[LessonPriceType] AS [t2] ON [t2].[PriceID] = [t1].[ClassLevel]
+            LEFT OUTER JOIN (
+                SELECT 1 AS [test], [t3].[RegisterID], [t3].[ContractID], [t3].[TypeID]
+                FROM [dbo].[RegisterLessonEnterprise] AS [t3]
+                ) AS [t4] ON [t4].[RegisterID] = [t1].[RegisterID]
+            LEFT OUTER JOIN [dbo].[EnterpriseCourseContent] AS [t5] ON ([t5].[ContractID] = [t4].[ContractID]) AND ([t5].[TypeID] = [t4].[TypeID])
+            LEFT OUTER JOIN [dbo].[EnterpriseLessonType] AS [t6] ON [t6].[TypeID] = [t5].[TypeID]
+            WHERE ((([t2].[Status]) IN (@p0, @p1, @p2)) OR (([t4].[test] IS NOT NULL) AND ([t6].[Status] IN (@p3, @p4)))) AND ([t0].[AttendingCoach] = @p5)
+            UNION
+            SELECT [t7].[LessonID], [t7].[RegisterID], [t7].[ClassTime], [t7].[DurationInMinutes], [t7].[InvitedCoach], [t7].[AttendingCoach], [t7].[GroupID], [t7].[TrainingBySelf], [t7].[BranchID], [t7].[HourOfClassTime], [t7].[Place]
+            FROM [dbo].[LessonTime] AS [t7]
+            WHERE ([t7].[TrainingBySelf] = @p6) AND ([t7].[AttendingCoach] = @p7)
+            ) AS [t8]
+        UNION
+        SELECT [t9].[LessonID], [t9].[RegisterID], [t9].[ClassTime], [t9].[DurationInMinutes], [t9].[InvitedCoach], [t9].[AttendingCoach], [t9].[GroupID], [t9].[TrainingBySelf], [t9].[BranchID], [t9].[HourOfClassTime], [t9].[Place]
+        FROM [dbo].[LessonTime] AS [t9]
+        INNER JOIN [dbo].[RegisterLesson] AS [t10] ON [t10].[RegisterID] = [t9].[RegisterID]
+        LEFT OUTER JOIN [dbo].[LessonPriceType] AS [t11] ON [t11].[PriceID] = [t10].[ClassLevel]
+        LEFT OUTER JOIN (
+            SELECT 1 AS [test], [t12].[RegisterID], [t12].[ContractID], [t12].[TypeID]
+            FROM [dbo].[RegisterLessonEnterprise] AS [t12]
+            ) AS [t13] ON [t13].[RegisterID] = [t10].[RegisterID]
+        LEFT OUTER JOIN [dbo].[EnterpriseCourseContent] AS [t14] ON ([t14].[ContractID] = [t13].[ContractID]) AND ([t14].[TypeID] = [t13].[TypeID])
+        LEFT OUTER JOIN [dbo].[EnterpriseLessonType] AS [t15] ON [t15].[TypeID] = [t14].[TypeID]
+        WHERE (([t11].[Status] = @p8) OR (([t13].[test] IS NOT NULL) AND ([t15].[Status] = @p9))) AND ([t9].[AttendingCoach] = @p10)
+        ) AS [t16]
+    ) AS [t17]
+WHERE ([t17].[ClassTime] >= @p11) AND ([t17].[ClassTime] < @p12)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [0]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [1007]
+-- @p3: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p4: Input Int (Size = -1; Prec = 0; Scale = 0) [1008]
+-- @p5: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p6: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p7: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p8: Input Int (Size = -1; Prec = 0; Scale = 0) [1006]
+-- @p9: Input Int (Size = -1; Prec = 0; Scale = 0) [1006]
+-- @p10: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p11: Input DateTime (Size = -1; Prec = 0; Scale = 0) [1/31/2019 12:00:00 AM]
+-- @p12: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/1/2019 12:00:00 AM]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[UserEvent] AS [t0]
+WHERE ((([t0].[StartDate] >= @p0) AND ([t0].[StartDate] < @p1)) OR (([t0].[EndDate] >= @p2) AND ([t0].[EndDate] < @p3)) OR (([t0].[StartDate] < @p4) AND ([t0].[EndDate] >= @p5))) AND (([t0].[UID] = @p6) OR (EXISTS(
+    SELECT NULL AS [EMPTY]
+    FROM [dbo].[GroupEvent] AS [t1]
+    WHERE ([t1].[UID] = @p7) AND ([t1].[EventID] = [t0].[EventID])
+    ))) AND ([t0].[EventType] = @p8)
+-- @p0: Input DateTime (Size = -1; Prec = 0; Scale = 0) [1/31/2019 12:00:00 AM]
+-- @p1: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/1/2019 12:00:00 AM]
+-- @p2: Input DateTime (Size = -1; Prec = 0; Scale = 0) [1/31/2019 12:00:00 AM]
+-- @p3: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/1/2019 12:00:00 AM]
+-- @p4: Input DateTime (Size = -1; Prec = 0; Scale = 0) [1/31/2019 12:00:00 AM]
+-- @p5: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/1/2019 12:00:00 AM]
+-- @p6: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p7: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p8: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM (
+    SELECT [t16].[ClassTime]
+    FROM (
+        SELECT [t8].[LessonID], [t8].[RegisterID], [t8].[ClassTime], [t8].[DurationInMinutes], [t8].[InvitedCoach], [t8].[AttendingCoach], [t8].[GroupID], [t8].[TrainingBySelf], [t8].[BranchID], [t8].[HourOfClassTime], [t8].[Place]
+        FROM (
+            SELECT [t0].[LessonID], [t0].[RegisterID], [t0].[ClassTime], [t0].[DurationInMinutes], [t0].[InvitedCoach], [t0].[AttendingCoach], [t0].[GroupID], [t0].[TrainingBySelf], [t0].[BranchID], [t0].[HourOfClassTime], [t0].[Place]
+            FROM [dbo].[LessonTime] AS [t0]
+            INNER JOIN [dbo].[RegisterLesson] AS [t1] ON [t1].[RegisterID] = [t0].[RegisterID]
+            LEFT OUTER JOIN [dbo].[LessonPriceType] AS [t2] ON [t2].[PriceID] = [t1].[ClassLevel]
+            LEFT OUTER JOIN (
+                SELECT 1 AS [test], [t3].[RegisterID], [t3].[ContractID], [t3].[TypeID]
+                FROM [dbo].[RegisterLessonEnterprise] AS [t3]
+                ) AS [t4] ON [t4].[RegisterID] = [t1].[RegisterID]
+            LEFT OUTER JOIN [dbo].[EnterpriseCourseContent] AS [t5] ON ([t5].[ContractID] = [t4].[ContractID]) AND ([t5].[TypeID] = [t4].[TypeID])
+            LEFT OUTER JOIN [dbo].[EnterpriseLessonType] AS [t6] ON [t6].[TypeID] = [t5].[TypeID]
+            WHERE ((([t2].[Status]) IN (@p0, @p1, @p2)) OR (([t4].[test] IS NOT NULL) AND ([t6].[Status] IN (@p3, @p4)))) AND ([t0].[AttendingCoach] = @p5)
+            UNION
+            SELECT [t7].[LessonID], [t7].[RegisterID], [t7].[ClassTime], [t7].[DurationInMinutes], [t7].[InvitedCoach], [t7].[AttendingCoach], [t7].[GroupID], [t7].[TrainingBySelf], [t7].[BranchID], [t7].[HourOfClassTime], [t7].[Place]
+            FROM [dbo].[LessonTime] AS [t7]
+            WHERE ([t7].[TrainingBySelf] = @p6) AND ([t7].[AttendingCoach] = @p7)
+            ) AS [t8]
+        UNION
+        SELECT [t9].[LessonID], [t9].[RegisterID], [t9].[ClassTime], [t9].[DurationInMinutes], [t9].[InvitedCoach], [t9].[AttendingCoach], [t9].[GroupID], [t9].[TrainingBySelf], [t9].[BranchID], [t9].[HourOfClassTime], [t9].[Place]
+        FROM [dbo].[LessonTime] AS [t9]
+        INNER JOIN [dbo].[RegisterLesson] AS [t10] ON [t10].[RegisterID] = [t9].[RegisterID]
+        LEFT OUTER JOIN [dbo].[LessonPriceType] AS [t11] ON [t11].[PriceID] = [t10].[ClassLevel]
+        LEFT OUTER JOIN (
+            SELECT 1 AS [test], [t12].[RegisterID], [t12].[ContractID], [t12].[TypeID]
+            FROM [dbo].[RegisterLessonEnterprise] AS [t12]
+            ) AS [t13] ON [t13].[RegisterID] = [t10].[RegisterID]
+        LEFT OUTER JOIN [dbo].[EnterpriseCourseContent] AS [t14] ON ([t14].[ContractID] = [t13].[ContractID]) AND ([t14].[TypeID] = [t13].[TypeID])
+        LEFT OUTER JOIN [dbo].[EnterpriseLessonType] AS [t15] ON [t15].[TypeID] = [t14].[TypeID]
+        WHERE (([t11].[Status] = @p8) OR (([t13].[test] IS NOT NULL) AND ([t15].[Status] = @p9))) AND ([t9].[AttendingCoach] = @p10)
+        ) AS [t16]
+    ) AS [t17]
+WHERE ([t17].[ClassTime] >= @p11) AND ([t17].[ClassTime] < @p12)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [0]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [1007]
+-- @p3: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p4: Input Int (Size = -1; Prec = 0; Scale = 0) [1008]
+-- @p5: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p6: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p7: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p8: Input Int (Size = -1; Prec = 0; Scale = 0) [1006]
+-- @p9: Input Int (Size = -1; Prec = 0; Scale = 0) [1006]
+-- @p10: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p11: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/1/2019 12:00:00 AM]
+-- @p12: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[UserEvent] AS [t0]
+WHERE ((([t0].[StartDate] >= @p0) AND ([t0].[StartDate] < @p1)) OR (([t0].[EndDate] >= @p2) AND ([t0].[EndDate] < @p3)) OR (([t0].[StartDate] < @p4) AND ([t0].[EndDate] >= @p5))) AND (([t0].[UID] = @p6) OR (EXISTS(
+    SELECT NULL AS [EMPTY]
+    FROM [dbo].[GroupEvent] AS [t1]
+    WHERE ([t1].[UID] = @p7) AND ([t1].[EventID] = [t0].[EventID])
+    ))) AND ([t0].[EventType] = @p8)
+-- @p0: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/1/2019 12:00:00 AM]
+-- @p1: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- @p2: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/1/2019 12:00:00 AM]
+-- @p3: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- @p4: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/1/2019 12:00:00 AM]
+-- @p5: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- @p6: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p7: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p8: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM (
+    SELECT [t16].[ClassTime]
+    FROM (
+        SELECT [t8].[LessonID], [t8].[RegisterID], [t8].[ClassTime], [t8].[DurationInMinutes], [t8].[InvitedCoach], [t8].[AttendingCoach], [t8].[GroupID], [t8].[TrainingBySelf], [t8].[BranchID], [t8].[HourOfClassTime], [t8].[Place]
+        FROM (
+            SELECT [t0].[LessonID], [t0].[RegisterID], [t0].[ClassTime], [t0].[DurationInMinutes], [t0].[InvitedCoach], [t0].[AttendingCoach], [t0].[GroupID], [t0].[TrainingBySelf], [t0].[BranchID], [t0].[HourOfClassTime], [t0].[Place]
+            FROM [dbo].[LessonTime] AS [t0]
+            INNER JOIN [dbo].[RegisterLesson] AS [t1] ON [t1].[RegisterID] = [t0].[RegisterID]
+            LEFT OUTER JOIN [dbo].[LessonPriceType] AS [t2] ON [t2].[PriceID] = [t1].[ClassLevel]
+            LEFT OUTER JOIN (
+                SELECT 1 AS [test], [t3].[RegisterID], [t3].[ContractID], [t3].[TypeID]
+                FROM [dbo].[RegisterLessonEnterprise] AS [t3]
+                ) AS [t4] ON [t4].[RegisterID] = [t1].[RegisterID]
+            LEFT OUTER JOIN [dbo].[EnterpriseCourseContent] AS [t5] ON ([t5].[ContractID] = [t4].[ContractID]) AND ([t5].[TypeID] = [t4].[TypeID])
+            LEFT OUTER JOIN [dbo].[EnterpriseLessonType] AS [t6] ON [t6].[TypeID] = [t5].[TypeID]
+            WHERE ((([t2].[Status]) IN (@p0, @p1, @p2)) OR (([t4].[test] IS NOT NULL) AND ([t6].[Status] IN (@p3, @p4)))) AND ([t0].[AttendingCoach] = @p5)
+            UNION
+            SELECT [t7].[LessonID], [t7].[RegisterID], [t7].[ClassTime], [t7].[DurationInMinutes], [t7].[InvitedCoach], [t7].[AttendingCoach], [t7].[GroupID], [t7].[TrainingBySelf], [t7].[BranchID], [t7].[HourOfClassTime], [t7].[Place]
+            FROM [dbo].[LessonTime] AS [t7]
+            WHERE ([t7].[TrainingBySelf] = @p6) AND ([t7].[AttendingCoach] = @p7)
+            ) AS [t8]
+        UNION
+        SELECT [t9].[LessonID], [t9].[RegisterID], [t9].[ClassTime], [t9].[DurationInMinutes], [t9].[InvitedCoach], [t9].[AttendingCoach], [t9].[GroupID], [t9].[TrainingBySelf], [t9].[BranchID], [t9].[HourOfClassTime], [t9].[Place]
+        FROM [dbo].[LessonTime] AS [t9]
+        INNER JOIN [dbo].[RegisterLesson] AS [t10] ON [t10].[RegisterID] = [t9].[RegisterID]
+        LEFT OUTER JOIN [dbo].[LessonPriceType] AS [t11] ON [t11].[PriceID] = [t10].[ClassLevel]
+        LEFT OUTER JOIN (
+            SELECT 1 AS [test], [t12].[RegisterID], [t12].[ContractID], [t12].[TypeID]
+            FROM [dbo].[RegisterLessonEnterprise] AS [t12]
+            ) AS [t13] ON [t13].[RegisterID] = [t10].[RegisterID]
+        LEFT OUTER JOIN [dbo].[EnterpriseCourseContent] AS [t14] ON ([t14].[ContractID] = [t13].[ContractID]) AND ([t14].[TypeID] = [t13].[TypeID])
+        LEFT OUTER JOIN [dbo].[EnterpriseLessonType] AS [t15] ON [t15].[TypeID] = [t14].[TypeID]
+        WHERE (([t11].[Status] = @p8) OR (([t13].[test] IS NOT NULL) AND ([t15].[Status] = @p9))) AND ([t9].[AttendingCoach] = @p10)
+        ) AS [t16]
+    ) AS [t17]
+WHERE ([t17].[ClassTime] >= @p11) AND ([t17].[ClassTime] < @p12)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [0]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [1007]
+-- @p3: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p4: Input Int (Size = -1; Prec = 0; Scale = 0) [1008]
+-- @p5: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p6: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p7: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p8: Input Int (Size = -1; Prec = 0; Scale = 0) [1006]
+-- @p9: Input Int (Size = -1; Prec = 0; Scale = 0) [1006]
+-- @p10: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p11: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- @p12: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/3/2019 12:00:00 AM]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[UserEvent] AS [t0]
+WHERE ((([t0].[StartDate] >= @p0) AND ([t0].[StartDate] < @p1)) OR (([t0].[EndDate] >= @p2) AND ([t0].[EndDate] < @p3)) OR (([t0].[StartDate] < @p4) AND ([t0].[EndDate] >= @p5))) AND (([t0].[UID] = @p6) OR (EXISTS(
+    SELECT NULL AS [EMPTY]
+    FROM [dbo].[GroupEvent] AS [t1]
+    WHERE ([t1].[UID] = @p7) AND ([t1].[EventID] = [t0].[EventID])
+    ))) AND ([t0].[EventType] = @p8)
+-- @p0: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- @p1: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/3/2019 12:00:00 AM]
+-- @p2: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- @p3: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/3/2019 12:00:00 AM]
+-- @p4: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- @p5: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/3/2019 12:00:00 AM]
+-- @p6: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p7: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p8: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM (
+    SELECT [t16].[ClassTime]
+    FROM (
+        SELECT [t8].[LessonID], [t8].[RegisterID], [t8].[ClassTime], [t8].[DurationInMinutes], [t8].[InvitedCoach], [t8].[AttendingCoach], [t8].[GroupID], [t8].[TrainingBySelf], [t8].[BranchID], [t8].[HourOfClassTime], [t8].[Place]
+        FROM (
+            SELECT [t0].[LessonID], [t0].[RegisterID], [t0].[ClassTime], [t0].[DurationInMinutes], [t0].[InvitedCoach], [t0].[AttendingCoach], [t0].[GroupID], [t0].[TrainingBySelf], [t0].[BranchID], [t0].[HourOfClassTime], [t0].[Place]
+            FROM [dbo].[LessonTime] AS [t0]
+            INNER JOIN [dbo].[RegisterLesson] AS [t1] ON [t1].[RegisterID] = [t0].[RegisterID]
+            LEFT OUTER JOIN [dbo].[LessonPriceType] AS [t2] ON [t2].[PriceID] = [t1].[ClassLevel]
+            LEFT OUTER JOIN (
+                SELECT 1 AS [test], [t3].[RegisterID], [t3].[ContractID], [t3].[TypeID]
+                FROM [dbo].[RegisterLessonEnterprise] AS [t3]
+                ) AS [t4] ON [t4].[RegisterID] = [t1].[RegisterID]
+            LEFT OUTER JOIN [dbo].[EnterpriseCourseContent] AS [t5] ON ([t5].[ContractID] = [t4].[ContractID]) AND ([t5].[TypeID] = [t4].[TypeID])
+            LEFT OUTER JOIN [dbo].[EnterpriseLessonType] AS [t6] ON [t6].[TypeID] = [t5].[TypeID]
+            WHERE ((([t2].[Status]) IN (@p0, @p1, @p2)) OR (([t4].[test] IS NOT NULL) AND ([t6].[Status] IN (@p3, @p4)))) AND ([t0].[AttendingCoach] = @p5)
+            UNION
+            SELECT [t7].[LessonID], [t7].[RegisterID], [t7].[ClassTime], [t7].[DurationInMinutes], [t7].[InvitedCoach], [t7].[AttendingCoach], [t7].[GroupID], [t7].[TrainingBySelf], [t7].[BranchID], [t7].[HourOfClassTime], [t7].[Place]
+            FROM [dbo].[LessonTime] AS [t7]
+            WHERE ([t7].[TrainingBySelf] = @p6) AND ([t7].[AttendingCoach] = @p7)
+            ) AS [t8]
+        UNION
+        SELECT [t9].[LessonID], [t9].[RegisterID], [t9].[ClassTime], [t9].[DurationInMinutes], [t9].[InvitedCoach], [t9].[AttendingCoach], [t9].[GroupID], [t9].[TrainingBySelf], [t9].[BranchID], [t9].[HourOfClassTime], [t9].[Place]
+        FROM [dbo].[LessonTime] AS [t9]
+        INNER JOIN [dbo].[RegisterLesson] AS [t10] ON [t10].[RegisterID] = [t9].[RegisterID]
+        LEFT OUTER JOIN [dbo].[LessonPriceType] AS [t11] ON [t11].[PriceID] = [t10].[ClassLevel]
+        LEFT OUTER JOIN (
+            SELECT 1 AS [test], [t12].[RegisterID], [t12].[ContractID], [t12].[TypeID]
+            FROM [dbo].[RegisterLessonEnterprise] AS [t12]
+            ) AS [t13] ON [t13].[RegisterID] = [t10].[RegisterID]
+        LEFT OUTER JOIN [dbo].[EnterpriseCourseContent] AS [t14] ON ([t14].[ContractID] = [t13].[ContractID]) AND ([t14].[TypeID] = [t13].[TypeID])
+        LEFT OUTER JOIN [dbo].[EnterpriseLessonType] AS [t15] ON [t15].[TypeID] = [t14].[TypeID]
+        WHERE (([t11].[Status] = @p8) OR (([t13].[test] IS NOT NULL) AND ([t15].[Status] = @p9))) AND ([t9].[AttendingCoach] = @p10)
+        ) AS [t16]
+    ) AS [t17]
+WHERE ([t17].[ClassTime] >= @p11) AND ([t17].[ClassTime] < @p12)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [0]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [1007]
+-- @p3: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p4: Input Int (Size = -1; Prec = 0; Scale = 0) [1008]
+-- @p5: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p6: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p7: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p8: Input Int (Size = -1; Prec = 0; Scale = 0) [1006]
+-- @p9: Input Int (Size = -1; Prec = 0; Scale = 0) [1006]
+-- @p10: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p11: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/3/2019 12:00:00 AM]
+-- @p12: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/4/2019 12:00:00 AM]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[UserEvent] AS [t0]
+WHERE ((([t0].[StartDate] >= @p0) AND ([t0].[StartDate] < @p1)) OR (([t0].[EndDate] >= @p2) AND ([t0].[EndDate] < @p3)) OR (([t0].[StartDate] < @p4) AND ([t0].[EndDate] >= @p5))) AND (([t0].[UID] = @p6) OR (EXISTS(
+    SELECT NULL AS [EMPTY]
+    FROM [dbo].[GroupEvent] AS [t1]
+    WHERE ([t1].[UID] = @p7) AND ([t1].[EventID] = [t0].[EventID])
+    ))) AND ([t0].[EventType] = @p8)
+-- @p0: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/3/2019 12:00:00 AM]
+-- @p1: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/4/2019 12:00:00 AM]
+-- @p2: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/3/2019 12:00:00 AM]
+-- @p3: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/4/2019 12:00:00 AM]
+-- @p4: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/3/2019 12:00:00 AM]
+-- @p5: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/4/2019 12:00:00 AM]
+-- @p6: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p7: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p8: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM (
+    SELECT [t16].[LessonID], [t16].[ClassTime]
+    FROM (
+        SELECT [t8].[LessonID], [t8].[RegisterID], [t8].[ClassTime], [t8].[DurationInMinutes], [t8].[InvitedCoach], [t8].[AttendingCoach], [t8].[GroupID], [t8].[TrainingBySelf], [t8].[BranchID], [t8].[HourOfClassTime], [t8].[Place]
+        FROM (
+            SELECT [t0].[LessonID], [t0].[RegisterID], [t0].[ClassTime], [t0].[DurationInMinutes], [t0].[InvitedCoach], [t0].[AttendingCoach], [t0].[GroupID], [t0].[TrainingBySelf], [t0].[BranchID], [t0].[HourOfClassTime], [t0].[Place]
+            FROM [dbo].[LessonTime] AS [t0]
+            INNER JOIN [dbo].[RegisterLesson] AS [t1] ON [t1].[RegisterID] = [t0].[RegisterID]
+            LEFT OUTER JOIN [dbo].[LessonPriceType] AS [t2] ON [t2].[PriceID] = [t1].[ClassLevel]
+            LEFT OUTER JOIN (
+                SELECT 1 AS [test], [t3].[RegisterID], [t3].[ContractID], [t3].[TypeID]
+                FROM [dbo].[RegisterLessonEnterprise] AS [t3]
+                ) AS [t4] ON [t4].[RegisterID] = [t1].[RegisterID]
+            LEFT OUTER JOIN [dbo].[EnterpriseCourseContent] AS [t5] ON ([t5].[ContractID] = [t4].[ContractID]) AND ([t5].[TypeID] = [t4].[TypeID])
+            LEFT OUTER JOIN [dbo].[EnterpriseLessonType] AS [t6] ON [t6].[TypeID] = [t5].[TypeID]
+            WHERE ((([t2].[Status]) IN (@p0, @p1, @p2)) OR (([t4].[test] IS NOT NULL) AND ([t6].[Status] IN (@p3, @p4)))) AND ([t0].[AttendingCoach] = @p5)
+            UNION
+            SELECT [t7].[LessonID], [t7].[RegisterID], [t7].[ClassTime], [t7].[DurationInMinutes], [t7].[InvitedCoach], [t7].[AttendingCoach], [t7].[GroupID], [t7].[TrainingBySelf], [t7].[BranchID], [t7].[HourOfClassTime], [t7].[Place]
+            FROM [dbo].[LessonTime] AS [t7]
+            WHERE ([t7].[TrainingBySelf] = @p6) AND ([t7].[AttendingCoach] = @p7)
+            ) AS [t8]
+        UNION
+        SELECT [t9].[LessonID], [t9].[RegisterID], [t9].[ClassTime], [t9].[DurationInMinutes], [t9].[InvitedCoach], [t9].[AttendingCoach], [t9].[GroupID], [t9].[TrainingBySelf], [t9].[BranchID], [t9].[HourOfClassTime], [t9].[Place]
+        FROM [dbo].[LessonTime] AS [t9]
+        INNER JOIN [dbo].[RegisterLesson] AS [t10] ON [t10].[RegisterID] = [t9].[RegisterID]
+        LEFT OUTER JOIN [dbo].[LessonPriceType] AS [t11] ON [t11].[PriceID] = [t10].[ClassLevel]
+        LEFT OUTER JOIN (
+            SELECT 1 AS [test], [t12].[RegisterID], [t12].[ContractID], [t12].[TypeID]
+            FROM [dbo].[RegisterLessonEnterprise] AS [t12]
+            ) AS [t13] ON [t13].[RegisterID] = [t10].[RegisterID]
+        LEFT OUTER JOIN [dbo].[EnterpriseCourseContent] AS [t14] ON ([t14].[ContractID] = [t13].[ContractID]) AND ([t14].[TypeID] = [t13].[TypeID])
+        LEFT OUTER JOIN [dbo].[EnterpriseLessonType] AS [t15] ON [t15].[TypeID] = [t14].[TypeID]
+        WHERE (([t11].[Status] = @p8) OR (([t13].[test] IS NOT NULL) AND ([t15].[Status] = @p9))) AND ([t9].[AttendingCoach] = @p10)
+        ) AS [t16]
+    ) AS [t17]
+LEFT OUTER JOIN (
+    SELECT 1 AS [test], [t18].[LessonID]
+    FROM [dbo].[LessonAttendance] AS [t18]
+    ) AS [t19] ON [t19].[LessonID] = ([t17].[LessonID])
+WHERE ([t19].[test] IS NULL) AND ([t17].[ClassTime] >= @p11) AND ([t17].[ClassTime] < @p12)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [0]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [1007]
+-- @p3: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p4: Input Int (Size = -1; Prec = 0; Scale = 0) [1008]
+-- @p5: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p6: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p7: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p8: Input Int (Size = -1; Prec = 0; Scale = 0) [1006]
+-- @p9: Input Int (Size = -1; Prec = 0; Scale = 0) [1006]
+-- @p10: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p11: Input DateTime (Size = -1; Prec = 0; Scale = 0) [1/28/2019 12:00:00 AM]
+-- @p12: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/4/2019 12:00:00 AM]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM (
+    SELECT [t8].[LessonID], [t8].[ClassTime]
+    FROM (
+        SELECT [t0].[LessonID], [t0].[RegisterID], [t0].[ClassTime], [t0].[DurationInMinutes], [t0].[InvitedCoach], [t0].[AttendingCoach], [t0].[GroupID], [t0].[TrainingBySelf], [t0].[BranchID], [t0].[HourOfClassTime], [t0].[Place]
+        FROM [dbo].[LessonTime] AS [t0]
+        INNER JOIN [dbo].[RegisterLesson] AS [t1] ON [t1].[RegisterID] = [t0].[RegisterID]
+        LEFT OUTER JOIN [dbo].[LessonPriceType] AS [t2] ON [t2].[PriceID] = [t1].[ClassLevel]
+        LEFT OUTER JOIN (
+            SELECT 1 AS [test], [t3].[RegisterID], [t3].[ContractID], [t3].[TypeID]
+            FROM [dbo].[RegisterLessonEnterprise] AS [t3]
+            ) AS [t4] ON [t4].[RegisterID] = [t1].[RegisterID]
+        LEFT OUTER JOIN [dbo].[EnterpriseCourseContent] AS [t5] ON ([t5].[ContractID] = [t4].[ContractID]) AND ([t5].[TypeID] = [t4].[TypeID])
+        LEFT OUTER JOIN [dbo].[EnterpriseLessonType] AS [t6] ON [t6].[TypeID] = [t5].[TypeID]
+        WHERE ((([t2].[Status]) IN (@p0, @p1, @p2)) OR (([t4].[test] IS NOT NULL) AND ([t6].[Status] IN (@p3, @p4)))) AND ([t0].[AttendingCoach] = @p5)
+        UNION
+        SELECT [t7].[LessonID], [t7].[RegisterID], [t7].[ClassTime], [t7].[DurationInMinutes], [t7].[InvitedCoach], [t7].[AttendingCoach], [t7].[GroupID], [t7].[TrainingBySelf], [t7].[BranchID], [t7].[HourOfClassTime], [t7].[Place]
+        FROM [dbo].[LessonTime] AS [t7]
+        WHERE ([t7].[TrainingBySelf] = @p6) AND ([t7].[AttendingCoach] = @p7)
+        ) AS [t8]
+    ) AS [t9]
+LEFT OUTER JOIN [dbo].[LessonPlan] AS [t10] ON [t10].[LessonID] = ([t9].[LessonID])
+WHERE (NOT ([t10].[CommitAttendance] IS NOT NULL)) AND ([t9].[ClassTime] < @p8) AND ([t9].[ClassTime] >= @p9) AND ([t9].[ClassTime] < @p10)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [0]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [1007]
+-- @p3: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p4: Input Int (Size = -1; Prec = 0; Scale = 0) [1008]
+-- @p5: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p6: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p7: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p8: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/3/2019 12:00:00 AM]
+-- @p9: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/1/2019 12:00:00 AM]
+-- @p10: Input DateTime (Size = -1; Prec = 0; Scale = 0) [3/1/2019 12:00:00 AM]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[CourseContract] AS [t0]
+WHERE ([t0].[Status] = @p0) AND (EXISTS(
+    SELECT NULL AS [EMPTY]
+    FROM [dbo].[RegisterLessonContract] AS [t1]
+    WHERE [t1].[ContractID] = [t0].[ContractID]
+    ))
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1210]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[CourseContract] AS [t0]
+WHERE ([t0].[Status] = @p0) AND (EXISTS(
+    SELECT NULL AS [EMPTY]
+    FROM [dbo].[RegisterLessonContract] AS [t1]
+    WHERE [t1].[ContractID] = [t0].[ContractID]
+    ))
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1210]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[CourseContract] AS [t0]
+LEFT OUTER JOIN (
+    SELECT 1 AS [test], [t1].[RevisionID]
+    FROM [dbo].[CourseContractRevision] AS [t1]
+    ) AS [t2] ON [t2].[RevisionID] = [t0].[ContractID]
+WHERE ([t0].[Status] = @p0) AND ([t2].[test] IS NULL)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1205]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[CourseContract] AS [t0]
+LEFT OUTER JOIN (
+    SELECT 1 AS [test], [t1].[RevisionID]
+    FROM [dbo].[CourseContractRevision] AS [t1]
+    ) AS [t2] ON [t2].[RevisionID] = [t0].[ContractID]
+WHERE ([t0].[Status] = @p0) AND ([t2].[test] IS NULL)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1205]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[CourseContract] AS [t0]
+LEFT OUTER JOIN (
+    SELECT 1 AS [test], [t1].[RevisionID]
+    FROM [dbo].[CourseContractRevision] AS [t1]
+    ) AS [t2] ON [t2].[RevisionID] = [t0].[ContractID]
+WHERE ([t0].[Expiration] < @p0) AND ([t0].[Expiration] >= @p1) AND ([t0].[Status] = @p2) AND ([t2].[test] IS NULL)
+-- @p0: Input DateTime (Size = -1; Prec = 0; Scale = 0) [3/2/2019 12:00:00 AM]
+-- @p1: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [1205]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[CourseContract] AS [t0]
+LEFT OUTER JOIN (
+    SELECT 1 AS [test], [t1].[RevisionID]
+    FROM [dbo].[CourseContractRevision] AS [t1]
+    ) AS [t2] ON [t2].[RevisionID] = [t0].[ContractID]
+WHERE ([t0].[Expiration] < @p0) AND ([t0].[Expiration] >= @p1) AND ([t0].[Status] = @p2) AND ([t2].[test] IS NULL)
+-- @p0: Input DateTime (Size = -1; Prec = 0; Scale = 0) [3/2/2019 12:00:00 AM]
+-- @p1: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [1205]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[CourseContract] AS [t0]
+LEFT OUTER JOIN (
+    SELECT 1 AS [test], [t1].[RevisionID]
+    FROM [dbo].[CourseContractRevision] AS [t1]
+    ) AS [t2] ON [t2].[RevisionID] = [t0].[ContractID]
+WHERE ([t0].[Status] = @p0) AND ([t2].[test] IS NULL)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1201]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[CourseContract] AS [t0]
+LEFT OUTER JOIN (
+    SELECT 1 AS [test], [t1].[RevisionID]
+    FROM [dbo].[CourseContractRevision] AS [t1]
+    ) AS [t2] ON [t2].[RevisionID] = [t0].[ContractID]
+WHERE ([t0].[Status] = @p0) AND ([t2].[test] IS NULL)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1201]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[CourseContract] AS [t0]
+LEFT OUTER JOIN (
+    SELECT 1 AS [test], [t1].[RevisionID]
+    FROM [dbo].[CourseContractRevision] AS [t1]
+    ) AS [t2] ON [t2].[RevisionID] = [t0].[ContractID]
+WHERE ([t0].[Status] = @p0) AND ([t2].[test] IS NULL)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1203]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[CourseContract] AS [t0]
+LEFT OUTER JOIN (
+    SELECT 1 AS [test], [t1].[RevisionID]
+    FROM [dbo].[CourseContractRevision] AS [t1]
+    ) AS [t2] ON [t2].[RevisionID] = [t0].[ContractID]
+WHERE ([t0].[Status] = @p0) AND ([t2].[test] IS NULL)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1203]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[CourseContract] AS [t0]
+LEFT OUTER JOIN (
+    SELECT 1 AS [test], [t1].[RevisionID]
+    FROM [dbo].[CourseContractRevision] AS [t1]
+    ) AS [t2] ON [t2].[RevisionID] = [t0].[ContractID]
+WHERE ([t0].[Status] = @p0) AND ([t2].[test] IS NULL)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1204]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[CourseContract] AS [t0]
+LEFT OUTER JOIN (
+    SELECT 1 AS [test], [t1].[RevisionID]
+    FROM [dbo].[CourseContractRevision] AS [t1]
+    ) AS [t2] ON [t2].[RevisionID] = [t0].[ContractID]
+WHERE ([t0].[Status] = @p0) AND ([t2].[test] IS NULL)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1204]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[CourseContract] AS [t0]
+LEFT OUTER JOIN (
+    SELECT 1 AS [test], [t1].[RevisionID]
+    FROM [dbo].[CourseContractRevision] AS [t1]
+    ) AS [t2] ON [t2].[RevisionID] = [t0].[ContractID]
+WHERE ([t0].[EffectiveDate] >= @p0) AND ([t0].[EffectiveDate] < @p1) AND ([t0].[Status] = @p2) AND ([t2].[test] IS NULL)
+-- @p0: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/1/2019 12:00:00 AM]
+-- @p1: Input DateTime (Size = -1; Prec = 0; Scale = 0) [3/1/2019 12:00:00 AM]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [1205]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[CourseContract] AS [t0]
+INNER JOIN [dbo].[CourseContractRevision] AS [t1] ON [t0].[ContractID] = [t1].[RevisionID]
+WHERE ([t0].[Status] = @p0) AND ([t0].[FitnessConsultant] = @p1)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1201]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[CourseContract] AS [t0]
+INNER JOIN [dbo].[CourseContractRevision] AS [t1] ON [t0].[ContractID] = [t1].[RevisionID]
+WHERE ([t0].[Status] = @p0) AND ([t0].[FitnessConsultant] = @p1)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1201]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[CourseContract] AS [t0]
+INNER JOIN [dbo].[CourseContractRevision] AS [t1] ON [t0].[ContractID] = [t1].[RevisionID]
+WHERE [t0].[Status] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1203]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[CourseContract] AS [t0]
+INNER JOIN [dbo].[CourseContractRevision] AS [t1] ON [t0].[ContractID] = [t1].[RevisionID]
+WHERE [t0].[Status] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1203]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[CourseContract] AS [t0]
+INNER JOIN [dbo].[CourseContractRevision] AS [t1] ON [t0].[ContractID] = [t1].[RevisionID]
+WHERE [t0].[Status] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1202]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[CourseContract] AS [t0]
+INNER JOIN [dbo].[CourseContractRevision] AS [t1] ON [t0].[ContractID] = [t1].[RevisionID]
+WHERE [t0].[Status] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1202]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[CourseContract] AS [t0]
+INNER JOIN [dbo].[CourseContractRevision] AS [t1] ON [t0].[ContractID] = [t1].[RevisionID]
+WHERE ([t0].[EffectiveDate] >= @p0) AND ([t0].[EffectiveDate] < @p1) AND ([t0].[Status] = @p2)
+-- @p0: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/1/2019 12:00:00 AM]
+-- @p1: Input DateTime (Size = -1; Prec = 0; Scale = 0) [3/1/2019 12:00:00 AM]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [1205]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[Payment] AS [t0]
+WHERE [t0].[PayoffDate] >= @p0
+-- @p0: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[VoidPayment] AS [t0]
+INNER JOIN [dbo].[Payment] AS [t1] ON [t0].[VoidID] = [t1].[PaymentID]
+LEFT OUTER JOIN [dbo].[InvoiceItem] AS [t2] ON [t2].[InvoiceID] = [t1].[InvoiceID]
+LEFT OUTER JOIN (
+    SELECT 1 AS [test], [t3].[InvoiceID]
+    FROM [dbo].[InvoiceCancellation] AS [t3]
+    ) AS [t4] ON [t4].[InvoiceID] = [t2].[InvoiceID]
+WHERE ([t4].[test] IS NOT NULL) AND ([t0].[VoidDate] >= @p0)
+-- @p0: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[VoidPayment] AS [t0]
+INNER JOIN [dbo].[Payment] AS [t1] ON [t0].[VoidID] = [t1].[PaymentID]
+WHERE ([t1].[AllowanceID] IS NOT NULL) AND ([t0].[VoidDate] >= @p0)
+-- @p0: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[Payment] AS [t0]
+WHERE [t0].[PayoffDate] >= @p0
+-- @p0: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[VoidPayment] AS [t0]
+INNER JOIN [dbo].[Payment] AS [t1] ON [t0].[VoidID] = [t1].[PaymentID]
+WHERE [t0].[VoidDate] >= @p0
+-- @p0: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [Count], [t7].[value] AS [Hour]
+FROM (
+    SELECT DATEPART(Hour, [t0].[ClassTime]) AS [value], [t2].[Status], [t4].[test], [t6].[Status] AS [Status2], [t0].[ClassTime]
+    FROM [dbo].[LessonTime] AS [t0]
+    INNER JOIN [dbo].[RegisterLesson] AS [t1] ON [t1].[RegisterID] = [t0].[RegisterID]
+    LEFT OUTER JOIN [dbo].[LessonPriceType] AS [t2] ON [t2].[PriceID] = [t1].[ClassLevel]
+    LEFT OUTER JOIN (
+        SELECT 1 AS [test], [t3].[RegisterID], [t3].[ContractID], [t3].[TypeID]
+        FROM [dbo].[RegisterLessonEnterprise] AS [t3]
+        ) AS [t4] ON [t4].[RegisterID] = [t1].[RegisterID]
+    LEFT OUTER JOIN [dbo].[EnterpriseCourseContent] AS [t5] ON ([t5].[ContractID] = [t4].[ContractID]) AND ([t5].[TypeID] = [t4].[TypeID])
+    LEFT OUTER JOIN [dbo].[EnterpriseLessonType] AS [t6] ON [t6].[TypeID] = [t5].[TypeID]
+    ) AS [t7]
+WHERE ((([t7].[Status]) IN (@p0, @p1, @p2)) OR (([t7].[test] IS NOT NULL) AND ([t7].[Status2] IN (@p3, @p4)))) AND ([t7].[ClassTime] >= @p5) AND ([t7].[ClassTime] < @p6)
+GROUP BY [t7].[value]
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [0]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [1007]
+-- @p3: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p4: Input Int (Size = -1; Prec = 0; Scale = 0) [1008]
+-- @p5: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- @p6: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/3/2019 12:00:00 AM]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [Count], [t1].[value] AS [Hour]
+FROM (
+    SELECT DATEPART(Hour, [t0].[ClassTime]) AS [value], [t0].[TrainingBySelf], [t0].[ClassTime]
+    FROM [dbo].[LessonTime] AS [t0]
+    ) AS [t1]
+WHERE ([t1].[TrainingBySelf] = @p0) AND ([t1].[ClassTime] >= @p1) AND ([t1].[ClassTime] < @p2)
+GROUP BY [t1].[value]
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p1: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- @p2: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/3/2019 12:00:00 AM]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [Count], [t7].[value] AS [Hour]
+FROM (
+    SELECT DATEPART(Hour, [t0].[ClassTime]) AS [value], [t2].[Status], [t4].[test], [t6].[Status] AS [Status2], [t0].[ClassTime]
+    FROM [dbo].[LessonTime] AS [t0]
+    INNER JOIN [dbo].[RegisterLesson] AS [t1] ON [t1].[RegisterID] = [t0].[RegisterID]
+    LEFT OUTER JOIN [dbo].[LessonPriceType] AS [t2] ON [t2].[PriceID] = [t1].[ClassLevel]
+    LEFT OUTER JOIN (
+        SELECT 1 AS [test], [t3].[RegisterID], [t3].[ContractID], [t3].[TypeID]
+        FROM [dbo].[RegisterLessonEnterprise] AS [t3]
+        ) AS [t4] ON [t4].[RegisterID] = [t1].[RegisterID]
+    LEFT OUTER JOIN [dbo].[EnterpriseCourseContent] AS [t5] ON ([t5].[ContractID] = [t4].[ContractID]) AND ([t5].[TypeID] = [t4].[TypeID])
+    LEFT OUTER JOIN [dbo].[EnterpriseLessonType] AS [t6] ON [t6].[TypeID] = [t5].[TypeID]
+    ) AS [t7]
+WHERE (([t7].[Status] = @p0) OR (([t7].[test] IS NOT NULL) AND ([t7].[Status2] = @p1))) AND ([t7].[ClassTime] >= @p2) AND ([t7].[ClassTime] < @p3)
+GROUP BY [t7].[value]
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1006]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [1006]
+-- @p2: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- @p3: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/3/2019 12:00:00 AM]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT [t0].[BranchID], [t0].[BranchName], [t0].[ManagerID], [t0].[ViceManagerID]
+FROM [dbo].[BranchStore] AS [t0]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[InvoiceItem] AS [t0]
+WHERE ([t0].[SellerID] = @p0) AND ([t0].[InvoiceDate] >= @p1) AND ([t0].[InvoiceDate] < @p2) AND ([t0].[InvoiceType] = @p3)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p1: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- @p2: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/3/2019 12:00:00 AM]
+-- @p3: Input Int (Size = -1; Prec = 0; Scale = 0) [7]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[InvoiceItem] AS [t0]
+INNER JOIN ([dbo].[Payment] AS [t1]
+    INNER JOIN [dbo].[VoidPayment] AS [t2] ON [t1].[PaymentID] = [t2].[VoidID]) ON ([t0].[InvoiceID]) = [t1].[InvoiceID]
+INNER JOIN [dbo].[InvoiceCancellation] AS [t3] ON [t0].[InvoiceID] = [t3].[InvoiceID]
+WHERE ([t0].[SellerID] = @p0) AND ([t0].[InvoiceType] = @p1) AND ([t2].[Status] = @p2) AND ([t3].[CancelDate] >= @p3) AND ([t3].[CancelDate] < @p4)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [7]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [1205]
+-- @p3: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- @p4: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/3/2019 12:00:00 AM]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[InvoiceItem] AS [t0]
+INNER JOIN [dbo].[InvoiceAllowance] AS [t1] ON ([t0].[InvoiceID]) = [t1].[InvoiceID]
+WHERE ([t0].[SellerID] = @p0) AND ([t0].[InvoiceType] = @p1) AND ([t1].[AllowanceDate] >= @p2) AND ([t1].[AllowanceDate] < @p3)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [7]
+-- @p2: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- @p3: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/3/2019 12:00:00 AM]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[InvoiceItem] AS [t0]
+INNER JOIN [dbo].[InvoiceItemDispatchLog] AS [t1] ON [t0].[InvoiceID] = [t1].[InvoiceID]
+WHERE ([t1].[Status] = @p0) AND ([t0].[SellerID] = @p1) AND ([t0].[InvoiceDate] >= @p2) AND ([t0].[InvoiceDate] < @p3) AND ([t0].[InvoiceType] = @p4)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p2: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- @p3: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/3/2019 12:00:00 AM]
+-- @p4: Input Int (Size = -1; Prec = 0; Scale = 0) [7]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[InvoiceItem] AS [t0]
+INNER JOIN [dbo].[InvoiceAllowance] AS [t1] ON ([t0].[InvoiceID]) = [t1].[InvoiceID]
+INNER JOIN [dbo].[InvoiceAllowanceDispatchLog] AS [t2] ON [t1].[AllowanceID] = [t2].[AllowanceID]
+WHERE ([t2].[Status] = @p0) AND ([t0].[SellerID] = @p1) AND ([t0].[InvoiceType] = @p2) AND ([t1].[AllowanceDate] >= @p3) AND ([t1].[AllowanceDate] < @p4)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [7]
+-- @p3: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- @p4: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/3/2019 12:00:00 AM]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[InvoiceItem] AS [t0]
+INNER JOIN ([dbo].[Payment] AS [t1]
+    INNER JOIN [dbo].[VoidPayment] AS [t2] ON [t1].[PaymentID] = [t2].[VoidID]) ON ([t0].[InvoiceID]) = [t1].[InvoiceID]
+INNER JOIN [dbo].[InvoiceCancellation] AS [t3] ON [t0].[InvoiceID] = [t3].[InvoiceID]
+INNER JOIN [dbo].[InvoiceCancellationDispatchLog] AS [t4] ON [t3].[InvoiceID] = [t4].[InvoiceID]
+WHERE ([t4].[Status] = @p0) AND ([t0].[SellerID] = @p1) AND ([t0].[InvoiceType] = @p2) AND ([t2].[Status] = @p3) AND ([t3].[CancelDate] >= @p4) AND ([t3].[CancelDate] < @p5)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [7]
+-- @p3: Input Int (Size = -1; Prec = 0; Scale = 0) [1205]
+-- @p4: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- @p5: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/3/2019 12:00:00 AM]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[InvoiceItem] AS [t0]
+WHERE ([t0].[SellerID] = @p0) AND ([t0].[InvoiceDate] >= @p1) AND ([t0].[InvoiceDate] < @p2) AND ([t0].[InvoiceType] = @p3)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [2]
+-- @p1: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- @p2: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/3/2019 12:00:00 AM]
+-- @p3: Input Int (Size = -1; Prec = 0; Scale = 0) [7]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[InvoiceItem] AS [t0]
+INNER JOIN ([dbo].[Payment] AS [t1]
+    INNER JOIN [dbo].[VoidPayment] AS [t2] ON [t1].[PaymentID] = [t2].[VoidID]) ON ([t0].[InvoiceID]) = [t1].[InvoiceID]
+INNER JOIN [dbo].[InvoiceCancellation] AS [t3] ON [t0].[InvoiceID] = [t3].[InvoiceID]
+WHERE ([t0].[SellerID] = @p0) AND ([t0].[InvoiceType] = @p1) AND ([t2].[Status] = @p2) AND ([t3].[CancelDate] >= @p3) AND ([t3].[CancelDate] < @p4)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [2]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [7]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [1205]
+-- @p3: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- @p4: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/3/2019 12:00:00 AM]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[InvoiceItem] AS [t0]
+INNER JOIN [dbo].[InvoiceAllowance] AS [t1] ON ([t0].[InvoiceID]) = [t1].[InvoiceID]
+WHERE ([t0].[SellerID] = @p0) AND ([t0].[InvoiceType] = @p1) AND ([t1].[AllowanceDate] >= @p2) AND ([t1].[AllowanceDate] < @p3)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [2]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [7]
+-- @p2: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- @p3: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/3/2019 12:00:00 AM]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[InvoiceItem] AS [t0]
+INNER JOIN [dbo].[InvoiceItemDispatchLog] AS [t1] ON [t0].[InvoiceID] = [t1].[InvoiceID]
+WHERE ([t1].[Status] = @p0) AND ([t0].[SellerID] = @p1) AND ([t0].[InvoiceDate] >= @p2) AND ([t0].[InvoiceDate] < @p3) AND ([t0].[InvoiceType] = @p4)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [2]
+-- @p2: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- @p3: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/3/2019 12:00:00 AM]
+-- @p4: Input Int (Size = -1; Prec = 0; Scale = 0) [7]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[InvoiceItem] AS [t0]
+INNER JOIN [dbo].[InvoiceAllowance] AS [t1] ON ([t0].[InvoiceID]) = [t1].[InvoiceID]
+INNER JOIN [dbo].[InvoiceAllowanceDispatchLog] AS [t2] ON [t1].[AllowanceID] = [t2].[AllowanceID]
+WHERE ([t2].[Status] = @p0) AND ([t0].[SellerID] = @p1) AND ([t0].[InvoiceType] = @p2) AND ([t1].[AllowanceDate] >= @p3) AND ([t1].[AllowanceDate] < @p4)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [2]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [7]
+-- @p3: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- @p4: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/3/2019 12:00:00 AM]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[InvoiceItem] AS [t0]
+INNER JOIN ([dbo].[Payment] AS [t1]
+    INNER JOIN [dbo].[VoidPayment] AS [t2] ON [t1].[PaymentID] = [t2].[VoidID]) ON ([t0].[InvoiceID]) = [t1].[InvoiceID]
+INNER JOIN [dbo].[InvoiceCancellation] AS [t3] ON [t0].[InvoiceID] = [t3].[InvoiceID]
+INNER JOIN [dbo].[InvoiceCancellationDispatchLog] AS [t4] ON [t3].[InvoiceID] = [t4].[InvoiceID]
+WHERE ([t4].[Status] = @p0) AND ([t0].[SellerID] = @p1) AND ([t0].[InvoiceType] = @p2) AND ([t2].[Status] = @p3) AND ([t3].[CancelDate] >= @p4) AND ([t3].[CancelDate] < @p5)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [2]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [7]
+-- @p3: Input Int (Size = -1; Prec = 0; Scale = 0) [1205]
+-- @p4: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- @p5: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/3/2019 12:00:00 AM]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[InvoiceItem] AS [t0]
+WHERE ([t0].[SellerID] = @p0) AND ([t0].[InvoiceDate] >= @p1) AND ([t0].[InvoiceDate] < @p2) AND ([t0].[InvoiceType] = @p3)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [3]
+-- @p1: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- @p2: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/3/2019 12:00:00 AM]
+-- @p3: Input Int (Size = -1; Prec = 0; Scale = 0) [7]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[InvoiceItem] AS [t0]
+INNER JOIN ([dbo].[Payment] AS [t1]
+    INNER JOIN [dbo].[VoidPayment] AS [t2] ON [t1].[PaymentID] = [t2].[VoidID]) ON ([t0].[InvoiceID]) = [t1].[InvoiceID]
+INNER JOIN [dbo].[InvoiceCancellation] AS [t3] ON [t0].[InvoiceID] = [t3].[InvoiceID]
+WHERE ([t0].[SellerID] = @p0) AND ([t0].[InvoiceType] = @p1) AND ([t2].[Status] = @p2) AND ([t3].[CancelDate] >= @p3) AND ([t3].[CancelDate] < @p4)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [3]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [7]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [1205]
+-- @p3: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- @p4: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/3/2019 12:00:00 AM]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[InvoiceItem] AS [t0]
+INNER JOIN [dbo].[InvoiceAllowance] AS [t1] ON ([t0].[InvoiceID]) = [t1].[InvoiceID]
+WHERE ([t0].[SellerID] = @p0) AND ([t0].[InvoiceType] = @p1) AND ([t1].[AllowanceDate] >= @p2) AND ([t1].[AllowanceDate] < @p3)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [3]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [7]
+-- @p2: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- @p3: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/3/2019 12:00:00 AM]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[InvoiceItem] AS [t0]
+INNER JOIN [dbo].[InvoiceItemDispatchLog] AS [t1] ON [t0].[InvoiceID] = [t1].[InvoiceID]
+WHERE ([t1].[Status] = @p0) AND ([t0].[SellerID] = @p1) AND ([t0].[InvoiceDate] >= @p2) AND ([t0].[InvoiceDate] < @p3) AND ([t0].[InvoiceType] = @p4)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [3]
+-- @p2: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- @p3: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/3/2019 12:00:00 AM]
+-- @p4: Input Int (Size = -1; Prec = 0; Scale = 0) [7]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[InvoiceItem] AS [t0]
+INNER JOIN [dbo].[InvoiceAllowance] AS [t1] ON ([t0].[InvoiceID]) = [t1].[InvoiceID]
+INNER JOIN [dbo].[InvoiceAllowanceDispatchLog] AS [t2] ON [t1].[AllowanceID] = [t2].[AllowanceID]
+WHERE ([t2].[Status] = @p0) AND ([t0].[SellerID] = @p1) AND ([t0].[InvoiceType] = @p2) AND ([t1].[AllowanceDate] >= @p3) AND ([t1].[AllowanceDate] < @p4)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [3]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [7]
+-- @p3: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- @p4: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/3/2019 12:00:00 AM]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[InvoiceItem] AS [t0]
+INNER JOIN ([dbo].[Payment] AS [t1]
+    INNER JOIN [dbo].[VoidPayment] AS [t2] ON [t1].[PaymentID] = [t2].[VoidID]) ON ([t0].[InvoiceID]) = [t1].[InvoiceID]
+INNER JOIN [dbo].[InvoiceCancellation] AS [t3] ON [t0].[InvoiceID] = [t3].[InvoiceID]
+INNER JOIN [dbo].[InvoiceCancellationDispatchLog] AS [t4] ON [t3].[InvoiceID] = [t4].[InvoiceID]
+WHERE ([t4].[Status] = @p0) AND ([t0].[SellerID] = @p1) AND ([t0].[InvoiceType] = @p2) AND ([t2].[Status] = @p3) AND ([t3].[CancelDate] >= @p4) AND ([t3].[CancelDate] < @p5)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [3]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [7]
+-- @p3: Input Int (Size = -1; Prec = 0; Scale = 0) [1205]
+-- @p4: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- @p5: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/3/2019 12:00:00 AM]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT [t0].[BranchID], [t0].[BranchName], [t0].[ManagerID], [t0].[ViceManagerID]
+FROM [dbo].[BranchStore] AS [t0]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT [t2].[IntervalID], [t2].[TrackID], [t2].[SellerID], [t2].[StartNo], [t2].[EndNo], [t2].[GroupID]
+FROM [dbo].[InvoiceTrackCodeAssignment] AS [t0]
+INNER JOIN [dbo].[InvoiceTrackCode] AS [t1] ON [t0].[TrackID] = [t1].[TrackID]
+CROSS JOIN [dbo].[InvoiceNoInterval] AS [t2]
+WHERE ([t0].[SellerID] = @p0) AND ([t1].[Year] = @p1) AND ([t1].[PeriodNo] = @p2) AND ([t2].[TrackID] = [t0].[TrackID]) AND ([t2].[SellerID] = [t0].[SellerID])
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [2019]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT [t0].[InvoiceID], [t0].[IntervalID], [t0].[InvoiceNo]
+FROM [dbo].[InvoiceNoAssignment] AS [t0]
+WHERE [t0].[IntervalID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [34]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT [t2].[IntervalID], [t2].[TrackID], [t2].[SellerID], [t2].[StartNo], [t2].[EndNo], [t2].[GroupID]
+FROM [dbo].[InvoiceTrackCodeAssignment] AS [t0]
+INNER JOIN [dbo].[InvoiceTrackCode] AS [t1] ON [t0].[TrackID] = [t1].[TrackID]
+CROSS JOIN [dbo].[InvoiceNoInterval] AS [t2]
+WHERE ([t0].[SellerID] = @p0) AND ([t1].[Year] = @p1) AND ([t1].[PeriodNo] = @p2) AND ([t2].[TrackID] = [t0].[TrackID]) AND ([t2].[SellerID] = [t0].[SellerID])
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [2]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [2019]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT [t0].[InvoiceID], [t0].[IntervalID], [t0].[InvoiceNo]
+FROM [dbo].[InvoiceNoAssignment] AS [t0]
+WHERE [t0].[IntervalID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [35]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT [t2].[IntervalID], [t2].[TrackID], [t2].[SellerID], [t2].[StartNo], [t2].[EndNo], [t2].[GroupID]
+FROM [dbo].[InvoiceTrackCodeAssignment] AS [t0]
+INNER JOIN [dbo].[InvoiceTrackCode] AS [t1] ON [t0].[TrackID] = [t1].[TrackID]
+CROSS JOIN [dbo].[InvoiceNoInterval] AS [t2]
+WHERE ([t0].[SellerID] = @p0) AND ([t1].[Year] = @p1) AND ([t1].[PeriodNo] = @p2) AND ([t2].[TrackID] = [t0].[TrackID]) AND ([t2].[SellerID] = [t0].[SellerID])
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [3]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [2019]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT [t0].[InvoiceID], [t0].[IntervalID], [t0].[InvoiceNo]
+FROM [dbo].[InvoiceNoAssignment] AS [t0]
+WHERE [t0].[IntervalID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [36]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT TOP (5) [t0].[DocID], [t0].[Title], [t0].[ArticleContent], [t0].[AuthorID], [t0].[Illustration], [t0].[Subtitle]
+FROM [dbo].[Article] AS [t0]
+INNER JOIN [dbo].[Document] AS [t1] ON [t1].[DocID] = [t0].[DocID]
+WHERE [t1].[CurrentStep] = @p0
+ORDER BY [t0].[DocID] DESC
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[Article] AS [t0]
+INNER JOIN [dbo].[Document] AS [t1] ON [t1].[DocID] = [t0].[DocID]
+WHERE ([t0].[DocID] >= @p0) AND ([t1].[CurrentStep] = @p1)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [21961]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT TOP (1) [t3].[DocID], [t3].[Title], [t3].[ArticleContent], [t3].[AuthorID], [t3].[Illustration], [t3].[Subtitle]
+FROM (
+    SELECT [t2].[DocID], [t2].[Title], [t2].[ArticleContent], [t2].[AuthorID], [t2].[Illustration], [t2].[Subtitle], [t2].[ROW_NUMBER]
+    FROM (
+        SELECT ROW_NUMBER() OVER (ORDER BY [t0].[DocID] DESC) AS [ROW_NUMBER], [t0].[DocID], [t0].[Title], [t0].[ArticleContent], [t0].[AuthorID], [t0].[Illustration], [t0].[Subtitle]
+        FROM [dbo].[Article] AS [t0]
+        INNER JOIN [dbo].[Document] AS [t1] ON [t1].[DocID] = [t0].[DocID]
+        WHERE ([t0].[DocID] >= @p0) AND ([t1].[CurrentStep] = @p1)
+        ) AS [t2]
+    WHERE [t2].[ROW_NUMBER] BETWEEN @p2 + 1 AND @p2 + @p3
+    ) AS [t3]
+ORDER BY [t3].[ROW_NUMBER]
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [21961]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [24]
+-- @p3: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT TOP (1) [t3].[DocID], [t3].[Title], [t3].[ArticleContent], [t3].[AuthorID], [t3].[Illustration], [t3].[Subtitle]
+FROM (
+    SELECT [t2].[DocID], [t2].[Title], [t2].[ArticleContent], [t2].[AuthorID], [t2].[Illustration], [t2].[Subtitle], [t2].[ROW_NUMBER]
+    FROM (
+        SELECT ROW_NUMBER() OVER (ORDER BY [t0].[DocID] DESC) AS [ROW_NUMBER], [t0].[DocID], [t0].[Title], [t0].[ArticleContent], [t0].[AuthorID], [t0].[Illustration], [t0].[Subtitle]
+        FROM [dbo].[Article] AS [t0]
+        INNER JOIN [dbo].[Document] AS [t1] ON [t1].[DocID] = [t0].[DocID]
+        WHERE ([t0].[DocID] >= @p0) AND ([t1].[CurrentStep] = @p1)
+        ) AS [t2]
+    WHERE [t2].[ROW_NUMBER] BETWEEN @p2 + 1 AND @p2 + @p3
+    ) AS [t3]
+ORDER BY [t3].[ROW_NUMBER]
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [21961]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [28]
+-- @p3: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT TOP (1) [t3].[DocID], [t3].[Title], [t3].[ArticleContent], [t3].[AuthorID], [t3].[Illustration], [t3].[Subtitle]
+FROM (
+    SELECT [t2].[DocID], [t2].[Title], [t2].[ArticleContent], [t2].[AuthorID], [t2].[Illustration], [t2].[Subtitle], [t2].[ROW_NUMBER]
+    FROM (
+        SELECT ROW_NUMBER() OVER (ORDER BY [t0].[DocID] DESC) AS [ROW_NUMBER], [t0].[DocID], [t0].[Title], [t0].[ArticleContent], [t0].[AuthorID], [t0].[Illustration], [t0].[Subtitle]
+        FROM [dbo].[Article] AS [t0]
+        INNER JOIN [dbo].[Document] AS [t1] ON [t1].[DocID] = [t0].[DocID]
+        WHERE ([t0].[DocID] >= @p0) AND ([t1].[CurrentStep] = @p1)
+        ) AS [t2]
+    WHERE [t2].[ROW_NUMBER] BETWEEN @p2 + 1 AND @p2 + @p3
+    ) AS [t3]
+ORDER BY [t3].[ROW_NUMBER]
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [21961]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [17]
+-- @p3: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT TOP (1) [t3].[DocID], [t3].[Title], [t3].[ArticleContent], [t3].[AuthorID], [t3].[Illustration], [t3].[Subtitle]
+FROM (
+    SELECT [t2].[DocID], [t2].[Title], [t2].[ArticleContent], [t2].[AuthorID], [t2].[Illustration], [t2].[Subtitle], [t2].[ROW_NUMBER]
+    FROM (
+        SELECT ROW_NUMBER() OVER (ORDER BY [t0].[DocID] DESC) AS [ROW_NUMBER], [t0].[DocID], [t0].[Title], [t0].[ArticleContent], [t0].[AuthorID], [t0].[Illustration], [t0].[Subtitle]
+        FROM [dbo].[Article] AS [t0]
+        INNER JOIN [dbo].[Document] AS [t1] ON [t1].[DocID] = [t0].[DocID]
+        WHERE ([t0].[DocID] >= @p0) AND ([t1].[CurrentStep] = @p1)
+        ) AS [t2]
+    WHERE [t2].[ROW_NUMBER] BETWEEN @p2 + 1 AND @p2 + @p3
+    ) AS [t3]
+ORDER BY [t3].[ROW_NUMBER]
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [21961]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [9]
+-- @p3: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT TOP (1) [t3].[DocID], [t3].[Title], [t3].[ArticleContent], [t3].[AuthorID], [t3].[Illustration], [t3].[Subtitle]
+FROM (
+    SELECT [t2].[DocID], [t2].[Title], [t2].[ArticleContent], [t2].[AuthorID], [t2].[Illustration], [t2].[Subtitle], [t2].[ROW_NUMBER]
+    FROM (
+        SELECT ROW_NUMBER() OVER (ORDER BY [t0].[DocID] DESC) AS [ROW_NUMBER], [t0].[DocID], [t0].[Title], [t0].[ArticleContent], [t0].[AuthorID], [t0].[Illustration], [t0].[Subtitle]
+        FROM [dbo].[Article] AS [t0]
+        INNER JOIN [dbo].[Document] AS [t1] ON [t1].[DocID] = [t0].[DocID]
+        WHERE ([t0].[DocID] >= @p0) AND ([t1].[CurrentStep] = @p1)
+        ) AS [t2]
+    WHERE [t2].[ROW_NUMBER] BETWEEN @p2 + 1 AND @p2 + @p3
+    ) AS [t3]
+ORDER BY [t3].[ROW_NUMBER]
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [21961]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [28]
+-- @p3: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT [t0].[AttachmentID], [t0].[StoredPath], [t0].[DocID]
+FROM [dbo].[Attachment] AS [t0]
+WHERE [t0].[AttachmentID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [7211]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT [t0].[AttachmentID], [t0].[StoredPath], [t0].[DocID]
+FROM [dbo].[Attachment] AS [t0]
+WHERE [t0].[AttachmentID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [7202]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT [t0].[AttachmentID], [t0].[StoredPath], [t0].[DocID]
+FROM [dbo].[Attachment] AS [t0]
+WHERE [t0].[AttachmentID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [7250]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT [t0].[AttachmentID], [t0].[StoredPath], [t0].[DocID]
+FROM [dbo].[Attachment] AS [t0]
+WHERE [t0].[AttachmentID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [7330]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT [t0].[UID], [t0].[Status], [t0].[TotalScope], [t0].[Rank]
+FROM [dbo].[ExerciseGameContestant] AS [t0]
+WHERE [t0].[UID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+
+2019/02/02 21:15:15
+SELECT TOP (1) [t0].[AttachmentID], [t0].[StoredPath], [t0].[DocID]
+FROM [dbo].[Attachment] AS [t0]
+WHERE [t0].[AttachmentID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1155]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+
+2019/02/02 21:15:15
+SELECT TOP (1) [t0].[AttachmentID], [t0].[StoredPath], [t0].[DocID]
+FROM [dbo].[Attachment] AS [t0]
+WHERE [t0].[AttachmentID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [7211]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+
+2019/02/02 21:15:15
+SELECT TOP (1) [t0].[AttachmentID], [t0].[StoredPath], [t0].[DocID]
+FROM [dbo].[Attachment] AS [t0]
+WHERE [t0].[AttachmentID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [7202]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+
+2019/02/02 21:15:15
+SELECT TOP (1) [t0].[AttachmentID], [t0].[StoredPath], [t0].[DocID]
+FROM [dbo].[Attachment] AS [t0]
+WHERE [t0].[AttachmentID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [7250]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+
+2019/02/02 21:15:15
+SELECT TOP (1) [t0].[AttachmentID], [t0].[StoredPath], [t0].[DocID]
+FROM [dbo].[Attachment] AS [t0]
+WHERE [t0].[AttachmentID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [7211]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+
+2019/02/02 21:15:16
+SELECT TOP (1) [t0].[AttachmentID], [t0].[StoredPath], [t0].[DocID]
+FROM [dbo].[Attachment] AS [t0]
+WHERE [t0].[AttachmentID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [7330]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+
+2019/02/02 21:15:16
+SELECT TOP (1) [t0].[AttachmentID], [t0].[StoredPath], [t0].[DocID]
+FROM [dbo].[Attachment] AS [t0]
+WHERE [t0].[AttachmentID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [7250]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+
+2019/02/02 21:15:16
+SELECT TOP (1) [t0].[AttachmentID], [t0].[StoredPath], [t0].[DocID]
+FROM [dbo].[Attachment] AS [t0]
+WHERE [t0].[AttachmentID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [7330]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+
+2019/02/02 21:15:17
+SELECT TOP (1) [t0].[AttachmentID], [t0].[StoredPath], [t0].[DocID]
+FROM [dbo].[Attachment] AS [t0]
+WHERE [t0].[AttachmentID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [7202]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+
+2019/02/02 21:15:31
+SELECT TOP (1) [t0].[UID], [t0].[UserName], [t0].[PID], [t0].[Password], [t0].[ExternalID], [t0].[Expiration], [t0].[Creator], [t0].[AuthID], [t0].[LevelID], [t0].[ThemeName], [t0].[Password2], [t0].[MemberCode], [t0].[PictureID], [t0].[RealName], [t0].[Address], [t0].[Phone], [t0].[RecentStatus], [t0].[Birthday], [t0].[Nickname], [t0].[BirthdateIndex]
+FROM [dbo].[UserProfile] AS [t0]
+WHERE [t0].[UID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+
+2019/02/02 21:15:31
+SELECT TOP (1) [t0].[AttachmentID], [t0].[StoredPath], [t0].[DocID]
+FROM [dbo].[Attachment] AS [t0]
+WHERE [t0].[AttachmentID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1155]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+
+2019/02/02 21:19:54
+SELECT TOP (1) [t0].[UID], [t0].[UserName], [t0].[PID], [t0].[Password], [t0].[ExternalID], [t0].[Expiration], [t0].[Creator], [t0].[AuthID], [t0].[LevelID], [t0].[ThemeName], [t0].[Password2], [t0].[MemberCode], [t0].[PictureID], [t0].[RealName], [t0].[Address], [t0].[Phone], [t0].[RecentStatus], [t0].[Birthday], [t0].[Nickname], [t0].[BirthdateIndex]
+FROM [dbo].[UserProfile] AS [t0]
+WHERE [t0].[UID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+
+2019/02/02 21:19:54
+SELECT TOP (1) [t0].[AttachmentID], [t0].[StoredPath], [t0].[DocID]
+FROM [dbo].[Attachment] AS [t0]
+WHERE [t0].[AttachmentID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1155]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+
+2019/02/02 21:24:43
+SELECT TOP (1) [t0].[UID], [t0].[UserName], [t0].[PID], [t0].[Password], [t0].[ExternalID], [t0].[Expiration], [t0].[Creator], [t0].[AuthID], [t0].[LevelID], [t0].[ThemeName], [t0].[Password2], [t0].[MemberCode], [t0].[PictureID], [t0].[RealName], [t0].[Address], [t0].[Phone], [t0].[RecentStatus], [t0].[Birthday], [t0].[Nickname], [t0].[BirthdateIndex]
+FROM [dbo].[UserProfile] AS [t0]
+WHERE [t0].[UID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+
+2019/02/02 21:24:44
+SELECT TOP (1) [t0].[AttachmentID], [t0].[StoredPath], [t0].[DocID]
+FROM [dbo].[Attachment] AS [t0]
+WHERE [t0].[AttachmentID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1155]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+
+2019/02/02 21:24:47
+SELECT TOP (1) [t0].[UID], [t0].[UserName], [t0].[PID], [t0].[Password], [t0].[ExternalID], [t0].[Expiration], [t0].[Creator], [t0].[AuthID], [t0].[LevelID], [t0].[ThemeName], [t0].[Password2], [t0].[MemberCode], [t0].[PictureID], [t0].[RealName], [t0].[Address], [t0].[Phone], [t0].[RecentStatus], [t0].[Birthday], [t0].[Nickname], [t0].[BirthdateIndex]
+FROM [dbo].[UserProfile] AS [t0]
+WHERE [t0].[UID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+
+2019/02/02 21:24:47
+SELECT TOP (1) [t0].[AttachmentID], [t0].[StoredPath], [t0].[DocID]
+FROM [dbo].[Attachment] AS [t0]
+WHERE [t0].[AttachmentID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1155]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+
+2019/02/02 21:24:50
+SELECT TOP (1) [t0].[UID], [t0].[UserName], [t0].[PID], [t0].[Password], [t0].[ExternalID], [t0].[Expiration], [t0].[Creator], [t0].[AuthID], [t0].[LevelID], [t0].[ThemeName], [t0].[Password2], [t0].[MemberCode], [t0].[PictureID], [t0].[RealName], [t0].[Address], [t0].[Phone], [t0].[RecentStatus], [t0].[Birthday], [t0].[Nickname], [t0].[BirthdateIndex]
+FROM [dbo].[UserProfile] AS [t0]
+WHERE [t0].[UID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+
+2019/02/02 21:24:51
+SELECT TOP (1) [t0].[AttachmentID], [t0].[StoredPath], [t0].[DocID]
+FROM [dbo].[Attachment] AS [t0]
+WHERE [t0].[AttachmentID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1155]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+
+2019/02/02 21:27:53
+SELECT TOP (1) [t0].[UID], [t0].[UserName], [t0].[PID], [t0].[Password], [t0].[ExternalID], [t0].[Expiration], [t0].[Creator], [t0].[AuthID], [t0].[LevelID], [t0].[ThemeName], [t0].[Password2], [t0].[MemberCode], [t0].[PictureID], [t0].[RealName], [t0].[Address], [t0].[Phone], [t0].[RecentStatus], [t0].[Birthday], [t0].[Nickname], [t0].[BirthdateIndex]
+FROM [dbo].[UserProfile] AS [t0]
+WHERE [t0].[UID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+
+2019/02/02 21:27:54
+SELECT TOP (1) [t0].[AttachmentID], [t0].[StoredPath], [t0].[DocID]
+FROM [dbo].[Attachment] AS [t0]
+WHERE [t0].[AttachmentID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1155]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+
+2019/02/02 21:27:55
+SELECT TOP (1) [t0].[UID], [t0].[UserName], [t0].[PID], [t0].[Password], [t0].[ExternalID], [t0].[Expiration], [t0].[Creator], [t0].[AuthID], [t0].[LevelID], [t0].[ThemeName], [t0].[Password2], [t0].[MemberCode], [t0].[PictureID], [t0].[RealName], [t0].[Address], [t0].[Phone], [t0].[RecentStatus], [t0].[Birthday], [t0].[Nickname], [t0].[BirthdateIndex]
+FROM [dbo].[UserProfile] AS [t0]
+WHERE [t0].[UID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+
+2019/02/02 21:27:55
+SELECT TOP (1) [t0].[UID], [t0].[UserName], [t0].[PID], [t0].[Password], [t0].[ExternalID], [t0].[Expiration], [t0].[Creator], [t0].[AuthID], [t0].[LevelID], [t0].[ThemeName], [t0].[Password2], [t0].[MemberCode], [t0].[PictureID], [t0].[RealName], [t0].[Address], [t0].[Phone], [t0].[RecentStatus], [t0].[Birthday], [t0].[Nickname], [t0].[BirthdateIndex]
+FROM [dbo].[UserProfile] AS [t0]
+WHERE [t0].[UID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+
+2019/02/02 21:27:56
+SELECT TOP (1) [t0].[AttachmentID], [t0].[StoredPath], [t0].[DocID]
+FROM [dbo].[Attachment] AS [t0]
+WHERE [t0].[AttachmentID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1155]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+
+2019/02/02 21:31:18
+SELECT TOP (1) [t0].[UID], [t0].[UserName], [t0].[PID], [t0].[Password], [t0].[ExternalID], [t0].[Expiration], [t0].[Creator], [t0].[AuthID], [t0].[LevelID], [t0].[ThemeName], [t0].[Password2], [t0].[MemberCode], [t0].[PictureID], [t0].[RealName], [t0].[Address], [t0].[Phone], [t0].[RecentStatus], [t0].[Birthday], [t0].[Nickname], [t0].[BirthdateIndex]
+FROM [dbo].[UserProfile] AS [t0]
+WHERE [t0].[UID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+
+2019/02/02 21:31:19
+SELECT TOP (1) [t0].[AttachmentID], [t0].[StoredPath], [t0].[DocID]
+FROM [dbo].[Attachment] AS [t0]
+WHERE [t0].[AttachmentID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1155]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+
+2019/02/02 21:34:46
+SELECT TOP (1) [t0].[UID], [t0].[UserName], [t0].[PID], [t0].[Password], [t0].[ExternalID], [t0].[Expiration], [t0].[Creator], [t0].[AuthID], [t0].[LevelID], [t0].[ThemeName], [t0].[Password2], [t0].[MemberCode], [t0].[PictureID], [t0].[RealName], [t0].[Address], [t0].[Phone], [t0].[RecentStatus], [t0].[Birthday], [t0].[Nickname], [t0].[BirthdateIndex]
+FROM [dbo].[UserProfile] AS [t0]
+WHERE [t0].[UID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+
+2019/02/02 21:34:47
+SELECT TOP (1) [t0].[AttachmentID], [t0].[StoredPath], [t0].[DocID]
+FROM [dbo].[Attachment] AS [t0]
+WHERE [t0].[AttachmentID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1155]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+
+2019/02/02 21:36:19
+SELECT TOP (1) [t0].[UID], [t0].[UserName], [t0].[PID], [t0].[Password], [t0].[ExternalID], [t0].[Expiration], [t0].[Creator], [t0].[AuthID], [t0].[LevelID], [t0].[ThemeName], [t0].[Password2], [t0].[MemberCode], [t0].[PictureID], [t0].[RealName], [t0].[Address], [t0].[Phone], [t0].[RecentStatus], [t0].[Birthday], [t0].[Nickname], [t0].[BirthdateIndex]
+FROM [dbo].[UserProfile] AS [t0]
+WHERE [t0].[UID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT SUM([t5].[DurationInMinutes]) AS [value]
+FROM [dbo].[RegisterLesson] AS [t0]
+INNER JOIN ([dbo].[LessonPriceType] AS [t1]
+    LEFT OUTER JOIN (
+        SELECT 1 AS [test], [t2].[PriceID]
+        FROM [dbo].[IsWelfareGiftLesson] AS [t2]
+        ) AS [t3] ON [t3].[PriceID] = [t1].[PriceID]) ON [t0].[ClassLevel] = ([t1].[PriceID])
+INNER JOIN [dbo].[GroupingLesson] AS [t4] ON [t0].[RegisterGroupID] = ([t4].[GroupID])
+INNER JOIN [dbo].[LessonTime] AS [t5] ON ([t4].[GroupID]) = [t5].[GroupID]
+LEFT OUTER JOIN (
+    SELECT 1 AS [test], [t6].[LessonID]
+    FROM [dbo].[LessonAttendance] AS [t6]
+    ) AS [t7] ON [t7].[LessonID] = [t5].[LessonID]
+WHERE ([t5].[ClassTime] >= @p0) AND ([t5].[ClassTime] < @p1) AND ([t7].[test] IS NOT NULL) AND ([t0].[UID] = @p2) AND (([t1].[Status] = @p3) OR ([t3].[test] IS NOT NULL))
+-- @p0: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/1/2019 12:00:00 AM]
+-- @p1: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/3/2019 12:00:00 AM]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p3: Input Int (Size = -1; Prec = 0; Scale = 0) [1005]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT SUM([t5].[DurationInMinutes]) AS [value]
+FROM [dbo].[RegisterLesson] AS [t0]
+INNER JOIN ([dbo].[LessonPriceType] AS [t1]
+    LEFT OUTER JOIN (
+        SELECT 1 AS [test], [t2].[PriceID]
+        FROM [dbo].[IsWelfareGiftLesson] AS [t2]
+        ) AS [t3] ON [t3].[PriceID] = [t1].[PriceID]) ON [t0].[ClassLevel] = ([t1].[PriceID])
+INNER JOIN [dbo].[GroupingLesson] AS [t4] ON [t0].[RegisterGroupID] = ([t4].[GroupID])
+INNER JOIN [dbo].[LessonTime] AS [t5] ON ([t4].[GroupID]) = [t5].[GroupID]
+LEFT OUTER JOIN (
+    SELECT 1 AS [test], [t6].[LessonID]
+    FROM [dbo].[LessonAttendance] AS [t6]
+    ) AS [t7] ON [t7].[LessonID] = [t5].[LessonID]
+WHERE ([t5].[ClassTime] >= @p0) AND ([t5].[ClassTime] < @p1) AND ([t7].[test] IS NOT NULL) AND ([t0].[UID] = @p2) AND (([t1].[Status] = @p3) OR ([t3].[test] IS NOT NULL))
+-- @p0: Input DateTime (Size = -1; Prec = 0; Scale = 0) [1/1/2019 12:00:00 AM]
+-- @p1: Input DateTime (Size = -1; Prec = 0; Scale = 0) [1/3/2019 12:00:00 AM]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p3: Input Int (Size = -1; Prec = 0; Scale = 0) [1005]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT [t0].[UID], [t0].[RoleID]
+FROM [dbo].[UserRole] AS [t0]
+WHERE [t0].[UID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT [t0].[UID], [t0].[RoleID]
+FROM [dbo].[UserRoleAuthorization] AS [t0]
+WHERE [t0].[UID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM (
+    SELECT [t16].[ClassTime]
+    FROM (
+        SELECT [t8].[LessonID], [t8].[RegisterID], [t8].[ClassTime], [t8].[DurationInMinutes], [t8].[InvitedCoach], [t8].[AttendingCoach], [t8].[GroupID], [t8].[TrainingBySelf], [t8].[BranchID], [t8].[HourOfClassTime], [t8].[Place]
+        FROM (
+            SELECT [t0].[LessonID], [t0].[RegisterID], [t0].[ClassTime], [t0].[DurationInMinutes], [t0].[InvitedCoach], [t0].[AttendingCoach], [t0].[GroupID], [t0].[TrainingBySelf], [t0].[BranchID], [t0].[HourOfClassTime], [t0].[Place]
+            FROM [dbo].[LessonTime] AS [t0]
+            INNER JOIN [dbo].[RegisterLesson] AS [t1] ON [t1].[RegisterID] = [t0].[RegisterID]
+            LEFT OUTER JOIN [dbo].[LessonPriceType] AS [t2] ON [t2].[PriceID] = [t1].[ClassLevel]
+            LEFT OUTER JOIN (
+                SELECT 1 AS [test], [t3].[RegisterID], [t3].[ContractID], [t3].[TypeID]
+                FROM [dbo].[RegisterLessonEnterprise] AS [t3]
+                ) AS [t4] ON [t4].[RegisterID] = [t1].[RegisterID]
+            LEFT OUTER JOIN [dbo].[EnterpriseCourseContent] AS [t5] ON ([t5].[ContractID] = [t4].[ContractID]) AND ([t5].[TypeID] = [t4].[TypeID])
+            LEFT OUTER JOIN [dbo].[EnterpriseLessonType] AS [t6] ON [t6].[TypeID] = [t5].[TypeID]
+            WHERE ((([t2].[Status]) IN (@p0, @p1, @p2)) OR (([t4].[test] IS NOT NULL) AND ([t6].[Status] IN (@p3, @p4)))) AND ([t0].[AttendingCoach] = @p5)
+            UNION
+            SELECT [t7].[LessonID], [t7].[RegisterID], [t7].[ClassTime], [t7].[DurationInMinutes], [t7].[InvitedCoach], [t7].[AttendingCoach], [t7].[GroupID], [t7].[TrainingBySelf], [t7].[BranchID], [t7].[HourOfClassTime], [t7].[Place]
+            FROM [dbo].[LessonTime] AS [t7]
+            WHERE ([t7].[TrainingBySelf] = @p6) AND ([t7].[AttendingCoach] = @p7)
+            ) AS [t8]
+        UNION
+        SELECT [t9].[LessonID], [t9].[RegisterID], [t9].[ClassTime], [t9].[DurationInMinutes], [t9].[InvitedCoach], [t9].[AttendingCoach], [t9].[GroupID], [t9].[TrainingBySelf], [t9].[BranchID], [t9].[HourOfClassTime], [t9].[Place]
+        FROM [dbo].[LessonTime] AS [t9]
+        INNER JOIN [dbo].[RegisterLesson] AS [t10] ON [t10].[RegisterID] = [t9].[RegisterID]
+        LEFT OUTER JOIN [dbo].[LessonPriceType] AS [t11] ON [t11].[PriceID] = [t10].[ClassLevel]
+        LEFT OUTER JOIN (
+            SELECT 1 AS [test], [t12].[RegisterID], [t12].[ContractID], [t12].[TypeID]
+            FROM [dbo].[RegisterLessonEnterprise] AS [t12]
+            ) AS [t13] ON [t13].[RegisterID] = [t10].[RegisterID]
+        LEFT OUTER JOIN [dbo].[EnterpriseCourseContent] AS [t14] ON ([t14].[ContractID] = [t13].[ContractID]) AND ([t14].[TypeID] = [t13].[TypeID])
+        LEFT OUTER JOIN [dbo].[EnterpriseLessonType] AS [t15] ON [t15].[TypeID] = [t14].[TypeID]
+        WHERE (([t11].[Status] = @p8) OR (([t13].[test] IS NOT NULL) AND ([t15].[Status] = @p9))) AND ([t9].[AttendingCoach] = @p10)
+        ) AS [t16]
+    ) AS [t17]
+WHERE ([t17].[ClassTime] >= @p11) AND ([t17].[ClassTime] < @p12)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [0]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [1007]
+-- @p3: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p4: Input Int (Size = -1; Prec = 0; Scale = 0) [1008]
+-- @p5: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p6: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p7: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p8: Input Int (Size = -1; Prec = 0; Scale = 0) [1006]
+-- @p9: Input Int (Size = -1; Prec = 0; Scale = 0) [1006]
+-- @p10: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p11: Input DateTime (Size = -1; Prec = 0; Scale = 0) [1/28/2019 12:00:00 AM]
+-- @p12: Input DateTime (Size = -1; Prec = 0; Scale = 0) [1/29/2019 12:00:00 AM]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[UserEvent] AS [t0]
+WHERE ((([t0].[StartDate] >= @p0) AND ([t0].[StartDate] < @p1)) OR (([t0].[EndDate] >= @p2) AND ([t0].[EndDate] < @p3)) OR (([t0].[StartDate] < @p4) AND ([t0].[EndDate] >= @p5))) AND (([t0].[UID] = @p6) OR (EXISTS(
+    SELECT NULL AS [EMPTY]
+    FROM [dbo].[GroupEvent] AS [t1]
+    WHERE ([t1].[UID] = @p7) AND ([t1].[EventID] = [t0].[EventID])
+    ))) AND ([t0].[EventType] = @p8)
+-- @p0: Input DateTime (Size = -1; Prec = 0; Scale = 0) [1/28/2019 12:00:00 AM]
+-- @p1: Input DateTime (Size = -1; Prec = 0; Scale = 0) [1/29/2019 12:00:00 AM]
+-- @p2: Input DateTime (Size = -1; Prec = 0; Scale = 0) [1/28/2019 12:00:00 AM]
+-- @p3: Input DateTime (Size = -1; Prec = 0; Scale = 0) [1/29/2019 12:00:00 AM]
+-- @p4: Input DateTime (Size = -1; Prec = 0; Scale = 0) [1/28/2019 12:00:00 AM]
+-- @p5: Input DateTime (Size = -1; Prec = 0; Scale = 0) [1/29/2019 12:00:00 AM]
+-- @p6: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p7: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p8: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM (
+    SELECT [t16].[ClassTime]
+    FROM (
+        SELECT [t8].[LessonID], [t8].[RegisterID], [t8].[ClassTime], [t8].[DurationInMinutes], [t8].[InvitedCoach], [t8].[AttendingCoach], [t8].[GroupID], [t8].[TrainingBySelf], [t8].[BranchID], [t8].[HourOfClassTime], [t8].[Place]
+        FROM (
+            SELECT [t0].[LessonID], [t0].[RegisterID], [t0].[ClassTime], [t0].[DurationInMinutes], [t0].[InvitedCoach], [t0].[AttendingCoach], [t0].[GroupID], [t0].[TrainingBySelf], [t0].[BranchID], [t0].[HourOfClassTime], [t0].[Place]
+            FROM [dbo].[LessonTime] AS [t0]
+            INNER JOIN [dbo].[RegisterLesson] AS [t1] ON [t1].[RegisterID] = [t0].[RegisterID]
+            LEFT OUTER JOIN [dbo].[LessonPriceType] AS [t2] ON [t2].[PriceID] = [t1].[ClassLevel]
+            LEFT OUTER JOIN (
+                SELECT 1 AS [test], [t3].[RegisterID], [t3].[ContractID], [t3].[TypeID]
+                FROM [dbo].[RegisterLessonEnterprise] AS [t3]
+                ) AS [t4] ON [t4].[RegisterID] = [t1].[RegisterID]
+            LEFT OUTER JOIN [dbo].[EnterpriseCourseContent] AS [t5] ON ([t5].[ContractID] = [t4].[ContractID]) AND ([t5].[TypeID] = [t4].[TypeID])
+            LEFT OUTER JOIN [dbo].[EnterpriseLessonType] AS [t6] ON [t6].[TypeID] = [t5].[TypeID]
+            WHERE ((([t2].[Status]) IN (@p0, @p1, @p2)) OR (([t4].[test] IS NOT NULL) AND ([t6].[Status] IN (@p3, @p4)))) AND ([t0].[AttendingCoach] = @p5)
+            UNION
+            SELECT [t7].[LessonID], [t7].[RegisterID], [t7].[ClassTime], [t7].[DurationInMinutes], [t7].[InvitedCoach], [t7].[AttendingCoach], [t7].[GroupID], [t7].[TrainingBySelf], [t7].[BranchID], [t7].[HourOfClassTime], [t7].[Place]
+            FROM [dbo].[LessonTime] AS [t7]
+            WHERE ([t7].[TrainingBySelf] = @p6) AND ([t7].[AttendingCoach] = @p7)
+            ) AS [t8]
+        UNION
+        SELECT [t9].[LessonID], [t9].[RegisterID], [t9].[ClassTime], [t9].[DurationInMinutes], [t9].[InvitedCoach], [t9].[AttendingCoach], [t9].[GroupID], [t9].[TrainingBySelf], [t9].[BranchID], [t9].[HourOfClassTime], [t9].[Place]
+        FROM [dbo].[LessonTime] AS [t9]
+        INNER JOIN [dbo].[RegisterLesson] AS [t10] ON [t10].[RegisterID] = [t9].[RegisterID]
+        LEFT OUTER JOIN [dbo].[LessonPriceType] AS [t11] ON [t11].[PriceID] = [t10].[ClassLevel]
+        LEFT OUTER JOIN (
+            SELECT 1 AS [test], [t12].[RegisterID], [t12].[ContractID], [t12].[TypeID]
+            FROM [dbo].[RegisterLessonEnterprise] AS [t12]
+            ) AS [t13] ON [t13].[RegisterID] = [t10].[RegisterID]
+        LEFT OUTER JOIN [dbo].[EnterpriseCourseContent] AS [t14] ON ([t14].[ContractID] = [t13].[ContractID]) AND ([t14].[TypeID] = [t13].[TypeID])
+        LEFT OUTER JOIN [dbo].[EnterpriseLessonType] AS [t15] ON [t15].[TypeID] = [t14].[TypeID]
+        WHERE (([t11].[Status] = @p8) OR (([t13].[test] IS NOT NULL) AND ([t15].[Status] = @p9))) AND ([t9].[AttendingCoach] = @p10)
+        ) AS [t16]
+    ) AS [t17]
+WHERE ([t17].[ClassTime] >= @p11) AND ([t17].[ClassTime] < @p12)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [0]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [1007]
+-- @p3: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p4: Input Int (Size = -1; Prec = 0; Scale = 0) [1008]
+-- @p5: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p6: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p7: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p8: Input Int (Size = -1; Prec = 0; Scale = 0) [1006]
+-- @p9: Input Int (Size = -1; Prec = 0; Scale = 0) [1006]
+-- @p10: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p11: Input DateTime (Size = -1; Prec = 0; Scale = 0) [1/29/2019 12:00:00 AM]
+-- @p12: Input DateTime (Size = -1; Prec = 0; Scale = 0) [1/30/2019 12:00:00 AM]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[UserEvent] AS [t0]
+WHERE ((([t0].[StartDate] >= @p0) AND ([t0].[StartDate] < @p1)) OR (([t0].[EndDate] >= @p2) AND ([t0].[EndDate] < @p3)) OR (([t0].[StartDate] < @p4) AND ([t0].[EndDate] >= @p5))) AND (([t0].[UID] = @p6) OR (EXISTS(
+    SELECT NULL AS [EMPTY]
+    FROM [dbo].[GroupEvent] AS [t1]
+    WHERE ([t1].[UID] = @p7) AND ([t1].[EventID] = [t0].[EventID])
+    ))) AND ([t0].[EventType] = @p8)
+-- @p0: Input DateTime (Size = -1; Prec = 0; Scale = 0) [1/29/2019 12:00:00 AM]
+-- @p1: Input DateTime (Size = -1; Prec = 0; Scale = 0) [1/30/2019 12:00:00 AM]
+-- @p2: Input DateTime (Size = -1; Prec = 0; Scale = 0) [1/29/2019 12:00:00 AM]
+-- @p3: Input DateTime (Size = -1; Prec = 0; Scale = 0) [1/30/2019 12:00:00 AM]
+-- @p4: Input DateTime (Size = -1; Prec = 0; Scale = 0) [1/29/2019 12:00:00 AM]
+-- @p5: Input DateTime (Size = -1; Prec = 0; Scale = 0) [1/30/2019 12:00:00 AM]
+-- @p6: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p7: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p8: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM (
+    SELECT [t16].[ClassTime]
+    FROM (
+        SELECT [t8].[LessonID], [t8].[RegisterID], [t8].[ClassTime], [t8].[DurationInMinutes], [t8].[InvitedCoach], [t8].[AttendingCoach], [t8].[GroupID], [t8].[TrainingBySelf], [t8].[BranchID], [t8].[HourOfClassTime], [t8].[Place]
+        FROM (
+            SELECT [t0].[LessonID], [t0].[RegisterID], [t0].[ClassTime], [t0].[DurationInMinutes], [t0].[InvitedCoach], [t0].[AttendingCoach], [t0].[GroupID], [t0].[TrainingBySelf], [t0].[BranchID], [t0].[HourOfClassTime], [t0].[Place]
+            FROM [dbo].[LessonTime] AS [t0]
+            INNER JOIN [dbo].[RegisterLesson] AS [t1] ON [t1].[RegisterID] = [t0].[RegisterID]
+            LEFT OUTER JOIN [dbo].[LessonPriceType] AS [t2] ON [t2].[PriceID] = [t1].[ClassLevel]
+            LEFT OUTER JOIN (
+                SELECT 1 AS [test], [t3].[RegisterID], [t3].[ContractID], [t3].[TypeID]
+                FROM [dbo].[RegisterLessonEnterprise] AS [t3]
+                ) AS [t4] ON [t4].[RegisterID] = [t1].[RegisterID]
+            LEFT OUTER JOIN [dbo].[EnterpriseCourseContent] AS [t5] ON ([t5].[ContractID] = [t4].[ContractID]) AND ([t5].[TypeID] = [t4].[TypeID])
+            LEFT OUTER JOIN [dbo].[EnterpriseLessonType] AS [t6] ON [t6].[TypeID] = [t5].[TypeID]
+            WHERE ((([t2].[Status]) IN (@p0, @p1, @p2)) OR (([t4].[test] IS NOT NULL) AND ([t6].[Status] IN (@p3, @p4)))) AND ([t0].[AttendingCoach] = @p5)
+            UNION
+            SELECT [t7].[LessonID], [t7].[RegisterID], [t7].[ClassTime], [t7].[DurationInMinutes], [t7].[InvitedCoach], [t7].[AttendingCoach], [t7].[GroupID], [t7].[TrainingBySelf], [t7].[BranchID], [t7].[HourOfClassTime], [t7].[Place]
+            FROM [dbo].[LessonTime] AS [t7]
+            WHERE ([t7].[TrainingBySelf] = @p6) AND ([t7].[AttendingCoach] = @p7)
+            ) AS [t8]
+        UNION
+        SELECT [t9].[LessonID], [t9].[RegisterID], [t9].[ClassTime], [t9].[DurationInMinutes], [t9].[InvitedCoach], [t9].[AttendingCoach], [t9].[GroupID], [t9].[TrainingBySelf], [t9].[BranchID], [t9].[HourOfClassTime], [t9].[Place]
+        FROM [dbo].[LessonTime] AS [t9]
+        INNER JOIN [dbo].[RegisterLesson] AS [t10] ON [t10].[RegisterID] = [t9].[RegisterID]
+        LEFT OUTER JOIN [dbo].[LessonPriceType] AS [t11] ON [t11].[PriceID] = [t10].[ClassLevel]
+        LEFT OUTER JOIN (
+            SELECT 1 AS [test], [t12].[RegisterID], [t12].[ContractID], [t12].[TypeID]
+            FROM [dbo].[RegisterLessonEnterprise] AS [t12]
+            ) AS [t13] ON [t13].[RegisterID] = [t10].[RegisterID]
+        LEFT OUTER JOIN [dbo].[EnterpriseCourseContent] AS [t14] ON ([t14].[ContractID] = [t13].[ContractID]) AND ([t14].[TypeID] = [t13].[TypeID])
+        LEFT OUTER JOIN [dbo].[EnterpriseLessonType] AS [t15] ON [t15].[TypeID] = [t14].[TypeID]
+        WHERE (([t11].[Status] = @p8) OR (([t13].[test] IS NOT NULL) AND ([t15].[Status] = @p9))) AND ([t9].[AttendingCoach] = @p10)
+        ) AS [t16]
+    ) AS [t17]
+WHERE ([t17].[ClassTime] >= @p11) AND ([t17].[ClassTime] < @p12)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [0]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [1007]
+-- @p3: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p4: Input Int (Size = -1; Prec = 0; Scale = 0) [1008]
+-- @p5: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p6: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p7: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p8: Input Int (Size = -1; Prec = 0; Scale = 0) [1006]
+-- @p9: Input Int (Size = -1; Prec = 0; Scale = 0) [1006]
+-- @p10: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p11: Input DateTime (Size = -1; Prec = 0; Scale = 0) [1/30/2019 12:00:00 AM]
+-- @p12: Input DateTime (Size = -1; Prec = 0; Scale = 0) [1/31/2019 12:00:00 AM]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[UserEvent] AS [t0]
+WHERE ((([t0].[StartDate] >= @p0) AND ([t0].[StartDate] < @p1)) OR (([t0].[EndDate] >= @p2) AND ([t0].[EndDate] < @p3)) OR (([t0].[StartDate] < @p4) AND ([t0].[EndDate] >= @p5))) AND (([t0].[UID] = @p6) OR (EXISTS(
+    SELECT NULL AS [EMPTY]
+    FROM [dbo].[GroupEvent] AS [t1]
+    WHERE ([t1].[UID] = @p7) AND ([t1].[EventID] = [t0].[EventID])
+    ))) AND ([t0].[EventType] = @p8)
+-- @p0: Input DateTime (Size = -1; Prec = 0; Scale = 0) [1/30/2019 12:00:00 AM]
+-- @p1: Input DateTime (Size = -1; Prec = 0; Scale = 0) [1/31/2019 12:00:00 AM]
+-- @p2: Input DateTime (Size = -1; Prec = 0; Scale = 0) [1/30/2019 12:00:00 AM]
+-- @p3: Input DateTime (Size = -1; Prec = 0; Scale = 0) [1/31/2019 12:00:00 AM]
+-- @p4: Input DateTime (Size = -1; Prec = 0; Scale = 0) [1/30/2019 12:00:00 AM]
+-- @p5: Input DateTime (Size = -1; Prec = 0; Scale = 0) [1/31/2019 12:00:00 AM]
+-- @p6: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p7: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p8: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM (
+    SELECT [t16].[ClassTime]
+    FROM (
+        SELECT [t8].[LessonID], [t8].[RegisterID], [t8].[ClassTime], [t8].[DurationInMinutes], [t8].[InvitedCoach], [t8].[AttendingCoach], [t8].[GroupID], [t8].[TrainingBySelf], [t8].[BranchID], [t8].[HourOfClassTime], [t8].[Place]
+        FROM (
+            SELECT [t0].[LessonID], [t0].[RegisterID], [t0].[ClassTime], [t0].[DurationInMinutes], [t0].[InvitedCoach], [t0].[AttendingCoach], [t0].[GroupID], [t0].[TrainingBySelf], [t0].[BranchID], [t0].[HourOfClassTime], [t0].[Place]
+            FROM [dbo].[LessonTime] AS [t0]
+            INNER JOIN [dbo].[RegisterLesson] AS [t1] ON [t1].[RegisterID] = [t0].[RegisterID]
+            LEFT OUTER JOIN [dbo].[LessonPriceType] AS [t2] ON [t2].[PriceID] = [t1].[ClassLevel]
+            LEFT OUTER JOIN (
+                SELECT 1 AS [test], [t3].[RegisterID], [t3].[ContractID], [t3].[TypeID]
+                FROM [dbo].[RegisterLessonEnterprise] AS [t3]
+                ) AS [t4] ON [t4].[RegisterID] = [t1].[RegisterID]
+            LEFT OUTER JOIN [dbo].[EnterpriseCourseContent] AS [t5] ON ([t5].[ContractID] = [t4].[ContractID]) AND ([t5].[TypeID] = [t4].[TypeID])
+            LEFT OUTER JOIN [dbo].[EnterpriseLessonType] AS [t6] ON [t6].[TypeID] = [t5].[TypeID]
+            WHERE ((([t2].[Status]) IN (@p0, @p1, @p2)) OR (([t4].[test] IS NOT NULL) AND ([t6].[Status] IN (@p3, @p4)))) AND ([t0].[AttendingCoach] = @p5)
+            UNION
+            SELECT [t7].[LessonID], [t7].[RegisterID], [t7].[ClassTime], [t7].[DurationInMinutes], [t7].[InvitedCoach], [t7].[AttendingCoach], [t7].[GroupID], [t7].[TrainingBySelf], [t7].[BranchID], [t7].[HourOfClassTime], [t7].[Place]
+            FROM [dbo].[LessonTime] AS [t7]
+            WHERE ([t7].[TrainingBySelf] = @p6) AND ([t7].[AttendingCoach] = @p7)
+            ) AS [t8]
+        UNION
+        SELECT [t9].[LessonID], [t9].[RegisterID], [t9].[ClassTime], [t9].[DurationInMinutes], [t9].[InvitedCoach], [t9].[AttendingCoach], [t9].[GroupID], [t9].[TrainingBySelf], [t9].[BranchID], [t9].[HourOfClassTime], [t9].[Place]
+        FROM [dbo].[LessonTime] AS [t9]
+        INNER JOIN [dbo].[RegisterLesson] AS [t10] ON [t10].[RegisterID] = [t9].[RegisterID]
+        LEFT OUTER JOIN [dbo].[LessonPriceType] AS [t11] ON [t11].[PriceID] = [t10].[ClassLevel]
+        LEFT OUTER JOIN (
+            SELECT 1 AS [test], [t12].[RegisterID], [t12].[ContractID], [t12].[TypeID]
+            FROM [dbo].[RegisterLessonEnterprise] AS [t12]
+            ) AS [t13] ON [t13].[RegisterID] = [t10].[RegisterID]
+        LEFT OUTER JOIN [dbo].[EnterpriseCourseContent] AS [t14] ON ([t14].[ContractID] = [t13].[ContractID]) AND ([t14].[TypeID] = [t13].[TypeID])
+        LEFT OUTER JOIN [dbo].[EnterpriseLessonType] AS [t15] ON [t15].[TypeID] = [t14].[TypeID]
+        WHERE (([t11].[Status] = @p8) OR (([t13].[test] IS NOT NULL) AND ([t15].[Status] = @p9))) AND ([t9].[AttendingCoach] = @p10)
+        ) AS [t16]
+    ) AS [t17]
+WHERE ([t17].[ClassTime] >= @p11) AND ([t17].[ClassTime] < @p12)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [0]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [1007]
+-- @p3: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p4: Input Int (Size = -1; Prec = 0; Scale = 0) [1008]
+-- @p5: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p6: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p7: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p8: Input Int (Size = -1; Prec = 0; Scale = 0) [1006]
+-- @p9: Input Int (Size = -1; Prec = 0; Scale = 0) [1006]
+-- @p10: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p11: Input DateTime (Size = -1; Prec = 0; Scale = 0) [1/31/2019 12:00:00 AM]
+-- @p12: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/1/2019 12:00:00 AM]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[UserEvent] AS [t0]
+WHERE ((([t0].[StartDate] >= @p0) AND ([t0].[StartDate] < @p1)) OR (([t0].[EndDate] >= @p2) AND ([t0].[EndDate] < @p3)) OR (([t0].[StartDate] < @p4) AND ([t0].[EndDate] >= @p5))) AND (([t0].[UID] = @p6) OR (EXISTS(
+    SELECT NULL AS [EMPTY]
+    FROM [dbo].[GroupEvent] AS [t1]
+    WHERE ([t1].[UID] = @p7) AND ([t1].[EventID] = [t0].[EventID])
+    ))) AND ([t0].[EventType] = @p8)
+-- @p0: Input DateTime (Size = -1; Prec = 0; Scale = 0) [1/31/2019 12:00:00 AM]
+-- @p1: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/1/2019 12:00:00 AM]
+-- @p2: Input DateTime (Size = -1; Prec = 0; Scale = 0) [1/31/2019 12:00:00 AM]
+-- @p3: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/1/2019 12:00:00 AM]
+-- @p4: Input DateTime (Size = -1; Prec = 0; Scale = 0) [1/31/2019 12:00:00 AM]
+-- @p5: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/1/2019 12:00:00 AM]
+-- @p6: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p7: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p8: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM (
+    SELECT [t16].[ClassTime]
+    FROM (
+        SELECT [t8].[LessonID], [t8].[RegisterID], [t8].[ClassTime], [t8].[DurationInMinutes], [t8].[InvitedCoach], [t8].[AttendingCoach], [t8].[GroupID], [t8].[TrainingBySelf], [t8].[BranchID], [t8].[HourOfClassTime], [t8].[Place]
+        FROM (
+            SELECT [t0].[LessonID], [t0].[RegisterID], [t0].[ClassTime], [t0].[DurationInMinutes], [t0].[InvitedCoach], [t0].[AttendingCoach], [t0].[GroupID], [t0].[TrainingBySelf], [t0].[BranchID], [t0].[HourOfClassTime], [t0].[Place]
+            FROM [dbo].[LessonTime] AS [t0]
+            INNER JOIN [dbo].[RegisterLesson] AS [t1] ON [t1].[RegisterID] = [t0].[RegisterID]
+            LEFT OUTER JOIN [dbo].[LessonPriceType] AS [t2] ON [t2].[PriceID] = [t1].[ClassLevel]
+            LEFT OUTER JOIN (
+                SELECT 1 AS [test], [t3].[RegisterID], [t3].[ContractID], [t3].[TypeID]
+                FROM [dbo].[RegisterLessonEnterprise] AS [t3]
+                ) AS [t4] ON [t4].[RegisterID] = [t1].[RegisterID]
+            LEFT OUTER JOIN [dbo].[EnterpriseCourseContent] AS [t5] ON ([t5].[ContractID] = [t4].[ContractID]) AND ([t5].[TypeID] = [t4].[TypeID])
+            LEFT OUTER JOIN [dbo].[EnterpriseLessonType] AS [t6] ON [t6].[TypeID] = [t5].[TypeID]
+            WHERE ((([t2].[Status]) IN (@p0, @p1, @p2)) OR (([t4].[test] IS NOT NULL) AND ([t6].[Status] IN (@p3, @p4)))) AND ([t0].[AttendingCoach] = @p5)
+            UNION
+            SELECT [t7].[LessonID], [t7].[RegisterID], [t7].[ClassTime], [t7].[DurationInMinutes], [t7].[InvitedCoach], [t7].[AttendingCoach], [t7].[GroupID], [t7].[TrainingBySelf], [t7].[BranchID], [t7].[HourOfClassTime], [t7].[Place]
+            FROM [dbo].[LessonTime] AS [t7]
+            WHERE ([t7].[TrainingBySelf] = @p6) AND ([t7].[AttendingCoach] = @p7)
+            ) AS [t8]
+        UNION
+        SELECT [t9].[LessonID], [t9].[RegisterID], [t9].[ClassTime], [t9].[DurationInMinutes], [t9].[InvitedCoach], [t9].[AttendingCoach], [t9].[GroupID], [t9].[TrainingBySelf], [t9].[BranchID], [t9].[HourOfClassTime], [t9].[Place]
+        FROM [dbo].[LessonTime] AS [t9]
+        INNER JOIN [dbo].[RegisterLesson] AS [t10] ON [t10].[RegisterID] = [t9].[RegisterID]
+        LEFT OUTER JOIN [dbo].[LessonPriceType] AS [t11] ON [t11].[PriceID] = [t10].[ClassLevel]
+        LEFT OUTER JOIN (
+            SELECT 1 AS [test], [t12].[RegisterID], [t12].[ContractID], [t12].[TypeID]
+            FROM [dbo].[RegisterLessonEnterprise] AS [t12]
+            ) AS [t13] ON [t13].[RegisterID] = [t10].[RegisterID]
+        LEFT OUTER JOIN [dbo].[EnterpriseCourseContent] AS [t14] ON ([t14].[ContractID] = [t13].[ContractID]) AND ([t14].[TypeID] = [t13].[TypeID])
+        LEFT OUTER JOIN [dbo].[EnterpriseLessonType] AS [t15] ON [t15].[TypeID] = [t14].[TypeID]
+        WHERE (([t11].[Status] = @p8) OR (([t13].[test] IS NOT NULL) AND ([t15].[Status] = @p9))) AND ([t9].[AttendingCoach] = @p10)
+        ) AS [t16]
+    ) AS [t17]
+WHERE ([t17].[ClassTime] >= @p11) AND ([t17].[ClassTime] < @p12)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [0]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [1007]
+-- @p3: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p4: Input Int (Size = -1; Prec = 0; Scale = 0) [1008]
+-- @p5: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p6: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p7: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p8: Input Int (Size = -1; Prec = 0; Scale = 0) [1006]
+-- @p9: Input Int (Size = -1; Prec = 0; Scale = 0) [1006]
+-- @p10: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p11: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/1/2019 12:00:00 AM]
+-- @p12: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[UserEvent] AS [t0]
+WHERE ((([t0].[StartDate] >= @p0) AND ([t0].[StartDate] < @p1)) OR (([t0].[EndDate] >= @p2) AND ([t0].[EndDate] < @p3)) OR (([t0].[StartDate] < @p4) AND ([t0].[EndDate] >= @p5))) AND (([t0].[UID] = @p6) OR (EXISTS(
+    SELECT NULL AS [EMPTY]
+    FROM [dbo].[GroupEvent] AS [t1]
+    WHERE ([t1].[UID] = @p7) AND ([t1].[EventID] = [t0].[EventID])
+    ))) AND ([t0].[EventType] = @p8)
+-- @p0: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/1/2019 12:00:00 AM]
+-- @p1: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- @p2: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/1/2019 12:00:00 AM]
+-- @p3: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- @p4: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/1/2019 12:00:00 AM]
+-- @p5: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- @p6: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p7: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p8: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM (
+    SELECT [t16].[ClassTime]
+    FROM (
+        SELECT [t8].[LessonID], [t8].[RegisterID], [t8].[ClassTime], [t8].[DurationInMinutes], [t8].[InvitedCoach], [t8].[AttendingCoach], [t8].[GroupID], [t8].[TrainingBySelf], [t8].[BranchID], [t8].[HourOfClassTime], [t8].[Place]
+        FROM (
+            SELECT [t0].[LessonID], [t0].[RegisterID], [t0].[ClassTime], [t0].[DurationInMinutes], [t0].[InvitedCoach], [t0].[AttendingCoach], [t0].[GroupID], [t0].[TrainingBySelf], [t0].[BranchID], [t0].[HourOfClassTime], [t0].[Place]
+            FROM [dbo].[LessonTime] AS [t0]
+            INNER JOIN [dbo].[RegisterLesson] AS [t1] ON [t1].[RegisterID] = [t0].[RegisterID]
+            LEFT OUTER JOIN [dbo].[LessonPriceType] AS [t2] ON [t2].[PriceID] = [t1].[ClassLevel]
+            LEFT OUTER JOIN (
+                SELECT 1 AS [test], [t3].[RegisterID], [t3].[ContractID], [t3].[TypeID]
+                FROM [dbo].[RegisterLessonEnterprise] AS [t3]
+                ) AS [t4] ON [t4].[RegisterID] = [t1].[RegisterID]
+            LEFT OUTER JOIN [dbo].[EnterpriseCourseContent] AS [t5] ON ([t5].[ContractID] = [t4].[ContractID]) AND ([t5].[TypeID] = [t4].[TypeID])
+            LEFT OUTER JOIN [dbo].[EnterpriseLessonType] AS [t6] ON [t6].[TypeID] = [t5].[TypeID]
+            WHERE ((([t2].[Status]) IN (@p0, @p1, @p2)) OR (([t4].[test] IS NOT NULL) AND ([t6].[Status] IN (@p3, @p4)))) AND ([t0].[AttendingCoach] = @p5)
+            UNION
+            SELECT [t7].[LessonID], [t7].[RegisterID], [t7].[ClassTime], [t7].[DurationInMinutes], [t7].[InvitedCoach], [t7].[AttendingCoach], [t7].[GroupID], [t7].[TrainingBySelf], [t7].[BranchID], [t7].[HourOfClassTime], [t7].[Place]
+            FROM [dbo].[LessonTime] AS [t7]
+            WHERE ([t7].[TrainingBySelf] = @p6) AND ([t7].[AttendingCoach] = @p7)
+            ) AS [t8]
+        UNION
+        SELECT [t9].[LessonID], [t9].[RegisterID], [t9].[ClassTime], [t9].[DurationInMinutes], [t9].[InvitedCoach], [t9].[AttendingCoach], [t9].[GroupID], [t9].[TrainingBySelf], [t9].[BranchID], [t9].[HourOfClassTime], [t9].[Place]
+        FROM [dbo].[LessonTime] AS [t9]
+        INNER JOIN [dbo].[RegisterLesson] AS [t10] ON [t10].[RegisterID] = [t9].[RegisterID]
+        LEFT OUTER JOIN [dbo].[LessonPriceType] AS [t11] ON [t11].[PriceID] = [t10].[ClassLevel]
+        LEFT OUTER JOIN (
+            SELECT 1 AS [test], [t12].[RegisterID], [t12].[ContractID], [t12].[TypeID]
+            FROM [dbo].[RegisterLessonEnterprise] AS [t12]
+            ) AS [t13] ON [t13].[RegisterID] = [t10].[RegisterID]
+        LEFT OUTER JOIN [dbo].[EnterpriseCourseContent] AS [t14] ON ([t14].[ContractID] = [t13].[ContractID]) AND ([t14].[TypeID] = [t13].[TypeID])
+        LEFT OUTER JOIN [dbo].[EnterpriseLessonType] AS [t15] ON [t15].[TypeID] = [t14].[TypeID]
+        WHERE (([t11].[Status] = @p8) OR (([t13].[test] IS NOT NULL) AND ([t15].[Status] = @p9))) AND ([t9].[AttendingCoach] = @p10)
+        ) AS [t16]
+    ) AS [t17]
+WHERE ([t17].[ClassTime] >= @p11) AND ([t17].[ClassTime] < @p12)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [0]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [1007]
+-- @p3: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p4: Input Int (Size = -1; Prec = 0; Scale = 0) [1008]
+-- @p5: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p6: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p7: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p8: Input Int (Size = -1; Prec = 0; Scale = 0) [1006]
+-- @p9: Input Int (Size = -1; Prec = 0; Scale = 0) [1006]
+-- @p10: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p11: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- @p12: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/3/2019 12:00:00 AM]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[UserEvent] AS [t0]
+WHERE ((([t0].[StartDate] >= @p0) AND ([t0].[StartDate] < @p1)) OR (([t0].[EndDate] >= @p2) AND ([t0].[EndDate] < @p3)) OR (([t0].[StartDate] < @p4) AND ([t0].[EndDate] >= @p5))) AND (([t0].[UID] = @p6) OR (EXISTS(
+    SELECT NULL AS [EMPTY]
+    FROM [dbo].[GroupEvent] AS [t1]
+    WHERE ([t1].[UID] = @p7) AND ([t1].[EventID] = [t0].[EventID])
+    ))) AND ([t0].[EventType] = @p8)
+-- @p0: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- @p1: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/3/2019 12:00:00 AM]
+-- @p2: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- @p3: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/3/2019 12:00:00 AM]
+-- @p4: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- @p5: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/3/2019 12:00:00 AM]
+-- @p6: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p7: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p8: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM (
+    SELECT [t16].[ClassTime]
+    FROM (
+        SELECT [t8].[LessonID], [t8].[RegisterID], [t8].[ClassTime], [t8].[DurationInMinutes], [t8].[InvitedCoach], [t8].[AttendingCoach], [t8].[GroupID], [t8].[TrainingBySelf], [t8].[BranchID], [t8].[HourOfClassTime], [t8].[Place]
+        FROM (
+            SELECT [t0].[LessonID], [t0].[RegisterID], [t0].[ClassTime], [t0].[DurationInMinutes], [t0].[InvitedCoach], [t0].[AttendingCoach], [t0].[GroupID], [t0].[TrainingBySelf], [t0].[BranchID], [t0].[HourOfClassTime], [t0].[Place]
+            FROM [dbo].[LessonTime] AS [t0]
+            INNER JOIN [dbo].[RegisterLesson] AS [t1] ON [t1].[RegisterID] = [t0].[RegisterID]
+            LEFT OUTER JOIN [dbo].[LessonPriceType] AS [t2] ON [t2].[PriceID] = [t1].[ClassLevel]
+            LEFT OUTER JOIN (
+                SELECT 1 AS [test], [t3].[RegisterID], [t3].[ContractID], [t3].[TypeID]
+                FROM [dbo].[RegisterLessonEnterprise] AS [t3]
+                ) AS [t4] ON [t4].[RegisterID] = [t1].[RegisterID]
+            LEFT OUTER JOIN [dbo].[EnterpriseCourseContent] AS [t5] ON ([t5].[ContractID] = [t4].[ContractID]) AND ([t5].[TypeID] = [t4].[TypeID])
+            LEFT OUTER JOIN [dbo].[EnterpriseLessonType] AS [t6] ON [t6].[TypeID] = [t5].[TypeID]
+            WHERE ((([t2].[Status]) IN (@p0, @p1, @p2)) OR (([t4].[test] IS NOT NULL) AND ([t6].[Status] IN (@p3, @p4)))) AND ([t0].[AttendingCoach] = @p5)
+            UNION
+            SELECT [t7].[LessonID], [t7].[RegisterID], [t7].[ClassTime], [t7].[DurationInMinutes], [t7].[InvitedCoach], [t7].[AttendingCoach], [t7].[GroupID], [t7].[TrainingBySelf], [t7].[BranchID], [t7].[HourOfClassTime], [t7].[Place]
+            FROM [dbo].[LessonTime] AS [t7]
+            WHERE ([t7].[TrainingBySelf] = @p6) AND ([t7].[AttendingCoach] = @p7)
+            ) AS [t8]
+        UNION
+        SELECT [t9].[LessonID], [t9].[RegisterID], [t9].[ClassTime], [t9].[DurationInMinutes], [t9].[InvitedCoach], [t9].[AttendingCoach], [t9].[GroupID], [t9].[TrainingBySelf], [t9].[BranchID], [t9].[HourOfClassTime], [t9].[Place]
+        FROM [dbo].[LessonTime] AS [t9]
+        INNER JOIN [dbo].[RegisterLesson] AS [t10] ON [t10].[RegisterID] = [t9].[RegisterID]
+        LEFT OUTER JOIN [dbo].[LessonPriceType] AS [t11] ON [t11].[PriceID] = [t10].[ClassLevel]
+        LEFT OUTER JOIN (
+            SELECT 1 AS [test], [t12].[RegisterID], [t12].[ContractID], [t12].[TypeID]
+            FROM [dbo].[RegisterLessonEnterprise] AS [t12]
+            ) AS [t13] ON [t13].[RegisterID] = [t10].[RegisterID]
+        LEFT OUTER JOIN [dbo].[EnterpriseCourseContent] AS [t14] ON ([t14].[ContractID] = [t13].[ContractID]) AND ([t14].[TypeID] = [t13].[TypeID])
+        LEFT OUTER JOIN [dbo].[EnterpriseLessonType] AS [t15] ON [t15].[TypeID] = [t14].[TypeID]
+        WHERE (([t11].[Status] = @p8) OR (([t13].[test] IS NOT NULL) AND ([t15].[Status] = @p9))) AND ([t9].[AttendingCoach] = @p10)
+        ) AS [t16]
+    ) AS [t17]
+WHERE ([t17].[ClassTime] >= @p11) AND ([t17].[ClassTime] < @p12)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [0]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [1007]
+-- @p3: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p4: Input Int (Size = -1; Prec = 0; Scale = 0) [1008]
+-- @p5: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p6: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p7: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p8: Input Int (Size = -1; Prec = 0; Scale = 0) [1006]
+-- @p9: Input Int (Size = -1; Prec = 0; Scale = 0) [1006]
+-- @p10: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p11: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/3/2019 12:00:00 AM]
+-- @p12: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/4/2019 12:00:00 AM]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[UserEvent] AS [t0]
+WHERE ((([t0].[StartDate] >= @p0) AND ([t0].[StartDate] < @p1)) OR (([t0].[EndDate] >= @p2) AND ([t0].[EndDate] < @p3)) OR (([t0].[StartDate] < @p4) AND ([t0].[EndDate] >= @p5))) AND (([t0].[UID] = @p6) OR (EXISTS(
+    SELECT NULL AS [EMPTY]
+    FROM [dbo].[GroupEvent] AS [t1]
+    WHERE ([t1].[UID] = @p7) AND ([t1].[EventID] = [t0].[EventID])
+    ))) AND ([t0].[EventType] = @p8)
+-- @p0: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/3/2019 12:00:00 AM]
+-- @p1: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/4/2019 12:00:00 AM]
+-- @p2: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/3/2019 12:00:00 AM]
+-- @p3: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/4/2019 12:00:00 AM]
+-- @p4: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/3/2019 12:00:00 AM]
+-- @p5: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/4/2019 12:00:00 AM]
+-- @p6: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p7: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p8: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM (
+    SELECT [t16].[LessonID], [t16].[ClassTime]
+    FROM (
+        SELECT [t8].[LessonID], [t8].[RegisterID], [t8].[ClassTime], [t8].[DurationInMinutes], [t8].[InvitedCoach], [t8].[AttendingCoach], [t8].[GroupID], [t8].[TrainingBySelf], [t8].[BranchID], [t8].[HourOfClassTime], [t8].[Place]
+        FROM (
+            SELECT [t0].[LessonID], [t0].[RegisterID], [t0].[ClassTime], [t0].[DurationInMinutes], [t0].[InvitedCoach], [t0].[AttendingCoach], [t0].[GroupID], [t0].[TrainingBySelf], [t0].[BranchID], [t0].[HourOfClassTime], [t0].[Place]
+            FROM [dbo].[LessonTime] AS [t0]
+            INNER JOIN [dbo].[RegisterLesson] AS [t1] ON [t1].[RegisterID] = [t0].[RegisterID]
+            LEFT OUTER JOIN [dbo].[LessonPriceType] AS [t2] ON [t2].[PriceID] = [t1].[ClassLevel]
+            LEFT OUTER JOIN (
+                SELECT 1 AS [test], [t3].[RegisterID], [t3].[ContractID], [t3].[TypeID]
+                FROM [dbo].[RegisterLessonEnterprise] AS [t3]
+                ) AS [t4] ON [t4].[RegisterID] = [t1].[RegisterID]
+            LEFT OUTER JOIN [dbo].[EnterpriseCourseContent] AS [t5] ON ([t5].[ContractID] = [t4].[ContractID]) AND ([t5].[TypeID] = [t4].[TypeID])
+            LEFT OUTER JOIN [dbo].[EnterpriseLessonType] AS [t6] ON [t6].[TypeID] = [t5].[TypeID]
+            WHERE ((([t2].[Status]) IN (@p0, @p1, @p2)) OR (([t4].[test] IS NOT NULL) AND ([t6].[Status] IN (@p3, @p4)))) AND ([t0].[AttendingCoach] = @p5)
+            UNION
+            SELECT [t7].[LessonID], [t7].[RegisterID], [t7].[ClassTime], [t7].[DurationInMinutes], [t7].[InvitedCoach], [t7].[AttendingCoach], [t7].[GroupID], [t7].[TrainingBySelf], [t7].[BranchID], [t7].[HourOfClassTime], [t7].[Place]
+            FROM [dbo].[LessonTime] AS [t7]
+            WHERE ([t7].[TrainingBySelf] = @p6) AND ([t7].[AttendingCoach] = @p7)
+            ) AS [t8]
+        UNION
+        SELECT [t9].[LessonID], [t9].[RegisterID], [t9].[ClassTime], [t9].[DurationInMinutes], [t9].[InvitedCoach], [t9].[AttendingCoach], [t9].[GroupID], [t9].[TrainingBySelf], [t9].[BranchID], [t9].[HourOfClassTime], [t9].[Place]
+        FROM [dbo].[LessonTime] AS [t9]
+        INNER JOIN [dbo].[RegisterLesson] AS [t10] ON [t10].[RegisterID] = [t9].[RegisterID]
+        LEFT OUTER JOIN [dbo].[LessonPriceType] AS [t11] ON [t11].[PriceID] = [t10].[ClassLevel]
+        LEFT OUTER JOIN (
+            SELECT 1 AS [test], [t12].[RegisterID], [t12].[ContractID], [t12].[TypeID]
+            FROM [dbo].[RegisterLessonEnterprise] AS [t12]
+            ) AS [t13] ON [t13].[RegisterID] = [t10].[RegisterID]
+        LEFT OUTER JOIN [dbo].[EnterpriseCourseContent] AS [t14] ON ([t14].[ContractID] = [t13].[ContractID]) AND ([t14].[TypeID] = [t13].[TypeID])
+        LEFT OUTER JOIN [dbo].[EnterpriseLessonType] AS [t15] ON [t15].[TypeID] = [t14].[TypeID]
+        WHERE (([t11].[Status] = @p8) OR (([t13].[test] IS NOT NULL) AND ([t15].[Status] = @p9))) AND ([t9].[AttendingCoach] = @p10)
+        ) AS [t16]
+    ) AS [t17]
+LEFT OUTER JOIN (
+    SELECT 1 AS [test], [t18].[LessonID]
+    FROM [dbo].[LessonAttendance] AS [t18]
+    ) AS [t19] ON [t19].[LessonID] = ([t17].[LessonID])
+WHERE ([t19].[test] IS NULL) AND ([t17].[ClassTime] >= @p11) AND ([t17].[ClassTime] < @p12)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [0]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [1007]
+-- @p3: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p4: Input Int (Size = -1; Prec = 0; Scale = 0) [1008]
+-- @p5: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p6: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p7: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p8: Input Int (Size = -1; Prec = 0; Scale = 0) [1006]
+-- @p9: Input Int (Size = -1; Prec = 0; Scale = 0) [1006]
+-- @p10: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p11: Input DateTime (Size = -1; Prec = 0; Scale = 0) [1/28/2019 12:00:00 AM]
+-- @p12: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/4/2019 12:00:00 AM]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM (
+    SELECT [t8].[LessonID], [t8].[ClassTime]
+    FROM (
+        SELECT [t0].[LessonID], [t0].[RegisterID], [t0].[ClassTime], [t0].[DurationInMinutes], [t0].[InvitedCoach], [t0].[AttendingCoach], [t0].[GroupID], [t0].[TrainingBySelf], [t0].[BranchID], [t0].[HourOfClassTime], [t0].[Place]
+        FROM [dbo].[LessonTime] AS [t0]
+        INNER JOIN [dbo].[RegisterLesson] AS [t1] ON [t1].[RegisterID] = [t0].[RegisterID]
+        LEFT OUTER JOIN [dbo].[LessonPriceType] AS [t2] ON [t2].[PriceID] = [t1].[ClassLevel]
+        LEFT OUTER JOIN (
+            SELECT 1 AS [test], [t3].[RegisterID], [t3].[ContractID], [t3].[TypeID]
+            FROM [dbo].[RegisterLessonEnterprise] AS [t3]
+            ) AS [t4] ON [t4].[RegisterID] = [t1].[RegisterID]
+        LEFT OUTER JOIN [dbo].[EnterpriseCourseContent] AS [t5] ON ([t5].[ContractID] = [t4].[ContractID]) AND ([t5].[TypeID] = [t4].[TypeID])
+        LEFT OUTER JOIN [dbo].[EnterpriseLessonType] AS [t6] ON [t6].[TypeID] = [t5].[TypeID]
+        WHERE ((([t2].[Status]) IN (@p0, @p1, @p2)) OR (([t4].[test] IS NOT NULL) AND ([t6].[Status] IN (@p3, @p4)))) AND ([t0].[AttendingCoach] = @p5)
+        UNION
+        SELECT [t7].[LessonID], [t7].[RegisterID], [t7].[ClassTime], [t7].[DurationInMinutes], [t7].[InvitedCoach], [t7].[AttendingCoach], [t7].[GroupID], [t7].[TrainingBySelf], [t7].[BranchID], [t7].[HourOfClassTime], [t7].[Place]
+        FROM [dbo].[LessonTime] AS [t7]
+        WHERE ([t7].[TrainingBySelf] = @p6) AND ([t7].[AttendingCoach] = @p7)
+        ) AS [t8]
+    ) AS [t9]
+LEFT OUTER JOIN [dbo].[LessonPlan] AS [t10] ON [t10].[LessonID] = ([t9].[LessonID])
+WHERE (NOT ([t10].[CommitAttendance] IS NOT NULL)) AND ([t9].[ClassTime] < @p8) AND ([t9].[ClassTime] >= @p9) AND ([t9].[ClassTime] < @p10)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [0]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [1007]
+-- @p3: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p4: Input Int (Size = -1; Prec = 0; Scale = 0) [1008]
+-- @p5: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p6: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p7: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p8: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/3/2019 12:00:00 AM]
+-- @p9: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/1/2019 12:00:00 AM]
+-- @p10: Input DateTime (Size = -1; Prec = 0; Scale = 0) [3/1/2019 12:00:00 AM]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[CourseContract] AS [t0]
+WHERE ([t0].[Status] = @p0) AND (EXISTS(
+    SELECT NULL AS [EMPTY]
+    FROM [dbo].[RegisterLessonContract] AS [t1]
+    WHERE [t1].[ContractID] = [t0].[ContractID]
+    ))
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1210]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[CourseContract] AS [t0]
+WHERE ([t0].[Status] = @p0) AND (EXISTS(
+    SELECT NULL AS [EMPTY]
+    FROM [dbo].[RegisterLessonContract] AS [t1]
+    WHERE [t1].[ContractID] = [t0].[ContractID]
+    ))
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1210]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[CourseContract] AS [t0]
+LEFT OUTER JOIN (
+    SELECT 1 AS [test], [t1].[RevisionID]
+    FROM [dbo].[CourseContractRevision] AS [t1]
+    ) AS [t2] ON [t2].[RevisionID] = [t0].[ContractID]
+WHERE ([t0].[Status] = @p0) AND ([t2].[test] IS NULL)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1205]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[CourseContract] AS [t0]
+LEFT OUTER JOIN (
+    SELECT 1 AS [test], [t1].[RevisionID]
+    FROM [dbo].[CourseContractRevision] AS [t1]
+    ) AS [t2] ON [t2].[RevisionID] = [t0].[ContractID]
+WHERE ([t0].[Status] = @p0) AND ([t2].[test] IS NULL)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1205]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[CourseContract] AS [t0]
+LEFT OUTER JOIN (
+    SELECT 1 AS [test], [t1].[RevisionID]
+    FROM [dbo].[CourseContractRevision] AS [t1]
+    ) AS [t2] ON [t2].[RevisionID] = [t0].[ContractID]
+WHERE ([t0].[Expiration] < @p0) AND ([t0].[Expiration] >= @p1) AND ([t0].[Status] = @p2) AND ([t2].[test] IS NULL)
+-- @p0: Input DateTime (Size = -1; Prec = 0; Scale = 0) [3/2/2019 12:00:00 AM]
+-- @p1: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [1205]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[CourseContract] AS [t0]
+LEFT OUTER JOIN (
+    SELECT 1 AS [test], [t1].[RevisionID]
+    FROM [dbo].[CourseContractRevision] AS [t1]
+    ) AS [t2] ON [t2].[RevisionID] = [t0].[ContractID]
+WHERE ([t0].[Expiration] < @p0) AND ([t0].[Expiration] >= @p1) AND ([t0].[Status] = @p2) AND ([t2].[test] IS NULL)
+-- @p0: Input DateTime (Size = -1; Prec = 0; Scale = 0) [3/2/2019 12:00:00 AM]
+-- @p1: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [1205]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[CourseContract] AS [t0]
+LEFT OUTER JOIN (
+    SELECT 1 AS [test], [t1].[RevisionID]
+    FROM [dbo].[CourseContractRevision] AS [t1]
+    ) AS [t2] ON [t2].[RevisionID] = [t0].[ContractID]
+WHERE ([t0].[Status] = @p0) AND ([t2].[test] IS NULL)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1201]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[CourseContract] AS [t0]
+LEFT OUTER JOIN (
+    SELECT 1 AS [test], [t1].[RevisionID]
+    FROM [dbo].[CourseContractRevision] AS [t1]
+    ) AS [t2] ON [t2].[RevisionID] = [t0].[ContractID]
+WHERE ([t0].[Status] = @p0) AND ([t2].[test] IS NULL)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1201]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[CourseContract] AS [t0]
+LEFT OUTER JOIN (
+    SELECT 1 AS [test], [t1].[RevisionID]
+    FROM [dbo].[CourseContractRevision] AS [t1]
+    ) AS [t2] ON [t2].[RevisionID] = [t0].[ContractID]
+WHERE ([t0].[Status] = @p0) AND ([t2].[test] IS NULL)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1203]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[CourseContract] AS [t0]
+LEFT OUTER JOIN (
+    SELECT 1 AS [test], [t1].[RevisionID]
+    FROM [dbo].[CourseContractRevision] AS [t1]
+    ) AS [t2] ON [t2].[RevisionID] = [t0].[ContractID]
+WHERE ([t0].[Status] = @p0) AND ([t2].[test] IS NULL)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1203]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[CourseContract] AS [t0]
+LEFT OUTER JOIN (
+    SELECT 1 AS [test], [t1].[RevisionID]
+    FROM [dbo].[CourseContractRevision] AS [t1]
+    ) AS [t2] ON [t2].[RevisionID] = [t0].[ContractID]
+WHERE ([t0].[Status] = @p0) AND ([t2].[test] IS NULL)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1204]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[CourseContract] AS [t0]
+LEFT OUTER JOIN (
+    SELECT 1 AS [test], [t1].[RevisionID]
+    FROM [dbo].[CourseContractRevision] AS [t1]
+    ) AS [t2] ON [t2].[RevisionID] = [t0].[ContractID]
+WHERE ([t0].[Status] = @p0) AND ([t2].[test] IS NULL)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1204]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[CourseContract] AS [t0]
+LEFT OUTER JOIN (
+    SELECT 1 AS [test], [t1].[RevisionID]
+    FROM [dbo].[CourseContractRevision] AS [t1]
+    ) AS [t2] ON [t2].[RevisionID] = [t0].[ContractID]
+WHERE ([t0].[EffectiveDate] >= @p0) AND ([t0].[EffectiveDate] < @p1) AND ([t0].[Status] = @p2) AND ([t2].[test] IS NULL)
+-- @p0: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/1/2019 12:00:00 AM]
+-- @p1: Input DateTime (Size = -1; Prec = 0; Scale = 0) [3/1/2019 12:00:00 AM]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [1205]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[CourseContract] AS [t0]
+INNER JOIN [dbo].[CourseContractRevision] AS [t1] ON [t0].[ContractID] = [t1].[RevisionID]
+WHERE ([t0].[Status] = @p0) AND ([t0].[FitnessConsultant] = @p1)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1201]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[CourseContract] AS [t0]
+INNER JOIN [dbo].[CourseContractRevision] AS [t1] ON [t0].[ContractID] = [t1].[RevisionID]
+WHERE ([t0].[Status] = @p0) AND ([t0].[FitnessConsultant] = @p1)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1201]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[CourseContract] AS [t0]
+INNER JOIN [dbo].[CourseContractRevision] AS [t1] ON [t0].[ContractID] = [t1].[RevisionID]
+WHERE [t0].[Status] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1203]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[CourseContract] AS [t0]
+INNER JOIN [dbo].[CourseContractRevision] AS [t1] ON [t0].[ContractID] = [t1].[RevisionID]
+WHERE [t0].[Status] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1203]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[CourseContract] AS [t0]
+INNER JOIN [dbo].[CourseContractRevision] AS [t1] ON [t0].[ContractID] = [t1].[RevisionID]
+WHERE [t0].[Status] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1202]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[CourseContract] AS [t0]
+INNER JOIN [dbo].[CourseContractRevision] AS [t1] ON [t0].[ContractID] = [t1].[RevisionID]
+WHERE [t0].[Status] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1202]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[CourseContract] AS [t0]
+INNER JOIN [dbo].[CourseContractRevision] AS [t1] ON [t0].[ContractID] = [t1].[RevisionID]
+WHERE ([t0].[EffectiveDate] >= @p0) AND ([t0].[EffectiveDate] < @p1) AND ([t0].[Status] = @p2)
+-- @p0: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/1/2019 12:00:00 AM]
+-- @p1: Input DateTime (Size = -1; Prec = 0; Scale = 0) [3/1/2019 12:00:00 AM]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [1205]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[Payment] AS [t0]
+WHERE [t0].[PayoffDate] >= @p0
+-- @p0: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[VoidPayment] AS [t0]
+INNER JOIN [dbo].[Payment] AS [t1] ON [t0].[VoidID] = [t1].[PaymentID]
+LEFT OUTER JOIN [dbo].[InvoiceItem] AS [t2] ON [t2].[InvoiceID] = [t1].[InvoiceID]
+LEFT OUTER JOIN (
+    SELECT 1 AS [test], [t3].[InvoiceID]
+    FROM [dbo].[InvoiceCancellation] AS [t3]
+    ) AS [t4] ON [t4].[InvoiceID] = [t2].[InvoiceID]
+WHERE ([t4].[test] IS NOT NULL) AND ([t0].[VoidDate] >= @p0)
+-- @p0: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[VoidPayment] AS [t0]
+INNER JOIN [dbo].[Payment] AS [t1] ON [t0].[VoidID] = [t1].[PaymentID]
+WHERE ([t1].[AllowanceID] IS NOT NULL) AND ([t0].[VoidDate] >= @p0)
+-- @p0: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[Payment] AS [t0]
+WHERE [t0].[PayoffDate] >= @p0
+-- @p0: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[VoidPayment] AS [t0]
+INNER JOIN [dbo].[Payment] AS [t1] ON [t0].[VoidID] = [t1].[PaymentID]
+WHERE [t0].[VoidDate] >= @p0
+-- @p0: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [Count], [t7].[value] AS [Hour]
+FROM (
+    SELECT DATEPART(Hour, [t0].[ClassTime]) AS [value], [t2].[Status], [t4].[test], [t6].[Status] AS [Status2], [t0].[ClassTime]
+    FROM [dbo].[LessonTime] AS [t0]
+    INNER JOIN [dbo].[RegisterLesson] AS [t1] ON [t1].[RegisterID] = [t0].[RegisterID]
+    LEFT OUTER JOIN [dbo].[LessonPriceType] AS [t2] ON [t2].[PriceID] = [t1].[ClassLevel]
+    LEFT OUTER JOIN (
+        SELECT 1 AS [test], [t3].[RegisterID], [t3].[ContractID], [t3].[TypeID]
+        FROM [dbo].[RegisterLessonEnterprise] AS [t3]
+        ) AS [t4] ON [t4].[RegisterID] = [t1].[RegisterID]
+    LEFT OUTER JOIN [dbo].[EnterpriseCourseContent] AS [t5] ON ([t5].[ContractID] = [t4].[ContractID]) AND ([t5].[TypeID] = [t4].[TypeID])
+    LEFT OUTER JOIN [dbo].[EnterpriseLessonType] AS [t6] ON [t6].[TypeID] = [t5].[TypeID]
+    ) AS [t7]
+WHERE ((([t7].[Status]) IN (@p0, @p1, @p2)) OR (([t7].[test] IS NOT NULL) AND ([t7].[Status2] IN (@p3, @p4)))) AND ([t7].[ClassTime] >= @p5) AND ([t7].[ClassTime] < @p6)
+GROUP BY [t7].[value]
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [0]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [1007]
+-- @p3: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p4: Input Int (Size = -1; Prec = 0; Scale = 0) [1008]
+-- @p5: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- @p6: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/3/2019 12:00:00 AM]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [Count], [t1].[value] AS [Hour]
+FROM (
+    SELECT DATEPART(Hour, [t0].[ClassTime]) AS [value], [t0].[TrainingBySelf], [t0].[ClassTime]
+    FROM [dbo].[LessonTime] AS [t0]
+    ) AS [t1]
+WHERE ([t1].[TrainingBySelf] = @p0) AND ([t1].[ClassTime] >= @p1) AND ([t1].[ClassTime] < @p2)
+GROUP BY [t1].[value]
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p1: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- @p2: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/3/2019 12:00:00 AM]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [Count], [t7].[value] AS [Hour]
+FROM (
+    SELECT DATEPART(Hour, [t0].[ClassTime]) AS [value], [t2].[Status], [t4].[test], [t6].[Status] AS [Status2], [t0].[ClassTime]
+    FROM [dbo].[LessonTime] AS [t0]
+    INNER JOIN [dbo].[RegisterLesson] AS [t1] ON [t1].[RegisterID] = [t0].[RegisterID]
+    LEFT OUTER JOIN [dbo].[LessonPriceType] AS [t2] ON [t2].[PriceID] = [t1].[ClassLevel]
+    LEFT OUTER JOIN (
+        SELECT 1 AS [test], [t3].[RegisterID], [t3].[ContractID], [t3].[TypeID]
+        FROM [dbo].[RegisterLessonEnterprise] AS [t3]
+        ) AS [t4] ON [t4].[RegisterID] = [t1].[RegisterID]
+    LEFT OUTER JOIN [dbo].[EnterpriseCourseContent] AS [t5] ON ([t5].[ContractID] = [t4].[ContractID]) AND ([t5].[TypeID] = [t4].[TypeID])
+    LEFT OUTER JOIN [dbo].[EnterpriseLessonType] AS [t6] ON [t6].[TypeID] = [t5].[TypeID]
+    ) AS [t7]
+WHERE (([t7].[Status] = @p0) OR (([t7].[test] IS NOT NULL) AND ([t7].[Status2] = @p1))) AND ([t7].[ClassTime] >= @p2) AND ([t7].[ClassTime] < @p3)
+GROUP BY [t7].[value]
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1006]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [1006]
+-- @p2: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- @p3: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/3/2019 12:00:00 AM]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT [t0].[BranchID], [t0].[BranchName], [t0].[ManagerID], [t0].[ViceManagerID]
+FROM [dbo].[BranchStore] AS [t0]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[InvoiceItem] AS [t0]
+WHERE ([t0].[SellerID] = @p0) AND ([t0].[InvoiceDate] >= @p1) AND ([t0].[InvoiceDate] < @p2) AND ([t0].[InvoiceType] = @p3)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p1: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- @p2: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/3/2019 12:00:00 AM]
+-- @p3: Input Int (Size = -1; Prec = 0; Scale = 0) [7]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[InvoiceItem] AS [t0]
+INNER JOIN ([dbo].[Payment] AS [t1]
+    INNER JOIN [dbo].[VoidPayment] AS [t2] ON [t1].[PaymentID] = [t2].[VoidID]) ON ([t0].[InvoiceID]) = [t1].[InvoiceID]
+INNER JOIN [dbo].[InvoiceCancellation] AS [t3] ON [t0].[InvoiceID] = [t3].[InvoiceID]
+WHERE ([t0].[SellerID] = @p0) AND ([t0].[InvoiceType] = @p1) AND ([t2].[Status] = @p2) AND ([t3].[CancelDate] >= @p3) AND ([t3].[CancelDate] < @p4)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [7]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [1205]
+-- @p3: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- @p4: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/3/2019 12:00:00 AM]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[InvoiceItem] AS [t0]
+INNER JOIN [dbo].[InvoiceAllowance] AS [t1] ON ([t0].[InvoiceID]) = [t1].[InvoiceID]
+WHERE ([t0].[SellerID] = @p0) AND ([t0].[InvoiceType] = @p1) AND ([t1].[AllowanceDate] >= @p2) AND ([t1].[AllowanceDate] < @p3)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [7]
+-- @p2: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- @p3: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/3/2019 12:00:00 AM]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[InvoiceItem] AS [t0]
+INNER JOIN [dbo].[InvoiceItemDispatchLog] AS [t1] ON [t0].[InvoiceID] = [t1].[InvoiceID]
+WHERE ([t1].[Status] = @p0) AND ([t0].[SellerID] = @p1) AND ([t0].[InvoiceDate] >= @p2) AND ([t0].[InvoiceDate] < @p3) AND ([t0].[InvoiceType] = @p4)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p2: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- @p3: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/3/2019 12:00:00 AM]
+-- @p4: Input Int (Size = -1; Prec = 0; Scale = 0) [7]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[InvoiceItem] AS [t0]
+INNER JOIN [dbo].[InvoiceAllowance] AS [t1] ON ([t0].[InvoiceID]) = [t1].[InvoiceID]
+INNER JOIN [dbo].[InvoiceAllowanceDispatchLog] AS [t2] ON [t1].[AllowanceID] = [t2].[AllowanceID]
+WHERE ([t2].[Status] = @p0) AND ([t0].[SellerID] = @p1) AND ([t0].[InvoiceType] = @p2) AND ([t1].[AllowanceDate] >= @p3) AND ([t1].[AllowanceDate] < @p4)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [7]
+-- @p3: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- @p4: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/3/2019 12:00:00 AM]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[InvoiceItem] AS [t0]
+INNER JOIN ([dbo].[Payment] AS [t1]
+    INNER JOIN [dbo].[VoidPayment] AS [t2] ON [t1].[PaymentID] = [t2].[VoidID]) ON ([t0].[InvoiceID]) = [t1].[InvoiceID]
+INNER JOIN [dbo].[InvoiceCancellation] AS [t3] ON [t0].[InvoiceID] = [t3].[InvoiceID]
+INNER JOIN [dbo].[InvoiceCancellationDispatchLog] AS [t4] ON [t3].[InvoiceID] = [t4].[InvoiceID]
+WHERE ([t4].[Status] = @p0) AND ([t0].[SellerID] = @p1) AND ([t0].[InvoiceType] = @p2) AND ([t2].[Status] = @p3) AND ([t3].[CancelDate] >= @p4) AND ([t3].[CancelDate] < @p5)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [7]
+-- @p3: Input Int (Size = -1; Prec = 0; Scale = 0) [1205]
+-- @p4: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- @p5: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/3/2019 12:00:00 AM]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[InvoiceItem] AS [t0]
+WHERE ([t0].[SellerID] = @p0) AND ([t0].[InvoiceDate] >= @p1) AND ([t0].[InvoiceDate] < @p2) AND ([t0].[InvoiceType] = @p3)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [2]
+-- @p1: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- @p2: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/3/2019 12:00:00 AM]
+-- @p3: Input Int (Size = -1; Prec = 0; Scale = 0) [7]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[InvoiceItem] AS [t0]
+INNER JOIN ([dbo].[Payment] AS [t1]
+    INNER JOIN [dbo].[VoidPayment] AS [t2] ON [t1].[PaymentID] = [t2].[VoidID]) ON ([t0].[InvoiceID]) = [t1].[InvoiceID]
+INNER JOIN [dbo].[InvoiceCancellation] AS [t3] ON [t0].[InvoiceID] = [t3].[InvoiceID]
+WHERE ([t0].[SellerID] = @p0) AND ([t0].[InvoiceType] = @p1) AND ([t2].[Status] = @p2) AND ([t3].[CancelDate] >= @p3) AND ([t3].[CancelDate] < @p4)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [2]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [7]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [1205]
+-- @p3: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- @p4: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/3/2019 12:00:00 AM]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[InvoiceItem] AS [t0]
+INNER JOIN [dbo].[InvoiceAllowance] AS [t1] ON ([t0].[InvoiceID]) = [t1].[InvoiceID]
+WHERE ([t0].[SellerID] = @p0) AND ([t0].[InvoiceType] = @p1) AND ([t1].[AllowanceDate] >= @p2) AND ([t1].[AllowanceDate] < @p3)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [2]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [7]
+-- @p2: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- @p3: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/3/2019 12:00:00 AM]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[InvoiceItem] AS [t0]
+INNER JOIN [dbo].[InvoiceItemDispatchLog] AS [t1] ON [t0].[InvoiceID] = [t1].[InvoiceID]
+WHERE ([t1].[Status] = @p0) AND ([t0].[SellerID] = @p1) AND ([t0].[InvoiceDate] >= @p2) AND ([t0].[InvoiceDate] < @p3) AND ([t0].[InvoiceType] = @p4)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [2]
+-- @p2: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- @p3: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/3/2019 12:00:00 AM]
+-- @p4: Input Int (Size = -1; Prec = 0; Scale = 0) [7]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[InvoiceItem] AS [t0]
+INNER JOIN [dbo].[InvoiceAllowance] AS [t1] ON ([t0].[InvoiceID]) = [t1].[InvoiceID]
+INNER JOIN [dbo].[InvoiceAllowanceDispatchLog] AS [t2] ON [t1].[AllowanceID] = [t2].[AllowanceID]
+WHERE ([t2].[Status] = @p0) AND ([t0].[SellerID] = @p1) AND ([t0].[InvoiceType] = @p2) AND ([t1].[AllowanceDate] >= @p3) AND ([t1].[AllowanceDate] < @p4)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [2]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [7]
+-- @p3: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- @p4: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/3/2019 12:00:00 AM]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[InvoiceItem] AS [t0]
+INNER JOIN ([dbo].[Payment] AS [t1]
+    INNER JOIN [dbo].[VoidPayment] AS [t2] ON [t1].[PaymentID] = [t2].[VoidID]) ON ([t0].[InvoiceID]) = [t1].[InvoiceID]
+INNER JOIN [dbo].[InvoiceCancellation] AS [t3] ON [t0].[InvoiceID] = [t3].[InvoiceID]
+INNER JOIN [dbo].[InvoiceCancellationDispatchLog] AS [t4] ON [t3].[InvoiceID] = [t4].[InvoiceID]
+WHERE ([t4].[Status] = @p0) AND ([t0].[SellerID] = @p1) AND ([t0].[InvoiceType] = @p2) AND ([t2].[Status] = @p3) AND ([t3].[CancelDate] >= @p4) AND ([t3].[CancelDate] < @p5)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [2]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [7]
+-- @p3: Input Int (Size = -1; Prec = 0; Scale = 0) [1205]
+-- @p4: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- @p5: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/3/2019 12:00:00 AM]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[InvoiceItem] AS [t0]
+WHERE ([t0].[SellerID] = @p0) AND ([t0].[InvoiceDate] >= @p1) AND ([t0].[InvoiceDate] < @p2) AND ([t0].[InvoiceType] = @p3)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [3]
+-- @p1: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- @p2: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/3/2019 12:00:00 AM]
+-- @p3: Input Int (Size = -1; Prec = 0; Scale = 0) [7]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[InvoiceItem] AS [t0]
+INNER JOIN ([dbo].[Payment] AS [t1]
+    INNER JOIN [dbo].[VoidPayment] AS [t2] ON [t1].[PaymentID] = [t2].[VoidID]) ON ([t0].[InvoiceID]) = [t1].[InvoiceID]
+INNER JOIN [dbo].[InvoiceCancellation] AS [t3] ON [t0].[InvoiceID] = [t3].[InvoiceID]
+WHERE ([t0].[SellerID] = @p0) AND ([t0].[InvoiceType] = @p1) AND ([t2].[Status] = @p2) AND ([t3].[CancelDate] >= @p3) AND ([t3].[CancelDate] < @p4)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [3]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [7]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [1205]
+-- @p3: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- @p4: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/3/2019 12:00:00 AM]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[InvoiceItem] AS [t0]
+INNER JOIN [dbo].[InvoiceAllowance] AS [t1] ON ([t0].[InvoiceID]) = [t1].[InvoiceID]
+WHERE ([t0].[SellerID] = @p0) AND ([t0].[InvoiceType] = @p1) AND ([t1].[AllowanceDate] >= @p2) AND ([t1].[AllowanceDate] < @p3)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [3]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [7]
+-- @p2: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- @p3: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/3/2019 12:00:00 AM]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[InvoiceItem] AS [t0]
+INNER JOIN [dbo].[InvoiceItemDispatchLog] AS [t1] ON [t0].[InvoiceID] = [t1].[InvoiceID]
+WHERE ([t1].[Status] = @p0) AND ([t0].[SellerID] = @p1) AND ([t0].[InvoiceDate] >= @p2) AND ([t0].[InvoiceDate] < @p3) AND ([t0].[InvoiceType] = @p4)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [3]
+-- @p2: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- @p3: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/3/2019 12:00:00 AM]
+-- @p4: Input Int (Size = -1; Prec = 0; Scale = 0) [7]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[InvoiceItem] AS [t0]
+INNER JOIN [dbo].[InvoiceAllowance] AS [t1] ON ([t0].[InvoiceID]) = [t1].[InvoiceID]
+INNER JOIN [dbo].[InvoiceAllowanceDispatchLog] AS [t2] ON [t1].[AllowanceID] = [t2].[AllowanceID]
+WHERE ([t2].[Status] = @p0) AND ([t0].[SellerID] = @p1) AND ([t0].[InvoiceType] = @p2) AND ([t1].[AllowanceDate] >= @p3) AND ([t1].[AllowanceDate] < @p4)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [3]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [7]
+-- @p3: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- @p4: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/3/2019 12:00:00 AM]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[InvoiceItem] AS [t0]
+INNER JOIN ([dbo].[Payment] AS [t1]
+    INNER JOIN [dbo].[VoidPayment] AS [t2] ON [t1].[PaymentID] = [t2].[VoidID]) ON ([t0].[InvoiceID]) = [t1].[InvoiceID]
+INNER JOIN [dbo].[InvoiceCancellation] AS [t3] ON [t0].[InvoiceID] = [t3].[InvoiceID]
+INNER JOIN [dbo].[InvoiceCancellationDispatchLog] AS [t4] ON [t3].[InvoiceID] = [t4].[InvoiceID]
+WHERE ([t4].[Status] = @p0) AND ([t0].[SellerID] = @p1) AND ([t0].[InvoiceType] = @p2) AND ([t2].[Status] = @p3) AND ([t3].[CancelDate] >= @p4) AND ([t3].[CancelDate] < @p5)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [3]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [7]
+-- @p3: Input Int (Size = -1; Prec = 0; Scale = 0) [1205]
+-- @p4: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/2/2019 12:00:00 AM]
+-- @p5: Input DateTime (Size = -1; Prec = 0; Scale = 0) [2/3/2019 12:00:00 AM]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT [t0].[BranchID], [t0].[BranchName], [t0].[ManagerID], [t0].[ViceManagerID]
+FROM [dbo].[BranchStore] AS [t0]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT [t2].[IntervalID], [t2].[TrackID], [t2].[SellerID], [t2].[StartNo], [t2].[EndNo], [t2].[GroupID]
+FROM [dbo].[InvoiceTrackCodeAssignment] AS [t0]
+INNER JOIN [dbo].[InvoiceTrackCode] AS [t1] ON [t0].[TrackID] = [t1].[TrackID]
+CROSS JOIN [dbo].[InvoiceNoInterval] AS [t2]
+WHERE ([t0].[SellerID] = @p0) AND ([t1].[Year] = @p1) AND ([t1].[PeriodNo] = @p2) AND ([t2].[TrackID] = [t0].[TrackID]) AND ([t2].[SellerID] = [t0].[SellerID])
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [2019]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT [t0].[InvoiceID], [t0].[IntervalID], [t0].[InvoiceNo]
+FROM [dbo].[InvoiceNoAssignment] AS [t0]
+WHERE [t0].[IntervalID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [34]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT [t2].[IntervalID], [t2].[TrackID], [t2].[SellerID], [t2].[StartNo], [t2].[EndNo], [t2].[GroupID]
+FROM [dbo].[InvoiceTrackCodeAssignment] AS [t0]
+INNER JOIN [dbo].[InvoiceTrackCode] AS [t1] ON [t0].[TrackID] = [t1].[TrackID]
+CROSS JOIN [dbo].[InvoiceNoInterval] AS [t2]
+WHERE ([t0].[SellerID] = @p0) AND ([t1].[Year] = @p1) AND ([t1].[PeriodNo] = @p2) AND ([t2].[TrackID] = [t0].[TrackID]) AND ([t2].[SellerID] = [t0].[SellerID])
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [2]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [2019]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT [t0].[InvoiceID], [t0].[IntervalID], [t0].[InvoiceNo]
+FROM [dbo].[InvoiceNoAssignment] AS [t0]
+WHERE [t0].[IntervalID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [35]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT [t2].[IntervalID], [t2].[TrackID], [t2].[SellerID], [t2].[StartNo], [t2].[EndNo], [t2].[GroupID]
+FROM [dbo].[InvoiceTrackCodeAssignment] AS [t0]
+INNER JOIN [dbo].[InvoiceTrackCode] AS [t1] ON [t0].[TrackID] = [t1].[TrackID]
+CROSS JOIN [dbo].[InvoiceNoInterval] AS [t2]
+WHERE ([t0].[SellerID] = @p0) AND ([t1].[Year] = @p1) AND ([t1].[PeriodNo] = @p2) AND ([t2].[TrackID] = [t0].[TrackID]) AND ([t2].[SellerID] = [t0].[SellerID])
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [3]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [2019]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT [t0].[InvoiceID], [t0].[IntervalID], [t0].[InvoiceNo]
+FROM [dbo].[InvoiceNoAssignment] AS [t0]
+WHERE [t0].[IntervalID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [36]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT TOP (5) [t0].[DocID], [t0].[Title], [t0].[ArticleContent], [t0].[AuthorID], [t0].[Illustration], [t0].[Subtitle]
+FROM [dbo].[Article] AS [t0]
+INNER JOIN [dbo].[Document] AS [t1] ON [t1].[DocID] = [t0].[DocID]
+WHERE [t1].[CurrentStep] = @p0
+ORDER BY [t0].[DocID] DESC
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT COUNT(*) AS [value]
+FROM [dbo].[Article] AS [t0]
+INNER JOIN [dbo].[Document] AS [t1] ON [t1].[DocID] = [t0].[DocID]
+WHERE ([t0].[DocID] >= @p0) AND ([t1].[CurrentStep] = @p1)
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [21961]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT TOP (1) [t3].[DocID], [t3].[Title], [t3].[ArticleContent], [t3].[AuthorID], [t3].[Illustration], [t3].[Subtitle]
+FROM (
+    SELECT [t2].[DocID], [t2].[Title], [t2].[ArticleContent], [t2].[AuthorID], [t2].[Illustration], [t2].[Subtitle], [t2].[ROW_NUMBER]
+    FROM (
+        SELECT ROW_NUMBER() OVER (ORDER BY [t0].[DocID] DESC) AS [ROW_NUMBER], [t0].[DocID], [t0].[Title], [t0].[ArticleContent], [t0].[AuthorID], [t0].[Illustration], [t0].[Subtitle]
+        FROM [dbo].[Article] AS [t0]
+        INNER JOIN [dbo].[Document] AS [t1] ON [t1].[DocID] = [t0].[DocID]
+        WHERE ([t0].[DocID] >= @p0) AND ([t1].[CurrentStep] = @p1)
+        ) AS [t2]
+    WHERE [t2].[ROW_NUMBER] BETWEEN @p2 + 1 AND @p2 + @p3
+    ) AS [t3]
+ORDER BY [t3].[ROW_NUMBER]
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [21961]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [34]
+-- @p3: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT TOP (1) [t3].[DocID], [t3].[Title], [t3].[ArticleContent], [t3].[AuthorID], [t3].[Illustration], [t3].[Subtitle]
+FROM (
+    SELECT [t2].[DocID], [t2].[Title], [t2].[ArticleContent], [t2].[AuthorID], [t2].[Illustration], [t2].[Subtitle], [t2].[ROW_NUMBER]
+    FROM (
+        SELECT ROW_NUMBER() OVER (ORDER BY [t0].[DocID] DESC) AS [ROW_NUMBER], [t0].[DocID], [t0].[Title], [t0].[ArticleContent], [t0].[AuthorID], [t0].[Illustration], [t0].[Subtitle]
+        FROM [dbo].[Article] AS [t0]
+        INNER JOIN [dbo].[Document] AS [t1] ON [t1].[DocID] = [t0].[DocID]
+        WHERE ([t0].[DocID] >= @p0) AND ([t1].[CurrentStep] = @p1)
+        ) AS [t2]
+    WHERE [t2].[ROW_NUMBER] BETWEEN @p2 + 1 AND @p2 + @p3
+    ) AS [t3]
+ORDER BY [t3].[ROW_NUMBER]
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [21961]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [0]
+-- @p3: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT TOP (1) [t3].[DocID], [t3].[Title], [t3].[ArticleContent], [t3].[AuthorID], [t3].[Illustration], [t3].[Subtitle]
+FROM (
+    SELECT [t2].[DocID], [t2].[Title], [t2].[ArticleContent], [t2].[AuthorID], [t2].[Illustration], [t2].[Subtitle], [t2].[ROW_NUMBER]
+    FROM (
+        SELECT ROW_NUMBER() OVER (ORDER BY [t0].[DocID] DESC) AS [ROW_NUMBER], [t0].[DocID], [t0].[Title], [t0].[ArticleContent], [t0].[AuthorID], [t0].[Illustration], [t0].[Subtitle]
+        FROM [dbo].[Article] AS [t0]
+        INNER JOIN [dbo].[Document] AS [t1] ON [t1].[DocID] = [t0].[DocID]
+        WHERE ([t0].[DocID] >= @p0) AND ([t1].[CurrentStep] = @p1)
+        ) AS [t2]
+    WHERE [t2].[ROW_NUMBER] BETWEEN @p2 + 1 AND @p2 + @p3
+    ) AS [t3]
+ORDER BY [t3].[ROW_NUMBER]
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [21961]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [30]
+-- @p3: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT TOP (1) [t3].[DocID], [t3].[Title], [t3].[ArticleContent], [t3].[AuthorID], [t3].[Illustration], [t3].[Subtitle]
+FROM (
+    SELECT [t2].[DocID], [t2].[Title], [t2].[ArticleContent], [t2].[AuthorID], [t2].[Illustration], [t2].[Subtitle], [t2].[ROW_NUMBER]
+    FROM (
+        SELECT ROW_NUMBER() OVER (ORDER BY [t0].[DocID] DESC) AS [ROW_NUMBER], [t0].[DocID], [t0].[Title], [t0].[ArticleContent], [t0].[AuthorID], [t0].[Illustration], [t0].[Subtitle]
+        FROM [dbo].[Article] AS [t0]
+        INNER JOIN [dbo].[Document] AS [t1] ON [t1].[DocID] = [t0].[DocID]
+        WHERE ([t0].[DocID] >= @p0) AND ([t1].[CurrentStep] = @p1)
+        ) AS [t2]
+    WHERE [t2].[ROW_NUMBER] BETWEEN @p2 + 1 AND @p2 + @p3
+    ) AS [t3]
+ORDER BY [t3].[ROW_NUMBER]
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [21961]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [15]
+-- @p3: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT TOP (1) [t3].[DocID], [t3].[Title], [t3].[ArticleContent], [t3].[AuthorID], [t3].[Illustration], [t3].[Subtitle]
+FROM (
+    SELECT [t2].[DocID], [t2].[Title], [t2].[ArticleContent], [t2].[AuthorID], [t2].[Illustration], [t2].[Subtitle], [t2].[ROW_NUMBER]
+    FROM (
+        SELECT ROW_NUMBER() OVER (ORDER BY [t0].[DocID] DESC) AS [ROW_NUMBER], [t0].[DocID], [t0].[Title], [t0].[ArticleContent], [t0].[AuthorID], [t0].[Illustration], [t0].[Subtitle]
+        FROM [dbo].[Article] AS [t0]
+        INNER JOIN [dbo].[Document] AS [t1] ON [t1].[DocID] = [t0].[DocID]
+        WHERE ([t0].[DocID] >= @p0) AND ([t1].[CurrentStep] = @p1)
+        ) AS [t2]
+    WHERE [t2].[ROW_NUMBER] BETWEEN @p2 + 1 AND @p2 + @p3
+    ) AS [t3]
+ORDER BY [t3].[ROW_NUMBER]
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [21961]
+-- @p1: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- @p2: Input Int (Size = -1; Prec = 0; Scale = 0) [35]
+-- @p3: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT [t0].[AttachmentID], [t0].[StoredPath], [t0].[DocID]
+FROM [dbo].[Attachment] AS [t0]
+WHERE [t0].[AttachmentID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [7001]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT [t0].[AttachmentID], [t0].[StoredPath], [t0].[DocID]
+FROM [dbo].[Attachment] AS [t0]
+WHERE [t0].[AttachmentID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [7377]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT [t0].[AttachmentID], [t0].[StoredPath], [t0].[DocID]
+FROM [dbo].[Attachment] AS [t0]
+WHERE [t0].[AttachmentID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [7080]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT [t0].[AttachmentID], [t0].[StoredPath], [t0].[DocID]
+FROM [dbo].[Attachment] AS [t0]
+WHERE [t0].[AttachmentID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [7258]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT [t0].[AttachmentID], [t0].[StoredPath], [t0].[DocID]
+FROM [dbo].[Attachment] AS [t0]
+WHERE [t0].[AttachmentID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [6996]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+SELECT [t0].[UID], [t0].[Status], [t0].[TotalScope], [t0].[Rank]
+FROM [dbo].[ExerciseGameContestant] AS [t0]
+WHERE [t0].[UID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+
+2019/02/02 21:36:19
+SELECT TOP (1) [t0].[AttachmentID], [t0].[StoredPath], [t0].[DocID]
+FROM [dbo].[Attachment] AS [t0]
+WHERE [t0].[AttachmentID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1155]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+
+2019/02/02 21:36:19
+SELECT TOP (1) [t0].[AttachmentID], [t0].[StoredPath], [t0].[DocID]
+FROM [dbo].[Attachment] AS [t0]
+WHERE [t0].[AttachmentID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [7377]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+
+2019/02/02 21:36:19
+SELECT TOP (1) [t0].[AttachmentID], [t0].[StoredPath], [t0].[DocID]
+FROM [dbo].[Attachment] AS [t0]
+WHERE [t0].[AttachmentID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [7258]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+
+2019/02/02 21:36:20
+SELECT TOP (1) [t0].[AttachmentID], [t0].[StoredPath], [t0].[DocID]
+FROM [dbo].[Attachment] AS [t0]
+WHERE [t0].[AttachmentID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [6996]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+
+2019/02/02 21:36:20
+SELECT TOP (1) [t0].[AttachmentID], [t0].[StoredPath], [t0].[DocID]
+FROM [dbo].[Attachment] AS [t0]
+WHERE [t0].[AttachmentID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [7377]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+
+2019/02/02 21:36:20
+SELECT TOP (1) [t0].[AttachmentID], [t0].[StoredPath], [t0].[DocID]
+FROM [dbo].[Attachment] AS [t0]
+WHERE [t0].[AttachmentID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [7080]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+
+2019/02/02 21:36:21
+SELECT TOP (1) [t0].[AttachmentID], [t0].[StoredPath], [t0].[DocID]
+FROM [dbo].[Attachment] AS [t0]
+WHERE [t0].[AttachmentID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [7258]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+
+2019/02/02 21:36:21
+SELECT TOP (1) [t0].[AttachmentID], [t0].[StoredPath], [t0].[DocID]
+FROM [dbo].[Attachment] AS [t0]
+WHERE [t0].[AttachmentID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [7377]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+
+2019/02/02 21:36:21
+SELECT TOP (1) [t0].[AttachmentID], [t0].[StoredPath], [t0].[DocID]
+FROM [dbo].[Attachment] AS [t0]
+WHERE [t0].[AttachmentID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [7080]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+
+2019/02/02 21:36:21
+SELECT TOP (1) [t0].[AttachmentID], [t0].[StoredPath], [t0].[DocID]
+FROM [dbo].[Attachment] AS [t0]
+WHERE [t0].[AttachmentID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [7258]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+
+2019/02/02 21:36:21
+SELECT TOP (1) [t0].[AttachmentID], [t0].[StoredPath], [t0].[DocID]
+FROM [dbo].[Attachment] AS [t0]
+WHERE [t0].[AttachmentID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [7001]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+
+2019/02/02 21:36:21
+SELECT TOP (1) [t0].[AttachmentID], [t0].[StoredPath], [t0].[DocID]
+FROM [dbo].[Attachment] AS [t0]
+WHERE [t0].[AttachmentID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [6996]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+
+2019/02/02 21:36:21
+SELECT TOP (1) [t0].[AttachmentID], [t0].[StoredPath], [t0].[DocID]
+FROM [dbo].[Attachment] AS [t0]
+WHERE [t0].[AttachmentID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [7001]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+
+2019/02/02 21:36:30
+SELECT TOP (1) [t0].[UID], [t0].[UserName], [t0].[PID], [t0].[Password], [t0].[ExternalID], [t0].[Expiration], [t0].[Creator], [t0].[AuthID], [t0].[LevelID], [t0].[ThemeName], [t0].[Password2], [t0].[MemberCode], [t0].[PictureID], [t0].[RealName], [t0].[Address], [t0].[Phone], [t0].[RecentStatus], [t0].[Birthday], [t0].[Nickname], [t0].[BirthdateIndex]
+FROM [dbo].[UserProfile] AS [t0]
+WHERE [t0].[UID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+
+2019/02/02 21:36:30
+SELECT TOP (1) [t0].[AttachmentID], [t0].[StoredPath], [t0].[DocID]
+FROM [dbo].[Attachment] AS [t0]
+WHERE [t0].[AttachmentID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1155]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+
+2019/02/02 21:41:21
+SELECT TOP (1) [t0].[UID], [t0].[UserName], [t0].[PID], [t0].[Password], [t0].[ExternalID], [t0].[Expiration], [t0].[Creator], [t0].[AuthID], [t0].[LevelID], [t0].[ThemeName], [t0].[Password2], [t0].[MemberCode], [t0].[PictureID], [t0].[RealName], [t0].[Address], [t0].[Phone], [t0].[RecentStatus], [t0].[Birthday], [t0].[Nickname], [t0].[BirthdateIndex]
+FROM [dbo].[UserProfile] AS [t0]
+WHERE [t0].[UID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+
+2019/02/02 21:41:21
+SELECT TOP (1) [t0].[AttachmentID], [t0].[StoredPath], [t0].[DocID]
+FROM [dbo].[Attachment] AS [t0]
+WHERE [t0].[AttachmentID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1155]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+
+2019/02/02 22:25:48
+SELECT TOP (1) [t0].[UID], [t0].[UserName], [t0].[PID], [t0].[Password], [t0].[ExternalID], [t0].[Expiration], [t0].[Creator], [t0].[AuthID], [t0].[LevelID], [t0].[ThemeName], [t0].[Password2], [t0].[MemberCode], [t0].[PictureID], [t0].[RealName], [t0].[Address], [t0].[Phone], [t0].[RecentStatus], [t0].[Birthday], [t0].[Nickname], [t0].[BirthdateIndex]
+FROM [dbo].[UserProfile] AS [t0]
+WHERE [t0].[UID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+
+2019/02/02 22:25:48
+SELECT TOP (1) [t0].[AttachmentID], [t0].[StoredPath], [t0].[DocID]
+FROM [dbo].[Attachment] AS [t0]
+WHERE [t0].[AttachmentID] = @p0
+-- @p0: Input Int (Size = -1; Prec = 0; Scale = 0) [1155]
+-- Context: SqlProvider(Sql2008) Model: AttributedMetaModel Build: 4.7.3056.0
+
+
