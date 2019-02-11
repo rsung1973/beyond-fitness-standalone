@@ -214,6 +214,45 @@
     <value>謝謝您，</value>
   </data>
   <data name="AboutVedioDeclaration1" xml:space="preserve">
-    <value>我們將一起創造運動的價值與運動的觀念，進而讓生活更有意</value>
+    <value>我們將一起創造運動的價值與運動的觀念，進而讓生活更有意義</value>
+  </data>
+  <data name="FindNanjingBranch" xml:space="preserve">
+    <value>南京店</value>
+  </data>
+  <data name="FindNanjingBranchAdd" xml:space="preserve">
+    <value>台北市松山區南京東路四段17號B1</value>
+  </data>
+  <data name="FindNanjingBranchDesc1" xml:space="preserve">
+    <value>位於台北小巨蛋正對面，鄰近微風百貨，小巨蛋商圈，捷運台北小巨蛋站1號出口，走路1分鐘即可抵達。</value>
+  </data>
+  <data name="FindNanjingBranchDesc2" xml:space="preserve">
+    <value>擁有超過百坪的專業場地，結合多樣化訓練設備，提供您在運動的同時不受一般場地侷限，讓您的訓練品質最佳化。</value>
+  </data>
+  <data name="FindXinyiBranch" xml:space="preserve">
+    <value>信義店</value>
+  </data>
+  <data name="FindXinyiBranchAdd" xml:space="preserve">
+    <value>台北市信義區信義路五段16號2樓之2</value>
+  </data>
+  <data name="FindXinyiBranchDesc1" xml:space="preserve">
+    <value>位於台北101正對面 (1Bite2Go 樓上)，捷運台北101/世貿站3號出口即可抵達。</value>
+  </data>
+  <data name="FindXinyiBranchDesc2" xml:space="preserve">
+    <value>台北市獨一無二同時擁有室內與戶外的私人教練場地。專業、寬敞與隱私的訓練空間，並且結合戶外大草皮運動區與PU跑道，讓您不侷限於室內場地。同時擁有戶外區的運動空間，增加訓練項目多元化，讓健身不僅止於健身，而是更佳的生活與功能化。</value>
+  </data>
+  <data name="FindZhongxiaoBranch" xml:space="preserve">
+    <value>忠孝店</value>
+  </data>
+  <data name="FindZhongxiaoBranchAdd" xml:space="preserve">
+    <value>台北市大安區大安路一段75巷21號1F/B1</value>
+  </data>
+  <data name="FindZhongxiaoBranchDesc1" xml:space="preserve">
+    <value>位於頂好名店城後方大樓1F/B1，捷運忠孝復興站3號(地下街14號)出口，走路2分鐘即可抵達。</value>
+  </data>
+  <data name="FindZhongxiaoBranchDesc2" xml:space="preserve">
+    <value>少數擁有室內挑高私人教練場地，明亮採光的運動空間，結合多樣化訓練設備，提供乾濕分離衛浴設備，方便您更舒適換穿衣物及梳洗。</value>
+  </data>
+  <data name="OurTeam" xml:space="preserve">
+    <value>了解團隊</value>
   </data>
 </root>

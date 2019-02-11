@@ -238,5 +238,83 @@ namespace BFConsole.Views.MainActivity.Resources {
                 return ResourceManager.GetString("AboutVedioDeclaration1", resourceCulture);
             }
         }
+        
+        public static string FindNanjingBranch {
+            get {
+                return ResourceManager.GetString("FindNanjingBranch", resourceCulture);
+            }
+        }
+        
+        public static string FindNanjingBranchAdd {
+            get {
+                return ResourceManager.GetString("FindNanjingBranchAdd", resourceCulture);
+            }
+        }
+        
+        public static string FindNanjingBranchDesc1 {
+            get {
+                return ResourceManager.GetString("FindNanjingBranchDesc1", resourceCulture);
+            }
+        }
+        
+        public static string FindNanjingBranchDesc2 {
+            get {
+                return ResourceManager.GetString("FindNanjingBranchDesc2", resourceCulture);
+            }
+        }
+        
+        public static string FindXinyiBranch {
+            get {
+                return ResourceManager.GetString("FindXinyiBranch", resourceCulture);
+            }
+        }
+        
+        public static string FindXinyiBranchAdd {
+            get {
+                return ResourceManager.GetString("FindXinyiBranchAdd", resourceCulture);
+            }
+        }
+        
+        public static string FindXinyiBranchDesc1 {
+            get {
+                return ResourceManager.GetString("FindXinyiBranchDesc1", resourceCulture);
+            }
+        }
+        
+        public static string FindXinyiBranchDesc2 {
+            get {
+                return ResourceManager.GetString("FindXinyiBranchDesc2", resourceCulture);
+            }
+        }
+        
+        public static string FindZhongxiaoBranch {
+            get {
+                return ResourceManager.GetString("FindZhongxiaoBranch", resourceCulture);
+            }
+        }
+        
+        public static string FindZhongxiaoBranchAdd {
+            get {
+                return ResourceManager.GetString("FindZhongxiaoBranchAdd", resourceCulture);
+            }
+        }
+        
+        public static string FindZhongxiaoBranchDesc1 {
+            get {
+                return ResourceManager.GetString("FindZhongxiaoBranchDesc1", resourceCulture);
+            }
+        }
+        
+        public static string FindZhongxiaoBranchDesc2 {
+            get {
+                return ResourceManager.GetString("FindZhongxiaoBranchDesc2", resourceCulture);
+            }
+        }
+        
+        public static string OurTeam {
+            get {
+                return ResourceManager.GetString("OurTeam", resourceCulture);
+            }
+        }
     }
 }

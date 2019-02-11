@@ -216,4 +216,31 @@
   <data name="AboutVedioDeclaration1" xml:space="preserve">
     <value>Together we build values and attitudes towards sports that bring meaning to our lives.</value>
   </data>
+  <data name="FindNanjingBranch" xml:space="preserve">
+    <value>Nanjing Branch</value>
+  </data>
+  <data name="FindNanjingBranchAdd" xml:space="preserve">
+    <value>B1, No.17, Sec. 4, Nanjing E. Rd., Songshan Dist., Taipei City 105, Taiwan</value>
+  </data>
+  <data name="FindNanjingBranchDesc1" xml:space="preserve">
+    <value>Across from the Taipei Arena, close to the Breeze Center, Taipei Arena shopping district, and 1 minute walk from the MRT Taipei Arena Station Exit 1.</value>
+  </data>
+  <data name="FindNanjingBranchDesc2" xml:space="preserve">
+    <value>With more than 100 ping professional venues combined with a variety of training equipment, you can optimize your training by exercising without being restricted by venues.</value>
+  </data>
+  <data name="FindXinyiBranch" xml:space="preserve">
+    <value>Xinyi Branch</value>
+  </data>
+  <data name="FindXinyiBranchAdd" xml:space="preserve">
+    <value>Rm. 2, 2F., No.16, Sec. 5, Xinyi Rd., Xinyi Dist., Taipei City 110, Taiwan</value>
+  </data>
+  <data name="FindXinyiBranchDesc1" xml:space="preserve">
+    <value>Across from Taipei 101 (Upstairs of the restaurant- 1Bite2Go), right at the MRT Taipei 101/World Trade Center Exit 3.</value>
+  </data>
+  <data name="FindXinyiBranchDesc2" xml:space="preserve">
+    <value>Own a unique personal training venue that has both indoor and outdoor in Taipei City. Professional, spacious and private training space, combined with an outdoor sports lawn and PU runway, you are not limited to indoor venues. Having sports space in the outdoor area increases the diversity of training programs. Fitness not only ends with fitness, but also has better functions toward lives.</value>
+  </data>
+  <data name="OurTeam" xml:space="preserve">
+    <value>Our team</value>
+  </data>
 </root>
