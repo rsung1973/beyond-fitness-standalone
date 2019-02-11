@@ -82,5 +82,161 @@ namespace BFConsole.Views.MainActivity.Resources {
                 return ResourceManager.GetString("BookNow", resourceCulture);
             }
         }
+        
+        public static string LearnMore {
+            get {
+                return ResourceManager.GetString("LearnMore", resourceCulture);
+            }
+        }
+        
+        public static string ContactTitle {
+            get {
+                return ResourceManager.GetString("ContactTitle", resourceCulture);
+            }
+        }
+        
+        public static string ContactSubTitle {
+            get {
+                return ResourceManager.GetString("ContactSubTitle", resourceCulture);
+            }
+        }
+        
+        public static string ContactAskNow {
+            get {
+                return ResourceManager.GetString("ContactAskNow", resourceCulture);
+            }
+        }
+        
+        public static string IndexBannerTitle {
+            get {
+                return ResourceManager.GetString("IndexBannerTitle", resourceCulture);
+            }
+        }
+        
+        public static string IndexBannerSubTitle {
+            get {
+                return ResourceManager.GetString("IndexBannerSubTitle", resourceCulture);
+            }
+        }
+        
+        public static string IndexFeature1 {
+            get {
+                return ResourceManager.GetString("IndexFeature1", resourceCulture);
+            }
+        }
+        
+        public static string IndexFeature1Desc {
+            get {
+                return ResourceManager.GetString("IndexFeature1Desc", resourceCulture);
+            }
+        }
+        
+        public static string IndexFeature2 {
+            get {
+                return ResourceManager.GetString("IndexFeature2", resourceCulture);
+            }
+        }
+        
+        public static string IndexFeature2Desc {
+            get {
+                return ResourceManager.GetString("IndexFeature2Desc", resourceCulture);
+            }
+        }
+        
+        public static string IndexFeature3 {
+            get {
+                return ResourceManager.GetString("IndexFeature3", resourceCulture);
+            }
+        }
+        
+        public static string IndexFeature3Desc {
+            get {
+                return ResourceManager.GetString("IndexFeature3Desc", resourceCulture);
+            }
+        }
+        
+        public static string IndexVedioTitle {
+            get {
+                return ResourceManager.GetString("IndexVedioTitle", resourceCulture);
+            }
+        }
+        
+        public static string IndexVedioSubTitle {
+            get {
+                return ResourceManager.GetString("IndexVedioSubTitle", resourceCulture);
+            }
+        }
+        
+        public static string IndexVedioDesc {
+            get {
+                return ResourceManager.GetString("IndexVedioDesc", resourceCulture);
+            }
+        }
+        
+        public static string IndexFunFactsTitle {
+            get {
+                return ResourceManager.GetString("IndexFunFactsTitle", resourceCulture);
+            }
+        }
+        
+        public static string IndexSlick1Desc {
+            get {
+                return ResourceManager.GetString("IndexSlick1Desc", resourceCulture);
+            }
+        }
+        
+        public static string IndexSlick2Desc {
+            get {
+                return ResourceManager.GetString("IndexSlick2Desc", resourceCulture);
+            }
+        }
+        
+        public static string AboutBannerTitle {
+            get {
+                return ResourceManager.GetString("AboutBannerTitle", resourceCulture);
+            }
+        }
+        
+        public static string AboutxBannerSubTitle {
+            get {
+                return ResourceManager.GetString("AboutxBannerSubTitle", resourceCulture);
+            }
+        }
+        
+        public static string AboutVedioTitle {
+            get {
+                return ResourceManager.GetString("AboutVedioTitle", resourceCulture);
+            }
+        }
+        
+        public static string AboutVedioDesc1 {
+            get {
+                return ResourceManager.GetString("AboutVedioDesc1", resourceCulture);
+            }
+        }
+        
+        public static string AboutVedioDesc2 {
+            get {
+                return ResourceManager.GetString("AboutVedioDesc2", resourceCulture);
+            }
+        }
+        
+        public static string AboutVedioDesc3 {
+            get {
+                return ResourceManager.GetString("AboutVedioDesc3", resourceCulture);
+            }
+        }
+        
+        public static string AboutVedioDesc4 {
+            get {
+                return ResourceManager.GetString("AboutVedioDesc4", resourceCulture);
+            }
+        }
+        
+        public static string AboutVedioDeclaration1 {
+            get {
+                return ResourceManager.GetString("AboutVedioDeclaration1", resourceCulture);
+            }
+        }
     }
 }

@@ -135,4 +135,85 @@
   <data name="BookNow" xml:space="preserve">
     <value>Book now</value>
   </data>    
+   <data name="LearnMore" xml:space="preserve">
+    <value>Learn more</value>
+  </data>    
+  <data name="ContactTitle" xml:space="preserve">
+    <value>Take your first step!</value>
+  </data>
+  <data name="ContactSubTitle" xml:space="preserve">
+    <value>We’re always here to help.</value>
+  </data>
+  <data name="ContactAskNow" xml:space="preserve">
+    <value>Ask Now</value>
+  </data>    
+  <data name="IndexBannerTitle" xml:space="preserve">
+    <value>Our persistence</value>
+  </data>
+  <data name="IndexBannerSubTitle" xml:space="preserve">
+    <value>Is built on the clients’faith</value>
+  </data>
+  <data name="IndexFeature1" xml:space="preserve">
+    <value>Our commitment</value>
+  </data>
+  <data name="IndexFeature1Desc" xml:space="preserve">
+    <value>Professionalism stem from trust.We’re committed to listening and communication.Together we work hard and reach your goal.</value>
+  </data>
+  <data name="IndexFeature2" xml:space="preserve">
+    <value>Our certificates</value>
+  </data>
+  <data name="IndexFeature2Desc" xml:space="preserve">
+    <value>Own six major international certificates.Provide you with a safe and supportable training venue.</value>
+  </data>
+  <data name="IndexFeature3" xml:space="preserve">
+    <value>Our Data management</value>
+  </data>
+  <data name="IndexFeature3Desc" xml:space="preserve">
+    <value>Innovated fitness analysis library.Customized training program.Inspire your unlimited power!</value>
+  </data>
+    <data name="IndexVedioTitle" xml:space="preserve">
+    <value>To whom who wants to know how to begin with...</value>
+  </data>
+  <data name="IndexVedioSubTitle" xml:space="preserve">
+    <value>Dream fulfillers</value>
+  </data>
+  <data name="IndexVedioDesc" xml:space="preserve">
+    <value>Check out the following videos to see how Mr. Huang <span class="hidden-sm-down">and Mrs. Chen </span>ecognize the value of exercise through professional training.</value>
+  </data>
+  <data name="IndexFunFactsTitle" xml:space="preserve">
+    <value>Analyze fitness data,<br />create a POWERFUL cloud.</value>
+  </data>
+  <data name="IndexSlick1Desc" xml:space="preserve">
+    <value>專業是細心且提升客戶的保障，Beyond 運動與物理治療的配合是有效的</value>
+  </data>
+  <data name="IndexSlick2Desc" xml:space="preserve">
+    <value>在溫馨與專業的Beyond，確保你的飲食以及運動都得到妥善照顧</value>
+  </data> 
+  <data name="AboutBannerTitle" xml:space="preserve">
+    <value>Professionalism comes from sincerity.</value>
+  </data>
+  <data name="AboutxBannerSubTitle" xml:space="preserve">
+    <value>A trust will give you a hearty smile.</value>
+  </data>
+  <data name="AboutVedioTitle" xml:space="preserve">
+    <value>Our belief</value>
+  </data>
+  <data name="AboutxBannerDesc1" xml:space="preserve">
+    <value>Founded in 2014, Beyond Fitness is one of the largest custom training centers in Taiwan. We have more than 50 employees, providing personalized training services, corporate team health strategies, professional sports education training, corporate health consultants and more.</value>
+  </data>
+  <data name="AboutxBannerDesc2" xml:space="preserve">
+    <value>Beyond Fitness takes exercise seriously.</value>
+  </data>
+  <data name="AboutxBannerDesc3" xml:space="preserve">
+    <value>As professional fitness instructors, we provide training in a scientific and systematic way. We help you in a sincere manner and bring the highest benefits and value to each training course.</value>
+  </data>
+  <data name="AboutxBannerDesc4" xml:space="preserve">
+    <value>We believe that “If we help you change your lifestyle and lead you to a healthier life, you will naturally find the value and quality of your life.”</value>
+  </data>
+  <data name="AboutVedioDeclaration1" xml:space="preserve">
+    <value>Thank you!</value>
+  </data>
+  <data name="AboutVedioDeclaration1" xml:space="preserve">
+    <value>Together we build values and attitudes towards sports that bring meaning to our lives.</value>
+  </data>
 </root>
