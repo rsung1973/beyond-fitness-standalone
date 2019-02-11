@@ -316,5 +316,107 @@ namespace BFConsole.Views.MainActivity.Resources {
                 return ResourceManager.GetString("OurTeam", resourceCulture);
             }
         }
+        
+        public static string JoinUsTitle {
+            get {
+                return ResourceManager.GetString("JoinUsTitle", resourceCulture);
+            }
+        }
+        
+        public static string JoinUsDesc {
+            get {
+                return ResourceManager.GetString("JoinUsDesc", resourceCulture);
+            }
+        }
+        
+        public static string JoinUsFeature1 {
+            get {
+                return ResourceManager.GetString("JoinUsFeature1", resourceCulture);
+            }
+        }
+        
+        public static string JoinUsFeature1Desc {
+            get {
+                return ResourceManager.GetString("JoinUsFeature1Desc", resourceCulture);
+            }
+        }
+        
+        public static string JoinUsFeature2 {
+            get {
+                return ResourceManager.GetString("JoinUsFeature2", resourceCulture);
+            }
+        }
+        
+        public static string JoinUsFeature2Desc {
+            get {
+                return ResourceManager.GetString("JoinUsFeature2Desc", resourceCulture);
+            }
+        }
+        
+        public static string JoinUsFeature3 {
+            get {
+                return ResourceManager.GetString("JoinUsFeature3", resourceCulture);
+            }
+        }
+        
+        public static string JoinUsFeature3Desc {
+            get {
+                return ResourceManager.GetString("JoinUsFeature3Desc", resourceCulture);
+            }
+        }
+        
+        public static string JoinUsFeature4 {
+            get {
+                return ResourceManager.GetString("JoinUsFeature4", resourceCulture);
+            }
+        }
+        
+        public static string JoinUsFeature4Desc {
+            get {
+                return ResourceManager.GetString("JoinUsFeature4Desc", resourceCulture);
+            }
+        }
+        
+        public static string JoinUsJob1 {
+            get {
+                return ResourceManager.GetString("JoinUsJob1", resourceCulture);
+            }
+        }
+        
+        public static string JoinUsJob1Desc {
+            get {
+                return ResourceManager.GetString("JoinUsJob1Desc", resourceCulture);
+            }
+        }
+        
+        public static string JoinUsJob2 {
+            get {
+                return ResourceManager.GetString("JoinUsJob2", resourceCulture);
+            }
+        }
+        
+        public static string JoinUsJob2Desc {
+            get {
+                return ResourceManager.GetString("JoinUsJob2Desc", resourceCulture);
+            }
+        }
+        
+        public static string JoinUsContactTitle {
+            get {
+                return ResourceManager.GetString("JoinUsContactTitle", resourceCulture);
+            }
+        }
+        
+        public static string JoinUsContactDesc {
+            get {
+                return ResourceManager.GetString("JoinUsContactDesc", resourceCulture);
+            }
+        }
+        
+        public static string HereWeGo {
+            get {
+                return ResourceManager.GetString("HereWeGo", resourceCulture);
+            }
+        }
     }
 }

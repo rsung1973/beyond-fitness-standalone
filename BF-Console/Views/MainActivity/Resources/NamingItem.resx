@@ -178,7 +178,7 @@
     <value>夢想實踐者</value>
   </data>
   <data name="IndexVedioDesc" xml:space="preserve">
-    <value>看看 黃伯伯 <span class="hidden-sm-down">和 陳阿姨 </span>如何透過專業的訓練，更加了解運動的價值。</value>
+    <value>&lt;data name="IndexVedioDesc" xml:space="preserve"&gt;    &lt;value&gt;看看 黃伯伯 &lt;span class="hidden-sm-down"&gt;和 陳阿姨 &lt;/span&gt;如何透過專業的訓練，更加了解運動的價值。&lt;/value&gt;  &lt;/data&gt;"</value>
   </data>
   <data name="IndexFunFactsTitle" xml:space="preserve">
     <value>數據體能分析，<br />創造強而有力的新雲端你</value>
@@ -254,5 +254,62 @@
   </data>
   <data name="OurTeam" xml:space="preserve">
     <value>了解團隊</value>
+  </data>
+  <data name="JoinUsTitle" xml:space="preserve">
+    <value>加入執行團隊</value>
+  </data>
+  <data name="JoinUsDesc" xml:space="preserve">
+    <value>Beyond Fitness 創立於 2015 年，致力於發展專業一對一私人教練。Beyond Fitness 從南京小巨蛋發跡，成立三年來陸續拓展了信義 101 與忠孝敦化等分店，在這些的背後，是一群想用行動與專業實踐理想的夥伴，與背後願意相信 我們的客戶們。我們相信，教育應該是個別化的，訓練也應該是，我們針對個人化的需求去克制最符合「人」的訓練模式，進而引領客戶走向更美好的生活為目標。</value>
+  </data>
+  <data name="JoinUsFeature1" xml:space="preserve">
+    <value>微笑</value>
+  </data>
+  <data name="JoinUsFeature1Desc" xml:space="preserve">
+    <value>隨時隨地，熱情回饋</value>
+  </data>
+  <data name="JoinUsFeature2" xml:space="preserve">
+    <value>啟發</value>
+  </data>
+  <data name="JoinUsFeature2Desc" xml:space="preserve">
+    <value>教學互長，一起成長</value>
+  </data>
+  <data name="JoinUsFeature3" xml:space="preserve">
+    <value>溫暖</value>
+  </data>
+  <data name="JoinUsFeature3Desc" xml:space="preserve">
+    <value>如同家人般的關懷</value>
+  </data>
+  <data name="JoinUsFeature4" xml:space="preserve">
+    <value>正直</value>
+  </data>
+  <data name="JoinUsFeature4Desc" xml:space="preserve">
+    <value>專業坦率，提供最真切的建議</value>
+  </data>
+  <data name="JoinUsJob1" xml:space="preserve">
+    <value>私人教練</value>
+  </data>
+  <data name="JoinUsJob1Desc" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="JoinUsJob1" xml:space="preserve">
+    <value>私人教練</value>
+  </data>
+  <data name="JoinUsJob1Desc" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="JoinUsJob2" xml:space="preserve">
+    <value>行銷人員</value>
+  </data>
+  <data name="JoinUsJob2Desc" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="JoinUsContactTitle" xml:space="preserve">
+    <value>把握一展長才的機會</value>
+  </data>
+  <data name="JoinUsContactDesc" xml:space="preserve">
+    <value>請向Beyond Fitness自我介紹，如果有適合您的職缺，我們會與您聯繫。</value>
+  </data> 
+  <data name="HereWeGo" xml:space="preserve">
+    <value>立即行動</value>
   </data>
 </root>
