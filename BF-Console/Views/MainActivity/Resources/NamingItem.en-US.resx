@@ -330,4 +330,19 @@
   <data name="AboutVedioDeclaration2" xml:space="preserve">
     <value>Together we build values and attitudes towards sports that bring meaning to our lives.</value>
   </data>
+  <data name="BookNowTitle" xml:space="preserve">
+    <value>Just four steps away!</value>
+  </data>
+  <data name="BookNowStep1" xml:space="preserve">
+    <value>Book&lt;span&gt;Directly via online, phone, email with our staff and get further information&lt;/span&gt;</value>
+  </data>
+  <data name="BookNowStep2" xml:space="preserve">
+    <value>Consult&lt;span&gt;You will be carefully and thoroughly evaluated according to your conditions and needs. We assure you that the details of our trial course are clearly explained.&lt;/span&gt;</value>
+  </data>
+  <data name="BookNowStep3" xml:space="preserve">
+    <value>Trial&lt;span&gt;Head to the branches you choose, there will be professional trainer taking you on one training course based on your physical condition. Meanwhile, you will not only know your physical status but also our training process and venue.&lt;/span&gt;</value>
+  </data>
+  <data name="BookNowStep4" xml:space="preserve">
+    <value>Customization&lt;span&gt;Professional trainers will explain the purpose of workout sessions. Your physical condition and status will be discussed with suitable advice made just for you.&lt;/span&gt;</value>
+  </data>    
 </root>

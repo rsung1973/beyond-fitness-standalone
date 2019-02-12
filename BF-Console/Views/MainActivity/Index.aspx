@@ -42,7 +42,7 @@
                     <h2><%: NamingItem.IndexFeature1 %></h2>
                     <hr />
                     <p> <%: NamingItem.IndexFeature1Desc %> </p>
-                    <a href="features.html" class="more"><%: NamingItem.LearnMore %><i class="pl-1 fa fa-angle-right"></i></a>
+                    <a href="<%= Url.Action("Features") %>" class="more"><%: NamingItem.LearnMore %><i class="pl-1 fa fa-angle-right"></i></a>
                 </div>
 
                 <div class="col-sm-4 features-item  ">
@@ -50,14 +50,14 @@
                     <h2><%: NamingItem.IndexFeature2 %></h2>
                     <hr />
                     <p> <%: NamingItem.IndexFeature2Desc %> </p>
-                    <a href="features.html" class="more"><%: NamingItem.LearnMore %><i class="pl-1 fa fa-angle-right"></i></a>
+                    <a href="<%= Url.Action("Features") %>" class="more"><%: NamingItem.LearnMore %><i class="pl-1 fa fa-angle-right"></i></a>
                 </div>
                 <div class="col-sm-4 features-item  ">
                     <div class="icon-wrapper"> <img src="images/landing/icon3.png" alt="數據管理"> </div>
                     <h2><%: NamingItem.IndexFeature3 %></h2>
                     <hr />
                     <p> <%: NamingItem.IndexFeature3Desc %> </p>
-                    <a href="features.html" class="more"><%: NamingItem.LearnMore %><i class="pl-1 fa fa-angle-right"></i></a>
+                    <a href="<%= Url.Action("Features") %>" class="more"><%: NamingItem.LearnMore %><i class="pl-1 fa fa-angle-right"></i></a>
                 </div>
             </div>
         </div>

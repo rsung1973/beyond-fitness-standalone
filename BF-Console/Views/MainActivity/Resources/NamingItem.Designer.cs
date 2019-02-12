@@ -472,5 +472,35 @@ namespace BFConsole.Views.MainActivity.Resources {
                 return ResourceManager.GetString("AboutVedioDeclaration2", resourceCulture);
             }
         }
+        
+        public static string BookNowTitle {
+            get {
+                return ResourceManager.GetString("BookNowTitle", resourceCulture);
+            }
+        }
+        
+        public static string BookNowStep1 {
+            get {
+                return ResourceManager.GetString("BookNowStep1", resourceCulture);
+            }
+        }
+        
+        public static string BookNowStep2 {
+            get {
+                return ResourceManager.GetString("BookNowStep2", resourceCulture);
+            }
+        }
+        
+        public static string BookNowStep3 {
+            get {
+                return ResourceManager.GetString("BookNowStep3", resourceCulture);
+            }
+        }
+        
+        public static string BookNowStep4 {
+            get {
+                return ResourceManager.GetString("BookNowStep4", resourceCulture);
+            }
+        }
     }
 }

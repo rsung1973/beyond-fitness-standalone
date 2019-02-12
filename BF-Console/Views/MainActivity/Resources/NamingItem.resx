@@ -330,4 +330,19 @@
   <data name="AboutVedioDeclaration2" xml:space="preserve">
     <value>我們將一起創造運動的價值與運動的觀念，進而讓生活更有意。</value>
   </data>
+  <data name="BookNowTitle" xml:space="preserve">
+    <value>諮詢四步驟</value>
+  </data>
+  <data name="BookNowStep1" xml:space="preserve">
+    <value>預約&lt;span&gt;可直接透過線上，電話，E-Mail 與專業人員預約時間以及了解內容&lt;/span&gt;</value>
+  </data>
+  <data name="BookNowStep2" xml:space="preserve">
+    <value>諮詢&lt;span&gt;我們將細心地瞭解您的狀況以及需求來幫助您，同時告知體驗相關流程，讓您放心理解細節&lt;/span&gt;</value>
+  </data>
+  <data name="BookNowStep3" xml:space="preserve">
+    <value>體驗&lt;span&gt;輕鬆的前往各分店，專業人員將針對您的狀況帶您做一次適合的運動，並同時可以了解自身狀況以及運動流程以及環境&lt;/span&gt;</value>
+  </data>
+  <data name="BookNowStep4" xml:space="preserve">
+    <value>量身定做&lt;span&gt;專業人員將與您解釋詳細運動細節以及身體狀況，並一同討論您的狀況以及給予真正適合您的建議&lt;/span&gt;</value>
+  </data>
 </root>
