@@ -34,7 +34,7 @@
             .ToList();
 
     %>
-<div id="<%= _chartID %>" class="c3"></div>
+<div id="<%= _chartID %>" class="c3 m-t-20"></div>
 <script>
 
     $(function () {
@@ -52,9 +52,9 @@
                     ['data1', 'data2', 'data3']
                 ],
                 colors: {
-                    'data1': '#ffe6aa',
-                    'data2': '#c5b6e2',
-                    'data3': '#eeaaaa'
+                    'data1': '#3fbac2',
+                    'data2': '#d3d4d8',
+                    'data3': '#65799b'
                 },
                 names: {
                     // name of each serie
@@ -72,7 +72,7 @@
                 },
             },
             bar: {
-                width: 25
+                width: 'auto'
             },
             legend: {
                 show: true, //hide legend

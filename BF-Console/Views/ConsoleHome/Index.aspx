@@ -17,7 +17,7 @@
     <link href="plugins/royalslider/skins/default/rs-default.css" rel="stylesheet"/>
     <link href="css/royalslider.css?1.0" rel="stylesheet"/>
     <!-- charts-c3 -->
-    <link href="plugins/charts-c3/plugin.css" rel="stylesheet" />
+    <link href="plugins/charts-c3/plugin_white.css" rel="stylesheet" />
 </asp:Content>
 
 <asp:Content ID="MainContent" ContentPlaceHolderID="MainContent" runat="server">
@@ -184,54 +184,13 @@
         <%  if (_model.IsCoach())
             {
                 Html.RenderPartial("~/Views/ConsoleHome/Module/AboutLearners_1.ascx", _model);
-            }   %>        <!--我的分店業績卡片-->        <%  if (_model.IsOfficer() || _model.IsManager() || _model.IsViceManager())
+            }   %>        <!--我的分店業績卡片-->        <%  if (_model.IsOfficer() || _model.IsManager() || _model.IsViceManager() || _model.IsAssistant() || _model.IsAuthorizedSysAdmin())
             {
                 Html.RenderPartial("~/Views/ConsoleHome/Module/AboutAchievementC3.ascx", _model);
             }   %>        <!--我的業績&我的比賽-->        <%  if (_model.IsCoach())
             {
                 Html.RenderPartial("~/Views/ConsoleHome/Module/AboutCoach.ascx", _model);
-            }   %>        <!--我的業績&我的比賽&運動小學堂-->
-        <%--        <div class="container-fluid">
-            <div class="row clearfix">
-                <div class="col-lg-12 col-md-12">
-                    <div class="row clearfix">
-                        <div class="col-sm-4 col-12 achivement">
-                            <h4 class="card-outbound-header">我的業績</h4>
-                            <div class="parallax-img-card">
-                                <div class="body">
-                                    <h4>AFM / P.T 6<br />
-                                        2 張證照</h4>
-                                </div>
-                                <div class="parallax">
-                                    <img src="images/carousel/level-background.jpg"></div>
-                            </div>
-                        </div>
-                        <div class="col-sm-4 col-12">
-                            <h4 class="card-outbound-header">我的比賽</h4>
-                            <div class="parallax-card bg-darkteal">
-                                <div class="body">
-                                    <h4>目前第 1 名</h4>
-                                </div>
-                                <div class="chart-box">
-                                    <canvas id="radarChart" height="150"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-4 col-12">
-                            <h4 class="card-outbound-header">運動小學堂</h4>
-                            <div class="parallax-img-card">
-                                <div class="body">
-                                    <h4>目前已編寫題目卷<span class="col-lime"> 5 </span>張囉！</h4>
-                                    <p class="col-white">題目卷答題率已達 <span class="col-lime">24%</span>，成績單及格率<span class="col-lime"> 10%</span></p>
-                                </div>
-                                <div class="parallax">
-                                    <img src="images/carousel/qa-background.jpg"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>--%>
+            }   %>
         <!--我的發票卡片-->
         <%  if (_model.IsAssistant() || _model.IsAuthorizedSysAdmin())
             {

@@ -95,6 +95,18 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
+    <Reference Include="beyond-fitness">
+      <HintPath>bin\beyond-fitness.dll</HintPath>
+    </Reference>
+    <Reference Include="CommonLib">
+      <HintPath>bin\CommonLib.dll</HintPath>
+    </Reference>
+    <Reference Include="CommonLib.Logger">
+      <HintPath>bin\CommonLib.Logger.dll</HintPath>
+    </Reference>
+    <Reference Include="CommonLib.PlugInAdapter">
+      <HintPath>bin\CommonLib.PlugInAdapter.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Web.Infrastructure">
@@ -6291,6 +6303,9 @@
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Views\MainActivity\AboutUs.aspx" />
+    <Content Include="Views\MainActivity\FindUs.aspx" />
+    <Content Include="Views\MainActivity\JoinUs.aspx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\ConsoleEventController.cs" />
@@ -6663,20 +6678,6 @@
     <Folder Include="Views\ReportConsole\Module\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\beyond-fitness\beyond-fitness.csproj">
-      <Project>{c49821ff-96c8-466b-aef4-137ec84fdefc}</Project>
-      <Name>beyond-fitness</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CommonLib.Logger\CommonLib.Logger.csproj">
-      <Project>{8146e629-552a-4b36-8711-08ae8245b8fa}</Project>
-      <Name>CommonLib.Logger</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CommonLib\CommonLib.csproj">
-      <Project>{c0ad239c-2ac4-46d2-ae7c-5e97266ef4ea}</Project>
-      <Name>CommonLib</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Views\MainActivity\Resources\NamingItem.en-US.resx" />
     <EmbeddedResource Include="Views\MainActivity\Resources\NamingItem.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -6707,6 +6708,11 @@
         </WebProjectProperties>
       </FlavorProperties>
     </VisualStudio>
+    <MonoDevelop>
+      <Properties>
+        <XspParameters Port="8080" Address="127.0.0.1" SslMode="None" SslProtocol="Default" KeyType="None" CertFile="" KeyFile="" PasswordOptions="None" Password="" Verbose="True" />
+      </Properties>
+    </MonoDevelop>
   </ProjectExtensions>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
