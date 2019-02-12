@@ -69,7 +69,7 @@
                 <div class="col-md-12">
                     <h2><%: NamingItem.IndexVedioTitle %></h2>
                     <h1><%: NamingItem.IndexVedioSubTitle %></h1>
-                    <p><%: NamingItem.IndexVedioDesc %></p>
+                    <p><%= NamingItem.IndexVedioDesc %></p>
                 </div>
             </div>
             <div class="row">
@@ -99,7 +99,7 @@
     <!-- // 雲端數據 -->
     <section class="section-fun-facts nopadding full-width-section">
         <div class="full-text-container bg-light-gray text-right">
-            <h1><%: NamingItem.IndexFunFactsTitle %></h1>
+            <h1><%= NamingItem.IndexFunFactsTitle %></h1>
         </div>
         <div>
             <img src="images/landing/mobile.jpg" class="wow zoomIn" data-wow-delay=".3s" alt="客製化健身藍圖" >

@@ -178,10 +178,10 @@
     <value>Dream fulfillers</value>
   </data>
   <data name="IndexVedioDesc" xml:space="preserve">
-    <value>&lt;data name="IndexVedioDesc" xml:space="preserve"&gt;    &lt;value&gt;Check out the following videos to see how Mr. Huang &lt;span class="hidden-sm-down"&gt;and Mrs. Chen &lt;/span&gt;ecognize the value of exercise through professional training.&lt;/value&gt;  &lt;/data&gt;</value>
+    <value>Check out the following videos to see how Mr. Huang &lt;span class="hidden-sm-down"&gt;and Mrs. Chen &lt;/span&gt;recognize the value of exercise through professional training.</value>
   </data>
   <data name="IndexFunFactsTitle" xml:space="preserve">
-    <value />
+    <value>Analyze fitness data,&lt;br /&gt;create a powerful Cloud.</value>
   </data>
   <data name="IndexSlick1Desc" xml:space="preserve">
     <value>專業是細心且提升客戶的保障，Beyond 運動與物理治療的配合是有效的</value>
@@ -224,6 +224,18 @@
   </data>
   <data name="FindXinyiBranchDesc2" xml:space="preserve">
     <value>Own a unique personal training venue that has both indoor and outdoor in Taipei City. Professional, spacious and private training space, combined with an outdoor sports lawn and PU runway, you are not limited to indoor venues. Having sports space in the outdoor area increases the diversity of training programs. Fitness not only ends with fitness, but also has better functions toward lives.</value>
+  </data>
+  <data name="FindZhongxiaoBranch" xml:space="preserve">
+    <value>Zhongxiao Branch</value>
+  </data>
+  <data name="FindZhongxiaoBranchAdd" xml:space="preserve">
+    <value>B1, No.21, Ln. 75, Sec. 1, Da’an Rd., Da’an Dist., Taipei City 106, Taiwan</value>
+  </data>
+  <data name="FindZhongxiaoBranchDesc1" xml:space="preserve">
+    <value>Located at B1 of the building behind Dinghao Market, 2 minute walk from MRT Zongxiao Fuxing station Exit 3 (or Exit 14 of East Metro Mall)</value>
+  </data>
+  <data name="FindZhongxiaoBranchDesc2" xml:space="preserve">
+    <value>Rarely seen indoor high ceiling personal training venue, bright lighting space, combined with a variety of training equipment, separate bath and shower, allowing you to freshen up more comfortably.</value>
   </data>
   <data name="OurTeam" xml:space="preserve">
     <value>Our team</value>

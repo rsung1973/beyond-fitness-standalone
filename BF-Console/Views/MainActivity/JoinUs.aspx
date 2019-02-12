@@ -68,7 +68,7 @@
                             <div class="features-box">
                                 <div class="features-icon title"><i class="fas fa-user-tag"></i> <%: NamingItem.JoinUsJob1 %></div>
                                 <div class="features-content">
-                                    <a href="jobdetail.html" class="more"><%: NamingItem.LearnMore %><i class="pl-1 fa fa-angle-right"></i></a>
+                                    <a href="<%= Url.Action("Opportunity") %>" class="more"><%: NamingItem.LearnMore %><i class="pl-1 fa fa-angle-right"></i></a>
                                 </div>
                             </div>
                         </div>
@@ -76,7 +76,7 @@
                             <div class="features-box">
                                 <div class="features-icon title"><i class="fas fa-user-tag"></i> <%: NamingItem.JoinUsJob2 %></div>
                                 <div class="features-content">
-                                    <a href="jobdetail.html" class="more"><%: NamingItem.LearnMore %><i class="pl-1 fa fa-angle-right"></i></a>
+                                    <a href="<%= Url.Action("Opportunity") %>" class="more"><%: NamingItem.LearnMore %><i class="pl-1 fa fa-angle-right"></i></a>
                                 </div>
                             </div>
                         </div>
