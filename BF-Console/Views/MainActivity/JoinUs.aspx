@@ -86,24 +86,7 @@
         </div>
     </section>
     <!-- // 聯絡我們 -->
-    <section class="section-contact">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12 text-center">
-                    <h1><%: NamingItem.JoinUsContactTitle %></h1>
-                    <p class="lead"><%: NamingItem.JoinUsContactDesc %></p>
-                    <a href="#" class="more"><%: NamingItem.HereWeGo %><i class="pl-1 fa fa-angle-right"></i></a>
-                    <ul class="contact_social">
-                        <li><a href="javascript:void(0);"><i class="zmdi zmdi-facebook"></i></a></li>
-                        <li><a href="javascript:void(0);"><i class="zmdi zmdi-instagram"></i></a></li>
-                        <li><a href="javascript:void(0);"><i class="zmdi zmdi-youtube-play"></i></a></li>
-                        <li><a href="javascript:void(0);"><i class="fab fa-line"></i></a></li>
-                    </ul>
-                    <div class="copyright">Copyright © 2018 Beyond Fitness. All Rights Reserved</div>
-                </div>
-            </div>
-        </div>
-    </section>
+    <%  Html.RenderPartial("~/Views/MainActivity/Module/JoinItem.ascx"); %>
     
 </asp:Content>
 

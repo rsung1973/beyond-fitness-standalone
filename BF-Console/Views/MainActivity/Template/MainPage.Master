@@ -71,22 +71,22 @@
             <a id="navigation" href="javascript:void(0);" class="hidden-md-up"><i class="zmdi zmdi-apps"></i></a>
             <div id="slide_out_menu">
                 <a href="javascript:void(0);" class="menu-close"><i class="zmdi zmdi-close"></i></a>
-                <div class="logo"><a href="index.html"><img src="images/logo.png" alt="BeyondFitness"></a></div>
+                <div class="logo"><a href="<%= Url.Action("Index","MainActivity") %>"><img src="images/logo.png" alt="BeyondFitness"></a></div>
                 <ul>
                     <%  Html.RenderPartial("~/Views/MainActivity/Module/MenuItem.ascx"); %>
                 </ul>
                 <div class="slide_out_menu_footer">
                     <ul class="socials">
-                        <li><a href="javascript:void(0);"><i class="zmdi zmdi-facebook"></i></a></li>
-                        <li><a href="javascript:void(0);"><i class="zmdi zmdi-instagram"></i></a></li>
-                        <li><a href="javascript:void(0);"><i class="zmdi zmdi-youtube-play"></i></a></li>
-                        <li><a href="javascript:void(0);"><i class="fab fa-line"></i></a></li>
+                        <li><a href="https://www.facebook.com/beyond.fitness.pro/" target="_blank"><i class="zmdi zmdi-facebook"></i></a></li>
+                        <li><a href="https://www.instagram.com/beyond_ft/" target="_blank"><i class="zmdi zmdi-instagram"></i></a></li>
+                        <li><a href="https://www.youtube.com/channel/UCPIcjPGaFFB1o8cFDUrT-4g" target="_blank><i class="zmdi zmdi-youtube-play"></i></a></li>
+                        <li><a href="line://ti/p/@itj9410x" target="_blank><i class="fab fa-line"></i></a></li>
                     </ul>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-2 col-sm-2 col-xs-12 text-center">
-                    <a href="index.html" class="logo"><img src="images/logo.png" alt="BeyondFitness"></a>
+                    <a href="<%= Url.Action("Index","MainActivity") %>" class="logo"><img src="images/logo.png" alt="BeyondFitness"></a>
                 </div>
                 <div class="col-md-10 col-sm-10 col-xs-12">
                     <ul class="left nav-active">
