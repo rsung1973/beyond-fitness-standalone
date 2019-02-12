@@ -71,7 +71,7 @@
                             <div class="card">
                                 <div class="body">
                                     <div class="row clearfix">
-                                        <div class="col-md-6 col-12 weather calendar">
+                                        <div class="col-md-6 col-12 weather">
                                             <ul class="row days list-unstyled m-t-20">
                                                 <%
                                                     DateTime weekday = DateTime.Today.FirstDayOfWeek();
@@ -218,19 +218,12 @@
             $('.counto').countTo();
   
         });
-        //行事曆
-        //$(".calendar").on('click', function (event) {
-        //    window.location.href = 'calendar.html';
-        //});
 
         //本月運動時間卡片
         $(".exerciserank").on('click', function (event) {
             window.location.href = '<%= Url.Action("ExerciseBillboard","ConsoleHome") %>';
         });
-        //我的功課卡片
-        $(".calendar-todolist").on('click', function (event) {
-            window.location.href = 'calendar-todolist.html';
-        });
+
         //我的業績
         $(".achivement").on('click', function (event) {
             window.location.href = 'achivement-self.html';

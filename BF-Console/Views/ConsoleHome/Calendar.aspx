@@ -57,36 +57,6 @@
                                     <button class="btn btn-default btn-simple btn-icon  btn-icon-mini btn-round waves-effect" id="ag">週</button>
                                     <button class="btn btn-default btn-simple btn-icon  btn-icon-mini btn-round waves-effect" id="mt">月</button>
                                 </div>
-                                <div class="col-md-4 col-lg-4 col-sm-4 col-12">
-                                    <!--
-                                 <div class="btn-group float-md-right">
-                                    <button type="button" class="btn btn-default btn-simple dropdown-toggle btn-round" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="zmdi zmdi-pin-drop"></i>
-                                    <span class="caret"></span>
-                                    </button>
-                                    <ul class="dropdown-menu dropdown-menu-right slideDown">
-                                       <li>
-                                          <a href="javascript:void(0);">全部</a>
-                                       </li>
-                                       <li>
-                                          <a href="javascript:void(0);">南京</a>
-                                       </li>
-                                       <li>
-                                          <a href="javascript:void(0);">信義</a>
-                                       </li>
-                                       <li>
-                                          <a href="javascript:void(0);">忠孝</a>
-                                       </li>
-                                    </ul>
-                                 </div>
-                                 -->
-                                    <div class="btn-group float-md-right">
-                                        <button type="button" class="btn btn-default btn-simple dropdown-toggle btn-round" id="searchCoach">
-                                            <i class="zmdi zmdi-account"></i>
-                                            <span class="caret"></span>
-                                        </button>
-                                    </div>
-                                </div>
                             </div>
                             <%  Html.RenderPartial("~/Views/ConsoleHome/Module/MainCalendar.ascx", _model); %>
                         </div>

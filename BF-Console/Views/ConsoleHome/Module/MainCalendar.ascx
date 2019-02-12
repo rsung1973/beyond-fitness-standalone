@@ -39,7 +39,7 @@
                     end: '22:00',
                     dow: [1, 2, 3, 4, 5, 6, 0]
                 },
-                minTime: "00:00:00",
+                minTime: "06:00:00",
                 maxTime: "24:00:00",
                 header: {
                     left: 'prev',
