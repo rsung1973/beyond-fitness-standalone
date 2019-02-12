@@ -10,6 +10,7 @@
 <%@ Import Namespace="WebHome.Models.DataEntity" %>
 <%@ Import Namespace="WebHome.Controllers" %>
 <%@ Import Namespace="Newtonsoft.Json" %>
+<%@ Import Namespace="BFConsole.Views.MainActivity.Resources" %>
 
 <asp:Content ID="CustomHeader" ContentPlaceHolderID="CustomHeader" runat="server">
 
@@ -66,9 +67,9 @@
         <div class="container">
             <div class="row mb-30">
                 <div class="col-md-12">
-                    <h2><%: NamingItem.IndexIndexVedioTitle %></h2>
-                    <h1><%: NamingItem.IndexIndexVedioSubTitle %></h1>
-                    <p><%: NamingItem.IndexIndexVedioDesc %></p>
+                    <h2><%: NamingItem.IndexVedioTitle %></h2>
+                    <h1><%: NamingItem.IndexVedioSubTitle %></h1>
+                    <p><%: NamingItem.IndexVedioDesc %></p>
                 </div>
             </div>
             <div class="row">

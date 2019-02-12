@@ -10,6 +10,7 @@
 <%@ Import Namespace="WebHome.Models.DataEntity" %>
 <%@ Import Namespace="WebHome.Controllers" %>
 <%@ Import Namespace="Newtonsoft.Json" %>
+<%@ Import Namespace="BFConsole.Views.MainActivity.Resources" %>
 
 <asp:Content ID="CustomHeader" ContentPlaceHolderID="CustomHeader" runat="server">
 

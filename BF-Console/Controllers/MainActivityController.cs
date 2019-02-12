@@ -37,7 +37,6 @@ namespace BFConsole.Controllers
         // GET: MainActivity
         public ActionResult Index()
         {
-            
             return View();
         }
 
@@ -45,6 +44,11 @@ namespace BFConsole.Controllers
         {
             Response.SetCookie(new HttpCookie("cLang", lang));
             return Json(new { result = true, message = System.Globalization.CultureInfo.CurrentCulture.Name }, JsonRequestBehavior.AllowGet);
+        }
+
+        protected override void HandleUnknownAction(string actionName)
+        {
+            this.View(actionName).ExecuteResult(this.ControllerContext);
         }
 
     }

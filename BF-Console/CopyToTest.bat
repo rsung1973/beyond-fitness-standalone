@@ -6,4 +6,5 @@ xcopy Views\ConsoleEvent \\VM-Venus\E$\Project\GitHub\beyond-fitness\beyond-fitn
 xcopy Views\ContractConsole \\VM-Venus\E$\Project\GitHub\beyond-fitness\beyond-fitness\Views\ContractConsole /s/d/v/f
 xcopy Views\LessonConsole \\VM-Venus\E$\Project\GitHub\beyond-fitness\beyond-fitness\Views\LessonConsole /s/d/v/f
 xcopy Views\ReportConsole \\VM-Venus\E$\Project\GitHub\beyond-fitness\beyond-fitness\Views\ReportConsole /s/d/v/f
+xcopy Views\MainActivity \\VM-Venus\E$\Project\GitHub\beyond-fitness\beyond-fitness\Views\MainActivity /s/d/v/f
 xcopy bin \\VM-Venus\E$\Project\GitHub\beyond-fitness\beyond-fitness\bin /s/d/v/f
