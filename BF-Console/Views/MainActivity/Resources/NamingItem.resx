@@ -294,6 +294,30 @@
   <data name="JoinUsJob2Desc" xml:space="preserve">
     <value />
   </data>
+  <data name="OpportunityBannerTitle" xml:space="preserve">
+    <value>幸福</value>
+  </data>
+  <data name="OpportunityBannerSubTitle" xml:space="preserve">
+    <value>是把健康安放在最適當的位置</value>
+  </data>
+  <data name="OpportunityFeaturesTitle" xml:space="preserve">
+    <value>你可以獲得什麼</value>
+  </data>
+  <data name="OpportunityFeaturesDesc1" xml:space="preserve">
+    <value>與優秀夥伴共事的機會</value>
+  </data>
+  <data name="OpportunityFeaturesDesc2" xml:space="preserve">
+    <value>一個世界級視野的訓練平台</value>
+  </data>
+  <data name="OpportunityFeaturesDesc3" xml:space="preserve">
+    <value>在壓力鍋中爆炸性成長的專業水準</value>
+  </data>
+  <data name="OpportunityFeaturesDesc4" xml:space="preserve">
+    <value>一份不算太高但可以舒適過生活的薪水</value>
+  </data>
+  <data name="OpportunityFeaturesDesc5" xml:space="preserve">
+    <value>在工作中玩樂，玩樂中工作</value>
+  </data>
   <data name="JoinUsContactTitle" xml:space="preserve">
     <value>把握一展長才的機會</value>
   </data>

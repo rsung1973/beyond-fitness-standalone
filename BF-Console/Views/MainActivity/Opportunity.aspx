@@ -22,8 +22,8 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-8 col-md-offset-2 text-center">
-                    <h1 class="wow fadeInUp animated" data-wow-delay=".3s" data-effect="mfp-zoom-in">幸福</h1>
-                    <p class="wow fadeInUp animated" data-wow-delay=".3s" data-effect="mfp-zoom-in">是把健康安放在最適當的位置</p>
+                    <h1 class="wow fadeInUp animated" data-wow-delay=".3s" data-effect="mfp-zoom-in"><%: NamingItem.OpportunityBannerTitle %></h1>
+                    <p class="wow fadeInUp animated" data-wow-delay=".3s" data-effect="mfp-zoom-in"><%: NamingItem.OpportunityBannerSubTitle %></p>
                     <a href="#" class="btn btn-primary btn-round wow fadeInUp animated hidden-md-up" data-wow-delay=".6s" data-effect="mfp-zoom-in">我想諮詢</a>
                 </div>
                 <!-- iPhone -->
@@ -35,17 +35,17 @@
     <section class="section-join">
         <div class="container">
             <div class="row">
-                <h3 class="section-title col-black align-center"> 你可以獲得什麼</h3>
+                <h3 class="section-title col-black align-center"> <%: NamingItem.OpportunityFeaturesTitle %></h3>
                 <div class="col-md-5 align-center">
                     <img src="images/landing/org.png">
                 </div>
                 <div class="col-md-7">
                     <ul class="features-list">
-                        <li>與優秀夥伴共事的機會</li>
-                        <li>一個世界級視野的訓練平台</li>
-                        <li>在壓力鍋中爆炸性成長的專業水準</li>
-                        <li>一份不算太高但可以舒適過生活的薪水</li>
-                        <li>在工作中玩樂，玩樂中工作</li>
+                        <li><%: NamingItem.OpportunityFeaturesDesc1 %></li>
+                        <li><%: NamingItem.OpportunityFeaturesDesc2 %></li>
+                        <li><%: NamingItem.OpportunityFeaturesDesc3 %></li>
+                        <li><%: NamingItem.OpportunityFeaturesDesc4 %></li>
+                        <li><%: NamingItem.OpportunityFeaturesDesc5 %></li>
                     </ul>
                 </div>
             </div>

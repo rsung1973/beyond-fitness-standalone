@@ -401,6 +401,54 @@ namespace BFConsole.Views.MainActivity.Resources {
             }
         }
         
+        public static string OpportunityBannerTitle {
+            get {
+                return ResourceManager.GetString("OpportunityBannerTitle", resourceCulture);
+            }
+        }
+        
+        public static string OpportunityBannerSubTitle {
+            get {
+                return ResourceManager.GetString("OpportunityBannerSubTitle", resourceCulture);
+            }
+        }
+        
+        public static string OpportunityFeaturesTitle {
+            get {
+                return ResourceManager.GetString("OpportunityFeaturesTitle", resourceCulture);
+            }
+        }
+        
+        public static string OpportunityFeaturesDesc1 {
+            get {
+                return ResourceManager.GetString("OpportunityFeaturesDesc1", resourceCulture);
+            }
+        }
+        
+        public static string OpportunityFeaturesDesc2 {
+            get {
+                return ResourceManager.GetString("OpportunityFeaturesDesc2", resourceCulture);
+            }
+        }
+        
+        public static string OpportunityFeaturesDesc3 {
+            get {
+                return ResourceManager.GetString("OpportunityFeaturesDesc3", resourceCulture);
+            }
+        }
+        
+        public static string OpportunityFeaturesDesc4 {
+            get {
+                return ResourceManager.GetString("OpportunityFeaturesDesc4", resourceCulture);
+            }
+        }
+        
+        public static string OpportunityFeaturesDesc5 {
+            get {
+                return ResourceManager.GetString("OpportunityFeaturesDesc5", resourceCulture);
+            }
+        }
+        
         public static string JoinUsContactTitle {
             get {
                 return ResourceManager.GetString("JoinUsContactTitle", resourceCulture);

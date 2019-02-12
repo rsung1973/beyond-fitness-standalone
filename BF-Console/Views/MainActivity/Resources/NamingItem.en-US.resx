@@ -256,7 +256,7 @@
     <value>Inspiration</value>
   </data>
   <data name="JoinUsFeature2Desc" xml:space="preserve">
-    <value>We teach, we learn, we grow together長</value>
+    <value>We teach, we learn, we grow together</value>
   </data>
   <data name="JoinUsFeature3" xml:space="preserve">
     <value>Warmth</value>
@@ -282,14 +282,38 @@
   <data name="JoinUsJob2Desc" xml:space="preserve">
     <value />
   </data>
+  <data name="OpportunityBannerTitle" xml:space="preserve">
+    <value>Happiness</value>
+  </data>
+  <data name="OpportunityBannerSubTitle" xml:space="preserve">
+    <value>is putting health at the right place</value>
+  </data>
+  <data name="OpportunityFeaturesTitle" xml:space="preserve">
+    <value>What will you get?</value>
+  </data>
+  <data name="OpportunityFeaturesDesc1" xml:space="preserve">
+    <value>Opportunity to work with outstanding partners</value>
+  </data>
+  <data name="OpportunityFeaturesDesc2" xml:space="preserve">
+    <value>World-class training platforms</value>
+  </data>
+  <data name="OpportunityFeaturesDesc3" xml:space="preserve">
+    <value>Grow explosively to professional level</value>
+  </data>
+  <data name="OpportunityFeaturesDesc4" xml:space="preserve">
+    <value>A salary allows you to live a comfortable life</value>
+  </data>
+  <data name="OpportunityFeaturesDesc5" xml:space="preserve">
+    <value>Have fun at work, working while having fun!</value>
+  </data>
   <data name="JoinUsContactTitle" xml:space="preserve">
-    <value>Seize the chance to show your talent!</value>
+    <value>Get discovered!</value>
   </data>
   <data name="JoinUsContactDesc" xml:space="preserve">
-    <value>Tell us about yourself. We’ll contact you when there’s a suitable position for you.</value>
+    <value>Introduce yourself, and we’ll get in touch if there’s a role that seems like a good match.</value>
   </data>
   <data name="HereWeGo" xml:space="preserve">
-    <value>Here we go</value>
+    <value>Get started</value>
   </data>
   <data name="AboutVedioDesc1" xml:space="preserve">
     <value>Founded in 2014, Beyond Fitness is one of the largest custom training centers in Taiwan. We have more than 50 employees, providing personalized training services, corporate team health strategies, professional sports education training, corporate health consultants and more.</value>
