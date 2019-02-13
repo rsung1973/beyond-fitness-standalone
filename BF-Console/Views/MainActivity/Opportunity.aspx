@@ -24,7 +24,7 @@
                 <div class="col-md-8 col-md-offset-2 text-center">
                     <h1 class="wow fadeInUp animated" data-wow-delay=".3s" data-effect="mfp-zoom-in"><%: NamingItem.OpportunityBannerTitle %></h1>
                     <p class="wow fadeInUp animated" data-wow-delay=".3s" data-effect="mfp-zoom-in"><%: NamingItem.OpportunityBannerSubTitle %></p>
-                    <a href="#" class="btn btn-primary btn-round wow fadeInUp animated hidden-md-up" data-wow-delay=".6s" data-effect="mfp-zoom-in">我想諮詢</a>
+                    <a href="#" class="btn btn-primary btn-round wow fadeInUp animated hidden-md-up" data-wow-delay=".6s" data-effect="mfp-zoom-in"><%: NamingItem.BookNow %></a>
                 </div>
                 <!-- iPhone -->
                 <img class="header_iphone wow fadeInUp animated" src="images/landing/banner/banner-join.jpg" alt="孕婦健身" data-wow-delay=".3s" data-effect="mfp-zoom-in">

@@ -502,5 +502,23 @@ namespace BFConsole.Views.MainActivity.Resources {
                 return ResourceManager.GetString("BookNowStep4", resourceCulture);
             }
         }
+        
+        public static string Features1Desc {
+            get {
+                return ResourceManager.GetString("Features1Desc", resourceCulture);
+            }
+        }
+        
+        public static string Features2Desc {
+            get {
+                return ResourceManager.GetString("Features2Desc", resourceCulture);
+            }
+        }
+        
+        public static string Features3Desc {
+            get {
+                return ResourceManager.GetString("Features3Desc", resourceCulture);
+            }
+        }
     }
 }
