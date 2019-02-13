@@ -47,6 +47,7 @@
                     ['data2'],
                     ['data3'],
                 ],
+                order: null,
                 type: 'bar', // default type of chart
                 groups: [
                     ['data1', 'data2', 'data3']
