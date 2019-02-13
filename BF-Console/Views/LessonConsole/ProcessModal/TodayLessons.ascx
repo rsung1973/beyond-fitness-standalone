@@ -12,7 +12,7 @@
         <div class="modal-content">
             <a class="closebutton" data-dismiss="modal"></a>
             <div class="modal-body">
-                <div class="card bg-darkteal">
+                <div class="card">
                     <div class="body">
                         <%  
                             Html.RenderPartial("~/Views/ConsoleHome/Module/TodayLessonsBarChartC3.ascx", _model);
