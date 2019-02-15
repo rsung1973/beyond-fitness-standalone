@@ -116,8 +116,8 @@
                         <p><%: NamingItem.IndexSlick1Desc %></p>
                         <div class="m-t-30">
                             <img class="media-object rounded-circle shadow" src="images/avatar/therapist.jpg" alt="物理治療">
-                            <h5 class="mb-0 m-t-10">Jane Doe</h5>
-                            <span>物理治療師</span>
+                            <h5 class="mb-0 m-t-10"><%: NamingItem.IndexSlick1Name %></h5>
+                            <span><%: NamingItem.IndexSlick1Title %></span>
                         </div>
                     </div>
                 </div>
@@ -131,8 +131,8 @@
                         <p><%: NamingItem.IndexSlick2Desc %></p>
                         <div class="m-t-30">
                             <img class="media-object rounded-circle shadow" src="images/avatar/dietitian.jpg" alt="運動營養">
-                            <h5 class="mb-0 m-t-10">Jane Doe</h5>
-                            <span>營養師</span>
+                            <h5 class="mb-0 m-t-10"><%: NamingItem.IndexSlick2Name %></h5>
+                            <span><%: NamingItem.IndexSlick2Title %></span>
                         </div>
                     </div>
                 </div>

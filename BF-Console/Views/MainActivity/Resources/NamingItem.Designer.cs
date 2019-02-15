@@ -185,9 +185,33 @@ namespace BFConsole.Views.MainActivity.Resources {
             }
         }
         
+        public static string IndexSlick1Title {
+            get {
+                return ResourceManager.GetString("IndexSlick1Title", resourceCulture);
+            }
+        }
+        
+        public static string IndexSlick1Name {
+            get {
+                return ResourceManager.GetString("IndexSlick1Name", resourceCulture);
+            }
+        }
+        
         public static string IndexSlick2Desc {
             get {
                 return ResourceManager.GetString("IndexSlick2Desc", resourceCulture);
+            }
+        }
+        
+        public static string IndexSlick2Title {
+            get {
+                return ResourceManager.GetString("IndexSlick2Title", resourceCulture);
+            }
+        }
+        
+        public static string IndexSlick2Name {
+            get {
+                return ResourceManager.GetString("IndexSlick2Name", resourceCulture);
             }
         }
         
@@ -518,6 +542,132 @@ namespace BFConsole.Views.MainActivity.Resources {
         public static string Features3Desc {
             get {
                 return ResourceManager.GetString("Features3Desc", resourceCulture);
+            }
+        }
+        
+        public static string FAQBannerTitle {
+            get {
+                return ResourceManager.GetString("FAQBannerTitle", resourceCulture);
+            }
+        }
+        
+        public static string FAQQestion1 {
+            get {
+                return ResourceManager.GetString("FAQQestion1", resourceCulture);
+            }
+        }
+        
+        public static string FAQQestion11 {
+            get {
+                return ResourceManager.GetString("FAQQestion11", resourceCulture);
+            }
+        }
+        
+        public static string FAQQestion12 {
+            get {
+                return ResourceManager.GetString("FAQQestion12", resourceCulture);
+            }
+        }
+        
+        public static string FAQQestion13 {
+            get {
+                return ResourceManager.GetString("FAQQestion13", resourceCulture);
+            }
+        }
+        
+        public static string FAQQestion2 {
+            get {
+                return ResourceManager.GetString("FAQQestion2", resourceCulture);
+            }
+        }
+        
+        public static string FAQQestion21 {
+            get {
+                return ResourceManager.GetString("FAQQestion21", resourceCulture);
+            }
+        }
+        
+        public static string FAQQestion22 {
+            get {
+                return ResourceManager.GetString("FAQQestion22", resourceCulture);
+            }
+        }
+        
+        public static string FAQQestion3 {
+            get {
+                return ResourceManager.GetString("FAQQestion3", resourceCulture);
+            }
+        }
+        
+        public static string FAQQestion4 {
+            get {
+                return ResourceManager.GetString("FAQQestion4", resourceCulture);
+            }
+        }
+        
+        public static string FAQQestion5 {
+            get {
+                return ResourceManager.GetString("FAQQestion5", resourceCulture);
+            }
+        }
+        
+        public static string FAQAnswer11 {
+            get {
+                return ResourceManager.GetString("FAQAnswer11", resourceCulture);
+            }
+        }
+        
+        public static string FAQAnswer12 {
+            get {
+                return ResourceManager.GetString("FAQAnswer12", resourceCulture);
+            }
+        }
+        
+        public static string FAQAnswer13 {
+            get {
+                return ResourceManager.GetString("FAQAnswer13", resourceCulture);
+            }
+        }
+        
+        public static string FAQAnswer21 {
+            get {
+                return ResourceManager.GetString("FAQAnswer21", resourceCulture);
+            }
+        }
+        
+        public static string FAQAnswer22 {
+            get {
+                return ResourceManager.GetString("FAQAnswer22", resourceCulture);
+            }
+        }
+        
+        public static string FAQAnswer3 {
+            get {
+                return ResourceManager.GetString("FAQAnswer3", resourceCulture);
+            }
+        }
+        
+        public static string FAQAnswer4 {
+            get {
+                return ResourceManager.GetString("FAQAnswer4", resourceCulture);
+            }
+        }
+        
+        public static string FAQAnswer5 {
+            get {
+                return ResourceManager.GetString("FAQAnswer5", resourceCulture);
+            }
+        }
+        
+        public static string Go {
+            get {
+                return ResourceManager.GetString("Go", resourceCulture);
+            }
+        }
+        
+        public static string OnlineReservation {
+            get {
+                return ResourceManager.GetString("OnlineReservation", resourceCulture);
             }
         }
     }

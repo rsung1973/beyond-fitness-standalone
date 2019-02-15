@@ -184,10 +184,22 @@
     <value>Analyze fitness data,&lt;br /&gt;create a powerful Cloud.</value>
   </data>
   <data name="IndexSlick1Desc" xml:space="preserve">
-    <value>專業是細心且提升客戶的保障，Beyond 運動與物理治療的配合是有效的</value>
+    <value>Professionalism lies on standing by clients. Beyond fitness proves it effective to cooperate with physical therapy.</value>
+  </data>
+  <data name="IndexSlick1Title" xml:space="preserve">
+    <value>Physical therapist</value>
+  </data>
+  <data name="IndexSlick1Name" xml:space="preserve">
+    <value>Yan-ping, Wang</value>
   </data>
   <data name="IndexSlick2Desc" xml:space="preserve">
-    <value>在溫馨與專業的Beyond，確保你的飲食以及運動都得到妥善照顧</value>
+    <value>At beyond fitness, we take good care of your eating and workout habit.</value>
+  </data>
+  <data name="IndexSlick2Title" xml:space="preserve">
+    <value>Dietician</value>
+  </data>
+  <data name="IndexSlick2Name" xml:space="preserve">
+    <value>Chia-hsiang, Liao</value>
   </data>
   <data name="AboutBannerTitle" xml:space="preserve">
     <value>Professionalism comes from sincerity.</value>
@@ -346,12 +358,75 @@
     <value>Customization&lt;span&gt;Professional trainers will explain the purpose of workout sessions. Your physical condition and status will be discussed with suitable advice made just for you.&lt;/span&gt;</value>
   </data>    
   <data name="Features1Desc" xml:space="preserve">
-    <value>&lt;p&gt;Beyond Fitness提供以下承諾&lt;/p&gt;&lt;ul class=&quot;features-list&quot;&gt;&lt;li&gt;客製化課程內容，學習更安全，同時讓您得到顯著的運動效果&lt;/li&gt;&lt;li&gt;專業教練帶領下，清楚了解自己的身體狀況與運動進度&lt;/li&gt;&lt;li&gt;透過與您互相討論課程內容，強化掌握運動時的每個環節&lt;/li&gt;&lt;li&gt;固定時間評估並分析身體狀況與課程內容，隨時替您把關上課品質&lt;/li&gt;&lt;/ul&gt;</value>
+    <value>&lt;p&gt;Beyond Fitness commit that…&lt;/p&gt;&lt;ul class=&quot;features-list&quot;&gt;&lt;li&gt;Customized program make training safer and meanwhile giving you significant training outcomes.&lt;/li&gt;&lt;li&gt;Professional coaches lead you to clearly understand your physical condition and training progress.&lt;/li&gt;&lt;li&gt;Enhance every step of progress by discussing the content of the course with you.&lt;/li&gt;&lt;li&gt;Review your physical condition and course content periodically. We keep the quality of training for you anytime.&lt;/li&gt;&lt;/ul&gt;</value>
   </data>
   <data name="Features2Desc" xml:space="preserve">
-    <value>&lt;p&gt;Beyond Fitness 團隊是業界擁有最多國際級六大專業證照的機構，讓您在專業及安全的環境下運動&lt;/p&gt;&lt;ul class=&quot;features-list&quot;&gt;&lt;li&gt;ACE   美國運動委員會&lt;/li&gt;&lt;li&gt;ACSM  美國運動醫學會&lt;/li&gt;&lt;li&gt;NCAA  國家委員會授證機構&lt;/li&gt;&lt;li&gt;NSCA  美國肌力體能協會&lt;/li&gt;&lt;li&gt;NASM  美國國家運動醫學會&lt;/li&gt;&lt;li&gt;CrossFit   美國混合健身系統&lt;/li&gt;&lt;li&gt;EXOS-XPS   美國最大私人運動員機構&lt;/li&gt;&lt;li&gt;CPR+AED    中華民國紅十字會&lt;/li&gt;&lt;/ul&gt;</value>
+    <value>&lt;p&gt;Beyond Fitness owns the most six major international certificates in fitness industry, allowing you to exercise in a professional and safe environment&lt;/p&gt;&lt;ul class=&quot;features-list&quot;&gt;&lt;li&gt;American Council on Exercise (ACE)&lt;/li&gt;&lt;li&gt;The American College of Sports Medicine (ACSM)&lt;/li&gt;&lt;li&gt;National Collegiate Athletic Association (NCAA)&lt;/li&gt;&lt;li&gt;National Strength and Conditioning Association (NSCA)&lt;/li&gt;&lt;li&gt;National Academy of Sports Medicine (NASM)&lt;/li&gt;&lt;li&gt;CrossFit&lt;/li&gt;&lt;li&gt;EXOS-XPS (The largest private athlete community in the US)&lt;/li&gt;&lt;li&gt;CPR+AED (The red cross society of the Republic of China, Taiwan)&lt;/li&gt;&lt;/ul&gt;</value>
   </data>
   <data name="Features3Desc" xml:space="preserve">
-    <value>&lt;p&gt;Beyond Fitness成立以來，持續提供您運動時的相關分析，打造屬於您個人的體能分析庫&lt;/p&gt;&lt;ul class=&quot;features-list&quot;&gt;&lt;li&gt;體能分析庫，全面性分析您的運動與身體狀態&lt;/li&gt;&lt;li&gt;雲端課表內容，提供您更了解當下運動內容&lt;/li&gt;&lt;li&gt;實用的專業文章，隨時補充您的運動與健康資訊&lt;/li&gt;&lt;li&gt;有趣的運動小學堂，替您在運動後帶來不同的互動樂趣&lt;/li&gt;&lt;/ul&gt;</value>
+    <value>&lt;p&gt;Since Beyond Fitness established, we’ve continued to provide you with analysis during your workout and create your own physical data.&lt;/p&gt;&lt;ul class=&quot;features-list&quot;&gt;&lt;li&gt;Fitness analysis library comprehensively analyze your exercise and physical status.&lt;/li&gt;&lt;li&gt;Class schedule and content in the Cloud, offering you a better understanding of training session.&lt;/li&gt;&lt;li&gt;Practical articles are in supply your sports and health information at any time.&lt;/li&gt;&lt;li&gt;Interesting sports &amp; healthy Q&amp;A, bringing you fun interactions after the workout.&lt;/li&gt;&lt;/ul&gt;</value>
+  </data>
+  <data name="FAQBannerTitle" xml:space="preserve">
+    <value>We’re happy to help,&lt;br /&gt;making it easy and simple!</value>
+  </data>
+  <data name="FAQQestion1" xml:space="preserve">
+    <value>I want to know more about personal training courses?</value>
+  </data>
+  <data name="FAQQestion11" xml:space="preserve">
+    <value>Are there any trial courses?</value>
+  </data>
+  <data name="FAQQestion12" xml:space="preserve">
+    <value>What is the content of the course?</value>
+  </data>
+  <data name="FAQQestion13" xml:space="preserve">
+    <value>How to book for trial course?</value>
+  </data>
+  <data name="FAQQestion2" xml:space="preserve">
+    <value>How to charge?</value>
+  </data>
+  <data name="FAQQestion21" xml:space="preserve">
+    <value>Is monthly fee, membership fee or handling charge needed?</value>
+  </data>
+  <data name="FAQQestion22" xml:space="preserve">
+    <value>How to charge?</value>
+  </data>
+  <data name="FAQQestion3" xml:space="preserve">
+    <value>Why do we stand out?</value>
+  </data>
+  <data name="FAQQestion4" xml:space="preserve">
+    <value>What is the difference between a personal training course and a group training course?</value>
+  </data>
+  <data name="FAQQestion5" xml:space="preserve">
+    <value>Can I train by myself at Beyond Fitness?</value>
+  </data>
+  <data name="FAQAnswer11" xml:space="preserve">
+    <value>Yes! Book for the trial course 1-2 days beforehand, and then you’re ready to enjoy!</value>
+  </data>
+  <data name="FAQAnswer12" xml:space="preserve">
+    <value>The content is as follows: &lt;li&gt;A careful consultation of your physical condition.&lt;/li&gt;&lt;li&gt;A careful analysis of your exercise habit and lifestyle by trainers.&lt;/li&gt;&lt;li&gt;Trainers will bring out your training goals and results, leading you to a pleasant experience.&lt;/li&gt;&lt;li&gt;Trainers are always by your side customizing your training courses.&lt;/li&gt;</value>
+  </data>
+  <data name="FAQAnswer13" xml:space="preserve">
+    <value>Find us in the following ways to start your trial course</value>
+  </data>
+  <data name="FAQAnswer21" xml:space="preserve">
+    <value>Beyond fitness focus on 1 on 1 customized training, you don’t need to pay any other fees.</value>
+  </data>
+  <data name="FAQAnswer22" xml:space="preserve">
+    <value>Customized courses are charged by the number of the courses. Prices vary depending on your goals, plans and the number of courses that you need.</value>
+  </data>
+  <data name="FAQAnswer3" xml:space="preserve">
+    <value>Our team is second to none in the industry. All personnel are qualified for international trainer certification (which must be within the validity period), internal professional team academic examination (every quarter, half year, one year). With scientific training as the fundamental, systematic record, analysis, we give every customer the most intimate and trustworthy service.</value>
+  </data>
+  <data name="FAQAnswer4" xml:space="preserve">
+    <value>A good personal trainer will customize training programs according to client's goals, life schedule, and the status of each day, giving you the best training outcomes to while avoiding sports injuries.&lt;br/&gt;&lt;br/&gt;The most important part is to help you make plans for those time you're not training. Compared to group training courses, personal training courses focus on each client's uniqueness and individual differentiation, customized course make the most effective training!</value>
+  </data>
+  <data name="FAQAnswer5" xml:space="preserve">
+    <value>Of course! We only provide customers who take training courses at Beyond fitness with registration. Your trainer will schedule and customize training session (shown as P.I. Session) for you. By that, we could control the number of people to maintain the venue, offering you the best training quality.</value>
+  </data>
+  <data name="Go" xml:space="preserve">
+    <value>Go</value>
+  </data>
+  <data name="OnlineReservation" xml:space="preserve">
+    <value>Online reservation</value>
   </data>
 </root>
