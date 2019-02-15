@@ -36,7 +36,7 @@
                         <li><%= NamingItem.BookNowStep3 %></li>
                         <li><%= NamingItem.BookNowStep4 %></li>
                     </ul>
-                    <a href="#" class="btn btn-default btn-round wow fadeInUp animated" data-wow-delay=".6s" data-effect="mfp-zoom-in"><%: NamingItem.BookNow %></a>
+                    <a href="https://goo.gl/forms/b9KvsoRwhqdFbNC03" target="_blank" class="btn btn-default btn-round wow fadeInUp animated" data-wow-delay=".6s" data-effect="mfp-zoom-in"><%: NamingItem.BookNow %></a>
                 </div>                
             </div>
         </div>

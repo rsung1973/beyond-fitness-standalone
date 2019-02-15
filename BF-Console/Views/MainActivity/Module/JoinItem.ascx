@@ -16,7 +16,7 @@
                 <div class="col-md-12 text-center">
                     <h1><%: NamingItem.JoinUsContactTitle %></h1>
                     <p class="lead"><%: NamingItem.JoinUsContactDesc %></p>
-                    <a href="#" class="more"><%: NamingItem.HereWeGo %><i class="pl-1 fa fa-angle-right"></i></a>
+                    <a href="https://goo.gl/forms/58gaS4bpPBkrPX9E3" class="more" target="_blank"><%: NamingItem.HereWeGo %><i class="pl-1 fa fa-angle-right"></i></a>
                     <ul class="contact_social">
                         <li><a href="https://www.facebook.com/beyond.fitness.pro/" target="_blank"><i class="zmdi zmdi-facebook"></i></a></li>
                         <li><a href="https://www.instagram.com/beyond_ft/" target="_blank"><i class="zmdi zmdi-instagram"></i></a></li>
