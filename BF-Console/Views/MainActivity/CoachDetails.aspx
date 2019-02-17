@@ -21,10 +21,10 @@
     <!-- // 個人介紹 -->
     <section class="section-portfolio full-width-section">
         <div class="text-center">
-                <img src="<%= _viewModel.personalPhoto %>" alt="私人教練">
+                <img src="<%= $"images/landing/portfolio/{ _viewModel.nickname}/Cover.png" %>" alt="私人教練">
             </div>
             <div class="full-text-container bg-light-gray">
-                <h1 class="text-center"><%= c.coachName %> <small><%= c.nickname %></small>></h1>
+                <h1 class="text-center"><%= _viewModel.coachName %> <small><%= _viewModel.nickname %></small></h1>
                 <div class="testimonials">
                     <div class="body">
                         <i class="fa fa-quote-left"></i><h2><%= _viewModel.prologue %></h2>
@@ -33,15 +33,21 @@
             </div>
     </section>
     <!-- // 教學照片 -->
+    <%  if (_viewModel.scenarioPhoto != null && _viewModel.scenarioPhoto.Count > 0)
+        {   %>
     <section class="section-slick nopadding">
         <div class="testimonials-slick-slide">
+            <%  foreach (var photo in _viewModel.scenarioPhoto)
+                {   %>
             <div class="row">
                 <div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3">
-                    <img class="fullwidth" src="<%= _viewModel.scenarioSample %>" alt=""/>                   
+                    <img class="fullwidth" src="<%= $"images/landing/portfolio/{ _viewModel.nickname}/{photo}" %>" alt=""/>                   
                 </div>
             </div>
+            <%  }   %>
         </div>
     </section>
+    <%  }   %>
     <!-- // 聯絡我們 -->
     <%  Html.RenderPartial("~/Views/MainActivity/Module/ContactItem.ascx"); %>
     

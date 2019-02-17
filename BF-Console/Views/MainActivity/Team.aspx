@@ -30,7 +30,7 @@
                 <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3 isotope-item">
                     <div class="image-box text-center">
                         <div class="overlay-container">
-                            <img src="<%= c.coverPhoto %>" alt="私人教練">
+                            <img src="<%= $"images/landing/portfolio/{ c.nickname}/Cover.png" %>" alt="私人教練">
                             <div class="overlay-top">
                                 <div class="text">
                                     <h3><%= c.coachName %> <small><%= c.nickname %></small></h3>
