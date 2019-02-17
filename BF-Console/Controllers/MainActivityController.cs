@@ -51,5 +51,33 @@ namespace BFConsole.Controllers
             this.View(actionName).ExecuteResult(this.ControllerContext);
         }
 
+        public ActionResult CoachDetails(CoachItem viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            return View();
+        }
+
+        public ActionResult Team(String branchName)
+        {
+            branchName = branchName.GetEfficientString();
+            CoachData model = null;
+            String jsonFile = Server.MapPath($"~/MainActivity/Portfolio/{branchName}.json");
+            if (System.IO.File.Exists(jsonFile))
+            {
+                var jsonData = System.IO.File.ReadAllText(jsonFile);
+                model = JsonConvert.DeserializeObject<CoachData>(jsonData);
+            }
+
+            if (model == null)
+            {
+                return Index();
+            }
+            else
+            {
+                return View(model);
+            }
+        }
+
+
     }
 }

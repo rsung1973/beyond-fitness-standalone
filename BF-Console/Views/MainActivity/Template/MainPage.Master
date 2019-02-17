@@ -62,6 +62,7 @@
     <script src="js/wow.js"></script>
     <!-- Main Script -->
     <script src="js/main-landing.js"></script>
+    <script src="js/common.js?1.4"></script>
 </head>
 
 <body class="theme-darkteal menu_darkteal">

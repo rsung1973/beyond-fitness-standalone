@@ -30,7 +30,7 @@
                     </a>
                     <p><%: NamingItem.FindNanjingBranchDesc1 %></p>
                     <p><%: NamingItem.FindNanjingBranchDesc2 %></p>
-                    <a href="team-arena.html" class="more"><%: NamingItem.OurTeam %><i class="pl-1 fa fa-angle-right"></i></a>
+                    <a href="javascript:$('').launchDownload('<%= Url.Action("Team", "MainActivity") %>', {'branchName':'Nanjing'});" class="more"><%: NamingItem.OurTeam %><i class="pl-1 fa fa-angle-right"></i></a>
                 </div>
                 <div class="col-sm-6 p-t-20">
                     <div id="map-arena" class="map-canvas small"></div>
@@ -346,7 +346,6 @@
         base.OnInit(e);
         models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
         _modelState = (ModelStateDictionary)ViewBag.ModelState;
-
     }
 
 </script>
