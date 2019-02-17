@@ -70,7 +70,7 @@
                     </a>                    
                     <p><%: NamingItem.FindZhongxiaoBranchDesc1 %></p>
                     <p><%: NamingItem.FindZhongxiaoBranchDesc2 %></p>
-                    <a href="team-sogo.html" class="more"><%: NamingItem.OurTeam %><i class="pl-1 fa fa-angle-right"></i></a>
+                    <a href="javascript:$('').launchDownload('<%= Url.Action("Team", "MainActivity") %>', {'branchName':'Zhongxiao'});" class="more"><%: NamingItem.OurTeam %><i class="pl-1 fa fa-angle-right"></i></a>
                 </div>
                 <div class="col-sm-6 p-t-20">
                     <div id="map-sogo" class="map-canvas small"></div>
