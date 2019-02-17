@@ -429,4 +429,7 @@
   <data name="OnlineReservation" xml:space="preserve">
     <value>線上預約</value>
   </data>
+  <data name="TeamTitle" xml:space="preserve">
+    <value>專業團隊</value>
+  </data>
 </root>

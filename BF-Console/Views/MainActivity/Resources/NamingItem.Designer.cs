@@ -670,5 +670,11 @@ namespace BFConsole.Views.MainActivity.Resources {
                 return ResourceManager.GetString("OnlineReservation", resourceCulture);
             }
         }
+        
+        public static string TeamTitle {
+            get {
+                return ResourceManager.GetString("TeamTitle", resourceCulture);
+            }
+        }
     }
 }

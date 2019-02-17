@@ -41,7 +41,7 @@
                 {   %>
             <div class="row">
                 <div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3">
-                    <img class="fullwidth" src="<%= $"images/landing/portfolio/{ _viewModel.nickname}/{photo}" %>" alt=""/>                   
+                    <img class="fullwidth" src="<%= $"images/landing/portfolio/{ _viewModel.nickname}/{photo}" %>" alt="私人教練"/>                   
                 </div>
             </div>
             <%  }   %>

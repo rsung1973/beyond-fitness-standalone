@@ -21,7 +21,7 @@
     <section class="section-team">
         <div class="container">
             <div class="row">
-                <h1 class="align-center">專業團隊</h1>
+                <h1 class="align-center"><%: NamingItem.TeamTitle %></h1>
                 <h2 class="align-center"><%= _coachData.branchName %></h2>
             </div>
             <div class="row grid-space-0">
