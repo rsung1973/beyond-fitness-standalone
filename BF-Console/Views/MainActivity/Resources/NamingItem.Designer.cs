@@ -676,5 +676,11 @@ namespace BFConsole.Views.MainActivity.Resources {
                 return ResourceManager.GetString("TeamTitle", resourceCulture);
             }
         }
+        
+        public static string BlogBack {
+            get {
+                return ResourceManager.GetString("BlogBack", resourceCulture);
+            }
+        }
     }
 }

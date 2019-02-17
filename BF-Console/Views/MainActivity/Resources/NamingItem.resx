@@ -432,4 +432,7 @@
   <data name="TeamTitle" xml:space="preserve">
     <value>專業團隊</value>
   </data>
+  <data name="BlogBack" xml:space="preserve">
+    <value>回官網首頁</value>
+  </data>
 </root>

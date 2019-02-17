@@ -73,9 +73,6 @@
             <div id="slide_out_menu">
                 <a href="javascript:void(0);" class="menu-close"><i class="zmdi zmdi-close"></i></a>
                 <div class="logo"><a href="<%= VirtualPathUtility.ToAbsolute("~/MainActivity/Index") %>"><img src="images/logo.png" alt="BeyondFitness"></a></div>
-                <ul>
-                    <%  Html.RenderPartial("~/Views/MainActivity/Module/MenuItem.ascx"); %>
-                </ul>
                 <div class="slide_out_menu_footer">
                     <ul class="socials">
                         <li><a href="https://www.facebook.com/beyond.fitness.pro/" target="_blank"><i class="zmdi zmdi-facebook"></i></a></li>
@@ -91,7 +88,9 @@
                 </div>
                 <div class="col-md-10 col-sm-10 col-xs-12">
                     <ul class="left nav-active">
-                        <%  Html.RenderPartial("~/Views/MainActivity/Module/MenuItem.ascx"); %>
+                        <li class="pull-right">
+                            <a href="<%= VirtualPathUtility.ToAbsolute("~/MainActivity/Index") %>" class="btn btn-default btn-round"><%: NamingItem.BlogBack %></a>
+                        </li>
                     </ul>
                     <script>
                         function changeLanguage(lang) {

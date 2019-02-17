@@ -432,4 +432,7 @@
   <data name="TeamTitle" xml:space="preserve">
     <value>Our Team</value>
   </data>
+  <data name="BlogBack" xml:space="preserve">
+    <value>Back Official Site</value>
+  </data>
 </root>
