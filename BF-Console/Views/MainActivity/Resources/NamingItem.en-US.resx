@@ -429,4 +429,7 @@
   <data name="OnlineReservation" xml:space="preserve">
     <value>Online reservation</value>
   </data>
+  <data name="TeamTitle" xml:space="preserve">
+    <value>Our Team</value>
+  </data>
 </root>
