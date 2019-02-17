@@ -38,7 +38,7 @@
                             </div>
                             <div class="overlay-bottom">
                                 <div class="links">
-                                    <a href='javascript:showDetails(<%= JsonConvert.SerializeObject(c) %>);' class="btn btn-gray-transparent btn-animated btn-sm">了解更多 <i class="pl-10 fa fa-arrow-right"></i></a>
+                                    <a href='javascript:showDetails(<%= JsonConvert.SerializeObject(c) %>);' class="btn btn-gray-transparent btn-animated btn-sm"><%: NamingItem.LearnMore %> <i class="pl-10 fa fa-arrow-right"></i></a>
                                 </div>
                             </div>
                         </div>
