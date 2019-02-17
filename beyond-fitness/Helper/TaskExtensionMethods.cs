@@ -307,51 +307,51 @@ namespace WebHome.Helper
                                 * original.CourseContractType.GroupingMemberCount
                                 * original.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount / 100;
 
-                        var balance = original.TotalPaidAmount() - calculated
+                        var refund = original.TotalPaidAmount() - calculated
                                 * item.CourseContract.CourseContractExtension.SettlementPrice
                                 * original.CourseContractType.GroupingMemberCount
                                 * original.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount / 100;
+
+                        refund = Math.Max(refund ?? 0, 0);
+                        var adjustment = returnAmt - refund;
+
+                        var dummyInvoice = models.GetTable<InvoiceItem>().Where(i => i.No == "--").FirstOrDefault();
                         Payment balancedPayment = null;
-                        if (balance > 0)
+                        balancedPayment = new Payment
                         {
-                            var dummyInvoice = models.GetTable<InvoiceItem>().Where(i => i.No == "--").FirstOrDefault();
-
-                            balancedPayment = new Payment
+                            Status = (int)Naming.CourseContractStatus.已生效,
+                            ContractPayment = new ContractPayment { },
+                            PaymentTransaction = new PaymentTransaction
                             {
-                                Status = (int)Naming.CourseContractStatus.已生效,
-                                ContractPayment = new ContractPayment { },
-                                PaymentTransaction = new PaymentTransaction
-                                {
-                                    BranchID = item.SourceContract.CourseContractExtension.BranchID
-                                },
-                                PaymentAudit = new Models.DataEntity.PaymentAudit { },
-                                PayoffAmount = -balance,
-                                PayoffDate = DateTime.Today,
-                                Remark = "終止退款",
-                                HandlerID = handler != null ? handler.UID : item.CourseContract.AgentID,
-                                PaymentType = "現金",
-                                TransactionType = (int)Naming.PaymentTransactionType.合約終止沖銷,
-                                AdjustmentAmount = calculated
-                                        * (item.CourseContract.CourseContractExtension.SettlementPrice- original.LessonPriceType.ListPrice)
-                                        * original.CourseContractType.GroupingMemberCount
-                                        * original.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount / 100,
-                            };
-                            balancedPayment.ContractPayment.ContractID = item.OriginalContract.Value;
-                            if (dummyInvoice != null)
-                                balancedPayment.InvoiceID = dummyInvoice.InvoiceID;
-                            models.GetTable<Payment>().InsertOnSubmit(balancedPayment);
+                                BranchID = item.SourceContract.CourseContractExtension.BranchID
+                            },
+                            PaymentAudit = new Models.DataEntity.PaymentAudit { },
+                            PayoffAmount = -refund,
+                            PayoffDate = DateTime.Today,
+                            Remark = "終止退款",
+                            HandlerID = handler != null ? handler.UID : item.CourseContract.AgentID,
+                            PaymentType = "現金",
+                            TransactionType = (int)Naming.PaymentTransactionType.合約終止沖銷,
+                            AdjustmentAmount = adjustment!=0 ? adjustment : (int?)null,
+                        };
+                        balancedPayment.ContractPayment.ContractID = item.OriginalContract.Value;
+                        if (dummyInvoice != null)
+                            balancedPayment.InvoiceID = dummyInvoice.InvoiceID;
+                        models.GetTable<Payment>().InsertOnSubmit(balancedPayment);
 
-                            models.GetTable<ContractTrustTrack>().InsertOnSubmit(new ContractTrustTrack
-                            {
-                                ContractID = item.OriginalContract.Value,
-                                EventDate = balancedPayment.PayoffDate.Value,
-                                TrustType = Naming.TrustType.S.ToString(),
-                                ReturnAmount = returnAmt,
-                            });
+                        models.GetTable<ContractTrustTrack>().InsertOnSubmit(new ContractTrustTrack
+                        {
+                            ContractID = item.OriginalContract.Value,
+                            EventDate = balancedPayment.PayoffDate.Value,
+                            TrustType = Naming.TrustType.S.ToString(),
+                            ReturnAmount = returnAmt,
+                        });
 
+                        if (refund > 0)
+                        {
                             //Logger.Debug("RevisionID: " + item.RevisionID);
                             //Logger.Debug("balance: " + balance);
-                            models.CreateAllowanceForContract(original, balance.Value);
+                            models.CreateAllowanceForContract(original, refund.Value);
                         }
 
                         models.SubmitChanges();

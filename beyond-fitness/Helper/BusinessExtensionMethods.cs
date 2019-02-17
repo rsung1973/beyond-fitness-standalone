@@ -1783,7 +1783,8 @@ namespace WebHome.Helper
                     {
                         item.RemainedAmount = item.TotalPrepaid - item.TotalLessonCost - (item.TotalAllowanceAmount ?? 0);
                         if ((c.Status == (int)Naming.CourseContractStatus.已終止 || c.Status == (int)Naming.CourseContractStatus.已轉讓 || c.Status == (int)Naming.CourseContractStatus.已轉點)
-                            && c.ValidTo < calcDate)
+                            && c.ValidTo < calcDate
+                            && item.RemainedAmount > 0)
                         {
                             item.RemainedAmount = 0;
                         }

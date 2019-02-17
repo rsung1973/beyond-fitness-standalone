@@ -32,4 +32,19 @@ namespace WebHome.Models.ViewModel
         public Object EventItem { get; set; }
     }
 
+    public class CoachItem
+    {
+        public string coachName { get; set; }
+        public string nickname { get; set; }
+        public string prologue { get; set; }
+        public List<string> scenarioPhoto { get; set; }
+    }
+
+    public class CoachData
+    {
+        public string branchName { get; set; }
+        public string arenaView { get; set; }
+        public List<CoachItem> coachItems { get; set; }
+    }
+
 }

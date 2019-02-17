@@ -970,7 +970,6 @@ namespace WebHome.Controllers
             table.Columns.Add(new DataColumn("合約編號", typeof(String)));
             table.Columns.Add(new DataColumn("身分證字號", typeof(String)));
             table.Columns.Add(new DataColumn("姓名", typeof(String)));
-            table.Columns.Add(new DataColumn("合約狀態", typeof(String)));
             table.Columns.Add(new DataColumn("是否信託", typeof(String)));
             table.Columns.Add(new DataColumn("合約總價金", typeof(int)));
             table.Columns.Add(new DataColumn("累計收款金額", typeof(int)));
@@ -988,7 +987,8 @@ namespace WebHome.Controllers
                 if (!initial)
                 {
                     if (item.CourseContract.ValidTo.HasValue
-                            && item.CourseContract.ValidTo < validTo)
+                            && item.CourseContract.ValidTo < validTo
+                            && item.RemainedAmount == 0)
                         continue;
                 }
                 var r = table.NewRow();
@@ -996,17 +996,16 @@ namespace WebHome.Controllers
                 r[0] = c.ContractNo();
                 r[1] = c.ContractOwner.UserProfileExtension.IDNo;
                 r[2] = c.ContractOwner.RealName;
-                r[3] = $"{(Naming.ContractQueryStatus)c.Status}";
-                r[4] = c.ContractTrustSettlement.Any() ? "是" : "否";
-                r[5] = c.TotalCost;
-                r[6] = item.TotalPrepaid;
-                r[7] = item.TotalLessonCost;
+                r[3] = c.ContractTrustSettlement.Any() ? "是" : "否";
+                r[4] = c.TotalCost;
+                r[5] = item.TotalPrepaid;
+                r[6] = item.TotalLessonCost;
                 if (item.TotalAllowanceAmount.HasValue)
-                    r[8] = item.TotalAllowanceAmount;
-                r[9] = item.RemainedAmount;
-                r[10] = c.AttendedLessonCount(calcDate);
-                r[11] = $"{c.EffectiveDate:yyyyMMdd}";
-                r[12] = $"{c.Expiration:yyyyMMdd}";
+                    r[7] = item.TotalAllowanceAmount;
+                r[8] = item.RemainedAmount;
+                r[9] = c.AttendedLessonCount(calcDate);
+                r[10] = $"{c.EffectiveDate:yyyyMMdd}";
+                r[11] = $"{c.Expiration:yyyyMMdd}";
                 table.Rows.Add(r);
             }
 

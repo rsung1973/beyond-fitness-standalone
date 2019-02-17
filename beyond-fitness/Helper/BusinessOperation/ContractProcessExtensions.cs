@@ -991,6 +991,18 @@ namespace WebHome.Helper.BusinessOperation
             {
                 if (!viewModel.SettlementPrice.HasValue)
                     ModelState.AddModelError("SettlementPrice", "請填入課程單價!!");
+                else
+                {
+
+                    var refund = item.TotalPaidAmount() - item.AttendedLessonCount()
+                            * viewModel.SettlementPrice
+                            * item.CourseContractType.GroupingMemberCount
+                            * item.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount / 100;
+                    if (refund < 0)
+                    {
+                        ModelState.AddModelError("SettlementPrice", "退款差額不可小於零!!");
+                    }
+                }
             }
             else if (viewModel.Reason == "轉讓")
             {
