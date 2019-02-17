@@ -73,8 +73,6 @@
 <asp:Content ID="TailPageJavaScriptInclude" ContentPlaceHolderID="TailPageJavaScriptInclude" runat="server">
     <!-- jquery reel -->
     <script src="plugins/jquery-reel/jquery.reel.js"></script>
-    <!-- WOW Plugin -->
-    <script src="js/wow.js"></script>
 </asp:Content>
 
 <script runat="server">
