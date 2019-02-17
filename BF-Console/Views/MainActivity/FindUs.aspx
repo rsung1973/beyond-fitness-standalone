@@ -50,7 +50,7 @@
                     </a>
                     <p><%: NamingItem.FindXinyiBranchDesc1 %></p>
                     <p><%: NamingItem.FindXinyiBranchDesc2 %></p>
-                    <a href="team-101.html" class="more"><%: NamingItem.OurTeam %><i class="pl-1 fa fa-angle-right"></i></a>
+                    <a href="javascript:$('').launchDownload('<%= Url.Action("Team", "MainActivity") %>', {'branchName':'Xinyi'});" class="more"><%: NamingItem.OurTeam %><i class="pl-1 fa fa-angle-right"></i></a>
                 </div>
                 <div class="col-sm-6 p-t-20">
                     <div id="map-101" class="map-canvas small"></div>
