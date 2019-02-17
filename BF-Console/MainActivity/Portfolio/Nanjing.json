@@ -1,0 +1,20 @@
+{
+  "branchName": "南京店",
+  "arenaView": "images/landing/360/arena.jpg",
+  "coachItems": [
+    {
+      "coverPhoto": "images/avatar/Bryant-small.png",
+      "coachName": "戴悟修",
+      "nickname": "Bryant",
+      "fullName": "戴悟修 Bryant",
+      "personalPhoto": "images/avatar/Bryant-small.png",
+      "prologue": "舒適圈就是失敗圈，成功者永遠走在恐懼的邊緣。",
+      "scenarioSample": "images/landing/portfolio/Bryant.jpg"
+    },
+    {
+      "coverPhoto": "images/avatar/Joei-small.png",
+      "coachName": "林哲儀",
+      "nickname": "Joei"
+    }
+  ]
+}
