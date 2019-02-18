@@ -18834,8 +18834,54 @@ textarea:focus {
             padding-top: 10px;
         }
 
+        .section-blog .blog-single ul.list-style1 li::before {
+            content: "◎";
+            display: inline-block;
+            width: 1em;
+            margin: 0 10px 0 10px;
+            font-size: 12px;
+        }
+
+        .section-blog .blog-single ul.list-style1 li {
+            font-size: 16px;
+            font-weight: 800;
+            padding: 10px;
+            line-height: 1.75em;
+        }
+
+        .section-blog .blog-single ul.list-style2 li::before {
+            content: "●";
+            display: inline-block;
+            width: 1em;
+            margin: 0 10px 0 10px;
+            font-size: 12px;
+        }
+
+        .section-blog .blog-single ul.list-style2 li.checked::before {
+            font-family: "Font Awesome 5 Free";
+            content: "\f00c";
+            color: aliceblue;
+        }
+
+        .section-blog .blog-single ul.list-style2 li {
+            font-size: 16px;
+            font-weight: 800;
+            color: #e6e6e6;
+            padding: 10px;
+            line-height: 1.75em;
+        }
+
+            .section-blog .blog-single ul.list-style2 li span {
+                font-size: 15px;
+                font-weight: 400;
+                padding-left: 2em;
+                padding-top: 5px;
+                padding-bottom: 5px;
+                display: block
+            }
+
         .section-blog .blog-single .reference p {
-            font-size: 10px;
+            font-size: 12px;
             text-transform: uppercase;
             font-weight: 400;
             color: #bfbfbf;
@@ -18844,58 +18890,66 @@ textarea:focus {
             padding-top: 5px;
         }
 
-.reference ul.list-style1 li::before {
-    content: "●";
-    display: inline-block;
-    width: 1em;
-    margin: 0px;
-}
 
-.reference ul.list-style1 li {
-    font-size: 10px;
-    font-weight: 400;
-}
+        .section-blog .blog-single .reference ul.list-style1 li::before {
+            content: "●";
+            display: inline-block;
+            width: 1em;
+            margin: 0px;
+            color: #bfbfbf;
+        }
 
-.section-blog .blog-single .card {
-    margin: auto;
-    width: 80%;
-    float: none;
-}
+        .section-blog .blog-single .reference ul.list-style1 li {
+            font-size: 12px;
+            font-weight: 400;
+            padding: 0px;
+        }
 
-    .section-blog .blog-single .card .body {
-        padding: 20px;
+            .section-blog .blog-single .reference ul.list-style1 li a {
+                color: #bfbfbf;
+                text-decoration-line: underline;
+            }
+
+        .section-blog .blog-single .card {
+            margin: auto;
+            width: 80%;
+            float: none;
+        }
+
+            .section-blog .blog-single .card .body {
+                padding: 20px;
+            }
+
+            .section-blog .blog-single .card.testimonials .body i {
+                display: block;
+            }
+
+            .section-blog .blog-single .card p {
+                text-align: justify;
+                padding-bottom: 15px;
+            }
+
+        .section-blog .blog-single i {
+            padding-right: 10px;
+        }
+
+        .section-blog .blog-single hr {
+            margin-top: 10px;
+            margin-bottom: 10px;
+            border: 0;
+            border-top: 1px solid #bfbfbf
+        }
+
+    .section-blog .slick-slide img.fullwidth {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        width: 100%
     }
 
-    .section-blog .blog-single .card.testimonials .body i {
-        display: block;
+    .section-blog .blog-single img {
+        width: 100%;
+        height: 100%;
     }
-
-    .section-blog .blog-single .card p {
-        text-align: justify;
-        padding-bottom: 15px;
-    }
-
-.section-blog .blog-single i {
-    padding-right: 10px;
-}
-
-.section-blog .blog-single hr {
-    margin-top: 10px;
-    margin-bottom: 10px;
-    border: 0;
-    border-top: 1px solid #bfbfbf
-}
-
-.section-blog .slick-slide img.fullwidth {
-    margin-top: 20px;
-    margin-bottom: 20px;
-    width: 100%
-}
-
-.section-blog .blog-single img {
-    width: 100%;
-    height: 100%;
-}
 
 .list-group-flush {
     margin-top: 30px;
