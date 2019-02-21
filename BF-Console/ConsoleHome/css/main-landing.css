@@ -18835,7 +18835,7 @@ textarea:focus {
         }
 
         .section-blog .blog-single ul.list-style1 li::before {
-            content: "◎";
+            content: "☆";
             display: inline-block;
             width: 1em;
             margin: 0 10px 0 10px;
