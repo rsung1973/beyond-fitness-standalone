@@ -74,7 +74,7 @@
                 <a href="javascript:void(0);" class="menu-close"><i class="zmdi zmdi-close"></i></a>
                 <div class="logo"><a href="<%= VirtualPathUtility.ToAbsolute("~/MainActivity/Index") %>"><img src="images/logo.png" alt="BeyondFitness"></a></div>
                 <ul>
-                    <%  Html.RenderPartial("~/Views/MainActivity/Module/MenuItem.ascx"); %>
+                    <%  Html.RenderPartial("~/Views/MainActivity/Module/MobileMenuItem.ascx"); %>
                 </ul>
                 <div class="slide_out_menu_footer">
                     <ul class="socials">
