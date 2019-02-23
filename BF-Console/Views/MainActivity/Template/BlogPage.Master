@@ -69,7 +69,6 @@
     <!-- //Main Nav -->
     <header id="main-nav">
         <div class="container">
-            <a id="navigation" href="javascript:void(0);" class="hidden-md-up"><i class="zmdi zmdi-apps"></i></a>
             <div id="slide_out_menu">
                 <a href="javascript:void(0);" class="menu-close"><i class="zmdi zmdi-close"></i></a>
                 <div class="logo"><a href="<%= VirtualPathUtility.ToAbsolute("~/MainActivity/Index") %>"><img src="images/logo.png" alt="BeyondFitness"></a></div>

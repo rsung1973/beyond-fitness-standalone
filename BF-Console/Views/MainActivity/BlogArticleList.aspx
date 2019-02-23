@@ -17,8 +17,15 @@
 <asp:Content ID="MainContent" ContentPlaceHolderID="MainContent" runat="server">
 
     <!-- Main Content -->
-    <section class="section-blog dark">
+    <section class="section-blog dark">        
         <div class="container">
+            <div class="row clearfix">
+                <div class="col-12">
+                    <span class="mode p-r-20">
+                        <a href="javascript:(history.back());"><i class="fas fa-backward"></i></a>
+                    </span>
+                </div>
+            </div>
             <ul class="list-group list-group-flush">
                 <%  foreach (var item in _model)
                     {   %>
