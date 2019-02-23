@@ -73,6 +73,9 @@
             <div id="slide_out_menu">
                 <a href="javascript:void(0);" class="menu-close"><i class="zmdi zmdi-close"></i></a>
                 <div class="logo"><a href="<%= VirtualPathUtility.ToAbsolute("~/MainActivity/Index") %>"><img src="images/logo.png" alt="BeyondFitness"></a></div>
+                <ul>
+                    <li><a href="<%= Url.Action("BlogList") %>"><%: NamingItem.Blog %></a></li>
+                </ul>
                 <div class="slide_out_menu_footer">
                     <ul class="socials">
                         <li><a href="https://www.facebook.com/beyond.fitness.pro/" target="_blank"><i class="zmdi zmdi-facebook"></i></a></li>
