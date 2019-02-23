@@ -73,6 +73,13 @@
 <asp:Content ID="TailPageJavaScriptInclude" ContentPlaceHolderID="TailPageJavaScriptInclude" runat="server">
     <!-- jquery reel -->
     <script src="plugins/jquery-reel/jquery.reel.js"></script>
+    <script>
+        $(function () {
+            reloadPage = function () {
+                $('').launchDownload('<%= Url.Action("Team", "MainActivity") %>', {'branchName':'<%= ViewBag.BranchName %>'});
+            };
+        });
+    </script>
 </asp:Content>
 
 <script runat="server">

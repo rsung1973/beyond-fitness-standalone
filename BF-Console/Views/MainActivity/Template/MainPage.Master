@@ -94,11 +94,16 @@
                         <%  Html.RenderPartial("~/Views/MainActivity/Module/MenuItem.ascx"); %>
                     </ul>
                     <script>
+                        var reloadPage;
                         function changeLanguage(lang) {
                             $.post('<%= Url.Action("ChangeLanguate", "MainActivity") %>', { 'lang': lang }, function (data) {
                                 if ($.isPlainObject(data)) {
                                     if (data.result) {
-                                        window.location.reload();
+                                        if (reloadPage) {
+                                            reloadPage();
+                                        } else {
+                                            window.location.reload();
+                                        }
                                     }
                                 } else {
                                     $(data).appendTo($('body'));

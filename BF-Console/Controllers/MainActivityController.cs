@@ -59,7 +59,7 @@ namespace BFConsole.Controllers
 
         public ActionResult Team(String branchName)
         {
-            branchName = branchName.GetEfficientString();
+            ViewBag.BranchName = branchName = branchName.GetEfficientString();
             CoachData model = null;
             String jsonFile = Server.MapPath($"~/MainActivity/Portfolio/{branchName}.json");
             if (System.IO.File.Exists(jsonFile))
@@ -78,6 +78,28 @@ namespace BFConsole.Controllers
             }
         }
 
+        public ActionResult BlogArticleList(BlogArticleQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            var items = models.GetTable<BlogArticle>()
+                .Where(b => b.BlogTag.Any(c => c.CategoryID == viewModel.CategoryID));
+            return View(items);
+        }
 
+        public ActionResult BlogSingle(BlogArticleQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            if(viewModel.KeyID!=null)
+            {
+                viewModel.DocID = viewModel.DecryptKeyValue();
+            }
+
+            var item = models.GetTable<BlogArticle>().Where(b => b.DocID == viewModel.DocID).FirstOrDefault();
+            if (item == null)
+            {
+                return View("Index");
+            }
+            return View(item);
+        }
     }
 }

@@ -54,6 +54,13 @@
 </asp:Content>
 
 <asp:Content ID="TailPageJavaScriptInclude" ContentPlaceHolderID="TailPageJavaScriptInclude" runat="server">
+    <script>
+        $(function () {
+            reloadPage = function () {
+                $('').launchDownload('<%= Url.Action("CoachDetails", "MainActivity") %>', <%= JsonConvert.SerializeObject(_viewModel) %>);
+            };
+        });
+    </script>
 
 </asp:Content>
 

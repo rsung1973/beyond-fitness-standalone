@@ -8,3 +8,4 @@ xcopy Views\LessonConsole \\VM-Venus\E$\Project\GitHub\beyond-fitness\beyond-fit
 xcopy Views\ReportConsole \\VM-Venus\E$\Project\GitHub\beyond-fitness\beyond-fitness\Views\ReportConsole /s/d/v/f
 xcopy Views\MainActivity \\VM-Venus\E$\Project\GitHub\beyond-fitness\beyond-fitness\Views\MainActivity /s/d/v/f
 xcopy bin \\VM-Venus\E$\Project\GitHub\beyond-fitness\beyond-fitness\bin /s/d/v/f
+xcopy ConsoleHome \\VM-Venus\E$\Project\GitHub\beyond-fitness\beyond-fitness\ConsoleHome /s/d/v/f
