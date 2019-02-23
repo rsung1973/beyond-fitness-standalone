@@ -18834,27 +18834,43 @@ textarea:focus {
             padding-top: 10px;
         }
 
-        .section-blog .blog-single ul.list-style1 li::before {
-            content: "☆";
-            display: inline-block;
-            width: 1em;
-            margin: 0 10px 0 10px;
-            font-size: 12px;
+        .section-blog .blog-single ul.list-style1 {
+            list-style-position: outside;
         }
 
-        .section-blog .blog-single ul.list-style1 li {
-            font-size: 16px;
-            font-weight: 800;
-            padding: 10px;
-            line-height: 1.75em;
-        }
+            .section-blog .blog-single ul.list-style1 li {
+                font-size: 16px;
+                font-weight: 400;
+                padding: 10px;
+                line-height: 1.75em;
+            }
+
+                .section-blog .blog-single ul.list-style1 li span {
+                    font-size: 15px;
+                    font-weight: 400;
+                    padding-left: 2em;
+                    padding-top: 5px;
+                    padding-bottom: 5px;
+                    display: block
+                }
+
+                .section-blog .blog-single ul.list-style1 li::before {
+                    font-family: "Font Awesome 5 Free";
+                    content: "\f0da";
+                    display: inline-block;
+                    width: 1em;
+                    margin: 0 5px 0 5px;
+                    font-size: 16px;
+                    font-weight: 900;
+                }
 
         .section-blog .blog-single ul.list-style2 li::before {
             content: "●";
             display: inline-block;
             width: 1em;
-            margin: 0 10px 0 10px;
-            font-size: 12px;
+            margin: 0 5px 0 5px;
+            font-size: 14px;
+            color: lightsalmon;
         }
 
         .section-blog .blog-single ul.list-style2 li.checked::before {
@@ -18890,25 +18906,30 @@ textarea:focus {
             padding-top: 5px;
         }
 
-
-        .section-blog .blog-single .reference ul.list-style1 li::before {
-            content: "●";
-            display: inline-block;
-            width: 1em;
-            margin: 0px;
-            color: #bfbfbf;
+        .section-blog .blog-single .reference ul.list-style1 {
+            list-style-position: outside;
         }
 
-        .section-blog .blog-single .reference ul.list-style1 li {
-            font-size: 12px;
-            font-weight: 400;
-            padding: 0px;
-        }
-
-            .section-blog .blog-single .reference ul.list-style1 li a {
+            .section-blog .blog-single .reference ul.list-style1 li::before {
+                font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+                content: "●";
+                display: inline-block;
+                width: 1em;
+                margin: 0px;
                 color: #bfbfbf;
-                text-decoration-line: underline;
+                font-size: 10px;
             }
+
+            .section-blog .blog-single .reference ul.list-style1 li {
+                font-size: 12px;
+                font-weight: 400;
+                padding: 0px;
+            }
+
+                .section-blog .blog-single .reference ul.list-style1 li a {
+                    color: #bfbfbf;
+                    text-decoration-line: underline;
+                }
 
         .section-blog .blog-single .card {
             margin: auto;
@@ -18921,7 +18942,7 @@ textarea:focus {
             }
 
             .section-blog .blog-single .card.testimonials .body i {
-                display: block;
+                display: inline-block;
             }
 
             .section-blog .blog-single .card p {
