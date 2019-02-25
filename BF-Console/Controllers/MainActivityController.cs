@@ -229,7 +229,19 @@ namespace BFConsole.Controllers
             {
                 using (ZipArchive zip = new ZipArchive(file.InputStream))
                 {
-                    zip.ExtractToDirectory(blogPath);
+                    foreach(var entry in zip.Entries)
+                    {
+                        var destName = Path.Combine(blogPath, entry.FullName);
+                        if (String.IsNullOrEmpty(entry.Name))
+                        {
+                            destName.CheckStoredPath();
+                        }
+                        else
+                        {
+                            entry.ExtractToFile(destName, true);
+                        }
+                    }
+                    //zip.ExtractToDirectory(blogPath);
                 }
                 return Json(new { result = true, item.DocID, item.BlogID });
             }
