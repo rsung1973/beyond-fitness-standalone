@@ -10,7 +10,7 @@
 
 <div class="col-lg-5 col-md-6 col-sm-12">
     <ul class="breadcrumb float-md-right">
-        <li class="breadcrumb-item"><a href="<%= Url.Action("BlogIndex","ConsoleHome") %>"><i class="zmdi zmdi-file-text"></i>部落格分類</a></li>
+        <li class="breadcrumb-item"><a href="<%= Url.Action("BlogIndex","ConsoleHome") %>"><i class="zmdi zmdi-view-module"></i> 部落格分類</a></li>
     </ul>
 </div>
 
