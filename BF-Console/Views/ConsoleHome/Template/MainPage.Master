@@ -130,9 +130,6 @@
                     <a href="javascript:void(0);"><i class="zmdi zmdi-accounts-list"></i><span>我的學生</span> </a>
                 </li>
                 <li>
-                    <a href="javascript:void(0);"><i class="zmdi zmdi-apps"></i><span>我的設定</span> </a>
-                </li>
-                <li>
                     <a href="<%= Url.Action("BlogIndex","ConsoleHome") %>"><i class="zmdi zmdi-blogger"></i><span>我的部落格</span> </a>
                 </li>                      
                 <li>
