@@ -6,9 +6,9 @@
     .blog-page .single_post .img-post {
         position: relative;
         overflow: hidden;
-        max-height: 500px;
+        max-height: 200px;
         position: relative;
-        object-fit: cover
+        object-fit: cover;
     }
 
         .blog-page .single_post .img-post > img {
@@ -16,8 +16,8 @@
             -ms-transform: scale(1);
             transform: scale(1);
             opacity: 1;
-            -webkit-transition: -webkit-transform .4s ease,opacity .4s ease;
-            transition: transform .4s ease,opacity .4s ease;
+            -webkit-transition: -webkit-transform .4s ease, opacity .4s ease;
+            transition: transform .4s ease, opacity .4s ease;
             max-width: 100%;
             filter: none;
             -webkit-filter: grayscale(0);
@@ -104,7 +104,8 @@
             color: #333
         }
 
-    .blog-page .right-box .popular-post ul li .author-name, .blog-page .right-box .popular-post ul li .date {
+    .blog-page .right-box .popular-post ul li .author-name,
+    .blog-page .right-box .popular-post ul li .date {
         display: block
     }
 
