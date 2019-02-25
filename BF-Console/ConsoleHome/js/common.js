@@ -154,6 +154,25 @@ function finishDownload() {
     hideLoading();
 }
 
+function uploadFile($file, postData, url, callback, errorback) {
+
+    $('<form method="post" enctype="multipart/form-data"></form>')
+        .append($file).ajaxForm({
+            url: url,
+            data: postData,
+            beforeSubmit: function () {
+                showLoading();
+            },
+            success: function (data) {
+                hideLoading();
+                callback(data);
+            },
+            error: function () {
+                hideLoading();
+                errorback();
+            }
+        }).submit();
+}
 
 
 var $global = {

@@ -27,17 +27,18 @@
                 </div>
             </div>
             <ul class="list-group list-group-flush">
-                <%  foreach (var item in _model)
+                <%  foreach (var item in _model.OrderByDescending(b => b.BlogID))
                     {   %>
                 <li class="list-group-item">
                     <div class="media mleft">
                         <div class="media-left">
-                            <a href="<%= Url.Action("BlogSingle","MainActivity",new { KeyID = item.DocID.EncryptKey() }) %>">
-                                <img class="blog-img" src="<%= $"Blog/{item.BlogID}/images/Title.jpg" %>" />
+                            <a href="<%= Url.Action("BlogSingle", "MainActivity", new { item.DocID }) %>">
+                                <%  var imgUrl = $"Blog/{item.BlogID}/images/Title.jpg"; %>
+                                <img class="blog-img" src="images/blog/DefaultTitle.jpg" onload="<%= System.IO.File.Exists(Server.MapPath(imgUrl)) ? $"this.onload = null;this.src = '{imgUrl}';" : null %>" />
                             </a>
                         </div>
                         <div class="media-body">
-                            <h4 class="media-heading"><a href="<%= Url.Action("BlogSingle","MainActivity",new { KeyID = item.DocID.EncryptKey() }) %>"><%= item.Title %></a></h4>
+                            <h4 class="media-heading"><a href="<%= Url.Action("BlogSingle", "MainActivity", new { KeyID = item.DocID.EncryptKey() }) %>"><%= item.Title %></a></h4>
                         </div>
                     </div>
                 </li>

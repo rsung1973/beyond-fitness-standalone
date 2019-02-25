@@ -62,7 +62,7 @@
     <script src="js/wow.js"></script>
     <!-- Main Script -->
     <script src="js/main-landing.js"></script>
-    <script src="js/common.js?1.4"></script>
+    <script src="js/common.js?1.5"></script>
 </head>
 
 <body>
