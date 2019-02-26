@@ -361,4 +361,20 @@ namespace WebHome.Models.ViewModel
 
     }
 
+    public class BlogArticleQueryViewModel : QueryViewModel
+    {
+        public int? CategoryID { get; set; }
+        public int? DocID { get; set; }
+        public int? id
+        {
+            get => DocID;
+            set => DocID = value;
+        }
+        public int? AuthorID { get; set; }
+        public DateTime? DocDate { get; set; }
+        public String Title { get; set; }
+        public int?[] TagID { get; set; }
+
+    }
+
 }

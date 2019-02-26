@@ -12,6 +12,10 @@ namespace WebHome.Models.ViewModel
         public String KeyID { get; set; }
         public String DialogID { get; set; }
         public String FileDownloadToken { get; set; }
+        public int? CurrentIndex { get; set; }
+        public int? PageSize { get; set; }
+        public int? PagingSize { get; set; }
+        public int? RecordCount { get; set; }
     }
 
     public class LoginViewModel

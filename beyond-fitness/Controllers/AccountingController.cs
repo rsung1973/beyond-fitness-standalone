@@ -948,6 +948,22 @@ namespace WebHome.Controllers
             return Json(new { result = true }, JsonRequestBehavior.AllowGet);
         }
 
+        enum MonthlySettlementColumn
+        {
+            合約編號 = 0,
+            //身分證字號,
+            姓名,
+            是否信託,
+            //合約總價金,
+            //累計收款金額,
+            //累計上課金額,
+            //折退金額,
+            合約餘額,
+            累計上課數,
+            合約起日,
+            合約迄日,
+        }
+
         public ActionResult GetMonthlySettlement(DateTime? settlementDate,DateTime? initialDate,String fileDownloadToken)
         {
             if (!settlementDate.HasValue)
@@ -965,20 +981,19 @@ namespace WebHome.Controllers
             IQueryable<ContractMonthlySummary> items = models.GetTable<ContractMonthlySummary>().Where(c => c.SettlementDate == calcDate);
 
             //										
-
             DataTable table = new DataTable();
             table.Columns.Add(new DataColumn("合約編號", typeof(String)));
-            table.Columns.Add(new DataColumn("身分證字號", typeof(String)));
+            //table.Columns.Add(new DataColumn("身分證字號", typeof(String)));
             table.Columns.Add(new DataColumn("姓名", typeof(String)));
             table.Columns.Add(new DataColumn("是否信託", typeof(String)));
-            table.Columns.Add(new DataColumn("合約總價金", typeof(int)));
-            table.Columns.Add(new DataColumn("累計收款金額", typeof(int)));
-            table.Columns.Add(new DataColumn("累計上課金額", typeof(int)));
-            table.Columns.Add(new DataColumn("折退金額", typeof(int)));
+            //table.Columns.Add(new DataColumn("合約總價金", typeof(int)));
+            //table.Columns.Add(new DataColumn("累計收款金額", typeof(int)));
+            //table.Columns.Add(new DataColumn("累計上課金額", typeof(int)));
+            //table.Columns.Add(new DataColumn("折退金額", typeof(int)));
             table.Columns.Add(new DataColumn("合約餘額", typeof(int)));
             table.Columns.Add(new DataColumn("累計上課數", typeof(int)));
-            table.Columns.Add(new DataColumn("合約生效起日", typeof(String)));
-            table.Columns.Add(new DataColumn("合約生效迄日", typeof(String)));
+            table.Columns.Add(new DataColumn("合約起日", typeof(String)));
+            table.Columns.Add(new DataColumn("合約迄日", typeof(String)));
 
             DateTime validTo = calcDate.AddMonths(-1);
 
@@ -993,19 +1008,19 @@ namespace WebHome.Controllers
                 }
                 var r = table.NewRow();
                 var c = item.CourseContract;
-                r[0] = c.ContractNo();
-                r[1] = c.ContractOwner.UserProfileExtension.IDNo;
-                r[2] = c.ContractOwner.RealName;
-                r[3] = c.ContractTrustSettlement.Any() ? "是" : "否";
-                r[4] = c.TotalCost;
-                r[5] = item.TotalPrepaid;
-                r[6] = item.TotalLessonCost;
-                if (item.TotalAllowanceAmount.HasValue)
-                    r[7] = item.TotalAllowanceAmount;
-                r[8] = item.RemainedAmount;
-                r[9] = c.AttendedLessonCount(calcDate);
-                r[10] = $"{c.EffectiveDate:yyyyMMdd}";
-                r[11] = $"{c.Expiration:yyyyMMdd}";
+                r[(int)MonthlySettlementColumn.合約編號] = c.ContractNo();
+                //r[(int)MonthlySettlementColumn.身分證字號] = c.ContractOwner.UserProfileExtension.IDNo;
+                r[(int)MonthlySettlementColumn.姓名] = c.ContractOwner.RealName;
+                r[(int)MonthlySettlementColumn.是否信託] = c.ContractTrustSettlement.Any() ? "是" : "否";
+                //r[(int)MonthlySettlementColumn.合約總價金] = c.TotalCost;
+                //r[(int)MonthlySettlementColumn.累計收款金額] = item.TotalPrepaid;
+                //r[(int)MonthlySettlementColumn.累計上課金額] = item.TotalLessonCost;
+                //if (item.TotalAllowanceAmount.HasValue)
+                //    r[(int)MonthlySettlementColumn.折退金額] = item.TotalAllowanceAmount;
+                r[(int)MonthlySettlementColumn.合約餘額] = item.RemainedAmount;
+                r[(int)MonthlySettlementColumn.累計上課數] = c.AttendedLessonCount(calcDate);
+                r[(int)MonthlySettlementColumn.合約起日] = $"{c.EffectiveDate:yyyyMMdd}";
+                r[(int)MonthlySettlementColumn.合約迄日] = $"{(c.ValidTo ?? c.Expiration):yyyyMMdd}";
                 table.Rows.Add(r);
             }
 

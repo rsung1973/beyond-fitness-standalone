@@ -24,6 +24,7 @@
       <Association Name="Document_DocumentPrintLog" Member="DocumentPrintLog" ThisKey="DocID" OtherKey="DocID" Type="DocumentPrintLog" />
       <Association Name="Document_DocumentPrintQueue" Member="DocumentPrintQueue" ThisKey="DocID" OtherKey="DocID" Type="DocumentPrintQueue" Cardinality="One" />
       <Association Name="Document_InvoiceAllowance" Member="InvoiceAllowance" ThisKey="DocID" OtherKey="AllowanceID" Type="InvoiceAllowance" Cardinality="One" />
+      <Association Name="Document_BlogArticle" Member="BlogArticle" ThisKey="DocID" OtherKey="DocID" Type="BlogArticle" Cardinality="One" />
       <Association Name="DocumentType_Document" Member="DocumentType" ThisKey="DocType" OtherKey="TypeID" Type="DocumentType" IsForeignKey="true" />
       <Association Name="LevelExpression_Document" Member="LevelExpression" ThisKey="CurrentStep" OtherKey="LevelID" Type="LevelExpression" IsForeignKey="true" />
     </Type>
@@ -209,6 +210,7 @@
       <Association Name="UserProfile_QuestionnaireCoachBypass" Member="QuestionnaireCoachBypass" ThisKey="UID" OtherKey="UID" Type="QuestionnaireCoachBypass" />
       <Association Name="UserProfile_UserEvent" Member="UserEvent" ThisKey="UID" OtherKey="UID" Type="UserEvent" />
       <Association Name="UserProfile_PreferredLessonTime" Member="PreferredLessonTime" ThisKey="UID" OtherKey="ApproverID" Type="PreferredLessonTime" />
+      <Association Name="UserProfile_BlogArticle" Member="BlogArticle" ThisKey="UID" OtherKey="AuthorID" Type="BlogArticle" />
       <Association Name="Attachment_UserProfile" Member="Attachment" ThisKey="PictureID" OtherKey="AttachmentID" Type="Attachment" IsForeignKey="true" />
       <Association Name="LevelExpression_UserProfile" Member="LevelExpression" ThisKey="LevelID" OtherKey="LevelID" Type="LevelExpression" IsForeignKey="true" />
       <Association Name="UserProfile_UserProfile" Member="UserProfile1" ThisKey="Creator" OtherKey="UID" Type="UserProfile" IsForeignKey="true" />
@@ -2031,6 +2033,35 @@
       <Column Name="RemainedAmount" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="TotalAllowanceAmount" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Association Name="CourseContract_ContractMonthlySummary" Member="CourseContract" ThisKey="ContractID" OtherKey="ContractID" Type="CourseContract" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.BlogArticle" Member="BlogArticle">
+    <Type Name="BlogArticle">
+      <Column Name="DocID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Title" Type="System.String" DbType="NVarChar(256)" CanBeNull="true" />
+      <Column Name="AuthorID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Subtitle" Type="System.String" DbType="NVarChar(256)" CanBeNull="true" />
+      <Column Name="BlogID" Type="System.String" DbType="NVarChar(64) NOT NULL" CanBeNull="false" />
+      <Association Name="BlogArticle_BlogTag" Member="BlogTag" ThisKey="DocID" OtherKey="DocID" Type="BlogTag" />
+      <Association Name="Document_BlogArticle" Member="Document" ThisKey="DocID" OtherKey="DocID" Type="Document" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="UserProfile_BlogArticle" Member="UserProfile" ThisKey="AuthorID" OtherKey="UID" Type="UserProfile" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.BlogCategoryDefinition" Member="BlogCategoryDefinition">
+    <Type Name="BlogCategoryDefinition">
+      <Column Name="CategoryID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Category" Type="System.String" DbType="NVarChar(32) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(64)" CanBeNull="true" />
+      <Column Name="CategoryIndication" Type="System.String" DbType="NVarChar(256)" CanBeNull="true" />
+      <Association Name="BlogCategoryDefinition_BlogTag" Member="BlogTag" ThisKey="CategoryID" OtherKey="CategoryID" Type="BlogTag" />
+    </Type>
+  </Table>
+  <Table Name="dbo.BlogTag" Member="BlogTag">
+    <Type Name="BlogTag">
+      <Column Name="DocID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CategoryID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="BlogArticle_BlogTag" Member="BlogArticle" ThisKey="DocID" OtherKey="DocID" Type="BlogArticle" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="BlogCategoryDefinition_BlogTag" Member="BlogCategoryDefinition" ThisKey="CategoryID" OtherKey="CategoryID" Type="BlogCategoryDefinition" IsForeignKey="true" />
     </Type>
   </Table>
   <Function Name="dbo.InquireVacantNo" Method="InquireVacantNo">
