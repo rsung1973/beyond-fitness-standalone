@@ -28,7 +28,9 @@
                     <a href="<%= Url.Action("BookNow") %>" class="btn btn-default btn-round fadeInUp animated hidden-md-up" data-wow-delay=".6s" data-effect="mfp-zoom-in"><%: NamingItem.BookNow %></a>
                 </div>
                 <!-- iPhone -->
-                <img class="header_iphone wow fadeInUp animated" src="images/landing/banner/banner-about.jpg" alt="私人教練" data-wow-delay=".3s" data-effect="mfp-zoom-in">
+                <div class="col-md-10 col-md-offset-1 text-center">
+                    <img class="header_iphone wow fadeInUp animated" src="images/landing/banner/banner-about.jpg" alt="私人教練" data-wow-delay=".3s" data-effect="mfp-zoom-in">
+                </div>               
                 <!-- //iPhone -->
             </div>
         </div>

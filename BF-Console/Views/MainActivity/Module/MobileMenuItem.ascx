@@ -15,14 +15,14 @@
 <li><a href="<%= Url.Action("FAQ") %>"><%: NamingItem.FAQ %></a></li>
 <li><a href="<%= Url.Action("BlogList") %>"><%: NamingItem.Blog %></a></li>
 <li><a href="<%= Url.Action("JoinUs") %>"><%: NamingItem.JoinUs %></a></li>
-<%  if (ViewBag.Lang == null || ViewBag.Lang == "zh-TW")
+    <%  if (ViewBag.Lang == null || ViewBag.Lang == "zh-TW")
         {   %>
     <li><a href="javascript:changeLanguage('en-US');" class="btn-link2">EN <i class="zmdi zmdi-globe-alt"></i></a></li>
-<%  }
+    <%  }
         else
         {   %>
-    <li><a href="javascript:changeLanguage('en-TW');" class="btn-link2">繁 <i class="zmdi zmdi-globe-alt"></i></a></li>
-<%  } %>
+    <li><a href="javascript:changeLanguage('zh-TW');" class="btn-link2">繁 <i class="zmdi zmdi-globe-alt"></i></a></li>
+    <%  } %>
 <li>
     <a href="<%= Url.Action("BookNow") %>" class="btn btn-default btn-round"><%: NamingItem.BookNow %></a>
 </li>

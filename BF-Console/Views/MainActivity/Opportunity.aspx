@@ -27,7 +27,9 @@
                     <a href="#" class="btn btn-primary btn-round wow fadeInUp animated hidden-md-up" data-wow-delay=".6s" data-effect="mfp-zoom-in"><%: NamingItem.BookNow %></a>
                 </div>
                 <!-- iPhone -->
-                <img class="header_iphone wow fadeInUp animated" src="images/landing/banner/banner-join.jpg" alt="孕婦健身" data-wow-delay=".3s" data-effect="mfp-zoom-in">
+                <div class="col-md-10 col-md-offset-1 text-center">
+                    <img class="header_iphone wow fadeInUp animated" src="images/landing/banner/banner-join.jpg" alt="孕婦健身" data-wow-delay=".3s" data-effect="mfp-zoom-in">
+                </div>                
                 <!-- //iPhone -->
             </div>
         </div>
