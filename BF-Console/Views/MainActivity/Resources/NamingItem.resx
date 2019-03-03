@@ -244,7 +244,7 @@
     <value>台北市信義區信義路五段16號2樓之2</value>
   </data>
   <data name="FindXinyiBranchDesc1" xml:space="preserve">
-    <value>位於台北101正對面 (1Bite2Go 樓上)，捷運台北101/世貿站3號出口即可抵達。</value>
+    <value>位於台北101正對面，捷運台北101/世貿站3號出口即可抵達。</value>
   </data>
   <data name="FindXinyiBranchDesc2" xml:space="preserve">
     <value>台北市獨一無二同時擁有室內與戶外的私人教練場地。專業、寬敞與隱私的訓練空間，並且結合戶外大草皮運動區與PU跑道，讓您不侷限於室內場地。同時擁有戶外區的運動空間，增加訓練項目多元化，讓健身不僅止於健身，而是更佳的生活與功能化。</value>
@@ -268,7 +268,7 @@
     <value>加入執行團隊</value>
   </data>
   <data name="JoinUsDesc" xml:space="preserve">
-    <value>Beyond Fitness 創立於 2015 年，致力於發展專業一對一私人教練。Beyond Fitness 從南京小巨蛋發跡，成立三年來陸續拓展了信義 101 與忠孝敦化等分店，在這些的背後，是一群想用行動與專業實踐理想的夥伴，與背後願意相信 我們的客戶們。我們相信，教育應該是個別化的，訓練也應該是，我們針對個人化的需求去克制最符合「人」的訓練模式，進而引領客戶走向更美好的生活為目標。</value>
+    <value>Beyond Fitness 創立於 2014 年，致力於發展專業一對一私人教練。Beyond Fitness 從南京小巨蛋發跡，成立三年來陸續拓展了信義 101 與忠孝敦化等分店，在這些的背後，是一群想用行動與專業實踐理想的夥伴，與背後願意相信 我們的客戶們。我們相信，教育應該是個別化的，訓練也應該是，我們針對個人化的需求去客製最符合「人」的訓練模式，進而引領客戶走向更美好的生活為目標。</value>
   </data>
   <data name="JoinUsFeature1" xml:space="preserve">
     <value>微笑</value>
@@ -316,19 +316,16 @@
     <value>你可以獲得什麼</value>
   </data>
   <data name="OpportunityFeaturesDesc1" xml:space="preserve">
-    <value>與優秀夥伴共事的機會</value>
+    <value>您將得到完整的內部教育培訓</value>
   </data>
   <data name="OpportunityFeaturesDesc2" xml:space="preserve">
-    <value>一個世界級視野的訓練平台</value>
+    <value>您將得到固定的國際進修機會</value>
   </data>
   <data name="OpportunityFeaturesDesc3" xml:space="preserve">
-    <value>在壓力鍋中爆炸性成長的專業水準</value>
+    <value>您將了解科學雲端系統的數據</value>
   </data>
   <data name="OpportunityFeaturesDesc4" xml:space="preserve">
-    <value>一份不算太高但可以舒適過生活的薪水</value>
-  </data>
-  <data name="OpportunityFeaturesDesc5" xml:space="preserve">
-    <value>在工作中玩樂，玩樂中工作</value>
+    <value>您將獲得良好進修及升遷制度</value>
   </data>
   <data name="JoinUsContactTitle" xml:space="preserve">
     <value>把握一展長才的機會</value>
@@ -434,5 +431,8 @@
   </data>
   <data name="BlogBack" xml:space="preserve">
     <value>回官網首頁</value>
+  </data>
+  <data name="PricingTitle" xml:space="preserve">
+    <value>選擇最適合您的方案</value>
   </data>
 </root>

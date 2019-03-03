@@ -467,12 +467,6 @@ namespace BFConsole.Views.MainActivity.Resources {
             }
         }
         
-        public static string OpportunityFeaturesDesc5 {
-            get {
-                return ResourceManager.GetString("OpportunityFeaturesDesc5", resourceCulture);
-            }
-        }
-        
         public static string JoinUsContactTitle {
             get {
                 return ResourceManager.GetString("JoinUsContactTitle", resourceCulture);
@@ -680,6 +674,12 @@ namespace BFConsole.Views.MainActivity.Resources {
         public static string BlogBack {
             get {
                 return ResourceManager.GetString("BlogBack", resourceCulture);
+            }
+        }
+        
+        public static string PricingTitle {
+            get {
+                return ResourceManager.GetString("PricingTitle", resourceCulture);
             }
         }
     }

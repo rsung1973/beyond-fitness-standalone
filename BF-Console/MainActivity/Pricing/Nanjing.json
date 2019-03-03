@@ -1,0 +1,60 @@
+{
+  "branchName": "南京店",
+  "arenaView": "images/landing/360/arena.jpg",
+  "coachItems": [
+    {
+      "coachName": "戴悟修",
+      "nickname": "Bryant",
+      "prologue": "舒適圈就是失敗圈，成功者永遠走在恐懼的邊緣。",
+      "scenarioPhoto": [ "Scenario1.jpg"]
+    },
+    {
+      "coachName": "林哲儀",
+      "nickname": "Joei",
+      "prologue": "沒有做不到，只有要不要！！",
+      "scenarioPhoto": [ "Scenario1.jpg" ]
+    },
+    {
+      "coachName": "胡志達",
+      "nickname": "Peter",
+      "prologue": "人在成長之前必須先學會相信自己",
+      "scenarioPhoto": [ "Scenario1.jpg" ]
+    },
+    {
+      "coachName": "李瑞傑",
+      "nickname": "Sam",
+      "prologue": "你所辛苦努力的今天，是為了更棒更好的明天。",
+      "scenarioPhoto": [ "Scenario1.jpg" ]
+    },
+    {
+      "coachName": "蔡雅欣",
+      "nickname": "Sammie",
+      "prologue": "Be the change that you wish to see in the world.",
+      "scenarioPhoto": [ "Scenario1.jpg" ]
+    },
+    {
+      "coachName": "陳嫻蓁",
+      "nickname": "Lucy",
+      "prologue": "當你開始改變自己，你也會越來越喜歡自己",
+      "scenarioPhoto": [ "Scenario1.jpg" ]
+    },
+    {
+      "coachName": "黃宇承",
+      "nickname": "Alan",
+      "prologue": "寧願跑起來被絆倒無數次，也不願規規矩矩走一輩子。就算跌倒也要豪邁的笑。",
+      "scenarioPhoto": [ "Scenario1.jpg" ]
+    },
+    {
+      "coachName": "鄭偉晨",
+      "nickname": "Neil",
+      "prologue": "只有放棄嘗試的，才是失敗者。",
+      "scenarioPhoto": [ "Scenario1.jpg" ]
+    },
+    {
+      "coachName": "曹育翔",
+      "nickname": "Hardy",
+      "prologue": "Continuous effort-not strength or intelligence-is the key to unlocking our potential.",
+      "scenarioPhoto": [ "Scenario1.jpg" ]
+    }
+  ]
+}

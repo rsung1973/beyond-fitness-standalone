@@ -1,0 +1,48 @@
+{
+  "branchName": "忠孝店",
+  "arenaView": "images/landing/360/sogo.jpg",
+  "coachItems": [
+    {
+      "coachName": "黃伊涵",
+      "nickname": "Sabrina",
+      "prologue": "「我」的價值由我自己決定！",
+      "scenarioPhoto": [ "Scenario1.jpg" ]
+    },
+    {
+      "coachName": "黃政浩",
+      "nickname": "Bill",
+      "prologue": "You are how you behave！",
+      "scenarioPhoto": [ "Scenario1.jpg" ]
+    },
+    {
+      "coachName": "游念儒",
+      "nickname": "Vic",
+      "prologue": "做任何事沒有能不能，只有想不想，如果真的想達成某個目標，那就全力以赴吧！",
+      "scenarioPhoto": [ "Scenario1.jpg" ]
+    },
+    {
+      "coachName": "宋智強",
+      "nickname": "Galai",
+      "prologue": "你/妳在訓練時缺乏的不是體力或者是力量，而是意志。",
+      "scenarioPhoto": [ "Scenario1.jpg" ]
+    },
+    {
+      "coachName": "陳詩綺",
+      "nickname": "Iron",
+      "prologue": "You haven&apos;t failed until you quit trying.",
+      "scenarioPhoto": [ "Scenario1.jpg" ]
+    },
+    {
+      "coachName": "侯炫竹",
+      "nickname": "Ted",
+      "prologue": "肯定自己，相信自己，超越自己",
+      "scenarioPhoto": [ "Scenario1.jpg" ]
+    },
+    {
+      "coachName": "劉家瑜",
+      "nickname": "Peter Liu",
+      "prologue": "危機就是轉機，你的選擇比努力更重要",
+      "scenarioPhoto": [ "Scenario1.jpg" ]
+    }
+  ]
+}

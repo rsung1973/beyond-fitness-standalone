@@ -1,0 +1,36 @@
+{
+  "branchName": "信義店",
+  "arenaView": "images/landing/360/101.jpg",
+  "coachItems": [
+    {
+      "coachName": "沈柏宇",
+      "nickname": "Shen",
+      "prologue": "思維影響行動，行動產生結果。",
+      "scenarioPhoto": [ "Scenario1.jpg" ]
+    },
+    {
+      "coachName": "黃伊婷",
+      "nickname": "Doreen",
+      "prologue": "你不改變並不會怎麼樣。但你改變了，肯定會變得不一樣！",
+      "scenarioPhoto": [ "Scenario1.jpg" ]
+    },
+    {
+      "coachName": "陳彥龍",
+      "nickname": "Billy",
+      "prologue": "折騰你的不是你爬的那座山，而是你鞋子裡的小石頭。",
+      "scenarioPhoto": [ "Scenario1.jpg" ]
+    },
+    {
+      "coachName": "崔宸笙",
+      "nickname": "Annie",
+      "prologue": "也許一開始沒有很厲害，但要開始變得厲害。",
+      "scenarioPhoto": [ "Scenario1.jpg" ]
+    },
+    {
+      "coachName": "陳芷榆",
+      "nickname": "Genie",
+      "prologue": "真正的成長，是因為經驗了苦痛；是在頻頻回首的大路上，終於領略了生命的喜悅與擔當！",
+      "scenarioPhoto": []
+    }
+  ]
+}
