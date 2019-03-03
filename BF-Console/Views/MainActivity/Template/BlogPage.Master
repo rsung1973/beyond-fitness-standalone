@@ -91,7 +91,7 @@
                 <div class="col-md-10 col-sm-10 col-xs-12">
                     <ul class="left nav-active">
                         <li class="pull-right">
-                            <a href="<%= VirtualPathUtility.ToAbsolute("~/MainActivity/Index") %>" class="btn btn-default btn-round"><%: NamingItem.BlogBack %></a>
+                            <a href="<%= VirtualPathUtility.ToAbsolute("~/Official/Index") %>" class="btn btn-default btn-round"><%: NamingItem.BlogBack %></a>
                         </li>
                     </ul>
                     <script>
