@@ -68,22 +68,7 @@
 <body>
     <!-- //Main Nav -->
     <header id="main-nav">
-        <div class="container">
-            <div id="slide_out_menu">
-                <a href="javascript:void(0);" class="menu-close"><i class="zmdi zmdi-close"></i></a>
-                <div class="logo"><a href="<%= Url.Action("BlogList") %>"><img src="images/logo.png" alt="BeyondFitness"></a></div>
-                <ul>
-                    <li><a href="<%= Url.Action("BlogList") %>"><%: NamingItem.Blog %></a></li>
-                </ul>
-                <div class="slide_out_menu_footer">
-                    <ul class="socials">
-                        <li><a href="https://www.facebook.com/beyond.fitness.pro/" target="_blank"><i class="zmdi zmdi-facebook"></i></a></li>
-                        <li><a href="https://www.instagram.com/beyond_ft/" target="_blank"><i class="zmdi zmdi-instagram"></i></a></li>
-                        <li><a href="https://www.youtube.com/channel/UCPIcjPGaFFB1o8cFDUrT-4g" target="_blank><i class="zmdi zmdi-youtube-play"></i></a></li>
-                        <li><a href="line://ti/p/@itj9410x" target="_blank><i class="fab fa-line"></i></a></li>
-                    </ul>
-                </div>
-            </div>
+        <div class="container">            
             <div class="row">
                 <div class="col-md-2 col-sm-2 col-xs-12 text-center">
                     <a href="<%= Url.Action("BlogGrid") %>" class="logo"><img src="images/logo.png" alt="BeyondFitness"></a>
