@@ -15824,6 +15824,11 @@ a {
     color: #fff !important
 }
 
+.l-cyan-2 {
+    background: linear-gradient(45deg, #49cdd0, #ab9ae5) !important;
+    color: #fff !important
+}
+
 .l-khaki {
     background: linear-gradient(45deg, khaki, #fdf181) !important
 }
@@ -20493,6 +20498,19 @@ img.mfp-img {
 @media screen and (min-width: 1024px) {
     .pricing-palden .pricing-item {
         margin: 1em -0.5em
+    }
+
+    .pricing-palden .pricing__item--featured {
+        margin: 0;
+        z-index: 10;
+        box-shadow: 0 0 20px rgba(46, 59, 125, 0.23)
+    }
+}
+
+@media only screen and (max-width: 992px) {
+    .pricing-palden .pricing-item {
+        flex: 0 1 200px;
+        margin: 1em -0.5em;
     }
 
     .pricing-palden .pricing__item--featured {
