@@ -38,7 +38,7 @@
                             </a>
                         </div>
                         <div class="media-body">
-                            <h4 class="media-heading"><a href="<%= Url.Action("BlogSingle", "MainActivity", new { KeyID = item.DocID.EncryptKey() }) %>"><%= item.Title %></a></h4>
+                            <h4 class="media-heading"><a href="<%= Url.Action("BlogSingle", "MainActivity", new { item.DocID }) %>"><%= item.Title %></a></h4>
                         </div>
                     </div>
                 </li>

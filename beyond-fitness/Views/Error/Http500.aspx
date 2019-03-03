@@ -1,4 +1,5 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/template/MainPage2017.Master" AutoEventWireup="true" CodeBehind="Index.aspx.cs" Inherits="System.Web.Mvc.ViewPage" %>
+﻿<%@ Page Title="" Language="C#" AutoEventWireup="true" Inherits="System.Web.Mvc.ViewPage" %>
+
 <%@ Import Namespace="System.IO" %>
 <%@ Import Namespace="System.Linq.Expressions" %>
 <%@ Import Namespace="System.Web.Mvc.Html" %>
@@ -9,45 +10,73 @@
 <%@ Import Namespace="WebHome.Models.DataEntity" %>
 <%@ Import Namespace="WebHome.Controllers" %>
 
-<asp:Content ID="ribbonContent" ContentPlaceHolderID="ribbonContent" runat="server">
-</asp:Content>
-<asp:Content ID="pageTitle" ContentPlaceHolderID="pageTitle" runat="server">
-</asp:Content>
-<asp:Content ID="mainContent" ContentPlaceHolderID="mainContent" runat="server">
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="description" content="Beyond Fitness | 專業與科學化的私人教練"/>
+    <meta http-equiv="PRAGMA" content="NO-CACHE"/>
+    <title>Beyond Fitness | 專業與科學化的私人教練</title>
+    <!-- Favicon-->
+    <link rel="icon" href="favicons/favicon_96x96.png"/>
+    <!-- Specifying a Webpage Icon for Web Clip -->
+    <link rel="apple-touch-icon-precomposed" href="favicons/favicon_57x57.png"/>
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="favicons/favicon_72x72.png"/>
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="favicons/favicon_114x114.png"/>
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="favicons/favicon_144x144.png"/>
+    <link rel="apple-touch-icon-precomposed" sizes="180x180" href="favicons/favicon_180x180.png"/>
+    <!-- IE可能不見得有效 -->
+    <meta http-equiv="EXPIRES" content="0"/>
+    <!-- 設定成馬上就過期 -->
+    <meta http-equiv="CACHE-CONTROL" content="NO-CACHE"/>
+    <!-- Mobile Meta -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="images/favicon.ico"/>
+    <!-- Magnific Popup -->
+    <link href="css/main-landing.css?1.0" type="text/css" rel="stylesheet"/>
+</head>
 
-    <div class="row">
-
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-
+<body>
+    <!-- //Main Nav -->
+    <header id="main-nav">
+        <div class="container">
             <div class="row">
-                <div class="col-sm-12">
-                    <div class="text-center error-box">
-                        <h1 class="error-text tada animated"><i class="fa fa-times-circle text-danger error-icon-shadow"></i>Error 500</h1>
-                        <h2 class="font-xl"><strong>Oooops, Something went wrong!</strong></h2>
-                        <br />
-                        <p class="lead semi-bold">
-                            <strong>You have experienced a technical error. We apologize.</strong>
-                            <br>
-                            <br>
-                            <small>We are working hard to correct this issue. Please wait a few moments and try your search again.
-                                <br>
-                                In the meantime, check out whats new on SmartAdmin:
-                            </small>
-                        </p>
-                    </div>
-
+                <div class="col-md-2 col-sm-2 col-xs-12 text-center">
+                    <a href="<%= VirtualPathUtility.ToAbsolute("~/") %>" class="logo">
+                        <img src="images/logo.png" alt="BeyondFitness"/></a>
                 </div>
-
             </div>
-
         </div>
+    </header>
+    <!-- // Banner -->
+    <section class="section-header small">
+        <div class="container">
+            <div class="row">
+                <!-- iPhone -->
+                <img class="header_iphone" src="images/error.png" alt="BeyondFitness">
+                <!-- //iPhone -->
+                <div class="col-md-8 col-md-offset-2 text-center">
+                    <h1>Oooops, Something went wrong!</h1>
+                    <h2>You have experienced a technical error. We apologize.<small></small></h2>
+                    <p>We are working hard to correct this issue. Please wait a few moments and try your search again.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- // Footer -->
+    <footer id="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
 
-    </div>
+</html>
 
-    <script>
-    </script>
-
-</asp:Content>
 <script runat="server">
 
     ModelStateDictionary _modelState;

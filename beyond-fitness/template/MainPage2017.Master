@@ -129,7 +129,10 @@
                     <!-- User image size is adjusted inside CSS, it should stay as it -->
 
                     <a href="javascript:void(0);" id="show-shortcut" data-action="toggleShortcut">
-                        <% _userProfile.RenderUserPicture(Writer, new { @class = "online" }); %>
+                        <%  if (_userProfile != null)
+                            {
+                                _userProfile.RenderUserPicture(Writer, new { @class = "online" });
+                            }   %>
                         <span> <%= _userProfile!=null ? _userProfile.UserName!=null ? _userProfile.UserName : _userProfile.RealName : null %>
                         </span>
                         <i class="fa fa-angle-down"></i>

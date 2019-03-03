@@ -66,7 +66,9 @@
         showLoading();
         $.post('<%= Url.Action("ConfirmSignatureForAmendment","CourseContract",new { KeyID = _model.RevisionID.EncryptKey() }) %>',
             {
-                'extension': $('input[name="extension"]').is(':checked')
+                'extension': $('input[name="extension"]').is(':checked'),
+                'booking': $('input[name="booking"]').is(':checked'),
+                'cancel': $('input[name="cancel"]').is(':checked'),
             }, function (data) {
                 hideLoading();
                 if (data.result) {

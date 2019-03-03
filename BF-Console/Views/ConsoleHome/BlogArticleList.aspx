@@ -63,7 +63,7 @@
                             <h3 class="m-t-0 m-b-5"><a href="javascript:viewArticle(<%= item.DocID %>);"><%= item.Title %></a></h3>
                             <ul class="meta">  
                                 <li><a><i class="zmdi zmdi-account col-blue"></i><%= item.UserProfile.FullName() %></a></li>
-                                <li><a><i class="zmdi zmdi-calendar col-green"></i></a></li>
+                                <li><a><i class="zmdi zmdi-calendar col-green"></i><%= $"{item.Document.DocDate:yyyy-MM-dd}" %></a></li>
                             </ul>
                             <ul class="meta">                                
                                 <%  foreach (var t in item.BlogTag)

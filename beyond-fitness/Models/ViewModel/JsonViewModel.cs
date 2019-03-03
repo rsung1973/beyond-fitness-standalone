@@ -10,6 +10,12 @@ namespace WebHome.Models.ViewModel
 
     }
 
+    public class BranchJsonViewModel
+    {
+        public String branchName { get; set; }
+        public int? unit { get; set; }
+    }
+
     public class CalendarEvent
     {
         public String id { get; set; }
@@ -45,6 +51,26 @@ namespace WebHome.Models.ViewModel
         public string branchName { get; set; }
         public string arenaView { get; set; }
         public List<CoachItem> coachItems { get; set; }
+    }
+
+    public class PriceItem
+    {
+        public string priceName { get; set; }
+        public string price { get; set; }
+        public string desc { get; set; }
+        public bool? promote { get; set; }
+    }
+
+    public class DurationItem
+    {
+        public int? unit { get; set; }
+        public List<PriceItem> priceItems { get; set; }
+    }
+
+    public class PricingData
+    {
+        public string branchName { get; set; }
+        public List<DurationItem> durationItems { get; set; }
     }
 
 }

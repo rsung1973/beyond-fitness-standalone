@@ -21,6 +21,12 @@ namespace WebHome
             //);
 
             routes.MapRoute(
+                name: "Official",
+                url: "Official/{action}/{id}",
+                defaults: new { controller = "MainActivity", action = "Index", id = UrlParameter.Optional }
+            );
+
+            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Account", action = "Index", id = UrlParameter.Optional }

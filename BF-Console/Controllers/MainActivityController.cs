@@ -79,6 +79,29 @@ namespace BFConsole.Controllers
             }
         }
 
+        public ActionResult PricingList(BranchJsonViewModel viewModel)
+        {
+            viewModel.branchName = viewModel.branchName.GetEfficientString();
+            viewModel.unit = viewModel.unit ?? 60;
+            ViewBag.ViewModel = viewModel;
+            PricingData model = null;
+            String jsonFile = Server.MapPath($"~/MainActivity/Pricing/{viewModel.branchName}.json");
+            if (System.IO.File.Exists(jsonFile))
+            {
+                var jsonData = System.IO.File.ReadAllText(jsonFile);
+                model = JsonConvert.DeserializeObject<PricingData>(jsonData);
+            }
+
+            if (model == null)
+            {
+                return Index();
+            }
+            else
+            {
+                return View(model);
+            }
+        }
+
         public ActionResult BlogArticleList(BlogArticleQueryViewModel viewModel)
         {
             ViewBag.ViewModel = viewModel;

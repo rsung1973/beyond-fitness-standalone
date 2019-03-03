@@ -19,13 +19,13 @@
     <a href="#"><i class="fa fa-lg fa-fw fa-tasks"></i><span class="menu-item-parent">顧問服務費</span></a>
     <ul>
         <li>
-            <a href="../../../front-end/pricing-arena.html" target="_blank"><i class="fa fa-fw fa-th-list"></i>南京小巨蛋</a>
+            <a href="<%= Url.Action("PricingList","MainActivity",new { branchName = "Nanjing" }) %>" target="_blank"><i class="fa fa-fw fa-th-list"></i>南京小巨蛋</a>
         </li>
         <li>
-            <a href="../../../front-end/pricing-101.html" target="_blank"><i class="fa fa-fw fa-th-list"></i>Enhanced 101</a>
+            <a href="<%= Url.Action("PricingList","MainActivity",new { branchName = "Xinyi" }) %>" target="_blank"><i class="fa fa-fw fa-th-list"></i>Enhanced 101</a>
         </li>
         <li>
-            <a href="../../../front-end/pricing-sogo.html" target="_blank"><i class="fa fa-fw fa-th-list"></i>忠孝</a>
+            <a href="<%= Url.Action("PricingList","MainActivity",new { branchName = "Zhongxiao" }) %>" target="_blank"><i class="fa fa-fw fa-th-list"></i>忠孝</a>
         </li>
     </ul>
 </li>

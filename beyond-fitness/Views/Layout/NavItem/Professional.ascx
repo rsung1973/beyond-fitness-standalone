@@ -16,9 +16,9 @@
 <li>
     <a href="#" title="上稿管理"><i class="fa fa-lg fa-fw fa-edit"></i><span class="menu-item-parent">上稿管理</span></a>
     <ul>
-        <li>
+<%--        <li>
             <a href="<%= VirtualPathUtility.ToAbsolute("~/Information/Publish") %>"><i class="fa fa-fw fa-puzzle-piece"></i>專業知識</a>
-        </li>
+        </li>--%>
         <li>
             <a href="<%= Url.Action("DailyQuestionIndex","Activity") %>"><i class="fa fa-fw fa-question"></i>問與答</a>
         </li>
