@@ -34,7 +34,7 @@
                     <div class="blog-item text-center">
                         <div class="blog-img">
                             <img class="img-fluid" src="<%= item.CategoryIndication %>">
-                            <div class="blog-overlay">
+                            <div class="blog-overlay" onclick="javascript:viewArticleList(<%= item.CategoryID %>);">
                                 <div class="overlay-social-icon text-center">
                                     <ul class="social-icons">
                                         <li><a href="<%= Url.Action("BlogArticleList","MainActivity",new { item.CategoryID }) %>">了解更多</a></li>
@@ -55,7 +55,12 @@
 </asp:Content>
 
 <asp:Content ID="TailPageJavaScriptInclude" ContentPlaceHolderID="TailPageJavaScriptInclude" runat="server">
+   <script>
 
+        function viewArticleList(categoryID) {
+            $('').launchDownload('<%= Url.Action("BlogArticleList", "MainActivity") %>', { 'CategoryID': categoryID });
+        }
+    </script>
 </asp:Content>
 
 <script runat="server">
@@ -72,3 +77,4 @@
     }
 
 </script>
+

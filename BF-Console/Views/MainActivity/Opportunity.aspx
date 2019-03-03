@@ -47,7 +47,6 @@
                         <li><%: NamingItem.OpportunityFeaturesDesc2 %></li>
                         <li><%: NamingItem.OpportunityFeaturesDesc3 %></li>
                         <li><%: NamingItem.OpportunityFeaturesDesc4 %></li>
-                        <li><%: NamingItem.OpportunityFeaturesDesc5 %></li>
                     </ul>
                 </div>
             </div>

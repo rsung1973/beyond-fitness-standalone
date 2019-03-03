@@ -34,7 +34,11 @@
                             </a>
                         </div>
                         <div class="media-body">
-                            <h4 class="media-heading"><%= item.Category %></h4>                            
+                            <h4 class="media-heading">
+                                <a href="<%= Url.Action("BlogArticleList","MainActivity",new { item.CategoryID }) %>">
+                                    <%= item.Category %>
+                                </a>
+                            </h4>                            
                         </div>
                     </div>
                 </li>
