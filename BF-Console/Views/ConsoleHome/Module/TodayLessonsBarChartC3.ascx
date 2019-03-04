@@ -74,7 +74,7 @@
                     // name of each serie
                     'data1': 'P.T',
                     'data2': 'P.I',
-                    'data3': '體驗'
+                    'data3': 'T.S'
                 },
                 labels: {
                         format: {
