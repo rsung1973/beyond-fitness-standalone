@@ -1,0 +1,90 @@
+﻿<%@ Page Title="" Language="C#" AutoEventWireup="true" MasterPageFile="~/Views/MainActivity/Template/MainPage.Master" Inherits="System.Web.Mvc.ViewPage" %>
+
+<%@ Import Namespace="System.IO" %>
+<%@ Import Namespace="System.Linq.Expressions" %>
+<%@ Import Namespace="System.Web.Mvc.Html" %>
+<%@ Import Namespace="WebHome.Helper" %>
+<%@ Import Namespace="WebHome.Models.Locale" %>
+<%@ Import Namespace="WebHome.Models.Locale" %>
+<%@ Import Namespace="WebHome.Models.ViewModel" %>
+<%@ Import Namespace="WebHome.Models.DataEntity" %>
+<%@ Import Namespace="WebHome.Controllers" %>
+<%@ Import Namespace="Newtonsoft.Json" %>
+<%@ Import Namespace="BFConsole.Views.MainActivity.Resources" %>
+
+<asp:Content ID="CustomHeader" ContentPlaceHolderID="CustomHeader" runat="server">
+
+</asp:Content>
+
+<asp:Content ID="MainContent" ContentPlaceHolderID="MainContent" runat="server">
+    <section class="section-features">
+        <div class="container">
+            <div class="row mb-30">
+                <div class="col-md-12 text-center">
+                    <h1 class="wow fadeInDown" data-wow-delay="0.3s"><%: NamingItem.PricingTitle %></h1>
+<!--                    <h2 class="wow fadeInDown" data-wow-delay="0.5s">它的價值，馬上讓你看到。</h2>-->
+                    <h2 class="wow fadeInDown" data-wow-delay="0.5s"><%= _model.branchName %></h2>
+                </div>
+            </div>
+            <%
+                var currentItem = _model.durationItems.Where(d => d.unit == _viewModel.unit).First();
+                _viewModel.unit = _viewModel.unit == 60 ? 90 : 60;    
+            %>
+            <div class="row clearfix">       
+                <div class="col-lg-12">
+                    <span class="pull-right p-r-20">
+                        <a href="<%= Url.Action("PricingList","MainActivity",_viewModel) %>" class="btn btn-simple btn-round"><i class="fas fa-exchange-alt"></i> <%= _viewModel.unit %></a>
+                    </span>
+                </div>
+                <div class="col-lg-12">
+                    <div class="pricing pricing-palden">
+                    <%  foreach (var c in currentItem.priceItems)
+                        {   %>
+                        <div class="<%= c.promote==true ? "pricing-item pricing__item--featured" : "pricing-item" %>">
+                            <div class="<%= c.promote==true ? "pricing-deco l-cyan-2" : "pricing-deco l-slategray" %>">
+                                <svg class="pricing-deco-img" enable-background="new 0 0 300 100" height="100px" id="Layer_1" preserveAspectRatio="none" version="1.1" viewBox="0 0 300 100" width="300px" x="0px" xml:space="preserve" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" y="0px">
+                                    <path class="deco-layer deco-layer--1" d="M30.913,43.944c0,0,42.911-34.464,87.51-14.191c77.31,35.14,113.304-1.952,146.638-4.729&#x000A; c48.654-4.056,69.94,16.218,69.94,16.218v54.396H30.913V43.944z" fill="#FFFFFF" opacity="0.6"></path>
+                                    <path class="deco-layer deco-layer--2" d="M-35.667,44.628c0,0,42.91-34.463,87.51-14.191c77.31,35.141,113.304-1.952,146.639-4.729&#x000A;    c48.653-4.055,69.939,16.218,69.939,16.218v54.396H-35.667V44.628z" fill="#FFFFFF" opacity="0.6"></path>
+                                    <path class="deco-layer deco-layer--3" d="M43.415,98.342c0,0,48.283-68.927,109.133-68.927c65.886,0,97.983,67.914,97.983,67.914v3.716&#x000A;    H42.401L43.415,98.342z" fill="#FFFFFF" opacity="0.7"></path>
+                                    <path class="deco-layer deco-layer--4" d="M-34.667,62.998c0,0,56-45.667,120.316-27.839C167.484,57.842,197,41.332,232.286,30.428&#x000A; c53.07-16.399,104.047,36.903,104.047,36.903l1.333,36.667l-372-2.954L-34.667,62.998z" fill="#FFFFFF"></path>
+                                </svg>
+                                <div class="pricing-price"><span class="pricing-currency">$</span><%= c.price %>
+                                </div>
+                                <h3 class="pricing-title"><%= c.priceName %></h3>
+                            </div>
+                            <ul class="feature-list">
+                                <li><%= c.desc %></li>
+                                <li><%= currentItem.unit %>分鐘</li>
+                            </ul>
+                        </div>
+                        <%  }   %>
+                    </div>
+                </div>                
+            </div>
+        </div>
+    </section>
+    
+    
+</asp:Content>
+
+<asp:Content ID="TailPageJavaScriptInclude" ContentPlaceHolderID="TailPageJavaScriptInclude" runat="server">
+
+</asp:Content>
+
+<script runat="server">
+
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    BranchJsonViewModel _viewModel;
+    PricingData _model;
+
+    protected override void OnInit(EventArgs e)
+    {
+        base.OnInit(e);
+        models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+        _modelState = (ModelStateDictionary)ViewBag.ModelState;
+        _model = (PricingData)this.Model;
+        _viewModel = (BranchJsonViewModel)ViewBag.ViewModel;
+    }
+
+</script>
