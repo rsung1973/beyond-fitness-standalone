@@ -24,7 +24,7 @@
                 <div class="col-md-8 col-md-offset-2 text-center">
                     <h1 class="wow fadeInUp animated" data-wow-delay=".3s" data-effect="mfp-zoom-in"><%: NamingItem.OpportunityBannerTitle %></h1>
                     <p class="wow fadeInUp animated" data-wow-delay=".3s" data-effect="mfp-zoom-in"><%: NamingItem.OpportunityBannerSubTitle %></p>
-                    <a href="#" class="btn btn-primary btn-round wow fadeInUp animated hidden-md-up" data-wow-delay=".6s" data-effect="mfp-zoom-in"><%: NamingItem.BookNow %></a>
+                    <a href="<%= Url.Action("BookNow") %>" class="btn btn-primary btn-round wow fadeInUp animated hidden-md-up" data-wow-delay=".6s" data-effect="mfp-zoom-in"><%: NamingItem.BookNow %></a>
                 </div>
                 <!-- iPhone -->
                 <div class="col-md-10 col-md-offset-1 text-center">
