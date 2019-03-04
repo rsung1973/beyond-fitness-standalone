@@ -15,8 +15,8 @@
                 <div class="col-12">
                     <div class="card xl-labaster">
                         <div class="body">
-<!--                            <div class="row text-center calendar-todo">
-                                        <div class="col-sm-3 col-6">
+                            <div class="row text-center calendar-todo">
+<!--                                        <div class="col-sm-3 col-6">
                                             <h4 class="margin-0">20</h4>
                                             <p class="text-muted margin-0"> 本月P.T 編輯中</p>
                                         </div>
@@ -31,8 +31,8 @@
                                         <div class="col-sm-3 col-6">
                                             <h4 class="margin-0">3</h4>
                                             <p class="text-muted margin-0"> 截至上月P.I 未完成</p>
-                                        </div>
-                                    </div>-->
+                                        </div>-->
+                                    </div>
                             <%  
                                 Html.RenderPartial("~/Views/ConsoleHome/Module/TodayLessonsBarChartC3.ascx", _model);
                             %>
