@@ -33,10 +33,23 @@
             .Select(g => new _Counting { Hour = g.Key, Count = g.Count() })
             .ToList();
 
+    var totalData = getDistribution(PTLessons).ToArray();
+    var tempData = getDistribution(PILessons).ToArray();
+    for(int i=0;i<totalData.Length;i++)
+    {
+        totalData[i] += tempData[i];
+    }
+    tempData = getDistribution(TrialLessons).ToArray();
+    for(int i=0;i<totalData.Length;i++)
+    {
+        totalData[i] += tempData[i];
+    }
+
     %>
 <div id="<%= _chartID %>" class="c3 m-t-20"></div>
 <script>
 
+    var totalData = <%= JsonConvert.SerializeObject(totalData) %>;
     $(function () {
         var chart = c3.generate({
             bindto: '#<%= _chartID %>', // id of chart wrapper
@@ -63,7 +76,13 @@
                     'data2': 'P.I',
                     'data3': '體驗'
                 },
-                labels: true,
+                labels: {
+                        format: {
+                            data3: function(v, id, i, j) {
+                                return totalData[i];
+                            },
+                        }
+                    },
             },
             axis: {
                 x: {
