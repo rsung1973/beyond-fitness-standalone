@@ -32,11 +32,7 @@
             %>
             <div class="row clearfix">       
                 <div class="col-lg-12">
-                    <span class="pull-right p-r-20">
-                        <a href="<%= Url.Action("PricingList","MainActivity",_viewModel) %>" class="btn btn-simple btn-round"><i class="fas fa-exchange-alt"></i> <%= _viewModel.unit %></a>
-                    </span>
-                </div>
-                <div class="col-lg-12">
+                    <a href="<%= Url.Action("PricingList","MainActivity",_viewModel) %>" class="btn btn-simple btn-round btn-sm pull-right"><i class="fas fa-exchange-alt"></i> <%= _viewModel.unit %></a>
                     <div class="pricing pricing-palden">
                     <%  foreach (var c in currentItem.priceItems)
                         {   %>
