@@ -19,10 +19,10 @@
     <a href="#"><i class="fa fa-lg fa-fw fa-tasks"></i><span class="menu-item-parent">顧問服務費</span></a>
     <ul>
         <li>
-            <a href="<%= Url.Action("PricingList","MainActivity",new { branchName = "Nanjing" }) %>" target="_blank"><i class="fa fa-fw fa-th-list"></i>南京小巨蛋</a>
+            <a href="<%= Url.Action("PricingList","MainActivity",new { branchName = "Nanjing" }) %>" target="_blank"><i class="fa fa-fw fa-th-list"></i>南京</a>
         </li>
         <li>
-            <a href="<%= Url.Action("PricingList","MainActivity",new { branchName = "Xinyi" }) %>" target="_blank"><i class="fa fa-fw fa-th-list"></i>Enhanced 101</a>
+            <a href="<%= Url.Action("PricingList","MainActivity",new { branchName = "Xinyi" }) %>" target="_blank"><i class="fa fa-fw fa-th-list"></i>信義</a>
         </li>
         <li>
             <a href="<%= Url.Action("PricingList","MainActivity",new { branchName = "Zhongxiao" }) %>" target="_blank"><i class="fa fa-fw fa-th-list"></i>忠孝</a>
