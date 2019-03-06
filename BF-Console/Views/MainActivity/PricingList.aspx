@@ -28,11 +28,15 @@
             </div>
             <%
                 var currentItem = _model.durationItems.Where(d => d.unit == _viewModel.unit).First();
-                _viewModel.unit = _viewModel.unit == 60 ? 90 : 60;    
+                _viewModel.unit = _viewModel.unit == 60 ? 90 : 60; 
+                var nextItem = _model.durationItems.Where(d => d.unit == _viewModel.unit).FirstOrDefault();
             %>
             <div class="row clearfix">       
                 <div class="col-lg-12">
-                    <a href="<%= Url.Action("PricingList","MainActivity",_viewModel) %>" class="btn btn-simple btn-round btn-sm pull-right"><i class="fas fa-exchange-alt"></i> <%= _viewModel.unit %></a>
+                    <%  if (nextItem != null)
+                    {   %>
+                        <a href="<%= Url.Action("PricingList","MainActivity",_viewModel) %>" class="btn btn-simple btn-round btn-sm pull-right"><i class="fas fa-exchange-alt"></i> <%= _viewModel.unit %></a>
+                    <% }%>
                     <div class="pricing pricing-palden">
                     <%  foreach (var c in currentItem.priceItems)
                         {   %>
