@@ -19596,7 +19596,7 @@ textarea:focus {
 @media only screen and (max-width: 575px) {
     .section-header {
         padding: 160px 0;
-        height: 100vh;
+        height: 80vh;
     }
 
         .section-header.small {
