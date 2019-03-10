@@ -544,13 +544,13 @@
                                 <div class="col-lg-2 col-md-3 col-sm-6">
                                     <div class="card">
                                         <div class="file">
-                                            <a href="javascript:$('').launchDownload('<%= Url.Action("GetMonthlySettlement","Accounting") %>', { 'settlementDate': '<%= $"{DateTime.Today.AddMonths(-1):yyyy/MM/dd}" %>','initialDate':'2018/12/01' }, 'report',true);">
+                                            <a href="javascript:$('').launchDownload('<%= Url.Action("GetMonthlySettlement","Accounting") %>', { 'settlementDate': '<%= $"{DateTime.Today:yyyy/MM/dd}" %>','initialDate':'2018/12/01' }, 'report',true);">
                                                 <div class="icon">
                                                     <i class="zmdi livicon livicon-evo" data-options="name: box.svg; size: 60px; style: original; strokeWidth:2px; autoPlay:true"></i>
                                                 </div>
                                                 <div class="file-name">
                                                     <p class="m-b-5 text-muted">合約盤點清單</p>
-                                                    <small>截至上月 <span class="date text-muted"><%= $"{DateTime.Today:yyyy/MM}" %></span></small>
+                                                    <small>截至上月 <span class="date text-muted"><%= $"{DateTime.Today.AddMonths(-1):yyyy/MM}" %></span></small>
                                                 </div>
                                             </a>
                                         </div>
