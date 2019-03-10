@@ -972,7 +972,7 @@ namespace WebHome.Controllers
             }
 
             bool initial = false;
-            var calcDate = settlementDate.Value.FirstDayOfMonth();
+            var calcDate = settlementDate.Value.AddMonths(1).FirstDayOfMonth();
             if (initialDate.HasValue)
             {
                 initial = initialDate.Value.FirstDayOfMonth() == calcDate;
@@ -1006,19 +1006,30 @@ namespace WebHome.Controllers
                             && item.RemainedAmount == 0)
                         continue;
                 }
+
                 var r = table.NewRow();
                 var c = item.CourseContract;
+                var ts = c.ContractTrustSettlement.Any();
                 r[(int)MonthlySettlementColumn.入會契約編號] = c.ContractNo();
                 //r[(int)MonthlySettlementColumn.身分證字號] = c.ContractOwner.UserProfileExtension.IDNo;
                 r[(int)MonthlySettlementColumn.姓名] = c.ContractOwner.RealName;
-                r[(int)MonthlySettlementColumn.是否信託] = c.ContractTrustSettlement.Any() ? "是" : "否";
+                r[(int)MonthlySettlementColumn.是否信託] = ts ? "是" : "否";
                 //r[(int)MonthlySettlementColumn.累計收款金額] = item.TotalPrepaid;
                 //r[(int)MonthlySettlementColumn.累計上課金額] = item.TotalLessonCost;
                 //if (item.TotalAllowanceAmount.HasValue)
                 //    r[(int)MonthlySettlementColumn.折退金額] = item.TotalAllowanceAmount;
-                r[(int)MonthlySettlementColumn.契約餘額] = item.RemainedAmount;
+                //r[(int)MonthlySettlementColumn.契約餘額] = item.RemainedAmount;
+                if (c.ContractTrustSettlement.Any() && item.RemainedAmount > 0)
+                {
+                    r[(int)MonthlySettlementColumn.契約餘額] = c.TotalCost - item.TotalLessonCost;
+                }
+                else
+                {
+                    r[(int)MonthlySettlementColumn.契約餘額] = item.RemainedAmount;
+                }
                 //r[(int)MonthlySettlementColumn.累計上課數] = c.AttendedLessonCount(calcDate);
                 r[(int)MonthlySettlementColumn.契約總價金] = c.TotalCost;
+
                 r[(int)MonthlySettlementColumn.契約起日] = $"{c.EffectiveDate:yyyyMMdd}";
                 r[(int)MonthlySettlementColumn.契約迄日] = $"{(c.ValidTo ?? c.Expiration):yyyyMMdd}";
                 table.Rows.Add(r);

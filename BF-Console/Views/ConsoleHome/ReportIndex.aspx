@@ -544,7 +544,7 @@
                                 <div class="col-lg-2 col-md-3 col-sm-6">
                                     <div class="card">
                                         <div class="file">
-                                            <a href="javascript:$('').launchDownload('<%= Url.Action("GetMonthlySettlement","Accounting") %>', { 'settlementDate': '<%= $"{DateTime.Today:yyyy/MM/dd}" %>','initialDate':'2018/12/01' }, 'report',true);">
+                                            <a href="javascript:$('').launchDownload('<%= Url.Action("GetMonthlySettlement","Accounting") %>', { 'settlementDate': '<%= $"{DateTime.Today.AddMonths(-1):yyyy/MM/dd}" %>','initialDate':'2018/12/01' }, 'report',true);">
                                                 <div class="icon">
                                                     <i class="zmdi livicon livicon-evo" data-options="name: box.svg; size: 60px; style: original; strokeWidth:2px; autoPlay:true"></i>
                                                 </div>
