@@ -17,8 +17,6 @@
     <link href="plugins/jquery-datatable/Responsive-2.2.2/css/responsive.bootstrap4.min.css" rel="stylesheet">
     <link href="plugins/jquery-datatable/FixedColumns-3.2.5/css/fixedColumns.bootstrap4.min.css" rel="stylesheet">
     <!-- Bootstrap Datetimepick -->
-    <%--    <link href="plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
-    <link href="css/datetimepicker.css" rel="stylesheet" />--%>
     <link href="plugins/smartcalendar/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
     <link href="css/smartcalendar-2.css" rel="stylesheet" />
 
@@ -48,7 +46,6 @@
                 <div class="col-lg-12">
                     <div class="card">
                         <ul class="nav nav-tabs">
-                            <%--<li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#contract">合約</a></li>--%>
                             <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#payment">收款</a></li>
                             <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#learner">學生</a></li>
                             <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#achivement">薪資</a></li>
@@ -56,109 +53,7 @@
                             <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#inventory">盤點</a></li>
                         </ul>
                     </div>
-                    <div class="tab-content">
-                        <%--<div class="tab-pane active" id="contract">
-                            <div class="row clearfix">
-                                <div class="col-12">
-                                    <h4 class="card-outbound-header">懶人包</h4>
-                                </div>
-                                <div class="col-lg-2 col-md-3 col-sm-6">
-                                    <div class="card">
-                                        <div class="file">
-                                            <a href="download/ContractDetails(YYYY-MM-DD HH-mm-dd).xlsx" >
-                                                <div class="icon">
-                                                    <i class="zmdi livicon livicon-evo" data-options="name: box.svg; size: 60px; style: original; strokeWidth:2px; autoPlay:true"></i>
-                                                </div>
-                                                <div class="file-name">
-                                                    <p class="m-b-5 text-muted">合約清單</p>
-                                                    <small>本月簽約 <span class="date text-muted">2018/12</span></small>
-                                                </div>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-2 col-md-3 col-sm-6">
-                                    <div class="card">
-                                        <div class="file">
-                                            <a href="download/ContractDetails(YYYY-MM-DD HH-mm-dd).xlsx" >
-                                                <div class="icon">
-                                                    <i class="zmdi livicon livicon-evo" data-options="name: box.svg; size: 60px; style: original; strokeWidth:2px; autoPlay:true"></i>
-                                                </div>
-                                                <div class="file-name">
-                                                    <p class="m-b-5 text-muted">合約清單</p>
-                                                    <small>上月簽約 <span class="date text-muted">2018/11</span></small>
-                                                </div>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-2 col-md-3 col-sm-6">
-                                    <div class="card">
-                                        <div class="file">
-                                            <a href="download/ApplyDetails(YYYY-MM-DD%20HH-mm-dd).xlsx" >
-                                                <div class="icon">
-                                                    <i class="zmdi livicon livicon-evo" data-options="name: briefcase.svg; size: 60px; style: original; strokeWidth:2px; autoPlay:true"></i>
-                                                </div>
-                                                <div class="file-name">
-                                                    <p class="m-b-5 text-muted">服務申請清單</p>
-                                                    <small>本月申請 <span class="date text-muted">2018/12</span></small>
-                                                </div>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-2 col-md-3 col-sm-6">
-                                    <div class="card">
-                                        <div class="file">
-                                            <a href="download/ApplyDetails(YYYY-MM-DD%20HH-mm-dd).xlsx" >
-                                                <div class="icon">
-                                                    <i class="zmdi livicon livicon-evo" data-options="name: briefcase.svg; size: 60px; style: original; strokeWidth:2px; autoPlay:true"></i>
-                                                </div>
-                                                <div class="file-name">
-                                                    <p class="m-b-5 text-muted">服務申請清單</p>
-                                                    <small>上月申請 <span class="date text-muted">2018/11</span></small>
-                                                </div>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row clearfix">
-                                <div class="col-12">
-                                    <h4 class="card-outbound-header">自訂條件</h4>
-                                </div>
-                                <div class="col-lg-2 col-md-3 col-sm-6">
-                                    <div class="card">
-                                        <div class="file">
-                                            <a href="javascript:moreMonthQuery();">
-                                                <div class="icon">
-                                                    <i class="zmdi livicon livicon-evo" data-options="name: box.svg; size: 60px; style: original; strokeWidth:2px; autoPlay:true"></i>
-                                                </div>
-                                                <div class="file-name">
-                                                    <p class="m-b-5 text-muted">合約清單</p>
-                                                    <small>自訂條件 <span class="date text-muted"><i class="zmdi zmdi-search"></i></span></small>
-                                                </div>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-2 col-md-3 col-sm-6">
-                                    <div class="card">
-                                        <div class="file">
-                                            <a href="javascript:moreMonthQuery();">
-                                                <div class="icon">
-                                                    <i class="zmdi livicon livicon-evo" data-options="name: briefcase.svg; size: 60px; style: original; strokeWidth:2px; autoPlay:true"></i>
-                                                </div>
-                                                <div class="file-name">
-                                                    <p class="m-b-5 text-muted">服務申請清單</p>
-                                                    <small>自訂條件 <span class="date text-muted"><i class="zmdi zmdi-search"></i></span></small>
-                                                </div>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>--%>
+                    <div class="tab-content">                        
                         <div class="tab-pane active" id="payment">
                             <div class="row clearfix">
                                 <div class="col-12">
@@ -655,27 +550,12 @@
                                                 </div>
                                                 <div class="file-name">
                                                     <p class="m-b-5 text-muted">合約盤點清單</p>
-                                                    <small>截至上月 <span class="date text-muted"><%= $"{DateTime.Today.AddMonths(-1):yyyy/MM}" %></span></small>
+                                                    <small>截至上月 <span class="date text-muted"><%= $"{DateTime.Today:yyyy/MM}" %></span></small>
                                                 </div>
                                             </a>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-lg-2 col-md-3 col-sm-6">
-                                    <div class="card">
-                                        <div class="file">
-                                            <a href="javascript:$('').launchDownload('<%= Url.Action("CreateContractTrustSummaryXlsx","Accounting") %>',{'BypassCondition':true},'report',true);">
-                                                <div class="icon">
-                                                    <i class="zmdi livicon livicon-evo" data-options="name: grid.svg; size: 60px; style: original; strokeWidth:2px; autoPlay:true"></i>
-                                                </div>
-                                                <div class="file-name">
-                                                    <p class="m-b-5 text-muted">信託盤點清單</p>
-                                                    <small>截至信託月份 <span class="date text-muted"><%= $"{models.GetTable<Settlement>().OrderByDescending(s=>s.SettlementID).Select(s=>s.StartDate).FirstOrDefault():yyyy/MM}" %></span></small>
-                                                </div>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
+                                </div>               
                                 <div class="col-lg-2 col-md-3 col-sm-6">
                                     <div class="card">
                                         <div class="file">

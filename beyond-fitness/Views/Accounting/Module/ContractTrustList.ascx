@@ -32,7 +32,7 @@
                 <h2>預收款信託清單</h2>
                 <div class="widget-toolbar">
                     <a id="btnDownloadTrustLesson" onclick="downloadTrustLesson();" class="btn bg-color-green"><i class="fa fa-fw fa-clipboard-list"></i>當月上課清單</a>
-                    <a id="btnDownloadContractTrustSummary" onclick="downloadContractTrustSummary();" class="btn btn-danger"><i class="fa fa-fw fa-file"></i>信託盤點表</a>
+                   <!-- <a id="btnDownloadContractTrustSummary" onclick="downloadContractTrustSummary();" class="btn btn-danger"><i class="fa fa-fw fa-file"></i>信託盤點表</a>-->
                     <a id="btnDownloadTrustContract" onclick="downloadTrustContract();" style="display: none;" class="btn btn-primary"><i class="fa fa-fw fa-file-archive"></i>信託合約下載</a>
                     <a id="btnDownloadTrustTrack" onclick="downloadTrustTrack();" style="display: none;" class="btn btn-warning"><i class="fa fa-fw fa-file-excel"></i>當月信託報表</a>
                 </div>
