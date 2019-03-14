@@ -14,8 +14,10 @@
             <%  foreach (var item in _items)
                 { %>
             <div class="rsTextSlide">
-                <img class="rsImg" src="<%= Url.Action("GetResource","Information",new { id = item.Attachment?.AttachmentID, stretch = false }) %>" data-rsh="" data-rsw="" />
-                <a href="#">
+                <%  var imgUrl = $"Blog/{item.BlogID}/images/Title.jpg"; %>
+                <img class="rsImg" src="images/blog/DefaultTitle.jpg" onload="<%= System.IO.File.Exists(Server.MapPath(imgUrl)) ? $"this.onload = null;this.src = '{imgUrl}';" : null %>"  data-rsh="" data-rsw=""  />
+<%--                <img class="rsImg" src="<%= Url.Action("GetResource","Information",new { id = item.Attachment?.AttachmentID, stretch = false }) %>" data-rsh="" data-rsw="" />--%>
+                <a href="<%= Url.Action("BlogSingle", "MainActivity", new { item.DocID }) %>">
                     <h3 class="bottommask"><%= item.Title %></h3>
                 </a>
                 <%--<span class="rsTmb"><%= $"{_items[i].Document.DocDate:MM/dd}" %></span>--%>
@@ -51,7 +53,7 @@
     ModelStateDictionary _modelState;
     ModelSource<UserProfile> models;
     UserProfile _model;
-    List<Article> _items;
+    List<BlogArticle> _items;
     //static String[] __Articles = {
     //    "images/carousel/article-background-1.jpg",
     //    "images/carousel/article-background-2.jpg",
@@ -68,15 +70,15 @@
         models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
         _model = (UserProfile)this.Model;
 
-        var items = models.GetTable<Article>()
-                .Where(a => a.Document.CurrentStep == (int)Naming.DocumentLevelDefinition.正常)
-                .Where(a => a.DocID >= 21961)
+        var items = models.GetTable<BlogArticle>()
+                //.Where(a => a.Document.CurrentStep == (int)Naming.DocumentLevelDefinition.正常)
+                //.Where(a => a.DocID >= 21961)
                 .OrderByDescending(a => a.DocID);
 
         var totalCount = items.Count();
         Random rand = new Random((int) DateTime.Now.Ticks & 0x0000FFFF);
 
-        _items = new List<Article>();
+        _items = new List<BlogArticle>();
         while (_items.Count < Math.Min(totalCount, 5))
         {
             var idx = rand.Next(totalCount);

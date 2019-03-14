@@ -54,7 +54,7 @@
     ModelStateDictionary _modelState;
     ModelSource<UserProfile> models;
     UserProfile _model;
-    List<Article> _items;
+    List<BlogArticle> _items;
     static String[] __Articles = {
         "images/carousel/article-background-1.jpg",
         "images/carousel/article-background-2.jpg",
@@ -71,8 +71,8 @@
         models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
         _model = (UserProfile)this.Model;
 
-        _items = models.GetTable<Article>()
-                .Where(a => a.Document.CurrentStep == (int)Naming.DocumentLevelDefinition.正常)
+        _items = models.GetTable<BlogArticle>()
+                //.Where(a => a.Document.CurrentStep == (int)Naming.DocumentLevelDefinition.正常)
                 .OrderByDescending(a => a.DocID)
                 .Take(5).ToList();
 

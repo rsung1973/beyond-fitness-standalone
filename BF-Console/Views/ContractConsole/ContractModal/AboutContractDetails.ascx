@@ -205,6 +205,8 @@
                                 </div>
                             </div>
                             <%  } %>
+                            <%  if (_model.Status >= (int)Naming.CourseContractStatus.已生效)
+                                {   %>
                             <div class="panel xl-pink">
                                 <div class="panel-heading" role="tab" id="headingInvoiceList">
                                     <h4 class="panel-title material-icons"><a role="button" data-toggle="collapse" data-parent="#accordionDetail_contract" href="#collapseInvoiceList" aria-expanded="true" aria-controls="collapseInvoiceList"><i class="material-icons">subject</i> 收款詳細資訊 </a></h4>
@@ -252,17 +254,18 @@
                                                         <div class="list_tb tb2">
                                                             <div class="list_tr">
                                                                 <div class="list_td hd">未收金額</div>
-                                                                <div class="list_td rt col-red"><%= $"{_model.TotalCost-totalPaidAmt:##,###,###,##0}" %></div>
+                                                                <div class="list_td rt col-red"><%= $"{_model.TotalCost - totalPaidAmt:##,###,###,##0}" %></div>
                                                             </div>
                                                         </div>
                                                     </li>
                                                 </ul>
                                             </div>
                                             <div class="col-md-12 col-12">
-                                                <%  Html.RenderPartial("~/Views/ContractConsole/Module/ContractPaymentList.ascx", 
-                                                            models.GetTable<ContractPayment>()
-                                                                .Where(c => c.ContractID == _model.ContractID)
-                                                                .Select(c=>c.Payment)); %>
+                                                <%  Html.RenderPartial("~/Views/ContractConsole/Module/ContractPaymentList.ascx",
+models.GetTable<ContractPayment>()
+.Where(c => c.ContractID == _model.ContractID)
+.Select(c => c.Payment)
+.Where(p => p.TransactionType == (int)Naming.PaymentTransactionType.體能顧問費)); %>
                                             </div>
                                         </div>
                                     </div>
@@ -271,9 +274,9 @@
                             <div class="panel xl-slategray">
                                 <div class="panel-heading" role="tab" id="headingLessonList">
                                     <%  var attended = _model.ContractType == (int)Naming.ContractTypeDefinition.CFA
-                                                                ? _model.RegisterLessonContract.Select(r => r.RegisterLesson).Sum(r => r.AttendedLessons)
-                                                                : _model.RegisterLessonContract.First().RegisterLesson.AttendedLessons; %>
-                                    <h4 class="panel-title material-icons"><a role="button" data-toggle="collapse" data-parent="#accordionDetail_contract" href="#collapseLessonList" aria-expanded="true" aria-controls="collapseLessonList"><i class="material-icons">subject</i> 上課詳細資訊 <%= attended>0 ? $"({attended})" : null %></a></h4>
+                                          ? _model.RegisterLessonContract.Select(r => r.RegisterLesson).Sum(r => r.AttendedLessons)
+                                          : _model.RegisterLessonContract.FirstOrDefault()?.RegisterLesson?.AttendedLessons; %>
+                                    <h4 class="panel-title material-icons"><a role="button" data-toggle="collapse" data-parent="#accordionDetail_contract" href="#collapseLessonList" aria-expanded="true" aria-controls="collapseLessonList"><i class="material-icons">subject</i> 上課詳細資訊 <%= attended > 0 ? $"({attended})" : null %></a></h4>
                                 </div>
                                 <div id="collapseLessonList" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingLessonList">
                                     <div class="panel-body no-padding">
@@ -285,6 +288,7 @@
                                     </div>
                                 </div>
                             </div>
+                            <%  } %>
                         </div>
                     </div>
                 </div>
