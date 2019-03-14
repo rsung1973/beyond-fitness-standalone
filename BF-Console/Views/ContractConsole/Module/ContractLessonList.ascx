@@ -113,7 +113,7 @@
         base.OnInit(e);
         _modelState = (ModelStateDictionary)ViewBag.ModelState;
         models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
-        _model = (IEnumerable<LessonTime>)this.Model;
+        _model = ((IEnumerable<LessonTime>)this.Model).OrderBy(l=>l.ClassTime);
     }
 
 </script>
