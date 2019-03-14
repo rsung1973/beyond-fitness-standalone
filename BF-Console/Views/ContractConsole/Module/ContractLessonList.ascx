@@ -12,13 +12,13 @@
     <thead>
         <tr>
             <th></th>
-            <th>上課日期</th>
-            <th>開始時間</th>
-            <th>結束時間</th>
             <th>上課地點</th>
+            <th>上課日期</th>
+            <th>上課時間</th>            
+            <th>完成上課</th>
+            <th>學生打卡</th>
             <th>體能顧問</th>
-            <th>學生</th>
-            <th>打卡時間</th>
+            <th>學生</th>                        
         </tr>
     </thead>
     <tbody>
@@ -28,13 +28,13 @@
             { %>
         <tr>
             <td><%= idx++ %></td>
-            <td><%= $"{item.ClassTime:yyyy/MM/dd}" %></td>
-            <td><%= $"{item.ClassTime:HH:mm}" %></td>
-            <td><%= $"{item.ClassTime.Value.AddMinutes(item.DurationInMinutes.Value):HH:mm}" %></td>
             <td><%= item.BranchStore.BranchName %></td>
+            <td><%= $"{item.ClassTime:yyyy/MM/dd}" %></td>
+            <td><%= $"{item.ClassTime:HH:mm}" %>-<%= $"{item.ClassTime.Value.AddMinutes(item.DurationInMinutes.Value):HH:mm}" %></td>            
+            <td><%= $"{item.LessonAttendance?.CompleteDate:yyyy/MM/dd HH:mm}" %></td>
+            <td><%= $"{item.LessonPlan.CommitAttendance:yyyy/MM/dd HH:mm}" %></td>                
             <td><%= item.AsAttendingCoach.UserProfile.FullName() %></td>
-            <td><%= item.RegisterLesson.LessonLearner() %></td>
-            <td><%= $"{item.LessonPlan.CommitAttendance:yyyy/MM/dd HH:mm}" %></td>
+            <td><%= item.RegisterLesson.LessonLearner() %></td>                   
         </tr>
         <%  } %>
     </tbody>
@@ -78,7 +78,7 @@
                 scrollCollapse: true,
                 "columnDefs": [
                     {
-                        targets: [0, 1, 2, 3, 4, 5, 6, 7],
+                        targets: [0, 1, 2, 3, 4, 7],
                         className: "align-center"
                     }
                 ],
