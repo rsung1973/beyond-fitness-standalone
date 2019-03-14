@@ -20,30 +20,25 @@
                                 <div class="panel-heading" role="tab" id="headingDetailContract">
                                     <h4 class="panel-title">
                                         <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordionDetail_contract" href="#collapseDetail_contract" aria-expanded="false" aria-controls="collapseDetail_contract"><i class="material-icons">subject</i> 合約詳細資訊 
-                                            <%  if (_model.Status <= (int)Naming.ContractQueryStatus.待審核)
-                                                {   %>
-                                            <span class="badge bg-orange"><%= _model.ContractCurrentStatus() %></span>
-                                            <%  }
+                                            <%  var bgColor = "bg-cyan";
+                                                if (_model.Status <= (int)Naming.ContractQueryStatus.待審核)
+                                                {
+                                                    bgColor = "bg-orange";
+                                                }
                                                 else if (_model.Status == (int)Naming.CourseContractStatus.已生效)
-                                                {   %>
-                                            <span class="badge bg-green"><%= _model.ContractCurrentStatus() %></span>
-                                            <%  }
-                                                else if (_model.Status == (int)Naming.CourseContractStatus.已過期)
-                                                {   %>
-                                            <span class="badge bg-red">已過期</span>
-                                            <%  }
-                                                else if (_model.Status == (int)Naming.CourseContractStatus.已終止)
-                                                {   %>
-                                            <span class="badge bg-red">已終止</span>
-                                            <%  }
-                                                else if (_model.Status == (int)Naming.CourseContractStatus.已轉讓)
-                                                {   %>
-                                            <span class="badge bg-red">已轉讓</span>
-                                            <%  }
-                                                else if (_model.Status == (int)Naming.CourseContractStatus.已轉點)
-                                                {   %>
-                                            <span class="badge bg-red">已轉點</span>
-                                            <%  }   %>
+                                                { 
+                                                    bgColor = "bg-green";
+                                                }
+                                                else if (_model.Status == (int)Naming.CourseContractStatus.已履行)
+                                                {   
+                                                    bgColor = "bg-darkteal";
+                                                }
+                                                else
+                                                {   
+                                                    bgColor = "bg-red";
+                                                }
+                                            %>
+                                            <span class="<%= $"badge {bgColor}" %>"><%= _model.ContractCurrentStatus() %></span>
                                         </a>
                                     </h4>
                                 </div>
@@ -82,6 +77,17 @@
                                                     </div>
                                                 </div>
                                             </li>
+                                            <%  if (_model.ValidTo.HasValue)
+                                                {   %>
+                                            <li>
+                                                <div class="list_tb tb2">
+                                                    <div class="list_tr">
+                                                        <div class="list_td hd">合約完成日</div>
+                                                        <div class="list_td rt col-green"><%= $"{_model.ValidTo:yyyy/MM/dd}" %></div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <% } else { %>
                                             <li>
                                                 <div class="list_tb tb2">
                                                     <div class="list_tr">
@@ -90,6 +96,7 @@
                                                     </div>
                                                 </div>
                                             </li>
+                                            <% } %>
                                             <li>
                                                 <div class="list_tb tb2">
                                                     <div class="list_tr">
@@ -121,7 +128,7 @@
                                                             <span class="badge bg-blue">
                                                                 <%  if (_model.LessonPriceType.SeriesID.HasValue)
                                                                     {   %>
-                                                                <%--<%= _model.LessonPriceType.Description %>--%> <%= _model.LessonPriceType.LowerLimit %>堂
+                                                                <%= _model.LessonPriceType.LowerLimit %>堂
                                                                 <%  }
                                                                     else
                                                                     {   %>
