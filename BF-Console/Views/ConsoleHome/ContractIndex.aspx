@@ -17,8 +17,6 @@
     <link href="plugins/jquery-datatable/Responsive-2.2.2/css/responsive.bootstrap4.min.css" rel="stylesheet">
     <link href="plugins/jquery-datatable/FixedColumns-3.2.5/css/fixedColumns.bootstrap4.min.css" rel="stylesheet">
     <!-- Bootstrap Datetimepick -->
-<%--    <link href="plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
-    <link href="css/datetimepicker.css" rel="stylesheet" />--%>
     <link href="plugins/smartcalendar/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
     <link href="css/smartcalendar-2.css" rel="stylesheet" />
 
