@@ -20,15 +20,15 @@
                     <%  var revision = _model.CourseContractRevision;
                         if (_model.IsServiceApprovable(models, _profile))
                         {   %>
-                            <a href="<%= Url.Action("SignContractService","ConsoleHome",new { KeyID = _model.ContractID.EncryptKey() }) %>" class="list-group-item">主管審核（<%= revision.Reason %>）</a>
+                            <a href="<%= Url.Action("SignContractService","ConsoleHome",new { KeyID = _model.ContractID.EncryptKey() }) %>" class="list-group-item">主管審核</a>
                     <%  }
                         else if (_model.IsServiceSignable(models, _profile))
                         {   %>
-                            <a href="<%= Url.Action("SignContractService","ConsoleHome",new { KeyID = _model.ContractID.EncryptKey() }) %>" class="list-group-item">學生簽名（展延）</a>
+                            <a href="<%= Url.Action("SignContractService","ConsoleHome",new { KeyID = _model.ContractID.EncryptKey() }) %>" class="list-group-item">學生簽名</a>
                     <%  }
                         if (_model.Status == (int)Naming.CourseContractStatus.已生效)
                         {   %>
-                            <a href="contract-pdf-end.html" target="_blank" class="list-group-item">查看電子合約</a>
+                            <a href="contract-pdf-end.html" target="_blank" class="list-group-item">電子合約</a>
                     <%  }   %>
                 </div>
             </div>
