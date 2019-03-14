@@ -76,27 +76,20 @@
                                                         <div class="list_td rt"><%= $"{_model.ValidFrom:yyyy/MM/dd}" %></div>
                                                     </div>
                                                 </div>
-                                            </li>
-                                            <%  if (_model.ValidTo.HasValue)
-                                                {   %>
-                                            <li>
-                                                <div class="list_tb tb2">
-                                                    <div class="list_tr">
-                                                        <div class="list_td hd">合約完成日</div>
-                                                        <div class="list_td rt col-green"><%= $"{_model.ValidTo:yyyy/MM/dd}" %></div>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <% } else { %>
+                                            </li>                                             
                                             <li>
                                                 <div class="list_tb tb2">
                                                     <div class="list_tr">
                                                         <div class="list_td hd">合約迄日</div>
-                                                        <div class="list_td rt col-red"><%= $"{_model.Expiration:yyyy/MM/dd}" %></div>
+                                                         <%  if (_model.ValidTo.HasValue)
+                                                             {   %>
+                                                            <div class="list_td rt col-green"><%= $"{_model.ValidTo:yyyy/MM/dd}" %></div>
+                                                        <% } else { %>
+                                                            <div class="list_td rt col-red"><%= $"{_model.Expiration:yyyy/MM/dd}" %></div>
+                                                        <% } %>
                                                     </div>
                                                 </div>
-                                            </li>
-                                            <% } %>
+                                            </li>                                            
                                             <li>
                                                 <div class="list_tb tb2">
                                                     <div class="list_tr">

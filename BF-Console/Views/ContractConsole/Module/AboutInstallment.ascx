@@ -18,7 +18,7 @@
 <div class="body">
     <div class="row">
         <div class="col-12 text-center">
-            <input type="text" class="knob" data-linecap="round" data-width="90" data-height="90" data-thickness="0.25" data-anglearc="250" data-angleoffset="-125" data-fgcolor="#379c94" readonly id="<%= _knobID %>" />
+            <input type="text" class="knob" data-linecap="round" data-width="90" data-height="90" data-thickness="0.25" data-anglearc="250" data-angleoffset="-125" data-fgcolor="#457fca" readonly id="<%= _knobID %>" />
             <script>
                 $(function () {
                     drawKnob($("#<%= _knobID %>"),<%= ratio %>, 3800);
@@ -37,12 +37,12 @@
                     if (currentCount < lastMonthCount)
                     {
                 %>
-                <i class="zmdi zmdi-trending-down"></i>
+                <i class="zmdi zmdi-trending-down col-green"></i>
                 <%  }
                     else if (currentCount > lastMonthCount)
                     {
                 %>
-                <i class="zmdi zmdi-trending-up"></i>
+                <i class="zmdi zmdi-trending-up col-red"></i>
                 <%  }   %>
             </p>
         </div>

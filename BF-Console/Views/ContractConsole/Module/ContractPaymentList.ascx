@@ -17,8 +17,8 @@
             <th>發票金額</th>
             <th>作廢/折讓金額</th>
             <th>折讓稅額</th>
-            <th>收款方式</th>            
-            <th>收款人/經手人</th>
+            <th>收款類型</th>            
+            <th>經手人</th>
             <th>買受人</th>
             <th>其他增補說明</th>
         </tr>
@@ -131,11 +131,11 @@
                     leftColumns: 1,
                 },
                 "columnDefs": [{
-                    targets: [0, 1, 2, 7, 9],
+                    targets: [0, 1, 2, 6, 8],
                     className: "align-center"
                 },
                 {
-                    targets: [3, 4, 5, 6],
+                    targets: [3, 4, 5],
                     className: "align-right"
                 }],
             });
