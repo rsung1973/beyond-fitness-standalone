@@ -18,10 +18,10 @@
             <th>合約名稱</th>
             <th>服務項目</th>
             <th>購買堂數</th>
+            <th>目前狀態</th>
             <th>編輯日期</th>
             <th>合約起日</th>
-            <th>合約迄日</th>
-            <th>目前狀態</th>
+            <th>合約迄日</th>            
         </tr>
     </thead>
     <tbody>
@@ -48,13 +48,13 @@
                                 ? "續約"
                                 : "新約" %></td>
             <td><%= item.Lessons %></td>
+            <td> <%= item.ContractCurrentStatus() %></td>
             <td><%= String.Format("{0:yyyy/MM/dd}", item.ContractDate) %></td>
             <td><%= String.Format("{0:yyyy/MM/dd}", item.EffectiveDate) %></td>
-            <td><%= String.Format("{0:yyyy/MM/dd}", item.Expiration) %></td>
             <td>
-                <%= item.ContractCurrentStatus() %>
+                <%= String.Format("{0:yyyy/MM/dd}", item.Expiration) %>
                 <i class='zmdi zmdi-more-vert float-right'></i>
-            </td>
+            </td>            
         </tr>
         <%  }   %>
     </tbody>
