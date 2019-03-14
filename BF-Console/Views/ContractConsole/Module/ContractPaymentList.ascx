@@ -42,8 +42,8 @@
                         : "紙本"
                     : "" %></td>
             <td><%= item.InvoiceID.HasValue
-                    ? item.InvoiceItem.InvoiceBuyer.IsB2C() ? "--" : item.InvoiceItem.InvoiceBuyer.ReceiptNo
-                    : "--" %></td>
+                    ? item.InvoiceItem.InvoiceBuyer.IsB2C() ? "" : item.InvoiceItem.InvoiceBuyer.ReceiptNo
+                    : "" %></td>
             <td><%  if (item.VoidPayment != null)
                     { %>
                 <%= item.VoidPayment.Remark %>
@@ -96,8 +96,12 @@
                     leftColumns: 1,
                 },
                 "columnDefs": [{
-                    targets: [1, 2],
+                    targets: [0, 1, 3, 6, 7],
                     className: "align-center"
+                },
+                {
+                    targets: [0, 4, 5],
+                    className: "align-right"
                 }],
             });
         }
