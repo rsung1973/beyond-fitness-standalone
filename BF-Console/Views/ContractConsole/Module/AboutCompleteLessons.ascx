@@ -23,7 +23,7 @@
 <div class="body">
     <div class="row">
         <div class="col-12 text-center">
-            <input type="text" class="knob knobRate3" data-linecap="round" data-width="90" data-height="90" data-thickness="0.25" data-anglearc="250" data-angleoffset="-125" data-fgcolor="#FFC107" readonly id="<%= _knobID %>"/>
+            <input type="text" class="knob knobRate3" data-linecap="round" data-width="90" data-height="90" data-thickness="0.25" data-anglearc="250" data-angleoffset="-125" data-fgcolor="#78b83e" readonly id="<%= _knobID %>"/>
             <script>
                 $(function () {
                     drawKnob($("#<%= _knobID %>"),<%= ratio %>, 3800);
