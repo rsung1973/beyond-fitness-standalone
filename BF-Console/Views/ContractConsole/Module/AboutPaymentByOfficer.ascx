@@ -40,7 +40,6 @@
                 <%= $"{dateFrom:yyyy/MM}" %>：<a href='javascript:showContractList(<%= JsonConvert.SerializeObject(
                                 new
                                 {
-                                    ManagerID = _model.UID,
                                     ContractQueryMode = Naming.ContractServiceMode.ContractOnly,
                                     PayoffMode = Naming.ContractPayoffMode.Unpaid,
                                     PayoffDueFrom = dateFrom,
@@ -56,7 +55,6 @@
             <a href='javascript:showContractList(<%= JsonConvert.SerializeObject(
                                 new
                                 {
-                                    ManagerID = _model.UID,
                                     ContractQueryMode = Naming.ContractServiceMode.ContractOnly,
                                     PayoffMode = Naming.ContractPayoffMode.Unpaid,
                                 }) %>,<%= toPay.Count() %>);'>

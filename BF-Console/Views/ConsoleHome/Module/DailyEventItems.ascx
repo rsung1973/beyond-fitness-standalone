@@ -128,7 +128,7 @@
 <%  if (eventItems.Count() > 0)
     {   %>
 <hr/>
-<%      foreach(var item in eventItems)
+<%      foreach(var item in eventItems.OrderBy(v=>v.StartDate))
         {   %>
 <div class="event-name b-custom row" onclick="showUserEventModal('<%= item.EventID.EncryptKey() %>',event);">
     <div class="col-2 text-center">
