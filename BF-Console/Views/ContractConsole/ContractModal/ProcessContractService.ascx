@@ -28,7 +28,7 @@
                     <%  }
                         if (_model.Status == (int)Naming.CourseContractStatus.已生效)
                         {   %>
-                            <a href="contract-pdf-end.html" target="_blank" class="list-group-item">查看電子合約（終止）</a>
+                            <a href="contract-pdf-end.html" target="_blank" class="list-group-item">查看電子合約</a>
                     <%  }   %>
                 </div>
             </div>

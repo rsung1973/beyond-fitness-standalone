@@ -60,7 +60,7 @@
                         <%  }
                             if (_model.Status == (int)Naming.CourseContractStatus.已生效)
                             {   %>
-                                <a href="<%= Url.Action("GetContractAmendmentPdf","CourseContract",new { KeyID = _model.ContractID.EncryptKey() }) %>" target="_blank" class="list-group-item">查看電子合約（<%= revision.Reason %>）</a>
+                                <a href="<%= Url.Action("GetContractAmendmentPdf","CourseContract",new { KeyID = _model.ContractID.EncryptKey() }) %>" target="_blank" class="list-group-item">查看電子合約</a>
                         <%  }
                         } %>
                 </div>
