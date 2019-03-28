@@ -305,17 +305,17 @@ namespace WebHome.Models.DataEntity
             switch(status)
             {
                 case (int)Naming.LessonPriceStatus.自主訓練:
-                    return "P.I.session";
+                    return "P.I";
                 case (int)Naming.LessonPriceStatus.一般課程:
                 case (int)Naming.LessonPriceStatus.團體學員課程:
                 case (int)Naming.LessonPriceStatus.已刪除:
-                    return "P.T.session";
+                    return "P.T";
                 case (int)Naming.LessonPriceStatus.在家訓練:
-                    return "S.T.session";
+                    return "S.T";
                 case (int)Naming.LessonPriceStatus.教練PI:
-                    return "教練P.I";
+                    return "Coach P.I";
                 case (int)Naming.LessonPriceStatus.體驗課程:
-                    return "體驗檢測";
+                    return "T.S";
                 default:
                     return ((Naming.LessonPriceStatus)status).ToString();
             }
