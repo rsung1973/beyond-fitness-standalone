@@ -16,12 +16,10 @@
 <div class="body">
     <div class="row clearfix">
         <div class="col-sm-6">
-            <div class="checkbox">
-                <input id="checkbox14" type="checkbox" name="FitnessConsultant" <%= _model.FitnessConsultant %> checked="checked" onclick="this.checked = true;" />
-                <label for="checkbox14">
-                    <span class="col-red">轉讓剩餘<%= _model.RemainedLessonCount() %>堂</span>
-                </label>
-            </div>
+            <label class="fancy-checkbox custom-bgcolor-pink">
+                <input id="checkbox14" type="checkbox" name="FitnessConsultant" value="<%= _model.FitnessConsultant %>" checked="checked" onclick="this.checked = true;" />
+                <span class="col-red">轉讓剩餘<%= _model.RemainedLessonCount() %></span>
+            </label>
         </div>
         <div class="col-sm-6">
             <div class="input-group">
