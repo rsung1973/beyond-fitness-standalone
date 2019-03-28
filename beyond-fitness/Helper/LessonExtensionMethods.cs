@@ -546,6 +546,7 @@ namespace WebHome.Helper
             where TEntity : class, new()
         {
             return models.GetTable<LessonTime>()
+                    .Where(l => l.LessonAttendance == null)
                     .Join(models.GetTable<BranchStore>().Where(b => b.ManagerID == manager.UID || b.ViceManagerID == manager.UID),
                         l => l.BranchID, b => b.BranchID, (l, b) => l)
                     .Join(models.GetTable<PreferredLessonTime>().Where(p => !p.ApprovalDate.HasValue),

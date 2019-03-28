@@ -1388,7 +1388,7 @@ namespace WebHome.Helper
             where TEntity : class, new()
         {
             return models.GetTable<CourseContractMember>().Where(m => uid.Contains(m.UID))
-                            .Any(m => m.CourseContract.Status == (int)Naming.CourseContractStatus.已生效);
+                            .Any(m => m.CourseContract.Status >= (int)Naming.CourseContractStatus.已生效);
         }
 
         public static IQueryable<ServingCoach> GetServingCoachInSameStore<TEntity>(this UserProfile profile, ModelSource<TEntity> models)

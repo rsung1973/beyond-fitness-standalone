@@ -86,9 +86,9 @@
             });
         }
 
-        function showBarChart() {
+        function showBarChart(classDate) {
             //showLoading();
-            $.post('<%= Url.Action("ShowTodayLessons", "LessonConsole") %>', { }, function (data) {
+            $.post('<%= Url.Action("ShowTodayLessons", "LessonConsole") %>', classDate, function (data) {
                 //hideLoading();
                 if ($.isPlainObject(data)) {
                     alert(data.message);

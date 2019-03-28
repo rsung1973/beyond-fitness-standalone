@@ -9,7 +9,7 @@
 <%@ Import Namespace="WebHome.Controllers" %>
 <%@ Import Namespace="Newtonsoft.Json" %>
 
-<%  var items = models.GetTable<LessonTime>().Where(l => l.ClassTime >= DateTime.Today && l.ClassTime < DateTime.Today.AddDays(1));
+<%  var items = models.GetTable<LessonTime>().Where(l => l.ClassTime >= _viewModel.ClassTimeStart && l.ClassTime < _viewModel.ClassTimeStart.Value.AddDays(1));
     if(_model.IsManager() || _model.IsViceManager())
     {
         var branch = models.GetTable<BranchStore>().Where(b => b.ManagerID == _model.UID || b.ViceManagerID == _model.UID)
@@ -142,6 +142,7 @@
     UserProfile _model;
     string _chartID = "lessonsBar" + DateTime.Now.Ticks;
     IEnumerable<int> _hourIdx;
+    LessonTimeBookingViewModel _viewModel;
 
     protected override void OnInit(EventArgs e)
     {
@@ -150,7 +151,7 @@
         models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
         _model = (UserProfile)this.Model;
         _hourIdx = Enumerable.Range(7, 16);
-
+        _viewModel = (LessonTimeBookingViewModel)ViewBag.ViewModel;
     }
 
     class _Counting
