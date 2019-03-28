@@ -37,11 +37,22 @@ namespace BFConsole.Controllers
         public ActionResult ProcessCrossBranch(LessonTimeBookingViewModel viewModel)
         {
             ViewBag.ViewModel = viewModel;
-            return View("~/Views/LessonConsole/ProcessModal/ProcessCrossBranch.ascx");
+            if(viewModel.KeyID!=null)
+            {
+                viewModel.LessonID = viewModel.DecryptKeyValue();
+            }
+            var item = models.GetTable<LessonTime>().Where(l => l.LessonID == viewModel.LessonID).FirstOrDefault();
+            return View("~/Views/LessonConsole/ProcessModal/ProcessCrossBranch.ascx", item);
         }
 
-        public ActionResult ShowTodayLessons()
+        public ActionResult ShowTodayLessons(LessonTimeBookingViewModel viewModel)
         {
+            ViewBag.ViewModel = viewModel;
+            if (!viewModel.ClassTimeStart.HasValue)
+            {
+                viewModel.ClassTimeStart = DateTime.Today;
+            }
+
             var profile = HttpContext.GetUser();
             return View("~/Views/LessonConsole/ProcessModal/TodayLessons.ascx", profile.LoadInstance(models));
         }

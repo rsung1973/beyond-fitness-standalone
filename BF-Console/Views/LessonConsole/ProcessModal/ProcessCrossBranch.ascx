@@ -7,6 +7,7 @@
 <%@ Import Namespace="WebHome.Models.ViewModel" %>
 <%@ Import Namespace="WebHome.Models.DataEntity" %>
 <%@ Import Namespace="WebHome.Controllers" %>
+<%@ Import Namespace="Newtonsoft.Json" %>
 <div class="modal modal-mini fade" id="<%= _dialogID %>" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
@@ -16,7 +17,7 @@
             </div>
             <div class="modal-popmenu-body">
                 <div class="list-group">
-                    <a href="javascript:showBarChart();" class="list-group-item">查看直條圖</a>
+                    <a href='javascript:showBarChart(<%= JsonConvert.SerializeObject(new { ClassTimeStart = _model.ClassTime.Value.Date }) %>);' class="list-group-item">查看直條圖</a>
                     <a href="javascript:approveLesson('<%= _viewModel.KeyID %>');" class="list-group-item">待審核</a>
                 </div>
             </div>
@@ -33,12 +34,14 @@
     ModelSource<UserProfile> models;
     LessonTimeBookingViewModel _viewModel;
     String _dialogID = $"pcb{DateTime.Now.Ticks}";
+    LessonTime _model;
 
     protected override void OnInit(EventArgs e)
     {
         base.OnInit(e);
         _modelState = (ModelStateDictionary)ViewBag.ModelState;
         models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+        _model = (LessonTime)this.Model;
         _viewModel = (LessonTimeBookingViewModel)ViewBag.ViewModel;
     }
 

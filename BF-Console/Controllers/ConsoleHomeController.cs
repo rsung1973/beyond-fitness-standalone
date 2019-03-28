@@ -36,8 +36,14 @@ namespace BFConsole.Controllers
         public const String InputErrorView = "~/Views/ConsoleHome/Shared/ReportInputError.ascx";
 
         [RoleAuthorize(RoleID = new int[] { (int)Naming.RoleID.Administrator, (int)Naming.RoleID.Assistant, (int)Naming.RoleID.Officer, (int)Naming.RoleID.Coach, (int)Naming.RoleID.Servitor })]
-        public ActionResult Index()
+        public ActionResult Index(LessonTimeBookingViewModel viewModel)
         {
+            ViewBag.ViewModel = viewModel;
+            if (!viewModel.ClassTimeStart.HasValue)
+            {
+                viewModel.ClassTimeStart = DateTime.Today;
+            }
+
             var profile = HttpContext.GetUser();
             profile.ReportInputError = InputErrorView;
             return View(profile.LoadInstance(models));
