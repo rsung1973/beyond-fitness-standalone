@@ -196,10 +196,10 @@
         <%  if (_model.IsAssistant() || _model.IsAuthorizedSysAdmin())
             {
                 Html.RenderPartial("~/Views/ConsoleHome/Module/AboutInvoice.ascx", _model);
-            }           %>        <!--專業文章&我的比賽-->        <%  if (_model.IsAssistant() || _model.IsAuthorizedSysAdmin() || _model.IsServitor())
+            }           %>        <!--專業文章&我的比賽--><!--        <%  if (_model.IsAssistant() || _model.IsAuthorizedSysAdmin() || _model.IsServitor())
             {
                 Html.RenderPartial("~/Views/ConsoleHome/Module/AboutStaff.ascx", _model);
-            }           %>    </section>
+            }           %>-->    </section>
 </asp:Content>
 
 <asp:Content ID="TailPageJavaScriptInclude" ContentPlaceHolderID="TailPageJavaScriptInclude" runat="server">

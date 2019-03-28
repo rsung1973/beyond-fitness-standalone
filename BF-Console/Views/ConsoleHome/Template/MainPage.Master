@@ -121,20 +121,28 @@
                     </div>
                 </li>
                 <li>
-                    <a href="<%= Url.Action("ContractIndex","ConsoleHome") %>"><i class="zmdi zmdi-file-text"></i><span>我的合約與收款</span> </a>
+                    <a href="<%= Url.Action("ContractIndex","ConsoleHome") %>"><i class="zmdi zmdi-file-text"></i><span>我的合約</span> </a>
                 </li>
                 <li>
-                    <a href="javascript:void(0);"><i class="zmdi zmdi-file-text"></i><span>我的分店業績</span> </a>
+                    <a href="javascript:void(0);"><i class="zmdi zmdi-file-text"></i><span>我的收款</span> </a>
                 </li>
                 <li>
                     <a href="javascript:void(0);"><i class="zmdi zmdi-accounts-list"></i><span>我的學生</span> </a>
-                </li>
-                <li>
-                    <a href="<%= Url.Action("BlogIndex","ConsoleHome") %>"><i class="zmdi zmdi-blogger"></i><span>我的部落格</span> </a>
-                </li>                      
+                </li>                   
                 <li>
                     <a href="<%= Url.Action("ReportIndex","ConsoleHome") %>"><i class="zmdi zmdi-download"></i><span>我的下載</span> </a>
-                </li>                <li>
+                </li>      
+                <li>
+                    <a href="javascript:void(0);"><i class="zmdi zmdi-file-text"></i><span>我的分店業績</span> </a>
+                </li>                     
+                <%  if (_model.IsAssistant() || _model.IsAuthorizedSysAdmin())
+                {　%>
+                <li>
+                    <a href="<%= Url.Action("BlogIndex","ConsoleHome") %>"><i class="zmdi zmdi-blogger"></i><span>我的部落格</span> </a>
+                </li>  
+               <%
+                } 
+                %>                                                                       <li>
                     <a href="javascript:void(0);"><i class="zmdi zmdi-comment-edit"></i><span>運動小學堂</span> </a>
                 </li>
             </ul>
@@ -204,9 +212,6 @@
                 minuteStep: 30,
                 forceParse: 0,
                 startDate: '<%= String.Format("{0:yyyy-MM-dd}",DateTime.Today) %>',
-<%--                useCurrent: 'hour',
-                format: 'yyyy-mm-dd hh:ii',
-                defaultDate: '<%= String.Format("{0:yyyy-MM-dd} 08:00",DateTime.Today) %>',--%>
             });
         }
 
