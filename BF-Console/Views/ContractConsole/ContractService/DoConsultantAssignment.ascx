@@ -11,17 +11,15 @@
 <%@ Import Namespace="Newtonsoft.Json" %>
 
 <div class="header">
-    <h2><strong>原負責體能顧問</strong> - <strong class="text-primary"><%= _model.ServingCoach.UserProfile.FullName() %></strong></h2>
+    <h2><strong>原負責體能顧問</strong> - <strong><%= _model.ServingCoach.UserProfile.FullName() %></strong></h2>
 </div>
 <div class="body">
     <div class="row clearfix">
         <div class="col-lg-6 col-md-6 col-sm-6 col-12 m-b-20">
-            <div class="checkbox">
-                <input id="checkbox14" type="checkbox" checked="checked" name="FitnessConsultant" value="<%= _profile.UID %>" onclick="this.checked = true;" />
-                <label for="checkbox14">
-                    <span class="col-red">轉換為自己</span>
-                </label>
-            </div>
+            <label class="fancy-checkbox custom-bgcolor-pink">
+                <input id="checkbox14" type="checkbox" checked="checked" disabled="" name="FitnessConsultant" value="<%= _profile.UID %>" onclick="this.checked = true;" />
+                <span class="col-red">轉換為自己</span>
+            </label>
         </div>
         <div class="col-12">
             <div class="form-group">

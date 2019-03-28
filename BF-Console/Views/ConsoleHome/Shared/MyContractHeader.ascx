@@ -10,7 +10,7 @@
 
 <div class="col-lg-5 col-md-6 col-sm-12">
     <ul class="breadcrumb float-md-right">
-        <li class="breadcrumb-item"><a href="<%= Url.Action("ContractIndex","ConsoleHome") %>"><i class="zmdi zmdi-file-text"></i>我的合約</a></li>
+        <li class="breadcrumb-item"><a href="<%= Url.Action("ContractIndex","ConsoleHome") %>"><i class="zmdi zmdi-file-text"></i>&nbsp;我的合約</a></li>
     </ul>
 </div>
 

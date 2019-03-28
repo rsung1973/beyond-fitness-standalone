@@ -34,7 +34,7 @@
         </div>
         <div class="col-4 text-right">
             <a href="javascript:void();">
-                <h2 class="col-blue"><%= _model.RevisionList.Where(r=>r.Reason=="展延").Count() %></h2>
+                <h2><%= _model.RevisionList.Where(r=>r.Reason=="展延").Count() %></h2>
             </a>
             <%  if (currentItem != null)
                 {   %>

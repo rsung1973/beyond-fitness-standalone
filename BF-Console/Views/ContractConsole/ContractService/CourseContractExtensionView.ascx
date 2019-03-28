@@ -43,7 +43,7 @@
                                 <%  var original = _model.SourceContract; %>
                                 申請內容：原合約編號 <%= original.ContractNo() %> 使用截止日為 <%= String.Format("{0:yyyy/MM/dd}",_contract.Expiration.Value.AddMonths(-3)) %> 展延至 <%= String.Format("{0:yyyy/MM/dd}",_contract.Expiration) %> 止。</td>
                         </tr>
-                        <tr style="height: 16cm">
+                        <tr style="height: 10cm">
                             <td colspan="2">說明：<%= _contract.Remark %></td>
                         </tr>
                     </tbody>

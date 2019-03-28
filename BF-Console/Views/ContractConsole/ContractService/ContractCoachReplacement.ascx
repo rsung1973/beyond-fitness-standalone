@@ -26,9 +26,7 @@
             <%  }   %>--%>
         </div>
         <div class="col-4 text-right">
-            <a href="javascript:void();">
-                <h2 class="col-blue"><%= _model.RevisionList.Where(r=>r.Reason=="轉換體能顧問").Count() %></h2>
-            </a>
+            <h2><%= _model.RevisionList.Where(r=>r.Reason=="轉換體能顧問").Count() %></h2>
             <%  if (currentItem != null)
                 {   %>
             <small class="info"><%= (Naming.ContractServiceStatus)currentItem.Status %></small>

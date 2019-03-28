@@ -52,39 +52,12 @@
         <div class="container-fluid">
             <div class="card widget_3">
                 <div class="header">
-                    <h2><strong><%= _item.ContractOwner.RealName %></strong> <%= _item.ContractName() %> <span class="badge badge-danger"><i class="zmdi zmdi-pin"></i> <%= _item.CourseContractExtension.BranchStore.BranchName %></span> <a href="javascript:$global.showContractDetails('<%= _item.ContractID.EncryptKey() %>');" class="btn btn-simple btn-info btn-round float-right">更多資訊</a></h2>
+                    <h2><strong><%= _item.ContractOwner.RealName %></strong> <%= _item.ContractName() %> <span class="badge bg-blue"><i class="zmdi zmdi-pin"></i>&nbsp;&nbsp;<%= _item.CourseContractExtension.BranchStore.BranchName %></span> <a href="javascript:$global.showContractDetails('<%= _item.ContractID.EncryptKey() %>');" class="btn btn-simple btn-info btn-round btn-sm float-right">更多資訊</a></h2>
                     <%  Html.RenderPartial("~/Views/ContractConsole/Indication/ContractDetails.ascx", _item); %>
                 </div>
                 <ul class="row clearfix list-unstyled m-b-0">
                     <li class="col-lg-3 col-md-6 col-sm-12">
                         <%  Html.RenderPartial("~/Views/ContractConsole/ContractService/ContractExtension.ascx", _item); %>
-                    </li>
-                    <!--
-                  <li class="col-lg-3 col-md-6 col-sm-12">
-                     <div class="body">
-                        <div class="row">
-                           <div class="col-8">
-                              <h5 class="m-t-0">轉點</h5>
-                              <span class="col-red"><i class="zmdi zmdi-block"></i> 合約已過期</span><br/>
-                              <span class="col-red"><i class="zmdi zmdi-block"></i> 服務申請進行中</span><br/>                          
-                              <span class="col-red"><i class="zmdi zmdi-block"></i> 費用未結清</span><br/>
-                              <span class="col-red"><i class="zmdi zmdi-block"></i> 信義禁止轉點</span>
-                           </div>
-                           <div class="col-4 text-right">
-                              <a href="javascript:showContractList();">
-                                 <h2>0</h2>
-                              </a>
-                              <small class="info">待申請</small>
-                              <p>
-                                 <button class="btn btn-darkteal btn-icon btn-icon-mini btn-round waves-effect float-right" id="relocation"><i class="zmdi zmdi-plus"></i></button>
-                              </p>
-                           </div>
-                        </div>
-                     </div>
-                  </li>
--->
-                    <li class="col-lg-3 col-md-6 col-sm-12">
-                        <%  Html.RenderPartial("~/Views/ContractConsole/ContractService/ContractTransference.ascx", _item); %>
                     </li>
                     <li class="col-lg-3 col-md-6 col-sm-12">
                         <%  Html.RenderPartial("~/Views/ContractConsole/ContractService/ContractTermination.ascx", _item); %>
@@ -136,9 +109,7 @@
     <script src="bundles/datatablescripts.bundle.js"></script>
     <script src="plugins/jquery-datatable/Responsive-2.2.2/js/dataTables.responsive.min.js"></script>
     <script src="plugins/jquery-datatable/FixedColumns-3.2.5/js/dataTables.fixedColumns.min.js"></script>
-    <!-- Bootstrap datetimepicker Plugin Js -->
-    <%--    <script src="plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
-    <script src="plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-TW.js"></script>--%>
+    <!-- Bootstrap datetimepicker Plugin Js -->    
     <script src="plugins/smartcalendar/js/bootstrap-datetimepicker.min.js"></script>
     <script src="plugins/smartcalendar/js/locales-datetimepicker/bootstrap-datetimepicker.zh-TW.js"></script>
 

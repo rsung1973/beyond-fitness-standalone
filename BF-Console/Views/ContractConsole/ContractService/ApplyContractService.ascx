@@ -13,7 +13,7 @@
 <ul class="row clearfix list-unstyled m-b-0" id="<%= _viewID %>">
     <li class="col-lg-6 col-md-12 col-sm-12">
         <div class="header">
-            <h2><strong>合約資料</strong> - <%= _model.ContractName() %> <span class="badge badge-danger"><i class="zmdi zmdi-pin"></i><%= _model.CourseContractExtension.BranchStore.BranchName %></span> </h2>
+            <h2><strong>合約資料</strong> - <%= _model.ContractName() %> <span class="badge bg-blue"><i class="zmdi zmdi-pin"></i>&nbsp;&nbsp;<%= _model.CourseContractExtension.BranchStore.BranchName %></span> </h2>
         </div>
         <div class="body">
             <div class="row">
@@ -34,38 +34,14 @@
                 </div>
             </div>
             <div class="mt-40"></div>
-            <!--
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <a href="javascript:showContractDetail();" class="btn btn-simple btn-info btn-round btn-sm float-right">更多資訊</a>
-                                    <div class="table-responsive">
-                                        <table class="table table-striped table-custom nowrap bg-white col-charcoal dataTable dataTable-learner" style="width:100%">
-                                            <thead>
-                                                <tr>
-                                                    <th>姓名</th>
-                                                    <th>性別</th>
-                                                    <th>連絡電話</th>
-                                                </tr>
-                                            </thead>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
--->
             <hr>
             <div class="row">
                 <div class="col-md-6">
                     <h5>其他增補說明</h5>
                     <p><%= _model.Remark %></p>
                 </div>
-                <!--
-                                <div class="col-md-6 text-right">
-                                    <p><b>專業顧問建置與諮詢費：</b> 89,600</p>
-                                    <p>教練課程費：22,400</p>                                    
-                                </div>
--->
                 <div class="col-12 text-right">
-                    <h3 class="text-right col-red">專業顧問服務總費用：<%= $"{_model.TotalCost:##,###,###,###}" %></h3>
+                    <h3 class="text-right">專業顧問服務總費用：<%= $"{_model.TotalCost:##,###,###,###}" %></h3>
                 </div>
             </div>
         </div>
