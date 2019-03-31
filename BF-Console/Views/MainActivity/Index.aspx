@@ -114,13 +114,13 @@
                 <div class="col-md-3"></div>
                 <div class="col-md-6 testimonials">
                     <div class="body text-center">
-                        <i class="fa fa-quote-left"></i>
-                        <p><%: NamingItem.IndexSlick1Desc %></p>
                         <div class="m-t-30">
                             <img class="media-object rounded-circle shadow" src="images/avatar/therapist.jpg" alt="物理治療">
-                            <h5 class="mb-0 m-t-10"><%: NamingItem.IndexSlick1Name %></h5>
+                            <h5 class="m-b-0"><%: NamingItem.IndexSlick1Name %></h5>
                             <span><%: NamingItem.IndexSlick1Title %></span>
                         </div>
+                        <i class="fa fa-quote-left m-t-20"></i>
+                        <p><%: NamingItem.IndexSlick1Desc %></p>                        
                     </div>
                 </div>
                 <div class="col-md-3"></div>
@@ -129,13 +129,13 @@
                 <div class="col-md-3"></div>
                 <div class="col-md-6 testimonials">
                     <div class="body text-center">
-                        <i class="fa fa-quote-left"></i>
-                        <p><%: NamingItem.IndexSlick2Desc %></p>
                         <div class="m-t-30">
                             <img class="media-object rounded-circle shadow" src="images/avatar/dietitian.jpg" alt="運動營養">
-                            <h5 class="mb-0 m-t-10"><%: NamingItem.IndexSlick2Name %></h5>
+                            <h5 class="m-b-0"><%: NamingItem.IndexSlick2Name %></h5>
                             <span><%: NamingItem.IndexSlick2Title %></span>
                         </div>
+                        <i class="fa fa-quote-left m-t-20"></i>
+                        <p><%: NamingItem.IndexSlick2Desc %></p>                        
                     </div>
                 </div>
                 <div class="col-md-3"></div>

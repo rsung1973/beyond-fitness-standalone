@@ -73,8 +73,6 @@
             </div>
         </div>
     </section>
-    <!-- // 聯絡我們 -->
-    <%  Html.RenderPartial("~/Views/MainActivity/Module/ContactItem.ascx"); %>
     
 </asp:Content>
 
