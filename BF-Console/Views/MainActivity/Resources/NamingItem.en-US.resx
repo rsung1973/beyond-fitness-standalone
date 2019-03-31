@@ -213,6 +213,9 @@
   <data name="AboutVedioDeclaration1" xml:space="preserve">
     <value>Thank you!</value>
   </data>
+  <data name="AboutVedioDeclaration2" xml:space="preserve">
+    <value>Together we build values and attitudes towards sports that bring meaning to our lives.</value>
+  </data>    
   <data name="FindNanjingBranch" xml:space="preserve">
     <value>Nanjing Branch</value>
   </data>
@@ -256,7 +259,7 @@
     <value>Join Us</value>
   </data>
   <data name="JoinUsDesc" xml:space="preserve">
-    <value>Founded in 2014, Beyond Fitness is devoted to developing professional one-on-one personal trainers. Beyond Fitness has established from Nanjing, Taipei Arena and has expanded Xinyi 101 and Zhongxiao Dunhua branches in three years. Behind all these, we are just a group of partners who want to let action and professional practice speak louder than words; most importantly, and those clients who have faith in us. We believe that education should be personalized and so as training. We should customize accordingly to individuals’ need that is most suitable for "people", guiding customers to live a better life.</value>
+    <value>Founded in 2014, Beyond Fitness is devoted to developing professional one-on-one personal trainers. Beyond Fitness has established from Nanjing, Taipei Arena and has expanded Xinyi 101 and Zhongxiao Dunhua branches in five years. Behind all these, we are just a group of partners who want to let action and professional practice speak louder than words; most importantly, and those clients who have faith in us. We believe that education should be personalized and so as training. We should customize accordingly to individuals’ need that is most suitable for "people", guiding customers to live a better life.</value>
   </data>
   <data name="JoinUsFeature1" xml:space="preserve">
     <value>Smile</value>
@@ -335,9 +338,6 @@
   </data>
   <data name="AboutVedioDesc4" xml:space="preserve">
     <value>We believe that “If we help you change your lifestyle and lead you to a healthier life, you will naturally find the value and quality of your life.”</value>
-  </data>
-  <data name="AboutVedioDeclaration2" xml:space="preserve">
-    <value>Together we build values and attitudes towards sports that bring meaning to our lives.</value>
   </data>
   <data name="BookNowTitle" xml:space="preserve">
     <value>Just four steps away!</value>

@@ -225,6 +225,9 @@
   <data name="AboutVedioDeclaration1" xml:space="preserve">
     <value>謝謝您，</value>
   </data>
+  <data name="AboutVedioDeclaration2" xml:space="preserve">
+    <value>我們將一起創造運動的價值以與運動的概念，進而讓生活更有意思</value>
+  </data>    
   <data name="FindNanjingBranch" xml:space="preserve">
     <value>南京店</value>
   </data>
@@ -268,7 +271,7 @@
     <value>加入執行團隊</value>
   </data>
   <data name="JoinUsDesc" xml:space="preserve">
-    <value>Beyond Fitness 創立於 2014 年，致力於發展專業一對一私人教練。Beyond Fitness 從南京小巨蛋發跡，成立三年來陸續拓展了信義 101 與忠孝敦化等分店，在這些的背後，是一群想用行動與專業實踐理想的夥伴，與背後願意相信 我們的客戶們。我們相信，教育應該是個別化的，訓練也應該是，我們針對個人化的需求去客製最符合「人」的訓練模式，進而引領客戶走向更美好的生活為目標。</value>
+    <value>Beyond Fitness 創立於 2014 年，致力於發展專業一對一私人教練。Beyond Fitness 從南京小巨蛋發跡，成立 5 年來陸續拓展了信義 101 與忠孝敦化等分店，在這些的背後，是一群想用行動與專業實踐理想的夥伴，與背後願意相信 我們的客戶們。我們相信，教育應該是個別化的，訓練也應該是，我們針對個人化的需求去客製最符合「人」的訓練模式，進而引領客戶走向更美好的生活為目標。</value>
   </data>
   <data name="JoinUsFeature1" xml:space="preserve">
     <value>微笑</value>
@@ -335,9 +338,6 @@
   </data>
   <data name="HereWeGo" xml:space="preserve">
     <value>立即行動</value>
-  </data>
-  <data name="AboutVedioDeclaration2" xml:space="preserve">
-    <value>我們將一起創造運動的價值與運動的觀念，進而讓生活更有意。</value>
   </data>
   <data name="BookNowTitle" xml:space="preserve">
     <value>諮詢四步驟</value>

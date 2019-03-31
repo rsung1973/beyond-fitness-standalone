@@ -263,6 +263,12 @@ namespace BFConsole.Views.MainActivity.Resources {
             }
         }
         
+        public static string AboutVedioDeclaration2 {
+            get {
+                return ResourceManager.GetString("AboutVedioDeclaration2", resourceCulture);
+            }
+        }
+        
         public static string FindNanjingBranch {
             get {
                 return ResourceManager.GetString("FindNanjingBranch", resourceCulture);
@@ -482,12 +488,6 @@ namespace BFConsole.Views.MainActivity.Resources {
         public static string HereWeGo {
             get {
                 return ResourceManager.GetString("HereWeGo", resourceCulture);
-            }
-        }
-        
-        public static string AboutVedioDeclaration2 {
-            get {
-                return ResourceManager.GetString("AboutVedioDeclaration2", resourceCulture);
             }
         }
         
