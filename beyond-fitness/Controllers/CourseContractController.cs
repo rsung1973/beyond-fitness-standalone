@@ -634,15 +634,13 @@ namespace WebHome.Controllers
 
         public ActionResult EnableContractAmendment(CourseContractViewModel viewModel)
         {
-            var profile = HttpContext.GetUser();
-            var item = models.GetTable<CourseContractRevision>().Where(c => c.RevisionID == viewModel.RevisionID).FirstOrDefault();
+            var item = viewModel.EnableContractAmendment(this, out String alertMessage);
             if (item != null)
             {
-                item.EnableContractAmendment(models, profile);
                 return Json(new { result = true });
             }
             else
-                return View("~/Views/Shared/JsAlert.ascx", model: "合約資料錯誤!!");
+                return View("~/Views/Shared/JsAlert.ascx", model: alertMessage);
         }
 
         public ActionResult SignaturePanel(CourseContractSignatureViewModel viewModel)

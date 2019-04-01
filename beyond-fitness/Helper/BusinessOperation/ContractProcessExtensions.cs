@@ -623,6 +623,37 @@ namespace WebHome.Helper.BusinessOperation
             }
         }
 
+        public static CourseContract EnableContractAmendment<TEntity>(this CourseContractViewModel viewModel, SampleController<TEntity> controller, out String alertMessage, Naming.CourseContractStatus? fromStatus = Naming.CourseContractStatus.待簽名)
+            where TEntity : class, new()
+        {
+            alertMessage = null;
+            var ModelState = controller.ModelState;
+            var ViewBag = controller.ViewBag;
+            var HttpContext = controller.HttpContext;
+            var models = controller.DataSource;
+
+            ViewBag.ViewModel = viewModel;
+            var profile = HttpContext.GetUser();
+
+            ViewBag.ViewModel = viewModel;
+
+            if (viewModel.KeyID != null)
+            {
+                viewModel.RevisionID = viewModel.DecryptKeyValue();
+            }
+            var item = models.GetTable<CourseContractRevision>().Where(c => c.RevisionID == viewModel.RevisionID).FirstOrDefault();
+            if (item != null)
+            {
+                item.EnableContractAmendment(models, profile, fromStatus);
+                return item.CourseContract;
+            }
+            else
+            {
+                alertMessage = "合約資料錯誤!!";
+                return null;
+            }
+        }
+
         public static void MarkContractNo<TEntity>(this CourseContract item, ModelSource<TEntity> models)
             where TEntity : class, new()
         {
@@ -1129,6 +1160,11 @@ namespace WebHome.Helper.BusinessOperation
                     }));
 
                     newItem.FitnessConsultant = viewModel.FitnessConsultant.Value;
+                    newItem.CourseContractRevision.CourseContractRevisionItem = new CourseContractRevisionItem
+                    {
+                        FitnessConsultant = item.FitnessConsultant
+                    };
+
                     if(profile.IsManager())
                     {
                         newItem.CourseContractRevision.EnableContractAmendment(models, profile, null);

@@ -17,7 +17,7 @@
     <div class="row clearfix">
         <div class="col-lg-6 col-md-6 col-sm-6 col-12 m-b-20">
             <label class="fancy-checkbox custom-bgcolor-pink">
-                <input id="checkbox14" type="checkbox" checked="checked" disabled="" name="FitnessConsultant" value="<%= _profile.UID %>" onclick="this.checked = true;" />
+                <input id="checkbox14" type="checkbox" checked="checked" name="FitnessConsultant" value="<%= _profile.UID %>" onclick="this.checked = true;" />
                 <span class="col-red">轉換為自己</span>
             </label>
         </div>

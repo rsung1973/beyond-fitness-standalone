@@ -47,6 +47,7 @@ namespace WebHome
             AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+            JobLauncher.StartUp();
         }
 
         void Application_Error(object sender, EventArgs e)

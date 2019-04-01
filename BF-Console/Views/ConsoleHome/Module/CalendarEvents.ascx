@@ -38,7 +38,7 @@
                     title = g.RegisterLesson.LessonPriceType.Status == (int)Naming.DocumentLevelDefinition.教練PI
                         ? g.GroupingLesson.RegisterLesson.Where(r=>r.MasterRegistration==true)
                             .Select(r => r.UserProfile).FirstOrDefault()?.RealName
-                        : String.Join("、", g.GroupingLesson.RegisterLesson.Select(r => r.UserProfile.RealName)) 
+                        : String.Join("、", g.GroupingLesson.RegisterLesson.Select(r => r.UserProfile.RealName))
                             + (g.PreferredLessonTime!=null && !g.PreferredLessonTime.ApprovalDate.HasValue ? "(待審核)" : ""),
                     start = String.Format("{0:O}", g.ClassTime),
                     end = String.Format("{0:O}", g.ClassTime.Value.AddMinutes(g.DurationInMinutes.Value)),
@@ -89,8 +89,10 @@
 
         }
 
-        foreach(var g in _model.Where(v => v.EventItem is LessonTime).Select(i => (LessonTime)i.EventItem)
-            .GroupBy(l=>((LessonTime)l).ClassTime.Value.Date))
+        foreach (var g in _model.Where(v => v.EventItem is LessonTime)
+            .Select(i => (LessonTime)i.EventItem)
+            .Where(l => l.PreferredLessonTime == null || l.PreferredLessonTime.ApproverID.HasValue)
+            .GroupBy(l => ((LessonTime)l).ClassTime.Value.Date))
         {
             var totalItems = g.ToList();
             var items = totalItems.TrialLesson();
@@ -102,7 +104,7 @@
                     id = "course",
                     title = items.Count().ToString(),
                     start = g.Key.ToString("yyyy-MM-dd"),
-                    description = "體驗課程",
+                    description = "T.S",
                     allDay = true,
                     //className = !items.Any(l => l.LessonAttendance == null) ? new string[] { "b-l b-2x b-PE" } : new string[] { "b-l b-2x b-finish" },
                     className = new string[] { "b-l b-2x b-PE" },
@@ -118,7 +120,7 @@
                     id = "course",
                     title = items.Count().ToString(),
                     start = g.Key.ToString("yyyy-MM-dd"),
-                    description = "P.I session",
+                    description = "P.I",
                     allDay = true,
                     //className = !items.Any(l => l.LessonAttendance == null) ? new string[] { "b-l b-2x b-PI" } : new string[] { "b-l b-2x b-finish" },
                     className = new string[] { "b-l b-2x b-PI" },
@@ -134,7 +136,7 @@
                     id = "coach",
                     title = items.Count().ToString(),
                     start = g.Key.ToString("yyyy-MM-dd"),
-                    description = "教練P.I",
+                    description = "Coach P.I",
                     allDay = true,
                     //className = !items.Any(l => l.LessonAttendance == null) ? new string[] { "b-l b-2x b-CoachPI" } : new string[] { "b-l b-2x b-finish" },
                     className = new string[] { "b-l b-2x b-CoachPI" },
@@ -150,7 +152,7 @@
                     id = "course",
                     title = items.Count().ToString(),
                     start = g.Key.ToString("yyyy-MM-dd"),
-                    description = "S.T session",
+                    description = "S.T",
                     allDay = true,
                     //className = !items.Any(l => l.LessonAttendance == null) ? new string[] { "b-l b-2x b-ST" } : new string[] { "b-l b-2x b-finish" },
                     className = new string[] { "b-l b-2x b-ST" },
@@ -164,7 +166,7 @@
                     id = "course",
                     title = totalItems.Count.ToString(),
                     start = g.Key.ToString("yyyy-MM-dd"),
-                    description = "P.T session",
+                    description = "P.T",
                     allDay = true,
                     //className = g.Key >= DateTime.Today ? new string[] { "b-l b-2x b-PT" } : new string[] { "b-l b-2x b-finish" },
                     className = new string[] { "b-l b-2x b-PT" },

@@ -17,7 +17,7 @@
     <div class="row clearfix">
         <div class="col-12 m-b-20">
             <label class="fancy-checkbox custom-bgcolor-pink">
-                <input id="checkbox14" type="checkbox" checked="checked" disabled="" name="MonthExtension" value="3" onclick="this.checked = true;" />
+                <input id="checkbox14" type="checkbox" checked="checked" name="MonthExtension" value="3" onclick="this.checked = true;" />
                 <span class="col-red">展延3個月 - <%= $"{_model.Expiration.Value.AddMonths(3):yyyy/MM/dd}" %></span>
             </label>
         </div>

@@ -34,8 +34,11 @@
                 </div>
             </div>
             <div class="modal-footer">
+                <%  if (_model.PreferredLessonTime == null || _model.PreferredLessonTime.ApproverID.HasValue)
+                    {   %>
                 <button type="button" class="btn btn-darkteal btn-round waves-effect"><i class="zmdi zmdi-edit"></i></button>
                 <button type="button" class="btn btn-simple btn-round waves-effect" onclick="commitEmphasis('<%= plan.ExecutionID.EncryptKey() %>');">更新重點</button>
+                <%  }   %>
                 <%  Html.RenderPartial("~/Views/ConsoleEvent/Module/RevokeLesson.ascx", _model); %>
             </div>
         </div>

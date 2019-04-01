@@ -326,6 +326,7 @@
       <Association Name="ServingCoach_LessonTime" Member="LessonTime" ThisKey="CoachID" OtherKey="InvitedCoach" Type="LessonTime" />
       <Association Name="ServingCoach_LessonTime1" Member="LessonTime1" ThisKey="CoachID" OtherKey="AttendingCoach" Type="LessonTime" />
       <Association Name="ServingCoach_ContractElement" Member="ContractElements" ThisKey="CoachID" OtherKey="OriginalFitnessConsultant" Type="ContractElement" />
+      <Association Name="ServingCoach_CourseContractRevisionItem" Member="CourseContractRevisionItem" ThisKey="CoachID" OtherKey="FitnessConsultant" Type="CourseContractRevisionItem" />
       <Association Name="UserProfile_ServingCoach" Member="UserProfile" ThisKey="CoachID" OtherKey="UID" Type="UserProfile" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
       <Association Name="ProfessionalLevel_ServingCoach" Member="ProfessionalLevel" ThisKey="LevelID" OtherKey="LevelID" Type="ProfessionalLevel" IsForeignKey="true" />
     </Type>
@@ -936,6 +937,7 @@
       <Column Name="Reason" Type="System.String" DbType="NVarChar(16)" CanBeNull="true" />
       <Association Name="CourseContractRevision_CourseContractExtension" Member="CourseContractExtension" ThisKey="RevisionID" OtherKey="RevisionTrackingID" Type="CourseContractExtension" />
       <Association Name="CourseContractRevision_ContractElement" Member="ContractElements" ThisKey="RevisionID" OtherKey="RevisionID" Type="ContractElement" />
+      <Association Name="CourseContractRevision_CourseContractRevisionItem" Member="CourseContractRevisionItem" ThisKey="RevisionID" OtherKey="RevisionID" Type="CourseContractRevisionItem" Cardinality="One" />
       <Association Name="CourseContract_CourseContractRevision" Member="CourseContract" ThisKey="RevisionID" OtherKey="ContractID" Type="CourseContract" IsForeignKey="true" />
       <Association Name="CourseContract_CourseContractRevision1" Member="SourceContract" ThisKey="OriginalContract" OtherKey="ContractID" Type="CourseContract" IsForeignKey="true" />
     </Type>
@@ -2062,6 +2064,14 @@
       <Column Name="CategoryID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Association Name="BlogArticle_BlogTag" Member="BlogArticle" ThisKey="DocID" OtherKey="DocID" Type="BlogArticle" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
       <Association Name="BlogCategoryDefinition_BlogTag" Member="BlogCategoryDefinition" ThisKey="CategoryID" OtherKey="CategoryID" Type="BlogCategoryDefinition" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.CourseContractRevisionItem" Member="CourseContractRevisionItem">
+    <Type Name="CourseContractRevisionItem">
+      <Column Name="RevisionID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="FitnessConsultant" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="CourseContractRevision_CourseContractRevisionItem" Member="CourseContractRevision" ThisKey="RevisionID" OtherKey="RevisionID" Type="CourseContractRevision" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="ServingCoach_CourseContractRevisionItem" Member="ServingCoach" ThisKey="FitnessConsultant" OtherKey="CoachID" Type="ServingCoach" IsForeignKey="true" />
     </Type>
   </Table>
   <Function Name="dbo.InquireVacantNo" Method="InquireVacantNo">

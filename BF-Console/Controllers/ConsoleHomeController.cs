@@ -342,6 +342,7 @@ namespace BFConsole.Controllers
             }
 
             IQueryable<LessonTime> items = models.PromptMemberExerciseLessons(lessons)
+                    .Where(l => l.LessonAttendance != null)
                     .Where(l => l.ClassTime >= viewModel.StartDate)
                     .Where(l => l.ClassTime < viewModel.EndDate.Value.AddDays(1));
 

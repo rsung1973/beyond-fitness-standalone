@@ -131,7 +131,7 @@
 
         function approveContractService() {
             showLoading();
-            $.post('<%= Url.Action("ExecuteContractStatus","ContractConsole",new { KeyID = _item.ContractID.EncryptKey(), Status = revision.Reason == "轉換體能顧問" ? (int)Naming.CourseContractStatus.已生效 :(int)Naming.CourseContractStatus.待簽名 }) %>', {}, function (data) {
+            $.post('<%= Url.Action(revision.Reason=="轉換體能顧問" ? "EnableContractAmendment" : "ExecuteContractStatus","ContractConsole",new { KeyID = _item.ContractID.EncryptKey(), Status = revision.Reason == "轉換體能顧問" ? (int)Naming.CourseContractStatus.已生效 :(int)Naming.CourseContractStatus.待簽名 }) %>', {}, function (data) {
                 hideLoading();
                 hideLoading();
                 if ($.isPlainObject(data)) {

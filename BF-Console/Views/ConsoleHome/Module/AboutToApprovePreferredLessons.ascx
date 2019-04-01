@@ -13,7 +13,7 @@
         <i class="zmdi livicon-evo" data-options="name: legal.svg; size: 40px; style: original; strokeWidth:2px; autoPlay:true"></i>
         <h4><%  var count =
                 _items
-                    .Where(l => l.ClassTime >= weekStart && l.ClassTime < weekStart.AddDays(7))
+                    //.Where(l => l.ClassTime >= weekStart && l.ClassTime < weekStart.AddDays(7))
                     .Count(); %>
             <%= count %>
         </h4>

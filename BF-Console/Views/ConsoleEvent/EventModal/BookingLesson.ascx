@@ -73,11 +73,11 @@
                                             </span>
                                         </div>
                                     </div>
-                                    <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-12" id="fieldBranch">
                                         <div>
                                             <select class="form-control show-tick" name="BranchID">
                                                 <option value="">-- 請選擇地點 --</option>
-                                                <%  Html.RenderPartial("~/Views/SystemInfo/BranchStoreOptions.ascx", model: -1);    %>
+                                                <%  Html.RenderPartial("~/Views/SystemInfo/BranchStoreOptions.ascx", model: (models.GetTable<CoachWorkplace>().Where(c=>c.CoachID==_profile.UID).Select(c=>(int?)c.BranchID).FirstOrDefault() ?? -1));    %>
                                             </select>
                                         </div>
                                     </div>
@@ -127,12 +127,12 @@
                                                     var enterpriseTrial = enterpriseLessons.Where(r => r.EnterpriseCourseContent.EnterpriseLessonType.Status == (int)Naming.LessonPriceStatus.體驗課程);
                                                     %>
                                                 <ul class="mail_list list-group list-unstyled">
-                                                <%  if (_model.UserProfileExtension.CurrentTrial.HasValue)
+                                                <%  //if (_model.UserProfileExtension.CurrentTrial.HasValue)
                                                     {
                                                         var trialLesson = models.GetTable<RegisterLesson>()
                                                                 .Where(r => r.UID == _model.UID).Where(r => r.LessonPriceType.Status == (int)Naming.LessonPriceStatus.體驗課程);
                                                         var trialLessonItem = trialLesson.FirstOrDefault();
-                                                        var trialBookable = trialLessonItem != null && trialLessonItem.LessonTime == null;
+                                                        var trialBookable = trialLessonItem == null;
                                                         if (trialBookable)
                                                             hasChoice = true;
                                                         %>
@@ -299,10 +299,12 @@
                                                         foreach (var content in courseContent.Where(r=>r.TypeID == (int)Naming.EnterpriseLessonTypeDefinition.體能顧問1對1課程 || r.TypeID == (int)Naming.EnterpriseLessonTypeDefinition.體能顧問1對2課程))
                                                         {
                                                             var enterprisePT = content.RegisterLessonEnterprise
-                                                                    .Select(r => r.RegisterLesson).Where(r => r.UID == _model.UID);
-                                                            var bookableLessons = enterprisePT.Where(r => r.LessonTime == null);
-                                                            var item = bookableLessons.FirstOrDefault();
-                                                            if (item != null)
+                                                                    .Select(r => r.RegisterLesson).Where(r => r.UID == _model.UID).FirstOrDefault();
+                                                            if (enterprisePT == null)
+                                                                continue;
+
+                                                            var availableCount = enterprisePT.RemainedLessonCount();
+                                                            if (availableCount > 0)
                                                                 hasChoice = true;
                                                             %>
                                                             <li class="list-group-item">
@@ -310,15 +312,15 @@
                                                                     <div class="pull-left">
                                                                         <div class="controls">
                                                                             <div class="checkbox">
-                                                                                <input type="checkbox" <%= item==null ? "disabled" : null %> id="enterprise<%= item?.RegisterID %>" name="RegisterID"  value="<%= item?.RegisterID %>" onclick="selectBooking(this, '<%= (int)Naming.LessonPriceStatus.企業合作方案 %>');" />
-                                                                                <label for="enterprise<%= item?.RegisterID %>"></label>
+                                                                                <input type="checkbox" <%= availableCount<=0 ? "disabled" : null %> id="enterprise<%= enterprisePT.RegisterID %>" name="RegisterID"  value="<%= enterprisePT.RegisterID %>" onclick="selectBooking(this, '<%= (int)Naming.LessonPriceStatus.企業合作方案 %>');" />
+                                                                                <label for="enterprise<%= enterprisePT.RegisterID %>"></label>
                                                                             </div>
                                                                         </div>
                                                                     </div>
                                                                     <div class="media-body">
                                                                         <div class="media-heading">
                                                                             <a class="m-r-10">P.T session（企業方案）- <%= content.EnterpriseLessonType.Description %></a>
-                                                                            <small class="float-right text-muted"><time><%= bookableLessons.Count() %>/<%= enterprisePT.Count() %></time></small>
+                                                                            <small class="float-right text-muted"><time><%= availableCount %>/<%= enterprisePT.Lessons %></time></small>
                                                                         </div>
                                                                         <p class="msg"><%= content.EnterpriseCourseContract.Subject %></p>
                                                                     </div>
@@ -499,6 +501,17 @@
 
         $(function () {
             equipDatetimePicker();
+
+            $('#<%= _dialogID %> input:checkbox').on('click', function (event) {
+                var event = event || window.event;
+                var $target = $(event.target);
+                if ($target.attr('id') == 'STLesson') {
+                    $('#fieldBranch').css('display', 'none');
+                } else {
+                    $('#fieldBranch').css('display', 'block');
+                }
+            });
+
         });
     </script>
 </div>

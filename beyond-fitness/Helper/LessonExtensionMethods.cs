@@ -418,7 +418,7 @@ namespace WebHome.Helper
             where TEntity : class, new()
         {
             var registerLesson = item.RegisterLesson;
-            if (item.IsCoachPISession())
+            if (item.IsCoachPISession() || item.IsTrialLesson())
             {
                 if (item.RegisterLesson.MasterRegistration == true)
                 {

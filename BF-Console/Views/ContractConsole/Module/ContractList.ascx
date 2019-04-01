@@ -50,7 +50,9 @@
             <td><%= item.Lessons %></td>
             <td> <%= item.ContractCurrentStatus() %></td>
             <td><%= String.Format("{0:yyyy/MM/dd}", item.ContractDate) %></td>
-            <td><%= String.Format("{0:yyyy/MM/dd}", item.EffectiveDate) %></td>
+            <td><%= String.Format("{0:yyyy/MM/dd}", item.CourseContractRevision == null
+                            ? item.EffectiveDate
+                            : item.CourseContractRevision.SourceContract.EffectiveDate) %></td>
             <td>
                 <%= String.Format("{0:yyyy/MM/dd}", item.Expiration) %>
                 <i class='zmdi zmdi-more-vert float-right'></i>

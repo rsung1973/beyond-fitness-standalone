@@ -35,7 +35,8 @@
                         <div class="body">
                             <%  DateTime monthStart = DateTime.Today.FirstDayOfMonth();
 
-                                var selfTraining = models.GetTable<RegisterLesson>().Where(r => r.UID == _model.UID)
+                                var selfTraining = models.PromptMemberExerciseRegisterLesson()
+                                        .Where(r => r.UID == _model.UID)
                                         .TotalLessons(models)
                                         .Where(l => l.LessonAttendance != null);
 

@@ -471,7 +471,6 @@ namespace BFConsole.Controllers
 
         public ActionResult ExecuteContractStatus(CourseContractViewModel viewModel)
         {
-            var profile = HttpContext.GetUser();
             var item = viewModel.ExecuteContractStatus(this, out String alertMessage);
             if (item == null)
             {
@@ -483,6 +482,17 @@ namespace BFConsole.Controllers
                 {
                     return View("~/Views/ConsoleHome/Shared/AlertMessage.ascx", model: alertMessage);
                 }
+            }
+
+            return View("~/Views/ContractConsole/Editing/ContractStatusChanged.ascx", item);
+        }
+
+        public ActionResult EnableContractAmendment(CourseContractViewModel viewModel)
+        {
+            var item = viewModel.EnableContractAmendment(this, out String alertMessage, null);
+            if (item == null)
+            {
+                return View("~/Views/ConsoleHome/Shared/AlertMessage.ascx", model: alertMessage);
             }
 
             return View("~/Views/ContractConsole/Editing/ContractStatusChanged.ascx", item);

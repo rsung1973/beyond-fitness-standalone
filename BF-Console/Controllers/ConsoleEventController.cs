@@ -151,7 +151,7 @@ namespace BFConsole.Controllers
             //        .Where(l => l.Lessons > l.GroupingLesson.LessonTime.Count)
             //        .Where(l => l.RegisterGroupID.HasValue);
 
-            var items = viewModel.UserName.PromptLearnerByName(models);
+            var items = viewModel.UserName.PromptLearnerByName(models, true);
 
             if (items.Count() > 0)
                 return View("~/Views/ConsoleEvent/EventModal/AttendeeSelector.ascx", items);

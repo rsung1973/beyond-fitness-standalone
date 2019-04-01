@@ -58,14 +58,29 @@ namespace WebHome.Helper
             }
         }
 
-        public static IQueryable<UserProfile> PromptLearnerByName<TEntity>(this String userName, ModelSource<TEntity> models)
+        public static IQueryable<UserProfile> PromptLearnerByName<TEntity>(this String userName, ModelSource<TEntity> models, bool includeTrial = false)
                 where TEntity : class, new()
         {
+            IQueryable<UserRole> roleItems = models.GetTable<UserRole>();
+            IQueryable<UserRoleAuthorization> authItems = models.GetTable<UserRoleAuthorization>();
+            if (includeTrial)
+            {
+                roleItems = roleItems.Where(r => r.RoleID == (int)Naming.RoleID.Learner
+                        || r.RoleID == (int)Naming.RoleID.Preliminary);
+                authItems = authItems.Where(r => r.RoleID == (int)Naming.RoleID.Learner
+                        || r.RoleID == (int)Naming.RoleID.Preliminary);
+            }
+            else
+            {
+                roleItems = roleItems.Where(r => r.RoleID == (int)Naming.RoleID.Learner);
+                authItems = authItems.Where(r => r.RoleID == (int)Naming.RoleID.Learner);
+            }
+
             var items = models.GetTable<UserProfile>()
                     .Where(l => (l.RealName.Contains(userName) || l.Nickname.Contains(userName))
                         && (l.UserProfileExtension != null))
-                    .Where(l => models.GetTable<UserRole>().Any(r => r.RoleID == (int)Naming.RoleID.Learner && r.UID == l.UID)
-                        || models.GetTable<UserRoleAuthorization>().Any(r => r.RoleID == (int)Naming.RoleID.Learner && r.UID == l.UID));
+                    .Where(l => roleItems.Any(r => r.UID == l.UID)
+                        || authItems.Any(r => r.UID == l.UID));
 
             return items;
         }

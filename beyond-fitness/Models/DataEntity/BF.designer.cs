@@ -531,6 +531,9 @@ namespace WebHome.Models.DataEntity
     partial void InsertBlogTag(BlogTag instance);
     partial void UpdateBlogTag(BlogTag instance);
     partial void DeleteBlogTag(BlogTag instance);
+    partial void InsertCourseContractRevisionItem(CourseContractRevisionItem instance);
+    partial void UpdateCourseContractRevisionItem(CourseContractRevisionItem instance);
+    partial void DeleteCourseContractRevisionItem(CourseContractRevisionItem instance);
     #endregion
 		
 		public BFDataContext() : 
@@ -1904,6 +1907,14 @@ namespace WebHome.Models.DataEntity
 			get
 			{
 				return this.GetTable<BlogTag>();
+			}
+		}
+		
+		public System.Data.Linq.Table<CourseContractRevisionItem> CourseContractRevisionItem
+		{
+			get
+			{
+				return this.GetTable<CourseContractRevisionItem>();
 			}
 		}
 		
@@ -9104,6 +9115,8 @@ namespace WebHome.Models.DataEntity
 		
 		private EntitySet<ContractElement> _ContractElements;
 		
+		private EntitySet<CourseContractRevisionItem> _CourseContractRevisionItem;
+		
 		private EntityRef<UserProfile> _UserProfile;
 		
 		private EntityRef<ProfessionalLevel> _ProfessionalLevel;
@@ -9134,6 +9147,7 @@ namespace WebHome.Models.DataEntity
 			this._LessonTime = new EntitySet<LessonTime>(new Action<LessonTime>(this.attach_LessonTime), new Action<LessonTime>(this.detach_LessonTime));
 			this._LessonTime1 = new EntitySet<LessonTime>(new Action<LessonTime>(this.attach_LessonTime1), new Action<LessonTime>(this.detach_LessonTime1));
 			this._ContractElements = new EntitySet<ContractElement>(new Action<ContractElement>(this.attach_ContractElements), new Action<ContractElement>(this.detach_ContractElements));
+			this._CourseContractRevisionItem = new EntitySet<CourseContractRevisionItem>(new Action<CourseContractRevisionItem>(this.attach_CourseContractRevisionItem), new Action<CourseContractRevisionItem>(this.detach_CourseContractRevisionItem));
 			this._UserProfile = default(EntityRef<UserProfile>);
 			this._ProfessionalLevel = default(EntityRef<ProfessionalLevel>);
 			OnCreated();
@@ -9357,6 +9371,19 @@ namespace WebHome.Models.DataEntity
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ServingCoach_CourseContractRevisionItem", Storage="_CourseContractRevisionItem", ThisKey="CoachID", OtherKey="FitnessConsultant")]
+		public EntitySet<CourseContractRevisionItem> CourseContractRevisionItem
+		{
+			get
+			{
+				return this._CourseContractRevisionItem;
+			}
+			set
+			{
+				this._CourseContractRevisionItem.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserProfile_ServingCoach", Storage="_UserProfile", ThisKey="CoachID", OtherKey="UID", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
 		public UserProfile UserProfile
 		{
@@ -9560,6 +9587,18 @@ namespace WebHome.Models.DataEntity
 		}
 		
 		private void detach_ContractElements(ContractElement entity)
+		{
+			this.SendPropertyChanging();
+			entity.ServingCoach = null;
+		}
+		
+		private void attach_CourseContractRevisionItem(CourseContractRevisionItem entity)
+		{
+			this.SendPropertyChanging();
+			entity.ServingCoach = this;
+		}
+		
+		private void detach_CourseContractRevisionItem(CourseContractRevisionItem entity)
 		{
 			this.SendPropertyChanging();
 			entity.ServingCoach = null;
@@ -22747,6 +22786,8 @@ namespace WebHome.Models.DataEntity
 		
 		private EntitySet<ContractElement> _ContractElements;
 		
+		private EntityRef<CourseContractRevisionItem> _CourseContractRevisionItem;
+		
 		private EntityRef<CourseContract> _CourseContract;
 		
 		private EntityRef<CourseContract> _SourceContract;
@@ -22769,6 +22810,7 @@ namespace WebHome.Models.DataEntity
 		{
 			this._CourseContractExtension = new EntitySet<CourseContractExtension>(new Action<CourseContractExtension>(this.attach_CourseContractExtension), new Action<CourseContractExtension>(this.detach_CourseContractExtension));
 			this._ContractElements = new EntitySet<ContractElement>(new Action<ContractElement>(this.attach_ContractElements), new Action<ContractElement>(this.detach_ContractElements));
+			this._CourseContractRevisionItem = default(EntityRef<CourseContractRevisionItem>);
 			this._CourseContract = default(EntityRef<CourseContract>);
 			this._SourceContract = default(EntityRef<CourseContract>);
 			OnCreated();
@@ -22885,6 +22927,35 @@ namespace WebHome.Models.DataEntity
 			set
 			{
 				this._ContractElements.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="CourseContractRevision_CourseContractRevisionItem", Storage="_CourseContractRevisionItem", ThisKey="RevisionID", OtherKey="RevisionID", IsUnique=true, IsForeignKey=false)]
+		public CourseContractRevisionItem CourseContractRevisionItem
+		{
+			get
+			{
+				return this._CourseContractRevisionItem.Entity;
+			}
+			set
+			{
+				CourseContractRevisionItem previousValue = this._CourseContractRevisionItem.Entity;
+				if (((previousValue != value) 
+							|| (this._CourseContractRevisionItem.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._CourseContractRevisionItem.Entity = null;
+						previousValue.CourseContractRevision = null;
+					}
+					this._CourseContractRevisionItem.Entity = value;
+					if ((value != null))
+					{
+						value.CourseContractRevision = this;
+					}
+					this.SendPropertyChanged("CourseContractRevisionItem");
+				}
 			}
 		}
 		
@@ -47707,6 +47778,174 @@ namespace WebHome.Models.DataEntity
 						this._CategoryID = default(int);
 					}
 					this.SendPropertyChanged("BlogCategoryDefinition");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.CourseContractRevisionItem")]
+	public partial class CourseContractRevisionItem : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _RevisionID;
+		
+		private int _FitnessConsultant;
+		
+		private EntityRef<CourseContractRevision> _CourseContractRevision;
+		
+		private EntityRef<ServingCoach> _ServingCoach;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnRevisionIDChanging(int value);
+    partial void OnRevisionIDChanged();
+    partial void OnFitnessConsultantChanging(int value);
+    partial void OnFitnessConsultantChanged();
+    #endregion
+		
+		public CourseContractRevisionItem()
+		{
+			this._CourseContractRevision = default(EntityRef<CourseContractRevision>);
+			this._ServingCoach = default(EntityRef<ServingCoach>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RevisionID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int RevisionID
+		{
+			get
+			{
+				return this._RevisionID;
+			}
+			set
+			{
+				if ((this._RevisionID != value))
+				{
+					if (this._CourseContractRevision.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnRevisionIDChanging(value);
+					this.SendPropertyChanging();
+					this._RevisionID = value;
+					this.SendPropertyChanged("RevisionID");
+					this.OnRevisionIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FitnessConsultant", DbType="Int NOT NULL")]
+		public int FitnessConsultant
+		{
+			get
+			{
+				return this._FitnessConsultant;
+			}
+			set
+			{
+				if ((this._FitnessConsultant != value))
+				{
+					if (this._ServingCoach.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnFitnessConsultantChanging(value);
+					this.SendPropertyChanging();
+					this._FitnessConsultant = value;
+					this.SendPropertyChanged("FitnessConsultant");
+					this.OnFitnessConsultantChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="CourseContractRevision_CourseContractRevisionItem", Storage="_CourseContractRevision", ThisKey="RevisionID", OtherKey="RevisionID", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public CourseContractRevision CourseContractRevision
+		{
+			get
+			{
+				return this._CourseContractRevision.Entity;
+			}
+			set
+			{
+				CourseContractRevision previousValue = this._CourseContractRevision.Entity;
+				if (((previousValue != value) 
+							|| (this._CourseContractRevision.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._CourseContractRevision.Entity = null;
+						previousValue.CourseContractRevisionItem = null;
+					}
+					this._CourseContractRevision.Entity = value;
+					if ((value != null))
+					{
+						value.CourseContractRevisionItem = this;
+						this._RevisionID = value.RevisionID;
+					}
+					else
+					{
+						this._RevisionID = default(int);
+					}
+					this.SendPropertyChanged("CourseContractRevision");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ServingCoach_CourseContractRevisionItem", Storage="_ServingCoach", ThisKey="FitnessConsultant", OtherKey="CoachID", IsForeignKey=true)]
+		public ServingCoach ServingCoach
+		{
+			get
+			{
+				return this._ServingCoach.Entity;
+			}
+			set
+			{
+				ServingCoach previousValue = this._ServingCoach.Entity;
+				if (((previousValue != value) 
+							|| (this._ServingCoach.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._ServingCoach.Entity = null;
+						previousValue.CourseContractRevisionItem.Remove(this);
+					}
+					this._ServingCoach.Entity = value;
+					if ((value != null))
+					{
+						value.CourseContractRevisionItem.Add(this);
+						this._FitnessConsultant = value.CoachID;
+					}
+					else
+					{
+						this._FitnessConsultant = default(int);
+					}
+					this.SendPropertyChanged("ServingCoach");
 				}
 			}
 		}
