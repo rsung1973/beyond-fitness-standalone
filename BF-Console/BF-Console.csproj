@@ -95,9 +95,6 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
-    <Reference Include="beyond-fitness">
-      <HintPath>bin\beyond-fitness.dll</HintPath>
-    </Reference>
     <Reference Include="CommonLib">
       <HintPath>bin\CommonLib.dll</HintPath>
     </Reference>
@@ -107,6 +104,8 @@
     <Reference Include="CommonLib.PlugInAdapter">
       <HintPath>bin\CommonLib.PlugInAdapter.dll</HintPath>
     </Reference>
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Web.Infrastructure">
@@ -6683,6 +6682,12 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>NamingItem.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\beyond-fitness\beyond-fitness.csproj">
+      <Project>{C49821FF-96C8-466B-AEF4-137EC84FDEFC}</Project>
+      <Name>beyond-fitness</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

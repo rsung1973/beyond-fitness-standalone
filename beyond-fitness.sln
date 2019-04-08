@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28010.2016
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "beyond-fitness", "beyond-fitness\beyond-fitness.csproj", "{C49821FF-96C8-466B-AEF4-137EC84FDEFC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BF-Console", "BF-Console\BF-Console.csproj", "{40D91196-7058-4A31-BEFA-DDF19098ECD9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{C49821FF-96C8-466B-AEF4-137EC84FDEFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C49821FF-96C8-466B-AEF4-137EC84FDEFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C49821FF-96C8-466B-AEF4-137EC84FDEFC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40D91196-7058-4A31-BEFA-DDF19098ECD9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40D91196-7058-4A31-BEFA-DDF19098ECD9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40D91196-7058-4A31-BEFA-DDF19098ECD9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40D91196-7058-4A31-BEFA-DDF19098ECD9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
