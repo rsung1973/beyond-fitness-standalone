@@ -133,7 +133,7 @@
     <value>Join Us</value>
   </data>
   <data name="BookNow" xml:space="preserve">
-    <value>Book now</value>
+    <value>Reservation</value>
   </data>
   <data name="LearnMore" xml:space="preserve">
     <value>Learn more</value>
@@ -151,31 +151,31 @@
     <value>Our persistence</value>
   </data>
   <data name="IndexBannerSubTitle" xml:space="preserve">
-    <value>Is built on the clients’faith</value>
+    <value>Is built on the faith of our clients</value>
   </data>
   <data name="IndexFeature1" xml:space="preserve">
     <value>Our commitment</value>
   </data>
   <data name="IndexFeature1Desc" xml:space="preserve">
-    <value>Professionalism stem from trust.We’re committed to listening and communication.Together we work hard and reach your goal.</value>
+    <value>Professionalism stems from trust. We’re committed to listening and communication. Together let's work hard and reach your goals.</value>
   </data>
   <data name="IndexFeature2" xml:space="preserve">
     <value>Our certificates</value>
   </data>
   <data name="IndexFeature2Desc" xml:space="preserve">
-    <value>Own six major international certificates.Provide you with a safe and supportable training venue.</value>
+    <value>Six major international certificates ensure we provide a safe and supportable training venue.</value>
   </data>
   <data name="IndexFeature3" xml:space="preserve">
-    <value>Our Data management</value>
+    <value>Fitness Data</value>
   </data>
   <data name="IndexFeature3Desc" xml:space="preserve">
-    <value>Innovated fitness analysis library.Customized training program.Inspire your unlimited power!</value>
+    <value>Innovative fitness analytics. Customized training program to inspire your unlimited power!</value>
   </data>
   <data name="IndexVedioTitle" xml:space="preserve">
-    <value>To whom who wants to know how to begin with...</value>
+    <value>For those that don't know how to begin...</value>
   </data>
   <data name="IndexVedioSubTitle" xml:space="preserve">
-    <value>Dream fulfillers</value>
+    <value>Dream Achievers</value>
   </data>
   <data name="IndexVedioDesc" xml:space="preserve">
     <value>Check out the following videos to see how Mr. Huang &lt;span class="hidden-sm-down"&gt;and Mrs. Chen &lt;/span&gt;recognize the value of exercise through professional training.</value>
@@ -184,7 +184,7 @@
     <value>Analyze fitness data,&lt;br /&gt;create a powerful Cloud.</value>
   </data>
   <data name="IndexSlick1Desc" xml:space="preserve">
-    <value>Professionalism lies on standing by clients. Beyond fitness proves it effective to cooperate with physical therapy.</value>
+    <value>Professionalism relies on standing by clients. Beyond Fitness's physcial therapy approach is effective.</value>
   </data>
   <data name="IndexSlick1Title" xml:space="preserve">
     <value>Physical therapist</value>
@@ -193,7 +193,7 @@
     <value>Yan-ping, Wang</value>
   </data>
   <data name="IndexSlick2Desc" xml:space="preserve">
-    <value>At beyond fitness, we take good care of your eating and workout habit.</value>
+    <value>At beyond fitness, we take good care of your nutrition and workout habits.</value>
   </data>
   <data name="IndexSlick2Title" xml:space="preserve">
     <value>Dietician</value>
@@ -202,10 +202,10 @@
     <value>Chia-hsiang, Liao</value>
   </data>
   <data name="AboutBannerTitle" xml:space="preserve">
-    <value>Professionalism comes from sincerity.</value>
+    <value>Professionalism comes from sincerity</value>
   </data>
   <data name="AboutBannerSubTitle" xml:space="preserve">
-    <value>A trust will give you a hearty smile.</value>
+    <value>Trust will give you a hearty smile</value>
   </data>
   <data name="AboutVedioTitle" xml:space="preserve">
     <value>Our belief</value>
@@ -250,7 +250,7 @@
     <value>Located at B1 of the building behind Dinghao Market, 2 minute walk from MRT Zongxiao Fuxing station Exit 3 (or Exit 14 of East Metro Mall)</value>
   </data>
   <data name="FindZhongxiaoBranchDesc2" xml:space="preserve">
-    <value>Rarely seen indoor high ceiling personal training venue, bright lighting space, combined with a variety of training equipment, separate bath and shower, allowing you to freshen up more comfortably.</value>
+    <value>Rarely seen high-ceiling indoor personal training venue, bright lighting space, combined with a variety of training equipment, separate bath and shower, allowing you to freshen up more comfortably.</value>
   </data>
   <data name="OurTeam" xml:space="preserve">
     <value>Our team</value>
@@ -259,7 +259,7 @@
     <value>Join Us</value>
   </data>
   <data name="JoinUsDesc" xml:space="preserve">
-    <value>Founded in 2014, Beyond Fitness is devoted to developing professional one-on-one personal trainers. Beyond Fitness has established from Nanjing, Taipei Arena and has expanded Xinyi 101 and Zhongxiao Dunhua branches in five years. Behind all these, we are just a group of partners who want to let action and professional practice speak louder than words; most importantly, and those clients who have faith in us. We believe that education should be personalized and so as training. We should customize accordingly to individuals’ need that is most suitable for "people", guiding customers to live a better life.</value>
+    <value>Founded in 2014, Beyond Fitness is devoted to developing professional one-on-one personal trainers. Beyond Fitness has established from Nanjing, Taipei Arena and has expanded Xinyi 101 and Zhongxiao Dunhua branches in five years. Behind all these, we are just a group of partners who want to let action and professional practice speak louder than words; most importantly, and those clients who have faith in us. We believe that education should be personalized as well as training. We should customize accordingly to individuals’ needs, guiding customers to live a better life.</value>
   </data>
   <data name="JoinUsFeature1" xml:space="preserve">
     <value>Smile</value>
@@ -283,7 +283,7 @@
     <value>Integrity</value>
   </data>
   <data name="JoinUsFeature4Desc" xml:space="preserve">
-    <value>Offer suggestions with professions</value>
+    <value>Advice from Professionals</value>
   </data>
   <data name="JoinUsJob1" xml:space="preserve">
     <value>Personal Trainers</value>
@@ -337,7 +337,7 @@
     <value>As professional fitness instructors, we provide training in a scientific and systematic way. We help you in a sincere manner and bring the highest benefits and value to each training course.</value>
   </data>
   <data name="AboutVedioDesc4" xml:space="preserve">
-    <value>We believe that “If we help you change your lifestyle and lead you to a healthier life, you will naturally find the value and quality of your life.”</value>
+    <value>We believe that if we help you change your lifestyle and lead you to a healthier life, you will naturally find the value and quality of your life.</value>
   </data>
   <data name="BookNowTitle" xml:space="preserve">
     <value>Just four steps away!</value>
@@ -349,25 +349,25 @@
     <value>Consult&lt;span&gt;You will be carefully and thoroughly evaluated according to your conditions and needs. We assure you that the details of our trial course are clearly explained.&lt;/span&gt;</value>
   </data>
   <data name="BookNowStep3" xml:space="preserve">
-    <value>Trial&lt;span&gt;Head to the branches you choose, there will be professional trainer taking you on one training course based on your physical condition. Meanwhile, you will not only know your physical status but also our training process and venue.&lt;/span&gt;</value>
+    <value>Trial&lt;span&gt;Head to the branches you choose, there will be a professional trainer to guide you for one training course based on your physical condition. Meanwhile, you will not only better understand your physical status but also our training process and venue.&lt;/span&gt;</value>
   </data>
   <data name="BookNowStep4" xml:space="preserve">
     <value>Customization&lt;span&gt;Professional trainers will explain the purpose of workout sessions. Your physical condition and status will be discussed with suitable advice made just for you.&lt;/span&gt;</value>
   </data>    
   <data name="Features1Desc" xml:space="preserve">
-    <value>&lt;p&gt;Beyond Fitness commit that…&lt;/p&gt;&lt;ul class=&quot;features-list&quot;&gt;&lt;li&gt;Customized program make training safer and meanwhile giving you significant training outcomes.&lt;/li&gt;&lt;li&gt;Professional coaches lead you to clearly understand your physical condition and training progress.&lt;/li&gt;&lt;li&gt;Enhance every step of progress by discussing the content of the course with you.&lt;/li&gt;&lt;li&gt;Review your physical condition and course content periodically. We keep the quality of training for you anytime.&lt;/li&gt;&lt;/ul&gt;</value>
+    <value>&lt;p&gt;Beyond Fitness commit that…&lt;/p&gt;&lt;ul class=&quot;features-list&quot;&gt;&lt;li&gt;Customized program make training safer and give you significant training results.&lt;/li&gt;&lt;li&gt;Professional coaches lead you to clearly understand your physical condition and training progress.&lt;/li&gt;&lt;li&gt;Enhance every step of progress by discussing the content of the course with you.&lt;/li&gt;&lt;li&gt;Review your physical condition and course content periodically. We keep the quality of training for you anytime.&lt;/li&gt;&lt;/ul&gt;</value>
   </data>
   <data name="Features2Desc" xml:space="preserve">
-    <value>&lt;p&gt;Beyond Fitness owns the most six major international certificates in fitness industry, allowing you to exercise in a professional and safe environment&lt;/p&gt;&lt;ul class=&quot;features-list&quot;&gt;&lt;li&gt;American Council on Exercise (ACE)&lt;/li&gt;&lt;li&gt;The American College of Sports Medicine (ACSM)&lt;/li&gt;&lt;li&gt;National Collegiate Athletic Association (NCAA)&lt;/li&gt;&lt;li&gt;National Strength and Conditioning Association (NSCA)&lt;/li&gt;&lt;li&gt;National Academy of Sports Medicine (NASM)&lt;/li&gt;&lt;li&gt;CrossFit&lt;/li&gt;&lt;li&gt;EXOS-XPS (The largest private athlete community in the US)&lt;/li&gt;&lt;li&gt;CPR+AED (The red cross society of the Republic of China, Taiwan)&lt;/li&gt;&lt;/ul&gt;</value>
+    <value>&lt;p&gt;Beyond Fitness owns six major international certificates in the fitness industry, allowing you to exercise in a professional and safe environment&lt;/p&gt;&lt;ul class=&quot;features-list&quot;&gt;&lt;li&gt;American Council on Exercise (ACE)&lt;/li&gt;&lt;li&gt;The American College of Sports Medicine (ACSM)&lt;/li&gt;&lt;li&gt;National Collegiate Athletic Association (NCAA)&lt;/li&gt;&lt;li&gt;National Strength and Conditioning Association (NSCA)&lt;/li&gt;&lt;li&gt;National Academy of Sports Medicine (NASM)&lt;/li&gt;&lt;li&gt;CrossFit&lt;/li&gt;&lt;li&gt;EXOS-XPS (The largest private athlete community in the US)&lt;/li&gt;&lt;li&gt;CPR+AED (The red cross society of the Republic of China, Taiwan)&lt;/li&gt;&lt;/ul&gt;</value>
   </data>
   <data name="Features3Desc" xml:space="preserve">
-    <value>&lt;p&gt;Since Beyond Fitness established, we’ve continued to provide you with analysis during your workout and create your own physical data.&lt;/p&gt;&lt;ul class=&quot;features-list&quot;&gt;&lt;li&gt;Fitness analysis library comprehensively analyze your exercise and physical status.&lt;/li&gt;&lt;li&gt;Class schedule and content in the Cloud, offering you a better understanding of training session.&lt;/li&gt;&lt;li&gt;Practical articles are in supply your sports and health information at any time.&lt;/li&gt;&lt;li&gt;Interesting sports &amp; healthy Q&amp;A, bringing you fun interactions after the workout.&lt;/li&gt;&lt;/ul&gt;</value>
+    <value>&lt;p&gt;Since Beyond Fitness was established, we’ve continued to provide you with analysis during your workout and create your own physical data.&lt;/p&gt;&lt;ul class=&quot;features-list&quot;&gt;&lt;li&gt;Fitness analysis library comprehensively analyze your exercise and physical status.&lt;/li&gt;&lt;li&gt;Class schedule and content in the Cloud, offering you a better understanding of training session.&lt;/li&gt;&lt;li&gt;Practical articles are in supply your sports and health information at any time.&lt;/li&gt;&lt;li&gt;Interesting sports &amp; healthy Q&amp;A, bringing you fun interactions after the workout.&lt;/li&gt;&lt;/ul&gt;</value>
   </data>
   <data name="FAQBannerTitle" xml:space="preserve">
-    <value>We’re happy to help,&lt;br /&gt;making it easy and simple!</value>
+    <value>We're happy to help&lt;br /&gt;make it easy and simple!</value>
   </data>
   <data name="FAQQestion1" xml:space="preserve">
-    <value>I want to know more about personal training courses?</value>
+    <value>I want to know more about personal training courses</value>
   </data>
   <data name="FAQQestion11" xml:space="preserve">
     <value>Are there any trial courses?</value>
@@ -376,19 +376,19 @@
     <value>What is the content of the course?</value>
   </data>
   <data name="FAQQestion13" xml:space="preserve">
-    <value>How to book for trial course?</value>
+    <value>How can I book a trial course?</value>
   </data>
   <data name="FAQQestion2" xml:space="preserve">
-    <value>How to charge?</value>
+    <value>How much does it cost?</value>
   </data>
   <data name="FAQQestion21" xml:space="preserve">
-    <value>Is monthly fee, membership fee or handling charge needed?</value>
+    <value>Is there a monthly fee, membership fee or handling charge?</value>
   </data>
   <data name="FAQQestion22" xml:space="preserve">
-    <value>How to charge?</value>
+    <value>How are the courses priced?</value>
   </data>
   <data name="FAQQestion3" xml:space="preserve">
-    <value>Why do we stand out?</value>
+    <value>What makes Beyond Fitness stand out?</value>
   </data>
   <data name="FAQQestion4" xml:space="preserve">
     <value>What is the difference between a personal training course and a group training course?</value>
@@ -397,28 +397,28 @@
     <value>Can I train by myself at Beyond Fitness?</value>
   </data>
   <data name="FAQAnswer11" xml:space="preserve">
-    <value>Yes! Book for the trial course 1-2 days beforehand, and then you’re ready to enjoy!</value>
+    <value>Yes! Book the trial course 1-2 days beforehand, and then you’re ready to enjoy!</value>
   </data>
   <data name="FAQAnswer12" xml:space="preserve">
-    <value>The content is as follows: &lt;li&gt;A careful consultation of your physical condition.&lt;/li&gt;&lt;li&gt;A careful analysis of your exercise habit and lifestyle by trainers.&lt;/li&gt;&lt;li&gt;Trainers will bring out your training goals and results, leading you to a pleasant experience.&lt;/li&gt;&lt;li&gt;Trainers are always by your side customizing your training courses.&lt;/li&gt;</value>
+    <value>The content is as follows: &lt;li&gt;A careful consultation of your physical condition.&lt;/li&gt;&lt;li&gt;A careful analysis of your exercise habit and lifestyle by trainers.&lt;/li&gt;&lt;li&gt;Trainers will help you achieve your training goals and results, leading you to a pleasant experience.&lt;/li&gt;&lt;li&gt;Trainers are always by your side customizing your training courses.&lt;/li&gt;</value>
   </data>
   <data name="FAQAnswer13" xml:space="preserve">
     <value>Find us in the following ways to start your trial course</value>
   </data>
   <data name="FAQAnswer21" xml:space="preserve">
-    <value>Beyond fitness focus on 1 on 1 customized training, you don’t need to pay any other fees.</value>
+    <value>Beyond Fitness focuses on 1-on-1 customized training, you don’t need to pay any other fees.</value>
   </data>
   <data name="FAQAnswer22" xml:space="preserve">
     <value>Customized courses are charged by the number of the courses. Prices vary depending on your goals, plans and the number of courses that you need.</value>
   </data>
   <data name="FAQAnswer3" xml:space="preserve">
-    <value>Our team is second to none in the industry. All personnel are qualified for international trainer certification (which must be within the validity period), internal professional team academic examination (every quarter, half year, one year). With scientific training as the fundamental, systematic record, analysis, we give every customer the most intimate and trustworthy service.</value>
+    <value>Our team is second to none in the industry. All personnel are qualified and hold international trainer certifications, internal professional team academic examination (every quarter, half year, one year). With scientific training as the fundamental, systematic record, analysis, we give every customer the most intimate and trustworthy service.</value>
   </data>
   <data name="FAQAnswer4" xml:space="preserve">
-    <value>A good personal trainer will customize training programs according to client's goals, life schedule, and the status of each day, giving you the best training outcomes to while avoiding sports injuries.&lt;br/&gt;&lt;br/&gt;The most important part is to help you make plans for those time you're not training. Compared to group training courses, personal training courses focus on each client's uniqueness and individual differentiation, customized course make the most effective training!</value>
+    <value>A good personal trainer will customize training programs according to client's goals, life schedule, and the status of each day, giving you the best training outcomes to avoid sports injuries.&lt;br/&gt;&lt;br/&gt;The most important part is to help you make plans for times when you're not training. Compared to group training courses, personal training courses focus on each client's uniqueness and individual differences. Customized courses are the most effective training!</value>
   </data>
   <data name="FAQAnswer5" xml:space="preserve">
-    <value>Of course! We only provide customers who take training courses at Beyond fitness with registration. Your trainer will schedule and customize training session (shown as P.I. Session) for you. By that, we could control the number of people to maintain the venue, offering you the best training quality.</value>
+    <value>Of course! We only provide customers who take training courses at Beyond Fitness with registration. Your trainer will schedule and customize training session (shown as P.I. Session) for you. This way we can control the number of people to maintain the standards of the venue, offering you the best training quality.</value>
   </data>
   <data name="Go" xml:space="preserve">
     <value>Go</value>
@@ -433,6 +433,6 @@
     <value>Back Official Site</value>
   </data>
   <data name="PricingTitle" xml:space="preserve">
-    <value>Choose your perfect plan</value>
+    <value>Choose your ideal plan</value>
   </data>
 </root>
