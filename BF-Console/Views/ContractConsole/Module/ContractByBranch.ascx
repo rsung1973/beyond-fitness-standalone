@@ -14,13 +14,16 @@
     <h4 class="card-outbound-header">我的分店合約</h4>
     <div class="card widget_3">
         <ul class="row clearfix list-unstyled m-b-0">
-            <li class="col-lg-4 col-md-6 col-sm-12">
+            <li class="col-lg-3 col-md-6 col-sm-12">
                 <%  Html.RenderPartial("~/Views/ContractConsole/Module/AboutExpiringByBranch.ascx", _model); %>
             </li>
-            <li class="col-lg-4 col-md-6 col-sm-12">
-                <%  Html.RenderPartial("~/Views/ContractConsole/Module/AboutNewContractsByBranch.ascx", _model); %>
+            <li class="col-lg-3 col-md-6 col-sm-12">
+                <%  Html.RenderPartial("~/Views/ContractConsole/Module/AboutContractsByBranch.ascx", _model); %>
             </li>
-            <li class="col-lg-4 col-sm-12">
+            <li class="col-lg-3 col-md-6 col-sm-12">
+                <%  Html.RenderPartial("~/Views/ContractConsole/Module/AboutContractServicesSummaryByBranch.ascx", _model); %>
+            </li>
+            <li class="col-lg-3 col-sm-12">
                 <%  Html.RenderPartial("~/Views/ContractConsole/Module/AboutPaymentByBranch.ascx", _model); %>
             </li>
         </ul>

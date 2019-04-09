@@ -32,7 +32,7 @@
     </div>
     <div class="content">
         <div class="text">待續約 <span class="col-grey float-right">合約</span></div>
-        <h5 class="number"><a href='javascript:showContractList(<%= JsonConvert.SerializeObject(
+        <h5 class="number"><a onclick='showContractList(<%= JsonConvert.SerializeObject(
                                     new
                                     {
                                         Status = queryModel.Status,

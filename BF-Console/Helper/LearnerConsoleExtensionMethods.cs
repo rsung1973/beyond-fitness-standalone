@@ -66,9 +66,11 @@ namespace WebHome.Helper
             if (includeTrial)
             {
                 roleItems = roleItems.Where(r => r.RoleID == (int)Naming.RoleID.Learner
-                        || r.RoleID == (int)Naming.RoleID.Preliminary);
+                        || r.RoleID == (int)Naming.RoleID.Preliminary
+                        || r.RoleID == (int)Naming.RoleID.Assistant);
                 authItems = authItems.Where(r => r.RoleID == (int)Naming.RoleID.Learner
-                        || r.RoleID == (int)Naming.RoleID.Preliminary);
+                        || r.RoleID == (int)Naming.RoleID.Preliminary
+                        || r.RoleID == (int)Naming.RoleID.Assistant);
             }
             else
             {

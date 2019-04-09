@@ -44,8 +44,9 @@
     }
 
     function showContractList(viewModel, alertCount) {
+        debugger;
         if (alertCount == 0)
-            return;
+            return false;
         clearErrors();
         if (alertCount && alertCount > 300) {
             swal({
@@ -87,6 +88,7 @@
                 }
             });
         }
+        return false;
     }
     
 </script>

@@ -48,7 +48,7 @@
                                         .Sum(l => l.DurationInMinutes) ?? 0;
                             %>
                             <div class="font-20 align-center">
-                                本月運動：<span class="col-lime counto" data-to="<%= totalMinutes/60 %>"><%= totalMinutes/60 %></span>小時:<span class="col-lime counto" data-to="<%= totalMinutes%60 %>"><%= totalMinutes%60 %></span>分鐘 
+                                本月運動：<span class="col-lime counto" data-to="<%= totalMinutes / 60 %>"><%= totalMinutes / 60 %></span>小時:<span class="col-lime counto" data-to="<%= totalMinutes % 60 %>"><%= totalMinutes % 60 %></span>分鐘 
                                 <%  if (totalMinutes > totalMinutesLastMonth)
                                     {   %>
                                 <i class="zmdi zmdi-caret-up zmdi-hc-2x text-danger"></i>
@@ -97,13 +97,13 @@
                                                                 || (t.StartDate < weekday && t.EndDate >= endDate)).Count());
                                                         }
                                                 %>
-                                                <li class="<%= weekday==DateTime.Today ? "col-pink" : null %>" onclick="window.location.href = '<%= Url.Action("Calendar","ConsoleHome",new { DateFrom = weekday, DateTo = endDate }) %>';">
+                                                <li class="<%= weekday == DateTime.Today ? "col-pink" : null %>" onclick="window.location.href = '<%= Url.Action("Calendar", "ConsoleHome", new { DateFrom = weekday, DateTo = endDate }) %>';">
                                                     <h5><%= $"{weekday:M/d}" %></h5>
-                                                    <img src="<%= lessonCount<3 
-                                                  ? "images/facesmile/easy-1.jpg"
-                                                  : lessonCount>5
-                                                        ? "images/facesmile/hard-1.jpg"
-                                                        : "images/facesmile/ragular-1.jpg"%>">
+                                                    <img src="<%= lessonCount < 3
+                                                      ? "images/facesmile/easy-1.jpg"
+                                                      : lessonCount > 5
+                                                            ? "images/facesmile/hard-1.jpg"
+                                                            : "images/facesmile/ragular-1.jpg"%>">
                                                     <span class="degrees"><%= lessonCount %></span>
                                                 </li>
                                                 <%     weekday = weekday.AddDays(1);
@@ -166,8 +166,8 @@
                                     <p class="text-small">
                                         收款：<a href="javascript:void(0);"><%= paymentToday.Count() %></a>
                                         <br />
-                                        作廢：<a href="javascript:void(0);"><%= voidToday.Where(v=>v.InvoiceItem.InvoiceCancellation!=null).Count() %></a><br />
-                                        折讓：<a href="javascript:void(0);"><%= voidToday.Where(v=>v.AllowanceID.HasValue).Count() %></a>
+                                        作廢：<a href="javascript:void(0);"><%= voidToday.Where(v => v.InvoiceItem.InvoiceCancellation != null).Count() %></a><br />
+                                        折讓：<a href="javascript:void(0);"><%= voidToday.Where(v => v.AllowanceID.HasValue).Count() %></a>
                                     </p>
                                 </div>
                                 <div class="col-4 text-right">
@@ -180,6 +180,13 @@
                         </div>
                     </li>
                 </ul>
+                <script>
+                    $(function () {
+                        $('li.contract').on('click', function (event) {
+                            window.location.href = '<%= Url.Action("ContractIndex", "ConsoleHome", new { ScrollToView = false }) %>';
+                        });
+                    });
+                </script>
             </div>
         </div>
         <!--我的學生-->
@@ -232,6 +239,10 @@
         });
 
         function showContractList(viewModel, alertCount) {
+            var event = window.event;
+            if (event) {
+                event.cancelBubble = true;
+            }
             if (alertCount == 0)
                 return;
             viewModel.scrollToView = false;

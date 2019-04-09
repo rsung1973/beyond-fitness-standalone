@@ -53,7 +53,7 @@
                         <%  Html.RenderPartial("~/Views/ContractConsole/Module/AboutNewContractsByCoach.ascx", _model); %>
                     </li>
                     <li class="col-lg-3 col-md-6 col-sm-12">
-                        <%  Html.RenderPartial("~/Views/ContractConsole/Module/AboutContractServices.ascx", _model); %>
+                        <%  Html.RenderPartial("~/Views/ContractConsole/Module/AboutContractServicesByCoach.ascx", _model); %>
                     </li>
                     <li class="col-lg-3 col-md-6 col-sm-12">
                         <%  Html.RenderPartial("~/Views/ContractConsole/Module/AboutPaymentByCoach.ascx", _model); %>

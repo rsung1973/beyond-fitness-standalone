@@ -12,46 +12,51 @@
     <div class="row">
         <div class="col-8">
             <%  DateTime monthStart = DateTime.Today.FirstDayOfMonth();
-                var editingItems = models.PromptContractInEditing().FilterByBranchStoreManager(models, _model.UID);
-                var toConfirmItems = models.PromptContractToConfirm().FilterByBranchStoreManager(models, _model.UID);
-                var toSignItems = models.PromptContractToSign().FilterByBranchStoreManager(models, _model.UID);;
+                var contracts = models.PromptContractService();
+                var editingItems = contracts
+                                    .Where(c => c.FitnessConsultant == _model.UID)
+                                    .Where(c => c.Status == (int)Naming.CourseContractStatus.草稿);
+                var toConfirmItems = contracts
+                                    .FilterByBranchStoreManager(models, _model.UID)
+                                    .Where(c => c.Status == (int)Naming.CourseContractStatus.待確認);
+                var toSignItems = contracts
+                                    .FilterByBranchStoreManager(models, _model.UID)
+                                    .Where(c => c.Status == (int)Naming.CourseContractStatus.待簽名);
             %>
-            <h5 class="m-t-0">賀成交</h5>
+            <h5 class="m-t-0">服務申請</h5>
             <p class="text-small">
                 編輯中：<a onclick='showContractList(<%= JsonConvert.SerializeObject(
                                 new 
                                 {
                                     ManagerID = _model.UID,
-                                    ContractQueryMode = Naming.ContractServiceMode.ContractOnly,
+                                    ContractQueryMode = Naming.ContractServiceMode.ServiceOnly,
                                     Status = (int)Naming.CourseContractStatus.草稿,
-                                }) %>,<%= editingItems.Count() %>);'><%= editingItems.Count() %></a>
-                <br />
+                                }) %>,<%= editingItems.Count() %>);'><%= editingItems.Count() %></a><br />
                 待簽名：<a onclick='showContractList(<%= JsonConvert.SerializeObject(
                                 new 
                                 {
                                     ManagerID = _model.UID,
-                                    ContractQueryMode = Naming.ContractServiceMode.ContractOnly,
+                                    ContractQueryMode = Naming.ContractServiceMode.ServiceOnly,
                                     Status = (int)Naming.CourseContractStatus.待簽名,
-                                }) %>,<%= toSignItems.Count() %>);'><%= toSignItems.Count() %></a>
-                <br />
+                                }) %>,<%= toSignItems.Count() %>);'><%= toSignItems.Count() %></a><br />
                 待審核：<a onclick='showContractList(<%= JsonConvert.SerializeObject(
                                 new 
                                 {
                                     ManagerID = _model.UID,
-                                    ContractQueryMode = Naming.ContractServiceMode.ContractOnly,
-                                    Status = (int)Naming.CourseContractStatus.待審核,
+                                    ContractQueryMode = Naming.ContractServiceMode.ServiceOnly,
+                                    Status = (int)Naming.CourseContractStatus.待確認,
                                 }) %>,<%= toConfirmItems.Count() %>);'><%= toConfirmItems.Count() %></a>
             </p>
         </div>
         <div class="col-4 text-right">
-            <%  var totalCount = models.PromptEffectiveContract()
-                            .FilterByBranchStoreManager(models, _model.UID)
+            <%  var totalCount = models.PromptContractService().FilterByEffective(models)
+                            .Where(c => c.FitnessConsultant == _model.UID)
                             .Where(c => c.EffectiveDate >= monthStart && c.EffectiveDate < monthStart.AddMonths(1)).Count(); %>
             <a onclick='showContractList(<%= JsonConvert.SerializeObject(
                                 new 
                                 {
-                                    ManagerID = _model.UID,
-                                    ContractQueryMode = Naming.ContractServiceMode.ContractOnly,
+                                    FitnessConsultant = _model.UID,
+                                    ContractQueryMode = Naming.ContractServiceMode.ServiceOnly,
                                     Status = (int)Naming.CourseContractStatus.已生效,
                                     EffectiveDateFrom = monthStart,
                                     EffectiveDateTo = monthStart.AddMonths(1),

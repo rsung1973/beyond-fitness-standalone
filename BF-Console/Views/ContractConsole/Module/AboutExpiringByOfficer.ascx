@@ -17,14 +17,14 @@
                 var expiredItems = models.PromptRegisterLessonContract()
                     .FilterByExpired(models); %>
             <p class="text-small">
-                已過期：<a href='javascript:showContractList(<%= JsonConvert.SerializeObject(
+                已過期：<a onclick='showContractList(<%= JsonConvert.SerializeObject(
                                 new 
                                 {
                                     IsExpired = true,
                                     ContractQueryMode = Naming.ContractServiceMode.ContractOnly,
                                     Status = (int)Naming.CourseContractStatus.已過期,
                                 }) %>,<%= expiredItems.Count() %>);'><%= expiredItems.Count() %></a><br />
-                生效中：<a href='javascript:showContractList(<%= JsonConvert.SerializeObject(
+                生效中：<a onclick='showContractList(<%= JsonConvert.SerializeObject(
                                 new 
                                 {
                                     ContractQueryMode = Naming.ContractServiceMode.ContractOnly,
@@ -34,7 +34,7 @@
             </p>
         </div>
         <div class="col-4 text-right">
-            <a href='javascript:showContractList(<%= JsonConvert.SerializeObject(
+            <a onclick='showContractList(<%= JsonConvert.SerializeObject(
                                 new 
                                 {
                                     ContractQueryMode = Naming.ContractServiceMode.ContractOnly,

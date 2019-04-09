@@ -19,7 +19,7 @@
     }
     else
     {
-        Html.RenderPartial("~/Views/ContractConsole/Module/AboutContractServicesByCoach.ascx", _model);
+        Html.RenderPartial("~/Views/ContractConsole/Module/AboutContractServicesByPureCoach.ascx", _model);
     }
     %>
 

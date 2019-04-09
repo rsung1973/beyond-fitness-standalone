@@ -121,7 +121,7 @@
                     </div>
                 </li>
                 <li>
-                    <a href="<%= Url.Action("ContractIndex","ConsoleHome") %>"><i class="zmdi zmdi-file-text"></i><span>我的合約</span> </a>
+                    <a href="<%= Url.Action("ContractIndex","ConsoleHome",new { ScrollToView = false}) %>"><i class="zmdi zmdi-file-text"></i><span>我的合約</span> </a>
                 </li>
                 <li>
                     <a href="javascript:void(0);"><i class="zmdi zmdi-file-text"></i><span>我的收款</span> </a>
@@ -157,6 +157,17 @@
     <script src="bundles/mainscripts.bundle.js"></script>
     <script type="text/javascript">
         $(function () {
+            $(window).bind("pageshow", function (event) {
+                //$(".page-loader-wrapper").fadeOut();
+                if (event.originalEvent.persisted) {
+                    window.location.reload()
+                }
+            });
+
+            $(window).bind("pagehide", function (event) {
+                $(".page-loader-wrapper").css('display', 'block');
+            });
+
             $.scrollUp({
                 animation: 'fade',
                 scrollImg: {
