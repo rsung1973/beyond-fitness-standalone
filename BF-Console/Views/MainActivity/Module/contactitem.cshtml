@@ -22,9 +22,9 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12 text-center">
-                <h1>@(NamingItem.ContactTitle)</h1>
-                <p class="lead">@(NamingItem.ContactSubTitle)</p>
-                <a href="@(Url.Action("BookNow"))" class="more">@(NamingItem.ContactAskNow)<i class="pl-1 fa fa-angle-right"></i></a>
+                <h1>@Html.Raw(NamingItem.ContactTitle)</h1>
+                <p class="lead">@Html.Raw(NamingItem.ContactSubTitle)</p>
+                <a href="@(Url.Action("BookNow"))" class="more">@Html.Raw(NamingItem.ContactAskNow)<i class="pl-1 fa fa-angle-right"></i></a>
                 <ul class="contact_social">
                     <li><a href="https://www.facebook.com/beyond.fitness.pro/" target="_blank"><i class="zmdi zmdi-facebook"></i></a></li>
                     <li><a href="https://www.instagram.com/beyond_ft/" target="_blank"><i class="zmdi zmdi-instagram"></i></a></li>
