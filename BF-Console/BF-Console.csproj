@@ -6293,7 +6293,6 @@
     <Content Include="Views\LessonConsole\ProcessModal\TodayLessons.ascx" />
     <Content Include="Views\LessonConsole\ProcessModal\ProcessCrossBranch.ascx" />
     <Content Include="Views\LessonConsole\Module\CrossBranchLessonList.ascx" />
-    <Content Include="Views\MainActivity\Index.aspx" />
     <Content Include="Views\ReportConsole\ReportModal\ByContractNo.ascx" />
     <Content Include="Views\ReportConsole\ReportModal\SelectReportCondition.ascx" />
     <Content Include="Views\ReportConsole\ReportModal\SelectPeriodReport.ascx" />
@@ -6301,20 +6300,6 @@
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Views\MainActivity\AboutUs.aspx" />
-    <Content Include="Views\MainActivity\FindUs.aspx" />
-    <Content Include="Views\MainActivity\JoinUs.aspx" />
-    <Content Include="Views\MainActivity\BlogArticleList.aspx" />
-    <Content Include="Views\MainActivity\BlogGrid.aspx" />
-    <Content Include="Views\MainActivity\BlogList.aspx" />
-    <Content Include="Views\MainActivity\BlogSingle.aspx" />
-    <Content Include="Views\MainActivity\BookNow.aspx" />
-    <Content Include="Views\MainActivity\CoachDetails.aspx" />
-    <Content Include="Views\MainActivity\FAQ.aspx" />
-    <Content Include="Views\MainActivity\Features.aspx" />
-    <Content Include="Views\MainActivity\Opportunity.aspx" />
-    <Content Include="Views\MainActivity\PricingList.aspx" />
-    <Content Include="Views\MainActivity\Team.aspx" />
     <Content Include="Views\MainActivity\Module\ContactItem.ascx" />
     <Content Include="Views\MainActivity\Module\JoinItem.ascx" />
     <Content Include="Views\MainActivity\Module\MenuItem.ascx" />
@@ -6348,6 +6333,8 @@
     <Content Include="Views\MainActivity\Module\MobileMenuItem.cshtml" />
     <Content Include="Views\MainActivity\Template\BlogPage.cshtml" />
     <Content Include="Views\MainActivity\Template\MainPage.cshtml" />
+    <Content Include="Views\ContractConsole\Module\AboutContractsByBranch.ascx" />
+    <Content Include="Views\ContractConsole\Module\AboutContractsByOfficer.ascx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\ConsoleEventController.cs" />
