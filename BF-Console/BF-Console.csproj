@@ -6335,6 +6335,10 @@
     <Content Include="Views\MainActivity\Template\MainPage.cshtml" />
     <Content Include="Views\ContractConsole\Module\AboutContractsByBranch.ascx" />
     <Content Include="Views\ContractConsole\Module\AboutContractsByOfficer.ascx" />
+    <Content Include="Views\ContractConsole\Module\AboutContractServicesByManager.ascx" />
+    <Content Include="Views\ContractConsole\Module\AboutContractServicesByPureCoach.ascx" />
+    <Content Include="Views\ContractConsole\Module\AboutContractServicesSummaryByBranch.ascx" />
+    <Content Include="Views\ContractConsole\Module\AboutContractServicesSummaryByOfficer.ascx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\ConsoleEventController.cs" />
