@@ -6342,12 +6342,12 @@
     <Content Include="Views\MainActivity\Opportunity.cshtml" />
     <Content Include="Views\MainActivity\PricingList.cshtml" />
     <Content Include="Views\MainActivity\Team.cshtml" />
+    <Content Include="Views\MainActivity\Template\BlogPage.cshtml" />
+    <Content Include="Views\MainActivity\Template\MainPage.cshtml" />
     <Content Include="Views\MainActivity\Module\ContactItem.cshtml" />
     <Content Include="Views\MainActivity\Module\JoinItem.cshtml" />
     <Content Include="Views\MainActivity\Module\MenuItem.cshtml" />
     <Content Include="Views\MainActivity\Module\MobileMenuItem.cshtml" />
-    <Content Include="Views\MainActivity\Template\BlogPage.cshtml" />
-    <Content Include="Views\MainActivity\Template\MainPage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\ConsoleEventController.cs" />
