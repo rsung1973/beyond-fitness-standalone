@@ -19,7 +19,7 @@
             %>
             <h5 class="m-t-0">賀成交</h5>
             <p class="text-small">
-                今日：<a onclick='showContractList(<%= JsonConvert.SerializeObject(
+                今日：<a href="#" onclick='showContractList(<%= JsonConvert.SerializeObject(
                                 new 
                                 {
                                     ContractQueryMode = Naming.ContractServiceMode.ContractOnly,
@@ -33,7 +33,7 @@
                     var weekStart = DateTime.Today.FirstDayOfWeek();
                     currentItems = items.Where(c => c.EffectiveDate >= weekStart && c.EffectiveDate < weekStart.AddDays(7));
                     %>
-                本週：<a onclick='showContractList(<%= JsonConvert.SerializeObject(
+                本週：<a href="#" onclick='showContractList(<%= JsonConvert.SerializeObject(
                                 new 
                                 {
                                     ContractQueryMode = Naming.ContractServiceMode.ContractOnly,
@@ -44,7 +44,7 @@
                                 }) %>,<%= currentItems.Count() %>);'><%= currentItems.Count() %></a>
                 <br />
                 <%  currentItems = items.Where(c => c.EffectiveDate >= monthStart.AddMonths(-1) && c.EffectiveDate < monthStart); %>
-                上月：<a onclick='showContractList(<%= JsonConvert.SerializeObject(
+                上月：<a href="#" onclick='showContractList(<%= JsonConvert.SerializeObject(
                                 new 
                                 {
                                     ContractQueryMode = Naming.ContractServiceMode.ContractOnly,
@@ -59,7 +59,7 @@
             <%
                     currentItems = items.Where(c => c.EffectiveDate >= monthStart && c.EffectiveDate < monthStart.AddMonths(1));
                 %>            
-            <a onclick='showContractList(<%= JsonConvert.SerializeObject(
+            <a href="#" onclick='showContractList(<%= JsonConvert.SerializeObject(
                                 new 
                                 {
                                     ContractQueryMode = Naming.ContractServiceMode.ContractOnly,
