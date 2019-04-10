@@ -1,0 +1,38 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Newtonsoft.Json
+@using BFConsole.Views.MainActivity.Resources
+
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+
+    _modelState = (ModelStateDictionary) ViewBag.ModelState;
+    models = ((SampleController<UserProfile>) ViewContext.Controller).DataSource;
+
+}
+
+<li><a href="@(Url.Action("AboutUs"))">@Html.Raw(NamingItem.AboutUs)</a></li>
+<li><a href="@(Url.Action("FindUs"))">@Html.Raw(NamingItem.FindUs)</a></li>
+<li><a href="@(Url.Action("FAQ"))">@Html.Raw(NamingItem.FAQ)</a></li>
+<li><a href="@(Url.Action("BlogList"))">@Html.Raw(NamingItem.Blog)</a></li>
+<li><a href="@(Url.Action("JoinUs"))">@Html.Raw(NamingItem.JoinUs)</a></li>
+@if (ViewBag.Lang == null || ViewBag.Lang == "zh-TW")
+{
+    <li><a href="javascript:changeLanguage('en-US');" class="btn-link2">EN <i class="zmdi zmdi-globe-alt"></i></a></li>
+}
+else
+{
+    <li><a href="javascript:changeLanguage('zh-TW');" class="btn-link2">繁 <i class="zmdi zmdi-globe-alt"></i></a></li>
+}
+<li>
+    <a href="@(Url.Action("BookNow"))" class="btn btn-default btn-round">@Html.Raw(NamingItem.BookNow)</a>
+</li>

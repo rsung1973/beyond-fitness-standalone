@@ -1,0 +1,38 @@
+
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Newtonsoft.Json
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    BlogArticle _model;
+
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    _model = (BlogArticle)this.Model;
+
+    Layout = "~/Views/MainActivity/Template/BlogPage.cshtml";
+
+}
+
+@section CustomHeader {
+
+}
+
+<!-- Main Content -->
+<div id="content" />
+<script>
+        $("#content").load("@($"blog/{_model.BlogID}/content.html")");
+</script>
+
+@section TailPageJavaScriptInclude {
+
+}
