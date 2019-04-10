@@ -39,29 +39,29 @@
                                     EffectiveDateFrom = weekStart,
                                     EffectiveDateTo = weekStart.AddDays(7),
                                 }) %>,<%= currentItems.Count() %>);'><%= currentItems.Count() %></a>
-                <br />
-                <%
-                    currentItems = items.Where(c => c.EffectiveDate >= monthStart && c.EffectiveDate < monthStart.AddMonths(1));
-                %>
+                <br />                
+                <%  currentItems = items.Where(c => c.EffectiveDate >= monthStart.AddMonths(-1) && c.EffectiveDate < monthStart); %>
                 本月：<a onclick='showContractList(<%= JsonConvert.SerializeObject(
-                                new 
-                                {
-                                    ContractQueryMode = Naming.ContractServiceMode.ContractOnly,
-                                    Status = (int)Naming.CourseContractStatus.已生效,
-                                    EffectiveDateFrom = monthStart,
-                                    EffectiveDateTo = monthStart.AddMonths(1),
-                                }) %>,<%= currentItems.Count() %>);'><%= currentItems.Count() %></a>
-            </p>
-        </div>
-        <div class="col-4 text-right">
-            <%  currentItems = items.Where(c => c.EffectiveDate >= monthStart.AddMonths(-1) && c.EffectiveDate < monthStart); %>
-            <a onclick='showContractList(<%= JsonConvert.SerializeObject(
                                 new 
                                 {
                                     ContractQueryMode = Naming.ContractServiceMode.ContractOnly,
                                     Status = (int)Naming.CourseContractStatus.已生效,
                                     EffectiveDateFrom = monthStart.AddMonths(-1),
                                     EffectiveDateTo = monthStart,
+                                }) %>,<%= currentItems.Count() %>);'><%= currentItems.Count() %></a>
+            </p>
+        </div>
+        <div class="col-4 text-right">
+            <%
+                    currentItems = items.Where(c => c.EffectiveDate >= monthStart && c.EffectiveDate < monthStart.AddMonths(1));
+                %>
+            <a onclick='showContractList(<%= JsonConvert.SerializeObject(
+                                new 
+                                {
+                                    ContractQueryMode = Naming.ContractServiceMode.ContractOnly,
+                                    Status = (int)Naming.CourseContractStatus.已生效,
+                                    EffectiveDateFrom = monthStart,
+                                    EffectiveDateTo = monthStart.AddMonths(1),
                                 }) %>,<%= currentItems.Count() %>);'>
                 <h2><%= currentItems.Count() %></h2>
             </a>
