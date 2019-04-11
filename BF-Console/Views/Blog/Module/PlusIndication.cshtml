@@ -8,25 +8,20 @@
 @using WebHome.Models.DataEntity
 @using WebHome.Controllers
 
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    UserProfile _model;
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = (UserProfile)this.Model;
+
+}
+
 <div class="col-lg-5 col-md-6 col-sm-12">
     <button class="btn bg-darkteal btn-icon btn-round float-right m-l-10" type="button" onclick="window.location.href='@(Url.Action("EditBlogArticle","ConsoleHome"))';">
         <i class="zmdi zmdi-plus"></i>
     </button>
 </div>
 
-<script runat="server">
-
-    ModelStateDictionary _modelState;
-    ModelSource<UserProfile> models;
-    UserProfile _model;
-
-    protected override void OnInit(EventArgs e)
-    {
-        base.OnInit(e);
-        _modelState = (ModelStateDictionary)ViewBag.ModelState;
-        models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
-        _model = (UserProfile)this.Model;
-    }
-
-
-</script>
