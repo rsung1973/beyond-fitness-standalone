@@ -48,7 +48,7 @@
                             </div>
                             <div class="overlay-bottom">
                                 <div class="links">
-                                    <a href='javascript:showDetails(@(JsonConvert.SerializeObject(c)));' class="btn btn-gray-transparent btn-animated btn-sm">@Html.Raw(NamingItem.LearnMore) <i class="pl-10 fa fa-arrow-right"></i></a>
+                                    <a href="javascript:showDetails(@(JsonConvert.SerializeObject(c)));bindTrackingCode('@($"體能顧問_{ c.nickname}")');" class="btn btn-gray-transparent btn-animated btn-sm">@Html.Raw(NamingItem.LearnMore) <i class="pl-10 fa fa-arrow-right"></i></a>
                                 </div>
                             </div>
                         </div>

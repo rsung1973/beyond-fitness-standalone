@@ -31,7 +31,7 @@
         <div class="row clearfix">
             <div class="col-12">
                 <span class="mode p-r-20">
-                    <a href="@(Url.Action("BlogList"))"><i class="fas fa-th-list"></i></a>
+                    <a href="javascript:bindTrackingCode('列表分類', '@(Url.Action("BlogList"))', null)"><i class="fas fa-th-list"></i></a>
                 </span>
             </div>
         </div>
@@ -42,10 +42,10 @@
                     <div class="blog-item text-center">
                         <div class="blog-img">
                             <img class="img-fluid" src="@(item.CategoryIndication)">
-                            <div class="blog-overlay" onclick="javascript:viewArticleList(@(item.CategoryID));">
+                            <div class="blog-overlay" onclick="javascript:bindTrackingCode('@($"文章列表_{ item.Category}")', '@(Url.Action("BlogArticleList","MainActivity",new { item.CategoryID }))', null)">
                                 <div class="overlay-social-icon text-center">
                                     <ul class="social-icons">
-                                        <li><a href="@(Url.Action("BlogArticleList","MainActivity",new { item.CategoryID }))">了解更多</a></li>
+                                        <li><a href="javascript:bindTrackingCode('@($"文章列表_{ item.Category}")', '@(Url.Action("BlogArticleList","MainActivity",new { item.CategoryID }))', null)">了解更多</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -61,10 +61,5 @@
 </section>
 
 @section TailPageJavaScriptInclude {
-    <script>
 
-        function viewArticleList(categoryID) {
-            $('').launchDownload('@(Url.Action("BlogArticleList", "MainActivity"))', { 'CategoryID': categoryID });
-        }
-    </script>
 }

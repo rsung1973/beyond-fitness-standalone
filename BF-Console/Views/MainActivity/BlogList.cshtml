@@ -29,7 +29,7 @@
 <section class="section-blog dark">
     <div class="container">
         <span class="mode">
-            <a href="@(Url.Action("BlogGrid"))"><i class="fas fa-th-large"></i></a>
+            <a href="javascript:bindTrackingCode('圖文分類', '@(Url.Action("BlogGrid"))', null)"><i class="fas fa-th-large"></i></a>
         </span>
         <ul class="list-group list-group-flush">
             @foreach (var item in models.GetTable<BlogCategoryDefinition>())
@@ -37,13 +37,13 @@
                 <li class="list-group-item">
                     <div class="media mleft">
                         <div class="media-left">
-                            <a href="@(Url.Action("BlogArticleList","MainActivity",new { item.CategoryID }))">
+                            <a href="javascript:bindTrackingCode('@($"文章列表_{ item.Category}")', '@(Url.Action("BlogArticleList","MainActivity",new { item.CategoryID }))', null)">
                                 <img class="blog-img" src="@(item.CategoryIndication)">
                             </a>
                         </div>
                         <div class="media-body">
                             <h4 class="media-heading">
-                                <a href="@(Url.Action("BlogArticleList","MainActivity",new { item.CategoryID }))">
+                                <a href="javascript:bindTrackingCode('@($"文章列表_{ item.Category}")', '@(Url.Action("BlogArticleList","MainActivity",new { item.CategoryID }))', null)">
                                     @(item.Category)
                                 </a>
                             </h4>

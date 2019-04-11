@@ -15,8 +15,8 @@
     ModelSource<UserProfile> models;
     ModelStateDictionary _modelState;
 
-    models = ((SampleController<UserProfile>) ViewContext.Controller).DataSource;
-    _modelState = (ModelStateDictionary) ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
 
 }
 <!DOCTYPE html>
@@ -72,6 +72,32 @@
     <!-- Main Script -->
     <script src="js/main-landing.js?1.2"></script>
     <script src="js/common.js?1.5"></script>
+    <!-- Facebook Pixel Code -->
+    <script>(function (f, b, e, v, n, t, s) {
+            if (f.fbq) return;
+            n = f.fbq = function () {
+                n.callMethod ?
+                    n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+            };
+            if (!f._fbq) f._fbq = n;
+            n.push = n;
+            n.loaded = !0;
+            n.version = '2.0';
+            n.queue = [];
+            t = b.createElement(e);
+            t.async = !0;
+            t.src = v;
+            s = b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t, s)
+        })(window, document, 'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '139380543390363');
+        fbq('track', 'PageView');</script>
+    <script type="application/javascript">(function(w,d,t,r,u){w[u]=w[u]||[];w[u].push({'projectId':'10000','properties':{'pixelId':'10056180'}});var s=d.createElement(t);s.src=r;s.async=true;s.onload=s.onreadystatechange=function(){var y,rs=this.readyState,c=w[u];if(rs&&rs!="complete"&&rs!="loaded"){return}try{y=YAHOO.ywa.I13N.fireBeacon;w[u]=[];w[u].push=function(p){y([p])};y(c)}catch(e){}};var scr=d.getElementsByTagName(t)[0],par=scr.parentNode;par.insertBefore(s,scr)})(window,document,"script","https://s.yimg.com/wi/ytc.js","dotq");</script>
+    <noscript>
+        <img height="1" width="1" src="https://www.facebook.com/tr?id=139380543390363&ev=PageView&noscript=1" / >
+    </noscript>
+    <!-- End Facebook Pixel Code -->
 </head>
 
 <body>
@@ -81,23 +107,23 @@
             <a id="navigation" href="javascript:void(0);" class="hidden-md-up"><i class="zmdi zmdi-apps"></i></a>
             <div id="slide_out_menu">
                 <a href="javascript:void(0);" class="menu-close"><i class="zmdi zmdi-close"></i></a>
-                <div class="logo"><a href="@(VirtualPathUtility.ToAbsolute("~/Official/Index"))"><img src="images/logo.png" alt="BeyondFitness"></a></div>
+                <div class="logo"><a href="javascript:bindTrackingCode('首頁', 'CompleteRegistration', '@(VirtualPathUtility.ToAbsolute("~/Official/Index"))', null)"><img src="images/logo.png" alt="BeyondFitness"></a></div>
                 <ul>
                     @{ Html.RenderPartial("~/Views/MainActivity/Module/MobileMenuItem.cshtml");}
 
                 </ul>
                 <div class="slide_out_menu_footer">
                     <ul class="socials">
-                        <li><a href="https://www.facebook.com/beyond.fitness.pro/" target="_blank"><i class="zmdi zmdi-facebook"></i></a></li>
-                        <li><a href="https://www.instagram.com/beyond_ft/" target="_blank"><i class="zmdi zmdi-instagram"></i></a></li>
-                        <li><a href="https://www.youtube.com/channel/UCPIcjPGaFFB1o8cFDUrT-4g" target="_blank"><i class="zmdi zmdi-youtube-play"></i></a></li>
-                        <li><a href="@("line://ti/p/@itj9410x")" target="_blank"><i class="fab fa-line"></i></a></li>
+                        <li><a href="javascript:bindTrackingCode('Facebook', null, 'https://www.facebook.com/beyond.fitness.pro/', '_blank')"><i class="zmdi zmdi-facebook"></i></a></li>
+                        <li><a href="javascript:bindTrackingCode('Instagram', null, 'https://www.instagram.com/beyond_ft/', '_blank')"><i class="zmdi zmdi-instagram"></i></a></li>
+                        <li><a href="javascript:bindTrackingCode('Youtube', null, 'https://www.youtube.com/channel/UCPIcjPGaFFB1o8cFDUrT-4g', '_blank')"><i class="zmdi zmdi-youtube-play"></i></a></li>
+                        <li><a href="javascript:bindTrackingCode('Line', null, '@("line://ti/p/@itj9410x")', '_blank')"><i class="fab fa-line"></i></a></li>
                     </ul>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-2 col-sm-2 col-xs-12 text-center">
-                    <a href="@(VirtualPathUtility.ToAbsolute("~/Official/Index"))" class="logo"><img src="images/logo.png" alt="BeyondFitness"></a>
+                    <a href="javascript:bindTrackingCode('首頁', 'CompleteRegistration', '@(VirtualPathUtility.ToAbsolute("~/Official/Index"))')" class="logo"><img src="images/logo.png" alt="BeyondFitness"></a>
                 </div>
                 <div class="col-md-10 col-sm-10 col-xs-12">
                     <ul class="left nav-active">
@@ -128,7 +154,6 @@
     <!-- Main Content -->
     @RenderBody()
     @RenderSection("TailPageJavaScriptInclude", false)
-
     <!-- // Footer -->
     <footer id="footer">
         <div class="container">
@@ -138,5 +163,31 @@
             </div>
         </div>
     </footer>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-84335528-4"></script>
+    <script type="text/javascript">window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-84335528-4');
+
+
+        this.bindTrackingCode = function (gaEventName, fbEventName, linkURL, linkType) {
+            if (gaEventName && typeof gaEventName != "undefined") {
+                gtag("event", gaEventName, { event_category: "連結點擊", event_label: "官方網站" });
+            }
+
+            if (fbEventName && typeof fbEventName != "undefined") {
+                fbq('track', fbEventName);
+            }
+
+            if (linkURL && typeof linkURL != "undefined") {
+                if (linkType && linkType == '_blank') {
+                    window.open(linkURL);
+                } else {
+                    window.location.href = linkURL;
+                }
+            }
+        }</script>
 </body>
 </html>

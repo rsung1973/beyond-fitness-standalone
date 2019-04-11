@@ -80,12 +80,12 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-2 col-sm-2 col-xs-12 text-center">
-                    <a href="@(Url.Action("BlogGrid"))" class="logo"><img src="images/logo.png" alt="BeyondFitness"></a>
+                    <a href="javascript:bindTrackingCode('圖文分類', '@(Url.Action("BlogGrid"))', null)" class="logo"><img src="images/logo.png" alt="BeyondFitness"></a>
                 </div>
                 <div class="col-md-10 col-sm-10 col-xs-12">
                     <ul class="left nav-active">
                         <li class="pull-right">
-                            <a href="@(VirtualPathUtility.ToAbsolute("~/Official/Index"))" class="btn btn-default btn-round">@Html.Raw(NamingItem.BlogBack)</a>
+                            <a href="javascript:bindTrackingCode('官方網站', '@(VirtualPathUtility.ToAbsolute("~/Official/Index"))', null)" class="btn btn-default btn-round">@Html.Raw(NamingItem.BlogBack)</a>
                         </li>
                     </ul>
                     <script>
@@ -108,7 +108,7 @@
     <!-- Main Content -->
     @RenderBody()
     @RenderSection("TailPageJavaScriptInclude", false)
-    
+
     <!-- // Footer -->
     <footer id="footer">
         <div class="container">
@@ -118,5 +118,27 @@
             </div>
         </div>
     </footer>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-84335528-4"></script>
+    <script type="text/javascript">window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-84335528-4');
+
+
+        this.bindTrackingCode = function (gaEventName, linkURL, linkType) {
+            if (gaEventName && typeof gaEventName != "undefined") {
+                gtag("event", gaEventName, { event_category: "連結點擊", event_label: "知識分享" });
+            }
+
+            if (linkURL && typeof linkURL != "undefined") {
+                if (linkType && linkType == '_blank') {
+                    window.open(linkURL);
+                } else {
+                    window.location.href = linkURL;
+                }
+            }
+        }</script>
 </body>
 </html>

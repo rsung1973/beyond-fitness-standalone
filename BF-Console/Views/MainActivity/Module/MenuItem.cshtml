@@ -20,19 +20,19 @@
 
 }
 
-<li><a href="@(Url.Action("AboutUs"))">@Html.Raw(NamingItem.AboutUs)</a></li>
-<li><a href="@(Url.Action("FindUs"))">@Html.Raw(NamingItem.FindUs)</a></li>
-<li><a href="@(Url.Action("FAQ"))">@Html.Raw(NamingItem.FAQ)</a></li>
-<li><a href="@(Url.Action("BlogGrid"))">@Html.Raw(NamingItem.Blog)</a></li>
-<li><a href="@(Url.Action("JoinUs"))">@Html.Raw(NamingItem.JoinUs)</a></li>
+<li><a href="javascript:bindTrackingCode('關於我們', 'Search', '@(Url.Action("AboutUs"))', null)">@Html.Raw(NamingItem.AboutUs)</a></li>
+<li><a href="javascript:bindTrackingCode('分店一覽', 'AddToWishlist', '@(Url.Action("FindUs"))', null)">@Html.Raw(NamingItem.FindUs)</a></li>
+<li><a href="javascript:bindTrackingCode('常見問題', 'AddToCart', '@(Url.Action("FAQ"))', null)">@Html.Raw(NamingItem.FAQ)</a></li>
+<li><a href="javascript:bindTrackingCode('知識分享_圖文分類', 'ViewContent', '@(Url.Action("BlogGrid"))', null)">@Html.Raw(NamingItem.Blog)</a></li>
+<li><a href="javascript:bindTrackingCode('加入團隊', null, '@(Url.Action("JoinUs"))', null)">@Html.Raw(NamingItem.JoinUs)</a></li>
 <li class="pull-right">
     @if (ViewBag.Lang == null || ViewBag.Lang == "zh-TW")
         {
-    <a href="javascript:changeLanguage('en-US');" class="btn-link2">EN <i class="zmdi zmdi-globe-alt"></i></a>
+    <a href="javascript:bindTrackingCode('切換語系_EN', 'Search', null, null);changeLanguage('en-US');" class="btn-link2">EN <i class="zmdi zmdi-globe-alt"></i></a>
     }
         else
         {
-    <a href="javascript:changeLanguage('zh-TW');" class="btn-link2">繁 <i class="zmdi zmdi-globe-alt"></i></a>
+    <a href="javascript:bindTrackingCode('切換語系_繁中', 'Search', null, null);changeLanguage('zh-TW');" class="btn-link2">繁 <i class="zmdi zmdi-globe-alt"></i></a>
     }
-    <a href="@(Url.Action("BookNow"))" class="btn btn-default btn-round">@Html.Raw(NamingItem.BookNow)</a>
+    <a href="javascript:bindTrackingCode('預約諮詢', 'AddToPaymentInfo', '@(Url.Action("BookNow"))', null)" class="btn btn-default btn-round">@Html.Raw(NamingItem.BookNow)</a>
 </li>
