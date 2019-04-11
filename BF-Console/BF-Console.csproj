@@ -6300,7 +6300,6 @@
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Views\MainActivity\Template\BlogPage.Master" />
     <Content Include="Views\Blog\Module\CategoryIndication.ascx" />
     <Content Include="Views\Blog\Module\PlusIndication.ascx" />
     <Content Include="Views\ConsoleHome\BlogArticleList.aspx" />
@@ -6335,12 +6334,6 @@
     <Content Include="Views\ContractConsole\Module\AboutContractServicesByPureCoach.ascx" />
     <Content Include="Views\ContractConsole\Module\AboutContractServicesSummaryByBranch.ascx" />
     <Content Include="Views\ContractConsole\Module\AboutContractServicesSummaryByOfficer.ascx" />
-    <Content Include="Views\Blog\Module\CategoryIndication.cshtml" />
-    <Content Include="Views\Blog\Module\PlusIndication.cshtml" />
-    <Content Include="Views\ReportConsole\ReportModal\ByContractNo.cshtml" />
-    <Content Include="Views\ReportConsole\ReportModal\SelectMonthlyReport.cshtml" />
-    <Content Include="Views\ReportConsole\ReportModal\SelectPeriodReport.cshtml" />
-    <Content Include="Views\ReportConsole\ReportModal\SelectReportCondition.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\ConsoleEventController.cs" />
@@ -6699,7 +6692,6 @@
     <None Include="packages.config" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Views\ConsoleHome\Template\MainPage.Master" />
-    <Content Include="Views\MainActivity\Template\MainPage.Master" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
