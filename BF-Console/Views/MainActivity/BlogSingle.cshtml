@@ -30,7 +30,9 @@
 <!-- Main Content -->
 <div id="content" />
 <script>
-        $("#content").load("@($"blog/{_model.BlogID}/content.html")");
+    $("#content").load("@($"blog/{_model.BlogID}/content.html")", function (data) {
+        bindTrackingCode('@($"文章_{_model.Title}")');
+    });
 </script>
 
 @section TailPageJavaScriptInclude {

@@ -344,7 +344,7 @@
     <!-- Your GOOGLE ANALYTICS CODE Below -->
     <script type="text/javascript">
         var _gaq = _gaq || [];
-        _gaq.push(['_setAccount', 'UA-XXXXXXXX-X']);
+        _gaq.push(['_setAccount', '<%= WebHome.Properties.Settings.Default.GA_ID_Backend %>']);
         _gaq.push(['_trackPageview']);
 
         (function () {

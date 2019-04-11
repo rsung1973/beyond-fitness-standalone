@@ -1,4 +1,4 @@
-
+﻿
 
 @using System.IO
 @using System.Linq.Expressions
@@ -119,12 +119,12 @@
         </div>
     </footer>
     <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-84335528-5"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=@(WebHome.Properties.Settings.Default.GA_ID_Frontend)"></script>
     <script type="text/javascript">window.dataLayer = window.dataLayer || [];
         function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
 
-        gtag('config', 'UA-84335528-5');
+        gtag('config', '@WebHome.Properties.Settings.Default.GA_ID_Frontend');
 
 
         this.bindTrackingCode = function (gaEventName, linkURL, linkType) {

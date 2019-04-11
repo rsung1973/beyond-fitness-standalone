@@ -49,5 +49,11 @@
     <Setting Name="ReportInputError" Type="System.String" Scope="Application">
       <Value Profile="(Default)">~/Views/Shared/ReportInputError.ascx</Value>
     </Setting>
+    <Setting Name="GA_ID_Backend" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">UA-84335528-5</Value>
+    </Setting>
+    <Setting Name="GA_ID_Frontend" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">UA-84335528-5</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

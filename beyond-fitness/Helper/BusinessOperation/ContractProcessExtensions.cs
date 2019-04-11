@@ -960,6 +960,10 @@ namespace WebHome.Helper.BusinessOperation
             {
                 case "展延":
                     item.SourceContract.Expiration = item.CourseContract.Expiration;
+                    if (item.SourceContract.Status == (int)Naming.CourseContractStatus.已過期)
+                    {
+                        item.SourceContract.Status = (int)Naming.CourseContractStatus.已生效;
+                    }
                     models.SubmitChanges();
                     break;
                 case "轉點":

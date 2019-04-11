@@ -339,13 +339,16 @@ namespace WebHome.Helper
                             balancedPayment.InvoiceID = dummyInvoice.InvoiceID;
                         models.GetTable<Payment>().InsertOnSubmit(balancedPayment);
 
-                        models.GetTable<ContractTrustTrack>().InsertOnSubmit(new ContractTrustTrack
+                        if (models.GetTable<ContractTrustTrack>().Any(a => a.ContractID == item.OriginalContract))
                         {
-                            ContractID = item.OriginalContract.Value,
-                            EventDate = balancedPayment.PayoffDate.Value,
-                            TrustType = Naming.TrustType.S.ToString(),
-                            ReturnAmount = returnAmt,
-                        });
+                            models.GetTable<ContractTrustTrack>().InsertOnSubmit(new ContractTrustTrack
+                            {
+                                ContractID = item.OriginalContract.Value,
+                                EventDate = balancedPayment.PayoffDate.Value,
+                                TrustType = Naming.TrustType.S.ToString(),
+                                ReturnAmount = returnAmt,
+                            });
+                        }
 
                         if (refund > 0)
                         {
