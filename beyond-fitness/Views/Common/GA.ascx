@@ -11,13 +11,13 @@
 <%@ Import Namespace="WebHome.Controllers" %>
 <%@ Import Namespace="Newtonsoft.Json" %>
 
-<script async src="https://www.googletagmanager.com/gtag/js?id=<%= WebHome.Properties.Settings.Default.GA_ID_Backend %>"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=<%= WebHome.Properties.Settings.Default.GA_ID_Frontend %>"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
-  gtag('config', '<%= WebHome.Properties.Settings.Default.GA_ID_Backend %>');
+  gtag('config', '<%= WebHome.Properties.Settings.Default.GA_ID_Frontend %>');
 </script>
 
 <script runat="server">
