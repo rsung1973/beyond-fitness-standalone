@@ -1,0 +1,45 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    IQueryable<LessonTime> _editableLessons;
+    UserProfile _model;
+    int _allotment;
+
+    var weekStart = DateTime.Today.FirstDayOfWeek();
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = (UserProfile)this.Model;
+    _allotment = ((int?)ViewBag.Allotment) ?? 2;
+
+    IQueryable<LessonTime> items = ViewBag.LessonTimeItems as IQueryable<LessonTime>;
+    _editableLessons = items.PTLesson()
+        .Union(items.Where(l => l.TrainingBySelf == 1))
+        .Union(items.TrialLesson());
+
+
+}
+
+<li class="@($"col-sm-{12 / _allotment} col-{12 / _allotment} calendar-todolist")">
+    <div class="body">
+        <i class="zmdi livicon-evo" data-options="name: pencil.svg; size: 40px; style: original; strokeWidth:2px;"></i>
+        <h4>
+            @(_editableLessons
+                    .Where(l => l.ClassTime >= weekStart && l.ClassTime < weekStart.AddDays(7))
+                    .Where(l => l.LessonAttendance == null).Count())
+    </h4>
+    <span>本週編輯中</span>
+</div>
+</li>
+
+
