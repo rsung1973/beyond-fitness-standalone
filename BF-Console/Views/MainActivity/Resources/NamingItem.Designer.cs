@@ -521,6 +521,12 @@ namespace BFConsole.Views.MainActivity.Resources {
             }
         }
         
+        public static string Reservation {
+            get {
+                return ResourceManager.GetString("Reservation", resourceCulture);
+            }
+        }
+        
         public static string Features1Desc {
             get {
                 return ResourceManager.GetString("Features1Desc", resourceCulture);

@@ -354,6 +354,9 @@
   <data name="BookNowStep4" xml:space="preserve">
     <value>量身定做&lt;span&gt;專業人員將與您解釋詳細運動細節以及身體狀況，並一同討論您的狀況以及給予真正適合您的建議&lt;/span&gt;</value>
   </data>
+  <data name="Reservation" xml:space="preserve">
+    <value>立即預約</value>
+  </data> 
   <data name="Features1Desc" xml:space="preserve">
     <value>&lt;p&gt;Beyond Fitness提供以下承諾&lt;/p&gt;&lt;ul class=&quot;features-list&quot;&gt;&lt;li&gt;客製化課程內容，學習更安全，同時讓您得到顯著的運動效果&lt;/li&gt;&lt;li&gt;專業教練帶領下，清楚了解自己的身體狀況與運動進度&lt;/li&gt;&lt;li&gt;透過與您互相討論課程內容，強化掌握運動時的每個環節&lt;/li&gt;&lt;li&gt;固定時間評估並分析身體狀況與課程內容，隨時替您把關上課品質&lt;/li&gt;&lt;/ul&gt;</value>
   </data>
