@@ -6180,7 +6180,6 @@
     <Content Include="Views\ConsoleHome\ExerciseBillboard.aspx" />
     <Content Include="Views\ConsoleHome\Calendar.aspx" />
     <Content Include="Views\ConsoleHome\CrossBranchIndex.aspx" />
-    <Content Include="Views\ConsoleHome\Index.aspx" />
     <Content Include="Views\ConsoleHome\LearnerLesson.ascx" />
     <Content Include="Views\ConsoleHome\Module\AboutAchievementC3.ascx" />
     <Content Include="Views\ConsoleHome\Module\AboutAchievement.ascx" />
@@ -6334,6 +6333,41 @@
     <Content Include="Views\ContractConsole\Module\AboutContractServicesByPureCoach.ascx" />
     <Content Include="Views\ContractConsole\Module\AboutContractServicesSummaryByBranch.ascx" />
     <Content Include="Views\ContractConsole\Module\AboutContractServicesSummaryByOfficer.ascx" />
+    <Content Include="Views\ConsoleHome\Index.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\AboutAchievementC3.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\AboutArticle.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\AboutCoach.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\AboutContest.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\AboutEditableLessons.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\AboutInvoice.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\AboutLearnerUncheckedLessons.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\AboutLearners_1.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\AboutToApprovePreferredLessons.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\BlockHeader.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\FocusItemToday.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\GameRankRadarChart.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\InspirationalTitle.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\ProfileImage.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\TodayLessonsBarChartC3.cshtml" />
+    <Content Include="Views\ConsoleHome\Shared\InitBarChartNoRegister.cshtml" />
+    <Content Include="Views\ConsoleHome\Shared\Knob.cshtml" />
+    <Content Include="Views\ConsoleHome\Shared\KnobJS.cshtml" />
+    <Content Include="Views\ConsoleHome\Template\MainPage.cshtml" />
+    <Content Include="Views\ContractConsole\Module\AboutContractServices.cshtml" />
+    <Content Include="Views\ContractConsole\Module\AboutContractServicesByBranch.cshtml" />
+    <Content Include="Views\ContractConsole\Module\AboutContractServicesByOfficer.cshtml" />
+    <Content Include="Views\ContractConsole\Module\AboutContractServicesByPureCoach.cshtml" />
+    <Content Include="Views\ContractConsole\Module\AboutExpiring.cshtml" />
+    <Content Include="Views\ContractConsole\Module\AboutExpiringByBranch.cshtml" />
+    <Content Include="Views\ContractConsole\Module\AboutExpiringByCoach.cshtml" />
+    <Content Include="Views\ContractConsole\Module\AboutExpiringByOfficer.cshtml" />
+    <Content Include="Views\ContractConsole\Module\AboutNewContracts.cshtml" />
+    <Content Include="Views\ContractConsole\Module\AboutNewContractsByBranch.cshtml" />
+    <Content Include="Views\ContractConsole\Module\AboutNewContractsByCoach.cshtml" />
+    <Content Include="Views\ContractConsole\Module\AboutNewContractsByOfficer.cshtml" />
+    <Content Include="Views\Blog\Module\CategoryIndication.cshtml" />
+    <Content Include="Views\Blog\Module\PlusIndication.cshtml" />
+    <Content Include="Views\ConsoleHome\BlogIndex.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\ConsoleEventController.cs" />
@@ -6698,6 +6732,7 @@
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
+    <None Include="Views\ConsoleHome\Index.aspx_" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
