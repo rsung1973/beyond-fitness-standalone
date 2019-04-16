@@ -346,7 +346,7 @@ namespace BFConsole.Controllers
                     .Where(l => l.ClassTime >= viewModel.StartDate)
                     .Where(l => l.ClassTime < viewModel.EndDate.Value.AddDays(1));
 
-            return View("~/Views/ConsoleHome/Module/CurrentExerciseBillboard.ascx", items);
+            return View("~/Views/ConsoleHome/Module/CurrentExerciseBillboard.cshtml", items);
         }
 
         [RoleAuthorize(RoleID = new int[] { (int)Naming.RoleID.Administrator, (int)Naming.RoleID.Assistant, (int)Naming.RoleID.Officer, (int)Naming.RoleID.Coach, (int)Naming.RoleID.Servitor })]
@@ -356,7 +356,7 @@ namespace BFConsole.Controllers
             viewModel.StartDate = queryDate.AddMonths(-1);
             viewModel.EndDate = queryDate.AddDays(-1);
             ViewResult result = (ViewResult)InquireExerciseBillboard(viewModel);
-            result.ViewName = "~/Views/ConsoleHome/Module/ExerciseBillboard.ascx";
+            result.ViewName = "~/Views/ConsoleHome/Module/ExerciseBillboard.cshtml";
             return result;
         }
 

@@ -292,14 +292,16 @@ namespace BFConsole.Controllers
         public ActionResult SelectCoach()
         {
             var profile = HttpContext.GetUser();
-            IQueryable<ServingCoach> items = models.GetTable<ServingCoach>();
+            IQueryable<ServingCoach> items = models.GetTable<ServingCoach>()
+                .Join(models.GetTable<UserProfile>().Where(u => u.LevelID != (int)Naming.MemberStatus.已停用), 
+                    s => s.CoachID, u => u.UID, (s, u) => s);
             if (profile.IsOfficer() || profile.IsAssistant() || profile.IsSysAdmin())
             {
 
             }
             else if (profile.IsManager() || profile.IsViceManager())
             {
-                items = profile.GetServingCoachInSameStore(models);
+                items = profile.GetServingCoachInSameStore(models, items);
             }
             else if (profile.IsCoach())
             {
