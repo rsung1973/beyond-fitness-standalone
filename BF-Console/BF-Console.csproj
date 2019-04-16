@@ -6368,6 +6368,11 @@
     <Content Include="Views\Blog\Module\CategoryIndication.cshtml" />
     <Content Include="Views\Blog\Module\PlusIndication.cshtml" />
     <Content Include="Views\ConsoleHome\BlogIndex.cshtml" />
+    <Content Include="Views\ConsoleHome\EditBlogArticle.cshtml" />
+    <Content Include="Views\ConsoleHome\Shared\DropifyUpload.cshtml" />
+    <Content Include="Views\ContractConsole\ContractModal\SelectCoach.cshtml" />
+    <Content Include="Views\ConsoleHome\Shared\BSModalScript.cshtml" />
+    <Content Include="Views\Common\ProfileImage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\ConsoleEventController.cs" />

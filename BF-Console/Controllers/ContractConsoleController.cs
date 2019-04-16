@@ -310,7 +310,7 @@ namespace BFConsole.Controllers
                 items = items.Where(c => false);
             }
 
-            return View("~/Views/ContractConsole/ContractModal/SelectCoach.ascx", items);
+            return View("~/Views/ContractConsole/ContractModal/SelectCoach.cshtml", items);
         }
 
         public ActionResult CommitContract(CourseContractViewModel viewModel)
