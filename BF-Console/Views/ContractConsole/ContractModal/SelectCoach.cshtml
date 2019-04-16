@@ -9,6 +9,7 @@
 @using Newtonsoft.Json
 
 @{
+
     ModelStateDictionary _modelState;
     ModelSource<UserProfile> models;
     IQueryable<ServingCoach> _model;
@@ -33,9 +34,9 @@
                     <li class="col-lg-4 col-md-4 col-6">
                         <a href="javascript:commitCoach(@(item.CoachID),'@(item.UserProfile.FullName())');">
                             @{
-                                ViewBag.ProfileClass = "img-thumbnail popfi";
+                                ViewBag.ProfileClass = "img-thumbnail popfit";
                                 Html.RenderPartial("~/Views/Common/ProfileImage.cshtml", item.UserProfile);
-                             }
+                            }
                             <h6 class="users_name">@(item.UserProfile.RealName)</h6>
                             <small class="join_date">@(item.UserProfile.Nickname)</small>
                         </a>
