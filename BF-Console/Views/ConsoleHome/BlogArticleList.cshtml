@@ -9,6 +9,8 @@
 @using Newtonsoft.Json
 
 @{
+    Layout = "~/Views/ConsoleHome/Template/MainPage.cshtml";
+
     ModelSource<UserProfile> models;
     ModelStateDictionary _modelState;
     IQueryable<BlogArticle> _items;
@@ -27,9 +29,9 @@
     <link href="css/blog.css?1.0" rel="stylesheet" /> 
 }
 
-<script>
+    <script>
         $(function () {
-            $global.viewModel = @(JsonConvert.SerializeObject(_viewModel));
+            $global.viewModel = @Html.Raw(JsonConvert.SerializeObject(_viewModel));
 
             for (var i = 0; i < $global.onReady.length; i++) {
                 $global.onReady[i]();
@@ -46,12 +48,12 @@
     <section class="content blog-page">
         @{ ViewBag.BlockHeader = "我的部落格";
             ViewBag.InsertPartial = "~/Views/Blog/Module/CategoryIndication.cshtml";
-            Html.RenderPartial("~/Views/ConsoleHome/Module/BlockHeader.ascx", _model);}
+            Html.RenderPartial("~/Views/ConsoleHome/Module/BlockHeader.cshtml", _model);}
 
         <div class="container-fluid">            
                         <div class="row clearfix">
                 <div class="col-sm-12">
-                    @{ Html.RenderPartial("~/Views/ConsoleHome/Shared/PagingControl.ascx");}
+                    @{ Html.RenderPartial("~/Views/ConsoleHome/Shared/PagingControl.cshtml");}
        
                 </div>
                 @{ 

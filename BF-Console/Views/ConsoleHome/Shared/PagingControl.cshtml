@@ -7,29 +7,30 @@
 @using WebHome.Models.DataEntity
 @using WebHome.Controllers
 @using Newtonsoft.Json
+
 @{
     ModelStateDictionary _modelState;
     ModelSource<UserProfile> models;
     QueryViewModel _viewModel;
-    int? startPaging, pagingCount;
-    bool nextPaging, prevPaging;
+    int? startPaging = null, pagingCount = null;
+    bool nextPaging = false, prevPaging = false;
 
     _modelState = (ModelStateDictionary)ViewBag.ModelState;
     models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
     _viewModel = (QueryViewModel)ViewBag.ViewModel;
 
-        if (_viewModel != null && _viewModel.PageSize > 0 && _viewModel.PagingSize > 0
-            && _viewModel.CurrentIndex >= 0 && _viewModel.RecordCount >= 0)
-        {
-            pagingCount = (_viewModel.RecordCount + _viewModel.PageSize - 1) / _viewModel.PageSize;
-            startPaging = _viewModel.CurrentIndex / _viewModel.PagingSize * _viewModel.PagingSize;
-            prevPaging = pagingCount > 0 && startPaging >= _viewModel.PagingSize;
-            nextPaging = pagingCount > 0 && (startPaging + _viewModel.PagingSize) < pagingCount;
-        }
-        else
-        {
-            _viewModel = null;
-        }
+    if (_viewModel != null && _viewModel.PageSize > 0 && _viewModel.PagingSize > 0
+        && _viewModel.CurrentIndex >= 0 && _viewModel.RecordCount >= 0)
+    {
+        pagingCount = (_viewModel.RecordCount + _viewModel.PageSize - 1) / _viewModel.PageSize;
+        startPaging = _viewModel.CurrentIndex / _viewModel.PagingSize * _viewModel.PagingSize;
+        prevPaging = pagingCount > 0 && startPaging >= _viewModel.PagingSize;
+        nextPaging = pagingCount > 0 && (startPaging + _viewModel.PagingSize) < pagingCount;
+    }
+    else
+    {
+        _viewModel = null;
+    }
 }
 
 @if (_viewModel != null && _viewModel.RecordCount > 0)
