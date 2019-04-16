@@ -32,8 +32,10 @@
                         {
                     <li class="col-lg-4 col-md-4 col-6">
                         <a href="javascript:commitCoach(@(item.CoachID),'@(item.UserProfile.FullName())');">
-                            @{ item.UserProfile.PictureID.RenderUserPicture(this.Writer, new { @class = "img-thumbnail popfit" }, "images/avatar/noname.png");}
-
+                            @{
+                                ViewBag.ProfileClass = "img-thumbnail popfi";
+                                Html.RenderPartial("~/Views/Common/ProfileImage.cshtml", item.UserProfile);
+                             }
                             <h6 class="users_name">@(item.UserProfile.RealName)</h6>
                             <small class="join_date">@(item.UserProfile.Nickname)</small>
                         </a>
