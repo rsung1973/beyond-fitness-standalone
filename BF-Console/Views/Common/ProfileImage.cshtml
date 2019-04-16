@@ -17,4 +17,5 @@
 }
 <img src="@(_model.PictureID.HasValue 
                 ? $"{VirtualPathUtility.ToAbsolute("~/Information/GetResource")}/{_model.PictureID}?stretch=true" 
-                : VirtualPathUtility.ToAbsolute("~/images/avatar/noname.png"))" />
+                : VirtualPathUtility.ToAbsolute("~/images/avatar/noname.png"))"
+        class="@(ViewBag.ProfileClass)" />
