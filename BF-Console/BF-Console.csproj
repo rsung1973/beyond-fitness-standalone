@@ -6373,6 +6373,8 @@
     <Content Include="Views\ContractConsole\ContractModal\SelectCoach.cshtml" />
     <Content Include="Views\ConsoleHome\Shared\BSModalScript.cshtml" />
     <Content Include="Views\Common\ProfileImage.cshtml" />
+    <Content Include="Views\ConsoleHome\BlogArticleList.cshtml" />
+    <Content Include="Views\ConsoleHome\Shared\PagingControl.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\ConsoleEventController.cs" />
