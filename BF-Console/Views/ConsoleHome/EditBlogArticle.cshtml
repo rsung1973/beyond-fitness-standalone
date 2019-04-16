@@ -33,23 +33,20 @@
     <link href="plugins/multi-select/css/multi-select.css" rel="stylesheet">
 }
 
-<script>
+    <script>
         $(function () {
-            $global.viewModel = @(JsonConvert.SerializeObject(_viewModel));
+            $global.viewModel = @Html.Raw(JsonConvert.SerializeObject(_viewModel));
 
             for (var i = 0; i < $global.onReady.length; i++) {
                 $global.onReady[i]();
             }
 
         });
-</script>
+    </script>
 <!-- Main Content -->
 <section class="content blog-page">
     @{ ViewBag.BlockHeader = "部落格撰稿";
-        ViewBag.InsertPartial = (Action)(() =>
-        {
-            Html.RenderPartial("~/Views/Blog/Module/CategoryIndication.cshtml", _model); ;
-        });
+        ViewBag.InsertPartial = "~/Views/Blog/Module/CategoryIndication.cshtml";
         Html.RenderPartial("~/Views/ConsoleHome/Module/BlockHeader.cshtml", _model);}
 
     <div class="container-fluid">

@@ -52,10 +52,6 @@
     @{
         ViewBag.BlockHeader = "我的部落格";
         ViewBag.InsertPartial = "~/Views/Blog/Module/PlusIndication.cshtml";
-        //(Action)(() =>
-        //{
-        //    Html.RenderPartial("~/Views/Blog/Module/PlusIndication.cshtml", _model);
-        //});
         Html.RenderPartial("~/Views/ConsoleHome/Module/BlockHeader.cshtml", _model);
     }
 

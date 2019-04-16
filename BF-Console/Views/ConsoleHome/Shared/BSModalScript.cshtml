@@ -1,3 +1,7 @@
+@{
+    String _dialogID = (String)this.Model;
+
+}
 
 <script>
 
@@ -19,15 +23,4 @@
 
         $('#@(_dialogID) select.form-control').selectpicker();
     });
-</script>
-<script runat="server">
-
-    String _dialogID;
-
-    protected override void OnInit(EventArgs e)
-    {
-        base.OnInit(e);
-        _dialogID = (String)this.Model;
-    }
-
 </script>
