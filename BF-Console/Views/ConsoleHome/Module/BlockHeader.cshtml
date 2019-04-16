@@ -28,10 +28,14 @@
                 </small>
             </h2>
         </div>
-        @{ Action insertPartial = ViewBag.InsertPartial as Action;}
-        @if (insertPartial != null)
-        {
-            insertPartial();
+        @{ 
+            String insertPartial = ViewBag.InsertPartial as String;
+            if (insertPartial != null)
+            {
+                Html.RenderPartial(insertPartial, _model);
+                //insertPartial();
+            }
+            //Html.RenderPartial("~/Views/Blog/Module/PlusIndication.cshtml", _model);
         }
     </div>
 </div>
