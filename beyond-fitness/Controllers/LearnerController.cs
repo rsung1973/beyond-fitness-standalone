@@ -412,7 +412,7 @@ namespace WebHome.Controllers
             items = items.Where(u => !u.LearnerFitnessAdvisor.Any())
                         .Where(l => l.UserProfileExtension != null && !l.UserProfileExtension.CurrentTrial.HasValue);
 
-            renderToXlsx(items, "未指派體能顧問學員清單",$"({DateTime.Now:yyyy-MM-dd HH-mm-ss})LearnerReport");
+            renderToXlsx(items, "未指派體能顧問學員清單",$"LearnerReport({DateTime.Now:yyyy-MM-dd HH-mm-ss})");
             return new EmptyResult();
         }
 

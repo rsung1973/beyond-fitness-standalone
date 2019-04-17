@@ -1,0 +1,45 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+
+@if (_modelState != null && !_modelState.IsValid)
+    {
+        <script>
+            $(function () {
+                @foreach(var key in _modelState.Keys.Where(k => _modelState[k].Errors.Count > 0))
+                    {
+                $('[name="@(key)"]').closest('div').after(
+                    $('<label class="material-icons help-error-text" for="@(key)"></label>')
+                        .text('clear @(HttpUtility.JavaScriptStringEncode(_singleError 
+                            ? _modelState[key].Errors[0].ErrorMessage
+                            : String.Join("、", _modelState[key].Errors.Select(r => r.ErrorMessage))))')
+                    );
+                @{ if (_singleError)
+                            break;
+                    }}
+
+            });
+        </script>
+}
+
+<script runat="server">
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    bool _singleError;
+
+    protected override void OnInit(EventArgs e)
+    {
+        base.OnInit(e);
+        _modelState = (ModelStateDictionary)ViewBag.ModelState;
+        models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+        _singleError = ViewBag.SingleError == true;
+    }
+
+</script>
