@@ -1,4 +1,3 @@
-
 @using System.IO
 @using System.Linq.Expressions
 
@@ -7,6 +6,17 @@
 @using WebHome.Models.ViewModel
 @using WebHome.Models.DataEntity
 @using WebHome.Controllers
+@using Newtonsoft.Json
+
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    String _dialogID;
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _dialogID = this.Model as String;
+}
 <input type="text" class="form-control" placeholder="合約編號" name="contractNo" />
 <span class="input-group-addon">
     <i class="zmdi zmdi-search"></i>
@@ -18,21 +28,4 @@
             return inputData.contractNo !== '';
         });
     });
-</script>
-
-<script runat="server">
-
-    ModelStateDictionary _modelState;
-    ModelSource<UserProfile> models;
-    String _dialogID ;
-
-    protected override void OnInit(EventArgs e)
-    {
-        base.OnInit(e);
-        _modelState = (ModelStateDictionary)ViewBag.ModelState;
-        models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
-        _dialogID = this.Model as String;
-    }
-
-
 </script>

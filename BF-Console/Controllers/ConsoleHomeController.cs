@@ -33,7 +33,7 @@ namespace BFConsole.Controllers
     [RoleAuthorize(RoleID = new int[] { (int)Naming.RoleID.Administrator, (int)Naming.RoleID.Assistant, (int)Naming.RoleID.Officer, (int)Naming.RoleID.Coach, (int)Naming.RoleID.Servitor })]
     public class ConsoleHomeController : SampleController<UserProfile>
     {
-        public const String InputErrorView = "~/Views/ConsoleHome/Shared/ReportInputError.ascx";
+        public const String InputErrorView = "~/Views/ConsoleHome/Shared/ReportInputError.cshtml";
 
         [RoleAuthorize(RoleID = new int[] { (int)Naming.RoleID.Administrator, (int)Naming.RoleID.Assistant, (int)Naming.RoleID.Officer, (int)Naming.RoleID.Coach, (int)Naming.RoleID.Servitor })]
         public ActionResult Index(LessonTimeBookingViewModel viewModel)
@@ -370,7 +370,7 @@ namespace BFConsole.Controllers
                 return new EmptyResult { };
 
             Response.ContentType = "application/json";
-            return View("~/Views/ConsoleHome/Module/ExerciseBillboardDetails.ascx", items);
+            return View("~/Views/ConsoleHome/Module/ExerciseBillboardDetails.cshtml", items);
         }
 
         [RoleAuthorize(RoleID = new int[] { (int)Naming.RoleID.Administrator, (int)Naming.RoleID.Assistant, (int)Naming.RoleID.Officer, (int)Naming.RoleID.Coach, (int)Naming.RoleID.Servitor })]

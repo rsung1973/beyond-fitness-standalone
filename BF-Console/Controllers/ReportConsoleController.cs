@@ -37,18 +37,18 @@ namespace BFConsole.Controllers
         // GET: ReportConsole
         public ActionResult SelectMonthlyReport()
         {
-            return View("~/Views/ReportConsole/ReportModal/SelectMonthlyReport.ascx");
+            return View("~/Views/ReportConsole/ReportModal/SelectMonthlyReport.cshtml");
         }
 
         public ActionResult SelectPeriodReport()
         {
-            return View("~/Views/ReportConsole/ReportModal/SelectPeriodReport.ascx");
+            return View("~/Views/ReportConsole/ReportModal/SelectPeriodReport.cshtml");
         }
 
         public ActionResult SelectReportByContractNo()
         {
-            ViewBag.ConditionView = "~/Views/ReportConsole/ReportModal/ByContractNo.ascx";
-            return View("~/Views/ReportConsole/ReportModal/SelectReportCondition.ascx");
+            ViewBag.ConditionView = "~/Views/ReportConsole/ReportModal/ByContractNo.cshtml";
+            return View("~/Views/ReportConsole/ReportModal/SelectReportCondition.cshtml");
         }
 
 

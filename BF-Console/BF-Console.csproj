@@ -6379,6 +6379,13 @@
     <Content Include="Views\ConsoleHome\Module\CurrentExerciseBillboard.cshtml" />
     <Content Include="Views\ConsoleHome\Module\ExerciseBillboard.cshtml" />
     <Content Include="Views\ConsoleHome\Module\ExerciseDonutChart.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\ExerciseBillboardDetails.cshtml" />
+    <Content Include="Views\ConsoleHome\ReportIndex.cshtml" />
+    <Content Include="Views\ReportConsole\ReportModal\ByContractNo.cshtml" />
+    <Content Include="Views\ReportConsole\ReportModal\SelectMonthlyReport.cshtml" />
+    <Content Include="Views\ReportConsole\ReportModal\SelectPeriodReport.cshtml" />
+    <Content Include="Views\ReportConsole\ReportModal\SelectReportCondition.cshtml" />
+    <Content Include="Views\ConsoleHome\Shared\ReportInputError.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\ConsoleEventController.cs" />

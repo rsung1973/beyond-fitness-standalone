@@ -142,7 +142,7 @@ namespace BFConsole.Controllers
             {
                 this.ModelState.AddModelError("userName", "請輸入查詢學員!!");
                 ViewBag.ModelState = this.ModelState;
-                return View("~/Views/ConsoleHome/Shared/ReportInputError.ascx");
+                return View("~/Views/ConsoleHome/Shared/ReportInputError.cshtml");
             }
 
             //var lessons = models.GetTable<RegisterLesson>()
