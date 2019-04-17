@@ -1391,10 +1391,12 @@ namespace WebHome.Helper
                             .Any(m => m.CourseContract.Status >= (int)Naming.CourseContractStatus.已生效);
         }
 
-        public static IQueryable<ServingCoach> GetServingCoachInSameStore<TEntity>(this UserProfile profile, ModelSource<TEntity> models)
+        public static IQueryable<ServingCoach> GetServingCoachInSameStore<TEntity>(this UserProfile profile, ModelSource<TEntity> models, IQueryable<ServingCoach> items = null)
             where TEntity : class, new()
         {
-            return models.GetTable<ServingCoach>()
+            if (items == null)
+                items = models.GetTable<ServingCoach>();
+            return items
                 .Join(models.GetTable<BranchStore>().Where(b => b.ManagerID == profile.UID || b.ViceManagerID == profile.UID)
                                             .Join(models.GetTable<CoachWorkplace>(),
                                                 b => b.BranchID, w => w.BranchID, (b, w) => w),
