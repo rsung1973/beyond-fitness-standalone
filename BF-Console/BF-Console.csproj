@@ -6375,6 +6375,10 @@
     <Content Include="Views\Common\ProfileImage.cshtml" />
     <Content Include="Views\ConsoleHome\BlogArticleList.cshtml" />
     <Content Include="Views\ConsoleHome\Shared\PagingControl.cshtml" />
+    <Content Include="Views\ConsoleHome\ExerciseBillboard.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\CurrentExerciseBillboard.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\ExerciseBillboard.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\ExerciseDonutChart.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\ConsoleEventController.cs" />
