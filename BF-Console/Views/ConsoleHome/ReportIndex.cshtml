@@ -37,7 +37,7 @@
 
 <script>
         $(function () {
-            $global.viewModel = @(JsonConvert.SerializeObject(_viewModel));
+            $global.viewModel = @Html.Raw(JsonConvert.SerializeObject(_viewModel));
 
             for (var i = 0; i < $global.onReady.length; i++) {
                 $global.onReady[i]();
@@ -70,7 +70,7 @@
                             <div class="col-lg-2 col-md-3 col-sm-6">
                                 <div class="card">
                                     <div class="file">
-                                        <a href='javascript:downloadPaymentReport(@(JsonConvert.SerializeObject(new {
+                                        <a href='javascript:downloadPaymentReport(@Html.Raw(JsonConvert.SerializeObject(new {
                                                             PayoffDateFrom = DateTime.Today,
                                                             PayoffDateTo = DateTime.Today,
                                                             BypassCondition = true,
@@ -87,7 +87,7 @@
                                         <script>
                                                 function downloadPaymentReport(viewModel) {
                                                     $('').launchDownload('@(Url.Action("CreatePaymentInvoiceQueryXlsx","Payment"))', viewModel, 'report', true);
-                                                }
+                                                }//
                                         </script>
                                     </div>
                                 </div>
@@ -95,7 +95,7 @@
                             @*<div class="col-lg-2 col-md-3 col-sm-6">
                                 <div class="card">
                                     <div class="file">
-                                        <a href='javascript:downloadPaymentReport(@(JsonConvert.SerializeObject(new
+                                        <a href='javascript:downloadPaymentReport(@Html.Raw(JsonConvert.SerializeObject(new
                                                         {
                                                             PayoffDateFrom = DateTime.Today.FirstDayOfMonth(),
                                                             PayoffDateTo = DateTime.Today.FirstDayOfMonth().AddMonths(1).AddDays(-1),
@@ -116,7 +116,7 @@
                             <div class="col-lg-2 col-md-3 col-sm-6">
                                 <div class="card">
                                     <div class="file">
-                                        <a href='javascript:downloadPaymentReport(@(JsonConvert.SerializeObject(new
+                                        <a href='javascript:downloadPaymentReport(@Html.Raw(JsonConvert.SerializeObject(new
                                                         {
                                                             PayoffDateFrom = DateTime.Today.FirstDayOfMonth().AddMonths(-1),
                                                             PayoffDateTo = DateTime.Today.FirstDayOfMonth().AddDays(-1),
@@ -196,7 +196,7 @@
                                                             $(data).appendTo($('body'));
                                                         }
                                                     });
-                                                }
+                                                }//
                                         </script>
                                     </div>
                                 </div>
@@ -228,7 +228,7 @@
                                                             $(data).appendTo($('body'));
                                                         }
                                                     });
-                                                }
+                                                }//
                                         </script>
                                     </div>
                                 </div>
@@ -339,7 +339,7 @@
                                                     $(data).appendTo($('body'));
                                                 }
                                             });
-                                        }
+                                        }//
                                 </script>
                             </div>
                             <div class="col-lg-2 col-md-3 col-sm-6">
@@ -474,7 +474,7 @@
                                                     $(data).appendTo($('body'));
                                                 }
                                             });
-                                        }
+                                        }//
                                 </script>
                             </div>
                             @*<div class="col-lg-2 col-md-3 col-sm-6">
@@ -506,7 +506,7 @@
                                                     $(data).appendTo($('body'));
                                                 }
                                             });
-                                        }
+                                        }//
                                 </script>
                             </div>*@
                             <div class="col-lg-2 col-md-3 col-sm-6">
@@ -539,7 +539,7 @@
                                                 $(data).appendTo($('body'));
                                             }
                                         });
-                                    }
+                                    }//
                             </script>
 
                         </div>
@@ -660,7 +660,7 @@
                                                 $(data).appendTo($('body'));
                                             }
                                         });
-                                    }
+                                    }//
                             </script>
                             <script>
                                     function selectMonthlySettlement() {
@@ -677,7 +677,8 @@
                                                 $(data).appendTo($('body'));
                                             }
                                         });
-                                    }
+                                }
+                                //
                             </script>
                         </div>
                     </div>

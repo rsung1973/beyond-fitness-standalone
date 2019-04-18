@@ -1,0 +1,57 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Newtonsoft.Json
+
+<div class="table-responsive">
+    @{ ViewBag.OwnerID = _viewModel.OwnerID;
+        Html.RenderPartial("~/Views/ContractConsole/Module/ContractMemberList.ascx", _viewModel.UID.PromptContractMembers(models));}
+
+</div>
+
+<script>
+
+    $(function () {
+        $global.viewModel.UID = @Html.Raw(JsonConvert.SerializeObject(_viewModel.UID));
+        $global.contractMemberInitComplete = function (dt) {
+            var api = dt.api();
+            api.$('tr').click(function () {
+                var id = $(this).data('id');
+                processMember(id);
+            });
+        };
+
+        function processMember(uid) {
+            showLoading();
+            $.post('@(Url.Action("ProcessContractMember", "ContractConsole"))', { 'uid': uid }, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    alert(data.message);
+                } else {
+                    $(data).appendTo($('body'));
+                }
+            });
+        }
+
+    });
+
+</script>
+
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    CourseContractQueryViewModel _viewModel;
+
+    
+    
+        _modelState = (ModelStateDictionary)ViewBag.ModelState;
+        models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+        _viewModel = (CourseContractQueryViewModel)ViewBag.ViewModel;
+    }

@@ -63,7 +63,7 @@
 <div id="@(_chartID)" class="c3 m-t-20"></div>
 <script>
 
-    var totalData = @(JsonConvert.SerializeObject(totalData));
+    var totalData = @Html.Raw(JsonConvert.SerializeObject(totalData));
     $(function () {
         var chart = c3.generate({
             bindto: '#@(_chartID)', // id of chart wrapper

@@ -1,0 +1,33 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    LessonTime _model;
+    CalendarEventQueryViewModel _viewModel;
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = (LessonTime)this.Model;
+    _viewModel = (CalendarEventQueryViewModel)ViewBag.ViewModel;
+}
+@if (_model.RegisterLesson.LessonPriceType.Status == (int)Naming.DocumentLevelDefinition.教練PI)
+{
+    Html.RenderPartial("~/Views/ConsoleEvent/EventModal/CoachPI.ascx", _model);
+}
+else if (_model.GroupingLesson.RegisterLesson.Count > 1)
+{
+    Html.RenderPartial("~/Views/ConsoleEvent/EventModal/OtherLesson.ascx", _model);
+}
+else
+{
+    Html.RenderPartial("~/Views/ConsoleEvent/EventModal/LearnerLesson.ascx", _model);
+}
+
+

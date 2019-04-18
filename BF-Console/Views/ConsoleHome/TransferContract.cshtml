@@ -1,0 +1,101 @@
+
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Newtonsoft.Json
+
+@section CustomHeader { 
+<!-- JQuery DataTable Css -->
+    <link href="plugins/jquery-datatable/DataTables-1.10.18/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link href="plugins/jquery-datatable/Responsive-2.2.2/css/responsive.bootstrap4.min.css" rel="stylesheet">
+    <link href="plugins/jquery-datatable/FixedColumns-3.2.5/css/fixedColumns.bootstrap4.min.css" rel="stylesheet">
+    <!-- Bootstrap Datetimepick -->
+    @*<link href="plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+    <link href="css/datetimepicker.css" rel="stylesheet" />*@
+    <link href="plugins/smartcalendar/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+    <link href="css/smartcalendar-2.css" rel="stylesheet" />
+
+    <!-- Custom Css -->
+    <link rel="stylesheet" href="css/customelist.css?2" />
+    <!-- jSignature -->
+    <link rel="stylesheet" href="css/jsignature.css"> 
+}
+
+<script>
+        $(function () {
+            $global.viewModel = @Html.Raw(JsonConvert.SerializeObject(_viewModel));
+
+            for (var i = 0; i < $global.onReady.length; i++) {
+                $global.onReady[i]();
+            }
+        });
+    </script>
+    <!-- Main Content -->
+    <section class="content">
+        @{ ViewBag.BlockHeader = "合約轉讓";
+            ViewBag.InsertPartial = (Action)(() =>
+            {
+                Html.RenderPartial("~/Views/ConsoleHome/Shared/MyContractHeader.ascx", _model); ;
+            });
+            Html.RenderPartial("~/Views/ConsoleHome/Module/BlockHeader.ascx", _model);}
+
+        <div class="container-fluid">
+            <div class="card widget_2">
+                @{ ViewBag.ApplyService = (Action<String>)(viewID =>
+                    {
+                        ViewBag.ViewID = viewID;
+                        Html.RenderPartial("~/Views/ContractConsole/ContractService/DoTransferringContract.ascx", _item);
+                    });
+                    Html.RenderPartial("~/Views/ContractConsole/ContractService/ApplyContractService.ascx", _item);}
+
+            </div>
+        </div>
+
+    </section>
+
+@section TailPageJavaScriptInclude { 
+<!--Sparkline Plugin Js-->
+    <script src="plugins/jquery-sparkline/jquery.sparkline.js"></script>
+    <!-- SweetAlert Plugin Js -->
+    <script src="plugins/sweetalert/sweetalert.min.js"></script>
+    <!-- Jquery DataTable Plugin Js -->
+    <script src="bundles/datatablescripts.bundle.js"></script>
+    <script src="plugins/jquery-datatable/Responsive-2.2.2/js/dataTables.responsive.min.js"></script>
+    <script src="plugins/jquery-datatable/FixedColumns-3.2.5/js/dataTables.fixedColumns.min.js"></script>
+    <!-- Bootstrap datetimepicker Plugin Js -->
+    @*<script src="plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-TW.js"></script>*@
+    <script src="plugins/smartcalendar/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="plugins/smartcalendar/js/locales-datetimepicker/bootstrap-datetimepicker.zh-TW.js"></script>
+
+    @{ Html.RenderPartial("~/Views/ConsoleHome/Shared/KnobJS.ascx");}
+
+
+    <script type="text/javascript">
+
+    </script> 
+}
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    CourseContract _item;
+    UserProfile _model;
+    CourseContractQueryViewModel _viewModel;
+
+    
+    
+        models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+        _modelState = (ModelStateDictionary)ViewBag.ModelState;
+        _model = (UserProfile)this.Model;
+        _viewModel = (CourseContractQueryViewModel)ViewBag.ViewModel;
+        _item = (CourseContract)ViewBag.DataItem;
+
+    }

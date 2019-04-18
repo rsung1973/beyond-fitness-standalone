@@ -51,6 +51,8 @@
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System.Data.Linq" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Net.Http.Formatting, Version=5.2.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.6\lib\net45\System.Net.Http.Formatting.dll</HintPath>
@@ -77,7 +79,7 @@
       <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.6\lib\net45\System.Web.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.6\lib\net45\System.Web.Razor.dll</HintPath>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.7\lib\net45\System.Web.Razor.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.6\lib\net45\System.Web.WebPages.dll</HintPath>
@@ -95,17 +97,6 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
-    <Reference Include="CommonLib">
-      <HintPath>bin\CommonLib.dll</HintPath>
-    </Reference>
-    <Reference Include="CommonLib.Logger">
-      <HintPath>bin\CommonLib.Logger.dll</HintPath>
-    </Reference>
-    <Reference Include="CommonLib.PlugInAdapter">
-      <HintPath>bin\CommonLib.PlugInAdapter.dll</HintPath>
-    </Reference>
-    <Reference Include="System.IO.Compression" />
-    <Reference Include="System.IO.Compression.FileSystem" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Web.Infrastructure">
@@ -1537,87 +1528,18 @@
     <Content Include="ConsoleHome\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="ConsoleHome\fonts\Material-Design-Iconic-Font.svg" />
     <Content Include="ConsoleHome\images\animation-bg.jpg" />
-    <Content Include="ConsoleHome\images\avatar\Alan-small.png" />
-    <Content Include="ConsoleHome\images\avatar\alan.jpg" />
-    <Content Include="ConsoleHome\images\avatar\Alan.png" />
-    <Content Include="ConsoleHome\images\avatar\Annie-small.png" />
-    <Content Include="ConsoleHome\images\avatar\Annie.png" />
     <Content Include="ConsoleHome\images\avatar\avatar.png" />
-    <Content Include="ConsoleHome\images\avatar\Ben-small.png" />
-    <Content Include="ConsoleHome\images\avatar\ben.jpg" />
-    <Content Include="ConsoleHome\images\avatar\Ben.png" />
-    <Content Include="ConsoleHome\images\avatar\Bill-small.png" />
-    <Content Include="ConsoleHome\images\avatar\bill.jpg" />
-    <Content Include="ConsoleHome\images\avatar\Bill.png" />
-    <Content Include="ConsoleHome\images\avatar\Billy-small.png" />
-    <Content Include="ConsoleHome\images\avatar\Billy.png" />
-    <Content Include="ConsoleHome\images\avatar\Bryant-small.png" />
-    <Content Include="ConsoleHome\images\avatar\bryant.jpg" />
-    <Content Include="ConsoleHome\images\avatar\Bryant.png" />
-    <Content Include="ConsoleHome\images\avatar\calendar.html" />
     <Content Include="ConsoleHome\images\avatar\dietitian.jpg" />
-    <Content Include="ConsoleHome\images\avatar\Doreen-small.png" />
-    <Content Include="ConsoleHome\images\avatar\doreen.jpg" />
-    <Content Include="ConsoleHome\images\avatar\Doreen.png" />
-    <Content Include="ConsoleHome\images\avatar\Galai-small.png" />
-    <Content Include="ConsoleHome\images\avatar\Galai.png" />
-    <Content Include="ConsoleHome\images\avatar\garfaild.png" />
-    <Content Include="ConsoleHome\images\avatar\Genie-small.png" />
-    <Content Include="ConsoleHome\images\avatar\genie.jpg" />
-    <Content Include="ConsoleHome\images\avatar\Genie.png" />
-    <Content Include="ConsoleHome\images\avatar\Hardy-small.png" />
-    <Content Include="ConsoleHome\images\avatar\hardy.jpg" />
-    <Content Include="ConsoleHome\images\avatar\Hardy.png" />
-    <Content Include="ConsoleHome\images\avatar\Iron-small.png" />
-    <Content Include="ConsoleHome\images\avatar\Iron.png" />
-    <Content Include="ConsoleHome\images\avatar\Joei-small.png" />
-    <Content Include="ConsoleHome\images\avatar\joei.jpg" />
-    <Content Include="ConsoleHome\images\avatar\Joei.png" />
-    <Content Include="ConsoleHome\images\avatar\Lucy-small.png" />
-    <Content Include="ConsoleHome\images\avatar\lucy.jpg" />
-    <Content Include="ConsoleHome\images\avatar\Lucy.png" />
-    <Content Include="ConsoleHome\images\avatar\Neil-small.png" />
-    <Content Include="ConsoleHome\images\avatar\Neil.png" />
-    <Content Include="ConsoleHome\images\avatar\noname.png" />
-    <Content Include="ConsoleHome\images\avatar\Peter-small.png" />
-    <Content Include="ConsoleHome\images\avatar\Peter-sogo-small.png" />
-    <Content Include="ConsoleHome\images\avatar\Peter-sogo.png" />
-    <Content Include="ConsoleHome\images\avatar\peter.jpg" />
-    <Content Include="ConsoleHome\images\avatar\Peter.png" />
-    <Content Include="ConsoleHome\images\avatar\Sabrina-small.png" />
-    <Content Include="ConsoleHome\images\avatar\Sabrina.png" />
-    <Content Include="ConsoleHome\images\avatar\Sam-small.png" />
-    <Content Include="ConsoleHome\images\avatar\sam.jpg" />
-    <Content Include="ConsoleHome\images\avatar\Sam.png" />
-    <Content Include="ConsoleHome\images\avatar\Sammie-small.png" />
-    <Content Include="ConsoleHome\images\avatar\sammie.jpg" />
-    <Content Include="ConsoleHome\images\avatar\Sammie.png" />
-    <Content Include="ConsoleHome\images\avatar\Shen-small.png" />
-    <Content Include="ConsoleHome\images\avatar\Shen.png" />
-    <Content Include="ConsoleHome\images\avatar\Ted-small.png" />
-    <Content Include="ConsoleHome\images\avatar\ted.jpg" />
-    <Content Include="ConsoleHome\images\avatar\Ted.png" />
     <Content Include="ConsoleHome\images\avatar\therapist.jpg" />
-    <Content Include="ConsoleHome\images\avatar\Vic-small.png" />
-    <Content Include="ConsoleHome\images\avatar\Vic.png" />
-    <Content Include="ConsoleHome\images\blog\05-img.jpg" />
-    <Content Include="ConsoleHome\images\blog\06-img.jpg" />
-    <Content Include="ConsoleHome\images\blog\07-img.jpg" />
-    <Content Include="ConsoleHome\images\blog\08-img.jpg" />
-    <Content Include="ConsoleHome\images\blog\09-img.jpg" />
-    <Content Include="ConsoleHome\images\blog\1.jpg" />
-    <Content Include="ConsoleHome\images\blog\10-img.jpg" />
-    <Content Include="ConsoleHome\images\blog\11-img.jpg" />
-    <Content Include="ConsoleHome\images\blog\12-img.jpg" />
-    <Content Include="ConsoleHome\images\blog\13-img.jpg" />
-    <Content Include="ConsoleHome\images\blog\2.jpg" />
-    <Content Include="ConsoleHome\images\blog\3.jpg" />
-    <Content Include="ConsoleHome\images\blog\4.jpg" />
-    <Content Include="ConsoleHome\images\blog\blog-bg.jpg" />
-    <Content Include="ConsoleHome\images\blog\blog-page-1.jpg" />
-    <Content Include="ConsoleHome\images\blog\blog-page-2.jpg" />
-    <Content Include="ConsoleHome\images\blog\blog-page-3.jpg" />
-    <Content Include="ConsoleHome\images\blog\blog-page-4.jpg" />
+    <Content Include="ConsoleHome\images\blog\Category1.jpg" />
+    <Content Include="ConsoleHome\images\blog\Category2.jpg" />
+    <Content Include="ConsoleHome\images\blog\Category3.jpg" />
+    <Content Include="ConsoleHome\images\blog\Category4.jpg" />
+    <Content Include="ConsoleHome\images\blog\Category5.jpg" />
+    <Content Include="ConsoleHome\images\blog\Category6.jpg" />
+    <Content Include="ConsoleHome\images\blog\Category7.jpg" />
+    <Content Include="ConsoleHome\images\blog\Category8.jpg" />
+    <Content Include="ConsoleHome\images\blog\DefaultTitle.jpg" />
     <Content Include="ConsoleHome\images\carousel\article-background-1.jpg" />
     <Content Include="ConsoleHome\images\carousel\article-background-2.jpg" />
     <Content Include="ConsoleHome\images\carousel\article-background-3.jpg" />
@@ -1634,37 +1556,6 @@
     <Content Include="ConsoleHome\images\certificate\default.jpg" />
     <Content Include="ConsoleHome\images\certificate\EXOS.png" />
     <Content Include="ConsoleHome\images\certificate\NACA.png" />
-    <Content Include="ConsoleHome\images\ecommerce\1.png" />
-    <Content Include="ConsoleHome\images\ecommerce\10.png" />
-    <Content Include="ConsoleHome\images\ecommerce\11.png" />
-    <Content Include="ConsoleHome\images\ecommerce\12.png" />
-    <Content Include="ConsoleHome\images\ecommerce\13.png" />
-    <Content Include="ConsoleHome\images\ecommerce\14.png" />
-    <Content Include="ConsoleHome\images\ecommerce\15.png" />
-    <Content Include="ConsoleHome\images\ecommerce\16.png" />
-    <Content Include="ConsoleHome\images\ecommerce\2.png" />
-    <Content Include="ConsoleHome\images\ecommerce\3.png" />
-    <Content Include="ConsoleHome\images\ecommerce\4.png" />
-    <Content Include="ConsoleHome\images\ecommerce\5.png" />
-    <Content Include="ConsoleHome\images\ecommerce\6.png" />
-    <Content Include="ConsoleHome\images\ecommerce\7.png" />
-    <Content Include="ConsoleHome\images\ecommerce\8.png" />
-    <Content Include="ConsoleHome\images\ecommerce\9.png" />
-    <Content Include="ConsoleHome\images\ecommerce\AQUARIUS.jpg" />
-    <Content Include="ConsoleHome\images\ecommerce\BeyondFitness.png" />
-    <Content Include="ConsoleHome\images\ecommerce\bonus_02.jpg" />
-    <Content Include="ConsoleHome\images\ecommerce\bonus_03.jpg" />
-    <Content Include="ConsoleHome\images\ecommerce\bonus_04.jpg" />
-    <Content Include="ConsoleHome\images\ecommerce\bonus_05.jpg" />
-    <Content Include="ConsoleHome\images\ecommerce\bonus_06.jpg" />
-    <Content Include="ConsoleHome\images\ecommerce\bonus_07.jpg" />
-    <Content Include="ConsoleHome\images\ecommerce\bonus_08.jpg" />
-    <Content Include="ConsoleHome\images\ecommerce\bonus_09.jpg" />
-    <Content Include="ConsoleHome\images\ecommerce\bonus_10.jpg" />
-    <Content Include="ConsoleHome\images\ecommerce\bonus_11.jpg" />
-    <Content Include="ConsoleHome\images\ecommerce\bonus_12.jpg" />
-    <Content Include="ConsoleHome\images\ecommerce\coconut.jpg" />
-    <Content Include="ConsoleHome\images\ecommerce\water.jpg" />
     <Content Include="ConsoleHome\images\facesmile\easy-1.jpg" />
     <Content Include="ConsoleHome\images\facesmile\easy-2.png" />
     <Content Include="ConsoleHome\images\facesmile\easy.jpg" />
@@ -1676,58 +1567,14 @@
     <Content Include="ConsoleHome\images\facesmile\ragular-3.png" />
     <Content Include="ConsoleHome\images\facesmile\ragular.jpg" />
     <Content Include="ConsoleHome\images\generic.jpg" />
-    <Content Include="ConsoleHome\images\icon.png" />
-    <Content Include="ConsoleHome\images\icon2.png" />
-    <Content Include="ConsoleHome\images\icon3.png" />
     <Content Include="ConsoleHome\images\icon_add.gif" />
     <Content Include="ConsoleHome\images\icon_add3.gif" />
     <Content Include="ConsoleHome\images\icon_close.png" />
     <Content Include="ConsoleHome\images\icon_minus.gif" />
     <Content Include="ConsoleHome\images\icon_minus3.gif" />
-    <Content Include="ConsoleHome\images\image-gallery\1.jpg" />
-    <Content Include="ConsoleHome\images\image-gallery\10.jpg" />
-    <Content Include="ConsoleHome\images\image-gallery\11.jpg" />
-    <Content Include="ConsoleHome\images\image-gallery\12.jpg" />
-    <Content Include="ConsoleHome\images\image-gallery\13.jpg" />
-    <Content Include="ConsoleHome\images\image-gallery\14.jpg" />
-    <Content Include="ConsoleHome\images\image-gallery\15.jpg" />
-    <Content Include="ConsoleHome\images\image-gallery\2.jpg" />
-    <Content Include="ConsoleHome\images\image-gallery\3.jpg" />
-    <Content Include="ConsoleHome\images\image-gallery\4.jpg" />
-    <Content Include="ConsoleHome\images\image-gallery\5.jpg" />
-    <Content Include="ConsoleHome\images\image-gallery\6.jpg" />
-    <Content Include="ConsoleHome\images\image-gallery\7.jpg" />
-    <Content Include="ConsoleHome\images\image-gallery\8.jpg" />
-    <Content Include="ConsoleHome\images\image-gallery\9.jpg" />
-    <Content Include="ConsoleHome\images\image-gallery\thumb\thumb-1.jpg" />
-    <Content Include="ConsoleHome\images\image-gallery\thumb\thumb-10.jpg" />
-    <Content Include="ConsoleHome\images\image-gallery\thumb\thumb-11.jpg" />
-    <Content Include="ConsoleHome\images\image-gallery\thumb\thumb-12.jpg" />
-    <Content Include="ConsoleHome\images\image-gallery\thumb\thumb-13.jpg" />
-    <Content Include="ConsoleHome\images\image-gallery\thumb\thumb-14.jpg" />
-    <Content Include="ConsoleHome\images\image-gallery\thumb\thumb-15.jpg" />
-    <Content Include="ConsoleHome\images\image-gallery\thumb\thumb-2.jpg" />
-    <Content Include="ConsoleHome\images\image-gallery\thumb\thumb-3.jpg" />
-    <Content Include="ConsoleHome\images\image-gallery\thumb\thumb-4.jpg" />
-    <Content Include="ConsoleHome\images\image-gallery\thumb\thumb-5.jpg" />
-    <Content Include="ConsoleHome\images\image-gallery\thumb\thumb-6.jpg" />
-    <Content Include="ConsoleHome\images\image-gallery\thumb\thumb-7.jpg" />
-    <Content Include="ConsoleHome\images\image-gallery\thumb\thumb-8.jpg" />
-    <Content Include="ConsoleHome\images\image-gallery\thumb\thumb-9.jpg" />
     <Content Include="ConsoleHome\images\landing\360\101.jpg" />
     <Content Include="ConsoleHome\images\landing\360\arena.jpg" />
     <Content Include="ConsoleHome\images\landing\360\sogo.jpg" />
-    <Content Include="ConsoleHome\images\landing\article\7360.jpg" />
-    <Content Include="ConsoleHome\images\landing\article\7367.jpg" />
-    <Content Include="ConsoleHome\images\landing\article\7368.jpg" />
-    <Content Include="ConsoleHome\images\landing\article\Category1.jpg" />
-    <Content Include="ConsoleHome\images\landing\article\Category2.jpg" />
-    <Content Include="ConsoleHome\images\landing\article\Category3.jpg" />
-    <Content Include="ConsoleHome\images\landing\article\Category4.jpg" />
-    <Content Include="ConsoleHome\images\landing\article\Category5.jpg" />
-    <Content Include="ConsoleHome\images\landing\article\Category6.jpg" />
-    <Content Include="ConsoleHome\images\landing\article\Category7.jpg" />
-    <Content Include="ConsoleHome\images\landing\article\Category8.jpg" />
     <Content Include="ConsoleHome\images\landing\banner\banner-about.jpg" />
     <Content Include="ConsoleHome\images\landing\banner\banner-index.jpg" />
     <Content Include="ConsoleHome\images\landing\banner\banner-join.jpg" />
@@ -1741,7 +1588,6 @@
     <Content Include="ConsoleHome\images\landing\marker.png" />
     <Content Include="ConsoleHome\images\landing\mobile.jpg" />
     <Content Include="ConsoleHome\images\landing\org.png" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Bryant.jpg" />
     <Content Include="ConsoleHome\images\landing\smile.png" />
     <Content Include="ConsoleHome\images\landing\upright.png" />
     <Content Include="ConsoleHome\images\landing\video\about-1.jpg" />
@@ -1773,26 +1619,13 @@
     <Content Include="ConsoleHome\images\lesson\stage5-girl-clear.png" />
     <Content Include="ConsoleHome\images\lesson\stage5-girl.png" />
     <Content Include="ConsoleHome\images\lesson\stage5.png" />
-    <Content Include="ConsoleHome\images\lg\avatar1.jpg" />
-    <Content Include="ConsoleHome\images\lg\avatar2.jpg" />
-    <Content Include="ConsoleHome\images\lg\avatar3.jpg" />
-    <Content Include="ConsoleHome\images\lg\avatar4.jpg" />
-    <Content Include="ConsoleHome\images\lg\avatar5.jpg" />
-    <Content Include="ConsoleHome\images\lg\avatar6.jpg" />
     <Content Include="ConsoleHome\images\login.jpg" />
     <Content Include="ConsoleHome\images\logo.png" />
     <Content Include="ConsoleHome\images\logo.svg" />
     <Content Include="ConsoleHome\images\logo_.png" />
     <Content Include="ConsoleHome\images\Nav-logo-black.png" />
-    <Content Include="ConsoleHome\images\sign\sabrina-sign.png" />
     <Content Include="ConsoleHome\images\sign\seal.png" />
     <Content Include="ConsoleHome\images\sign\SignHere.png" />
-    <Content Include="ConsoleHome\images\sm\avatar1.jpg" />
-    <Content Include="ConsoleHome\images\sm\avatar2.jpg" />
-    <Content Include="ConsoleHome\images\sm\avatar3.jpg" />
-    <Content Include="ConsoleHome\images\sm\avatar4.jpg" />
-    <Content Include="ConsoleHome\images\sm\avatar5.jpg" />
-    <Content Include="ConsoleHome\images\sm\avatar6.jpg" />
     <Content Include="ConsoleHome\images\tit1_darkteal.jpg" />
     <Content Include="ConsoleHome\images\tit1_gray.gif" />
     <Content Include="ConsoleHome\images\top.png" />
@@ -1802,16 +1635,6 @@
     <Content Include="ConsoleHome\images\weather\sky.svg" />
     <Content Include="ConsoleHome\images\weather\summer.svg" />
     <Content Include="ConsoleHome\images\weather\wind.svg" />
-    <Content Include="ConsoleHome\images\xs\avatar1.jpg" />
-    <Content Include="ConsoleHome\images\xs\avatar10.jpg" />
-    <Content Include="ConsoleHome\images\xs\avatar2.jpg" />
-    <Content Include="ConsoleHome\images\xs\avatar3.jpg" />
-    <Content Include="ConsoleHome\images\xs\avatar4.jpg" />
-    <Content Include="ConsoleHome\images\xs\avatar5.jpg" />
-    <Content Include="ConsoleHome\images\xs\avatar6.jpg" />
-    <Content Include="ConsoleHome\images\xs\avatar7.jpg" />
-    <Content Include="ConsoleHome\images\xs\avatar8.jpg" />
-    <Content Include="ConsoleHome\images\xs\avatar9.jpg" />
     <Content Include="ConsoleHome\js\admin.js" />
     <Content Include="ConsoleHome\js\common.js" />
     <Content Include="ConsoleHome\js\demo.js" />
@@ -2035,6 +1858,7 @@
     <Content Include="ConsoleHome\plugins\charts-c3\js\d3.v3.min.js" />
     <Content Include="ConsoleHome\plugins\charts-c3\plugin.css" />
     <Content Include="ConsoleHome\plugins\charts-c3\plugin.js" />
+    <Content Include="ConsoleHome\plugins\charts-c3\plugin_white.css" />
     <Content Include="ConsoleHome\plugins\chosen\chosen-sprite%402x.png" />
     <Content Include="ConsoleHome\plugins\chosen\chosen-sprite.png" />
     <Content Include="ConsoleHome\plugins\chosen\chosen.css" />
@@ -5185,6 +5009,7 @@
     <Content Include="ConsoleHome\plugins\jquery-datatable\Select-1.2.6\js\select.jqueryui.min.js" />
     <Content Include="ConsoleHome\plugins\jquery-datatable\Select-1.2.6\js\select.semanticui.js" />
     <Content Include="ConsoleHome\plugins\jquery-datatable\Select-1.2.6\js\select.semanticui.min.js" />
+    <Content Include="ConsoleHome\plugins\jquery-form\jquery-form.min.js" />
     <Content Include="ConsoleHome\plugins\jquery-inputmask\inputmask\inputmask.date.extensions.js" />
     <Content Include="ConsoleHome\plugins\jquery-inputmask\inputmask\inputmask.dependencyLib.jquery.js" />
     <Content Include="ConsoleHome\plugins\jquery-inputmask\inputmask\inputmask.extensions.js" />
@@ -6151,6 +5976,9 @@
     <Content Include="ConsoleHome\plugins\waitme\waitMe.min.css" />
     <Content Include="ConsoleHome\plugins\waitme\waitMe.min.js" />
     <Content Include="Global.asax" />
+    <Content Include="MainActivity\Blog\Default\DefaultTitle.jpg" />
+    <Content Include="Views\Blog\Module\CategoryIndication.ascx" />
+    <Content Include="Views\Blog\Module\PlusIndication.ascx" />
     <Content Include="Views\ConsoleEvent\EventModal\MemberSelector.ascx" />
     <Content Include="Views\ConsoleEvent\Module\SearchLearner.ascx" />
     <Content Include="Views\ConsoleEvent\Module\CoachPIAttendeeSelector.ascx" />
@@ -6167,7 +5995,81 @@
     <Content Include="Views\ConsoleEvent\Module\RevokeLesson.ascx" />
     <Content Include="Views\ConsoleEvent\Module\LessonEmphasis.ascx" />
     <Content Include="Views\ConsoleHome\ApplyContractService.aspx" />
+    <Content Include="Views\ConsoleHome\EditBlogArticle.aspx" />
+    <Content Include="Views\ConsoleHome\BlogArticleList.aspx" />
+    <Content Include="Views\ConsoleHome\Module\AboutAchievement.ascx" />
+    <Content Include="Views\ConsoleHome\Module\AboutAchievement.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\AboutAchievementC3.ascx" />
+    <Content Include="Views\ConsoleHome\Module\AboutAchievementC3.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\AboutArticle.ascx" />
+    <Content Include="Views\ConsoleHome\Module\AboutArticle.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\AboutCoach.ascx" />
+    <Content Include="Views\ConsoleHome\Module\AboutCoach.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\AboutContest.ascx" />
+    <Content Include="Views\ConsoleHome\Module\AboutContest.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\AboutDailyQuestion.ascx" />
+    <Content Include="Views\ConsoleHome\Module\AboutDailyQuestion.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\AboutEditableLessons.ascx" />
+    <Content Include="Views\ConsoleHome\Module\AboutEditableLessons.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\AboutInvoice.ascx" />
+    <Content Include="Views\ConsoleHome\Module\AboutInvoice.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\AboutLearners.ascx" />
+    <Content Include="Views\ConsoleHome\Module\AboutLearners_1.ascx" />
+    <Content Include="Views\ConsoleHome\Module\AboutLearners_1.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\AboutLearnerUncheckedLessons.ascx" />
+    <Content Include="Views\ConsoleHome\Module\AboutLearnerUncheckedLessons.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\AboutStaff.ascx" />
+    <Content Include="Views\ConsoleHome\Module\AboutToApprovePreferredLessons.ascx" />
+    <Content Include="Views\ConsoleHome\Module\AboutToApprovePreferredLessons.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\BlockHeader.ascx" />
+    <Content Include="Views\ConsoleHome\Module\BlockHeader.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\CalendarEvents.ascx" />
+    <Content Include="Views\ConsoleHome\Module\CurrentExerciseBillboard.ascx" />
+    <Content Include="Views\ConsoleHome\Module\CurrentExerciseBillboard.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\DailyEventItems.ascx" />
+    <Content Include="Views\ConsoleHome\Module\EventDetails.ascx" />
+    <Content Include="Views\ConsoleHome\Module\EventItems.ascx" />
+    <Content Include="Views\ConsoleHome\Module\ExerciseBillboard.ascx" />
+    <Content Include="Views\ConsoleHome\Module\ExerciseBillboard.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\ExerciseBillboardDetails.ascx" />
+    <Content Include="Views\ConsoleHome\Module\ExerciseDonutChart.ascx" />
+    <Content Include="Views\ConsoleHome\Module\ExerciseDonutChart.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\FocusItemToday.ascx" />
+    <Content Include="Views\ConsoleHome\Module\FocusItemToday.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\GameRankRadarChart.ascx" />
+    <Content Include="Views\ConsoleHome\Module\GameRankRadarChart.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\InspirationalTitle.ascx" />
+    <Content Include="Views\ConsoleHome\Module\InspirationalTitle.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\MainCalendar.ascx" />
+    <Content Include="Views\ConsoleHome\Module\ProfileImage.ascx" />
+    <Content Include="Views\ConsoleHome\Module\ProfileImage.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\RenderLessonCheck.ascx" />
+    <Content Include="Views\ConsoleHome\Module\TodayLessonsBarChart.ascx" />
+    <Content Include="Views\ConsoleHome\Module\TodayLessonsBarChartC3.ascx" />
+    <Content Include="Views\ConsoleHome\Module\TodayLessonsBarChartC3.cshtml" />
     <Content Include="Views\ConsoleHome\ReportIndex.aspx" />
+    <Content Include="Views\Blog\Module\PlusIndication.cshtml" />
+    <Content Include="Views\ConsoleEvent\EventModal\LessonItem.cshtml" />
+    <Content Include="Views\ConsoleEvent\EventModal\UserEvent.cshtml" />
+    <Content Include="Views\ConsoleEvent\EventModal\AddEvent.cshtml" />
+    <Content Include="Views\ConsoleEvent\EventModal\AttendeeSelector.cshtml" />
+    <Content Include="Views\ConsoleEvent\EventModal\BookingCoachPI.cshtml" />
+    <Content Include="Views\ConsoleEvent\EventModal\BookingCustomEvent.cshtml" />
+    <Content Include="Views\ConsoleEvent\EventModal\BookingLesson.cshtml" />
+    <Content Include="Views\ConsoleEvent\EventModal\CoachPI.cshtml" />
+    <Content Include="Views\ConsoleEvent\EventModal\LearnerLesson.cshtml" />
+    <Content Include="Views\ConsoleEvent\EventModal\MemberSelector.cshtml" />
+    <Content Include="Views\ConsoleEvent\EventModal\OtherLesson.cshtml" />
+    <Content Include="Views\Blog\Module\CategoryIndication.cshtml" />
+    <Content Include="Views\ConsoleEvent\Module\CoachPIAttendeeSelector.cshtml" />
+    <Content Include="Views\ConsoleEvent\Module\LessonEmphasis.cshtml" />
+    <Content Include="Views\ConsoleEvent\Module\RevokeLesson.cshtml" />
+    <Content Include="Views\ConsoleEvent\Module\SearchLearner.cshtml" />
+    <Content Include="Views\ConsoleHome\ApplyContractService.cshtml" />
+    <Content Include="Views\ConsoleHome\BlogArticleList.cshtml" />
+    <None Include="Views\ConsoleHome\BlogIndex.aspx_" />
+    <Content Include="Views\ConsoleHome\Shared\DropifyUpload.ascx" />
+    <Content Include="Views\ConsoleHome\Shared\PagingControl.ascx" />
     <Content Include="Views\ConsoleHome\SignContractService.aspx" />
     <Content Include="Views\ConsoleHome\TerminateContract.aspx" />
     <Content Include="Views\ConsoleHome\TransferContract.aspx" />
@@ -6177,40 +6079,9 @@
     <Content Include="Views\ConsoleHome\SignCourseContract.aspx" />
     <Content Include="Views\ConsoleHome\EditCourseContract.aspx" />
     <Content Include="Views\ConsoleHome\ContractIndex.aspx" />
-    <Content Include="Views\ConsoleHome\ExerciseBillboard.aspx" />
     <Content Include="Views\ConsoleHome\Calendar.aspx" />
     <Content Include="Views\ConsoleHome\CrossBranchIndex.aspx" />
     <Content Include="Views\ConsoleHome\LearnerLesson.ascx" />
-    <Content Include="Views\ConsoleHome\Module\AboutAchievementC3.ascx" />
-    <Content Include="Views\ConsoleHome\Module\AboutAchievement.ascx" />
-    <Content Include="Views\ConsoleHome\Module\AboutToApprovePreferredLessons.ascx" />
-    <Content Include="Views\ConsoleHome\Module\AboutEditableLessons.ascx" />
-    <Content Include="Views\ConsoleHome\Module\AboutLearnerUncheckedLessons.ascx" />
-    <Content Include="Views\ConsoleHome\Module\AboutArticle.ascx" />
-    <Content Include="Views\ConsoleHome\Module\AboutLearners_1.ascx" />
-    <Content Include="Views\ConsoleHome\Module\AboutStaff.ascx" />
-    <Content Include="Views\ConsoleHome\Module\DailyEventItems.ascx" />
-    <Content Include="Views\ConsoleHome\Module\FocusItemToday.ascx" />
-    <Content Include="Views\ConsoleHome\Module\RenderLessonCheck.ascx" />
-    <Content Include="Views\ConsoleHome\Module\EventItems.ascx" />
-    <Content Include="Views\ConsoleHome\Module\EventDetails.ascx" />
-    <Content Include="Views\ConsoleHome\Module\CalendarEvents.ascx" />
-    <Content Include="Views\ConsoleHome\Module\MainCalendar.ascx" />
-    <Content Include="Views\ConsoleHome\Module\AboutDailyQuestion.ascx" />
-    <Content Include="Views\ConsoleHome\Module\AboutContest.ascx" />
-    <Content Include="Views\ConsoleHome\Module\AboutInvoice.ascx" />
-    <Content Include="Views\ConsoleHome\Module\AboutCoach.ascx" />
-    <Content Include="Views\ConsoleHome\Module\ExerciseBillboardDetails.ascx" />
-    <Content Include="Views\ConsoleHome\Module\ExerciseBillboard.ascx" />
-    <Content Include="Views\ConsoleHome\Module\ExerciseDonutChart.ascx" />
-    <Content Include="Views\ConsoleHome\Module\CurrentExerciseBillboard.ascx" />
-    <Content Include="Views\ConsoleHome\Module\AboutLearners.ascx" />
-    <Content Include="Views\ConsoleHome\Module\TodayLessonsBarChartC3.ascx" />
-    <Content Include="Views\ConsoleHome\Module\TodayLessonsBarChart.ascx" />
-    <Content Include="Views\ConsoleHome\Module\GameRankRadarChart.ascx" />
-    <Content Include="Views\ConsoleHome\Module\ProfileImage.ascx" />
-    <Content Include="Views\ConsoleHome\Module\InspirationalTitle.ascx" />
-    <Content Include="Views\ConsoleHome\Module\BlockHeader.ascx" />
     <Content Include="Views\ConsoleHome\Shared\MyContractHeader.ascx" />
     <Content Include="Views\ConsoleHome\Shared\KnobJS.ascx" />
     <Content Include="Views\ConsoleHome\Shared\Knob.ascx" />
@@ -6255,6 +6126,12 @@
     <Content Include="Views\ContractConsole\ContractService\ContractTransference.ascx" />
     <Content Include="Views\ContractConsole\ContractService\ContractExtension.ascx" />
     <Content Include="Views\ContractConsole\Indication\ContractDetails.ascx" />
+    <Content Include="Views\ContractConsole\Module\AboutContractServicesSummaryByOfficer.ascx" />
+    <Content Include="Views\ContractConsole\Module\AboutContractServicesSummaryByBranch.ascx" />
+    <Content Include="Views\ContractConsole\Module\AboutContractsByBranch.ascx" />
+    <Content Include="Views\ContractConsole\Module\AboutContractsByOfficer.ascx" />
+    <Content Include="Views\ContractConsole\Module\AboutContractServicesByManager.ascx" />
+    <Content Include="Views\ContractConsole\Module\AboutContractServicesByPureCoach.ascx" />
     <Content Include="Views\ContractConsole\Module\AboutContractServicesByCoach.ascx" />
     <Content Include="Views\ContractConsole\Module\AboutContractServicesByBranch.ascx" />
     <Content Include="Views\ContractConsole\Module\AboutContractServicesByOfficer.ascx" />
@@ -6292,6 +6169,11 @@
     <Content Include="Views\LessonConsole\ProcessModal\TodayLessons.ascx" />
     <Content Include="Views\LessonConsole\ProcessModal\ProcessCrossBranch.ascx" />
     <Content Include="Views\LessonConsole\Module\CrossBranchLessonList.ascx" />
+    <Content Include="Views\MainActivity\Module\MobileMenuItem.ascx" />
+    <Content Include="Views\MainActivity\Module\ContactItem.ascx" />
+    <Content Include="Views\MainActivity\Module\JoinItem.ascx" />
+    <Content Include="Views\MainActivity\Module\MenuItem.ascx" />
+    <Content Include="Views\MainActivity\SamplePage.aspx" />
     <Content Include="Views\ReportConsole\ReportModal\ByContractNo.ascx" />
     <Content Include="Views\ReportConsole\ReportModal\SelectReportCondition.ascx" />
     <Content Include="Views\ReportConsole\ReportModal\SelectPeriodReport.ascx" />
@@ -6299,93 +6181,6 @@
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Views\Blog\Module\CategoryIndication.ascx" />
-    <Content Include="Views\Blog\Module\PlusIndication.ascx" />
-    <Content Include="Views\ConsoleHome\BlogArticleList.aspx" />
-    <Content Include="Views\ConsoleHome\BlogIndex.aspx" />
-    <Content Include="Views\ConsoleHome\EditBlogArticle.aspx" />
-    <Content Include="Views\ConsoleHome\Shared\DropifyUpload.ascx" />
-    <Content Include="Views\ConsoleHome\Shared\PagingControl.ascx" />
-    <Content Include="Views\MainActivity\AboutUs.cshtml" />
-    <Content Include="Views\MainActivity\BlogArticleList.cshtml" />
-    <Content Include="Views\MainActivity\BlogGrid.cshtml" />
-    <Content Include="Views\MainActivity\BlogList.cshtml" />
-    <Content Include="Views\MainActivity\BlogSingle.cshtml" />
-    <Content Include="Views\MainActivity\BookNow.cshtml" />
-    <Content Include="Views\MainActivity\CoachDetails.cshtml" />
-    <Content Include="Views\MainActivity\FAQ.cshtml" />
-    <Content Include="Views\MainActivity\Features.cshtml" />
-    <Content Include="Views\MainActivity\FindUs.cshtml" />
-    <Content Include="Views\MainActivity\Index.cshtml" />
-    <Content Include="Views\MainActivity\JoinUs.cshtml" />
-    <Content Include="Views\MainActivity\Opportunity.cshtml" />
-    <Content Include="Views\MainActivity\PricingList.cshtml" />
-    <Content Include="Views\MainActivity\Team.cshtml" />
-    <Content Include="Views\MainActivity\Module\ContactItem.cshtml" />
-    <Content Include="Views\MainActivity\Module\JoinItem.cshtml" />
-    <Content Include="Views\MainActivity\Module\MenuItem.cshtml" />
-    <Content Include="Views\MainActivity\Module\MobileMenuItem.cshtml" />
-    <Content Include="Views\MainActivity\Template\BlogPage.cshtml" />
-    <Content Include="Views\MainActivity\Template\MainPage.cshtml" />
-    <Content Include="Views\ContractConsole\Module\AboutContractsByBranch.ascx" />
-    <Content Include="Views\ContractConsole\Module\AboutContractsByOfficer.ascx" />
-    <Content Include="Views\ContractConsole\Module\AboutContractServicesByManager.ascx" />
-    <Content Include="Views\ContractConsole\Module\AboutContractServicesByPureCoach.ascx" />
-    <Content Include="Views\ContractConsole\Module\AboutContractServicesSummaryByBranch.ascx" />
-    <Content Include="Views\ContractConsole\Module\AboutContractServicesSummaryByOfficer.ascx" />
-    <Content Include="Views\ConsoleHome\Index.cshtml" />
-    <Content Include="Views\ConsoleHome\Module\AboutAchievementC3.cshtml" />
-    <Content Include="Views\ConsoleHome\Module\AboutArticle.cshtml" />
-    <Content Include="Views\ConsoleHome\Module\AboutCoach.cshtml" />
-    <Content Include="Views\ConsoleHome\Module\AboutContest.cshtml" />
-    <Content Include="Views\ConsoleHome\Module\AboutEditableLessons.cshtml" />
-    <Content Include="Views\ConsoleHome\Module\AboutInvoice.cshtml" />
-    <Content Include="Views\ConsoleHome\Module\AboutLearnerUncheckedLessons.cshtml" />
-    <Content Include="Views\ConsoleHome\Module\AboutLearners_1.cshtml" />
-    <Content Include="Views\ConsoleHome\Module\AboutToApprovePreferredLessons.cshtml" />
-    <Content Include="Views\ConsoleHome\Module\BlockHeader.cshtml" />
-    <Content Include="Views\ConsoleHome\Module\FocusItemToday.cshtml" />
-    <Content Include="Views\ConsoleHome\Module\GameRankRadarChart.cshtml" />
-    <Content Include="Views\ConsoleHome\Module\InspirationalTitle.cshtml" />
-    <Content Include="Views\ConsoleHome\Module\ProfileImage.cshtml" />
-    <Content Include="Views\ConsoleHome\Module\TodayLessonsBarChartC3.cshtml" />
-    <Content Include="Views\ConsoleHome\Shared\InitBarChartNoRegister.cshtml" />
-    <Content Include="Views\ConsoleHome\Shared\Knob.cshtml" />
-    <Content Include="Views\ConsoleHome\Shared\KnobJS.cshtml" />
-    <Content Include="Views\ConsoleHome\Template\MainPage.cshtml" />
-    <Content Include="Views\ContractConsole\Module\AboutContractServices.cshtml" />
-    <Content Include="Views\ContractConsole\Module\AboutContractServicesByBranch.cshtml" />
-    <Content Include="Views\ContractConsole\Module\AboutContractServicesByOfficer.cshtml" />
-    <Content Include="Views\ContractConsole\Module\AboutContractServicesByPureCoach.cshtml" />
-    <Content Include="Views\ContractConsole\Module\AboutExpiring.cshtml" />
-    <Content Include="Views\ContractConsole\Module\AboutExpiringByBranch.cshtml" />
-    <Content Include="Views\ContractConsole\Module\AboutExpiringByCoach.cshtml" />
-    <Content Include="Views\ContractConsole\Module\AboutExpiringByOfficer.cshtml" />
-    <Content Include="Views\ContractConsole\Module\AboutNewContracts.cshtml" />
-    <Content Include="Views\ContractConsole\Module\AboutNewContractsByBranch.cshtml" />
-    <Content Include="Views\ContractConsole\Module\AboutNewContractsByCoach.cshtml" />
-    <Content Include="Views\ContractConsole\Module\AboutNewContractsByOfficer.cshtml" />
-    <Content Include="Views\Blog\Module\CategoryIndication.cshtml" />
-    <Content Include="Views\Blog\Module\PlusIndication.cshtml" />
-    <Content Include="Views\ConsoleHome\BlogIndex.cshtml" />
-    <Content Include="Views\ConsoleHome\EditBlogArticle.cshtml" />
-    <Content Include="Views\ConsoleHome\Shared\DropifyUpload.cshtml" />
-    <Content Include="Views\ContractConsole\ContractModal\SelectCoach.cshtml" />
-    <Content Include="Views\ConsoleHome\Shared\BSModalScript.cshtml" />
-    <Content Include="Views\Common\ProfileImage.cshtml" />
-    <Content Include="Views\ConsoleHome\BlogArticleList.cshtml" />
-    <Content Include="Views\ConsoleHome\Shared\PagingControl.cshtml" />
-    <Content Include="Views\ConsoleHome\ExerciseBillboard.cshtml" />
-    <Content Include="Views\ConsoleHome\Module\CurrentExerciseBillboard.cshtml" />
-    <Content Include="Views\ConsoleHome\Module\ExerciseBillboard.cshtml" />
-    <Content Include="Views\ConsoleHome\Module\ExerciseDonutChart.cshtml" />
-    <Content Include="Views\ConsoleHome\Module\ExerciseBillboardDetails.cshtml" />
-    <Content Include="Views\ConsoleHome\ReportIndex.cshtml" />
-    <Content Include="Views\ReportConsole\ReportModal\ByContractNo.cshtml" />
-    <Content Include="Views\ReportConsole\ReportModal\SelectMonthlyReport.cshtml" />
-    <Content Include="Views\ReportConsole\ReportModal\SelectPeriodReport.cshtml" />
-    <Content Include="Views\ReportConsole\ReportModal\SelectReportCondition.cshtml" />
-    <Content Include="Views\ConsoleHome\Shared\ReportInputError.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\ConsoleEventController.cs" />
@@ -6394,6 +6189,7 @@
     <Compile Include="Controllers\LessonConsoleController.cs" />
     <Compile Include="Controllers\MainActivityController.cs" />
     <Compile Include="Controllers\ReportConsoleController.cs" />
+    <Compile Include="Dummy.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -6406,7 +6202,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>NamingItem.resx</DependentUpon>
     </Compile>
-    <Compile Include="Dummy.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
@@ -6520,7 +6315,6 @@
     <Content Include="ConsoleHome\fonts\Material-Design-Iconic-Font.woff2" />
     <Content Include="ConsoleHome\images\.DS_Store" />
     <Content Include="ConsoleHome\images\carousel\.DS_Store" />
-    <Content Include="ConsoleHome\images\lg\.DS_Store" />
     <Content Include="ConsoleHome\images\weather\.DS_Store" />
     <Content Include="ConsoleHome\scss\color_skins.scss" />
     <Content Include="ConsoleHome\scss\components\_alerts.scss" />
@@ -6741,33 +6535,197 @@
     <Content Include="ConsoleHome\plugins\slick\slick.scss" />
     <Content Include="ConsoleHome\plugins\timon-stepformwizard\.DS_Store" />
     <Content Include="ConsoleHome\plugins\timon-stepformwizard\js\.DS_Store" />
+    <Content Include="MainActivity\Portfolio\Nanjing.json" />
+    <Content Include="MainActivity\Portfolio\Xinyi.json" />
+    <Content Include="MainActivity\Portfolio\Zhongxiao.json" />
+    <Content Include="MainActivity\Pricing\Nanjing.json" />
+    <Content Include="MainActivity\Pricing\Xinyi.json" />
+    <Content Include="MainActivity\Pricing\Zhongxiao.json" />
     <None Include="packages.config" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Views\ConsoleHome\Template\MainPage.Master" />
+    <Content Include="Views\MainActivity\Template\MainPage.Master" />
+    <Content Include="Views\MainActivity\Template\BlogPage.Master" />
+    <Content Include="Views\MainActivity\Template\BlogPage.cshtml" />
+    <Content Include="Views\MainActivity\Template\MainPage.cshtml" />
+    <Content Include="Views\MainActivity\Index.cshtml" />
+    <Content Include="Views\MainActivity\AboutUs.cshtml" />
+    <Content Include="Views\MainActivity\Module\MenuItem.cshtml" />
+    <Content Include="Views\MainActivity\Module\MobileMenuItem.cshtml" />
+    <Content Include="Views\MainActivity\Module\ContactItem.cshtml" />
+    <Content Include="Views\MainActivity\Module\JoinItem.cshtml" />
+    <Content Include="Views\MainActivity\BlogArticleList.cshtml" />
+    <Content Include="Views\MainActivity\BlogGrid.cshtml" />
+    <Content Include="Views\MainActivity\BlogList.cshtml" />
+    <Content Include="Views\MainActivity\BlogSingle.cshtml" />
+    <Content Include="Views\MainActivity\BookNow.cshtml" />
+    <Content Include="Views\MainActivity\CoachDetails.cshtml" />
+    <Content Include="Views\MainActivity\FAQ.cshtml" />
+    <Content Include="Views\MainActivity\Features.cshtml" />
+    <Content Include="Views\MainActivity\FindUs.cshtml" />
+    <Content Include="Views\MainActivity\JoinUs.cshtml" />
+    <Content Include="Views\MainActivity\Opportunity.cshtml" />
+    <Content Include="Views\MainActivity\PricingList.cshtml" />
+    <Content Include="Views\MainActivity\Team.cshtml" />
+    <Content Include="Views\ConsoleHome\Template\MainPage.cshtml" />
+    <Content Include="Views\ConsoleHome\Index.cshtml" />
+    <Content Include="Views\ContractConsole\Module\AboutExpiring.cshtml" />
+    <Content Include="Views\ContractConsole\Module\AboutNewContracts.cshtml" />
+    <Content Include="Views\ContractConsole\Module\AboutContractServices.cshtml" />
+    <Content Include="Views\ContractConsole\Module\AboutNewContractsByCoach.cshtml" />
+    <Content Include="Views\ContractConsole\Module\AboutNewContractsByBranch.cshtml" />
+    <Content Include="Views\ContractConsole\Module\AboutNewContractsByOfficer.cshtml" />
+    <Content Include="Views\ContractConsole\Module\AboutExpiringByCoach.ascx.cshtml" />
+    <Content Include="Views\ContractConsole\Module\AboutExpiringByBranch.cshtml" />
+    <Content Include="Views\ContractConsole\Module\AboutExpiringByOfficer.cshtml" />
+    <Content Include="Views\ContractConsole\Module\AboutContractServicesByPureCoach.cshtml" />
+    <Content Include="Views\ContractConsole\Module\AboutContractServicesByBranch.cshtml" />
+    <Content Include="Views\ContractConsole\Module\AboutContractServicesByOfficer.cshtml" />
+    <Content Include="Views\ConsoleHome\Shared\Knob.cshtml" />
+    <Content Include="Views\ConsoleHome\Shared\KnobJS.cshtml" />
+    <Content Include="Views\ConsoleHome\Shared\InitBarChartNoRegister.cshtml" />
+    <Content Include="Views\Common\ProfileImage.cshtml" />
+    <Content Include="Views\ConsoleHome\ExerciseBillboard.cshtml" />
+    <Content Include="Views\ConsoleHome\BlogIndex.cshtml" />
+    <Content Include="Views\ContractConsole\ContractModal\SelectCoach.cshtml" />
+    <Content Include="Views\ConsoleHome\Shared\BSModalScript.cshtml" />
+    <Content Include="Views\ConsoleHome\Shared\DropifyUpload.cshtml" />
+    <Content Include="Views\ConsoleHome\Shared\ReportInputError.cshtml" />
+    <Content Include="Views\ContractConsole\Module\ContractList.cshtml" />
+    <Content Include="Views\ConsoleHome\Shared\AlertMessage.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\AboutLearners.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\AboutStaff.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\CalendarEvents.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\DailyEventItems.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\EventDetails.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\EventItems.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\ExerciseBillboardDetails.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\MainCalendar.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\RenderLessonCheck.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\TodayLessonsBarChart.cshtml" />
+    <Content Include="Views\ConsoleHome\Shared\MyContractHeader.cshtml" />
+    <Content Include="Views\ConsoleHome\Shared\PagingControl.cshtml" />
+    <Content Include="Views\ContractConsole\ContractModal\AboutContractDetails.cshtml" />
+    <Content Include="Views\ContractConsole\ContractModal\ContractQuery.cshtml" />
+    <Content Include="Views\ContractConsole\ContractModal\EditContractMember.cshtml" />
+    <Content Include="Views\ContractConsole\ContractModal\ListLessonPrice.cshtml" />
+    <Content Include="Views\ContractConsole\ContractModal\ProcessContract.cshtml" />
+    <Content Include="Views\ContractConsole\ContractModal\ProcessContractMember.cshtml" />
+    <Content Include="Views\ContractConsole\ContractModal\ProcessContractService.cshtml" />
+    <Content Include="Views\ContractConsole\ContractModal\SelectContractMember.cshtml" />
+    <Content Include="Views\ContractConsole\ContractModal\SelectContractOwner.cshtml" />
+    <Content Include="Views\ContractConsole\ContractModal\SignaturePanel.cshtml" />
+    <Content Include="Views\ContractConsole\ContractService\ApplyContractService.cshtml" />
+    <Content Include="Views\ContractConsole\ContractService\ContractCoachReplacement.cshtml" />
+    <Content Include="Views\ContractConsole\ContractService\ContractConsultantReassignmentView.cshtml" />
+    <Content Include="Views\ContractConsole\ContractService\ContractExtension.cshtml" />
+    <Content Include="Views\ContractConsole\ContractService\ContractServiceHistory.cshtml" />
+    <Content Include="Views\ContractConsole\ContractService\ContractTermination.cshtml" />
+    <Content Include="Views\ContractConsole\ContractService\ContractTransference.cshtml" />
+    <Content Include="Views\ContractConsole\ContractService\CourseContractExtensionView.cshtml" />
+    <Content Include="Views\ContractConsole\ContractService\CourseContractOtherAmendmentView.cshtml" />
+    <Content Include="Views\ContractConsole\ContractService\CourseContractTerminationView.cshtml" />
+    <Content Include="Views\ContractConsole\ContractService\CourseContractTransferenceView.cshtml" />
+    <Content Include="Views\ContractConsole\ContractService\DoConsultantAssignment.cshtml" />
+    <Content Include="Views\ContractConsole\ContractService\DoExpirationPostponing.cshtml" />
+    <Content Include="Views\ContractConsole\ContractService\DoTerminatingContract.cshtml" />
+    <Content Include="Views\ContractConsole\ContractService\DoTransferringContract.cshtml" />
+    <Content Include="Views\ReportConsole\ReportModal\ByContractNo.cshtml" />
+    <Content Include="Views\ReportConsole\ReportModal\SelectMonthlyReport.cshtml" />
+    <Content Include="Views\ReportConsole\ReportModal\SelectPeriodReport.cshtml" />
+    <Content Include="Views\ReportConsole\ReportModal\SelectReportCondition.cshtml" />
+    <Content Include="Views\ContractConsole\Editing\ContractMemberCommitted.cshtml" />
+    <Content Include="Views\ContractConsole\Editing\ContractServiceCommitted.cshtml" />
+    <Content Include="Views\ContractConsole\Editing\ContractStatusChanged.cshtml" />
+    <Content Include="Views\ContractConsole\Editing\CourseContractCommitted.cshtml" />
+    <Content Include="Views\ContractConsole\Editing\CourseContractSaved.cshtml" />
+    <Content Include="Views\ContractConsole\Editing\CourseContractSigned.cshtml" />
+    <Content Include="Views\ContractConsole\Editing\ListContractMember.cshtml" />
+    <Content Include="Views\ContractConsole\Editing\SelectConsultant.cshtml" />
+    <Content Include="Views\ContractConsole\Editing\SelectLessonPrice.cshtml" />
+    <Content Include="Views\ContractConsole\Editing\TotalCostSummary.cshtml" />
+    <Content Include="Views\ContractConsole\Indication\ContractDetails.cshtml" />
+    <Content Include="Views\ContractConsole\Module\AboutCompleteLessons.cshtml" />
+    <Content Include="Views\ContractConsole\Module\AboutContractsByBranch.cshtml" />
+    <Content Include="Views\ContractConsole\Module\AboutContractsByOfficer.cshtml" />
+    <Content Include="Views\ContractConsole\Module\AboutContractServicesByCoach.cshtml" />
+    <Content Include="Views\ContractConsole\Module\AboutContractServicesByManager.cshtml" />
+    <Content Include="Views\ContractConsole\Module\AboutContractServicesSummaryByBranch.cshtml" />
+    <Content Include="Views\ContractConsole\Module\AboutContractServicesSummaryByOfficer.cshtml" />
+    <Content Include="Views\ContractConsole\Module\AboutExpiringByCoach.cshtml" />
+    <Content Include="Views\ContractConsole\Module\AboutInstallment.cshtml" />
+    <Content Include="Views\ContractConsole\Module\AboutPaymentByBranch.cshtml" />
+    <Content Include="Views\ContractConsole\Module\AboutPaymentByCoach.cshtml" />
+    <Content Include="Views\ContractConsole\Module\AboutPaymentByOfficer.cshtml" />
+    <Content Include="Views\ContractConsole\Module\AboutReceivables.cshtml" />
+    <Content Include="Views\ContractConsole\Module\AboutReceivablesByBranch.cshtml" />
+    <Content Include="Views\ContractConsole\Module\AboutReceivablesByCoach.cshtml" />
+    <Content Include="Views\ContractConsole\Module\AboutReceivablesByOfficer.cshtml" />
+    <Content Include="Views\ContractConsole\Module\ContractByBranch.cshtml" />
+    <Content Include="Views\ContractConsole\Module\ContractByOfficer.cshtml" />
+    <Content Include="Views\ContractConsole\Module\ContractDetails.cshtml" />
+    <Content Include="Views\ContractConsole\Module\ContractInstallmentList.cshtml" />
+    <Content Include="Views\ContractConsole\Module\ContractLessonList.cshtml" />
+    <Content Include="Views\ContractConsole\Module\ContractMemberList.cshtml" />
+    <Content Include="Views\ContractConsole\Module\ContractPaymentList.cshtml" />
+    <Content Include="Views\ContractConsole\Module\CourseContractView.cshtml" />
+    <Content Include="Views\ContractConsole\Module\CustomContractList.cshtml" />
+    <Content Include="Views\ContractConsole\Module\ToRenewByBranch.cshtml" />
+    <Content Include="Views\ContractConsole\Module\ToRenewByCoach.cshtml" />
+    <Content Include="Views\ContractConsole\Module\ToRenewByOfficer.cshtml" />
+    <Content Include="Views\LessonConsole\Module\CrossBranchLessonList.cshtml" />
+    <Content Include="Views\LessonConsole\ProcessModal\ProcessCrossBranch.cshtml" />
+    <Content Include="Views\LessonConsole\ProcessModal\TodayLessons.cshtml" />
+    <Content Include="Views\ConsoleHome\Calendar.cshtml" />
+    <Content Include="Views\ConsoleHome\ContractIndex.cshtml" />
+    <Content Include="Views\ConsoleHome\CrossBranchIndex.cshtml" />
+    <Content Include="Views\ConsoleHome\EditBlogArticle.cshtml" />
+    <Content Include="Views\ConsoleHome\EditCourseContract.cshtml" />
+    <Content Include="Views\ConsoleHome\LearnerLesson.cshtml" />
+    <Content Include="Views\ConsoleHome\PostponeContractExpiration.cshtml" />
+    <Content Include="Views\ConsoleHome\ReassignFitnessConsultant.cshtml" />
+    <Content Include="Views\ConsoleHome\ReportIndex.cshtml" />
+    <Content Include="Views\ConsoleHome\SamplePage.cshtml" />
+    <Content Include="Views\ConsoleHome\SignContractService.cshtml" />
+    <Content Include="Views\ConsoleHome\SignCourseContract.cshtml" />
+    <Content Include="Views\ConsoleHome\TerminateContract.cshtml" />
+    <Content Include="Views\ConsoleHome\TransferContract.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
-    <None Include="Views\ConsoleHome\Index.aspx_" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="App_Start\" />
+    <Folder Include="ConsoleHome\images\landing\portfolio\" />
+    <Folder Include="MainActivity\Portfolio\Coach\Bryant\" />
+    <Folder Include="MainActivity\Portfolio\Nanjing\" />
     <Folder Include="Views\ContractConsole\Items\" />
+    <Folder Include="Views\ReportConsole\Module\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\MainActivity\Resources\NamingItem.en-US.resx" />
     <EmbeddedResource Include="Views\MainActivity\Resources\NamingItem.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>NamingItem.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\beyond-fitness\beyond-fitness.csproj">
-      <Project>{C49821FF-96C8-466B-AEF4-137EC84FDEFC}</Project>
+      <Project>{c49821ff-96c8-466b-aef4-137ec84fdefc}</Project>
       <Name>beyond-fitness</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CommonLib.Logger\CommonLib.Logger.csproj">
+      <Project>{8146e629-552a-4b36-8711-08ae8245b8fa}</Project>
+      <Name>CommonLib.Logger</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CommonLib\CommonLib.csproj">
+      <Project>{c0ad239c-2ac4-46d2-ae7c-5e97266ef4ea}</Project>
+      <Name>CommonLib</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

@@ -32,12 +32,12 @@
                 var RadarConfig = {
                     type: 'radar',
                     data: {
-                        labels: @(JsonConvert.SerializeObject(exerciseItems.Select(x => x.Exercise).ToArray())),
+                        labels: @Html.Raw(JsonConvert.SerializeObject(exerciseItems.Select(x => x.Exercise).ToArray())),
                         datasets: [{
                             label: "分佈圖",
                             backgroundColor: "rgba(179,214,255,.8)",
                             pointBackgroundColor: "rgba(230,241,255,1)",
-                            data: @(JsonConvert.SerializeObject(exerciseItems.Select(x => x.ExerciseGameRank.Where(r => r.UID == _item.UID).Select(r => r.RankingScore).FirstOrDefault() ?? 0).ToArray())),
+                            data: @Html.Raw(JsonConvert.SerializeObject(exerciseItems.Select(x => x.ExerciseGameRank.Where(r => r.UID == _item.UID).Select(r => r.RankingScore).FirstOrDefault() ?? 0).ToArray())),
                         }]
                     },
                     options: {

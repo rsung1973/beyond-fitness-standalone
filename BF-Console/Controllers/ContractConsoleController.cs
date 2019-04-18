@@ -218,7 +218,7 @@ namespace BFConsole.Controllers
             //if (viewModel.ContractType.HasValue)
             //    items = items.Where(c => c.ContractType == viewModel.ContractType);
 
-            return View("~/Views/ContractConsole/Module/ContractList.ascx", items);
+            return View("~/Views/ContractConsole/Module/ContractList.cshtml", items);
         }
 
         public ActionResult InquireContractByCustom(CourseContractQueryViewModel viewModel)
@@ -232,7 +232,7 @@ namespace BFConsole.Controllers
                 }
                 else
                 {
-                    return View("~/Views/ConsoleHome/Shared/AlertMessage.ascx", model: alertMessage);
+                    return View("~/Views/ConsoleHome/Shared/AlertMessage.cshtml", model: alertMessage);
                 }
             }
 
@@ -258,7 +258,7 @@ namespace BFConsole.Controllers
             var item = models.GetTable<CourseContract>().Where(c => c.ContractID == viewModel.ContractID).FirstOrDefault();
             if (item == null)
             {
-                return View("~/Views/ConsoleHome/Shared/AlertMessage.ascx", model: "合約資料錯誤!!");
+                return View("~/Views/ConsoleHome/Shared/AlertMessage.cshtml", model: "合約資料錯誤!!");
             }
 
             return View("~/Views/ContractConsole/ContractModal/ProcessContract.ascx", item);
@@ -326,7 +326,7 @@ namespace BFConsole.Controllers
                 }
                 else
                 {
-                    return View("~/Views/ConsoleHome/Shared/AlertMessage.ascx", model: alertMessage);
+                    return View("~/Views/ConsoleHome/Shared/AlertMessage.cshtml", model: alertMessage);
                 }
             }
 
@@ -344,7 +344,7 @@ namespace BFConsole.Controllers
                 }
                 else
                 {
-                    return View("~/Views/ConsoleHome/Shared/AlertMessage.ascx", model: alertMessage);
+                    return View("~/Views/ConsoleHome/Shared/AlertMessage.cshtml", model: alertMessage);
                 }
             }
 
@@ -412,7 +412,7 @@ namespace BFConsole.Controllers
             if (items.Count() > 0)
                 return View("~/Views/ContractConsole/ContractModal/SelectContractMember.ascx", items);
             else
-                return View("~/Views/ConsoleHome/Shared/AlertMessage.ascx", model: "Opps！您確定您輸入的資料正確嗎！？");
+                return View("~/Views/ConsoleHome/Shared/AlertMessage.cshtml", model: "Opps！您確定您輸入的資料正確嗎！？");
         }
 
         public ActionResult ProcessContractMember(int uid)
@@ -427,7 +427,7 @@ namespace BFConsole.Controllers
             UserProfile item = models.GetTable<UserProfile>().Where(u => u.UID == viewModel.UID).FirstOrDefault();
             if (item == null)
             {
-                return View("~/Views/ConsoleHome/Shared/AlertMessage.ascx", model: "Opps！您確定您輸入的資料正確嗎！？");
+                return View("~/Views/ConsoleHome/Shared/AlertMessage.cshtml", model: "Opps！您確定您輸入的資料正確嗎！？");
             }
 
             viewModel.Gender = item.UserProfileExtension.Gender;
@@ -457,7 +457,7 @@ namespace BFConsole.Controllers
                 }
                 else
                 {
-                    return View("~/Views/ConsoleHome/Shared/AlertMessage.ascx", model: alertMessage);
+                    return View("~/Views/ConsoleHome/Shared/AlertMessage.cshtml", model: alertMessage);
                 }
             }
 
@@ -482,7 +482,7 @@ namespace BFConsole.Controllers
                 }
                 else
                 {
-                    return View("~/Views/ConsoleHome/Shared/AlertMessage.ascx", model: alertMessage);
+                    return View("~/Views/ConsoleHome/Shared/AlertMessage.cshtml", model: alertMessage);
                 }
             }
 
@@ -494,7 +494,7 @@ namespace BFConsole.Controllers
             var item = viewModel.EnableContractAmendment(this, out String alertMessage, null);
             if (item == null)
             {
-                return View("~/Views/ConsoleHome/Shared/AlertMessage.ascx", model: alertMessage);
+                return View("~/Views/ConsoleHome/Shared/AlertMessage.cshtml", model: alertMessage);
             }
 
             return View("~/Views/ContractConsole/Editing/ContractStatusChanged.ascx", item);
@@ -511,7 +511,7 @@ namespace BFConsole.Controllers
                 }
                 else
                 {
-                    return View("~/Views/ConsoleHome/Shared/AlertMessage.ascx", model: alertMessage);
+                    return View("~/Views/ConsoleHome/Shared/AlertMessage.cshtml", model: alertMessage);
                 }
             }
 
@@ -529,7 +529,7 @@ namespace BFConsole.Controllers
                 }
                 else
                 {
-                    return View("~/Views/ConsoleHome/Shared/AlertMessage.ascx", model: alertMessage);
+                    return View("~/Views/ConsoleHome/Shared/AlertMessage.cshtml", model: alertMessage);
                 }
             }
 
@@ -549,7 +549,7 @@ namespace BFConsole.Controllers
                 var pdfFile = item.MakeContractEffective(models, profile, Naming.CourseContractStatus.待審核);
                 if (pdfFile == null)
                 {
-                    return View("~/Views/ConsoleHome/Shared/AlertMessage.ascx", model: "合約狀態錯誤，請重新檢查!!");
+                    return View("~/Views/ConsoleHome/Shared/AlertMessage.cshtml", model: "合約狀態錯誤，請重新檢查!!");
                 }
                 else
                 {
@@ -557,7 +557,7 @@ namespace BFConsole.Controllers
                 }
             }
             else
-                return View("~/Views/ConsoleHome/Shared/AlertMessage.ascx", model: "合約資料錯誤!!");
+                return View("~/Views/ConsoleHome/Shared/AlertMessage.cshtml", model: "合約資料錯誤!!");
         }
 
         public ActionResult CommitContractService(CourseContractViewModel viewModel)
@@ -571,7 +571,7 @@ namespace BFConsole.Controllers
                 }
                 else
                 {
-                    return View("~/Views/ConsoleHome/Shared/AlertMessage.ascx", model: alertMessage);
+                    return View("~/Views/ConsoleHome/Shared/AlertMessage.cshtml", model: alertMessage);
                 }
             }
 

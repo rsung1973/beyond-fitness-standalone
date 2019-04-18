@@ -1,0 +1,78 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Helper.DataOperation
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Newtonsoft.Json
+
+<ul class="row clearfix list-unstyled m-b-0" id="@(_viewID)">
+    <li class="col-lg-6 col-md-12 col-sm-12">
+        <div class="header">
+            <h2><strong>合約資料</strong> - @(_model.ContractName()) <span class="badge bg-blue"><i class="zmdi zmdi-pin"></i>&nbsp;&nbsp;@(_model.CourseContractExtension.BranchStore.BranchName)</span> </h2>
+        </div>
+        <div class="body">
+            <div class="row">
+                <div class="col-md-6 col-sm-6 invoice1">
+                    <div class="clientlogo">
+                        @{
+                            ViewBag.ProfileClass = "fit";
+                            Html.RenderPartial("~/Views/Common/ProfileImage.cshtml", _model.ContractOwner);
+                        }
+                    </div>
+                    <address>
+                        <strong>@(_model.ContractOwner.FullName())</strong><br />
+                        購買堂數：@(_model.Lessons)<br />
+                        <span class="p-l-40 col-red">剩餘堂數：@(_model.RemainedLessonCount())</span>
+                    </address>
+                </div>
+                <div class="col-md-6 col-sm-6 text-right">
+                    <p class="m-b-0"><strong>合約起日: </strong>@($"{_model.ValidFrom:yyyy/MM/dd}")</p>
+                    <p class="m-b-0 col-red"><strong>合約迄日: </strong>@($"{_model.Expiration:yyyy/MM/dd}")</p>
+                    <p class="m-b-0">@(_model.ContractNo()) <span class="badge bg-green">@((Naming.CourseContractStatus)_model.Status)</span></p>
+                </div>
+            </div>
+            <div class="mt-40"></div>
+            <hr>
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>其他增補說明</h5>
+                    <p>@(_model.Remark)</p>
+                </div>
+                <div class="col-12 text-right">
+                    <h3 class="text-right">專業顧問服務總費用：@($"{_model.TotalCost:##,###,###,###}")</h3>
+                </div>
+            </div>
+        </div>
+    </li>
+    <li class="col-lg-6 col-md-12 col-sm-12">
+        @{ Action<String> applyPartial = ViewBag.ApplyService as Action<String>;}
+ @if (applyPartial != null)
+            {
+                applyPartial(_viewID);
+            }
+    </li>
+    <li class="col-12">
+        <button type="button" class="btn btn-darkteal btn-round waves-effect float-right finish">確定，不後悔</button>
+        <button type="button" class="btn btn-danger btn-round btn-simple waves-effect quit">不, 點錯了</button>
+    </li>
+</ul>
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    CourseContract _model;
+    UserProfile _profile;
+    String _viewID = $"assign{DateTime.Now.Ticks}";
+
+    
+    
+        _modelState = (ModelStateDictionary)ViewBag.ModelState;
+        models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+        _model = (CourseContract)this.Model;
+        _profile = Context.GetUser();
+    }

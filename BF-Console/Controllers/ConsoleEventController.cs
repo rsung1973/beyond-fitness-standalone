@@ -46,10 +46,10 @@ namespace BFConsole.Controllers
             var item = models.GetTable<LessonTime>().Where(l => l.LessonID == viewModel.LessonID).FirstOrDefault();
             if (item == null)
             {
-                return View("~/Views/ConsoleHome/Shared/AlertMessage.ascx", model: "課程資料錯誤!!");
+                return View("~/Views/ConsoleHome/Shared/AlertMessage.cshtml", model: "課程資料錯誤!!");
             }
 
-            return View("~/Views/ConsoleEvent/EventModal/LessonItem.ascx", item);
+            return View("~/Views/ConsoleEvent/EventModal/LessonItem.cshtml", item);
         }
 
         public ActionResult ShowUserEventModal(CalendarEventQueryViewModel viewModel)
@@ -64,10 +64,10 @@ namespace BFConsole.Controllers
             var item = models.GetTable<UserEvent>().Where(l => l.EventID == viewModel.EventID).FirstOrDefault();
             if (item == null)
             {
-                return View("~/Views/ConsoleHome/Shared/AlertMessage.ascx", model: "自訂行事曆資料錯誤!!");
+                return View("~/Views/ConsoleHome/Shared/AlertMessage.cshtml", model: "自訂行事曆資料錯誤!!");
             }
 
-            return View("~/Views/ConsoleEvent/EventModal/UserEvent.ascx", item);
+            return View("~/Views/ConsoleEvent/EventModal/UserEvent.cshtml", item);
         }
 
         public ActionResult RevokeBooking(CalendarEventQueryViewModel viewModel)
