@@ -7,23 +7,20 @@
 @using WebHome.Models.ViewModel
 @using WebHome.Models.DataEntity
 @using WebHome.Controllers
-
-@foreach(var g in _model.GroupBy(v=>v.EventTime.Value.Date))
-    {
-        var items = g.ToList();
-        Html.RenderPartial("~/Views/ConsoleHome/Module/DailyEventItems.ascx", items);
-    }
-
 @{
 
     ModelStateDictionary _modelState;
     ModelSource<UserProfile> models;
     List<CalendarEventItem> _model;
-    DateTime? startDate;
 
-    
-    
-        _modelState = (ModelStateDictionary)ViewBag.ModelState;
-        models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
-        _model = (List<CalendarEventItem>)this.Model;
-    }
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = (List<CalendarEventItem>)this.Model;
+}
+@foreach (var g in _model.GroupBy(v => v.EventTime.Value.Date))
+{
+    var items = g.ToList();
+    Html.RenderPartial("~/Views/ConsoleHome/Module/DailyEventItems.ascx", items);
+}
+
+

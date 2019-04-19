@@ -130,7 +130,7 @@ namespace BFConsole.Controllers
         public ActionResult AddEvent(CalendarEventQueryViewModel viewModel)
         {
             ViewBag.ViewModel = viewModel;
-            return View("~/Views/ConsoleEvent/EventModal/AddEvent.ascx");
+            return View("~/Views/ConsoleEvent/EventModal/AddEvent.cshtml");
         }
 
         public ActionResult AttendeeSelector(CalendarEventQueryViewModel viewModel)
@@ -154,7 +154,7 @@ namespace BFConsole.Controllers
             var items = viewModel.UserName.PromptLearnerByName(models, true);
 
             if (items.Count() > 0)
-                return View("~/Views/ConsoleEvent/EventModal/AttendeeSelector.ascx", items);
+                return View("~/Views/ConsoleEvent/EventModal/AttendeeSelector.cshtml", items);
             else
                 return Json(new { result = false, message = "Opps！您確定您輸入的資料正確嗎！？" },JsonRequestBehavior.AllowGet);
         }
@@ -173,7 +173,7 @@ namespace BFConsole.Controllers
                 return Json(new { result = false, message = "學員資料錯誤!!" });
             }
 
-            return View("~/Views/ConsoleEvent/EventModal/BookingLesson.ascx", item);
+            return View("~/Views/ConsoleEvent/EventModal/BookingLesson.cshtml", item);
 
         }
 
@@ -193,7 +193,7 @@ namespace BFConsole.Controllers
                 viewModel.CoachID = item.AttendingCoach;
                 viewModel.RegisterID = item.RegisterID;
             }
-            return View("~/Views/ConsoleEvent/EventModal/BookingCoachPI.ascx", item);
+            return View("~/Views/ConsoleEvent/EventModal/BookingCoachPI.cshtml", item);
 
         }
 
@@ -233,7 +233,7 @@ namespace BFConsole.Controllers
                 viewModel.UID = profile.UID;
             }
 
-            return View("~/Views/ConsoleEvent/EventModal/BookingCustomEvent.ascx");
+            return View("~/Views/ConsoleEvent/EventModal/BookingCustomEvent.cshtml");
         }
 
     }

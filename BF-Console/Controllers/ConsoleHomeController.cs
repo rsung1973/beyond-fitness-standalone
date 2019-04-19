@@ -202,7 +202,7 @@ namespace BFConsole.Controllers
             if (item == null)
             {
                 ViewBag.GoBack = true;
-                return View("~/Views/Shared/JsAlert.ascx", model: "合約資料錯誤!!");
+                return View("~/Views/Shared/JsAlert.cshtml", model: "合約資料錯誤!!");
             }
 
             ViewBag.DataItem = item;
@@ -226,7 +226,7 @@ namespace BFConsole.Controllers
         public ActionResult CalendarEventItems(FullCalendarViewModel viewModel)
         {
             ViewResult result = (ViewResult)CalendarEvents(viewModel, true);
-            result.ViewName = "~/Views/ConsoleHome/Module/EventItems.ascx";
+            result.ViewName = "~/Views/ConsoleHome/Module/EventItems.cshtml";
             return result;
         }
 
@@ -308,7 +308,7 @@ namespace BFConsole.Controllers
             {
                 Response.ContentType = "application/json";
             }
-            return View("~/Views/ConsoleHome/Module/CalendarEvents.ascx", items);
+            return View("~/Views/ConsoleHome/Module/CalendarEvents.cshtml", items);
 
         }
 

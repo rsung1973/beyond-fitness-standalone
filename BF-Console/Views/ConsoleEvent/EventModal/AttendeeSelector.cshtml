@@ -23,11 +23,13 @@
     _viewModel = (CalendarEventQueryViewModel)ViewBag.ViewModel;
     _profile = Context.GetUser();
 }
-@{ ViewBag.SelectMember = (Func<UserProfile, String>)(item =>
-         {
-             return $"showBookEvent('{item.UID.EncryptKey()}');";
-         });
-    Html.RenderPartial("~/Views/ConsoleEvent/EventModal/MemberSelector.ascx", _model);}
+@{ 
+    ViewBag.SelectMember = (Func<UserProfile, String>)(item =>
+    {
+        return $"showBookEvent('{item.UID.EncryptKey()}');";
+    });
+    Html.RenderPartial("~/Views/ConsoleEvent/EventModal/MemberSelector.ascx", _model);
+}
 
 <script>
         function showBookEvent(keyID) {
@@ -41,7 +43,7 @@
                 }
             });
         }
-
+</script>
 
 
 

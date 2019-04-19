@@ -207,10 +207,10 @@
             equipDatetimePicker();
             $('.employeegroup').multiSelect();
 
-    @if (_viewModel.MemberID != null && _viewModel.MemberID.Length > 0)
-        {
-            $('.employeegroup').multiSelect('select',@Html.Raw(JsonConvert.SerializeObject(_viewModel.MemberID.Select(m=>m.ToString()))));
-    }
+            @if (_viewModel.MemberID != null && _viewModel.MemberID.Length > 0)
+            {
+            <text>$('.employeegroup').multiSelect('select',@Html.Raw(JsonConvert.SerializeObject(_viewModel.MemberID.Select(m=>m.ToString()))));</text>
+            }
         });
     </script>
 </div>
