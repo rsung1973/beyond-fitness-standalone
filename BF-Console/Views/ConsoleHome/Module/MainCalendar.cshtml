@@ -8,6 +8,23 @@
 @using WebHome.Models.DataEntity
 @using WebHome.Controllers
 @using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    UserProfile _model;
+    String _calendarID = $"calendar{DateTime.Now.Ticks}";
+    DateTime? startDate;
+    DailyBookingQueryViewModel _viewModel;
+
+
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = (UserProfile)this.Model;
+    _viewModel = (DailyBookingQueryViewModel)ViewBag.ViewModel;
+    startDate = _viewModel.DateFrom ?? DateTime.Today;
+}
 <div id="@(_calendarID)" class="m-t-20"></div>
 <script>
     var refetchCalendarEvents;
@@ -255,20 +272,4 @@
 
     });
 </script>
-@{
 
-    ModelStateDictionary _modelState;
-    ModelSource<UserProfile> models;
-    UserProfile _model;
-    String _calendarID = $"calendar{DateTime.Now.Ticks}";
-    DateTime? startDate;
-    DailyBookingQueryViewModel _viewModel;
-
-    
-    
-        _modelState = (ModelStateDictionary)ViewBag.ModelState;
-        models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
-        _model = (UserProfile)this.Model;
-        _viewModel = (DailyBookingQueryViewModel)ViewBag.ViewModel;
-        startDate = _viewModel.DateFrom ?? DateTime.Today;
-    }

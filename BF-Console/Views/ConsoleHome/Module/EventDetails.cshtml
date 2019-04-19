@@ -7,6 +7,22 @@
 @using WebHome.Models.ViewModel
 @using WebHome.Models.DataEntity
 @using WebHome.Controllers
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    UserProfile _model;
+    DateTime? startDate;
+    DailyBookingQueryViewModel _viewModel;
+    
+    
+    
+        _modelState = (ModelStateDictionary)ViewBag.ModelState;
+        models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+        _model = (UserProfile)this.Model;
+        _viewModel = (DailyBookingQueryViewModel)ViewBag.ViewModel;
+        startDate = _viewModel.DateFrom ?? DateTime.Today;
+    }
 <div class="row clearfix">
     <div class="col-md-11 col-lg-12 col-9">
     </div>
@@ -122,19 +138,4 @@
     });
 </script>
 
-@{
 
-    ModelStateDictionary _modelState;
-    ModelSource<UserProfile> models;
-    UserProfile _model;
-    DateTime? startDate;
-    DailyBookingQueryViewModel _viewModel;
-    
-    
-    
-        _modelState = (ModelStateDictionary)ViewBag.ModelState;
-        models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
-        _model = (UserProfile)this.Model;
-        _viewModel = (DailyBookingQueryViewModel)ViewBag.ViewModel;
-        startDate = _viewModel.DateFrom ?? DateTime.Today;
-    }

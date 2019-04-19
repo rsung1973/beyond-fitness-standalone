@@ -5,25 +5,36 @@
 
 @using WebHome.Helper
 @using WebHome.Models.Locale
-@using WebHome.Models.Locale
 @using WebHome.Models.ViewModel
 @using WebHome.Models.DataEntity
 @using WebHome.Controllers
 @using Newtonsoft.Json
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    UserProfile _model;
+    DailyBookingQueryViewModel _viewModel;
 
-@section CustomHeader { 
-<!-- Fullcalendar -->
+    Layout = "~/Views/ConsoleHome/Template/MainPage.cshtml";
+
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    _model = (UserProfile)this.Model;
+    _viewModel = (DailyBookingQueryViewModel)ViewBag.ViewModel;
+}
+@section CustomHeader {
+    <!-- Fullcalendar -->
     <link href="plugins/fullcalendar/fullcalendar.min.css" rel="stylesheet">
     <!-- Bootstrap Datetimepick -->
-@*<link href="plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />*@
+    @*<link href="plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />*@
     @*<link href="css/datetimepicker.css" rel="stylesheet" />*@
-<!-- SmartCalendar Datetimepick -->
+    <!-- SmartCalendar Datetimepick -->
     <link href="plugins/smartcalendar/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
     <link href="css/smartcalendar-2.css" rel="stylesheet" />
     <!-- Inbox -->
     <link href="css/inbox.css" rel="stylesheet">
     <!-- Multi Select Css -->
-    <link href="plugins/multi-select/css/multi-select.css" rel="stylesheet"> 
+    <link href="plugins/multi-select/css/multi-select.css" rel="stylesheet">
 }
 
 <script>
@@ -34,47 +45,47 @@
                 $global.onReady[i]();
             }
         });
-    </script>
-    <section class="content page-calendar">
-        @{ ViewBag.BlockHeader = "我的行事曆";
-            Html.RenderPartial("~/Views/ConsoleHome/Module/BlockHeader.ascx", _model);}
+</script>
+<section class="content page-calendar">
+    @{ ViewBag.BlockHeader = "我的行事曆";
+        Html.RenderPartial("~/Views/ConsoleHome/Module/BlockHeader.cshtml", _model);}
 
-        <!--行事曆-->
-        <div class="container-fluid">
-            <div class="card">
-                <div class="row">
-                    <div class="col-md-12 col-lg-4 col-xl-4">
-                        <div class="body">
-                            @{ Html.RenderPartial("~/Views/ConsoleHome/Module/EventDetails.ascx", _model);}
+    <!--行事曆-->
+    <div class="container-fluid">
+        <div class="card">
+            <div class="row">
+                <div class="col-md-12 col-lg-4 col-xl-4">
+                    <div class="body">
+                        @{ Html.RenderPartial("~/Views/ConsoleHome/Module/EventDetails.cshtml", _model);}
 
-                        </div>
                     </div>
-                    <div class="col-md-12 col-lg-8 col-xl-8">
-                        <div class="body">
-                            <div class="row">
-                                <div class="col-md-8 col-lg-8 col-sm-8 col-12">
-                                    <button class="btn btn-default btn-simple btn-icon  btn-icon-mini btn-round waves-effect" id="today">今</button>
-                                    <button class="btn btn-default btn-simple btn-icon  btn-icon-mini btn-round waves-effect" id="td">天</button>
-                                    <button class="btn btn-default btn-simple btn-icon  btn-icon-mini btn-round waves-effect" id="ag">週</button>
-                                    <button class="btn btn-default btn-simple btn-icon  btn-icon-mini btn-round waves-effect" id="mt">月</button>
-                                </div>
+                </div>
+                <div class="col-md-12 col-lg-8 col-xl-8">
+                    <div class="body">
+                        <div class="row">
+                            <div class="col-md-8 col-lg-8 col-sm-8 col-12">
+                                <button class="btn btn-default btn-simple btn-icon  btn-icon-mini btn-round waves-effect" id="today">今</button>
+                                <button class="btn btn-default btn-simple btn-icon  btn-icon-mini btn-round waves-effect" id="td">天</button>
+                                <button class="btn btn-default btn-simple btn-icon  btn-icon-mini btn-round waves-effect" id="ag">週</button>
+                                <button class="btn btn-default btn-simple btn-icon  btn-icon-mini btn-round waves-effect" id="mt">月</button>
                             </div>
-                            @{ Html.RenderPartial("~/Views/ConsoleHome/Module/MainCalendar.ascx", _model);}
-
                         </div>
+                        @{ Html.RenderPartial("~/Views/ConsoleHome/Module/MainCalendar.cshtml", _model);}
+
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-@section TailPageJavaScriptInclude { 
-<!-- Fullcalendar Plugin js -->
+@section TailPageJavaScriptInclude {
+    <!-- Fullcalendar Plugin js -->
     <script src="bundles/fullcalendarscripts.bundle.js"></script>
     <script src="plugins/fullcalendar/locale/zh-tw.js"></script>
     <!-- Bootstrap datetimepicker Plugin Js -->
-@*<script src="plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
-    <script src="plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-TW.js"></script>*@
+    @*<script src="plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+        <script src="plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-TW.js"></script>*@
     <script src="plugins/smartcalendar/js/bootstrap-datetimepicker.min.js"></script>
     <script src="plugins/smartcalendar/js/locales-datetimepicker/bootstrap-datetimepicker.zh-TW.js"></script>
     <!-- Multi Select Plugin Js -->
@@ -109,19 +120,7 @@
             });
         }
         //
-    </script> 
+    </script>
 }
 
-@{
-    ModelSource<UserProfile> models;
-    ModelStateDictionary _modelState;
-    UserProfile _model;
-    DailyBookingQueryViewModel _viewModel;
 
-    
-    
-        models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
-        _modelState = (ModelStateDictionary)ViewBag.ModelState;
-        _model = (UserProfile)this.Model;
-        _viewModel = (DailyBookingQueryViewModel)ViewBag.ViewModel;
-    }
