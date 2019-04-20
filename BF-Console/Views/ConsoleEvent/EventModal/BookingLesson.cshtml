@@ -46,51 +46,6 @@
                             </div>
                             <div class="body">
                                 <div class="row clearfix">
-                                    @*<div class="col-lg-4 col-md-6 col-sm-6 col-12">
-                                            <div class="checkbox">
-                                                <input id="repeate_checkbox" type="checkbox">
-                                                <label for="repeate_checkbox">
-                                                    週期性
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-8 col-md-6 col-sm-6 col-12">
-                                            <select class="form-control show-tick repeate">
-                                                <option value="0">-- 請選擇重複頻率 --</option>
-                                                <option value="1">每週一</option>
-                                                <option value="2">每週二</option>
-                                                <option value="3">每週三</option>
-                                                <option value="4">每週四</option>
-                                                <option value="5">每週五</option>
-                                                <option value="6">每週六</option>
-                                                <option value="7">每週日</option>
-                                            </select>
-                                            <label class="material-icons help-error-text repeate">clear 請選擇重複頻率</label>
-                                        </div>
-                                        <div class="col-lg-6 col-md-4 col-sm-6 col-12 repeate">
-                                            <div class="input-group">
-                                                <input type="text" class="form-control date" data-date-format="yyyy/mm/dd" readonly="readonly" placeholder="開始日期" />
-                                                <span class="input-group-addon xl-slategray">
-                                                    <i class="zmdi zmdi-calendar"></i>
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6 col-md-4 col-sm-6 col-12 repeate">
-                                            <div class="input-group">
-                                                <input type="text" class="form-control date" data-date-format="yyyy/mm/dd" readonly="readonly" placeholder="結束日期" />
-                                                <span class="input-group-addon xl-slategray">
-                                                    <i class="zmdi zmdi-calendar"></i>
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6 col-md-4 col-sm-6 col-12 repeate">
-                                            <div class="input-group">
-                                                <input type="text" class="form-control date" data-date-format="hh:ii" readonly="readonly" placeholder="上課時間" />
-                                                <span class="input-group-addon xl-slategray">
-                                                    <i class="zmdi zmdi-time"></i>
-                                                </span>
-                                            </div>
-                                        </div>*@
                                     <div class="col-lg-6 col-md-6 col-sm-6 col-12 single">
                                         <div class="input-group">
                                             <input type="text" class="form-control datetime" data-date-format="yyyy/mm/dd hh:ii" readonly="readonly" placeholder="開始時間" name="ClassDate" value="@($"{_viewModel.StartDate:yyyy/MM/dd HH:mm}")" />
@@ -153,7 +108,7 @@
                                                         </div>
                                                     </li>
                                                 </ul>
-                                                @{ 
+                                                @{
                                                     var lessons = models.GetTable<RegisterLesson>()
                                                             .Where(r => r.UID == _model.UID)
                                                             .Where(r => r.Attended != (int)Naming.LessonStatus.課程結束);
@@ -176,10 +131,10 @@
                                                             <div class="media">
                                                                 <div class="pull-left">
                                                                     <div class="controls">
-                                                                        <div class="checkbox">
-                                                                            <input type="checkbox" @(trialBookable ? null : "disabled") id="trialLesson" name="RegisterID" value="" onclick="selectBooking(this, '@((int)Naming.LessonPriceStatus.體驗課程)');" />
-                                                                            <label for="trialLesson"></label>
-                                                                        </div>
+                                                                        <label class="fancy-checkbox">
+                                                                            <input type="checkbox" @(trialBookable ? null : "disabled") name="RegisterID" id="trialLesson" value="" onclick="selectBooking(this, '@((int)Naming.LessonPriceStatus.體驗課程)');">
+                                                                            <span></span>
+                                                                        </label>
                                                                     </div>
                                                                 </div>
                                                                 <div class="media-body">
@@ -205,10 +160,10 @@
                                                             <div class="media">
                                                                 <div class="pull-left">
                                                                     <div class="controls">
-                                                                        <div class="checkbox">
-                                                                            <input type="checkbox" id="enterpriseTrial@(item?.RegisterID)" @(item == null ? "disabled" : null) name="RegisterID" value="@(item?.RegisterID)" onclick="selectBooking(this, '@((int)Naming.LessonPriceStatus.企業合作方案)');" />
-                                                                            <label for="enterpriseTrial@(item?.RegisterID)"></label>
-                                                                        </div>
+                                                                        <label class="fancy-checkbox">
+                                                                            <input type="checkbox" id="enterpriseTrial@(item?.RegisterID)" @(item == null ? "disabled" : null) name="RegisterID" value="@(item?.RegisterID)" onclick="selectBooking(this, '@((int)Naming.LessonPriceStatus.企業合作方案)');">
+                                                                            <span></span>
+                                                                        </label>
                                                                     </div>
                                                                 </div>
                                                                 <div class="media-body">
@@ -248,17 +203,16 @@
                                                                 <div class="media">
                                                                     <div class="pull-left">
                                                                         <div class="controls">
-                                                                            <div class="checkbox">
-                                                                                <input type="checkbox" id="PTSession@(item.RegisterID)" @(bookable ? null : "disabled") name="RegisterID" value="@(item.RegisterID)" onclick="selectBooking(this, '@((int)Naming.LessonPriceStatus.一般課程)');" />
-                                                                                <label for="PTSession@(item.RegisterID)"></label>
-                                                                            </div>
+                                                                            <label class="fancy-checkbox">
+                                                                                <input type="checkbox" id="PTSession@(item.RegisterID)" @(bookable ? null : "disabled") name="RegisterID" value="@(item.RegisterID)" onclick="selectBooking(this, '@((int)Naming.LessonPriceStatus.一般課程)');">
+                                                                                <span></span>
+                                                                            </label>
                                                                         </div>
                                                                     </div>
                                                                     <div class="media-body">
                                                                         <div class="media-heading">
                                                                             <a class="m-r-10">
-                                                                                P.T session -
-                                                                                @(contract.CourseContractType.TypeName)(@(contract.LessonPriceType.DurationInMinutes)分鐘)
+                                                                                P.T session - @(contract.CourseContractType.TypeName)(@(contract.LessonPriceType.DurationInMinutes)分鐘)
                                                                             </a>
                                                                             <span class="badge badge-info"><i class="zmdi zmdi-pin"></i>@(contract.CourseContractExtension.BranchStore.BranchName)</span>
                                                                             <small class="float-right text-muted"><time>@(remainedCount)/@(contract.Lessons)</time></small>
@@ -292,10 +246,10 @@
                                                             <div class="media">
                                                                 <div class="pull-left">
                                                                     <div class="controls">
-                                                                        <div class="checkbox">
-                                                                            <input type="checkbox" id="Other@(item.RegisterID)" name="RegisterID" @(bookable ? null : "disabled") value="@(bookable ? item.RegisterID : -1)" onclick="selectBooking(this, '@(item.LessonPriceType.IsWelfareGiftLesson != null ? (int)Naming.LessonPriceStatus.一般課程 : (int)Naming.LessonPriceStatus.點數兌換課程)');" />
-                                                                            <label for="Other@(item.RegisterID)"></label>
-                                                                        </div>
+                                                                        <label class="fancy-checkbox">
+                                                                            <input type="checkbox" id="Other@(item.RegisterID)" name="RegisterID" @(bookable ? null : "disabled") value="@(bookable ? item.RegisterID : -1)" onclick="selectBooking(this, '@(item.LessonPriceType.IsWelfareGiftLesson != null ? (int)Naming.LessonPriceStatus.一般課程 : (int)Naming.LessonPriceStatus.點數兌換課程)');">
+                                                                            <span></span>
+                                                                        </label>
                                                                     </div>
                                                                 </div>
                                                                 <div class="media-body">
@@ -319,10 +273,10 @@
                                                             <div class="media">
                                                                 <div class="pull-left">
                                                                     <div class="controls">
-                                                                        <div class="checkbox">
-                                                                            <input type="checkbox" id="gift@(item.RegisterID)" name="RegisterID" @(bookable ? null : "disabled") value="@(bookable ? item.RegisterID : -1)" onclick="selectBooking(this, '@((int)Naming.LessonPriceStatus.一般課程)');" />
-                                                                            <label for="gift@(item.RegisterID)"></label>
-                                                                        </div>
+                                                                        <label class="fancy-checkbox">
+                                                                            <input type="checkbox" id="gift@(item.RegisterID)" name="RegisterID" @(bookable ? null : "disabled") value="@(bookable ? item.RegisterID : -1)" onclick="selectBooking(this, '@((int)Naming.LessonPriceStatus.一般課程)');">
+                                                                            <span></span>
+                                                                        </label>
                                                                     </div>
                                                                 </div>
                                                                 <div class="media-body">
@@ -357,10 +311,10 @@
                                                             <div class="media">
                                                                 <div class="pull-left">
                                                                     <div class="controls">
-                                                                        <div class="checkbox">
-                                                                            <input type="checkbox" @(availableCount <= 0 ? "disabled" : null) id="enterprise@(enterprisePT.RegisterID)" name="RegisterID" value="@(enterprisePT.RegisterID)" onclick="selectBooking(this, '@((int)Naming.LessonPriceStatus.企業合作方案)');" />
-                                                                            <label for="enterprise@(enterprisePT.RegisterID)"></label>
-                                                                        </div>
+                                                                        <label class="fancy-checkbox">
+                                                                            <input type="checkbox" @(availableCount <= 0 ? "disabled" : null) id="enterprise@(enterprisePT.RegisterID)" name="RegisterID" value="@(enterprisePT.RegisterID)" onclick="selectBooking(this, '@((int)Naming.LessonPriceStatus.企業合作方案)');">
+                                                                            <span></span>
+                                                                        </label>
                                                                     </div>
                                                                 </div>
                                                                 <div class="media-body">
@@ -380,10 +334,10 @@
                                                         <div class="media">
                                                             <div class="pull-left">
                                                                 <div class="controls">
-                                                                    <div class="checkbox">
-                                                                        <input type="checkbox" id="PILesson" name="RegisterID" value="" onclick="selectBooking(this, '@((int)Naming.LessonPriceStatus.自主訓練)');" />
-                                                                        <label for="PILesson"></label>
-                                                                    </div>
+                                                                    <label class="fancy-checkbox">
+                                                                        <input type="checkbox" id="PILesson" name="RegisterID" value="" onclick="selectBooking(this, '@((int)Naming.LessonPriceStatus.自主訓練)');">
+                                                                        <span></span>
+                                                                    </label>
                                                                 </div>
                                                             </div>
                                                             <div class="media-body">
@@ -403,25 +357,25 @@
                                                         {
                                                             hasChoice = true;
                                                         }
-                                                        <li class="list-group-item">
-                                                            <div class="media">
-                                                                <div class="pull-left">
-                                                                    <div class="controls">
-                                                                        <div class="checkbox">
-                                                                            <input type="checkbox" @(item == null ? "disabled" : null) id="enterprisePI@(item?.RegisterID)" name="RegisterID" value="@(item?.RegisterID)" onclick="selectBooking(this, '@((int)Naming.LessonPriceStatus.企業合作方案)');" />
-                                                                            <label for="enterprisePI@(item?.RegisterID)"></label>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="media-body">
-                                                                    <div class="media-heading">
-                                                                        <a class="m-r-10">P.I session（企業方案）- @(content.EnterpriseLessonType.Description)</a>
-                                                                        <small class="float-right text-muted"><time>@(bookableLessons.Count())/@(enterprisePI.Count())</time></small>
-                                                                    </div>
-                                                                    <p class="msg">@(content.EnterpriseCourseContract.Subject)</p>
+                                                    <li class="list-group-item">
+                                                        <div class="media">
+                                                            <div class="pull-left">
+                                                                <div class="controls">
+                                                                    <label class="fancy-checkbox">
+                                                                        <input type="checkbox" @(item == null ? "disabled" : null) id="enterprisePI@(item?.RegisterID)" name="RegisterID" value="@(item?.RegisterID)" onclick="selectBooking(this, '@((int)Naming.LessonPriceStatus.企業合作方案)');">
+                                                                        <span></span>
+                                                                    </label>
                                                                 </div>
                                                             </div>
-                                                        </li>
+                                                            <div class="media-body">
+                                                                <div class="media-heading">
+                                                                    <a class="m-r-10">P.I session（企業方案）- @(content.EnterpriseLessonType.Description)</a>
+                                                                    <small class="float-right text-muted"><time>@(bookableLessons.Count())/@(enterprisePI.Count())</time></small>
+                                                                </div>
+                                                                <p class="msg">@(content.EnterpriseCourseContract.Subject)</p>
+                                                            </div>
+                                                        </div>
+                                                    </li>
                                                     }
                                                     @{
                                                         hasChoice = true;
@@ -430,10 +384,10 @@
                                                         <div class="media">
                                                             <div class="pull-left">
                                                                 <div class="controls">
-                                                                    <div class="checkbox">
-                                                                        <input type="checkbox" id="STLesson" name="RegisterID" value="" onclick="selectBooking(this, '@((int)Naming.LessonPriceStatus.在家訓練)');" />
-                                                                        <label for="STLesson"></label>
-                                                                    </div>
+                                                                    <label class="fancy-checkbox">
+                                                                        <input type="checkbox" id="STLesson" name="RegisterID" value="" onclick="selectBooking(this, '@((int)Naming.LessonPriceStatus.在家訓練)');">
+                                                                        <span></span>
+                                                                    </label>
                                                                 </div>
                                                             </div>
                                                             <div class="media-body">
