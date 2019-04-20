@@ -28,7 +28,7 @@
     {
         return $"showBookEvent('{item.UID.EncryptKey()}');";
     });
-    Html.RenderPartial("~/Views/ConsoleEvent/EventModal/MemberSelector.ascx", _model);
+    Html.RenderPartial("~/Views/ConsoleEvent/EventModal/MemberSelector.cshtml", _model);
 }
 
 <script>

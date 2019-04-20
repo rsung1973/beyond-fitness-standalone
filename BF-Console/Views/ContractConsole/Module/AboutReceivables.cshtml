@@ -8,7 +8,19 @@
 @using WebHome.Models.DataEntity
 @using WebHome.Controllers
 @using Newtonsoft.Json
+@{
 
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    IQueryable<CourseContract> _model;
+    IQueryable<CourseContract> _contractItems;
+    String _knobID = $"toPayRatio{DateTime.Now.Ticks}";
+
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = _contractItems = (IQueryable<CourseContract>)this.Model;
+}
 @{ var totalAmt = _contractItems.Sum(c => c.TotalCost) ?? 1;
     var toPayItems = _contractItems.QueryContractPayment(models)
                         .Where(p => !p.TotalPaidAmount.HasValue || p.Contract.TotalCost > p.TotalPaidAmount);
@@ -30,18 +42,6 @@
     </div>
 </div>
 
-@{
 
-    ModelStateDictionary _modelState;
-    ModelSource<UserProfile> models;
-    IQueryable<CourseContract> _model;
-    IQueryable<CourseContract> _contractItems;
-    String _knobID = $"toPayRatio{DateTime.Now.Ticks}";
-
-
-        _modelState = (ModelStateDictionary)ViewBag.ModelState;
-        models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
-        _model = _contractItems = (IQueryable<CourseContract>)this.Model;
-    }
 
 

@@ -7,17 +7,28 @@
 @using WebHome.Models.ViewModel
 @using WebHome.Models.DataEntity
 @using WebHome.Controllers
+@{
 
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    String _tableId = "dt_payment" + DateTime.Now.Ticks;
+    IQueryable<Payment> _model;
+
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = (IQueryable<Payment>)this.Model;
+}
 <table id="@(_tableId)" class="table table-striped table-custom nowrap bg-white col-charcoal dataTable dataTable-learner" width="100%">
     <thead>
         <tr>
             <th>發票號碼</th>
-            <th>狀態</th>            
+            <th>狀態</th>
             <th>日期</th>
             <th>發票金額</th>
             <th>作廢/折讓金額</th>
             <th>折讓稅額</th>
-            <th>收款類型</th>            
+            <th>收款類型</th>
             <th>經手人</th>
             <th>買受人</th>
             <th>其他增補說明</th>
@@ -25,74 +36,84 @@
     </thead>
     <tbody>
         @foreach (var item in _model)
+        {
+            <tr>
+                <td>@(item.InvoiceID.HasValue ? $"{item.InvoiceItem.TrackCode}{item.InvoiceItem.No}" : null)</td>
+                <td>
+                    @(item.InvoiceID.HasValue
+                                        ? item.InvoiceItem.InvoiceType == (int)Naming.InvoiceTypeDefinition.一般稅額計算之電子發票
+                                            ? "電子開立"
+                                            : "紙本開立"
+                                        : "")
+                </td>
+                <td>@($"{item.PayoffDate:yyyy/MM/dd}")</td>
+                <td>@($"{item.PayoffAmount:##,###,###,###}")</td>
+                <td></td>
+                <td></td>
+                <td>@(item.PaymentType)</td>
+                <td>@(item.UserProfile.FullName())</td>
+                <td>
+                    @(item.InvoiceID.HasValue
+                                        ? item.InvoiceItem.InvoiceBuyer.IsB2C() ? "" : item.InvoiceItem.InvoiceBuyer.ReceiptNo
+                                        : "")
+                </td>
+                <td>
+                    @(item.Remark)
+                </td>
+            </tr>
+            if (item.AllowanceID.HasValue)
             {
-        <tr>
-            <td>@(item.InvoiceID.HasValue ? $"{item.InvoiceItem.TrackCode}{item.InvoiceItem.No}" : null)</td>
-            <td>@(item.InvoiceID.HasValue
-                    ? item.InvoiceItem.InvoiceType == (int)Naming.InvoiceTypeDefinition.一般稅額計算之電子發票
-                        ? "電子開立"
-                        : "紙本開立"
-                    : "")</td>            
-            <td>@($"{item.PayoffDate:yyyy/MM/dd}")</td>
-            <td>@($"{item.PayoffAmount:##,###,###,###}")</td>
-            <td></td>
-            <td></td>
-            <td>@(item.PaymentType)</td>
-            <td>@(item.UserProfile.FullName())</td>
-            <td>@(item.InvoiceID.HasValue
-                    ? item.InvoiceItem.InvoiceBuyer.IsB2C() ? "" : item.InvoiceItem.InvoiceBuyer.ReceiptNo
-                    : "")</td>            
-            <td>
-                @(item.Remark)
-            </td>
-        </tr>
-        @if(item.AllowanceID.HasValue)
-                {
-                    var allowance = item.InvoiceAllowance;
-        <tr>
-            <td>@(item.InvoiceID.HasValue ? $"{item.InvoiceItem.TrackCode}{item.InvoiceItem.No}" : null)</td>
-            <td>@(item.InvoiceID.HasValue
-                    ? item.InvoiceItem.InvoiceType == (int)Naming.InvoiceTypeDefinition.一般稅額計算之電子發票
-                        ? "電子折讓"
-                        : "紙本折讓"
-                    : "")
-            </td>            
-            <td>@($"{allowance.AllowanceDate:yyyy/MM/dd}")</td>
-            <td>@(item.InvoiceID.HasValue ? $"{item.InvoiceItem.InvoiceAmountType.TotalAmount:##,###,###,###}" : null)</td>
-            <td>@($"{allowance.TotalAmount:##,###,###,###}")</td>
-            <td>@($"{allowance.TaxAmount:##,###,###,###}")</td>
-            <td></td>
-            <td>@(item.VoidPayment.UserProfile?.FullName())</td>
-            <td>@(item.InvoiceID.HasValue
-                    ? item.InvoiceItem.InvoiceBuyer.IsB2C() ? "" : item.InvoiceItem.InvoiceBuyer.ReceiptNo
-                    : "")</td>            
-            <td>                
-                @(item.InvoiceAllowance.InvoiceAllowanceDetails.First().InvoiceAllowanceItem.Remark)
-            </td>
-        </tr>
-            } 
-                else if (item.VoidPayment != null)
-                {
-        <tr>
-            <td>@(item.InvoiceID.HasValue ? $"{item.InvoiceItem.TrackCode}{item.InvoiceItem.No}" : null)</td>
-            <td>@(item.InvoiceID.HasValue
-                    ? item.InvoiceItem.InvoiceType == (int)Naming.InvoiceTypeDefinition.一般稅額計算之電子發票
-                        ? "電子作廢"
-                        : "紙本作廢"
-                    : "")
-            </td>            
-            <td>@($"{item.VoidPayment.VoidDate:yyyy/MM/dd}")</td>
-            <td></td>
-            <td>@(item.InvoiceID.HasValue ? $"{item.InvoiceItem.InvoiceAmountType.TotalAmount:##,###,###,###}" : null)</td>
-            <td></td>
-            <td></td>
-            <td>@(item.VoidPayment.UserProfile.FullName())</td>
-            <td>@(item.InvoiceID.HasValue
-                    ? item.InvoiceItem.InvoiceBuyer.IsB2C() ? "" : item.InvoiceItem.InvoiceBuyer.ReceiptNo
-                    : "")</td>            
-            <td>@(item.VoidPayment.Remark)</td>
-        </tr>
-        }
+                var allowance = item.InvoiceAllowance;
+                <tr>
+                    <td>@(item.InvoiceID.HasValue ? $"{item.InvoiceItem.TrackCode}{item.InvoiceItem.No}" : null)</td>
+                    <td>
+                        @(item.InvoiceID.HasValue
+                                            ? item.InvoiceItem.InvoiceType == (int)Naming.InvoiceTypeDefinition.一般稅額計算之電子發票
+                                                ? "電子折讓"
+                                                : "紙本折讓"
+                                            : "")
+                    </td>
+                    <td>@($"{allowance.AllowanceDate:yyyy/MM/dd}")</td>
+                    <td>@(item.InvoiceID.HasValue ? $"{item.InvoiceItem.InvoiceAmountType.TotalAmount:##,###,###,###}" : null)</td>
+                    <td>@($"{allowance.TotalAmount:##,###,###,###}")</td>
+                    <td>@($"{allowance.TaxAmount:##,###,###,###}")</td>
+                    <td></td>
+                    <td>@(item.VoidPayment.UserProfile?.FullName())</td>
+                    <td>
+                        @(item.InvoiceID.HasValue
+                                            ? item.InvoiceItem.InvoiceBuyer.IsB2C() ? "" : item.InvoiceItem.InvoiceBuyer.ReceiptNo
+                                            : "")
+                    </td>
+                    <td>
+                        @(item.InvoiceAllowance.InvoiceAllowanceDetails.First().InvoiceAllowanceItem.Remark)
+                    </td>
+                </tr>
+            }
+            else if (item.VoidPayment != null)
+            {
+                <tr>
+                    <td>@(item.InvoiceID.HasValue ? $"{item.InvoiceItem.TrackCode}{item.InvoiceItem.No}" : null)</td>
+                    <td>
+                        @(item.InvoiceID.HasValue
+                                            ? item.InvoiceItem.InvoiceType == (int)Naming.InvoiceTypeDefinition.一般稅額計算之電子發票
+                                                ? "電子作廢"
+                                                : "紙本作廢"
+                                            : "")
+                    </td>
+                    <td>@($"{item.VoidPayment.VoidDate:yyyy/MM/dd}")</td>
+                    <td></td>
+                    <td>@(item.InvoiceID.HasValue ? $"{item.InvoiceItem.InvoiceAmountType.TotalAmount:##,###,###,###}" : null)</td>
+                    <td></td>
+                    <td></td>
+                    <td>@(item.VoidPayment.UserProfile.FullName())</td>
+                    <td>
+                        @(item.InvoiceID.HasValue
+                                            ? item.InvoiceItem.InvoiceBuyer.IsB2C() ? "" : item.InvoiceItem.InvoiceBuyer.ReceiptNo
+                                            : "")
+                    </td>
+                    <td>@(item.VoidPayment.Remark)</td>
+                </tr>
+            }
         }
     </tbody>
 </table>
@@ -154,17 +175,6 @@
     });
 </script>
 
-@{
 
-    ModelStateDictionary _modelState;
-    ModelSource<UserProfile> models;
-    String _tableId = "dt_payment" + DateTime.Now.Ticks;
-    IQueryable<Payment> _model;
-
-
-        _modelState = (ModelStateDictionary)ViewBag.ModelState;
-        models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
-        _model = (IQueryable<Payment>)this.Model;
-    }
 
 

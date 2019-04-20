@@ -8,8 +8,20 @@
 @using WebHome.Models.DataEntity
 @using WebHome.Controllers
 @using Newtonsoft.Json
+@{
 
-@{ CourseContractQueryViewModel queryModel = new CourseContractQueryViewModel
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    UserProfile _model;
+
+
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = (UserProfile)this.Model;
+}
+@{ 
+    CourseContractQueryViewModel queryModel = new CourseContractQueryViewModel
     {
         AlarmCount = 4,
         Status = (int)Naming.CourseContractStatus.已生效,
@@ -17,7 +29,8 @@
     var tobeContinued = models.PromptEffectiveContract();
     tobeContinued = tobeContinued.Where(c => c.FitnessConsultant == _model.UID);
     queryModel.FitnessConsultant = _model.UID;
-    tobeContinued = tobeContinued.FilterByAlarmedContract(models, 4);}
+    tobeContinued = tobeContinued.FilterByAlarmedContract(models, 4);
+    }
 
 <div class="body top_counter">
     <div class="icon">
@@ -33,7 +46,8 @@
     </div>
     <div class="content">
         <div class="text">待續約 <span class="col-grey float-right">合約</span></div>
-        <h5 class="number"><a href='javascript:showContractList(@Html.Raw(JsonConvert.SerializeObject(
+        <h5 class="number">
+            <a href='javascript:showContractList(@Html.Raw(JsonConvert.SerializeObject(
                                     new
                                     {
                                         Status = queryModel.Status,
@@ -41,19 +55,9 @@
                                         FitnessConsultant = queryModel.FitnessConsultant,
                                         AlarmCount = queryModel.AlarmCount,
                                         ContractQueryMode = (int)Naming.ContractServiceMode.ContractOnly,
-                                    })),@(tobeContinued.Count()));'>@(tobeContinued.Count())</a></h5>
-    </div>
-</div>
+                                    })),@(tobeContinued.Count()));'>@(tobeContinued.Count())</a>
+                                </h5>
+                            </div>
+                        </div>
 
-@{
 
-    ModelStateDictionary _modelState;
-    ModelSource<UserProfile> models;
-    UserProfile _model;
-
-    
-    
-        _modelState = (ModelStateDictionary)ViewBag.ModelState;
-        models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
-        _model = (UserProfile)this.Model;
-    }

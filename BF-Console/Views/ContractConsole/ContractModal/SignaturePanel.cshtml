@@ -8,6 +8,19 @@
 @using WebHome.Models.DataEntity
 @using WebHome.Controllers
 @using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    String _dialogID = $"signature{DateTime.Now.Ticks}";
+    CourseContractSignatureViewModel _viewModel;
+
+
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _viewModel = (CourseContractSignatureViewModel)ViewBag.ViewModel;
+}
 <div class="modal fade" id="@(_dialogID)" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -49,21 +62,9 @@
                 });
             }
         }//
-        
+
     </script>
-    @{ Html.RenderPartial("~/Views/ConsoleHome/Shared/BSModalScript.ascx", model: _dialogID);}
+    @{ Html.RenderPartial("~/Views/ConsoleHome/Shared/BSModalScript.cshtml", model: _dialogID);}
 
 </div>
-@{
 
-    ModelStateDictionary _modelState;
-    ModelSource<UserProfile> models;
-    String _dialogID = $"signature{DateTime.Now.Ticks}";
-    CourseContractSignatureViewModel _viewModel;
-
-    
-    
-        _modelState = (ModelStateDictionary)ViewBag.ModelState;
-        models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
-        _viewModel = (CourseContractSignatureViewModel)ViewBag.ViewModel;
-    }

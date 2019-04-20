@@ -7,7 +7,24 @@
 @using WebHome.Models.ViewModel
 @using WebHome.Models.DataEntity
 @using WebHome.Controllers
+@{
 
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    UserProfile _model;
+    String _viewID = $"contractDetails{DateTime.Now.Ticks}";
+    IQueryable<CourseContract> _contractItems;
+
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = (UserProfile)this.Model;
+    _contractItems = ViewBag.Contracts as IQueryable<CourseContract>;
+    if (_contractItems == null)
+    {
+        _contractItems = models.GetTable<CourseContract>().Where(c => false);
+    }
+}
 <!--合約詳細資料-->
 <div class="container-fluid contract">
     <div class="row clearfix">
@@ -22,7 +39,7 @@
                     </ul>
                 </div>
                 <div class="body" id="@(_viewID)">
-                    @{ Html.RenderPartial("~/Views/ContractConsole/Module/ContractList.ascx", _contractItems);}
+                    @{ Html.RenderPartial("~/Views/ContractConsole/Module/ContractList.cshtml", _contractItems);}
 
                 </div>
             </div>
@@ -92,19 +109,4 @@
     //
 </script>
 
-@{
 
-    ModelStateDictionary _modelState;
-    ModelSource<UserProfile> models;
-    UserProfile _model;
-    String _viewID = $"contractDetails{DateTime.Now.Ticks}";
-    IQueryable<CourseContract> _contractItems;
-
-        
-        _modelState = (ModelStateDictionary)ViewBag.ModelState;
-        models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
-        _model = (UserProfile)this.Model;
-        _contractItems = ViewBag.Contracts as IQueryable<CourseContract>;
-        if (_contractItems == null)
-            _contractItems = models.GetTable<CourseContract>().Where(c => false);
-    }

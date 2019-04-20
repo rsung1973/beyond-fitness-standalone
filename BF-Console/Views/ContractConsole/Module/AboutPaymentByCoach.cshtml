@@ -8,6 +8,21 @@
 @using WebHome.Models.DataEntity
 @using WebHome.Controllers
 @using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    UserProfile _model;
+    IQueryable<CourseContract> _contractItems;
+
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = (UserProfile)this.Model;
+    _contractItems = models.PromptAccountingContract()
+        .Where(c => c.FitnessConsultant == _model.UID);
+
+}
 @{ var toPay = _contractItems.FilterByToPay(models);}
 
 <div class="body">
@@ -30,52 +45,40 @@
                                     PayoffDueTo = dateTo,
                                     IncludeTotalUnpaid = true,
                                 })),@(items.Count()));'>@(items.Count())</a>
-                <br />
-                @for (int i = 1; i < 5; i++)
-                    {
-                        dateFrom = dateTo;
-                        dateTo = dateTo.AddMonths(1);
-                        items = toPay.Where(c => c.PayoffDue >= dateFrom && c.PayoffDue < dateTo);
-                @($"{dateFrom:yyyy/MM}")：<a href='javascript:showContractList(@Html.Raw(JsonConvert.SerializeObject(
-                                new
+                                <br />
+                                @for (int i = 1; i < 5; i++)
                                 {
-                                    FitnessConsultant = _model.UID,
-                                    ContractQueryMode = Naming.ContractServiceMode.ContractOnly,
-                                    PayoffMode = Naming.ContractPayoffMode.Unpaid,
-                                    PayoffDueFrom = dateFrom,
-                                    PayoffDueTo = dateTo,
-                                })),@(items.Count()));'>@(items.Count())</a>
-                <br />
-                }
-            </p>
-        </div>
-        <div class="col-4 text-right">
-            <a href='javascript:showContractList(@Html.Raw(JsonConvert.SerializeObject(
+                                    dateFrom = dateTo;
+                                    dateTo = dateTo.AddMonths(1);
+                                    items = toPay.Where(c => c.PayoffDue >= dateFrom && c.PayoffDue < dateTo);
+                                    <text>@($"{dateFrom:yyyy/MM}")：</text>
+                                    <a href = 'javascript:showContractList(@Html.Raw(JsonConvert.SerializeObject(
+                                                                    new
+                                                                    {
+                                                                        FitnessConsultant = _model.UID,
+                                                                        ContractQueryMode = Naming.ContractServiceMode.ContractOnly,
+                                                                        PayoffMode = Naming.ContractPayoffMode.Unpaid,
+                                                                        PayoffDueFrom = dateFrom,
+                                                                        PayoffDueTo = dateTo,
+                                                                    })),@(items.Count())); '>@(items.Count())</a>
+                                    <br />
+                                        }
+                                /**/
+                            </p>
+                        </div>
+                        <div class="col-4 text-right">
+                            <a href='javascript:showContractList(@Html.Raw(JsonConvert.SerializeObject(
                                 new
                                 {
                                     FitnessConsultant = _model.UID,
                                     ContractQueryMode = Naming.ContractServiceMode.ContractOnly,
                                     PayoffMode = Naming.ContractPayoffMode.Unpaid,
                                 })),@(toPay.Count()));'>
-                <h2 class="col-red">@(toPay.Count())</h2>
-            </a>
-            <small class="info">全部</small>
-        </div>
-    </div>
-</div>
-@{
+                                <h2 class="col-red">@(toPay.Count())</h2>
+                            </a>
+                            <small class="info">全部</small>
+                        </div>
+                    </div>
+                </div>
 
-    ModelStateDictionary _modelState;
-    ModelSource<UserProfile> models;
-    UserProfile _model;
-    IQueryable<CourseContract> _contractItems;
-
-
-        _modelState = (ModelStateDictionary)ViewBag.ModelState;
-        models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
-        _model = (UserProfile)this.Model;
-        _contractItems = models.PromptAccountingContract()
-            .Where(c => c.FitnessConsultant == _model.UID);
-
-    }
 

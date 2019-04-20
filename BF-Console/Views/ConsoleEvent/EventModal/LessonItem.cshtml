@@ -19,15 +19,15 @@
 }
 @if (_model.RegisterLesson.LessonPriceType.Status == (int)Naming.DocumentLevelDefinition.教練PI)
 {
-    Html.RenderPartial("~/Views/ConsoleEvent/EventModal/CoachPI.ascx", _model);
+    Html.RenderPartial("~/Views/ConsoleEvent/EventModal/CoachPI.cshtml", _model);
 }
 else if (_model.GroupingLesson.RegisterLesson.Count > 1)
 {
-    Html.RenderPartial("~/Views/ConsoleEvent/EventModal/OtherLesson.ascx", _model);
+    Html.RenderPartial("~/Views/ConsoleEvent/EventModal/OtherLesson.cshtml", _model);
 }
 else
 {
-    Html.RenderPartial("~/Views/ConsoleEvent/EventModal/LearnerLesson.ascx", _model);
+    Html.RenderPartial("~/Views/ConsoleEvent/EventModal/LearnerLesson.cshtml", _model);
 }
 
 

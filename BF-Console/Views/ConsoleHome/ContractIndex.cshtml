@@ -5,14 +5,29 @@
 
 @using WebHome.Helper
 @using WebHome.Models.Locale
-@using WebHome.Models.Locale
 @using WebHome.Models.ViewModel
 @using WebHome.Models.DataEntity
 @using WebHome.Controllers
 @using Newtonsoft.Json
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    UserProfile _model;
+    CourseContractQueryViewModel _viewModel;
+    IQueryable<CourseContract> _effectiveItems;
 
-@section CustomHeader { 
-<!-- JQuery DataTable Css -->
+    Layout = "~/Views/ConsoleHome/Template/MainPage.cshtml";
+
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    _model = (UserProfile)this.Model;
+    _viewModel = (CourseContractQueryViewModel)ViewBag.ViewModel;
+
+    _effectiveItems = models.PromptEffectiveContract()
+        .Where(c => c.FitnessConsultant == _model.UID);
+}
+@section CustomHeader {
+    <!-- JQuery DataTable Css -->
     <link href="plugins/jquery-datatable/DataTables-1.10.18/css/dataTables.bootstrap4.min.css" rel="stylesheet">
     <link href="plugins/jquery-datatable/Responsive-2.2.2/css/responsive.bootstrap4.min.css" rel="stylesheet">
     <link href="plugins/jquery-datatable/FixedColumns-3.2.5/css/fixedColumns.bootstrap4.min.css" rel="stylesheet">
@@ -21,7 +36,7 @@
     <link href="css/smartcalendar-2.css" rel="stylesheet" />
 
     <!-- Custom Css -->
-    <link rel="stylesheet" href="css/customelist.css?2" /> 
+    <link rel="stylesheet" href="css/customelist.css?2" />
 }
 
 <script>
@@ -32,46 +47,46 @@
                 $global.onReady[i]();
             }
         });
-    </script>
-        <!-- Main Content -->
-    <section class="content">
-        @{ ViewBag.BlockHeader = "我的合約";
-            Html.RenderPartial("~/Views/ConsoleHome/Module/BlockHeader.ascx", _model);}
+</script>
+<!-- Main Content -->
+<section class="content">
+    @{ ViewBag.BlockHeader = "我的合約";
+        Html.RenderPartial("~/Views/ConsoleHome/Module/BlockHeader.cshtml", _model);}
 
 
-        @if (_model.IsCoach())
-            {
+    @if (_model.IsCoach())
+    {
         <!--我的合約-->
         <div class="container-fluid">
             <div class="card widget_3">
                 <ul class="row clearfix list-unstyled m-b-0">
                     <li class="col-lg-3 col-md-6 col-sm-12">
-                        @{ Html.RenderPartial("~/Views/ContractConsole/Module/AboutExpiringByCoach.ascx", _model);}
+                        @{ Html.RenderPartial("~/Views/ContractConsole/Module/AboutExpiringByCoach.cshtml", _model);}
 
                     </li>
                     <li class="col-lg-3 col-md-6 col-sm-12">
-                        @{ Html.RenderPartial("~/Views/ContractConsole/Module/AboutNewContractsByCoach.ascx", _model);}
+                        @{ Html.RenderPartial("~/Views/ContractConsole/Module/AboutNewContractsByCoach.cshtml", _model);}
 
                     </li>
                     <li class="col-lg-3 col-md-6 col-sm-12">
-                        @{ Html.RenderPartial("~/Views/ContractConsole/Module/AboutContractServicesByCoach.ascx", _model);}
+                        @{ Html.RenderPartial("~/Views/ContractConsole/Module/AboutContractServicesByCoach.cshtml", _model);}
 
                     </li>
                     <li class="col-lg-3 col-md-6 col-sm-12">
-                        @{ Html.RenderPartial("~/Views/ContractConsole/Module/AboutPaymentByCoach.ascx", _model);}
+                        @{ Html.RenderPartial("~/Views/ContractConsole/Module/AboutPaymentByCoach.cshtml", _model);}
 
                     </li>
                 </ul>
-                <ul class="row clearfix list-unstyled m-b-0"> 
+                <ul class="row clearfix list-unstyled m-b-0">
                     @{ var newContracts = _effectiveItems
-                            .Where(c => c.Expiration >= DateTime.Today)
-                            .Where(c => !c.Renewal.HasValue || c.Renewal == false);
+                             .Where(c => c.Expiration >= DateTime.Today)
+                             .Where(c => !c.Renewal.HasValue || c.Renewal == false);
                         var renewContracts = _effectiveItems
                             .Where(c => c.Expiration >= DateTime.Today)
                             .Where(c => c.Renewal.HasValue && c.Renewal == true);}
 
                     <li class="col-lg-3 col-md-3 col-sm-6">
-                        @{ Html.RenderPartial("~/Views/ContractConsole/Module/ToRenewByCoach.ascx", _model);}
+                        @{ Html.RenderPartial("~/Views/ContractConsole/Module/ToRenewByCoach.cshtml", _model);}
 
                     </li>
                     <li class="col-lg-3 col-md-3 col-sm-6">
@@ -79,40 +94,40 @@
                             <div class="row">
                                 <div class="col-12 text-center">
                                     <div class="sparkline-pie">@(newContracts.Count()),@(renewContracts.Count())</div>
-                                     <h6 class="m-t-20">新約 V.S. 續約</h6>
-                                      <p class="displayblock m-b-0"><span class="col-amber">@(newContracts.Count())</span> / <span class="col-grey">@(renewContracts.Count())</span></p>
+                                    <h6 class="m-t-20">新約 V.S. 續約</h6>
+                                    <p class="displayblock m-b-0"><span class="col-amber">@(newContracts.Count())</span> / <span class="col-grey">@(renewContracts.Count())</span></p>
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="col-lg-3 col-md-3 col-sm-6">
-                        @{ Html.RenderPartial("~/Views/ContractConsole/Module/AboutInstallment.ascx", _effectiveItems);}
-                                    
+                        @{ Html.RenderPartial("~/Views/ContractConsole/Module/AboutInstallment.cshtml", _effectiveItems);}
+
                     </li>
                     <li class="col-lg-3 col-md-3 col-sm-6">
-                        @{ Html.RenderPartial("~/Views/ContractConsole/Module/AboutReceivablesByCoach.ascx", _model);}
+                        @{ Html.RenderPartial("~/Views/ContractConsole/Module/AboutReceivablesByCoach.cshtml", _model);}
 
-                    </li>                    
+                    </li>
                 </ul>
             </div>
         </div>
-        }
+    }
 
-        @if (_model.IsViceManager() || _model.IsManager())
-            {
-                Html.RenderPartial("~/Views/ContractConsole/Module/ContractByBranch.ascx", _model);
-            }
-            else if (_model.IsAssistant() || _model.IsOfficer())
-            {
-                Html.RenderPartial("~/Views/ContractConsole/Module/ContractByOfficer.ascx", _model);
-            }
+    @if (_model.IsViceManager() || _model.IsManager())
+    {
+        Html.RenderPartial("~/Views/ContractConsole/Module/ContractByBranch.cshtml", _model);
+    }
+    else if (_model.IsAssistant() || _model.IsOfficer())
+    {
+        Html.RenderPartial("~/Views/ContractConsole/Module/ContractByOfficer.cshtml", _model);
+    }
 
-        @{ Html.RenderPartial("~/Views/ContractConsole/Module/ContractDetails.ascx", _model);}
+    @{ Html.RenderPartial("~/Views/ContractConsole/Module/ContractDetails.cshtml", _model);}
 
-    </section>
+</section>
 
-@section TailPageJavaScriptInclude { 
-<!--Sparkline Plugin Js-->
+@section TailPageJavaScriptInclude {
+    <!--Sparkline Plugin Js-->
     <script src="plugins/jquery-sparkline/jquery.sparkline.js"></script>
     <!-- SweetAlert Plugin Js -->
     <script src="plugins/sweetalert/sweetalert.min.js"></script>
@@ -124,7 +139,7 @@
     <script src="plugins/smartcalendar/js/bootstrap-datetimepicker.min.js"></script>
     <script src="plugins/smartcalendar/js/locales-datetimepicker/bootstrap-datetimepicker.zh-TW.js"></script>
 
-    @{ Html.RenderPartial("~/Views/ConsoleHome/Shared/KnobJS.ascx");}
+    @{ Html.RenderPartial("~/Views/ConsoleHome/Shared/KnobJS.cshtml");}
 
 
     <script type="text/javascript">
@@ -357,23 +372,7 @@
             });
         }
         //
-    </script> 
+    </script>
 }
 
-@{
-    ModelSource<UserProfile> models;
-    ModelStateDictionary _modelState;
-    UserProfile _model;
-    CourseContractQueryViewModel _viewModel;
-    IQueryable<CourseContract> _effectiveItems;
 
-    
-    
-        models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
-        _modelState = (ModelStateDictionary)ViewBag.ModelState;
-        _model = (UserProfile)this.Model;
-        _viewModel = (CourseContractQueryViewModel)ViewBag.ViewModel;
-
-        _effectiveItems = models.PromptEffectiveContract()
-            .Where(c => c.FitnessConsultant == _model.UID);
-    }

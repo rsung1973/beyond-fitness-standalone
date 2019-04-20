@@ -7,7 +7,19 @@
 @using WebHome.Models.ViewModel
 @using WebHome.Models.DataEntity
 @using WebHome.Controllers
+@{
 
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    String _tableId = "dt_installment" + DateTime.Now.Ticks;
+    IQueryable<CourseContract> _model;
+
+
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = (IQueryable<CourseContract>)this.Model;
+}
 <table id="@(_tableId)" class="table table-striped table-custom nowrap bg-white col-charcoal dataTable dataTable-learner" width="100%">
     <thead>
         <tr>
@@ -18,12 +30,12 @@
     </thead>
     <tbody>
         @foreach (var item in _model)
-            {
-        <tr>
-            <td>@(item.ContractNo)</td>
-            <td>@(String.Format("{0:yyyy/MM/dd}",item.PayoffDue))</td>
-            <td>@(String.Format("{0:yyyy/MM/dd}",item.ContractPayment.FirstOrDefault()?.Payment.PayoffDate))</td>
-        </tr>
+        {
+            <tr>
+                <td>@(item.ContractNo)</td>
+                <td>@(String.Format("{0:yyyy/MM/dd}", item.PayoffDue))</td>
+                <td>@(String.Format("{0:yyyy/MM/dd}", item.ContractPayment.FirstOrDefault()?.Payment.PayoffDate))</td>
+            </tr>
         }
     </tbody>
 </table>
@@ -82,16 +94,4 @@
     });
 </script>
 
-@{
 
-    ModelStateDictionary _modelState;
-    ModelSource<UserProfile> models;
-    String _tableId = "dt_installment" + DateTime.Now.Ticks;
-    IQueryable<CourseContract> _model;
-
-    
-    
-        _modelState = (ModelStateDictionary)ViewBag.ModelState;
-        models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
-        _model = (IQueryable<CourseContract>)this.Model;
-    }

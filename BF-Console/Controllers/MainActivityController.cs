@@ -128,7 +128,7 @@ namespace BFConsole.Controllers
 
         public ActionResult DropifyUpload()
         {
-            return View("~/Views/ConsoleHome/Shared/DropifyUpload.ascx");
+            return View("~/Views/ConsoleHome/Shared/DropifyUpload.cshtml");
         }
 
         public ActionResult CommitArticle(BlogArticleQueryViewModel viewModel)

@@ -9,7 +9,22 @@
 @using WebHome.Models.DataEntity
 @using WebHome.Controllers
 @using Newtonsoft.Json
+@{
 
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    CourseContract _model;
+    UserProfile _profile;
+    String _viewID;
+
+
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = (CourseContract)this.Model;
+    _profile = Context.GetUser();
+    _viewID = ViewBag.ViewID as String;
+}
 <div class="header">
     <h2><strong>原負責體能顧問</strong> - <strong>@(_model.ServingCoach.UserProfile.FullName())</strong></h2>
 </div>
@@ -67,19 +82,4 @@
     }//
 
 </script>
-@{
 
-    ModelStateDictionary _modelState;
-    ModelSource<UserProfile> models;
-    CourseContract _model;
-    UserProfile _profile;
-    String _viewID;
-
-    
-    
-        _modelState = (ModelStateDictionary)ViewBag.ModelState;
-        models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
-        _model = (CourseContract)this.Model;
-        _profile = Context.GetUser();
-        _viewID = ViewBag.ViewID as String;
-    }

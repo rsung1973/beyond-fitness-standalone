@@ -7,10 +7,6 @@
 @using WebHome.Models.ViewModel
 @using WebHome.Models.DataEntity
 @using WebHome.Controllers
-@if (_model.CouldBeCancelled(_userProfile))
-    {
-<button type="button" class="btn btn-danger btn-round btn-simple btn-round waves-effect waves-red" onclick="javascript:deleteLesson('@(_model.LessonID.EncryptKey())');"><i class="zmdi zmdi-delete"></i></button>
-}
 @{
 
     ModelStateDictionary _modelState;
@@ -18,10 +14,15 @@
     LessonTime _model;
     UserProfile _userProfile;
 
-    
-    
-        _modelState = (ModelStateDictionary)ViewBag.ModelState;
-        models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
-        _model = (LessonTime)this.Model;
-        _userProfile = Context.GetUser();
-    }
+
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = (LessonTime)this.Model;
+    _userProfile = Context.GetUser();
+}
+@if (_model.CouldBeCancelled(_userProfile))
+{
+    <button type="button" class="btn btn-danger btn-round btn-simple btn-round waves-effect waves-red" onclick="javascript:deleteLesson('@(_model.LessonID.EncryptKey())');"><i class="zmdi zmdi-delete"></i></button>
+}
+

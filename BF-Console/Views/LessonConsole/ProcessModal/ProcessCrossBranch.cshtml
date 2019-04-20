@@ -8,6 +8,21 @@
 @using WebHome.Models.DataEntity
 @using WebHome.Controllers
 @using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    LessonTimeBookingViewModel _viewModel;
+    String _dialogID = $"pcb{DateTime.Now.Ticks}";
+    LessonTime _model;
+
+
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = (LessonTime)this.Model;
+    _viewModel = (LessonTimeBookingViewModel)ViewBag.ViewModel;
+}
 <div class="modal modal-mini fade" id="@(_dialogID)" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
@@ -23,24 +38,10 @@
             </div>
         </div>
     </div>
-    @{ Html.RenderPartial("~/Views/ConsoleHome/Shared/BSModalScript.ascx", model: _dialogID);}
+    @{ Html.RenderPartial("~/Views/ConsoleHome/Shared/BSModalScript.cshtml", model: _dialogID);}
 
     <script>
 
     </script>
 </div>
-@{
 
-    ModelStateDictionary _modelState;
-    ModelSource<UserProfile> models;
-    LessonTimeBookingViewModel _viewModel;
-    String _dialogID = $"pcb{DateTime.Now.Ticks}";
-    LessonTime _model;
-
-    
-    
-        _modelState = (ModelStateDictionary)ViewBag.ModelState;
-        models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
-        _model = (LessonTime)this.Model;
-        _viewModel = (LessonTimeBookingViewModel)ViewBag.ViewModel;
-    }

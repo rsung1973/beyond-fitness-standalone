@@ -8,51 +8,6 @@
 @using WebHome.Models.DataEntity
 @using WebHome.Controllers
 @using Newtonsoft.Json
-
-<!--我的分店合約-->
-<div class="container-fluid">
-    <h4 class="card-outbound-header">我的分店合約</h4>
-    <div class="card widget_3">
-        <ul class="row clearfix list-unstyled m-b-0">
-            <li class="col-lg-3 col-md-6 col-sm-12">
-                @{ Html.RenderPartial("~/Views/ContractConsole/Module/AboutExpiringByBranch.ascx", _model);}
-
-            </li>
-            <li class="col-lg-3 col-md-6 col-sm-12">
-                @{ Html.RenderPartial("~/Views/ContractConsole/Module/AboutContractsByBranch.ascx", _model);}
-
-            </li>
-            <li class="col-lg-3 col-md-6 col-sm-12">
-                @{ Html.RenderPartial("~/Views/ContractConsole/Module/AboutContractServicesSummaryByBranch.ascx", _model);}
-
-            </li>
-            <li class="col-lg-3 col-sm-12">
-                @{ Html.RenderPartial("~/Views/ContractConsole/Module/AboutPaymentByBranch.ascx", _model);}
-
-            </li>
-        </ul>
-        <ul class="row clearfix list-unstyled m-b-0">
-            <li class="col-lg-3 col-md-3 col-sm-6">
-                @{ Html.RenderPartial("~/Views/ContractConsole/Module/ToRenewByBranch.ascx", _model);}
-
-            </li>
-            <li class="col-lg-3 col-md-3 col-sm-6">
-                @{ Html.RenderPartial("~/Views/ContractConsole/Module/AboutCompleteLessons.ascx", _effectiveItems);}
-
-            </li>
-            <li class="col-lg-3 col-md-3 col-sm-6">
-                @{ Html.RenderPartial("~/Views/ContractConsole/Module/AboutInstallment.ascx", _effectiveItems);}
-
-            </li>
-            <li class="col-lg-3 col-md-6 col-sm-12">
-                @{ Html.RenderPartial("~/Views/ContractConsole/Module/AboutReceivablesByBranch.ascx", _model);}
-
-            </li>
-        </ul>
-    </div>
-</div>
-
-
 @{
 
     ModelStateDictionary _modelState;
@@ -61,12 +16,57 @@
     IQueryable<CourseContract> _effectiveItems;
     IQueryable<CourseContract> _contractItems;
 
-        _modelState = (ModelStateDictionary)ViewBag.ModelState;
-        models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
-        _model = (UserProfile)this.Model;
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = (UserProfile)this.Model;
 
-        _contractItems = models.PromptOriginalContract().FilterByBranchStoreManager(models, _model.UID);
-        _effectiveItems = models.PromptEffectiveContract().FilterByBranchStoreManager(models, _model.UID);
-    }
+    _contractItems = models.PromptOriginalContract().FilterByBranchStoreManager(models, _model.UID);
+    _effectiveItems = models.PromptEffectiveContract().FilterByBranchStoreManager(models, _model.UID);
+}
+<!--我的分店合約-->
+<div class="container-fluid">
+    <h4 class="card-outbound-header">我的分店合約</h4>
+    <div class="card widget_3">
+        <ul class="row clearfix list-unstyled m-b-0">
+            <li class="col-lg-3 col-md-6 col-sm-12">
+                @{ Html.RenderPartial("~/Views/ContractConsole/Module/AboutExpiringByBranch.cshtml", _model);}
+
+            </li>
+            <li class="col-lg-3 col-md-6 col-sm-12">
+                @{ Html.RenderPartial("~/Views/ContractConsole/Module/AboutContractsByBranch.cshtml", _model);}
+
+            </li>
+            <li class="col-lg-3 col-md-6 col-sm-12">
+                @{ Html.RenderPartial("~/Views/ContractConsole/Module/AboutContractServicesSummaryByBranch.cshtml", _model);}
+
+            </li>
+            <li class="col-lg-3 col-sm-12">
+                @{ Html.RenderPartial("~/Views/ContractConsole/Module/AboutPaymentByBranch.cshtml", _model);}
+
+            </li>
+        </ul>
+        <ul class="row clearfix list-unstyled m-b-0">
+            <li class="col-lg-3 col-md-3 col-sm-6">
+                @{ Html.RenderPartial("~/Views/ContractConsole/Module/ToRenewByBranch.cshtml", _model);}
+
+            </li>
+            <li class="col-lg-3 col-md-3 col-sm-6">
+                @{ Html.RenderPartial("~/Views/ContractConsole/Module/AboutCompleteLessons.cshtml", _effectiveItems);}
+
+            </li>
+            <li class="col-lg-3 col-md-3 col-sm-6">
+                @{ Html.RenderPartial("~/Views/ContractConsole/Module/AboutInstallment.cshtml", _effectiveItems);}
+
+            </li>
+            <li class="col-lg-3 col-md-6 col-sm-12">
+                @{ Html.RenderPartial("~/Views/ContractConsole/Module/AboutReceivablesByBranch.cshtml", _model);}
+
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+
 
 

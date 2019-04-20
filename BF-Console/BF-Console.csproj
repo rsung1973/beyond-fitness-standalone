@@ -1,4 +1,4 @@
-<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -97,15 +97,6 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
-    <Reference Include="CommonLib">
-      <HintPath>..\beyond-fitness\bin\CommonLib.dll</HintPath>
-    </Reference>
-    <Reference Include="CommonLib.Logger">
-      <HintPath>..\beyond-fitness\bin\CommonLib.Logger.dll</HintPath>
-    </Reference>
-    <Reference Include="CommonLib.PlugInAdapter">
-      <HintPath>..\beyond-fitness\bin\CommonLib.PlugInAdapter.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Web.Infrastructure">
@@ -6088,7 +6079,7 @@
     <Content Include="Views\ConsoleHome\SignCourseContract.aspx" />
     <Content Include="Views\ConsoleHome\EditCourseContract.aspx" />
     <Content Include="Views\ConsoleHome\ContractIndex.aspx" />
-    <Content Include="Views\ConsoleHome\Calendar.aspx" />
+    <None Include="Views\ConsoleHome\Calendar.aspx_" />
     <Content Include="Views\ConsoleHome\CrossBranchIndex.aspx" />
     <Content Include="Views\ConsoleHome\LearnerLesson.ascx" />
     <Content Include="Views\ConsoleHome\Shared\MyContractHeader.ascx" />
@@ -6190,7 +6181,6 @@
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
-    <None Include="Views\ConsoleHome\Index.aspx_" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\ConsoleEventController.cs" />
@@ -6728,6 +6718,14 @@
     <ProjectReference Include="..\beyond-fitness\beyond-fitness.csproj">
       <Project>{c49821ff-96c8-466b-aef4-137ec84fdefc}</Project>
       <Name>beyond-fitness</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CommonLib.Logger\CommonLib.Logger.csproj">
+      <Project>{8146e629-552a-4b36-8711-08ae8245b8fa}</Project>
+      <Name>CommonLib.Logger</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CommonLib\CommonLib.csproj">
+      <Project>{c0ad239c-2ac4-46d2-ae7c-5e97266ef4ea}</Project>
+      <Name>CommonLib</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

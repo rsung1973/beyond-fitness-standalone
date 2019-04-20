@@ -64,7 +64,7 @@
                         }
                     </div>
                     <hr>
-                    @*@{ Html.RenderPartial("~/Views/ConsoleEvent/Module/LessonEmphasis.ascx", _model);}
+                    @*@{ Html.RenderPartial("~/Views/ConsoleEvent/Module/LessonEmphasis.cshtml", _model);}
                     *@
                     <div class="col-12 align-left">
                         <p class="col-red">課表重點：@((_model.TrainingPlan.FirstOrDefault()?.TrainingExecution.Emphasis) ?? "重點一片空 ...")</p>
@@ -78,12 +78,12 @@
                 {
                     <button type="button" class="btn btn-simple btn-round waves-effect" onclick="bookingCoachPI();">修改成員</button>
                 }
-                @{ Html.RenderPartial("~/Views/ConsoleEvent/Module/RevokeLesson.ascx", _model);}
+                @{ Html.RenderPartial("~/Views/ConsoleEvent/Module/RevokeLesson.cshtml", _model);}
 
             </div>
         </div>
     </div>
-    @{ Html.RenderPartial("~/Views/ConsoleHome/Shared/BSModalScript.ascx", model: _dialogID);}
+    @{ Html.RenderPartial("~/Views/ConsoleHome/Shared/BSModalScript.cshtml", model: _dialogID);}
 
     <script>
         function bookingCoachPI() {

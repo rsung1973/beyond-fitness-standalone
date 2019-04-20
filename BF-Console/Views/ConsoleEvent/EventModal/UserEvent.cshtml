@@ -33,12 +33,12 @@
                         <p>
                             @if ((_model.EndDate - _model.StartDate).TotalDays >= 1)
                             {
-                                @(_model.StartDate.ToString("yyyy/MM/dd"))~@(_model.EndDate.ToString("yyyy/MM/dd"))
-                                            }
+                                <text>@(_model.StartDate.ToString("yyyy/MM/dd"))~@(_model.EndDate.ToString("yyyy/MM/dd"))</text>
+                            }
                             else
                             {
-                                @(_model.StartDate.ToString("yyyy/MM/dd HH:mm"))~@(_model.EndDate.ToString("HH:mm"))
-                                            }
+                                <text>@(_model.StartDate.ToString("yyyy/MM/dd HH:mm"))~@(_model.EndDate.ToString("HH:mm"))</text>
+                            }
                     </p>
                 </div>
                 <div class="body">
@@ -68,7 +68,7 @@
         </div>
     </div>
 </div>
-@{ Html.RenderPartial("~/Views/ConsoleHome/Shared/BSModalScript.ascx", model: _dialogID);}
+@{ Html.RenderPartial("~/Views/ConsoleHome/Shared/BSModalScript.cshtml", model: _dialogID);}
 
 </div>
 

@@ -43,7 +43,7 @@
             </div>
         </div>
     </div>
-    @{ Html.RenderPartial("~/Views/ConsoleHome/Shared/BSModalScript.ascx", model: _dialogID);}
+    @{ Html.RenderPartial("~/Views/ConsoleHome/Shared/BSModalScript.cshtml", model: _dialogID);}
 
     <script>
         $('#@(_dialogID) .searchLearner').keypress(function (event) {

@@ -9,6 +9,21 @@
 @using WebHome.Models.DataEntity
 @using WebHome.Controllers
 @using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    CourseContract _model;
+    UserProfile _profile;
+    String _viewID = $"assign{DateTime.Now.Ticks}";
+
+
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = (CourseContract)this.Model;
+    _profile = Context.GetUser();
+}
 
 <ul class="row clearfix list-unstyled m-b-0" id="@(_viewID)">
     <li class="col-lg-6 col-md-12 col-sm-12">
@@ -50,29 +65,17 @@
         </div>
     </li>
     <li class="col-lg-6 col-md-12 col-sm-12">
-        @{ Action<String> applyPartial = ViewBag.ApplyService as Action<String>;}
- @if (applyPartial != null)
+        @{ 
+            String applyPartial = ViewBag.ApplyService as String;
+            if (applyPartial != null)
             {
-                applyPartial(_viewID);
+                ViewBag.ViewID = _viewID;
+                Html.RenderPartial(applyPartial, model: (object)ViewBag.ApplyServiceModel);
             }
+        }
     </li>
     <li class="col-12">
         <button type="button" class="btn btn-darkteal btn-round waves-effect float-right finish">確定，不後悔</button>
         <button type="button" class="btn btn-danger btn-round btn-simple waves-effect quit">不, 點錯了</button>
     </li>
 </ul>
-@{
-
-    ModelStateDictionary _modelState;
-    ModelSource<UserProfile> models;
-    CourseContract _model;
-    UserProfile _profile;
-    String _viewID = $"assign{DateTime.Now.Ticks}";
-
-    
-    
-        _modelState = (ModelStateDictionary)ViewBag.ModelState;
-        models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
-        _model = (CourseContract)this.Model;
-        _profile = Context.GetUser();
-    }

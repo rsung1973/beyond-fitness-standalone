@@ -42,7 +42,7 @@ namespace BFConsole.Controllers
                 viewModel.LessonID = viewModel.DecryptKeyValue();
             }
             var item = models.GetTable<LessonTime>().Where(l => l.LessonID == viewModel.LessonID).FirstOrDefault();
-            return View("~/Views/LessonConsole/ProcessModal/ProcessCrossBranch.ascx", item);
+            return View("~/Views/LessonConsole/ProcessModal/ProcessCrossBranch.cshtml", item);
         }
 
         public ActionResult ShowTodayLessons(LessonTimeBookingViewModel viewModel)
@@ -54,7 +54,7 @@ namespace BFConsole.Controllers
             }
 
             var profile = HttpContext.GetUser();
-            return View("~/Views/LessonConsole/ProcessModal/TodayLessons.ascx", profile.LoadInstance(models));
+            return View("~/Views/LessonConsole/ProcessModal/TodayLessons.cshtml", profile.LoadInstance(models));
         }
 
         public ActionResult CommitCrossBranch(LessonTimeBookingViewModel viewModel)

@@ -7,9 +7,20 @@
 @using WebHome.Models.ViewModel
 @using WebHome.Models.DataEntity
 @using WebHome.Controllers
+@{
 
-@{ Html.RenderPartial("~/Views/ContractConsole/Module/ContractList.ascx", _model);}
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    IQueryable<CourseContract> _model;
+    CourseContractQueryViewModel _viewModel;
 
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = (IQueryable<CourseContract>)this.Model;
+    _viewModel = ViewBag.ViewModel as CourseContractQueryViewModel;
+}
+@{ Html.RenderPartial("~/Views/ContractConsole/Module/ContractList.cshtml", _model);}
 
 <script>
 
@@ -21,19 +32,7 @@
 
 </script>
 
-@{
 
-    ModelStateDictionary _modelState;
-    ModelSource<UserProfile> models;
-    IQueryable<CourseContract> _model;
-    CourseContractQueryViewModel _viewModel;
-
-
-        _modelState = (ModelStateDictionary)ViewBag.ModelState;
-        models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
-        _model = (IQueryable<CourseContract>)this.Model;
-        _viewModel = ViewBag.ViewModel as CourseContractQueryViewModel;
-    }
 
 
 

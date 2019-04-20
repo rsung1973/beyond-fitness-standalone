@@ -20,7 +20,7 @@
 @foreach (var g in _model.GroupBy(v => v.EventTime.Value.Date))
 {
     var items = g.ToList();
-    Html.RenderPartial("~/Views/ConsoleHome/Module/DailyEventItems.ascx", items);
+    Html.RenderPartial("~/Views/ConsoleHome/Module/DailyEventItems.cshtml", items);
 }
 
 

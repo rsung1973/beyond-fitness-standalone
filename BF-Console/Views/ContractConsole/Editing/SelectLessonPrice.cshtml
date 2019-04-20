@@ -7,7 +7,19 @@
 @using WebHome.Models.ViewModel
 @using WebHome.Models.DataEntity
 @using WebHome.Controllers
+@{
 
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    UserProfile _model;
+    String _viewID = $"lessonPrice{DateTime.Now.Ticks}";
+
+
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = (UserProfile)this.Model;
+}
 <div class="input-group">
     <input type="text" class="form-control form-control-danger" onclick="listPrice();" placeholder="課程單價" name="PriceID" id="searchPrice" readonly />
     <span class="input-group-addon xl-slategray">
@@ -40,16 +52,4 @@
     }//
 </script>
 
-@{
 
-    ModelStateDictionary _modelState;
-    ModelSource<UserProfile> models;
-    UserProfile _model;
-    String _viewID = $"lessonPrice{DateTime.Now.Ticks}";
-
-    
-    
-        _modelState = (ModelStateDictionary)ViewBag.ModelState;
-        models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
-        _model = (UserProfile)this.Model;
-    }

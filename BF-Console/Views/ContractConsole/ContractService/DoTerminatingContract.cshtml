@@ -9,7 +9,22 @@
 @using WebHome.Models.DataEntity
 @using WebHome.Controllers
 @using Newtonsoft.Json
+@{
 
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    CourseContract _model;
+    UserProfile _profile;
+    String _viewID;
+
+
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = (CourseContract)this.Model;
+    _profile = Context.GetUser();
+    _viewID = ViewBag.ViewID as String;
+}
 <div class="header">
     <h2><strong>原課程單價 <span class="badge bg-blue">@(_model.LessonPriceType.PriceTypeBundle())</span>：</strong> <span class="col-red">@($"{_model.LessonPriceType.ListPrice:##,###,###,###}")</span></h2>
 </div>
@@ -38,7 +53,7 @@
                         var lessons = @(_model.Lessons);
                         var currPrice = @(_model.LessonPriceType.ListPrice);
                         var totalPaid = @(_model.TotalPaidAmount());
-                        var refund = totalPaid - (lessons - remained) * settlementPrice *@(_model.CourseContractType.GroupingMemberCount)*@(_model.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount)/100;
+                        var refund = totalPaid - (lessons - remained) * settlementPrice * @($"{_model.CourseContractType.GroupingMemberCount}*{_model.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount}/100");
                         $('#refund').text(refund);
                         $('#refundUnit').text(settlementPrice);
                     }
@@ -103,19 +118,4 @@
     }//
 
 </script>
-@{
 
-    ModelStateDictionary _modelState;
-    ModelSource<UserProfile> models;
-    CourseContract _model;
-    UserProfile _profile;
-    String _viewID;
-
-    
-    
-        _modelState = (ModelStateDictionary)ViewBag.ModelState;
-        models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
-        _model = (CourseContract)this.Model;
-        _profile = Context.GetUser();
-        _viewID = ViewBag.ViewID as String;
-    }

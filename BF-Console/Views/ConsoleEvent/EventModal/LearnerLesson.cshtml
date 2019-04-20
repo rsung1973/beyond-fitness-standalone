@@ -50,7 +50,7 @@
                         <address>@(_model.LessonTypeStatus()) <i class="zmdi zmdi-pin"></i>@(_model.BranchID.HasValue ? _model.BranchStore.BranchName : _model.Place)</address>
                     </div>
                     <hr>
-                    @{ Html.RenderPartial("~/Views/ConsoleEvent/Module/LessonEmphasis.ascx", _model);}
+                    @{ Html.RenderPartial("~/Views/ConsoleEvent/Module/LessonEmphasis.cshtml", _model);}
 
                 </div>
             </div>
@@ -60,12 +60,12 @@
                     <button type="button" class="btn btn-darkteal btn-round waves-effect"><i class="zmdi zmdi-edit"></i></button>
                     <button type="button" class="btn btn-simple btn-round waves-effect" onclick="commitEmphasis('@(plan.ExecutionID.EncryptKey())');">更新重點</button>
                 }
-                @{ Html.RenderPartial("~/Views/ConsoleEvent/Module/RevokeLesson.ascx", _model);}
+                @{ Html.RenderPartial("~/Views/ConsoleEvent/Module/RevokeLesson.cshtml", _model);}
 
             </div>
         </div>
     </div>
-    @{ Html.RenderPartial("~/Views/ConsoleHome/Shared/BSModalScript.ascx", model: _dialogID);}
+    @{ Html.RenderPartial("~/Views/ConsoleHome/Shared/BSModalScript.cshtml", model: _dialogID);}
 
     <script>
 

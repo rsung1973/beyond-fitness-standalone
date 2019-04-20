@@ -8,6 +8,18 @@
 @using WebHome.Models.DataEntity
 @using WebHome.Controllers
 @using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    CourseContract _model;
+
+
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = (CourseContract)this.Model;
+}
 
 <script>
     $(function () {
@@ -22,15 +34,3 @@
     });
 </script>
 
-@{
-
-    ModelStateDictionary _modelState;
-    ModelSource<UserProfile> models;
-    CourseContract _model;
-
-    
-    
-        _modelState = (ModelStateDictionary)ViewBag.ModelState;
-        models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
-        _model = (CourseContract)this.Model;
-    }

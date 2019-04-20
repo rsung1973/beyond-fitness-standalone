@@ -7,6 +7,23 @@
 @using WebHome.Models.ViewModel
 @using WebHome.Models.DataEntity
 @using WebHome.Controllers
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    LessonTime _model;
+    CalendarEventQueryViewModel _viewModel;
+    String _dialogID = $"other{DateTime.Now.Ticks}";
+    TrainingPlan plan;
+
+
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = (LessonTime)this.Model;
+    _viewModel = (CalendarEventQueryViewModel)ViewBag.ViewModel;
+    plan = _model.AssertTrainingPlan(models);
+}
 <div class="modal fade" id="@(_dialogID)" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
@@ -28,50 +45,34 @@
                         <p class="text-muted">@(_model.FullLessonDuration())</p>
                         <address>@(_model.LessonTypeStatus()) <i class="zmdi zmdi-pin"></i>@(_model.BranchID.HasValue ? _model.BranchStore.BranchName : _model.Place)</address>
                         @if (_model.GroupingLesson.RegisterLesson.Count > 1)
-                            {
-                        <ul class="list-unstyled team-info margin-0">
-                            @foreach (var r in _model.GroupingLesson.RegisterLesson)
+                        {
+                            <ul class="list-unstyled team-info margin-0">
+                                @foreach (var r in _model.GroupingLesson.RegisterLesson)
                                 {
-                            <li>
-                                @{
-                                    ViewBag.ProfileClass = "popfit";
-                                    Html.RenderPartial("~/Views/Common/ProfileImage.cshtml", r.UserProfile);
+                                    <li>
+                                        @{
+                                            ViewBag.ProfileClass = "popfit";
+                                            Html.RenderPartial("~/Views/Common/ProfileImage.cshtml", r.UserProfile);
+                                        }
+                                    </li>
                                 }
-                            </li>
-                            }
-                        </ul>
+                            </ul>
                         }
                     </div>
                     <hr>
-                    @{ Html.RenderPartial("~/Views/ConsoleEvent/Module/LessonEmphasis.ascx", _model);}
+                    @{ Html.RenderPartial("~/Views/ConsoleEvent/Module/LessonEmphasis.cshtml", _model);}
 
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-darkteal btn-round waves-effect"><i class="zmdi zmdi-edit"></i></button>
                 <button type="button" class="btn btn-simple btn-round waves-effect" onclick="commitEmphasis('@(plan.ExecutionID.EncryptKey())');">更新重點</button>
-                @{ Html.RenderPartial("~/Views/ConsoleEvent/Module/RevokeLesson.ascx", _model);}
+                @{ Html.RenderPartial("~/Views/ConsoleEvent/Module/RevokeLesson.cshtml", _model);}
 
             </div>
         </div>
     </div>
-    @{ Html.RenderPartial("~/Views/ConsoleHome/Shared/BSModalScript.ascx", model: _dialogID);}
+    @{ Html.RenderPartial("~/Views/ConsoleHome/Shared/BSModalScript.cshtml", model: _dialogID);}
 
 </div>
-@{
 
-    ModelStateDictionary _modelState;
-    ModelSource<UserProfile> models;
-    LessonTime _model;
-    CalendarEventQueryViewModel _viewModel;
-    String _dialogID = $"other{DateTime.Now.Ticks}";
-    TrainingPlan plan;
-
-    
-    
-        _modelState = (ModelStateDictionary)ViewBag.ModelState;
-        models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
-        _model = (LessonTime)this.Model;
-        _viewModel = (CalendarEventQueryViewModel)ViewBag.ViewModel;
-        plan = _model.AssertTrainingPlan(models);
-    }

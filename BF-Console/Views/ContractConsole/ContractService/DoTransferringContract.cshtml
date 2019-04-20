@@ -9,7 +9,22 @@
 @using WebHome.Models.DataEntity
 @using WebHome.Controllers
 @using Newtonsoft.Json
+@{
 
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    CourseContract _model;
+    UserProfile _profile;
+    String _viewID;
+
+
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = (CourseContract)this.Model;
+    _profile = Context.GetUser();
+    _viewID = ViewBag.ViewID as String;
+}
 <div class="header">
     <h2><strong>轉讓資料</strong></h2>
 </div>
@@ -24,7 +39,7 @@
         <div class="col-sm-6">
             <div class="input-group">
                 @{ ViewBag.SearchAction = Url.Action("SearchContractOwner", "ContractConsole");
-                    Html.RenderPartial("~/Views/ConsoleEvent/Module/SearchLearner.ascx");}
+                    Html.RenderPartial("~/Views/ConsoleEvent/Module/SearchLearner.cshtml");}
 
                 <input type="hidden" name="UID" />
             </div>
@@ -77,19 +92,4 @@
     }
     //
 </script>
-@{
 
-    ModelStateDictionary _modelState;
-    ModelSource<UserProfile> models;
-    CourseContract _model;
-    UserProfile _profile;
-    String _viewID;
-
-    
-    
-        _modelState = (ModelStateDictionary)ViewBag.ModelState;
-        models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
-        _model = (CourseContract)this.Model;
-        _profile = Context.GetUser();
-        _viewID = ViewBag.ViewID as String;
-    }

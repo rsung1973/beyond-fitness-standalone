@@ -18,11 +18,11 @@
 }
 @if (_model.IsManager() || _model.IsViceManager())
     {
-        Html.RenderPartial("~/Views/ContractConsole/Module/AboutContractServicesByManager.ascx", _model);
+        Html.RenderPartial("~/Views/ContractConsole/Module/AboutContractServicesByManager.cshtml", _model);
     }
     else
     {
-        Html.RenderPartial("~/Views/ContractConsole/Module/AboutContractServicesByPureCoach.ascx", _model);
+        Html.RenderPartial("~/Views/ContractConsole/Module/AboutContractServicesByPureCoach.cshtml", _model);
     }
 
 

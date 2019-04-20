@@ -103,7 +103,7 @@
                                         <div>
                                             <select class="form-control show-tick" name="BranchID">
                                                 <option value="">-- 請選擇地點 --</option>
-                                                @{ Html.RenderPartial("~/Views/SystemInfo/BranchStoreOptions.ascx", model: (models.GetTable<CoachWorkplace>().Where(c => c.CoachID == _profile.UID).Select(c => (int?)c.BranchID).FirstOrDefault() ?? -1));}
+                                                @{ Html.RenderPartial("~/Views/SystemInfo/BranchStoreOptions.cshtml", model: (models.GetTable<CoachWorkplace>().Where(c => c.CoachID == _profile.UID).Select(c => (int?)c.BranchID).FirstOrDefault() ?? -1));}
 
                                             </select>
                                         </div>
@@ -462,7 +462,7 @@
         </div>
     </div>
 
-    @{ Html.RenderPartial("~/Views/ConsoleHome/Shared/BSModalScript.ascx", model: _dialogID);}
+    @{ Html.RenderPartial("~/Views/ConsoleHome/Shared/BSModalScript.cshtml", model: _dialogID);}
 
     <script>
 

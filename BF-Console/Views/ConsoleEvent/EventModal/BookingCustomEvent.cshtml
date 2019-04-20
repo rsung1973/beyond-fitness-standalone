@@ -117,7 +117,7 @@
                                         <div>
                                             <select class="form-control show-tick" name="BranchID">
                                                 <option value="@(Naming.BranchName.請選擇)">-- 請選擇地點 --</option>
-                                                @{ Html.RenderPartial("~/Views/SystemInfo/BranchStoreOptions.ascx", model: (int?)_viewModel.BranchID);}
+                                                @{ Html.RenderPartial("~/Views/SystemInfo/BranchStoreOptions.cshtml", model: (int?)_viewModel.BranchID);}
 
                                                 <option value="@(Naming.BranchName.璞真)" @(_viewModel.Place == Naming.BranchName.璞真.ToString() ? "selected" : null)>璞真</option>
                                                 <option value="@(Naming.BranchName.其他)" @(_viewModel.Place == Naming.BranchName.其他.ToString() ? "selected" : null)>其他</option>
@@ -154,7 +154,7 @@
                                                                      .Select(w => w.ServingCoach)
                                                                      .Where(s => s.CoachID != _profile.UID)
                                                                      .Where(s => s.UserProfile.LevelID == (int)Naming.MemberStatusDefinition.Checked);
-                                                                Html.RenderPartial("~/Views/SystemInfo/ServingCoachOptions.ascx", items);}
+                                                                Html.RenderPartial("~/Views/SystemInfo/ServingCoachOptions.cshtml", items);}
 
                                                         </optgroup>
                                                     }
@@ -179,7 +179,7 @@
         </div>
     </div>
 
-    @{ Html.RenderPartial("~/Views/ConsoleHome/Shared/BSModalScript.ascx", model: _dialogID);}
+    @{ Html.RenderPartial("~/Views/ConsoleHome/Shared/BSModalScript.cshtml", model: _dialogID);}
 
     <script>
 

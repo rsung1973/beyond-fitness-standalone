@@ -236,7 +236,7 @@ namespace BFConsole.Controllers
                 }
             }
 
-            return View("~/Views/ContractConsole/Module/CustomContractList.ascx", items);
+            return View("~/Views/ContractConsole/Module/CustomContractList.cshtml", items);
         }
 
         public ActionResult InvokeContractQuery(CourseContractQueryViewModel viewModel)
@@ -245,7 +245,7 @@ namespace BFConsole.Controllers
             //viewModel.ContractDateTo = viewModel.ContractDateFrom.Value.AddMonths(1).AddDays(-1);
             viewModel.ByCustom = true;
             ViewBag.ViewModel = viewModel;
-            return View("~/Views/ContractConsole/ContractModal/ContractQuery.ascx");
+            return View("~/Views/ContractConsole/ContractModal/ContractQuery.cshtml");
         }
 
         public ActionResult ProcessContract(CourseContractQueryViewModel viewModel)
@@ -261,7 +261,7 @@ namespace BFConsole.Controllers
                 return View("~/Views/ConsoleHome/Shared/AlertMessage.cshtml", model: "合約資料錯誤!!");
             }
 
-            return View("~/Views/ContractConsole/ContractModal/ProcessContract.ascx", item);
+            return View("~/Views/ContractConsole/ContractModal/ProcessContract.cshtml", item);
         }
 
         public ActionResult ProcessContractService(CourseContractQueryViewModel viewModel)
@@ -270,7 +270,7 @@ namespace BFConsole.Controllers
             CourseContract item = result.Model as CourseContract;
             if(item!=null)
             {
-                result.ViewName = "~/Views/ContractConsole/ContractModal/ProcessContractService.ascx";
+                result.ViewName = "~/Views/ContractConsole/ContractModal/ProcessContractService.cshtml";
             }
             return result;
         }
@@ -286,7 +286,7 @@ namespace BFConsole.Controllers
                 return result;
             }
 
-            return View("~/Views/ContractConsole/ContractModal/AboutContractDetails.ascx", item);
+            return View("~/Views/ContractConsole/ContractModal/AboutContractDetails.cshtml", item);
         }
 
         public ActionResult SelectCoach()
@@ -330,7 +330,7 @@ namespace BFConsole.Controllers
                 }
             }
 
-            return View("~/Views/ContractConsole/Editing/CourseContractCommitted.ascx", item);
+            return View("~/Views/ContractConsole/Editing/CourseContractCommitted.cshtml", item);
         }
 
         public ActionResult SaveContract(CourseContractViewModel viewModel)
@@ -348,7 +348,7 @@ namespace BFConsole.Controllers
                 }
             }
 
-            return View("~/Views/ContractConsole/Editing/CourseContractSaved.ascx", item);
+            return View("~/Views/ContractConsole/Editing/CourseContractSaved.cshtml", item);
         }
 
         public ActionResult ListLessonPrice(CourseContractQueryViewModel viewModel)
@@ -373,7 +373,7 @@ namespace BFConsole.Controllers
                 .Where(p => p.BranchID == viewModel.BranchID)
                 .Where(l => !l.DurationInMinutes.HasValue || l.DurationInMinutes == viewModel.DurationInMinutes);
 
-            return View("~/Views/ContractConsole/ContractModal/ListLessonPrice.ascx", items);
+            return View("~/Views/ContractConsole/ContractModal/ListLessonPrice.cshtml", items);
         }
 
         public ActionResult CalculateTotalCost(CourseContractQueryViewModel viewModel)
@@ -383,7 +383,7 @@ namespace BFConsole.Controllers
             var item = models.GetTable<LessonPriceType>().Where(p => p.PriceID == viewModel.PriceID).FirstOrDefault();
             viewModel.TotalCost = item?.ListPrice * viewModel.Lessons;
 
-            return View("~/Views/ContractConsole/Editing/TotalCostSummary.ascx");
+            return View("~/Views/ContractConsole/Editing/TotalCostSummary.cshtml");
         }
 
         public ActionResult ListContractMember(CourseContractQueryViewModel viewModel)
@@ -394,7 +394,7 @@ namespace BFConsole.Controllers
                 viewModel.UID = viewModel.UID.Distinct().ToArray();
             }
 
-            return View("~/Views/ContractConsole/Editing/ListContractMember.ascx");
+            return View("~/Views/ContractConsole/Editing/ListContractMember.cshtml");
         }
 
         public ActionResult SearchContractMember(String userName)
@@ -410,14 +410,14 @@ namespace BFConsole.Controllers
             var items = userName.PromptLearnerByName(models);
 
             if (items.Count() > 0)
-                return View("~/Views/ContractConsole/ContractModal/SelectContractMember.ascx", items);
+                return View("~/Views/ContractConsole/ContractModal/SelectContractMember.cshtml", items);
             else
                 return View("~/Views/ConsoleHome/Shared/AlertMessage.cshtml", model: "Opps！您確定您輸入的資料正確嗎！？");
         }
 
         public ActionResult ProcessContractMember(int uid)
         {
-            return View("~/Views/ContractConsole/ContractModal/ProcessContractMember.ascx", uid);
+            return View("~/Views/ContractConsole/ContractModal/ProcessContractMember.cshtml", uid);
         }
 
         public ActionResult EditContractMember(ContractMemberViewModel viewModel)
@@ -443,7 +443,7 @@ namespace BFConsole.Controllers
             viewModel.Address = item.Address;
             viewModel.Nickname = item.Nickname;
 
-            return View("~/Views/ContractConsole/ContractModal/EditContractMember.ascx");
+            return View("~/Views/ContractConsole/ContractModal/EditContractMember.cshtml");
         }
 
         public ActionResult CommitContractMember(ContractMemberViewModel viewModel)
@@ -461,14 +461,14 @@ namespace BFConsole.Controllers
                 }
             }
 
-            return View("~/Views/ContractConsole/Editing/ContractMemberCommitted.ascx", item);
+            return View("~/Views/ContractConsole/Editing/ContractMemberCommitted.cshtml", item);
 
         }
 
         public ActionResult SignaturePanel(CourseContractSignatureViewModel viewModel)
         {
             ViewBag.ViewModel = viewModel;
-            return View("~/Views/ContractConsole/ContractModal/SignaturePanel.ascx");
+            return View("~/Views/ContractConsole/ContractModal/SignaturePanel.cshtml");
         }
 
         public ActionResult ExecuteContractStatus(CourseContractViewModel viewModel)
@@ -486,7 +486,7 @@ namespace BFConsole.Controllers
                 }
             }
 
-            return View("~/Views/ContractConsole/Editing/ContractStatusChanged.ascx", item);
+            return View("~/Views/ContractConsole/Editing/ContractStatusChanged.cshtml", item);
         }
 
         public ActionResult EnableContractAmendment(CourseContractViewModel viewModel)
@@ -497,7 +497,7 @@ namespace BFConsole.Controllers
                 return View("~/Views/ConsoleHome/Shared/AlertMessage.cshtml", model: alertMessage);
             }
 
-            return View("~/Views/ContractConsole/Editing/ContractStatusChanged.ascx", item);
+            return View("~/Views/ContractConsole/Editing/ContractStatusChanged.cshtml", item);
         }
 
         public ActionResult ConfirmSignature(CourseContractViewModel viewModel)
@@ -515,7 +515,7 @@ namespace BFConsole.Controllers
                 }
             }
 
-            return View("~/Views/ContractConsole/Editing/CourseContractSigned.ascx", item);
+            return View("~/Views/ContractConsole/Editing/CourseContractSigned.cshtml", item);
         }
 
         public ActionResult ConfirmContractServiceSignature(CourseContractViewModel viewModel)
@@ -533,7 +533,7 @@ namespace BFConsole.Controllers
                 }
             }
 
-            return View("~/Views/ContractConsole/Editing/CourseContractSigned.ascx", item);
+            return View("~/Views/ContractConsole/Editing/CourseContractSigned.cshtml", item);
         }
 
         public ActionResult EnableContractStatus(CourseContractViewModel viewModel)
@@ -553,7 +553,7 @@ namespace BFConsole.Controllers
                 }
                 else
                 {
-                    return View("~/Views/ContractConsole/Editing/CourseContractSigned.ascx", item);
+                    return View("~/Views/ContractConsole/Editing/CourseContractSigned.cshtml", item);
                 }
             }
             else
@@ -575,7 +575,7 @@ namespace BFConsole.Controllers
                 }
             }
 
-            return View("~/Views/ContractConsole/Editing/ContractServiceCommitted.ascx", item);
+            return View("~/Views/ContractConsole/Editing/ContractServiceCommitted.cshtml", item);
         }
 
         public ActionResult SearchContractOwner(String userName)
@@ -584,7 +584,7 @@ namespace BFConsole.Controllers
 
             if (result.Model is IQueryable<UserProfile> items)
             {
-                result.ViewName = "~/Views/ContractConsole/ContractModal/SelectContractOwner.ascx";
+                result.ViewName = "~/Views/ContractConsole/ContractModal/SelectContractOwner.cshtml";
             }
 
             return result;

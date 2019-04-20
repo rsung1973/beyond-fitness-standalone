@@ -7,6 +7,21 @@
 @using WebHome.Models.ViewModel
 @using WebHome.Models.DataEntity
 @using WebHome.Controllers
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    LessonTime _model;
+    CalendarEventQueryViewModel _viewModel;
+    String _dialogID = $"boy{DateTime.Now.Ticks}";
+
+
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = (LessonTime)this.Model;
+    _viewModel = (CalendarEventQueryViewModel)ViewBag.ViewModel;
+}
 <div class="modal fade" id="@(_dialogID)" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
@@ -48,21 +63,7 @@
             </div>
         </div>
     </div>
-    @{ Html.RenderPartial("~/Views/ConsoleHome/Shared/BSModalScript.ascx", model: _dialogID);}
+    @{ Html.RenderPartial("~/Views/ConsoleHome/Shared/BSModalScript.cshtml", model: _dialogID);}
 
 </div>
-@{
 
-    ModelStateDictionary _modelState;
-    ModelSource<UserProfile> models;
-    LessonTime _model;
-    CalendarEventQueryViewModel _viewModel;
-    String _dialogID = $"boy{DateTime.Now.Ticks}";
-
-    
-    
-        _modelState = (ModelStateDictionary)ViewBag.ModelState;
-        models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
-        _model = (LessonTime)this.Model;
-        _viewModel = (CalendarEventQueryViewModel)ViewBag.ViewModel;
-    }

@@ -8,10 +8,22 @@
 @using WebHome.Models.DataEntity
 @using WebHome.Controllers
 @using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    CourseContractQueryViewModel _viewModel;
+
+
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _viewModel = (CourseContractQueryViewModel)ViewBag.ViewModel;
+}
 
 <div class="table-responsive">
     @{ ViewBag.OwnerID = _viewModel.OwnerID;
-        Html.RenderPartial("~/Views/ContractConsole/Module/ContractMemberList.ascx", _viewModel.UID.PromptContractMembers(models));}
+        Html.RenderPartial("~/Views/ContractConsole/Module/ContractMemberList.cshtml", _viewModel.UID.PromptContractMembers(models));}
 
 </div>
 
@@ -43,15 +55,3 @@
 
 </script>
 
-@{
-
-    ModelStateDictionary _modelState;
-    ModelSource<UserProfile> models;
-    CourseContractQueryViewModel _viewModel;
-
-    
-    
-        _modelState = (ModelStateDictionary)ViewBag.ModelState;
-        models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
-        _viewModel = (CourseContractQueryViewModel)ViewBag.ViewModel;
-    }

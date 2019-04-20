@@ -5,27 +5,41 @@
 
 @using WebHome.Helper
 @using WebHome.Models.Locale
-@using WebHome.Models.Locale
 @using WebHome.Models.ViewModel
 @using WebHome.Models.DataEntity
 @using WebHome.Controllers
 @using Newtonsoft.Json
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    CourseContract _item;
+    UserProfile _model;
+    CourseContractQueryViewModel _viewModel;
 
-@section CustomHeader { 
-<!-- JQuery DataTable Css -->
+    Layout = "~/Views/ConsoleHome/Template/MainPage.cshtml";
+
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    _model = (UserProfile)this.Model;
+    _viewModel = (CourseContractQueryViewModel)ViewBag.ViewModel;
+    _item = (CourseContract)ViewBag.DataItem;
+    ViewBag.ContractAgent = _model;
+}
+@section CustomHeader {
+    <!-- JQuery DataTable Css -->
     <link href="plugins/jquery-datatable/DataTables-1.10.18/css/dataTables.bootstrap4.min.css" rel="stylesheet">
     <link href="plugins/jquery-datatable/Responsive-2.2.2/css/responsive.bootstrap4.min.css" rel="stylesheet">
     <link href="plugins/jquery-datatable/FixedColumns-3.2.5/css/fixedColumns.bootstrap4.min.css" rel="stylesheet">
     <!-- Bootstrap Datetimepick -->
     @*<link href="plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
-    <link href="css/datetimepicker.css" rel="stylesheet" />*@
+        <link href="css/datetimepicker.css" rel="stylesheet" />*@
     <link href="plugins/smartcalendar/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
     <link href="css/smartcalendar-2.css" rel="stylesheet" />
 
     <!-- Custom Css -->
     <link rel="stylesheet" href="css/customelist.css?2" />
     <!-- jSignature -->
-    <link rel="stylesheet" href="css/jsignature.css"> 
+    <link rel="stylesheet" href="css/jsignature.css">
 }
 
 <script>
@@ -36,62 +50,60 @@
                 $global.onReady[i]();
             }
         });
-    </script>
-    <!-- Main Content -->
-    <section class="content">
-        @{ ViewBag.BlockHeader = _item.Status == (int)Naming.CourseContractStatus.待簽名 ? "學生簽名" : "主管審核";
-            ViewBag.InsertPartial = (Action)(() =>
-            {
-                Html.RenderPartial("~/Views/ConsoleHome/Shared/MyContractHeader.ascx", _model); ;
-            });
-            Html.RenderPartial("~/Views/ConsoleHome/Module/BlockHeader.ascx", _model);}
+</script>
+<!-- Main Content -->
+<section class="content">
+    @{ ViewBag.BlockHeader = _item.Status == (int)Naming.CourseContractStatus.待簽名 ? "學生簽名" : "主管審核";
+        ViewBag.InsertPartial = "~/Views/ConsoleHome/Shared/MyContractHeader.cshtml";
+        Html.RenderPartial("~/Views/ConsoleHome/Module/BlockHeader.cshtml", _model);
+        }
 
-        <div class="container-fluid">
-            <div class="card">
-                <div class="body">
-                    @{ var revision = _item.CourseContractRevision;}
- @if (revision.Reason == "展延")
+    <div class="container-fluid">
+        <div class="card">
+            <div class="body">
+                @{ var revision = _item.CourseContractRevision;}
+                @if (revision.Reason == "展延")
+                {
+                    Html.RenderPartial("~/Views/ContractConsole/ContractService/CourseContractExtensionView.cshtml", revision);
+                }
+                else if (revision.Reason == "轉讓")
+                {
+                    Html.RenderPartial("~/Views/ContractConsole/ContractService/CourseContractTransferenceView.cshtml", revision);
+                }
+                else if (revision.Reason == "轉點")
+                {
+                    Html.RenderPartial("~/Views/ContractConsole/ContractService/CourseContractMigrationView.cshtml", revision);
+                }
+                else if (revision.Reason == "終止")
+                {
+                    Html.RenderPartial("~/Views/ContractConsole/ContractService/CourseContractTerminationView.cshtml", revision);
+                }
+                else if (revision.Reason == "轉換體能顧問")
+                {
+                    Html.RenderPartial("~/Views/ContractConsole/ContractService/ContractConsultantReassignmentView.cshtml", revision);
+                }
+                else if (revision.Reason == "其他")
+                {
+                    Html.RenderPartial("~/Views/ContractConsole/ContractService/CourseContractOtherAmendmentView.cshtml", revision);
+                }
+                <div class="row clearfix">
+                    <div class="col-lg-12">
+                        <button type="button" class="btn btn-danger btn-round btn-simple btn-round waves-effect waves-red reedit" onclick="rejectContractService();">內容錯誤，刪除申請</button>
+                        @if (_item.Status == (int)Naming.CourseContractStatus.待簽名)
                         {
-                            Html.RenderPartial("~/Views/ContractConsole/ContractService/CourseContractExtensionView.ascx", revision);
-                        }
-                        else if (revision.Reason == "轉讓")
-                        {
-                            Html.RenderPartial("~/Views/ContractConsole/ContractService/CourseContractTransferenceView.ascx", revision);
-                        }
-                        else if (revision.Reason == "轉點")
-                        {
-                            Html.RenderPartial("~/Views/ContractConsole/ContractService/CourseContractMigrationView.ascx", revision);
-                        }
-                        else if (revision.Reason == "終止")
-                        {
-                            Html.RenderPartial("~/Views/ContractConsole/ContractService/CourseContractTerminationView.ascx", revision);
-                        }
-                        else if (revision.Reason == "轉換體能顧問")
-                        {
-                            Html.RenderPartial("~/Views/ContractConsole/ContractService/ContractConsultantReassignmentView.ascx", revision);
-                        }
-                        else if (revision.Reason == "其他")
-                        {
-                            Html.RenderPartial("~/Views/ContractConsole/ContractService/CourseContractOtherAmendmentView.ascx", revision);
-                        }
-                    <div class="row clearfix">
-                        <div class="col-lg-12">
-                            <button type="button" class="btn btn-danger btn-round btn-simple btn-round waves-effect waves-red reedit" onclick="rejectContractService();">內容錯誤，刪除申請</button>
-                            @if (_item.Status == (int)Naming.CourseContractStatus.待簽名)
-                                {
                             <button type="button" class="btn btn-darkteal btn-round waves-effect float-right next" onclick="confirmSignature();">確定，不後悔</button>
-                            }
-                                else
-                                {
+                        }
+                        else
+                        {
                             <button type="button" class="btn btn-darkteal btn-round waves-effect float-right next" onclick="approveContractService();">確定，審核通過</button>
-                            }
-                        </div>
+                        }
                     </div>
                 </div>
             </div>
         </div>
-    </section>
-    <script>
+    </div>
+</section>
+<script>
         var done = false;
         function signaturePanel(contractID, uid, signatureName) {
             if (done)
@@ -152,10 +164,10 @@
                 }
             });
         }//
-    </script>
+</script>
 
-@section TailPageJavaScriptInclude { 
-<!--Sparkline Plugin Js-->
+@section TailPageJavaScriptInclude {
+    <!--Sparkline Plugin Js-->
     <script src="plugins/jquery-sparkline/jquery.sparkline.js"></script>
     <!-- SweetAlert Plugin Js -->
     <script src="plugins/sweetalert/sweetalert.min.js"></script>
@@ -165,11 +177,11 @@
     <script src="plugins/jquery-datatable/FixedColumns-3.2.5/js/dataTables.fixedColumns.min.js"></script>
     <!-- Bootstrap datetimepicker Plugin Js -->
     @*<script src="plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
-    <script src="plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-TW.js"></script>*@
+        <script src="plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-TW.js"></script>*@
     <script src="plugins/smartcalendar/js/bootstrap-datetimepicker.min.js"></script>
     <script src="plugins/smartcalendar/js/locales-datetimepicker/bootstrap-datetimepicker.zh-TW.js"></script>
 
-    @{ Html.RenderPartial("~/Views/ConsoleHome/Shared/KnobJS.ascx");}
+    @{ Html.RenderPartial("~/Views/ConsoleHome/Shared/KnobJS.cshtml");}
 
 
     @{ String basePath = VirtualPathUtility.ToAbsolute("~/");}
@@ -182,22 +194,7 @@
 
     <script type="text/javascript">
 
-    </script> 
+    </script>
 }
 
-@{
-    ModelSource<UserProfile> models;
-    ModelStateDictionary _modelState;
-    CourseContract _item;
-    UserProfile _model;
-    CourseContractQueryViewModel _viewModel;
 
-    
-    
-        models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
-        _modelState = (ModelStateDictionary)ViewBag.ModelState;
-        _model = (UserProfile)this.Model;
-        _viewModel = (CourseContractQueryViewModel)ViewBag.ViewModel;
-        _item = (CourseContract)ViewBag.DataItem;
-        ViewBag.ContractAgent = _model;
-    }

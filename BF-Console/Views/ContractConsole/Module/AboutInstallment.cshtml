@@ -8,7 +8,19 @@
 @using WebHome.Models.DataEntity
 @using WebHome.Controllers
 @using Newtonsoft.Json
+@{
 
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    IQueryable<CourseContract> _model;
+    IQueryable<CourseContract> _contractItems;
+    String _knobID = $"installmentRate{DateTime.Now.Ticks}";
+
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = _contractItems = (IQueryable<CourseContract>)this.Model;
+}
 @{ DateTime calcStart = new DateTime(2018, 12, 1);
     var calculatedItems = _contractItems.Where(c => c.EffectiveDate >= calcStart);
     var calculatedInstallment = calculatedItems.Where(c => c.InstallmentID.HasValue);
@@ -25,40 +37,28 @@
             </script>
             <h6 class="m-t-20">分期比率</h6>
             <p class="displayblock m-b-0">
-                @(ratio)% 本月平均 
+                @(ratio)% 本月平均
                 @{ DateTime monthStart = DateTime.Today.FirstDayOfMonth();
                     var currentContractsMonthly = _contractItems.Where(c => c.EffectiveDate >= monthStart);
-                    var contractsInstallment = currentContractsMonthly.Where(c => c.InstallmentID.HasValue);                                    
+                    var contractsInstallment = currentContractsMonthly.Where(c => c.InstallmentID.HasValue);
                     var contractsLastMonth = _contractItems.Where(c => c.EffectiveDate >= monthStart.AddMonths(-1) && c.EffectiveDate < monthStart);
                     var contractsLastMonthInstallment = contractsLastMonth.Where(c => c.InstallmentID.HasValue);
                     var currentCount = contractsInstallment.Count();
                     var lastMonthCount = contractsLastMonthInstallment.Count();}
- @if (currentCount < lastMonthCount)
-                    {
-                <i class="zmdi zmdi-trending-down col-green"></i>
+                @if (currentCount < lastMonthCount)
+                {
+                    <i class="zmdi zmdi-trending-down col-green"></i>
                 }
-                    else if (currentCount > lastMonthCount)
-                    {
-                <i class="zmdi zmdi-trending-up col-red"></i>
+                else if (currentCount > lastMonthCount)
+                {
+                    <i class="zmdi zmdi-trending-up col-red"></i>
                 }
             </p>
         </div>
     </div>
 </div>
 
-@{
 
-    ModelStateDictionary _modelState;
-    ModelSource<UserProfile> models;
-    IQueryable<CourseContract> _model;
-    IQueryable<CourseContract> _contractItems;
-    String _knobID = $"installmentRate{DateTime.Now.Ticks}";
-
-
-        _modelState = (ModelStateDictionary)ViewBag.ModelState;
-        models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
-        _model = _contractItems = (IQueryable<CourseContract>)this.Model;
-    }
 
 
 

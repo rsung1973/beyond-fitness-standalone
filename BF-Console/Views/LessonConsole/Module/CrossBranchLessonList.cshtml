@@ -7,7 +7,18 @@
 @using WebHome.Models.ViewModel
 @using WebHome.Models.DataEntity
 @using WebHome.Controllers
+@{
 
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    IQueryable<LessonTime> _model;
+
+
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = (IQueryable<LessonTime>)this.Model;
+}
 <table class="table table-striped nowrap dataTable-crossBranch" style="width: 100%">
     <thead class="bg-darkteal">
         <tr>
@@ -23,16 +34,17 @@
     </thead>
     <tbody>
         @foreach (var item in _model)
-            {
-        <tr onclick="processCrossBranch('@(item.LessonID.EncryptKey())');">
-            <td>
-                <span class='list-icon'>
-                    @{
-                        ViewBag.ProfileClass = "patients-img";
-                        Html.RenderPartial("~/Views/Common/ProfileImage.cshtml", item.AsAttendingCoach.UserProfile);
-                    }
-                </span>
-                <span class='hidden-sm-down'>@(item.AsAttendingCoach.UserProfile.RealName)
+        {
+            <tr onclick="processCrossBranch('@(item.LessonID.EncryptKey())');">
+                <td>
+                    <span class='list-icon'>
+                        @{
+                            ViewBag.ProfileClass = "patients-img";
+                            Html.RenderPartial("~/Views/Common/ProfileImage.cshtml", item.AsAttendingCoach.UserProfile);
+                        }
+                    </span>
+                    <span class='hidden-sm-down'>
+                        @(item.AsAttendingCoach.UserProfile.RealName)
                     <span class='small'>(@(item.AsAttendingCoach.UserProfile.Nickname))</span>
                 </span>
             </td>
@@ -53,7 +65,7 @@
                 <i class='zmdi zmdi-more-vert float-right'></i>
             </td>
         </tr>
-        }
+    }
     </tbody>
 </table>
 
@@ -152,15 +164,4 @@
 
 </script>
 
-@{
 
-    ModelStateDictionary _modelState;
-    ModelSource<UserProfile> models;
-    IQueryable<LessonTime> _model;
-
-    
-    
-        _modelState = (ModelStateDictionary)ViewBag.ModelState;
-        models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
-        _model = (IQueryable<LessonTime>)this.Model;
-    }

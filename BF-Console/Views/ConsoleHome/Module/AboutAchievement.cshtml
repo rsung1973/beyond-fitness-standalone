@@ -7,6 +7,18 @@
 @using WebHome.Models.ViewModel
 @using WebHome.Models.DataEntity
 @using WebHome.Controllers
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    UserProfile _model;
+
+
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = (UserProfile)this.Model;
+}
 <div class="container-fluid">
     <div class="row clearfix">
         <h4 class="card-outbound-header m-l-15">我的分店業績</h4>
@@ -21,7 +33,7 @@
                                 <span class="m-r-20"><i class="zmdi zmdi-label col-purple m-r-5"></i>體驗</span>
                             </div>
                             <div class="chart-box">
-                                @{ Html.RenderPartial("~/Views/ConsoleHome/Module/TodayLessonsBarChart.ascx", _model);}
+                                @{ Html.RenderPartial("~/Views/ConsoleHome/Module/TodayLessonsBarChart.cshtml", _model);}
 
                             </div>
                         </div>
@@ -32,15 +44,4 @@
     </div>
 </div>
 
-@{
 
-    ModelStateDictionary _modelState;
-    ModelSource<UserProfile> models;
-    UserProfile _model;
-
-    
-    
-        _modelState = (ModelStateDictionary)ViewBag.ModelState;
-        models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
-        _model = (UserProfile)this.Model;
-    }

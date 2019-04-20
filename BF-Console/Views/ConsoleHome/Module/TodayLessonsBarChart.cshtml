@@ -8,28 +8,44 @@
 @using WebHome.Models.DataEntity
 @using WebHome.Controllers
 @using Newtonsoft.Json
+@{
 
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    UserProfile _model;
+    string _chartID = "lessonsBar" + DateTime.Now.Ticks;
+    IEnumerable<int> _hourIdx;
+
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = (UserProfile)this.Model;
+    _hourIdx = Enumerable.Range(7, 16);
+
+}
 @{ var items = models.GetTable<LessonTime>().Where(l => l.ClassTime >= DateTime.Today && l.ClassTime < DateTime.Today.AddDays(1));}
- @if(_model.IsManager() || _model.IsViceManager())
-    {
-        var branch = models.GetTable<BranchStore>().Where(b => b.ManagerID == _model.UID || b.ViceManagerID == _model.UID)
-                .Select(b => b.BranchID).FirstOrDefault();
-        items = items.Where(l => l.BranchID == branch);
-    }@{ var PTLessons = items.PTLesson()
-            .Select(l => l.ClassTime.Value.Hour)
-            .GroupBy(h => h)
-            .Select(g => new _Counting { Hour = g.Key, Count = g.Count() })
-            .ToList();
-    var PILessons = items.Where(l => l.TrainingBySelf == 1)
-            .Select(l => l.ClassTime.Value.Hour)
-            .GroupBy(h => h)
-            .Select(g => new _Counting { Hour = g.Key, Count = g.Count() })
-            .ToList();
-    var TrialLessons = items.TrialLesson()
-            .Select(l => l.ClassTime.Value.Hour)
-            .GroupBy(h => h)
-            .Select(g => new _Counting { Hour = g.Key, Count = g.Count() })
-            .ToList();}
+@if (_model.IsManager() || _model.IsViceManager())
+{
+    var branch = models.GetTable<BranchStore>().Where(b => b.ManagerID == _model.UID || b.ViceManagerID == _model.UID)
+            .Select(b => b.BranchID).FirstOrDefault();
+    items = items.Where(l => l.BranchID == branch);
+}
+ @{ 
+     var PTLessons = items.PTLesson()
+        .Select(l => l.ClassTime.Value.Hour)
+        .GroupBy(h => h)
+        .Select(g => new _Counting { Hour = g.Key, Count = g.Count() })
+        .ToList();
+     var PILessons = items.Where(l => l.TrainingBySelf == 1)
+             .Select(l => l.ClassTime.Value.Hour)
+             .GroupBy(h => h)
+             .Select(g => new _Counting { Hour = g.Key, Count = g.Count() })
+             .ToList();
+     var TrialLessons = items.TrialLesson()
+             .Select(l => l.ClassTime.Value.Hour)
+             .GroupBy(h => h)
+             .Select(g => new _Counting { Hour = g.Key, Count = g.Count() })
+             .ToList();}
 
 <canvas id="@(_chartID)" class="bar-chart"></canvas>
 <script>
@@ -39,15 +55,15 @@
             datasets: [{
                 label: "P.T",
                 backgroundColor: "rgba(245, 166, 35, .43)",
-                data: @Html.Raw(JsonConvert.SerializeObject(getDistribution(PTLessons)))
+                data: @Html.Raw(JsonConvert.SerializeObject(getDistribution(PTLessons,_hourIdx))),
             }, {
                 label: "P.I",
                 backgroundColor: "rgba(238,170,170, .43)",
-                data: @Html.Raw(JsonConvert.SerializeObject(getDistribution(PILessons)))
+                data: @Html.Raw(JsonConvert.SerializeObject(getDistribution(PILessons, _hourIdx))),
             }, {
                 label: "體驗",
                 backgroundColor: "rgba(197,182,226, .43)",
-                data: @Html.Raw(JsonConvert.SerializeObject(getDistribution(TrialLessons)))
+                data: @Html.Raw(JsonConvert.SerializeObject(getDistribution(TrialLessons, _hourIdx))),
             }]
         };
         var chartConfig = {
@@ -89,35 +105,21 @@
 
     });
 </script>
-@{ Html.RenderPartial("~/Views/ConsoleHome/Shared/InitBarChartNoRegister.ascx");}
+@{ Html.RenderPartial("~/Views/ConsoleHome/Shared/InitBarChartNoRegister.cshtml");}
 
-@{
 
-    ModelStateDictionary _modelState;
-    ModelSource<UserProfile> models;
-    UserProfile _model;
-    string _chartID = "lessonsBar" + DateTime.Now.Ticks;
-    IEnumerable<int> _hourIdx;
-
-    
-    
-        _modelState = (ModelStateDictionary)ViewBag.ModelState;
-        models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
-        _model = (UserProfile)this.Model;
-        _hourIdx = Enumerable.Range(7, 16);
-
-    }
-
+@functions {
     class _Counting
     {
         public int Hour { get; set; }
         public int Count { get; set; }
     }
 
-    IEnumerable<int> getDistribution(IEnumerable<_Counting> items)
+    IEnumerable<int> getDistribution(IEnumerable<_Counting> items, IEnumerable<int> hourIdx)
     {
-        foreach(var h in _hourIdx)
+        foreach (var h in hourIdx)
         {
             yield return items.Where(i => i.Hour == h).Select(i => i.Count).FirstOrDefault();
         }
     }
+}

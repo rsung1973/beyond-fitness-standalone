@@ -7,7 +7,24 @@
 @using WebHome.Models.ViewModel
 @using WebHome.Models.DataEntity
 @using WebHome.Controllers
+@{
 
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    UserProfile _model;
+    String _viewID = $"consultant{DateTime.Now.Ticks}";
+    CourseContractQueryViewModel _viewModel;
+    ServingCoach _fitnessConsultant;
+
+
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = (UserProfile)this.Model;
+    _viewModel = (CourseContractQueryViewModel)ViewBag.ViewModel;
+    _fitnessConsultant = models.GetTable<ServingCoach>().Where(c => c.CoachID == _viewModel.FitnessConsultant).FirstOrDefault();
+
+}
 <h2><strong>合約基本資料</strong> - <span id="fitnessConsultant">@(_fitnessConsultant?.UserProfile.FullName())</span></h2>
 <ul class="header-dropdown">
     <li>
@@ -36,21 +53,4 @@
     }//
 </script>
 
-@{
 
-    ModelStateDictionary _modelState;
-    ModelSource<UserProfile> models;
-    UserProfile _model;
-    String _viewID = $"consultant{DateTime.Now.Ticks}";
-    CourseContractQueryViewModel _viewModel;
-    ServingCoach _fitnessConsultant;
-
-    
-    
-        _modelState = (ModelStateDictionary)ViewBag.ModelState;
-        models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
-        _model = (UserProfile)this.Model;
-        _viewModel = (CourseContractQueryViewModel)ViewBag.ViewModel;
-        _fitnessConsultant = models.GetTable<ServingCoach>().Where(c => c.CoachID == _viewModel.FitnessConsultant).FirstOrDefault();
-
-    }

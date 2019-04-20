@@ -7,6 +7,19 @@
 @using WebHome.Models.ViewModel
 @using WebHome.Models.DataEntity
 @using WebHome.Controllers
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    LessonTime _model;
+    String _fieldID = $"emphasis{DateTime.Now.Ticks}";
+
+
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = (LessonTime)this.Model;
+}
 <div class="col-12 align-left">
     <p class="col-red">課表重點：</p>
     <div class="form-line">
@@ -43,16 +56,4 @@
     }
     //
 </script>
-@{
 
-    ModelStateDictionary _modelState;
-    ModelSource<UserProfile> models;
-    LessonTime _model;
-    String _fieldID = $"emphasis{DateTime.Now.Ticks}";
-
-    
-    
-        _modelState = (ModelStateDictionary)ViewBag.ModelState;
-        models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
-        _model = (LessonTime)this.Model;
-    }

@@ -7,6 +7,18 @@
 @using WebHome.Models.ViewModel
 @using WebHome.Models.DataEntity
 @using WebHome.Controllers
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    ContractMemberViewModel _viewModel;
+
+
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _viewModel = (ContractMemberViewModel)ViewBag.ViewModel;
+}
 
 <script>
     $(function () {
@@ -16,15 +28,3 @@
     });
 </script>
 
-@{
-
-    ModelStateDictionary _modelState;
-    ModelSource<UserProfile> models;
-    ContractMemberViewModel _viewModel;
-
-    
-    
-        _modelState = (ModelStateDictionary)ViewBag.ModelState;
-        models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
-        _viewModel = (ContractMemberViewModel)ViewBag.ViewModel;
-    }

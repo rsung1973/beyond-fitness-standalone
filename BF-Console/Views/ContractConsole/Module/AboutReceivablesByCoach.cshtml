@@ -21,7 +21,7 @@
         _model = (UserProfile)this.Model;
     }
 	
-	@{ Html.RenderPartial("~/Views/ContractConsole/Module/AboutReceivables.ascx", models.PromptAccountingContract().Where(c => c.FitnessConsultant == _model.UID));}
+	@{ Html.RenderPartial("~/Views/ContractConsole/Module/AboutReceivables.cshtml", models.PromptAccountingContract().Where(c => c.FitnessConsultant == _model.UID));}
 
 
 

@@ -94,7 +94,7 @@
                                                 <option value="">-- 請選擇地點 --</option>
                                                 @{ var workPlace = models.GetTable<CoachWorkplace>().Where(c => c.CoachID == _profile.UID);}
 
-                                                @{ Html.RenderPartial("~/Views/SystemInfo/BranchStoreOptions.ascx", model: _viewModel.BranchID ?? (workPlace.Count() == 1 ? workPlace.First().BranchID : -1));}
+                                                @{ Html.RenderPartial("~/Views/SystemInfo/BranchStoreOptions.cshtml", model: _viewModel.BranchID ?? (workPlace.Count() == 1 ? workPlace.First().BranchID : -1));}
 
                                             </select>
                                         </div>
@@ -103,7 +103,7 @@
                                         <label>與誰同行?</label>
                                         <div class="row clearfix">
                                             <div class="col-sm-12">
-                                                @{ Html.RenderPartial("~/Views/ConsoleEvent/Module/CoachPIAttendeeSelector.ascx", _viewModel.AttendeeID);}
+                                                @{ Html.RenderPartial("~/Views/ConsoleEvent/Module/CoachPIAttendeeSelector.cshtml", _viewModel.AttendeeID);}
 
                                             </div>
                                         </div>
@@ -121,7 +121,7 @@
     </div>
 
 
-    @{ Html.RenderPartial("~/Views/ConsoleHome/Shared/BSModalScript.ascx", model: _dialogID);}
+    @{ Html.RenderPartial("~/Views/ConsoleHome/Shared/BSModalScript.cshtml", model: _dialogID);}
 
     <script>
 

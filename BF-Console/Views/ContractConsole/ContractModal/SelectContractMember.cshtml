@@ -7,23 +7,6 @@
 @using WebHome.Models.ViewModel
 @using WebHome.Models.DataEntity
 @using WebHome.Controllers
-
-@{ ViewBag.SelectMember = (Func<UserProfile, String>)(item =>
-        {
-            return $"commitContractMember({item.UID});";
-        });
-    Html.RenderPartial("~/Views/ConsoleEvent/EventModal/MemberSelector.ascx", _model);}
-
-    <script>
-        function commitContractMember(uid) {
-            if (!$global.viewModel.UID) {
-                $global.viewModel.UID = [];
-            }
-            $global.viewModel.UID.push(uid);
-            loadMemberList();
-            $global.closeAllModal();
-        }//
-    </script>
 @{
 
     ModelStateDictionary _modelState;
@@ -32,10 +15,29 @@
     CalendarEventQueryViewModel _viewModel;
     String _dialogID = $"attendee{DateTime.Now.Ticks}";
 
-    
-    
-        _modelState = (ModelStateDictionary)ViewBag.ModelState;
-        models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
-        _model = (IQueryable<UserProfile>)this.Model;
-        _viewModel = (CalendarEventQueryViewModel)ViewBag.ViewModel;
+
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = (IQueryable<UserProfile>)this.Model;
+    _viewModel = (CalendarEventQueryViewModel)ViewBag.ViewModel;
+}
+@{ 
+    ViewBag.SelectMember = (Func<UserProfile, String>)(item =>
+    {
+        return $"commitContractMember({item.UID});";
+    });
+    Html.RenderPartial("~/Views/ConsoleEvent/EventModal/MemberSelector.cshtml", _model);
     }
+
+<script>
+    function commitContractMember(uid) {
+        if (!$global.viewModel.UID) {
+            $global.viewModel.UID = [];
+        }
+        $global.viewModel.UID.push(uid);
+        loadMemberList();
+        $global.closeAllModal();
+    }//
+</script>
+

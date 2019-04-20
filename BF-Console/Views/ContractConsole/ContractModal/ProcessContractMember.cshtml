@@ -8,6 +8,20 @@
 @using WebHome.Models.DataEntity
 @using WebHome.Controllers
 @using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    int? _model;
+    String _dialogID = $"processMember{DateTime.Now.Ticks}";
+
+
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = (int?)this.Model;
+
+}
 <div class="modal fade" id="@(_dialogID)" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
@@ -23,7 +37,7 @@
             </div>
         </div>
     </div>
-    @{ Html.RenderPartial("~/Views/ConsoleHome/Shared/BSModalScript.ascx", model: _dialogID);}
+    @{ Html.RenderPartial("~/Views/ConsoleHome/Shared/BSModalScript.cshtml", model: _dialogID);}
 
     <script>
         $(function () {
@@ -54,17 +68,4 @@
 
     </script>
 </div>
-@{
 
-    ModelStateDictionary _modelState;
-    ModelSource<UserProfile> models;
-    int? _model;
-    String _dialogID = $"processMember{DateTime.Now.Ticks}";
-
-    
-    
-        _modelState = (ModelStateDictionary)ViewBag.ModelState;
-        models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
-        _model = (int?)this.Model;
-
-    }
