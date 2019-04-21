@@ -1,4 +1,4 @@
-
+﻿
 @using System.IO
 @using System.Linq.Expressions
 
@@ -38,8 +38,16 @@
                                     ViewBag.ProfileClass = "img-thumbnail popfit";
                                     Html.RenderPartial("~/Views/Common/ProfileImage.cshtml", item);
                                 }
-                                <h6 class="users_name">@(item.RealName)</h6>
-                                <small class="join_date">@(item.Nickname)</small>
+                                @if (item.IsTrialLearner())
+                                {
+                                    <h6 class="users_name">@(item.RealName)@(item.Nickname!=null?$"({item.Nickname})":null)</h6>
+                                    <small class="join_date">體驗學生</small>
+                                }
+                                else
+                                {
+                                    <h6 class="users_name">@(item.RealName)</h6>
+                                    <small class="join_date">@(item.Nickname)</small>
+                                }
                             </a>
                         </li>
                     }

@@ -2074,6 +2074,12 @@
       <Association Name="ServingCoach_CourseContractRevisionItem" Member="ServingCoach" ThisKey="FitnessConsultant" OtherKey="CoachID" Type="ServingCoach" IsForeignKey="true" />
     </Type>
   </Table>
+  <Table Name="dbo.V_BranchStaff" Member="V_BranchStaff">
+    <Type Name="V_BranchStaff">
+      <Column Name="UID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="BranchID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
   <Function Name="dbo.InquireVacantNo" Method="InquireVacantNo">
     <Parameter Name="SellerID" Parameter="sellerID" Type="System.Int32" DbType="Int" />
     <Parameter Name="Year" Parameter="year" Type="System.Int32" DbType="Int" />

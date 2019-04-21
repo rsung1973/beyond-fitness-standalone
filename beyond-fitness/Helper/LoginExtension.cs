@@ -328,6 +328,10 @@ namespace WebHome.Helper
                 || profile.UserRoleAuthorization.Any(r => roleID.Contains(r.RoleID)));
         }
 
+        public static bool IsTrialLearner(this UserProfile profile)
+        {
+            return profile.UserProfileExtension?.CurrentTrial == 1;
+        }
 
     }
 }

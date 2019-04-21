@@ -36,31 +36,14 @@
     @foreach (var branch in models.GetTable<BranchStore>())
     {
         <optgroup label="@(branch.BranchName)">
-            @{ var items = models.GetTable<V_BranchStaff>().Where(w => w.BranchID == branch.BranchID)
-                           .Join(models.GetTable<UserProfile>(), v => v.UID, u => u.UID, (v, u) => u)
-                           .Where(s => s.LevelID == (int)Naming.MemberStatusDefinition.Checked)
-                           .Where(s => s.UID != _profile.UID)
-                           .OrderBy(u => u.RealName);
-                foreach (var user in items)
-                {
-                    <option value="@(user.UID)">@(user.FullName())</option>
-                }
-            }
+            @{ var items = models.GetTable<CoachWorkplace>().Where(w => w.BranchID == branch.BranchID)
+                                                                      .Select(w => w.ServingCoach)
+                                                                      .Where(s => s.CoachID != _profile.UID)
+                                                                      .Where(s => s.UserProfile.LevelID == (int)Naming.MemberStatusDefinition.Checked);
+                Html.RenderPartial("~/Views/SystemInfo/ServingCoachOptions.cshtml", items);}
+
         </optgroup>
     }
-    <optgroup label="其他">
-        @{  
-            var others = models.GetTable<V_BranchStaff>().Where(w => !w.BranchID.HasValue)
-                     .Join(models.GetTable<UserProfile>(), v => v.UID, u => u.UID, (v, u) => u)
-                     .Where(s => s.LevelID == (int)Naming.MemberStatusDefinition.Checked)
-                     .Where(s => s.UID != _profile.UID)
-                     .OrderBy(u => u.RealName);
-            foreach (var user in others)
-            {
-                <option value="@(user.UID)">@(user.FullName())</option>
-            }
-        }
-    </optgroup>
 </select>
 <script>
     $(function () {

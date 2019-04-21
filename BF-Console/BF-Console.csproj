@@ -97,15 +97,6 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
-    <Reference Include="CommonLib">
-      <HintPath>..\beyond-fitness\bin\CommonLib.dll</HintPath>
-    </Reference>
-    <Reference Include="CommonLib.Logger">
-      <HintPath>..\beyond-fitness\bin\CommonLib.Logger.dll</HintPath>
-    </Reference>
-    <Reference Include="CommonLib.PlugInAdapter">
-      <HintPath>..\beyond-fitness\bin\CommonLib.PlugInAdapter.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Web.Infrastructure">
@@ -6076,6 +6067,9 @@
     <Content Include="Views\ConsoleEvent\Module\SearchLearner.cshtml" />
     <Content Include="Views\ConsoleHome\ApplyContractService.cshtml" />
     <Content Include="Views\ConsoleHome\BlogArticleList.cshtml" />
+    <Content Include="Views\ConsoleEvent\Module\CoachPICoachOnlySelector.cshtml" />
+    <Content Include="Views\ConsoleEvent\EventModal\BookingTrialLesson.cshtml" />
+    <Content Include="Views\ConsoleEvent\EventModal\BookingLearnerLesson.cshtml" />
     <None Include="Views\ConsoleHome\BlogIndex.aspx_" />
     <Content Include="Views\ConsoleHome\Shared\DropifyUpload.ascx" />
     <Content Include="Views\ConsoleHome\Shared\PagingControl.ascx" />
@@ -6205,6 +6199,7 @@
     <Compile Include="Helper\LearnerConsoleExtensionMethods.cs" />
     <Compile Include="Helper\LessonConsoleExtensionMethods.cs" />
     <Compile Include="Models\ViewModel\InputQueryViewModel.cs" />
+    <Compile Include="Models\ViewModel\ViewPageModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Views\MainActivity\Resources\NamingItem.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -6727,6 +6722,14 @@
     <ProjectReference Include="..\beyond-fitness\beyond-fitness.csproj">
       <Project>{c49821ff-96c8-466b-aef4-137ec84fdefc}</Project>
       <Name>beyond-fitness</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CommonLib.Logger\CommonLib.Logger.csproj">
+      <Project>{8146e629-552a-4b36-8711-08ae8245b8fa}</Project>
+      <Name>CommonLib.Logger</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CommonLib\CommonLib.csproj">
+      <Project>{c0ad239c-2ac4-46d2-ae7c-5e97266ef4ea}</Project>
+      <Name>CommonLib</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

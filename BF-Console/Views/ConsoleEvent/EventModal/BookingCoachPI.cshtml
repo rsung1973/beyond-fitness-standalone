@@ -130,7 +130,7 @@
             var $formData = $('#@(_dialogID) input,select,textarea').serializeObject();
             clearErrors();
             showLoading();
-            $.post('@(_viewModel.LessonID.HasValue
+            $.post('@Html.Raw(_viewModel.LessonID.HasValue
                 ? Url.Action("UpdateBookingByCoach","ClassFacet",new { _viewModel.KeyID,_viewModel.CoachID })
                 : Url.Action("CommitBookingSelfTraining","Lessons"))', $formData, function (data) {
                 hideLoading();

@@ -161,9 +161,11 @@ namespace WebHome.Controllers
             if (viewModel.AttendeeID != null && viewModel.AttendeeID.Length > 0)
             {
                 var lesson = timeItem.RegisterLesson;
-                foreach (var coachID in viewModel.AttendeeID.Distinct())
+                foreach (var uid in viewModel.AttendeeID.Distinct())
                 {
-                    LessonTime coachPI = SpawnCoachPI(timeItem, coachID);
+                    LessonTime coachPI = models.GetTable<ServingCoach>().Any(s => s.CoachID == uid)
+                        ? SpawnCoachPI(timeItem, uid, uid)
+                        : SpawnCoachPI(timeItem, uid, profile.UID);
 
                     models.GetTable<LessonTime>().InsertOnSubmit(coachPI);
                     models.SubmitChanges();
@@ -186,7 +188,7 @@ namespace WebHome.Controllers
 
         }
 
-        public static LessonTime SpawnCoachPI(LessonTime timeItem, int coachID)
+        public static LessonTime SpawnCoachPI(LessonTime timeItem, int uid,int coachID)
         {
             var coachPI = new LessonTime
             {
@@ -196,7 +198,7 @@ namespace WebHome.Controllers
                     GroupingMemberCount = 1,
                     ClassLevel = timeItem.RegisterLesson.ClassLevel,
                     Lessons = 1,
-                    UID = coachID,
+                    UID = uid,
                     AdvisorID = coachID,
                     GroupingLesson = timeItem.RegisterLesson.GroupingLesson
                 },
@@ -213,7 +215,7 @@ namespace WebHome.Controllers
 
             coachPI.LessonFitnessAssessment.Add(new LessonFitnessAssessment
             {
-                UID = coachID
+                UID = uid
             });
             return coachPI;
         }
