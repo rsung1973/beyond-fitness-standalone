@@ -6588,7 +6588,6 @@
     <Content Include="Views\ContractConsole\Module\AboutNewContractsByCoach.cshtml" />
     <Content Include="Views\ContractConsole\Module\AboutNewContractsByBranch.cshtml" />
     <Content Include="Views\ContractConsole\Module\AboutNewContractsByOfficer.cshtml" />
-    <Content Include="Views\ContractConsole\Module\AboutExpiringByCoach.ascx.cshtml" />
     <Content Include="Views\ContractConsole\Module\AboutExpiringByBranch.cshtml" />
     <Content Include="Views\ContractConsole\Module\AboutExpiringByOfficer.cshtml" />
     <Content Include="Views\ContractConsole\Module\AboutContractServicesByPureCoach.cshtml" />
