@@ -28,7 +28,7 @@
                     .FilterByBranchStoreManager(models, _model.UID);}
 
             <p class="text-small">
-                已過期：<a href='javascript:showContractList(@Html.Raw(JsonConvert.SerializeObject(
+                已過期：<a href="#" onclick='showContractList(@Html.Raw(JsonConvert.SerializeObject(
                                 new 
                                 {
                                     ManagerID = _model.UID,
@@ -36,7 +36,7 @@
                                     ContractQueryMode = Naming.ContractServiceMode.ContractOnly,
                                     Status = (int)Naming.CourseContractStatus.已過期,
                                 })),@(expiredItems.Count()));'>@(expiredItems.Count())</a><br />
-                生效中：<a href='javascript:showContractList(@Html.Raw(JsonConvert.SerializeObject(
+                生效中：<a href="#" onclick='showContractList(@Html.Raw(JsonConvert.SerializeObject(
                                 new 
                                 {
                                     ManagerID = _model.UID,
@@ -47,7 +47,7 @@
             </p>
         </div>
         <div class="col-4 text-right">
-            <a href='javascript:showContractList(@Html.Raw(JsonConvert.SerializeObject(
+            <a href="#" onclick='showContractList(@Html.Raw(JsonConvert.SerializeObject(
                                 new 
                                 {
                                     ManagerID = _model.UID,

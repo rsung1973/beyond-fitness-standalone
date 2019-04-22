@@ -36,7 +36,7 @@
                                     || (c.PayoffDue >= dateFrom && c.PayoffDue < dateTo));}
 
                 <text>@($"{dateFrom:yyyy/MM}")：</text>
-                <a href='javascript:showContractList(@Html.Raw(JsonConvert.SerializeObject(
+                <a href="#" onclick='showContractList(@Html.Raw(JsonConvert.SerializeObject(
                                 new
                                 {
                                     ManagerID = _model.UID,
@@ -53,7 +53,7 @@
                                     dateTo = dateTo.AddMonths(1);
                                     items = toPay.Where(c => c.PayoffDue >= dateFrom && c.PayoffDue < dateTo);
                                     <text>@($"{dateFrom:yyyy/MM}")：</text>
-                                    <a href='javascript:showContractList(@Html.Raw(JsonConvert.SerializeObject(
+                                    <a href="#" onclick='showContractList(@Html.Raw(JsonConvert.SerializeObject(
                                                                     new
                                                                     {
                                                                         ManagerID = _model.UID,
@@ -67,7 +67,7 @@
                             </p>
                         </div>
                         <div class="col-4 text-right">
-                            <a href='javascript:showContractList(@Html.Raw(JsonConvert.SerializeObject(
+                            <a href="#" onclick='showContractList(@Html.Raw(JsonConvert.SerializeObject(
                                 new
                                 {
                                     ManagerID = _model.UID,

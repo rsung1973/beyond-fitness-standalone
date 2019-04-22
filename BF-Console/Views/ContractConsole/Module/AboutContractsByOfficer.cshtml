@@ -26,7 +26,7 @@
 
             <h5 class="m-t-0">賀成交</h5>
             <p class="text-small">
-                今日：<a href='javascript:showContractList(@Html.Raw(JsonConvert.SerializeObject(
+                今日：<a href="#" onclick='showContractList(@Html.Raw(JsonConvert.SerializeObject(
                                 new
                                 {
                                     ContractQueryMode = Naming.ContractServiceMode.ContractOnly,
@@ -38,7 +38,7 @@
                                 @{ var weekStart = DateTime.Today.FirstDayOfWeek();
                         currentItems = items.Where(c => c.EffectiveDate >= weekStart && c.EffectiveDate < weekStart.AddDays(7));}
 
-                                本週：<a href='javascript:showContractList(@Html.Raw(JsonConvert.SerializeObject(
+                                本週：<a href="#" onclick='showContractList(@Html.Raw(JsonConvert.SerializeObject(
                                 new
                                 {
                                     ContractQueryMode = Naming.ContractServiceMode.ContractOnly,
@@ -49,7 +49,7 @@
                                 <br />
                                 @{ currentItems = items.Where(c => c.EffectiveDate >= monthStart.AddMonths(-1) && c.EffectiveDate < monthStart);}
 
-                                上月：<a href='javascript:showContractList(@Html.Raw(JsonConvert.SerializeObject(
+                                上月：<a href="#" onclick='showContractList(@Html.Raw(JsonConvert.SerializeObject(
                                 new
                                 {
                                     ContractQueryMode = Naming.ContractServiceMode.ContractOnly,
@@ -63,7 +63,7 @@
         <div class="col-4 text-right">
             @{ currentItems = items.Where(c => c.EffectiveDate >= monthStart && c.EffectiveDate < monthStart.AddMonths(1));}
 
-            <a href='javascript:showContractList(@Html.Raw(JsonConvert.SerializeObject(
+            <a href="#" onclick='showContractList(@Html.Raw(JsonConvert.SerializeObject(
                                 new
                                 {
                                     ContractQueryMode = Naming.ContractServiceMode.ContractOnly,

@@ -29,7 +29,7 @@
 <script>
     function commitEmphasis(keyID) {
         showLoading();
-        $.post('@(Url.Action("CommitEmphasis", "Training"))', { 'keyID': keyID, 'emphasis': $('#@(_fieldID)').val() }, function (data) {
+        $.post('@Html.Raw(Url.Action("CommitEmphasis", "Training"))', { 'keyID': keyID, 'emphasis': $('#@(_fieldID)').val() }, function (data) {
             hideLoading();
             if ($.isPlainObject(data)) {
                 if (data.result) {

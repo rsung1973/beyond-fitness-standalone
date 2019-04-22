@@ -51,7 +51,7 @@
         //更多查詢條件
     function moreContractQuery() {
         showLoading();
-        $.post('@(Url.Action("InvokeContractQuery", "ContractConsole"))', {}, function (data) {
+        $.post('@Html.Raw(Url.Action("InvokeContractQuery", "ContractConsole"))', {}, function (data) {
             hideLoading();
             if ($.isPlainObject(data)) {
                 alert(data.message);
@@ -62,6 +62,11 @@
     }
 
     function showContractList(viewModel, alertCount) {
+        var event = window.event;
+        if (event) {
+            event.cancelBubble = true;
+        }
+
         if (alertCount == 0)
             return;
         clearErrors();
@@ -79,7 +84,7 @@
             }, function (isConfirm) {
                 if (isConfirm) {
                     showLoading();
-                    $.post('@(Url.Action("InquireContract", "ContractConsole"))', viewModel, function (data) {
+                    $.post('@Html.Raw(Url.Action("InquireContract", "ContractConsole"))', viewModel, function (data) {
                         hideLoading();
                         if ($.isPlainObject(data)) {
                             swal(data.message);
@@ -94,7 +99,7 @@
             });
         } else {
             showLoading();
-            $.post('@(Url.Action("InquireContract", "ContractConsole"))', viewModel, function (data) {
+            $.post('@Html.Raw(Url.Action("InquireContract", "ContractConsole"))', viewModel, function (data) {
                 hideLoading();
                 if ($.isPlainObject(data)) {
                     swal(data.message);

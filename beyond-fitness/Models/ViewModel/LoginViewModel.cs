@@ -614,6 +614,11 @@ namespace WebHome.Models.ViewModel
         public TimeSpan? EndTime { get; set; }
         public bool? CreateNew { get; set; }
         public String Place { get; set; }
+        public int[] AttendeeID
+        {
+            get => MemberID;
+            set => MemberID = value;
+        }
 
     }
 

@@ -117,7 +117,7 @@
                                                         || (t.EndDate >= weekday && t.EndDate < endDate)
                                                         || (t.StartDate < weekday && t.EndDate >= endDate)).Count());
                                                 }
-                                                <li class="@(weekday == DateTime.Today ? "col-pink" : null)" onclick="window.location.href = '@(Url.Action("Calendar", "ConsoleHome", new { DateFrom = weekday, DateTo = endDate }))';">
+                                                <li class="@(weekday == DateTime.Today ? "col-pink" : null)" onclick="window.location.href = '@Html.Raw(Url.Action("Calendar", "ConsoleHome", new { DateFrom = weekday, DateTo = endDate }))';">
                                                     <h5>@($"{weekday:M/d}")</h5>
                                                     <img src="@(lessonCount < 3
                                             ? "images/facesmile/easy-1.jpg"
@@ -206,7 +206,7 @@
             <script>
                     $(function () {
                         $('li.contract').on('click', function (event) {
-                            window.location.href = '@(Url.Action("ContractIndex", "ConsoleHome", new { ScrollToView = false }))';
+                            window.location.href = '@Html.Raw(Url.Action("ContractIndex", "ConsoleHome", new { ScrollToView = false }))';
                         });
                     });
             </script>
@@ -259,7 +259,7 @@
 
         //本月運動時間卡片
         $(".exerciserank").on('click', function (event) {
-            window.location.href = '@(Url.Action("ExerciseBillboard","ConsoleHome"))';
+            window.location.href = '@Html.Raw(Url.Action("ExerciseBillboard","ConsoleHome"))';
         });
 
         //我的業績
@@ -268,6 +268,11 @@
         });
 
         function showContractList(viewModel, alertCount) {
+            var event = window.event;
+            if (event) {
+                event.cancelBubble = true;
+            }
+
             if (alertCount == 0)
                 return;
             viewModel.scrollToView = false;
@@ -285,13 +290,13 @@
                 }, function (isConfirm) {
                     if (isConfirm) {
                         showLoading();
-                        $('').launchDownload('@(Url.Action("ShowContractList","ContractConsole"))', viewModel);
+                        $('').launchDownload('@Html.Raw(Url.Action("ShowContractList","ContractConsole"))', viewModel);
                     } else {
                     }
                 });
             } else {
                 showLoading();
-                $('').launchDownload('@(Url.Action("ShowContractList","ContractConsole"))', viewModel);
+                $('').launchDownload('@Html.Raw(Url.Action("ShowContractList","ContractConsole"))', viewModel);
             }
         }
 

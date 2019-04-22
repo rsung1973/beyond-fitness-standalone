@@ -24,7 +24,7 @@
     _items = _model.PreferredLessonTimeToApprove(models);
 }
 
-<li id="@(_viewID)" class="@($"col-sm-{12/_allotment} col-{12/_allotment}")" onclick="window.location.href='@(Url.Action("CrossBranchIndex","ConsoleHome"))';">
+<li id="@(_viewID)" class="@($"col-sm-{12/_allotment} col-{12/_allotment}")" onclick="window.location.href='@Html.Raw(Url.Action("CrossBranchIndex","ConsoleHome"))';">
     <div class="body">
         <i class="zmdi livicon-evo" data-options="name: legal.svg; size: 40px; style: original; strokeWidth:2px; autoPlay:true"></i>
         <h4>

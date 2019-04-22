@@ -189,7 +189,7 @@
         function inquireBillboard(branchID) {
 
             showLoading();
-            $.post('@(Url.Action("InquireExerciseBillboard", "ConsoleHome"))', { 'branchID': branchID }, function (data) {
+            $.post('@Html.Raw(Url.Action("InquireExerciseBillboard", "ConsoleHome"))', { 'branchID': branchID }, function (data) {
                 hideLoading();
                 if ($.isPlainObject(data)) {
                     alert(data.message);
@@ -199,7 +199,7 @@
                 }
             });
 
-            $.post('@(Url.Action("InquireExerciseBillboardLastMonth", "ConsoleHome"))', { 'branchID': branchID }, function (data) {
+            $.post('@Html.Raw(Url.Action("InquireExerciseBillboardLastMonth", "ConsoleHome"))', { 'branchID': branchID }, function (data) {
                 hideLoading();
                 if ($.isPlainObject(data)) {
                     alert(data.message);
@@ -209,7 +209,7 @@
                 }
             });
 
-            dtExerciserankList.ajax.url('@(Url.Action("GetExerciseBillboardDetails","ConsoleHome"))?branchID=' + branchID);
+            dtExerciserankList.ajax.url('@Html.Raw(Url.Action("GetExerciseBillboardDetails","ConsoleHome"))?branchID=' + branchID);
             dtExerciserankList.ajax.reload(function (jsonData) {
                 dtExerciserankList.draw();
                 $('div.btn-group.bootstrap-select.form-control.form-control-sm').after($('div.btn-group.bootstrap-select.form-control.form-control-sm select'));

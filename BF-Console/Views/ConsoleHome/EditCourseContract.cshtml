@@ -165,7 +165,7 @@
                     <script>
                             function calcTotalCost() {
                                 if ($global.viewModel.PriceID && $global.viewModel.Lessons) {
-                                    $.post('@(Url.Action("CalculateTotalCost", "ContractConsole"))', $global.viewModel, function (data) {
+                                    $.post('@Html.Raw(Url.Action("CalculateTotalCost", "ContractConsole"))', $global.viewModel, function (data) {
                                         if ($.isPlainObject(data)) {
                                             alert(data.message);
                                         } else {
@@ -203,7 +203,7 @@
                     <script>
                             function loadMemberList() {
                                 showLoading();
-                                $.post('@(Url.Action("ListContractMember", "ContractConsole"))', $global.viewModel, function (data) {
+                                $.post('@Html.Raw(Url.Action("ListContractMember", "ContractConsole"))', $global.viewModel, function (data) {
                                     hideLoading();
                                     if ($.isPlainObject(data)) {
                                         alert(data.message);
@@ -278,7 +278,7 @@
                                         return;
                                     }
                                     showLoading();
-                                    $.post('@(Url.Action("LoadInstallmentPlan","CourseContract"))', { 'lessons': lessons, 'installments': installments }, function (data) {
+                                    $.post('@Html.Raw(Url.Action("LoadInstallmentPlan","CourseContract"))', { 'lessons': lessons, 'installments': installments }, function (data) {
                                         hideLoading();
                                         if ($.isPlainObject(data)) {
                                             swal(data.message);
@@ -289,11 +289,13 @@
                                     });
                                 }
                         @if (_viewModel.InstallmentPlan == true || _viewModel.Lessons > 0)
-                                {
-                                $(function () {
+                        {
+                            <text>
+                            $(function () {
                                     loadInstallments('@(_viewModel.Lessons)', '@(_viewModel.Installments)');
-                                });
-                        }//
+                            });
+                            </text>
+                        }
 
                         </script>
                     </div>
@@ -310,7 +312,7 @@
                         <script>
                                 function saveContract() {
                                     clearErrors();
-                                    $.post('@(Url.Action("SaveContract", "ContractConsole", _viewModel.ContractID))', $global.viewModel, function (data) {
+                                    $.post('@Html.Raw(Url.Action("SaveContract", "ContractConsole", _viewModel.ContractID))', $global.viewModel, function (data) {
                                         if ($.isPlainObject(data)) {
                                             swal(data.message);
                                         }
@@ -321,7 +323,7 @@
                                 }
                                 function commitContract() {
                                     clearErrors();
-                                    $.post('@(Url.Action("CommitContract", "ContractConsole", _viewModel.ContractID))', $global.viewModel, function (data) {
+                                    $.post('@Html.Raw(Url.Action("CommitContract", "ContractConsole", _viewModel.ContractID))', $global.viewModel, function (data) {
                                         if ($.isPlainObject(data)) {
                                             swal(data.message);
                                         }

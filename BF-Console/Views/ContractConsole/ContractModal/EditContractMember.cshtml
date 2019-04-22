@@ -204,7 +204,7 @@
             var viewModel = @Html.Raw(JsonConvert.SerializeObject(_viewModel));
             var $formData = $('#@(_dialogID) form').serializeObject();
             showLoading();
-            $.post('@(Url.Action("CommitContractMember", "ContractConsole"))', $.extend({}, viewModel, $formData), function (data) {
+            $.post('@Html.Raw(Url.Action("CommitContractMember", "ContractConsole"))', $.extend({}, viewModel, $formData), function (data) {
                 hideLoading();
                 if ($.isPlainObject(data)) {
                     alert(data.message);

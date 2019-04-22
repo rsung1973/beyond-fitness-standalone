@@ -41,7 +41,7 @@
 
         function processMember(uid) {
             showLoading();
-            $.post('@(Url.Action("ProcessContractMember", "ContractConsole"))', { 'uid': uid }, function (data) {
+            $.post('@Html.Raw(Url.Action("ProcessContractMember", "ContractConsole"))', { 'uid': uid }, function (data) {
                 hideLoading();
                 if ($.isPlainObject(data)) {
                     alert(data.message);

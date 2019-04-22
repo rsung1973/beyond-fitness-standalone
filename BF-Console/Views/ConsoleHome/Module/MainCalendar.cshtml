@@ -69,7 +69,7 @@
                     $global.viewModel.DateFrom = start.format('YYYY-MM-DD');
                     $global.viewModel.DateTo = end.format('YYYY-MM-DD');
                     //$global.viewModel.DefaultView = defaultView;
-                    $.post('@(Url.Action("CalendarEvents","ConsoleHome"))', $global.viewModel, function (data) {
+                    $.post('@Html.Raw(Url.Action("CalendarEvents","ConsoleHome"))', $global.viewModel, function (data) {
                         callback(data);
                     });
                 },
@@ -96,7 +96,7 @@
 
                 dayClick: function (date, allDay, jsEvent, view) {
                     showLoading();
-                    $.post('@(Url.Action("AddEvent", "ConsoleEvent"))', { 'startDate': date.format('YYYY-MM-DD HH:mm:ss') }, function (data) {
+                    $.post('@Html.Raw(Url.Action("AddEvent", "ConsoleEvent"))', { 'startDate': date.format('YYYY-MM-DD HH:mm:ss') }, function (data) {
                         hideLoading();
                         if ($.isPlainObject(data)) {
                             alert(data.message);
@@ -112,7 +112,7 @@
 
                     showLoading();
                     if (calEvent.id.indexOf('my') == 0) {
-                        $.post('@(Url.Action("UpdateCoachEvent","CoachFacet",new { _model.UID }))', {
+                        $.post('@Html.Raw(Url.Action("UpdateCoachEvent","CoachFacet",new { _model.UID }))', {
                             'startDate': calEvent.start.format('YYYY-MM-DD HH:mm:ss'),
                             'endDate': calEvent.end.format('YYYY-MM-DD HH:mm:ss'),
                             'keyID': calEvent.keyID,
@@ -129,7 +129,7 @@
                             }
                         });
                     } else {
-                        $.post('@(Url.Action("UpdateBookingByCoach","CoachFacet"))', {
+                        $.post('@Html.Raw(Url.Action("UpdateBookingByCoach","CoachFacet"))', {
                             'keyID': calEvent.keyID,
                             'classTimeStart': calEvent.start.format('YYYY-MM-DD HH:mm:ss'),
                             'classTimeEnd': calEvent.end.format('YYYY-MM-DD HH:mm:ss'),
@@ -151,7 +151,7 @@
 
                     showLoading();
                     if (calEvent.id.indexOf('my') == 0) {
-                        $.post('@(Url.Action("UpdateCoachEvent","CoachFacet",new { _model.UID }))',
+                        $.post('@Html.Raw(Url.Action("UpdateCoachEvent","CoachFacet",new { _model.UID }))',
                             {
                                 'keyID': calEvent.keyID,
                                 'startDate': calEvent.start.format('YYYY-MM-DD HH:mm:ss'),
@@ -169,7 +169,7 @@
                                 }
                             });
                     } else {
-                        $.post('@(Url.Action("UpdateBookingByCoach","CoachFacet"))',
+                        $.post('@Html.Raw(Url.Action("UpdateBookingByCoach","CoachFacet"))',
                             {
                                 'keyID': calEvent.keyID,
                                 'classTimeStart': calEvent.start.format('YYYY-MM-DD HH:mm:ss'),

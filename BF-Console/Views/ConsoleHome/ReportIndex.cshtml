@@ -86,7 +86,7 @@
                                         </a>
                                         <script>
                                                 function downloadPaymentReport(viewModel) {
-                                                    $('').launchDownload('@(Url.Action("CreatePaymentInvoiceQueryXlsx","Payment"))', viewModel, 'report', true);
+                                                    $('').launchDownload('@Html.Raw(Url.Action("CreatePaymentInvoiceQueryXlsx","Payment"))', viewModel, 'report', true);
                                                 }//
                                         </script>
                                     </div>
@@ -137,7 +137,7 @@
                             <div class="col-lg-2 col-md-3 col-sm-6">
                                 <div class="card">
                                     <div class="file">
-                                        <a href="javascript:$('').launchDownload('@(Url.Action("CreateMonthlyPaymentReportXlsx","Payment"))', { 'settlementDate': '@($"{DateTime.Today.AddMonths(-1):yyyy/MM/dd}")' },'report',true);">
+                                        <a href="javascript:$('').launchDownload('@Html.Raw(Url.Action("CreateMonthlyPaymentReportXlsx","Payment"))', { 'settlementDate': '@($"{DateTime.Today.AddMonths(-1):yyyy/MM/dd}")' },'report',true);">
                                             <div class="icon">
                                                 <i class="zmdi livicon livicon-evo" data-options="name: notebook.svg; size: 60px; style: original; strokeWidth:2px; autoPlay:true"></i>
                                             </div>
@@ -152,7 +152,7 @@
                             <div class="col-lg-2 col-md-3 col-sm-6">
                                 <div class="card">
                                     <div class="file">
-                                        <a href="javascript:$('').launchDownload('@(Url.Action("CreateAccountsReveivableXlsx","Accounting"))',{'BypassCondition':true},'report',true);">
+                                        <a href="javascript:$('').launchDownload('@Html.Raw(Url.Action("CreateAccountsReveivableXlsx","Accounting"))',{'BypassCondition':true},'report',true);">
                                             <div class="icon">
                                                 <i class="zmdi livicon livicon-evo" data-options="name: dislike.svg; size: 60px; style: original; strokeWidth:2px; autoPlay:true"></i>
                                             </div>
@@ -184,7 +184,7 @@
                                         <script>
                                                 function selectPeriodPaymentReport() {
                                                     showLoading();
-                                                    $.post('@(Url.Action("SelectPeriodReport","ReportConsole"))', {}, function (data) {
+                                                    $.post('@Html.Raw(Url.Action("SelectPeriodReport","ReportConsole"))', {}, function (data) {
                                                         hideLoading();
                                                         if ($.isPlainObject(data)) {
                                                             swal(data.message);
@@ -216,14 +216,14 @@
                                         <script>
                                                 function selectMonthlyAccountingReport() {
                                                     showLoading();
-                                                    $.post('@(Url.Action("SelectMonthlyReport","ReportConsole"))', {}, function (data) {
+                                                    $.post('@Html.Raw(Url.Action("SelectMonthlyReport","ReportConsole"))', {}, function (data) {
                                                         hideLoading();
                                                         if ($.isPlainObject(data)) {
                                                             swal(data.message);
 
                                                         } else {
                                                             $global.doQuery = function (settlementDate) {
-                                                                $('').launchDownload('@(Url.Action("CreateMonthlyPaymentReportXlsx","Payment"))', { 'settlementDate': settlementDate }, 'report',true);
+                                                                $('').launchDownload('@Html.Raw(Url.Action("CreateMonthlyPaymentReportXlsx","Payment"))', { 'settlementDate': settlementDate }, 'report',true);
                                                             }
                                                             $(data).appendTo($('body'));
                                                         }
@@ -240,7 +240,7 @@
                             <div class="col-lg-2 col-md-3 col-sm-6">
                                 <div class="card">
                                     <div class="file">
-                                        <a href="javascript:$('').launchDownload('@(Url.Action("CreateUnallocatedLearnerListXlsx","Learner"))');">
+                                        <a href="javascript:$('').launchDownload('@Html.Raw(Url.Action("CreateUnallocatedLearnerListXlsx","Learner"))');">
                                             <div class="icon">
                                                 <i class="zmdi livicon livicon-evo" data-options="name: users.svg; size: 60px; style: original; strokeWidth:2px; autoPlay:true"></i>
                                             </div>
@@ -262,7 +262,7 @@
                             <div class="col-lg-2 col-md-3 col-sm-6">
                                 <div class="card">
                                     <div class="file">
-                                        <a href="javascript:$('').launchDownload('@(Url.Action("CreateFullAchievementXlsx","Accounting"))', { 'achievementDateFrom': '@($"{DateTime.Today.FirstDayOfMonth().AddMonths(-1):yyyy/MM/dd}")', 'bypassCondition': true ,'detailsOnly': false }, 'report',true);">
+                                        <a href="javascript:$('').launchDownload('@Html.Raw(Url.Action("CreateFullAchievementXlsx","Accounting"))', { 'achievementDateFrom': '@($"{DateTime.Today.FirstDayOfMonth().AddMonths(-1):yyyy/MM/dd}")', 'bypassCondition': true ,'detailsOnly': false }, 'report',true);">
                                             <div class="icon">
                                                 <i class="zmdi livicon livicon-evo" data-options="name: piggybank.svg; size: 60px; style: original; strokeWidth:2px; autoPlay:true"></i>
                                             </div>
@@ -277,7 +277,7 @@
                             <div class="col-lg-2 col-md-3 col-sm-6">
                                 <div class="card">
                                     <div class="file">
-                                        <a href="javascript:$('').launchDownload('@(Url.Action("CreateAchievementXlsx","Accounting"))', { 'achievementDateFrom': '@($"{DateTime.Today.FirstDayOfMonth().AddMonths(-1):yyyy/MM/dd}")', 'bypassCondition': true ,'detailsOnly': true }, 'report',true);">
+                                        <a href="javascript:$('').launchDownload('@Html.Raw(Url.Action("CreateAchievementXlsx","Accounting"))', { 'achievementDateFrom': '@($"{DateTime.Today.FirstDayOfMonth().AddMonths(-1):yyyy/MM/dd}")', 'bypassCondition': true ,'detailsOnly': true }, 'report',true);">
                                             <div class="icon">
                                                 <i class="zmdi livicon livicon-evo" data-options="name: list.svg; size: 60px; style: original; strokeWidth:2px; autoPlay:true"></i>
                                             </div>
@@ -311,14 +311,14 @@
                                 <script>
                                         function selectMonthlyAchievement(detailsOnly) {
                                             showLoading();
-                                            $.post('@(Url.Action("SelectMonthlyReport","ReportConsole"))', {}, function (data) {
+                                            $.post('@Html.Raw(Url.Action("SelectMonthlyReport","ReportConsole"))', {}, function (data) {
                                                 hideLoading();
                                                 if ($.isPlainObject(data)) {
                                                     swal(data.message);
 
                                                 } else {
                                                     $global.doQuery = function (settlementDate) {
-                                                        $('').launchDownload('@(Url.Action("CreateAchievementXlsx","Accounting"))', { 'achievementDateFrom': settlementDate, 'bypassCondition': true, 'detailsOnly': detailsOnly }, 'report', true);
+                                                        $('').launchDownload('@Html.Raw(Url.Action("CreateAchievementXlsx","Accounting"))', { 'achievementDateFrom': settlementDate, 'bypassCondition': true, 'detailsOnly': detailsOnly }, 'report', true);
                                                     }
                                                     $(data).appendTo($('body'));
                                                 }
@@ -327,14 +327,14 @@
 
                                         function selectMonthlyFullAchievement() {
                                             showLoading();
-                                            $.post('@(Url.Action("SelectMonthlyReport","ReportConsole"))', {}, function (data) {
+                                            $.post('@Html.Raw(Url.Action("SelectMonthlyReport","ReportConsole"))', {}, function (data) {
                                                 hideLoading();
                                                 if ($.isPlainObject(data)) {
                                                     swal(data.message);
 
                                                 } else {
                                                     $global.doQuery = function (settlementDate) {
-                                                        $('').launchDownload('@(Url.Action("CreateFullAchievementXlsx","Accounting"))', { 'achievementDateFrom': settlementDate, 'bypassCondition': true }, 'report', true);
+                                                        $('').launchDownload('@Html.Raw(Url.Action("CreateFullAchievementXlsx","Accounting"))', { 'achievementDateFrom': settlementDate, 'bypassCondition': true }, 'report', true);
                                                     }
                                                     $(data).appendTo($('body'));
                                                 }
@@ -368,7 +368,7 @@
                             @*<div class="col-lg-2 col-md-3 col-sm-6">
                                 <div class="card">
                                     <div class="file">
-                                        <a href="javascript:$('').launchDownload('@(Url.Action("CreateTrustTrackXlsx","Accounting"))', { 'trustDateFrom': '@($"{DateTime.Today.FirstDayOfMonth():yyyy/MM/dd}")' }, 'report',true);">
+                                        <a href="javascript:$('').launchDownload('@Html.Raw(Url.Action("CreateTrustTrackXlsx","Accounting"))', { 'trustDateFrom': '@($"{DateTime.Today.FirstDayOfMonth():yyyy/MM/dd}")' }, 'report',true);">
                                             <div class="icon">
                                                 <i class="zmdi livicon livicon-evo" data-options="name: bank.svg; size: 60px; style: original; strokeWidth:2px; autoPlay:true"></i>
                                             </div>
@@ -383,7 +383,7 @@
                             <div class="col-lg-2 col-md-3 col-sm-6">
                                 <div class="card">
                                     <div class="file">
-                                        <a href="javascript:$('').launchDownload('@(Url.Action("CreateTrustTrackXlsx","Accounting"))', { 'trustDateFrom': '@($"{DateTime.Today.FirstDayOfMonth().AddMonths(-1):yyyy/MM/dd}")' }, 'report',true);">
+                                        <a href="javascript:$('').launchDownload('@Html.Raw(Url.Action("CreateTrustTrackXlsx","Accounting"))', { 'trustDateFrom': '@($"{DateTime.Today.FirstDayOfMonth().AddMonths(-1):yyyy/MM/dd}")' }, 'report',true);">
                                             <div class="icon">
                                                 <i class="zmdi livicon livicon-evo" data-options="name: bank.svg; size: 60px; style: original; strokeWidth:2px; autoPlay:true"></i>
                                             </div>
@@ -398,7 +398,7 @@
                             @*<div class="col-lg-2 col-md-3 col-sm-6">
                                 <div class="card">
                                     <div class="file">
-                                        <a href="javascript:$('').launchDownload('@(Url.Action("CreateTrustLessonXlsx","Accounting"))', { 'trustDateFrom': '@($"{DateTime.Today.FirstDayOfMonth().AddMonths(-1):yyyy/MM/dd}")' }, 'report',true);">
+                                        <a href="javascript:$('').launchDownload('@Html.Raw(Url.Action("CreateTrustLessonXlsx","Accounting"))', { 'trustDateFrom': '@($"{DateTime.Today.FirstDayOfMonth().AddMonths(-1):yyyy/MM/dd}")' }, 'report',true);">
                                             <div class="icon">
                                                 <i class="zmdi livicon livicon-evo" data-options="name: timer.svg; size: 60px; style: original; strokeWidth:2px; autoPlay:true"></i>
                                             </div>
@@ -413,7 +413,7 @@
                             <div class="col-lg-2 col-md-3 col-sm-6">
                                 <div class="card">
                                     <div class="file">
-                                        <a href="javascript:$('').launchDownload('@(Url.Action("CreateTrustContractZip","Accounting"))', { 'trustDateFrom': '@($"{DateTime.Today.FirstDayOfMonth().AddMonths(-1):yyyy/MM/dd}")' }, 'report',true);">
+                                        <a href="javascript:$('').launchDownload('@Html.Raw(Url.Action("CreateTrustContractZip","Accounting"))', { 'trustDateFrom': '@($"{DateTime.Today.FirstDayOfMonth().AddMonths(-1):yyyy/MM/dd}")' }, 'report',true);">
                                             <div class="icon">
                                                 <i class="zmdi livicon livicon-evo" data-options="name: rocket.svg; size: 60px; style: original; strokeWidth:2px; autoPlay:true"></i>
                                             </div>
@@ -428,7 +428,7 @@
                             @*<div class="col-lg-2 col-md-3 col-sm-6">
                                 <div class="card">
                                     <div class="file">
-                                        <a href="javascript:$('').launchDownload('@(Url.Action("CreateContractTrustSummaryXlsx","Accounting"))',{'BypassCondition':true},'report',true);">
+                                        <a href="javascript:$('').launchDownload('@Html.Raw(Url.Action("CreateContractTrustSummaryXlsx","Accounting"))',{'BypassCondition':true},'report',true);">
                                             <div class="icon">
                                                 <i class="zmdi livicon livicon-evo" data-options="name: grid.svg; size: 60px; style: original; strokeWidth:2px; autoPlay:true"></i>
                                             </div>
@@ -462,14 +462,14 @@
                                 <script>
                                         function selectMonthlyTrust() {
                                             showLoading();
-                                            $.post('@(Url.Action("SelectMonthlyReport","ReportConsole"))', {}, function (data) {
+                                            $.post('@Html.Raw(Url.Action("SelectMonthlyReport","ReportConsole"))', {}, function (data) {
                                                 hideLoading();
                                                 if ($.isPlainObject(data)) {
                                                     swal(data.message);
 
                                                 } else {
                                                     $global.doQuery = function (settlementDate) {
-                                                        $('').launchDownload('@(Url.Action("CreateTrustTrackXlsx","Accounting"))', { 'trustDateFrom': settlementDate }, 'report', true);
+                                                        $('').launchDownload('@Html.Raw(Url.Action("CreateTrustTrackXlsx","Accounting"))', { 'trustDateFrom': settlementDate }, 'report', true);
                                                     }
                                                     $(data).appendTo($('body'));
                                                 }
@@ -494,14 +494,14 @@
                                 <script>
                                         function selectMonthlyTrustLessons() {
                                             showLoading();
-                                            $.post('@(Url.Action("SelectMonthlyReport","ReportConsole"))', {}, function (data) {
+                                            $.post('@Html.Raw(Url.Action("SelectMonthlyReport","ReportConsole"))', {}, function (data) {
                                             hideLoading();
                                             if ($.isPlainObject(data)) {
                                                 swal(data.message);
 
                                             } else {
                                                 $global.doQuery = function (settlementDate) {
-                                                    $('').launchDownload('@(Url.Action("CreateTrustLessonXlsx","Accounting"))', { 'trustDateFrom': settlementDate }, 'report', true);
+                                                    $('').launchDownload('@Html.Raw(Url.Action("CreateTrustLessonXlsx","Accounting"))', { 'trustDateFrom': settlementDate }, 'report', true);
                                                     }
                                                     $(data).appendTo($('body'));
                                                 }
@@ -527,14 +527,14 @@
                             <script>
                                     function selectMonthlyTrustContract() {
                                         showLoading();
-                                        $.post('@(Url.Action("SelectMonthlyReport","ReportConsole"))', {}, function (data) {
+                                        $.post('@Html.Raw(Url.Action("SelectMonthlyReport","ReportConsole"))', {}, function (data) {
                                                 hideLoading();
                                                 if ($.isPlainObject(data)) {
                                                     swal(data.message);
 
                                                 } else {
                                                     $global.doQuery = function (settlementDate) {
-                                                        $('').launchDownload('@(Url.Action("CreateTrustContractZip","Accounting"))', { 'trustDateFrom': settlementDate }, 'report', true);
+                                                        $('').launchDownload('@Html.Raw(Url.Action("CreateTrustContractZip","Accounting"))', { 'trustDateFrom': settlementDate }, 'report', true);
                                                 }
                                                 $(data).appendTo($('body'));
                                             }
@@ -552,7 +552,7 @@
                             <div class="col-lg-2 col-md-3 col-sm-6">
                                 <div class="card">
                                     <div class="file">
-                                        <a href="javascript:$('').launchDownload('@(Url.Action("GetMonthlySettlement","Accounting"))', { 'settlementDate': '@($"{DateTime.Today.AddMonths(-1):yyyy/MM/dd}")','initialDate':'2018/12/01' }, 'report',true);">
+                                        <a href="javascript:$('').launchDownload('@Html.Raw(Url.Action("GetMonthlySettlement","Accounting"))', { 'settlementDate': '@($"{DateTime.Today.AddMonths(-1):yyyy/MM/dd}")','initialDate':'2018/12/01' }, 'report',true);">
                                             <div class="icon">
                                                 <i class="zmdi livicon livicon-evo" data-options="name: box.svg; size: 60px; style: original; strokeWidth:2px; autoPlay:true"></i>
                                             </div>
@@ -567,7 +567,7 @@
                             <div class="col-lg-2 col-md-3 col-sm-6">
                                 <div class="card">
                                     <div class="file">
-                                        <a href="javascript:$('').launchDownload('@(Url.Action("GetMonthlyLessonsSummary","Accounting"))', { 'settlementDate': '@($"{DateTime.Today.FirstDayOfMonth().AddMonths(-1):yyyy/MM/dd}")' }, 'report',true);">
+                                        <a href="javascript:$('').launchDownload('@Html.Raw(Url.Action("GetMonthlyLessonsSummary","Accounting"))', { 'settlementDate': '@($"{DateTime.Today.FirstDayOfMonth().AddMonths(-1):yyyy/MM/dd}")' }, 'report',true);">
                                             <div class="icon">
                                                 <i class="zmdi livicon livicon-evo" data-options="name: morph-clock.svg; size: 60px; style: original; strokeWidth:2px; autoPlay:true"></i>
                                             </div>
@@ -632,14 +632,14 @@
                             <script>
                                     function selectContractLessonsSummary() {
                                         showLoading();
-                                        $.post('@(Url.Action("SelectReportByContractNo","ReportConsole"))', {}, function (data) {
+                                        $.post('@Html.Raw(Url.Action("SelectReportByContractNo","ReportConsole"))', {}, function (data) {
                                                 hideLoading();
                                                 if ($.isPlainObject(data)) {
                                                     swal(data.message);
 
                                                 } else {
                                                     $global.doQuery = function (inputData) {
-                                                        $('').launchDownload('@(Url.Action("GetContractLessonsSummary","Report"))', inputData, 'report', true);
+                                                        $('').launchDownload('@Html.Raw(Url.Action("GetContractLessonsSummary","Report"))', inputData, 'report', true);
                                                 }
                                                 $(data).appendTo($('body'));
                                             }
@@ -648,14 +648,14 @@
 
                                     function selectMonthlyLessonsSummary() {
                                         showLoading();
-                                        $.post('@(Url.Action("SelectMonthlyReport","ReportConsole"))', {}, function (data) {
+                                        $.post('@Html.Raw(Url.Action("SelectMonthlyReport","ReportConsole"))', {}, function (data) {
                                                 hideLoading();
                                                 if ($.isPlainObject(data)) {
                                                     swal(data.message);
 
                                                 } else {
                                                     $global.doQuery = function (settlementDate) {
-                                                        $('').launchDownload('@(Url.Action("GetMonthlyLessonsSummary","Accounting"))', { 'settlementDate': settlementDate }, 'report', true);
+                                                        $('').launchDownload('@Html.Raw(Url.Action("GetMonthlyLessonsSummary","Accounting"))', { 'settlementDate': settlementDate }, 'report', true);
                                                 }
                                                 $(data).appendTo($('body'));
                                             }
@@ -665,14 +665,14 @@
                             <script>
                                     function selectMonthlySettlement() {
                                         showLoading();
-                                        $.post('@(Url.Action("SelectMonthlyReport","ReportConsole"))', {}, function (data) {
+                                        $.post('@Html.Raw(Url.Action("SelectMonthlyReport","ReportConsole"))', {}, function (data) {
                                                         hideLoading();
                                                         if ($.isPlainObject(data)) {
                                                             swal(data.message);
 
                                                         } else {
                                                             $global.doQuery = function (settlementDate) {
-                                                                $('').launchDownload('@(Url.Action("GetMonthlySettlement","Accounting"))', { 'settlementDate': settlementDate, 'initialDate': '2018/12/01' }, 'report', true);
+                                                                $('').launchDownload('@Html.Raw(Url.Action("GetMonthlySettlement","Accounting"))', { 'settlementDate': settlementDate, 'initialDate': '2018/12/01' }, 'report', true);
                                                 }
                                                 $(data).appendTo($('body'));
                                             }

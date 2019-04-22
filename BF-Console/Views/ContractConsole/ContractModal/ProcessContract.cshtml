@@ -51,7 +51,7 @@
                         {
                             <a href="payment-edit-type1.html" class="list-group-item">新增收款</a>
                         }
-                        if (_model.Status == (int)Naming.CourseContractStatus.已生效 && _model.SequenceNo == 0)
+                        if (_model.Status >= (int)Naming.CourseContractStatus.已生效 && _model.SequenceNo == 0)
                         {
                             <a href="@(Url.Action("ApplyContractService", "ConsoleHome", new { KeyID = _model.ContractID.EncryptKey() }))" class="list-group-item">服務申請</a>
                         }

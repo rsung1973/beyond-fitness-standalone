@@ -42,7 +42,7 @@
 
     function selectCoach() {
         showLoading();
-        $.post('@(Url.Action("SelectCoach", "ContractConsole"))', {}, function (data) {
+        $.post('@Html.Raw(Url.Action("SelectCoach", "ContractConsole"))', {}, function (data) {
             hideLoading();
             if ($.isPlainObject(data)) {
                 alert(data.message);

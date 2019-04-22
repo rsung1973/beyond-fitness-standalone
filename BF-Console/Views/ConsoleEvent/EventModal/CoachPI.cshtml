@@ -88,7 +88,7 @@
     <script>
         function bookingCoachPI() {
             showLoading();
-            $.post('@(Url.Action("BookingCoachPI", "ConsoleEvent", new { keyID = _model.LessonID.EncryptKey(),CoachID = _model.AttendingCoach }))', {}, function (data) {
+            $.post('@Html.Raw(Url.Action("BookingCoachPI", "ConsoleEvent", new { keyID = _model.LessonID.EncryptKey(),CoachID = _model.AttendingCoach }))', {}, function (data) {
                 hideLoading();
                 if ($.isPlainObject(data)) {
                     swal(data.message);

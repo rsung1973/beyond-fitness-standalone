@@ -58,7 +58,7 @@
     });
 
     function cancelAssignment() {
-        $('').launchDownload('@(Url.Action("ApplyContractService","ConsoleHome"))',
+        $('').launchDownload('@Html.Raw(Url.Action("ApplyContractService","ConsoleHome"))',
             @Html.Raw(JsonConvert.SerializeObject(new CourseContractQueryViewModel
                 {
                     KeyID = _model.ContractID.EncryptKey(),
@@ -70,7 +70,7 @@
         viewModel.Reason = '轉換體能顧問';
         clearErrors();
         showLoading();
-        $.post('@(Url.Action("CommitContractService", "ContractConsole",new { KeyID = _model.ContractID.EncryptKey() }))', viewModel, function (data) {
+        $.post('@Html.Raw(Url.Action("CommitContractService", "ContractConsole",new { KeyID = _model.ContractID.EncryptKey() }))', viewModel, function (data) {
             hideLoading();
             if ($.isPlainObject(data)) {
                 swal(data.message);

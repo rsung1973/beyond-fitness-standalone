@@ -34,7 +34,7 @@
                     var items = toPay.Where(c => !c.PayoffDue.HasValue
                                     || (c.PayoffDue >= dateFrom && c.PayoffDue < dateTo));}
 
-                @($"{dateFrom:yyyy/MM}")：<a href='javascript:showContractList(@Html.Raw(JsonConvert.SerializeObject(
+                @($"{dateFrom:yyyy/MM}")：<a href="#" onclick='showContractList(@Html.Raw(JsonConvert.SerializeObject(
                                 new
                                 {
                                     ContractQueryMode = Naming.ContractServiceMode.ContractOnly,
@@ -63,7 +63,7 @@
                             </p>
                         </div>
                         <div class="col-4 text-right">
-                            <a href='javascript:showContractList(@Html.Raw(JsonConvert.SerializeObject(
+                            <a href="#" onclick='showContractList(@Html.Raw(JsonConvert.SerializeObject(
                                 new
                                 {
                                     ContractQueryMode = Naming.ContractServiceMode.ContractOnly,

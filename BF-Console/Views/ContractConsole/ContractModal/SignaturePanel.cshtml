@@ -51,7 +51,7 @@
         function commitSignature() {
             var sigData = $("#signature").jSignature("getData");
             if (sigData) {
-                $.post('@(Url.Action("CommitSignature","CourseContract",_viewModel))', { 'Signature': sigData }, function (data) {
+                $.post('@Html.Raw(Url.Action("CommitSignature","CourseContract",_viewModel))', { 'Signature': sigData }, function (data) {
                     //hideLoading();
                     if (data.result) {
                         if ($global.commitSignature) {

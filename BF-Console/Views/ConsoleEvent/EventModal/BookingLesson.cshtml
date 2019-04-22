@@ -178,7 +178,7 @@
                 case '@((int)Naming.LessonPriceStatus.點數兌換課程)':
                 case '@((int)Naming.LessonPriceStatus.企業合作方案)':
                 default:
-                    $.post('@(Url.Action("CommitBookingByCoach","Lessons"))', $formData, function (data) {
+                    $.post('@Html.Raw(Url.Action("CommitBookingByCoach","Lessons"))', $formData, function (data) {
                         if ($.isPlainObject(data)) {
                             if (data.result) {
                                 $global.closeAllModal();
@@ -194,7 +194,7 @@
 
                 case '@((int)Naming.LessonPriceStatus.自主訓練)':
                     $formData.trainingBySelf = 1;
-                    $.post('@(Url.Action("CommitBookingByCoach","Lessons"))', $formData, function (data) {
+                    $.post('@Html.Raw(Url.Action("CommitBookingByCoach","Lessons"))', $formData, function (data) {
                         if ($.isPlainObject(data)) {
                             if (data.result) {
                                 $global.closeAllModal();
@@ -209,7 +209,7 @@
                     break;
                 case '@((int)Naming.LessonPriceStatus.在家訓練)':
                     $formData.trainingBySelf = 2;
-                    $.post('@(Url.Action("CommitBookingByCoach","Lessons"))', $formData, function (data) {
+                    $.post('@Html.Raw(Url.Action("CommitBookingByCoach","Lessons"))', $formData, function (data) {
                         if ($.isPlainObject(data)) {
                             if (data.result) {
                                 $global.closeAllModal();
@@ -224,7 +224,7 @@
                     break;
 
                 case '@((int)Naming.LessonPriceStatus.體驗課程)':
-                    $.post('@(Url.Action("CommitTrialLesson","CoachFacet",new { CoachID = _model.UID }))', $formData, function (data) {
+                    $.post('@Html.Raw(Url.Action("CommitTrialLesson","CoachFacet",new { CoachID = _model.UID }))', $formData, function (data) {
                         if ($.isPlainObject(data)) {
                             if (data.result) {
                                 $global.closeAllModal();

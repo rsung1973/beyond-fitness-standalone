@@ -93,7 +93,7 @@
                 $signatureImage[0].src = sigData;
             };
             //showLoading();
-            $.post('@(Url.Action("SignaturePanel","ContractConsole"))', { 'contractID': contractID, 'uid': uid, 'signatureName': signatureName }, function (data) {
+            $.post('@Html.Raw(Url.Action("SignaturePanel","ContractConsole"))', { 'contractID': contractID, 'uid': uid, 'signatureName': signatureName }, function (data) {
                 //hideLoading();
                 $(data).appendTo($('body'));
             });
@@ -101,7 +101,7 @@
 
         function confirmSignature() {
             showLoading();
-            $.post('@(Url.Action("ConfirmSignature","ContractConsole",new { KeyID = _item.ContractID.EncryptKey() }))',
+            $.post('@Html.Raw(Url.Action("ConfirmSignature","ContractConsole",new { KeyID = _item.ContractID.EncryptKey() }))',
                 {
                     'Extension': $('input[name="extension"]').is(':checked'),
                     'Booking': $('input[name="booking"]').is(':checked'),
@@ -119,7 +119,7 @@
 
         function enableContract() {
             showLoading();
-            $.post('@(Url.Action("EnableContractStatus","ContractConsole",new { KeyID = _item.ContractID.EncryptKey(), Status = (int)Naming.CourseContractStatus.待簽名 }))', {}, function (data) {
+            $.post('@Html.Raw(Url.Action("EnableContractStatus","ContractConsole",new { KeyID = _item.ContractID.EncryptKey(), Status = (int)Naming.CourseContractStatus.待簽名 }))', {}, function (data) {
                 hideLoading();
                 hideLoading();
                 if ($.isPlainObject(data)) {
@@ -133,7 +133,7 @@
 
         function rejectSignature() {
             showLoading();
-            $.post('@(Url.Action("ExecuteContractStatus","ContractConsole",new {KeyID = _item.ContractID.EncryptKey(), Status = (int)Naming.CourseContractStatus.草稿,FromStatus = (int)Naming.CourseContractStatus.待簽名,  Drawback=true }))', {}, function (data) {
+            $.post('@Html.Raw(Url.Action("ExecuteContractStatus","ContractConsole",new {KeyID = _item.ContractID.EncryptKey(), Status = (int)Naming.CourseContractStatus.草稿,FromStatus = (int)Naming.CourseContractStatus.待簽名,  Drawback=true }))', {}, function (data) {
                 hideLoading();
                 if ($.isPlainObject(data)) {
                     swal(data.message);

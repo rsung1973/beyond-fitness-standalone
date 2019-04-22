@@ -46,7 +46,7 @@
 
         function editContractMember(uid) {
             showLoading();
-            $.post('@(Url.Action("EditContractMember", "ContractConsole"))', { 'uid': uid, 'OwnerID': $global.viewModel.OwnerID }, function (data) {
+            $.post('@Html.Raw(Url.Action("EditContractMember", "ContractConsole"))', { 'uid': uid, 'OwnerID': $global.viewModel.OwnerID }, function (data) {
                 hideLoading();
                 if ($.isPlainObject(data)) {
                     alert(data.message);

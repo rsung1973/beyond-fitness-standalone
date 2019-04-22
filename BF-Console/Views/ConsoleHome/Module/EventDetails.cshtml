@@ -36,7 +36,7 @@
 <script>
     function loadEvents(dateFrom, dateTo) {
         showLoading();
-        $.post('@(Url.Action("CalendarEventItems", "ConsoleHome", new { KeyID = _model.UID.EncryptKey() }))', { 'dateFrom': dateFrom, 'dateTo': dateTo }, function (data) {
+        $.post('@Html.Raw(Url.Action("CalendarEventItems", "ConsoleHome", new { KeyID = _model.UID.EncryptKey() }))', { 'dateFrom': dateFrom, 'dateTo': dateTo }, function (data) {
             hideLoading();
             if ($.isPlainObject(data)) {
                 alert(data.message);
@@ -49,7 +49,7 @@
     function deleteLesson(keyID) {
         deleteData(function (onSuccess) {
             showLoading();
-            $.post('@(Url.Action("RevokeBooking", "ConsoleEvent"))', { 'keyID': keyID }, function (data) {
+            $.post('@Html.Raw(Url.Action("RevokeBooking", "ConsoleEvent"))', { 'keyID': keyID }, function (data) {
                 hideLoading();
                 if ($.isPlainObject(data)) {
                     if (data.result) {
@@ -74,7 +74,7 @@
     function deleteUserEvent(keyID) {
         deleteData(function (onSuccess) {
             showLoading();
-            $.post('@(Url.Action("RevokeCoachEvent", "ConsoleEvent"))', { 'keyID': keyID }, function (data) {
+            $.post('@Html.Raw(Url.Action("RevokeCoachEvent", "ConsoleEvent"))', { 'keyID': keyID }, function (data) {
                 hideLoading();
                 if ($.isPlainObject(data)) {
                     if (data.result) {
@@ -98,7 +98,7 @@
 
     function bookingCustomEvent(args) {
         showLoading();
-        $.post('@(Url.Action("BookingCustomEvent", "ConsoleEvent"))', args, function (data) {
+        $.post('@Html.Raw(Url.Action("BookingCustomEvent", "ConsoleEvent"))', args, function (data) {
             hideLoading();
             if ($.isPlainObject(data)) {
                 swal(data.message);

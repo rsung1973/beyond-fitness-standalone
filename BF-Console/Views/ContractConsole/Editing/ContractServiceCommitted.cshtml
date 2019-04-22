@@ -22,7 +22,7 @@
 }
 <script>
     $(function () {
-        $('').launchDownload('@(Url.Action("ApplyContractService","ConsoleHome"))',
+        $('').launchDownload('@Html.Raw(Url.Action("ApplyContractService","ConsoleHome"))',
             @Html.Raw(JsonConvert.SerializeObject(new CourseContractQueryViewModel
                 {
                     KeyID = _model.CourseContractRevision.OriginalContract.Value.EncryptKey(),

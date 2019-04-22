@@ -67,7 +67,7 @@
 </div>
 <script>
     function transferContract() {
-        $('').launchDownload('@(Url.Action("TransferContract", "ConsoleHome"))',
+        $('').launchDownload('@Html.Raw(Url.Action("TransferContract", "ConsoleHome"))',
             @Html.Raw(JsonConvert.SerializeObject(new 
             {
                 KeyID = _model.ContractID.EncryptKey()

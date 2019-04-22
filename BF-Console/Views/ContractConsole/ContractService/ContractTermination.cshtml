@@ -74,7 +74,7 @@
 </div>
 <script>
     function terminateContract() {
-        $('').launchDownload('@(Url.Action("TerminateContract", "ConsoleHome"))',
+        $('').launchDownload('@Html.Raw(Url.Action("TerminateContract", "ConsoleHome"))',
             @Html.Raw(JsonConvert.SerializeObject(new
             {
                 KeyID = _model.ContractID.EncryptKey()

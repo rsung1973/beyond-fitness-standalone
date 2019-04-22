@@ -41,7 +41,7 @@
     function listPrice() {
         clearErrors();
         showLoading();
-        $.post('@(Url.Action("ListLessonPrice", "ContractConsole"))', $global.viewModel, function (data) {
+        $.post('@Html.Raw(Url.Action("ListLessonPrice", "ContractConsole"))', $global.viewModel, function (data) {
             hideLoading();
             if ($.isPlainObject(data)) {
                 alert(data.message);

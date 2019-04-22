@@ -24,7 +24,7 @@
 {
     <script>
     $(function () {
-        $('').launchDownload('@(Url.Action("EditCourseContract", "ConsoleHome"))',
+        $('').launchDownload('@Html.Raw(Url.Action("EditCourseContract", "ConsoleHome"))',
             @Html.Raw(JsonConvert.SerializeObject(new
        {
            KeyID = _model.ContractID.EncryptKey()
@@ -36,7 +36,7 @@ else
 {
     <script>
     $(function () {
-        $('').launchDownload('@(Url.Action("ShowContractList", "ContractConsole"))',
+        $('').launchDownload('@Html.Raw(Url.Action("ShowContractList", "ContractConsole"))',
             @Html.Raw(JsonConvert.SerializeObject(new CourseContractQueryViewModel
        {
            //FitnessConsultant = _model.FitnessConsultant,

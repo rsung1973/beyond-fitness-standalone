@@ -63,7 +63,7 @@
 </div>
 <script>
     function postponeExpiration() {
-        $('').launchDownload('@(Url.Action("PostponeContractExpiration", "ConsoleHome"))',
+        $('').launchDownload('@Html.Raw(Url.Action("PostponeContractExpiration", "ConsoleHome"))',
             @Html.Raw(JsonConvert.SerializeObject(new
             {
                 KeyID = _model.ContractID.EncryptKey()
