@@ -6089,7 +6089,6 @@
     <Content Include="Views\ConsoleHome\ReassignFitnessConsultant.aspx" />
     <Content Include="Views\ConsoleHome\SamplePage.aspx" />
     <Content Include="Views\ConsoleHome\SignCourseContract.aspx" />
-    <Content Include="Views\ConsoleHome\EditCourseContract.aspx" />
     <Content Include="Views\ConsoleHome\ContractIndex.aspx" />
     <None Include="Views\ConsoleHome\Calendar.aspx_" />
     <Content Include="Views\ConsoleHome\CrossBranchIndex.aspx" />

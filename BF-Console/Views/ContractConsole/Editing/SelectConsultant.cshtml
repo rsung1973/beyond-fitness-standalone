@@ -26,11 +26,15 @@
 
 }
 <h2><strong>合約基本資料</strong> - <span id="fitnessConsultant">@(_fitnessConsultant?.UserProfile.FullName())</span></h2>
-<ul class="header-dropdown">
-    <li>
-        <a href="javascript:selectCoach();"><i class="zmdi zmdi-swap"></i></a>
-    </li>
-</ul>
+<!--分店主管/副主管提供切換-->
+@if (_model.IsManager() || _model.IsViceManager())
+{
+    <ul class="header-dropdown">
+        <li>
+            <a href="javascript:selectCoach();"><i class="zmdi zmdi-swap"></i></a>
+        </li>
+    </ul>
+}
 <script>
 
     $(function () {

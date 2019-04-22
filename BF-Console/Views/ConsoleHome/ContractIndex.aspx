@@ -21,7 +21,7 @@
     <link href="css/smartcalendar-2.css" rel="stylesheet" />
 
     <!-- Custom Css -->
-    <link rel="stylesheet" href="css/customelist.css?2" />
+    <link rel="stylesheet" href="css/customelist.css?1" />
 
 </asp:Content>
 
