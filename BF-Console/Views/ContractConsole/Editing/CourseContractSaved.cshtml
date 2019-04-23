@@ -23,6 +23,7 @@
 
 <script>
     $(function () {
+        showLoading();
         $('').launchDownload('@Html.Raw(Url.Action("ShowContractList","ContractConsole"))',
             @Html.Raw(JsonConvert.SerializeObject(new CourseContractQueryViewModel
                 {

@@ -139,7 +139,7 @@
                                                             <span class="badge bg-blue">
                                                                 @if (_model.LessonPriceType.SeriesID.HasValue)
                                                                 {
-                                                                    <text>@(_model.LessonPriceType.LowerLimit)堂</text>
+                                                                    <text>@(_model.LessonPriceType.LowerLimit==1 ? "單" : _model.LessonPriceType.LowerLimit.ToString())堂</text>
                                                                 }
                                                                 else
                                                                 {

@@ -158,6 +158,9 @@ namespace BFConsole.Controllers
                 viewModel.SequenceNo = item.SequenceNo;
                 viewModel.Lessons = item.Lessons;
                 viewModel.PriceID = item.PriceID;
+                viewModel.DurationInMinutes = item.LessonPriceType.DurationInMinutes;
+                var priceType = item.LessonPriceType;
+                viewModel.PriceName = $"{priceType.PriceTypeBundle()}{(priceType.LessonPriceProperty.Any(p => p.PropertyID == (int)Naming.LessonPriceFeature.舊會員續約) ? "(舊會員續約)" : null)}{string.Format("{0,5:##,###,###,###}", priceType.ListPrice)}";
                 viewModel.Remark = item.Remark;
                 viewModel.FitnessConsultant = item.FitnessConsultant;
                 viewModel.Status = item.Status;

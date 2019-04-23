@@ -13,15 +13,17 @@
     ModelSource<UserProfile> models;
     UserProfile _model;
     String _viewID = $"lessonPrice{DateTime.Now.Ticks}";
-
+    CourseContractQueryViewModel _viewModel;
 
 
     _modelState = (ModelStateDictionary)ViewBag.ModelState;
     models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
     _model = (UserProfile)this.Model;
+    _viewModel = (CourseContractQueryViewModel)ViewBag.ViewModel;
+
 }
 <div class="input-group">
-    <input type="text" class="form-control form-control-danger" onclick="listPrice();" placeholder="課程單價" name="PriceID" id="searchPrice" readonly />
+    <input type="text" class="form-control form-control-danger" onclick="listPrice();" placeholder="@(_viewModel?.PriceName ?? "課程單價")" name="PriceID" id="searchPrice" readonly />
     <span class="input-group-addon xl-slategray">
         <i class="zmdi zmdi-money-box"></i>
     </span>

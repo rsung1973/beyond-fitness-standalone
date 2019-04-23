@@ -223,7 +223,15 @@
                         hideLoading();
                         if ($.isPlainObject(data)) {
                             if (data.result) {
-                                swal("刪除成功!", "資料已經刪除 Bye!", "success");
+                                swal({
+                                    title: "刪除成功!",
+                                    text: "資料已經刪除 Bye!",
+                                    type: "success",
+                                    showCancelButton: false,
+                                    closeOnConfirm: true
+                                }, function () {
+                                    window.location.href = '@Html.Raw(Url.Action("ContractIndex", "ConsoleHome", new { ScrollToView = false }))';
+                                });
                             } else {
                                 swal("刪除失敗", data.message, "error");
                             }

@@ -115,10 +115,6 @@
                                     {
                                         <text>$('select[name="BranchID"]').val('@(_viewModel.BranchID)');</text>
                                     }
-                                    else
-                                    {
-                                        <text>$global.viewModel.BranchID = $('select[name="BranchID"]').val();</text>
-                                    }
                                     $('select[name="BranchID"]').on('change', function (event) {
                                         $global.viewModel.BranchID = $(this).val();
                                     });
@@ -256,6 +252,7 @@
                                         } else {
                                             $remark.val(content);
                                         }
+                                        $global.viewModel.Remark = $remark.val();
                                     }
                                 }
 
