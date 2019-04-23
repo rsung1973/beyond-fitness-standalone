@@ -80,7 +80,7 @@
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6 col-12">
                         <select class="form-control show-tick" name="Renewal">
-                            <option value="" selected="">-- 是否為舊學員續約 --</option>
+                            <option value="" selected="">-- 是否為舊生續約 --</option>
                             <option value="True">是</option>
                             <option value="False">否</option>
                         </select>
@@ -234,10 +234,10 @@
             <div class="body">
                 <div class="row clearfix">
                     <div class="col-lg-3 col-md-3 col-sm-12 col-12">
-                        <div class="checkbox">
-                            <input id="checkbox1" type="checkbox" name="InstallmentPlan" value="@(true)" @(_viewModel.InstallmentPlan == true ? "checked" : null) onclick="checkInstallmentPlan();">
-                            <label for="checkbox1">合約分期轉開</label>
-                        </div>
+                        <label class="fancy-checkbox">
+                            <input type="checkbox" name="InstallmentPlan" value="@(true)" @(_viewModel.InstallmentPlan == true ? "checked" : null) onclick="checkInstallmentPlan();">
+                            <span>合約分期轉開</span>
+                        </label>
                     </div>
                     <div class="col-lg-9 col-md-9 col-sm-12 col-12 installments">
                         <select class="form-control show-tick" name="Installments" onchange="installmentPlanRemark();"></select>

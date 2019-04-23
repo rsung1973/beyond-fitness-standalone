@@ -124,7 +124,7 @@ namespace WebHome.Helper.BusinessOperation
             lessonPrice = null;
             if (!viewModel.ContractType.HasValue)
             {
-                ModelState.AddModelError("ContractType", "請選擇合約類型");
+                ModelState.AddModelError("ContractType", "請選澤合約類型");
             }
             if (!viewModel.BranchID.HasValue)
             {
@@ -134,12 +134,12 @@ namespace WebHome.Helper.BusinessOperation
             //請選擇上課時間長度
             if (!viewModel.Renewal.HasValue)
             {
-                ModelState.AddModelError("Renewal", "請選擇是否為舊學員續約");
+                ModelState.AddModelError("Renewal", "請選擇是否為舊生續約");
             }
 
             if (!viewModel.PriceID.HasValue)
             {
-                ModelState.AddModelError("PriceID", "請選擇課程單價!!");
+                ModelState.AddModelError("PriceID", "請選擇課程單價");
             }
             else
             {
@@ -147,30 +147,30 @@ namespace WebHome.Helper.BusinessOperation
             }
             if (!viewModel.FitnessConsultant.HasValue)
             {
-                ModelState.AddModelError("FitnessConsultant", "請選擇體能顧問!!");
+                ModelState.AddModelError("FitnessConsultant", "請選擇合約負責體能顧問");
             }
             else
             {
                 if (!models.GetTable<ServingCoach>().Any(s => s.CoachID == viewModel.FitnessConsultant
                      && s.UserProfile.UserProfileExtension.Signature != null))
                 {
-                    ModelState.AddModelError("FitnessConsultant", "體能顧問未建立簽名檔!!");
+                    ModelState.AddModelError("FitnessConsultant", "請建立自己的簽名檔");
                 }
             }
 
             if (!viewModel.OwnerID.HasValue)
             {
-                ModelState.AddModelError("OwnerID", "請設定主簽約人!!");
+                ModelState.AddModelError("OwnerID", "請設定主簽約人");
             }
             else if (viewModel.UID == null || viewModel.UID.Length < 1)
             {
-                ModelState.AddModelError("OwnerID", "請設定學員!!");
+                ModelState.AddModelError("OwnerID", "請新增合約學生");
             }
             else if ((viewModel.ContractType == 1 && viewModel.UID.Length != 1)
                 || (viewModel.ContractType == 3 && viewModel.UID.Length != 2)
                 || (viewModel.ContractType == 4 && viewModel.UID.Length != 3))
             {
-                ModelState.AddModelError("OwnerID", "學員數與合約不符!!");
+                ModelState.AddModelError("OwnerID", "請再次確認一次合約人數與合約類型是否相符");
             }
         }
 
@@ -190,14 +190,14 @@ namespace WebHome.Helper.BusinessOperation
 
             if (lessonPrice != null && !lessonPrice.BranchStore.ManagerID.HasValue)
             {
-                ModelState.AddModelError("BranchID", "該分店未指定店長!!");
+                ModelState.AddModelError("BranchID", "分店主管消失了！？");
             }
 
             if (viewModel.InstallmentPlan == true)
             {
                 if (!viewModel.Installments.HasValue)
                 {
-                    ModelState.AddModelError("Installments", "請選擇分期!!");
+                    ModelState.AddModelError("Installments", "請選擇分期期數");
                 }
             }
 
