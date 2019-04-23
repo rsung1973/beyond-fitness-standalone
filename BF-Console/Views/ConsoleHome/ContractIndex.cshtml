@@ -205,7 +205,7 @@
         });
 
         //點選刪除功能
-        this.deleteData = function() {
+        this.deleteData = function(keyID) {
             swal({
                 title: "不後悔?",
                 text: "刪除後資料將無法回覆!",
@@ -218,7 +218,20 @@
                 closeOnCancel: false
             }, function(isConfirm) {
                 if (isConfirm) {
-                    swal("刪除成功!", "資料已經刪除 Bye!", "success");
+                    showLoading();
+                    $.post('@Html.Raw(Url.Action("DeleteCourseContract","CourseContract"))', { 'keyID': keyID }, function (data) {
+                        hideLoading();
+                        if ($.isPlainObject(data)) {
+                            if (data.result) {
+                                swal("刪除成功!", "資料已經刪除 Bye!", "success");
+                            } else {
+                                swal("刪除失敗", data.message, "error");
+                            }
+                        }
+                        else {
+                            $(data).appendTo($('body'));
+                        }
+                    });
                 } else {
                     swal("取消成功", "你的資料現在非常安全 :)", "error");
                 }

@@ -34,10 +34,12 @@
     }
     else
     {
-        _items = _items.Where(p => p.SeriesID.HasValue);
+        _items = _items
+            .Where(l => !l.LessonPriceProperty.Any() || !l.LessonPriceProperty.Any(p => p.PropertyID == (int)Naming.LessonPriceFeature.舊會員續約))
+            .Where(p => p.SeriesID.HasValue);
     }
 
-    _items = _items.OrderBy(l => l.LowerLimit).ThenBy(l => l.PriceID);
+    _items = _items.OrderBy(l => l.LowerLimit).ThenBy(l => l.ListPrice);
 }
 <div class="modal fade" id="@(_dialogID)" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
     <div class="modal-dialog" role="document">

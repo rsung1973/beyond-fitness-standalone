@@ -37,7 +37,7 @@
                         if (_model.IsEditable(models, _profile))
                         {
                             <a href="@(Url.Action("EditCourseContract", "ConsoleHome", new { KeyID = _model.ContractID.EncryptKey() }))" class="list-group-item">編輯資料</a>
-                            <a href="javascript:deleteData();" class="list-group-item">刪除資料</a>
+                            <a href="javascript:deleteData('@_model.ContractID.EncryptKey()');" class="list-group-item">刪除資料</a>
                         }
                         else if (_model.IsSignable(models, _profile))
                         {
@@ -66,8 +66,8 @@
                     else
                     {
                         <a href="javascript:$global.showContractDetails('@(_model.CourseContractRevision.OriginalContract.Value.EncryptKey())');" class="list-group-item">主約詳細資訊</a>
-                        { Html.RenderPartial("~/Views/ContractConsole/Indication/ContractDetails.cshtml", _model);}
-
+                        { Html.RenderPartial("~/Views/ContractConsole/Indication/ContractDetails.cshtml", _model); }
+                        <a href="@(Url.Action("ApplyContractService", "ConsoleHome", new { KeyID = _model.CourseContractRevision.OriginalContract.Value.EncryptKey() }))" class="list-group-item">服務申請</a>
                         if (_model.IsServiceApprovable(models, _profile))
                         {
                             <a href="@(Url.Action("SignContractService","ConsoleHome",new { KeyID = _model.ContractID.EncryptKey() }))" class="list-group-item">主管審核</a>

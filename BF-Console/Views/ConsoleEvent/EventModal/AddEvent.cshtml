@@ -37,7 +37,10 @@
                             <i class="zmdi zmdi-search"></i>
                         </span>
                     </div>
-                    <a href="javascript:bookingCoachPI();" class="list-group-item">教練P.I</a>
+                    @if (_profile.IsCoach())
+                    {
+                        <a href="javascript:bookingCoachPI();" class="list-group-item">教練P.I</a>
+                    }
                     <a href="javascript:bookingCustomEvent({ 'startDate':'@($"{_viewModel.StartDate:yyyy-MM-dd HH:mm:ss}")' });" class="list-group-item">個人行事曆</a>
                 </div>
             </div>

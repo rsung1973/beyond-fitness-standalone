@@ -180,6 +180,7 @@ namespace BFConsole.Controllers
                 {
                     viewModel.FitnessConsultant = profile.UID;
                 }
+                viewModel.ContractType = null;
             }
 
             ViewBag.ViewModel = viewModel;
@@ -288,11 +289,13 @@ namespace BFConsole.Controllers
                 eventItems = eventItems.Where(f => false);
             }
 
-            var items = dataItems.Select(d => new CalendarEventItem
-            {
-                EventTime = d.ClassTime,
-                EventItem = d
-            }).ToList();
+            var items = dataItems.GroupBy(l => l.GroupID)
+                .ToList()
+                .Select(d => new CalendarEventItem
+                {
+                    EventTime = d.First().ClassTime,
+                    EventItem = d.First()
+                }).ToList();
 
             items.AddRange(eventItems.Select(v => new CalendarEventItem
             {

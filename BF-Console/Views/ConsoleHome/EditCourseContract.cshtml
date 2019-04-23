@@ -95,19 +95,30 @@
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6 col-12">
                         <select class="form-control show-tick" name="BranchID">
-                            <option value="">-- 請選擇上課場所 --</option>
                             @if (_model.IsAssistant() || _model.IsOfficer())
                             {
+                                <option value="">-- 請選擇上課場所 --</option>
                             }
                             else
                             {
-                                ViewBag.IntentStore = models.GetTable<CoachWorkplace>().Where(w => w.CoachID == _model.UID).Select(w => w.BranchID).ToArray();
-                            }@{ Html.RenderPartial("~/Views/SystemInfo/BranchStoreOptions.cshtml", model: _viewModel.BranchID);}
-
+                                int[] intentStore = ViewBag.IntentStore = models.GetTable<CoachWorkplace>().Where(w => w.CoachID == _model.UID).Select(w => w.BranchID).ToArray();
+                                if (intentStore.Length > 1)
+                                {
+                                    <option value="">-- 請選擇上課場所 --</option>
+                                }
+                            }
+                            @{ Html.RenderPartial("~/Views/SystemInfo/BranchStoreOptions.cshtml", model: _viewModel.BranchID);}
                         </select>
                         <script>
-                                $(function () {
-                                    $('select[name="BranchID"]').val('@(_viewModel.BranchID)');
+                            $(function () {
+                                    @if(_viewModel.BranchID.HasValue)
+                                    {
+                                        <text>$('select[name="BranchID"]').val('@(_viewModel.BranchID)');</text>
+                                    }
+                                    else
+                                    {
+                                        <text>$global.viewModel.BranchID = $('select[name="BranchID"]').val();</text>
+                                    }
                                     $('select[name="BranchID"]').on('change', function (event) {
                                         $global.viewModel.BranchID = $(this).val();
                                     });

@@ -39,8 +39,8 @@
             @{ var items = models.GetTable<V_BranchStaff>().Where(w => w.BranchID == branch.BranchID)
                            .Join(models.GetTable<UserProfile>(), v => v.UID, u => u.UID, (v, u) => u)
                            .Where(s => s.LevelID == (int)Naming.MemberStatusDefinition.Checked)
-                           .Where(s => s.UID != _profile.UID)
-                           .OrderBy(u => u.RealName);
+                           .Where(s => s.UID != _profile.UID).ToList()
+                           .OrderBy(u => $"{u.Nickname}{u.RealName}");
                 foreach (var user in items)
                 {
                     <option value="@(user.UID)">@(user.FullName())</option>
@@ -53,8 +53,8 @@
             var others = models.GetTable<V_BranchStaff>().Where(w => !w.BranchID.HasValue)
                      .Join(models.GetTable<UserProfile>(), v => v.UID, u => u.UID, (v, u) => u)
                      .Where(s => s.LevelID == (int)Naming.MemberStatusDefinition.Checked)
-                     .Where(s => s.UID != _profile.UID)
-                     .OrderBy(u => u.RealName);
+                     .Where(s => s.UID != _profile.UID).ToList()
+                     .OrderBy(u => $"{u.Nickname}{u.RealName}"); 
             foreach (var user in others)
             {
                 <option value="@(user.UID)">@(user.FullName())</option>

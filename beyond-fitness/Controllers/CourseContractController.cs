@@ -92,12 +92,18 @@ namespace WebHome.Controllers
         }
 
         [RoleAuthorize(RoleID = new int[] { (int)Naming.RoleID.Administrator, (int)Naming.RoleID.Assistant, (int)Naming.RoleID.Officer,(int)Naming.RoleID.Coach })]
-        public ActionResult DeleteCourseContract(int contractID)
+        public ActionResult DeleteCourseContract(CourseContractViewModel viewModel)
         {
+            ViewBag.ViewModel = viewModel;
+            if(viewModel.KeyID!=null)
+            {
+                viewModel.ContractID = viewModel.DecryptKeyValue();
+            }
+
             bool result = false;
             try
             {
-                var item = models.DeleteAny<CourseContract>(d => d.ContractID == contractID);
+                var item = models.DeleteAny<CourseContract>(d => d.ContractID == viewModel.ContractID);
                 if (item != null)
                 {
                     result = true;

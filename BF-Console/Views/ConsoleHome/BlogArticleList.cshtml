@@ -40,7 +40,7 @@
             $global.onPaging = function (pageModel) {
                 $.extend($global.viewModel, pageModel);
                 showLoading();
-                $('').launchDownload('@(Url.Action("BlogArticleList","ConsoleHome"))', $global.viewModel);
+                $('').launchDownload('@Html.Raw(Url.Action("BlogArticleList","ConsoleHome"))', $global.viewModel);
             };
         });
     </script>
@@ -107,11 +107,11 @@
     <script>
         function editArticle(docID) {
             showLoading();
-            $('').launchDownload('@(Url.Action("EditBlogArticle","ConsoleHome"))', { 'docID': docID });
+            $('').launchDownload('@Html.Raw(Url.Action("EditBlogArticle","ConsoleHome"))', { 'docID': docID });
         }
 
         function viewArticle(docID) {
-            $('').launchDownload('@(Url.Action("BlogSingle","MainActivity"))', { 'docID': docID }, "_blank");
+            $('').launchDownload('@Html.Raw(Url.Action("BlogSingle","MainActivity"))', { 'docID': docID }, "_blank");
         }
     </script>
 

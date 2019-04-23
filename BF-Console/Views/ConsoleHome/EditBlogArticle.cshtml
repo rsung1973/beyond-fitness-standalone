@@ -90,7 +90,7 @@
 
                                         function selectCoach() {
                                             showLoading();
-                                            $.post('@(Url.Action("SelectCoach", "ContractConsole"))', {}, function (data) {
+                                            $.post('@Html.Raw(Url.Action("SelectCoach", "ContractConsole"))', {}, function (data) {
                                                 hideLoading();
                                                 if ($.isPlainObject(data)) {
                                                     alert(data.message);
@@ -142,7 +142,7 @@
                                         viewModel.DocID = $global.viewModel.DocID;
                                         viewModel.AuthorID = $global.viewModel.AuthorID;
                                         showLoading();
-                                        $.post('@(Url.Action("CommitArticle", "MainActivity"))', viewModel, function (data) {
+                                        $.post('@Html.Raw(Url.Action("CommitArticle", "MainActivity"))', viewModel, function (data) {
                                         hideLoading();
                                         if ($.isPlainObject(data)) {
                                             if (data.result) {
@@ -150,7 +150,7 @@
                                                 $global.viewModel.DocID = data.DocID;
                                                 swal('資料已儲存');
                                                 if ($('#uploadContent').find(":first-child").length == 0) {
-                                                    $.post('@(Url.Action("DropifyUpload", "MainActivity"))', {}, function (data) {
+                                                    $.post('@Html.Raw(Url.Action("DropifyUpload", "MainActivity"))', {}, function (data) {
                                                             $(data).appendTo($('#uploadContent'));
                                                         });
                                                     }
@@ -178,13 +178,13 @@
                                             }, function (isConfirm) {
                                                 if (isConfirm) {
                                                     showLoading();
-                                                    $.post('@(Url.Action("DeleteArticle", "MainActivity"))', {
+                                                    $.post('@Html.Raw(Url.Action("DeleteArticle", "MainActivity"))', {
                                                         'DocID': $global.viewModel.DocID
                                                     }, function(data) {
                                                         hideLoading();
                                                         if ($.isPlainObject(data)) {
                                                             if (data.result) {
-                                                                $('').launchDownload('@(Url.Action("BlogIndex","ConsoleHome"))');
+                                                                $('').launchDownload('@Html.Raw(Url.Action("BlogIndex","ConsoleHome"))');
                                                             } else {
                                                                 swal(data.message);
                                                             }
@@ -222,7 +222,7 @@
                 };
 
                 $('form').ajaxForm({
-                    url: '@(Url.Action("CommitArticleContent","MainActivity"))',
+                    url: '@Html.Raw(Url.Action("CommitArticleContent","MainActivity"))',
                     data: postData,
                     beforeSubmit: function () {
                         showLoading();
@@ -240,7 +240,7 @@
                                 closeOnConfirm: true
                             }, function () {
                                 //$('#uploadContent').empty();
-                                $('').launchDownload('@(Url.Action("BlogSingle","MainActivity"))', data, "_blank");
+                                $('').launchDownload('@Html.Raw(Url.Action("BlogSingle","MainActivity"))', data, "_blank");
                             });
                         } else {
                             swal(data.message);

@@ -41,7 +41,7 @@ namespace BFConsole.Controllers
             ViewBag.Contracts = result.Model;
 
             var profile = HttpContext.GetUser();
-            return View("~/Views/ConsoleHome/ContractIndex.aspx", profile.LoadInstance(models));
+            return View("~/Views/ConsoleHome/ContractIndex.cshtml", profile.LoadInstance(models));
         }
 
 
@@ -407,7 +407,7 @@ namespace BFConsole.Controllers
                 return View("~/Views/ConsoleHome/Shared/ReportInputError.cshtml");
             }
 
-            var items = userName.PromptLearnerByName(models);
+            var items = userName.PromptLearnerByName(models, true);
 
             if (items.Count() > 0)
                 return View("~/Views/ContractConsole/ContractModal/SelectContractMember.cshtml", items);
