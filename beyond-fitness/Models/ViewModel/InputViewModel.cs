@@ -54,6 +54,7 @@ namespace WebHome.Models.ViewModel
         public bool? Extension { get; set; }
         public bool? Booking { get; set; }
         public bool? Cancel { get; set; }
+        public String PriceName { get; set; }
     }
 
     public class CourseContractQueryViewModel : CourseContractViewModel
