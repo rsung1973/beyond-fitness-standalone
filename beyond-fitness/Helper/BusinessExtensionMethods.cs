@@ -1319,23 +1319,33 @@ namespace WebHome.Helper
             return items;
         }
 
+        public static Func<CourseContract, string> ContractViewUrl { get; set; } = item => 
+            {
+                return $"{Settings.Default.HostDomain}{VirtualPathUtility.ToAbsolute("~/CourseContract/ViewContract")}?pdf=1&contractID={item.ContractID}";
+            };
+
         public static String CreateContractPDF(this CourseContract item, bool createNew = false)
         {
             String pdfFile = Path.Combine(GlobalDefinition.ContractPdfPath, item.ContractNo + ".pdf");
             if (createNew == true || !File.Exists(pdfFile))
             {
-                String viewUrl = Settings.Default.HostDomain + VirtualPathUtility.ToAbsolute("~/CourseContract/ViewContract") + "?pdf=1&contractID=" + item.ContractID;
+                String viewUrl = ContractViewUrl(item);
                 viewUrl.ConvertHtmlToPDF(pdfFile, 20);
             }
             return pdfFile;
         }
+
+        public static Func<CourseContractRevision, string> ContractServiceViewUrl { get; set; } = item =>
+        {
+            return $"{Settings.Default.HostDomain}{VirtualPathUtility.ToAbsolute("~/CourseContract/ViewContractAmendment")}?pdf=1&revisionID={item.RevisionID}";
+        };
 
         public static String CreateContractAmendmentPDF(this CourseContractRevision item, bool createNew = false)
         {
             String pdfFile = Path.Combine(GlobalDefinition.ContractPdfPath, item.CourseContract.ContractNo() + ".pdf");
             if (createNew == true || !File.Exists(pdfFile))
             {
-                String viewUrl = Settings.Default.HostDomain + VirtualPathUtility.ToAbsolute("~/CourseContract/ViewContractAmendment") + "?pdf=1&revisionID=" + item.RevisionID;
+                String viewUrl = ContractServiceViewUrl(item);
                 viewUrl.ConvertHtmlToPDF(pdfFile, 20);
             }
             return pdfFile;

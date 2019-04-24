@@ -33,6 +33,20 @@ namespace BFConsole.Controllers
     [RoleAuthorize(RoleID = new int[] { (int)Naming.RoleID.Administrator, (int)Naming.RoleID.Assistant, (int)Naming.RoleID.Officer, (int)Naming.RoleID.Coach, (int)Naming.RoleID.Servitor })]
     public class ConsoleHomeController : SampleController<UserProfile>
     {
+        static ConsoleHomeController()
+        {
+            BusinessExtensionMethods.ContractViewUrl = item => 
+            {
+                return $"{Settings.Default.HostDomain}{VirtualPathUtility.ToAbsolute("~/CommonHelper/ViewContract")}?pdf=1&contractID={item.ContractID}";
+            };
+
+            BusinessExtensionMethods.ContractServiceViewUrl = item =>
+            {
+                return $"{Settings.Default.HostDomain}{VirtualPathUtility.ToAbsolute("~/CommonHelper/ViewContractService")}?pdf=1&revisionID={item.RevisionID}";
+            };
+
+        }
+
         public const String InputErrorView = "~/Views/ConsoleHome/Shared/ReportInputError.cshtml";
 
         [RoleAuthorize(RoleID = new int[] { (int)Naming.RoleID.Administrator, (int)Naming.RoleID.Assistant, (int)Naming.RoleID.Officer, (int)Naming.RoleID.Coach, (int)Naming.RoleID.Servitor })]

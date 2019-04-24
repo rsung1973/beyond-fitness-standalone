@@ -97,15 +97,6 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
-    <Reference Include="CommonLib">
-      <HintPath>..\beyond-fitness\bin\CommonLib.dll</HintPath>
-    </Reference>
-    <Reference Include="CommonLib.Logger">
-      <HintPath>..\beyond-fitness\bin\CommonLib.Logger.dll</HintPath>
-    </Reference>
-    <Reference Include="CommonLib.PlugInAdapter">
-      <HintPath>..\beyond-fitness\bin\CommonLib.PlugInAdapter.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Web.Infrastructure">
@@ -6003,6 +5994,10 @@
     <Content Include="Views\ConsoleEvent\EventModal\LessonItem.ascx" />
     <Content Include="Views\ConsoleEvent\Module\RevokeLesson.ascx" />
     <Content Include="Views\ConsoleEvent\Module\LessonEmphasis.ascx" />
+    <None Include="Views\ConsoleHome\ApplyContractService.aspx_" />
+    <Content Include="Views\ConsoleHome\ViewCourseContract.cshtml" />
+    <None Include="Views\ConsoleHome\EditBlogArticle.aspx_" />
+    <None Include="Views\ConsoleHome\BlogArticleList.aspx_" />
     <Content Include="Views\ConsoleHome\Module\AboutAchievement.ascx" />
     <Content Include="Views\ConsoleHome\Module\AboutAchievement.cshtml" />
     <Content Include="Views\ConsoleHome\Module\AboutAchievementC3.ascx" />
@@ -6053,6 +6048,7 @@
     <Content Include="Views\ConsoleHome\Module\TodayLessonsBarChart.ascx" />
     <Content Include="Views\ConsoleHome\Module\TodayLessonsBarChartC3.ascx" />
     <Content Include="Views\ConsoleHome\Module\TodayLessonsBarChartC3.cshtml" />
+    <None Include="Views\ConsoleHome\ReportIndex.aspx_" />
     <Content Include="Views\Blog\Module\PlusIndication.cshtml" />
     <Content Include="Views\ConsoleEvent\EventModal\LessonItem.cshtml" />
     <Content Include="Views\ConsoleEvent\EventModal\UserEvent.cshtml" />
@@ -6078,7 +6074,18 @@
     <None Include="Views\ConsoleHome\BlogIndex.aspx_" />
     <Content Include="Views\ConsoleHome\Shared\DropifyUpload.ascx" />
     <Content Include="Views\ConsoleHome\Shared\PagingControl.ascx" />
+    <Content Include="Views\ConsoleHome\Shared\JsAlert.cshtml" />
+    <None Include="Views\ConsoleHome\SignContractService.aspx_" />
+    <None Include="Views\ConsoleHome\TerminateContract.aspx_" />
+    <None Include="Views\ConsoleHome\TransferContract.aspx_" />
+    <None Include="Views\ConsoleHome\PostponeContractExpiration.aspx_" />
+    <None Include="Views\ConsoleHome\ReassignFitnessConsultant.aspx_" />
+    <None Include="Views\ConsoleHome\SamplePage.aspx_" />
+    <None Include="Views\ConsoleHome\SignCourseContract.aspx_" />
+    <None Include="Views\ConsoleHome\EditCourseContract.aspx_" />
+    <None Include="Views\ConsoleHome\ContractIndex.aspx_" />
     <None Include="Views\ConsoleHome\Calendar.aspx_" />
+    <None Include="Views\ConsoleHome\CrossBranchIndex.aspx_" />
     <Content Include="Views\ConsoleHome\LearnerLesson.ascx" />
     <Content Include="Views\ConsoleHome\Shared\MyContractHeader.ascx" />
     <Content Include="Views\ConsoleHome\Shared\KnobJS.ascx" />
@@ -6181,6 +6188,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\CommonHelperController.cs" />
     <Compile Include="Controllers\ConsoleEventController.cs" />
     <Compile Include="Controllers\ConsoleHomeController.cs" />
     <Compile Include="Controllers\ContractConsoleController.cs" />
@@ -6688,6 +6696,7 @@
     <Content Include="Views\ConsoleHome\SignCourseContract.cshtml" />
     <Content Include="Views\ConsoleHome\TerminateContract.cshtml" />
     <Content Include="Views\ConsoleHome\TransferContract.cshtml" />
+    <Content Include="Views\ConsoleHome\ViewContractService.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -6701,6 +6710,7 @@
     <Folder Include="ConsoleHome\images\landing\portfolio\" />
     <Folder Include="MainActivity\Portfolio\Coach\Bryant\" />
     <Folder Include="MainActivity\Portfolio\Nanjing\" />
+    <Folder Include="Views\CommonHelper\" />
     <Folder Include="Views\ContractConsole\Items\" />
     <Folder Include="Views\ReportConsole\Module\" />
   </ItemGroup>
@@ -6716,6 +6726,14 @@
     <ProjectReference Include="..\beyond-fitness\beyond-fitness.csproj">
       <Project>{c49821ff-96c8-466b-aef4-137ec84fdefc}</Project>
       <Name>beyond-fitness</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CommonLib.Logger\CommonLib.Logger.csproj">
+      <Project>{8146e629-552a-4b36-8711-08ae8245b8fa}</Project>
+      <Name>CommonLib.Logger</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CommonLib\CommonLib.csproj">
+      <Project>{c0ad239c-2ac4-46d2-ae7c-5e97266ef4ea}</Project>
+      <Name>CommonLib</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
