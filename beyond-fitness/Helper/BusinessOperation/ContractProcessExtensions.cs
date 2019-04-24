@@ -197,7 +197,7 @@ namespace WebHome.Helper.BusinessOperation
             {
                 if (!viewModel.Installments.HasValue)
                 {
-                    ModelState.AddModelError("Installments", "請選擇分期期數");
+                    ModelState.AddModelError("Installments", "請選擇分期轉開次數");
                 }
             }
 
