@@ -1,0 +1,26 @@
+@{
+
+    String _message;
+    _message = (String)this.Model ?? (String)ViewBag.Message ?? Request["Message"];
+
+}
+@if (_message != null)
+{
+    <script>
+    alert('@(HttpUtility.JavaScriptStringEncode(_message))');
+    </script>
+}
+@if (ViewBag.GoBack == true)
+{
+    <script>
+        window.history.go(-1);
+    </script>
+}
+@if(ViewBag.CloseWindow==true)
+{
+    <script>
+        window.close();
+    </script>
+}
+
+
