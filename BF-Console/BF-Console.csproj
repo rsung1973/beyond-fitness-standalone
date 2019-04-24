@@ -6178,7 +6178,6 @@
     <Content Include="Views\MainActivity\Module\ContactItem.ascx" />
     <Content Include="Views\MainActivity\Module\JoinItem.ascx" />
     <Content Include="Views\MainActivity\Module\MenuItem.ascx" />
-    <Content Include="Views\MainActivity\SamplePage.aspx" />
     <Content Include="Views\ReportConsole\ReportModal\ByContractNo.ascx" />
     <Content Include="Views\ReportConsole\ReportModal\SelectReportCondition.ascx" />
     <Content Include="Views\ReportConsole\ReportModal\SelectPeriodReport.ascx" />
@@ -6551,8 +6550,6 @@
     <None Include="packages.config" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Views\ConsoleHome\Template\MainPage.Master" />
-    <Content Include="Views\MainActivity\Template\MainPage.Master" />
-    <Content Include="Views\MainActivity\Template\BlogPage.Master" />
     <Content Include="Views\MainActivity\Template\BlogPage.cshtml" />
     <Content Include="Views\MainActivity\Template\MainPage.cshtml" />
     <Content Include="Views\MainActivity\Index.cshtml" />
