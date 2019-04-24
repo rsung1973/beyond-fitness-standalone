@@ -28,7 +28,8 @@
 <ul class="row clearfix list-unstyled m-b-0" id="@(_viewID)">
     <li class="col-lg-6 col-md-12 col-sm-12">
         <div class="header">
-            <h2><strong>合約資料</strong> - @(_model.ContractName()) <span class="badge bg-blue"><i class="zmdi zmdi-pin"></i>&nbsp;&nbsp;@(_model.CourseContractExtension.BranchStore.BranchName)</span> </h2>
+            <h2><strong>合約資料</strong> - @(_model.ContractName()) <span class="badge bg-blue"><i class="zmdi zmdi-pin"></i>&nbsp;&nbsp;@(_model.CourseContractExtension.BranchStore.BranchName)</span> <a href="javascript:$global.showContractDetails('@(_model.ContractID.EncryptKey())');" class="btn btn-simple btn-info btn-round btn-sm float-right">更多資訊</a></h2>
+            @{ Html.RenderPartial("~/Views/ContractConsole/Indication/ContractDetails.cshtml", _model);}
         </div>
         <div class="body">
             <div class="row">

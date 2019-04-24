@@ -42,20 +42,28 @@
         <ul class="list-group list-group-flush">
             @foreach (var item in _model.OrderByDescending(b => b.BlogID))
             {
-                <li class="list-group-item">
-                    <div class="media mleft">
-                        <div class="media-left">
-                            <a href="@(Url.Action("BlogSingle", "MainActivity", new { item.DocID }))">
-                                @{ var imgUrl = $"Blog/{item.BlogID}/images/Title.jpg";}
 
-                                <img class="blog-img" src="images/blog/DefaultTitle.jpg" onload="@(System.IO.File.Exists(Server.MapPath(imgUrl)) ? $"this.onload = null;this.src = '{imgUrl}';" : null)" />
-                            </a>
-                        </div>
-                        <div class="media-body">
-                            <h4 class="media-heading"><a href="@(Url.Action("BlogSingle", "MainActivity", new { item.DocID }))">@(item.Title)</a></h4>
-                        </div>
+                <div class="row clearfix">
+                    <div class="col-md-6 col-xs-12">
+                        <li class="list-group-item">
+                            <div class="media">
+                                <div class="media-body">
+                                    <a href="@(Url.Action("BlogSingle", "MainActivity", new { item.DocID }))" class="title">@(item.Title)</a>
+                                    <span class="author">@(item.UserProfile.FullName())</span>
+                                    <span class="date">@($"{item.Document.DocDate:yyyy-MM-dd}")</span>
+                                </div>
+                                <div class="media-right">
+                                    <a href="@(Url.Action("BlogSingle", "MainActivity", new { item.DocID }))">
+                                        @{ var imgUrl = $"Blog/{item.BlogID}/images/Title.jpg";}
+
+                                        <img class="blog-img" src="images/blog/DefaultTitle.jpg" onload="@(System.IO.File.Exists(Server.MapPath(imgUrl)) ? $"this.onload = null;this.src = '{imgUrl}';" : null)" />
+                                    </a>
+                                </div>
+                            </div>
+                        </li>
                     </div>
-                </li>
+
+                </div>
             }
         </ul>
     </div>
