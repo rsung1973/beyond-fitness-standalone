@@ -161,12 +161,12 @@
                             {
                                 foreach (var m in _model.CourseContractMember)
                                 {
-                                    Html.RenderPartial("~/Views/CourseContract/Module/SignHere.cshtml", m);
+                                    Html.RenderPartial("~/Views/ContractConsole/Module/SignHere.cshtml", m);
                                 }
                             }
                             else
                             {
-                                Html.RenderPartial("~/Views/CourseContract/Module/SignHere.cshtml", _owner);
+                                Html.RenderPartial("~/Views/ContractConsole/Module/SignHere.cshtml", _owner);
                             }
                         </td>
                         <td></td>
@@ -184,7 +184,7 @@
                         <td colspan="2">
                             家長/監護人簽名：
                             @{ ViewBag.SignatureName = "GuardianSignature";
-                                Html.RenderPartial("~/Views/CourseContract/Module/SignHere.cshtml", _owner);}
+                                Html.RenderPartial("~/Views/ContractConsole/Module/SignHere.cshtml", _owner);}
 
                         </td>
                         <td>簽約體能顧問：<img src="@(_model.ServingCoach.UserProfile.UserProfileExtension.Signature)" width="200px" class="modifySignDialog_link"></td>
@@ -337,12 +337,12 @@
                             {
                                 foreach (var m in _model.CourseContractMember)
                                 {
-                                    Html.RenderPartial("~/Views/CourseContract/Module/SignHere.cshtml", m);
+                                    Html.RenderPartial("~/Views/ContractConsole/Module/SignHere.cshtml", m);
                                 }
                             }
                             else
                             {
-                                Html.RenderPartial("~/Views/CourseContract/Module/SignHere.cshtml", _owner);
+                                Html.RenderPartial("~/Views/ContractConsole/Module/SignHere.cshtml", _owner);
                             }
                         </td>
                         <td>日期：@(String.Format("{0:yyyy/MM/dd}", _signatureDate))</td>
@@ -351,7 +351,7 @@
                         <td colspan="2">
                             家長/監護人簽名：
                             @{ ViewBag.SignatureName = "GuardianSignature1";
-                                Html.RenderPartial("~/Views/CourseContract/Module/SignHere.cshtml", _owner);}
+                                Html.RenderPartial("~/Views/ContractConsole/Module/SignHere.cshtml", _owner);}
 
                         </td>
                     </tr>
@@ -398,7 +398,7 @@
                             <td class="text-right">
                                 簽名：
                                 @{ ViewBag.SignatureName = "Signature2";
-                                    Html.RenderPartial("~/Views/CourseContract/Module/SignHere.cshtml", _owner);}
+                                    Html.RenderPartial("~/Views/ContractConsole/Module/SignHere.cshtml", _owner);}
 
                             </td>
                             <td>日期：@(String.Format("{0:yyyy/MM/dd}", _signatureDate))</td>

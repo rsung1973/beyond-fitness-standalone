@@ -44,18 +44,6 @@
 
         });
 
-        function editContractMember(uid) {
-            showLoading();
-            $.post('@Html.Raw(Url.Action("EditContractMember", "ContractConsole"))', { 'uid': uid, 'OwnerID': $global.viewModel.OwnerID }, function (data) {
-                hideLoading();
-                if ($.isPlainObject(data)) {
-                    alert(data.message);
-                } else {
-                    $(data).appendTo($('body'));
-                }
-            });
-        }
-
         function removeContractMember(uid) {
             var idx = $global.viewModel.UID.indexOf(uid);
             if (idx >= 0) {
@@ -63,6 +51,7 @@
                 loadMemberList();
                 $global.closeAllModal();
             }
+            $global.closeAllModal();
         }//
 
 

@@ -218,6 +218,7 @@
                 closeOnCancel: false
             }, function(isConfirm) {
                 if (isConfirm) {
+                    $global.closeAllModal();
                     showLoading();
                     $.post('@Html.Raw(Url.Action("DeleteCourseContract","CourseContract"))', { 'keyID': keyID }, function (data) {
                         hideLoading();

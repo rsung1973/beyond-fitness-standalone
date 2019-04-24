@@ -35,9 +35,12 @@
         if (!$global.viewModel.UID) {
             $global.viewModel.UID = [];
         }
-        $global.viewModel.UID.push(uid);
-        loadMemberList();
+        $global.commitContractMemberOnce = function () {
+            $global.viewModel.UID.push(uid);
+            loadMemberList();
+        };
         $global.closeAllModal();
-    }//
+        editContractMember(uid);
+    }
 </script>
 

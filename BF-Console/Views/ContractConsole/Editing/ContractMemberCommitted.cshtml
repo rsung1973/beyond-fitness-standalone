@@ -24,7 +24,12 @@
     $(function () {
         $('#@(_viewModel.DialogID)').modal('hide');
         $global.viewModel.OwnerID = @(_viewModel.OwnerID.HasValue ? _viewModel.OwnerID.ToString() : "null");
-        loadMemberList();
+        if ($global.commitContractMemberOnce) {
+            $global.commitContractMemberOnce();
+            $global.commitContractMemberOnce = null;
+        } else {
+            loadMemberList();
+        }
     });
 </script>
 

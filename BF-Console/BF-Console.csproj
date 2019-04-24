@@ -1556,6 +1556,7 @@
     <Content Include="ConsoleHome\images\certificate\default.jpg" />
     <Content Include="ConsoleHome\images\certificate\EXOS.png" />
     <Content Include="ConsoleHome\images\certificate\NACA.png" />
+    <Content Include="ConsoleHome\images\error.png" />
     <Content Include="ConsoleHome\images\facesmile\easy-1.jpg" />
     <Content Include="ConsoleHome\images\facesmile\easy-2.png" />
     <Content Include="ConsoleHome\images\facesmile\easy.jpg" />
@@ -6178,6 +6179,7 @@
     <Content Include="Views\MainActivity\Module\ContactItem.ascx" />
     <Content Include="Views\MainActivity\Module\JoinItem.ascx" />
     <Content Include="Views\MainActivity\Module\MenuItem.ascx" />
+    <Content Include="Views\MainActivity\SamplePage.aspx" />
     <Content Include="Views\ReportConsole\ReportModal\ByContractNo.ascx" />
     <Content Include="Views\ReportConsole\ReportModal\SelectReportCondition.ascx" />
     <Content Include="Views\ReportConsole\ReportModal\SelectPeriodReport.ascx" />
@@ -6550,6 +6552,8 @@
     <None Include="packages.config" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Views\ConsoleHome\Template\MainPage.Master" />
+    <Content Include="Views\MainActivity\Template\MainPage.Master" />
+    <Content Include="Views\MainActivity\Template\BlogPage.Master" />
     <Content Include="Views\MainActivity\Template\BlogPage.cshtml" />
     <Content Include="Views\MainActivity\Template\MainPage.cshtml" />
     <Content Include="Views\MainActivity\Index.cshtml" />
@@ -6694,6 +6698,9 @@
     <Content Include="Views\ConsoleHome\TerminateContract.cshtml" />
     <Content Include="Views\ConsoleHome\TransferContract.cshtml" />
     <Content Include="Views\ConsoleHome\ViewContractService.cshtml" />
+    <Content Include="Views\Error\InvalidCrypto.cshtml" />
+    <Content Include="Views\Error\Http500.cshtml" />
+    <Content Include="Views\ContractConsole\Module\SignHere.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

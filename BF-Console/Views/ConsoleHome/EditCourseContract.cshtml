@@ -208,18 +208,31 @@
                     </div>
                     <input type="hidden" name="OwnerID" />
                     <script>
-                            function loadMemberList() {
-                                showLoading();
-                                $.post('@Html.Raw(Url.Action("ListContractMember", "ContractConsole"))', $global.viewModel, function (data) {
-                                    hideLoading();
-                                    if ($.isPlainObject(data)) {
-                                        alert(data.message);
-                                    } else {
-                                        $('#contractMember').empty()
-                                            .append(data);
-                                    }
-                                });
-                            }//
+                        function loadMemberList() {
+                            showLoading();
+                            $.post('@Html.Raw(Url.Action("ListContractMember", "ContractConsole"))', $global.viewModel, function (data) {
+                                hideLoading();
+                                if ($.isPlainObject(data)) {
+                                    alert(data.message);
+                                } else {
+                                    $('#contractMember').empty()
+                                        .append(data);
+                                }
+                            });
+                        }
+
+                        function editContractMember(uid) {
+                            showLoading();
+                            $.post('@Html.Raw(Url.Action("EditContractMember", "ContractConsole"))', { 'uid': uid, 'OwnerID': $global.viewModel.OwnerID }, function (data) {
+                                hideLoading();
+                                if ($.isPlainObject(data)) {
+                                    alert(data.message);
+                                } else {
+                                    $(data).appendTo($('body'));
+                                }
+                            });
+                            //$global.closeAllModal();
+                        }
                     </script>
                 </div>
             </div>
