@@ -6081,7 +6081,6 @@
     <None Include="Views\ConsoleHome\TransferContract.aspx_" />
     <None Include="Views\ConsoleHome\PostponeContractExpiration.aspx_" />
     <None Include="Views\ConsoleHome\ReassignFitnessConsultant.aspx_" />
-    <None Include="Views\ConsoleHome\SamplePage.aspx_" />
     <None Include="Views\ConsoleHome\SignCourseContract.aspx_" />
     <None Include="Views\ConsoleHome\EditCourseContract.aspx_" />
     <None Include="Views\ConsoleHome\ContractIndex.aspx_" />
@@ -6179,7 +6178,6 @@
     <Content Include="Views\MainActivity\Module\ContactItem.ascx" />
     <Content Include="Views\MainActivity\Module\JoinItem.ascx" />
     <Content Include="Views\MainActivity\Module\MenuItem.ascx" />
-    <Content Include="Views\MainActivity\SamplePage.aspx" />
     <Content Include="Views\ReportConsole\ReportModal\ByContractNo.ascx" />
     <Content Include="Views\ReportConsole\ReportModal\SelectReportCondition.ascx" />
     <Content Include="Views\ReportConsole\ReportModal\SelectPeriodReport.ascx" />
