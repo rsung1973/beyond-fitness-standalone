@@ -63,7 +63,7 @@
                         }
                         @foreach (var m in items)
                         {
-                            <tr style="border-width: 1px; border-top-style: dashed;">
+                            <tr style="border-width: 2px; border-top-style: dashed;">
                                 <td>姓名：@(m.UserProfile.RealName)</td>
                                 <td colspan="2">身份證字號/護照號碼：@(m.UserProfile.UserProfileExtension.IDNo)</td>
                             </tr>
@@ -81,7 +81,7 @@
                                 <td colspan="3">地址：@(m.UserProfile.Address())</td>
                             </tr>
                         }
-                        <tr style="height: 1cm; border-width: 1px; border-top-style: dashed;">
+                        <tr style="height: 1cm; border-width: 2px; border-top-style: dashed;">
                             <td colspan="3">課程內容</td>
                         </tr>
                     </tbody>
