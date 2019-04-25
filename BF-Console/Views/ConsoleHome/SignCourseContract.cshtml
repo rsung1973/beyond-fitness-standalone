@@ -26,24 +26,8 @@
     _item = (CourseContract)ViewBag.DataItem;
 
 }
-
-@section CustomHeader {
-    <!-- JQuery DataTable Css -->
-    <link href="plugins/jquery-datatable/DataTables-1.10.18/css/dataTables.bootstrap4.min.css" rel="stylesheet">
-    <link href="plugins/jquery-datatable/Responsive-2.2.2/css/responsive.bootstrap4.min.css" rel="stylesheet">
-    <link href="plugins/jquery-datatable/FixedColumns-3.2.5/css/fixedColumns.bootstrap4.min.css" rel="stylesheet">
-    <!-- Bootstrap Datetimepick -->
-    @*<link href="plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
-        <link href="css/datetimepicker.css" rel="stylesheet" />*@
-    <link href="plugins/smartcalendar/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
-    <link href="css/smartcalendar-2.css" rel="stylesheet" />
-
-    <!-- Custom Css -->
-    <link rel="stylesheet" href="css/customelist.css?1" />
-    <!-- jSignature -->
-    <link rel="stylesheet" href="css/jsignature.css">
-}
-
+<!-- jSignature -->
+<link rel="stylesheet" href="css/jsignature.css">
 <script>
         $(function () {
             $global.viewModel = @Html.Raw(JsonConvert.SerializeObject(_viewModel));
@@ -171,8 +155,6 @@
     <script src="@(basePath + "js/plugin/jSignature/plugins/jSignature.UndoButton.js")"></script>
     <script src="@(basePath + "js/plugin/jSignature/plugins/signhere/jSignature.SignHere.js")"></script>
 
-    <script type="text/javascript">
-
-    </script>
+    <script type="text/javascript"></script>
 }
 

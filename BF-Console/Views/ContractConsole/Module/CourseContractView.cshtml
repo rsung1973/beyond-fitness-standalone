@@ -38,16 +38,14 @@
             <h2 class="text-center"><b>體能顧問聘請服務合約</b></h2>
             <div class="@(Request["pdf"]=="1" ? "bs-example bs-example-type seal" : "bs-example bs-example-type")">
                 <table class="table" style="font-size: 16px">
-                    @if (_model.ContractNo != null)
-                    {
-                        <tbody>
-                            <tr>
-                                <td colspan="3">合約編號：@(_model.ContractNo())</td>
-                            </tr>
-                        </tbody>
-                    }
                     <tbody>
+                        @if (_model.ContractNo != null)
+                        {
                         <tr>
+                            <td colspan="3">合約編號：@(_model.ContractNo())</td>
+                        </tr>
+                        }
+                        <tr style="border-width: 1px; border-bottom-style: dashed;">
                             <td colspan="3">學員資料</td>
                         </tr>
                         @{ IEnumerable
@@ -63,7 +61,7 @@
                         }
                         @foreach (var m in items)
                         {
-                            <tr style="border-width: 2px; border-top-style: dashed;">
+                            <tr>
                                 <td>姓名：@(m.UserProfile.RealName)</td>
                                 <td colspan="2">身份證字號/護照號碼：@(m.UserProfile.UserProfileExtension.IDNo)</td>
                             </tr>
@@ -81,7 +79,7 @@
                                 <td colspan="3">地址：@(m.UserProfile.Address())</td>
                             </tr>
                         }
-                        <tr style="height: 1cm; border-width: 2px; border-top-style: dashed;">
+                        <tr style="height: 1cm; border-width: 1px; border-top-style: dashed;">
                             <td colspan="3">課程內容</td>
                         </tr>
                     </tbody>
@@ -108,43 +106,85 @@
                 </table>
                 <table class="table" style="font-size: 16px">
                     <tr>
-                        <td>
-                            @if (_model.Status >= (int)Naming.CourseContractStatus.待審核)
-                            {
-                                <text>☑</text>
-                            }
-                            else
-                            {
-                                <input type="checkbox" name="extension" />
-                            }
-                        </td>
-                        <td>展延：無法於上述使用期限內完成課程堂數者，得於到期前30日內申請展延使用，並得就未完成部分協商展延3個月內完成，且展延後不得申請轉讓或退費。</td>
+                        @if (_model.Status < (int)Naming.CourseContractStatus.待審核)
+                        {
+                            <td>
+
+                                <label class="fancy-checkbox">
+                                    <input type="checkbox" name="extension">
+                                    <span>展延：</span>
+                                </label>
+                            </td>  
+                        }
+                        else if (_model.Status == (int)Naming.CourseContractStatus.待審核)
+                        {
+                            <td>
+
+                                <label class="fancy-checkbox">
+                                    <input type="checkbox" name="extension" checked="checked" disabled="disabled">
+                                    <span>展延：</span>
+                                </label>
+                            </td>  
+                        }
+                        else
+                        {
+                            <text>☑</text>
+                        }
+                        <td>無法於上述使用期限內完成課程堂數者，得於到期前30日內申請展延使用，並得就未完成部分協商展延3個月內完成，且展延後不得申請轉讓或退費。</td>
+                    </tr>
+                     <tr>
+                    @if (_model.Status < (int)Naming.CourseContractStatus.待審核)
+                        {
+                            <td width="100px">
+
+                                <label class="fancy-checkbox">
+                                    <input type="checkbox" name="booking">
+                                    <span>預約：</span>
+                                </label>
+                            </td>  
+                        }
+                        else if (_model.Status == (int)Naming.CourseContractStatus.待審核)
+                        {
+                            <td width="100px">
+
+                                <label class="fancy-checkbox">
+                                    <input type="checkbox" name="booking" checked="checked" disabled="disabled">
+                                    <span>預約：</span>
+                                </label>
+                            </td>  
+                        }
+                        else
+                        {
+                            <text>☑</text>
+                        }
+                            <td>須於欲使用其體能顧問服務時段至少24小時前向其負責之體能顧問預約其服務與其場地租用權力。</td>
                     </tr>
                     <tr>
-                        <td>
-                            @if (_model.Status >= (int)Naming.CourseContractStatus.待審核)
+                        @if (_model.Status < (int)Naming.CourseContractStatus.待審核)
                             {
-                                <text>☑</text>
+                                <td width="100px">
+
+                                    <label class="fancy-checkbox">
+                                        <input type="checkbox" name="cancle">
+                                        <span>取消：</span>
+                                    </label>
+                                </td>  
+                            }
+                            else if (_model.Status == (int)Naming.CourseContractStatus.待審核)
+                            {
+                                <td width="100px">
+
+                                    <label class="fancy-checkbox">
+                                        <input type="checkbox" name="booking" checked="checked" disabled="disabled">
+                                        <span>取消：</span>
+                                    </label>
+                                </td>  
                             }
                             else
                             {
-                                <input type="checkbox" name="booking" />
-                            }
-                        </td>
-                        <td>預約：須於欲使用其體能顧問服務時段至少24小時前向其負責之體能顧問預約其服務與其場地租用權力。</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            @if (_model.Status >= (int)Naming.CourseContractStatus.待審核)
-                            {
                                 <text>☑</text>
                             }
-                            else
-                            {
-                                <input type="checkbox" name="cancel" />
-                            }
-                        </td>
-                        <td>取消：如欲取消預約時段，學員必須於原定時間24小時前通知負責之體能顧問，否則該未使用之預約顧問服務仍應記入已使用之體能顧問課程堂數內。</td>
+                        <td>須於欲使用其體能顧問服務時段至少24小時前向其負責之體能顧問預約其服務與其場地租用權力。</td>
                     </tr>
                     <tr>
                         <td colspan="2">您已確認並瞭解於簽署本合約後，即表示即日起您同意接受本合約正面及背面條款之相關約束及其責任。</td>

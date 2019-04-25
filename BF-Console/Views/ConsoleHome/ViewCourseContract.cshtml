@@ -11,13 +11,12 @@
 @using Newtonsoft.Json
 @{
     Layout = "~/Views/ConsoleHome/Template/MainPage.cshtml"; ModelStateDictionary _modelState;
+
+
     ModelSource<UserProfile> models;
     CourseContract _model;
-    String _msg = DateTime.Now.Ticks.ToString();
-    _modelState = (ModelStateDictionary)ViewBag.ModelState;
     models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
     _model = (CourseContract)this.Model;
-    ViewBag.ScrollUp = false;
 }
 
 <section class="content">
@@ -29,23 +28,3 @@
         </div>
     </div>
 </section>
-
-@section TailPageJavaScriptInclude {
-    <script>
-    var done = false;
-    var $signatureImage;
-    function signaturePanel(contractID, uid, signatureName) {
-        if (done)
-            return;
-        var event = event || window.event;
-        $signatureImage = $(event.target);
-        //showLoading();
-        $.post('@(Url.Action("SignaturePanel","CourseContract"))', { 'contractID': contractID, 'uid': uid, 'signatureName': signatureName }, function (data) {
-            //hideLoading();
-            $(data).appendTo($('body'));
-        });
-    }
-    </script>
-
-}
-
