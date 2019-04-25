@@ -26,8 +26,7 @@
     _item = (CourseContract)ViewBag.DataItem;
 
 }
-<!-- jSignature -->
-<link rel="stylesheet" href="css/jsignature.css">
+
 <script>
         $(function () {
             $global.viewModel = @Html.Raw(JsonConvert.SerializeObject(_viewModel));
@@ -130,6 +129,8 @@
 </script>
 
 @section TailPageJavaScriptInclude {
+    <!-- jSignature -->
+    <link rel="stylesheet" href="css/jsignature.css">
     <!--Sparkline Plugin Js-->
     <script src="plugins/jquery-sparkline/jquery.sparkline.js"></script>
     <!-- SweetAlert Plugin Js -->

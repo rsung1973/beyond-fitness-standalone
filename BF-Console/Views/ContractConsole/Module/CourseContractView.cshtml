@@ -32,9 +32,9 @@
     }
 }
 
-<div class="row" style="page-break-after: always;">
+<div class="row">
     <div class="col-md-12">
-        <div class="well no-padding well-light">
+        <div class="well no-padding well-light" style="@(Request["pdf"]=="1" ? "width: 23cm; height: 30cm" : "")">
             <h2 class="text-center"><b>體能顧問聘請服務合約</b></h2>
             <div class="@(Request["pdf"]=="1" ? "bs-example bs-example-type seal" : "bs-example bs-example-type")">
                 <table class="table" style="font-size: 16px">
@@ -100,7 +100,7 @@
                             <td colspan="3">顧問服務使用期限：自 @(String.Format("{0:yyyy/MM/dd}", _model.ValidFrom)) 起，至 @(String.Format("{0:yyyy/MM/dd}", _model.Expiration)) 止。</td>
                         </tr>
                         <tr>
-                            <td colspan="3" style="height: @(_model.CourseContractType.IsGroup==true ? "1cm" : "2cm")">備註：@(_model.Remark)@(_model.PayoffDue.HasValue ? $"帳款應付期限{_model.PayoffDue:yyyy/MM/dd}。" : null)</td>
+                            <td colspan="3" style="height: @(_model.CourseContractType.IsGroup==true ? "3cm" : "5cm")">備註：@(_model.Remark)@(_model.PayoffDue.HasValue ? $"帳款應付期限{_model.PayoffDue:yyyy/MM/dd}。" : null)</td>
                         </tr>
                     </tbody>
                 </table>
@@ -108,7 +108,7 @@
                     <tr>
                         @if (_model.Status < (int)Naming.CourseContractStatus.待審核)
                         {
-                            <td>
+                            <td width="100px">
 
                                 <label class="fancy-checkbox">
                                     <input type="checkbox" name="extension">
@@ -116,15 +116,21 @@
                                 </label>
                             </td>  
                         }
-                        else if (_model.Status >= (int)Naming.CourseContractStatus.待審核)
+                        else if (_model.Status == (int)Naming.CourseContractStatus.待審核)
                         {
-                            <td>
+                            <td width="100px">
 
                                 <label class="fancy-checkbox">
                                     <input type="checkbox" name="extension" checked="checked" disabled="disabled">
                                     <span>展延：</span>
                                 </label>
                             </td>  
+                        }
+                        else
+                        {
+                            <td width="100px">
+                                ☑ 展延：
+                            </td> 
                         }
                         <td>無法於上述使用期限內完成課程堂數者，得於到期前30日內申請展延使用，並得就未完成部分協商展延3個月內完成，且展延後不得申請轉讓或退費。</td>
                     </tr>
@@ -139,7 +145,7 @@
                                 </label>
                             </td>  
                         }
-                        else if (_model.Status >= (int)Naming.CourseContractStatus.待審核)
+                        else if (_model.Status == (int)Naming.CourseContractStatus.待審核)
                         {
                             <td width="100px">
 
@@ -149,6 +155,12 @@
                                 </label>
                             </td>  
                         }
+                        else
+                        {
+                            <td width="100px">
+                                ☑ 預約：
+                            </td> 
+                        }
                         <td>須於欲使用其體能顧問服務時段至少24小時前向其負責之體能顧問預約其服務與其場地租用權力。</td>
                     </tr>
                     <tr>
@@ -157,22 +169,28 @@
                                 <td width="100px">
 
                                     <label class="fancy-checkbox">
-                                        <input type="checkbox" name="cancle">
+                                        <input type="checkbox" name="cancel">
                                         <span>取消：</span>
                                     </label>
                                 </td>  
                             }
-                            else if (_model.Status >= (int)Naming.CourseContractStatus.待審核)
+                            else if (_model.Status == (int)Naming.CourseContractStatus.待審核)
                             {
                                 <td width="100px">
 
                                     <label class="fancy-checkbox">
-                                        <input type="checkbox" name="booking" checked="checked" disabled="disabled">
+                                        <input type="checkbox" name="cancel" checked="checked" disabled="disabled">
                                         <span>取消：</span>
                                     </label>
                                 </td>  
                             }
-                        <td>須於欲使用其體能顧問服務時段至少24小時前向其負責之體能顧問預約其服務與其場地租用權力。</td>
+                            else
+                            {
+                                <td width="100px">
+                                    ☑ 取消：
+                                </td> 
+                            }
+                        <td>如欲取消預約時段，學員必須於原定時間24小時前通知負責之體能顧問，否則該未使用之預約顧問服務仍應記入已使用之體能顧問課程堂數內。</td>
                     </tr>
                     <tr>
                         <td colspan="2">您已確認並瞭解於簽署本合約後，即表示即日起您同意接受本合約正面及背面條款之相關約束及其責任。</td>
@@ -227,9 +245,9 @@
         </div>
     </div>
 </div>
-<div class="row">
+<div class="row" style="page-break-before: always;">
     <div class="col-md-12">
-        <div class="well padding-5 well-light">
+        <div class="well padding-5 well-light" style="@(Request["pdf"]=="1" ? "width: 23cm; height: 30cm" : "")">
             <h2 class="text-center"><b>Beyond Fitness訓練特約條款</b></h2>
             <div class="@(Request["pdf"]=="1" ? "bs-example bs-example-type seal" : "bs-example bs-example-type")">
                 <table class="table" style="font-size:13px">
@@ -355,7 +373,7 @@
                         <td>您已詳閱上述各項記載、購買服務之項目及各項特約條款，並確認收到副本。</td>
                     </tr>
                 </table>
-                <table class="table" style="font-size:13px">
+                <table class="table" style="font-size:12px">
                     <tr>
                         <td>
                             學員簽名：
@@ -388,9 +406,9 @@
 </div>
 @if (_model.CourseContractType.ContractCode == "CFA")
 {
-    <div class="row">
+    <div class="row" style="page-break-before: always;">
         <div class="col-md-12">
-            <div class="well padding-5 well-light">
+            <div class="well padding-5 well-light" style="@(Request["pdf"]=="1" ? "width: 23cm; height: 30cm" : "")">
                 <h2 class="text-center"><b>附表-學員名單</b></h2>
                 <div class="@(Request["pdf"]=="1" ? "bs-example bs-example-type seal" : "bs-example bs-example-type")">
                     <table class="table" style="font-size: 16px">
