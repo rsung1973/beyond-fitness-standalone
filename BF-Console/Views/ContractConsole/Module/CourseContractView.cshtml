@@ -116,7 +116,7 @@
                                 </label>
                             </td>  
                         }
-                        else if (_model.Status == (int)Naming.CourseContractStatus.待審核)
+                        else if (_model.Status >= (int)Naming.CourseContractStatus.待審核)
                         {
                             <td>
 
@@ -125,10 +125,6 @@
                                     <span>展延：</span>
                                 </label>
                             </td>  
-                        }
-                        else
-                        {
-                            <text>☑</text>
                         }
                         <td>無法於上述使用期限內完成課程堂數者，得於到期前30日內申請展延使用，並得就未完成部分協商展延3個月內完成，且展延後不得申請轉讓或退費。</td>
                     </tr>
@@ -143,7 +139,7 @@
                                 </label>
                             </td>  
                         }
-                        else if (_model.Status == (int)Naming.CourseContractStatus.待審核)
+                        else if (_model.Status >= (int)Naming.CourseContractStatus.待審核)
                         {
                             <td width="100px">
 
@@ -153,11 +149,7 @@
                                 </label>
                             </td>  
                         }
-                        else
-                        {
-                            <text>☑</text>
-                        }
-                            <td>須於欲使用其體能顧問服務時段至少24小時前向其負責之體能顧問預約其服務與其場地租用權力。</td>
+                        <td>須於欲使用其體能顧問服務時段至少24小時前向其負責之體能顧問預約其服務與其場地租用權力。</td>
                     </tr>
                     <tr>
                         @if (_model.Status < (int)Naming.CourseContractStatus.待審核)
@@ -170,7 +162,7 @@
                                     </label>
                                 </td>  
                             }
-                            else if (_model.Status == (int)Naming.CourseContractStatus.待審核)
+                            else if (_model.Status >= (int)Naming.CourseContractStatus.待審核)
                             {
                                 <td width="100px">
 
@@ -179,10 +171,6 @@
                                         <span>取消：</span>
                                     </label>
                                 </td>  
-                            }
-                            else
-                            {
-                                <text>☑</text>
                             }
                         <td>須於欲使用其體能顧問服務時段至少24小時前向其負責之體能顧問預約其服務與其場地租用權力。</td>
                     </tr>
