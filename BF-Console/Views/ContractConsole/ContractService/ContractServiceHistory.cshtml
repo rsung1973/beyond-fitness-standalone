@@ -49,7 +49,7 @@
                 <td>@(item.Reason)</td>
                 <td>@(contract.ContractLearner())</td>
                 <td>@(contract.CourseContractExtension.BranchStore.BranchName)</td>
-                <td>@(contract.ContractAgent.FullName())</td>
+                <td>@(contract.ServingCoach.UserProfile.FullName())</td>
                 <td>@(contract.ContractNo())</td>
                 <td>@($"{contract.ContractDate:yyyy/MM/dd}")</td>
                 <td>@($"{contract.Expiration:yyyy/MM/dd}")</td>

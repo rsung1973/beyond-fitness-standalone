@@ -68,7 +68,7 @@
     function commitPostponing() {
         var viewModel = $('#@(_viewID)').find('input,select,textArea').serializeObject();
         viewModel.Reason = '展延';
-        viewModel.FitnessConsultant = @(_model.FitnessConsultant);
+        viewModel.FitnessConsultant = @(_profile.UID);
         clearErrors();
         showLoading();
         $.post('@Html.Raw(Url.Action("CommitContractService", "ContractConsole",new { KeyID = _model.ContractID.EncryptKey() }))', viewModel, function (data) {
