@@ -356,6 +356,7 @@ namespace WebHome.Helper.BusinessOperation
                 totalLessons -= item.Lessons.Value;
                 payoffDue = payoffDue.AddMonths(1);
                 viewModel.ContractID = null;
+                viewModel.KeyID = null;
                 while (totalLessons > 0)
                 {
                     viewModel.Lessons = Math.Min(installment, totalLessons);
@@ -977,6 +978,7 @@ namespace WebHome.Helper.BusinessOperation
                     break;
                 case "轉換體能顧問":
                     item.SourceContract.FitnessConsultant = item.CourseContract.FitnessConsultant;
+                    item.SourceContract.CourseContractExtension.BranchID = item.CourseContract.CourseContractExtension.BranchID;
                     models.SubmitChanges();
                     break;
 
@@ -1164,9 +1166,16 @@ namespace WebHome.Helper.BusinessOperation
                     }));
 
                     newItem.FitnessConsultant = viewModel.FitnessConsultant.Value;
+                    var work = models.GetTable<CoachWorkplace>().Where(w => w.CoachID == viewModel.FitnessConsultant).FirstOrDefault();
+                    if (work != null)
+                    {
+                        newItem.CourseContractExtension.BranchID = work.BranchID;
+                    }
+
                     newItem.CourseContractRevision.CourseContractRevisionItem = new CourseContractRevisionItem
                     {
-                        FitnessConsultant = item.FitnessConsultant
+                        FitnessConsultant = item.FitnessConsultant,
+                        BranchID = item.CourseContractExtension.BranchID
                     };
 
                     if(profile.IsManager())

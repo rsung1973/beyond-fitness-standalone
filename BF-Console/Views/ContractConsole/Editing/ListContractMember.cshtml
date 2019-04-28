@@ -21,12 +21,6 @@
     _viewModel = (CourseContractQueryViewModel)ViewBag.ViewModel;
 }
 
-<div class="table-responsive">
-    @{ ViewBag.OwnerID = _viewModel.OwnerID;
-        Html.RenderPartial("~/Views/ContractConsole/Module/ContractMemberList.cshtml", _viewModel.UID.PromptContractMembers(models));}
-
-</div>
-
 <script>
 
     $(function () {
@@ -54,4 +48,12 @@
     });
 
 </script>
+
+<div class="table-responsive">
+    @{ ViewBag.OwnerID = _viewModel.OwnerID;
+        Html.RenderPartial("~/Views/ContractConsole/Module/ContractMemberList.cshtml", _viewModel.UID.PromptContractMembers(models));}
+
+</div>
+
+
 

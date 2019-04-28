@@ -956,6 +956,7 @@
       <Association Name="BranchStore_EnterpriseCourseContract" Member="EnterpriseCourseContract" ThisKey="BranchID" OtherKey="BranchID" Type="EnterpriseCourseContract" />
       <Association Name="BranchStore_LessonTime" Member="LessonTime" ThisKey="BranchID" OtherKey="BranchID" Type="LessonTime" />
       <Association Name="BranchStore_UserEvent" Member="UserEvent" ThisKey="BranchID" OtherKey="BranchID" Type="UserEvent" />
+      <Association Name="BranchStore_CourseContractRevisionItem" Member="CourseContractRevisionItem" ThisKey="BranchID" OtherKey="BranchID" Type="CourseContractRevisionItem" />
       <Association Name="UserProfile_BranchStore" Member="Manager" ThisKey="ManagerID" OtherKey="UID" Type="UserProfile" IsForeignKey="true" />
       <Association Name="UserProfile_BranchStore1" Member="ViceManager" ThisKey="ViceManagerID" OtherKey="UID" Type="UserProfile" IsForeignKey="true" />
       <Association Name="Organization_BranchStore" Member="Organization" ThisKey="BranchID" OtherKey="CompanyID" Type="Organization" IsForeignKey="true" />
@@ -2066,18 +2067,20 @@
       <Association Name="BlogCategoryDefinition_BlogTag" Member="BlogCategoryDefinition" ThisKey="CategoryID" OtherKey="CategoryID" Type="BlogCategoryDefinition" IsForeignKey="true" />
     </Type>
   </Table>
-  <Table Name="dbo.CourseContractRevisionItem" Member="CourseContractRevisionItem">
-    <Type Name="CourseContractRevisionItem">
-      <Column Name="RevisionID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="FitnessConsultant" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Association Name="CourseContractRevision_CourseContractRevisionItem" Member="CourseContractRevision" ThisKey="RevisionID" OtherKey="RevisionID" Type="CourseContractRevision" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
-      <Association Name="ServingCoach_CourseContractRevisionItem" Member="ServingCoach" ThisKey="FitnessConsultant" OtherKey="CoachID" Type="ServingCoach" IsForeignKey="true" />
-    </Type>
-  </Table>
   <Table Name="dbo.V_BranchStaff" Member="V_BranchStaff">
     <Type Name="V_BranchStaff">
       <Column Name="UID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="BranchID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.CourseContractRevisionItem" Member="CourseContractRevisionItem">
+    <Type Name="CourseContractRevisionItem">
+      <Column Name="RevisionID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="FitnessConsultant" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="BranchID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="BranchStore_CourseContractRevisionItem" Member="BranchStore" ThisKey="BranchID" OtherKey="BranchID" Type="BranchStore" IsForeignKey="true" />
+      <Association Name="CourseContractRevision_CourseContractRevisionItem" Member="CourseContractRevision" ThisKey="RevisionID" OtherKey="RevisionID" Type="CourseContractRevision" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="ServingCoach_CourseContractRevisionItem" Member="ServingCoach" ThisKey="FitnessConsultant" OtherKey="CoachID" Type="ServingCoach" IsForeignKey="true" />
     </Type>
   </Table>
   <Function Name="dbo.InquireVacantNo" Method="InquireVacantNo">

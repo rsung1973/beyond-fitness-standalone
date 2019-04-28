@@ -205,6 +205,11 @@ namespace BFConsole.Controllers
                 items = items.FilterByAlarmedContract(models, viewModel.AlarmCount.Value);
             }
 
+            if (viewModel.InstallmentID.HasValue)
+            {
+                hasConditon = true;
+                items = items.Where(c => c.InstallmentID == viewModel.InstallmentID);
+            }
 
             if (hasConditon)
             {
@@ -473,6 +478,8 @@ namespace BFConsole.Controllers
 
         public ActionResult ExecuteContractStatus(CourseContractViewModel viewModel)
         {
+            ViewBag.ViewModel = viewModel;
+
             var item = viewModel.ExecuteContractStatus(this, out String alertMessage);
             if (item == null)
             {
@@ -491,6 +498,7 @@ namespace BFConsole.Controllers
 
         public ActionResult EnableContractAmendment(CourseContractViewModel viewModel)
         {
+            ViewBag.ViewModel = viewModel;
             var item = viewModel.EnableContractAmendment(this, out String alertMessage, null);
             if (item == null)
             {

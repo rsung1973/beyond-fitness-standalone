@@ -1910,19 +1910,19 @@ namespace WebHome.Models.DataEntity
 			}
 		}
 		
-		public System.Data.Linq.Table<CourseContractRevisionItem> CourseContractRevisionItem
-		{
-			get
-			{
-				return this.GetTable<CourseContractRevisionItem>();
-			}
-		}
-		
 		public System.Data.Linq.Table<V_BranchStaff> V_BranchStaff
 		{
 			get
 			{
 				return this.GetTable<V_BranchStaff>();
+			}
+		}
+		
+		public System.Data.Linq.Table<CourseContractRevisionItem> CourseContractRevisionItem
+		{
+			get
+			{
+				return this.GetTable<CourseContractRevisionItem>();
 			}
 		}
 		
@@ -23110,6 +23110,8 @@ namespace WebHome.Models.DataEntity
 		
 		private EntitySet<UserEvent> _UserEvent;
 		
+		private EntitySet<CourseContractRevisionItem> _CourseContractRevisionItem;
+		
 		private EntityRef<UserProfile> _Manager;
 		
 		private EntityRef<UserProfile> _ViceManager;
@@ -23140,6 +23142,7 @@ namespace WebHome.Models.DataEntity
 			this._EnterpriseCourseContract = new EntitySet<EnterpriseCourseContract>(new Action<EnterpriseCourseContract>(this.attach_EnterpriseCourseContract), new Action<EnterpriseCourseContract>(this.detach_EnterpriseCourseContract));
 			this._LessonTime = new EntitySet<LessonTime>(new Action<LessonTime>(this.attach_LessonTime), new Action<LessonTime>(this.detach_LessonTime));
 			this._UserEvent = new EntitySet<UserEvent>(new Action<UserEvent>(this.attach_UserEvent), new Action<UserEvent>(this.detach_UserEvent));
+			this._CourseContractRevisionItem = new EntitySet<CourseContractRevisionItem>(new Action<CourseContractRevisionItem>(this.attach_CourseContractRevisionItem), new Action<CourseContractRevisionItem>(this.detach_CourseContractRevisionItem));
 			this._Manager = default(EntityRef<UserProfile>);
 			this._ViceManager = default(EntityRef<UserProfile>);
 			this._Organization = default(EntityRef<Organization>);
@@ -23339,6 +23342,19 @@ namespace WebHome.Models.DataEntity
 			set
 			{
 				this._UserEvent.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="BranchStore_CourseContractRevisionItem", Storage="_CourseContractRevisionItem", ThisKey="BranchID", OtherKey="BranchID")]
+		public EntitySet<CourseContractRevisionItem> CourseContractRevisionItem
+		{
+			get
+			{
+				return this._CourseContractRevisionItem;
+			}
+			set
+			{
+				this._CourseContractRevisionItem.Assign(value);
 			}
 		}
 		
@@ -23555,6 +23571,18 @@ namespace WebHome.Models.DataEntity
 		}
 		
 		private void detach_UserEvent(UserEvent entity)
+		{
+			this.SendPropertyChanging();
+			entity.BranchStore = null;
+		}
+		
+		private void attach_CourseContractRevisionItem(CourseContractRevisionItem entity)
+		{
+			this.SendPropertyChanging();
+			entity.BranchStore = this;
+		}
+		
+		private void detach_CourseContractRevisionItem(CourseContractRevisionItem entity)
 		{
 			this.SendPropertyChanging();
 			entity.BranchStore = null;
@@ -47811,6 +47839,51 @@ namespace WebHome.Models.DataEntity
 		}
 	}
 	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.V_BranchStaff")]
+	public partial class V_BranchStaff
+	{
+		
+		private int _UID;
+		
+		private System.Nullable<int> _BranchID;
+		
+		public V_BranchStaff()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UID", DbType="Int NOT NULL")]
+		public int UID
+		{
+			get
+			{
+				return this._UID;
+			}
+			set
+			{
+				if ((this._UID != value))
+				{
+					this._UID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BranchID", DbType="Int")]
+		public System.Nullable<int> BranchID
+		{
+			get
+			{
+				return this._BranchID;
+			}
+			set
+			{
+				if ((this._BranchID != value))
+				{
+					this._BranchID = value;
+				}
+			}
+		}
+	}
+	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.CourseContractRevisionItem")]
 	public partial class CourseContractRevisionItem : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -47820,6 +47893,10 @@ namespace WebHome.Models.DataEntity
 		private int _RevisionID;
 		
 		private int _FitnessConsultant;
+		
+		private int _BranchID;
+		
+		private EntityRef<BranchStore> _BranchStore;
 		
 		private EntityRef<CourseContractRevision> _CourseContractRevision;
 		
@@ -47833,10 +47910,13 @@ namespace WebHome.Models.DataEntity
     partial void OnRevisionIDChanged();
     partial void OnFitnessConsultantChanging(int value);
     partial void OnFitnessConsultantChanged();
+    partial void OnBranchIDChanging(int value);
+    partial void OnBranchIDChanged();
     #endregion
 		
 		public CourseContractRevisionItem()
 		{
+			this._BranchStore = default(EntityRef<BranchStore>);
 			this._CourseContractRevision = default(EntityRef<CourseContractRevision>);
 			this._ServingCoach = default(EntityRef<ServingCoach>);
 			OnCreated();
@@ -47886,6 +47966,64 @@ namespace WebHome.Models.DataEntity
 					this._FitnessConsultant = value;
 					this.SendPropertyChanged("FitnessConsultant");
 					this.OnFitnessConsultantChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BranchID", DbType="Int NOT NULL")]
+		public int BranchID
+		{
+			get
+			{
+				return this._BranchID;
+			}
+			set
+			{
+				if ((this._BranchID != value))
+				{
+					if (this._BranchStore.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnBranchIDChanging(value);
+					this.SendPropertyChanging();
+					this._BranchID = value;
+					this.SendPropertyChanged("BranchID");
+					this.OnBranchIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="BranchStore_CourseContractRevisionItem", Storage="_BranchStore", ThisKey="BranchID", OtherKey="BranchID", IsForeignKey=true)]
+		public BranchStore BranchStore
+		{
+			get
+			{
+				return this._BranchStore.Entity;
+			}
+			set
+			{
+				BranchStore previousValue = this._BranchStore.Entity;
+				if (((previousValue != value) 
+							|| (this._BranchStore.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._BranchStore.Entity = null;
+						previousValue.CourseContractRevisionItem.Remove(this);
+					}
+					this._BranchStore.Entity = value;
+					if ((value != null))
+					{
+						value.CourseContractRevisionItem.Add(this);
+						this._BranchID = value.BranchID;
+					}
+					else
+					{
+						this._BranchID = default(int);
+					}
+					this.SendPropertyChanged("BranchStore");
 				}
 			}
 		}
@@ -47975,51 +48113,6 @@ namespace WebHome.Models.DataEntity
 			if ((this.PropertyChanged != null))
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.V_BranchStaff")]
-	public partial class V_BranchStaff
-	{
-		
-		private int _UID;
-		
-		private System.Nullable<int> _BranchID;
-		
-		public V_BranchStaff()
-		{
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UID", DbType="Int NOT NULL")]
-		public int UID
-		{
-			get
-			{
-				return this._UID;
-			}
-			set
-			{
-				if ((this._UID != value))
-				{
-					this._UID = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BranchID", DbType="Int")]
-		public System.Nullable<int> BranchID
-		{
-			get
-			{
-				return this._BranchID;
-			}
-			set
-			{
-				if ((this._BranchID != value))
-				{
-					this._BranchID = value;
-				}
 			}
 		}
 	}

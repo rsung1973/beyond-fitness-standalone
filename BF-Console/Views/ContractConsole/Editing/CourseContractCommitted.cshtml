@@ -22,15 +22,33 @@
 }
 <script>
     $(function () {
-@*$('').launchDownload('@Html.Raw(Url.Action("SignCourseContract","ConsoleHome"))', { 'contractID':@(_model.ContractID)});*@
-        $('').launchDownload('@Html.Raw(Url.Action("ShowContractList","ContractConsole"))',
-            @Html.Raw(JsonConvert.SerializeObject(new CourseContractQueryViewModel
-                {
-                    //FitnessConsultant = _model.FitnessConsultant,
-                    //ContractQueryMode = Naming.ContractServiceMode.ContractOnly,
-                    //Status = (int)Naming.CourseContractStatus.待簽名,
-                    KeyID = _model.ContractID.EncryptKey(),
-                })));
+        @if(_model.Status==(int)Naming.CourseContractStatus.待簽名 && _model.InstallmentID.HasValue)
+        {
+            <text>
+                $('').launchDownload('@Html.Raw(Url.Action("ShowContractList","ContractConsole"))',
+                    @Html.Raw(JsonConvert.SerializeObject(new CourseContractQueryViewModel
+                       {
+                           FitnessConsultant = _model.FitnessConsultant,
+                           ContractQueryMode = Naming.ContractServiceMode.ContractOnly,
+                           Status = (int)Naming.CourseContractStatus.待簽名,
+                           InstallmentID = _model.InstallmentID,
+                       })));
+            </text>
+        }
+        else
+        {
+            <text>
+                $('').launchDownload('@Html.Raw(Url.Action("ShowContractList","ContractConsole"))',
+                    @Html.Raw(JsonConvert.SerializeObject(new CourseContractQueryViewModel
+                    {
+                        //FitnessConsultant = _model.FitnessConsultant,
+                        //ContractQueryMode = Naming.ContractServiceMode.ContractOnly,
+                        //Status = (int)Naming.CourseContractStatus.待簽名,
+                        KeyID = _model.ContractID.EncryptKey(),
+                    })));
+            </text>
+        }
+
     });
 </script>
 

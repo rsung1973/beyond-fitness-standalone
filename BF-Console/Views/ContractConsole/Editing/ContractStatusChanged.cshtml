@@ -13,14 +13,15 @@
     ModelStateDictionary _modelState;
     ModelSource<UserProfile> models;
     CourseContract _model;
-
+    CourseContractViewModel _viewModel;
 
 
     _modelState = (ModelStateDictionary)ViewBag.ModelState;
     models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
     _model = (CourseContract)this.Model;
+    _viewModel = (CourseContractViewModel)ViewBag.ViewModel;
 }
-@if (_model.Status == (int)Naming.CourseContractStatus.草稿)
+@if (_model.Status == (int)Naming.CourseContractStatus.草稿 && _viewModel?.FromStatus == Naming.CourseContractStatus.待簽名)
 {
     <script>
     $(function () {
@@ -35,15 +36,15 @@
 else
 {
     <script>
-    $(function () {
+    $(function() {
         $('').launchDownload('@Html.Raw(Url.Action("ShowContractList", "ContractConsole"))',
             @Html.Raw(JsonConvert.SerializeObject(new CourseContractQueryViewModel
-       {
-           //FitnessConsultant = _model.FitnessConsultant,
-           //ContractQueryMode = Naming.ContractServiceMode.ContractOnly,
-           //Status = (int)Naming.CourseContractStatus.草稿,
-           KeyID = _model.ContractID.EncryptKey(),
-       })));
+            {
+                //FitnessConsultant = _model.FitnessConsultant,
+                //ContractQueryMode = Naming.ContractServiceMode.ContractOnly,
+                //Status = (int)Naming.CourseContractStatus.草稿,
+                KeyID = _model.ContractID.EncryptKey(),
+            })));
     });
     </script>
 }

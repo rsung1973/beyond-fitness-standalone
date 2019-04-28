@@ -37,14 +37,16 @@
             </script>
             <h6 class="m-t-20">分期比率</h6>
             <p class="displayblock m-b-0">
-                @(ratio)% 本月平均
                 @{ DateTime monthStart = DateTime.Today.FirstDayOfMonth();
-                    var currentContractsMonthly = _contractItems.Where(c => c.EffectiveDate >= monthStart);
-                    var contractsInstallment = currentContractsMonthly.Where(c => c.InstallmentID.HasValue);
+                    var currentMonthContracts = _contractItems.Where(c => c.EffectiveDate >= monthStart);
+                    var currentMonthContractsInstallment = currentMonthContracts.Where(c => c.InstallmentID.HasValue);
+                    ratio = currentMonthContractsInstallment.Count() * 100 / Math.Max(currentMonthContracts.Count(), 1);
                     var contractsLastMonth = _contractItems.Where(c => c.EffectiveDate >= monthStart.AddMonths(-1) && c.EffectiveDate < monthStart);
                     var contractsLastMonthInstallment = contractsLastMonth.Where(c => c.InstallmentID.HasValue);
-                    var currentCount = contractsInstallment.Count();
-                    var lastMonthCount = contractsLastMonthInstallment.Count();}
+                    var currentCount = currentMonthContractsInstallment.Count();
+                    var lastMonthCount = contractsLastMonthInstallment.Count();
+                }
+                @(ratio)% 本月平均
                 @if (currentCount < lastMonthCount)
                 {
                     <i class="zmdi zmdi-trending-down col-green"></i>

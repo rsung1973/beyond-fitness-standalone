@@ -218,14 +218,18 @@ namespace WebHome.Helper
         public static bool IsEditable<TEntity>(this CourseContract item, ModelSource<TEntity> models, UserProfile agent)
                 where TEntity : class, new()
         {
-            return models.GetContractInEditingByAgent(agent).Any(c => c.ContractID == item.ContractID); ;
+            return item.Status == (int)Naming.CourseContractStatus.草稿
+                    && (/*item.AgentID == agent.UID ||*/ item.FitnessConsultant == agent.UID);
+            //return models.GetContractInEditingByAgent(agent).Any(c => c.ContractID == item.ContractID); ;
 
         }
 
         public static bool IsSignable<TEntity>(this CourseContract item, ModelSource<TEntity> models, UserProfile agent)
                 where TEntity : class, new()
         {
-            return models.GetContractToSignByAgent(agent).Any(c => c.ContractID == item.ContractID);
+            return item.Status == (int)Naming.CourseContractStatus.待簽名
+                && agent.IsCoach();
+            //return models.GetContractToSignByAgent(agent).Any(c => c.ContractID == item.ContractID);
         }
 
         public static bool IsApprovable<TEntity>(this CourseContract item, ModelSource<TEntity> models, UserProfile agent)
@@ -243,7 +247,8 @@ namespace WebHome.Helper
         public static bool IsServiceSignable<TEntity>(this CourseContract item, ModelSource<TEntity> models, UserProfile agent)
                 where TEntity : class, new()
         {
-            return models.GetAmendmentToSignByAgent(agent).Any(c => c.RevisionID == item.ContractID);
+            return item.IsSignable(models, agent);
+            //return models.GetAmendmentToSignByAgent(agent).Any(c => c.RevisionID == item.ContractID);
         }
 
         public static bool IsPayable<TEntity>(this CourseContract item, ModelSource<TEntity> models)

@@ -97,15 +97,6 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
-    <Reference Include="CommonLib">
-      <HintPath>..\beyond-fitness\bin\CommonLib.dll</HintPath>
-    </Reference>
-    <Reference Include="CommonLib.Logger">
-      <HintPath>..\beyond-fitness\bin\CommonLib.Logger.dll</HintPath>
-    </Reference>
-    <Reference Include="CommonLib.PlugInAdapter">
-      <HintPath>..\beyond-fitness\bin\CommonLib.PlugInAdapter.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Web.Infrastructure">
@@ -6090,6 +6081,7 @@
     <None Include="Views\ConsoleHome\TransferContract.aspx_" />
     <None Include="Views\ConsoleHome\PostponeContractExpiration.aspx_" />
     <None Include="Views\ConsoleHome\ReassignFitnessConsultant.aspx_" />
+    <None Include="Views\ConsoleHome\SamplePage.aspx_" />
     <None Include="Views\ConsoleHome\SignCourseContract.aspx_" />
     <None Include="Views\ConsoleHome\EditCourseContract.aspx_" />
     <None Include="Views\ConsoleHome\ContractIndex.aspx_" />
@@ -6187,6 +6179,7 @@
     <Content Include="Views\MainActivity\Module\ContactItem.ascx" />
     <Content Include="Views\MainActivity\Module\JoinItem.ascx" />
     <Content Include="Views\MainActivity\Module\MenuItem.ascx" />
+    <Content Include="Views\MainActivity\SamplePage.aspx" />
     <Content Include="Views\ReportConsole\ReportModal\ByContractNo.ascx" />
     <Content Include="Views\ReportConsole\ReportModal\SelectReportCondition.ascx" />
     <Content Include="Views\ReportConsole\ReportModal\SelectPeriodReport.ascx" />
@@ -6196,6 +6189,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\InitializeType.cs" />
     <Compile Include="Controllers\CommonHelperController.cs" />
     <Compile Include="Controllers\ConsoleEventController.cs" />
     <Compile Include="Controllers\ConsoleHomeController.cs" />
@@ -6708,6 +6702,8 @@
     <Content Include="Views\Error\InvalidCrypto.cshtml" />
     <Content Include="Views\Error\Http500.cshtml" />
     <Content Include="Views\ContractConsole\Module\SignHere.cshtml" />
+    <Content Include="Views\ContractConsole\Module\AboutNewContractsByPureCoach.cshtml" />
+    <Content Include="Views\ContractConsole\Module\AboutNewContractsByManager.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -6717,7 +6713,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="App_Start\" />
     <Folder Include="ConsoleHome\images\landing\portfolio\" />
     <Folder Include="MainActivity\Portfolio\Coach\Bryant\" />
     <Folder Include="MainActivity\Portfolio\Nanjing\" />
@@ -6737,6 +6732,14 @@
     <ProjectReference Include="..\beyond-fitness\beyond-fitness.csproj">
       <Project>{c49821ff-96c8-466b-aef4-137ec84fdefc}</Project>
       <Name>beyond-fitness</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CommonLib.Logger\CommonLib.Logger.csproj">
+      <Project>{8146e629-552a-4b36-8711-08ae8245b8fa}</Project>
+      <Name>CommonLib.Logger</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CommonLib\CommonLib.csproj">
+      <Project>{c0ad239c-2ac4-46d2-ae7c-5e97266ef4ea}</Project>
+      <Name>CommonLib</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

@@ -28,7 +28,7 @@
                                     .FilterByBranchStoreManager(models, _model.UID)
                                     .Where(c => c.Status == (int)Naming.CourseContractStatus.待確認);
                 var toSignItems = contracts
-                                    .FilterByBranchStoreManager(models, _model.UID)
+                                    .Where(c => c.FitnessConsultant == _model.UID)
                                     .Where(c => c.Status == (int)Naming.CourseContractStatus.待簽名);}
 
             <h5 class="m-t-0">服務申請</h5>
@@ -36,14 +36,14 @@
                 編輯中：<a href="#" onclick='showContractList(@Html.Raw(JsonConvert.SerializeObject(
                                 new 
                                 {
-                                    ManagerID = _model.UID,
+                                    FitnessConsultant = _model.UID,
                                     ContractQueryMode = Naming.ContractServiceMode.ServiceOnly,
                                     Status = (int)Naming.CourseContractStatus.草稿,
                                 })),@(editingItems.Count()));'>@(editingItems.Count())</a><br />
                 待簽名：<a href="#" onclick='showContractList(@Html.Raw(JsonConvert.SerializeObject(
                                 new 
                                 {
-                                    ManagerID = _model.UID,
+                                    FitnessConsultant = _model.UID,
                                     ContractQueryMode = Naming.ContractServiceMode.ServiceOnly,
                                     Status = (int)Naming.CourseContractStatus.待簽名,
                                 })),@(toSignItems.Count()));'>@(toSignItems.Count())</a><br />
@@ -64,7 +64,7 @@
             <a href="#" onclick='showContractList(@Html.Raw(JsonConvert.SerializeObject(
                                 new 
                                 {
-                                    FitnessConsultant = _model.UID,
+                                    ManagerID = _model.UID,
                                     ContractQueryMode = Naming.ContractServiceMode.ServiceOnly,
                                     Status = (int)Naming.CourseContractStatus.已生效,
                                     EffectiveDateFrom = monthStart,
