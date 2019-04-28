@@ -39,7 +39,7 @@
     <div class="row">
         <div class="col-8">
             <h5 class="m-t-0">終止</h5>
-            @if (_model.Status == (int)Naming.CourseContractStatus.已終止)
+            @if (_model.Status == (int)Naming.CourseContractStatus.已終止 || _model.Status == (int)Naming.CourseContractStatus.已履行)
             {
                 applicable = false;
                 <span class="col-red"><i class="zmdi zmdi-block"></i>合約@((Naming.CourseContractStatus)_model.Status)</span><br />

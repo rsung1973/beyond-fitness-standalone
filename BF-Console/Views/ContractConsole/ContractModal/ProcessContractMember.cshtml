@@ -48,12 +48,14 @@
             var idx = $global.viewModel.UID.indexOf(uid);
             if (idx >= 0) {
                 $global.viewModel.UID.splice(idx, 1);
+                if($global.viewModel.OwnerID===uid) {
+                    $global.viewModel.OwnerID = null;
+                }
                 loadMemberList();
                 $global.closeAllModal();
             }
             $global.closeAllModal();
-        }//
-
+        }
 
     </script>
 </div>
