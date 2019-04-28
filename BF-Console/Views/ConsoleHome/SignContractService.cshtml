@@ -23,7 +23,10 @@
     _model = (UserProfile)this.Model;
     _viewModel = (CourseContractQueryViewModel)ViewBag.ViewModel;
     _item = (CourseContract)ViewBag.DataItem;
-    //ViewBag.ContractAgent = _model;
+    if (_item.Status < (int)Naming.ContractServiceStatus.待簽名)
+    {
+        ViewBag.ContractAgent = _model;
+    }
 }
 @section CustomHeader {
     <!-- jSignature -->
