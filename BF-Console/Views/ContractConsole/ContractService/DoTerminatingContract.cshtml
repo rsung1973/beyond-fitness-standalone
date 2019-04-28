@@ -47,6 +47,7 @@
                 $('input[name="SettlementPrice"]').on('change', function (evt) {
                     $('#refund').empty();
                     $('#refundUnit').empty();
+                    $('#formular').empty();
                     var settlementPrice = parseInt($(this).val());
                     if (!isNaN(settlementPrice)) {
                         var remained = @(_model.RemainedLessonCount());
@@ -54,8 +55,15 @@
                         var currPrice = @(_model.LessonPriceType.ListPrice);
                         var totalPaid = @(_model.TotalPaidAmount());
                         var refund = totalPaid - (lessons - remained) * settlementPrice * @($"{_model.CourseContractType.GroupingMemberCount}*{_model.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount}/100");
+                        if (refund < 0) {
+                            $('input[name="SettlementPrice"]').val('');
+                            swal('Ooops!!!!你確定嗎？計算後學生還要多拿錢出來喔！');
+                            return;
+                        }
+
                         $('#refund').text(refund);
                         $('#refundUnit').text(settlementPrice);
+                        $('#formular').text('=' + totalPaid + ' - (' +  settlementPrice + ' * ' + '@($"{_model.CourseContractType.GroupingMemberCount}") * ('  + lessons + ' - ' + remained  + '))');
                     }
                 });
             </script>
@@ -66,7 +74,7 @@
                     <div class="alert-icon">
                         <i class="zmdi zmdi-notifications"></i>
                     </div>
-                    終止時全部堂數以單堂 <span id="refundUnit"></span>元 計價，並扣除剩餘上課堂數：@(_model.RemainedLessonCount())堂，計算退款差額 <span class="col-red" id="refund"></span>元。
+                    已繳服務總費用 @(String.Format("{0:##,###,###,###}", _model.TotalPaidAmount())) 扣除依簽約時課程單堂原價(<span id="refundUnit" class="col-red"></span>) / 人)乘以實際上課堂數(<span class="col-red">@(_model.AttendedLessonCount())</span>)，退還剩餘款項 <span class="col-red" id="refund"></span>元 <small id="formular"></small>。
                 </div>
             </div>
         </div>
