@@ -110,7 +110,7 @@
                         {
                             <td width="100px">
 
-                                <label class="fancy-checkbox">
+                                <label class="fancy-checkbox custom-bgcolor-pink">
                                     <input type="checkbox" name="extension">
                                     <span>展延：</span>
                                 </label>
@@ -139,7 +139,7 @@
                         {
                             <td width="100px">
 
-                                <label class="fancy-checkbox">
+                                <label class="fancy-checkbox custom-bgcolor-pink">
                                     <input type="checkbox" name="booking">
                                     <span>預約：</span>
                                 </label>
@@ -168,7 +168,7 @@
                             {
                                 <td width="100px">
 
-                                    <label class="fancy-checkbox">
+                                    <label class="fancy-checkbox custom-bgcolor-pink">
                                         <input type="checkbox" name="cancel">
                                         <span>取消：</span>
                                     </label>
@@ -410,7 +410,7 @@
     <div class="col-md-12">
         <div class="well p-t-10 well-light" style="@(Request["pdf"]=="1" ? "width: 21.5cm;" : "")">
             <h2 class="text-center" style="margin-top: 0px; margin-bottom: 0px"><b>附表-學員名單</b></h2>
-            <div>
+            <div class="@(Request["pdf"]=="1" ? "seal" : "")">
                 <table class="table" style="font-size: 15px">
                     <tr>
                         <td>本人同意並授權以下人員得使用本人與超越體能顧問有限公司購買之體能顧問服務課程，任一人員(含本人)使用體能顧問服務，皆需計入體能顧問服務次數內，並應共同遵守合約及特約條款之規定。</td>
@@ -444,7 +444,7 @@
                             @{ ViewBag.SignatureName = "Signature2";
                                 Html.RenderPartial("~/Views/ContractConsole/Module/SignHere.cshtml", _owner);}
                         </td>
-                        <td class="@(Request["pdf"]=="1" ? "seal" : "")">日期：@(String.Format("{0:yyyy/MM/dd}", _signatureDate))</td>
+                        <td>日期：@(String.Format("{0:yyyy/MM/dd}", _signatureDate))</td>
                     </tr>
                 </table>
             </div>
