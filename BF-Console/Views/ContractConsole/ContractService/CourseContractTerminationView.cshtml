@@ -33,12 +33,12 @@
         _signatureDate = _contract.EffectiveDate ?? _contract.ContractDate;
     }
 }
-<div class="row">
+<div class="row" style="margin-top: 20px;margin-bottom: 20px;">
     <div class="col-md-12">
-        <div class="well no-padding well-light">
-            <h2 class="text-center"><b>學員服務申請表</b></h2>
-            <div class="@(Request["pdf"]=="1" ? "bs-example bs-example-type seal" : "bs-example bs-example-type")">
-                <table class="table" style="font-size: 15px">
+        <div class="well well-light" style="@(Request["pdf"]=="1" ? "width: 21.5cm; height: 28cm" : "")">
+            <h1 class="text-center"><b>學員服務申請表</b></h1>
+            <div class="@(Request["pdf"]=="1" ? "seal" : "")">
+                <table class="table" style="font-size: 16px">
                     <tbody>
                         <tr>
                             <td colspan="2">合約編號：@(_contract.ContractNo())</td>
@@ -51,14 +51,17 @@
                     <tbody>
                         <tr>
                             <td colspan="2">
-                                申請項目：@if (_contract.Status >= (int)Naming.CourseContractStatus.待審核)
+                                申請項目：
+                                @if (_contract.Status == (int)Naming.ContractServiceStatus.已生效)
                                 {
-                                    <text>☑</text>
+                                    <text>☑ 終止</text>
+                                } else {
+                                    <label class="fancy-checkbox">
+                                        <input type="checkbox" name="extension" checked="checked" disabled="disabled">
+                                        <span>終止</span>
+                                    </label>
                                 }
-                                else
-                                {
-                                    <input type="checkbox" name="extension" checked="checked" onclick="this.checked = true;" />
-                                } 終止
+
                             </td>
                         </tr>
                         <tr>
@@ -68,20 +71,19 @@
                         <tr>
                             <td colspan="2">
                                 @{ var original = _model.SourceContract;
-                                    var remained = original.RemainedLessonCount();
-                                    var refund = original.TotalPaidAmount() - (original.Lessons - original.RemainedLessonCount()) * _contract.CourseContractExtension.SettlementPrice * _contract.CourseContractType.GroupingMemberCount * _contract.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount / 100;}
+                                    var attened = original.AttendedLessonCount();
+                                    var refund = original.TotalPaidAmount() - (original.Lessons - original.RemainedLessonCount()) * _contract.CourseContractExtension.SettlementPrice * _contract.CourseContractType.GroupingMemberCount * _contract.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount / 100;
+                                }
 
-                                申請內容：原合約編號 @(original.ContractNo()) 原購買堂數：@(original.Lessons)堂 / @(String.Format("{0:##,###,###,###}", original.LessonPriceType.ListPrice))元，
-                                終止時全部堂數以單堂 / @(String.Format("{0:##,###,###,###}", _contract.CourseContractExtension.SettlementPrice))元 計價，
-                                並扣除剩餘上課堂數：@(remained)堂，計算退款差額 @(String.Format("{0:##,###,###,##0}", refund))元，確定於 @(String.Format("{0:yyyy/MM/dd}", _signatureDate)) 終止服務。
+                                申請內容：原合約編號 @(original.ContractNo()) 以每堂 @(String.Format("{0:##,###,###,###}", original.LessonPriceType.ListPrice))元 共購買 @(original.Lessons)堂，確定於<span class="col-red">@(String.Format("{0:yyyy/MM/dd}", _signatureDate))</span>終止服務時，完成上課堂數以<span class="col-red">單堂 @(String.Format("{0:##,###,###,###}", _contract.CourseContractExtension.SettlementPrice)) 元</span>計算，並扣除已完成上課數<span class="col-red">@(attened)堂</span>後退還款項 <span class="col-red">@(String.Format("{0:##,###,###,##0}", refund))</span>元<small> =( @(String.Format("{0:##,###,###,###}", original.LessonPriceType.ListPrice)) * @(original.Lessons) ) - ( @(String.Format("{0:##,###,###,###}", _contract.CourseContractExtension.SettlementPrice)) * @(attened) )。</small>
                             </td>
                         </tr>
-                        <tr style="height: 16cm">
-                            <td colspan="2">@(_contract.Remark)</td>
+                        <tr style="@(Request["pdf"]=="1" ? "height: 14cm" : "height: 2cm")">
+                            <td colspan="2">其他更多說明：@(_contract.Remark)</td>
                         </tr>
                     </tbody>
                 </table>
-                <table class="table" style="font-size: 15px">
+                <table class="table" style="font-size: 16px">
                     <tr>
                         <td colspan="3">備註：各項申請內容皆應依體能顧問聘請合約之規定辦理並經雙方簽署後始生效力</td>
                     </tr>

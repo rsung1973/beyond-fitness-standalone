@@ -23,7 +23,7 @@
 }
 <!DOCTYPE html>
 <html class="no-js">
-<head runat="server">
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
@@ -39,81 +39,29 @@
     <link rel="apple-touch-icon-precomposed" sizes="180x180" href="favicons/favicon_180x180.png">
     <!-- Bootstrap -->
     <link href="plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap Select Css -->
-    <link href="plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
-    <!-- Scrollup-master  -->
-    <link href="plugins/scrollup-master/css/themes/image.css?1" rel="stylesheet" id="scrollUpTheme">
-    <!-- LivIconsevo  -->
-    <link href='plugins/livIconsevo/css/LivIconsEvo.css' rel='stylesheet' type='text/css'>
-    <!-- Sweetalert -->
-    <link href="plugins/sweetalert/sweetalert.css" rel="stylesheet" />
     <!-- Custom Css -->
-    <link rel="stylesheet" href="css/main.css?5.1">
-    <link rel="stylesheet" href="css/color_skins.css?1.1">
-    <!-- Jquery Core Js -->
-    <script src="bundles/libscripts.bundle.js"></script>
-    <!-- Lib Scripts Plugin Js -->
-    <script src="bundles/vendorscripts.bundle.js"></script>
-    <!-- Lib Scripts Plugin Js -->
-    <!-- Morris Plugin Js -->
-    <script src="bundles/morrisscripts.bundle.js"></script>
-    <!-- LivIconsEvo  -->
-    <script src="plugins/livIconsevo/js/tools/snap.svg-min.js"></script>
-    <script src="plugins/livIconsevo/js/tools/TweenMax.min.js"></script>
-    <script src="plugins/livIconsevo/js/tools/DrawSVGPlugin.min.js"></script>
-    <script src="plugins/livIconsevo/js/tools/MorphSVGPlugin.min.js"></script>
-    <script src="plugins/livIconsevo/js/tools/verge.min.js"></script>
-    <script src="plugins/livIconsevo/js/LivIconsEvo.Tools.js"></script>
-    <script src="plugins/livIconsevo/js/LivIconsEvo.defaults.js"></script>
-    <script src="plugins/livIconsevo/js/LivIconsEvo.js"></script>
-    <!-- Scrollup-master  Plugin js-->
-    <script src="plugins/scrollup-master/jquery.scrollUp.min.js"></script>
-    <script src="plugins/moment/moment.min.js"></script>
-    <script src="plugins/jquery-cookie/jquery.cookie.js"></script>
-    <!-- SweetAlert Plugin Js -->
-    <script src="plugins/sweetalert/sweetalert.min.js"></script>
-    <script src="plugins/jquery-form/jquery-form.min.js"></script>
-    <script src="js/common.js?1.5"></script>
-
-    <script src="plugins/jquery-sparkline/jquery.sparkline.js"></script>
-    <!-- SweetAlert Plugin Js -->
-    <script src="plugins/sweetalert/sweetalert.min.js"></script>
-    <!-- Jquery DataTable Plugin Js -->
-    <script src="bundles/datatablescripts.bundle.js"></script>
-    <script src="plugins/jquery-datatable/Responsive-2.2.2/js/dataTables.responsive.min.js"></script>
-    <script src="plugins/jquery-datatable/FixedColumns-3.2.5/js/dataTables.fixedColumns.min.js"></script>
-    <!-- Bootstrap datetimepicker Plugin Js -->
-    <script src="plugins/smartcalendar/js/bootstrap-datetimepicker.min.js"></script>
-    <script src="plugins/smartcalendar/js/locales-datetimepicker/bootstrap-datetimepicker.zh-TW.js"></script>
-
-
-    @{ String basePath = VirtualPathUtility.ToAbsolute("~/");}
-
-    <script src="@(basePath + "js/plugin/jSignature/jSignature.js")"></script>
-    <script src="@(basePath + "js/plugin/jSignature/plugins/jSignature.CompressorBase30.js")"></script>
-    <script src="@(basePath + "js/plugin/jSignature/plugins/jSignature.CompressorSVG.js")"></script>
-    <script src="@(basePath + "js/plugin/jSignature/plugins/jSignature.UndoButton.js")"></script>
-    <script src="@(basePath + "js/plugin/jSignature/plugins/signhere/jSignature.SignHere.js")"></script>
-
+    <link rel="stylesheet" href="css/main.css?1">
+    <link rel="stylesheet" href="css/color_skins.css">
+    <!-- jSignature -->
+    <link rel="stylesheet" href="css/jsignature.css">
+    <style type="text/css">
+        body {
+            background-color: #fff;
+        }
+    </style>
 </head>
 
-<body class="theme-darkteal menu_darkteal">
+<body class="theme-white">
     <!-- Main Content -->
-    <section class="content">
+    <section>
         <div class="container-fluid">
-            <div class="card">
-                <div class="body">
-                    @if (_model.Reason == "展延")
+            @if (_model.Reason == "展延")
                     {
                         Html.RenderPartial("~/Views/ContractConsole/ContractService/CourseContractExtensionView.cshtml", _model);
                     }
                     else if (_model.Reason == "轉讓")
                     {
                         Html.RenderPartial("~/Views/ContractConsole/ContractService/CourseContractTransferenceView.cshtml", _model);
-                    }
-                    else if (_model.Reason == "轉點")
-                    {
-                        Html.RenderPartial("~/Views/ContractConsole/ContractService/CourseContractMigrationView.cshtml", _model);
                     }
                     else if (_model.Reason == "終止")
                     {
@@ -127,8 +75,6 @@
                     {
                         Html.RenderPartial("~/Views/ContractConsole/ContractService/CourseContractOtherAmendmentView.cshtml", _model);
                     }
-                </div>
-            </div>
         </div>
     </section>
 </body>
