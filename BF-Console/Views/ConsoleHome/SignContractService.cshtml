@@ -57,14 +57,6 @@
                 {
                     Html.RenderPartial("~/Views/ContractConsole/ContractService/CourseContractExtensionView.cshtml", revision);
                 }
-                else if (revision.Reason == "轉讓")
-                {
-                    Html.RenderPartial("~/Views/ContractConsole/ContractService/CourseContractTransferenceView.cshtml", revision);
-                }
-                else if (revision.Reason == "轉點")
-                {
-                    Html.RenderPartial("~/Views/ContractConsole/ContractService/CourseContractMigrationView.cshtml", revision);
-                }
                 else if (revision.Reason == "終止")
                 {
                     Html.RenderPartial("~/Views/ContractConsole/ContractService/CourseContractTerminationView.cshtml", revision);

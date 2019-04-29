@@ -33,12 +33,12 @@
         _signatureDate = DateTime.Now;
     }
 }
-<div class="row">
+<div class="row" style="margin-top: 20px; margin-bottom: 20px;">
     <div class="col-md-12">
-        <div class="well no-padding well-light">
-            <h2 class="text-center"><b>學員服務申請表</b></h2>
-            <div class="@(Request["pdf"]=="1" ? "bs-example bs-example-type seal" : "bs-example bs-example-type")">
-                <table class="table" style="font-size: 15px">
+        <div class="well well-light" style="@(Request["pdf"]=="1" ? "width: 21.5cm; height: 28cm" : "")">
+            <h1 class="text-center"><b>學員服務申請表</b></h1>
+            <div class="@(Request["pdf"]=="1" ? "seal" : "")">
+                <table class="table" style="font-size: 16px">
                     <tbody>
                         <tr>
                             <td colspan="2">合約編號：@(_contract.ContractNo())</td>
@@ -51,14 +51,18 @@
                     <tbody>
                         <tr>
                             <td colspan="2">
-                                申請項目：@if (_contract.Status >= (int)Naming.CourseContractStatus.待審核)
+                                申請項目：
+                                @if (_contract.Status == (int)Naming.ContractServiceStatus.已生效)
                                 {
-                                    <text>☑</text>
+                                    <text>☑ 轉讓體能顧問</text>
                                 }
                                 else
                                 {
-                                    <input type="checkbox" name="extension" checked="checked" onclick="this.checked = true;" />
-                                } 轉換體能顧問
+                                    <label class="fancy-checkbox">
+                                        <input type="checkbox" name="extension" checked="checked" disabled="disabled">
+                                        <span>轉讓體能顧問</span>
+                                    </label>
+                                }
                             </td>
                         </tr>
                         <tr>
@@ -72,15 +76,12 @@
                                 申請內容：體能顧問由@(original.ServingCoach.UserProfile.FullName())轉換為<span class="col-red">@(_contract.ServingCoach.UserProfile.FullName())</span>負責本合約相關後續事宜。
                             </td>
                         </tr>
-                        <tr style="height: 16cm">
-                            <td colspan="2">@(_contract.Remark)</td>
+                        <tr style="@(Request["pdf"]=="1" ? "height: 14cm" : "height: 2cm")">
+                            <td colspan="2">其他更多說明：@(_contract.Remark)</td>
                         </tr>
                     </tbody>
                 </table>
-                <table class="table" style="font-size: 15px">
-                    <tr>
-                        <td colspan="3">說明：</td>
-                    </tr>
+                <table class="table" style="font-size: 16px">
                     <tr>
                         <td colspan="2">日期：@(String.Format("{0:yyyy/MM/dd}", _signatureDate))</td>
                         <td>超越體能顧問有限公司</td>
