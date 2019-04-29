@@ -180,15 +180,15 @@
                     ['data1', 'data2', 'data3']
                 ],
                 colors: {
-                    'data1': 'rgba(251,195,77,1)',
+                    'data1': 'rgba(248,126,186,1)',
                     'data2': 'rgba(44,177,89,1)',
-                    'data3': 'rgba(248,126,186,1)'
+                    'data3': 'rgba(251,195,77,1)'
                 },
                 names: {
                     // name of each serie
-                    'data1': 'P.T',
+                    'data1': 'T.S',
                     'data2': 'P.I',
-                    'data3': 'T.S'
+                    'data3': 'P.T'
                 },
                 labels: {
                         format: {
@@ -227,7 +227,7 @@
 
         setTimeout(function () {
             chart.load({
-                columns: [@Html.Raw(JsonConvert.SerializeObject(getDistributionC3("data1",PTLessons,_hourIdx)))]
+                columns: [@Html.Raw(JsonConvert.SerializeObject(getDistributionC3("data1",TrialLessons, _hourIdx)))]
             });
         }, 1000);
 
@@ -239,7 +239,7 @@
 
         setTimeout(function () {
             chart.load({
-                columns: [@Html.Raw(JsonConvert.SerializeObject(getDistributionC3("data3",TrialLessons, _hourIdx)))]
+                columns: [@Html.Raw(JsonConvert.SerializeObject(getDistributionC3("data3",PTLessons,_hourIdx)))]
             });
         }, 2000);
 
