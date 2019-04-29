@@ -14,7 +14,9 @@
     ModelSource<UserProfile> models;
     String _dialogID = $"selectPrice{DateTime.Now.Ticks}";
     IQueryable<LessonPriceType> _model;
-    IQueryable<LessonPriceType> _items;
+    IQueryable<LessonPriceType> _discountItems;
+    IQueryable<LessonPriceType> _normalItems;
+    IQueryable<LessonPriceType> _specialItems;
     UserProfile _profile;
     CourseContractQueryViewModel _viewModel;
 
@@ -26,20 +28,21 @@
     _profile = Context.GetUser();
     _viewModel = (CourseContractQueryViewModel)ViewBag.ViewModel;
 
-    _items = _model;
 
-    if (_profile.IsAssistant() || _profile.IsManager() || _profile.IsViceManager() || _profile.IsOfficer())
-    {
+    _normalItems = _model
+        .Where(l => !l.LessonPriceProperty.Any() || !l.LessonPriceProperty.Any(p => p.PropertyID == (int)Naming.LessonPriceFeature.舊會員續約))
+        .Where(p => p.SeriesID.HasValue)
+        .OrderBy(l => l.LowerLimit).ThenBy(l => l.ListPrice);
 
-    }
-    else
-    {
-        _items = _items
-            .Where(l => !l.LessonPriceProperty.Any() || !l.LessonPriceProperty.Any(p => p.PropertyID == (int)Naming.LessonPriceFeature.舊會員續約))
-            .Where(p => p.SeriesID.HasValue);
-    }
+    _discountItems = _model
+        .Where(l => l.LessonPriceProperty.Any(p => p.PropertyID == (int)Naming.LessonPriceFeature.舊會員續約))
+        .Where(p => p.SeriesID.HasValue)
+        .OrderBy(l => l.LowerLimit).ThenBy(l => l.ListPrice);
 
-    _items = _items.OrderBy(l => l.LowerLimit).ThenBy(l => l.ListPrice);
+    _specialItems = _model
+        .Where(p => !p.SeriesID.HasValue)
+        .OrderBy(l => l.LowerLimit).ThenBy(l => l.ListPrice);
+
 }
 <div class="modal fade" id="@(_dialogID)" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -55,14 +58,13 @@
                                 <div id="collapseDetail_listprice" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="headingListPrice">
                                     <div class="panel-body no-padding">
                                         <ul class="mb_list xl-aliceblue">
-                                            @foreach (var item in _items)
+                                            @foreach (var item in _normalItems)
                                             {
                                             <li onclick="commitPrice(@(item.PriceID),event);">
                                                 <div class="list_tb tb2">
                                                     <div class="list_tr hand">
                                                         <div class="list_td">
                                                             @(item.PriceTypeBundle())
-                                                            @(item.LessonPriceProperty.Any(p => p.PropertyID == (int)Naming.LessonPriceFeature.舊會員續約) ? "(舊會員續約)" : null)
                                                         </div>
                                                         <div class="list_td rt">@(String.Format("{0,5:##,###,###,###}", item.ListPrice))</div>
                                                     </div>
@@ -83,6 +85,19 @@
                                 <div id="collapseListPriceDiscount" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingListPriceDiscount">
                                     <div class="panel-body no-padding">
                                         <ul class="mb_list xl-khaki">
+                                            @foreach (var item in _discountItems)
+                                            {
+                                                <li onclick="commitPrice(@(item.PriceID),event);">
+                                                    <div class="list_tb tb2">
+                                                        <div class="list_tr hand">
+                                                            <div class="list_td">
+                                                                @(item.PriceTypeBundle())
+                                                            </div>
+                                                            <div class="list_td rt">@(String.Format("{0,5:##,###,###,###}", item.ListPrice))</div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            }
 
                                         </ul>
                                     </div>
@@ -95,7 +110,19 @@
                                 <div id="collapseSpecialPrice" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSpecialPrice">
                                     <div class="panel-body no-padding">
                                         <ul class="mb_list xl-pink">
-
+                                            @foreach (var item in _specialItems)
+                                            {
+                                                <li onclick="commitPrice(@(item.PriceID),event);">
+                                                    <div class="list_tb tb2">
+                                                        <div class="list_tr hand">
+                                                            <div class="list_td">
+                                                                @(item.PriceTypeBundle())
+                                                            </div>
+                                                            <div class="list_td rt">@(String.Format("{0,5:##,###,###,###}", item.ListPrice))</div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            }
                                         </ul>
                                     </div>
                                 </div>
@@ -119,7 +146,7 @@
         function commitPrice(priceID, event) {
             var event = event || window.event;
             if ($global.commitPrice) {
-                $global.commitPrice(priceID, $(event.target).text().trim().replace(/\s/g, ''));
+                $global.commitPrice(priceID, $(event.target).parent().text().trim().replace(/\s/g, ''));
             }
             $global.closeAllModal();
         }//
