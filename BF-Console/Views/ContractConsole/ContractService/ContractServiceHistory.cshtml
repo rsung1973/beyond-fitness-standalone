@@ -79,7 +79,6 @@
         }
 
         $global.dtContract = $('.dataTable-contract').DataTable({
-            //"ajax": 'ajax/data/contractlist-2.json',
             "order": [
                 [4, 'desc']
             ],
@@ -111,33 +110,16 @@
             },
             "columnDefs": [{
                 targets: [9, 10],
-                className: "align-right more"
+                className: "align-right"
 
             },
             {
                 targets: [2, 5, 6, 7, 8],
-                className: "align-center more"
-
-            },
-            {
-                targets: [0, 1, 3, 4],
-                className: "more"
+                className: "align-center"
 
             }
-            ],
-            "initComplete": function () {
-                var api = this.api();
-                api.$('td').click(function () {
-                    if ($(this).hasClass('more')) {
-                        $("#moreContractActionModal").modal('show');
-                    }
-                });
-            }
+            ]
         });
-
-        $([document.documentElement, document.body]).animate({
-            scrollTop: $(".dataTable-contract").offset().top
-        }, 2000);
 
         setTimeout(function () {
             var $btnSelect = $('.dataTables_length div.btn-group.bootstrap-select.form-control.form-control-sm');

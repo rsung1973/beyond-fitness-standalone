@@ -617,6 +617,10 @@ ul.mb_list .tit1 {
 	vertical-align: bottom;
 }
 
+.tb2 .hand {
+    cursor: pointer;
+}
+
 .tr_normal td,
 .tr_normal .list_td {
 	line-height: normal;
