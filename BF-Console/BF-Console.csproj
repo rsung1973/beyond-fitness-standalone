@@ -6061,7 +6061,6 @@
     <Content Include="Views\ConsoleEvent\EventModal\BookingTrialLesson.cshtml" />
     <Content Include="Views\ConsoleEvent\EventModal\BookingLearnerLesson.cshtml" />
     <Content Include="Views\ConsoleHome\Shared\JsAlert.cshtml" />
-    <None Include="Views\ConsoleHome\TransferContract.aspx_" />
     <Content Include="Views\ConsoleHome\LearnerLesson.ascx" />
     <Content Include="Views\ContractConsole\ContractModal\AboutContractDetails.ascx" />
     <Content Include="Views\ContractConsole\ContractModal\EditContractMember.ascx" />
