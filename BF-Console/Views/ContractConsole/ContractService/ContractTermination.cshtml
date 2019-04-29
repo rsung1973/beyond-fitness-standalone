@@ -14,12 +14,13 @@
     ModelStateDictionary _modelState;
     ModelSource<UserProfile> models;
     CourseContract _model;
-
+    UserProfile _profile;
 
 
     _modelState = (ModelStateDictionary)ViewBag.ModelState;
     models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
     _model = (CourseContract)this.Model;
+    _profile = Context.GetUser();
 }
 
 @{ CourseContract currentItem = models.GetTable<CourseContractRevision>()
@@ -63,7 +64,7 @@
             {
                 <small class="info">@((Naming.ContractServiceStatus)currentItem.Status)</small>
             }
-            else if (applicable)
+            else if (applicable && _profile.IsCoach())
             {
                 <p>
                     <button class="btn btn-darkteal btn-icon btn-icon-mini btn-round waves-effect float-right" onclick="terminateContract();"><i class="zmdi zmdi-plus"></i></button>
