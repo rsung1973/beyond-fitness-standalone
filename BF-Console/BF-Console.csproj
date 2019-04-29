@@ -6075,7 +6075,6 @@
     <Content Include="Views\ContractConsole\ContractService\ApplyContractService.ascx" />
     <Content Include="Views\ContractConsole\ContractService\CourseContractExtensionView.ascx" />
     <Content Include="Views\ContractConsole\ContractService\ContractConsultantReassignmentView.ascx" />
-    <Content Include="Views\ContractConsole\ContractService\CourseContractOtherAmendmentView.ascx" />
     <Content Include="Views\ContractConsole\ContractService\CourseContractTerminationView.ascx" />
     <Content Include="Views\ContractConsole\ContractService\CourseContractTransferenceView.ascx" />
     <Content Include="Views\ContractConsole\ContractService\DoTerminatingContract.ascx" />
@@ -6539,7 +6538,6 @@
     <Content Include="Views\ContractConsole\ContractService\ContractTermination.cshtml" />
     <Content Include="Views\ContractConsole\ContractService\ContractTransference.cshtml" />
     <Content Include="Views\ContractConsole\ContractService\CourseContractExtensionView.cshtml" />
-    <Content Include="Views\ContractConsole\ContractService\CourseContractOtherAmendmentView.cshtml" />
     <Content Include="Views\ContractConsole\ContractService\CourseContractTerminationView.cshtml" />
     <Content Include="Views\ContractConsole\ContractService\CourseContractTransferenceView.cshtml" />
     <Content Include="Views\ContractConsole\ContractService\DoConsultantAssignment.cshtml" />
