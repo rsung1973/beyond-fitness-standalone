@@ -17,7 +17,7 @@
     _model = (UserProfile)this.Model;
 }
 
-@if (_model.IsAssistant() || _model.IsOfficer())
+@if (_model.IsAssistant() || _model.IsOfficer() || _model.IsServitor())
 {
     Html.RenderPartial("~/Views/ContractConsole/Module/AboutExpiringByOfficer.cshtml", _model);
 }

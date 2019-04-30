@@ -139,13 +139,16 @@
                 <li>
                     <a href="javascript:void(0);"><i class="zmdi zmdi-accounts-list"></i><span>我的學生</span> </a>
                 </li>
+                @if (!_model.IsServitor())
+                {
                 <li>
                     <a href="@(Url.Action("ReportIndex","ConsoleHome"))"><i class="zmdi zmdi-download"></i><span>我的下載</span> </a>
                 </li>
+                }
                 <li>
                     <a href="javascript:void(0);"><i class="zmdi zmdi-file-text"></i><span>我的分店業績</span> </a>
                 </li>
-                @if (_model.IsAssistant() || _model.IsAuthorizedSysAdmin())
+                @if (_model.IsAssistant() || _model.IsAuthorizedSysAdmin() || _model.IsServitor())
                 {
                     <li>
                         <a href="@(Url.Action("BlogIndex","ConsoleHome"))"><i class="zmdi zmdi-blogger"></i><span>我的部落格</span> </a>
