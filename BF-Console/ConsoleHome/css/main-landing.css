@@ -17877,7 +17877,7 @@ textarea:focus {
 }
 
 .section-header {
-    padding: 150px 0 0px;
+    padding: 150px 0 50px;
     background-repeat: no-repeat;
     background-position: center center;
     background-size: cover;
@@ -17886,7 +17886,14 @@ textarea:focus {
     text-align: center;
 /*    height: 100vh;*/
     background: #1A1A1A !important;
+/*
+    background: linear-gradient(#1A1A1A 90%, #fff 0);
     color: #FFF;
+*/
+}
+
+.section-header.dark {
+    background: #1A1A1A !important;
 }
 
 .section-header.small {
@@ -17933,7 +17940,11 @@ textarea:focus {
 .section-faq .header_image,
 .section-header .header_iphone {
     position: relative;
-    z-index: 2
+    z-index: 2;
+/*
+    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.3);
+    border-radius: .55rem;
+*/
 }
 
 .section-header .btn {
@@ -18802,6 +18813,32 @@ textarea:focus {
     color: #eee;
 }
 
+.section-blog .articlelist .title {
+    font-size: 14px;
+    color: #fff;
+    font-weight: 700;
+}
+
+.section-blog .articlelist .author {
+    font-size: 12px;
+    color: #f6f6f6;
+/*
+    padding-top: 20px;
+    display: block;
+*/
+    display: block;
+    position: absolute;
+    bottom: 38px;
+}
+.section-blog .articlelist .date {
+    font-size: 12px;
+    color: #f6f6f6;
+    padding-top: 0px;
+    display: block;
+    position: absolute;
+    bottom: 20px;
+}
+
 .section-blog a {
     color: #eee;
 }
@@ -19088,8 +19125,8 @@ textarea:focus {
 }
 
 .list-group-flush .blog-img {
-    width: 110px;
-    height: 73px;
+    width: 128px;
+    height: 96px;
     object-fit: cover;
     vertical-align: middle;
     border-style: none;
@@ -19331,7 +19368,7 @@ textarea:focus {
 
 @media only screen and (min-device-width: 992px) and (max-device-width: 1024px) {
     .section-header {
-        padding: 130px 0
+        padding: 130px 0 50px
     }
 
     #main-nav ul li {
@@ -19607,8 +19644,9 @@ textarea:focus {
 
 @media only screen and (max-width: 575px) {
     .section-header {
-        padding: 160px 0;
-        height: 100vh;
+        padding: 160px 0 50px;
+/*        height: 100vh;*/
+        background: #1A1A1A !important;
     }
 
     .section-header.small {
@@ -20304,6 +20342,17 @@ screen and (max-height: 300px) {
     .list-group-flush .media .media-body .media-heading {
         font-size: 24px;
     }
+    
+    .section-blog .title {
+        font-size: 20px;        
+    }
+
+    .section-blog .author {
+        font-size: 14px;
+    }
+    .section-blog .date {
+        font-size: 14px;
+    }  
 
 }
 
@@ -20344,6 +20393,11 @@ screen and (max-height: 300px) {
     .full-width-section img {
         margin: 0 auto;
     }
+    
+    .full-width-section img.small {
+        width: 80%;
+    }
+
 
     .section-blog .blog-single {
         width: 95%;
