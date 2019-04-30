@@ -117,7 +117,7 @@
     {
         Html.RenderPartial("~/Views/ContractConsole/Module/ContractByBranch.cshtml", _model);
     }
-    else if (_model.IsAssistant() || _model.IsOfficer())
+    else if (_model.IsOfficer() || _model.IsAssistant() || _model.IsAuthorizedSysAdmin() || _model.IsServitor())
     {
         Html.RenderPartial("~/Views/ContractConsole/Module/ContractByOfficer.cshtml", _model);
     }

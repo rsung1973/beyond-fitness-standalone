@@ -17,7 +17,6 @@
     UserProfile _profile;
 
 
-
     _modelState = (ModelStateDictionary)ViewBag.ModelState;
     models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
     _model = (CourseContract)this.Model;
@@ -38,21 +37,21 @@
                                             <i class="material-icons">subject</i> 合約詳細資訊
                                             @{ var bgColor = "bg-cyan";}
                                             @if (_model.Status <= (int)Naming.ContractQueryStatus.待審核)
-                                            {
-                                                bgColor = "bg-orange";
-                                            }
-                                            else if (_model.Status == (int)Naming.CourseContractStatus.已生效)
-                                            {
-                                                bgColor = "bg-green";
-                                            }
-                                            else if (_model.Status == (int)Naming.CourseContractStatus.已履行)
-                                            {
-                                                bgColor = "bg-darkteal";
-                                            }
-                                            else
-                                            {
-                                                bgColor = "bg-red";
-                                            }
+                    {
+                        bgColor = "bg-orange";
+                    }
+                    else if (_model.Status == (int)Naming.CourseContractStatus.已生效)
+                    {
+                        bgColor = "bg-green";
+                    }
+                    else if (_model.Status == (int)Naming.CourseContractStatus.已履行)
+                    {
+                        bgColor = "bg-darkteal";
+                    }
+                    else
+                    {
+                        bgColor = "bg-red";
+                    }
                                             <span class="@($"badge {bgColor}")">@(_model.ContractCurrentStatus())</span>
                                         </a>
                                     </h4>
@@ -97,13 +96,13 @@
                                                     <div class="list_tr">
                                                         <div class="list_td hd">合約迄日</div>
                                                         @if (_model.ValidTo.HasValue)
-                                                        {
-                                                            <div class="list_td rt col-green">@($"{_model.ValidTo:yyyy/MM/dd}")</div>
-                                                        }
-                                                        else
-                                                        {
-                                                            <div class="list_td rt col-red">@($"{_model.Expiration:yyyy/MM/dd}")</div>
-                                                        }
+                                {
+                                    <div class="list_td rt col-green">@($"{_model.ValidTo:yyyy/MM/dd}")</div>
+        }
+        else
+        {
+                        <div class="list_td rt col-red">@($"{_model.Expiration:yyyy/MM/dd}")</div>
+}
                                                     </div>
                                                 </div>
                                             </li>
@@ -138,13 +137,13 @@
                                                             課程單價
                                                             <span class="badge bg-blue">
                                                                 @if (_model.LessonPriceType.SeriesID.HasValue)
-                                                                {
-                                                                    <text>@(_model.LessonPriceType.LowerLimit==1 ? "單" : _model.LessonPriceType.LowerLimit.ToString())堂</text>
-                                                                }
-                                                                else
-                                                                {
-                                                                    <text>@(_model.LessonPriceType.Description) </text>
-                                                                }
+                                        {
+                                            <text>@(_model.LessonPriceType.LowerLimit == 1 ? "單" : _model.LessonPriceType.LowerLimit.ToString())堂</text>
+                }
+                else
+                {
+                        <text>@(_model.LessonPriceType.Description) </text>
+}
                                                             </span>
                                                         </div>
                                                         <div class="list_td rt">@($"{_model.LessonPriceType.ListPrice:##,###,###,###}")</div>
@@ -187,6 +186,8 @@
                                     </div>
                                 </div>
                             </div>
+                            @if (!_profile.IsServitor())
+                            {
                             <div class="panel">
                                 <div class="panel-heading" role="tab" id="headingLearnerlist">
                                     <h4 class="panel-title"><a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordionDetail_contract" href="#collapseLearnerlist" aria-expanded="false" aria-controls="collapseLearnerlist"><i class="material-icons">subject</i> 學生詳細資訊 </a></h4>
@@ -200,112 +201,113 @@
                                     </div>
                                 </div>
                             </div>
+                            }
                             @if (_model.InstallmentID.HasValue)
                             {
-                                <div class="panel xl-khaki">
-                                    <div class="panel-heading" role="tab" id="headingInstallmentList">
-                                        <h4 class="panel-title material-icons"><a role="button" data-toggle="collapse" data-parent="#accordionDetail_contract" href="#collapseInstallmentList" aria-expanded="true" aria-controls="collapseInstallmentList"><i class="material-icons">subject</i> 分期詳細資訊 </a></h4>
-                                    </div>
-                                    <div id="collapseInstallmentList" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingInstallmentList">
-                                        <div class="panel-body no-padding">
-                                            <div class="row">
-                                                <div class="col-md-12 col-12">
-                                                    @{ Html.RenderPartial("~/Views/ContractConsole/Module/ContractInstallmentList.cshtml", models.GetTable<CourseContract>().Where(c => c.InstallmentID == _model.InstallmentID));}
+                            <div class="panel xl-khaki">
+                                <div class="panel-heading" role="tab" id="headingInstallmentList">
+                                    <h4 class="panel-title material-icons"><a role="button" data-toggle="collapse" data-parent="#accordionDetail_contract" href="#collapseInstallmentList" aria-expanded="true" aria-controls="collapseInstallmentList"><i class="material-icons">subject</i> 分期詳細資訊 </a></h4>
+                                </div>
+                                <div id="collapseInstallmentList" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingInstallmentList">
+                                    <div class="panel-body no-padding">
+                                        <div class="row">
+                                            <div class="col-md-12 col-12">
+                                                @{ Html.RenderPartial("~/Views/ContractConsole/Module/ContractInstallmentList.cshtml", models.GetTable<CourseContract>().Where(c => c.InstallmentID == _model.InstallmentID));}
 
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
                             }
                             @if (_model.Status >= (int)Naming.CourseContractStatus.已生效)
                             {
-                                <div class="panel xl-pink">
-                                    <div class="panel-heading" role="tab" id="headingInvoiceList">
-                                        <h4 class="panel-title material-icons"><a role="button" data-toggle="collapse" data-parent="#accordionDetail_contract" href="#collapseInvoiceList" aria-expanded="true" aria-controls="collapseInvoiceList"><i class="material-icons">subject</i> 收款詳細資訊 </a></h4>
-                                    </div>
-                                    <div id="collapseInvoiceList" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingInvoiceList">
-                                        <div class="panel-body no-padding">
-                                            <div class="row">
-                                                <div class="col-md-12 col-12">
-                                                    <ul class="mb_list xl-pink">
-                                                        <li>
-                                                            <div class="list_tb tb2">
-                                                                <div class="list_tr">
-                                                                    <div class="list_td hd">應收款期限</div>
-                                                                    <div class="list_td rt col-red"></div>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                        <li>
-                                                            <div class="list_tb tb2">
-                                                                <div class="list_tr">
-                                                                    <div class="list_td hd">收款次數</div>
-                                                                    <div class="list_td rt">@(_model.ContractPayment.Count)</div>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                        <li>
-                                                            <div class="list_tb tb2">
-                                                                <div class="list_tr">
-                                                                    <div class="list_td hd">合約金額</div>
-                                                                    <div class="list_td rt">@($"{_model.TotalCost:##,###,###,###}")</div>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                        <li>
-                                                            <div class="list_tb tb2">
-                                                                <div class="list_tr">
-                                                                    <div class="list_td hd">已收金額</div>
-                                                                    <div class="list_td rt">
-                                                                        @{ var totalPaidAmt = _model.TotalPaidAmount();}
+                        <div class="panel xl-pink">
+                            <div class="panel-heading" role="tab" id="headingInvoiceList">
+                                <h4 class="panel-title material-icons"><a role="button" data-toggle="collapse" data-parent="#accordionDetail_contract" href="#collapseInvoiceList" aria-expanded="true" aria-controls="collapseInvoiceList"><i class="material-icons">subject</i> 收款詳細資訊 </a></h4>
+                            </div>
+                            <div id="collapseInvoiceList" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingInvoiceList">
+                                <div class="panel-body no-padding">
+                                    <div class="row">
+                                        <div class="col-md-12 col-12">
+                                            <ul class="mb_list xl-pink">
+                                                <li>
+                                                    <div class="list_tb tb2">
+                                                        <div class="list_tr">
+                                                            <div class="list_td hd">應收款期限</div>
+                                                            <div class="list_td rt col-red"></div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="list_tb tb2">
+                                                        <div class="list_tr">
+                                                            <div class="list_td hd">收款次數</div>
+                                                            <div class="list_td rt">@(_model.ContractPayment.Count)</div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="list_tb tb2">
+                                                        <div class="list_tr">
+                                                            <div class="list_td hd">合約金額</div>
+                                                            <div class="list_td rt">@($"{_model.TotalCost:##,###,###,###}")</div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="list_tb tb2">
+                                                        <div class="list_tr">
+                                                            <div class="list_td hd">已收金額</div>
+                                                            <div class="list_td rt">
+                                                                @{ var totalPaidAmt = _model.TotalPaidAmount();}
 
-                                                                        @($"{totalPaidAmt:##,###,###,##0}")
-                                                                    </div>
-                                                                </div>
+                                                                @($"{totalPaidAmt:##,###,###,##0}")
                                                             </div>
-                                                        </li>
-                                                        <li>
-                                                            <div class="list_tb tb2">
-                                                                <div class="list_tr">
-                                                                    <div class="list_td hd">未收金額</div>
-                                                                    <div class="list_td rt col-red">@($"{_model.TotalCost - totalPaidAmt:##,###,###,##0}")</div>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                                <div class="col-md-12 col-12">
-                                                    @{ Html.RenderPartial("~/Views/ContractConsole/Module/ContractPaymentList.cshtml",
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="list_tb tb2">
+                                                        <div class="list_tr">
+                                                            <div class="list_td hd">未收金額</div>
+                                                            <div class="list_td rt col-red">@($"{_model.TotalCost - totalPaidAmt:##,###,###,##0}")</div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-md-12 col-12">
+                                            @{ Html.RenderPartial("~/Views/ContractConsole/Module/ContractPaymentList.cshtml",
 models.GetTable<ContractPayment>()
 .Where(c => c.ContractID == _model.ContractID)
 .Select(c => c.Payment)
 .Where(p => p.TransactionType == (int)Naming.PaymentTransactionType.體能顧問費));}
 
-                                                </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                            <div class="panel xl-slategray">
+                                <div class="panel-heading" role="tab" id="headingLessonList">
+                                    @{ var attended = _model.ContractType == (int)Naming.ContractTypeDefinition.CFA
+                    ? _model.RegisterLessonContract.Select(r => r.RegisterLesson).Sum(r => r.AttendedLessons)
+                    : _model.RegisterLessonContract.FirstOrDefault()?.RegisterLesson?.AttendedLessons;}
+
+                                    <h4 class="panel-title material-icons"><a role="button" data-toggle="collapse" data-parent="#accordionDetail_contract" href="#collapseLessonList" aria-expanded="true" aria-controls="collapseLessonList"><i class="material-icons">subject</i> 上課詳細資訊 @(attended > 0 ? $"({attended})" : null)</a></h4>
+                                </div>
+                                <div id="collapseLessonList" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingLessonList">
+                                    <div class="panel-body no-padding">
+                                        <div class="row">
+                                            <div class="col-md-12 col-12">
+                                                @{ Html.RenderPartial("~/Views/ContractConsole/Module/ContractLessonList.cshtml", _model.AttendedLessonList());}
+
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="panel xl-slategray">
-                                    <div class="panel-heading" role="tab" id="headingLessonList">
-                                        @{ var attended = _model.ContractType == (int)Naming.ContractTypeDefinition.CFA
-                                               ? _model.RegisterLessonContract.Select(r => r.RegisterLesson).Sum(r => r.AttendedLessons)
-                                               : _model.RegisterLessonContract.FirstOrDefault()?.RegisterLesson?.AttendedLessons;}
-
-                                        <h4 class="panel-title material-icons"><a role="button" data-toggle="collapse" data-parent="#accordionDetail_contract" href="#collapseLessonList" aria-expanded="true" aria-controls="collapseLessonList"><i class="material-icons">subject</i> 上課詳細資訊 @(attended > 0 ? $"({attended})" : null)</a></h4>
-                                    </div>
-                                    <div id="collapseLessonList" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingLessonList">
-                                        <div class="panel-body no-padding">
-                                            <div class="row">
-                                                <div class="col-md-12 col-12">
-                                                    @{ Html.RenderPartial("~/Views/ContractConsole/Module/ContractLessonList.cshtml", _model.AttendedLessonList());}
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                            </div>
                             }
                         </div>
                     </div>

@@ -233,10 +233,10 @@
         Html.RenderPartial("~/Views/ConsoleHome/Module/AboutInvoice.cshtml", _model);
     }
     <!--專業文章&我的比賽-->
-    @*@if (_model.IsAssistant() || _model.IsAuthorizedSysAdmin() || _model.IsServitor())
+    @if (_model.IsAssistant() || _model.IsAuthorizedSysAdmin() || _model.IsServitor())
     {
         Html.RenderPartial("~/Views/ConsoleHome/Module/AboutStaff.cshtml", _model);
-    }*@
+    }
 </section>
 
 @section TailPageJavaScriptInclude {

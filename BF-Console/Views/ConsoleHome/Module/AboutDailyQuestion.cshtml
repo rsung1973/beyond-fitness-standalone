@@ -12,12 +12,13 @@
     ModelStateDictionary _modelState;
     ModelSource<UserProfile> models;
     UserProfile _model;
-
+    int _allotment;
 
 
     _modelState = (ModelStateDictionary)ViewBag.ModelState;
     models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
     _model = (UserProfile)this.Model;
+    _allotment = ((int?)ViewBag.Allotment) ?? 2;
 }
 @{ var questItems = models.PromptDailyQuestion();
     var questCount = questItems.Count();
@@ -25,7 +26,7 @@
     var taskItems = models.GetTable<PDQTask>().Where(t => t.PDQQuestion.GroupID == 6);
     var rightAns = taskItems.Where(t => t.PDQSuggestion.RightAnswer == true);}
 
-<div class="col-sm-6 col-12">
+<div class="@($"col-sm-{12/_allotment} col-12")">
     <h4 class="card-outbound-header">運動小學堂</h4>
     <div class="parallax-img-card">
         <div class="body">
