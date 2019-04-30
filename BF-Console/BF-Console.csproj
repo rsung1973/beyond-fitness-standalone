@@ -5997,7 +5997,6 @@
     <Content Include="Views\ConsoleHome\Module\AboutInvoice.cshtml" />
     <Content Include="Views\ConsoleHome\Module\AboutLearners_1.cshtml" />
     <Content Include="Views\ConsoleHome\Module\AboutLearnerUncheckedLessons.cshtml" />
-    <Content Include="Views\ConsoleHome\Module\AboutStaff.ascx" />
     <Content Include="Views\ConsoleHome\Module\AboutToApprovePreferredLessons.cshtml" />
     <Content Include="Views\ConsoleHome\Module\BlockHeader.cshtml" />
     <Content Include="Views\ConsoleHome\Module\CurrentExerciseBillboard.cshtml" />
@@ -6041,6 +6040,7 @@
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="ConsoleHome\images\landing\guarantee.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\InitializeType.cs" />
