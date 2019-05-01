@@ -87,7 +87,7 @@
                                         <ul class="mb_list xl-khaki">
                                             @foreach (var item in _discountItems)
                                             {
-                                                <li onclick="commitPrice(@(item.PriceID),'@($"{item.ListPrice:##,###,###,###}")元 / @(item.PriceTypeBundle())',event);">
+                                                <li onclick="commitPrice(@(item.PriceID),'@($"{item.ListPrice:##,###,###,###}")元 / @(item.PriceTypeBundle())(舊生續約)',event);">
                                                     <div class="list_tb tb2">
                                                         <div class="list_tr hand">
                                                             <div class="list_td">
