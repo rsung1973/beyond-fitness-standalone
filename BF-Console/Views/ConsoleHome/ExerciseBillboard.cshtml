@@ -41,23 +41,6 @@
     <link href="plugins/jquery-datatable/Responsive-2.2.2/css/responsive.bootstrap4.min.css" rel="stylesheet">
     <link href="plugins/jquery-datatable/FixedColumns-3.2.5/css/fixedColumns.bootstrap4.min.css" rel="stylesheet">
 }
-@helper showFullName(UserProfile profile) {
-    <span class='hidden-sm-down'>
-        @(profile.RealName)
-        @if (!String.IsNullOrEmpty(profile.Nickname))
-        {
-        <span class='small'>(@(profile.Nickname))</span>
-        }
-    </span>
-}@helper showFullName(UserProfile profile) {
-    <span class='hidden-sm-down'>
-        @(profile.RealName)
-        @if (!String.IsNullOrEmpty(profile.Nickname))
-        {
-        <span class='small'>(@(profile.Nickname))</span>
-        }
-    </span>
-}
 <section class="content">
     @{ ViewBag.BlockHeader = "本月運動時間";
         Html.RenderPartial("~/Views/ConsoleHome/Module/BlockHeader.cshtml", _model);}
