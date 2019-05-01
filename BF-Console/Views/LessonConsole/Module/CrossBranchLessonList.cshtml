@@ -14,22 +14,31 @@
     IQueryable<LessonTime> _model;
 
 
-
     _modelState = (ModelStateDictionary)ViewBag.ModelState;
     models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
     _model = (IQueryable<LessonTime>)this.Model;
+   
 }
+@helper showFullName(UserProfile profile) {
+    <span class='hidden-sm-down'>
+        @(profile.RealName)
+        @if (!String.IsNullOrEmpty(profile.Nickname))
+        {
+        <span class='small'>(@(profile.Nickname))</span>
+        }
+    </span>
+}
+
 <table class="table table-striped nowrap dataTable-crossBranch" style="width: 100%">
     <thead class="bg-darkteal">
         <tr>
             <th>體能顧問</th>
-            <th>日期</th>
-            <th>開始時間</th>
-            <th>結束時間</th>
+            <th>上課日期</th>
+            <th>上課時間</th>
             <th>類型</th>
             <th>學生</th>
-            <th>課程類別佔比</th>
-            <th>該時段總人數</th>
+            <th>該時段人數</th>
+            <th>類型佔比</th>
         </tr>
     </thead>
     <tbody>
@@ -43,35 +52,28 @@
                             Html.RenderPartial("~/Views/Common/ProfileImage.cshtml", item.AsAttendingCoach.UserProfile);
                         }
                     </span>
-                    <span class='hidden-sm-down'>
-                        @(item.AsAttendingCoach.UserProfile.RealName)
-                    <span class='small'>(@(item.AsAttendingCoach.UserProfile.Nickname))</span>
-                </span>
-            </td>
-            <td>@($"{item.ClassTime:yyyy/MM/dd}")</td>
-            <td>@($"{item.ClassTime:HH:mm}")</td>
-            <td>@($"{item.ClassTime.Value.AddMinutes(item.DurationInMinutes.Value):HH:mm}")</td>
-            <td>@(item.LessonTypeStatus())</td>
-            <td>@(String.Join("、", item.GroupingLesson.RegisterLesson.Select(r => r.UserProfile.RealName)))</td>
-            <td>
-                @{ var expansion = item.LessonTimeExpansion.First();}
-
-                @{ var lessons = expansion.ConcurrentLessons(models);}
-
-                <div class='sparkline-pie'>@(lessons.PTLesson().Count()),@(lessons.PILesson().Count()),@(lessons.TrialLesson().Count())</div>
-            </td>
-            <td>
-                @(lessons.ConcurrentRegisterLessons(models).Count())
-                <i class='zmdi zmdi-more-vert float-right'></i>
-            </td>
-        </tr>
-    }
+                    @showFullName(item.AsAttendingCoach.UserProfile)
+                </td>
+                <td>@($"{item.ClassTime:yyyy/MM/dd}")</td>
+                <td>@($"{item.ClassTime:HH:mm}")-@($"{item.ClassTime.Value.AddMinutes(item.DurationInMinutes.Value):HH:mm}")</td>
+                <td>@(item.LessonTypeStatus())</td>
+                <td>@(String.Join("、", item.GroupingLesson.RegisterLesson.Select(r => r.UserProfile.RealName)))</td>
+                <td>
+                    @{
+                        var expansion = item.LessonTimeExpansion.First();
+                        var lessons = expansion.ConcurrentLessons(models);
+                    }
+                    @(lessons.ConcurrentRegisterLessons(models).Count())
+                </td>
+                <td>
+                    <div class='sparkline-pie'>@(lessons.PTLesson().Count()),@(lessons.PILesson().Count()),@(lessons.TrialLesson().Count())</div>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
 
-<script>
-
-    $(function () {
+<script>$(function () {
 
         if ($global.dtContract != undefined) {
             $global.dtContract.destroy();
@@ -111,12 +113,8 @@
             },
             columnDefs: [
                 {
-                    targets: [1, 2, 3, 4, 6, 5, 7],
-                    className: "align-center more"
-                },
-                {
-                    targets: [0],
-                    className: "more"
+                    targets: [1, 2, 3, 4, 5, 6],
+                    className: "align-center"
                 }
             ],
             "initComplete": function () {
@@ -134,7 +132,7 @@
                         offset: 90,
                         width: '50px',
                         height: '50px',
-                        sliceColors: ['#ffe6aa', '#eeaaaa', '#c5b6e2']
+                        sliceColors: ['#FFCC84', '#C5E1A7', '#F58FB0']
                     });
             },
 
@@ -149,19 +147,9 @@
             $btnSelect.remove();
         }, 1000);
 
-        //$global.dtContract.on('draw', function () {
-        //    console.log('draw...')
-        //    var $btnSelect = $('.dataTables_length div.btn-group.bootstrap-select.form-control.form-control-sm');
-        //    console.log($btnSelect);
-        //    var $menu = $btnSelect.find('select');
-        //    $btnSelect.before($menu);
-        //    $btnSelect.remove();
-        //});
 
         $('.dataTable-crossBranch').resize();
 
-    });
-
-</script>
+    });</script>
 
 
