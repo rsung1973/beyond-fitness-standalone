@@ -555,6 +555,10 @@ img.responsive-img.nodata {
 	background-color: #fd5c63 !important;
 }
 
+.bg-amber {
+    background-color: rgba(245, 166, 35) !important;
+}
+
 .f-boys {
 	color: #0061d2 !important;
 }
@@ -745,6 +749,12 @@ img.responsive-img.nodata {
 .btn-add:hover {
 	background-color: #0061d2;
 }
+
+/*新增ST */
+.fixed-action-btn.custome {
+    bottom: 90px;
+}
+/*新增ST */
 
 
 /*  Input Set
@@ -1118,6 +1128,17 @@ a.middle-indicator-text i.left {
 	top: 0;
 	left: 0;
 	padding: 20px;
+}
+
+.class-block .rsTextSlide h3.bottommask,
+.article-block .rsTextSlide h3.bottommask {
+    position: absolute;
+    top: 0;
+    padding: auto;
+    bottom: 0px;    
+    background: rgba(30, 30, 30, 0.5);
+    width: 100%;
+    -webkit-mask-image: linear-gradient(to bottom, rgba(30, 30, 30, .9), rgba(30, 30, 30, .9));
 }
 
 .rsTextSlide .valign-wrapper {
@@ -2581,7 +2602,7 @@ ul.lesson-list li.list-intro {
 .time-box .flow-text {
 	font-size: 64px;
 	font-weight: 400;
-	letter-spacing: 6px;
+	letter-spacing: 5px;
 }
 
 .time-box .flow-text small {

@@ -46,7 +46,7 @@
             @foreach (var item in _items)
             {
                 <div class="rsTextSlide">
-                    @{ var imgUrl = $"Blog/{item.BlogID}/images/Title.jpg";}
+                    @{ var imgUrl = $"blog/{item.BlogID}/images/Title.jpg";}
 
                     <img class="rsImg" src="images/blog/DefaultTitle.jpg" onload="@(System.IO.File.Exists(Server.MapPath(imgUrl)) ? $"this.onload = null;this.src = '{imgUrl}';" : null)" data-rsh="" data-rsw="" />
                     <a href="@(Url.Action("BlogSingle", "MainActivity", new { item.DocID }))" target="_blank">

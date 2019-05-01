@@ -18,9 +18,9 @@
         <%  for (int i = 0; i < 5; i++)
             { %>
         <div class="rsTextSlide">
-            <img class="rsImg" src="<%= __Articles[i] %>" data-rsh="" data-rsw="">
+            <img class="rsImg" src="../ConsoleHome/blog/<%= _items[i].BlogID %>/images/Title.jpg" data-rsh="" data-rsw="">
             <a onclick="gtag('event', '專業文章', {  'event_category': '卡片點擊',  'event_label': '卡片總覽'});" href="<%= "../../front-end/single-post.html?id=" + _items[i].DocID %>" target="_blank">
-                <h3><%= _items[i].Title %></h3>
+                <h3 class="bottommask"><%= _items[i].Title %></h3>
             </a>
         </div>
         <%  } %>
