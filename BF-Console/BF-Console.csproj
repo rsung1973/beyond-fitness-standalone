@@ -6041,6 +6041,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="ConsoleHome\images\landing\guarantee.jpg" />
+    <Content Include="Views\ConsoleHome\Module\AboutLessonSummary.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\InitializeType.cs" />

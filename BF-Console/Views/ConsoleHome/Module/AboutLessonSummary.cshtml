@@ -1,0 +1,37 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    UserProfile _model;
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = (UserProfile)this.Model;
+}
+<div class="row text-center calendar-todo">
+    <div class="col-sm-3 col-6">
+            <h4 class="margin-0">20</h4>
+            <p class="text-muted margin-0"> 本月P.T 編輯中</p>
+        </div>
+        <div class="col-sm-3 col-6">
+            <h4 class="margin-0">8</h4>
+            <p class="text-muted margin-0"> 本月P.I 編輯中</p>
+        </div>
+        <div class="col-sm-3 col-6">
+            <h4 class="margin-0">28</h4>
+            <p class="text-muted margin-0"> 截至上月P.T 未完成</p>
+        </div>
+        <div class="col-sm-3 col-6">
+            <h4 class="margin-0">3</h4>
+            <p class="text-muted margin-0"> 截至上月P.I 未完成</p>
+        </div>
+</div>
+
