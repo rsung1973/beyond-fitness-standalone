@@ -9,29 +9,48 @@
 @using WebHome.Controllers
 
 @{
+
     ModelStateDictionary _modelState;
     ModelSource<UserProfile> models;
     UserProfile _model;
     _modelState = (ModelStateDictionary)ViewBag.ModelState;
     models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
     _model = (UserProfile)this.Model;
+
+    IQueryable<LessonTime> items = models.GetTable<LessonTime>();
+    if (_model.IsManager() || _model.IsViceManager())
+    {
+        var branch = models.GetTable<BranchStore>().Where(b => b.ManagerID == _model.UID || b.ViceManagerID == _model.UID)
+                .Select(b => b.BranchID).FirstOrDefault();
+        items = items.Where(l => l.BranchID == branch);
+    }
+
+    DateTime monthStart = DateTime.Today.FirstDayOfMonth();
+    var currentMonthLessons = items.Where(l => l.ClassTime >= monthStart && l.ClassTime < monthStart.AddMonths(1));
+    var beforeCurrentLessons = items.Where(l => l.ClassTime < monthStart);
+
+    var currentMonthPT = currentMonthLessons.PTLesson();
+    var beforeCurrentPT = beforeCurrentLessons.PTLesson();
+    var currentMonthPI = currentMonthLessons.PILesson();
+    var beforeCurrentPI = beforeCurrentLessons.PILesson();
+
 }
 <div class="row text-center calendar-todo">
     <div class="col-sm-3 col-6">
-            <h4 class="margin-0">20</h4>
-            <p class="text-muted margin-0"> 本月P.T 編輯中</p>
-        </div>
-        <div class="col-sm-3 col-6">
-            <h4 class="margin-0">8</h4>
-            <p class="text-muted margin-0"> 本月P.I 編輯中</p>
-        </div>
-        <div class="col-sm-3 col-6">
-            <h4 class="margin-0">28</h4>
-            <p class="text-muted margin-0"> 截至上月P.T 未完成</p>
-        </div>
-        <div class="col-sm-3 col-6">
-            <h4 class="margin-0">3</h4>
-            <p class="text-muted margin-0"> 截至上月P.I 未完成</p>
-        </div>
+        <h4 class="margin-0">@(currentMonthPT.Where(l => l.LessonAttendance == null).Count())</h4>
+        <p class="text-muted margin-0"> 本月P.T 編輯中</p>
+    </div>
+    <div class="col-sm-3 col-6">
+        <h4 class="margin-0">@(currentMonthPI.Where(l => l.LessonAttendance == null).Count())</h4>
+        <p class="text-muted margin-0"> 本月P.I 編輯中</p>
+    </div>
+    <div class="col-sm-3 col-6">
+        <h4 class="margin-0">@(beforeCurrentLessons.Where(l => l.LessonAttendance == null).Count())</h4>
+        <p class="text-muted margin-0"> 截至上月P.T 未完成</p>
+    </div>
+    <div class="col-sm-3 col-6">
+        <h4 class="margin-0">@(beforeCurrentPI.Where(l => l.LessonAttendance == null).Count())</h4>
+        <p class="text-muted margin-0"> 截至上月P.I 未完成</p>
+    </div>
 </div>
 
