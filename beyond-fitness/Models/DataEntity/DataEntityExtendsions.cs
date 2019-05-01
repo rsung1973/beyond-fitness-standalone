@@ -195,6 +195,13 @@ namespace WebHome.Models.DataEntity
             return item.Nickname == null ? item.RealName : item.RealName + "(" + item.Nickname + ")";
         }
 
+        public static String FullNameHtml(this UserProfile profile)
+        {
+            return String.Concat($"<span class='hidden-sm-down'>{profile.RealName}",
+                        !String.IsNullOrEmpty(profile.Nickname) ? $"<span class='small'>{profile.Nickname}</span>" : null,
+                        "</span>");
+        }
+
         public static String MaskedName(this String name)
         {
             if (name == null || name.Length < 2)

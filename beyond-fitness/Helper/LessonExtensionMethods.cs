@@ -326,6 +326,14 @@ namespace WebHome.Helper
             return items.Where(l => l.TrainingBySelf == 1);
         }
 
+        public static IQueryable<LessonTime> LearnerPILesson(this IQueryable<LessonTime> items)
+        {
+            return items.PILesson()
+                .Where(l => l.RegisterLesson.LessonPriceType.Status == (int)Naming.LessonPriceStatus.自主訓練
+                    || (l.RegisterLesson.RegisterLessonEnterprise != null && l.RegisterLesson.RegisterLessonEnterprise.EnterpriseCourseContent.EnterpriseLessonType.Status == (int)Naming.LessonPriceStatus.自主訓練));
+        }
+
+
 
         public static bool IsPISession(this LessonTime item)
         {

@@ -31,10 +31,11 @@
 
     var currentMonthPT = currentMonthLessons.PTLesson();
     var beforeCurrentPT = beforeCurrentLessons.PTLesson();
-    var currentMonthPI = currentMonthLessons.PILesson();
-    var beforeCurrentPI = beforeCurrentLessons.PILesson();
+    var currentMonthPI = currentMonthLessons.LearnerPILesson();
+    var beforeCurrentPI = beforeCurrentLessons.LearnerPILesson();
 
 }
+
 <div class="row text-center calendar-todo">
     <div class="col-sm-3 col-6">
         <h4 class="margin-0">@(currentMonthPT.Where(l => l.LessonAttendance == null).Count())</h4>
@@ -45,7 +46,7 @@
         <p class="text-muted margin-0"> 本月P.I 編輯中</p>
     </div>
     <div class="col-sm-3 col-6">
-        <h4 class="margin-0">@(beforeCurrentLessons.Where(l => l.LessonAttendance == null).Count())</h4>
+        <h4 class="margin-0">@(beforeCurrentPT.Where(l => l.LessonAttendance == null).Count())</h4>
         <p class="text-muted margin-0"> 截至上月P.T 未完成</p>
     </div>
     <div class="col-sm-3 col-6">
