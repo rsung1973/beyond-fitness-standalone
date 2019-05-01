@@ -55,14 +55,6 @@
     ModelSource<UserProfile> models;
     UserProfile _model;
     List<BlogArticle> _items;
-    static String[] __Articles = {
-        "images/carousel/article-background-1.jpg",
-        "images/carousel/article-background-2.jpg",
-        "images/carousel/article-background-3.jpg",
-        "images/carousel/article-background-4.jpg",
-        "images/carousel/article-background-5.jpg"
-    };
-
 
     protected override void OnInit(EventArgs e)
     {
