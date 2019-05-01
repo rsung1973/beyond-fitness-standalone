@@ -19,16 +19,6 @@
     _model = (IQueryable<LessonTime>)this.Model;
    
 }
-@helper showFullName(UserProfile profile) {
-    <span class='hidden-sm-down'>
-        @(profile.RealName)
-        @if (!String.IsNullOrEmpty(profile.Nickname))
-        {
-        <span class='small'>(@(profile.Nickname))</span>
-        }
-    </span>
-}
-
 <table class="table table-striped nowrap dataTable-crossBranch" style="width: 100%">
     <thead class="bg-darkteal">
         <tr>
@@ -52,7 +42,7 @@
                             Html.RenderPartial("~/Views/Common/ProfileImage.cshtml", item.AsAttendingCoach.UserProfile);
                         }
                     </span>
-                    @showFullName(item.AsAttendingCoach.UserProfile)
+                    @Html.Raw(item.AsAttendingCoach.UserProfile.FullNameHtml())
                 </td>
                 <td>@($"{item.ClassTime:yyyy/MM/dd}")</td>
                 <td>@($"{item.ClassTime:HH:mm}")-@($"{item.ClassTime.Value.AddMinutes(item.DurationInMinutes.Value):HH:mm}")</td>

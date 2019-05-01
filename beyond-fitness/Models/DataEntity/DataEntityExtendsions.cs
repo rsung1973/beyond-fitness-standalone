@@ -198,7 +198,7 @@ namespace WebHome.Models.DataEntity
         public static String FullNameHtml(this UserProfile profile)
         {
             return String.Concat($"<span class='hidden-sm-down'>{profile.RealName}",
-                        !String.IsNullOrEmpty(profile.Nickname) ? $"<span class='small'>{profile.Nickname}</span>" : null,
+                        !String.IsNullOrEmpty(profile.Nickname) ? $"<span class='small'>({profile.Nickname})</span>" : null,
                         "</span>");
         }
 
