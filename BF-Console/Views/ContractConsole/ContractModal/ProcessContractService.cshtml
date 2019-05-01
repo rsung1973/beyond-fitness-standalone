@@ -46,7 +46,7 @@
                         <a href="@(Url.Action("SignContractService","ConsoleHome",new { KeyID = _model.ContractID.EncryptKey() }))" class="list-group-item">學生簽名</a>
                         hasItem = true;
                     }
-                    @if (_model.Status == (int)Naming.CourseContractStatus.已生效 && _model.CourseContractRevision.Reason != "終止")
+                    @if (_model.Status == (int)Naming.CourseContractStatus.已生效 && _model.CourseContractRevision.Reason != "轉讓體能顧問")
                     {
                         <a href="@Html.Raw(Url.Action("GetContractAmendmentPdf","CourseContract",new { revision.RevisionID }))" target="_blank" class="list-group-item">電子合約</a>
                         hasItem = true;
