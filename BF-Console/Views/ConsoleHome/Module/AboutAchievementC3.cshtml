@@ -27,19 +27,22 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="header">
-                            @for (int idx = 0; idx < 3; idx++)
-                            {
-                                var dayIdx = DateTime.Today.AddDays(idx);
-                                <a href="#lessonSummary" onclick="inquireDailyBarChart('@($"{dayIdx:yyyy-MM-dd}")',event);" class="btn btn-simple btn-sm btn-primary inquireDaily @(_viewModel.ClassTimeStart == dayIdx ? "disabled" : null)">@($"{dayIdx:yyyy/MM/dd}")</a>
-                            }
+                            <h2>
+                                <strong class="col-red" id="branchName">@(_viewModel.BranchName)</strong>
+                                @for (int idx = 0; idx < 3; idx++)
+                                {
+                                    var dayIdx = DateTime.Today.AddDays(idx);
+                                    <a href="#lessonSummary" onclick="inquireDailyBarChart('@($"{dayIdx:yyyy-MM-dd}")',event);" class="btn btn-simple btn-sm btn-primary inquireDaily @(_viewModel.ClassTimeStart == dayIdx ? "disabled" : null)">@($"{dayIdx:yyyy/MM/dd}")</a>
+                                }
+                            </h2>
                             <ul class="header-dropdown">
                                 <li class="dropdown">
                                     <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class="zmdi zmdi-more"></i> </a>
                                     <ul class="dropdown-menu dropdown-menu-right slideUp float-right">
-                                        <li><a href="javascript:inquireLessonsBarChart();">全部</a></li>
+                                        <li><a href="#lessonSummary" onclick="inquireLessonsBarChart();">全部</a></li>
                                         @foreach (var b in models.GetTable<BranchStore>())
                                         {
-                                            <li><a href="javascript:inquireLessonsBarChart(@(b.BranchID));">@(b.BranchName)</a></li>
+                                            <li><a href="#lessonSummary" onclick="inquireLessonsBarChart(@(b.BranchID));">@(b.BranchName)</a></li>
                                         }
                                     </ul>
                                 </li>
@@ -59,7 +62,11 @@
                         </div>
                         <script>
                             function inquireLessonsBarChart(branchID) {
+                                var event = event || window.event;
+                                var branchName = $(event.target).text();
+                                $('#branchName').text(branchName);
                                 $global.viewModel.BranchID = branchID;
+                                $global.viewModel.BranchName = branchName;
                                 drawLessonsBarChart();
                                 showLessonSummary();
                             }

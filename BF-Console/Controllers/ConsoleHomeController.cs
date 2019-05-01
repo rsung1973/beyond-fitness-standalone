@@ -63,8 +63,13 @@ namespace BFConsole.Controllers
             {
                 if (profile.IsManager() || profile.IsViceManager())
                 {
-                    viewModel.BranchID = models.GetTable<BranchStore>().Where(b => b.ManagerID == profile.UID || b.ViceManagerID == profile.UID)
-                            .Select(b => b.BranchID).FirstOrDefault();
+                    var branch = models.GetTable<BranchStore>().Where(b => b.ManagerID == profile.UID || b.ViceManagerID == profile.UID)
+                            .FirstOrDefault();
+                    if (branch != null)
+                    {
+                        viewModel.BranchID = branch.BranchID;
+                        viewModel.BranchName = branch.BranchName;
+                    }
                 }
             }
 

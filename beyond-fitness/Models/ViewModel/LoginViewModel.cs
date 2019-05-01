@@ -587,6 +587,7 @@ namespace WebHome.Models.ViewModel
         public DateTime? ClassTimeStart { get; set; }
         public DateTime? ClassTimeEnd { get; set; }
         public int? BranchID { get; set; }
+        public String BranchName { get; set; }
 
     }
 
