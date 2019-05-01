@@ -6042,6 +6042,7 @@
     </Content>
     <Content Include="ConsoleHome\images\landing\guarantee.jpg" />
     <Content Include="Views\ConsoleHome\Module\AboutLessonSummary.cshtml" />
+    <Content Include="ConsoleHome\images\avatar\noname.png" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\InitializeType.cs" />
