@@ -33,9 +33,9 @@
     }
 
     var PTLessons = items.PTLesson()
-            .Select(l => l.ClassTime.Value.Hour)
-            .GroupBy(h => h)
-            .Select(g => new _Counting { Hour = g.Key, Count = g.Count() })
+            .Select(l => new { Hour = l.ClassTime.Value.Hour, Persons = l.GroupingLesson.RegisterLesson.Count })
+            .GroupBy(h => h.Hour)
+            .Select(g => new _Counting { Hour = g.Key, Count = g.Sum(p => p.Persons) })
             .ToList();
     var PILessons = items.Where(l => l.TrainingBySelf == 1)
             .Select(l => l.ClassTime.Value.Hour)
