@@ -16,10 +16,12 @@
     ModelStateDictionary _modelState;
     UserProfile _model;
     IQueryable<LessonTime> _lessons;
+    LessonTimeBookingViewModel _viewModel;
 
     models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
     _modelState = (ModelStateDictionary)ViewBag.ModelState;
     _model = (UserProfile)this.Model;
+    _viewModel = (LessonTimeBookingViewModel)ViewBag.ViewModel;
 
     IQueryable<LessonTime> items = models.GetTable<LessonTime>().Where(l => l.AttendingCoach == _model.UID);
     //.FilterByUserRoleScope(models, _model);
@@ -43,7 +45,15 @@
 
 <!--Sparkline Plugin Js-->
 <script src="plugins/jquery-sparkline/jquery.sparkline.js"></script>
+<script>
+        $(function () {
+            $global.viewModel = @Html.Raw(JsonConvert.SerializeObject(_viewModel));
 
+            for (var i = 0; i < $global.onReady.length; i++) {
+                $global.onReady[i]();
+            }
+        });
+</script>
 <section class="content">
 
     @{ ViewBag.BlockHeader = "任意門";

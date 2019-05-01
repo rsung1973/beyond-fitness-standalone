@@ -580,12 +580,13 @@ namespace WebHome.Models.ViewModel
         public DateTime? QueryStart { get; set; }
         public DateTime? ClassTime { get; set; }
     }
+
     public class LessonTimeBookingViewModel : QueryViewModel
     {
-
         public int? LessonID { get; set; }
         public DateTime? ClassTimeStart { get; set; }
         public DateTime? ClassTimeEnd { get; set; }
+        public int? BranchID { get; set; }
 
     }
 

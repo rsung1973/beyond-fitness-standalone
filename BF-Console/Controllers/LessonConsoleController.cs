@@ -54,6 +54,15 @@ namespace BFConsole.Controllers
             }
 
             var profile = HttpContext.GetUser();
+            if (!viewModel.BranchID.HasValue)
+            {
+                if (profile.IsManager() || profile.IsViceManager())
+                {
+                    viewModel.BranchID = models.GetTable<BranchStore>().Where(b => b.ManagerID == profile.UID || b.ViceManagerID == profile.UID)
+                            .Select(b => b.BranchID).FirstOrDefault();
+                }
+            }
+
             return View("~/Views/LessonConsole/ProcessModal/TodayLessons.cshtml", profile.LoadInstance(models));
         }
 

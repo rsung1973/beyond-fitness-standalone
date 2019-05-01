@@ -59,6 +59,15 @@ namespace BFConsole.Controllers
             }
 
             var profile = HttpContext.GetUser();
+            if(!viewModel.BranchID.HasValue)
+            {
+                if (profile.IsManager() || profile.IsViceManager())
+                {
+                    viewModel.BranchID = models.GetTable<BranchStore>().Where(b => b.ManagerID == profile.UID || b.ViceManagerID == profile.UID)
+                            .Select(b => b.BranchID).FirstOrDefault();
+                }
+            }
+
             profile.ReportInputError = InputErrorView;
             return View(profile.LoadInstance(models));
         }
@@ -451,6 +460,30 @@ namespace BFConsole.Controllers
                 result.ViewName = "TerminateContract";
             }
             return result;
+        }
+
+        public ActionResult DailyLessonsBarChart(LessonTimeBookingViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            if (!viewModel.ClassTimeStart.HasValue)
+            {
+                viewModel.ClassTimeStart = DateTime.Today;
+            }
+
+            var profile = HttpContext.GetUser();
+            return View("~/Views/ConsoleHome/Module/TodayLessonsBarChartC3.cshtml", profile.LoadInstance(models));
+        }
+
+        public ActionResult ShowLessonSummary(LessonTimeBookingViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            if (!viewModel.ClassTimeStart.HasValue)
+            {
+                viewModel.ClassTimeStart = DateTime.Today;
+            }
+
+            var profile = HttpContext.GetUser();
+            return View("~/Views/ConsoleHome/Module/AboutLessonSummary.cshtml", profile.LoadInstance(models));
         }
 
     }

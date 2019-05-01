@@ -25,11 +25,9 @@
 
 @{
     var items = models.GetTable<LessonTime>().Where(l => l.ClassTime >= _viewModel.ClassTimeStart && l.ClassTime < _viewModel.ClassTimeStart.Value.AddDays(1));
-    if (_model.IsManager() || _model.IsViceManager())
+    if (_viewModel.BranchID.HasValue)
     {
-        var branch = models.GetTable<BranchStore>().Where(b => b.ManagerID == _model.UID || b.ViceManagerID == _model.UID)
-                .Select(b => b.BranchID).FirstOrDefault();
-        items = items.Where(l => l.BranchID == branch);
+        items = items.Where(l => l.BranchID == _viewModel.BranchID);
     }
 
     var PTLessons = items.PTLesson()
@@ -60,7 +58,7 @@
         totalData[i] += tempData[i];
     }
 }
-<div id="@(_chartID)" class="c3 m-t-20"></div>
+<div id="@(_chartID)" class="c3 m-t-20 lessonBar"></div>
 <script>
 
     var totalData = @Html.Raw(JsonConvert.SerializeObject(totalData));
