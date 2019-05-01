@@ -218,7 +218,7 @@
         Html.RenderPartial("~/Views/ConsoleHome/Module/AboutLearners_1.cshtml", _model);
     }
     <!--我的分店業績卡片-->
-    @if (_model.IsOfficer() || _model.IsManager() || _model.IsViceManager() || _model.IsAssistant() || _model.IsAuthorizedSysAdmin())
+    @if (_model.IsManager() || _model.IsViceManager() || _model.IsAssistant() || _model.IsAuthorizedSysAdmin())
     {
         Html.RenderPartial("~/Views/ConsoleHome/Module/AboutAchievementC3.cshtml", _model);
     }
