@@ -69,10 +69,12 @@
                                     ? item.EffectiveDate
                                     : item.CourseContractRevision.SourceContract.EffectiveDate))
         </td>
-        <td>
-            @(String.Format("{0:yyyy/MM/dd}", item.Expiration))
-            <i class='zmdi zmdi-more-vert float-right'></i>
-        </td>
+            <td>
+                @(String.Format("{0:yyyy/MM/dd}", item.CourseContractRevision?.Reason == "終止"
+                                            ? item.EffectiveDate
+                                            : item.Expiration))
+                <i class='zmdi zmdi-more-vert float-right'></i>
+            </td>
     </tr>
 }
     </tbody>

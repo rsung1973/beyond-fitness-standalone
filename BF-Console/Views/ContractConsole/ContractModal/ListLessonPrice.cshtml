@@ -60,7 +60,7 @@
                                         <ul class="mb_list xl-aliceblue">
                                             @foreach (var item in _normalItems)
                                             {
-                                            <li onclick="commitPrice(@(item.PriceID),event);">
+                                            <li onclick="commitPrice(@(item.PriceID),'@($"{item.ListPrice:##,###,###,###}")元 / @(item.PriceTypeBundle())',event);">
                                                 <div class="list_tb tb2">
                                                     <div class="list_tr hand">
                                                         <div class="list_td">
@@ -87,7 +87,7 @@
                                         <ul class="mb_list xl-khaki">
                                             @foreach (var item in _discountItems)
                                             {
-                                                <li onclick="commitPrice(@(item.PriceID),event);">
+                                                <li onclick="commitPrice(@(item.PriceID),'@($"{item.ListPrice:##,###,###,###}")元 / @(item.PriceTypeBundle())',event);">
                                                     <div class="list_tb tb2">
                                                         <div class="list_tr hand">
                                                             <div class="list_td">
@@ -112,7 +112,7 @@
                                         <ul class="mb_list xl-pink">
                                             @foreach (var item in _specialItems)
                                             {
-                                                <li onclick="commitPrice(@(item.PriceID),event);">
+                                                <li onclick="commitPrice(@(item.PriceID),'@($"{item.ListPrice:##,###,###,###}")元 / @(item.PriceTypeBundle())',event);">
                                                     <div class="list_tb tb2">
                                                         <div class="list_tr hand">
                                                             <div class="list_td">
@@ -143,10 +143,11 @@
 
         });
 
-        function commitPrice(priceID, event) {
+        function commitPrice(priceID, priceName, event) {
             var event = event || window.event;
             if ($global.commitPrice) {
-                $global.commitPrice(priceID, $(event.target).parent().text().trim().replace(/\s/g, ''));
+                /*$(event.target).parent().text().trim().replace(/\s/g, '')*/
+                $global.commitPrice(priceID, priceName);
             }
             $global.closeAllModal();
         }//
