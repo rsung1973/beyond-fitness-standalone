@@ -38,9 +38,11 @@
 }
 
 .rsTextSlide h3.bottommask {
+    font-weight: 800;
+    font-size: 18px;
     position: absolute;
-    top: auto;
-    padding: 15px;
+    top: 0;
+    padding: 20px;
     bottom: 0px;    
     background: rgba(30, 30, 30, 0.5);
     width: 100%;
@@ -57,7 +59,8 @@ img.rsImg {
 	border-radius: .55rem;
 	vertical-align: bottom !important;
 	border: 1px solid #f4f6f9;    
-    
+}
+
 /*Overright 外掛套件 royalSlider*/
 
 .rsClass {
