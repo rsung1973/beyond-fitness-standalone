@@ -39,12 +39,12 @@
         foreach (var v in i.OrderByDescending(m => m.Key))
         {
             resultData.Add(new string[] {
-buildParticipant(v.Key),
-workPlace(v.Key),
-buildScore(v.Key,v.TotalMinutes),
-buildAnalysis(v.Key),
-$"<span class='{(idx==1 ? "badge bg-red" : "badge badge-info")}'>{idx}</span>"
-});
+                buildParticipant(v.Key),
+                workPlace(v.Key),
+                buildScore(v.Key,v.TotalMinutes),
+                buildAnalysis(v.Key),
+                $"<span class='{(idx==1 ? "badge bg-red" : "badge badge-info")}'>{idx}</span>"
+            });
         }
         idx++;
     }
@@ -57,7 +57,7 @@ $"<span class='{(idx==1 ? "badge bg-red" : "badge badge-info")}'>{idx}</span>"
     String buildParticipant(int uid)
     {
         var u = models.GetTable<UserProfile>().Where(p => p.UID == uid).First();
-        return $"<span class='list-icon'><img class='patients-img' src='{buildPhoto(u)}'></span> <span class='hidden-sm-down'>{u.RealName}({u.Nickname})</span>";
+        return $"<span class='list-icon'><img class='patients-img' src='{buildPhoto(u)}'></span> {u.FullNameHtml()}";
     }
 
     String buildPhoto(UserProfile profile)

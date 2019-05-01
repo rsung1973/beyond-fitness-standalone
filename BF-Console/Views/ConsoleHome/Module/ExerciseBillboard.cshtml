@@ -56,7 +56,7 @@
                     {
                         <span class='badge round bg-blue'>@(w.BranchStore.BranchName)</span>
                     }
-                    @(coach.RealName)<small>(@(coach.Nickname))</small>
+                    @Html.Raw(coach.FullNameHtml())
                     @if (idx == 0)
                     {
                         <i class="zmdi livicon-evo" data-options="name: trophy.svg; size: 24px; style: original; autoPlay:true"></i>
