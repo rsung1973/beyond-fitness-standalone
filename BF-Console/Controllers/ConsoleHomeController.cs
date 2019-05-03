@@ -470,6 +470,18 @@ namespace BFConsole.Controllers
             return result;
         }
 
+        [RoleAuthorize(RoleID = new int[] { (int)Naming.RoleID.Administrator, (int)Naming.RoleID.Assistant, (int)Naming.RoleID.Officer, (int)Naming.RoleID.Coach, (int)Naming.RoleID.Servitor })]
+        public ActionResult QuickTerminateContract(CourseContractQueryViewModel viewModel)
+        {
+            ViewResult result = (ViewResult)SignCourseContract(viewModel);
+            CourseContract item = (CourseContract)ViewBag.DataItem;
+            if (item != null)
+            {
+                result.ViewName = "QuickTerminateContract";
+            }
+            return result;
+        }
+
         public ActionResult DailyLessonsBarChart(LessonTimeBookingViewModel viewModel)
         {
             ViewBag.ViewModel = viewModel;

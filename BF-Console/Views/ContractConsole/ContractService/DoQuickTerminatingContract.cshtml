@@ -1,0 +1,103 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Helper.DataOperation
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    CourseContract _model;
+    UserProfile _profile;
+    String _viewID;
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = (CourseContract)this.Model;
+    _profile = Context.GetUser();
+    _viewID = ViewBag.ViewID as String;
+
+}
+<div class="header">
+    <h2><strong>原課程單價 <span class="badge bg-blue">@(_model.LessonPriceType.PriceTypeBundle())</span>：</strong> <span class="col-red">@($"{_model.LessonPriceType.ListPrice:##,###,###,###}")</span></h2>
+</div>
+<div class="body">
+    <div class="row clearfix">
+        <div class="col-sm-12">
+            <label class="fancy-checkbox custom-bgcolor-pink">
+                <input id="checkbox14" type="checkbox" name="FitnessConsultant" value="@(_model.FitnessConsultant)" checked="checked" onclick="this.checked = true;" />
+                <span class="col-red">終止轉收入</span>
+            </label>
+        </div>
+        <div class="col-sm-12">
+            <div class="alert xl-pink col-darkteal" role="alert">
+                <div class="container">
+                    <div class="alert-icon">
+                        <i class="zmdi zmdi-notifications"></i>
+                    </div>
+                    @{
+                        var remained = _model.RemainedLessonCount();
+                        var lessons = _model.Lessons;
+                        var refund = _model.TotalPaidAmount() - (lessons - remained) * _model.LessonPriceType.ListPrice * _model.CourseContractType.GroupingMemberCount * _model.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount / 100;
+
+                    }
+                    已繳服務總費用 @(String.Format("{0:##,###,###,###}", _model.TotalPaidAmount())) 扣除依簽約時課程單價(<span class="col-red">@(String.Format("{0:##,###,###,###}", _model.LessonPriceType.PriceTypeBundle()))</span>) / 人乘以實際上課堂數(<span class="col-red">@(_model.AttendedLessonCount())</span>)，終止轉收入款項 <span class="col-red">@(String.Format("{0:##,###,###,##0}", refund))</span>元<small> = @(String.Format("{0:##,###,###,###}", _model.TotalPaidAmount())) - ( @(String.Format("{0:##,###,###,###}", _model.LessonPriceType.PriceTypeBundle())) * @(_model.CourseContractType.GroupingMemberCount) * ( @(_model.Lessons) - @(_model.RemainedLessonCount() ))。</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <div class="form-group">
+                <textarea rows="3" class="form-control no-resize" name="Remark" placeholder="請輸入任何想補充的事項..."></textarea>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $(function () {
+
+        $('#@(_viewID) button.quit').on('click', function (event) {
+            cancelTerminating();
+        });
+
+        $('#@(_viewID) button.finish').on('click', function (event) {
+            commitTerminating();
+        });
+
+    });
+
+    function cancelTerminating() {
+        $('').launchDownload('@Html.Raw(Url.Action("ApplyContractService","ConsoleHome"))',
+            @Html.Raw(JsonConvert.SerializeObject(new CourseContractQueryViewModel
+                {
+                    KeyID = _model.ContractID.EncryptKey(),
+                })));
+    }
+
+    function commitTerminating() {
+        var viewModel = $('#@(_viewID)').find('input,select,textArea').serializeObject();
+        viewModel.SettlementPrice = @(_model.LessonPriceType.ListPrice);
+        viewModel.Reason = '終止';
+        viewModel.FitnessConsultant = @(_profile.UID);
+        clearErrors();
+        showLoading();
+        $.post('@Html.Raw(Url.Action("CommitContractService", "ContractConsole",new { KeyID = _model.ContractID.EncryptKey() }))', viewModel, function (data) {
+            hideLoading();
+            if ($.isPlainObject(data)) {
+                swal(data.message);
+            }
+            else {
+                $(data).appendTo($('body'));
+            }
+        });
+    }//
+
+</script>
+

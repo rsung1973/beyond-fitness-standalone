@@ -6043,6 +6043,10 @@
     <Content Include="ConsoleHome\images\landing\guarantee.jpg" />
     <Content Include="Views\ConsoleHome\Module\AboutLessonSummary.cshtml" />
     <Content Include="ConsoleHome\images\avatar\noname.png" />
+    <Content Include="Views\ContractConsole\ContractService\CourseContractQuickTerminationView.cshtml" />
+    <Content Include="Views\ContractConsole\ContractService\ContractQuickTermination.cshtml" />
+    <Content Include="Views\ContractConsole\ContractService\DoQuickTerminatingContract.cshtml" />
+    <Content Include="Views\ConsoleHome\QuickTerminateContract.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\InitializeType.cs" />
