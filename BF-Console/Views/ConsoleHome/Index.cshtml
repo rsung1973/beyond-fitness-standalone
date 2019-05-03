@@ -283,9 +283,11 @@
                 event.cancelBubble = true;
             }
 
-            if (alertCount == 0)
-                return;
-            viewModel.scrollToView = false;
+            if (alertCount == 0) {
+                viewModel.scrollToView = false;
+            } else {
+                viewModel.scrollToView = true;
+            }
             if (alertCount && alertCount > 300) {
                 swal({
                     title: "繼續載入?",
