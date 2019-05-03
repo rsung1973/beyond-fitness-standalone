@@ -213,7 +213,10 @@ namespace BFConsole.Controllers
                 }
                 viewModel.ContractType = null;
             }
-
+            if(profile.IsManager() || profile.IsViceManager())
+            {
+                viewModel.ManagerID = profile.UID;
+            }
             ViewBag.ViewModel = viewModel;
             return View(profile.LoadInstance(models));
         }

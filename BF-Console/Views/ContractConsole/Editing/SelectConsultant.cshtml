@@ -41,6 +41,11 @@
         $global.commitCoach = function (coachID, coachName) {
             $global.viewModel.FitnessConsultant = coachID;
             $('#fitnessConsultant').text(coachName);
+            if ($global.viewModel.ManagerID && $global.viewModel.ManagerID != coachID) {
+                $('button.save').prop('disabled', true);
+            } else {
+                $('button.save').prop('disabled', false);
+            }
         };
     });
 
