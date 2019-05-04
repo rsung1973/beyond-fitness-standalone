@@ -1030,14 +1030,16 @@ namespace WebHome.Helper.BusinessOperation
                     ModelState.AddModelError("SettlementPrice", "請填入課程單價!!");
                 else
                 {
-
-                    var refund = item.TotalPaidAmount() - item.AttendedLessonCount()
-                            * viewModel.SettlementPrice
-                            * item.CourseContractType.GroupingMemberCount
-                            * item.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount / 100;
-                    if (refund < 0)
+                    if (viewModel.FromStatus != Naming.CourseContractStatus.快速終止)
                     {
-                        ModelState.AddModelError("SettlementPrice", "退款差額不可小於零!!");
+                        var refund = item.TotalPaidAmount() - item.AttendedLessonCount()
+                                * viewModel.SettlementPrice
+                                * item.CourseContractType.GroupingMemberCount
+                                * item.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount / 100;
+                        if (refund < 0)
+                        {
+                            ModelState.AddModelError("SettlementPrice", "退款差額不可小於零!!");
+                        }
                     }
                 }
             }
@@ -1156,6 +1158,12 @@ namespace WebHome.Helper.BusinessOperation
                     }));
 
                     newItem.CourseContractExtension.SettlementPrice = viewModel.SettlementPrice;
+
+                    if (viewModel.FromStatus == Naming.CourseContractStatus.快速終止)
+                    {
+                        newItem.CourseContractRevision.EnableContractAmendment(models, profile, null);
+                    }
+                    
                     break;
 
                 case "轉換體能顧問":
@@ -1190,6 +1198,7 @@ namespace WebHome.Helper.BusinessOperation
             }
 
             models.SubmitChanges();
+
             return newItem;
         }
     }

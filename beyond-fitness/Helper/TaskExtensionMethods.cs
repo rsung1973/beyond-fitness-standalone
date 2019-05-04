@@ -368,6 +368,81 @@ namespace WebHome.Helper
             });
         }
 
+        public static void ProcessContractQuickTermination(this CourseContractRevision item, UserProfile handler = null)
+        {
+            ThreadPool.QueueUserWorkItem(t =>
+            {
+                try
+                {
+                    using (var models = new ModelSource<UserProfile>())
+                    {
+                        item = models.GetTable<CourseContractRevision>()
+                            .Where(r => r.RevisionID == item.RevisionID).First();
+                        ///1.變更狀態
+                        ///
+                        item.SourceContract.Status = (int)Naming.CourseContractStatus.已終止;
+                        item.SourceContract.ValidTo = DateTime.Now;
+                        item.CourseContract.EffectiveDate = DateTime.Now;
+                        foreach (var lesson in item.SourceContract.RegisterLessonContract)
+                        {
+                            lesson.RegisterLesson.Attended = (int)Naming.LessonStatus.課程結束;
+                        }
+                        ///2.回沖繳款餘額
+                        ///
+                        var original = item.SourceContract;
+                        var remained = original.RemainedLessonCount();
+                        var calculated = original.Lessons - remained;
+                        var returnAmt = original.TotalPaidAmount() - calculated
+                                * original.LessonPriceType.ListPrice
+                                * original.CourseContractType.GroupingMemberCount
+                                * original.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount / 100;
+
+                        var dummyInvoice = models.GetTable<InvoiceItem>().Where(i => i.No == "--").FirstOrDefault();
+                        Payment balancedPayment = null;
+                        balancedPayment = new Payment
+                        {
+                            Status = (int)Naming.CourseContractStatus.已生效,
+                            ContractPayment = new ContractPayment { },
+                            PaymentTransaction = new PaymentTransaction
+                            {
+                                BranchID = item.SourceContract.CourseContractExtension.BranchID
+                            },
+                            PaymentAudit = new Models.DataEntity.PaymentAudit { },
+                            PayoffAmount = -returnAmt,
+                            PayoffDate = DateTime.Today,
+                            Remark = "終止退款",
+                            HandlerID = handler != null ? handler.UID : item.CourseContract.AgentID,
+                            PaymentType = "現金",
+                            TransactionType = (int)Naming.PaymentTransactionType.合約終止沖銷,
+                            AdjustmentAmount = returnAmt,
+                        };
+                        balancedPayment.ContractPayment.ContractID = item.OriginalContract.Value;
+                        if (dummyInvoice != null)
+                            balancedPayment.InvoiceID = dummyInvoice.InvoiceID;
+                        models.GetTable<Payment>().InsertOnSubmit(balancedPayment);
+
+                        if (models.GetTable<ContractTrustTrack>().Any(a => a.ContractID == item.OriginalContract))
+                        {
+                            models.GetTable<ContractTrustTrack>().InsertOnSubmit(new ContractTrustTrack
+                            {
+                                ContractID = item.OriginalContract.Value,
+                                EventDate = balancedPayment.PayoffDate.Value,
+                                TrustType = Naming.TrustType.S.ToString(),
+                                ReturnAmount = returnAmt,
+                            });
+                        }
+
+                        models.SubmitChanges();
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error("終止失敗:\r\n" + ex);
+                }
+            });
+        }
+
         public readonly static String C0401Outbound ;
         public readonly static String C0501Outbound ;
         public readonly static String D0401Outbound;

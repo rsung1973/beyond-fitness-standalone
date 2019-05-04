@@ -80,7 +80,6 @@ namespace WebHome.Models.ViewModel
         public Naming.ContractPayoffMode? PayoffMode { get; set; }
         public DateTime? PayoffDueFrom { get; set; }
         public DateTime? PayoffDueTo { get; set; }
-        public int? ManagerID { get; set; }
         public int? OfficerID { get; set; }
         public bool? ScrollToView { get; set; }
         public bool? ByCustom { get; set; }

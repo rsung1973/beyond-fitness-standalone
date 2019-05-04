@@ -85,6 +85,7 @@
         var viewModel = $('#@(_viewID)').find('input,select,textArea').serializeObject();
         viewModel.SettlementPrice = @(_model.LessonPriceType.ListPrice);
         viewModel.Reason = '終止';
+        viewModel.FromStatus = @((int)Naming.CourseContractStatus.快速終止);
         viewModel.FitnessConsultant = @(_profile.UID);
         clearErrors();
         showLoading();
