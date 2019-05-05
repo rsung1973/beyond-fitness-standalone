@@ -943,7 +943,8 @@ namespace WebHome.Helper.BusinessOperation
         public static bool EnableContractAmendment<TEntity>(this CourseContractRevision item,ModelSource<TEntity> models, UserProfile profile,Naming.CourseContractStatus? fromStatus = Naming.CourseContractStatus.待簽名)
             where TEntity : class, new()
         {
-            if (!item.CourseContract.ExecuteContractStatus(profile, Naming.CourseContractStatus.已生效, fromStatus, false))
+            bool updateAgent = fromStatus != Naming.CourseContractStatus.待簽名;
+            if (!item.CourseContract.ExecuteContractStatus(profile, Naming.CourseContractStatus.已生效, fromStatus, updateAgent))
                 return false;
 
             item.CourseContract.EffectiveDate = DateTime.Now;
@@ -974,7 +975,14 @@ namespace WebHome.Helper.BusinessOperation
                     item.ProcessContractTransference();
                     break;
                 case "終止":
-                    item.ProcessContractTermination(profile);
+                    if (item.OperationMode == (int)Naming.OperationMode.快速終止)
+                    {
+                        item.ProcessContractQuickTermination(profile);
+                    }
+                    else
+                    {
+                        item.ProcessContractTermination(profile);
+                    }
                     break;
                 case "轉換體能顧問":
                     item.SourceContract.FitnessConsultant = item.CourseContract.FitnessConsultant;
@@ -1030,17 +1038,15 @@ namespace WebHome.Helper.BusinessOperation
                     ModelState.AddModelError("SettlementPrice", "請填入課程單價!!");
                 else
                 {
-                    if (viewModel.FromStatus != Naming.CourseContractStatus.快速終止)
+                    var refund = item.TotalPaidAmount() - item.AttendedLessonCount()
+                            * viewModel.SettlementPrice
+                            * item.CourseContractType.GroupingMemberCount
+                            * item.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount / 100;
+                    if (refund < 0)
                     {
-                        var refund = item.TotalPaidAmount() - item.AttendedLessonCount()
-                                * viewModel.SettlementPrice
-                                * item.CourseContractType.GroupingMemberCount
-                                * item.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount / 100;
-                        if (refund < 0)
-                        {
-                            ModelState.AddModelError("SettlementPrice", "退款差額不可小於零!!");
-                        }
+                        ModelState.AddModelError("SettlementPrice", "退款差額不可小於零!!");
                     }
+
                 }
             }
             else if (viewModel.Reason == "轉讓")
@@ -1096,17 +1102,25 @@ namespace WebHome.Helper.BusinessOperation
             {
                 OriginalContract = item.ContractID,
                 Reason = viewModel.Reason,
-                RevisionNo = item.RevisionList.Count + 1
+                RevisionNo = item.RevisionList.Count + 1,
+                OperationMode = (int?)viewModel.OperationMode,
             };
             newItem.SequenceNo = newItem.CourseContractRevision.RevisionNo;
             newItem.ContractNo = item.ContractNo;   // + "-" + String.Format("{0:00}", newItem.CourseContractRevision.RevisionNo);
 
             if (viewModel.Reason != "轉換體能顧問")
             {
-                newItem.ExecuteContractStatus(profile, Naming.CourseContractStatus.待確認, null);
-                if (profile.IsManager())
+                if (viewModel.Status.HasValue)
                 {
-                    newItem.ExecuteContractStatus(profile, Naming.CourseContractStatus.待簽名, null);
+                    newItem.ExecuteContractStatus(profile, (Naming.CourseContractStatus)viewModel.Status.Value, null);
+                }
+                else
+                {
+                    newItem.ExecuteContractStatus(profile, Naming.CourseContractStatus.待確認, null);
+                    if (profile.IsManager())
+                    {
+                        newItem.ExecuteContractStatus(profile, Naming.CourseContractStatus.待簽名, null);
+                    }
                 }
             }
 
@@ -1159,11 +1173,11 @@ namespace WebHome.Helper.BusinessOperation
 
                     newItem.CourseContractExtension.SettlementPrice = viewModel.SettlementPrice;
 
-                    if (viewModel.FromStatus == Naming.CourseContractStatus.快速終止)
+                    if (profile.IsManager() && viewModel.OperationMode == Naming.OperationMode.快速終止)
                     {
-                        newItem.CourseContractRevision.EnableContractAmendment(models, profile, null);
+                        newItem.CourseContractRevision.EnableContractAmendment(models, profile, Naming.CourseContractStatus.待確認);
                     }
-                    
+
                     break;
 
                 case "轉換體能顧問":

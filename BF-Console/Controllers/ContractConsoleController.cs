@@ -44,6 +44,120 @@ namespace BFConsole.Controllers
             return View("~/Views/ConsoleHome/ContractIndex.cshtml", profile.LoadInstance(models));
         }
 
+        //public ActionResult CreateContractQueryXlsx(CourseContractQueryViewModel viewModel)
+        //{
+        //    ViewResult result = (ViewResult)InquirePayment(viewModel);
+        //    IQueryable<Payment> items = (IQueryable<Payment>)result.Model;
+
+        //    if (items.Count() == 0)
+        //    {
+        //        return View("~/Views/Shared/JsAlert.ascx", model: "資料不存在!!");
+        //    }
+
+        //    var details = items
+        //        .OrderByDescending(i => i.PayoffDate)
+        //        .ToArray()
+        //        .Select(i => new
+        //        {
+        //            發票號碼 = i.InvoiceItem.TrackCode + i.InvoiceItem.No,
+        //            分店 = i.PaymentTransaction.BranchStore.BranchName,
+        //            收款人 = i.UserProfile.FullName(),
+        //            學員 = i.TuitionInstallment != null
+        //                ? i.TuitionInstallment.IntuitionCharge.RegisterLesson.UserProfile.FullName()
+        //                : i.ContractPayment != null
+        //                    ? i.ContractPayment.CourseContract.CourseContractType.IsGroup == true
+        //                        ? String.Join("/", i.ContractPayment.CourseContract.CourseContractMember.Select(m => m.UserProfile).ToArray().Select(u => u.FullName()))
+        //                        : i.ContractPayment.CourseContract.ContractOwner.FullName()
+        //                    : "--",
+        //            收款日期 = String.Format("{0:yyyy/MM/dd}", i.PayoffDate),
+        //            發票日期 = String.Format("{0:yyyy/MM/dd}", i.InvoiceItem.InvoiceDate),
+        //            作廢或折讓日 = i.InvoiceItem.InvoiceCancellation != null && i.VoidPayment != null
+        //                ? String.Format("{0:yyyy/MM/dd}", i.InvoiceItem.InvoiceCancellation.CancelDate)
+        //                : i.InvoiceAllowance != null
+        //                    ? String.Format("{0:yyyy/MM/dd}", i.InvoiceAllowance.AllowanceDate)
+        //                    : "--",
+        //            收款品項 = String.Concat(((Naming.PaymentTransactionType)i.TransactionType).ToString(),
+        //                    i.TransactionType == (int)Naming.PaymentTransactionType.運動商品 || i.TransactionType == (int)Naming.PaymentTransactionType.飲品
+        //                        ? String.Format("({0})", String.Join("、", i.PaymentTransaction.PaymentOrder.Select(p => p.MerchandiseWindow.ProductName)))
+        //                        : null),
+        //            收款金額 = i.PayoffAmount,
+        //            發票金額 = i.InvoiceItem.InvoiceBuyer.IsB2C() ? i.InvoiceItem.InvoiceAmountType.TotalAmount : i.InvoiceItem.InvoiceAmountType.SalesAmount,
+        //            收款未稅金額 = Math.Round((decimal)i.PayoffAmount / 1.05m),
+        //            營業稅 = i.PayoffAmount - Math.Round((decimal)i.PayoffAmount / 1.05m),
+        //            作廢金額 = i.InvoiceItem.InvoiceCancellation != null && i.VoidPayment != null
+        //                ? i.PayoffAmount
+        //                : null,
+        //            折讓金額 = i.InvoiceAllowance?.TotalAmount,
+        //            折讓稅額 = i.InvoiceAllowance?.TaxAmount,
+        //            收款方式 = i.PaymentType,
+        //            發票類型 = i.InvoiceID.HasValue
+        //                ? i.InvoiceItem.InvoiceType == (int)Naming.InvoiceTypeDefinition.一般稅額計算之電子發票
+        //                    ? "電子發票"
+        //                    : "紙本"
+        //                : "--",
+        //            發票狀態 = i.InvoiceItem.InvoiceCancellation != null && i.VoidPayment != null
+        //                ? "已作廢"
+        //                : i.InvoiceAllowance != null
+        //                    ? "已折讓"
+        //                    : "已開立",
+        //            買受人統編 = i.InvoiceID.HasValue
+        //                ? i.InvoiceItem.InvoiceBuyer.IsB2C() ? "--" : i.InvoiceItem.InvoiceBuyer.ReceiptNo
+        //                : "--",
+        //            合約編號 = i.ContractPayment != null
+        //                ? i.ContractPayment.CourseContract.ContractNo()
+        //                : "--",
+        //            合約總金額 = i.ContractPayment != null
+        //                ? i.ContractPayment.CourseContract.TotalCost
+        //                : (int?)null,
+        //            備註 = i.VoidPayment != null
+        //                ? i.VoidPayment.Remark
+        //                : i.InvoiceAllowance != null
+        //                    ? i.InvoiceAllowance.InvoiceAllowanceDetails.First().InvoiceAllowanceItem.Remark
+        //                    : null,
+        //            狀態 = i.VoidPayment == null
+        //                ? String.Concat((Naming.CourseContractStatus)i.Status, i.PaymentAudit.AuditorID.HasValue ? "" : "(*)")
+        //                : String.Concat((Naming.VoidPaymentStatus)i.VoidPayment.Status, "(作廢)"),
+        //            //i.PaymentID,
+        //            //VoidID = i.VoidPayment != null ? i.VoidPayment.VoidID : (int?)null
+        //        });
+
+
+        //    Response.Clear();
+        //    Response.ClearContent();
+        //    Response.ClearHeaders();
+        //    Response.AppendCookie(new HttpCookie("fileDownloadToken", viewModel.FileDownloadToken));
+        //    Response.AddHeader("Cache-control", "max-age=1");
+        //    Response.ContentType = "application/vnd.ms-excel";
+        //    Response.AddHeader("Content-Disposition", String.Format("attachment;filename={0}({1:yyyy-MM-dd HH-mm-ss}).xlsx", HttpUtility.UrlEncode("PaymentDetails"), DateTime.Now));
+
+        //    using (DataSet ds = new DataSet())
+        //    {
+        //        DataTable table = details.ToDataTable();
+        //        if (viewModel.PayoffDateFrom.HasValue)
+        //        {
+        //            table.TableName = $"收款資料明細{viewModel.PayoffDateFrom:yyyy-MM-dd}~{viewModel.PayoffDateTo:yyyy-MM-dd}";
+        //        }
+        //        else
+        //        {
+        //            table.TableName = "收款資料明細";
+        //        }
+        //        ds.Tables.Add(table);
+
+        //        foreach (var r in table.Select("買受人統編 = '0000000000'"))
+        //        {
+        //            r["買受人統編"] = "";
+        //        }
+
+        //        using (var xls = ds.ConvertToExcel())
+        //        {
+        //            xls.SaveAs(Response.OutputStream);
+        //        }
+        //    }
+
+        //    return new EmptyResult();
+        //}
+
+
 
         public ActionResult InquireContract(CourseContractQueryViewModel viewModel)
         {
@@ -499,7 +613,7 @@ namespace BFConsole.Controllers
         public ActionResult EnableContractAmendment(CourseContractViewModel viewModel)
         {
             ViewBag.ViewModel = viewModel;
-            var item = viewModel.EnableContractAmendment(this, out String alertMessage, null);
+            var item = viewModel.EnableContractAmendment(this, out String alertMessage, viewModel.FromStatus);
             if (item == null)
             {
                 return View("~/Views/ConsoleHome/Shared/AlertMessage.cshtml", model: alertMessage);

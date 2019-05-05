@@ -56,21 +56,28 @@
     <section>
         <div class="container-fluid">
             @if (_model.Reason == "展延")
-                    {
-                        Html.RenderPartial("~/Views/ContractConsole/ContractService/CourseContractExtensionView.cshtml", _model);
-                    }
-                    else if (_model.Reason == "轉讓")
-                    {
-                        Html.RenderPartial("~/Views/ContractConsole/ContractService/CourseContractTransferenceView.cshtml", _model);
-                    }
-                    else if (_model.Reason == "終止")
-                    {
-                        Html.RenderPartial("~/Views/ContractConsole/ContractService/CourseContractTerminationView.cshtml", _model);
-                    }
-                    else if (_model.Reason == "轉換體能顧問")
-                    {
-                        Html.RenderPartial("~/Views/ContractConsole/ContractService/ContractConsultantReassignmentView.cshtml", _model);
-                    }
+            {
+                Html.RenderPartial("~/Views/ContractConsole/ContractService/CourseContractExtensionView.cshtml", _model);
+            }
+            else if (_model.Reason == "轉讓")
+            {
+                Html.RenderPartial("~/Views/ContractConsole/ContractService/CourseContractTransferenceView.cshtml", _model);
+            }
+            else if (_model.Reason == "終止")
+            {
+                if(_model.OperationMode==(int)Naming.OperationMode.快速終止)
+                {
+                    Html.RenderPartial("~/Views/ContractConsole/ContractService/CourseContractQuickTerminationView.cshtml", _model);
+                }
+                else
+                {
+                    Html.RenderPartial("~/Views/ContractConsole/ContractService/CourseContractTerminationView.cshtml", _model);
+                }
+            }
+            else if (_model.Reason == "轉換體能顧問")
+            {
+                Html.RenderPartial("~/Views/ContractConsole/ContractService/ContractConsultantReassignmentView.cshtml", _model);
+            }
         </div>
     </section>
 </body>

@@ -73,7 +73,7 @@
                             <td colspan="2">
                                 @{ var original = _model.SourceContract;}
 
-                                申請內容：體能顧問由@(original.ServingCoach.UserProfile.FullName())轉換為<span class="col-red">@(_contract.ServingCoach.UserProfile.FullName())</span>負責本合約相關後續事宜。
+                                申請內容：體能顧問由@(_model.CourseContractRevisionItem.ServingCoach.UserProfile.FullName())轉換為<span class="col-red">@(_contract.ServingCoach.UserProfile.FullName())</span>負責本合約相關後續事宜。
                             </td>
                         </tr>
                         <tr style="@(Request["pdf"]=="1" ? "height: 14cm" : "height: 2cm")">

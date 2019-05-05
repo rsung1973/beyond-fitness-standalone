@@ -59,7 +59,14 @@
                 }
                 else if (revision.Reason == "終止")
                 {
-                    Html.RenderPartial("~/Views/ContractConsole/ContractService/CourseContractTerminationView.cshtml", revision);
+                    if (revision.OperationMode == (int)Naming.OperationMode.快速終止)
+                    {
+                        Html.RenderPartial("~/Views/ContractConsole/ContractService/CourseContractQuickTerminationView.cshtml", revision);
+                    }
+                    else
+                    {
+                        Html.RenderPartial("~/Views/ContractConsole/ContractService/CourseContractTerminationView.cshtml", revision);
+                    }
                 }
                 else if (revision.Reason == "轉換體能顧問")
                 {
@@ -123,8 +130,17 @@
 
         function approveContractService() {
             showLoading();
-            $.post('@Html.Raw(Url.Action(revision.Reason=="轉換體能顧問" ? "EnableContractAmendment" : "ExecuteContractStatus","ContractConsole",new { KeyID = _item.ContractID.EncryptKey(), Status = revision.Reason == "轉換體能顧問" ? (int)Naming.CourseContractStatus.已生效 :(int)Naming.CourseContractStatus.待簽名 }))', {}, function (data) {
-                hideLoading();
+            $.post('@Html.Raw(Url.Action(revision.Reason=="轉換體能顧問" || revision.OperationMode==(int)Naming.OperationMode.快速終止
+                        ? "EnableContractAmendment"
+                        : "ExecuteContractStatus","ContractConsole",
+                            new
+                            {
+                                KeyID = _item.ContractID.EncryptKey(),
+                                Status = revision.Reason == "轉換體能顧問" || revision.OperationMode == (int)Naming.OperationMode.快速終止
+                                    ? (int)Naming.CourseContractStatus.已生效
+                                    : (int)Naming.CourseContractStatus.待簽名,
+                                FromStatus = _item.Status,
+                            }))', {}, function (data) {
                 hideLoading();
                 if ($.isPlainObject(data)) {
                     swal(data.message);

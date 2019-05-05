@@ -32,7 +32,7 @@
             </div>
             <div class="modal-popmenu-body">
                 <div class="list-group">
-                    @{ 
+                    @{
                         var revision = _model.CourseContractRevision;
                         bool hasItem = false;
                     }
@@ -48,10 +48,17 @@
                     }
                     @if (_model.Status == (int)Naming.CourseContractStatus.已生效)
                     {
-                        <a href="@Html.Raw(Url.Action("GetContractAmendmentPdf","CourseContract",new { revision.RevisionID }))" target="_blank" class="list-group-item">電子合約</a>
+                        if (revision.OperationMode == (int)Naming.OperationMode.快速終止)
+                        {
+                            <a href="@Html.Raw(Url.Action("ViewContractService", "CommonHelper", new { revision.RevisionID,pdf=1 }))" target="_blank" class="list-group-item">電子合約</a>
+                        }
+                        else
+                        {
+                            <a href="@Html.Raw(Url.Action("GetContractAmendmentPdf", "CourseContract", new { revision.RevisionID }))" target="_blank" class="list-group-item">電子合約</a>
+                        }
                         hasItem = true;
                     }
-                    @if(!hasItem)
+                    @if (!hasItem)
                     {
                         <script>
                             $(function () {

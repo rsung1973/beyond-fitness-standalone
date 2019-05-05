@@ -221,7 +221,6 @@ namespace WebHome.Models.Locale
             已轉讓 = 1208,
             已轉點 = 1209,
             已過期 = 1210,
-            快速終止 = 1211,
         }
 
         public enum ContractQueryStatus
@@ -243,6 +242,11 @@ namespace WebHome.Models.Locale
             待審核 = 1202,
             待簽名 = 1203,
             已生效 = 1205,
+        }
+
+        public enum OperationMode
+        {
+            快速終止 = 1,
         }
 
 

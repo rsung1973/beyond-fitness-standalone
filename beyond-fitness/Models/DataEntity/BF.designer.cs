@@ -22790,6 +22790,8 @@ namespace WebHome.Models.DataEntity
 		
 		private string _Reason;
 		
+		private System.Nullable<int> _OperationMode;
+		
 		private EntitySet<CourseContractExtension> _CourseContractExtension;
 		
 		private EntitySet<ContractElement> _ContractElements;
@@ -22812,6 +22814,8 @@ namespace WebHome.Models.DataEntity
     partial void OnRevisionNoChanged();
     partial void OnReasonChanging(string value);
     partial void OnReasonChanged();
+    partial void OnOperationModeChanging(System.Nullable<int> value);
+    partial void OnOperationModeChanged();
     #endregion
 		
 		public CourseContractRevision()
@@ -22908,6 +22912,26 @@ namespace WebHome.Models.DataEntity
 					this._Reason = value;
 					this.SendPropertyChanged("Reason");
 					this.OnReasonChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OperationMode", DbType="Int")]
+		public System.Nullable<int> OperationMode
+		{
+			get
+			{
+				return this._OperationMode;
+			}
+			set
+			{
+				if ((this._OperationMode != value))
+				{
+					this.OnOperationModeChanging(value);
+					this.SendPropertyChanging();
+					this._OperationMode = value;
+					this.SendPropertyChanged("OperationMode");
+					this.OnOperationModeChanged();
 				}
 			}
 		}

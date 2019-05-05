@@ -473,10 +473,17 @@ namespace BFConsole.Controllers
         [RoleAuthorize(RoleID = new int[] { (int)Naming.RoleID.Administrator, (int)Naming.RoleID.Assistant, (int)Naming.RoleID.Officer, (int)Naming.RoleID.Coach, (int)Naming.RoleID.Servitor })]
         public ActionResult QuickTerminateContract(CourseContractQueryViewModel viewModel)
         {
+            var profile = HttpContext.GetUser();
             ViewResult result = (ViewResult)SignCourseContract(viewModel);
             CourseContract item = (CourseContract)ViewBag.DataItem;
             if (item != null)
             {
+                if (profile.IsCoach())
+                    viewModel.FitnessConsultant = profile.UID;
+                else
+                    viewModel.FitnessConsultant = item.FitnessConsultant;
+                viewModel.OperationMode = Naming.OperationMode.快速終止;
+                viewModel.Status = (int)Naming.CourseContractStatus.待確認;
                 result.ViewName = "QuickTerminateContract";
             }
             return result;

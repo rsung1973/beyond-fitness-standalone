@@ -57,6 +57,7 @@ namespace WebHome.Models.ViewModel
         public String PriceName { get; set; }
         public int? InstallmentID { get; set; }
         public int? ManagerID { get; set; }
+        public Naming.OperationMode? OperationMode { get; set; }
 
     }
 
