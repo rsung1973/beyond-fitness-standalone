@@ -58,14 +58,21 @@
         </div>
         <div class="col-4 text-right">
             <a href="javascript:void();">
-                <h2>@(_model.RevisionList.Where(r => r.Reason == "終止").Count())</h2>
+                <h2>
+                    @{
+                        var revision = _model.RevisionList.Where(r => r.Reason == "終止");
+                        var count =  (revision.Where(r => r.OperationMode == (int)Naming.OperationMode.快速終止)).Count();
+                    }
+                    @(count)
+                </h2>
             </a>
             @if (currentItem != null)
             {
-                <small class="info">不退款</small>
+                <small class="info">@((Naming.ContractServiceStatus)currentItem.Status)</small>
             }
-            else if (applicable && _profile.IsCoach() || _profile.IsAssistant() || _profile.IsAuthorizedSysAdmin())
+            else if (_model.Status == (int)Naming.CourseContractStatus.已過期 && applicable && _profile.IsCoach() || _profile.IsAssistant() || _profile.IsAuthorizedSysAdmin())
             {
+                <small class="info">不退款</small>
                 <p>
                     <button class="btn btn-darkteal btn-icon btn-icon-mini btn-round waves-effect float-right" onclick="terminateContract();"><i class="zmdi zmdi-plus"></i></button>
                 </p>
