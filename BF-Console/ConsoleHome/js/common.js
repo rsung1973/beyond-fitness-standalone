@@ -118,7 +118,9 @@ $.fn.launchDownload = function (url, params, target, loading) {
     if (target) {
         form.attr('target', target);
         if (window.frames[target] == null) {
-            $('<iframe>').attr('name', target).appendTo($('body'));
+            $('<iframe>')
+                .css('display','none')
+                .attr('name', target).appendTo($('body'));
         }
     }
 

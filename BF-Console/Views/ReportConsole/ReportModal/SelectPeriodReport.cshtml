@@ -80,9 +80,9 @@
 
             $('#@(_dialogID) button').on('click', function (event) {
                 var viewModel = { 'BypassCondition': true };
-                viewModel.PayoffDateFrom = $('#@(_dialogID) input[name="dateFrom"]').val();
-                viewModel.PayoffDateTo = $('#@(_dialogID) input[name="dateTo"]').val();
-                if (viewModel.PayoffDateFrom != '' && viewModel.PayoffDateTo != '') {
+                viewModel.DateFrom = $('#@(_dialogID) input[name="dateFrom"]').val();
+                viewModel.DateTo = $('#@(_dialogID) input[name="dateTo"]').val();
+                if (viewModel.DateFrom != '' && viewModel.DateTo != '') {
                     if ($global.doQuery) {
                         $('#@(_dialogID)').modal('hide');
                         $global.doQuery(viewModel);

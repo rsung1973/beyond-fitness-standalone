@@ -1,4 +1,5 @@
 @{
+    Layout = ViewBag.AlertLayout;
     String _message;
     String _dialogID = $"alert{DateTime.Now.Ticks}";
     _message = (String)this.Model ?? (String)ViewBag.Message ?? Request["Message"];

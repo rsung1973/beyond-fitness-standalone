@@ -287,6 +287,16 @@ namespace WebHome.Models.DataEntity
                 .Sum(c => c.PayoffAmount);
         }
 
+        public static int? TotalPayoffCount(this CourseContract contract)
+        {
+            return contract.ContractPayment
+                .Select(c => c.Payment)
+                .Where(p => p.TransactionType == (int)Naming.PaymentTransactionType.體能顧問費
+                    || p.TransactionType == (int)Naming.PaymentTransactionType.合約轉讓餘額
+                    || p.TransactionType == (int)Naming.PaymentTransactionType.合約轉點餘額)
+                .Where(p => p.VoidPayment == null || p.AllowanceID.HasValue).Count();
+        }
+
         public static decimal? TotalAllowanceAmount(this CourseContract contract)
         {
             return contract.ContractPayment
@@ -371,6 +381,11 @@ namespace WebHome.Models.DataEntity
                             ? "單堂"
                             : item.LowerLimit + "堂"
                         : item.Description;
+        }
+
+        public static int? SeriesSingleLessonPrice(this LessonPriceType item)
+        {
+            return item.CurrentPriceSeries?.AllLessonPrice.Where(p => p.LowerLimit == 1).FirstOrDefault()?.ListPrice;
         }
 
     }
