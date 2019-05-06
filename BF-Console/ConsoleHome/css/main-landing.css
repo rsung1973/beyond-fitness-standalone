@@ -20395,7 +20395,7 @@ screen and (max-height: 300px) {
     }
     
     .full-width-section img.small {
-        width: 80%;
+        width: 100%;
     }
 
 
@@ -20412,20 +20412,9 @@ screen and (max-height: 300px) {
 }
 
 /* Medium devices (desktops, tablets less than 991px) */
-@media (max-width: 991px) {
-    .full-width-section:not(.no-image) .full-text-container {
-        top: 0;
-        height: 100%;
-        padding: 0 20px;
-    }
-
-    .section-blog .blog-single .reference,
-    .section-blog .blog-single .header {
-        width: 90%;
-    }
-
-    .section-blog .blog-single .card {
-        width: 100%;
+@media (min-width: 992px) {    
+    .full-width-section img.small {
+        width: 50%;
     }
 }
 
