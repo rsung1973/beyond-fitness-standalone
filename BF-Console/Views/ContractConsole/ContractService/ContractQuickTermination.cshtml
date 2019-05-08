@@ -50,11 +50,6 @@
                 applicable = false;
                 <span class="col-red"><i class="zmdi zmdi-block"></i>服務申請進行中</span><br />
             }
-            @if (contractCost > totalPaid)
-            {
-                applicable = true;
-                <span class="col-red"><i class="zmdi zmdi-block"></i>合約繳款餘額不足！（不足：@(String.Format("{0:##,###,###,###}", contractCost - totalPaid))元）</span>
-            }
         </div>
         <div class="col-4 text-right">
             <a href="javascript:void();">
