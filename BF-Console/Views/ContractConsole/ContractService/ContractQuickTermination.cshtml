@@ -70,7 +70,7 @@
             {
                 <small class="info">@((Naming.ContractServiceStatus)currentItem.Status)</small>
             }
-            else if (_model.Status == (int)Naming.CourseContractStatus.已過期 && (applicable && _profile.IsCoach() || _profile.IsAssistant() || _profile.IsAuthorizedSysAdmin()))
+            else if (_model.Status == (int)Naming.CourseContractStatus.已過期 && applicable && (_profile.IsCoach() || _profile.IsAssistant() || _profile.IsAuthorizedSysAdmin()))
             {
                 <small class="info">不退款</small>
                 <p>
