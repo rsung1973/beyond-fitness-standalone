@@ -80,6 +80,21 @@
     <div class="col-lg-2 col-md-3 col-sm-6">
         <div class="card">
             <div class="file">
+                <a href="javascript:selectCoach();">
+                    <div class="icon">
+                        <i class="zmdi livicon livicon-evo" data-options="name: piggybank.svg; size: 60px; style: original; strokeWidth:2px; autoPlay:true"></i>
+                    </div>
+                    <div class="file-name">
+                        <p class="m-b-5 text-muted">薪資清單</p>
+                        <small>體能顧問 <span class="date text-muted"><i class="zmdi zmdi-search"></i></span></small>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-2 col-md-3 col-sm-6">
+        <div class="card">
+            <div class="file">
                 <a href="javascript:selectMonthlyAchievement(true);">
                     <div class="icon">
                         <i class="zmdi livicon livicon-evo" data-options="name: list.svg; size: 60px; style: original; strokeWidth:2px; autoPlay:true"></i>
@@ -87,6 +102,22 @@
                     <div class="file-name">
                         <p class="m-b-5 text-muted">上課清單</p>
                         <small>自訂條件 <span class="date text-muted"><i class="zmdi zmdi-search"></i></span></small>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-lg-2 col-md-3 col-sm-6">
+        <div class="card">
+            <div class="file">
+                <a href="javascript:selectCoach(true);">
+                    <div class="icon">
+                        <i class="zmdi livicon livicon-evo" data-options="name: list.svg; size: 60px; style: original; strokeWidth:2px; autoPlay:true"></i>
+                    </div>
+                    <div class="file-name">
+                        <p class="m-b-5 text-muted">上課清單</p>
+                        <small>體能顧問 <span class="date text-muted"><i class="zmdi zmdi-search"></i></span></small>
                     </div>
                 </a>
             </div>
@@ -119,6 +150,18 @@
                     $global.doQuery = function (settlementDate) {
                         $('').launchDownload('@Html.Raw(Url.Action("CreateFullAchievementXlsx","Accounting"))', { 'achievementDateFrom': settlementDate, 'bypassCondition': true }, 'report', true);
                     }
+                    $(data).appendTo($('body'));
+                }
+            });
+        }
+
+        function selectCoach() {
+            showLoading();
+            $.post('@Html.Raw(Url.Action("SelectCoach", "ContractConsole"))', {}, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    alert(data.message);
+                } else {
                     $(data).appendTo($('body'));
                 }
             });
