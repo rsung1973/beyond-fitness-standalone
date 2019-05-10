@@ -182,5 +182,114 @@ namespace BFConsole.Controllers
             return new EmptyResult();
         }
 
+        public ActionResult CreateBonusCreditXlsx(AwardQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+
+            var taskItems = models.GetTable<PDQTask>()
+                .Join(models.GetTable<PDQTaskBonus>(),
+                    t => t.TaskID, q => q.TaskID, (t, q) => t)
+                .Select(t => t.UID);
+
+
+            IQueryable<UserProfile> items = models.GetTable<UserProfile>().Where(u => taskItems.Contains(u.UID));
+
+            if (items.Count() == 0)
+            {
+                Response.AppendCookie(new HttpCookie("fileDownloadToken", viewModel.FileDownloadToken));
+                return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: "資料不存在!!");
+            }
+
+            var details = items
+                .Select(i => new
+                {
+                    姓名 = i.FullName(false),
+                    目前剩餘點數 = i.BonusPoint(models),
+                });
+
+
+            Response.Clear();
+            Response.ClearContent();
+            Response.ClearHeaders();
+            Response.AppendCookie(new HttpCookie("fileDownloadToken", viewModel.FileDownloadToken));
+            Response.AddHeader("Cache-control", "max-age=1");
+            Response.ContentType = "application/vnd.ms-excel";
+            Response.AddHeader("Content-Disposition", String.Format("attachment;filename={0}({1:yyyy-MM-dd HH-mm-ss}).xlsx", HttpUtility.UrlEncode("BonusAccumulation"), DateTime.Now));
+
+            using (DataSet ds = new DataSet())
+            {
+                DataTable table = details.ToDataTable();
+                table.TableName = $"截至{DateTime.Today:yyyy-MM-dd}";
+
+                ds.Tables.Add(table);
+
+                using (var xls = ds.ConvertToExcel())
+                {
+                    xls.SaveAs(Response.OutputStream);
+                }
+            }
+
+            return new EmptyResult();
+        }
+
+        public ActionResult CreateBonusAwardXlsx(AwardQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+
+            IQueryable<LearnerAward> items = models.GetTable<LearnerAward>();
+
+            if (items.Count() == 0)
+            {
+                Response.AppendCookie(new HttpCookie("fileDownloadToken", viewModel.FileDownloadToken));
+                return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: "資料不存在!!");
+            }
+
+
+            var details = items.ToArray()
+                .Select(item => new
+                {
+                    兌換時間 = String.Format("{0:yyyy/MM/dd}", item.AwardDate),
+                    姓名 = item.UserProfile.FullName(false),
+                    分店 = models.GetTable<CoachWorkplace>().Where(c=>c.CoachID==item.ActorID)
+                                .Select(c=>c.BranchStore.BranchName).FirstOrDefault(),
+                    兌換人員 = item.Actor.RealName,
+                    兌換商品 = item.BonusAwardingItem.ItemName,
+                    使用日期 = item.BonusAwardingItem.BonusAwardingLesson != null
+                        ? item.AwardingLesson != null
+                            ? item.AwardingLesson.RegisterLesson.LessonTime.Count > 0
+                                ? String.Format("{0:yyyy/MM/dd}", item.AwardingLesson.RegisterLesson.LessonTime.First().ClassTime)
+                                : "--"
+                            : item.AwardingLessonGift.RegisterLesson.LessonTime.Count > 0
+                                ? String.Format("{0:yyyy/MM/dd}", item.AwardingLessonGift.RegisterLesson.LessonTime.First().ClassTime)
+                                : "--"
+                        : "--",
+                    贈與學員 = item.AwardingLessonGift != null ? item.AwardingLessonGift.RegisterLesson.UserProfile.FullName(false) : "--",
+                });
+
+
+            Response.Clear();
+            Response.ClearContent();
+            Response.ClearHeaders();
+            Response.AppendCookie(new HttpCookie("fileDownloadToken", viewModel.FileDownloadToken));
+            Response.AddHeader("Cache-control", "max-age=1");
+            Response.ContentType = "application/vnd.ms-excel";
+            Response.AddHeader("Content-Disposition", String.Format("attachment;filename={0}({1:yyyy-MM-dd HH-mm-ss}).xlsx", HttpUtility.UrlEncode("BonusAward"), DateTime.Now));
+
+            using (DataSet ds = new DataSet())
+            {
+                DataTable table = details.ToDataTable();
+                table.TableName = $"截至{DateTime.Today:yyyy-MM-dd}";
+
+                ds.Tables.Add(table);
+
+                using (var xls = ds.ConvertToExcel())
+                {
+                    xls.SaveAs(Response.OutputStream);
+                }
+            }
+
+            return new EmptyResult();
+        }
+
     }
 }
