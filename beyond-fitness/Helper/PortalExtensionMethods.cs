@@ -126,7 +126,10 @@ namespace WebHome.Helper
             }
 
             if (models.GetTable<PDQTask>().Count(t => t.UID == profile.UID && t.PDQQuestion.GroupID == 6) >=
-                models.GetTable<RegisterLesson>().Where(r => r.UID == profile.UID && r.LessonPriceType.Status != (int)Naming.LessonPriceStatus.在家訓練)
+                models.GetTable<RegisterLesson>()
+                    .Where(r => r.UID == profile.UID)
+                    .Where(r => r.LessonPriceType.Status != (int)Naming.LessonPriceStatus.在家訓練)
+                    .Where(r => r.LessonPriceType.Status != (int)Naming.LessonPriceStatus.教練PI)
                     .Join(models.GetTable<GroupingLesson>(), r => r.RegisterGroupID, g => g.GroupID, (r, g) => g)
                     .Join(models.GetTable<LessonTime>(), g => g.GroupID, l => l.GroupID, (g, l) => l)
                     .Where(l => l.LessonPlan.CommitAttendance.HasValue || l.LessonAttendance != null).Count())

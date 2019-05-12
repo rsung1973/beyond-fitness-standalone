@@ -1683,6 +1683,7 @@ namespace WebHome.Helper
         {
             return models.GetTable<LessonTime>()
                 .Where(l => l.RegisterLesson.LessonPriceType.Status != (int)Naming.LessonPriceStatus.在家訓練)
+                .Where(l => l.RegisterLesson.LessonPriceType.Status != (int)Naming.LessonPriceStatus.教練PI)
                 .Where(l => l.GroupingLesson.RegisterLesson.Any(r => r.UID == profile.UID))
                 .GetLearnerUncheckedLessons(includeAfterToday);
         }
