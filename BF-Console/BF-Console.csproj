@@ -6117,6 +6117,7 @@
     <Content Include="Content\bootstrap-datetimepicker.css" />
     <Content Include="Views\ReportConsole\Module\TrustReport.cshtml" />
     <Content Include="Views\ReportConsole\Module\InventoryReport.cshtml" />
+    <Content Include="Views\ReportConsole\ReportModal\SelectAwardItem.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\InitializeType.cs" />
