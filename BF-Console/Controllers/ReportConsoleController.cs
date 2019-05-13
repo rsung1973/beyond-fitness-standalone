@@ -51,6 +51,12 @@ namespace BFConsole.Controllers
             return View("~/Views/ReportConsole/ReportModal/SelectReportCondition.cshtml");
         }
 
+        public ActionResult SelectAwardItem()
+        {
+            return View("~/Views/ReportConsole/ReportModal/SelectAwardItem.cshtml");
+        }
+
+
         public ActionResult CreateContractQueryXlsx(CourseContractQueryViewModel viewModel)
         {
             IQueryable<CourseContract> items = viewModel.InquireContract(this, out string alertMessage);
@@ -237,6 +243,11 @@ namespace BFConsole.Controllers
             ViewBag.ViewModel = viewModel;
 
             IQueryable<LearnerAward> items = models.GetTable<LearnerAward>();
+
+            if(viewModel.ItemID.HasValue)
+            {
+                items = items.Where(a => a.ItemID == viewModel.ItemID);
+            }
 
             if (items.Count() == 0)
             {

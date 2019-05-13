@@ -81,7 +81,7 @@
     <div class="col-lg-2 col-md-3 col-sm-6">
         <div class="card">
             <div class="file">
-                <a href="javascript:selectBonusAdward();">
+                <a href="javascript:selectBonusAward();">
                     <div class="icon">
                         <i class="zmdi livicon livicon-evo" data-options="name: shoppingcart-out.svg; size: 60px; style: original; strokeWidth:2px; autoPlay:true"></i>
                     </div>
@@ -95,15 +95,15 @@
     </div>
     <script>
 
-        function selectBonusAdward() {
+        function selectBonusAward() {
             showLoading();
-            $.post('@Html.Raw(Url.Action("SelectReportByAdward","ReportConsole"))', {}, function (data) {
+            $.post('@Html.Raw(Url.Action("SelectAwardItem","ReportConsole"))', {}, function (data) {
                 hideLoading();
                 if ($.isPlainObject(data)) {
                     swal(data.message);
                 } else {
                     $global.doQuery = function (inputData) {
-                        $('').launchDownload('@Html.Raw(Url.Action("BonusAdward","Report"))', inputData, 'report', true);
+                        $('').launchDownload('@Html.Raw(Url.Action("CreateBonusAwardXlsx", "ReportConsole"))', inputData, 'report', true);
                     }
                     $(data).appendTo($('body'));
                 }
