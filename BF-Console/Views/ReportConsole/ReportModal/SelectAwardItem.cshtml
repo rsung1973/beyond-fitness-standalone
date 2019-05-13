@@ -18,7 +18,7 @@
     models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
     _items = models.GetTable<BonusAwardingItem>()
             .OrderByDescending(a => a.ExchangeableOnline)
-            .ThenByDescending(a => a.PointValue);
+            .ThenBy(a => a.PointValue);
 }
 
 <div class="modal fade" id="@(_dialogID)" tabindex="-1" role="dialog">
