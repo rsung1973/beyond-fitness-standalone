@@ -49,11 +49,14 @@
                             </ul>
                         </div>
                         <div class="body">
-                            <div id="lessonSummary">
-                                @{
-                                    Html.RenderPartial("~/Views/ConsoleHome/Module/AboutLessonSummary.cshtml", _model);
-                                }
-                            </div>
+                            @if (_model.IsManager() || _model.IsViceManager() || _model.IsAssistant() || _model.IsAuthorizedSysAdmin())
+                            {
+                                <div id="lessonSummary">
+                                    @{
+                                        Html.RenderPartial("~/Views/ConsoleHome/Module/AboutLessonSummary.cshtml", _model);
+                                    }
+                                </div>
+                            }
                             <div id="lessonsBarChart">
                                 @{
                                     Html.RenderPartial("~/Views/ConsoleHome/Module/TodayLessonsBarChartC3.cshtml", _model);
