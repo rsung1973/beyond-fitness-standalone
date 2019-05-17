@@ -7,6 +7,8 @@
 
     $(function () {
         $('#@(_dialogID)').modal('show');
+        $('#@(_dialogID)').modal.addClass('modal-open');
+
 
         $('#@(_dialogID)').on('hidden.bs.modal', function () {
             $('#@(_dialogID)').remove();
