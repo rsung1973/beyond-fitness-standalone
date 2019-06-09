@@ -1,0 +1,201 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Newtonsoft.Json
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    UserProfile _model;
+    DailyBookingQueryViewModel _viewModel;
+
+    Layout = "~/Views/ConsoleHome/Template/MainPage.cshtml";
+
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    _model = (UserProfile)this.Model;
+    _viewModel = (DailyBookingQueryViewModel)ViewBag.ViewModel;
+    UserProfile _learner = (UserProfile)ViewBag.DataItem;
+}
+@section CustomHeader {
+    <!-- Fullcalendar -->
+    <link href="plugins/fullcalendar/fullcalendar.min.css" rel="stylesheet">
+    <!-- Bootstrap Datetimepick -->
+    @*<link href="plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />*@
+    @*<link href="css/datetimepicker.css" rel="stylesheet" />*@
+    <!-- SmartCalendar Datetimepick -->
+    <link href="plugins/smartcalendar/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+    <link href="css/smartcalendar-2.css" rel="stylesheet" />
+    <!-- Inbox -->
+    <link href="css/inbox.css" rel="stylesheet">
+    <!-- Multi Select Css -->
+    <link href="plugins/multi-select/css/multi-select.css" rel="stylesheet">
+    <!--Bootstrap progressbar -->
+    <link rel="stylesheet" href="plugins/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css">
+    <!-- JQuery DataTable Css -->
+    <link href="plugins/jquery-datatable/DataTables-1.10.18/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link href="plugins/jquery-datatable/Responsive-2.2.2/css/responsive.bootstrap4.min.css" rel="stylesheet">
+    <link href="plugins/jquery-datatable/FixedColumns-3.2.5/css/fixedColumns.bootstrap4.min.css" rel="stylesheet">
+
+}
+
+<section class="content profile-page">
+    @{ ViewBag.BlockHeader = "X檔案";
+        Html.RenderPartial("~/Views/ConsoleHome/Module/BlockHeader.cshtml", _model);}
+
+    <!--本月運動時間-->
+    <div class="container-fluid">
+        <div class="row clearfix">
+            <div class="col-12">
+                <div class="card profile-header bg-darkteal">
+                    <div class="body">
+                        <div class="profile-image inlineblock">
+                            <a href="javascript:editLearner();">
+                                @{
+                                    ViewBag.ProfileClass = "small";
+                                    Html.RenderPartial("~/Views/Common/ProfileImage.cshtml", _learner);
+                                }
+                            </a>
+                        </div>
+                        <div class="float-right">
+                            @{ var purpose = _learner.PersonalExercisePurpose;}
+                            @if (purpose != null && (purpose.Cardiopulmonary.HasValue || purpose.Flexibility.HasValue || purpose.MuscleStrength.HasValue))
+                            {
+                                Html.RenderPartial("~/Views/LearnerProfile/Module/PersonalExerciseRadarChart.cshtml", purpose);
+                            }
+                            else
+                            {
+                                <div class="pie">
+                                    <div class="pie_light small">
+                                        Opps!<br /><span>你很不了解這位學生喔！</span>
+                                    </div>
+                                </div>
+                            }
+                            @if (purpose != null)
+                            {
+                                <h6 class="@(purpose.PowerAbliityCss("text-center"))">@(purpose.PowerAbility != null ? purpose.PowerAbility.Substring(0, 3) : "？型") / @(purpose.Purpose ?? "？")期</h6>
+                            }
+                            else
+                            {
+                                <h6 class="col-green text-center">？型 / ？期</h6>
+                            }
+                        </div>
+                        <div class="col-white inlineblock">
+                            <strong>@(_learner.FullName())</strong> <span class="font-12"><i class="zmdi zmdi-cake"></i> @(_learner.YearsOld())</span>
+                        </div>
+                        <div class="font-20">
+                            @{
+                                DateTime monthStart = DateTime.Today.FirstDayOfMonth();
+
+                                var lessons = models.GetTable<LessonTime>()
+                                        .Where(r => r.GroupingLesson.RegisterLesson.Any(u => u.UID == _learner.UID))
+                                        .Where(l => l.LessonAttendance != null);
+
+                                var selfTrainingThisMonth = lessons.Where(l => l.ClassTime >= monthStart && l.ClassTime < DateTime.Today.AddDays(1));
+                                var totalMinutes = selfTrainingThisMonth.Sum(l => l.DurationInMinutes) ?? 0;
+
+                                var totalMinutesLastMonth = lessons
+                                        .Where(l => l.ClassTime >= monthStart.AddMonths(-1) && l.ClassTime < DateTime.Today.AddMonths(-1).AddDays(1))
+                                        .Sum(l => l.DurationInMinutes) ?? 0;
+                            }
+                            本月運動：<span class="col-lime counto" data-to="@(totalMinutes / 60)">@(totalMinutes / 60)</span>小時:<span class="col-lime counto" data-to="@(totalMinutes % 60)">@(totalMinutes % 60)</span>分鐘
+                            @if (totalMinutes > totalMinutesLastMonth)
+                            {
+                                <i class="zmdi zmdi-caret-up zmdi-hc-2x text-danger"></i>
+                            }
+                            else if (totalMinutes < totalMinutesLastMonth)
+                            {
+                                <i class="zmdi zmdi-caret-down zmdi-hc-2x text-success"></i>
+                            }
+                        </div>
+                        <div class="displayblock col-grey">
+                            @{ 
+                                var answers = _learner.PDQTask.Where(t => t.PDQQuestion.GroupID == 6);
+                                var answerCount = answers.Count();
+                                var rightAns = answers.Where(t => t.SuggestionID.HasValue && t.PDQSuggestion.RightAnswer == true);
+                            }
+                            目前已參加運動小學堂 @(answerCount) 次囉，得點數 @(rightAns.Count()) 點！
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--行事曆-->
+    <div class="container-fluid page-calendar">
+        <div class="card">
+            <div class="row">
+                <div class="col-md-12 col-lg-4 col-xl-4">
+                    <div class="body">
+                        <div class="row clearfix">
+                            <div class="col-md-11 col-lg-12 col-9">
+                            </div>
+                            <div class="col-md-11 col-lg-12 col-3">
+                                <button class="btn btn-default hidden-lg-up m-t-0 float-right" data-toggle="collapse" data-target="#open-events" aria-expanded="false" aria-controls="collapseExample"><i class="zmdi zmdi-chevron-down"></i></button>
+                            </div>
+                        </div>
+                        <div class="collapse-xs collapse-sm collapse" id="open-events">
+                            @{
+                                var dataQuery = models.GetTable<CourseContractMember>().Where(m => m.UID == _learner.UID)
+                                        .Join(models.PromptEffectiveContract(),
+                                            m => m.ContractID, c => c.ContractID, (m, c) => c);
+                                var items = dataQuery.ToList();
+                                var fullPaid = items.Where(c => c.TotalCost <= (c.TotalPaidAmount() ?? 0));
+                                var unpaid = items.Where(c => c.TotalCost > (c.TotalPaidAmount() ?? 0));
+                            }
+                            @{
+                                Html.RenderPartial("~/Views/LearnerProfile/Module/LearnerEffectiveContractList.cshtml", fullPaid);
+                            }
+                            @{
+                                Html.RenderPartial("~/Views/LearnerProfile/Module/LearnerUnpaidContractList.cshtml", unpaid);
+                            }
+                            <hr>
+                            <div class="event-name b-custom row">
+                                @{ Html.RenderPartial("~/Views/LearnerProfile/Module/LearnerCharacter.cshtml", _learner); }
+                            </div>
+                            <button class="btn btn-darkteal waves-effect float-right" onclick="javascript:editProfile();">重新了解學生 GO</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 col-lg-8 col-xl-8">
+                    <div class="body">
+                        @{  Html.RenderPartial("~/Views/LearnerProfile/Module/LearnerLessonsReview.cshtml",_learner);   }
+                        @{  Html.RenderAction("LearnerCalendar", "LearnerProfile", new { LearnerID = _learner.UID });   }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section TailPageJavaScriptInclude {
+    <!-- Fullcalendar Plugin js -->
+    <script src="bundles/fullcalendarscripts.bundle.js"></script>
+    <script src="plugins/fullcalendar/locale/zh-tw.js"></script>
+    <!-- Bootstrap datetimepicker Plugin Js -->
+    @*<script src="plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+        <script src="plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-TW.js"></script>*@
+    <script src="plugins/smartcalendar/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="plugins/smartcalendar/js/locales-datetimepicker/bootstrap-datetimepicker.zh-TW.js"></script>
+    <!-- Multi Select Plugin Js -->
+    <script src="plugins/multi-select/js/jquery.multi-select.js"></script>
+    <!-- countTo Plugin Js -->
+    <script src="bundles/countTo.bundle.js"></script>
+    <!-- Sparkline Plugin Js -->
+    <script src="plugins/jquery-sparkline/jquery.sparkline.js"></script>
+    <script>
+        $(function () {
+
+            $('.counto').countTo();
+
+        });
+
+        function editProfile() {
+            $('').launchDownload('@(Html.Raw(Url.Action("EditLearnerCharacter","ConsoleHome",new { KeyID = _learner.UID.EncryptKey() })))', {});
+        }
+    </script>
+}

@@ -1,0 +1,383 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Newtonsoft.Json
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    UserProfile _model;
+    DailyBookingQueryViewModel _viewModel;
+
+    Layout = "~/Views/ConsoleHome/Template/MainPage.cshtml";
+
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    _model = (UserProfile)this.Model;
+    _viewModel = (DailyBookingQueryViewModel)ViewBag.ViewModel;
+}
+@{ 
+    LessonTime lessonItem = (LessonTime)ViewBag.DataItem;
+    UserProfile learner = (UserProfile)ViewBag.Learner;
+    QuestionnaireRequest questionnaire = models.GetEffectiveQuestionnaireRequest(learner, Naming.QuestionnaireGroup.身體心靈密碼).FirstOrDefault();
+    if(questionnaire!=null)
+    {
+        ViewBag.ViewOnly = true;
+    }
+}
+@section CustomHeader {
+    <!-- Bootstrap Datetimepick -->
+    @*<link href="plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />*@
+    @*<link href="css/datetimepicker.css" rel="stylesheet" />*@
+    <!-- Jquery Nestable -->
+    <link rel="stylesheet" href="plugins/nestable/jquery-nestable.css" />
+    <!-- Custom Css -->
+    <link rel="stylesheet" href="css/customelist.css?2">
+
+}
+
+    <section class="content">
+        @{ ViewBag.BlockHeader = "編輯課表";
+            ViewBag.InsertPartial = "~/Views/LearnerProfile/Module/ProfileHeader.cshtml";
+            Html.RenderPartial("~/Views/ConsoleHome/Module/BlockHeader.cshtml", _model);}
+
+        <!--編輯課表-->
+        <div class="container-fluid">
+            <div class="card">
+                <div class="header">
+                    <h2><strong>@(learner.FullName())</strong> - 
+                        <span class="@(learner.PersonalExercisePurpose.PowerAbliityCss())">@(learner.PersonalExercisePurpose.ExercisePowerAbility())</span>
+                    </h2>
+                    <ul class="header-dropdown">
+                        <li>
+                            @{
+                                Html.RenderPartial("~/Views/LearnerProfile/Module/FavoriteLesson.cshtml", lessonItem);
+                            }
+                        </li>
+                        <li class="dropdown" id="slideMenu">
+                            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class="zmdi zmdi-more"></i> </a>
+                            <ul class="dropdown-menu dropdown-menu-right slideUp float-right">
+                                @{
+                                    bool hasSlideItem = false;
+                                }
+                                @if (lessonItem.GroupingLesson.RegisterLesson.Count > 1)
+                                {
+                                    hasSlideItem = true;
+                                    <li><a href="javascript:cloneLearnerTrainingPlan();">同步課表</a></li>
+                                }
+                                else if (lessonItem.ClassTime >= DateTime.Today && lessonItem.GroupingLesson.LessonTime.Count > 1)
+                                {
+                                    hasSlideItem = true;
+                                    <li><a href="javascript:cloneCoachPITrainingPlan();">同步課表</a></li>
+                                }
+                                @if ((lessonItem.RegisterLesson.LessonPriceType.Status != (int)Naming.LessonPriceStatus.自主訓練
+                                        && lessonItem.ClassTime < DateTime.Today.AddDays(1)) && lessonItem.LessonAttendance == null
+                                        && !lessonItem.IsSTSession())
+                                {
+                                    hasSlideItem = true;
+                                    <li><a href="javascript:attendLesson();">完成上課</a></li>
+                                }
+                                @if (!hasSlideItem)
+                                {
+                                    <li>
+                                        <script>
+                                            $(function () {
+                                                $('#slideMenu').remove();
+                                            });
+                                        </script>
+                                    </li>
+                                }
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="body p-0">
+                    <div class="row">
+                        <div class="col-md-12 col-lg-4 col-xl-4">
+                            <div class="body">
+                                <div class="row clearfix">
+                                    <div class="col-12">
+                                        <button class="btn btn-default btn-sm hidden-lg-up m-t-0 float-right" data-toggle="collapse" data-target="#open-events" aria-expanded="false" aria-controls="collapseExample"><i class="zmdi zmdi-chevron-down"></i></button>
+                                    </div>
+                                </div>
+                                <div class="collapse-xs collapse-sm collapse" id="open-events">
+                                    <div class="row clearfix">
+                                        <div class="col-12">
+                                            <ul class="nav nav-tabs-new2 darkteal p-t-0" id="tabs">
+                                                <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#recent">了解學生</a></li>
+                                                <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#mildstone">里程碑</a></li>
+                                            </ul>
+                                            <div class="tab-content p-l-5 p-r-5">
+                                                <div class="tab-pane active" id="recent">
+                                                    @{ 
+                                                        Html.RenderPartial("~/Views/LearnerProfile/Module/RecentStatus.cshtml", learner);
+                                                    }
+                                                </div>
+                                                <div class="tab-pane" id="mildstone">
+                                                    @{
+                                                        Html.RenderPartial("~/Views/LearnerProfile/Module/TrainingMilestone.cshtml", learner);
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="new_timeline">
+                                        <ul>
+                                            <li>
+                                                @{
+                                                    Html.RenderPartial("~/Views/LearnerProfile/Module/TrainingGoal.cshtml", learner);
+                                                }
+                                            </li>
+                                            @if (questionnaire != null)
+                                            {
+                                                <li>
+                                                    <div class="bullet pink"></div>
+                                                    <div class="time">NEXT</div>
+                                                    <div class="desc">
+                                                        <a href="@(Html.Raw(Url.Action("EditLearnerCharacter","ConsoleHome",new { questionnaire.QuestionnaireID, KeyID = questionnaire.UID.EncryptKey() })))">
+                                                            <h3 class="col-red">重新了解學生 Go~</h3>
+                                                        </a>
+                                                    </div>
+                                                </li>
+                                            }
+                                            @{
+                                                Html.RenderPartial("~/Views/LearnerProfile/Module/LessonList.cshtml", learner);
+                                            }
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-lg-8 col-xl-8">
+                            <div class="body">
+                                <div class="row">
+                                    @{  Html.RenderPartial("~/Views/LearnerProfile/Module/TrainingExecutionPlan.cshtml", lessonItem);   }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+@section TailPageJavaScriptInclude {
+    <!-- Sparkline Plugin Js -->
+    <script src="plugins/jquery-sparkline/jquery.sparkline.js"></script>
+    <!-- Jquery Nestable -->
+    <script src="plugins/nestable/jquery.nestable.js"></script>
+    <script>
+
+        function refreshTrainingContent() {
+            $('').launchDownload('@Html.Raw(Url.Action("LessonTrainingContent", "ConsoleHome",new { KeyID = lessonItem.LessonID.EncryptKey(),LearnerID = learner.UID }))', { });
+        }
+
+        function editTrainingContent(keyID) {
+            $('').launchDownload('@Html.Raw(Url.Action("LessonTrainingContent", "ConsoleHome",new { LearnerID = learner.UID }))', { 'keyID': keyID });
+        }
+
+
+        //編輯近期目標
+        this.addRecentGoal = function () {
+            swal({
+                title: "近期目標",
+                text: "",
+                type: "input",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "確定, 不後悔",
+                cancelButtonText: "不, 點錯了",
+                closeOnConfirm: false,
+                animation: "slide-from-top",
+                inputPlaceholder: "請輸入20個中英文字"
+            }, function (inputValue) {
+                if (inputValue === false) return false;
+                if (inputValue === "") {
+                    swal.showInputError("你忘了輸入文字嗎!?");
+                    return false
+                }
+                swal("Nice!", "You wrote: " + inputValue, "success");
+            });
+        };
+
+        //近期目標更多功能
+        $('.more').on('click', function () {
+            $("#moreActionModal").modal('show');
+        });
+
+        //點選刪除功能
+        this.deleteData = function () {
+            swal({
+                title: "不後悔?",
+                text: "刪除後資料將無法回覆!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "確定, 不後悔",
+                cancelButtonText: "不, 點錯了",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            }, function (isConfirm) {
+                if (isConfirm) {
+                    swal("刪除成功!", "資料已經刪除 Bye!", "success");
+                } else {
+                    swal("取消成功", "你的資料現在非常安全 :)", "error");
+                }
+            });
+        };
+
+
+        //編輯完成上課結語
+        this.attendLesson = function () {
+            swal({
+                title: "家庭聯絡簿",
+                text: "",
+                type: "input",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "確定, 不後悔",
+                cancelButtonText: "不, 點錯了",
+                closeOnConfirm: false,
+                animation: "slide-from-top",
+                inputPlaceholder: "請輸入20個中英文字"
+            }, function (inputValue) {
+                if (inputValue === false) return false;
+                if (inputValue === "") {
+                    swal.showInputError("你忘了輸入文字嗎!?");
+                    return false
+                }
+                commitAttendance(inputValue);
+            });
+        };
+
+        function commitAttendance(remark) {
+            showLoading();
+            $.post('@Html.Raw(Url.Action("AttendLesson", "Attendance"))', { 'keyID': '@(lessonItem.LessonID.EncryptKey())', 'remark': remark }, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    if (data.result) {
+                        swal("Nice!", "You wrote: " + remark, "success");
+                    } else {
+                        swal({
+                            title: "Opps！",
+                            text: data.message,
+                            type: "warning",
+                            showCancelButton: false,
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "重新輸入!",
+                            closeOnConfirm: true
+                        }, function () {
+
+                        });
+                    }
+                } else {
+                    $(data).appendTo($('body'));
+                }
+            });
+        }
+
+        //點選同步課表
+        this.cloneLearnerTrainingPlan = function () {
+            swal({
+                title: "不後悔?",
+                text: "同步後資料會一模模一樣樣喔!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "確定, 不後悔",
+                cancelButtonText: "不, 點錯了",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            }, function (isConfirm) {
+                if (isConfirm) {
+                    showLoading();
+                    $.post('@Html.Raw(Url.Action("CloneLearnerTrainingPlan", "LessonConsole", new { KeyID = lessonItem.LessonID.EncryptKey(),learner.UID }))', {}, function (data) {
+                        hideLoading();
+                        if ($.isPlainObject(data)) {
+                            if (data.result) {
+                                swal("同步成功!", "資料已經同步 Bye!", "success");
+                            } else {
+                                swal("同步失敗!", data.message, "error");
+                            }
+                        } else {
+                            $(data).appendTo($('body'));
+                        }
+                    });
+                } else {
+                    swal("取消成功", "你的資料現在非常安全 :)", "error");
+                }
+            });
+        };
+
+        this.cloneCoachPITrainingPlan = function () {
+            swal({
+                title: "不後悔?",
+                text: "同步後資料會一模模一樣樣喔!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "確定, 不後悔",
+                cancelButtonText: "不, 點錯了",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            }, function (isConfirm) {
+                if (isConfirm) {
+                    showLoading();
+                    $.post('@Html.Raw(Url.Action("CloneCoachPITrainingPlan", "LessonConsole", new { KeyID = lessonItem.LessonID.EncryptKey() }))', {}, function (data) {
+                        hideLoading();
+                        if ($.isPlainObject(data)) {
+                            if (data.result) {
+                                swal("同步成功!", "資料已經同步 Bye!", "success");
+                            } else {
+                                swal("同步失敗!", data.message, "error");
+                            }
+                        } else {
+                            $(data).appendTo($('body'));
+                        }
+                    });
+                } else {
+                    swal("取消成功", "你的資料現在非常安全 :)", "error");
+                }
+            });
+        };
+
+        this.copyTrainingPlan = function (copyFrom) {
+            swal({
+                title: "不後悔?",
+                text: "複製後資料會一模模一樣樣喔!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "確定, 不後悔",
+                cancelButtonText: "不, 點錯了",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            }, function (isConfirm) {
+                if (isConfirm) {
+                    showLoading();
+                    $.post('@Html.Raw(Url.Action("CopyTrainingPlan", "LessonConsole", new { KeyID = lessonItem.LessonID.EncryptKey(),learner.UID }))', { 'copyFrom': copyFrom }, function (data) {
+                        hideLoading();
+                        if ($.isPlainObject(data)) {
+                            if (data.result) {
+                                swal("複製課表!", "資料已經複製 Bye!", "success");
+                                refreshTrainingContent();
+                            } else {
+                                swal("複製失敗!", data.message, "error");
+                            }
+                        } else {
+                            $(data).appendTo($('body'));
+                        }
+                    });
+                } else {
+                    swal("取消成功", "你的資料現在非常安全 :)", "error");
+                }
+            });
+        };
+
+    </script>
+}

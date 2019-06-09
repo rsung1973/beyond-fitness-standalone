@@ -459,7 +459,7 @@ namespace WebHome.Controllers
                 return View(ConsoleHomeController.InputErrorView);
             }
 
-            var items = userName.PromptLearnerByName(models, false);
+            var items = userName.PromptUserProfileByName(models);
 
             if (items.Count() > 0)
                 return View("~/Views/LearnerProfile/ProfileModal/SelectLearnerProfile.cshtml", items);

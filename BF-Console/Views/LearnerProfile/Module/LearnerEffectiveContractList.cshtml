@@ -11,16 +11,14 @@
 
     ModelStateDictionary _modelState;
     ModelSource<UserProfile> models;
-    UserProfile _model;
+    IEnumerable<CourseContract> _model;
 
     _modelState = (ModelStateDictionary)ViewBag.ModelState;
     models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
-    _model = (UserProfile)this.Model;
+    _model = (IEnumerable<CourseContract>)this.Model;
 }
 @{
-    IQueryable<CourseContract> items = models.GetTable<CourseContractMember>().Where(m => m.UID == _model.UID)
-            .Join(models.PromptEffectiveContract(),
-                m => m.ContractID, c => c.ContractID, (m, c) => c);
+    IEnumerable<CourseContract> items = _model;
 }
 @if (items.Count() > 0)
 {

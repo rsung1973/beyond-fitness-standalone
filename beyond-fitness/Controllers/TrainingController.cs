@@ -136,6 +136,12 @@ namespace WebHome.Controllers
                 ModelState.AddModelError("TrainingID", "請選擇類別");
             }
 
+            viewModel.Remark = viewModel.Remark.GetEfficientString();
+            if (viewModel.PurposeID.HasValue && viewModel.Remark == null)
+            {
+                ModelState.AddModelError("Remark", "請輸入里程碑內容");
+            }
+
             if (!ModelState.IsValid)
             {
                 ViewBag.ModelState = this.ModelState;
@@ -163,7 +169,7 @@ namespace WebHome.Controllers
             item.GoalTurns = viewModel.GoalTurns;
             item.Description = viewModel.Description;
             item.TrainingID = viewModel.TrainingID;
-            item.Remark = viewModel.Remark.GetEfficientString();
+            item.Remark = viewModel.Remark;
             item.DurationInMinutes = viewModel.DurationInMinutes;
 
             models.SubmitChanges();
@@ -190,6 +196,7 @@ namespace WebHome.Controllers
             else if (viewModel.PurposeID == -1 && item.Remark != null)
             {
                 var purpose = item.TrainingExecution.TrainingPlan.LessonTime.RegisterLesson.UserProfile.AssertPurposeItem(models, item.Remark);
+                purpose.CompleteDate = DateTime.Now;
                 item.PurposeID = purpose.ItemID;
                 models.SubmitChanges();
             }

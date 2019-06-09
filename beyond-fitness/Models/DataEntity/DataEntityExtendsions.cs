@@ -388,6 +388,26 @@ namespace WebHome.Models.DataEntity
             return item.CurrentPriceSeries?.AllLessonPrice.Where(p => p.LowerLimit == 1).FirstOrDefault()?.ListPrice;
         }
 
+        public static string ExercisePowerAbility(this PersonalExercisePurpose purpose)
+        {
+            return purpose?.PowerAbility != null
+                        ? purpose.PowerAbility.Substring(0, 3)
+                        : "？型";
+        }
+
+        public static string ExercisePurpose(this PersonalExercisePurpose purpose)
+        {
+            return $"{(purpose?.Purpose ?? "？")}期";
+        }
+
+        public static string ExercisePurposeDescription(this PersonalExercisePurpose purpose)
+        {
+            return String.Concat(
+                purpose.ExercisePowerAbility(),
+                " / ",
+                purpose.ExercisePurpose());
+        }
+
     }
 
     public partial class UserProfile

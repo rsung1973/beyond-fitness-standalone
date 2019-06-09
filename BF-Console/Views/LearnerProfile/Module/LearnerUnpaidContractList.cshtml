@@ -11,27 +11,17 @@
 
     ModelStateDictionary _modelState;
     ModelSource<UserProfile> models;
-    UserProfile _model;
+    IEnumerable<CourseContract> _model;
 
     _modelState = (ModelStateDictionary)ViewBag.ModelState;
     models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
-    _model = (UserProfile)this.Model;
+    _model = (IEnumerable<CourseContract>)this.Model;
 }
 @{
-
-    IQueryable<CourseContract> items = models.GetTable<CourseContractMember>().Where(m => m.UID == _model.UID)
-            .Join(models.PromptAccountingContract(),
-                m => m.ContractID, c => c.ContractID, (m, c) => c)
-            .Where(t => t.TotalCost > t.ContractPayment
-                        .Select(c => c.Payment)
-                        .Where(p => p.TransactionType == (int)Naming.PaymentTransactionType.體能顧問費
-                            || p.TransactionType == (int)Naming.PaymentTransactionType.合約轉讓餘額
-                            || p.TransactionType == (int)Naming.PaymentTransactionType.合約轉點餘額)
-                        .Where(p => p.VoidPayment == null || p.AllowanceID.HasValue)
-                        .Sum(c => c.PayoffAmount));
-    }
-    @if (items.Count() > 0)
-    {
+    IEnumerable<CourseContract> items = _model;
+}
+@if (items.Count() > 0)
+{
     <hr />
     foreach (var item in items)
     {

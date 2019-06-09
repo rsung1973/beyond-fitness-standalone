@@ -35,11 +35,13 @@
         <li>
             <div class="@(item.IsPTSession()
                             ? "bullet PT"
-                            : item.IsPISession()
-                                ? "bullet PI"
-                                : item.IsSTSession()
-                                    ? "bullet ST"
-                                    : "bullet")"></div>
+                            : item.IsCoachPISession()
+                                ? "bullet CoachPI"
+                                : item.IsPISession()
+                                    ? "bullet PI"
+                                    : item.IsSTSession()
+                                        ? "bullet ST"
+                                        : "bullet")"></div>
             <div class="time">@($"{item.ClassTime:MM/dd}")<br />@($"{item.ClassTime:yyyy}")</div>
             <div class="desc">
                 <h3>

@@ -78,11 +78,20 @@ namespace WebHome.Helper
                 authItems = authItems.Where(r => r.RoleID == (int)Naming.RoleID.Learner);
             }
 
-            var items = models.GetTable<UserProfile>()
-                    .Where(l => (l.RealName.Contains(userName) || l.Nickname.Contains(userName))
-                        && (l.UserProfileExtension != null))
+            var items = userName.PromptUserProfileByName(models)
                     .Where(l => roleItems.Any(r => r.UID == l.UID)
                         || authItems.Any(r => r.UID == l.UID));
+
+            return items;
+        }
+
+
+        public static IQueryable<UserProfile> PromptUserProfileByName<TEntity>(this String userName, ModelSource<TEntity> models)
+                where TEntity : class, new()
+        {
+            var items = models.GetTable<UserProfile>()
+                    .Where(l => (l.RealName.Contains(userName) || l.Nickname.Contains(userName))
+                        && (l.UserProfileExtension != null));
 
             return items;
         }

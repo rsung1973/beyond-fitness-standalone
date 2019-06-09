@@ -173,6 +173,15 @@ namespace WebHome.Controllers
                 return Json(new { result = false, message = "學員資料錯誤!!" });
             }
 
+            if (!viewModel.StartDate.HasValue)
+            {
+                viewModel.StartDate = DateTime.Today.AddHours(8);
+            }
+            else if (viewModel.StartDate.Value.TimeOfDay.Hours == 0)
+            {
+                viewModel.StartDate = viewModel.StartDate.Value.Date.AddHours(8);
+            }
+
             return View("~/Views/ConsoleEvent/EventModal/BookingLesson.cshtml", item);
 
         }

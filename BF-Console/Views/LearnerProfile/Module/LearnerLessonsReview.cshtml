@@ -19,11 +19,12 @@
 }
 @{
     IQueryable<LessonTime> lessons = _model.UID.PromptLearnerLessons(models);
+    DateTime monthStart = DateTime.Today.FirstDayOfMonth();
 }
 <ul class="nav nav-tabs-new2 darkteal p-t-0" id="tabs">
-    <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#previousmonth">上月</a></li>
-    <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#thismonth">本月</a></li>
-    <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#nextmonth">次月</a></li>
+    <li class="nav-item"><a class="nav-link" data-toggle="tab" onclick="$global.calendarToDate('@(monthStart.AddMonths(-1).ToString("yyyy-MM-dd"))');" href="#previousmonth">上月</a></li>
+    <li class="nav-item"><a class="nav-link active" data-toggle="tab" onclick="$global.calendarToDate('@(monthStart.ToString("yyyy-MM-dd"))');" href="#thismonth">本月</a></li>
+    <li class="nav-item"><a class="nav-link" data-toggle="tab" onclick="$global.calendarToDate('@(monthStart.AddMonths(1).ToString("yyyy-MM-dd"))');" href="#nextmonth">次月</a></li>
 </ul>
 @{  Html.RenderPartial("~/Views/LearnerProfile/Module/LearnerLessonsReviewDetails.cshtml", _model);}
 <script>

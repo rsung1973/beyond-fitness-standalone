@@ -275,6 +275,10 @@
             $('#@(_calendarID)').fullCalendar('today');
         });
 
+        $global.calendarToDate = function (toDate) {
+            $('#@(_calendarID)').fullCalendar('gotoDate', toDate);
+        };
+
     });
 </script>
 
