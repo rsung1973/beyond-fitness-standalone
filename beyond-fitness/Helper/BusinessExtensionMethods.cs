@@ -27,6 +27,12 @@ namespace WebHome.Helper
                 attendance.CompleteDate = DateTime.Now;
 
                 models.SubmitChanges();
+
+                foreach (var r in item.GroupingLesson.RegisterLesson)
+                {
+                    r.UID.CheckCurrentQuestionnaireRequest(models, Naming.QuestionnaireGroup.身體心靈密碼);
+                    models.CheckLearnerQuestionnaireRequest(r);
+                }
             }
 
             var lesson = item.RegisterLesson;
@@ -97,9 +103,9 @@ namespace WebHome.Helper
 
         }
 
-        public static QuestionnaireRequest CreateQuestionnaire<TEntity>(this ModelSource<TEntity> models, RegisterLesson item) where TEntity : class, new()
+        public static QuestionnaireRequest CreateQuestionnaire<TEntity>(this ModelSource<TEntity> models, RegisterLesson item,Naming.QuestionnaireGroup? groupID = Naming.QuestionnaireGroup.滿意度問卷調查_2017) where TEntity : class, new()
         {
-            var group = models.GetTable<QuestionnaireGroup>().OrderByDescending(q => q.GroupID).FirstOrDefault();
+            var group = models.GetTable<QuestionnaireGroup>().Where(g => g.GroupID == (int?)groupID).FirstOrDefault();
             if (group != null && !item.QuestionnaireRequest.Any(q => q.PDQTask.Count == 0))
             {
                 var questionnaire = new QuestionnaireRequest
@@ -116,6 +122,60 @@ namespace WebHome.Helper
             }
             return null;
         }
+
+        public static QuestionnaireRequest AssertQuestionnaire<TEntity>(this int learnerID, ModelSource<TEntity> models, Naming.QuestionnaireGroup groupID = Naming.QuestionnaireGroup.滿意度問卷調查_2017) 
+            where TEntity : class, new()
+        {
+            var item = models.GetTable<QuestionnaireRequest>().Where(q => q.UID == learnerID)
+                    .Where(q => q.GroupID == (int)groupID)
+                    .Where(q => !q.Status.HasValue || q.Status == (int)Naming.IncommingMessageStatus.未讀)
+                    .FirstOrDefault();
+
+            if (item == null)
+            {
+                item = new QuestionnaireRequest
+                {
+                    GroupID = (int)groupID,
+                    RequestDate = DateTime.Now,
+                    UID = learnerID
+                };
+                models.GetTable<QuestionnaireRequest>().InsertOnSubmit(item);
+                models.SubmitChanges();
+            }
+            return item;
+        }
+
+        public static QuestionnaireRequest CheckCurrentQuestionnaireRequest<TEntity>(this int learnerID, ModelSource<TEntity> models, Naming.QuestionnaireGroup groupID = Naming.QuestionnaireGroup.滿意度問卷調查_2017)
+            where TEntity : class, new()
+        {
+            var lessons = learnerID.PromptLearnerLessons(models)
+                            .PTLesson()
+                            .Where(l => l.LessonAttendance != null);
+
+            var item = models.GetTable<QuestionnaireRequest>().Where(q => q.UID == learnerID)
+                    .Where(q => q.GroupID == (int)groupID)
+                    .OrderByDescending(q => q.QuestionnaireID)
+                    .FirstOrDefault();
+
+            if (item != null)
+            {
+                if(!item.Status.HasValue || item.Status == (int)Naming.IncommingMessageStatus.未讀)
+                {
+                    return item;
+                }
+
+                lessons = lessons.Where(l => l.ClassTime >= item.RequestDate);
+            }
+
+            if (lessons.Count() >= 12)
+            {
+                return learnerID.AssertQuestionnaire(models, groupID);
+            }
+
+            return null;
+        }
+
+
 
         public static bool CheckCurrentQuestionnaireRequest<TEntity>(this ModelSource<TEntity> models, RegisterLesson item)
             where TEntity : class, new()
@@ -557,6 +617,16 @@ namespace WebHome.Helper
         {
             return models.GetTable<QuestionnaireRequest>().Where(q => q.UID == profile.UID
                 && q.PDQTask.Count == 0 && !q.Status.HasValue);
+        }
+
+        public static IQueryable<QuestionnaireRequest> GetEffectiveQuestionnaireRequest<TEntity>(this ModelSource<TEntity> models, UserProfile profile,Naming.QuestionnaireGroup group)
+            where TEntity : class, new()
+        {
+            return models.GetTable<QuestionnaireRequest>()
+                .Where(q => q.UID == profile.UID)
+                .Where(q => q.GroupID == (int)group)
+                .Where(q => !q.Status.HasValue 
+                    || q.Status == (int)Naming.IncommingMessageStatus.未讀);
         }
 
         public static int? BonusPoint<TEntity>(this UserProfile item, ModelSource<TEntity> models)

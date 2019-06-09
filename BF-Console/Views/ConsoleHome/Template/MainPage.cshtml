@@ -101,10 +101,10 @@
             <ul class="nav navbar-nav navbar-right">
                 <li class="hidden-sm-down">
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="搜尋學生..." id="searchLearner">
-                        <span class="input-group-addon">
-                            <i class="zmdi zmdi-search"></i>
-                        </span>
+                        @{
+                            ViewBag.SearchAction = Url.Action("SearchLearner", "LearnerProfile");
+                            Html.RenderPartial("~/Views/ConsoleEvent/Module/SearchLearner.cshtml");
+                        }
                     </div>
                 </li>
                 <li>

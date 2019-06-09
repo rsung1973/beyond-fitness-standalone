@@ -30,7 +30,7 @@ using WebHome.Models.ViewModel;
 using WebHome.Properties;
 using WebHome.Security.Authorization;
 
-namespace BFConsole.Controllers
+namespace WebHome.Controllers
 {
     public class MainActivityController : SampleController<UserProfile>
     {

@@ -34,4 +34,4 @@ using System.Web;
 // by using the '*' as shown below:
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
-[assembly: PreApplicationStartMethod(typeof(BFConsole.App_Start.InitializeType),"InitializeApp")]
+[assembly: PreApplicationStartMethod(typeof(WebHome.App_Start.InitializeType),"InitializeApp")]

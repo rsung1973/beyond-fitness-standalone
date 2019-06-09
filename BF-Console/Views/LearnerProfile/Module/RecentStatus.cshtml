@@ -1,0 +1,40 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    UserProfile _learner;
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _learner = (UserProfile)this.Model;
+}
+<div class="new_post">
+    <div class="form-group">
+        <textarea rows="10" cols="80" name="RecentStatus" class="form-control" placeholder="請輸入任何您想輸入的...">@(_learner.RecentStatus)</textarea>
+    </div>
+    <div class="post-toolbar-b">
+        <button class="btn bg-darkteal btn-round float-right btn-sm" onclick="commitRecentStatus();">更新</button>
+    </div>
+</div>
+<script>
+    function commitRecentStatus() {
+        showLoading();
+        $.post('@Html.Raw(Url.Action("CommitRecentStatus","ClassFacet",new {_learner.UID }))', { 'recentStatus': $('textarea[name="RecentStatus"]').val() }, function (data) {
+            hideLoading();
+            if (data) {
+                swal(data.message);
+            }
+        });
+    }
+</script>
+
+

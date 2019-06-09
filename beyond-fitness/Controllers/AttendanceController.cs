@@ -132,9 +132,15 @@ namespace WebHome.Controllers
         }
 
 
-        public ActionResult AttendLesson(int lessonID)
+        public ActionResult AttendLesson(LessonTimeBookingViewModel viewModel)
         {
-            LessonTime item = models.GetTable<LessonTime>().Where(t => t.LessonID == lessonID).FirstOrDefault();
+            ViewBag.ViewModel = viewModel;
+            if(viewModel.KeyID!=null)
+            {
+                viewModel.LessonID = viewModel.DecryptKeyValue();
+            }
+
+            LessonTime item = models.GetTable<LessonTime>().Where(t => t.LessonID == viewModel.LessonID).FirstOrDefault();
 
             if (item == null)
                 return Json(new { result = false, message = "未登記此上課時間!!" }, JsonRequestBehavior.AllowGet);
@@ -144,12 +150,13 @@ namespace WebHome.Controllers
                 return Json(new { result = false, message = "未輸入課表重點，無法完成上課!!" }, JsonRequestBehavior.AllowGet);
             }
 
+            item.LessonPlan.Remark = viewModel.Remark;
 
             models.AttendLesson(item);
-            foreach (var r in item.GroupingLesson.RegisterLesson)
-            {
-                models.CheckLearnerQuestionnaireRequest(r);
-            }
+            //foreach (var r in item.GroupingLesson.RegisterLesson)
+            //{
+            //    models.CheckLearnerQuestionnaireRequest(r);
+            //}
 
             return Json(new { result = true, message = "資料存檔完成!!" });
 

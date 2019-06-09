@@ -65,5 +65,31 @@ namespace WebHome.Helper
             }
         }
 
+        public static String PowerAbliityCss(this PersonalExercisePurpose item,String append = null)
+        {
+            if (item != null && item.PowerAbility != null)
+            {
+                String css = item.PowerAbility.Contains("初")
+                            ? "col-amber"
+                            : item.PowerAbility.Contains("中")
+                                ? "col-green"
+                                : "col-red";
+                return append == null ? css : $"{css} {append}";
+            }
+            return null;
+        }
+
+        public static String PowerAbliityCss(this Naming.PowerAbilityLevel? item, String append = null)
+        {
+            String css = item == Naming.PowerAbilityLevel.初階
+                        ? "col-green"
+                        : item == Naming.PowerAbilityLevel.中階
+                            ? "col-amber"
+                            : item == Naming.PowerAbilityLevel.高階
+                                ? "col-red"
+                                : null;
+            return append == null ? css : $"{css} {append}";
+        }
+
     }
 }

@@ -22,6 +22,7 @@ using WebHome.Models.Locale;
 using WebHome.Models.Timeline;
 using WebHome.Models.ViewModel;
 using WebHome.Security.Authorization;
+using WebHome.Properties;
 
 namespace WebHome.Controllers
 {
@@ -318,7 +319,7 @@ namespace WebHome.Controllers
             {
                 this.ModelState.AddModelError("userName", "請輸學員名稱!!");
                 ViewBag.ModelState = this.ModelState;
-                return View(profile.ReportInputError);
+                return View(Settings.Default.ReportInputError);
             }
             else
             {
@@ -349,7 +350,7 @@ namespace WebHome.Controllers
             {
                 //this.ModelState.AddModelError("userName", "請輸學員名稱!!");
                 //ViewBag.ModelState = this.ModelState;
-                //return View(profile.ReportInputError);
+                //return View(Settings.Default.ReportInputError);
             }
             else
             {
@@ -367,7 +368,7 @@ namespace WebHome.Controllers
             //{
             //    this.ModelState.AddModelError("userName", "請輸學員名稱!!");
             //    ViewBag.ModelState = this.ModelState;
-            //    return View(profile.ReportInputError);
+            //    return View(Settings.Default.ReportInputError);
             //}
             //else
             //{
@@ -404,7 +405,7 @@ namespace WebHome.Controllers
             {
                 //this.ModelState.AddModelError("userName", "請輸學員名稱!!");
                 //ViewBag.ModelState = this.ModelState;
-                //return View(profile.ReportInputError);
+                //return View(Settings.Default.ReportInputError);
                 items = models.GetTable<UserProfile>().Where(u => u.UserProfileExtension.CurrentTrial.HasValue)
                     .OrderBy(l => l.RealName);
 
@@ -431,7 +432,7 @@ namespace WebHome.Controllers
             {
                 this.ModelState.AddModelError("userName", "請輸學員名稱!!");
                 ViewBag.ModelState = this.ModelState;
-                return View(profile.ReportInputError);
+                return View(Settings.Default.ReportInputError);
             }
             else
             {
@@ -476,7 +477,7 @@ namespace WebHome.Controllers
             if (!this.ModelState.IsValid)
             {
                 ViewBag.ModelState = this.ModelState;
-                return View(profile.ReportInputError);
+                return View(Settings.Default.ReportInputError);
             }
 
             var coach = models.GetTable<ServingCoach>().Where(s => s.CoachID == viewModel.CoachID).FirstOrDefault();
@@ -494,7 +495,7 @@ namespace WebHome.Controllers
                 {
                     this.ModelState.AddModelError("realName", "請輸入學員姓名!!");
                     ViewBag.ModelState = this.ModelState;
-                    return View(profile.ReportInputError);
+                    return View(Settings.Default.ReportInputError);
                 }
                 else
                 {
@@ -944,7 +945,7 @@ namespace WebHome.Controllers
             if (!ModelState.IsValid)
             {
                 ViewBag.ModelState = ModelState;
-                return View(HttpContext.GetUser().ReportInputError);
+                return View(Settings.Default.ReportInputError);
             }
 
             var item = models.GetTable<UserEvent>().Where(u => u.EventID == viewModel.EventID).FirstOrDefault();

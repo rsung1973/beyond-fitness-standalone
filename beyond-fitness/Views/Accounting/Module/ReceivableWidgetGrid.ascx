@@ -189,7 +189,7 @@
     }
 
     function downloadAccounts() {
-        $('#queryForm').launchDownload('<%= Url.Action("CreateAccountsReveivableXlsx","Accounting") %>');
+        $('#queryForm').launchDownload('<%= Url.Action("CreateAccountsReceivableXlsx","Accounting") %>');
     }
 
 </script>

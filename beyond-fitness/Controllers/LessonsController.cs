@@ -12,6 +12,8 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using System.Web.Mvc.Html;
+using System.Data;
+using System.Data.Linq;
 
 using CommonLib.MvcExtension;
 using Utility;
@@ -19,9 +21,8 @@ using WebHome.Helper;
 using WebHome.Models.DataEntity;
 using WebHome.Models.Locale;
 using WebHome.Models.ViewModel;
-using System.Data.Linq;
+using WebHome.Properties;
 using WebHome.Security.Authorization;
-using System.Data;
 
 namespace WebHome.Controllers
 {
@@ -79,7 +80,7 @@ namespace WebHome.Controllers
             if (!ModelState.IsValid)
             {
                 ViewBag.ModelState = ModelState;
-                return View(profile.ReportInputError);
+                return View(Settings.Default.ReportInputError);
             }
 
             var priceType = models.GetTable<LessonPriceType>().Where(p => p.Status == (int)Naming.DocumentLevelDefinition.教練PI).FirstOrDefault();
@@ -684,7 +685,7 @@ namespace WebHome.Controllers
             if (!this.ModelState.IsValid)
             {
                 ViewBag.ModelState = this.ModelState;
-                return View(profile.ReportInputError);
+                return View(Settings.Default.ReportInputError);
             }
 
             var coach = models.GetTable<ServingCoach>().Where(s => s.CoachID == viewModel.CoachID).FirstOrDefault();
@@ -717,7 +718,7 @@ namespace WebHome.Controllers
                 {
                     this.ModelState.AddModelError("userName", "請選擇上課學員!!");
                     ViewBag.ModelState = this.ModelState;
-                    return View(profile.ReportInputError);
+                    return View(Settings.Default.ReportInputError);
                 }
 
                 if (viewModel.SessionStatus.HasValue)
@@ -958,7 +959,7 @@ namespace WebHome.Controllers
             if (!this.ModelState.IsValid)
             {
                 ViewBag.ModelState = this.ModelState;
-                return View(profile.ReportInputError);
+                return View(Settings.Default.ReportInputError);
             }
 
             var coach = models.GetTable<ServingCoach>().Where(s => s.CoachID == viewModel.CoachID).FirstOrDefault();
@@ -3284,6 +3285,7 @@ namespace WebHome.Controllers
                 {
                     LessonID = lessonID,
                     PlanStatus = p.PlanStatus,
+                    RegisterID = p.RegisterID,
                     TrainingExecution = new TrainingExecution
                     {
                         Emphasis = null //p.TrainingExecution.Emphasis
@@ -3577,17 +3579,10 @@ namespace WebHome.Controllers
             if (execution == null || createNew)
             {
                 LessonTimeExpansion item = (LessonTimeExpansion)HttpContext.GetCacheValue(CachingKey.Training);
+                var lesson = models.GetTable<LessonTime>().Where(l => l.LessonID == item.LessonID).FirstOrDefault();
 
-                Models.DataEntity.TrainingPlan plan = new TrainingPlan
-                {
-                    LessonID = item.LessonID.Value,
-                    PlanStatus = (int)Naming.DocumentLevelDefinition.暫存
-                };
-                execution = new TrainingExecution
-                {
-                    TrainingPlan = plan
-                };
-                models.GetTable<Models.DataEntity.TrainingPlan>().InsertOnSubmit(plan);
+                TrainingPlan plan = lesson.AssertTrainingPlan(models, Naming.DocumentLevelDefinition.暫存);
+                execution = plan.TrainingExecution;
             }
 
             return execution;

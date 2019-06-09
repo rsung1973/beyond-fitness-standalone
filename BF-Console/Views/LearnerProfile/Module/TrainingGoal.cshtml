@@ -1,0 +1,96 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    UserProfile _learner;
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _learner = (UserProfile)this.Model;
+}
+@{ 
+    PersonalExercisePurpose purpose = _learner.PersonalExercisePurpose;
+}
+<div class="bullet todo"></div>
+<div class="time">近期目標</div>
+<div class="desc">
+    <h3 class="col-green">週期性目標-@(purpose?.Purpose!=null ? $"{purpose.Purpose}期" : "目前暫無週期性目標，請洽詢專屬顧問幫您設計『屬於自己』的目標吧！")</h3>
+    <h4>
+        <ul class="list-unstyled">
+            @{
+                IQueryable<PersonalExercisePurposeItem> items = models.GetTable<PersonalExercisePurposeItem>()
+                        .Where(p => p.UID == _learner.UID)
+                        .Where(p => !p.CompleteDate.HasValue);
+            }
+            @if (items.Count() > 0)
+            {
+                foreach (var item in items)
+                {
+                    <li>
+                        <label class="fancy-checkbox custom-bgcolor-green">
+                            <input type="checkbox" name="ItemID" value="@(item.ItemID)" onclick="completePurposeItem(event);" />
+                            <span>@(item.PurposeItem)</span>
+                        </label>
+                    </li>
+                }
+            }
+            else
+            {
+                <li>
+                    <label class="fancy-checkbox custom-bgcolor-green">
+                        <input type="checkbox" name="todolist" value="1">
+                        <span>
+                            您暫無近期目標<br />
+                            快與您的體能顧問進行討論喔！
+                        </span>
+                    </label>
+                </li>
+            }
+        </ul>
+    </h4>
+</div>
+<script>
+    function completePurposeItem(event) {
+        var event = event || window.event;
+        var $target = $(event.target);
+        swal({
+            title: "確定完成此項目?",
+            text: "完成近期目標",
+            //type: "successful",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "確定, 不後悔",
+            cancelButtonText: "不, 點錯了",
+            closeOnConfirm: true,
+            closeOnCancel: true,
+        }, function (isConfirm) {
+            if (isConfirm) {
+                showLoading();
+                $.post('@Html.Raw(Url.Action("CompletePurposeItem", "ClassFacet", new { _learner.UID }))', { 'ItemID': $target.val() }, function (data) {
+                    hideLoading();
+                    if ($.isPlainObject(data)) {
+                        if (data.result) {
+                            loadMilestone(true);
+                        } else {
+                            swal(data.message);
+                        }
+                    } else {
+                        $(data).appendTo($('body')).remove();
+                    }
+                });
+            } else {
+                $target.prop('checked', false);
+            }
+        });
+    }
+</script>
+

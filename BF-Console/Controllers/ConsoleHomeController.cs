@@ -28,7 +28,7 @@ using WebHome.Models.ViewModel;
 using WebHome.Properties;
 using WebHome.Security.Authorization;
 
-namespace BFConsole.Controllers
+namespace WebHome.Controllers
 {
     [RoleAuthorize(RoleID = new int[] { (int)Naming.RoleID.Administrator, (int)Naming.RoleID.Assistant, (int)Naming.RoleID.Officer, (int)Naming.RoleID.Coach, (int)Naming.RoleID.Servitor })]
     public class ConsoleHomeController : SampleController<UserProfile>
@@ -73,7 +73,6 @@ namespace BFConsole.Controllers
                 }
             }
 
-            profile.ReportInputError = InputErrorView;
             return View(profile.LoadInstance(models));
         }
 
@@ -89,7 +88,6 @@ namespace BFConsole.Controllers
         {
             ViewBag.ViewModel = viewModel;
             var profile = HttpContext.GetUser();
-            profile.ReportInputError = InputErrorView;
             viewModel.KeyID = profile.UID.EncryptKey();
             return View(profile.LoadInstance(models));
         }
@@ -101,7 +99,6 @@ namespace BFConsole.Controllers
             viewModel.ContractDateTo = viewModel.ContractDateFrom.Value.AddMonths(1).AddDays(-1);
 
             var profile = HttpContext.GetUser();
-            profile.ReportInputError = InputErrorView;
             viewModel.KeyID = profile.UID.EncryptKey();
             return View(profile.LoadInstance(models));
         }
@@ -141,7 +138,6 @@ namespace BFConsole.Controllers
             ViewBag.ViewModel = viewModel;
 
             var profile = HttpContext.GetUser();
-            profile.ReportInputError = InputErrorView;
             viewModel.KeyID = profile.UID.EncryptKey();
             return View(profile.LoadInstance(models));
         }
@@ -511,6 +507,64 @@ namespace BFConsole.Controllers
 
             var profile = HttpContext.GetUser();
             return View("~/Views/ConsoleHome/Module/AboutLessonSummary.cshtml", profile.LoadInstance(models));
+        }
+
+        [RoleAuthorize(RoleID = new int[] { (int)Naming.RoleID.Administrator, (int)Naming.RoleID.Assistant, (int)Naming.RoleID.Officer, (int)Naming.RoleID.Coach, (int)Naming.RoleID.Servitor })]
+        public ActionResult LearnerProfile(DailyBookingQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            var profile = HttpContext.GetUser();
+
+            if (viewModel.KeyID != null)
+            {
+                viewModel.LearnerID = viewModel.DecryptKeyValue();
+            }
+
+            ViewBag.DataItem = models.GetTable<UserProfile>().Where(u => u.UID == viewModel.LearnerID).First();
+
+            return View(profile.LoadInstance(models));
+        }
+
+        public ActionResult LessonTrainingContent(DailyBookingQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            var profile = HttpContext.GetUser();
+
+            if (viewModel.KeyID != null)
+            {
+                viewModel.LessonID = viewModel.DecryptKeyValue();
+            }
+
+            ViewBag.DataItem = models.GetTable<LessonTime>().Where(u => u.LessonID == viewModel.LessonID).First();
+            ViewBag.Learner = models.GetTable<UserProfile>().Where(u => u.UID == viewModel.LearnerID).First();
+
+            return View(profile.LoadInstance(models));
+        }
+
+        public ActionResult EditLearnerCharacter(LearnerCharacterViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            var profile = HttpContext.GetUser();
+
+            if (viewModel.KeyID != null)
+            {
+                viewModel.UID = viewModel.DecryptKeyValue();
+            }
+
+            UserProfile item = ViewBag.DataItem = models.GetTable<UserProfile>().Where(u => u.UID == viewModel.UID).First();
+            QuestionnaireRequest quest = models.GetTable<QuestionnaireRequest>()
+                    .Where(r => r.UID == viewModel.UID)
+                    .Where(r => r.QuestionnaireID == viewModel.QuestionnaireID).FirstOrDefault();
+
+            if (quest == null)
+            {
+                quest = item.UID.AssertQuestionnaire(models, Naming.QuestionnaireGroup.身體心靈密碼);
+                viewModel.QuestionnaireID = quest.QuestionnaireID;
+            }
+
+            ViewBag.CurrentQuestionnaire = quest;
+
+            return View(profile.LoadInstance(models));
         }
 
     }

@@ -59,7 +59,7 @@
                 }
             },
 <%      }
-        if (couldBeCancelled())
+        if (_model.CouldBeCancelled(_profile))
         { %>
             {
                 html: "<i class='far fa-trash-alt'></i>&nbsp;取消預約",
@@ -115,25 +115,6 @@
         _model = (LessonTime)this.Model;
         _profile = Context.GetUser();
         _dialogID = "modifyBookingDialog" + DateTime.Now.Ticks;
-    }
-
-    bool couldBeCancelled()
-    {
-        if (_model.TrainingBySelf == 2)
-            return true;
-
-        if (!_model.ContractTrustTrack.Any(s => s.SettlementID.HasValue))
-        {
-            if (_model.GroupingLesson.RegisterLesson.Any(r => r.RegisterLessonContract != null && r.RegisterLessonContract.CourseContract.RevisionList.Where(v => v.Reason != "展延").Count() > 0))
-            {
-                return false;
-            }
-            if (_profile.IsAssistant() || _profile.IsAuthorizedSysAdmin())
-                return true;
-            if (_model.LessonAttendance == null && !_model.LessonPlan.CommitAttendance.HasValue && _model.ClassTime.Value >= DateTime.Today.AddDays(-3))
-                return true;
-        }
-        return false;
     }
 
 </script>

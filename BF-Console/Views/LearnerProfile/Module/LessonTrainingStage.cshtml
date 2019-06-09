@@ -1,0 +1,155 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    LessonTime _model;
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = (LessonTime)this.Model;
+}
+@{
+    UserProfile learner = (UserProfile)ViewBag.Learner;
+    var plan = _model.AssertTrainingPlan(models, UID: learner.UID);
+    var execution = plan.TrainingExecution;
+    TrainingStage stage = (TrainingStage)ViewBag.TrainingStage;
+    var items = models.GetTable<TrainingItem>()
+            .Where(t => t.ExecutionID == execution.ExecutionID)
+            .Where(t => t.TrainingType.TrainingStageItem.StageID == stage.StageID)
+            .OrderBy(t => t.Sequence);
+
+    bool viewOnly = (bool?)ViewBag.ViewOnly == true ? true : false;
+}
+<div>
+    <div class="card-header" id="@($"heading_{stage.StageID}")">
+        <h3 class="m-b-0">
+            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#@($"collapse_{stage.StageID}")" aria-expanded="true" aria-controls="@($"collapse_{stage.StageID}")">
+                <img src="@($"images/lesson/stage{stage.StageID}-boy.png")" class="img-thumbnail popfit">
+                @(stage.Stage)
+                @{
+                    var duration = execution.TrainingExecutionStage.Where(s => s.StageID == stage.StageID).FirstOrDefault();
+                }
+                @if (duration != null)
+                {
+                    <text>- @(String.Format("{0:.#}", duration.TotalMinutes)) min</text>
+                }
+            </button>
+            <i class="zmdi zmdi-label @(stageColor(stage.StageID)) m-r-5 p-t-50 float-right"></i>
+        </h3>
+    </div>
+    <div id="@($"collapse_{stage.StageID}")" class="collapse show" aria-labelledby="@($"heading_{stage.StageID}")" data-parent="#accordion">
+        <div class="card-body">
+            <div class="clearfix m-b-20">
+                <div class="dd nestable-with-handle nestable-dark-theme" id="@($"nestable_{stage.StageID}")">
+                    <ol class="dd-list lesson-list">
+                        @foreach (var item in items)
+                        {
+                            if (item.TrainingType.BreakMark != true)
+                            {
+                                <li class="dd-item dd3-item list-action" data-id="@(item.ItemID)" onclick="@($"editStageTrainingItem({stage.StageID},{item.ItemID})");">
+                                    <div class="dd-handle dd3-handle"></div>
+                                    <div class="dd3-content list-item">
+                                        <span class="badge bg-blue-grey">@(item.TrainingType.BodyParts)</span>
+                                        @foreach (var aid in item.TrainingItemAids)
+                                        {
+                                            <span class="badge bg-teal">@aid.TrainingAids.ItemName</span>
+                                        }
+                                        <div class="float-right">
+                                            @if (item.GoalStrength != null)
+                                            {
+                                                <span class="badge">@(item.GoalStrength)</span>
+                                            }
+                                            @if (item.GoalTurns != null && item.GoalStrength != null)
+                                            {
+                                                <text>X</text>
+                                            }
+                                            @if (item.GoalTurns != null)
+                                            {
+                                                <span class="badge">@(item.GoalTurns)</span>
+                                            }
+                                        </div>
+                                        @(item.Description)
+                                        <span class="list-intro">@(item.Remark)</span>
+                                    </div>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="dd-item dd3-item list-line" data-id="@item.ItemID" onclick="@($"editStageBreakInterval({stage.StageID},{item.ItemID})");">
+                                    <div class="dd-handle dd3-handle t--12"></div>
+                                    <div class="dd3-content">
+                                        <span class="tag-repet badge col-grey">
+                                            @if (item.BreakIntervalInSecond != null)
+                                            {
+                                                <text>Break @(item.BreakIntervalInSecond) sec.</text>
+                                            }
+                                            @if (item.BreakIntervalInSecond != null && item.Repeats != null)
+                                            {
+                                                <text> / </text>
+                                            }
+                                            @if (item.Repeats != null)
+                                            {
+                                                <text>Repeat * @(item.Repeats)</text>
+                                            }
+                                        </span>
+                                    </div>
+                                </li>
+                            }
+                        }
+                    </ol>
+                </div>
+            </div>
+            <div class="clearfix m-b-0">
+                <div class="btn-group float-right" role="group">
+                    <a id="btnGroupDrop1" class="dropdown-toggle col-white" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="zmdi livicon-evo" data-options="name: pencil.svg; size: 40px; style: lines; strokeStyle:round; strokeColor:#f9edee; strokeWidth:2px; autoPlay:true"></i>
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                        <a class="dropdown-item" href="javascript:editStageTrainingItem(@stage.StageID);">新增動作</a>
+                        <a class="dropdown-item" href="javascript:editStageBreakInterval(@stage.StageID);">新增休息/組數</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@if (viewOnly != true)
+{
+<script>
+    $(function () {
+        $('#@($"nestable_{stage.StageID}")').nestable({
+            group: @(stage.StageID),
+            maxDepth: 1
+        });
+    });
+</script>
+}
+@functions
+{
+
+    String stageColor(int stageID)
+    {
+        switch (stageID)
+        {
+            case 1:
+                return "col-amber";
+            case 2:
+                return "col-pink";
+            case 3:
+                return "col-green";
+            case 4:
+                return "col-blue";
+            case 5:
+                return "col-yellow";
+        }
+        return null;
+    }
+}

@@ -28,7 +28,7 @@ using WebHome.Models.ViewModel;
 using WebHome.Properties;
 using WebHome.Security.Authorization;
 
-namespace BFConsole.Controllers
+namespace WebHome.Controllers
 {
     [RoleAuthorize(RoleID = new int[] { (int)Naming.RoleID.Administrator, (int)Naming.RoleID.Assistant, (int)Naming.RoleID.Officer, (int)Naming.RoleID.Coach, (int)Naming.RoleID.Servitor })]
     public class ConsoleEventController : SampleController<UserProfile>

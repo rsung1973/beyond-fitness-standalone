@@ -1,4 +1,5 @@
 ﻿<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
   <Import Project="..\packages\Microsoft.Net.Compilers.3.0.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.3.0.0\build\Microsoft.Net.Compilers.props')" />
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
@@ -12,7 +13,7 @@
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BFConsole</RootNamespace>
+    <RootNamespace>WebHome</RootNamespace>
     <AssemblyName>BF-Console</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
@@ -24,6 +25,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <TypeScriptToolsVersion>3.1</TypeScriptToolsVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -44,14 +46,45 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ClosedXML, Version=0.94.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ClosedXML.0.94.2\lib\net46\ClosedXML.dll</HintPath>
+    </Reference>
+    <Reference Include="DocumentFormat.OpenXml, Version=2.9.1.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
+      <HintPath>..\packages\DocumentFormat.OpenXml.2.9.1\lib\net46\DocumentFormat.OpenXml.dll</HintPath>
+    </Reference>
+    <Reference Include="ExcelNumberFormat, Version=1.0.6.0, Culture=neutral, PublicKeyToken=23c6f5d73be07eca, processorArchitecture=MSIL">
+      <HintPath>..\packages\ExcelNumberFormat.1.0.6\lib\net20\ExcelNumberFormat.dll</HintPath>
+    </Reference>
+    <Reference Include="FastMember, Version=1.4.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FastMember.1.4.1\lib\net461\FastMember.dll</HintPath>
+    </Reference>
+    <Reference Include="FastMember.Signed, Version=1.4.1.0, Culture=neutral, PublicKeyToken=9e8f22703bef9a29, processorArchitecture=MSIL">
+      <HintPath>..\packages\FastMember.Signed.1.4.1\lib\net461\FastMember.Signed.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=2.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Annotations, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ComponentModel.Annotations.4.5.0\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
+    </Reference>
     <Reference Include="System.Data.Linq" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.IO.FileSystem.Primitives, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.FileSystem.Primitives.4.3.0\lib\net46\System.IO.FileSystem.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.Packaging, Version=4.0.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Packaging.4.5.0\lib\net46\System.IO.Packaging.dll</HintPath>
+    </Reference>
     <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.7\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -61,6 +94,30 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.7\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.7\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.7\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.7\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
@@ -68,73 +125,7 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
-    <Reference Include="CommonLib.Logger">
-      <HintPath>..\beyond-fitness\bin\CommonLib.Logger.dll</HintPath>
-    </Reference>
-    <Reference Include="CommonLib.PlugInAdapter">
-      <HintPath>..\beyond-fitness\bin\CommonLib.PlugInAdapter.dll</HintPath>
-    </Reference>
-    <Reference Include="CommonLib">
-      <HintPath>..\beyond-fitness\bin\CommonLib.dll</HintPath>
-    </Reference>
-    <Reference Include="ExcelNumberFormat">
-      <HintPath>..\packages\ExcelNumberFormat.1.0.6\lib\net20\ExcelNumberFormat.dll</HintPath>
-    </Reference>
-    <Reference Include="FastMember">
-      <HintPath>..\packages\FastMember.1.4.1\lib\net461\FastMember.dll</HintPath>
-    </Reference>
-    <Reference Include="ClosedXML">
-      <HintPath>..\packages\ClosedXML.0.94.2\lib\net46\ClosedXML.dll</HintPath>
-    </Reference>
     <Reference Include="WindowsBase" />
-    <Reference Include="ClosedXML, Version=0.88.0.0, Culture=neutral, PublicKeyToken=fd1eb21b62ae805b" />
-    <Reference Include="FastMember.Signed">
-      <HintPath>..\packages\FastMember.Signed.1.4.1\lib\net461\FastMember.Signed.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Razor">
-      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.7\lib\net45\System.Web.Razor.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Helpers">
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.Helpers.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.WebPages.Deployment">
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.WebPages">
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.WebPages.Razor">
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Mvc">
-      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.7\lib\net45\System.Web.Mvc.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Net.Http.Formatting">
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.7\lib\net45\System.Net.Http.Formatting.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Http">
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.7\lib\net45\System.Web.Http.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Http.WebHost">
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.7\lib\net45\System.Web.Http.WebHost.dll</HintPath>
-    </Reference>
-    <Reference Include="System.ComponentModel.Annotations">
-      <HintPath>..\packages\System.ComponentModel.Annotations.4.5.0\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
-    </Reference>
-    <Reference Include="mscorlib" />
-    <Reference Include="System.IO.FileSystem.Primitives">
-      <HintPath>..\packages\System.IO.FileSystem.Primitives.4.3.0\lib\net46\System.IO.FileSystem.Primitives.dll</HintPath>
-    </Reference>
-    <Reference Include="System.IO.Packaging">
-      <HintPath>..\packages\System.IO.Packaging.4.5.0\lib\net46\System.IO.Packaging.dll</HintPath>
-    </Reference>
-    <Reference Include="DocumentFormat.OpenXml">
-      <HintPath>..\packages\DocumentFormat.OpenXml.2.9.1\lib\net46\DocumentFormat.OpenXml.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Runtime.Serialization" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Web.Infrastructure">
@@ -6014,28 +6005,138 @@
     <Content Include="ConsoleHome\plugins\waitme\waitMe.js" />
     <Content Include="ConsoleHome\plugins\waitme\waitMe.min.css" />
     <Content Include="ConsoleHome\plugins\waitme\waitMe.min.js" />
+    <Content Include="Content\bootstrap-datetimepicker.css" />
+    <Content Include="Content\bootstrap-datetimepicker.min.css" />
+    <Content Include="Content\bootstrap-grid.css" />
+    <Content Include="Content\bootstrap-grid.min.css" />
+    <Content Include="Content\bootstrap-reboot.css" />
+    <Content Include="Content\bootstrap-reboot.min.css" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
     <Content Include="Global.asax" />
     <Content Include="MainActivity\Blog\Default\DefaultTitle.jpg" />
+    <Content Include="Scripts\bootstrap-datetimepicker.js" />
+    <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
+    <Content Include="Scripts\bootstrap.bundle.js" />
+    <Content Include="Scripts\bootstrap.bundle.min.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\esm\popper-utils.js" />
+    <Content Include="Scripts\esm\popper-utils.min.js" />
+    <Content Include="Scripts\esm\popper.js" />
+    <Content Include="Scripts\esm\popper.min.js" />
+    <Content Include="Scripts\esm\popper.min.js.map" />
+    <Content Include="Scripts\esm\popper.js.map" />
+    <Content Include="Scripts\esm\popper-utils.min.js.map" />
+    <Content Include="Scripts\esm\popper-utils.js.map" />
+    <Content Include="Scripts\bootstrap.min.js.map" />
+    <Content Include="Scripts\bootstrap.js.map" />
+    <Content Include="Scripts\bootstrap.bundle.min.js.map" />
+    <Content Include="Scripts\bootstrap.bundle.js.map" />
+    <Content Include="Content\bootstrap.min.css.map" />
+    <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Content\bootstrap-reboot.min.css.map" />
+    <Content Include="Content\bootstrap-reboot.css.map" />
+    <Content Include="Content\bootstrap-grid.min.css.map" />
+    <Content Include="Content\bootstrap-grid.css.map" />
+    <None Include="Scripts\jquery-3.4.1.intellisense.js" />
+    <Content Include="Scripts\jquery-3.4.1.js" />
+    <Content Include="Scripts\jquery-3.4.1.min.js" />
+    <Content Include="Scripts\jquery-3.4.1.slim.js" />
+    <Content Include="Scripts\jquery-3.4.1.slim.min.js" />
+    <Content Include="Scripts\moment-with-locales.js" />
+    <Content Include="Scripts\moment-with-locales.min.js" />
+    <Content Include="Scripts\moment.js" />
+    <Content Include="Scripts\moment.min.js" />
+    <Content Include="Scripts\popper-utils.js" />
+    <Content Include="Scripts\popper-utils.min.js" />
+    <Content Include="Scripts\popper.js" />
+    <Content Include="Scripts\popper.min.js" />
+    <Content Include="Scripts\umd\popper-utils.js" />
+    <Content Include="Scripts\umd\popper-utils.min.js" />
+    <Content Include="Scripts\umd\popper.js" />
+    <Content Include="Scripts\umd\popper.min.js" />
+    <Content Include="Views\Blog\Module\CategoryIndication.ascx" />
+    <Content Include="Views\Blog\Module\PlusIndication.ascx" />
+    <Content Include="Views\ConsoleEvent\EventModal\MemberSelector.ascx" />
+    <Content Include="Views\ConsoleEvent\Module\SearchLearner.ascx" />
+    <Content Include="Views\ConsoleEvent\Module\CoachPIAttendeeSelector.ascx" />
+    <Content Include="Views\ConsoleEvent\EventModal\BookingCustomEvent.ascx" />
+    <Content Include="Views\ConsoleEvent\EventModal\BookingCoachPI.ascx" />
+    <Content Include="Views\ConsoleEvent\EventModal\BookingLesson.ascx" />
+    <Content Include="Views\ConsoleEvent\EventModal\AttendeeSelector.ascx" />
+    <Content Include="Views\ConsoleEvent\EventModal\AddEvent.ascx" />
+    <Content Include="Views\ConsoleEvent\EventModal\CoachPI.ascx" />
+    <Content Include="Views\ConsoleEvent\EventModal\UserEvent.ascx" />
+    <Content Include="Views\ConsoleEvent\EventModal\OtherLesson.ascx" />
+    <Content Include="Views\ConsoleEvent\EventModal\LearnerLesson.ascx" />
+    <Content Include="Views\ConsoleEvent\EventModal\LessonItem.ascx" />
+    <Content Include="Views\ConsoleEvent\Module\RevokeLesson.ascx" />
+    <Content Include="Views\ConsoleEvent\Module\LessonEmphasis.ascx" />
+    <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
+    <Content Include="Scripts\jquery-3.4.1.min.map" />
+    <Content Include="Scripts\umd\popper.min.js.map" />
+    <Content Include="Scripts\umd\popper.js.map" />
+    <Content Include="Scripts\umd\popper-utils.min.js.map" />
+    <Content Include="Scripts\umd\popper-utils.js.map" />
+    <Content Include="Scripts\README.md" />
+    <Content Include="Scripts\popper.min.js.map" />
+    <Content Include="Scripts\popper.js.map" />
+    <Content Include="Scripts\popper-utils.min.js.map" />
+    <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\ConsoleHome\ViewCourseContract.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\AboutAchievement.ascx" />
+    <Content Include="Views\ConsoleHome\Module\AboutAchievement.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\AboutAchievementC3.ascx" />
     <Content Include="Views\ConsoleHome\Module\AboutAchievementC3.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\AboutArticle.ascx" />
     <Content Include="Views\ConsoleHome\Module\AboutArticle.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\AboutCoach.ascx" />
     <Content Include="Views\ConsoleHome\Module\AboutCoach.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\AboutContest.ascx" />
     <Content Include="Views\ConsoleHome\Module\AboutContest.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\AboutDailyQuestion.ascx" />
     <Content Include="Views\ConsoleHome\Module\AboutDailyQuestion.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\AboutEditableLessons.ascx" />
     <Content Include="Views\ConsoleHome\Module\AboutEditableLessons.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\AboutInvoice.ascx" />
     <Content Include="Views\ConsoleHome\Module\AboutInvoice.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\AboutLearners.ascx" />
+    <Content Include="Views\ConsoleHome\Module\AboutLearners_1.ascx" />
     <Content Include="Views\ConsoleHome\Module\AboutLearners_1.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\AboutLearnerUncheckedLessons.ascx" />
     <Content Include="Views\ConsoleHome\Module\AboutLearnerUncheckedLessons.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\AboutStaff.ascx" />
+    <Content Include="Views\ConsoleHome\Module\AboutToApprovePreferredLessons.ascx" />
     <Content Include="Views\ConsoleHome\Module\AboutToApprovePreferredLessons.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\BlockHeader.ascx" />
     <Content Include="Views\ConsoleHome\Module\BlockHeader.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\CalendarEvents.ascx" />
+    <Content Include="Views\ConsoleHome\Module\CurrentExerciseBillboard.ascx" />
     <Content Include="Views\ConsoleHome\Module\CurrentExerciseBillboard.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\DailyEventItems.ascx" />
+    <Content Include="Views\ConsoleHome\Module\EventDetails.ascx" />
+    <Content Include="Views\ConsoleHome\Module\EventItems.ascx" />
+    <Content Include="Views\ConsoleHome\Module\ExerciseBillboard.ascx" />
     <Content Include="Views\ConsoleHome\Module\ExerciseBillboard.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\ExerciseBillboardDetails.ascx" />
+    <Content Include="Views\ConsoleHome\Module\ExerciseDonutChart.ascx" />
     <Content Include="Views\ConsoleHome\Module\ExerciseDonutChart.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\FocusItemToday.ascx" />
     <Content Include="Views\ConsoleHome\Module\FocusItemToday.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\GameRankRadarChart.ascx" />
     <Content Include="Views\ConsoleHome\Module\GameRankRadarChart.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\InspirationalTitle.ascx" />
     <Content Include="Views\ConsoleHome\Module\InspirationalTitle.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\MainCalendar.ascx" />
+    <Content Include="Views\ConsoleHome\Module\ProfileImage.ascx" />
     <Content Include="Views\ConsoleHome\Module\ProfileImage.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\RenderLessonCheck.ascx" />
+    <Content Include="Views\ConsoleHome\Module\TodayLessonsBarChart.ascx" />
+    <Content Include="Views\ConsoleHome\Module\TodayLessonsBarChartC3.ascx" />
     <Content Include="Views\ConsoleHome\Module\TodayLessonsBarChartC3.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\AboutLessonSummary.cshtml" />
+    <Content Include="Views\ConsoleHome\QuickTerminateContract.cshtml" />
     <Content Include="Views\Blog\Module\PlusIndication.cshtml" />
     <Content Include="Views\ConsoleEvent\EventModal\LessonItem.cshtml" />
     <Content Include="Views\ConsoleEvent\EventModal\UserEvent.cshtml" />
@@ -6058,73 +6159,117 @@
     <Content Include="Views\ConsoleEvent\Module\CoachPICoachOnlySelector.cshtml" />
     <Content Include="Views\ConsoleEvent\EventModal\BookingTrialLesson.cshtml" />
     <Content Include="Views\ConsoleEvent\EventModal\BookingLearnerLesson.cshtml" />
+    <Content Include="Views\ConsoleHome\Shared\DropifyUpload.ascx" />
+    <Content Include="Views\ConsoleHome\Shared\PagingControl.ascx" />
     <Content Include="Views\ConsoleHome\Shared\JsAlert.cshtml" />
+    <Content Include="Views\ConsoleHome\LearnerLesson.ascx" />
+    <Content Include="Views\ConsoleHome\Shared\MyContractHeader.ascx" />
+    <Content Include="Views\ConsoleHome\Shared\KnobJS.ascx" />
+    <Content Include="Views\ConsoleHome\Shared\Knob.ascx" />
+    <Content Include="Views\ConsoleHome\Shared\BSModalScript.ascx" />
+    <Content Include="Views\ConsoleHome\Shared\AlertMessage.ascx" />
+    <Content Include="Views\ConsoleHome\Shared\InitBarChartNoRegister.ascx" />
+    <Content Include="Views\ConsoleHome\Shared\ReportInputError.ascx" />
+    <Content Include="Views\ContractConsole\ContractModal\AboutContractDetails.ascx" />
+    <Content Include="Views\ContractConsole\ContractModal\EditContractMember.ascx" />
+    <Content Include="Views\ContractConsole\ContractModal\ProcessContractMember.ascx" />
+    <Content Include="Views\ContractConsole\ContractModal\SelectContractOwner.ascx" />
+    <Content Include="Views\ContractConsole\ContractModal\SignaturePanel.ascx" />
+    <Content Include="Views\ContractConsole\ContractModal\SelectContractMember.ascx" />
+    <Content Include="Views\ContractConsole\ContractModal\ListLessonPrice.ascx" />
+    <Content Include="Views\ContractConsole\ContractModal\SelectCoach.ascx" />
+    <Content Include="Views\ContractConsole\ContractModal\ProcessContract.ascx" />
+    <Content Include="Views\ContractConsole\ContractModal\ContractQuery.ascx" />
+    <Content Include="Views\ContractConsole\ContractService\ApplyContractService.ascx" />
+    <Content Include="Views\ContractConsole\ContractService\CourseContractExtensionView.ascx" />
+    <Content Include="Views\ContractConsole\ContractService\ContractConsultantReassignmentView.ascx" />
+    <Content Include="Views\ContractConsole\ContractService\CourseContractOtherAmendmentView.ascx" />
+    <Content Include="Views\ContractConsole\ContractService\CourseContractTerminationView.ascx" />
     <Content Include="Views\ContractConsole\ContractService\CourseContractTransferenceView.ascx" />
+    <Content Include="Views\ContractConsole\ContractService\DoTerminatingContract.ascx" />
+    <Content Include="Views\ContractConsole\ContractService\DoTransferringContract.ascx" />
+    <Content Include="Views\ContractConsole\ContractService\DoExpirationPostponing.ascx" />
     <Content Include="Views\ContractConsole\ContractService\DoConsultantAssignment.ascx" />
+    <Content Include="Views\ContractConsole\ContractService\ContractServiceHistory.ascx" />
+    <Content Include="Views\ContractConsole\ContractModal\ProcessContractService.ascx" />
+    <Content Include="Views\ContractConsole\Editing\ContractServiceCommitted.ascx" />
+    <Content Include="Views\ContractConsole\Editing\CourseContractSigned.ascx" />
+    <Content Include="Views\ContractConsole\Editing\CourseContractCommitted.ascx" />
+    <Content Include="Views\ContractConsole\Editing\ContractStatusChanged.ascx" />
+    <Content Include="Views\ContractConsole\Editing\CourseContractSaved.ascx" />
+    <Content Include="Views\ContractConsole\Editing\ListContractMember.ascx" />
+    <Content Include="Views\ContractConsole\Editing\ContractMemberCommitted.ascx" />
+    <Content Include="Views\ContractConsole\Editing\TotalCostSummary.ascx" />
+    <Content Include="Views\ContractConsole\Editing\SelectLessonPrice.ascx" />
+    <Content Include="Views\ContractConsole\Editing\SelectConsultant.ascx" />
+    <Content Include="Views\ContractConsole\ContractService\ContractCoachReplacement.ascx" />
+    <Content Include="Views\ContractConsole\ContractService\ContractTermination.ascx" />
     <Content Include="Views\ContractConsole\ContractService\ContractTransference.ascx" />
+    <Content Include="Views\ContractConsole\ContractService\ContractExtension.ascx" />
+    <Content Include="Views\ContractConsole\Indication\ContractDetails.ascx" />
+    <Content Include="Views\ContractConsole\Module\AboutContractServicesSummaryByOfficer.ascx" />
+    <Content Include="Views\ContractConsole\Module\AboutContractServicesSummaryByBranch.ascx" />
+    <Content Include="Views\ContractConsole\Module\AboutContractsByBranch.ascx" />
+    <Content Include="Views\ContractConsole\Module\AboutContractsByOfficer.ascx" />
+    <Content Include="Views\ContractConsole\Module\AboutContractServicesByManager.ascx" />
+    <Content Include="Views\ContractConsole\Module\AboutContractServicesByPureCoach.ascx" />
+    <Content Include="Views\ContractConsole\Module\AboutContractServicesByCoach.ascx" />
+    <Content Include="Views\ContractConsole\Module\AboutContractServicesByBranch.ascx" />
+    <Content Include="Views\ContractConsole\Module\AboutContractServicesByOfficer.ascx" />
+    <Content Include="Views\ContractConsole\Module\AboutContractServices.ascx" />
+    <Content Include="Views\ContractConsole\Module\AboutCompleteLessons.ascx" />
+    <Content Include="Views\ContractConsole\Module\AboutNewContracts.ascx" />
+    <Content Include="Views\ContractConsole\Module\AboutExpiring.ascx" />
+    <Content Include="Views\ContractConsole\Module\AboutExpiringByOfficer.ascx" />
+    <Content Include="Views\ContractConsole\Module\AboutNewContractsByOfficer.ascx" />
+    <Content Include="Views\ContractConsole\Module\AboutPaymentByOfficer.ascx" />
+    <Content Include="Views\ContractConsole\Module\AboutReceivablesByBranch.ascx" />
+    <Content Include="Views\ContractConsole\Module\AboutReceivablesByOfficer.ascx" />
+    <Content Include="Views\ContractConsole\Module\AboutReceivablesByCoach.ascx" />
+    <Content Include="Views\ContractConsole\Module\AboutReceivables.ascx" />
+    <Content Include="Views\ContractConsole\Module\AboutInstallment.ascx" />
+    <Content Include="Views\ContractConsole\Module\AboutNewContractsByBranch.ascx" />
+    <Content Include="Views\ContractConsole\Module\AboutPaymentByBranch.ascx" />
+    <Content Include="Views\ContractConsole\Module\AboutPaymentByCoach.ascx" />
+    <Content Include="Views\ContractConsole\Module\ContractLessonList.ascx" />
+    <Content Include="Views\ContractConsole\Module\ToRenewByOfficer.ascx" />
+    <Content Include="Views\ContractConsole\Module\ToRenewByBranch.ascx" />
+    <Content Include="Views\ContractConsole\Module\ToRenewByCoach.ascx" />
+    <Content Include="Views\ContractConsole\Module\ContractByOfficer.ascx" />
+    <Content Include="Views\ContractConsole\Module\ContractByBranch.ascx" />
+    <Content Include="Views\ContractConsole\Module\ContractDetails.ascx" />
+    <Content Include="Views\ContractConsole\Module\AboutExpiringByCoach.ascx" />
+    <Content Include="Views\ContractConsole\Module\ContractPaymentList.ascx" />
+    <Content Include="Views\ContractConsole\Module\ContractInstallmentList.ascx" />
+    <Content Include="Views\ContractConsole\Module\ContractMemberList.ascx" />
+    <Content Include="Views\ContractConsole\Module\CourseContractView.ascx" />
+    <Content Include="Views\ContractConsole\Module\CustomContractList.ascx" />
+    <Content Include="Views\ContractConsole\Module\ContractList.ascx" />
+    <Content Include="Views\ContractConsole\Module\AboutNewContractsByCoach.ascx" />
+    <Content Include="Views\ContractConsole\Module\AboutExpiringByBranch.ascx" />
+    <Content Include="Views\LessonConsole\ProcessModal\TodayLessons.ascx" />
+    <Content Include="Views\LessonConsole\ProcessModal\ProcessCrossBranch.ascx" />
+    <Content Include="Views\LessonConsole\Module\CrossBranchLessonList.ascx" />
     <Content Include="Views\MainActivity\Module\MobileMenuItem.ascx" />
     <Content Include="Views\MainActivity\Module\ContactItem.ascx" />
     <Content Include="Views\MainActivity\Module\JoinItem.ascx" />
     <Content Include="Views\MainActivity\Module\MenuItem.ascx" />
+    <Content Include="Views\MainActivity\SamplePage.aspx" />
+    <Content Include="Views\ReportConsole\ReportModal\ByContractNo.ascx" />
+    <Content Include="Views\ReportConsole\ReportModal\SelectPeriodReport.ascx" />
+    <Content Include="Views\ReportConsole\ReportModal\SelectMonthlyReport.ascx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="ConsoleHome\images\landing\guarantee.jpg" />
-    <Content Include="Views\ConsoleHome\Module\AboutLessonSummary.cshtml" />
-    <Content Include="ConsoleHome\images\avatar\noname.png" />
-    <Content Include="Views\ContractConsole\ContractService\CourseContractQuickTerminationView.cshtml" />
-    <Content Include="Views\ContractConsole\ContractService\ContractQuickTermination.cshtml" />
-    <Content Include="Views\ContractConsole\ContractService\DoQuickTerminatingContract.cshtml" />
-    <Content Include="Views\ConsoleHome\QuickTerminateContract.cshtml" />
-    <Content Include="Views\ReportConsole\Module\CourseContractReport.cshtml" />
-    <Content Include="Views\ReportConsole\Module\PaymentReport.cshtml" />
-    <Content Include="Views\ReportConsole\Module\LearnerReport.cshtml" />
-    <Content Include="Views\ReportConsole\Module\AchivementReport.cshtml" />
-    <Content Include="Scripts\jquery-3.4.1.slim.min.js" />
-    <Content Include="Scripts\jquery-3.4.1.slim.js" />
-    <Content Include="Scripts\jquery-3.4.1.min.js" />
-    <Content Include="Scripts\jquery-3.4.1.js" />
-    <Content Include="Scripts\jquery-3.4.1-vsdoc.js" />
-    <Content Include="Scripts\moment.min.js" />
-    <Content Include="Scripts\moment.js" />
-    <Content Include="Scripts\moment-with-locales.min.js" />
-    <Content Include="Scripts\moment-with-locales.js" />
-    <Content Include="Scripts\umd\popper.min.js" />
-    <Content Include="Scripts\umd\popper.js" />
-    <Content Include="Scripts\umd\popper-utils.min.js" />
-    <Content Include="Scripts\umd\popper-utils.js" />
-    <Content Include="Scripts\popper.min.js" />
-    <Content Include="Scripts\popper.js" />
-    <Content Include="Scripts\popper-utils.min.js" />
-    <Content Include="Scripts\popper-utils.js" />
-    <Content Include="Scripts\esm\popper.min.js" />
-    <Content Include="Scripts\esm\popper.js" />
-    <Content Include="Scripts\esm\popper-utils.min.js" />
-    <Content Include="Scripts\esm\popper-utils.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.bundle.min.js" />
-    <Content Include="Scripts\bootstrap.bundle.js" />
-    <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Content\bootstrap.css" />
-    <Content Include="Content\bootstrap-reboot.min.css" />
-    <Content Include="Content\bootstrap-reboot.css" />
-    <Content Include="Content\bootstrap-grid.min.css" />
-    <Content Include="Content\bootstrap-grid.css" />
-    <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
-    <Content Include="Scripts\bootstrap-datetimepicker.js" />
-    <Content Include="Content\bootstrap-datetimepicker.min.css" />
-    <Content Include="Content\bootstrap-datetimepicker.css" />
-    <Content Include="Views\ReportConsole\Module\TrustReport.cshtml" />
-    <Content Include="Views\ReportConsole\Module\InventoryReport.cshtml" />
-    <Content Include="Views\ReportConsole\ReportModal\SelectAwardItem.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\InitializeType.cs" />
+    <Compile Include="Controllers\BonusCreditController.cs" />
     <Compile Include="Controllers\CommonHelperController.cs" />
     <Compile Include="Controllers\ConsoleEventController.cs" />
     <Compile Include="Controllers\ConsoleHomeController.cs" />
     <Compile Include="Controllers\ContractConsoleController.cs" />
+    <Compile Include="Controllers\LearnerProfileController.cs" />
     <Compile Include="Controllers\LessonConsoleController.cs" />
     <Compile Include="Controllers\MainActivityController.cs" />
     <Compile Include="Controllers\ReportConsoleController.cs" />
@@ -6483,6 +6628,9 @@
     <Content Include="MainActivity\Pricing\Zhongxiao.json" />
     <None Include="packages.config" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <Content Include="Views\ConsoleHome\Template\MainPage.Master" />
+    <Content Include="Views\MainActivity\Template\MainPage.Master" />
+    <Content Include="Views\MainActivity\Template\BlogPage.Master" />
     <Content Include="Views\MainActivity\Template\BlogPage.cshtml" />
     <Content Include="Views\MainActivity\Template\MainPage.cshtml" />
     <Content Include="Views\MainActivity\Index.cshtml" />
@@ -6529,6 +6677,7 @@
     <Content Include="Views\ConsoleHome\Shared\ReportInputError.cshtml" />
     <Content Include="Views\ContractConsole\Module\ContractList.cshtml" />
     <Content Include="Views\ConsoleHome\Shared\AlertMessage.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\AboutLearners.cshtml" />
     <Content Include="Views\ConsoleHome\Module\AboutStaff.cshtml" />
     <Content Include="Views\ConsoleHome\Module\CalendarEvents.cshtml" />
     <Content Include="Views\ConsoleHome\Module\DailyEventItems.cshtml" />
@@ -6537,6 +6686,7 @@
     <Content Include="Views\ConsoleHome\Module\ExerciseBillboardDetails.cshtml" />
     <Content Include="Views\ConsoleHome\Module\MainCalendar.cshtml" />
     <Content Include="Views\ConsoleHome\Module\RenderLessonCheck.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\TodayLessonsBarChart.cshtml" />
     <Content Include="Views\ConsoleHome\Shared\MyContractHeader.cshtml" />
     <Content Include="Views\ConsoleHome\Shared\PagingControl.cshtml" />
     <Content Include="Views\ContractConsole\ContractModal\AboutContractDetails.cshtml" />
@@ -6557,6 +6707,7 @@
     <Content Include="Views\ContractConsole\ContractService\ContractTermination.cshtml" />
     <Content Include="Views\ContractConsole\ContractService\ContractTransference.cshtml" />
     <Content Include="Views\ContractConsole\ContractService\CourseContractExtensionView.cshtml" />
+    <Content Include="Views\ContractConsole\ContractService\CourseContractOtherAmendmentView.cshtml" />
     <Content Include="Views\ContractConsole\ContractService\CourseContractTerminationView.cshtml" />
     <Content Include="Views\ContractConsole\ContractService\CourseContractTransferenceView.cshtml" />
     <Content Include="Views\ContractConsole\ContractService\DoConsultantAssignment.cshtml" />
@@ -6614,9 +6765,11 @@
     <Content Include="Views\ConsoleHome\CrossBranchIndex.cshtml" />
     <Content Include="Views\ConsoleHome\EditBlogArticle.cshtml" />
     <Content Include="Views\ConsoleHome\EditCourseContract.cshtml" />
+    <Content Include="Views\ConsoleHome\LearnerLesson.cshtml" />
     <Content Include="Views\ConsoleHome\PostponeContractExpiration.cshtml" />
     <Content Include="Views\ConsoleHome\ReassignFitnessConsultant.cshtml" />
     <Content Include="Views\ConsoleHome\ReportIndex.cshtml" />
+    <Content Include="Views\ConsoleHome\SamplePage.cshtml" />
     <Content Include="Views\ConsoleHome\SignContractService.cshtml" />
     <Content Include="Views\ConsoleHome\SignCourseContract.cshtml" />
     <Content Include="Views\ConsoleHome\TerminateContract.cshtml" />
@@ -6627,45 +6780,65 @@
     <Content Include="Views\ContractConsole\Module\SignHere.cshtml" />
     <Content Include="Views\ContractConsole\Module\AboutNewContractsByPureCoach.cshtml" />
     <Content Include="Views\ContractConsole\Module\AboutNewContractsByManager.cshtml" />
+    <Content Include="Views\ContractConsole\ContractService\ContractQuickTermination.cshtml" />
+    <Content Include="Views\ContractConsole\ContractService\CourseContractQuickTerminationView.cshtml" />
+    <Content Include="Views\ContractConsole\ContractService\DoQuickTerminatingContract.cshtml" />
+    <Content Include="Views\ReportConsole\Module\CourseContractReport.cshtml" />
+    <Content Include="Views\ReportConsole\Module\AchivementReport.cshtml" />
+    <Content Include="Views\ReportConsole\Module\InventoryReport.cshtml" />
+    <Content Include="Views\ReportConsole\Module\LearnerReport.cshtml" />
+    <Content Include="Views\ReportConsole\Module\PaymentReport.cshtml" />
+    <Content Include="Views\ReportConsole\Module\TrustReport.cshtml" />
+    <Content Include="Views\ReportConsole\ReportModal\SelectAwardItem.cshtml" />
+    <Content Include="Views\ConsoleHome\LearnerProfile.cshtml" />
+    <Content Include="Views\LearnerProfile\Module\PersonalExerciseRadarChart.cshtml" />
+    <Content Include="Views\LearnerProfile\Module\LearnerEffectiveContractList.cshtml" />
+    <Content Include="Views\LearnerProfile\Module\LearnerUnpaidContractList.cshtml" />
+    <Content Include="Views\LearnerProfile\Module\LearnerLessonsReview.cshtml" />
+    <Content Include="Views\LearnerProfile\Module\LearnerCalendar.cshtml" />
+    <Content Include="Views\LearnerProfile\Module\LearnerCalendarEvents.cshtml" />
+    <Content Include="Views\LearnerProfile\Module\LearnerLessonsReviewDetails.cshtml" />
+    <Content Include="Views\ConsoleHome\LessonTrainingContent.cshtml" />
+    <Content Include="Views\LearnerProfile\Module\ProfileHeader.cshtml" />
+    <Content Include="Views\LearnerProfile\Module\RecentStatus.cshtml" />
+    <Content Include="Views\LearnerProfile\Module\TrainingGoal.cshtml" />
+    <Content Include="Views\LearnerProfile\Module\TrainingMilestone.cshtml" />
+    <Content Include="Views\LearnerProfile\Module\TrainingMilestoneItems.cshtml" />
+    <Content Include="Views\LearnerProfile\Module\TrainingExecutionPlan.cshtml" />
+    <Content Include="Views\LearnerProfile\Module\LessonContentSparkline.cshtml" />
+    <Content Include="Views\LessonConsole\Module\LessonContentDetails.cshtml" />
+    <Content Include="Views\LearnerProfile\Module\LessonEmphasis.cshtml" />
+    <Content Include="Views\LearnerProfile\Module\LessonTrainingStage.cshtml" />
+    <Content Include="Views\LearnerProfile\Module\LessonTrainingPlan.cshtml" />
+    <Content Include="Views\LearnerProfile\ProfileModal\EditTrainingItem.cshtml" />
+    <Content Include="Views\LearnerProfile\Module\TrainingAids.cshtml" />
+    <Content Include="Views\LearnerProfile\ProfileModal\EditBreakInterval.cshtml" />
+    <Content Include="Views\LearnerProfile\Module\FavoriteLesson.cshtml" />
+    <Content Include="Views\LearnerProfile\Module\LessonList.cshtml" />
+    <Content Include="Views\LearnerProfile\Module\LessonItems.cshtml" />
+    <Content Include="Views\LearnerProfile\ProfileModal\ViewTrainingExecution.cshtml" />
+    <Content Include="Views\ConsoleHome\EditLearnerCharacter.cshtml" />
+    <Content Include="Views\LearnerProfile\Module\PDQItem.cshtml" />
+    <Content Include="Views\LessonConsole\Module\TrainingSparkleDetails.cshtml" />
+    <Content Include="Views\LearnerProfile\Module\EditLearnerFeature.cshtml" />
+    <Content Include="Views\LearnerProfile\Module\EditExercisePurpose.cshtml" />
+    <Content Include="Views\LearnerProfile\Module\LearnerCharacter.cshtml" />
+    <Content Include="Views\LearnerProfile\ProfileModal\SelectLearnerProfile.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
-    <None Include="Scripts\jquery-3.4.1.slim.min.map" />
-    <None Include="Scripts\jquery-3.4.1.min.map" />
-    <None Include="Scripts\umd\popper.min.js.map" />
-    <None Include="Scripts\umd\popper.js.map" />
-    <None Include="Scripts\umd\popper-utils.min.js.map" />
-    <None Include="Scripts\umd\popper-utils.js.map" />
-    <None Include="Scripts\README.md" />
-    <None Include="Scripts\popper.min.js.map" />
-    <None Include="Scripts\popper.js.map" />
-    <None Include="Scripts\popper-utils.min.js.map" />
-    <None Include="Scripts\popper-utils.js.map" />
-    <None Include="Scripts\esm\popper.min.js.map" />
-    <None Include="Scripts\esm\popper.js.map" />
-    <None Include="Scripts\esm\popper-utils.min.js.map" />
-    <None Include="Scripts\esm\popper-utils.js.map" />
-    <None Include="Scripts\bootstrap.min.js.map" />
-    <None Include="Scripts\bootstrap.js.map" />
-    <None Include="Scripts\bootstrap.bundle.min.js.map" />
-    <None Include="Scripts\bootstrap.bundle.js.map" />
-    <None Include="Content\bootstrap.min.css.map" />
-    <None Include="Content\bootstrap.css.map" />
-    <None Include="Content\bootstrap-reboot.min.css.map" />
-    <None Include="Content\bootstrap-reboot.css.map" />
-    <None Include="Content\bootstrap-grid.min.css.map" />
-    <None Include="Content\bootstrap-grid.css.map" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="ConsoleHome\images\landing\portfolio\" />
     <Folder Include="MainActivity\Portfolio\Coach\Bryant\" />
     <Folder Include="MainActivity\Portfolio\Nanjing\" />
+    <Folder Include="Views\BonusCredit\" />
     <Folder Include="Views\CommonHelper\" />
-    <Folder Include="Views\ReportConsole\Module\" />
+    <Folder Include="Views\ContractConsole\Items\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\MainActivity\Resources\NamingItem.en-US.resx" />
@@ -6680,15 +6853,27 @@
       <Project>{c49821ff-96c8-466b-aef4-137ec84fdefc}</Project>
       <Name>beyond-fitness</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CommonLib.Logger\CommonLib.Logger.csproj">
+      <Project>{8146e629-552a-4b36-8711-08ae8245b8fa}</Project>
+      <Name>CommonLib.Logger</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CommonLib\CommonLib.csproj">
+      <Project>{c0ad239c-2ac4-46d2-ae7c-5e97266ef4ea}</Project>
+      <Name>CommonLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\index.d.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
   <ProjectExtensions>
@@ -6719,6 +6904,7 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.3.0.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.3.0.0\build\Microsoft.Net.Compilers.props'))" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

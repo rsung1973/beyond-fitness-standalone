@@ -21,9 +21,7 @@
 <input type="text" id="@(_viewID)" class="form-control" name="userName" placeholder="搜尋學生..." />
 <span class="input-group-addon">
     <i class="zmdi zmdi-search"></i>
-</span>
-
-<script>
+    <script>
     $('#@(_viewID)').keypress(function (event) {
         var event = event || window.event;
         var userName = $(event.target).val();
@@ -70,6 +68,8 @@
         }
     });
 
-</script>
+    </script>
+</span>
+
 
 

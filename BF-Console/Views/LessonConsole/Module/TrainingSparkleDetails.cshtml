@@ -1,0 +1,34 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    IQueryable<LessonTime> _model;
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = (IQueryable<LessonTime>)this.Model;
+}
+@{
+    IQueryable<TrainingExecution> executionItems = _model.Join(models.GetTable<TrainingPlan>(), l => l.LessonID, p => p.LessonID, (l, p) => p)
+                .Join(models.GetTable<TrainingExecution>(), p => p.ExecutionID, t => t.ExecutionID, (p, t) => t);
+}
+@if (executionItems.Count()>0)
+{
+    var items = models.GetTable<TrainingStage>().ToArray();
+    var stageItems = executionItems.Join(models.GetTable<TrainingExecutionStage>(), t => t.ExecutionID, s => s.ExecutionID, (t, s) => s);
+    var total = stageItems.Sum(t => t.TotalMinutes) ?? 1;
+    if (total <= 0)
+    {
+        total = 1;
+    }
+    <text>@String.Join(",",items.Select(t => Math.Round((stageItems.Where(x => x.StageID == t.StageID).Select(x => x.TotalMinutes).FirstOrDefault() ?? 0) * 100 / total)))</text>
+}

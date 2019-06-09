@@ -644,10 +644,10 @@ namespace WebHome.Controllers
             if (models.CouldMarkToAttendLesson(fitnessAssessment.LessonTime))
             {
                 models.AttendLesson(fitnessAssessment.LessonTime);
-                foreach(var r in fitnessAssessment.LessonTime.GroupingLesson.RegisterLesson)
-                {
-                    models.CheckLearnerQuestionnaireRequest(r);
-                }
+                //foreach(var r in fitnessAssessment.LessonTime.GroupingLesson.RegisterLesson)
+                //{
+                //    models.CheckLearnerQuestionnaireRequest(r);
+                //}
             }
             else
             {
@@ -778,10 +778,10 @@ namespace WebHome.Controllers
             if (models.CouldMarkToAttendLesson(fitnessAssessment.LessonTime))
             {
                 models.AttendLesson(fitnessAssessment.LessonTime);
-                foreach (var r in fitnessAssessment.LessonTime.GroupingLesson.RegisterLesson)
-                {
-                    models.CheckLearnerQuestionnaireRequest(r);
-                }
+                //foreach (var r in fitnessAssessment.LessonTime.GroupingLesson.RegisterLesson)
+                //{
+                //    models.CheckLearnerQuestionnaireRequest(r);
+                //}
             }
 
 

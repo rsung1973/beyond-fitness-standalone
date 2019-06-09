@@ -5,7 +5,7 @@ using System.Web;
 using WebHome.Helper;
 using WebHome.Properties;
 
-namespace BFConsole.App_Start
+namespace WebHome.App_Start
 {
     public static class InitializeType
     {
@@ -20,6 +20,8 @@ namespace BFConsole.App_Start
             {
                 return $"{Settings.Default.HostDomain}{VirtualPathUtility.ToAbsolute("~/CommonHelper/ViewContractService")}?pdf=1&revisionID={item.RevisionID}&t={DateTime.Now.Ticks}";
             };
+
+            Settings.Default["ReportInputError"] = "~/Views/ConsoleHome/Shared/ReportInputError.cshtml";
         }
     }
 }

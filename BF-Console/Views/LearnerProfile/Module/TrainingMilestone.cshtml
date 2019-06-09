@@ -1,0 +1,48 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    UserProfile _learner;
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _learner = (UserProfile)this.Model;
+}
+@{
+    PersonalExercisePurpose purpose = _learner.PersonalExercisePurpose;
+}
+<ul class="list-unstyled feeds_widget" id="milestoneItems">
+    @{ 
+        Html.RenderAction("LoadCompleteExercisePurposeItems", "LearnerProfile", new { _learner.UID });
+    }
+</ul>
+<button onclick="loadMilestone();" class="btn btn-darkteal btn-round btn-sm m-t-0 float-right">載入更多 ...</button>
+<script>
+
+    function loadMilestone(reload) {
+        if (reload) {
+            $('#milestoneItems').empty();
+            $global.currentIndex = 0;
+        }
+        showLoading();
+        $.post('@Html.Raw(Url.Action("LoadCompleteExercisePurposeItems", "LearnerProfile", new { _learner.UID }))', { 'currentIndex': $global.currentIndex }, function (data) {
+            hideLoading();
+            if ($.isPlainObject(data)) {
+                swal(data.message);
+            } else {
+                $(data).appendTo($('#milestoneItems'));
+            }
+        });
+    }
+
+</script>
+

@@ -42,7 +42,6 @@
       <Column Name="Expression" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="Description" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
       <Association Name="LevelExpression_Document" Member="Documents" ThisKey="LevelID" OtherKey="CurrentStep" Type="Document" />
-      <Association Name="LevelExpression_TrainingPlan" Member="TrainingPlan" ThisKey="LevelID" OtherKey="PlanStatus" Type="TrainingPlan" />
       <Association Name="LevelExpression_UserProfile" Member="UserProfile" ThisKey="LevelID" OtherKey="LevelID" Type="UserProfile" />
       <Association Name="LevelExpression_PDQType" Member="PDQType" ThisKey="LevelID" OtherKey="TypeID" Type="PDQType" />
       <Association Name="LevelExpression_RegisterLesson" Member="RegisterLesson" ThisKey="LevelID" OtherKey="Attended" Type="RegisterLesson" />
@@ -61,6 +60,7 @@
       <Association Name="LevelExpression_VoidPaymentLevel" Member="VoidPaymentLevel" ThisKey="LevelID" OtherKey="LevelID" Type="VoidPaymentLevel" />
       <Association Name="LevelExpression_CourseContractLevel" Member="CourseContractLevel" ThisKey="LevelID" OtherKey="LevelID" Type="CourseContractLevel" />
       <Association Name="LevelExpression_Payment" Member="Payment" ThisKey="LevelID" OtherKey="Status" Type="Payment" />
+      <Association Name="LevelExpression_TrainingPlan" Member="TrainingPlan" ThisKey="LevelID" OtherKey="PlanStatus" Type="TrainingPlan" />
     </Type>
   </Table>
   <Table Name="dbo.Attachment" Member="Attachments">
@@ -104,16 +104,6 @@
       <Column Name="OrderIndex" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Association Name="TrainingType_TrainingStageItem" Member="TrainingStageItem" ThisKey="TrainingID" OtherKey="TrainingID" Type="TrainingStageItem" Cardinality="One" />
       <Association Name="TrainingType_TrainingItem" Member="TrainingItem" ThisKey="TrainingID" OtherKey="TrainingID" Type="TrainingItem" />
-    </Type>
-  </Table>
-  <Table Name="dbo.TrainingPlan" Member="TrainingPlan">
-    <Type Name="TrainingPlan">
-      <Column Name="LessonID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="ExecutionID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="PlanStatus" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Association Name="TrainingPlan_TrainingExecution" Member="TrainingExecution" ThisKey="ExecutionID" OtherKey="ExecutionID" Type="TrainingExecution" Cardinality="One" />
-      <Association Name="LevelExpression_TrainingPlan" Member="LevelExpression" ThisKey="PlanStatus" OtherKey="LevelID" Type="LevelExpression" IsForeignKey="true" />
-      <Association Name="LessonTime_TrainingPlan" Member="LessonTime" ThisKey="LessonID" OtherKey="LessonID" Type="LessonTime" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
   <Table Name="dbo.FitnessAssessment" Member="FitnessAssessment">
@@ -211,6 +201,7 @@
       <Association Name="UserProfile_UserEvent" Member="UserEvent" ThisKey="UID" OtherKey="UID" Type="UserEvent" />
       <Association Name="UserProfile_PreferredLessonTime" Member="PreferredLessonTime" ThisKey="UID" OtherKey="ApproverID" Type="PreferredLessonTime" />
       <Association Name="UserProfile_BlogArticle" Member="BlogArticle" ThisKey="UID" OtherKey="AuthorID" Type="BlogArticle" />
+      <Association Name="UserProfile_FavoriteLesson" Member="FavoriteLesson" ThisKey="UID" OtherKey="UID" Type="FavoriteLesson" />
       <Association Name="Attachment_UserProfile" Member="Attachment" ThisKey="PictureID" OtherKey="AttachmentID" Type="Attachment" IsForeignKey="true" />
       <Association Name="LevelExpression_UserProfile" Member="LevelExpression" ThisKey="LevelID" OtherKey="LevelID" Type="LevelExpression" IsForeignKey="true" />
       <Association Name="UserProfile_UserProfile" Member="UserProfile1" ThisKey="Creator" OtherKey="UID" Type="UserProfile" IsForeignKey="true" />
@@ -231,6 +222,7 @@
       <Column Name="Suggestion" Type="System.String" DbType="NVarChar(256)" CanBeNull="true" />
       <Column Name="RightAnswer" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
       <Association Name="PDQSuggestion_PDQTask" Member="PDQTask" ThisKey="SuggestionID" OtherKey="SuggestionID" Type="PDQTask" />
+      <Association Name="PDQSuggestion_PDQTaskItem" Member="PDQTaskItem" ThisKey="SuggestionID" OtherKey="SuggestionID" Type="PDQTaskItem" />
       <Association Name="PDQQuestion_PDQSuggestion" Member="PDQQuestion" ThisKey="QuestionID" OtherKey="QuestionID" Type="PDQQuestion" IsForeignKey="true" />
     </Type>
   </Table>
@@ -291,6 +283,7 @@
       <Association Name="RegisterLesson_AwardingLesson" Member="AwardingLesson" ThisKey="RegisterID" OtherKey="RegisterID" Type="AwardingLesson" />
       <Association Name="RegisterLesson_LessonTime" Member="LessonTime" ThisKey="RegisterID" OtherKey="RegisterID" Type="LessonTime" />
       <Association Name="RegisterLesson_LessonTimeExpansion" Member="LessonTimeExpansion" ThisKey="RegisterID" OtherKey="RegisterID" Type="LessonTimeExpansion" />
+      <Association Name="RegisterLesson_TrainingPlan" Member="TrainingPlan" ThisKey="RegisterID" OtherKey="RegisterID" Type="TrainingPlan" />
       <Association Name="GroupingLesson_RegisterLesson" Member="GroupingLesson" ThisKey="RegisterGroupID" OtherKey="GroupID" Type="GroupingLesson" IsForeignKey="true" DeleteRule="SET NULL" />
       <Association Name="GroupingLessonDiscount_RegisterLesson" Member="GroupingLessonDiscount" ThisKey="GroupingMemberCount" OtherKey="GroupingMemberCount" Type="GroupingLessonDiscount" IsForeignKey="true" />
       <Association Name="LevelExpression_RegisterLesson" Member="LevelExpression" ThisKey="Attended" OtherKey="LevelID" Type="LevelExpression" IsForeignKey="true" />
@@ -376,8 +369,8 @@
       <Column Name="ExecutionFeedBack" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
       <Column Name="ExecutionFeedBackDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Column Name="Emphasis" Type="System.String" DbType="NVarChar(32)" CanBeNull="true" />
-      <Association Name="TrainingExecution_TrainingItem" Member="TrainingItem" ThisKey="ExecutionID" OtherKey="ExecutionID" Type="TrainingItem" />
       <Association Name="TrainingExecution_TrainingExecutionStage" Member="TrainingExecutionStage" ThisKey="ExecutionID" OtherKey="ExecutionID" Type="TrainingExecutionStage" />
+      <Association Name="TrainingExecution_TrainingItem" Member="TrainingItem" ThisKey="ExecutionID" OtherKey="ExecutionID" Type="TrainingItem" />
       <Association Name="TrainingPlan_TrainingExecution" Member="TrainingPlan" ThisKey="ExecutionID" OtherKey="ExecutionID" Type="TrainingPlan" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
@@ -429,6 +422,7 @@
       <Column Name="TaskDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Column Name="QuestionnaireID" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Association Name="PDQTask_PDQTaskBonus" Member="PDQTaskBonus" ThisKey="TaskID" OtherKey="TaskID" Type="PDQTaskBonus" Cardinality="One" />
+      <Association Name="PDQTask_PDQTaskItem" Member="PDQTaskItem" ThisKey="TaskID" OtherKey="TaskID" Type="PDQTaskItem" />
       <Association Name="PDQQuestion_PDQTask" Member="PDQQuestion" ThisKey="QuestionID" OtherKey="QuestionID" Type="PDQQuestion" IsForeignKey="true" />
       <Association Name="PDQSuggestion_PDQTask" Member="PDQSuggestion" ThisKey="SuggestionID" OtherKey="SuggestionID" Type="PDQSuggestion" IsForeignKey="true" DeleteRule="CASCADE" />
       <Association Name="UserProfile_PDQTask" Member="UserProfile" ThisKey="UID" OtherKey="UID" Type="UserProfile" IsForeignKey="true" />
@@ -1835,6 +1829,8 @@
       <Column Name="Flexibility" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="Cardiopulmonary" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="MuscleStrength" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="AbilityStyle" Type="System.String" DbType="NVarChar(16)" CanBeNull="true" />
+      <Column Name="AbilityLevel" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Association Name="PersonalExercisePurpose_PersonalExercisePurposeItem" Member="PersonalExercisePurposeItem" ThisKey="UID" OtherKey="UID" Type="PersonalExercisePurposeItem" />
       <Association Name="UserProfile_PersonalExercisePurpose" Member="UserProfile" ThisKey="UID" OtherKey="UID" Type="UserProfile" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
@@ -1846,6 +1842,8 @@
       <Column Name="PurposeItem" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
       <Column Name="CompleteDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Column Name="NoticeStatus" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="InitialDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="PersonalExercisePurposeItem_TrainingItem" Member="TrainingItem" ThisKey="ItemID" OtherKey="PurposeID" Type="TrainingItem" />
       <Association Name="PersonalExercisePurpose_PersonalExercisePurposeItem" Member="PersonalExercisePurpose" ThisKey="UID" OtherKey="UID" Type="PersonalExercisePurpose" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
@@ -1866,34 +1864,12 @@
       <Association Name="TrainingType_TrainingStageItem" Member="TrainingType" ThisKey="TrainingID" OtherKey="TrainingID" Type="TrainingType" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
-  <Table Name="dbo.TrainingItem" Member="TrainingItem">
-    <Type Name="TrainingItem">
-      <Column Name="ItemID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="TrainingID" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="GoalTurns" Type="System.String" DbType="NVarChar(512)" CanBeNull="true" />
-      <Column Name="GoalStrength" Type="System.String" DbType="NVarChar(512)" CanBeNull="true" />
-      <Column Name="ExecutionID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="Description" Type="System.String" DbType="NVarChar(512)" CanBeNull="true" />
-      <Column Name="ActualStrength" Type="System.String" DbType="NVarChar(512)" CanBeNull="true" />
-      <Column Name="ActualTurns" Type="System.String" DbType="NVarChar(512)" CanBeNull="true" />
-      <Column Name="Remark" Type="System.String" DbType="NVarChar(512)" CanBeNull="true" />
-      <Column Name="BreakIntervalInSecond" Type="System.String" DbType="NVarChar(32)" CanBeNull="true" />
-      <Column Name="Repeats" Type="System.String" DbType="NVarChar(32)" CanBeNull="true" />
-      <Column Name="Sequence" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="ExecutionFeedBack" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
-      <Column Name="ExecutionFeedBackDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Column Name="DurationInMinutes" Type="System.Decimal" DbType="Decimal(6,2)" CanBeNull="true" />
-      <Association Name="TrainingItem_TrainingItemAids" Member="TrainingItemAids" ThisKey="ItemID" OtherKey="ItemID" Type="TrainingItemAids" />
-      <Association Name="TrainingExecution_TrainingItem" Member="TrainingExecution" ThisKey="ExecutionID" OtherKey="ExecutionID" Type="TrainingExecution" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
-      <Association Name="TrainingType_TrainingItem" Member="TrainingType" ThisKey="TrainingID" OtherKey="TrainingID" Type="TrainingType" IsForeignKey="true" />
-    </Type>
-  </Table>
   <Table Name="dbo.TrainingItemAids" Member="TrainingItemAids">
     <Type Name="TrainingItemAids">
       <Column Name="ItemID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="AidID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Association Name="TrainingItem_TrainingItemAids" Member="TrainingItem" ThisKey="ItemID" OtherKey="ItemID" Type="TrainingItem" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
       <Association Name="TrainingAids_TrainingItemAids" Member="TrainingAids" ThisKey="AidID" OtherKey="AidID" Type="TrainingAids" IsForeignKey="true" />
+      <Association Name="TrainingItem_TrainingItemAids" Member="TrainingItem" ThisKey="ItemID" OtherKey="ItemID" Type="TrainingItem" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
   <Table Name="dbo.TrainingAids" Member="TrainingAids">
@@ -1934,7 +1910,6 @@
       <Column Name="BranchID" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="HourOfClassTime" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="Place" Type="System.String" DbType="NVarChar(64)" CanBeNull="true" />
-      <Association Name="LessonTime_TrainingPlan" Member="TrainingPlan" ThisKey="LessonID" OtherKey="LessonID" Type="TrainingPlan" />
       <Association Name="LessonTime_FitnessAssessment" Member="FitnessAssessment" ThisKey="LessonID" OtherKey="LessonID" Type="FitnessAssessment" Cardinality="One" />
       <Association Name="LessonTime_LessonTrend" Member="LessonTrend" ThisKey="LessonID" OtherKey="LessonID" Type="LessonTrend" Cardinality="One" />
       <Association Name="LessonTime_LessonAttendance" Member="LessonAttendance" ThisKey="LessonID" OtherKey="LessonID" Type="LessonAttendance" Cardinality="One" />
@@ -1945,6 +1920,7 @@
       <Association Name="LessonTime_ContractTrustTrack" Member="ContractTrustTrack" ThisKey="LessonID" OtherKey="LessonID" Type="ContractTrustTrack" />
       <Association Name="LessonTime_LessonTimeExpansion" Member="LessonTimeExpansion" ThisKey="LessonID" OtherKey="LessonID" Type="LessonTimeExpansion" />
       <Association Name="LessonTime_PreferredLessonTime" Member="PreferredLessonTime" ThisKey="LessonID" OtherKey="LessonID" Type="PreferredLessonTime" Cardinality="One" />
+      <Association Name="LessonTime_TrainingPlan" Member="TrainingPlan" ThisKey="LessonID" OtherKey="LessonID" Type="TrainingPlan" />
       <Association Name="BranchStore_LessonTime" Member="BranchStore" ThisKey="BranchID" OtherKey="BranchID" Type="BranchStore" IsForeignKey="true" />
       <Association Name="DailyWorkingHour_LessonTime" Member="DailyWorkingHour" ThisKey="HourOfClassTime" OtherKey="Hour" Type="DailyWorkingHour" IsForeignKey="true" />
       <Association Name="GroupingLesson_LessonTime" Member="GroupingLesson" ThisKey="GroupID" OtherKey="GroupID" Type="GroupingLesson" IsForeignKey="true" />
@@ -2082,6 +2058,59 @@
       <Association Name="BranchStore_CourseContractRevisionItem" Member="BranchStore" ThisKey="BranchID" OtherKey="BranchID" Type="BranchStore" IsForeignKey="true" />
       <Association Name="CourseContractRevision_CourseContractRevisionItem" Member="CourseContractRevision" ThisKey="RevisionID" OtherKey="RevisionID" Type="CourseContractRevision" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
       <Association Name="ServingCoach_CourseContractRevisionItem" Member="ServingCoach" ThisKey="FitnessConsultant" OtherKey="CoachID" Type="ServingCoach" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TrainingItem" Member="TrainingItem">
+    <Type Name="TrainingItem">
+      <Column Name="ItemID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="TrainingID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="GoalTurns" Type="System.String" DbType="NVarChar(512)" CanBeNull="true" />
+      <Column Name="GoalStrength" Type="System.String" DbType="NVarChar(512)" CanBeNull="true" />
+      <Column Name="ExecutionID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(512)" CanBeNull="true" />
+      <Column Name="ActualStrength" Type="System.String" DbType="NVarChar(512)" CanBeNull="true" />
+      <Column Name="ActualTurns" Type="System.String" DbType="NVarChar(512)" CanBeNull="true" />
+      <Column Name="Remark" Type="System.String" DbType="NVarChar(512)" CanBeNull="true" />
+      <Column Name="BreakIntervalInSecond" Type="System.String" DbType="NVarChar(32)" CanBeNull="true" />
+      <Column Name="Repeats" Type="System.String" DbType="NVarChar(32)" CanBeNull="true" />
+      <Column Name="Sequence" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ExecutionFeedBack" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="ExecutionFeedBackDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="DurationInMinutes" Type="System.Decimal" DbType="Decimal(6,2)" CanBeNull="true" />
+      <Column Name="PurposeID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="TrainingItem_TrainingItemAids" Member="TrainingItemAids" ThisKey="ItemID" OtherKey="ItemID" Type="TrainingItemAids" />
+      <Association Name="PersonalExercisePurposeItem_TrainingItem" Member="PersonalExercisePurposeItem" ThisKey="PurposeID" OtherKey="ItemID" Type="PersonalExercisePurposeItem" IsForeignKey="true" DeleteRule="SET NULL" />
+      <Association Name="TrainingExecution_TrainingItem" Member="TrainingExecution" ThisKey="ExecutionID" OtherKey="ExecutionID" Type="TrainingExecution" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="TrainingType_TrainingItem" Member="TrainingType" ThisKey="TrainingID" OtherKey="TrainingID" Type="TrainingType" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TrainingPlan" Member="TrainingPlan">
+    <Type Name="TrainingPlan">
+      <Column Name="LessonID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ExecutionID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="PlanStatus" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="RegisterID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="TrainingPlan_TrainingExecution" Member="TrainingExecution" ThisKey="ExecutionID" OtherKey="ExecutionID" Type="TrainingExecution" Cardinality="One" />
+      <Association Name="TrainingPlan_FavoriteLesson" Member="FavoriteLesson" ThisKey="ExecutionID" OtherKey="ExecutionID" Type="FavoriteLesson" />
+      <Association Name="LessonTime_TrainingPlan" Member="LessonTime" ThisKey="LessonID" OtherKey="LessonID" Type="LessonTime" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="LevelExpression_TrainingPlan" Member="LevelExpression" ThisKey="PlanStatus" OtherKey="LevelID" Type="LevelExpression" IsForeignKey="true" />
+      <Association Name="RegisterLesson_TrainingPlan" Member="RegisterLesson" ThisKey="RegisterID" OtherKey="RegisterID" Type="RegisterLesson" IsForeignKey="true" DeleteRule="SET NULL" />
+    </Type>
+  </Table>
+  <Table Name="dbo.FavoriteLesson" Member="FavoriteLesson">
+    <Type Name="FavoriteLesson">
+      <Column Name="ExecutionID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="UID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="TrainingPlan_FavoriteLesson" Member="TrainingPlan" ThisKey="ExecutionID" OtherKey="ExecutionID" Type="TrainingPlan" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="UserProfile_FavoriteLesson" Member="UserProfile" ThisKey="UID" OtherKey="UID" Type="UserProfile" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PDQTaskItem" Member="PDQTaskItem">
+    <Type Name="PDQTaskItem">
+      <Column Name="TaskID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="SuggestionID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="PDQSuggestion_PDQTaskItem" Member="PDQSuggestion" ThisKey="SuggestionID" OtherKey="SuggestionID" Type="PDQSuggestion" IsForeignKey="true" />
+      <Association Name="PDQTask_PDQTaskItem" Member="PDQTask" ThisKey="TaskID" OtherKey="TaskID" Type="PDQTask" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
   <Function Name="dbo.InquireVacantNo" Method="InquireVacantNo">

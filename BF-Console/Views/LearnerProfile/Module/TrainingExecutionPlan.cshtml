@@ -1,0 +1,68 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    LessonTime _model;
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = (LessonTime)this.Model;
+}
+@{ 
+    UserProfile learner = (UserProfile)ViewBag.Learner;
+}
+<div class="accordion custom" id="accordion">
+    <div class="accordion-header">
+        <ul class="lesson-box">
+            <li class="lesson-spot">
+                <span class="title">@($"{_model.ClassTime:yyyy/MM/dd HH:mm}")-@($"{_model.ClassTime.Value.AddMinutes(_model.DurationInMinutes.Value):HH:mm}") - @(_model.LessonTypeStatus()) @(_model.AsAttendingCoach.UserProfile.FullName())</span>
+                @{
+                    Html.RenderPartial("~/Views/LearnerProfile/Module/LessonContentSparkline.cshtml", _model);
+                }
+                <ul class="list-unstyled team-info margin-0 float-right inlineblock">
+                    @{
+                        ViewBag.ProfileClass = "popfit";
+                    }
+                    @foreach (var item in _model.GroupingLesson.RegisterLesson.Where(r=>r.UID!=learner.UID))
+                    {
+                        <li onclick="$('').launchDownload('@Html.Raw(Url.Action("LessonTrainingContent", "ConsoleHome",new { KeyID = _model.LessonID.EncryptKey(),LearnerID = item.UID }))', { });">
+                            @{
+                                Html.RenderPartial("~/Views/Common/ProfileImage.cshtml", item.UserProfile);
+                            }
+                        </li>
+                    }
+                </ul>
+            </li>
+            <li class="lesson-item">
+                @{
+                    Html.RenderPartial("~/Views/LearnerProfile/Module/LessonEmphasis.cshtml", _model);
+                }
+            </li>
+        </ul>
+    </div>
+    @{
+        Html.RenderPartial("~/Views/LearnerProfile/Module/LessonTrainingPlan.cshtml", _model);
+    }
+</div>
+<script>
+
+    function sparkline($current) {
+        $current.sparkline('html', {
+            type: "pie",
+            offset: 90,
+            width: "40px",
+            height: "40px",
+            sliceColors: ['rgba(245, 166, 35, .8)', 'rgba(255, 78, 100, .8)', 'rgba(126, 211, 33, .8)', 'rgba(74, 144, 226, .8)', 'rgba(244, 237, 0, .8)']
+        });
+    }
+
+</script>

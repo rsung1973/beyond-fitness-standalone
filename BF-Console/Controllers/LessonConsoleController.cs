@@ -28,7 +28,7 @@ using WebHome.Models.ViewModel;
 using WebHome.Properties;
 using WebHome.Security.Authorization;
 
-namespace BFConsole.Controllers
+namespace WebHome.Controllers
 {
     [RoleAuthorize(RoleID = new int[] { (int)Naming.RoleID.Administrator, (int)Naming.RoleID.Assistant, (int)Naming.RoleID.Officer, (int)Naming.RoleID.Coach, (int)Naming.RoleID.Servitor })]
     public class LessonConsoleController : SampleController<UserProfile>
@@ -97,6 +97,192 @@ namespace BFConsole.Controllers
 
         }
 
+        public ActionResult LessonContentDetails(LessonTimeBookingViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+
+            if (viewModel.KeyID != null)
+            {
+                viewModel.LessonID = viewModel.DecryptKeyValue();
+            }
+
+            LessonTime item = models.GetTable<LessonTime>()
+                    .Where(l => l.LessonID == viewModel.LessonID).FirstOrDefault();
+
+            if (item == null)
+            {
+                return Json(new { result = false, message = "課程資料錯誤!!" }, JsonRequestBehavior.AllowGet);
+            }
+
+            return View("~/Views/LessonConsole/Module/LessonContentDetails.cshtml", item);
+
+        }
+
+        public ActionResult ViewTrainingExecution(LessonTimeBookingViewModel viewModel)
+        {
+            ActionResult result = LessonContentDetails(viewModel);
+            if (result is JsonResult)
+                return result;
+
+            ViewBag.Learner = models.GetTable<UserProfile>().Where(u => u.UID == viewModel.UID).FirstOrDefault();
+            if (ViewBag.Learner == null)
+            {
+                return Json(new { result = false, message = "資料錯誤!!" }, JsonRequestBehavior.AllowGet);
+            }
+
+            ((ViewResult)result).ViewName = "~/Views/LearnerProfile/ProfileModal/ViewTrainingExecution.cshtml";
+            return result;
+        }
+
+
+        public ActionResult CloneLearnerTrainingPlan(LessonTimeBookingViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+
+            if(viewModel.KeyID!=null)
+            {
+                viewModel.LessonID = viewModel.DecryptKeyValue();
+            }
+
+            LessonTime item = models.GetTable<LessonTime>()
+                .Where(l => l.LessonID == viewModel.LessonID).FirstOrDefault();
+
+            if (item == null)
+            {
+                return Json(new { result = false, message = "課程資料錯誤!!" }, JsonRequestBehavior.AllowGet);
+            }
+
+            if (!viewModel.UID.HasValue)
+            {
+                return Json(new { result = false, message = "未指定同步來源之學員!!" }, JsonRequestBehavior.AllowGet);
+            }
+
+            var lessonItems = item.GroupingLesson.RegisterLesson.Where(r => r.UID != viewModel.UID.Value);
+            if (lessonItems.Count() == 0)
+            {
+                return Json(new { result = false, message = "課程非一對多!!" }, JsonRequestBehavior.AllowGet);
+            }
+
+            var source = item.AssertLearnerTrainingPlan(models, viewModel.UID.Value);
+            foreach(var lesson in lessonItems)
+            {
+                var target = item.AssertLearnerTrainingPlan(models, lesson.UID);
+                models.CloneTrainingPlan(source, target);
+            }
+
+            return Json(new { result = true }, JsonRequestBehavior.AllowGet);
+
+        }
+
+        public ActionResult CloneCoachPITrainingPlan(LessonTimeBookingViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+
+            if (viewModel.KeyID != null)
+            {
+                viewModel.LessonID = viewModel.DecryptKeyValue();
+            }
+
+            LessonTime item = models.GetTable<LessonTime>()
+                .Where(l => l.LessonID == viewModel.LessonID).FirstOrDefault();
+
+            if (item == null)
+            {
+                return Json(new { result = false, message = "課程資料錯誤!!" }, JsonRequestBehavior.AllowGet);
+            }
+
+            var lessonItems = models.GetTable<LessonTime>().Where(l => l.GroupID == item.GroupID && l.LessonID != item.LessonID);
+            if (lessonItems.Count() == 0)
+            {
+                return Json(new { result = false, message = "課程非一對多!!" }, JsonRequestBehavior.AllowGet);
+            }
+
+            var source = item.AssertTrainingPlan(models);
+            foreach (var lesson in lessonItems)
+            {
+                var target = lesson.AssertTrainingPlan(models);
+                models.CloneTrainingPlan(source, target);
+            }
+
+            return Json(new { result = true }, JsonRequestBehavior.AllowGet);
+
+        }
+
+        public ActionResult CopyTrainingPlan(LessonTimeBookingViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+
+            if (viewModel.KeyID != null)
+            {
+                viewModel.LessonID = viewModel.DecryptKeyValue();
+            }
+
+            LessonTime copyTo = models.GetTable<LessonTime>()
+                .Where(l => l.LessonID == viewModel.LessonID).FirstOrDefault();
+
+            if (copyTo == null)
+            {
+                return Json(new { result = false, message = "課程資料錯誤!!" }, JsonRequestBehavior.AllowGet);
+            }
+
+            LessonTime copyFrom = models.GetTable<LessonTime>()
+                .Where(l => l.LessonID == viewModel.CopyFrom).FirstOrDefault();
+
+            if (copyTo == null)
+            {
+                return Json(new { result = false, message = "複製來源課程資料錯誤!!" }, JsonRequestBehavior.AllowGet);
+            }
+
+            var source = copyFrom.AssertLearnerTrainingPlan(models, viewModel.UID.Value);
+            var target = copyTo.AssertLearnerTrainingPlan(models, viewModel.UID.Value);
+            models.CloneTrainingPlan(source, target);
+
+            return Json(new { result = true }, JsonRequestBehavior.AllowGet);
+
+        }
+
+        public ActionResult SwitchLessonFavorite(TrainingExecutionViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+
+            if (models.GetTable<FavoriteLesson>().Any(f => f.ExecutionID == viewModel.ExecutionID && f.UID == viewModel.UID))
+            {
+                models.ExecuteCommand("delete FavoriteLesson where ExecutionID = {0} and UID = {1}", viewModel.ExecutionID, viewModel.UID);
+            }
+            else
+            {
+                models.ExecuteCommand(@"
+                        insert FavoriteLesson (ExecutionID,UID)
+                        SELECT        TrainingPlan.ExecutionID, UserProfile.UID
+                        FROM            TrainingPlan CROSS JOIN
+                                                 UserProfile
+                        WHERE        (TrainingPlan.ExecutionID = {0}) AND (UserProfile.UID = {1})", viewModel.ExecutionID, viewModel.UID);
+            }
+
+            return Json(new { result = true, message = models.GetTable<FavoriteLesson>().Where(f => f.ExecutionID == viewModel.ExecutionID).Count() }, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult InquireLesson(LessonQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+
+            IQueryable<LessonTime> items = models.GetTable<LessonTime>();
+            if (viewModel.LearnerID.HasValue)
+            {
+                items = viewModel.LearnerID.Value.PromptLearnerLessons(models);
+            }
+
+            if (viewModel.CoachID.HasValue)
+                items = items.Where(t => t.AttendingCoach == viewModel.CoachID);
+
+            if (viewModel.QueryStart.HasValue)
+                items = items.Where(t => t.ClassTime >= viewModel.QueryStart && t.ClassTime < viewModel.QueryStart.Value.AddMonths(1));
+
+            if (viewModel.ClassTime.HasValue)
+                items = items.Where(t => t.ClassTime >= viewModel.ClassTime && t.ClassTime < viewModel.ClassTime.Value.AddDays(1));
+
+            return View("~/Views/LearnerProfile/Module/LessonItems.cshtml", items);
+        }
 
     }
 }

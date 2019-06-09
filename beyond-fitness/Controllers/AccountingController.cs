@@ -124,7 +124,7 @@ namespace WebHome.Controllers
             return View("~/Views/Accounting/Module/AccountsReceivableList.ascx", items);
         }
 
-        public ActionResult CreateAccountsReveivableXlsx(CourseContractQueryViewModel viewModel)
+        public ActionResult CreateAccountsReceivableXlsx(CourseContractQueryViewModel viewModel)
         {
             ViewResult result = (ViewResult)InquireAccountsReceivable(viewModel);
             IQueryable<CourseContract> items = (IQueryable<CourseContract>)result.Model;

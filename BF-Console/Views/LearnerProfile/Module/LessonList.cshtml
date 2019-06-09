@@ -1,0 +1,63 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    UserProfile _learner;
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _learner = (UserProfile)this.Model;
+}
+@{ 
+    LessonTime lessonItem = (LessonTime)ViewBag.DataItem;
+}
+<script>
+    $(function () {
+        var currentIndex = 1;
+        $global.nomoreLesson = function () {
+            $('#btnMoreLesson').remove();
+        };
+        $('#btnMoreLesson').on('click', function (element) {
+            showLoading();
+            $.post('@Html.Raw(Url.Action("InquireLesson", "LessonConsole", new { LearnerID = _learner.UID, PageSize = 12, ExceptionalID = lessonItem?.LessonID }))', { 'CurrentIndex': currentIndex }, function (data) {
+                hideLoading();
+                currentIndex++;
+                if ($.isPlainObject(data)) {
+                    if (data.result) {
+                    } else {
+                        swal(data.message);
+                    }
+                } else {
+                    $(data).insertBefore($('#btnMoreLesson').closest('li'));
+                }
+            });
+        });
+    });
+
+    //檢視課表
+    function viewTraining(keyID) {
+        showLoading();
+        $.post('@Html.Raw(Url.Action("ViewTrainingExecution", "LessonConsole", new { _learner.UID }))', { 'keyID': keyID }, function (data) {
+            hideLoading();
+            if ($.isPlainObject(data)) {
+                swal(data.message);
+            } else {
+                $(data).appendTo($('body'));
+            }
+        });
+    }
+
+</script>
+@{  Html.RenderAction("InquireLesson", "LessonConsole", new { LearnerID = _learner.UID, PageSize = 12, CurrentIndex = 0, ExceptionalID = lessonItem?.LessonID });  }
+<li><button id="btnMoreLesson" class="btn btn-darkteal btn-round btn-sm m-t-0 float-right">載入更多 ...</button></li>
+
+

@@ -21,6 +21,7 @@ using WebHome.Models.DataEntity;
 using WebHome.Models.Locale;
 using WebHome.Models.Timeline;
 using WebHome.Models.ViewModel;
+using WebHome.Properties;
 using WebHome.Security.Authorization;
 
 namespace WebHome.Controllers
@@ -152,7 +153,7 @@ namespace WebHome.Controllers
             if (!ModelState.IsValid)
             {
                 ViewBag.ModelState = this.ModelState;
-                return View(profile.ReportInputError);
+                return View(Settings.Default.ReportInputError);
             }
 
             var changeCoach = item.AttendingCoach != viewModel.CoachID;
@@ -312,7 +313,7 @@ namespace WebHome.Controllers
                 return Json(new { result = false, message = "學員資料錯誤!!" });
             }
 
-            profile.RecentStatus = recentStatus;
+            profile.RecentStatus = recentStatus.GetEfficientString();
 
             models.SubmitChanges();
             return Json(new { result = true, message = "資料更新完成!!" });
@@ -469,17 +470,7 @@ namespace WebHome.Controllers
                 return Json(new { result = false, message = "請輸入目標最多20個字!!" });
             }
 
-            if (item.PersonalExercisePurpose == null)
-            {
-                item.PersonalExercisePurpose = new PersonalExercisePurpose { };
-            }
-
-            item.PersonalExercisePurpose.PersonalExercisePurposeItem.Add(new PersonalExercisePurposeItem
-            {
-                PurposeItem = viewModel.PurposeItem
-            });
-
-            models.SubmitChanges();
+            item.AssertPurposeItem(models, viewModel.PurposeItem);
 
             return Json(new { result = true });
 

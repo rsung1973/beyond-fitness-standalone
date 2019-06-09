@@ -377,5 +377,18 @@ namespace WebHome.Models.Locale
             All,
         }
 
+        public enum QuestionnaireGroup
+        {
+            滿意度問卷調查_2017 = 7,
+            身體心靈密碼 = 10,
+        }
+
+        public enum PowerAbilityLevel
+        {
+            初階 = 1,
+            中階 = 2,
+            高階 = 3,
+        }
+
     }
 }

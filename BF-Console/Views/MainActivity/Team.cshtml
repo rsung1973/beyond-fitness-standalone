@@ -9,7 +9,7 @@
 @using WebHome.Models.DataEntity
 @using WebHome.Controllers
 @using Newtonsoft.Json
-@using BFConsole.Views.MainActivity.Resources
+@using WebHome.Views.MainActivity.Resources
 
 @{
     ModelSource<UserProfile> models;
@@ -57,7 +57,7 @@
             }
             <script>
                     function showDetails(coachItem) {
-                        $('').launchDownload('@(Url.Action("CoachDetails", "MainActivity"))', coachItem);
+                        $('').launchDownload('@Html.Raw(Url.Action("CoachDetails", "MainActivity"))', coachItem);
                     }
             </script>
         </div>
@@ -85,7 +85,7 @@
     <script>
         $(function () {
             reloadPage = function () {
-                $('').launchDownload('@(Url.Action("Team", "MainActivity"))', {'branchName':'@(ViewBag.BranchName)'});
+                $('').launchDownload('@Html.Raw(Url.Action("Team", "MainActivity"))', {'branchName':'@(ViewBag.BranchName)'});
             };
         });
     </script>

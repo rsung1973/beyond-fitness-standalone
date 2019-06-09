@@ -1,0 +1,84 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    IQueryable<LessonTime> _model;
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = (IQueryable<LessonTime>)this.Model;
+}
+@{
+    LessonQueryViewModel _viewModel = (LessonQueryViewModel)ViewBag.ViewModel;
+    IQueryable<LessonTime> items = _model.OrderByDescending(l => l.ClassTime);
+    if (_viewModel.CurrentIndex.HasValue)
+    {
+        items = items.Skip(_viewModel.PageSize.Value * _viewModel.CurrentIndex.Value);
+    }
+    items = items.Take(_viewModel.PageSize.Value);
+}
+@if (items.Count() > 0)
+{
+    foreach (var item in items)
+    {
+        var plan = item.AssertTrainingPlan(models, UID: _viewModel.LearnerID);
+        var execution = plan.TrainingExecution;
+        <li>
+            <div class="@(item.IsPTSession()
+                            ? "bullet PT"
+                            : item.IsPISession()
+                                ? "bullet PI"
+                                : item.IsSTSession()
+                                    ? "bullet ST"
+                                    : "bullet")"></div>
+            <div class="time">@($"{item.ClassTime:MM/dd}")<br />@($"{item.ClassTime:yyyy}")</div>
+            <div class="desc">
+                <h3>
+                    @(item.LessonTypeStatus())
+                    @if (item.LessonAttendance != null)
+                    {
+                        if (item.LessonPlan.CommitAttendance.HasValue)
+                        {
+                            <i class="zmdi zmdi-check-all"></i>
+                        }
+                        else
+                        {
+                            <i class="zmdi zmdi-check"></i>
+                        }
+                    }
+                    @if (execution.TrainingItem.Count() > 0)
+                    {
+                        <a href="javascript:copyTrainingPlan(@item.LessonID);" class="btn btn-sm btn-round btn-simple float-right">複製</a>
+                    }
+                    @if (item.LessonID != _viewModel.ExceptionalID)
+                    {
+                        <a href="javascript:editTrainingContent('@(item.LessonID.EncryptKey())');" class="btn btn-sm btn-round btn-simple float-right edit" data-id="@item.LessonID">編輯</a>
+                    }
+                </h3>
+                <h4><a href="javascript:viewTraining('@item.LessonID.EncryptKey()');">@(execution.Emphasis ?? "重點一片空，學生要來踹你了...")</a></h4>
+            </div>
+        </li>
+    }
+}
+else
+{
+    <script>
+        $(function () {
+            if (typeof ($global.nomoreLesson) === 'function') {
+                $global.nomoreLesson();
+            }
+        });
+    </script>
+}
+
+
+

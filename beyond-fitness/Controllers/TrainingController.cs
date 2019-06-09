@@ -4,6 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
+using System.Data.Linq;
+using System.Data;
+using System.Text.RegularExpressions;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
@@ -19,10 +22,8 @@ using WebHome.Helper;
 using WebHome.Models.DataEntity;
 using WebHome.Models.Locale;
 using WebHome.Models.ViewModel;
-using System.Data.Linq;
+using WebHome.Properties;
 using WebHome.Security.Authorization;
-using System.Data;
-using System.Text.RegularExpressions;
 
 namespace WebHome.Controllers
 {
@@ -92,6 +93,10 @@ namespace WebHome.Controllers
             }
 
             var execution = item.TrainingExecution;
+            if (item.PurposeID.HasValue)
+            {
+                models.ExecuteCommand("delete PersonalExercisePurposeItem where ItemID = {0}", item.PurposeID);
+            }
             models.ExecuteCommand("delete TrainingItem where ItemID = {0}", item.ItemID);
 
             calculateTotalMinutes(execution, viewModel.StageID.Value);
@@ -106,35 +111,35 @@ namespace WebHome.Controllers
             viewModel.Description = viewModel.Description.GetEfficientString();
             if (viewModel.Description == null)
             {
-                ModelState.AddModelError("Description", "請輸入動作內容!!");
+                ModelState.AddModelError("Description", "請輸入動作");
             }
 
             //viewModel.ActualStrength = viewModel.ActualStrength.GetEfficientString();
             //if(viewModel.ActualStrength == null)
             //{
-            //    ModelState.AddModelError("ActualStrength", "請輸入強度!!");
+            //    ModelState.AddModelError("ActualStrength", "請輸入強度");
             //}
 
             //viewModel.ActualTurns = viewModel.ActualTurns.GetEfficientString();
             //if (viewModel.ActualTurns == null)
             //{
-            //    ModelState.AddModelError("ActualTurns", "請輸入次數!!");
+            //    ModelState.AddModelError("ActualTurns", "請輸入次數");
             //}
 
             if (!viewModel.DurationInSeconds.HasValue)
             {
-                ModelState.AddModelError("DurationInMinutes", "請輸入分鐘數!!");
+                ModelState.AddModelError("DurationInSeconds", "請輸入時間");
             }
 
             if (!viewModel.TrainingID.HasValue)
             {
-                ModelState.AddModelError("TrainingID", "請選擇項目!!");
+                ModelState.AddModelError("TrainingID", "請選擇類別");
             }
 
             if (!ModelState.IsValid)
             {
                 ViewBag.ModelState = this.ModelState;
-                return View("~/Views/Shared/ReportInputError.ascx");
+                return View(Settings.Default.ReportInputError);
             }
 
             TrainingExecution execution = models.GetTable<TrainingExecution>().Where(t => t.ExecutionID == viewModel.ExecutionID).FirstOrDefault();
@@ -158,7 +163,7 @@ namespace WebHome.Controllers
             item.GoalTurns = viewModel.GoalTurns;
             item.Description = viewModel.Description;
             item.TrainingID = viewModel.TrainingID;
-            item.Remark = viewModel.Remark;
+            item.Remark = viewModel.Remark.GetEfficientString();
             item.DurationInMinutes = viewModel.DurationInMinutes;
 
             models.SubmitChanges();
@@ -174,6 +179,20 @@ namespace WebHome.Controllers
             }
 
             calculateTotalMinutes(execution, viewModel.StageID.Value);
+
+            if (item.PurposeID.HasValue)
+            {
+                if (!viewModel.PurposeID.HasValue)
+                {
+                    models.ExecuteCommand("delete PersonalExercisePurposeItem where ItemID = {0}", item.PurposeID);
+                }
+            }
+            else if (viewModel.PurposeID == -1 && item.Remark != null)
+            {
+                var purpose = item.TrainingExecution.TrainingPlan.LessonTime.RegisterLesson.UserProfile.AssertPurposeItem(models, item.Remark);
+                item.PurposeID = purpose.ItemID;
+                models.SubmitChanges();
+            }
 
             return Json(new { result = true, message = "" });
 
@@ -286,7 +305,7 @@ namespace WebHome.Controllers
             //if (!ModelState.IsValid)
             //{
             //    ViewBag.ModelState = this.ModelState;
-            //    return View("~/Views/Shared/ReportInputError.ascx");
+            //    return View(Settings.Default.ReportInputError);
             //}
 
             TrainingExecution execution = models.GetTable<TrainingExecution>().Where(t => t.ExecutionID == viewModel.ExecutionID).FirstOrDefault();

@@ -73,6 +73,9 @@
                         <label class="checkbox">
                             <input type="checkbox" name="AuthorizedRole" value="<%= (int)Naming.RoleID.Accounting %>">
                             <i></i><%= Naming.RoleName[(int)Naming.RoleID.Accounting] %></label>
+                        <label class="checkbox">
+                            <input type="checkbox" name="AuthorizedRole" value="<%= (int)Naming.RoleID.Learner %>">
+                            <i></i><%= Naming.RoleName[(int)Naming.RoleID.Learner] %></label>
                     </div>
                     <div class="col col-4">
                         <label class="checkbox">

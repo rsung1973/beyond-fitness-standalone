@@ -402,8 +402,6 @@ namespace WebHome.Models.DataEntity
 
         public int? DailyQuestionID { get; set; }
 
-        public String ReportInputError { get; set; } = WebHome.Properties.Settings.Default.ReportInputError;
-
     }
 
     public class CourseContractPayment
