@@ -24792,6 +24792,28 @@ section.content {
     border: 2px solid #ffce4b
 }
 
+.new_timeline .bullet.PT {
+    border: 2px solid #F5A623
+}
+
+.new_timeline .bullet.PI {
+    border: 2px solid #7ED321
+}
+
+.new_timeline .bullet.ST {
+    border: 2px solid #BD10E0
+}
+
+.new_timeline .bullet.CoachPI {
+    border: 2px solid #8B572A
+}
+
+
+.new_timeline .bullet.todo {
+    background: #457fca;
+    border: 2px solid #e47297
+}
+
 .new_timeline .time {
     width: 20%;
     font-size: 0.75em;

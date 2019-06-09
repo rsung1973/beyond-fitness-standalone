@@ -31,6 +31,7 @@
             <th>服務項目</th>
             <th>購買堂數</th>
             <th>目前狀態</th>
+            <th>應收款期限</th>
             <th>編輯日期</th>
             <th>合約起日</th>
             <th>合約迄日</th>
@@ -62,13 +63,20 @@
                                             : "新約")
             </td>
             <td>@(item.Lessons)</td>
-            <td> @(item.ContractCurrentStatus())</td>
+            <td>@(item.ContractCurrentStatus())</td>
+            <td>
+                @(item.CourseContractRevision == null
+                    ? String.Format("{0:yyyy/MM/dd}", item.PayoffDue == null
+                        ? item.EffectiveDate
+                        : item.PayoffDue)
+                    : "")
+            </td>
             <td>@(String.Format("{0:yyyy/MM/dd}", item.ContractDate))</td>
             <td>
                 @(String.Format("{0:yyyy/MM/dd}", item.CourseContractRevision == null
                                     ? item.EffectiveDate
                                     : item.CourseContractRevision.SourceContract.EffectiveDate))
-        </td>
+            </td>
             <td>
                 @(String.Format("{0:yyyy/MM/dd}", item.CourseContractRevision?.Reason == "終止"
                                             ? item.EffectiveDate
