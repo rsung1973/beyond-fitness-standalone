@@ -126,6 +126,15 @@
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="WindowsBase" />
+    <Reference Include="CommonLib">
+      <HintPath>..\beyond-fitness\bin\CommonLib.dll</HintPath>
+    </Reference>
+    <Reference Include="CommonLib.Logger">
+      <HintPath>..\beyond-fitness\bin\CommonLib.Logger.dll</HintPath>
+    </Reference>
+    <Reference Include="CommonLib.PlugInAdapter">
+      <HintPath>..\beyond-fitness\bin\CommonLib.PlugInAdapter.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Web.Infrastructure">
@@ -6162,7 +6171,6 @@
     <Content Include="Views\ConsoleHome\Shared\DropifyUpload.ascx" />
     <Content Include="Views\ConsoleHome\Shared\PagingControl.ascx" />
     <Content Include="Views\ConsoleHome\Shared\JsAlert.cshtml" />
-    <Content Include="Views\ConsoleHome\LearnerLesson.ascx" />
     <Content Include="Views\ConsoleHome\Shared\MyContractHeader.ascx" />
     <Content Include="Views\ConsoleHome\Shared\KnobJS.ascx" />
     <Content Include="Views\ConsoleHome\Shared\Knob.ascx" />
@@ -6170,16 +6178,6 @@
     <Content Include="Views\ConsoleHome\Shared\AlertMessage.ascx" />
     <Content Include="Views\ConsoleHome\Shared\InitBarChartNoRegister.ascx" />
     <Content Include="Views\ConsoleHome\Shared\ReportInputError.ascx" />
-    <Content Include="Views\ContractConsole\ContractModal\AboutContractDetails.ascx" />
-    <Content Include="Views\ContractConsole\ContractModal\EditContractMember.ascx" />
-    <Content Include="Views\ContractConsole\ContractModal\ProcessContractMember.ascx" />
-    <Content Include="Views\ContractConsole\ContractModal\SelectContractOwner.ascx" />
-    <Content Include="Views\ContractConsole\ContractModal\SignaturePanel.ascx" />
-    <Content Include="Views\ContractConsole\ContractModal\SelectContractMember.ascx" />
-    <Content Include="Views\ContractConsole\ContractModal\ListLessonPrice.ascx" />
-    <Content Include="Views\ContractConsole\ContractModal\SelectCoach.ascx" />
-    <Content Include="Views\ContractConsole\ContractModal\ProcessContract.ascx" />
-    <Content Include="Views\ContractConsole\ContractModal\ContractQuery.ascx" />
     <Content Include="Views\ContractConsole\ContractService\ApplyContractService.ascx" />
     <Content Include="Views\ContractConsole\ContractService\CourseContractExtensionView.ascx" />
     <Content Include="Views\ContractConsole\ContractService\ContractConsultantReassignmentView.ascx" />
@@ -6191,7 +6189,6 @@
     <Content Include="Views\ContractConsole\ContractService\DoExpirationPostponing.ascx" />
     <Content Include="Views\ContractConsole\ContractService\DoConsultantAssignment.ascx" />
     <Content Include="Views\ContractConsole\ContractService\ContractServiceHistory.ascx" />
-    <Content Include="Views\ContractConsole\ContractModal\ProcessContractService.ascx" />
     <Content Include="Views\ContractConsole\Editing\ContractServiceCommitted.ascx" />
     <Content Include="Views\ContractConsole\Editing\CourseContractSigned.ascx" />
     <Content Include="Views\ContractConsole\Editing\CourseContractCommitted.ascx" />
@@ -6207,54 +6204,6 @@
     <Content Include="Views\ContractConsole\ContractService\ContractTransference.ascx" />
     <Content Include="Views\ContractConsole\ContractService\ContractExtension.ascx" />
     <Content Include="Views\ContractConsole\Indication\ContractDetails.ascx" />
-    <Content Include="Views\ContractConsole\Module\AboutContractServicesSummaryByOfficer.ascx" />
-    <Content Include="Views\ContractConsole\Module\AboutContractServicesSummaryByBranch.ascx" />
-    <Content Include="Views\ContractConsole\Module\AboutContractsByBranch.ascx" />
-    <Content Include="Views\ContractConsole\Module\AboutContractsByOfficer.ascx" />
-    <Content Include="Views\ContractConsole\Module\AboutContractServicesByManager.ascx" />
-    <Content Include="Views\ContractConsole\Module\AboutContractServicesByPureCoach.ascx" />
-    <Content Include="Views\ContractConsole\Module\AboutContractServicesByCoach.ascx" />
-    <Content Include="Views\ContractConsole\Module\AboutContractServicesByBranch.ascx" />
-    <Content Include="Views\ContractConsole\Module\AboutContractServicesByOfficer.ascx" />
-    <Content Include="Views\ContractConsole\Module\AboutContractServices.ascx" />
-    <Content Include="Views\ContractConsole\Module\AboutCompleteLessons.ascx" />
-    <Content Include="Views\ContractConsole\Module\AboutNewContracts.ascx" />
-    <Content Include="Views\ContractConsole\Module\AboutExpiring.ascx" />
-    <Content Include="Views\ContractConsole\Module\AboutExpiringByOfficer.ascx" />
-    <Content Include="Views\ContractConsole\Module\AboutNewContractsByOfficer.ascx" />
-    <Content Include="Views\ContractConsole\Module\AboutPaymentByOfficer.ascx" />
-    <Content Include="Views\ContractConsole\Module\AboutReceivablesByBranch.ascx" />
-    <Content Include="Views\ContractConsole\Module\AboutReceivablesByOfficer.ascx" />
-    <Content Include="Views\ContractConsole\Module\AboutReceivablesByCoach.ascx" />
-    <Content Include="Views\ContractConsole\Module\AboutReceivables.ascx" />
-    <Content Include="Views\ContractConsole\Module\AboutInstallment.ascx" />
-    <Content Include="Views\ContractConsole\Module\AboutNewContractsByBranch.ascx" />
-    <Content Include="Views\ContractConsole\Module\AboutPaymentByBranch.ascx" />
-    <Content Include="Views\ContractConsole\Module\AboutPaymentByCoach.ascx" />
-    <Content Include="Views\ContractConsole\Module\ContractLessonList.ascx" />
-    <Content Include="Views\ContractConsole\Module\ToRenewByOfficer.ascx" />
-    <Content Include="Views\ContractConsole\Module\ToRenewByBranch.ascx" />
-    <Content Include="Views\ContractConsole\Module\ToRenewByCoach.ascx" />
-    <Content Include="Views\ContractConsole\Module\ContractByOfficer.ascx" />
-    <Content Include="Views\ContractConsole\Module\ContractByBranch.ascx" />
-    <Content Include="Views\ContractConsole\Module\ContractDetails.ascx" />
-    <Content Include="Views\ContractConsole\Module\AboutExpiringByCoach.ascx" />
-    <Content Include="Views\ContractConsole\Module\ContractPaymentList.ascx" />
-    <Content Include="Views\ContractConsole\Module\ContractInstallmentList.ascx" />
-    <Content Include="Views\ContractConsole\Module\ContractMemberList.ascx" />
-    <Content Include="Views\ContractConsole\Module\CourseContractView.ascx" />
-    <Content Include="Views\ContractConsole\Module\CustomContractList.ascx" />
-    <Content Include="Views\ContractConsole\Module\ContractList.ascx" />
-    <Content Include="Views\ContractConsole\Module\AboutNewContractsByCoach.ascx" />
-    <Content Include="Views\ContractConsole\Module\AboutExpiringByBranch.ascx" />
-    <Content Include="Views\LessonConsole\ProcessModal\TodayLessons.ascx" />
-    <Content Include="Views\LessonConsole\ProcessModal\ProcessCrossBranch.ascx" />
-    <Content Include="Views\LessonConsole\Module\CrossBranchLessonList.ascx" />
-    <Content Include="Views\MainActivity\Module\MobileMenuItem.ascx" />
-    <Content Include="Views\MainActivity\Module\ContactItem.ascx" />
-    <Content Include="Views\MainActivity\Module\JoinItem.ascx" />
-    <Content Include="Views\MainActivity\Module\MenuItem.ascx" />
-    <Content Include="Views\MainActivity\SamplePage.aspx" />
     <Content Include="Views\ReportConsole\ReportModal\ByContractNo.ascx" />
     <Content Include="Views\ReportConsole\ReportModal\SelectPeriodReport.ascx" />
     <Content Include="Views\ReportConsole\ReportModal\SelectMonthlyReport.ascx" />
@@ -6629,8 +6578,6 @@
     <None Include="packages.config" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Views\ConsoleHome\Template\MainPage.Master" />
-    <Content Include="Views\MainActivity\Template\MainPage.Master" />
-    <Content Include="Views\MainActivity\Template\BlogPage.Master" />
     <Content Include="Views\MainActivity\Template\BlogPage.cshtml" />
     <Content Include="Views\MainActivity\Template\MainPage.cshtml" />
     <Content Include="Views\MainActivity\Index.cshtml" />
@@ -6765,11 +6712,9 @@
     <Content Include="Views\ConsoleHome\CrossBranchIndex.cshtml" />
     <Content Include="Views\ConsoleHome\EditBlogArticle.cshtml" />
     <Content Include="Views\ConsoleHome\EditCourseContract.cshtml" />
-    <Content Include="Views\ConsoleHome\LearnerLesson.cshtml" />
     <Content Include="Views\ConsoleHome\PostponeContractExpiration.cshtml" />
     <Content Include="Views\ConsoleHome\ReassignFitnessConsultant.cshtml" />
     <Content Include="Views\ConsoleHome\ReportIndex.cshtml" />
-    <Content Include="Views\ConsoleHome\SamplePage.cshtml" />
     <Content Include="Views\ConsoleHome\SignContractService.cshtml" />
     <Content Include="Views\ConsoleHome\SignCourseContract.cshtml" />
     <Content Include="Views\ConsoleHome\TerminateContract.cshtml" />
@@ -6790,7 +6735,6 @@
     <Content Include="Views\ReportConsole\Module\PaymentReport.cshtml" />
     <Content Include="Views\ReportConsole\Module\TrustReport.cshtml" />
     <Content Include="Views\ReportConsole\ReportModal\SelectAwardItem.cshtml" />
-    <Content Include="Views\ConsoleHome\LearnerProfile.cshtml" />
     <Content Include="Views\LearnerProfile\Module\PersonalExerciseRadarChart.cshtml" />
     <Content Include="Views\LearnerProfile\Module\LearnerEffectiveContractList.cshtml" />
     <Content Include="Views\LearnerProfile\Module\LearnerUnpaidContractList.cshtml" />
@@ -6798,7 +6742,6 @@
     <Content Include="Views\LearnerProfile\Module\LearnerCalendar.cshtml" />
     <Content Include="Views\LearnerProfile\Module\LearnerCalendarEvents.cshtml" />
     <Content Include="Views\LearnerProfile\Module\LearnerLessonsReviewDetails.cshtml" />
-    <Content Include="Views\ConsoleHome\LessonTrainingContent.cshtml" />
     <Content Include="Views\LearnerProfile\Module\ProfileHeader.cshtml" />
     <Content Include="Views\LearnerProfile\Module\RecentStatus.cshtml" />
     <Content Include="Views\LearnerProfile\Module\TrainingGoal.cshtml" />
@@ -6817,7 +6760,6 @@
     <Content Include="Views\LearnerProfile\Module\LessonList.cshtml" />
     <Content Include="Views\LearnerProfile\Module\LessonItems.cshtml" />
     <Content Include="Views\LearnerProfile\ProfileModal\ViewTrainingExecution.cshtml" />
-    <Content Include="Views\ConsoleHome\EditLearnerCharacter.cshtml" />
     <Content Include="Views\LearnerProfile\Module\PDQItem.cshtml" />
     <Content Include="Views\LessonConsole\Module\TrainingSparkleDetails.cshtml" />
     <Content Include="Views\LearnerProfile\Module\EditLearnerFeature.cshtml" />
@@ -6852,14 +6794,6 @@
     <ProjectReference Include="..\beyond-fitness\beyond-fitness.csproj">
       <Project>{c49821ff-96c8-466b-aef4-137ec84fdefc}</Project>
       <Name>beyond-fitness</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CommonLib.Logger\CommonLib.Logger.csproj">
-      <Project>{8146e629-552a-4b36-8711-08ae8245b8fa}</Project>
-      <Name>CommonLib.Logger</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CommonLib\CommonLib.csproj">
-      <Project>{c0ad239c-2ac4-46d2-ae7c-5e97266ef4ea}</Project>
-      <Name>CommonLib</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

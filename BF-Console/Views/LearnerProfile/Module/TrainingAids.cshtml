@@ -22,8 +22,8 @@
 @{
     string[] cssClass = new string[]
     {
-"collapse xl-pink collapse",
 "collapse xl-khaki collapse",
+"collapse xl-pink collapse",
 "collapse xl-seagreen collapse",
 "collapse xl-blue collapse",
     };
@@ -56,24 +56,22 @@
                 @foreach (var aid in item.TrainingAids
                             .Where(t => t.Status == (int)Naming.GeneralStatus.Successful))
                 {
-                <div class="col-lg-3 col-md-3 col-sm-6 col-6">
-                    <label class="fancy-checkbox custom-bgcolor-green">
-                        <input name="AidID" value="@aid.AidID" type="checkbox" />
-                        <span>@(aid.ItemName)</span>
-                    </label>
-                </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-6">
+                        <label class="fancy-checkbox custom-bgcolor-green">
+                            <input name="AidID" value="@aid.AidID" type="checkbox" />
+                            <span>@(aid.ItemName)</span>
+                        </label>
+                    </div>
                 }
             </div>
         </div>
     </div>
 }
-<script>
-    $(function () {
+<script>$(function () {
         if ($global.viewModel.AidID && $global.viewModel.AidID.length > 0) {
             $global.viewModel.AidID.forEach(function (item, idx) {
                 $('input:checkbox[name="AidID"][value=' + item + ']').prop('checked', true);
             });
         }
-    });
-</script>
+    });</script>
 
