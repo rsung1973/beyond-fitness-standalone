@@ -21,8 +21,9 @@
     var plan = _model.AssertTrainingPlan(models, UID: learner.UID);
     var execution = plan.TrainingExecution;
     bool viewOnly = (bool?)ViewBag.ViewOnly == true ? true : false;
+    bool isModal = (bool?)ViewBag.IsModal == true ? true : false;
 }
-<a href="javascript:$global.editEmphasis('@HttpUtility.JavaScriptStringEncode(execution.Emphasis)');">
+<a href="javascript:@(isModal ? "void(0)" : $"$global.editEmphasis('{HttpUtility.JavaScriptStringEncode(execution.Emphasis)}')");">
     <span id="emphasis">@(execution.Emphasis ?? "重點一片空，學生要來踹你了...")</span>
     <i class="zmdi livicon-evo" data-options="name: pencil.svg; size: 30px; style: original; strokeStyle:round; strokeColor:#052333; strokeWidth:2px; autoPlay:true"></i>
 </a>

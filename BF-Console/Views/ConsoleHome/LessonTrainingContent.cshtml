@@ -36,7 +36,7 @@
     <!-- Jquery Nestable -->
     <link rel="stylesheet" href="plugins/nestable/jquery-nestable.css" />
     <!-- Custom Css -->
-    <link rel="stylesheet" href="css/customelist.css?2">
+    <link rel="stylesheet" href="css/customelist.css?2" />
 
 }
 
@@ -50,7 +50,7 @@
             <div class="card">
                 <div class="header">
                     <h2><strong>@(learner.FullName())</strong> - 
-                        <span class="@(learner.PersonalExercisePurpose.PowerAbliityCss())">@(learner.PersonalExercisePurpose.ExercisePowerAbility())</span>
+                        <span class="@(learner.PersonalExercisePurpose.PowerAbliityCss())">@(learner.PersonalExercisePurpose.ExercisePurposeDescription())</span>
                     </h2>
                     <ul class="header-dropdown">
                         <li>
@@ -69,14 +69,12 @@
                                     hasSlideItem = true;
                                     <li><a href="javascript:cloneLearnerTrainingPlan();">同步課表</a></li>
                                 }
-                                else if (lessonItem.ClassTime >= DateTime.Today && lessonItem.GroupingLesson.LessonTime.Count > 1)
+                                else if (lessonItem.IsCoachPISession() && lessonItem.ClassTime >= DateTime.Today && lessonItem.GroupingLesson.LessonTime.Count > 1)
                                 {
                                     hasSlideItem = true;
                                     <li><a href="javascript:cloneCoachPITrainingPlan();">同步課表</a></li>
                                 }
-                                @if ((lessonItem.RegisterLesson.LessonPriceType.Status != (int)Naming.LessonPriceStatus.自主訓練
-                                        && lessonItem.ClassTime < DateTime.Today.AddDays(1)) && lessonItem.LessonAttendance == null
-                                        && !lessonItem.IsSTSession())
+                                @if (lessonItem.CheckToAttendLesson(models))
                                 {
                                     hasSlideItem = true;
                                     <li><a href="javascript:attendLesson();">完成上課</a></li>
@@ -139,7 +137,7 @@
                                                     <div class="bullet pink"></div>
                                                     <div class="time">NEXT</div>
                                                     <div class="desc">
-                                                        <a href="@(Html.Raw(Url.Action("EditLearnerCharacter","ConsoleHome",new { questionnaire.QuestionnaireID, KeyID = questionnaire.UID.EncryptKey() })))">
+                                                        <a href="javascript:editLearnerCharacter();">
                                                             <h3 class="col-red">重新了解學生 Go~</h3>
                                                         </a>
                                                     </div>
@@ -174,7 +172,7 @@
     <script>
 
         function refreshTrainingContent() {
-            $('').launchDownload('@Html.Raw(Url.Action("LessonTrainingContent", "ConsoleHome",new { KeyID = lessonItem.LessonID.EncryptKey(),LearnerID = learner.UID }))', { });
+            editTrainingContent('@(lessonItem.LessonID.EncryptKey())');
         }
 
         function editTrainingContent(keyID) {
@@ -378,6 +376,25 @@
                 }
             });
         };
+
+        function editLearnerCharacter() {
+            $global.rejectCharacterDone = function () {
+                $('').launchDownload('@Html.Raw(Url.Action("LessonTrainingContent", "ConsoleHome",new { LearnerID =  learner.UID }))', {'keyID':'@(lessonItem.LessonID.EncryptKey())' });
+            };
+
+            $.post('@Html.Raw(Url.Action("ResumeLearnerCharacter", "LearnerProfile"))', { 'keyID': '@(learner.UID.EncryptKey())' }, function (data) {
+                if ($.isPlainObject(data)) {
+                    if (data.result) {
+                        $('').launchDownload('@(Html.Raw(Url.Action("EditLearnerCharacter","ConsoleHome",new { KeyID = learner.UID.EncryptKey() })))', {});
+                    } else {
+                        swal(data.message);
+                    }
+                } else {
+                    $(data).appendTo($('body'));
+                }
+            });
+        }
+
 
     </script>
 }

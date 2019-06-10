@@ -29,6 +29,7 @@
     String currentID = $"{DateTime.Now.Ticks}";
 
     bool viewOnly = (bool?)ViewBag.ViewOnly == true ? true : false;
+    bool isModal = (bool?)ViewBag.IsModal == true ? true : false;
 }
 <div>
     <div class="card-header" id="@($"heading_{stage.StageID}{currentID}")">
@@ -39,10 +40,7 @@
                 @{
                     var duration = execution.TrainingExecutionStage.Where(s => s.StageID == stage.StageID).FirstOrDefault();
                 }
-                @if (duration != null)
-                {
-                    <text>- @(String.Format("{0:.#}", duration.TotalMinutes)) min</text>
-                }
+                - @(String.Format("{0:0.#}", duration?.TotalMinutes ?? 0)) min
             </button>
             <i class="zmdi zmdi-label @(stageColor(stage.StageID)) m-r-5 p-t-50 float-right"></i>
         </h3>
@@ -56,8 +54,11 @@
                         {
                             if (item.TrainingType.BreakMark != true)
                             {
-                                <li class="dd-item dd3-item list-action" data-id="@(item.ItemID)" onclick="@($"editStageTrainingItem({stage.StageID},{item.ItemID})");">
-                                    <div class="dd-handle dd3-handle"></div>
+                                <li class="dd-item dd3-item list-action" data-id="@(item.ItemID)" onclick="@(isModal ? "void(0)" : $"editStageTrainingItem({stage.StageID},{item.ItemID})");">
+                                    @if (!isModal)
+                                    {
+                                        <div class="dd-handle dd3-handle"></div>
+                                    }
                                     <div class="dd3-content list-item">
                                         <span class="badge bg-blue-grey">@(item.TrainingType.BodyParts)</span>
                                         @foreach (var aid in item.TrainingItemAids)
@@ -85,8 +86,11 @@
                             }
                             else
                             {
-                                <li class="dd-item dd3-item list-line" data-id="@item.ItemID" onclick="@($"editStageBreakInterval({stage.StageID},{item.ItemID})");">
-                                    <div class="dd-handle dd3-handle t--12"></div>
+                                <li class="dd-item dd3-item list-line" data-id="@item.ItemID" onclick="@(isModal ? "void(0)" : $"editStageBreakInterval({stage.StageID},{item.ItemID})");">
+                                    @if (!isModal)
+                                    {
+                                        <div class="dd-handle dd3-handle t--12"></div>
+                                    }
                                     <div class="dd3-content">
                                         <span class="tag-repet badge col-grey">
                                             @if (item.BreakIntervalInSecond != null)
@@ -110,7 +114,7 @@
                 </div>
             </div>
             <div class="clearfix m-b-0">
-                @if (!viewOnly)
+                @if (!isModal)
                 {
                     <div class="btn-group float-right" role="group">
                         <a id="btnGroupDrop1" class="dropdown-toggle col-white" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

@@ -20,8 +20,9 @@
     UserProfile learner = (UserProfile)ViewBag.Learner;
     var plan = _model.AssertTrainingPlan(models, UID: learner.UID);
     var execution = plan.TrainingExecution;
+    UserProfile profile = Context.GetUser();
 }
-<a href="javascript:addToFavorites();" class="col-red"> <i class="@(plan.FavoriteLesson.Any(f => f.UID == learner.UID) ? "myfavaroit like" : "myfavaroit")"></i> <span>@(plan.FavoriteLesson.Count > 0 ? plan.FavoriteLesson.Count.ToString() : null)</span> </a>
+<a href="javascript:addToFavorites();" class="col-red"> <i class="@(plan.FavoriteLesson.Any(f => f.UID == profile.UID) ? "myfavaroit like" : "myfavaroit")"></i> <span>@(plan.FavoriteLesson.Count > 0 ? plan.FavoriteLesson.Count.ToString() : null)</span> </a>
 <script>
     //加入我的最愛課表
     function addToFavorites() {
@@ -31,7 +32,7 @@
             $(".myfavaroit").addClass("like");
         }
 
-        $.post('@Html.Raw(Url.Action("SwitchLessonFavorite", "LessonConsole", new { plan.ExecutionID,learner.UID }))', {}, function (data) {
+        $.post('@Html.Raw(Url.Action("SwitchLessonFavorite", "LessonConsole", new { plan.ExecutionID,profile.UID }))', {}, function (data) {
             if ($.isPlainObject(data)) {
                 if (data.result) {
                     $(".myfavaroit").next().text(data.message == '0' ? '' : data.message);

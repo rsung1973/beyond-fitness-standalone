@@ -157,7 +157,7 @@
                             <div class="event-name b-custom row">
                                 @{ Html.RenderPartial("~/Views/LearnerProfile/Module/LearnerCharacter.cshtml", _learner); }
                             </div>
-                            <button class="btn btn-darkteal waves-effect float-right" onclick="javascript:editProfile();">重新了解學生 GO</button>
+                            <button class="btn btn-darkteal waves-effect float-right" onclick="javascript:editLearnerCharacter();">重新了解學生 GO</button>
                         </div>
                     </div>
                 </div>
@@ -194,8 +194,21 @@
 
         });
 
-        function editProfile() {
-            $('').launchDownload('@(Html.Raw(Url.Action("EditLearnerCharacter","ConsoleHome",new { KeyID = _learner.UID.EncryptKey() })))', {});
+        function editLearnerCharacter() {
+            $global.rejectCharacterDone = function () {
+                $('').launchDownload('@Html.Raw(Url.Action("LearnerProfile","ConsoleHome"))', { 'keyID': '@(_learner.UID.EncryptKey())' });
+            };
+            $.post('@Html.Raw(Url.Action("ResumeLearnerCharacter", "LearnerProfile"))', { 'keyID': '@(_learner.UID.EncryptKey())' }, function (data) {
+                if ($.isPlainObject(data)) {
+                    if (data.result) {
+                        $('').launchDownload('@(Html.Raw(Url.Action("EditLearnerCharacter","ConsoleHome",new { KeyID = _learner.UID.EncryptKey() })))', {});
+                    } else {
+                        swal(data.message);
+                    }
+                } else {
+                    $(data).appendTo($('body'));
+                }
+            });
         }
     </script>
 }

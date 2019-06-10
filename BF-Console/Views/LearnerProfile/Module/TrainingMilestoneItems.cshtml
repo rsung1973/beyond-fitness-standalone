@@ -8,6 +8,8 @@
 @using WebHome.Models.DataEntity
 @using WebHome.Controllers
 @{
+    /**/
+
 
     ModelStateDictionary _modelState;
     ModelSource<UserProfile> models;
@@ -28,8 +30,9 @@
         items = _model.Take(3);
     }
     //_viewModel.CurrentIndex = (_viewModel.CurrentIndex ?? 0) + items.Count();
+    var count = items.Count();
 }
-@if (items.Count() > 0)
+@if (count > 0)
 {
     foreach (var item in items)
     {
@@ -51,6 +54,16 @@
         }
         $global.currentIndex = $global.currentIndex + @items.Count();
     });
+    </script>
+}
+@if (count < 3)
+{
+    <script>
+        $(function () {
+            if (typeof ($global.nomoreMilestone) === 'function') {
+                $global.nomoreMilestone();
+            }
+        });
     </script>
 }
 

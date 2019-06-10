@@ -20,12 +20,20 @@
 @{
     PersonalExercisePurpose purpose = _learner.PersonalExercisePurpose;
 }
+
+<script>
+    $(function () {
+        $global.nomoreMilestone = function () {
+            $('#btnMoreMilestone').remove();
+        };
+    });
+</script>
 <ul class="list-unstyled feeds_widget" id="milestoneItems">
     @{ 
         Html.RenderAction("LoadCompleteExercisePurposeItems", "LearnerProfile", new { _learner.UID });
     }
 </ul>
-<button onclick="loadMilestone();" class="btn btn-darkteal btn-round btn-sm m-t-0 float-right">載入更多 ...</button>
+<button id="btnMoreMilestone" onclick="loadMilestone();" class="btn btn-darkteal btn-round btn-sm m-t-0 float-right">載入更多 ...</button>
 <script>
 
     function loadMilestone(reload) {

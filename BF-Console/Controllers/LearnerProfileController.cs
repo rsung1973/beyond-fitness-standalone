@@ -58,14 +58,16 @@ namespace WebHome.Controllers
             ops.LoadWith<RegisterLesson>(i => i.LessonPriceType);
             models.GetDataContext().LoadOptions = ops;
 
-
             IQueryable<LessonTime> dataItems = viewModel.LearnerID.Value.PromptLearnerLessons(models);
+            IQueryable<LessonTime> coachPI = viewModel.LearnerID.Value.PromptCoachPILessons(models);
             IQueryable<UserEvent> eventItems = models.GetTable<UserEvent>()
                 .Where(e => !e.SystemEventID.HasValue)
                 .Where(e => e.UID == viewModel.LearnerID);
             if (viewModel.DateFrom.HasValue && viewModel.DateTo.HasValue)
             {
                 dataItems = dataItems.Where(t => t.ClassTime >= viewModel.DateFrom.Value
+                    && t.ClassTime < viewModel.DateTo.Value.AddDays(1));
+                coachPI = coachPI.Where(t => t.ClassTime >= viewModel.DateFrom.Value
                     && t.ClassTime < viewModel.DateTo.Value.AddDays(1));
                 eventItems = eventItems.Where(t =>
                     (t.StartDate >= viewModel.DateFrom.Value && t.StartDate < viewModel.DateTo.Value.AddDays(1))
@@ -76,11 +78,13 @@ namespace WebHome.Controllers
             else if (viewModel.DateFrom.HasValue)
             {
                 dataItems = dataItems.Where(t => t.ClassTime >= viewModel.DateFrom.Value);
+                coachPI = coachPI.Where(t => t.ClassTime >= viewModel.DateFrom.Value);
                 eventItems = eventItems.Where(t => t.StartDate >= viewModel.DateFrom.Value);
             }
             else if (viewModel.DateTo.HasValue)
             {
                 dataItems = dataItems.Where(t => t.ClassTime < viewModel.DateTo.Value.AddDays(1));
+                coachPI = coachPI.Where(t => t.ClassTime < viewModel.DateTo.Value.AddDays(1));
                 eventItems = eventItems.Where(t => t.EndDate < viewModel.DateTo.Value.AddDays(1));
             }
 
@@ -91,6 +95,12 @@ namespace WebHome.Controllers
                     EventTime = d.ClassTime,
                     EventItem = d
                 }).ToList();
+
+            items.AddRange(coachPI.Select(v => new CalendarEventItem
+            {
+                EventTime = v.ClassTime,
+                EventItem = v
+            }));
 
             items.AddRange(eventItems.Select(v => new CalendarEventItem
             {
@@ -356,7 +366,9 @@ namespace WebHome.Controllers
                 ModelState.AddModelError("Purpose", "週期性目標");
             }
 
-            var itemCount = models.GetTable<PersonalExercisePurposeItem>().Where(p => p.UID == item.UID).Count();
+            var itemCount = models.GetTable<PersonalExercisePurposeItem>()
+                .Where(p => !p.CompleteDate.HasValue)
+                .Where(p => p.UID == item.UID).Count();
             if (viewModel.Items != null)
             {
                 if (viewModel.Items.ItemID != null)
@@ -467,6 +479,55 @@ namespace WebHome.Controllers
                 return View("~/Views/ConsoleHome/Shared/AlertMessage.cshtml", model: "Opps！您確定您輸入的資料正確嗎！？");
 
         }
+
+        public ActionResult ResumeLearnerCharacter(LearnerCharacterViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            if (viewModel.KeyID != null)
+            {
+                viewModel.UID = viewModel.DecryptKeyValue();
+            }
+
+            var profile = models.GetTable<UserProfile>().Where(u => u.UID == viewModel.UID).FirstOrDefault();
+            if (profile == null)
+            {
+                return Json(new { result = false, message = "資料錯誤!" }, JsonRequestBehavior.AllowGet);
+            }
+
+            var questionnaire = models.GetEffectiveQuestionnaireRequest(profile, Naming.QuestionnaireGroup.身體心靈密碼).FirstOrDefault();
+            if(questionnaire==null || !questionnaire.PDQTask.Any())
+            {
+                return Json(new { result = true }, JsonRequestBehavior.AllowGet);
+            }
+
+            return View("~/Views/LearnerProfile/Module/ResumeLearnerCharacter.cshtml", questionnaire);
+
+        }
+
+        public ActionResult RejectLearnerCharacter(LearnerCharacterViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            if (viewModel.KeyID != null)
+            {
+                viewModel.UID = viewModel.DecryptKeyValue();
+            }
+
+            var questionnaire = models.GetTable<QuestionnaireRequest>().Where(q => q.QuestionnaireID == viewModel.QuestionnaireID)
+                                    .Where(q => q.UID == viewModel.UID).FirstOrDefault();
+
+            if (questionnaire == null)
+            {
+                return Json(new { result = false, message = "資料錯誤!" }, JsonRequestBehavior.AllowGet);
+            }
+
+            questionnaire.Status = (int)Naming.IncommingMessageStatus.拒答;
+            models.SubmitChanges();
+
+            return Json(new { result = true }, JsonRequestBehavior.AllowGet);
+
+        }
+
+
 
     }
 }
