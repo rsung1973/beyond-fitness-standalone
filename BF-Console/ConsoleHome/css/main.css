@@ -3099,7 +3099,8 @@ textarea.form-control {
     border: none;
     border-bottom: 1px solid #E3E3E3;
     border-radius: 0;
-    line-height: 2
+    line-height: 2;
+    overflow-y:scroll;
 }
 
 textarea.form-control.no-padding{
@@ -27000,4 +27001,23 @@ section.content {
     vertical-align: bottom !important;
     border: 3px solid #fff;
     box-shadow: 0px 5px 25px 0px rgba(0, 0, 0, 0.2);    
+}
+
+/**
+* 展開TextArea
+*/
+.decrease,
+.autogrow {
+    text-align: center;
+    font-size: 10px;
+    cursor: pointer;
+}
+
+.decrease {
+    display: none;
+}
+
+.decrease span,
+.autogrow span {
+    display: block;
 }
