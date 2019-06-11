@@ -31,7 +31,11 @@
             closeOnCancel: true,
         }, function (isConfirm) {
             if (isConfirm) {
-                $('').launchDownload('@(Html.Raw(Url.Action("EditLearnerCharacter","ConsoleHome",new { _model.QuestionnaireID })))', { 'keyID': '@(_model.UID.EncryptKey())' });
+                if ($global.resumeCharacter) {
+                    $global.resumeCharacter();
+                } else {
+                    $('').launchDownload('@(Html.Raw(Url.Action("EditLearnerCharacter","ConsoleHome",new { _model.QuestionnaireID })))', { 'keyID': '@(_model.UID.EncryptKey())' });
+                }
             } else {
                 showLoading();
                 $.post('@Html.Raw(Url.Action("RejectLearnerCharacter", "LearnerProfile", new {_model.QuestionnaireID }))', { 'keyID': '@(_model.UID.EncryptKey())' }, function (data) {

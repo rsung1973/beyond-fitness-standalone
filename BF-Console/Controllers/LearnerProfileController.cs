@@ -211,6 +211,19 @@ namespace WebHome.Controllers
                 return Json(new { result = false, message = "資料錯誤!!" }, JsonRequestBehavior.AllowGet);
             }
 
+            int?[] sugguestion = null;
+            viewModel.PDQAnswer = viewModel.PDQAnswer.GetEfficientString();
+            if (viewModel.SuggestionID != null && viewModel.SuggestionID.Length > 0)
+            {
+                sugguestion = viewModel.SuggestionID
+                    .Where(s => s.HasValue).ToArray();
+            }
+
+            if (viewModel.NoChecked != true && (sugguestion == null || sugguestion.Length == 0) && viewModel.PDQAnswer == null)
+            {
+                return Json(new { result = false, message = "請勾選項目!!" }, JsonRequestBehavior.AllowGet);
+            }
+
             if (viewModel.QuestionnaireID.HasValue)
             {
                 models.ExecuteCommand("delete PDQTask where UID = {0} and QuestionID = {1} and QuestionnaireID = {2}",
@@ -226,10 +239,8 @@ namespace WebHome.Controllers
                 QuestionnaireID = viewModel.QuestionnaireID,
             };
 
-            if (viewModel.SuggestionID != null && viewModel.SuggestionID.Length > 0)
+            if (sugguestion!=null)
             {
-                var sugguestion = viewModel.SuggestionID
-                        .Where(s => s.HasValue).ToArray();
                 if (sugguestion.Length > 0)
                 {
                     if (question.QuestionType == (int)Naming.QuestionType.多重選 || question.QuestionType == (int)Naming.QuestionType.多重選其他)

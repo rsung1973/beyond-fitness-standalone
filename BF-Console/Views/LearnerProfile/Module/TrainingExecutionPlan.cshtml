@@ -16,15 +16,22 @@
     _modelState = (ModelStateDictionary)ViewBag.ModelState;
     models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
     _model = (LessonTime)this.Model;
+    var profile = Context.GetUser();
 }
 @{ 
     UserProfile learner = (UserProfile)ViewBag.Learner;
+    var plan = _model.AssertTrainingPlan(models, UID: learner.UID);
+    bool isModal = (bool?)ViewBag.IsModal == true ? true : false;
 }
 <div class="accordion custom" id="accordion">
     <div class="accordion-header">
         <ul class="lesson-box">
             <li class="lesson-spot">
                 <span class="title">@($"{_model.ClassTime:yyyy/MM/dd HH:mm}")-@($"{_model.ClassTime.Value.AddMinutes(_model.DurationInMinutes.Value):HH:mm}") - @(_model.LessonTypeStatus()) @(_model.AsAttendingCoach.UserProfile.FullName())</span>
+                @if (isModal && plan.FavoriteLesson.Count>0)
+                {
+                    <a href="javascript:void(0);" class="col-red"> <i class="@(plan.FavoriteLesson.Any(f => f.UID == profile.UID) ? "myfavaroit like" : "myfavaroit")"></i> <span>@(plan.FavoriteLesson.Count > 0 ? plan.FavoriteLesson.Count.ToString() : null)</span> </a>
+                }
                 @{
                     Html.RenderPartial("~/Views/LearnerProfile/Module/LessonContentSparkline.cshtml", _model);
                 }
@@ -32,7 +39,7 @@
                     @{
                         ViewBag.ProfileClass = "popfit";
                     }
-                    @foreach (var item in _model.GroupingLesson.RegisterLesson.Where(r=>r.UID!=learner.UID))
+                    @foreach (var item in _model.GroupingLesson.RegisterLesson.Where(r => r.UID != learner.UID))
                     {
                         <li onclick="$('').launchDownload('@Html.Raw(Url.Action("LessonTrainingContent", "ConsoleHome",new { KeyID = _model.LessonID.EncryptKey(),LearnerID = item.UID }))', { });">
                             @{

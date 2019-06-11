@@ -44,7 +44,7 @@
                                 <img src="images/avatar/noname.png" class="rounded-circle">
                                 <div class="chat-info smallpadding">
                                     <span class="message">
-                                        @(item.PDQQuestion.Question)
+                                        @Html.Raw(item.PDQQuestion.Question)
                                     </span>
                                 </div>
                             </li>
@@ -126,7 +126,7 @@
         <img src="images/avatar/noname.png" class="rounded-circle">
         <div class="chat-info smallpadding">
             <span class="message">
-                @(item.PDQQuestion.Question)
+                @Html.Raw(item.PDQQuestion.Question)
             </span>
         </div>
     </li>

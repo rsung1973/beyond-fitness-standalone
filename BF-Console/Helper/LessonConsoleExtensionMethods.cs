@@ -65,18 +65,18 @@ namespace WebHome.Helper
             }
         }
 
-        public static String PowerAbliityCss(this PersonalExercisePurpose item,String append = null)
+        public static String PowerAbliityCss(this PersonalExercisePurpose item, String append = null)
         {
+            String css = "col - red";
             if (item != null && item.PowerAbility != null)
             {
-                String css = item.PowerAbility.Contains("初")
-                            ? "col-amber"
-                            : item.PowerAbility.Contains("中")
-                                ? "col-green"
-                                : "col-red";
-                return append == null ? css : $"{css} {append}";
+                css = item.PowerAbility.Contains("初")
+                           ? "col-amber"
+                           : item.PowerAbility.Contains("中")
+                               ? "col-green"
+                               : "col-red";
             }
-            return null;
+            return append == null ? css : $"{css} {append}";
         }
 
         public static String PowerAbliityCss(this Naming.PowerAbilityLevel? item, String append = null)

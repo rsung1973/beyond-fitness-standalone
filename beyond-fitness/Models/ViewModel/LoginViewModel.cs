@@ -713,6 +713,7 @@ namespace WebHome.Models.ViewModel
         public int? QuestionID { get; set; }
         public int?[] SuggestionID { get; set; }
         public String PDQAnswer { get; set; }
+        public bool? NoChecked { get; set; }
     }
 
 }

@@ -238,6 +238,44 @@ namespace WebHome.Helper
                     || f.LessonFitnessAssessmentReport.Count(r => r.FitnessAssessmentItem.GroupID == 3) == 0);
         }
 
+        public static bool CheckToAttendLesson<TEntity>(this LessonTime lessonItem, ModelSource<TEntity> models)
+            where TEntity : class, new()
+        {
+
+            if (lessonItem.LessonAttendance != null)
+            {
+                return false;
+            }
+
+            if(!(lessonItem.ClassTime < DateTime.Today.AddDays(1)))
+            {
+                return false;
+            }
+
+            if (lessonItem.IsSTSession())
+            {
+                return false;
+            }
+
+            if(lessonItem.RegisterLesson.LessonPriceType.Status == (int)Naming.LessonPriceStatus.自主訓練)
+            {
+                return false;
+            }
+
+            bool result = true;
+            if(lessonItem.IsCoachPISession())
+            {
+                result = !models.GetEffectiveQuestionnaireRequest(lessonItem.RegisterLesson.UserProfile, Naming.QuestionnaireGroup.身體心靈密碼).Any();
+            }
+            else 
+            {
+                result = !lessonItem.GetEffectiveQuestionnaireRequest(models, Naming.QuestionnaireGroup.身體心靈密碼).Any();
+            }
+
+            return result;
+        }
+
+
         public static bool IsAttendanceOverdue<TEntity>(this ModelSource<TEntity> models, LessonTime item)
             where TEntity : class, new()
         {
@@ -628,6 +666,17 @@ namespace WebHome.Helper
                 .Where(q => !q.Status.HasValue 
                     || q.Status == (int)Naming.IncommingMessageStatus.未讀);
         }
+
+        public static IQueryable<QuestionnaireRequest> GetEffectiveQuestionnaireRequest<TEntity>(this LessonTime item, ModelSource<TEntity> models, Naming.QuestionnaireGroup group)
+            where TEntity : class, new()
+        {
+            return models.GetTable<RegisterLesson>().Where(r => r.RegisterGroupID == item.GroupID)
+                .Join(models.GetTable<QuestionnaireRequest>(), r => r.UID, q => q.UID, (r, q) => q)
+                .Where(q => q.GroupID == (int)group)
+                .Where(q => !q.Status.HasValue
+                    || q.Status == (int)Naming.IncommingMessageStatus.未讀);
+        }
+
 
         public static int? BonusPoint<TEntity>(this UserProfile item, ModelSource<TEntity> models)
             where TEntity : class, new()

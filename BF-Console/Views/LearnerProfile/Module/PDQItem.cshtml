@@ -46,4 +46,18 @@ else
 <div class="form-group p-t-0">
     <textarea rows="1" cols="100" class="form-control" placeholder="其他更多說明" data-id="@(_model.QuestionID)" name="PDQAnswer">@(taskItem?.PDQAnswer)</textarea>
 </div>
+@if(_model.QuestionType==(int)Naming.QuestionType.單選其他 || _model.QuestionType == (int)Naming.QuestionType.單選題)
+{
+    <script>
+        $(function () {
+            function answer(element) {
+                $('input:checkbox[data-id="@(_model.QuestionID)"]').prop('checked', false);
+                $(element).prop('checked', true);
+            }
+            $('input:checkbox[data-id="@(_model.QuestionID)"]').on('click', function (event) {
+                answer(this);
+            });
+        });
+    </script>
+}
 

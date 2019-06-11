@@ -588,9 +588,19 @@ namespace WebHome.Helper
             where TEntity : class, new()
         {
             return models.GetTable<RegisterLesson>().Where(u => u.UID == learnerID)
+                .Where(r=>r.LessonPriceType.Status != (int)Naming.LessonPriceStatus.教練PI)
                 .Join(models.GetTable<GroupingLesson>(), r => r.RegisterGroupID, g => g.GroupID, (r, g) => g)
                 .Join(models.GetTable<LessonTime>(), g => g.GroupID, l => l.GroupID, (g, l) => l);
         }
+
+        public static IQueryable<LessonTime> PromptCoachPILessons<TEntity>(this int learnerID, ModelSource<TEntity> models)
+            where TEntity : class, new()
+        {
+            return models.GetTable<RegisterLesson>().Where(u => u.UID == learnerID)
+                .Where(r => r.LessonPriceType.Status == (int)Naming.LessonPriceStatus.教練PI)
+                .Join(models.GetTable<LessonTime>(), g => g.RegisterID, l => l.RegisterID, (g, l) => l);
+        }
+
 
         public static void ProcessBookingWhenCrossBranch<TEntity>(this LessonTime item, ModelSource<TEntity> models)
             where TEntity : class, new()

@@ -378,7 +378,10 @@
         };
 
         function editLearnerCharacter() {
-            $global.rejectCharacterDone = function () {
+
+            $('').launchDownload('@(Html.Raw(Url.Action("EditLearnerCharacter","ConsoleHome",new { KeyID = learner.UID.EncryptKey() })))', {});
+
+            @*$global.rejectCharacterDone = function () {
                 $('').launchDownload('@Html.Raw(Url.Action("LessonTrainingContent", "ConsoleHome",new { LearnerID =  learner.UID }))', {'keyID':'@(lessonItem.LessonID.EncryptKey())' });
             };
 
@@ -392,7 +395,7 @@
                 } else {
                     $(data).appendTo($('body'));
                 }
-            });
+            });*@
         }
 
 
