@@ -67,7 +67,7 @@ namespace WebHome.Helper
 
         public static String PowerAbliityCss(this PersonalExercisePurpose item, String append = null)
         {
-            String css = "col - red";
+            String css = "col-red";
             if (item != null && item.PowerAbility != null)
             {
                 css = item.PowerAbility.Contains("初")
@@ -87,7 +87,7 @@ namespace WebHome.Helper
                             ? "col-amber"
                             : item == Naming.PowerAbilityLevel.高階
                                 ? "col-red"
-                                : null;
+                                : "col-red";
             return append == null ? css : $"{css} {append}";
         }
 

@@ -221,7 +221,7 @@ namespace WebHome.Controllers
 
             if (viewModel.NoChecked != true && (sugguestion == null || sugguestion.Length == 0) && viewModel.PDQAnswer == null)
             {
-                return Json(new { result = false, message = "請勾選項目!!" }, JsonRequestBehavior.AllowGet);
+                return Json(new { result = false, message = "請至少勾選一項或填寫其它內容喔！" }, JsonRequestBehavior.AllowGet);
             }
 
             if (viewModel.QuestionnaireID.HasValue)

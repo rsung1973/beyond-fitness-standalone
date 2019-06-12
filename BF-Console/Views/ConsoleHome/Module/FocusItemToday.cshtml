@@ -48,7 +48,7 @@
                 {
                     var lessonItem = models.GetTable<LessonTime>().Where(l => l.LessonID == globalViewModel.LessonTimeItem.LessonID).First();
                     <a href="javascript:$('').launchDownload('@Html.Raw(Url.Action("LessonTrainingContent", "ConsoleHome",new { LearnerID = lessonItem.RegisterLesson.UID }))', {'keyID':'@(lessonItem.LessonID.EncryptKey())' });">
-                        @{ Html.RenderPartial("~/Views/Common/ProfileImage.cshtml");}
+                        @{ Html.RenderPartial("~/Views/Common/ProfileImage.cshtml", lessonItem.AsAttendingCoach.UserProfile);   }
                     </a>
                 }
                 else
