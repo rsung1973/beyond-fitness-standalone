@@ -6137,16 +6137,7 @@
     <Content Include="Views\ConsoleEvent\Module\CoachPICoachOnlySelector.cshtml" />
     <Content Include="Views\ConsoleEvent\EventModal\BookingTrialLesson.cshtml" />
     <Content Include="Views\ConsoleEvent\EventModal\BookingLearnerLesson.cshtml" />
-    <Content Include="Views\ConsoleHome\Shared\DropifyUpload.ascx" />
-    <Content Include="Views\ConsoleHome\Shared\PagingControl.ascx" />
     <Content Include="Views\ConsoleHome\Shared\JsAlert.cshtml" />
-    <Content Include="Views\ConsoleHome\Shared\MyContractHeader.ascx" />
-    <Content Include="Views\ConsoleHome\Shared\KnobJS.ascx" />
-    <Content Include="Views\ConsoleHome\Shared\Knob.ascx" />
-    <Content Include="Views\ConsoleHome\Shared\BSModalScript.ascx" />
-    <Content Include="Views\ConsoleHome\Shared\AlertMessage.ascx" />
-    <Content Include="Views\ConsoleHome\Shared\InitBarChartNoRegister.ascx" />
-    <Content Include="Views\ConsoleHome\Shared\ReportInputError.ascx" />
     <Content Include="Views\ContractConsole\ContractService\CourseContractTransferenceView.ascx" />
     <Content Include="Views\ContractConsole\ContractService\DoConsultantAssignment.ascx" />
     <Content Include="Views\ContractConsole\Editing\ContractServiceCommitted.ascx" />
@@ -6167,6 +6158,11 @@
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Views\ConsoleHome\EditLearnerCharacter.cshtml" />
+    <Content Include="Views\ConsoleHome\LearnerLesson.cshtml" />
+    <Content Include="Views\ConsoleHome\LearnerProfile.cshtml" />
+    <Content Include="Views\ConsoleHome\LessonTrainingContent.cshtml" />
+    <Content Include="Views\LearnerProfile\Module\ResumeLearnerCharacter.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\InitializeType.cs" />
