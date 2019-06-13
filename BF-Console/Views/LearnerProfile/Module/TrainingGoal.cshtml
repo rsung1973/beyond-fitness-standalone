@@ -23,7 +23,7 @@
 <div class="bullet todo"></div>
 <div class="time">近期目標</div>
 <div class="desc">
-    <h3 class="col-green">週期性目標-@(purpose?.Purpose!=null ? $"{purpose.Purpose}期" : "目前暫無週期性目標，請洽詢專屬顧問幫您設計『屬於自己』的目標吧！")</h3>
+    <h3 class="col-green">週期性目標-@(purpose?.Purpose != null ? $"{purpose.Purpose}期" : "你知道你的學生為了什麼而努力嗎？")</h3>
     <h4>
         <ul class="list-unstyled">
             @{
@@ -42,18 +42,6 @@
                         </label>
                     </li>
                 }
-            }
-            else
-            {
-                <li>
-                    <label class="fancy-checkbox custom-bgcolor-green">
-                        <input type="checkbox" name="todolist" value="1">
-                        <span>
-                            您暫無近期目標<br />
-                            快與您的體能顧問進行討論喔！
-                        </span>
-                    </label>
-                </li>
             }
         </ul>
     </h4>
