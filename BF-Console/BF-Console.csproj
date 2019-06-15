@@ -6530,7 +6530,6 @@
     <Content Include="MainActivity\Pricing\Zhongxiao.json" />
     <None Include="packages.config" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
-    <Content Include="Views\ConsoleHome\Template\MainPage.Master" />
     <Content Include="Views\MainActivity\Template\BlogPage.cshtml" />
     <Content Include="Views\MainActivity\Template\MainPage.cshtml" />
     <Content Include="Views\MainActivity\Index.cshtml" />
