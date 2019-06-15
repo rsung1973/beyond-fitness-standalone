@@ -63,106 +63,6 @@
 
     var totalData = @Html.Raw(JsonConvert.SerializeObject(totalData));
     $(function () {
-        c3.chart.internal.fn.additionalConfig = {
-                bar_radiusAll: false,
-                bar_radius: 8,
-                tooltip_format_color: undefined
-
-            };
-
-            c3.chart.internal.fn.generateDrawBar = function(barIndices, isSub) {
-                var $$ = this,
-                    config = $$.config,
-                    getPoints = $$.generateGetBarPoints(barIndices, isSub);
-                return function(d, i) {
-                    // 4 points that make a bar
-                    var points = getPoints(d, i),
-                        groups = config.data_groups,
-                        path = '';
-                    // switch points if axis is rotated, not applicable for sub chart
-                    var indexX = config.axis_rotated ? 1 : 0;
-                    var indexY = config.axis_rotated ? 0 : 1;
-                    var bar_radius = config.bar_radius;
-                    var bar_radiusAll = config.bar_radiusAll;
-                    if (groups && groups.length > 0) {
-                        var lastGrps = [];
-                        groups.forEach(function(group) {
-                            lastGrps.push(group[group.length - 1]);
-                        });
-                        //if(points[0][1] < points[1][1] || points[0][0] > points[1][0] ) {
-                        //  bar_radius = bar_radius*-1;
-                        //}
-                        if ((points[0][1] === points[1][1]) && (points[1][1] === points[2][1]) && (points[2][1] === points[3][1]) ||
-                            (points[0][0] === points[1][0]) && (points[1][0] === points[2][0]) && (points[2][0] === points[3][0])) {
-                            path = 'M ' + points[0][indexX] + ',' + points[0][indexY] + ' ' +
-                                'L' + points[1][indexX] + ',' + (points[1][indexY]) + ' ' +
-                                'L' + (points[2][indexX]) + ',' + points[2][indexY] + ' ' +
-                                'L' + points[3][indexX] + ',' + points[3][indexY] + ' ' +
-                                'z';
-                            return path;
-                        }
-                        if (lastGrps.indexOf(d.id) > -1 && (config.data_order === null)) {
-                            if (config.axis_rotated) {
-                                path = 'M ' + points[0][indexX] + ',' + points[0][indexY] + ' ' +
-                                    'L' + (points[1][indexX] - bar_radius) + ',' + points[1][indexY] + ' ' +
-                                    'Q' + points[1][indexX] + ',' + points[1][indexY] + ' ' + points[1][indexX] + ',' + (points[1][indexY] + bar_radius) + ' ' +
-                                    'L' + points[2][indexX] + ',' + (points[2][indexY] - bar_radius) + ' ' +
-                                    'Q' + points[2][indexX] + ',' + points[2][indexY] + ' ' + (points[2][indexX] - bar_radius) + ',' + points[2][indexY] + ' ' +
-                                    'L' + points[3][indexX] + ',' + points[3][indexY] + ' ' +
-                                    'z';
-                            } else {
-                                path = 'M ' + points[0][indexX] + ',' + points[0][indexY] + ' ' +
-                                    'L' + points[1][indexX] + ',' + (points[1][indexY] + bar_radius) + ' ' +
-                                    'Q' + points[1][indexX] + ',' + points[1][indexY] + ' ' + (points[1][indexX] + bar_radius) + ',' + points[1][indexY] + ' ' +
-                                    'L' + (points[2][indexX] - bar_radius) + ',' + points[2][indexY] + ' ' +
-                                    'Q' + points[2][indexX] + ',' + points[2][indexY] + ' ' + points[2][indexX] + ',' + (points[2][indexY] + bar_radius) + ' ' +
-                                    'L' + points[3][indexX] + ',' + points[3][indexY] + ' ' +
-                                    'z';
-                            }
-                        } else {
-                            if (bar_radiusAll) {
-                                path = 'M ' + points[0][indexX] + ',' + points[0][indexY] + ' ' +
-                                    'L' + (points[1][indexX] + bar_radius) + ',' + (points[1][indexY]) + ' ' +
-                                    'Q' + points[1][indexX] + ',' + points[1][indexY] + ' ' + (points[1][indexX]) + ',' + (points[1][indexY] + bar_radius) + ' ' +
-                                    'L' + (points[2][indexX]) + ',' + (points[2][indexY] - bar_radius) + ' ' +
-                                    'Q' + points[2][indexX] + ',' + points[2][indexY] + ' ' + (points[2][indexX] + bar_radius) + ',' + (points[2][indexY]) + ' ' +
-                                    'L' + points[3][indexX] + ',' + points[3][indexY] + ' ' +
-                                    'z';
-                            } else {
-                                path = 'M ' + points[0][indexX] + ',' + points[0][indexY] + ' ' +
-                                    'L' + points[1][indexX] + ',' + (points[1][indexY]) + ' ' +
-                                    'L' + (points[2][indexX]) + ',' + points[2][indexY] + ' ' +
-                                    'L' + points[3][indexX] + ',' + points[3][indexY] + ' ' +
-                                    'z';
-                            }
-                        }
-                    } else {
-                        /*path = 'M ' + points[0][indexX] + ',' + points[0][indexY] + ' ' +
-                         'L' + points[1][indexX] + ',' + (points[1][indexY]) + ' ' +
-                         'L' + (points[2][indexX]) + ',' + points[2][indexY] + ' ' +
-                         'L' + points[3][indexX] + ',' + points[3][indexY] + ' ' +
-                         'z';*/
-                        if (config.axis_rotated) {
-                            path = 'M ' + points[0][indexX] + ',' + points[0][indexY] + ' ' +
-                                'L' + (points[1][indexX] - bar_radius) + ',' + points[1][indexY] + ' ' +
-                                'Q' + points[1][indexX] + ',' + points[1][indexY] + ' ' + points[1][indexX] + ',' + (points[1][indexY] + bar_radius) + ' ' +
-                                'L' + points[2][indexX] + ',' + (points[2][indexY] - bar_radius) + ' ' +
-                                'Q' + points[2][indexX] + ',' + points[2][indexY] + ' ' + (points[2][indexX] - bar_radius) + ',' + points[2][indexY] + ' ' +
-                                'L' + points[3][indexX] + ',' + points[3][indexY] + ' ' +
-                                'z';
-                        } else {
-                            path = 'M ' + points[0][indexX] + ',' + points[0][indexY] + ' ' +
-                                'L' + points[1][indexX] + ',' + (points[1][indexY] + bar_radius) + ' ' +
-                                'Q' + points[1][indexX] + ',' + points[1][indexY] + ' ' + (points[1][indexX] + bar_radius) + ',' + points[1][indexY] + ' ' +
-                                'L' + (points[2][indexX] - bar_radius) + ',' + points[2][indexY] + ' ' +
-                                'Q' + points[2][indexX] + ',' + points[2][indexY] + ' ' + points[2][indexX] + ',' + (points[2][indexY] + bar_radius) + ' ' +
-                                'L' + points[3][indexX] + ',' + points[3][indexY] + ' ' +
-                                'z';
-                        }
-                    }
-                    return path;
-                };
-            };
         var chart = c3.generate({
             bindto: '#@(_chartID)', // id of chart wrapper
             data: {
@@ -178,15 +78,15 @@
                     ['data1', 'data2', 'data3']
                 ],
                 colors: {
-                    'data1': '#F58FB0',
-                    'data2': '#C5E1A7',
-                    'data3': '#FFCC84'
+                    'data1': '#65799b',
+                    'data2': '#d3d4d8',
+                    'data3': '#3fbac2'
                 },
                 names: {
                     // name of each serie
-                    'data1': 'T.S',
+                    'data1': 'P.T',
                     'data2': 'P.I',
-                    'data3': 'P.T'
+                    'data3': 'T.S'
                 },
                 labels: {
                         format: {
@@ -225,7 +125,7 @@
 
         setTimeout(function () {
             chart.load({
-                columns: [@Html.Raw(JsonConvert.SerializeObject(getDistributionC3("data1",TrialLessons, _hourIdx)))]
+                columns: [@Html.Raw(JsonConvert.SerializeObject(getDistributionC3("data1",PTLessons,_hourIdx)))]
             });
         }, 1000);
 
@@ -237,7 +137,7 @@
 
         setTimeout(function () {
             chart.load({
-                columns: [@Html.Raw(JsonConvert.SerializeObject(getDistributionC3("data3",PTLessons,_hourIdx)))]
+                columns: [@Html.Raw(JsonConvert.SerializeObject(getDistributionC3("data3",TrialLessons, _hourIdx)))]
             });
         }, 2000);
 
