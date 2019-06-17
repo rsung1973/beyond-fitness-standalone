@@ -15,7 +15,7 @@
 
     _modelState = (ModelStateDictionary)ViewBag.ModelState;
     models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
-    _model = (UserProfile)this.Model;
+    _model = (UserProfile)this.Model;    
 
 }
 @{
@@ -29,6 +29,7 @@
         <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#mind">心靈密碼</a></li>
     </ul>
 </div>
+<div class="col-12"><span class="float-right font-10">日期：@($"{questionnaire.PayoffDue:yyyy/MM/dd}")</span></div>
 <div class="col-12">
     <div class="tab-content p-l-0 p-r-0">
         <div class="tab-pane active" id="body">
