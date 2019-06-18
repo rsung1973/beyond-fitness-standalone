@@ -29,11 +29,22 @@
 }
 @if (count > 0)
 {
+    var idx = 0;
     foreach (var item in items)
     {
+        idx++;
+        var btnclass = "btn btn-icon btn-round btn-sm float-right m-l-5 ";
+        if (idx % 2 == 0)
+        {
+            btnclass += "bg-darkteal";
+        }
+        else
+        {
+            btnclass += "btn-simple";
+        }
         var plan = item.AssertTrainingPlan(models, UID: _viewModel.LearnerID);
         var execution = plan.TrainingExecution;
-        <li>
+        <li class="lessonitem">
             <div class="@(item.IsPTSession()
                             ? "bullet PT"
                             : item.IsCoachPISession()
@@ -59,26 +70,26 @@
                                 <i class="zmdi zmdi-check"></i>
                             }
                         }
-                    </h3>                                                                                                                                                                         
-                 </div>
+                    </h3>
+                    @if (item.LessonID != _viewModel.ExceptionalID)
+                    {
+                        <div class="buttons">
+                            @if (execution.TrainingItem.Count() > 0)
+                            {
+                                <button class="@(btnclass)" type="button" onclick="javascript:copyTrainingPlan(@item.LessonID);">
+                                    <i class="zmdi zmdi-copy"></i>
+                                </button>
+                            }
+                            <button class="@(btnclass)" type="button" onclick="javascript:editTrainingContent('@(item.LessonID.EncryptKey())');">
+                                <i class="zmdi zmdi-edit"></i>
+                            </button>
+                        </div>
+                    }
+                </div>
                 <h4><a href="javascript:viewTraining('@item.LessonID.EncryptKey()');">@(execution.Emphasis ?? "重點一片空，學生要來踹你了...")</a></h4>
                 @if (item.LessonPlan.Remark != null)
                 {
                     <span class="comment">@(item.LessonPlan.Remark)<span class="author">@(item.AsAttendingCoach.UserProfile.FullName())</span></span>
-                }
-                @if (item.LessonID != _viewModel.ExceptionalID)
-                {
-                    <div class="buttons">
-                        @if (execution.TrainingItem.Count() > 0)
-                        {
-                            <button class="btn btn-simple btn-icon btn-round btn-sm float-right m-l-5" type="button" onclick="javascript:copyTrainingPlan(@item.LessonID);">
-                                <i class="zmdi zmdi-copy"></i>
-                            </button>
-                        }
-                        <button class="btn btn-simple btn-icon btn-round btn-sm float-right m-l-5" type="button" onclick="javascript:editTrainingContent('@(item.LessonID.EncryptKey())');">
-                            <i class="zmdi zmdi-edit"></i>
-                        </button>
-                    </div>
                 }
             </div>
         </li>
@@ -86,13 +97,11 @@
 }
 @if (count < _viewModel.PageSize.Value)
 {
-    <script>
-        $(function () {
+    <script>$(function () {
             if (typeof ($global.nomoreLesson) === 'function') {
                 $global.nomoreLesson();
             }
-        });
-    </script>
+        });</script>
 }
 
 
