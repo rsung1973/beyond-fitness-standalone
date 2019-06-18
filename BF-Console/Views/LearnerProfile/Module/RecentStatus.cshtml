@@ -1,4 +1,4 @@
-
+﻿
 @using System.IO
 @using System.Linq.Expressions
 
@@ -20,11 +20,11 @@
 <div class="new_post">
     <div class="form-group">
         <textarea rows="10" cols="80" name="RecentStatus" class="form-control xl-aliceblue" placeholder="請輸入任何您想輸入的..." onkeyup="autogrow();">@(_learner.RecentStatus)</textarea>
-        <div class="autogrow" onclick="autogrow();"><i class="zmdi zmdi-chevron-down"></i><span>展開全部</span></div>
-        <div class="decrease" onclick="autodecrease();"><i class="zmdi zmdi-chevron-up"></i><span>收合全部</span></div>
     </div>
     <div class="post-toolbar-b">
         <button class="btn bg-darkteal btn-round float-right btn-sm" onclick="commitRecentStatus();">更新</button>
+        <div class="autogrow" onclick="autogrow();"><i class="zmdi zmdi-chevron-down"></i><span>展開全部</span></div>
+        <div class="decrease" onclick="autodecrease();"><i class="zmdi zmdi-chevron-up"></i><span>收合</span></div>    
     </div>
 </div>
 <script>
