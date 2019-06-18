@@ -1,4 +1,4 @@
-
+﻿
 @using System.IO
 @using System.Linq.Expressions
 
@@ -45,32 +45,40 @@
                                         : "bullet")"></div>
             <div class="time">@($"{item.ClassTime:MM/dd}")<br />@($"{item.ClassTime:yyyy}")</div>
             <div class="desc">
-                <h3>
-                    @(item.LessonTypeStatus())
-                    @if (item.LessonAttendance != null)
-                    {
-                        if (item.LessonPlan.CommitAttendance.HasValue)
+                <div class="header">
+                    <h3>
+                        @(item.LessonTypeStatus())
+                        @if (item.LessonAttendance != null)
                         {
-                            <i class="zmdi zmdi-check-all"></i>
+                            if (item.LessonPlan.CommitAttendance.HasValue)
+                            {
+                                <i class="zmdi zmdi-check-all"></i>
+                            }
+                            else
+                            {
+                                <i class="zmdi zmdi-check"></i>
+                            }
                         }
-                        else
-                        {
-                            <i class="zmdi zmdi-check"></i>
-                        }
-                    }
-                </h3>
+                    </h3>                                                                                                                                                                         
+                 </div>
                 <h4><a href="javascript:viewTraining('@item.LessonID.EncryptKey()');">@(execution.Emphasis ?? "重點一片空，學生要來踹你了...")</a></h4>
                 @if (item.LessonPlan.Remark != null)
                 {
-                    <div class="font-10">@(item.LessonPlan.Remark)<span class="float-right">- @(item.AsAttendingCoach.UserProfile.FullName())</span></div>
+                    <span class="comment">@(item.LessonPlan.Remark)<span class="author">@(item.AsAttendingCoach.UserProfile.FullName())</span></span>
                 }
                 @if (item.LessonID != _viewModel.ExceptionalID)
                 {
-                    if (execution.TrainingItem.Count() > 0)
-                    {
-                        <a href="javascript:copyTrainingPlan(@item.LessonID);" class="btn btn-sm btn-round btn-simple float-right">複製</a>
-                    }
-                    <a href="javascript:editTrainingContent('@(item.LessonID.EncryptKey())');" class="btn btn-sm btn-round btn-simple float-right edit" data-id="@item.LessonID">編輯</a>
+                    <div class="buttons">
+                        @if (execution.TrainingItem.Count() > 0)
+                        {
+                            <button class="btn btn-simple btn-icon btn-round btn-sm float-right m-l-5" type="button" onclick="javascript:copyTrainingPlan(@item.LessonID);">
+                                <i class="zmdi zmdi-copy"></i>
+                            </button>
+                        }
+                        <button class="btn btn-simple btn-icon btn-round btn-sm float-right m-l-5" type="button" onclick="javascript:editTrainingContent('@(item.LessonID.EncryptKey())');">
+                            <i class="zmdi zmdi-edit"></i>
+                        </button>
+                    </div>
                 }
             </div>
         </li>
