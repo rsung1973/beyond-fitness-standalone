@@ -335,6 +335,13 @@ namespace WebHome.Controllers
                 ModelState.AddModelError("AbilityLevel", "請選擇Level");
             }
 
+            if((!viewModel.Cardiopulmonary.HasValue || viewModel.Cardiopulmonary==0)
+                && (!viewModel.MuscleStrength.HasValue || viewModel.MuscleStrength==0)
+                && (!viewModel.Flexibility.HasValue || viewModel.Flexibility==0))
+            {
+                ModelState.AddModelError("StrengthFeature", "請選擇至少一項強度");
+            }
+
             if (!ModelState.IsValid)
             {
                 ViewBag.ModelState = ModelState;

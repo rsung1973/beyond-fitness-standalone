@@ -97,13 +97,13 @@
                                                                     {
                                                                         <p class="msg col-red"><i class="zmdi zmdi-info-outline"></i>PDQ尚未登打或登打不完全</p>
                                                                     }
-                                                                    _pageModel.QuestionnaireStatus =
+                                                                    @*_pageModel.QuestionnaireStatus =
                                                                         contractLessons.PromptLessonQuestionnaireRequest(models).Count() > 0
                                                                         || enterpriseLessonItems.PromptLessonQuestionnaireRequest(models).Count() > 0;
                                                                     if (_pageModel.QuestionnaireStatus)
                                                                     {
                                                                         <p class="msg col-red"><i class="zmdi zmdi-info-outline"></i>階段性調整計劃未填寫，請 <u>立即填寫</u> 階段性調整計劃</p>
-                                                                    }
+                                                                    }*@
                                                                 }
                                                             </div>
                                                         </div>

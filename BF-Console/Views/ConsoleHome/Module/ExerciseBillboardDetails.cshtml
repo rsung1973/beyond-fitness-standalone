@@ -25,11 +25,11 @@
     compareDateTo = DateTime.Today.AddMonths(-1).AddDays(1);
 
     var items = _model.GroupBy(l => l.RegisterLesson.UID)
-        .Select(g => new
-        {
-            g.Key,
-            TotalMinutes = (decimal?)g.Sum(l => l.DurationInMinutes),
-        }).ToArray();
+.Select(g => new
+{
+    g.Key,
+    TotalMinutes = (decimal?)g.Sum(l => l.DurationInMinutes),
+}).ToArray();
 
     List<String[]> resultData = new List<string[]>();
 
@@ -43,7 +43,8 @@
                 workPlace(v.Key),
                 buildScore(v.Key,v.TotalMinutes),
                 buildAnalysis(v.Key),
-                $"<span class='{(idx==1 ? "badge bg-red" : "badge badge-info")}'>{idx}</span>"
+                $"<span class='{(idx==1 ? "badge bg-red" : "badge badge-info")}'>{idx}</span>",
+                v.Key.EncryptKey()
             });
         }
         idx++;
@@ -57,7 +58,7 @@
     String buildParticipant(int uid)
     {
         var u = models.GetTable<UserProfile>().Where(p => p.UID == uid).First();
-        return $"<span class='list-icon'><img class='patients-img' src='{buildPhoto(u)}'></span> {u.FullNameHtml()}";
+        return $"<span class='list-icon'><img class='patients-img' src='{buildPhoto(u)}'></span> {u.FullNameHtml("hidden-sm-down")}";
     }
 
     String buildPhoto(UserProfile profile)
@@ -81,7 +82,7 @@
     String buildScore(int uid, decimal? totalMinutes)
     {
         var lessons = models.GetTable<RegisterLesson>().Where(r => r.UID == uid);
-        var totalMinutesLastMonth = models.PromptMemberExerciseLessons(lessons)
+        var totalMinutesLastMonth = lessons.TotalLessons(models).Where(l => l.LessonAttendance != null)
                 .Where(l => l.ClassTime >= compareDateFrom && l.ClassTime < compareDateTo)
                 .Sum(l => l.DurationInMinutes) ?? 0;
         if (totalMinutes > totalMinutesLastMonth)
@@ -100,12 +101,13 @@
 
     String buildAnalysis(int uid)
     {
-        var lessons = models.PromptMemberExerciseRegisterLesson().Where(f => f.UID == uid)
+        var lessons = models.GetTable<RegisterLesson>().Where(f => f.UID == uid)
            .TotalLessons(models)
-           .Where(l => l.ClassTime >= compareDateFrom && l.ClassTime < compareDateTo)
+           .Where(l=>l.LessonAttendance!=null)
+           .Where(l => l.ClassTime >= _viewModel.StartDate && l.ClassTime < _viewModel.EndDate.Value.AddDays(1))
            .Join(models.GetTable<TrainingPlan>(), l => l.LessonID, p => p.LessonID, (l, p) => p)
            .Join(models.GetTable<TrainingExecution>(), p => p.ExecutionID, x => x.ExecutionID, (p, x) => x)
-           .Join(models.GetTable<TrainingExecutionStage>(), x => x.ExecutionID, s => s.ExecutionID, (x, s) => s);
+           .Join(models.GetTable<TrainingExecutionStage>(), x => x.ExecutionID, s => s.ExecutionID, (x, s) => s); ;
 
         var items2 = models.GetTable<TrainingStage>()
                 .Select(s => new

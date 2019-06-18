@@ -19,12 +19,14 @@
 }
 @{
     IQueryable<LessonTime> lessons = _model.UID.PromptLearnerLessons(models);
+    IQueryable<LessonTime> coachPI = _model.UID.PromptCoachPILessons(models);
 }
 <div class="tab-content p-l-5 p-r-5">
     @{
         DateTime startDate = DateTime.Today.FirstDayOfMonth();
         var items = lessons.Where(l => l.ClassTime >= startDate && l.ClassTime < startDate.AddMonths(1));
-        var lessonsCount = items.Count();
+        var coachPIItems = coachPI.Where(l => l.ClassTime >= startDate && l.ClassTime < startDate.AddMonths(1));
+        var lessonsCount = items.Count() + coachPIItems.Count();
     }
     <div class="tab-pane active" id="thismonth">
         <ul class="row profile_state list-unstyled">
@@ -41,13 +43,14 @@
                     </div>
                 </div>
             </li>
-            @ReviewLesson(items)
+            @ReviewLesson(items,coachPIItems)
         </ul>
     </div>
     @{
         startDate = startDate.AddMonths(-1);
         items = lessons.Where(l => l.ClassTime >= startDate && l.ClassTime < startDate.AddMonths(1));
-        lessonsCount = items.Count();
+        coachPIItems = coachPI.Where(l => l.ClassTime >= startDate && l.ClassTime < startDate.AddMonths(1));
+        lessonsCount = items.Count() + coachPIItems.Count();
     }
     <div class="tab-pane" id="previousmonth">
         <ul class="row profile_state list-unstyled">
@@ -64,13 +67,14 @@
                     </div>
                 </div>
             </li>
-            @ReviewLesson(items)
+            @ReviewLesson(items,coachPIItems)
         </ul>
     </div>
     @{
         startDate = startDate.AddMonths(2);
         items = lessons.Where(l => l.ClassTime >= startDate && l.ClassTime < startDate.AddMonths(1));
-        lessonsCount = items.Count();
+        coachPIItems = coachPI.Where(l => l.ClassTime >= startDate && l.ClassTime < startDate.AddMonths(1));
+        lessonsCount = items.Count() + coachPIItems.Count();
     }
     <div class="tab-pane" id="nextmonth">
         <ul class="row profile_state list-unstyled">
@@ -87,12 +91,12 @@
                     </div>
                 </div>
             </li>
-            @ReviewLesson(items)
+            @ReviewLesson(items, coachPIItems)
         </ul>
     </div>
 </div>
 
-@helper ReviewLesson(IQueryable<LessonTime> items)
+@helper ReviewLesson(IQueryable<LessonTime> items, IQueryable<LessonTime> coachPI)
 {
 var count = items.PTLesson().Count();
     <li class="col-lg-3 col-md-3 col-6">
@@ -102,7 +106,7 @@ var count = items.PTLesson().Count();
             <small>P.T</small>
         </div>
     </li>
-count = items.PILesson().Count();
+count = items.PILesson().Count() + coachPI.Count();
     <li class="col-lg-3 col-md-3 col-6">
         <div class="body">
             <i class="zmdi zmdi-account col-purple"></i>

@@ -255,11 +255,12 @@
 
         function commitAttendance(remark) {
             showLoading();
-            $.post('@Html.Raw(Url.Action("AttendLesson", "Attendance"))', { 'keyID': '@(lessonItem.LessonID.EncryptKey())', 'remark': remark }, function (data) {
+            $.post('@Html.Raw(Url.Action("AttendLesson", "Attendance",new { QuestionnaireGroupID = (int)Naming.QuestionnaireGroup.身體心靈密碼 }))', { 'keyID': '@(lessonItem.LessonID.EncryptKey())', 'remark': remark }, function (data) {
                 hideLoading();
                 if ($.isPlainObject(data)) {
                     if (data.result) {
                         swal("Nice!", "You wrote: " + remark, "success");
+                        refreshTrainingContent();
                     } else {
                         swal({
                             title: "Opps！",

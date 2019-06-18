@@ -69,8 +69,10 @@
                     $global.viewModel.DateFrom = start.format('YYYY-MM-DD');
                     $global.viewModel.DateTo = end.format('YYYY-MM-DD');
                     //$global.viewModel.DefaultView = defaultView;
+                    showLoading();
                     $.post('@Html.Raw(Url.Action("CalendarEvents","ConsoleHome"))', $global.viewModel, function (data) {
                         callback(data);
+                        hideLoading();
                     });
                 },
                 eventRender: function (event, element, icon) {

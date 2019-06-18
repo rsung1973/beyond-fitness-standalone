@@ -259,6 +259,11 @@ namespace WebHome.Controllers
         {
             ViewBag.ViewModel = viewModel;
 
+            if (viewModel.KeyID != null)
+            {
+                viewModel.UID = viewModel.DecryptKeyValue();
+            }
+
             UserProfile item = models.GetTable<UserProfile>().Where(u => u.UID == viewModel.UID).FirstOrDefault();
             if (item == null)
             {
@@ -283,7 +288,7 @@ namespace WebHome.Controllers
 
         public ActionResult CommitContractMember(ContractMemberViewModel viewModel)
         {
-            var item = viewModel.CommitContractMember(this, out String alertMessage);
+            var item = viewModel.CommitUserProfile(this, out String alertMessage);
             if (item == null)
             {
                 if (!ModelState.IsValid)
@@ -296,7 +301,15 @@ namespace WebHome.Controllers
                 }
             }
 
-            return View("~/Views/ContractConsole/Editing/ContractMemberCommitted.cshtml", item);
+            if (viewModel.ProfileOnly == true)
+            {
+                return View("~/Views/ContractConsole/Editing/UserProfileCommitted.cshtml", item);
+
+            }
+            else
+            {
+                return View("~/Views/ContractConsole/Editing/ContractMemberCommitted.cshtml", item);
+            }
 
         }
 
@@ -427,6 +440,12 @@ namespace WebHome.Controllers
 
             return result;
 
+        }
+
+        public ActionResult EditPaymentForContract(PaymentViewModel viewModel)
+        {
+            Payment item = viewModel.EditPaymentForContract(this);
+            return View("~/Views/ContractConsole/Module/EditPaymentForContract.cshtml", item);
         }
 
     }

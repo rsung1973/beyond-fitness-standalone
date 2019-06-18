@@ -17,7 +17,7 @@
     _model = (LessonTime)this.Model;
 }
 @{
-    UserProfile learner = (UserProfile)ViewBag.Learner;
+    UserProfile learner = ((UserProfile)ViewBag.Learner).LoadInstance(models);
     var plan = _model.AssertTrainingPlan(models, UID: learner.UID);
     var execution = plan.TrainingExecution;
     TrainingStage stage = (TrainingStage)ViewBag.TrainingStage;
@@ -30,12 +30,13 @@
 
     bool viewOnly = (bool?)ViewBag.ViewOnly == true ? true : false;
     bool isModal = (bool?)ViewBag.IsModal == true ? true : false;
+    String indication = learner.UserProfileExtension?.Gender == "F" ? "girl" : "boy";
 }
 <div>
     <div class="card-header" id="@($"heading_{stage.StageID}{currentID}")">
         <h3 class="m-b-0">
             <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#@($"collapse_{stage.StageID}{currentID}")" aria-expanded="true" aria-controls="@($"collapse_{stage.StageID}{currentID}")">
-                <img src="@($"images/lesson/stage{stage.StageID}-boy.png")" class="img-thumbnail popfit">
+                <img src="@($"images/lesson/stage{stage.StageID}-{indication}.png")" class="img-thumbnail popfit">
                 @(stage.Stage)
                 @{
                     var duration = execution.TrainingExecutionStage.Where(s => s.StageID == stage.StageID).FirstOrDefault();

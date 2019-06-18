@@ -27,43 +27,7 @@
 
 <ul class="row clearfix list-unstyled m-b-0" id="@(_viewID)">
     <li class="col-lg-6 col-md-12 col-sm-12">
-        <div class="header">
-            <h2><strong>合約資料</strong> - @(_model.ContractName()) <span class="badge bg-blue"><i class="zmdi zmdi-pin"></i>&nbsp;&nbsp;@(_model.CourseContractExtension.BranchStore.BranchName)</span> <a href="javascript:$global.showContractDetails('@(_model.ContractID.EncryptKey())');" class="btn btn-simple btn-info btn-round btn-sm float-right">更多資訊</a></h2>
-            @{ Html.RenderPartial("~/Views/ContractConsole/Indication/ContractDetails.cshtml", _model);}
-        </div>
-        <div class="body">
-            <div class="row">
-                <div class="col-md-6 col-sm-6 invoice1">
-                    <div class="clientlogo">
-                        @{
-                            ViewBag.ProfileClass = "fit";
-                            Html.RenderPartial("~/Views/Common/ProfileImage.cshtml", _model.ContractOwner);
-                        }
-                    </div>
-                    <address>
-                        <strong>@(_model.ContractOwner.FullName())</strong><br />
-                        購買堂數：@(_model.Lessons)<br />
-                        <span class="p-l-40 col-red">剩餘堂數：@(_model.RemainedLessonCount())</span>
-                    </address>
-                </div>
-                <div class="col-md-6 col-sm-6 text-right">
-                    <p class="m-b-0"><strong>合約起日: </strong>@($"{_model.ValidFrom:yyyy/MM/dd}")</p>
-                    <p class="m-b-0 col-red"><strong>合約迄日: </strong>@($"{_model.Expiration:yyyy/MM/dd}")</p>
-                    <p class="m-b-0">@(_model.ContractNo()) <span class="badge bg-green">@((Naming.CourseContractStatus)_model.Status)</span></p>
-                </div>
-            </div>
-            <div class="mt-40"></div>
-            <hr>
-            <div class="row">
-                <div class="col-md-6">
-                    <h3>其他增補說明</h3>
-                    <p>@(_model.Remark)</p>
-                </div>
-                <div class="col-6 text-right">
-                    <h3 class="text-right">專業顧問服務總費用：@($"{_model.TotalCost:##,###,###,###}")</h3>
-                </div>
-            </div>
-        </div>
+        @{ Html.RenderPartial("~/Views/ContractConsole/Module/ContractDataItem.cshtml", _model);}
     </li>
     <li class="col-lg-6 col-md-12 col-sm-12">
         @{ 

@@ -5,7 +5,6 @@
 
 @using WebHome.Helper
 @using WebHome.Models.Locale
-@using WebHome.Models.Locale
 @using WebHome.Models.ViewModel
 @using WebHome.Models.DataEntity
 @using WebHome.Controllers
@@ -174,7 +173,7 @@
                         offset: 90,
                         width: '50px',
                         height: '50px',
-                        sliceColors: ['rgba(245, 166, 35, .8)', 'rgba(74, 144, 226, .8)', 'rgba(126, 211, 33, .8)', 'rgba(255, 78, 100, .8)', 'rgba(244, 237, 0, .8)']
+                        sliceColors: ['rgba(245, 166, 35, .8)', 'rgba(255, 78, 100, .8)', 'rgba(126, 211, 33, .8)', 'rgba(74, 144, 226, .8)', 'rgba(244, 237, 0, .8)']
                     });
             });
 
@@ -182,14 +181,16 @@
 
 
         $(function () {
-            inquireBillboard();
+            setTimeout(function () {
+                inquireBillboard();
+            }, 500);
         });
 
         function inquireBillboard(branchID) {
 
             showLoading();
             $.post('@Html.Raw(Url.Action("InquireExerciseBillboard", "ConsoleHome"))', { 'branchID': branchID }, function (data) {
-                hideLoading();
+                //hideLoading();
                 if ($.isPlainObject(data)) {
                     alert(data.message);
                 } else {
@@ -199,7 +200,7 @@
             });
 
             $.post('@Html.Raw(Url.Action("InquireExerciseBillboardLastMonth", "ConsoleHome"))', { 'branchID': branchID }, function (data) {
-                hideLoading();
+                //hideLoading();
                 if ($.isPlainObject(data)) {
                     alert(data.message);
                 } else {
@@ -210,11 +211,22 @@
 
             dtExerciserankList.ajax.url('@Html.Raw(Url.Action("GetExerciseBillboardDetails","ConsoleHome"))?branchID=' + branchID);
             dtExerciserankList.ajax.reload(function (jsonData) {
+                hideLoading();
                 dtExerciserankList.draw();
                 $('div.btn-group.bootstrap-select.form-control.form-control-sm').after($('div.btn-group.bootstrap-select.form-control.form-control-sm select'));
                 $('div.btn-group.bootstrap-select.form-control.form-control-sm').remove();
+                $('.dataTable-exerciserankList tbody').on('click', 'tr', function () {
+                    var d = dtExerciserankList.row(this).data();
+                    //console.log(d);
+                    editProfile(d[5]);
+                });
             }, true);
 
+        }
+
+        function editProfile(keyID) {
+            showLoading();
+            $('').launchDownload('@Html.Raw(Url.Action("LearnerProfile","ConsoleHome"))', { 'keyID': keyID });
         }
 
     </script>

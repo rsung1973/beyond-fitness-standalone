@@ -61,15 +61,12 @@ namespace WebHome.Controllers
             var profile = HttpContext.GetUser();
             if(!viewModel.BranchID.HasValue)
             {
-                if (profile.IsManager() || profile.IsViceManager())
+                var branch = models.GetTable<CoachWorkplace>().Where(c => c.CoachID == profile.UID)
+                        .Select(c => c.BranchStore).FirstOrDefault();
+                if (branch != null)
                 {
-                    var branch = models.GetTable<BranchStore>().Where(b => b.ManagerID == profile.UID || b.ViceManagerID == profile.UID)
-                            .FirstOrDefault();
-                    if (branch != null)
-                    {
-                        viewModel.BranchID = branch.BranchID;
-                        viewModel.BranchName = branch.BranchName;
-                    }
+                    viewModel.BranchID = branch.BranchID;
+                    viewModel.BranchName = branch.BranchName;
                 }
             }
 
@@ -280,11 +277,14 @@ namespace WebHome.Controllers
             models.GetDataContext().LoadOptions = ops;
 
 
-            IQueryable<LessonTime> dataItems = models.GetTable<LessonTime>();
+            IQueryable<LessonTime> learnerLessons = models.PromptLearnerLessons();
+            IQueryable<LessonTime> coachPI = models.PromptCoachPILessons();
             IQueryable<UserEvent> eventItems = models.GetTable<UserEvent>().Where(e => !e.SystemEventID.HasValue);
             if (viewModel.DateFrom.HasValue && viewModel.DateTo.HasValue)
             {
-                dataItems = dataItems.Where(t => t.ClassTime >= viewModel.DateFrom.Value
+                learnerLessons = learnerLessons.Where(t => t.ClassTime >= viewModel.DateFrom.Value
+                    && t.ClassTime < viewModel.DateTo.Value.AddDays(1));
+                coachPI = coachPI.Where(t => t.ClassTime >= viewModel.DateFrom.Value
                     && t.ClassTime < viewModel.DateTo.Value.AddDays(1));
                 eventItems = eventItems.Where(t =>
                     (t.StartDate >= viewModel.DateFrom.Value && t.StartDate < viewModel.DateTo.Value.AddDays(1))
@@ -294,23 +294,26 @@ namespace WebHome.Controllers
             }
             else if (viewModel.DateFrom.HasValue)
             {
-                dataItems = dataItems.Where(t => t.ClassTime >= viewModel.DateFrom.Value);
+                learnerLessons = learnerLessons.Where(t => t.ClassTime >= viewModel.DateFrom.Value);
+                coachPI = coachPI.Where(t => t.ClassTime >= viewModel.DateFrom.Value);
                 eventItems = eventItems.Where(t => t.StartDate >= viewModel.DateFrom.Value);
             }
             else if (viewModel.DateTo.HasValue)
             {
-                dataItems = dataItems.Where(t => t.ClassTime < viewModel.DateTo.Value.AddDays(1));
+                learnerLessons = learnerLessons.Where(t => t.ClassTime < viewModel.DateTo.Value.AddDays(1));
+                coachPI = coachPI.Where(t => t.ClassTime < viewModel.DateTo.Value.AddDays(1));
                 eventItems = eventItems.Where(t => t.EndDate < viewModel.DateTo.Value.AddDays(1));
             }
             if (viewModel.BranchID.HasValue)
             {
-                dataItems = dataItems.Where(t => t.BranchID == viewModel.BranchID);
+                learnerLessons = learnerLessons.Where(t => t.BranchID == viewModel.BranchID);
+                coachPI = coachPI.Where(t => t.BranchID == viewModel.BranchID);
                 eventItems = eventItems.Where(t => t.BranchID == viewModel.BranchID);
             }
             if (viewModel.UID.HasValue)
             {
-                dataItems = dataItems.Where(t => t.AttendingCoach == viewModel.UID
-                    || t.RegisterLesson.UID == viewModel.UID);
+                learnerLessons = learnerLessons.Where(t => t.AttendingCoach == viewModel.UID);
+                coachPI = coachPI.Where(t => t.RegisterLesson.UID == viewModel.UID);
                 eventItems = eventItems.Where(t => t.UID == viewModel.UID
                     || t.GroupEvent.Any(g => g.UID == viewModel.UID));
             }
@@ -319,13 +322,20 @@ namespace WebHome.Controllers
                 eventItems = eventItems.Where(f => false);
             }
 
-            var items = dataItems.GroupBy(l => l.GroupID)
+            var items = learnerLessons
+                .Select(d => new CalendarEventItem
+                {
+                    EventTime = d.ClassTime,
+                    EventItem = d
+                }).ToList();
+
+            items.AddRange(coachPI.GroupBy(l => l.GroupID)
                 .ToList()
                 .Select(d => new CalendarEventItem
                 {
                     EventTime = d.First().ClassTime,
                     EventItem = d.First()
-                }).ToList();
+                }));
 
             items.AddRange(eventItems.Select(v => new CalendarEventItem
             {
@@ -367,14 +377,14 @@ namespace WebHome.Controllers
                 viewModel.EndDate = DateTime.Today;
             }
 
-            IQueryable<RegisterLesson> lessons = models.GetTable<RegisterLesson>();
+            IQueryable<RegisterLesson> lessons = models.PromptMemberExerciseRegisterLesson();
             if(viewModel.BranchID.HasValue)
             {
                 lessons = lessons.Join(models.GetTable<CoachWorkplace>().Where(w => w.BranchID == viewModel.BranchID), 
                     r => r.UID, w => w.CoachID, (r, w) => r);
             }
 
-            IQueryable<LessonTime> items = models.PromptMemberExerciseLessons(lessons)
+            IQueryable<LessonTime> items = lessons.TotalLessons(models)
                     .Where(l => l.LessonAttendance != null)
                     .Where(l => l.ClassTime >= viewModel.StartDate)
                     .Where(l => l.ClassTime < viewModel.EndDate.Value.AddDays(1));
@@ -566,6 +576,19 @@ namespace WebHome.Controllers
 
             return View(profile.LoadInstance(models));
         }
+
+        public ActionResult EditPayment(CourseContractQueryViewModel viewModel)
+        {
+            ViewResult result = (ViewResult)SignCourseContract(viewModel);
+            CourseContract item = (CourseContract)ViewBag.DataItem;
+            if (item != null)
+            {
+                result.ViewName = "EditPayment";
+            }
+            return result;
+
+        }
+
 
     }
 }

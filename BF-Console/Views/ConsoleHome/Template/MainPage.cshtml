@@ -44,6 +44,9 @@
     <link href='plugins/livIconsevo/css/LivIconsEvo.css' rel='stylesheet' type='text/css'>
     <!-- Sweetalert -->
     <link href="plugins/sweetalert/sweetalert.css" rel="stylesheet" />
+    <!-- SmartCalendar Datetimepick -->
+    <link href="plugins/smartcalendar/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+
 
     @RenderSection("CustomHeader", false)
     <!-- Custom Css -->
@@ -71,6 +74,11 @@
     <script src="plugins/jquery-cookie/jquery.cookie.js"></script>
     <!-- SweetAlert Plugin Js -->
     <script src="plugins/sweetalert/sweetalert.min.js"></script>
+    <!-- Bootstrap datetimepicker Plugin Js -->
+    @*<script src="plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+        <script src="plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-TW.js"></script>*@
+    <script src="plugins/smartcalendar/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="plugins/smartcalendar/js/locales-datetimepicker/bootstrap-datetimepicker.zh-TW.js"></script>
     <script src="plugins/jquery-form/jquery-form.min.js"></script>
     <script src="js/common.js?1.5"></script>
 </head>
@@ -120,7 +128,7 @@
                 <li>
                     <div class="user-info">
                         <div class="image">
-                            <a href="profile.html">
+                            <a href="javascript:void(0);">
                                 @{ Html.RenderPartial("~/Views/ConsoleHome/Module/ProfileImage.cshtml", _model);}
                             </a>
                         </div>
@@ -213,8 +221,8 @@
 
         });
 
-        function equipDatetimePicker() {
-            $('.date').datetimepicker({
+        function equipDatetimePicker(param) {
+            var dateOptions = {
                 language: 'zh-TW',
                 weekStart: 1,
                 todayBtn: 0,
@@ -227,7 +235,12 @@
                 forceParse: 0,
                 startDate: '@(String.Format("{0:yyyy-MM-dd}",DateTime.Today))',
                 defaultDate: '@(String.Format("{0:yyyy-MM-dd}",DateTime.Today))',
-            });
+            };
+            if (param) {
+                dateOptions = $.extend(dateOptions, param);
+            }
+
+            $('.date').datetimepicker(dateOptions);
             $('.time').datetimepicker({
                 language: 'zh-TW',
                 weekStart: 1,

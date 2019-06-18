@@ -15,11 +15,12 @@
 
     _modelState = (ModelStateDictionary)ViewBag.ModelState;
     models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
-    _model = (UserProfile)this.Model;    
+    _model = (UserProfile)this.Model;
 
 }
 @{
     var questionnaire = models.GetTable<QuestionnaireRequest>()
+            .Where(q => q.GroupID == (int)Naming.QuestionnaireGroup.身體心靈密碼)
             .Where(q => q.UID == _model.UID).Where(q => q.Status == (int)Naming.IncommingMessageStatus.已讀)
             .OrderByDescending(q => q.QuestionnaireID).FirstOrDefault();
 }
@@ -29,7 +30,10 @@
         <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#mind">心靈密碼</a></li>
     </ul>
 </div>
-<div class="col-12"><span class="float-right font-10">日期：@($"{questionnaire.PayoffDue:yyyy/MM/dd}")</span></div>
+@if (questionnaire != null)
+{
+    <div class="col-12"><span class="float-right font-10">日期：@($"{questionnaire.PDQTask.OrderByDescending(t => t.TaskID).FirstOrDefault()?.TaskDate:yyyy/MM/dd}")</span></div>
+}
 <div class="col-12">
     <div class="tab-content p-l-0 p-r-0">
         <div class="tab-pane active" id="body">
@@ -77,51 +81,51 @@
                             .Where(t => t.PDQQuestion.GroupID == (int)Naming.QuestionnaireGroup.身體心靈密碼)
                             .Where(t => t.PDQQuestion.QuestionNo > 10)
                             .Where(t => t.PDQQuestion.QuestionNo <= 20);
-            <ul class="chat-widget m-r-5 clearfix">
-                @if (tasks.Count() > 0)
-                {
-                    <li class="left float-left">
-                        <img src="images/avatar/noname.png" class="rounded-circle">
-                        <div class="chat-info smallpadding">
-                            <span class="message">
-                                希望增加訓練時間的百分比
-                            </span>
-                        </div>
-                    </li>
-                    <li class="right">
-                        @{
-                            ViewBag.ProfileClass = "rounded-circle";
-                            Html.RenderPartial("~/Views/Common/ProfileImage.cshtml", _model);
-                        }
-                        <div class="chat-info smallpadding">
-                            <span class="message">
-                                @*<div class="sparkline-pie float-right inlineblock">20,6,33,12,0</div>*@
-                                @{
-                                    List<string> ans = new List<string>();
-                                    foreach (var item in tasks)
-                                    {
-                                        ans.AddRange(item.PDQTaskItem.Select(t => t.PDQSuggestion.Suggestion));
-                                        ans.Add(item.PDQSuggestion?.Suggestion);
-                                        ans.Add(item.PDQAnswer);
+                <ul class="chat-widget m-r-5 clearfix">
+                    @if (tasks.Count() > 0)
+                    {
+                        <li class="left float-left">
+                            <img src="images/avatar/noname.png" class="rounded-circle">
+                            <div class="chat-info smallpadding">
+                                <span class="message">
+                                    希望增加訓練時間的百分比
+                                </span>
+                            </div>
+                        </li>
+                        <li class="right">
+                            @{
+                                ViewBag.ProfileClass = "rounded-circle";
+                                Html.RenderPartial("~/Views/Common/ProfileImage.cshtml", _model);
+                            }
+                            <div class="chat-info smallpadding">
+                                <span class="message">
+                                    @*<div class="sparkline-pie float-right inlineblock">20,6,33,12,0</div>*@
+                                    @{
+                                        List<string> ans = new List<string>();
+                                        foreach (var item in tasks)
+                                        {
+                                            ans.AddRange(item.PDQTaskItem.Select(t => t.PDQSuggestion.Suggestion));
+                                            ans.Add(item.PDQSuggestion?.Suggestion);
+                                            ans.Add(item.PDQAnswer);
+                                        }
                                     }
-                                }
-                                @(String.Join("、", ans.Where(s => s != null)))
-                            </span>
-                        </div>
-                    </li>
-                }
-                @foreach (var item in questionnaire.PDQTask
-                            .Where(t => t.PDQQuestion.GroupID == (int)Naming.QuestionnaireGroup.身體心靈密碼)
-                            .Where(t => t.PDQQuestion.QuestionNo > 20))
-                {
-                    <text>@buildItem(item, _model)</text>
-                }
-            </ul>
+                                    @(String.Join("、", ans.Where(s => s != null)))
+                                </span>
+                            </div>
+                        </li>
+                    }
+                    @foreach (var item in questionnaire.PDQTask
+                                .Where(t => t.PDQQuestion.GroupID == (int)Naming.QuestionnaireGroup.身體心靈密碼)
+                                .Where(t => t.PDQQuestion.QuestionNo > 20))
+                    {
+                        <text>@buildItem(item, _model)</text>
+                    }
+                </ul>
             }
         </div>
     </div>
 </div>
-@helper buildItem(PDQTask item,UserProfile learner)
+@helper buildItem(PDQTask item, UserProfile learner)
 {
     <li class="left float-left">
         <img src="images/avatar/noname.png" class="rounded-circle">

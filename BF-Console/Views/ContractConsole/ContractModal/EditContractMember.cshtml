@@ -34,10 +34,13 @@
                                 <div class="header">
                                     <h2>
                                         <strong>基本資料</strong>
+                                        @if (_viewModel.ProfileOnly != true)
+                                        {
                                         <label class="fancy-checkbox custom-bgcolor-pink">
                                             <input type="checkbox" name="OwnerID" value="@(_viewModel.UID)" @(_viewModel.OwnerID == _viewModel.UID ? "checked" : null) >
                                             <span class="col-red">主簽約人</span>
                                         </label>
+                                        }
                                     </h2>
                                 </div>
                                 <div class="body">
@@ -198,7 +201,7 @@
 
     <script>
         $(function () {
-
+            equipDatetimePicker({ 'startDate': null, 'defaultDate': '@($"{_viewModel.Birthday:yyyy/MM/dd}")' });
         });
 
         function commitContractMember() {

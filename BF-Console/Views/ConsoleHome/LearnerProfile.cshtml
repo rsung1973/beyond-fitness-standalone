@@ -27,8 +27,8 @@
     <!-- Bootstrap Datetimepick -->
     @*<link href="plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />*@
     @*<link href="css/datetimepicker.css" rel="stylesheet" />*@
-    <!-- SmartCalendar Datetimepick -->
-    <link href="plugins/smartcalendar/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+    
+    
     <link href="css/smartcalendar-2.css" rel="stylesheet" />
     <!-- Inbox -->
     <link href="css/inbox.css" rel="stylesheet">
@@ -88,37 +88,17 @@
                             <strong>@(_learner.FullName())</strong> <span class="font-12"><i class="zmdi zmdi-cake"></i> @(_learner.YearsOld())</span>
                         </div>
                         <div class="font-20">
-                            @{
-                                DateTime monthStart = DateTime.Today.FirstDayOfMonth();
-
-                                var lessons = models.GetTable<LessonTime>()
-                                        .Where(r => r.GroupingLesson.RegisterLesson.Any(u => u.UID == _learner.UID))
-                                        .Where(l => l.LessonAttendance != null);
-
-                                var selfTrainingThisMonth = lessons.Where(l => l.ClassTime >= monthStart && l.ClassTime < DateTime.Today.AddDays(1));
-                                var totalMinutes = selfTrainingThisMonth.Sum(l => l.DurationInMinutes) ?? 0;
-
-                                var totalMinutesLastMonth = lessons
-                                        .Where(l => l.ClassTime >= monthStart.AddMonths(-1) && l.ClassTime < DateTime.Today.AddMonths(-1).AddDays(1))
-                                        .Sum(l => l.DurationInMinutes) ?? 0;
-                            }
-                            本月運動：<span class="col-lime counto" data-to="@(totalMinutes / 60)">@(totalMinutes / 60)</span>小時:<span class="col-lime counto" data-to="@(totalMinutes % 60)">@(totalMinutes % 60)</span>分鐘
-                            @if (totalMinutes > totalMinutesLastMonth)
-                            {
-                                <i class="zmdi zmdi-caret-up zmdi-hc-2x text-danger"></i>
-                            }
-                            else if (totalMinutes < totalMinutesLastMonth)
-                            {
-                                <i class="zmdi zmdi-caret-down zmdi-hc-2x text-success"></i>
+                            @{ 
+                                Html.RenderPartial("~/Views/LearnerProfile/Module/ExerciseSummary.cshtml", _learner);
                             }
                         </div>
                         <div class="displayblock col-grey">
-                            @{ 
+                            @{
                                 var answers = _learner.PDQTask.Where(t => t.PDQQuestion.GroupID == 6);
                                 var answerCount = answers.Count();
                                 var rightAns = answers.Where(t => t.SuggestionID.HasValue && t.PDQSuggestion.RightAnswer == true);
                             }
-                            目前已參加運動小學堂 @(answerCount) 次囉，得點數 @(rightAns.Count()) 點！
+                            目前已參加運動小學堂 @(answerCount) 次囉，得點數 @(rightAns.Count()) 點，目前剩餘 @(_learner.BonusPoint(models) ?? 0)點！
                         </div>
                     </div>
                 </div>
@@ -176,11 +156,6 @@
     <!-- Fullcalendar Plugin js -->
     <script src="bundles/fullcalendarscripts.bundle.js"></script>
     <script src="plugins/fullcalendar/locale/zh-tw.js"></script>
-    <!-- Bootstrap datetimepicker Plugin Js -->
-    @*<script src="plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
-        <script src="plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-TW.js"></script>*@
-    <script src="plugins/smartcalendar/js/bootstrap-datetimepicker.min.js"></script>
-    <script src="plugins/smartcalendar/js/locales-datetimepicker/bootstrap-datetimepicker.zh-TW.js"></script>
     <!-- Multi Select Plugin Js -->
     <script src="plugins/multi-select/js/jquery.multi-select.js"></script>
     <!-- countTo Plugin Js -->
@@ -193,6 +168,18 @@
             $('.counto').countTo();
 
         });
+
+        function editLearner() {
+            showLoading();
+            $.post('@Html.Raw(Url.Action("EditContractMember", "ContractConsole",new { KeyID = _learner.UID.EncryptKey(), ProfileOnly = true }))', { }, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    alert(data.message);
+                } else {
+                    $(data).appendTo($('body'));
+                }
+            });
+        }
 
         function editLearnerCharacter() {
 

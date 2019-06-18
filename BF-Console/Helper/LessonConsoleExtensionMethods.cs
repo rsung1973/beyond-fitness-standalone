@@ -27,11 +27,16 @@ namespace WebHome.Helper
                 where TEntity : class, new()
         {
             if (items == null)
+            {
                 items = models.GetTable<RegisterLesson>();
+            }
 
-            items = items.Join(models.GetTable<LessonPriceType>()
-                            .Where(p => p.Status == (int)Naming.LessonPriceStatus.教練PI || p.IsWelfareGiftLesson != null),
-                            r => r.ClassLevel, p => p.PriceID, (r, p) => r);
+            var staff = models.GetTable<UserRoleAuthorization>().Where(a => Naming.StaffRole.Contains(a.RoleID));
+
+            items = items.Where(r => staff.Any(s => s.UID == r.UID));
+            //items = items.Join(models.GetTable<LessonPriceType>()
+            //                .Where(p => p.Status == (int)Naming.LessonPriceStatus.教練PI || p.IsWelfareGiftLesson != null),
+            //                r => r.ClassLevel, p => p.PriceID, (r, p) => r);
 
             return items;
         }
