@@ -26,7 +26,7 @@
 
     var selfTraining = models.GetTable<RegisterLesson>()
         .Where(r => r.UID == _learner.UID)
-        .TotalLessons(models)
+        .TotalRegisterLessonItems(models)
         .Where(l => l.LessonAttendance != null);
 
     var selfTrainingThisMonth = selfTraining.Where(l => l.ClassTime >= monthStart && l.ClassTime < DateTime.Today.AddDays(1));

@@ -45,7 +45,7 @@ namespace WebHome.Helper
                 where TEntity : class, new()
         {
             return models.PromptMemberExerciseRegisterLesson(items)
-                .TotalLessons(models);
+                .TotalRegisterLessonItems(models);
         }
 
         public static IQueryable<LessonTime> FilterByUserRoleScope<TEntity>(this IQueryable<LessonTime> items, ModelSource<TEntity> models, UserProfile profile)

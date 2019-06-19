@@ -235,7 +235,7 @@ namespace WebHome.Controllers
 
             var source = copyFrom.AssertLearnerTrainingPlan(models, viewModel.UID.Value);
             var target = copyTo.AssertLearnerTrainingPlan(models, viewModel.UID.Value);
-            models.CloneTrainingPlan(source, target);
+            models.CloneTrainingPlan(source, target, false);
 
             return Json(new { result = true }, JsonRequestBehavior.AllowGet);
 

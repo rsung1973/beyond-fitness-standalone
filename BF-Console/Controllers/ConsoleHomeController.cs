@@ -384,7 +384,7 @@ namespace WebHome.Controllers
                     r => r.UID, w => w.CoachID, (r, w) => r);
             }
 
-            IQueryable<LessonTime> items = lessons.TotalLessons(models)
+            IQueryable<LessonTime> items = lessons.TotalRegisterLessonItems(models)
                     .Where(l => l.LessonAttendance != null)
                     .Where(l => l.ClassTime >= viewModel.StartDate)
                     .Where(l => l.ClassTime < viewModel.EndDate.Value.AddDays(1));
@@ -589,6 +589,16 @@ namespace WebHome.Controllers
 
         }
 
+        public ActionResult PaymentIndex(CourseContractQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            viewModel.ContractDateFrom = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+            viewModel.ContractDateTo = viewModel.ContractDateFrom.Value.AddMonths(1).AddDays(-1);
+
+            var profile = HttpContext.GetUser();
+            viewModel.KeyID = profile.UID.EncryptKey();
+            return View(profile.LoadInstance(models));
+        }
 
     }
 }

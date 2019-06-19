@@ -34,7 +34,8 @@
     List<String[]> resultData = new List<string[]>();
 
     int idx = 1;
-    foreach (var i in items.GroupBy(g => g.TotalMinutes).OrderByDescending(g => g.Key))
+    var orderItems = items.GroupBy(g => g.TotalMinutes).OrderByDescending(g => g.Key);
+    foreach (var i in orderItems)
     {
         foreach (var v in i.OrderByDescending(m => m.Key))
         {
@@ -82,7 +83,7 @@
     String buildScore(int uid, decimal? totalMinutes)
     {
         var lessons = models.GetTable<RegisterLesson>().Where(r => r.UID == uid);
-        var totalMinutesLastMonth = lessons.TotalLessons(models).Where(l => l.LessonAttendance != null)
+        var totalMinutesLastMonth = lessons.TotalRegisterLessonItems(models).Where(l => l.LessonAttendance != null)
                 .Where(l => l.ClassTime >= compareDateFrom && l.ClassTime < compareDateTo)
                 .Sum(l => l.DurationInMinutes) ?? 0;
         if (totalMinutes > totalMinutesLastMonth)
@@ -102,7 +103,7 @@
     String buildAnalysis(int uid)
     {
         var lessons = models.GetTable<RegisterLesson>().Where(f => f.UID == uid)
-           .TotalLessons(models)
+           .TotalRegisterLessonItems(models)
            .Where(l=>l.LessonAttendance!=null)
            .Where(l => l.ClassTime >= _viewModel.StartDate && l.ClassTime < _viewModel.EndDate.Value.AddDays(1))
            .Join(models.GetTable<TrainingPlan>(), l => l.LessonID, p => p.LessonID, (l, p) => p)
