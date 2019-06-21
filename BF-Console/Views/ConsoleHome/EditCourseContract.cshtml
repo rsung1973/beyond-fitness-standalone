@@ -1,4 +1,4 @@
-
+﻿
 
 @using System.IO
 @using System.Linq.Expressions
@@ -47,11 +47,11 @@
 </script>
 <!-- Main Content -->
 <section class="content">
-    @{ 
+    @{
         ViewBag.BlockHeader = "編輯合約";
         ViewBag.InsertPartial = "~/Views/ConsoleHome/Shared/MyContractHeader.cshtml";
         Html.RenderPartial("~/Views/ConsoleHome/Module/BlockHeader.cshtml", _model);
-        }
+    }
 
     <!--合約基本資料-->
     <div class="container-fluid">
@@ -239,98 +239,126 @@
         </div>
     </div>
     <!--其他增補說明-->
+    <!--其他增補說明-->
     <div class="container-fluid">
-        <div class="card">
-            <div class="header">
-                <h2><strong>其他增補說明</strong></h2>
-            </div>
-            <div class="body">
-                <div class="row clearfix">
-                    <div class="col-lg-3 col-md-3 col-sm-12 col-12">
-                        <label class="fancy-checkbox">
-                            <input type="checkbox" name="InstallmentPlan" value="@(true)" @(_viewModel.InstallmentPlan == true ? "checked" : null) onclick="checkInstallmentPlan();">
-                            <span>合約分期轉開</span>
-                        </label>
+        <div class="card widget_2">
+            <ul class="row clearfix list-unstyled m-b-0">
+                <li class="col-lg-6 col-md-12 col-sm-12">
+                    <div class="header">
+                        <h2><strong>支付方式</strong></h2>
                     </div>
-                    <div class="col-lg-9 col-md-9 col-sm-12 col-12 installments">
-                        <select class="form-control show-tick" name="Installments" onchange="installmentPlanRemark();"></select>
-                        <script>
+                    <div class="body">
+                        <div class="row">
+                            <div class="col-12 m-b-20">
+                                <label class="fancy-checkbox">
+                                    <input type="checkbox" id="checkbox14">
+                                    <span>現金</span>
+                                </label>
+                                <label class="fancy-checkbox">
+                                    <input type="checkbox" id="checkbox14">
+                                    <span>刷卡</span>
+                                </label>
+                                <label class="fancy-checkbox">
+                                    <input type="checkbox" id="checkbox14">
+                                    <span>轉帳</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="row clearfix">
+                            <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                <label class="fancy-checkbox">
+                                    <input type="checkbox" name="InstallmentPlan" value="@(true)" @(_viewModel.InstallmentPlan == true ? "checked" : null) onclick="checkInstallmentPlan();">
+                                    <span>分期支付</span>
+                                </label>
+                            </div>
+                            <div class="col-lg-8 col-md-8 col-sm-12 col-12">
+                                <select class="form-control show-tick" name="Installments" onchange="installmentPlanRemark();"></select>
+                                <script>
 
-                                function installmentPlanRemark() {
-                                    var $installments = $('select[name="Installments"]');
-                                    $global.viewModel.Installments = $installments.val();
-                                    if ($installments.val() != '') {
-                                        var $remark = $('textarea[name="Remark"]');
-                                        var remark = $remark.val();
-                                        var idx = remark.indexOf('本合約總共購買');
-                                        var content = '本合約總共購買' + $('input[name="Lessons"]').val() + '堂，分期轉開次數' + $installments.val() + '次。';
-                                        if (idx > 0) {
-                                            $remark.val(remark.substr(0, idx) + content);
-                                        } else {
-                                            $remark.val(content);
+                                        function installmentPlanRemark() {
+                                            var $installments = $('select[name="Installments"]');
+                                            $global.viewModel.Installments = $installments.val();
+                                            if ($installments.val() != '') {
+                                                var $remark = $('textarea[name="Remark"]');
+                                                var remark = $remark.val();
+                                                var idx = remark.indexOf('本合約總共購買');
+                                                var content = '本合約總共購買' + $('input[name="Lessons"]').val() + '堂，分期轉開次數' + $installments.val() + '次。';
+                                                if (idx > 0) {
+                                                    $remark.val(remark.substr(0, idx) + content);
+                                                } else {
+                                                    $remark.val(content);
+                                                }
+                                                $global.viewModel.Remark = $remark.val();
+                                            }
                                         }
-                                        $global.viewModel.Remark = $remark.val();
-                                    }
-                                }
 
-                                function checkInstallmentPlan() {
-                                    var $installmentPlan = $('input[name="InstallmentPlan"]');
-                                    var $installments = $('.installments');
-                                    if ($installmentPlan.is(':checked')) {
-                                        $installments.css('display', 'block');
-                                        $global.viewModel.InstallmentPlan = true;
-                                    } else {
-                                        $installments.css('display', 'none');
-                                        $global.viewModel.InstallmentPlan = false;
-                                    }
-                                }
-
-                                $(function () {
-                                    checkInstallmentPlan();
-                                });
-
-                                function loadInstallments(lessons, installments) {
-                                    var $installments = $('select[name="Installments"]');
-                                    if (!installments) {
-                                        installments = $installments.val();
-                                    }
-                                    $installments.empty();
-                                    if (lessons == '' || isNaN(Number(lessons))) {
-                                        return;
-                                    }
-                                    showLoading();
-                                    $.post('@Html.Raw(Url.Action("LoadInstallmentPlan","CourseContract"))', { 'lessons': lessons, 'installments': installments }, function (data) {
-                                        hideLoading();
-                                        if ($.isPlainObject(data)) {
-                                            swal(data.message);
-                                        } else {
-                                            $(data).appendTo($installments);
-                                            $installments.selectpicker('refresh');
+                                        function checkInstallmentPlan() {
+                                            var $installmentPlan = $('input[name="InstallmentPlan"]');
+                                            var $installments = $('.installments');
+                                            if ($installmentPlan.is(':checked')) {
+                                                $installments.css('display', 'block');
+                                                $global.viewModel.InstallmentPlan = true;
+                                            } else {
+                                                $installments.css('display', 'none');
+                                                $global.viewModel.InstallmentPlan = false;
+                                            }
                                         }
-                                    });
-                                }
-                        @if (_viewModel.InstallmentPlan == true || _viewModel.Lessons > 0)
-                        {
-                            <text>
-                            $(function () {
-                                    loadInstallments('@(_viewModel.Lessons)', '@(_viewModel.Installments)');
-                            });
-                            </text>
-                        }
 
-                        </script>
-                    </div>
-                </div>
-                <div class="row clearfix">
-                    <div class="col-sm-12">
-                        <div class="form-group">
-                            <textarea rows="4" class="form-control no-resize" name="Remark" placeholder="請輸入任何想補充的事項...">@(_viewModel.Remark)</textarea>
+                                        $(function () {
+                                            checkInstallmentPlan();
+                                        });
+
+                                        function loadInstallments(lessons, installments) {
+                                            var $installments = $('select[name="Installments"]');
+                                            if (!installments) {
+                                                installments = $installments.val();
+                                            }
+                                            $installments.empty();
+                                            if (lessons == '' || isNaN(Number(lessons))) {
+                                                return;
+                                            }
+                                            showLoading();
+                                            $.post('@Html.Raw(Url.Action("LoadInstallmentPlan","CourseContract"))', { 'lessons': lessons, 'installments': installments }, function (data) {
+                                                hideLoading();
+                                                if ($.isPlainObject(data)) {
+                                                    swal(data.message);
+                                                } else {
+                                                    $(data).appendTo($installments);
+                                                    $installments.selectpicker('refresh');
+                                                }
+                                            });
+                                        }
+                                    @if (_viewModel.InstallmentPlan == true || _viewModel.Lessons > 0)
+                                    {
+                                        <text>
+                                        $(function () {
+                                                loadInstallments('@(_viewModel.Lessons)', '@(_viewModel.Installments)');
+                                        });
+                                        </text>
+                                    }
+                                </script>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-sm-12">
-                        <button type="button" class="btn bg-darkteal btn-round float-right next" onclick="commitContract();">確定，不後悔</button>
-                        <button type="button" class="btn btn-danger btn-round btn-simple save" onclick="saveContract();">暫時存檔</button>
-                        <script>
+                </li>
+                <li class="col-lg-6 col-md-12 col-sm-12">
+                    <div class="header">
+                        <h2><strong>其他增補說明</strong></h2>
+                    </div>
+                    <div class="body">
+                        <div class="row clearfix">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <textarea rows="4" class="form-control no-resize" name="Remark" placeholder="請輸入任何想補充的事項...">@(_viewModel.Remark)</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="col-12">
+                    <button type="button" class="btn bg-darkteal btn-round float-right next" onclick="commitContract();">確定，不後悔</button>
+                    <button type="button" class="btn btn-round btn-simple save" onclick="saveContract();">暫時存檔</button>
+                    <script>
                                 function saveContract() {
                                     clearErrors();
                                     $.post('@Html.Raw(Url.Action("SaveContract", "ContractConsole", _viewModel.ContractID))', $global.viewModel, function (data) {
@@ -353,10 +381,9 @@
                                         }
                                     });
                                 }//
-                        </script>
-                    </div>
-                </div>
-            </div>
+                    </script>
+                </li>
+            </ul>
         </div>
     </div>
 </section>
