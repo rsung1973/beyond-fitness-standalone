@@ -105,10 +105,12 @@
                     </tr>
                     <tr>
                         <td colspan="2">
-                            家長/監護人簽名：
-                            @{ ViewBag.SignatureName = "GuardianSignature";
-                                Html.RenderPartial("~/Views/ContractConsole/Module/SignHere.cshtml", _owner);}
-
+                            @if (_contract.CheckMinorLearner())
+                            {
+                                <text>家長/監護人簽名：</text>
+                                ViewBag.SignatureName = "GuardianSignature";
+                                Html.RenderPartial("~/Views/ContractConsole/Module/SignHere.cshtml", _owner);
+                            }
                         </td>
                         <td>簽約體能顧問：<img src="@(_contract.ServingCoach.UserProfile.UserProfileExtension.Signature)" width="200px" class="modifySignDialog_link" /></td>
                     </tr>

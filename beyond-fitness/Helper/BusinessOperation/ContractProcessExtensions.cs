@@ -5,7 +5,6 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Net.Mail;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -26,7 +25,7 @@ namespace WebHome.Helper.BusinessOperation
 {
     public static class ContractProcessExtensions
     {
-        public static CourseContract InitiateCourseContract<TEntity>(this ModelSource<TEntity> models, CourseContractViewModel viewModel, UserProfile profile, LessonPriceType lessonPrice, int? installmentID = null)
+        public static CourseContract InitiateCourseContract<TEntity>(this ModelSource<TEntity> models, CourseContractViewModel viewModel, UserProfile profile, LessonPriceType lessonPrice, int? installmentID = null, String paymentMethod = null)
             where TEntity : class, new()
         {
             if (viewModel.KeyID != null)
@@ -68,6 +67,7 @@ namespace WebHome.Helper.BusinessOperation
             item.Remark = viewModel.Remark;
             item.FitnessConsultant = viewModel.FitnessConsultant.Value;
             item.Renewal = viewModel.Renewal;
+            item.CourseContractExtension.PaymentMethod = paymentMethod;
 
             if (viewModel.InstallmentPlan == true)
             {
@@ -201,6 +201,20 @@ namespace WebHome.Helper.BusinessOperation
                 }
             }
 
+            String paymentMethod = null;
+            if (viewModel.PaymentMethod != null)
+            {
+                paymentMethod = String.Join("/", viewModel.PaymentMethod.Where(p => p!=null && p.Length > 0)).GetEfficientString();
+            }
+
+            if (viewModel.Version == Naming.ContractVersion.Ver2019)
+            {
+                if (paymentMethod == null)
+                {
+                    ModelState.AddModelError("PaymentMethod", "請選擇支付方式");
+                }
+            }
+
             if (!ModelState.IsValid)
             {
                 ViewBag.ModelState = ModelState;
@@ -248,6 +262,8 @@ namespace WebHome.Helper.BusinessOperation
             item.Remark = viewModel.Remark;
             item.FitnessConsultant = viewModel.FitnessConsultant.Value;
             item.Renewal = viewModel.Renewal;
+            item.CourseContractExtension.PaymentMethod = paymentMethod;
+
             if (viewModel.InstallmentPlan == true)
             {
                 if (item.ContractInstallment == null)
@@ -306,9 +322,24 @@ namespace WebHome.Helper.BusinessOperation
             {
                 if (!viewModel.Installments.HasValue)
                 {
-                    ModelState.AddModelError("Installments", "請選擇分期!!");
+                    ModelState.AddModelError("Installments", "請選擇分期");
                 }
             }
+
+            String paymentMethod = null;
+            if (viewModel.PaymentMethod != null)
+            {
+                paymentMethod = String.Join("/", viewModel.PaymentMethod.Where(p => p!=null && p.Length > 0)).GetEfficientString();
+            }
+
+            if (viewModel.Version == Naming.ContractVersion.Ver2019)
+            {
+                if (paymentMethod == null)
+                {
+                    ModelState.AddModelError("PaymentMethod", "請選擇支付方式");
+                }
+            }
+
 
             if (!ModelState.IsValid)
             {
@@ -330,7 +361,7 @@ namespace WebHome.Helper.BusinessOperation
                 }
             }
 
-            item = models.InitiateCourseContract(viewModel, profile, lessonPrice);
+            item = models.InitiateCourseContract(viewModel, profile, lessonPrice, paymentMethod: paymentMethod);
 
             if (item.InstallmentID.HasValue)
             {
@@ -360,7 +391,7 @@ namespace WebHome.Helper.BusinessOperation
                 while (totalLessons > 0)
                 {
                     viewModel.Lessons = Math.Min(installment, totalLessons);
-                    var c = models.InitiateCourseContract(viewModel, profile, lessonPrice, item.InstallmentID);
+                    var c = models.InitiateCourseContract(viewModel, profile, lessonPrice, item.InstallmentID, paymentMethod);
                     c.PayoffDue = payoffDue.AddDays(-1);
                     //c.Remark = $"{c.Remark}帳款應付期限{payoffDue:yyyy/MM/dd}。";
                     models.SubmitChanges();
@@ -392,7 +423,7 @@ namespace WebHome.Helper.BusinessOperation
 
         }
 
-        public static UserProfile CommitContractMember<TEntity>(this ContractMemberViewModel viewModel, SampleController<TEntity> controller, out String alertMessage)
+        public static UserProfile CommitUserProfile<TEntity>(this ContractMemberViewModel viewModel, SampleController<TEntity> controller, out String alertMessage)
             where TEntity : class, new()
         {
             alertMessage = null;
@@ -997,7 +1028,7 @@ namespace WebHome.Helper.BusinessOperation
         }
 
 
-        public static CourseContract CommitContractService<TEntity>(this CourseContractViewModel viewModel, SampleController<TEntity> controller, out String alertMessage)
+        public static CourseContract CommitContractService<TEntity>(this CourseContractViewModel viewModel, SampleController<TEntity> controller, out String alertMessage, String attachment = null)
             where TEntity : class, new()
         {
             alertMessage = null;
@@ -1062,6 +1093,13 @@ namespace WebHome.Helper.BusinessOperation
                 {
                     ModelState.AddModelError("MonthExtension", "請選擇展延期間!!");
                 }
+                else if (viewModel.MonthExtension > 3)
+                {
+                    if (attachment == null)
+                    {
+                        ModelState.AddModelError("uploadFile", "展延期間３個月以上請提供證明文件!!");
+                    }
+                }
             }
             else if (viewModel.Reason == "轉點")
             {
@@ -1080,7 +1118,7 @@ namespace WebHome.Helper.BusinessOperation
             newItem = new CourseContract
             {
                 AgentID = profile.UID,  //item.LessonPriceType.BranchStore.ManagerID.Value,
-                CourseContractExtension = new Models.DataEntity.CourseContractExtension
+                CourseContractExtension = new CourseContractExtension
                 {
                     BranchID = item.CourseContractExtension.BranchID
                 }
@@ -1107,6 +1145,13 @@ namespace WebHome.Helper.BusinessOperation
             };
             newItem.SequenceNo = newItem.CourseContractRevision.RevisionNo;
             newItem.ContractNo = item.ContractNo;   // + "-" + String.Format("{0:00}", newItem.CourseContractRevision.RevisionNo);
+            if (attachment != null)
+            {
+                newItem.CourseContractRevision.Attachment = new Attachment
+                {
+                    StoredPath = attachment
+                };
+            }
 
             if (viewModel.Reason != "轉換體能顧問")
             {
@@ -1134,6 +1179,7 @@ namespace WebHome.Helper.BusinessOperation
                     }));
 
                     newItem.Expiration = newItem.Expiration.Value.AddMonths(viewModel.MonthExtension.Value);
+                    newItem.CourseContractRevision.MonthExtension = viewModel.MonthExtension;
                     break;
 
                 case "轉點":
@@ -1200,7 +1246,7 @@ namespace WebHome.Helper.BusinessOperation
                         BranchID = item.CourseContractExtension.BranchID
                     };
 
-                    if(profile.IsManager())
+                    if (profile.IsManager())
                     {
                         newItem.CourseContractRevision.EnableContractAmendment(models, profile, null);
                     }
@@ -1215,5 +1261,37 @@ namespace WebHome.Helper.BusinessOperation
 
             return newItem;
         }
+
+        public static Payment EditPaymentForContract<TEntity>(this PaymentViewModel viewModel, SampleController<TEntity> controller)
+            where TEntity : class, new()
+        {
+            var ViewBag = controller.ViewBag;
+            var HttpContext = controller.HttpContext;
+            var models = controller.DataSource;
+
+            ViewBag.ViewModel = viewModel;
+
+            var item = models.GetTable<Payment>().Where(c => c.PaymentID == viewModel.PaymentID).FirstOrDefault();
+            if (item != null)
+            {
+                viewModel.PayoffAmount = item.PayoffAmount;
+                viewModel.PayoffDate = item.PayoffDate;
+                viewModel.Status = item.Status;
+                viewModel.HandlerID = item.HandlerID;
+                viewModel.PaymentType = item.PaymentType;
+                viewModel.InvoiceID = item.InvoiceID;
+                viewModel.TransactionType = item.TransactionType;
+                viewModel.BuyerReceiptNo = item.InvoiceItem.InvoiceBuyer.IsB2C() ? null : item.InvoiceItem.InvoiceBuyer.ReceiptNo;
+                viewModel.Remark = item.Remark;
+                viewModel.InvoiceNo = item.InvoiceItem.TrackCode + item.InvoiceItem.No;
+            }
+            else
+            {
+                viewModel.PayoffDate = DateTime.Today;
+            }
+
+            return item;
+        }
+
     }
 }

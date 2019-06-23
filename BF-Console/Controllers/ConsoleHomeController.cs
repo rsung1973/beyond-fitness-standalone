@@ -161,10 +161,11 @@ namespace WebHome.Controllers
         public ActionResult EditCourseContract(CourseContractQueryViewModel viewModel)
         {
             ViewBag.ViewModel = viewModel;
-            if(viewModel.KeyID!=null)
+            if (viewModel.KeyID != null)
             {
                 viewModel.ContractID = viewModel.DecryptKeyValue();
             }
+            viewModel.Version = Naming.ContractVersion.Ver2019;
             var profile = HttpContext.GetUser();
             var item = models.GetTable<CourseContract>().Where(c => c.ContractID == viewModel.ContractID).FirstOrDefault();
             if (item != null)
@@ -195,6 +196,10 @@ namespace WebHome.Controllers
                     viewModel.Installments = item.ContractInstallment.Installments;
                 }
                 viewModel.UID = item.CourseContractMember.Select(m => m.UID).ToArray();
+                if (item.CourseContractExtension.PaymentMethod != null)
+                {
+                    viewModel.PaymentMethod = item.CourseContractExtension.PaymentMethod.Split('/');
+                }
             }
             else
             {

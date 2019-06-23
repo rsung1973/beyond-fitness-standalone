@@ -97,7 +97,7 @@
                     </tr>
                     <tr>
                         <td colspan="2">顧問服務使用期限：自 @(String.Format("{0:yyyy/MM/dd}", _model.ValidFrom)) 起，至 @(String.Format("{0:yyyy/MM/dd}", _model.Expiration)) 止。</td>
-                        <td>付款方式：</td>
+                        <td>付款方式：@(_model.CourseContractExtension.PaymentMethod)</td>
                     </tr>
                     <tr>
                         <td colspan="3">備註：@(_model.Remark)@(_model.PayoffDue.HasValue ? $"帳款應付期限{_model.PayoffDue:yyyy/MM/dd}。" : null)</td>
@@ -201,21 +201,21 @@
                       }
                    </tr>
                    <tr>
-                      <td class="p-t-0">
-                         學員簽名：
-                         @{ ViewBag.SignatureName = "Signature";}
-                         @if (_model.CourseContractType.IsGroup == true)
-                         {
-                         foreach (var m in _model.CourseContractMember)
-                         {
-                            Html.RenderPartial("~/Views/ContractConsole/Module/SignHere.cshtml", m);
-                         }
-                         }
-                         else
-                         {
-                            Html.RenderPartial("~/Views/ContractConsole/Module/SignHere.cshtml", _owner);
-                         }
-                      </td>
+                       <td class="p-t-0">
+                           學員簽名：
+                           @{ ViewBag.SignatureName = "Signature";}
+                           @if (_model.CourseContractType.IsGroup == true)
+                           {
+                               foreach (var m in _model.CourseContractMember)
+                               {
+                                   Html.RenderPartial("~/Views/ContractConsole/Module/SignHere.cshtml", m);
+                               }
+                           }
+                           else
+                           {
+                               Html.RenderPartial("~/Views/ContractConsole/Module/SignHere.cshtml", _owner);
+                           }
+                       </td>
                       <td class="p-0">
                          @if (_model.Status > (int)Naming.CourseContractStatus.待簽名)
                          {
@@ -227,12 +227,15 @@
                       </td>
                    </tr>
                    <tr>
-                      <td class="p-t-0">
-                         家長/監護人簽名：
-                         @{ ViewBag.SignatureName = "GuardianSignature";
-                         Html.RenderPartial("~/Views/ContractConsole/Module/SignHere.cshtml", _owner);}
-                      </td>
-                      <td class="p-0">簽約體能顧問：<img src="@(_model.ServingCoach.UserProfile.UserProfileExtension.Signature)" width="200px" class="modifySignDialog_link"></td>
+                       <td class="p-t-0">
+                           @if (_model.CheckMinorLearner())
+                           {
+                               <text>家長/監護人簽名：</text>
+                               ViewBag.SignatureName = "GuardianSignature";
+                               Html.RenderPartial("~/Views/ContractConsole/Module/SignHere.cshtml", _owner);
+                           }
+                       </td>
+                       <td class="p-0">簽約體能顧問：<img src="@(_model.ServingCoach.UserProfile.UserProfileExtension.Signature)" width="200px" class="modifySignDialog_link"></td>
                    </tr>
                    <tr>
                       <td class="p-t-0">日期：@(String.Format("{0:yyyy/MM/dd}", _signatureDate))</td>
@@ -346,9 +349,12 @@
                     </tr>
                     <tr>
                         <td class="p-t-0">
-                            家長/監護人簽名：
-                            @{ ViewBag.SignatureName = "GuardianSignature1";
-                                Html.RenderPartial("~/Views/ContractConsole/Module/SignHere.cshtml", _owner);}
+                            @if (_model.CheckMinorLearner())
+                            {
+                                <text>家長/監護人簽名：</text>
+                                ViewBag.SignatureName = "GuardianSignature1";
+                                Html.RenderPartial("~/Views/ContractConsole/Module/SignHere.cshtml", _owner);
+                            }
                         </td>
                     </tr>
                     <tr style="font-size:10px" class="p-t-0">

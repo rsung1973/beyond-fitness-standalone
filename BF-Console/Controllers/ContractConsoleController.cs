@@ -413,7 +413,13 @@ namespace WebHome.Controllers
 
         public ActionResult CommitContractService(CourseContractViewModel viewModel)
         {
-            var item = viewModel.CommitContractService(this, out String alertMessage);
+            String storedPath = null;
+            if (Request.Files.Count > 0)
+            {
+                storedPath = Path.Combine(Logger.LogDailyPath, Guid.NewGuid().ToString() + Path.GetExtension(Request.Files[0].FileName));
+                Request.Files[0].SaveAs(storedPath);
+            }
+            var item = viewModel.CommitContractService(this, out String alertMessage, storedPath);
             if (item == null)
             {
                 if (!ModelState.IsValid)

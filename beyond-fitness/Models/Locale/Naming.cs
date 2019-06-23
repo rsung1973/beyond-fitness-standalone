@@ -141,6 +141,18 @@ namespace WebHome.Models.Locale
             "工讀生"
         };
 
+        public static readonly int[] StaffRole = new int[] 
+        {
+            (int)RoleID.Administrator,
+            (int)RoleID.Accounting,
+            (int)RoleID.Assistant,
+            (int)RoleID.Coach,
+            (int)RoleID.Manager,
+            (int)RoleID.Officer,
+            (int)RoleID.Servitor,
+            (int)RoleID.ViceManager,
+        };
+
         public enum LessonStatus
         {
             準備上課 = 100,
@@ -388,6 +400,11 @@ namespace WebHome.Models.Locale
             初階 = 1,
             中階 = 2,
             高階 = 3,
+        }
+
+        public enum ContractVersion
+        {
+            Ver2019 = 1,
         }
 
     }

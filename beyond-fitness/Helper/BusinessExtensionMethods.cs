@@ -16,7 +16,7 @@ namespace WebHome.Helper
 {
     public static class BusinessExtensionMethods
     {
-        public static void AttendLesson<TEntity>(this ModelSource<TEntity> models, LessonTime item)
+        public static void AttendLesson<TEntity>(this ModelSource<TEntity> models, LessonTime item, Naming.QuestionnaireGroup? groupID = null)
                     where TEntity : class, new()
         {
             if (!item.ContractTrustTrack.Any(t => t.SettlementID.HasValue))
@@ -30,8 +30,14 @@ namespace WebHome.Helper
 
                 foreach (var r in item.GroupingLesson.RegisterLesson)
                 {
-                    r.UID.CheckCurrentQuestionnaireRequest(models, Naming.QuestionnaireGroup.身體心靈密碼);
-                    models.CheckLearnerQuestionnaireRequest(r);
+                    if (groupID == Naming.QuestionnaireGroup.身體心靈密碼)
+                    {
+                        r.UID.CheckCurrentQuestionnaireRequest(models, Naming.QuestionnaireGroup.身體心靈密碼);
+                    }
+                    else
+                    {
+                        models.CheckLearnerQuestionnaireRequest(r);
+                    }
                 }
             }
 
@@ -148,8 +154,11 @@ namespace WebHome.Helper
         public static QuestionnaireRequest CheckCurrentQuestionnaireRequest<TEntity>(this int learnerID, ModelSource<TEntity> models, Naming.QuestionnaireGroup groupID = Naming.QuestionnaireGroup.滿意度問卷調查_2017)
             where TEntity : class, new()
         {
-            var lessons = learnerID.PromptLearnerLessons(models)
+            var PT = learnerID.PromptLearnerLessons(models)
                             .PTLesson()
+                            .Where(l => l.LessonAttendance != null);
+            var PI = learnerID.PromptLearnerLessons(models)
+                            .PILesson()
                             .Where(l => l.LessonAttendance != null);
 
             var item = models.GetTable<QuestionnaireRequest>().Where(q => q.UID == learnerID)
@@ -164,10 +173,11 @@ namespace WebHome.Helper
                     return item;
                 }
 
-                lessons = lessons.Where(l => l.ClassTime >= item.RequestDate);
+                PT = PT.Where(l => l.ClassTime >= item.RequestDate);
+                PI = PI.Where(l => l.ClassTime >= item.RequestDate);
             }
 
-            if (lessons.Count() >= 12)
+            if (PT.Count() + PI.Count() >= 12)
             {
                 return learnerID.AssertQuestionnaire(models, groupID);
             }
@@ -650,19 +660,21 @@ namespace WebHome.Helper
                 .ToString();
         }
 
-        public static IQueryable<QuestionnaireRequest> GetQuestionnaireRequest<TEntity>(this ModelSource<TEntity> models, UserProfile profile)
+        public static IQueryable<QuestionnaireRequest> GetQuestionnaireRequest<TEntity>(this ModelSource<TEntity> models, UserProfile profile, Naming.QuestionnaireGroup groupID = Naming.QuestionnaireGroup.滿意度問卷調查_2017)
             where TEntity : class, new()
         {
-            return models.GetTable<QuestionnaireRequest>().Where(q => q.UID == profile.UID
-                && q.PDQTask.Count == 0 && !q.Status.HasValue);
+            return models.GetTable<QuestionnaireRequest>().Where(q => q.UID == profile.UID)
+                .Where(q => q.PDQTask.Count == 0)
+                .Where(q => q.GroupID == (int)groupID)
+                .Where(q => !q.Status.HasValue);
         }
 
-        public static IQueryable<QuestionnaireRequest> GetEffectiveQuestionnaireRequest<TEntity>(this ModelSource<TEntity> models, UserProfile profile,Naming.QuestionnaireGroup group)
+        public static IQueryable<QuestionnaireRequest> GetEffectiveQuestionnaireRequest<TEntity>(this ModelSource<TEntity> models, UserProfile profile,Naming.QuestionnaireGroup groupID)
             where TEntity : class, new()
         {
             return models.GetTable<QuestionnaireRequest>()
                 .Where(q => q.UID == profile.UID)
-                .Where(q => q.GroupID == (int)group)
+                .Where(q => q.GroupID == (int)groupID)
                 .Where(q => !q.Status.HasValue 
                     || q.Status == (int)Naming.IncommingMessageStatus.未讀);
         }
@@ -686,6 +698,15 @@ namespace WebHome.Helper
                 .Where(t => !t.BonusExchange.Any())
                 .Sum(x => x.PDQTask.PDQQuestion.PDQQuestionExtension.BonusPoint);
         }
+
+        public static int? AwardedPoint<TEntity>(this UserProfile item, ModelSource<TEntity> models)
+            where TEntity : class, new()
+        {
+            return models.GetTable<PDQTaskBonus>()
+                .Where(t => t.PDQTask.UID == item.UID)
+                .Sum(x => x.PDQTask.PDQQuestion.PDQQuestionExtension.BonusPoint);
+        }
+
 
         public static IEnumerable<PDQTaskBonus> BonusPointList<TEntity>(this UserProfile item, ModelSource<TEntity> models)
             where TEntity : class, new()

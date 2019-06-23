@@ -30,6 +30,9 @@
                 </li>
             </ul>
         </li>
+        <li>
+            <a href="<%= VirtualPathUtility.ToAbsolute("~/ConsoleHome/Index") %>" target="_blank"><i class="fa fa-lg fa-fw fa-external-link-alt"></i><span class="menu-item-parent">任意門</span></a>
+        </li>
     </ul>
 </nav>
 

@@ -55,6 +55,7 @@ namespace WebHome.Models.ViewModel
         public string Phone { get; set; }
         public string Address { get; set; }
         public string EMail { get; set; }
+        public bool? CustomBrief { get; set; }
 
     }
 }

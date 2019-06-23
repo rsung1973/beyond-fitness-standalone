@@ -31,10 +31,48 @@
 <div class="body">
     <div class="row clearfix">
         <div class="col-12 m-b-20">
-            <label class="fancy-checkbox custom-bgcolor-pink">
-                <input id="checkbox14" type="checkbox" checked="checked" name="MonthExtension" value="3" onclick="this.checked = true;" />
-                <span class="col-red">展延3個月 - @($"{_model.Expiration.Value.AddMonths(3):yyyy/MM/dd}")</span>
-            </label>
+            @for (int i = 3; i <= 12; i += 3)
+            {
+                <label class="fancy-checkbox displayblock">
+                    <input type="checkbox" name="MonthExtension" value="@(i)" />
+                    <span>展延@(i)個月 - @($"{_model.Expiration.Value.AddMonths(i):yyyy/MM/dd}")</span>
+                </label>
+            }
+            <script>
+                $(function () {
+                    function check(element) {
+                        $('input:checkbox[name="MonthExtension"]').prop('checked', false);
+                        $(element).prop('checked', true);
+                    }
+                    $('input:checkbox[name="MonthExtension"]').on('click', function (event) {
+                        check(this);
+                    });
+                });
+            </script>
+        </div>
+        <div class="col-12">
+            @{
+                ViewBag.DropifyExtension = "gif jpg png pdf";
+            }
+            <script>
+                $(function () {
+                    $global.dropifyMessage = {
+                        'default': '點選或拖拉證明文件(可上傳格式PDF、GIF、JPG、PNG)到這邊',
+                        'replace': '點選或拖拉證明文件(可上傳格式PDF、GIF、JPG、PNG)取代目前內容',
+                        'remove': '刪除內容',
+                        'error': 'Ooops, 肯定做錯了什麼'
+                    };
+                    $global.dropifyError = {
+                        'fileSize': 'Ooops, 上傳的檔案太大了啦！ ({{ value }} max).',
+                        'imageFormat': 'Ooops, 上傳檔案是PDF或圖檔嗎？！ ({{ value }} only).'
+                    };
+                });
+            </script>
+            <form enctype="multipart/form-data" method="post">
+                @{
+                    Html.RenderPartial("~/Views/ConsoleHome/Shared/DropifyFileUpload.cshtml");
+                }
+            </form>
         </div>
         <div class="col-12">
             <div class="form-group">
@@ -71,7 +109,26 @@
         viewModel.FitnessConsultant = @(_profile.UID);
         clearErrors();
         showLoading();
-        $.post('@Html.Raw(Url.Action("CommitContractService", "ContractConsole",new { KeyID = _model.ContractID.EncryptKey() }))', viewModel, function (data) {
+        $('form').ajaxForm({
+            url: '@Html.Raw(Url.Action("CommitContractService", "ContractConsole",new { KeyID = _model.ContractID.EncryptKey() }))',
+            data: viewModel,
+            beforeSubmit: function () {
+                showLoading();
+            },
+            success: function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    swal(data.message);
+                }
+                else {
+                    $(data).appendTo($('body'));
+                }
+            },
+            error: function () {
+                hideLoading();
+            }
+        }).submit();
+        @*$.post('@Html.Raw(Url.Action("CommitContractService", "ContractConsole",new { KeyID = _model.ContractID.EncryptKey() }))', viewModel, function (data) {
             hideLoading();
             if ($.isPlainObject(data)) {
                 swal(data.message);
@@ -79,7 +136,7 @@
             else {
                 $(data).appendTo($('body'));
             }
-        });
+        });*@
     }//
 
 </script>

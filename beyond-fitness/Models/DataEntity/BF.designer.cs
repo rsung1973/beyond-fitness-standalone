@@ -22702,11 +22702,17 @@ namespace WebHome.Models.DataEntity
 		
 		private System.Nullable<int> _OperationMode;
 		
+		private System.Nullable<int> _AttachmentID;
+		
+		private System.Nullable<int> _MonthExtension;
+		
 		private EntitySet<CourseContractExtension> _CourseContractExtension;
 		
 		private EntitySet<ContractElement> _ContractElements;
 		
 		private EntityRef<CourseContractRevisionItem> _CourseContractRevisionItem;
+		
+		private EntityRef<Attachment> _Attachment;
 		
 		private EntityRef<CourseContract> _CourseContract;
 		
@@ -22726,6 +22732,10 @@ namespace WebHome.Models.DataEntity
     partial void OnReasonChanged();
     partial void OnOperationModeChanging(System.Nullable<int> value);
     partial void OnOperationModeChanged();
+    partial void OnAttachmentIDChanging(System.Nullable<int> value);
+    partial void OnAttachmentIDChanged();
+    partial void OnMonthExtensionChanging(System.Nullable<int> value);
+    partial void OnMonthExtensionChanged();
     #endregion
 		
 		public CourseContractRevision()
@@ -22733,6 +22743,7 @@ namespace WebHome.Models.DataEntity
 			this._CourseContractExtension = new EntitySet<CourseContractExtension>(new Action<CourseContractExtension>(this.attach_CourseContractExtension), new Action<CourseContractExtension>(this.detach_CourseContractExtension));
 			this._ContractElements = new EntitySet<ContractElement>(new Action<ContractElement>(this.attach_ContractElements), new Action<ContractElement>(this.detach_ContractElements));
 			this._CourseContractRevisionItem = default(EntityRef<CourseContractRevisionItem>);
+			this._Attachment = default(EntityRef<Attachment>);
 			this._CourseContract = default(EntityRef<CourseContract>);
 			this._SourceContract = default(EntityRef<CourseContract>);
 			OnCreated();
@@ -22846,6 +22857,50 @@ namespace WebHome.Models.DataEntity
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AttachmentID", DbType="Int")]
+		public System.Nullable<int> AttachmentID
+		{
+			get
+			{
+				return this._AttachmentID;
+			}
+			set
+			{
+				if ((this._AttachmentID != value))
+				{
+					if (this._Attachment.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnAttachmentIDChanging(value);
+					this.SendPropertyChanging();
+					this._AttachmentID = value;
+					this.SendPropertyChanged("AttachmentID");
+					this.OnAttachmentIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MonthExtension", DbType="Int")]
+		public System.Nullable<int> MonthExtension
+		{
+			get
+			{
+				return this._MonthExtension;
+			}
+			set
+			{
+				if ((this._MonthExtension != value))
+				{
+					this.OnMonthExtensionChanging(value);
+					this.SendPropertyChanging();
+					this._MonthExtension = value;
+					this.SendPropertyChanged("MonthExtension");
+					this.OnMonthExtensionChanged();
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="CourseContractRevision_CourseContractExtension", Storage="_CourseContractExtension", ThisKey="RevisionID", OtherKey="RevisionTrackingID")]
 		public EntitySet<CourseContractExtension> CourseContractExtension
 		{
@@ -22897,6 +22952,24 @@ namespace WebHome.Models.DataEntity
 						value.CourseContractRevision = this;
 					}
 					this.SendPropertyChanged("CourseContractRevisionItem");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Attachment_CourseContractRevision", Storage="_Attachment", ThisKey="AttachmentID", OtherKey="AttachmentID", IsForeignKey=true)]
+		public Attachment Attachment
+		{
+			get
+			{
+				return this._Attachment.Entity;
+			}
+			set
+			{
+				if ((this._Attachment.Entity != value))
+				{
+					this.SendPropertyChanging();
+					this._Attachment.Entity = value;
+					this.SendPropertyChanged("Attachment");
 				}
 			}
 		}
@@ -33227,6 +33300,8 @@ namespace WebHome.Models.DataEntity
 		
 		private System.Nullable<int> _SettlementPrice;
 		
+		private string _PaymentMethod;
+		
 		private EntityRef<BranchStore> _BranchStore;
 		
 		private EntityRef<CourseContract> _CourseContract;
@@ -33245,6 +33320,8 @@ namespace WebHome.Models.DataEntity
     partial void OnRevisionTrackingIDChanged();
     partial void OnSettlementPriceChanging(System.Nullable<int> value);
     partial void OnSettlementPriceChanged();
+    partial void OnPaymentMethodChanging(string value);
+    partial void OnPaymentMethodChanged();
     #endregion
 		
 		public CourseContractExtension()
@@ -33343,6 +33420,26 @@ namespace WebHome.Models.DataEntity
 					this._SettlementPrice = value;
 					this.SendPropertyChanged("SettlementPrice");
 					this.OnSettlementPriceChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PaymentMethod", DbType="NVarChar(64)")]
+		public string PaymentMethod
+		{
+			get
+			{
+				return this._PaymentMethod;
+			}
+			set
+			{
+				if ((this._PaymentMethod != value))
+				{
+					this.OnPaymentMethodChanging(value);
+					this.SendPropertyChanging();
+					this._PaymentMethod = value;
+					this.SendPropertyChanged("PaymentMethod");
+					this.OnPaymentMethodChanged();
 				}
 			}
 		}

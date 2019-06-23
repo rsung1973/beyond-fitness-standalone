@@ -7,6 +7,7 @@
 @using WebHome.Models.ViewModel
 @using WebHome.Models.DataEntity
 @using WebHome.Controllers
+@using WebHome.Properties
 @{
 
     ModelStateDictionary _modelState;
@@ -71,11 +72,20 @@
                         <tr>
                             <td colspan="2">
                                 @{ var original = _model.SourceContract;}
-                                申請內容：@(original.ContractNo()) 使用截止日由 @(String.Format("{0:yyyy/MM/dd}", _contract.Expiration.Value.AddMonths(-3)))  ，展延至 <sapn class="col-red">@(String.Format("{0:yyyy/MM/dd}", _contract.Expiration))</sapn> 止。
+                                申請內容：@(original.ContractNo()) 使用截止日由 @(String.Format("{0:yyyy/MM/dd}", _contract.Expiration.Value.AddMonths(-(_model.MonthExtension??3))))  ，展延至 <sapn class="col-red">@(String.Format("{0:yyyy/MM/dd}", _contract.Expiration))</sapn> 止。
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                相關證明文件：
+                                @if (_model.AttachmentID.HasValue)
+                                {
+                                    <u><a href="@($"{Settings.Default.HostDomain}{Url.Action("GetResourceWithMime","Information",new { id=_model.AttachmentID })}")" target="_blank">開啟附件</a> 。</u>
+                                }
                             </td>
                         </tr>
                         <tr style="@(Request["pdf"]=="1" ? "height: 11cm" : "height: 2cm")">
-                            <td colspan="2">其他更多說明：@(_contract.Remark)</td>
+                            <td colspan="2">說明：@(_contract.Remark)</td>
                         </tr>
                     </tbody>
                 </table>
@@ -150,10 +160,12 @@
                     </tr>
                     <tr>
                         <td colspan="2">
-                            家長/監護人簽名：
-                            @{ ViewBag.SignatureName = "GuardianSignature";
-                                Html.RenderPartial("~/Views/ContractConsole/Module/SignHere.cshtml", _owner);}
-
+                            @if (_contract.CheckMinorLearner())
+                            {
+                                <text>家長 / 監護人簽名：</text>
+                                ViewBag.SignatureName = "GuardianSignature";
+                                Html.RenderPartial("~/Views/ContractConsole/Module/SignHere.cshtml", _owner);
+                            }
                         </td>
                         <td>簽約體能顧問：<img src="@(_contract.ServingCoach.UserProfile.UserProfileExtension.Signature)" width="200px" class="modifySignDialog_link" /></td>
                     </tr>

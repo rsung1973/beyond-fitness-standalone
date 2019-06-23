@@ -19,6 +19,25 @@ namespace WebHome.Models.DataEntity
             return item.Birthday.HasValue ? (int)((DateTime.Today - item.Birthday.Value).TotalDays / 365) : 999;
         }
 
+        public static bool CheckMinorLearner(this CourseContract item)
+        {
+            if (item.CourseContractType.IsGroup == true)
+            {
+                foreach (var m in item.CourseContractMember)
+                {
+                    if (m.UserProfile.CurrentYearsOld() < 18)
+                    {
+                        return true;
+                    }
+                }
+            }
+            else
+            {
+                return item.ContractOwner.CurrentYearsOld() < 18;
+            }
+            return false;
+        }
+
 
         public static String CurrentLessonStatus(this LessonTime item)
         {
@@ -195,9 +214,9 @@ namespace WebHome.Models.DataEntity
             return item.Nickname == null ? item.RealName : item.RealName + "(" + item.Nickname + ")";
         }
 
-        public static String FullNameHtml(this UserProfile profile)
+        public static String FullNameHtml(this UserProfile profile,String css = null)
         {
-            return String.Concat($"<span class='hidden-sm-down'>{profile.RealName}",
+            return String.Concat($"<span class='{css}'>{profile.RealName}",
                         !String.IsNullOrEmpty(profile.Nickname) ? $"<span class='small'>({profile.Nickname})</span>" : null,
                         "</span>");
         }

@@ -18,7 +18,7 @@ namespace WebHome.Models.ViewModel
         public int? RecordCount { get; set; }
     }
 
-    public class LoginViewModel
+    public class LoginViewModel : QueryViewModel
     {
         //[Required]
         [Display(Name = "電子郵件信箱")]
@@ -32,13 +32,15 @@ namespace WebHome.Models.ViewModel
         //[Display(Name = "encryptedCode")]
         //public string EncryptedCode { get; set; }
 
-        [Required]
+        //[Required]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }
 
         [Display(Name = "Remember me?")]
         public bool RememberMe { get; set; }
+
+        public int? UID { get; set; }
     }
 
     public class FBRegisterViewModel
@@ -599,6 +601,7 @@ namespace WebHome.Models.ViewModel
         public int? UID { get; set; }
         public String Remark { get; set; }
         public int? CopyFrom { get; set; }
+        public Naming.QuestionnaireGroup? QuestionnaireGroupID { get; set; }
 
     }
 

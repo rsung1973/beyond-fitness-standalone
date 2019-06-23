@@ -33,6 +33,13 @@ namespace WebHome.Helper
                     .Join(models.GetTable<LessonTime>(), g => g.GroupID, l => l.GroupID, (g, l) => l);
         }
 
+        public static IQueryable<LessonTime> TotalRegisterLessonItems<TEntity>(this IQueryable<RegisterLesson> items, ModelSource<TEntity> models)
+                    where TEntity : class, new()
+        {
+            return items
+                    .Join(models.GetTable<LessonTime>(), g => g.RegisterID, l => l.RegisterID, (g, l) => l);
+        }
+
         public static int TotalLessonMinutes<TEntity>(this UserProfile profile, ModelSource<TEntity> models, DateTime dateFrom, DateTime dateTo)
                     where TEntity : class, new()
         {
@@ -601,6 +608,21 @@ namespace WebHome.Helper
                 .Join(models.GetTable<LessonTime>(), g => g.RegisterID, l => l.RegisterID, (g, l) => l);
         }
 
+        public static IQueryable<LessonTime> PromptLearnerLessons<TEntity>(this ModelSource<TEntity> models)
+            where TEntity : class, new()
+        {
+            return models.GetTable<LessonTime>()
+                .Where(r => r.RegisterLesson.LessonPriceType.Status != (int)Naming.LessonPriceStatus.教練PI);
+        }
+
+        public static IQueryable<LessonTime> PromptCoachPILessons<TEntity>(this ModelSource<TEntity> models)
+            where TEntity : class, new()
+        {
+            return models.GetTable<RegisterLesson>()
+                .Where(r => r.LessonPriceType.Status == (int)Naming.LessonPriceStatus.教練PI)
+                .Join(models.GetTable<LessonTime>(), g => g.RegisterID, l => l.RegisterID, (g, l) => l);
+        }
+
 
         public static void ProcessBookingWhenCrossBranch<TEntity>(this LessonTime item, ModelSource<TEntity> models)
             where TEntity : class, new()
@@ -652,7 +674,7 @@ namespace WebHome.Helper
                         l => l.LessonID, p => p.LessonID, (l, p) => l);
         }
 
-        public static TrainingPlan CloneTrainingPlan<TEntity>(this ModelSource<TEntity> models, TrainingPlan source,TrainingPlan target = null)
+        public static TrainingPlan CloneTrainingPlan<TEntity>(this ModelSource<TEntity> models, TrainingPlan source,TrainingPlan target = null,bool copyEmphasis = true)
             where TEntity : class, new()
         {
             if (source == target || source == null)
@@ -669,7 +691,6 @@ namespace WebHome.Helper
                     RegisterID = source.RegisterID,
                     TrainingExecution = new TrainingExecution
                     {
-                        Emphasis = null //p.TrainingExecution.Emphasis
                     }
                 };
                 models.GetTable<TrainingPlan>().InsertOnSubmit(target);
@@ -680,6 +701,10 @@ namespace WebHome.Helper
                 models.ExecuteCommand("delete TrainingItem where ExecutionID = {0}", target.ExecutionID);
             }
 
+            if (copyEmphasis)
+            {
+                target.TrainingExecution.Emphasis = source.TrainingExecution.Emphasis;
+            }
             target.TrainingExecution.TrainingExecutionStage.AddRange(source.TrainingExecution.TrainingExecutionStage
                 .Select(t => new TrainingExecutionStage
                 {

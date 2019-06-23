@@ -375,6 +375,21 @@ namespace WebHome.Controllers
 
         }
 
+        public ActionResult GetResourceWithMime(int id)
+        {
+            var item = models.GetTable<Attachment>().Where(a => a.AttachmentID == id).FirstOrDefault();
+            if (item != null)
+            {
+                if (System.IO.File.Exists(item.StoredPath))
+                {
+                    return File(item.StoredPath, MimeMapping.GetMimeMapping(Path.GetFileName(item.StoredPath)));
+                }
+            }
+            return new EmptyResult();
+
+        }
+
+
         private void checkOrientation(Bitmap img)
         {
             if (Array.IndexOf(img.PropertyIdList, 274) > -1)

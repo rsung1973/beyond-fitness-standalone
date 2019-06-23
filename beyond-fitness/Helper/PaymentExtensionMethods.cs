@@ -68,5 +68,21 @@ namespace WebHome.Helper
                 .Where(p => p.VoidPayment == null || p.AllowanceID.HasValue);
         }
 
+        public static IQueryable<InvoiceAllowance> ExtractPaymentAllowance<TEntity>(this IQueryable<Payment> items, ModelSource<TEntity> models)
+                    where TEntity : class, new()
+        {
+            return items.Join(models.GetTable<InvoiceAllowance>(),
+                            p => p.AllowanceID, a => a.AllowanceID, (p, a) => a);
+        }
+
+        public static IQueryable<Payment> ExtractVoidPayment<TEntity>(this IQueryable<Payment> items, ModelSource<TEntity> models)
+                    where TEntity : class, new()
+        {
+            return items.Where(p => !p.AllowanceID.HasValue)
+                .Join(models.GetTable<VoidPayment>(),
+                            p => p.PaymentID, a => a.VoidID, (p, a) => p);
+        }
+
+
     }
 }

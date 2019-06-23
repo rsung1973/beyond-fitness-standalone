@@ -33,13 +33,13 @@
     {
         Html.RenderPartial("~/Views/SiteAction/Accounting.ascx", _userProfile);
     }
-    else if (_userProfile.IsLearner())
-    {
-        Html.RenderPartial("~/Views/SiteAction/Learner.ascx", _userProfile);
-    }
     else if (_userProfile.IsServitor())
     {
         Html.RenderPartial("~/Views/SiteAction/Servitor.ascx", _userProfile);
+    }
+    else if (_userProfile.IsLearner())
+    {
+        Html.RenderPartial("~/Views/SiteAction/Learner.ascx", _userProfile);
     }
     else
     {

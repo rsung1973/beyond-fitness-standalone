@@ -58,7 +58,8 @@ namespace WebHome.Models.ViewModel
         public int? InstallmentID { get; set; }
         public int? ManagerID { get; set; }
         public Naming.OperationMode? OperationMode { get; set; }
-
+        public String[] PaymentMethod { get; set; }
+        public Naming.ContractVersion? Version { get; set; }
     }
 
     public class CourseContractQueryViewModel : CourseContractViewModel
@@ -102,6 +103,7 @@ namespace WebHome.Models.ViewModel
         public int? OwnerID { get; set; }
         public int? ContractType { get; set; }
         public string Nickname { get; set; }
+        public bool? ProfileOnly { get; set; }
     }
 
     public class UserSignatureViewModel : QueryViewModel
@@ -135,7 +137,6 @@ namespace WebHome.Models.ViewModel
     public class LearnerQueryViewModel : LearnerViewModel
     {
         public String IDNo { get; set; }
-        public int? UID { get; set; }
         public int? CoachID { get; set; }
         public int?[] LessonID { get; set; }
     }

@@ -230,7 +230,7 @@ namespace WebHome.Controllers
 
         public ActionResult CommitContractMember(ContractMemberViewModel viewModel)
         {
-            var item = viewModel.CommitContractMember(this, out String alertMessage);
+            var item = viewModel.CommitUserProfile(this, out String alertMessage);
             if (item == null)
             {
                 if (!ModelState.IsValid)

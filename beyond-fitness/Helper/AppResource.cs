@@ -1,14 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Web;
+using Newtonsoft.Json;
+using Utility;
 
 namespace WebHome.Helper
 {
     public sealed class AppResource
     {
         private static AppResource _instance = new AppResource();
+
+        class __KeyResource
+        {
+            public byte[] Key { get; set; }
+            public byte[] IV { get; set; }
+            public CipherMode Mode { get; set; }
+        }
 
         public TripleDES CurrentTripleDES
         {
@@ -19,6 +29,51 @@ namespace WebHome.Helper
         private AppResource()
         {
             CurrentTripleDES = TripleDES.Create();
+            InitializeKey();
+        }
+
+        public void InitializeKey(bool reset = false)
+        {
+            string keyFile = Path.Combine(Logger.LogPath, "SystemKey.json");
+
+            void saveKeyResource()
+            {
+                __KeyResource kr = new __KeyResource
+                {
+                    Key = CurrentTripleDES.Key,
+                    IV = CurrentTripleDES.IV,
+                    Mode = CurrentTripleDES.Mode,
+                };
+                File.WriteAllText(keyFile, JsonConvert.SerializeObject(kr));
+            }
+
+            if (reset)
+            {
+                CurrentTripleDES.Dispose();
+                CurrentTripleDES = TripleDES.Create();
+                saveKeyResource();
+                return;
+            }
+
+            if (File.Exists(keyFile))
+            {
+                try
+                {
+                    var kr = JsonConvert.DeserializeObject<__KeyResource>(File.ReadAllText(keyFile));
+                    CurrentTripleDES.Key = kr.Key;
+                    CurrentTripleDES.IV = kr.IV;
+                    CurrentTripleDES.Mode = kr.Mode;
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error(ex);
+                    saveKeyResource();
+                }
+            }
+            else
+            {
+                saveKeyResource();
+            }
         }
 
         public static AppResource Instance

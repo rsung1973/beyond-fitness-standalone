@@ -251,18 +251,29 @@
                         <div class="row">
                             <div class="col-12 m-b-20">
                                 <label class="fancy-checkbox">
-                                    <input type="checkbox" id="checkbox14">
+                                    <input type="checkbox" name="PaymentMethod" value="現金" />
                                     <span>現金</span>
                                 </label>
                                 <label class="fancy-checkbox">
-                                    <input type="checkbox" id="checkbox14">
+                                    <input type="checkbox" name="PaymentMethod" value="刷卡" />
                                     <span>刷卡</span>
                                 </label>
                                 <label class="fancy-checkbox">
-                                    <input type="checkbox" id="checkbox14">
+                                    <input type="checkbox" name="PaymentMethod" value="轉帳" />
                                     <span>轉帳</span>
                                 </label>
                             </div>
+                            @if (_viewModel.PaymentMethod != null)
+                            {
+                            <script>
+                                    $(function () {
+                                        @foreach(var p in _viewModel.PaymentMethod)
+                                        {
+                                            <text>$('input:checkbox[name="PaymentMethod"][value="@(p)"]').prop('checked', true);</text>
+                                        }
+                                    });
+                            </script>
+                            }
                         </div>
                         <div class="row clearfix">
                             <div class="col-lg-4 col-md-4 col-sm-12 col-12">
@@ -361,6 +372,7 @@
                     <script>
                                 function saveContract() {
                                     clearErrors();
+                                    $global.viewModel.PaymentMethod = $('input[name="PaymentMethod"]').serializeObject().PaymentMethod;
                                     $.post('@Html.Raw(Url.Action("SaveContract", "ContractConsole", _viewModel.ContractID))', $global.viewModel, function (data) {
                                         if ($.isPlainObject(data)) {
                                             swal(data.message);
@@ -372,6 +384,7 @@
                                 }
                                 function commitContract() {
                                     clearErrors();
+                                    $global.viewModel.PaymentMethod = $('input[name="PaymentMethod"]').serializeObject().PaymentMethod;
                                     $.post('@Html.Raw(Url.Action("CommitContract", "ContractConsole", _viewModel.ContractID))', $global.viewModel, function (data) {
                                         if ($.isPlainObject(data)) {
                                             swal(data.message);

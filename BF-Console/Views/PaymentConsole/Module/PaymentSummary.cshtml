@@ -1,0 +1,23 @@
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Newtonsoft.Json
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    IQueryable<Payment> _model;
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = (IQueryable<Payment>)this.Model;
+}
+<p class="text-small">
+    收款：<a href="javascript:showPaymentList();">@(_model.Count())</a><br />
+    作廢：<a href="javascript:showPaymentList();">@(_model.ExtractVoidPayment(models).Count())</a><br />
+    折讓：<a href="javascript:showPaymentList();">@(_model.ExtractPaymentAllowance(models).Count())</a><br />
+</p>
+

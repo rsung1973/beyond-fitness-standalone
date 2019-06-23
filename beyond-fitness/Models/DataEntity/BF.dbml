@@ -1,4 +1,5 @@
-﻿<?xml version="1.0" encoding="utf-8"?><Database Name="BeyondFitnessProd2" Class="BFDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Database Name="BeyondFitnessProd2" Class="BFDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
   <Connection Mode="AppSettings" ConnectionString="Data Source=VM-Venus\sqlexpress,1433;Initial Catalog=BeyondFitnessProd2;Integrated Security=True" SettingsObjectName="WebHome.Properties.Settings" SettingsPropertyName="BFDbConnection" Provider="System.Data.SqlClient" />
   <Table Name="dbo.UserRoleDefinition" Member="UserRoleDefinitions">
     <Type Name="UserRoleDefinition">
@@ -930,6 +931,9 @@
       <Column Name="RevisionNo" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="Reason" Type="System.String" DbType="NVarChar(16)" CanBeNull="true" />
       <Column Name="OperationMode" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="AttachmentID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="MonthExtension" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Attachment_CourseContractRevision" Member="Attachment" ThisKey="AttachmentID" OtherKey="AttachmentID" Type="Attachment" IsForeignKey="true" />
       <Association Name="CourseContractRevision_CourseContractExtension" Member="CourseContractExtension" ThisKey="RevisionID" OtherKey="RevisionTrackingID" Type="CourseContractExtension" />
       <Association Name="CourseContractRevision_ContractElement" Member="ContractElements" ThisKey="RevisionID" OtherKey="RevisionID" Type="ContractElement" />
       <Association Name="CourseContractRevision_CourseContractRevisionItem" Member="CourseContractRevisionItem" ThisKey="RevisionID" OtherKey="RevisionID" Type="CourseContractRevisionItem" Cardinality="One" />
@@ -1400,6 +1404,7 @@
       <Column Name="BranchID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="RevisionTrackingID" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="SettlementPrice" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PaymentMethod" Type="System.String" DbType="NVarChar(64)" CanBeNull="true" />
       <Association Name="BranchStore_CourseContractExtension" Member="BranchStore" ThisKey="BranchID" OtherKey="BranchID" Type="BranchStore" IsForeignKey="true" />
       <Association Name="CourseContract_CourseContractExtension" Member="CourseContract" ThisKey="ContractID" OtherKey="ContractID" Type="CourseContract" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
       <Association Name="CourseContractRevision_CourseContractExtension" Member="CourseContractRevision" ThisKey="RevisionTrackingID" OtherKey="RevisionID" Type="CourseContractRevision" IsForeignKey="true" />

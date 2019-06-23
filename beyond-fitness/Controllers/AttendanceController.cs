@@ -150,9 +150,9 @@ namespace WebHome.Controllers
                 return Json(new { result = false, message = "未輸入課表重點，無法完成上課!!" }, JsonRequestBehavior.AllowGet);
             }
 
-            item.LessonPlan.Remark = viewModel.Remark;
+            item.LessonPlan.Remark = viewModel.Remark.GetEfficientString();
 
-            models.AttendLesson(item);
+            models.AttendLesson(item, viewModel.QuestionnaireGroupID);
             //foreach (var r in item.GroupingLesson.RegisterLesson)
             //{
             //    models.CheckLearnerQuestionnaireRequest(r);

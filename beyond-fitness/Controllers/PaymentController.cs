@@ -26,6 +26,7 @@ using WebHome.Models.Timeline;
 using WebHome.Models.ViewModel;
 using WebHome.Security.Authorization;
 using WebHome.Properties;
+using WebHome.Helper.BusinessOperation;
 
 namespace WebHome.Controllers
 {
@@ -124,22 +125,7 @@ namespace WebHome.Controllers
         [RoleAuthorize(RoleID = new int[] { (int)Naming.RoleID.Coach,(int)Naming.RoleID.Assistant,(int)Naming.RoleID.Servitor, (int)Naming.RoleID.Manager, (int)Naming.RoleID.ViceManager })]
         public ActionResult EditPaymentForContract(PaymentViewModel viewModel)
         {
-            var item = models.GetTable<Payment>().Where(c => c.PaymentID == viewModel.PaymentID).FirstOrDefault();
-            if (item != null)
-            {
-                viewModel.PayoffAmount = item.PayoffAmount;
-                viewModel.PayoffDate = item.PayoffDate;
-                viewModel.Status = item.Status;
-                viewModel.HandlerID = item.HandlerID;
-                viewModel.PaymentType = item.PaymentType;
-                viewModel.InvoiceID = item.InvoiceID;
-                viewModel.TransactionType = item.TransactionType;
-                viewModel.BuyerReceiptNo = item.InvoiceItem.InvoiceBuyer.IsB2C() ? null : item.InvoiceItem.InvoiceBuyer.ReceiptNo;
-                viewModel.Remark = item.Remark;
-                viewModel.InvoiceNo = item.InvoiceItem.TrackCode + item.InvoiceItem.No;
-            }
-
-            ViewBag.ViewModel = viewModel;
+            var item = viewModel.EditPaymentForContract(this);
             return View("~/Views/Payment/Module/EditPaymentForContract.ascx", item);
         }
 
@@ -149,61 +135,89 @@ namespace WebHome.Controllers
             var profile = HttpContext.GetUser();
 
             CourseContract contract = null;
-            viewModel.ContractNo = viewModel.ContractNo.GetEfficientString();
-            if (viewModel.ContractNo == null)
+            if(viewModel.ContractID.HasValue)
             {
-                ModelState.AddModelError("ContractNo", "請輸入合約編號!!");
+                contract = models.GetTable<CourseContract>().Where(c => c.ContractID == viewModel.ContractID).FirstOrDefault();
             }
-            else
+            if (contract == null)
             {
-                var no = viewModel.ContractNo.Split('-');
-                int seqNo = 0;
-                if (no.Length > 1)
+                viewModel.ContractNo = viewModel.ContractNo.GetEfficientString();
+                if (viewModel.ContractNo == null)
                 {
-                    int.TryParse(no[1], out seqNo);
+                    ModelState.AddModelError("ContractNo", "請輸入合約編號!!");
                 }
-                contract = models.GetTable<CourseContract>()
-                    .Where(c => c.ContractNo == no[0] && c.SequenceNo == seqNo)
-                    .Where(c => c.Status >= (int)Naming.CourseContractStatus.已生效)
-                    .FirstOrDefault();
-
-                if (contract == null)
+                else
                 {
-                    ModelState.AddModelError("ContractNo", "合約編號錯誤!!");
-                }
-                //else if (contract.ContractPayment.Any(p => p.Payment.PayoffDate > DateTime.Now.AddMinutes(-1)))
-                //{
-                //    ModelState.AddModelError("ContractNo", "本合約一分鐘內重複收款，請再確認!!");
-                //}
+                    var no = viewModel.ContractNo.Split('-');
+                    int seqNo = 0;
+                    if (no.Length > 1)
+                    {
+                        int.TryParse(no[1], out seqNo);
+                    }
+                    contract = models.GetTable<CourseContract>()
+                        .Where(c => c.ContractNo == no[0] && c.SequenceNo == seqNo)
+                        .Where(c => c.Status >= (int)Naming.CourseContractStatus.已生效)
+                        .FirstOrDefault();
 
-                //else if(CheckContractPayment.IsPayoffRecently(contract.ContractID))
-                //{
-                //    ModelState.AddModelError("ContractNo", "本合約一分鐘內重複收款，請再確認!!");
-                //}
+                    if (contract == null)
+                    {
+                        ModelState.AddModelError("ContractNo", "合約編號錯誤!!");
+                    }
+                    //else if (contract.ContractPayment.Any(p => p.Payment.PayoffDate > DateTime.Now.AddMinutes(-1)))
+                    //{
+                    //    ModelState.AddModelError("ContractNo", "本合約一分鐘內重複收款，請再確認!!");
+                    //}
+
+                    //else if(CheckContractPayment.IsPayoffRecently(contract.ContractID))
+                    //{
+                    //    ModelState.AddModelError("ContractNo", "本合約一分鐘內重複收款，請再確認!!");
+                    //}
+                }
+            }
+
+            if(!viewModel.InvoiceType.HasValue)
+            {
+                ModelState.AddModelError("InvoiceType", "請選擇發票類型");
             }
 
             if (!viewModel.PayoffDate.HasValue)
             {
-                ModelState.AddModelError("PayoffDate", "請選擇收款日期!!");
+                ModelState.AddModelError("PayoffDate", "請輸入收款日期");
             }
 
             if (String.IsNullOrEmpty(viewModel.PaymentType))
             {
-                ModelState.AddModelError("errorMessage", "請選擇收款方式!!");
+                ModelState.AddModelError("errorMessage", "請選擇收款方式");
             }
 
-            viewModel.ItemNo = new string[] { "01","02" };
-            viewModel.Brief = new string[] { "專業顧問建置與諮詢費", "教練課程費" };
-            viewModel.CostAmount = new int?[] { (viewModel.PayoffAmount * 8 + 5) / 10, (viewModel.PayoffAmount * 2 + 5) / 10 };
-            viewModel.UnitCost = new int?[] { (viewModel.PayoffAmount * 8 + 5) / 10, (viewModel.PayoffAmount * 2 + 5) / 10 };
-            viewModel.Piece = new int?[] { 1,1 };
-            viewModel.ItemRemark = new string[] { viewModel.Remark, null };
+            if (viewModel.CustomBrief == true)
+            {
+                viewModel.ItemNo = new string[] { "01" };
+                viewModel.Brief = new string[] { "顧問費用" };
+                viewModel.CostAmount = new int?[] { viewModel.PayoffAmount };
+                viewModel.UnitCost = new int?[] { viewModel.PayoffAmount };
+                viewModel.Piece = new int?[] { 1 };
+                viewModel.ItemRemark = new string[] { viewModel.Remark };
+            }
+            else
+            {
 
-            var invoice = checkInvoiceNo(viewModel);
+                viewModel.ItemNo = new string[] { "01", "02" };
+                viewModel.Brief = new string[] { "專業顧問建置與諮詢費", "教練課程費" };
+                viewModel.CostAmount = new int?[] { (viewModel.PayoffAmount * 8 + 5) / 10, (viewModel.PayoffAmount * 2 + 5) / 10 };
+                viewModel.UnitCost = new int?[] { (viewModel.PayoffAmount * 8 + 5) / 10, (viewModel.PayoffAmount * 2 + 5) / 10 };
+                viewModel.Piece = new int?[] { 1, 1 };
+                viewModel.ItemRemark = new string[] { viewModel.Remark, null };
+            }
 
+            InvoiceItem invoice = null;
             if (!viewModel.SellerID.HasValue)
             {
-                ModelState.AddModelError("SellerID", "請選擇分店!!");
+                ModelState.AddModelError("SellerID", "請選擇收款場地");
+            }
+            else
+            {
+                invoice = checkInvoiceNo(viewModel);
             }
 
             if (contract!=null && contract.TotalPaidAmount() + viewModel.PayoffAmount > contract.TotalCost)
@@ -214,7 +228,7 @@ namespace WebHome.Controllers
             if (!ModelState.IsValid)
             {
                 ViewBag.ModelState = ModelState;
-                return View("~/Views/Shared/ReportInputError.ascx");
+                return View(Settings.Default.ReportInputError);
             }
 
             try
@@ -623,7 +637,7 @@ namespace WebHome.Controllers
         {
             if (!viewModel.PayoffAmount.HasValue || viewModel.PayoffAmount <= 0)
             {
-                ModelState.AddModelError("PayoffAmount", "請輸入收款金額!!");
+                ModelState.AddModelError("PayoffAmount", "請輸入收款金額");
                 return null;
             }
 
@@ -633,7 +647,7 @@ namespace WebHome.Controllers
             {
                 if (viewModel.InvoiceNo == null || !Regex.IsMatch(viewModel.InvoiceNo, "[A-Za-z]{2}[0-9]{8}"))
                 {
-                    ModelState.AddModelError("InvoiceNo", "請輸入正確發票號碼!!");
+                    ModelState.AddModelError("InvoiceNo", "請輸入紙本發票號碼");
                 }
                 else
                 {
@@ -667,7 +681,7 @@ namespace WebHome.Controllers
                 var seller = models.GetTable<Organization>().Where(o => o.CompanyID == viewModel.SellerID).FirstOrDefault();
                 if (seller == null)
                 {
-                    ModelState.AddModelError("SellerID", "發票開立人錯誤!!");
+                    ModelState.AddModelError("SellerID", "請選擇收款場地");
                     return null;
                 }
 
@@ -1283,10 +1297,9 @@ namespace WebHome.Controllers
                 {
                     hasConditon = true;
                     var no = viewModel.ContractNo.Split('-');
-                    int seqNo;
                     if (no.Length > 1)
                     {
-                        int.TryParse(no[1], out seqNo);
+                        int.TryParse(no[1], out int seqNo);
                         queryExpr = queryExpr.Or(c => c.ContractPayment.CourseContract.ContractNo.StartsWith(no[0])
                             && c.ContractPayment.CourseContract.SequenceNo == seqNo);
                     }
