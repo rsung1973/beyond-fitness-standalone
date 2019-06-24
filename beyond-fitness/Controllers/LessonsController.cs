@@ -3285,7 +3285,7 @@ namespace WebHome.Controllers
                 {
                     LessonID = lessonID,
                     PlanStatus = p.PlanStatus,
-                    RegisterID = p.RegisterID,
+                    //RegisterID = p.RegisterID,
                     TrainingExecution = new TrainingExecution
                     {
                         Emphasis = null //p.TrainingExecution.Emphasis

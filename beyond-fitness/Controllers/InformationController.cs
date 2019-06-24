@@ -375,9 +375,14 @@ namespace WebHome.Controllers
 
         }
 
-        public ActionResult GetResourceWithMime(int id)
+        [AllowAnonymous]
+        public ActionResult GetResourceWithMime(AttachmentQueryViewModel viewModel)
         {
-            var item = models.GetTable<Attachment>().Where(a => a.AttachmentID == id).FirstOrDefault();
+            if(viewModel.KeyID!=null)
+            {
+                viewModel.AttachmentID = viewModel.DecryptKeyValue();
+            }
+            var item = models.GetTable<Attachment>().Where(a => a.AttachmentID == viewModel.AttachmentID).FirstOrDefault();
             if (item != null)
             {
                 if (System.IO.File.Exists(item.StoredPath))

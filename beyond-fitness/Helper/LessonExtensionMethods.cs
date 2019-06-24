@@ -688,7 +688,7 @@ namespace WebHome.Helper
                 {
                     LessonID = source.LessonID,
                     PlanStatus = source.PlanStatus,
-                    RegisterID = source.RegisterID,
+                    //RegisterID = source.RegisterID,
                     TrainingExecution = new TrainingExecution
                     {
                     }

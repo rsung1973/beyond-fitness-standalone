@@ -382,4 +382,15 @@ namespace WebHome.Models.ViewModel
 
     }
 
+    public class AttachmentQueryViewModel : QueryViewModel
+    {
+        public int? AttachmentID { get; set; }
+        public int? id
+        {
+            get => AttachmentID;
+            set => AttachmentID = value;
+        }
+
+    }
+
 }

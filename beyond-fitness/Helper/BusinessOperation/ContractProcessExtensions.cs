@@ -362,12 +362,13 @@ namespace WebHome.Helper.BusinessOperation
             }
 
             item = models.InitiateCourseContract(viewModel, profile, lessonPrice, paymentMethod: paymentMethod);
+            DateTime payoffDue = item.ContractDate.Value.AddMonths(1).FirstDayOfMonth();
+            item.PayoffDue = payoffDue.AddDays(-1);
 
             if (item.InstallmentID.HasValue)
             {
                 int totalLessons = item.Lessons.Value;
                 int installment = totalLessons / item.ContractInstallment.Installments;
-                DateTime payoffDue = item.ContractDate.Value.AddMonths(1).FirstDayOfMonth();
                 //if(item.Remark!=null)
                 //{
                 //    var idx = item.Remark.IndexOf("本合約分期轉開次數");
@@ -380,7 +381,6 @@ namespace WebHome.Helper.BusinessOperation
                 //viewModel.Remark = item.Remark = $"{item.Remark}本合約分期轉開次數{item.ContractInstallment.Installments}次。";
                 item.Lessons = installment + (totalLessons % item.ContractInstallment.Installments);
                 item.TotalCost = item.TotalCost * item.Lessons / totalLessons;
-                item.PayoffDue = payoffDue.AddDays(-1);
                 //item.Remark = $"{item.Remark}帳款應付期限{payoffDue:yyyy/MM/dd}。";
                 models.SubmitChanges();
 
