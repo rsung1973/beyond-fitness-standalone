@@ -6127,9 +6127,6 @@
     <Content Include="Views\ConsoleEvent\EventModal\BookingTrialLesson.cshtml" />
     <Content Include="Views\ConsoleEvent\EventModal\BookingLearnerLesson.cshtml" />
     <Content Include="Views\ConsoleHome\Shared\JsAlert.cshtml" />
-    <Content Include="Views\ContractConsole\ContractService\CourseContractTransferenceView.ascx" />
-    <Content Include="Views\ContractConsole\ContractService\DoConsultantAssignment.ascx" />
-    <Content Include="Views\ContractConsole\ContractService\ContractTransference.ascx" />
     <Content Include="Views\ContractConsole\Indication\ContractDetails.ascx" />
     <Content Include="Views\ReportConsole\ReportModal\ByContractNo.ascx" />
     <Content Include="Views\ReportConsole\ReportModal\SelectPeriodReport.ascx" />
