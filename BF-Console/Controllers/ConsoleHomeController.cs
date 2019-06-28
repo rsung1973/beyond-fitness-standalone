@@ -454,6 +454,7 @@ namespace WebHome.Controllers
             {
                 result.ViewName = "PostponeContractExpiration";
             }
+            viewModel.Version = (Naming.ContractVersion?)item.CourseContractExtension.Version;
             return result;
         }
 
@@ -466,6 +467,7 @@ namespace WebHome.Controllers
             {
                 result.ViewName = "TransferContract";
             }
+            viewModel.Version = (Naming.ContractVersion?)item.CourseContractExtension.Version;
             return result;
         }
 
@@ -478,6 +480,7 @@ namespace WebHome.Controllers
             {
                 result.ViewName = "TerminateContract";
             }
+            viewModel.Version = (Naming.ContractVersion?)item.CourseContractExtension.Version;
             return result;
         }
 

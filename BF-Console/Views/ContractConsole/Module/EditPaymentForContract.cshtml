@@ -167,7 +167,7 @@
                 var formData = $('input,select,textarea').serializeObject();
 
                 showLoading();
-                $.post('@Html.Raw(Url.Action("CommitPaymentForContract","Payment",new { _viewModel.ContractID }))', formData, function (data) {
+                $.post('@Html.Raw(Url.Action("CommitPaymentForContract","Payment",new { _viewModel.ContractID,TransactionType = (int)Naming.PaymentTransactionType.體能顧問費 }))', formData, function (data) {
                     hideLoading();
                     if ($.isPlainObject(data)) {
                         if (data.result) {

@@ -70,12 +70,39 @@
                         <tr>
                         <tr>
                             <td colspan="2">
-                                @{ var original = _model.SourceContract;
-        var attened = original.AttendedLessonCount();
-        var refund = original.TotalPaidAmount() - (original.Lessons - original.RemainedLessonCount()) * _contract.CourseContractExtension.SettlementPrice * _contract.CourseContractType.GroupingMemberCount * _contract.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount / 100;
+                                @{
+                                    var original = _model.SourceContract;
+                                    var totalPaid = original.TotalPaidAmount();
+                                    var attened = original.AttendedLessonCount();
+                                    var refund = totalPaid - (original.Lessons - original.RemainedLessonCount()) * _contract.CourseContractExtension.SettlementPrice * _contract.CourseContractType.GroupingMemberCount * _contract.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount / 100;
                                 }
-
-                                申請內容：原合約於 <span class="col-red">@(String.Format("{0:yyyy/MM/dd}", _signatureDate))</span> 終止服務，已繳服務總費用 @(String.Format("{0:##,###,###,###}", original.TotalPaidAmount())) 扣除依簽約時課程單堂原價(<span class="col-red">@(String.Format("{0:##,###,###,###}", _contract.CourseContractExtension.SettlementPrice))</span>) / 人乘以實際上課堂數(<span class="col-red">@(original.AttendedLessonCount())</span>)，退還剩餘款項 <span class="col-red">@(String.Format("{0:##,###,###,##0}", refund))</span>元<small> = @(String.Format("{0:##,###,###,###}", original.TotalPaidAmount())) - ( @(String.Format("{0:##,###,###,###}", _contract.CourseContractExtension.SettlementPrice)) * @(_contract.CourseContractType.GroupingMemberCount) * ( @(original.Lessons) - @(original.RemainedLessonCount() ))。</small>
+                                申請內容：原合約於 <span class="col-red">@(String.Format("{0:yyyy/MM/dd}", _signatureDate))</span> 終止服務，
+                                @if (totalPaid == 0)
+                                {
+                                    <text>
+                                        契約簽訂後未繳納費用 @(String.Format("{0:##,###,###,###}", totalPaid)) 元，退還剩餘款項
+                                        <span class="col-red">0</span>元。
+                                    </text>
+                                }
+                                else if (attened > 0)
+                                {
+                                    <text>
+                                        已繳服務總費用 @(String.Format("{0:##,###,###,###}", original.TotalPaidAmount())) 扣除依簽約時課程單堂原價(<span class="col-red">@(String.Format("{0:##,###,###,###}", _contract.CourseContractExtension.SettlementPrice))</span>) / 人乘以實際上課堂數(<span class="col-red">@(original.AttendedLessonCount())</span>)，退還剩餘款項 <span class="col-red">@(String.Format("{0:##,###,###,##0}", refund))</span>元<small> = @(String.Format("{0:##,###,###,###}", original.TotalPaidAmount())) - ( @(String.Format("{0:##,###,###,###}", _contract.CourseContractExtension.SettlementPrice)) * @(_contract.CourseContractType.GroupingMemberCount) * ( @(original.Lessons) - @(original.RemainedLessonCount() ))。</small>
+                                    </text>
+                                }
+                                else if ((_contract.ContractDate - original.EffectiveDate).Value.TotalDays < 8)
+                                {
+                                    <text>
+                                        契約簽訂後七日內未使用所約定服務(課程)，全額退還已繳費用 <span class="col-red">@(String.Format("{0:##,###,###,###}", totalPaid))</span> 元。
+                                    </text>
+                                }
+                                else
+                                {
+                                    var processingFee = totalPaid * 0.05;
+                                    <text>
+                                        契約簽訂後逾七日未使用所約定服務(課程)，已繳服務總費用 @(String.Format("{0:##,###,###,###}", totalPaid)) 扣除5％處理費(<span class="col-red">@(String.Format("{0:##,###,###,###}", processingFee))</span>)，退還剩餘款項 <span class="col-red">@(String.Format("{0:##,###,###,###}", totalPaid - processingFee))</span>元。<small>=@(totalPaid) - (@(totalPaid)*0.05)</small>
+                                    </text>
+                                }
                             </td>
                         </tr>
                         <tr style="@(Request["pdf"]=="1" ? "height: 14cm" : "height: 2cm")">

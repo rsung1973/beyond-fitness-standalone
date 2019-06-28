@@ -30,11 +30,27 @@
 </div>
 <div class="body">
     <div class="row clearfix">
-        <div class="col-sm-3">
-            <label class="fancy-checkbox custom-bgcolor-pink">
-                <input id="checkbox14" type="checkbox" name="FitnessConsultant" value="@(_model.FitnessConsultant)" checked="checked" onclick="this.checked = true;" />
-                <span class="col-red">終止</span>
+        <div class="col-sm-5">
+            <input type="hidden" name="FitnessConsultant" value="@(_model.FitnessConsultant)" />
+            <label class="fancy-checkbox">
+                <input type="checkbox" name="BySelf" value="1" />
+                <span>本人 辦理終止</span>
             </label>
+            <label class="fancy-checkbox">
+                <input type="checkbox" name="BySelf" value="0" />
+                <span>代理人 辦理終止</span>
+            </label>
+            <script>
+                $(function () {
+                    function check(element) {
+                        $('input:checkbox[name="BySelf"]').prop('checked', false);
+                        $(element).prop('checked', true);
+                    }
+                    $('input:checkbox[name="BySelf"]').on('click', function (event) {
+                        check(this);
+                    });
+                });
+            </script>
         </div>
         <div class="col-sm-6">
             <div class="input-group">
@@ -42,6 +58,43 @@
                 <span class="input-group-addon">
                     <i class="zmdi zmdi-money-box"></i>
                 </span>
+            </div>
+        </div>
+        @{ 
+            var totalPaid = _model.TotalPaidAmount();
+        }
+        @if (totalPaid == 0)
+        {
+            <div class="col-12">
+                <div class="alert xl-pink col-darkteal" role="alert">
+                    <div class="container">
+                        <div class="alert-icon">
+                            <i class="zmdi zmdi-notifications"></i>
+                        </div>
+                        契約簽訂後未繳納費用 @(String.Format("{0:##,###,###,###}", totalPaid)) 元，退還剩餘款項
+                        <span class="col-red">0</span>元。
+                    </div>
+                </div>
+            </div>
+            <script>
+            $(function () {
+                $('input[name="SettlementPrice"]').val('@(_model.LessonPriceType.ListPrice)')
+                    .parent().parent()
+                    .css('display', 'none');
+            });
+            </script>
+        }
+        else if (_model.AttendedLessonCount() > 0)
+        {
+            <div class="col-12">
+                <div class="alert xl-pink col-darkteal" role="alert">
+                    <div class="container">
+                        <div class="alert-icon">
+                            <i class="zmdi zmdi-notifications"></i>
+                        </div>
+                        已繳服務總費用 @(String.Format("{0:##,###,###,###}", totalPaid)) 扣除依簽約時課程單堂原價(<span id="refundUnit" class="col-red"></span>) / 人)乘以實際上課堂數(<span class="col-red">@(_model.AttendedLessonCount())</span>)，退還剩餘款項 <span class="col-red" id="refund"></span>元 <small id="formular"></small>。
+                    </div>
+                </div>
             </div>
             <script>
                 $('input[name="SettlementPrice"]').on('change', function (evt) {
@@ -53,7 +106,7 @@
                         var remained = @(_model.RemainedLessonCount());
                         var lessons = @(_model.Lessons);
                         var currPrice = @(_model.LessonPriceType.ListPrice);
-                        var totalPaid = @(_model.TotalPaidAmount());
+                        var totalPaid = @(totalPaid);
                         var refund = totalPaid - (lessons - remained) * settlementPrice * @($"{_model.CourseContractType.GroupingMemberCount}*{_model.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount}/100");
                         if (refund < 0) {
                             $('input[name="SettlementPrice"]').val('');
@@ -67,17 +120,56 @@
                     }
                 });
             </script>
-        </div>
-        <div class="col-12">
-            <div class="alert xl-pink col-darkteal" role="alert">
-                <div class="container">
-                    <div class="alert-icon">
-                        <i class="zmdi zmdi-notifications"></i>
+        }
+        else if ((DateTime.Today - _model.EffectiveDate.Value).TotalDays < 8)
+        {
+            <div class="col-12">
+                <div class="alert xl-pink col-darkteal" role="alert">
+                    <div class="container">
+                        <div class="alert-icon">
+                            <i class="zmdi zmdi-notifications"></i>
+                        </div>
+                        契約簽訂後七日內未使用所約定服務(課程)，全額退還已繳費用 <span class="col-red">@(String.Format("{0:##,###,###,###}", totalPaid))</span> 元。
                     </div>
-                    已繳服務總費用 @(String.Format("{0:##,###,###,###}", _model.TotalPaidAmount())) 扣除依簽約時課程單堂原價(<span id="refundUnit" class="col-red"></span>) / 人)乘以實際上課堂數(<span class="col-red">@(_model.AttendedLessonCount())</span>)，退還剩餘款項 <span class="col-red" id="refund"></span>元 <small id="formular"></small>。
                 </div>
             </div>
-        </div>
+            <script>
+            $(function () {
+                $('input[name="SettlementPrice"]').val('@(_model.LessonPriceType.ListPrice)')
+                    .parent().parent()
+                    .css('display', 'none');
+            });
+            </script>
+        }
+        else
+        {
+            <div class="col-12">
+                <div class="alert xl-pink col-darkteal" role="alert">
+                    <div class="container col-red">
+                        <div class="alert-icon">
+                            <i class="zmdi zmdi-alert-triangle"></i>
+                        </div>
+                        契約簽訂後逾七日未使用所約定服務(課程)
+                    </div>
+                    <div class="container">
+                        <div class="alert-icon">
+                            <i class="zmdi zmdi-notifications"></i>
+                        </div>
+                        @{
+                            var processingFee = totalPaid * 0.05;
+                        }
+                        已繳服務總費用 @(String.Format("{0:##,###,###,###}", totalPaid)) 扣除5％處理費(<span class="col-red">@(String.Format("{0:##,###,###,###}", processingFee))</span>)，退還剩餘款項 <span class="col-red">@(String.Format("{0:##,###,###,###}", totalPaid - processingFee))</span>元。<small>=@(totalPaid) - (@(totalPaid)*0.05)</small>
+                    </div>
+                </div>
+            </div>
+            <script>
+                $(function () {
+                    $('input[name="SettlementPrice"]').val('@(_model.LessonPriceType.ListPrice)')
+                        .parent().parent()
+                        .css('display', 'none');
+                });
+            </script>
+        }
         <div class="col-12">
             <div class="form-group">
                 <textarea rows="3" class="form-control no-resize" name="Remark" placeholder="請輸入任何想補充的事項..."></textarea>
