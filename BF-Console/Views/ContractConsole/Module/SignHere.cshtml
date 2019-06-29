@@ -26,7 +26,7 @@
 {
     if (_model.CourseContract.CourseContractType.IsGroup == true)
     {
-        <img onclick="signaturePanel(@(_model.ContractID),@(_model.UID),'@(ViewBag.SignatureName)');" src="@(_item != null && _item.Signature != null ? _item.Signature : VirtualPathUtility.ToAbsolute("~/img/SignHere.png"))" width="160px" />
+        <img onclick="signaturePanel(@(_model.ContractID),@(_model.UID),'@(ViewBag.SignatureName)');" src="@(_item != null && _item.Signature != null ? _item.Signature : VirtualPathUtility.ToAbsolute("~/img/SignHere.png"))" width="200px" />
     }
     else
     {
@@ -37,7 +37,7 @@ else if (_item != null && _item.Signature != null)
 {
     if (_model.CourseContract.CourseContractType.IsGroup == true)
     {
-        <img src="@(_item.Signature)" width="160px" />
+        <img src="@(_item.Signature)" width="100px" />
     }
     else
     {
