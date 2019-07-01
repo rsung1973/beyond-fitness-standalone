@@ -60,6 +60,8 @@ namespace WebHome.Models.ViewModel
         public Naming.OperationMode? OperationMode { get; set; }
         public String[] PaymentMethod { get; set; }
         public Naming.ContractVersion? Version { get; set; }
+        public Naming.Actor? BySelf { get; set; }
+        public int? ProcessingFee { get; set; }
     }
 
     public class CourseContractQueryViewModel : CourseContractViewModel

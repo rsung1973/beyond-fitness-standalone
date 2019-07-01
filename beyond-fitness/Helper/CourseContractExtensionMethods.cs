@@ -37,7 +37,7 @@ namespace WebHome.Helper
             //return items;
             return models.PromptEffectiveContract()
                 .Where(c => c.Expiration >= DateTime.Today)
-                .Where(c => c.Expiration < DateTime.Today.AddMonths(1));
+                .Where(c => c.Expiration < DateTime.Today.AddMonths(3));
         }
 
         public static IQueryable<CourseContract> PromptEffectiveContract<TEntity>(this ModelSource<TEntity> models)

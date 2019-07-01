@@ -33,7 +33,7 @@
             <input type="text" class="knob" data-linecap="round" data-width="90" data-height="90" data-thickness="0.25" data-anglearc="250" data-angleoffset="-125" data-fgcolor="#F15F79" readonly id="@(_knobID)" />
             <script>
                 $(function () {
-                    drawKnob($("#@(_knobID)"),@(totalAmtToPay*100 / totalAmt), 3800);
+                    drawKnob($("#@(_knobID)"),@((totalAmtToPay*100 / totalAmt) ?? 0), 3800);
                 });
             </script>
             <h6 class="m-t-20">催收帳款比率</h6>

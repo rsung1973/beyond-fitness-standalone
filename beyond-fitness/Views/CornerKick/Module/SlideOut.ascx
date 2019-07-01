@@ -45,6 +45,14 @@
             _items.Add(eventItem);
             contractCount = ((PromptContractEvent)eventItem).ContractList.Count() - 1;
         }
+
+        eventItem = _model.CheckPayoffDueEvent(models);
+        if (eventItem != null)
+        {
+            _items.Add(eventItem);
+            contractCount += (((PromptPayoffDueEvent)eventItem).ContractList.Count() - 1);
+        }
+
         eventItem = _model.CheckExercisePurposeEvent(models);
         if (eventItem != null)
             _items.Add(eventItem);

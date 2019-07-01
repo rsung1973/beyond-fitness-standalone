@@ -251,8 +251,7 @@ namespace WebHome.Helper
         public static PromptContractEvent CheckPromptContractEvent<TEntity>(this UserProfile profile, ModelSource<TEntity> models, bool includeAfterToday = false)
             where TEntity : class, new()
         {
-            var items = models.PromptEffectiveContract()
-                .Where(c => c.Expiration >= DateTime.Today)
+            var items = models.PromptExpiringContract()
                 .Where(c => c.CourseContractMember.Any(m => m.UID == profile.UID));
             if (items.Count()>0)
             {
@@ -261,6 +260,31 @@ namespace WebHome.Helper
                     Profile = profile,
                     ContractList = items
                 };
+            }
+
+            return null;
+
+        }
+
+        public static PromptPayoffDueEvent CheckPayoffDueEvent<TEntity>(this UserProfile profile, ModelSource<TEntity> models, bool includeAfterToday = false)
+            where TEntity : class, new()
+        {
+            var items = models.PromptEffectiveContract()
+                .Where(c => c.PayoffDue < DateTime.Today.AddMonths(1))
+                .Where(c => c.CourseContractMember.Any(m => m.UID == profile.UID));
+
+            if (items.Count() > 0)
+            {
+                var unpaid = items.ToList()
+                        .Where(c => c.TotalCost > (c.TotalPaidAmount() ?? 0));
+                if (unpaid.Count() > 0)
+                {
+                    return new PromptPayoffDueEvent
+                    {
+                        Profile = profile,
+                        ContractList = unpaid
+                    };
+                }
             }
 
             return null;

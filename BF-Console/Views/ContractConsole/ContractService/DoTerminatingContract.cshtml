@@ -33,11 +33,11 @@
         <div class="col-sm-5">
             <input type="hidden" name="FitnessConsultant" value="@(_model.FitnessConsultant)" />
             <label class="fancy-checkbox">
-                <input type="checkbox" name="BySelf" value="1" />
+                <input type="checkbox" name="BySelf" value="@((int)Naming.Actor.BySelf)" />
                 <span>本人 辦理終止</span>
             </label>
             <label class="fancy-checkbox">
-                <input type="checkbox" name="BySelf" value="0" />
+                <input type="checkbox" name="BySelf" value="@((int)Naming.Actor.ByOther)" />
                 <span>代理人 辦理終止</span>
             </label>
             <script>
@@ -45,6 +45,11 @@
                     function check(element) {
                         $('input:checkbox[name="BySelf"]').prop('checked', false);
                         $(element).prop('checked', true);
+                        if (element.value == '@((int)Naming.Actor.ByOther)') {
+                            $('.byOther').css('display', 'block');
+                        } else {
+                            $('.byOther').css('display', 'none');
+                        }
                     }
                     $('input:checkbox[name="BySelf"]').on('click', function (event) {
                         check(this);
@@ -60,8 +65,9 @@
                 </span>
             </div>
         </div>
-        @{ 
+        @{
             var totalPaid = _model.TotalPaidAmount();
+            var attendedCount = _model.AttendedLessonCount();
         }
         @if (totalPaid == 0)
         {
@@ -71,7 +77,7 @@
                         <div class="alert-icon">
                             <i class="zmdi zmdi-notifications"></i>
                         </div>
-                        契約簽訂後未繳納費用 @(String.Format("{0:##,###,###,###}", totalPaid)) 元，退還剩餘款項
+                        契約簽訂後未繳納費用 @(String.Format("{0:##,###,###,###}", _model.TotalCost)) 元，退還剩餘款項
                         <span class="col-red">0</span>元。
                     </div>
                 </div>
@@ -84,7 +90,7 @@
             });
             </script>
         }
-        else if (_model.AttendedLessonCount() > 0)
+        else if (attendedCount > 0 || !_model.CourseContractExtension.Version.HasValue)
         {
             <div class="col-12">
                 <div class="alert xl-pink col-darkteal" role="alert">
@@ -102,6 +108,10 @@
                     $('#refundUnit').empty();
                     $('#formular').empty();
                     var settlementPrice = parseInt($(this).val());
+                    refundInfo(settlementPrice);
+                });
+
+                function refundInfo(settlementPrice) {
                     if (!isNaN(settlementPrice)) {
                         var remained = @(_model.RemainedLessonCount());
                         var lessons = @(_model.Lessons);
@@ -116,12 +126,21 @@
 
                         $('#refund').text(refund);
                         $('#refundUnit').text(settlementPrice);
-                        $('#formular').text('=' + totalPaid + ' - (' +  settlementPrice + ' * ' + '@($"{_model.CourseContractType.GroupingMemberCount}") * ('  + lessons + ' - ' + remained  + '))');
+                        $('#formular').text('=' + totalPaid + ' - (' + settlementPrice + ' * ' + '@($"{_model.CourseContractType.GroupingMemberCount}") * (' + lessons + ' - ' + remained + '))');
                     }
-                });
+                }
             </script>
+            if (attendedCount == 0)
+            {
+                <script>
+                    $(function () {
+                        $('input[name="SettlementPrice"]').val('@(_model.LessonPriceType.ListPrice)');
+                        refundInfo(@(_model.LessonPriceType.ListPrice));
+                    });
+                </script>
+            }
         }
-        else if ((DateTime.Today - _model.EffectiveDate.Value).TotalDays < 8)
+        else if ((DateTime.Today - _model.ValidFrom.Value).TotalDays < 8)
         {
             <div class="col-12">
                 <div class="alert xl-pink col-darkteal" role="alert">
@@ -170,6 +189,30 @@
                 });
             </script>
         }
+        <div class="col-12 byOther" style="display:none;">
+            @{
+                ViewBag.DropifyExtension = "pdf";
+            }
+            <script>
+                $(function () {
+                    $global.dropifyMessage = {
+                        'default': '點選或拖拉代辦委任書（PDF）到這邊',
+                        'replace': '點選或拖拉代辦委任書（PDF）取代目前內容',
+                        'remove': '刪除內容',
+                        'error': 'Ooops, 肯定做錯了什麼'
+                    };
+                    $global.dropifyError = {
+                        'fileSize': 'Ooops, 上傳的檔案太大了啦！ ({{ value }} max).',
+                        'imageFormat': 'Ooops, 上傳檔案是PDF嗎？！ ({{ value }} only).'
+                    };
+                });
+            </script>
+            <form enctype="multipart/form-data" method="post">
+                @{
+                    Html.RenderPartial("~/Views/ConsoleHome/Shared/DropifyFileUpload.cshtml");
+                }
+            </form>
+        </div>
         <div class="col-12">
             <div class="form-group">
                 <textarea rows="3" class="form-control no-resize" name="Remark" placeholder="請輸入任何想補充的事項..."></textarea>
@@ -206,15 +249,26 @@
         viewModel.FitnessConsultant = @(_profile.UID);
         clearErrors();
         showLoading();
-        $.post('@Html.Raw(Url.Action("CommitContractService", "ContractConsole",new { KeyID = _model.ContractID.EncryptKey() }))', viewModel, function (data) {
-            hideLoading();
-            if ($.isPlainObject(data)) {
-                swal(data.message);
+        $('form').ajaxForm({
+            url: '@Html.Raw(Url.Action("CommitContractService", "ContractConsole",new { KeyID = _model.ContractID.EncryptKey() }))',
+            data: viewModel,
+            beforeSubmit: function () {
+                showLoading();
+            },
+            success: function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    swal(data.message);
+                }
+                else {
+                    $(data).appendTo($('body'));
+                }
+            },
+            error: function () {
+                hideLoading();
             }
-            else {
-                $(data).appendTo($('body'));
-            }
-        });
+        }).submit();
+
     }//
 
 </script>

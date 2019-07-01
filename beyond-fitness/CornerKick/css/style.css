@@ -1453,6 +1453,22 @@ img.rsImg {
 	color: #4a4a4a;
 }
 
+.notice-wrap ul li .desc {
+    padding-left: 30px;
+	color: #0c5279;
+    font-size: 14px;
+    line-height: 1.5626rem;
+}
+
+.notice-wrap ul li .desc span{    
+    font-size: 14px;
+    display: block;
+}
+
+.notice-wrap ul li .desc .material-icons {
+    font-size: 12px;
+}
+
 .personal-info {
 	margin: 0 20px;
 }

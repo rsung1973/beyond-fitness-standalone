@@ -28,7 +28,7 @@
     <link href="css/scrollup-master/themes/image.css?1.1" rel="stylesheet" id="scrollUpTheme">
     
     <!-- STYLE 要放最下面  -->
-    <link href="css/style.css?1.1" type="text/css" rel="stylesheet" media="screen,projection" />
+    <link href="css/style.css?1.2" type="text/css" rel="stylesheet" media="screen,projection" />
               <link rel="icon" href="favicons/favicon_96x96.png">
       <!-- Specifying a Webpage Icon for Web Clip -->
       <link rel="apple-touch-icon-precomposed" href="favicons/favicon_57x57.png">
@@ -77,6 +77,7 @@
                                 <%  Html.RenderPartial("~/Views/CornerKick/Module/ExercisePurposeCheckNotice.ascx", _model); %>
                                 <%  Html.RenderPartial("~/Views/CornerKick/Module/ExercisePurposeAccomplishedNotice.ascx", _model); %>
                                 <%  Html.RenderPartial("~/Views/CornerKick/Module/PromptContractNotice.ascx", _model); %>
+                                <%  Html.RenderPartial("~/Views/CornerKick/Module/PromptPayoffDue.cshtml", _model); %>
                             </ul>
                         </div>
                     </div>
@@ -141,6 +142,11 @@
         if (item != null)
         {
             count = count + ((PromptContractEvent)item).ContractList.Count() - 1;
+        }
+        item = events.Where(v => v is PromptPayoffDueEvent).FirstOrDefault();
+        if (item != null)
+        {
+            count = count + ((PromptPayoffDueEvent)item).ContractList.Count() - 1;
         }
         %>
         $('#noticeCount').text(<%= count %>);

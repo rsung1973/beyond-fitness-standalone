@@ -283,37 +283,39 @@
                                 </label>
                             </div>
                             <div class="col-lg-8 col-md-8 col-sm-12 col-12">
-                                <select class="form-control show-tick" name="Installments" onchange="installmentPlanRemark();"></select>
+                                <select class="form-control show-tick installments" name="Installments" onchange="installmentPlanRemark();"></select>
                                 <script>
 
-                                        function installmentPlanRemark() {
-                                            var $installments = $('select[name="Installments"]');
-                                            $global.viewModel.Installments = $installments.val();
-                                            if ($installments.val() != '') {
-                                                var $remark = $('textarea[name="Remark"]');
-                                                var remark = $remark.val();
-                                                var idx = remark.indexOf('本合約總共購買');
-                                                var content = '本合約總共購買' + $('input[name="Lessons"]').val() + '堂，分期轉開次數' + $installments.val() + '次。';
-                                                if (idx > 0) {
-                                                    $remark.val(remark.substr(0, idx) + content);
-                                                } else {
-                                                    $remark.val(content);
-                                                }
-                                                $global.viewModel.Remark = $remark.val();
-                                            }
+                                    function installmentPlanRemark() {
+                                        var $installments = $('select[name="Installments"]');
+                                        $global.viewModel.Installments = $installments.val();
+                                        if ($installments.val() != '') {
+                                            var content = '本合約總共購買' + $('input[name="Lessons"]').val() + '堂，分期轉開次數' + $installments.val() + '次。';
+                                            $global.viewModel.Remark = prepareRemark(content);
                                         }
+                                    }
 
-                                        function checkInstallmentPlan() {
-                                            var $installmentPlan = $('input[name="InstallmentPlan"]');
-                                            var $installments = $('.installments');
-                                            if ($installmentPlan.is(':checked')) {
-                                                $installments.css('display', 'block');
-                                                $global.viewModel.InstallmentPlan = true;
-                                            } else {
-                                                $installments.css('display', 'none');
-                                                $global.viewModel.InstallmentPlan = false;
-                                            }
+                                    function prepareRemark(remark) {
+                                        var $remark = $('textarea[name="Remark"]');
+                                        var content = $remark.val();
+                                        content = remark + content.replace(/本合約.*次。/g, '');
+                                        $remark.val(content);
+                                        return content;
+                                    }
+
+                                    function checkInstallmentPlan() {
+                                        var $installmentPlan = $('input[name="InstallmentPlan"]');
+                                        var $installments = $('.installments');
+                                        if ($installmentPlan.is(':checked')) {
+                                            $installments.css('display', 'block');
+                                            $global.viewModel.InstallmentPlan = true;
+                                        } else {
+                                            $installments.css('display', 'none');
+                                            $('select[name="Installments"]').selectpicker('val', '');
+                                            $global.viewModel.InstallmentPlan = false;
+                                            $global.viewModel.Remark = prepareRemark('');
                                         }
+                                    }
 
                                         $(function () {
                                             checkInstallmentPlan();
@@ -373,6 +375,7 @@
                                 function saveContract() {
                                     clearErrors();
                                     $global.viewModel.PaymentMethod = $('input[name="PaymentMethod"]').serializeObject().PaymentMethod;
+                                    $global.viewModel.Remark = $('textarea[name="Remark"]').val();
                                     $.post('@Html.Raw(Url.Action("SaveContract", "ContractConsole", _viewModel.ContractID))', $global.viewModel, function (data) {
                                         if ($.isPlainObject(data)) {
                                             swal(data.message);
@@ -385,6 +388,7 @@
                                 function commitContract() {
                                     clearErrors();
                                     $global.viewModel.PaymentMethod = $('input[name="PaymentMethod"]').serializeObject().PaymentMethod;
+                                    $global.viewModel.Remark = $('textarea[name="Remark"]').val();
                                     $.post('@Html.Raw(Url.Action("CommitContract", "ContractConsole", _viewModel.ContractID))', $global.viewModel, function (data) {
                                         if ($.isPlainObject(data)) {
                                             swal(data.message);

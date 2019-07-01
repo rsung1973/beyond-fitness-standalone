@@ -407,5 +407,11 @@ namespace WebHome.Models.Locale
             Ver2019 = 1,
         }
 
+        public enum Actor
+        {
+            ByOther = 0,
+            BySelf = 1,
+        }
+
     }
 }

@@ -241,6 +241,15 @@ namespace WebHome.Helper.BusinessOperation
                 items = models.GetTable<CourseContract>();
             }
 
+            if(viewModel.KeyID!=null)
+            {
+                viewModel.ContractID = viewModel.DecryptKeyValue();
+            }
+            if(viewModel.ContractID.HasValue)
+            {
+                items = items.Where(c => c.ContractID == viewModel.ContractID);
+            }
+
             if (viewModel.ContractDateFrom.HasValue)
             {
                 hasConditon = true;

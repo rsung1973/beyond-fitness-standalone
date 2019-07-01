@@ -46,8 +46,15 @@
             }
         </div>
         <div class="col-4 text-right">
+            @{ 
+                var extensionCount = _model.RevisionList.Where(r => r.Reason == "展延").Count();
+                if (extensionCount > 0)
+                {
+                    applicable = false;
+                }
+            }
             <a href="javascript:void();">
-                <h2>@(_model.RevisionList.Where(r => r.Reason == "展延").Count())</h2>
+                <h2>@(extensionCount)</h2>
             </a>
             @if (currentItem != null)
             {

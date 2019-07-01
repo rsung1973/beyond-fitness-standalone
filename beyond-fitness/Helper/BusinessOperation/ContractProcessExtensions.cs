@@ -38,9 +38,10 @@ namespace WebHome.Helper.BusinessOperation
                 item = new CourseContract
                 {
                     //AgentID = profile.UID,  //lessonPrice.BranchStore.ManagerID.Value,
-                    CourseContractExtension = new Models.DataEntity.CourseContractExtension
+                    CourseContractExtension = new CourseContractExtension
                     {
-                        BranchID = lessonPrice.BranchID.Value
+                        BranchID = lessonPrice.BranchID.Value,
+                        Version = (int?)viewModel.Version,
                     }
                 };
                 models.GetTable<CourseContract>().InsertOnSubmit(item);
@@ -87,6 +88,7 @@ namespace WebHome.Helper.BusinessOperation
             else
             {
                 models.DeleteAllOnSubmit<ContractInstallment>(t => t.InstallmentID == item.InstallmentID);
+                item.InstallmentID = null;
             }
 
             //item.Status = viewModel.Status;
@@ -232,9 +234,10 @@ namespace WebHome.Helper.BusinessOperation
                 {
                     Status = (int)Naming.CourseContractStatus.草稿,
                     AgentID = profile.UID, //lessonPrice.BranchStore.ManagerID.Value,
-                    CourseContractExtension = new Models.DataEntity.CourseContractExtension
+                    CourseContractExtension = new CourseContractExtension
                     {
-                        BranchID = lessonPrice.BranchID.Value
+                        BranchID = lessonPrice.BranchID.Value,
+                        Version = (int?)viewModel.Version,
                     }
                 };
 
@@ -1079,6 +1082,19 @@ namespace WebHome.Helper.BusinessOperation
                     }
 
                 }
+
+                if (!viewModel.BySelf.HasValue)
+                {
+                    ModelState.AddModelError("BySelf", "請勾辦理人");
+                }
+                else if (viewModel.BySelf == Naming.Actor.ByOther)
+                {
+                    if (attachment == null)
+                    {
+                        ModelState.AddModelError("uploadFile", "請提供代辦委任書");
+                    }
+                }
+
             }
             else if (viewModel.Reason == "轉讓")
             {
@@ -1120,7 +1136,8 @@ namespace WebHome.Helper.BusinessOperation
                 AgentID = profile.UID,  //item.LessonPriceType.BranchStore.ManagerID.Value,
                 CourseContractExtension = new CourseContractExtension
                 {
-                    BranchID = item.CourseContractExtension.BranchID
+                    BranchID = item.CourseContractExtension.BranchID,
+                    Version = item.CourseContractExtension.Version,
                 }
             };
             models.GetTable<CourseContract>().InsertOnSubmit(newItem);
@@ -1218,6 +1235,8 @@ namespace WebHome.Helper.BusinessOperation
                     }));
 
                     newItem.CourseContractExtension.SettlementPrice = viewModel.SettlementPrice;
+                    newItem.CourseContractRevision.BySelf = (int?)viewModel.BySelf;
+                    newItem.CourseContractRevision.ProcessingFee = viewModel.ProcessingFee;
 
                     if (profile.IsManager() && viewModel.OperationMode == Naming.OperationMode.快速終止)
                     {

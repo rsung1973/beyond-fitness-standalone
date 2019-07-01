@@ -17,7 +17,7 @@
         { %>
 <li>
     <i class="livicon-evo" data-options="name: bell.svg; size: 30px; style: original; strokeWidth:2px; autoPlay:true"></i>
-    <a><%= _model.UserProfileExtension.Gender == "F" ? "親愛的" : "兄弟" %>，合約於<%= $"{ item.Expiration():yyyy/MM/dd}" %>到期</a>
+    <a href="javascript:gtag('event', '我的合約', {  'event_category': '連結點擊',  'event_label': '我的通知'});window.location.href = '<%= Url.Action("MyContract", "CornerKick") %>';"><%= _model.UserProfileExtension.Gender == "F" ? "親愛的" : "兄弟" %>，合約上課截止日(<%= $"{item.Expiration():yyyy/MM/dd}" %>)快到囉！</a>
 </li>
 <%      }
     } %>

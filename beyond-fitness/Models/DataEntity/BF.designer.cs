@@ -22706,6 +22706,10 @@ namespace WebHome.Models.DataEntity
 		
 		private System.Nullable<int> _MonthExtension;
 		
+		private System.Nullable<int> _BySelf;
+		
+		private System.Nullable<int> _ProcessingFee;
+		
 		private EntitySet<CourseContractExtension> _CourseContractExtension;
 		
 		private EntitySet<ContractElement> _ContractElements;
@@ -22736,6 +22740,10 @@ namespace WebHome.Models.DataEntity
     partial void OnAttachmentIDChanged();
     partial void OnMonthExtensionChanging(System.Nullable<int> value);
     partial void OnMonthExtensionChanged();
+    partial void OnBySelfChanging(System.Nullable<int> value);
+    partial void OnBySelfChanged();
+    partial void OnProcessingFeeChanging(System.Nullable<int> value);
+    partial void OnProcessingFeeChanged();
     #endregion
 		
 		public CourseContractRevision()
@@ -22897,6 +22905,46 @@ namespace WebHome.Models.DataEntity
 					this._MonthExtension = value;
 					this.SendPropertyChanged("MonthExtension");
 					this.OnMonthExtensionChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BySelf", DbType="Int")]
+		public System.Nullable<int> BySelf
+		{
+			get
+			{
+				return this._BySelf;
+			}
+			set
+			{
+				if ((this._BySelf != value))
+				{
+					this.OnBySelfChanging(value);
+					this.SendPropertyChanging();
+					this._BySelf = value;
+					this.SendPropertyChanged("BySelf");
+					this.OnBySelfChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProcessingFee", DbType="Int")]
+		public System.Nullable<int> ProcessingFee
+		{
+			get
+			{
+				return this._ProcessingFee;
+			}
+			set
+			{
+				if ((this._ProcessingFee != value))
+				{
+					this.OnProcessingFeeChanging(value);
+					this.SendPropertyChanging();
+					this._ProcessingFee = value;
+					this.SendPropertyChanged("ProcessingFee");
+					this.OnProcessingFeeChanged();
 				}
 			}
 		}
@@ -33302,6 +33350,8 @@ namespace WebHome.Models.DataEntity
 		
 		private string _PaymentMethod;
 		
+		private System.Nullable<int> _Version;
+		
 		private EntityRef<BranchStore> _BranchStore;
 		
 		private EntityRef<CourseContract> _CourseContract;
@@ -33322,6 +33372,8 @@ namespace WebHome.Models.DataEntity
     partial void OnSettlementPriceChanged();
     partial void OnPaymentMethodChanging(string value);
     partial void OnPaymentMethodChanged();
+    partial void OnVersionChanging(System.Nullable<int> value);
+    partial void OnVersionChanged();
     #endregion
 		
 		public CourseContractExtension()
@@ -33440,6 +33492,26 @@ namespace WebHome.Models.DataEntity
 					this._PaymentMethod = value;
 					this.SendPropertyChanged("PaymentMethod");
 					this.OnPaymentMethodChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Version", DbType="Int")]
+		public System.Nullable<int> Version
+		{
+			get
+			{
+				return this._Version;
+			}
+			set
+			{
+				if ((this._Version != value))
+				{
+					this.OnVersionChanging(value);
+					this.SendPropertyChanging();
+					this._Version = value;
+					this.SendPropertyChanged("Version");
+					this.OnVersionChanged();
 				}
 			}
 		}

@@ -494,6 +494,16 @@ namespace WebHome.Controllers
         }
 
         [Authorize]
+        public ActionResult MyContract()
+        {
+            var profile = HttpContext.GetUser();
+            var items = models.PromptEffectiveContract()
+                .Where(c => c.CourseContractMember.Any(m => m.UID == profile.UID));
+            return View("~/Views/CornerKick/MyContract.cshtml", items);
+        }
+
+
+        [Authorize]
         public ActionResult CommitAnswerDailyQuestion(DailyQuestionViewModel viewModel)
         {
 

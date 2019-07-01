@@ -933,6 +933,8 @@
       <Column Name="OperationMode" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="AttachmentID" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="MonthExtension" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="BySelf" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ProcessingFee" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Association Name="Attachment_CourseContractRevision" Member="Attachment" ThisKey="AttachmentID" OtherKey="AttachmentID" Type="Attachment" IsForeignKey="true" />
       <Association Name="CourseContractRevision_CourseContractExtension" Member="CourseContractExtension" ThisKey="RevisionID" OtherKey="RevisionTrackingID" Type="CourseContractExtension" />
       <Association Name="CourseContractRevision_ContractElement" Member="ContractElements" ThisKey="RevisionID" OtherKey="RevisionID" Type="ContractElement" />
@@ -1405,6 +1407,7 @@
       <Column Name="RevisionTrackingID" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="SettlementPrice" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="PaymentMethod" Type="System.String" DbType="NVarChar(64)" CanBeNull="true" />
+      <Column Name="Version" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Association Name="BranchStore_CourseContractExtension" Member="BranchStore" ThisKey="BranchID" OtherKey="BranchID" Type="BranchStore" IsForeignKey="true" />
       <Association Name="CourseContract_CourseContractExtension" Member="CourseContract" ThisKey="ContractID" OtherKey="ContractID" Type="CourseContract" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
       <Association Name="CourseContractRevision_CourseContractExtension" Member="CourseContractRevision" ThisKey="RevisionTrackingID" OtherKey="RevisionID" Type="CourseContractRevision" IsForeignKey="true" />

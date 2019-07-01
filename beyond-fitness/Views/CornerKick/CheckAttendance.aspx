@@ -36,7 +36,7 @@
       <link rel="apple-touch-icon-precomposed" sizes="144x144" href="favicons/favicon_144x144.png">
       <link rel="apple-touch-icon-precomposed" sizes="180x180" href="favicons/favicon_180x180.png">       
 
-      <link href="css/style.css?1.1" type="text/css" rel="stylesheet" media="screen,projection"/>
+      <link href="css/style.css?1.2" type="text/css" rel="stylesheet" media="screen,projection"/>
    </head>
    <body class="light-gray">
       <!--//預設值為藍色 / 若要設定女生 請加上 mode-girls /  全版 full-fixed / 背景色 light-gray-->
