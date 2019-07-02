@@ -18,7 +18,7 @@
                 <img src="images/carousel/side-background.jpg"></div>
             <a href="javascript:gtag('event', '我的設定', {  'event_category': '大頭貼點擊',  'event_label': '漢堡選單'});window.location.href='<%= Url.Action("Settings","CornerKick",new { learnerSettings = true }) %>';">
                 <%  Html.RenderPartial("~/Views/CornerKick/Module/ProfileImage.ascx", _model); %></a> 
-            <a href="javascript:gtag('event', '我的設定', {  'event_category': '大頭貼點擊',  'event_label': '漢堡選單'});window.location.href='<%= Url.Action("Settings","CornerKick",new { learnerSettings = true }) %>';">
+            <a href="javascript:gtag('event', '我的合約', {  'event_category': '大頭貼點擊',  'event_label': '漢堡選單'});window.location.href = '<%= Url.Action("MyContract","CornerKick") %>';">
                 <span class="white-text name">
                     <%= _model.UserName ?? _model.RealName %>
                     <%  Html.RenderPartial("~/Views/CornerKick/Module/LessonCount.ascx", _model); %>

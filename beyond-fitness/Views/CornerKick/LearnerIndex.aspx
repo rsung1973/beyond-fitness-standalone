@@ -150,7 +150,7 @@
                                     foreach (var c in ((PromptContractEvent)item).ContractList)
                                     {
                                         count++;%>
-                            <li><a href="javascript:gtag('event', '我的合約', {  'event_category': '下拉式選單點擊',  'event_label': '卡片總覽'});window.location.href = '<%= Url.Action("MyContract","CornerKick") %>';"><%= _model.UserProfileExtension.Gender == "F" ? "親愛的" : "兄弟" %>，合約上課截止日(<%= $"{c.Expiration():yyyy/MM/dd}" %>)快到囉！ <i class="livicon-evo right" data-options="name: bell.svg; size: 30px; style: lines; strokeColor:#0f244a; strokeWidth:2px; autoPlay:true"></i></a></li>
+                            <li><a href="javascript:gtag('event', '我的合約', {  'event_category': '下拉式選單點擊',  'event_label': '卡片總覽'});window.location.href = '<%= Url.Action("MyContract","CornerKick") %>';"><%= _model.UserProfileExtension.Gender == "F" ? "親愛的" : "兄弟" %>，合約上課截止日(<%= $"{c.Expiration():yyyy/MM/dd}" %>)快到囉！ <i class="material-icons right">arrow_forward</i></a></li>
                             <%      }
                                     count--;
                                 }
@@ -161,7 +161,7 @@
                                     foreach (var c in ((PromptPayoffDueEvent)item).ContractList)
                                     {
                                         count++;%>
-                            <li><a href="javascript:gtag('event', '我的合約', {  'event_category': '下拉式選單點擊',  'event_label': '卡片總覽'});window.location.href = '<%= Url.Action("MyContract","CornerKick") %>';"><%= _model.UserProfileExtension.Gender == "F" ? "親愛的" : "兄弟" %>，合約繳款截止日(<%= $"{c.PayoffDue:yyyy/MM/dd}" %>)快到囉！ <i class="livicon-evo right" data-options="name: bell.svg; size: 30px; style: lines; strokeColor:#0f244a; strokeWidth:2px; autoPlay:true"></i></a></li>
+                            <li><a href="javascript:gtag('event', '我的合約', {  'event_category': '下拉式選單點擊',  'event_label': '卡片總覽'});window.location.href = '<%= Url.Action("MyContract","CornerKick") %>';"><%= _model.UserProfileExtension.Gender == "F" ? "親愛的" : "兄弟" %>，合約繳款截止日(<%= $"{c.PayoffDue:yyyy/MM/dd}" %>)快到囉！ <i class="material-icons right">arrow_forward</i></i></a></li>
                             <%      }
                                     count--;
                                 }
