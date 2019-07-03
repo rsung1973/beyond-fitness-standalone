@@ -719,4 +719,11 @@ namespace WebHome.Models.ViewModel
         public bool? NoChecked { get; set; }
     }
 
+    public class DataItemViewModel
+    {
+        public String Title { get; set; }
+        public String Message { get; set; }
+        public String Assertion { get; set; }
+    }
+
 }
