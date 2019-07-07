@@ -90,7 +90,7 @@
                                  </div>
                                  <div class="col s8 m10 text-box">
 <!--                                    <span class="black-t18">劉加菲</span>-->
-                                    <span class="black-t12">每一枚金幣都是汗水與淚水的結晶，目前已累積 <span class="point"><%= currentBonusPoint %>枚</span> Beyond💰！ <%= currentBonusPoint>35 ? "繼續努力累積，集滿100枚有神秘大禮喔！" : null %></span>
+                                    <span class="black-t12">每一枚金幣都是汗水與淚水的結晶，目前已累積 <span class="point"><%= currentBonusPoint %>枚</span> Beyond💰！ <%= currentBonusPoint>=35 ? "繼續努力累積，集滿100枚有神秘大禮喔！" : null %></span>
                                  </div>
                               </div>
                            </div>

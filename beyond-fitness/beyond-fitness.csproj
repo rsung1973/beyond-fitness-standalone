@@ -3807,6 +3807,7 @@
     <Content Include="Content\bootstrap-datetimepicker.min.css" />
     <Content Include="Content\bootstrap-datetimepicker.css" />
     <Content Include="Views\CornerKick\Module\PromptPayoffDue.cshtml" />
+    <Content Include="Views\CornerKick\MyContract.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
