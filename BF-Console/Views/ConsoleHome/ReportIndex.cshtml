@@ -1,4 +1,4 @@
-@using System.IO
+﻿@using System.IO
 @using System.Linq.Expressions
 
 @using WebHome.Helper
@@ -55,9 +55,12 @@
                         <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#learner">學生</a></li>
                         @if (_model.IsOfficer() || _model.IsManager() || _model.IsViceManager() || _model.IsAssistant() || _model.IsAuthorizedSysAdmin())
                         {
-                            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#achivement">薪資</a></li>
+                            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#achivement">業績</a></li>
                         }
+                        @if (_model.IsAssistant() || _model.IsAuthorizedSysAdmin())
+                        {
                         <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#trust">信託</a></li>
+                        }
                         <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#inventory">盤點</a></li>
                     </ul>
                 </div>

@@ -1,4 +1,4 @@
-@using System.IO
+﻿@using System.IO
 @using System.Linq.Expressions
 
 @using WebHome.Helper
@@ -31,17 +31,15 @@
     <div class="col-lg-2 col-md-3 col-sm-6">
         <div class="card">
             <div class="file">
-                <a href='javascript:downloadPaymentReport(@Html.Raw(JsonConvert.SerializeObject(new {
+                <a href='javascript:selectPeriodAccountingReport(@Html.Raw(JsonConvert.SerializeObject(new {
                                                             PayoffDateFrom = DateTime.Today,
                                                             PayoffDateTo = DateTime.Today,
-                                                            BypassCondition = true,
-                                                            InvoiceType = (Naming.InvoiceTypeDefinition?)null,
                                                         })));'>
                     <div class="icon">
-                        <i class="zmdi livicon livicon-evo" data-options="name: coins.svg; size: 60px; style: original; strokeWidth:2px; autoPlay:true"></i>
+                        <i class="zmdi livicon livicon-evo" data-options="name: calculator.svg; size: 60px; style: original; strokeWidth:2px; autoPlay:true"></i>
                     </div>
                     <div class="file-name">
-                        <p class="m-b-5 text-muted">收款清單</p>
+                        <p class="m-b-5 text-muted">明細帳</p>
                         <small>本日 <span class="date text-muted">@($"{DateTime.Today:yyyy/MM/dd}")</span></small>
                     </div>
                 </a>
@@ -51,36 +49,19 @@
     <div class="col-lg-2 col-md-3 col-sm-6">
         <div class="card">
             <div class="file">
-                <a href='javascript:downloadPaymentReport(@Html.Raw(JsonConvert.SerializeObject(new
+                <a href='javascript:selectPeriodAccountingReport(@Html.Raw(JsonConvert.SerializeObject(new
                                                         {
                                                             PayoffDateFrom = DateTime.Today.FirstDayOfMonth().AddMonths(-1),
                                                             PayoffDateTo = DateTime.Today.FirstDayOfMonth().AddDays(-1),
-                                                            BypassCondition = true,
-                                                            InvoiceType = (Naming.InvoiceTypeDefinition?)null,
                                                         })));'>
-                    <div class="icon">
-                        <i class="zmdi livicon livicon-evo" data-options="name: us-dollar.svg; size: 60px; style: original; strokeWidth:2px; autoPlay:true"></i>
-                    </div>
-                    <div class="file-name">
-                        <p class="m-b-5 text-muted">收款清單</p>
-                        <small>上月 <span class="date text-muted">@($"{DateTime.Today.FirstDayOfMonth().AddMonths(-1):yyyy/MM}")</span></small>
-                    </div>
-                </a>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-2 col-md-3 col-sm-6">
-        <div class="card">
-            <div class="file">
-                <a href="javascript:$('').launchDownload('@Html.Raw(Url.Action("CreateMonthlyPaymentReportXlsx","Payment"))', { 'settlementDate': '@($"{DateTime.Today.AddMonths(-1):yyyy/MM/dd}")' },'report',true);">
-                    <div class="icon">
-                        <i class="zmdi livicon livicon-evo" data-options="name: notebook.svg; size: 60px; style: original; strokeWidth:2px; autoPlay:true"></i>
-                    </div>
-                    <div class="file-name">
-                        <p class="m-b-5 text-muted">課程顧問費用會計明細帳</p>
-                        <small>上月 <span class="date text-muted">@($"{DateTime.Today.AddMonths(-1):yyyy/MM}")</span></small>
-                    </div>
-                </a>
+                        <div class="icon">
+                            <i class="zmdi livicon livicon-evo" data-options="name: notebook.svg; size: 60px; style: original; strokeWidth:2px; autoPlay:true"></i>
+                        </div>
+                        <div class="file-name">
+                            <p class="m-b-5 text-muted">明細帳</p>
+                            <small>上月 <span class="date text-muted">@($"{DateTime.Today.AddMonths(-1):yyyy/MM}")</span></small>
+                        </div>
+                    </a>
             </div>
         </div>
     </div>
@@ -107,27 +88,12 @@
     <div class="col-lg-2 col-md-3 col-sm-6">
         <div class="card">
             <div class="file">
-                <a href="javascript:selectPeriodPaymentReport();">
-                    <div class="icon">
-                        <i class="zmdi livicon livicon-evo" data-options="name: us-dollar.svg; size: 60px; style: original; strokeWidth:2px; autoPlay:true"></i>
-                    </div>
-                    <div class="file-name">
-                        <p class="m-b-5 text-muted">收款清單</p>
-                        <small>自訂條件 <span class="date text-muted"><i class="zmdi zmdi-search"></i></span></small>
-                    </div>
-                </a>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-2 col-md-3 col-sm-6">
-        <div class="card">
-            <div class="file">
-                <a href="javascript:selectMonthlyAccountingReport();">
+                <a href="javascript:selectPeriodAccountingReport();">
                     <div class="icon">
                         <i class="zmdi livicon livicon-evo" data-options="name: notebook.svg; size: 60px; style: original; strokeWidth:2px; autoPlay:true"></i>
                     </div>
                     <div class="file-name">
-                        <p class="m-b-5 text-muted">課程顧問費用會計明細帳</p>
+                        <p class="m-b-5 text-muted">明細帳</p>
                         <small>自訂條件 <span class="date text-muted"><i class="zmdi zmdi-search"></i></span></small>
                     </div>
                 </a>
@@ -135,7 +101,7 @@
         </div>
     </div>
     <script>
-        function selectPeriodPaymentReport() {
+        function selectPeriodAccountingReport() {
             showLoading();
             $.post('@Html.Raw(Url.Action("SelectPeriodReport","ReportConsole"))', {}, function (data) {
                 hideLoading();
@@ -145,31 +111,15 @@
                     $global.doQuery = function (viewModel) {
                         viewModel.PayoffDateFrom = viewModel.DateFrom;
                         viewModel.PayoffDateTo = viewModel.DateTo;
-                        viewModel.InvoiceType = null;
-                        downloadPaymentReport(viewModel);
+                        downloadAccountingReport(viewModel);
                     }
                     $(data).appendTo($('body'));
                 }
             });
         }
 
-        function selectMonthlyAccountingReport() {
-            showLoading();
-            $.post('@Html.Raw(Url.Action("SelectMonthlyReport","ReportConsole"))', {}, function (data) {
-                hideLoading();
-                if ($.isPlainObject(data)) {
-                    swal(data.message);
-                } else {
-                    $global.doQuery = function (settlementDate) {
-                        $('').launchDownload('@Html.Raw(Url.Action("CreateMonthlyPaymentReportXlsx","Payment"))', { 'settlementDate': settlementDate }, 'report',true);
-                    }
-                    $(data).appendTo($('body'));
-                }
-            });
-        }
-
-        function downloadPaymentReport(viewModel) {
-            $('').launchDownload('@Html.Raw(Url.Action("CreatePaymentInvoiceQueryXlsx","Payment"))', viewModel, 'report', true);
+        function downloadAccountingReport(viewModel) {
+            $('').launchDownload('@Html.Raw(Url.Action("CreateMonthlyPaymentReportXlsx","Payment"))', viewModel, 'report', true);
         }
     </script>
 </div>
