@@ -252,6 +252,18 @@
   <data name="FindZhongxiaoBranchDesc2" xml:space="preserve">
     <value>Rarely seen high-ceiling indoor personal training venue, bright lighting space, combined with a variety of training equipment, separate bath and shower, allowing you to freshen up more comfortably.</value>
   </data>
+  <data name="FindDongmenBranch" xml:space="preserve">
+    <value>Dongmen Branch</value>
+  </data>
+  <data name="FindDongmenBranchAdd" xml:space="preserve">
+    <value>No.28, Sec. 2, Xinyi Rd., Da’an Dist., Taipei City 106, Taiwan</value>
+  </data>
+  <data name="FindDongmenBranchDesc1" xml:space="preserve">
+    <value>3 minute walk from MRT Dongmen station Exit 3</value>
+  </data>
+  <data name="FindDongmenBranchDesc2" xml:space="preserve">
+    <value></value>
+  </data>
   <data name="OurTeam" xml:space="preserve">
     <value>Our team</value>
   </data>

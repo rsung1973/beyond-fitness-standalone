@@ -264,6 +264,18 @@
   <data name="FindZhongxiaoBranchDesc2" xml:space="preserve">
     <value>少數擁有室內挑高私人教練場地，明亮採光的運動空間，結合多樣化訓練設備，提供乾濕分離衛浴設備，方便您更舒適換穿衣物及梳洗。</value>
   </data>
+  <data name="FindDongmenBranch" xml:space="preserve">
+    <value>東門店</value>
+  </data>
+  <data name="FindDongmenBranchAdd" xml:space="preserve">
+    <value>台北市大安區信義路二段28號</value>
+  </data>
+  <data name="FindDongmenBranchDesc1" xml:space="preserve">
+    <value>位於捷運東門捷運站3號出口，走路約3分鐘即可抵達。</value>
+  </data>
+  <data name="FindDongmenBranchDesc2" xml:space="preserve">
+    <value></value>
+  </data>
   <data name="OurTeam" xml:space="preserve">
     <value>了解團隊</value>
   </data>
