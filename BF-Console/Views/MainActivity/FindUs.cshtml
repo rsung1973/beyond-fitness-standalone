@@ -90,11 +90,11 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm-6">
-                    <h1>東門店 <span>Coming Soon</span></h1>
+                    <h1>@Html.Raw(NamingItem.FindDongmenBranch) <span>Coming Soon</span></h1>
                     <a href="https://maps.google.com/?q=台北市大安區信義路二段28號" target="_blank" class="add">
-                        台北市大安區信義路二段28號
+                        @Html.Raw(NamingItem.FindDongmenBranchAdd)
                     </a>
-                    <p>位於捷運東門捷運站3號出口，走路約3分鐘即可抵達。</p>
+                    <p>@Html.Raw(NamingItem.FindDongmenBranchDesc1)</p>
                 </div>
                 <div class="col-sm-6 p-t-20">
                     <div id="map-dongmen" class="map-canvas small"></div>
