@@ -1,4 +1,4 @@
-
+﻿
 
 @using System.IO
 @using System.Linq.Expressions
@@ -86,6 +86,22 @@
             </div>
         </div>
     </section>
+    <section class="section-branch second">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6">
+                    <h1>東門店 <span>Coming Soon</span></h1>
+                    <a href="https://maps.google.com/?q=台北市大安區信義路二段28號" target="_blank" class="add">
+                        台北市大安區信義路二段28號
+                    </a>
+                    <p>位於捷運東門捷運站3號出口，走路約3分鐘即可抵達。</p>
+                </div>
+                <div class="col-sm-6 p-t-20">
+                    <div id="map-dongmen" class="map-canvas small"></div>
+                </div>
+            </div>
+        </div>
+    </section>
     <!-- // 聯絡我們 -->
     @{ Html.RenderPartial("~/Views/MainActivity/Module/ContactItem.cshtml");}
 
@@ -98,6 +114,7 @@
             var arenaStation = new google.maps.LatLng(25.0519269, 121.55007599999999); //南京
             var oneooneStation = new google.maps.LatLng(25.032599, 121.562962); //信義
             var sogoStation = new google.maps.LatLng(25.042265, 121.547384); //忠孝
+            var dongmenStation = new google.maps.LatLng(25.035054, 121.525365); //東門
 
             var mapArenaOptions = {
                 scaleControl: true,
@@ -135,11 +152,24 @@
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
 
+            var mapDongmenOptions = {
+                scaleControl: true,
+                center: dongmenStation,
+                zoom: 17,
+                zoomControl: true,
+                panControl: false,
+                mapTypeControl: false,
+                streetViewControl: false,
+                scrollwheel: false,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+
             var myIcon = new google.maps.MarkerImage("images/landing/marker.png", null, null, null, new google.maps.Size(50, 50));
 
             var mapArena = new google.maps.Map(document.getElementById('map-arena'), mapArenaOptions);
             var map101 = new google.maps.Map(document.getElementById('map-101'), map101Options);
             var mapSogo = new google.maps.Map(document.getElementById('map-sogo'), mapSogoOptions);
+            var mapDongmen = new google.maps.Map(document.getElementById('map-dongmen'), mapDongmenOptions);
 
             var arenaMarker = new google.maps.Marker({
                 position: arenaStation,
@@ -156,158 +186,167 @@
                 map: mapSogo,
                 icon: myIcon
             });
+            var dongmenMarker = new google.maps.Marker({
+                position: dongmenStation,
+                map: mapDongmen,
+                icon: myIcon
+            });
 
-            google.maps.event.addListener(arenaMarker, 'click', function() {
+            google.maps.event.addListener(arenaMarker, 'click', function () {
                 window.open("http://maps.google.com/?q=台北市松山區南京東路四段17號B1");
             });
 
-            google.maps.event.addListener(oneooneMarker, 'click', function() {
+            google.maps.event.addListener(oneooneMarker, 'click', function () {
                 window.open("http://maps.google.com/?q=台北市信義區信義路五段16號2樓之2");
             });
 
-            google.maps.event.addListener(sogoMarker, 'click', function() {
+            google.maps.event.addListener(sogoMarker, 'click', function () {
                 window.open("http://maps.google.com/?q=台北市大安區大安路一段75巷21號1F");
+            });
+
+            google.maps.event.addListener(dongmenMarker, 'click', function () {
+                window.open("http://maps.google.com/?q=台北市大安區信義路二段28號");
             });
 
             var styledMapType = new google.maps.StyledMapType(
                 [{
-                        elementType: 'geometry',
-                        stylers: [{
-                            color: '#242f3e'
-                        }]
-                    },
-                    {
-                        elementType: 'labels.text.stroke',
-                        stylers: [{
-                            color: '#242f3e'
-                        }]
-                    },
-                    {
-                        elementType: 'labels.text.fill',
-                        stylers: [{
-                            color: '#746855'
-                        }]
-                    },
-                    {
-                        featureType: 'administrative.locality',
-                        elementType: 'labels.text.fill',
-                        stylers: [{
-                            color: '#d59563'
-                        }]
-                    }, {
-                        featureType: "poi.business",
-                        elementType: "labels.text",
-                        stylers: [{
-                            visibility: "off"
-                        }]
-                    }, {
-                        featureType: "poi.business",
-                        elementType: "labels.icon",
-                        stylers: [{
-                            visibility: "off"
-                        }]
-                    }, {
-                        featureType: "poi.place_of_worship",
-                        elementType: "labels.text",
-                        stylers: [{
-                            visibility: "off"
-                        }]
-                    }, {
-                        featureType: "poi.place_of_worship",
-                        elementType: "labels.icon",
-                        stylers: [{
-                            visibility: "off"
-                        }]
-                    }, {
-                        featureType: "poi.government",
-                        elementType: "labels.text",
-                        stylers: [{
-                            color: '#d59563'
-                        }]
-                    }, {
-                        featureType: "poi.government",
-                        elementType: "labels.icon",
-                        stylers: [{
-                            color: '#d59563'
-                        }]
-                    },
-                    {
-                        featureType: 'road',
-                        elementType: 'geometry',
-                        stylers: [{
-                            color: '#38414e'
-                        }]
-                    },
-                    {
-                        featureType: 'road',
-                        elementType: 'geometry.stroke',
-                        stylers: [{
-                            color: '#212a37'
-                        }]
-                    },
-                    {
-                        featureType: 'road',
-                        elementType: 'labels.text.fill',
-                        stylers: [{
-                            color: '#9ca5b3'
-                        }]
-                    },
-                    {
-                        featureType: 'road.highway',
-                        elementType: 'geometry',
-                        stylers: [{
-                            color: '#746855'
-                        }]
-                    },
-                    {
-                        featureType: 'road.highway',
-                        elementType: 'geometry.stroke',
-                        stylers: [{
-                            color: '#1f2835'
-                        }]
-                    },
-                    {
-                        featureType: 'road.highway',
-                        elementType: 'labels.text.fill',
-                        stylers: [{
-                            color: '#f3d19c'
-                        }]
-                    },
-                    {
-                        featureType: 'transit',
-                        elementType: 'geometry',
-                        stylers: [{
-                            color: '#2f3948'
-                        }]
-                    },
-                    {
-                        featureType: 'transit.station',
-                        elementType: 'labels.text.fill',
-                        stylers: [{
-                            color: '#d59563'
-                        }]
-                    },
-                    {
-                        featureType: 'water',
-                        elementType: 'geometry',
-                        stylers: [{
-                            color: '#17263c'
-                        }]
-                    },
-                    {
-                        featureType: 'water',
-                        elementType: 'labels.text.fill',
-                        stylers: [{
-                            color: '#515c6d'
-                        }]
-                    },
-                    {
-                        featureType: 'water',
-                        elementType: 'labels.text.stroke',
-                        stylers: [{
-                            color: '#17263c'
-                        }]
-                    }
+                    elementType: 'geometry',
+                    stylers: [{
+                        color: '#242f3e'
+                    }]
+                },
+                {
+                    elementType: 'labels.text.stroke',
+                    stylers: [{
+                        color: '#242f3e'
+                    }]
+                },
+                {
+                    elementType: 'labels.text.fill',
+                    stylers: [{
+                        color: '#746855'
+                    }]
+                },
+                {
+                    featureType: 'administrative.locality',
+                    elementType: 'labels.text.fill',
+                    stylers: [{
+                        color: '#d59563'
+                    }]
+                }, {
+                    featureType: "poi.business",
+                    elementType: "labels.text",
+                    stylers: [{
+                        visibility: "off"
+                    }]
+                }, {
+                    featureType: "poi.business",
+                    elementType: "labels.icon",
+                    stylers: [{
+                        visibility: "off"
+                    }]
+                }, {
+                    featureType: "poi.place_of_worship",
+                    elementType: "labels.text",
+                    stylers: [{
+                        visibility: "off"
+                    }]
+                }, {
+                    featureType: "poi.place_of_worship",
+                    elementType: "labels.icon",
+                    stylers: [{
+                        visibility: "off"
+                    }]
+                }, {
+                    featureType: "poi.government",
+                    elementType: "labels.text",
+                    stylers: [{
+                        color: '#d59563'
+                    }]
+                }, {
+                    featureType: "poi.government",
+                    elementType: "labels.icon",
+                    stylers: [{
+                        color: '#d59563'
+                    }]
+                },
+                {
+                    featureType: 'road',
+                    elementType: 'geometry',
+                    stylers: [{
+                        color: '#38414e'
+                    }]
+                },
+                {
+                    featureType: 'road',
+                    elementType: 'geometry.stroke',
+                    stylers: [{
+                        color: '#212a37'
+                    }]
+                },
+                {
+                    featureType: 'road',
+                    elementType: 'labels.text.fill',
+                    stylers: [{
+                        color: '#9ca5b3'
+                    }]
+                },
+                {
+                    featureType: 'road.highway',
+                    elementType: 'geometry',
+                    stylers: [{
+                        color: '#746855'
+                    }]
+                },
+                {
+                    featureType: 'road.highway',
+                    elementType: 'geometry.stroke',
+                    stylers: [{
+                        color: '#1f2835'
+                    }]
+                },
+                {
+                    featureType: 'road.highway',
+                    elementType: 'labels.text.fill',
+                    stylers: [{
+                        color: '#f3d19c'
+                    }]
+                },
+                {
+                    featureType: 'transit',
+                    elementType: 'geometry',
+                    stylers: [{
+                        color: '#2f3948'
+                    }]
+                },
+                {
+                    featureType: 'transit.station',
+                    elementType: 'labels.text.fill',
+                    stylers: [{
+                        color: '#d59563'
+                    }]
+                },
+                {
+                    featureType: 'water',
+                    elementType: 'geometry',
+                    stylers: [{
+                        color: '#17263c'
+                    }]
+                },
+                {
+                    featureType: 'water',
+                    elementType: 'labels.text.fill',
+                    stylers: [{
+                        color: '#515c6d'
+                    }]
+                },
+                {
+                    featureType: 'water',
+                    elementType: 'labels.text.stroke',
+                    stylers: [{
+                        color: '#17263c'
+                    }]
+                }
                 ], {
                     name: 'Styled Map'
                 });
@@ -320,6 +359,9 @@
 
             mapSogo.mapTypes.set('map_styles', styledMapType);
             mapSogo.setMapTypeId('map_styles');
+
+            mapDongmen.mapTypes.set('map_styles', styledMapType);
+            mapDongmen.setMapTypeId('map_styles');
 
         }
     </script> 

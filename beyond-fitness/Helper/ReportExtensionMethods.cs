@@ -215,7 +215,7 @@ namespace WebHome.Helper
                         姓名 = i.TuitionInstallment.IntuitionCharge.RegisterLesson.UserProfile.FullName(),
                         合約編號 = null,
                         信託 = null,                       
-                        摘要 =  $"銷貨收入-自主訓練-{i.TuitionInstallment.IntuitionCharge.RegisterLesson.UserProfile.RealName}({i.PaymentType})",
+                        摘要 =  $"銷貨收入-自主訓練{i.TuitionInstallment.IntuitionCharge.RegisterLesson.LessonTime:yyyyMMdd}-{i.TuitionInstallment.IntuitionCharge.RegisterLesson.UserProfile.RealName}({i.PaymentType})",
                         退款金額_含稅 =  null,
                         收款金額_含稅 =  i.PayoffAmount,
                         借方金額 = null,
@@ -240,9 +240,9 @@ namespace WebHome.Helper
                                 合約編號 = null,
                                 信託 = null,
                                 摘要 = i.InvoiceItem.InvoiceCancellation != null
-                                        ? $"(沖:{i.PayoffDate:yyyyMMdd}-作廢)銷貨收入-自主訓練-{i.TuitionInstallment.IntuitionCharge.RegisterLesson.UserProfile.RealName}"
+                                        ? $"(沖:{i.PayoffDate:yyyyMMdd}-作廢)銷貨收入-自主訓練{i.TuitionInstallment.IntuitionCharge.RegisterLesson.LessonTime:yyyyMMdd}-{i.TuitionInstallment.IntuitionCharge.RegisterLesson.UserProfile.RealName}"
                                         //(沖:20190104-作廢)課程顧問費用-CFA201810091870-00-林妍君
-                                        : $"(沖:{i.PayoffDate:yyyyMMdd}-折讓)銷貨收入-自主訓練-{i.TuitionInstallment.IntuitionCharge.RegisterLesson.UserProfile.RealName}",
+                                        : $"(沖:{i.PayoffDate:yyyyMMdd}-折讓)銷貨收入-自主訓練{i.TuitionInstallment.IntuitionCharge.RegisterLesson.LessonTime:yyyyMMdd}-{i.TuitionInstallment.IntuitionCharge.RegisterLesson.UserProfile.RealName}",
                                 退款金額_含稅 = i.AllowanceID.HasValue
                                                 ? (int?)(i.InvoiceAllowance.TotalAmount + i.InvoiceAllowance.TaxAmount)
                                                 : i.PayoffAmount,

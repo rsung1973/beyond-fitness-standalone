@@ -18658,6 +18658,13 @@ textarea:focus {
     margin-bottom: 0px;
 }
 
+.section-branch h1 span{
+    font-weight: 400;
+    color: #f4f6f9;
+    font-style: italic;
+    font-family: sans-serif;
+}
+
 .section-branch a.tel {
     font-size: 20px;
     color: #bfbfbf;
@@ -18746,7 +18753,7 @@ textarea:focus {
 }
 
 .section-faq-content {
-    padding: 0px 0;
+    padding: 20px 20px 20px 20px;
     background: #fff;
 }
 
@@ -19683,6 +19690,7 @@ textarea:focus {
     }
 }
 
+/*
 @media only screen and (max-width: 574px) {
     .section-faq .container:after {
         top: 0px;
@@ -19690,6 +19698,7 @@ textarea:focus {
     }  
 
 }
+*/
 
 .mfp-bg {
     top: 0;
