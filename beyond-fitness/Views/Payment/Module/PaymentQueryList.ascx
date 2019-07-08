@@ -51,7 +51,7 @@
             <td nowrap="noWrap"><%= String.Format("{0:yyyy/MM/dd}",item.PayoffDate) %></td>
             <td nowrap="noWrap"><%= ((Naming.PaymentTransactionType)item.TransactionType).ToString() %>
                 <%  if(item.TransactionType==(int)Naming.PaymentTransactionType.運動商品
-                        || item.TransactionType==(int)Naming.PaymentTransactionType.飲品)
+                        || item.TransactionType==(int)Naming.PaymentTransactionType.食飲品)
                     { %>
                 (<%= String.Join("、", item.PaymentTransaction.PaymentOrder.Select(p=>p.MerchandiseWindow.ProductName)) %>)
                 <%  } %>

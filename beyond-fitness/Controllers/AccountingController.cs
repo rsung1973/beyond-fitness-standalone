@@ -1244,7 +1244,7 @@ namespace WebHome.Controllers
             Response.AppendCookie(new HttpCookie("fileDownloadToken", viewModel.FileDownloadToken));
             Response.AddHeader("Cache-control", "max-age=1");
             Response.ContentType = "application/vnd.ms-excel";
-            Response.AddHeader("Content-Disposition", String.Format("attachment;filename={0}({1:yyyy-MM-dd HH-mm-ss}).xlsx", HttpUtility.UrlEncode("AchievementReport"), DateTime.Now));
+            Response.AddHeader("Content-Disposition", String.Format("attachment;filename={0}({1:yyyy-MM-dd HH-mm-ss}).xlsx", HttpUtility.UrlEncode("LessonAchievementDetails"), DateTime.Now));
 
             using (DataSet ds = new DataSet())
             {
@@ -1266,6 +1266,7 @@ namespace WebHome.Controllers
                 if (viewModel.DetailsOnly != false)
                 {
                     table = createAchievementDetailsXlsx(viewModel);
+                    table.TableName = String.Format("{0:yyyy-MM-dd}~{1:yyyy-MM-dd}", viewModel.AchievementDateFrom, viewModel.AchievementDateTo.Value.AddMonths(1).AddDays(-1));
                     ds.Tables.Add(table);
                 }
                 if (viewModel.DetailsOnly != true)

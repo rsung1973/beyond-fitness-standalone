@@ -38,7 +38,7 @@
 </td>
 <td><%= ((Naming.PaymentTransactionType)_model.TransactionType).ToString() %>
     <%  if (_model.TransactionType == (int)Naming.PaymentTransactionType.運動商品
-            || _model.TransactionType == (int)Naming.PaymentTransactionType.飲品)
+            || _model.TransactionType == (int)Naming.PaymentTransactionType.食飲品)
         { %>
     (<%= String.Join("、", _model.PaymentTransaction.PaymentOrder.Select(p => p.MerchandiseWindow.ProductName)) %>)
     <%  } %>

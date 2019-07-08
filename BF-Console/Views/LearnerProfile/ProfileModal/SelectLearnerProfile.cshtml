@@ -33,7 +33,8 @@
 <script>
     $(function () {
         $global.selectLearnerProfile = function (keyID) {
-            $('').launchDownload('@Html.Raw(Url.Action("LearnerProfile","ConsoleHome"))', { 'keyID': keyID });
+            @*$('').launchDownload('@Html.Raw(Url.Action("LearnerProfile","ConsoleHome"))', { 'keyID': keyID });*@
+            window.location.href = '@(Url.Action("LearnerProfile", "ConsoleHome"))' + '?keyID=' + encodeURIComponent(keyID);
         };
     });
 </script>

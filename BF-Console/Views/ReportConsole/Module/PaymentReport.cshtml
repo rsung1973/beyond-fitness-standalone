@@ -31,7 +31,7 @@
     <div class="col-lg-2 col-md-3 col-sm-6">
         <div class="card">
             <div class="file">
-                <a href='javascript:selectPeriodAccountingReport(@Html.Raw(JsonConvert.SerializeObject(new {
+                <a href='javascript:downloadAccountingReport(@Html.Raw(JsonConvert.SerializeObject(new {
                                                             PayoffDateFrom = DateTime.Today,
                                                             PayoffDateTo = DateTime.Today,
                                                         })));'>
@@ -49,7 +49,7 @@
     <div class="col-lg-2 col-md-3 col-sm-6">
         <div class="card">
             <div class="file">
-                <a href='javascript:selectPeriodAccountingReport(@Html.Raw(JsonConvert.SerializeObject(new
+                <a href='javascript:downloadAccountingReport(@Html.Raw(JsonConvert.SerializeObject(new
                                                         {
                                                             PayoffDateFrom = DateTime.Today.FirstDayOfMonth().AddMonths(-1),
                                                             PayoffDateTo = DateTime.Today.FirstDayOfMonth().AddDays(-1),

@@ -49,15 +49,15 @@
                 <%  } %></td>
         </tr>
         <tr>
-            <%  paymentItems = _auditItems.Where(a => a.Payment.TransactionType == (int)Naming.PaymentTransactionType.飲品);
-                voidItemsToConfirm = _voidItemsToConfirm.Where(a => a.Payment.TransactionType == (int)Naming.PaymentTransactionType.飲品);
-                editingVoidItems = _editingVoidItems.Where(a => a.Payment.TransactionType == (int)Naming.PaymentTransactionType.飲品);   %>
+            <%  paymentItems = _auditItems.Where(a => a.Payment.TransactionType == (int)Naming.PaymentTransactionType.食飲品);
+                voidItemsToConfirm = _voidItemsToConfirm.Where(a => a.Payment.TransactionType == (int)Naming.PaymentTransactionType.食飲品);
+                editingVoidItems = _editingVoidItems.Where(a => a.Payment.TransactionType == (int)Naming.PaymentTransactionType.食飲品);   %>
             <td>飲品(<%= paymentItems.Count()+voidItemsToConfirm.Count()+editingVoidItems.Count() %>)</td>
             <td class="text-center">
                 <%  
                     if (editingVoidItems.Count() > 0)
                     {   %>
-                <a onclick="showVoidPaymentToEdit(<%= (int)Naming.PaymentTransactionType.飲品 %>);"><u>(<%= editingVoidItems.Count() %>)</u></a>
+                <a onclick="showVoidPaymentToEdit(<%= (int)Naming.PaymentTransactionType.食飲品 %>);"><u>(<%= editingVoidItems.Count() %>)</u></a>
                 <%  }
                     else
                     { %>

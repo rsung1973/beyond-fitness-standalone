@@ -87,7 +87,7 @@ namespace WebHome.Controllers
                 case Naming.PaymentTransactionType.自主訓練:
                     return EditPaymentForPISession(viewModel);
                 case Naming.PaymentTransactionType.運動商品:
-                case Naming.PaymentTransactionType.飲品:
+                case Naming.PaymentTransactionType.食飲品:
                     return EditPaymentForShopping(viewModel);
                 case Naming.PaymentTransactionType.體能顧問費:
                 default:
@@ -1479,7 +1479,7 @@ namespace WebHome.Controllers
                             : "--",
                     收款日期 = String.Format("{0:yyyy/MM/dd}", i.Item.PayoffDate),
                     收款品項 = String.Concat(((Naming.PaymentTransactionType)i.Item.TransactionType).ToString(),
-                            i.Item.TransactionType == (int)Naming.PaymentTransactionType.運動商品 || i.Item.TransactionType == (int)Naming.PaymentTransactionType.飲品
+                            i.Item.TransactionType == (int)Naming.PaymentTransactionType.運動商品 || i.Item.TransactionType == (int)Naming.PaymentTransactionType.食飲品
                                 ? String.Format("({0})", String.Join("、", i.Item.PaymentTransaction.PaymentOrder.Select(p => p.MerchandiseWindow.ProductName)))
                                 : null),
                     金額 = i.Direction > 0
@@ -1585,7 +1585,7 @@ namespace WebHome.Controllers
                             ? String.Format("{0:yyyy/MM/dd}", i.InvoiceAllowance.AllowanceDate)
                             : "--",
                     收款品項 = String.Concat(((Naming.PaymentTransactionType)i.TransactionType).ToString(),
-                            i.TransactionType == (int)Naming.PaymentTransactionType.運動商品 || i.TransactionType == (int)Naming.PaymentTransactionType.飲品
+                            i.TransactionType == (int)Naming.PaymentTransactionType.運動商品 || i.TransactionType == (int)Naming.PaymentTransactionType.食飲品
                                 ? String.Format("({0})", String.Join("、", i.PaymentTransaction.PaymentOrder.Select(p => p.MerchandiseWindow.ProductName)))
                                 : null),
                     收款金額 = i.PayoffAmount,
@@ -1686,7 +1686,7 @@ namespace WebHome.Controllers
                             : "--",
                     收款日期 = String.Format("{0:yyyy/MM/dd}", i.PayoffDate),
                     收款品項 = String.Concat(((Naming.PaymentTransactionType)i.TransactionType).ToString(),
-                            i.TransactionType == (int)Naming.PaymentTransactionType.運動商品 || i.TransactionType == (int)Naming.PaymentTransactionType.飲品
+                            i.TransactionType == (int)Naming.PaymentTransactionType.運動商品 || i.TransactionType == (int)Naming.PaymentTransactionType.食飲品
                                 ? String.Format("({0})", String.Join("、", i.PaymentTransaction.PaymentOrder.Select(p => p.MerchandiseWindow.ProductName)))
                                 : null),
                     金額 =  i.PayoffAmount,
@@ -1914,43 +1914,43 @@ namespace WebHome.Controllers
             return View("~/Views/Payment/Module/ApplyPaymentAchievement.ascx", item);
         }
 
-        class _PaymentMonthlyReportItem
-        {
-            public String 日期 { get; set; }
-            public String 分店 { get; set; }
-            public String 買受人統編 { get; set; }
-            public String 摘要 { get; set; }
-            public int? 退款金額_含稅 { get; set; }
-            public int? 收款金額_含稅 { get; set; }
-            public int? 借方金額 { get; set; }
-            public int? 貸方金額 { get; set; }
-            public String 發票號碼 { get; set; }
-            public String 姓名 { get; set; }
-            public String 合約編號 { get; set; }
-            public String 信託 { get; set; }
-        }
-
         public ActionResult CreateMonthlyPaymentReportXlsx(PaymentQueryViewModel viewModel)
         {
-            if(viewModel.SettlementDate.HasValue)
+            //if(viewModel.SettlementDate.HasValue)
+            //{
+            //    viewModel.SettlementDate = viewModel.SettlementDate.Value.FirstDayOfMonth();
+            //}
+            //else
+            //{
+            //    viewModel.SettlementDate = DateTime.Today.FirstDayOfMonth();
+            //}
+            //viewModel.PayoffDateTo = viewModel.SettlementDate.Value.AddMonths(1);
+
+            if (!viewModel.PayoffDateFrom.HasValue)
             {
-                viewModel.SettlementDate = viewModel.SettlementDate.Value.FirstDayOfMonth();
+                ModelState.AddModelError("PayoffDateFrom", "請選擇起始日期");
             }
-            else
+            if (!viewModel.PayoffDateTo.HasValue)
             {
-                viewModel.SettlementDate = DateTime.Today.FirstDayOfMonth();
+                ModelState.AddModelError("PayoffDateTo", "請選擇結束日期");
             }
-            viewModel.PayoffDateTo = viewModel.SettlementDate.Value.AddMonths(1);
+
+            if (!ModelState.IsValid)
+            {
+                ViewBag.ModelState = ModelState;
+                return View(Settings.Default.ReportInputError);
+            }
+            viewModel.PayoffDateTo = viewModel.PayoffDateTo.Value.AddDays(1);
             viewModel.BypassCondition = true;
 
             IQueryable<Payment> items = models.GetTable<Payment>().Where(p => p.ContractPayment != null);
 
             //收款(不含終止沖銷)
-            IEnumerable<_PaymentMonthlyReportItem> details = items
+            IEnumerable<PaymentMonthlyReportItem> details = items
                 .Where(p => p.PayoffDate >= viewModel.PayoffDateFrom && p.PayoffDate < viewModel.PayoffDateTo)
                 .Where(p => p.TransactionType != (int)Naming.PaymentTransactionType.合約終止沖銷 || p.AdjustmentAmount.HasValue)
                 .ToArray()
-                    .Select(i => new _PaymentMonthlyReportItem
+                    .Select(i => new PaymentMonthlyReportItem
                     {
                         日期 = $"{i.PayoffDate:yyyyMMdd}",
                         發票號碼 = i.InvoiceID.HasValue ? i.InvoiceItem.TrackCode + i.InvoiceItem.No : null,
@@ -2009,7 +2009,7 @@ namespace WebHome.Controllers
                                 .Where(v => v.VoidDate >= viewModel.PayoffDateFrom && v.VoidDate < viewModel.PayoffDateTo),
                             p => p.PaymentID, v => v.VoidID, (p, v) => p)
                         .ToArray()
-                            .Select(i => new _PaymentMonthlyReportItem
+                            .Select(i => new PaymentMonthlyReportItem
                             {
                                 日期 = $"{i.VoidPayment.VoidDate:yyyyMMdd}",
                                 發票號碼 = i.InvoiceID.HasValue ? i.InvoiceItem.TrackCode + i.InvoiceItem.No : null,
@@ -2043,6 +2043,11 @@ namespace WebHome.Controllers
                                 .OrderBy(d => d.日期).ThenByDescending(d => d.收款金額_含稅)
                                     .ThenByDescending(d => d.退款金額_含稅);
 
+            details = details.Concat(viewModel.CreateMonthlyPaymentReportForPISession(models))
+                        .Concat(viewModel.CreateMonthlyPaymentReportForSale(models))
+                        .OrderBy(d => d.日期)
+                        .ThenBy(d => d.發票號碼);
+
             Response.Clear();
             Response.ClearContent();
             Response.ClearHeaders();
@@ -2054,7 +2059,7 @@ namespace WebHome.Controllers
             using (DataSet ds = new DataSet())
             {
                 DataTable table = details.ToDataTable();
-                table.TableName = $"課程顧問費用{viewModel.SettlementDate:yyyyMM}";
+                table.TableName = $"{viewModel.PayoffDateFrom:yyyy-MM-dd}~{viewModel.PayoffDateTo.Value.AddDays(-1):yyyy-MM-dd}";
                 table.Columns[4].ColumnName = "退款金額(含稅)";
                 table.Columns[5].ColumnName = "收款金額(含稅)";
                 ds.Tables.Add(table);
@@ -2067,7 +2072,6 @@ namespace WebHome.Controllers
 
             return new EmptyResult();
         }
-
 
     }
 }

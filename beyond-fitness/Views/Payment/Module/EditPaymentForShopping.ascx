@@ -21,7 +21,7 @@
                             <select name="TransactionType">
                                 <option value="1">體能顧問費</option>
                                 <option value="2">自主訓練</option>
-                                <option value="3" <%= _viewModel.TransactionType==(int)Naming.PaymentTransactionType.飲品 ? "selected" : null %> >食／飲品</option>
+                                <option value="3" <%= _viewModel.TransactionType==(int)Naming.PaymentTransactionType.食飲品 ? "selected" : null %> >食／飲品</option>
                                 <option value="4" <%= _viewModel.TransactionType==(int)Naming.PaymentTransactionType.運動商品 ? "selected" : null %>>運動商品</option>
                             </select>
                             <i class="icon-append far fa-keyboard"></i>

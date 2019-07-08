@@ -86,30 +86,20 @@
             <fieldset>
                 <label class="label"><i class="fa fa-tags"></i>本數分配（1本50張）</label>
                 <div class="row">
+                    <%
+                        int idx = 0;
+                        foreach(var branch in models.GetTable<BranchStore>())
+                        {   %>
                     <section class="col col-4">
-                        <label class="label">南京小巨蛋</label>
+                        <label class="label"><%= branch.BranchName %></label>
                         <label class="input">
                             <i class="icon-append fa fa-sort-numeric-up"></i>
-                            <input type="hidden" name="BookletBranchID" value="<%= _viewModel.BookletBranchID!=null && _viewModel.BookletBranchID.Length>0 ? _viewModel.BookletBranchID[0] : 1 %>" />
-                            <input type="number" name="BookletCount" maxlength="4" placeholder="請輸入本數" value="<%= _viewModel.BookletCount!=null && _viewModel.BookletCount.Length>0 ? _viewModel.BookletCount[0] : null %>" />
+                            <input type="hidden" name="BookletBranchID" value="<%= _viewModel.BookletBranchID!=null && _viewModel.BookletBranchID.Length>0 ? _viewModel.BookletBranchID[idx] : branch.BranchID %>" />
+                            <input type="number" name="BookletCount" maxlength="4" placeholder="請輸入本數" value="<%= _viewModel.BookletCount!=null && _viewModel.BookletCount.Length>0 ? _viewModel.BookletCount[idx] : null %>" />
                         </label>
                     </section>
-                    <section class="col col-4">
-                        <label class="label">Enhanced 101</label>
-                        <label class="input">
-                            <i class="icon-append fa fa-sort-numeric-up"></i>
-                            <input type="hidden" name="BookletBranchID" value="<%= _viewModel.BookletBranchID!=null && _viewModel.BookletBranchID.Length>1 ? _viewModel.BookletBranchID[1] : 2 %>" />
-                            <input type="number" name="BookletCount" maxlength="4" placeholder="請輸入本數" value="<%= _viewModel.BookletCount!=null && _viewModel.BookletCount.Length>1 ? _viewModel.BookletCount[1] : null %>" />
-                        </label>
-                    </section>
-                    <section class="col col-4">
-                        <label class="label">忠孝</label>
-                        <label class="input">
-                            <i class="icon-append fa fa-sort-numeric-up"></i>
-                            <input type="hidden" name="BookletBranchID" value="<%= _viewModel.BookletBranchID!=null && _viewModel.BookletBranchID.Length>2 ? _viewModel.BookletBranchID[2] : 3 %>" />
-                            <input type="number" name="BookletCount" maxlength="4" placeholder="請輸入本數" value="<%= _viewModel.BookletCount!=null && _viewModel.BookletCount.Length>2 ? _viewModel.BookletCount[2] : null %>" />
-                        </label>
-                    </section>
+                    <%      idx++;
+                        }   %>
                 </div>
             </fieldset>
         </form>
