@@ -109,12 +109,11 @@
 @section TailPageJavaScriptInclude { 
 <!-- Google map-->
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA3OuzgVBIrXUdm0wsRqiPUxAXg3CAULFI&callback=initMap" async defer></script>
-    <script>
-        function initMap() {
+    <script>function initMap() {
             var arenaStation = new google.maps.LatLng(25.0519269, 121.55007599999999); //南京
             var oneooneStation = new google.maps.LatLng(25.032599, 121.562962); //信義
             var sogoStation = new google.maps.LatLng(25.042265, 121.547384); //忠孝
-            var dongmenStation = new google.maps.LatLng(25.035054, 121.525365); //東門
+            var dongmenStation = new google.maps.LatLng(25.034532, 121.525470); //東門
 
             var mapArenaOptions = {
                 scaleControl: true,
@@ -154,7 +153,7 @@
 
             var mapDongmenOptions = {
                 scaleControl: true,
-                center: dongmenStation,
+                center: { lat: 25.034532, lng: 121.527470 },
                 zoom: 17,
                 zoomControl: true,
                 panControl: false,
@@ -363,6 +362,5 @@
             mapDongmen.mapTypes.set('map_styles', styledMapType);
             mapDongmen.setMapTypeId('map_styles');
 
-        }
-    </script> 
+        }</script> 
 }
