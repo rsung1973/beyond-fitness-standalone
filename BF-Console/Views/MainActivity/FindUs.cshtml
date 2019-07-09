@@ -25,8 +25,23 @@
 @section CustomHeader { 
  
 }
-
-<section class="section-branch">
+    <section class="section-branch">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6">
+                    <h1>@Html.Raw(NamingItem.FindDongmenBranch) <span>Coming Soon</span></h1>
+                    <a href="https://maps.google.com/?q=台北市大安區信義路二段28號" target="_blank" class="add">
+                        @Html.Raw(NamingItem.FindDongmenBranchAdd)
+                    </a>
+                    <p>@Html.Raw(NamingItem.FindDongmenBranchDesc1)</p>
+                </div>
+                <div class="col-sm-6 p-t-20">
+                    <div id="map-dongmen" class="map-canvas small"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+<section class="section-branch second">
         <div class="container">
             <div class="row">
                 <div class="col-sm-6">
@@ -86,22 +101,6 @@
             </div>
         </div>
     </section>
-    <section class="section-branch second">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-6">
-                    <h1>@Html.Raw(NamingItem.FindDongmenBranch) <span>Coming Soon</span></h1>
-                    <a href="https://maps.google.com/?q=台北市大安區信義路二段28號" target="_blank" class="add">
-                        @Html.Raw(NamingItem.FindDongmenBranchAdd)
-                    </a>
-                    <p>@Html.Raw(NamingItem.FindDongmenBranchDesc1)</p>
-                </div>
-                <div class="col-sm-6 p-t-20">
-                    <div id="map-dongmen" class="map-canvas small"></div>
-                </div>
-            </div>
-        </div>
-    </section>
     <!-- // 聯絡我們 -->
     @{ Html.RenderPartial("~/Views/MainActivity/Module/ContactItem.cshtml");}
 
@@ -153,9 +152,9 @@
 
             var mapDongmenOptions = {
                 scaleControl: true,
-                center: { lat: 25.034532, lng: 121.527470 },
+                center: { lat: 25.034532, lng: 121.526890 },
                 zoom: 17,
-                zoomControl: true,
+                zoomControl: false,
                 panControl: false,
                 mapTypeControl: false,
                 streetViewControl: false,
