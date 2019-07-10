@@ -1,4 +1,4 @@
-{
+﻿{
   "branchName": "忠孝店",
   "durationItems": [
     {
@@ -29,19 +29,19 @@
       "priceItems": [
         {
           "priceName": "單堂",
-          "price": "2900",
+          "price": "3300",
           "desc": "短程規劃。",
           "promote": "false"
         },
         {
           "priceName": "25堂",
-          "price": "2400",
+          "price": "2700",
           "desc": "中程規劃。",
           "promote": "true"
         },
         {
           "priceName": "50堂",
-          "price": "2100",
+          "price": "2400",
           "desc": "長程規劃。",
           "promote": "false"
         }
