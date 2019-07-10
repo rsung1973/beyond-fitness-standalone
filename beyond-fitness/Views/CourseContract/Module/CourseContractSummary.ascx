@@ -73,6 +73,8 @@
                 <%  } %>
             </td>
         </tr>
+        <%  if (_model.IsAssistant() || _model.IsSysAdmin())
+            { %>
         <tr>
             <td nowrap="noWrap">
                 <%  var revisions = models.GetApplyingAmendmentByAgent(_model);
@@ -115,6 +117,7 @@
                 <%  } %>
             </td>
         </tr>
+        <%  } %>
     </tbody>
 </table>
 
