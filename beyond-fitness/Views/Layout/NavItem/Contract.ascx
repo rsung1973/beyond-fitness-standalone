@@ -17,9 +17,12 @@
         <li>
             <a href="<%= Url.Action("CreateContract", "CourseContract") %>" title="新增合約"><i class="far fa-lg fa-fw fa-copy"></i>新增合約</a>
         </li>
+        <%  if (_userProfile.IsAssistant() || _userProfile.IsSysAdmin())
+            { %>
         <li>
             <a href="<%= Url.Action("ApplyAmendment", "CourseContract") %>" title="服務申請"><i class="fa fa-lg fa-fw fa-cogs"></i>服務申請</a>
         </li>
+        <%  } %>
         <li>
             <a href="<%= Url.Action("ContractIndex","CourseContract") %>" title="合約查詢"><i class="fa fa-lg fa-fw fa-search"></i>合約查詢</a>
         </li>
