@@ -6137,6 +6137,7 @@
     <Content Include="Views\ConsoleHome\LessonTrainingContent.cshtml" />
     <Content Include="Views\LearnerProfile\Module\ResumeLearnerCharacter.cshtml" />
     <None Include="MainActivity\Portfolio\Dongmen.json" />
+    <Content Include="ConsoleHome\images\avatar\avatars.png" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\InitializeType.cs" />
