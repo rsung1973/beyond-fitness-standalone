@@ -6128,9 +6128,6 @@
     <Content Include="Views\ConsoleEvent\EventModal\BookingLearnerLesson.cshtml" />
     <Content Include="Views\ConsoleHome\Shared\JsAlert.cshtml" />
     <Content Include="Views\ContractConsole\Indication\ContractDetails.ascx" />
-    <Content Include="Views\ReportConsole\ReportModal\ByContractNo.ascx" />
-    <Content Include="Views\ReportConsole\ReportModal\SelectPeriodReport.ascx" />
-    <Content Include="Views\ReportConsole\ReportModal\SelectMonthlyReport.ascx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
