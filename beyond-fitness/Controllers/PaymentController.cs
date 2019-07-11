@@ -2063,7 +2063,14 @@ namespace WebHome.Controllers
                 table.Columns[4].ColumnName = "退款金額(含稅)";
                 table.Columns[5].ColumnName = "收款金額(含稅)";
                 ds.Tables.Add(table);
-                
+
+                foreach (var branch in models.GetTable<BranchStore>())
+                {
+                    table = details.BuildDailyPaymentReportForBranch(branch).ToDataTable();
+                    table.TableName = branch.BranchName;
+                    ds.Tables.Add(table);
+                }
+
                 using (var xls = ds.ConvertToExcel())
                 {
                     xls.SaveAs(Response.OutputStream);

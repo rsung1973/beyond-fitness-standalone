@@ -215,11 +215,11 @@ namespace WebHome.Helper
                         姓名 = i.TuitionInstallment.IntuitionCharge.RegisterLesson.UserProfile.FullName(),
                         合約編號 = null,
                         信託 = null,                       
-                        摘要 =  $"銷貨收入-自主訓練{i.TuitionInstallment.IntuitionCharge.RegisterLesson.LessonTime:yyyyMMdd}-{i.TuitionInstallment.IntuitionCharge.RegisterLesson.UserProfile.RealName}({i.PaymentType})",
+                        摘要 =  $"銷貨收入-自主訓練{i.TuitionInstallment.IntuitionCharge.RegisterLesson.LessonTime.First().ClassTime:yyyyMMdd}-{i.TuitionInstallment.IntuitionCharge.RegisterLesson.UserProfile.RealName}({i.PaymentType})",
                         退款金額_含稅 =  null,
                         收款金額_含稅 =  i.PayoffAmount,
                         借方金額 = null,
-                        貸方金額 = null,
+                        貸方金額 = (int?)Math.Round(i.PayoffAmount.Value / 1.05m, MidpointRounding.AwayFromZero),
                     });
 
             //作廢或折讓
@@ -240,9 +240,9 @@ namespace WebHome.Helper
                                 合約編號 = null,
                                 信託 = null,
                                 摘要 = i.InvoiceItem.InvoiceCancellation != null
-                                        ? $"(沖:{i.PayoffDate:yyyyMMdd}-作廢)銷貨收入-自主訓練{i.TuitionInstallment.IntuitionCharge.RegisterLesson.LessonTime:yyyyMMdd}-{i.TuitionInstallment.IntuitionCharge.RegisterLesson.UserProfile.RealName}"
+                                        ? $"(沖:{i.PayoffDate:yyyyMMdd}-作廢)銷貨收入-自主訓練-{i.TuitionInstallment.IntuitionCharge.RegisterLesson.UserProfile.RealName}"
                                         //(沖:20190104-作廢)課程顧問費用-CFA201810091870-00-林妍君
-                                        : $"(沖:{i.PayoffDate:yyyyMMdd}-折讓)銷貨收入-自主訓練{i.TuitionInstallment.IntuitionCharge.RegisterLesson.LessonTime:yyyyMMdd}-{i.TuitionInstallment.IntuitionCharge.RegisterLesson.UserProfile.RealName}",
+                                        : $"(沖:{i.PayoffDate:yyyyMMdd}-折讓)銷貨收入-自主訓練-{i.TuitionInstallment.IntuitionCharge.RegisterLesson.UserProfile.RealName}",
                                 退款金額_含稅 = i.AllowanceID.HasValue
                                                 ? (int?)(i.InvoiceAllowance.TotalAmount + i.InvoiceAllowance.TaxAmount)
                                                 : i.PayoffAmount,
@@ -278,11 +278,11 @@ namespace WebHome.Helper
                         姓名 = null,
                         合約編號 = null,
                         信託 = null,
-                        摘要 = $"其他營業收入-{((Naming.PaymentTransactionType)i.TransactionType).ToString()}-{String.Join("/", i.PaymentTransaction.PaymentOrder.Select(o => o.MerchandiseWindow.ProductName))}({i.PaymentType})",
+                        摘要 = $"其他營業收入-{String.Join("/", i.PaymentTransaction.PaymentOrder.Select(o => o.MerchandiseWindow.ProductName))}({i.PaymentType})",
                         退款金額_含稅 = null,
                         收款金額_含稅 = i.PayoffAmount,
                         借方金額 = null,
-                        貸方金額 = null,
+                        貸方金額 = (int?)Math.Round(i.PayoffAmount.Value / 1.05m, MidpointRounding.AwayFromZero),
                     });
 
             //作廢或折讓
@@ -299,13 +299,13 @@ namespace WebHome.Helper
                                 買受人統編 = i.InvoiceID.HasValue
                                           ? i.InvoiceItem.InvoiceBuyer.IsB2C() ? "--" : i.InvoiceItem.InvoiceBuyer.ReceiptNo
                                           : "--",
-                                姓名 = i.TuitionInstallment.IntuitionCharge.RegisterLesson.UserProfile.FullName(),
+                                姓名 = null,
                                 合約編號 = null,
                                 信託 = null,
                                 摘要 = i.InvoiceItem.InvoiceCancellation != null
-                                        ? $"(沖:{i.PayoffDate:yyyyMMdd}-作廢)其他營業收入-{((Naming.PaymentTransactionType)i.TransactionType).ToString()}-{String.Join("/", i.PaymentTransaction.PaymentOrder.Select(o => o.MerchandiseWindow.ProductName))}"
+                                        ? $"(沖:{i.PayoffDate:yyyyMMdd}-作廢)其他營業收入-{(Naming.PaymentTransactionType?)i.TransactionType}-{String.Join("/", i.PaymentTransaction.PaymentOrder.Select(o => o.MerchandiseWindow.ProductName))}"
                                         //(沖:20190104-作廢)課程顧問費用-CFA201810091870-00-林妍君
-                                        : $"(沖:{i.PayoffDate:yyyyMMdd}-折讓)其他營業收入-{((Naming.PaymentTransactionType)i.TransactionType).ToString()}-{String.Join("/", i.PaymentTransaction.PaymentOrder.Select(o => o.MerchandiseWindow.ProductName))}",
+                                        : $"(沖:{i.PayoffDate:yyyyMMdd}-折讓)其他營業收入-{(Naming.PaymentTransactionType?)i.TransactionType}-{String.Join("/", i.PaymentTransaction.PaymentOrder.Select(o => o.MerchandiseWindow.ProductName))}",
                                 退款金額_含稅 = i.AllowanceID.HasValue
                                                 ? (int?)(i.InvoiceAllowance.TotalAmount + i.InvoiceAllowance.TaxAmount)
                                                 : i.PayoffAmount,
@@ -318,6 +318,26 @@ namespace WebHome.Helper
                                 ));
 
             return details;
+        }
+        public static IEnumerable<DailyBranchReportItem> BuildDailyPaymentReportForBranch(this IEnumerable<PaymentMonthlyReportItem> details, BranchStore branch)
+        {
+            var items = details.Where(d => d.分店 == branch.BranchName);
+            IEnumerable<DailyBranchReportItem> results = items.GroupBy(d => d.日期).Select(g => new DailyBranchReportItem
+            {
+                日期 = g.Key,
+                收款總計 = g.Sum(i => i.收款金額_含稅),
+                現金收款 = g.Where(i => i.摘要.Contains("現金")).Sum(i => i.收款金額_含稅),
+                轉帳收款 = g.Where(i => i.摘要.Contains("轉帳")).Sum(i => i.收款金額_含稅),
+                刷卡收款 = g.Where(i => i.摘要.Contains("刷卡")).Sum(i => i.收款金額_含稅),
+                作廢總計 = g.Where(i => i.摘要.Contains("作廢")).Sum(i => i.退款金額_含稅),
+                終止退款 = g.Where(i => i.摘要.Contains("終止退款")).Sum(i => i.退款金額_含稅),
+                終止轉收 = g.Where(i => i.摘要.Contains("終止轉收")).Sum(i => i.退款金額_含稅),
+            }).ToList();
+            foreach(var r in results)
+            {
+                r.實際收款 = r.收款總計 - r.作廢總計;
+            }
+            return results;
         }
 
     }
@@ -336,6 +356,19 @@ namespace WebHome.Helper
         public String 姓名 { get; set; }
         public String 合約編號 { get; set; }
         public String 信託 { get; set; }
+    }
+
+    public class DailyBranchReportItem
+    {
+        public String 日期 { get; set; }
+        public int? 收款總計 { get; set; }
+        public int? 現金收款 { get; set; }
+        public int? 轉帳收款 { get; set; }
+        public int? 刷卡收款 { get; set; }
+        public int? 作廢總計 { get; set; }
+        public int? 實際收款 { get; set; }
+        public int? 終止退款 { get; set; }
+        public int? 終止轉收 { get; set; }
     }
 
 }

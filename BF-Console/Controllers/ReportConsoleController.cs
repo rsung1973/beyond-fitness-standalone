@@ -39,6 +39,10 @@ namespace WebHome.Controllers
         {
             return View("~/Views/ReportConsole/ReportModal/SelectMonthlyReport.cshtml");
         }
+        public ActionResult SelectCoachMonthlyReport()
+        {
+            return View("~/Views/ReportConsole/ReportModal/SelectCoachMonthlyReport.cshtml");
+        }
 
         public ActionResult SelectPeriodReport()
         {

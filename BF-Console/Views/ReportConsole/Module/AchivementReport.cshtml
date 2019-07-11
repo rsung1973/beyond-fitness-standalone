@@ -67,11 +67,11 @@
             <div class="file">
                 <a href="javascript:selectMonthlyFullAchievement();">
                     <div class="icon">
-                        <i class="zmdi livicon livicon-evo" data-options="name: piggybank.svg; size: 60px; style: original; strokeWidth:2px; autoPlay:true"></i>
+                        <i class="zmdi livicon livicon-evo" data-options="name: user.svg; size: 60px; style: original; strokeWidth:2px; autoPlay:true"></i>
                     </div>
                     <div class="file-name">
                         <p class="m-b-5 text-muted">薪資清單</p>
-                        <small>自訂條件 <span class="date text-muted"><i class="zmdi zmdi-search"></i></span></small>
+                        <small>體能顧問 <span class="date text-muted"><i class="zmdi zmdi-search"></i></span></small>
                     </div>
                 </a>
             </div>
@@ -82,11 +82,11 @@
             <div class="file">
                 <a href="javascript:selectMonthlyAchievement(true);">
                     <div class="icon">
-                        <i class="zmdi livicon livicon-evo" data-options="name: list.svg; size: 60px; style: original; strokeWidth:2px; autoPlay:true"></i>
+                        <i class="zmdi livicon livicon-evo" data-options="name: users.svg; size: 60px; style: original; strokeWidth:2px; autoPlay:true"></i>
                     </div>
                     <div class="file-name">
                         <p class="m-b-5 text-muted">上課業績明細</p>
-                        <small>自訂條件 <span class="date text-muted"><i class="zmdi zmdi-search"></i></span></small>
+                        <small>體能顧問 <span class="date text-muted"><i class="zmdi zmdi-search"></i></span></small>
                     </div>
                 </a>
             </div>
@@ -96,13 +96,13 @@
     <script>
         function selectMonthlyAchievement(detailsOnly) {
             showLoading();
-            $.post('@Html.Raw(Url.Action("SelectMonthlyReport","ReportConsole"))', {}, function (data) {
+            $.post('@Html.Raw(Url.Action("SelectCoachMonthlyReport","ReportConsole"))', {}, function (data) {
                 hideLoading();
                 if ($.isPlainObject(data)) {
                     swal(data.message);
                 } else {
-                    $global.doQuery = function (settlementDate) {
-                        $('').launchDownload('@Html.Raw(Url.Action("CreateAchievementXlsx","Accounting"))', { 'achievementDateFrom': settlementDate, 'bypassCondition': true, 'detailsOnly': detailsOnly }, 'report', true);
+                    $global.doQuery = function (settlementDate, coachID) {
+                        $('').launchDownload('@Html.Raw(Url.Action("CreateAchievementXlsx","Accounting"))', { 'achievementDateFrom': settlementDate, 'bypassCondition': true, 'detailsOnly': detailsOnly, 'coachID': coachID }, 'report', true);
                     }
                     $(data).appendTo($('body'));
                 }
@@ -111,13 +111,13 @@
 
         function selectMonthlyFullAchievement() {
             showLoading();
-            $.post('@Html.Raw(Url.Action("SelectMonthlyReport","ReportConsole"))', {}, function (data) {
+            $.post('@Html.Raw(Url.Action("SelectCoachMonthlyReport","ReportConsole"))', {}, function (data) {
                 hideLoading();
                 if ($.isPlainObject(data)) {
                     swal(data.message);
                 } else {
-                    $global.doQuery = function (settlementDate) {
-                        $('').launchDownload('@Html.Raw(Url.Action("CreateFullAchievementXlsx","Accounting"))', { 'achievementDateFrom': settlementDate, 'bypassCondition': true }, 'report', true);
+                    $global.doQuery = function (settlementDate, coachID) {
+                        $('').launchDownload('@Html.Raw(Url.Action("CreateFullAchievementXlsx","Accounting"))', { 'achievementDateFrom': settlementDate, 'bypassCondition': true, 'coachID': coachID }, 'report', true);
                     }
                     $(data).appendTo($('body'));
                 }
