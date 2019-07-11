@@ -27,7 +27,8 @@
             <div class="modal-header">
                 <a href="#" class="closebutton" data-dismiss="modal"></a>
             </div>
-            <div class="row clearfix">
+            <div class="modal-body">
+                <div class="row clearfix">
                 @{
                     String insertPartial = ViewBag.InsertPartial as String;
                     if (insertPartial != null)
@@ -44,13 +45,12 @@
                     </div>
                 </div>
             </div>
-            <div class="modal-body">
                 <ul class="new_friend_list list-unstyled row">
                     @if (ViewBag.SelectAll == true)
                     {
                         <li class="col-lg-4 col-md-4 col-6">
                             <a href="javascript:commitCoach();">
-                                <img src="images/avatar/avatar.png" class="img-thumbnail popfit" />
+                                <img src="images/avatar/avatars.png" class="img-thumbnail popfit" />
                                 <h6 class="users_name">全部</h6>
                             </a>
                         </li>
