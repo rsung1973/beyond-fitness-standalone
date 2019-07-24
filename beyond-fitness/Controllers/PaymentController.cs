@@ -2064,10 +2064,35 @@ namespace WebHome.Controllers
                 table.Columns[5].ColumnName = "收款金額(含稅)";
                 ds.Tables.Add(table);
 
+                List<String> days = new List<string>();
+                for (int i = 0; i < (viewModel.PayoffDateTo - viewModel.PayoffDateFrom).Value.TotalDays; i++)
+                {
+                    days.Add($"{viewModel.PayoffDateFrom.Value.AddDays(i):yyyyMMdd}");
+                }
+
                 foreach (var branch in models.GetTable<BranchStore>())
                 {
-                    table = details.BuildDailyPaymentReportForBranch(branch).ToDataTable();
+                    var data = details.BuildDailyPaymentReportForBranch(branch).ToList();
+                    foreach (var emptyItem in days.Except(data.Select(d => d.日期)))
+                    {
+                        data.Add(new DailyBranchReportItem
+                        {
+                            日期 = emptyItem
+                        });
+                    }
+                    table = data.OrderBy(d => d.日期).ToDataTable();
                     table.TableName = branch.BranchName;
+                    ds.Tables.Add(table);
+                }
+
+                if (!details.Any(d => d.摘要.StartsWith("課程顧問費用") && d.信託 == ""))
+                {
+                    table = details.Where(d => d.信託 == "是").BuildContractPaymentReport(models);
+                    table.TableName = "課程顧問費用彙總-信託";
+                    ds.Tables.Add(table);
+
+                    table = details.Where(d => d.信託 == "否").BuildContractPaymentReport(models);
+                    table.TableName = "課程顧問費用彙總-非信託";
                     ds.Tables.Add(table);
                 }
 

@@ -18,7 +18,7 @@ namespace WebHome.Helper
 {
     public static class ReportExtensionMethods
     {
-        public static DataTable CreateLessonAchievementDetails<TEntity>(this ModelSource<TEntity> models,IQueryable<LessonTime> items)
+        public static DataTable CreateLessonAchievementDetails<TEntity>(this ModelSource<TEntity> models, IQueryable<LessonTime> items)
             where TEntity : class, new()
         {
             DataTable table = new DataTable();
@@ -73,7 +73,11 @@ namespace WebHome.Helper
                 r[8] = branch.BranchName;
                 var discount = contract.CourseContractType.GroupingLessonDiscount;
                 r[9] = count * contract.LessonPriceType.ListPrice * discount.GroupingMemberCount * discount.PercentageOfDiscount / 100;
-                r[10] = contract.ContractTrustSettlement.Any() ? "是" : "否";
+                r[10] = contract.Entrusted == true
+                    ? "是"
+                    : contract.Entrusted == false
+                        ? "否"
+                        : "";
                 table.Rows.Add(r);
             }
 
@@ -197,7 +201,7 @@ namespace WebHome.Helper
             IQueryable<RegisterLesson> lessons = models.GetTable<RegisterLesson>()
                     .Join(models.GetTable<LessonTime>().PILesson(), r => r.RegisterID, l => l.RegisterID, (r, l) => r);
             IQueryable<Payment> items = models.GetTable<Payment>().Join(models.GetTable<TuitionInstallment>()
-                    .Join(lessons, 
+                    .Join(lessons,
                         t => t.RegisterID, r => r.RegisterID, (t, r) => t),
                 p => p.PaymentID, t => t.InstallmentID, (p, t) => p);
 
@@ -214,10 +218,10 @@ namespace WebHome.Helper
                                   : "--",
                         姓名 = i.TuitionInstallment.IntuitionCharge.RegisterLesson.UserProfile.FullName(),
                         合約編號 = null,
-                        信託 = null,                       
-                        摘要 =  $"銷貨收入-自主訓練{i.TuitionInstallment.IntuitionCharge.RegisterLesson.LessonTime.First().ClassTime:yyyyMMdd}-{i.TuitionInstallment.IntuitionCharge.RegisterLesson.UserProfile.RealName}({i.PaymentType})",
-                        退款金額_含稅 =  null,
-                        收款金額_含稅 =  i.PayoffAmount,
+                        信託 = null,
+                        摘要 = $"銷貨收入-自主訓練{i.TuitionInstallment.IntuitionCharge.RegisterLesson.LessonTime.First().ClassTime:yyyyMMdd}-{i.TuitionInstallment.IntuitionCharge.RegisterLesson.UserProfile.RealName}({i.PaymentType})",
+                        退款金額_含稅 = null,
+                        收款金額_含稅 = i.PayoffAmount,
                         借方金額 = null,
                         貸方金額 = (int?)Math.Round(i.PayoffAmount.Value / 1.05m, MidpointRounding.AwayFromZero),
                     });
@@ -333,12 +337,65 @@ namespace WebHome.Helper
                 終止退款 = g.Where(i => i.摘要.Contains("終止退款")).Sum(i => i.退款金額_含稅),
                 終止轉收 = g.Where(i => i.摘要.Contains("終止轉收")).Sum(i => i.退款金額_含稅),
             }).ToList();
-            foreach(var r in results)
+            foreach (var r in results)
             {
                 r.實際收款 = r.收款總計 - r.作廢總計;
             }
             return results;
         }
+
+        public static DataTable BuildContractPaymentReport<TEntity>(this IEnumerable<PaymentMonthlyReportItem> details, ModelSource<TEntity> models)
+            where TEntity : class, new()
+        {
+            List<DataItem> results = new List<DataItem>();
+            DataItem subtotal = new DataItem
+            {
+                A = "總計"
+            };
+            foreach(var branch in models.GetTable<BranchStore>())
+            {
+                var items = details.Where(d => d.分店 == branch.BranchName);
+                var i = new DataItem
+                {
+                    A = branch.BranchName,
+                    B = (items.Where(d => d.摘要.StartsWith("課程顧問費用")).Sum(d => d.收款金額_含稅) ?? 0)
+                            - (items.Where(d => d.摘要.Contains("課程顧問費用")).Where(d => d.摘要.Contains("作廢") || d.摘要.Contains("折讓")).Sum(d => d.退款金額_含稅) ?? 0),
+                    C = items.Where(d => d.摘要.Contains("終止退款")).Sum(d => d.退款金額_含稅) ?? 0,
+                    D = items.Where(d => d.摘要.Contains("終止轉收")).Sum(d => d.退款金額_含稅) ?? 0,
+                    E = items.Where(d => d.摘要.StartsWith("課程顧問費用")).Sum(d => d.貸方金額) ?? 0,
+                    F = items.Where(d => d.摘要.Contains("終止退款")).Sum(d => d.借方金額) ?? 0,
+                    G = items.Where(d => d.摘要.Contains("終止轉收")).Sum(d => d.借方金額) ?? 0,
+                };
+                subtotal.B += i.B;
+                subtotal.C += i.C;
+                subtotal.D += i.D;
+                subtotal.E += i.E;
+                subtotal.F += i.F;
+                subtotal.G += i.G;
+                results.Add(i);
+            }
+            results.Add(subtotal);
+            DataTable table = results.ToDataTable();
+            table.Columns[0].ColumnName = "分店/全部";
+            table.Columns[1].ColumnName = "新增(含稅)";
+            table.Columns[2].ColumnName = "終止退款(含稅)";
+            table.Columns[3].ColumnName = "終止轉收(含稅)";
+            table.Columns[4].ColumnName = "新增(未稅)";
+            table.Columns[5].ColumnName = "終止退款(未稅)";
+            table.Columns[6].ColumnName = "終止轉收(未稅)";
+            return table;
+        }
+
+        class DataItem
+        {
+            public String A { get; set; }
+            public int B { get; set; }
+            public int C { get; set; }
+            public int D { get; set; }
+            public int E { get; set; }
+            public int F { get; set; }
+            public int G { get; set; }
+        };
 
     }
 

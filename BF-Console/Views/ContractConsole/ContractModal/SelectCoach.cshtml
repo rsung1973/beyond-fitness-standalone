@@ -87,9 +87,10 @@
                         $(this).css('display', 'block');
                     });
                 } else {
+                    var regex = new RegExp(userName, 'i');
                     $('#@(_dialogID) li').each(function (idx, element) {
                         var $this = $(this);
-                        if ($this.text().indexOf(userName) >= 0) {
+                        if ($this.text().search(regex) >= 0) {
                             $this.css('display', 'block');
                         } else {
                             $this.css('display', 'none');
