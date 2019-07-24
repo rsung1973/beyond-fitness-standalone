@@ -781,7 +781,12 @@ namespace WebHome.Controllers
                     var contract = lesson.RegisterLessonContract.CourseContract;
                     if (contract.Expiration.Value < DateTime.Today)
                     {
-                        return View("~/Views/Shared/MessageView.ascx", model: "學員合約已過期!!");
+                        return View("~/Views/Shared/MessageView.ascx", model: "合約已過期!!");
+                    }
+
+                    if (contract.Expiration.Value < viewModel.ClassDate.Value.AddDays(1))
+                    {
+                        return View("~/Views/Shared/MessageView.ascx", model: "合約尚未生效或已過期!!");
                     }
 
                     var lessonCount = lesson.GroupingLesson.LessonTime.Count;

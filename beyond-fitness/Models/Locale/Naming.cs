@@ -194,6 +194,7 @@ namespace WebHome.Models.Locale
 
         public enum ProfessionalCategory
         {
+            Preliminary = 1100,
             舊制 = 1101,
             新制 = 1102,
             Special = 1103,
@@ -205,6 +206,7 @@ namespace WebHome.Models.Locale
 
         public enum ProfessionLevelDefinition
         {
+            Preliminary = 0,
             FM_1st = 1,
             AFM_1st = 2,
             Level_5_1st = 14,

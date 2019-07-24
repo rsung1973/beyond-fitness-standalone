@@ -665,6 +665,31 @@ namespace WebHome.Controllers
                 return View("~/Views/Shared/MessageView.ascx");
             }
 
+            foreach (var regles in item.RegisterLesson.GroupingLesson.RegisterLesson)
+            {
+                var contract = regles.RegisterLessonContract?.CourseContract;
+                if (contract != null)
+                {
+                    if (timeItem.ClassTime.Value.AddDays(1) > contract.Expiration)
+                    {
+                        ViewBag.Message = "合約尚未生效或已過期!!";
+                        return View("~/Views/Shared/MessageView.ascx");
+                    }
+                }
+                else
+                {
+                    var entpContract = regles.RegisterLessonEnterprise?.EnterpriseCourseContract;
+                    if (entpContract != null)
+                    {
+                        if (timeItem.ClassTime.Value.AddDays(1) > entpContract.Expiration)
+                        {
+                            ViewBag.Message = "合約尚未生效或已過期!!";
+                            return View("~/Views/Shared/MessageView.ascx");
+                        }
+                    }
+                }
+            }
+
             models.DeleteAll<LessonTimeExpansion>(t => t.LessonID == item.LessonID);
 
             //item.InvitedCoach = viewModel.CoachID;

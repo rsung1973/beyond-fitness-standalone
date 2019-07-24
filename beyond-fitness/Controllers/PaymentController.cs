@@ -197,7 +197,7 @@ namespace WebHome.Controllers
                 viewModel.CostAmount = new int?[] { viewModel.PayoffAmount };
                 viewModel.UnitCost = new int?[] { viewModel.PayoffAmount };
                 viewModel.Piece = new int?[] { 1 };
-                viewModel.ItemRemark = new string[] { viewModel.Remark };
+                viewModel.ItemRemark = new string[] { null };
             }
             else
             {
@@ -207,7 +207,7 @@ namespace WebHome.Controllers
                 viewModel.CostAmount = new int?[] { (viewModel.PayoffAmount * 8 + 5) / 10, (viewModel.PayoffAmount * 2 + 5) / 10 };
                 viewModel.UnitCost = new int?[] { (viewModel.PayoffAmount * 8 + 5) / 10, (viewModel.PayoffAmount * 2 + 5) / 10 };
                 viewModel.Piece = new int?[] { 1, 1 };
-                viewModel.ItemRemark = new string[] { viewModel.Remark, null };
+                viewModel.ItemRemark = new string[] { null, null };
             }
 
             InvoiceItem invoice = null;
@@ -426,7 +426,7 @@ namespace WebHome.Controllers
             viewModel.CostAmount = new int?[] { viewModel.PayoffAmount };
             viewModel.UnitCost = new int?[] { viewModel.PayoffAmount };
             viewModel.Piece = new int?[] { 1 };
-            viewModel.ItemRemark = new string[] { viewModel.Remark };
+            viewModel.ItemRemark = new string[] { null };
 
             var invoice = checkInvoiceNo(viewModel);
 
@@ -544,7 +544,7 @@ namespace WebHome.Controllers
                     viewModel.CostAmount = new int?[] { totalAmt, viewModel.PayoffAmount - totalAmt };
                     viewModel.UnitCost = new int?[] { product.UnitPrice, viewModel.PayoffAmount - totalAmt };
                     viewModel.Piece = new int?[] { viewModel.ProductCount, 1 };
-                    viewModel.ItemRemark = new string[] { viewModel.Remark, null };
+                    viewModel.ItemRemark = new string[] { null, null };
                 }
                 else
                 {
@@ -553,7 +553,7 @@ namespace WebHome.Controllers
                     viewModel.CostAmount = new int?[] { product.UnitPrice * viewModel.ProductCount };
                     viewModel.UnitCost = new int?[] { product.UnitPrice };
                     viewModel.Piece = new int?[] { viewModel.ProductCount };
-                    viewModel.ItemRemark = new string[] { viewModel.Remark };
+                    viewModel.ItemRemark = new string[] { null };
                 }
             }
 

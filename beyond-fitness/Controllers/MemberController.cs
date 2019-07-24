@@ -398,6 +398,13 @@ namespace WebHome.Controllers
                 }
 
             }
+            else
+            {
+                if (item.ServingCoach != null)
+                {
+                    item.ServingCoach.LevelID = (int)Naming.ProfessionLevelDefinition.Preliminary;
+                }
+            }
 
             item.RealName = viewModel.RealName;
             item.Phone = viewModel.Phone;

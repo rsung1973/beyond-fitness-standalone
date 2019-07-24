@@ -33,9 +33,9 @@ namespace WebHome.Controllers
             return View();
         }
 
-        public ActionResult RegisterGiftLesson()
+        public ActionResult RegisterGiftLesson(int?[] uid)
         {
-            models.RegisterMonthlyGiftLesson();
+            models.RegisterMonthlyGiftLesson(uid);
             return Json(new { result = true }, JsonRequestBehavior.AllowGet);
         }
     }

@@ -15,7 +15,7 @@ namespace WebHome.Helper
 {
     public static class LessonAffairsExtensionMethods
     {
-        public static void RegisterMonthlyGiftLesson<TEntity>(this ModelSource<TEntity> models)
+        public static void RegisterMonthlyGiftLesson<TEntity>(this ModelSource<TEntity> models,int?[] uid=null)
                     where TEntity : class, new()
         {
             var price = models.GetTable<LessonPriceType>().Where(l => l.IsWelfareGiftLesson != null).FirstOrDefault();
@@ -27,6 +27,11 @@ namespace WebHome.Helper
                     .Where(m => m.MonthlyGiftLessons > 0)
                     .Where(y => !y.UserProfile.RegisterLesson.Any(r => r.ClassLevel == price.PriceID
                           && r.RegisterDate >= startDate && r.RegisterDate < endDate));
+
+                if (uid != null && uid.Length > 0)
+                {
+                    items = items.Where(m => uid.Contains(m.UID));
+                }
 
                 if (items.Count() > 0)
                 {

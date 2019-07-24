@@ -848,6 +848,58 @@ namespace WebHome.Helper
             return (fullAchievement ?? 0) + (halfAchievement ?? 0);
         }
 
+        public static int CalcLearnerContractAchievement(this IQueryable<LessonTime> items, out int count, bool filterData = true)
+        {
+            var lessonItems = filterData
+                ? items.Where(l => l.RegisterLesson.RegisterLessonContract != null)
+                : items;
+            count = lessonItems.Count();
+            return lessonItems.Sum(l => l.RegisterLesson.LessonPriceType.ListPrice * l.RegisterLesson.GroupingMemberCount * l.RegisterLesson.GroupingLessonDiscount.PercentageOfDiscount / 100) ?? 0;
+        }
+
+        public static int CalcPISessionAchievement(this IQueryable<LessonTime> items, out int count, bool filterData = true)
+        {
+            var lessonItems = filterData
+                ? items.Where(l => l.RegisterLesson.LessonPriceType.Status == (int)Naming.LessonPriceStatus.自主訓練)
+                : items;
+            count = lessonItems.Count();
+            return lessonItems.Sum(l => l.RegisterLesson.LessonPriceType.ListPrice) ?? 0;
+        }
+
+
+        public static int CalcEnterpriseContractAchievement(this IQueryable<LessonTime> items, out int count, bool filterData = true)
+        {
+            var lessonItems = filterData
+                ? items.Where(l => l.RegisterLesson.RegisterLessonEnterprise != null)
+                : items;
+            count = lessonItems.Count();
+            return lessonItems.Sum(l => l.RegisterLesson.RegisterLessonEnterprise.EnterpriseCourseContent.ListPrice) ?? 0;
+        }
+
+        public static int CalcEnterprisePISessionAchievement(this IQueryable<LessonTime> items, out int count, bool filterData = true)
+        {
+            var lessonItems = filterData
+                ? items.Where(l => l.RegisterLesson.RegisterLessonEnterprise != null && l.RegisterLesson.RegisterLessonEnterprise.EnterpriseCourseContent.EnterpriseLessonType.Status == (int)Naming.LessonPriceStatus.自主訓練)
+                : items;
+            count = lessonItems.Count();
+            return lessonItems.Sum(l => l.RegisterLesson.RegisterLessonEnterprise.EnterpriseCourseContent.ListPrice) ?? 0;
+        }
+
+        public static int CalcPTSessionAchievement(this IQueryable<LessonTime> items, out int count)
+        {
+            int subtotal = items.CalcLearnerContractAchievement(out int contractCount) + items.CalcEnterpriseContractAchievement(out int entpCount);
+            count = contractCount + entpCount;
+            return subtotal;
+        }
+
+        public static int CalcLearnerPISessionAchievement(this IQueryable<LessonTime> items, out int count)
+        {
+            int subtotal = items.CalcPISessionAchievement(out count) + items.CalcEnterprisePISessionAchievement(out int entpCount);
+            count += entpCount;
+            return subtotal;
+        }
+
+
         public static int CalcAchievement<TEntity>(this ModelSource<TEntity> models, IEnumerable<LessonTime> items, out int shares)
             where TEntity : class, new()
         {

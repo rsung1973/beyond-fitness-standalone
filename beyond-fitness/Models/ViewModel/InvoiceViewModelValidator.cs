@@ -143,6 +143,7 @@ namespace WebHome.Models.ViewModel
                 InvoiceCarrier = _carrier,
                 InvoiceDonation = _donation,
                 PrintMark = _carrier == null ? "Y" : "N",
+                Remark = _invItem.Remark,
             };
 
             _newItem.InvoiceDetails.AddRange(_productItems.Select(p => new InvoiceDetails

@@ -29,7 +29,7 @@ namespace WebHome.Helper
                 {
                     Buyer = new WebHome.Models.MIG3_1.C0401.MainBuyer
                     {
-                        Address = item.InvoiceBuyer.Address.GetEfficientStringMaxSize(0,100).InsteadOfNullOrEmpty(""),
+                        Address = item.InvoiceBuyer.Address.GetEfficientStringMaxSize(0, 100).InsteadOfNullOrEmpty(""),
                         CustomerNumber = item.InvoiceBuyer.CustomerNumber.GetEfficientStringMaxSize(0, 20).InsteadOfNullOrEmpty(""),
                         EmailAddress = item.InvoiceBuyer.EMail.GetEfficientStringMaxSize(0, 80).InsteadOfNullOrEmpty(""),
                         FacsimileNumber = item.InvoiceBuyer.Fax.GetEfficientStringMaxSize(0, 26).InsteadOfNullOrEmpty(""),
@@ -65,7 +65,7 @@ namespace WebHome.Helper
                     InvoiceTime = item.InvoiceDate.Value,
                     //InvoiceTimeSpecified = false,
                     InvoiceNumber = String.Format("{0}{1}", item.TrackCode, item.No),
-                    MainRemark = item.Remark,
+                    MainRemark = item.Remark.GetEfficientStringMaxSize(0, 200),
                     //PermitNumber = item.PermitNumber,
                     //PermitDate = item.PermitDate.HasValue ? String.Format("{0:yyyyMMdd}", item.PermitDate.Value) : null,
                     //PermitWord = item.PermitWord,
@@ -119,7 +119,7 @@ namespace WebHome.Helper
                         Description = detailItem.InvoiceProduct.Brief,
                         Quantity = productItem.Piece.HasValue ? productItem.Piece.Value : 0,
                         RelateNumber = productItem.RelateNumber,
-                        Remark = productItem.Remark,
+                        Remark = productItem.Remark.GetEfficientStringMaxSize(0,40),
                         SequenceNumber = String.Format("{0:00}", productItem.No),
                         Unit = productItem.PieceUnit,
                         UnitPrice = productItem.UnitCost.HasValue ? productItem.UnitCost.Value : 0,

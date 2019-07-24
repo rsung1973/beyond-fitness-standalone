@@ -44,6 +44,7 @@ namespace WebHome.Helper
                 where TEntity : class, new()
         {
             return models.GetTable<ServingCoach>()
+                    .Where(c => c.LevelID > (int)Naming.ProfessionLevelDefinition.Preliminary)
                     .Join(models.GetTable<UserProfile>()
                             .Where(u => u.LevelID == (int)Naming.MemberStatusDefinition.Checked),
                         c => c.CoachID, u => u.UID, (c, u) => c);
