@@ -42,7 +42,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-2 col-md-3 col-sm-6">
+        @*<div class="col-lg-2 col-md-3 col-sm-6">
             <div class="card">
                 <div class="file">
                     <a href="#">
@@ -56,7 +56,7 @@
                     </a>
                 </div>
             </div>
-        </div>
+        </div>*@
         <div class="col-lg-2 col-md-3 col-sm-6">
             <div class="card">
                 <div class="file">
@@ -72,7 +72,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-2 col-md-3 col-sm-6">
+        @*<div class="col-lg-2 col-md-3 col-sm-6">
             <div class="card">
                 <div class="file">
                     <a href="javascript:$('').launchDownload('@Html.Raw(Url.Action("CreateAchievementXlsx","Accounting"))', { 'achievementDateFrom': '@($"{DateTime.Today.FirstDayOfMonth().AddMonths(-1):yyyy/MM/dd}")', 'bypassCondition': true ,'detailsOnly': true }, 'report',true);">
@@ -86,7 +86,7 @@
                     </a>
                 </div>
             </div>
-        </div>
+        </div>*@
     </div>
 <div class="row clearfix">
     <div class="col-12">
@@ -112,11 +112,11 @@
             <div class="file">
                 <a href="javascript:selectMonthlyAchievement(true);">
                     <div class="icon">
-                        <i class="zmdi livicon livicon-evo" data-options="name: users.svg; size: 60px; style: original; strokeWidth:2px; autoPlay:true"></i>
+                        <i class="zmdi livicon livicon-evo" data-options="name: magic.svg; size: 60px; style: original; strokeWidth:2px; autoPlay:true"></i>
                     </div>
                     <div class="file-name">
-                        <p class="m-b-5 text-muted">上課業績明細</p>
-                        <small>體能顧問 <span class="date text-muted"><i class="zmdi zmdi-search"></i></span></small>
+                        <p class="m-b-5 text-muted">上課業績彙總表</p>
+                        <small>自訂條件 <span class="date text-muted"><i class="zmdi zmdi-search"></i></span></small>
                     </div>
                 </a>
             </div>
@@ -132,7 +132,7 @@
                     swal(data.message);
                 } else {
                     $global.doQuery = function (settlementDate, coachID) {
-                        $('').launchDownload('@Html.Raw(Url.Action("CreateAchievementXlsx","Accounting"))', { 'achievementDateFrom': settlementDate, 'bypassCondition': true, 'detailsOnly': detailsOnly, 'coachID': coachID }, 'report', true);
+                        $('').launchDownload('@Html.Raw(Url.Action("CreateAchievementSummaryXlsx","Accounting"))', { 'achievementDateFrom': settlementDate, 'bypassCondition': true, 'detailsOnly': detailsOnly, 'coachID': coachID }, 'report', true);
                     }
                     $(data).appendTo($('body'));
                 }

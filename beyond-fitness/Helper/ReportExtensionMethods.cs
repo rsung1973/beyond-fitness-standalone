@@ -24,7 +24,7 @@ namespace WebHome.Helper
             DataTable table = new DataTable();
             table.Columns.Add(new DataColumn("合約編號", typeof(String)));
             table.Columns.Add(new DataColumn("體能顧問", typeof(String)));
-            table.Columns.Add(new DataColumn("合約分店", typeof(String)));
+            table.Columns.Add(new DataColumn("簽約場所", typeof(String)));
             table.Columns.Add(new DataColumn("學員", typeof(String)));
             table.Columns.Add(new DataColumn("合約名稱", typeof(String)));
             table.Columns.Add(new DataColumn("課程單價", typeof(int)));
@@ -33,6 +33,8 @@ namespace WebHome.Helper
             table.Columns.Add(new DataColumn("上課地點", typeof(String)));
             table.Columns.Add(new DataColumn("累計上課金額", typeof(int)));
             table.Columns.Add(new DataColumn("是否信託", typeof(String)));
+            table.Columns.Add(new DataColumn("課程代碼", typeof(int)));
+            table.Columns.Add(new DataColumn("體能顧問所屬分店", typeof(String)));
 
             var details = items.Where(t => t.RegisterLesson.RegisterLessonContract != null)
                 .GroupBy(t => new
@@ -78,6 +80,13 @@ namespace WebHome.Helper
                     : contract.Entrusted == false
                         ? "否"
                         : "";
+                if (contract.LessonPriceType.Status.HasValue)
+                {
+                    r[11] = contract.LessonPriceType.Status.Value;
+                }
+                r[12] = coach.CoachWorkplace.Count == 1
+                            ? coach.CoachWorkplace.First().BranchStore.BranchName
+                            : "其他";
                 table.Rows.Add(r);
             }
 
@@ -121,15 +130,20 @@ namespace WebHome.Helper
                 r[8] = branch.BranchName;
                 r[9] = count * lesson.RegisterLessonEnterprise.EnterpriseCourseContent.ListPrice
                         * lesson.GroupingLessonDiscount.PercentageOfDiscount / 100;
+                r[11] = (int)Naming.LessonPriceStatus.企業合作方案;
+                r[12] = coach.CoachWorkplace.Count == 1
+                            ? coach.CoachWorkplace.First().BranchStore.BranchName
+                            : "其他";
                 table.Rows.Add(r);
             }
 
             var others = items.Where(t => t.RegisterLesson.RegisterLessonContract == null && t.RegisterLesson.RegisterLessonEnterprise == null);
             foreach (var item in others)
             {
+                var coach = item.AsAttendingCoach;
                 var r = table.NewRow();
                 r[0] = "--";
-                r[1] = item.AsAttendingCoach.UserProfile.FullName();
+                r[1] = coach.UserProfile.FullName();
                 if (item.BranchID.HasValue)
                     r[2] = item.BranchStore.BranchName;
 
@@ -137,12 +151,21 @@ namespace WebHome.Helper
 
                 r[4] = item.RegisterLesson.LessonPriceType.Description
                     + " (" + item.RegisterLesson.LessonPriceType.DurationInMinutes + " 分鐘)";
-                r[5] = item.RegisterLesson.LessonPriceType.ListPrice;
+                r[9] = r[5] = item.RegisterLesson.LessonPriceType.ListPrice;
                 var halfCount = item.LessonAttendance == null || item.LessonPlan.CommitAttendance.HasValue ? 1 : 0;
                 r[6] = 1 - halfCount;
                 r[7] = halfCount;
                 if (item.BranchID.HasValue)
+                {
                     r[8] = item.BranchStore.BranchName;
+                }
+                if (item.RegisterLesson.LessonPriceType.Status.HasValue)
+                {
+                    r[11] = item.RegisterLesson.LessonPriceType.Status.Value;
+                }
+                r[12] = coach.CoachWorkplace.Count == 1
+                            ? coach.CoachWorkplace.First().BranchStore.BranchName
+                            : "其他";
                 table.Rows.Add(r);
             }
 

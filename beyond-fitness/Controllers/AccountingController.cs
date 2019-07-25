@@ -1409,18 +1409,27 @@ namespace WebHome.Controllers
 
         public ActionResult CreateAchievementSummaryXlsx(AchievementQueryViewModel viewModel)
         {
-            ViewResult result = (ViewResult)InquireAchievement(viewModel);
-            IQueryable<LessonTime> items = (IQueryable<LessonTime>)result.Model;
+            IQueryable<LessonTime> items;
+            var detailsTable = createAchievementDetailsXlsx(viewModel,out items);
+            detailsTable.TableName = $"{viewModel.AchievementDateFrom:yyyyMM} 上課明細";
 
-            if (items == null)
+            var tableItems = detailsTable.Rows.Cast<DataRow>();
+            foreach (var item in tableItems
+                                    .Where(l => l[11].Equals((int)Naming.LessonPriceStatus.員工福利課程)
+                                        || l[11].Equals((int)Naming.LessonPriceStatus.點數兌換課程)))
             {
-                return result;
+                item[5] = item[9] = 0;
             }
+
+            int?[] PTSessionScope = new int?[]
+            {
+                    (int)Naming.LessonPriceStatus.一般課程,
+                    (int)Naming.LessonPriceStatus.企業合作方案,
+                    (int)Naming.LessonPriceStatus.已刪除
+            };
 
             DataTable buildBranchDetails()
             {
-                //上課日期	上課時間	上課地點	上課時間長度	體能顧問姓名	姓名	簽到時間
-
                 DataTable table = new DataTable();
                 table.Columns.Add(new DataColumn("上課場所", typeof(String)));
                 table.Columns.Add(new DataColumn("P.T上課總數", typeof(int)));
@@ -1428,25 +1437,41 @@ namespace WebHome.Controllers
                 table.Columns.Add(new DataColumn("P.I上課總數", typeof(int)));
                 table.Columns.Add(new DataColumn("P.I計上課金額", typeof(int)));
                 table.Columns.Add(new DataColumn("T.S上課總數", typeof(int)));
+                table.Columns.Add(new DataColumn("點數兌換上課總數", typeof(int)));
+                table.Columns.Add(new DataColumn("員工福利上課總數", typeof(int)));
 
                 DataRow r;
+
                 foreach (var branch in models.GetTable<BranchStore>())
                 {
                     var branchItems = items.Where(l => l.BranchID == branch.BranchID);
                     r = table.NewRow();
                     r[0] = branch.BranchName;
-                    r[2] = branchItems.CalcPTSessionAchievement(out int count);
+
+                    var dataItems = branchItems.PTLesson();
+                    r[2] = dataItems.CalcPTSessionAchievement(out int count);
                     r[1] = count;
-                    r[4] = branchItems.CalcLearnerPISessionAchievement(out count);
+
+                    dataItems = branchItems.PILesson();
+                    r[4] = dataItems.CalcLearnerPISessionAchievement(out count);
                     r[3] = count;
-                    r[5] = branchItems.STLesson().Count();
+
+                    dataItems = branchItems.TrialLesson();
+                    r[5] = dataItems.Count();
+
+                    dataItems = branchItems.BonusLesson();
+                    r[6] = dataItems.Count();
+
+                    dataItems = branchItems.WelfareGiftLesson();
+                    r[7] = dataItems.Count();
+
                     table.Rows.Add(r);
                 }
 
                 r = table.NewRow();
                 r[0] = "總計";
                 var data = table.Rows.Cast<DataRow>();
-                for (int idx = 1; idx <= 5; idx++)
+                for (int idx = 1; idx <= 7; idx++)
                 {
                     r[idx] = data.Sum(d => (int)d[idx]);
                 }
@@ -1454,30 +1479,157 @@ namespace WebHome.Controllers
                 return table;
             }
 
+
             DataTable buildContractBranchDetails()
             {
-                //上課日期	上課時間	上課地點	上課時間長度	體能顧問姓名	姓名	簽到時間
-
                 DataTable table = new DataTable();
-                table.Columns.Add(new DataColumn("上課場所", typeof(String)));
+                table.Columns.Add(new DataColumn("簽約場所", typeof(String)));
                 table.Columns.Add(new DataColumn("P.T上課總數", typeof(int)));
                 table.Columns.Add(new DataColumn("P.T累計上課金額", typeof(int)));
+                table.Columns.Add(new DataColumn("P.I上課總數", typeof(int)));
+                table.Columns.Add(new DataColumn("P.I計上課金額", typeof(int)));
+                table.Columns.Add(new DataColumn("T.S上課總數", typeof(int)));
+                table.Columns.Add(new DataColumn("點數兌換上課總數", typeof(int)));
+                table.Columns.Add(new DataColumn("員工福利上課總數", typeof(int)));
 
                 DataRow r;
+
                 foreach (var branch in models.GetTable<BranchStore>())
                 {
-                    var branchItems = items.Where(l => l.BranchID == branch.BranchID);
+                    var branchItems = tableItems.Where(l => (String)l[2] == branch.BranchName);
                     r = table.NewRow();
                     r[0] = branch.BranchName;
-                    r[2] = branchItems.CalcPTSessionAchievement(out int count);
-                    r[1] = count;
+
+                    var dataItems = branchItems.Where(l => PTSessionScope.Contains((int?)l[11]));
+                    r[1] = dataItems.Sum(l => (int)l[6] + (int)l[7]);
+                    r[2] = dataItems.Sum(l => (int)l[9]);
+
+                    dataItems = branchItems.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.自主訓練);
+                    r[3] = dataItems.Sum(l => (int)l[6] + (int)l[7]);
+                    r[4] = dataItems.Sum(l => (int)l[9]);
+
+                    dataItems = branchItems.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.體驗課程);
+                    r[5] = dataItems.Sum(l => (int)l[6] + (int)l[7]);
+
+                    dataItems = branchItems.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.點數兌換課程);
+                    r[6] = dataItems.Sum(l => (int)l[6] + (int)l[7]);
+
+                    dataItems = branchItems.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.員工福利課程);
+                    r[7] = dataItems.Sum(l => (int)l[6] + (int)l[7]);
+
                     table.Rows.Add(r);
                 }
 
                 r = table.NewRow();
                 r[0] = "總計";
                 var data = table.Rows.Cast<DataRow>();
-                for (int idx = 1; idx <= 2; idx++)
+                for (int idx = 1; idx <= 7; idx++)
+                {
+                    r[idx] = data.Sum(d => (int)d[idx]);
+                }
+                table.Rows.Add(r);
+                return table;
+            }
+
+            DataTable buildCoachBranchDetails()
+            {
+                DataTable table = new DataTable();
+                table.Columns.Add(new DataColumn("所屬分店", typeof(String)));
+                table.Columns.Add(new DataColumn("P.T上課總數", typeof(int)));
+                table.Columns.Add(new DataColumn("P.T累計上課金額", typeof(int)));
+                table.Columns.Add(new DataColumn("P.I上課總數", typeof(int)));
+                table.Columns.Add(new DataColumn("P.I計上課金額", typeof(int)));
+                table.Columns.Add(new DataColumn("T.S上課總數", typeof(int)));
+                table.Columns.Add(new DataColumn("點數兌換上課總數", typeof(int)));
+                table.Columns.Add(new DataColumn("員工福利上課總數", typeof(int)));
+
+                DataRow r;
+
+                var branchName = models.GetTable<BranchStore>().Select(b => b.BranchName).ToList();
+                branchName.Add("其他");
+                foreach (var branch in branchName)
+                {
+                    var branchItems = tableItems.Where(l => (String)l[12] == branch);
+                    r = table.NewRow();
+                    r[0] = branch;
+
+                    var dataItems = branchItems.Where(l => PTSessionScope.Contains((int?)l[11]));
+                    r[1] = dataItems.Sum(l => (int)l[6] + (int)l[7]);
+                    r[2] = dataItems.Sum(l => (int)l[9]);
+
+                    dataItems = branchItems.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.自主訓練);
+                    r[3] = dataItems.Sum(l => (int)l[6] + (int)l[7]);
+                    r[4] = dataItems.Sum(l => (int)l[9]);
+
+                    dataItems = branchItems.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.體驗課程);
+                    r[5] = dataItems.Sum(l => (int)l[6] + (int)l[7]);
+
+                    dataItems = branchItems.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.點數兌換課程);
+                    r[6] = dataItems.Sum(l => (int)l[6] + (int)l[7]);
+
+                    dataItems = branchItems.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.員工福利課程);
+                    r[7] = dataItems.Sum(l => (int)l[6] + (int)l[7]);
+
+                    table.Rows.Add(r);
+                }
+
+                r = table.NewRow();
+                r[0] = "總計";
+                var data = table.Rows.Cast<DataRow>();
+                for (int idx = 1; idx <= 7; idx++)
+                {
+                    r[idx] = data.Sum(d => (int)d[idx]);
+                }
+                table.Rows.Add(r);
+                return table;
+            }
+
+            DataTable buildCoachDetails()
+            {
+                DataTable table = new DataTable();
+                table.Columns.Add(new DataColumn("姓名", typeof(String)));
+                table.Columns.Add(new DataColumn("所屬分店", typeof(String)));
+                table.Columns.Add(new DataColumn("P.T上課總數", typeof(int)));
+                table.Columns.Add(new DataColumn("P.T累計上課金額", typeof(int)));
+                table.Columns.Add(new DataColumn("P.I上課總數", typeof(int)));
+                table.Columns.Add(new DataColumn("P.I計上課金額", typeof(int)));
+                table.Columns.Add(new DataColumn("T.S上課總數", typeof(int)));
+                table.Columns.Add(new DataColumn("點數兌換上課總數", typeof(int)));
+                table.Columns.Add(new DataColumn("員工福利上課總數", typeof(int)));
+
+                DataRow r;
+
+                var coachItems = tableItems.GroupBy(l => (String)l[1])
+                                    .OrderBy(g => g.First()[12]);
+                foreach (var coach in coachItems)
+                {
+                    r = table.NewRow();
+                    r[0] = coach.Key;
+                    r[1] = (String)coach.First()[12];
+                    var dataItems = coach.Where(l => PTSessionScope.Contains((int?)l[11]));
+                    r[2] = dataItems.Sum(l => (int)l[6] + (int)l[7]);
+                    r[3] = dataItems.Sum(l => (int)l[9]);
+
+                    dataItems = coach.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.自主訓練);
+                    r[4] = dataItems.Sum(l => (int)l[6] + (int)l[7]);
+                    r[5] = dataItems.Sum(l => (int)l[9]);
+
+                    dataItems = coach.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.體驗課程);
+                    r[6] = dataItems.Sum(l => (int)l[6] + (int)l[7]);
+
+                    dataItems = coach.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.點數兌換課程);
+                    r[7] = dataItems.Sum(l => (int)l[6] + (int)l[7]);
+
+                    dataItems = coach.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.員工福利課程);
+                    r[8] = dataItems.Sum(l => (int)l[6] + (int)l[7]);
+
+                    table.Rows.Add(r);
+                }
+
+                r = table.NewRow();
+                r[0] = "總計";
+                var data = table.Rows.Cast<DataRow>();
+                for (int idx = 2; idx <= 8; idx++)
                 {
                     r[idx] = data.Sum(d => (int)d[idx]);
                 }
@@ -1495,9 +1647,23 @@ namespace WebHome.Controllers
 
             using (DataSet ds = new DataSet())
             {
-                var table = buildBranchDetails();
-                table.TableName = $"{viewModel.AchievementDateFrom:yyyyMM} 上課地點";
+                var table = buildContractBranchDetails();
+                table.TableName = $"{viewModel.AchievementDateFrom:yyyyMM} 簽約場所彙總";
                 ds.Tables.Add(table);
+
+                table = buildBranchDetails();
+                table.TableName = $"{viewModel.AchievementDateFrom:yyyyMM} 上課場所彙總";
+                ds.Tables.Add(table);
+
+                table = buildCoachBranchDetails();
+                table.TableName = $"{viewModel.AchievementDateFrom:yyyyMM} 體能顧問所屬分店彙總";
+                ds.Tables.Add(table);
+
+                table = buildCoachDetails();
+                table.TableName = $"{viewModel.AchievementDateFrom:yyyyMM} 體能顧問彙總";
+                ds.Tables.Add(table);
+
+                ds.Tables.Add(detailsTable);
 
                 using (var xls = ds.ConvertToExcel())
                 {
@@ -1540,7 +1706,8 @@ namespace WebHome.Controllers
                 }
                 if (viewModel.DetailsOnly != false)
                 {
-                    table = createAchievementDetailsXlsx(viewModel);
+                    IQueryable<LessonTime> items;
+                    table = createAchievementDetailsXlsx(viewModel,out items);
                     table.TableName = String.Format("{0:yyyy-MM-dd}~{1:yyyy-MM-dd}", viewModel.AchievementDateFrom, viewModel.AchievementDateTo.Value.AddMonths(1).AddDays(-1));
                     ds.Tables.Add(table);
                 }
@@ -1604,10 +1771,10 @@ namespace WebHome.Controllers
             return table;
         }
 
-        private DataTable createAchievementDetailsXlsx(AchievementQueryViewModel viewModel)
+        private DataTable createAchievementDetailsXlsx(AchievementQueryViewModel viewModel,out IQueryable<LessonTime> items)
         {
             ViewResult result = (ViewResult)InquireAchievement(viewModel);
-            IQueryable<LessonTime> items = (IQueryable<LessonTime>)result.Model;
+            items = (IQueryable<LessonTime>)result.Model;
 
             return models.CreateLessonAchievementDetails(items);
 

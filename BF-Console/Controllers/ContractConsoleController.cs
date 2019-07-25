@@ -152,7 +152,7 @@ namespace WebHome.Controllers
 
         public ActionResult CommitContract(CourseContractViewModel viewModel)
         {
-            var item = viewModel.CommitCourseContract(this, out String alertMessage);
+            var item = viewModel.CommitCourseContract(this, out String alertMessage, true);
             if (item == null)
             {
                 if (!ModelState.IsValid)
@@ -170,7 +170,7 @@ namespace WebHome.Controllers
 
         public ActionResult SaveContract(CourseContractViewModel viewModel)
         {
-            var item = viewModel.SaveCourseContract(this, out String alertMessage);
+            var item = viewModel.SaveCourseContract(this, out String alertMessage, true);
             if (item == null)
             {
                 if (!ModelState.IsValid)

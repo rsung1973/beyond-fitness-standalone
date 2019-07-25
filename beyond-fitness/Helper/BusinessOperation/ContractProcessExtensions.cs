@@ -176,7 +176,7 @@ namespace WebHome.Helper.BusinessOperation
             }
         }
 
-        public static CourseContract SaveCourseContract<TEntity>(this CourseContractViewModel viewModel, SampleController<TEntity> controller, out String alertMessage)
+        public static CourseContract SaveCourseContract<TEntity>(this CourseContractViewModel viewModel, SampleController<TEntity> controller, out String alertMessage,bool checkPayment=false)
                 where TEntity : class, new()
         {
             alertMessage = null;
@@ -203,14 +203,15 @@ namespace WebHome.Helper.BusinessOperation
                 }
             }
 
-            String paymentMethod = null;
-            if (viewModel.PaymentMethod != null)
-            {
-                paymentMethod = String.Join("/", viewModel.PaymentMethod.Where(p => p!=null && p.Length > 0)).GetEfficientString();
-            }
 
-            if (viewModel.Version == Naming.ContractVersion.Ver2019)
+            String paymentMethod = null;
+            if (checkPayment)
             {
+                if (viewModel.PaymentMethod != null)
+                {
+                    paymentMethod = String.Join("/", viewModel.PaymentMethod.Where(p => p != null && p.Length > 0)).GetEfficientString();
+                }
+
                 if (paymentMethod == null)
                 {
                     ModelState.AddModelError("PaymentMethod", "請選擇支付方式");
@@ -298,7 +299,7 @@ namespace WebHome.Helper.BusinessOperation
             return item;
         }
 
-        public static CourseContract CommitCourseContract<TEntity>(this CourseContractViewModel viewModel, SampleController<TEntity> controller, out String alertMessage)
+        public static CourseContract CommitCourseContract<TEntity>(this CourseContractViewModel viewModel, SampleController<TEntity> controller, out String alertMessage, bool checkPayment = false)
                 where TEntity : class, new()
         {
             alertMessage = null;
@@ -330,13 +331,13 @@ namespace WebHome.Helper.BusinessOperation
             }
 
             String paymentMethod = null;
-            if (viewModel.PaymentMethod != null)
+            if (checkPayment)
             {
-                paymentMethod = String.Join("/", viewModel.PaymentMethod.Where(p => p!=null && p.Length > 0)).GetEfficientString();
-            }
+                if (viewModel.PaymentMethod != null)
+                {
+                    paymentMethod = String.Join("/", viewModel.PaymentMethod.Where(p => p != null && p.Length > 0)).GetEfficientString();
+                }
 
-            if (viewModel.Version == Naming.ContractVersion.Ver2019)
-            {
                 if (paymentMethod == null)
                 {
                     ModelState.AddModelError("PaymentMethod", "請選擇支付方式");
@@ -367,6 +368,7 @@ namespace WebHome.Helper.BusinessOperation
             item = models.InitiateCourseContract(viewModel, profile, lessonPrice, paymentMethod: paymentMethod);
             DateTime payoffDue = item.ContractDate.Value.AddMonths(1).FirstDayOfMonth();
             item.PayoffDue = payoffDue.AddDays(-1);
+            models.SubmitChanges();
 
             if (item.InstallmentID.HasValue)
             {

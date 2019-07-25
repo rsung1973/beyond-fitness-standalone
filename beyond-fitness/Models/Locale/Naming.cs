@@ -71,7 +71,8 @@ namespace WebHome.Models.Locale
             體驗課程 = 1006,
             點數兌換課程 = 1007,
             團體學員課程 = 1008,
-            在家訓練 = 1009
+            在家訓練 = 1009,
+            員工福利課程 = 1010,
         }
 
         public enum LessonPriceFeature
@@ -406,7 +407,7 @@ namespace WebHome.Models.Locale
 
         public enum ContractVersion
         {
-            Ver2019 = 1,
+            Ver2019 = 20190801,
         }
 
         public enum Actor

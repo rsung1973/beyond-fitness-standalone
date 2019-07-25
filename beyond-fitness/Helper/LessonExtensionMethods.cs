@@ -279,7 +279,9 @@ namespace WebHome.Helper
                         (int)Naming.LessonPriceStatus.一般課程,
                         //(int)Naming.LessonPriceStatus.企業合作方案,
                         (int)Naming.LessonPriceStatus.已刪除,
-                        (int)Naming.LessonPriceStatus.點數兌換課程 };
+                        (int)Naming.LessonPriceStatus.點數兌換課程,
+                        (int)Naming.LessonPriceStatus.員工福利課程,
+        };
 
         public static IQueryable<LessonTime> PTorPILesson(this IQueryable<LessonTime> items)
         {
@@ -375,10 +377,20 @@ namespace WebHome.Helper
                                     || (l.RegisterLesson.RegisterLessonEnterprise != null && l.RegisterLesson.RegisterLessonEnterprise.EnterpriseCourseContent.EnterpriseLessonType.Status == (int)Naming.LessonPriceStatus.體驗課程));
         }
 
+        public static IQueryable<LessonTime> BonusLesson(this IQueryable<LessonTime> items)
+        {
+            return items.Where(l => l.RegisterLesson.LessonPriceType.Status == (int)Naming.LessonPriceStatus.點數兌換課程);
+        }
+
         public static IEnumerable<LessonTime> TrialLesson(this IEnumerable<LessonTime> items)
         {
             return items.Where(l => l.RegisterLesson.LessonPriceType.Status == (int)Naming.LessonPriceStatus.體驗課程
                                     || (l.RegisterLesson.RegisterLessonEnterprise != null && l.RegisterLesson.RegisterLessonEnterprise.EnterpriseCourseContent.EnterpriseLessonType.Status == (int)Naming.LessonPriceStatus.體驗課程));
+        }
+
+        public static IQueryable<LessonTime> WelfareGiftLesson(this IQueryable<LessonTime> items)
+        {
+            return items.Where(l => l.RegisterLesson.LessonPriceType.IsWelfareGiftLesson != null);
         }
 
         public static IQueryable<LessonTime> AllCompleteLesson(this IQueryable<LessonTime> items)

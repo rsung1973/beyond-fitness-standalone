@@ -54,7 +54,7 @@
     <!-- Main Content -->
     <section>
         <div class="container-fluid">
-            @{ Html.RenderPartial("~/Views/ContractConsole/Module/CourseContractView.cshtml", _model);}
+            @{ Html.RenderPartial($"~/Views/ContractConsole/Module/CourseContractView{_model.CourseContractExtension.Version}.cshtml", _model);}
         </div>
     </section>
 </body>
