@@ -37,11 +37,48 @@ namespace WebHome.Controllers
         // GET: PaymentConsole
         public ActionResult ShowPaymentList(PaymentQueryViewModel viewModel)
         {
-            ViewBag.ViewModel = viewModel;
-            IQueryable<Payment> items = models.GetTable<Payment>();
-            return View(items);
+            if (viewModel.KeyID != null)
+            {
+                viewModel.PaymentID = viewModel.DecryptKeyValue();
+            }
+            IQueryable<Payment> items = viewModel.InquirePayment(this, out string alertMessage);
+            return View("~/Views/PaymentConsole/Module/PaymentItemsList.cshtml", items);
         }
 
+        public ActionResult ClearUnpaidContract()
+        {
+            models.ClearUnpaidOverdueContract();
+            return Json(new { result = true }, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult ProcessPayment(PaymentQueryViewModel viewModel)
+        {
+            if (viewModel.KeyID != null)
+            {
+                viewModel.PaymentID = viewModel.DecryptKeyValue();
+            }
+
+            var item = models.GetTable<Payment>().Where(c => c.PaymentID == viewModel.PaymentID).FirstOrDefault();
+            if (item == null)
+            {
+                return View("~/Views/ConsoleHome/Shared/AlertMessage.cshtml", model: "收款資料錯誤!!");
+            }
+
+            return View("~/Views/PaymentConsole/Module/ProcessPayment.cshtml", item);
+        }
+
+        public ActionResult ShowPaymentDetails(PaymentQueryViewModel viewModel)
+        {
+            ViewResult result = (ViewResult)ProcessPayment(viewModel);
+
+            Payment item = result.Model as Payment;
+            if (item == null)
+            {
+                return result;
+            }
+
+            return View("~/Views/PaymentConsole/PaymentModal/AboutPaymentDetails.cshtml", item);
+        }
 
     }
 }

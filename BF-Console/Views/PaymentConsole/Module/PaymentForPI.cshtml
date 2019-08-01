@@ -16,15 +16,27 @@
     _model = (IQueryable<Payment>)this.Model;
 }
 @{
+    PaymentQueryViewModel _viewModel = (PaymentQueryViewModel)ViewBag.ViewModel;
     IQueryable<Payment> items = _model.Where(p => p.TransactionType == (int)Naming.PaymentTransactionType.自主訓練);
 }
 <div class="col-6">
     <h5 class="m-t-0">本日P.I</h5>
     @{
+        PaymentQueryViewModel tempViewModel = new PaymentQueryViewModel
+        {
+            PayoffDateFrom = DateTime.Today,
+            PayoffDateTo = DateTime.Today.AddDays(1),
+            TransactionType = (int)Naming.PaymentTransactionType.自主訓練,
+        };
+
+        ViewBag.ViewModel = tempViewModel;
         Html.RenderPartial("~/Views/PaymentConsole/Module/PaymentSummary.cshtml", items.Where(p => p.PayoffDate >= DateTime.Today));
     }
 </div>
 @{
+    tempViewModel.PayoffDateFrom = tempViewModel.PayoffDateTo = null;
+    tempViewModel.HasInvoicePrinted = false;
+    tempViewModel.BypassCondition = true;
     Html.RenderPartial("~/Views/PaymentConsole/Module/InvoiceToPrintOut.cshtml", items);
 }
 

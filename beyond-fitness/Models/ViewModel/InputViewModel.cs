@@ -172,6 +172,11 @@ namespace WebHome.Models.ViewModel
 
     public class PaymentQueryViewModel : PaymentViewModel
     {
+        public PaymentQueryViewModel() : base()
+        {
+            InvoiceType = null;
+        }
+
         public string UserName { get; set; }
         public int? BranchID { get; set; }
         public bool? IsCancelled { get; set; }
@@ -184,6 +189,12 @@ namespace WebHome.Models.ViewModel
             set => PayoffDateFrom = value;
         }
         public bool? BypassCondition { get; set; }
+        public Naming.PaymentTransactionType?[] CompoundType { get; set; }
+        public bool? ScrollToView { get; set; }
+        public bool? HasCancellation { get; set; }
+        public bool? HasAllowance { get; set; }
+        public bool? HasInvoicePrinted { get; set; }
+
     }
 
     public class AchievementQueryViewModel : QueryViewModel

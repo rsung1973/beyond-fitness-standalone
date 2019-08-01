@@ -784,7 +784,7 @@ namespace WebHome.Controllers
                         return View("~/Views/Shared/MessageView.ascx", model: "合約已過期!!");
                     }
 
-                    if (contract.Expiration.Value < viewModel.ClassDate.Value.AddDays(1))
+                    if (contract.Expiration.Value.AddDays(1) < viewModel.ClassDate.Value)
                     {
                         return View("~/Views/Shared/MessageView.ascx", model: "合約尚未生效或已過期!!");
                     }

@@ -16,8 +16,6 @@
     CourseContract _model;
     UserProfile _profile;
 
-
-
     _modelState = (ModelStateDictionary)ViewBag.ModelState;
     models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
     _model = (CourseContract)this.Model;
@@ -46,6 +44,20 @@
             {
                 applicable = false;
                 <span class="col-red"><i class="zmdi zmdi-block"></i>服務申請進行中</span><br />
+            }
+            @if (_model.FitnessConsultant == _profile.UID)
+            {
+                applicable = false;
+            }
+            else if (_model.ContractPayment.Any())
+            {
+                if (!models.GetTable<CoachWorkplace>().Where(c => c.CoachID == _profile.UID)
+                    .Where(c => c.BranchID == _model.CourseContractExtension.BranchID)
+                    .Any())
+                {
+                    applicable = false;
+                    <span class="col-red"><i class="zmdi zmdi-block"></i>已收款，禁止跨分店轉讓</span><br />
+                }
             }
         </div>
         <div class="col-4 text-right">

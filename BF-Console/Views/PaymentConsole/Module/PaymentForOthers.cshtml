@@ -16,17 +16,30 @@
     _model = (IQueryable<Payment>)this.Model;
 }
 @{
+    PaymentQueryViewModel _viewModel = (PaymentQueryViewModel)ViewBag.ViewModel;
+    PaymentQueryViewModel tempViewModel = new PaymentQueryViewModel
+    {
+        PayoffDateFrom = DateTime.Today,
+        PayoffDateTo = DateTime.Today.AddDays(1),
+        CompoundType = new Naming.PaymentTransactionType?[] {
+            Naming.PaymentTransactionType.運動商品,
+            Naming.PaymentTransactionType.食飲品
+        },
+    };
     IQueryable<Payment> items = _model
-        .Where(p => p.TransactionType != (int)Naming.PaymentTransactionType.體能顧問費)
-        .Where(p => p.TransactionType != (int)Naming.PaymentTransactionType.自主訓練);
+        .Where(p => tempViewModel.CompoundType.Contains((Naming.PaymentTransactionType?)p.TransactionType));
 }
 <div class="col-6">
     <h5 class="m-t-0">本日其他</h5>
     @{
+        ViewBag.ViewModel = tempViewModel;
         Html.RenderPartial("~/Views/PaymentConsole/Module/PaymentSummary.cshtml", items.Where(p => p.PayoffDate >= DateTime.Today));
     }
 </div>
 @{
+    tempViewModel.PayoffDateFrom = tempViewModel.PayoffDateTo = null;
+    tempViewModel.HasInvoicePrinted = false;
+    tempViewModel.BypassCondition = true;
     Html.RenderPartial("~/Views/PaymentConsole/Module/InvoiceToPrintOut.cshtml", items);
 }
 

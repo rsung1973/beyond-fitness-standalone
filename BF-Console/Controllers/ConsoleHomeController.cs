@@ -165,7 +165,7 @@ namespace WebHome.Controllers
             {
                 viewModel.ContractID = viewModel.DecryptKeyValue();
             }
-            viewModel.Version = Naming.ContractVersion.Ver2019;
+            //viewModel.Version = Naming.ContractVersion.Ver2019;
             var profile = HttpContext.GetUser();
             var item = models.GetTable<CourseContract>().Where(c => c.ContractID == viewModel.ContractID).FirstOrDefault();
             if (item != null)
@@ -597,16 +597,38 @@ namespace WebHome.Controllers
 
         }
 
-        public ActionResult PaymentIndex(CourseContractQueryViewModel viewModel)
+        public ActionResult PaymentIndex(PaymentQueryViewModel viewModel)
         {
             ViewBag.ViewModel = viewModel;
-            viewModel.ContractDateFrom = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
-            viewModel.ContractDateTo = viewModel.ContractDateFrom.Value.AddMonths(1).AddDays(-1);
 
             var profile = HttpContext.GetUser();
-            viewModel.KeyID = profile.UID.EncryptKey();
+            viewModel.ScrollToView = false;
             return View(profile.LoadInstance(models));
         }
+
+        public ActionResult VoidPayment(PaymentQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            if (viewModel.KeyID != null)
+            {
+                viewModel.PaymentID = viewModel.DecryptKeyValue();
+            }
+
+            var profile = HttpContext.GetUser();
+
+            var item = models.GetTable<Payment>().Where(c => c.PaymentID == viewModel.PaymentID).FirstOrDefault();
+
+            if (item == null)
+            {
+                ViewBag.GoBack = true;
+                return View("~/Views/Shared/JsAlert.cshtml", model: "收款資料錯誤!!");
+            }
+
+            ViewBag.DataItem = item;
+
+            return View(profile.LoadInstance(models));
+        }
+
 
     }
 }

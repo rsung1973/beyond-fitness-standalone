@@ -23,6 +23,7 @@
     _modelState = (ModelStateDictionary)ViewBag.ModelState;
     _model = (UserProfile)this.Model;
     _viewModel = (CourseContractQueryViewModel)ViewBag.ViewModel;
+    _viewModel.BySelf = Naming.Actor.BySelf;
     _item = (CourseContract)ViewBag.DataItem;
 
 }

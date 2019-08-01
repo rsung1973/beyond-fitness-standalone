@@ -28,6 +28,18 @@ namespace WebHome.Helper.Jobs
                     Logger.Error(ex);
                 }
             }
+
+            using (ModelSource<UserProfile> models = new ModelSource<UserProfile>())
+            {
+                try
+                {
+                    models.ClearUnpaidOverdueContract();
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error(ex);
+                }
+            }
         }
 
         public DateTime GetScheduleToNextTurn(DateTime current)

@@ -16,13 +16,23 @@
     _model = (IQueryable<Payment>)this.Model;
 }
 @{ 
+    PaymentQueryViewModel _viewModel = (PaymentQueryViewModel)ViewBag.ViewModel;
     var items = _model
                     .Join(models.GetTable<InvoiceItem>(),
                         p => p.InvoiceID, i => i.InvoiceID, (p, i) => i)
+                    .Where(i => i.InvoiceType == (int)Naming.InvoiceTypeDefinition.一般稅額計算之電子發票)
                     .Where(i => !i.Document.DocumentPrintLog.Any());
 }
 <div class="col-6 text-right">
-    <a href="javascript:void(0);">
+    <a href='javascript:showPaymentList(@Html.Raw(JsonConvert.SerializeObject(
+            new
+            {
+                _viewModel.TransactionType,
+                _viewModel.HasInvoicePrinted,
+                _viewModel.BypassCondition,
+                InvoiceType = (int)Naming.InvoiceTypeDefinition.一般稅額計算之電子發票,
+                _viewModel.CompoundType,
+            })));'>
         <h2 class="col-red">@(items.Count())</h2>
     </a>
     <small class="info">未列印發票</small>

@@ -37,7 +37,7 @@ namespace WebHome.Helper
             //return items;
             return models.PromptEffectiveContract()
                 .Where(c => c.Expiration >= DateTime.Today)
-                .Where(c => c.Expiration < DateTime.Today.AddMonths(3));
+                .Where(c => c.Expiration < DateTime.Today.AddMonths(1));
         }
 
         public static IQueryable<CourseContract> PromptEffectiveContract<TEntity>(this ModelSource<TEntity> models)
@@ -314,6 +314,26 @@ namespace WebHome.Helper
         {
             return models.PromptEffectiveContract().FilterByAlarmedContract(models, alarmCount);
         }
+
+        public static void ClearUnpaidOverdueContract<TEntity>(this ModelSource<TEntity> models)
+                    where TEntity : class, new()
+        {
+            DateTime checkDate = DateTime.Today.FirstDayOfMonth();
+            var items = models.PromptEffectiveContract()
+                                .Where(c => !c.ContractPayment.Any())
+                                .Where(c => c.PayoffDue.HasValue)
+                                .Where(c => c.PayoffDue.Value.AddMonths(1) < checkDate)
+                                .Where(c => c.CourseContractExtension.Version.HasValue);
+
+            foreach(var item in items)
+            {
+                item.Status = (int)Naming.CourseContractStatus.已終止;
+                item.ValidTo = checkDate;
+                item.Subject = "未付款";
+            }
+            models.SubmitChanges();
+        }
+
 
 
     }

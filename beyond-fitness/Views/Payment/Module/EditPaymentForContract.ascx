@@ -42,11 +42,12 @@
                         <label class="select">
                             <select name="SellerID">
                                 <%  BranchStore branch = null;
-                                    if(_profile.IsManager() || _profile.IsViceManager())
-                                    {
-                                        branch = models.GetTable<BranchStore>().Where(b => b.ManagerID == _profile.UID || b.ViceManagerID == _profile.UID).FirstOrDefault();
-                                    }
-                                    else if(_profile.IsCoach())
+                                    //if(_profile.IsManager() || _profile.IsViceManager())
+                                    //{
+                                    //    branch = models.GetTable<BranchStore>().Where(b => b.ManagerID == _profile.UID || b.ViceManagerID == _profile.UID).FirstOrDefault();
+                                    //}
+                                    //else 
+                                    if(_profile.IsCoach())
                                     {
                                         ViewBag.DataItems = models.GetTable<CoachWorkplace>().Where(c => c.CoachID == _profile.UID)
                                                                 .Select(w => w.BranchStore);

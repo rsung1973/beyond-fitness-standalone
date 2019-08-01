@@ -22,7 +22,7 @@
     models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
     _viewModel = (CourseContractQueryViewModel)ViewBag.ViewModel;
     _profile = Context.GetUser();
-
+    /*
     if (_profile.IsAssistant() || _profile.IsOfficer())
     {
         _viewModel.OfficerID = _profile.UID;
@@ -34,7 +34,7 @@
     else
     {
         _viewModel.FitnessConsultant = _profile.UID;
-    }
+    }*/
 }
 <div class="modal fade" id="@(_dialogID)" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">

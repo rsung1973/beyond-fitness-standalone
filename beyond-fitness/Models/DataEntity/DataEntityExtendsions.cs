@@ -427,6 +427,25 @@ namespace WebHome.Models.DataEntity
                 purpose.ExercisePurpose());
         }
 
+        public static String PayerName(this Payment item, String insteadOfNull = null)
+        {
+            return item.TuitionInstallment != null
+                        ? item.TuitionInstallment.IntuitionCharge.RegisterLesson.UserProfile.FullName()
+                        : item.ContractPayment != null
+                            ? item.ContractPayment.CourseContract.CourseContractType.IsGroup == true
+                                ? String.Join("/", item.ContractPayment.CourseContract.CourseContractMember.Select(m => m.UserProfile).ToArray().Select(u => u.FullName()))
+                                : item.ContractPayment.CourseContract.ContractOwner.FullName()
+                            : insteadOfNull;
+        }
+
+        public static UserProfile Payer(this Payment item)
+        {
+            return item.TuitionInstallment != null
+                        ? item.TuitionInstallment.IntuitionCharge.RegisterLesson.UserProfile
+                        : item.ContractPayment?.CourseContract.ContractOwner;
+        }
+
+
     }
 
     public partial class UserProfile

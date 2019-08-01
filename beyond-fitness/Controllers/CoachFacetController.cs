@@ -670,7 +670,7 @@ namespace WebHome.Controllers
                 var contract = regles.RegisterLessonContract?.CourseContract;
                 if (contract != null)
                 {
-                    if (timeItem.ClassTime.Value.AddDays(1) > contract.Expiration)
+                    if (timeItem.ClassTime.Value > contract.Expiration.Value.AddDays(1))
                     {
                         ViewBag.Message = "合約尚未生效或已過期!!";
                         return View("~/Views/Shared/MessageView.ascx");
@@ -681,7 +681,7 @@ namespace WebHome.Controllers
                     var entpContract = regles.RegisterLessonEnterprise?.EnterpriseCourseContract;
                     if (entpContract != null)
                     {
-                        if (timeItem.ClassTime.Value.AddDays(1) > entpContract.Expiration)
+                        if (timeItem.ClassTime.Value > entpContract.Expiration.Value.AddDays(1))
                         {
                             ViewBag.Message = "合約尚未生效或已過期!!";
                             return View("~/Views/Shared/MessageView.ascx");

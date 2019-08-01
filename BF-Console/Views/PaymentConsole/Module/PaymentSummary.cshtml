@@ -15,9 +15,32 @@
     models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
     _model = (IQueryable<Payment>)this.Model;
 }
+@{
+    PaymentQueryViewModel _viewModel = (PaymentQueryViewModel)ViewBag.ViewModel;
+}
 <p class="text-small">
-    收款：<a href="javascript:showPaymentList();">@(_model.Count())</a><br />
-    作廢：<a href="javascript:showPaymentList();">@(_model.ExtractVoidPayment(models).Count())</a><br />
-    折讓：<a href="javascript:showPaymentList();">@(_model.ExtractPaymentAllowance(models).Count())</a><br />
+    收款：<a href='javascript:showPaymentList(@Html.Raw(JsonConvert.SerializeObject(
+            new
+            {
+                _viewModel.PayoffDateFrom,
+                _viewModel.PayoffDateTo,
+                _viewModel.TransactionType,
+            })));'>@(_model.Count())</a><br />
+    作廢：<a href='javascript:showPaymentList(@Html.Raw(JsonConvert.SerializeObject(
+            new
+            {
+                _viewModel.PayoffDateFrom,
+                _viewModel.PayoffDateTo,
+                _viewModel.TransactionType,
+                HasCancellation = true,
+            })));'>@(_model.ExtractVoidPayment(models).Count())</a><br />
+    折讓：<a href='javascript:showPaymentList(@Html.Raw(JsonConvert.SerializeObject(
+            new
+            {
+                _viewModel.PayoffDateFrom,
+                _viewModel.PayoffDateTo,
+                _viewModel.TransactionType,
+                HasAllowance = true
+            })));'>@(_model.Where(p=>p.AllowanceID.HasValue).Count())</a><br />
 </p>
 

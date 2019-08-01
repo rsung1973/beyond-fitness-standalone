@@ -88,6 +88,7 @@
         viewModel.Status = $global.viewModel.Status;
         viewModel.OperationMode = $global.viewModel.OperationMode;
         viewModel.FitnessConsultant = $global.viewModel.FitnessConsultant;
+        viewModel.BySelf = $global.viewModel.BySelf;
         clearErrors();
         showLoading();
         $.post('@Html.Raw(Url.Action("CommitContractService", "ContractConsole",new { KeyID = _model.ContractID.EncryptKey() }))', viewModel, function (data) {

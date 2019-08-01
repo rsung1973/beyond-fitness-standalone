@@ -1,0 +1,68 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    CourseContract _model;
+    String _dialogID = $"contractDetails{DateTime.Now.Ticks}";
+    UserProfile _profile;
+
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = (CourseContract)this.Model;
+    _profile = Context.GetUser();
+}
+<li>
+    <div class="list_tb tb2">
+        <div class="list_tr">
+            <div class="list_td hd">應收款期限</div>
+            <div class="list_td rt col-red">@($"{_model.PayoffDue:yyyy/MM/dd}")</div>
+        </div>
+    </div>
+</li>
+<li>
+    <div class="list_tb tb2">
+        <div class="list_tr">
+            <div class="list_td hd">收款次數</div>
+            <div class="list_td rt">@(_model.ContractPayment.Count)</div>
+        </div>
+    </div>
+</li>
+<li>
+    <div class="list_tb tb2">
+        <div class="list_tr">
+            <div class="list_td hd">合約金額</div>
+            <div class="list_td rt">@($"{_model.TotalCost:##,###,###,###}")</div>
+        </div>
+    </div>
+</li>
+<li>
+    <div class="list_tb tb2">
+        <div class="list_tr">
+            <div class="list_td hd">已收金額</div>
+            <div class="list_td rt">
+                @{ var totalPaidAmt = _model.TotalPaidAmount();}
+                @($"{totalPaidAmt:##,###,###,##0}")
+            </div>
+        </div>
+    </div>
+</li>
+<li>
+    <div class="list_tb tb2">
+        <div class="list_tr">
+            <div class="list_td hd">未收金額</div>
+            <div class="list_td rt col-red">@($"{_model.TotalCost - totalPaidAmt:##,###,###,##0}")</div>
+        </div>
+    </div>
+</li>
+

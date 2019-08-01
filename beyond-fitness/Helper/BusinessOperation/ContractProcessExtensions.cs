@@ -69,6 +69,7 @@ namespace WebHome.Helper.BusinessOperation
             item.FitnessConsultant = viewModel.FitnessConsultant.Value;
             item.Renewal = viewModel.Renewal;
             item.CourseContractExtension.PaymentMethod = paymentMethod;
+            item.CourseContractExtension.Version = (int?)viewModel.Version;
 
             if (viewModel.InstallmentPlan == true)
             {
@@ -267,6 +268,7 @@ namespace WebHome.Helper.BusinessOperation
             item.FitnessConsultant = viewModel.FitnessConsultant.Value;
             item.Renewal = viewModel.Renewal;
             item.CourseContractExtension.PaymentMethod = paymentMethod;
+            item.CourseContractExtension.Version = (int?)viewModel.Version;
 
             if (viewModel.InstallmentPlan == true)
             {

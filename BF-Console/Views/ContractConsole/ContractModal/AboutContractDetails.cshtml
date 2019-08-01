@@ -35,153 +35,18 @@
                                     <h4 class="panel-title">
                                         <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordionDetail_contract" href="#collapseDetail_contract" aria-expanded="false" aria-controls="collapseDetail_contract">
                                             <i class="material-icons">subject</i> 合約詳細資訊
-                                            @{ var bgColor = "bg-cyan";}
-                                            @if (_model.Status <= (int)Naming.ContractQueryStatus.待審核)
-                    {
-                        bgColor = "bg-orange";
-                    }
-                    else if (_model.Status == (int)Naming.CourseContractStatus.已生效)
-                    {
-                        bgColor = "bg-green";
-                    }
-                    else if (_model.Status == (int)Naming.CourseContractStatus.已履行)
-                    {
-                        bgColor = "bg-darkteal";
-                    }
-                    else
-                    {
-                        bgColor = "bg-red";
-                    }
-                                            <span class="@($"badge {bgColor}")">@(_model.ContractCurrentStatus())</span>
+                                            @{ 
+                                                Html.RenderPartial("~/Views/ContractConsole/Module/ContractDataStatus.cshtml", _model);
+                                            }
                                         </a>
                                     </h4>
                                 </div>
                                 <div id="collapseDetail_contract" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="headingDetailContract">
                                     <div class="panel-body no-padding">
                                         <ul class="mb_list xl-aliceblue">
-                                            <li>
-                                                <div class="list_tb tb2">
-                                                    <div class="list_tr">
-                                                        <div class="list_td hd">合約編號</div>
-                                                        <div class="list_td rt">@(_model.ContractNo())</div>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="list_tb tb2">
-                                                    <div class="list_tr">
-                                                        <div class="list_td hd">合約名稱</div>
-                                                        <div class="list_td rt">@(_model.ContractName())</div>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="list_tb tb2">
-                                                    <div class="list_tr">
-                                                        <div class="list_td hd">學生</div>
-                                                        <div class="list_td rt">@(_model.ContractLearner())</div>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="list_tb tb2">
-                                                    <div class="list_tr">
-                                                        <div class="list_td hd">合約起日</div>
-                                                        <div class="list_td rt">@($"{_model.ValidFrom:yyyy/MM/dd}")</div>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="list_tb tb2">
-                                                    <div class="list_tr">
-                                                        <div class="list_td hd">合約迄日</div>
-                                                        @if (_model.ValidTo.HasValue)
-                                {
-                                    <div class="list_td rt col-green">@($"{_model.ValidTo:yyyy/MM/dd}")</div>
-        }
-        else
-        {
-                        <div class="list_td rt col-red">@($"{_model.Expiration:yyyy/MM/dd}")</div>
-}
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="list_tb tb2">
-                                                    <div class="list_tr">
-                                                        <div class="list_td hd">合約金額</div>
-                                                        <div class="list_td rt">@($"{_model.TotalCost:##,###,###,###}")</div>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="list_tb tb2">
-                                                    <div class="list_tr">
-                                                        <div class="list_td hd p-l-20">專業顧問服務總費用</div>
-                                                        <div class="list_td rt">@(String.Format("{0:##,###,###,###}", (_model.TotalCost * 8 + 5) / 10))</div>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="list_tb tb2">
-                                                    <div class="list_tr">
-                                                        <div class="list_td hd p-l-20">教練課程費</div>
-                                                        <div class="list_td rt">@(String.Format("{0:##,###,###,###}", (_model.TotalCost * 2 + 5) / 10))</div>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="list_tb tb2">
-                                                    <div class="list_tr">
-                                                        <div class="list_td hd">
-                                                            課程單價
-                                                            <span class="badge bg-blue">
-                                                                @if (_model.LessonPriceType.SeriesID.HasValue)
-                                        {
-                                            <text>@(_model.LessonPriceType.LowerLimit == 1 ? "單" : _model.LessonPriceType.LowerLimit.ToString())堂</text>
-                }
-                else
-                {
-                        <text>@(_model.LessonPriceType.Description) </text>
-}
-                                                            </span>
-                                                        </div>
-                                                        <div class="list_td rt">@($"{_model.LessonPriceType.ListPrice:##,###,###,###}")</div>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="list_tb tb2">
-                                                    <div class="list_tr">
-                                                        <div class="list_td hd">剩餘/購買堂數</div>
-                                                        <div class="list_td rt">@(_model.RemainedLessonCount())/@(_model.Lessons)</div>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="list_tb tb2">
-                                                    <div class="list_tr">
-                                                        <div class="list_td hd">備註</div>
-                                                        <div class="list_td rt">@(_model.Remark)@(_model.PayoffDue.HasValue ? $"帳款應付期限{_model.PayoffDue:yyyy/MM/dd}。" : null)</div>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="list_tb tb2">
-                                                    <div class="list_tr">
-                                                        <div class="list_td hd">合約體能顧問</div>
-                                                        <div class="list_td rt">@(_model.ServingCoach.UserProfile.FullName())</div>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="list_tb tb2">
-                                                    <div class="list_tr">
-                                                        <div class="list_td hd">上課場所</div>
-                                                        <div class="list_td rt">@(_model.CourseContractExtension?.BranchStore.BranchName)</div>
-                                                    </div>
-                                                </div>
-                                            </li>
+                                            @{
+                                                Html.RenderPartial("~/Views/ContractConsole/Module/ContractDataContent.cshtml", _model);
+                                            }
                                         </ul>
                                     </div>
                                 </div>
@@ -231,59 +96,17 @@
                                     <div class="row">
                                         <div class="col-md-12 col-12">
                                             <ul class="mb_list xl-pink">
-                                                <li>
-                                                    <div class="list_tb tb2">
-                                                        <div class="list_tr">
-                                                            <div class="list_td hd">應收款期限</div>
-                                                            <div class="list_td rt col-red"></div>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="list_tb tb2">
-                                                        <div class="list_tr">
-                                                            <div class="list_td hd">收款次數</div>
-                                                            <div class="list_td rt">@(_model.ContractPayment.Count)</div>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="list_tb tb2">
-                                                        <div class="list_tr">
-                                                            <div class="list_td hd">合約金額</div>
-                                                            <div class="list_td rt">@($"{_model.TotalCost:##,###,###,###}")</div>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="list_tb tb2">
-                                                        <div class="list_tr">
-                                                            <div class="list_td hd">已收金額</div>
-                                                            <div class="list_td rt">
-                                                                @{ var totalPaidAmt = _model.TotalPaidAmount();}
-
-                                                                @($"{totalPaidAmt:##,###,###,##0}")
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="list_tb tb2">
-                                                        <div class="list_tr">
-                                                            <div class="list_td hd">未收金額</div>
-                                                            <div class="list_td rt col-red">@($"{_model.TotalCost - totalPaidAmt:##,###,###,##0}")</div>
-                                                        </div>
-                                                    </div>
-                                                </li>
+                                                @{
+                                                    Html.RenderPartial("~/Views/ContractConsole/Module/ContractPayoff.cshtml", _model);
+                                                }
                                             </ul>
                                         </div>
                                         <div class="col-md-12 col-12">
                                             @{ Html.RenderPartial("~/Views/ContractConsole/Module/ContractPaymentList.cshtml",
-models.GetTable<ContractPayment>()
-.Where(c => c.ContractID == _model.ContractID)
-.Select(c => c.Payment)
-.Where(p => p.TransactionType == (int)Naming.PaymentTransactionType.體能顧問費));}
-
+                                                        models.GetTable<ContractPayment>()
+                                                        .Where(c => c.ContractID == _model.ContractID)
+                                                        .Select(c => c.Payment)
+                                                        .Where(p => p.TransactionType == (int)Naming.PaymentTransactionType.體能顧問費));}
                                         </div>
                                     </div>
                                 </div>
