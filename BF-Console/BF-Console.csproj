@@ -6127,7 +6127,6 @@
     <Content Include="Views\ConsoleEvent\EventModal\BookingTrialLesson.cshtml" />
     <Content Include="Views\ConsoleEvent\EventModal\BookingLearnerLesson.cshtml" />
     <Content Include="Views\ConsoleHome\Shared\JsAlert.cshtml" />
-    <Content Include="Views\ContractConsole\Indication\ContractDetails.ascx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -6138,6 +6137,8 @@
     <Content Include="Views\LearnerProfile\Module\ResumeLearnerCharacter.cshtml" />
     <None Include="MainActivity\Portfolio\Dongmen.json" />
     <Content Include="ConsoleHome\images\avatar\avatars.png" />
+    <Content Include="Views\ContractConsole\Module\CourseContractView20190801.cshtml" />
+    <Content Include="ConsoleHome\images\landing\guarantee-1.png" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\InitializeType.cs" />
@@ -6479,7 +6480,6 @@
     <Content Include="ConsoleHome\fonts\fontawesome-v5.3.1\webfonts\fa-solid-900.woff" />
     <Content Include="ConsoleHome\fonts\fontawesome-v5.3.1\webfonts\fa-solid-900.woff2" />
     <Content Include="ConsoleHome\images\certificate\.DS_Store" />
-    <Content Include="ConsoleHome\images\landing\.DS_Store" />
     <Content Include="ConsoleHome\images\landing\article\.DS_Store" />
     <Content Include="ConsoleHome\plugins\dropify\fonts\dropify.eot" />
     <Content Include="ConsoleHome\plugins\dropify\fonts\dropify.ttf" />
