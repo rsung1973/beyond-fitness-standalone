@@ -13,12 +13,12 @@
     { %>
 <li>
     <a href="#" title="合約管理"><i class="fas fa-lg fa-fw fa-file-alt"></i><span class="menu-item-parent">合約管理</span></a>
-    <ul>
-        <li>
-            <a href="<%= Url.Action("CreateContract", "CourseContract") %>" title="新增合約"><i class="far fa-lg fa-fw fa-copy"></i>新增合約</a>
-        </li>
+    <ul>        
         <%  if (_userProfile.IsAssistant() || _userProfile.IsSysAdmin())
             { %>
+        <!--<li>
+            <a href="<%= Url.Action("CreateContract", "CourseContract") %>" title="新增合約"><i class="far fa-lg fa-fw fa-copy"></i>新增合約</a>
+        </li>-->
         <li>
             <a href="<%= Url.Action("ApplyAmendment", "CourseContract") %>" title="服務申請"><i class="fa fa-lg fa-fw fa-cogs"></i>服務申請</a>
         </li>
