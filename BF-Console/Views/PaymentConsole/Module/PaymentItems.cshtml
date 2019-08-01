@@ -1,0 +1,43 @@
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Newtonsoft.Json
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    IQueryable<Payment> _model;
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = (IQueryable<Payment>)this.Model;
+}
+@{ 
+    var items = _model;
+}
+    <div class="card">
+        <div class="header">
+            <ul class="header-dropdown">
+                <li>
+                    <a href="javascript:moreQuery();"><i class="zmdi zmdi-search-for"></i></a>
+                </li>
+            </ul>
+        </div>
+        <div class="body">
+            <div class="table-responsive" id="paymentList">
+                @{ 
+                    Html.RenderPartial("~/Views/PaymentConsole/Module/PaymentItemsList.cshtml", _model);
+                }
+            </div>
+        </div>
+    </div>
+<script>
+    $(function () {
+        $global.showPayment = function (data) {
+            $('#paymentList').empty().append($(data));
+        };
+    });
+</script>
