@@ -9,7 +9,7 @@
 <%@ Import Namespace="WebHome.Controllers" %>
 
 <%  if (_userProfile != null
-        && (_userProfile.IsCoach() || _userProfile.IsAssistant() || _userProfile.IsOfficer()))
+        && (_userProfile.IsAssistant() || _userProfile.IsOfficer()))
     { %>
 <li>
     <a href="#" title="合約管理"><i class="fas fa-lg fa-fw fa-file-alt"></i><span class="menu-item-parent">合約管理</span></a>
