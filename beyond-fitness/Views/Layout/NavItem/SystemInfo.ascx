@@ -15,7 +15,7 @@
 </li>--%>
 <%  } %>
 
-<li>
+<%--<li>
     <a href="#"><i class="fa fa-lg fa-fw fa-tasks"></i><span class="menu-item-parent">顧問服務費</span></a>
     <ul>
         <li>
@@ -28,7 +28,7 @@
             <a href="<%= Url.Action("PricingList","MainActivity",new { branchName = "Zhongxiao" }) %>" target="_blank"><i class="fa fa-fw fa-th-list"></i>忠孝</a>
         </li>
     </ul>
-</li>
+</li>--%>
 <%  if (_userProfile.IsLearner() || (_userProfile.EmployeeWelfare != null && _userProfile.EmployeeWelfare.MonthlyGiftLessons > 0))
     { %>
 <li>

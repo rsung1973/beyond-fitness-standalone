@@ -173,7 +173,12 @@
                     <div class="body">
                         <div class="row">
                             <div class="col-8">
-                                @{ var payment = models.GetTable<Payment>().FilterByUserRoleScope(models, _model);
+                                @{ var payment = models.GetTable<Payment>()
+                                        .Where(p=>p.TransactionType==(int)Naming.PaymentTransactionType.自主訓練
+                                            || p.TransactionType==(int)Naming.PaymentTransactionType.運動商品
+                                            || p.TransactionType==(int)Naming.PaymentTransactionType.食飲品
+                                            || p.TransactionType==(int)Naming.PaymentTransactionType.體能顧問費)
+                                        .FilterByUserRoleScope(models, _model);
                                     var paymentToday = payment.Where(p => p.PayoffDate >= DateTime.Today);
                                     var voidToday = models.GetTable<VoidPayment>().Where(v => v.VoidDate >= DateTime.Today)
                                             .Join(payment, v => v.VoidID, p => p.PaymentID, (v, p) => p);}

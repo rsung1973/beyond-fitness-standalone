@@ -37,7 +37,7 @@
                                         @if (_viewModel.ProfileOnly != true)
                                         {
                                         <label class="fancy-checkbox custom-bgcolor-pink">
-                                            <input type="checkbox" name="OwnerID" value="@(_viewModel.UID)" @(_viewModel.OwnerID == _viewModel.UID ? "checked" : null) >
+                                            <input type="checkbox" name="OwnerID" value="@(_viewModel.UID)" @(!_viewModel.OwnerID.HasValue || _viewModel.OwnerID == _viewModel.UID ? "checked" : null) >
                                             <span class="col-red">主簽約人</span>
                                         </label>
                                         }

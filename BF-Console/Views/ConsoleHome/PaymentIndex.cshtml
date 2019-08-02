@@ -14,7 +14,6 @@
     ModelStateDictionary _modelState;
     UserProfile _model;
     PaymentQueryViewModel _viewModel;
-    IQueryable<CourseContract> _effectiveItems;
 
     Layout = "~/Views/ConsoleHome/Template/MainPage.cshtml";
 
@@ -23,8 +22,6 @@
     _model = (UserProfile)this.Model;
     _viewModel = (PaymentQueryViewModel)ViewBag.ViewModel;
 
-    _effectiveItems = models.PromptEffectiveContract()
-        .Where(c => c.FitnessConsultant == _model.UID);
 }
 @section CustomHeader {
     <!-- JQuery DataTable Css -->

@@ -17,7 +17,7 @@
         <% Html.RenderPartial("~/Views/Layout/NavItem/Payment.ascx", _userProfile); %>
         <% Html.RenderPartial("~/Views/Layout/NavItem/Invoice.ascx", _userProfile); %>
         <% Html.RenderPartial("~/Views/Layout/NavItem/Achievement.ascx", _userProfile); %>
-        <% Html.RenderPartial("~/Views/Layout/NavItem/Report.ascx", _userProfile); %>
+        <%--<% Html.RenderPartial("~/Views/Layout/NavItem/Report.ascx", _userProfile); %>--%>
         <% Html.RenderPartial("~/Views/Layout/NavItem/Professional.ascx", _userProfile); %>
         <%--<li>
             <a href="<%= Url.Action("PriceList","Information") %>"><i class="fa fa-lg fa-fw fa-tasks"></i>顧問費用表</a>

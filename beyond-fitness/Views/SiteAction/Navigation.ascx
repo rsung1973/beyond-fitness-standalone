@@ -12,7 +12,7 @@
 <nav>
     <ul>
         <% Html.RenderPartial("~/Views/Layout/NavItem/Members.ascx", _userProfile); %>
-        <% Html.RenderPartial("~/Views/Layout/NavItem/Report.ascx", _userProfile); %>
+        <%--<% Html.RenderPartial("~/Views/Layout/NavItem/Report.ascx", _userProfile); %>--%>
         <% Html.RenderPartial("~/Views/Layout/NavItem/Professional.ascx", _userProfile); %>
         <% Html.RenderPartial("~/Views/Layout/NavItem/SystemInfo.ascx", _userProfile); %>
         <%  if (_userProfile == null)

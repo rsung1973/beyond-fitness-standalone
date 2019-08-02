@@ -84,11 +84,11 @@
             </div>
             <!-- end widget content -->
         </div>
-        <div class="row padding-5">
+<%--        <div class="row padding-5">
             <div class="widget-body txt-color-white">
                 <%  Html.RenderAction("CourseContractSummary", "CourseContract"); %>
             </div>
-        </div>
+        </div>--%>
         <div class="row padding-5">
             <!-- widget content -->
             <div class="widget-body txt-color-white">
