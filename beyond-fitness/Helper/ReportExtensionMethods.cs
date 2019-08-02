@@ -239,8 +239,8 @@ namespace WebHome.Helper
                         買受人統編 = i.InvoiceID.HasValue
                                   ? i.InvoiceItem.InvoiceBuyer.IsB2C() ? "--" : i.InvoiceItem.InvoiceBuyer.ReceiptNo
                                   : "--",
-                        姓名 = i.TuitionInstallment.IntuitionCharge.RegisterLesson.UserProfile.FullName(),
-                        合約編號 = null,
+                        //姓名 = i.TuitionInstallment.IntuitionCharge.RegisterLesson.UserProfile.FullName(),
+                        //合約編號 = null,
                         信託 = null,
                         摘要 = $"銷貨收入-自主訓練{i.TuitionInstallment.IntuitionCharge.RegisterLesson.LessonTime.First().ClassTime:yyyyMMdd}-{i.TuitionInstallment.IntuitionCharge.RegisterLesson.UserProfile.RealName}({i.PaymentType})",
                         退款金額_含稅 = null,
@@ -263,8 +263,8 @@ namespace WebHome.Helper
                                 買受人統編 = i.InvoiceID.HasValue
                                           ? i.InvoiceItem.InvoiceBuyer.IsB2C() ? "--" : i.InvoiceItem.InvoiceBuyer.ReceiptNo
                                           : "--",
-                                姓名 = i.TuitionInstallment.IntuitionCharge.RegisterLesson.UserProfile.FullName(),
-                                合約編號 = null,
+                                //姓名 = i.TuitionInstallment.IntuitionCharge.RegisterLesson.UserProfile.FullName(),
+                                //合約編號 = null,
                                 信託 = null,
                                 摘要 = i.InvoiceItem.InvoiceCancellation != null
                                         ? $"(沖:{i.PayoffDate:yyyyMMdd}-作廢)銷貨收入-自主訓練-{i.TuitionInstallment.IntuitionCharge.RegisterLesson.UserProfile.RealName}"
@@ -302,8 +302,8 @@ namespace WebHome.Helper
                         買受人統編 = i.InvoiceID.HasValue
                                   ? i.InvoiceItem.InvoiceBuyer.IsB2C() ? "--" : i.InvoiceItem.InvoiceBuyer.ReceiptNo
                                   : "--",
-                        姓名 = null,
-                        合約編號 = null,
+                        //姓名 = null,
+                        //合約編號 = null,
                         信託 = null,
                         摘要 = $"其他營業收入-{String.Join("/", i.PaymentTransaction.PaymentOrder.Select(o => o.MerchandiseWindow.ProductName))}({i.PaymentType})",
                         退款金額_含稅 = null,
@@ -326,8 +326,8 @@ namespace WebHome.Helper
                                 買受人統編 = i.InvoiceID.HasValue
                                           ? i.InvoiceItem.InvoiceBuyer.IsB2C() ? "--" : i.InvoiceItem.InvoiceBuyer.ReceiptNo
                                           : "--",
-                                姓名 = null,
-                                合約編號 = null,
+                                //姓名 = null,
+                                //合約編號 = null,
                                 信託 = null,
                                 摘要 = i.InvoiceItem.InvoiceCancellation != null
                                         ? $"(沖:{i.PayoffDate:yyyyMMdd}-作廢)其他營業收入-{(Naming.PaymentTransactionType?)i.TransactionType}-{String.Join("/", i.PaymentTransaction.PaymentOrder.Select(o => o.MerchandiseWindow.ProductName))}"
@@ -426,15 +426,15 @@ namespace WebHome.Helper
     {
         public String 日期 { get; set; }
         public String 分店 { get; set; }
+        public String 發票號碼 { get; set; }
         public String 買受人統編 { get; set; }
         public String 摘要 { get; set; }
         public int? 退款金額_含稅 { get; set; }
         public int? 收款金額_含稅 { get; set; }
         public int? 借方金額 { get; set; }
-        public int? 貸方金額 { get; set; }
-        public String 發票號碼 { get; set; }
-        public String 姓名 { get; set; }
-        public String 合約編號 { get; set; }
+        public int? 貸方金額 { get; set; }        
+        //public String 姓名 { get; set; }
+        //public String 合約編號 { get; set; }
         public String 信託 { get; set; }
     }
 

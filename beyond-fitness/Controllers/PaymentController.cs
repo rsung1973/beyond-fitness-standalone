@@ -1786,8 +1786,8 @@ namespace WebHome.Controllers
                         買受人統編 = i.InvoiceID.HasValue
                                   ? i.InvoiceItem.InvoiceBuyer.IsB2C() ? "--" : i.InvoiceItem.InvoiceBuyer.ReceiptNo
                                   : "--",
-                        姓名 = i.ContractPayment.CourseContract.ContractLearner("/"),
-                        合約編號 = i.ContractPayment.CourseContract.ContractNo(),
+                        //姓名 = i.ContractPayment.CourseContract.ContractLearner("/"),
+                        //合約編號 = i.ContractPayment.CourseContract.ContractNo(),
                         信託 = i.ContractPayment.CourseContract.Entrusted == true
                                   ? "是"
                                   : i.ContractPayment.CourseContract.Entrusted == false
@@ -1845,8 +1845,8 @@ namespace WebHome.Controllers
                                 買受人統編 = i.InvoiceID.HasValue
                                           ? i.InvoiceItem.InvoiceBuyer.IsB2C() ? "--" : i.InvoiceItem.InvoiceBuyer.ReceiptNo
                                           : "--",
-                                姓名 = i.ContractPayment.CourseContract.ContractLearner("/"),
-                                合約編號 = i.ContractPayment.CourseContract.ContractNo(),
+                                //姓名 = i.ContractPayment.CourseContract.ContractLearner("/"),
+                                //合約編號 = i.ContractPayment.CourseContract.ContractNo(),
                                 信託 = i.ContractPayment.CourseContract.Entrusted == true
                                           ? "是"
                                           : i.ContractPayment.CourseContract.Entrusted == false
