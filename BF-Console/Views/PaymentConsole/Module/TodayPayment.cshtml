@@ -17,6 +17,8 @@
 }
 @{
     IQueryable<Payment> items = _model.Where(p => p.PayoffDate >= DateTime.Today);
+    IQueryable<Payment> voidItems =models.GetTable<VoidPayment>().Where(v => v.VoidDate >= DateTime.Today)
+                                            .Join(items, v => v.VoidID, p => p.PaymentID, (v, p) => p);
 }
 <div class="col-6">
     <br /><br />
@@ -28,8 +30,25 @@
 </div>
 <div class="col-6 text-right">
     <h5 class="m-t-0">本日金額</h5>
-    <a href="javascript:showPaymentList();">$@($"{items.Sum(p => p.PayoffAmount):##,###,###,###}")</a><br />
-    <a href="javascript:showPaymentList();">$@($"{items.ExtractVoidPayment(models).Sum(p => p.PayoffAmount):##,###,###,###}")</a><br />
-    <a href="javascript:showPaymentList();">$@($"{items.ExtractPaymentAllowance(models).Sum(a=>a.TotalAmount):##,###,###,###}")</a><br />
+    <a href="#" onclick='showPaymentList(@Html.Raw(JsonConvert.SerializeObject(
+            new
+            {
+                PayoffDateFrom = DateTime.Today,
+                PayoffDateTo = DateTime.Today.AddDays(1),
+            })));'>@($"{items.Sum(p => p.PayoffAmount) ?? 0:##,###,###,##0}")</a><br />
+    <a href="#" onclick='showPaymentList(@Html.Raw(JsonConvert.SerializeObject(
+            new
+            {
+                PayoffDateFrom = DateTime.Today,
+                PayoffDateTo = DateTime.Today.AddDays(1),
+                HasCancellation = true,
+            })));'>@($"{voidItems.ExtractVoidPayment(models,true).Sum(p => p.PayoffAmount) ?? 0:##,###,###,##0}")</a><br />
+    <a href="#" onclick='showPaymentList(@Html.Raw(JsonConvert.SerializeObject(
+            new
+            {
+                PayoffDateFrom = DateTime.Today,
+                PayoffDateTo = DateTime.Today.AddDays(1),
+                HasAllowance = true
+            })));'>@($"{items.ExtractPaymentAllowance(models).Sum(a=>a.TotalAmount) ?? 0:##,###,###,##0}")</a><br />
 </div>
 

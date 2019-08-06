@@ -21,6 +21,7 @@ using Newtonsoft.Json;
 using Utility;
 using WebHome.Controllers;
 using WebHome.Helper;
+using WebHome.Helper.BusinessOperation;
 using WebHome.Models.DataEntity;
 using WebHome.Models.Locale;
 using WebHome.Models.Timeline;
@@ -585,17 +586,25 @@ namespace WebHome.Controllers
             return View(profile.LoadInstance(models));
         }
 
-        public ActionResult EditPayment(CourseContractQueryViewModel viewModel)
+        public ActionResult EditPaymentForContract(CourseContractQueryViewModel viewModel)
         {
             ViewResult result = (ViewResult)SignCourseContract(viewModel);
             CourseContract item = (CourseContract)ViewBag.DataItem;
             if (item != null)
             {
-                result.ViewName = "EditPayment";
+                result.ViewName = "~/Views/PaymentConsole/EditPaymentForContract.cshtml";
             }
             return result;
 
         }
+
+        public ActionResult EditPaymentForPISession(PaymentQueryViewModel viewModel)
+        {
+            ViewResult result = (ViewResult)PaymentIndex(viewModel);
+            result.ViewName = "~/Views/PaymentConsole/EditPaymentForPISession.cshtml";
+            return result;
+        }
+
 
         public ActionResult PaymentIndex(PaymentQueryViewModel viewModel)
         {

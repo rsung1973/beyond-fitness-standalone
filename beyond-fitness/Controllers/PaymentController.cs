@@ -145,6 +145,7 @@ namespace WebHome.Controllers
                 if (viewModel.ContractNo == null)
                 {
                     ModelState.AddModelError("ContractNo", "請輸入合約編號!!");
+                    return View("~/Views/Shared/AlertMessage.ascx", model: "請輸入合約編號");
                 }
                 else
                 {
@@ -162,6 +163,7 @@ namespace WebHome.Controllers
                     if (contract == null)
                     {
                         ModelState.AddModelError("ContractNo", "合約編號錯誤!!");
+                        return View("~/Views/Shared/AlertMessage.ascx", model: "合約編號錯誤");
                     }
                     //else if (contract.ContractPayment.Any(p => p.Payment.PayoffDate > DateTime.Now.AddMinutes(-1)))
                     //{
@@ -178,16 +180,19 @@ namespace WebHome.Controllers
             if(!viewModel.InvoiceType.HasValue)
             {
                 ModelState.AddModelError("InvoiceType", "請選擇發票類型");
+                return View("~/Views/Shared/AlertMessage.ascx", model: "請選擇發票類型");
             }
 
             if (!viewModel.PayoffDate.HasValue)
             {
                 ModelState.AddModelError("PayoffDate", "請輸入收款日期");
+                return View("~/Views/Shared/AlertMessage.ascx", model: "請輸入收款日期");
             }
 
             if (String.IsNullOrEmpty(viewModel.PaymentType))
             {
                 ModelState.AddModelError("errorMessage", "請選擇收款方式");
+                return View("~/Views/Shared/AlertMessage.ascx", model: "請選擇收款方式");
             }
 
             if (viewModel.CustomBrief == true)
@@ -214,15 +219,25 @@ namespace WebHome.Controllers
             if (!viewModel.SellerID.HasValue)
             {
                 ModelState.AddModelError("SellerID", "請選擇收款場地");
+                return View("~/Views/Shared/AlertMessage.ascx", model: "請選擇收款場地");
             }
             else
             {
+                if (contract != null)
+                {
+                    if (viewModel.SellerID != contract.CourseContractExtension.BranchID)
+                    {
+                        return View("~/Views/Shared/AlertMessage.ascx", model: "簽約場地與收款場地不符");
+                        //ModelState.AddModelError("SellerID", "簽約場地與收款場地不符");
+                    }
+                }
                 invoice = checkInvoiceNo(viewModel);
             }
 
             if (contract!=null && contract.TotalPaidAmount() + viewModel.PayoffAmount > contract.TotalCost)
             {
                 ModelState.AddModelError("PayoffAmount", "含本次收款金額已大於總收費金額!!");
+                return View("~/Views/Shared/AlertMessage.ascx", model: "含本次收款金額已大於總收費金額");
             }
 
             if (!ModelState.IsValid)
@@ -440,11 +455,15 @@ namespace WebHome.Controllers
                 ModelState.AddModelError("errorMessage", "請選擇收款方式!!");
             }
 
+            if (!viewModel.InvoiceType.HasValue)
+            {
+                ModelState.AddModelError("InvoiceType", "請選擇發票類型");
+            }
 
             if (!ModelState.IsValid)
             {
                 ViewBag.ModelState = ModelState;
-                return View("~/Views/Shared/ReportInputError.ascx");
+                return View(Settings.Default.ReportInputError);
             }
 
             try
@@ -750,19 +769,11 @@ namespace WebHome.Controllers
             return item;
         }
 
-        public ActionResult ListUnpaidPISession(int? branchID)
+        public ActionResult ListUnpaidPISession(PaymentQueryViewModel viewModel)
         {
+            ViewBag.ViewModel = viewModel;
             var profile = HttpContext.GetUser();
-            var items = models.GetTable<LessonTime>()
-                .Where(r => r.ClassTime < DateTime.Today.AddDays(1))
-                .Where(r => r.RegisterLesson.LessonPriceType.Status == (int)Naming.DocumentLevelDefinition.自主訓練)
-                .Where(r => r.RegisterLesson.IntuitionCharge.TuitionInstallment.Count == 0
-                    || !r.RegisterLesson.IntuitionCharge.TuitionInstallment.Any(t => t.Payment.VoidPayment == null || t.Payment.VoidPayment.Status != (int)Naming.CourseContractStatus.已生效));
-
-            if (branchID.HasValue)
-            {
-                items = items.Where(r => r.BranchID == branchID);
-            }
+            var items = viewModel.GetUnpaidPISession(models);
 
             return View("~/Views/Payment/Module/UnpaidPISession.ascx", items);
         }
@@ -1273,7 +1284,7 @@ namespace WebHome.Controllers
 
         public ActionResult InquirePayment(PaymentQueryViewModel viewModel)
         {
-            IQueryable<Payment> items = viewModel.InquirePayment(this, out string alertMessage);
+            IQueryable<Payment> items = viewModel.InquirePaymentByCustom(this, out string alertMessage);
             return View("~/Views/Payment/Module/PaymentInvoiceList.ascx", items);
         }
 

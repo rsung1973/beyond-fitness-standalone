@@ -24,7 +24,7 @@
                     .Where(i => !i.Document.DocumentPrintLog.Any());
 }
 <div class="col-6 text-right">
-    <a href='javascript:showPaymentList(@Html.Raw(JsonConvert.SerializeObject(
+    <a href="#" onclick='showPaymentList(@Html.Raw(JsonConvert.SerializeObject(
             new
             {
                 _viewModel.TransactionType,
@@ -32,6 +32,7 @@
                 _viewModel.BypassCondition,
                 InvoiceType = (int)Naming.InvoiceTypeDefinition.一般稅額計算之電子發票,
                 _viewModel.CompoundType,
+                _viewModel.HandlerID,
             })));'>
         <h2 class="col-red">@(items.Count())</h2>
     </a>

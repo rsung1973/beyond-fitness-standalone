@@ -337,7 +337,7 @@ namespace WebHome.Helper.BusinessOperation
             return items;
         }
 
-        public static IQueryable<Payment> InquirePayment<TEntity>(this PaymentQueryViewModel viewModel, SampleController<TEntity> controller, out String alertMessage)
+        public static IQueryable<Payment> InquirePaymentByCustom<TEntity>(this PaymentQueryViewModel viewModel, SampleController<TEntity> controller, out String alertMessage)
                 where TEntity : class, new()
         {
             alertMessage = null;
@@ -534,18 +534,13 @@ namespace WebHome.Helper.BusinessOperation
             if (viewModel.IsCancelled == true)
             {
                 result = result
-                    .Where(p => p.VoidPayment != null || p.AllowanceID.HasValue);
+                    .Where(p => p.VoidPayment != null /*|| p.AllowanceID.HasValue*/);
 
             }
             else if (viewModel.IsCancelled == false)
             {
                 result = items
-                    .Where(p => p.VoidPayment == null && !p.AllowanceID.HasValue);
-            }
-
-            if (viewModel.HasCancellation == true)
-            {
-                result = result.ExtractVoidPayment(models);
+                    .Where(p => p.VoidPayment == null /*&& !p.AllowanceID.HasValue*/);
             }
 
             if(viewModel.HasAllowance == true)
@@ -560,6 +555,192 @@ namespace WebHome.Helper.BusinessOperation
                     result = result
                         .Join(models.GetTable<InvoiceItem>()
                                 .Where(i => i.Document.DocumentPrintLog.Any()), 
+                            p => p.InvoiceID, i => i.InvoiceID, (p, i) => p);
+                }
+                else if (viewModel.HasInvoicePrinted == false)
+                {
+                    result = result
+                        .Join(models.GetTable<InvoiceItem>()
+                                .Where(i => !i.Document.DocumentPrintLog.Any()),
+                            p => p.InvoiceID, i => i.InvoiceID, (p, i) => p);
+                }
+            }
+
+            return result;
+        }
+        public static IQueryable<Payment> InquirePayment<TEntity>(this PaymentQueryViewModel viewModel, SampleController<TEntity> controller, out String alertMessage)
+                where TEntity : class, new()
+        {
+            alertMessage = null;
+            var ModelState = controller.ModelState;
+            var ViewBag = controller.ViewBag;
+            var HttpContext = controller.HttpContext;
+            var models = controller.DataSource;
+
+            ViewBag.ViewModel = viewModel;
+            var profile = HttpContext.GetUser();
+
+            IQueryable<Payment> items = models.PromptIncomePayment();
+
+            IQueryable<VoidPayment> voidItems = models.GetTable<VoidPayment>();
+            IQueryable<InvoiceItem> invoiceItems = models.GetTable<InvoiceItem>();
+
+            if (viewModel.PaymentID.HasValue)
+            {
+                items = items.Where(p => p.PaymentID == viewModel.PaymentID);
+            }
+
+            viewModel.UserName = viewModel.UserName.GetEfficientString();
+            if (viewModel.UserName != null)
+            {
+                Expression<Func<Payment, bool>> queryExpr = c => false;
+                queryExpr = queryExpr.Or(c => c.ContractPayment.CourseContract.CourseContractMember.Any(m => m.UserProfile.RealName.Contains(viewModel.UserName) || m.UserProfile.Nickname.Contains(viewModel.UserName)));
+                queryExpr = queryExpr.Or(c => c.TuitionInstallment.IntuitionCharge.RegisterLesson.UserProfile.RealName.Contains(viewModel.UserName));
+                queryExpr = queryExpr.Or(c => c.TuitionInstallment.IntuitionCharge.RegisterLesson.UserProfile.Nickname.Contains(viewModel.UserName));
+                items = items.Where(queryExpr);
+            }
+
+            viewModel.ContractNo = viewModel.ContractNo.GetEfficientString();
+            if (viewModel.ContractNo != null)
+            {
+                Expression<Func<Payment, bool>> queryExpr = c => false;
+                var no = viewModel.ContractNo.Split('-');
+                if (no.Length > 1)
+                {
+                    int.TryParse(no[1], out int seqNo);
+                    queryExpr = queryExpr.Or(c => c.ContractPayment.CourseContract.ContractNo.StartsWith(no[0])
+                        && c.ContractPayment.CourseContract.SequenceNo == seqNo);
+                }
+                else
+                {
+                    queryExpr = queryExpr.Or(c => c.ContractPayment.CourseContract.ContractNo.StartsWith(viewModel.ContractNo));
+                }
+                items = items.Where(queryExpr);
+            }
+
+            if (viewModel.BranchID.HasValue)
+            {
+                items = items.Where(c => c.PaymentTransaction.BranchID == viewModel.BranchID);
+            }
+
+            if (viewModel.HandlerID.HasValue)
+            {
+                items = items.Where(c => c.HandlerID == viewModel.HandlerID);
+                voidItems = voidItems.Where(v => v.HandlerID == viewModel.HandlerID);
+            }
+
+
+            if (viewModel.TransactionType.HasValue)
+                items = items.Where(c => c.TransactionType == viewModel.TransactionType);
+
+            if (viewModel.CompoundType != null)
+            {
+                viewModel.CompoundType = viewModel.CompoundType.Where(t => t.HasValue).ToArray();
+                if (viewModel.CompoundType.Length > 0)
+                {
+                    items = items.Where(c => viewModel.CompoundType.Contains((Naming.PaymentTransactionType?)c.TransactionType));
+                }
+            }
+
+            if (viewModel.Status.HasValue)
+            {
+                //items = items.Where(c => c.Status == viewModel.Status);
+                //items = items.Where(c => c.VoidPayment.Status == viewModel.Status);
+                items = items.Where(c => c.Status == viewModel.Status
+                    || c.VoidPayment.Status == viewModel.Status);
+            }
+
+            if (viewModel.InvoiceType.HasValue)
+            {
+                invoiceItems = invoiceItems.Where(c => c.InvoiceType == (byte)viewModel.InvoiceType);
+            }
+
+
+            viewModel.InvoiceNo = viewModel.InvoiceNo.GetEfficientString();
+            if (viewModel.InvoiceNo != null && Regex.IsMatch(viewModel.InvoiceNo, "[A-Za-z]{2}[0-9]{8}"))
+            {
+                String trackCode = viewModel.InvoiceNo.Substring(0, 2).ToUpper();
+                String no = viewModel.InvoiceNo.Substring(2);
+                invoiceItems = invoiceItems.Where(c => c.TrackCode == trackCode
+                    && c.No == no);
+
+                //allowanceItems = allowanceItems.Where(a => a.AllowanceNumber == viewModel.InvoiceNo);
+                //voidItems = voidItems
+                //    .Join(models.GetTable<Payment>()
+                //        .Join(models.GetTable<InvoiceItem>().Where(i => i.TrackCode == trackCode && i.No == no),
+                //            p => p.InvoiceID, i => i.InvoiceID, (p, i) => p),
+                //        v => v.VoidID, p => p.PaymentID, (v, p) => v);
+            }
+
+            viewModel.BuyerReceiptNo = viewModel.BuyerReceiptNo.GetEfficientString();
+            if (viewModel.BuyerReceiptNo != null)
+            {
+                invoiceItems = invoiceItems.Where(c => c.InvoiceBuyer.ReceiptNo == viewModel.BuyerReceiptNo);
+            }
+
+            Expression<Func<InvoiceItem, bool>> queryInv = f => true;
+            bool dateQuery = false;
+            IQueryable<InvoiceAllowance> allowanceItems = models.GetTable<InvoiceAllowance>();
+            IQueryable<InvoiceCancellation> cancelledItems = models.GetTable<InvoiceCancellation>();
+
+            if (viewModel.PayoffDateFrom.HasValue)
+            {
+                dateQuery = true;
+                items = items.Where(p => p.PayoffDate >= viewModel.PayoffDateFrom);
+                queryInv = queryInv.And(i => i.InvoiceDate >= viewModel.PayoffDateFrom);
+                cancelledItems = cancelledItems.Where(i => i.CancelDate >= viewModel.PayoffDateFrom);
+                allowanceItems = allowanceItems.Where(a => a.AllowanceDate >= viewModel.PayoffDateFrom);
+                voidItems = voidItems.Where(v => v.VoidDate >= viewModel.PayoffDateFrom);
+            }
+
+            if (viewModel.PayoffDateTo.HasValue)
+            {
+                dateQuery = true;
+                items = items.Where(i => i.PayoffDate < viewModel.PayoffDateTo.Value.AddDays(1));
+                queryInv = queryInv.And(i => i.InvoiceDate < viewModel.PayoffDateTo.Value.AddDays(1));
+                cancelledItems = cancelledItems.Where(i => i.CancelDate < viewModel.PayoffDateTo.Value.AddDays(1));
+                allowanceItems = allowanceItems.Where(a => a.AllowanceDate < viewModel.PayoffDateTo.Value.AddDays(1));
+                voidItems = voidItems.Where(v => v.VoidDate < viewModel.PayoffDateTo.Value.AddDays(1));
+            }
+
+            IQueryable<Payment> result = items.Join(invoiceItems, p => p.InvoiceID, i => i.InvoiceID, (p, i) => p);
+            if(viewModel.ShareFor.HasValue)
+            {
+                result = result.Where(p => p.VoidPayment == null)
+                            .Where(p => p.TuitionAchievement.Any(t => t.CoachID == viewModel.ShareFor));
+            }
+            else if (dateQuery)
+            {
+                result = result
+                    .Union(result.Join(models.GetTable<InvoiceItem>().Where(queryInv), p => p.InvoiceID, i => i.InvoiceID, (p, i) => p))
+                    .Union(result.Join(allowanceItems, p => p.AllowanceID, a => a.AllowanceID, (p, a) => p)
+                    .Union(result.Join(voidItems, p => p.PaymentID, c => c.VoidID, (p, c) => p)));
+            }
+
+            if (viewModel.IsCancelled == true)
+            {
+                result = result
+                    .Where(p => p.VoidPayment != null /*|| p.AllowanceID.HasValue*/);
+
+            }
+            else if (viewModel.IsCancelled == false)
+            {
+                result = items
+                    .Where(p => p.VoidPayment == null /*&& !p.AllowanceID.HasValue*/);
+            }
+
+            if (viewModel.HasAllowance == true)
+            {
+                result = result.Where(p => p.AllowanceID.HasValue);
+            }
+
+            if (viewModel.HasInvoicePrinted.HasValue)
+            {
+                if (viewModel.HasInvoicePrinted == true)
+                {
+                    result = result
+                        .Join(models.GetTable<InvoiceItem>()
+                                .Where(i => i.Document.DocumentPrintLog.Any()),
                             p => p.InvoiceID, i => i.InvoiceID, (p, i) => p);
                 }
                 else if (viewModel.HasInvoicePrinted == false)

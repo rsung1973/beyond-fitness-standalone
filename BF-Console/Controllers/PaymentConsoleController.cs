@@ -41,6 +41,8 @@ namespace WebHome.Controllers
             {
                 viewModel.PaymentID = viewModel.DecryptKeyValue();
             }
+            viewModel.BypassCondition = true;
+
             IQueryable<Payment> items = viewModel.InquirePayment(this, out string alertMessage);
             return View("~/Views/PaymentConsole/Module/PaymentItemsList.cshtml", items);
         }

@@ -23,6 +23,9 @@
     _viewModel = (PaymentQueryViewModel)ViewBag.ViewModel;
 
 }
+@{ 
+    UserProfile _profile = Context.GetUser();
+}
 @section CustomHeader {
     <!-- JQuery DataTable Css -->
     <link href="plugins/jquery-datatable/DataTables-1.10.18/css/dataTables.bootstrap4.min.css" rel="stylesheet">
@@ -51,92 +54,25 @@
         ViewBag.BlockHeader = "我的收款";
         Html.RenderPartial("~/Views/ConsoleHome/Module/BlockHeader.cshtml", _model);
     }
-
-
+    @{
+        IQueryable<Payment> items = models.PromptIncomePayment();
+    }
     <!--我的收款-->
+    @{
+        Html.RenderPartial("~/Views/PaymentConsole/Module/CoachPaymentView.cshtml", items);
+    }
+    <!--我的分店收款-->
+    @if (_profile.IsManager() || _profile.IsViceManager())
+    {
     <div class="container-fluid">
-        <div class="card">
-            <div class="header">
-                <ul class="header-dropdown">
-                    <li class="dropdown">
-                        <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class="zmdi zmdi-shopping-cart-plus"></i> </a>
-                        <ul class="dropdown-menu dropdown-menu-right slideUp float-right">
-                            <li><a href="javascript:addPayment('payment-edit-type2');">收款 - P.I sesson</a></li>
-                            <li><a href="javascript:addPayment('payment-edit-type3');">收款 - 飲品</a></li>
-                            <li><a href="javascript:addPayment('payment-edit-type4');">收款 - 運動商品</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-            @{ 
-                IQueryable<Payment> items = models.GetTable<Payment>();
+        <h4 class="card-outbound-header">我的分店收款</h4>
+        <div class="row clearfix">
+            @{
+                Html.RenderPartial("~/Views/PaymentConsole/Module/CurrentMonthBranchPaymentView.cshtml", items);
             }
-            <ul class="row clearfix list-unstyled m-b-0 widget_3">
-                <li class="col-lg-4 col-md-4 col-sm-12">
-                    <div class="body">
-                        <div class="row">
-                            @{
-                                Html.RenderPartial("~/Views/PaymentConsole/Module/PaymentForPT.cshtml", items);
-                            }
-                        </div>
-                    </div>
-                </li>
-                <li class="col-lg-4 col-md-4 col-sm-12">
-                    <div class="body">
-                        <div class="row">
-                            @{
-                                Html.RenderPartial("~/Views/PaymentConsole/Module/PaymentForPI.cshtml", items);
-                            }
-                        </div>
-                    </div>
-                </li>
-                <li class="col-lg-4 col-md-4 col-sm-12">
-                    <div class="body">
-                        <div class="row">
-                            @{
-                                Html.RenderPartial("~/Views/PaymentConsole/Module/PaymentForOthers.cshtml", items);
-                            }
-                        </div>
-                    </div>
-                </li>
-                <li class="col-lg-6 col-md-6 col-sm-12">
-                    <div class="body">
-                        <div class="row">
-                            @{
-                                Html.RenderPartial("~/Views/PaymentConsole/Module/TodayPayment.cshtml", items);
-                            }
-                        </div>
-                    </div>
-                </li>
-                <li class="col-lg-6 col-md-6 col-sm-12">
-                    <div class="body">
-                        <div class="row">
-                            <div class="col-6">
-                                <h5 class="m-t-0"><strong class="col-red">本月</strong>已分潤</h5>
-                                <p class="text-small">
-                                    P.T：<a href="javascript:showPaymentList();">$9,999,999</a><br />
-                                    P.I：<a href="javascript:showPaymentList();">$999,999</a><br />
-                                    其他：<a href="javascript:showPaymentList();">$9,999</a>
-                                </p>
-                            </div>
-                            <div class="col-6 text-right">
-                                <div class="info-box-2 text-right">
-                                    <div class="content">
-                                        <div class="sparkline-pie">99999,9999,9999</div>
-                                        <div class="text">
-                                            <i class="zmdi zmdi-label col-amber m-r-5"></i>P.T
-                                            <i class="zmdi zmdi-label col-green m-r-5"></i>P.I
-                                            <i class="zmdi zmdi-label col-pink m-r-5"></i>其他
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-            </ul>
         </div>
     </div>
+    }
     <!--收款詳細資料-->
     <div class="container-fluid payment">
         <div class="row clearfix">
@@ -168,6 +104,9 @@
             var event = window.event;
             if (event) {
                 event.cancelBubble = true;
+                if ($(event.target).text() == '0') {
+                    return false;
+                }
             }
 
             if (alertCount == 0) {
@@ -175,6 +114,7 @@
             } else {
                 viewModel.scrollToView = true;
             }
+
             if (alertCount && alertCount > 300) {
                 swal({
                     title: "繼續載入?",

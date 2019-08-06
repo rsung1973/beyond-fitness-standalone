@@ -21,7 +21,7 @@
     protected override void OnInit(EventArgs e)
     {
         base.OnInit(e);
-        _message = (String)ViewBag.Message ?? Request["Message"];
+        _message = (Model as String) ?? (String)ViewBag.Message ?? Request["Message"];
     }
 
 </script>

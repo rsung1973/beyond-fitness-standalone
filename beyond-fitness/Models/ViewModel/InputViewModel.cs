@@ -191,9 +191,14 @@ namespace WebHome.Models.ViewModel
         public bool? BypassCondition { get; set; }
         public Naming.PaymentTransactionType?[] CompoundType { get; set; }
         public bool? ScrollToView { get; set; }
-        public bool? HasCancellation { get; set; }
+        public bool? HasCancellation
+        {
+            get => IsCancelled;
+            set => IsCancelled = value;
+        }
         public bool? HasAllowance { get; set; }
         public bool? HasInvoicePrinted { get; set; }
+        public int? ShareFor { get; set; }
 
     }
 

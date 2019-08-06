@@ -27,8 +27,11 @@
             PayoffDateFrom = DateTime.Today,
             PayoffDateTo = DateTime.Today.AddDays(1),
             TransactionType = (int)Naming.PaymentTransactionType.體能顧問費,
+            HandlerID = _viewModel.HandlerID,
         };
         ViewBag.ViewModel = tempViewModel;
+        ViewBag.VoidPayment = models.GetTable<VoidPayment>().Where(v => v.VoidDate >= DateTime.Today)
+                                            .Join(items, v => v.VoidID, p => p.PaymentID, (v, p) => p);
         Html.RenderPartial("~/Views/PaymentConsole/Module/PaymentSummary.cshtml", items.Where(p => p.PayoffDate >= DateTime.Today));
     }
 </div>

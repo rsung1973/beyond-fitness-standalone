@@ -25,6 +25,7 @@
             Naming.PaymentTransactionType.運動商品,
             Naming.PaymentTransactionType.食飲品
         },
+        HandlerID = _viewModel.HandlerID,
     };
     IQueryable<Payment> items = _model
         .Where(p => tempViewModel.CompoundType.Contains((Naming.PaymentTransactionType?)p.TransactionType));
@@ -33,6 +34,8 @@
     <h5 class="m-t-0">本日其他</h5>
     @{
         ViewBag.ViewModel = tempViewModel;
+        ViewBag.VoidPayment = models.GetTable<VoidPayment>().Where(v => v.VoidDate >= DateTime.Today)
+                                            .Join(items, v => v.VoidID, p => p.PaymentID, (v, p) => p);
         Html.RenderPartial("~/Views/PaymentConsole/Module/PaymentSummary.cshtml", items.Where(p => p.PayoffDate >= DateTime.Today));
     }
 </div>

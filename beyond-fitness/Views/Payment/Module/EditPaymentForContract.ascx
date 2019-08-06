@@ -83,7 +83,7 @@
                                 $.post('<%= Url.Action("LoadContract", "CourseContract") %>', { 'contractNo': $('#<%= _dialog %> input[name="ContractNo"]').val(), 'contractDateFrom': null, 'contractType': null }, function (data) {
                                     hideLoading();
                                     if ($.isPlainObject(data)) {
-                                        if (data.data.length > 0 && !data.data[0].Installment) {
+                                        if (data.data.length > 0 /*&& !data.data[0].Installment*/) {
                                             $('input[name="PayoffAmount"]').val(data.data[0].TotalCost);
                                             $('input[name="PayoffAmount"]').prop('readOnly', true);
                                         } else {
