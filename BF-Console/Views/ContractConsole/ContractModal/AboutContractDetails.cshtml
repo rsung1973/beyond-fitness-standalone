@@ -71,7 +71,7 @@
                             {
                             <div class="panel xl-khaki">
                                 <div class="panel-heading" role="tab" id="headingInstallmentList">
-                                    <h4 class="panel-title material-icons"><a role="button" data-toggle="collapse" data-parent="#accordionDetail_contract" href="#collapseInstallmentList" aria-expanded="true" aria-controls="collapseInstallmentList"><i class="material-icons">subject</i> 分期詳細資訊 </a></h4>
+                                    <h4 class="panel-title"><a role="button" data-toggle="collapse" data-parent="#accordionDetail_contract" href="#collapseInstallmentList" aria-expanded="false" aria-controls="collapseInstallmentList"><i class="material-icons">subject</i> 分期詳細資訊 </a></h4>
                                 </div>
                                 <div id="collapseInstallmentList" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingInstallmentList">
                                     <div class="panel-body no-padding">
@@ -89,7 +89,7 @@
                             {
                         <div class="panel xl-pink">
                             <div class="panel-heading" role="tab" id="headingInvoiceList">
-                                <h4 class="panel-title material-icons"><a role="button" data-toggle="collapse" data-parent="#accordionDetail_contract" href="#collapseInvoiceList" aria-expanded="true" aria-controls="collapseInvoiceList"><i class="material-icons">subject</i> 收款詳細資訊 </a></h4>
+                                <h4 class="panel-title"><a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordionDetail_contract" href="#collapseInvoiceList" aria-expanded="false" aria-controls="collapseInvoiceList"><i class="material-icons">subject</i> 收款詳細資訊 </a></h4>
                             </div>
                             <div id="collapseInvoiceList" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingInvoiceList">
                                 <div class="panel-body no-padding">
@@ -118,7 +118,7 @@
                     ? _model.RegisterLessonContract.Select(r => r.RegisterLesson).Sum(r => r.AttendedLessons)
                     : _model.RegisterLessonContract.FirstOrDefault()?.RegisterLesson?.AttendedLessons;}
 
-                                    <h4 class="panel-title material-icons"><a role="button" data-toggle="collapse" data-parent="#accordionDetail_contract" href="#collapseLessonList" aria-expanded="true" aria-controls="collapseLessonList"><i class="material-icons">subject</i> 上課詳細資訊 @(attended > 0 ? $"({attended})" : null)</a></h4>
+                                    <h4 class="panel-title"><a role="button" data-toggle="collapse" data-parent="#accordionDetail_contract" href="#collapseLessonList" aria-expanded="false" aria-controls="collapseLessonList"><i class="material-icons">subject</i> 上課詳細資訊 @(attended > 0 ? $"({attended})" : null)</a></h4>
                                 </div>
                                 <div id="collapseLessonList" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingLessonList">
                                     <div class="panel-body no-padding">
