@@ -1,6 +1,7 @@
 {
   "branchName": "南京店",
   "arenaView": "images/landing/360/arena.jpg",
+  "scenarioPhoto": [ "nanjing-01.jpg", "nanjing-02.jpg", "nanjing-03.jpg" ],
   "coachItems": [
     {
       "coachName": "戴悟修",

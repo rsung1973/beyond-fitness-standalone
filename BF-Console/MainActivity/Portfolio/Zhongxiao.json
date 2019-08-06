@@ -1,6 +1,7 @@
 {
   "branchName": "忠孝店",
   "arenaView": "images/landing/360/sogo.jpg",
+  "scenarioPhoto": [ "zhongxiao-01.jpg", "zhongxiao-02.jpg", "zhongxiao-03.jpg" ],
   "coachItems": [
     {
       "coachName": "黃伊涵",

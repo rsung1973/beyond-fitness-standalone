@@ -50,6 +50,7 @@ namespace WebHome.Models.ViewModel
     {
         public string branchName { get; set; }
         public string arenaView { get; set; }
+        public List<string> scenarioPhoto { get; set; }
         public List<CoachItem> coachItems { get; set; }
     }
 

@@ -6139,6 +6139,7 @@
     <Content Include="ConsoleHome\images\avatar\avatars.png" />
     <Content Include="Views\ContractConsole\Module\CourseContractView20190801.cshtml" />
     <Content Include="ConsoleHome\images\landing\guarantee-1.png" />
+    <None Include="MainActivity\Pricing\Dongmen.json" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\InitializeType.cs" />

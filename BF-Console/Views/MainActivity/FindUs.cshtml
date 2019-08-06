@@ -34,6 +34,7 @@
                         @Html.Raw(NamingItem.FindDongmenBranchAdd)
                     </a>
                     <p>@Html.Raw(NamingItem.FindDongmenBranchDesc1)</p>
+                    <a href="javascript:$('').launchDownload('@(Url.Action("Team", "MainActivity"))', {'branchName':'Dongmen'});bindTrackingCode('專業團隊_東門');" class="more">@Html.Raw(NamingItem.OurTeam)<i class="pl-1 fa fa-angle-right"></i></a>
                 </div>
                 <div class="col-sm-6 p-t-20">
                     <div id="map-dongmen" class="map-canvas small"></div>

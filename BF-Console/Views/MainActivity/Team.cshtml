@@ -14,12 +14,11 @@
 @{
     ModelSource<UserProfile> models;
     ModelStateDictionary _modelState;
-    CoachData _coachData;
+    CoachData _viewModel;
 
     models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
     _modelState = (ModelStateDictionary)ViewBag.ModelState;
-    _coachData = (CoachData)this.Model;
-
+    _viewModel = (CoachData)this.Model;
     Layout = "~/Views/MainActivity/Template/MainPage.cshtml";
 
 }
@@ -32,10 +31,10 @@
     <div class="container">
         <div class="row">
             <h1 class="align-center">@Html.Raw(NamingItem.TeamTitle)</h1>
-            <h2 class="align-center">@(_coachData.branchName)</h2>
+            <h2 class="align-center">@(_viewModel.branchName)</h2>
         </div>
         <div class="row grid-space-0">
-            @foreach (var c in _coachData.coachItems)
+            @foreach (var c in _viewModel.coachItems)
             {
                 <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3 isotope-item">
                     <div class="image-box text-center">
@@ -63,30 +62,32 @@
         </div>
     </div>
 </section>
-<!-- 360度照片 -->
-<section class="section-360">
-    <div class="container">
-        <div class="row clearfix">
-            <div class="col-12">
-                <div class="fullwidth-gallery">
-                    <img src="@(_coachData.arenaView)" class="reel" data-image="@(_coachData.arenaView)" data-frames="2" data-footage="2" data-revolution="800" />
+<!-- 教學場景 -->
+@if (_viewModel.scenarioPhoto != null && _viewModel.scenarioPhoto.Count > 0)
+{
+<section class="section-slick nopadding">
+    <div class="testimonials-slick-slide">
+        @foreach (var photo in _viewModel.scenarioPhoto)
+        {
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3">
+                    <img class="fullwidth" src="@($"images/landing/360/{photo}")" alt="私人教練" />
                 </div>
             </div>
-        </div>
+        }
     </div>
 </section>
-<!-- // 聯絡我們 -->
-@{ Html.RenderPartial("~/Views/MainActivity/Module/ContactItem.cshtml");}
+}
+    <!-- // 聯絡我們 -->
+    @{ Html.RenderPartial("~/Views/MainActivity/Module/ContactItem.cshtml");}
 
 
-@section TailPageJavaScriptInclude {
-    <!-- jquery reel -->
-    <script src="plugins/jquery-reel/jquery.reel.js"></script>
-    <script>
+    @section TailPageJavaScriptInclude {
+        <script>
         $(function () {
             reloadPage = function () {
                 $('').launchDownload('@Html.Raw(Url.Action("Team", "MainActivity"))', {'branchName':'@(ViewBag.BranchName)'});
             };
         });
-    </script>
-}
+        </script>
+    }
