@@ -50,7 +50,7 @@
 
     @RenderSection("CustomHeader", false)
     <!-- Custom Css -->
-    <link rel="stylesheet" href="css/main.css?1.3">
+    <link rel="stylesheet" href="css/main.css?1.4">
     <link rel="stylesheet" href="css/color_skins.css?1.1">
     <!-- Jquery Core Js -->
     <script src="bundles/libscripts.bundle.js"></script>
@@ -73,10 +73,7 @@
     <script src="plugins/moment/moment.min.js"></script>
     <script src="plugins/jquery-cookie/jquery.cookie.js"></script>
     <!-- SweetAlert Plugin Js -->
-    <script src="plugins/sweetalert/sweetalert.min.js"></script>
-    <!-- Bootstrap datetimepicker Plugin Js -->
-    @*<script src="plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
-        <script src="plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-TW.js"></script>*@
+    <script src="plugins/sweetalert/sweetalert.min.js"></script
     <script src="plugins/smartcalendar/js/bootstrap-datetimepicker.min.js"></script>
     <script src="plugins/smartcalendar/js/locales-datetimepicker/bootstrap-datetimepicker.zh-TW.js"></script>
     <script src="plugins/jquery-form/jquery-form.min.js"></script>
@@ -183,6 +180,9 @@
                         </li>
                         <li>
                             <a href="@(Url.Action("PricingList","MainActivity",new { branchName = "Zhongxiao" }))" class="waves-effect waves-block" target="_blank"><i class="zmdi zmdi-label col-blue"></i><span>忠孝</span></a>
+                        </li>
+                        <li>
+                            <a href="@(Url.Action("PricingList","MainActivity",new { branchName = "Dongmen" }))" class="waves-effect waves-block" target="_blank"><i class="zmdi zmdi-label col-tiffany"></i><span>東門</span></a>
                         </li>
                     </ul>
                 </li>
