@@ -635,6 +635,12 @@ namespace WebHome.Views.MainActivity.Resources {
             }
         }
         
+        public static string FAQQestion6 {
+            get {
+                return ResourceManager.GetString("FAQQestion6", resourceCulture);
+            }
+        }
+        
         public static string FAQAnswer11 {
             get {
                 return ResourceManager.GetString("FAQAnswer11", resourceCulture);
@@ -677,27 +683,33 @@ namespace WebHome.Views.MainActivity.Resources {
             }
         }
         
-        public static string FAQAnswer5NanjingMRT {
+        public static string FAQAnswer6 {
             get {
-                return ResourceManager.GetString("FAQAnswer5NanjingMRT", resourceCulture);
+                return ResourceManager.GetString("FAQAnswer6", resourceCulture);
             }
         }
         
-        public static string FAQAnswer5XinyiMRT {
+        public static string NanjingMRT {
             get {
-                return ResourceManager.GetString("FAQAnswer5XinyiMRT", resourceCulture);
+                return ResourceManager.GetString("NanjingMRT", resourceCulture);
             }
         }
         
-        public static string FAQAnswer5ZhongxiaoMRT {
+        public static string XinyiMRT {
             get {
-                return ResourceManager.GetString("FAQAnswer5ZhongxiaoMRT", resourceCulture);
+                return ResourceManager.GetString("XinyiMRT", resourceCulture);
             }
         }
         
-        public static string FAQAnswer5DongmenMRT {
+        public static string ZhongxiaoMRT {
             get {
-                return ResourceManager.GetString("FAQAnswer5DongmenMRT", resourceCulture);
+                return ResourceManager.GetString("ZhongxiaoMRT", resourceCulture);
+            }
+        }
+        
+        public static string DongmenMRT {
+            get {
+                return ResourceManager.GetString("DongmenMRT", resourceCulture);
             }
         }
         

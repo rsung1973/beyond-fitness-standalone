@@ -409,6 +409,9 @@
     <value>私人教練課程跟團體課程的差別？</value>
   </data>
   <data name="FAQQestion5" xml:space="preserve">
+    <value>除了教練課之外，平時也可以去健身房運動嗎？</value>
+  </data>
+  <data name="FAQQestion6" xml:space="preserve">
     <value>如何去Beyond？</value>
   </data>
   <data name="FAQAnswer11" xml:space="preserve">
@@ -430,18 +433,21 @@
     <value>優良的私人教練是針對客戶的目標、生活作息、每一次的當天狀況做出客製化的訓練安排，同時給予您最好的訓練效果去幫助您達成改變並確實地避免運動傷害。&lt;br/&gt;&lt;br/&gt;最重要的並幫助您規劃您生活中其餘非運動時間需要注意的事項，相較於團體課程，教練更能針對客戶的目標去做訓練，並依照每位客戶的獨特性以及個別差異化進而給予最有效果的訓練哦！練，並依照每位客戶的獨特性進而給予最有效益的訓練哦！</value>
   </data>
   <data name="FAQAnswer5" xml:space="preserve">
+    <value>可以的 , 我們只提供 BeyondFitness 的客戶登記使用喔，經由規劃專業自主訓練P.I Session，並且進行人數的管控以維持場地以提供客戶最好的運動品質。</value>
+  </data>
+  <data name="FAQAnswer6" xml:space="preserve">
     <value>您可以透過以下交通資訊抵達Beyond</value>
   </data>
-  <data name="FAQAnswer5NanjingMRT" xml:space="preserve">
+  <data name="NanjingMRT" xml:space="preserve">
     <value>松山新店線-台北小巨蛋站1號出口</value>
   </data>
-  <data name="FAQAnswer5XinyiMRT" xml:space="preserve">
+  <data name="XinyiMRT" xml:space="preserve">
     <value>淡水信義線-台北101/世貿站3號出口</value>
   </data>
-  <data name="FAQAnswer5ZhongxiaoMRT" xml:space="preserve">
+  <data name="ZhongxiaoMRT" xml:space="preserve">
     <value>板南線-忠孝復興站3號出口（地下街14號）</value>
   </data>
-  <data name="FAQAnswer5DongmenMRT" xml:space="preserve">
+  <data name="DongmenMRT" xml:space="preserve">
     <value>淡水信義線-東門站3號出口</value>
   </data>
   <data name="Walk" xml:space="preserve">

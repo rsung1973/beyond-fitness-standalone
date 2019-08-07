@@ -409,10 +409,13 @@
     <value>What is the difference between a personal training course and a group training course?</value>
   </data>
   <data name="FAQQestion5" xml:space="preserve">
+    <value>除了教練課之外，平時也可以去健身房運動嗎？</value>
+  </data>
+  <data name="FAQQestion6" xml:space="preserve">
     <value>How to get to Beyond Fitness?</value>
   </data>
   <data name="FAQAnswer11" xml:space="preserve">
-    <value>How to book for trial course?</value>
+    <value>How to book for trial?</value>
   </data>
   <data name="FAQAnswer12" xml:space="preserve">
     <value>The content is as follows: &lt;li&gt;A careful consultation of your physical condition.&lt;/li&gt;&lt;li&gt;A careful analysis of your exercise habits and lifestyle.&lt;/li&gt;&lt;li&gt;Trainers will bring out your training goals and results, leading you to a personalized program and experience.&lt;/li&gt;&lt;li&gt;Trainers are always by your side customizing your training courses.&lt;/li&gt;</value>
@@ -430,18 +433,21 @@
     <value>A good personal trainer will customize training programs according to your goals, life schedule, and your status each day, giving you the best training outcomes while avoiding sports injuries.&lt;br/&gt;&lt;br/&gt;It is important to help you make plans for when you're not training. Compared to group training courses, personal training courses focus on your uniqueness and differentiation, customized course provide the most effective training!</value>
   </data>
   <data name="FAQAnswer5" xml:space="preserve">
+    <value>可以的 , 我們只提供 BeyondFitness 的客戶登記使用喔，經由規劃專業自主訓練P.I Session，並且進行人數的管控以維持場地以提供客戶最好的運動品質。</value>
+  </data>
+  <data name="FAQAnswer6" xml:space="preserve">
     <value>Follow the directions below to reach us</value>
   </data>
-  <data name="FAQAnswer5NanjingMRT" xml:space="preserve">
+  <data name="NanjingMRT" xml:space="preserve">
     <value>Green line( Songshan–Xindian) MRT Taipei Arena Station Exit 1</value>
   </data>
-  <data name="FAQAnswer5XinyiMRT" xml:space="preserve">
+  <data name="XinyiMRT" xml:space="preserve">
     <value>Red line (Tamsui–Xinyi) MRT Taipei 101/World Trade Center Station Exit 3</value>
   </data>
-  <data name="FAQAnswer5ZhongxiaoMRT" xml:space="preserve">
+  <data name="ZhongxiaoMRT" xml:space="preserve">
     <value>Blue line (Bannan) MRT Zongxiao Fuxing station Exit 3 (or Exit 14 of East Metro Mall)</value>
   </data>
-  <data name="FAQAnswer5DongmenMRT" xml:space="preserve">
+  <data name="DongmenMRT" xml:space="preserve">
     <value>Red line (Tamsui–Xinyi) MRT Dongmen station Exit 3</value>
   </data>
   <data name="Walk" xml:space="preserve">

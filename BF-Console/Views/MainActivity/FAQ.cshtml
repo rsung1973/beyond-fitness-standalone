@@ -100,8 +100,13 @@
                 <li class="accordion-item">
                     <input id="q5" class="hide" type="checkbox">
                     <label for="q5" class="accordion-label">@Html.Raw(NamingItem.FAQQestion5)</label>
+                    <p class="accordion-child">@Html.Raw(NamingItem.FAQAnswer5)</p>
+                </li>
+                <li class="accordion-item">
+                    <input id="q6" class="hide" type="checkbox">
+                    <label for="q6" class="accordion-label">@Html.Raw(NamingItem.FAQQestion6)</label>
                     <ul class="accordion-child list-style3">
-                        @Html.Raw(NamingItem.FAQAnswer5)
+                        @Html.Raw(NamingItem.FAQAnswer6)
                         <br />
                         <li>
                             @Html.Raw(NamingItem.Walk)
@@ -112,10 +117,10 @@
                         </li>
                         <li>
                             @Html.Raw(NamingItem.MRT)
-                            <span>@Html.Raw(NamingItem.FindNanjingBranch)：@Html.Raw(NamingItem.FAQAnswer5NanjingMRT)</span>
-                            <span>@Html.Raw(NamingItem.FindXinyiBranch)：@Html.Raw(NamingItem.FAQAnswer5XinyiMRT))</a></span>
-                            <span>@Html.Raw(NamingItem.FindZhongxiaoBranch)：@Html.Raw(NamingItem.FAQAnswer5ZhongxiaoMRT)</a></span>
-                            <span>@Html.Raw(NamingItem.FindDongmenBranch)：@Html.Raw(NamingItem.FAQAnswer5DongmenMRT)</a></span>
+                            <span>@Html.Raw(NamingItem.FindNanjingBranch)：@Html.Raw(NamingItem.NanjingMRT)</span>
+                            <span>@Html.Raw(NamingItem.FindXinyiBranch)：@Html.Raw(NamingItem.XinyiMRT))</a></span>
+                            <span>@Html.Raw(NamingItem.FindZhongxiaoBranch)：@Html.Raw(NamingItem.ZhongxiaoMRT)</a></span>
+                            <span>@Html.Raw(NamingItem.FindDongmenBranch)：@Html.Raw(NamingItem.DongmenMRT)</a></span>
                         </li>
                     </ul>
                 </li>
