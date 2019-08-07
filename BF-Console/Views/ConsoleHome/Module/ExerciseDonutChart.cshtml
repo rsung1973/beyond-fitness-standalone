@@ -46,7 +46,9 @@
                 ? "#eeaaaa"
                 : work?.BranchID == (int)Naming.BranchName.忠孝
                     ? "#93e3ff"
-                    : "#a989bf").ToArray();
+                    : work?.BranchID == (int)Naming.BranchName.信義
+                      ? "#a989bf"
+                      : "#6DD0CD").ToArray();
 
 
     <script>

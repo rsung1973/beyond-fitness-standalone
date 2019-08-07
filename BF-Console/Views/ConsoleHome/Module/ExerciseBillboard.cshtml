@@ -52,9 +52,13 @@
                     {
                         <span class='badge round bg-vivid_red'>@(w.BranchStore.BranchName)</span>
                     }
-                    else
+                    else if (w.BranchID == (int)Naming.BranchName.忠孝)                    
                     {
                         <span class='badge round bg-blue'>@(w.BranchStore.BranchName)</span>
+                    }
+                    else
+                    {
+                        <span class='badge round bg-tiffany'>@(w.BranchStore.BranchName)</span>
                     }
                     @Html.Raw(coach.FullNameHtml())
                     @if (idx == 0)
