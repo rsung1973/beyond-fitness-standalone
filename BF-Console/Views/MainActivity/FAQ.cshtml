@@ -51,19 +51,11 @@
                         <li class="accordion-item">
                             <input id="q11" class="hide" type="checkbox">
                             <label for="q11" class="accordion-label sub">@Html.Raw(NamingItem.FAQQestion11)</label>
-                            <p class="accordion-child">@Html.Raw(NamingItem.FAQAnswer11)</p>
-                        </li>
-                        <li class="accordion-item">
-                            <input id="q12" class="hide" type="checkbox">
-                            <label for="q12" class="accordion-label sub">@Html.Raw(NamingItem.FAQQestion12)</label>
-                            <ul class="accordion-child list-style3">@Html.Raw(NamingItem.FAQAnswer12)</ul>
-                        </li>
-                        <li class="accordion-item">
-                            <input id="q13" class="hide" type="checkbox">
-                            <label for="q13" class="accordion-label sub">@Html.Raw(NamingItem.FAQQestion13)</label>
                             <ul class="accordion-child list-style3">
-                                @Html.Raw(NamingItem.FAQAnswer13)<br />
-                                <li>Tel
+                                @Html.Raw(NamingItem.FAQAnswer11)
+                                <br />
+                                <li>
+                                    @Html.Raw(NamingItem.Tel)
                                     <span>@Html.Raw(NamingItem.FindNanjingBranch)：<a href="tel://+886-2-2715-2733" class="more">(02)-2715-2733</a></span>
                                     <span>@Html.Raw(NamingItem.FindXinyiBranch)：<a href="tel://+886-2-2720-0530" class="more">(02)2720-0530</a></span>
                                     <span>@Html.Raw(NamingItem.FindZhongxiaoBranch)：<a href="tel://+886-2-2776-9932" class="more">(02)2776-9932</a></span>
@@ -71,6 +63,11 @@
                                 <li>Facebook：<a href="https://www.facebook.com/beyond.fitness.pro/" target="_blank" class="more">@Html.Raw(NamingItem.Go)<i class="pl-1 fa fa-angle-right"></i></a></li>
                                 <li>@Html.Raw(NamingItem.OnlineReservation)：<a href="@(Url.Action("BookNow"))" class="more">@Html.Raw(NamingItem.BookNow)<i class="pl-1 fa fa-angle-right"></i></a></li>
                             </ul>
+                        </li>
+                        <li class="accordion-item">
+                            <input id="q12" class="hide" type="checkbox">
+                            <label for="q12" class="accordion-label sub">@Html.Raw(NamingItem.FAQQestion12)</label>
+                            <ul class="accordion-child list-style3">@Html.Raw(NamingItem.FAQAnswer12)</ul>
                         </li>
                     </ul>
                 </li>
@@ -103,7 +100,24 @@
                 <li class="accordion-item">
                     <input id="q5" class="hide" type="checkbox">
                     <label for="q5" class="accordion-label">@Html.Raw(NamingItem.FAQQestion5)</label>
-                    <p class="accordion-child">@Html.Raw(NamingItem.FAQAnswer5)</p>
+                    <ul class="accordion-child list-style3">
+                        @Html.Raw(NamingItem.FAQAnswer5)
+                        <br />
+                        <li>
+                            @Html.Raw(NamingItem.Walk)
+                            <span>@Html.Raw(NamingItem.FindNanjingBranch)：<a href="https://maps.google.com/?q=台北市大安區大安路一段75巷21號B1" target="_blank" class="more">@Html.Raw(NamingItem.FindNanjingBranchAdd)</a></span>
+                            <span>@Html.Raw(NamingItem.FindXinyiBranch)：<a href="https://maps.google.com/?q=台北市信義區信義路五段16號2樓之2" target="_blank" class="more">@Html.Raw(NamingItem.FindXinyiBranchAdd)</a></span>
+                            <span>@Html.Raw(NamingItem.FindZhongxiaoBranch)：<a href="https://maps.google.com/?q=台北市大安區大安路一段75巷21號B1" target="_blank" class="more">@Html.Raw(NamingItem.FindZhongxiaoBranchAdd)</a></span>
+                            <span>@Html.Raw(NamingItem.FindDongmenBranch)：<a href="https://maps.google.com/?q=台北市大安區信義路二段28號" target="_blank" class="more">@Html.Raw(NamingItem.FindDongmenBranchAdd)</a></span>
+                        </li>
+                        <li>
+                            @Html.Raw(NamingItem.MRT)
+                            <span>@Html.Raw(NamingItem.FindNanjingBranch)：@Html.Raw(NamingItem.FAQAnswer5NanjingMRT)</span>
+                            <span>@Html.Raw(NamingItem.FindXinyiBranch)：@Html.Raw(NamingItem.FAQAnswer5XinyiMRT))</a></span>
+                            <span>@Html.Raw(NamingItem.FindZhongxiaoBranch)：@Html.Raw(NamingItem.FAQAnswer5ZhongxiaoMRT)</a></span>
+                            <span>@Html.Raw(NamingItem.FindDongmenBranch)：@Html.Raw(NamingItem.FAQAnswer5DongmenMRT)</a></span>
+                        </li>
+                    </ul>
                 </li>
             </ul>
         </div>

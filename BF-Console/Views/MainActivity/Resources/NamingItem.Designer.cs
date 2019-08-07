@@ -497,6 +497,12 @@ namespace WebHome.Views.MainActivity.Resources {
             }
         }
         
+        public static string OpportunityFeaturesDesc5 {
+            get {
+                return ResourceManager.GetString("OpportunityFeaturesDesc5", resourceCulture);
+            }
+        }
+        
         public static string JoinUsContactTitle {
             get {
                 return ResourceManager.GetString("JoinUsContactTitle", resourceCulture);
@@ -593,12 +599,6 @@ namespace WebHome.Views.MainActivity.Resources {
             }
         }
         
-        public static string FAQQestion13 {
-            get {
-                return ResourceManager.GetString("FAQQestion13", resourceCulture);
-            }
-        }
-        
         public static string FAQQestion2 {
             get {
                 return ResourceManager.GetString("FAQQestion2", resourceCulture);
@@ -647,12 +647,6 @@ namespace WebHome.Views.MainActivity.Resources {
             }
         }
         
-        public static string FAQAnswer13 {
-            get {
-                return ResourceManager.GetString("FAQAnswer13", resourceCulture);
-            }
-        }
-        
         public static string FAQAnswer21 {
             get {
                 return ResourceManager.GetString("FAQAnswer21", resourceCulture);
@@ -680,6 +674,48 @@ namespace WebHome.Views.MainActivity.Resources {
         public static string FAQAnswer5 {
             get {
                 return ResourceManager.GetString("FAQAnswer5", resourceCulture);
+            }
+        }
+        
+        public static string FAQAnswer5NanjingMRT {
+            get {
+                return ResourceManager.GetString("FAQAnswer5NanjingMRT", resourceCulture);
+            }
+        }
+        
+        public static string FAQAnswer5XinyiMRT {
+            get {
+                return ResourceManager.GetString("FAQAnswer5XinyiMRT", resourceCulture);
+            }
+        }
+        
+        public static string FAQAnswer5ZhongxiaoMRT {
+            get {
+                return ResourceManager.GetString("FAQAnswer5ZhongxiaoMRT", resourceCulture);
+            }
+        }
+        
+        public static string FAQAnswer5DongmenMRT {
+            get {
+                return ResourceManager.GetString("FAQAnswer5DongmenMRT", resourceCulture);
+            }
+        }
+        
+        public static string Walk {
+            get {
+                return ResourceManager.GetString("Walk", resourceCulture);
+            }
+        }
+        
+        public static string MRT {
+            get {
+                return ResourceManager.GetString("MRT", resourceCulture);
+            }
+        }
+        
+        public static string Tel {
+            get {
+                return ResourceManager.GetString("Tel", resourceCulture);
             }
         }
         
