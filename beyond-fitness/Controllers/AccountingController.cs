@@ -1327,7 +1327,7 @@ namespace WebHome.Controllers
             }
 
             DataTable details = models.CreateAchievementShareList(achievementItems);
-            details.TableName = $"{viewModel.PayoffDateFrom:yyyyMM} 收款分潤明細(含稅)";
+            details.TableName = $"{viewModel.PayoffDateFrom:yyyyMM} 分潤業績明細(含稅)";
 
             var tableItems = details.Rows.Cast<DataRow>();
 
@@ -1335,13 +1335,13 @@ namespace WebHome.Controllers
             {
                 DataTable table = new DataTable();
                 table.Columns.Add(new DataColumn("簽約場所", typeof(String)));
-                table.Columns.Add(new DataColumn("收款分潤金額", typeof(int)));
-                table.Columns.Add(new DataColumn("體能顧問費收款金額", typeof(int)));
-                table.Columns.Add(new DataColumn("體能顧問收款佔比(%)", typeof(String)));
-                table.Columns.Add(new DataColumn("P.I收款收款金額", typeof(int)));
-                table.Columns.Add(new DataColumn("P.I收款佔比(%)", typeof(String)));
-                table.Columns.Add(new DataColumn("販售商品收款金額", typeof(int)));
-                table.Columns.Add(new DataColumn("販售商品收款金額占比(%)", typeof(String)));
+                table.Columns.Add(new DataColumn("分潤業績", typeof(int)));
+                table.Columns.Add(new DataColumn("體能顧問費", typeof(int)));
+                table.Columns.Add(new DataColumn("體能顧問費佔比(%)", typeof(String)));
+                table.Columns.Add(new DataColumn("P.I Session", typeof(int)));
+                table.Columns.Add(new DataColumn("P.I Session佔比(%)", typeof(String)));
+                table.Columns.Add(new DataColumn("其他販售商品", typeof(int)));
+                table.Columns.Add(new DataColumn("其他販售商品占比(%)", typeof(String)));
                 return table;
             }
 
@@ -1450,13 +1450,13 @@ namespace WebHome.Controllers
                 DataTable table = new DataTable();
                 table.Columns.Add(new DataColumn("姓名", typeof(String)));
                 table.Columns.Add(new DataColumn("所屬分店", typeof(String)));
-                table.Columns.Add(new DataColumn("收款分潤金額", typeof(int)));
-                table.Columns.Add(new DataColumn("體能顧問費收款金額", typeof(int)));
-                table.Columns.Add(new DataColumn("體能顧問收款佔比(%)", typeof(String)));
-                table.Columns.Add(new DataColumn("P.I收款收款金額", typeof(int)));
-                table.Columns.Add(new DataColumn("P.I收款佔比(%)", typeof(String)));
-                table.Columns.Add(new DataColumn("販售商品收款金額", typeof(int)));
-                table.Columns.Add(new DataColumn("販售商品收款金額占比(%)", typeof(String)));
+                table.Columns.Add(new DataColumn("分潤業績", typeof(int)));
+                table.Columns.Add(new DataColumn("體能顧問費", typeof(int)));
+                table.Columns.Add(new DataColumn("體能顧問費佔比(%)", typeof(String)));
+                table.Columns.Add(new DataColumn("P.I Session", typeof(int)));
+                table.Columns.Add(new DataColumn("P.I Session佔比(%)", typeof(String)));
+                table.Columns.Add(new DataColumn("其他販售商品", typeof(int)));
+                table.Columns.Add(new DataColumn("其他販售商品占比(%)", typeof(String)));
 
                 DataRow r;
 

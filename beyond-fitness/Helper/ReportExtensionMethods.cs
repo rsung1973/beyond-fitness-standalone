@@ -228,8 +228,8 @@ namespace WebHome.Helper
                         : item.Payment.ContractPayment != null
                             ? item.Payment.ContractPayment.CourseContract.ContractLearner()
                             : "--",
-                收款分潤金額 = item.ShareAmount,
-                收款類別 = ((Naming.PaymentTransactionType?)item.Payment.TransactionType).ToString(),
+                分潤業績 = item.ShareAmount,
+                類別 = ((Naming.PaymentTransactionType?)item.Payment.TransactionType).ToString(),
                 發票號碼 = item.Payment.InvoiceID.HasValue
                     ? item.Payment.InvoiceItem.TrackCode + item.Payment.InvoiceItem.No : null,
                 收款日期 = item.Payment.VoidPayment == null ? String.Format("{0:yyyy/MM/dd}", item.Payment.PayoffDate) : null,
