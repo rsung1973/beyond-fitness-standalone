@@ -6140,6 +6140,23 @@
     <Content Include="Views\ContractConsole\Module\CourseContractView20190801.cshtml" />
     <Content Include="ConsoleHome\images\landing\guarantee-1.png" />
     <None Include="MainActivity\Pricing\Dongmen.json" />
+    <Content Include="Views\PaymentConsole\Module\PaymentItemsList.cshtml" />
+    <Content Include="Views\PaymentConsole\Module\PaymentForOthers.cshtml" />
+    <Content Include="Views\PaymentConsole\Module\InvoiceToPrintOut.cshtml" />
+    <Content Include="Views\PaymentConsole\Module\PaymentForPT.cshtml" />
+    <Content Include="Views\PaymentConsole\Module\PaymentSummary.cshtml" />
+    <Content Include="Views\PaymentConsole\Module\PaymentItems.cshtml" />
+    <Content Include="Views\PaymentConsole\Module\ProcessPayment.cshtml" />
+    <Content Include="Views\PaymentConsole\Module\PaymentForPI.cshtml" />
+    <Content Include="Views\PaymentConsole\Module\ApplyVoidPayment.cshtml" />
+    <Content Include="Views\PaymentConsole\Module\TodayPayment.cshtml" />
+    <Content Include="Views\PaymentConsole\Module\PaymentDataItem.cshtml" />
+    <Content Include="Views\PaymentConsole\Indication\PaymentDetails.cshtml" />
+    <Content Include="Views\PaymentConsole\PaymentModal\AboutPaymentDetails.cshtml" />
+    <None Include="Views\ConsoleHome\.DS_Store" />
+    <Content Include="Views\ConsoleHome\PaymentIndex.cshtml" />
+    <Content Include="Views\ConsoleHome\Shared\DropifyFileUpload.cshtml" />
+    <Content Include="Views\ConsoleHome\Shared\MyPaymentHeader.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\InitializeType.cs" />

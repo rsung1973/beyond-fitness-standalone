@@ -40,18 +40,6 @@
                                     <h4 class="panel-title material-icons">
                                         <a role="button" data-toggle="collapse" data-parent="#accordionDetail_payment" href="#collapseDetail_payment" aria-expanded="true" aria-controls="collapseDetail_payment">
                                             <i class="material-icons">subject</i> 收款詳細資訊
-                                            @if (voidItem == null)
-                                            {
-                                                <span class="badge bg-orange">@(((Naming.CourseContractStatus)_model.Status).ToString())</span>
-                                            }
-                                            else if (_model.AllowanceID.HasValue)
-                                            {
-                                                <span class="badge bg-red">已折讓</span>
-                                            }
-                                            else
-                                            {
-                                                <span class="badge bg-red">已作廢</span>
-                                            }
                                         </a>
                                     </h4>
                                 </div>
