@@ -1607,7 +1607,7 @@ namespace WebHome.Controllers
             ViewResult result = (ViewResult)InquirePayment(viewModel);
 
             IQueryable<Payment> items = (IQueryable<Payment>)result.Model;
-            items = items.Where(p => p.VoidPayment == null || p.AllowanceID.HasValue);
+            items = items.FilterByEffective();
 
             return View("~/Views/Payment/Module/PaymentAchievementList.ascx", items);
         }

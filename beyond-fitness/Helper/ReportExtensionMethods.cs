@@ -217,6 +217,32 @@ namespace WebHome.Helper
             return table;
         }
 
+        public static DataTable CreateAchievementShareList<TEntity>(this ModelSource<TEntity> models, IQueryable<TuitionAchievement> items)
+            where TEntity : class, new()
+        {
+            var details = items.ToArray().Select(item => new
+            {
+                體能顧問 = item.ServingCoach.UserProfile.FullName(),
+                學生 = item.Payment.TuitionInstallment != null
+                        ? item.Payment.TuitionInstallment.IntuitionCharge.RegisterLesson.UserProfile.FullName()
+                        : item.Payment.ContractPayment != null
+                            ? item.Payment.ContractPayment.CourseContract.ContractLearner()
+                            : "--",
+                收款分潤金額 = item.ShareAmount,
+                收款類別 = ((Naming.PaymentTransactionType?)item.Payment.TransactionType).ToString(),
+                發票號碼 = item.Payment.InvoiceID.HasValue
+                    ? item.Payment.InvoiceItem.TrackCode + item.Payment.InvoiceItem.No : null,
+                收款日期 = item.Payment.VoidPayment == null ? String.Format("{0:yyyy/MM/dd}", item.Payment.PayoffDate) : null,
+                簽約場所 = item.Payment.PaymentTransaction.BranchStore.BranchName,
+                體能顧問所屬分店 = item.ServingCoach.CoachWorkplace.Count == 1
+                            ? item.ServingCoach.CoachWorkplace.First().BranchStore.BranchName
+                            : "其他",
+            });
+
+            DataTable table = details.ToDataTable();
+            return table;
+        }
+
         public static IEnumerable<PaymentMonthlyReportItem> CreateMonthlyPaymentReportForPISession<TEntity>(this PaymentQueryViewModel viewModel, ModelSource<TEntity> models)
             where TEntity : class, new()
         {
@@ -419,6 +445,12 @@ namespace WebHome.Helper
             public int F { get; set; }
             public int G { get; set; }
         };
+
+        public static void ExecuteLessonPerformanceSettlement<TEntity>(this ModelSource<TEntity> models, DateTime startDate, DateTime endExclusiveDate)
+            where TEntity : class, new()
+        {
+
+        }
 
     }
 

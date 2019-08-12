@@ -1,0 +1,87 @@
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Newtonsoft.Json
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    IQueryable<Payment> _model;
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = (IQueryable<Payment>)this.Model;
+}
+@{
+    UserProfile _profile = Context.GetUser();
+    PaymentQueryViewModel _viewModel = (PaymentQueryViewModel)ViewBag.ViewModel;
+    _viewModel.HandlerID = _profile.UID;
+    IQueryable<Payment> items = _model.Where(p => p.HandlerID == _profile.UID);
+
+}
+<div class="container-fluid">
+    <div class="card">
+        <div class="header">
+            <ul class="header-dropdown">
+                <li class="dropdown">
+                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class="zmdi zmdi-shopping-cart-plus"></i> </a>
+                    <ul class="dropdown-menu dropdown-menu-right slideUp float-right">
+                        <li><a href="javascript:addPayment('payment-edit-type2');">收款 - P.I sesson</a></li>
+                        <li><a href="javascript:addPayment('payment-edit-type3');">收款 - 飲品</a></li>
+                        <li><a href="javascript:addPayment('payment-edit-type4');">收款 - 運動商品</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <ul class="row clearfix list-unstyled m-b-0 widget_3">
+            <li class="col-lg-4 col-md-4 col-sm-12">
+                <div class="body">
+                    <div class="row">
+                        @{
+                            Html.RenderPartial("~/Views/PaymentConsole/Module/PaymentForPT.cshtml", items);
+                        }
+                    </div>
+                </div>
+            </li>
+            <li class="col-lg-4 col-md-4 col-sm-12">
+                <div class="body">
+                    <div class="row">
+                        @{
+                            Html.RenderPartial("~/Views/PaymentConsole/Module/PaymentForPI.cshtml", items);
+                        }
+                    </div>
+                </div>
+            </li>
+            <li class="col-lg-4 col-md-4 col-sm-12">
+                <div class="body">
+                    <div class="row">
+                        @{
+                            Html.RenderPartial("~/Views/PaymentConsole/Module/PaymentForOthers.cshtml", items);
+                        }
+                    </div>
+                </div>
+            </li>
+            <li class="col-lg-6 col-md-6 col-sm-12">
+                <div class="body">
+                    <div class="row">
+                        @{
+                            Html.RenderPartial("~/Views/PaymentConsole/Module/TodayPayment.cshtml", items);
+                        }
+                    </div>
+                </div>
+            </li>
+            <li class="col-lg-6 col-md-6 col-sm-12">
+                <div class="body">
+                    <div class="row">
+                        @{
+                            Html.RenderPartial("~/Views/PaymentConsole/Module/CurrentMonthAchievementShare.cshtml", _model);
+                        }
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>

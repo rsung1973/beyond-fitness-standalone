@@ -79,7 +79,7 @@
             <h4 class="card-outbound-header m-l-15">詳細資料</h4>
             <div class="col-lg-12">
                 @{
-                    Html.RenderPartial("~/Views/PaymentConsole/Module/PaymentItems.cshtml", items.Where(p => false));
+                    Html.RenderPartial("~/Views/PaymentConsole/Module/PaymentItems.cshtml", ((IQueryable<Payment>)ViewBag.DataItems) ?? items.Where(p => false));
                 }
             </div>
         </div>
@@ -99,7 +99,7 @@
 
     @{ Html.RenderPartial("~/Views/ConsoleHome/Shared/KnobJS.cshtml");}
 
-    <script>
+<script>
         function showPaymentList(viewModel, alertCount) {
             var event = window.event;
             if (event) {
@@ -163,7 +163,29 @@
             });
         }
 
-    </script>
+    function testPrintInvoice(invoiceID, printerIP) {
+        var event = event || window.event;
+        if (!printerIP || printerIP == '') {
+            printerIP = '192.168.1.200';
+        }
+        @if (WebHome.Properties.Settings.Default.UseSSL)
+        {
+            <text>$('<form>').launchDownload('@Html.Raw("http://210.65.88.44/WebInvoice" + Url.Action("LoadInvoiceImageByUID", "Invoice",new { _profile.UID,t = DateTime.Now.Ticks }))', { 'invoiceID': invoiceID, 'printerIP': printerIP }, '_blank');</text>
+        }
+        else
+        {
+            <text>$('<form>').launchDownload('@Html.Raw(Url.Action("LoadInvoiceImage", "Invoice",new { t = DateTime.Now.Ticks }))', { 'invoiceID': invoiceID, 'printerIP': printerIP }, '_blank');</text>
+        }
+    }
+
+    function printInvoice(invoiceID, printerIP) {
+        var event = event || window.event;
+        testPrintInvoice(invoiceID, printerIP);
+        $(event.target).after('<span class="list-group-item">已列印</span>').remove();
+    }
+
+
+</script>
 
     @if (_viewModel.KeyID != null)
     {

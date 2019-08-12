@@ -34471,6 +34471,8 @@ namespace WebHome.Models.DataEntity
 		
 		private System.Nullable<decimal> _MarkedGradeIndex;
 		
+		private System.Nullable<int> _SettlementStatus;
+		
 		private EntityRef<ProfessionalLevel> _ProfessionalLevel;
 		
 		private EntityRef<LessonTime> _LessonTime;
@@ -34485,6 +34487,8 @@ namespace WebHome.Models.DataEntity
     partial void OnProfessionalLevelIDChanged();
     partial void OnMarkedGradeIndexChanging(System.Nullable<decimal> value);
     partial void OnMarkedGradeIndexChanged();
+    partial void OnSettlementStatusChanging(System.Nullable<int> value);
+    partial void OnSettlementStatusChanged();
     #endregion
 		
 		public LessonTimeSettlement()
@@ -34558,6 +34562,26 @@ namespace WebHome.Models.DataEntity
 					this._MarkedGradeIndex = value;
 					this.SendPropertyChanged("MarkedGradeIndex");
 					this.OnMarkedGradeIndexChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SettlementStatus", DbType="Int")]
+		public System.Nullable<int> SettlementStatus
+		{
+			get
+			{
+				return this._SettlementStatus;
+			}
+			set
+			{
+				if ((this._SettlementStatus != value))
+				{
+					this.OnSettlementStatusChanging(value);
+					this.SendPropertyChanging();
+					this._SettlementStatus = value;
+					this.SendPropertyChanged("SettlementStatus");
+					this.OnSettlementStatusChanged();
 				}
 			}
 		}

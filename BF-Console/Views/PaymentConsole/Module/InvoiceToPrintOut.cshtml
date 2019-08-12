@@ -17,10 +17,13 @@
 }
 @{ 
     PaymentQueryViewModel _viewModel = (PaymentQueryViewModel)ViewBag.ViewModel;
+    _viewModel.HasInvoicePrinted = false;
     var items = _model
                     .Join(models.GetTable<InvoiceItem>(),
                         p => p.InvoiceID, i => i.InvoiceID, (p, i) => i)
                     .Where(i => i.InvoiceType == (int)Naming.InvoiceTypeDefinition.一般稅額計算之電子發票)
+                    .Where(i => i.PrintMark == "Y")
+                    .Where(i => i.InvoiceCancellation == null)
                     .Where(i => !i.Document.DocumentPrintLog.Any());
 }
 <div class="col-6 text-right">

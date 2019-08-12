@@ -991,7 +991,7 @@ namespace WebHome.Controllers
             item.EventType = 1;
             if (viewModel.BranchID.HasValue)
             {
-                if ((int)viewModel.BranchID <= (int)Naming.BranchName.忠孝)
+                if ((int)viewModel.BranchID <= (int)Naming.BranchName.東門)
                     item.BranchID = (int)viewModel.BranchID;
                 else
                     item.Place = viewModel.BranchID.ToString();

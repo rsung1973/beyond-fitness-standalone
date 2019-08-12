@@ -196,8 +196,7 @@ namespace WebHome.Helper
         {
 
             var dataItems = items.GroupJoin(models.GetTable<ContractPayment>()
-                                    .Join(models.GetTable<Payment>()
-                                        .Where(p => p.VoidPayment == null || p.AllowanceID.HasValue),
+                                    .Join(models.GetTable<Payment>().FilterByEffective(),
                                         c => c.PaymentID, p => p.PaymentID, (c, p) => new { c.ContractID, p.PayoffAmount }),
                                     t => t.ContractID, a => a.ContractID, (t, a) => new CourseContractPayment { Contract = t, TotalPaidAmount = a.Sum(s => s.PayoffAmount) });
             return dataItems;

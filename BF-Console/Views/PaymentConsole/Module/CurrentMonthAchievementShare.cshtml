@@ -1,0 +1,82 @@
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Newtonsoft.Json
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    IQueryable<Payment> _model;
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = (IQueryable<Payment>)this.Model;
+}
+@{
+    PaymentQueryViewModel _viewModel = (PaymentQueryViewModel)ViewBag.ViewModel;
+    IQueryable<Payment> items = _model.Where(p => p.PayoffDate >= DateTime.Today.FirstDayOfMonth());
+}
+<div class="col-6">
+    <h5 class="m-t-0"><strong class="col-red">本月</strong>已分潤</h5>
+    <p class="text-small">
+        @{ 
+            IQueryable<TuitionAchievement> coachItems = models.GetTable<TuitionAchievement>().Where(t => t.CoachID == _viewModel.HandlerID);
+            var PTShareItems = items.Where(p => p.TransactionType == (int)Naming.PaymentTransactionType.體能顧問費).GetPaymentAchievement(models, coachItems);
+            var PTShare = PTShareItems.Sum(p => p.ShareAmount) ?? 0;
+            var PIShareItems = items.Where(p => p.TransactionType == (int)Naming.PaymentTransactionType.自主訓練).GetPaymentAchievement(models, coachItems);
+            var PIShare = PIShareItems.Sum(p => p.ShareAmount) ?? 0;
+            var othersShare = items.Where(p => p.TransactionType == (int)Naming.PaymentTransactionType.運動商品 || p.TransactionType == (int)Naming.PaymentTransactionType.食飲品).GetPaymentAchievement(models, coachItems).Sum(p => p.ShareAmount) ?? 0;
+        }
+        P.T：<a href="#" onclick='showPaymentList(@Html.Raw(JsonConvert.SerializeObject(
+            new
+            {
+                PayoffDateFrom = DateTime.Today.FirstDayOfMonth(),
+                TransactionType = (int)Naming.PaymentTransactionType.體能顧問費,
+                ShareFor = _viewModel.HandlerID,
+            })));'>@($"{PTShare:##,###,###,##0}")</a><br />
+        P.I：<a href="#" onclick='showPaymentList(@Html.Raw(JsonConvert.SerializeObject(
+            new
+            {
+                PayoffDateFrom = DateTime.Today.FirstDayOfMonth(),
+                TransactionType = (int)Naming.PaymentTransactionType.自主訓練,
+                ShareFor = _viewModel.HandlerID,
+            })));'>@($"{PIShare:##,###,###,##0}")</a><br />
+        其他：<a href="#" onclick='showPaymentList(@Html.Raw(JsonConvert.SerializeObject(
+            new
+            {
+                PayoffDateFrom = DateTime.Today.FirstDayOfMonth(),
+                TransactionTypeCompoundType = new Naming.PaymentTransactionType?[] {
+                    Naming.PaymentTransactionType.運動商品,
+                    Naming.PaymentTransactionType.食飲品
+                },
+                ShareFor = _viewModel.HandlerID,
+            })));'>@($"{othersShare:##,###,###,##0}")</a>
+    </p>
+</div>
+<div class="col-6 text-right">
+    <div class="info-box-2 text-right">
+        <div class="content">
+            <div class="sparkline-pie current-share">@(PTShare),@(PIShare),@(othersShare)</div>
+            <div class="text">
+                <i class="zmdi zmdi-label col-amber m-r-5"></i>P.T
+                <i class="zmdi zmdi-label col-green m-r-5"></i>P.I
+                <i class="zmdi zmdi-label col-pink m-r-5"></i>其他
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $('.current-share').sparkline('html', {
+            type: 'pie',
+            offset: 90,
+            width: '75px',
+            height: '75px',
+            sliceColors: ['#FFCC84', '#C5E1A7', '#F58FB0']
+        });
+    });
+</script>
+

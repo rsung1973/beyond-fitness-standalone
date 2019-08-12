@@ -615,6 +615,22 @@ namespace WebHome.Controllers
             return View(profile.LoadInstance(models));
         }
 
+        public ActionResult InquirePaymentIndex(PaymentQueryViewModel viewModel)
+        {
+            if (viewModel.KeyID != null)
+            {
+                viewModel.PaymentID = viewModel.DecryptKeyValue();
+            }
+
+            IQueryable<Payment> items = viewModel.InquirePayment(this, out string alertMessage);
+            ViewBag.DataItems = items;
+
+            var profile = HttpContext.GetUser();
+            viewModel.ScrollToView = true;
+
+            return View("~/Views/ConsoleHome/PaymentIndex.cshtml", profile.LoadInstance(models));
+        }
+
         public ActionResult VoidPayment(PaymentQueryViewModel viewModel)
         {
             ViewBag.ViewModel = viewModel;

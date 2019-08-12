@@ -961,7 +961,7 @@ namespace WebHome.Helper
             where TEntity : class, new()
         {
             IQueryable<TuitionAchievement> items = models.GetTable<TuitionAchievement>()
-                .Where(t => t.Payment.VoidPayment == null || t.Payment.AllowanceID.HasValue);
+                .FilterByEffective();
             Expression<Func<TuitionAchievement, bool>> queryExpr = c => true;
 
             DateTime? queryDateTo = dateTo;
@@ -1945,7 +1945,7 @@ namespace WebHome.Helper
                     var paymentItems = c.ContractPayment.Select(p => p.Payment)
                             .Where(p => p.TransactionType != (int)Naming.PaymentTransactionType.合約終止沖銷)
                             .Where(p => p.PayoffDate < calcDate)
-                            .Where(p => p.VoidPayment == null || p.AllowanceID.HasValue);
+                            .FilterByEffective();
 
                     if (paymentItems.Count() > 0)
                     {

@@ -282,7 +282,8 @@ namespace WebHome.Controllers
                 }
             }
 
-            if (viewModel.AuthorizedRole == null || viewModel.AuthorizedRole.Length == 0)
+            if (viewModel.AuthorizedRole == null || viewModel.AuthorizedRole.Length == 0
+                || viewModel.AuthorizedRole.Where(r => r != (int)Naming.RoleID.Learner).Count() == 0)
             {
                 ModelState.AddModelError("AuthorizedRole", "請選擇適用角色!!");
             }
@@ -318,10 +319,6 @@ namespace WebHome.Controllers
             }
 
             models.DeleteAllOnSubmit<UserRole>(r => r.UID == item.UID);
-            item.UserRole.Add(new UserRole
-            {
-                RoleID = viewModel.CoachRole.Value
-            });
 
             models.DeleteAllOnSubmit<UserRoleAuthorization>(r => r.UID == item.UID);
             item.UserRoleAuthorization.AddRange(viewModel.AuthorizedRole.Select(r => new UserRoleAuthorization
@@ -347,6 +344,13 @@ namespace WebHome.Controllers
                 item.UserRole.Add(new UserRole
                 {
                     RoleID = (int)Naming.RoleID.Coach
+                });
+            }
+            else
+            {
+                item.UserRole.Add(new UserRole
+                {
+                    RoleID = viewModel.CoachRole.Value
                 });
             }
 

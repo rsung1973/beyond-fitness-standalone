@@ -37,7 +37,7 @@
                 <h1 class="text-center">@(_viewModel.coachName) <small>@(_viewModel.nickname)</small></h1>
                 <div class="testimonials">
                     <div class="body">
-                        <i class="fa fa-quote-left"></i><h2>@(_viewModel.prologue)</h2>
+                        <i class="fa fa-quote-left"></i><h2>@Html.Raw(_viewModel.prologue)</h2>
                     </div>                    
                 </div>                
             </div>

@@ -37,7 +37,6 @@
 </div>
 @{
     tempViewModel.PayoffDateFrom = tempViewModel.PayoffDateTo = null;
-    tempViewModel.HasInvoicePrinted = false;
     tempViewModel.BypassCondition = true;
     Html.RenderPartial("~/Views/PaymentConsole/Module/InvoiceToPrintOut.cshtml", items);
 }

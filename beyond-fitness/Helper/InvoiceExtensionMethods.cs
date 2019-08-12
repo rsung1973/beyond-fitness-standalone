@@ -95,7 +95,7 @@ namespace WebHome.Helper
         {
             var paymentItems = contractItem.ContractPayment.Select(p => p.Payment)
                     .Where(p => p.PayoffAmount > 0)
-                    .Where(p => p.VoidPayment == null)
+                    .FilterByEffective()
                     .Where(p => p.InvoiceID.HasValue)
                     .OrderByDescending(p => p.PaymentID)
                     .ToArray();

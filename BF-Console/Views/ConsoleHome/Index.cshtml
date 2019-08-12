@@ -169,40 +169,21 @@
                     @{ Html.RenderPartial("~/Views/ContractConsole/Module/AboutContractServices.cshtml", _model);}
 
                 </li>
-                <li class="col-lg-3 col-md-6 col-sm-12">
-                    <div class="body">
-                        <div class="row">
-                            <div class="col-8">
-                                @{ var payment = models.PromptIncomePayment()
-                                        .FilterByUserRoleScope(models, _model);
-                                    var paymentToday = payment.Where(p => p.PayoffDate >= DateTime.Today);
-                                    var voidToday = models.GetTable<VoidPayment>().Where(v => v.VoidDate >= DateTime.Today)
-                                            .Join(payment, v => v.VoidID, p => p.PaymentID, (v, p) => p);}
-
-                                <h5 class="m-t-0">本日收款</h5>
-                                <p class="text-small">
-                                    收款：<a href="javascript:void(0);">@(paymentToday.Count())</a>
-                                    <br />
-                                    作廢：<a href="javascript:void(0);">@(voidToday.Where(v => v.InvoiceItem.InvoiceCancellation != null).Count())</a><br />
-                                    折讓：<a href="javascript:void(0);">@(voidToday.Where(v => v.AllowanceID.HasValue).Count())</a>
-                                </p>
-                            </div>
-                            <div class="col-4 text-right">
-                                <a href="javascript:void(0);">
-                                    <h2>@(paymentToday.Count() + voidToday.Count())</h2>
-                                </a>
-                                <small class="info"></small>
-                            </div>
-                        </div>
-                    </div>
+                <li class="col-lg-3 col-md-6 col-sm-12 payment">
+                    @{ Html.RenderPartial("~/Views/PaymentConsole/Module/AboutTodayPayment.cshtml", _model);}
                 </li>
             </ul>
             <script>
-                    $(function () {
-                        $('li.contract').on('click', function (event) {
-                            window.location.href = '@Html.Raw(Url.Action("ContractIndex", "ConsoleHome", new { ScrollToView = false }))';
-                        });
+                $(function () {
+                    $('li.contract').on('click', function (event) {
+                        window.location.href = '@Html.Raw(Url.Action("ContractIndex", "ConsoleHome", new { ScrollToView = false }))';
                     });
+                });
+                $(function () {
+                    $('li.payment').on('click', function (event) {
+                        window.location.href = '@Html.Raw(Url.Action("PaymentIndex", "ConsoleHome", new { ScrollToView = false }))';
+                    });
+                });
             </script>
         </div>
     </div>

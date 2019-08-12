@@ -33,9 +33,9 @@ namespace WebHome.Helper
             }
             else if (profile.IsManager() || profile.IsViceManager())
             {
-                var payment = models.GetTable<BranchStore>().Where(b => b.ManagerID == profile.UID || b.ViceManagerID == profile.UID)
-                    .SelectMany(b => b.PaymentTransaction)
-                    .Select(p => p.Payment);
+                //var payment = models.GetTable<BranchStore>().Where(b => b.ManagerID == profile.UID || b.ViceManagerID == profile.UID)
+                //    .SelectMany(b => b.PaymentTransaction)
+                //    .Select(p => p.Payment);
 
                 return items
                         .Join(models.GetTable<PaymentTransaction>()
@@ -45,7 +45,7 @@ namespace WebHome.Helper
             }
             else
             {
-                return items.Where(f => false);
+                return items.Where(p => p.HandlerID == profile.UID);
             }
         }
 
@@ -56,7 +56,7 @@ namespace WebHome.Helper
                 .Where(p => p.TransactionType == (int)Naming.PaymentTransactionType.體能顧問費
                     || p.TransactionType == (int)Naming.PaymentTransactionType.合約轉讓餘額
                     || p.TransactionType == (int)Naming.PaymentTransactionType.合約轉點餘額)
-                .Where(p => p.VoidPayment == null || p.AllowanceID.HasValue);
+                .FilterByEffective();
         }
 
         public static IEnumerable<Payment> FilterByAccountingPayment(this IEnumerable<Payment> items)
@@ -65,7 +65,7 @@ namespace WebHome.Helper
                 .Where(p => p.TransactionType == (int)Naming.PaymentTransactionType.體能顧問費
                     || p.TransactionType == (int)Naming.PaymentTransactionType.合約轉讓餘額
                     || p.TransactionType == (int)Naming.PaymentTransactionType.合約轉點餘額)
-                .Where(p => p.VoidPayment == null || p.AllowanceID.HasValue);
+                .FilterByEffective();
         }
 
         public static IQueryable<InvoiceAllowance> ExtractPaymentAllowance<TEntity>(this IQueryable<Payment> items, ModelSource<TEntity> models)
@@ -108,7 +108,7 @@ namespace WebHome.Helper
             {
                 filterItems = models.GetTable<TuitionAchievement>();
             }
-            return items.Where(p => p.VoidPayment == null)
+            return items.FilterByEffective()
                 .Join(filterItems, 
                     p => p.PaymentID, t => t.InstallmentID, (p, t) => t);
         }
@@ -129,7 +129,6 @@ namespace WebHome.Helper
 
             return items;
         }
-
 
     }
 }

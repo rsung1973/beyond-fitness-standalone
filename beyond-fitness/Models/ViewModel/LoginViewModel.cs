@@ -16,6 +16,11 @@ namespace WebHome.Models.ViewModel
         public int? PageSize { get; set; }
         public int? PagingSize { get; set; }
         public int? RecordCount { get; set; }
+
+        public QueryViewModel Duplicate()
+        {
+            return (QueryViewModel)this.MemberwiseClone();
+        }
     }
 
     public class LoginViewModel : QueryViewModel

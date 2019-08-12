@@ -16,6 +16,7 @@
     _model = (IQueryable<Payment>)this.Model;
 }
 @{
+    PaymentQueryViewModel _viewModel = (PaymentQueryViewModel)ViewBag.ViewModel;
     IQueryable<Payment> items = _model.Where(p => p.PayoffDate >= DateTime.Today);
     IQueryable<Payment> voidItems =models.GetTable<VoidPayment>().Where(v => v.VoidDate >= DateTime.Today)
                                             .Join(items, v => v.VoidID, p => p.PaymentID, (v, p) => p);
@@ -35,12 +36,15 @@
             {
                 PayoffDateFrom = DateTime.Today,
                 PayoffDateTo = DateTime.Today.AddDays(1),
+                _viewModel.HandlerID,
+                IncomeOnly = true,
             })));'>@($"{items.Sum(p => p.PayoffAmount) ?? 0:##,###,###,##0}")</a><br />
     <a href="#" onclick='showPaymentList(@Html.Raw(JsonConvert.SerializeObject(
             new
             {
                 PayoffDateFrom = DateTime.Today,
                 PayoffDateTo = DateTime.Today.AddDays(1),
+                _viewModel.HandlerID,
                 HasCancellation = true,
             })));'>@($"{voidItems.ExtractVoidPayment(models,true).Sum(p => p.PayoffAmount) ?? 0:##,###,###,##0}")</a><br />
     <a href="#" onclick='showPaymentList(@Html.Raw(JsonConvert.SerializeObject(
@@ -48,6 +52,7 @@
             {
                 PayoffDateFrom = DateTime.Today,
                 PayoffDateTo = DateTime.Today.AddDays(1),
+                _viewModel.HandlerID,
                 HasAllowance = true
             })));'>@($"{items.ExtractPaymentAllowance(models).Sum(a=>a.TotalAmount) ?? 0:##,###,###,##0}")</a><br />
 </div>

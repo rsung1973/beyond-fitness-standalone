@@ -710,7 +710,7 @@ namespace WebHome.Controllers
 
             IQueryable<LessonTime> lessons = models.GetTable<LessonTime>().AllCompleteLesson();
             IQueryable<TuitionAchievement> items = models.GetTable<TuitionAchievement>()
-                .Where(t => t.Payment.VoidPayment == null || t.Payment.AllowanceID.HasValue);
+                .FilterByEffective();
 
             if (viewModel.BranchID.HasValue)
             {

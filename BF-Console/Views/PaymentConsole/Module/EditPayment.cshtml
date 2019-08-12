@@ -1,0 +1,155 @@
+
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Newtonsoft.Json
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    Payment _model;
+    PaymentViewModel _viewModel;
+
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    _model = this.Model as Payment;
+    _viewModel = (PaymentViewModel)ViewBag.ViewModel;
+}
+@{
+    UserProfile _profile = Context.GetUser();
+}
+<div class="header">
+    <h2><strong>收款資料</strong></h2>
+</div>
+<div class="body">
+    <div class="row clearfix">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-12 m-b-20">
+            <select class="form-control show-tick" name="SellerID">
+                <option value="">-- 請選擇收款場地 --</option>
+                @{
+                    BranchStore branch = null;
+                    //if (_profile.IsManager() || _profile.IsViceManager())
+                    //{
+                    //    branch = models.GetTable<BranchStore>().Where(b => b.ManagerID == _profile.UID || b.ViceManagerID == _profile.UID).FirstOrDefault();
+                    //}
+                    //else 
+                    if (_profile.IsCoach())
+                    {
+                        ViewBag.DataItems = models.GetTable<CoachWorkplace>().Where(c => c.CoachID == _profile.UID)
+                                                .Select(w => w.BranchStore);
+                        branch = models.GetTable<CoachWorkplace>().Where(w => w.CoachID == _profile.UID).Select(w => w.BranchStore).FirstOrDefault();
+                    }
+                    Html.RenderPartial("~/Views/SystemInfo/BranchStoreOptions.ascx", model: branch != null ? branch.BranchID : -1);
+                }
+            </select>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-12 m-b-20">
+            <div class="input-group">
+                <input type="text" class="form-control date" name="PayoffDate" data-date-format="yyyy/mm/dd" readonly="readonly" placeholder="收款日期" value="@(String.Format("{0:yyyy/MM/dd}",_viewModel.PayoffDate))" />
+                <span class="input-group-addon xl-slategray">
+                    <i class="zmdi zmdi-time"></i>
+                </span>
+                @if (!(_profile.IsAssistant() || _profile.IsManager()))
+                {
+                    <script>
+                        $('input[name="PayoffDate"]').prop('disabled', true);
+                    </script>
+                }
+                else
+                {
+                    <script>
+                        $('input[name="PayoffDate"]').addClass('eInvoice-disable');
+                    </script>
+                }
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-12 m-b-20">
+            <div class="input-group">
+                <input type="text" class="form-control col-red" name="PayoffAmount" placeholder="收款金額" value="@(_viewModel.PayoffAmount)" />
+                <span class="input-group-addon">
+                    <i class="zmdi zmdi-money-box"></i>
+                </span>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-12 m-b-20">
+            <div class="input-group">
+                <input type="text" class="form-control" name="BuyerReceiptNo" placeholder="買受人統編" />
+                <span class="input-group-addon">
+                    <i class="zmdi zmdi-text-format"></i>
+                </span>
+            </div>
+            @*<label class="material-icons help-error-text" for="BuyerReceiptNo">clear 請輸入買受人統編</label>*@
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-12 m-b-20">
+            <select class="form-control show-tick" name="PaymentType">
+                <option value="">-- 請選擇收款方式 --</option>
+                <option value="現金">現金</option>
+                <option value="刷卡">刷卡</option>
+                <option value="轉帳">轉帳</option>
+            </select>
+            <input type="hidden" name="errorMessage" />
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-12 m-b-20">
+            <select class="form-control show-tick" name="InvoiceType">
+                <option value="">-- 請選擇發票類型 --</option>
+                <option value="@((int)Naming.InvoiceTypeDefinition.一般稅額計算之電子發票)">電子發票</option>
+                @if (_profile.IsAssistant() || _profile.IsSysAdmin())
+                {
+                    <option value="@((int)Naming.InvoiceTypeDefinition.二聯式收銀機)">紙本發票</option>
+                }
+            </select>
+            <script>
+                function initial() {
+                    var invoiceType = $('select[name="InvoiceType"]').val();
+                    if (invoiceType == '@((int)Naming.InvoiceTypeDefinition.一般稅額計算之電子發票)' || invoiceType=='') {
+                        $('.eInvoice-dialog').css('display', 'block');
+                        $('.paper-invoice').css('display', 'none');
+                        $('.eInvoice-disable').prop('disabled', true);
+                        $('input[name="PayoffDate"]').val('@(String.Format("{0:yyyy/MM/dd}",DateTime.Today))');
+                    } else if (invoiceType == '@((int)Naming.InvoiceTypeDefinition.二聯式收銀機)') {
+                        $('.eInvoice-dialog').css('display', 'none');
+                        $('.paper-invoice').css('display', 'block');
+                        $('.eInvoice-disable').prop('disabled', false);
+                    }
+                }
+                $(function () {
+                    $('select[name="InvoiceType"]').on('change', function (evt) {
+                        initial();
+                    });
+                    initial();
+                    equipDatetimePicker({ 'startDate': null });
+                });
+            </script>
+        </div>
+        <div class="col-12 m-b-20 paper-invoice">
+            <div class="input-group">
+                <input type="text" class="form-control" name="InvoiceNo" placeholder="紙本發票號碼" value="@(_viewModel.InvoiceNo)"/>
+                <span class="input-group-addon">
+                    <i class="zmdi zmdi-collection-item-9-plus"></i>
+                </span>
+            </div>
+        </div>
+        @if (ViewBag.TransactionType == Naming.PaymentTransactionType.體能顧問費)
+        {
+        <div class="col-12 m-b-20">
+            <select class="form-control show-tick" name="CustomBrief">
+                <option value="">-- 請選擇發票品項是否更改 --</option>
+                <option value="@(true)">是, 更改為顧問費用</option>
+                <option value="@(false)">否, 我堅持使用預設</option>
+            </select>
+        </div>
+        }
+        <div class="col-12">
+            <div class="form-group">
+                <textarea rows="3" class="form-control no-resize" name="Remark" placeholder="請輸入任何想補充的事項..."></textarea>
+            </div>
+        </div>
+    </div>
+</div>
+
+

@@ -40,6 +40,25 @@
                         <a href="javascript:$global.showPaymentDetails('@(_model.PaymentID.EncryptKey())');" class="list-group-item">詳細資訊</a>
                         Html.RenderPartial("~/Views/PaymentConsole/Indication/PaymentDetails.cshtml", _model);
                     }
+                    @{
+                        var item = _model.InvoiceItem;
+                    }
+                    @if (item.InvoiceType == (byte)Naming.InvoiceTypeDefinition.一般稅額計算之電子發票)
+                    {
+                        if (item.PrintMark == "Y")
+                        {
+                            if (item.InvoiceCancellation == null
+                                && (item.Document.DocumentPrintLog.Count == 0
+                                        || _profile.IsAssistant() || _profile.IsManager() || _profile.IsViceManager()))
+                            {
+                                <a href="#" onclick="printInvoice(@(item.InvoiceID),'@(item.Organization.InvoiceSignature)');" class="list-group-item">列印發票</a>
+                            }
+                        }
+                    }
+                    @{
+                        var testItem = models.GetTable<InvoiceItem>().Where(i => i.InvoiceID == 23417).FirstOrDefault();
+                    }
+                    <a href="javascript:testPrintInvoice(@(testItem?.InvoiceID),'@(testItem?.Organization.InvoiceSignature)');" class="list-group-item">確認連線發票印表機</a>
                 </div>
             </div>
         </div>

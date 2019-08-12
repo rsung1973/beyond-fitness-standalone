@@ -96,7 +96,6 @@ namespace WebHome.Models.ViewModel
 
     public class ContractMemberViewModel : LearnerViewModel
     {
-        public int? UID { get; set; }
         public String EmergencyContactPhone { get; set; }
         public String EmergencyContactPerson { get; set; }
         public String Relationship { get; set; }
@@ -199,6 +198,7 @@ namespace WebHome.Models.ViewModel
         public bool? HasAllowance { get; set; }
         public bool? HasInvoicePrinted { get; set; }
         public int? ShareFor { get; set; }
+        public bool? IncomeOnly { get; set; }
 
     }
 

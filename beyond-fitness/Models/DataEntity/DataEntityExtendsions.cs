@@ -302,7 +302,7 @@ namespace WebHome.Models.DataEntity
                 .Where(p => p.TransactionType == (int)Naming.PaymentTransactionType.體能顧問費
                     || p.TransactionType == (int)Naming.PaymentTransactionType.合約轉讓餘額
                     || p.TransactionType == (int)Naming.PaymentTransactionType.合約轉點餘額)
-                .Where(p => p.VoidPayment == null || p.AllowanceID.HasValue)
+                .FilterByEffective()
                 .Sum(c => c.PayoffAmount);
         }
 
@@ -313,7 +313,7 @@ namespace WebHome.Models.DataEntity
                 .Where(p => p.TransactionType == (int)Naming.PaymentTransactionType.體能顧問費
                     || p.TransactionType == (int)Naming.PaymentTransactionType.合約轉讓餘額
                     || p.TransactionType == (int)Naming.PaymentTransactionType.合約轉點餘額)
-                .Where(p => p.VoidPayment == null || p.AllowanceID.HasValue).Count();
+                .FilterByEffective().Count();
         }
 
         public static decimal? TotalAllowanceAmount(this CourseContract contract)
@@ -362,6 +362,30 @@ namespace WebHome.Models.DataEntity
             return item.RegisterLesson.RegisterLessonEnterprise == null
                     ? item.RegisterLesson.LessonPriceType.Status.LessonTypeStatus()
                     : item.RegisterLesson.RegisterLessonEnterprise.EnterpriseCourseContent.EnterpriseLessonType.Status.LessonTypeStatus() + "(企)";
+        }
+
+        public static IQueryable<TuitionAchievement> FilterByEffective(this IQueryable<TuitionAchievement> items)
+        {
+            return items
+                    .Where(t => t.Payment.VoidPayment == null /*|| t.Payment.AllowanceID.HasValue*/);
+        }
+
+        public static IEnumerable<Payment> FilterByEffective(this IEnumerable<Payment> items)
+        {
+            return items
+                    .Where(t => t.VoidPayment == null /*|| t.AllowanceID.HasValue*/);
+        }
+
+        public static IEnumerable<TuitionAchievement> FilterByEffective(this IEnumerable<TuitionAchievement> items)
+        {
+            return items
+                    .Where(t => t.Payment.VoidPayment == null /*|| t.Payment.AllowanceID.HasValue*/);
+        }
+
+        public static IQueryable<Payment> FilterByEffective(this IQueryable<Payment> items)
+        {
+            return items
+                    .Where(t => t.VoidPayment == null /*|| t.AllowanceID.HasValue*/);
         }
 
 

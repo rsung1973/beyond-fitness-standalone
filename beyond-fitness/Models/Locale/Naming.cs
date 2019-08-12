@@ -205,6 +205,12 @@ namespace WebHome.Models.Locale
             AFM = 1107
         }
 
+        public static readonly ProfessionalCategory[] ManagerialLevel = new ProfessionalCategory[]
+        {
+            ProfessionalCategory.Special,
+            ProfessionalCategory.FM,
+        };
+
         public enum ProfessionLevelDefinition
         {
             Preliminary = 0,
@@ -357,9 +363,10 @@ namespace WebHome.Models.Locale
             南京 = 1,
             信義 = 2,
             忠孝 = 3,
-            其他 = 4,
+            東門 = 4,
             璞真,
             甜蜜的家,
+            其他,
         }
 
         public enum ContractTypeDefinition
@@ -414,6 +421,12 @@ namespace WebHome.Models.Locale
         {
             ByOther = 0,
             BySelf = 1,
+        }
+
+        public enum LessonSettlementStatus
+        {
+            HalfAchievement = 1,
+            FullAchievement = 2,
         }
 
     }

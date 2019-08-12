@@ -1457,6 +1457,7 @@
       <Column Name="LessonID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="ProfessionalLevelID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="MarkedGradeIndex" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Column Name="SettlementStatus" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Association Name="ProfessionalLevel_LessonTimeSettlement" Member="ProfessionalLevel" ThisKey="ProfessionalLevelID" OtherKey="LevelID" Type="ProfessionalLevel" IsForeignKey="true" />
       <Association Name="LessonTime_LessonTimeSettlement" Member="LessonTime" ThisKey="LessonID" OtherKey="LessonID" Type="LessonTime" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
