@@ -103,7 +103,10 @@ namespace WebHome.Controllers
 
         public ActionResult TestDataTable()
         {
-            return View();
+            var item0 = models.GetTable<UserProfile>().OrderBy(u => u.UID).FirstOrDefault();
+            var item1 = models.GetTable<UserProfile>().Where(u => u.UID == 1).FirstOrDefault();
+            var item2 = ((IEnumerable<UserProfile>)models.GetTable<UserProfile>()).Where(u => u.PID.Contains("info")).FirstOrDefault();
+            return new EmptyResult();
         }
 
         public ActionResult UrlToPDF(String url)

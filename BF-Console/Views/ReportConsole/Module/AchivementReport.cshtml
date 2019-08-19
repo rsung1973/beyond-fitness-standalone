@@ -30,12 +30,12 @@
         <div class="col-lg-2 col-md-3 col-sm-6">
             <div class="card">
                 <div class="file">
-                    <a href="javascript:$('').launchDownload('@Html.Raw(Url.Action("CreateFullAchievementXlsx","Accounting"))', { 'achievementDateFrom': '@($"{DateTime.Today.FirstDayOfMonth().AddMonths(-1):yyyy/MM/dd}")', 'bypassCondition': true ,'detailsOnly': false }, 'report',true);">
+                    <a href="javascript:processMonthlyBonus('@($"{DateTime.Today.FirstDayOfMonth().AddMonths(-1):yyyy/MM/dd}")');">
                         <div class="icon">
                             <i class="zmdi livicon livicon-evo" data-options="name: piggybank.svg; size: 60px; style: original; strokeWidth:2px; autoPlay:true"></i>
                         </div>
                         <div class="file-name">
-                            <p class="m-b-5 text-muted">薪資清單</p>
+                            <p class="m-b-5 text-muted">獎金抽成彙總表</p>
                             <small>上月 <span class="date text-muted">@($"{DateTime.Today.FirstDayOfMonth().AddMonths(-1):yyyy/MM}")</span></small>
                         </div>
                     </a>
@@ -95,13 +95,13 @@
         <div class="col-lg-2 col-md-3 col-sm-6">
             <div class="card">
                 <div class="file">
-                    <a href="javascript:selectMonthlyFullAchievement();">
+                    <a href="javascript:selectMonthlyBonusList();">
                         <div class="icon">
-                            <i class="zmdi livicon livicon-evo" data-options="name: user.svg; size: 60px; style: original; strokeWidth:2px; autoPlay:true"></i>
+                            <i class="zmdi livicon livicon-evo" data-options="name: users.svg; size: 60px; style: original; strokeWidth:2px; autoPlay:true"></i>
                         </div>
                         <div class="file-name">
-                            <p class="m-b-5 text-muted">薪資清單</p>
-                            <small>體能顧問 <span class="date text-muted"><i class="zmdi zmdi-search"></i></span></small>
+                            <p class="m-b-5 text-muted">獎金抽成彙總表</p>
+                            <small>自訂條件 <span class="date text-muted"><i class="zmdi zmdi-search"></i></span></small>
                         </div>
                     </a>
                 </div>
@@ -155,6 +155,18 @@
                 });
             }
 
+            function processMonthlyBonus(achievementDateFrom) {
+                showLoading();
+                $.post('@Html.Raw(Url.Action("PrepareMonthlyBonus","ReportConsole"))', { 'achievementDateFrom': achievementDateFrom }, function (data) {
+                    hideLoading();
+                    if ($.isPlainObject(data)) {
+                        swal(data.message);
+                    } else {
+                        $(data).appendTo($('body'));
+                    }
+                });
+            }
+
             function selectMonthlyShare(detailsOnly) {
                 showLoading();
                 $.post('@Html.Raw(Url.Action("SelectCoachMonthlyReport","ReportConsole"))', {}, function (data) {
@@ -169,6 +181,22 @@
                     }
                 });
             }
+
+        function selectMonthlyBonusList() {
+            showLoading();
+            $.post('@Html.Raw(Url.Action("SelectMonthlyReport","ReportConsole"))', {}, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    swal(data.message);
+                } else {
+                    $global.doQuery = function (settlementDate) {
+                        processMonthlyBonus(settlementDate);
+                    }
+                    $(data).appendTo($('body'));
+                }
+            });
+        }
+
 
         function selectMonthlyFullAchievement() {
             showLoading();

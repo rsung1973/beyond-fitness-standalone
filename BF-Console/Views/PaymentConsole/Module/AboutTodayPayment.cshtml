@@ -1,0 +1,98 @@
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Newtonsoft.Json
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    UserProfile _model;
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = (UserProfile)this.Model;
+}
+
+<div class="body">
+    <div class="row">
+        <div class="col-8">
+            @{ var payment = models.PromptIncomePayment()
+                         .FilterByUserRoleScope(models, _model);
+                var paymentToday = payment.Where(p => p.PayoffDate >= DateTime.Today);
+                var voidToday = models.GetTable<VoidPayment>().Where(v => v.VoidDate >= DateTime.Today)
+                        .Join(payment, v => v.VoidID, p => p.PaymentID, (v, p) => p);
+                var branchID = models.GetTable<BranchStore>().Where(b => b.ManagerID == _model.UID || b.ViceManagerID == _model.UID)
+                            .FirstOrDefault()?.BranchID;
+
+                int? handlerID = null;
+                if (_model.IsAssistant() || _model.IsOfficer() || _model.IsServitor())
+                {
+                }
+                else if (_model.IsManager() || _model.IsViceManager())
+                {
+                }
+                else
+                {
+                    handlerID = _model.UID;
+                }
+            }
+            <h5 class="m-t-0">本日收款</h5>
+            <p class="text-small">
+                收款：<a href="#" onclick='showPaymentList(@Html.Raw(JsonConvert.SerializeObject(
+                        new
+                        {
+                            PayoffDateFrom = DateTime.Today,
+                            BranchID = branchID,
+                            HandlerID = handlerID,
+                            IncomeOnly = true,
+                        })));'>@(paymentToday.Count())</a>
+                <br />
+                作廢：<a href="#" onclick='showPaymentList(@Html.Raw(JsonConvert.SerializeObject(
+                        new
+                        {
+                            PayoffDateFrom = DateTime.Today,
+                            BranchID = branchID,
+                            HandlerID = handlerID,
+                            HasCancellation = true,
+                        })));'>@(voidToday.ExtractVoidPayment(models,true).Count())</a><br />
+                折讓：<a href="#" onclick='showPaymentList(@Html.Raw(JsonConvert.SerializeObject(
+                        new
+                        {
+                            PayoffDateFrom = DateTime.Today,
+                            BranchID = branchID,
+                            HandlerID = handlerID,
+                            HasAllowance = true,
+                        })));'>@(voidToday.Where(v => v.AllowanceID.HasValue).Count())</a>
+            </p>
+        </div>
+        <div class="col-4 text-right">
+            <a href="#" onclick='showPaymentList(@Html.Raw(JsonConvert.SerializeObject(
+                        new
+                        {
+                            PayoffDateFrom = DateTime.Today,
+                            BranchID = branchID,
+                            HandlerID = handlerID,
+                        })));'>
+                <h2>@(paymentToday.Count() + voidToday.Count())</h2>
+            </a>
+            <small class="info"></small>
+        </div>
+    </div>
+</div>
+<script>
+        function showPaymentList(viewModel) {
+            var event = window.event;
+            if (event) {
+                event.cancelBubble = true;
+                if ($(event.target).text() == '0') {
+                    return false;
+                }
+            }
+
+            $('').launchDownload('@Html.Raw(Url.Action("InquirePaymentIndex", "ConsoleHome"))', viewModel);
+        }
+
+</script>

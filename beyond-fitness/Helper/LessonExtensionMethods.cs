@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Net;
 using System.Net.Mail;
 using System.Text;
@@ -343,11 +344,30 @@ namespace WebHome.Helper
 
         public static IQueryable<LessonTime> LearnerPILesson(this IQueryable<LessonTime> items)
         {
-            return items.PILesson()
+            return items/*.PILesson()*/
                 .Where(l => l.RegisterLesson.LessonPriceType.Status == (int)Naming.LessonPriceStatus.自主訓練
                     || (l.RegisterLesson.RegisterLessonEnterprise != null && l.RegisterLesson.RegisterLessonEnterprise.EnterpriseCourseContent.EnterpriseLessonType.Status == (int)Naming.LessonPriceStatus.自主訓練));
         }
 
+        public static IEnumerable<LessonTime> LearnerPILesson(this IEnumerable<LessonTime> items)
+        {
+            return items
+                .Where(l => l.RegisterLesson.LessonPriceType.Status == (int)Naming.LessonPriceStatus.自主訓練
+                    || (l.RegisterLesson.RegisterLessonEnterprise != null && l.RegisterLesson.RegisterLessonEnterprise.EnterpriseCourseContent.EnterpriseLessonType.Status == (int)Naming.LessonPriceStatus.自主訓練));
+        }
+
+
+        public static IQueryable<LessonTime> ExclusivePILesson(this IQueryable<LessonTime> items)
+        {
+            return items.Where(l => l.RegisterLesson.LessonPriceType.Status != (int)Naming.LessonPriceStatus.自主訓練)
+                    .Where(l => l.RegisterLesson.RegisterLessonEnterprise == null || l.RegisterLesson.RegisterLessonEnterprise.EnterpriseCourseContent.EnterpriseLessonType.Status != (int)Naming.LessonPriceStatus.自主訓練);
+        }
+
+        public static IEnumerable<LessonTime> ExclusivePILesson(this IEnumerable<LessonTime> items)
+        {
+            return items.Where(l => l.RegisterLesson.LessonPriceType.Status != (int)Naming.LessonPriceStatus.自主訓練)
+                    .Where(l => l.RegisterLesson.RegisterLessonEnterprise == null || l.RegisterLesson.RegisterLessonEnterprise.EnterpriseCourseContent.EnterpriseLessonType.Status != (int)Naming.LessonPriceStatus.自主訓練);
+        }
 
 
         public static bool IsPISession(this LessonTime item)
@@ -360,10 +380,31 @@ namespace WebHome.Helper
             return item.TrainingBySelf == 2;
         }
 
-        public static bool IsTrialLesson(this LessonTime item)
+        public static Func<LessonTime, bool> CheckTrialLesson = item =>
         {
             return item.RegisterLesson.LessonPriceType.Status == (int)Naming.LessonPriceStatus.體驗課程
                                     || (item.RegisterLesson.RegisterLessonEnterprise != null && item.RegisterLesson.RegisterLessonEnterprise.EnterpriseCourseContent.EnterpriseLessonType.Status == (int)Naming.LessonPriceStatus.體驗課程);
+        };
+
+        public static Func<LessonTime, bool> IsNotTrialLesson = item =>
+        {
+            return item.RegisterLesson.LessonPriceType.Status != (int)Naming.LessonPriceStatus.體驗課程
+                                    && (item.RegisterLesson.RegisterLessonEnterprise == null || item.RegisterLesson.RegisterLessonEnterprise.EnterpriseCourseContent.EnterpriseLessonType.Status != (int)Naming.LessonPriceStatus.體驗課程);
+        };
+
+        public static Expression<Func<LessonTime, bool>> QueryTrialLesson = item =>
+                    item.RegisterLesson.LessonPriceType.Status == (int)Naming.LessonPriceStatus.體驗課程
+                                    || (item.RegisterLesson.RegisterLessonEnterprise != null && item.RegisterLesson.RegisterLessonEnterprise.EnterpriseCourseContent.EnterpriseLessonType.Status == (int)Naming.LessonPriceStatus.體驗課程);
+        
+
+        public static Expression<Func<LessonTime, bool>> QueryNotTrialLesson = item =>
+                     item.RegisterLesson.LessonPriceType.Status != (int)Naming.LessonPriceStatus.體驗課程
+                                    && (item.RegisterLesson.RegisterLessonEnterprise == null || item.RegisterLesson.RegisterLessonEnterprise.EnterpriseCourseContent.EnterpriseLessonType.Status != (int)Naming.LessonPriceStatus.體驗課程);
+
+
+        public static bool IsTrialLesson(this LessonTime item)
+        {
+            return CheckTrialLesson(item);
         }
 
         public static bool IsCoachPISession(this LessonTime item)
@@ -406,6 +447,31 @@ namespace WebHome.Helper
                 //.Where(t => t.RegisterLesson.LessonPriceType.Status != (int)Naming.DocumentLevelDefinition.點數兌換課程)
                 .Where(t => t.LessonAttendance != null || t.LessonPlan.CommitAttendance.HasValue);
         }
+
+        public static IQueryable<LessonTime> FullAchievementLesson(this IQueryable<LessonTime> items)
+        {
+            return items.Where(t => t.LessonAttendance != null && t.LessonPlan.CommitAttendance.HasValue);
+        }
+
+        public static IQueryable<LessonTime> HalfAchievementLesson(this IQueryable<LessonTime> items)
+        {
+            return items
+                .Where(t => (t.LessonAttendance == null && t.LessonPlan.CommitAttendance.HasValue)
+                        || (t.LessonAttendance != null && !t.LessonPlan.CommitAttendance.HasValue));
+        }
+
+        public static IEnumerable<LessonTime> FullAchievementLesson(this IEnumerable<LessonTime> items)
+        {
+            return items.Where(t => t.LessonAttendance != null && t.LessonPlan.CommitAttendance.HasValue);
+        }
+
+        public static IEnumerable<LessonTime> HalfAchievementLesson(this IEnumerable<LessonTime> items)
+        {
+            return items
+                .Where(t => (t.LessonAttendance == null && t.LessonPlan.CommitAttendance.HasValue)
+                        || (t.LessonAttendance != null && !t.LessonPlan.CommitAttendance.HasValue));
+        }
+
 
         public static TrainingPlan AssertTrainingPlan<TEntity>(this LessonTime item, ModelSource<TEntity> models, Naming.DocumentLevelDefinition? planStatus = null,int? UID = null)
             where TEntity : class, new()

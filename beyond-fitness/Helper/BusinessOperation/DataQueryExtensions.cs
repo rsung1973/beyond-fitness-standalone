@@ -736,5 +736,101 @@ namespace WebHome.Helper.BusinessOperation
 
             return result;
         }
+
+        public static IQueryable<LessonTime> InquireAchievement<TEntity>(this AchievementQueryViewModel viewModel, SampleController<TEntity> controller, out String alertMessage)
+                where TEntity : class, new()
+        {
+            alertMessage = null;
+            var ModelState = controller.ModelState;
+            var ViewBag = controller.ViewBag;
+            var HttpContext = controller.HttpContext;
+            var models = controller.DataSource;
+
+            ViewBag.ViewModel = viewModel;
+            var profile = HttpContext.GetUser();
+            if (!viewModel.AchievementDateFrom.HasValue)
+            {
+                if (!String.IsNullOrEmpty(viewModel.AchievementYearMonthFrom))
+                {
+                    viewModel.AchievementDateFrom = DateTime.ParseExact(viewModel.AchievementYearMonthFrom, "yyyy/MM", System.Globalization.CultureInfo.CurrentCulture);
+                }
+                else
+                {
+                    ModelState.AddModelError("AchievementYearMonthFrom", "請選擇查詢月份");
+                }
+            }
+
+            if (!viewModel.AchievementDateTo.HasValue)
+            {
+
+                if (!String.IsNullOrEmpty(viewModel.AchievementYearMonthTo))
+                {
+                    viewModel.AchievementDateTo = DateTime.ParseExact(viewModel.AchievementYearMonthTo, "yyyy/MM", System.Globalization.CultureInfo.CurrentCulture);
+                }
+            }
+
+            IQueryable<LessonTime> items = models.GetTable<LessonTime>().AllCompleteLesson();
+
+            bool hasConditon = false;
+            if (viewModel.BypassCondition == true)
+            {
+                hasConditon = true;
+            }
+
+            if (viewModel.CoachID.HasValue)
+            {
+                hasConditon = true;
+                items = items.Where(c => c.AttendingCoach == viewModel.CoachID);
+            }
+
+            if (viewModel.ByCoachID != null && viewModel.ByCoachID.Length > 0)
+            {
+                items = items.Where(c => viewModel.ByCoachID.Contains(c.AttendingCoach));
+            }
+
+            //if (!hasConditon)
+            //{
+            if (viewModel.BranchID.HasValue)
+            {
+                hasConditon = true;
+                items = items.Where(c => c.BranchID == viewModel.BranchID);
+            }
+            //}
+
+
+            if (!hasConditon)
+            {
+                if (profile.IsAssistant() || profile.IsAccounting() || profile.IsOfficer())
+                {
+
+                }
+                else if (profile.IsManager() || profile.IsViceManager())
+                {
+                    var coaches = profile.GetServingCoachInSameStore(models);
+                    items = items.Join(coaches, c => c.AttendingCoach, h => h.CoachID, (c, h) => c);
+                }
+                else if (profile.IsCoach())
+                {
+                    items = items.Where(c => c.AttendingCoach == profile.UID);
+                }
+            }
+
+            if (viewModel.AchievementDateFrom.HasValue)
+            {
+                items = items.Where(c => c.ClassTime >= viewModel.AchievementDateFrom);
+
+                if (!viewModel.AchievementDateTo.HasValue)
+                    viewModel.AchievementDateTo = viewModel.AchievementDateFrom;
+
+            }
+
+            if (viewModel.AchievementDateTo.HasValue)
+            {
+                items = items.Where(c => c.ClassTime < viewModel.AchievementDateTo.Value.AddMonths(1));
+            }
+
+            return items;
+        }
+
     }
 }

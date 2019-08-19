@@ -805,7 +805,7 @@ namespace WebHome.Helper
         public static int CalcAchievement<TEntity>(this ModelSource<TEntity> models, IEnumerable<LessonTime> items)
             where TEntity : class, new()
         {
-            var lessons = items.Where(t => t.LessonAttendance != null && t.LessonPlan.CommitAttendance.HasValue)
+            var lessons = items.FullAchievementLesson()
                 .Select(l => l.GroupingLesson)
                         .Join(models.GetTable<RegisterLesson>(), g => g.GroupID, r => r.RegisterGroupID, (g, r) => r)
                         .Where(r => r.IntuitionCharge != null);
@@ -837,7 +837,7 @@ namespace WebHome.Helper
 
             //}
 
-            lessons = items.Where(t => t.LessonAttendance == null || !t.LessonPlan.CommitAttendance.HasValue)
+            lessons = items.HalfAchievementLesson()
                 .Select(l => l.GroupingLesson)
                         .Join(models.GetTable<RegisterLesson>(), g => g.GroupID, r => r.RegisterGroupID, (g, r) => r)
                         .Where(r => r.IntuitionCharge != null);
@@ -904,57 +904,97 @@ namespace WebHome.Helper
             where TEntity : class, new()
         {
             shares = 0;
+
+            var fullAchievement = items.FullAchievementLesson().CalcTuition(models); 
+            var halfAchievement = items.HalfAchievementLesson().CalcTuition(models) / 2;
+
+            var courseItems = items.Where(l => l.RegisterLesson.RegisterLessonEnterprise == null);
+            var enterpriseItems = items.Where(l => l.RegisterLesson.RegisterLessonEnterprise != null);
+
+            shares = items.FullAchievementLesson().CalcTuitionShare(models)
+                + items.HalfAchievementLesson().CalcTuitionShare(models) / 2;
+
+            return fullAchievement + halfAchievement;
+        }
+
+        public static int CalcTuition<TEntity>(this IQueryable<LessonTime> items, ModelSource<TEntity> models)
+            where TEntity : class, new()
+        {
             var allLessons = items
-                .Where(t => t.LessonAttendance != null && t.LessonPlan.CommitAttendance.HasValue)
                 .Select(l => l.GroupingLesson)
                         .Join(models.GetTable<RegisterLesson>(), g => g.GroupID, r => r.RegisterGroupID, (g, r) => r);
 
             var lessons = allLessons.Where(r => r.RegisterLessonEnterprise == null);
             var enterpriseLessons = allLessons.Where(r => r.RegisterLessonEnterprise != null);
 
-            var fullAchievement = lessons
-                .Sum(l => l.LessonPriceType.CoachPayoffCreditCard
-                    * l.GroupingLessonDiscount.PercentageOfDiscount / 100)
-                + enterpriseLessons
+            var tuition = (lessons
+                .Sum(l => l.LessonPriceType.ListPrice
+                    * l.GroupingLessonDiscount.PercentageOfDiscount / 100) ?? 0)
+                + (enterpriseLessons
                     .Sum(l => l.RegisterLessonEnterprise.EnterpriseCourseContent.ListPrice
-                        * l.GroupingLessonDiscount.PercentageOfDiscount / 100);
+                        * l.GroupingLessonDiscount.PercentageOfDiscount / 100) ?? 0);
+            return tuition;
+        }
 
-            allLessons = items.Where(t => t.LessonAttendance == null || !t.LessonPlan.CommitAttendance.HasValue)
+        public static int CalcTuition<TEntity>(this IEnumerable<LessonTime> items, ModelSource<TEntity> models)
+            where TEntity : class, new()
+        {
+            var allLessons = items
                 .Select(l => l.GroupingLesson)
                         .Join(models.GetTable<RegisterLesson>(), g => g.GroupID, r => r.RegisterGroupID, (g, r) => r);
 
-            lessons = allLessons.Where(r => r.RegisterLessonEnterprise == null);
-            enterpriseLessons = allLessons.Where(r => r.RegisterLessonEnterprise != null);
+            var lessons = allLessons.Where(r => r.RegisterLessonEnterprise == null);
+            var enterpriseLessons = allLessons.Where(r => r.RegisterLessonEnterprise != null);
 
-            var halfAchievement = (lessons
-                .Sum(l => l.LessonPriceType.CoachPayoffCreditCard
-                    * l.GroupingLessonDiscount.PercentageOfDiscount / 100)
-                + enterpriseLessons
+            var tuition = (lessons
+                .Sum(l => l.LessonPriceType.ListPrice
+                    * l.GroupingLessonDiscount.PercentageOfDiscount / 100) ?? 0)
+                + (enterpriseLessons
                     .Sum(l => l.RegisterLessonEnterprise.EnterpriseCourseContent.ListPrice
-                        * l.GroupingLessonDiscount.PercentageOfDiscount / 100)) / 2;
+                        * l.GroupingLessonDiscount.PercentageOfDiscount / 100) ?? 0);
+            return tuition;
+        }
+
+        public static int CalcTuitionShare<TEntity>(this IEnumerable<LessonTime> items, ModelSource<TEntity> models)
+            where TEntity : class, new()
+        {
+            int shares = 0;
 
             var courseItems = items.Where(l => l.RegisterLesson.RegisterLessonEnterprise == null);
             var enterpriseItems = items.Where(l => l.RegisterLesson.RegisterLessonEnterprise != null);
 
-            shares = ((int?)courseItems.Where(t => t.LessonAttendance != null && t.LessonPlan.CommitAttendance.HasValue)
-                .Sum(l => l.RegisterLesson.LessonPriceType.CoachPayoffCreditCard
+            shares = ((int?)courseItems
+                .Sum(l => l.RegisterLesson.LessonPriceType.ListPrice
                     * l.RegisterLesson.GroupingMemberCount * l.RegisterLesson.GroupingLessonDiscount.PercentageOfDiscount / 100
                     * l.LessonTimeSettlement.MarkedGradeIndex / 100) ?? 0)
-                + ((int?)courseItems.Where(t => t.LessonAttendance == null || !t.LessonPlan.CommitAttendance.HasValue)
-                .Sum(l => l.RegisterLesson.LessonPriceType.CoachPayoffCreditCard
-                    * l.RegisterLesson.GroupingMemberCount * l.RegisterLesson.GroupingLessonDiscount.PercentageOfDiscount / 100
-                    * l.LessonTimeSettlement.MarkedGradeIndex / 100) / 2 ?? 0)
-                + ((int?)enterpriseItems.Where(t => t.LessonAttendance != null && t.LessonPlan.CommitAttendance.HasValue)
+                + ((int?)enterpriseItems
                 .Sum(l => l.RegisterLesson.RegisterLessonEnterprise.EnterpriseCourseContent.ListPrice
                     * l.RegisterLesson.GroupingMemberCount * l.RegisterLesson.GroupingLessonDiscount.PercentageOfDiscount / 100
-                    * l.LessonTimeSettlement.MarkedGradeIndex / 100) ?? 0)
-                + ((int?)enterpriseItems.Where(t => t.LessonAttendance == null || !t.LessonPlan.CommitAttendance.HasValue)
-                .Sum(l => l.RegisterLesson.RegisterLessonEnterprise.EnterpriseCourseContent.ListPrice
-                    * l.RegisterLesson.GroupingMemberCount * l.RegisterLesson.GroupingLessonDiscount.PercentageOfDiscount / 100
-                    * l.LessonTimeSettlement.MarkedGradeIndex / 100) / 2 ?? 0);
+                    * l.LessonTimeSettlement.MarkedGradeIndex / 100) ?? 0);
 
-            return (fullAchievement ?? 0) + (halfAchievement ?? 0);
+            return shares;
         }
+
+        public static int CalcTuitionShare<TEntity>(this IQueryable<LessonTime> items, ModelSource<TEntity> models)
+            where TEntity : class, new()
+        {
+            int shares = 0;
+
+            var courseItems = items.Where(l => l.RegisterLesson.RegisterLessonEnterprise == null);
+            var enterpriseItems = items.Where(l => l.RegisterLesson.RegisterLessonEnterprise != null);
+
+            shares = ((int?)courseItems
+                .Sum(l => l.RegisterLesson.LessonPriceType.ListPrice
+                    * l.RegisterLesson.GroupingMemberCount * l.RegisterLesson.GroupingLessonDiscount.PercentageOfDiscount / 100
+                    * l.LessonTimeSettlement.MarkedGradeIndex / 100) ?? 0)
+                + ((int?)enterpriseItems
+                .Sum(l => l.RegisterLesson.RegisterLessonEnterprise.EnterpriseCourseContent.ListPrice
+                    * l.RegisterLesson.GroupingMemberCount * l.RegisterLesson.GroupingLessonDiscount.PercentageOfDiscount / 100
+                    * l.LessonTimeSettlement.MarkedGradeIndex / 100) ?? 0);
+
+            return shares;
+        }
+
 
 
         public static IQueryable<TuitionAchievement> GetTuitionAchievement<TEntity>(this ModelSource<TEntity> models, int? coachID, DateTime? dateFrom, ref DateTime? dateTo, int? month)

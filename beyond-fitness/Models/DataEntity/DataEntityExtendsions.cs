@@ -469,6 +469,13 @@ namespace WebHome.Models.DataEntity
                         : item.ContractPayment?.CourseContract.ContractOwner;
         }
 
+        public static String WorkPlace(this ServingCoach item)
+        {
+            return item.CoachWorkplace.Count == 1
+                            ? item.CoachWorkplace.First().BranchStore.BranchName
+                            : "其他";
+        }
+
 
     }
 

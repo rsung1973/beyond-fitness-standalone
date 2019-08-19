@@ -429,5 +429,12 @@ namespace WebHome.Models.Locale
             FullAchievement = 2,
         }
 
+        public enum LessonSelfTraining
+        {
+            自主訓練 = 1,
+            在家訓練 = 2,
+            體驗課程 = 3,
+        }
+
     }
 }

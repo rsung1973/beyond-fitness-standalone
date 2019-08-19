@@ -224,6 +224,7 @@
                     break;
 
                 case '@((int)Naming.LessonPriceStatus.體驗課程)':
+                    $formData.trainingBySelf = 3;
                     $.post('@Html.Raw(Url.Action("CommitTrialLesson","CoachFacet",new { CoachID = _model.UID }))', $formData, function (data) {
                         if ($.isPlainObject(data)) {
                             if (data.result) {

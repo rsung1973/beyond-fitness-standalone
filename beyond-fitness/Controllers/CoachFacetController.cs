@@ -562,7 +562,7 @@ namespace WebHome.Controllers
                 //ClassTime = viewModel.ClassDate.Add(viewModel.ClassTime),
                 ClassTime = viewModel.ClassDate,
                 DurationInMinutes = priceType.DurationInMinutes,
-                TrainingBySelf = viewModel.TrainingBySelf,
+                TrainingBySelf = (int)Naming.LessonSelfTraining.體驗課程,
                 RegisterID = lesson.RegisterID,
                 LessonPlan = new LessonPlan
                 {

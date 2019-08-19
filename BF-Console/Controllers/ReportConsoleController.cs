@@ -306,5 +306,19 @@ namespace WebHome.Controllers
             return new EmptyResult();
         }
 
+        public ActionResult PrepareMonthlyBonus(AchievementQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+
+            if (!viewModel.AchievementDateFrom.HasValue)
+            {
+                viewModel.AchievementDateFrom = DateTime.Today.FirstDayOfMonth();
+            }
+            viewModel.AchievementDateTo = viewModel.AchievementDateFrom.Value.AddMonths(1);
+
+            IQueryable<CoachMonthlySalary> items = viewModel.InquireMonthlySalary(models);
+
+            return View("~/Views/ReportConsole/Module/PrepareMonthlyBonus.cshtml", items);
+        }
     }
 }

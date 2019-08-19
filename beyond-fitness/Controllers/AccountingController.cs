@@ -199,98 +199,7 @@ namespace WebHome.Controllers
 
         public ActionResult InquireAchievement(AchievementQueryViewModel viewModel)
         {
-            ViewBag.ViewModel = viewModel;
-
-            if (!viewModel.AchievementDateFrom.HasValue)
-            {
-                if (!String.IsNullOrEmpty(viewModel.AchievementYearMonthFrom))
-                {
-                    viewModel.AchievementDateFrom = DateTime.ParseExact(viewModel.AchievementYearMonthFrom, "yyyy/MM", System.Globalization.CultureInfo.CurrentCulture);
-                }
-                else
-                {
-                    ModelState.AddModelError("AchievementYearMonthFrom", "請選擇查詢月份");
-                }
-            }
-
-            if (!viewModel.AchievementDateTo.HasValue)
-            {
-
-                if (!String.IsNullOrEmpty(viewModel.AchievementYearMonthTo))
-                {
-                    viewModel.AchievementDateTo = DateTime.ParseExact(viewModel.AchievementYearMonthTo, "yyyy/MM", System.Globalization.CultureInfo.CurrentCulture);
-                }
-            }
-
-
-            if (!ModelState.IsValid)
-            {
-                ViewBag.ModelState = this.ModelState;
-                return View("~/Views/Shared/ReportInputError.ascx");
-            }
-
-            IQueryable<LessonTime> items = models.GetTable<LessonTime>().AllCompleteLesson();
-
-            var profile = HttpContext.GetUser();
-
-            bool hasConditon = false;
-            if (viewModel.BypassCondition == true)
-            {
-                hasConditon = true;
-            }
-
-            if (viewModel.CoachID.HasValue)
-            {
-                hasConditon = true;
-                items = items.Where(c => c.AttendingCoach == viewModel.CoachID);
-            }
-
-            if (viewModel.ByCoachID != null && viewModel.ByCoachID.Length > 0)
-            {
-                items = items.Where(c => viewModel.ByCoachID.Contains(c.AttendingCoach));
-            }
-
-            //if (!hasConditon)
-            //{
-            if (viewModel.BranchID.HasValue)
-            {
-                hasConditon = true;
-                items = items.Where(c => c.BranchID == viewModel.BranchID);
-            }
-            //}
-
-
-            if (!hasConditon)
-            {
-                if (profile.IsAssistant() || profile.IsAccounting() || profile.IsOfficer())
-                {
-
-                }
-                else if (profile.IsManager() || profile.IsViceManager())
-                {
-                    var coaches = profile.GetServingCoachInSameStore(models);
-                    items = items.Join(coaches, c => c.AttendingCoach, h => h.CoachID, (c, h) => c);
-                }
-                else if (profile.IsCoach())
-                {
-                    items = items.Where(c => c.AttendingCoach == profile.UID);
-                }
-            }
-
-            if (viewModel.AchievementDateFrom.HasValue)
-            {
-                items = items.Where(c => c.ClassTime >= viewModel.AchievementDateFrom);
-
-                if (!viewModel.AchievementDateTo.HasValue)
-                    viewModel.AchievementDateTo = viewModel.AchievementDateFrom;
-
-            }
-
-            if (viewModel.AchievementDateTo.HasValue)
-            {
-                items = items.Where(c => c.ClassTime < viewModel.AchievementDateTo.Value.AddMonths(1));
-            }
-
+            var items = viewModel.InquireAchievement(this, out string alertMessage);
             return View("~/Views/Accounting/Module/LessonAttendanceAchievementList.ascx", items);
         }
 
@@ -906,6 +815,23 @@ namespace WebHome.Controllers
                     models.ExecuteMonthlySettlement(viewModel.SettlementDate.Value);
                 }
 
+            });
+
+            return Json(new { result = true }, JsonRequestBehavior.AllowGet);
+        }
+
+        public async Task<ActionResult> ExecuteMonthlyPerformanceSettlement(DateTime? settlementDate)
+        {
+            if (!settlementDate.HasValue)
+            {
+                settlementDate = DateTime.Today;
+            }
+
+            await Task.Run(() =>
+            {
+                DateTime execDate = settlementDate.Value;
+                DateTime startDate = execDate.FirstDayOfMonth();
+                models.ExecuteLessonPerformanceSettlement(startDate, startDate.AddMonths(1));
             });
 
             return Json(new { result = true }, JsonRequestBehavior.AllowGet);
@@ -1535,6 +1461,225 @@ namespace WebHome.Controllers
             return new EmptyResult();
         }
 
+        public ActionResult CreateMonthlyBonusXlsx(AchievementQueryViewModel viewModel)
+        {
+            if (!viewModel.AchievementDateFrom.HasValue)
+            {
+                viewModel.AchievementDateFrom = DateTime.Today.FirstDayOfMonth();
+            }
+            viewModel.AchievementDateTo = viewModel.AchievementDateFrom.Value.AddMonths(1);
+
+            IQueryable<CoachMonthlySalary> items = viewModel.InquireMonthlySalary(models);
+
+            IEnumerable<CoachMonthlySalary> salaryItems = (IEnumerable<CoachMonthlySalary>)items;
+            var branchItems = models.GetTable<BranchStore>().ToArray();
+
+            DataTable buildManagerBonusList()
+            {
+                //						
+                DataTable table = new DataTable();
+                table.Columns.Add(new DataColumn("姓名", typeof(String)));
+                table.Columns.Add(new DataColumn("所屬分店", typeof(String)));
+                table.Columns.Add(new DataColumn("職級", typeof(String)));
+                table.Columns.Add(new DataColumn("個人上課數", typeof(decimal)));
+                table.Columns.Add(new DataColumn("分店總上課數", typeof(int)));
+                table.Columns.Add(new DataColumn("總獎金", typeof(int)));
+                table.Columns.Add(new DataColumn("管理獎金", typeof(int)));
+                table.Columns.Add(new DataColumn("特別獎金", typeof(int)));
+                table.Columns.Add(new DataColumn("月中上課獎金", typeof(int)));
+                table.Columns.Add(new DataColumn("上課獎金", typeof(int)));
+
+                DataRow r;
+
+                var coachItems = salaryItems.Where(s => s.ServingCoach.ProfessionalLevel.CategoryID == (int)Naming.ProfessionalCategory.Special
+                                    || s.ServingCoach.ProfessionalLevel.CategoryID == (int)Naming.ProfessionalCategory.FM);
+
+                foreach (var g in coachItems)
+                {
+                    r = table.NewRow();
+
+                    r[0] = g.ServingCoach.UserProfile.FullName();
+                    r[1] = g.BranchStore?.BranchName ?? "其他";
+                    r[2] = g.ProfessionalLevel.LevelName;
+                    r[3] = g.CoachBranchMonthlyBonus.Sum(b => b.AchievementAttendanceCount);
+                    r[4] = g.CoachBranchMonthlyBonus.Where(b => b.BranchTotalAttendanceCount.HasValue)
+                                .Sum(b => b.BranchTotalAttendanceCount);
+
+                    table.Rows.Add(r);
+                }
+                return table;
+            }
+
+            DataTable buildCoachBonusList()
+            {
+                //														
+                DataTable table = new DataTable();
+                table.Columns.Add(new DataColumn("姓名", typeof(String)));
+                table.Columns.Add(new DataColumn("所屬分店", typeof(String)));
+                table.Columns.Add(new DataColumn("P.T Level", typeof(String)));
+                table.Columns.Add(new DataColumn("上課數", typeof(decimal)));
+                table.Columns.Add(new DataColumn("上課累積金額", typeof(int)));
+                table.Columns.Add(new DataColumn("上課獎金抽成比例", typeof(decimal)));
+                table.Columns.Add(new DataColumn("業績金額", typeof(int)));
+                table.Columns.Add(new DataColumn("業績獎金抽成百分比", typeof(decimal)));
+                table.Columns.Add(new DataColumn("總獎金", typeof(int)));
+                table.Columns.Add(new DataColumn("管理獎金", typeof(int)));
+                table.Columns.Add(new DataColumn("特別獎金", typeof(int)));
+                table.Columns.Add(new DataColumn("月中上課+業績獎金", typeof(int)));
+                table.Columns.Add(new DataColumn("上課總獎金", typeof(int)));
+                table.Columns.Add(new DataColumn("上課獎金（地點：南京）", typeof(int)));
+                table.Columns.Add(new DataColumn("上課獎金（地點：信義）", typeof(int)));
+                table.Columns.Add(new DataColumn("上課獎金（地點：忠孝）", typeof(int)));
+                table.Columns.Add(new DataColumn("上課獎金（地點：東門）", typeof(int)));
+                table.Columns.Add(new DataColumn("業績獎金", typeof(int)));
+
+                DataRow r;
+
+                var coachItems = salaryItems.Where(s => s.ServingCoach.ProfessionalLevel.CategoryID != (int)Naming.ProfessionalCategory.Special
+                                    && s.ServingCoach.ProfessionalLevel.CategoryID != (int)Naming.ProfessionalCategory.FM);
+
+                List<DataRow> rows = new List<DataRow>();
+                foreach (var g in coachItems)
+                {
+                    r = table.NewRow();
+
+                    r[0] = g.ServingCoach.UserProfile.FullName();
+                    r[1] = g.BranchStore?.BranchName ?? "其他";
+                    r[2] = g.ProfessionalLevel.LevelName;
+                    r[3] = g.CoachBranchMonthlyBonus.Sum(b => b.AchievementAttendanceCount);
+                    r[4] = g.CoachBranchMonthlyBonus.Where(b => b.Tuition.HasValue)
+                                .Sum(b => b.Tuition);
+                    r[5] = g.GradeIndex;
+                    r[6] = g.PerformanceAchievement;
+                    r[7] = g.AchievementShareRatio;
+
+                    r[12] = g.CoachBranchMonthlyBonus.Sum(b => b.AttendanceBonus) ?? 0;
+                    for (int i = 0; i < branchItems.Length; i++)
+                    {
+                        var br = g.CoachBranchMonthlyBonus.Where(b => b.BranchID == branchItems[i].BranchID).FirstOrDefault();
+                        if (br != null)
+                        {
+                            if (br.AttendanceBonus.HasValue)
+                            {
+                                r[13 + i] = br.AttendanceBonus;
+                            }
+                        }
+                    }
+
+                    r[17] = g.PerformanceAchievement * g.AchievementShareRatio / 100;
+
+                    rows.Add(r);
+                }
+
+                foreach (var t in rows.OrderBy(t => t[1]))
+                {
+                    table.Rows.Add(t);
+                }
+
+                return table;
+            }
+
+            DataTable buildAttendanceBonusSummary(DataTable source)
+            {
+                //		
+                DataTable table = new DataTable();
+                table.Columns.Add(new DataColumn("上課場所", typeof(String)));
+                table.Columns.Add(new DataColumn("上課獎金（含稅）", typeof(int)));
+                table.Columns.Add(new DataColumn("上課獎金（未稅）", typeof(int)));
+
+                DataRow r;
+                var rowItems = source.Rows.Cast<DataRow>();
+                for (int i = 0; i < branchItems.Length; i++)
+                {
+                    r = table.NewRow();
+
+                    r[0] = branchItems[i].BranchName;
+                    r[1] = rowItems.Where(t => t[13 + i] is int).Sum(t => (int)t[13 + i]);
+                    r[2] = Math.Round((int)r[1] / 1.05m);
+                    table.Rows.Add(r);
+                }
+
+                r = table.NewRow();
+                r[0] = "總計";
+                var data = table.Rows.Cast<DataRow>();
+                foreach (int idx in (new int[] { 1, 2 }))
+                {
+                    r[idx] = data.Where(d => d[idx] != DBNull.Value)
+                        .Sum(d => (int?)d[idx]);
+                }
+                table.Rows.Add(r);
+
+                return table;
+            }
+
+            DataTable buildCoachBranchSummary(DataTable source)
+            {
+                //		
+                DataTable table = new DataTable();
+                table.Columns.Add(new DataColumn("上課場所", typeof(String)));
+                table.Columns.Add(new DataColumn("業績獎金（含稅）", typeof(int)));
+                table.Columns.Add(new DataColumn("業績獎金（未稅）", typeof(int)));
+
+                DataRow r;
+                var rowItems = source.Rows.Cast<DataRow>();
+                foreach (var g in branchItems)
+                {
+                    r = table.NewRow();
+
+                    r[0] = g.BranchName;
+                    r[1] = rowItems.Where(t => (String)t[1] == g.BranchName).Sum(t => (int)t[17]);
+                    r[2] = Math.Round((int)r[1] / 1.05m);
+                    table.Rows.Add(r);
+                }
+                r = table.NewRow();
+
+                r[0] = "總計";
+                var data = table.Rows.Cast<DataRow>();
+                foreach (int idx in (new int[] { 1, 2}))
+                {
+                    r[idx] = data.Where(d => d[idx] != DBNull.Value)
+                        .Sum(d => (int)d[idx]);
+                }
+                table.Rows.Add(r);
+
+                return table;
+            }
+
+            Response.Clear();
+            Response.ClearContent();
+            Response.ClearHeaders();
+            Response.AppendCookie(new HttpCookie("fileDownloadToken", viewModel.FileDownloadToken));
+            Response.AddHeader("Cache-control", "max-age=1");
+            Response.ContentType = "application/vnd.ms-excel";
+            Response.AddHeader("Content-Disposition", String.Format("attachment;filename={0}({1:yyyy-MM-dd HH-mm-ss}).xlsx", HttpUtility.UrlEncode("AchievementBonusList"), DateTime.Now));
+
+            using (DataSet ds = new DataSet())
+            {
+                var table = buildManagerBonusList();
+                table.TableName = $"{viewModel.AchievementDateFrom:yyyyMM} 獎金清單 - 主管(未稅)";
+                ds.Tables.Add(table);
+
+                var details = buildCoachBonusList();
+                details.TableName = $"{viewModel.AchievementDateFrom:yyyyMM} 獎金清單 - 教練(未稅)";
+                ds.Tables.Add(details);
+
+                table = buildAttendanceBonusSummary(details);
+                table.TableName = $"{viewModel.AchievementDateFrom:yyyyMM} 上課獎金彙總 - 上課場地(教練）";
+                ds.Tables.Add(table);
+
+                table = buildCoachBranchSummary(details);
+                table.TableName = $"{viewModel.AchievementDateFrom:yyyyMM} 業績獎金彙總 - 教練所屬分店";
+                ds.Tables.Add(table);
+
+                using (var xls = ds.ConvertToExcel())
+                {
+                    xls.SaveAs(Response.OutputStream);
+                }
+            }
+
+            return new EmptyResult();
+        }
+
         public ActionResult CreateFullAchievementXlsx(AchievementQueryViewModel viewModel)
         {
             ViewResult result = (ViewResult)InquireAchievement(viewModel);
@@ -1587,14 +1732,8 @@ namespace WebHome.Controllers
                 {
                     var item = g.LessonGroup;
                     var lesson = item.First();
-                    r[1] = item.Count() - (decimal)(item
-                                        .Where(t => t.RegisterLesson.LessonPriceType.Status == (int)Naming.DocumentLevelDefinition.自主訓練
-                                            || (t.RegisterLesson.RegisterLessonEnterprise != null
-                                                && t.RegisterLesson.RegisterLessonEnterprise.EnterpriseCourseContent.EnterpriseLessonType.Status == (int)Naming.DocumentLevelDefinition.自主訓練)).Count()) / 2m;
-                    var lessons = item
-                            .Where(t => t.RegisterLesson.LessonPriceType.Status != (int)Naming.DocumentLevelDefinition.自主訓練)
-                            .Where(t => t.RegisterLesson.RegisterLessonEnterprise == null
-                                || t.RegisterLesson.RegisterLessonEnterprise.EnterpriseCourseContent.EnterpriseLessonType.Status != (int)Naming.DocumentLevelDefinition.自主訓練);
+                    r[1] = item.Count() - (decimal)(item.LearnerPILesson().Count()) / 2m;
+                    var lessons = item.ExclusivePILesson();
                     r[2] = models.CalcAchievement(lessons, out int shares);
                     r[3] = lesson.LessonTimeSettlement.ProfessionalLevel.LevelName;
                     r[4] = shares;
