@@ -1488,7 +1488,6 @@ namespace WebHome.Controllers
                 table.Columns.Add(new DataColumn("總獎金", typeof(int)));
                 table.Columns.Add(new DataColumn("管理獎金", typeof(int)));
                 table.Columns.Add(new DataColumn("特別獎金", typeof(int)));
-                table.Columns.Add(new DataColumn("月中上課獎金", typeof(int)));
                 table.Columns.Add(new DataColumn("上課獎金", typeof(int)));
 
                 DataRow r;
@@ -1520,10 +1519,10 @@ namespace WebHome.Controllers
                 table.Columns.Add(new DataColumn("所屬分店", typeof(String)));
                 table.Columns.Add(new DataColumn("P.T Level", typeof(String)));
                 table.Columns.Add(new DataColumn("上課數", typeof(decimal)));
-                table.Columns.Add(new DataColumn("上課累積金額", typeof(int)));
-                table.Columns.Add(new DataColumn("上課獎金抽成比例", typeof(decimal)));
+                table.Columns.Add(new DataColumn("上課金額", typeof(int)));
+                table.Columns.Add(new DataColumn("上課獎金抽成(%)", typeof(decimal)));
                 table.Columns.Add(new DataColumn("業績金額", typeof(int)));
-                table.Columns.Add(new DataColumn("業績獎金抽成百分比", typeof(decimal)));
+                table.Columns.Add(new DataColumn("業績獎金抽成(%)", typeof(decimal)));
                 table.Columns.Add(new DataColumn("總獎金", typeof(int)));
                 table.Columns.Add(new DataColumn("管理獎金", typeof(int)));
                 table.Columns.Add(new DataColumn("特別獎金", typeof(int)));
@@ -1618,7 +1617,7 @@ namespace WebHome.Controllers
             {
                 //		
                 DataTable table = new DataTable();
-                table.Columns.Add(new DataColumn("上課場所", typeof(String)));
+                table.Columns.Add(new DataColumn("教練所屬分店", typeof(String)));
                 table.Columns.Add(new DataColumn("業績獎金（含稅）", typeof(int)));
                 table.Columns.Add(new DataColumn("業績獎金（未稅）", typeof(int)));
 
