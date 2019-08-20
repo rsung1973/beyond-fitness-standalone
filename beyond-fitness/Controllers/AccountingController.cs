@@ -1257,24 +1257,18 @@ namespace WebHome.Controllers
 
             var tableItems = details.Rows.Cast<DataRow>();
 
-            DataTable initializeTable()
+            DataTable buildBranchDetails()
             {
+                //							
                 DataTable table = new DataTable();
                 table.Columns.Add(new DataColumn("簽約場所", typeof(String)));
                 table.Columns.Add(new DataColumn("分潤業績", typeof(int)));
                 table.Columns.Add(new DataColumn("體能顧問費", typeof(int)));
-                table.Columns.Add(new DataColumn("體能顧問費佔比(%)", typeof(String)));
+                table.Columns.Add(new DataColumn("體能顧問費佔比(%)", typeof(int)));
                 table.Columns.Add(new DataColumn("P.I Session", typeof(int)));
-                table.Columns.Add(new DataColumn("P.I Session佔比(%)", typeof(String)));
+                table.Columns.Add(new DataColumn("P.I Session佔比(%)", typeof(int)));
                 table.Columns.Add(new DataColumn("其他販售商品", typeof(int)));
-                table.Columns.Add(new DataColumn("其他販售商品占比(%)", typeof(String)));
-                return table;
-            }
-
-            DataTable buildBranchDetails()
-            {
-                //							
-                DataTable table = initializeTable();
+                table.Columns.Add(new DataColumn("其他販售商品占比(%)", typeof(int)));
 
                 DataRow r;
 
@@ -1296,9 +1290,9 @@ namespace WebHome.Controllers
                     r[6] = dataItems.Sum(t => (int)t[2]);
 
                     decimal total = Math.Max((int)r[1], 1);
-                    r[3] = $"{Math.Round((int)r[2] * 100m / total)}%";
-                    r[5] = $"{Math.Round((int)r[4] * 100m / total)}%";
-                    r[7] = $"{Math.Round((int)r[6] * 100m / total)}%";
+                    r[3] = Math.Round((int)r[2] * 100m / total);
+                    r[5] = Math.Round((int)r[4] * 100m / total);
+                    r[7] = Math.Round((int)r[6] * 100m / total);
 
                     table.Rows.Add(r);
                 }
@@ -1311,9 +1305,9 @@ namespace WebHome.Controllers
                     r[idx] = data.Sum(d => (int)d[idx]);
                 }
                 decimal totalAmt = Math.Max((int)r[1], 1);
-                r[3] = $"{Math.Round((int)r[2] * 100m / totalAmt)}%";
-                r[5] = $"{Math.Round((int)r[4] * 100m / totalAmt)}%";
-                r[7] = $"{Math.Round((int)r[6] * 100m / totalAmt)}%";
+                r[3] = Math.Round((int)r[2] * 100m / totalAmt);
+                r[5] = Math.Round((int)r[4] * 100m / totalAmt);
+                r[7] = Math.Round((int)r[6] * 100m / totalAmt);
 
                 table.Rows.Add(r);
                 return table;
@@ -1322,7 +1316,15 @@ namespace WebHome.Controllers
             DataTable buildCoachBranchDetails()
             {
                 //							
-                DataTable table = initializeTable();
+                DataTable table = new DataTable();
+                table.Columns.Add(new DataColumn("所屬分店", typeof(String)));
+                table.Columns.Add(new DataColumn("分潤業績", typeof(int)));
+                table.Columns.Add(new DataColumn("體能顧問費", typeof(int)));
+                table.Columns.Add(new DataColumn("體能顧問費佔比(%)", typeof(int)));
+                table.Columns.Add(new DataColumn("P.I Session", typeof(int)));
+                table.Columns.Add(new DataColumn("P.I Session佔比(%)", typeof(int)));
+                table.Columns.Add(new DataColumn("其他販售商品", typeof(int)));
+                table.Columns.Add(new DataColumn("其他販售商品占比(%)", typeof(int)));
 
                 DataRow r;
 
@@ -1346,9 +1348,9 @@ namespace WebHome.Controllers
                     r[6] = dataItems.Sum(t => (int)t[2]);
 
                     decimal total = Math.Max((int)r[1], 1);
-                    r[3] = $"{Math.Round((int)r[2] * 100m / total)}%";
-                    r[5] = $"{Math.Round((int)r[4] * 100m / total)}%";
-                    r[7] = $"{Math.Round((int)r[6] * 100m / total)}%";
+                    r[3] = Math.Round((int)r[2] * 100m / total);
+                    r[5] = Math.Round((int)r[4] * 100m / total);
+                    r[7] = Math.Round((int)r[6] * 100m / total);
 
 
                     table.Rows.Add(r);
@@ -1362,9 +1364,9 @@ namespace WebHome.Controllers
                     r[idx] = data.Sum(d => (int)d[idx]);
                 }
                 decimal totalAmt = Math.Max((int)r[1], 1);
-                r[3] = $"{Math.Round((int)r[2] * 100m / totalAmt)}%";
-                r[5] = $"{Math.Round((int)r[4] * 100m / totalAmt)}%";
-                r[7] = $"{Math.Round((int)r[6] * 100m / totalAmt)}%";
+                r[3] = Math.Round((int)r[2] * 100m / totalAmt);
+                r[5] = Math.Round((int)r[4] * 100m / totalAmt);
+                r[7] = Math.Round((int)r[6] * 100m / totalAmt);
                 table.Rows.Add(r);
 
                 return table;
@@ -1378,11 +1380,11 @@ namespace WebHome.Controllers
                 table.Columns.Add(new DataColumn("所屬分店", typeof(String)));
                 table.Columns.Add(new DataColumn("分潤業績", typeof(int)));
                 table.Columns.Add(new DataColumn("體能顧問費", typeof(int)));
-                table.Columns.Add(new DataColumn("體能顧問費佔比(%)", typeof(String)));
+                table.Columns.Add(new DataColumn("體能顧問費佔比(%)", typeof(int)));
                 table.Columns.Add(new DataColumn("P.I Session", typeof(int)));
-                table.Columns.Add(new DataColumn("P.I Session佔比(%)", typeof(String)));
+                table.Columns.Add(new DataColumn("P.I Session佔比(%)", typeof(int)));
                 table.Columns.Add(new DataColumn("其他販售商品", typeof(int)));
-                table.Columns.Add(new DataColumn("其他販售商品占比(%)", typeof(String)));
+                table.Columns.Add(new DataColumn("其他販售商品占比(%)", typeof(int)));
 
                 DataRow r;
 
@@ -1406,9 +1408,9 @@ namespace WebHome.Controllers
                     r[7] = dataItems.Sum(t => (int)t[2]);
 
                     decimal total = Math.Max((int)r[2], 1);
-                    r[4] = $"{Math.Round((int)r[3] * 100m / total)}%";
-                    r[6] = $"{Math.Round((int)r[5] * 100m / total)}%";
-                    r[8] = $"{Math.Round((int)r[7] * 100m / total)}%";
+                    r[4] = Math.Round((int)r[3] * 100m / total);
+                    r[6] = Math.Round((int)r[5] * 100m / total);
+                    r[8] = Math.Round((int)r[7] * 100m / total);
 
                     table.Rows.Add(r);
                 }
@@ -1421,9 +1423,9 @@ namespace WebHome.Controllers
                     r[idx] = data.Sum(d => (int)d[idx]);
                 }
                 decimal totalAmt = Math.Max((int)r[2], 1);
-                r[4] = $"{Math.Round((int)r[3] * 100m / totalAmt)}%";
-                r[6] = $"{Math.Round((int)r[5] * 100m / totalAmt)}%";
-                r[8] = $"{Math.Round((int)r[7] * 100m / totalAmt)}%";
+                r[4] = Math.Round((int)r[3] * 100m / totalAmt);
+                r[6] = Math.Round((int)r[5] * 100m / totalAmt);
+                r[8] = Math.Round((int)r[7] * 100m / totalAmt);
                 table.Rows.Add(r);
                 return table;
             }

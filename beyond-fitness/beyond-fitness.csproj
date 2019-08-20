@@ -3939,6 +3939,7 @@
     <Compile Include="template\MainPage.Master.designer.cs">
       <DependentUpon>MainPage.Master</DependentUpon>
     </Compile>
+    <Compile Include="Helper\LessonTimeAchievementHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="README.md" />
