@@ -1665,7 +1665,7 @@ namespace WebHome.Controllers
                 ds.Tables.Add(details);
 
                 table = buildAttendanceBonusSummary(details);
-                table.TableName = $"{viewModel.AchievementDateFrom:yyyyMM} 上課獎金彙總 - 上課場地(教練）";
+                table.TableName = $"{viewModel.AchievementDateFrom:yyyyMM} 上課獎金彙總 - 上課場所";
                 ds.Tables.Add(table);
 
                 table = buildCoachBranchSummary(details);
