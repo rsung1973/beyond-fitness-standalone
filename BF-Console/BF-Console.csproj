@@ -6165,6 +6165,20 @@
     <Content Include="Views\PaymentConsole\Module\CurrentMonthBranchPaymentView.cshtml" />
     <Content Include="Views\PaymentConsole\Module\EditPayment.cshtml" />
     <Content Include="Views\PaymentConsole\Module\UnpaidPISession.cshtml" />
+    <Content Include="Views\ContractConsole\Module\EditPaymentForContract.cshtml" />
+    <Content Include="ConsoleHome\images\landing\360\Dongmen-01.jpg" />
+    <Content Include="ConsoleHome\images\landing\360\Dongmen-02.jpg" />
+    <Content Include="ConsoleHome\images\landing\360\Dongmen-03.jpg" />
+    <Content Include="ConsoleHome\images\landing\360\nanjing-01.jpg" />
+    <Content Include="ConsoleHome\images\landing\360\nanjing-02.jpg" />
+    <Content Include="ConsoleHome\images\landing\360\nanjing-03.jpg" />
+    <Content Include="ConsoleHome\images\landing\360\xinyi-01.jpg" />
+    <Content Include="ConsoleHome\images\landing\360\xinyi-02.jpg" />
+    <Content Include="ConsoleHome\images\landing\360\xinyi-03.jpg" />
+    <Content Include="ConsoleHome\images\landing\360\xinyi-04.jpg" />
+    <Content Include="ConsoleHome\images\landing\360\zhongxiao-01.jpg" />
+    <Content Include="ConsoleHome\images\landing\360\zhongxiao-02.jpg" />
+    <Content Include="ConsoleHome\images\landing\360\zhongxiao-03.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\InitializeType.cs" />
