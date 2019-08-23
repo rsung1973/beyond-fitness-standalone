@@ -62,16 +62,41 @@
             <div class="row">
                 <div class="col-lg-7 col-md-7 col-sm-12">
                     <div class="body">
-
+                        @{ Html.RenderPartial("~/Views/PaymentConsole/Module/UnpaidPISession.cshtml");}
                     </div>
+                </div>
                 <div class="col-lg-5 col-md-5 col-sm-12 bg-darkteal">
                     <div class="body">
-
+                        @{
+                            Payment item = models.GetTable<Payment>().Where(p => p.PaymentID == _viewModel.PaymentID).FirstOrDefault();
+                            _viewModel.PayoffAmount = models.CurrentSessionPrice()?.ListPrice;
+                            Html.RenderPartial("~/Views/PaymentConsole/Module/EditPayment.cshtml", item);
+                        }
                     </div>
                 </div>
             </div>
         </div>
     </div>
+                    @*<div class="container-fluid">
+                        <div class="card widget_2">
+                            <ul class="row clearfix list-unstyled m-b-0">
+                                <li class="col-lg-6 col-md-12 col-sm-12">
+
+                                </li>
+                                <li class="col-lg-6 col-md-12 col-sm-12">
+                                    @{
+                                    Payment item = models.GetTable<Payment>().Where(p => p.PaymentID == _viewModel.PaymentID).FirstOrDefault();
+                                    _viewModel.PayoffAmount = models.CurrentSessionPrice()?.ListPrice;
+                                    Html.RenderPartial("~/Views/PaymentConsole/Module/EditPayment.cshtml", item);
+                                    }
+                                </li>
+                                <li class="col-12">
+                                    <button type="button" class="btn btn-darkteal btn-round waves-effect float-right finish" onclick="commitPayoff();">確定，不後悔</button>
+                                    <button type="reset" class="btn btn-danger btn-round btn-simple waves-effect quit" onclick="commitPayoff();">不, 重新輸入</button>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>*@
 
 </section>
 

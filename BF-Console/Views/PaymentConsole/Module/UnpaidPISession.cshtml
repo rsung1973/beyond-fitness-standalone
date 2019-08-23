@@ -39,11 +39,14 @@
                     <div class="media">
                         <div class="pull-left">
                             <div class="controls">
-                                <div class="checkbox">
+                                <label class="fancy-checkbox">
+                                    <input type="checkbox" id="basic_checkbox_@(item.LessonID)" name="RegisterID" value="@(item.RegisterID)" onclick="selectPI(this);" />
+                                    <span></span>
+                                </label>
+                                @*<div class="checkbox">
                                     <input type="checkbox" id="basic_checkbox_@(item.LessonID)" name="RegisterID" value="@(item.RegisterID)" onclick="selectPI(this);" />
                                     <label for="basic_checkbox_@(item.LessonID)"></label>
-                                </div>
-                                <a href="javascript:void(0);" class="favourite text-muted hidden-sm-down" data-toggle="active"><i class="zmdi zmdi-run"></i></a>
+                                </div>*@
                             </div>
                             <div class="thumb hidden-sm-down m-r-20">
                                 @{
@@ -55,7 +58,7 @@
                         <div class="media-body">
                             <div class="media-heading">
                                 <a class="m-r-10">@($"{item.ClassTime:yyyy/MM/dd}") - @(item.RegisterLesson.UserProfile.FullName())</a>
-                                <small class="float-right text-muted"><time>@(item.AsAttendingCoach.UserProfile.FullName())</time></small>
+                                <span class="badge badge-info float-right"><i class="zmdi zmdi-pin"></i> @(item.BranchStore.BranchName)</span>
                             </div>
                         </div>
                     </div>
