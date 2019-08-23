@@ -1257,9 +1257,8 @@ namespace WebHome.Controllers
 
             var tableItems = details.Rows.Cast<DataRow>();
 
-            DataTable buildBranchDetails()
+            DataTable initializeTable()
             {
-                //							
                 DataTable table = new DataTable();
                 table.Columns.Add(new DataColumn("簽約場所", typeof(String)));
                 table.Columns.Add(new DataColumn("分潤業績", typeof(int)));
@@ -1269,6 +1268,13 @@ namespace WebHome.Controllers
                 table.Columns.Add(new DataColumn("P.I Session佔比(%)", typeof(int)));
                 table.Columns.Add(new DataColumn("其他販售商品", typeof(int)));
                 table.Columns.Add(new DataColumn("其他販售商品占比(%)", typeof(int)));
+                return table;
+            }
+
+            DataTable buildBranchDetails()
+            {
+                //							
+                DataTable table = initializeTable();
 
                 DataRow r;
 
@@ -1316,15 +1322,7 @@ namespace WebHome.Controllers
             DataTable buildCoachBranchDetails()
             {
                 //							
-                DataTable table = new DataTable();
-                table.Columns.Add(new DataColumn("所屬分店", typeof(String)));
-                table.Columns.Add(new DataColumn("分潤業績", typeof(int)));
-                table.Columns.Add(new DataColumn("體能顧問費", typeof(int)));
-                table.Columns.Add(new DataColumn("體能顧問費佔比(%)", typeof(int)));
-                table.Columns.Add(new DataColumn("P.I Session", typeof(int)));
-                table.Columns.Add(new DataColumn("P.I Session佔比(%)", typeof(int)));
-                table.Columns.Add(new DataColumn("其他販售商品", typeof(int)));
-                table.Columns.Add(new DataColumn("其他販售商品占比(%)", typeof(int)));
+                DataTable table = initializeTable();
 
                 DataRow r;
 
@@ -1475,6 +1473,7 @@ namespace WebHome.Controllers
 
             IEnumerable<CoachMonthlySalary> salaryItems = (IEnumerable<CoachMonthlySalary>)items;
             var branchItems = models.GetTable<BranchStore>().ToArray();
+            int branchColIdx;
 
             DataTable buildManagerBonusList()
             {
@@ -1488,6 +1487,7 @@ namespace WebHome.Controllers
                 table.Columns.Add(new DataColumn("總獎金", typeof(int)));
                 table.Columns.Add(new DataColumn("管理獎金", typeof(int)));
                 table.Columns.Add(new DataColumn("特別獎金", typeof(int)));
+                table.Columns.Add(new DataColumn("月中上課獎金", typeof(int)));
                 table.Columns.Add(new DataColumn("上課獎金", typeof(int)));
 
                 DataRow r;
@@ -1528,10 +1528,11 @@ namespace WebHome.Controllers
                 table.Columns.Add(new DataColumn("特別獎金", typeof(int)));
                 table.Columns.Add(new DataColumn("月中上課+業績獎金", typeof(int)));
                 table.Columns.Add(new DataColumn("上課總獎金", typeof(int)));
-                table.Columns.Add(new DataColumn("上課獎金（地點：南京）", typeof(int)));
-                table.Columns.Add(new DataColumn("上課獎金（地點：信義）", typeof(int)));
-                table.Columns.Add(new DataColumn("上課獎金（地點：忠孝）", typeof(int)));
-                table.Columns.Add(new DataColumn("上課獎金（地點：東門）", typeof(int)));
+                branchColIdx = 13;
+                for (int i = 0; i < branchItems.Length; i++)
+                {
+                    table.Columns.Add(new DataColumn($"上課獎金（地點：{branchItems[i].BranchName}）", typeof(int)));
+                }
                 table.Columns.Add(new DataColumn("業績獎金", typeof(int)));
 
                 DataRow r;
@@ -1554,7 +1555,7 @@ namespace WebHome.Controllers
                     r[6] = g.PerformanceAchievement;
                     r[7] = g.AchievementShareRatio;
 
-                    r[12] = g.CoachBranchMonthlyBonus.Sum(b => b.AttendanceBonus) ?? 0;
+                    r[12] = g.CoachBranchMonthlyBonus.Sum(b => b.AttendanceBonus);
                     for (int i = 0; i < branchItems.Length; i++)
                     {
                         var br = g.CoachBranchMonthlyBonus.Where(b => b.BranchID == branchItems[i].BranchID).FirstOrDefault();
@@ -1562,12 +1563,12 @@ namespace WebHome.Controllers
                         {
                             if (br.AttendanceBonus.HasValue)
                             {
-                                r[13 + i] = br.AttendanceBonus;
+                                r[branchColIdx + i] = br.AttendanceBonus;
                             }
                         }
                     }
 
-                    r[17] = g.PerformanceAchievement * g.AchievementShareRatio / 100;
+                    r[branchColIdx + branchItems.Length] = g.PerformanceAchievement * g.AchievementShareRatio / 100m;
 
                     rows.Add(r);
                 }
@@ -1595,8 +1596,8 @@ namespace WebHome.Controllers
                     r = table.NewRow();
 
                     r[0] = branchItems[i].BranchName;
-                    r[1] = rowItems.Where(t => t[13 + i] is int).Sum(t => (int)t[13 + i]);
-                    r[2] = Math.Round((int)r[1] / 1.05m);
+                    r[1] = rowItems.Where(t => t[branchColIdx + i] is int).Sum(t => (int)t[branchColIdx + i]);
+                    r[2] = Math.Round((int)r[1] / 1.05);
                     table.Rows.Add(r);
                 }
 
@@ -1617,7 +1618,7 @@ namespace WebHome.Controllers
             {
                 //		
                 DataTable table = new DataTable();
-                table.Columns.Add(new DataColumn("教練所屬分店", typeof(String)));
+                table.Columns.Add(new DataColumn("上課場所", typeof(String)));
                 table.Columns.Add(new DataColumn("業績獎金（含稅）", typeof(int)));
                 table.Columns.Add(new DataColumn("業績獎金（未稅）", typeof(int)));
 
@@ -1628,8 +1629,8 @@ namespace WebHome.Controllers
                     r = table.NewRow();
 
                     r[0] = g.BranchName;
-                    r[1] = rowItems.Where(t => (String)t[1] == g.BranchName).Sum(t => (int)t[17]);
-                    r[2] = Math.Round((int)r[1] / 1.05m);
+                    r[1] = rowItems.Where(t => (String)t[1] == g.BranchName).Sum(t => (int)t[branchColIdx + branchItems.Length]);
+                    r[2] = Math.Round((int)r[1] / 1.05);
                     table.Rows.Add(r);
                 }
                 r = table.NewRow();
@@ -1644,6 +1645,21 @@ namespace WebHome.Controllers
                 table.Rows.Add(r);
 
                 return table;
+            }
+
+            void eliminateTax(DataRow row,IEnumerable<int> colIdx)
+            {
+                foreach (int i in colIdx)
+                {
+                    if (row[i] == DBNull.Value)
+                    {
+                        row[i] = 0;
+                    }
+                    else
+                    {
+                        row[i] = Math.Round((int)row[i] / 1.05);
+                    }
+                }
             }
 
             Response.Clear();
@@ -1671,6 +1687,17 @@ namespace WebHome.Controllers
                 table = buildCoachBranchSummary(details);
                 table.TableName = $"{viewModel.AchievementDateFrom:yyyyMM} 業績獎金彙總 - 教練所屬分店";
                 ds.Tables.Add(table);
+
+                var rowItems = details.Rows.Cast<DataRow>();
+                List<int> taxCol = new List<int> { 4, 6, 12, 17 };
+                for (int i = 0; i < branchItems.Length; i++)
+                {
+                    taxCol.Add(branchColIdx + i);
+                }
+                foreach (var r in rowItems)
+                {
+                    eliminateTax(r, taxCol);
+                }
 
                 using (var xls = ds.ConvertToExcel())
                 {
@@ -1777,8 +1804,7 @@ namespace WebHome.Controllers
 
         public ActionResult CreateAchievementSummaryXlsx(AchievementQueryViewModel viewModel)
         {
-            IQueryable<LessonTime> items;
-            var detailsTable = createAchievementDetailsXlsx(viewModel,out items);
+            var detailsTable = createAchievementDetailsXlsx(viewModel, out IQueryable<LessonTime> items);
             detailsTable.TableName = $"{viewModel.AchievementDateFrom:yyyyMM} 上課明細";
 
             var tableItems = detailsTable.Rows.Cast<DataRow>();
@@ -2157,8 +2183,8 @@ namespace WebHome.Controllers
             ViewResult result = (ViewResult)InquireAchievement(viewModel);
             items = (IQueryable<LessonTime>)result.Model;
 
-            return models.CreateLessonAchievementDetails(items);
-
+            IQueryable<V_Tuition> tuitionItems = items.Join(models.GetTable<V_Tuition>(), l => l.LessonID, t => t.LessonID, (l, t) => t);
+            return models.CreateLessonAchievementDetails(tuitionItems);
         }
 
         private DataTable createTuitionAchievementXlsx(AchievementQueryViewModel viewModel)

@@ -81,6 +81,22 @@ namespace WebHome.Controllers
             return View(profile.LoadInstance(models));
         }
 
+        [RoleAuthorize(RoleID = new int[] { (int)Naming.RoleID.Administrator, (int)Naming.RoleID.Assistant, (int)Naming.RoleID.Officer })]
+        public ActionResult CoachBonusIndex(AchievementQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            if (!viewModel.AchievementDateFrom.HasValue)
+            {
+                viewModel.AchievementDateFrom = DateTime.Today.FirstDayOfMonth();
+            }
+
+            viewModel.AchievementDateTo = viewModel.AchievementDateFrom.Value.AddMonths(1);
+            ViewBag.DataItems = viewModel.InquireMonthlySalary(models);
+
+            var profile = HttpContext.GetUser();
+            return View("~/Views/BonusCredit/CoachBonusIndex.cshtml", profile.LoadInstance(models));
+        }
+
         [RoleAuthorize(RoleID = new int[] { (int)Naming.RoleID.Administrator, (int)Naming.RoleID.Assistant, (int)Naming.RoleID.Officer, (int)Naming.RoleID.Coach, (int)Naming.RoleID.Servitor })]
         public ActionResult Calendar(DailyBookingQueryViewModel viewModel)
         {
@@ -103,9 +119,11 @@ namespace WebHome.Controllers
 
         public ActionResult ReportIndex(CourseContractQueryViewModel viewModel)
         {
-            ViewResult result = (ViewResult)ContractIndex(viewModel);
-            result.ViewName = "ReportIndex";
-            return result;
+            ViewBag.ViewModel = viewModel;
+            var profile = HttpContext.GetUser();
+
+            viewModel.KeyID = profile.UID.EncryptKey();
+            return View("~/Views/ConsoleHome/ReportIndex.cshtml", profile.LoadInstance(models));
 
         }
 

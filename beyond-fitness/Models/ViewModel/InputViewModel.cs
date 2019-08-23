@@ -221,6 +221,18 @@ namespace WebHome.Models.ViewModel
         public bool? DetailsOnly { get; set; }
     }
 
+    public class CoachBonusViewModel : QueryViewModel
+    {
+        public int? CoachID { get; set; }
+        public int? SettlementID { get; set; }
+    }
+
+    public class MonthlyBonusViewModel : AchievementQueryViewModel
+    {
+        public int? ManagerBonus { get; set; }
+        public int? SpecialBonus { get; set; }
+    }
+
     public class QuestionnaireQueryViewModel : AchievementQueryViewModel
     {
         public QuestionnaireQueryViewModel() : base()

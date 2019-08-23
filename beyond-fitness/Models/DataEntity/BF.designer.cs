@@ -1906,14 +1906,6 @@ namespace WebHome.Models.DataEntity
 			}
 		}
 		
-		public System.Data.Linq.Table<V_BranchStaff> V_BranchStaff
-		{
-			get
-			{
-				return this.GetTable<V_BranchStaff>();
-			}
-		}
-		
 		public System.Data.Linq.Table<CourseContractRevisionItem> CourseContractRevisionItem
 		{
 			get
@@ -1970,11 +1962,51 @@ namespace WebHome.Models.DataEntity
 			}
 		}
 		
+		public System.Data.Linq.Table<V_PerformanceShare> V_PerformanceShares
+		{
+			get
+			{
+				return this.GetTable<V_PerformanceShare>();
+			}
+		}
+		
+		public System.Data.Linq.Table<V_WorkPlace> V_WorkPlaces
+		{
+			get
+			{
+				return this.GetTable<V_WorkPlace>();
+			}
+		}
+		
+		public System.Data.Linq.Table<V_ContractTuition> V_ContractTuitions
+		{
+			get
+			{
+				return this.GetTable<V_ContractTuition>();
+			}
+		}
+		
 		public System.Data.Linq.Table<V_LessonTime> V_LessonTimes
 		{
 			get
 			{
 				return this.GetTable<V_LessonTime>();
+			}
+		}
+		
+		public System.Data.Linq.Table<V_Tuition> V_Tuitions
+		{
+			get
+			{
+				return this.GetTable<V_Tuition>();
+			}
+		}
+		
+		public System.Data.Linq.Table<V_BranchStaff> V_BranchStaffs
+		{
+			get
+			{
+				return this.GetTable<V_BranchStaff>();
 			}
 		}
 		
@@ -33296,6 +33328,8 @@ namespace WebHome.Models.DataEntity
 		
 		private System.Nullable<int> _ShareAmount;
 		
+		private System.Nullable<System.DateTime> _CommitShare;
+		
 		private EntityRef<ServingCoach> _ServingCoach;
 		
 		private EntityRef<Payment> _Payment;
@@ -33310,6 +33344,8 @@ namespace WebHome.Models.DataEntity
     partial void OnCoachIDChanged();
     partial void OnShareAmountChanging(System.Nullable<int> value);
     partial void OnShareAmountChanged();
+    partial void OnCommitShareChanging(System.Nullable<System.DateTime> value);
+    partial void OnCommitShareChanged();
     #endregion
 		
 		public TuitionAchievement()
@@ -33383,6 +33419,26 @@ namespace WebHome.Models.DataEntity
 					this._ShareAmount = value;
 					this.SendPropertyChanged("ShareAmount");
 					this.OnShareAmountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CommitShare", DbType="DateTime")]
+		public System.Nullable<System.DateTime> CommitShare
+		{
+			get
+			{
+				return this._CommitShare;
+			}
+			set
+			{
+				if ((this._CommitShare != value))
+				{
+					this.OnCommitShareChanging(value);
+					this.SendPropertyChanging();
+					this._CommitShare = value;
+					this.SendPropertyChanged("CommitShare");
+					this.OnCommitShareChanged();
 				}
 			}
 		}
@@ -47728,51 +47784,6 @@ namespace WebHome.Models.DataEntity
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.V_BranchStaff")]
-	public partial class V_BranchStaff
-	{
-		
-		private int _UID;
-		
-		private System.Nullable<int> _BranchID;
-		
-		public V_BranchStaff()
-		{
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UID", DbType="Int NOT NULL")]
-		public int UID
-		{
-			get
-			{
-				return this._UID;
-			}
-			set
-			{
-				if ((this._UID != value))
-				{
-					this._UID = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BranchID", DbType="Int")]
-		public System.Nullable<int> BranchID
-		{
-			get
-			{
-				return this._BranchID;
-			}
-			set
-			{
-				if ((this._BranchID != value))
-				{
-					this._BranchID = value;
-				}
-			}
-		}
-	}
-	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.CourseContractRevisionItem")]
 	public partial class CourseContractRevisionItem : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -49996,6 +50007,645 @@ namespace WebHome.Models.DataEntity
 		}
 	}
 	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.V_PerformanceShare")]
+	public partial class V_PerformanceShare
+	{
+		
+		private int _PaymentID;
+		
+		private System.Nullable<int> _PayoffAmount;
+		
+		private System.Nullable<System.DateTime> _PayoffDate;
+		
+		private int _CoachID;
+		
+		private System.Nullable<int> _ShareAmount;
+		
+		public V_PerformanceShare()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PaymentID", DbType="Int NOT NULL")]
+		public int PaymentID
+		{
+			get
+			{
+				return this._PaymentID;
+			}
+			set
+			{
+				if ((this._PaymentID != value))
+				{
+					this._PaymentID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PayoffAmount", DbType="Int")]
+		public System.Nullable<int> PayoffAmount
+		{
+			get
+			{
+				return this._PayoffAmount;
+			}
+			set
+			{
+				if ((this._PayoffAmount != value))
+				{
+					this._PayoffAmount = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PayoffDate", DbType="DateTime")]
+		public System.Nullable<System.DateTime> PayoffDate
+		{
+			get
+			{
+				return this._PayoffDate;
+			}
+			set
+			{
+				if ((this._PayoffDate != value))
+				{
+					this._PayoffDate = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CoachID", DbType="Int NOT NULL")]
+		public int CoachID
+		{
+			get
+			{
+				return this._CoachID;
+			}
+			set
+			{
+				if ((this._CoachID != value))
+				{
+					this._CoachID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ShareAmount", DbType="Int")]
+		public System.Nullable<int> ShareAmount
+		{
+			get
+			{
+				return this._ShareAmount;
+			}
+			set
+			{
+				if ((this._ShareAmount != value))
+				{
+					this._ShareAmount = value;
+				}
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.V_WorkPlace")]
+	public partial class V_WorkPlace
+	{
+		
+		private int _CoachID;
+		
+		private System.Nullable<int> _WorkPlace;
+		
+		private System.Nullable<int> _WorkPlaceCount;
+		
+		private string _OfficeLocation;
+		
+		public V_WorkPlace()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CoachID", DbType="Int NOT NULL")]
+		public int CoachID
+		{
+			get
+			{
+				return this._CoachID;
+			}
+			set
+			{
+				if ((this._CoachID != value))
+				{
+					this._CoachID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_WorkPlace", DbType="Int")]
+		public System.Nullable<int> WorkPlace
+		{
+			get
+			{
+				return this._WorkPlace;
+			}
+			set
+			{
+				if ((this._WorkPlace != value))
+				{
+					this._WorkPlace = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_WorkPlaceCount", DbType="Int")]
+		public System.Nullable<int> WorkPlaceCount
+		{
+			get
+			{
+				return this._WorkPlaceCount;
+			}
+			set
+			{
+				if ((this._WorkPlaceCount != value))
+				{
+					this._WorkPlaceCount = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OfficeLocation", DbType="NVarChar(32)")]
+		public string OfficeLocation
+		{
+			get
+			{
+				return this._OfficeLocation;
+			}
+			set
+			{
+				if ((this._OfficeLocation != value))
+				{
+					this._OfficeLocation = value;
+				}
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.V_ContractTuition")]
+	public partial class V_ContractTuition
+	{
+		
+		private int _LessonID;
+		
+		private System.Nullable<System.DateTime> _ClassTime;
+		
+		private System.Nullable<int> _AttendingCoach;
+		
+		private System.Nullable<int> _GroupID;
+		
+		private System.Nullable<int> _BranchID;
+		
+		private System.Nullable<int> _CoachAttendance;
+		
+		private System.Nullable<System.DateTime> _CompleteDate;
+		
+		private System.Nullable<System.DateTime> _CommitAttendance;
+		
+		private int _PriceID;
+		
+		private System.Nullable<int> _PriceStatus;
+		
+		private System.Nullable<int> _ELStatus;
+		
+		private System.Nullable<decimal> _AchievementIndex;
+		
+		private System.Nullable<decimal> _TuitionIndex;
+		
+		private int _RegisterID;
+		
+		private int _GroupingMemberCount;
+		
+		private System.Nullable<int> _ListPrice;
+		
+		private System.Nullable<int> _PercentageOfDiscount;
+		
+		private int _ProfessionalLevelID;
+		
+		private System.Nullable<decimal> _MarkedGradeIndex;
+		
+		private string _BranchName;
+		
+		private string _OfficeLocation;
+		
+		private System.Nullable<int> _EnterpriseRegisterID;
+		
+		private System.Nullable<int> _EnterpriseListPrice;
+		
+		private System.Nullable<int> _WorkPlace;
+		
+		private int _ContractID;
+		
+		public V_ContractTuition()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LessonID", DbType="Int NOT NULL")]
+		public int LessonID
+		{
+			get
+			{
+				return this._LessonID;
+			}
+			set
+			{
+				if ((this._LessonID != value))
+				{
+					this._LessonID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ClassTime", DbType="DateTime")]
+		public System.Nullable<System.DateTime> ClassTime
+		{
+			get
+			{
+				return this._ClassTime;
+			}
+			set
+			{
+				if ((this._ClassTime != value))
+				{
+					this._ClassTime = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AttendingCoach", DbType="Int")]
+		public System.Nullable<int> AttendingCoach
+		{
+			get
+			{
+				return this._AttendingCoach;
+			}
+			set
+			{
+				if ((this._AttendingCoach != value))
+				{
+					this._AttendingCoach = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GroupID", DbType="Int")]
+		public System.Nullable<int> GroupID
+		{
+			get
+			{
+				return this._GroupID;
+			}
+			set
+			{
+				if ((this._GroupID != value))
+				{
+					this._GroupID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BranchID", DbType="Int")]
+		public System.Nullable<int> BranchID
+		{
+			get
+			{
+				return this._BranchID;
+			}
+			set
+			{
+				if ((this._BranchID != value))
+				{
+					this._BranchID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CoachAttendance", DbType="Int")]
+		public System.Nullable<int> CoachAttendance
+		{
+			get
+			{
+				return this._CoachAttendance;
+			}
+			set
+			{
+				if ((this._CoachAttendance != value))
+				{
+					this._CoachAttendance = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CompleteDate", DbType="DateTime")]
+		public System.Nullable<System.DateTime> CompleteDate
+		{
+			get
+			{
+				return this._CompleteDate;
+			}
+			set
+			{
+				if ((this._CompleteDate != value))
+				{
+					this._CompleteDate = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CommitAttendance", DbType="DateTime")]
+		public System.Nullable<System.DateTime> CommitAttendance
+		{
+			get
+			{
+				return this._CommitAttendance;
+			}
+			set
+			{
+				if ((this._CommitAttendance != value))
+				{
+					this._CommitAttendance = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PriceID", DbType="Int NOT NULL")]
+		public int PriceID
+		{
+			get
+			{
+				return this._PriceID;
+			}
+			set
+			{
+				if ((this._PriceID != value))
+				{
+					this._PriceID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PriceStatus", DbType="Int")]
+		public System.Nullable<int> PriceStatus
+		{
+			get
+			{
+				return this._PriceStatus;
+			}
+			set
+			{
+				if ((this._PriceStatus != value))
+				{
+					this._PriceStatus = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ELStatus", DbType="Int")]
+		public System.Nullable<int> ELStatus
+		{
+			get
+			{
+				return this._ELStatus;
+			}
+			set
+			{
+				if ((this._ELStatus != value))
+				{
+					this._ELStatus = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AchievementIndex", DbType="Decimal(2,1)")]
+		public System.Nullable<decimal> AchievementIndex
+		{
+			get
+			{
+				return this._AchievementIndex;
+			}
+			set
+			{
+				if ((this._AchievementIndex != value))
+				{
+					this._AchievementIndex = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TuitionIndex", DbType="Decimal(2,1)")]
+		public System.Nullable<decimal> TuitionIndex
+		{
+			get
+			{
+				return this._TuitionIndex;
+			}
+			set
+			{
+				if ((this._TuitionIndex != value))
+				{
+					this._TuitionIndex = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RegisterID", DbType="Int NOT NULL")]
+		public int RegisterID
+		{
+			get
+			{
+				return this._RegisterID;
+			}
+			set
+			{
+				if ((this._RegisterID != value))
+				{
+					this._RegisterID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GroupingMemberCount", DbType="Int NOT NULL")]
+		public int GroupingMemberCount
+		{
+			get
+			{
+				return this._GroupingMemberCount;
+			}
+			set
+			{
+				if ((this._GroupingMemberCount != value))
+				{
+					this._GroupingMemberCount = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ListPrice", DbType="Int")]
+		public System.Nullable<int> ListPrice
+		{
+			get
+			{
+				return this._ListPrice;
+			}
+			set
+			{
+				if ((this._ListPrice != value))
+				{
+					this._ListPrice = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PercentageOfDiscount", DbType="Int")]
+		public System.Nullable<int> PercentageOfDiscount
+		{
+			get
+			{
+				return this._PercentageOfDiscount;
+			}
+			set
+			{
+				if ((this._PercentageOfDiscount != value))
+				{
+					this._PercentageOfDiscount = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProfessionalLevelID", DbType="Int NOT NULL")]
+		public int ProfessionalLevelID
+		{
+			get
+			{
+				return this._ProfessionalLevelID;
+			}
+			set
+			{
+				if ((this._ProfessionalLevelID != value))
+				{
+					this._ProfessionalLevelID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MarkedGradeIndex", DbType="Decimal(18,2)")]
+		public System.Nullable<decimal> MarkedGradeIndex
+		{
+			get
+			{
+				return this._MarkedGradeIndex;
+			}
+			set
+			{
+				if ((this._MarkedGradeIndex != value))
+				{
+					this._MarkedGradeIndex = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BranchName", DbType="NVarChar(32)")]
+		public string BranchName
+		{
+			get
+			{
+				return this._BranchName;
+			}
+			set
+			{
+				if ((this._BranchName != value))
+				{
+					this._BranchName = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OfficeLocation", DbType="NVarChar(32) NOT NULL", CanBeNull=false)]
+		public string OfficeLocation
+		{
+			get
+			{
+				return this._OfficeLocation;
+			}
+			set
+			{
+				if ((this._OfficeLocation != value))
+				{
+					this._OfficeLocation = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EnterpriseRegisterID", DbType="Int")]
+		public System.Nullable<int> EnterpriseRegisterID
+		{
+			get
+			{
+				return this._EnterpriseRegisterID;
+			}
+			set
+			{
+				if ((this._EnterpriseRegisterID != value))
+				{
+					this._EnterpriseRegisterID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EnterpriseListPrice", DbType="Int")]
+		public System.Nullable<int> EnterpriseListPrice
+		{
+			get
+			{
+				return this._EnterpriseListPrice;
+			}
+			set
+			{
+				if ((this._EnterpriseListPrice != value))
+				{
+					this._EnterpriseListPrice = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_WorkPlace", DbType="Int")]
+		public System.Nullable<int> WorkPlace
+		{
+			get
+			{
+				return this._WorkPlace;
+			}
+			set
+			{
+				if ((this._WorkPlace != value))
+				{
+					this._WorkPlace = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ContractID", DbType="Int NOT NULL")]
+		public int ContractID
+		{
+			get
+			{
+				return this._ContractID;
+			}
+			set
+			{
+				if ((this._ContractID != value))
+				{
+					this._ContractID = value;
+				}
+			}
+		}
+	}
+	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.V_LessonTime")]
 	public partial class V_LessonTime
 	{
@@ -50021,6 +50671,18 @@ namespace WebHome.Models.DataEntity
 		private System.Nullable<int> _PriceStatus;
 		
 		private System.Nullable<int> _ELStatus;
+		
+		private int _RegisterID;
+		
+		private int _GroupingMemberCount;
+		
+		private System.Nullable<int> _ListPrice;
+		
+		private System.Nullable<int> _EnterpriseRegisterID;
+		
+		private System.Nullable<int> _EnterpriseListPrice;
+		
+		private System.Nullable<int> _EnterpriseContractID;
 		
 		public V_LessonTime()
 		{
@@ -50198,6 +50860,624 @@ namespace WebHome.Models.DataEntity
 				if ((this._ELStatus != value))
 				{
 					this._ELStatus = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RegisterID", DbType="Int NOT NULL")]
+		public int RegisterID
+		{
+			get
+			{
+				return this._RegisterID;
+			}
+			set
+			{
+				if ((this._RegisterID != value))
+				{
+					this._RegisterID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GroupingMemberCount", DbType="Int NOT NULL")]
+		public int GroupingMemberCount
+		{
+			get
+			{
+				return this._GroupingMemberCount;
+			}
+			set
+			{
+				if ((this._GroupingMemberCount != value))
+				{
+					this._GroupingMemberCount = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ListPrice", DbType="Int")]
+		public System.Nullable<int> ListPrice
+		{
+			get
+			{
+				return this._ListPrice;
+			}
+			set
+			{
+				if ((this._ListPrice != value))
+				{
+					this._ListPrice = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EnterpriseRegisterID", DbType="Int")]
+		public System.Nullable<int> EnterpriseRegisterID
+		{
+			get
+			{
+				return this._EnterpriseRegisterID;
+			}
+			set
+			{
+				if ((this._EnterpriseRegisterID != value))
+				{
+					this._EnterpriseRegisterID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EnterpriseListPrice", DbType="Int")]
+		public System.Nullable<int> EnterpriseListPrice
+		{
+			get
+			{
+				return this._EnterpriseListPrice;
+			}
+			set
+			{
+				if ((this._EnterpriseListPrice != value))
+				{
+					this._EnterpriseListPrice = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EnterpriseContractID", DbType="Int")]
+		public System.Nullable<int> EnterpriseContractID
+		{
+			get
+			{
+				return this._EnterpriseContractID;
+			}
+			set
+			{
+				if ((this._EnterpriseContractID != value))
+				{
+					this._EnterpriseContractID = value;
+				}
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.V_Tuition")]
+	public partial class V_Tuition
+	{
+		
+		private int _LessonID;
+		
+		private System.Nullable<System.DateTime> _ClassTime;
+		
+		private System.Nullable<int> _AttendingCoach;
+		
+		private System.Nullable<int> _GroupID;
+		
+		private System.Nullable<int> _BranchID;
+		
+		private System.Nullable<int> _CoachAttendance;
+		
+		private System.Nullable<System.DateTime> _CompleteDate;
+		
+		private System.Nullable<System.DateTime> _CommitAttendance;
+		
+		private int _PriceID;
+		
+		private System.Nullable<int> _PriceStatus;
+		
+		private System.Nullable<int> _ELStatus;
+		
+		private System.Nullable<decimal> _AchievementIndex;
+		
+		private System.Nullable<decimal> _TuitionIndex;
+		
+		private int _RegisterID;
+		
+		private int _GroupingMemberCount;
+		
+		private System.Nullable<int> _ListPrice;
+		
+		private System.Nullable<int> _PercentageOfDiscount;
+		
+		private int _ProfessionalLevelID;
+		
+		private System.Nullable<decimal> _MarkedGradeIndex;
+		
+		private string _BranchName;
+		
+		private string _OfficeLocation;
+		
+		private System.Nullable<int> _EnterpriseRegisterID;
+		
+		private System.Nullable<int> _EnterpriseListPrice;
+		
+		private System.Nullable<int> _WorkPlace;
+		
+		private System.Nullable<int> _EnterpriseContractID;
+		
+		private System.Nullable<int> _ContractID;
+		
+		public V_Tuition()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LessonID", DbType="Int NOT NULL")]
+		public int LessonID
+		{
+			get
+			{
+				return this._LessonID;
+			}
+			set
+			{
+				if ((this._LessonID != value))
+				{
+					this._LessonID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ClassTime", DbType="DateTime")]
+		public System.Nullable<System.DateTime> ClassTime
+		{
+			get
+			{
+				return this._ClassTime;
+			}
+			set
+			{
+				if ((this._ClassTime != value))
+				{
+					this._ClassTime = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AttendingCoach", DbType="Int")]
+		public System.Nullable<int> AttendingCoach
+		{
+			get
+			{
+				return this._AttendingCoach;
+			}
+			set
+			{
+				if ((this._AttendingCoach != value))
+				{
+					this._AttendingCoach = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GroupID", DbType="Int")]
+		public System.Nullable<int> GroupID
+		{
+			get
+			{
+				return this._GroupID;
+			}
+			set
+			{
+				if ((this._GroupID != value))
+				{
+					this._GroupID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BranchID", DbType="Int")]
+		public System.Nullable<int> BranchID
+		{
+			get
+			{
+				return this._BranchID;
+			}
+			set
+			{
+				if ((this._BranchID != value))
+				{
+					this._BranchID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CoachAttendance", DbType="Int")]
+		public System.Nullable<int> CoachAttendance
+		{
+			get
+			{
+				return this._CoachAttendance;
+			}
+			set
+			{
+				if ((this._CoachAttendance != value))
+				{
+					this._CoachAttendance = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CompleteDate", DbType="DateTime")]
+		public System.Nullable<System.DateTime> CompleteDate
+		{
+			get
+			{
+				return this._CompleteDate;
+			}
+			set
+			{
+				if ((this._CompleteDate != value))
+				{
+					this._CompleteDate = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CommitAttendance", DbType="DateTime")]
+		public System.Nullable<System.DateTime> CommitAttendance
+		{
+			get
+			{
+				return this._CommitAttendance;
+			}
+			set
+			{
+				if ((this._CommitAttendance != value))
+				{
+					this._CommitAttendance = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PriceID", DbType="Int NOT NULL")]
+		public int PriceID
+		{
+			get
+			{
+				return this._PriceID;
+			}
+			set
+			{
+				if ((this._PriceID != value))
+				{
+					this._PriceID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PriceStatus", DbType="Int")]
+		public System.Nullable<int> PriceStatus
+		{
+			get
+			{
+				return this._PriceStatus;
+			}
+			set
+			{
+				if ((this._PriceStatus != value))
+				{
+					this._PriceStatus = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ELStatus", DbType="Int")]
+		public System.Nullable<int> ELStatus
+		{
+			get
+			{
+				return this._ELStatus;
+			}
+			set
+			{
+				if ((this._ELStatus != value))
+				{
+					this._ELStatus = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AchievementIndex", DbType="Decimal(2,1)")]
+		public System.Nullable<decimal> AchievementIndex
+		{
+			get
+			{
+				return this._AchievementIndex;
+			}
+			set
+			{
+				if ((this._AchievementIndex != value))
+				{
+					this._AchievementIndex = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TuitionIndex", DbType="Decimal(2,1)")]
+		public System.Nullable<decimal> TuitionIndex
+		{
+			get
+			{
+				return this._TuitionIndex;
+			}
+			set
+			{
+				if ((this._TuitionIndex != value))
+				{
+					this._TuitionIndex = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RegisterID", DbType="Int NOT NULL")]
+		public int RegisterID
+		{
+			get
+			{
+				return this._RegisterID;
+			}
+			set
+			{
+				if ((this._RegisterID != value))
+				{
+					this._RegisterID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GroupingMemberCount", DbType="Int NOT NULL")]
+		public int GroupingMemberCount
+		{
+			get
+			{
+				return this._GroupingMemberCount;
+			}
+			set
+			{
+				if ((this._GroupingMemberCount != value))
+				{
+					this._GroupingMemberCount = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ListPrice", DbType="Int")]
+		public System.Nullable<int> ListPrice
+		{
+			get
+			{
+				return this._ListPrice;
+			}
+			set
+			{
+				if ((this._ListPrice != value))
+				{
+					this._ListPrice = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PercentageOfDiscount", DbType="Int")]
+		public System.Nullable<int> PercentageOfDiscount
+		{
+			get
+			{
+				return this._PercentageOfDiscount;
+			}
+			set
+			{
+				if ((this._PercentageOfDiscount != value))
+				{
+					this._PercentageOfDiscount = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProfessionalLevelID", DbType="Int NOT NULL")]
+		public int ProfessionalLevelID
+		{
+			get
+			{
+				return this._ProfessionalLevelID;
+			}
+			set
+			{
+				if ((this._ProfessionalLevelID != value))
+				{
+					this._ProfessionalLevelID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MarkedGradeIndex", DbType="Decimal(18,2)")]
+		public System.Nullable<decimal> MarkedGradeIndex
+		{
+			get
+			{
+				return this._MarkedGradeIndex;
+			}
+			set
+			{
+				if ((this._MarkedGradeIndex != value))
+				{
+					this._MarkedGradeIndex = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BranchName", DbType="NVarChar(32)")]
+		public string BranchName
+		{
+			get
+			{
+				return this._BranchName;
+			}
+			set
+			{
+				if ((this._BranchName != value))
+				{
+					this._BranchName = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OfficeLocation", DbType="NVarChar(32) NOT NULL", CanBeNull=false)]
+		public string OfficeLocation
+		{
+			get
+			{
+				return this._OfficeLocation;
+			}
+			set
+			{
+				if ((this._OfficeLocation != value))
+				{
+					this._OfficeLocation = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EnterpriseRegisterID", DbType="Int")]
+		public System.Nullable<int> EnterpriseRegisterID
+		{
+			get
+			{
+				return this._EnterpriseRegisterID;
+			}
+			set
+			{
+				if ((this._EnterpriseRegisterID != value))
+				{
+					this._EnterpriseRegisterID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EnterpriseListPrice", DbType="Int")]
+		public System.Nullable<int> EnterpriseListPrice
+		{
+			get
+			{
+				return this._EnterpriseListPrice;
+			}
+			set
+			{
+				if ((this._EnterpriseListPrice != value))
+				{
+					this._EnterpriseListPrice = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_WorkPlace", DbType="Int")]
+		public System.Nullable<int> WorkPlace
+		{
+			get
+			{
+				return this._WorkPlace;
+			}
+			set
+			{
+				if ((this._WorkPlace != value))
+				{
+					this._WorkPlace = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EnterpriseContractID", DbType="Int")]
+		public System.Nullable<int> EnterpriseContractID
+		{
+			get
+			{
+				return this._EnterpriseContractID;
+			}
+			set
+			{
+				if ((this._EnterpriseContractID != value))
+				{
+					this._EnterpriseContractID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ContractID", DbType="Int")]
+		public System.Nullable<int> ContractID
+		{
+			get
+			{
+				return this._ContractID;
+			}
+			set
+			{
+				if ((this._ContractID != value))
+				{
+					this._ContractID = value;
+				}
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.V_BranchStaff")]
+	public partial class V_BranchStaff
+	{
+		
+		private int _UID;
+		
+		private System.Nullable<int> _BranchID;
+		
+		public V_BranchStaff()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UID", DbType="Int NOT NULL")]
+		public int UID
+		{
+			get
+			{
+				return this._UID;
+			}
+			set
+			{
+				if ((this._UID != value))
+				{
+					this._UID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BranchID", DbType="Int")]
+		public System.Nullable<int> BranchID
+		{
+			get
+			{
+				return this._BranchID;
+			}
+			set
+			{
+				if ((this._BranchID != value))
+				{
+					this._BranchID = value;
 				}
 			}
 		}

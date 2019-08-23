@@ -280,6 +280,14 @@
         }
 
     </script>
+    @if(ViewBag.Message!=null)
+    {
+        <script>
+            $(function () {
+                swal('@(HttpUtility.JavaScriptStringEncode((String)ViewBag.Message))');
+            });
+        </script>
+    }
 </body>
 </html>
 

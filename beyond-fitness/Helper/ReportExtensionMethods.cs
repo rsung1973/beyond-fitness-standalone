@@ -40,7 +40,7 @@ namespace WebHome.Helper
                 .GroupBy(t => new
                 {
                     t.AttendingCoach,
-                    ContractID = t.RegisterLesson.RegisterLessonContract.ContractID,
+                    t.RegisterLesson.RegisterLessonContract.ContractID,
                     t.BranchID
                 });
 
@@ -92,7 +92,7 @@ namespace WebHome.Helper
                 .GroupBy(t => new
                 {
                     t.AttendingCoach,
-                    ContractID = t.RegisterLesson.RegisterLessonEnterprise.ContractID,
+                    t.RegisterLesson.RegisterLessonEnterprise.ContractID,
                     t.RegisterID,
                     t.BranchID
                 });
@@ -167,6 +167,151 @@ namespace WebHome.Helper
 
             return table;
         }
+
+        public static DataTable CreateLessonAchievementDetails<TEntity>(this ModelSource<TEntity> models, IQueryable<V_Tuition> items)
+            where TEntity : class, new()
+        {
+            DataTable table = new DataTable();
+            table.Columns.Add(new DataColumn("合約編號", typeof(String)));
+            table.Columns.Add(new DataColumn("體能顧問", typeof(String)));
+            table.Columns.Add(new DataColumn("簽約場所", typeof(String)));
+            table.Columns.Add(new DataColumn("學員", typeof(String)));
+            table.Columns.Add(new DataColumn("合約名稱", typeof(String)));
+            table.Columns.Add(new DataColumn("課程單價", typeof(int)));
+            table.Columns.Add(new DataColumn("全價計算堂數", typeof(int)));
+            table.Columns.Add(new DataColumn("半價計算堂數", typeof(int)));
+            table.Columns.Add(new DataColumn("上課地點", typeof(String)));
+            table.Columns.Add(new DataColumn("累計上課金額", typeof(int)));
+            table.Columns.Add(new DataColumn("是否信託", typeof(String)));
+            table.Columns.Add(new DataColumn("課程代碼", typeof(int)));
+            table.Columns.Add(new DataColumn("體能顧問所屬分店", typeof(String)));
+
+            var details = items.Where(t => t.ContractID.HasValue)
+                .GroupBy(t => new
+                {
+                    t.AttendingCoach,
+                    t.ContractID,
+                    t.BranchID
+                });
+
+            foreach (var item in details)
+            {
+                CourseContract contract = models.GetTable<CourseContract>().Where(u => u.ContractID == item.Key.ContractID).First();
+                ServingCoach coach = models.GetTable<ServingCoach>().Where(c => c.CoachID == item.Key.AttendingCoach).First();
+                var branch = models.GetTable<BranchStore>().Where(b => b.BranchID == item.Key.BranchID).First();
+
+                var r = table.NewRow();
+                r[0] = contract.ContractNo();
+                r[1] = coach.UserProfile.FullName();
+                r[2] = contract.CourseContractExtension.BranchStore.BranchName;
+
+                if (contract.CourseContractType.IsGroup == true)
+                {
+                    r[3] = String.Join("/", contract.CourseContractMember.Select(m => m.UserProfile).ToArray().Select(m => m.FullName()));
+                }
+                else
+                {
+                    r[3] = contract.ContractOwner.FullName();
+                }
+
+                r[4] = contract.CourseContractType.TypeName
+                    + " (" + contract.LessonPriceType.DurationInMinutes + " 分鐘)";
+                r[5] = contract.LessonPriceType.ListPrice;
+
+                r[6] = item.Where(l => l.AchievementIndex == 1m).Count();
+                r[7] = item.Where(l => l.AchievementIndex == 0.5m).Count();
+                r[8] = branch.BranchName;
+                r[9] = item.Sum(l=>l.ListPrice * l.GroupingMemberCount * l.PercentageOfDiscount / 100);
+                r[10] = contract.Entrusted == true
+                    ? "是"
+                    : contract.Entrusted == false
+                        ? "否"
+                        : "";
+                if (contract.LessonPriceType.Status.HasValue)
+                {
+                    r[11] = contract.LessonPriceType.Status.Value;
+                }
+                r[12] = coach.WorkPlace();
+                table.Rows.Add(r);
+            }
+
+            var enterprise = items.Where(t => t.EnterpriseContractID.HasValue)
+                .GroupBy(t => new
+                {
+                    t.AttendingCoach,
+                    ContractID = t.EnterpriseContractID,
+                    t.RegisterID,
+                    t.BranchID
+                });
+
+            foreach (var item in enterprise)
+            {
+                EnterpriseCourseContract contract = models.GetTable<EnterpriseCourseContract>().Where(u => u.ContractID == item.Key.ContractID).First();
+                ServingCoach coach = models.GetTable<ServingCoach>().Where(c => c.CoachID == item.Key.AttendingCoach).First();
+                RegisterLesson lesson = models.GetTable<RegisterLesson>().Where(g => g.RegisterID == item.Key.RegisterID).First();
+                var branch = models.GetTable<BranchStore>().Where(b => b.BranchID == item.Key.BranchID).First();
+
+                var r = table.NewRow();
+
+                r[0] = contract.ContractNo;
+                r[1] = coach.UserProfile.FullName();
+                r[2] = contract.BranchStore.BranchName;
+
+                if (lesson.GroupingMemberCount > 1)
+                {
+                    r[3] = String.Join("/", lesson.GroupingLesson.RegisterLesson.Select(s => s.UserProfile).ToArray().Select(m => m.FullName()));
+                }
+                else
+                {
+                    r[3] = lesson.UserProfile.FullName();
+                }
+
+                r[4] = contract.Subject;
+                r[5] = contract.EnterpriseCourseContent.OrderByDescending(c => c.ListPrice).First().ListPrice;
+                r[6] = item.Where(l => l.AchievementIndex == 1m).Count();
+                r[7] = item.Where(l => l.AchievementIndex == 0.5m).Count(); 
+                r[8] = branch.BranchName;
+                r[9] = item.Sum(l=>l.EnterpriseListPrice * l.GroupingMemberCount
+                        * l.PercentageOfDiscount / 100);
+                r[11] = (int)Naming.LessonPriceStatus.企業合作方案;
+                r[12] = coach.WorkPlace();
+                table.Rows.Add(r);
+            }
+
+            var others = items.Where(t => !t.ContractID.HasValue&& !t.EnterpriseRegisterID.HasValue);
+            foreach (var item in others)
+            {
+                ServingCoach coach = models.GetTable<ServingCoach>().Where(c => c.CoachID == item.AttendingCoach).First();
+                var branch = models.GetTable<BranchStore>().Where(b => b.BranchID == item.BranchID).FirstOrDefault();
+                var lesson = models.GetTable<RegisterLesson>().Where(g => g.RegisterID == item.RegisterID).First();
+
+                var r = table.NewRow();
+                r[0] = "--";
+                r[1] = coach.UserProfile.FullName();
+                if (item.BranchID.HasValue)
+                    r[2] = branch.BranchName;
+
+                r[3] = lesson.UserProfile.FullName();
+
+                r[4] = lesson.LessonPriceType.Description
+                    + " (" + lesson.LessonPriceType.DurationInMinutes + " 分鐘)";
+                r[9] = r[5] = item.ListPrice;
+                r[6] = item.AchievementIndex == 1m ? 1 : 0;
+                r[7] = item.AchievementIndex == 0.5m ? 1 : 0;
+                if (branch != null)
+                {
+                    r[8] = branch.BranchName;
+                }
+                r[11] = item.PriceStatus;
+                r[12] = coach.WorkPlace();
+                table.Rows.Add(r);
+            }
+
+            table.TableName = "上課統計表-人員明細";
+
+            return table;
+        }
+
 
         public static DataTable CreateTuitionAchievementDetails<TEntity>(this ModelSource<TEntity> models, IQueryable<TuitionAchievement> items)
             where TEntity : class, new()
@@ -438,10 +583,10 @@ namespace WebHome.Helper
             public int G { get; set; }
         };
 
-        static int[] PerformanceAchievementIndex = new int[] { 230000, 168000 };
-        static decimal[] ShareRatioIncrementForPerformance = new decimal[] { 2m, 1m };
-        static int[] AttendingLessonIndex = new int[] { 151, 131, 112, 92 };
-        static decimal[] ShareRatioIncrementForAttendance = new decimal[] { 2m, 1.5m, 1m, 0.5m };
+        static readonly int[] PerformanceAchievementIndex = new int[] { 230000, 168000 };
+        static readonly decimal[] ShareRatioIncrementForPerformance = new decimal[] { 2m, 1m };
+        static readonly int[] AttendingLessonIndex = new int[] { 152, 132, 112, 92 };
+        static readonly decimal[] ShareRatioIncrementForAttendance = new decimal[] { 2m, 1.5m, 1m, 0.5m };
         public static void ExecuteLessonPerformanceSettlement<TEntity>(this ModelSource<TEntity> models, DateTime startDate, DateTime endExclusiveDate)
             where TEntity : class, new()
         {
@@ -451,19 +596,17 @@ namespace WebHome.Helper
 
             LessonTimeAchievementHelper<TEntity> helper = new LessonTimeAchievementHelper<TEntity>(models)
             {
-                LessonItems = models.GetTable<LessonTime>().Where(l => l.ClassTime >= settlement.StartDate && l.ClassTime < settlement.EndExclusiveDate)
+                LessonItems = models.GetTable<V_Tuition>().Where(l => l.ClassTime >= settlement.StartDate && l.ClassTime < settlement.EndExclusiveDate)
             };
 
             foreach(var item in helper.SettlementFullAchievement)
             {
-                item.LessonTimeSettlement.SettlementStatus = (int)Naming.LessonSettlementStatus.FullAchievement;
-                models.SubmitChanges();
+                models.ExecuteCommand("update LessonTimeSettlement set SettlementStatus = {0} where LessonID={1}", (int)Naming.LessonSettlementStatus.FullAchievement, item.LessonID);
             }
 
             foreach (var item in helper.SettlementHalfAchievement)
             {
-                item.LessonTimeSettlement.SettlementStatus = (int)Naming.LessonSettlementStatus.HalfAchievement;
-                models.SubmitChanges();
+                models.ExecuteCommand("update LessonTimeSettlement set SettlementStatus = {0} where LessonID={1}", (int)Naming.LessonSettlementStatus.HalfAchievement, item.LessonID);
             }
                        
             var coachItems = models.PromptEffectiveCoach();
@@ -474,7 +617,6 @@ namespace WebHome.Helper
                                     .FilterByEffective();
             IQueryable<TuitionAchievement> achievementItems = paymentItems.Join(models.GetTable<TuitionAchievement>(),
                 p => p.PaymentID, t => t.InstallmentID, (p, t) => t);
-
 
             foreach (var coach in coachItems)
             {
@@ -497,8 +639,8 @@ namespace WebHome.Helper
 
                 if (lessonItem != null)
                 {
-                    salary.LevelID = lessonItem.LessonTimeSettlement.ProfessionalLevelID;
-                    salary.GradeIndex = lessonItem.LessonTimeSettlement.MarkedGradeIndex ?? 0;
+                    salary.LevelID = lessonItem.ProfessionalLevelID;
+                    salary.GradeIndex = lessonItem.MarkedGradeIndex ?? 0;
                 }
                 else
                 {
@@ -535,11 +677,9 @@ namespace WebHome.Helper
                         branchBonus.AchievementAttendanceCount = branchHelper.LessonItems.Count()
                                 - branchHelper.SettlementPILesson.Count() / 2m;
 
-                        branchBonus.Tuition = branchHelper.SettlementFullAchievement.CalcTuition(models)
-                                + branchHelper.SettlementHalfAchievementForShare.CalcTuition(models) / 2;
+                        branchBonus.Tuition = branchHelper.LessonItems.CalcTuition(models);
 
-                        branchBonus.AttendanceBonus = branchHelper.SettlementFullAchievement.CalcTuitionShare(models)
-                                + branchHelper.SettlementHalfAchievementForShare.CalcTuitionShare(models) / 2;
+                        branchBonus.AttendanceBonus = branchHelper.LessonItems.CalcTuitionShare(models);
 
                         models.SubmitChanges();
                     }
@@ -567,6 +707,7 @@ namespace WebHome.Helper
                     models.SubmitChanges();
                 };
 
+                BranchStore branch;
                 if (coach.UserProfile.IsOfficer())
                 {
                     foreach (var g in settlementItems.GroupBy(l => l.BranchID))
@@ -583,32 +724,29 @@ namespace WebHome.Helper
                         }
 
                         branchBonus.BranchTotalAttendanceCount = g.Count();
-                        branchBonus.BranchTotalTuition = g.ExclusivePILesson().CalcTuition(models);
+                        branchBonus.BranchTotalTuition = g.CalcTuition(models);
                         models.SubmitChanges();
                     }
 
                     calcCoachAchievement();
                 }
-                else if (coach.UserProfile.IsManager())
+                else if ((branch = models.GetTable<BranchStore>().Where(b => b.ManagerID == coach.CoachID).FirstOrDefault()) != null)
                 {
-                    var branch = models.GetTable<BranchStore>().Where(b => b.ManagerID == coach.CoachID).FirstOrDefault();
-                    if (branch != null)
+                    var branchBonus = salary.CoachBranchMonthlyBonus.Where(b => b.BranchID == branch.BranchID).FirstOrDefault();
+                    if (branchBonus == null)
                     {
-                        var branchBonus = salary.CoachBranchMonthlyBonus.Where(b => b.BranchID == branch.BranchID).FirstOrDefault();
-                        if (branchBonus == null)
+                        branchBonus = new CoachBranchMonthlyBonus
                         {
-                            branchBonus = new CoachBranchMonthlyBonus
-                            {
-                                CoachMonthlySalary = salary,
-                                BranchID = branch.BranchID
-                            };
-                            salary.CoachBranchMonthlyBonus.Add(branchBonus);
-                        }
-                        var branchItems = settlementItems.Where(l => l.BranchID == branch.BranchID);
-                        branchBonus.BranchTotalAttendanceCount = branchItems.Count();
-                        branchBonus.BranchTotalTuition = branchItems.ExclusivePILesson().CalcTuition(models);
-                        models.SubmitChanges();
+                            CoachMonthlySalary = salary,
+                            BranchID = branch.BranchID
+                        };
+                        salary.CoachBranchMonthlyBonus.Add(branchBonus);
                     }
+                    var branchItems = settlementItems.Where(w => w.WorkPlace == branch.BranchID);
+                    branchBonus.BranchTotalAttendanceCount = branchItems.Count();
+                    branchBonus.BranchTotalTuition = branchItems.CalcTuition(models);
+                    models.SubmitChanges();
+
                     calcCoachAchievement();
                 }
                 else
@@ -627,6 +765,64 @@ namespace WebHome.Helper
                     && s.SettlementDate < viewModel.AchievementDateTo.Value.AddMonths(1))
                 .Join(models.GetTable<CoachMonthlySalary>(),
                     s => s.SettlementID, c => c.SettlementID, (s, c) => c);
+
+            return items;
+        }
+
+        public static IQueryable<V_Tuition> InquireAchievementTuition<TEntity>(this AchievementQueryViewModel viewModel, ModelSource<TEntity> models)
+            where TEntity : class, new()
+        {
+            if (!viewModel.AchievementDateFrom.HasValue)
+            {
+                if (!String.IsNullOrEmpty(viewModel.AchievementYearMonthFrom))
+                {
+                    viewModel.AchievementDateFrom = DateTime.ParseExact(viewModel.AchievementYearMonthFrom, "yyyy/MM", System.Globalization.CultureInfo.CurrentCulture);
+                }
+                else
+                {
+                    viewModel.AchievementDateFrom = DateTime.Today.FirstDayOfMonth();
+                }
+            }
+
+            if (!viewModel.AchievementDateTo.HasValue)
+            {
+
+                if (!String.IsNullOrEmpty(viewModel.AchievementYearMonthTo))
+                {
+                    viewModel.AchievementDateTo = DateTime.ParseExact(viewModel.AchievementYearMonthTo, "yyyy/MM", System.Globalization.CultureInfo.CurrentCulture).AddMonths(1);
+                }
+                else
+                {
+                    viewModel.AchievementDateTo = viewModel.AchievementDateFrom.Value.AddMonths(1);
+                }
+            }
+
+            IQueryable<V_Tuition> items = models.GetTable<V_Tuition>();
+
+            if (viewModel.CoachID.HasValue)
+            {
+                items = items.Where(c => c.AttendingCoach == viewModel.CoachID);
+            }
+
+            if (viewModel.ByCoachID != null && viewModel.ByCoachID.Length > 0)
+            {
+                items = items.Where(c => viewModel.ByCoachID.Contains(c.AttendingCoach));
+            }
+
+            if (viewModel.BranchID.HasValue)
+            {
+                items = items.Where(c => c.BranchID == viewModel.BranchID);
+            }
+
+            if (viewModel.AchievementDateFrom.HasValue)
+            {
+                items = items.Where(c => c.ClassTime >= viewModel.AchievementDateFrom);
+            }
+
+            if (viewModel.AchievementDateTo.HasValue)
+            {
+                items = items.Where(c => c.ClassTime < viewModel.AchievementDateTo);
+            }
 
             return items;
         }

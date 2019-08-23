@@ -47,7 +47,8 @@ else
                 if (isConfirm) {
                     $('').launchDownload('@Html.Raw(Url.Action("CreateMonthlyBonusXlsx","Accounting"))', @Html.Raw(JsonConvert.SerializeObject(new { _viewModel.AchievementDateFrom })), 'report', true);
                 } else {
-                    window.location.href = 'achivementbonus-setting.html';
+                    showLoading();
+                    $('').launchDownload('@Html.Raw(Url.Action("CoachBonusIndex","ConsoleHome"))', @Html.Raw(JsonConvert.SerializeObject(new { _viewModel.AchievementDateFrom })));
                 }
             });
         });

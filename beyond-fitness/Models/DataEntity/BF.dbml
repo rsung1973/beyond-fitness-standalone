@@ -1399,6 +1399,7 @@
       <Column Name="InstallmentID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="CoachID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="ShareAmount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CommitShare" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Association Name="ServingCoach_TuitionAchievement" Member="ServingCoach" ThisKey="CoachID" OtherKey="CoachID" Type="ServingCoach" IsForeignKey="true" />
       <Association Name="Payment_TuitionAchievement" Member="Payment" ThisKey="InstallmentID" OtherKey="PaymentID" Type="Payment" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
@@ -2057,12 +2058,6 @@
       <Association Name="BlogCategoryDefinition_BlogTag" Member="BlogCategoryDefinition" ThisKey="CategoryID" OtherKey="CategoryID" Type="BlogCategoryDefinition" IsForeignKey="true" />
     </Type>
   </Table>
-  <Table Name="dbo.V_BranchStaff" Member="V_BranchStaff">
-    <Type Name="V_BranchStaff">
-      <Column Name="UID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="BranchID" Type="System.Int32" DbType="Int" CanBeNull="true" />
-    </Type>
-  </Table>
   <Table Name="dbo.CourseContractRevisionItem" Member="CourseContractRevisionItem">
     <Type Name="CourseContractRevisionItem">
       <Column Name="RevisionID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -2158,6 +2153,52 @@
       <Association Name="Settlement_CoachMonthlySalary" Member="Settlement" ThisKey="SettlementID" OtherKey="SettlementID" Type="Settlement" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
+  <Table Name="dbo.V_PerformanceShare" Member="V_PerformanceShares">
+    <Type Name="V_PerformanceShare">
+      <Column Name="PaymentID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PayoffAmount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PayoffDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="CoachID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ShareAmount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.V_WorkPlace" Member="V_WorkPlaces">
+    <Type Name="V_WorkPlace">
+      <Column Name="CoachID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="WorkPlace" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="WorkPlaceCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="OfficeLocation" Type="System.String" DbType="NVarChar(32)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.V_ContractTuition" Member="V_ContractTuitions">
+    <Type Name="V_ContractTuition">
+      <Column Name="LessonID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ClassTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="AttendingCoach" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="GroupID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="BranchID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CoachAttendance" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CompleteDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="CommitAttendance" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="PriceID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PriceStatus" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ELStatus" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="AchievementIndex" Type="System.Decimal" DbType="Decimal(2,1)" CanBeNull="true" />
+      <Column Name="TuitionIndex" Type="System.Decimal" DbType="Decimal(2,1)" CanBeNull="true" />
+      <Column Name="RegisterID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="GroupingMemberCount" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ListPrice" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PercentageOfDiscount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ProfessionalLevelID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="MarkedGradeIndex" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Column Name="BranchName" Type="System.String" DbType="NVarChar(32)" CanBeNull="true" />
+      <Column Name="OfficeLocation" Type="System.String" DbType="NVarChar(32) NOT NULL" CanBeNull="false" />
+      <Column Name="EnterpriseRegisterID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="EnterpriseListPrice" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="WorkPlace" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ContractID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
   <Table Name="dbo.V_LessonTime" Member="V_LessonTimes">
     <Type Name="V_LessonTime">
       <Column Name="LessonID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
@@ -2171,6 +2212,48 @@
       <Column Name="PriceID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="PriceStatus" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="ELStatus" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="RegisterID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="GroupingMemberCount" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ListPrice" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="EnterpriseRegisterID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="EnterpriseListPrice" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="EnterpriseContractID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.V_Tuition" Member="V_Tuitions">
+    <Type Name="V_Tuition">
+      <Column Name="LessonID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ClassTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="AttendingCoach" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="GroupID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="BranchID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CoachAttendance" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CompleteDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="CommitAttendance" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="PriceID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PriceStatus" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ELStatus" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="AchievementIndex" Type="System.Decimal" DbType="Decimal(2,1)" CanBeNull="true" />
+      <Column Name="TuitionIndex" Type="System.Decimal" DbType="Decimal(2,1)" CanBeNull="true" />
+      <Column Name="RegisterID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="GroupingMemberCount" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ListPrice" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PercentageOfDiscount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ProfessionalLevelID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="MarkedGradeIndex" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Column Name="BranchName" Type="System.String" DbType="NVarChar(32)" CanBeNull="true" />
+      <Column Name="OfficeLocation" Type="System.String" DbType="NVarChar(32) NOT NULL" CanBeNull="false" />
+      <Column Name="EnterpriseRegisterID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="EnterpriseListPrice" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="WorkPlace" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="EnterpriseContractID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ContractID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.V_BranchStaff" Member="V_BranchStaffs">
+    <Type Name="V_BranchStaff">
+      <Column Name="UID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="BranchID" Type="System.Int32" DbType="Int" CanBeNull="true" />
     </Type>
   </Table>
   <Function Name="dbo.InquireVacantNo" Method="InquireVacantNo">

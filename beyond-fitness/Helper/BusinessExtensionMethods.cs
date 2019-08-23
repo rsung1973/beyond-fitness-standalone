@@ -955,6 +955,38 @@ namespace WebHome.Helper
             return tuition;
         }
 
+        public static int CalcTuition<TEntity>(this IQueryable<V_Tuition> items, ModelSource<TEntity> models)
+            where TEntity : class, new()
+        {
+
+            var lessons = items.Where(r => !r.EnterpriseRegisterID.HasValue);
+            var enterpriseLessons = items.Where(r => r.EnterpriseRegisterID.HasValue);
+
+            var tuition = (lessons
+                .Sum(l => l.ListPrice * l.GroupingMemberCount * l.TuitionIndex
+                    * l.PercentageOfDiscount / 100) ?? 0)
+                + (enterpriseLessons
+                    .Sum(l => l.EnterpriseListPrice * l.TuitionIndex
+                        * l.PercentageOfDiscount / 100) ?? 0);
+            return (int)tuition;
+        }
+
+        public static int CalcTuition<TEntity>(this IEnumerable<V_Tuition> items, ModelSource<TEntity> models)
+            where TEntity : class, new()
+        {
+
+            var lessons = items.Where(r => !r.EnterpriseRegisterID.HasValue);
+            var enterpriseLessons = items.Where(r => r.EnterpriseRegisterID.HasValue);
+
+            var tuition = (lessons
+                .Sum(l => l.ListPrice * l.GroupingMemberCount * l.TuitionIndex
+                    * l.PercentageOfDiscount / 100) ?? 0)
+                + (enterpriseLessons
+                    .Sum(l => l.EnterpriseListPrice * l.TuitionIndex
+                        * l.PercentageOfDiscount / 100) ?? 0);
+            return (int)tuition;
+        }
+
         public static int CalcTuitionShare<TEntity>(this IEnumerable<LessonTime> items, ModelSource<TEntity> models)
             where TEntity : class, new()
         {
@@ -991,6 +1023,26 @@ namespace WebHome.Helper
                 .Sum(l => l.RegisterLesson.RegisterLessonEnterprise.EnterpriseCourseContent.ListPrice
                     * l.RegisterLesson.GroupingMemberCount * l.RegisterLesson.GroupingLessonDiscount.PercentageOfDiscount / 100
                     * l.LessonTimeSettlement.MarkedGradeIndex / 100) ?? 0);
+
+            return shares;
+        }
+
+        public static int CalcTuitionShare<TEntity>(this IQueryable<V_Tuition> items, ModelSource<TEntity> models)
+            where TEntity : class, new()
+        {
+            int shares = 0;
+
+            var courseItems = items.Where(l => !l.EnterpriseRegisterID.HasValue);
+            var enterpriseItems = items.Where(l => l.EnterpriseRegisterID.HasValue);
+
+            shares = ((int?)courseItems
+                .Sum(l => l.ListPrice * l.TuitionIndex
+                    * l.GroupingMemberCount * l.PercentageOfDiscount / 100
+                    * l.MarkedGradeIndex / 100) ?? 0)
+                + ((int?)enterpriseItems
+                .Sum(l => l.EnterpriseListPrice * l.TuitionIndex
+                    * l.GroupingMemberCount * l.PercentageOfDiscount / 100
+                    * l.MarkedGradeIndex / 100) ?? 0);
 
             return shares;
         }

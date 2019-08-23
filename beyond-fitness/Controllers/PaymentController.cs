@@ -1715,7 +1715,7 @@ namespace WebHome.Controllers
                 
                 var achievement = item.TuitionAchievement.Where(t => t.CoachID == viewModel.CoachID).FirstOrDefault();
 
-                if (achievement==null)
+                if (achievement == null)
                 {
                     achievement = new TuitionAchievement
                     {
@@ -1726,6 +1726,7 @@ namespace WebHome.Controllers
                 }
 
                 achievement.ShareAmount = viewModel.ShareAmount;
+                achievement.CommitShare = DateTime.Now;
                 models.SubmitChanges();
 
                 return Json(new { result = true });
