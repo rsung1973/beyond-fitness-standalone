@@ -29,16 +29,12 @@
     }
     IQueryable<LessonTime> items = _viewModel.GetUnpaidPISession(models);
 }
-<div class="header">
-    <h2><strong>P.I session未收款清單</strong></h2>
-</div>
-<div class="body">
-    <div class="card square xl-blue inbox">
-        <div class="cover">
-            <h6 class="m-t-20 m-l-20">目前尚未收款結果如下：</h6>
-            <ul class="mail_list list-group list-unstyled">
-                @foreach (var item in items)
-                {
+<div class="card square xl-blue inbox">
+    <div class="cover">
+        <h6 class="m-t-20 m-l-20">P.I Session 尚未收款清單如下：</h6>
+        <ul class="mail_list list-group list-unstyled">
+            @foreach (var item in items)
+            {
                 <li class="list-group-item">
                     <div class="media">
                         <div class="pull-left">
@@ -58,17 +54,17 @@
                         </div>
                         <div class="media-body">
                             <div class="media-heading">
-                                <a class="m-r-10">@(item.RegisterLesson.UserProfile.FullName())</a>
-                                <span class="float-right text-muted">@($"{item.ClassTime:yyyy/MM/dd}")</span>
+                                <a class="m-r-10">@($"{item.ClassTime:yyyy/MM/dd}") - @(item.RegisterLesson.UserProfile.FullName())</a>
+                                <small class="float-right text-muted"><time>@(item.AsAttendingCoach.UserProfile.FullName())</time></small>
                             </div>
                         </div>
                     </div>
                 </li>
-                }
-            </ul>
-        </div>
+            }
+        </ul>
     </div>
 </div>
+
 <script>
     function selectPI(element) {
         var current = $(element).is(':checked');

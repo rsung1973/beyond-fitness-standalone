@@ -1,6 +1,6 @@
 ﻿{
   "branchName": "東門店",
-  "scenarioPhoto": [],
+   "scenarioPhoto": [ "Dongmen-01.jpg", "Dongmen-02.jpg", "Dongmen-03.jpg"],
   "coachItems": [
     {
         "coachName": "戴悟修",

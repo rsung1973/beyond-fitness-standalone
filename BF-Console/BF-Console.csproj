@@ -6157,6 +6157,14 @@
     <Content Include="Views\ConsoleHome\PaymentIndex.cshtml" />
     <Content Include="Views\ConsoleHome\Shared\DropifyFileUpload.cshtml" />
     <Content Include="Views\ConsoleHome\Shared\MyPaymentHeader.cshtml" />
+    <Content Include="Views\PaymentConsole\EditPaymentForContract.cshtml" />
+    <Content Include="Views\PaymentConsole\EditPaymentForPISession.cshtml" />
+    <Content Include="Views\PaymentConsole\Module\AboutTodayPayment.cshtml" />
+    <Content Include="Views\PaymentConsole\Module\CoachPaymentView.cshtml" />
+    <Content Include="Views\PaymentConsole\Module\CurrentMonthAchievementShare.cshtml" />
+    <Content Include="Views\PaymentConsole\Module\CurrentMonthBranchPaymentView.cshtml" />
+    <Content Include="Views\PaymentConsole\Module\EditPayment.cshtml" />
+    <Content Include="Views\PaymentConsole\Module\UnpaidPISession.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\InitializeType.cs" />
