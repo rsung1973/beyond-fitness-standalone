@@ -1841,7 +1841,7 @@ namespace WebHome.Controllers
                 DataTable table = new DataTable();
                 table.Columns.Add(new DataColumn("上課場所", typeof(String)));
                 table.Columns.Add(new DataColumn("P.T上課總數", typeof(int)));
-                table.Columns.Add(new DataColumn("P.T累計上課金額(含稅)", typeof(int)));  
+                table.Columns.Add(new DataColumn("P.T上課金額(含稅)", typeof(int)));  
                 table.Columns.Add(new DataColumn("點數兌換上課總數", typeof(int)));
                 table.Columns.Add(new DataColumn("員工福利上課總數", typeof(int)));                
                 table.Columns.Add(new DataColumn("總上課數(P.T+點數+員工)", typeof(int)));
