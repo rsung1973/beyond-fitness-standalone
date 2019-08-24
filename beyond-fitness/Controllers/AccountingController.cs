@@ -1257,8 +1257,9 @@ namespace WebHome.Controllers
 
             var tableItems = details.Rows.Cast<DataRow>();
 
-            DataTable initializeTable()
+            DataTable buildBranchDetails()
             {
+                //							
                 DataTable table = new DataTable();
                 table.Columns.Add(new DataColumn("簽約場所", typeof(String)));
                 table.Columns.Add(new DataColumn("分潤業績", typeof(int)));
@@ -1268,13 +1269,6 @@ namespace WebHome.Controllers
                 table.Columns.Add(new DataColumn("P.I Session佔比(%)", typeof(int)));
                 table.Columns.Add(new DataColumn("其他販售商品", typeof(int)));
                 table.Columns.Add(new DataColumn("其他販售商品占比(%)", typeof(int)));
-                return table;
-            }
-
-            DataTable buildBranchDetails()
-            {
-                //							
-                DataTable table = initializeTable();
 
                 DataRow r;
 
@@ -1320,9 +1314,17 @@ namespace WebHome.Controllers
             }
 
             DataTable buildCoachBranchDetails()
-            {
-                //							
-                DataTable table = initializeTable();
+            {			
+                DataTable table = new DataTable();
+                table.Columns.Add(new DataColumn("所屬分店", typeof(String)));
+                table.Columns.Add(new DataColumn("分潤業績", typeof(int)));
+                table.Columns.Add(new DataColumn("體能顧問費", typeof(int)));
+                table.Columns.Add(new DataColumn("體能顧問費佔比(%)", typeof(int)));
+                table.Columns.Add(new DataColumn("P.I Session", typeof(int)));
+                table.Columns.Add(new DataColumn("P.I Session佔比(%)", typeof(int)));
+                table.Columns.Add(new DataColumn("其他販售商品", typeof(int)));
+                table.Columns.Add(new DataColumn("其他販售商品占比(%)", typeof(int)));
+
 
                 DataRow r;
 
@@ -1374,7 +1376,7 @@ namespace WebHome.Controllers
             {
                 //							
                 DataTable table = new DataTable();
-                table.Columns.Add(new DataColumn("姓名", typeof(String)));
+                table.Columns.Add(new DataColumn("體能顧問", typeof(String)));
                 table.Columns.Add(new DataColumn("所屬分店", typeof(String)));
                 table.Columns.Add(new DataColumn("分潤業績", typeof(int)));
                 table.Columns.Add(new DataColumn("體能顧問費", typeof(int)));
@@ -1894,7 +1896,7 @@ namespace WebHome.Controllers
                 DataTable table = new DataTable();
                 table.Columns.Add(new DataColumn("簽約場所", typeof(String)));
                 table.Columns.Add(new DataColumn("P.T上課總數", typeof(int)));
-                table.Columns.Add(new DataColumn("P.T累計上課金額(含稅)", typeof(int)));  
+                table.Columns.Add(new DataColumn("P.T上課金額(含稅)", typeof(int)));  
                 table.Columns.Add(new DataColumn("點數兌換上課總數", typeof(int)));
                 table.Columns.Add(new DataColumn("員工福利上課總數", typeof(int)));                
                 table.Columns.Add(new DataColumn("總上課數(P.T+點數+員工)", typeof(int)));
@@ -1949,7 +1951,7 @@ namespace WebHome.Controllers
                 DataTable table = new DataTable();
                 table.Columns.Add(new DataColumn("所屬分店", typeof(String)));
                 table.Columns.Add(new DataColumn("P.T上課總數", typeof(int)));
-                table.Columns.Add(new DataColumn("P.T累計上課金額(含稅）", typeof(int)));  
+                table.Columns.Add(new DataColumn("P.T上課金額(含稅）", typeof(int)));  
                 table.Columns.Add(new DataColumn("點數兌換上課總數", typeof(int)));
                 table.Columns.Add(new DataColumn("員工福利上課總數", typeof(int)));                
                 table.Columns.Add(new DataColumn("總上課數(P.T+點數+員工)", typeof(int)));
@@ -2007,7 +2009,7 @@ namespace WebHome.Controllers
                 table.Columns.Add(new DataColumn("體能顧問", typeof(String)));
                 table.Columns.Add(new DataColumn("所屬分店", typeof(String)));
                 table.Columns.Add(new DataColumn("P.T上課總數", typeof(int)));
-                table.Columns.Add(new DataColumn("P.T累計上課金額(含稅）", typeof(int)));  
+                table.Columns.Add(new DataColumn("P.T上課金額(含稅）", typeof(int)));  
                 table.Columns.Add(new DataColumn("點數兌換上課總數", typeof(int)));
                 table.Columns.Add(new DataColumn("員工福利上課總數", typeof(int)));                
                 table.Columns.Add(new DataColumn("總上課數(P.T+點數+員工)", typeof(int)));

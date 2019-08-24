@@ -175,13 +175,13 @@ namespace WebHome.Helper
             table.Columns.Add(new DataColumn("合約編號", typeof(String)));
             table.Columns.Add(new DataColumn("體能顧問", typeof(String)));
             table.Columns.Add(new DataColumn("簽約場所", typeof(String)));
-            table.Columns.Add(new DataColumn("學員", typeof(String)));
+            table.Columns.Add(new DataColumn("學生", typeof(String)));
             table.Columns.Add(new DataColumn("合約名稱", typeof(String)));
             table.Columns.Add(new DataColumn("課程單價", typeof(int)));
-            table.Columns.Add(new DataColumn("全價計算堂數", typeof(int)));
-            table.Columns.Add(new DataColumn("半價計算堂數", typeof(int)));
-            table.Columns.Add(new DataColumn("上課地點", typeof(String)));
-            table.Columns.Add(new DataColumn("累計上課金額", typeof(int)));
+            table.Columns.Add(new DataColumn("全價上課數", typeof(int)));
+            table.Columns.Add(new DataColumn("半價上課數", typeof(int)));
+            table.Columns.Add(new DataColumn("上課場所", typeof(String)));
+            table.Columns.Add(new DataColumn("上課金額", typeof(int)));
             table.Columns.Add(new DataColumn("是否信託", typeof(String)));
             table.Columns.Add(new DataColumn("課程代碼", typeof(int)));
             table.Columns.Add(new DataColumn("體能顧問所屬分店", typeof(String)));
