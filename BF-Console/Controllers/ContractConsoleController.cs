@@ -218,6 +218,12 @@ namespace WebHome.Controllers
             var item = models.GetTable<LessonPriceType>().Where(p => p.PriceID == viewModel.PriceID).FirstOrDefault();
             viewModel.TotalCost = item?.ListPrice * viewModel.Lessons;
 
+            var typeItem = models.GetTable<CourseContractType>().Where(t => t.TypeID == viewModel.ContractType).FirstOrDefault();
+            if (typeItem != null)
+            {
+                viewModel.TotalCost = viewModel.TotalCost * typeItem.GroupingMemberCount * typeItem.GroupingLessonDiscount.PercentageOfDiscount / 100;
+            }
+
             return View("~/Views/ContractConsole/Editing/TotalCostSummary.cshtml");
         }
 

@@ -115,6 +115,35 @@ namespace WebHome.Controllers
             return View("~/Views/BonusCredit/Module/ProcessBonus.cshtml", item);
         }
 
+        public ActionResult CommitSingleCoachBonus(CoachBonusViewModel viewModel)
+        {
+            ViewResult result = (ViewResult)ProcessBonus(viewModel);
+            CoachMonthlySalary item = result.Model as CoachMonthlySalary;
+            if (item == null)
+                return result;
+
+            if (!viewModel.SpecialBonus.HasValue && !viewModel.ManagerBonus.HasValue)
+            {
+                ModelState.AddModelError("ManagerBonus", "請輸入管理獎金");
+                ModelState.AddModelError("SpecialBonus", "請輸特別獎金");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                ViewBag.ModelState = ModelState;
+                return View(ConsoleHomeController.InputErrorView);
+            }
+
+            item.SpecialBonus = viewModel.SpecialBonus;
+            item.ManagerBonus = viewModel.ManagerBonus;
+
+            models.SubmitChanges();
+
+            return Json(new { result = true }, JsonRequestBehavior.AllowGet);
+
+        }
+
+
         public ActionResult ClearCoachBonus(CoachBonusViewModel viewModel)
         {
             ViewResult result = (ViewResult)ProcessBonus(viewModel);
@@ -128,6 +157,20 @@ namespace WebHome.Controllers
             models.SubmitChanges();
 
             return Json(new { result = true }, JsonRequestBehavior.AllowGet);
+
+        }
+
+        public ActionResult EditCoachBonus(CoachBonusViewModel viewModel)
+        {
+            ViewResult result = (ViewResult)ProcessBonus(viewModel);
+            CoachMonthlySalary item = result.Model as CoachMonthlySalary;
+            if (item == null)
+                return result;
+
+            viewModel.SpecialBonus = item.SpecialBonus;
+            viewModel.ManagerBonus = item.ManagerBonus;
+
+            return View("~/Views/BonusCredit/BonusModal/EditCoachBonus.cshtml", item);
 
         }
 

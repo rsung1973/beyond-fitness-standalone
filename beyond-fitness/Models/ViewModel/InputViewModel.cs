@@ -225,6 +225,8 @@ namespace WebHome.Models.ViewModel
     {
         public int? CoachID { get; set; }
         public int? SettlementID { get; set; }
+        public int? ManagerBonus { get; set; }
+        public int? SpecialBonus { get; set; }
     }
 
     public class MonthlyBonusViewModel : AchievementQueryViewModel

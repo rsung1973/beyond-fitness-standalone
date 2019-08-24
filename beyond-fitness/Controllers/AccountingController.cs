@@ -1487,7 +1487,6 @@ namespace WebHome.Controllers
                 table.Columns.Add(new DataColumn("總獎金", typeof(int)));
                 table.Columns.Add(new DataColumn("管理獎金", typeof(int)));
                 table.Columns.Add(new DataColumn("特別獎金", typeof(int)));
-                table.Columns.Add(new DataColumn("月中上課獎金", typeof(int)));
                 table.Columns.Add(new DataColumn("上課獎金", typeof(int)));
 
                 DataRow r;
@@ -1505,6 +1504,8 @@ namespace WebHome.Controllers
                     r[3] = g.CoachBranchMonthlyBonus.Sum(b => b.AchievementAttendanceCount);
                     r[4] = g.CoachBranchMonthlyBonus.Where(b => b.BranchTotalAttendanceCount.HasValue)
                                 .Sum(b => b.BranchTotalAttendanceCount);
+                    r[6] = g.ManagerBonus ?? 0;
+                    r[7] = g.SpecialBonus ?? 0;
 
                     table.Rows.Add(r);
                 }
@@ -1554,6 +1555,8 @@ namespace WebHome.Controllers
                     r[5] = g.GradeIndex;
                     r[6] = g.PerformanceAchievement;
                     r[7] = g.AchievementShareRatio;
+                    r[9] = g.ManagerBonus ?? 0;
+                    r[10] = g.SpecialBonus ?? 0;
 
                     r[12] = g.CoachBranchMonthlyBonus.Sum(b => b.AttendanceBonus);
                     for (int i = 0; i < branchItems.Length; i++)
@@ -1572,6 +1575,25 @@ namespace WebHome.Controllers
 
                     rows.Add(r);
                 }
+
+                List<int> taxCol = new List<int> { 4, 6, 12, 17 };
+                for (int i = 0; i < branchItems.Length; i++)
+                {
+                    taxCol.Add(branchColIdx + i);
+                }
+
+                foreach (var t in rows)
+                {
+                    eliminateTax(t, taxCol);
+                    t[12] = 0;
+                    for (int i = 0; i < branchItems.Length; i++)
+                    {
+                        t[12] = (int)t[12] + (int)t[branchColIdx + i];
+                    }
+                    t[11] = (int)t[12] + (int)t[branchColIdx + branchItems.Length];
+                    t[8] = (int)t[9] + (int)t[10] + (int)t[11];
+                }
+                rows.RemoveAll(t => (int)t[8] == 0);
 
                 foreach (var t in rows.OrderBy(t => t[1]))
                 {
@@ -1596,8 +1618,8 @@ namespace WebHome.Controllers
                     r = table.NewRow();
 
                     r[0] = branchItems[i].BranchName;
-                    r[1] = rowItems.Where(t => t[branchColIdx + i] is int).Sum(t => (int)t[branchColIdx + i]);
-                    r[2] = Math.Round((int)r[1] / 1.05);
+                    r[2] = rowItems.Where(t => t[branchColIdx + i] is int).Sum(t => (int)t[branchColIdx + i]);
+                    r[1] = Math.Round((int)r[2] * 1.05);
                     table.Rows.Add(r);
                 }
 
@@ -1629,8 +1651,8 @@ namespace WebHome.Controllers
                     r = table.NewRow();
 
                     r[0] = g.BranchName;
-                    r[1] = rowItems.Where(t => (String)t[1] == g.BranchName).Sum(t => (int)t[branchColIdx + branchItems.Length]);
-                    r[2] = Math.Round((int)r[1] / 1.05);
+                    r[2] = rowItems.Where(t => (String)t[1] == g.BranchName).Sum(t => (int)t[branchColIdx + branchItems.Length]);
+                    r[1] = Math.Round((int)r[2] * 1.05);
                     table.Rows.Add(r);
                 }
                 r = table.NewRow();
@@ -1688,16 +1710,6 @@ namespace WebHome.Controllers
                 table.TableName = $"{viewModel.AchievementDateFrom:yyyyMM} 業績獎金彙總 - 教練所屬分店";
                 ds.Tables.Add(table);
 
-                var rowItems = details.Rows.Cast<DataRow>();
-                List<int> taxCol = new List<int> { 4, 6, 12, 17 };
-                for (int i = 0; i < branchItems.Length; i++)
-                {
-                    taxCol.Add(branchColIdx + i);
-                }
-                foreach (var r in rowItems)
-                {
-                    eliminateTax(r, taxCol);
-                }
 
                 using (var xls = ds.ConvertToExcel())
                 {

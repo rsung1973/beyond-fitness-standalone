@@ -74,6 +74,9 @@
                                     $('select[name="ContractType"]').val('@(_viewModel.ContractType)');
                                     $('select[name="ContractType"]').on('change', function (event) {
                                         $global.viewModel.ContractType = $(this).val();
+                                        if ($global.viewModel.PriceID) {
+                                            calcTotalCost();
+                                        }
                                     });
                                 });
                         </script>
