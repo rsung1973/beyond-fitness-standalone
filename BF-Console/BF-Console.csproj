@@ -6180,6 +6180,10 @@
     <Content Include="ConsoleHome\images\landing\360\zhongxiao-02.jpg" />
     <Content Include="ConsoleHome\images\landing\360\zhongxiao-03.jpg" />
     <Content Include="Views\PaymentConsole\Module\EditPaymentForPI.cshtml" />
+    <Content Include="Views\ContractConsole\Module\ContractDataStatus.cshtml" />
+    <Content Include="Views\ContractConsole\Module\ContractDataContent.cshtml" />
+    <Content Include="Views\ContractConsole\Module\ContractDataItem.cshtml" />
+    <Content Include="Views\ContractConsole\Module\ContractPayoff.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\InitializeType.cs" />

@@ -116,6 +116,19 @@
 <li>
     <div class="list_tb tb2">
         <div class="list_tr">
+            <div class="list_td hd">付款方式</div>
+            <div class="list_td rt">
+                @if (_model.CourseContractExtension?.PaymentMethod != null)
+                {
+                     <text>@(_model.CourseContractExtension.PaymentMethod)</text>
+                }
+            </div>
+        </div>
+    </div>
+</li>
+<li>
+    <div class="list_tb tb2">
+        <div class="list_tr">
             <div class="list_td hd">剩餘/購買堂數</div>
             <div class="list_td rt">@(_model.RemainedLessonCount())/@(_model.Lessons)</div>
         </div>
@@ -140,7 +153,7 @@
 <li>
     <div class="list_tb tb2">
         <div class="list_tr">
-            <div class="list_td hd">上課場所</div>
+            <div class="list_td hd">簽約場所</div>
             <div class="list_td rt">@(_model.CourseContractExtension?.BranchStore.BranchName)</div>
         </div>
     </div>
