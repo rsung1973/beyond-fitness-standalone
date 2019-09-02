@@ -367,37 +367,37 @@ namespace WebHome.Models.DataEntity
         public static IQueryable<TuitionAchievement> FilterByEffective(this IQueryable<TuitionAchievement> items)
         {
             return items
-                    .Where(t => t.Payment.VoidPayment == null /*|| t.Payment.AllowanceID.HasValue*/);
+                    .Where(t => t.Payment.VoidPayment == null || t.Payment.AllowanceID.HasValue);
         }
 
         public static IEnumerable<Payment> FilterByEffective(this IEnumerable<Payment> items)
         {
             return items
-                    .Where(t => t.VoidPayment == null /*|| t.AllowanceID.HasValue*/);
+                    .Where(t => t.VoidPayment == null || t.AllowanceID.HasValue);
         }
 
         public static IEnumerable<TuitionAchievement> FilterByEffective(this IEnumerable<TuitionAchievement> items)
         {
             return items
-                    .Where(t => t.Payment.VoidPayment == null /*|| t.Payment.AllowanceID.HasValue*/);
+                    .Where(t => t.Payment.VoidPayment == null || t.Payment.AllowanceID.HasValue);
         }
 
         public static IQueryable<Payment> FilterByEffective(this IQueryable<Payment> items)
         {
             return items
-                    .Where(t => t.VoidPayment == null /*|| t.AllowanceID.HasValue*/);
+                    .Where(t => t.VoidPayment == null || t.AllowanceID.HasValue);
         }
 
 
         public static decimal? EffectiveAchievement(this Payment item)
         {
-            if (item.VoidPayment != null)
-            {
-                return 0;
-            }
-            else if (item.AllowanceID.HasValue)
+            if (item.AllowanceID.HasValue)
             {
                 return item.PayoffAmount - item.InvoiceAllowance.TotalAmount - item.InvoiceAllowance.TaxAmount;
+            }
+            else if (item.VoidPayment != null)
+            {
+                return 0;
             }
             else
             {
@@ -476,7 +476,12 @@ namespace WebHome.Models.DataEntity
                             : "其他";
         }
 
-
+        public static int? WorkBranchID(this ServingCoach item)
+        {
+            return item.CoachWorkplace.Count == 1
+                            ? (int?)item.CoachWorkplace.First().BranchID
+                            : (int?)null;
+        }
     }
 
     public partial class UserProfile

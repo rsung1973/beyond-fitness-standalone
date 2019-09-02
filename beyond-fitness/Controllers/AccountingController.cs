@@ -1242,8 +1242,8 @@ namespace WebHome.Controllers
             }
             viewModel.PayoffDateTo = viewModel.PayoffDateFrom.Value.AddMonths(1).AddDays(-1);
 
-            IQueryable<Payment> paymentItems = viewModel.InquirePayment(this, out string alertMessage)
-                                                    .FilterByEffective();
+            IQueryable<Payment> paymentItems = viewModel.InquirePayment(this, out string alertMessage);
+                                                    //.FilterByEffective();
             IQueryable<TuitionAchievement> achievementItems = paymentItems.Join(models.GetTable<TuitionAchievement>(),
                         p => p.PaymentID, t => t.InstallmentID, (p, t) => t);
 
@@ -2084,6 +2084,7 @@ namespace WebHome.Controllers
                 table.TableName = $"{viewModel.AchievementDateFrom:yyyyMM} 體能顧問彙總";
                 ds.Tables.Add(table);
 
+                detailsTable.Columns.RemoveAt(11);
                 ds.Tables.Add(detailsTable);
 
                 using (var xls = ds.ConvertToExcel())
@@ -2197,7 +2198,10 @@ namespace WebHome.Controllers
             ViewResult result = (ViewResult)InquireAchievement(viewModel);
             items = (IQueryable<LessonTime>)result.Model;
 
-            IQueryable<V_Tuition> tuitionItems = items.Join(models.GetTable<V_Tuition>(), l => l.LessonID, t => t.LessonID, (l, t) => t);
+            IQueryable<V_Tuition> tuitionItems = items
+                .Join(models.GetTable<LessonTimeSettlement>().Where(l => l.SettlementID.HasValue),
+                    l => l.LessonID, t => t.LessonID, (l, t) => l)
+                .Join(models.GetTable<V_Tuition>(), l => l.LessonID, t => t.LessonID, (l, t) => t);
             return models.CreateLessonAchievementDetails(tuitionItems);
         }
 

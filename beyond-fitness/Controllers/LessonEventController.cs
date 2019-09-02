@@ -96,7 +96,8 @@ namespace WebHome.Controllers
                 LessonTimeSettlement = new LessonTimeSettlement
                 {
                     ProfessionalLevelID = coach.LevelID.Value,
-                    MarkedGradeIndex = coach.ProfessionalLevel.GradeIndex
+                    MarkedGradeIndex = coach.ProfessionalLevel.GradeIndex,
+                    CoachWorkPlace = coach.WorkBranchID(),
                 }
             };
 

@@ -37,7 +37,7 @@
                 <td>P.I Session</td>
                 <td>
                     <div class="input-group">
-                        <input type="text" class="form-control col-red" name="PayoffAmount" placeholder="收款金額" value="@(_viewModel.PayoffAmount)" />
+                        <input type="text" class="form-control col-red" onkeyup="$('#payoffAmount').text('TWD ' + this.value);" name="PayoffAmount" placeholder="收款金額" value="@(_viewModel.PayoffAmount)" />
                         <span class="input-group-addon">
                             <i class="zmdi zmdi-money-box"></i>
                         </span>
@@ -49,7 +49,7 @@
             <tr>
                 <td>總計：</td>
                 <td class="text-danger text-right">
-                    <h6>TWD 300</h6>
+                    <h6 id="payoffAmount">TWD @(_viewModel.PayoffAmount)</h6>
                 </td>
             </tr>
         </tfoot>
@@ -63,6 +63,7 @@
             <option value="刷卡">刷卡</option>
             <option value="轉帳">轉帳</option>
         </select>
+        <input type="hidden" name="errorMessage" />
     </div>
     <div class="col-12">
         <div class="input-group">

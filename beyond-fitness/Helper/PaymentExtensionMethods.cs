@@ -108,7 +108,8 @@ namespace WebHome.Helper
             {
                 filterItems = models.GetTable<TuitionAchievement>();
             }
-            return items.FilterByEffective()
+            return items
+                //.FilterByEffective()
                 .Join(filterItems, 
                     p => p.PaymentID, t => t.InstallmentID, (p, t) => t);
         }

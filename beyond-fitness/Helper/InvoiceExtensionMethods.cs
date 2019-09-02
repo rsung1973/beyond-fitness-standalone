@@ -129,6 +129,14 @@ namespace WebHome.Helper
                 VoidDate = DateTime.Now
             };
 
+            ///刪除當月已分潤
+            /// 
+            DateTime startDate = DateTime.Today.FirstDayOfMonth();
+            if(item.PayoffDate >= startDate && item.PayoffDate < startDate.AddMonths(1))
+            {
+                models.DeleteAllOnSubmit<TuitionAchievement>(t => t.InstallmentID == item.PaymentID);
+            }
+
             return newItem;
         }
     }

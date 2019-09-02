@@ -64,15 +64,18 @@
                                 @{
                                     bool hasSlideItem = false;
                                 }
-                                @if (lessonItem.GroupingLesson.RegisterLesson.Count > 1)
+                                @if (lessonItem.IsCoachPISession())
+                                {
+                                    if (lessonItem.ClassTime >= DateTime.Today && lessonItem.GroupingLesson.LessonTime.Count > 1)
+                                    {
+                                        hasSlideItem = true;
+                                        <li><a href="javascript:cloneCoachPITrainingPlan();">同步課表</a></li>
+                                    }
+                                }
+                                else if (lessonItem.GroupingLesson.RegisterLesson.Count > 1)
                                 {
                                     hasSlideItem = true;
                                     <li><a href="javascript:cloneLearnerTrainingPlan();">同步課表</a></li>
-                                }
-                                else if (lessonItem.IsCoachPISession() && lessonItem.ClassTime >= DateTime.Today && lessonItem.GroupingLesson.LessonTime.Count > 1)
-                                {
-                                    hasSlideItem = true;
-                                    <li><a href="javascript:cloneCoachPITrainingPlan();">同步課表</a></li>
                                 }
                                 @if (lessonItem.CheckToAttendLesson(models))
                                 {

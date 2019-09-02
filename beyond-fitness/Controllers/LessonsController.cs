@@ -824,7 +824,8 @@ namespace WebHome.Controllers
                 LessonTimeSettlement = new LessonTimeSettlement
                 {
                     ProfessionalLevelID = coach.LevelID.Value,
-                    MarkedGradeIndex = coach.ProfessionalLevel.GradeIndex
+                    MarkedGradeIndex = coach.ProfessionalLevel.GradeIndex,
+                    CoachWorkPlace = coach.WorkBranchID(),
                 }
             };
             if (models.GetTable<DailyWorkingHour>().Any(d => d.Hour == viewModel.ClassDate.Value.Hour))
@@ -1013,7 +1014,8 @@ namespace WebHome.Controllers
                 LessonTimeSettlement = new LessonTimeSettlement
                 {
                     ProfessionalLevelID = coach.LevelID.Value,
-                    MarkedGradeIndex = coach.ProfessionalLevel.GradeIndex
+                    MarkedGradeIndex = coach.ProfessionalLevel.GradeIndex,
+                    CoachWorkPlace = coach.WorkBranchID(),
                 }
             };
             if (models.GetTable<DailyWorkingHour>().Any(d => d.Hour == viewModel.ClassDate.Value.Hour))
@@ -1171,7 +1173,8 @@ namespace WebHome.Controllers
                 LessonTimeSettlement = new LessonTimeSettlement
                 {
                     ProfessionalLevelID = coach.LevelID.Value,
-                    MarkedGradeIndex = coach.ProfessionalLevel.GradeIndex
+                    MarkedGradeIndex = coach.ProfessionalLevel.GradeIndex,
+                    CoachWorkPlace = coach.WorkBranchID(),
                 }
             };
             if (models.GetTable<DailyWorkingHour>().Any(d => d.Hour == viewModel.ClassDate.Value.Hour))

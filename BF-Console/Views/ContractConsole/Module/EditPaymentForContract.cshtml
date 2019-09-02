@@ -25,7 +25,7 @@
 }
 @{ 
     ViewBag.TransactionType = Naming.PaymentTransactionType.體能顧問費;
-    Html.RenderPartial("~/Views/PaymentConsole/Module/EditPayment.cshtml", _model);
+    Html.RenderPartial("~/Views/PaymentConsole/Module/EditPaymentForContract.cshtml", _model);
 }
 <script type="text/javascript">
 
@@ -45,9 +45,8 @@
             if (isConfirm) {
                 clearErrors();
                 var formData = $('input,select,textarea').serializeObject();
-
                 showLoading();
-                $.post('@Html.Raw(Url.Action("CommitPaymentForContract","Payment",new { _viewModel.ContractID,TransactionType = (int)Naming.PaymentTransactionType.體能顧問費 }))', formData, function (data) {
+                $.post('@Html.Raw(Url.Action("CommitPaymentForContract","Payment",new { _viewModel.ContractID,TransactionType = (int)Naming.PaymentTransactionType.體能顧問費, _viewModel.PayoffAmount, alertError = false }))', formData, function (data) {
                     hideLoading();
                     if ($.isPlainObject(data)) {
                         if (data.result) {

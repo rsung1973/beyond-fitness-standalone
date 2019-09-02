@@ -503,7 +503,7 @@ namespace WebHome.Controllers
 
         public ActionResult InquireInvoiceDispatchLog(InvoiceQueryViewModel viewModel)
         {
-            return View("~/Views/Invoice/Module/InvoiceDispatchLogSummary.ascx", viewModel);
+            return View("~/Views/Invoice/Module/InvoiceDispatchLogSummary.cshtml", viewModel);
 
         }
 

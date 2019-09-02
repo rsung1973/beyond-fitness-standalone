@@ -24,6 +24,7 @@
     _model = (CourseContract)this.Model;
     _profile = Context.GetUser();
     _viewID = ViewBag.ViewID as String;
+    LessonPriceType originalPrice = _model.OriginalSeriesPrice();
 }
 <div class="header">
     <h2><strong>原課程單價 <span class="badge bg-blue">@(_model.LessonPriceType.PriceTypeBundle())</span>：</strong> <span class="col-red">@($"{_model.LessonPriceType.ListPrice:##,###,###,###}")</span></h2>
@@ -84,7 +85,7 @@
             </div>
             <script>
             $(function () {
-                $('input[name="SettlementPrice"]').val('@(_model.LessonPriceType.ListPrice)')
+                $('input[name="SettlementPrice"]').val('@(originalPrice?.ListPrice ?? _model.LessonPriceType.ListPrice)')
                     .parent().parent()
                     .css('display', 'none');
             });
@@ -130,15 +131,15 @@
                     }
                 }
             </script>
-            if (attendedCount == 0)
-            {
-                <script>
-                    $(function () {
-                        $('input[name="SettlementPrice"]').val('@(_model.LessonPriceType.ListPrice)');
-                        refundInfo(@(_model.LessonPriceType.ListPrice));
-                    });
-                </script>
-            }
+            var currentSettlementPrice = attendedCount == 0 || originalPrice == null
+                    ? _model.LessonPriceType.ListPrice
+                    : originalPrice.ListPrice;
+            <script>
+                $(function () {
+                    $('input[name="SettlementPrice"]').val('@(currentSettlementPrice)');
+                    refundInfo(@(currentSettlementPrice));
+                });
+            </script>
         }
         else if ((DateTime.Today - _model.ValidFrom.Value).TotalDays < 8)
         {

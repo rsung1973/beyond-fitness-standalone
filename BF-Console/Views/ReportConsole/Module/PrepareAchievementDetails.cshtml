@@ -1,0 +1,40 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Newtonsoft.Json
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    IQueryable<CoachMonthlySalary> _model;
+    AchievementQueryViewModel _viewModel;
+
+
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    _model = (IQueryable<CoachMonthlySalary>)this.Model;
+    _viewModel = (AchievementQueryViewModel)ViewBag.ViewModel;
+
+}
+@if(_model.Count()==0)
+{
+    <script>
+        $(function () {
+            hideLoading();
+            swal("獎金抽成彙總表", "目前尚未執行獎金抽成批次，無法提供下載！", "error");
+        });
+    </script>
+}
+else
+{
+    <script>
+        $(function () {
+            $('').launchDownload('@Html.Raw(Url.Action("CreateAchievementSummaryXlsx","Accounting"))', @Html.Raw(JsonConvert.SerializeObject(new { _viewModel.AchievementDateFrom, _viewModel.BypassCondition, _viewModel.DetailsOnly, _viewModel.CoachID })), 'report', true);
+        });
+    </script>
+}

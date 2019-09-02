@@ -129,7 +129,7 @@ namespace WebHome.Controllers
             return View("~/Views/Payment/Module/EditPaymentForContract.ascx", item);
         }
 
-        public ActionResult CommitPaymentForContract(PaymentViewModel viewModel)
+        public ActionResult CommitPaymentForContract(PaymentViewModel viewModel, bool? alertError)
         {
             ViewBag.ViewModel = viewModel;
             var profile = HttpContext.GetUser();
@@ -145,7 +145,8 @@ namespace WebHome.Controllers
                 if (viewModel.ContractNo == null)
                 {
                     ModelState.AddModelError("ContractNo", "請輸入合約編號!!");
-                    return View("~/Views/Shared/AlertMessage.ascx", model: "請輸入合約編號");
+                    if (alertError != false)
+                        return View("~/Views/Shared/AlertMessage.ascx", model: "請輸入合約編號");
                 }
                 else
                 {
@@ -163,7 +164,8 @@ namespace WebHome.Controllers
                     if (contract == null)
                     {
                         ModelState.AddModelError("ContractNo", "合約編號錯誤!!");
-                        return View("~/Views/Shared/AlertMessage.ascx", model: "合約編號錯誤");
+                        if (alertError != false)
+                            return View("~/Views/Shared/AlertMessage.ascx", model: "合約編號錯誤");
                     }
                     //else if (contract.ContractPayment.Any(p => p.Payment.PayoffDate > DateTime.Now.AddMinutes(-1)))
                     //{
@@ -177,28 +179,47 @@ namespace WebHome.Controllers
                 }
             }
 
+            viewModel.CarrierId1 = viewModel.CarrierId1.GetEfficientString();
+            if (viewModel.CarrierId1 != null)
+            {
+                if (viewModel.CarrierType == null)
+                {
+                    viewModel.CarrierType = "3J0002";
+                }
+            }
+
             if(!viewModel.InvoiceType.HasValue)
             {
                 ModelState.AddModelError("InvoiceType", "請選擇發票類型");
-                return View("~/Views/Shared/AlertMessage.ascx", model: "請選擇發票類型");
+                if (alertError != false)
+                    return View("~/Views/Shared/AlertMessage.ascx", model: "請選擇發票類型");
             }
 
             if (!viewModel.PayoffDate.HasValue)
             {
                 ModelState.AddModelError("PayoffDate", "請輸入收款日期");
-                return View("~/Views/Shared/AlertMessage.ascx", model: "請輸入收款日期");
+                if (alertError != false)
+                    return View("~/Views/Shared/AlertMessage.ascx", model: "請輸入收款日期");
             }
 
             if (String.IsNullOrEmpty(viewModel.PaymentType))
             {
-                ModelState.AddModelError("errorMessage", "請選擇收款方式");
-                return View("~/Views/Shared/AlertMessage.ascx", model: "請選擇收款方式");
+                ModelState.AddModelError("PaymentType", "請選擇收款方式");
+                if (alertError != false)
+                    return View("~/Views/Shared/AlertMessage.ascx", model: "請選擇收款方式");
             }
 
             if (viewModel.CustomBrief == true)
             {
+                if (viewModel.Brief == null || viewModel.Brief.Length == 0 || (viewModel.Brief[0] = viewModel.Brief[0].GetEfficientString()) == null)
+                {
+                    //ModelState.AddModelError("Brief", "請輸入發票品項");
+                    if (alertError != false)
+                        return View("~/Views/Shared/AlertMessage.ascx", model: "請輸入發票品項");
+                }
+
                 viewModel.ItemNo = new string[] { "01" };
-                viewModel.Brief = new string[] { "顧問費用" };
+                viewModel.Brief = new string[] { viewModel.Brief[0]/*"顧問費用"*/ };
                 viewModel.CostAmount = new int?[] { viewModel.PayoffAmount };
                 viewModel.UnitCost = new int?[] { viewModel.PayoffAmount };
                 viewModel.Piece = new int?[] { 1 };
@@ -219,7 +240,8 @@ namespace WebHome.Controllers
             if (!viewModel.SellerID.HasValue)
             {
                 ModelState.AddModelError("SellerID", "請選擇收款場地");
-                return View("~/Views/Shared/AlertMessage.ascx", model: "請選擇收款場地");
+                if (alertError != false)
+                    return View("~/Views/Shared/AlertMessage.ascx", model: "請選擇收款場地");
             }
             else
             {
@@ -237,13 +259,21 @@ namespace WebHome.Controllers
             if (contract!=null && contract.TotalPaidAmount() + viewModel.PayoffAmount > contract.TotalCost)
             {
                 ModelState.AddModelError("PayoffAmount", "含本次收款金額已大於總收費金額!!");
-                return View("~/Views/Shared/AlertMessage.ascx", model: "含本次收款金額已大於總收費金額");
+                if (alertError != false)
+                    return View("~/Views/Shared/AlertMessage.ascx", model: "含本次收款金額已大於總收費金額");
             }
 
             if (!ModelState.IsValid)
             {
                 ViewBag.ModelState = ModelState;
-                return View(Settings.Default.ReportInputError);
+                if (alertError != false)
+                {
+                    return View("~/Views/Shared/AlertMessage.ascx", model: ModelState.ErrorMessage());
+                }
+                else
+                {
+                    return View(Settings.Default.ReportInputError);
+                }
             }
 
             try
@@ -314,12 +344,21 @@ namespace WebHome.Controllers
                 ModelState.AddModelError("PayoffDate", "請選擇收款日期!!");
             }
 
-            var invoice = checkInvoiceNo(viewModel);
-
             if (!viewModel.SellerID.HasValue)
             {
                 ModelState.AddModelError("SellerID", "請選擇分店!!");
             }
+
+            viewModel.CarrierId1 = viewModel.CarrierId1.GetEfficientString();
+            if (viewModel.CarrierId1 != null)
+            {
+                if (viewModel.CarrierType == null)
+                {
+                    viewModel.CarrierType = "3J0002";
+                }
+            }
+
+            var invoice = checkInvoiceNo(viewModel);
 
             if (!ModelState.IsValid)
             {
@@ -426,9 +465,14 @@ namespace WebHome.Controllers
             ViewBag.ViewModel = viewModel;
             var profile = HttpContext.GetUser();
 
-            if (!viewModel.RegisterID.HasValue)
+            var lesson = models.GetTable<RegisterLesson>().Where(r => r.RegisterID == viewModel.RegisterID).FirstOrDefault();
+            if (!viewModel.RegisterID.HasValue || lesson == null)
             {
                 ModelState.AddModelError("RegisterID", "請選擇收款自主訓練!!");
+            }
+            else
+            {
+                viewModel.SellerID = lesson.LessonTime.First().BranchID.Value;
             }
 
             if (!viewModel.PayoffDate.HasValue)
@@ -442,13 +486,23 @@ namespace WebHome.Controllers
             viewModel.UnitCost = new int?[] { viewModel.PayoffAmount };
             viewModel.Piece = new int?[] { 1 };
             viewModel.ItemRemark = new string[] { null };
+            viewModel.InvoiceType = Naming.InvoiceTypeDefinition.一般稅額計算之電子發票;
+            viewModel.CarrierId1 = viewModel.CarrierId1.GetEfficientString();
+
+            if (viewModel.CarrierId1 != null)
+            {
+                if (viewModel.CarrierType == null)
+                {
+                    viewModel.CarrierType = "3J0002";
+                }
+            }
 
             var invoice = checkInvoiceNo(viewModel);
 
-            if (!viewModel.SellerID.HasValue)
-            {
-                ModelState.AddModelError("SellerID", "請選擇分店!!");
-            }
+            //if (!viewModel.SellerID.HasValue)
+            //{
+            //    ModelState.AddModelError("SellerID", "請選擇分店!!");
+            //}
 
             if (String.IsNullOrEmpty(viewModel.PaymentType))
             {
@@ -468,8 +522,6 @@ namespace WebHome.Controllers
 
             try
             {
-                var lesson = models.GetTable<RegisterLesson>().Where(r => r.RegisterID == viewModel.RegisterID).First();
-
                 Payment item = models.GetTable<Payment>()
                     .Where(p => p.PaymentID == viewModel.PaymentID).FirstOrDefault();
 
@@ -489,7 +541,8 @@ namespace WebHome.Controllers
                     item.TuitionAchievement.Add(new TuitionAchievement
                     {
                         CoachID = lesson.AdvisorID.Value,
-                        ShareAmount = viewModel.PayoffAmount
+                        ShareAmount = viewModel.PayoffAmount,
+                        CoachWorkPlace = lesson.ServingCoach.WorkBranchID()
                     });
                     models.GetTable<Payment>().InsertOnSubmit(item);
                     item.InvoiceItem = invoice;
@@ -573,6 +626,15 @@ namespace WebHome.Controllers
                     viewModel.UnitCost = new int?[] { product.UnitPrice };
                     viewModel.Piece = new int?[] { viewModel.ProductCount };
                     viewModel.ItemRemark = new string[] { null };
+                }
+            }
+
+            viewModel.CarrierId1 = viewModel.CarrierId1.GetEfficientString();
+            if (viewModel.CarrierId1 != null)
+            {
+                if (viewModel.CarrierType == null)
+                {
+                    viewModel.CarrierType = "3J0002";
                 }
             }
 
@@ -1118,7 +1180,7 @@ namespace WebHome.Controllers
                 foreach (var v in viewModel.VoidID)
                 {
                     var item = models.GetTable<Payment>().Where(p => p.PaymentID == v).FirstOrDefault();
-                    if (item.VoidPayment == null)
+                    if (item!=null && item.VoidPayment == null)
                     {
                         voidPaymentForInvoice(item);
 
@@ -1129,6 +1191,14 @@ namespace WebHome.Controllers
                             Status = (int)Naming.CourseContractStatus.待審核,
                             VoidDate = DateTime.Now
                         };
+
+                        ///刪除當月已分潤
+                        /// 
+                        DateTime startDate = DateTime.Today.FirstDayOfMonth();
+                        if (item.PayoffDate >= startDate && item.PayoffDate < startDate.AddMonths(1))
+                        {
+                            models.DeleteAllOnSubmit<TuitionAchievement>(t => t.InstallmentID == item.PaymentID);
+                        }
 
                         if (viewModel.Status.HasValue)
                         {
@@ -1607,7 +1677,7 @@ namespace WebHome.Controllers
             ViewResult result = (ViewResult)InquirePayment(viewModel);
 
             IQueryable<Payment> items = (IQueryable<Payment>)result.Model;
-            items = items.FilterByEffective();
+            //items = items.FilterByEffective();
 
             return View("~/Views/Payment/Module/PaymentAchievementList.ascx", items);
         }
@@ -1727,6 +1797,7 @@ namespace WebHome.Controllers
 
                 achievement.ShareAmount = viewModel.ShareAmount;
                 achievement.CommitShare = DateTime.Now;
+                achievement.CoachWorkPlace = models.GetTable<ServingCoach>().Where(s => s.CoachID == viewModel.CoachID).First().WorkBranchID();
                 models.SubmitChanges();
 
                 return Json(new { result = true });
@@ -1783,7 +1854,8 @@ namespace WebHome.Controllers
             viewModel.PayoffDateTo = viewModel.PayoffDateTo.Value.AddDays(1);
             viewModel.BypassCondition = true;
 
-            IQueryable<Payment> items = models.GetTable<Payment>().Where(p => p.ContractPayment != null);
+            IQueryable<Payment> items = models.GetTable<Payment>()
+                .Where(p => p.ContractPayment != null);
 
             //收款(不含終止沖銷)
             IEnumerable<PaymentMonthlyReportItem> details = items
@@ -1900,8 +1972,8 @@ namespace WebHome.Controllers
             {
                 DataTable table = details.ToDataTable();
                 table.TableName = $"{viewModel.PayoffDateFrom:yyyy-MM-dd}~{viewModel.PayoffDateTo.Value.AddDays(-1):yyyy-MM-dd}";
-                table.Columns[4].ColumnName = "退款金額(含稅)";
-                table.Columns[5].ColumnName = "收款金額(含稅)";
+                table.Columns[5].ColumnName = "退款金額(含稅)";
+                table.Columns[6].ColumnName = "收款金額(含稅)";
                 ds.Tables.Add(table);
 
                 List<String> days = new List<string>();
@@ -1925,7 +1997,7 @@ namespace WebHome.Controllers
                     ds.Tables.Add(table);
                 }
 
-                if (!details.Any(d => d.摘要.StartsWith("課程顧問費用") && d.信託 == ""))
+                //if (!details.Any(d => d.摘要.StartsWith("課程顧問費用") && d.信託 == ""))
                 {
                     table = details.Where(d => d.信託 == "是").BuildContractPaymentReport(models);
                     table.TableName = "課程顧問費用彙總-信託";

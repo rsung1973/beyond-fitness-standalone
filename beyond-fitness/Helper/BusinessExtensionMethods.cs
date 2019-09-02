@@ -1995,6 +1995,7 @@ namespace WebHome.Helper
             }
             item.LessonTimeSettlement.ProfessionalLevelID = coach.LevelID.Value;
             item.LessonTimeSettlement.MarkedGradeIndex = coach.ProfessionalLevel.GradeIndex;
+            item.LessonTimeSettlement.CoachWorkPlace = coach.WorkBranchID();
         }
 
         public static IQueryable<TrainingItemAids> LearnerTrainingAids<TEntity>(this int uid, ModelSource<TEntity> models)

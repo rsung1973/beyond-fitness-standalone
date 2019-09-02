@@ -27,7 +27,7 @@
 
 </asp:Content>
 <asp:Content ID="mainContent" ContentPlaceHolderID="mainContent" runat="server">
-    <%  Html.RenderPartial("~/Views/Invoice/Module/TurnkeyWidgetGrid.ascx",_model); %>
+    <%  Html.RenderPartial("~/Views/Invoice/Module/TurnkeyWidgetGrid.cshtml",_model); %>
     <%  Html.RenderPartial("~/Views/Shared/ConfirmationDialog.ascx"); %>
 </asp:Content>
 

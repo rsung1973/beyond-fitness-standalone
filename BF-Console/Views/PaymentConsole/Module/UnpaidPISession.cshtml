@@ -27,7 +27,9 @@
         _viewModel.BranchID = models.GetTable<CoachWorkplace>().Where(c => c.CoachID == _profile.UID)
                                 .FirstOrDefault()?.BranchID;
     }
-    IQueryable<LessonTime> items = _viewModel.GetUnpaidPISession(models);
+    IQueryable<LessonTime> items = _viewModel.GetUnpaidPISession(models)
+                                        .OrderBy(l => l.BranchID)
+                                        .ThenBy(l => l.ClassTime);
 }
 <div class="card square xl-blue inbox">
     <div class="cover">

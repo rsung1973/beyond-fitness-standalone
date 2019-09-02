@@ -281,7 +281,7 @@ namespace WebHome.Models.ViewModel
                 }
             }
 
-            return new InvoiceException(String.Format("載具類別為非共通性載具，傳送資料：{0}", _invItem.CarrierType));
+            return new InvoiceException("載具號碼、類別不為共通性載具") { RequestName = "CarrierId1" };
         }
 
         protected virtual InvoiceException checkBusinessDetails()
@@ -381,7 +381,8 @@ namespace WebHome.Models.ViewModel
             {
                 if (String.IsNullOrEmpty(product.InvoiceProduct.Brief) || product.InvoiceProduct.Brief.Length > 256)
                 {
-                    return new InvoiceException(String.Format("品項名稱不可空白長度不得大於256，傳送資料：{0}", product.InvoiceProduct.Brief));
+                    //return new InvoiceException(String.Format("品項名稱不可空白長度不得大於256，傳送資料：{0}", product.InvoiceProduct.Brief));
+                    return new InvoiceException("請輸入發票品項");
                 }
 
 

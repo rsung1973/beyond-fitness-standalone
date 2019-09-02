@@ -194,11 +194,13 @@ namespace WebHome.Helper
                     t.BranchID
                 });
 
+            var branchItems = models.GetTable<BranchStore>().ToArray();
+
             foreach (var item in details)
             {
                 CourseContract contract = models.GetTable<CourseContract>().Where(u => u.ContractID == item.Key.ContractID).First();
                 ServingCoach coach = models.GetTable<ServingCoach>().Where(c => c.CoachID == item.Key.AttendingCoach).First();
-                var branch = models.GetTable<BranchStore>().Where(b => b.BranchID == item.Key.BranchID).First();
+                var branch = branchItems.Where(b => b.BranchID == item.Key.BranchID).First();
 
                 var r = table.NewRow();
                 r[0] = contract.ContractNo();
@@ -231,7 +233,10 @@ namespace WebHome.Helper
                 {
                     r[11] = contract.LessonPriceType.Status.Value;
                 }
-                r[12] = coach.WorkPlace();
+
+                var sample = item.First();
+                r[12] = branchItems.Where(b => b.BranchID == sample.CoachWorkPlace)
+                            .Select(b=>b.BranchName).FirstOrDefault() ?? "其他";
                 table.Rows.Add(r);
             }
 
@@ -371,9 +376,9 @@ namespace WebHome.Helper
                 類別 = ((Naming.PaymentTransactionType?)item.Payment.TransactionType).ToString(),
                 發票號碼 = item.Payment.InvoiceID.HasValue
                     ? item.Payment.InvoiceItem.TrackCode + item.Payment.InvoiceItem.No : null,
-                收款日期 = item.Payment.VoidPayment == null ? String.Format("{0:yyyy/MM/dd}", item.Payment.PayoffDate) : null,
+                收款日期 = /*item.Payment.VoidPayment == null ?*/ String.Format("{0:yyyy/MM/dd}", item.Payment.PayoffDate)/* : null*/,
                 簽約場所 = item.Payment.PaymentTransaction.BranchStore.BranchName,
-                體能顧問所屬分店 = item.ServingCoach.WorkPlace(),
+                體能顧問所屬分店 = item.CoachWorkPlace.HasValue ? item.BranchStore.BranchName : "其他",
             });
 
             DataTable table = details.ToDataTable();
@@ -601,20 +606,20 @@ namespace WebHome.Helper
 
             foreach(var item in helper.SettlementFullAchievement)
             {
-                models.ExecuteCommand("update LessonTimeSettlement set SettlementStatus = {0} where LessonID={1}", (int)Naming.LessonSettlementStatus.FullAchievement, item.LessonID);
+                models.ExecuteCommand("update LessonTimeSettlement set SettlementStatus = {0},SettlementID = {1} where LessonID={2}", (int)Naming.LessonSettlementStatus.FullAchievement, settlement.SettlementID, item.LessonID);
             }
 
             foreach (var item in helper.SettlementHalfAchievement)
             {
-                models.ExecuteCommand("update LessonTimeSettlement set SettlementStatus = {0} where LessonID={1}", (int)Naming.LessonSettlementStatus.HalfAchievement, item.LessonID);
+                models.ExecuteCommand("update LessonTimeSettlement set SettlementStatus = {0},SettlementID = {1} where LessonID={2}", (int)Naming.LessonSettlementStatus.HalfAchievement, settlement.SettlementID, item.LessonID);
             }
                        
             var coachItems = models.PromptEffectiveCoach();
             var salaryTable = models.GetTable<CoachMonthlySalary>();
             var settlementItems = helper.LessonItems;
 
-            var paymentItems = models.GetTable<Payment>().Where(p => p.PayoffDate >= settlement.StartDate && p.PayoffDate < settlement.EndExclusiveDate)
-                                    .FilterByEffective();
+            var paymentItems = models.GetTable<Payment>().Where(p => p.PayoffDate >= settlement.StartDate && p.PayoffDate < settlement.EndExclusiveDate);
+                                    //.FilterByEffective();
             IQueryable<TuitionAchievement> achievementItems = paymentItems.Join(models.GetTable<TuitionAchievement>(),
                 p => p.PaymentID, t => t.InstallmentID, (p, t) => t);
 

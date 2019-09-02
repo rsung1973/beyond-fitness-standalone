@@ -8,6 +8,8 @@
 <%@ Import Namespace="WebHome.Models.DataEntity" %>
 <%@ Import Namespace="WebHome.Controllers" %>
 
+<%  if (_userProfile.IsAssistant() || _userProfile.IsSysAdmin())
+    {   %>
 <li>
     <a href="#" title="績效管理"><i class="fas fa-lg fa-fw fa-chart-bar"></i><span class="menu-item-parent">績效管理</span></a>
     <ul>
@@ -21,12 +23,12 @@
         </li>
         <%  } %>
         <li>
-            <a href="<%= Url.Action("LessonIndex","Achievement") %>"><i class="fas fa-fw fa-clipboard-list"></i>上課統計表</a>
+            <a href="<%= Url.Action("LessonIndex", "Achievement") %>"><i class="fas fa-fw fa-clipboard-list"></i>上課統計表</a>
         </li>
         <li>
-            <a href="<%= Url.Action("BranchStoreIndex","Achievement") %>"><i class="far fa-fw fa-chart-bar"></i>分店上課總覽</a>
+            <a href="<%= Url.Action("BranchStoreIndex", "Achievement") %>"><i class="far fa-fw fa-chart-bar"></i>分店上課總覽</a>
         </li>
-        <%  if (_userProfile.IsAssistant() || _userProfile.IsSysAdmin() || _userProfile.IsOfficer()  || _userProfile.IsManager())
+        <%  if (_userProfile.IsAssistant() || _userProfile.IsSysAdmin() || _userProfile.IsOfficer() || _userProfile.IsManager())
             { %>
         <li>
             <a href="<%= Url.Action("PerformanceIndex", "Achievement") %>"><i class="fas fa-fw fa-hand-holding-heart fa-spin"></i>每月薪資統計表</a>
@@ -34,7 +36,7 @@
         <%  } %>
     </ul>
 </li>
-
+<%  } %>
 <script runat="server">
 
     ModelStateDictionary _modelState;
