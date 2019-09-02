@@ -2863,6 +2863,14 @@ fieldset[disabled] .btn-link.active {
     background-color: #fff
 }
 
+.bg-darkteal .bootstrap-select .btn.btn-round.btn-simple .filter-option {
+    color: #fff;
+}
+
+.bg-darkteal .input-group .form-control {
+    color: #fff;
+}
+
 .bg-darkteal .input-group .form-control::-moz-placeholder {
     color: #fff;
     font-weight: 400;
