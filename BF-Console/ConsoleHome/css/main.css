@@ -2869,6 +2869,7 @@ fieldset[disabled] .btn-link.active {
 
 .bg-darkteal .input-group .form-control {
     color: #fff;
+    background: #052333;
 }
 
 .bg-darkteal .input-group .form-control::-moz-placeholder {
