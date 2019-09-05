@@ -21,6 +21,7 @@ namespace WebHome.Models.ViewModel
         {
             return (QueryViewModel)this.MemberwiseClone();
         }
+        public String CustomQuery { get; set; }
     }
 
     public class LoginViewModel : QueryViewModel

@@ -55,5 +55,8 @@
     <Setting Name="GA_ID_Frontend" Type="System.String" Scope="Application">
       <Value Profile="(Default)">UA-84335528-5</Value>
     </Setting>
+    <Setting Name="PrintInvoiceWebAp" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://210.65.88.44/WebInvoice</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

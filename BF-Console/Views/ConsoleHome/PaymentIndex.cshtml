@@ -137,19 +137,34 @@
             }
         }
 
-        function loadPaymentList(viewModel) {
-            showLoading();
-            $.post('@Html.Raw(Url.Action("ShowPaymentList", "PaymentConsole"))', viewModel, function (data) {
-                hideLoading();
-                if ($.isPlainObject(data)) {
-                    alert(data.message);
-                } else {
-                    if ($global.showPayment) {
-                        $global.showPayment(data);
-                    }
+    function loadPaymentList(viewModel) {
+        showLoading();
+        $.post('@Html.Raw(Url.Action("ShowPaymentList", "PaymentConsole"))', viewModel, function (data) {
+            hideLoading();
+            if ($.isPlainObject(data)) {
+                swal(data.message);
+            } else {
+                if ($global.showPayment) {
+                    $global.showPayment(data);
                 }
-            });
-        }
+            }
+        });
+    }
+
+    function inquirePayment(viewModel) {
+        showLoading();
+        $.post('@Html.Raw(Url.Action("InquirePayment", "PaymentConsole"))', viewModel, function (data) {
+            hideLoading();
+            if ($.isPlainObject(data)) {
+                swal(data.message);
+            } else {
+                if ($global.showPayment) {
+                    $global.showPayment(data);
+                }
+            }
+        });
+    }
+
 
         function processPayment(keyID) {
             showLoading();
@@ -168,9 +183,9 @@
         if (!printerIP || printerIP == '') {
             printerIP = '192.168.1.200';
         }
-        @if (WebHome.Properties.Settings.Default.UseSSL)
+        @if (!String.IsNullOrEmpty(WebHome.Properties.Settings.Default.PrintInvoiceWebAp))
         {
-            <text>$('<form>').launchDownload('@Html.Raw("http://210.65.88.44/WebInvoice" + Url.Action("LoadInvoiceImageByUID", "Invoice",new { _profile.UID,t = DateTime.Now.Ticks }))', { 'invoiceID': invoiceID, 'printerIP': printerIP }, '_blank');</text>
+            <text>$('<form>').launchDownload('@Html.Raw(WebHome.Properties.Settings.Default.PrintInvoiceWebAp + Url.Action("LoadInvoiceImageByUID", "Invoice",new { _profile.UID,t = DateTime.Now.Ticks }))', { 'invoiceID': invoiceID, 'printerIP': printerIP }, '_blank');</text>
         }
         else
         {

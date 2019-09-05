@@ -596,7 +596,8 @@ namespace WebHome.Helper.BusinessOperation
                 }
                 else
                 {
-                    queryExpr = queryExpr.Or(c => c.ContractPayment.CourseContract.ContractNo.StartsWith(viewModel.ContractNo));
+                    queryExpr = queryExpr.Or(c => c.ContractPayment == null
+                                    || c.ContractPayment.CourseContract.ContractNo.StartsWith(viewModel.ContractNo));
                 }
                 items = items.Where(queryExpr);
             }

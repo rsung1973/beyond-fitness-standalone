@@ -124,8 +124,8 @@
                                         .Join(models.PromptEffectiveContract(),
                                             m => m.ContractID, c => c.ContractID, (m, c) => c);
                                 var items = dataQuery.ToList();
-                                var fullPaid = items.Where(c => c.TotalCost <= (c.TotalPaidAmount() ?? 0));
-                                var unpaid = items.Where(c => c.TotalCost > (c.TotalPaidAmount() ?? 0));
+                                var fullPaid = items.Where(c => c.TotalCost <= c.TotalPaidAmount());
+                                var unpaid = items.Where(c => c.TotalCost > c.TotalPaidAmount());
                             }
                             @{
                                 Html.RenderPartial("~/Views/LearnerProfile/Module/LearnerEffectiveContractList.cshtml", fullPaid);

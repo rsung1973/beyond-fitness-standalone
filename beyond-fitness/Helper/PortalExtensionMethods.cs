@@ -276,7 +276,7 @@ namespace WebHome.Helper
             if (items.Count() > 0)
             {
                 var unpaid = items.ToList()
-                        .Where(c => c.TotalCost > (c.TotalPaidAmount() ?? 0));
+                        .Where(c => c.TotalCost > c.TotalPaidAmount());
                 if (unpaid.Count() > 0)
                 {
                     return new PromptPayoffDueEvent

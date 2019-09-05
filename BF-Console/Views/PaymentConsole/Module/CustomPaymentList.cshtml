@@ -1,0 +1,38 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    IQueryable<Payment> _model;
+    PaymentQueryViewModel _viewModel;
+
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = (IQueryable<Payment>)this.Model;
+    _viewModel = ViewBag.ViewModel as PaymentQueryViewModel;
+}
+@{ Html.RenderPartial("~/Views/PaymentConsole/Module/PaymentItemsList.cshtml", _model);}
+
+<script>
+
+    $(function () {
+        if ($global.queryCallback) {
+            $global.queryCallback();
+        }
+    });
+
+</script>
+
+
+
+
+

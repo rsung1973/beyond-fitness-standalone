@@ -44,6 +44,12 @@
                 applicable = false;
                 <span class="col-red"><i class="zmdi zmdi-block"></i>服務申請進行中</span>
             }
+            @if (_model.TotalPaidAmount() < _model.TotalCost)
+            {
+                applicable = false;
+                <span class="col-red"><i class="zmdi zmdi-block"></i>費用未結清</span><br />
+            }
+
         </div>
         <div class="col-4 text-right">
             @{ 

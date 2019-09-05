@@ -46,6 +46,38 @@ namespace WebHome.Controllers
             return View("~/Views/PaymentConsole/Module/PaymentItemsList.cshtml", items);
         }
 
+        public ActionResult InquirePayment(PaymentQueryViewModel viewModel)
+        {
+            if (viewModel.KeyID != null)
+            {
+                viewModel.PaymentID = viewModel.DecryptKeyValue();
+            }
+
+            viewModel.CustomQuery = viewModel.CustomQuery.GetEfficientString();
+            if (viewModel.CustomQuery != null)
+            {
+                viewModel.ContractNo = viewModel.UserName = viewModel.InvoiceNo = viewModel.CustomQuery;
+            }
+
+            if (!viewModel.PayoffDateFrom.HasValue && !viewModel.PayoffDateTo.HasValue
+                && viewModel.CustomQuery == null)
+            {
+                ModelState.AddModelError("PayoffDateFrom", "請選擇查詢起日");
+                ModelState.AddModelError("PayoffDateTo", "請選擇查詢迄日");
+                ModelState.AddModelError("CustomQuery", "請輸入學生姓名(暱稱) 或 合約編號 或 發票號碼");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                ViewBag.ModelState = ModelState;
+                return View(ConsoleHomeController.InputErrorView);
+            }
+
+            IQueryable<Payment> items = viewModel.InquirePayment(this, out string alertMessage);
+            return View("~/Views/PaymentConsole/Module/CustomPaymentList.cshtml", items);
+        }
+
+
 
         public ActionResult ClearUnpaidContract()
         {
@@ -81,6 +113,15 @@ namespace WebHome.Controllers
 
             return View("~/Views/PaymentConsole/PaymentModal/AboutPaymentDetails.cshtml", item);
         }
+
+        public ActionResult InvokePaymentQuery(PaymentQueryViewModel viewModel)
+        {
+            //viewModel.ContractDateFrom = DateTime.Today.FirstDayOfMonth();
+            //viewModel.ContractDateTo = viewModel.ContractDateFrom.Value.AddMonths(1).AddDays(-1);
+            ViewBag.ViewModel = viewModel;
+            return View("~/Views/PaymentConsole/PaymentModal/PaymentQuery.cshtml");
+        }
+
 
     }
 }

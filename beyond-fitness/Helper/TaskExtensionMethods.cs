@@ -317,7 +317,7 @@ namespace WebHome.Helper
                                     * original.CourseContractType.GroupingMemberCount
                                     * original.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount / 100 ?? 0);
 
-                            refund = Math.Max(refund ?? 0, 0);
+                            refund = Math.Max(refund , 0);
                             var adjustment = returnAmt - refund;
 
                             var dummyInvoice = models.GetTable<InvoiceItem>().Where(i => i.No == "--").FirstOrDefault();
@@ -359,7 +359,7 @@ namespace WebHome.Helper
                             {
                                 //Logger.Debug("RevisionID: " + item.RevisionID);
                                 //Logger.Debug("balance: " + balance);
-                                models.CreateAllowanceForContract(original, refund.Value);
+                                models.CreateAllowanceForContract(original, refund);
                             }
                         }
 

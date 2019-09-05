@@ -63,7 +63,6 @@
             <option value="刷卡">刷卡</option>
             <option value="轉帳">轉帳</option>
         </select>
-        <input type="hidden" name="errorMessage" />
     </div>
     <div class="col-12">
         <div class="input-group">
@@ -72,6 +71,19 @@
                 <i class="zmdi zmdi-text-format"></i>
             </span>
         </div>
+    </div>
+    <div class="col-12 eInvoice-dialog">
+        <div class="input-group">
+            <input type="text" class="form-control col-red" name="CarrierId1" placeholder="請輸入載具號碼" value="@(_viewModel.CarrierId1)" />
+            <span class="input-group-addon">
+                <i class="zmdi zmdi-money-box"></i>
+            </span>
+        </div>
+    </div>
+    <div class="col-12 eInvoice-dialog">
+        <dv>
+            <input type="hidden" name="errorMessage" />
+        </dv>
     </div>
     <div class="col-12">
         <div class="input-group">

@@ -259,7 +259,7 @@
                 formData.InvoiceNow = invoiceNow;
 
                 showLoading();
-                $.post('<%= Url.Action("CommitPaymentForContract","Payment",new { _viewModel.PaymentID }) %>', formData, function (data) {
+                $.post('<%= Url.Action("CommitPaymentForContract","Payment",new { _viewModel.PaymentID, CustomBrief = false }) %>', formData, function (data) {
                     hideLoading();
                     if ($.isPlainObject(data)) {
                         if (data.result) {

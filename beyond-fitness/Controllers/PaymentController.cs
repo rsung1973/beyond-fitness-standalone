@@ -225,8 +225,12 @@ namespace WebHome.Controllers
                 viewModel.Piece = new int?[] { 1 };
                 viewModel.ItemRemark = new string[] { null };
             }
-            else
+            else 
             {
+                if (!viewModel.CustomBrief.HasValue)
+                {
+                    ModelState.AddModelError("CustomBrief", "請選擇發票品項是否更改");
+                }
 
                 viewModel.ItemNo = new string[] { "01", "02" };
                 viewModel.Brief = new string[] { "專業顧問建置與諮詢費", "教練課程費" };
@@ -311,7 +315,7 @@ namespace WebHome.Controllers
                 models.SubmitChanges();
                 TaskExtensionMethods.ProcessInvoiceToGov();
 
-                return Json(new { result = true, invoiceNo = item.InvoiceItem.TrackCode + item.InvoiceItem.No, item.InvoiceID, item.InvoiceItem.InvoiceType });
+                return Json(new { result = true, invoiceNo = item.InvoiceItem.TrackCode + item.InvoiceItem.No, item.InvoiceID, item.InvoiceItem.InvoiceType, item.PaymentID });
             }
             catch (Exception ex)
             {
@@ -395,7 +399,7 @@ namespace WebHome.Controllers
 
                 models.SubmitChanges();
 
-                return Json(new { result = true });
+                return Json(new { result = true, item.PaymentID });
             }
             catch (Exception ex)
             {
@@ -460,7 +464,7 @@ namespace WebHome.Controllers
             item.InvoiceItem.InvoiceAmountType.TotalAmount = viewModel.PayoffAmount;
         }
 
-        public ActionResult CommitPaymentForPISession(PaymentViewModel viewModel)
+        public ActionResult CommitPaymentForPISession(PaymentViewModel viewModel, bool? alertError)
         {
             ViewBag.ViewModel = viewModel;
             var profile = HttpContext.GetUser();
@@ -469,6 +473,8 @@ namespace WebHome.Controllers
             if (!viewModel.RegisterID.HasValue || lesson == null)
             {
                 ModelState.AddModelError("RegisterID", "請選擇收款自主訓練!!");
+                if (alertError != false)
+                    return View("~/Views/Shared/AlertMessage.ascx", model: "請選擇收款自主訓練");
             }
             else
             {
@@ -478,6 +484,8 @@ namespace WebHome.Controllers
             if (!viewModel.PayoffDate.HasValue)
             {
                 ModelState.AddModelError("PayoffDate", "請選擇收款日期!!");
+                if (alertError != false)
+                    return View("~/Views/Shared/AlertMessage.ascx", model: "請選擇收款日期");
             }
 
             viewModel.ItemNo = new string[] { "01" };
@@ -506,12 +514,16 @@ namespace WebHome.Controllers
 
             if (String.IsNullOrEmpty(viewModel.PaymentType))
             {
-                ModelState.AddModelError("errorMessage", "請選擇收款方式!!");
+                ModelState.AddModelError("PaymentType", "請選擇收款方式!!");
+                if (alertError != false)
+                    return View("~/Views/Shared/AlertMessage.ascx", model: "請選擇收款方式");
             }
 
             if (!viewModel.InvoiceType.HasValue)
             {
                 ModelState.AddModelError("InvoiceType", "請選擇發票類型");
+                if (alertError != false)
+                    return View("~/Views/Shared/AlertMessage.ascx", model: "請選擇發票類型");
             }
 
             if (!ModelState.IsValid)
@@ -559,7 +571,7 @@ namespace WebHome.Controllers
                 models.AttendLesson(lesson.LessonTime.First());
                 TaskExtensionMethods.ProcessInvoiceToGov();
 
-                return Json(new { result = true, invoiceNo = item.InvoiceItem.TrackCode + item.InvoiceItem.No, item.InvoiceID, item.InvoiceItem.InvoiceType });
+                return Json(new { result = true, invoiceNo = item.InvoiceItem.TrackCode + item.InvoiceItem.No, item.InvoiceID, item.InvoiceItem.InvoiceType, item.PaymentID });
             }
             catch (Exception ex)
             {
@@ -705,7 +717,7 @@ namespace WebHome.Controllers
                 //    models.ExecuteCommand(@"delete Payment where InvoiceID = {0} and PaymentID <> {1}", invoice.InvoiceID, item.PaymentID);
                 //}
 
-                return Json(new { result = true, invoiceNo = item.InvoiceItem.TrackCode + item.InvoiceItem.No, item.InvoiceID, item.InvoiceItem.InvoiceType }, JsonRequestBehavior.AllowGet);
+                return Json(new { result = true, invoiceNo = item.InvoiceItem.TrackCode + item.InvoiceItem.No, item.InvoiceID, item.InvoiceItem.InvoiceType, item.PaymentID }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {

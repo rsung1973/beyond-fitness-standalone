@@ -51,7 +51,7 @@
                     if ($.isPlainObject(data)) {
                         if (data.result) {
                             showLoading();
-                            $('').launchDownload('@Html.Raw(Url.Action("PaymentIndex","ConsoleHome"))', { 'invoiceNo': data.invoiceNo });
+                            $('').launchDownload('@Html.Raw(Url.Action("InquirePaymentIndex","ConsoleHome"))', { 'PaymentID': data.PaymentID });
                         } else {
                             swal(data.message);
                         }

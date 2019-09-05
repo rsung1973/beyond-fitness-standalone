@@ -95,12 +95,12 @@
                 var formData = $('input,select,textarea').serializeObject();
 
                 showLoading();
-                $.post('@Html.Raw(Url.Action("CommitPaymentForPISession","Payment",new { _viewModel.PaymentID,TransactionType = (int)Naming.PaymentTransactionType.自主訓練 }))', formData, function (data) {
+                $.post('@Html.Raw(Url.Action("CommitPaymentForPISession","Payment",new { _viewModel.PaymentID,TransactionType = (int)Naming.PaymentTransactionType.自主訓練, alertError = false }))', formData, function (data) {
                     hideLoading();
                     if ($.isPlainObject(data)) {
                         if (data.result) {
                             showLoading();
-                            $('').launchDownload('@Html.Raw(Url.Action("PaymentIndex","ConsoleHome"))', { 'invoiceNo': data.invoiceNo });
+                            $('').launchDownload('@Html.Raw(Url.Action("InquirePaymentIndex","ConsoleHome"))', { 'PaymentID': data.PaymentID });
                         } else {
                             swal(data.message);
                         }

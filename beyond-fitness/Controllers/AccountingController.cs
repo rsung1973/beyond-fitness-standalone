@@ -145,7 +145,7 @@ namespace WebHome.Controllers
                     剩餘堂數 = item.RemainedLessonCount(),
                     購買堂數 = item.Lessons,
                     應付金額 = item.TotalCost ?? 0,
-                    已付金額 =  item.TotalPaidAmount() ?? 0,
+                    已付金額 =  item.TotalPaidAmount(),
                     欠款金額 =  (item.TotalCost - item.TotalPaidAmount()) ?? 0,
                     已繳期數 = item.ContractPayment.Count,
                 })

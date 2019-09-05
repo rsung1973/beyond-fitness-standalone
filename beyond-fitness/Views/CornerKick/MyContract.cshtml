@@ -79,7 +79,7 @@
                                 <div class="col s8 m10 text-box">
                                     @{
                                         var items = _model.ToList();
-                                        var unpaid = items.Where(c => c.TotalCost > (c.TotalPaidAmount() ?? 0));
+                                        var unpaid = items.Where(c => c.TotalCost > c.TotalPaidAmount());
                                         var unpaidCount = unpaid.Count();
                                     }
                                     <span class="black-t18">@(profile.RealName)</span> <span class="black-t12">

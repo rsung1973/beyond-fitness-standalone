@@ -46,8 +46,24 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="beyond-fitness, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\beyond-fitness.dll</HintPath>
+    </Reference>
     <Reference Include="ClosedXML, Version=0.94.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ClosedXML.0.94.2\lib\net46\ClosedXML.dll</HintPath>
+    </Reference>
+    <Reference Include="CommonLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\CommonLib.dll</HintPath>
+    </Reference>
+    <Reference Include="CommonLib.Logger, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\CommonLib.Logger.dll</HintPath>
+    </Reference>
+    <Reference Include="CommonLib.PlugInAdapter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\CommonLib.PlugInAdapter.dll</HintPath>
     </Reference>
     <Reference Include="DocumentFormat.OpenXml, Version=2.9.1.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
       <HintPath>..\packages\DocumentFormat.OpenXml.2.9.1\lib\net46\DocumentFormat.OpenXml.dll</HintPath>
@@ -126,15 +142,6 @@
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="WindowsBase" />
-    <Reference Include="CommonLib">
-      <HintPath>..\beyond-fitness\bin\CommonLib.dll</HintPath>
-    </Reference>
-    <Reference Include="CommonLib.Logger">
-      <HintPath>..\beyond-fitness\bin\CommonLib.Logger.dll</HintPath>
-    </Reference>
-    <Reference Include="CommonLib.PlugInAdapter">
-      <HintPath>..\beyond-fitness\bin\CommonLib.PlugInAdapter.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Web.Infrastructure">
@@ -1567,7 +1574,9 @@
     <Content Include="ConsoleHome\fonts\Material-Design-Iconic-Font.svg" />
     <Content Include="ConsoleHome\images\animation-bg.jpg" />
     <Content Include="ConsoleHome\images\avatar\avatar.png" />
+    <Content Include="ConsoleHome\images\avatar\avatars.png" />
     <Content Include="ConsoleHome\images\avatar\dietitian.jpg" />
+    <Content Include="ConsoleHome\images\avatar\noname.png" />
     <Content Include="ConsoleHome\images\avatar\therapist.jpg" />
     <Content Include="ConsoleHome\images\blog\Category1.jpg" />
     <Content Include="ConsoleHome\images\blog\Category2.jpg" />
@@ -1601,8 +1610,11 @@
     <Content Include="ConsoleHome\images\facesmile\hard-1.jpg" />
     <Content Include="ConsoleHome\images\facesmile\hard-2.png" />
     <Content Include="ConsoleHome\images\facesmile\hard.jpg" />
+    <Content Include="ConsoleHome\images\facesmile\regular-1.jpg" />
     <Content Include="ConsoleHome\images\facesmile\ragular-1.jpg" />
+    <Content Include="ConsoleHome\images\facesmile\regular-2.png" />
     <Content Include="ConsoleHome\images\facesmile\ragular-2.png" />
+    <Content Include="ConsoleHome\images\facesmile\regular-3.png" />
     <Content Include="ConsoleHome\images\facesmile\ragular-3.png" />
     <Content Include="ConsoleHome\images\facesmile\ragular.jpg" />
     <Content Include="ConsoleHome\images\generic.jpg" />
@@ -6048,6 +6060,8 @@
     <Content Include="Content\bootstrap-reboot.css.map" />
     <Content Include="Content\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap-grid.css.map" />
+    <Content Include="MainActivity\Portfolio\Dongmen.json" />
+    <Content Include="MainActivity\Pricing\Dongmen.json" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -6067,8 +6081,19 @@
     <Content Include="Scripts\umd\popper.min.js" />
     <Content Include="Views\Blog\Module\CategoryIndication.ascx" />
     <Content Include="Views\Blog\Module\PlusIndication.ascx" />
+    <Content Include="Views\ConsoleEvent\EventModal\MemberSelector.ascx" />
     <Content Include="Views\ConsoleEvent\Module\SearchLearner.ascx" />
     <Content Include="Views\ConsoleEvent\Module\CoachPIAttendeeSelector.ascx" />
+    <Content Include="Views\ConsoleEvent\EventModal\BookingCustomEvent.ascx" />
+    <Content Include="Views\ConsoleEvent\EventModal\BookingCoachPI.ascx" />
+    <Content Include="Views\ConsoleEvent\EventModal\BookingLesson.ascx" />
+    <Content Include="Views\ConsoleEvent\EventModal\AttendeeSelector.ascx" />
+    <Content Include="Views\ConsoleEvent\EventModal\AddEvent.ascx" />
+    <Content Include="Views\ConsoleEvent\EventModal\CoachPI.ascx" />
+    <Content Include="Views\ConsoleEvent\EventModal\UserEvent.ascx" />
+    <Content Include="Views\ConsoleEvent\EventModal\OtherLesson.ascx" />
+    <Content Include="Views\ConsoleEvent\EventModal\LearnerLesson.ascx" />
+    <Content Include="Views\ConsoleEvent\EventModal\LessonItem.ascx" />
     <Content Include="Views\ConsoleEvent\Module\RevokeLesson.ascx" />
     <Content Include="Views\ConsoleEvent\Module\LessonEmphasis.ascx" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
@@ -6083,6 +6108,7 @@
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\ConsoleHome\ViewCourseContract.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\AboutAchievement.cshtml" />
     <Content Include="Views\ConsoleHome\Module\AboutAchievementC3.cshtml" />
     <Content Include="Views\ConsoleHome\Module\AboutArticle.cshtml" />
     <Content Include="Views\ConsoleHome\Module\AboutCoach.cshtml" />
@@ -6127,63 +6153,17 @@
     <Content Include="Views\ConsoleEvent\EventModal\BookingTrialLesson.cshtml" />
     <Content Include="Views\ConsoleEvent\EventModal\BookingLearnerLesson.cshtml" />
     <Content Include="Views\ConsoleHome\Shared\JsAlert.cshtml" />
+    <Content Include="Views\LessonConsole\ProcessModal\TodayLessons.ascx" />
+    <Content Include="Views\LessonConsole\ProcessModal\ProcessCrossBranch.ascx" />
+    <Content Include="Views\LessonConsole\Module\CrossBranchLessonList.ascx" />
+    <Content Include="Views\MainActivity\Module\MobileMenuItem.ascx" />
+    <Content Include="Views\MainActivity\Module\ContactItem.ascx" />
+    <Content Include="Views\MainActivity\Module\JoinItem.ascx" />
+    <Content Include="Views\MainActivity\Module\MenuItem.ascx" />
+    <Content Include="Views\MainActivity\SamplePage.aspx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Views\ConsoleHome\EditLearnerCharacter.cshtml" />
-    <Content Include="Views\ConsoleHome\LearnerLesson.cshtml" />
-    <Content Include="Views\ConsoleHome\LearnerProfile.cshtml" />
-    <Content Include="Views\ConsoleHome\LessonTrainingContent.cshtml" />
-    <Content Include="Views\LearnerProfile\Module\ResumeLearnerCharacter.cshtml" />
-    <None Include="MainActivity\Portfolio\Dongmen.json" />
-    <Content Include="ConsoleHome\images\avatar\avatars.png" />
-    <Content Include="Views\ContractConsole\Module\CourseContractView20190801.cshtml" />
-    <Content Include="ConsoleHome\images\landing\guarantee-1.png" />
-    <None Include="MainActivity\Pricing\Dongmen.json" />
-    <Content Include="Views\PaymentConsole\Module\PaymentItemsList.cshtml" />
-    <Content Include="Views\PaymentConsole\Module\PaymentForOthers.cshtml" />
-    <Content Include="Views\PaymentConsole\Module\InvoiceToPrintOut.cshtml" />
-    <Content Include="Views\PaymentConsole\Module\PaymentForPT.cshtml" />
-    <Content Include="Views\PaymentConsole\Module\PaymentSummary.cshtml" />
-    <Content Include="Views\PaymentConsole\Module\PaymentItems.cshtml" />
-    <Content Include="Views\PaymentConsole\Module\ProcessPayment.cshtml" />
-    <Content Include="Views\PaymentConsole\Module\PaymentForPI.cshtml" />
-    <Content Include="Views\PaymentConsole\Module\ApplyVoidPayment.cshtml" />
-    <Content Include="Views\PaymentConsole\Module\TodayPayment.cshtml" />
-    <Content Include="Views\PaymentConsole\Module\PaymentDataItem.cshtml" />
-    <Content Include="Views\PaymentConsole\Indication\PaymentDetails.cshtml" />
-    <Content Include="Views\PaymentConsole\PaymentModal\AboutPaymentDetails.cshtml" />
-    <None Include="Views\ConsoleHome\.DS_Store" />
-    <Content Include="Views\ConsoleHome\PaymentIndex.cshtml" />
-    <Content Include="Views\ConsoleHome\Shared\DropifyFileUpload.cshtml" />
-    <Content Include="Views\ConsoleHome\Shared\MyPaymentHeader.cshtml" />
-    <Content Include="Views\PaymentConsole\EditPaymentForContract.cshtml" />
-    <Content Include="Views\PaymentConsole\EditPaymentForPISession.cshtml" />
-    <Content Include="Views\PaymentConsole\Module\AboutTodayPayment.cshtml" />
-    <Content Include="Views\PaymentConsole\Module\CoachPaymentView.cshtml" />
-    <Content Include="Views\PaymentConsole\Module\CurrentMonthAchievementShare.cshtml" />
-    <Content Include="Views\PaymentConsole\Module\CurrentMonthBranchPaymentView.cshtml" />
-    <Content Include="Views\PaymentConsole\Module\EditPayment.cshtml" />
-    <Content Include="Views\PaymentConsole\Module\UnpaidPISession.cshtml" />
-    <Content Include="Views\ContractConsole\Module\EditPaymentForContract.cshtml" />
-    <Content Include="ConsoleHome\images\landing\360\Dongmen-01.jpg" />
-    <Content Include="ConsoleHome\images\landing\360\Dongmen-02.jpg" />
-    <Content Include="ConsoleHome\images\landing\360\Dongmen-03.jpg" />
-    <Content Include="ConsoleHome\images\landing\360\nanjing-01.jpg" />
-    <Content Include="ConsoleHome\images\landing\360\nanjing-02.jpg" />
-    <Content Include="ConsoleHome\images\landing\360\nanjing-03.jpg" />
-    <Content Include="ConsoleHome\images\landing\360\xinyi-01.jpg" />
-    <Content Include="ConsoleHome\images\landing\360\xinyi-02.jpg" />
-    <Content Include="ConsoleHome\images\landing\360\xinyi-03.jpg" />
-    <Content Include="ConsoleHome\images\landing\360\xinyi-04.jpg" />
-    <Content Include="ConsoleHome\images\landing\360\zhongxiao-01.jpg" />
-    <Content Include="ConsoleHome\images\landing\360\zhongxiao-02.jpg" />
-    <Content Include="ConsoleHome\images\landing\360\zhongxiao-03.jpg" />
-    <Content Include="Views\PaymentConsole\Module\EditPaymentForPI.cshtml" />
-    <Content Include="Views\ContractConsole\Module\ContractDataStatus.cshtml" />
-    <Content Include="Views\ContractConsole\Module\ContractDataContent.cshtml" />
-    <Content Include="Views\ContractConsole\Module\ContractDataItem.cshtml" />
-    <Content Include="Views\ContractConsole\Module\ContractPayoff.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\InitializeType.cs" />
@@ -6195,6 +6175,7 @@
     <Compile Include="Controllers\LearnerProfileController.cs" />
     <Compile Include="Controllers\LessonConsoleController.cs" />
     <Compile Include="Controllers\MainActivityController.cs" />
+    <Compile Include="Controllers\PaymentConsoleController.cs" />
     <Compile Include="Controllers\ReportConsoleController.cs" />
     <Compile Include="Dummy.cs" />
     <Compile Include="Global.asax.cs">
@@ -6525,6 +6506,7 @@
     <Content Include="ConsoleHome\fonts\fontawesome-v5.3.1\webfonts\fa-solid-900.woff" />
     <Content Include="ConsoleHome\fonts\fontawesome-v5.3.1\webfonts\fa-solid-900.woff2" />
     <Content Include="ConsoleHome\images\certificate\.DS_Store" />
+    <Content Include="ConsoleHome\images\landing\.DS_Store" />
     <Content Include="ConsoleHome\images\landing\article\.DS_Store" />
     <Content Include="ConsoleHome\plugins\dropify\fonts\dropify.eot" />
     <Content Include="ConsoleHome\plugins\dropify\fonts\dropify.ttf" />
@@ -6550,6 +6532,8 @@
     <Content Include="MainActivity\Pricing\Zhongxiao.json" />
     <None Include="packages.config" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <Content Include="Views\MainActivity\Template\MainPage.Master" />
+    <Content Include="Views\MainActivity\Template\BlogPage.Master" />
     <Content Include="Views\MainActivity\Template\BlogPage.cshtml" />
     <Content Include="Views\MainActivity\Template\MainPage.cshtml" />
     <Content Include="Views\MainActivity\Index.cshtml" />
@@ -6596,6 +6580,7 @@
     <Content Include="Views\ConsoleHome\Shared\ReportInputError.cshtml" />
     <Content Include="Views\ContractConsole\Module\ContractList.cshtml" />
     <Content Include="Views\ConsoleHome\Shared\AlertMessage.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\AboutLearners.cshtml" />
     <Content Include="Views\ConsoleHome\Module\AboutStaff.cshtml" />
     <Content Include="Views\ConsoleHome\Module\CalendarEvents.cshtml" />
     <Content Include="Views\ConsoleHome\Module\DailyEventItems.cshtml" />
@@ -6604,6 +6589,7 @@
     <Content Include="Views\ConsoleHome\Module\ExerciseBillboardDetails.cshtml" />
     <Content Include="Views\ConsoleHome\Module\MainCalendar.cshtml" />
     <Content Include="Views\ConsoleHome\Module\RenderLessonCheck.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\TodayLessonsBarChart.cshtml" />
     <Content Include="Views\ConsoleHome\Shared\MyContractHeader.cshtml" />
     <Content Include="Views\ConsoleHome\Shared\PagingControl.cshtml" />
     <Content Include="Views\ContractConsole\ContractModal\AboutContractDetails.cshtml" />
@@ -6624,6 +6610,7 @@
     <Content Include="Views\ContractConsole\ContractService\ContractTermination.cshtml" />
     <Content Include="Views\ContractConsole\ContractService\ContractTransference.cshtml" />
     <Content Include="Views\ContractConsole\ContractService\CourseContractExtensionView.cshtml" />
+    <Content Include="Views\ContractConsole\ContractService\CourseContractOtherAmendmentView.cshtml" />
     <Content Include="Views\ContractConsole\ContractService\CourseContractTerminationView.cshtml" />
     <Content Include="Views\ContractConsole\ContractService\CourseContractTransferenceView.cshtml" />
     <Content Include="Views\ContractConsole\ContractService\DoConsultantAssignment.cshtml" />
@@ -6681,9 +6668,11 @@
     <Content Include="Views\ConsoleHome\CrossBranchIndex.cshtml" />
     <Content Include="Views\ConsoleHome\EditBlogArticle.cshtml" />
     <Content Include="Views\ConsoleHome\EditCourseContract.cshtml" />
+    <Content Include="Views\ConsoleHome\LearnerLesson.cshtml" />
     <Content Include="Views\ConsoleHome\PostponeContractExpiration.cshtml" />
     <Content Include="Views\ConsoleHome\ReassignFitnessConsultant.cshtml" />
     <Content Include="Views\ConsoleHome\ReportIndex.cshtml" />
+    <Content Include="Views\ConsoleHome\SamplePage.cshtml" />
     <Content Include="Views\ConsoleHome\SignContractService.cshtml" />
     <Content Include="Views\ConsoleHome\SignCourseContract.cshtml" />
     <Content Include="Views\ConsoleHome\TerminateContract.cshtml" />
@@ -6704,6 +6693,7 @@
     <Content Include="Views\ReportConsole\Module\PaymentReport.cshtml" />
     <Content Include="Views\ReportConsole\Module\TrustReport.cshtml" />
     <Content Include="Views\ReportConsole\ReportModal\SelectAwardItem.cshtml" />
+    <Content Include="Views\ConsoleHome\LearnerProfile.cshtml" />
     <Content Include="Views\LearnerProfile\Module\PersonalExerciseRadarChart.cshtml" />
     <Content Include="Views\LearnerProfile\Module\LearnerEffectiveContractList.cshtml" />
     <Content Include="Views\LearnerProfile\Module\LearnerUnpaidContractList.cshtml" />
@@ -6711,6 +6701,7 @@
     <Content Include="Views\LearnerProfile\Module\LearnerCalendar.cshtml" />
     <Content Include="Views\LearnerProfile\Module\LearnerCalendarEvents.cshtml" />
     <Content Include="Views\LearnerProfile\Module\LearnerLessonsReviewDetails.cshtml" />
+    <Content Include="Views\ConsoleHome\LessonTrainingContent.cshtml" />
     <Content Include="Views\LearnerProfile\Module\ProfileHeader.cshtml" />
     <Content Include="Views\LearnerProfile\Module\RecentStatus.cshtml" />
     <Content Include="Views\LearnerProfile\Module\TrainingGoal.cshtml" />
@@ -6729,12 +6720,60 @@
     <Content Include="Views\LearnerProfile\Module\LessonList.cshtml" />
     <Content Include="Views\LearnerProfile\Module\LessonItems.cshtml" />
     <Content Include="Views\LearnerProfile\ProfileModal\ViewTrainingExecution.cshtml" />
+    <Content Include="Views\ConsoleHome\EditLearnerCharacter.cshtml" />
     <Content Include="Views\LearnerProfile\Module\PDQItem.cshtml" />
     <Content Include="Views\LessonConsole\Module\TrainingSparkleDetails.cshtml" />
     <Content Include="Views\LearnerProfile\Module\EditLearnerFeature.cshtml" />
     <Content Include="Views\LearnerProfile\Module\EditExercisePurpose.cshtml" />
     <Content Include="Views\LearnerProfile\Module\LearnerCharacter.cshtml" />
     <Content Include="Views\LearnerProfile\ProfileModal\SelectLearnerProfile.cshtml" />
+    <Content Include="Views\LearnerProfile\Module\ResumeLearnerCharacter.cshtml" />
+    <Content Include="Views\PaymentConsole\EditPaymentForContract.cshtml" />
+    <Content Include="Views\ContractConsole\Editing\UserProfileCommitted.cshtml" />
+    <Content Include="Views\ContractConsole\Module\ContractDataItem.cshtml" />
+    <Content Include="Views\ContractConsole\Module\EditPaymentForContract.cshtml" />
+    <Content Include="Views\LearnerProfile\Module\ExerciseSummary.cshtml" />
+    <Content Include="Views\ConsoleHome\PaymentIndex.cshtml" />
+    <Content Include="Views\PaymentConsole\Module\PaymentForPT.cshtml" />
+    <Content Include="Views\PaymentConsole\Module\PaymentSummary.cshtml" />
+    <Content Include="Views\PaymentConsole\Module\InvoiceToPrintOut.cshtml" />
+    <Content Include="Views\PaymentConsole\Module\PaymentForPI.cshtml" />
+    <Content Include="Views\PaymentConsole\Module\PaymentForOthers.cshtml" />
+    <Content Include="Views\PaymentConsole\Module\TodayPayment.cshtml" />
+    <Content Include="Views\ConsoleHome\Shared\DropifyFileUpload.cshtml" />
+    <Content Include="Views\ReportConsole\ReportModal\SelectCoachMonthlyReport.cshtml" />
+    <Content Include="Views\ReportConsole\ReportModal\SelectMonth.cshtml" />
+    <Content Include="Views\ContractConsole\Module\CourseContractView20190801.cshtml" />
+    <Content Include="Views\PaymentConsole\Module\PaymentItems.cshtml" />
+    <Content Include="Views\PaymentConsole\Module\PaymentItemsList.cshtml" />
+    <Content Include="Views\PaymentConsole\Module\ProcessPayment.cshtml" />
+    <Content Include="Views\ConsoleHome\VoidPayment.cshtml" />
+    <Content Include="Views\ConsoleHome\Shared\MyPaymentHeader.cshtml" />
+    <Content Include="Views\PaymentConsole\Module\ApplyVoidPayment.cshtml" />
+    <Content Include="Views\PaymentConsole\Module\PaymentDataItem.cshtml" />
+    <Content Include="Views\PaymentConsole\Indication\PaymentDetails.cshtml" />
+    <Content Include="Views\PaymentConsole\PaymentModal\AboutPaymentDetails.cshtml" />
+    <Content Include="Views\ContractConsole\Module\ContractDataContent.cshtml" />
+    <Content Include="Views\ContractConsole\Module\ContractDataStatus.cshtml" />
+    <Content Include="Views\ContractConsole\Module\ContractPayoff.cshtml" />
+    <Content Include="Views\PaymentConsole\Module\CurrentMonthAchievementShare.cshtml" />
+    <Content Include="Views\PaymentConsole\Module\CoachPaymentView.cshtml" />
+    <Content Include="Views\PaymentConsole\Module\CurrentMonthBranchPaymentView.cshtml" />
+    <Content Include="Views\PaymentConsole\Module\EditPayment.cshtml" />
+    <Content Include="Views\PaymentConsole\EditPaymentForPISession.cshtml" />
+    <Content Include="Views\PaymentConsole\Module\UnpaidPISession.cshtml" />
+    <Content Include="Views\PaymentConsole\Module\AboutTodayPayment.cshtml" />
+    <Content Include="Views\ReportConsole\Module\PrepareMonthlyBonus.cshtml" />
+    <Content Include="Views\BonusCredit\CoachBonusIndex.cshtml" />
+    <Content Include="Views\ConsoleHome\Shared\MyReportHeader.cshtml" />
+    <Content Include="Views\BonusCredit\Module\MonthlyBonusList.cshtml" />
+    <Content Include="Views\BonusCredit\BonusModal\GiveBonusToCoach.cshtml" />
+    <Content Include="Views\BonusCredit\Module\ProcessBonus.cshtml" />
+    <Content Include="Views\BonusCredit\BonusModal\EditCoachBonus.cshtml" />
+    <Content Include="Views\ReportConsole\Module\PrepareAchievementDetails.cshtml" />
+    <Content Include="Views\PaymentConsole\Module\EditPaymentForPI.cshtml" />
+    <Content Include="Views\Common\BranchStoreName.cshtml" />
+    <Content Include="Views\PaymentConsole\Module\EditPaymentForContract.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -6747,7 +6786,6 @@
     <Folder Include="ConsoleHome\images\landing\portfolio\" />
     <Folder Include="MainActivity\Portfolio\Coach\Bryant\" />
     <Folder Include="MainActivity\Portfolio\Nanjing\" />
-    <Folder Include="Views\BonusCredit\" />
     <Folder Include="Views\CommonHelper\" />
     <Folder Include="Views\ContractConsole\Items\" />
   </ItemGroup>
@@ -6758,12 +6796,6 @@
       <LastGenOutput>NamingItem.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\beyond-fitness\beyond-fitness.csproj">
-      <Project>{c49821ff-96c8-466b-aef4-137ec84fdefc}</Project>
-      <Name>beyond-fitness</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\index.d.ts" />

@@ -30,11 +30,11 @@
     </p>
 </div>
 <div class="col-6 text-right">
-    <h5 class="m-t-0">本日金額</h5>
+    <h5 class="m-t-0">本月金額</h5>
     <a href="#" onclick='showPaymentList(@Html.Raw(JsonConvert.SerializeObject(
             new
             {
-                PayoffDateFrom = DateTime.Today,
+                PayoffDateFrom = DateTime.Today.FirstDayOfMonth(),
                 PayoffDateTo = DateTime.Today.AddDays(1),
                 _viewModel.HandlerID,
                 IncomeOnly = true,
@@ -42,7 +42,7 @@
     <a href="#" onclick='showPaymentList(@Html.Raw(JsonConvert.SerializeObject(
             new
             {
-                PayoffDateFrom = DateTime.Today,
+                PayoffDateFrom = DateTime.Today.FirstDayOfMonth(),
                 PayoffDateTo = DateTime.Today.AddDays(1),
                 _viewModel.HandlerID,
                 HasCancellation = true,
@@ -50,7 +50,7 @@
     <a href="#" onclick='showPaymentList(@Html.Raw(JsonConvert.SerializeObject(
             new
             {
-                PayoffDateFrom = DateTime.Today,
+                PayoffDateFrom = DateTime.Today.FirstDayOfMonth(),
                 PayoffDateTo = DateTime.Today.AddDays(1),
                 _viewModel.HandlerID,
                 HasAllowance = true

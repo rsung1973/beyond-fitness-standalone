@@ -295,7 +295,7 @@ namespace WebHome.Models.DataEntity
         }
 
 
-        public static int? TotalPaidAmount(this CourseContract contract)
+        public static int TotalPaidAmount(this CourseContract contract)
         {
             return contract.ContractPayment
                 .Select(c => c.Payment)
@@ -303,7 +303,7 @@ namespace WebHome.Models.DataEntity
                     || p.TransactionType == (int)Naming.PaymentTransactionType.合約轉讓餘額
                     || p.TransactionType == (int)Naming.PaymentTransactionType.合約轉點餘額)
                 .FilterByEffective()
-                .Sum(c => c.PayoffAmount);
+                .Sum(c => c.PayoffAmount) ?? 0;
         }
 
         public static int? TotalPayoffCount(this CourseContract contract)

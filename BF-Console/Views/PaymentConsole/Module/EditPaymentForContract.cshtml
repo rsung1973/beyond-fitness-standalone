@@ -22,6 +22,7 @@
 }
 @{
     UserProfile _profile = Context.GetUser();
+    CourseContract _item = TempData["DataItem"] as CourseContract;
 }
 <h2>
     <strong>結帳櫃檯</strong>
@@ -58,9 +59,20 @@
     <div class="col-12">
         <select class="form-control show-tick" name="PaymentType">
             <option value="">-- 請選擇收款方式 --</option>
-            <option value="現金">現金</option>
-            <option value="刷卡">刷卡</option>
-            <option value="轉帳">轉帳</option>
+            @if (_profile.IsAuthorizedSysAdmin() || _profile.IsAssistant() || _profile.IsManager() || _profile.IsViceManager()
+                    || String.IsNullOrEmpty(_item.CourseContractExtension.PaymentMethod))
+            {
+                <option value="現金">現金</option>
+                <option value="刷卡">刷卡</option>
+                <option value="轉帳">轉帳</option>
+            }
+            else
+            {
+                foreach (var m in _item.CourseContractExtension.PaymentMethod.Split('/'))
+                {
+                    <option value="@(m)">@(m)</option>
+                }
+            }
         </select>
     </div>
     <div class="col-12">
@@ -126,7 +138,7 @@
             </div>
             <script>
                 $(function () {
-                    equipDatetimePicker({ 'startDate': '@($"{DateTime.Today.FirstDayOfMonth():yyyy-MM-dd}")', 'endDate': '@($"{DateTime.Today.FirstDayOfMonth().AddMonths(1).AddDays(-1):yyyy-MM-dd}")' });
+                    equipDatetimePicker({ 'startDate': '@($"{DateTime.Today.FirstDayOfMonth():yyyy-MM-dd}")', 'endDate': '@($"{DateTime.Today:yyyy-MM-dd}")' });
                 });
             </script>
             @*@if (!(_profile.IsAssistant() || _profile.IsManager()))
@@ -142,6 +154,9 @@
                     </script>
                 }*@
         </div>
+    }
+    @if (_profile.IsSysAdmin() || _profile.IsAssistant() || _profile.IsManager())
+    {
         <div class="col-12">
             <select class="form-control show-tick" name="CustomBrief">
                 <option value="">-- 請選擇發票品項是否更改 --</option>
@@ -175,6 +190,11 @@
             @*<label class="material-icons help-error-text" for="BuyerReceiptNo">clear 請輸入發票品項</label>*@
         </div>
     }
+    else
+    {
+        <input type="hidden" name="CustomBrief" value="@Html.Raw(false)" />
+    }
+
     <div class="col-12">
         <div>
             <input type="hidden" name="errorMessage" />
