@@ -113,7 +113,9 @@
                         <a class="m-r-10">
                             P.T session - @(contract.CourseContractType.TypeName)(@(contract.LessonPriceType.DurationInMinutes)分鐘)
                         </a>
-                        <span class="badge badge-info"><i class="zmdi zmdi-pin"></i>@(contract.CourseContractExtension.BranchStore.BranchName)</span>
+                        @{
+                            Html.RenderPartial("~/Views/Common/BranchStoreName.cshtml", contract.CourseContractExtension.BranchStore);
+                        }
                         <small class="float-right text-muted"><time>@(remainedCount)/@(contract.Lessons)</time></small>
                     </div>
                     @if (!validContract)
