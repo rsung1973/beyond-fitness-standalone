@@ -58,20 +58,32 @@
         IQueryable<Payment> items = models.PromptIncomePayment();
     }
     <!--我的收款-->
-    @{
+    @if (!_profile.IsSysAdmin() && (_profile.IsAssistant() || _profile.IsCoach() || _profile.IsServitor()))
+    {
         Html.RenderPartial("~/Views/PaymentConsole/Module/CoachPaymentView.cshtml", items);
     }
     <!--我的分店收款-->
+    @if (_profile.IsSysAdmin() || _profile.IsAssistant())
+    {
+        <div class="container-fluid">
+            <h4 class="card-outbound-header">我的分店收款</h4>
+            <div class="row clearfix">
+                @{
+                    Html.RenderPartial("~/Views/PaymentConsole/Module/CurrentMonthPaymentView.cshtml", items);
+                }
+            </div>
+        </div>
+    }
     @if (_profile.IsManager() || _profile.IsViceManager())
     {
-    <div class="container-fluid">
-        <h4 class="card-outbound-header">我的分店收款</h4>
-        <div class="row clearfix">
-            @{
-                Html.RenderPartial("~/Views/PaymentConsole/Module/CurrentMonthBranchPaymentView.cshtml", items);
-            }
+        <div class="container-fluid">
+            <h4 class="card-outbound-header">我的分店收款</h4>
+            <div class="row clearfix">
+                @{
+                    Html.RenderPartial("~/Views/PaymentConsole/Module/CurrentMonthBranchPaymentView.cshtml", items);
+                }
+            </div>
         </div>
-    </div>
     }
     <!--收款詳細資料-->
     <div class="container-fluid payment">

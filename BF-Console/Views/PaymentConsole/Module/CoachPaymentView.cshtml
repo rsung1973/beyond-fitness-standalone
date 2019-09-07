@@ -73,15 +73,18 @@
                     </div>
                 </div>
             </li>
-            <li class="col-lg-6 col-md-6 col-sm-12">
-                <div class="body">
-                    <div class="row">
-                        @{
-                            Html.RenderPartial("~/Views/PaymentConsole/Module/CurrentMonthAchievementShare.cshtml", _model);
-                        }
+            @if (_profile.IsCoach())
+            {
+                <li class="col-lg-6 col-md-6 col-sm-12">
+                    <div class="body">
+                        <div class="row">
+                            @{
+                                Html.RenderPartial("~/Views/PaymentConsole/Module/CurrentMonthAchievementShare.cshtml", _model);
+                            }
+                        </div>
                     </div>
-                </div>
-            </li>
+                </li>
+            }
         </ul>
     </div>
 </div>

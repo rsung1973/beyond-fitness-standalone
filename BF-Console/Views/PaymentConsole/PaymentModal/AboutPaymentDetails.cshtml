@@ -78,6 +78,8 @@
                                                     </div>
                                                 </div>
                                             </li>
+                                            @if (_model.TransactionType != (int)Naming.PaymentTransactionType.體能顧問費)
+                                            {
                                             <li>
                                                 <div class="list_tb tb2">
                                                     <div class="list_tr">
@@ -86,6 +88,7 @@
                                                     </div>
                                                 </div>
                                             </li>
+                                            }
                                             <li>
                                                 <div class="list_tb tb2">
                                                     <div class="list_tr">
@@ -209,8 +212,24 @@
                                                     <li>
                                                         <div class="list_tb tb2">
                                                             <div class="list_tr">
+                                                                <div class="list_td hd">載具號碼</div>
+                                                                <div class="list_td rt">@(invoice?.InvoiceCarrier?.CarrierNo)</div>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="list_tb tb2">
+                                                            <div class="list_tr">
                                                                 <div class="list_td hd">列印次數</div>
                                                                 <div class="list_td rt">@(invoice?.Document.DocumentPrintLog.Count)</div>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="list_tb tb2">
+                                                            <div class="list_tr">
+                                                                <div class="list_td hd">發票品項</div>
+                                                                <div class="list_td rt">@Html.Raw(String.Join("<br/>", invoice?.InvoiceDetails.Select(d=>d.InvoiceProduct.Brief)))</div>
                                                             </div>
                                                         </div>
                                                     </li>

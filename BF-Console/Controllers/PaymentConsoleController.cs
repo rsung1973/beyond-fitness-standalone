@@ -54,18 +54,38 @@ namespace WebHome.Controllers
             }
 
             viewModel.CustomQuery = viewModel.CustomQuery.GetEfficientString();
-            if (viewModel.CustomQuery != null)
+            //if (viewModel.CustomQuery != null)
+            //{
+            //    viewModel.ContractNo = viewModel.UserName = viewModel.InvoiceNo = viewModel.CustomQuery;
+            //}
+
+            if (viewModel.CustomQuery == null)
             {
-                viewModel.ContractNo = viewModel.UserName = viewModel.InvoiceNo = viewModel.CustomQuery;
+                bool hasQuery = false;
+                if (!viewModel.PayoffDateFrom.HasValue)
+                {
+                    ModelState.AddModelError("PayoffDateFrom", "請選擇查詢起日");
+                }
+                else
+                {
+                    hasQuery = true;
+                }
+
+                if (!viewModel.PayoffDateTo.HasValue)
+                {
+                    ModelState.AddModelError("PayoffDateTo", "請選擇查詢迄日");
+                }
+                else
+                {
+                    hasQuery = true;
+                }
+
+                if (!hasQuery)
+                {
+                    ModelState.AddModelError("CustomQuery", "請輸入學生姓名(暱稱) 或 合約編號 或 發票號碼");
+                }
             }
 
-            if (!viewModel.PayoffDateFrom.HasValue && !viewModel.PayoffDateTo.HasValue
-                && viewModel.CustomQuery == null)
-            {
-                ModelState.AddModelError("PayoffDateFrom", "請選擇查詢起日");
-                ModelState.AddModelError("PayoffDateTo", "請選擇查詢迄日");
-                ModelState.AddModelError("CustomQuery", "請輸入學生姓名(暱稱) 或 合約編號 或 發票號碼");
-            }
 
             if (!ModelState.IsValid)
             {
