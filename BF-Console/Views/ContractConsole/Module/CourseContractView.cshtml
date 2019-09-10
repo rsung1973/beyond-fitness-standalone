@@ -299,7 +299,7 @@
                                         <li>(2) 合約簽訂後七日內，學員未使用所約定服務(課程)而解除契約者，全額退還學員已繳費用。</li>
                                         <li>
                                             (3) 已繳服務總費用扣除依簽約時課程單堂原價(@{ LessonPriceType originalPrice = null;}
-                                            @((originalPrice = _model.OriginalSeriesPrice()) != null
+                                            @((originalPrice = _model.ContractOriginalSeriesPrice(models)) != null
                                             ? String.Format("{0:##,###,###,###}", originalPrice.ListPrice)
                                             : String.Format("{0:##,###,###,###}", _model.LessonPriceType.ListPrice))/人)乘以實際上課堂數之費用。
                                         </li>

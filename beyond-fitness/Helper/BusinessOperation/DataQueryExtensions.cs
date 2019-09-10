@@ -573,33 +573,55 @@ namespace WebHome.Helper.BusinessOperation
                 items = items.Where(p => p.PaymentID == viewModel.PaymentID);
             }
 
+            IQueryable<Payment> buildQueryByUserName(IQueryable<Payment> queryItems,String userName)
+            {
+                IQueryable<UserProfile> users = models.GetTable<UserProfile>().Where(c => c.RealName.Contains(userName)
+                        || c.Nickname.Contains(userName));
+
+                IQueryable<ContractPayment> cp = users.Join(models.GetTable<CourseContractMember>(), u => u.UID, m => m.UID, (u, m) => m)
+                                                    .Join(models.GetTable<CourseContract>(), m => m.ContractID, c => c.ContractID, (m, c) => c)
+                                                    .Join(models.GetTable<ContractPayment>(), c => c.ContractID, p => p.ContractID, (m, p) => p);
+                IQueryable<TuitionInstallment> ti = users.Join(models.GetTable<RegisterLesson>(), u => u.UID, r => r.UID, (u, r) => r)
+                                                    .Join(models.GetTable<TuitionInstallment>(), r => r.RegisterID, t => t.RegisterID, (r, t) => t);
+
+                queryItems = queryItems.Join(cp, p => p.PaymentID, c => c.PaymentID, (p, c) => p)
+                    .Union(queryItems.Join(ti, p => p.PaymentID, c => c.InstallmentID, (p, c) => p));
+
+                return queryItems;
+            }
+
             viewModel.UserName = viewModel.UserName.GetEfficientString();
             if (viewModel.UserName != null)
             {
-                Expression<Func<Payment, bool>> queryExpr = c => false;
-                queryExpr = queryExpr.Or(c => c.ContractPayment.CourseContract.CourseContractMember.Any(m => m.UserProfile.RealName.Contains(viewModel.UserName) || m.UserProfile.Nickname.Contains(viewModel.UserName)));
-                queryExpr = queryExpr.Or(c => c.TuitionInstallment.IntuitionCharge.RegisterLesson.UserProfile.RealName.Contains(viewModel.UserName));
-                queryExpr = queryExpr.Or(c => c.TuitionInstallment.IntuitionCharge.RegisterLesson.UserProfile.Nickname.Contains(viewModel.UserName));
-                items = items.Where(queryExpr);
+                items = buildQueryByUserName(items,viewModel.UserName);
             }
+
+            IQueryable<Payment> buildQueryByContractNo(IQueryable<Payment> queryItems, String contractNo)
+            {
+                IQueryable<CourseContract> ci = models.GetTable<CourseContract>();
+                var no = contractNo.Split('-');
+                if (no.Length > 1)
+                {
+                    int.TryParse(no[1], out int seqNo);
+                    ci = ci.Where(c => c.ContractNo.StartsWith(no[0])
+                        && c.SequenceNo == seqNo);
+                }
+                else
+                {
+                    ci = ci.Where(c => c.ContractNo.StartsWith(contractNo));
+                }
+
+                IQueryable<ContractPayment> cp = ci.Join(models.GetTable<ContractPayment>(), c => c.ContractID, p => p.ContractID, (m, p) => p);
+                queryItems =queryItems.Join(cp, p => p.PaymentID, c => c.PaymentID, (p, c) => p);
+
+                return queryItems;
+            }
+
 
             viewModel.ContractNo = viewModel.ContractNo.GetEfficientString();
             if (viewModel.ContractNo != null)
             {
-                Expression<Func<Payment, bool>> queryExpr = c => false;
-                var no = viewModel.ContractNo.Split('-');
-                if (no.Length > 1)
-                {
-                    int.TryParse(no[1], out int seqNo);
-                    queryExpr = queryExpr.Or(c => c.ContractPayment.CourseContract.ContractNo.StartsWith(no[0])
-                        && c.ContractPayment.CourseContract.SequenceNo == seqNo);
-                }
-                else
-                {
-                    queryExpr = queryExpr.Or(c => c.ContractPayment == null
-                                    || c.ContractPayment.CourseContract.ContractNo.StartsWith(viewModel.ContractNo));
-                }
-                items = items.Where(queryExpr);
+                items = buildQueryByContractNo(items, viewModel.ContractNo);
             }
 
             if (viewModel.BranchID.HasValue)
@@ -655,6 +677,23 @@ namespace WebHome.Helper.BusinessOperation
                 }
             }
 
+            IQueryable<Payment> buildQueryByInvoiceNo(IQueryable<Payment> queryItems, String invoiceNo)
+            {
+                if (Regex.IsMatch(invoiceNo, "[A-Za-z]{2}[0-9]{8}"))
+                {
+                    String trackCode = invoiceNo.Substring(0, 2).ToUpper();
+                    String no = invoiceNo.Substring(2);
+
+                    queryItems = queryItems.Join(models.GetTable<InvoiceItem>()
+                                                    .Where(c => c.TrackCode == trackCode && c.No == no),
+                                                p => p.InvoiceID, i => i.InvoiceID, (p, i) => p);
+                    return queryItems;
+                }
+                else
+                {
+                    return models.GetTable<Payment>().Where(p => false);
+                }
+            }
 
 
             viewModel.InvoiceNo = viewModel.InvoiceNo.GetEfficientString();
@@ -686,6 +725,7 @@ namespace WebHome.Helper.BusinessOperation
             if (viewModel.PayoffDateFrom.HasValue)
             {
                 dateQuery = true;
+                items = items.Where(p => p.PayoffDate >= viewModel.PayoffDateFrom);
                 invoiceItems = invoiceItems.Where(i => i.InvoiceDate >= viewModel.PayoffDateFrom);
                 cancelledItems = cancelledItems.Where(i => i.CancelDate >= viewModel.PayoffDateFrom);
                 allowanceItems = allowanceItems.Where(a => a.AllowanceDate >= viewModel.PayoffDateFrom);
@@ -695,6 +735,7 @@ namespace WebHome.Helper.BusinessOperation
             if (viewModel.PayoffDateTo.HasValue)
             {
                 dateQuery = true;
+                items = items.Where(i => i.PayoffDate < viewModel.PayoffDateTo.Value.AddDays(1));
                 invoiceItems = invoiceItems.Where(i => i.InvoiceDate < viewModel.PayoffDateTo.Value.AddDays(1));
                 cancelledItems = cancelledItems.Where(i => i.CancelDate < viewModel.PayoffDateTo.Value.AddDays(1));
                 allowanceItems = allowanceItems.Where(a => a.AllowanceDate < viewModel.PayoffDateTo.Value.AddDays(1));
@@ -733,6 +774,33 @@ namespace WebHome.Helper.BusinessOperation
             if (viewModel.HasAllowance == true)
             {
                 result = result.Where(p => p.AllowanceID.HasValue);
+            }
+
+            if (viewModel.CustomQuery != null)
+            {
+                result = buildQueryByUserName(result, viewModel.CustomQuery)
+                            .Union(buildQueryByContractNo(result, viewModel.CustomQuery))
+                            .Union(buildQueryByInvoiceNo(result, viewModel.CustomQuery));
+            }
+
+            if (viewModel.HasShare.HasValue)
+            {
+                IQueryable<TuitionAchievement> shareItems = models.GetTable<TuitionAchievement>();
+                if (viewModel.HasShare == true)
+                {
+                    result = result.Where(t => shareItems.Any(s => s.InstallmentID == t.PaymentID));
+                }
+                else
+                {
+                    result = result.Where(t => !shareItems.Any(s => s.InstallmentID == t.PaymentID));
+                }
+            }
+
+            if(viewModel.RelatedID.HasValue)
+            {
+                result = result.Where(p => p.HandlerID == viewModel.RelatedID)
+                            .Union(result.Where(p => p.ContractPayment.CourseContract.FitnessConsultant == viewModel.RelatedID))
+                            .Union(result.Where(p => p.TuitionInstallment.IntuitionCharge.RegisterLesson.LessonTime.Any(l => l.AttendingCoach == viewModel.RelatedID)));
             }
 
             return result;

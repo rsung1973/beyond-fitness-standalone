@@ -1330,15 +1330,8 @@
     <Type Name="MerchandiseTransaction">
       <Column Name="TransactionID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="ProductID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Association Name="MerchandiseTransactionType_MerchandiseTransaction" Member="MerchandiseTransactionType" ThisKey="TransactionID" OtherKey="TransactionID" Type="MerchandiseTransactionType" IsForeignKey="true" />
       <Association Name="MerchandiseWindow_MerchandiseTransaction" Member="MerchandiseWindow" ThisKey="ProductID" OtherKey="ProductID" Type="MerchandiseWindow" IsForeignKey="true" />
-    </Type>
-  </Table>
-  <Table Name="dbo.MerchandiseTransactionType" Member="MerchandiseTransactionType">
-    <Type Name="MerchandiseTransactionType">
-      <Column Name="TransactionID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="TransactionType" Type="System.String" DbType="NVarChar(16)" CanBeNull="true" />
-      <Association Name="MerchandiseTransactionType_MerchandiseTransaction" Member="MerchandiseTransaction" ThisKey="TransactionID" OtherKey="TransactionID" Type="MerchandiseTransaction" />
+      <Association Name="MerchandiseTransactionType_MerchandiseTransaction" Member="MerchandiseTransactionType" ThisKey="TransactionID" OtherKey="TransactionID" Type="MerchandiseTransactionType" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.MerchandiseWindow" Member="MerchandiseWindow">
@@ -1347,6 +1340,7 @@
       <Column Name="ProductName" Type="System.String" DbType="NVarChar(32) NOT NULL" CanBeNull="false" />
       <Column Name="UnitPrice" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="Status" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SampleUrl" Type="System.String" DbType="NVarChar(256)" CanBeNull="true" />
       <Association Name="MerchandiseWindow_MerchandiseTransaction" Member="MerchandiseTransaction" ThisKey="ProductID" OtherKey="ProductID" Type="MerchandiseTransaction" />
       <Association Name="MerchandiseWindow_PaymentOrder" Member="PaymentOrder" ThisKey="ProductID" OtherKey="ProductID" Type="PaymentOrder" />
       <Association Name="LevelExpression_MerchandiseWindow" Member="LevelExpression" ThisKey="Status" OtherKey="LevelID" Type="LevelExpression" IsForeignKey="true" />
@@ -2265,6 +2259,36 @@
       <Association Name="BranchStore_TuitionAchievement" Member="BranchStore" ThisKey="CoachWorkPlace" OtherKey="BranchID" Type="BranchStore" IsForeignKey="true" />
       <Association Name="Payment_TuitionAchievement" Member="Payment" ThisKey="InstallmentID" OtherKey="PaymentID" Type="Payment" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
       <Association Name="ServingCoach_TuitionAchievement" Member="ServingCoach" ThisKey="CoachID" OtherKey="CoachID" Type="ServingCoach" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.MerchandiseTransactionType" Member="MerchandiseTransactionType">
+    <Type Name="MerchandiseTransactionType">
+      <Column Name="TransactionID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="TransactionType" Type="System.String" DbType="NVarChar(16)" CanBeNull="true" />
+      <Column Name="CategorySourceID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="MerchandiseTransactionType_MerchandiseTransaction" Member="MerchandiseTransaction" ThisKey="TransactionID" OtherKey="TransactionID" Type="MerchandiseTransaction" />
+      <Association Name="MerchandiseTransactionType_MerchandiseTransactionType" Member="MerchandiseTransactionType2" ThisKey="TransactionID" OtherKey="CategorySourceID" Type="MerchandiseTransactionType" />
+      <Association Name="MerchandiseTransactionType_MerchandiseTransactionType" Member="MerchandiseTransactionType1" ThisKey="CategorySourceID" OtherKey="TransactionID" Type="MerchandiseTransactionType" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.V_LessonUnitPrice" Member="V_LessonUnitPrice">
+    <Type Name="V_LessonUnitPrice">
+      <Column Name="Year" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PeriodNo" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PriceID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(64)" CanBeNull="true" />
+      <Column Name="ListPrice" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Status" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UsageType" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CoachPayoff" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CoachPayoffCreditCard" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ExcludeQuestionnaire" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="LowerLimit" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UpperBound" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="BranchID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DiscountedPrice" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DurationInMinutes" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SeriesID" Type="System.Int32" DbType="Int" CanBeNull="true" />
     </Type>
   </Table>
   <Function Name="dbo.InquireVacantNo" Method="InquireVacantNo">

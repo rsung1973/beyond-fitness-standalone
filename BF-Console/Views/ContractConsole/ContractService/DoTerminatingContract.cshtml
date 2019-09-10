@@ -24,7 +24,7 @@
     _model = (CourseContract)this.Model;
     _profile = Context.GetUser();
     _viewID = ViewBag.ViewID as String;
-    LessonPriceType originalPrice = _model.OriginalSeriesPrice();
+    LessonPriceType originalPrice = _model.ContractOriginalSeriesPrice(models);
 }
 <div class="header">
     <h2><strong>原課程單價 <span class="badge bg-blue">@(_model.LessonPriceType.PriceTypeBundle())</span>：</strong> <span class="col-red">@($"{_model.LessonPriceType.ListPrice:##,###,###,###}")</span></h2>

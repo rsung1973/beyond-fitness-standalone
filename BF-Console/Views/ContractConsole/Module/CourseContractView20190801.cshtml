@@ -299,7 +299,7 @@
                                             <ul class="list-unstyled">
                                                 <li>&nbsp;&nbsp;i. 學員未使用所約定服務(課程)而解除契約者，合約簽訂後七日內或所簽契約使期尚未屆至，全額退還學員已繳費用；契約簽訂後超過七日，酌收契約總金額 5%處理費。</li>
                                                 <li>&nbsp;&nbsp;ii. 學員已使用所約定服務(課程)而解除契約者，則依已繳服務總費用扣除依簽約時課程單堂原價(@{LessonPriceType originalPrice = null;}
-                                            @((originalPrice = _model.OriginalSeriesPrice()) != null
+                                            @((originalPrice = _model.ContractOriginalSeriesPrice(models)) != null
                                             ? String.Format("{0:##,###,###,###}", originalPrice.ListPrice)
                                             : String.Format("{0:##,###,###,###}", _model.LessonPriceType.ListPrice))/人)乘以實際上課堂數之費用計算。</li>
                                             </ul>

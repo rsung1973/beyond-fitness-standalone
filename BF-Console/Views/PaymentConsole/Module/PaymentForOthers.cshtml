@@ -25,7 +25,7 @@
             Naming.PaymentTransactionType.運動商品,
             Naming.PaymentTransactionType.食飲品
         },
-        HandlerID = _viewModel.HandlerID,
+        RelatedID = _viewModel.RelatedID,
     };
     IQueryable<Payment> items = _model
         .Where(p => tempViewModel.CompoundType.Contains((Naming.PaymentTransactionType?)p.TransactionType));

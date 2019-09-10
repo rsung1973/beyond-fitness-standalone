@@ -379,6 +379,7 @@ namespace WebHome.Helper
                 收款日期 = /*item.Payment.VoidPayment == null ?*/ String.Format("{0:yyyy/MM/dd}", item.Payment.PayoffDate)/* : null*/,
                 簽約場所 = item.Payment.PaymentTransaction.BranchStore.BranchName,
                 體能顧問所屬分店 = item.CoachWorkPlace.HasValue ? item.BranchStore.BranchName : "其他",
+                是否續約 = item.Payment.ContractPayment?.CourseContract.Renewal,
             });
 
             DataTable table = details.ToDataTable();

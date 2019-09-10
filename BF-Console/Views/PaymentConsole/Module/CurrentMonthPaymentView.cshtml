@@ -192,23 +192,62 @@
         <div class="body">
             <table class="table m-t-15 m-b-0">
                 <tbody>
-                    <tr>
+                    <tr onclick='showPaymentList(@Html.Raw(JsonConvert.SerializeObject(
+                                    new
+                                    {
+                                        _viewModel.PayoffDateFrom,
+                                        _viewModel.BranchID,
+                                        IsCancelled = false,
+                                        HasShare = false,
+                                    })));'>
                         <td>全部</td>
                         <td class="text-right">@($"{totalPayoff - (items.GetPaymentAchievement(models).Sum(t => t.ShareAmount) ?? 0):##,###,###,##0}")</td>
                     </tr>
-                    <tr>
+                    <tr onclick='showPaymentList(@Html.Raw(JsonConvert.SerializeObject(
+                                    new
+                                    {
+                                        _viewModel.PayoffDateFrom,
+                                        _viewModel.BranchID,
+                                        TransactionType = (int)Naming.PaymentTransactionType.體能顧問費,
+                                        IsCancelled = false,
+                                        HasShare = false,
+                                    })));'>
                         <td>P.T session</td>
                         <td class="text-right">@($"{PTPayoff - (items.Where(p => p.TransactionType == (int)Naming.PaymentTransactionType.體能顧問費).GetPaymentAchievement(models).Sum(t => t.ShareAmount) ?? 0):##,###,###,##0}")</td>
                     </tr>
-                    <tr>
+                    <tr onclick='showPaymentList(@Html.Raw(JsonConvert.SerializeObject(
+                                    new
+                                    {
+                                        _viewModel.PayoffDateFrom,
+                                        _viewModel.BranchID,
+                                        TransactionType = (int)Naming.PaymentTransactionType.自主訓練,
+                                        IsCancelled = false,
+                                        HasShare = false,
+                                    })));'>
                         <td>P.I session</td>
                         <td class="text-right">@($"{PIPayoff - (items.Where(p => p.TransactionType == (int)Naming.PaymentTransactionType.自主訓練).GetPaymentAchievement(models).Sum(t => t.ShareAmount) ?? 0):##,###,###,##0}")</td>
                     </tr>
-                    <tr>
+                    <tr onclick='showPaymentList(@Html.Raw(JsonConvert.SerializeObject(
+                                    new
+                                    {
+                                        _viewModel.PayoffDateFrom,
+                                        _viewModel.BranchID,
+                                        TransactionType = (int)Naming.PaymentTransactionType.食飲品,
+                                        IsCancelled = false,
+                                        HasShare = false,
+                                    })));'>
                         <td>飲品</td>
                         <td class="text-right">@($"{foodsPayoff - (items.Where(p => p.TransactionType == (int)Naming.PaymentTransactionType.食飲品).GetPaymentAchievement(models).Sum(t => t.ShareAmount) ?? 0):##,###,###,##0}")</td>
                     </tr>
-                    <tr>
+                    <tr onclick='showPaymentList(@Html.Raw(JsonConvert.SerializeObject(
+                                    new
+                                    {
+                                        _viewModel.PayoffDateFrom,
+                                        _viewModel.BranchID,
+                                        TransactionType = (int)Naming.PaymentTransactionType.運動商品,
+                                        IsCancelled = false,
+                                        HasShare = false,
+                                    })));'>
                         <td>運動商品</td>
                         <td class="text-right">@($"{itemsPayoff - (items.Where(p => p.TransactionType == (int)Naming.PaymentTransactionType.運動商品).GetPaymentAchievement(models).Sum(t => t.ShareAmount) ?? 0):##,###,###,##0}")</td>
                     </tr>

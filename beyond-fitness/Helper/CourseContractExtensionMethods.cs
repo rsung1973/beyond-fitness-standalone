@@ -333,7 +333,19 @@ namespace WebHome.Helper
             models.SubmitChanges();
         }
 
+        public static LessonPriceType ContractOriginalSeriesPrice<TEntity>(this CourseContract item, ModelSource<TEntity> models)
+                    where TEntity : class, new()
+        {
 
+            var seriesItem = models.GetTable<V_LessonUnitPrice>()
+                    .Where(p => p.DurationInMinutes == item.LessonPriceType.DurationInMinutes)
+                    .Where(p => p.BranchID == item.LessonPriceType.BranchID)
+                    .Join(models.GetTable<LessonPriceType>(),
+                        p => p.PriceID, s => s.PriceID, (p, s) => s)
+                    .OrderByDescending(s => s.PriceID);
+
+            return seriesItem.FirstOrDefault();
+        }
 
     }
 }

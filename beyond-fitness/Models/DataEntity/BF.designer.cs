@@ -321,9 +321,6 @@ namespace WebHome.Models.DataEntity
     partial void InsertMerchandiseTransaction(MerchandiseTransaction instance);
     partial void UpdateMerchandiseTransaction(MerchandiseTransaction instance);
     partial void DeleteMerchandiseTransaction(MerchandiseTransaction instance);
-    partial void InsertMerchandiseTransactionType(MerchandiseTransactionType instance);
-    partial void UpdateMerchandiseTransactionType(MerchandiseTransactionType instance);
-    partial void DeleteMerchandiseTransactionType(MerchandiseTransactionType instance);
     partial void InsertMerchandiseWindow(MerchandiseWindow instance);
     partial void UpdateMerchandiseWindow(MerchandiseWindow instance);
     partial void DeleteMerchandiseWindow(MerchandiseWindow instance);
@@ -546,6 +543,9 @@ namespace WebHome.Models.DataEntity
     partial void InsertTuitionAchievement(TuitionAchievement instance);
     partial void UpdateTuitionAchievement(TuitionAchievement instance);
     partial void DeleteTuitionAchievement(TuitionAchievement instance);
+    partial void InsertMerchandiseTransactionType(MerchandiseTransactionType instance);
+    partial void UpdateMerchandiseTransactionType(MerchandiseTransactionType instance);
+    partial void DeleteMerchandiseTransactionType(MerchandiseTransactionType instance);
     #endregion
 		
 		public BFDataContext() : 
@@ -1362,14 +1362,6 @@ namespace WebHome.Models.DataEntity
 			}
 		}
 		
-		public System.Data.Linq.Table<MerchandiseTransactionType> MerchandiseTransactionType
-		{
-			get
-			{
-				return this.GetTable<MerchandiseTransactionType>();
-			}
-		}
-		
 		public System.Data.Linq.Table<MerchandiseWindow> MerchandiseWindow
 		{
 			get
@@ -2007,6 +1999,22 @@ namespace WebHome.Models.DataEntity
 			get
 			{
 				return this.GetTable<TuitionAchievement>();
+			}
+		}
+		
+		public System.Data.Linq.Table<MerchandiseTransactionType> MerchandiseTransactionType
+		{
+			get
+			{
+				return this.GetTable<MerchandiseTransactionType>();
+			}
+		}
+		
+		public System.Data.Linq.Table<V_LessonUnitPrice> V_LessonUnitPrice
+		{
+			get
+			{
+				return this.GetTable<V_LessonUnitPrice>();
 			}
 		}
 		
@@ -31867,9 +31875,9 @@ namespace WebHome.Models.DataEntity
 		
 		private int _ProductID;
 		
-		private EntityRef<MerchandiseTransactionType> _MerchandiseTransactionType;
-		
 		private EntityRef<MerchandiseWindow> _MerchandiseWindow;
+		
+		private EntityRef<MerchandiseTransactionType> _MerchandiseTransactionType;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -31883,8 +31891,8 @@ namespace WebHome.Models.DataEntity
 		
 		public MerchandiseTransaction()
 		{
-			this._MerchandiseTransactionType = default(EntityRef<MerchandiseTransactionType>);
 			this._MerchandiseWindow = default(EntityRef<MerchandiseWindow>);
+			this._MerchandiseTransactionType = default(EntityRef<MerchandiseTransactionType>);
 			OnCreated();
 		}
 		
@@ -31936,40 +31944,6 @@ namespace WebHome.Models.DataEntity
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="MerchandiseTransactionType_MerchandiseTransaction", Storage="_MerchandiseTransactionType", ThisKey="TransactionID", OtherKey="TransactionID", IsForeignKey=true)]
-		public MerchandiseTransactionType MerchandiseTransactionType
-		{
-			get
-			{
-				return this._MerchandiseTransactionType.Entity;
-			}
-			set
-			{
-				MerchandiseTransactionType previousValue = this._MerchandiseTransactionType.Entity;
-				if (((previousValue != value) 
-							|| (this._MerchandiseTransactionType.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._MerchandiseTransactionType.Entity = null;
-						previousValue.MerchandiseTransaction.Remove(this);
-					}
-					this._MerchandiseTransactionType.Entity = value;
-					if ((value != null))
-					{
-						value.MerchandiseTransaction.Add(this);
-						this._TransactionID = value.TransactionID;
-					}
-					else
-					{
-						this._TransactionID = default(int);
-					}
-					this.SendPropertyChanged("MerchandiseTransactionType");
-				}
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="MerchandiseWindow_MerchandiseTransaction", Storage="_MerchandiseWindow", ThisKey="ProductID", OtherKey="ProductID", IsForeignKey=true)]
 		public MerchandiseWindow MerchandiseWindow
 		{
@@ -32004,105 +31978,37 @@ namespace WebHome.Models.DataEntity
 			}
 		}
 		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.MerchandiseTransactionType")]
-	public partial class MerchandiseTransactionType : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _TransactionID;
-		
-		private string _TransactionType;
-		
-		private EntitySet<MerchandiseTransaction> _MerchandiseTransaction;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnTransactionIDChanging(int value);
-    partial void OnTransactionIDChanged();
-    partial void OnTransactionTypeChanging(string value);
-    partial void OnTransactionTypeChanged();
-    #endregion
-		
-		public MerchandiseTransactionType()
-		{
-			this._MerchandiseTransaction = new EntitySet<MerchandiseTransaction>(new Action<MerchandiseTransaction>(this.attach_MerchandiseTransaction), new Action<MerchandiseTransaction>(this.detach_MerchandiseTransaction));
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TransactionID", DbType="Int NOT NULL", IsPrimaryKey=true)]
-		public int TransactionID
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="MerchandiseTransactionType_MerchandiseTransaction", Storage="_MerchandiseTransactionType", ThisKey="TransactionID", OtherKey="TransactionID", IsForeignKey=true)]
+		public MerchandiseTransactionType MerchandiseTransactionType
 		{
 			get
 			{
-				return this._TransactionID;
+				return this._MerchandiseTransactionType.Entity;
 			}
 			set
 			{
-				if ((this._TransactionID != value))
+				MerchandiseTransactionType previousValue = this._MerchandiseTransactionType.Entity;
+				if (((previousValue != value) 
+							|| (this._MerchandiseTransactionType.HasLoadedOrAssignedValue == false)))
 				{
-					this.OnTransactionIDChanging(value);
 					this.SendPropertyChanging();
-					this._TransactionID = value;
-					this.SendPropertyChanged("TransactionID");
-					this.OnTransactionIDChanged();
+					if ((previousValue != null))
+					{
+						this._MerchandiseTransactionType.Entity = null;
+						previousValue.MerchandiseTransaction.Remove(this);
+					}
+					this._MerchandiseTransactionType.Entity = value;
+					if ((value != null))
+					{
+						value.MerchandiseTransaction.Add(this);
+						this._TransactionID = value.TransactionID;
+					}
+					else
+					{
+						this._TransactionID = default(int);
+					}
+					this.SendPropertyChanged("MerchandiseTransactionType");
 				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TransactionType", DbType="NVarChar(16)")]
-		public string TransactionType
-		{
-			get
-			{
-				return this._TransactionType;
-			}
-			set
-			{
-				if ((this._TransactionType != value))
-				{
-					this.OnTransactionTypeChanging(value);
-					this.SendPropertyChanging();
-					this._TransactionType = value;
-					this.SendPropertyChanged("TransactionType");
-					this.OnTransactionTypeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="MerchandiseTransactionType_MerchandiseTransaction", Storage="_MerchandiseTransaction", ThisKey="TransactionID", OtherKey="TransactionID")]
-		public EntitySet<MerchandiseTransaction> MerchandiseTransaction
-		{
-			get
-			{
-				return this._MerchandiseTransaction;
-			}
-			set
-			{
-				this._MerchandiseTransaction.Assign(value);
 			}
 		}
 		
@@ -32124,18 +32030,6 @@ namespace WebHome.Models.DataEntity
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
-		}
-		
-		private void attach_MerchandiseTransaction(MerchandiseTransaction entity)
-		{
-			this.SendPropertyChanging();
-			entity.MerchandiseTransactionType = this;
-		}
-		
-		private void detach_MerchandiseTransaction(MerchandiseTransaction entity)
-		{
-			this.SendPropertyChanging();
-			entity.MerchandiseTransactionType = null;
 		}
 	}
 	
@@ -32152,6 +32046,8 @@ namespace WebHome.Models.DataEntity
 		private System.Nullable<int> _UnitPrice;
 		
 		private System.Nullable<int> _Status;
+		
+		private string _SampleUrl;
 		
 		private EntitySet<MerchandiseTransaction> _MerchandiseTransaction;
 		
@@ -32171,6 +32067,8 @@ namespace WebHome.Models.DataEntity
     partial void OnUnitPriceChanged();
     partial void OnStatusChanging(System.Nullable<int> value);
     partial void OnStatusChanged();
+    partial void OnSampleUrlChanging(string value);
+    partial void OnSampleUrlChanged();
     #endregion
 		
 		public MerchandiseWindow()
@@ -32261,6 +32159,26 @@ namespace WebHome.Models.DataEntity
 					this._Status = value;
 					this.SendPropertyChanged("Status");
 					this.OnStatusChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SampleUrl", DbType="NVarChar(256)")]
+		public string SampleUrl
+		{
+			get
+			{
+				return this._SampleUrl;
+			}
+			set
+			{
+				if ((this._SampleUrl != value))
+				{
+					this.OnSampleUrlChanging(value);
+					this.SendPropertyChanging();
+					this._SampleUrl = value;
+					this.SendPropertyChanged("SampleUrl");
+					this.OnSampleUrlChanged();
 				}
 			}
 		}
@@ -51794,6 +51712,510 @@ namespace WebHome.Models.DataEntity
 			if ((this.PropertyChanged != null))
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.MerchandiseTransactionType")]
+	public partial class MerchandiseTransactionType : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _TransactionID;
+		
+		private string _TransactionType;
+		
+		private System.Nullable<int> _CategorySourceID;
+		
+		private EntitySet<MerchandiseTransaction> _MerchandiseTransaction;
+		
+		private EntitySet<MerchandiseTransactionType> _MerchandiseTransactionType2;
+		
+		private EntityRef<MerchandiseTransactionType> _MerchandiseTransactionType1;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnTransactionIDChanging(int value);
+    partial void OnTransactionIDChanged();
+    partial void OnTransactionTypeChanging(string value);
+    partial void OnTransactionTypeChanged();
+    partial void OnCategorySourceIDChanging(System.Nullable<int> value);
+    partial void OnCategorySourceIDChanged();
+    #endregion
+		
+		public MerchandiseTransactionType()
+		{
+			this._MerchandiseTransaction = new EntitySet<MerchandiseTransaction>(new Action<MerchandiseTransaction>(this.attach_MerchandiseTransaction), new Action<MerchandiseTransaction>(this.detach_MerchandiseTransaction));
+			this._MerchandiseTransactionType2 = new EntitySet<MerchandiseTransactionType>(new Action<MerchandiseTransactionType>(this.attach_MerchandiseTransactionType2), new Action<MerchandiseTransactionType>(this.detach_MerchandiseTransactionType2));
+			this._MerchandiseTransactionType1 = default(EntityRef<MerchandiseTransactionType>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TransactionID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int TransactionID
+		{
+			get
+			{
+				return this._TransactionID;
+			}
+			set
+			{
+				if ((this._TransactionID != value))
+				{
+					this.OnTransactionIDChanging(value);
+					this.SendPropertyChanging();
+					this._TransactionID = value;
+					this.SendPropertyChanged("TransactionID");
+					this.OnTransactionIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TransactionType", DbType="NVarChar(16)")]
+		public string TransactionType
+		{
+			get
+			{
+				return this._TransactionType;
+			}
+			set
+			{
+				if ((this._TransactionType != value))
+				{
+					this.OnTransactionTypeChanging(value);
+					this.SendPropertyChanging();
+					this._TransactionType = value;
+					this.SendPropertyChanged("TransactionType");
+					this.OnTransactionTypeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CategorySourceID", DbType="Int")]
+		public System.Nullable<int> CategorySourceID
+		{
+			get
+			{
+				return this._CategorySourceID;
+			}
+			set
+			{
+				if ((this._CategorySourceID != value))
+				{
+					if (this._MerchandiseTransactionType1.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnCategorySourceIDChanging(value);
+					this.SendPropertyChanging();
+					this._CategorySourceID = value;
+					this.SendPropertyChanged("CategorySourceID");
+					this.OnCategorySourceIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="MerchandiseTransactionType_MerchandiseTransaction", Storage="_MerchandiseTransaction", ThisKey="TransactionID", OtherKey="TransactionID")]
+		public EntitySet<MerchandiseTransaction> MerchandiseTransaction
+		{
+			get
+			{
+				return this._MerchandiseTransaction;
+			}
+			set
+			{
+				this._MerchandiseTransaction.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="MerchandiseTransactionType_MerchandiseTransactionType", Storage="_MerchandiseTransactionType2", ThisKey="TransactionID", OtherKey="CategorySourceID")]
+		public EntitySet<MerchandiseTransactionType> MerchandiseTransactionType2
+		{
+			get
+			{
+				return this._MerchandiseTransactionType2;
+			}
+			set
+			{
+				this._MerchandiseTransactionType2.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="MerchandiseTransactionType_MerchandiseTransactionType", Storage="_MerchandiseTransactionType1", ThisKey="CategorySourceID", OtherKey="TransactionID", IsForeignKey=true)]
+		public MerchandiseTransactionType MerchandiseTransactionType1
+		{
+			get
+			{
+				return this._MerchandiseTransactionType1.Entity;
+			}
+			set
+			{
+				MerchandiseTransactionType previousValue = this._MerchandiseTransactionType1.Entity;
+				if (((previousValue != value) 
+							|| (this._MerchandiseTransactionType1.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._MerchandiseTransactionType1.Entity = null;
+						previousValue.MerchandiseTransactionType2.Remove(this);
+					}
+					this._MerchandiseTransactionType1.Entity = value;
+					if ((value != null))
+					{
+						value.MerchandiseTransactionType2.Add(this);
+						this._CategorySourceID = value.TransactionID;
+					}
+					else
+					{
+						this._CategorySourceID = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("MerchandiseTransactionType1");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_MerchandiseTransaction(MerchandiseTransaction entity)
+		{
+			this.SendPropertyChanging();
+			entity.MerchandiseTransactionType = this;
+		}
+		
+		private void detach_MerchandiseTransaction(MerchandiseTransaction entity)
+		{
+			this.SendPropertyChanging();
+			entity.MerchandiseTransactionType = null;
+		}
+		
+		private void attach_MerchandiseTransactionType2(MerchandiseTransactionType entity)
+		{
+			this.SendPropertyChanging();
+			entity.MerchandiseTransactionType1 = this;
+		}
+		
+		private void detach_MerchandiseTransactionType2(MerchandiseTransactionType entity)
+		{
+			this.SendPropertyChanging();
+			entity.MerchandiseTransactionType1 = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.V_LessonUnitPrice")]
+	public partial class V_LessonUnitPrice
+	{
+		
+		private System.Nullable<int> _Year;
+		
+		private System.Nullable<int> _PeriodNo;
+		
+		private int _PriceID;
+		
+		private string _Description;
+		
+		private System.Nullable<int> _ListPrice;
+		
+		private System.Nullable<int> _Status;
+		
+		private System.Nullable<int> _UsageType;
+		
+		private System.Nullable<int> _CoachPayoff;
+		
+		private System.Nullable<int> _CoachPayoffCreditCard;
+		
+		private System.Nullable<int> _ExcludeQuestionnaire;
+		
+		private System.Nullable<int> _LowerLimit;
+		
+		private System.Nullable<int> _UpperBound;
+		
+		private System.Nullable<int> _BranchID;
+		
+		private System.Nullable<int> _DiscountedPrice;
+		
+		private System.Nullable<int> _DurationInMinutes;
+		
+		private System.Nullable<int> _SeriesID;
+		
+		public V_LessonUnitPrice()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Year", DbType="Int")]
+		public System.Nullable<int> Year
+		{
+			get
+			{
+				return this._Year;
+			}
+			set
+			{
+				if ((this._Year != value))
+				{
+					this._Year = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PeriodNo", DbType="Int")]
+		public System.Nullable<int> PeriodNo
+		{
+			get
+			{
+				return this._PeriodNo;
+			}
+			set
+			{
+				if ((this._PeriodNo != value))
+				{
+					this._PeriodNo = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PriceID", DbType="Int NOT NULL")]
+		public int PriceID
+		{
+			get
+			{
+				return this._PriceID;
+			}
+			set
+			{
+				if ((this._PriceID != value))
+				{
+					this._PriceID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Description", DbType="NVarChar(64)")]
+		public string Description
+		{
+			get
+			{
+				return this._Description;
+			}
+			set
+			{
+				if ((this._Description != value))
+				{
+					this._Description = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ListPrice", DbType="Int")]
+		public System.Nullable<int> ListPrice
+		{
+			get
+			{
+				return this._ListPrice;
+			}
+			set
+			{
+				if ((this._ListPrice != value))
+				{
+					this._ListPrice = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Status", DbType="Int")]
+		public System.Nullable<int> Status
+		{
+			get
+			{
+				return this._Status;
+			}
+			set
+			{
+				if ((this._Status != value))
+				{
+					this._Status = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UsageType", DbType="Int")]
+		public System.Nullable<int> UsageType
+		{
+			get
+			{
+				return this._UsageType;
+			}
+			set
+			{
+				if ((this._UsageType != value))
+				{
+					this._UsageType = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CoachPayoff", DbType="Int")]
+		public System.Nullable<int> CoachPayoff
+		{
+			get
+			{
+				return this._CoachPayoff;
+			}
+			set
+			{
+				if ((this._CoachPayoff != value))
+				{
+					this._CoachPayoff = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CoachPayoffCreditCard", DbType="Int")]
+		public System.Nullable<int> CoachPayoffCreditCard
+		{
+			get
+			{
+				return this._CoachPayoffCreditCard;
+			}
+			set
+			{
+				if ((this._CoachPayoffCreditCard != value))
+				{
+					this._CoachPayoffCreditCard = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ExcludeQuestionnaire", DbType="Int")]
+		public System.Nullable<int> ExcludeQuestionnaire
+		{
+			get
+			{
+				return this._ExcludeQuestionnaire;
+			}
+			set
+			{
+				if ((this._ExcludeQuestionnaire != value))
+				{
+					this._ExcludeQuestionnaire = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LowerLimit", DbType="Int")]
+		public System.Nullable<int> LowerLimit
+		{
+			get
+			{
+				return this._LowerLimit;
+			}
+			set
+			{
+				if ((this._LowerLimit != value))
+				{
+					this._LowerLimit = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UpperBound", DbType="Int")]
+		public System.Nullable<int> UpperBound
+		{
+			get
+			{
+				return this._UpperBound;
+			}
+			set
+			{
+				if ((this._UpperBound != value))
+				{
+					this._UpperBound = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BranchID", DbType="Int")]
+		public System.Nullable<int> BranchID
+		{
+			get
+			{
+				return this._BranchID;
+			}
+			set
+			{
+				if ((this._BranchID != value))
+				{
+					this._BranchID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DiscountedPrice", DbType="Int")]
+		public System.Nullable<int> DiscountedPrice
+		{
+			get
+			{
+				return this._DiscountedPrice;
+			}
+			set
+			{
+				if ((this._DiscountedPrice != value))
+				{
+					this._DiscountedPrice = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DurationInMinutes", DbType="Int")]
+		public System.Nullable<int> DurationInMinutes
+		{
+			get
+			{
+				return this._DurationInMinutes;
+			}
+			set
+			{
+				if ((this._DurationInMinutes != value))
+				{
+					this._DurationInMinutes = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SeriesID", DbType="Int")]
+		public System.Nullable<int> SeriesID
+		{
+			get
+			{
+				return this._SeriesID;
+			}
+			set
+			{
+				if ((this._SeriesID != value))
+				{
+					this._SeriesID = value;
+				}
 			}
 		}
 	}

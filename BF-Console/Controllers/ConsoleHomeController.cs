@@ -623,6 +623,14 @@ namespace WebHome.Controllers
             return result;
         }
 
+        public ActionResult EditPaymentForShopping(PaymentQueryViewModel viewModel)
+        {
+            ViewResult result = (ViewResult)PaymentIndex(viewModel);
+            result.ViewName = "~/Views/PaymentConsole/EditPaymentForPISession.cshtml";
+            return result;
+        }
+
+
 
         public ActionResult PaymentIndex(PaymentQueryViewModel viewModel)
         {

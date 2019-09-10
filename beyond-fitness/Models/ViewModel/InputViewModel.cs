@@ -199,6 +199,8 @@ namespace WebHome.Models.ViewModel
         public bool? HasInvoicePrinted { get; set; }
         public int? ShareFor { get; set; }
         public bool? IncomeOnly { get; set; }
+        public bool? HasShare { get; set; }
+        public int? RelatedID { get; set; }
 
     }
 
