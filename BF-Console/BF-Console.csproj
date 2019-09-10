@@ -6081,19 +6081,8 @@
     <Content Include="Scripts\umd\popper.min.js" />
     <Content Include="Views\Blog\Module\CategoryIndication.ascx" />
     <Content Include="Views\Blog\Module\PlusIndication.ascx" />
-    <Content Include="Views\ConsoleEvent\EventModal\MemberSelector.ascx" />
     <Content Include="Views\ConsoleEvent\Module\SearchLearner.ascx" />
     <Content Include="Views\ConsoleEvent\Module\CoachPIAttendeeSelector.ascx" />
-    <Content Include="Views\ConsoleEvent\EventModal\BookingCustomEvent.ascx" />
-    <Content Include="Views\ConsoleEvent\EventModal\BookingCoachPI.ascx" />
-    <Content Include="Views\ConsoleEvent\EventModal\BookingLesson.ascx" />
-    <Content Include="Views\ConsoleEvent\EventModal\AttendeeSelector.ascx" />
-    <Content Include="Views\ConsoleEvent\EventModal\AddEvent.ascx" />
-    <Content Include="Views\ConsoleEvent\EventModal\CoachPI.ascx" />
-    <Content Include="Views\ConsoleEvent\EventModal\UserEvent.ascx" />
-    <Content Include="Views\ConsoleEvent\EventModal\OtherLesson.ascx" />
-    <Content Include="Views\ConsoleEvent\EventModal\LearnerLesson.ascx" />
-    <Content Include="Views\ConsoleEvent\EventModal\LessonItem.ascx" />
     <Content Include="Views\ConsoleEvent\Module\RevokeLesson.ascx" />
     <Content Include="Views\ConsoleEvent\Module\LessonEmphasis.ascx" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
@@ -6108,7 +6097,6 @@
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\ConsoleHome\ViewCourseContract.cshtml" />
-    <Content Include="Views\ConsoleHome\Module\AboutAchievement.cshtml" />
     <Content Include="Views\ConsoleHome\Module\AboutAchievementC3.cshtml" />
     <Content Include="Views\ConsoleHome\Module\AboutArticle.cshtml" />
     <Content Include="Views\ConsoleHome\Module\AboutCoach.cshtml" />
@@ -6153,17 +6141,14 @@
     <Content Include="Views\ConsoleEvent\EventModal\BookingTrialLesson.cshtml" />
     <Content Include="Views\ConsoleEvent\EventModal\BookingLearnerLesson.cshtml" />
     <Content Include="Views\ConsoleHome\Shared\JsAlert.cshtml" />
-    <Content Include="Views\LessonConsole\ProcessModal\TodayLessons.ascx" />
-    <Content Include="Views\LessonConsole\ProcessModal\ProcessCrossBranch.ascx" />
-    <Content Include="Views\LessonConsole\Module\CrossBranchLessonList.ascx" />
     <Content Include="Views\MainActivity\Module\MobileMenuItem.ascx" />
     <Content Include="Views\MainActivity\Module\ContactItem.ascx" />
     <Content Include="Views\MainActivity\Module\JoinItem.ascx" />
     <Content Include="Views\MainActivity\Module\MenuItem.ascx" />
-    <Content Include="Views\MainActivity\SamplePage.aspx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Views\PaymentConsole\PaymentModal\PaymentQuery.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\InitializeType.cs" />
@@ -6580,7 +6565,6 @@
     <Content Include="Views\ConsoleHome\Shared\ReportInputError.cshtml" />
     <Content Include="Views\ContractConsole\Module\ContractList.cshtml" />
     <Content Include="Views\ConsoleHome\Shared\AlertMessage.cshtml" />
-    <Content Include="Views\ConsoleHome\Module\AboutLearners.cshtml" />
     <Content Include="Views\ConsoleHome\Module\AboutStaff.cshtml" />
     <Content Include="Views\ConsoleHome\Module\CalendarEvents.cshtml" />
     <Content Include="Views\ConsoleHome\Module\DailyEventItems.cshtml" />
@@ -6672,7 +6656,6 @@
     <Content Include="Views\ConsoleHome\PostponeContractExpiration.cshtml" />
     <Content Include="Views\ConsoleHome\ReassignFitnessConsultant.cshtml" />
     <Content Include="Views\ConsoleHome\ReportIndex.cshtml" />
-    <Content Include="Views\ConsoleHome\SamplePage.cshtml" />
     <Content Include="Views\ConsoleHome\SignContractService.cshtml" />
     <Content Include="Views\ConsoleHome\SignCourseContract.cshtml" />
     <Content Include="Views\ConsoleHome\TerminateContract.cshtml" />

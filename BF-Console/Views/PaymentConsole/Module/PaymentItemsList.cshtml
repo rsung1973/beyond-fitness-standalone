@@ -23,6 +23,7 @@
     <thead>
         <tr>
             <th>發票號碼</th>
+            <th>賣方場所</th>
             <th>狀態</th>
             <th>收款人</th>
             <th>學生</th>
@@ -46,6 +47,7 @@
                     <text>@(item.InvoiceItem.TrackCode)@(item.InvoiceItem.No)</text>
                 }
             </td>
+            <td>@(item.PaymentTransaction.BranchStore.BranchName)</td>
             <td>
                 @(item.VoidPayment == null
                     ? "已開立"
@@ -128,16 +130,12 @@
                 leftColumns: 1
             },
             "columnDefs": [{
-                targets: [6, 7],
+                targets: [7, 8],
                 className: "align-right more"
 
             }, {
-                targets: [0, 1, 4, 8, 9],
+                targets: [0, 1, 2, 5, 9, 10, 11],
                 className: "align-center more"
-
-            }, {
-                targets: [2, 3, 5, 10, 11],
-                className: "more"
 
             }
             ],
