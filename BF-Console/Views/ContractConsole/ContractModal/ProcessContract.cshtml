@@ -46,9 +46,9 @@
                         {
                             <a href="@Html.Raw(Url.Action("SignCourseContract", "ConsoleHome", new { KeyID = _model.ContractID.EncryptKey() }))" class="list-group-item">主管審核</a>
                         }
-                        else if (_model.IsPayable(models))
+                        else if (_model.IsPayable(models) && (_profile.IsAssistant() || _profile.IsAuthorizedSysAdmin() || _profile.IsServitor()))
                         {
-                            @*<a href="@Html.Raw(Url.Action("EditPaymentForContract", "ConsoleHome", new { KeyID = _model.ContractID.EncryptKey() }))" class="list-group-item">新增收款</a>*@
+                            <a href="@Html.Raw(Url.Action("EditPaymentForContract", "ConsoleHome", new { KeyID = _model.ContractID.EncryptKey() }))" class="list-group-item">新增收款</a>
                         }
                         if (_model.Status >= (int)Naming.CourseContractStatus.已生效 && _model.SequenceNo == 0)
                         {
