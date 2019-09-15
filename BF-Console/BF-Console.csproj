@@ -6149,6 +6149,11 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Views\PaymentConsole\PaymentModal\PaymentQuery.cshtml" />
+    <Content Include="Views\ContractConsole\Module\AboutPayment.cshtml" />
+    <Content Include="Views\ContractConsole\Module\AboutAutoTermination.cshtml" />
+    <Content Include="Views\ContractConsole\Module\AboutAutoTerminationByCoach.cshtml" />
+    <Content Include="Views\ContractConsole\Module\AboutAutoTerminationByBranch.cshtml" />
+    <Content Include="Views\ContractConsole\Module\AboutAutoTerminationByOfficer.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\InitializeType.cs" />
@@ -6573,7 +6578,6 @@
     <Content Include="Views\ConsoleHome\Module\ExerciseBillboardDetails.cshtml" />
     <Content Include="Views\ConsoleHome\Module\MainCalendar.cshtml" />
     <Content Include="Views\ConsoleHome\Module\RenderLessonCheck.cshtml" />
-    <Content Include="Views\ConsoleHome\Module\TodayLessonsBarChart.cshtml" />
     <Content Include="Views\ConsoleHome\Shared\MyContractHeader.cshtml" />
     <Content Include="Views\ConsoleHome\Shared\PagingControl.cshtml" />
     <Content Include="Views\ContractConsole\ContractModal\AboutContractDetails.cshtml" />

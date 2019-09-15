@@ -157,19 +157,29 @@
         <h4 class="card-outbound-header">我的合約與收款</h4>
         <div class="card widget_2">
             <ul class="row clearfix list-unstyled m-b-0">
-                <li class="col-lg-3 col-md-6 col-sm-12 contract">
+                <li class="col-lg-4 col-md-6 col-sm-12 contract">
                     @{ Html.RenderPartial("~/Views/ContractConsole/Module/AboutExpiring.cshtml", _model);}
-
                 </li>
-                <li class="col-lg-3 col-md-6 col-sm-12 contract">
+                @if (!_model.IsServitor())
+                {
+                <li class="col-lg-4 col-md-6 col-sm-12 contract">
+                    @{ Html.RenderPartial("~/Views/ContractConsole/Module/AboutAutoTermination.cshtml", _model);}
+                </li>
+                }
+                <li class="col-lg-4 col-md-6 col-sm-12 contract">
+                    @{ Html.RenderPartial("~/Views/ContractConsole/Module/AboutPayment.cshtml", _model);}
+                </li>
+                @if (!_model.IsServitor())
+                {
+                <li class="col-lg-4 col-md-6 col-sm-12 contract">
                     @{ Html.RenderPartial("~/Views/ContractConsole/Module/AboutNewContracts.cshtml", _model);}
-
                 </li>
-                <li class="col-lg-3 col-md-6 col-sm-12 contract">
+                <li class="col-lg-4 col-md-6 col-sm-12 contract">
                     @{ Html.RenderPartial("~/Views/ContractConsole/Module/AboutContractServices.cshtml", _model);}
 
                 </li>
-                <li class="col-lg-3 col-md-6 col-sm-12 payment">
+                }
+                <li class="col-lg-4 col-md-6 col-sm-12 payment">
                     @{ Html.RenderPartial("~/Views/PaymentConsole/Module/AboutTodayPayment.cshtml", _model);}
                 </li>
             </ul>
@@ -235,11 +245,7 @@
         $(".exerciserank").on('click', function (event) {
             window.location.href = '@Html.Raw(Url.Action("ExerciseBillboard","ConsoleHome"))';
         });
-
-        //我的業績
-        $(".achivement").on('click', function (event) {
-            window.location.href = 'achivement-self.html';
-        });
+        
 
         function showContractList(viewModel, alertCount) {
             var event = window.event;
