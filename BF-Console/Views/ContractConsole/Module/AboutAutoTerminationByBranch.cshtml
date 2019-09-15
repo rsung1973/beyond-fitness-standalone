@@ -28,7 +28,7 @@
                     .Where(c => c.FitnessConsultant == _model.UID);}
 
             <p class="text-small">
-                已過期：<a href="#" onclick='showContractList(@Html.Raw(JsonConvert.SerializeObject(
+                已自動終止：<a href="#" onclick='showContractList(@Html.Raw(JsonConvert.SerializeObject(
                                 new 
                                 {
                                     FitnessConsultant = _model.UID,

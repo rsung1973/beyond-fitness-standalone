@@ -28,15 +28,15 @@
                     .Where(c => c.FitnessConsultant == _model.UID);}
 
             <p class="text-small">
-                已過期：<a href="#" onclick='showContractList(@Html.Raw(JsonConvert.SerializeObject(
-                                new 
+                已自動終止：<a href="#" onclick='showContractList(@Html.Raw(JsonConvert.SerializeObject(
+                                new
                                 {
                                     FitnessConsultant = _model.UID,
                                     IsExpired = true,
                                     ContractQueryMode = Naming.ContractServiceMode.ContractOnly,
                                     Status = (int)Naming.CourseContractStatus.已過期,
                                 })),@(expiredItems.Count()));'>@(expiredItems.Count())</a>
-            </p>
+                            </p>
         </div>
         <div class="col-4 text-right">
             <a href="#" onclick='showContractList(@Html.Raw(JsonConvert.SerializeObject(
