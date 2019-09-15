@@ -17000,6 +17000,10 @@ img {
     color: #052333;
 }
 
+.sidebar .menu .input-group .form-control,
+.navbar-nav.navbar-right .input-group .form-control {
+    color: #9E9E9E
+}
 .sidebar .menu .input-group .form-control:focus,
 .navbar-nav.navbar-right .input-group .form-control:focus {
     border: 1px solid #fff;

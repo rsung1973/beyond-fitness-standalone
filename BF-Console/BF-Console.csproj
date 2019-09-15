@@ -6154,6 +6154,18 @@
     <Content Include="Views\ContractConsole\Module\AboutAutoTerminationByCoach.cshtml" />
     <Content Include="Views\ContractConsole\Module\AboutAutoTerminationByBranch.cshtml" />
     <Content Include="Views\ContractConsole\Module\AboutAutoTerminationByOfficer.cshtml" />
+    <Content Include="Views\PaymentConsole\ApplyPaymentAchievement.cshtml" />
+    <Content Include="Views\PaymentConsole\EditPaymentForShopping.cshtml" />
+    <Content Include="Views\PaymentConsole\Module\AchievementShareList.cshtml" />
+    <Content Include="Views\PaymentConsole\Module\ApplyAchievementShare.cshtml" />
+    <Content Include="Views\PaymentConsole\Module\CurrentMonthPaymentView.cshtml" />
+    <Content Include="Views\PaymentConsole\Module\CustomPaymentList.cshtml" />
+    <Content Include="Views\PaymentConsole\Module\EditPaymentForShopping.cshtml" />
+    <Content Include="Views\PaymentConsole\Module\MerchandiseForSale.cshtml" />
+    <Content Include="Views\PaymentConsole\Module\MerchandiseList.cshtml" />
+    <Content Include="Views\PaymentConsole\Module\ProcessAchievementShare.cshtml" />
+    <Content Include="Views\PaymentConsole\PaymentModal\ApplyCoachAchievementShare.cshtml" />
+    <Content Include="Views\PaymentConsole\PaymentModal\ApplyShareAmount.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\InitializeType.cs" />

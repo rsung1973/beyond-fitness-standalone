@@ -68,20 +68,10 @@
                             {
                                 <text>@(_model.ContractPayment.CourseContract.ContractName())</text>
                             }
-                            else if (_model.TransactionType == (int)Naming.PaymentTransactionType.運動商品
-                                || _model.TransactionType == (int)Naming.PaymentTransactionType.食飲品)
-                            {
-                                <text>(@(String.Join("、", _model.PaymentTransaction.PaymentOrder.Select(p => p.MerchandiseWindow.ProductName))))</text>
-                            }
-                            else
-                            {
-                                @(((Naming.PaymentTransactionType)_model.TransactionType).ToString())
-                            }
                         }
-                        <br />買受人統編：
                         @if (invoice != null && !invoice.InvoiceBuyer.IsB2C())
                         {
-                            <text>@(invoice.InvoiceBuyer.ReceiptNo)</text>
+                            <text><br />買受人統編：@(invoice.InvoiceBuyer.ReceiptNo)</text>
                         }
                     </p>
                 </div>

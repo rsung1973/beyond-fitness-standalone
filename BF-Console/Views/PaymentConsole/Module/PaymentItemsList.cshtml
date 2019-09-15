@@ -65,7 +65,7 @@
                 @if (item.TransactionType == (int)Naming.PaymentTransactionType.運動商品
                     || item.TransactionType == (int)Naming.PaymentTransactionType.食飲品)
                 {
-                    <text>(@(String.Join("、", item.PaymentTransaction.PaymentOrder.Select(p => p.MerchandiseWindow.ProductName))))</text>
+                    <text>(@(String.Join("/", item.PaymentTransaction.PaymentOrder.Select(p => p.MerchandiseWindow.ProductName))))</text>
                 }
             </td>
             <td style="text-align:right">@(item.PayoffAmount >= 0 
