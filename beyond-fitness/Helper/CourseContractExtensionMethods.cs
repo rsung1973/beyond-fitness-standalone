@@ -40,6 +40,46 @@ namespace WebHome.Helper
                 .Where(c => c.Expiration < DateTime.Today.AddMonths(1));
         }
 
+        public static IQueryable<CourseContract> PromptUnpaidContract<TEntity>(this ModelSource<TEntity> models)
+                where TEntity : class, new()
+        {
+            return models.PromptEffectiveContract().FilterByUnpaidContract(models);
+        }
+
+        public static IQueryable<CourseContract> FilterByUnpaidContract<TEntity>(this IQueryable<CourseContract> contractItems, ModelSource<TEntity> models)
+                where TEntity : class, new()
+        {
+            var items = models.GetTable<ContractPayment>()
+                    .Join(models.GetTable<Payment>().Where(p => p.VoidPayment == null),
+                        c => c.PaymentID, p => p.PaymentID, (c, p) => c);
+
+            return contractItems
+                .Join(models.GetTable<CourseContractExtension>().Where(t => t.Version.HasValue),
+                    c => c.ContractID, t => t.ContractID, (c, t) => c)
+                .Where(c => !items.Any(t => t.ContractID == c.ContractID));
+        }
+
+        public static IQueryable<CourseContract> PromptUnpaidExpiredContract<TEntity>(this ModelSource<TEntity> models)
+                where TEntity : class, new()
+        {
+            return models.GetTable<CourseContract>().FilterByUnpaidExpiredContract(models);
+        }
+
+        public static IQueryable<CourseContract> FilterByUnpaidExpiredContract<TEntity>(this IQueryable<CourseContract> contractItems, ModelSource<TEntity> models)
+                where TEntity : class, new()
+        {
+            return contractItems.Where(c => c.Status == (int)Naming.CourseContractStatus.已終止)
+                .Where(c => c.Subject == "未付款");
+        }
+
+
+        public static IQueryable<CourseContract> PromptUnpaidExpiringContract<TEntity>(this ModelSource<TEntity> models)
+                where TEntity : class, new()
+        {
+            return models.PromptUnpaidContract()
+                .Where(c => c.PayoffDue < DateTime.Today);
+        }
+
         public static IQueryable<CourseContract> PromptEffectiveContract<TEntity>(this ModelSource<TEntity> models)
                 where TEntity : class, new()
         {
@@ -318,9 +358,7 @@ namespace WebHome.Helper
                     where TEntity : class, new()
         {
             DateTime checkDate = DateTime.Today.FirstDayOfMonth();
-            var items = models.PromptEffectiveContract()
-                                .Where(c => !c.ContractPayment.Any())
-                                .Where(c => c.PayoffDue.HasValue)
+            var items = models.PromptUnpaidContract()
                                 .Where(c => c.PayoffDue.Value.AddMonths(1) < checkDate)
                                 .Where(c => c.CourseContractExtension.Version.HasValue);
 

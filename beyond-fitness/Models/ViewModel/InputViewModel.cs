@@ -62,6 +62,9 @@ namespace WebHome.Models.ViewModel
         public Naming.ContractVersion? Version { get; set; }
         public Naming.Actor? BySelf { get; set; }
         public int? ProcessingFee { get; set; }
+        public bool? UnpaidExpiring { get; set; }
+        public bool? Unpaid { get; set; }
+
     }
 
     public class CourseContractQueryViewModel : CourseContractViewModel

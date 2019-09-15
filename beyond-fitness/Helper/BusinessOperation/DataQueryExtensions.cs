@@ -199,6 +199,19 @@ namespace WebHome.Helper.BusinessOperation
                 items = items.Where(c => c.InstallmentID == viewModel.InstallmentID);
             }
 
+            if (viewModel.UnpaidExpiring == true)
+            {
+                hasConditon = true;
+                items = items.FilterByUnpaidContract(models)
+                        .Where(p => p.PayoffDue < DateTime.Today);
+            }
+
+            if (viewModel.Unpaid == true)
+            {
+                hasConditon = true;
+                items = items.FilterByUnpaidContract(models);
+            }
+
             if (hasConditon)
             {
 
