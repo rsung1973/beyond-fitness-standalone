@@ -25,14 +25,14 @@
         <div class="col-lg-12 col-md-12">
             <div class="row clearfix">
                 <div class="col-12">
-                    <div class="card">
+                    <div class="card bg-darkteal">
                         <div class="header">
                             <h2>
-                                <strong class="col-red" id="branchName">@(_viewModel.BranchName)</strong>
+                                <strong class="col-white" id="branchName">@(_viewModel.BranchName)</strong>
                                 @for (int idx = 0; idx < 3; idx++)
                                 {
                                     var dayIdx = DateTime.Today.AddDays(idx);
-                                    <a href="#lessonSummary" onclick="inquireDailyBarChart('@($"{dayIdx:yyyy-MM-dd}")',event);" class="btn btn-simple btn-sm btn-darkteal inquireDaily @(_viewModel.ClassTimeStart == dayIdx ? "disabled" : null)">@($"{dayIdx:yyyy/MM/dd}")</a>
+                                    <a href="#lessonSummary" onclick="inquireDailyBarChart('@($"{dayIdx:yyyy-MM-dd}")',event);" class="btn btn-simple btn-sm bg-blue-grey inquireDaily @(_viewModel.ClassTimeStart == dayIdx ? "disabled" : null)">@($"{dayIdx:yyyy/MM/dd}")</a>
                                 }
                             </h2>
                             <ul class="header-dropdown">

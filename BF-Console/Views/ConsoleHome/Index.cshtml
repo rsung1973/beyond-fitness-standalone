@@ -40,7 +40,7 @@
     <link href="plugins/royalslider/skins/default/rs-default.css" rel="stylesheet" />
     <link href="css/royalslider.css?1.1" rel="stylesheet" />
     <!-- charts-c3 -->
-    <link href="plugins/charts-c3/plugin_white.css" rel="stylesheet" />
+    <link href="plugins/charts-c3/plugin.css" rel="stylesheet" />
 }
 
 <!--Sparkline Plugin Js-->
@@ -162,22 +162,22 @@
                 </li>
                 @if (!_model.IsServitor())
                 {
-                <li class="col-lg-4 col-md-6 col-sm-12 contract">
-                    @{ Html.RenderPartial("~/Views/ContractConsole/Module/AboutAutoTermination.cshtml", _model);}
-                </li>
+                    <li class="col-lg-4 col-md-6 col-sm-12 contract">
+                        @{ Html.RenderPartial("~/Views/ContractConsole/Module/AboutAutoTermination.cshtml", _model);}
+                    </li>
                 }
                 <li class="col-lg-4 col-md-6 col-sm-12 contract">
                     @{ Html.RenderPartial("~/Views/ContractConsole/Module/AboutPayment.cshtml", _model);}
                 </li>
                 @if (!_model.IsServitor())
                 {
-                <li class="col-lg-4 col-md-6 col-sm-12 contract">
-                    @{ Html.RenderPartial("~/Views/ContractConsole/Module/AboutNewContracts.cshtml", _model);}
-                </li>
-                <li class="col-lg-4 col-md-6 col-sm-12 contract">
-                    @{ Html.RenderPartial("~/Views/ContractConsole/Module/AboutContractServices.cshtml", _model);}
+                    <li class="col-lg-4 col-md-6 col-sm-12 contract">
+                        @{ Html.RenderPartial("~/Views/ContractConsole/Module/AboutNewContracts.cshtml", _model);}
+                    </li>
+                    <li class="col-lg-4 col-md-6 col-sm-12 contract">
+                        @{ Html.RenderPartial("~/Views/ContractConsole/Module/AboutContractServices.cshtml", _model);}
 
-                </li>
+                    </li>
                 }
                 <li class="col-lg-4 col-md-6 col-sm-12 payment">
                     @{ Html.RenderPartial("~/Views/PaymentConsole/Module/AboutTodayPayment.cshtml", _model);}
@@ -202,6 +202,11 @@
     {
         Html.RenderPartial("~/Views/ConsoleHome/Module/AboutLearners_1.cshtml", _model);
     }
+    <!--我的發票卡片-->
+    @if (_model.IsAssistant() || _model.IsAuthorizedSysAdmin())
+    {
+        Html.RenderPartial("~/Views/ConsoleHome/Module/AboutInvoice.cshtml", _model);
+    }
     <!--我的分店業績卡片-->
     @{
         Html.RenderPartial("~/Views/ConsoleHome/Module/AboutAchievementC3.cshtml", _model);
@@ -210,11 +215,6 @@
     @if (_model.IsCoach())
     {
         Html.RenderPartial("~/Views/ConsoleHome/Module/AboutCoach.cshtml", _model);
-    }
-    <!--我的發票卡片-->
-    @if (_model.IsAssistant() || _model.IsAuthorizedSysAdmin())
-    {
-        Html.RenderPartial("~/Views/ConsoleHome/Module/AboutInvoice.cshtml", _model);
     }
     <!--專業文章&我的比賽-->
     @if (_model.IsAssistant() || _model.IsAuthorizedSysAdmin() || _model.IsServitor())

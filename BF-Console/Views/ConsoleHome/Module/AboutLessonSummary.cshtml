@@ -40,19 +40,19 @@
 <div class="row text-center calendar-todo">
     <div class="col-sm-3 col-6">
         <h4 class="margin-0">@(currentMonthPT.Where(l => l.LessonAttendance == null).Count())</h4>
-        <p class="text-muted margin-0"> 本月P.T 編輯中</p>
+        <p class="margin-0"> 本月P.T 編輯中</p>
     </div>
     <div class="col-sm-3 col-6">
         <h4 class="margin-0">@(currentMonthPI.Where(l => l.LessonAttendance == null).Count())</h4>
-        <p class="text-muted margin-0"> 本月P.I 編輯中</p>
+        <p class="margin-0"> 本月P.I 編輯中</p>
     </div>
     <div class="col-sm-3 col-6">
         <h4 class="margin-0">@(beforeCurrentPT.Where(l => l.LessonAttendance == null).Count())</h4>
-        <p class="text-muted margin-0"> 截至上月P.T 未完成</p>
+        <p class="margin-0"> 截至上月P.T 未完成</p>
     </div>
     <div class="col-sm-3 col-6">
         <h4 class="margin-0">@(beforeCurrentPI.Where(l => l.LessonAttendance == null).Count())</h4>
-        <p class="text-muted margin-0"> 截至上月P.I 未完成</p>
+        <p class="margin-0"> 截至上月P.I 未完成</p>
     </div>
 </div>
 

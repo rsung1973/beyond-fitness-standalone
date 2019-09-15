@@ -68,9 +68,9 @@
             data: {
                 columns: [
                     // each columns data
-                    ['data1'],
-                    ['data2'],
-                    ['data3'],
+                    @Html.Raw(JsonConvert.SerializeObject(getDistributionC3("data1",PTLessons,_hourIdx))),
+                    @Html.Raw(JsonConvert.SerializeObject(getDistributionC3("data2",PILessons, _hourIdx))),
+                    @Html.Raw(JsonConvert.SerializeObject(getDistributionC3("data3",TrialLessons, _hourIdx)))
                 ],
                 order: null,
                 type: 'bar', // default type of chart
@@ -78,9 +78,9 @@
                     ['data1', 'data2', 'data3']
                 ],
                 colors: {
-                    'data1': '#65799b',
-                    'data2': '#d3d4d8',
-                    'data3': '#3fbac2'
+                    'data1': '#CDDC39',
+                    'data2': '#ACACAC',
+                    'data3': '#930641'
                 },
                 names: {
                     // name of each serie
@@ -91,7 +91,11 @@
                 labels: {
                         format: {
                             data3: function(v, id, i, j) {
-                                return totalData[i];
+                                if (totalData[i] > 0) {
+                                    return totalData[i];
+                                } else {
+                                    return "";
+                                }
                             },
                         }
                     },
@@ -122,28 +126,11 @@
                 }
             }
         });
-
-        setTimeout(function () {
-            chart.load({
-                columns: [@Html.Raw(JsonConvert.SerializeObject(getDistributionC3("data1",PTLessons,_hourIdx)))]
-            });
+        setTimeout(function() {
+                chart.groups([
+                    ['data1', 'data2', 'data3']
+                ])
         }, 1000);
-
-        setTimeout(function () {
-            chart.load({
-                columns: [@Html.Raw(JsonConvert.SerializeObject(getDistributionC3("data2",PILessons, _hourIdx)))]
-            });
-        }, 1500);
-
-        setTimeout(function () {
-            chart.load({
-                columns: [@Html.Raw(JsonConvert.SerializeObject(getDistributionC3("data3",TrialLessons, _hourIdx)))]
-            });
-        }, 2000);
-
-        setTimeout(function () {
-            chart.groups([['data1', 'data2', 'data3']])
-        }, 2500);
     });
 </script>
 @{ Html.RenderPartial("~/Views/ConsoleHome/Shared/InitBarChartNoRegister.cshtml");}
