@@ -254,7 +254,7 @@ namespace WebHome.Controllers
             if (item == null)
             {
                 ViewBag.GoBack = true;
-                return View("~/Views/Shared/JsAlert.cshtml", model: "合約資料錯誤!!");
+                return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: "合約資料錯誤!!");
             }
 
             ViewBag.DataItem = item;
@@ -626,7 +626,7 @@ namespace WebHome.Controllers
         public ActionResult EditPaymentForShopping(PaymentQueryViewModel viewModel)
         {
             ViewResult result = (ViewResult)PaymentIndex(viewModel);
-            result.ViewName = "~/Views/PaymentConsole/EditPaymentForPISession.cshtml";
+            result.ViewName = "~/Views/PaymentConsole/EditPaymentForShopping.cshtml";
             return result;
         }
 
@@ -672,12 +672,23 @@ namespace WebHome.Controllers
             if (item == null)
             {
                 ViewBag.GoBack = true;
-                return View("~/Views/Shared/JsAlert.cshtml", model: "收款資料錯誤!!");
+                return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: "收款資料錯誤!!");
             }
 
             ViewBag.DataItem = item;
 
             return View(profile.LoadInstance(models));
+        }
+
+        public ActionResult ApplyPaymentAchievement(PaymentQueryViewModel viewModel)
+        {
+            ViewResult result = (ViewResult)VoidPayment(viewModel);
+            if (ViewBag.DataItem is Payment item)
+            {
+                result.ViewName = "~/Views/PaymentConsole/ApplyPaymentAchievement.cshtml";
+            }
+
+            return result;
         }
 
 

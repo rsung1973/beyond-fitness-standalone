@@ -51832,7 +51832,7 @@ namespace WebHome.Models.DataEntity
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="MerchandiseTransactionType_MerchandiseTransactionType", Storage="_MerchandiseTransactionType2", ThisKey="TransactionID", OtherKey="CategorySourceID")]
-		public EntitySet<MerchandiseTransactionType> MerchandiseTransactionType2
+		public EntitySet<MerchandiseTransactionType> SubCategory
 		{
 			get
 			{
@@ -51845,7 +51845,7 @@ namespace WebHome.Models.DataEntity
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="MerchandiseTransactionType_MerchandiseTransactionType", Storage="_MerchandiseTransactionType1", ThisKey="CategorySourceID", OtherKey="TransactionID", IsForeignKey=true)]
-		public MerchandiseTransactionType MerchandiseTransactionType1
+		public MerchandiseTransactionType ParentType
 		{
 			get
 			{
@@ -51861,19 +51861,19 @@ namespace WebHome.Models.DataEntity
 					if ((previousValue != null))
 					{
 						this._MerchandiseTransactionType1.Entity = null;
-						previousValue.MerchandiseTransactionType2.Remove(this);
+						previousValue.SubCategory.Remove(this);
 					}
 					this._MerchandiseTransactionType1.Entity = value;
 					if ((value != null))
 					{
-						value.MerchandiseTransactionType2.Add(this);
+						value.SubCategory.Add(this);
 						this._CategorySourceID = value.TransactionID;
 					}
 					else
 					{
 						this._CategorySourceID = default(Nullable<int>);
 					}
-					this.SendPropertyChanged("MerchandiseTransactionType1");
+					this.SendPropertyChanged("ParentType");
 				}
 			}
 		}
@@ -51913,13 +51913,13 @@ namespace WebHome.Models.DataEntity
 		private void attach_MerchandiseTransactionType2(MerchandiseTransactionType entity)
 		{
 			this.SendPropertyChanging();
-			entity.MerchandiseTransactionType1 = this;
+			entity.ParentType = this;
 		}
 		
 		private void detach_MerchandiseTransactionType2(MerchandiseTransactionType entity)
 		{
 			this.SendPropertyChanging();
-			entity.MerchandiseTransactionType1 = null;
+			entity.ParentType = null;
 		}
 	}
 	

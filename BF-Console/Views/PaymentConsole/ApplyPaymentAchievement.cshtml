@@ -12,40 +12,28 @@
 @{
     ModelSource<UserProfile> models;
     ModelStateDictionary _modelState;
+    Payment _item;
     UserProfile _model;
     PaymentQueryViewModel _viewModel;
 
     Layout = "~/Views/ConsoleHome/Template/MainPage.cshtml";
 
+
     models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
     _modelState = (ModelStateDictionary)ViewBag.ModelState;
     _model = (UserProfile)this.Model;
     _viewModel = (PaymentQueryViewModel)ViewBag.ViewModel;
-    _viewModel.PayoffDate = DateTime.Now;
-    if(!_viewModel.TransactionType.HasValue)
-    {
-        _viewModel.TransactionType = (int)Naming.PaymentTransactionType.食飲品;
-    }
-    _viewModel.InvoiceType = Naming.InvoiceTypeDefinition.一般稅額計算之電子發票;
-    _viewModel.SellerID = models.GetTable<V_WorkPlace>().Where(w => w.CoachID == _model.UID)
-            .Select(w => w.WorkPlace).FirstOrDefault();
-}
-@{
-    UserProfile _profile = _model;
+    _item = (Payment)ViewBag.DataItem;
+
 }
 @section CustomHeader {
+    <!-- Custom Css -->
+    <link rel="stylesheet" href="css/customelist.css?2">
+
     <!-- JQuery DataTable Css -->
     <link href="plugins/jquery-datatable/DataTables-1.10.18/css/dataTables.bootstrap4.min.css" rel="stylesheet">
     <link href="plugins/jquery-datatable/Responsive-2.2.2/css/responsive.bootstrap4.min.css" rel="stylesheet">
     <link href="plugins/jquery-datatable/FixedColumns-3.2.5/css/fixedColumns.bootstrap4.min.css" rel="stylesheet">
-    <!-- Bootstrap Datetimepick -->
-
-    <link href="css/smartcalendar-2.css" rel="stylesheet" />
-    <!-- Inbox -->
-    <link href="css/inbox.css" rel="stylesheet">
-    <!-- Custom Css -->
-    <link rel="stylesheet" href="css/customelist.css?2" />
-    <link rel="stylesheet" href="css/ecommerce.css">
 }
 
 <script>
@@ -59,29 +47,15 @@
 </script>
 <!-- Main Content -->
 <section class="content">
-    @{
-        ViewBag.BlockHeader = "編輯收款";
-        Html.RenderPartial("~/Views/ConsoleHome/Module/BlockHeader.cshtml", _model);
-    }
+    @{ ViewBag.BlockHeader = "業績分潤";
+        ViewBag.InsertPartial = "~/Views/ConsoleHome/Shared/MyPaymentHeader.cshtml";
+        Html.RenderPartial("~/Views/ConsoleHome/Module/BlockHeader.cshtml", _model);}
 
-    <!--合約詳細資料&收款資料-->
     <div class="container-fluid">
-        <div class="card">
-            <div class="row">
-                <div class="col-lg-8 col-md-6 col-sm-12">
-                    @{
-                        Html.RenderPartial("~/Views/PaymentConsole/Module/MerchandiseForSale.cshtml");
-                    }
-                </div>
-                <div class="col-lg-4 col-md-6 col-sm-12 bg-darkteal">
-                    <div class="body">
-                        @{
-                            Payment item = models.GetTable<Payment>().Where(p => p.PaymentID == _viewModel.PaymentID).FirstOrDefault();
-                            Html.RenderPartial("~/Views/PaymentConsole/Module/EditPaymentForShopping.cshtml", item);
-                        }
-                    </div>
-                </div>
-            </div>
+        <div class="card widget_2">
+            @{
+                Html.RenderPartial("~/Views/PaymentConsole/Module/ApplyAchievementShare.cshtml", _item);
+            }
         </div>
     </div>
 
@@ -96,11 +70,12 @@
     <script src="bundles/datatablescripts.bundle.js"></script>
     <script src="plugins/jquery-datatable/Responsive-2.2.2/js/dataTables.responsive.min.js"></script>
     <script src="plugins/jquery-datatable/FixedColumns-3.2.5/js/dataTables.fixedColumns.min.js"></script>
-    <script src="js/linq.min.js"></script>
 
     @{ Html.RenderPartial("~/Views/ConsoleHome/Shared/KnobJS.cshtml");}
 
+    <script type="text/javascript">
 
+    </script>
 }
 
 

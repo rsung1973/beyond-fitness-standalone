@@ -23,6 +23,12 @@
     <script>
         $(function () {
             console.log('@(_modelState.ErrorMessage())');
+            @if(ViewBag.AlertError==true)
+            {
+                <text>
+            swal('@(HttpUtility.JavaScriptStringEncode(_modelState.ErrorMessage()))');
+                </text>
+            }
             @foreach (var key in _modelState.Keys.Where(k => _modelState[k].Errors.Count > 0))
             {
             <text>

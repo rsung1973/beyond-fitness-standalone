@@ -726,6 +726,95 @@ namespace WebHome.Controllers
             }
         }
 
+        public ActionResult CommitPaymentForShopping2019(PaymentViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            var profile = HttpContext.GetUser();
+
+            if (viewModel.ProductItemID == null || viewModel.ProductItemID.Length == 0)
+            {
+                ModelState.AddModelError("ProductItems", "請選擇品項");
+            }
+
+            if (!viewModel.PayoffDate.HasValue)
+            {
+                ModelState.AddModelError("errorMessage", "請選擇收款日期");
+            }
+            
+            viewModel.CarrierId1 = viewModel.CarrierId1.GetEfficientString();
+            if (viewModel.CarrierId1 != null)
+            {
+                if (viewModel.CarrierType == null)
+                {
+                    viewModel.CarrierType = "3J0002";
+                }
+            }
+
+            var invoice = checkInvoiceNo(viewModel);
+
+            if (!viewModel.SellerID.HasValue)
+            {
+                ModelState.AddModelError("SellerID", "請選擇收款場地");
+            }
+
+            if (String.IsNullOrEmpty(viewModel.PaymentType))
+            {
+                ModelState.AddModelError("PaymentType", "請選擇收款方式");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                ViewBag.ModelState = ModelState;
+                return View(Settings.Default.ReportInputError);
+            }
+
+            try
+            {
+
+                Payment item = models.GetTable<Payment>()
+                    .Where(p => p.PaymentID == viewModel.PaymentID).FirstOrDefault();
+
+                if (item == null)
+                {
+                    item = new Payment
+                    {
+                        Status = (int)Naming.CourseContractStatus.已生效,
+                        PaymentTransaction = new PaymentTransaction
+                        { },
+                        PaymentAudit = new Models.DataEntity.PaymentAudit { }
+                    };
+                    models.GetTable<Payment>().InsertOnSubmit(item);
+                    item.InvoiceItem = invoice;
+                }
+                else
+                {
+                    models.DeleteAllOnSubmit<PaymentOrder>(p => p.PaymentID == item.PaymentID);
+                }
+
+                item.PaymentTransaction.BranchID = viewModel.SellerID.Value;
+                int idx = 0;
+                item.PaymentTransaction.PaymentOrder.AddRange(viewModel.ProductItemID.Select(d =>
+                    new PaymentOrder
+                    {
+                        ProductID = d.Value,
+                        ProductCount = viewModel.Piece[idx++].Value
+                    }));
+
+                preparePayment(viewModel, profile, item);
+
+                models.SubmitChanges();
+
+                TaskExtensionMethods.ProcessInvoiceToGov();
+
+                return Json(new { result = true, invoiceNo = item.InvoiceItem.TrackCode + item.InvoiceItem.No, item.InvoiceID, item.InvoiceItem.InvoiceType, item.PaymentID }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return Json(new { result = false, message = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
         private InvoiceItem checkInvoiceNo(PaymentViewModel viewModel)
         {
             if (!viewModel.PayoffAmount.HasValue || viewModel.PayoffAmount <= 0)
@@ -1763,6 +1852,10 @@ namespace WebHome.Controllers
         public ActionResult CommitToApplyCoachAchievement(PaymentViewModel viewModel)
         {
             ViewBag.ViewModel = viewModel;
+            if(viewModel.KeyID!=null)
+            {
+                viewModel.PaymentID = viewModel.DecryptKeyValue();
+            }
 
             if (!viewModel.ShareAmount.HasValue || viewModel.ShareAmount <= 0)
             {
@@ -1777,7 +1870,7 @@ namespace WebHome.Controllers
             if(!ModelState.IsValid)
             {
                 ViewBag.ModelState = this.ModelState;
-                return View("~/Views/Shared/ReportInputError.ascx");
+                return View(Settings.Default.ReportInputError);
             }
 
             try

@@ -167,6 +167,8 @@ namespace WebHome.Models.ViewModel
         public int? CoachID { get; set; }
         public int? ContractID { get; set; }
         public bool? InvoiceNow { get; set; }
+        public int?[] ProductItemID { get; set; }
+
     }
 
     public class PaymentQueryViewModel : PaymentViewModel
@@ -201,6 +203,7 @@ namespace WebHome.Models.ViewModel
         public bool? IncomeOnly { get; set; }
         public bool? HasShare { get; set; }
         public int? RelatedID { get; set; }
+        public int? TransactionID { get; set; }
 
     }
 

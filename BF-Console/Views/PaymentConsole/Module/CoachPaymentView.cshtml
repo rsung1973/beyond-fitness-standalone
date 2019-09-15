@@ -33,9 +33,9 @@
                 <li class="dropdown">
                     <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class="zmdi zmdi-shopping-cart-plus"></i> </a>
                     <ul class="dropdown-menu dropdown-menu-right slideUp float-right">
-                        <li><a href="@(Url.Action("EditPaymentForPISession","ConsoleHome"))">收款 - P.I sesson</a></li>
-                        <li><a href="javascript:addPayment('payment-edit-type3');">收款 - 食飲品</a></li>
-                        <li><a href="javascript:addPayment('payment-edit-type4');">收款 - 運動商品</a></li>
+                        <li><a href="@Html.Raw(Url.Action("EditPaymentForPISession","ConsoleHome"))">收款 - P.I sesson</a></li>
+                        <li><a href="@Html.Raw(Url.Action("EditPaymentForShopping","ConsoleHome"))">收款 - 食飲品</a></li>
+                        <li><a href="@Html.Raw(Url.Action("EditPaymentForShopping","ConsoleHome",new { TransactionType = (int)Naming.PaymentTransactionType.運動商品}))">收款 - 運動商品</a></li>
                     </ul>
                 </li>
             </ul>
@@ -46,7 +46,7 @@
                 <div class="body">
                     <div class="row">
                         @{
-                        Html.RenderPartial("~/Views/PaymentConsole/Module/PaymentForPT.cshtml", items);
+                            Html.RenderPartial("~/Views/PaymentConsole/Module/PaymentForPT.cshtml", items);
                         }
                     </div>
                 </div>
@@ -55,7 +55,7 @@
                 <div class="body">
                     <div class="row">
                         @{
-                        Html.RenderPartial("~/Views/PaymentConsole/Module/PaymentForPI.cshtml", items);
+                            Html.RenderPartial("~/Views/PaymentConsole/Module/PaymentForPI.cshtml", items);
                         }
                     </div>
                 </div>
@@ -64,7 +64,7 @@
                 <div class="body">
                     <div class="row">
                         @{
-                        Html.RenderPartial("~/Views/PaymentConsole/Module/PaymentForOthers.cshtml", items);
+                            Html.RenderPartial("~/Views/PaymentConsole/Module/PaymentForOthers.cshtml", items);
                         }
                     </div>
                 </div>
@@ -73,23 +73,23 @@
                 <div class="body">
                     <div class="row">
                         @{
-                        Html.RenderPartial("~/Views/PaymentConsole/Module/TodayPayment.cshtml", items);
+                            Html.RenderPartial("~/Views/PaymentConsole/Module/TodayPayment.cshtml", items);
                         }
                     </div>
                 </div>
             </li>
             @if (_profile.IsCoach())
-        {
-            <li class="col-lg-6 col-md-6 col-sm-12">
-                <div class="body">
-                    <div class="row">
-                        @{
-                        Html.RenderPartial("~/Views/PaymentConsole/Module/CurrentMonthAchievementShare.cshtml", _model);
-                        }
+            {
+                <li class="col-lg-6 col-md-6 col-sm-12">
+                    <div class="body">
+                        <div class="row">
+                            @{
+                                Html.RenderPartial("~/Views/PaymentConsole/Module/CurrentMonthAchievementShare.cshtml", _model);
+                            }
+                        </div>
                     </div>
-                </div>
-            </li>
-    }
+                </li>
+            }
         </ul>
     </div>
 </div>

@@ -1,0 +1,126 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Helper.DataOperation
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    UserProfile _profile;
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _profile = Context.GetUser();
+}
+@{
+    PaymentQueryViewModel _viewModel = (PaymentQueryViewModel)ViewBag.ViewModel;
+    var categoryItems = models.GetTable<MerchandiseTransactionType>().Where(m => m.CategorySourceID.HasValue);
+    int? defaultType = _viewModel.TransactionType;
+}
+<div class="header">
+    <select class="form-control show-tick" name="TransactionID">
+        @if (_viewModel.TransactionType == (int)Naming.PaymentTransactionType.食飲品)
+        {
+        <option value="3">食飲品</option>
+        }
+        else if (_viewModel.TransactionType == (int)Naming.PaymentTransactionType.運動商品)
+        {
+            defaultType = categoryItems.FirstOrDefault()?.TransactionID;
+            foreach (var item in categoryItems)
+            {
+            <option value="@(item.TransactionID)">@(item.ParentType.TransactionType)/@(item.TransactionType)</option>
+            }
+        }
+    </select>
+</div>
+<div class="body ecommerce-page">
+    <div class="row clearfix" id="merchandiseList">
+        @{ 
+            var items = models.GetTable<MerchandiseTransaction>().Where(t => t.TransactionID == defaultType)
+                            .Select(t => t.MerchandiseWindow);
+            Html.RenderPartial("~/Views/PaymentConsole/Module/MerchandiseList.cshtml", items);
+        }
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('select[name="TransactionID"]').on('change', function (event) {
+            var $this = $(this);
+            showLoading();
+            $.post('@Html.Raw(Url.Action("GetMerchandiseList","PaymentConsole"))', {'TransactionID':$this.val()}, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                        swal(data.message);
+                } else {
+                    $('#merchandiseList').empty().append(data);
+                }
+            });
+        });
+    });
+
+    function commitPayoff() {
+
+        swal({
+            title: "@($"新增{(Naming.PaymentTransactionType?)_viewModel.TransactionType}收款")",
+            text: "請再次確認收款資料正確?",
+            //type: "successful",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "確定，不後悔",
+            cancelButtonText: "不, 重新輸入",
+            closeOnConfirm: true,
+            closeOnCancel: true,
+        }, function (isConfirm) {
+            if (isConfirm) {
+                clearErrors();
+                var formData = $.extend({}, $global.viewModel, $('input,select,textarea').serializeObject());
+                formData.ItemNo = [];
+                formData.Brief = [];
+                formData.CostAmount = [];
+                formData.UnitCost = [];
+                formData.Piece = [];
+                formData.ItemRemark = [];
+                formData.ProductItemID = [];
+                $global.invoiceItems.forEach(function (item, index) {
+                    formData.ItemNo.push('' + index);
+                    formData.Brief.push(item.ProductName);
+                    formData.CostAmount.push(item.Quantity * item.UnitPrice);
+                    formData.UnitCost.push(item.UnitPrice);
+                    formData.Piece.push(item.Quantity);
+                    formData.ProductItemID.push(item.ProductID);
+                    formData.ItemRemark.push('');
+                });
+
+                showLoading();
+                $.post('@Html.Raw(Url.Action("CommitPaymentForShopping2019","Payment",new { _viewModel.PaymentID,_viewModel.TransactionType, alertError = false }))', formData, function (data) {
+                    hideLoading();
+                    if ($.isPlainObject(data)) {
+                        if (data.result) {
+                            showLoading();
+                            $('').launchDownload('@Html.Raw(Url.Action("InquirePaymentIndex","ConsoleHome"))', { 'PaymentID': data.PaymentID });
+                        } else {
+                            swal(data.message);
+                        }
+                    } else {
+                        $(data).appendTo($('body')).remove();
+                    }
+                });
+            } else {
+
+            }
+        });
+    }
+
+    function quitPayoff() {
+        window.location.href = '@Url.Action("PaymentIndex","ConsoleHome")';
+    }
+
+</script>

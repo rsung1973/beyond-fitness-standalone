@@ -2267,8 +2267,8 @@
       <Column Name="TransactionType" Type="System.String" DbType="NVarChar(16)" CanBeNull="true" />
       <Column Name="CategorySourceID" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Association Name="MerchandiseTransactionType_MerchandiseTransaction" Member="MerchandiseTransaction" ThisKey="TransactionID" OtherKey="TransactionID" Type="MerchandiseTransaction" />
-      <Association Name="MerchandiseTransactionType_MerchandiseTransactionType" Member="MerchandiseTransactionType2" ThisKey="TransactionID" OtherKey="CategorySourceID" Type="MerchandiseTransactionType" />
-      <Association Name="MerchandiseTransactionType_MerchandiseTransactionType" Member="MerchandiseTransactionType1" ThisKey="CategorySourceID" OtherKey="TransactionID" Type="MerchandiseTransactionType" IsForeignKey="true" />
+      <Association Name="MerchandiseTransactionType_MerchandiseTransactionType" Member="SubCategory" Storage="_MerchandiseTransactionType2" ThisKey="TransactionID" OtherKey="CategorySourceID" Type="MerchandiseTransactionType" />
+      <Association Name="MerchandiseTransactionType_MerchandiseTransactionType" Member="ParentType" Storage="_MerchandiseTransactionType1" ThisKey="CategorySourceID" OtherKey="TransactionID" Type="MerchandiseTransactionType" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.V_LessonUnitPrice" Member="V_LessonUnitPrice">

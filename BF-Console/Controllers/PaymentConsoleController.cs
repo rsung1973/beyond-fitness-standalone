@@ -115,7 +115,7 @@ namespace WebHome.Controllers
             var item = models.GetTable<Payment>().Where(c => c.PaymentID == viewModel.PaymentID).FirstOrDefault();
             if (item == null)
             {
-                return View("~/Views/ConsoleHome/Shared/AlertMessage.cshtml", model: "收款資料錯誤!!");
+                return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: "收款資料錯誤!!");
             }
 
             return View("~/Views/PaymentConsole/Module/ProcessPayment.cshtml", item);
@@ -140,6 +140,87 @@ namespace WebHome.Controllers
             //viewModel.ContractDateTo = viewModel.ContractDateFrom.Value.AddMonths(1).AddDays(-1);
             ViewBag.ViewModel = viewModel;
             return View("~/Views/PaymentConsole/PaymentModal/PaymentQuery.cshtml");
+        }
+
+        public ActionResult GetMerchandiseList(PaymentQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+
+            var items = models.GetTable<MerchandiseTransaction>()
+                .Where(t => t.TransactionID == viewModel.TransactionID)
+                .Select(t => t.MerchandiseWindow)
+                .Where(p => p.Status == (int)Naming.MerchandiseStatus.OnSale);
+
+            return View("~/Views/PaymentConsole/Module/MerchandiseList.cshtml", items);
+
+        }
+
+        public ActionResult ApplyCoachAchievementShare(PaymentQueryViewModel viewModel)
+        {
+            ViewResult result = (ViewResult)ProcessPayment(viewModel);
+
+            Payment item = result.Model as Payment;
+            if (item == null)
+            {
+                return result;
+            }
+
+            return View("~/Views/PaymentConsole/PaymentModal/ApplyCoachAchievementShare.cshtml", item);
+        }
+
+        public ActionResult ShowAchievementShareList(PaymentQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+
+            if (viewModel.KeyID != null)
+            {
+                viewModel.PaymentID = viewModel.DecryptKeyValue();
+            }
+
+            var items = models.GetTable<TuitionAchievement>().Where(t => t.InstallmentID == viewModel.PaymentID);
+            return View("~/Views/PaymentConsole/Module/AchievementShareList.cshtml", items);
+        }
+
+        public ActionResult ProcessAchievementShare(PaymentQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+
+            if (viewModel.KeyID != null)
+            {
+                viewModel.PaymentID = viewModel.DecryptKeyValue();
+            }
+
+            var item = models.GetTable<TuitionAchievement>()
+                .Where(t => t.InstallmentID == viewModel.PaymentID)
+                .Where(t => t.CoachID == viewModel.CoachID)
+                .FirstOrDefault();
+
+            if (item == null)
+            {
+                return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: "收款資料錯誤!!");
+            }
+
+            return View("~/Views/PaymentConsole/Module/ProcessAchievementShare.cshtml", item);
+        }
+
+        public ActionResult DeleteAchievementShare(PaymentQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+
+            if (viewModel.KeyID != null)
+            {
+                viewModel.PaymentID = viewModel.DecryptKeyValue();
+            }
+
+            if (models.ExecuteCommand("delete TuitionAchievement where CoachID = {0} and InstallmentID = {1}",
+                    viewModel.CoachID, viewModel.PaymentID) > 0)
+            {
+                return Json(new { result = true }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(new { result = false, message = "資料錯誤!!" }, JsonRequestBehavior.AllowGet);
+            }
         }
 
 

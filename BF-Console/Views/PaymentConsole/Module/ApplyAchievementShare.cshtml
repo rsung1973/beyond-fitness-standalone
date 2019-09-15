@@ -1,0 +1,135 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Helper.DataOperation
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    Payment _model;
+    UserProfile _profile;
+    String _viewID = $"void{DateTime.Now.Ticks}";
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = (Payment)this.Model;
+    _profile = Context.GetUser();
+}
+
+<ul class="row clearfix list-unstyled m-b-0" id="@(_viewID)">
+    <li class="col-lg-6 col-md-12 col-sm-12">
+        @{ Html.RenderPartial("~/Views/PaymentConsole/Module/PaymentDataItem.cshtml", _model);}
+    </li>
+    <li class="col-lg-6 col-md-12 col-sm-12">
+        <div class="header">
+            <h2><strong>分潤資料</strong></h2>
+            <ul class="header-dropdown">
+                <li>
+                    <a href="javascript:applyCoachShare();"><i class="zmdi zmdi-shopping-cart-plus"></i></a>
+                </li>
+            </ul>
+        </div>
+        <div class="body patients-list">
+            <div class="table-responsive" id="achievementShareList">
+                @{ 
+                    var items = models.GetTable<TuitionAchievement>().Where(t => t.InstallmentID == _model.PaymentID);
+                    Html.RenderPartial("~/Views/PaymentConsole/Module/AchievementShareList.cshtml", items);
+                }
+            </div>
+        </div>
+    </li>
+</ul>
+<script>
+
+    function applyCoachShare() {
+        showLoading();
+        $.post('@Html.Raw(Url.Action("ApplyCoachAchievementShare", "PaymentConsole",new { KeyID = _model.PaymentID.EncryptKey(),Status = (int)Naming.CourseContractStatus.已生效 }))', {}, function (data) {
+            hideLoading();
+            if ($.isPlainObject(data)) {
+                if (data.result) {
+
+                } else {
+                    swal(data.message);
+                }
+            }
+            else {
+                $(data).appendTo($('body'));
+            }
+        });
+
+    }
+
+    function showAchievementShareList() {
+        showLoading();
+        $.post('@Html.Raw(Url.Action("ShowAchievementShareList", "PaymentConsole",new { KeyID = _model.PaymentID.EncryptKey(),Status = (int)Naming.CourseContractStatus.已生效 }))', {}, function (data) {
+            hideLoading();
+            if ($.isPlainObject(data)) {
+                if (data.result) {
+
+                } else {
+                    swal(data.message);
+                }
+            }
+            else {
+                $('#achievementShareList').empty()
+                    .append(data);
+            }
+        });
+
+    }
+
+        function processAchievementShare(keyID,coachID) {
+            showLoading();
+            $.post('@Html.Raw(Url.Action("ProcessAchievementShare", "PaymentConsole"))', { 'keyID': keyID, 'coachID': coachID }, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    swal(data.message);
+                } else {
+                    $(data).appendTo($('body'));
+                }
+            });
+    }
+
+    function deleteAchievementShare(keyID, coachID) {
+
+        swal({
+            title: "不後悔?",
+            text: "刪除後資料將無法回覆!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "確定, 不後悔",
+            cancelButtonText: "不, 點錯了",
+            closeOnConfirm: false,
+            closeOnCancel: false
+        }, function (isConfirm) {
+            if (isConfirm) {
+                showLoading();
+                $.post('@Html.Raw(Url.Action("DeleteAchievementShare", "PaymentConsole"))', { 'keyID': keyID, 'coachID': coachID }, function (data) {
+                    hideLoading();
+                    if ($.isPlainObject(data)) {
+                        if (data.result) {
+                            $global.closeAllModal();
+                            swal("刪除成功!", "資料已經刪除 Bye!", "success");
+                            showAchievementShareList();
+                        } else {
+                            swal(data.message);
+                        }
+                    } else {
+                        $('body').append(data);
+                    }
+                });
+            } else {
+                swal("取消成功", "你的資料現在非常安全 :)", "error");
+            }
+        });
+    }
+
+</script>

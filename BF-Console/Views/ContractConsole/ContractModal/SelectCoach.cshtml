@@ -25,6 +25,13 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
+                @{
+                    IHtmlString headerRaw = ViewBag.HeaderRaw as IHtmlString;
+                    if (headerRaw != null)
+                    {
+                        this.Write(headerRaw);
+                    }
+                }
                 <a href="#" class="closebutton" data-dismiss="modal"></a>
             </div>
             <div class="modal-body">

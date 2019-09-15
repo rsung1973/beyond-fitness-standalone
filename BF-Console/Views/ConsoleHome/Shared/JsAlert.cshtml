@@ -1,26 +1,37 @@
-@{
+﻿@{
 
     String _message;
     _message = (String)this.Model ?? (String)ViewBag.Message ?? Request["Message"];
-
 }
 @if (_message != null)
 {
     <script>
-    alert('@(HttpUtility.JavaScriptStringEncode(_message))');
+        swal({
+        title: "",
+        text: '@(HttpUtility.JavaScriptStringEncode(_message))',
+        type: "warning",
+        showCancelButton: false,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "關閉",
+        cancelButtonText: "不, 點錯了",
+        closeOnConfirm: true,
+        closeOnCancel: false
+        }, function (isConfirm) {
+        @if (ViewBag.GoBack == true)
+        {
+            <text>
+                window.history.go(-1);
+            </text>
+        }
+        @if (ViewBag.CloseWindow == true)
+        {
+            <text>
+                window.close();
+            </text>
+        }
+        });
     </script>
 }
-@if (ViewBag.GoBack == true)
-{
-    <script>
-        window.history.go(-1);
-    </script>
-}
-@if(ViewBag.CloseWindow==true)
-{
-    <script>
-        window.close();
-    </script>
-}
+
 
 

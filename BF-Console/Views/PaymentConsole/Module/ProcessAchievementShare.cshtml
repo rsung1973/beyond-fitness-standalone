@@ -1,0 +1,53 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Newtonsoft.Json
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    TuitionAchievement _model;
+    String _dialogID = $"achievementShare{DateTime.Now.Ticks}";
+    UserProfile _profile;
+
+
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = (TuitionAchievement)this.Model;
+    _profile = Context.GetUser();
+}
+<div class="modal fade" id="@(_dialogID)" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="title">請選擇執行功能</h6>
+                <a class="closebutton" data-dismiss="modal"></a>
+            </div>
+            <div class="modal-popmenu-body">
+                <div class="list-group">
+                    @if (_model != null)
+                    {
+                        if (_profile.IsSysAdmin() || _profile.IsAssistant() || _profile.IsManager())
+                        {
+                            <a href="javascript:deleteAchievementShare('@Html.Raw(_model.InstallmentID.EncryptKey())',@(_model.CoachID));" class="list-group-item">刪除業績分潤</a>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    @{ Html.RenderPartial("~/Views/ConsoleHome/Shared/BSModalScript.cshtml", model: _dialogID);}
+
+    <script>
+        $(function () {
+
+        });
+    </script>
+</div>
+

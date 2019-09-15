@@ -1,0 +1,145 @@
+
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Newtonsoft.Json
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    Payment _model;
+    PaymentViewModel _viewModel;
+
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    _model = this.Model as Payment;
+    _viewModel = (PaymentViewModel)ViewBag.ViewModel;
+}
+@{
+    UserProfile _profile = Context.GetUser();
+}
+<h2><strong>結帳櫃檯</strong></h2>
+<div class="table-responsive">
+    <table class="table table-black table-hover m-b-0">
+        <thead>
+            <tr>
+                <th>品項</th>
+                <th width="100px">數量</th>
+                <th class="text-right" width="150px">單價</th>
+            </tr>
+        </thead>
+        <tbody id="invoiceItems">
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="2">總計：</td>
+                <td class="text-danger text-right">
+                    <h6 id="totalAmt">TWD </h6>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+    <div class="col-12 eInvoice-dialog">
+        <dv>
+            <input type="hidden" name="ProductItems" />
+        </dv>
+    </div>
+</div>
+<div class="row clearfix m-t-20">
+    @if (!_viewModel.SellerID.HasValue)
+    {
+        <div class="col-12">
+            <select class="form-control show-tick" name="SellerID">
+                <option value="">-- 請選擇收款場地 --</option>
+                @{ Html.RenderPartial("~/Views/SystemInfo/BranchStoreOptions.cshtml", model: -1);}
+            </select>
+            @*<label class="material-icons help-error-text" for="BranchID">clear 請選擇收款場地</label>*@
+        </div>
+    }
+    <div class="col-12">
+        <select class="form-control show-tick" name="PaymentType">
+            <option value="">-- 請選擇收款方式 --</option>
+            <option value="現金">現金</option>
+            <option value="刷卡">刷卡</option>
+            <option value="轉帳">轉帳</option>
+        </select>
+    </div>
+    <div class="col-12">
+        <div class="input-group">
+            <input type="text" class="form-control" name="BuyerReceiptNo" placeholder="買受人統編" />
+            <span class="input-group-addon">
+                <i class="zmdi zmdi-text-format"></i>
+            </span>
+        </div>
+    </div>
+    <div class="col-12 eInvoice-dialog">
+        <div class="input-group">
+            <input type="text" class="form-control col-red" name="CarrierId1" placeholder="手機載具條碼，例：/17T448Q" value="@(_viewModel.CarrierId1)" />
+            <span class="input-group-addon">
+                <i class="zmdi zmdi-money-box"></i>
+            </span>
+        </div>
+    </div>
+    <div class="col-12 eInvoice-dialog">
+        <dv>
+            <input type="hidden" name="errorMessage" />
+        </dv>
+    </div>
+    <div class="col-12">
+        <div class="input-group">
+            <textarea rows="3" class="form-control no-resize" name="Remark" placeholder="請輸入任何想補充的事項..."></textarea>
+        </div>
+    </div>
+</div>
+<button class="subscribe btn btn-primary btn-block" type="button" onclick="commitPayoff();"> 確定，不後悔  </button>
+<script>
+    $(function () {
+        $global.invoiceItems = [];
+    });
+
+    function calculatePayment() {
+        var $items = $('#invoiceItems');
+        $items.empty();
+        $global.invoiceItems.forEach(function (item) {
+            var $tr = $('<tr>')
+                .append($('<td>').text(item.ProductName))
+                .append($('<td class="text-center">').text(item.Quantity))
+                .append($('<td class="text-right">').text('TWD ' + (item.Quantity * item.UnitPrice)));
+            $items.append($tr);
+        });
+
+        $global.viewModel.PayoffAmount = $global.invoiceItems.sum(function (item) {
+            return item.Quantity * item.UnitPrice;
+        });
+        $('#totalAmt').text('TWD ' + $global.viewModel.PayoffAmount);
+    }
+
+    function addItem(item, incremental) {
+        var target = $global.invoiceItems.where(function (t) {
+            return t.ProductID == item.ProductID;
+        });
+
+        var product;
+        if (target.length > 0) {
+            product = target[0];
+        } else {
+            product = item;
+            product.Quantity = 0;
+            $global.invoiceItems.push(product);
+        }
+
+        product.Quantity += incremental;
+        if (product.Quantity <= 0) {
+            $global.invoiceItems.remove(product);
+        }
+
+        calculatePayment();
+        return product;
+    }
+</script>
+
