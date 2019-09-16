@@ -60,7 +60,11 @@
                         <div class="media-body">
                             <div class="media-heading">
                                 <a class="m-r-10">@($"{item.ClassTime:yyyy/MM/dd}") - @(item.RegisterLesson.UserProfile.FullName())</a>
-                                <span class="badge badge-info float-right"><i class="zmdi zmdi-pin"></i> @(item.BranchStore.BranchName)</span>
+                                <span class="float-right">
+                                    @{
+                                        Html.RenderPartial("~/Views/Common/BranchStoreName.cshtml", item.BranchStore);
+                                    }
+                                </span>
                             </div>
                         </div>
                     </div>

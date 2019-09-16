@@ -1,0 +1,32 @@
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Newtonsoft.Json
+
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    IQueryable<Payment> _model;
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = (IQueryable<Payment>)this.Model;
+    UserProfile _profile = Context.GetUser();
+}
+
+@if (_profile.IsAssistant() || _profile.IsSysAdmin() || _profile.IsServitor())
+{
+    Html.RenderPartial("~/Views/PaymentConsole/Module/AboutPaymentViewByOfficer.cshtml", _model);
+}
+else
+{
+    ViewBag.EnableToCreate = false;
+    Html.RenderPartial("~/Views/PaymentConsole/Module/AboutPaymentViewByCoach.cshtml", _model);
+}
+
+
+

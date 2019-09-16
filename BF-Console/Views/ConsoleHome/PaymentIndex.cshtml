@@ -58,9 +58,8 @@
         IQueryable<Payment> items = models.PromptIncomePayment();
     }
     <!--我的收款-->
-    @if (!_profile.IsSysAdmin() && (_profile.IsAssistant() || _profile.IsCoach() || _profile.IsServitor()))
-    {
-        Html.RenderPartial("~/Views/PaymentConsole/Module/CoachPaymentView.cshtml", items);
+    @{
+        Html.RenderPartial("~/Views/PaymentConsole/Module/AboutPaymentView.cshtml", items);
     }
     <!--我的分店收款-->
     @if (_profile.IsSysAdmin() || _profile.IsAssistant())

@@ -6166,6 +6166,8 @@
     <Content Include="Views\PaymentConsole\Module\ProcessAchievementShare.cshtml" />
     <Content Include="Views\PaymentConsole\PaymentModal\ApplyCoachAchievementShare.cshtml" />
     <Content Include="Views\PaymentConsole\PaymentModal\ApplyShareAmount.cshtml" />
+    <Content Include="Views\PaymentConsole\Module\AboutPaymentViewByOfficer.cshtml" />
+    <Content Include="Views\PaymentConsole\Module\AboutPaymentView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\InitializeType.cs" />
@@ -6756,7 +6758,7 @@
     <Content Include="Views\ContractConsole\Module\ContractDataStatus.cshtml" />
     <Content Include="Views\ContractConsole\Module\ContractPayoff.cshtml" />
     <Content Include="Views\PaymentConsole\Module\CurrentMonthAchievementShare.cshtml" />
-    <Content Include="Views\PaymentConsole\Module\CoachPaymentView.cshtml" />
+    <Content Include="Views\PaymentConsole\Module\AboutPaymentViewByCoach.cshtml" />
     <Content Include="Views\PaymentConsole\Module\CurrentMonthBranchPaymentView.cshtml" />
     <Content Include="Views\PaymentConsole\Module\EditPayment.cshtml" />
     <Content Include="Views\PaymentConsole\EditPaymentForPISession.cshtml" />
