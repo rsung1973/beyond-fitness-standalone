@@ -68,9 +68,6 @@
             data: {
                 columns: [
                     // each columns data
-                    @Html.Raw(JsonConvert.SerializeObject(getDistributionC3("data1",PTLessons,_hourIdx))),
-                    @Html.Raw(JsonConvert.SerializeObject(getDistributionC3("data2",PILessons, _hourIdx))),
-                    @Html.Raw(JsonConvert.SerializeObject(getDistributionC3("data3",TrialLessons, _hourIdx)))
                 ],
                 order: null,
                 type: 'bar', // default type of chart
@@ -126,6 +123,16 @@
                 }
             }
         });
+        setTimeout(function() {
+                chart.load({
+                    columns: [
+                        @Html.Raw(JsonConvert.SerializeObject(getDistributionC3("data1",PTLessons,_hourIdx))),
+                        @Html.Raw(JsonConvert.SerializeObject(getDistributionC3("data2",PILessons,_hourIdx))),
+                        @Html.Raw(JsonConvert.SerializeObject(getDistributionC3("data3",TrialLessons,_hourIdx))),
+
+                    ]
+                });
+            }, 500);
         setTimeout(function() {
                 chart.groups([
                     ['data1', 'data2', 'data3']
