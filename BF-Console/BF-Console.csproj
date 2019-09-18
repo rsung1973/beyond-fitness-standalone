@@ -6141,10 +6141,6 @@
     <Content Include="Views\ConsoleEvent\EventModal\BookingTrialLesson.cshtml" />
     <Content Include="Views\ConsoleEvent\EventModal\BookingLearnerLesson.cshtml" />
     <Content Include="Views\ConsoleHome\Shared\JsAlert.cshtml" />
-    <Content Include="Views\MainActivity\Module\MobileMenuItem.ascx" />
-    <Content Include="Views\MainActivity\Module\ContactItem.ascx" />
-    <Content Include="Views\MainActivity\Module\JoinItem.ascx" />
-    <Content Include="Views\MainActivity\Module\MenuItem.ascx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
