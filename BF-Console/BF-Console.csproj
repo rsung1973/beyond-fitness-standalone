@@ -6164,6 +6164,7 @@
     <Content Include="Views\PaymentConsole\PaymentModal\ApplyShareAmount.cshtml" />
     <Content Include="Views\PaymentConsole\Module\AboutPaymentViewByOfficer.cshtml" />
     <Content Include="Views\PaymentConsole\Module\AboutPaymentView.cshtml" />
+    <Content Include="Views\BonusCredit\BonusModal\GiveBonusAmount.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\InitializeType.cs" />
