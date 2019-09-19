@@ -69,13 +69,13 @@
                                     if (lessonItem.ClassTime >= DateTime.Today && lessonItem.GroupingLesson.LessonTime.Count > 1)
                                     {
                                         hasSlideItem = true;
-                                        <li><a href="javascript:cloneCoachPITrainingPlan();">同步課表</a></li>
+                                        <li><a href="javascript:cloneCoachPITrainingPlan();">我的課表<i class="zmdi zmdi-arrow-right"></i>同伴</a></li>
                                     }
                                 }
                                 else if (lessonItem.GroupingLesson.RegisterLesson.Count > 1)
                                 {
                                     hasSlideItem = true;
-                                    <li><a href="javascript:cloneLearnerTrainingPlan();">同步課表</a></li>
+                                    <li><a href="javascript:cloneLearnerTrainingPlan();">我的課表<i class="zmdi zmdi-arrow-right"></i>同伴</a></li>
                                 }
                                 @if (lessonItem.CheckToAttendLesson(models))
                                 {
@@ -285,7 +285,7 @@
         //點選同步課表
         this.cloneLearnerTrainingPlan = function () {
             swal({
-                title: "不後悔?",
+                title: "確定要將這張課表複製同步給同伴，不後悔?",
                 text: "同步後資料會一模模一樣樣喔!",
                 type: "warning",
                 showCancelButton: true,
