@@ -46,6 +46,13 @@ namespace WebHome.Controllers
             return View("~/Views/PaymentConsole/Module/PaymentItemsList.cshtml", items);
         }
 
+        public ActionResult ShowCurrentMonthPaymentView(PaymentQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            IQueryable<Payment> items = models.PromptIncomePayment();
+            return View("~/Views/PaymentConsole/Module/CurrentMonthPaymentView.cshtml", items);
+        }
+
         public ActionResult InquirePayment(PaymentQueryViewModel viewModel)
         {
             if (viewModel.KeyID != null)

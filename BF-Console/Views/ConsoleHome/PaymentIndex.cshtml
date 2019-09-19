@@ -62,13 +62,16 @@
         Html.RenderPartial("~/Views/PaymentConsole/Module/AboutPaymentView.cshtml", items);
     }
     <!--我的分店收款-->
+    @{
+        ViewBag.ViewID = $"branch{DateTime.Now.Ticks}";
+    }
     @if (_profile.IsSysAdmin() || _profile.IsAssistant())
     {
         <div class="container-fluid">
             <h4 class="card-outbound-header">我的分店收款</h4>
-            <div class="row clearfix">
+            <div class="row clearfix" id="@(ViewBag.ViewID)">
                 @{
-                    Html.RenderPartial("~/Views/PaymentConsole/Module/CurrentMonthPaymentView.cshtml", items);
+                    Html.RenderPartial("~/Views/PaymentConsole/Module/AboutBranchPaymentView.cshtml", items);
                 }
             </div>
         </div>
@@ -77,7 +80,7 @@
     {
         <div class="container-fluid">
             <h4 class="card-outbound-header">我的分店收款</h4>
-            <div class="row clearfix">
+            <div class="row clearfix" id="@(ViewBag.ViewID)">
                 @{
                     Html.RenderPartial("~/Views/PaymentConsole/Module/CurrentMonthBranchPaymentView.cshtml", items);
                 }

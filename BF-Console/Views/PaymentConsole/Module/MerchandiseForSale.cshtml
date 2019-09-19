@@ -44,7 +44,8 @@
     <div class="row clearfix" id="merchandiseList">
         @{ 
             var items = models.GetTable<MerchandiseTransaction>().Where(t => t.TransactionID == defaultType)
-                            .Select(t => t.MerchandiseWindow);
+                            .Select(t => t.MerchandiseWindow)
+                            .Where(p => p.Status == (int)Naming.MerchandiseStatus.OnSale);
             Html.RenderPartial("~/Views/PaymentConsole/Module/MerchandiseList.cshtml", items);
         }
     </div>

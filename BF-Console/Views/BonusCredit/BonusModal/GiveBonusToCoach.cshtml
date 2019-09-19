@@ -39,13 +39,13 @@
     <script>
     $(function () {
         $global.commitCoach = function (coachID, coachName, $dialog) {
-            var mangerBonus = $dialog.find('input[name="ManagerBonus"]').val();
+            var managerBonus = $dialog.find('input[name="ManagerBonus"]').val();
             var specialBonus = $dialog.find('input[name="SpecialBonus"]').val();
 
-            if (!isNaN(mangerBonus) && !isNaN(specialBonus)) {
+            if (!isNaN(managerBonus) && !isNaN(specialBonus)) {
                 clearErrors();
                 showLoading();
-                $.post('@Html.Raw(Url.Action("CommitCoachBonus","BonusCredit"))', { 'coachID': coachID, 'mangerBonus': mangerBonus, 'specialBonus': specialBonus }, function (data) {
+                $.post('@Html.Raw(Url.Action("CommitCoachBonus","BonusCredit"))', { 'byCoachID': [coachID], 'managerBonus': managerBonus, 'specialBonus': specialBonus,'AchievementDateFrom':'@($"{_viewModel.AchievementDateFrom:yyyy/MM/dd}")' }, function (data) {
                     if ($.isPlainObject(data)) {
                         if (data.result) {
                             $global.closeAllModal();

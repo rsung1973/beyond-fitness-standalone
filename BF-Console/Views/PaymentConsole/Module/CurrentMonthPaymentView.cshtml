@@ -25,6 +25,7 @@
 
     IQueryable<Payment> items = null;
     IQueryable<Payment> lastMonthItems;
+    BranchStore currentBranch = null;
 
     if (_viewModel.BranchID.HasValue)
     {
@@ -36,6 +37,8 @@
            .Where(p => p.PayoffDate < dateFrom)
            .Where(p => p.VoidPayment == null)
            .Where(p => p.PaymentTransaction.BranchID == _viewModel.BranchID);
+
+        currentBranch = models.GetTable<BranchStore>().Where(b => b.BranchID == _viewModel.BranchID).FirstOrDefault();
     }
     else
     {
@@ -52,7 +55,38 @@
 <div class="col-md-7 col-sm-12 col-12">
     <div class="card">
         <div class="header">
-            <h2><strong>本月收款</strong> 總計</h2>
+            <h2><strong>本月收款</strong> 總計
+            @if (currentBranch != null)
+            {
+                Html.RenderPartial("~/Views/Common/BranchStoreName.cshtml", currentBranch);
+            }
+            </h2>
+            <ul class="header-dropdown">
+                <li class="dropdown">
+                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class="zmdi zmdi-swap"></i> </a>
+                    <ul class="dropdown-menu dropdown-menu-right slideUp float-right">
+                        <li>
+                            <a onclick='reloadPaymentView(@Html.Raw(JsonConvert.SerializeObject(
+                                    new
+                                    {
+                                        _viewModel.PayoffDateFrom,
+                                        BranchID = (String)null,
+                                    })));'>全部</a>
+                        </li>
+                        @foreach (var item in models.GetTable<BranchStore>())
+                        {
+                            <li>
+                                <a onclick='reloadPaymentView(@Html.Raw(JsonConvert.SerializeObject(
+                                    new
+                                    {
+                                        _viewModel.PayoffDateFrom,
+                                        BranchID = item.BranchID,
+                                    })));'>@(item.BranchName)</a>
+                                </li>
+                        }
+                    </ul>
+                </li>
+            </ul>
         </div>
         <div class="body">
             <div class="row clearfix">
@@ -187,7 +221,13 @@
 <div class="col-md-5 col-sm-12 col-12">
     <div class="card">
         <div class="header">
-            <h2><strong class="col-red">本月未分潤</strong> 總計</h2>
+            <h2>
+                <strong class="col-red">本月未分潤</strong> 總計
+                @if (currentBranch != null)
+                {
+                    Html.RenderPartial("~/Views/Common/BranchStoreName.cshtml", currentBranch);
+                }
+            </h2>
         </div>
         <div class="body">
             <table class="table m-t-15 m-b-0">

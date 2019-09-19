@@ -1,0 +1,34 @@
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Newtonsoft.Json
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    IQueryable<Payment> _model;
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = (IQueryable<Payment>)this.Model;
+}
+@{ 
+    Html.RenderPartial("~/Views/PaymentConsole/Module/CurrentMonthPaymentView.cshtml", _model);
+    String _viewID = (String)ViewBag.ViewID;
+}
+<script>
+    function reloadPaymentView(viewModel) {
+        showLoading();
+        $.post('@Html.Raw(Url.Action("ShowCurrentMonthPaymentView", "PaymentConsole"))', viewModel, function (data) {
+            hideLoading();
+            if ($.isPlainObject(data)) {
+                swal(data.message);
+            } else {
+                $('#@(_viewID)').empty().append(data);
+            }
+        });
+    }
+</script>

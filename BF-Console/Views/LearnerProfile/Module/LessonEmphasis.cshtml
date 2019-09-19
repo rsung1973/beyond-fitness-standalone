@@ -31,6 +31,7 @@
 {
     <script>
         $(function () {
+            $global.emphasis = '@Html.Raw(execution.Emphasis)';
             //編輯上課重點
             $global.editEmphasis = function (defaultValue) {
                 swal({
@@ -64,6 +65,7 @@
                         if (data.result) {
                             swal("Nice!", "You wrote: " + emphasis, "success");
                             $('#emphasis').text(emphasis);
+                            $global.emphasis = emphasis;
                         } else {
                             swal({
                                 title: "Opps！",

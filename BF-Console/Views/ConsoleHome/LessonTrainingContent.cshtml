@@ -234,6 +234,11 @@
 
         //編輯完成上課結語
         this.attendLesson = function () {
+            if ($global.emphasis === '') {
+                swal("請先輸入上課重點!?");
+                return false
+            }
+
             swal({
                 title: "家庭聯絡簿",
                 text: "",
@@ -248,7 +253,7 @@
             }, function (inputValue) {
                 if (inputValue === false) return false;
                 if (inputValue === "") {
-                    swal.showInputError("你忘了輸入文字嗎!?");
+                    swal("你忘了輸入文字嗎!?");
                     return false
                 }
                 commitAttendance(inputValue);

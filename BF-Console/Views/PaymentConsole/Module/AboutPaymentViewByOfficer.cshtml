@@ -18,10 +18,7 @@
 @{
     UserProfile _profile = Context.GetUser();
     PaymentQueryViewModel _viewModel = (PaymentQueryViewModel)ViewBag.ViewModel;
-    _viewModel.RelatedID = _profile.UID;
-    IQueryable<Payment> items = _model.Where(p => p.HandlerID == _profile.UID)
-                                    .Union(_model.Where(p => p.ContractPayment.CourseContract.FitnessConsultant == _profile.UID))
-                                    .Union(_model.Where(p => p.TuitionInstallment.IntuitionCharge.RegisterLesson.LessonTime.Any(l => l.AttendingCoach == _profile.UID)));
+    IQueryable<Payment> items = _model;
 
 }
 <div class="container-fluid">
@@ -40,13 +37,17 @@
         </div>
         <ul class="row clearfix list-unstyled m-b-0 widget_3">
             <li class="col-lg-6 col-md-6 col-sm-12">
-                @{ Html.RenderPartial("~/Views/PaymentConsole/Module/AboutTodayPayment.cshtml", _profile);}
+                <div class="body">
+                    <div class="row">
+                        @{ Html.RenderPartial("~/Views/PaymentConsole/Module/PaymentToday.cshtml", items);}
+                    </div>
+                </div>
             </li>
             <li class="col-lg-6 col-md-6 col-sm-12">
                 <div class="body">
                     <div class="row">
                         @{
-                            Html.RenderPartial("~/Views/PaymentConsole/Module/TodayPayment.cshtml", items);
+                            Html.RenderPartial("~/Views/PaymentConsole/Module/CurrentMonthPayment.cshtml", items);
                         }
                     </div>
                 </div>
