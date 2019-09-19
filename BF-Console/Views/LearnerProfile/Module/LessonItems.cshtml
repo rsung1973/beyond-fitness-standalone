@@ -71,25 +71,25 @@
                             }
                         }
                     </h3>
-                    @if (item.LessonID != _viewModel.ExceptionalID)
-                    {
-                        <div class="buttons">
-                            @if (execution.TrainingItem.Count() > 0)
-                            {
-                                <button class="@(btnclass)" type="button" onclick="javascript:copyTrainingPlan(@item.LessonID);">
-                                    <i class="zmdi zmdi-copy"></i>
-                                </button>
-                            }
-                            <button class="@(btnclass)" type="button" onclick="javascript:editTrainingContent('@(item.LessonID.EncryptKey())');">
-                                <i class="zmdi zmdi-edit"></i>
-                            </button>
-                        </div>
-                    }
                 </div>
                 <h4><a href="javascript:viewTraining('@item.LessonID.EncryptKey()');">@(execution.Emphasis ?? "重點一片空，學生要來踹你了...")</a></h4>
                 @if (item.LessonPlan.Remark != null)
                 {
                     <span class="comment">@(item.LessonPlan.Remark)<span class="author">@(item.AsAttendingCoach.UserProfile.FullName())</span></span>
+                }
+                @if (item.LessonID != _viewModel.ExceptionalID)
+                {
+                    <div class="buttons">
+                        @if (execution.TrainingItem.Count() > 0)
+                        {
+                        <a class="btn btn-simple btn-round btn-sm float-right m-l-5" href="javascript:copyTrainingPlan(@item.LessonID);">
+                            複製
+                        </a>
+                        }
+                        <a class="btn btn-simple btn-round btn-sm float-right m-l-5" href="javascript:editTrainingContent('@(item.LessonID.EncryptKey())');">
+                            編輯
+                        </a>
+                    </div>
                 }
             </div>
         </li>
