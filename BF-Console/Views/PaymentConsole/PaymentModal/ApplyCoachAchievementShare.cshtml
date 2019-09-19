@@ -22,12 +22,14 @@
     ViewBag.InsertPartial = "~/Views/PaymentConsole/PaymentModal/ApplyShareAmount.cshtml";
     ViewBag.SelectAll = false;
     ViewBag.EnableClose = false;
+    ViewBag.Allotment = 2;
+    ViewBag.AllotmentCoach = 4;
     Html.RenderPartial("~/Views/ContractConsole/ContractModal/SelectCoach.cshtml", models.PromptEffectiveCoach());
 }
 
 @helper showHeader(Payment item)
 {
-    <h6 class="title">目前剩餘分潤金額：<span class="col-red">@($"{item.PayoffAmount - item.TuitionAchievement.Sum(t=>t.ShareAmount):##,###,###,###}")</span></h6>
+    <h2>目前<span class="col-red">剩餘</span>分潤金額：<span class="col-red">@($"{item.PayoffAmount - item.TuitionAchievement.Sum(t=>t.ShareAmount):##,###,###,###}")</span></h2>
 }
 
 <script>

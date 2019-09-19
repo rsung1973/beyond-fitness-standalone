@@ -17,14 +17,16 @@
     models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
 
 }
-@{ 
+@{
     ViewBag.InsertPartial = "~/Views/ReportConsole/ReportModal/SelectMonth.cshtml";
     ViewBag.SelectAll = true;
     ViewBag.EnableClose = false;
+    ViewBag.Allotment = 2;
+    ViewBag.AllotmentCoach = 4;
     Html.RenderPartial("~/Views/ContractConsole/ContractModal/SelectCoach.cshtml", models.PromptEffectiveCoach());
 }
-    <script>
-        $(function () {
+<script>
+$(function () {
             $global.commitCoach = function (coachID, coachName, $dialog) {
                 var dateVal = $dialog.find('input.month').val();
                 if (dateVal != '') {
@@ -35,5 +37,4 @@
                     }
                 }
             };
-        });
-    </script>
+        });</script>
