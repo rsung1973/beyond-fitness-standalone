@@ -20,7 +20,7 @@
     _modelState = (ModelStateDictionary)ViewBag.ModelState;
     models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
     _model = (IQueryable<ServingCoach>)this.Model;
-    _allotment = ((int?)ViewBag.Allotment) ?? 2;
+    _allotment = ((int?)ViewBag.Allotment) ?? 1;
     _allotmentCoach = ((int?)ViewBag.AllotmentCoach) ?? 3;
 }
 
