@@ -27,12 +27,15 @@
                 <div class="col-12">
                     <div class="card bg-darkteal">
                         <div class="header">
-                            <h2>
-                                <strong class="col-white" id="branchName">@(_viewModel.BranchName)</strong>
+                            <h2 id="branchName">
                                 @for (int idx = 0; idx < 3; idx++)
                                 {
                                     var dayIdx = DateTime.Today.AddDays(idx);
                                     <a href="#lessonSummary" onclick="inquireDailyBarChart('@($"{dayIdx:yyyy-MM-dd}")',event);" class="btn btn-simple btn-sm inquireDaily @(_viewModel.ClassTimeStart == dayIdx ? "disabled" : null)">@($"{dayIdx:yyyy/MM/dd}")</a>
+                                }
+                                @{
+                                    ViewBag.Other = "全部";
+                                    Html.RenderPartial("~/Views/Common/BranchStoreWithOther.cshtml", models.GetTable<BranchStore>().Where(b => b.BranchID == _viewModel.BranchID).FirstOrDefault());
                                 }
                             </h2>
                             <ul class="header-dropdown">
@@ -67,11 +70,11 @@
                             function inquireLessonsBarChart(branchID) {
                                 var event = event || window.event;
                                 var branchName = $(event.target).text();
-                                $('#branchName').text(branchName);
                                 $global.viewModel.BranchID = branchID;
                                 $global.viewModel.BranchName = branchName;
                                 drawLessonsBarChart();
                                 showLessonSummary();
+                                showBranchStore();
                             }
 
                             function inquireDailyBarChart(daily, event) {
@@ -104,6 +107,19 @@
                                         alert(data.message);
                                     } else {
                                         $(data).appendTo($('#lessonSummary'));
+                                    }
+                                });
+                            }
+
+                            function showBranchStore() {
+                                $('#branchName').find('span').remove();
+                                showLoading();
+                                $.post('@Url.Action("ViewBranchStore", "CommonHelper")', $global.viewModel, function (data) {
+                                    hideLoading();
+                                    if ($.isPlainObject(data)) {
+                                        alert(data.message);
+                                    } else {
+                                        $(data).appendTo($('#branchName'));
                                     }
                                 });
                             }

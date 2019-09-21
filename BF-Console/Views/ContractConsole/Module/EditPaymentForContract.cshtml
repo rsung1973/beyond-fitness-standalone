@@ -51,7 +51,8 @@
                     if ($.isPlainObject(data)) {
                         if (data.result) {
                             showLoading();
-                            $('').launchDownload('@Html.Raw(Url.Action("InquirePaymentIndex","ConsoleHome"))', { 'PaymentID': data.PaymentID });
+                            @*$('').launchDownload('@Html.Raw(Url.Action("InquirePaymentIndex","ConsoleHome"))', { 'PaymentID': data.PaymentID });*@
+                            $('').launchDownload('@Html.Raw(Url.Action("ShowContractList","ContractConsole"))', { 'keyID': data.keyID });
                         } else {
                             swal(data.message);
                         }

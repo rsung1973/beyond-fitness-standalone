@@ -70,6 +70,12 @@ namespace WebHome.Helper.BusinessOperation
                 items = models.GetTable<CourseContract>();
             }
 
+            if (viewModel.ContractID.HasValue)
+            {
+                hasConditon = true;
+                items = items.Where(c=>c.ContractID==viewModel.ContractID);
+            }
+
             if (viewModel.PayoffMode == Naming.ContractPayoffMode.Unpaid)
             {
                 hasConditon = true;

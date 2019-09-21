@@ -1,0 +1,26 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    BranchStore _model;
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = this.Model as BranchStore;
+}
+@if (_model != null)
+{
+    Html.RenderPartial("~/Views/Common/BranchStoreName.cshtml", _model);
+}
+else
+{
+    <span class="badge bg-secondary"><i class="zmdi zmdi-pin"></i> @(ViewBag.Other)</span>
+}
+

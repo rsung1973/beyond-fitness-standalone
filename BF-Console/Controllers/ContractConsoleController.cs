@@ -37,6 +37,11 @@ namespace WebHome.Controllers
         // GET: ContractConsole
         public ActionResult ShowContractList(CourseContractQueryViewModel viewModel)
         {
+            if (viewModel.KeyID != null)
+            {
+                viewModel.ContractID = viewModel.DecryptKeyValue();
+            }
+
             ViewResult result = (ViewResult)InquireContract(viewModel);
             ViewBag.Contracts = result.Model;
 

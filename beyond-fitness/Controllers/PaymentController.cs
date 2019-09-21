@@ -315,7 +315,7 @@ namespace WebHome.Controllers
                 models.SubmitChanges();
                 TaskExtensionMethods.ProcessInvoiceToGov();
 
-                return Json(new { result = true, invoiceNo = item.InvoiceItem.TrackCode + item.InvoiceItem.No, item.InvoiceID, item.InvoiceItem.InvoiceType, item.PaymentID });
+                return Json(new { result = true, invoiceNo = item.InvoiceItem.TrackCode + item.InvoiceItem.No, item.InvoiceID, item.InvoiceItem.InvoiceType, item.PaymentID, keyID = contract.ContractID.EncryptKey() });
             }
             catch (Exception ex)
             {

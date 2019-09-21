@@ -13,7 +13,7 @@
 
 <%  if (_qrCode!=null)
     { %>
-        <img class="qrcode" alt="" width="<%= (bool?)ViewBag.Canvas==true ? "160" : "80" %>" height="<%= (bool?)ViewBag.Canvas==true ? "160" : "80" %>" src="<%= _qrCode.CreateQRCodeImageSrc() %>" />
+        <img class="qrcode" alt="" width="<%= (bool?)ViewBag.Canvas==true ? "160" : "80" %>" height="<%= (bool?)ViewBag.Canvas==true ? "160" : "80" %>" src="<%= _qrCode.CreateQRCodeImageSrc(version:10) %>" />
 &nbsp;&nbsp;&nbsp;&nbsp;
         <img class="qrcode" alt="" width="<%= (bool?)ViewBag.Canvas==true ? "160" : "80" %>" height="<%= (bool?)ViewBag.Canvas==true ? "160" : "80" %>" src="<%= "**".CreateQRCodeImageSrc() %>" />
 <%  } %>
@@ -71,19 +71,22 @@
         sb.Append(":");
         sb.Append(1);
         sb.Append(":");
+        StringBuilder details = new StringBuilder();
         foreach (var d in _model.InvoiceDetails)
         {
             var product = d.InvoiceProduct;
             foreach (var p in product.InvoiceProductItem)
             {
-                sb.Append(product.Brief);
-                sb.Append(":");
-                sb.Append(String.Format("{0:0}", p.Piece));
-                sb.Append(":");
-                sb.Append(String.Format("{0:0}", p.UnitCost));
-                sb.Append(":");
+                details.Append(product.Brief);
+                details.Append(":");
+                details.Append(String.Format("{0:0}", p.Piece));
+                details.Append(":");
+                details.Append(String.Format("{0:0}", p.UnitCost));
+                details.Append(":");
             }
         }
+        //sb.Append(Convert.ToBase64String(Encoding.Default.GetBytes(details.ToString())));
+        sb.Append(details);
 
         _qrCode = sb.ToString();
 
