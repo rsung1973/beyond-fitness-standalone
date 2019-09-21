@@ -760,5 +760,11 @@ namespace WebHome.Views.MainActivity.Resources {
                 return ResourceManager.GetString("PricingTitle", resourceCulture);
             }
         }
+        
+        public static string Disclaimer {
+            get {
+                return ResourceManager.GetString("Disclaimer", resourceCulture);
+            }
+        }
     }
 }

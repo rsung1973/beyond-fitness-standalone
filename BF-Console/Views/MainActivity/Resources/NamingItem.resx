@@ -474,4 +474,7 @@
   <data name="PricingTitle" xml:space="preserve">
     <value>選擇最適合您的方案</value>
   </data>
+  <data name="Disclaimer" xml:space="preserve">
+    <value>相關運動成效與所需時間因人而異，建議與教練共同討論，確保相關品質</value>
+  </data>    
 </root>

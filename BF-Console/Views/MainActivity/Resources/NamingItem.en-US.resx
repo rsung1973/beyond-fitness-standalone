@@ -259,10 +259,10 @@
     <value>No.28, Sec. 2, Xinyi Rd., Da’an Dist., Taipei City 106, Taiwan</value>
   </data>
   <data name="FindDongmenBranchDesc1" xml:space="preserve">
-    <value>3 minute walk from MRT Dongmen station Exit 3</value>
+    <value>Dongmen Branch is a 3 mins walk from MRT Dongmen Station exit 3, with ample space and natural sunlight.</value>
   </data>
   <data name="FindDongmenBranchDesc2" xml:space="preserve">
-    <value></value>
+    <value>The customized training space integrates stretching, artificial turf and weight training areas providing a dynamic training environment. Under the professional guidance of Beyond Fitness trainers, a safe, comfortable and private training environment is provided.</value>
   </data>
   <data name="OurTeam" xml:space="preserve">
     <value>Our team</value>
@@ -474,4 +474,7 @@
   <data name="PricingTitle" xml:space="preserve">
     <value>Choose your ideal plan</value>
   </data>
+  <data name="Disclaimer" xml:space="preserve">
+    <value>As the requirements and effects of exercise are different for each person, we recommend consultation with a Beyond Fitness trainer, to guarantee the best performance results.質</value>
+  </data>  
 </root>
