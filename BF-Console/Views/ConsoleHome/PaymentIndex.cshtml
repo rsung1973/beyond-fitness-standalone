@@ -58,7 +58,8 @@
         IQueryable<Payment> items = models.PromptIncomePayment();
     }
     <!--我的收款-->
-    @{
+    @if (_profile.IsCoach())
+    {
         Html.RenderPartial("~/Views/PaymentConsole/Module/AboutPaymentView.cshtml", items);
     }
     <!--我的分店收款-->
