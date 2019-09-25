@@ -97,9 +97,9 @@
                         {
                             <tr>
                                 <td>@(p.Brief)</td>
-                                <td>@i.Piece</td>
-                                <td>@($"{i.UnitCost:##,###,###,###}")</td>
-                                <td>@($"{i.CostAmount:##,###,###,###}")</td>
+                                <td class="text-right">@($"{i.Piece:.}")</td>
+                                <td class="text-right">@($"{i.UnitCost:##,###,###,###}")</td>
+                                <td class="text-right">@($"{i.CostAmount:##,###,###,###}")</td>
                             </tr>
                         }
                     }
