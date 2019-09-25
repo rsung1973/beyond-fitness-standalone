@@ -17,7 +17,7 @@
 
     _modelState = (ModelStateDictionary)ViewBag.ModelState;
     models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
-    _item = _model = (PersonalExercisePurpose)this.Model;
+    _item = _model = this.Model as PersonalExercisePurpose;
 }
 @if ((bool?)ViewBag.DisableHeight == true)
 {

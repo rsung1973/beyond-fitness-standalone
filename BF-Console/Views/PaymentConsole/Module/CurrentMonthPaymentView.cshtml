@@ -164,7 +164,7 @@
                                 @{
                                     var foodsPayoff = items.Where(p => p.TransactionType == (int)Naming.PaymentTransactionType.食飲品).Sum(p => p.PayoffAmount) ?? 0;
                                 }
-                                <td>飲品</td>
+                                <td>食飲品</td>
                                 <td class="text-right">@($"{foodsPayoff:##,###,###,##0}") </td>
                                 <td>@showIntent(foodsPayoff, lastMonthItems.Where(p => p.TransactionType == (int)Naming.PaymentTransactionType.食飲品).Sum(p => p.PayoffAmount) ?? 0)</td>
                             </tr>
@@ -276,7 +276,7 @@
                                         IsCancelled = false,
                                         HasShare = false,
                                     })));'>
-                        <td>飲品</td>
+                        <td>食飲品</td>
                         <td class="text-right">@($"{foodsPayoff - (items.Where(p => p.TransactionType == (int)Naming.PaymentTransactionType.食飲品).GetPaymentAchievement(models).Sum(t => t.ShareAmount) ?? 0):##,###,###,##0}")</td>
                     </tr>
                     <tr onclick='showPaymentList(@Html.Raw(JsonConvert.SerializeObject(

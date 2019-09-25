@@ -1,0 +1,28 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    UserProfile _model;
+
+
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = (UserProfile)this.Model;
+}
+
+<div class="col-lg-5 col-md-6 col-sm-12">
+    <ul class="breadcrumb float-md-right">
+        <li class="breadcrumb-item"><a href="@Html.Raw(Url.Action("PaymentIndex","ConsoleHome",new { ScrollToView = false }))#myPayment"><i class="zmdi zmdi-file-text"></i>&nbsp;我要分潤</a></li>
+    </ul>
+</div>
+

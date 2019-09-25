@@ -67,7 +67,7 @@
     }
     @if (_profile.IsSysAdmin() || _profile.IsAssistant() || _profile.IsOfficer())
     {
-        <div class="container-fluid">
+        <div class="container-fluid" id="myPayment">
             <h4 class="card-outbound-header">我的分店收款</h4>
             <div class="row clearfix" id="@(ViewBag.ViewID)">
                 @{
@@ -78,7 +78,7 @@
     }
     @if (_profile.IsManager() || _profile.IsViceManager())
     {
-        <div class="container-fluid">
+        <div class="container-fluid" id="myPayment">
             <h4 class="card-outbound-header">我的分店收款</h4>
             <div class="row clearfix" id="@(ViewBag.ViewID)">
                 @{

@@ -18,8 +18,8 @@
 @{
     PaymentQueryViewModel _viewModel = (PaymentQueryViewModel)ViewBag.ViewModel;
     IQueryable<Payment> items = _model.Where(p => p.PayoffDate >= DateTime.Today.FirstDayOfMonth());
-    IQueryable<Payment> voidItems =models.GetTable<VoidPayment>().Where(v => v.VoidDate >= DateTime.Today)
-                                            .Join(items, v => v.VoidID, p => p.PaymentID, (v, p) => p);
+    IQueryable<Payment> voidItems = models.GetTable<VoidPayment>().Where(v => v.VoidDate >= DateTime.Today.FirstDayOfMonth())
+                                            .Join(_model, v => v.VoidID, p => p.PaymentID, (v, p) => p);
 }
 <div class="col-6">
     <br /><br />
@@ -35,25 +35,22 @@
             new
             {
                 PayoffDateFrom = DateTime.Today.FirstDayOfMonth(),
-                PayoffDateTo = DateTime.Today.AddDays(1),
                 _viewModel.RelatedID,
                 IncomeOnly = true,
             })));'>@($"{items.Sum(p => p.PayoffAmount) ?? 0:##,###,###,##0}")</a><br />
     <a href="#" onclick='showPaymentList(@Html.Raw(JsonConvert.SerializeObject(
             new
             {
-                PayoffDateFrom = DateTime.Today.FirstDayOfMonth(),
-                PayoffDateTo = DateTime.Today.AddDays(1),
+                CancelDateFrom = DateTime.Today.FirstDayOfMonth(),
                 _viewModel.RelatedID,
                 HasCancellation = true,
             })));'>@($"{voidItems.ExtractVoidPayment(models,true).Sum(p => p.PayoffAmount) ?? 0:##,###,###,##0}")</a><br />
     <a href="#" onclick='showPaymentList(@Html.Raw(JsonConvert.SerializeObject(
             new
             {
-                PayoffDateFrom = DateTime.Today.FirstDayOfMonth(),
-                PayoffDateTo = DateTime.Today.AddDays(1),
+                AllowanceDateFrom = DateTime.Today.FirstDayOfMonth(),
                 _viewModel.RelatedID,
                 HasAllowance = true
-            })));'>@($"{items.ExtractPaymentAllowance(models).Sum(a=>a.TotalAmount) ?? 0:##,###,###,##0}")</a><br />
+            })));'>@($"{_model.ExtractPaymentAllowance(models,models.GetTable<InvoiceAllowance>().Where(a=>a.AllowanceDate>=DateTime.Today.FirstDayOfMonth())).Sum(a=>a.TotalAmount) ?? 0:##,###,###,##0}")</a><br />
 </div>
 

@@ -199,9 +199,19 @@ namespace WebHome.Controllers
                 viewModel.AttendeeID = item.GroupingLesson.RegisterLesson.Select(r => r.UID).ToArray();
                 viewModel.BranchID = item.BranchID;
                 viewModel.ClassDate = item.ClassTime;
+                if (item.ClassTime.HasValue && item.DurationInMinutes.HasValue)
+                {
+                    viewModel.ClassEndTime = item.ClassTime.Value.AddMinutes(item.DurationInMinutes.Value);
+                }
                 viewModel.CoachID = item.AttendingCoach;
                 viewModel.RegisterID = item.RegisterID;
             }
+
+            if(!viewModel.ClassEndTime.HasValue)
+            {
+                viewModel.ClassEndTime = viewModel.ClassDate;
+            }
+
             return View("~/Views/ConsoleEvent/EventModal/BookingCoachPI.cshtml", item);
 
         }

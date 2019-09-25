@@ -23,7 +23,7 @@
     <h5 class="m-t-0"><strong class="col-red">本月</strong>已分潤</h5>
     <p class="text-small">
         @{ 
-            IQueryable<TuitionAchievement> coachItems = models.GetTable<TuitionAchievement>().Where(t => t.CoachID == _viewModel.HandlerID);
+            IQueryable<TuitionAchievement> coachItems = models.GetTable<TuitionAchievement>().Where(t => t.CoachID == _viewModel.RelatedID);
             var PTShareItems = items.Where(p => p.TransactionType == (int)Naming.PaymentTransactionType.體能顧問費).GetPaymentAchievement(models, coachItems);
             var PTShare = PTShareItems.Sum(p => p.ShareAmount) ?? 0;
             var PIShareItems = items.Where(p => p.TransactionType == (int)Naming.PaymentTransactionType.自主訓練).GetPaymentAchievement(models, coachItems);
@@ -35,24 +35,24 @@
             {
                 PayoffDateFrom = DateTime.Today.FirstDayOfMonth(),
                 TransactionType = (int)Naming.PaymentTransactionType.體能顧問費,
-                ShareFor = _viewModel.HandlerID,
+                ShareFor = _viewModel.RelatedID,
             })));'>@($"{PTShare:##,###,###,##0}")</a><br />
         P.I：<a href="#" onclick='showPaymentList(@Html.Raw(JsonConvert.SerializeObject(
             new
             {
                 PayoffDateFrom = DateTime.Today.FirstDayOfMonth(),
                 TransactionType = (int)Naming.PaymentTransactionType.自主訓練,
-                ShareFor = _viewModel.HandlerID,
+                ShareFor = _viewModel.RelatedID,
             })));'>@($"{PIShare:##,###,###,##0}")</a><br />
         其他：<a href="#" onclick='showPaymentList(@Html.Raw(JsonConvert.SerializeObject(
             new
             {
                 PayoffDateFrom = DateTime.Today.FirstDayOfMonth(),
-                TransactionTypeCompoundType = new Naming.PaymentTransactionType?[] {
+                CompoundType = new Naming.PaymentTransactionType?[] {
                     Naming.PaymentTransactionType.運動商品,
                     Naming.PaymentTransactionType.食飲品
                 },
-                ShareFor = _viewModel.HandlerID,
+                ShareFor = _viewModel.RelatedID,
             })));'>@($"{othersShare:##,###,###,##0}")</a>
     </p>
 </div>

@@ -19,6 +19,7 @@
     UserProfile _profile = Context.GetUser();
     PaymentQueryViewModel _viewModel = (PaymentQueryViewModel)ViewBag.ViewModel;
     _viewModel.RelatedID = _profile.UID;
+    ViewBag.ViewModel = _viewModel;
     IQueryable<Payment> items = _model.Where(p => p.HandlerID == _profile.UID)
                                     .Union(_model.Where(p => p.ContractPayment.CourseContract.FitnessConsultant == _profile.UID))
                                     .Union(_model.Where(p => p.TuitionInstallment.IntuitionCharge.RegisterLesson.LessonTime.Any(l => l.AttendingCoach == _profile.UID)));

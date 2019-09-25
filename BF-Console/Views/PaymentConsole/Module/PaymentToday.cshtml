@@ -22,11 +22,14 @@
                                             .Join(items, v => v.VoidID, p => p.PaymentID, (v, p) => p);
 
     int? relatedID = null;
+    int? branchID = null;
     if (_profile.IsAssistant() || _profile.IsOfficer() || _profile.IsServitor())
     {
     }
     else if (_profile.IsManager() || _profile.IsViceManager())
     {
+        branchID = models.GetTable<BranchStore>().Where(b => b.ManagerID == _profile.UID || b.ViceManagerID == _profile.UID)
+                    .Select(b => b.BranchID).FirstOrDefault();
     }
     else
     {
@@ -41,6 +44,7 @@
             PayoffDateFrom = DateTime.Today,
             PayoffDateTo = DateTime.Today.AddDays(1),
             RelatedID = relatedID,
+            BranchID = branchID,
         };
         ViewBag.ViewModel = tempViewModel;
         ViewBag.VoidPayment = voidItems;
