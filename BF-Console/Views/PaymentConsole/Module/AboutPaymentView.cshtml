@@ -22,7 +22,7 @@
 {
     Html.RenderPartial("~/Views/PaymentConsole/Module/AboutPaymentViewByOfficer.cshtml", _model);
 }
-else
+else if(_profile.IsCoach())
 {
     ViewBag.EnableToCreate = false;
     Html.RenderPartial("~/Views/PaymentConsole/Module/AboutPaymentViewByCoach.cshtml", _model);
