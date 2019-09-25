@@ -268,6 +268,7 @@ namespace WebHome.Models.ViewModel
 
         [Display(Name = "上課日期")]
         public DateTime? ClassDate { get; set; }
+        public DateTime? ClassEndTime { get; set; }
 
         //[Required]
         //[Display(Name = "上課時段")]

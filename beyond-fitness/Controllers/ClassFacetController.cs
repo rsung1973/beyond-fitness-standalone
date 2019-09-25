@@ -149,6 +149,14 @@ namespace WebHome.Controllers
                     return View("~/Views/Shared/MessageView.ascx");
                 }
             }
+            else
+            {
+                if (viewModel.ClassEndTime.HasValue)
+                {
+                    timeItem.DurationInMinutes =
+                             (int)(viewModel.ClassEndTime.Value - viewModel.ClassDate.Value).TotalMinutes;
+                }
+            }
 
             if (!ModelState.IsValid)
             {

@@ -96,7 +96,7 @@ namespace WebHome.Controllers
         public ActionResult TestContractAllowance(int? revisionID,int? balance)
         {
             var item = models.GetTable<CourseContractRevision>().Where(r => r.RevisionID == revisionID).FirstOrDefault();
-            models.CreateAllowanceForContract(item.SourceContract, balance.Value, item.CourseContract.ContractDate);
+            models.CreateAllowanceForContract(item.SourceContract, balance.Value, null, item.CourseContract.ContractDate);
             models.SubmitChanges();
             return Json(new { result = true }, JsonRequestBehavior.AllowGet);
         }

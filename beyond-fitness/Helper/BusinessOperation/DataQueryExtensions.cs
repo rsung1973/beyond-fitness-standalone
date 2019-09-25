@@ -586,6 +586,7 @@ namespace WebHome.Helper.BusinessOperation
 
             IQueryable<VoidPayment> voidItems = models.GetTable<VoidPayment>();
             IQueryable<InvoiceItem> invoiceItems = models.GetTable<InvoiceItem>();
+            bool hasInvoiceQuery = false;
 
             if (viewModel.PaymentID.HasValue)
             {
@@ -677,11 +678,13 @@ namespace WebHome.Helper.BusinessOperation
 
             if (viewModel.InvoiceType.HasValue)
             {
+                hasInvoiceQuery = true;
                 invoiceItems = invoiceItems.Where(c => c.InvoiceType == (byte)viewModel.InvoiceType);
             }
 
             if (viewModel.HasInvoicePrinted.HasValue)
             {
+                hasInvoiceQuery = true;
                 if (viewModel.HasInvoicePrinted == true)
                 {
                     invoiceItems = invoiceItems
@@ -718,6 +721,7 @@ namespace WebHome.Helper.BusinessOperation
             viewModel.InvoiceNo = viewModel.InvoiceNo.GetEfficientString();
             if (viewModel.InvoiceNo != null && Regex.IsMatch(viewModel.InvoiceNo, "[A-Za-z]{2}[0-9]{8}"))
             {
+                hasInvoiceQuery = true;
                 String trackCode = viewModel.InvoiceNo.Substring(0, 2).ToUpper();
                 String no = viewModel.InvoiceNo.Substring(2);
                 invoiceItems = invoiceItems.Where(c => c.TrackCode == trackCode
@@ -734,34 +738,27 @@ namespace WebHome.Helper.BusinessOperation
             viewModel.BuyerReceiptNo = viewModel.BuyerReceiptNo.GetEfficientString();
             if (viewModel.BuyerReceiptNo != null)
             {
+                hasInvoiceQuery = true;
                 invoiceItems = invoiceItems.Where(c => c.InvoiceBuyer.ReceiptNo == viewModel.BuyerReceiptNo);
             }
 
             bool dateQuery = false;
             IQueryable<InvoiceAllowance> allowanceItems = models.GetTable<InvoiceAllowance>();
             IQueryable<InvoiceCancellation> cancelledItems = models.GetTable<InvoiceCancellation>();
-
+            IQueryable<Payment> result = items;
             if (viewModel.PayoffDateFrom.HasValue)
             {
                 dateQuery = true;
-                items = items.Where(p => p.PayoffDate >= viewModel.PayoffDateFrom);
-                invoiceItems = invoiceItems.Where(i => i.InvoiceDate >= viewModel.PayoffDateFrom);
-                cancelledItems = cancelledItems.Where(i => i.CancelDate >= viewModel.PayoffDateFrom);
-                allowanceItems = allowanceItems.Where(a => a.AllowanceDate >= viewModel.PayoffDateFrom);
-                voidItems = voidItems.Where(v => v.VoidDate >= viewModel.PayoffDateFrom);
+                result = result.Where(p => p.PayoffDate >= viewModel.PayoffDateFrom);
             }
 
             if (viewModel.PayoffDateTo.HasValue)
             {
                 dateQuery = true;
-                items = items.Where(i => i.PayoffDate < viewModel.PayoffDateTo.Value.AddDays(1));
-                invoiceItems = invoiceItems.Where(i => i.InvoiceDate < viewModel.PayoffDateTo.Value.AddDays(1));
-                cancelledItems = cancelledItems.Where(i => i.CancelDate < viewModel.PayoffDateTo.Value.AddDays(1));
-                allowanceItems = allowanceItems.Where(a => a.AllowanceDate < viewModel.PayoffDateTo.Value.AddDays(1));
-                voidItems = voidItems.Where(v => v.VoidDate < viewModel.PayoffDateTo.Value.AddDays(1));
+                result = result.Where(i => i.PayoffDate < viewModel.PayoffDateTo.Value.AddDays(1));
             }
 
-            IQueryable<Payment> result = items.Join(invoiceItems, p => p.InvoiceID, i => i.InvoiceID, (p, i) => p);
+            //result = items.Join(invoiceItems, p => p.InvoiceID, i => i.InvoiceID, (p, i) => p);
             if (viewModel.ShareFor.HasValue)
             {
                 result = result.Where(p => p.VoidPayment == null)
@@ -771,12 +768,13 @@ namespace WebHome.Helper.BusinessOperation
             {
 
             }
-            else if (dateQuery)
-            {
-                result = result
-                    .Union(result.Join(allowanceItems, p => p.AllowanceID, a => a.AllowanceID, (p, a) => p)
-                    .Union(result.Join(voidItems, p => p.PaymentID, c => c.VoidID, (p, c) => p)));
-            }
+            //else if (dateQuery)
+            //{
+            //    result = result
+            //        .Union(items.Join(invoiceItems, p => p.InvoiceID, i => i.InvoiceID, (p, i) => p))
+            //        .Union(items.Join(allowanceItems, p => p.AllowanceID, a => a.AllowanceID, (p, a) => p)
+            //        .Union(items.Join(voidItems, p => p.PaymentID, c => c.VoidID, (p, c) => p)));
+            //}
 
             if (viewModel.IsCancelled == true)
             {
@@ -786,13 +784,48 @@ namespace WebHome.Helper.BusinessOperation
             }
             else if (viewModel.IsCancelled == false)
             {
-                result = items
+                result = result
                     .Where(p => p.VoidPayment == null /*&& !p.AllowanceID.HasValue*/);
+            }
+
+            if (viewModel.AllowanceDateFrom.HasValue)
+            {
+                viewModel.HasAllowance = true;
+                allowanceItems = allowanceItems.Where(a => a.AllowanceDate >= viewModel.AllowanceDateFrom);
+            }
+
+            if (viewModel.AllowanceDateTo.HasValue)
+            {
+                viewModel.HasAllowance = true;
+                allowanceItems = allowanceItems.Where(a => a.AllowanceDate < viewModel.AllowanceDateTo.Value.AddDays(1));
             }
 
             if (viewModel.HasAllowance == true)
             {
-                result = result.Where(p => p.AllowanceID.HasValue);
+                result = result.Join(allowanceItems, p => p.AllowanceID, a => a.AllowanceID, (p, a) => p);
+            }
+
+            if (viewModel.CancelDateFrom.HasValue)
+            {
+                viewModel.HasCancellation = true;
+                cancelledItems = cancelledItems.Where(i => i.CancelDate >= viewModel.CancelDateFrom);
+            }
+
+            if (viewModel.CancelDateTo.HasValue)
+            {
+                viewModel.HasCancellation = true;
+                cancelledItems = cancelledItems.Where(i => i.CancelDate < viewModel.CancelDateTo.Value.AddDays(1));
+            }
+
+            if (viewModel.HasCancellation == true)
+            {
+                hasInvoiceQuery = true;
+                invoiceItems = invoiceItems.Join(cancelledItems, i => i.InvoiceID, c => c.InvoiceID, (i, c) => i);
+            }
+
+            if(hasInvoiceQuery)
+            {
+                result = result.Join(invoiceItems, p => p.InvoiceID, i => i.InvoiceID, (p, i) => p);
             }
 
             if (viewModel.CustomQuery != null)

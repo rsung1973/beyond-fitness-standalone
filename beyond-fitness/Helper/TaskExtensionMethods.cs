@@ -359,7 +359,7 @@ namespace WebHome.Helper
                             {
                                 //Logger.Debug("RevisionID: " + item.RevisionID);
                                 //Logger.Debug("balance: " + balance);
-                                models.CreateAllowanceForContract(original, refund);
+                                models.CreateAllowanceForContract(original, refund, handler);
                             }
                         }
 

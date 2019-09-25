@@ -596,6 +596,7 @@ namespace WebHome.Helper
                     && t.Hour >= intendedBooking.ClassTime.Value.Hour
                     && t.Hour < (intendedBooking.ClassTime.Value.Hour + durationHours)
                     && t.LessonID != originalBooking.LessonID)
+                .Where(t => t.LessonTime.GroupID != originalBooking.GroupID)
                 .Select(r => r.RegisterLesson.UserProfile).Where(u => oriUID.Contains(u.UID));
 
             return overlappingItems;

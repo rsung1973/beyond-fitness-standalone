@@ -68,10 +68,15 @@ namespace WebHome.Helper
                 .FilterByEffective();
         }
 
-        public static IQueryable<InvoiceAllowance> ExtractPaymentAllowance<TEntity>(this IQueryable<Payment> items, ModelSource<TEntity> models)
+        public static IQueryable<InvoiceAllowance> ExtractPaymentAllowance<TEntity>(this IQueryable<Payment> items, ModelSource<TEntity> models, IQueryable<InvoiceAllowance> filterItems = null)
                     where TEntity : class, new()
         {
-            return items.Join(models.GetTable<InvoiceAllowance>(),
+            if (filterItems == null)
+            {
+                filterItems = models.GetTable<InvoiceAllowance>();
+            }
+
+            return items.Join(filterItems,
                             p => p.AllowanceID, a => a.AllowanceID, (p, a) => a);
         }
 
@@ -90,15 +95,18 @@ namespace WebHome.Helper
             }
         }
 
+        public static readonly int?[] IncomePayment = new int?[]
+        {
+            (int)Naming.PaymentTransactionType.自主訓練,
+            (int)Naming.PaymentTransactionType.運動商品,
+            (int)Naming.PaymentTransactionType.食飲品,
+            (int)Naming.PaymentTransactionType.體能顧問費
+        };
         public static IQueryable<Payment> PromptIncomePayment<TEntity>(this ModelSource<TEntity> models)
             where TEntity : class, new()
         {
-
             return models.GetTable<Payment>()
-                    .Where(p => p.TransactionType == (int)Naming.PaymentTransactionType.自主訓練
-                        || p.TransactionType == (int)Naming.PaymentTransactionType.運動商品
-                        || p.TransactionType == (int)Naming.PaymentTransactionType.食飲品
-                        || p.TransactionType == (int)Naming.PaymentTransactionType.體能顧問費);
+                    .Where(p => IncomePayment.Contains(p.TransactionType));
         }
 
         public static IQueryable<TuitionAchievement> GetPaymentAchievement<TEntity>(this IQueryable<Payment> items, ModelSource<TEntity> models,IQueryable<TuitionAchievement> filterItems = null)

@@ -524,10 +524,18 @@ namespace WebHome.Controllers
                 case Naming.RoleID.Coach:
                 case Naming.RoleID.Manager:
                 case Naming.RoleID.ViceManager:
-                case Naming.RoleID.Officer:
                 case Naming.RoleID.Assistant:
                     return RedirectToAction("Index", "CoachFacet", new { KeyID = item.UID.EncryptKey() });
 
+                case Naming.RoleID.Officer:
+                    if (item.UserRole.Count == 1 && item.UserRoleAuthorization.Any(r => r.RoleID == (int)Naming.RoleID.Officer))
+                    {
+                        return Redirect("~/ConsoleHome/Index");
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index", "CoachFacet", new { KeyID = item.UID.EncryptKey() });
+                    }
                 //case Naming.RoleID.Assistant:
                 //    return RedirectToAction("Index", "CoachFacet");
 
@@ -541,7 +549,8 @@ namespace WebHome.Controllers
                         return RedirectToAction("TimeLine", "Activity", new { uid = item.UID });
 
                 case Naming.RoleID.Servitor:
-                    return RedirectToAction("PaymentIndex", "Payment");
+                    return Redirect("~/ConsoleHome/Index");
+                    //return RedirectToAction("PaymentIndex", "Payment");
 
 
                 case Naming.RoleID.FreeAgent:

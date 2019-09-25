@@ -67,7 +67,8 @@ namespace WebHome.Helper
             }
             else if (item.IsServitor())
             {
-                return url.Action("PaymentIndex", "Payment");
+                return VirtualPathUtility.ToAbsolute("~/ConsoleHome/Index");
+                //return url.Action("PaymentIndex", "Payment");
             }
             
 
@@ -82,9 +83,18 @@ namespace WebHome.Helper
 
                 case Naming.RoleID.Manager:
                 case Naming.RoleID.ViceManager:
-                case Naming.RoleID.Officer:
                 case Naming.RoleID.Assistant:
                     return url.Action("Index", "CoachFacet", new { KeyID = item.UID.EncryptKey() });
+
+                case Naming.RoleID.Officer:
+                    if (item.UserRole.Count == 1 && item.UserRoleAuthorization.Any(r => r.RoleID == (int)Naming.RoleID.Officer))
+                    {
+                        return VirtualPathUtility.ToAbsolute("~/ConsoleHome/Index");
+                    }
+                    else
+                    {
+                        return url.Action("Index", "CoachFacet", new { KeyID = item.UID.EncryptKey() });
+                    }
 
                 //case Naming.RoleID.Assistant:
                 //    return url.Action("Index", "CoachFacet");

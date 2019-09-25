@@ -90,7 +90,7 @@ namespace WebHome.Helper
             return result;
         }
 
-        public static void CreateAllowanceForContract<TEntity>(this ModelSource<TEntity> models, CourseContract contractItem, int totalAllowanceAmount,DateTime? allowanceDate = null)
+        public static void CreateAllowanceForContract<TEntity>(this ModelSource<TEntity> models, CourseContract contractItem, int totalAllowanceAmount, UserProfile handler, DateTime? allowanceDate = null)
                     where TEntity : class, new()
         {
             var paymentItems = contractItem.ContractPayment.Select(p => p.Payment)
@@ -104,6 +104,7 @@ namespace WebHome.Helper
             {
                 var allowanceAmt = Math.Min(totalAmt, paymentItems[i].PayoffAmount.Value);
                 models.PrepareAllowanceForPayment(paymentItems[i], allowanceAmt, "終止退款", allowanceDate);
+                paymentItems[i].VoidPayment.HandlerID = handler?.UID;
                 totalAmt -= allowanceAmt;
             }
         }

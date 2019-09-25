@@ -197,8 +197,8 @@ namespace WebHome.Models.ViewModel
         public bool? ScrollToView { get; set; }
         public bool? HasCancellation
         {
-            get => IsCancelled;
-            set => IsCancelled = value;
+            get;
+            set;
         }
         public bool? HasAllowance { get; set; }
         public bool? HasInvoicePrinted { get; set; }
@@ -207,6 +207,10 @@ namespace WebHome.Models.ViewModel
         public bool? HasShare { get; set; }
         public int? RelatedID { get; set; }
         public int? TransactionID { get; set; }
+        public DateTime? AllowanceDateFrom { get; set; }
+        public DateTime? AllowanceDateTo { get; set; }
+        public DateTime? CancelDateFrom { get; set; }
+        public DateTime? CancelDateTo { get; set; }
 
     }
 

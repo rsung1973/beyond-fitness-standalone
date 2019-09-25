@@ -653,7 +653,12 @@ namespace WebHome.Controllers
                 //DurationInMinutes = (int)(viewModel.ClassTimeEnd.Value - viewModel.ClassTimeStart.Value).TotalMinutes
             };
 
-            if(models.GetTable<Settlement>().Any(s=>s.StartDate<=viewModel.ClassTimeStart && s.EndExclusiveDate>viewModel.ClassTimeStart))
+            if(item.IsCoachPISession())
+            {
+                timeItem.DurationInMinutes = (int)(viewModel.ClassTimeEnd.Value - viewModel.ClassTimeStart.Value).TotalMinutes;
+            }
+
+            if (models.GetTable<Settlement>().Any(s=>s.StartDate<=viewModel.ClassTimeStart && s.EndExclusiveDate>viewModel.ClassTimeStart))
             {
                 ViewBag.Message = "修改上課時間(" + String.Format("{0:yyyy/MM/dd}",viewModel.ClassTimeStart) + "已信託結算!!";
                 return View("~/Views/Shared/MessageView.ascx");

@@ -71,6 +71,10 @@ namespace WebHome.Controllers
             {
                 ModelState.AddModelError("ClassDate", "預約時間不可早於今天!!");
             }
+            else if(viewModel.ClassEndTime.HasValue && viewModel.ClassDate>=viewModel.ClassEndTime)
+            {
+                ModelState.AddModelError("ClassEndTime", "結束時間不可早於開始時間!!");
+            }
 
             if (!viewModel.BranchID.HasValue)
             {
@@ -91,7 +95,7 @@ namespace WebHome.Controllers
             }
 
 
-            DateTime endTime = viewModel.ClassDate.Value.AddMinutes(priceType.DurationInMinutes.Value);
+            DateTime endTime = viewModel.ClassEndTime ?? viewModel.ClassDate.Value.AddMinutes(priceType.DurationInMinutes.Value);
             IQueryable<LessonTimeExpansion> items = models.GetTable<LessonTimeExpansion>();
             if (viewModel.LessonID.HasValue)
                 items = items.Where(t => t.LessonID != viewModel.LessonID);
@@ -135,7 +139,7 @@ namespace WebHome.Controllers
             }
 
             timeItem.ClassTime = viewModel.ClassDate;
-            timeItem.DurationInMinutes = priceType.DurationInMinutes;
+            timeItem.DurationInMinutes = (int)(viewModel.ClassEndTime.Value - viewModel.ClassDate.Value).TotalMinutes; //priceType.DurationInMinutes;
             if (viewModel.BranchID > 0)
                 timeItem.BranchID = viewModel.BranchID;
             timeItem.InvitedCoach =  timeItem.AttendingCoach = profile.UID;
