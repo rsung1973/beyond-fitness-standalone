@@ -32,14 +32,14 @@
             <div class="modal-popmenu-body">
                 <div class="list-group">
                     <div class="list-group-item input-group m-b-0">
-                        <input type="text" class="form-control searchLearner" name="userName" placeholder="搜尋學生..." />
-                        <span class="input-group-addon">
+                        <input type="text" class="form-control searchLearner xl-aliceblue" name="userName" placeholder="搜尋學生..." />
+                        <span class="input-group-addon xl-aliceblue">
                             <i class="zmdi zmdi-search"></i>
                         </span>
                     </div>
                     @if (_profile.IsCoach())
                     {
-                        <a href="javascript:bookingCoachPI();" class="list-group-item">教練P.I</a>
+                        <a href="javascript:bookingCoachPI();" class="list-group-item">教練 P.I</a>
                     }
                     <a href="javascript:bookingCustomEvent({ 'startDate':'@($"{_viewModel.StartDate:yyyy-MM-dd HH:mm:ss}")' });" class="list-group-item">個人行事曆</a>
                 </div>

@@ -6077,10 +6077,6 @@
     <Content Include="Scripts\umd\popper.min.js" />
     <Content Include="Views\Blog\Module\CategoryIndication.ascx" />
     <Content Include="Views\Blog\Module\PlusIndication.ascx" />
-    <Content Include="Views\ConsoleEvent\Module\SearchLearner.ascx" />
-    <Content Include="Views\ConsoleEvent\Module\CoachPIAttendeeSelector.ascx" />
-    <Content Include="Views\ConsoleEvent\Module\RevokeLesson.ascx" />
-    <Content Include="Views\ConsoleEvent\Module\LessonEmphasis.ascx" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.4.1.min.map" />
     <Content Include="Scripts\umd\popper.min.js.map" />

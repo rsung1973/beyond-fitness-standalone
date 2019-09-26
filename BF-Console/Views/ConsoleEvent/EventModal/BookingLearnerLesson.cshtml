@@ -93,7 +93,7 @@
         var payoffStatus = contract.TotalCost / contract.Lessons * (bookingCount + 1) <= totalPaid;
         bool revisionStatus = contract.RevisionList.Any(c => c.CourseContract.Status < (int)Naming.CourseContractStatus.已生效);
          _pageModel.GroupComplete = item.GroupingMemberCount == item.GroupingLesson.RegisterLesson.Count ? true : false;
-        bool bookable = _pageModel.PDQStatus && _pageModel.GroupComplete && !_pageModel.QuestionnaireStatus && validContract && payoffStatus && !revisionStatus;
+        bool bookable = _pageModel.GroupComplete && validContract && payoffStatus && !revisionStatus;
         if (bookable)
         {
             _pageModel.HasChoice = true;
