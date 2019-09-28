@@ -5575,7 +5575,7 @@ img {
 }
 
 .modal-backdrop {
-    background: rgba(0, 0, 0, 0.3)
+    background: rgba(0, 0, 0, 0.8)
 }
 
 .modal.modal-sign .modal-dialog {
@@ -8431,7 +8431,8 @@ img {
     }
 
     .modal-dialog {
-        max-width: 700px;
+/*        max-width: 700px;*/
+        max-width: 600px;
         margin: 30px auto;
     }
 }
@@ -17004,6 +17005,7 @@ img {
 .navbar-nav.navbar-right .input-group .form-control {
     color: #9E9E9E
 }
+
 .sidebar .menu .input-group .form-control:focus,
 .navbar-nav.navbar-right .input-group .form-control:focus {
     border: 1px solid #fff;
