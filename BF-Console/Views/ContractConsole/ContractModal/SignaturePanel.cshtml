@@ -39,7 +39,7 @@
         $(function () {
             $('#@(_dialogID)').on('shown.bs.modal', function (e) {
                 $("#signature").empty();
-                $("#signature").jSignature({ 'UndoButton': true });
+                $("#signature").jSignature({ 'UndoButton': true, 'sizeRatio': 2  });
             });
 
             $("#@(_dialogID) button.resign").on('click', function (event) {

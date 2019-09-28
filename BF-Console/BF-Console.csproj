@@ -6601,7 +6601,6 @@
     <Content Include="Views\ContractConsole\ContractService\ContractTermination.cshtml" />
     <Content Include="Views\ContractConsole\ContractService\ContractTransference.cshtml" />
     <Content Include="Views\ContractConsole\ContractService\CourseContractExtensionView.cshtml" />
-    <Content Include="Views\ContractConsole\ContractService\CourseContractOtherAmendmentView.cshtml" />
     <Content Include="Views\ContractConsole\ContractService\CourseContractTerminationView.cshtml" />
     <Content Include="Views\ContractConsole\ContractService\CourseContractTransferenceView.cshtml" />
     <Content Include="Views\ContractConsole\ContractService\DoConsultantAssignment.cshtml" />

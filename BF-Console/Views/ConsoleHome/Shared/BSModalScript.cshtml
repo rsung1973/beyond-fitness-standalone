@@ -9,12 +9,14 @@
         $('#@(_dialogID)').modal('show');
 
         $('#@(_dialogID)').on('shown.bs.modal', function () {
-            if ($('body').hasClass('modal-open') == false) {
-                $('body').addClass('modal-open');
-            };
+            document.body.style.overflow = 'hidden';
+            //if ($('body').hasClass('modal-open') == false) {                
+            //   $('body').addClass('modal-open');
+            //};
         });
 
         $('#@(_dialogID)').on('hidden.bs.modal', function () {
+            document.body.style.overflow = 'visible';
             $('#@(_dialogID)').remove();
         });
 
