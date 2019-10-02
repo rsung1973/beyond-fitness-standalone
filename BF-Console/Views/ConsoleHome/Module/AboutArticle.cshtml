@@ -25,17 +25,20 @@
             .OrderByDescending(a => a.DocID);
 
     var totalCount = items.Count();
-    Random rand = new Random((int)DateTime.Now.Ticks & 0x0000FFFF);
+    //Random rand = new Random((int)DateTime.Now.Ticks & 0x0000FFFF);
+    int idx = (int)(DateTime.Now.Ticks % Math.Max(totalCount, 1));
 
     _items = new List<BlogArticle>();
     while (_items.Count < Math.Min(totalCount, 5))
     {
-        var idx = rand.Next(totalCount);
+        //var idx = rand.Next(totalCount);
         var item = items.Skip(idx).Take(1).FirstOrDefault();
         if (item != null)
         {
             _items.Add(item);
         }
+        idx++;
+        idx = (idx * idx * idx) % Math.Max(totalCount, 1);
     }
     _allotment = ((int?)ViewBag.Allotment) ?? 2;
 }

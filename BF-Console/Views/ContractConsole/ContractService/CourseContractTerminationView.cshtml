@@ -18,7 +18,7 @@
     CourseContract _contract;
     DateTime? _signatureDate;
 
-
+    CourseContractViewModel _viewModel = (CourseContractViewModel)ViewBag.ViewModel;
 
     _modelState = (ModelStateDictionary)ViewBag.ModelState;
     models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
@@ -37,9 +37,9 @@
 }
 <div class="row" style="margin-top: 20px;margin-bottom: 20px;">
     <div class="col-md-12">
-        <div class="well well-light" style="@(Request["pdf"]=="1" ? "width: 21.5cm; height: 28cm" : "")">
+        <div class="well well-light" style="@(_viewModel.Pdf=="1" ? "width: 21.5cm; height: 28cm" : "")">
             <h1 class="text-center"><b>學員服務申請表</b></h1>
-            <div class="@(Request["pdf"]=="1" ? "seal" : "")">
+            <div class="@(_viewModel.Pdf=="1" ? "seal" : "")">
                 <table class="table" style="font-size: 16px">
                     <tbody>
                         <tr>
@@ -135,7 +135,7 @@
                                 }
                             </td>
                         </tr>
-                        <tr style="@(Request["pdf"]=="1" ? "height: 14cm" : "height: 2cm")">
+                        <tr style="@(_viewModel.Pdf=="1" ? "height: 14cm" : "height: 2cm")">
                             <td colspan="2">其他更多說明：@(_contract.Remark)</td>
                         </tr>
                     </tbody>

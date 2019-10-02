@@ -15,7 +15,7 @@
     CourseContractMember _owner;
     DateTime? _signatureDate;
 
-
+    CourseContractViewModel _viewModel = (CourseContractViewModel)ViewBag.ViewModel;
 
     _modelState = (ModelStateDictionary)ViewBag.ModelState;
     models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
@@ -34,7 +34,7 @@
 
 <div class="row" style="margin-top: 20px;margin-bottom: 5px;">
     <div class="col-md-12">
-        <div class="@(Request["pdf"]=="1" ? "" : "well well-light")" style="@(Request["pdf"]=="1" ? "width: 21.5cm; height: 28cm" : "")">
+        <div class="@(_viewModel.Pdf=="1" ? "" : "well well-light")" style="@(_viewModel.Pdf=="1" ? "width: 21.5cm; height: 28cm" : "")">
             <h1 class="text-center" style="margin-bottom: 0px"><b>體能顧問聘請服務合約</b></h1>
             <table class="table" style="font-size: 15px">
                 <tbody>
@@ -109,7 +109,7 @@
                     </tr>
                 </tbody>
             </table>
-            <div style="@(Request["pdf"]=="1" ? "font-size: 15px; position: absolute; bottom: 0px;width: 21.5cm" : "font-size: 15px")";>
+            <div style="@(_viewModel.Pdf=="1" ? "font-size: 15px; position: absolute; bottom: 0px;width: 21.5cm" : "font-size: 15px")";>
                 <table class="table" style="margin-bottom: 0px">
                    <tr>
                       @if (_model.Status < (int)Naming.CourseContractStatus.待審核)
@@ -200,7 +200,7 @@
                    <tr>
                       <td class="p-t-0"></td>
                       <td class="p-0">Beyond Fitness超越體能顧問有限公司</td>
-                      @if (Request["pdf"] == "1")
+                      @if (_viewModel.Pdf == "1")
                       {
                       <td rowspan="3" width="150px" class="p-0 text-right"><img src="images/sign/seal.png" width="150px" /></td>
                       }
@@ -225,7 +225,7 @@
                          @if (_model.Status > (int)Naming.CourseContractStatus.待簽名)
                          {
                          <text>主管簽核代表：</text>
-                         <img src="@(_model.Status == (int)Naming.CourseContractStatus.待審核 && Request["pdf"] != "1"
+                         <img src="@(_model.Status == (int)Naming.CourseContractStatus.待審核 && _viewModel.Pdf != "1"
                          ? Context.GetUser().LoadInstance(models).UserProfileExtension.Signature
                          : _model.ContractAgent.UserProfileExtension.Signature)" width="200px" class="modifySignDialog_link">
                          }
@@ -253,7 +253,7 @@
 </div>
 <div class="row" style="page-break-before: always;">
     <div class="col-md-12">
-        <div class="@(Request["pdf"]=="1" ? "p-t-0" : "well p-t-0 well-ligh")" style="@(Request["pdf"]=="1" ? "width: 21.5cm; height: 29cm" : "")">
+        <div class="@(_viewModel.Pdf=="1" ? "p-t-0" : "well p-t-0 well-ligh")" style="@(_viewModel.Pdf=="1" ? "width: 21.5cm; height: 29cm" : "")">
             <h2 class="text-center" style="margin-bottom: 0px"><b>Beyond Fitness訓練特約條款</b></h2>
                 <table class="table" style="font-size:13px">
                     <tr>
@@ -345,7 +345,7 @@
                             }
                             日期：@(String.Format("{0:yyyy/MM/dd}", _signatureDate))
                         </td>
-                        @if (Request["pdf"] == "1")
+                        @if (_viewModel.Pdf == "1")
                         {
                         <td rowspan="2" width="150px" class="p-0 text-right">
                             <img src="images/sign/seal.png" width="150px" />
@@ -373,7 +373,7 @@
 {
 <div class="row" style="margin-top: 30px; margin-bottom: 20px;">
     <div class="col-md-12">
-        <div class="@(Request["pdf"]=="1" ? "p-t-10" : "well p-t-10 well-ligh")" style="@(Request["pdf"]=="1" ? "width: 21.5cm;" : "")">
+        <div class="@(_viewModel.Pdf=="1" ? "p-t-10" : "well p-t-10 well-ligh")" style="@(_viewModel.Pdf=="1" ? "width: 21.5cm;" : "")">
             <h2 class="text-center" style="margin-top: 0px; margin-bottom: 10px"><b>附表-學員名單</b></h2>
             <div>
                 <table class="table" style="font-size: 15px">
@@ -411,7 +411,7 @@
                              }
                             日期：@(String.Format("{0:yyyy/MM/dd}", _signatureDate))
                         </td>                    
-                        @if (Request["pdf"] == "1")
+                        @if (_viewModel.Pdf == "1")
                         {
                             <td class="p-0 text-right" width="150px"><img src="images/sign/seal.png" width="150px" /></td>
                         }

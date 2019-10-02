@@ -545,6 +545,11 @@ namespace WebHome.Controllers
 
         }
 
+        public ActionResult ShowLearnerAboutToBirth(int? days)
+        {
+            var items = models.PromptLearnerAboutToBirth(days ?? 14);
+            return View("~/Views/LearnerProfile/ProfileModal/LearnerAboutToBirth.cshtml", items);
+        }
 
 
     }

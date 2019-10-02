@@ -16,7 +16,7 @@
     CourseContract _contract;
     DateTime? _signatureDate;
 
-
+    CourseContractViewModel _viewModel = (CourseContractViewModel)ViewBag.ViewModel;
 
     _modelState = (ModelStateDictionary)ViewBag.ModelState;
     models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
@@ -38,7 +38,7 @@
     <div class="col-md-12">
         <div class="well no-padding well-light">
             <h2 class="text-center"><b>學員服務申請表</b></h2>
-            <div class="@(Request["pdf"]=="1" ? "bs-example bs-example-type seal" : "bs-example bs-example-type")">
+            <div class="@(_viewModel.Pdf=="1" ? "bs-example bs-example-type seal" : "bs-example bs-example-type")">
                 <table class="table" style="font-size: 15px">
                     <tbody>
                         <tr>

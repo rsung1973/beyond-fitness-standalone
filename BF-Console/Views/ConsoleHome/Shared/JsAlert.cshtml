@@ -1,7 +1,7 @@
 ﻿@{
 
     String _message;
-    _message = (String)this.Model ?? (String)ViewBag.Message ?? Request["Message"];
+    _message = (String)this.Model ?? (String)ViewBag.Message;
 }
 @if (_message != null)
 {

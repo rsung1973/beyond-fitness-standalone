@@ -28,6 +28,7 @@
                 _viewModel.TransactionType,
                 _viewModel.CompoundType,
                 _viewModel.RelatedID,
+                _viewModel.BranchID,
                 IncomeOnly = true,
             })));'>@(_model.Count())</a><br />
     作廢：<a href="#" onclick='showPaymentList(@Html.Raw(JsonConvert.SerializeObject(
@@ -39,6 +40,7 @@
                 _viewModel.CompoundType,
                 HasCancellation = true,
                 _viewModel.RelatedID,
+                _viewModel.BranchID,
             })));'>@(voidItems.ExtractVoidPayment(models,true).Count())</a><br />
     折讓：<a href="#" onclick='showPaymentList(@Html.Raw(JsonConvert.SerializeObject(
             new
@@ -49,6 +51,7 @@
                 _viewModel.CompoundType,
                 HasAllowance = true,
                 _viewModel.RelatedID,
+                _viewModel.BranchID,
             })));'>@(voidItems.Where(p=>p.AllowanceID.HasValue).Count())</a><br />
 </p>
 

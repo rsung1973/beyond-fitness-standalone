@@ -2,7 +2,7 @@
     Layout = ViewBag.AlertLayout;
     String _message;
     String _dialogID = $"alert{DateTime.Now.Ticks}";
-    _message = (String)this.Model ?? (String)ViewBag.Message ?? Request["Message"];
+    _message = (String)this.Model ?? (String)ViewBag.Message;
 }
 <div class="modal fade" id="@(_dialogID)" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-sm" role="document">

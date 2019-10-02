@@ -88,15 +88,15 @@
                 .Sum(l => l.DurationInMinutes) ?? 0;
         if (totalMinutes > totalMinutesLastMonth)
         {
-            return $"{totalMinutes / 60:.}:{totalMinutes % 60:00} <i class='zmdi zmdi-caret-up zmdi-hc-2x text-danger float-right'></i>";
+            return $"{(int)(totalMinutes / 60)}:{totalMinutes % 60:00} <i class='zmdi zmdi-caret-up zmdi-hc-2x text-danger float-right'></i>";
         }
         else if (totalMinutes < totalMinutesLastMonth)
         {
-            return $"{totalMinutes / 60:.}:{totalMinutes % 60:00} <i class='zmdi zmdi-caret-down zmdi-hc-2x text-success float-right'></i>";
+            return $"{(int)(totalMinutes / 60)}:{totalMinutes % 60:00} <i class='zmdi zmdi-caret-down zmdi-hc-2x text-success float-right'></i>";
         }
         else
         {
-            return $"{totalMinutes / 60:.}:{totalMinutes % 60:00}";
+            return $"{(int)(totalMinutes / 60)}:{totalMinutes % 60:00}";
         }
     }
 

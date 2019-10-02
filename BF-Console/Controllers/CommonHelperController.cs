@@ -36,6 +36,7 @@ namespace WebHome.Controllers
         [AllowAnonymous]
         public ActionResult ViewContract(CourseContractViewModel viewModel)
         {
+            ViewBag.ViewModel = viewModel;
             if (viewModel.KeyID != null)
             {
                 viewModel.ContractID = viewModel.DecryptKeyValue();
@@ -52,6 +53,7 @@ namespace WebHome.Controllers
         [AllowAnonymous]
         public ActionResult ViewContractService(CourseContractViewModel viewModel)
         {
+            ViewBag.ViewModel = viewModel;
             if (viewModel.KeyID != null)
             {
                 viewModel.RevisionID = viewModel.DecryptKeyValue();
