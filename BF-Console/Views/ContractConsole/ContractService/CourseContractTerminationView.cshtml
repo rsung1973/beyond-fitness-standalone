@@ -135,7 +135,11 @@
                                 }
                             </td>
                         </tr>
+<<<<<<< HEAD
                         <tr style="@(_viewModel.Pdf=="1" ? "height: 14cm" : "height: 2cm")">
+=======
+                        <tr style="@(Request["pdf"]=="1" ? "height: 12cm" : "height: 2cm")">
+>>>>>>> b73b6ec1d10241b6e63d006c79974057fbe3f3aa
                             <td colspan="2">其他更多說明：@(_contract.Remark)</td>
                         </tr>
                     </tbody>
