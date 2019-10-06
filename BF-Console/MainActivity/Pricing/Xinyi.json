@@ -35,13 +35,13 @@
             },
             {
                 "priceName": "25堂",
-                "price": "2700",
+                "price": "2800",
                 "desc": "中程規劃。",
                 "promote": "true"
             },
             {
                 "priceName": "50堂",
-                "price": "2400",
+                "price": "2700",
                 "desc": "長程規劃。",
                 "promote": "false"
             }
