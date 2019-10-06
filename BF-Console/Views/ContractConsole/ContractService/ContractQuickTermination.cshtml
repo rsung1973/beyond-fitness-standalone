@@ -50,6 +50,11 @@
                 applicable = false;
                 <span class="col-red"><i class="zmdi zmdi-block"></i>服務申請進行中</span><br />
             }
+            @if (_model.PromptLearnerLessons(models).Any(l => l.LessonAttendance == null))
+            {
+                applicable = false;
+                <span class="col-red"><i class="zmdi zmdi-block"></i>尚有未完成課表！</span>
+            }
         </div>
         <div class="col-4 text-right">
             <a href="javascript:void();">

@@ -22,14 +22,14 @@
                 </li>
             </ul>
         </li>
-        <li>
+        <%--<li>
             <a href="#" title="上稿管理"><i class="fa fa-lg fa-fw fa-edit"></i><span class="menu-item-parent">上稿管理</span></a>
             <ul>
                 <li>
                     <a href="<%= VirtualPathUtility.ToAbsolute("~/Information/Publish") %>"><i class="fa fa-fw fa-puzzle-piece"></i>專業知識</a>
                 </li>
             </ul>
-        </li>
+        </li>--%>
         <li>
             <a href="<%= VirtualPathUtility.ToAbsolute("~/ConsoleHome/Index") %>" target="_blank"><i class="fa fa-lg fa-fw fa-external-link-alt"></i><span class="menu-item-parent">任意門</span></a>
         </li>

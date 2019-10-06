@@ -213,6 +213,27 @@
         $(event.target).after('<span class="list-group-item">已列印</span>').remove();
     }
 
+    function testPrintAllowance(allowanceID, printerIP) {
+        var event = event || window.event;
+        if (!printerIP || printerIP == '') {
+            printerIP = '192.168.1.200';
+        }
+        @if (!String.IsNullOrEmpty(WebHome.Properties.Settings.Default.PrintInvoiceWebAp))
+        {
+            <text>$('<form>').launchDownload('@Html.Raw(WebHome.Properties.Settings.Default.PrintInvoiceWebAp + Url.Action("PrintAllowanceImageByUID", "Invoice",new { _profile.UID,t = DateTime.Now.Ticks }))', { 'allowanceID': allowanceID, 'printerIP': printerIP }, '_blank');</text>
+        }
+        else
+        {
+            <text>$('<form>').launchDownload('@Html.Raw(Url.Action("PrintAllowanceImage", "Invoice",new { t = DateTime.Now.Ticks }))', { 'allowanceID': allowanceID, 'printerIP': printerIP }, '_blank');</text>
+        }
+    }
+
+    function printAllowance(allowanceID, printerIP) {
+        var event = event || window.event;
+        testPrintAllowance(allowanceID, printerIP);
+        $(event.target).after('<span class="list-group-item">已列印</span>').remove();
+    }
+
 
 </script>
 

@@ -50,5 +50,29 @@ namespace WebHome.Helper
                         c => c.CoachID, u => u.UID, (c, u) => c);
         }
 
+        public static IQueryable<UserProfile> PromptLearnerAboutToBirth<TEntity>(this ModelSource<TEntity> models,int days = 14)
+            where TEntity : class, new()
+        {
+            DateTime start = DateTime.Today;
+            DateTime end = DateTime.Today.AddDays(days);
+            int startIdx = start.Month * 100 + start.Day;
+            int endIdx = end.Month * 100 + end.Day;
+            if (startIdx < endIdx)
+            {
+                return models.GetTable<UserProfile>().Where(u => u.Birthday.HasValue
+                            && u.BirthdateIndex >= startIdx
+                                && u.BirthdateIndex <= endIdx);
+            }
+            else
+            {
+                return models.GetTable<UserProfile>().Where(u => u.Birthday.HasValue
+                            && ((u.BirthdateIndex >= startIdx
+                                    && u.BirthdateIndex <= 1231)
+                                || u.BirthdateIndex <= endIdx));
+
+            }
+        }
+
+
     }
 }

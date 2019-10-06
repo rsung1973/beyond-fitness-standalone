@@ -51,6 +51,6 @@
                 AllowanceDateFrom = DateTime.Today.FirstDayOfMonth(),
                 _viewModel.RelatedID,
                 HasAllowance = true
-            })));'>@($"{_model.ExtractPaymentAllowance(models,models.GetTable<InvoiceAllowance>().Where(a=>a.AllowanceDate>=DateTime.Today.FirstDayOfMonth())).Sum(a=>a.TotalAmount) ?? 0:##,###,###,##0}")</a><br />
+            })));'>@($"{_model.ExtractPaymentAllowance(models,models.GetTable<InvoiceAllowance>().Where(a=>a.AllowanceDate>=DateTime.Today.FirstDayOfMonth())).Sum(a=>a.TotalAmount+a.TaxAmount) ?? 0:##,###,###,##0}")</a><br />
 </div>
 

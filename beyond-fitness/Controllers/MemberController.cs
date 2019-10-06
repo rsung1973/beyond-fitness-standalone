@@ -1139,7 +1139,7 @@ namespace WebHome.Controllers
             if (item == null)
             {
                 //ViewBag.Message = "課程資料不存在!!";
-                return View("~/Views/Shared/MessageView.ascx", model: "付款資料錯誤!!");
+                return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: "付款資料錯誤!!");
             }
 
             return View("~/Views/Member/Tuition/Module/TuitionAchievementShare.ascx", item);
@@ -1152,7 +1152,7 @@ namespace WebHome.Controllers
 
             //if (item == null)
             //{
-            //    return View("~/Views/Shared/MessageView.ascx", model: "付款資料不存在!!");
+            //    return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: "付款資料不存在!!");
             //}
 
             //if (!viewModel.ShareAmount.HasValue || viewModel.ShareAmount <= 0)

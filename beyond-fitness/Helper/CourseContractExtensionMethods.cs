@@ -69,7 +69,7 @@ namespace WebHome.Helper
                 where TEntity : class, new()
         {
             return contractItems.Where(c => c.Status == (int)Naming.CourseContractStatus.已終止)
-                .Where(c => c.Subject == "未付款");
+                .Where(c => c.Subject == "已自動終止");
         }
 
 
@@ -251,7 +251,9 @@ namespace WebHome.Helper
         {
             return item.IsContractService()
                         ? ((Naming.ContractServiceStatus)item.Status).ToString()
-                        : ((Naming.ContractQueryStatus)item.Status).ToString();
+                        : item.Status == (int)Naming.ContractQueryStatus.已終止
+                            ? item.Subject ?? ((Naming.ContractQueryStatus)item.Status).ToString()
+                            : ((Naming.ContractQueryStatus)item.Status).ToString();
         }
 
         public static bool IsEditable<TEntity>(this CourseContract item, ModelSource<TEntity> models, UserProfile agent)
@@ -366,7 +368,7 @@ namespace WebHome.Helper
             {
                 item.Status = (int)Naming.CourseContractStatus.已終止;
                 item.ValidTo = checkDate;
-                item.Subject = "未付款";
+                item.Subject = "已自動終止";
             }
             models.SubmitChanges();
         }

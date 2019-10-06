@@ -546,6 +546,27 @@ namespace WebHome.Models.DataEntity
     partial void InsertMerchandiseTransactionType(MerchandiseTransactionType instance);
     partial void UpdateMerchandiseTransactionType(MerchandiseTransactionType instance);
     partial void DeleteMerchandiseTransactionType(MerchandiseTransactionType instance);
+    partial void InsertMonthlyBranchRevenueGoal(MonthlyBranchRevenueGoal instance);
+    partial void UpdateMonthlyBranchRevenueGoal(MonthlyBranchRevenueGoal instance);
+    partial void DeleteMonthlyBranchRevenueGoal(MonthlyBranchRevenueGoal instance);
+    partial void InsertMonthlyRevenueGrade(MonthlyRevenueGrade instance);
+    partial void UpdateMonthlyRevenueGrade(MonthlyRevenueGrade instance);
+    partial void DeleteMonthlyRevenueGrade(MonthlyRevenueGrade instance);
+    partial void InsertMonthlyBranchRevenueIndicator(MonthlyBranchRevenueIndicator instance);
+    partial void UpdateMonthlyBranchRevenueIndicator(MonthlyBranchRevenueIndicator instance);
+    partial void DeleteMonthlyBranchRevenueIndicator(MonthlyBranchRevenueIndicator instance);
+    partial void InsertMonthlyIndicator(MonthlyIndicator instance);
+    partial void UpdateMonthlyIndicator(MonthlyIndicator instance);
+    partial void DeleteMonthlyIndicator(MonthlyIndicator instance);
+    partial void InsertMonthlyBranchIndicator(MonthlyBranchIndicator instance);
+    partial void UpdateMonthlyBranchIndicator(MonthlyBranchIndicator instance);
+    partial void DeleteMonthlyBranchIndicator(MonthlyBranchIndicator instance);
+    partial void InsertMonthlyRevenueIndicator(MonthlyRevenueIndicator instance);
+    partial void UpdateMonthlyRevenueIndicator(MonthlyRevenueIndicator instance);
+    partial void DeleteMonthlyRevenueIndicator(MonthlyRevenueIndicator instance);
+    partial void InsertMonthlyRevenueGoal(MonthlyRevenueGoal instance);
+    partial void UpdateMonthlyRevenueGoal(MonthlyRevenueGoal instance);
+    partial void DeleteMonthlyRevenueGoal(MonthlyRevenueGoal instance);
     #endregion
 		
 		public BFDataContext() : 
@@ -2015,6 +2036,62 @@ namespace WebHome.Models.DataEntity
 			get
 			{
 				return this.GetTable<V_LessonUnitPrice>();
+			}
+		}
+		
+		public System.Data.Linq.Table<MonthlyBranchRevenueGoal> MonthlyBranchRevenueGoal
+		{
+			get
+			{
+				return this.GetTable<MonthlyBranchRevenueGoal>();
+			}
+		}
+		
+		public System.Data.Linq.Table<MonthlyRevenueGrade> MonthlyRevenueGrade
+		{
+			get
+			{
+				return this.GetTable<MonthlyRevenueGrade>();
+			}
+		}
+		
+		public System.Data.Linq.Table<MonthlyBranchRevenueIndicator> MonthlyBranchRevenueIndicator
+		{
+			get
+			{
+				return this.GetTable<MonthlyBranchRevenueIndicator>();
+			}
+		}
+		
+		public System.Data.Linq.Table<MonthlyIndicator> MonthlyIndicator
+		{
+			get
+			{
+				return this.GetTable<MonthlyIndicator>();
+			}
+		}
+		
+		public System.Data.Linq.Table<MonthlyBranchIndicator> MonthlyBranchIndicator
+		{
+			get
+			{
+				return this.GetTable<MonthlyBranchIndicator>();
+			}
+		}
+		
+		public System.Data.Linq.Table<MonthlyRevenueIndicator> MonthlyRevenueIndicator
+		{
+			get
+			{
+				return this.GetTable<MonthlyRevenueIndicator>();
+			}
+		}
+		
+		public System.Data.Linq.Table<MonthlyRevenueGoal> MonthlyRevenueGoal
+		{
+			get
+			{
+				return this.GetTable<MonthlyRevenueGoal>();
 			}
 		}
 		
@@ -23301,6 +23378,10 @@ namespace WebHome.Models.DataEntity
 		
 		private EntitySet<TuitionAchievement> _TuitionAchievement;
 		
+		private EntitySet<MonthlyBranchRevenueIndicator> _MonthlyBranchRevenueIndicator;
+		
+		private EntitySet<MonthlyBranchIndicator> _MonthlyBranchIndicator;
+		
 		private EntityRef<UserProfile> _Manager;
 		
 		private EntityRef<UserProfile> _ViceManager;
@@ -23336,6 +23417,8 @@ namespace WebHome.Models.DataEntity
 			this._CoachMonthlySalaries = new EntitySet<CoachMonthlySalary>(new Action<CoachMonthlySalary>(this.attach_CoachMonthlySalaries), new Action<CoachMonthlySalary>(this.detach_CoachMonthlySalaries));
 			this._LessonTimeSettlements = new EntitySet<LessonTimeSettlement>(new Action<LessonTimeSettlement>(this.attach_LessonTimeSettlements), new Action<LessonTimeSettlement>(this.detach_LessonTimeSettlements));
 			this._TuitionAchievement = new EntitySet<TuitionAchievement>(new Action<TuitionAchievement>(this.attach_TuitionAchievement), new Action<TuitionAchievement>(this.detach_TuitionAchievement));
+			this._MonthlyBranchRevenueIndicator = new EntitySet<MonthlyBranchRevenueIndicator>(new Action<MonthlyBranchRevenueIndicator>(this.attach_MonthlyBranchRevenueIndicator), new Action<MonthlyBranchRevenueIndicator>(this.detach_MonthlyBranchRevenueIndicator));
+			this._MonthlyBranchIndicator = new EntitySet<MonthlyBranchIndicator>(new Action<MonthlyBranchIndicator>(this.attach_MonthlyBranchIndicator), new Action<MonthlyBranchIndicator>(this.detach_MonthlyBranchIndicator));
 			this._Manager = default(EntityRef<UserProfile>);
 			this._ViceManager = default(EntityRef<UserProfile>);
 			this._Organization = default(EntityRef<Organization>);
@@ -23600,6 +23683,32 @@ namespace WebHome.Models.DataEntity
 			set
 			{
 				this._TuitionAchievement.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="BranchStore_MonthlyBranchRevenueIndicator", Storage="_MonthlyBranchRevenueIndicator", ThisKey="BranchID", OtherKey="BranchID")]
+		public EntitySet<MonthlyBranchRevenueIndicator> MonthlyBranchRevenueIndicator
+		{
+			get
+			{
+				return this._MonthlyBranchRevenueIndicator;
+			}
+			set
+			{
+				this._MonthlyBranchRevenueIndicator.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="BranchStore_MonthlyBranchIndicator", Storage="_MonthlyBranchIndicator", ThisKey="BranchID", OtherKey="BranchID")]
+		public EntitySet<MonthlyBranchIndicator> MonthlyBranchIndicator
+		{
+			get
+			{
+				return this._MonthlyBranchIndicator;
+			}
+			set
+			{
+				this._MonthlyBranchIndicator.Assign(value);
 			}
 		}
 		
@@ -23876,6 +23985,30 @@ namespace WebHome.Models.DataEntity
 		}
 		
 		private void detach_TuitionAchievement(TuitionAchievement entity)
+		{
+			this.SendPropertyChanging();
+			entity.BranchStore = null;
+		}
+		
+		private void attach_MonthlyBranchRevenueIndicator(MonthlyBranchRevenueIndicator entity)
+		{
+			this.SendPropertyChanging();
+			entity.BranchStore = this;
+		}
+		
+		private void detach_MonthlyBranchRevenueIndicator(MonthlyBranchRevenueIndicator entity)
+		{
+			this.SendPropertyChanging();
+			entity.BranchStore = null;
+		}
+		
+		private void attach_MonthlyBranchIndicator(MonthlyBranchIndicator entity)
+		{
+			this.SendPropertyChanging();
+			entity.BranchStore = this;
+		}
+		
+		private void detach_MonthlyBranchIndicator(MonthlyBranchIndicator entity)
 		{
 			this.SendPropertyChanging();
 			entity.BranchStore = null;
@@ -52216,6 +52349,1578 @@ namespace WebHome.Models.DataEntity
 				{
 					this._SeriesID = value;
 				}
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="KPI.MonthlyBranchRevenueGoal")]
+	public partial class MonthlyBranchRevenueGoal : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _PeriodID;
+		
+		private int _BranchID;
+		
+		private int _GradeID;
+		
+		private EntityRef<MonthlyBranchRevenueIndicator> _MonthlyBranchRevenueIndicator;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnPeriodIDChanging(int value);
+    partial void OnPeriodIDChanged();
+    partial void OnBranchIDChanging(int value);
+    partial void OnBranchIDChanged();
+    partial void OnGradeIDChanging(int value);
+    partial void OnGradeIDChanged();
+    #endregion
+		
+		public MonthlyBranchRevenueGoal()
+		{
+			this._MonthlyBranchRevenueIndicator = default(EntityRef<MonthlyBranchRevenueIndicator>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PeriodID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int PeriodID
+		{
+			get
+			{
+				return this._PeriodID;
+			}
+			set
+			{
+				if ((this._PeriodID != value))
+				{
+					if (this._MonthlyBranchRevenueIndicator.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnPeriodIDChanging(value);
+					this.SendPropertyChanging();
+					this._PeriodID = value;
+					this.SendPropertyChanged("PeriodID");
+					this.OnPeriodIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BranchID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int BranchID
+		{
+			get
+			{
+				return this._BranchID;
+			}
+			set
+			{
+				if ((this._BranchID != value))
+				{
+					if (this._MonthlyBranchRevenueIndicator.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnBranchIDChanging(value);
+					this.SendPropertyChanging();
+					this._BranchID = value;
+					this.SendPropertyChanged("BranchID");
+					this.OnBranchIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GradeID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int GradeID
+		{
+			get
+			{
+				return this._GradeID;
+			}
+			set
+			{
+				if ((this._GradeID != value))
+				{
+					if (this._MonthlyBranchRevenueIndicator.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnGradeIDChanging(value);
+					this.SendPropertyChanging();
+					this._GradeID = value;
+					this.SendPropertyChanged("GradeID");
+					this.OnGradeIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="MonthlyBranchRevenueIndicator_MonthlyBranchRevenueGoal", Storage="_MonthlyBranchRevenueIndicator", ThisKey="PeriodID,BranchID,GradeID", OtherKey="PeriodID,BranchID,GradeID", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public MonthlyBranchRevenueIndicator MonthlyBranchRevenueIndicator
+		{
+			get
+			{
+				return this._MonthlyBranchRevenueIndicator.Entity;
+			}
+			set
+			{
+				MonthlyBranchRevenueIndicator previousValue = this._MonthlyBranchRevenueIndicator.Entity;
+				if (((previousValue != value) 
+							|| (this._MonthlyBranchRevenueIndicator.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._MonthlyBranchRevenueIndicator.Entity = null;
+						previousValue.MonthlyBranchRevenueGoal = null;
+					}
+					this._MonthlyBranchRevenueIndicator.Entity = value;
+					if ((value != null))
+					{
+						value.MonthlyBranchRevenueGoal = this;
+						this._PeriodID = value.PeriodID;
+						this._BranchID = value.BranchID;
+						this._GradeID = value.GradeID;
+					}
+					else
+					{
+						this._PeriodID = default(int);
+						this._BranchID = default(int);
+						this._GradeID = default(int);
+					}
+					this.SendPropertyChanged("MonthlyBranchRevenueIndicator");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="KPI.MonthlyRevenueGrade")]
+	public partial class MonthlyRevenueGrade : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _GradeID;
+		
+		private int _IndicatorPercentage;
+		
+		private string _Description;
+		
+		private EntitySet<MonthlyBranchRevenueIndicator> _MonthlyBranchRevenueIndicator;
+		
+		private EntitySet<MonthlyRevenueIndicator> _MonthlyRevenueIndicator;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnGradeIDChanging(int value);
+    partial void OnGradeIDChanged();
+    partial void OnIndicatorPercentageChanging(int value);
+    partial void OnIndicatorPercentageChanged();
+    partial void OnDescriptionChanging(string value);
+    partial void OnDescriptionChanged();
+    #endregion
+		
+		public MonthlyRevenueGrade()
+		{
+			this._MonthlyBranchRevenueIndicator = new EntitySet<MonthlyBranchRevenueIndicator>(new Action<MonthlyBranchRevenueIndicator>(this.attach_MonthlyBranchRevenueIndicator), new Action<MonthlyBranchRevenueIndicator>(this.detach_MonthlyBranchRevenueIndicator));
+			this._MonthlyRevenueIndicator = new EntitySet<MonthlyRevenueIndicator>(new Action<MonthlyRevenueIndicator>(this.attach_MonthlyRevenueIndicator), new Action<MonthlyRevenueIndicator>(this.detach_MonthlyRevenueIndicator));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GradeID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int GradeID
+		{
+			get
+			{
+				return this._GradeID;
+			}
+			set
+			{
+				if ((this._GradeID != value))
+				{
+					this.OnGradeIDChanging(value);
+					this.SendPropertyChanging();
+					this._GradeID = value;
+					this.SendPropertyChanged("GradeID");
+					this.OnGradeIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IndicatorPercentage", DbType="Int NOT NULL")]
+		public int IndicatorPercentage
+		{
+			get
+			{
+				return this._IndicatorPercentage;
+			}
+			set
+			{
+				if ((this._IndicatorPercentage != value))
+				{
+					this.OnIndicatorPercentageChanging(value);
+					this.SendPropertyChanging();
+					this._IndicatorPercentage = value;
+					this.SendPropertyChanged("IndicatorPercentage");
+					this.OnIndicatorPercentageChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Description", DbType="NVarChar(16)")]
+		public string Description
+		{
+			get
+			{
+				return this._Description;
+			}
+			set
+			{
+				if ((this._Description != value))
+				{
+					this.OnDescriptionChanging(value);
+					this.SendPropertyChanging();
+					this._Description = value;
+					this.SendPropertyChanged("Description");
+					this.OnDescriptionChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="MonthlyRevenueGrade_MonthlyBranchRevenueIndicator", Storage="_MonthlyBranchRevenueIndicator", ThisKey="GradeID", OtherKey="GradeID")]
+		public EntitySet<MonthlyBranchRevenueIndicator> MonthlyBranchRevenueIndicator
+		{
+			get
+			{
+				return this._MonthlyBranchRevenueIndicator;
+			}
+			set
+			{
+				this._MonthlyBranchRevenueIndicator.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="MonthlyRevenueGrade_MonthlyRevenueIndicator", Storage="_MonthlyRevenueIndicator", ThisKey="GradeID", OtherKey="GradeID")]
+		public EntitySet<MonthlyRevenueIndicator> MonthlyRevenueIndicator
+		{
+			get
+			{
+				return this._MonthlyRevenueIndicator;
+			}
+			set
+			{
+				this._MonthlyRevenueIndicator.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_MonthlyBranchRevenueIndicator(MonthlyBranchRevenueIndicator entity)
+		{
+			this.SendPropertyChanging();
+			entity.MonthlyRevenueGrade = this;
+		}
+		
+		private void detach_MonthlyBranchRevenueIndicator(MonthlyBranchRevenueIndicator entity)
+		{
+			this.SendPropertyChanging();
+			entity.MonthlyRevenueGrade = null;
+		}
+		
+		private void attach_MonthlyRevenueIndicator(MonthlyRevenueIndicator entity)
+		{
+			this.SendPropertyChanging();
+			entity.MonthlyRevenueGrade = this;
+		}
+		
+		private void detach_MonthlyRevenueIndicator(MonthlyRevenueIndicator entity)
+		{
+			this.SendPropertyChanging();
+			entity.MonthlyRevenueGrade = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="KPI.MonthlyBranchRevenueIndicator")]
+	public partial class MonthlyBranchRevenueIndicator : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _PeriodID;
+		
+		private int _BranchID;
+		
+		private int _GradeID;
+		
+		private int _RevenueGoal;
+		
+		private EntityRef<MonthlyBranchRevenueGoal> _MonthlyBranchRevenueGoal;
+		
+		private EntityRef<BranchStore> _BranchStore;
+		
+		private EntityRef<MonthlyRevenueGrade> _MonthlyRevenueGrade;
+		
+		private EntityRef<MonthlyIndicator> _MonthlyIndicator;
+		
+		private EntityRef<MonthlyBranchIndicator> _MonthlyBranchIndicator;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnPeriodIDChanging(int value);
+    partial void OnPeriodIDChanged();
+    partial void OnBranchIDChanging(int value);
+    partial void OnBranchIDChanged();
+    partial void OnGradeIDChanging(int value);
+    partial void OnGradeIDChanged();
+    partial void OnRevenueGoalChanging(int value);
+    partial void OnRevenueGoalChanged();
+    #endregion
+		
+		public MonthlyBranchRevenueIndicator()
+		{
+			this._MonthlyBranchRevenueGoal = default(EntityRef<MonthlyBranchRevenueGoal>);
+			this._BranchStore = default(EntityRef<BranchStore>);
+			this._MonthlyRevenueGrade = default(EntityRef<MonthlyRevenueGrade>);
+			this._MonthlyIndicator = default(EntityRef<MonthlyIndicator>);
+			this._MonthlyBranchIndicator = default(EntityRef<MonthlyBranchIndicator>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PeriodID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int PeriodID
+		{
+			get
+			{
+				return this._PeriodID;
+			}
+			set
+			{
+				if ((this._PeriodID != value))
+				{
+					if ((this._MonthlyIndicator.HasLoadedOrAssignedValue || this._MonthlyBranchIndicator.HasLoadedOrAssignedValue))
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnPeriodIDChanging(value);
+					this.SendPropertyChanging();
+					this._PeriodID = value;
+					this.SendPropertyChanged("PeriodID");
+					this.OnPeriodIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BranchID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int BranchID
+		{
+			get
+			{
+				return this._BranchID;
+			}
+			set
+			{
+				if ((this._BranchID != value))
+				{
+					if ((this._BranchStore.HasLoadedOrAssignedValue || this._MonthlyBranchIndicator.HasLoadedOrAssignedValue))
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnBranchIDChanging(value);
+					this.SendPropertyChanging();
+					this._BranchID = value;
+					this.SendPropertyChanged("BranchID");
+					this.OnBranchIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GradeID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int GradeID
+		{
+			get
+			{
+				return this._GradeID;
+			}
+			set
+			{
+				if ((this._GradeID != value))
+				{
+					if (this._MonthlyRevenueGrade.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnGradeIDChanging(value);
+					this.SendPropertyChanging();
+					this._GradeID = value;
+					this.SendPropertyChanged("GradeID");
+					this.OnGradeIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RevenueGoal", DbType="Int NOT NULL")]
+		public int RevenueGoal
+		{
+			get
+			{
+				return this._RevenueGoal;
+			}
+			set
+			{
+				if ((this._RevenueGoal != value))
+				{
+					this.OnRevenueGoalChanging(value);
+					this.SendPropertyChanging();
+					this._RevenueGoal = value;
+					this.SendPropertyChanged("RevenueGoal");
+					this.OnRevenueGoalChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="MonthlyBranchRevenueIndicator_MonthlyBranchRevenueGoal", Storage="_MonthlyBranchRevenueGoal", ThisKey="PeriodID,BranchID,GradeID", OtherKey="PeriodID,BranchID,GradeID", IsUnique=true, IsForeignKey=false)]
+		public MonthlyBranchRevenueGoal MonthlyBranchRevenueGoal
+		{
+			get
+			{
+				return this._MonthlyBranchRevenueGoal.Entity;
+			}
+			set
+			{
+				MonthlyBranchRevenueGoal previousValue = this._MonthlyBranchRevenueGoal.Entity;
+				if (((previousValue != value) 
+							|| (this._MonthlyBranchRevenueGoal.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._MonthlyBranchRevenueGoal.Entity = null;
+						previousValue.MonthlyBranchRevenueIndicator = null;
+					}
+					this._MonthlyBranchRevenueGoal.Entity = value;
+					if ((value != null))
+					{
+						value.MonthlyBranchRevenueIndicator = this;
+					}
+					this.SendPropertyChanged("MonthlyBranchRevenueGoal");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="BranchStore_MonthlyBranchRevenueIndicator", Storage="_BranchStore", ThisKey="BranchID", OtherKey="BranchID", IsForeignKey=true)]
+		public BranchStore BranchStore
+		{
+			get
+			{
+				return this._BranchStore.Entity;
+			}
+			set
+			{
+				BranchStore previousValue = this._BranchStore.Entity;
+				if (((previousValue != value) 
+							|| (this._BranchStore.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._BranchStore.Entity = null;
+						previousValue.MonthlyBranchRevenueIndicator.Remove(this);
+					}
+					this._BranchStore.Entity = value;
+					if ((value != null))
+					{
+						value.MonthlyBranchRevenueIndicator.Add(this);
+						this._BranchID = value.BranchID;
+					}
+					else
+					{
+						this._BranchID = default(int);
+					}
+					this.SendPropertyChanged("BranchStore");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="MonthlyRevenueGrade_MonthlyBranchRevenueIndicator", Storage="_MonthlyRevenueGrade", ThisKey="GradeID", OtherKey="GradeID", IsForeignKey=true)]
+		public MonthlyRevenueGrade MonthlyRevenueGrade
+		{
+			get
+			{
+				return this._MonthlyRevenueGrade.Entity;
+			}
+			set
+			{
+				MonthlyRevenueGrade previousValue = this._MonthlyRevenueGrade.Entity;
+				if (((previousValue != value) 
+							|| (this._MonthlyRevenueGrade.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._MonthlyRevenueGrade.Entity = null;
+						previousValue.MonthlyBranchRevenueIndicator.Remove(this);
+					}
+					this._MonthlyRevenueGrade.Entity = value;
+					if ((value != null))
+					{
+						value.MonthlyBranchRevenueIndicator.Add(this);
+						this._GradeID = value.GradeID;
+					}
+					else
+					{
+						this._GradeID = default(int);
+					}
+					this.SendPropertyChanged("MonthlyRevenueGrade");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="MonthlyIndicator_MonthlyBranchRevenueIndicator", Storage="_MonthlyIndicator", ThisKey="PeriodID", OtherKey="PeriodID", IsForeignKey=true)]
+		public MonthlyIndicator MonthlyIndicator
+		{
+			get
+			{
+				return this._MonthlyIndicator.Entity;
+			}
+			set
+			{
+				MonthlyIndicator previousValue = this._MonthlyIndicator.Entity;
+				if (((previousValue != value) 
+							|| (this._MonthlyIndicator.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._MonthlyIndicator.Entity = null;
+						previousValue.MonthlyBranchRevenueIndicator.Remove(this);
+					}
+					this._MonthlyIndicator.Entity = value;
+					if ((value != null))
+					{
+						value.MonthlyBranchRevenueIndicator.Add(this);
+						this._PeriodID = value.PeriodID;
+					}
+					else
+					{
+						this._PeriodID = default(int);
+					}
+					this.SendPropertyChanged("MonthlyIndicator");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="MonthlyBranchIndicator_MonthlyBranchRevenueIndicator", Storage="_MonthlyBranchIndicator", ThisKey="PeriodID,BranchID", OtherKey="PeriodID,BranchID", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public MonthlyBranchIndicator MonthlyBranchIndicator
+		{
+			get
+			{
+				return this._MonthlyBranchIndicator.Entity;
+			}
+			set
+			{
+				MonthlyBranchIndicator previousValue = this._MonthlyBranchIndicator.Entity;
+				if (((previousValue != value) 
+							|| (this._MonthlyBranchIndicator.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._MonthlyBranchIndicator.Entity = null;
+						previousValue.MonthlyBranchRevenueIndicator.Remove(this);
+					}
+					this._MonthlyBranchIndicator.Entity = value;
+					if ((value != null))
+					{
+						value.MonthlyBranchRevenueIndicator.Add(this);
+						this._PeriodID = value.PeriodID;
+						this._BranchID = value.BranchID;
+					}
+					else
+					{
+						this._PeriodID = default(int);
+						this._BranchID = default(int);
+					}
+					this.SendPropertyChanged("MonthlyBranchIndicator");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="KPI.MonthlyIndicator")]
+	public partial class MonthlyIndicator : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _PeriodID;
+		
+		private int _Year;
+		
+		private int _Month;
+		
+		private System.DateTime _StartDate;
+		
+		private System.DateTime _EndExclusiveDate;
+		
+		private EntitySet<MonthlyBranchRevenueIndicator> _MonthlyBranchRevenueIndicator;
+		
+		private EntitySet<MonthlyBranchIndicator> _MonthlyBranchIndicator;
+		
+		private EntitySet<MonthlyRevenueIndicator> _MonthlyRevenueIndicator;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnPeriodIDChanging(int value);
+    partial void OnPeriodIDChanged();
+    partial void OnYearChanging(int value);
+    partial void OnYearChanged();
+    partial void OnMonthChanging(int value);
+    partial void OnMonthChanged();
+    partial void OnStartDateChanging(System.DateTime value);
+    partial void OnStartDateChanged();
+    partial void OnEndExclusiveDateChanging(System.DateTime value);
+    partial void OnEndExclusiveDateChanged();
+    #endregion
+		
+		public MonthlyIndicator()
+		{
+			this._MonthlyBranchRevenueIndicator = new EntitySet<MonthlyBranchRevenueIndicator>(new Action<MonthlyBranchRevenueIndicator>(this.attach_MonthlyBranchRevenueIndicator), new Action<MonthlyBranchRevenueIndicator>(this.detach_MonthlyBranchRevenueIndicator));
+			this._MonthlyBranchIndicator = new EntitySet<MonthlyBranchIndicator>(new Action<MonthlyBranchIndicator>(this.attach_MonthlyBranchIndicator), new Action<MonthlyBranchIndicator>(this.detach_MonthlyBranchIndicator));
+			this._MonthlyRevenueIndicator = new EntitySet<MonthlyRevenueIndicator>(new Action<MonthlyRevenueIndicator>(this.attach_MonthlyRevenueIndicator), new Action<MonthlyRevenueIndicator>(this.detach_MonthlyRevenueIndicator));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PeriodID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int PeriodID
+		{
+			get
+			{
+				return this._PeriodID;
+			}
+			set
+			{
+				if ((this._PeriodID != value))
+				{
+					this.OnPeriodIDChanging(value);
+					this.SendPropertyChanging();
+					this._PeriodID = value;
+					this.SendPropertyChanged("PeriodID");
+					this.OnPeriodIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Year", DbType="Int NOT NULL")]
+		public int Year
+		{
+			get
+			{
+				return this._Year;
+			}
+			set
+			{
+				if ((this._Year != value))
+				{
+					this.OnYearChanging(value);
+					this.SendPropertyChanging();
+					this._Year = value;
+					this.SendPropertyChanged("Year");
+					this.OnYearChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Month", DbType="Int NOT NULL")]
+		public int Month
+		{
+			get
+			{
+				return this._Month;
+			}
+			set
+			{
+				if ((this._Month != value))
+				{
+					this.OnMonthChanging(value);
+					this.SendPropertyChanging();
+					this._Month = value;
+					this.SendPropertyChanged("Month");
+					this.OnMonthChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StartDate", DbType="DateTime NOT NULL")]
+		public System.DateTime StartDate
+		{
+			get
+			{
+				return this._StartDate;
+			}
+			set
+			{
+				if ((this._StartDate != value))
+				{
+					this.OnStartDateChanging(value);
+					this.SendPropertyChanging();
+					this._StartDate = value;
+					this.SendPropertyChanged("StartDate");
+					this.OnStartDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EndExclusiveDate", DbType="DateTime NOT NULL")]
+		public System.DateTime EndExclusiveDate
+		{
+			get
+			{
+				return this._EndExclusiveDate;
+			}
+			set
+			{
+				if ((this._EndExclusiveDate != value))
+				{
+					this.OnEndExclusiveDateChanging(value);
+					this.SendPropertyChanging();
+					this._EndExclusiveDate = value;
+					this.SendPropertyChanged("EndExclusiveDate");
+					this.OnEndExclusiveDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="MonthlyIndicator_MonthlyBranchRevenueIndicator", Storage="_MonthlyBranchRevenueIndicator", ThisKey="PeriodID", OtherKey="PeriodID")]
+		public EntitySet<MonthlyBranchRevenueIndicator> MonthlyBranchRevenueIndicator
+		{
+			get
+			{
+				return this._MonthlyBranchRevenueIndicator;
+			}
+			set
+			{
+				this._MonthlyBranchRevenueIndicator.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="MonthlyIndicator_MonthlyBranchIndicator", Storage="_MonthlyBranchIndicator", ThisKey="PeriodID", OtherKey="PeriodID")]
+		public EntitySet<MonthlyBranchIndicator> MonthlyBranchIndicator
+		{
+			get
+			{
+				return this._MonthlyBranchIndicator;
+			}
+			set
+			{
+				this._MonthlyBranchIndicator.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="MonthlyIndicator_MonthlyRevenueIndicator", Storage="_MonthlyRevenueIndicator", ThisKey="PeriodID", OtherKey="PeriodID")]
+		public EntitySet<MonthlyRevenueIndicator> MonthlyRevenueIndicator
+		{
+			get
+			{
+				return this._MonthlyRevenueIndicator;
+			}
+			set
+			{
+				this._MonthlyRevenueIndicator.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_MonthlyBranchRevenueIndicator(MonthlyBranchRevenueIndicator entity)
+		{
+			this.SendPropertyChanging();
+			entity.MonthlyIndicator = this;
+		}
+		
+		private void detach_MonthlyBranchRevenueIndicator(MonthlyBranchRevenueIndicator entity)
+		{
+			this.SendPropertyChanging();
+			entity.MonthlyIndicator = null;
+		}
+		
+		private void attach_MonthlyBranchIndicator(MonthlyBranchIndicator entity)
+		{
+			this.SendPropertyChanging();
+			entity.MonthlyIndicator = this;
+		}
+		
+		private void detach_MonthlyBranchIndicator(MonthlyBranchIndicator entity)
+		{
+			this.SendPropertyChanging();
+			entity.MonthlyIndicator = null;
+		}
+		
+		private void attach_MonthlyRevenueIndicator(MonthlyRevenueIndicator entity)
+		{
+			this.SendPropertyChanging();
+			entity.MonthlyIndicator = this;
+		}
+		
+		private void detach_MonthlyRevenueIndicator(MonthlyRevenueIndicator entity)
+		{
+			this.SendPropertyChanging();
+			entity.MonthlyIndicator = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="KPI.MonthlyBranchIndicator")]
+	public partial class MonthlyBranchIndicator : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _PeriodID;
+		
+		private int _BranchID;
+		
+		private string _RiskPrediction;
+		
+		private string _Strategy;
+		
+		private string _Comment;
+		
+		private EntitySet<MonthlyBranchRevenueIndicator> _MonthlyBranchRevenueIndicator;
+		
+		private EntityRef<BranchStore> _BranchStore;
+		
+		private EntityRef<MonthlyIndicator> _MonthlyIndicator;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnPeriodIDChanging(int value);
+    partial void OnPeriodIDChanged();
+    partial void OnBranchIDChanging(int value);
+    partial void OnBranchIDChanged();
+    partial void OnRiskPredictionChanging(string value);
+    partial void OnRiskPredictionChanged();
+    partial void OnStrategyChanging(string value);
+    partial void OnStrategyChanged();
+    partial void OnCommentChanging(string value);
+    partial void OnCommentChanged();
+    #endregion
+		
+		public MonthlyBranchIndicator()
+		{
+			this._MonthlyBranchRevenueIndicator = new EntitySet<MonthlyBranchRevenueIndicator>(new Action<MonthlyBranchRevenueIndicator>(this.attach_MonthlyBranchRevenueIndicator), new Action<MonthlyBranchRevenueIndicator>(this.detach_MonthlyBranchRevenueIndicator));
+			this._BranchStore = default(EntityRef<BranchStore>);
+			this._MonthlyIndicator = default(EntityRef<MonthlyIndicator>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PeriodID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int PeriodID
+		{
+			get
+			{
+				return this._PeriodID;
+			}
+			set
+			{
+				if ((this._PeriodID != value))
+				{
+					if (this._MonthlyIndicator.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnPeriodIDChanging(value);
+					this.SendPropertyChanging();
+					this._PeriodID = value;
+					this.SendPropertyChanged("PeriodID");
+					this.OnPeriodIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BranchID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int BranchID
+		{
+			get
+			{
+				return this._BranchID;
+			}
+			set
+			{
+				if ((this._BranchID != value))
+				{
+					if (this._BranchStore.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnBranchIDChanging(value);
+					this.SendPropertyChanging();
+					this._BranchID = value;
+					this.SendPropertyChanged("BranchID");
+					this.OnBranchIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RiskPrediction", DbType="NVarChar(MAX)")]
+		public string RiskPrediction
+		{
+			get
+			{
+				return this._RiskPrediction;
+			}
+			set
+			{
+				if ((this._RiskPrediction != value))
+				{
+					this.OnRiskPredictionChanging(value);
+					this.SendPropertyChanging();
+					this._RiskPrediction = value;
+					this.SendPropertyChanged("RiskPrediction");
+					this.OnRiskPredictionChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Strategy", DbType="NVarChar(MAX)")]
+		public string Strategy
+		{
+			get
+			{
+				return this._Strategy;
+			}
+			set
+			{
+				if ((this._Strategy != value))
+				{
+					this.OnStrategyChanging(value);
+					this.SendPropertyChanging();
+					this._Strategy = value;
+					this.SendPropertyChanged("Strategy");
+					this.OnStrategyChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Comment", DbType="NVarChar(MAX)")]
+		public string Comment
+		{
+			get
+			{
+				return this._Comment;
+			}
+			set
+			{
+				if ((this._Comment != value))
+				{
+					this.OnCommentChanging(value);
+					this.SendPropertyChanging();
+					this._Comment = value;
+					this.SendPropertyChanged("Comment");
+					this.OnCommentChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="MonthlyBranchIndicator_MonthlyBranchRevenueIndicator", Storage="_MonthlyBranchRevenueIndicator", ThisKey="PeriodID,BranchID", OtherKey="PeriodID,BranchID")]
+		public EntitySet<MonthlyBranchRevenueIndicator> MonthlyBranchRevenueIndicator
+		{
+			get
+			{
+				return this._MonthlyBranchRevenueIndicator;
+			}
+			set
+			{
+				this._MonthlyBranchRevenueIndicator.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="BranchStore_MonthlyBranchIndicator", Storage="_BranchStore", ThisKey="BranchID", OtherKey="BranchID", IsForeignKey=true)]
+		public BranchStore BranchStore
+		{
+			get
+			{
+				return this._BranchStore.Entity;
+			}
+			set
+			{
+				BranchStore previousValue = this._BranchStore.Entity;
+				if (((previousValue != value) 
+							|| (this._BranchStore.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._BranchStore.Entity = null;
+						previousValue.MonthlyBranchIndicator.Remove(this);
+					}
+					this._BranchStore.Entity = value;
+					if ((value != null))
+					{
+						value.MonthlyBranchIndicator.Add(this);
+						this._BranchID = value.BranchID;
+					}
+					else
+					{
+						this._BranchID = default(int);
+					}
+					this.SendPropertyChanged("BranchStore");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="MonthlyIndicator_MonthlyBranchIndicator", Storage="_MonthlyIndicator", ThisKey="PeriodID", OtherKey="PeriodID", IsForeignKey=true)]
+		public MonthlyIndicator MonthlyIndicator
+		{
+			get
+			{
+				return this._MonthlyIndicator.Entity;
+			}
+			set
+			{
+				MonthlyIndicator previousValue = this._MonthlyIndicator.Entity;
+				if (((previousValue != value) 
+							|| (this._MonthlyIndicator.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._MonthlyIndicator.Entity = null;
+						previousValue.MonthlyBranchIndicator.Remove(this);
+					}
+					this._MonthlyIndicator.Entity = value;
+					if ((value != null))
+					{
+						value.MonthlyBranchIndicator.Add(this);
+						this._PeriodID = value.PeriodID;
+					}
+					else
+					{
+						this._PeriodID = default(int);
+					}
+					this.SendPropertyChanged("MonthlyIndicator");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_MonthlyBranchRevenueIndicator(MonthlyBranchRevenueIndicator entity)
+		{
+			this.SendPropertyChanging();
+			entity.MonthlyBranchIndicator = this;
+		}
+		
+		private void detach_MonthlyBranchRevenueIndicator(MonthlyBranchRevenueIndicator entity)
+		{
+			this.SendPropertyChanging();
+			entity.MonthlyBranchIndicator = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="KPI.MonthlyRevenueIndicator")]
+	public partial class MonthlyRevenueIndicator : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _PeriodID;
+		
+		private int _GradeID;
+		
+		private int _RevenueGoal;
+		
+		private EntityRef<MonthlyRevenueGoal> _MonthlyRevenueGoal;
+		
+		private EntityRef<MonthlyIndicator> _MonthlyIndicator;
+		
+		private EntityRef<MonthlyRevenueGrade> _MonthlyRevenueGrade;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnPeriodIDChanging(int value);
+    partial void OnPeriodIDChanged();
+    partial void OnGradeIDChanging(int value);
+    partial void OnGradeIDChanged();
+    partial void OnRevenueGoalChanging(int value);
+    partial void OnRevenueGoalChanged();
+    #endregion
+		
+		public MonthlyRevenueIndicator()
+		{
+			this._MonthlyRevenueGoal = default(EntityRef<MonthlyRevenueGoal>);
+			this._MonthlyIndicator = default(EntityRef<MonthlyIndicator>);
+			this._MonthlyRevenueGrade = default(EntityRef<MonthlyRevenueGrade>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PeriodID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int PeriodID
+		{
+			get
+			{
+				return this._PeriodID;
+			}
+			set
+			{
+				if ((this._PeriodID != value))
+				{
+					if (this._MonthlyIndicator.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnPeriodIDChanging(value);
+					this.SendPropertyChanging();
+					this._PeriodID = value;
+					this.SendPropertyChanged("PeriodID");
+					this.OnPeriodIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GradeID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int GradeID
+		{
+			get
+			{
+				return this._GradeID;
+			}
+			set
+			{
+				if ((this._GradeID != value))
+				{
+					if (this._MonthlyRevenueGrade.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnGradeIDChanging(value);
+					this.SendPropertyChanging();
+					this._GradeID = value;
+					this.SendPropertyChanged("GradeID");
+					this.OnGradeIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RevenueGoal", DbType="Int NOT NULL")]
+		public int RevenueGoal
+		{
+			get
+			{
+				return this._RevenueGoal;
+			}
+			set
+			{
+				if ((this._RevenueGoal != value))
+				{
+					this.OnRevenueGoalChanging(value);
+					this.SendPropertyChanging();
+					this._RevenueGoal = value;
+					this.SendPropertyChanged("RevenueGoal");
+					this.OnRevenueGoalChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="MonthlyRevenueIndicator_MonthlyRevenueGoal", Storage="_MonthlyRevenueGoal", ThisKey="PeriodID,GradeID", OtherKey="PeriodID,GradeID", IsUnique=true, IsForeignKey=false)]
+		public MonthlyRevenueGoal MonthlyRevenueGoal
+		{
+			get
+			{
+				return this._MonthlyRevenueGoal.Entity;
+			}
+			set
+			{
+				MonthlyRevenueGoal previousValue = this._MonthlyRevenueGoal.Entity;
+				if (((previousValue != value) 
+							|| (this._MonthlyRevenueGoal.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._MonthlyRevenueGoal.Entity = null;
+						previousValue.MonthlyRevenueIndicator = null;
+					}
+					this._MonthlyRevenueGoal.Entity = value;
+					if ((value != null))
+					{
+						value.MonthlyRevenueIndicator = this;
+					}
+					this.SendPropertyChanged("MonthlyRevenueGoal");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="MonthlyIndicator_MonthlyRevenueIndicator", Storage="_MonthlyIndicator", ThisKey="PeriodID", OtherKey="PeriodID", IsForeignKey=true)]
+		public MonthlyIndicator MonthlyIndicator
+		{
+			get
+			{
+				return this._MonthlyIndicator.Entity;
+			}
+			set
+			{
+				MonthlyIndicator previousValue = this._MonthlyIndicator.Entity;
+				if (((previousValue != value) 
+							|| (this._MonthlyIndicator.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._MonthlyIndicator.Entity = null;
+						previousValue.MonthlyRevenueIndicator.Remove(this);
+					}
+					this._MonthlyIndicator.Entity = value;
+					if ((value != null))
+					{
+						value.MonthlyRevenueIndicator.Add(this);
+						this._PeriodID = value.PeriodID;
+					}
+					else
+					{
+						this._PeriodID = default(int);
+					}
+					this.SendPropertyChanged("MonthlyIndicator");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="MonthlyRevenueGrade_MonthlyRevenueIndicator", Storage="_MonthlyRevenueGrade", ThisKey="GradeID", OtherKey="GradeID", IsForeignKey=true)]
+		public MonthlyRevenueGrade MonthlyRevenueGrade
+		{
+			get
+			{
+				return this._MonthlyRevenueGrade.Entity;
+			}
+			set
+			{
+				MonthlyRevenueGrade previousValue = this._MonthlyRevenueGrade.Entity;
+				if (((previousValue != value) 
+							|| (this._MonthlyRevenueGrade.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._MonthlyRevenueGrade.Entity = null;
+						previousValue.MonthlyRevenueIndicator.Remove(this);
+					}
+					this._MonthlyRevenueGrade.Entity = value;
+					if ((value != null))
+					{
+						value.MonthlyRevenueIndicator.Add(this);
+						this._GradeID = value.GradeID;
+					}
+					else
+					{
+						this._GradeID = default(int);
+					}
+					this.SendPropertyChanged("MonthlyRevenueGrade");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="KPI.MonthlyRevenueGoal")]
+	public partial class MonthlyRevenueGoal : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _PeriodID;
+		
+		private int _GradeID;
+		
+		private System.Nullable<decimal> _CustomIndicatorPercentage;
+		
+		private System.Nullable<int> _CustomRevenueGoal;
+		
+		private EntityRef<MonthlyRevenueIndicator> _MonthlyRevenueIndicator;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnPeriodIDChanging(int value);
+    partial void OnPeriodIDChanged();
+    partial void OnGradeIDChanging(int value);
+    partial void OnGradeIDChanged();
+    partial void OnCustomIndicatorPercentageChanging(System.Nullable<decimal> value);
+    partial void OnCustomIndicatorPercentageChanged();
+    partial void OnCustomRevenueGoalChanging(System.Nullable<int> value);
+    partial void OnCustomRevenueGoalChanged();
+    #endregion
+		
+		public MonthlyRevenueGoal()
+		{
+			this._MonthlyRevenueIndicator = default(EntityRef<MonthlyRevenueIndicator>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PeriodID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int PeriodID
+		{
+			get
+			{
+				return this._PeriodID;
+			}
+			set
+			{
+				if ((this._PeriodID != value))
+				{
+					if (this._MonthlyRevenueIndicator.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnPeriodIDChanging(value);
+					this.SendPropertyChanging();
+					this._PeriodID = value;
+					this.SendPropertyChanged("PeriodID");
+					this.OnPeriodIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GradeID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int GradeID
+		{
+			get
+			{
+				return this._GradeID;
+			}
+			set
+			{
+				if ((this._GradeID != value))
+				{
+					if (this._MonthlyRevenueIndicator.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnGradeIDChanging(value);
+					this.SendPropertyChanging();
+					this._GradeID = value;
+					this.SendPropertyChanged("GradeID");
+					this.OnGradeIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CustomIndicatorPercentage", DbType="Decimal(18,2)")]
+		public System.Nullable<decimal> CustomIndicatorPercentage
+		{
+			get
+			{
+				return this._CustomIndicatorPercentage;
+			}
+			set
+			{
+				if ((this._CustomIndicatorPercentage != value))
+				{
+					this.OnCustomIndicatorPercentageChanging(value);
+					this.SendPropertyChanging();
+					this._CustomIndicatorPercentage = value;
+					this.SendPropertyChanged("CustomIndicatorPercentage");
+					this.OnCustomIndicatorPercentageChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CustomRevenueGoal", DbType="Int")]
+		public System.Nullable<int> CustomRevenueGoal
+		{
+			get
+			{
+				return this._CustomRevenueGoal;
+			}
+			set
+			{
+				if ((this._CustomRevenueGoal != value))
+				{
+					this.OnCustomRevenueGoalChanging(value);
+					this.SendPropertyChanging();
+					this._CustomRevenueGoal = value;
+					this.SendPropertyChanged("CustomRevenueGoal");
+					this.OnCustomRevenueGoalChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="MonthlyRevenueIndicator_MonthlyRevenueGoal", Storage="_MonthlyRevenueIndicator", ThisKey="PeriodID,GradeID", OtherKey="PeriodID,GradeID", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public MonthlyRevenueIndicator MonthlyRevenueIndicator
+		{
+			get
+			{
+				return this._MonthlyRevenueIndicator.Entity;
+			}
+			set
+			{
+				MonthlyRevenueIndicator previousValue = this._MonthlyRevenueIndicator.Entity;
+				if (((previousValue != value) 
+							|| (this._MonthlyRevenueIndicator.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._MonthlyRevenueIndicator.Entity = null;
+						previousValue.MonthlyRevenueGoal = null;
+					}
+					this._MonthlyRevenueIndicator.Entity = value;
+					if ((value != null))
+					{
+						value.MonthlyRevenueGoal = this;
+						this._PeriodID = value.PeriodID;
+						this._GradeID = value.GradeID;
+					}
+					else
+					{
+						this._PeriodID = default(int);
+						this._GradeID = default(int);
+					}
+					this.SendPropertyChanged("MonthlyRevenueIndicator");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
 		}
 	}

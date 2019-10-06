@@ -1242,9 +1242,13 @@ namespace WebHome.Helper.BusinessOperation
                     newItem.CourseContractRevision.BySelf = (int?)viewModel.BySelf;
                     newItem.CourseContractRevision.ProcessingFee = viewModel.ProcessingFee;
 
-                    if (profile.IsManager() && viewModel.OperationMode == Naming.OperationMode.快速終止)
+                    if (viewModel.OperationMode == Naming.OperationMode.快速終止)
                     {
-                        newItem.CourseContractRevision.EnableContractAmendment(models, profile, Naming.CourseContractStatus.待確認);
+                        item.Subject = "已快速終止";
+                        if (profile.IsManager())
+                        {
+                            newItem.CourseContractRevision.EnableContractAmendment(models, profile, Naming.CourseContractStatus.待確認);
+                        }
                     }
 
                     break;

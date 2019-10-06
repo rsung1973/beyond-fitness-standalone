@@ -963,6 +963,8 @@
       <Association Name="BranchStore_CoachMonthlySalary" Member="CoachMonthlySalaries" ThisKey="BranchID" OtherKey="WorkPlace" Type="CoachMonthlySalary" />
       <Association Name="BranchStore_LessonTimeSettlement" Member="LessonTimeSettlements" ThisKey="BranchID" OtherKey="CoachWorkPlace" Type="LessonTimeSettlement" />
       <Association Name="BranchStore_TuitionAchievement" Member="TuitionAchievement" ThisKey="BranchID" OtherKey="CoachWorkPlace" Type="TuitionAchievement" />
+      <Association Name="BranchStore_MonthlyBranchRevenueIndicator" Member="MonthlyBranchRevenueIndicator" ThisKey="BranchID" OtherKey="BranchID" Type="MonthlyBranchRevenueIndicator" />
+      <Association Name="BranchStore_MonthlyBranchIndicator" Member="MonthlyBranchIndicator" ThisKey="BranchID" OtherKey="BranchID" Type="MonthlyBranchIndicator" />
       <Association Name="UserProfile_BranchStore" Member="Manager" ThisKey="ManagerID" OtherKey="UID" Type="UserProfile" IsForeignKey="true" />
       <Association Name="UserProfile_BranchStore1" Member="ViceManager" ThisKey="ViceManagerID" OtherKey="UID" Type="UserProfile" IsForeignKey="true" />
       <Association Name="Organization_BranchStore" Member="Organization" ThisKey="BranchID" OtherKey="CompanyID" Type="Organization" IsForeignKey="true" />
@@ -2289,6 +2291,79 @@
       <Column Name="DiscountedPrice" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="DurationInMinutes" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="SeriesID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="KPI.MonthlyBranchRevenueGoal" Member="MonthlyBranchRevenueGoal">
+    <Type Name="MonthlyBranchRevenueGoal">
+      <Column Name="PeriodID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="BranchID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="GradeID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="MonthlyBranchRevenueIndicator_MonthlyBranchRevenueGoal" Member="MonthlyBranchRevenueIndicator" ThisKey="PeriodID,BranchID,GradeID" OtherKey="PeriodID,BranchID,GradeID" Type="MonthlyBranchRevenueIndicator" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="KPI.MonthlyRevenueGrade" Member="MonthlyRevenueGrade">
+    <Type Name="MonthlyRevenueGrade">
+      <Column Name="GradeID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="IndicatorPercentage" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(16)" CanBeNull="true" />
+      <Association Name="MonthlyRevenueGrade_MonthlyBranchRevenueIndicator" Member="MonthlyBranchRevenueIndicator" ThisKey="GradeID" OtherKey="GradeID" Type="MonthlyBranchRevenueIndicator" />
+      <Association Name="MonthlyRevenueGrade_MonthlyRevenueIndicator" Member="MonthlyRevenueIndicator" ThisKey="GradeID" OtherKey="GradeID" Type="MonthlyRevenueIndicator" />
+    </Type>
+  </Table>
+  <Table Name="KPI.MonthlyBranchRevenueIndicator" Member="MonthlyBranchRevenueIndicator">
+    <Type Name="MonthlyBranchRevenueIndicator">
+      <Column Name="PeriodID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="BranchID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="GradeID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="RevenueGoal" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="MonthlyBranchRevenueIndicator_MonthlyBranchRevenueGoal" Member="MonthlyBranchRevenueGoal" ThisKey="PeriodID,BranchID,GradeID" OtherKey="PeriodID,BranchID,GradeID" Type="MonthlyBranchRevenueGoal" Cardinality="One" />
+      <Association Name="BranchStore_MonthlyBranchRevenueIndicator" Member="BranchStore" ThisKey="BranchID" OtherKey="BranchID" Type="BranchStore" IsForeignKey="true" />
+      <Association Name="MonthlyRevenueGrade_MonthlyBranchRevenueIndicator" Member="MonthlyRevenueGrade" ThisKey="GradeID" OtherKey="GradeID" Type="MonthlyRevenueGrade" IsForeignKey="true" />
+      <Association Name="MonthlyIndicator_MonthlyBranchRevenueIndicator" Member="MonthlyIndicator" ThisKey="PeriodID" OtherKey="PeriodID" Type="MonthlyIndicator" IsForeignKey="true" />
+      <Association Name="MonthlyBranchIndicator_MonthlyBranchRevenueIndicator" Member="MonthlyBranchIndicator" ThisKey="PeriodID,BranchID" OtherKey="PeriodID,BranchID" Type="MonthlyBranchIndicator" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="KPI.MonthlyIndicator" Member="MonthlyIndicator">
+    <Type Name="MonthlyIndicator">
+      <Column Name="PeriodID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Year" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Month" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="StartDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="EndExclusiveDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="MonthlyIndicator_MonthlyBranchRevenueIndicator" Member="MonthlyBranchRevenueIndicator" ThisKey="PeriodID" OtherKey="PeriodID" Type="MonthlyBranchRevenueIndicator" />
+      <Association Name="MonthlyIndicator_MonthlyBranchIndicator" Member="MonthlyBranchIndicator" ThisKey="PeriodID" OtherKey="PeriodID" Type="MonthlyBranchIndicator" />
+      <Association Name="MonthlyIndicator_MonthlyRevenueIndicator" Member="MonthlyRevenueIndicator" ThisKey="PeriodID" OtherKey="PeriodID" Type="MonthlyRevenueIndicator" />
+    </Type>
+  </Table>
+  <Table Name="KPI.MonthlyBranchIndicator" Member="MonthlyBranchIndicator">
+    <Type Name="MonthlyBranchIndicator">
+      <Column Name="PeriodID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="BranchID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="RiskPrediction" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Strategy" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Comment" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Association Name="MonthlyBranchIndicator_MonthlyBranchRevenueIndicator" Member="MonthlyBranchRevenueIndicator" ThisKey="PeriodID,BranchID" OtherKey="PeriodID,BranchID" Type="MonthlyBranchRevenueIndicator" />
+      <Association Name="BranchStore_MonthlyBranchIndicator" Member="BranchStore" ThisKey="BranchID" OtherKey="BranchID" Type="BranchStore" IsForeignKey="true" />
+      <Association Name="MonthlyIndicator_MonthlyBranchIndicator" Member="MonthlyIndicator" ThisKey="PeriodID" OtherKey="PeriodID" Type="MonthlyIndicator" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="KPI.MonthlyRevenueIndicator" Member="MonthlyRevenueIndicator">
+    <Type Name="MonthlyRevenueIndicator">
+      <Column Name="PeriodID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="GradeID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="RevenueGoal" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="MonthlyRevenueIndicator_MonthlyRevenueGoal" Member="MonthlyRevenueGoal" ThisKey="PeriodID,GradeID" OtherKey="PeriodID,GradeID" Type="MonthlyRevenueGoal" Cardinality="One" />
+      <Association Name="MonthlyIndicator_MonthlyRevenueIndicator" Member="MonthlyIndicator" ThisKey="PeriodID" OtherKey="PeriodID" Type="MonthlyIndicator" IsForeignKey="true" />
+      <Association Name="MonthlyRevenueGrade_MonthlyRevenueIndicator" Member="MonthlyRevenueGrade" ThisKey="GradeID" OtherKey="GradeID" Type="MonthlyRevenueGrade" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="KPI.MonthlyRevenueGoal" Member="MonthlyRevenueGoal">
+    <Type Name="MonthlyRevenueGoal">
+      <Column Name="PeriodID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="GradeID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CustomIndicatorPercentage" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Column Name="CustomRevenueGoal" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="MonthlyRevenueIndicator_MonthlyRevenueGoal" Member="MonthlyRevenueIndicator" ThisKey="PeriodID,GradeID" OtherKey="PeriodID,GradeID" Type="MonthlyRevenueIndicator" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
   <Function Name="dbo.InquireVacantNo" Method="InquireVacantNo">

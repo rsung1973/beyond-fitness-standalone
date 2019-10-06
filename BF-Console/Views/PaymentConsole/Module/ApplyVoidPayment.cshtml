@@ -55,7 +55,23 @@
         });
 
         $('#@(_viewID) button.finish').on('click', function (event) {
-            commitVoiding();
+            swal({
+                title: "不後悔?",
+                text: "作廢後資料將無法回復!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "確定, 不後悔",
+                cancelButtonText: "不, 點錯了",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            }, function (isConfirm) {
+                if (isConfirm) {
+                    commitVoiding();
+                } else {
+                    swal("取消成功", "你的資料現在非常安全 :)", "error");
+                }
+            });
         });
 
     });

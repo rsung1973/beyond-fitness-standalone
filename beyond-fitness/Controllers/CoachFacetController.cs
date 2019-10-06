@@ -239,7 +239,7 @@ namespace WebHome.Controllers
         {
             var item = models.GetTable<LessonTime>().Where(l => l.LessonID == lessonID).FirstOrDefault();
             if (item == null)
-                return View("~/Views/Shared/MessageView.ascx", model: "課程資料錯誤!!");
+                return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: "課程資料錯誤!!");
             else
                 return View("~/Views/CoachFacet/Module/BookingEventDialog.ascx", item);
         }
@@ -248,7 +248,7 @@ namespace WebHome.Controllers
         {
             var item = models.GetTable<UserEvent>().Where(l => l.EventID == eventID).FirstOrDefault();
             if (item == null)
-                return View("~/Views/Shared/MessageView.ascx", model: "行事曆資料錯誤!!");
+                return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: "行事曆資料錯誤!!");
             else
             {
                 ViewBag.ModeratorID = uid;
@@ -269,11 +269,11 @@ namespace WebHome.Controllers
             LessonTime item = models.GetTable<LessonTime>().Where(l => l.LessonID == viewModel.LessonID).FirstOrDefault();
             if (item == null)
             {
-                return View("~/Views/Shared/MessageView.ascx", model: "課程資料錯誤!!");
+                return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: "課程資料錯誤!!");
             }
             else if(item.ContractTrustTrack.Any(t=>t.SettlementID.HasValue))
             {
-                return View("~/Views/Shared/MessageView.ascx", model: "課程資料已信託，不可取消!!");
+                return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: "課程資料已信託，不可取消!!");
             }
             //else if (item.LessonPlan != null || item.TrainingPlan.Count > 0)
             //{
@@ -282,7 +282,7 @@ namespace WebHome.Controllers
             //}
             item.RevokeBooking(models);
 
-            return View("~/Views/Shared/MessageView.ascx", model: "課程預約已取消!!");
+            return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: "課程預約已取消!!");
 
         }
 
@@ -292,10 +292,10 @@ namespace WebHome.Controllers
             UserEvent item = models.DeleteAny<UserEvent>(l => l.EventID == eventID && l.UID == uid);
             if (item == null)
             {
-                return View("~/Views/Shared/MessageView.ascx", model: "行事曆資料錯誤!!");
+                return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: "行事曆資料錯誤!!");
             }
 
-            return View("~/Views/Shared/MessageView.ascx", model: "行事曆已刪除!!");
+            return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: "行事曆已刪除!!");
 
         }
 
@@ -484,7 +484,15 @@ namespace WebHome.Controllers
             if (coach == null)
             {
                 ViewBag.Message = "未指定體能顧問!!";
-                return View("~/Views/Shared/ViewMessage.ascx");
+                return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml");
+            }
+
+            if (!models.GetTable<CoachWorkplace>()
+                            .Any(c => c.BranchID == viewModel.BranchID
+                                && c.CoachID == viewModel.CoachID)
+                && viewModel.ClassDate.Value < DateTime.Today.AddDays(1))
+            {
+                return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: "此時段不允許跨店預約!!");
             }
 
             RegisterLesson lesson;
@@ -510,7 +518,7 @@ namespace WebHome.Controllers
 
                     if (profileItem == null)
                     {
-                        return View("~/Views/Shared/MessageView.ascx", model: "無法新增體驗學員!!");
+                        return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: "無法新增體驗學員!!");
                     }
                     viewModel.UID = profile.UID;
                 }
@@ -612,7 +620,7 @@ namespace WebHome.Controllers
             {
                 Logger.Error(ex);
                 ViewBag.Message = "預約未完成，請重新預約!!";
-                return View("~/Views/Shared/MessageView.ascx");
+                return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml");
             }
 
             return Json(new { result = true, message = "上課時間預約完成!!" });
@@ -631,17 +639,25 @@ namespace WebHome.Controllers
             LessonTime item = models.GetTable<LessonTime>().Where(l => l.LessonID == viewModel.LessonID).FirstOrDefault();
             if (item == null)
             {
-                return View("~/Views/Shared/MessageView.ascx", model: "修改上課時間資料不存在!!");
+                return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: "修改上課時間資料不存在!!");
             }
 
             if (item.LessonAttendance != null)
             {
-                return View("~/Views/Shared/MessageView.ascx", model: "已完成上課，不可修改!!");
+                return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: "已完成上課，不可修改!!");
             }
 
             if (item.ContractTrustTrack.Any(t => t.SettlementID.HasValue))
             {
-                return View("~/Views/Shared/MessageView.ascx", model: "課程資料已信託，不可修改!!");
+                return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: "課程資料已信託，不可修改!!");
+            }
+
+            if (!item.IsSTSession() && !models.GetTable<CoachWorkplace>()
+                            .Any(c => c.BranchID == item.BranchID
+                                && c.CoachID == item.AttendingCoach)
+                && viewModel.ClassTimeStart.Value < DateTime.Today.AddDays(1))
+            {
+                return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: "此時段不允許跨店預約!!");
             }
 
             LessonTime timeItem = new LessonTime
@@ -661,14 +677,14 @@ namespace WebHome.Controllers
             if (models.GetTable<Settlement>().Any(s=>s.StartDate<=viewModel.ClassTimeStart && s.EndExclusiveDate>viewModel.ClassTimeStart))
             {
                 ViewBag.Message = "修改上課時間(" + String.Format("{0:yyyy/MM/dd}",viewModel.ClassTimeStart) + "已信託結算!!";
-                return View("~/Views/Shared/MessageView.ascx");
+                return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml");
             }
 
             var users = models.CheckOverlappingBooking(timeItem, item);
             if (users.Count() > 0)
             {
                 ViewBag.Message = "學員(" + String.Join("、", users.Select(u => u.RealName)) + ")上課時間重複!!";
-                return View("~/Views/Shared/MessageView.ascx");
+                return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml");
             }
 
             foreach (var regles in item.RegisterLesson.GroupingLesson.RegisterLesson)
@@ -679,7 +695,7 @@ namespace WebHome.Controllers
                     if (timeItem.ClassTime.Value > contract.Expiration.Value.AddDays(1))
                     {
                         ViewBag.Message = "合約尚未生效或已過期!!";
-                        return View("~/Views/Shared/MessageView.ascx");
+                        return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml");
                     }
                 }
                 else
@@ -690,7 +706,7 @@ namespace WebHome.Controllers
                         if (timeItem.ClassTime.Value > entpContract.Expiration.Value.AddDays(1))
                         {
                             ViewBag.Message = "合約尚未生效或已過期!!";
-                            return View("~/Views/Shared/MessageView.ascx");
+                            return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml");
                         }
                     }
                 }
@@ -749,6 +765,12 @@ namespace WebHome.Controllers
             if(item.RegisterLesson.LessonPriceType.Status == (int)Naming.DocumentLevelDefinition.自主訓練)
             {
                 models.ExecuteCommand("update TuitionInstallment set PayoffDate = {0} where RegisterID = {1} ", item.ClassTime, item.RegisterID);
+            }
+
+            if (!item.IsSTSession())
+            {
+                models.ExecuteCommand("delete PreferredLessonTime where LessonID = {0}", item.LessonID);
+                item.ProcessBookingWhenCrossBranch(models);
             }
 
             return Json(new { result = true, message = "上課時間修改完成!!" });
@@ -854,7 +876,7 @@ namespace WebHome.Controllers
             if (model == null)
             {
                 ViewBag.Message = "問卷資料不存在!!";
-                return View("~/Views/Shared/MessageView.ascx");
+                return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml");
             }
 
             return View("~/Views/CoachFacet/Module/LearnerQuestionnaire.ascx", model);
@@ -868,7 +890,7 @@ namespace WebHome.Controllers
             if (model == null)
             {
                 ViewBag.Message = "留言資料不存在!!";
-                return View("~/Views/Shared/MessageView.ascx");
+                return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml");
             }
 
             return View("~/Views/CoachFacet/Module/LessonComments.ascx", model);
@@ -1029,12 +1051,12 @@ namespace WebHome.Controllers
             UserEvent item = models.GetTable<UserEvent>().Where(l => l.EventID == viewModel.EventID).FirstOrDefault();
             if (item == null)
             {
-                return View("~/Views/Shared/MessageView.ascx", model: "修改行事曆資料不存在!!");
+                return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: "修改行事曆資料不存在!!");
             }
 
             if (item.UID != viewModel.UID)
             {
-                return View("~/Views/Shared/MessageView.ascx", model: "原行事曆發起人才可以修改時間!!");
+                return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: "原行事曆發起人才可以修改時間!!");
             }
 
             item.StartDate = viewModel.StartDate.Value;

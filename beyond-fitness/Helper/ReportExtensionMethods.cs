@@ -278,7 +278,7 @@ namespace WebHome.Helper
                 r[8] = branch.BranchName;
                 r[9] = item.Sum(l=>l.EnterpriseListPrice * l.GroupingMemberCount
                         * l.PercentageOfDiscount / 100);
-                r[11] = (int)Naming.LessonPriceStatus.企業合作方案;
+                r[11] = item.FirstOrDefault()?.ELStatus;    //(int)Naming.LessonPriceStatus.企業合作方案;
                 r[12] = coach.WorkPlace();
                 table.Rows.Add(r);
             }
@@ -620,9 +620,8 @@ namespace WebHome.Helper
             var settlementItems = helper.LessonItems;
 
             var paymentItems = models.GetTable<Payment>().Where(p => p.PayoffDate >= settlement.StartDate && p.PayoffDate < settlement.EndExclusiveDate);
-                                    //.FilterByEffective();
-            IQueryable<TuitionAchievement> achievementItems = paymentItems.Join(models.GetTable<TuitionAchievement>(),
-                p => p.PaymentID, t => t.InstallmentID, (p, t) => t);
+            //.FilterByEffective();
+            IQueryable<TuitionAchievement> achievementItems = paymentItems.GetPaymentAchievement(models);
 
             foreach (var coach in coachItems)
             {

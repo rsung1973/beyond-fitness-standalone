@@ -336,7 +336,8 @@ namespace WebHome.Controllers
             }
             if (viewModel.UID.HasValue)
             {
-                learnerLessons = learnerLessons.Where(t => t.AttendingCoach == viewModel.UID);
+                learnerLessons = learnerLessons.Where(t => t.AttendingCoach == viewModel.UID
+                                        || t.RegisterLesson.UID == viewModel.UID);
                 coachPI = coachPI.Where(t => t.RegisterLesson.UID == viewModel.UID);
                 eventItems = eventItems.Where(t => t.UID == viewModel.UID
                     || t.GroupEvent.Any(g => g.UID == viewModel.UID));
@@ -691,6 +692,28 @@ namespace WebHome.Controllers
             return result;
         }
 
+        public ActionResult AchievementOverview(MonthlyIndicatorQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            if (viewModel.KeyID != null)
+            {
+                viewModel.PeriodID = viewModel.DecryptKeyValue();
+            }
+
+            if(!viewModel.Year.HasValue)
+            {
+                viewModel.Year = DateTime.Today.Year;
+                viewModel.Month = DateTime.Today.Month;
+            }
+
+            var item = models.GetTable<MonthlyIndicator>().Where(i => i.PeriodID == viewModel.PeriodID
+                            || (i.Year == viewModel.Year && i.Month == viewModel.Month)).FirstOrDefault();
+
+            ViewBag.DataItem = item;
+
+            var profile = HttpContext.GetUser();
+            return View("~/Views/BusinessConsole/AchievementOverview.cshtml", profile.LoadInstance(models));
+        }
 
     }
 }

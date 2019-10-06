@@ -19,7 +19,7 @@
     UserProfile _profile = Context.GetUser();
     IQueryable<Payment> items = _model.Where(p => p.PayoffDate >= DateTime.Today);
     IQueryable<Payment> voidItems = models.GetTable<VoidPayment>().Where(v => v.VoidDate >= DateTime.Today)
-                                            .Join(items, v => v.VoidID, p => p.PaymentID, (v, p) => p);
+                                            .Join(_model, v => v.VoidID, p => p.PaymentID, (v, p) => p);
 
     int? relatedID = null;
     int? branchID = null;

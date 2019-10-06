@@ -59,6 +59,14 @@
                             }
                         }
                     }
+                    @if (_model.AllowanceID.HasValue)
+                    {
+                        if (_model.InvoiceAllowance.Document.DocumentPrintLog.Count == 0
+                            || _profile.IsAssistant() || _profile.IsManager() || _profile.IsViceManager())
+                        {
+                        <a href="#" onclick="printAllowance(@(_model.AllowanceID),'@(item.Organization.InvoiceSignature)');" class="list-group-item">列印折讓單</a>
+                        }
+                    }
                     @{
                         var testItem = models.GetTable<InvoiceItem>().Where(i => i.InvoiceID == 23417).FirstOrDefault();
                     }

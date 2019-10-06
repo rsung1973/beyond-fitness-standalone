@@ -64,6 +64,7 @@ namespace WebHome.Models.ViewModel
         public int? ProcessingFee { get; set; }
         public bool? UnpaidExpiring { get; set; }
         public bool? Unpaid { get; set; }
+        public String Pdf { get; set; }
 
     }
 
@@ -435,6 +436,14 @@ namespace WebHome.Models.ViewModel
             set => AttachmentID = value;
         }
 
+    }
+
+    public class MonthlyIndicatorQueryViewModel : QueryViewModel
+    {
+        public int? PeriodID { get; set; }
+        public int? Year { get; set; }
+        public int? Month { get; set; }
+        public int? BranchID { get; set; }
     }
 
 }

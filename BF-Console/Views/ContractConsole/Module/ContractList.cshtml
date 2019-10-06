@@ -57,7 +57,9 @@
                 <td>@(item.CourseContractType.TypeName)(@(item.LessonPriceType.DurationInMinutes)分鐘)</td>
                 <td>
                     @(item.CourseContractRevision != null
-                                        ? item.CourseContractRevision.Reason
+                                        ? item.CourseContractRevision.OperationMode.HasValue
+                                            ? ((Naming.OperationMode?)item.CourseContractRevision.OperationMode).ToString()
+                                            : item.CourseContractRevision.Reason
                                         : item.Renewal == true
                                             ? "續約"
                                             : "新約")

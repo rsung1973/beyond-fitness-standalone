@@ -445,7 +445,7 @@ namespace WebHome.Helper
                 //    || t.RegisterLesson.RegisterLessonEnterprise.EnterpriseCourseContent.EnterpriseLessonType.Status != (int)Naming.DocumentLevelDefinition.自主訓練)
                 //.Where(t => t.RegisterLesson.LessonPriceType.Status != (int)Naming.DocumentLevelDefinition.體驗課程)
                 //.Where(t => t.RegisterLesson.LessonPriceType.Status != (int)Naming.DocumentLevelDefinition.點數兌換課程)
-                .Where(t => t.LessonAttendance != null || t.LessonPlan.CommitAttendance.HasValue);
+                .Where(t => t.LessonAttendance != null /*|| t.LessonPlan.CommitAttendance.HasValue*/);
         }
 
         public static IQueryable<LessonTime> FullAchievementLesson(this IQueryable<LessonTime> items)
@@ -678,6 +678,16 @@ namespace WebHome.Helper
                 .Join(models.GetTable<LessonTime>(), g => g.GroupID, l => l.GroupID, (g, l) => l);
         }
 
+        public static IQueryable<LessonTime> PromptLearnerLessons<TEntity>(this CourseContract item, ModelSource<TEntity> models)
+            where TEntity : class, new()
+        {
+            return models.GetTable<RegisterLesson>()
+                .Join(models.GetTable<RegisterLessonContract>().Where(c => c.ContractID == item.ContractID),
+                    r => r.RegisterID, c => c.RegisterID, (r, c) => r)
+                .Join(models.GetTable<GroupingLesson>(), r => r.RegisterGroupID, g => g.GroupID, (r, g) => g)
+                .Join(models.GetTable<LessonTime>(), g => g.GroupID, l => l.GroupID, (g, l) => l);
+        }
+
         public static IQueryable<LessonTime> PromptCoachPILessons<TEntity>(this int learnerID, ModelSource<TEntity> models)
             where TEntity : class, new()
         {
@@ -745,7 +755,7 @@ namespace WebHome.Helper
             where TEntity : class, new()
         {
             return models.GetTable<LessonTime>()
-                    .Where(l => l.LessonAttendance == null)
+                    //.Where(l => l.LessonAttendance == null)
                     .Join(models.GetTable<BranchStore>().Where(b => b.ManagerID == manager.UID || b.ViceManagerID == manager.UID),
                         l => l.BranchID, b => b.BranchID, (l, b) => l)
                     .Join(models.GetTable<PreferredLessonTime>().Where(p => !p.ApprovalDate.HasValue),

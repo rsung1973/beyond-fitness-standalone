@@ -1454,7 +1454,7 @@ namespace WebHome.Helper
             if (agent.IsManager())
             {
                 items = items.Join(models.FilterByBranchStoreManager(models.GetTable<CourseContract>(), agent),
-                    r => r.OriginalContract, c => c.ContractID, (r, c) => r);
+                    r => r.RevisionID, c => c.ContractID, (r, c) => r);
             }
             else if (agent.IsViceManager())
             {

@@ -77,7 +77,15 @@ namespace WebHome.Controllers
             if (!this.ModelState.IsValid)
             {
                 ViewBag.ModelState = this.ModelState;
-                return View("~/Views/Shared/ReportInputError.ascx");
+                return View(Properties.Settings.Default.ReportInputError);
+            }
+
+            if (!models.GetTable<CoachWorkplace>()
+                            .Any(c => c.BranchID == viewModel.BranchID
+                                && c.CoachID == viewModel.CoachID)
+                && viewModel.ClassDate.Value < DateTime.Today.AddDays(1))
+            {
+                return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: "此時段不允許跨店預約!!");
             }
 
             LessonTime timeItem = new LessonTime
@@ -187,7 +195,7 @@ namespace WebHome.Controllers
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                return View("~/Views/Shared/MessageView.ascx", model: "預約未完成，請重新預約!!");
+                return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: "預約未完成，請重新預約!!");
             }
 
             return Json(new { result = true, message = "上課時間預約完成!!" });

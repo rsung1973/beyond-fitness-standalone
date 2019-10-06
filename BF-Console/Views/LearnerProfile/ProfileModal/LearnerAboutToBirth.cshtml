@@ -1,0 +1,51 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    IQueryable<UserProfile> _model;
+    String _dialogID = $"birth{DateTime.Now.Ticks}";
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = (IQueryable<UserProfile>)this.Model;
+}
+<div class="modal modal-large fade" id="@(_dialogID)" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a class="closebutton" data-dismiss="modal"></a>
+            </div>
+            <div class="modal-body">
+                <ul class="new_friend_list list-unstyled row">
+                    @foreach (var item in _model.ToArray()
+                        .OrderBy(u=>u.Birthday.Value.Month).ThenBy(u=>u.Birthday.Value.Day))
+                    {
+                        <li class="col-lg-2 col-md-2 col-sm-3 col-6">
+                            <a href="javascript:$('').launchDownload('@Html.Raw(Url.Action("LearnerProfile","ConsoleHome"))', { 'keyID': '@(item.UID.EncryptKey())' });">
+                                @{
+                                    ViewBag.ProfileClass = "img-thumbnail popfit";
+                                    Html.RenderPartial("~/Views/Common/ProfileImage.cshtml", item);
+                                }
+                                <h6 class="users_name">@Html.Raw(item.FullNameHtml())</h6>
+                                <small class="@($"join_date {(item.Birthday.Value.Month == DateTime.Today.Month && item.Birthday.Value.Day == DateTime.Today.Day ? "col-red" : null )}")">@($"{item.Birthday:MM/dd}")</small>
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+    @{ Html.RenderPartial("~/Views/ConsoleHome/Shared/BSModalScript.cshtml", model: _dialogID);}
+
+    <script></script>
+</div>
+

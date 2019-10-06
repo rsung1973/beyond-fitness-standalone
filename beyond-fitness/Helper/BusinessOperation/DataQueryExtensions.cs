@@ -218,6 +218,12 @@ namespace WebHome.Helper.BusinessOperation
                 items = items.FilterByUnpaidContract(models);
             }
 
+            viewModel.Subject = viewModel.Subject.GetEfficientString();
+            if(viewModel.Subject!=null)
+            {
+                items = items.Where(c => c.Subject == viewModel.Subject);
+            }
+
             if (hasConditon)
             {
 
@@ -844,7 +850,8 @@ namespace WebHome.Helper.BusinessOperation
                 }
                 else
                 {
-                    result = result.Where(t => !shareItems.Any(s => s.InstallmentID == t.PaymentID));
+                    //result = result.Where(t => !shareItems.Any(s => s.InstallmentID == t.PaymentID));
+                    result = result.Where(t => !t.TuitionAchievement.Any() || t.TuitionAchievement.Sum(a => a.ShareAmount) < t.PayoffAmount);
                 }
             }
 

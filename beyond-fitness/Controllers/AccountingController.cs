@@ -1244,8 +1244,7 @@ namespace WebHome.Controllers
 
             IQueryable<Payment> paymentItems = viewModel.InquirePayment(this, out string alertMessage);
                                                     //.FilterByEffective();
-            IQueryable<TuitionAchievement> achievementItems = paymentItems.Join(models.GetTable<TuitionAchievement>(),
-                        p => p.PaymentID, t => t.InstallmentID, (p, t) => t);
+            IQueryable<TuitionAchievement> achievementItems = paymentItems.GetPaymentAchievement(models);
 
             if(viewModel.CoachID.HasValue)
             {

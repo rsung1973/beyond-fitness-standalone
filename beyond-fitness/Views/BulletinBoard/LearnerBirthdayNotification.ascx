@@ -55,10 +55,7 @@
         models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
         _lessonDate = DateTime.Today;   //(DateTime?)this.Model;
 
-        _items = models.GetTable<UserProfile>().Where(u => u.Birthday.HasValue
-                && u.Birthday.Value.DayOfYear >= _lessonDate.Value.DayOfYear
-                && u.Birthday.Value.DayOfYear <= _lessonDate.Value.AddDays(7).DayOfYear)
-            .OrderByDescending(u => u.Birthday.Value.DayOfYear);
+        _items = models.PromptLearnerAboutToBirth();
 
     }
 

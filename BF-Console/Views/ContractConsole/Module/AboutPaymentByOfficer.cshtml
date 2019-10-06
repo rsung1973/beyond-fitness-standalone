@@ -32,14 +32,14 @@
                 @{ DateTime dateFrom = DateTime.Today.FirstDayOfMonth();
                     DateTime dateTo = dateFrom.AddMonths(1);
                     var items = toPay.Where(c => !c.PayoffDue.HasValue
-                                    || (c.PayoffDue >= dateFrom && c.PayoffDue < dateTo));}
+                                    || (/*c.PayoffDue >= dateFrom &&*/ c.PayoffDue < dateTo));}
 
                 @($"{dateFrom:yyyy/MM}")：<a href="#" onclick='showContractList(@Html.Raw(JsonConvert.SerializeObject(
                                 new
                                 {
                                     ContractQueryMode = Naming.ContractServiceMode.ContractOnly,
                                     PayoffMode = Naming.ContractPayoffMode.Unpaid,
-                                    PayoffDueFrom = dateFrom,
+                                    //PayoffDueFrom = dateFrom,
                                     PayoffDueTo = dateTo,
                                     IncludeTotalUnpaid = true,
                                 })),@(items.Count()));'>@(items.Count())</a>
