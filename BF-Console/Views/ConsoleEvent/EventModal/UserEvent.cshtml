@@ -21,35 +21,36 @@
     _profile = Context.GetUser();
 }
 <div class="modal fade" id="@(_dialogID)" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <a class="closebutton" data-dismiss="modal"></a>
             </div>
             <div class="modal-body">
-                <div class="card">
+                <div class="card xl-slategray">
                     <div class="header">
-                        <h2>@(_model.Title)：@(_model.ActivityProgram)</h2>
-                        <p>
-                            @if ((_model.EndDate - _model.StartDate).TotalDays >= 1)
-                            {
-                                <text>@(_model.StartDate.ToString("yyyy/MM/dd"))~@(_model.EndDate.ToString("yyyy/MM/dd"))</text>
-                            }
-                            else
-                            {
-                                <text>@(_model.StartDate.ToString("yyyy/MM/dd HH:mm"))~@(_model.EndDate.ToString("HH:mm"))</text>
-                            }
-                    </p>
+                        <h2>@(_model.Title == null ? _model.ActivityProgram : $"{_model.Title}：{_model.ActivityProgram}")
+                            <small>
+                                @if ((_model.EndDate - _model.StartDate).TotalDays >= 1)
+                                {
+                                    <text>@(_model.StartDate.ToString("yyyy/MM/dd"))~@(_model.EndDate.ToString("yyyy/MM/dd"))</text>
+                                }
+                                else
+                                {
+                                    <text>@(_model.StartDate.ToString("yyyy/MM/dd HH:mm"))~@(_model.EndDate.ToString("HH:mm"))</text>
+                                }
+                            </small>
+                        </h2>
                 </div>
                 <div class="body">
-                    @if (_model.GroupEvent.Count > 1)
+                    @if (_model.GroupEvent.Count >= 1)
                     {
                         <ul class="list-unstyled team-info margin-0">
                             @foreach (var r in _model.GroupEvent)
                             {
                             <li>
                                 @{
-                                    ViewBag.ProfileClass = "popfit";
+                                    ViewBag.ProfileClass = "large popfit";
                                     Html.RenderPartial("~/Views/Common/ProfileImage.cshtml", r.UserProfile);
                                 }
                             </li>

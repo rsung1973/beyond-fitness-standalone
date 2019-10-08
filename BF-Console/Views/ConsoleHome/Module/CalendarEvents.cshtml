@@ -73,10 +73,10 @@
             _result.Add(new CalendarEvent
             {
                 id = "my" + g.EventID,
-                title = g.Title ?? g.ActivityProgram,
+                title = g.Title == null || g.Title == "其他" ? g.ActivityProgram : g.Title,
                 start = String.Format("{0:O}", g.StartDate),
                 end = String.Format("{0:O}", g.EndDate),
-                description = g.Title == null ? "" : g.ActivityProgram,
+                description = g.Title == null || g.Title == "其他" ? "" : g.ActivityProgram,
                 keyID = g.EventID.EncryptKey(),
                 allDay = false,
                 editable = g.UID == _userProfile.UID,
