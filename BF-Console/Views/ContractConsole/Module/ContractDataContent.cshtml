@@ -116,6 +116,14 @@
 <li>
     <div class="list_tb tb2">
         <div class="list_tr">
+            <div class="list_td hd">應收款期限</div>
+            <div class="list_td rt col-red">@($"{_model.PayoffDue:yyyy/MM/dd}")</div>
+        </div>
+    </div>
+</li>
+<li>
+    <div class="list_tb tb2">
+        <div class="list_tr">
             <div class="list_td hd">付款方式</div>
             <div class="list_td rt">
                 @if (_model.CourseContractExtension?.PaymentMethod != null)

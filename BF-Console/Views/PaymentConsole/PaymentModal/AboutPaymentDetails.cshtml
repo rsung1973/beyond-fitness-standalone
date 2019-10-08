@@ -142,7 +142,7 @@
                                 <div class="panel-heading" role="tab" id="headingInvoice">
                                     <h4 class="panel-title">
                                         <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordionDetail_payment" href="#collapseDetail_Invoice" aria-expanded="false" aria-controls="collapseDetail_Invoice">
-                                            <i class="material-icons">subject</i> 發票詳細資訊
+                                            <i class="material-icons">subject</i> 發票詳細資訊<small></small>
                                             @if (voidItem == null)
                                             {
                                                 <span class="badge bg-green">已開立</span>
@@ -163,6 +163,18 @@
                                         <div class="row">
                                             <div class="col-md-6 col-sm-6 col-12">
                                                 <ul class="mb_list xl-aliceblue">
+                                                    <li>
+                                                        <div class="list_tb tb2">
+                                                            <div class="list_tr">
+                                                                <div class="list_td hd">發票號碼</div>
+                                                                <div class="list_td rt">
+                                                                    @if (invoice.InvoiceID != null) {
+                                                                        <text>@(invoice.TrackCode)@(invoice.No)</text>
+                                                                    }
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </li>
                                                     <li>
                                                         <div class="list_tb tb2">
                                                             <div class="list_tr">
@@ -315,7 +327,7 @@
                                                     Html.RenderPartial("~/Views/ContractConsole/Module/ContractDataContent.cshtml", contract);
                                                 }
                                             </ul>
-                                            <ul class="mb_colsble open">
+                                            @*<ul class="mb_colsble open">
                                                 <li class="tit">更多資訊</li>
                                                 <li>
                                                     <ul class="mb_list xl-khaki">
@@ -324,11 +336,11 @@
                                                         }
                                                     </ul>
                                                 </li>
-                                            </ul>
+                                            </ul>*@
                                         </div>
                                     </div>
-                                </div>
-                            }
+                                </div>                                
+                              }
                         </div>
                     </div>
                 </div>

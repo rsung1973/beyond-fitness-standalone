@@ -64,7 +64,12 @@
     <div class="container-fluid">
         <div class="card widget_3">
             <div class="header">
-                <h2><strong>@(_item.ContractOwner.RealName)</strong> @(_item.ContractName()) <span class="badge bg-blue"><i class="zmdi zmdi-pin"></i>&nbsp;&nbsp;@(_item.CourseContractExtension.BranchStore.BranchName)</span> <a href="javascript:$global.showContractDetails('@(_item.ContractID.EncryptKey())');" class="btn btn-simple btn-info btn-round btn-sm float-right">更多資訊</a></h2>
+                <h2><strong>@(_item.ContractOwner.RealName)</strong> @(_item.ContractName())
+                    @{
+                        Html.RenderPartial("~/Views/Common/BranchStoreName.cshtml", _item.CourseContractExtension.BranchStore);
+                    }
+                    <a href="javascript:$global.showContractDetails('@(_item.ContractID.EncryptKey())');" class="btn btn-simple btn-info btn-round btn-sm float-right">更多資訊</a>
+                </h2>
                 @{ Html.RenderPartial("~/Views/ContractConsole/Indication/ContractDetails.cshtml", _item);}
 
             </div>
