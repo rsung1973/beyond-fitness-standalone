@@ -46,7 +46,7 @@
                             .Where(t => t.PDQQuestion.QuestionNo <= 10))
                         {
                             <li class="left float-left">
-                                <img src="images/avatar/noname.png" class="rounded-circle">
+                                <img src="images/avatar/noname-2.jpg" class="rounded-circle">
                                 <div class="chat-info smallpadding">
                                     <span class="message">
                                         @Html.Raw(item.PDQQuestion.Question)
@@ -85,7 +85,7 @@
                     @if (tasks.Count() > 0)
                     {
                         <li class="left float-left">
-                            <img src="images/avatar/noname.png" class="rounded-circle">
+                            <img src="images/avatar/noname-2.jpg" class="rounded-circle">
                             <div class="chat-info smallpadding">
                                 <span class="message">
                                     希望增加訓練時間的百分比
@@ -128,7 +128,7 @@
 @helper buildItem(PDQTask item, UserProfile learner)
 {
     <li class="left float-left">
-        <img src="images/avatar/noname.png" class="rounded-circle">
+        <img src="images/avatar/noname-2.jpg" class="rounded-circle">
         <div class="chat-info smallpadding">
             <span class="message">
                 @Html.Raw(item.PDQQuestion.Question)

@@ -104,7 +104,7 @@
                                                             <h4>Hi，@(_learner.Nickname)您好</h4>
                                                             <p>
                                                                 恭喜您持之以恆的完成了12堂訓練課程，為了讓您未來在更安全的環境中進行有效的訓練<br />
-                                                                阿呆將與您進行以下的對談，雖然會花費您5分鐘的時間，但是阿呆在過程中可替您規劃出更適合的訓練內容喔！
+                                                                Beyond精靈將與您進行以下的對談，雖然會花費您5分鐘的時間，但是在過程中可替您規劃出更適合的訓練內容喔！
                                                             </p>
                                                             <p class="text-center p-t-10">
                                                                 <a href="javascript:startEditingCharacter();">
@@ -114,9 +114,12 @@
                                                             </p>
                                                         </div>
                                                         <div class="testimonial-desc">
-                                                            <img class="media-object rounded-circle shadow" src="images/avatar/noname.png">
+                                                            @{
+                                                                ViewBag.ProfileClass = "media-object rounded-circle shadow";
+                                                                Html.RenderPartial("~/Views/Common/ProfileImage.cshtml", _model);
+                                                            }
                                                             <div class="testimonial-writer">
-                                                                <h6>阿呆</h6>
+                                                                <h6>@(_model.UserName)</h6>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -129,7 +132,7 @@
                                                 <div class="cwidget-scroll">
                                                     <ul class="chat-widget m-r-5 clearfix">
                                                         <li class="left float-left step10">
-                                                            <img src="images/avatar/noname.png" class="rounded-circle">
+                                                            <img src="images/avatar/noname-2.jpg" class="rounded-circle">
                                                             <div class="chat-info">
                                                                 <span class="message">Hello, @(_learner.Nickname)<br>為保障您運動時的安全，請您務必詳閱，並於確實閱讀瞭解後簽名。</span>
                                                             </div>
@@ -149,7 +152,7 @@
                                                             var pdqItems = models.GetTable<PDQQuestion>().Where(p => p.GroupID == 10).ToArray();
                                                         }
                                                         <li class="left float-left step11">
-                                                            <img src="images/avatar/noname.png" class="rounded-circle">
+                                                            <img src="images/avatar/noname-2.jpg" class="rounded-circle">
                                                             <div class="chat-info">
                                                                 @{  Html.RenderPartial("~/Views/LearnerProfile/Module/PDQItem.cshtml", pdqItems[0]);   }
                                                             </div>
@@ -167,7 +170,7 @@
                                                             </div>
                                                         </li>
                                                         <li class="left float-left step12">
-                                                            <img src="images/avatar/noname.png" class="rounded-circle">
+                                                            <img src="images/avatar/noname-2.jpg" class="rounded-circle">
                                                             <div class="chat-info">
                                                                 @{ Html.RenderPartial("~/Views/LearnerProfile/Module/PDQItem.cshtml", pdqItems[1]); }
                                                             </div>
@@ -185,7 +188,7 @@
                                                             </div>
                                                         </li>
                                                         <li class="left float-left step13">
-                                                            <img src="images/avatar/noname.png" class="rounded-circle">
+                                                            <img src="images/avatar/noname-2.jpg" class="rounded-circle">
                                                             <div class="chat-info">
                                                                 @{ Html.RenderPartial("~/Views/LearnerProfile/Module/PDQItem.cshtml", pdqItems[2]); }
                                                             </div>
@@ -203,7 +206,7 @@
                                                             </div>
                                                         </li>
                                                         <li class="left float-left step14">
-                                                            <img src="images/avatar/noname.png" class="rounded-circle">
+                                                            <img src="images/avatar/noname-2.jpg" class="rounded-circle">
                                                             <div class="chat-info">
                                                                 @{ Html.RenderPartial("~/Views/LearnerProfile/Module/PDQItem.cshtml", pdqItems[3]); }
                                                             </div>
@@ -231,7 +234,7 @@
                                                 <div class="cwidget-scroll">
                                                     <ul class="chat-widget m-r-5 clearfix">
                                                         <li class="left float-left step20">
-                                                            <img src="images/avatar/noname.png" class="rounded-circle">
+                                                            <img src="images/avatar/noname-2.jpg" class="rounded-circle">
                                                             <div class="chat-info">
                                                                 <span class="message">Hello, @(_learner.Nickname)<br>為了幫助您未來的上課內容更貼近您的預期目標，阿呆會認真傾聽您的內心話喔。</span>
                                                             </div>
@@ -249,7 +252,7 @@
                                                             </div>
                                                         </li>
                                                         <li class="left float-left step21">
-                                                            <img src="images/avatar/noname.png" class="rounded-circle">
+                                                            <img src="images/avatar/noname-2.jpg" class="rounded-circle">
                                                             <div class="chat-info">
                                                                 @{
                                                                     ViewBag.GroupQuestion = true;
@@ -321,7 +324,7 @@
                                                             ViewBag.GroupQuestion = null;
                                                         }
                                                         <li class="left float-left step22">
-                                                            <img src="images/avatar/noname.png" class="rounded-circle">
+                                                            <img src="images/avatar/noname-2.jpg" class="rounded-circle">
                                                             <div class="chat-info">
                                                                 @{ Html.RenderPartial("~/Views/LearnerProfile/Module/PDQItem.cshtml", pdqItems[9]); }
                                                             </div>
@@ -338,7 +341,7 @@
                                                             </div>
                                                         </li>
                                                         <li class="left float-left step23">
-                                                            <img src="images/avatar/noname.png" class="rounded-circle">
+                                                            <img src="images/avatar/noname-2.jpg" class="rounded-circle">
                                                             <div class="chat-info">
                                                                 @{ Html.RenderPartial("~/Views/LearnerProfile/Module/PDQItem.cshtml", pdqItems[10]); }
                                                             </div>
@@ -355,7 +358,7 @@
                                                             </div>
                                                         </li>
                                                         <li class="left float-left step24">
-                                                            <img src="images/avatar/noname.png" class="rounded-circle">
+                                                            <img src="images/avatar/noname-2.jpg" class="rounded-circle">
                                                             <div class="chat-info">
                                                                 @{ Html.RenderPartial("~/Views/LearnerProfile/Module/PDQItem.cshtml", pdqItems[11]); }
                                                             </div>
