@@ -118,6 +118,7 @@ namespace WebHome.Controllers
                 RealName = viewModel.RealName,
                 Phone = viewModel.Phone,
                 Birthday = viewModel.Birthday,
+                CreateTime = DateTime.Now,
                 UserProfileExtension = new UserProfileExtension
                 {
                     Gender = viewModel.Gender,
@@ -192,6 +193,7 @@ namespace WebHome.Controllers
                 RealName = viewModel.RealName,
                 Phone = viewModel.Phone,
                 Birthday = viewModel.Birthday,
+                CreateTime = DateTime.Now,
                 UserProfileExtension = new UserProfileExtension { }
             };
 
@@ -257,6 +259,7 @@ namespace WebHome.Controllers
                     MemberCode = memberCode,
                     LevelID = (int)Naming.MemberStatusDefinition.ReadyToRegister,
                     Birthday = viewModel.Birthday,
+                    CreateTime = DateTime.Now,
                     UserProfileExtension = new UserProfileExtension { }
                 };
 

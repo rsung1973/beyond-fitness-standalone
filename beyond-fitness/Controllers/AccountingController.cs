@@ -1229,7 +1229,7 @@ namespace WebHome.Controllers
         class _AchievementGroupItem
         {
             public int? CoachID { get; set; }
-            public IGrouping<int?, LessonTime> LessonGroup { get; set; }
+            public IGrouping<int?, V_Tuition> LessonGroup { get; set; }
             public IGrouping<int, TuitionAchievement> AchievementGroup { get; set; }
         }
 
@@ -1776,7 +1776,7 @@ namespace WebHome.Controllers
         public ActionResult CreateFullAchievementXlsx(AchievementQueryViewModel viewModel)
         {
             ViewResult result = (ViewResult)InquireAchievement(viewModel);
-            IQueryable<LessonTime> items = (IQueryable<LessonTime>)result.Model;
+            IQueryable<V_Tuition> items = (IQueryable<V_Tuition>)result.Model;
 
             var lessonDetails = items.GroupBy(t => t.AttendingCoach);
 
@@ -1824,7 +1824,8 @@ namespace WebHome.Controllers
                 if (g.LessonGroup != null)
                 {
                     var item = g.LessonGroup;
-                    var lesson = item.First();
+                    int lessonID = item.First().LessonID;
+                    var lesson = models.GetTable<LessonTime>().Where(l => l.LessonID == lessonID).First();
                     r[1] = item.Count() - (decimal)(item.LearnerPILesson().Count()) / 2m;
                     var lessons = item.ExclusivePILesson();
                     r[2] = models.CalcAchievement(lessons, out int shares);
@@ -1869,10 +1870,13 @@ namespace WebHome.Controllers
 
         public ActionResult CreateAchievementSummaryXlsx(AchievementQueryViewModel viewModel)
         {
-            var detailsTable = createAchievementDetailsXlsx(viewModel, out IQueryable<LessonTime> items);
+            var detailsTable = createAchievementDetailsXlsx(viewModel, out IQueryable<V_Tuition> items);
             detailsTable.TableName = $"{viewModel.AchievementDateFrom:yyyyMM} 上課明細";
 
-            var tableItems = detailsTable.Rows.Cast<DataRow>();
+            var tableItems = detailsTable.Rows.Cast<DataRow>()
+                                .Where(l => !l.IsNull(14))
+                                .Where(l => (int)l[6] > 0
+                                    || ((int)l[7] > 0 && !l[11].Equals((int)Naming.LessonPriceStatus.體驗課程)));
             foreach (var item in tableItems
                                     .Where(l => l[11].Equals((int)Naming.LessonPriceStatus.員工福利課程)
                                         || l[11].Equals((int)Naming.LessonPriceStatus.點數兌換課程)))
@@ -1883,8 +1887,8 @@ namespace WebHome.Controllers
             int?[] PTSessionScope = new int?[]
             {
                     (int)Naming.LessonPriceStatus.一般課程,
-                    (int)Naming.LessonPriceStatus.企業合作方案,
-                    (int)Naming.LessonPriceStatus.已刪除
+                    (int)Naming.LessonPriceStatus.已刪除,
+                    (int)Naming.LessonPriceStatus.團體學員課程,
             };
 
             DataTable buildBranchDetails()
@@ -1900,32 +1904,33 @@ namespace WebHome.Controllers
                 table.Columns.Add(new DataColumn("P.I上課總數", typeof(int)));
                 //table.Columns.Add(new DataColumn("P.I計上課金額", typeof(int)));
 
-
                 DataRow r;
 
                 foreach (var branch in models.GetTable<BranchStore>())
                 {
-                    var branchItems = items.Where(l => l.BranchID == branch.BranchID);
+                    var branchItems = tableItems.Where(l => (String)l[8] == branch.BranchName);
                     r = table.NewRow();
                     r[0] = branch.BranchName;
 
-                    var dataItems = branchItems.PTLesson();
-                    r[2] = dataItems.CalcPTSessionAchievement(out int count);
-                    r[1] = count;                                        
+                    var dataItems = branchItems.Where(l => PTSessionScope.Contains((int?)l[11]));
+                    r[1] = dataItems.Sum(l => (int)l[13]);
+                    r[2] = dataItems.Sum(l => (int)l[9]);
 
-                    dataItems = branchItems.BonusLesson();
-                    r[3] = dataItems.Count();
+                    dataItems = branchItems.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.點數兌換課程);
+                    r[3] = dataItems.Sum(l => (int)l[13]);
 
-                    dataItems = branchItems.WelfareGiftLesson();
-                    r[4] = dataItems.Count();
+                    dataItems = branchItems.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.員工福利課程);
+                    r[4] = dataItems.Sum(l => (int)l[13]);
+
+                    //P.T + 點數 + 員工
                     r[5] = (int)r[1] + (int)r[3] + (int)r[4];
 
-                    dataItems = branchItems.TrialLesson();
-                    r[6] = dataItems.Count();
+                    dataItems = branchItems.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.體驗課程);
+                    r[6] = dataItems.Sum(l => (int)l[13]);
 
-                    dataItems = branchItems.PILesson();
-                    //r[4] = dataItems.CalcLearnerPISessionAchievement(out count);
-                    r[7] = dataItems.Count();;
+                    dataItems = branchItems.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.自主訓練);
+                    r[7] = dataItems.Sum(l => (int)l[13]);
+                    //r[4] = dataItems.Sum(l => (int)l[9]);
 
                     table.Rows.Add(r);
                 }
@@ -1964,23 +1969,23 @@ namespace WebHome.Controllers
                     r[0] = branch.BranchName;
 
                     var dataItems = branchItems.Where(l => PTSessionScope.Contains((int?)l[11]));
-                    r[1] = dataItems.Sum(l => (int)l[6] + (int)l[7]);
+                    r[1] = dataItems.Sum(l => (int)l[13]);
                     r[2] = dataItems.Sum(l => (int)l[9]);                                        
 
                     dataItems = branchItems.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.點數兌換課程);
-                    r[3] = dataItems.Sum(l => (int)l[6] + (int)l[7]);
+                    r[3] = dataItems.Sum(l => (int)l[13]);
 
                     dataItems = branchItems.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.員工福利課程);
-                    r[4] = dataItems.Sum(l => (int)l[6] + (int)l[7]);
+                    r[4] = dataItems.Sum(l => (int)l[13]);
 
                     //P.T + 點數 + 員工
                     r[5] = (int)r[1] + (int)r[3] + (int)r[4];
 
                     dataItems = branchItems.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.體驗課程);
-                    r[6] = dataItems.Sum(l => (int)l[6] + (int)l[7]);                    
+                    r[6] = dataItems.Sum(l => (int)l[13]);                    
 
                     dataItems = branchItems.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.自主訓練);
-                    r[7] = dataItems.Sum(l => (int)l[6] + (int)l[7]);
+                    r[7] = dataItems.Sum(l => (int)l[13]);
                     //r[4] = dataItems.Sum(l => (int)l[9]);
 
                     table.Rows.Add(r);
@@ -2021,23 +2026,23 @@ namespace WebHome.Controllers
                     r[0] = branch;
 
                     var dataItems = branchItems.Where(l => PTSessionScope.Contains((int?)l[11]));
-                    r[1] = dataItems.Sum(l => (int)l[6] + (int)l[7]);
+                    r[1] = dataItems.Sum(l => (int)l[13]);
                     r[2] = dataItems.Sum(l => (int)l[9]);
 
                     dataItems = branchItems.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.點數兌換課程);
-                    r[3] = dataItems.Sum(l => (int)l[6] + (int)l[7]);
+                    r[3] = dataItems.Sum(l => (int)l[13]);
 
                     dataItems = branchItems.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.員工福利課程);
-                    r[4] = dataItems.Sum(l => (int)l[6] + (int)l[7]);
+                    r[4] = dataItems.Sum(l => (int)l[13]);
 
                     //P.T + 點數 + 員工
                     r[5] = (int)r[1] + (int)r[3] + (int)r[4];
 
                     dataItems = branchItems.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.體驗課程);
-                    r[6] = dataItems.Sum(l => (int)l[6] + (int)l[7]);
+                    r[6] = dataItems.Sum(l => (int)l[13]);
                                         
                     dataItems = branchItems.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.自主訓練);
-                    r[7] = dataItems.Sum(l => (int)l[6] + (int)l[7]);
+                    r[7] = dataItems.Sum(l => (int)l[13]);
                     //r[4] = dataItems.Sum(l => (int)l[9]);                    
 
                     table.Rows.Add(r);
@@ -2078,21 +2083,21 @@ namespace WebHome.Controllers
                     r[0] = coach.Key;
                     r[1] = (String)coach.First()[12];
                     var dataItems = coach.Where(l => PTSessionScope.Contains((int?)l[11]));
-                    r[2] = dataItems.Sum(l => (int)l[6] + (int)l[7]);
+                    r[2] = dataItems.Sum(l => (int)l[13]);
                     r[3] = dataItems.Sum(l => (int)l[9]);
 
                     dataItems = coach.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.點數兌換課程);
-                    r[4] = dataItems.Sum(l => (int)l[6] + (int)l[7]);
+                    r[4] = dataItems.Sum(l => (int)l[13]);
 
                     dataItems = coach.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.員工福利課程);
-                    r[5] = dataItems.Sum(l => (int)l[6] + (int)l[7]);
+                    r[5] = dataItems.Sum(l => (int)l[13]);
                     r[6] = (int)r[2] + (int)r[4] + (int)r[5];
 
                     dataItems = coach.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.體驗課程);
-                    r[7] = dataItems.Sum(l => (int)l[6] + (int)l[7]);
+                    r[7] = dataItems.Sum(l => (int)l[13]);
 
                     dataItems = coach.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.自主訓練);
-                    r[8] = dataItems.Sum(l => (int)l[6] + (int)l[7]);
+                    r[8] = dataItems.Sum(l => (int)l[13]);
                     //r[5] = dataItems.Sum(l => (int)l[9]);                           
 
                     table.Rows.Add(r);
@@ -2135,6 +2140,7 @@ namespace WebHome.Controllers
                 table.TableName = $"{viewModel.AchievementDateFrom:yyyyMM} 體能顧問彙總";
                 ds.Tables.Add(table);
 
+                detailsTable.Columns.RemoveAt(14);
                 detailsTable.Columns.RemoveAt(11);
                 ds.Tables.Add(detailsTable);
 
@@ -2179,7 +2185,7 @@ namespace WebHome.Controllers
                 }
                 if (viewModel.DetailsOnly != false)
                 {
-                    IQueryable<LessonTime> items;
+                    IQueryable<V_Tuition> items;
                     table = createAchievementDetailsXlsx(viewModel,out items);
                     table.TableName = String.Format("{0:yyyy-MM-dd}~{1:yyyy-MM-dd}", viewModel.AchievementDateFrom, viewModel.AchievementDateTo.Value.AddMonths(1).AddDays(-1));
                     ds.Tables.Add(table);
@@ -2207,7 +2213,7 @@ namespace WebHome.Controllers
         private DataTable createAchievementXlsx(AchievementQueryViewModel viewModel)
         {
             ViewResult result = (ViewResult)InquireAchievement(viewModel);
-            IQueryable<LessonTime> items = (IQueryable<LessonTime>)result.Model;
+            IQueryable<V_Tuition> items = (IQueryable<V_Tuition>)result.Model;
 
             var details = items.GroupBy(t => new { CoachID = t.AttendingCoach });
             DataTable table = new DataTable();
@@ -2220,19 +2226,19 @@ namespace WebHome.Controllers
 
             foreach (var item in details)
             {
-                var lesson = item.First();
+                int lessonID = item.First().LessonID;
+                var lesson = models.GetTable<LessonTime>().Where(l => l.LessonID == lessonID).First();
                 var r = table.NewRow();
                 var coach = models.GetTable<ServingCoach>().Where(u => u.CoachID == item.Key.CoachID).First();
                 r[0] = coach.UserProfile.RealName;
                 r[1] = item.Count() - (decimal)(item
-                                    .Where(t => t.RegisterLesson.LessonPriceType.Status == (int)Naming.DocumentLevelDefinition.自主訓練
-                                        || (t.RegisterLesson.RegisterLessonEnterprise != null
-                                            && t.RegisterLesson.RegisterLessonEnterprise.EnterpriseCourseContent.EnterpriseLessonType.Status == (int)Naming.DocumentLevelDefinition.自主訓練)).Count()) / 2m;
+                                    .Where(t => t.PriceStatus == (int)Naming.DocumentLevelDefinition.自主訓練
+                                        || (t.ELStatus == (int)Naming.DocumentLevelDefinition.自主訓練)).Count()) / 2m;
                 int shares;
                 var lessons = item
-                        .Where(t => t.RegisterLesson.LessonPriceType.Status != (int)Naming.DocumentLevelDefinition.自主訓練)
-                        .Where(t => t.RegisterLesson.RegisterLessonEnterprise == null
-                            || t.RegisterLesson.RegisterLessonEnterprise.EnterpriseCourseContent.EnterpriseLessonType.Status != (int)Naming.DocumentLevelDefinition.自主訓練);
+                        .Where(t => t.PriceStatus != (int)Naming.DocumentLevelDefinition.自主訓練)
+                        .Where(t => !t.ELStatus.HasValue
+                            || t.ELStatus != (int)Naming.DocumentLevelDefinition.自主訓練);
                 r[2] = models.CalcAchievement(lessons, out shares);
                 r[3] = lesson.LessonTimeSettlement.ProfessionalLevel.LevelName;
                 r[4] = shares;
@@ -2244,16 +2250,14 @@ namespace WebHome.Controllers
             return table;
         }
 
-        private DataTable createAchievementDetailsXlsx(AchievementQueryViewModel viewModel,out IQueryable<LessonTime> items)
+        private DataTable createAchievementDetailsXlsx(AchievementQueryViewModel viewModel,out IQueryable<V_Tuition> items)
         {
-            ViewResult result = (ViewResult)InquireAchievement(viewModel);
-            items = (IQueryable<LessonTime>)result.Model;
+            viewModel.IgnoreAttendance = true;
 
-            IQueryable<V_Tuition> tuitionItems = items
-                .Join(models.GetTable<LessonTimeSettlement>().Where(l => l.SettlementID.HasValue),
-                    l => l.LessonID, t => t.LessonID, (l, t) => l)
-                .Join(models.GetTable<V_Tuition>(), l => l.LessonID, t => t.LessonID, (l, t) => t);
-            return models.CreateLessonAchievementDetails(tuitionItems);
+            ViewResult result = (ViewResult)InquireAchievement(viewModel);
+            items = (IQueryable<V_Tuition>)result.Model;
+
+            return models.CreateLessonAchievementDetails(items);
         }
 
         private DataTable createTuitionAchievementXlsx(AchievementQueryViewModel viewModel)

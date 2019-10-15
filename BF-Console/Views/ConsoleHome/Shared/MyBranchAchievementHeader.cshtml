@@ -32,9 +32,6 @@
         <li><a href="javascript:showAchievementOverview(@(branch.BranchID));">@(branch.BranchName)</a></li>
         }
     </ul>
-    <ul class="breadcrumb float-md-right">
-        <li class="breadcrumb-item"><a href="@Html.Raw(Url.Action("ContractIndex","ConsoleHome",new { ScrollToView = false }))"><i class="zmdi zmdi-file-text"></i>&nbsp;我的分店業績</a></li>
-    </ul>
 </div>
 <script>
     function showAchievementOverview(branchID) {

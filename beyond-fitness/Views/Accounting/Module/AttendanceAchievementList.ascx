@@ -20,7 +20,7 @@
             modal: true,
             width: "auto",
             height: "auto",
-            title: "<h4 class='modal-title'><i class='fa-fw fa fa-table'></i>  <%= _viewModel.AchievementYearMonthFrom %>上課明細：<%= _model.First().AsAttendingCoach.UserProfile.FullName() %></h4>",
+            title: "<h4 class='modal-title'><i class='fa-fw fa fa-table'></i>  <%= _viewModel.AchievementYearMonthFrom %>上課明細：<%= _items.First().AsAttendingCoach.UserProfile.FullName() %></h4>",
             close: function () {
                 $('#<%= _dialog %>').remove();
             }
@@ -33,7 +33,8 @@
     ModelStateDictionary _modelState;
     ModelSource<UserProfile> models;
     String _dialog = "attendance" + DateTime.Now.Ticks;
-    IQueryable<LessonTime> _model;
+    IQueryable<V_Tuition> _model;
+    IQueryable<LessonTime> _items;
     AchievementQueryViewModel _viewModel;
 
     protected override void OnInit(EventArgs e)
@@ -41,8 +42,9 @@
         base.OnInit(e);
         _modelState = (ModelStateDictionary)ViewBag.ModelState;
         models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
-        _model = (IQueryable<LessonTime>)this.Model;
+        _model = (IQueryable<V_Tuition>)this.Model;
         _viewModel = (AchievementQueryViewModel)ViewBag.ViewModel;
+        _items = _model.Join(models.GetTable<LessonTime>(), t => t.LessonID, c => c.LessonID, (t, c) => c);
     }
 
 </script>

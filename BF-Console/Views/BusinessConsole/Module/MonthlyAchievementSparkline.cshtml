@@ -1,0 +1,59 @@
+﻿
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Newtonsoft.Json
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    MonthlyIndicator _model;
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = (MonthlyIndicator)this.Model;
+}
+@{
+    String _viewID = $"asl{DateTime.Now.Ticks}";
+    MonthlyIndicatorQueryViewModel _viewModel = (MonthlyIndicatorQueryViewModel)ViewBag.ViewModel;
+}
+@{
+    int lessonAchievementAmt = 0;
+    int tuitionAchievementAmt = 0;
+    int totalAchievementAmt = 0;
+    if (_viewModel.BranchID.HasValue)
+    {
+        MonthlyBranchRevenueGoal indicator = (MonthlyBranchRevenueGoal)TempData["RevenueGoal"];
+        lessonAchievementAmt = indicator?.ActualLessonAchievement ?? 0;
+        tuitionAchievementAmt = indicator?.ActualSharedAchievement ?? 0;
+        totalAchievementAmt = tuitionAchievementAmt + lessonAchievementAmt;
+    }
+    else
+    {
+        MonthlyRevenueGoal indicator = (MonthlyRevenueGoal)TempData["RevenueGoal"];
+        lessonAchievementAmt = indicator?.ActualLessonAchievement ?? 0;
+        tuitionAchievementAmt = indicator?.ActualSharedAchievement ?? 0;
+        totalAchievementAmt = tuitionAchievementAmt + lessonAchievementAmt;
+    }
+
+}
+<div class="m-t-20 inlineblock" id="@(_viewID)">@(tuitionAchievementAmt), @(lessonAchievementAmt)</div>
+<p class="m-t-20">
+    <i class="zmdi livicon-evo" data-options="name: morph-checkbox-4.svg; size: 30px; style: filled; strokeStyle:round; fillColor:#F6F5F1; strokeColor:#ff6f6f; strokeWidth:2px; autoPlay:true;"></i> 收款業績 @(Math.Round(tuitionAchievementAmt * 100D / totalAchievementAmt, 1))%
+    <i class="zmdi livicon-evo" data-options="name: morph-checkbox-4.svg; size: 30px; style: filled; strokeStyle:round; fillColor:#F6F5F1; strokeColor:#ffbb38; strokeWidth:2px; autoPlay:true;"></i> 上課業績 @(Math.Round(lessonAchievementAmt * 100D / totalAchievementAmt, 1))%
+</p>
+<script>
+    $(function () {
+        //收款業績與上課業績比例
+        $('#@(_viewID)').sparkline('html', {
+            type: 'pie',
+            offset: 90,
+            width: '100px',
+            height: '100px',
+            sliceColors: ['#ff6f6f', '#ffbb38']
+        })
+    });
+</script>

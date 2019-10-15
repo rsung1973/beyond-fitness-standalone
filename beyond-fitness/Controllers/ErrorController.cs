@@ -23,5 +23,11 @@ namespace WebHome.Controllers
         {
             return View();
         }
+
+        public ActionResult Goback()
+        {
+            return Content("<script>window.history.go(-1);</script>");
+        }
+
     }
 }

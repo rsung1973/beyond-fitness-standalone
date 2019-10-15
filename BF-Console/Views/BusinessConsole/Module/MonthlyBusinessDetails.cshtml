@@ -1,0 +1,69 @@
+﻿
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Newtonsoft.Json
+@using WebHome.Helper.BusinessOperation
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    MonthlyIndicator _model;
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = (MonthlyIndicator)this.Model;
+}
+@{
+    MonthlyIndicatorQueryViewModel _viewModel = (MonthlyIndicatorQueryViewModel)ViewBag.ViewModel;
+    dynamic indicator = null;
+    if (_viewModel.BranchID.HasValue)
+    {
+        indicator = (MonthlyBranchRevenueGoal)TempData["RevenueGoal"];
+    }
+    else
+    {
+        indicator = (MonthlyRevenueGoal)TempData["RevenueGoal"];
+    }
+}
+    <table class="table table-black table-hover m-b-0">
+        <thead>
+            <tr>
+                <th>目標</th>
+                <th>達成率</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr onclick="javascript:showLessonDetail();">
+                <td>課數 <small class="col-grey">@(indicator.CompleteLessonsGoal)堂</small></td>
+                @{ 
+                    decimal lessonCount = (indicator.ActualCompleteLessonCount ?? 0) + (indicator.ActualCompleteTSCount ?? 0);
+                }
+                <td>@(Math.Round(lessonCount*100M / (indicator.CompleteLessonsGoal ?? 1)))% <small class="col-tiffany">@(lessonCount)堂</small></td>
+            </tr>
+            <tr onclick="javascript:showIncomeDetail();">
+                <td>上課業績 <small class="col-grey">@($"{indicator.LessonTuitionGoal:##,###,###,###}")</small></td>
+                <td>@(Math.Round((indicator.ActualLessonAchievement ?? 0) * 100M / (indicator.LessonTuitionGoal ?? 1)))% <small class="col-tiffany">@($"{indicator.ActualLessonAchievement:##,###,###,###}")</small></td>
+            </tr>
+            <tr onclick="javascript:showIncomeDetail();">
+                <td>收款業績 <small class="col-grey">@($"{indicator.AchievementGoal:##,###,###,###}")</small></td>
+                <td>@(Math.Round((indicator.ActualSharedAchievement ?? 0) * 100M / (indicator.AchievementGoal ?? 1)))% <small class="col-tiffany">@($"{indicator.ActualSharedAchievement:##,###,###,###}")</small></td>
+            </tr>
+            @*<tr onclick="javascript:showSoldDetail();">
+                <td>BR <small class="col-grey">20堂</small></td>
+                <td>75% <small class="col-tiffany">12堂</small></td>
+            </tr>
+            <tr onclick="javascript:showSoldDetail();">
+                <td>BR簽約率 <small class="col-grey">6張</small></td>
+                <td><span class="badge round bg-vivid_red">40%</span></td>
+            </tr>
+            <tr onclick="javascript:showSoldDetail();">
+                <td>TS簽約率</td>
+                <td><span class="badge round bg-vivid_red">41%</span></td>
+            </tr>*@
+        </tbody>
+    </table>
+

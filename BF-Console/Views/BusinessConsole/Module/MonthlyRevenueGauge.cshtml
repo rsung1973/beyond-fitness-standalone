@@ -1,0 +1,111 @@
+﻿
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Newtonsoft.Json
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    MonthlyIndicator _model;
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = (MonthlyIndicator)this.Model;
+}
+@{
+    String _viewID = $"revenue{DateTime.Now.Ticks}";
+    MonthlyIndicatorQueryViewModel _viewModel = (MonthlyIndicatorQueryViewModel)ViewBag.ViewModel;
+}
+@{
+    IQueryable<Payment> items = (IQueryable<Payment>)TempData["PaymentItems"];
+    int revenueAmt = items.Sum(p => p.PayoffAmount) ?? 0;
+    decimal indicatorAmt = 1;
+    if (_viewModel.BranchID.HasValue)
+    {
+        MonthlyBranchRevenueIndicator indicator =
+            models.GetTable<MonthlyBranchRevenueIndicator>()
+                .Where(m => m.BranchID == _viewModel.BranchID && m.PeriodID == _model.PeriodID
+                    && m.MonthlyBranchRevenueGoal != null).First();
+
+        indicatorAmt = (decimal)indicator.RevenueGoal;
+        TempData["RevenueGoal"] = indicator;
+    }
+    else
+    {
+        MonthlyRevenueIndicator indicator =
+            models.GetTable<MonthlyRevenueIndicator>()
+                .Where(m => m.PeriodID == _model.PeriodID
+                    && m.MonthlyRevenueGoal != null).First();
+        indicatorAmt = (decimal)(indicator.MonthlyRevenueGoal.CustomRevenueGoal ?? indicator.RevenueGoal);
+        TempData["RevenueGoal"] = indicator;
+    }
+    decimal achievementRatio = revenueAmt * 100M / indicatorAmt;
+}
+    <h2 id="@($"{_viewID}_text")" class="m-b-0"></h2>
+    <canvas id="@($"{_viewID}_gauge")" height="150"></canvas>
+    <h4 class="col-pink">目標 $@($"{indicatorAmt / 10000M}")萬元</h4>
+    <script>
+    $(function () {
+        var zoneGauge = new Gauge(document.getElementById("@($"{_viewID}_gauge")"));
+            var opts = {
+                angle: 0,
+                lineWidth: 0.4,
+                radiusScale: 1,
+                pointer: {
+                    length: 0.5,
+                    strokeWidth: 0.05,
+                    color: '#fff'
+                },
+                staticLabels: {
+                    font: "12px Material-Design-Iconic-Font",
+                    color: "#fff",
+                    labels: [100, 110, 120, 130],
+                    fractionDigits: 0
+                },
+                staticZones: [{
+                        //                        strokeStyle: "#F15F79",
+                        strokeStyle: "#B5B5B5",
+                        min: 0,
+                        max: 100
+                    },
+                    {
+                        //                        strokeStyle: "#FFC107",
+                        strokeStyle: "#E4C04E",
+                        min: 101,
+                        max: 110
+                    },
+                    {
+                        //                        strokeStyle: "#457fca",
+                        strokeStyle: "#D28945",
+                        min: 111,
+                        max: 120
+                    },
+                    {
+                        //                        strokeStyle: "#78b83e",
+                        strokeStyle: "#CD4E32",
+                        min: 121,
+                        max: 130
+                    },
+                    {
+                        strokeStyle: "#BD2C30",
+                        min: 131,
+                        max: 150
+                    }
+                ],
+                limitMax: false,
+                limitMin: false,
+                highDpiSupport: true,
+                generateGradient: true
+            }
+            zoneGauge.setOptions(opts);
+            zoneGauge.setTextField(document.getElementById("@($"{_viewID}_text")"));
+            zoneGauge.minValue = 0;
+            zoneGauge.maxValue = 150;
+            zoneGauge.set(@(Math.Round(achievementRatio)));
+    });
+    </script>
+

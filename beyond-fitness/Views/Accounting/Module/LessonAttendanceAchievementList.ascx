@@ -20,7 +20,9 @@
         </tr>
     </thead>
     <tbody>
-        <%  var items = _model.GroupBy(t => new { CoachID = t.AttendingCoach });
+        <%  var items = _model
+                .Join(models.GetTable<LessonTime>(), t => t.LessonID, c => c.LessonID, (t, c) => c)
+                .GroupBy(t => new { CoachID = t.AttendingCoach });
             decimal totalCount = 0, summary = 0, totalShares = 0;
             foreach(var item in items)
             {
@@ -121,7 +123,7 @@
     ModelStateDictionary _modelState;
     ModelSource<UserProfile> models;
     String _tableId = "attendanceAchievement" + DateTime.Now.Ticks;
-    IQueryable<LessonTime> _model;
+    IQueryable<V_Tuition> _model;
     AchievementQueryViewModel _viewModel;
 
     protected override void OnInit(EventArgs e)
@@ -129,7 +131,7 @@
         base.OnInit(e);
         _modelState = (ModelStateDictionary)ViewBag.ModelState;
         models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
-        _model = (IQueryable<LessonTime>)this.Model;
+        _model = (IQueryable<V_Tuition>)this.Model;
         _viewModel = (AchievementQueryViewModel)ViewBag.ViewModel;
     }
 

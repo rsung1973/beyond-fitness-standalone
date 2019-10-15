@@ -1,0 +1,36 @@
+﻿
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Newtonsoft.Json
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    MonthlyIndicator _model;
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = (MonthlyIndicator)this.Model;
+}
+@{
+    MonthlyIndicatorQueryViewModel _viewModel = (MonthlyIndicatorQueryViewModel)ViewBag.ViewModel;
+    MonthlyBranchIndicator item = _model.MonthlyBranchIndicator.Where(i => i.BranchID == _viewModel.BranchID).FirstOrDefault();
+}
+@if (item != null)
+{
+    <h4><strong>策略目標與風險分析</strong> <a href="javascript:showEditActionModal();" class="text-gray"><i class="zmdi zmdi-edit"></i></a></h4>
+    <ul class="list-unstyled">
+        <li>
+            <span class="title"><i class="zmdi zmdi-circle"></i> 風險考量：@Html.Raw(item.RiskPrediction)</span>
+        </li>
+        <li>
+            <span class="title"><i class="zmdi zmdi-circle"></i> 策略目標：@Html.Raw(item.Strategy)</span>
+        </li>
+        <li><span class="title"> <i class="zmdi zmdi-circle"></i> @Html.Raw(item.Comment)</span></li>
+    </ul>
+}
+

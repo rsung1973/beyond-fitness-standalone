@@ -1328,28 +1328,24 @@ namespace WebHome.Controllers
                         }
                     }
 
-                    if (profile.IsManager())
+                    foreach (var item in items)
                     {
-                        foreach (var item in items)
-                        {
-                            withdrawPayment(item);
-                        }
-
-                        var invForAllowance = items.Select(i => i.Payment).Where(p => p.AllowanceID.HasValue && p.InvoiceItem.InvoiceType == (int)Naming.InvoiceTypeDefinition.一般稅額計算之電子發票);
-                        if (invForAllowance.Count() > 0)
-                        {
-                            return Json(new
-                            {
-                                result = true,
-                                invoiceID = invForAllowance.Select(p => p.InvoiceID).ToArray()
-                            });
-                        }
-                        else
-                        {
-                            return Json(new { result = true, message = "作廢收款資料已生效!!" });
-                        }
+                        withdrawPayment(item);
                     }
-                    return Json(new { result = true, message = "作廢收款資料已送交審核!!" });
+
+                    var invForAllowance = items.Select(i => i.Payment).Where(p => p.AllowanceID.HasValue && p.InvoiceItem.InvoiceType == (int)Naming.InvoiceTypeDefinition.一般稅額計算之電子發票);
+                    if (invForAllowance.Count() > 0)
+                    {
+                        return Json(new
+                        {
+                            result = true,
+                            invoiceID = invForAllowance.Select(p => p.InvoiceID).ToArray()
+                        });
+                    }
+                    else
+                    {
+                        return Json(new { result = true, message = "作廢收款資料已生效!!" });
+                    }
                 }
                 else
                     return Json(new { result = false, message = "作廢收款資料錯誤!!" });

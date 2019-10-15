@@ -694,13 +694,12 @@ namespace WebHome.Controllers
 
         public ActionResult AchievementOverview(MonthlyIndicatorQueryViewModel viewModel)
         {
-            ViewBag.ViewModel = viewModel;
             if (viewModel.KeyID != null)
             {
                 viewModel.PeriodID = viewModel.DecryptKeyValue();
             }
 
-            if(!viewModel.Year.HasValue)
+            if(!viewModel.Year.HasValue || !viewModel.Month.HasValue)
             {
                 viewModel.Year = DateTime.Today.Year;
                 viewModel.Month = DateTime.Today.Month;
@@ -709,6 +708,18 @@ namespace WebHome.Controllers
             var item = models.GetTable<MonthlyIndicator>().Where(i => i.PeriodID == viewModel.PeriodID
                             || (i.Year == viewModel.Year && i.Month == viewModel.Month)).FirstOrDefault();
 
+            if (item == null)
+            {
+                item = models.InitializeMonthlyIndicator(viewModel.Year.Value, viewModel.Month.Value);
+            }
+
+            //if (viewModel.Year == DateTime.Today.Year && viewModel.Month == DateTime.Today.Month)
+            //{
+            //    item.UpdateMonthlyAchievement(this);
+            //    item.UpdateMonthlyAchievementGoal(models);
+            //}
+
+            ViewBag.ViewModel = viewModel;
             ViewBag.DataItem = item;
 
             var profile = HttpContext.GetUser();

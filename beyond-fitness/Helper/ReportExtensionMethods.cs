@@ -178,20 +178,23 @@ namespace WebHome.Helper
             table.Columns.Add(new DataColumn("學生", typeof(String)));
             table.Columns.Add(new DataColumn("合約名稱", typeof(String)));
             table.Columns.Add(new DataColumn("課程單價", typeof(int)));
-            table.Columns.Add(new DataColumn("全價上課數", typeof(int)));
-            table.Columns.Add(new DataColumn("半價上課數", typeof(int)));
+            table.Columns.Add(new DataColumn("已完成上課", typeof(int)));
+            table.Columns.Add(new DataColumn("學員打卡", typeof(int)));
             table.Columns.Add(new DataColumn("上課場所", typeof(String)));
             table.Columns.Add(new DataColumn("上課金額", typeof(int)));
             table.Columns.Add(new DataColumn("是否信託", typeof(String)));
             table.Columns.Add(new DataColumn("課程代碼", typeof(int)));
             table.Columns.Add(new DataColumn("體能顧問所屬分店", typeof(String)));
+            table.Columns.Add(new DataColumn("預約上課數", typeof(int)));
+            table.Columns.Add(new DataColumn("SettlementID", typeof(int)));
 
             var details = items.Where(t => t.ContractID.HasValue)
                 .GroupBy(t => new
                 {
                     t.AttendingCoach,
                     t.ContractID,
-                    t.BranchID
+                    t.BranchID,
+                    t.SettlementID,
                 });
 
             var branchItems = models.GetTable<BranchStore>().ToArray();
@@ -220,8 +223,9 @@ namespace WebHome.Helper
                     + " (" + contract.LessonPriceType.DurationInMinutes + " 分鐘)";
                 r[5] = contract.LessonPriceType.ListPrice;
 
-                r[6] = item.Where(l => l.AchievementIndex == 1m).Count();
-                r[7] = item.Where(l => l.AchievementIndex == 0.5m).Count();
+                r[6] = item.Where(l => l.CoachAttendance.HasValue).Count();     //item.Where(l => l.AchievementIndex == 1m).Count();
+                r[7] = item.Join(models.GetTable<Settlement>(), l => l.SettlementID, s => s.SettlementID, (l, s) => new { l.CommitAttendance, s.SettlementDate })
+                            .Where(l => l.CommitAttendance <= l.SettlementDate).Count();    //item.Where(l => l.AchievementIndex == 0.5m).Count();
                 r[8] = branch.BranchName;
                 r[9] = item.Sum(l=>l.ListPrice * l.GroupingMemberCount * l.PercentageOfDiscount / 100);
                 r[10] = contract.Entrusted == true
@@ -237,6 +241,9 @@ namespace WebHome.Helper
                 var sample = item.First();
                 r[12] = branchItems.Where(b => b.BranchID == sample.CoachWorkPlace)
                             .Select(b=>b.BranchName).FirstOrDefault() ?? "其他";
+                r[13] = item.Count();
+                if (item.Key.SettlementID.HasValue)
+                    r[14] = item.Key.SettlementID;
                 table.Rows.Add(r);
             }
 
@@ -246,7 +253,8 @@ namespace WebHome.Helper
                     t.AttendingCoach,
                     ContractID = t.EnterpriseContractID,
                     t.RegisterID,
-                    t.BranchID
+                    t.BranchID,
+                    t.SettlementID,
                 });
 
             foreach (var item in enterprise)
@@ -273,13 +281,18 @@ namespace WebHome.Helper
 
                 r[4] = contract.Subject;
                 r[5] = contract.EnterpriseCourseContent.OrderByDescending(c => c.ListPrice).First().ListPrice;
-                r[6] = item.Where(l => l.AchievementIndex == 1m).Count();
-                r[7] = item.Where(l => l.AchievementIndex == 0.5m).Count(); 
+                r[6] = item.Where(l => l.CoachAttendance.HasValue).Count();     //item.Where(l => l.AchievementIndex == 1m).Count();
+                r[7] = item.Join(models.GetTable<Settlement>(), l => l.SettlementID, s => s.SettlementID, (l, s) => new { l.CommitAttendance, s.SettlementDate })
+                            .Where(l => l.CommitAttendance <= l.SettlementDate).Count();     //item.Where(l => l.AchievementIndex == 0.5m).Count();
                 r[8] = branch.BranchName;
                 r[9] = item.Sum(l=>l.EnterpriseListPrice * l.GroupingMemberCount
                         * l.PercentageOfDiscount / 100);
                 r[11] = item.FirstOrDefault()?.ELStatus;    //(int)Naming.LessonPriceStatus.企業合作方案;
                 r[12] = coach.WorkPlace();
+                r[13] = item.Count();
+                if (item.Key.SettlementID.HasValue)
+                    r[14] = item.Key.SettlementID;
+
                 table.Rows.Add(r);
             }
 
@@ -301,14 +314,19 @@ namespace WebHome.Helper
                 r[4] = lesson.LessonPriceType.Description
                     + " (" + lesson.LessonPriceType.DurationInMinutes + " 分鐘)";
                 r[9] = r[5] = item.ListPrice;
-                r[6] = item.AchievementIndex == 1m ? 1 : 0;
-                r[7] = item.AchievementIndex == 0.5m ? 1 : 0;
+                r[6] = item.CoachAttendance.HasValue ? 1 : 0;   //item.AchievementIndex == 1m ? 1 : 0;
+                var settlement = models.GetTable<Settlement>().Where(s => s.SettlementID == item.SettlementID).FirstOrDefault();
+                r[7] = item.CommitAttendance.HasValue && item.CommitAttendance <= settlement?.SettlementDate ? 1 : 0;  //item.AchievementIndex == 0.5m ? 1 : 0;
                 if (branch != null)
                 {
                     r[8] = branch.BranchName;
                 }
                 r[11] = item.PriceStatus;
                 r[12] = coach.WorkPlace();
+                r[13] = 1;
+                if (item.SettlementID.HasValue)
+                    r[14] = item.SettlementID;
+
                 table.Rows.Add(r);
             }
 
@@ -617,7 +635,7 @@ namespace WebHome.Helper
                        
             var coachItems = models.PromptEffectiveCoach();
             var salaryTable = models.GetTable<CoachMonthlySalary>();
-            var settlementItems = helper.LessonItems;
+            var countableItems = helper.PerformanceCountableLesson;
 
             var paymentItems = models.GetTable<Payment>().Where(p => p.PayoffDate >= settlement.StartDate && p.PayoffDate < settlement.EndExclusiveDate);
             //.FilterByEffective();
@@ -625,7 +643,7 @@ namespace WebHome.Helper
 
             foreach (var coach in coachItems)
             {
-                var lessonItem = settlementItems.Where(l => l.AttendingCoach == coach.CoachID).FirstOrDefault();
+                var lessonItem = countableItems.Where(l => l.AttendingCoach == coach.CoachID).FirstOrDefault();
                 var salary = salaryTable.Where(s => s.CoachID == coach.CoachID && s.SettlementID == settlement.SettlementID).FirstOrDefault();
                 if (salary == null)
                 {
@@ -660,7 +678,7 @@ namespace WebHome.Helper
 
                 void calcCoachAchievement()
                 {
-                    var attendingLessons = settlementItems.Where(l => l.AttendingCoach == coach.CoachID);
+                    var attendingLessons = countableItems.Where(l => l.AttendingCoach == coach.CoachID);
                     foreach (var g in attendingLessons.GroupBy(l => l.BranchID))
                     {
                         var branchBonus = salary.CoachBranchMonthlyBonus.Where(b => b.BranchID == g.Key).FirstOrDefault();
@@ -715,7 +733,7 @@ namespace WebHome.Helper
                 BranchStore branch;
                 if (coach.UserProfile.IsOfficer())
                 {
-                    foreach (var g in settlementItems.GroupBy(l => l.BranchID))
+                    foreach (var g in countableItems.GroupBy(l => l.BranchID))
                     {
                         var branchBonus = salary.CoachBranchMonthlyBonus.Where(b => b.BranchID == g.Key).FirstOrDefault();
                         if (branchBonus == null)
@@ -747,7 +765,7 @@ namespace WebHome.Helper
                         };
                         salary.CoachBranchMonthlyBonus.Add(branchBonus);
                     }
-                    var branchItems = settlementItems.Where(w => w.WorkPlace == branch.BranchID);
+                    var branchItems = countableItems.Where(w => w.WorkPlace == branch.BranchID);
                     branchBonus.BranchTotalAttendanceCount = branchItems.Count();
                     branchBonus.BranchTotalTuition = branchItems.CalcTuition(models);
                     models.SubmitChanges();

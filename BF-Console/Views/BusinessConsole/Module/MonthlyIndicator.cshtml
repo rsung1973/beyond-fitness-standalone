@@ -1,0 +1,106 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Newtonsoft.Json
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    MonthlyIndicator _model;
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = (MonthlyIndicator)this.Model;
+}
+@{ 
+    MonthlyIndicatorQueryViewModel _viewModel = (MonthlyIndicatorQueryViewModel)ViewBag.ViewModel;
+}
+<ul class="row clearfix list-unstyled m-b-0">
+    <li class="col-12">
+        <div class="body">
+            <div class="row clearfox">
+                <div class="col-md-6 col-sm-12">
+                    @{ 
+    Html.RenderPartial("~/Views/BusinessConsole/Module/MonthlyAchievementStatus.cshtml", _model);
+                    }
+                    @{ 
+    Html.RenderPartial("~/Views/BusinessConsole/Module/MonthlyBranchBusiness.cshtml", _model);
+                    }
+                </div>
+                <div class="col-md-6 col-sm-12 text-right">
+                    <div class="info-box-2 float-right bg-darkteal">
+                        <div class="content text-center">
+                            @{ 
+    Html.RenderPartial("~/Views/BusinessConsole/Module/MonthlyAchievementGauge.cshtml", _model);
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row clearfix">
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                    <div class="table-responsive">
+                        @{ 
+    if (_viewModel.BranchID.HasValue)
+    {
+        Html.RenderPartial("~/Views/BusinessConsole/Module/MonthlyBranchRevenueGrade.cshtml", _model);
+    }
+    else
+    {
+        Html.RenderPartial("~/Views/BusinessConsole/Module/MonthlyRevenueGrade.cshtml", _model);
+    }
+                        }
+                    </div>
+                    <button class="btn btn-default btn-round btn-sm waves-effect float-right" onclick="javascript:showGoalListModal();">詳細資料</button>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                    <div class="table-responsive">
+                        @{ 
+                            Html.RenderPartial("~/Views/BusinessConsole/Module/MonthlyBusinessDetails.cshtml", _model);
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </li>
+    <li class="col-lg-4 col-md-4 col-sm-4">
+        <div class="body">
+            <div class="info-box-2 bg-darkteal">
+                <div class="content">
+                    @{
+                        Html.RenderPartial("~/Views/BusinessConsole/Module/MonthlyAchievementSparkline.cshtml", _model);
+                    }
+                </div>
+            </div>
+        </div>
+    </li>
+    <li class="col-lg-4 col-md-4 col-sm-4">
+        <div class="body">
+            <div class="info-box-2 bg-darkteal">
+                <div class="content">
+                    @{
+                        Html.RenderPartial("~/Views/BusinessConsole/Module/MonthlyContractSparkline.cshtml", _model);
+                    }
+                </div>
+            </div>
+        </div>
+    </li>
+    @*<li class="col-lg-4 col-md-4 col-sm-4">
+        <div class="body">
+            <div class="info-box-2 bg-darkteal">
+                <div class="content">
+                    <div class="sparkline-pie3 m-t-20">5, 5</div>
+                    <p class="m-t-20">
+                        <i class="zmdi livicon-evo" data-options="name: morph-checkbox-4.svg; size: 30px; style: filled; strokeStyle:round; fillColor:#F6F5F1; strokeColor:#15619F; strokeWidth:2px; autoPlay:true;"></i> BR 50%
+                        <i class="zmdi livicon-evo" data-options="name: morph-checkbox-4.svg; size: 30px; style: filled; strokeStyle:round; fillColor:#F6F5F1; strokeColor:#777777; strokeWidth:2px; autoPlay:true;"></i> TS 50%
+                    </p>
+                </div>
+            </div>
+        </div>
+    </li>*@
+</ul>
+

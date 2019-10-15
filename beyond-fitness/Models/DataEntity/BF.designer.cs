@@ -546,9 +546,6 @@ namespace WebHome.Models.DataEntity
     partial void InsertMerchandiseTransactionType(MerchandiseTransactionType instance);
     partial void UpdateMerchandiseTransactionType(MerchandiseTransactionType instance);
     partial void DeleteMerchandiseTransactionType(MerchandiseTransactionType instance);
-    partial void InsertMonthlyBranchRevenueGoal(MonthlyBranchRevenueGoal instance);
-    partial void UpdateMonthlyBranchRevenueGoal(MonthlyBranchRevenueGoal instance);
-    partial void DeleteMonthlyBranchRevenueGoal(MonthlyBranchRevenueGoal instance);
     partial void InsertMonthlyRevenueGrade(MonthlyRevenueGrade instance);
     partial void UpdateMonthlyRevenueGrade(MonthlyRevenueGrade instance);
     partial void DeleteMonthlyRevenueGrade(MonthlyRevenueGrade instance);
@@ -564,9 +561,15 @@ namespace WebHome.Models.DataEntity
     partial void InsertMonthlyRevenueIndicator(MonthlyRevenueIndicator instance);
     partial void UpdateMonthlyRevenueIndicator(MonthlyRevenueIndicator instance);
     partial void DeleteMonthlyRevenueIndicator(MonthlyRevenueIndicator instance);
+    partial void InsertMonthlyCoachRevenueIndicator(MonthlyCoachRevenueIndicator instance);
+    partial void UpdateMonthlyCoachRevenueIndicator(MonthlyCoachRevenueIndicator instance);
+    partial void DeleteMonthlyCoachRevenueIndicator(MonthlyCoachRevenueIndicator instance);
     partial void InsertMonthlyRevenueGoal(MonthlyRevenueGoal instance);
     partial void UpdateMonthlyRevenueGoal(MonthlyRevenueGoal instance);
     partial void DeleteMonthlyRevenueGoal(MonthlyRevenueGoal instance);
+    partial void InsertMonthlyBranchRevenueGoal(MonthlyBranchRevenueGoal instance);
+    partial void UpdateMonthlyBranchRevenueGoal(MonthlyBranchRevenueGoal instance);
+    partial void DeleteMonthlyBranchRevenueGoal(MonthlyBranchRevenueGoal instance);
     #endregion
 		
 		public BFDataContext() : 
@@ -1999,14 +2002,6 @@ namespace WebHome.Models.DataEntity
 			}
 		}
 		
-		public System.Data.Linq.Table<V_Tuition> V_Tuitions
-		{
-			get
-			{
-				return this.GetTable<V_Tuition>();
-			}
-		}
-		
 		public System.Data.Linq.Table<LessonTimeSettlement> LessonTimeSettlements
 		{
 			get
@@ -2036,14 +2031,6 @@ namespace WebHome.Models.DataEntity
 			get
 			{
 				return this.GetTable<V_LessonUnitPrice>();
-			}
-		}
-		
-		public System.Data.Linq.Table<MonthlyBranchRevenueGoal> MonthlyBranchRevenueGoal
-		{
-			get
-			{
-				return this.GetTable<MonthlyBranchRevenueGoal>();
 			}
 		}
 		
@@ -2087,11 +2074,35 @@ namespace WebHome.Models.DataEntity
 			}
 		}
 		
+		public System.Data.Linq.Table<MonthlyCoachRevenueIndicator> MonthlyCoachRevenueIndicator
+		{
+			get
+			{
+				return this.GetTable<MonthlyCoachRevenueIndicator>();
+			}
+		}
+		
 		public System.Data.Linq.Table<MonthlyRevenueGoal> MonthlyRevenueGoal
 		{
 			get
 			{
 				return this.GetTable<MonthlyRevenueGoal>();
+			}
+		}
+		
+		public System.Data.Linq.Table<MonthlyBranchRevenueGoal> MonthlyBranchRevenueGoal
+		{
+			get
+			{
+				return this.GetTable<MonthlyBranchRevenueGoal>();
+			}
+		}
+		
+		public System.Data.Linq.Table<V_Tuition> V_Tuition
+		{
+			get
+			{
+				return this.GetTable<V_Tuition>();
 			}
 		}
 		
@@ -5051,6 +5062,8 @@ namespace WebHome.Models.DataEntity
 		
 		private System.Nullable<int> _BirthdateIndex;
 		
+		private System.Nullable<System.DateTime> _CreateTime;
+		
 		private EntitySet<UserRole> _UserRole;
 		
 		private EntitySet<ResetPassword> _ResetPassword;
@@ -5193,6 +5206,8 @@ namespace WebHome.Models.DataEntity
     partial void OnNicknameChanged();
     partial void OnBirthdateIndexChanging(System.Nullable<int> value);
     partial void OnBirthdateIndexChanged();
+    partial void OnCreateTimeChanging(System.Nullable<System.DateTime> value);
+    partial void OnCreateTimeChanged();
     #endregion
 		
 		public UserProfile()
@@ -5661,6 +5676,26 @@ namespace WebHome.Models.DataEntity
 					this._BirthdateIndex = value;
 					this.SendPropertyChanged("BirthdateIndex");
 					this.OnBirthdateIndexChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreateTime", DbType="DateTime")]
+		public System.Nullable<System.DateTime> CreateTime
+		{
+			get
+			{
+				return this._CreateTime;
+			}
+			set
+			{
+				if ((this._CreateTime != value))
+				{
+					this.OnCreateTimeChanging(value);
+					this.SendPropertyChanging();
+					this._CreateTime = value;
+					this.SendPropertyChanged("CreateTime");
+					this.OnCreateTimeChanged();
 				}
 			}
 		}
@@ -9156,6 +9191,8 @@ namespace WebHome.Models.DataEntity
 		
 		private EntitySet<TuitionAchievement> _TuitionAchievement;
 		
+		private EntitySet<MonthlyCoachRevenueIndicator> _MonthlyCoachRevenueIndicator;
+		
 		private EntityRef<UserProfile> _UserProfile;
 		
 		private EntityRef<ProfessionalLevel> _ProfessionalLevel;
@@ -9188,6 +9225,7 @@ namespace WebHome.Models.DataEntity
 			this._CourseContractRevisionItem = new EntitySet<CourseContractRevisionItem>(new Action<CourseContractRevisionItem>(this.attach_CourseContractRevisionItem), new Action<CourseContractRevisionItem>(this.detach_CourseContractRevisionItem));
 			this._CoachMonthlySalaries = new EntitySet<CoachMonthlySalary>(new Action<CoachMonthlySalary>(this.attach_CoachMonthlySalaries), new Action<CoachMonthlySalary>(this.detach_CoachMonthlySalaries));
 			this._TuitionAchievement = new EntitySet<TuitionAchievement>(new Action<TuitionAchievement>(this.attach_TuitionAchievement), new Action<TuitionAchievement>(this.detach_TuitionAchievement));
+			this._MonthlyCoachRevenueIndicator = new EntitySet<MonthlyCoachRevenueIndicator>(new Action<MonthlyCoachRevenueIndicator>(this.attach_MonthlyCoachRevenueIndicator), new Action<MonthlyCoachRevenueIndicator>(this.detach_MonthlyCoachRevenueIndicator));
 			this._UserProfile = default(EntityRef<UserProfile>);
 			this._ProfessionalLevel = default(EntityRef<ProfessionalLevel>);
 			OnCreated();
@@ -9437,6 +9475,19 @@ namespace WebHome.Models.DataEntity
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ServingCoach_MonthlyCoachRevenueIndicator", Storage="_MonthlyCoachRevenueIndicator", ThisKey="CoachID", OtherKey="CoachID")]
+		public EntitySet<MonthlyCoachRevenueIndicator> MonthlyCoachRevenueIndicator
+		{
+			get
+			{
+				return this._MonthlyCoachRevenueIndicator;
+			}
+			set
+			{
+				this._MonthlyCoachRevenueIndicator.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserProfile_ServingCoach", Storage="_UserProfile", ThisKey="CoachID", OtherKey="UID", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
 		public UserProfile UserProfile
 		{
@@ -9664,6 +9715,18 @@ namespace WebHome.Models.DataEntity
 		}
 		
 		private void detach_TuitionAchievement(TuitionAchievement entity)
+		{
+			this.SendPropertyChanging();
+			entity.ServingCoach = null;
+		}
+		
+		private void attach_MonthlyCoachRevenueIndicator(MonthlyCoachRevenueIndicator entity)
+		{
+			this.SendPropertyChanging();
+			entity.ServingCoach = this;
+		}
+		
+		private void detach_MonthlyCoachRevenueIndicator(MonthlyCoachRevenueIndicator entity)
 		{
 			this.SendPropertyChanging();
 			entity.ServingCoach = null;
@@ -18661,6 +18724,8 @@ namespace WebHome.Models.DataEntity
 		
 		private EntitySet<LessonTimeSettlement> _LessonTimeSettlements;
 		
+		private EntitySet<MonthlyCoachRevenueIndicator> _MonthlyCoachRevenueIndicator;
+		
 		private EntityRef<LevelExpression> _LevelExpression;
 		
     #region Extensibility Method Definitions
@@ -18688,6 +18753,7 @@ namespace WebHome.Models.DataEntity
 			this._DemotingFrom = new EntitySet<ProfessionalLevelReview>(new Action<ProfessionalLevelReview>(this.attach_DemotingFrom), new Action<ProfessionalLevelReview>(this.detach_DemotingFrom));
 			this._CoachMonthlySalaries = new EntitySet<CoachMonthlySalary>(new Action<CoachMonthlySalary>(this.attach_CoachMonthlySalaries), new Action<CoachMonthlySalary>(this.detach_CoachMonthlySalaries));
 			this._LessonTimeSettlements = new EntitySet<LessonTimeSettlement>(new Action<LessonTimeSettlement>(this.attach_LessonTimeSettlements), new Action<LessonTimeSettlement>(this.detach_LessonTimeSettlements));
+			this._MonthlyCoachRevenueIndicator = new EntitySet<MonthlyCoachRevenueIndicator>(new Action<MonthlyCoachRevenueIndicator>(this.attach_MonthlyCoachRevenueIndicator), new Action<MonthlyCoachRevenueIndicator>(this.detach_MonthlyCoachRevenueIndicator));
 			this._LevelExpression = default(EntityRef<LevelExpression>);
 			OnCreated();
 		}
@@ -18903,6 +18969,19 @@ namespace WebHome.Models.DataEntity
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ProfessionalLevel_MonthlyCoachRevenueIndicator", Storage="_MonthlyCoachRevenueIndicator", ThisKey="LevelID", OtherKey="LevelID")]
+		public EntitySet<MonthlyCoachRevenueIndicator> MonthlyCoachRevenueIndicator
+		{
+			get
+			{
+				return this._MonthlyCoachRevenueIndicator;
+			}
+			set
+			{
+				this._MonthlyCoachRevenueIndicator.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="LevelExpression_ProfessionalLevel", Storage="_LevelExpression", ThisKey="CategoryID", OtherKey="LevelID", IsForeignKey=true)]
 		public LevelExpression LevelExpression
 		{
@@ -19024,6 +19103,18 @@ namespace WebHome.Models.DataEntity
 		}
 		
 		private void detach_LessonTimeSettlements(LessonTimeSettlement entity)
+		{
+			this.SendPropertyChanging();
+			entity.ProfessionalLevel = null;
+		}
+		
+		private void attach_MonthlyCoachRevenueIndicator(MonthlyCoachRevenueIndicator entity)
+		{
+			this.SendPropertyChanging();
+			entity.ProfessionalLevel = this;
+		}
+		
+		private void detach_MonthlyCoachRevenueIndicator(MonthlyCoachRevenueIndicator entity)
 		{
 			this.SendPropertyChanging();
 			entity.ProfessionalLevel = null;
@@ -23382,6 +23473,8 @@ namespace WebHome.Models.DataEntity
 		
 		private EntitySet<MonthlyBranchIndicator> _MonthlyBranchIndicator;
 		
+		private EntitySet<MonthlyCoachRevenueIndicator> _MonthlyCoachRevenueIndicator;
+		
 		private EntityRef<UserProfile> _Manager;
 		
 		private EntityRef<UserProfile> _ViceManager;
@@ -23419,6 +23512,7 @@ namespace WebHome.Models.DataEntity
 			this._TuitionAchievement = new EntitySet<TuitionAchievement>(new Action<TuitionAchievement>(this.attach_TuitionAchievement), new Action<TuitionAchievement>(this.detach_TuitionAchievement));
 			this._MonthlyBranchRevenueIndicator = new EntitySet<MonthlyBranchRevenueIndicator>(new Action<MonthlyBranchRevenueIndicator>(this.attach_MonthlyBranchRevenueIndicator), new Action<MonthlyBranchRevenueIndicator>(this.detach_MonthlyBranchRevenueIndicator));
 			this._MonthlyBranchIndicator = new EntitySet<MonthlyBranchIndicator>(new Action<MonthlyBranchIndicator>(this.attach_MonthlyBranchIndicator), new Action<MonthlyBranchIndicator>(this.detach_MonthlyBranchIndicator));
+			this._MonthlyCoachRevenueIndicator = new EntitySet<MonthlyCoachRevenueIndicator>(new Action<MonthlyCoachRevenueIndicator>(this.attach_MonthlyCoachRevenueIndicator), new Action<MonthlyCoachRevenueIndicator>(this.detach_MonthlyCoachRevenueIndicator));
 			this._Manager = default(EntityRef<UserProfile>);
 			this._ViceManager = default(EntityRef<UserProfile>);
 			this._Organization = default(EntityRef<Organization>);
@@ -23709,6 +23803,19 @@ namespace WebHome.Models.DataEntity
 			set
 			{
 				this._MonthlyBranchIndicator.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="BranchStore_MonthlyCoachRevenueIndicator", Storage="_MonthlyCoachRevenueIndicator", ThisKey="BranchID", OtherKey="BranchID")]
+		public EntitySet<MonthlyCoachRevenueIndicator> MonthlyCoachRevenueIndicator
+		{
+			get
+			{
+				return this._MonthlyCoachRevenueIndicator;
+			}
+			set
+			{
+				this._MonthlyCoachRevenueIndicator.Assign(value);
 			}
 		}
 		
@@ -24009,6 +24116,18 @@ namespace WebHome.Models.DataEntity
 		}
 		
 		private void detach_MonthlyBranchIndicator(MonthlyBranchIndicator entity)
+		{
+			this.SendPropertyChanging();
+			entity.BranchStore = null;
+		}
+		
+		private void attach_MonthlyCoachRevenueIndicator(MonthlyCoachRevenueIndicator entity)
+		{
+			this.SendPropertyChanging();
+			entity.BranchStore = this;
+		}
+		
+		private void detach_MonthlyCoachRevenueIndicator(MonthlyCoachRevenueIndicator entity)
 		{
 			this.SendPropertyChanging();
 			entity.BranchStore = null;
@@ -50709,519 +50828,6 @@ namespace WebHome.Models.DataEntity
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.V_Tuition")]
-	public partial class V_Tuition
-	{
-		
-		private int _LessonID;
-		
-		private System.Nullable<System.DateTime> _ClassTime;
-		
-		private System.Nullable<int> _AttendingCoach;
-		
-		private System.Nullable<int> _GroupID;
-		
-		private System.Nullable<int> _BranchID;
-		
-		private System.Nullable<int> _CoachAttendance;
-		
-		private System.Nullable<System.DateTime> _CompleteDate;
-		
-		private System.Nullable<System.DateTime> _CommitAttendance;
-		
-		private int _PriceID;
-		
-		private System.Nullable<int> _PriceStatus;
-		
-		private System.Nullable<int> _ELStatus;
-		
-		private System.Nullable<decimal> _AchievementIndex;
-		
-		private System.Nullable<decimal> _TuitionIndex;
-		
-		private int _RegisterID;
-		
-		private int _GroupingMemberCount;
-		
-		private System.Nullable<int> _ListPrice;
-		
-		private System.Nullable<int> _PercentageOfDiscount;
-		
-		private int _ProfessionalLevelID;
-		
-		private System.Nullable<decimal> _MarkedGradeIndex;
-		
-		private string _BranchName;
-		
-		private string _OfficeLocation;
-		
-		private System.Nullable<int> _EnterpriseRegisterID;
-		
-		private System.Nullable<int> _EnterpriseListPrice;
-		
-		private System.Nullable<int> _WorkPlace;
-		
-		private System.Nullable<int> _EnterpriseContractID;
-		
-		private System.Nullable<int> _ContractID;
-		
-		private System.Nullable<int> _SettlementStatus;
-		
-		private System.Nullable<int> _CoachWorkPlace;
-		
-		public V_Tuition()
-		{
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LessonID", DbType="Int NOT NULL")]
-		public int LessonID
-		{
-			get
-			{
-				return this._LessonID;
-			}
-			set
-			{
-				if ((this._LessonID != value))
-				{
-					this._LessonID = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ClassTime", DbType="DateTime")]
-		public System.Nullable<System.DateTime> ClassTime
-		{
-			get
-			{
-				return this._ClassTime;
-			}
-			set
-			{
-				if ((this._ClassTime != value))
-				{
-					this._ClassTime = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AttendingCoach", DbType="Int")]
-		public System.Nullable<int> AttendingCoach
-		{
-			get
-			{
-				return this._AttendingCoach;
-			}
-			set
-			{
-				if ((this._AttendingCoach != value))
-				{
-					this._AttendingCoach = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GroupID", DbType="Int")]
-		public System.Nullable<int> GroupID
-		{
-			get
-			{
-				return this._GroupID;
-			}
-			set
-			{
-				if ((this._GroupID != value))
-				{
-					this._GroupID = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BranchID", DbType="Int")]
-		public System.Nullable<int> BranchID
-		{
-			get
-			{
-				return this._BranchID;
-			}
-			set
-			{
-				if ((this._BranchID != value))
-				{
-					this._BranchID = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CoachAttendance", DbType="Int")]
-		public System.Nullable<int> CoachAttendance
-		{
-			get
-			{
-				return this._CoachAttendance;
-			}
-			set
-			{
-				if ((this._CoachAttendance != value))
-				{
-					this._CoachAttendance = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CompleteDate", DbType="DateTime")]
-		public System.Nullable<System.DateTime> CompleteDate
-		{
-			get
-			{
-				return this._CompleteDate;
-			}
-			set
-			{
-				if ((this._CompleteDate != value))
-				{
-					this._CompleteDate = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CommitAttendance", DbType="DateTime")]
-		public System.Nullable<System.DateTime> CommitAttendance
-		{
-			get
-			{
-				return this._CommitAttendance;
-			}
-			set
-			{
-				if ((this._CommitAttendance != value))
-				{
-					this._CommitAttendance = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PriceID", DbType="Int NOT NULL")]
-		public int PriceID
-		{
-			get
-			{
-				return this._PriceID;
-			}
-			set
-			{
-				if ((this._PriceID != value))
-				{
-					this._PriceID = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PriceStatus", DbType="Int")]
-		public System.Nullable<int> PriceStatus
-		{
-			get
-			{
-				return this._PriceStatus;
-			}
-			set
-			{
-				if ((this._PriceStatus != value))
-				{
-					this._PriceStatus = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ELStatus", DbType="Int")]
-		public System.Nullable<int> ELStatus
-		{
-			get
-			{
-				return this._ELStatus;
-			}
-			set
-			{
-				if ((this._ELStatus != value))
-				{
-					this._ELStatus = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AchievementIndex", DbType="Decimal(2,1)")]
-		public System.Nullable<decimal> AchievementIndex
-		{
-			get
-			{
-				return this._AchievementIndex;
-			}
-			set
-			{
-				if ((this._AchievementIndex != value))
-				{
-					this._AchievementIndex = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TuitionIndex", DbType="Decimal(2,1)")]
-		public System.Nullable<decimal> TuitionIndex
-		{
-			get
-			{
-				return this._TuitionIndex;
-			}
-			set
-			{
-				if ((this._TuitionIndex != value))
-				{
-					this._TuitionIndex = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RegisterID", DbType="Int NOT NULL")]
-		public int RegisterID
-		{
-			get
-			{
-				return this._RegisterID;
-			}
-			set
-			{
-				if ((this._RegisterID != value))
-				{
-					this._RegisterID = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GroupingMemberCount", DbType="Int NOT NULL")]
-		public int GroupingMemberCount
-		{
-			get
-			{
-				return this._GroupingMemberCount;
-			}
-			set
-			{
-				if ((this._GroupingMemberCount != value))
-				{
-					this._GroupingMemberCount = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ListPrice", DbType="Int")]
-		public System.Nullable<int> ListPrice
-		{
-			get
-			{
-				return this._ListPrice;
-			}
-			set
-			{
-				if ((this._ListPrice != value))
-				{
-					this._ListPrice = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PercentageOfDiscount", DbType="Int")]
-		public System.Nullable<int> PercentageOfDiscount
-		{
-			get
-			{
-				return this._PercentageOfDiscount;
-			}
-			set
-			{
-				if ((this._PercentageOfDiscount != value))
-				{
-					this._PercentageOfDiscount = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProfessionalLevelID", DbType="Int NOT NULL")]
-		public int ProfessionalLevelID
-		{
-			get
-			{
-				return this._ProfessionalLevelID;
-			}
-			set
-			{
-				if ((this._ProfessionalLevelID != value))
-				{
-					this._ProfessionalLevelID = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MarkedGradeIndex", DbType="Decimal(18,2)")]
-		public System.Nullable<decimal> MarkedGradeIndex
-		{
-			get
-			{
-				return this._MarkedGradeIndex;
-			}
-			set
-			{
-				if ((this._MarkedGradeIndex != value))
-				{
-					this._MarkedGradeIndex = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BranchName", DbType="NVarChar(32)")]
-		public string BranchName
-		{
-			get
-			{
-				return this._BranchName;
-			}
-			set
-			{
-				if ((this._BranchName != value))
-				{
-					this._BranchName = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OfficeLocation", DbType="NVarChar(32) NOT NULL", CanBeNull=false)]
-		public string OfficeLocation
-		{
-			get
-			{
-				return this._OfficeLocation;
-			}
-			set
-			{
-				if ((this._OfficeLocation != value))
-				{
-					this._OfficeLocation = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EnterpriseRegisterID", DbType="Int")]
-		public System.Nullable<int> EnterpriseRegisterID
-		{
-			get
-			{
-				return this._EnterpriseRegisterID;
-			}
-			set
-			{
-				if ((this._EnterpriseRegisterID != value))
-				{
-					this._EnterpriseRegisterID = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EnterpriseListPrice", DbType="Int")]
-		public System.Nullable<int> EnterpriseListPrice
-		{
-			get
-			{
-				return this._EnterpriseListPrice;
-			}
-			set
-			{
-				if ((this._EnterpriseListPrice != value))
-				{
-					this._EnterpriseListPrice = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_WorkPlace", DbType="Int")]
-		public System.Nullable<int> WorkPlace
-		{
-			get
-			{
-				return this._WorkPlace;
-			}
-			set
-			{
-				if ((this._WorkPlace != value))
-				{
-					this._WorkPlace = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EnterpriseContractID", DbType="Int")]
-		public System.Nullable<int> EnterpriseContractID
-		{
-			get
-			{
-				return this._EnterpriseContractID;
-			}
-			set
-			{
-				if ((this._EnterpriseContractID != value))
-				{
-					this._EnterpriseContractID = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ContractID", DbType="Int")]
-		public System.Nullable<int> ContractID
-		{
-			get
-			{
-				return this._ContractID;
-			}
-			set
-			{
-				if ((this._ContractID != value))
-				{
-					this._ContractID = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SettlementStatus", DbType="Int")]
-		public System.Nullable<int> SettlementStatus
-		{
-			get
-			{
-				return this._SettlementStatus;
-			}
-			set
-			{
-				if ((this._SettlementStatus != value))
-				{
-					this._SettlementStatus = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CoachWorkPlace", DbType="Int")]
-		public System.Nullable<int> CoachWorkPlace
-		{
-			get
-			{
-				return this._CoachWorkPlace;
-			}
-			set
-			{
-				if ((this._CoachWorkPlace != value))
-				{
-					this._CoachWorkPlace = value;
-				}
-			}
-		}
-	}
-	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.LessonTimeSettlement")]
 	public partial class LessonTimeSettlement : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -52353,169 +51959,6 @@ namespace WebHome.Models.DataEntity
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="KPI.MonthlyBranchRevenueGoal")]
-	public partial class MonthlyBranchRevenueGoal : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _PeriodID;
-		
-		private int _BranchID;
-		
-		private int _GradeID;
-		
-		private EntityRef<MonthlyBranchRevenueIndicator> _MonthlyBranchRevenueIndicator;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnPeriodIDChanging(int value);
-    partial void OnPeriodIDChanged();
-    partial void OnBranchIDChanging(int value);
-    partial void OnBranchIDChanged();
-    partial void OnGradeIDChanging(int value);
-    partial void OnGradeIDChanged();
-    #endregion
-		
-		public MonthlyBranchRevenueGoal()
-		{
-			this._MonthlyBranchRevenueIndicator = default(EntityRef<MonthlyBranchRevenueIndicator>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PeriodID", DbType="Int NOT NULL", IsPrimaryKey=true)]
-		public int PeriodID
-		{
-			get
-			{
-				return this._PeriodID;
-			}
-			set
-			{
-				if ((this._PeriodID != value))
-				{
-					if (this._MonthlyBranchRevenueIndicator.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnPeriodIDChanging(value);
-					this.SendPropertyChanging();
-					this._PeriodID = value;
-					this.SendPropertyChanged("PeriodID");
-					this.OnPeriodIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BranchID", DbType="Int NOT NULL", IsPrimaryKey=true)]
-		public int BranchID
-		{
-			get
-			{
-				return this._BranchID;
-			}
-			set
-			{
-				if ((this._BranchID != value))
-				{
-					if (this._MonthlyBranchRevenueIndicator.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnBranchIDChanging(value);
-					this.SendPropertyChanging();
-					this._BranchID = value;
-					this.SendPropertyChanged("BranchID");
-					this.OnBranchIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GradeID", DbType="Int NOT NULL", IsPrimaryKey=true)]
-		public int GradeID
-		{
-			get
-			{
-				return this._GradeID;
-			}
-			set
-			{
-				if ((this._GradeID != value))
-				{
-					if (this._MonthlyBranchRevenueIndicator.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnGradeIDChanging(value);
-					this.SendPropertyChanging();
-					this._GradeID = value;
-					this.SendPropertyChanged("GradeID");
-					this.OnGradeIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="MonthlyBranchRevenueIndicator_MonthlyBranchRevenueGoal", Storage="_MonthlyBranchRevenueIndicator", ThisKey="PeriodID,BranchID,GradeID", OtherKey="PeriodID,BranchID,GradeID", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		public MonthlyBranchRevenueIndicator MonthlyBranchRevenueIndicator
-		{
-			get
-			{
-				return this._MonthlyBranchRevenueIndicator.Entity;
-			}
-			set
-			{
-				MonthlyBranchRevenueIndicator previousValue = this._MonthlyBranchRevenueIndicator.Entity;
-				if (((previousValue != value) 
-							|| (this._MonthlyBranchRevenueIndicator.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._MonthlyBranchRevenueIndicator.Entity = null;
-						previousValue.MonthlyBranchRevenueGoal = null;
-					}
-					this._MonthlyBranchRevenueIndicator.Entity = value;
-					if ((value != null))
-					{
-						value.MonthlyBranchRevenueGoal = this;
-						this._PeriodID = value.PeriodID;
-						this._BranchID = value.BranchID;
-						this._GradeID = value.GradeID;
-					}
-					else
-					{
-						this._PeriodID = default(int);
-						this._BranchID = default(int);
-						this._GradeID = default(int);
-					}
-					this.SendPropertyChanged("MonthlyBranchRevenueIndicator");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="KPI.MonthlyRevenueGrade")]
 	public partial class MonthlyRevenueGrade : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -53032,6 +52475,8 @@ namespace WebHome.Models.DataEntity
 		
 		private EntitySet<MonthlyRevenueIndicator> _MonthlyRevenueIndicator;
 		
+		private EntitySet<MonthlyCoachRevenueIndicator> _MonthlyCoachRevenueIndicator;
+		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -53053,6 +52498,7 @@ namespace WebHome.Models.DataEntity
 			this._MonthlyBranchRevenueIndicator = new EntitySet<MonthlyBranchRevenueIndicator>(new Action<MonthlyBranchRevenueIndicator>(this.attach_MonthlyBranchRevenueIndicator), new Action<MonthlyBranchRevenueIndicator>(this.detach_MonthlyBranchRevenueIndicator));
 			this._MonthlyBranchIndicator = new EntitySet<MonthlyBranchIndicator>(new Action<MonthlyBranchIndicator>(this.attach_MonthlyBranchIndicator), new Action<MonthlyBranchIndicator>(this.detach_MonthlyBranchIndicator));
 			this._MonthlyRevenueIndicator = new EntitySet<MonthlyRevenueIndicator>(new Action<MonthlyRevenueIndicator>(this.attach_MonthlyRevenueIndicator), new Action<MonthlyRevenueIndicator>(this.detach_MonthlyRevenueIndicator));
+			this._MonthlyCoachRevenueIndicator = new EntitySet<MonthlyCoachRevenueIndicator>(new Action<MonthlyCoachRevenueIndicator>(this.attach_MonthlyCoachRevenueIndicator), new Action<MonthlyCoachRevenueIndicator>(this.detach_MonthlyCoachRevenueIndicator));
 			OnCreated();
 		}
 		
@@ -53195,6 +52641,19 @@ namespace WebHome.Models.DataEntity
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="MonthlyIndicator_MonthlyCoachRevenueIndicator", Storage="_MonthlyCoachRevenueIndicator", ThisKey="PeriodID", OtherKey="PeriodID")]
+		public EntitySet<MonthlyCoachRevenueIndicator> MonthlyCoachRevenueIndicator
+		{
+			get
+			{
+				return this._MonthlyCoachRevenueIndicator;
+			}
+			set
+			{
+				this._MonthlyCoachRevenueIndicator.Assign(value);
+			}
+		}
+		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -53246,6 +52705,18 @@ namespace WebHome.Models.DataEntity
 		}
 		
 		private void detach_MonthlyRevenueIndicator(MonthlyRevenueIndicator entity)
+		{
+			this.SendPropertyChanging();
+			entity.MonthlyIndicator = null;
+		}
+		
+		private void attach_MonthlyCoachRevenueIndicator(MonthlyCoachRevenueIndicator entity)
+		{
+			this.SendPropertyChanging();
+			entity.MonthlyIndicator = this;
+		}
+		
+		private void detach_MonthlyCoachRevenueIndicator(MonthlyCoachRevenueIndicator entity)
 		{
 			this.SendPropertyChanging();
 			entity.MonthlyIndicator = null;
@@ -53744,6 +53215,592 @@ namespace WebHome.Models.DataEntity
 		}
 	}
 	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="KPI.MonthlyCoachRevenueIndicator")]
+	public partial class MonthlyCoachRevenueIndicator : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _PeriodID;
+		
+		private int _CoachID;
+		
+		private System.Nullable<int> _AchievementGoal;
+		
+		private System.Nullable<int> _CompleteLessonsGoal;
+		
+		private System.Nullable<int> _AverageLessonPrice;
+		
+		private System.Nullable<int> _LessonTuitionGoal;
+		
+		private System.Nullable<int> _BranchID;
+		
+		private System.Nullable<int> _ActualCompleteLessonCount;
+		
+		private System.Nullable<int> _ActualSharedPIAchievement;
+		
+		private System.Nullable<int> _ActualSharedMerchandiseAchievement;
+		
+		private System.Nullable<int> _ActualNewContractAchievement;
+		
+		private System.Nullable<int> _ActualRenewContractAchievement;
+		
+		private System.Nullable<int> _ActualLessonAchievement;
+		
+		private System.Nullable<int> _LevelID;
+		
+		private System.Nullable<int> _ActualCompleteTSCount;
+		
+		private System.Nullable<int> _ActualCompletePICount;
+		
+		private EntityRef<BranchStore> _BranchStore;
+		
+		private EntityRef<MonthlyIndicator> _MonthlyIndicator;
+		
+		private EntityRef<ProfessionalLevel> _ProfessionalLevel;
+		
+		private EntityRef<ServingCoach> _ServingCoach;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnPeriodIDChanging(int value);
+    partial void OnPeriodIDChanged();
+    partial void OnCoachIDChanging(int value);
+    partial void OnCoachIDChanged();
+    partial void OnAchievementGoalChanging(System.Nullable<int> value);
+    partial void OnAchievementGoalChanged();
+    partial void OnCompleteLessonsGoalChanging(System.Nullable<int> value);
+    partial void OnCompleteLessonsGoalChanged();
+    partial void OnAverageLessonPriceChanging(System.Nullable<int> value);
+    partial void OnAverageLessonPriceChanged();
+    partial void OnLessonTuitionGoalChanging(System.Nullable<int> value);
+    partial void OnLessonTuitionGoalChanged();
+    partial void OnBranchIDChanging(System.Nullable<int> value);
+    partial void OnBranchIDChanged();
+    partial void OnActualCompleteLessonCountChanging(System.Nullable<int> value);
+    partial void OnActualCompleteLessonCountChanged();
+    partial void OnActualSharedPIAchievementChanging(System.Nullable<int> value);
+    partial void OnActualSharedPIAchievementChanged();
+    partial void OnActualSharedMerchandiseAchievementChanging(System.Nullable<int> value);
+    partial void OnActualSharedMerchandiseAchievementChanged();
+    partial void OnActualNewContractAchievementChanging(System.Nullable<int> value);
+    partial void OnActualNewContractAchievementChanged();
+    partial void OnActualRenewContractAchievementChanging(System.Nullable<int> value);
+    partial void OnActualRenewContractAchievementChanged();
+    partial void OnActualLessonAchievementChanging(System.Nullable<int> value);
+    partial void OnActualLessonAchievementChanged();
+    partial void OnLevelIDChanging(System.Nullable<int> value);
+    partial void OnLevelIDChanged();
+    partial void OnActualCompleteTSCountChanging(System.Nullable<int> value);
+    partial void OnActualCompleteTSCountChanged();
+    partial void OnActualCompletePICountChanging(System.Nullable<int> value);
+    partial void OnActualCompletePICountChanged();
+    #endregion
+		
+		public MonthlyCoachRevenueIndicator()
+		{
+			this._BranchStore = default(EntityRef<BranchStore>);
+			this._MonthlyIndicator = default(EntityRef<MonthlyIndicator>);
+			this._ProfessionalLevel = default(EntityRef<ProfessionalLevel>);
+			this._ServingCoach = default(EntityRef<ServingCoach>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PeriodID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int PeriodID
+		{
+			get
+			{
+				return this._PeriodID;
+			}
+			set
+			{
+				if ((this._PeriodID != value))
+				{
+					if (this._MonthlyIndicator.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnPeriodIDChanging(value);
+					this.SendPropertyChanging();
+					this._PeriodID = value;
+					this.SendPropertyChanged("PeriodID");
+					this.OnPeriodIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CoachID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int CoachID
+		{
+			get
+			{
+				return this._CoachID;
+			}
+			set
+			{
+				if ((this._CoachID != value))
+				{
+					if (this._ServingCoach.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnCoachIDChanging(value);
+					this.SendPropertyChanging();
+					this._CoachID = value;
+					this.SendPropertyChanged("CoachID");
+					this.OnCoachIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AchievementGoal", DbType="Int")]
+		public System.Nullable<int> AchievementGoal
+		{
+			get
+			{
+				return this._AchievementGoal;
+			}
+			set
+			{
+				if ((this._AchievementGoal != value))
+				{
+					this.OnAchievementGoalChanging(value);
+					this.SendPropertyChanging();
+					this._AchievementGoal = value;
+					this.SendPropertyChanged("AchievementGoal");
+					this.OnAchievementGoalChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CompleteLessonsGoal", DbType="Int")]
+		public System.Nullable<int> CompleteLessonsGoal
+		{
+			get
+			{
+				return this._CompleteLessonsGoal;
+			}
+			set
+			{
+				if ((this._CompleteLessonsGoal != value))
+				{
+					this.OnCompleteLessonsGoalChanging(value);
+					this.SendPropertyChanging();
+					this._CompleteLessonsGoal = value;
+					this.SendPropertyChanged("CompleteLessonsGoal");
+					this.OnCompleteLessonsGoalChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AverageLessonPrice", DbType="Int")]
+		public System.Nullable<int> AverageLessonPrice
+		{
+			get
+			{
+				return this._AverageLessonPrice;
+			}
+			set
+			{
+				if ((this._AverageLessonPrice != value))
+				{
+					this.OnAverageLessonPriceChanging(value);
+					this.SendPropertyChanging();
+					this._AverageLessonPrice = value;
+					this.SendPropertyChanged("AverageLessonPrice");
+					this.OnAverageLessonPriceChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LessonTuitionGoal", DbType="Int")]
+		public System.Nullable<int> LessonTuitionGoal
+		{
+			get
+			{
+				return this._LessonTuitionGoal;
+			}
+			set
+			{
+				if ((this._LessonTuitionGoal != value))
+				{
+					this.OnLessonTuitionGoalChanging(value);
+					this.SendPropertyChanging();
+					this._LessonTuitionGoal = value;
+					this.SendPropertyChanged("LessonTuitionGoal");
+					this.OnLessonTuitionGoalChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BranchID", DbType="Int")]
+		public System.Nullable<int> BranchID
+		{
+			get
+			{
+				return this._BranchID;
+			}
+			set
+			{
+				if ((this._BranchID != value))
+				{
+					if (this._BranchStore.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnBranchIDChanging(value);
+					this.SendPropertyChanging();
+					this._BranchID = value;
+					this.SendPropertyChanged("BranchID");
+					this.OnBranchIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ActualCompleteLessonCount", DbType="Int")]
+		public System.Nullable<int> ActualCompleteLessonCount
+		{
+			get
+			{
+				return this._ActualCompleteLessonCount;
+			}
+			set
+			{
+				if ((this._ActualCompleteLessonCount != value))
+				{
+					this.OnActualCompleteLessonCountChanging(value);
+					this.SendPropertyChanging();
+					this._ActualCompleteLessonCount = value;
+					this.SendPropertyChanged("ActualCompleteLessonCount");
+					this.OnActualCompleteLessonCountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ActualSharedPIAchievement", DbType="Int")]
+		public System.Nullable<int> ActualSharedPIAchievement
+		{
+			get
+			{
+				return this._ActualSharedPIAchievement;
+			}
+			set
+			{
+				if ((this._ActualSharedPIAchievement != value))
+				{
+					this.OnActualSharedPIAchievementChanging(value);
+					this.SendPropertyChanging();
+					this._ActualSharedPIAchievement = value;
+					this.SendPropertyChanged("ActualSharedPIAchievement");
+					this.OnActualSharedPIAchievementChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ActualSharedMerchandiseAchievement", DbType="Int")]
+		public System.Nullable<int> ActualSharedMerchandiseAchievement
+		{
+			get
+			{
+				return this._ActualSharedMerchandiseAchievement;
+			}
+			set
+			{
+				if ((this._ActualSharedMerchandiseAchievement != value))
+				{
+					this.OnActualSharedMerchandiseAchievementChanging(value);
+					this.SendPropertyChanging();
+					this._ActualSharedMerchandiseAchievement = value;
+					this.SendPropertyChanged("ActualSharedMerchandiseAchievement");
+					this.OnActualSharedMerchandiseAchievementChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ActualNewContractAchievement", DbType="Int")]
+		public System.Nullable<int> ActualNewContractAchievement
+		{
+			get
+			{
+				return this._ActualNewContractAchievement;
+			}
+			set
+			{
+				if ((this._ActualNewContractAchievement != value))
+				{
+					this.OnActualNewContractAchievementChanging(value);
+					this.SendPropertyChanging();
+					this._ActualNewContractAchievement = value;
+					this.SendPropertyChanged("ActualNewContractAchievement");
+					this.OnActualNewContractAchievementChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ActualRenewContractAchievement", DbType="Int")]
+		public System.Nullable<int> ActualRenewContractAchievement
+		{
+			get
+			{
+				return this._ActualRenewContractAchievement;
+			}
+			set
+			{
+				if ((this._ActualRenewContractAchievement != value))
+				{
+					this.OnActualRenewContractAchievementChanging(value);
+					this.SendPropertyChanging();
+					this._ActualRenewContractAchievement = value;
+					this.SendPropertyChanged("ActualRenewContractAchievement");
+					this.OnActualRenewContractAchievementChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ActualLessonAchievement", DbType="Int")]
+		public System.Nullable<int> ActualLessonAchievement
+		{
+			get
+			{
+				return this._ActualLessonAchievement;
+			}
+			set
+			{
+				if ((this._ActualLessonAchievement != value))
+				{
+					this.OnActualLessonAchievementChanging(value);
+					this.SendPropertyChanging();
+					this._ActualLessonAchievement = value;
+					this.SendPropertyChanged("ActualLessonAchievement");
+					this.OnActualLessonAchievementChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LevelID", DbType="Int")]
+		public System.Nullable<int> LevelID
+		{
+			get
+			{
+				return this._LevelID;
+			}
+			set
+			{
+				if ((this._LevelID != value))
+				{
+					if (this._ProfessionalLevel.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnLevelIDChanging(value);
+					this.SendPropertyChanging();
+					this._LevelID = value;
+					this.SendPropertyChanged("LevelID");
+					this.OnLevelIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ActualCompleteTSCount", DbType="Int")]
+		public System.Nullable<int> ActualCompleteTSCount
+		{
+			get
+			{
+				return this._ActualCompleteTSCount;
+			}
+			set
+			{
+				if ((this._ActualCompleteTSCount != value))
+				{
+					this.OnActualCompleteTSCountChanging(value);
+					this.SendPropertyChanging();
+					this._ActualCompleteTSCount = value;
+					this.SendPropertyChanged("ActualCompleteTSCount");
+					this.OnActualCompleteTSCountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ActualCompletePICount", DbType="Int")]
+		public System.Nullable<int> ActualCompletePICount
+		{
+			get
+			{
+				return this._ActualCompletePICount;
+			}
+			set
+			{
+				if ((this._ActualCompletePICount != value))
+				{
+					this.OnActualCompletePICountChanging(value);
+					this.SendPropertyChanging();
+					this._ActualCompletePICount = value;
+					this.SendPropertyChanged("ActualCompletePICount");
+					this.OnActualCompletePICountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="BranchStore_MonthlyCoachRevenueIndicator", Storage="_BranchStore", ThisKey="BranchID", OtherKey="BranchID", IsForeignKey=true)]
+		public BranchStore BranchStore
+		{
+			get
+			{
+				return this._BranchStore.Entity;
+			}
+			set
+			{
+				BranchStore previousValue = this._BranchStore.Entity;
+				if (((previousValue != value) 
+							|| (this._BranchStore.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._BranchStore.Entity = null;
+						previousValue.MonthlyCoachRevenueIndicator.Remove(this);
+					}
+					this._BranchStore.Entity = value;
+					if ((value != null))
+					{
+						value.MonthlyCoachRevenueIndicator.Add(this);
+						this._BranchID = value.BranchID;
+					}
+					else
+					{
+						this._BranchID = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("BranchStore");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="MonthlyIndicator_MonthlyCoachRevenueIndicator", Storage="_MonthlyIndicator", ThisKey="PeriodID", OtherKey="PeriodID", IsForeignKey=true)]
+		public MonthlyIndicator MonthlyIndicator
+		{
+			get
+			{
+				return this._MonthlyIndicator.Entity;
+			}
+			set
+			{
+				MonthlyIndicator previousValue = this._MonthlyIndicator.Entity;
+				if (((previousValue != value) 
+							|| (this._MonthlyIndicator.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._MonthlyIndicator.Entity = null;
+						previousValue.MonthlyCoachRevenueIndicator.Remove(this);
+					}
+					this._MonthlyIndicator.Entity = value;
+					if ((value != null))
+					{
+						value.MonthlyCoachRevenueIndicator.Add(this);
+						this._PeriodID = value.PeriodID;
+					}
+					else
+					{
+						this._PeriodID = default(int);
+					}
+					this.SendPropertyChanged("MonthlyIndicator");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ProfessionalLevel_MonthlyCoachRevenueIndicator", Storage="_ProfessionalLevel", ThisKey="LevelID", OtherKey="LevelID", IsForeignKey=true)]
+		public ProfessionalLevel ProfessionalLevel
+		{
+			get
+			{
+				return this._ProfessionalLevel.Entity;
+			}
+			set
+			{
+				ProfessionalLevel previousValue = this._ProfessionalLevel.Entity;
+				if (((previousValue != value) 
+							|| (this._ProfessionalLevel.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._ProfessionalLevel.Entity = null;
+						previousValue.MonthlyCoachRevenueIndicator.Remove(this);
+					}
+					this._ProfessionalLevel.Entity = value;
+					if ((value != null))
+					{
+						value.MonthlyCoachRevenueIndicator.Add(this);
+						this._LevelID = value.LevelID;
+					}
+					else
+					{
+						this._LevelID = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("ProfessionalLevel");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ServingCoach_MonthlyCoachRevenueIndicator", Storage="_ServingCoach", ThisKey="CoachID", OtherKey="CoachID", IsForeignKey=true)]
+		public ServingCoach ServingCoach
+		{
+			get
+			{
+				return this._ServingCoach.Entity;
+			}
+			set
+			{
+				ServingCoach previousValue = this._ServingCoach.Entity;
+				if (((previousValue != value) 
+							|| (this._ServingCoach.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._ServingCoach.Entity = null;
+						previousValue.MonthlyCoachRevenueIndicator.Remove(this);
+					}
+					this._ServingCoach.Entity = value;
+					if ((value != null))
+					{
+						value.MonthlyCoachRevenueIndicator.Add(this);
+						this._CoachID = value.CoachID;
+					}
+					else
+					{
+						this._CoachID = default(int);
+					}
+					this.SendPropertyChanged("ServingCoach");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="KPI.MonthlyRevenueGoal")]
 	public partial class MonthlyRevenueGoal : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -53757,6 +53814,26 @@ namespace WebHome.Models.DataEntity
 		private System.Nullable<decimal> _CustomIndicatorPercentage;
 		
 		private System.Nullable<int> _CustomRevenueGoal;
+		
+		private System.Nullable<int> _ActualLessonAchievement;
+		
+		private System.Nullable<int> _ActualSharedAchievement;
+		
+		private System.Nullable<int> _ActualCompleteLessonCount;
+		
+		private System.Nullable<int> _AchievementGoal;
+		
+		private System.Nullable<int> _CompleteLessonsGoal;
+		
+		private System.Nullable<int> _LessonTuitionGoal;
+		
+		private System.Nullable<int> _NewContractCount;
+		
+		private System.Nullable<int> _RenewContractCount;
+		
+		private System.Nullable<int> _ActualCompleteTSCount;
+		
+		private System.Nullable<int> _ActualCompletePICount;
 		
 		private EntityRef<MonthlyRevenueIndicator> _MonthlyRevenueIndicator;
 		
@@ -53772,6 +53849,26 @@ namespace WebHome.Models.DataEntity
     partial void OnCustomIndicatorPercentageChanged();
     partial void OnCustomRevenueGoalChanging(System.Nullable<int> value);
     partial void OnCustomRevenueGoalChanged();
+    partial void OnActualLessonAchievementChanging(System.Nullable<int> value);
+    partial void OnActualLessonAchievementChanged();
+    partial void OnActualSharedAchievementChanging(System.Nullable<int> value);
+    partial void OnActualSharedAchievementChanged();
+    partial void OnActualCompleteLessonCountChanging(System.Nullable<int> value);
+    partial void OnActualCompleteLessonCountChanged();
+    partial void OnAchievementGoalChanging(System.Nullable<int> value);
+    partial void OnAchievementGoalChanged();
+    partial void OnCompleteLessonsGoalChanging(System.Nullable<int> value);
+    partial void OnCompleteLessonsGoalChanged();
+    partial void OnLessonTuitionGoalChanging(System.Nullable<int> value);
+    partial void OnLessonTuitionGoalChanged();
+    partial void OnNewContractCountChanging(System.Nullable<int> value);
+    partial void OnNewContractCountChanged();
+    partial void OnRenewContractCountChanging(System.Nullable<int> value);
+    partial void OnRenewContractCountChanged();
+    partial void OnActualCompleteTSCountChanging(System.Nullable<int> value);
+    partial void OnActualCompleteTSCountChanged();
+    partial void OnActualCompletePICountChanging(System.Nullable<int> value);
+    partial void OnActualCompletePICountChanged();
     #endregion
 		
 		public MonthlyRevenueGoal()
@@ -53868,6 +53965,206 @@ namespace WebHome.Models.DataEntity
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ActualLessonAchievement", DbType="Int")]
+		public System.Nullable<int> ActualLessonAchievement
+		{
+			get
+			{
+				return this._ActualLessonAchievement;
+			}
+			set
+			{
+				if ((this._ActualLessonAchievement != value))
+				{
+					this.OnActualLessonAchievementChanging(value);
+					this.SendPropertyChanging();
+					this._ActualLessonAchievement = value;
+					this.SendPropertyChanged("ActualLessonAchievement");
+					this.OnActualLessonAchievementChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ActualSharedAchievement", DbType="Int")]
+		public System.Nullable<int> ActualSharedAchievement
+		{
+			get
+			{
+				return this._ActualSharedAchievement;
+			}
+			set
+			{
+				if ((this._ActualSharedAchievement != value))
+				{
+					this.OnActualSharedAchievementChanging(value);
+					this.SendPropertyChanging();
+					this._ActualSharedAchievement = value;
+					this.SendPropertyChanged("ActualSharedAchievement");
+					this.OnActualSharedAchievementChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ActualCompleteLessonCount", DbType="Int")]
+		public System.Nullable<int> ActualCompleteLessonCount
+		{
+			get
+			{
+				return this._ActualCompleteLessonCount;
+			}
+			set
+			{
+				if ((this._ActualCompleteLessonCount != value))
+				{
+					this.OnActualCompleteLessonCountChanging(value);
+					this.SendPropertyChanging();
+					this._ActualCompleteLessonCount = value;
+					this.SendPropertyChanged("ActualCompleteLessonCount");
+					this.OnActualCompleteLessonCountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AchievementGoal", DbType="Int")]
+		public System.Nullable<int> AchievementGoal
+		{
+			get
+			{
+				return this._AchievementGoal;
+			}
+			set
+			{
+				if ((this._AchievementGoal != value))
+				{
+					this.OnAchievementGoalChanging(value);
+					this.SendPropertyChanging();
+					this._AchievementGoal = value;
+					this.SendPropertyChanged("AchievementGoal");
+					this.OnAchievementGoalChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CompleteLessonsGoal", DbType="Int")]
+		public System.Nullable<int> CompleteLessonsGoal
+		{
+			get
+			{
+				return this._CompleteLessonsGoal;
+			}
+			set
+			{
+				if ((this._CompleteLessonsGoal != value))
+				{
+					this.OnCompleteLessonsGoalChanging(value);
+					this.SendPropertyChanging();
+					this._CompleteLessonsGoal = value;
+					this.SendPropertyChanged("CompleteLessonsGoal");
+					this.OnCompleteLessonsGoalChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LessonTuitionGoal", DbType="Int")]
+		public System.Nullable<int> LessonTuitionGoal
+		{
+			get
+			{
+				return this._LessonTuitionGoal;
+			}
+			set
+			{
+				if ((this._LessonTuitionGoal != value))
+				{
+					this.OnLessonTuitionGoalChanging(value);
+					this.SendPropertyChanging();
+					this._LessonTuitionGoal = value;
+					this.SendPropertyChanged("LessonTuitionGoal");
+					this.OnLessonTuitionGoalChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NewContractCount", DbType="Int")]
+		public System.Nullable<int> NewContractCount
+		{
+			get
+			{
+				return this._NewContractCount;
+			}
+			set
+			{
+				if ((this._NewContractCount != value))
+				{
+					this.OnNewContractCountChanging(value);
+					this.SendPropertyChanging();
+					this._NewContractCount = value;
+					this.SendPropertyChanged("NewContractCount");
+					this.OnNewContractCountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RenewContractCount", DbType="Int")]
+		public System.Nullable<int> RenewContractCount
+		{
+			get
+			{
+				return this._RenewContractCount;
+			}
+			set
+			{
+				if ((this._RenewContractCount != value))
+				{
+					this.OnRenewContractCountChanging(value);
+					this.SendPropertyChanging();
+					this._RenewContractCount = value;
+					this.SendPropertyChanged("RenewContractCount");
+					this.OnRenewContractCountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ActualCompleteTSCount", DbType="Int")]
+		public System.Nullable<int> ActualCompleteTSCount
+		{
+			get
+			{
+				return this._ActualCompleteTSCount;
+			}
+			set
+			{
+				if ((this._ActualCompleteTSCount != value))
+				{
+					this.OnActualCompleteTSCountChanging(value);
+					this.SendPropertyChanging();
+					this._ActualCompleteTSCount = value;
+					this.SendPropertyChanged("ActualCompleteTSCount");
+					this.OnActualCompleteTSCountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ActualCompletePICount", DbType="Int")]
+		public System.Nullable<int> ActualCompletePICount
+		{
+			get
+			{
+				return this._ActualCompletePICount;
+			}
+			set
+			{
+				if ((this._ActualCompletePICount != value))
+				{
+					this.OnActualCompletePICountChanging(value);
+					this.SendPropertyChanging();
+					this._ActualCompletePICount = value;
+					this.SendPropertyChanged("ActualCompletePICount");
+					this.OnActualCompletePICountChanged();
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="MonthlyRevenueIndicator_MonthlyRevenueGoal", Storage="_MonthlyRevenueIndicator", ThisKey="PeriodID,GradeID", OtherKey="PeriodID,GradeID", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
 		public MonthlyRevenueIndicator MonthlyRevenueIndicator
 		{
@@ -53921,6 +54218,988 @@ namespace WebHome.Models.DataEntity
 			if ((this.PropertyChanged != null))
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="KPI.MonthlyBranchRevenueGoal")]
+	public partial class MonthlyBranchRevenueGoal : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _PeriodID;
+		
+		private int _BranchID;
+		
+		private int _GradeID;
+		
+		private System.Nullable<int> _ActualLessonAchievement;
+		
+		private System.Nullable<int> _ActualSharedAchievement;
+		
+		private System.Nullable<int> _ActualCompleteLessonCount;
+		
+		private System.Nullable<decimal> _CustomIndicatorPercentage;
+		
+		private System.Nullable<int> _CustomRevenueGoal;
+		
+		private System.Nullable<int> _AchievementGoal;
+		
+		private System.Nullable<int> _CompleteLessonsGoal;
+		
+		private System.Nullable<int> _LessonTuitionGoal;
+		
+		private System.Nullable<int> _NewContractCount;
+		
+		private System.Nullable<int> _RenewContractCount;
+		
+		private System.Nullable<int> _ActualCompleteTSCount;
+		
+		private System.Nullable<int> _ActualCompletePICount;
+		
+		private EntityRef<MonthlyBranchRevenueIndicator> _MonthlyBranchRevenueIndicator;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnPeriodIDChanging(int value);
+    partial void OnPeriodIDChanged();
+    partial void OnBranchIDChanging(int value);
+    partial void OnBranchIDChanged();
+    partial void OnGradeIDChanging(int value);
+    partial void OnGradeIDChanged();
+    partial void OnActualLessonAchievementChanging(System.Nullable<int> value);
+    partial void OnActualLessonAchievementChanged();
+    partial void OnActualSharedAchievementChanging(System.Nullable<int> value);
+    partial void OnActualSharedAchievementChanged();
+    partial void OnActualCompleteLessonCountChanging(System.Nullable<int> value);
+    partial void OnActualCompleteLessonCountChanged();
+    partial void OnCustomIndicatorPercentageChanging(System.Nullable<decimal> value);
+    partial void OnCustomIndicatorPercentageChanged();
+    partial void OnCustomRevenueGoalChanging(System.Nullable<int> value);
+    partial void OnCustomRevenueGoalChanged();
+    partial void OnAchievementGoalChanging(System.Nullable<int> value);
+    partial void OnAchievementGoalChanged();
+    partial void OnCompleteLessonsGoalChanging(System.Nullable<int> value);
+    partial void OnCompleteLessonsGoalChanged();
+    partial void OnLessonTuitionGoalChanging(System.Nullable<int> value);
+    partial void OnLessonTuitionGoalChanged();
+    partial void OnNewContractCountChanging(System.Nullable<int> value);
+    partial void OnNewContractCountChanged();
+    partial void OnRenewContractCountChanging(System.Nullable<int> value);
+    partial void OnRenewContractCountChanged();
+    partial void OnActualCompleteTSCountChanging(System.Nullable<int> value);
+    partial void OnActualCompleteTSCountChanged();
+    partial void OnActualCompletePICountChanging(System.Nullable<int> value);
+    partial void OnActualCompletePICountChanged();
+    #endregion
+		
+		public MonthlyBranchRevenueGoal()
+		{
+			this._MonthlyBranchRevenueIndicator = default(EntityRef<MonthlyBranchRevenueIndicator>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PeriodID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int PeriodID
+		{
+			get
+			{
+				return this._PeriodID;
+			}
+			set
+			{
+				if ((this._PeriodID != value))
+				{
+					if (this._MonthlyBranchRevenueIndicator.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnPeriodIDChanging(value);
+					this.SendPropertyChanging();
+					this._PeriodID = value;
+					this.SendPropertyChanged("PeriodID");
+					this.OnPeriodIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BranchID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int BranchID
+		{
+			get
+			{
+				return this._BranchID;
+			}
+			set
+			{
+				if ((this._BranchID != value))
+				{
+					if (this._MonthlyBranchRevenueIndicator.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnBranchIDChanging(value);
+					this.SendPropertyChanging();
+					this._BranchID = value;
+					this.SendPropertyChanged("BranchID");
+					this.OnBranchIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GradeID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int GradeID
+		{
+			get
+			{
+				return this._GradeID;
+			}
+			set
+			{
+				if ((this._GradeID != value))
+				{
+					if (this._MonthlyBranchRevenueIndicator.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnGradeIDChanging(value);
+					this.SendPropertyChanging();
+					this._GradeID = value;
+					this.SendPropertyChanged("GradeID");
+					this.OnGradeIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ActualLessonAchievement", DbType="Int")]
+		public System.Nullable<int> ActualLessonAchievement
+		{
+			get
+			{
+				return this._ActualLessonAchievement;
+			}
+			set
+			{
+				if ((this._ActualLessonAchievement != value))
+				{
+					this.OnActualLessonAchievementChanging(value);
+					this.SendPropertyChanging();
+					this._ActualLessonAchievement = value;
+					this.SendPropertyChanged("ActualLessonAchievement");
+					this.OnActualLessonAchievementChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ActualSharedAchievement", DbType="Int")]
+		public System.Nullable<int> ActualSharedAchievement
+		{
+			get
+			{
+				return this._ActualSharedAchievement;
+			}
+			set
+			{
+				if ((this._ActualSharedAchievement != value))
+				{
+					this.OnActualSharedAchievementChanging(value);
+					this.SendPropertyChanging();
+					this._ActualSharedAchievement = value;
+					this.SendPropertyChanged("ActualSharedAchievement");
+					this.OnActualSharedAchievementChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ActualCompleteLessonCount", DbType="Int")]
+		public System.Nullable<int> ActualCompleteLessonCount
+		{
+			get
+			{
+				return this._ActualCompleteLessonCount;
+			}
+			set
+			{
+				if ((this._ActualCompleteLessonCount != value))
+				{
+					this.OnActualCompleteLessonCountChanging(value);
+					this.SendPropertyChanging();
+					this._ActualCompleteLessonCount = value;
+					this.SendPropertyChanged("ActualCompleteLessonCount");
+					this.OnActualCompleteLessonCountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CustomIndicatorPercentage", DbType="Decimal(18,2)")]
+		public System.Nullable<decimal> CustomIndicatorPercentage
+		{
+			get
+			{
+				return this._CustomIndicatorPercentage;
+			}
+			set
+			{
+				if ((this._CustomIndicatorPercentage != value))
+				{
+					this.OnCustomIndicatorPercentageChanging(value);
+					this.SendPropertyChanging();
+					this._CustomIndicatorPercentage = value;
+					this.SendPropertyChanged("CustomIndicatorPercentage");
+					this.OnCustomIndicatorPercentageChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CustomRevenueGoal", DbType="Int")]
+		public System.Nullable<int> CustomRevenueGoal
+		{
+			get
+			{
+				return this._CustomRevenueGoal;
+			}
+			set
+			{
+				if ((this._CustomRevenueGoal != value))
+				{
+					this.OnCustomRevenueGoalChanging(value);
+					this.SendPropertyChanging();
+					this._CustomRevenueGoal = value;
+					this.SendPropertyChanged("CustomRevenueGoal");
+					this.OnCustomRevenueGoalChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AchievementGoal", DbType="Int")]
+		public System.Nullable<int> AchievementGoal
+		{
+			get
+			{
+				return this._AchievementGoal;
+			}
+			set
+			{
+				if ((this._AchievementGoal != value))
+				{
+					this.OnAchievementGoalChanging(value);
+					this.SendPropertyChanging();
+					this._AchievementGoal = value;
+					this.SendPropertyChanged("AchievementGoal");
+					this.OnAchievementGoalChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CompleteLessonsGoal", DbType="Int")]
+		public System.Nullable<int> CompleteLessonsGoal
+		{
+			get
+			{
+				return this._CompleteLessonsGoal;
+			}
+			set
+			{
+				if ((this._CompleteLessonsGoal != value))
+				{
+					this.OnCompleteLessonsGoalChanging(value);
+					this.SendPropertyChanging();
+					this._CompleteLessonsGoal = value;
+					this.SendPropertyChanged("CompleteLessonsGoal");
+					this.OnCompleteLessonsGoalChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LessonTuitionGoal", DbType="Int")]
+		public System.Nullable<int> LessonTuitionGoal
+		{
+			get
+			{
+				return this._LessonTuitionGoal;
+			}
+			set
+			{
+				if ((this._LessonTuitionGoal != value))
+				{
+					this.OnLessonTuitionGoalChanging(value);
+					this.SendPropertyChanging();
+					this._LessonTuitionGoal = value;
+					this.SendPropertyChanged("LessonTuitionGoal");
+					this.OnLessonTuitionGoalChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NewContractCount", DbType="Int")]
+		public System.Nullable<int> NewContractCount
+		{
+			get
+			{
+				return this._NewContractCount;
+			}
+			set
+			{
+				if ((this._NewContractCount != value))
+				{
+					this.OnNewContractCountChanging(value);
+					this.SendPropertyChanging();
+					this._NewContractCount = value;
+					this.SendPropertyChanged("NewContractCount");
+					this.OnNewContractCountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RenewContractCount", DbType="Int")]
+		public System.Nullable<int> RenewContractCount
+		{
+			get
+			{
+				return this._RenewContractCount;
+			}
+			set
+			{
+				if ((this._RenewContractCount != value))
+				{
+					this.OnRenewContractCountChanging(value);
+					this.SendPropertyChanging();
+					this._RenewContractCount = value;
+					this.SendPropertyChanged("RenewContractCount");
+					this.OnRenewContractCountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ActualCompleteTSCount", DbType="Int")]
+		public System.Nullable<int> ActualCompleteTSCount
+		{
+			get
+			{
+				return this._ActualCompleteTSCount;
+			}
+			set
+			{
+				if ((this._ActualCompleteTSCount != value))
+				{
+					this.OnActualCompleteTSCountChanging(value);
+					this.SendPropertyChanging();
+					this._ActualCompleteTSCount = value;
+					this.SendPropertyChanged("ActualCompleteTSCount");
+					this.OnActualCompleteTSCountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ActualCompletePICount", DbType="Int")]
+		public System.Nullable<int> ActualCompletePICount
+		{
+			get
+			{
+				return this._ActualCompletePICount;
+			}
+			set
+			{
+				if ((this._ActualCompletePICount != value))
+				{
+					this.OnActualCompletePICountChanging(value);
+					this.SendPropertyChanging();
+					this._ActualCompletePICount = value;
+					this.SendPropertyChanged("ActualCompletePICount");
+					this.OnActualCompletePICountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="MonthlyBranchRevenueIndicator_MonthlyBranchRevenueGoal", Storage="_MonthlyBranchRevenueIndicator", ThisKey="PeriodID,BranchID,GradeID", OtherKey="PeriodID,BranchID,GradeID", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public MonthlyBranchRevenueIndicator MonthlyBranchRevenueIndicator
+		{
+			get
+			{
+				return this._MonthlyBranchRevenueIndicator.Entity;
+			}
+			set
+			{
+				MonthlyBranchRevenueIndicator previousValue = this._MonthlyBranchRevenueIndicator.Entity;
+				if (((previousValue != value) 
+							|| (this._MonthlyBranchRevenueIndicator.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._MonthlyBranchRevenueIndicator.Entity = null;
+						previousValue.MonthlyBranchRevenueGoal = null;
+					}
+					this._MonthlyBranchRevenueIndicator.Entity = value;
+					if ((value != null))
+					{
+						value.MonthlyBranchRevenueGoal = this;
+						this._PeriodID = value.PeriodID;
+						this._BranchID = value.BranchID;
+						this._GradeID = value.GradeID;
+					}
+					else
+					{
+						this._PeriodID = default(int);
+						this._BranchID = default(int);
+						this._GradeID = default(int);
+					}
+					this.SendPropertyChanged("MonthlyBranchRevenueIndicator");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.V_Tuition")]
+	public partial class V_Tuition
+	{
+		
+		private int _LessonID;
+		
+		private System.Nullable<System.DateTime> _ClassTime;
+		
+		private System.Nullable<int> _AttendingCoach;
+		
+		private System.Nullable<int> _GroupID;
+		
+		private System.Nullable<int> _BranchID;
+		
+		private System.Nullable<int> _CoachAttendance;
+		
+		private System.Nullable<System.DateTime> _CompleteDate;
+		
+		private System.Nullable<System.DateTime> _CommitAttendance;
+		
+		private int _PriceID;
+		
+		private System.Nullable<int> _PriceStatus;
+		
+		private System.Nullable<int> _ELStatus;
+		
+		private System.Nullable<decimal> _AchievementIndex;
+		
+		private System.Nullable<decimal> _TuitionIndex;
+		
+		private int _RegisterID;
+		
+		private int _GroupingMemberCount;
+		
+		private System.Nullable<int> _ListPrice;
+		
+		private System.Nullable<int> _PercentageOfDiscount;
+		
+		private int _ProfessionalLevelID;
+		
+		private System.Nullable<decimal> _MarkedGradeIndex;
+		
+		private string _BranchName;
+		
+		private string _OfficeLocation;
+		
+		private System.Nullable<int> _EnterpriseRegisterID;
+		
+		private System.Nullable<int> _EnterpriseListPrice;
+		
+		private System.Nullable<int> _WorkPlace;
+		
+		private System.Nullable<int> _EnterpriseContractID;
+		
+		private System.Nullable<int> _ContractID;
+		
+		private System.Nullable<int> _SettlementStatus;
+		
+		private System.Nullable<int> _CoachWorkPlace;
+		
+		private System.Nullable<int> _SettlementID;
+		
+		public V_Tuition()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LessonID", DbType="Int NOT NULL")]
+		public int LessonID
+		{
+			get
+			{
+				return this._LessonID;
+			}
+			set
+			{
+				if ((this._LessonID != value))
+				{
+					this._LessonID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ClassTime", DbType="DateTime")]
+		public System.Nullable<System.DateTime> ClassTime
+		{
+			get
+			{
+				return this._ClassTime;
+			}
+			set
+			{
+				if ((this._ClassTime != value))
+				{
+					this._ClassTime = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AttendingCoach", DbType="Int")]
+		public System.Nullable<int> AttendingCoach
+		{
+			get
+			{
+				return this._AttendingCoach;
+			}
+			set
+			{
+				if ((this._AttendingCoach != value))
+				{
+					this._AttendingCoach = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GroupID", DbType="Int")]
+		public System.Nullable<int> GroupID
+		{
+			get
+			{
+				return this._GroupID;
+			}
+			set
+			{
+				if ((this._GroupID != value))
+				{
+					this._GroupID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BranchID", DbType="Int")]
+		public System.Nullable<int> BranchID
+		{
+			get
+			{
+				return this._BranchID;
+			}
+			set
+			{
+				if ((this._BranchID != value))
+				{
+					this._BranchID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CoachAttendance", DbType="Int")]
+		public System.Nullable<int> CoachAttendance
+		{
+			get
+			{
+				return this._CoachAttendance;
+			}
+			set
+			{
+				if ((this._CoachAttendance != value))
+				{
+					this._CoachAttendance = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CompleteDate", DbType="DateTime")]
+		public System.Nullable<System.DateTime> CompleteDate
+		{
+			get
+			{
+				return this._CompleteDate;
+			}
+			set
+			{
+				if ((this._CompleteDate != value))
+				{
+					this._CompleteDate = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CommitAttendance", DbType="DateTime")]
+		public System.Nullable<System.DateTime> CommitAttendance
+		{
+			get
+			{
+				return this._CommitAttendance;
+			}
+			set
+			{
+				if ((this._CommitAttendance != value))
+				{
+					this._CommitAttendance = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PriceID", DbType="Int NOT NULL")]
+		public int PriceID
+		{
+			get
+			{
+				return this._PriceID;
+			}
+			set
+			{
+				if ((this._PriceID != value))
+				{
+					this._PriceID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PriceStatus", DbType="Int")]
+		public System.Nullable<int> PriceStatus
+		{
+			get
+			{
+				return this._PriceStatus;
+			}
+			set
+			{
+				if ((this._PriceStatus != value))
+				{
+					this._PriceStatus = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ELStatus", DbType="Int")]
+		public System.Nullable<int> ELStatus
+		{
+			get
+			{
+				return this._ELStatus;
+			}
+			set
+			{
+				if ((this._ELStatus != value))
+				{
+					this._ELStatus = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AchievementIndex", DbType="Decimal(11,1)")]
+		public System.Nullable<decimal> AchievementIndex
+		{
+			get
+			{
+				return this._AchievementIndex;
+			}
+			set
+			{
+				if ((this._AchievementIndex != value))
+				{
+					this._AchievementIndex = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TuitionIndex", DbType="Decimal(11,1)")]
+		public System.Nullable<decimal> TuitionIndex
+		{
+			get
+			{
+				return this._TuitionIndex;
+			}
+			set
+			{
+				if ((this._TuitionIndex != value))
+				{
+					this._TuitionIndex = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RegisterID", DbType="Int NOT NULL")]
+		public int RegisterID
+		{
+			get
+			{
+				return this._RegisterID;
+			}
+			set
+			{
+				if ((this._RegisterID != value))
+				{
+					this._RegisterID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GroupingMemberCount", DbType="Int NOT NULL")]
+		public int GroupingMemberCount
+		{
+			get
+			{
+				return this._GroupingMemberCount;
+			}
+			set
+			{
+				if ((this._GroupingMemberCount != value))
+				{
+					this._GroupingMemberCount = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ListPrice", DbType="Int")]
+		public System.Nullable<int> ListPrice
+		{
+			get
+			{
+				return this._ListPrice;
+			}
+			set
+			{
+				if ((this._ListPrice != value))
+				{
+					this._ListPrice = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PercentageOfDiscount", DbType="Int")]
+		public System.Nullable<int> PercentageOfDiscount
+		{
+			get
+			{
+				return this._PercentageOfDiscount;
+			}
+			set
+			{
+				if ((this._PercentageOfDiscount != value))
+				{
+					this._PercentageOfDiscount = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProfessionalLevelID", DbType="Int NOT NULL")]
+		public int ProfessionalLevelID
+		{
+			get
+			{
+				return this._ProfessionalLevelID;
+			}
+			set
+			{
+				if ((this._ProfessionalLevelID != value))
+				{
+					this._ProfessionalLevelID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MarkedGradeIndex", DbType="Decimal(18,2)")]
+		public System.Nullable<decimal> MarkedGradeIndex
+		{
+			get
+			{
+				return this._MarkedGradeIndex;
+			}
+			set
+			{
+				if ((this._MarkedGradeIndex != value))
+				{
+					this._MarkedGradeIndex = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BranchName", DbType="NVarChar(32)")]
+		public string BranchName
+		{
+			get
+			{
+				return this._BranchName;
+			}
+			set
+			{
+				if ((this._BranchName != value))
+				{
+					this._BranchName = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OfficeLocation", DbType="NVarChar(32) NOT NULL", CanBeNull=false)]
+		public string OfficeLocation
+		{
+			get
+			{
+				return this._OfficeLocation;
+			}
+			set
+			{
+				if ((this._OfficeLocation != value))
+				{
+					this._OfficeLocation = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EnterpriseRegisterID", DbType="Int")]
+		public System.Nullable<int> EnterpriseRegisterID
+		{
+			get
+			{
+				return this._EnterpriseRegisterID;
+			}
+			set
+			{
+				if ((this._EnterpriseRegisterID != value))
+				{
+					this._EnterpriseRegisterID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EnterpriseListPrice", DbType="Int")]
+		public System.Nullable<int> EnterpriseListPrice
+		{
+			get
+			{
+				return this._EnterpriseListPrice;
+			}
+			set
+			{
+				if ((this._EnterpriseListPrice != value))
+				{
+					this._EnterpriseListPrice = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_WorkPlace", DbType="Int")]
+		public System.Nullable<int> WorkPlace
+		{
+			get
+			{
+				return this._WorkPlace;
+			}
+			set
+			{
+				if ((this._WorkPlace != value))
+				{
+					this._WorkPlace = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EnterpriseContractID", DbType="Int")]
+		public System.Nullable<int> EnterpriseContractID
+		{
+			get
+			{
+				return this._EnterpriseContractID;
+			}
+			set
+			{
+				if ((this._EnterpriseContractID != value))
+				{
+					this._EnterpriseContractID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ContractID", DbType="Int")]
+		public System.Nullable<int> ContractID
+		{
+			get
+			{
+				return this._ContractID;
+			}
+			set
+			{
+				if ((this._ContractID != value))
+				{
+					this._ContractID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SettlementStatus", DbType="Int")]
+		public System.Nullable<int> SettlementStatus
+		{
+			get
+			{
+				return this._SettlementStatus;
+			}
+			set
+			{
+				if ((this._SettlementStatus != value))
+				{
+					this._SettlementStatus = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CoachWorkPlace", DbType="Int")]
+		public System.Nullable<int> CoachWorkPlace
+		{
+			get
+			{
+				return this._CoachWorkPlace;
+			}
+			set
+			{
+				if ((this._CoachWorkPlace != value))
+				{
+					this._CoachWorkPlace = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SettlementID", DbType="Int")]
+		public System.Nullable<int> SettlementID
+		{
+			get
+			{
+				return this._SettlementID;
+			}
+			set
+			{
+				if ((this._SettlementID != value))
+				{
+					this._SettlementID = value;
+				}
 			}
 		}
 	}

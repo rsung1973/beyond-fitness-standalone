@@ -57,6 +57,9 @@ namespace WebHome.Helper
                     .Where(l => l.PriceStatus == (int)Naming.LessonPriceStatus.自主訓練
                         || l.ELStatus == (int)Naming.LessonPriceStatus.自主訓練);
 
+        public IQueryable<V_Tuition> PerformanceCountableLesson => LessonItems
+                    .Where(l => l.CoachAttendance.HasValue
+                        || (!l.CoachAttendance.HasValue && !(l.PriceStatus==(int)Naming.LessonPriceFeature.體驗課程 || l.ELStatus == (int)Naming.LessonPriceFeature.體驗課程)));
 
     }
 }

@@ -98,7 +98,7 @@
             $.post('@Html.Raw(Url.Action("ProcessCrossBranch", "LessonConsole"))', { 'keyID': keyID }, function (data) {
                 //hideLoading();
                 if ($.isPlainObject(data)) {
-                    alert(data.message);
+                    swal(data.message);
                 } else {
                     $(data).appendTo($('body'));
                 }

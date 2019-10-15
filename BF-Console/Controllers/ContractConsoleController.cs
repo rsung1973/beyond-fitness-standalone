@@ -51,12 +51,14 @@ namespace WebHome.Controllers
 
         public ActionResult InquireContract(CourseContractQueryViewModel viewModel)
         {
+            ViewBag.ViewModel = viewModel;
+
             if(viewModel.ByCustom==true)
             {
                 return InquireContractByCustom(viewModel);
             }
 
-            IQueryable<CourseContract> items = viewModel.InquireContract(this, out string alertMessage);
+            IQueryable<CourseContract> items = viewModel.InquireContract(models);
 
             return View("~/Views/ContractConsole/Module/ContractList.cshtml", items);
         }

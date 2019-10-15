@@ -36,13 +36,18 @@ namespace WebHome.Helper.BusinessOperation
             var HttpContext = controller.HttpContext;
             var models = controller.DataSource;
 
-            ViewBag.ViewModel = viewModel;
             var profile = HttpContext.GetUser();
 
             ViewBag.ViewModel = viewModel;
 
+            return viewModel.InquireContract(models);
+        }
+
+        public static IQueryable<CourseContract> InquireContract<TEntity>(this CourseContractQueryViewModel viewModel, ModelSource<TEntity> models)
+            where TEntity : class, new()
+        {
+
             bool hasConditon = false;
-            ViewBag.ViewModel = viewModel;
 
             IQueryable<CourseContract> items;
 
@@ -73,7 +78,7 @@ namespace WebHome.Helper.BusinessOperation
             if (viewModel.ContractID.HasValue)
             {
                 hasConditon = true;
-                items = items.Where(c=>c.ContractID==viewModel.ContractID);
+                items = items.Where(c => c.ContractID == viewModel.ContractID);
             }
 
             if (viewModel.PayoffMode == Naming.ContractPayoffMode.Unpaid)
@@ -219,7 +224,7 @@ namespace WebHome.Helper.BusinessOperation
             }
 
             viewModel.Subject = viewModel.Subject.GetEfficientString();
-            if(viewModel.Subject!=null)
+            if (viewModel.Subject != null)
             {
                 items = items.Where(c => c.Subject == viewModel.Subject);
             }
@@ -588,6 +593,13 @@ namespace WebHome.Helper.BusinessOperation
             PaymentQueryViewModel viewModel = (PaymentQueryViewModel)queryViewModel.Duplicate();
             var profile = HttpContext.GetUser();
 
+            return viewModel.InquirePayment(models);
+        }
+
+        public static IQueryable<Payment> InquirePayment<TEntity>(this PaymentQueryViewModel viewModel, ModelSource<TEntity> models)
+                where TEntity : class, new()
+        {
+
             IQueryable<Payment> items = models.PromptIncomePayment();
 
             IQueryable<VoidPayment> voidItems = models.GetTable<VoidPayment>();
@@ -599,7 +611,7 @@ namespace WebHome.Helper.BusinessOperation
                 items = items.Where(p => p.PaymentID == viewModel.PaymentID);
             }
 
-            IQueryable<Payment> buildQueryByUserName(IQueryable<Payment> queryItems,String userName)
+            IQueryable<Payment> buildQueryByUserName(IQueryable<Payment> queryItems, String userName)
             {
                 IQueryable<UserProfile> users = models.GetTable<UserProfile>().Where(c => c.RealName.Contains(userName)
                         || c.Nickname.Contains(userName));
@@ -619,7 +631,7 @@ namespace WebHome.Helper.BusinessOperation
             viewModel.UserName = viewModel.UserName.GetEfficientString();
             if (viewModel.UserName != null)
             {
-                items = buildQueryByUserName(items,viewModel.UserName);
+                items = buildQueryByUserName(items, viewModel.UserName);
             }
 
             IQueryable<Payment> buildQueryByContractNo(IQueryable<Payment> queryItems, String contractNo)
@@ -638,7 +650,7 @@ namespace WebHome.Helper.BusinessOperation
                 }
 
                 IQueryable<ContractPayment> cp = ci.Join(models.GetTable<ContractPayment>(), c => c.ContractID, p => p.ContractID, (m, p) => p);
-                queryItems =queryItems.Join(cp, p => p.PaymentID, c => c.PaymentID, (p, c) => p);
+                queryItems = queryItems.Join(cp, p => p.PaymentID, c => c.PaymentID, (p, c) => p);
 
                 return queryItems;
             }
@@ -748,19 +760,16 @@ namespace WebHome.Helper.BusinessOperation
                 invoiceItems = invoiceItems.Where(c => c.InvoiceBuyer.ReceiptNo == viewModel.BuyerReceiptNo);
             }
 
-            bool dateQuery = false;
             IQueryable<InvoiceAllowance> allowanceItems = models.GetTable<InvoiceAllowance>();
             IQueryable<InvoiceCancellation> cancelledItems = models.GetTable<InvoiceCancellation>();
             IQueryable<Payment> result = items;
             if (viewModel.PayoffDateFrom.HasValue)
             {
-                dateQuery = true;
                 result = result.Where(p => p.PayoffDate >= viewModel.PayoffDateFrom);
             }
 
             if (viewModel.PayoffDateTo.HasValue)
             {
-                dateQuery = true;
                 result = result.Where(i => i.PayoffDate < viewModel.PayoffDateTo.Value.AddDays(1));
             }
 
@@ -829,7 +838,7 @@ namespace WebHome.Helper.BusinessOperation
                 invoiceItems = invoiceItems.Join(cancelledItems, i => i.InvoiceID, c => c.InvoiceID, (i, c) => i);
             }
 
-            if(hasInvoiceQuery)
+            if (hasInvoiceQuery)
             {
                 result = result.Join(invoiceItems, p => p.InvoiceID, i => i.InvoiceID, (p, i) => p);
             }
@@ -855,7 +864,7 @@ namespace WebHome.Helper.BusinessOperation
                 }
             }
 
-            if(viewModel.RelatedID.HasValue)
+            if (viewModel.RelatedID.HasValue)
             {
                 result = result.Where(p => p.HandlerID == viewModel.RelatedID)
                             .Union(result.Where(p => p.ContractPayment.CourseContract.FitnessConsultant == viewModel.RelatedID))
@@ -865,7 +874,7 @@ namespace WebHome.Helper.BusinessOperation
             return result;
         }
 
-        public static IQueryable<LessonTime> InquireAchievement<TEntity>(this AchievementQueryViewModel viewModel, SampleController<TEntity> controller, out String alertMessage)
+        public static IQueryable<V_Tuition> InquireAchievement<TEntity>(this AchievementQueryViewModel viewModel, SampleController<TEntity> controller, out String alertMessage)
                 where TEntity : class, new()
         {
             alertMessage = null;
@@ -884,7 +893,8 @@ namespace WebHome.Helper.BusinessOperation
                 }
                 else
                 {
-                    ModelState.AddModelError("AchievementYearMonthFrom", "請選擇查詢月份");
+                    //ModelState.AddModelError("AchievementYearMonthFrom", "請選擇查詢月份");
+                    viewModel.AchievementDateFrom = DateTime.Today.FirstDayOfMonth().AddMonths(1);
                 }
             }
 
@@ -897,7 +907,28 @@ namespace WebHome.Helper.BusinessOperation
                 }
             }
 
-            IQueryable<LessonTime> items = models.GetTable<LessonTime>().AllCompleteLesson();
+            IQueryable<V_Tuition> items = viewModel.InquireAchievement(models, profile);
+            return items;
+        }
+
+        public static IQueryable<V_Tuition> InquireAchievement<TEntity>(this AchievementQueryViewModel viewModel, ModelSource<TEntity> models,UserProfile profile = null)
+                where TEntity : class, new()
+        {
+
+            IQueryable<V_Tuition> items = models.GetTable<V_Tuition>()
+                                    .Where(v => v.PriceStatus != (int)Naming.DocumentLevelDefinition.教練PI);
+
+            if (viewModel.IgnoreAttendance == true)
+            {
+
+            }
+            else
+            {
+                items = items.Where(v => v.CoachAttendance.HasValue
+                            || (!v.CoachAttendance.HasValue
+                                    && !(v.PriceStatus == (int)Naming.DocumentLevelDefinition.體驗課程
+                                            || (v.ELStatus == (int)Naming.DocumentLevelDefinition.體驗課程))));
+            }
 
             bool hasConditon = false;
             if (viewModel.BypassCondition == true)
@@ -928,7 +959,11 @@ namespace WebHome.Helper.BusinessOperation
 
             if (!hasConditon)
             {
-                if (profile.IsAssistant() || profile.IsAccounting() || profile.IsOfficer())
+                if(profile==null)
+                {
+                    items = items.Where(l => false);
+                }
+                else if (profile.IsAssistant() || profile.IsAccounting() || profile.IsOfficer())
                 {
 
                 }

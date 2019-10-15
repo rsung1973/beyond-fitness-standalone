@@ -232,6 +232,7 @@ namespace WebHome.Models.ViewModel
         public Naming.QueryIntervalDefinition? QueryInterval { get; set; }
         public bool? BypassCondition { get; set; }
         public bool? DetailsOnly { get; set; }
+        public bool? IgnoreAttendance { get; set; }
     }
 
     public class CoachBonusViewModel : QueryViewModel
@@ -444,6 +445,11 @@ namespace WebHome.Models.ViewModel
         public int? Year { get; set; }
         public int? Month { get; set; }
         public int? BranchID { get; set; }
+    }
+
+    public class MonthlySelectorViewModel
+    {
+        public int? RecentCount { get; set; }
     }
 
 }
