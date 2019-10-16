@@ -176,6 +176,20 @@ function uploadFile($file, postData, url, callback, errorback) {
         }).submit();
 }
 
+function showDialog(url, jsonData) {
+    showLoading();
+    $.post(url, jsonData, function (data) {
+        hideLoading();
+        if ($.isPlainObject(data)) {
+            swal(data.message);
+        } else {
+            $(data).appendTo($('body'));
+        }
+    });
+}
+
+
+
 
 var $global = {
     'onReady': [],

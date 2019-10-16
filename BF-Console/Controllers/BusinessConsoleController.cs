@@ -77,5 +77,19 @@ namespace WebHome.Controllers
             return View("~/Views/Common/SelectMonth.cshtml");
         }
 
+        public ActionResult BranchCoachAchievement(MonthlyIndicatorQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            if (viewModel.KeyID != null)
+            {
+                viewModel.PeriodID = viewModel.DecryptKeyValue();
+            }
+
+            IQueryable<MonthlyCoachRevenueIndicator> items = models.GetTable<MonthlyCoachRevenueIndicator>()
+                        .Where(c => c.PeriodID == viewModel.PeriodID && c.BranchID == viewModel.BranchID);
+
+            return View("~/Views/BusinessConsole/Module/BranchCoachAchievement.cshtml", items);
+        }
+
     }
 }

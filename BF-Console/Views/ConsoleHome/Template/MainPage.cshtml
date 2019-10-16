@@ -150,15 +150,18 @@
                 </li>
                 @if (!_model.IsServitor())
                 {
-                <li>
-                  <a href="javascript:void(0);"><i class="zmdi zmdi-accounts-list"></i><span>我的學生</span> </a>
-                </li>
-                <li>
-                    <a href="@(Url.Action("ReportIndex","ConsoleHome"))"><i class="zmdi zmdi-download"></i><span>我的下載</span> </a>
-                </li>
-                <li>
-                    <a href="javascript:void(0);"><i class="zmdi zmdi-file-text"></i><span>我的分店業績</span> </a>
-                </li>
+                    <li>
+                        <a href="javascript:void(0);"><i class="zmdi zmdi-accounts-list"></i><span>我的學生</span> </a>
+                    </li>
+                    <li>
+                        <a href="@(Url.Action("ReportIndex","ConsoleHome"))"><i class="zmdi zmdi-download"></i><span>我的下載</span> </a>
+                    </li>
+                    if (_model.IsAuthorizedSysAdmin() || _model.IsAssistant() || _model.IsOfficer() || _model.IsManager() || _model.IsViceManager())
+                    {
+                        <li>
+                            <a href="javascript:$('').launchDownload('@Html.Raw(Url.Action("AchievementOverview", "ConsoleHome",new { BranchID = models.GetTable<V_WorkPlace>().Where(v=>v.CoachID==_model.UID).FirstOrDefault()?.WorkPlace }))', { });"><i class="zmdi zmdi-file-text"></i><span>我的分店業績</span> </a>
+                        </li>
+                    }
                 }
                 @if (_model.IsAssistant() || _model.IsAuthorizedSysAdmin() || _model.IsServitor())
                 {
@@ -168,15 +171,15 @@
                 }
                 @if (_model.IsCoach())
                 {
-                <li>
-                    <a href="javascript:void(0);"><i class="zmdi zmdi-comment-edit"></i><span>運動小學堂</span> </a>
-                </li>
+                    <li>
+                        <a href="javascript:void(0);"><i class="zmdi zmdi-comment-edit"></i><span>運動小學堂</span> </a>
+                    </li>
                 }
                 @if (_model.IsCoach() || _model.IsAssistant() || _model.IsSysAdmin())
                 {
-                <li>
-                    <a href="@(Url.Action("Index","CoachFacet"))"><i class="zmdi zmdi-time-restore"></i><span>時光機</span> </a>
-                </li>
+                    <li>
+                        <a href="@(Url.Action("Index","CoachFacet"))"><i class="zmdi zmdi-time-restore"></i><span>時光機</span> </a>
+                    </li>
                 }
                 <li>
                     <a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-search-replace"></i><span>價格詢問球</span> </a>
@@ -197,15 +200,15 @@
                 </li>
                 @if (_model.IsCoach() || _model.IsAssistant() || _model.IsSysAdmin())
                 {
-                <li class="header hidden-md-up">更多搜尋</li>
-                <li class="hidden-md-up">
-                    <div class="input-group">
-                        @{
-                            ViewBag.SearchAction = Url.Action("SearchLearner", "LearnerProfile");
-                            Html.RenderPartial("~/Views/ConsoleEvent/Module/SearchLearner.cshtml");
-                        }
-                    </div>
-                </li>
+                    <li class="header hidden-md-up">更多搜尋</li>
+                    <li class="hidden-md-up">
+                        <div class="input-group">
+                            @{
+                                ViewBag.SearchAction = Url.Action("SearchLearner", "LearnerProfile");
+                                Html.RenderPartial("~/Views/ConsoleEvent/Module/SearchLearner.cshtml");
+                            }
+                        </div>
+                    </li>
                 }
             </ul>
         </div>

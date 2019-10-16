@@ -32,11 +32,11 @@
     <link href="plugins/jquery-datatable/Responsive-2.2.2/css/responsive.bootstrap4.min.css" rel="stylesheet">
     <link href="plugins/jquery-datatable/FixedColumns-3.2.5/css/fixedColumns.bootstrap4.min.css" rel="stylesheet">
     <!-- Bootstrap Datetimepick -->
-
     <link href="css/smartcalendar-2.css" rel="stylesheet" />
-
     <!-- Custom Css -->
     <link rel="stylesheet" href="css/customelist.css?1" />
+    <!-- charts-c3 -->
+    <link href="plugins/charts-c3/plugin.css" rel="stylesheet">
 }
 
 <script>
@@ -97,7 +97,7 @@
                         </li>
                     </ul>
                 </div>
-                @{ 
+                @{
                     Html.RenderPartial("~/Views/BusinessConsole/Module/MonthlyIndicator.cshtml", _item);
                 }
             </div>
@@ -117,6 +117,8 @@
     <script src="plugins/jquery-datatable/FixedColumns-3.2.5/js/dataTables.fixedColumns.min.js"></script>
     <!--Gauge Plugin Js-->
     <script src="plugins/gauge/gauge.min.js"></script>
+    <!-- ChartC3 Js -->
+    <script src="bundles/cs.bundles.js"></script>
 
     @{ Html.RenderPartial("~/Views/ConsoleHome/Shared/KnobJS.cshtml");}
 

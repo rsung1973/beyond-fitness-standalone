@@ -44,18 +44,21 @@
             <div class="row clearfix">
                 <div class="col-lg-6 col-md-6 col-sm-12">
                     <div class="table-responsive">
-                        @{ 
-    if (_viewModel.BranchID.HasValue)
-    {
-        Html.RenderPartial("~/Views/BusinessConsole/Module/MonthlyBranchRevenueGrade.cshtml", _model);
-    }
-    else
-    {
-        Html.RenderPartial("~/Views/BusinessConsole/Module/MonthlyRevenueGrade.cshtml", _model);
-    }
+                        @{
+                            if (_viewModel.BranchID.HasValue)
+                            {
+                                Html.RenderPartial("~/Views/BusinessConsole/Module/MonthlyBranchRevenueGrade.cshtml", _model);
+                            }
+                            else
+                            {
+                                Html.RenderPartial("~/Views/BusinessConsole/Module/MonthlyRevenueGrade.cshtml", _model);
+                            }
                         }
                     </div>
-                    <button class="btn btn-default btn-round btn-sm waves-effect float-right" onclick="javascript:showGoalListModal();">詳細資料</button>
+                    @if (_viewModel.BranchID.HasValue)
+                    {
+                        <button class="btn btn-default btn-round btn-sm waves-effect float-right" onclick="javascript:showDialog('@Url.Action("BranchCoachAchievement","BusinessConsole")',@JsonConvert.SerializeObject(new { KeyID = _model.PeriodID.EncryptKey(),_viewModel.BranchID }));">詳細資料</button>
+                    }
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12">
                     <div class="table-responsive">
