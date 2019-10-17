@@ -52,7 +52,6 @@
 <section class="content">
     @{
         ViewBag.BlockHeader = "我的分店業績";
-        ViewBag.InsertPartial = "~/Views/ConsoleHome/Shared/MyBranchAchievementHeader.cshtml";
         Html.RenderPartial("~/Views/ConsoleHome/Module/BlockHeader.cshtml", _model);
     }
     <!--目標與達成率-->
@@ -94,6 +93,16 @@
                                     };
                                 });
                             </script>
+                        </li>
+                        <li class="dropdown">
+                            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class="zmdi zmdi-swap"></i> </a>
+                            <ul class="dropdown-menu dropdown-menu-right slideUp float-right">
+                                <li><a href="javascript:showAchievementOverview();">全部</a></li>
+                                @foreach (var branch in models.GetTable<BranchStore>())
+                                {
+                                    <li><a href="javascript:showAchievementOverview(@(branch.BranchID));">@(branch.BranchName)</a></li>
+                                }
+                            </ul>
                         </li>
                     </ul>
                 </div>

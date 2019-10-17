@@ -6157,6 +6157,20 @@
     <Content Include="Views\PaymentConsole\Module\AboutPaymentViewByOfficer.cshtml" />
     <Content Include="Views\PaymentConsole\Module\AboutPaymentView.cshtml" />
     <Content Include="Views\BonusCredit\BonusModal\GiveBonusAmount.cshtml" />
+    <Content Include="Views\ConsoleHome\Shared\MyAchievementShare.cshtml" />
+    <Content Include="Views\ConsoleHome\Shared\MyBranchAchievementHeader.cshtml" />
+    <Content Include="Views\BusinessConsole\AchievementOverview.cshtml" />
+    <Content Include="Views\BusinessConsole\Module\MonthlyAchievementSparkline.cshtml" />
+    <Content Include="Views\BusinessConsole\Module\MonthlyRevenueStatus.cshtml" />
+    <Content Include="Views\BusinessConsole\Module\MonthlyAchievementStatus.cshtml" />
+    <Content Include="Views\BusinessConsole\Module\MonthlyRevenueGauge.cshtml" />
+    <Content Include="Views\BusinessConsole\Module\MonthlyBranchBusiness.cshtml" />
+    <Content Include="Views\BusinessConsole\Module\MonthlyBranchRevenueGrade.cshtml" />
+    <Content Include="Views\BusinessConsole\Module\MonthlyIndicator.cshtml" />
+    <Content Include="Views\BusinessConsole\Module\MonthlyBusinessDetails.cshtml" />
+    <Content Include="Views\BusinessConsole\Module\MonthlyContractSparkline.cshtml" />
+    <Content Include="Views\BusinessConsole\Module\MonthlyRevenueGrade.cshtml" />
+    <Content Include="Views\BusinessConsole\Module\MonthlyAchievementGauge.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\InitializeType.cs" />
