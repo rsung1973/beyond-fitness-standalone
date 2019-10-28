@@ -240,8 +240,8 @@
             }
 
             swal({
-                title: "家庭聯絡簿",
-                text: "",
+                title: "@(learner.FullName())的家庭聯絡簿",
+                text: "<span class=\"col-blue font-bold\">範例：昨天喝酒精神狀況不好<br/>今天第一次學甩壺鈴<br/>今天沒吃飯就運動狀況不好，下次記得提前吃飽喔</span>",
                 type: "input",
                 showCancelButton: true,
                 confirmButtonColor: "#DD6B55",
@@ -249,7 +249,8 @@
                 cancelButtonText: "不, 點錯了",
                 closeOnConfirm: false,
                 animation: "slide-from-top",
-                inputPlaceholder: "請輸入20個中英文字"
+                inputPlaceholder: "請輸入20個中英文字",
+                html: true
             }, function (inputValue) {
                 if (inputValue === false) return false;
                 if (inputValue === "") {
