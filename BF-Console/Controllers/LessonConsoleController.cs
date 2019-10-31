@@ -139,7 +139,7 @@ namespace WebHome.Controllers
         {
             ViewBag.ViewModel = viewModel;
 
-            if(viewModel.KeyID!=null)
+            if (viewModel.KeyID != null)
             {
                 viewModel.LessonID = viewModel.DecryptKeyValue();
             }
@@ -152,26 +152,38 @@ namespace WebHome.Controllers
                 return Json(new { result = false, message = "課程資料錯誤!!" }, JsonRequestBehavior.AllowGet);
             }
 
-            if (!viewModel.UID.HasValue)
-            {
-                return Json(new { result = false, message = "未指定同步來源之學員!!" }, JsonRequestBehavior.AllowGet);
-            }
-
-            var lessonItems = item.GroupingLesson.RegisterLesson.Where(r => r.UID != viewModel.UID.Value);
-            if (lessonItems.Count() == 0)
+            IEnumerable<RegisterLesson> lessonItems = item.GroupingLesson.RegisterLesson;
+            if (lessonItems.Count() < 2)
             {
                 return Json(new { result = false, message = "課程非一對多!!" }, JsonRequestBehavior.AllowGet);
             }
 
-            var source = item.AssertLearnerTrainingPlan(models, viewModel.UID.Value);
-            foreach(var lesson in lessonItems)
+            if (viewModel.CopyFrom.HasValue)
             {
-                var target = item.AssertLearnerTrainingPlan(models, lesson.UID);
+                if (!viewModel.UID.HasValue)
+                {
+                    return Json(new { result = false, message = "未指定同步目標之學員!!" }, JsonRequestBehavior.AllowGet);
+                }
+
+                var source = item.AssertLearnerTrainingPlan(models, viewModel.CopyFrom.Value);
+                var target = item.AssertLearnerTrainingPlan(models, viewModel.UID.Value);
                 models.CloneTrainingPlan(source, target);
             }
+            else
+            {
+                if (!viewModel.UID.HasValue)
+                {
+                    return Json(new { result = false, message = "未指定同步來源之學員!!" }, JsonRequestBehavior.AllowGet);
+                }
 
+                var source = item.AssertLearnerTrainingPlan(models, viewModel.UID.Value);
+                foreach (var lesson in lessonItems.Where(r => r.UID != viewModel.UID.Value))
+                {
+                    var target = item.AssertLearnerTrainingPlan(models, lesson.UID);
+                    models.CloneTrainingPlan(source, target);
+                }
+            }
             return Json(new { result = true }, JsonRequestBehavior.AllowGet);
-
         }
 
         public ActionResult CloneCoachPITrainingPlan(LessonTimeBookingViewModel viewModel)
@@ -197,14 +209,92 @@ namespace WebHome.Controllers
                 return Json(new { result = false, message = "課程非一對多!!" }, JsonRequestBehavior.AllowGet);
             }
 
-            var source = item.AssertTrainingPlan(models);
-            foreach (var lesson in lessonItems)
+            if (viewModel.CopyFrom.HasValue)
             {
-                var target = lesson.AssertTrainingPlan(models);
-                models.CloneTrainingPlan(source, target);
+                var sourceLesson = item.GroupingLesson.LessonTime.Where(l => l.RegisterLesson.UID == viewModel.CopyFrom).FirstOrDefault();
+
+                if (sourceLesson != null)
+                {
+                    var target = item.AssertTrainingPlan(models);
+                    models.CloneTrainingPlan(sourceLesson.AssertTrainingPlan(models), target);
+
+                    return Json(new { result = true }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            else
+            {
+                var source = item.AssertTrainingPlan(models);
+                foreach (var lesson in lessonItems)
+                {
+                    var target = lesson.AssertTrainingPlan(models);
+                    models.CloneTrainingPlan(source, target);
+                }
+                return Json(new { result = true }, JsonRequestBehavior.AllowGet);
+
             }
 
-            return Json(new { result = true }, JsonRequestBehavior.AllowGet);
+            return Json(new { result = false,message = "複製失敗!!" }, JsonRequestBehavior.AllowGet);
+
+        }
+
+        public ActionResult SelectToCloneCoachPITrainingPlan(LessonTimeBookingViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+
+            if (viewModel.KeyID != null)
+            {
+                viewModel.LessonID = viewModel.DecryptKeyValue();
+            }
+
+            LessonTime item = models.GetTable<LessonTime>()
+                .Where(l => l.LessonID == viewModel.LessonID).FirstOrDefault();
+
+            if (item == null)
+            {
+                return Json(new { result = false, message = "課程資料錯誤!!" }, JsonRequestBehavior.AllowGet);
+            }
+
+            var lessonItems = models.GetTable<LessonTime>().Where(l => l.GroupID == item.GroupID && l.LessonID != item.LessonID);
+            if (lessonItems.Count() < 2)
+            {
+                return Json(new { result = false, message = "課程非一對多!!" }, JsonRequestBehavior.AllowGet);
+            }
+
+            var items = lessonItems.Where(l => l.LessonID != item.LessonID)
+                        .Select(l => l.RegisterLesson.UserProfile);
+
+            return View("~/Views/LessonConsole/Module/SelectToCloneTrainingPlan.cshtml", items);
+
+        }
+
+        public ActionResult SelectToCloneLearnerTrainingPlan(LessonTimeBookingViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+
+            if (viewModel.KeyID != null)
+            {
+                viewModel.LessonID = viewModel.DecryptKeyValue();
+            }
+
+            LessonTime item = models.GetTable<LessonTime>()
+                .Where(l => l.LessonID == viewModel.LessonID).FirstOrDefault();
+
+            if (item == null)
+            {
+                return Json(new { result = false, message = "課程資料錯誤!!" }, JsonRequestBehavior.AllowGet);
+            }
+
+            var lessonItems = item.GroupingLesson.RegisterLesson;
+            if (lessonItems.Count() < 2)
+            {
+                return Json(new { result = false, message = "課程非一對多!!" }, JsonRequestBehavior.AllowGet);
+            }
+
+            var items = models.GetTable<RegisterLesson>().Where(r => r.RegisterGroupID == item.GroupID)
+                            .Where(l => l.UID != viewModel.UID)
+                            .Select(l => l.UserProfile);
+
+            return View("~/Views/LessonConsole/Module/SelectToCloneTrainingPlan.cshtml", items);
 
         }
 

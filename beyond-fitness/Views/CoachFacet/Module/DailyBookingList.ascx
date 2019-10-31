@@ -44,12 +44,10 @@
                 <td><%= item.BranchID.HasValue ? item.BranchStore.BranchName : "其他" %></td>
                 <td>
                     <a onclick="$global.showLearnerLesson(<%= item.GroupingLesson.RegisterLesson.Select(r=>r.UID).FirstOrDefault() %>,<%= item.LessonID %>);" class="btn btn-circle bg-color-green"><i class="fa fa-fw fa-lg fa-eye" aria-hidden="true"></i> </a>
-                    <%  
-                    var expansion = item.LessonTimeExpansion.First(); %>
                     <a onclick='makeLessonPlan(<%= JsonConvert.SerializeObject(new
                         {
-                            classDate = expansion.ClassDate.ToString("yyyy-MM-dd"),
-                            hour = expansion.Hour,
+                            classDate = $"{item.ClassTime:yyyy-MM-dd}",
+                            hour = item.ClassTime.Value.Hour,
                             registerID = item.RegisterID,
                             lessonID = item.LessonID
                         }) %>);'

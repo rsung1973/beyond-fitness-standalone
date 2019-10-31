@@ -2149,7 +2149,6 @@
     <Type Name="V_WorkPlace">
       <Column Name="CoachID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="WorkPlace" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="WorkPlaceCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="OfficeLocation" Type="System.String" DbType="NVarChar(32)" CanBeNull="true" />
     </Type>
   </Table>

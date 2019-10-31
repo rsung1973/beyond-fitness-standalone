@@ -101,7 +101,7 @@ namespace WebHome.Controllers
 
             calculateTotalMinutes(execution, viewModel.StageID.Value);
 
-            return Json(new { result = true }, JsonRequestBehavior.AllowGet);
+            return Json(new { result = true, viewModel.StageID }, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult CommitTrainingItem(TrainingItemViewModel viewModel)
@@ -201,7 +201,7 @@ namespace WebHome.Controllers
                 models.SubmitChanges();
             }
 
-            return Json(new { result = true, message = "" });
+            return Json(new { result = true, message = "", viewModel.StageID });
 
         }
 
@@ -353,7 +353,7 @@ namespace WebHome.Controllers
                 calculateTotalMinutes(execution, stage.StageID);
             }
 
-            return Json(new { result = true, message = "" });
+            return Json(new { result = true, message = "", stage.StageID });
 
         }
 

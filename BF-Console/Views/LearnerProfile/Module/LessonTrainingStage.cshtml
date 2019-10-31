@@ -142,6 +142,18 @@
     });
 </script>
 }
+@if (ViewBag.StageID == stage.StageID)
+{
+    <script>
+        $(function () {
+            var u = navigator.userAgent;
+            var isApple = u.indexOf('iPhone') >= 0 || u.indexOf('iPad') >= 0;
+            if (isApple) {
+                $([document.documentElement, document.body]).scrollTop($('#@($"heading_{stage.StageID}{currentID}")').offset().top);
+            }
+        });
+    </script>
+}
 @functions
 {
 

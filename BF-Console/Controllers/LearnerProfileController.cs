@@ -551,6 +551,21 @@ namespace WebHome.Controllers
             return View("~/Views/LearnerProfile/ProfileModal/LearnerAboutToBirth.cshtml", items);
         }
 
+        public ActionResult LoadTrainingExecution(DailyBookingQueryViewModel viewModel,int? stageID)
+        {
+            ViewBag.ViewModel = viewModel;
+
+            if (viewModel.KeyID != null)
+            {
+                viewModel.LessonID = viewModel.DecryptKeyValue();
+            }
+
+            var item = ViewBag.DataItem = models.GetTable<LessonTime>().Where(u => u.LessonID == viewModel.LessonID).First();
+            ViewBag.Learner = models.GetTable<UserProfile>().Where(u => u.UID == viewModel.LearnerID).First();
+            ViewBag.StageID = stageID;
+
+            return View("~/Views/LearnerProfile/Module/LessonTrainingExecution.cshtml", item);
+        }
 
     }
 }

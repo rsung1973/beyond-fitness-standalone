@@ -181,7 +181,7 @@
                     <!-- end widget edit box -->
                     <!-- widget content -->
                     <div class="widget-body no-padding" id="achievementList">
-                        <%  Html.RenderPartial("~/Views/Accounting/Module/LessonAttendanceAchievementList.ascx", models.GetTable<LessonTime>().Where(c => false)); %>
+                        <%  Html.RenderPartial("~/Views/Accounting/Module/LessonAttendanceAchievementList.ascx", models.GetTable<V_Tuition>().Where(c => false)); %>
                     </div>
                     <!-- end widget content -->
                 </div>

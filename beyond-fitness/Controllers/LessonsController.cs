@@ -59,21 +59,26 @@ namespace WebHome.Controllers
 
             var profile = HttpContext.GetUser();
 
+            if(viewModel.KeyID!=null)
+            {
+                viewModel.LessonID = viewModel.DecryptKeyValue();
+            }
+
             LessonTime timeItem = models.GetTable<LessonTime>().Where(l => l.LessonID == viewModel.LessonID).FirstOrDefault();
 
             ViewBag.ViewModel = viewModel;
 
-            if (!viewModel.ClassDate.HasValue)
+            if (!viewModel.ClassTimeStart.HasValue)
             {
-                ModelState.AddModelError("ClassDate", "請選擇上課日期!!");
+                ModelState.AddModelError("ClassTimeStart", "請選擇上課日期!!");
             }
-            else if (viewModel.ClassDate < DateTime.Today)
+            else if (viewModel.ClassTimeStart < DateTime.Today)
             {
-                ModelState.AddModelError("ClassDate", "預約時間不可早於今天!!");
+                ModelState.AddModelError("ClassTimeStart", "預約時間不可早於今天!!");
             }
-            else if(viewModel.ClassEndTime.HasValue && viewModel.ClassDate>=viewModel.ClassEndTime)
+            else if(viewModel.ClassTimeEnd.HasValue && viewModel.ClassTimeStart >= viewModel.ClassTimeEnd)
             {
-                ModelState.AddModelError("ClassEndTime", "結束時間不可早於開始時間!!");
+                ModelState.AddModelError("ClassTimeEnd", "結束時間不可早於開始時間!!");
             }
 
             if (!viewModel.BranchID.HasValue)
@@ -96,15 +101,6 @@ namespace WebHome.Controllers
 
 
             DateTime endTime = viewModel.ClassEndTime ?? viewModel.ClassDate.Value.AddMinutes(priceType.DurationInMinutes.Value);
-            IQueryable<LessonTimeExpansion> items = models.GetTable<LessonTimeExpansion>();
-            if (viewModel.LessonID.HasValue)
-                items = items.Where(t => t.LessonID != viewModel.LessonID);
-            if (items.Any(t => t.RegisterLesson.UID == profile.UID
-                && t.ClassDate == viewModel.ClassDate.Value.Date && t.Hour >= viewModel.ClassDate.Value.Hour && t.Hour < endTime.Hour))
-            {
-                ViewBag.Message = "上課時間重複!!";
-                return View("~/Views/Shared/AlertMessage.ascx");
-            }
 
             if (timeItem == null)
             {
@@ -143,51 +139,39 @@ namespace WebHome.Controllers
             if (viewModel.BranchID > 0)
                 timeItem.BranchID = viewModel.BranchID;
             timeItem.InvitedCoach =  timeItem.AttendingCoach = profile.UID;
-
-            models.DeleteAllOnSubmit<LessonTimeExpansion>(t => t.LessonID == viewModel.LessonID);
+            if (models.GetTable<DailyWorkingHour>().Any(d => d.Hour == viewModel.ClassTimeStart.Value.Hour))
+                timeItem.HourOfClassTime = viewModel.ClassTimeStart.Value.Hour;
 
             models.SubmitChanges();
 
-            var timeExpansion = models.GetTable<LessonTimeExpansion>();
-
-            for (int i = 0; i <= (timeItem.DurationInMinutes + timeItem.ClassTime.Value.Minute - 1) / 60; i++)
+            if (viewModel.AttendeeID == null || viewModel.AttendeeID.Length == 0)
             {
-                timeExpansion.InsertOnSubmit(new LessonTimeExpansion
-                {
-                    ClassDate = timeItem.ClassTime.Value.Date,
-                    LessonID = timeItem.LessonID,
-                    Hour = timeItem.ClassTime.Value.Hour + i,
-                    RegisterID = timeItem.RegisterID
-                });
+                models.ExecuteCommand("delete LessonTime where LessonID<>{0} and GroupID={1}", timeItem.LessonID, timeItem.GroupID);
+                models.ExecuteCommand("delete RegisterLesson where RegisterID<>{0} and RegisterGroupID={1}", timeItem.RegisterID, timeItem.GroupID);
             }
-
-            models.SubmitChanges();
-
-            if (viewModel.AttendeeID != null && viewModel.AttendeeID.Length > 0)
+            else
             {
+                String attendee = $"({String.Join(",", viewModel.AttendeeID.Select(i => i.ToString()))})";
+                models.ExecuteCommand("delete LessonTime where LessonID<>{0} and GroupID={1} and AttendingCoach not in " + attendee, timeItem.LessonID, timeItem.GroupID);
+                models.ExecuteCommand("delete RegisterLesson where RegisterID<>{0} and RegisterGroupID={1} and UID not in " + attendee, timeItem.RegisterID, timeItem.GroupID, attendee);
+
                 var lesson = timeItem.RegisterLesson;
                 foreach (var uid in viewModel.AttendeeID.Distinct())
                 {
+                    if (models.GetTable<LessonTime>().Any(l => l.GroupID == timeItem.GroupID && l.AttendingCoach == uid))
+                        continue;
+
                     LessonTime coachPI = models.GetTable<ServingCoach>().Any(s => s.CoachID == uid)
                         ? SpawnCoachPI(timeItem, uid, uid)
                         : SpawnCoachPI(timeItem, uid, profile.UID);
 
+                    coachPI.HourOfClassTime = timeItem.HourOfClassTime;
                     models.GetTable<LessonTime>().InsertOnSubmit(coachPI);
-                    models.SubmitChanges();
-
-                    for (int i = 0; i <= (coachPI.DurationInMinutes + coachPI.ClassTime.Value.Minute - 1) / 60; i++)
-                    {
-                        timeExpansion.InsertOnSubmit(new LessonTimeExpansion
-                        {
-                            ClassDate = coachPI.ClassTime.Value.Date,
-                            LessonID = coachPI.LessonID,
-                            Hour = coachPI.ClassTime.Value.Hour + i,
-                            RegisterID = coachPI.RegisterID
-                        });
-                    }
                     models.SubmitChanges();
                 }
             }
+
+            timeItem.BookingLessonTimeExpansion(models, timeItem.ClassTime.Value, timeItem.DurationInMinutes.Value);
 
             return Json(new { result = true, message = "上課時間預約完成!!" });
 
@@ -216,12 +200,14 @@ namespace WebHome.Controllers
                 DurationInMinutes = timeItem.DurationInMinutes,
                 InvitedCoach = coachID,
                 AttendingCoach = coachID,
+                BranchID = timeItem.BranchID,
             };
 
             coachPI.LessonFitnessAssessment.Add(new LessonFitnessAssessment
             {
                 UID = uid
             });
+
             return coachPI;
         }
 

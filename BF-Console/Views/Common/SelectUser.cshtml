@@ -12,14 +12,14 @@
 
     ModelStateDictionary _modelState;
     ModelSource<UserProfile> models;
-    IQueryable<ServingCoach> _model;
-    String _dialogID = $"selectCoach{DateTime.Now.Ticks}";
+    IQueryable<UserProfile> _model;
+    String _dialogID = $"selectUser{DateTime.Now.Ticks}";
     int _allotment;
     int _allotmentCoach;
 
     _modelState = (ModelStateDictionary)ViewBag.ModelState;
     models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
-    _model = (IQueryable<ServingCoach>)this.Model;
+    _model = (IQueryable<UserProfile>)this.Model;
     _allotment = ((int?)ViewBag.Allotment) ?? 1;
     _allotmentCoach = ((int?)ViewBag.AllotmentCoach) ?? 3;
 }
@@ -63,17 +63,17 @@
                                     @if (ViewBag.SelectAll == true)
                                     {
                                         <li class="@($"col-sm-{12 / _allotmentCoach} col-6")">
-                                            <a href="javascript:commitCoach();">
+                                            <a href="javascript:commitSelecting();">
                                                 <img src="images/avatar/avatars.png" class="img-thumbnail popfit" />
                                                 <h6 class="users_name">全部</h6>
                                             </a>
                                         </li>
                                     }
-                                    @foreach (var item in _model.Select(c => c.UserProfile).ToList()
+                                    @foreach (var item in _model.ToList()
                                                 .OrderBy(u => $"{u.Nickname}{u.RealName}"))
                                     {
                                         <li class="@($"col-sm-{12 / _allotmentCoach} col-6")">
-                                            <a href="javascript:commitCoach(@(item.UID),'@(item.FullName())');">
+                                            <a href="javascript:commitSelecting(@(item.UID),'@(item.FullName())');">
                                                 @{
                                                     ViewBag.ProfileClass = "img-thumbnail popfit";
                                                     Html.RenderPartial("~/Views/Common/ProfileImage.cshtml", item);
@@ -121,9 +121,9 @@
 
     });
 
-    function commitCoach(coachID, coachName) {
-        if ($global.commitCoach) {
-            $global.commitCoach(coachID, coachName, $('#@(_dialogID)'));
+    function commitSelecting(uid, userName) {
+        if ($global.commitSelecting) {
+            $global.commitSelecting(uid, userName, $('#@(_dialogID)'));
         }
             @if (ViewBag.EnableClose != false)
             {

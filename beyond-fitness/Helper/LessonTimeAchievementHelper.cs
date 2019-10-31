@@ -49,6 +49,10 @@ namespace WebHome.Helper
                         || (!l.CommitAttendance.HasValue && l.CoachAttendance.HasValue)
                         || (l.CommitAttendance.HasValue && !l.CoachAttendance.HasValue));
 
+        public IQueryable<V_Tuition> SettlementVainAchievement => LessonItems
+                    .Where(l => !l.CommitAttendance.HasValue)
+                    .Where(l => !l.CoachAttendance.HasValue);
+
         public IQueryable<V_Tuition> SettlementHalfAchievementForShare => ExclusivePILesson
                     .Where(l => (!l.CommitAttendance.HasValue && l.CoachAttendance.HasValue)
                             || (l.CommitAttendance.HasValue && !l.CoachAttendance.HasValue));

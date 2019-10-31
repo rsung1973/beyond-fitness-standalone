@@ -21,7 +21,6 @@
     </thead>
     <tbody>
         <%  var items = _model
-                .Join(models.GetTable<LessonTime>(), t => t.LessonID, c => c.LessonID, (t, c) => c)
                 .GroupBy(t => new { CoachID = t.AttendingCoach });
             decimal totalCount = 0, summary = 0, totalShares = 0;
             foreach(var item in items)
@@ -32,23 +31,22 @@
                     <td><%= coach.UserProfile.FullName() %></td>
                     <td class="text-right">
                         <%  var attendanceCount = item.Count() - (decimal)(item
-                                    .Where(t => t.RegisterLesson.LessonPriceType.Status == (int)Naming.DocumentLevelDefinition.自主訓練
-                                        || (t.RegisterLesson.RegisterLessonEnterprise != null
-                                            && t.RegisterLesson.RegisterLessonEnterprise.EnterpriseCourseContent.EnterpriseLessonType.Status == (int)Naming.DocumentLevelDefinition.自主訓練)).Count()) / 2m;
+                                    .Where(t => t.PriceStatus == (int)Naming.DocumentLevelDefinition.自主訓練
+                                        || (t.ELStatus == (int)Naming.DocumentLevelDefinition.自主訓練)).Count()) / 2m;
                             totalCount += attendanceCount; %>
                         <%= attendanceCount %></td>
                     <td nowrap="noWrap" class="text-right">
                         <%  int shares;
                             var lessons = item
-                                    .Where(t => t.RegisterLesson.LessonPriceType.Status != (int)Naming.DocumentLevelDefinition.自主訓練)
-                                    .Where(t => t.RegisterLesson.RegisterLessonEnterprise == null
-                                        || t.RegisterLesson.RegisterLessonEnterprise.EnterpriseCourseContent.EnterpriseLessonType.Status != (int)Naming.DocumentLevelDefinition.自主訓練);
+                                    .Where(t => t.PriceStatus != (int)Naming.DocumentLevelDefinition.自主訓練)
+                                    .Where(t => !t.ELStatus.HasValue
+                                        || t.ELStatus != (int)Naming.DocumentLevelDefinition.自主訓練);
                             var achievement = models.CalcAchievement(lessons,out shares);
                             summary += achievement;
                             Writer.Write(achievement);
                             totalShares += shares; %>
                     </td>
-                    <td class="text-center"><%= lesson.LessonTimeSettlement.ProfessionalLevel.LevelName %></td>
+                    <td class="text-center"><%= models.GetTable<ProfessionalLevel>().Where(l=>l.LevelID==lesson.ProfessionalLevelID).FirstOrDefault()?.LevelName %></td>
                     <td nowrap="noWrap" class="text-right"><%= shares %></td>
                     <td nowrap="noWrap"><a onclick="showAttendanceAchievement(<%= coach.CoachID %>);" class="btn btn-circle bg-color-blueLight classlistDialog_link "><i class="fa fa-eye"></i></a></td>
                 </tr>

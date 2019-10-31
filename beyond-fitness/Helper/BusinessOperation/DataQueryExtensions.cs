@@ -924,10 +924,7 @@ namespace WebHome.Helper.BusinessOperation
             }
             else
             {
-                items = items.Where(v => v.CoachAttendance.HasValue
-                            || (!v.CoachAttendance.HasValue
-                                    && !(v.PriceStatus == (int)Naming.DocumentLevelDefinition.體驗課程
-                                            || (v.ELStatus == (int)Naming.DocumentLevelDefinition.體驗課程))));
+                items = items.FilterByCompleteLesson();
             }
 
             bool hasConditon = false;

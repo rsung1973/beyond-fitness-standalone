@@ -49936,8 +49936,6 @@ namespace WebHome.Models.DataEntity
 		
 		private System.Nullable<int> _WorkPlace;
 		
-		private System.Nullable<int> _WorkPlaceCount;
-		
 		private string _OfficeLocation;
 		
 		public V_WorkPlace()
@@ -49972,22 +49970,6 @@ namespace WebHome.Models.DataEntity
 				if ((this._WorkPlace != value))
 				{
 					this._WorkPlace = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_WorkPlaceCount", DbType="Int")]
-		public System.Nullable<int> WorkPlaceCount
-		{
-			get
-			{
-				return this._WorkPlaceCount;
-			}
-			set
-			{
-				if ((this._WorkPlaceCount != value))
-				{
-					this._WorkPlaceCount = value;
 				}
 			}
 		}

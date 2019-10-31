@@ -28,13 +28,21 @@ namespace WebHome.Helper
         public static MonthlyIndicator InitializeMonthlyIndicator<TEntity>(this ModelSource<TEntity> models, int year, int month)
                 where TEntity : class, new()
         {
+            DateTime startDate = new DateTime(year, month, 1);
+            DateTime lastPeriod = startDate.AddMonths(-1);
+
             var sampleItem = models.GetTable<MonthlyIndicator>()
-                .OrderByDescending(m => m.PeriodID).FirstOrDefault();
+                                .Where(i => i.StartDate == lastPeriod).FirstOrDefault();
+
+            if (sampleItem == null)
+            {
+                sampleItem = models.GetTable<MonthlyIndicator>()
+                    .OrderByDescending(m => m.PeriodID).FirstOrDefault();
+            }
 
             if (sampleItem == null)
                 return null;
 
-            DateTime startDate = new DateTime(year, month, 1);
 
             MonthlyIndicator item = new MonthlyIndicator
             {
@@ -82,11 +90,16 @@ namespace WebHome.Helper
                         RevenueGoal = r.RevenueGoal,
                     };
 
-                    if (r.MonthlyBranchRevenueGoal != null)
+                    var branchGoal = r.MonthlyBranchRevenueGoal;
+                    if (branchGoal != null)
                     {
                         newItem.MonthlyBranchRevenueGoal = new MonthlyBranchRevenueGoal
                         {
-
+                            LessonTuitionGoal = branchGoal.LessonTuitionGoal,
+                            CompleteLessonsGoal = branchGoal.CompleteLessonsGoal,
+                            AchievementGoal = branchGoal.AchievementGoal,
+                            CustomRevenueGoal = branchGoal.CustomRevenueGoal,
+                            CustomIndicatorPercentage = branchGoal.CustomIndicatorPercentage,
                         };
                     }
                 }
@@ -98,6 +111,10 @@ namespace WebHome.Helper
                 {
                     MonthlyIndicator = item,
                     CoachID = c.CoachID,
+                    BranchID = c.BranchID,
+                    AchievementGoal = c.AchievementGoal,
+                    CompleteLessonsGoal = c.CompleteLessonsGoal,
+                    LessonTuitionGoal = c.LessonTuitionGoal
                 };
             }
 

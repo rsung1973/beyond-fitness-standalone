@@ -493,6 +493,14 @@ namespace WebHome.Helper
                 .Where(t => t.LessonAttendance != null /*|| t.LessonPlan.CommitAttendance.HasValue*/);
         }
 
+        public static IQueryable<V_Tuition> FilterByCompleteLesson(this IQueryable<V_Tuition> items)
+        {
+            return items.Where(v => v.CoachAttendance.HasValue
+                                        || (!v.CoachAttendance.HasValue
+                                                && !(v.PriceStatus == (int)Naming.DocumentLevelDefinition.體驗課程
+                                                        || (v.ELStatus == (int)Naming.DocumentLevelDefinition.體驗課程))));
+        }
+
         public static IQueryable<LessonTime> FullAchievementLesson(this IQueryable<LessonTime> items)
         {
             return items.Where(t => t.LessonAttendance != null && t.LessonPlan.CommitAttendance.HasValue);
@@ -535,7 +543,7 @@ namespace WebHome.Helper
         public static TrainingPlan AssertTrainingPlan<TEntity>(this LessonTime item, ModelSource<TEntity> models, Naming.DocumentLevelDefinition? planStatus = null,int? UID = null)
             where TEntity : class, new()
         {
-            if(UID.HasValue)
+            if (UID.HasValue)
             {
                 return item.AssertLearnerTrainingPlan(models, UID.Value, planStatus);
             }
@@ -543,11 +551,11 @@ namespace WebHome.Helper
             var plan = item.TrainingPlan.FirstOrDefault();
             if (plan == null)
             {
-                foreach (var lesson in item.GroupingLesson.RegisterLesson)
+                if(item.IsCoachPISession())
                 {
                     plan = new TrainingPlan
                     {
-                        RegisterID = lesson.RegisterID,
+                        RegisterID = item.RegisterID,
                         PlanStatus = (int?)planStatus,
                         TrainingExecution = new TrainingExecution
                         {
@@ -556,6 +564,23 @@ namespace WebHome.Helper
 
                     item.TrainingPlan.Add(plan);
                 }
+                else
+                {
+                    foreach (var lesson in item.GroupingLesson.RegisterLesson)
+                    {
+                        plan = new TrainingPlan
+                        {
+                            RegisterID = lesson.RegisterID,
+                            PlanStatus = (int?)planStatus,
+                            TrainingExecution = new TrainingExecution
+                            {
+                            }
+                        };
+
+                        item.TrainingPlan.Add(plan);
+                    }
+                }
+
                 models.SubmitChanges();
             }
 
@@ -888,6 +913,221 @@ namespace WebHome.Helper
             models.SubmitChanges();
             return target;
 
+        }
+
+        public static Exception BookingLessonTimeExpansion<TEntity>(this LessonTime item, ModelSource<TEntity> models, DateTime classTime,int duration)
+            where TEntity : class, new()
+        {
+
+            List<LessonTimeExpansion> originalItems = new List<LessonTimeExpansion>();
+            List<LessonTimeExpansion> newItems = new List<LessonTimeExpansion>();
+
+            int endHour = classTime.Hour + (duration + classTime.Minute - 1) / 60;
+
+            void buildTimeExpansion(LessonTime lessonItem)
+            {
+                List<LessonTimeExpansion> items = lessonItem.LessonTimeExpansion.ToList();
+                originalItems.AddRange(items);
+                foreach (var g in items.GroupBy(l => l.RegisterID))
+                {
+                    for (int hour = classTime.Hour; hour <= endHour; hour++)
+                    {
+                        if (!originalItems.Any(l => l.ClassDate == classTime.Date && l.Hour == hour))
+                        {
+                            LessonTimeExpansion newItem = new LessonTimeExpansion
+                            {
+                                ClassDate = classTime.Date,
+                                Hour = hour,
+                                RegisterID = g.Key,
+                                LessonID = lessonItem.LessonID,
+                            };
+
+                            models.GetTable<LessonTimeExpansion>().InsertOnSubmit(newItem);
+                            newItems.Add(newItem);
+                        }
+                    }
+                }
+            };
+
+            if(item.IsCoachPISession())
+            {
+                foreach(var lesson in models.GetTable<LessonTime>().Where(l=>l.GroupID==item.GroupID))
+                {
+                    buildTimeExpansion(lesson);
+                }
+            }
+            else
+            {
+                buildTimeExpansion(item);
+            }
+
+            if (newItems.Count > 0)
+            {
+                var redundantItems = originalItems
+                    .Where(l => l.ClassDate != classTime.Date)
+                    .Where(l => l.Hour < classTime.Hour || l.Hour > endHour);
+
+                if (redundantItems.Count() > 0)
+                    models.GetTable<LessonTimeExpansion>().DeleteAllOnSubmit(redundantItems);
+
+                try
+                {
+                    models.SubmitChanges();
+                }
+                catch(Exception ex)
+                {
+                    return ex;
+                }
+            }
+
+            return null;
+        }
+
+        public static void UpdateBookingByCoach<TEntity>(this LessonTimeBookingViewModel viewModel, ModelSource<TEntity> models,out String alertMessage)
+            where TEntity : class, new()
+        {
+            alertMessage = null;
+            if (viewModel.KeyID != null)
+            {
+                viewModel.LessonID = viewModel.DecryptKeyValue();
+            }
+
+            LessonTime item = models.GetTable<LessonTime>().Where(l => l.LessonID == viewModel.LessonID).FirstOrDefault();
+            if (item == null)
+            {
+                alertMessage = "修改上課時間資料不存在!!";
+                return ;
+            }
+
+            if (!viewModel.ClassTimeStart.HasValue)
+            {
+                alertMessage = "請選擇上課時間!!";
+                return;
+            }
+
+            if (item.LessonAttendance != null)
+            {
+                alertMessage = "已完成上課，不可修改!!";
+                return ;
+            }
+
+            if (item.ContractTrustTrack.Any(t => t.SettlementID.HasValue))
+            {
+                alertMessage = "課程資料已信託，不可修改!!";
+                return ;
+            }
+
+            if (!item.IsSTSession() && !models.GetTable<CoachWorkplace>()
+                            .Any(c => c.BranchID == item.BranchID
+                                && c.CoachID == item.AttendingCoach)
+                && viewModel.ClassTimeStart.Value < DateTime.Today.AddDays(1))
+            {
+                alertMessage = "此時段不允許跨店預約!!";
+                return ;
+            }
+
+            LessonTime timeItem = new LessonTime
+            {
+                InvitedCoach = item.InvitedCoach,
+                AttendingCoach = item.AttendingCoach,
+                ClassTime = viewModel.ClassTimeStart,
+                DurationInMinutes = item.DurationInMinutes
+                //DurationInMinutes = (int)(viewModel.ClassTimeEnd.Value - viewModel.ClassTimeStart.Value).TotalMinutes
+            };
+
+            if (item.IsCoachPISession())
+            {
+                timeItem.DurationInMinutes = (int)(viewModel.ClassTimeEnd.Value - viewModel.ClassTimeStart.Value).TotalMinutes;
+            }
+
+            if (models.GetTable<Settlement>().Any(s => s.StartDate <= viewModel.ClassTimeStart && s.EndExclusiveDate > viewModel.ClassTimeStart))
+            {
+                alertMessage = "修改上課時間(" + String.Format("{0:yyyy/MM/dd}", viewModel.ClassTimeStart) + "已結算!!";
+                return ;
+            }
+
+            var users = models.CheckOverlappingBooking(timeItem, item);
+            if (users.Count() > 0)
+            {
+                alertMessage = "學員(" + String.Join("、", users.Select(u => u.RealName)) + ")上課時間重複!!";
+                return ;
+            }
+
+            foreach (var regles in item.RegisterLesson.GroupingLesson.RegisterLesson)
+            {
+                var contract = regles.RegisterLessonContract?.CourseContract;
+                if (contract != null)
+                {
+                    if (timeItem.ClassTime.Value > contract.Expiration.Value.AddDays(1))
+                    {
+                        alertMessage = "合約尚未生效或已過期!!";
+                        return ;
+                    }
+                }
+                else
+                {
+                    var entpContract = regles.RegisterLessonEnterprise?.EnterpriseCourseContract;
+                    if (entpContract != null)
+                    {
+                        if (timeItem.ClassTime.Value > entpContract.Expiration.Value.AddDays(1))
+                        {
+                            alertMessage = "合約尚未生效或已過期!!";
+                            return ;
+                        }
+                    }
+                }
+            }
+
+            var exception = item.BookingLessonTimeExpansion(models, timeItem.ClassTime.Value, timeItem.DurationInMinutes.Value);
+
+            if (exception == null)
+            {
+                void updateClassTime(LessonTime lessonItem)
+                {
+                    //lessonItem.InvitedCoach = viewModel.CoachID;
+                    //lessonItem.AttendingCoach = viewModel.CoachID;
+                    lessonItem.ClassTime = viewModel.ClassTimeStart;
+                    lessonItem.DurationInMinutes = timeItem.DurationInMinutes;
+                    if (models.GetTable<DailyWorkingHour>().Any(d => d.Hour == viewModel.ClassTimeStart.Value.Hour))
+                        lessonItem.HourOfClassTime = viewModel.ClassTimeStart.Value.Hour;
+                    //item.BranchID = viewModel.BranchID;
+                    //item.TrainingBySelf = viewModel.TrainingBySelf;
+                    foreach (var t in item.ContractTrustTrack)
+                    {
+                        t.EventDate = viewModel.ClassTimeStart.Value;
+                    }
+
+                    models.SubmitChanges();
+
+                };
+
+                if(item.IsCoachPISession())
+                {
+                    foreach (var lesson in models.GetTable<LessonTime>().Where(l => l.GroupID == item.GroupID))
+                    {
+                        updateClassTime(lesson);
+                    }
+                }
+                else
+                {
+                    updateClassTime(item);
+                    if (item.IsPISession()/*item.RegisterLesson.LessonPriceType.Status == (int)Naming.DocumentLevelDefinition.自主訓練*/)
+                    {
+                        models.ExecuteCommand("update TuitionInstallment set PayoffDate = {0} where RegisterID = {1} ", item.ClassTime, item.RegisterID);
+                    }
+
+                    if (!item.IsSTSession())
+                    {
+                        models.ExecuteCommand("delete PreferredLessonTime where LessonID = {0}", item.LessonID);
+                        item.ProcessBookingWhenCrossBranch(models);
+                    }
+                }
+            }
+            else
+            {
+                Logger.Error(exception);
+                alertMessage = exception.Message;
+            }
         }
 
     }

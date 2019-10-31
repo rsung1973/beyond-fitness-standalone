@@ -39,9 +39,8 @@
                                 var items = _model.Where(t => t.ClassTime >= start && t.ClassTime < to);
                                 var tuitionItems = _items.Where(a => a.Payment.PayoffDate >= start && a.Payment.PayoffDate < to);
                                 var attendanceCount = items.Count() - (decimal)(items
-                                        .Where(t => t.RegisterLesson.LessonPriceType.Status == (int)Naming.DocumentLevelDefinition.自主訓練
-                                            || (t.RegisterLesson.RegisterLessonEnterprise != null
-                                                && t.RegisterLesson.RegisterLessonEnterprise.EnterpriseCourseContent.EnterpriseLessonType.Status == (int)Naming.DocumentLevelDefinition.自主訓練)).Count()) / 2m;
+                                        .Where(t => t.PriceStatus == (int)Naming.DocumentLevelDefinition.自主訓練
+                                            || (t.ELStatus == (int)Naming.DocumentLevelDefinition.自主訓練)).Count()) / 2m;
                                 totalCount += attendanceCount;
                         %>
                         <tr>
@@ -60,9 +59,9 @@
                                 <%    
                                     int shares;
                                     var lessons = items
-                                            .Where(t => t.RegisterLesson.LessonPriceType.Status != (int)Naming.DocumentLevelDefinition.自主訓練)
-                                            .Where(t => t.RegisterLesson.RegisterLessonEnterprise == null
-                                                || t.RegisterLesson.RegisterLessonEnterprise.EnterpriseCourseContent.EnterpriseLessonType.Status != (int)Naming.DocumentLevelDefinition.自主訓練);
+                                            .Where(t => t.PriceStatus != (int)Naming.DocumentLevelDefinition.自主訓練)
+                                            .Where(t => !t.ELStatus.HasValue
+                                                || t.ELStatus != (int)Naming.DocumentLevelDefinition.自主訓練);
                                     var achievement = models.CalcAchievement(lessons, out shares);
                                     summary += achievement;
                                     Writer.Write(shares > 0 ? $"{shares:0,0}" : "--");
@@ -154,7 +153,7 @@
     ModelStateDictionary _modelState;
     ModelSource<UserProfile> models;
     String _tableId = "performance" + DateTime.Now.Ticks;
-    IQueryable<LessonTime> _model;
+    IQueryable<V_Tuition> _model;
     IQueryable<TuitionAchievement> _items;
     AchievementQueryViewModel _viewModel;
     String _dialogID = "coachPerformance" + DateTime.Now.Ticks;
@@ -164,9 +163,10 @@
         base.OnInit(e);
         _modelState = (ModelStateDictionary)ViewBag.ModelState;
         models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
-        _model = (IQueryable<LessonTime>)this.Model;
+        _model = (IQueryable<V_Tuition>)this.Model;
         _items = (IQueryable<TuitionAchievement>)ViewBag.TuitionItems;
         _viewModel = (AchievementQueryViewModel)ViewBag.ViewModel;
+
     }
 
 </script>

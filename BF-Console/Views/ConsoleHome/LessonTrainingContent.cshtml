@@ -70,12 +70,14 @@
                                     {
                                         hasSlideItem = true;
                                         <li><a href="javascript:cloneCoachPITrainingPlan();">我的課表<i class="zmdi zmdi-arrow-right"></i>同伴</a></li>
+                                        <li><a href="javascript:selectToClonePITrainingPlan();">同伴課表<i class="zmdi zmdi-arrow-right"></i>我</a></li>
                                     }
                                 }
                                 else if (lessonItem.GroupingLesson.RegisterLesson.Count > 1)
                                 {
                                     hasSlideItem = true;
                                     <li><a href="javascript:cloneLearnerTrainingPlan();">我的課表<i class="zmdi zmdi-arrow-right"></i>同伴</a></li>
+                                    <li><a href="javascript:selectToCloneLearnerTrainingPlan();">同伴課表<i class="zmdi zmdi-arrow-right"></i>我</a></li>
                                 }
                                 @if (lessonItem.CheckToAttendLesson(models))
                                 {
@@ -289,7 +291,7 @@
         }
 
         //點選同步課表
-        this.cloneLearnerTrainingPlan = function () {
+        this.cloneLearnerTrainingPlan = function (viewModel) {
             swal({
                 title: "確定要將這張課表複製同步給同伴，不後悔?",
                 text: "同步後資料會一模模一樣樣喔!",
@@ -303,11 +305,12 @@
             }, function (isConfirm) {
                 if (isConfirm) {
                     showLoading();
-                    $.post('@Html.Raw(Url.Action("CloneLearnerTrainingPlan", "LessonConsole", new { KeyID = lessonItem.LessonID.EncryptKey(),learner.UID }))', {}, function (data) {
+                    $.post('@Html.Raw(Url.Action("CloneLearnerTrainingPlan", "LessonConsole", new { KeyID = lessonItem.LessonID.EncryptKey(),learner.UID }))', viewModel, function (data) {
                         hideLoading();
                         if ($.isPlainObject(data)) {
                             if (data.result) {
                                 swal("同步成功!", "資料已經同步 Bye!", "success");
+                                refreshTrainingContent();
                             } else {
                                 swal("同步失敗!", data.message, "error");
                             }
@@ -321,7 +324,38 @@
             });
         };
 
-        this.cloneCoachPITrainingPlan = function () {
+        function selectToClonePITrainingPlan() {
+            showLoading();
+            $.post('@Html.Raw(Url.Action("SelectToCloneCoachPITrainingPlan", "LessonConsole", new { KeyID = lessonItem.LessonID.EncryptKey() }))', {}, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    swal(data.message);
+                } else {
+                    $(data).appendTo($('body'));
+                    $global.doSelect = function (uid, userName) {
+                        cloneCoachPITrainingPlan({ 'CopyFrom': uid });
+                    };
+                }
+            });
+
+        }
+
+        function selectToCloneLearnerTrainingPlan() {
+            showLoading();
+            $.post('@Html.Raw(Url.Action("SelectToCloneLearnerTrainingPlan", "LessonConsole", new { KeyID = lessonItem.LessonID.EncryptKey() }))', { 'UID': @(learner.UID) }, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    swal(data.message);
+                } else {
+                    $(data).appendTo($('body'));
+                    $global.doSelect = function (uid, userName) {
+                        cloneLearnerTrainingPlan({ 'CopyFrom': uid });
+                    };
+                }
+            });
+        }
+
+        this.cloneCoachPITrainingPlan = function (viewModel) {
             swal({
                 title: "不後悔?",
                 text: "同步後資料會一模模一樣樣喔!",
@@ -335,11 +369,12 @@
             }, function (isConfirm) {
                 if (isConfirm) {
                     showLoading();
-                    $.post('@Html.Raw(Url.Action("CloneCoachPITrainingPlan", "LessonConsole", new { KeyID = lessonItem.LessonID.EncryptKey() }))', {}, function (data) {
+                    $.post('@Html.Raw(Url.Action("CloneCoachPITrainingPlan", "LessonConsole", new { KeyID = lessonItem.LessonID.EncryptKey() }))', viewModel, function (data) {
                         hideLoading();
                         if ($.isPlainObject(data)) {
                             if (data.result) {
                                 swal("同步成功!", "資料已經同步 Bye!", "success");
+                                refreshTrainingContent();
                             } else {
                                 swal("同步失敗!", data.message, "error");
                             }

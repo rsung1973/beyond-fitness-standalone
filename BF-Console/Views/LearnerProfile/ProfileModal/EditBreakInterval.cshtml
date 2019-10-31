@@ -83,13 +83,13 @@
                 $.post('@Html.Raw(Url.Action("CommitBreakInterval", "Training"))', $formData, function (data) {
                     if ($.isPlainObject(data)) {
                         if (data.result) {
-                            refreshTrainingContent();
+                            $('#@(_dialogID)').modal('hide');
+                            refreshTrainingExecution(data.StageID);;
                         } else {
                             hideLoading();
                             swal(data.message);
                         }
                     } else {
-                        hideLoading();
                         $(data).appendTo($('body'));
                     }
                 });
@@ -118,7 +118,8 @@
                                 hideLoading();
                                 if ($.isPlainObject(data)) {
                                     if (data.result) {
-                                        refreshTrainingContent();
+                                        $('#@(_dialogID)').modal('hide');
+                                        refreshTrainingExecution(data.StageID);
                                     } else {
                                         swal(data.message);
                                     }

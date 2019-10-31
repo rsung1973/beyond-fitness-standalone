@@ -632,7 +632,12 @@ namespace WebHome.Helper
             {
                 models.ExecuteCommand("update LessonTimeSettlement set SettlementStatus = {0},SettlementID = {1} where LessonID={2}", (int)Naming.LessonSettlementStatus.HalfAchievement, settlement.SettlementID, item.LessonID);
             }
-                       
+
+            foreach (var item in helper.SettlementVainAchievement)
+            {
+                models.ExecuteCommand("update LessonTimeSettlement set SettlementID = {0} where LessonID={1}", settlement.SettlementID, item.LessonID);
+            }
+
             var coachItems = models.PromptEffectiveCoach();
             var salaryTable = models.GetTable<CoachMonthlySalary>();
             var countableItems = helper.PerformanceCountableLesson;

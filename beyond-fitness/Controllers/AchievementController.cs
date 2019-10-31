@@ -708,7 +708,9 @@ namespace WebHome.Controllers
         {
             ViewBag.ViewModel = viewModel;
 
-            IQueryable<LessonTime> lessons = models.GetTable<LessonTime>().AllCompleteLesson();
+            IQueryable<V_Tuition> lessons = models.GetTable<V_Tuition>()
+                .Where(v => v.PriceStatus != (int)Naming.DocumentLevelDefinition.教練PI)
+                .FilterByCompleteLesson();
             IQueryable<TuitionAchievement> items = models.GetTable<TuitionAchievement>()
                 .FilterByEffective();
 

@@ -82,7 +82,7 @@
         </div>*@
                                     <div class="col-lg-6 col-md-6 col-sm-6 col-12 single">
                                         <div class="input-group">
-                                            <input type="text" class="form-control datetime" data-date-format="yyyy/mm/dd hh:ii" readonly="readonly" placeholder="開始時間" name="ClassDate" value="@($"{_viewModel.ClassDate:yyyy/MM/dd HH:mm}")" />
+                                            <input type="text" class="form-control datetime" data-date-format="yyyy/mm/dd hh:ii" readonly="readonly" placeholder="開始時間" name="ClassTimeStart" value="@($"{_viewModel.ClassDate:yyyy/MM/dd HH:mm}")" />
                                             <span class="input-group-addon xl-slategray">
                                                 <i class="zmdi zmdi-time"></i>
                                             </span>
@@ -90,7 +90,7 @@
                                     </div>
                                     <div class="col-lg-6 col-md-6 col-sm-6 col-12 single">
                                         <div class="input-group">
-                                            <input type="text" class="form-control time" data-date-format="yyyy/mm/dd hh:ii" readonly="readonly" placeholder="結束時間" name="ClassEndTime" value="@($"{_viewModel.ClassEndTime:yyyy/MM/dd HH:mm}")" />
+                                            <input type="text" class="form-control time" data-date-format="yyyy/mm/dd hh:ii" readonly="readonly" placeholder="結束時間" name="ClassTimeEnd" value="@($"{_viewModel.ClassEndTime:yyyy/MM/dd HH:mm}")" />
                                             <span class="input-group-addon xl-slategray">
                                                 <i class="zmdi zmdi-time"></i>
                                             </span>
@@ -138,9 +138,7 @@
             var $formData = $('#@(_dialogID) input,select,textarea').serializeObject();
             clearErrors();
             showLoading();
-            $.post('@Html.Raw(_viewModel.LessonID.HasValue
-                ? Url.Action("UpdateBookingByCoach","ClassFacet",new { _viewModel.KeyID,_viewModel.CoachID })
-                : Url.Action("CommitBookingSelfTraining","Lessons"))', $formData, function (data) {
+            $.post('@Html.Raw(Url.Action("CommitBookingSelfTraining","Lessons",new { _viewModel.KeyID,_viewModel.CoachID }))', $formData, function (data) {
                 hideLoading();
                 if ($.isPlainObject(data)) {
                     if (data.result) {
