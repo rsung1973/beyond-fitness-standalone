@@ -115,10 +115,10 @@
                                             <li class="@(weekday == DateTime.Today ? "col-pink" : null)" onclick="window.location.href = '@Html.Raw(Url.Action("Calendar", "ConsoleHome", new { DateFrom = weekday, DateTo = endDate }))';">
                                                 <h5>@($"{weekday:M/d}")</h5>
                                                 <img src="@(lessonCount < 3
-                                            ? "images/facesmile/easy-1.jpg"
+                                            ? "images/facesmile/easy-1.png"
                                             : lessonCount > 5
-                                                  ? "images/facesmile/hard-1.jpg"
-                                                  : "images/facesmile/ragular-1.jpg")">
+                                                  ? "images/facesmile/hard-1.png"
+                                                  : "images/facesmile/ragular-1.png")">
                                                 <span class="degrees">@(lessonCount)</span>
                                             </li>
                                                     weekday = weekday.AddDays(1);

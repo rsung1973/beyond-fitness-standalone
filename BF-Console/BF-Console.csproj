@@ -1600,19 +1600,9 @@
     <Content Include="ConsoleHome\images\certificate\EXOS.png" />
     <Content Include="ConsoleHome\images\certificate\NACA.png" />
     <Content Include="ConsoleHome\images\error.png" />
-    <Content Include="ConsoleHome\images\facesmile\easy-1.jpg" />
     <Content Include="ConsoleHome\images\facesmile\easy-2.png" />
-    <Content Include="ConsoleHome\images\facesmile\easy.jpg" />
-    <Content Include="ConsoleHome\images\facesmile\hard-1.jpg" />
     <Content Include="ConsoleHome\images\facesmile\hard-2.png" />
-    <Content Include="ConsoleHome\images\facesmile\hard.jpg" />
-    <Content Include="ConsoleHome\images\facesmile\regular-1.jpg" />
-    <Content Include="ConsoleHome\images\facesmile\ragular-1.jpg" />
     <Content Include="ConsoleHome\images\facesmile\regular-2.png" />
-    <Content Include="ConsoleHome\images\facesmile\ragular-2.png" />
-    <Content Include="ConsoleHome\images\facesmile\regular-3.png" />
-    <Content Include="ConsoleHome\images\facesmile\ragular-3.png" />
-    <Content Include="ConsoleHome\images\facesmile\ragular.jpg" />
     <Content Include="ConsoleHome\images\generic.jpg" />
     <Content Include="ConsoleHome\images\icon_add.gif" />
     <Content Include="ConsoleHome\images\icon_add3.gif" />
@@ -6171,6 +6161,10 @@
     <Content Include="Views\BusinessConsole\Module\MonthlyContractSparkline.cshtml" />
     <Content Include="Views\BusinessConsole\Module\MonthlyRevenueGrade.cshtml" />
     <Content Include="Views\BusinessConsole\Module\MonthlyAchievementGauge.cshtml" />
+    <Content Include="Views\BusinessConsole\Module\BranchCoachAchievement.cshtml" />
+    <Content Include="ConsoleHome\images\facesmile\easy-1.png" />
+    <Content Include="ConsoleHome\images\facesmile\hard-1.png" />
+    <Content Include="ConsoleHome\images\facesmile\regular-1.png" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\InitializeType.cs" />
