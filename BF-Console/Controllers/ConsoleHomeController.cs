@@ -705,13 +705,12 @@ namespace WebHome.Controllers
                 viewModel.Month = DateTime.Today.Month;
             }
 
-            var item = models.GetTable<MonthlyIndicator>().Where(i => i.PeriodID == viewModel.PeriodID
-                            || (i.Year == viewModel.Year && i.Month == viewModel.Month)).FirstOrDefault();
+            var item = viewModel.GetAlmostMonthlyIndicator(models);
 
-            if (item == null)
-            {
-                item = models.InitializeMonthlyIndicator(viewModel.Year.Value, viewModel.Month.Value);
-            }
+            //if (item == null)
+            //{
+            //    item = models.InitializeMonthlyIndicator(viewModel.Year.Value, viewModel.Month.Value);
+            //}
 
             //if (viewModel.Year == DateTime.Today.Year && viewModel.Month == DateTime.Today.Month)
             //{
@@ -724,6 +723,28 @@ namespace WebHome.Controllers
 
             var profile = HttpContext.GetUser();
             return View("~/Views/BusinessConsole/AchievementOverview.cshtml", profile.LoadInstance(models));
+        }
+
+        public ActionResult ApplyAchievementGoal(MonthlyIndicatorQueryViewModel viewModel)
+        {
+            if (viewModel.KeyID != null)
+            {
+                viewModel.PeriodID = viewModel.DecryptKeyValue();
+            }
+
+            if (!viewModel.Year.HasValue || !viewModel.Month.HasValue)
+            {
+                viewModel.Year = DateTime.Today.Year;
+                viewModel.Month = DateTime.Today.Month;
+            }
+
+            var item = viewModel.AssertMonthlyIndicator(models);
+
+            ViewBag.ViewModel = viewModel;
+            ViewBag.DataItem = item;
+
+            var profile = HttpContext.GetUser();
+            return View("~/Views/BusinessConsole/ApplyAchievementGoal.cshtml", profile.LoadInstance(models));
         }
 
     }

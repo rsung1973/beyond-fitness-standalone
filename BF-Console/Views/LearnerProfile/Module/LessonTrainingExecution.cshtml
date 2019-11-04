@@ -1,0 +1,68 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    LessonTime _model;
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = (LessonTime)this.Model;
+}
+@{
+    UserProfile learner = (UserProfile)ViewBag.Learner;
+    var plan = _model.AssertTrainingPlan(models, UID: learner.UID);
+    var execution = plan.TrainingExecution;
+}
+@foreach (var item in models.GetTable<TrainingStage>())
+{
+    ViewBag.TrainingStage = item;
+    Html.RenderPartial("~/Views/LearnerProfile/Module/LessonTrainingStage.cshtml", _model);
+}
+@if ((bool?)ViewBag.ViewOnly != true)
+{
+    <script>
+        $(function () {
+            $('.dd').on('change', function () {
+                //var $this = $(this);
+                //var serializedData = window.JSON.stringify($($this).nestable('serialize'));
+
+                var itemID = [];
+                $(this).find('[data-id]')
+                    .each(function (idx, elmt) {
+                        itemID.push($(this).data('id'));
+                    });
+
+                showLoading();
+                $.post('@Html.Raw(Url.Action("UpdateStageTrainingItemSequence", "Lessons"))', { 'itemID': itemID }, function (data) {
+                    hideLoading();
+                    if ($.isPlainObject(data)) {
+                        if (data.result) {
+                        } else {
+                            swal(data.message);
+                        }
+                    } else {
+                        $(data).appendTo($('body'));
+                    }
+                });
+            });
+        });
+    </script>
+}
+else
+{
+    <script>
+        $(function () {
+            $('.dd').on('change', function () {
+                swal("是不是忘了重新了解學生？", "了解學生後編輯的課表才會更完美喔！");
+            });
+        });
+    </script>
+}

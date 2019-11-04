@@ -1,0 +1,91 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Newtonsoft.Json
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    MonthlyCoachRevenueIndicator _model;
+    String _dialogID = $"contractProcess{DateTime.Now.Ticks}";
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = (MonthlyCoachRevenueIndicator)this.Model;
+
+    MonthlyCoachRevenueIndicatorQueryViewModel _viewModel = (MonthlyCoachRevenueIndicatorQueryViewModel)ViewBag.ViewModel;
+}
+<div class="modal fade" id="@(_dialogID)" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="title">請選擇執行功能</h6>
+                <a class="closebutton" data-dismiss="modal"></a>
+            </div>
+            <div class="modal-popmenu-body">
+                <div class="list-group">
+                    <a class="list-group-item btnEdit">編輯資料</a>
+                    <a class="list-group-item btnDelete">刪除資料</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    @{ Html.RenderPartial("~/Views/ConsoleHome/Shared/BSModalScript.cshtml", model: _dialogID);}
+
+    <script>
+        $(function () {
+            $('#@(_dialogID) .btnEdit').on('click', function (event) {
+                showLoading();
+                $.post('@Html.Raw(Url.Action("EditCoachRevenueIndicator", "BusinessConsole", new { KeyID = _model.PeriodID.EncryptKey(),_model.CoachID,_model.BranchID }))', {}, function (data) {
+                    hideLoading();
+                    if ($.isPlainObject(data)) {
+                        swal(data.message);
+                    } else {
+                        $('#@(_dialogID)').modal('hide');
+                        $(data).appendTo($('body'));
+                    }
+                });
+            });
+
+            $('#@(_dialogID) .btnDelete').on('click', function (event) {
+                swal({
+                    title: "不後悔?",
+                    text: "刪除後資料將無法回覆!",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "確定, 不後悔",
+                    cancelButtonText: "不, 點錯了",
+                    closeOnConfirm: false,
+                    closeOnCancel: false
+                }, function (isConfirm) {
+                    if (isConfirm) {
+                        showLoading();
+                        $.post('@Html.Raw(Url.Action("DeleteCoachRevenueIndicator", "BusinessConsole", new { KeyID = _model.PeriodID.EncryptKey(),_model.CoachID }))', {}, function (data) {
+                            hideLoading();
+                            if ($.isPlainObject(data)) {
+                                if (data.result) {
+                                    $('#@(_dialogID)').modal('hide');
+                                    swal("刪除成功!", "資料已經刪除 Bye!", "success");
+                                    refreshCoachIndicatorList();
+                                } else {
+                                    swal(data.message);
+                                }
+                            } else {
+                                $(data).appendTo($('body')).remove();
+                            }
+                        });
+                    } else {
+                        swal("取消成功", "你的資料現在非常安全 :)", "error");
+                    }
+                });
+            });
+        });
+    </script>
+</div>
+

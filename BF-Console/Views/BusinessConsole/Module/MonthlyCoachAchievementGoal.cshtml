@@ -1,0 +1,104 @@
+﻿
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using WebHome.Helper.BusinessOperation
+@using Newtonsoft.Json
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    MonthlyIndicator _model;
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = (MonthlyIndicator)this.Model;
+}
+@{
+    MonthlyIndicatorQueryViewModel _viewModel = (MonthlyIndicatorQueryViewModel)ViewBag.ViewModel;
+    String _viewID = $"indicator{DateTime.Now.Ticks}";
+}
+<h4 class="card-outbound-header m-l-15">@(_model.Year)年@($"{_model.Month:00}")月</h4>
+<div class="col-lg-12">
+    <div class="card patients-list">
+        <div class="header">
+            <ul class="header-dropdown">
+                <li class="dropdown">
+                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class="zmdi zmdi-more"></i> </a>
+                    <ul class="dropdown-menu dropdown-menu-right slideUp float-right">
+                        <li><a href="javascript:applyAchievementGoal();">新增人員</a></li>
+                        <li><a href="javascript:selectMonth();">切換月份</a></li>
+                    </ul>
+                    <script>
+                        function selectMonth() {
+                            //showLoading();
+                            $.post('@Html.Raw(Url.Action("SelectMonth", "BusinessConsole"))', null, function (data) {
+                                //hideLoading();
+                                if ($.isPlainObject(data)) {
+                                    swal(data.message);
+                                } else {
+                                    $(data).appendTo($('body'));
+                                }
+                            });
+                        }
+
+                        function applyAchievementGoal() {
+                            //showLoading();
+                            $.post('@Html.Raw(Url.Action("ApplyCoachAchievement", "BusinessConsole",new { KeyID = _model.PeriodID.EncryptKey(), _viewModel.BranchID }))', { 'DataOperation' : @((int)Naming.DataOperationMode.Create) }, function (data) {
+                                //hideLoading();
+                                if ($.isPlainObject(data)) {
+                                    swal(data.message);
+                                } else {
+                                    $(data).appendTo($('body'));
+                                }
+                            });                        }
+
+                        $(function () {
+                            $global.doSelect = function (year, month) {
+                                $('').launchDownload('@Html.Raw(Url.Action("ApplyAchievementGoal", "ConsoleHome"))', { 'year': year, 'month': month, 'branchID': '@(_viewModel.BranchID)' });
+                            };
+                        });
+                    </script>
+                </li>
+            </ul>
+        </div>
+        <div class="body">
+            <div class="table-responsive" id="@(_viewID)">
+                @{ 
+                    Html.RenderPartial("~/Views/BusinessConsole/Module/MonthlyCoachRevenueIndicatorList.cshtml", _model);
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function refreshCoachIndicatorList() {
+        showLoading();
+        $.post('@Html.Raw(Url.Action("LoadCoachRevenueIndicatorList", "BusinessConsole", new { KeyID = _model.PeriodID.EncryptKey(),_viewModel.BranchID }))', {}, function (data) {
+            hideLoading();
+            if ($.isPlainObject(data)) {
+                    swal(data.message);
+            } else {
+                $('#@(_viewID)').empty()
+                    .append(data);
+            }
+        });
+    }
+
+    function processCoachIndicator(viewModel) {
+        showLoading();
+        $.post('@Html.Raw(Url.Action("EditCoachRevenueIndicator", "BusinessConsole"))', viewModel, function (data) {
+            hideLoading();
+            if ($.isPlainObject(data)) {
+                swal(data.message);
+            } else {
+                $(data).appendTo($('body'));
+            }
+        });
+    }
+</script>
+
+

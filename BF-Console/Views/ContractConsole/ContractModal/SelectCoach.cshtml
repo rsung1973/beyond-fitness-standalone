@@ -33,24 +33,27 @@
                     <div class="col-12">
                         <div class="card action_bar">
                             @{
-                              IHtmlString headerRaw = ViewBag.HeaderRaw as IHtmlString;
-                              if (headerRaw != null)
-                              {
-                                <div class="header">
-                                    @(headerRaw)
-                                </div>
-                              }
+                                IHtmlString headerRaw = ViewBag.HeaderRaw as IHtmlString;
+                                if (headerRaw != null)
+                                {
+                                    <div class="header">
+                                        @(headerRaw)
+                                    </div>
+                                }
                             }
                             <div class="body">
                                 <div class="row clearfix">
-                                    <div class="@($"col-sm-{12 / _allotment} col-{12 / _allotment}")">
-                                        <div class="input-group">
-                                            <input type="text" class="form-control xl-aliceblue" placeholder="搜尋姓名(暱稱)" name="KeyWord" />
-                                            <span class="input-group-addon xl-aliceblue">
-                                                <i class="zmdi zmdi-search"></i>
-                                            </span>
+                                    @if (ViewBag.EnableSearch != false)
+                                    {
+                                        <div class="@($"col-sm-{12 / _allotment} col-{12 / _allotment}")">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control xl-aliceblue" placeholder="搜尋姓名(暱稱)" name="KeyWord" />
+                                                <span class="input-group-addon xl-aliceblue">
+                                                    <i class="zmdi zmdi-search"></i>
+                                                </span>
+                                            </div>
                                         </div>
-                                    </div>
+                                    }
                                     @{
                                         String insertPartial = ViewBag.InsertPartial as String;
                                         if (insertPartial != null)
@@ -89,6 +92,17 @@
                     </div>
                 </div>
             </div>
+            @{
+                String insertFooter = ViewBag.InsertFooter as String;
+                if (insertFooter != null)
+                {
+                    <div class="modal-footer">
+                        @{ 
+                            Html.RenderPartial(insertFooter, model: _dialogID);
+                        }
+                    </div>
+                }
+            }
         </div>
     </div>
 </div>

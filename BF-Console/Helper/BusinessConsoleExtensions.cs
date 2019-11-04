@@ -69,6 +69,8 @@ namespace WebHome.Helper
                     {
                         CustomIndicatorPercentage = r.MonthlyRevenueGoal.CustomIndicatorPercentage,
                         CustomRevenueGoal = r.MonthlyRevenueGoal.CustomRevenueGoal,
+                        NewContractCount = r.MonthlyRevenueGoal.NewContractCount,
+                        RenewContractCount = r.MonthlyRevenueGoal.RenewContractCount,
                     };
                 }
             }
@@ -100,6 +102,8 @@ namespace WebHome.Helper
                             AchievementGoal = branchGoal.AchievementGoal,
                             CustomRevenueGoal = branchGoal.CustomRevenueGoal,
                             CustomIndicatorPercentage = branchGoal.CustomIndicatorPercentage,
+                            NewContractCount = branchGoal.NewContractCount,
+                            RenewContractCount = branchGoal.RenewContractCount,
                         };
                     }
                 }
@@ -114,14 +118,61 @@ namespace WebHome.Helper
                     BranchID = c.BranchID,
                     AchievementGoal = c.AchievementGoal,
                     CompleteLessonsGoal = c.CompleteLessonsGoal,
-                    LessonTuitionGoal = c.LessonTuitionGoal
+                    LessonTuitionGoal = c.LessonTuitionGoal,
+                    BRCount = c.BRCount,
+                    LevelID = c.ServingCoach.LevelID,
+                    AverageLessonPrice = (c.ActualLessonAchievement + c.ActualCompleteLessonCount - 1) / (c.ActualCompleteLessonCount ?? 1),
                 };
+                newItem.LessonTuitionGoal = newItem.CompleteLessonsGoal * newItem.AverageLessonPrice;
             }
 
             models.SubmitChanges();
 
             return item;
 
+        }
+
+        public static MonthlyIndicator AssertMonthlyIndicator<TEntity>(this MonthlyIndicatorQueryViewModel viewModel,  ModelSource<TEntity> models)
+                where TEntity : class, new()
+        {
+            var item = models.GetTable<MonthlyIndicator>().Where(i => i.PeriodID == viewModel.PeriodID
+                            || (i.Year == viewModel.Year && i.Month == viewModel.Month)).FirstOrDefault();
+
+            if (item == null)
+            {
+                item = models.InitializeMonthlyIndicator(viewModel.Year.Value, viewModel.Month.Value);
+            }
+
+            return item;
+        }
+
+        public static MonthlyIndicator GetAlmostMonthlyIndicator<TEntity>(this MonthlyIndicatorQueryViewModel viewModel, ModelSource<TEntity> models)
+                where TEntity : class, new()
+        {
+            var item = models.GetTable<MonthlyIndicator>().Where(i => i.PeriodID == viewModel.PeriodID
+                            || (i.Year == viewModel.Year && i.Month == viewModel.Month)).FirstOrDefault();
+
+            if (item != null)
+            {
+                return item;
+            }
+
+            DateTime period = viewModel.Year.HasValue && viewModel.Month.HasValue
+                    ? new DateTime(viewModel.Year.Value, viewModel.Month.Value, 1)
+                    : DateTime.Today;
+
+            item = models.GetTable<MonthlyIndicator>().Where(i => i.StartDate <= period)
+                        .OrderByDescending(i => i.StartDate).FirstOrDefault();
+
+            if (item != null)
+            {
+                return item;
+            }
+
+            item = models.GetTable<MonthlyIndicator>().Where(i => i.StartDate > period)
+                        .OrderBy(i => i.StartDate).FirstOrDefault();
+
+            return item;
         }
 
         public static readonly int?[] SessionScopeForAchievement = new int?[]
@@ -272,6 +323,38 @@ namespace WebHome.Helper
             calcHeadquarterAchievement();
             calcBranchAchievement();
             calcCoachAchievement();
+        }
+
+        public static int CalculateAverageLessonPrice<TEntity>(this MonthlyIndicator item, ModelSource<TEntity> models,int? coachID)
+            where TEntity : class, new()
+        {
+            AchievementQueryViewModel queryModel = new AchievementQueryViewModel
+            {
+                AchievementDateFrom = item.StartDate,
+                BypassCondition = true,
+            };
+
+            IQueryable<V_Tuition> lessonItems = queryModel.InquireAchievement(models);
+
+            if (item.StartDate == DateTime.Today.FirstDayOfMonth())
+            {
+                lessonItems = lessonItems.Where(l => l.ClassTime < DateTime.Today);
+            }
+            else
+            {
+                lessonItems = lessonItems.Where(l => l.SettlementID.HasValue);
+            }
+
+            IQueryable<V_Tuition> tuitionItems = lessonItems;
+            int lessonAchievement;
+            var coachTuitionItems = tuitionItems.Where(t => t.AttendingCoach == coachID);
+            lessonAchievement = coachTuitionItems.Where(t => SessionScopeForAchievement.Contains(t.PriceStatus)).Sum(t => t.ListPrice * t.GroupingMemberCount * t.PercentageOfDiscount / 100) ?? 0;
+            lessonAchievement += (coachTuitionItems.Where(t => SessionScopeForAchievement.Contains(t.ELStatus)).Sum(l => l.EnterpriseListPrice * l.GroupingMemberCount * l.PercentageOfDiscount / 100) ?? 0);
+
+            var completeLessonCount = Math.Max(coachTuitionItems.Where(t => SessionScopeForComleteLessonCount.Contains(t.PriceStatus)).Count()
+                                    + coachTuitionItems.Where(t => SessionScopeForComleteLessonCount.Contains(t.ELStatus)).Count(), 1);
+
+            return (lessonAchievement + completeLessonCount - 1) / completeLessonCount;
         }
 
         public static void UpdateMonthlyAchievementGoal<TEntity>(this MonthlyIndicator item, ModelSource<TEntity> models)

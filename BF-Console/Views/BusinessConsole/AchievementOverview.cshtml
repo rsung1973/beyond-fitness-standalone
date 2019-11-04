@@ -51,7 +51,7 @@
 <!-- Main Content -->
 <section class="content">
     @{
-        ViewBag.BlockHeader = "我的分店業績";
+        ViewBag.BlockHeader = "損益平衡概況";
         Html.RenderPartial("~/Views/ConsoleHome/Module/BlockHeader.cshtml", _model);
     }
     <!--目標與達成率-->
@@ -71,27 +71,19 @@
                         <li class="dropdown">
                             <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class="zmdi zmdi-more"></i> </a>
                             <ul class="dropdown-menu dropdown-menu-right slideUp float-right">
-                                <li><a href="achivement-setting.html">設定目標</a></li>
+                                <li><a href="javascript:applyAchievement(@(_model.IsAssistant() || _model.IsAuthorizedSysAdmin() ? _viewModel.BranchID : models.GetTable<V_WorkPlace>().Where(w=>w.CoachID==_model.UID).Select(w=>w.WorkPlace).FirstOrDefault()));">設定目標</a></li>
                                 <li><a href="javascript:selectMonth();">切換月份</a></li>
                             </ul>
                             <script>
-                                function selectMonth() {
-                                    //showLoading();
-                                    $.post('@Html.Raw(Url.Action("SelectMonth", "BusinessConsole"))', null, function (data) {
-                                        //hideLoading();
-                                        if ($.isPlainObject(data)) {
-                                            swal(data.message);
-                                        } else {
-                                            $(data).appendTo($('body'));
-                                        }
-                                    });
+
+                                function applyAchievement(branchID) {
+                                    $('').launchDownload('@Html.Raw(Url.Action("ApplyAchievementGoal", "ConsoleHome"))', { 'year': @(_viewModel.Year), 'month': @(_viewModel.Month), 'branchID': branchID });
                                 }
 
-                                $(function () {
-                                    $global.doSelect = function (year, month) {
-                                        $('').launchDownload('@Html.Raw(Url.Action("AchievementOverview", "ConsoleHome"))', { 'year': year, 'month': month, 'branchID': @(_viewModel.BranchID) });
-                                    };
-                                });
+                                function showAchievementOverview(branchID) {
+                                    $('').launchDownload('@Html.Raw(Url.Action("AchievementOverview", "ConsoleHome"))', { 'year': @(_viewModel.Year), 'month': @(_viewModel.Month), 'branchID': branchID });
+                                }
+
                             </script>
                         </li>
                         <li class="dropdown">
@@ -111,9 +103,49 @@
                 }
             </div>
         }
+        else
+        {
+            <ul class="header-dropdown">
+                <li class="dropdown">
+                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class="zmdi zmdi-more"></i> </a>
+                    <ul class="dropdown-menu dropdown-menu-right slideUp float-right">
+                        <li><a href="javascript:selectMonth();">切換月份</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class="zmdi zmdi-swap"></i> </a>
+                    <ul class="dropdown-menu dropdown-menu-right slideUp float-right">
+                        <li><a href="javascript:showAchievementOverview();">全部</a></li>
+                        @foreach (var branch in models.GetTable<BranchStore>())
+                        {
+                            <li><a href="javascript:showAchievementOverview(@(branch.BranchID));">@(branch.BranchName)</a></li>
+                        }
+                    </ul>
+                </li>
+            </ul>
+        }
     </div>
+    <script>
+        function selectMonth() {
+            //showLoading();
+            $.post('@Html.Raw(Url.Action("SelectMonth", "BusinessConsole"))', null, function (data) {
+                //hideLoading();
+                if ($.isPlainObject(data)) {
+                    swal(data.message);
+                } else {
+                    $(data).appendTo($('body'));
+                }
+            });
+        }
 
+        $(function () {
+            $global.doSelect = function (year, month) {
+                $('').launchDownload('@Html.Raw(Url.Action("AchievementOverview", "ConsoleHome"))', { 'year': year, 'month': month, 'branchID': '@(_viewModel.BranchID)' });
+            };
+        });
+    </script>
 </section>
+
 
 @section TailPageJavaScriptInclude {
     <!--Sparkline Plugin Js-->

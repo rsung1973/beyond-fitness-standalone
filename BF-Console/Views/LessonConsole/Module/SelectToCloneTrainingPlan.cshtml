@@ -1,0 +1,36 @@
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Newtonsoft.Json
+
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    String _dialogID = $"reportQuery{DateTime.Now.Ticks}";
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+
+    IQueryable<UserProfile> _model = (IQueryable<UserProfile>)this.Model;
+}
+@{
+    ViewBag.Allotment = 2;
+    ViewBag.AllotmentCoach = 4;
+    ViewBag.EnableClose = false;
+    Html.RenderPartial("~/Views/Common/SelectUser.cshtml", _model);
+}
+<script>
+    $(function () {
+        $global.commitSelecting = function (uid, userName, $dialog) {
+            if ($global.doSelect) {
+                $dialog.modal('hide');
+                $global.doSelect(uid, userName);
+            }
+        };
+    });
+</script>

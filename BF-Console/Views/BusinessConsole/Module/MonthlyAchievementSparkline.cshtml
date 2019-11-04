@@ -29,14 +29,14 @@
         MonthlyBranchRevenueGoal indicator = (MonthlyBranchRevenueGoal)TempData["RevenueGoal"];
         lessonAchievementAmt = indicator?.ActualLessonAchievement ?? 0;
         tuitionAchievementAmt = indicator?.ActualSharedAchievement ?? 0;
-        totalAchievementAmt = tuitionAchievementAmt + lessonAchievementAmt;
+        totalAchievementAmt = Math.Max(tuitionAchievementAmt + lessonAchievementAmt, 1);
     }
     else
     {
         MonthlyRevenueGoal indicator = (MonthlyRevenueGoal)TempData["RevenueGoal"];
         lessonAchievementAmt = indicator?.ActualLessonAchievement ?? 0;
         tuitionAchievementAmt = indicator?.ActualSharedAchievement ?? 0;
-        totalAchievementAmt = tuitionAchievementAmt + lessonAchievementAmt;
+        totalAchievementAmt = Math.Max(tuitionAchievementAmt + lessonAchievementAmt, 1);
     }
 
 }
