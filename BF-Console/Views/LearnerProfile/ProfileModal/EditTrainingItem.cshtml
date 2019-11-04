@@ -72,30 +72,30 @@
                                     <div class="col-sm-6 col-12">
                                         <div class="input-group">
                                             <input type="text" class="form-control" placeholder="強度" name="GoalStrength" value="@_viewModel.GoalStrength" />
-                                            <span class="input-group-addon">
-                                                <i class="zmdi zmdi-plus-2"></i>
+                                            <span class="input-group-addon font-10">
+                                                強度
                                             </span>
                                         </div>
                                     </div>
                                     <div class="col-sm-6 col-12">
                                         <div class="input-group">
                                             <input type="text" class="form-control" placeholder="次數" value="@_viewModel.GoalTurns" name="GoalTurns" />
-                                            <span class="input-group-addon">
-                                                <i class="zmdi zmdi-collection-item-9-plus"></i>
+                                            <span class="input-group-addon font-10">
+                                                次
                                             </span>
                                         </div>
                                     </div>
                                     <div class="col-sm-6 col-12">
                                         <div class="input-group">
                                             <input type="text" class="form-control form-control-danger" placeholder="時間" value="@($"{_viewModel.DurationInSeconds:.}")" name="DurationInSeconds" />
-                                            <span class="input-group-addon">
+                                            <span class="input-group-addon font-10">
                                                 秒
                                             </span>
                                         </div>
                                     </div>
                                     <div class="col-12">
                                         <div class="form-group">
-                                            <textarea rows="4" class="form-control no-resize" placeholder="其他更多說明" name="Remark">@_viewModel.Remark</textarea>
+                                            <textarea rows="2" class="form-control no-resize" placeholder="其他更多說明" name="Remark">@_viewModel.Remark</textarea>
                                         </div>
                                     </div>
                                     <div class="col-12">

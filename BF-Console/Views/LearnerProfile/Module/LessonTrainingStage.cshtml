@@ -36,19 +36,18 @@
     <div class="card-header" id="@($"heading_{stage.StageID}{currentID}")">
         <h3 class="m-b-0">
             <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#@($"collapse_{stage.StageID}{currentID}")" aria-expanded="true" aria-controls="@($"collapse_{stage.StageID}{currentID}")">
-                <img src="@($"images/lesson/stage{stage.StageID}-{indication}.png")" class="img-thumbnail popfit">
+                <img src="@($"images/lesson/stage{stage.StageID}-{indication}-clear.png")" class="img-thumbnail popfit">
                 @(stage.Stage)
                 @{
                     var duration = execution.TrainingExecutionStage.Where(s => s.StageID == stage.StageID).FirstOrDefault();
                 }
                 - @(String.Format("{0:0.#}", duration?.TotalMinutes ?? 0)) min
             </button>
-            <i class="zmdi zmdi-label @(stageColor(stage.StageID)) m-r-5 p-t-50 float-right"></i>
         </h3>
     </div>
     <div id="@($"collapse_{stage.StageID}{currentID}")" class="collapse show" aria-labelledby="@($"heading_{stage.StageID}{currentID}")" data-parent="#accordion">
         <div class="card-body">
-            <div class="clearfix m-b-20">
+            <div class="clearfix">
                 <div class="dd nestable-with-handle nestable-dark-theme" id="@($"nestable_{stage.StageID}{currentID}")">
                     <ol class="dd-list lesson-list">
                         @foreach (var item in items)
@@ -66,10 +65,11 @@
                                         {
                                             <span class="badge bg-teal">@aid.TrainingAids.ItemName</span>
                                         }
+                                        @(item.Description)
                                         <div class="float-right">
                                             @if (item.GoalStrength != null)
                                             {
-                                                <span class="badge">@(item.GoalStrength)</span>
+                                                <span class="badge bg-black">@(item.GoalStrength)</span>
                                             }
                                             @if (item.GoalTurns != null && item.GoalStrength != null)
                                             {
@@ -77,10 +77,9 @@
                                             }
                                             @if (item.GoalTurns != null)
                                             {
-                                                <span class="badge">@(item.GoalTurns)</span>
+                                                <span class="badge bg-black">@(item.GoalTurns)</span>
                                             }
-                                        </div>
-                                        @(item.Description)
+                                        </div>                                        
                                         <span class="list-intro">@(item.Remark)</span>
                                     </div>
                                 </li>
@@ -119,7 +118,7 @@
                 {
                     <div class="btn-group float-right" role="group">
                         <a id="btnGroupDrop1" class="dropdown-toggle col-white" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="zmdi livicon-evo" data-options="name: pencil.svg; size: 40px; style: lines; strokeStyle:round; strokeColor:#f9edee; strokeWidth:2px; autoPlay:true"></i>
+                            <i class="zmdi zmdi-plus-circle-o-duplicate zmdi-hc-2x float-right m-t-25 col-grey"></i>
                         </a>
                         <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                             <a class="dropdown-item" href="javascript:editStageTrainingItem(@stage.StageID);">新增動作</a>
