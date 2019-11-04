@@ -37,7 +37,7 @@
                     <h4 class="m-t-0 p-t-10">@(_proposedLesson.UserProfile.FullName())</h4>
                 </div>
                 <div class="member-img">
-                    <a href="profile.html" class="">
+                    <a href="javascript:$('').launchDownload('@Html.Raw(Url.Action("LearnerProfile","ConsoleHome"))', { 'keyID': '@(_model.RegisterLesson.UID.EncryptKey())' });">
                         @{
                             ViewBag.ProfileClass = "rounded-circle popfit";
                             Html.RenderPartial("~/Views/Common/ProfileImage.cshtml", _proposedLesson.UserProfile);
