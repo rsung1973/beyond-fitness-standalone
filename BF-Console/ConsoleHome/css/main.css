@@ -898,6 +898,10 @@
     background-color: #ced7e4
 }
 
+.table td {
+    cursor: pointer;
+}
+
 .table.table-striped td {
     border-color: #999999;
 }
@@ -3687,12 +3691,13 @@ textarea.form-control:active {
 }
 
 a {
-    color: #0061d2
+    color: #0061d2;    
+    cursor: pointer;
 }
 
 a:hover,
 a:focus {
-    color: #0061d2
+    color: #0061d2;
 }
 
 h1,
@@ -3900,12 +3905,18 @@ body {
 
 .nav.nav-tabs > li > a {
     color: inherit;
-    font-weight: 600
+    font-weight: 600;
+     -moz-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.1);
+    -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.1)    
 }
 
 .nav.nav-tabs > li > a:hover,
 .nav.nav-tabs > li > a:focus {
-    background-color: #f5f5f5
+    background-color: #f5f5f5;
+    -moz-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2);
+    -webkit-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2);
+    box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2)    
 }
 
 .nav.nav-tabs-new > li > a {
@@ -21563,7 +21574,7 @@ section.content {
 .card .bg-blush,
 .card .bg-black,
 .card .bg-darkteal {
-    border-bottom: none !important;
+/*    border-bottom: none !important;*/
     color: #fff !important
 }
 
@@ -24229,12 +24240,13 @@ section.content {
 }
 */
 
-/*
 .nestable-dark-theme .dd-handle {
-    background: #ccc !important;
-    border: 1px solid #999 !important
+    background: #052333;
 }
-*/
+
+.dd3-handle:before {
+    color: #9E9E9E !important;
+}
 
 /*
 .dd3-handle {
@@ -27053,7 +27065,8 @@ section.content {
     padding: 0px 15px;
     margin-right: 8px;
     margin-left: 0;
-    border-bottom: 1px solid #eee !important;
+/*    border-bottom: 1px solid #eee !important;*/
+    border: 0px;
 }
 
 .accordion.custom span.badge.tag-line {
@@ -27076,7 +27089,7 @@ section.content {
 .accordion.custom span.badge.tag-repet {
     background-color: #f9f1d8 !important;
     border-radius: 20px;
-    font-size: 14px;
+    font-size: 12px;
     height: 25px;
     line-height: 25px;
     padding: 0px 15px;
@@ -27109,7 +27122,7 @@ section.content {
 }
 
 .accordion.custom ol.lesson-list li .list-item {
-	font-size: 18px;
+	font-size: 15px;
 	color: #f4f6f9;
 	line-height: 25px;
     width: 100%;
@@ -27118,10 +27131,10 @@ section.content {
 .accordion.custom ol.lesson-list li.list-line {
 	padding: 0;
 	height: 1px;
-	background: #f9f1d8;
+	background: #656565;
 	position: relative;
-	margin-bottom: 10px;
-    margin-top: 5px;
+/*	margin-bottom: 20px;*/
+/*    margin-top: 5px;*/
     min-height: 0px !important;
 }
 
@@ -27139,13 +27152,19 @@ section.content {
 .accordion.custom .card-header {
     background: transparent;
 /*    border-color: #f0f0f0;*/
-    border-color: #656565;
-    background: linear-gradient(#052333, #052333), linear-gradient(to bottom, rgba(255, 255, 255, 0.5), rgba(0, 0, 0, 0.5)) !important;
-    padding: .25rem 1.25rem;    
+    border-bottom: 1px solid rgba(0, 0, 0, 0.78) !important;
+/*    background: linear-gradient(#052333, #052333), linear-gradient(to bottom, rgba(255, 255, 255, 0.5), rgba(0, 0, 0, 0.5)) !important;*/
+    background: #05202e !important;
+    padding: .5rem 1.25rem 0rem;    
+}
+
+.accordion.custom .card-header h3 {
+    padding: 0px;
+    margin: 0px 0;
 }
 
 .accordion .accordion-header {
-	padding: 1.1em 1.5em;
+	padding: 0.25em 1.5em;
 	background: #cccccc;
 	text-transform: uppercase;
 	color: #4a4a4a;
@@ -27172,8 +27191,8 @@ section.content {
 
 .accordion.custom .card-header .img-thumbnail.popfit {
     object-fit: cover;
-    width: 100px;
-    height: 100px;
+    width: 50px;
+    height: 50px;
 }
 
 
@@ -27184,10 +27203,11 @@ section.content {
 
 .accordion.custom .card-body {
     font-size: 15px;
-    line-height: 28px;
+/*    line-height: 28px;*/
     color: #777;
-    padding: 1.75rem;
+    padding: 0 0.75rem;
     background: linear-gradient(#052333, #052333), linear-gradient(to bottom, rgba(255, 255, 255, 0.5), rgba(0, 0, 0, 0.5)) !important;
+    min-height: 100px;
 }
 
 .myfavaroit:before{    
@@ -27296,6 +27316,21 @@ label.star:hover { transform: rotate(-15deg) scale(1.3); }
 label.star:before {
   content: '\f27c';
   font-family: 'Material-Design-Iconic-Font';
+}
+
+.numberCircle {
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    padding: 6px;
+
+    background: #cacaca;
+    border: 2px solid #cacaca;
+    color: #052333;
+    text-align: center;
+
+    font: 16px;
+    display: inline-block;
 }
 
 .col-xs-1,
