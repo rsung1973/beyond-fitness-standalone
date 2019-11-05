@@ -58,60 +58,49 @@
     <div class="container-fluid">
         @if (_item != null)
         {
-            <div class="card bg-darkteal">
-                <div class="header">
-                    <h2 class="col-grey">
-                        @(_item.Year)/@(_item.Month)
+            <div class="row clearfix">
+                <h4 class="card-outbound-header m-l-15">
+                    @(_item.Year)年@(_item.Month)月
+                    <a href="javascript:selectMonth();"><i class="zmdi zmdi-calendar zmdi-hc-lg"></i></a>
+                    @{
+                        ViewBag.Other = "全部";
+                        Html.RenderPartial("~/Views/Common/BranchStoreWithOther.cshtml", models.GetTable<BranchStore>().Where(b => b.BranchID == _viewModel.BranchID).FirstOrDefault());
+                    }
+                </h4>
+                <script>
+                    function applyAchievement(branchID) {
+                        $('').launchDownload('@Html.Raw(Url.Action("ApplyAchievementGoal", "ConsoleHome"))', { 'year': @(_viewModel.Year), 'month': @(_viewModel.Month), 'branchID': branchID });
+                    }
+                    function showAchievementOverview(branchID) {
+                         $('').launchDownload('@Html.Raw(Url.Action("AchievementOverview", "ConsoleHome"))', { 'year': @(_viewModel.Year), 'month': @(_viewModel.Month), 'branchID': branchID });
+                    }
+                </script>
+                <div class="col-lg-12">
+                    <div class="card bg-darkteal">
+                        <div class="header">
+                            <ul class="header-dropdown">
+                                <li class="dropdown">
+                                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class="zmdi zmdi-swap"></i> </a>
+                                    <ul class="dropdown-menu dropdown-menu-right slideUp float-right">
+                                        <li><a href="javascript:showAchievementOverview();">全部</a></li>
+                                        @foreach (var branch in models.GetTable<BranchStore>())
+                                        {
+                                            <li><a href="javascript:showAchievementOverview(@(branch.BranchID));">@(branch.BranchName)</a></li>
+                                        }
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
                         @{
-                            ViewBag.Other = "全部";
-                            Html.RenderPartial("~/Views/Common/BranchStoreWithOther.cshtml", models.GetTable<BranchStore>().Where(b => b.BranchID == _viewModel.BranchID).FirstOrDefault());
+                            Html.RenderPartial("~/Views/BusinessConsole/Module/MonthlyIndicator.cshtml", _item);
                         }
-                    </h2>
-                    <ul class="header-dropdown">
-                        <li class="dropdown">
-                            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class="zmdi zmdi-more"></i> </a>
-                            <ul class="dropdown-menu dropdown-menu-right slideUp float-right">
-                                <li><a href="javascript:applyAchievement(@(_model.IsAssistant() || _model.IsAuthorizedSysAdmin() ? _viewModel.BranchID : models.GetTable<V_WorkPlace>().Where(w=>w.CoachID==_model.UID).Select(w=>w.WorkPlace).FirstOrDefault()));">設定目標</a></li>
-                                <li><a href="javascript:selectMonth();">切換月份</a></li>
-                            </ul>
-                            <script>
-
-                                function applyAchievement(branchID) {
-                                    $('').launchDownload('@Html.Raw(Url.Action("ApplyAchievementGoal", "ConsoleHome"))', { 'year': @(_viewModel.Year), 'month': @(_viewModel.Month), 'branchID': branchID });
-                                }
-
-                                function showAchievementOverview(branchID) {
-                                    $('').launchDownload('@Html.Raw(Url.Action("AchievementOverview", "ConsoleHome"))', { 'year': @(_viewModel.Year), 'month': @(_viewModel.Month), 'branchID': branchID });
-                                }
-
-                            </script>
-                        </li>
-                        <li class="dropdown">
-                            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class="zmdi zmdi-swap"></i> </a>
-                            <ul class="dropdown-menu dropdown-menu-right slideUp float-right">
-                                <li><a href="javascript:showAchievementOverview();">全部</a></li>
-                                @foreach (var branch in models.GetTable<BranchStore>())
-                                {
-                                    <li><a href="javascript:showAchievementOverview(@(branch.BranchID));">@(branch.BranchName)</a></li>
-                                }
-                            </ul>
-                        </li>
-                    </ul>
+                    </div>
                 </div>
-                @{
-                    Html.RenderPartial("~/Views/BusinessConsole/Module/MonthlyIndicator.cshtml", _item);
-                }
-            </div>
+            </div>                 
         }
         else
         {
             <ul class="header-dropdown">
-                <li class="dropdown">
-                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class="zmdi zmdi-more"></i> </a>
-                    <ul class="dropdown-menu dropdown-menu-right slideUp float-right">
-                        <li><a href="javascript:selectMonth();">切換月份</a></li>
-                    </ul>
-                </li>
                 <li class="dropdown">
                     <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class="zmdi zmdi-swap"></i> </a>
                     <ul class="dropdown-menu dropdown-menu-right slideUp float-right">

@@ -12,9 +12,13 @@
     ModelStateDictionary _modelState;
     ModelSource<UserProfile> models;
     MonthlyIndicator _model;
+    UserProfile _profile = Context.GetUser();
+
     _modelState = (ModelStateDictionary)ViewBag.ModelState;
     models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
     _model = (MonthlyIndicator)this.Model;
+    
+
 }
 @{
     MonthlyIndicatorQueryViewModel _viewModel = (MonthlyIndicatorQueryViewModel)ViewBag.ViewModel;
@@ -30,11 +34,12 @@
             </tr>
         </thead>
         <tbody>
-            <tr class="font-bold font-18">
+            <tr class="font-bold col-grey" onclick="javascript: applyAchievement(@(_profile.IsAssistant() || _profile.IsAuthorizedSysAdmin() ? _viewModel.BranchID : models.GetTable<V_WorkPlace>().Where(w => w.CoachID == _profile.UID).Select(w => w.WorkPlace).FirstOrDefault()));">
                 <td>本月設定</td>
                 <td>@($"{revenueGoal.CustomRevenueGoal:##,###,###,###}")</td>
                 <td class="text-right">@(revenueGoal.CustomIndicatorPercentage)%</td>
             </tr>
+            <script>@Html.Raw(Url.Action("ApplyAchievementGoal", "ConsoleHome"))@(_viewModel.Year)@(_viewModel.Month)</script>
             @{
                 MonthlyBranchRevenueIndicator achieved = null;
                 foreach (var item in models.GetTable<MonthlyBranchRevenueIndicator>()

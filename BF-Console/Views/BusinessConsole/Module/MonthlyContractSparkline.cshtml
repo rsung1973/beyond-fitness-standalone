@@ -35,7 +35,7 @@
 }
     <div class="sparkline-pie m-t-20" id="@(_viewID)">@(indicator.NewContractCount), @(indicator.RenewContractCount)</div>
     <p class="m-t-20">
-        <i class="zmdi livicon-evo" data-options="name: morph-checkbox-4.svg; size: 30px; style: filled; strokeStyle:round; fillColor:#F6F5F1; strokeColor:#E4C04E; strokeWidth:2px; autoPlay:true;"></i> 新單 @(Math.Round((indicator.NewContractCount ?? 0) * 100M / totalCount, 1))%
+        <i class="zmdi livicon-evo" data-options="name: morph-checkbox-4.svg; size: 30px; style: filled; strokeStyle:round; fillColor:#F6F5F1; strokeColor:#E4C04E; strokeWidth:2px; autoPlay:true;"></i> 新單 @(Math.Round((indicator.NewContractCount ?? 0) * 100M / totalCount, 1))% <br />
         <i class="zmdi livicon-evo" data-options="name: morph-checkbox-4.svg; size: 30px; style: filled; strokeStyle:round; fillColor:#F6F5F1; strokeColor:#729DBD; strokeWidth:2px; autoPlay:true;"></i> 續約 @(Math.Round((indicator.RenewContractCount ?? 0) * 100M / totalCount, 1))%
     </p>
 <script>

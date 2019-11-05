@@ -6165,6 +6165,13 @@
     <Content Include="ConsoleHome\images\facesmile\easy-1.png" />
     <Content Include="ConsoleHome\images\facesmile\hard-1.png" />
     <Content Include="ConsoleHome\images\facesmile\regular-1.png" />
+    <Content Include="Views\BusinessConsole\ApplyAchievementGoal.cshtml" />
+    <Content Include="Views\BusinessConsole\Module\CoachAchievementGoal.cshtml" />
+    <Content Include="Views\BusinessConsole\Module\ConfirmToDeleteCoachRevenueIndicator.cshtml" />
+    <Content Include="Views\BusinessConsole\Module\MonthlyCoachAchievementGoal.cshtml" />
+    <Content Include="Views\BusinessConsole\Module\MonthlyCoachRevenueIndicatorList.cshtml" />
+    <Content Include="Views\BusinessConsole\Module\ProcessCoachRevenueIndicator.cshtml" />
+    <Content Include="Views\BusinessConsole\Module\SelectCoachAchievementGoal.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\InitializeType.cs" />
