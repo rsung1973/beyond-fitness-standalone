@@ -2339,6 +2339,7 @@
       <Column Name="LevelID" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="ActualCompleteTSCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="ActualCompletePICount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="BRCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Association Name="BranchStore_MonthlyCoachRevenueIndicator" Member="BranchStore" ThisKey="BranchID" OtherKey="BranchID" Type="BranchStore" IsForeignKey="true" />
       <Association Name="MonthlyIndicator_MonthlyCoachRevenueIndicator" Member="MonthlyIndicator" ThisKey="PeriodID" OtherKey="PeriodID" Type="MonthlyIndicator" IsForeignKey="true" />
       <Association Name="ProfessionalLevel_MonthlyCoachRevenueIndicator" Member="ProfessionalLevel" ThisKey="LevelID" OtherKey="LevelID" Type="ProfessionalLevel" IsForeignKey="true" />

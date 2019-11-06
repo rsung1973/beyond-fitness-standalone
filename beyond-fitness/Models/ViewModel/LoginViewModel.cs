@@ -22,6 +22,7 @@ namespace WebHome.Models.ViewModel
             return (QueryViewModel)this.MemberwiseClone();
         }
         public String CustomQuery { get; set; }
+        public Naming.DataOperationMode? DataOperation { get; set; }
     }
 
     public class LoginViewModel : QueryViewModel
@@ -393,6 +394,7 @@ namespace WebHome.Models.ViewModel
 
         public int? StageID { get; set; }
         public int? PurposeID { get; set; }
+        public Naming.TrainingItemMode? ItemMode { get; set; }
     }
 
     public class TrainingPlanViewModel

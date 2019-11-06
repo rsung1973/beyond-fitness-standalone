@@ -48,7 +48,7 @@
 
     function editStageTrainingItem(stageID, itemID) {
         showLoading();
-        $.post('@Html.Raw(Url.Action("EditTrainingItem", "LearnerProfile", new { execution.ExecutionID }))', { 'stageID': stageID, 'itemID': itemID }, function (data) {
+        $.post('@Html.Raw(Url.Action("EditTrainingItem", "LearnerProfile", new { execution.ExecutionID }))', { 'stageID': stageID, 'itemID': itemID, 'itemMode': itemID !== undefined ? @((int)Naming.TrainingItemMode.ForTrainingItem) : null }, function (data) {
             hideLoading();
             if ($.isPlainObject(data)) {
                 alert(data.message);
@@ -60,7 +60,7 @@
 
     function editStageBreakInterval(stageID, itemID) {
         showLoading();
-        $.post('@Html.Raw(Url.Action("EditBreakInterval", "LearnerProfile", new { execution.ExecutionID }))', { 'stageID': stageID, 'itemID': itemID }, function (data) {
+        $.post('@Html.Raw(Url.Action("EditBreakInterval", "LearnerProfile", new { execution.ExecutionID }))', { 'stageID': stageID, 'itemID': itemID, 'itemMode': @((int)Naming.TrainingItemMode.ForBreakInterval) }, function (data) {
             hideLoading();
             if ($.isPlainObject(data)) {
                 alert(data.message);

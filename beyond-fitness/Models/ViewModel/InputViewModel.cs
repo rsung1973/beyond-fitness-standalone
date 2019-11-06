@@ -452,4 +452,14 @@ namespace WebHome.Models.ViewModel
         public int? RecentCount { get; set; }
     }
 
+    public class MonthlyCoachRevenueIndicatorQueryViewModel : MonthlyIndicatorQueryViewModel
+    {
+        public int? CoachID { get; set; }
+        public int? AchievementGoal { get; set; }
+        public int? CompleteLessonsGoal { get; set; }
+        public int? AverageLessonPrice { get; set; }
+        public int? BRCount { get; set; }
+
+    }
+
 }

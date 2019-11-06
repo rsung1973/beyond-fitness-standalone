@@ -436,5 +436,20 @@ namespace WebHome.Models.Locale
             體驗課程 = 3,
         }
 
+        [Flags]
+        public enum DataOperationMode
+        {
+            Create = 1,
+            Read = 2,
+            Update = 4,
+            Delete = 8
+        }
+
+        public enum TrainingItemMode
+        {
+            ForTrainingItem = 0,
+            ForBreakInterval = 1,
+        }
+
     }
 }

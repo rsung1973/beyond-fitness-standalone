@@ -42,6 +42,8 @@
       <link rel="apple-touch-icon-precomposed" sizes="114x114" href="favicons/favicon_114x114.png">
       <link rel="apple-touch-icon-precomposed" sizes="144x144" href="favicons/favicon_144x144.png">
       <link rel="apple-touch-icon-precomposed" sizes="180x180" href="favicons/favicon_180x180.png">       
+           <link href="plugins/smartcalendar/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+      <link href="css/smartcalendar-2.css" rel="stylesheet" />     
 
 <script src="js/libs/jquery-2.2.4.min.js"></script> 
       <script src="js/materialize.js"></script> 
@@ -58,9 +60,13 @@
       <!-- scrollup-master  -->
       <script src="js/plugin/scrollup-master/jquery.scrollUp.min.js"></script>
       <!--datedropper-->
-      <script src="js/plugin/datedropper/datedropper.js"></script> 
+      <%--<script src="js/plugin/datedropper/datedropper.js"></script> --%>
       <!--timedropper-->
-      <script src="js/plugin/timedropper/timedropper.js"></script>     </head>
+      <%--<script src="js/plugin/timedropper/timedropper.js"></script>--%>
+       <script src="plugins/smartcalendar/js/bootstrap-datetimepicker.min.js"></script>
+       <script src="plugins/smartcalendar/js/locales-datetimepicker/bootstrap-datetimepicker.zh-TW.js"></script>
+
+   </head>
    <body>
       <!--//預設值為藍色 / 若要設定女生 請加上 mode-girls /--> 
       <div class="wrapper">
@@ -94,27 +100,29 @@
                               <!--1-->
                               <div class="input-field col s12"> 
                                  <i class="livicon-evo prefix" data-options="name: calendar.svg; size: 30px; style: lines; strokeColor:#05232d; autoPlay:true"></i>
-                                 <label for="">開始日期</label>
-                                 <input type="text" class="pickdate" name="StartDate" data-format="Y/m/d" data-lang="zh" data-modal="true" data-large-default="true" data-large-mode="true" data-theme="<%= _model.UserProfileExtension.Gender=="F" ? "teal-momo" : "teal-navy" %>" value="<%= $"{_viewModel.StartDate:yyyy/M/d}" %>" data-default-date="<%= $"{_viewModel.StartDate:MM-dd-yyyy}" %>"/>
+                                 <label for="">開始時間</label>
+<%--                                 <input type="text" class="pickdate" name="StartDate" data-format="Y/m/d" data-lang="zh" data-modal="true" data-large-default="true" data-large-mode="true" data-theme="<%= _model.UserProfileExtension.Gender=="F" ? "teal-momo" : "teal-navy" %>" value="<%= $"{_viewModel.StartDate:yyyy/MM/dd HH:mm}" %>" data-default-date="<%= $"{_viewModel.StartDate:MM-dd-yyyy}" %>"/>--%>
+                                 <input type="text" class="form-control datetime" data-date-format="yyyy/mm/dd hh:ii" readonly="readonly" name="StartDate" value="<%= $"{_viewModel.StartDate:yyyy/MM/dd HH:mm}" %>" />
                               </div>
                               <!--2-->
-                              <div class="input-field col s12"> 
-                                 <i class="livicon-evo prefix" data-options="name: alarm.svg; size: 30px; style: lines; strokeColor:#05232d; autoPlay:true"></i>
-                                 <label for="">開始時間</label>
-                                 <input type="text" class="picktime" name="StartTime" value="<%= $"{_viewModel.StartDate ?? DateTime.Now:HH:mm}" %>"/>
-                              </div>                               
-                              <!--3-->
+                               <%--<div class="input-field col s12">
+                                   <i class="livicon-evo prefix" data-options="name: alarm.svg; size: 30px; style: lines; strokeColor:#05232d; autoPlay:true"></i>
+                                   <label for="">開始時間</label>
+                                   <input type="text" class="picktime" name="StartTime" value="<%= $"{_viewModel.StartDate ?? DateTime.Now:HH:mm}" %>" />
+                               </div>--%>
+                               <!--3-->
                               <div class="input-field col s12"> 
                                  <i class="livicon-evo prefix" data-options="name: calendar.svg; size: 30px; style: lines; strokeColor:#05232d; autoPlay:true"></i>
-                                 <label for="">結束日期</label>
-                                 <input type="text" class="pickdate" name="EndDate" data-format="Y/m/d" data-lang="zh" data-modal="true" data-large-default="true" data-large-mode="true" data-theme="<%= _model.UserProfileExtension.Gender=="F" ? "teal-momo" : "teal-navy" %>" value="<%= $"{_viewModel.EndDate:yyyy/M/d}" %>"  data-default-date="<%= $"{_viewModel.EndDate:MM-dd-yyyy}" %>"/>
+                                 <label for="">結束時間</label>
+                                 <%--<input type="text" class="pickdate" name="EndDate" data-date-format="yyyy/mm/dd hh:ii" readonly="readonly" data-format="Y/m/d" data-lang="zh" data-modal="true" data-large-default="true" data-large-mode="true" data-theme="<%= _model.UserProfileExtension.Gender=="F" ? "teal-momo" : "teal-navy" %>" value="<%= $"{_viewModel.EndDate:yyyy/MM/dd HH:mm}" %>"  data-default-date="<%= $"{_viewModel.EndDate:MM-dd-yyyy}" %>"/>--%>
+                                  <input type="text" class="form-control datetime" data-date-format="yyyy/mm/dd hh:ii" readonly="readonly" name="EndDate" value="<%= $"{_viewModel.EndDate:yyyy/MM/dd HH:mm}" %>" />
                               </div>							   							   							   
                               <!--4-->
-                              <div class="input-field col s12"> 
-                                 <i class="livicon-evo prefix" data-options="name: alarm.svg; size: 30px; style: lines; strokeColor:#05232d; autoPlay:true"></i>
-                                 <label for="">結束時間</label>
-                                 <input type="text" class="picktime" name="EndTime" value="<%= $"{_viewModel.EndDate ?? DateTime.Now:HH:mm}" %>" />
-                              </div>								   
+                               <%--<div class="input-field col s12">
+                                   <i class="livicon-evo prefix" data-options="name: alarm.svg; size: 30px; style: lines; strokeColor:#05232d; autoPlay:true"></i>
+                                   <label for="">結束時間</label>
+                                   <input type="text" class="picktime" name="EndTime" value="<%= $"{_viewModel.EndDate ?? DateTime.Now:HH:mm}" %>" />
+                               </div>--%>								   
                                <!--4-->
                               <div class="input-field col s12">
                                  <i class="livicon-evo prefix" data-options="name: pen.svg; size: 30px; style: lines; strokeColor:#05232d; autoPlay:true"></i>
@@ -168,7 +176,7 @@
                  }
              });
                       
-                $(".pickdate").dateDropper({
+<%--                $(".pickdate").dateDropper({
                 });
              
                 $(".picktime").timeDropper({
@@ -177,7 +185,25 @@
                     primaryColor: '<%= _model.UserProfileExtension.Gender=="F" ? "#fd5c63" : "#0061d2" %>',
                     borderColor: '#4a4a4a',
                     setCurrentTime: false
-                });
+                });--%>
+
+             $('.datetime').datetimepicker({
+                 language: 'zh-TW',
+                 weekStart: 1,
+                 todayBtn: 0,
+                 showMeridian: 1,
+                 clearBtn: 1,
+                 autoclose: 1,
+                 todayHighlight: 1,
+                 startView: 2,
+                 minView: 0,
+                 defaultView: 2,
+                 minuteStep: 5,
+                 forceParse: 0,
+                 startDate: new Date(),
+                 defaultDate: $(this).val(),
+             });
+
          });
          
                                         

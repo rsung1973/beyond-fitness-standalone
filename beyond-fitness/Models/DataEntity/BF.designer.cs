@@ -53235,6 +53235,8 @@ namespace WebHome.Models.DataEntity
 		
 		private System.Nullable<int> _ActualCompletePICount;
 		
+		private System.Nullable<int> _BRCount;
+		
 		private EntityRef<BranchStore> _BranchStore;
 		
 		private EntityRef<MonthlyIndicator> _MonthlyIndicator;
@@ -53279,6 +53281,8 @@ namespace WebHome.Models.DataEntity
     partial void OnActualCompleteTSCountChanged();
     partial void OnActualCompletePICountChanging(System.Nullable<int> value);
     partial void OnActualCompletePICountChanged();
+    partial void OnBRCountChanging(System.Nullable<int> value);
+    partial void OnBRCountChanged();
     #endregion
 		
 		public MonthlyCoachRevenueIndicator()
@@ -53622,6 +53626,26 @@ namespace WebHome.Models.DataEntity
 					this._ActualCompletePICount = value;
 					this.SendPropertyChanged("ActualCompletePICount");
 					this.OnActualCompletePICountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BRCount", DbType="Int")]
+		public System.Nullable<int> BRCount
+		{
+			get
+			{
+				return this._BRCount;
+			}
+			set
+			{
+				if ((this._BRCount != value))
+				{
+					this.OnBRCountChanging(value);
+					this.SendPropertyChanging();
+					this._BRCount = value;
+					this.SendPropertyChanged("BRCount");
+					this.OnBRCountChanged();
 				}
 			}
 		}
