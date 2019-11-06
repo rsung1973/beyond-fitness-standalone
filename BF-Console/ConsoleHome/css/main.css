@@ -2864,7 +2864,7 @@ fieldset[disabled] .btn-link.active {
 }
 
 .form-control + .input-group-addon {
-    background-color: #fff
+    background-color: transparent;
 }
 
 .bg-darkteal .bootstrap-select .btn.btn-round.btn-simple .filter-option {
@@ -20715,7 +20715,9 @@ section.content {
 
 body {
 /*    background-color: #f4f6f9;*/
-    background-color: #eceeef;
+/*    background-color: #eceeef;*/
+    background-color: rgba(34, 40, 43, .1);
+/*    background-color: #E8EDED;*/
     -moz-transition: all 0.5s;
     -o-transition: all 0.5s;
     -webkit-transition: all 0.5s;
@@ -21517,7 +21519,7 @@ section.content {
     margin-bottom: 5px;
 */
 
-    background: #fff;
+    background: rgba(255, 255, 255, .7);
     border-radius: .55rem;
     margin-bottom: 30px;
     transition: .5s;
@@ -27134,8 +27136,17 @@ section.content {
 	background: #656565;
 	position: relative;
 /*	margin-bottom: 20px;*/
-/*    margin-top: 5px;*/
+    margin-top: 5px;
     min-height: 0px !important;
+}
+
+.accordion.custom ol.lesson-list li.list-line .list-intro {
+    position: absolute;
+    top: -20px;
+	font-size: 14px;
+	font-weight: normal;
+	color: #cacaca;
+    display: block;
 }
 
 .accordion ol.lesson-list li .list-intro {
@@ -27318,19 +27329,22 @@ label.star:before {
   font-family: 'Material-Design-Iconic-Font';
 }
 
-.numberCircle {
-    border-radius: 50%;
-    width: 36px;
-    height: 36px;
-    padding: 6px;
-
-    background: #cacaca;
-    border: 2px solid #cacaca;
-    color: #052333;
-    text-align: center;
-
-    font: 16px;
+.btn-floating {
     display: inline-block;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    padding: 0;
+    background-color: #26a69a;
+    border-radius: 50%;
+    -webkit-transition: .3s;
+    transition: .3s;
+    cursor: pointer;
+    vertical-align: middle;
 }
 
 .col-xs-1,

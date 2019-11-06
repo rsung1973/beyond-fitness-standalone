@@ -6172,6 +6172,7 @@
     <Content Include="Views\BusinessConsole\Module\MonthlyCoachRevenueIndicatorList.cshtml" />
     <Content Include="Views\BusinessConsole\Module\ProcessCoachRevenueIndicator.cshtml" />
     <Content Include="Views\BusinessConsole\Module\SelectCoachAchievementGoal.cshtml" />
+    <Content Include="Views\LearnerProfile\Module\LessonTrainingExecution.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\InitializeType.cs" />
