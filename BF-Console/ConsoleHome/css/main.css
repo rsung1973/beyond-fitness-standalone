@@ -27069,6 +27069,7 @@ section.content {
     margin-left: 0;
 /*    border-bottom: 1px solid #eee !important;*/
     border: 0px;
+    font-weight: 400;
 }
 
 .accordion.custom span.badge.tag-line {
@@ -27094,7 +27095,7 @@ section.content {
     font-size: 12px;
     height: 25px;
     line-height: 25px;
-    padding: 0px 15px;
+    padding: 0px 10px;
     margin-right: 8px;
     margin-left: 0;
     border: 1px solid rgba(0, 0, 0, 0.4);
@@ -27102,6 +27103,7 @@ section.content {
     position: absolute;
     top: -12px;
     right: 15%;
+    font-weight: 800;
 }
 
 /* 編輯課程下方 項目清單 */
@@ -27113,7 +27115,7 @@ section.content {
 }
 
 .accordion.custom ol.lesson-list li {
-	padding: 5px 0;
+	padding: 3px 0;
 	line-height: 23px;
 	color: #4a4a4a;
 	display: -webkit-box;
@@ -27124,7 +27126,7 @@ section.content {
 }
 
 .accordion.custom ol.lesson-list li .list-item {
-	font-size: 15px;
+	font-size: 16px;
 	color: #f4f6f9;
 	line-height: 25px;
     width: 100%;
@@ -27136,25 +27138,27 @@ section.content {
 	background: #656565;
 	position: relative;
 /*	margin-bottom: 20px;*/
-    margin-top: 5px;
+    margin-top: 10px;
     min-height: 0px !important;
 }
 
 .accordion.custom ol.lesson-list li.list-line .list-intro {
     position: absolute;
     top: -20px;
-	font-size: 14px;
+	font-size: 13px;
 	font-weight: normal;
 	color: #cacaca;
     display: block;
+    line-height: 15px;
 }
 
 .accordion ol.lesson-list li .list-intro {
-	font-size: 14px;
+	font-size: 13px;
 	font-weight: normal;
 	color: #cacaca;
-	padding: 3px 0;
+	padding: 0 0;
     display: block;
+    line-height: 15px;
 }
 
 .accordion.custom {
