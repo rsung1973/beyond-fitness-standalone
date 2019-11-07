@@ -24244,6 +24244,7 @@ section.content {
 
 .nestable-dark-theme .dd-handle {
     background: #052333;
+    height: 32px;
 }
 
 .dd3-handle:before {
@@ -27138,14 +27139,14 @@ section.content {
 	background: #656565;
 	position: relative;
 /*	margin-bottom: 20px;*/
-    margin-top: 10px;
+    margin-top: 15px;
     min-height: 0px !important;
 }
 
 .accordion.custom ol.lesson-list li.list-line .list-intro {
     position: absolute;
-    top: -20px;
-	font-size: 13px;
+    top: 5px;
+	font-size: 12px;
 	font-weight: normal;
 	color: #cacaca;
     display: block;
@@ -27220,9 +27221,9 @@ section.content {
     font-size: 15px;
 /*    line-height: 28px;*/
     color: #777;
-    padding: 0 0.75rem;
+    padding: 0 .75rem .75rem .75rem;
     background: linear-gradient(#052333, #052333), linear-gradient(to bottom, rgba(255, 255, 255, 0.5), rgba(0, 0, 0, 0.5)) !important;
-    min-height: 100px;
+    min-height: 0px;
 }
 
 .myfavaroit:before{    

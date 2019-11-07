@@ -109,6 +109,10 @@
                                             <text>Repeat * @(item.Repeats)</text>
                                         }
                                     </span>
+                                    @if (item.Remark != null)
+                                    {
+                                        <span class="list-intro">@(item.Remark)</span>
+                                    }
                                 </div>
                             </li>
                         }
