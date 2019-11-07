@@ -185,7 +185,14 @@ namespace WebHome.Controllers
             }
 
             ViewBag.ViewModel = viewModel;
-            return View("~/Views/LearnerProfile/ProfileModal/EditTrainingItem.cshtml", item);
+            if (item == null)
+            {
+                return View("~/Views/LearnerProfile/ProfileModal/CreateTrainingItem.cshtml", item);
+            }
+            else
+            {
+                return View("~/Views/LearnerProfile/ProfileModal/EditTrainingItem.cshtml", item);
+            }
 
         }
 
