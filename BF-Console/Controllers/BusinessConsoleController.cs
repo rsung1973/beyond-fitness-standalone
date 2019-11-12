@@ -40,7 +40,7 @@ namespace WebHome.Controllers
             return View();
         }
 
-        public ActionResult PrepareRevenueGoal(MonthlyIndicatorQueryViewModel viewModel)
+        public ActionResult PrepareRevenueGoal(MonthlyIndicatorQueryViewModel viewModel,bool? forcedPrepare)
         {
             if (viewModel.KeyID != null)
             {
@@ -53,12 +53,16 @@ namespace WebHome.Controllers
                 viewModel.Month = DateTime.Today.Month;
             }
 
-            var item = models.GetTable<MonthlyIndicator>().Where(i => i.PeriodID == viewModel.PeriodID
-                            || (i.Year == viewModel.Year && i.Month == viewModel.Month)).FirstOrDefault();
+            var item = models.GetTable<MonthlyIndicator>().Where(i => i.PeriodID == viewModel.PeriodID).FirstOrDefault();
 
             if (item == null)
             {
-                item = models.InitializeMonthlyIndicator(viewModel.Year.Value, viewModel.Month.Value);
+                item = models.GetTable<MonthlyIndicator>().Where(i => (i.Year == viewModel.Year && i.Month == viewModel.Month)).FirstOrDefault();
+            }
+
+            if (item == null || forcedPrepare == true)
+            {
+                item = models.InitializeMonthlyIndicator(viewModel.Year.Value, viewModel.Month.Value, true);
             }
 
             item.UpdateMonthlyAchievement(models);
@@ -112,8 +116,17 @@ namespace WebHome.Controllers
 
         public ActionResult EditCoachRevenueIndicator(MonthlyCoachRevenueIndicatorQueryViewModel viewModel)
         {
-            ViewResult result = (ViewResult)ApplyCoachAchievement(viewModel);
-            MonthlyIndicator indicator = (MonthlyIndicator)result.Model;
+            ViewBag.ViewModel = viewModel;
+            if (viewModel.KeyID != null)
+            {
+                viewModel.PeriodID = viewModel.DecryptKeyValue();
+            }
+
+            var indicator = models.GetTable<MonthlyIndicator>().Where(c => c.PeriodID == viewModel.PeriodID).FirstOrDefault();
+            if (indicator == null)
+            {
+                return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: "資料錯誤!!");
+            }
 
             var item = models.GetTable<MonthlyCoachRevenueIndicator>()
                 .Where(c => c.PeriodID == viewModel.PeriodID && c.CoachID == viewModel.CoachID).FirstOrDefault();
@@ -130,8 +143,26 @@ namespace WebHome.Controllers
                 viewModel.AverageLessonPrice = indicator.CalculateAverageLessonPrice(models, viewModel.CoachID);
             }
 
-            return result;
+            return View("~/Views/BusinessConsole/Module/SelectCoachAchievementGoal.cshtml", indicator);
         }
+
+        public ActionResult LoadMonthlyIndicator(MonthlyIndicatorQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            if (viewModel.KeyID != null)
+            {
+                viewModel.PeriodID = viewModel.DecryptKeyValue();
+            }
+
+            var indicator = models.GetTable<MonthlyIndicator>().Where(c => c.PeriodID == viewModel.PeriodID).FirstOrDefault();
+            if (indicator == null)
+            {
+                return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: "資料錯誤!!");
+            }
+
+            return View("", indicator);
+        }
+
 
         public ActionResult DeleteCoachRevenueIndicator(MonthlyCoachRevenueIndicatorQueryViewModel viewModel)
         {
@@ -168,12 +199,62 @@ namespace WebHome.Controllers
             return View("~/Views/BusinessConsole/Module/ProcessCoachRevenueIndicator.cshtml", item);
         }
 
+        public ActionResult MakeStrategyAnalysis(MonthlyCoachRevenueIndicatorQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            if (viewModel.KeyID != null)
+            {
+                viewModel.PeriodID = viewModel.DecryptKeyValue();
+            }
+
+            var item = models.GetTable<MonthlyBranchIndicator>().Where(c => c.PeriodID == viewModel.PeriodID && c.BranchID == viewModel.BranchID).FirstOrDefault();
+            if (item == null)
+            {
+                return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: "資料錯誤!!");
+            }
+
+            viewModel.RiskPrediction = item.RiskPrediction;
+            viewModel.Strategy = item.Strategy;
+            viewModel.Comment = item.Comment;
+
+            return View("~/Views/BusinessConsole/Module/MakeStrategyAnalysis.cshtml", item);
+        }
+
+        public ActionResult CommitStrategyAnalysis(MonthlyCoachRevenueIndicatorQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            if (viewModel.KeyID != null)
+            {
+                viewModel.PeriodID = viewModel.DecryptKeyValue();
+            }
+
+            var item = models.GetTable<MonthlyBranchIndicator>().Where(c => c.PeriodID == viewModel.PeriodID && c.BranchID == viewModel.BranchID).FirstOrDefault();
+            if (item == null)
+            {
+                return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: "資料錯誤!!");
+            }
+
+            item.RiskPrediction = viewModel.RiskPrediction;
+            item.Strategy = viewModel.Strategy;
+            //item.Comment = viewModel.Comment;
+
+            models.SubmitChanges();
+
+            return Json(new { result = true }, JsonRequestBehavior.AllowGet);
+        }
+
+
         public ActionResult CommitCoachRevenueIndicator(MonthlyCoachRevenueIndicatorQueryViewModel viewModel)
         {
-            ViewResult result = (ViewResult)ApplyCoachAchievement(viewModel);
-            MonthlyIndicator indicator = (MonthlyIndicator)result.Model;
+            ViewResult result = (ViewResult)LoadMonthlyIndicator(viewModel);
+            MonthlyIndicator indicator = result.Model as MonthlyIndicator;
+            if (indicator == null)
+            {
+                return result;
+            }
 
-            if(!viewModel.CoachID.HasValue)
+            var coach = models.GetTable<ServingCoach>().Where(c => c.CoachID == viewModel.CoachID).FirstOrDefault();
+            if (coach == null)
             {
                 return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: "請選擇教練!!");
             }
@@ -222,6 +303,7 @@ namespace WebHome.Controllers
                     PeriodID = indicator.PeriodID,
                     CoachID = viewModel.CoachID.Value,
                     BranchID = viewModel.BranchID,
+                    LevelID = coach.LevelID,
                 };
                 models.GetTable<MonthlyCoachRevenueIndicator>().InsertOnSubmit(item);
             }
@@ -248,8 +330,19 @@ namespace WebHome.Controllers
 
         public ActionResult LoadCoachRevenueIndicatorList(MonthlyCoachRevenueIndicatorQueryViewModel viewModel)
         {
-            ViewResult result = (ViewResult)ApplyCoachAchievement(viewModel);
+            ViewResult result = (ViewResult)LoadMonthlyIndicator(viewModel);
+            if (!(result.Model is MonthlyIndicator item))
+                return result;
             result.ViewName = "~/Views/BusinessConsole/Module/MonthlyCoachRevenueIndicatorList.cshtml";
+            return result;
+        }
+
+        public ActionResult LoadStrategyAnalysis(MonthlyCoachRevenueIndicatorQueryViewModel viewModel)
+        {
+            ViewResult result = (ViewResult)LoadMonthlyIndicator(viewModel);
+            if (!(result.Model is MonthlyIndicator item))
+                return result;
+            result.ViewName = "~/Views/BusinessConsole/Module/StrategyAnalysis.cshtml";
             return result;
         }
 

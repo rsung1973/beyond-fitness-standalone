@@ -45,7 +45,7 @@
             </button>
             @if (!isModal)
             {
-                <a href="javascript:editStageTrainingItem(@stage.StageID);"><i class="zmdi zmdi-plus-circle-o-duplicate zmdi-hc-lg float-right m-t-25 col-grey"></i></a>
+                <a href="javascript:editStageTrainingItem(@stage.StageID,null,$('#@($"heading_{stage.StageID}{currentID}")'));"><i class="zmdi zmdi-plus-circle-o-duplicate zmdi-hc-lg float-right m-t-25 col-grey"></i></a>
             }
         </h3>
     </div>
@@ -57,7 +57,7 @@
                     {
                         if (item.TrainingType.BreakMark != true)
                         {
-                            <li class="dd-item dd3-item list-action" data-id="@(item.ItemID)" onclick="@(isModal ? "void(0)" : $"editStageTrainingItem({stage.StageID},{item.ItemID})");">
+                            <li class="dd-item dd3-item list-action" data-id="@(item.ItemID)" onclick="@(isModal ? "void(0)" : $"editStageTrainingItem({stage.StageID},{item.ItemID},$('#heading_{stage.StageID}{currentID}'))");">
                                 @if (!isModal)
                                 {
                                     <div class="dd-handle dd3-handle"></div>
@@ -89,7 +89,7 @@
                         }
                         else
                         {
-                            <li class="dd-item dd3-item list-line" data-id="@item.ItemID" onclick="@(isModal ? "void(0)" : $"editStageBreakInterval({stage.StageID},{item.ItemID})");">
+                            <li class="dd-item dd3-item list-line" data-id="@item.ItemID" onclick="@(isModal ? "void(0)" : $"editStageBreakInterval({stage.StageID},{item.ItemID},$('#heading_{stage.StageID}{currentID}'))");">
                                 @if (!isModal)
                                 {
                                     <div class="dd-handle dd3-handle t--12"></div>
@@ -126,8 +126,8 @@
                                 <i class="zmdi zmdi-plus-circle-o-duplicate zmdi-hc-2x float-right m-t-25 col-grey"></i>
                             </a>
                             <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                <a class="dropdown-item" href="javascript:editStageTrainingItem(@stage.StageID);">新增動作</a>
-                                <a class="dropdown-item" href="javascript:editStageBreakInterval(@stage.StageID);">新增休息/組數</a>
+                                <a class="dropdown-item" href="javascript:editStageTrainingItem(@stage.StageID,null,$('#@($"heading_{stage.StageID}{currentID}")'));">新增動作</a>
+                                <a class="dropdown-item" href="javascript:editStageBreakInterval(@stage.StageID,null,$('#@($"heading_{stage.StageID}{currentID}")'));">新增休息/組數</a>
                             </div>
                         </div>
                     }

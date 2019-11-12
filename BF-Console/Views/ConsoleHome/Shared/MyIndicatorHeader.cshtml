@@ -25,7 +25,7 @@
 
 <div class="col-lg-5 col-md-6 col-sm-12">
     <ul class="breadcrumb float-md-right">
-        <li class="breadcrumb-item"><a href="@Html.Raw(Url.Action("AchievementOverview","ConsoleHome",new { _viewModel?.BranchID }))"><i class="zmdi zmdi-file-text"></i>&nbsp;損益平衡概況</a></li>
+        <li class="breadcrumb-item"><a href="@Html.Raw(Url.Action("AchievementOverview","ConsoleHome",new { _viewModel?.BranchID, _viewModel?.KeyID,_viewModel?.Year,_viewModel?.Month }))"><i class="zmdi zmdi-file-text"></i>&nbsp;損益平衡概況</a></li>
     </ul>
 </div>
 

@@ -23,7 +23,7 @@
 @{
     IQueryable<Payment> items = (IQueryable<Payment>)TempData["PaymentItems"];
     int revenueAmt = items.Sum(p => p.PayoffAmount) ?? 0;
-    decimal indicatorAmt = 1;
+    decimal indicatorAmt = 1, percentage = 100;
     if (_viewModel.BranchID.HasValue)
     {
         MonthlyBranchRevenueIndicator indicator =
@@ -31,8 +31,15 @@
                 .Where(m => m.BranchID == _viewModel.BranchID && m.PeriodID == _model.PeriodID
                     && m.MonthlyBranchRevenueGoal != null).First();
 
-        indicatorAmt = (decimal)indicator.RevenueGoal;
+        //indicatorAmt = (decimal)indicator.RevenueGoal;
         TempData["RevenueGoal"] = indicator;
+
+        indicator = models.GetTable<MonthlyBranchRevenueIndicator>()
+                .Where(m => m.BranchID == _viewModel.BranchID && m.PeriodID == _model.PeriodID)
+                .OrderBy(g => g.GradeID).First();
+        indicatorAmt = indicator.RevenueGoal;
+        percentage = indicator.MonthlyRevenueGrade.IndicatorPercentage;
+
     }
     else
     {
@@ -40,10 +47,17 @@
             models.GetTable<MonthlyRevenueIndicator>()
                 .Where(m => m.PeriodID == _model.PeriodID
                     && m.MonthlyRevenueGoal != null).First();
-        indicatorAmt = (decimal)(indicator.MonthlyRevenueGoal.CustomRevenueGoal ?? indicator.RevenueGoal);
+        //indicatorAmt = (decimal)(indicator.MonthlyRevenueGoal.CustomRevenueGoal ?? indicator.RevenueGoal);
         TempData["RevenueGoal"] = indicator;
+
+        indicator =
+            models.GetTable<MonthlyRevenueIndicator>()
+                .Where(m => m.PeriodID == _model.PeriodID)
+                .OrderBy(m => m.GradeID).First();
+        indicatorAmt = indicator.RevenueGoal;
+        percentage = indicator.MonthlyRevenueGrade.IndicatorPercentage;
     }
-    decimal achievementRatio = revenueAmt * 100M / indicatorAmt;
+    decimal achievementRatio = revenueAmt * percentage / indicatorAmt;
 }
     <h2 id="@($"{_viewID}_text")" class="m-b-0"></h2>
     <canvas id="@($"{_viewID}_gauge")" height="150"></canvas>

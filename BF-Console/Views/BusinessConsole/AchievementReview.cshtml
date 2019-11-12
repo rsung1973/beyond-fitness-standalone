@@ -1,0 +1,224 @@
+
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Newtonsoft.Json
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    UserProfile _model;
+    MonthlyIndicatorQueryViewModel _viewModel;
+
+    Layout = "~/Views/ConsoleHome/Template/MainPage.cshtml";
+
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    _model = (UserProfile)this.Model;
+    _viewModel = (MonthlyIndicatorQueryViewModel)ViewBag.ViewModel;
+
+}
+@{
+    MonthlyIndicator _item = (MonthlyIndicator)ViewBag.DataItem;
+}
+@section CustomHeader {
+    <!-- JQuery DataTable Css -->
+    <link href="plugins/jquery-datatable/DataTables-1.10.18/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link href="plugins/jquery-datatable/Responsive-2.2.2/css/responsive.bootstrap4.min.css" rel="stylesheet">
+    <link href="plugins/jquery-datatable/FixedColumns-3.2.5/css/fixedColumns.bootstrap4.min.css" rel="stylesheet">
+    <!-- Bootstrap Datetimepick -->
+    <link href="css/smartcalendar-2.css" rel="stylesheet" />
+    <!-- Custom Css -->
+    <link rel="stylesheet" href="css/customelist.css?1" />
+    <!-- charts-c3 -->
+    <link href="plugins/charts-c3/plugin.css" rel="stylesheet">
+}
+
+<script>
+        $(function () {
+            $global.viewModel = @Html.Raw(JsonConvert.SerializeObject(_viewModel));
+
+            for (var i = 0; i < $global.onReady.length; i++) {
+                $global.onReady[i]();
+            }
+        });
+</script>
+<!-- Main Content -->
+<section class="content">
+    @{
+        ViewBag.BlockHeader = "近3個月概況";
+        ViewBag.InsertPartial = "~/Views/ConsoleHome/Shared/MyIndicatorHeader.cshtml";
+        Html.RenderPartial("~/Views/ConsoleHome/Module/BlockHeader.cshtml", _model);
+    }
+    <!--目標與達成率-->
+    @if (_item != null)
+    {
+        <div class="container-fluid">
+            <div class="card bg-darkteal">
+                <div class="header">
+                    <h2 class="col-grey">
+                        @($"{_item.StartDate:yyyy/MM}")
+                        @{
+                            ViewBag.Other = "全部";
+                            Html.RenderPartial("~/Views/Common/BranchStoreWithOther.cshtml", models.GetTable<BranchStore>().Where(b => b.BranchID == _viewModel.BranchID).FirstOrDefault());
+                        }
+                    </h2>
+                    <ul class="header-dropdown">
+                        @if (_viewModel.BranchID.HasValue)
+                        {
+                        <li class="dropdown">
+                            <a href="javascript:makeStrategy();"><i class="zmdi zmdi-plus-circle-o-duplicate"></i></a>
+                        </li>
+                        }
+                        <li class="dropdown">
+                            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class="zmdi zmdi-swap"></i> </a>
+                            <ul class="dropdown-menu dropdown-menu-right slideUp float-right">
+                                <li><a href="javascript:showAchievementReview();">全部</a></li>
+                                @foreach (var branch in models.GetTable<BranchStore>())
+                                {
+                                    <li><a href="javascript:showAchievementReview(@(branch.BranchID));">@(branch.BranchName)</a></li>
+                                }
+                            </ul>
+                        </li>
+                    </ul>
+                    <script>
+                        function showAchievementReview(branchID) {
+                            $('').launchDownload('@Html.Raw(Url.Action("AchievementReview", "ConsoleHome"))', { 'year': @(_viewModel.Year), 'month': @(_viewModel.Month), 'branchID': branchID });
+                        }
+                    </script>
+                </div>
+                <ul class="row clearfix list-unstyled m-b-0">
+                    <li class="col-lg-6 col-md-12 col-sm-12">
+                        <div class="body">
+                            <div class="row clearfix">
+                                <div class="col-12">
+                                    @{ 
+                                        Html.RenderPartial("~/Views/BusinessConsole/Module/AchievementReviewBarchart.cshtml", _item);
+                                    }
+                                </div>
+                                <div class="col-12">
+                                    @{
+                                        Html.RenderPartial("~/Views/BusinessConsole/Module/CompleteLessonReviewBarchart.cshtml", _item);
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="col-lg-6 col-md-12 col-sm-12">
+                        <div class="body">
+                            <div class="row clearfox">
+                                <div class="col-md-8 col-sm-12">
+                                    <h2><strong>總結分析</strong></h2>
+                                    @{
+                                        Html.RenderPartial("~/Views/BusinessConsole/Module/AchievementComparison.cshtml", _item);
+                                    }
+                                </div>
+                                <div class="col-md-4 col-sm-12 text-right">
+                                    <div class="info-box-2 float-right bg-darkteal">
+                                        <div class="content text-center">
+                                            @{
+                                                Html.RenderPartial("~/Views/BusinessConsole/Module/MonthlyContractSparkline.cshtml", _item);
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!--不同維度分析-->
+        <div class="container-fluid">
+            <div class="row clearfix">
+                <h4 class="card-outbound-header m-l-15">不同維度分析</h4>
+                <div class="col-lg-12 col-md-12">
+                    <div class="row clearfix">
+                        <div class="col-12">
+                            <p>
+                                <a class="btn btn-simple btn-round" href="javascript:showMoreQueryModal();">自訂區間</a>
+                                <a class="btn btn-simple btn-round" href="javascript:showCoachIncomeBarChart();">體能顧問</a>
+                                <a class="btn btn-simple btn-round" href="javascript:showContractIncomeBarChart();">簽單收款交叉分析</a>
+                                <a class="btn btn-simple btn-round" href="javascript:void();">各分店統計</a>
+                            </p>
+                            <div class="card bg-darkteal vetorIncomeChart">
+                                <div class="body">
+                                    <div class="row clearfox">
+                                        <div class="col-md-12 col-sm-12">
+                                            <div id="vectorIncomeBarChart" class="c3"></div>
+                                        </div>
+                                    </div>
+                                    <div class="row clearfox p-t-10">
+                                        <div class="col-md-8 col-md-offset-4">
+                                            <ul class="list-unstyled">
+                                                <li>
+                                                    <span class="title"><i class="zmdi livicon livicon-evo" data-options="name: star.svg; size: 30px; style: original; strokeWidth:2px; autoPlay:true"></i> 2018年08月總業績達成率最高</span>
+                                                </li>
+                                                <li>
+                                                    <span class="title"><i class="zmdi livicon livicon-evo" data-options="name: star.svg; size: 30px; style: original; strokeWidth:2px; autoPlay:true"></i> 2018年11月上課業績最高($15,130,000)</span>
+                                                </li>
+                                                <li>
+                                                    <span class="title"><i class="zmdi livicon livicon-evo" data-options="name: star.svg; size: 30px; style: original; strokeWidth:2px; autoPlay:true"></i> 2018年09月上課業績最高($25,830,000)</span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    <script>
+        function selectMonth() {
+            //showLoading();
+            $.post('@Html.Raw(Url.Action("SelectMonth", "BusinessConsole"))', null, function (data) {
+                //hideLoading();
+                if ($.isPlainObject(data)) {
+                    swal(data.message);
+                } else {
+                    $(data).appendTo($('body'));
+                }
+            });
+        }
+
+        $(function () {
+            $global.doSelect = function (year, month) {
+                $('').launchDownload('@Html.Raw(Url.Action("AchievementOverview", "ConsoleHome"))', { 'year': year, 'month': month, 'branchID': '@(_viewModel.BranchID)' });
+            };
+        });
+    </script>
+</section>
+
+
+@section TailPageJavaScriptInclude {
+    <!--Sparkline Plugin Js-->
+    <script src="plugins/jquery-sparkline/jquery.sparkline.js"></script>
+    <!-- SweetAlert Plugin Js -->
+    <script src="plugins/sweetalert/sweetalert.min.js"></script>
+    <!-- Jquery DataTable Plugin Js -->
+    <script src="bundles/datatablescripts.bundle.js"></script>
+    <script src="plugins/jquery-datatable/Responsive-2.2.2/js/dataTables.responsive.min.js"></script>
+    <script src="plugins/jquery-datatable/FixedColumns-3.2.5/js/dataTables.fixedColumns.min.js"></script>
+    <!--Gauge Plugin Js-->
+    <script src="plugins/gauge/gauge.min.js"></script>
+    <!-- ChartC3 Js -->
+    <script src="bundles/cs.bundles.js"></script>
+
+    @{ Html.RenderPartial("~/Views/ConsoleHome/Shared/KnobJS.cshtml");}
+
+    <script>
+
+
+    </script>
+
+}
+
+

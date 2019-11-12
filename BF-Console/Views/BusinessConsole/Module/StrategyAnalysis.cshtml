@@ -1,13 +1,12 @@
-﻿
-@using System.IO
+﻿@using System.IO
 @using System.Linq.Expressions
-
 @using WebHome.Helper
 @using WebHome.Models.Locale
 @using WebHome.Models.ViewModel
 @using WebHome.Models.DataEntity
 @using WebHome.Controllers
 @using Newtonsoft.Json
+@using Utility
 @{
     ModelStateDictionary _modelState;
     ModelSource<UserProfile> models;
@@ -15,20 +14,17 @@
     _modelState = (ModelStateDictionary)ViewBag.ModelState;
     models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
     _model = (MonthlyIndicator)this.Model;
-    String _viewID = $"strategy{DateTime.Now.Ticks}";
-}
-@{
+
     MonthlyIndicatorQueryViewModel _viewModel = (MonthlyIndicatorQueryViewModel)ViewBag.ViewModel;
     MonthlyBranchIndicator item = _model.MonthlyBranchIndicator.Where(i => i.BranchID == _viewModel.BranchID).FirstOrDefault();
-}
-@if (item != null)
-{
-    <h4><strong class="col-grey">策略與總結</strong> <a href="javascript:makeStrategy();" class="text-gray"><i class="zmdi zmdi-edit"></i></a></h4>
-    Html.RenderPartial("~/Views/BusinessConsole/Module/MonthlyBranchStrategyAnalysis.cshtml", _model);
-    @*<ul class="list-unstyled col-grey" id="@(_viewID)">
-            @{
-                Html.RenderPartial("~/Views/BusinessConsole/Module/StrategyAnalysis.cshtml", _model);
-            }
-        </ul>*@
-}
-
+    String strategy = item?.Strategy.GetEfficientString();
+    if (strategy != null)
+    {
+<text>@Html.Raw(strategy.Replace("\r", "").Replace("\n", "<br/>"))</text>
+    }
+}@*<li>
+        <span class="title"><i class="zmdi zmdi-dot-circle"></i> 風險考量：@Html.Raw(item?.RiskPrediction)</span>
+    </li>
+    <li>
+        <span class="title"><i class="zmdi zmdi-dot-circle"></i> 策略目標：@Html.Raw(item?.Strategy)</span>
+    </li>*@

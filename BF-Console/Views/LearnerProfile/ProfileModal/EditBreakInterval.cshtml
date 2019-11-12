@@ -25,44 +25,17 @@
         <div class="modal-content">
             <a class="closebutton" data-dismiss="modal"></a>
             <div class="modal-body">
-                <div class="row clearfix">
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="header">
-                                <h2><strong>休息/組數資料</strong></h2>
-                            </div>
-                            <div class="body">
-                                <div class="row clearfix">
-                                    <div class="col-sm-6 col-12">
-                                        <div class="input-group">
-                                            <input type="text" class="form-control form-control-danger" placeholder="休息時間" value="@_viewModel.BreakInterval" name="BreakInterval" />
-                                            <span class="input-group-addon font-10">
-                                                秒
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6 col-12">
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" placeholder="組數" value="@(_viewModel.Repeats ?? "1")" name="Repeats" />
-                                            <span class="input-group-addon font-10">
-                                                組
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="form-group">
-                                            <textarea rows="2" class="form-control no-resize" placeholder="其他更多說明" name="Remark">@(_viewModel.Remark)</textarea>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                <div class="card">
+                    <div class="header">
+                        <h2>休息/組數</h2>
+                    </div>
+                    <div class="body">
+                        @{
+                            ViewBag.DialogID = _dialogID;
+                            Html.RenderPartial("~/Views/LearnerProfile/ProfileModal/EditBreakIntervalView.cshtml", _model);
+                        }
                     </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger btn-round btn-simple btn-round waves-effect waves-red btnDelete">刪除，不想要了</button>
-                <button type="button" class="btn btn-darkteal btn-round waves-effect float-right btnConfirm">確定，不後悔</button>
             </div>
         </div>
     </div>
@@ -72,6 +45,15 @@
         $(function () {
 
             $global.viewModel = @(Html.Raw(JsonConvert.SerializeObject(_viewModel)));
+
+            var u = navigator.userAgent;
+            var isApple = u.indexOf('iPhone') >= 0 || u.indexOf('iPad') >= 0;
+
+            if (isApple) {
+                $('#@(_dialogID)').on('hidden.bs.modal', function () {
+                    scrollToStage($global.$stage);
+                });
+            }
 
             $('#@(_dialogID) button.btnConfirm').on('click', function (element) {
                 clearErrors();

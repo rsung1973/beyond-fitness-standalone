@@ -1,0 +1,53 @@
+﻿
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Newtonsoft.Json
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    MonthlyIndicator _model;
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = (MonthlyIndicator)this.Model;
+    String _viewID = $"strategy{DateTime.Now.Ticks}";
+}
+@{
+    MonthlyIndicatorQueryViewModel _viewModel = (MonthlyIndicatorQueryViewModel)ViewBag.ViewModel;
+    MonthlyBranchIndicator item = _model.MonthlyBranchIndicator.Where(i => i.BranchID == _viewModel.BranchID).FirstOrDefault();
+}
+<pre class="col-grey" id="@(_viewID)">@{
+            Html.RenderPartial("~/Views/BusinessConsole/Module/StrategyAnalysis.cshtml", _model);
+        }</pre>
+<script>
+    function makeStrategy() {
+        showLoading();
+        $.post('@Html.Raw(Url.Action("MakeStrategyAnalysis", "BusinessConsole", new { KeyID = _model.PeriodID.EncryptKey(), _viewModel.BranchID }))', {}, function (data) {
+            hideLoading();
+            if ($.isPlainObject(data)) {
+                swal(data.message);
+            } else {
+                $(data).appendTo($('body'));
+            }
+        });
+    }
+
+    function refreshStrategy() {
+        showLoading();
+        $.post('@Html.Raw(Url.Action("LoadStrategyAnalysis", "BusinessConsole", new { KeyID = _model.PeriodID.EncryptKey(), _viewModel.BranchID }))', {}, function (data) {
+            hideLoading();
+            if ($.isPlainObject(data)) {
+                    swal(data.message);
+            } else {
+                $('#@(_viewID)').empty()
+                    .append(data);
+            }
+        });
+    }
+</script>
+

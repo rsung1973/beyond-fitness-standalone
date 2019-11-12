@@ -46,29 +46,35 @@
             });
         }
 
-    function editStageTrainingItem(stageID, itemID) {
-        showLoading();
-        $.post('@Html.Raw(Url.Action("EditTrainingItem", "LearnerProfile", new { execution.ExecutionID }))', { 'stageID': stageID, 'itemID': itemID, 'itemMode': itemID !== undefined ? @((int)Naming.TrainingItemMode.ForTrainingItem) : null }, function (data) {
-            hideLoading();
-            if ($.isPlainObject(data)) {
-                alert(data.message);
-            } else {
-                $(data).appendTo($('body'));
-            }
-        });
-    }
+        function editStageTrainingItem(stageID, itemID, $stage) {
+            showLoading();
+            $global.$stage = $stage;
+            $.post('@Html.Raw(Url.Action("EditTrainingItem", "LearnerProfile", new { execution.ExecutionID }))', { 'stageID': stageID, 'itemID': itemID, 'itemMode': itemID != undefined ? @((int)Naming.TrainingItemMode.ForTrainingItem) : null }, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    alert(data.message);
+                } else {
+                    $(data).appendTo($('body'));
+                }
+            });
+        }
 
-    function editStageBreakInterval(stageID, itemID) {
-        showLoading();
-        $.post('@Html.Raw(Url.Action("EditBreakInterval", "LearnerProfile", new { execution.ExecutionID }))', { 'stageID': stageID, 'itemID': itemID, 'itemMode': @((int)Naming.TrainingItemMode.ForBreakInterval) }, function (data) {
-            hideLoading();
-            if ($.isPlainObject(data)) {
-                alert(data.message);
-            } else {
-                $(data).appendTo($('body'));
-            }
-        });
-    }
+        function editStageBreakInterval(stageID, itemID, $stage) {
+            showLoading();
+            $global.$stage = $stage;
+            $.post('@Html.Raw(Url.Action("EditBreakInterval", "LearnerProfile", new { execution.ExecutionID }))', { 'stageID': stageID, 'itemID': itemID, 'itemMode': @((int)Naming.TrainingItemMode.ForBreakInterval) }, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    alert(data.message);
+                } else {
+                    $(data).appendTo($('body'));
+                }
+            });
+        }
+
+        function scrollToStage($stage) {
+            $([document.documentElement, document.body]).scrollTop($stage.offset().top);
+        }
 
     </script>
 }

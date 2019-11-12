@@ -45,127 +45,19 @@
                                     @if (_viewModel.ItemMode != Naming.TrainingItemMode.ForBreakInterval)
                                     {
                                         <div class="tab-pane active" id="@(_dialogID)action">
-                                            <div class="row clearfix">
-                                                <div class="col-sm-6 col-12">
-                                                    <select name="TrainingID" class="form-control show-tick">
-                                                        <option value="">- 請選擇類別 -</option>
-                                                        @foreach (var item in models.GetTable<TrainingStageItem>().Where(t => t.StageID == _stage.StageID)
-                                                                .Select(t => t.TrainingType)
-                                                                .Where(t => !t.BreakMark.HasValue || t.BreakMark == false)
-                                                                .Where(t => t.TrainingID >= 8)
-                                                                .OrderByDescending(t => t.OrderIndex))
-                                                        {
-                                                            <option value="@item.TrainingID">@item.BodyParts</option>
-                                                        }
-                                                    </select>
-                                                    <script>
-                                            $(function () {
-                                                $('#@(_dialogID) select[name="TrainingID"]').val('@_viewModel.TrainingID');
-                                            });
-                                                    </script>
-                                                </div>
-                                                <div class="col-sm-6 col-12">
-                                                    <div class="input-group">
-                                                        <input type="text" name="Description" class="form-control form-control-danger" placeholder="動作" value="@_viewModel.Description" />
-                                                        <span class="input-group-addon">
-                                                            <i class="zmdi zmdi-run"></i>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <div class="col-12 p-b-10">
-                                                    <script>
-                                            $(function () {
-                                                $global.viewModel = @(Html.Raw(JsonConvert.SerializeObject(_viewModel)));
-                                            });
-                                                    </script>
-                                                    @{
-                                                        Html.RenderPartial("~/Views/LearnerProfile/Module/TrainingAids.cshtml", _model);
-                                                    }
-                                                </div>
-                                                <div class="col-sm-6 col-12">
-                                                    <div class="input-group">
-                                                        <input type="text" class="form-control" placeholder="強度" name="GoalStrength" value="@_viewModel.GoalStrength" />
-                                                        <span class="input-group-addon font-10">
-                                                            強度
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-6 col-12">
-                                                    <div class="input-group">
-                                                        <input type="text" class="form-control" placeholder="次數" value="@_viewModel.GoalTurns" name="GoalTurns" />
-                                                        <span class="input-group-addon font-10">
-                                                            次
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-6 col-12">
-                                                    <div class="input-group">
-                                                        <input type="text" class="form-control form-control-danger" placeholder="時間" value="@($"{_viewModel.DurationInSeconds:.}")" name="DurationInSeconds" />
-                                                        <span class="input-group-addon font-10">
-                                                            秒
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <div class="col-12">
-                                                    <div class="form-group">
-                                                        <textarea rows="2" class="form-control no-resize" placeholder="其他更多說明" name="Remark">@_viewModel.Remark</textarea>
-                                                    </div>
-                                                </div>
-                                                <div class="col-12">
-                                                    <label class="fancy-checkbox custom-bgcolor-pink">
-                                                        <input name="PurposeID" value="@(_viewModel.PurposeID ?? -1)" type="checkbox" />
-                                                        <span>自動加入里程碑<small>(輸入於其他更多說明欄位)</small></span>
-                                                    </label>
-                                                    @if (_viewModel.PurposeID.HasValue)
-                                                    {
-                                                        <script>
-                                                            $(function () {
-                                                                $('input[name="PurposeID"]').prop('checked', true);
-                                                            });
-                                                        </script>
-                                                    }
-                                                </div>
-                                            </div>
-                                            <div class="row clearfix">
-                                                <div class="col-lg-12">
-                                                    <button type="button" class="btn btn-danger btn-round btn-simple btn-round waves-effect waves-red btnDelete">刪除，不想要了</button>
-                                                    <button type="button" class="btn btn-darkteal btn-round waves-effect float-right btnConfirm">確定，不後悔</button>
-                                                </div>
-                                            </div>
+                                            @{
+                                                ViewBag.DialogID = _dialogID;
+                                                Html.RenderPartial("~/Views/LearnerProfile/ProfileModal/EditTrainingItemView.cshtml", _model);
+                                            }
                                         </div>
                                     }
                                     @if (_viewModel.ItemMode != Naming.TrainingItemMode.ForTrainingItem)
                                     {
                                         <div class="tab-pane" id="@(_dialogID)reset">
-                                            <div class="row clearfix">
-                                                <div class="col-sm-6 col-12">
-                                                    <div class="input-group">
-                                                        <input type="text" class="form-control form-control-danger" placeholder="休息時間" value="@_viewModel.BreakInterval" name="BreakInterval" />
-                                                        <span class="input-group-addon font-10">
-                                                            秒
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-6 col-12">
-                                                    <div class="input-group">
-                                                        <input type="text" class="form-control" placeholder="組數" value="@(_viewModel.Repeats ?? "1")" name="Repeats" />
-                                                        <span class="input-group-addon font-10">
-                                                            組
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <div class="col-12">
-                                                    <div class="form-group">
-                                                        <textarea rows="2" class="form-control no-resize" placeholder="其他更多說明" name="Remark">@(_viewModel.Remark)</textarea>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row clearfix">
-                                                <div class="col-lg-12">
-                                                    <button type="button" class="btn btn-danger btn-round btn-simple btn-round waves-effect waves-red btnDelete">刪除，不想要了</button>
-                                                    <button type="button" class="btn btn-darkteal btn-round waves-effect float-right btnConfirm">確定，不後悔</button>
-                                                </div>
-                                            </div>
+                                            @{
+                                                ViewBag.DialogID = _dialogID;
+                                                Html.RenderPartial("~/Views/LearnerProfile/ProfileModal/EditBreakIntervalView.cshtml", _model);
+                                            }
                                         </div>
                                     }
                                 </div>
@@ -179,57 +71,66 @@
     @{ Html.RenderPartial("~/Views/ConsoleHome/Shared/BSModalScript.cshtml", model: _dialogID);}
 
     <script>
-    $(function () {
+        $(function () {
 
-        $('#@(_dialogID)action button.btnConfirm').on('click', function (element) {
-            clearErrors();
-            var $formData = $('#@(_dialogID)').find('input,select,textarea').serializeObject();
-            $formData.ItemID = $global.viewModel.ItemID;
-            $formData.ExecutionID = $global.viewModel.ExecutionID;
-            $formData.StageID = $global.viewModel.StageID;
-            if (!$('input[name="PurposeID"]').is(':checked')) {
-                delete $formData.PurposeID;
+            var u = navigator.userAgent;
+            var isApple = u.indexOf('iPhone') >= 0 || u.indexOf('iPad') >= 0;
+
+            if (isApple) {
+                $('#@(_dialogID)').on('hidden.bs.modal', function () {
+                    scrollToStage($global.$stage);
+                });
             }
-            showLoading();
-            $.post('@Html.Raw(Url.Action("CommitTrainingItem", "Training"))', $formData, function (data) {
-                if ($.isPlainObject(data)) {
-                    if (data.result) {
-                        $('#@(_dialogID)').modal('hide');
-                        refreshTrainingExecution(data.StageID);
+
+            $('#@(_dialogID)action button.btnConfirm').on('click', function (element) {
+                clearErrors();
+                var $formData = $('#@(_dialogID)').find('input,select,textarea').serializeObject();
+                $formData.ItemID = $global.viewModel.ItemID;
+                $formData.ExecutionID = $global.viewModel.ExecutionID;
+                $formData.StageID = $global.viewModel.StageID;
+                if (!$('input[name="PurposeID"]').is(':checked')) {
+                    delete $formData.PurposeID;
+                }
+                showLoading();
+                $.post('@Html.Raw(Url.Action("CommitTrainingItem", "Training"))', $formData, function (data) {
+                    if ($.isPlainObject(data)) {
+                        if (data.result) {
+                            $('#@(_dialogID)').modal('hide');
+                            refreshTrainingExecution(data.StageID);
+                        } else {
+                            hideLoading();
+                            swal(data.message);
+                        }
                     } else {
                         hideLoading();
-                        swal(data.message);
+                        $(data).appendTo($('body'));
                     }
-                } else {
-                    hideLoading();
-                    $(data).appendTo($('body'));
-                }
+                });
             });
-        });
 
-        $('#@(_dialogID)reset button.btnConfirm').on('click', function (element) {
-            clearErrors();
-            var $formData = $('#@(_dialogID)').find('input,select,textarea').serializeObject();
-            $formData.ItemID = $global.viewModel.ItemID;
-            $formData.ExecutionID = $global.viewModel.ExecutionID;
-            $formData.StageID = $global.viewModel.StageID;
-            showLoading();
-            $.post('@Html.Raw(Url.Action("CommitBreakInterval", "Training"))', $formData, function (data) {
-                if ($.isPlainObject(data)) {
-                    if (data.result) {
-                        $('#@(_dialogID)').modal('hide');
-                        refreshTrainingExecution(data.StageID);;
+            $('#@(_dialogID)reset button.btnConfirm').on('click', function (element) {
+                clearErrors();
+                var $formData = $('#@(_dialogID)').find('input,select,textarea').serializeObject();
+                $formData.ItemID = $global.viewModel.ItemID;
+                $formData.ExecutionID = $global.viewModel.ExecutionID;
+                $formData.StageID = $global.viewModel.StageID;
+                showLoading();
+                $.post('@Html.Raw(Url.Action("CommitBreakInterval", "Training"))', $formData, function (data) {
+                    if ($.isPlainObject(data)) {
+                        if (data.result) {
+                            $('#@(_dialogID)').modal('hide');
+                            refreshTrainingExecution(data.StageID);;
+                        } else {
+                            hideLoading();
+                            swal(data.message);
+                        }
                     } else {
-                        hideLoading();
-                        swal(data.message);
+                        $(data).appendTo($('body'));
                     }
-                } else {
-                    $(data).appendTo($('body'));
-                }
+                });
             });
-        });
 
-    });
+        });
     </script>
     @if (_model != null)
     {

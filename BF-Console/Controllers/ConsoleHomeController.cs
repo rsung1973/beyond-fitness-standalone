@@ -705,7 +705,12 @@ namespace WebHome.Controllers
                 viewModel.Month = DateTime.Today.Month;
             }
 
-            var item = viewModel.GetAlmostMonthlyIndicator(models);
+            var item = viewModel.GetAlmostMonthlyIndicator(models, true);
+
+            if (item == null)
+            {
+                return View("~/Views/ConsoleHome/Shared/JsGoback.cshtml", model: "資料尚未設定!!");
+            }
 
             //if (item == null)
             //{
@@ -745,6 +750,16 @@ namespace WebHome.Controllers
 
             var profile = HttpContext.GetUser();
             return View("~/Views/BusinessConsole/ApplyAchievementGoal.cshtml", profile.LoadInstance(models));
+        }
+
+        public ActionResult AchievementReview(MonthlyIndicatorQueryViewModel viewModel)
+        {
+            ViewResult result = (ViewResult)AchievementOverview(viewModel);
+            if (ViewBag.DataItem != null)
+            {
+                result.ViewName = "~/Views/BusinessConsole/AchievementReview.cshtml";
+            }
+            return result;
         }
 
     }

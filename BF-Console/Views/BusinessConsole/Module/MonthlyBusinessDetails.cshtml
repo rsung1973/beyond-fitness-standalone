@@ -37,18 +37,18 @@
             </tr>
         </thead>
         <tbody>
-            <tr onclick="javascript:showLessonDetail();">
+            <tr onclick="javascript:achievementReview();">
                 <td>課數 <small class="col-grey">@(indicator.CompleteLessonsGoal)堂</small></td>
                 @{ 
                     decimal lessonCount = (indicator.ActualCompleteLessonCount ?? 0) + (indicator.ActualCompleteTSCount ?? 0);
                 }
                 <td>@(Math.Round(lessonCount*100M / (indicator.CompleteLessonsGoal ?? 1)))% <small class="col-green">@(lessonCount)堂</small></td>
             </tr>
-            <tr onclick="javascript:showIncomeDetail();">
+            <tr onclick="javascript:achievementReview();">
                 <td>上課業績 <small class="col-grey">@($"{indicator.LessonTuitionGoal:##,###,###,###}")</small></td>
                 <td>@(Math.Round((indicator.ActualLessonAchievement ?? 0) * 100M / (indicator.LessonTuitionGoal ?? 1)))% <small class="col-green">@($"{indicator.ActualLessonAchievement:##,###,###,###}")</small></td>
             </tr>
-            <tr onclick="javascript:showIncomeDetail();">
+            <tr onclick="javascript:achievementReview();">
                 <td>收款業績 <small class="col-grey">@($"{indicator.AchievementGoal:##,###,###,###}")</small></td>
                 <td>@(Math.Round((indicator.ActualSharedAchievement ?? 0) * 100M / (indicator.AchievementGoal ?? 1)))% <small class="col-green">@($"{indicator.ActualSharedAchievement:##,###,###,###}")</small></td>
             </tr>
@@ -66,4 +66,8 @@
             </tr>*@
         </tbody>
     </table>
-
+<script>
+    function achievementReview() {
+        $('').launchDownload('@Html.Raw(Url.Action("AchievementReview","ConsoleHome",new { _viewModel?.BranchID, _viewModel?.KeyID,_viewModel?.Year,_viewModel?.Month }))', {});
+    }
+</script>

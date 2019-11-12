@@ -39,7 +39,6 @@
                 <td>@($"{revenueGoal.CustomRevenueGoal:##,###,###,###}")</td>
                 <td class="text-right">@(revenueGoal.CustomIndicatorPercentage)%</td>
             </tr>
-            <script>@Html.Raw(Url.Action("ApplyAchievementGoal", "ConsoleHome"))@(_viewModel.Year)@(_viewModel.Month)</script>
             @{
                 MonthlyBranchRevenueIndicator achieved = null;
                 foreach (var item in models.GetTable<MonthlyBranchRevenueIndicator>()

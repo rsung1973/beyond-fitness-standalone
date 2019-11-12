@@ -1,0 +1,124 @@
+﻿
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Newtonsoft.Json
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    MonthlyIndicator _model;
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = (MonthlyIndicator)this.Model;
+}
+@{
+    String _viewID = $"lessonsBar{DateTime.Now.Ticks}";
+    MonthlyIndicatorQueryViewModel _viewModel = (MonthlyIndicatorQueryViewModel)ViewBag.ViewModel;
+}
+@{
+
+    IGrouping<DateTime, MonthlyBranchRevenueGoal>[] groups = (IGrouping<DateTime, MonthlyBranchRevenueGoal>[])TempData["PeriodGroup"];
+
+    var totals = groups.Select(g => g.Sum(b => b.ActualCompleteLessonCount + b.ActualCompletePICount + b.ActualCompleteTSCount)).ToArray();
+    var PTCount = groups.Select(g => (object)g.Sum(b => b.ActualCompleteLessonCount)).ToList();
+    var PICount = groups.Select(g => (object)g.Sum(b => b.ActualCompletePICount)).ToList();
+    var TSCount = groups.Select(g => (object)g.Sum(b => b.ActualCompleteTSCount)).ToList();
+
+    PTCount.Insert(0, "data1");
+    PICount.Insert(0, "data2");
+    TSCount.Insert(0, "data3");
+
+}
+<div id="@(_viewID)" class="c3"></div>
+<script>
+        //顯示比較近三個月上課與收款業績概況
+    $(function () {
+
+        var totals = @Html.Raw(JsonConvert.SerializeObject(totals));
+        var chart = c3.generate({
+            bindto: '#@(_viewID)', // id of chart wrapper
+            data: {
+                columns: [
+                    @Html.Raw(JsonConvert.SerializeObject(PTCount)),
+                    @Html.Raw(JsonConvert.SerializeObject(PICount)),
+                    @Html.Raw(JsonConvert.SerializeObject(TSCount)),
+                ],
+                order: null,
+                types: {
+                    'data1': 'bar',
+                    'data2': 'bar',
+                    'data3': 'bar',
+                },
+                groups: [
+                    ['data1', 'data2', 'data3']
+                ],
+                colors: {
+                    'data1': '#ffbb38',
+                    'data2': '#8cff98',
+                    'data3': '#ff6f6f'
+                },
+                names: {
+                    // name of each serie
+                    'data1': 'P.T',
+                    'data2': 'P.I',
+                    'data3': 'T.S',
+                },
+                labels: {
+                    format: {
+                        //                            data1: function(v, id, i, j) {
+                        //                                return v;
+                        //                            },
+                        data2: function (v, id, i, j) {
+                            return totals[i];
+                        }
+                    }
+                }
+            },
+            axis: {
+                x: {
+                    type: 'category',
+                    // name of each category
+                    categories: @Html.Raw(JsonConvert.SerializeObject(TempData["Category"])),
+                },
+                y: {
+                    show: true,
+                    label: {
+                        text: '課數',
+                        position: 'outer-middle'
+                    }
+                }
+            },
+            bar: {
+                width: 'auto'
+            },
+            legend: {
+                show: true, //hide legend
+            },
+            padding: {
+                bottom: 0,
+                top: 0
+            },
+            grid: {
+                x: {
+                    show: false
+                },
+                y: {
+                    show: false,
+                    lines: [{
+                        value: @(groups[groups.Length-1].Sum(g=>g.CompleteLessonsGoal)),
+                        text: '目標',
+                        position: 'start',
+                        class: 'target'
+                    }]
+                }
+            }
+        });
+        //d3.select('#monthIncomeBarChart').selectAll('.c3-texts-data1').selectAll('text.c3-text').attr('dy', 80);
+    });
+
+</script>

@@ -25,7 +25,7 @@ namespace WebHome.Helper
 {
     public static class BusinessConsoleExtensions
     {
-        public static MonthlyIndicator InitializeMonthlyIndicator<TEntity>(this ModelSource<TEntity> models, int year, int month)
+        public static MonthlyIndicator InitializeMonthlyIndicator<TEntity>(this ModelSource<TEntity> models, int year, int month,bool? forcedPrepare=null)
                 where TEntity : class, new()
         {
             DateTime startDate = new DateTime(year, month, 1);
@@ -37,31 +37,44 @@ namespace WebHome.Helper
             if (sampleItem == null)
             {
                 sampleItem = models.GetTable<MonthlyIndicator>()
-                    .OrderByDescending(m => m.PeriodID).FirstOrDefault();
+                    .OrderBy(m => m.PeriodID).FirstOrDefault();
             }
 
             if (sampleItem == null)
                 return null;
 
-
-            MonthlyIndicator item = new MonthlyIndicator
+            MonthlyIndicator item = models.GetTable<MonthlyIndicator>().Where(i => i.Year == year && i.Month == month).FirstOrDefault();
+            if (item == null)
             {
-                Year = year,
-                Month = month,
-                StartDate = startDate,
-                EndExclusiveDate = startDate.AddMonths(1),
-            };
+                item = new MonthlyIndicator
+                {
+                    Year = year,
+                    Month = month,
+                    StartDate = startDate,
+                    EndExclusiveDate = startDate.AddMonths(1),
+                };
 
-            models.GetTable<MonthlyIndicator>().InsertOnSubmit(item);
+                models.GetTable<MonthlyIndicator>().InsertOnSubmit(item);
+            }
 
             foreach(var r in sampleItem.MonthlyRevenueIndicator)
             {
-                MonthlyRevenueIndicator newItem = new MonthlyRevenueIndicator
+                MonthlyRevenueIndicator newItem = item.MonthlyRevenueIndicator.Where(i => i.GradeID == r.GradeID).FirstOrDefault();
+                if (newItem != null)
                 {
-                    MonthlyIndicator = item,
-                    RevenueGoal = r.RevenueGoal,
-                    GradeID = r.GradeID,
-                };
+                    if (newItem.MonthlyRevenueGoal != null)
+                        continue;
+                }
+                else
+                {
+                    newItem = new MonthlyRevenueIndicator
+                    {
+                        MonthlyIndicator = item,
+                        RevenueGoal = r.RevenueGoal,
+                        GradeID = r.GradeID,
+                    };
+                }
+
 
                 if (r.MonthlyRevenueGoal != null)
                 {
@@ -71,26 +84,41 @@ namespace WebHome.Helper
                         CustomRevenueGoal = r.MonthlyRevenueGoal.CustomRevenueGoal,
                         NewContractCount = r.MonthlyRevenueGoal.NewContractCount,
                         RenewContractCount = r.MonthlyRevenueGoal.RenewContractCount,
+                        NewContractSubtotal = r.MonthlyRevenueGoal.NewContractSubtotal,
+                        RenewContractSubtotal = r.MonthlyRevenueGoal.RenewContractSubtotal,
                     };
                 }
             }
 
             foreach(var b in sampleItem.MonthlyBranchIndicator)
             {
-                MonthlyBranchIndicator newBranchItem = new MonthlyBranchIndicator
+                MonthlyBranchIndicator newBranchItem = item.MonthlyBranchIndicator.Where(i => i.BranchID == b.BranchID).FirstOrDefault();
+                if (newBranchItem == null)
                 {
-                    MonthlyIndicator = item,
-                    BranchID = b.BranchID,
-                };
-
-                foreach(var r in b.MonthlyBranchRevenueIndicator)
-                {
-                    MonthlyBranchRevenueIndicator newItem = new MonthlyBranchRevenueIndicator
+                    newBranchItem = new MonthlyBranchIndicator
                     {
-                        MonthlyBranchIndicator = newBranchItem,
-                        GradeID = r.GradeID,
-                        RevenueGoal = r.RevenueGoal,
+                        MonthlyIndicator = item,
+                        BranchID = b.BranchID,
                     };
+                }
+
+                foreach (var r in b.MonthlyBranchRevenueIndicator)
+                {
+                    MonthlyBranchRevenueIndicator newItem = newBranchItem.MonthlyBranchRevenueIndicator.Where(i => i.GradeID == r.GradeID).FirstOrDefault();
+                    if (newItem != null)
+                    {
+                        if (newItem.MonthlyBranchRevenueGoal != null)
+                            continue;
+                    }
+                    else
+                    {
+                        newItem = new MonthlyBranchRevenueIndicator
+                        {
+                            MonthlyBranchIndicator = newBranchItem,
+                            GradeID = r.GradeID,
+                            RevenueGoal = r.RevenueGoal,
+                        };
+                    }
 
                     var branchGoal = r.MonthlyBranchRevenueGoal;
                     if (branchGoal != null)
@@ -104,26 +132,35 @@ namespace WebHome.Helper
                             CustomIndicatorPercentage = branchGoal.CustomIndicatorPercentage,
                             NewContractCount = branchGoal.NewContractCount,
                             RenewContractCount = branchGoal.RenewContractCount,
+                            NewContractSubtotal = branchGoal.NewContractSubtotal,
+                            RenewContractSubtotal = branchGoal.RenewContractSubtotal,
                         };
                     }
                 }
             }
 
-            foreach(var c in sampleItem.MonthlyCoachRevenueIndicator)
+            if (forcedPrepare != true)
             {
-                MonthlyCoachRevenueIndicator newItem = new MonthlyCoachRevenueIndicator
+                foreach (var c in sampleItem.MonthlyCoachRevenueIndicator)
                 {
-                    MonthlyIndicator = item,
-                    CoachID = c.CoachID,
-                    BranchID = c.BranchID,
-                    AchievementGoal = c.AchievementGoal,
-                    CompleteLessonsGoal = c.CompleteLessonsGoal,
-                    LessonTuitionGoal = c.LessonTuitionGoal,
-                    BRCount = c.BRCount,
-                    LevelID = c.ServingCoach.LevelID,
-                    AverageLessonPrice = (c.ActualLessonAchievement + c.ActualCompleteLessonCount - 1) / (c.ActualCompleteLessonCount ?? 1),
-                };
-                newItem.LessonTuitionGoal = newItem.CompleteLessonsGoal * newItem.AverageLessonPrice;
+                    MonthlyCoachRevenueIndicator newItem = item.MonthlyCoachRevenueIndicator.Where(i => i.CoachID == c.CoachID).FirstOrDefault();
+                    if (newItem != null)
+                        continue;
+
+                    newItem = new MonthlyCoachRevenueIndicator
+                    {
+                        MonthlyIndicator = item,
+                        CoachID = c.CoachID,
+                        BranchID = c.BranchID,
+                        AchievementGoal = c.AchievementGoal,
+                        CompleteLessonsGoal = c.CompleteLessonsGoal,
+                        LessonTuitionGoal = c.LessonTuitionGoal,
+                        BRCount = c.BRCount,
+                        LevelID = c.ServingCoach.LevelID,
+                        AverageLessonPrice = (c.ActualLessonAchievement + c.ActualCompleteLessonCount - 1) / (c.ActualCompleteLessonCount ?? 1),
+                    };
+                    newItem.LessonTuitionGoal = newItem.CompleteLessonsGoal * newItem.AverageLessonPrice;
+                }
             }
 
             models.SubmitChanges();
@@ -135,26 +172,37 @@ namespace WebHome.Helper
         public static MonthlyIndicator AssertMonthlyIndicator<TEntity>(this MonthlyIndicatorQueryViewModel viewModel,  ModelSource<TEntity> models)
                 where TEntity : class, new()
         {
-            var item = models.GetTable<MonthlyIndicator>().Where(i => i.PeriodID == viewModel.PeriodID
-                            || (i.Year == viewModel.Year && i.Month == viewModel.Month)).FirstOrDefault();
+            var item = models.GetTable<MonthlyIndicator>().Where(i => i.PeriodID == viewModel.PeriodID).FirstOrDefault();
+            if (item != null)
+                return item;
 
-            if (item == null)
-            {
-                item = models.InitializeMonthlyIndicator(viewModel.Year.Value, viewModel.Month.Value);
-            }
+            item = models.GetTable<MonthlyIndicator>().Where(i => (i.Year == viewModel.Year && i.Month == viewModel.Month)).FirstOrDefault();
+            if (item != null)
+                return item;
+
+            item = models.InitializeMonthlyIndicator(viewModel.Year.Value, viewModel.Month.Value);
 
             return item;
         }
 
-        public static MonthlyIndicator GetAlmostMonthlyIndicator<TEntity>(this MonthlyIndicatorQueryViewModel viewModel, ModelSource<TEntity> models)
+        public static MonthlyIndicator GetAlmostMonthlyIndicator<TEntity>(this MonthlyIndicatorQueryViewModel viewModel, ModelSource<TEntity> models,bool? exact = null)
                 where TEntity : class, new()
         {
-            var item = models.GetTable<MonthlyIndicator>().Where(i => i.PeriodID == viewModel.PeriodID
-                            || (i.Year == viewModel.Year && i.Month == viewModel.Month)).FirstOrDefault();
-
+            var item = models.GetTable<MonthlyIndicator>().Where(i => i.PeriodID == viewModel.PeriodID).FirstOrDefault();
             if (item != null)
             {
                 return item;
+            }
+
+            item = models.GetTable<MonthlyIndicator>().Where(i => (i.Year == viewModel.Year && i.Month == viewModel.Month)).FirstOrDefault();
+            if (item != null)
+            {
+                return item;
+            }
+
+            if (exact == true)
+            {
+                return null;
             }
 
             DateTime period = viewModel.Year.HasValue && viewModel.Month.HasValue
@@ -252,6 +300,9 @@ namespace WebHome.Helper
                     revenueItem.ActualSharedAchievement = tuitionAchievement;
                     revenueItem.RenewContractCount = contractItems.Where(c => c.Renewal == true).Count();
                     revenueItem.NewContractCount = contractItems.Count() - revenueItem.RenewContractCount;
+                    revenueItem.RenewContractSubtotal = contractItems.Where(c => c.Renewal == true).Sum(c => c.TotalCost);
+                    revenueItem.NewContractSubtotal = contractItems.Sum(c => c.TotalCost) - revenueItem.RenewContractSubtotal;
+
                     revenueItem.ActualCompleteTSCount = tuitionItems.Where(t => t.PriceStatus == (int)Naming.LessonPriceStatus.體驗課程).Count()
                                     + tuitionItems.Where(t => t.ELStatus == (int)Naming.LessonPriceStatus.體驗課程).Count();
                     revenueItem.ActualCompletePICount = tuitionItems.Where(t => t.PriceStatus == (int)Naming.LessonPriceStatus.自主訓練).Count()
@@ -284,6 +335,8 @@ namespace WebHome.Helper
                         revenueItem.ActualSharedAchievement = tuitionAchievement;
                         revenueItem.RenewContractCount = branchContractItems.Where(c => c.Renewal == true).Count();
                         revenueItem.NewContractCount = branchContractItems.Count() - revenueItem.RenewContractCount;
+                        revenueItem.RenewContractSubtotal = branchContractItems.Where(c => c.Renewal == true).Sum(c => c.TotalCost);
+                        revenueItem.NewContractSubtotal = branchContractItems.Sum(c => c.TotalCost) - revenueItem.RenewContractSubtotal;
                         revenueItem.ActualCompleteTSCount = branchTuitionItems.Where(t => t.PriceStatus == (int)Naming.LessonPriceStatus.體驗課程).Count()
                                         + branchTuitionItems.Where(t => t.ELStatus == (int)Naming.LessonPriceStatus.體驗課程).Count();
                         revenueItem.ActualCompletePICount = branchTuitionItems.Where(t => t.PriceStatus == (int)Naming.LessonPriceStatus.自主訓練).Count()
