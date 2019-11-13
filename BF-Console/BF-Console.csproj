@@ -6173,6 +6173,13 @@
     <Content Include="Views\BusinessConsole\Module\ProcessCoachRevenueIndicator.cshtml" />
     <Content Include="Views\BusinessConsole\Module\SelectCoachAchievementGoal.cshtml" />
     <Content Include="Views\LearnerProfile\Module\LessonTrainingExecution.cshtml" />
+    <Content Include="Views\BusinessConsole\AchievementReview.cshtml" />
+    <Content Include="Views\BusinessConsole\Module\AchievementComparison.cshtml" />
+    <Content Include="Views\BusinessConsole\Module\AchievementReviewBarchart.cshtml" />
+    <Content Include="Views\BusinessConsole\Module\CompleteLessonReviewBarchart.cshtml" />
+    <Content Include="Views\BusinessConsole\Module\MakeStrategyAnalysis.cshtml" />
+    <Content Include="Views\BusinessConsole\Module\MonthlyBranchStrategyAnalysis.cshtml" />
+    <Content Include="Views\BusinessConsole\Module\StrategyAnalysis.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\InitializeType.cs" />
