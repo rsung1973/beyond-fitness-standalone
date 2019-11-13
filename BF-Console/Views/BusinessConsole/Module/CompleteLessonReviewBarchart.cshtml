@@ -73,7 +73,7 @@
                         //                            data1: function(v, id, i, j) {
                         //                                return v;
                         //                            },
-                        data2: function (v, id, i, j) {
+                        data3: function (v, id, i, j) {
                             return totals[i];
                         }
                     }
@@ -118,7 +118,7 @@
                 }
             }
         });
-        //d3.select('#monthIncomeBarChart').selectAll('.c3-texts-data1').selectAll('text.c3-text').attr('dy', 80);
+        d3.select('#@(_viewID)').selectAll('.c3-texts-data1').selectAll('text.c3-text').attr('dy', 80);
     });
 
 </script>

@@ -27127,7 +27127,7 @@ section.content {
 }
 
 .accordion.custom ol.lesson-list li .list-item {
-	font-size: 16px;
+	font-size: 17px;
 	color: #f4f6f9;
 	line-height: 25px;
     width: 100%;
@@ -27352,6 +27352,14 @@ label.star:before {
     vertical-align: middle;
 }
 
+pre {
+   white-space: pre-wrap;       /* css-3 */
+   white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+   white-space: -pre-wrap;      /* Opera 4-6 */
+   white-space: -o-pre-wrap;    /* Opera 7 */
+   word-wrap: break-word;       /* Internet Explorer 5.5+ */
+   margin-top: 1rem !important;
+}
 .col-xs-1,
 .col-sm-1,
 .col-md-1,

@@ -110,21 +110,12 @@
                         <li class="col-lg-6 col-md-12 col-sm-12">
                             <div class="body">
                                 <div class="row clearfox">
-                                    <div class="col-md-8 col-sm-12">
+                                    <div class="col-sm-12">
                                         <h2><strong>策略與總結</strong></h2>
                                         @{
                                             Html.RenderPartial("~/Views/BusinessConsole/Module/AchievementComparison.cshtml", _item);
                                         }
-                                    </div>
-                                    <div class="col-md-4 col-sm-12 text-right">
-                                        <div class="info-box-2 float-right bg-darkteal">
-                                            <div class="content text-center">
-                                                @{
-                                                    Html.RenderPartial("~/Views/BusinessConsole/Module/MonthlyContractSparkline.cshtml", _item);
-                                                }
-                                            </div>
-                                        </div>
-                                    </div>
+                                    </div>                                    
                                 </div>
                             </div>
                         </li>
