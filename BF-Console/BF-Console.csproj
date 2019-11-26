@@ -6180,6 +6180,10 @@
     <Content Include="Views\BusinessConsole\Module\MakeStrategyAnalysis.cshtml" />
     <Content Include="Views\BusinessConsole\Module\MonthlyBranchStrategyAnalysis.cshtml" />
     <Content Include="Views\BusinessConsole\Module\StrategyAnalysis.cshtml" />
+    <Content Include="Views\PaymentConsole\Module\AboutBranchPaymentView.cshtml" />
+    <Content Include="Views\PaymentConsole\Module\CoachPaymentView.cshtml" />
+    <Content Include="Views\PaymentConsole\Module\CurrentMonthPayment.cshtml" />
+    <Content Include="Views\PaymentConsole\Module\PaymentToday.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\InitializeType.cs" />

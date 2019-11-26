@@ -25,7 +25,6 @@
 
     IQueryable<Payment> items = null;
     IQueryable<Payment> lastMonthItems;
-    BranchStore currentBranch = null;
 
     if (_viewModel.BranchID.HasValue)
     {
@@ -38,7 +37,6 @@
            .Where(p => p.VoidPayment == null)
            .Where(p => p.PaymentTransaction.BranchID == _viewModel.BranchID);
 
-        currentBranch = models.GetTable<BranchStore>().Where(b => b.BranchID == _viewModel.BranchID).FirstOrDefault();
     }
     else
     {
@@ -52,16 +50,15 @@
     }
 
 }
-<div class="col-md-7 col-sm-12 col-12">
-    <div class="card">
-        <div class="header">
-            <h2><strong>本月收款</strong> 總計
-            @if (currentBranch != null)
-            {
-                Html.RenderPartial("~/Views/Common/BranchStoreName.cshtml", currentBranch);
-            }
-            </h2>
-            <ul class="header-dropdown">
+<div class="card">
+   <div class="header">
+      <h2><strong>本月總計</strong>
+        @{
+            ViewBag.Other = "全部";
+            Html.RenderPartial("~/Views/Common/BranchStoreWithOther.cshtml", models.GetTable<BranchStore>().Where(b => b.BranchID == _viewModel.BranchID).FirstOrDefault());
+        }
+      </h2>
+       <ul class="header-dropdown">
                 <li class="dropdown">
                     <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class="zmdi zmdi-swap"></i> </a>
                     <ul class="dropdown-menu dropdown-menu-right slideUp float-right">
@@ -86,12 +83,14 @@
                         }
                     </ul>
                 </li>
-            </ul>
-        </div>
-        <div class="body">
+            </ul>      
+   </div>
+   <ul class="row clearfix list-unstyled m-b-0 widget_3">
+      <li class="col-lg-7 col-md-7 col-sm-12">
+         <div class="body">
             <div class="row clearfix">
-                <div class="col-lg-5 col-md-4 col-sm-6 col-12">
-                    @if (items.Count() > 0)
+               <div class="col-lg-5 col-md-4 col-sm-6 col-12">
+                  @if (items.Count() > 0)
                     {
                         <div id="@(_chartID)" class="dashboard-donut-chart small"></div>
                     }
@@ -104,11 +103,11 @@
                             </div>
                         </div>
                     }
-                </div>
-                <div class="col-lg-7 col-md-8 col-sm-6 col-12">
-                    <table class="table m-t-15 m-b-0">
-                        <tbody>
-                            <tr onclick='showPaymentList(@Html.Raw(JsonConvert.SerializeObject(
+               </div>
+               <div class="col-lg-7 col-md-8 col-sm-6 col-12">
+                  <table class="table m-t-15 m-b-0">
+                     <tbody>
+                        <tr onclick='showPaymentList(@Html.Raw(JsonConvert.SerializeObject(
                                     new
                                     {
                                         _viewModel.PayoffDateFrom,
@@ -118,7 +117,7 @@
                                 @{
                                     var totalPayoff = items.Sum(p => p.PayoffAmount) ?? 0;
                                 }
-                                <td>全部</td>
+                                <td>收款</td>
                                 <td class="text-right">@($"{totalPayoff:##,###,###,##0}")</td>
                                 <td>@showIntent(totalPayoff, lastMonthItems.Sum(p => p.PayoffAmount) ?? 0)</td>
                             </tr>
@@ -183,9 +182,9 @@
                                 <td class="text-right">@($"{itemsPayoff:##,###,###,##0}")</td>
                                 <td>@showIntent(itemsPayoff, lastMonthItems.Where(p => p.TransactionType == (int)Naming.PaymentTransactionType.運動商品).Sum(p => p.PayoffAmount) ?? 0)</td>
                             </tr>
-                        </tbody>
-                    </table>
-                </div>
+                     </tbody>
+                  </table>
+               </div>
                 @if (totalPayoff > 0)
                 {
                     <script>
@@ -199,7 +198,7 @@
                                         label: 'P.I session',
                                         value: @Math.Round(PIPayoff*100m/totalPayoff)
                                     }, {
-                                        label: '飲品',
+                                        label: '食飲品',
                                         value: @Math.Round(foodsPayoff*100m/totalPayoff)
                                     }, {
                                         label: '運動商品',
@@ -215,24 +214,13 @@
 
                 }
             </div>
-        </div>
-    </div>
-</div>
-<div class="col-md-5 col-sm-12 col-12">
-    <div class="card">
-        <div class="header">
-            <h2>
-                <strong class="col-red">本月未分潤</strong> 總計
-                @if (currentBranch != null)
-                {
-                    Html.RenderPartial("~/Views/Common/BranchStoreName.cshtml", currentBranch);
-                }
-            </h2>
-        </div>
-        <div class="body">
+         </div>
+      </li>
+      <li class="col-lg-5 col-md-5 col-sm-12">
+         <div class="body">
             <table class="table m-t-15 m-b-0">
-                <tbody>
-                    <tr onclick='showPaymentList(@Html.Raw(JsonConvert.SerializeObject(
+               <tbody>
+                  <tr onclick='showPaymentList(@Html.Raw(JsonConvert.SerializeObject(
                                     new
                                     {
                                         _viewModel.PayoffDateFrom,
@@ -240,7 +228,7 @@
                                         IsCancelled = false,
                                         HasShare = false,
                                     })));'>
-                        <td>全部</td>
+                        <td class="col-pink">未分潤</td>
                         <td class="text-right">@($"{totalPayoff - (items.GetPaymentAchievement(models).Sum(t => t.ShareAmount) ?? 0):##,###,###,##0}")</td>
                     </tr>
                     <tr onclick='showPaymentList(@Html.Raw(JsonConvert.SerializeObject(
@@ -291,10 +279,11 @@
                         <td>運動商品</td>
                         <td class="text-right">@($"{itemsPayoff - (items.Where(p => p.TransactionType == (int)Naming.PaymentTransactionType.運動商品).GetPaymentAchievement(models).Sum(t => t.ShareAmount) ?? 0):##,###,###,##0}")</td>
                     </tr>
-                </tbody>
+               </tbody>
             </table>
-        </div>
-    </div>
+         </div>
+      </li>
+   </ul>
 </div>
 
 @helper showIntent(int a1, int a2)

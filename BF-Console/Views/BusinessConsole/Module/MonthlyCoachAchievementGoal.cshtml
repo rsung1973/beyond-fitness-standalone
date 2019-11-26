@@ -21,47 +21,20 @@
     MonthlyIndicatorQueryViewModel _viewModel = (MonthlyIndicatorQueryViewModel)ViewBag.ViewModel;
     String _viewID = $"indicator{DateTime.Now.Ticks}";
 }
-<h4 class="card-outbound-header m-l-15">@(_model.Year)年@($"{_model.Month:00}")月</h4>
+<h4 class="card-outbound-header m-l-15">
+    @(_model.Year)年@($"{_model.Month:00}")月
+    <a href="javascript:selectMonth();"><i class="zmdi zmdi-calendar zmdi-hc-lg"></i></a>
+    @{
+        ViewBag.Other = "全部";
+        Html.RenderPartial("~/Views/Common/BranchStoreWithOther.cshtml", models.GetTable<BranchStore>().Where(b => b.BranchID == _viewModel.BranchID).FirstOrDefault());
+    }
+</h4>
 <div class="col-lg-12">
     <div class="card patients-list">
         <div class="header">
             <ul class="header-dropdown">
-                <li class="dropdown">
-                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class="zmdi zmdi-more"></i> </a>
-                    <ul class="dropdown-menu dropdown-menu-right slideUp float-right">
-                        <li><a href="javascript:applyAchievementGoal();">新增人員</a></li>
-                        <li><a href="javascript:selectMonth();">切換月份</a></li>
-                    </ul>
-                    <script>
-                        function selectMonth() {
-                            //showLoading();
-                            $.post('@Html.Raw(Url.Action("SelectMonth", "BusinessConsole"))', null, function (data) {
-                                //hideLoading();
-                                if ($.isPlainObject(data)) {
-                                    swal(data.message);
-                                } else {
-                                    $(data).appendTo($('body'));
-                                }
-                            });
-                        }
-
-                        function applyAchievementGoal() {
-                            //showLoading();
-                            $.post('@Html.Raw(Url.Action("ApplyCoachAchievement", "BusinessConsole",new { KeyID = _model.PeriodID.EncryptKey(), _viewModel.BranchID }))', { 'DataOperation' : @((int)Naming.DataOperationMode.Create) }, function (data) {
-                                //hideLoading();
-                                if ($.isPlainObject(data)) {
-                                    swal(data.message);
-                                } else {
-                                    $(data).appendTo($('body'));
-                                }
-                            });                        }
-
-                        $(function () {
-                            $global.doSelect = function (year, month) {
-                                $('').launchDownload('@Html.Raw(Url.Action("ApplyAchievementGoal", "ConsoleHome"))', { 'year': year, 'month': month, 'branchID': '@(_viewModel.BranchID)' });
-                            };
-                        });
-                    </script>
+                <li>
+                    <a href="javascript:applyAchievementGoal();"><i class="zmdi zmdi-plus-circle-o-duplicate"></i></a>
                 </li>
             </ul>
         </div>
@@ -75,6 +48,35 @@
     </div>
 </div>
 <script>
+    function selectMonth() {
+        //showLoading();
+        $.post('@Html.Raw(Url.Action("SelectMonth", "BusinessConsole"))', null, function (data) {
+        //hideLoading();
+        if ($.isPlainObject(data)) {
+            swal(data.message);
+        } else {
+            $(data).appendTo($('body'));
+            }
+        });
+    }
+
+    function applyAchievementGoal() {
+        //showLoading();
+        $.post('@Html.Raw(Url.Action("ApplyCoachAchievement", "BusinessConsole",new { KeyID = _model.PeriodID.EncryptKey(), _viewModel.BranchID }))', { 'DataOperation': @((int)Naming.DataOperationMode.Create) }, function (data) {
+        //hideLoading();
+            if ($.isPlainObject(data)) {
+                swal(data.message);
+            } else {
+                $(data).appendTo($('body'));
+             }
+        });
+
+     $(function () {
+         $global.doSelect = function (year, month) {
+             $('').launchDownload('@Html.Raw(Url.Action("ApplyAchievementGoal", "ConsoleHome"))', { 'year': year, 'month': month, 'branchID': '@(_viewModel.BranchID)' });
+         };
+     });
+
     function refreshCoachIndicatorList() {
         showLoading();
         $.post('@Html.Raw(Url.Action("LoadCoachRevenueIndicatorList", "BusinessConsole", new { KeyID = _model.PeriodID.EncryptKey(),_viewModel.BranchID }))', {}, function (data) {
