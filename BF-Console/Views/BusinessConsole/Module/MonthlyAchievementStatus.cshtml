@@ -56,9 +56,9 @@
         totalAchievementAmtLastMonth = lastMonth?.ActualLessonAchievement + lastMonth?.ActualSharedAchievement;
     }
 
-    if(TempData["RevenueGoal"]==null)
+    if (TempData["RevenueGoal"] == null)
     {
-        Response.Redirect("~/Error/Goback");
+        Response.Redirect("~/Error/Goback?message=" + HttpUtility.UrlEncode("資料未設定!!"));
     }
 
 }

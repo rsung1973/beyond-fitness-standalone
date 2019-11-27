@@ -24,6 +24,7 @@
 }
 <div id="@(_viewID)">
     @{
+        ViewBag.ViewID = _viewID;
         Html.RenderPartial("~/Views/LearnerProfile/Module/LessonTrainingExecution.cshtml", _model);
     }
 </div>
@@ -82,13 +83,18 @@ else
 {
     <script>
 
-        function editStageTrainingItem(stageID, itemID) {
-            swal("是不是忘了重新了解學生？", "了解學生後編輯的課表才會更完美喔！");
-        }
-
-        function editStageBreakInterval(stageID, itemID) {
-            swal("是不是忘了重新了解學生？", "了解學生後編輯的課表才會更完美喔！");
-        }
+        $(function () {
+            if (!window.editStageTrainingItem) {
+                window.editStageTrainingItem = function (stageID, itemID) {
+                    swal("是不是忘了重新了解學生？", "了解學生後編輯的課表才會更完美喔！");
+                };
+            }
+            if (!window.editStageBreakInterval) {
+                window.editStageBreakInterval = function (stageID, itemID) {
+                    swal("是不是忘了重新了解學生？", "了解學生後編輯的課表才會更完美喔！");
+                };
+            }
+        });
 
     </script>
 }

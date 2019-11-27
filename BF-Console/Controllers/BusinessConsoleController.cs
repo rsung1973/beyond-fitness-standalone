@@ -81,6 +81,14 @@ namespace WebHome.Controllers
             return View("~/Views/Common/SelectMonth.cshtml");
         }
 
+        public ActionResult SelectMonthPeriod(MonthlySelectorViewModel viewModel)
+        {
+            ViewResult result = (ViewResult)SelectMonth(viewModel);
+            result.ViewName = "~/Views/Common/SelectMonthPeriod.cshtml";
+            return result;
+        }
+
+
         public ActionResult BranchCoachAchievement(MonthlyIndicatorQueryViewModel viewModel)
         {
             ViewBag.ViewModel = viewModel;
@@ -163,6 +171,55 @@ namespace WebHome.Controllers
             return View("", indicator);
         }
 
+        public ActionResult AchievementIntervalReview(MonthlyIndicatorQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+
+            DateTime? startDate = viewModel.DateFrom;
+            DateTime? endDate = viewModel.DateTo?.AddMonths(1);
+
+            var monthlyItems = models.GetTable<MonthlyIndicator>().Where(i => i.StartDate >= startDate && i.StartDate < endDate);
+
+            if (monthlyItems.Count() == 0)
+            {
+                return Json(new { result = false, message = "資料錯誤!!" }, JsonRequestBehavior.AllowGet);
+            }
+
+            return View("~/Views/BusinessConsole/Module/AchievementIntervalReview.cshtml", monthlyItems);
+        }
+
+        public ActionResult CommitAchievementIntervalReview(MonthlyIndicatorQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+
+            if (!viewModel.DateFrom.HasValue)
+            {
+                ModelState.AddModelError("DateFrom", "請選擇起月");
+            }
+
+            if (!viewModel.DateTo.HasValue)
+            {
+                ModelState.AddModelError("DateTo", "請選擇迄月");
+            }
+
+            if (ModelState.IsValid)
+            {
+                if (!(viewModel.DateFrom.Value.AddMonths(2) <= viewModel.DateTo.Value && viewModel.DateTo.Value <= viewModel.DateFrom.Value.AddMonths(12)))
+                {
+                    ModelState.AddModelError("DateTo", "查詢月數區間錯誤");
+                }
+            }
+
+            if (!ModelState.IsValid)
+            {
+                ViewBag.ModelState = ModelState;
+                return View(ConsoleHomeController.InputErrorView);
+            }
+
+            return Json(new { result = true }, JsonRequestBehavior.AllowGet);
+        }
+
+
 
         public ActionResult DeleteCoachRevenueIndicator(MonthlyCoachRevenueIndicatorQueryViewModel viewModel)
         {
@@ -218,6 +275,11 @@ namespace WebHome.Controllers
             viewModel.Comment = item.Comment;
 
             return View("~/Views/BusinessConsole/Module/MakeStrategyAnalysis.cshtml", item);
+        }
+
+        public ActionResult SelectAchievementReviewInterval()
+        {
+            return View("~/Views/BusinessConsole/Module/SelectAchievementReviewInterval.cshtml");
         }
 
         public ActionResult CommitStrategyAnalysis(MonthlyCoachRevenueIndicatorQueryViewModel viewModel)
@@ -345,6 +407,163 @@ namespace WebHome.Controllers
             result.ViewName = "~/Views/BusinessConsole/Module/StrategyAnalysis.cshtml";
             return result;
         }
+
+        public ActionResult CommitInvoiceTrackNoInterval(InvoiceQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            var profile = HttpContext.GetUser();
+
+            if (viewModel.BookletBranchID == null || viewModel.BookletBranchID.Length == 0 || viewModel.BookletBranchID.Any(c => !c.HasValue))
+            {
+                ModelState.AddModelError("BookletBranchID", "請選擇分店!!");
+            }
+
+            viewModel.TrackCode = viewModel.TrackCode.GetEfficientString();
+            if (viewModel.TrackCode == null || !Regex.IsMatch(viewModel.TrackCode, "[A-Z]{2}"))
+            {
+                ModelState.AddModelError("TrackCode", "請輸入字軌");
+            }
+
+            if (!viewModel.Year.HasValue)
+            {
+                ModelState.AddModelError("Year", "請選擇發票年度");
+            }
+
+            if (!viewModel.PeriodNo.HasValue)
+            {
+                ModelState.AddModelError("PeriodNo", "請選擇期別");
+            }
+
+            int? range = 0, assignedBooklet = 0; ;
+            if (!viewModel.StartNo.HasValue || !(viewModel.StartNo >= 0 && viewModel.StartNo < 100000000))
+            {
+                ModelState.AddModelError("StartNo", "請輸入起號");
+            }
+            else if (!viewModel.EndNo.HasValue || !(viewModel.EndNo >= 0 && viewModel.EndNo < 100000000))
+            {
+                ModelState.AddModelError("EndNo", "請輸入迄號");
+            }
+            else if (viewModel.EndNo <= viewModel.StartNo || (((range = viewModel.EndNo - viewModel.StartNo + 1)) % 50 != 0))
+            {
+                ModelState.AddModelError("StartNo", "不符號碼大小順序與差距為50之倍數原則");
+            }
+            else if ((assignedBooklet = viewModel.BookletCount.Where(c => c.HasValue && c > 0).Sum(c => c)) > (range / 50))
+            {
+                ModelState.AddModelError("BookletCount", "輸入總本數超過配號區間");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                ViewBag.ModelState = ModelState;
+                return View(ConsoleHomeController.InputErrorView);
+            }
+
+            var trackCode = models.GetTable<InvoiceTrackCode>()
+                .Where(t => t.TrackCode == viewModel.TrackCode && t.Year == viewModel.Year && t.PeriodNo == viewModel.PeriodNo).FirstOrDefault();
+
+            if (trackCode == null)
+            {
+                trackCode = new InvoiceTrackCode
+                {
+                    TrackCode = viewModel.TrackCode,
+                    Year = viewModel.Year.Value,
+                    PeriodNo = viewModel.PeriodNo.Value,
+                };
+                models.GetTable<InvoiceTrackCode>().InsertOnSubmit(trackCode);
+            }
+
+            int? startNo = trackCode.StartNo = viewModel.StartNo;
+            trackCode.EndNo = viewModel.EndNo;
+
+            foreach (var b in viewModel.BookletBranchID)
+            {
+                if (!trackCode.InvoiceTrackCodeAssignment.Any(t => t.SellerID == b))
+                {
+                    trackCode.InvoiceTrackCodeAssignment.Add(new InvoiceTrackCodeAssignment
+                    {
+                        SellerID = b.Value
+                    });
+                }
+            }
+
+            models.SubmitChanges();
+
+            for (int idx = 0; idx < viewModel.BookletBranchID.Length; idx++)
+            {
+                var interval = models.GetTable<InvoiceNoInterval>()
+                    .Where(i => i.SellerID == viewModel.BookletBranchID[idx])
+                    .Where(i => i.TrackID == trackCode.TrackID).FirstOrDefault();
+
+                if (interval == null)
+                {
+                    if (!viewModel.BookletCount[idx].HasValue || viewModel.BookletCount[idx] <= 0)
+                        continue;
+
+                    interval = new InvoiceNoInterval
+                    {
+                        TrackID = trackCode.TrackID,
+                        SellerID = viewModel.BookletBranchID[idx].Value,
+                    };
+
+                    models.GetTable<InvoiceNoInterval>().InsertOnSubmit(interval);
+                }
+                else
+                {
+                    if(interval.InvoiceNoAssignment.Any())
+                    {
+                        if (interval.StartNo != startNo
+                            || !viewModel.BookletCount[idx].HasValue
+                            || viewModel.BookletCount[idx] <= 0)
+                        {
+                            ModelState.AddModelError($"BranchID_{viewModel.BookletBranchID[idx]}", "字軌配號已使用，無法修改");
+                            continue;
+                        }
+                        else if ((startNo + viewModel.BookletCount[idx] * 50 - 1) < interval.EndNo)
+                        {
+                            ModelState.AddModelError($"BranchID_{viewModel.BookletBranchID[idx]}", "字軌配號已使用本組數，只允許增加");
+                            continue;
+                        }
+                    }
+                    else if (!viewModel.BookletCount[idx].HasValue || viewModel.BookletCount[idx] <= 0)
+                    {
+                        models.GetTable<InvoiceNoInterval>().DeleteOnSubmit(interval);
+                        continue;
+                    }
+                }
+
+                interval.StartNo = startNo.Value;
+                startNo += viewModel.BookletCount[idx] * 50;
+                interval.EndNo = startNo.Value - 1;
+
+            }
+
+            if (!ModelState.IsValid)
+            {
+                ViewBag.ModelState = ModelState;
+                return View(ConsoleHomeController.InputErrorView);
+            }
+
+            try
+            {
+                models.SubmitChanges();
+                if (assignedBooklet > 0)
+                {
+                    return Json(new { result = true, message = $"總本數:{range / 50}，已配置本數:{assignedBooklet}" });
+                }
+                else
+                {
+                    models.ExecuteCommand("delete InvoiceTrackCode where TrackID = {0}", trackCode.TrackID);
+                    return Json(new { result = true, message = "未配置本組數。" });
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return Json(new { result = false, message = ex.Message });
+            }
+
+        }
+
 
     }
 }

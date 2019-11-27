@@ -15,6 +15,7 @@
     _modelState = (ModelStateDictionary)ViewBag.ModelState;
     models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
     _model = (LessonTime)this.Model;
+    String _viewID = (String)ViewBag.ViewID;
 }
 @{
     UserProfile learner = (UserProfile)ViewBag.Learner;
@@ -30,7 +31,7 @@
 {
     <script>
         $(function () {
-            $('.dd').on('change', function () {
+            $('#@(_viewID) .dd').on('change', function () {
                 //var $this = $(this);
                 //var serializedData = window.JSON.stringify($($this).nestable('serialize'));
 
@@ -60,7 +61,7 @@ else
 {
     <script>
         $(function () {
-            $('.dd').on('change', function () {
+            $('#@(_viewID) .dd').on('change', function () {
                 swal("是不是忘了重新了解學生？", "了解學生後編輯的課表才會更完美喔！");
             });
         });

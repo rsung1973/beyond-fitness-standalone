@@ -3,7 +3,7 @@
 
 }
 
-<script>
+    <script>
 
     $(function () {
         var u = navigator.userAgent;
@@ -16,7 +16,7 @@
             if (isApple) {
                 document.body.style.position = 'fixed';
             }
-            //if ($('body').hasClass('modal-open') == false) {                
+            //if ($('body').hasClass('modal-open') == false) {
             //   $('body').addClass('modal-open');
             //};
         });
@@ -26,7 +26,10 @@
             if (isApple) {
                 document.body.style.position = 'relative';
             }
-            $('#@(_dialogID)').remove();
+            @if (ViewBag.ReuseModal != true)
+            {
+                <text>$('#@(_dialogID)').remove();</text>
+            }
         });
 
 
@@ -41,4 +44,4 @@
 
         $('#@(_dialogID) select.form-control').selectpicker();
     });
-</script>
+    </script>

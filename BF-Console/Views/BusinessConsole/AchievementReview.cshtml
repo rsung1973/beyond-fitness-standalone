@@ -59,8 +59,8 @@
     <div class="container-fluid">
         @if (_item != null)
         {
-        <div class="row clearfix">
-            <h4 class="card-outbound-header m-l-15">
+            <div class="row clearfix">
+                <h4 class="card-outbound-header m-l-15">
                     @(_item.Year)年@(_item.Month)月
                     <a href="javascript:selectMonth();"><i class="zmdi zmdi-calendar zmdi-hc-lg"></i></a>
                     @{
@@ -69,61 +69,83 @@
 
                     }
                 </h4>
-            <div class="col-lg-12">
-                <div class="card bg-darkteal">
-                    <div class="header">
-                        <ul class="header-dropdown">
-                            <li class="dropdown">
-                                <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class="zmdi zmdi-swap"></i> </a>
-                                <ul class="dropdown-menu dropdown-menu-right slideUp float-right">
-                                    <li><a href="javascript:showAchievementReview();">全部</a></li>
-                                    @foreach (var branch in models.GetTable<BranchStore>())
-                                    {
-                                        <li><a href="javascript:showAchievementReview(@(branch.BranchID));">@(branch.BranchName)</a></li>
-                                    }
-                                </ul>
-                            </li>
-                        </ul>
-                        <script>
+                <div class="col-lg-12">
+                    <div class="card bg-darkteal">
+                        <div class="header">
+                            <ul class="header-dropdown">
+                                <li class="dropdown">
+                                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class="zmdi zmdi-swap"></i> </a>
+                                    <ul class="dropdown-menu dropdown-menu-right slideUp float-right">
+                                        <li><a href="javascript:showAchievementReview();">全部</a></li>
+                                        @foreach (var branch in models.GetTable<BranchStore>())
+                                        {
+                                            <li><a href="javascript:showAchievementReview(@(branch.BranchID));">@(branch.BranchName)</a></li>
+                                        }
+                                    </ul>
+                                </li>
+                            </ul>
+                            <script>
                             function showAchievementReview(branchID) {
                                 $('').launchDownload('@Html.Raw(Url.Action("AchievementReview", "ConsoleHome"))', { 'year': @(_viewModel.Year), 'month': @(_viewModel.Month), 'branchID': branchID });
                             }
-                        </script>
+                            </script>
+                        </div>
+                        <ul class="row clearfix list-unstyled m-b-0">
+                            <li class="col-lg-6 col-md-12 col-sm-12">
+                                <div class="body">
+                                    <div class="row clearfix">
+                                        <div class="col-12">
+                                            @{
+                                                Html.RenderPartial("~/Views/BusinessConsole/Module/AchievementReviewBarchart.cshtml", _item);
+                                            }
+                                        </div>
+                                        <div class="col-12">
+                                            @{
+                                                Html.RenderPartial("~/Views/BusinessConsole/Module/CompleteLessonReviewBarchart.cshtml", _item);
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="col-lg-6 col-md-12 col-sm-12">
+                                <div class="body">
+                                    <div class="row clearfox">
+                                        <div class="col-sm-12">
+                                            <h2><strong>策略與總結</strong></h2>
+                                            @{
+                                                Html.RenderPartial("~/Views/BusinessConsole/Module/AchievementComparison.cshtml", _item);
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
                     </div>
-                    <ul class="row clearfix list-unstyled m-b-0">
-                        <li class="col-lg-6 col-md-12 col-sm-12">
-                            <div class="body">
-                                <div class="row clearfix">
-                                    <div class="col-12">
-                                        @{ 
-                                            Html.RenderPartial("~/Views/BusinessConsole/Module/AchievementReviewBarchart.cshtml", _item);
-                                        }
-                                    </div>
-                                    <div class="col-12">
-                                        @{
-                                            Html.RenderPartial("~/Views/BusinessConsole/Module/CompleteLessonReviewBarchart.cshtml", _item);
-                                        }
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="col-lg-6 col-md-12 col-sm-12">
-                            <div class="body">
-                                <div class="row clearfox">
-                                    <div class="col-sm-12">
-                                        <h2><strong>策略與總結</strong></h2>
-                                        @{
-                                            Html.RenderPartial("~/Views/BusinessConsole/Module/AchievementComparison.cshtml", _item);
-                                        }
-                                    </div>                                    
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
+                </div>
+            </div>
+        }
+    </div>
+    <!--不同維度分析-->
+    <div class="container-fluid">
+        <div class="row clearfix">
+            <h4 class="card-outbound-header m-l-15">不同維度分析</h4>
+            <div class="col-lg-12 col-md-12">
+                <div class="row clearfix">
+                    <div class="col-12">
+                        <p>
+                            <a class="btn btn-simple btn-round" href="javascript:selectReviewInterval();">自訂區間</a>
+                            @*<a class="btn btn-simple btn-round" href="javascript:showCoachIncomeBarChart();">體能顧問</a>
+                            <a class="btn btn-simple btn-round" href="javascript:showContractIncomeBarChart();">簽單收款交叉分析</a>
+                            <a class="btn btn-simple btn-round" href="javascript:void();">各分店統計</a>*@
+                        </p>
+                        <div class="card bg-darkteal" id="intervalReview">
+                            
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        }
+    </div>
     <script>
         function selectMonth() {
             //showLoading();
@@ -135,6 +157,36 @@
                     $(data).appendTo($('body'));
                 }
             });
+        }
+
+        function selectReviewInterval() {
+            if ($global.$currentModal) {
+                $global.$currentModal.modal('show');
+                return;
+            }
+            showLoading();
+            $.post('@Html.Raw(Url.Action("SelectAchievementReviewInterval", "BusinessConsole"))', { 't': (new Date()).getTime() }, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    swal(data.message);
+                } else {
+                    $(data).appendTo($('body'));
+                }
+            });
+        }
+
+        function showIntervalReview(viewModel) {
+            showLoading();
+            $.post('@Html.Raw(Url.Action("AchievementIntervalReview", "BusinessConsole",new { _viewModel.BranchID}))', viewModel, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    swal(data.message);
+                } else {
+                    $('#intervalReview').empty()
+                        .append(data);
+                }
+            });
+
         }
 
         $(function () {

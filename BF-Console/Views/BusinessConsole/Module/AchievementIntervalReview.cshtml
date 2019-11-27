@@ -1,0 +1,209 @@
+﻿
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Newtonsoft.Json
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    IQueryable<MonthlyIndicator> _model = (IQueryable<MonthlyIndicator>)this.Model;
+}
+@{
+    String _viewID = $"achievementBar{DateTime.Now.Ticks}";
+    MonthlyIndicatorQueryViewModel _viewModel = (MonthlyIndicatorQueryViewModel)ViewBag.ViewModel;
+}
+@{
+
+    var revenueItems = _model
+    .Join(models.GetTable<MonthlyBranchRevenueIndicator>(),
+        i => i.PeriodID, b => b.PeriodID, (i, b) => b);
+
+    if (_viewModel.BranchID.HasValue)
+    {
+        revenueItems = revenueItems.Where(b => b.BranchID == _viewModel.BranchID);
+    }
+
+    var revenueGoal = revenueItems.Where(b => b.GradeID == 1)
+                .GroupBy(g => g.MonthlyIndicator.StartDate)
+                .OrderBy(g => g.Key).ToArray()
+                .Select(g => Math.Round(g.Sum(b => b.RevenueGoal) / 10000M, 1)).ToList();
+
+    var indicatorItems = revenueItems.Where(b => b.MonthlyBranchRevenueGoal != null);
+
+    var groups = indicatorItems
+        .Select(b => b.MonthlyBranchRevenueGoal).ToArray()
+        .GroupBy(g => g.MonthlyBranchRevenueIndicator.MonthlyIndicator.StartDate)
+        .OrderBy(g => g.Key).ToArray();
+
+
+    var totalAmt = groups.Select(g => Math.Round((g.Sum(b => b.ActualSharedAchievement + b.ActualLessonAchievement) ?? 0) / 10000M, 1)).ToArray();
+    var achievement = groups.Select(g => (object)Math.Round((g.Sum(b => b.ActualSharedAchievement) ?? 0) / 10000M, 1)).ToList();
+    var tuition = groups.Select(g => (object)Math.Round((g.Sum(b => b.ActualLessonAchievement) ?? 0) / 10000M, 1)).ToList();
+
+    int idx = 0;
+    var achievementRatio = totalAmt.Select(a => (object)Math.Round(a * 100 / revenueGoal[idx++], 2)).ToList();
+
+    var category = groups.Select(g => $"{g.Key:yyyyMM}");
+
+}
+<div class="body">
+    <div class="row clearfox">
+        <div class="col-md-12 col-sm-12">
+            <div id="@(_viewID)" class="c3"></div>
+        </div>
+    </div>
+    <div class="row clearfox p-t-10">
+        <div class="col-md-8 col-md-offset-4">
+            <ul class="list-unstyled">
+                <li>
+                    <span class="title">
+                        <i class="zmdi livicon livicon-evo" data-options="name: star.svg; size: 30px; style: original; strokeWidth:2px; autoPlay:true"></i>
+                        @{
+                            var maxItem = groups.ElementAt(achievementRatio.IndexOf(achievementRatio.Max(r => r)));
+                        }
+                        @(maxItem.Key.Year)年@($"{maxItem.Key.Month:00}")月總業績達成率最高
+                    </span>
+                </li>
+                <li>
+                    <span class="title">
+                        <i class="zmdi livicon livicon-evo" data-options="name: star.svg; size: 30px; style: original; strokeWidth:2px; autoPlay:true"></i>
+                        @{
+                            maxItem = groups.ElementAt(achievement.IndexOf(achievement.Max(r => r)));
+                        }
+                        @(maxItem.Key.Year)年@($"{maxItem.Key.Month:00}")收款業績最高($@($"{maxItem.Sum(b => b.ActualSharedAchievement):##,###,###,###}"))
+                    </span>
+                </li>
+                <li>
+                    <span class="title">
+                        <i class="zmdi livicon livicon-evo" data-options="name: star.svg; size: 30px; style: original; strokeWidth:2px; autoPlay:true"></i>
+                        @{
+                            maxItem = groups.ElementAt(tuition.IndexOf(tuition.Max(r => r)));
+                        }
+                        @(maxItem.Key.Year)年@($"{maxItem.Key.Month:00}")上課業績最高($@($"{maxItem.Sum(b => b.ActualLessonAchievement):##,###,###,###}"))
+                    </span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+@{
+    achievement.Insert(0, "data1");
+    tuition.Insert(0, "data2");
+    achievementRatio.Insert(0, "data3");
+}
+<script>
+        //顯示比較近三個月上課與收款業績概況
+    $(function () {
+        jQuery('.livicon-evo').addLiviconEvo();
+        var total = @Html.Raw(JsonConvert.SerializeObject(totalAmt));
+        var chart = c3.generate({
+            bindto: '#@(_viewID)', // id of chart wrapper
+            data: {
+                columns: [
+                        @Html.Raw(JsonConvert.SerializeObject(achievement)),
+                        @Html.Raw(JsonConvert.SerializeObject(tuition)),
+                        @Html.Raw(JsonConvert.SerializeObject(achievementRatio)),
+                ],
+                order: null,
+                types: {
+                    'data1': 'bar',
+                    'data2': 'bar',
+                    'data3': 'spline'
+                },
+                groups: [
+                    ['data1', 'data2'],
+                ],
+                colors: {
+                    'data1': '#ff6f6f',
+                    'data2': '#ffbb38',
+                    'data3': '#8cff98'
+                },
+                names: {
+                    // name of each serie
+                    'data1': '收款業績',
+                    'data2': '上課業績',
+                    //                        'data3': '收款業績(簽約場所)',
+                    //                        'data4': '上課業績(上課場所)',
+                    'data3': '達成率',
+                },
+                labels: {
+                    format: {
+                        data2: function (v, id, i, j) {
+                            return total[i];
+                        },
+                        data3: function (v, id, i, j) {
+                            return v + '%';
+                        },
+                    }
+                },
+                axes: {
+                    data1: 'y',
+                    data2: 'y',
+                    //                        data3: 'y',
+                    //                        data4: 'y',
+                    data3: 'y2'
+                },
+            },
+            axis: {
+                x: {
+                    type: 'category',
+                    // name of each category
+                    categories: @Html.Raw(JsonConvert.SerializeObject(category)),
+                },
+                y: {
+                    show: true,
+                    max: @(totalAmt.Max()+200),
+                    label: {
+                        text: '元（萬）',
+                        position: 'outer-middle'
+                    }
+                },
+                y2: {
+                    show: true,
+                    min: 10,
+                    label: {
+                        text: '達成率%',
+                        position: 'outer-middle'
+                    }
+                }
+            },
+            bar: {
+                width: 'auto'
+            },
+            legend: {
+                show: true, //hide legend
+            },
+            padding: {
+                bottom: 0,
+                top: 0
+            },
+            grid: {
+                x: {
+                    show: false
+                },
+                y: {
+                    show: false
+                }
+            },
+            point: {
+                r: 5,
+                select: {
+                    r: 8
+                }
+            }
+        });
+        //d3.select('#yearIncomeBarChart').selectAll('.c3-texts-data1').selectAll('text.c3-text').attr('dy', 20);
+        // 讓捲軸用動畫的方式移動到 #header 的 top 位置並加入動畫效果
+        $([document.documentElement, document.body]).animate({
+            scrollTop: $("#@(_viewID)").offset().top
+        }, 2000);
+    });
+
+</script>

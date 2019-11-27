@@ -68,8 +68,13 @@
     var category = groups.Select(g => $"{g.Key:yyyyMM}");
     TempData["Category"] = category;
 
-    var goal130 = Math.Round(gradeItems[gradeItems.Length - 1].Goal / 10000M, 1);
-    var yMax = Math.Max(goal130, totalAmt.OrderByDescending(t => t).First());
+    if (gradeItems.Length == 0)
+    {
+        Response.Redirect("~/Error/Goback?message="+HttpUtility.UrlEncode("資料未設定!!"));
+    }
+
+    var goal130 = gradeItems.Length > 0 ? Math.Round(gradeItems[gradeItems.Length - 1].Goal / 10000M, 1) : 0;
+    var yMax = totalAmt.Length>0 ? Math.Max(goal130, totalAmt.OrderByDescending(t => t).First()) : 0;
 }
 <div id="@(_viewID)" class="c3"></div>
 <script>
@@ -152,7 +157,7 @@
                 y: {
                     show: false,
                     lines: [{
-                        value: @(Math.Round(gradeItems[0].Goal/10000M,1)),
+                        value: @(gradeItems.Length>0 ? Math.Round(gradeItems[0].Goal/10000M,1) : 0),
                         text: '100%',
                         position: 'start',
                         class: 'target'
@@ -167,7 +172,7 @@
                 }
             }
         });
-        //d3.select('#monthIncomeBarChart').selectAll('.c3-texts-data1').selectAll('text.c3-text').attr('dy', 80);
+        d3.select('#@(_viewID)').selectAll('.c3-texts-data1').selectAll('text.c3-text').attr('dy', 80);
     });
 
 </script>

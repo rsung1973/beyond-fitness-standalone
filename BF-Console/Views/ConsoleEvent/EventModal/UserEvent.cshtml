@@ -45,17 +45,23 @@
                 <div class="body">
                     @if (_model.GroupEvent.Count >= 1)
                     {
-                        <ul class="list-unstyled team-info margin-0">
-                            @foreach (var r in _model.GroupEvent)
-                            {
+                    <ul class="list-unstyled team-info margin-0">
+                        <li>
+                            @{
+                                ViewBag.ProfileClass = "large popfit";
+                                Html.RenderPartial("~/Views/Common/ProfileImage.cshtml", _model.UserProfile);
+                            }
+                        </li>
+                        @foreach (var r in _model.GroupEvent)
+                        {
                             <li>
                                 @{
                                     ViewBag.ProfileClass = "large popfit";
                                     Html.RenderPartial("~/Views/Common/ProfileImage.cshtml", r.UserProfile);
                                 }
                             </li>
-                            }
-                        </ul>
+                        }
+                    </ul>
                     }
                 </div>
             </div>

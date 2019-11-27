@@ -19,6 +19,7 @@
     _modelState = (ModelStateDictionary)ViewBag.ModelState;
     models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
     _viewModel = (MonthlyIndicatorQueryViewModel)ViewBag.ViewModel;
+    var indicator = models.GetTable<MonthlyIndicator>().Where(m => m.PeriodID == _viewModel.PeriodID).FirstOrDefault();
 }
 @{ 
     IQueryable<MonthlyCoachRevenueIndicator> _model = (IQueryable<MonthlyCoachRevenueIndicator>)this.Model;
@@ -28,7 +29,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content bg-darkteal">
                 <div class="modal-header">
-                    <h6 class="title col-white">@(_viewModel.Year)年@(_viewModel.Month)月 - 目標設定</h6>
+                    <h6 class="title col-white">@(indicator?.Year)年@(indicator?.Month)月 - 目標設定</h6>
                     <a class="closebutton" data-dismiss="modal"></a>
                 </div>
                 <div class="modal-body patients-list">
@@ -45,12 +46,13 @@
             data2.Insert(0, "data2");
             List<object> data3 = items.Select(a => (object)a.CompleteLessonsGoal).ToList();
             data3.Insert(0, "data3");
+            var totals = items.Select(a => Math.Round(((a.AchievementGoal + a.LessonTuitionGoal) ?? 0) / 10000M, 1));
         }
         <script>
             $(function () {
         //顯示各教練設定目標
                 function showCoachIncomeBarChart() {
-                    var totals = @Html.Raw(JsonConvert.SerializeObject(items.Select(a => Math.Round(((a.AchievementGoal + a.LessonTuitionGoal) ?? 0) / 10000M, 1))));
+                    var totals = @Html.Raw(JsonConvert.SerializeObject(totals));
                     var chart = c3.generate({
                         bindto: '#@(_chartID)', // id of chart wrapper
                         data: {
@@ -112,7 +114,7 @@
                             y2: {
                                 show: true,
                                 min: 0,
-                                max: 50,
+                                max: @(totals.Max()+50),
                                 label: {
                                     text: '金額（萬）',
                                     position: 'outer-middle'

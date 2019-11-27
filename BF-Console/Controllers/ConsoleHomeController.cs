@@ -762,5 +762,72 @@ namespace WebHome.Controllers
             return result;
         }
 
+        public ActionResult InvoiceOverview(InvoiceQueryViewModel viewModel)
+        {
+            if(viewModel.Year.HasValue && viewModel.Month.HasValue)
+            {
+                viewModel.DateFrom = new DateTime(viewModel.Year.Value, viewModel.Month.Value, 1);
+                if (viewModel.DateFrom.Value.Month % 2 == 0)
+                {
+                    viewModel.DateFrom = viewModel.DateFrom.Value.AddMonths(-1);
+                }
+                viewModel.DateTo = viewModel.DateFrom.Value.AddMonths(2);
+            }
+            else if (!viewModel.DateFrom.HasValue || !viewModel.DateTo.HasValue)
+            {
+                viewModel.DateFrom = DateTime.Today.FirstDayOfMonth();
+                if (viewModel.DateFrom.Value.Month % 2 == 0)
+                {
+                    viewModel.DateFrom = viewModel.DateFrom.Value.AddMonths(-1);
+                }
+                viewModel.DateTo = viewModel.DateFrom.Value.AddMonths(2);
+            }
+
+            var items = models.GetTable<InvoiceItem>()
+                .Where(i => i.InvoiceType == (int)Naming.InvoiceTypeDefinition.一般稅額計算之電子發票)
+                .Where(i => i.InvoiceDate >= viewModel.DateFrom && i.InvoiceDate < viewModel.DateTo);
+
+            ViewBag.ViewModel = viewModel;
+            ViewBag.DataItems = items;
+
+            var cancellationItems = models.GetTable<InvoiceCancellation>().Where(i => i.CancelDate >= viewModel.DateFrom && i.CancelDate < viewModel.DateTo);
+            ViewBag.CancellationItems = cancellationItems;
+
+            var allowanceItems = models.GetTable<InvoiceAllowance>().Where(a => a.AllowanceDate >= viewModel.DateFrom && a.AllowanceDate < viewModel.DateTo);
+            ViewBag.AllowanceItems = allowanceItems;
+
+            var profile = HttpContext.GetUser();
+            return View("~/Views/BusinessConsole/InvoiceOverview.cshtml", profile.LoadInstance(models));
+        }
+
+        public ActionResult InvoiceNoIndex(InvoiceQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+
+            if (!viewModel.DateFrom.HasValue)
+            {
+                viewModel.DateFrom = DateTime.Today.FirstDayOfMonth();
+                if (viewModel.DateFrom.Value.Month % 2 == 0)
+                {
+                    viewModel.DateFrom = viewModel.DateFrom.Value.AddMonths(-1);
+                }
+            }
+
+            IQueryable<InvoiceTrackCode> items = models.GetTable<InvoiceTrackCode>()
+                    .Where(t => t.Year == viewModel.DateFrom.Value.Year)
+                    .Where(t => t.PeriodNo == viewModel.TrackPeriodNo);
+            
+            viewModel.TrackCode = viewModel.TrackCode.GetEfficientString();
+            if(viewModel.TrackCode!=null)
+            {
+                items = items.Where(t => t.TrackCode == viewModel.TrackCode);
+            }
+
+            ViewBag.DataItems = items;
+
+            var profile = HttpContext.GetUser();
+            return View("~/Views/BusinessConsole/InvoiceNoIndex.cshtml", profile.LoadInstance(models));
+        }
+
     }
 }

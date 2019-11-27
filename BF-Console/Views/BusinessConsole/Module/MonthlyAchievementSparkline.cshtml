@@ -40,7 +40,7 @@
     }
 
 }
-<div class="m-t-20 inlineblock" id="@(_viewID)">@(tuitionAchievementAmt), @(lessonAchievementAmt)</div>
+    <div class="m-t-20 inlineblock" id="@(_viewID)">@(Math.Round(tuitionAchievementAmt * 100D / totalAchievementAmt, 1)), @(Math.Round(lessonAchievementAmt * 100D / totalAchievementAmt, 1))</div>
 <p class="m-t-20">
     <i class="zmdi livicon-evo" data-options="name: morph-checkbox-4.svg; size: 30px; style: filled; strokeStyle:round; fillColor:#F6F5F1; strokeColor:#ff6f6f; strokeWidth:2px; autoPlay:true;"></i> 收款業績 @(Math.Round(tuitionAchievementAmt * 100D / totalAchievementAmt, 1))%<br />
     <i class="zmdi livicon-evo" data-options="name: morph-checkbox-4.svg; size: 30px; style: filled; strokeStyle:round; fillColor:#F6F5F1; strokeColor:#ffbb38; strokeWidth:2px; autoPlay:true;"></i> 上課業績 @(Math.Round(lessonAchievementAmt * 100D / totalAchievementAmt, 1))%
