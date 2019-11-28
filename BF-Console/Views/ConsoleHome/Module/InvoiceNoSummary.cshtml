@@ -23,7 +23,7 @@
     List<int> issued = new List<int>();
 }
 <div class="col-9">
-    <h5 class="m-t-0">發票號碼</h5>
+    <h5 class="m-t-0">發票本數 <a href="javascript:selectMonth();"><i class="zmdi zmdi-search-for"></i></a></h5>
     <p class="text-small">
         @foreach (var branch in models.GetTable<BranchStore>())
         {
@@ -48,16 +48,18 @@
                 }
             }
             issued.Add(issuedCount);
-            <text>@(branch.BranchName)：共 @(assignedCount / 50) 本，</text>
-            if (remainedCount < 50)
-            {
-                <span class="col-red">尚有0本@(remainedCount)張</span>
+            if (remainedCount > 0) {
+                <text>@(branch.BranchName)：共 @(assignedCount / 50) 本，</text>
+                if (remainedCount < 50)
+                {
+                    <span class="col-red">尚有0本@(remainedCount)張</span>
+                }
+                else
+                {
+                    <text>尚有@(remainedCount / 50)本@(remainedCount % 50)張</text>
+                }
+                <br />
             }
-            else
-            {
-                <text>尚有@(remainedCount / 50)本@(remainedCount % 50)張</text>
-            }
-            <br />
         }
     </p>
 </div>
@@ -65,7 +67,23 @@
     <div id="invoiceNoPie" class="sparkline-pie m-t-25">@(String.Join(",",issued.Select(i=>i.ToString())))</div>
 </div>
 <script>
+    function selectMonth() {
+            //showLoading();
+            $.post('@Html.Raw(Url.Action("SelectMonthPeriod", "BusinessConsole"))', null, function (data) {
+                //hideLoading();
+                if ($.isPlainObject(data)) {
+                    swal(data.message);
+                } else {
+                    $(data).appendTo($('body'));
+                }
+            });
+     }
+
     $(function () {
+        //查詢月份
+        $global.doSelect = function (year, month) {
+            $('').launchDownload('@Html.Raw(Url.Action("InvoiceOverview", "ConsoleHome"))', { 'year': year, 'month': month });
+        };
         //本月發票
         $('#invoiceNoPie').sparkline('html', {
             type: 'pie',

@@ -6184,6 +6184,14 @@
     <Content Include="Views\PaymentConsole\Module\CoachPaymentView.cshtml" />
     <Content Include="Views\PaymentConsole\Module\CurrentMonthPayment.cshtml" />
     <Content Include="Views\PaymentConsole\Module\PaymentToday.cshtml" />
+    <Content Include="Views\BusinessConsole\Module\AchievementIntervalReview.cshtml" />
+    <Content Include="Views\BusinessConsole\Module\SelectAchievementReviewInterval.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\InvoiceNoSummary.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\InvoiceSummary.cshtml" />
+    <Content Include="Views\InvoiceConsole\InvoiceNoIndex.cshtml" />
+    <Content Include="Views\InvoiceConsole\InvoiceOverview.cshtml" />
+    <Content Include="Views\InvoiceConsole\Module\PlusIndication.cshtml" />
+    <Content Include="Views\InvoiceConsole\Module\InvoiceNoIntervalList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\InitializeType.cs" />
@@ -6800,10 +6808,10 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="ConsoleHome\images\landing\portfolio\" />
-    <Folder Include="MainActivity\Portfolio\Coach\Bryant\" />
-    <Folder Include="MainActivity\Portfolio\Nanjing\" />
     <Folder Include="Views\CommonHelper\" />
     <Folder Include="Views\ContractConsole\Items\" />
+    <Folder Include="Views\InvoiceConsole\" />
+    <Folder Include="Views\InvoiceConsole\Module\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\MainActivity\Resources\NamingItem.en-US.resx" />

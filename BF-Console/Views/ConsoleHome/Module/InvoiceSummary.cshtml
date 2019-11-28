@@ -37,7 +37,14 @@
 
         var invTurnkeyLogs = calcItems.Join(models.GetTable<InvoiceItemDispatchLog>(), i => i.InvoiceID, d => d.InvoiceID, (i, d) => d);
         var cancellationTurnkeyLogs = calcCancellation.Join(models.GetTable<InvoiceCancellationDispatchLog>(), i => i.InvoiceID, d => d.InvoiceID, (i, d) => d);
-        var allowanceTurnkeyLogs = calcAllowance.Join(models.GetTable<InvoiceAllowanceDispatchLog>(), i => i.AllowanceID, d => d.AllowanceID, (i, d) => d);}
+        var allowanceTurnkeyLogs = calcAllowance.Join(models.GetTable<InvoiceAllowanceDispatchLog>(), i => i.AllowanceID, d => d.AllowanceID, (i, d) => d);
+
+        int totalItems = calcItems.Count() + calcCancellation.Count() + calcAllowance.Count();
+        int uploadItems = invTurnkeyLogs.Where(i => i.Status == (int)Naming.GeneralStatus.Successful).Count()
+                        + allowanceTurnkeyLogs.Where(i => i.Status == (int)Naming.GeneralStatus.Successful).Count()
+                        + cancellationTurnkeyLogs.Where(i => i.Status == (int)Naming.GeneralStatus.Successful).Count();
+    }
+        
 
     <h5 class="m-t-0">@(branch.BranchName)</h5>
     <p class="text-small">
@@ -47,10 +54,8 @@
     </p>
 </div>
 <div class="col-4 text-right">
-    <h2 class="col-red">
-        @(invTurnkeyLogs.Where(i => i.Status == (int)Naming.GeneralStatus.Successful).Count()
-                        + allowanceTurnkeyLogs.Where(i => i.Status == (int)Naming.GeneralStatus.Successful).Count()
-                        + cancellationTurnkeyLogs.Where(i => i.Status == (int)Naming.GeneralStatus.Successful).Count())
+    <h2 class="@(totalItems != uploadItems ? "col-red" : "")">
+        @(uploadItems)
     </h2>
     <small class="info">上傳成功</small>
 </div>
