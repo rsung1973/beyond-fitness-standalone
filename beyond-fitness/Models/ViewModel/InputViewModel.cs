@@ -311,7 +311,7 @@ namespace WebHome.Models.ViewModel
         public int? UID { get; set; }
     }
 
-    public class InvoiceNoViewModel
+    public class InvoiceNoViewModel : QueryViewModel
     {
         public int? BranchID { get; set; }
         public short? Year { get; set; }
@@ -327,11 +327,10 @@ namespace WebHome.Models.ViewModel
 
     }
 
-    public class InvoiceQueryViewModel
+    public class InvoiceQueryViewModel : InvoiceNoViewModel
     {
         public int? HandlerID { get; set; }
         public bool? IsPrinted { get; set; }
-        public int? BranchID { get; set; }
         public DateTime? DateFrom { get; set; }
         public DateTime? DateTo { get; set; }
         public String InvoiceNo { get; set; }
@@ -341,7 +340,9 @@ namespace WebHome.Models.ViewModel
         public int?[] AllowanceID { get; set; }
         public Naming.DocumentTypeDefinition? DocType { get; set; }
         public int? InvoiceType { get; set; }
-
+        public int? Month { get; set; }
+        public int? TrackPeriodNo => (DateFrom?.Month + 1) / 2;
+        public int? TrackID { get; set; }
     }
 
     public class AwardQueryViewModel : QueryViewModel
@@ -445,6 +446,8 @@ namespace WebHome.Models.ViewModel
         public int? Year { get; set; }
         public int? Month { get; set; }
         public int? BranchID { get; set; }
+        public DateTime? DateFrom { get; set; }
+        public DateTime? DateTo { get; set; }
     }
 
     public class MonthlySelectorViewModel
@@ -459,7 +462,9 @@ namespace WebHome.Models.ViewModel
         public int? CompleteLessonsGoal { get; set; }
         public int? AverageLessonPrice { get; set; }
         public int? BRCount { get; set; }
-
+        public String RiskPrediction { get; set; }
+        public String Strategy { get; set; }
+        public String Comment { get; set; }
     }
 
 }

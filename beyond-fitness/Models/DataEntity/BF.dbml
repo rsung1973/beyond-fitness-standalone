@@ -1516,6 +1516,8 @@
       <Column Name="TrackCode" Type="System.String" DbType="NVarChar(2) NOT NULL" CanBeNull="false" />
       <Column Name="Year" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
       <Column Name="PeriodNo" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="StartNo" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="EndNo" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Association Name="InvoiceTrackCode_InvoiceTrackCodeAssignment" Member="InvoiceTrackCodeAssignment" ThisKey="TrackID" OtherKey="TrackID" Type="InvoiceTrackCodeAssignment" />
     </Type>
   </Table>
@@ -2362,6 +2364,8 @@
       <Column Name="RenewContractCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="ActualCompleteTSCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="ActualCompletePICount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="NewContractSubtotal" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="RenewContractSubtotal" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Association Name="MonthlyRevenueIndicator_MonthlyRevenueGoal" Member="MonthlyRevenueIndicator" ThisKey="PeriodID,GradeID" OtherKey="PeriodID,GradeID" Type="MonthlyRevenueIndicator" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
@@ -2382,6 +2386,8 @@
       <Column Name="RenewContractCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="ActualCompleteTSCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="ActualCompletePICount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="NewContractSubtotal" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="RenewContractSubtotal" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Association Name="MonthlyBranchRevenueIndicator_MonthlyBranchRevenueGoal" Member="MonthlyBranchRevenueIndicator" ThisKey="PeriodID,BranchID,GradeID" OtherKey="PeriodID,BranchID,GradeID" Type="MonthlyBranchRevenueIndicator" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>

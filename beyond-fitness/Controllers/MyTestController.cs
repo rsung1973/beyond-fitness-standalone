@@ -142,6 +142,20 @@ namespace WebHome.Controllers
 
         }
 
+        public ActionResult TestKey(QueryViewModel viewModel)
+        {
+            if (viewModel.KeyID != null)
+            {
+                viewModel.id = viewModel.DecryptKeyValue();
+            }
+            else if (viewModel.HKeyID != null)
+            {
+                viewModel.id = viewModel.DecryptHexKeyValue();
+            }
+
+            return Json(viewModel,JsonRequestBehavior.AllowGet);
+        }
+
         public ActionResult SystemInfo()
         {
             return Json(new

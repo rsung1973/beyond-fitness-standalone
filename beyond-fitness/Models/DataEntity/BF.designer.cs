@@ -36083,6 +36083,10 @@ namespace WebHome.Models.DataEntity
 		
 		private short _PeriodNo;
 		
+		private System.Nullable<int> _StartNo;
+		
+		private System.Nullable<int> _EndNo;
+		
 		private EntitySet<InvoiceTrackCodeAssignment> _InvoiceTrackCodeAssignment;
 		
     #region Extensibility Method Definitions
@@ -36097,6 +36101,10 @@ namespace WebHome.Models.DataEntity
     partial void OnYearChanged();
     partial void OnPeriodNoChanging(short value);
     partial void OnPeriodNoChanged();
+    partial void OnStartNoChanging(System.Nullable<int> value);
+    partial void OnStartNoChanged();
+    partial void OnEndNoChanging(System.Nullable<int> value);
+    partial void OnEndNoChanged();
     #endregion
 		
 		public InvoiceTrackCode()
@@ -36181,6 +36189,46 @@ namespace WebHome.Models.DataEntity
 					this._PeriodNo = value;
 					this.SendPropertyChanged("PeriodNo");
 					this.OnPeriodNoChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StartNo", DbType="Int")]
+		public System.Nullable<int> StartNo
+		{
+			get
+			{
+				return this._StartNo;
+			}
+			set
+			{
+				if ((this._StartNo != value))
+				{
+					this.OnStartNoChanging(value);
+					this.SendPropertyChanging();
+					this._StartNo = value;
+					this.SendPropertyChanged("StartNo");
+					this.OnStartNoChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EndNo", DbType="Int")]
+		public System.Nullable<int> EndNo
+		{
+			get
+			{
+				return this._EndNo;
+			}
+			set
+			{
+				if ((this._EndNo != value))
+				{
+					this.OnEndNoChanging(value);
+					this.SendPropertyChanging();
+					this._EndNo = value;
+					this.SendPropertyChanged("EndNo");
+					this.OnEndNoChanged();
 				}
 			}
 		}
@@ -53841,6 +53889,10 @@ namespace WebHome.Models.DataEntity
 		
 		private System.Nullable<int> _ActualCompletePICount;
 		
+		private System.Nullable<int> _NewContractSubtotal;
+		
+		private System.Nullable<int> _RenewContractSubtotal;
+		
 		private EntityRef<MonthlyRevenueIndicator> _MonthlyRevenueIndicator;
 		
     #region Extensibility Method Definitions
@@ -53875,6 +53927,10 @@ namespace WebHome.Models.DataEntity
     partial void OnActualCompleteTSCountChanged();
     partial void OnActualCompletePICountChanging(System.Nullable<int> value);
     partial void OnActualCompletePICountChanged();
+    partial void OnNewContractSubtotalChanging(System.Nullable<int> value);
+    partial void OnNewContractSubtotalChanged();
+    partial void OnRenewContractSubtotalChanging(System.Nullable<int> value);
+    partial void OnRenewContractSubtotalChanged();
     #endregion
 		
 		public MonthlyRevenueGoal()
@@ -54171,6 +54227,46 @@ namespace WebHome.Models.DataEntity
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NewContractSubtotal", DbType="Int")]
+		public System.Nullable<int> NewContractSubtotal
+		{
+			get
+			{
+				return this._NewContractSubtotal;
+			}
+			set
+			{
+				if ((this._NewContractSubtotal != value))
+				{
+					this.OnNewContractSubtotalChanging(value);
+					this.SendPropertyChanging();
+					this._NewContractSubtotal = value;
+					this.SendPropertyChanged("NewContractSubtotal");
+					this.OnNewContractSubtotalChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RenewContractSubtotal", DbType="Int")]
+		public System.Nullable<int> RenewContractSubtotal
+		{
+			get
+			{
+				return this._RenewContractSubtotal;
+			}
+			set
+			{
+				if ((this._RenewContractSubtotal != value))
+				{
+					this.OnRenewContractSubtotalChanging(value);
+					this.SendPropertyChanging();
+					this._RenewContractSubtotal = value;
+					this.SendPropertyChanged("RenewContractSubtotal");
+					this.OnRenewContractSubtotalChanged();
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="MonthlyRevenueIndicator_MonthlyRevenueGoal", Storage="_MonthlyRevenueIndicator", ThisKey="PeriodID,GradeID", OtherKey="PeriodID,GradeID", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
 		public MonthlyRevenueIndicator MonthlyRevenueIndicator
 		{
@@ -54264,6 +54360,10 @@ namespace WebHome.Models.DataEntity
 		
 		private System.Nullable<int> _ActualCompletePICount;
 		
+		private System.Nullable<int> _NewContractSubtotal;
+		
+		private System.Nullable<int> _RenewContractSubtotal;
+		
 		private EntityRef<MonthlyBranchRevenueIndicator> _MonthlyBranchRevenueIndicator;
 		
     #region Extensibility Method Definitions
@@ -54300,6 +54400,10 @@ namespace WebHome.Models.DataEntity
     partial void OnActualCompleteTSCountChanged();
     partial void OnActualCompletePICountChanging(System.Nullable<int> value);
     partial void OnActualCompletePICountChanged();
+    partial void OnNewContractSubtotalChanging(System.Nullable<int> value);
+    partial void OnNewContractSubtotalChanged();
+    partial void OnRenewContractSubtotalChanging(System.Nullable<int> value);
+    partial void OnRenewContractSubtotalChanged();
     #endregion
 		
 		public MonthlyBranchRevenueGoal()
@@ -54616,6 +54720,46 @@ namespace WebHome.Models.DataEntity
 					this._ActualCompletePICount = value;
 					this.SendPropertyChanged("ActualCompletePICount");
 					this.OnActualCompletePICountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NewContractSubtotal", DbType="Int")]
+		public System.Nullable<int> NewContractSubtotal
+		{
+			get
+			{
+				return this._NewContractSubtotal;
+			}
+			set
+			{
+				if ((this._NewContractSubtotal != value))
+				{
+					this.OnNewContractSubtotalChanging(value);
+					this.SendPropertyChanging();
+					this._NewContractSubtotal = value;
+					this.SendPropertyChanged("NewContractSubtotal");
+					this.OnNewContractSubtotalChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RenewContractSubtotal", DbType="Int")]
+		public System.Nullable<int> RenewContractSubtotal
+		{
+			get
+			{
+				return this._RenewContractSubtotal;
+			}
+			set
+			{
+				if ((this._RenewContractSubtotal != value))
+				{
+					this.OnRenewContractSubtotalChanging(value);
+					this.SendPropertyChanging();
+					this._RenewContractSubtotal = value;
+					this.SendPropertyChanged("RenewContractSubtotal");
+					this.OnRenewContractSubtotalChanged();
 				}
 			}
 		}

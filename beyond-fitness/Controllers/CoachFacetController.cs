@@ -893,6 +893,7 @@ namespace WebHome.Controllers
             models.ExecuteCommand("delete GroupEvent where EventID = {0} ", item.EventID);
             if (viewModel.MemberID != null && viewModel.MemberID.Length > 0)
             {
+                //models.ExecuteCommand("insert GroupEvent(EventID,UID) values ({0},{1}) ", item.EventID, item.UID);
                 foreach (var memberID in viewModel.MemberID.Distinct())
                 {
                     models.ExecuteCommand("insert GroupEvent(EventID,UID) values ({0},{1}) ", item.EventID, memberID);

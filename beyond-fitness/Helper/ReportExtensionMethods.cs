@@ -288,7 +288,9 @@ namespace WebHome.Helper
                 r[9] = item.Sum(l=>l.EnterpriseListPrice * l.GroupingMemberCount
                         * l.PercentageOfDiscount / 100);
                 r[11] = item.FirstOrDefault()?.ELStatus;    //(int)Naming.LessonPriceStatus.企業合作方案;
-                r[12] = coach.WorkPlace();
+                var sample = item.First();
+                r[12] = branchItems.Where(b => b.BranchID == sample.CoachWorkPlace)
+                            .Select(b => b.BranchName).FirstOrDefault() ?? "其他";
                 r[13] = item.Count();
                 if (item.Key.SettlementID.HasValue)
                     r[14] = item.Key.SettlementID;
@@ -322,7 +324,8 @@ namespace WebHome.Helper
                     r[8] = branch.BranchName;
                 }
                 r[11] = item.PriceStatus;
-                r[12] = coach.WorkPlace();
+                r[12] = branchItems.Where(b => b.BranchID == item.CoachWorkPlace)
+                            .Select(b => b.BranchName).FirstOrDefault() ?? "其他";
                 r[13] = 1;
                 if (item.SettlementID.HasValue)
                     r[14] = item.SettlementID;

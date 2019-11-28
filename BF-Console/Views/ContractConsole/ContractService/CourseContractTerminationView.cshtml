@@ -131,7 +131,7 @@
                                 代辦申請書：
                                 @if (_model.AttachmentID.HasValue)
                                 {
-                                    <u><a href="@Html.Raw($"{Settings.Default.HostDomain}{Url.Action("GetResourceWithMime","Information",new { keyID =_model.AttachmentID.Value.EncryptKey() })}")" target="_blank">開啟附件</a></u>
+                                    <u><a href="@Html.Raw($"{Settings.Default.HostDomain}{Url.Action("GetResourceWithMime","Information",new { HKeyID =_model.AttachmentID.Value.EncryptHexKey() })}")" target="_blank">開啟附件</a></u>
                                 }
                             </td>
                         </tr>

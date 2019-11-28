@@ -9,7 +9,9 @@ namespace WebHome.Models.ViewModel
 {
     public class QueryViewModel
     {
+        public int? id { get; set; }
         public String KeyID { get; set; }
+        public String HKeyID { get; set; }
         public String DialogID { get; set; }
         public String FileDownloadToken { get; set; }
         public int? CurrentIndex { get; set; }

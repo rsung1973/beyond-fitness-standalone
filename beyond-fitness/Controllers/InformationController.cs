@@ -382,6 +382,11 @@ namespace WebHome.Controllers
             {
                 viewModel.AttachmentID = viewModel.DecryptKeyValue();
             }
+            else if(viewModel.HKeyID!=null)
+            {
+                viewModel.AttachmentID = viewModel.DecryptHexKeyValue();
+            }
+
             var item = models.GetTable<Attachment>().Where(a => a.AttachmentID == viewModel.AttachmentID).FirstOrDefault();
             if (item != null)
             {

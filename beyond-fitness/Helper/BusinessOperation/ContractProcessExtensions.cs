@@ -1245,7 +1245,7 @@ namespace WebHome.Helper.BusinessOperation
                     if (viewModel.OperationMode == Naming.OperationMode.快速終止)
                     {
                         item.Subject = "已快速終止";
-                        //if (profile.IsManager())
+                        if (profile.IsManager())
                         {
                             newItem.CourseContractRevision.EnableContractAmendment(models, profile, Naming.CourseContractStatus.待確認);
                         }

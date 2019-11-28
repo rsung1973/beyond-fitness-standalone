@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using WebHome.Models.DataEntity;
+using Utility;
 
 namespace WebHome.Controllers
 {
@@ -24,9 +25,17 @@ namespace WebHome.Controllers
             return View();
         }
 
-        public ActionResult Goback()
+        public ActionResult Goback(String message)
         {
-            return Content("<script>window.history.go(-1);</script>");
+            message = message.GetEfficientString();
+            if(message==null)
+            {
+                return Content("<script>window.history.go(-1);</script>");
+            }
+            else
+            {
+                return Content($"<script>alert('{HttpUtility.JavaScriptStringEncode(message)}');window.history.go(-1);</script>");
+            }
         }
 
     }
