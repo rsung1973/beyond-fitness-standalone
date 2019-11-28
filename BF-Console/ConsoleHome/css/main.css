@@ -3041,7 +3041,7 @@ fieldset[disabled] .btn-link.active {
 
 .form-group .input-group-addon,
 .input-group .input-group-addon {
-    padding: 10px 0 10px 18px
+    padding: 10px 10px 10px 18px
 }
 
 .form-group .input-group-addon + .form-control,

@@ -797,7 +797,7 @@ namespace WebHome.Controllers
             ViewBag.AllowanceItems = allowanceItems;
 
             var profile = HttpContext.GetUser();
-            return View("~/Views/BusinessConsole/InvoiceOverview.cshtml", profile.LoadInstance(models));
+            return View("~/Views/InvoiceConsole/InvoiceOverview.cshtml", profile.LoadInstance(models));
         }
 
         public ActionResult InvoiceNoIndex(InvoiceQueryViewModel viewModel)
@@ -826,7 +826,7 @@ namespace WebHome.Controllers
             ViewBag.DataItems = items;
 
             var profile = HttpContext.GetUser();
-            return View("~/Views/BusinessConsole/InvoiceNoIndex.cshtml", profile.LoadInstance(models));
+            return View("~/Views/InvoiceConsole/InvoiceNoIndex.cshtml", profile.LoadInstance(models));
         }
 
     }
