@@ -6192,6 +6192,10 @@
     <Content Include="Views\InvoiceConsole\InvoiceOverview.cshtml" />
     <Content Include="Views\InvoiceConsole\Module\PlusIndication.cshtml" />
     <Content Include="Views\InvoiceConsole\Module\InvoiceNoIntervalList.cshtml" />
+    <Content Include="Views\Common\BranchStoreWithOther.cshtml" />
+    <Content Include="Views\Common\SelectMonth.cshtml" />
+    <Content Include="Views\Common\SelectMonthPeriod.cshtml" />
+    <Content Include="Views\Common\SelectUser.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\InitializeType.cs" />
@@ -6219,6 +6223,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>NamingItem.resx</DependentUpon>
     </Compile>
+    <Compile Include="Helper\BusinessConsoleExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
@@ -6534,7 +6539,6 @@
     <Content Include="ConsoleHome\fonts\fontawesome-v5.3.1\webfonts\fa-solid-900.woff" />
     <Content Include="ConsoleHome\fonts\fontawesome-v5.3.1\webfonts\fa-solid-900.woff2" />
     <Content Include="ConsoleHome\images\certificate\.DS_Store" />
-    <Content Include="ConsoleHome\images\landing\.DS_Store" />
     <Content Include="ConsoleHome\images\landing\article\.DS_Store" />
     <Content Include="ConsoleHome\plugins\dropify\fonts\dropify.eot" />
     <Content Include="ConsoleHome\plugins\dropify\fonts\dropify.ttf" />

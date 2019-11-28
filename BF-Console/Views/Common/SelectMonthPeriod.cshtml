@@ -43,7 +43,7 @@
                     <a href="javascript:selectTheMonth(@(item.Year),@(item.Month));" class="list-group-item">@(item.Year)年@(item.Month)-@(item.Month+1)月</a>
                     }
                     <div class="list-group-item input-group m-b-0">
-                        <input type="text" class="form-control selectMonth" placeholder="自訂月份 YYYY/MM" />
+                        <input type="text" class="form-control selectMonth" placeholder="自訂月份 YYYYMM" />
                         <span class="input-group-addon">
                             <i class="zmdi zmdi-calendar"></i>
                         </span>
@@ -58,12 +58,12 @@
         $('#@(_dialogID) .selectMonth').keypress(function (event) {
             var event = event || window.event;
             var $target = $(event.target);
-             var keycode = (event.keyCode ? event.keyCode : event.which);
+            var keycode = (event.keyCode ? event.keyCode : event.which);
             if (keycode == '13') {
-                var data = $target.val().split('/');
-                if (Array.isArray(data) && data.length == 2) {
+                var data = $target.val();
+                if (data.length == 6 && data.match(/[0-9]+/)) {
                     clearErrors();
-                    selectTheMonth(data[0], data[1]);
+                    selectTheMonth(data.substring(0, 4), data.substring(4, 6));
                 }
             }
         });
