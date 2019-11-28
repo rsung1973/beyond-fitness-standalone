@@ -66,7 +66,7 @@
                     </div>
                      <div class="body">
                         <div class="row clearfix">
-                            <div class="col-lg-4 col-md-4 col-sm-4 col-12 m-b-20">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 m-b-20">
                                 <select class="form-control show-tick" name="Year" @(_viewModel.DateFrom?.Year > 0 ? " disabled" : "")>
                                     <option value="">-- 請選擇發票年度 --</option>
                                     @if (DateTime.Today.Month >= 11)
@@ -85,7 +85,7 @@
                                     });
                                 </script>
                             </div>
-                            <div class="col-lg-4 col-md-4 col-sm-4 col-12 m-b-20">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 m-b-20">
                                 <select class="form-control show-tick" name="PeriodNo" @(_viewModel.TrackPeriodNo > 0 ? " disabled" : "")>
                                     <option value="">-- 請選擇期別 --</option>
                                     <option value="1">01~02</option>
@@ -101,7 +101,7 @@
                                     });
                                 </script>
                             </div>
-                            <div class="col-lg-4 col-md-4 col-sm-4 col-12 m-b-20">
+                            <div class="col-lg-4 col-md-12 col-sm-6 col-12 m-b-20">
                                 <div class="input-group">
                                     <input type="text" class="form-control form-control-danger" placeholder="請輸入字軌" name="TrackCode" value="@(_item?.TrackCode)" />
                                     <span class="input-group-addon">
@@ -109,7 +109,7 @@
                                     </span>
                                 </div>
                             </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 m-b-20">
+                            <div class="col-lg-4 col-md-6 col-sm-6 col-12 m-b-20">
                                 <div class="input-group">
                                     <input type="text" class="form-control form-control-danger" placeholder="請輸入起號" name="StartNo" value="@($"{_item?.StartNo:00000000}")">
                                     <span class="input-group-addon">
@@ -117,7 +117,7 @@
                                     </span>
                                 </div>
                             </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 m-b-20">
+                            <div class="col-lg-4 col-md-6 col-sm-6 col-12 m-b-20">
                                 <div class="input-group">
                                     <input type="text" class="form-control form-control-danger" placeholder="請輸入迄號" name="EndNo" value="@($"{_item?.EndNo:00000000}")">
                                     <span class="input-group-addon">
@@ -143,14 +143,12 @@
                                     .Where(i => i.SellerID == branch.BranchID).FirstOrDefault();
                             }
                             <div class="row">
-                                <div class="col-sm-3">
-                                    <input name="BookletBranchID" type="hidden" value="@(branch.BranchID)" />
-                                    <label for="branch">
-                                        <span class="col-red">@(branch.BranchName)</span>
-                                    </label>
-                                </div>
-                                <div class="col-sm-6">
+                                <div class="col-sm-12">
+                                    @*<input name="BookletBranchID" type="hidden" value="@(branch.BranchID)" />*@
                                     <div class="input-group">
+                                        <span class="input-group-addon">
+                                            @(branch.BranchName)
+                                        </span>
                                         <input name="@($"BranchID_{branch.BranchID}")" type="hidden" />
                                         <input type="text" class="form-control" placeholder="請輸入本數" name="BookletCount" value="@((item?.EndNo-item?.StartNo+1)/50)" />
                                         <span class="input-group-addon">

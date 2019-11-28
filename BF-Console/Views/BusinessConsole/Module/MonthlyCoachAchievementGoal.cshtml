@@ -29,6 +29,24 @@
         Html.RenderPartial("~/Views/Common/BranchStoreWithOther.cshtml", models.GetTable<BranchStore>().Where(b => b.BranchID == _viewModel.BranchID).FirstOrDefault());
     }
 </h4>
+<script>
+   function selectMonth() {
+        //showLoading();
+        $.post('@Html.Raw(Url.Action("SelectMonth", "BusinessConsole"))', null, function (data) {
+        //hideLoading();
+        if ($.isPlainObject(data)) {
+            swal(data.message);
+        } else {
+            $(data).appendTo($('body'));
+            }
+        });
+    }
+    $(function () {
+         $global.doSelect = function (year, month) {
+             $('').launchDownload('@Html.Raw(Url.Action("ApplyAchievementGoal", "ConsoleHome"))', { 'year': year, 'month': month, 'branchID': '@(_viewModel.BranchID)' });
+         };
+    });
+</script>
 <div class="col-lg-12">
     <div class="card patients-list">
         <div class="header">
@@ -48,18 +66,6 @@
     </div>
 </div>
 <script>
-    function selectMonth() {
-        //showLoading();
-        $.post('@Html.Raw(Url.Action("SelectMonth", "BusinessConsole"))', null, function (data) {
-        //hideLoading();
-        if ($.isPlainObject(data)) {
-            swal(data.message);
-        } else {
-            $(data).appendTo($('body'));
-            }
-        });
-    }
-
     function applyAchievementGoal() {
         //showLoading();
         $.post('@Html.Raw(Url.Action("ApplyCoachAchievement", "BusinessConsole",new { KeyID = _model.PeriodID.EncryptKey(), _viewModel.BranchID }))', { 'DataOperation': @((int)Naming.DataOperationMode.Create) }, function (data) {
@@ -70,12 +76,6 @@
                 $(data).appendTo($('body'));
              }
         });
-
-     $(function () {
-         $global.doSelect = function (year, month) {
-             $('').launchDownload('@Html.Raw(Url.Action("ApplyAchievementGoal", "ConsoleHome"))', { 'year': year, 'month': month, 'branchID': '@(_viewModel.BranchID)' });
-         };
-     });
 
     function refreshCoachIndicatorList() {
         showLoading();
