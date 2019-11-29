@@ -4,41 +4,59 @@
   "scenarioPhoto": [ "nanjing-01.jpg", "nanjing-02.jpg", "nanjing-03.jpg" ],
   "coachItems": [
     {
-        "coachName": "林哲儀",
-        "nickname": "Joei",
-        "prologue": "沒有做不到，只有要不要！！",
-        "scenarioPhoto": [ "Scenario1.jpg" ]
+      "coachName": "林哲儀",
+      "nickname": "Joei",
+      "prologue": "沒有做不到，只有要不要！！",
+      "scenarioPhoto": [ "Scenario1.jpg" ]
     },
 
     {
-        "coachName": "陳嫻蓁",
-        "nickname": "Lucy",
-        "prologue": "當你開始改變自己，你也會越來越喜歡自己",
-        "scenarioPhoto": [ "Scenario1.jpg" ]
+      "coachName": "陳嫻蓁",
+      "nickname": "Lucy",
+      "prologue": "當你開始改變自己，你也會越來越喜歡自己",
+      "scenarioPhoto": [ "Scenario1.jpg" ]
     },
     {
-        "coachName": "游念儒",
-        "nickname": "Vic",
-        "prologue": "做任何事沒有能不能，只有想不想，如果真的想達成某個目標，那就全力以赴吧！",
-        "scenarioPhoto": [ "Scenario1.jpg" ]
+      "coachName": "許若宸",
+      "nickname": "Zoe",
+      "prologue": "成為永遠不滿足現況的人，因為只有這樣，你才會不斷進步",
+      "scenarioPhoto": [ "Scenario1.jpg" ]
     },
     {
-        "coachName": "鄭偉晨",
-        "nickname": "Neil",
-        "prologue": "只有放棄嘗試的，才是失敗者。",
-        "scenarioPhoto": [ "Scenario1.jpg" ]
+      "coachName": "游念儒",
+      "nickname": "Vic",
+      "prologue": "做任何事沒有能不能，只有想不想，如果真的想達成某個目標，那就全力以赴吧！",
+      "scenarioPhoto": [ "Scenario1.jpg" ]
     },
     {
-        "coachName": "李瑞傑",
-        "nickname": "Sam",
-        "prologue": "你所辛苦努力的今天，是為了更棒更好的明天。",
-        "scenarioPhoto": [ "Scenario1.jpg" ]
+      "coachName": "邱謹瑜",
+      "nickname": "Grace",
+      "prologue": "一個人的夢想也許不值錢，但一個人的努力很值錢。",
+      "scenarioPhoto": [ "Scenario1.jpeg" ]
     },
     {
-        "coachName": "曹育翔",
-        "nickname": "Hardy",
-        "prologue": "Continuous effort-not strength or intelligence-is the key to unlocking our potential.",
-        "scenarioPhoto": [ "Scenario1.jpg" ]
+      "coachName": "吳怡慧",
+      "nickname": "Fiona",
+      "prologue": "勇敢的踏出這一步，你/妳會看到不一樣的自己",
+      "scenarioPhoto": [ "Scenario1.png" ]
+    },
+    {
+      "coachName": "鄭偉晨",
+      "nickname": "Neil",
+      "prologue": "只有放棄嘗試的，才是失敗者。",
+      "scenarioPhoto": [ "Scenario1.jpg" ]
+    },
+    {
+      "coachName": "李瑞傑",
+      "nickname": "Sam",
+      "prologue": "你所辛苦努力的今天，是為了更棒更好的明天。",
+      "scenarioPhoto": [ "Scenario1.jpg" ]
+    },
+    {
+      "coachName": "曹育翔",
+      "nickname": "Hardy",
+      "prologue": "Continuous effort-not strength or intelligence-is the key to unlocking our potential.",
+      "scenarioPhoto": [ "Scenario1.jpg" ]
     }
   ]
 }

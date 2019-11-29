@@ -26,6 +26,18 @@
       "nickname": "Annie",
       "prologue": "也許一開始沒有很厲害，但要開始變得厲害。",
       "scenarioPhoto": [ "Scenario1.jpg" ]
+    },
+    {
+      "coachName": "黃卓瑩",
+      "nickname": "Candy",
+      "prologue": "我們不是因為事情困難而不敢行動，我們是因為不敢行動，而產生了事情困難的藉口。",
+      "scenarioPhoto": [ "Scenario1.jpg" ]
+    },
+    {
+      "coachName": "顏廷宇",
+      "nickname": "Eugene",
+      "prologue": "Rest at the end, Not in the middle.",
+      "scenarioPhoto": [ "Scenario1.png" ]
     }
   ]
 }
