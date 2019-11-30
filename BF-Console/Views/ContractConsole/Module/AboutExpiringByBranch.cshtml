@@ -56,7 +56,7 @@
                                     ExpirationFrom = DateTime.Today,
                                     ExpirationTo = DateTime.Today.AddMonths(1),
                                 })),@(expiringItems.Count()));'>
-                <h2 class="col-red">@(expiringItems.Count())</h2>
+                <h2 class="@(expiringItems.Count() > 0 ? "col-red" : "")">@(expiringItems.Count())</h2>
             </a>
             <small class="info">合約</small>
         </div>

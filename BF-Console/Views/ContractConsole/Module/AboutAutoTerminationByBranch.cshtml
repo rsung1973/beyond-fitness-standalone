@@ -47,7 +47,7 @@
                                     Status = (int)Naming.CourseContractStatus.已生效,
                                     UnpaidExpiring = true,
                                 })),@(expiringItems.Count()));'>
-                <h2 class="col-red">@(expiringItems.Count())</h2>
+                <h2 class="@(expiringItems.Count() > 0 ? "col-red" : "")">@(expiringItems.Count())</h2>
             </a>
             <small class="info">未收款合約</small>
         </div>
