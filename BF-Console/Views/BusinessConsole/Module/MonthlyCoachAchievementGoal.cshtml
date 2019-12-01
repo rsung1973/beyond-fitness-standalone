@@ -40,6 +40,17 @@
             $(data).appendTo($('body'));
             }
         });
+   }
+    function applyAchievementGoal() {
+        //showLoading();
+        $.post('@Html.Raw(Url.Action("ApplyCoachAchievement", "BusinessConsole",new { KeyID = _model.PeriodID.EncryptKey(), _viewModel.BranchID }))', { 'DataOperation': @((int)Naming.DataOperationMode.Create) }, function (data) {
+            //hideLoading();
+            if ($.isPlainObject(data)) {
+                swal(data.message);
+            } else {
+                $(data).appendTo($('body'));
+            }
+        });
     }
     $(function () {
          $global.doSelect = function (year, month) {
@@ -66,16 +77,6 @@
     </div>
 </div>
 <script>
-    function applyAchievementGoal() {
-        //showLoading();
-        $.post('@Html.Raw(Url.Action("ApplyCoachAchievement", "BusinessConsole",new { KeyID = _model.PeriodID.EncryptKey(), _viewModel.BranchID }))', { 'DataOperation': @((int)Naming.DataOperationMode.Create) }, function (data) {
-        //hideLoading();
-            if ($.isPlainObject(data)) {
-                swal(data.message);
-            } else {
-                $(data).appendTo($('body'));
-             }
-        });
 
     function refreshCoachIndicatorList() {
         showLoading();

@@ -33,7 +33,19 @@
 
     decimal totalCount = Math.Max(((int?)indicator.NewContractSubtotal + (int?)indicator.RenewContractSubtotal) ?? 1, 1);
 }
+@if (totalCount > 1)
+{
     <div class="sparkline-pie m-t-20" id="@(_viewID)">@(Math.Round((indicator.NewContractSubtotal ?? 0) * 100M / totalCount, 1)), @(Math.Round((indicator.RenewContractSubtotal ?? 0) * 100M / totalCount, 1))</div>
+}
+else
+{
+    <div class="pie_chart">
+        <div class="pie_light">
+            目前沒有<br />
+            <span>相關合約張數</span>
+        </div>
+    </div>
+}
     <p class="m-t-20">
         <i class="zmdi livicon-evo" data-options="name: morph-checkbox-4.svg; size: 30px; style: filled; strokeStyle:round; fillColor:#F6F5F1; strokeColor:#E4C04E; strokeWidth:2px; autoPlay:true;"></i> 新單 @(Math.Round((indicator.NewContractSubtotal ?? 0) * 100M / totalCount, 1))% <br />
         <i class="zmdi livicon-evo" data-options="name: morph-checkbox-4.svg; size: 30px; style: filled; strokeStyle:round; fillColor:#F6F5F1; strokeColor:#729DBD; strokeWidth:2px; autoPlay:true;"></i> 續約 @(Math.Round((indicator.RenewContractSubtotal ?? 0) * 100M / totalCount, 1))%
