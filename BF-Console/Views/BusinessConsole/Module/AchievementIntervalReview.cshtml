@@ -77,7 +77,7 @@
                         @{
                             maxItem = groups.ElementAt(achievement.IndexOf(achievement.Max(r => r)));
                         }
-                        @(maxItem.Key.Year)年@($"{maxItem.Key.Month:00}")收款業績最高($@($"{maxItem.Sum(b => b.ActualSharedAchievement):##,###,###,###}"))
+                        @(maxItem.Key.Year)年@($"{maxItem.Key.Month:00}")月收款業績最高($@($"{maxItem.Sum(b => b.ActualSharedAchievement):##,###,###,###}"))
                     </span>
                 </li>
                 <li>
@@ -86,7 +86,7 @@
                         @{
                             maxItem = groups.ElementAt(tuition.IndexOf(tuition.Max(r => r)));
                         }
-                        @(maxItem.Key.Year)年@($"{maxItem.Key.Month:00}")上課業績最高($@($"{maxItem.Sum(b => b.ActualLessonAchievement):##,###,###,###}"))
+                        @(maxItem.Key.Year)年@($"{maxItem.Key.Month:00}")月上課業績最高($@($"{maxItem.Sum(b => b.ActualLessonAchievement):##,###,###,###}"))
                     </span>
                 </li>
             </ul>
