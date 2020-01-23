@@ -16,10 +16,18 @@
     _modelState = (ModelStateDictionary)ViewBag.ModelState;
     models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
     _model = (UserProfile)this.Model;
-}
 
-<div class="col-lg-5 col-md-6 col-sm-12">
-    <button class="btn bg-darkteal btn-icon btn-round float-right m-l-10" type="button" onclick="javascript:$('').launchDownload('@Html.Raw(Url.Action("InvoiceNoIndex", "ConsoleHome",new { KeyID = (-1).EncryptKey() }))', { });">
-        <i class="zmdi zmdi-plus"></i>
-    </button>
+}
+@{ 
+    ///撈資料參考：/CornerKick/AnswerDailyQuestion
+}
+<div class="table-responsive">
+    <table class="table table-striped table-custom nowrap bg-white col-charcoal dataTable dataTable-qa" style="width:100%">
+        <thead>
+            <tr>
+                <th>時間</th>
+                <th>題目</th>
+            </tr>
+        </thead>
+    </table>
 </div>

@@ -559,11 +559,17 @@ namespace WebHome.Controllers
                     var r = table.NewRow();
                     r[0] = $"{lesson.ClassTime:yyyy/MM/dd}";
                     r[1] = $"{lesson.ClassTime:HH:mm}~{lesson.ClassTime.Value.AddMinutes(lesson.DurationInMinutes.Value):HH:mm}";
-                    r[2] = lesson.BranchStore?.BranchName;
+                    if (lesson.BranchStore?.BranchName != null)
+                    {
+                        r[2] = lesson.BranchStore.BranchName;
+                    }
                     r[3] = lesson.DurationInMinutes;
                     r[4] = lesson.AsAttendingCoach.UserProfile.FullName();
                     r[5] = String.Join("/", lesson.GroupingLesson.RegisterLesson.Select(g => g.UserProfile).ToArray().Select(u => u.FullName()));
-                    r[6] = lesson.LessonPlan.CommitAttendance;
+                    if (lesson.LessonPlan.CommitAttendance.HasValue)
+                    {
+                        r[6] = lesson.LessonPlan.CommitAttendance;
+                    }
                     table.Rows.Add(r);
                 }
 

@@ -560,7 +560,8 @@ namespace WebHome.Controllers
 
             ViewBag.DataItem = models.GetTable<UserProfile>().Where(u => u.UID == viewModel.LearnerID).First();
 
-            return View(profile.LoadInstance(models));
+            //return View("~/Views/ConsoleHome/LearnerProfile2020.cshtml", profile.LoadInstance(models));
+            return View("~/Views/ConsoleHome/LearnerProfile.cshtml", profile.LoadInstance(models));
         }
 
         public ActionResult LessonTrainingContent(DailyBookingQueryViewModel viewModel)
@@ -804,21 +805,33 @@ namespace WebHome.Controllers
         {
             ViewBag.ViewModel = viewModel;
 
-            if (!viewModel.DateFrom.HasValue)
+            if (viewModel.KeyID != null)
             {
-                viewModel.DateFrom = DateTime.Today.FirstDayOfMonth();
-                if (viewModel.DateFrom.Value.Month % 2 == 0)
-                {
-                    viewModel.DateFrom = viewModel.DateFrom.Value.AddMonths(-1);
-                }
+                viewModel.TrackID = viewModel.DecryptKeyValue();
             }
 
-            IQueryable<InvoiceTrackCode> items = models.GetTable<InvoiceTrackCode>()
-                    .Where(t => t.Year == viewModel.DateFrom.Value.Year)
-                    .Where(t => t.PeriodNo == viewModel.TrackPeriodNo);
-            
+            IQueryable<InvoiceTrackCode> items = models.GetTable<InvoiceTrackCode>();
+
+            if (viewModel.TrackID.HasValue)
+            {
+                items = items.Where(t => t.TrackID == viewModel.TrackID);
+            }
+            else
+            {
+                if (!viewModel.DateFrom.HasValue)
+                {
+                    viewModel.DateFrom = DateTime.Today.FirstDayOfMonth();
+                    if (viewModel.DateFrom.Value.Month % 2 == 0)
+                    {
+                        viewModel.DateFrom = viewModel.DateFrom.Value.AddMonths(-1);
+                    }
+                }
+                items = items.Where(t => t.Year == viewModel.DateFrom.Value.Year)
+                            .Where(t => t.PeriodNo == viewModel.TrackPeriodNo);
+            }
+
             viewModel.TrackCode = viewModel.TrackCode.GetEfficientString();
-            if(viewModel.TrackCode!=null)
+            if (viewModel.TrackCode != null)
             {
                 items = items.Where(t => t.TrackCode == viewModel.TrackCode);
             }

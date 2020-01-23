@@ -42,7 +42,8 @@
             buttons: [
     <%  //if (_model.RegisterLesson.LessonPriceType.Status != (int)Naming.DocumentLevelDefinition.自由教練預約)
         {
-            var expansion = _model.LessonTimeExpansion.First();%>
+            //var expansion = _model.LessonTimeExpansion.First();
+            %>
             {
                 html: "<i class='fa fa-edit'></i>&nbsp;編輯",
                 "class": "btn btn-primary",

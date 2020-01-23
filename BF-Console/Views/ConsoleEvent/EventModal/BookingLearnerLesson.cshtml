@@ -81,6 +81,11 @@
     var contract = item.RegisterLessonContract.CourseContract;
     if (contract != null)
     {
+        if (contract.Status == (int)Naming.CourseContractStatus.已終止)
+        {
+            continue;
+        }
+
         var remainedCount = contract.RemainedLessonCount();
         if (remainedCount <= 0)
         {
@@ -92,7 +97,7 @@
         var totalPaid = contract.TotalPaidAmount();
         var payoffStatus = contract.TotalCost / contract.Lessons * (bookingCount + 1) <= totalPaid;
         bool revisionStatus = contract.RevisionList.Any(c => c.CourseContract.Status < (int)Naming.CourseContractStatus.已生效);
-         _pageModel.GroupComplete = item.GroupingMemberCount == item.GroupingLesson.RegisterLesson.Count ? true : false;
+        _pageModel.GroupComplete = item.GroupingMemberCount == item.GroupingLesson.RegisterLesson.Count ? true : false;
         bool bookable = _pageModel.GroupComplete && validContract && payoffStatus && !revisionStatus;
         if (bookable)
         {

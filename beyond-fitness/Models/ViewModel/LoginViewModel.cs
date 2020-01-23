@@ -25,6 +25,7 @@ namespace WebHome.Models.ViewModel
         }
         public String CustomQuery { get; set; }
         public Naming.DataOperationMode? DataOperation { get; set; }
+        public String ViewID { get; set; }
     }
 
     public class LoginViewModel : QueryViewModel

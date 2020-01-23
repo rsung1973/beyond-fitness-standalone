@@ -610,7 +610,7 @@ namespace WebHome.Helper
             public int G { get; set; }
         };
 
-        static readonly int[] PerformanceAchievementIndex = new int[] { 230000, 168000 };
+        static readonly int[] PerformanceAchievementIndex = new int[] { 250000, 188000 };
         static readonly decimal[] ShareRatioIncrementForPerformance = new decimal[] { 2m, 1m };
         static readonly int[] AttendingLessonIndex = new int[] { 152, 132, 112, 92 };
         static readonly decimal[] ShareRatioIncrementForAttendance = new decimal[] { 2m, 1.5m, 1m, 0.5m };

@@ -70,7 +70,8 @@ namespace WebHome.Helper.Jobs
                 {
                     AssemblyQualifiedName = typeof(ReviewProfessionalLevelEachQuarter).AssemblyQualifiedName,
                     Description = "檢查教練等級",
-                    Schedule = (new DateTime(DateTime.Today.Year, (DateTime.Today.Month - 1) / 3 * 3 + 1, 16)).AddMonths(3).Add(new TimeSpan(0, 10, 0))
+                    Schedule = (new DateTime(DateTime.Today.Year, (DateTime.Today.Month - 1) / 3 * 3 + 1, 16)).AddMonths(3).Add(new TimeSpan(0, 10, 0)),
+                    Pending = true,
                 });
             }
 

@@ -1,0 +1,93 @@
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Newtonsoft.Json
+
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    UserProfile _model;
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = (UserProfile)this.Model;
+    String _dialogID = $"bonusDetails{DateTime.Now.Ticks}";
+    String _tabID = $"tab{DateTime.Now.Ticks}";
+}
+
+<div class="modal fade" id="@(_dialogID)" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <a class="closebutton" data-dismiss="modal"></a>
+            <div class="modal-body">
+                <div class="card">
+                    <div class="body">
+                        <ul class="nav nav-tabs-new2 darkteal p-t-0" id="@(_tabID)">
+                            <li class="nav-item"><a class="nav-link" data-toggle="tab" data-id="0" href="@($"#{_tabID}_0")">已兌換商品</a></li>
+                            <li class="nav-item"><a class="nav-link" data-toggle="tab" data-id="1" href="@($"#{_tabID}_1")">Beyond💰彙總</a></li>
+                            <li class="nav-item"><a class="nav-link" data-toggle="tab" data-id="2" href="@($"#{_tabID}_2")">運動小學堂答案卷</a></li>
+                        </ul>
+                        <div class="tab-content p-l-5 p-r-5">
+                            <div class="tab-pane" id="@($"{_tabID}_0")">
+
+                            </div>
+                            <div class="tab-pane" id="@($"{_tabID}_1")">
+
+                            </div>
+                            <div class="tab-pane" id="@($"{_tabID}_2")">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @{ Html.RenderPartial("~/Views/ConsoleHome/Shared/BSModalScript.cshtml", model: _dialogID);}
+
+    <script>
+            var tabs = [];
+            var tabUrl = [
+                '@Html.Raw(Url.Action("ShowLearnerBonusAwards", "LearnerProfile",new { KeyID = _model.UID.EncryptKey()}))',
+                '@Html.Raw(Url.Action("ShowLearnerBonusCredits", "LearnerProfile",new { KeyID = _model.UID.EncryptKey()}))',
+                '@Html.Raw(Url.Action("ShowLearnerDailyAnswers", "LearnerProfile",new { KeyID = _model.UID.EncryptKey()}))'];
+
+            function loadTabContent(idx) {
+                if (tabs[idx] != undefined) {
+                    return;
+                }
+                var tabID = '#@($"{_tabID}_")' + idx;
+                tabs[idx] = $(tabID);
+                var $tab = tabs[idx];
+                showLoading();
+                $.post(tabUrl[idx], {}, function (data) {
+                    hideLoading();
+                    if ($.isPlainObject(data)) {
+                        alert(data.message);
+                    } else {
+                        $tab.empty().append(data);
+                    }
+                });
+
+            }
+
+            $('#@(_dialogID)').on('shown.bs.modal', function () {
+                $('#@(_tabID) a[data-id="0"]').tab('show');
+            });
+
+            $('#@(_tabID) a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+                //e.target // newly activated tab
+                //e.relatedTarget // previous active tab
+                var idx = parseInt($(e.target).data('id'));
+                console.log(idx);
+                loadTabContent(idx);
+            });
+    </script>
+</div>
+

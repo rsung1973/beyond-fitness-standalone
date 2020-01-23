@@ -1,0 +1,47 @@
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Newtonsoft.Json
+
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    UserProfile _model;
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = (UserProfile)this.Model;
+
+    var revision = _model.PromptContractCauseForEndig(models);
+    var totalCount = revision.Count();
+
+    if (totalCount > 0)
+    {
+        var groups = revision.GroupBy(r => r.CauseForEnding).OrderByDescending(g => g.Count());
+        var theMost = groups.First();
+        var cause = ((Naming.CauseForEnding)theMost.Key).ToString(); 
+
+        <div class="col-12 col-red">
+            終止原因：<a href="javascript:showDonutChart();">@(cause) @(Math.Round((theMost.Count() * 100M) / totalCount))% <i class="zmdi livicon-evo" data-options="name: hand-right.svg; size: 24px; style: original; autoPlay:true"></i></a>
+        </div> 
+        <script>
+            function showDonutChart() {
+                showLoading();
+                $.post('@Html.Raw(Url.Action("ShowCauseForEndingDonutChart", "ContractConsole"))', { }, function (data) {
+                    hideLoading();
+                    if ($.isPlainObject(data)) {
+                        alert(data.message);
+                    } else {
+                        $(data).appendTo($('body'));
+                    }
+                });
+            }
+        </script>
+    }
+}
+

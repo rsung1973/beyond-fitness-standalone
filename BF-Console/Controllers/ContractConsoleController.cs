@@ -469,5 +469,13 @@ namespace WebHome.Controllers
             return View("~/Views/ContractConsole/Module/EditPaymentForContract.cshtml", item);
         }
 
+        public ActionResult ShowCauseForEndingDonutChart(CourseContractQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            var profile = HttpContext.GetUser();
+            return View("~/Views/ContractConsole/Module/ShowCauseForEndingDonutChart.cshtml", profile);
+        }
+
+
     }
 }

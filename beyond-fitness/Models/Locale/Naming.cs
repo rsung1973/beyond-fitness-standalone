@@ -451,5 +451,15 @@ namespace WebHome.Models.Locale
             ForBreakInterval = 1,
         }
 
+        public enum CauseForEnding
+        {
+            合約到期轉新約 = 1,
+            轉讓,
+            私人原因,
+            更改合約類型,
+            簽約後反悔,
+            其他,
+        }
+
     }
 }

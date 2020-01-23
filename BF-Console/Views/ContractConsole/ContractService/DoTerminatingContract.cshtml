@@ -190,6 +190,19 @@
                 });
             </script>
         }
+
+        <div class="col-12">
+            <select class="form-control show-tick" name="CauseForEnding">
+                <option value="">-- 請選擇終止原因 --</option>
+                <option value="@((int)Naming.CauseForEnding.合約到期轉新約)">合約到期轉新約</option>
+                <option value="@((int)Naming.CauseForEnding.轉讓)">轉讓</option>
+                <option value="@((int)Naming.CauseForEnding.私人原因)">私人原因（工作、搬家等等）</option>
+                <option value="@((int)Naming.CauseForEnding.更改合約類型)">更改合約類型</option>
+                <option value="@((int)Naming.CauseForEnding.簽約後反悔)">簽約後反悔</option>
+                <option value="@((int)Naming.CauseForEnding.其他)">其他（自行輸入）</option>
+            </select>
+        </div>
+
         <div class="col-12 byOther" style="display:none;">
             @{
                 ViewBag.DropifyExtension = "pdf";
@@ -270,7 +283,7 @@
             }
         }).submit();
 
-    }//
+    }
 
 </script>
 

@@ -418,20 +418,31 @@ namespace WebHome.Controllers
                 ModelState.AddModelError("BookletBranchID", "請選擇分店!!");
             }
 
-            viewModel.TrackCode = viewModel.TrackCode.GetEfficientString();
-            if (viewModel.TrackCode == null || !Regex.IsMatch(viewModel.TrackCode, "[A-Z]{2}"))
+            if (viewModel.KeyID != null)
             {
-                ModelState.AddModelError("TrackCode", "請輸入字軌");
+                viewModel.TrackID = viewModel.DecryptKeyValue();
             }
 
-            if (!viewModel.Year.HasValue)
-            {
-                ModelState.AddModelError("Year", "請選擇發票年度");
-            }
+            var trackCode = models.GetTable<InvoiceTrackCode>()
+                                .Where(t => t.TrackID == viewModel.TrackID).FirstOrDefault();
 
-            if (!viewModel.PeriodNo.HasValue)
+            if (trackCode == null)
             {
-                ModelState.AddModelError("PeriodNo", "請選擇期別");
+                viewModel.TrackCode = viewModel.TrackCode.GetEfficientString();
+                if (viewModel.TrackCode == null || !Regex.IsMatch(viewModel.TrackCode, "[A-Z]{2}"))
+                {
+                    ModelState.AddModelError("TrackCode", "請輸入字軌");
+                }
+
+                if (!viewModel.Year.HasValue)
+                {
+                    ModelState.AddModelError("Year", "請選擇發票年度");
+                }
+
+                if (!viewModel.PeriodNo.HasValue)
+                {
+                    ModelState.AddModelError("PeriodNo", "請選擇期別");
+                }
             }
 
             int? range = 0, assignedBooklet = 0; ;
@@ -458,8 +469,11 @@ namespace WebHome.Controllers
                 return View(ConsoleHomeController.InputErrorView);
             }
 
-            var trackCode = models.GetTable<InvoiceTrackCode>()
-                .Where(t => t.TrackCode == viewModel.TrackCode && t.Year == viewModel.Year && t.PeriodNo == viewModel.PeriodNo).FirstOrDefault();
+            if (trackCode == null)
+            {
+                trackCode = models.GetTable<InvoiceTrackCode>()
+                    .Where(t => t.TrackCode == viewModel.TrackCode && t.Year == viewModel.Year && t.PeriodNo == viewModel.PeriodNo).FirstOrDefault();
+            }
 
             if (trackCode == null)
             {

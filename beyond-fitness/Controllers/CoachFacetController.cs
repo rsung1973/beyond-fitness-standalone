@@ -594,26 +594,12 @@ namespace WebHome.Controllers
                 UID = lesson.UID
             });
             models.GetTable<LessonTime>().InsertOnSubmit(timeItem);
-            //models.SubmitChanges();
-
-            var timeExpansion = models.GetTable<LessonTimeExpansion>();
-
-            for (int i = 0; i <= (timeItem.DurationInMinutes + timeItem.ClassTime.Value.Minute - 1) / 60; i++)
-            {
-                timeExpansion.InsertOnSubmit(new LessonTimeExpansion
-                {
-                    ClassDate = timeItem.ClassTime.Value.Date,
-                    //LessonID = timeItem.LessonID,
-                    LessonTime = timeItem,
-                    Hour = timeItem.ClassTime.Value.Hour + i,
-                    RegisterID = lesson.RegisterID
-                });
-            }
-
 
             try
             {
                 models.SubmitChanges();
+
+                timeItem.BookingLessonTimeExpansion(models, timeItem.ClassTime.Value, timeItem.DurationInMinutes.Value);
                 timeItem.ProcessBookingWhenCrossBranch(models);
             }
             catch (Exception ex)

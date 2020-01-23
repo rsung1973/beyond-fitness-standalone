@@ -23004,6 +23004,8 @@ namespace WebHome.Models.DataEntity
 		
 		private System.Nullable<int> _ProcessingFee;
 		
+		private System.Nullable<int> _CauseForEnding;
+		
 		private EntitySet<CourseContractExtension> _CourseContractExtension;
 		
 		private EntitySet<ContractElement> _ContractElements;
@@ -23038,6 +23040,8 @@ namespace WebHome.Models.DataEntity
     partial void OnBySelfChanged();
     partial void OnProcessingFeeChanging(System.Nullable<int> value);
     partial void OnProcessingFeeChanged();
+    partial void OnCauseForEndingChanging(System.Nullable<int> value);
+    partial void OnCauseForEndingChanged();
     #endregion
 		
 		public CourseContractRevision()
@@ -23239,6 +23243,26 @@ namespace WebHome.Models.DataEntity
 					this._ProcessingFee = value;
 					this.SendPropertyChanged("ProcessingFee");
 					this.OnProcessingFeeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CauseForEnding", DbType="Int")]
+		public System.Nullable<int> CauseForEnding
+		{
+			get
+			{
+				return this._CauseForEnding;
+			}
+			set
+			{
+				if ((this._CauseForEnding != value))
+				{
+					this.OnCauseForEndingChanging(value);
+					this.SendPropertyChanging();
+					this._CauseForEnding = value;
+					this.SendPropertyChanged("CauseForEnding");
+					this.OnCauseForEndingChanged();
 				}
 			}
 		}

@@ -66,10 +66,13 @@
                                 }
                                 @if (lessonItem.IsCoachPISession())
                                 {
-                                    if (lessonItem.ClassTime >= DateTime.Today && lessonItem.GroupingLesson.LessonTime.Count > 1)
+                                    if (lessonItem.GroupingLesson.LessonTime.Count > 1)
                                     {
                                         hasSlideItem = true;
-                                        <li><a href="javascript:cloneCoachPITrainingPlan();">我的課表<i class="zmdi zmdi-arrow-right"></i>同伴</a></li>
+                                        if (lessonItem.ClassTime >= DateTime.Today)
+                                        {
+                                            <li><a href="javascript:cloneCoachPITrainingPlan();">我的課表<i class="zmdi zmdi-arrow-right"></i>同伴</a></li>
+                                        }
                                         <li><a href="javascript:selectToClonePITrainingPlan();">同伴課表<i class="zmdi zmdi-arrow-right"></i>我</a></li>
                                     }
                                 }

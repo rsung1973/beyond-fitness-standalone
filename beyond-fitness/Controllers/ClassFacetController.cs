@@ -148,7 +148,7 @@ namespace WebHome.Controllers
                 }
             }
             
-            if(!item.IsCoachPISession())
+            if(!item.IsCoachPISession() && !item.IsSTSession())
             {
                 var users = models.CheckOverlappingBooking(timeItem, item);
                 if (users.Count() > 0)
@@ -203,8 +203,6 @@ namespace WebHome.Controllers
 
                 foreach (var s in models.GetTable<LessonTime>().Where(l => l.GroupID == item.GroupID))
                 {
-                    models.DeleteAll<LessonTimeExpansion>(t => t.LessonID == s.LessonID);
-
                     s.ClassTime = viewModel.ClassDate;
                     if (models.GetTable<DailyWorkingHour>().Any(d => d.Hour == viewModel.ClassDate.Value.Hour))
                         s.HourOfClassTime = viewModel.ClassDate.Value.Hour;
@@ -217,7 +215,6 @@ namespace WebHome.Controllers
             }
             else
             {
-                models.DeleteAll<LessonTimeExpansion>(t => t.LessonID == item.LessonID);
 
                 item.InvitedCoach = viewModel.CoachID;
                 item.AssignLessonAttendingCoach(coach);
@@ -236,58 +233,6 @@ namespace WebHome.Controllers
 
             models.SubmitChanges();
 
-            var timeExpansion = models.GetTable<LessonTimeExpansion>();
-            if (models.GetTable<RegisterLesson>().Count(r => r.RegisterGroupID == item.GroupID) > 1)
-            {
-                if (item.IsCoachPISession())
-                {
-                    for (int i = 0; i <= (item.DurationInMinutes + item.ClassTime.Value.Minute - 1) / 60; i++)
-                    {
-                        foreach (var s in models.GetTable<LessonTime>().Where(l => l.GroupID == item.GroupID))
-                        {
-                            timeExpansion.InsertOnSubmit(new LessonTimeExpansion
-                            {
-                                ClassDate = item.ClassTime.Value.Date,
-                                LessonID = s.LessonID,
-                                Hour = item.ClassTime.Value.Hour + i,
-                                RegisterID = s.RegisterID
-                            });
-                        }
-                    }
-                }
-                else
-                {
-                    for (int i = 0; i <= (item.DurationInMinutes + item.ClassTime.Value.Minute - 1) / 60; i++)
-                    {
-                        foreach (var regles in item.RegisterLesson.GroupingLesson.RegisterLesson)
-                        {
-                            timeExpansion.InsertOnSubmit(new LessonTimeExpansion
-                            {
-                                ClassDate = item.ClassTime.Value.Date,
-                                LessonID = item.LessonID,
-                                Hour = item.ClassTime.Value.Hour + i,
-                                RegisterID = regles.RegisterID
-                            });
-                        }
-                    }
-                }
-            }
-            else
-            {
-                for (int i = 0; i <= (item.DurationInMinutes + item.ClassTime.Value.Minute - 1) / 60; i++)
-                {
-                    timeExpansion.InsertOnSubmit(new LessonTimeExpansion
-                    {
-                        ClassDate = item.ClassTime.Value.Date,
-                        LessonID = item.LessonID,
-                        Hour = item.ClassTime.Value.Hour + i,
-                        RegisterID = item.RegisterID
-                    });
-                }
-            }
-
-            models.SubmitChanges();
-
             if (item.IsPISession())
             {
                 models.ExecuteCommand("update TuitionInstallment set PayoffDate = {0} where RegisterID = {1} ", item.ClassTime, item.RegisterID);
@@ -295,6 +240,8 @@ namespace WebHome.Controllers
 
             if(!item.IsSTSession())
             {
+                item.BookingLessonTimeExpansion(models, item.ClassTime.Value, item.DurationInMinutes.Value);
+
                 models.ExecuteCommand("delete PreferredLessonTime where LessonID = {0}", item.LessonID);
                 item.ProcessBookingWhenCrossBranch(models);
             }

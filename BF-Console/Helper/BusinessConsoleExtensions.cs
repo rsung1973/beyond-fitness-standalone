@@ -25,7 +25,7 @@ namespace WebHome.Helper
 {
     public static class BusinessConsoleExtensions
     {
-        public static MonthlyIndicator InitializeMonthlyIndicator<TEntity>(this ModelSource<TEntity> models, int year, int month,bool? forcedPrepare=null)
+        public static MonthlyIndicator InitializeMonthlyIndicator<TEntity>(this ModelSource<TEntity> models, int year, int month, bool? forcedPrepare = null)
                 where TEntity : class, new()
         {
             DateTime startDate = new DateTime(year, month, 1);
@@ -57,7 +57,7 @@ namespace WebHome.Helper
                 models.GetTable<MonthlyIndicator>().InsertOnSubmit(item);
             }
 
-            foreach(var r in sampleItem.MonthlyRevenueIndicator)
+            foreach (var r in sampleItem.MonthlyRevenueIndicator)
             {
                 MonthlyRevenueIndicator newItem = item.MonthlyRevenueIndicator.Where(i => i.GradeID == r.GradeID).FirstOrDefault();
                 if (newItem != null)
@@ -90,7 +90,7 @@ namespace WebHome.Helper
                 }
             }
 
-            foreach(var b in sampleItem.MonthlyBranchIndicator)
+            foreach (var b in sampleItem.MonthlyBranchIndicator)
             {
                 MonthlyBranchIndicator newBranchItem = item.MonthlyBranchIndicator.Where(i => i.BranchID == b.BranchID).FirstOrDefault();
                 if (newBranchItem == null)
@@ -139,7 +139,7 @@ namespace WebHome.Helper
                 }
             }
 
-            if (forcedPrepare != true)
+            if (forcedPrepare == true)
             {
                 foreach (var c in sampleItem.MonthlyCoachRevenueIndicator)
                 {
@@ -169,7 +169,7 @@ namespace WebHome.Helper
 
         }
 
-        public static MonthlyIndicator AssertMonthlyIndicator<TEntity>(this MonthlyIndicatorQueryViewModel viewModel,  ModelSource<TEntity> models)
+        public static MonthlyIndicator AssertMonthlyIndicator<TEntity>(this MonthlyIndicatorQueryViewModel viewModel, ModelSource<TEntity> models)
                 where TEntity : class, new()
         {
             var item = models.GetTable<MonthlyIndicator>().Where(i => i.PeriodID == viewModel.PeriodID).FirstOrDefault();
@@ -185,7 +185,7 @@ namespace WebHome.Helper
             return item;
         }
 
-        public static MonthlyIndicator GetAlmostMonthlyIndicator<TEntity>(this MonthlyIndicatorQueryViewModel viewModel, ModelSource<TEntity> models,bool? exact = null)
+        public static MonthlyIndicator GetAlmostMonthlyIndicator<TEntity>(this MonthlyIndicatorQueryViewModel viewModel, ModelSource<TEntity> models, bool? exact = null)
                 where TEntity : class, new()
         {
             var item = models.GetTable<MonthlyIndicator>().Where(i => i.PeriodID == viewModel.PeriodID).FirstOrDefault();
@@ -300,7 +300,7 @@ namespace WebHome.Helper
                     revenueItem.ActualSharedAchievement = tuitionAchievement;
                     revenueItem.RenewContractCount = contractItems.Where(c => c.Renewal == true).Count();
                     revenueItem.NewContractCount = contractItems.Count() - revenueItem.RenewContractCount;
-                    revenueItem.RenewContractSubtotal = contractItems.Where(c => c.Renewal == true).Sum(c => c.TotalCost);
+                    revenueItem.RenewContractSubtotal = contractItems.Where(c => c.Renewal == true).Sum(c => c.TotalCost) ?? 0;
                     revenueItem.NewContractSubtotal = contractItems.Sum(c => c.TotalCost) - revenueItem.RenewContractSubtotal;
 
                     revenueItem.ActualCompleteTSCount = tuitionItems.Where(t => t.PriceStatus == (int)Naming.LessonPriceStatus.體驗課程).Count()
@@ -314,7 +314,7 @@ namespace WebHome.Helper
 
             void calcBranchAchievement()
             {
-                foreach(var branchIndicator in item.MonthlyBranchIndicator)
+                foreach (var branchIndicator in item.MonthlyBranchIndicator)
                 {
                     var branchTuitionItems = tuitionItems.Where(t => t.CoachWorkPlace == branchIndicator.BranchID);
                     var branchAchievementItems = achievementItems.Where(t => t.CoachWorkPlace == branchIndicator.BranchID);
@@ -335,7 +335,7 @@ namespace WebHome.Helper
                         revenueItem.ActualSharedAchievement = tuitionAchievement;
                         revenueItem.RenewContractCount = branchContractItems.Where(c => c.Renewal == true).Count();
                         revenueItem.NewContractCount = branchContractItems.Count() - revenueItem.RenewContractCount;
-                        revenueItem.RenewContractSubtotal = branchContractItems.Where(c => c.Renewal == true).Sum(c => c.TotalCost);
+                        revenueItem.RenewContractSubtotal = branchContractItems.Where(c => c.Renewal == true).Sum(c => c.TotalCost) ?? 0;
                         revenueItem.NewContractSubtotal = branchContractItems.Sum(c => c.TotalCost) - revenueItem.RenewContractSubtotal;
                         revenueItem.ActualCompleteTSCount = branchTuitionItems.Where(t => t.PriceStatus == (int)Naming.LessonPriceStatus.體驗課程).Count()
                                         + branchTuitionItems.Where(t => t.ELStatus == (int)Naming.LessonPriceStatus.體驗課程).Count();
@@ -378,7 +378,7 @@ namespace WebHome.Helper
             calcCoachAchievement();
         }
 
-        public static int CalculateAverageLessonPrice<TEntity>(this MonthlyIndicator item, ModelSource<TEntity> models,int? coachID)
+        public static int CalculateAverageLessonPrice<TEntity>(this MonthlyIndicator item, ModelSource<TEntity> models, int? coachID)
             where TEntity : class, new()
         {
             AchievementQueryViewModel queryModel = new AchievementQueryViewModel
@@ -415,7 +415,7 @@ namespace WebHome.Helper
         {
             IQueryable<MonthlyCoachRevenueIndicator> coachItems = models.GetTable<MonthlyCoachRevenueIndicator>().Where(r => r.PeriodID == item.PeriodID);
             List<MonthlyBranchRevenueGoal> branchGoalItems = new List<MonthlyBranchRevenueGoal>();
-            foreach(var branchIndicator in item.MonthlyBranchIndicator)
+            foreach (var branchIndicator in item.MonthlyBranchIndicator)
             {
                 var revenueGoal = branchIndicator.MonthlyBranchRevenueIndicator.Where(r => r.MonthlyBranchRevenueGoal != null)
                                     .Select(r => r.MonthlyBranchRevenueGoal).FirstOrDefault();

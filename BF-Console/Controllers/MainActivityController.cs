@@ -213,7 +213,7 @@ namespace WebHome.Controllers
 
             String blogRoot = Server.MapPath("~/MainActivity/Blog");
             String blogPath = Path.Combine(blogRoot, blogID);
-            blogPath.CheckStoredPath();
+            //blogPath.CheckStoredPath();
             if (sourceBlogID != null && sourceBlogID != blogID)
             {
                 Directory.Move(Path.Combine(blogRoot, sourceBlogID), blogPath);

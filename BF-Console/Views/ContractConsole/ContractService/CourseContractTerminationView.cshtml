@@ -136,7 +136,31 @@
                             </td>
                         </tr>
                         <tr style="@(_viewModel.Pdf=="1" ? "height: 14cm" : "height: 2cm")">
-                            <td colspan="2">其他更多說明：@(_contract.Remark)</td>
+                            <td colspan="2">
+                                其他更多說明：
+                                @if (_contract.Status == (int)Naming.ContractServiceStatus.待簽名)
+                                {
+                                    if (!_model.CauseForEnding.HasValue)
+                                    {
+                                        <text>@(_contract.Remark)</text>
+                                    }
+                                }
+                                else
+                                {
+                                    if (_model.CauseForEnding.HasValue)
+                                    {
+                                        <text>終止原因—@($"{(Naming.CauseForEnding)_model.CauseForEnding}") </text>
+                                        if (_model.CauseForEnding == (int)Naming.CauseForEnding.其他)
+                                        {
+                                            <text>（@(_contract.Remark)）</text>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <text>@(_contract.Remark)</text>
+                                    }
+                                }
+                            </td>
                         </tr>
                     </tbody>
                 </table>

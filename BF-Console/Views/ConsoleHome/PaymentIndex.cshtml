@@ -59,7 +59,7 @@
     }
     <!--我的收款-->
     @{
-      Html.RenderPartial("~/Views/PaymentConsole/Module/AboutPaymentView.cshtml", items);  
+        Html.RenderPartial("~/Views/PaymentConsole/Module/AboutPaymentView.cshtml", items);
     }
     <!--我的分店收款-->
     @{
@@ -67,8 +67,9 @@
     }
     @if (_profile.IsSysAdmin() || _profile.IsAssistant() || _profile.IsOfficer())
     {
-        <div class="container-fluid" id="myPayment">
-            <h4 class="card-outbound-header" id="@(ViewBag.ViewID)">我的分店收款</h4>
+        <a name="myPayment"></a>
+        <div class="container-fluid" id="@(ViewBag.ViewID)">
+            <h4 class="card-outbound-header">我的分店收款</h4>
             @{
                 Html.RenderPartial("~/Views/PaymentConsole/Module/AboutBranchPaymentView.cshtml", items);
             }
@@ -76,8 +77,9 @@
     }
     @if (_profile.IsManager() || _profile.IsViceManager())
     {
-        <div class="container-fluid" id="myPayment">
-            <h4 class="card-outbound-header" id="@(ViewBag.ViewID)">我的分店收款</h4>
+        <a name="myPayment"></a>
+        <div class="container-fluid" id="@(ViewBag.ViewID)">
+            <h4 class="card-outbound-header">我的分店收款</h4>
             @{
                 Html.RenderPartial("~/Views/PaymentConsole/Module/CurrentMonthBranchPaymentView.cshtml", items);
             }

@@ -22,6 +22,7 @@
     _model = (UserProfile)this.Model;
     _items = ViewBag.DataItems as IQueryable<BlogArticle>;
     _viewModel = (BlogArticleQueryViewModel)ViewBag.ViewModel;
+    //_items = _items.Where(a => a.Document.DocDate < DateTime.Now);
 }
 
 @section CustomHeader { 
@@ -111,7 +112,7 @@
         }
 
         function viewArticle(docID) {
-            $('').launchDownload('@Html.Raw(Url.Action("BlogSingle","MainActivity"))', { 'docID': docID }, "_blank");
+            $('').launchDownload('@Html.Raw(Url.Action("BlogSingle","MainActivity"))' + '?docID=' + docID, { }, "_blank");
         }
     </script>
 

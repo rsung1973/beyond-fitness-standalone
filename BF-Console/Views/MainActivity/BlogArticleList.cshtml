@@ -41,7 +41,9 @@
         </div>
         <ul class="list-group list-group-flush articlelist">
             @{
-                var items = _model.OrderByDescending(b => b.BlogID).ToArray();
+                var items = _model
+                    .Where(a => a.Document.DocDate < DateTime.Now)
+                    .OrderByDescending(b => b.BlogID).ToArray();
             }
             @for (int idx = 0; idx < items.Length;)
             {

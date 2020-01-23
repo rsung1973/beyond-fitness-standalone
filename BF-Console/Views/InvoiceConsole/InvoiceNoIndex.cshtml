@@ -67,7 +67,7 @@
                      <div class="body">
                         <div class="row clearfix">
                             <div class="col-lg-6 col-md-6 col-sm-6 col-12 m-b-20">
-                                <select class="form-control show-tick" name="Year" @(_viewModel.DateFrom?.Year > 0 ? " disabled" : "")>
+                                <select class="form-control show-tick" name="Year" @(_viewModel.DateFrom.HasValue ? " disabled" : "")>
                                     <option value="">-- 請選擇發票年度 --</option>
                                     @if (DateTime.Today.Month >= 11)
                                     {
@@ -80,13 +80,12 @@
                                 </select>
                                 <script>
                                     $(function () {
-                                        alert(@(_viewModel.DateFrom?.Year));
                                         $('select[name="Year"]').val('@(_viewModel.DateFrom?.Year)');
                                     });
                                 </script>
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6 col-12 m-b-20">
-                                <select class="form-control show-tick" name="PeriodNo" @(_viewModel.TrackPeriodNo > 0 ? " disabled" : "")>
+                                <select class="form-control show-tick" name="PeriodNo" @(_viewModel.TrackPeriodNo.HasValue ? " disabled" : "")>
                                     <option value="">-- 請選擇期別 --</option>
                                     <option value="1">01~02</option>
                                     <option value="2">03~04</option>
@@ -144,7 +143,7 @@
                             }
                             <div class="row">
                                 <div class="col-sm-12">
-                                    @*<input name="BookletBranchID" type="hidden" value="@(branch.BranchID)" />*@
+                                    <input name="BookletBranchID" type="hidden" value="@(branch.BranchID)" />
                                     <div class="input-group">
                                         <span class="input-group-addon">
                                             @(branch.BranchName)

@@ -585,19 +585,26 @@ namespace WebHome.Helper
         }
 
 
-        public static IEnumerable<UserProfile> CheckOverlappingBooking<TEntity>(this ModelSource<TEntity> models, LessonTime intendedBooking, LessonTime originalBooking)
+        public static IQueryable<UserProfile> CheckOverlappingBooking<TEntity>(this ModelSource<TEntity> models, LessonTime intendedBooking, LessonTime originalBooking)
                     where TEntity : class, new()
         {
-            int durationHours = (intendedBooking.ClassTime.Value.Minute + intendedBooking.DurationInMinutes.Value + 59) / 60;
+            List<int> checkHour = new List<int>();
+            DateTime startTime = intendedBooking.ClassTime.Value.AddMinutes(-intendedBooking.ClassTime.Value.Minute);
+            DateTime endTime = intendedBooking.ClassTime.Value.AddMinutes(intendedBooking.DurationInMinutes.Value);
+
+            for (var t = startTime; t < endTime; t = t.AddHours(1))
+            {
+                checkHour.Add(t.Hour);
+            }
 
             var oriUID = originalBooking.GroupingLesson.RegisterLesson.Select(r => r.UID).ToArray();
 
-            var overlappingItems = models.GetTable<LessonTimeExpansion>().Where(t => t.ClassDate == intendedBooking.ClassTime.Value.Date
-                    && t.Hour >= intendedBooking.ClassTime.Value.Hour
-                    && t.Hour < (intendedBooking.ClassTime.Value.Hour + durationHours)
-                    && t.LessonID != originalBooking.LessonID)
-                .Where(t => t.LessonTime.GroupID != originalBooking.GroupID)
-                .Select(r => r.RegisterLesson.UserProfile).Where(u => oriUID.Contains(u.UID));
+            var overlappingItems = models.GetTable<LessonTimeExpansion>()
+                                .Where(t => t.ClassDate == startTime.Date)
+                                .Where(t => checkHour.Contains(t.Hour))
+                                .Where(t => t.LessonID != originalBooking.LessonID)
+                                .Select(t => t.RegisterLesson.UserProfile)
+                                .Where(u => oriUID.Contains(u.UID));
 
             return overlappingItems;
 

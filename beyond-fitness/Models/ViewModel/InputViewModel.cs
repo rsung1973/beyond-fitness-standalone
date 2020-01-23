@@ -65,7 +65,7 @@ namespace WebHome.Models.ViewModel
         public bool? UnpaidExpiring { get; set; }
         public bool? Unpaid { get; set; }
         public String Pdf { get; set; }
-
+        public Naming.CauseForEnding? CauseForEnding { get; set; }
     }
 
     public class CourseContractQueryViewModel : CourseContractViewModel
@@ -417,7 +417,7 @@ namespace WebHome.Models.ViewModel
     {
         public int? CategoryID { get; set; }
         public int? DocID { get; set; }
-        public int? id
+        public new int? id
         {
             get => DocID;
             set => DocID = value;
@@ -432,7 +432,7 @@ namespace WebHome.Models.ViewModel
     public class AttachmentQueryViewModel : QueryViewModel
     {
         public int? AttachmentID { get; set; }
-        public int? id
+        public new int? id
         {
             get => AttachmentID;
             set => AttachmentID = value;

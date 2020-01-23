@@ -1,0 +1,73 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Net.Mail;
+using System.Text;
+using System.Threading;
+using System.Web;
+using System.Web.Mvc;
+
+using CommonLib.DataAccess;
+using Utility;
+using WebHome.Models.DataEntity;
+using WebHome.Models.Locale;
+using WebHome.Models.Timeline;
+using WebHome.Models.ViewModel;
+using WebHome.Properties;
+
+namespace WebHome.Helper
+{
+    public static class ContractConsoleExtensionMethods
+    {
+
+        public static IQueryable<CourseContractRevision> PromptContractCauseForEndig<TEntity>(this UserProfile profile,  ModelSource<TEntity> models,DateTime? dateFrom = null, DateTime? dateTo = null)
+                where TEntity : class, new()
+        {
+            IQueryable<CourseContract> contracts = models.GetTable<CourseContract>();
+
+            if (profile.IsSysAdmin() || profile.IsAssistant() || profile.IsOfficer())
+            {
+
+            }
+            else if (profile.IsManager() || profile.IsViceManager())
+            {
+                contracts = contracts
+                    .Join(models.GetTable<CourseContractExtension>()
+                        .Join(models.GetTable<BranchStore>()
+                            .Where(b => b.ManagerID == profile.UID || b.ViceManagerID == profile.UID),
+                        c => c.BranchID, b => b.BranchID, (c, b) => c),
+                    c => c.ContractID, e => e.ContractID, (c, e) => c);
+            }
+            else
+            {
+                contracts = contracts.Where(c => false);
+            }
+
+
+            IQueryable<CourseContract> items = models.GetTable<CourseContract>()
+                .Where(c => c.EffectiveDate.HasValue);
+            if(dateFrom.HasValue)
+            {
+                items = items.Where(c => c.EffectiveDate >= dateFrom);
+            }
+            if(dateTo.HasValue)
+            {
+                items = items.Where(c => c.EffectiveDate < dateTo);
+            }
+
+
+            var revision = models.GetTable<CourseContractRevision>()
+                .Where(r => r.Reason == "終止")
+                .Where(r => r.CauseForEnding.HasValue)
+                    .Join(items, r => r.RevisionID, c => c.ContractID, (r, c) => r)
+                    .Join(contracts, r => r.OriginalContract, c => c.ContractID, (r, c) => r);
+
+            return revision;
+        }
+
+    }
+}

@@ -255,9 +255,9 @@ namespace WebHome.Controllers
             }
 
             var lessonItems = models.GetTable<LessonTime>().Where(l => l.GroupID == item.GroupID && l.LessonID != item.LessonID);
-            if (lessonItems.Count() < 2)
+            if (lessonItems.Count() < 1)
             {
-                return Json(new { result = false, message = "課程非一對多!!" }, JsonRequestBehavior.AllowGet);
+                return Json(new { result = false, message = "課程非多人團體課!!" }, JsonRequestBehavior.AllowGet);
             }
 
             var items = lessonItems.Where(l => l.LessonID != item.LessonID)

@@ -1,0 +1,37 @@
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Newtonsoft.Json
+
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    UserProfile _model;
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = (UserProfile)this.Model;
+}
+@{
+    ///撈資料請參考:
+    ///CornerKick/CheckBonusPoint => 兌換我的裝備
+    ///ConsoleHome/ReportIndex => 兌換商品
+}
+    <div class="table-responsive">
+        <table class="table table-striped table-custom nowrap bg-white col-charcoal dataTable dataTable-pointexchange" style="width:100%">
+            <thead>
+                <tr>
+                    <th>兌換時間</th>
+                    <th>兌換商品</th>
+                    <th>兌換人員</th>
+                    <th>使用日期</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+

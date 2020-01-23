@@ -1527,6 +1527,7 @@ namespace WebHome.Controllers
             IEnumerable<CoachMonthlySalary> salaryItems = (IEnumerable<CoachMonthlySalary>)items;
             var branchItems = models.GetTable<BranchStore>().ToArray();
             int branchColIdx;
+            bool rule2020 = viewModel.AchievementDateFrom >= new DateTime(2020, 1, 1);
 
             DataTable buildManagerBonusList()
             {
@@ -1544,7 +1545,11 @@ namespace WebHome.Controllers
 
                 DataRow r;
 
-                var coachItems = salaryItems.Where(s => s.ServingCoach.ProfessionalLevel.CategoryID == (int)Naming.ProfessionalCategory.Special
+                var coachItems = rule2020
+                    ? salaryItems.Where(s => s.ServingCoach.ProfessionalLevel.CategoryID == (int)Naming.ProfessionalCategory.Special
+                                    || s.ServingCoach.ProfessionalLevel.CategoryID == (int)Naming.ProfessionalCategory.FM
+                                    || s.ServingCoach.ProfessionalLevel.CategoryID == (int)Naming.ProfessionalCategory.AFM)
+                    : salaryItems.Where(s => s.ServingCoach.ProfessionalLevel.CategoryID == (int)Naming.ProfessionalCategory.Special
                                     || s.ServingCoach.ProfessionalLevel.CategoryID == (int)Naming.ProfessionalCategory.FM);
 
                 foreach (var g in coachItems)
@@ -1591,7 +1596,11 @@ namespace WebHome.Controllers
 
                 DataRow r;
 
-                var coachItems = salaryItems.Where(s => s.ServingCoach.ProfessionalLevel.CategoryID != (int)Naming.ProfessionalCategory.Special
+                var coachItems = rule2020
+                    ? salaryItems.Where(s => s.ServingCoach.ProfessionalLevel.CategoryID != (int)Naming.ProfessionalCategory.Special
+                                    && s.ServingCoach.ProfessionalLevel.CategoryID != (int)Naming.ProfessionalCategory.FM
+                                    && s.ServingCoach.ProfessionalLevel.CategoryID != (int)Naming.ProfessionalCategory.AFM)
+                    : salaryItems.Where(s => s.ServingCoach.ProfessionalLevel.CategoryID != (int)Naming.ProfessionalCategory.Special
                                     && s.ServingCoach.ProfessionalLevel.CategoryID != (int)Naming.ProfessionalCategory.FM);
 
                 List<DataRow> rows = new List<DataRow>();

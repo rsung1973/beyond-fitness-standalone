@@ -35,7 +35,7 @@
 
         function refreshTrainingExecution(stageID) {
             showLoading();
-            $.post('@Html.Raw(Url.Action("LoadTrainingExecution", "LearnerProfile", new { KeyID = _model.LessonID.EncryptKey() }))', { 'learnerID': @(learner.UID), 'stageID': stageID }, function (data) {
+            $.post('@Html.Raw(Url.Action("LoadTrainingExecution", "LearnerProfile", new { KeyID = _model.LessonID.EncryptKey(), ViewID = _viewID }))', { 'learnerID': @(learner.UID), 'stageID': stageID }, function (data) {
                 hideLoading();
                 if ($.isPlainObject(data)) {
                     alert(data.message);

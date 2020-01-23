@@ -939,6 +939,7 @@
       <Column Name="MonthExtension" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="BySelf" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="ProcessingFee" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CauseForEnding" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Association Name="CourseContractRevision_CourseContractExtension" Member="CourseContractExtension" ThisKey="RevisionID" OtherKey="RevisionTrackingID" Type="CourseContractExtension" />
       <Association Name="CourseContractRevision_ContractElement" Member="ContractElements" ThisKey="RevisionID" OtherKey="RevisionID" Type="ContractElement" />
       <Association Name="CourseContractRevision_CourseContractRevisionItem" Member="CourseContractRevisionItem" ThisKey="RevisionID" OtherKey="RevisionID" Type="CourseContractRevisionItem" Cardinality="One" />
