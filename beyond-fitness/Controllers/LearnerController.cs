@@ -412,12 +412,12 @@ namespace WebHome.Controllers
             items = items.Where(u => !u.LearnerFitnessAdvisor.Any())
                         .Where(l => l.UserProfileExtension != null && !l.UserProfileExtension.CurrentTrial.HasValue);
 
-            renderToXlsx(items, "未指派體能顧問學員清單",$"LearnerReport({DateTime.Now:yyyy-MM-dd HH-mm-ss})");
+            renderToXlsx(items, $"UnallocatedLearner({DateTime.Now:yyyy-MM-dd HH-mm-ss})");
             return new EmptyResult();
         }
 
 
-        private void renderToXlsx(IQueryable<UserProfile> items, String tableName,String fileName)
+        private void renderToXlsx(IQueryable<UserProfile> items, String fileName)
         {
             models.ExecuteCommand(@"UPDATE RegisterLesson
                         SET        BranchID = CourseContractExtension.BranchID
@@ -434,17 +434,15 @@ namespace WebHome.Controllers
                                 new
                                 {
                                     EMail = u.LevelID == (int)Naming.MemberStatus.已註冊 ? u.PID : null,
-                                    真實姓名 = u.RealName,
-                                    暱稱 = u.Nickname,
+                                    姓名 = u.FullName(true),
                                     性別 = u.UserProfileExtension.Gender == "F" ? "女" : "男",
-                                    出生 = u.Birthday,
+                                    生日 = $"{u.Birthday:yyyyMMdd}",
                                     聯絡電話 = u.Phone,
-                                    分店 = m.Key.BranchName
+                                    簽約場所 = m.Key.BranchName
                                 });
 
             DataTable details = resultItems.ToDataTable();
-            if (!String.IsNullOrEmpty(tableName))
-                details.TableName = tableName;
+            details.TableName = $"截至 {DateTime.Today:yyyyMMdd} 未指派體能顧問";
 
             Response.Clear();
             Response.ClearContent();

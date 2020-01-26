@@ -77,9 +77,9 @@ namespace WebHome.Controllers
                     合約編號 = i.ContractNo(),
                     合約名稱 = i.ContractName(),
                     學生 = i.ContractLearnerName("/"),
-                    合約生效起日 = $"{i.EffectiveDate:yyyy/MM/dd}",
-                    合約生效迄日 = $"{i.Expiration:yyyy/MM/dd}",
-                    合約結束日 = $"{i.ValidTo:yyyy/MM/dd}",
+                    合約生效起日 = $"{i.EffectiveDate:yyyyMMdd}",
+                    合約生效迄日 = $"{i.Expiration:yyyyMMdd}",
+                    合約結束日 = $"{i.ValidTo:yyyyMMdd}",
                     合約總價金 = i.TotalCost,
                     專業顧問服務總費用 = (i.TotalCost * 8 + 5) / 10,
                     教練課程費 = (i.TotalCost * 2 + 5) / 10,
@@ -89,9 +89,9 @@ namespace WebHome.Controllers
                     購買上課數 = i.Lessons,
                     其他更多說明 = i.Remark,
                     合約體能顧問 = i.ServingCoach.UserProfile.FullName(false),
-                    上課場所 = i.CourseContractExtension.BranchStore.BranchName,
+                    簽約場所 = i.CourseContractExtension.BranchStore.BranchName,
                     狀態 = i.ContractCurrentStatus(),
-                    應收款期限 = $"{i.PayoffDue:yyyy/MM/dd}",
+                    應收款期限 = $"{i.PayoffDue:yyyyMMdd}",
                     累計收款金額 = i.TotalPaidAmount(),
                     累計收款次數 = i.TotalPayoffCount(),
                 });
@@ -108,7 +108,7 @@ namespace WebHome.Controllers
             using (DataSet ds = new DataSet())
             {
                 DataTable table = details.ToDataTable();
-                    table.TableName = $"{viewModel.EffectiveDateFrom:yyyy-MM-dd}~{viewModel.EffectiveDateFrom:yyyy-MM-dd}";
+                table.TableName = $"{viewModel.EffectiveDateFrom:yyyyMMdd}~{viewModel.EffectiveDateTo.Value.AddDays(-1):yyyyMMdd}";
 
                 ds.Tables.Add(table);
 
@@ -141,30 +141,31 @@ namespace WebHome.Controllers
                             合約編號 = i.ContractNo(),
                             合約名稱 = i.ContractName(),
                             合約體能顧問 = i.ServingCoach.UserProfile.FullName(false),
-                            上課場所 = i.CourseContractExtension.BranchStore.BranchName,
+                            簽約場所 = i.CourseContractExtension.BranchStore.BranchName,
                             學生 = i.ContractLearnerName("/"),
-                            合約生效起日 = $"{i.CourseContractRevision.SourceContract.EffectiveDate:yyyy/MM/dd}",
-                            合約生效迄日 = $"{i.CourseContractRevision.SourceContract.Expiration:yyyy/MM/dd}",
-                            合約結束日 = $"{i.CourseContractRevision.SourceContract.ValidTo:yyyy/MM/dd}",
+                            合約生效起日 = $"{i.CourseContractRevision.SourceContract.EffectiveDate:yyyyMMdd}",
+                            合約生效迄日 = $"{i.CourseContractRevision.SourceContract.Expiration:yyyyMMdd}",
+                            合約結束日 = $"{i.CourseContractRevision.SourceContract.ValidTo:yyyyMMdd}",
                             合約總價金 = i.TotalCost,
                             專業顧問服務總費用 = (i.TotalCost * 8 + 5) / 10,
                             教練課程費 = (i.TotalCost * 2 + 5) / 10,
                             課程單價 = i.LessonPriceType.ListPrice,
                             單堂原價 = i.LessonPriceType.SeriesSingleLessonPrice(),
+                            剩餘堂數 = i.RemainedLessonCount(),
                             購買上課數 = i.Lessons,
-                            編輯日期 = $"{i.ContractDate:yyyy/MM/dd}",
+                            編輯日期 = $"{i.ContractDate:yyyyMMdd}",                            
+                            審核日期 = reason == "轉換體能顧問" || i.CourseContractRevision.OriginalContract == (int)Naming.OperationMode.快速終止
+                                ? $"{i.EffectiveDate:yyyyMMdd}"
+                                : $"{i.CourseContractLevel.Where(l => l.LevelID == (int)Naming.ContractServiceStatus.待簽名).Select(l => l.LevelDate).FirstOrDefault():yyyyMMdd}",
                             簽約日期 = reason== "轉換體能顧問" || i.CourseContractRevision.OriginalContract==(int)Naming.OperationMode.快速終止
                                 ? null
-                                : $"{i.CourseContractLevel.Where(l => l.LevelID == (int)Naming.ContractServiceStatus.已生效).Select(l => l.LevelDate).FirstOrDefault():yyyy/MM/dd}",
-                            審核日期 = reason == "轉換體能顧問" || i.CourseContractRevision.OriginalContract == (int)Naming.OperationMode.快速終止
-                                ? $"{i.EffectiveDate:yyyy/MM/dd}"
-                                : $"{i.CourseContractLevel.Where(l => l.LevelID == (int)Naming.ContractServiceStatus.待簽名).Select(l => l.LevelDate).FirstOrDefault():yyyy/MM/dd}",
+                                : $"{i.CourseContractLevel.Where(l => l.LevelID == (int)Naming.ContractServiceStatus.已生效).Select(l => l.LevelDate).FirstOrDefault():yyyyMMdd}",
                             狀態 = i.ContractCurrentStatus(),
                             其他更多說明 = i.Remark,
                         });
 
                 DataTable table = details.ToDataTable();
-                table.TableName = reason;
+                table.TableName = $"{reason} {viewModel.EffectiveDateFrom:yyyyMMdd}~{viewModel.EffectiveDateTo.Value.AddDays(-1):yyyyMMdd}";
                 ds.Tables.Add(table);
             }
             void buildTerminationDetails(DataSet ds, string reason)
@@ -177,31 +178,32 @@ namespace WebHome.Controllers
                             合約編號 = i.ContractNo(),
                             合約名稱 = i.ContractName(),
                             合約體能顧問 = i.ServingCoach.UserProfile.FullName(false),
-                            上課場所 = i.CourseContractExtension.BranchStore.BranchName,
+                            簽約場所 = i.CourseContractExtension.BranchStore.BranchName,
                             學生 = i.ContractLearnerName("/"),
-                            合約生效起日 = $"{i.CourseContractRevision.SourceContract.EffectiveDate:yyyy/MM/dd}",
-                            合約生效迄日 = $"{i.CourseContractRevision.SourceContract.Expiration:yyyy/MM/dd}",
-                            合約結束日 = $"{i.CourseContractRevision.SourceContract.ValidTo:yyyy/MM/dd}",
+                            合約生效起日 = $"{i.CourseContractRevision.SourceContract.EffectiveDate:yyyyMMdd}",
+                            合約生效迄日 = $"{i.CourseContractRevision.SourceContract.Expiration:yyyyMMdd}",
+                            合約結束日 = $"{i.CourseContractRevision.SourceContract.ValidTo:yyyyMMdd}",
                             合約總價金 = i.TotalCost,
                             專業顧問服務總費用 = (i.TotalCost * 8 + 5) / 10,
                             教練課程費 = (i.TotalCost * 2 + 5) / 10,
                             課程單價 = i.LessonPriceType.ListPrice,
                             單堂原價 = i.LessonPriceType.SeriesSingleLessonPrice(),
+                            剩餘堂數 = i.RemainedLessonCount(),
                             購買上課數 = i.Lessons,
-                            編輯日期 = $"{i.ContractDate:yyyy/MM/dd}",
+                            編輯日期 = $"{i.ContractDate:yyyyMMdd}",                            
+                            審核日期 = reason == "轉換體能顧問" || i.CourseContractRevision.OperationMode == (int)Naming.OperationMode.快速終止
+                                ? $"{i.EffectiveDate:yyyyMMdd}"
+                                : $"{i.CourseContractLevel.Where(l => l.LevelID == (int)Naming.ContractServiceStatus.待簽名).Select(l => l.LevelDate).FirstOrDefault():yyyyMMdd}",
                             簽約日期 = reason == "轉換體能顧問" || i.CourseContractRevision.OperationMode == (int)Naming.OperationMode.快速終止
                                 ? null
-                                : $"{i.CourseContractLevel.Where(l => l.LevelID == (int)Naming.ContractServiceStatus.已生效).Select(l => l.LevelDate).FirstOrDefault():yyyy/MM/dd}",
-                            審核日期 = reason == "轉換體能顧問" || i.CourseContractRevision.OperationMode == (int)Naming.OperationMode.快速終止
-                                ? $"{i.EffectiveDate:yyyy/MM/dd}"
-                                : $"{i.CourseContractLevel.Where(l => l.LevelID == (int)Naming.ContractServiceStatus.待簽名).Select(l => l.LevelDate).FirstOrDefault():yyyy/MM/dd}",
+                                : $"{i.CourseContractLevel.Where(l => l.LevelID == (int)Naming.ContractServiceStatus.已生效).Select(l => l.LevelDate).FirstOrDefault():yyyyMMdd}",
                             終止類別 = $"{(Naming.OperationMode?)i.CourseContractRevision.OperationMode}",
                             狀態 = i.ContractCurrentStatus(),
                             其他更多說明 = i.Remark,
                         });
 
                 DataTable table = details.ToDataTable();
-                table.TableName = reason;
+                table.TableName = $"{reason} {viewModel.EffectiveDateFrom:yyyyMMdd}~{viewModel.EffectiveDateTo.Value.AddDays(-1):yyyyMMdd}";
                 ds.Tables.Add(table);
             }
             void buildConsultantAssignmentDetails(DataSet ds, string reason)
@@ -215,30 +217,30 @@ namespace WebHome.Controllers
                             合約名稱 = i.ContractName(),
                             原合約體能顧問 = i.CourseContractRevision.CourseContractRevisionItem?.ServingCoach.UserProfile.FullName(false),
                             合約體能顧問 = i.ServingCoach.UserProfile.FullName(false),
-                            上課場所 = i.CourseContractExtension.BranchStore.BranchName,
+                            簽約場所 = i.CourseContractExtension.BranchStore.BranchName,
                             學生 = i.ContractLearnerName("/"),
-                            合約生效起日 = $"{i.CourseContractRevision.SourceContract.EffectiveDate:yyyy/MM/dd}",
-                            合約生效迄日 = $"{i.CourseContractRevision.SourceContract.Expiration:yyyy/MM/dd}",
-                            合約結束日 = $"{i.CourseContractRevision.SourceContract.ValidTo:yyyy/MM/dd}",
+                            合約生效起日 = $"{i.CourseContractRevision.SourceContract.EffectiveDate:yyyyMMdd}",
+                            合約生效迄日 = $"{i.CourseContractRevision.SourceContract.Expiration:yyyyMMdd}",
+                            合約結束日 = $"{i.CourseContractRevision.SourceContract.ValidTo:yyyyMMdd}",
                             合約總價金 = i.TotalCost,
                             專業顧問服務總費用 = (i.TotalCost * 8 + 5) / 10,
                             教練課程費 = (i.TotalCost * 2 + 5) / 10,
                             課程單價 = i.LessonPriceType.ListPrice,
                             單堂原價 = i.LessonPriceType.SeriesSingleLessonPrice(),
                             購買上課數 = i.Lessons,
-                            編輯日期 = $"{i.ContractDate:yyyy/MM/dd}",
-                            簽約日期 = reason == "轉換體能顧問" || i.CourseContractRevision.OriginalContract == (int)Naming.OperationMode.快速終止
-                                ? null
-                                : $"{i.CourseContractLevel.Where(l => l.LevelID == (int)Naming.ContractServiceStatus.已生效).Select(l => l.LevelDate).FirstOrDefault():yyyy/MM/dd}",
+                            編輯日期 = $"{i.ContractDate:yyyyMMdd}",
+                            //簽約日期 = reason == "轉換體能顧問" || i.CourseContractRevision.OriginalContract == (int)Naming.OperationMode.快速終止
+                            //    ? null
+                            //    : $"{i.CourseContractLevel.Where(l => l.LevelID == (int)Naming.ContractServiceStatus.已生效).Select(l => l.LevelDate).FirstOrDefault():yyyyMMdd}",
                             審核日期 = reason == "轉換體能顧問" || i.CourseContractRevision.OriginalContract == (int)Naming.OperationMode.快速終止
-                                ? $"{i.EffectiveDate:yyyy/MM/dd}"
-                                : $"{i.CourseContractLevel.Where(l => l.LevelID == (int)Naming.ContractServiceStatus.待簽名).Select(l => l.LevelDate).FirstOrDefault():yyyy/MM/dd}",
+                                ? $"{i.EffectiveDate:yyyyMMdd}"
+                                : $"{i.CourseContractLevel.Where(l => l.LevelID == (int)Naming.ContractServiceStatus.待簽名).Select(l => l.LevelDate).FirstOrDefault():yyyyMMdd}",
                             狀態 = i.ContractCurrentStatus(),
                             其他更多說明 = i.Remark,
                         });
 
                 DataTable table = details.ToDataTable();
-                table.TableName = reason;
+                table.TableName = $"{reason} {viewModel.EffectiveDateFrom:yyyyMMdd}~{viewModel.EffectiveDateTo.Value.AddDays(-1):yyyyMMdd}";
                 ds.Tables.Add(table);
             }
 
@@ -248,13 +250,13 @@ namespace WebHome.Controllers
             Response.AppendCookie(new HttpCookie("fileDownloadToken", viewModel.FileDownloadToken));
             Response.AddHeader("Cache-control", "max-age=1");
             Response.ContentType = "application/vnd.ms-excel";
-            Response.AddHeader("Content-Disposition", String.Format("attachment;filename={0}({1:yyyy-MM-dd HH-mm-ss}).xlsx", HttpUtility.UrlEncode("ContractDetails"), DateTime.Now));
+            Response.AddHeader("Content-Disposition", String.Format("attachment;filename={0}({1:yyyy-MM-dd HH-mm-ss}).xlsx", HttpUtility.UrlEncode("ContractServiceDetails"), DateTime.Now));
 
             using (DataSet ds = new DataSet())
             {
                 buildDetails(ds, "展延");
                 buildTerminationDetails(ds, "終止");
-                buildDetails(ds, "轉讓");
+                //buildDetails(ds, "轉讓");
                 buildConsultantAssignmentDetails(ds, "轉換體能顧問");
 
                 using (var xls = ds.ConvertToExcel())
@@ -287,8 +289,8 @@ namespace WebHome.Controllers
             var details = items
                 .Select(i => new
                 {
-                    姓名 = i.FullName(false),
-                    目前剩餘點數 = i.BonusPoint(models),
+                    姓名 = i.FullName(true),
+                    目前Beyond幣金額 = i.BonusPoint(models),
                 });
 
 
@@ -303,7 +305,7 @@ namespace WebHome.Controllers
             using (DataSet ds = new DataSet())
             {
                 DataTable table = details.ToDataTable();
-                table.TableName = $"截至{DateTime.Today:yyyy-MM-dd}";
+                table.TableName = $"截至 {DateTime.Today:yyyyMMdd} Beyond幣金額";
 
                 ds.Tables.Add(table);
 
@@ -337,22 +339,22 @@ namespace WebHome.Controllers
             var details = items.ToArray()
                 .Select(item => new
                 {
-                    兌換時間 = String.Format("{0:yyyy/MM/dd}", item.AwardDate),
-                    姓名 = item.UserProfile.FullName(false),
-                    分店 = models.GetTable<CoachWorkplace>().Where(c=>c.CoachID==item.ActorID)
+                    兌換時間 = String.Format("{0:yyyyMMdd}", item.AwardDate),
+                    姓名 = item.UserProfile.FullName(true),
+                    兌換場所 = models.GetTable<CoachWorkplace>().Where(c=>c.CoachID==item.ActorID)
                                 .Select(c=>c.BranchStore.BranchName).FirstOrDefault(),
-                    兌換人員 = item.Actor.RealName,
+                    兌換人員 = item.Actor.FullName(false),
                     兌換商品 = item.BonusAwardingItem.ItemName,
                     使用日期 = item.BonusAwardingItem.BonusAwardingLesson != null
                         ? item.AwardingLesson != null
                             ? item.AwardingLesson.RegisterLesson.LessonTime.Count > 0
-                                ? String.Format("{0:yyyy/MM/dd}", item.AwardingLesson.RegisterLesson.LessonTime.First().ClassTime)
-                                : "--"
+                                ? String.Format("{0:yyyyMMdd}", item.AwardingLesson.RegisterLesson.LessonTime.First().ClassTime)
+                                : ""
                             : item.AwardingLessonGift.RegisterLesson.LessonTime.Count > 0
-                                ? String.Format("{0:yyyy/MM/dd}", item.AwardingLessonGift.RegisterLesson.LessonTime.First().ClassTime)
-                                : "--"
-                        : "--",
-                    贈與學員 = item.AwardingLessonGift != null ? item.AwardingLessonGift.RegisterLesson.UserProfile.FullName(false) : "--",
+                                ? String.Format("{0:yyyyMMdd}", item.AwardingLessonGift.RegisterLesson.LessonTime.First().ClassTime)
+                                : ""
+                        : "",
+                    贈與學員 = item.AwardingLessonGift != null ? item.AwardingLessonGift.RegisterLesson.UserProfile.FullName(true) : "",
                 });
 
 
@@ -367,7 +369,7 @@ namespace WebHome.Controllers
             using (DataSet ds = new DataSet())
             {
                 DataTable table = details.ToDataTable();
-                table.TableName = $"截至{DateTime.Today:yyyy-MM-dd}";
+                table.TableName = $"截至 {DateTime.Today:yyyyMMdd} 兌換商品";
 
                 ds.Tables.Add(table);
 

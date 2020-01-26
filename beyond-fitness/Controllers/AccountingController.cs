@@ -134,22 +134,24 @@ namespace WebHome.Controllers
                 .Select(item => new
                 {
                     合約編號 = item.ContractNo(),
-                    分店 = item.CourseContractExtension.BranchStore.BranchName,
-                    簽約體能顧問 = item.ServingCoach.UserProfile.FullName(),
-                    學員 = item.CourseContractType.IsGroup == true
-                        ? String.Join("/", item.CourseContractMember.Select(m => m.UserProfile).ToArray().Select(u => u.FullName()))
-                        : item.ContractOwner.FullName(),
                     合約名稱 = String.Concat(item.CourseContractType.TypeName,
                         "(", item.LessonPriceType.DurationInMinutes, " 分鐘)"),
-                    生效日 = String.Format("{0:yyyy/MM/dd}", item.EffectiveDate),
+                    簽約場所 = item.CourseContractExtension.BranchStore.BranchName,
+                    合約體能顧問 = item.ServingCoach.UserProfile.FullName(),
+                    學生 = item.CourseContractType.IsGroup == true
+                        ? String.Join("/", item.CourseContractMember.Select(m => m.UserProfile).ToArray().Select(u => u.FullName()))
+                        : item.ContractOwner.FullName(),                    
+                    合約生效起日 = String.Format("{0:yyyyMMdd}", item.EffectiveDate),
+                    合約生效迄日 = String.Format("{0:yyyyMMdd}", item.Expiration),
+                    應收款期限 = String.Format("{0:yyyyMMdd}", item.PayoffDue),
+                    合約總價金 = item.TotalCost ?? 0,
                     剩餘堂數 = item.RemainedLessonCount(),
-                    購買堂數 = item.Lessons,
-                    應付金額 = item.TotalCost ?? 0,
-                    已付金額 =  item.TotalPaidAmount(),
-                    欠款金額 =  (item.TotalCost - item.TotalPaidAmount()) ?? 0,
-                    已繳期數 = item.ContractPayment.Count,
+                    購買上課數 = item.Lessons,
+                    累計收款金額 =  item.TotalPaidAmount(),
+                    累計欠款金額 =  (item.TotalCost - item.TotalPaidAmount()) ?? 0,
+                    累計收款次數 = item.ContractPayment.Count,
                 })
-                .Where(r =>  r.欠款金額 != 0);
+                .Where(r =>  r.累計欠款金額 != 0);
 
 
             Response.Clear();
@@ -163,7 +165,7 @@ namespace WebHome.Controllers
             using (DataSet ds = new DataSet())
             {
                 DataTable table = details.ToDataTable();
-                table.TableName = "應收帳款催收表";
+                table.TableName = $"截至 {DateTime.Today:yyyyMMdd} 催收帳款";
                 ds.Tables.Add(table);
 
                 using (var xls = ds.ConvertToExcel())
@@ -390,7 +392,7 @@ namespace WebHome.Controllers
             public DateTime? 契約起日 { get; set; }
             public DateTime? 契約迄日 { get; set; }
             //public int? 應入信託金額 { get; set; }
-            public int? 代墊信託金額 { get; set; }
+            //public int? 代墊信託金額 { get; set; }
         }
 
         public ActionResult CreateTrustTrackXlsx(TrustQueryViewModel viewModel)
@@ -528,11 +530,11 @@ namespace WebHome.Controllers
                         headerItem = reportItem;
                 }
 
-                if (headerItem != null)
-                {
+                //if (headerItem != null)
+                //{
                     //headerItem.應入信託金額 = settlement.BookingTrustAmount.AdjustTrustAmount();
-                    headerItem.代墊信託金額 = settlement.CurrentLiableAmount.AdjustTrustAmount();
-                }
+                    //headerItem.代墊信託金額 = settlement.CurrentLiableAmount.AdjustTrustAmount();
+                //}
 
             }
 
@@ -580,7 +582,7 @@ namespace WebHome.Controllers
                 契約起日 = contract.ValidFrom.Value.Date,
                 契約迄日 = contract.Expiration.Value.Date,
                 //應入信託金額 = null,
-                代墊信託金額 = null,
+                //代墊信託金額 = null,
             };
         }
 

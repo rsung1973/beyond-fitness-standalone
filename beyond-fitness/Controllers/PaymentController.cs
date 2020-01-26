@@ -2072,7 +2072,7 @@ namespace WebHome.Controllers
             using (DataSet ds = new DataSet())
             {
                 DataTable table = details.ToDataTable();
-                table.TableName = $"{viewModel.PayoffDateFrom:yyyy-MM-dd}~{viewModel.PayoffDateTo.Value.AddDays(-1):yyyy-MM-dd}";
+                table.TableName = $"{viewModel.PayoffDateFrom:yyyyMMdd}~{viewModel.PayoffDateTo.Value.AddDays(-1):yyyyMMdd}";
                 table.Columns[5].ColumnName = "退款金額(含稅)";
                 table.Columns[6].ColumnName = "收款金額(含稅)";
                 ds.Tables.Add(table);
