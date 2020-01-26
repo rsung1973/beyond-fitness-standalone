@@ -963,7 +963,7 @@ namespace WebHome.Controllers
                 table.Rows.Add(r);
             }
 
-            table.TableName = $"合約盤點表{calcDate.AddDays(-1):yyyy-MM-dd}截止";
+            table.TableName = $"截至 {calcDate.AddDays(-1):yyyyMMdd} 合約盤點表";
 
             Response.Clear();
             Response.ClearContent();
@@ -1135,18 +1135,18 @@ namespace WebHome.Controllers
                 var dataItems = items.Where(l => l.RegisterLesson.RegisterLessonContract != null)
                     .Where(l => l.RegisterLesson.RegisterLessonContract.CourseContract.Entrusted == true);
                 var table = buildSummary(dataItems);
-                table.TableName = $"{dateFrom:yyyy-MM} 信託合約上課盤點彙總表";
+                table.TableName = $"{dateFrom:yyyyMM} 信託合約上課盤點彙總表";
                 ds.Tables.Add(table);
 
                 dataItems = items.Where(l => l.RegisterLesson.RegisterLessonContract != null)
                                 .Where(l => l.RegisterLesson.RegisterLessonContract.CourseContract.Entrusted == false);
                 table = buildTable(dataItems);
-                table.TableName = $"{dateFrom:yyyy-MM} 非信託合約上課盤點彙總表";
+                table.TableName = $"{dateFrom:yyyyMM} 非信託合約上課盤點彙總表";
                 ds.Tables.Add(table);
 
                 dataItems = items.Where(l => l.RegisterLesson.RegisterLessonEnterprise != null);
                 table = buildEnterpriseTable(dataItems);
-                table.TableName = $"{dateFrom:yyyy-MM} 企業方案上課盤點彙總表";
+                table.TableName = $"{dateFrom:yyyyMM} 企業方案上課盤點彙總表";
                 ds.Tables.Add(table);
 
                 using (var xls = ds.ConvertToExcel())
