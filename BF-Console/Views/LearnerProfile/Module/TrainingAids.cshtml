@@ -17,7 +17,7 @@
     _model = (TrainingItem)this.Model;
     TrainingItemViewModel _viewModel = (TrainingItemViewModel)ViewBag.ViewModel;
     TrainingStage _stage = (TrainingStage)ViewBag.TrainingStage;
-    var items = models.GetTable<TrainingStage>().OrderBy(s => s.StageID).Take(4);
+    var items = models.GetTable<TrainingStage>().OrderBy(s => s.StageID).Take(5);
 }
 @{
     string[] cssClass = new string[]
@@ -26,7 +26,7 @@
 "collapse xl-pink collapse",
 "collapse xl-seagreen collapse",
 "collapse xl-blue collapse",
-""
+"collapse l-khaki collapse"
     };
 
     cssClass[_stage.StageID - 1] += " show";
@@ -37,7 +37,7 @@
 "btn btn-raised bg-pink btn-sm btn-round waves-effect",
 "btn btn-raised bg-green btn-sm btn-round waves-effect",
 "btn btn-raised bg-blue btn-sm btn-round waves-effect",
-""
+"btn btn-raised bg-lime btn-sm btn-round waves-effect"
     };
 }
 @foreach (var item in items)
