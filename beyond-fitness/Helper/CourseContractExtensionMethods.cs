@@ -260,7 +260,7 @@ namespace WebHome.Helper
                 where TEntity : class, new()
         {
             return item.Status == (int)Naming.CourseContractStatus.草稿
-                    && (/*item.AgentID == agent.UID ||*/ item.FitnessConsultant == agent.UID);
+                    && (item.AgentID == agent.UID || item.FitnessConsultant == agent.UID);
             //return models.GetContractInEditingByAgent(agent).Any(c => c.ContractID == item.ContractID); ;
 
         }

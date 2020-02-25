@@ -1554,7 +1554,7 @@ namespace WebHome.Controllers
                     : salaryItems.Where(s => s.ServingCoach.ProfessionalLevel.CategoryID == (int)Naming.ProfessionalCategory.Special
                                     || s.ServingCoach.ProfessionalLevel.CategoryID == (int)Naming.ProfessionalCategory.FM);
 
-                foreach (var g in coachItems)
+                foreach (var g in coachItems.OrderBy(c => c.WorkPlace))
                 {
                     r = table.NewRow();
 

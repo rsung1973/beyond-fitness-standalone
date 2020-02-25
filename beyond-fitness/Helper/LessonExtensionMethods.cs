@@ -495,10 +495,14 @@ namespace WebHome.Helper
 
         public static IQueryable<V_Tuition> FilterByCompleteLesson(this IQueryable<V_Tuition> items)
         {
+            //return items.Where(v => v.CoachAttendance.HasValue
+            //                            || (!v.CoachAttendance.HasValue
+            //                                    && !(v.PriceStatus == (int)Naming.DocumentLevelDefinition.體驗課程
+            //                                            || (v.ELStatus == (int)Naming.DocumentLevelDefinition.體驗課程))));
             return items.Where(v => v.CoachAttendance.HasValue
-                                        || (!v.CoachAttendance.HasValue
-                                                && !(v.PriceStatus == (int)Naming.DocumentLevelDefinition.體驗課程
-                                                        || (v.ELStatus == (int)Naming.DocumentLevelDefinition.體驗課程))));
+                                        || v.PriceStatus == (int)Naming.DocumentLevelDefinition.體驗課程
+                                        || v.ELStatus == (int)Naming.DocumentLevelDefinition.體驗課程);
+
         }
 
         public static IQueryable<LessonTime> FullAchievementLesson(this IQueryable<LessonTime> items)

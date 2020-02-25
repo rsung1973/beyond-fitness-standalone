@@ -48,7 +48,16 @@ namespace WebHome.Helper.BusinessOperation
             }
 
             item.AgentID = profile.UID;
-            item.Status = (int)Naming.CourseContractStatus.待簽名;  //  (int)checkInitialStatus(viewModel, profile);
+            if (profile.IsManager())
+            {
+                item.SupervisorID = profile.UID;
+                item.Status = (int)Naming.CourseContractStatus.待簽名;  //  (int)checkInitialStatus(viewModel, profile);
+            }
+            else
+            {
+                item.Status = (int)Naming.CourseContractStatus.待審核;
+            }
+
             item.CourseContractLevel.Add(new CourseContractLevel
             {
                 LevelDate = DateTime.Now,
@@ -114,6 +123,8 @@ namespace WebHome.Helper.BusinessOperation
             {
                 models.ExecuteCommand("update UserProfileExtension set CurrentTrial = null where UID = {0}", uid);
             }
+
+            item.MarkContractNo(models);
 
             return item;
         }
@@ -411,7 +422,7 @@ namespace WebHome.Helper.BusinessOperation
             return item;
         }
 
-        public static bool ExecuteContractStatus(this CourseContract item, UserProfile profile, Naming.CourseContractStatus status, Naming.CourseContractStatus? fromStatus, bool updateAgent = true)
+        public static bool ExecuteContractStatus(this CourseContract item, UserProfile profile, Naming.CourseContractStatus status, Naming.CourseContractStatus? fromStatus)
         {
             if (fromStatus.HasValue && item.Status != (int)fromStatus)
                 return false;
@@ -422,9 +433,11 @@ namespace WebHome.Helper.BusinessOperation
                 LevelDate = DateTime.Now,
                 LevelID = (int)status
             });
+
             item.Status = (int)status;
-            if (updateAgent)
-                item.AgentID = profile.UID;
+
+            if (status == Naming.CourseContractStatus.待簽名)
+                item.SupervisorID = profile.UID;
 
             return true;
 
@@ -707,7 +720,7 @@ namespace WebHome.Helper.BusinessOperation
             }
         }
 
-        public static String MakeContractEffective<TEntity>(this CourseContract item, ModelSource<TEntity> models, UserProfile profile, Naming.CourseContractStatus fromStatus)
+        public static String MakeContractEffective<TEntity>(this CourseContract item, ModelSource<TEntity> models, UserProfile profile, Naming.CourseContractStatus? fromStatus = null)
             where TEntity : class, new()
         {
             if (!item.ExecuteContractStatus(profile, Naming.CourseContractStatus.已生效, fromStatus))
@@ -838,11 +851,11 @@ namespace WebHome.Helper.BusinessOperation
                     return null;
                 }
 
-                if (!item.ExecuteContractStatus(profile, Naming.CourseContractStatus.待審核, Naming.CourseContractStatus.待簽名))
-                {
-                    alertMessage = "合約狀態錯誤，請重新檢查!!";
-                    return null;
-                }
+                //if (!item.ExecuteContractStatus(profile, Naming.CourseContractStatus.待審核, Naming.CourseContractStatus.待簽名))
+                //{
+                //    alertMessage = "合約狀態錯誤，請重新檢查!!";
+                //    return null;
+                //}
 
                 item.EffectiveDate = DateTime.Now;
                 //item.ValidFrom = DateTime.Today;
@@ -851,21 +864,8 @@ namespace WebHome.Helper.BusinessOperation
                 models.SubmitChanges();
 
                 item.MarkContractNo(models);
-                //do
-                //{
-                //    try
-                //    {
-                //    }
-                //    catch (Exception ex)
-                //    {
-                //        Logger.Error(ex);
-                //    }
-                //} while (item.ContractNo == null);
 
-                if (item.ContractAgent.IsManager() /*item.ServingCoach.UserProfile.IsManager()*/)
-                {
-                    pdfFile = item.MakeContractEffective(models, profile, Naming.CourseContractStatus.待審核);
-                }
+                pdfFile = item.MakeContractEffective(models, profile);
 
                 //ThreadPool.QueueUserWorkItem(t =>
                 //{
@@ -981,8 +981,7 @@ namespace WebHome.Helper.BusinessOperation
         public static bool EnableContractAmendment<TEntity>(this CourseContractRevision item,ModelSource<TEntity> models, UserProfile profile,Naming.CourseContractStatus? fromStatus = Naming.CourseContractStatus.待簽名)
             where TEntity : class, new()
         {
-            bool updateAgent = fromStatus != Naming.CourseContractStatus.待簽名;
-            if (!item.CourseContract.ExecuteContractStatus(profile, Naming.CourseContractStatus.已生效, fromStatus, updateAgent))
+            if (!item.CourseContract.ExecuteContractStatus(profile, Naming.CourseContractStatus.已生效, fromStatus))
                 return false;
 
             item.CourseContract.EffectiveDate = DateTime.Now;

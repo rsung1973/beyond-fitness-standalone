@@ -147,6 +147,8 @@ namespace WebHome.Helper
                     if (newItem != null)
                         continue;
 
+                    int actualCount = c.ActualCompleteLessonCount ?? 0;
+
                     newItem = new MonthlyCoachRevenueIndicator
                     {
                         MonthlyIndicator = item,
@@ -157,7 +159,9 @@ namespace WebHome.Helper
                         LessonTuitionGoal = c.LessonTuitionGoal,
                         BRCount = c.BRCount,
                         LevelID = c.ServingCoach.LevelID,
-                        AverageLessonPrice = (c.ActualLessonAchievement + c.ActualCompleteLessonCount - 1) / (c.ActualCompleteLessonCount ?? 1),
+                        AverageLessonPrice = actualCount > 0
+                            ? (c.ActualLessonAchievement + c.ActualCompleteLessonCount - 1) / actualCount
+                            : 0,
                     };
                     newItem.LessonTuitionGoal = newItem.CompleteLessonsGoal * newItem.AverageLessonPrice;
                 }

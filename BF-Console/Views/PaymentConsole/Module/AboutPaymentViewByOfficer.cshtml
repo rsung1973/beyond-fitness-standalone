@@ -24,16 +24,9 @@
 <div class="container-fluid">
     <div class="card">
         <div class="header">
-            <ul class="header-dropdown">
-                <li class="dropdown">
-                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class="zmdi zmdi-shopping-cart-plus"></i> </a>
-                    <ul class="dropdown-menu dropdown-menu-right slideUp float-right">
-                        <li><a href="@Html.Raw(Url.Action("EditPaymentForPISession","ConsoleHome"))">收款 - P.I sesson</a></li>
-                        <li><a href="@Html.Raw(Url.Action("EditPaymentForShopping","ConsoleHome"))">收款 - 食飲品</a></li>
-                        <li><a href="@Html.Raw(Url.Action("EditPaymentForShopping","ConsoleHome",new { TransactionType = (int)Naming.PaymentTransactionType.運動商品}))">收款 - 運動商品</a></li>
-                    </ul>
-                </li>
-            </ul>
+            @{
+                Html.RenderPartial("~/Views/PaymentConsole/Module/EditPaymentDropdown.cshtml", items);
+            }
         </div>
         <ul class="row clearfix list-unstyled m-b-0 widget_3">
             <li class="col-lg-6 col-md-6 col-sm-12">

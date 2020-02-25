@@ -292,6 +292,7 @@ namespace WebHome.Models.Locale
             合約終止沖銷 = 7,
             合約轉點餘額 = 8,
             合約轉讓餘額 = 9,
+            教育訓練  = 10,
 
         }
 
@@ -461,6 +462,17 @@ namespace WebHome.Models.Locale
             教練誤開合約後終止,
             分期不付款,
             其他,
+        }
+
+        public enum ProfessionalLevelCheck
+        {
+            PT_1 = 4,
+            PT_2 = 5,
+            PT_3 = 0,
+            PT_4 = 1,
+            PT_5 = 2,
+            PT_6 = 3,
+
         }
 
     }

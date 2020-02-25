@@ -19,14 +19,24 @@
 }
 @{
     MonthlyIndicatorQueryViewModel _viewModel = (MonthlyIndicatorQueryViewModel)ViewBag.ViewModel;
+    var coachIndicatorItems = models.GetTable<MonthlyCoachRevenueIndicator>().Where(c => c.BRCount.HasValue);
+
     dynamic indicator = null;
     if (_viewModel.BranchID.HasValue)
     {
-        indicator = (MonthlyBranchRevenueGoal)TempData["RevenueGoal"];
+        var goal = (MonthlyBranchRevenueGoal)TempData["RevenueGoal"];
+        coachIndicatorItems = coachIndicatorItems
+            .Where(c => c.PeriodID == goal.PeriodID)
+            .Where(c => c.BranchID == goal.BranchID);
+
+        indicator = goal;
     }
     else
     {
-        indicator = (MonthlyRevenueGoal)TempData["RevenueGoal"];
+        var goal = (MonthlyRevenueGoal)TempData["RevenueGoal"];
+        coachIndicatorItems = coachIndicatorItems
+            .Where(c => c.PeriodID == goal.PeriodID);
+        indicator = goal;
     }
 }
     <table class="table table-black table-hover m-b-0">
@@ -46,24 +56,28 @@
             </tr>
             <tr onclick="javascript:achievementReview();">
                 <td>上課業績 <small class="col-grey">@($"{indicator.LessonTuitionGoal:##,###,###,###}")</small></td>
-                <td>@(Math.Round((indicator.ActualLessonAchievement ?? 0) * 100M / (indicator.LessonTuitionGoal ?? 1)))% <small class="col-green">@($"{indicator.ActualLessonAchievement:##,###,###,###}")</small></td>
+                <td>@(indicator.LessonTuitionGoal>0 
+                        ? Math.Round((indicator.ActualLessonAchievement ?? 0) * 100M / (indicator.LessonTuitionGoal ?? 1))
+                        : 0)% <small class="col-green">@($"{indicator.ActualLessonAchievement:##,###,###,###}")</small></td>
             </tr>
             <tr onclick="javascript:achievementReview();">
                 <td>收款業績 <small class="col-grey">@($"{indicator.AchievementGoal:##,###,###,###}")</small></td>
-                <td>@(Math.Round((indicator.ActualSharedAchievement ?? 0) * 100M / (indicator.AchievementGoal ?? 1)))% <small class="col-green">@($"{indicator.ActualSharedAchievement:##,###,###,###}")</small></td>
-            </tr>
-            @*<tr onclick="javascript:showSoldDetail();">
-                <td>BR <small class="col-grey">20堂</small></td>
-                <td>75% <small class="col-green">12堂</small></td>
+                <td>@(indicator.AchievementGoal >0 
+                        ? Math.Round((indicator.ActualSharedAchievement ?? 0) * 100M / (indicator.AchievementGoal ?? 1))
+                        : 0)% <small class="col-green">@($"{indicator.ActualSharedAchievement:##,###,###,###}")</small></td>
             </tr>
             <tr onclick="javascript:showSoldDetail();">
-                <td>BR簽約率 <small class="col-grey">6張</small></td>
-                <td><span class="badge round bg-vivid_red">40%</span></td>
+                <td>BR <small class="col-grey">@(coachIndicatorItems.Sum(c=>c.BRCount) ?? 0)堂</small></td>
+                <td><small class="col-grey">敬請期待</small></td>
+            </tr>
+            <tr onclick="javascript:showSoldDetail();">
+                <td>BR簽約率 <small class="col-grey"></small></td>
+                <td><small class="col-grey">敬請期待</small></td>
             </tr>
             <tr onclick="javascript:showSoldDetail();">
                 <td>TS簽約率</td>
-                <td><span class="badge round bg-vivid_red">41%</span></td>
-            </tr>*@
+                <td><small class="col-grey">敬請期待</small></td>
+            </tr>
         </tbody>
     </table>
 <script>

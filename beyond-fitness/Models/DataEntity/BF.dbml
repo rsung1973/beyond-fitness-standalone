@@ -183,6 +183,7 @@
       <Association Name="UserProfile_CourseContractMember" Member="CourseContractMember" ThisKey="UID" OtherKey="UID" Type="CourseContractMember" />
       <Association Name="UserProfile_CourseContract" Member="CourseContract" ThisKey="UID" OtherKey="OwnerID" Type="CourseContract" />
       <Association Name="UserProfile_CourseContract1" Member="ActedContract" ThisKey="UID" OtherKey="AgentID" Type="CourseContract" />
+      <Association Name="UserProfile_CourseContract2" Member="SupervisedContractList" Storage="_CourseContract2" ThisKey="UID" OtherKey="SupervisorID" Type="CourseContract" />
       <Association Name="UserProfile_BranchStore" Member="BranchStoreAsManager" ThisKey="UID" OtherKey="ManagerID" Type="BranchStore" />
       <Association Name="UserProfile_BranchStore1" Member="BranchStoreAsViceManager" ThisKey="UID" OtherKey="ViceManagerID" Type="BranchStore" />
       <Association Name="UserProfile_LearnerFitnessAdvisor" Member="LearnerFitnessAdvisor" ThisKey="UID" OtherKey="UID" Type="LearnerFitnessAdvisor" />
@@ -802,7 +803,7 @@
       <Column Name="RegisterID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="ContractID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Association Name="RegisterLesson_RegisterLessonContract" Member="RegisterLesson" ThisKey="RegisterID" OtherKey="RegisterID" Type="RegisterLesson" IsForeignKey="true" />
-      <Association Name="CourseContract_RegisterLessonContract" Member="CourseContract" ThisKey="ContractID" OtherKey="ContractID" Type="CourseContract" IsForeignKey="true" />
+      <Association Name="CourseContract_RegisterLessonContract" Member="CourseContract" ThisKey="ContractID" OtherKey="ContractID" Type="CourseContract" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
   <Table Name="dbo.CourseContractMember" Member="CourseContractMember">
@@ -875,7 +876,7 @@
       <Column Name="SequenceNo" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="Lessons" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="PriceID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="Remark" Type="System.String" DbType="NVarChar(64)" CanBeNull="true" />
+      <Column Name="Remark" Type="System.String" DbType="NVarChar(256)" CanBeNull="true" />
       <Column Name="FitnessConsultant" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="Status" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="AgentID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
@@ -888,6 +889,7 @@
       <Column Name="PayoffDue" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Column Name="ValidTo" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Column Name="Entrusted" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="SupervisorID" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Association Name="CourseContract_RegisterLessonContract" Member="RegisterLessonContract" ThisKey="ContractID" OtherKey="ContractID" Type="RegisterLessonContract" />
       <Association Name="CourseContract_CourseContractMember" Member="CourseContractMember" ThisKey="ContractID" OtherKey="ContractID" Type="CourseContractMember" />
       <Association Name="CourseContract_CourseContractRevision" Member="CourseContractRevision" ThisKey="ContractID" OtherKey="RevisionID" Type="CourseContractRevision" Cardinality="One" />
@@ -905,8 +907,9 @@
       <Association Name="ServingCoach_CourseContract" Member="ServingCoach" ThisKey="FitnessConsultant" OtherKey="CoachID" Type="ServingCoach" IsForeignKey="true" />
       <Association Name="UserProfile_CourseContract" Member="ContractOwner" ThisKey="OwnerID" OtherKey="UID" Type="UserProfile" IsForeignKey="true" />
       <Association Name="UserProfile_CourseContract1" Member="ContractAgent" ThisKey="AgentID" OtherKey="UID" Type="UserProfile" IsForeignKey="true" />
+      <Association Name="UserProfile_CourseContract2" Member="Supervisor" Storage="_UserProfile2" ThisKey="SupervisorID" OtherKey="UID" Type="UserProfile" IsForeignKey="true" />
       <Association Name="CourseContractType_CourseContract" Member="CourseContractType" ThisKey="ContractType" OtherKey="TypeID" Type="CourseContractType" IsForeignKey="true" />
-      <Association Name="ContractInstallment_CourseContract" Member="ContractInstallment" ThisKey="InstallmentID" OtherKey="InstallmentID" Type="ContractInstallment" IsForeignKey="true" />
+      <Association Name="ContractInstallment_CourseContract" Member="ContractInstallment" ThisKey="InstallmentID" OtherKey="InstallmentID" Type="ContractInstallment" IsForeignKey="true" DeleteRule="SET NULL" />
     </Type>
   </Table>
   <Table Name="dbo.LessonPriceProperty" Member="LessonPriceProperty">
@@ -944,7 +947,7 @@
       <Association Name="CourseContractRevision_ContractElement" Member="ContractElements" ThisKey="RevisionID" OtherKey="RevisionID" Type="ContractElement" />
       <Association Name="CourseContractRevision_CourseContractRevisionItem" Member="CourseContractRevisionItem" ThisKey="RevisionID" OtherKey="RevisionID" Type="CourseContractRevisionItem" Cardinality="One" />
       <Association Name="Attachment_CourseContractRevision" Member="Attachment" ThisKey="AttachmentID" OtherKey="AttachmentID" Type="Attachment" IsForeignKey="true" />
-      <Association Name="CourseContract_CourseContractRevision" Member="CourseContract" ThisKey="RevisionID" OtherKey="ContractID" Type="CourseContract" IsForeignKey="true" />
+      <Association Name="CourseContract_CourseContractRevision" Member="CourseContract" ThisKey="RevisionID" OtherKey="ContractID" Type="CourseContract" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true"/>
       <Association Name="CourseContract_CourseContractRevision1" Member="SourceContract" ThisKey="OriginalContract" OtherKey="ContractID" Type="CourseContract" IsForeignKey="true" />
     </Type>
   </Table>

@@ -51,13 +51,13 @@
                     <div class="col-lg-12">
                         @if (_item.Status == (int)Naming.CourseContractStatus.待簽名)
                         {
-                            <button type="button" class="btn btn-danger btn-round btn-simple btn-round waves-effect waves-red reedit" onclick="rejectSignature(@(JsonConvert.SerializeObject(new {KeyID = _item.ContractID.EncryptKey(), Status = (int)Naming.CourseContractStatus.草稿,FromStatus = (int)Naming.CourseContractStatus.待簽名,  Drawback=true, })));">內容錯誤，重新編輯</button>
+                            <button type="button" class="btn btn-danger btn-round btn-simple btn-round waves-effect waves-red reedit" onclick="processContract(@(JsonConvert.SerializeObject(new {KeyID = _item.ContractID.EncryptKey(), Status = (int)Naming.CourseContractStatus.草稿,FromStatus = (int)Naming.CourseContractStatus.待簽名,  Drawback=true, })));">內容錯誤，重新編輯</button>
                             <button type="button" class="btn btn-darkteal btn-round waves-effect float-right next" onclick="confirmSignature();">確定，不後悔</button>
                         }
                         else
                         {
-                            <button type="button" class="btn btn-danger btn-round btn-simple btn-round waves-effect waves-red reject" onclick="rejectSignature(@(JsonConvert.SerializeObject(new {KeyID = _item.ContractID.EncryptKey(), Status = (int)Naming.CourseContractStatus.草稿,FromStatus = (int)Naming.CourseContractStatus.待審核,  Drawback=true, })));">退回編輯者</button>
-                            <button type="button" class="btn btn-darkteal btn-round waves-effect float-right next" onclick="enableContract();">確定，審核通過</button>
+                            <button type="button" class="btn btn-danger btn-round btn-simple btn-round waves-effect waves-red reject" onclick="processContract(@(JsonConvert.SerializeObject(new {KeyID = _item.ContractID.EncryptKey(), Status = (int)Naming.CourseContractStatus.草稿,FromStatus = (int)Naming.CourseContractStatus.待審核,  Drawback=true, })));">退回編輯者</button>
+                            <button type="button" class="btn btn-darkteal btn-round waves-effect float-right next" onclick="processContract(@(JsonConvert.SerializeObject(new {KeyID = _item.ContractID.EncryptKey(), Status = (int)Naming.CourseContractStatus.待簽名,FromStatus = (int)Naming.CourseContractStatus.待審核 })));">確定，審核通過</button>
                         }
                     </div>
                 </div>
@@ -114,7 +114,7 @@
             });
         }
 
-        function rejectSignature(itemData) {
+        function processContract(itemData) {
             showLoading();
             $.post('@Html.Raw(Url.Action("ExecuteContractStatus","ContractConsole"))', itemData, function (data) {
                 hideLoading();

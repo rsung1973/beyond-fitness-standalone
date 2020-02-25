@@ -99,7 +99,7 @@
                             @{ UserProfile contractAgent = (UserProfile)ViewBag.ContractAgent;}
                             @if (_contract.Status > (int)Naming.CourseContractStatus.待確認 || contractAgent != null)
                             {
-                                <img src="@(contractAgent!=null ? contractAgent.LoadInstance(models).UserProfileExtension.Signature : _contract.ContractAgent.UserProfileExtension.Signature)" width="200px" class="modifySignDialog_link">
+                                <img src="@(contractAgent!=null ? contractAgent.LoadInstance(models).UserProfileExtension.Signature : _contract.Supervisor?.UserProfileExtension.Signature)" width="200px" class="modifySignDialog_link">
                             }
                         </td>
                     </tr>

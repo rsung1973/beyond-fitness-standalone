@@ -28,15 +28,19 @@
     <select class="form-control show-tick" name="TransactionID">
         @if (_viewModel.TransactionType == (int)Naming.PaymentTransactionType.食飲品)
         {
-        <option value="3">食飲品</option>
+            <option value="3">食飲品</option>
         }
         else if (_viewModel.TransactionType == (int)Naming.PaymentTransactionType.運動商品)
         {
             defaultType = categoryItems.FirstOrDefault()?.TransactionID;
             foreach (var item in categoryItems)
             {
-            <option value="@(item.TransactionID)">@(item.ParentType.TransactionType)/@(item.TransactionType)</option>
+                <option value="@(item.TransactionID)">@(item.ParentType.TransactionType)/@(item.TransactionType)</option>
             }
+        }
+        else if (_viewModel.TransactionType == (int)Naming.PaymentTransactionType.教育訓練)
+        {
+            <option value="9">教育訓練</option>
         }
     </select>
 </div>

@@ -5114,6 +5114,8 @@ namespace WebHome.Models.DataEntity
 		
 		private EntitySet<CourseContract> _ActedContract;
 		
+		private EntitySet<CourseContract> _CourseContract2;
+		
 		private EntitySet<BranchStore> _BranchStoreAsManager;
 		
 		private EntitySet<BranchStore> _BranchStoreAsViceManager;
@@ -5237,6 +5239,7 @@ namespace WebHome.Models.DataEntity
 			this._CourseContractMember = new EntitySet<CourseContractMember>(new Action<CourseContractMember>(this.attach_CourseContractMember), new Action<CourseContractMember>(this.detach_CourseContractMember));
 			this._CourseContract = new EntitySet<CourseContract>(new Action<CourseContract>(this.attach_CourseContract), new Action<CourseContract>(this.detach_CourseContract));
 			this._ActedContract = new EntitySet<CourseContract>(new Action<CourseContract>(this.attach_ActedContract), new Action<CourseContract>(this.detach_ActedContract));
+			this._CourseContract2 = new EntitySet<CourseContract>(new Action<CourseContract>(this.attach_CourseContract2), new Action<CourseContract>(this.detach_CourseContract2));
 			this._BranchStoreAsManager = new EntitySet<BranchStore>(new Action<BranchStore>(this.attach_BranchStoreAsManager), new Action<BranchStore>(this.detach_BranchStoreAsManager));
 			this._BranchStoreAsViceManager = new EntitySet<BranchStore>(new Action<BranchStore>(this.attach_BranchStoreAsViceManager), new Action<BranchStore>(this.detach_BranchStoreAsViceManager));
 			this._LearnerFitnessAdvisor = new EntitySet<LearnerFitnessAdvisor>(new Action<LearnerFitnessAdvisor>(this.attach_LearnerFitnessAdvisor), new Action<LearnerFitnessAdvisor>(this.detach_LearnerFitnessAdvisor));
@@ -6057,6 +6060,19 @@ namespace WebHome.Models.DataEntity
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserProfile_CourseContract2", Storage="_CourseContract2", ThisKey="UID", OtherKey="SupervisorID")]
+		public EntitySet<CourseContract> SupervisedContractList
+		{
+			get
+			{
+				return this._CourseContract2;
+			}
+			set
+			{
+				this._CourseContract2.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserProfile_BranchStore", Storage="_BranchStoreAsManager", ThisKey="UID", OtherKey="ManagerID")]
 		public EntitySet<BranchStore> BranchStoreAsManager
 		{
@@ -6811,6 +6827,18 @@ namespace WebHome.Models.DataEntity
 		{
 			this.SendPropertyChanging();
 			entity.ContractAgent = null;
+		}
+		
+		private void attach_CourseContract2(CourseContract entity)
+		{
+			this.SendPropertyChanging();
+			entity.Supervisor = this;
+		}
+		
+		private void detach_CourseContract2(CourseContract entity)
+		{
+			this.SendPropertyChanging();
+			entity.Supervisor = null;
 		}
 		
 		private void attach_BranchStoreAsManager(BranchStore entity)
@@ -19955,7 +19983,7 @@ namespace WebHome.Models.DataEntity
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="CourseContract_RegisterLessonContract", Storage="_CourseContract", ThisKey="ContractID", OtherKey="ContractID", IsForeignKey=true)]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="CourseContract_RegisterLessonContract", Storage="_CourseContract", ThisKey="ContractID", OtherKey="ContractID", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
 		public CourseContract CourseContract
 		{
 			get
@@ -21412,6 +21440,8 @@ namespace WebHome.Models.DataEntity
 		
 		private System.Nullable<bool> _Entrusted;
 		
+		private System.Nullable<int> _SupervisorID;
+		
 		private EntitySet<RegisterLessonContract> _RegisterLessonContract;
 		
 		private EntitySet<CourseContractMember> _CourseContractMember;
@@ -21445,6 +21475,8 @@ namespace WebHome.Models.DataEntity
 		private EntityRef<UserProfile> _ContractOwner;
 		
 		private EntityRef<UserProfile> _ContractAgent;
+		
+		private EntityRef<UserProfile> _UserProfile2;
 		
 		private EntityRef<CourseContractType> _CourseContractType;
 		
@@ -21500,6 +21532,8 @@ namespace WebHome.Models.DataEntity
     partial void OnValidToChanged();
     partial void OnEntrustedChanging(System.Nullable<bool> value);
     partial void OnEntrustedChanged();
+    partial void OnSupervisorIDChanging(System.Nullable<int> value);
+    partial void OnSupervisorIDChanged();
     #endregion
 		
 		public CourseContract()
@@ -21521,6 +21555,7 @@ namespace WebHome.Models.DataEntity
 			this._ServingCoach = default(EntityRef<ServingCoach>);
 			this._ContractOwner = default(EntityRef<UserProfile>);
 			this._ContractAgent = default(EntityRef<UserProfile>);
+			this._UserProfile2 = default(EntityRef<UserProfile>);
 			this._CourseContractType = default(EntityRef<CourseContractType>);
 			this._ContractInstallment = default(EntityRef<ContractInstallment>);
 			OnCreated();
@@ -21738,7 +21773,7 @@ namespace WebHome.Models.DataEntity
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Remark", DbType="NVarChar(64)")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Remark", DbType="NVarChar(256)")]
 		public string Remark
 		{
 			get
@@ -22010,6 +22045,30 @@ namespace WebHome.Models.DataEntity
 					this._Entrusted = value;
 					this.SendPropertyChanged("Entrusted");
 					this.OnEntrustedChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SupervisorID", DbType="Int")]
+		public System.Nullable<int> SupervisorID
+		{
+			get
+			{
+				return this._SupervisorID;
+			}
+			set
+			{
+				if ((this._SupervisorID != value))
+				{
+					if (this._UserProfile2.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnSupervisorIDChanging(value);
+					this.SendPropertyChanging();
+					this._SupervisorID = value;
+					this.SendPropertyChanged("SupervisorID");
+					this.OnSupervisorIDChanged();
 				}
 			}
 		}
@@ -22388,6 +22447,40 @@ namespace WebHome.Models.DataEntity
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserProfile_CourseContract2", Storage="_UserProfile2", ThisKey="SupervisorID", OtherKey="UID", IsForeignKey=true)]
+		public UserProfile Supervisor
+		{
+			get
+			{
+				return this._UserProfile2.Entity;
+			}
+			set
+			{
+				UserProfile previousValue = this._UserProfile2.Entity;
+				if (((previousValue != value) 
+							|| (this._UserProfile2.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._UserProfile2.Entity = null;
+						previousValue.SupervisedContractList.Remove(this);
+					}
+					this._UserProfile2.Entity = value;
+					if ((value != null))
+					{
+						value.SupervisedContractList.Add(this);
+						this._SupervisorID = value.UID;
+					}
+					else
+					{
+						this._SupervisorID = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("Supervisor");
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="CourseContractType_CourseContract", Storage="_CourseContractType", ThisKey="ContractType", OtherKey="TypeID", IsForeignKey=true)]
 		public CourseContractType CourseContractType
 		{
@@ -22422,7 +22515,7 @@ namespace WebHome.Models.DataEntity
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ContractInstallment_CourseContract", Storage="_ContractInstallment", ThisKey="InstallmentID", OtherKey="InstallmentID", IsForeignKey=true)]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ContractInstallment_CourseContract", Storage="_ContractInstallment", ThisKey="InstallmentID", OtherKey="InstallmentID", IsForeignKey=true, DeleteRule="SET NULL")]
 		public ContractInstallment ContractInstallment
 		{
 			get
@@ -23340,7 +23433,7 @@ namespace WebHome.Models.DataEntity
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="CourseContract_CourseContractRevision", Storage="_CourseContract", ThisKey="RevisionID", OtherKey="ContractID", IsForeignKey=true)]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="CourseContract_CourseContractRevision", Storage="_CourseContract", ThisKey="RevisionID", OtherKey="ContractID", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
 		public CourseContract CourseContract
 		{
 			get

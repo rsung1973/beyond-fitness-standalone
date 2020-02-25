@@ -23,7 +23,7 @@ namespace WebHome.Helper.Jobs
                 {
                     try
                     {
-                        models.CheckProfessionalLeve(item);
+                        models.CheckProfessionalLeve2020(item);
                     }
                     catch(Exception ex)
                     {

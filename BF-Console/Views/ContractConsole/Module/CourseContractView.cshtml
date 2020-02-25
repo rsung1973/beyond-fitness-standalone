@@ -222,12 +222,12 @@
                            }
                        </td>
                       <td class="p-0">
-                         @if (_model.Status > (int)Naming.CourseContractStatus.待簽名)
+                         @if (_model.Status >= (int)Naming.CourseContractStatus.待簽名)
                          {
                          <text>主管簽核代表：</text>
                          <img src="@(_model.Status == (int)Naming.CourseContractStatus.待審核 && _viewModel.Pdf != "1"
-                         ? Context.GetUser().LoadInstance(models).UserProfileExtension.Signature
-                         : _model.ContractAgent.UserProfileExtension.Signature)" width="200px" class="modifySignDialog_link">
+                             ? Context.GetUser().LoadInstance(models).UserProfileExtension.Signature
+                             : _model.Supervisor?.UserProfileExtension.Signature)" width="200px" class="modifySignDialog_link">
                          }
                       </td>
                    </tr>

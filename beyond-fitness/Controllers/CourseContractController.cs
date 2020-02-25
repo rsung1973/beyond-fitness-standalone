@@ -239,7 +239,7 @@ namespace WebHome.Controllers
                 }
                 else
                 {
-                    return View("~/Views/Shared/JsAlert.ascx", model: alertMessage);
+                    return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: alertMessage);
                 }
             }
 
@@ -335,7 +335,7 @@ namespace WebHome.Controllers
                 }
                 else
                 {
-                    return View("~/Views/Shared/JsAlert.ascx", model: alertMessage);
+                    return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: alertMessage);
                 }
             }
 
@@ -353,7 +353,7 @@ namespace WebHome.Controllers
                 }
                 else
                 {
-                    return View("~/Views/Shared/JsAlert.ascx", model: alertMessage);
+                    return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: alertMessage);
                 }
             }
 
@@ -443,7 +443,7 @@ namespace WebHome.Controllers
             if (item != null)
                 return View("CourseContractView", item);
             else
-                return View("~/Views/Shared/JsAlert.ascx", model: "合約資料錯誤!!");
+                return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: "合約資料錯誤!!");
         }
 
         [AllowAnonymous]
@@ -459,7 +459,7 @@ namespace WebHome.Controllers
             if (item != null)
                 return View("CourseContractAmendmentView", item);
             else
-                return View("~/Views/Shared/JsAlert.ascx", model: "合約資料錯誤!!");
+                return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: "合約資料錯誤!!");
         }
 
 
@@ -494,7 +494,7 @@ namespace WebHome.Controllers
             if (item != null)
                 return View("~/Views/CourseContract/Module/SignCourseContract.ascx", item);
             else
-                return View("~/Views/Shared/JsAlert.ascx", model: "合約資料錯誤!!");
+                return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: "合約資料錯誤!!");
         }
 
         public ActionResult ApproveContract(CourseContractViewModel viewModel)
@@ -507,7 +507,7 @@ namespace WebHome.Controllers
             if (item != null)
                 return View("~/Views/CourseContract/Module/ApproveCourseContract.ascx", item);
             else
-                return View("~/Views/Shared/JsAlert.ascx", model: "合約資料錯誤!!");
+                return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: "合約資料錯誤!!");
         }
 
         public ActionResult ContractApprovalView(CourseContractViewModel viewModel)
@@ -525,10 +525,6 @@ namespace WebHome.Controllers
             ViewResult result = (ViewResult)ViewContract(viewModel);
             if (result.Model is CourseContract)
             {
-                //var profile = HttpContext.GetUser();
-                //var item = (CourseContract)result.Model;
-                //item.AgentID = profile.UID;
-                //models.SubmitChanges();
                 ViewBag.ContractAction = "~/Views/CourseContract/Module/ContractAllowance.ascx";
             }
             return result;
@@ -541,8 +537,6 @@ namespace WebHome.Controllers
             {
                 var item = (CourseContractRevision)result.Model;
                 var profile = HttpContext.GetUser();
-                //item.CourseContract.AgentID = profile.UID;
-                //models.SubmitChanges();
                 ViewBag.ContractAgent = profile;
                 ViewBag.ContractAction = "~/Views/CourseContract/Module/ContractAmendmentApproval.ascx";
             }
@@ -559,7 +553,7 @@ namespace WebHome.Controllers
             if (item != null)
                 return View("~/Views/CourseContract/Module/EnableCourseContract.ascx", item);
             else
-                return View("~/Views/Shared/JsAlert.ascx", model: "合約資料錯誤!!");
+                return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: "合約資料錯誤!!");
         }
 
 
@@ -572,7 +566,7 @@ namespace WebHome.Controllers
                 return Json(new { result = true });
             }
             else
-                return View("~/Views/Shared/JsAlert.ascx", model: alertMessage);
+                return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: alertMessage);
         }
 
         public ActionResult EnableContractStatus(CourseContractViewModel viewModel)
@@ -588,7 +582,7 @@ namespace WebHome.Controllers
                 var pdfFile = item.MakeContractEffective(models, profile, Naming.CourseContractStatus.待審核);
                 if (pdfFile == null)
                 {
-                    return View("~/Views/Shared/JsAlert.ascx", model: "合約狀態錯誤，請重新檢查!!");
+                    return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: "合約狀態錯誤，請重新檢查!!");
                 }
                 else
                 {
@@ -596,7 +590,7 @@ namespace WebHome.Controllers
                 }
             }
             else
-                return View("~/Views/Shared/JsAlert.ascx", model: "合約資料錯誤!!");
+                return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: "合約資料錯誤!!");
         }
 
         public ActionResult ConfirmSignature(CourseContractViewModel viewModel)
@@ -611,7 +605,7 @@ namespace WebHome.Controllers
                 }
                 else
                 {
-                    return View("~/Views/Shared/JsAlert.ascx", model: alertMessage);
+                    return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: alertMessage);
                 }
             }
 
@@ -630,7 +624,7 @@ namespace WebHome.Controllers
                 }
                 else
                 {
-                    return View("~/Views/Shared/JsAlert.ascx", model: alertMessage);
+                    return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: alertMessage);
                 }
             }
 
@@ -646,7 +640,7 @@ namespace WebHome.Controllers
                 return Json(new { result = true });
             }
             else
-                return View("~/Views/Shared/JsAlert.ascx", model: alertMessage);
+                return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: alertMessage);
         }
 
         public ActionResult SignaturePanel(CourseContractSignatureViewModel viewModel)
@@ -901,7 +895,7 @@ namespace WebHome.Controllers
 
             if(!hasCondition)
             {
-                return View("~/Views/Shared/JsAlert.ascx",model:"請輸入查詢條件!!");
+                return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml",model:"請輸入查詢條件!!");
             }
 
             return View("~/Views/CourseContract/Module/ContractQueryAmendmentList.ascx", items);
@@ -950,7 +944,7 @@ namespace WebHome.Controllers
                 }
                 else
                 {
-                    return View("~/Views/Shared/JsAlert.ascx", model: alertMessage);
+                    return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: alertMessage);
                 }
             }
 

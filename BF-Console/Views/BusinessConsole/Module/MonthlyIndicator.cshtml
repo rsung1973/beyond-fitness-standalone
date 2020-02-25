@@ -17,6 +17,7 @@
     _model = (MonthlyIndicator)this.Model;
 }
 @{ 
+    var _profile = Context.GetUser();
     MonthlyIndicatorQueryViewModel _viewModel = (MonthlyIndicatorQueryViewModel)ViewBag.ViewModel;
 }
 <ul class="row clearfix list-unstyled m-b-0">
@@ -59,6 +60,13 @@
                     {
                         <button class="btn btn-default btn-round btn-sm waves-effect float-right" onclick="javascript:showDialog('@Url.Action("BranchCoachAchievement","BusinessConsole")',@JsonConvert.SerializeObject(new { KeyID = _model.PeriodID.EncryptKey(),_viewModel.BranchID }));">詳細資料</button>
                     }
+                    else
+                    {
+                        if (_profile.IsSysAdmin())
+                        {
+                            <button class="btn btn-danger btn-round btn-sm waves-effect float-right" onclick="javascript:$('').launchDownload('@(Url.Action("PrepareRevenueGoal","BusinessConsole",new { _model.Year, _model.Month }))',null,'_blank');">Batch Go~</button>
+                        }
+                    }
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12">
                     <div class="table-responsive">
@@ -92,18 +100,23 @@
             </div>
         </div>
     </li>
-    @*<li class="col-lg-3 col-md-3 col-sm-6">
+    <li class="col-lg-3 col-md-3 col-sm-6">
         <div class="body">
             <div class="info-box-2 bg-darkteal">
                 <div class="content">
-                    <div class="sparkline-pie3 m-t-20">5, 5</div>
-                    <p class="m-t-20">
-                        <i class="zmdi livicon-evo" data-options="name: morph-checkbox-4.svg; size: 30px; style: filled; strokeStyle:round; fillColor:#F6F5F1; strokeColor:#15619F; strokeWidth:2px; autoPlay:true;"></i> BR 50%
-                        <i class="zmdi livicon-evo" data-options="name: morph-checkbox-4.svg; size: 30px; style: filled; strokeStyle:round; fillColor:#F6F5F1; strokeColor:#777777; strokeWidth:2px; autoPlay:true;"></i> TS 50%
-                    </p>
+                    @{
+                        Html.RenderPartial("~/Views/BusinessConsole/Module/MonthlyTurnoverSparkline.cshtml", _model);
+                    }
                 </div>
             </div>
         </div>
-    </li>*@
+    </li>
+    <li class="col-lg-3 col-md-3 col-sm-6">
+        <div class="body text-center m-t-30">
+            @{
+                Html.RenderPartial("~/Views/BusinessConsole/Module/MonthlyAveragePrice.cshtml", _model);
+            }
+        </div>
+    </li>
 </ul>
 

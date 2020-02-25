@@ -147,6 +147,13 @@ namespace WebHome.Helper.BusinessOperation
                 hasConditon = true;
                 items = items.FilterByBranchStoreManager(models, viewModel.ManagerID);
             }
+            else if (viewModel.ViceManagerID.HasValue)
+            {
+                hasConditon = true;
+                items = items.FilterByBranchStoreManager(models, viewModel.ManagerID)
+                            .Where(c => c.AgentID != viewModel.ViceManagerID);
+            }
+
 
             if (viewModel.OfficerID.HasValue)
             {

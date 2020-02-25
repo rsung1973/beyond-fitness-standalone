@@ -1,0 +1,219 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Newtonsoft.Json
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    UserProfile _model;
+    DailyBookingQueryViewModel _viewModel;
+
+    Layout = "~/Views/ConsoleHome/Template/MainPage.cshtml";
+
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    _model = (UserProfile)this.Model;
+    _viewModel = (DailyBookingQueryViewModel)ViewBag.ViewModel;
+    UserProfile _learner = (UserProfile)ViewBag.DataItem;
+}
+@section CustomHeader {
+    <!-- Fullcalendar -->
+    <link href="plugins/fullcalendar/fullcalendar.min.css" rel="stylesheet">
+    <!-- Bootstrap Datetimepick -->
+    @*<link href="plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />*@
+    @*<link href="css/datetimepicker.css" rel="stylesheet" />*@
+    
+    
+    <link href="css/smartcalendar-2.css" rel="stylesheet" />
+    <!-- Inbox -->
+    <link href="css/inbox.css" rel="stylesheet">
+    <!-- Multi Select Css -->
+    <link href="plugins/multi-select/css/multi-select.css" rel="stylesheet">
+    <!--Bootstrap progressbar -->
+    <link rel="stylesheet" href="plugins/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css">
+    <!-- JQuery DataTable Css -->
+    <link href="plugins/jquery-datatable/DataTables-1.10.18/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link href="plugins/jquery-datatable/Responsive-2.2.2/css/responsive.bootstrap4.min.css" rel="stylesheet">
+    <link href="plugins/jquery-datatable/FixedColumns-3.2.5/css/fixedColumns.bootstrap4.min.css" rel="stylesheet">
+
+}
+
+<section class="content profile-page">
+    @{ ViewBag.BlockHeader = "X檔案";
+        Html.RenderPartial("~/Views/ConsoleHome/Module/BlockHeader.cshtml", _model);}
+
+    <!--本月運動時間-->
+    <div class="container-fluid">
+        <div class="row clearfix">
+            <div class="col-12">
+                <div class="card profile-header bg-darkteal">
+                    <div class="body">
+                        <div class="profile-image inlineblock">
+                            <a href="javascript:editLearner();">
+                                @{
+                                    ViewBag.ProfileClass = "small";
+                                    Html.RenderPartial("~/Views/Common/ProfileImage.cshtml", _learner);
+                                }
+                            </a>
+                        </div>
+                        <div class="float-right">
+                            @{ var purpose = _learner.PersonalExercisePurpose;}
+                            @if (purpose != null && (purpose.Cardiopulmonary.HasValue || purpose.Flexibility.HasValue || purpose.MuscleStrength.HasValue))
+                            {
+                                Html.RenderPartial("~/Views/LearnerProfile/Module/PersonalExerciseRadarChart.cshtml", purpose);
+                            }
+                            else
+                            {
+                                <div class="pie">
+                                    <div class="pie_light small">
+                                        Opps!<br /><span>你很不了解這位學生喔！</span>
+                                    </div>
+                                </div>
+                            }
+                            @if (purpose != null)
+                            {
+                                <h6 class="@(purpose.PowerAbliityCss("text-center"))">@(purpose.PowerAbility != null ? purpose.PowerAbility.Substring(0, 3) : "？型") / @(purpose.Purpose ?? "？")期</h6>
+                            }
+                            else
+                            {
+                                <h6 class="col-pink text-center">？型 / ？期</h6>
+                            }
+                        </div>
+                        <div class="col-white inlineblock">
+                            <strong>@(_learner.FullName())</strong> <span class="font-12"><i class="zmdi zmdi-cake"></i> @(_learner.YearsOld())</span>
+                        </div>
+                        <div class="font-20">
+                            @{ 
+                                Html.RenderPartial("~/Views/LearnerProfile/Module/ExerciseSummary.cshtml", _learner);
+                            }
+                        </div>
+                        <div class="displayblock col-grey">
+                            @{
+                                var answers = _learner.PDQTask.Where(t => t.PDQQuestion.GroupID == 6);
+                                var answerCount = answers.Count();
+                                var rightAns = answers.Where(t => t.SuggestionID.HasValue && t.PDQSuggestion.RightAnswer == true);
+                            }
+                            @****@
+                            @*目前已參加運動小學堂 @(answerCount) 次囉，得點數 @(rightAns.Count()) 點，目前剩餘 @(_learner.BonusPoint(models) ?? 0)點！*@
+                            @*參考=>beyond-fitness/Views/CornerKick/Module/PromptDailyQuestion.ascx*@
+                            已參加運動小學堂 @(answerCount) 次囉，答題正確率已達 <span class="col-green"> 20%</span>，就讀運動幼幼班，再接再厲！<a href="javascript:showBonusDetails();" class="col-tiffany font-underline">目前已累積 39枚 Beyond💰</a>！
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--行事曆-->
+    <div class="container-fluid page-calendar">
+        <div class="card">
+            <div class="row">
+                <div class="col-md-12 col-lg-4 col-xl-4">
+                    <div class="body">
+                        <div class="row clearfix">
+                            <div class="col-md-11 col-lg-12 col-9">
+                            </div>
+                            <div class="col-md-11 col-lg-12 col-3">
+                                <button class="btn btn-default hidden-lg-up m-t-0 float-right" data-toggle="collapse" data-target="#open-events" aria-expanded="false" aria-controls="collapseExample"><i class="zmdi zmdi-chevron-down"></i></button>
+                            </div>
+                        </div>
+                        <div class="collapse-xs collapse-sm collapse" id="open-events">
+                            @{
+                                var dataQuery = models.GetTable<CourseContractMember>().Where(m => m.UID == _learner.UID)
+                                        .Join(models.PromptEffectiveContract(),
+                                            m => m.ContractID, c => c.ContractID, (m, c) => c);
+                                var items = dataQuery.ToList();
+                                var fullPaid = items.Where(c => c.TotalCost <= c.TotalPaidAmount());
+                                var unpaid = items.Where(c => c.TotalCost > c.TotalPaidAmount());
+                            }
+                            @{
+                                Html.RenderPartial("~/Views/LearnerProfile/Module/LearnerEffectiveContractList.cshtml", fullPaid);
+                            }
+                            @{
+                                Html.RenderPartial("~/Views/LearnerProfile/Module/LearnerUnpaidContractList.cshtml", unpaid);
+                            }
+                            <hr>
+                            <div class="event-name b-custom row">
+                                @{ Html.RenderPartial("~/Views/LearnerProfile/Module/LearnerCharacter.cshtml", _learner); }
+                            </div>
+                            <button class="btn btn-darkteal waves-effect float-right" onclick="javascript:editLearnerCharacter();">重新了解學生 GO</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 col-lg-8 col-xl-8">
+                    <div class="body">
+                        @{  Html.RenderPartial("~/Views/LearnerProfile/Module/LearnerLessonsReview.cshtml",_learner);   }
+                        @{  Html.RenderAction("LearnerCalendar", "LearnerProfile", new { LearnerID = _learner.UID });   }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section TailPageJavaScriptInclude {
+    <!-- Fullcalendar Plugin js -->
+    <script src="bundles/fullcalendarscripts.bundle.js"></script>
+    <script src="plugins/fullcalendar/locale/zh-tw.js"></script>
+    <!-- Multi Select Plugin Js -->
+    <script src="plugins/multi-select/js/jquery.multi-select.js"></script>
+    <!-- countTo Plugin Js -->
+    <script src="bundles/countTo.bundle.js"></script>
+    <!-- Sparkline Plugin Js -->
+    <script src="plugins/jquery-sparkline/jquery.sparkline.js"></script>
+    <script>
+        $(function () {
+
+            $('.counto').countTo();
+
+        });
+
+        function editLearner() {
+            showLoading();
+            $.post('@Html.Raw(Url.Action("EditContractMember", "ContractConsole",new { KeyID = _learner.UID.EncryptKey(), ProfileOnly = true }))', { }, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    alert(data.message);
+                } else {
+                    $(data).appendTo($('body'));
+                }
+            });
+        }
+
+        function editLearnerCharacter() {
+
+            $('').launchDownload('@(Html.Raw(Url.Action("EditLearnerCharacter","ConsoleHome",new { KeyID = _learner.UID.EncryptKey() })))', {});
+
+            @*$global.rejectCharacterDone = function () {
+                $('').launchDownload('@Html.Raw(Url.Action("LearnerProfile","ConsoleHome"))', { 'keyID': '@(_learner.UID.EncryptKey())' });
+            };
+            $.post('@Html.Raw(Url.Action("ResumeLearnerCharacter", "LearnerProfile"))', { 'keyID': '@(_learner.UID.EncryptKey())' }, function (data) {
+                if ($.isPlainObject(data)) {
+                    if (data.result) {
+                        $('').launchDownload('@(Html.Raw(Url.Action("EditLearnerCharacter","ConsoleHome",new { KeyID = _learner.UID.EncryptKey() })))', {});
+                    } else {
+                        swal(data.message);
+                    }
+                } else {
+                    $(data).appendTo($('body'));
+                }
+            });*@
+        }
+
+        function showBonusDetails() {
+            showLoading();
+            $.post('@Html.Raw(Url.Action("ShowLearnerBonusDetails", "LearnerProfile",new { KeyID = _learner.UID.EncryptKey()}))', {}, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    alert(data.message);
+                } else {
+                    $(data).appendTo($('body'));
+                }
+            });
+        }
+    </script>
+}

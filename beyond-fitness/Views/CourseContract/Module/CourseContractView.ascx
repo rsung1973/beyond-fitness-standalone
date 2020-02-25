@@ -152,7 +152,7 @@
                             主管簽核代表：
                             <img src="<%= _model.Status==(int)Naming.CourseContractStatus.待審核 && Request["pdf"]!="1"
                                     ? Context.GetUser().LoadInstance(models).UserProfileExtension.Signature
-                                    : _model.ContractAgent.UserProfileExtension.Signature %>" width="200px" class="modifySignDialog_link">
+                                    : _model.Supervisor?.UserProfileExtension.Signature %>" width="200px" class="modifySignDialog_link">
                             <%  } %>
                         </td>
                     </tr>

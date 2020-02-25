@@ -904,12 +904,12 @@ namespace WebHome.Controllers
             {
                 foreach (var item in models.GetTable<ServingCoach>())
                 {
-                    models.CheckProfessionalLeve(item);
+                    models.CheckProfessionalLeve2020(item);
                 }
             }
             else
             {
-                models.CheckProfessionalLeve(coach);
+                models.CheckProfessionalLeve2020(coach);
             }
             return new EmptyResult();
         }

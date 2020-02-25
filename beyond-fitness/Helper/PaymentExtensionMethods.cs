@@ -100,7 +100,8 @@ namespace WebHome.Helper
             (int)Naming.PaymentTransactionType.自主訓練,
             (int)Naming.PaymentTransactionType.運動商品,
             (int)Naming.PaymentTransactionType.食飲品,
-            (int)Naming.PaymentTransactionType.體能顧問費
+            (int)Naming.PaymentTransactionType.體能顧問費,
+            (int)Naming.PaymentTransactionType.教育訓練
         };
         public static IQueryable<Payment> PromptIncomePayment<TEntity>(this ModelSource<TEntity> models)
             where TEntity : class, new()
