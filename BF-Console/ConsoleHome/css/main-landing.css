@@ -18888,6 +18888,11 @@ textarea:focus {
     padding-top: 10px;
 }
 
+.section-blog .blog-single u {
+    text-underline-position: under;
+    font-weight: 500;
+}
+
 .section-blog .blog-single ul.list-style1 {
     list-style-position: outside;
 }
@@ -18925,6 +18930,10 @@ textarea:focus {
     margin: 0 5px 0 5px;
     font-size: 14px;
     color: lightsalmon;
+}
+
+.section-blog .blog-single ul.list-style2 li.dotgrey::before {
+    color: #e6e6e6;
 }
 
 .section-blog .blog-single ul.list-style2 li.checked::before {
