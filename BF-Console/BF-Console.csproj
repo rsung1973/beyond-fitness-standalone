@@ -6196,6 +6196,7 @@
     <Content Include="Views\Common\SelectMonth.cshtml" />
     <Content Include="Views\Common\SelectMonthPeriod.cshtml" />
     <Content Include="Views\Common\SelectUser.cshtml" />
+    <Content Include="Views\ContractConsole\Module\ShowCauseForEndingDonutChart.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\InitializeType.cs" />
