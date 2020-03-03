@@ -8,17 +8,20 @@
 @using WebHome.Models.DataEntity
 @using WebHome.Controllers
 @using Newtonsoft.Json
-@using WebHome.Views.MainActivity.Resources
-
 @{
+
     ModelStateDictionary _modelState;
     ModelSource<UserProfile> models;
+    CoachMonthlySalary _model;
+    String _dialogID = $"coachBonus{DateTime.Now.Ticks}";
+
 
     _modelState = (ModelStateDictionary)ViewBag.ModelState;
     models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = (CoachMonthlySalary)this.Model;
 }
 
-<div class="modal fade" id="declarationModal" tabindex="-1" role="dialog">
+<div class="modal fade" id="@(_dialogID)" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -40,3 +43,4 @@
         </div>
     </div>
 </div>
+@{ Html.RenderPartial("~/Views/ConsoleHome/Shared/BSModalScript.cshtml", model: _dialogID);}
