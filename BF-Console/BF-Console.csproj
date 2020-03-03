@@ -6197,6 +6197,7 @@
     <Content Include="Views\Common\SelectMonthPeriod.cshtml" />
     <Content Include="Views\Common\SelectUser.cshtml" />
     <Content Include="Views\ContractConsole\Module\ShowCauseForEndingDonutChart.cshtml" />
+    <Content Include="Views\MainActivity\Module\DeclarationItem.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\InitializeType.cs" />
@@ -6565,8 +6566,6 @@
     <Content Include="MainActivity\Pricing\Zhongxiao.json" />
     <None Include="packages.config" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
-    <Content Include="Views\MainActivity\Template\MainPage.Master" />
-    <Content Include="Views\MainActivity\Template\BlogPage.Master" />
     <Content Include="Views\MainActivity\Template\BlogPage.cshtml" />
     <Content Include="Views\MainActivity\Template\MainPage.cshtml" />
     <Content Include="Views\MainActivity\Index.cshtml" />

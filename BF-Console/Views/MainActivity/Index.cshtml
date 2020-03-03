@@ -19,7 +19,6 @@
     _modelState = (ModelStateDictionary)ViewBag.ModelState;
 
     Layout = "~/Views/MainActivity/Template/MainPage.cshtml";
-
 }
 
 @section CustomHeader {
@@ -158,8 +157,15 @@
 </section>
 <!-- // 聯絡我們 -->
 @{ Html.RenderPartial("~/Views/MainActivity/Module/ContactItem.cshtml");}
+<!-- // 公告事項 -->
+@{ Html.RenderPartial("~/Views/MainActivity/Module/DeclarationItem.cshtml");}
 
 
 @section TailPageJavaScriptInclude {
-
+    <script>
+        $(function () {
+            $("#declarationModal").modal('show');
+            aler('test');
+        });
+    </script>
 }
