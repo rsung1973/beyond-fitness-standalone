@@ -6198,6 +6198,7 @@
     <Content Include="Views\Common\SelectUser.cshtml" />
     <Content Include="Views\ContractConsole\Module\ShowCauseForEndingDonutChart.cshtml" />
     <Content Include="Views\MainActivity\Module\DeclarationItem.cshtml" />
+    <Content Include="ConsoleHome\images\declaration.png" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\InitializeType.cs" />
