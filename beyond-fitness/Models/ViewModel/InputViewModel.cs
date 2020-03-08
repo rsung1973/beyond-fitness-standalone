@@ -468,4 +468,17 @@ namespace WebHome.Models.ViewModel
         public String Comment { get; set; }
     }
 
+    public class LessonOverviewQueryViewModel : MonthlyIndicatorQueryViewModel
+    {
+        public int? LessonID { get; set; }
+        public int? CoachID { get; set; }
+    }
+
+    public class ServingCoachQueryViewModel : QueryViewModel
+    {
+        public int? Allotment { get; set; }
+        public int? AllotmentCoach { get; set; }
+        public bool? SelectAll { get; set; }
+    }
+
 }

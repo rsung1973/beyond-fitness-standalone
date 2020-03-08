@@ -24,7 +24,7 @@ namespace WebHome.Helper
     public static class ContractConsoleExtensionMethods
     {
 
-        public static IQueryable<CourseContractRevision> PromptContractCauseForEndig<TEntity>(this UserProfile profile,  ModelSource<TEntity> models,DateTime? dateFrom = null, DateTime? dateTo = null)
+        public static IQueryable<CourseContractRevision> PromptContractCauseForEnding<TEntity>(this UserProfile profile,  ModelSource<TEntity> models,out IQueryable<CourseContract> unpaidOverdueItems, DateTime? dateFrom = null, DateTime? dateTo = null)
                 where TEntity : class, new()
         {
             IQueryable<CourseContract> contracts = models.GetTable<CourseContract>();
@@ -47,16 +47,22 @@ namespace WebHome.Helper
                 contracts = contracts.Where(c => false);
             }
 
+            unpaidOverdueItems = contracts
+                .Where(c => c.Status == (int)Naming.CourseContractStatus.已終止)
+                .Where(c => c.Subject == "已自動終止");
+
 
             IQueryable<CourseContract> items = models.GetTable<CourseContract>()
                 .Where(c => c.EffectiveDate.HasValue);
             if(dateFrom.HasValue)
             {
                 items = items.Where(c => c.EffectiveDate >= dateFrom);
+                unpaidOverdueItems = unpaidOverdueItems.Where(c => c.ValidTo >= dateFrom);
             }
             if(dateTo.HasValue)
             {
                 items = items.Where(c => c.EffectiveDate < dateTo);
+                unpaidOverdueItems = unpaidOverdueItems.Where(c => c.ValidTo < dateTo);
             }
 
 

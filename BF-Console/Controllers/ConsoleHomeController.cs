@@ -842,5 +842,21 @@ namespace WebHome.Controllers
             return View("~/Views/InvoiceConsole/InvoiceNoIndex.cshtml", profile.LoadInstance(models));
         }
 
+        public ActionResult LessonOverview(LessonOverviewQueryViewModel viewModel)
+        {
+
+            if (!viewModel.Year.HasValue || !viewModel.Month.HasValue)
+            {
+                viewModel.Year = DateTime.Today.Year;
+                viewModel.Month = DateTime.Today.Month;
+            }
+
+            ViewBag.ViewModel = viewModel;
+
+            var profile = HttpContext.GetUser();
+            return View("~/Views/LessonConsole/LessonOverview.cshtml", profile.LoadInstance(models));
+        }
+
+
     }
 }

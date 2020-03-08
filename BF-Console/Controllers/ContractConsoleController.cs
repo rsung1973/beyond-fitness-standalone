@@ -131,8 +131,13 @@ namespace WebHome.Controllers
             return View("~/Views/ContractConsole/ContractModal/AboutContractDetails.cshtml", item);
         }
 
-        public ActionResult SelectCoach()
+        public ActionResult SelectCoach(ServingCoachQueryViewModel viewModel)
         {
+            ViewBag.ViewModel = viewModel;
+            ViewBag.SelectAll = viewModel.SelectAll;
+            ViewBag.Allotment = viewModel.Allotment;
+            ViewBag.AllotmentCoach = viewModel.AllotmentCoach;
+
             var profile = HttpContext.GetUser();
             IQueryable<ServingCoach> items = models.GetTable<ServingCoach>()
                 .Join(models.GetTable<UserProfile>().Where(u => u.LevelID != (int)Naming.MemberStatus.已停用), 

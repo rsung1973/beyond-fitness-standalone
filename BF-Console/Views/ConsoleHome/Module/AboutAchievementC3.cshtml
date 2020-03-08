@@ -19,6 +19,7 @@
     _model = (UserProfile)this.Model;
     _viewModel = (LessonTimeBookingViewModel)ViewBag.ViewModel;
 }
+
 <div class="container-fluid">
     <div class="row clearfix">
         <h4 class="card-outbound-header m-l-15">我的分店一覽</h4>
@@ -28,11 +29,15 @@
                     <div class="card bg-darkteal">
                         <div class="header">
                             <h2 id="branchName">
-                                @for (int idx = 0; idx < 3; idx++)
+                                @*@for (int idx = 0; idx < 3; idx++)
                                 {
                                     var dayIdx = DateTime.Today.AddDays(idx);
                                     <a href="#lessonSummary" onclick="inquireDailyBarChart('@($"{dayIdx:yyyy-MM-dd}")',event);" class="btn btn-simple btn-sm inquireDaily @(_viewModel.ClassTimeStart == dayIdx ? "disabled" : null)">@($"{dayIdx:yyyy/MM/dd}")</a>
+                                }*@
+                                @{
+                                    <a href="#lessonSummary" onclick="inquireDailyBarChart('@($"{DateTime.Today:yyyy-MM-dd}")',event);" class="btn btn-simple btn-sm inquireDaily disabled">今</a>
                                 }
+                                <input type="text" class="btn btn-simple btn-sm inquireDaily" data-date-format="yyyy/mm/dd" readonly="readonly" value="" size="10" placeholder="自選日期..." />
                                 @{
                                     ViewBag.Other = "全部";
                                     Html.RenderPartial("~/Views/Common/BranchStoreWithOther.cshtml", models.GetTable<BranchStore>().Where(b => b.BranchID == _viewModel.BranchID).FirstOrDefault());
@@ -67,6 +72,28 @@
                             </div>
                         </div>
                         <script>
+                            $(function () {
+                                var $input = $('input.inquireDaily');
+                                $input.datetimepicker({
+                                    language: 'zh-TW',
+                                    format: 'yyyy/mm/dd',
+                                    defaultDate: new Date(),
+                                    weekStart: 1,
+                                    todayBtn: 1,
+                                    clearBtn: 1,
+                                    autoclose: 1,
+                                    todayHighlight: 1,
+                                    startView: 2,
+                                    minView: 2,
+                                    defaultView: 2,
+                                    forceParse: 0,
+                                }).on('changeDate', function (ev) {
+                                    $('a.inquireDaily').removeClass('disabled');
+                                    $global.viewModel.ClassTimeStart = $input.val();
+                                    drawLessonsBarChart();
+                                });
+
+                            });
                             function inquireLessonsBarChart(branchID) {
                                 var event = event || window.event;
                                 var branchName = $(event.target).text();

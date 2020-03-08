@@ -1949,7 +1949,7 @@ namespace WebHome.Helper
             return models.GetTable<LessonPriceType>().Where(p => p.Status == (int)sessionStatus).FirstOrDefault();
         }
 
-        public static void ExecuteSettlement<TEntity>(this ModelSource<TEntity> models, DateTime startDate, DateTime endExclusiveDate)
+        public static void ExecuteSettlement<TEntity>(this ModelSource<TEntity> models, DateTime startDate, DateTime endExclusiveDate, DateTime? settlementDate = null)
             where TEntity : class, new()
         {
             models.GetDataContext().DeleteRedundantTrack();
@@ -1964,7 +1964,7 @@ namespace WebHome.Helper
 
                 Settlement settlement = new Settlement
                 {
-                    SettlementDate = DateTime.Now,
+                    SettlementDate = settlementDate ?? DateTime.Now,
                     StartDate = startDate,
                     EndExclusiveDate = endExclusiveDate
                 };

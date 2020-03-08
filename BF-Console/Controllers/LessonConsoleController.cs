@@ -386,5 +386,20 @@ namespace WebHome.Controllers
             return View("~/Views/LearnerProfile/Module/LessonItems.cshtml", items.Union(coachPI));
         }
 
+        public ActionResult ShowLessonList(LessonOverviewQueryViewModel viewModel)
+        {
+            if (viewModel.KeyID != null)
+            {
+                viewModel.LessonID = viewModel.DecryptKeyValue();
+            }
+
+            var items = viewModel.InquireLesson(models);
+            ViewBag.DataItems = items;
+
+            var profile = HttpContext.GetUser();
+            return View("~/Views/ConsoleHome/ContractIndex.cshtml", profile.LoadInstance(models));
+        }
+
+
     }
 }

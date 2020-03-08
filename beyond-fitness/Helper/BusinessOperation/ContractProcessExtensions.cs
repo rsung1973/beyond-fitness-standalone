@@ -436,8 +436,16 @@ namespace WebHome.Helper.BusinessOperation
 
             item.Status = (int)status;
 
-            if (status == Naming.CourseContractStatus.待簽名)
-                item.SupervisorID = profile.UID;
+            if (item.CourseContractRevision == null)
+            {
+                if (status == Naming.CourseContractStatus.待簽名)
+                    item.SupervisorID = profile.UID;
+            }
+            else 
+            {
+                if (status == Naming.CourseContractStatus.已生效)
+                    item.SupervisorID = profile.UID;
+            }
 
             return true;
 
@@ -1290,6 +1298,7 @@ namespace WebHome.Helper.BusinessOperation
 
                     if (profile.IsManager())
                     {
+                        newItem.SupervisorID = profile.UID;
                         newItem.CourseContractRevision.EnableContractAmendment(models, profile, null);
                     }
                     else

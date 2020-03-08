@@ -27,7 +27,7 @@
     if (_viewModel.BranchID.HasValue)
     {
         var goal = (MonthlyBranchRevenueGoal)TempData["RevenueGoal"];
-        if (goal.ActualCompleteLessonCount.HasValue && goal.ActualLessonAchievement.HasValue)
+        if (goal.ActualCompleteLessonCount.HasValue && goal.ActualLessonAchievement.HasValue && goal.ActualCompleteLessonCount > 0)
         {
             averagePrice = goal.ActualLessonAchievement / goal.ActualCompleteLessonCount;
         }
@@ -41,7 +41,12 @@
                         .Where(g => g.GradeID == goal.GradeID)
                         .Where(g => g.ActualLessonAchievement.HasValue)
                         .Where(g => g.ActualCompleteLessonCount.HasValue).ToList();
-        averagePrice = items.Sum(g => g.ActualLessonAchievement) / items.Sum(g => g.ActualCompleteLessonCount);
+        var actualTotalAchievement = items.Sum(g => g.ActualLessonAchievement);
+        var actualTotalCount = items.Sum(g => g.ActualCompleteLessonCount);
+        if (actualTotalCount.HasValue && actualTotalCount > 0)
+        {
+            averagePrice = actualTotalAchievement / actualTotalCount;
+        }
         indicator = goal;
     }
 }

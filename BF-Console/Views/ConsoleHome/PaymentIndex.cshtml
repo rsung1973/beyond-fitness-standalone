@@ -23,7 +23,7 @@
     _viewModel = (PaymentQueryViewModel)ViewBag.ViewModel;
 
 }
-@{ 
+@{
     UserProfile _profile = Context.GetUser();
 }
 @section CustomHeader {
@@ -32,7 +32,7 @@
     <link href="plugins/jquery-datatable/Responsive-2.2.2/css/responsive.bootstrap4.min.css" rel="stylesheet">
     <link href="plugins/jquery-datatable/FixedColumns-3.2.5/css/fixedColumns.bootstrap4.min.css" rel="stylesheet">
     <!-- Bootstrap Datetimepick -->
-    
+
     <link href="css/smartcalendar-2.css" rel="stylesheet" />
 
     <!-- Custom Css -->
@@ -111,7 +111,7 @@
 
     @{ Html.RenderPartial("~/Views/ConsoleHome/Shared/KnobJS.cshtml");}
 
-<script>
+    <script>
         function showPaymentList(viewModel, alertCount) {
             var event = window.event;
             if (event) {
@@ -233,7 +233,7 @@
     }
 
 
-</script>
+    </script>
 
     @if (_viewModel.KeyID != null)
     {
@@ -247,8 +247,8 @@
                      })));
             });
         </script>
-        }
-
     }
+
+}
 
 

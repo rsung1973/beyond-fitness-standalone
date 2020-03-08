@@ -8,6 +8,15 @@
 @using WebHome.Controllers
 @using Newtonsoft.Json
 
+@functions
+{
+    class _GroupIndex
+    {
+        public int? Key { get; set; }
+        public int Count { get; set; }
+    }
+}
+
 @{
     ModelStateDictionary _modelState;
     ModelSource<UserProfile> models;
@@ -21,18 +30,29 @@
     //DateTime dateFrom = DateTime.Today.FirstDayOfMonth();
     //DateTime dateTo = DateTime.Today.FirstDayOfMonth().AddMonths(1);
 
-    var revision = _model.PromptContractCauseForEndig(models);
-
-    var totalCount = revision.Count();
+    var revision = _model.PromptContractCauseForEnding(models, out IQueryable<CourseContract> unpaidOverdueItems);
+    var unpaidCount = unpaidOverdueItems.Count();
+    var totalCount = revision.Count() + unpaidCount;
 
     if (totalCount > 0)
     {
         var groups = revision.GroupBy(r => r.CauseForEnding)
-                        .Select(g => new
+                        .Select(g => new _GroupIndex
                         {
-                            g.Key,
+                            Key = g.Key,
                             Count = g.Count()
-                        }).ToArray();
+                        }).ToList();
+
+        if (unpaidCount > 0)
+        {
+            groups.Add(new _GroupIndex
+            {
+                Key = (int)Naming.CauseForEnding.分期不付款,
+                Count = unpaidCount
+            });
+        }
+
+        groups = groups.OrderByDescending(g => g.Count).ToList();
 
         var result = groups.Select(s => new
         {
@@ -108,6 +128,6 @@
 }
 
 @functions  {
-    static String[] __ColorIndex = new string[] { "", "#93e3ff", "#b0dd91", "#ffe699", "#f8cbad", "#a989bf", "#a4a4a4" };
+    static String[] __ColorIndex = new string[] { "", "#f2e8cc", "#93e3ff", "#b0dd91", "#ffe699", "#f8cbad", "#a989bf", "#a4a4a4", "#b2c8ff" };
 }
 

@@ -27,6 +27,41 @@ namespace WebHome.Helper.BusinessOperation
 {
     public static class DataQueryExtensions
     {
+        public static IQueryable<V_Tuition> InquireLesson<TEntity>(this LessonOverviewQueryViewModel viewModel, ModelSource<TEntity> models)
+            where TEntity : class, new()
+        {
+
+            IQueryable<V_Tuition> items = models.GetTable<V_Tuition>();
+
+            if(viewModel.LessonID.HasValue)
+            {
+                items = items.Where(t => t.LessonID == viewModel.LessonID);
+            }
+
+            if (viewModel.CoachID.HasValue)
+            {
+                items = items.Where(c => c.AttendingCoach == viewModel.CoachID);
+            }
+
+            if (viewModel.BranchID.HasValue)
+            {
+                items = items.Where(c => c.BranchID == viewModel.BranchID);
+            }
+
+            if (viewModel.DateFrom.HasValue)
+            {
+                items = items.Where(c => c.ClassTime >= viewModel.DateFrom);
+            }
+
+            if (viewModel.DateTo.HasValue)
+            {
+                items = items.Where(c => c.ClassTime < viewModel.DateTo);
+            }
+
+            return items;
+
+        }
+
         public static IQueryable<CourseContract> InquireContract<TEntity>(this CourseContractQueryViewModel viewModel, SampleController<TEntity> controller, out String alertMessage)
             where TEntity : class, new()
         {

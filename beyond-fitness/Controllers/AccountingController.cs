@@ -789,7 +789,7 @@ namespace WebHome.Controllers
 
             DateTime execDate = settlementDate.Value.AddMonths(-1);
             DateTime startDate = new DateTime(execDate.Year, execDate.Month, 1);
-            models.ExecuteSettlement(startDate, startDate.AddMonths(1));
+            models.ExecuteSettlement(startDate, startDate.AddMonths(1), settlementDate);
 
             return Json(new { result = true }, JsonRequestBehavior.AllowGet);
         }
