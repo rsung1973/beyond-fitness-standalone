@@ -276,6 +276,34 @@ namespace WebHome.Helper
             return items;
         }
 
+        public static IQueryable<V_Tuition> ByLessonQueryType(this IQueryable<V_Tuition> items, Naming.LessonQueryType? query)
+        {
+            switch (query)
+            {
+                case Naming.LessonQueryType.一般課程:
+                    items = items.PTLesson();
+                    break;
+
+                case Naming.LessonQueryType.自主訓練:
+                    //items = items.Where(l => l.RegisterLesson.LessonPriceType.Status == (int)Naming.LessonPriceStatus.自主訓練
+                    //    || (l.RegisterLesson.RegisterLessonEnterprise != null && l.RegisterLesson.RegisterLessonEnterprise.EnterpriseCourseContent.EnterpriseLessonType.Status == (int)Naming.LessonPriceStatus.自主訓練));
+                    items = items.PILesson();
+                    break;
+                case Naming.LessonQueryType.教練PI:
+                    items = items.Where(l => l.PriceStatus == (int)Naming.LessonPriceStatus.教練PI);
+                    break;
+                case Naming.LessonQueryType.體驗課程:
+                    items = items.TrialLesson();
+                    break;
+
+                case Naming.LessonQueryType.在家訓練:
+                    items = items.Where(l => l.PriceStatus == (int)Naming.LessonPriceStatus.在家訓練);
+                    break;
+            }
+
+            return items;
+        }
+
         public static int?[] PTScope = new int?[] {
                         (int)Naming.LessonPriceStatus.一般課程,
                         (int)Naming.LessonPriceStatus.團體學員課程,
@@ -791,12 +819,17 @@ namespace WebHome.Helper
                 .Where(r => r.RegisterLesson.LessonPriceType.Status != (int)Naming.LessonPriceStatus.教練PI);
         }
 
-        public static IQueryable<LessonTime> PromptCoachPILessons<TEntity>(this ModelSource<TEntity> models)
+        public static IQueryable<LessonTime> PromptCoachPILessons<TEntity>(this ModelSource<TEntity> models, IQueryable<LessonTime> items = null)
             where TEntity : class, new()
         {
+            if (items == null)
+            {
+                items = models.GetTable<LessonTime>();
+            }
+
             return models.GetTable<RegisterLesson>()
                 .Where(r => r.LessonPriceType.Status == (int)Naming.LessonPriceStatus.教練PI)
-                .Join(models.GetTable<LessonTime>(), g => g.RegisterID, l => l.RegisterID, (g, l) => l);
+                .Join(items, g => g.RegisterID, l => l.RegisterID, (g, l) => l);
         }
 
 

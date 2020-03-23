@@ -27,11 +27,17 @@ namespace WebHome.Helper.BusinessOperation
 {
     public static class DataQueryExtensions
     {
-        public static IQueryable<V_Tuition> InquireLesson<TEntity>(this LessonOverviewQueryViewModel viewModel, ModelSource<TEntity> models)
+        public static IQueryable<LessonTime> InquireLesson<TEntity>(this LessonOverviewQueryViewModel viewModel, ModelSource<TEntity> models)
             where TEntity : class, new()
         {
 
-            IQueryable<V_Tuition> items = models.GetTable<V_Tuition>();
+            IQueryable<LessonTime> items = models.GetTable<LessonTime>();
+
+            if(viewModel.Year.HasValue && viewModel.Month.HasValue)
+            {
+                viewModel.DateFrom = new DateTime(viewModel.Year.Value, viewModel.Month.Value, 1);
+                viewModel.DateTo = viewModel.DateFrom.Value.AddMonths(1);
+            }
 
             if(viewModel.LessonID.HasValue)
             {
@@ -45,7 +51,18 @@ namespace WebHome.Helper.BusinessOperation
 
             if (viewModel.BranchID.HasValue)
             {
-                items = items.Where(c => c.BranchID == viewModel.BranchID);
+                if (viewModel.ByManager == true)
+                {
+                    var allCoach = models.GetTable<CoachWorkplace>().Where(w => w.BranchID == viewModel.BranchID)
+                                    .Where(w => !models.GetTable<CoachWorkplace>().Where(c => c.CoachID == w.CoachID)
+                                                .Any(c => c.BranchID != viewModel.BranchID))
+                                    .Select(w => w.CoachID);
+                    items = items.Where(c => allCoach.Any(w => w == c.AttendingCoach));
+                }
+                else
+                {
+                    items = items.Where(c => c.BranchID == viewModel.BranchID);
+                }
             }
 
             if (viewModel.DateFrom.HasValue)
@@ -56,6 +73,29 @@ namespace WebHome.Helper.BusinessOperation
             if (viewModel.DateTo.HasValue)
             {
                 items = items.Where(c => c.ClassTime < viewModel.DateTo);
+            }
+
+            if (viewModel.CoachAttended == true)
+            {
+                items = items.Where(l => l.LessonAttendance != null);
+            }
+            else if (viewModel.CoachAttended == false)
+            {
+                items = items.Where(t => t.LessonAttendance == null);
+            }
+
+            if (viewModel.LearnerCommitted == true)
+            {
+                items = items.Where(t => t.LessonPlan.CommitAttendance.HasValue);
+            }
+            else if (viewModel.LearnerCommitted == false)
+            {
+                items = items.Where(t => !t.LessonPlan.CommitAttendance.HasValue);
+            }
+
+            if(viewModel.LessonType.HasValue)
+            {
+                items = items.ByLessonQueryType(viewModel.LessonType);
             }
 
             return items;

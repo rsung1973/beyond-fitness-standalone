@@ -90,7 +90,6 @@ namespace WebHome.Models.ViewModel
         public DateTime? PayoffDueFrom { get; set; }
         public DateTime? PayoffDueTo { get; set; }
         public int? OfficerID { get; set; }
-        public bool? ScrollToView { get; set; }
         public bool? ByCustom { get; set; }
         public bool? IncludeTotalUnpaid { get; set; }
         public int? AlarmCount { get; set; }
@@ -196,7 +195,6 @@ namespace WebHome.Models.ViewModel
         }
         public bool? BypassCondition { get; set; }
         public Naming.PaymentTransactionType?[] CompoundType { get; set; }
-        public bool? ScrollToView { get; set; }
         public bool? HasCancellation
         {
             get;
@@ -472,6 +470,10 @@ namespace WebHome.Models.ViewModel
     {
         public int? LessonID { get; set; }
         public int? CoachID { get; set; }
+        public bool? CoachAttended { get; set; }
+        public bool? LearnerCommitted { get; set; }
+        public Naming.LessonQueryType? LessonType { get; set; }
+        public bool? ByManager { get; set; }
     }
 
     public class ServingCoachQueryViewModel : QueryViewModel
@@ -479,6 +481,8 @@ namespace WebHome.Models.ViewModel
         public int? Allotment { get; set; }
         public int? AllotmentCoach { get; set; }
         public bool? SelectAll { get; set; }
+        public String SelectablePartial { get; set; }
+        public int? WorkPlace { get; set; }
     }
 
 }

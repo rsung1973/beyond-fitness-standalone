@@ -37,7 +37,7 @@
 
 }
 
-<div class="row text-center calendar-todo">
+<div class="row text-center calendar-todo" onclick="showLoading();$('').launchDownload('@(Url.Action("LessonOverview","ConsoleHome",new { _viewModel.BranchID, ByManager = _viewModel.BranchID.HasValue }))');">
     <div class="col-sm-3 col-6">
         <h4 class="margin-0">@(currentMonthPT.Where(l => l.LessonAttendance == null).Count())</h4>
         <p class="margin-0"> 本月P.T 編輯中</p>

@@ -1,0 +1,149 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+}
+@{
+    InvoiceQueryViewModel _viewModel = (InvoiceQueryViewModel)ViewBag.ViewModel;
+    var trackCodeItems = models.GetTable<InvoiceTrackCode>()
+            .Where(t => t.Year == _viewModel.DateFrom.Value.Year)
+            .Where(t => t.PeriodNo == _viewModel.TrackPeriodNo);
+
+}
+
+<table class="table table-striped table-custom nowrap dataTable-einvoice" style="width:100%">
+    <thead>
+        <tr>
+            <th>總/分支機構統編</th>
+            <th>總/分支機構名稱</th>
+            <th>發票期別</th>
+            <th>發票字軌</th>
+            <th>發票起號</th>
+            <th>發票迄號</th>
+            <th>空白起號</th>
+            <th>空白迄號</th>
+            <th>剩餘張數</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var branch in models.GetTable<BranchStore>())
+        {
+            var items = trackCodeItems
+                            .Join(models.GetTable<InvoiceNoInterval>().Where(n => n.SellerID == branch.BranchID),
+                                t => t.TrackID, n => n.TrackID, (t, n) => n);
+            foreach (var item in items)
+            {
+                var noItem = item.InvoiceNoAssignment.OrderByDescending(i => i.InvoiceID).FirstOrDefault();
+                <tr>
+                    <td>@(item.InvoiceTrackCodeAssignment.Organization.ReceiptNo)</td>
+                    <td>@(branch.BranchName)</td>
+                    <td>@(item.InvoiceTrackCodeAssignment.InvoiceTrackCode.Year)年@(item.InvoiceTrackCodeAssignment.InvoiceTrackCode.PeriodNo * 2 - 1)-@(item.InvoiceTrackCodeAssignment.InvoiceTrackCode.PeriodNo * 2)月</td>
+                    <td>@(item.InvoiceTrackCodeAssignment.InvoiceTrackCode.TrackCode)</td>
+                    <td>@($"{item.StartNo:00000000}")</td>
+                    <td>@($"{item.EndNo:00000000}")</td>
+                    <td>
+                        @if (noItem != null)
+                        {
+                            if (noItem.InvoiceNo < item.EndNo)
+                            {
+                                <text>@($"{noItem.InvoiceNo+1:00000000}")</text>
+                            }
+                        }
+                        else
+                        {
+                            <text>@($"{item.StartNo:00000000}")</text>
+                        }
+                    </td>
+                    <td>
+                        @if (noItem != null)
+                        {
+                            if (noItem.InvoiceNo < item.EndNo)
+                            {
+                                <text>@($"{item.EndNo:00000000}")</text>
+                            }
+                        }
+                        else
+                        {
+                            <text>@($"{item.EndNo:00000000}")</text>
+                        }
+                    </td>
+                    <td>
+                        @if (noItem != null)
+                        {
+                            <text>@(item.EndNo - noItem.InvoiceNo)</text>
+                        }
+                        else
+                        {
+                            <text>@(item.EndNo - item.StartNo + 1)</text>
+                        }
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+<script>
+
+    $(function () {
+
+        if ($global.dtInvoiceNo != undefined) {
+            $global.dtInvoiceNo.destroy();
+        }
+
+        $global.dtInvoiceNo = $('.dataTable-einvoice').DataTable({
+            "order": [
+                [0, 'asc'],
+                [2, 'asc']
+            ],
+            "searching": false,
+            "paging": false,
+            "language": {
+                "lengthMenu": "每頁顯示 _MENU_ 筆資料",
+                "zeroRecords": "沒有資料也是種福氣",
+                "info": "共 _TOTAL_ 筆，目前顯示第 _START_ 至 _END_筆資料",
+                "infoEmpty": "顯示 0 筆的資料",
+                "infoFiltered": "(總共從 _MAX_ 筆資料過濾)",
+                "loadingRecords": "快馬加鞭處理中...",
+                "processing": "快馬加鞭處理中...",
+                "search": "快速搜尋：",
+                "paginate": {
+                    "first": "第一頁",
+                    "last": "最後一頁",
+                    "next": "下一頁",
+                    "previous": "前一頁"
+                },
+            },
+            scrollX: true,
+            scrollCollapse: true,
+            fixedColumns: {
+                leftColumns: 2
+            },
+            "columnDefs": [{
+                targets: [0, 1, 2, 3, 4, 5, 6, 7, 8],
+                className: "align-center"
+            }],
+        });
+
+        setTimeout(function () {
+            var $btnSelect = $('.dataTables_length div.btn-group.bootstrap-select.form-control.form-control-sm');
+            var $menu = $btnSelect.find('select');
+            $btnSelect.before($menu);
+            $btnSelect.remove();
+        }, 1000);
+
+        $('.dataTable-einvoice').resize();
+
+    });
+
+</script>

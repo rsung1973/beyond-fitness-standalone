@@ -574,8 +574,17 @@ namespace WebHome.Controllers
                 viewModel.LessonID = viewModel.DecryptKeyValue();
             }
 
-            ViewBag.DataItem = models.GetTable<LessonTime>().Where(u => u.LessonID == viewModel.LessonID).First();
-            ViewBag.Learner = models.GetTable<UserProfile>().Where(u => u.UID == viewModel.LearnerID).First();
+            LessonTime item = ViewBag.DataItem = models.GetTable<LessonTime>().Where(u => u.LessonID == viewModel.LessonID).FirstOrDefault();
+            if (item == null)
+            {
+                return View("~/Views/ConsoleHome/Shared/JsGoback.cshtml", model: "資料錯誤!!");
+            }
+
+            ViewBag.Learner = models.GetTable<UserProfile>().Where(u => u.UID == viewModel.LearnerID).FirstOrDefault();
+            if (ViewBag.Learner == null)
+            {
+                ViewBag.Learner = item.GroupingLesson.RegisterLesson.First().UserProfile;
+            }
 
             return View(profile.LoadInstance(models));
         }
@@ -852,6 +861,10 @@ namespace WebHome.Controllers
             }
 
             ViewBag.ViewModel = viewModel;
+
+            var items = viewModel.InquireLesson(models);
+            ViewBag.DataItems = items;
+
 
             var profile = HttpContext.GetUser();
             return View("~/Views/LessonConsole/LessonOverview.cshtml", profile.LoadInstance(models));

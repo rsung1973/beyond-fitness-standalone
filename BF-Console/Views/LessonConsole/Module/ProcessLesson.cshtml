@@ -1,0 +1,101 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Newtonsoft.Json
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    LessonTime _model;
+    String _dialogID = $"contractProcess{DateTime.Now.Ticks}";
+    UserProfile _profile;
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = (LessonTime)this.Model;
+    _profile = Context.GetUser();
+}
+@if ((_profile.IsSysAdmin() || _profile.IsAssistant()))
+{
+    <div class="modal fade" id="@(_dialogID)" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="title">請選擇執行功能</h6>
+                    <a class="closebutton" data-dismiss="modal"></a>
+                </div>
+                <div class="modal-popmenu-body">
+                    <div class="list-group">
+                        <a href="javascript:$('').launchDownload('@Html.Raw(Url.Action("LessonTrainingContent", "ConsoleHome"))', {'keyID':'@(_model.LessonID.EncryptKey())' });" class="list-group-item">編輯課表</a>
+                        @if (!_model.LessonPlan.CommitAttendance.HasValue)
+                        {
+                            <a class="list-group-item checkAttendance">學生打卡</a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        @{ Html.RenderPartial("~/Views/ConsoleHome/Shared/BSModalScript.cshtml", model: _dialogID);}
+
+        <script>
+        $(function () {
+            $('#@(_dialogID) a.checkAttendance').on('click', function (event) {
+                swal({
+                    title: "不後悔?",
+                    text: "確定將該筆資料認定學生確實有來上課！？",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "確定, 不後悔",
+                    cancelButtonText: "不, 點錯了",
+                    closeOnConfirm: false,
+                    closeOnCancel: false
+                }, function (isConfirm) {
+                    if (isConfirm) {
+                        showLoading();
+                        $.post('@Html.Raw(Url.Action("LearnerAttendLesson", "Attendance"))', { 'keyID': '@(_model.LessonID.EncryptKey())' }, function (data) {
+                            hideLoading();
+                            if ($.isPlainObject(data)) {
+                                if (data.result) {
+                                    swal({
+                                        title: "全部打卡成功!",
+                                        text: "資料已經完成打卡 Bye!",
+                                        type: "success",
+                                        showCancelButton: false,
+                                        closeOnConfirm: true
+                                    }, function () {
+                                            $global.viewModel.ScrollToView = true;
+                                            $global.viewModel.KeyID = '@(_model.LessonID.EncryptKey())';
+                                            showLoading();
+                                            $('').launchDownload('@Html.Raw(Url.Action("LessonOverview", "ConsoleHome"))',$global.viewModel);
+                                    });
+                                } else {
+                                    swal(data.message);
+                                }
+                            } else {
+                                $(data).appendTo($('body'));
+                            }
+                        });
+
+                    } else {
+                        swal("取消成功", "你的資料現在非常安全 :)", "error");
+                    }
+                });
+            });
+        });
+        </script>
+    </div>
+}
+else
+{
+    <script>
+           $('').launchDownload('@Html.Raw(Url.Action("LessonTrainingContent", "ConsoleHome"))', {'keyID':'@(_model.LessonID.EncryptKey())' });
+    </script>
+}
+
+

@@ -37,7 +37,7 @@
                                 @{
                                     <a href="#lessonSummary" onclick="inquireDailyBarChart('@($"{DateTime.Today:yyyy-MM-dd}")',event);" class="btn btn-simple btn-sm inquireDaily disabled">今</a>
                                 }
-                                <input type="text" class="btn btn-simple btn-sm inquireDaily" data-date-format="yyyy/mm/dd" readonly="readonly" value="" size="10" placeholder="自選日期..." />
+                                <input type="text" class="btn btn-simple btn-sm inquireDaily" data-date-format="yyyy/mm/dd" readonly="readonly" value="" size="12" placeholder="自選日期..." />
                                 @{
                                     ViewBag.Other = "全部";
                                     Html.RenderPartial("~/Views/Common/BranchStoreWithOther.cshtml", models.GetTable<BranchStore>().Where(b => b.BranchID == _viewModel.BranchID).FirstOrDefault());

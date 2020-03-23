@@ -20,8 +20,9 @@
     _modelState = (ModelStateDictionary)ViewBag.ModelState;
     models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
     _model = (IQueryable<ServingCoach>)this.Model;
-    _allotment = ((int?)ViewBag.Allotment) ?? 1;
-    _allotmentCoach = ((int?)ViewBag.AllotmentCoach) ?? 3;
+    ServingCoachQueryViewModel _viewModel = ViewBag.ViewModel as ServingCoachQueryViewModel;
+    _allotment = ((int?)ViewBag.Allotment) ?? _viewModel?.Allotment ?? 1;
+    _allotmentCoach = ((int?)ViewBag.AllotmentCoach) ?? _viewModel?.AllotmentCoach ?? 3;
 }
 
 <div class="modal fade" id="@(_dialogID)" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
@@ -63,7 +64,7 @@
                                     }
                                 </div>
                                 <ul class="new_friend_list list-unstyled row">
-                                    @if (ViewBag.SelectAll == true)
+                                    @if (ViewBag.SelectAll == true || _viewModel?.SelectAll == true)
                                     {
                                         <li class="@($"col-sm-{12 / _allotmentCoach} col-6")">
                                             <a href="javascript:commitCoach();">
@@ -71,6 +72,13 @@
                                                 <h6 class="users_name">全部</h6>
                                             </a>
                                         </li>
+                                    }
+                                    @{
+                                        insertPartial = _viewModel?.SelectablePartial;
+                                        if (insertPartial != null)
+                                        {
+                                            Html.RenderPartial(insertPartial);
+                                        }
                                     }
                                     @foreach (var item in _model.Select(c => c.UserProfile).ToList()
                                                 .OrderBy(u => $"{u.Nickname}{u.RealName}"))
@@ -135,9 +143,9 @@
 
     });
 
-    function commitCoach(coachID, coachName) {
+    function commitCoach(coachID, coachName, others) {
         if ($global.commitCoach) {
-            $global.commitCoach(coachID, coachName, $('#@(_dialogID)'));
+            $global.commitCoach(coachID, coachName, $('#@(_dialogID)'), others);
         }
             @if (ViewBag.EnableClose != false)
             {

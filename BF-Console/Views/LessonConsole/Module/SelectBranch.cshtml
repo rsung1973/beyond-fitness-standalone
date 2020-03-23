@@ -1,0 +1,38 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Newtonsoft.Json
+
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    IQueryable<ServingCoach> _model;
+    String _dialogID = $"selectCoach{DateTime.Now.Ticks}";
+    int _allotment;
+    int _allotmentCoach;
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = (IQueryable<ServingCoach>)this.Model;
+    ServingCoachQueryViewModel _viewModel = ViewBag.ViewModel as ServingCoachQueryViewModel;
+    _allotment = _viewModel?.Allotment ?? 1;
+    _allotmentCoach = _viewModel?.AllotmentCoach ?? 3;
+}
+
+@foreach (var b in models.GetTable<BranchStore>())
+{
+    <li class="@($"col-sm-{12 / _allotmentCoach} col-6")">
+        <a href="javascript:commitCoach(null,null,{'branchID' : @(b.BranchID),'branchName':'@(b.BranchName)'});">
+            <img src="images/branch.jpg" class="img-thumbnail popfit" />
+            <h6 class="users_name">@(b.BranchName)</h6>
+        </a>
+    </li>
+
+}
+

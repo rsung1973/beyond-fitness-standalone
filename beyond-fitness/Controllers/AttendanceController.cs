@@ -162,9 +162,14 @@ namespace WebHome.Controllers
 
         }
 
-        public ActionResult LearnerAttendLesson(int lessonID)
+        public ActionResult LearnerAttendLesson(DailyBookingQueryViewModel viewModel)
         {
-            LessonTime item = models.GetTable<LessonTime>().Where(t => t.LessonID == lessonID).FirstOrDefault();
+            ViewBag.ViewModel = viewModel;
+            if (viewModel.KeyID != null)
+            {
+                viewModel.LessonID = viewModel.DecryptKeyValue();
+            }
+            LessonTime item = models.GetTable<LessonTime>().Where(t => t.LessonID == viewModel.LessonID).FirstOrDefault();
 
             if (item == null)
                 return Json(new { result = false, message = "未登記此上課時間!!" }, JsonRequestBehavior.AllowGet);

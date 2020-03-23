@@ -21,6 +21,7 @@ using Newtonsoft.Json;
 using Utility;
 using WebHome.Controllers;
 using WebHome.Helper;
+using WebHome.Helper.BusinessOperation;
 using WebHome.Models.DataEntity;
 using WebHome.Models.Locale;
 using WebHome.Models.Timeline;
@@ -388,17 +389,45 @@ namespace WebHome.Controllers
 
         public ActionResult ShowLessonList(LessonOverviewQueryViewModel viewModel)
         {
+            ViewBag.ViewModel = viewModel;
             if (viewModel.KeyID != null)
             {
                 viewModel.LessonID = viewModel.DecryptKeyValue();
             }
 
             var items = viewModel.InquireLesson(models);
-            ViewBag.DataItems = items;
-
-            var profile = HttpContext.GetUser();
-            return View("~/Views/ConsoleHome/ContractIndex.cshtml", profile.LoadInstance(models));
+            return View("~/Views/LessonConsole/Module/LessonList.cshtml", items);
         }
+
+        public ActionResult ProcessLesson(LessonOverviewQueryViewModel viewModel)
+        {
+            if (viewModel.KeyID != null)
+            {
+                viewModel.LessonID = viewModel.DecryptKeyValue();
+            }
+
+            var item = models.GetTable<LessonTime>().Where(c => c.LessonID == viewModel.LessonID).FirstOrDefault();
+            if (item == null)
+            {
+                return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: "資料錯誤!!");
+            }
+
+            return View("~/Views/LessonConsole/Module/ProcessLesson.cshtml", item);
+        }
+
+        public ActionResult SelectCoachWithBranch(ServingCoachQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            viewModel.SelectablePartial = "~/Views/LessonConsole/Module/SelectBranch.cshtml";
+            var items = models.PromptEffectiveCoach();
+            if (viewModel.WorkPlace.HasValue)
+            {
+                items = items.Where(s => s.CoachWorkplace.Any(w => w.BranchID == viewModel.WorkPlace));
+            }
+            return View("~/Views/ContractConsole/ContractModal/SelectCoach.cshtml", items);
+        }
+
+
 
 
     }
