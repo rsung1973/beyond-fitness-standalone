@@ -6199,6 +6199,13 @@
     <Content Include="Views\ContractConsole\Module\ShowCauseForEndingDonutChart.cshtml" />
     <Content Include="Views\MainActivity\Module\DeclarationItem.cshtml" />
     <Content Include="ConsoleHome\images\declaration.png" />
+    <Content Include="Views\ConsoleHome\LearnerProfile2020.cshtml" />
+    <Content Include="Views\ConsoleHome\ShowLearnerBonusDetails.cshtml" />
+    <Content Include="Views\LessonConsole\LessonOverview.cshtml" />
+    <Content Include="Views\LessonConsole\Module\LessonList.cshtml" />
+    <Content Include="Views\LessonConsole\Module\ProcessLesson.cshtml" />
+    <Content Include="Views\LessonConsole\Module\SelectBranch.cshtml" />
+    <Content Include="Views\LessonConsole\Module\SelectToCloneTrainingPlan.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\InitializeType.cs" />
