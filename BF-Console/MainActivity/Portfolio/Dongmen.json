@@ -15,9 +15,9 @@
       "scenarioPhoto": [ "Scenario1.jpg" ]
     },
     {
-      "coachName": "鄭伊伶",
-      "nickname": "Eda",
-      "prologue": "在每件小事上勇敢，活出自己喜歡的模樣。",
+      "coachName": "陳芷榆",
+      "nickname": "Genie",
+      "prologue": "真正的成長，是因為經驗了苦痛；是在頻頻回首的大路上，終於領略了生命的喜悅與擔當！",
       "scenarioPhoto": []
     },
     {
@@ -31,18 +31,6 @@
       "nickname": "Alan",
       "prologue": "寧願跑起來被絆倒無數次，也不願規規矩矩走一輩子。就算跌倒也要豪邁的笑。",
       "scenarioPhoto": [ "Scenario1.jpg" ]
-    },
-    {
-      "coachName": "胡志達",
-      "nickname": "Peter",
-      "prologue": "人在成長之前必須先學會相信自己",
-      "scenarioPhoto": [ "Scenario1.jpg" ]
-    },
-    {
-      "coachName": "陳芷榆",
-      "nickname": "Genie",
-      "prologue": "真正的成長，是因為經驗了苦痛；是在頻頻回首的大路上，終於領略了生命的喜悅與擔當！",
-      "scenarioPhoto": []
     }
   ]
 }
