@@ -7376,7 +7376,7 @@ button.close {
 .modal-dialog {
     position: relative;
     width: auto;
-    margin: 30px
+    margin: 30px;
 }
 
 .modal-content {
@@ -13022,6 +13022,17 @@ img {
     line-height: 1.9
 }
 
+.modal-content .modal-body.fill-img {
+    padding-right: 0 !important;
+    padding-bottom: 0 !important;
+    padding-left: 0 !important;
+}
+
+.modal-content .modal-body.fill-img img.round {
+    border-radius: .55rem !important;
+}
+
+
 .modal-content .modal-footer {
     border-top: none;
     padding-right: 24px;
@@ -17583,6 +17594,11 @@ a:hover {
     -ms-border-radius: 50px;
     border-radius: 50px;
     background: rgba(255, 255, 255, 0.3)
+}
+
+.bg-edgewater {
+    background-color: #b5dcca !important;
+    color: #fff
 }
 
 .bg-red {
