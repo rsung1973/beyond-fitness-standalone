@@ -19,7 +19,7 @@
         </tr>
     </thead>
     <tbody>
-        <%  var items = _model.Where(t => t.RegisterLesson.RegisterLessonContract != null)
+        <%  var items = _items.Where(t => t.RegisterLesson.RegisterLessonContract != null)
                 .GroupBy(t => new { ContractID = t.RegisterLesson.RegisterLessonContract.ContractID });
             foreach(var item in items)
             {
@@ -42,7 +42,7 @@
                     </td>
                 </tr>
         <%  } %>
-        <%  var enterprise = _model.Where(t => t.RegisterLesson.RegisterLessonEnterprise != null
+        <%  var enterprise = _items.Where(t => t.RegisterLesson.RegisterLessonEnterprise != null
                     && t.RegisterLesson.RegisterLessonEnterprise.EnterpriseCourseContent.EnterpriseLessonType.Status != (int)Naming.DocumentLevelDefinition.自主訓練)
                 .GroupBy(t => new
                 {
@@ -63,7 +63,7 @@
             </td>
         </tr>
         <%  } %>
-        <%  var others = _model.Where(t => t.RegisterLesson.RegisterLessonContract == null 
+        <%  var others = _items.Where(t => t.RegisterLesson.RegisterLessonContract == null 
                         && t.RegisterLesson.RegisterLessonEnterprise == null
                         && t.RegisterLesson.LessonPriceType.Status != (int)Naming.DocumentLevelDefinition.自主訓練);
             foreach(var item in others)
@@ -79,7 +79,7 @@
             </td>
         </tr>
         <%  } %>
-        <%  var PISession = _model
+        <%  var PISession = _items
                 .Where(t => t.RegisterLesson.LessonPriceType.Status == (int)Naming.DocumentLevelDefinition.自主訓練
                         || (t.RegisterLesson.RegisterLessonEnterprise != null
                             && t.RegisterLesson.RegisterLessonEnterprise.EnterpriseCourseContent.EnterpriseLessonType.Status == (int)Naming.DocumentLevelDefinition.自主訓練))
@@ -147,7 +147,8 @@
     ModelStateDictionary _modelState;
     ModelSource<UserProfile> models;
     String _tableId = "attendanceAchievement" + DateTime.Now.Ticks;
-    IQueryable<LessonTime> _model;
+    IQueryable<V_Tuition> _model;
+    IQueryable<LessonTime> _items;
     AchievementQueryViewModel _viewModel;
 
     protected override void OnInit(EventArgs e)
@@ -155,8 +156,9 @@
         base.OnInit(e);
         _modelState = (ModelStateDictionary)ViewBag.ModelState;
         models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
-        _model = (IQueryable<LessonTime>)this.Model;
+        _model = (IQueryable<V_Tuition>)this.Model;
         _viewModel = (AchievementQueryViewModel)ViewBag.ViewModel;
+        _items = models.GetTable<LessonTime>().Join(_model, l => l.LessonID, t => t.LessonID, (l, t) => l);
     }
 
 </script>

@@ -127,7 +127,7 @@
 
                         $('#refund').text(refund);
                         $('#refundUnit').text(settlementPrice);
-                        $('#formular').text('=' + totalPaid + ' - (' + settlementPrice + ' * ' + '@($"{_model.CourseContractType.GroupingMemberCount}") * (' + lessons + ' - ' + remained + '))');
+                        $('#formular').text('=' + totalPaid + ' - (' + settlementPrice + ' * ' + '@($"{_model.CourseContractType.GroupingMemberCount}") @(_model.CourseContractType.GroupingMemberCount>1 ? $"* {_model.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount / 100m}" : null)* (' + lessons + ' - ' + remained + ')))');
                     }
                 }
             </script>

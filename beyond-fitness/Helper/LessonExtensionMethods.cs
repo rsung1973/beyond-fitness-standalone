@@ -528,8 +528,8 @@ namespace WebHome.Helper
             //                                    && !(v.PriceStatus == (int)Naming.DocumentLevelDefinition.體驗課程
             //                                            || (v.ELStatus == (int)Naming.DocumentLevelDefinition.體驗課程))));
             return items.Where(v => v.CoachAttendance.HasValue
-                                        || v.PriceStatus == (int)Naming.DocumentLevelDefinition.體驗課程
-                                        || v.ELStatus == (int)Naming.DocumentLevelDefinition.體驗課程);
+                                        /*|| v.PriceStatus == (int)Naming.DocumentLevelDefinition.體驗課程
+                                        || v.ELStatus == (int)Naming.DocumentLevelDefinition.體驗課程*/);
 
         }
 

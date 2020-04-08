@@ -761,7 +761,7 @@ namespace WebHome.Helper
 
                     calcCoachAchievement();
                 }
-                else if ((branch = models.GetTable<BranchStore>().Where(b => b.ManagerID == coach.CoachID).FirstOrDefault()) != null)
+                else if ((branch = models.GetTable<BranchStore>().Where(b => b.ManagerID == coach.CoachID || b.ViceManagerID == coach.CoachID).FirstOrDefault()) != null)
                 {
                     var branchBonus = salary.CoachBranchMonthlyBonus.Where(b => b.BranchID == branch.BranchID).FirstOrDefault();
                     if (branchBonus == null)

@@ -55,6 +55,7 @@ namespace WebHome.Helper.BusinessOperation
             }
             else
             {
+                item.SupervisorID = lessonPrice.BranchStore?.ManagerID;
                 item.Status = (int)Naming.CourseContractStatus.待審核;
             }
 
@@ -251,7 +252,8 @@ namespace WebHome.Helper.BusinessOperation
                     {
                         BranchID = lessonPrice.BranchID.Value,
                         Version = (int?)viewModel.Version,
-                    }
+                    },
+                    SupervisorID = lessonPrice.BranchStore?.ManagerID,
                 };
 
                 item.ExecuteContractStatus(profile, Naming.CourseContractStatus.草稿, null);
@@ -436,16 +438,16 @@ namespace WebHome.Helper.BusinessOperation
 
             item.Status = (int)status;
 
-            if (item.CourseContractRevision == null)
-            {
-                if (status == Naming.CourseContractStatus.待簽名)
-                    item.SupervisorID = profile.UID;
-            }
-            else 
-            {
-                if (status == Naming.CourseContractStatus.已生效)
-                    item.SupervisorID = profile.UID;
-            }
+            //if (item.CourseContractRevision == null)
+            //{
+            //    if (status == Naming.CourseContractStatus.待簽名)
+            //        item.SupervisorID = profile.UID;
+            //}
+            //else 
+            //{
+            //    if (status == Naming.CourseContractStatus.已生效)
+            //        item.SupervisorID = profile.UID;
+            //}
 
             return true;
 
@@ -1164,7 +1166,8 @@ namespace WebHome.Helper.BusinessOperation
                 {
                     BranchID = item.CourseContractExtension.BranchID,
                     Version = item.CourseContractExtension.Version,
-                }
+                },
+                SupervisorID = item.CourseContractExtension.BranchStore.ManagerID,
             };
             models.GetTable<CourseContract>().InsertOnSubmit(newItem);
 
@@ -1298,7 +1301,7 @@ namespace WebHome.Helper.BusinessOperation
 
                     if (profile.IsManager())
                     {
-                        newItem.SupervisorID = profile.UID;
+                        //newItem.SupervisorID = profile.UID;
                         newItem.CourseContractRevision.EnableContractAmendment(models, profile, null);
                     }
                     else

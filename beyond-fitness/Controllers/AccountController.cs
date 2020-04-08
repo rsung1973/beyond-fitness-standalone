@@ -897,19 +897,20 @@ namespace WebHome.Controllers
             return View("~/Views/Html/Module/LoginPhoto.ascx");
         }
 
-        public ActionResult CheckProfessionalLeve(int? coachID)
+        [Authorize]
+        public ActionResult CheckProfessionalLevel(int? coachID)
         {
             var coach = models.GetTable<ServingCoach>().Where(s => s.CoachID == coachID).FirstOrDefault();
             if (coach == null)
             {
-                foreach (var item in models.GetTable<ServingCoach>())
+                foreach (var item in models.PromptEffectiveCoach())
                 {
-                    models.CheckProfessionalLeve2020(item);
+                    models.CheckProfessionalLevel2020(item);
                 }
             }
             else
             {
-                models.CheckProfessionalLeve2020(coach);
+                models.CheckProfessionalLevel2020(coach);
             }
             return new EmptyResult();
         }

@@ -224,33 +224,35 @@ namespace WebHome.Models.ViewModel
 
         protected bool checkPublicCarrierId(String carrierId)
         {
-            return carrierId != null && carrierId.Length == 8 && carrierId.StartsWith("/");
+            return carrierId != null && Regex.IsMatch(carrierId, "^/[A-Z0-9+-]{7}$");
         }
 
         protected virtual InvoiceException checkPublicCarrier()
         {
-
             if (_invItem.CarrierType == __CELLPHONE_BARCODE)
             {
+                _invItem.CarrierId1 = _invItem.CarrierId1.GetEfficientString()?.ToUpper();
+                _invItem.CarrierId2 = _invItem.CarrierId2.GetEfficientString()?.ToUpper();
+
                 if (checkPublicCarrierId(_invItem.CarrierId1))
                 {
                     _carrier = new InvoiceCarrier
-                        {
-                            CarrierType = _invItem.CarrierType,
-                            CarrierNo = _invItem.CarrierId1,
-                            CarrierNo2 = _invItem.CarrierId1
-                        };
+                    {
+                        CarrierType = _invItem.CarrierType,
+                        CarrierNo = _invItem.CarrierId1,
+                        CarrierNo2 = _invItem.CarrierId1
+                    };
 
                     return null;
                 }
                 else if (checkPublicCarrierId(_invItem.CarrierId2))
                 {
                     _carrier = new InvoiceCarrier
-                        {
-                            CarrierType = _invItem.CarrierType,
-                            CarrierNo = _invItem.CarrierId2,
-                            CarrierNo2 = _invItem.CarrierId2
-                        };
+                    {
+                        CarrierType = _invItem.CarrierType,
+                        CarrierNo = _invItem.CarrierId2,
+                        CarrierNo2 = _invItem.CarrierId2
+                    };
 
                     return null;
                 }
@@ -281,7 +283,7 @@ namespace WebHome.Models.ViewModel
                 }
             }
 
-            return new InvoiceException("載具號碼、類別不為共通性載具") { RequestName = "CarrierId1" };
+            return new InvoiceException("載具號碼、類別不符合共通性載具") { RequestName = "CarrierId1" };
         }
 
         protected virtual InvoiceException checkBusinessDetails()

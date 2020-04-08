@@ -108,7 +108,12 @@
                                 else if (attened > 0 || !original.CourseContractExtension.Version.HasValue)
                                 {
                                     <text>
-                                        已繳服務總費用 @(String.Format("{0:##,###,###,###}", totalPaid)) 扣除依簽約時課程單堂原價(<span class="col-red">@(String.Format("{0:##,###,###,###}", _contract.CourseContractExtension.SettlementPrice))</span>) / 人乘以實際上課堂數(<span class="col-red">@(original.AttendedLessonCount())</span>)，退還剩餘款項 <span class="col-red">@(String.Format("{0:##,###,###,##0}", refund))</span>元<small> = @(String.Format("{0:##,###,###,###}", original.TotalPaidAmount())) - ( @(String.Format("{0:##,###,###,###}", _contract.CourseContractExtension.SettlementPrice)) * @(_contract.CourseContractType.GroupingMemberCount) * ( @(original.Lessons) - @(original.RemainedLessonCount() ))。</small>
+                                        已繳服務總費用 @(String.Format("{0:##,###,###,###}", totalPaid)) 扣除依簽約時課程單堂原價(<span class="col-red">@(String.Format("{0:##,###,###,###}", _contract.CourseContractExtension.SettlementPrice))</span>) / 人乘以實際上課堂數(<span class="col-red">@(original.AttendedLessonCount())</span>)，退還剩餘款項 <span class="col-red">@(String.Format("{0:##,###,###,##0}", refund))</span>元<small> = @(String.Format("{0:##,###,###,###}", original.TotalPaidAmount())) - ( @(String.Format("{0:##,###,###,###}", _contract.CourseContractExtension.SettlementPrice)) * @(_contract.CourseContractType.GroupingMemberCount) 
+                                            @if(_contract.CourseContractType.GroupingMemberCount>1)
+                                            {
+                                                <text>* @(_contract.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount / 100m)</text>
+                                            }
+                                            * ( @(original.Lessons) - @(original.RemainedLessonCount() )))。</small>
                                     </text>
                                 }
                                 else if ((_contract.ContractDate - original.ValidFrom).Value.TotalDays < 8)
@@ -182,11 +187,7 @@
                         <td></td>
                         <td style="vertical-align: middle;">
                             主管簽約代表：
-                            @{ UserProfile contractAgent = (UserProfile)ViewBag.ContractAgent;}
-                            @if (_contract.Status > (int)Naming.CourseContractStatus.待確認 || contractAgent != null)
-                            {
-                                <img src="@(contractAgent!=null ? contractAgent.LoadInstance(models).UserProfileExtension.Signature : _contract.Supervisor?.UserProfileExtension.Signature)" width="200px" class="modifySignDialog_link">
-                            }
+                            <img src="@(_contract.Supervisor?.UserProfileExtension.Signature)" width="200px" class="modifySignDialog_link">
                         </td>
                     </tr>
                     <tr>

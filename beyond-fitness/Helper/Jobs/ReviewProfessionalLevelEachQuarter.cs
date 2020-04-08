@@ -19,11 +19,11 @@ namespace WebHome.Helper.Jobs
         {
             using (ModelSource<UserProfile> models = new ModelSource<UserProfile>())
             {
-                foreach (var item in models.GetTable<ServingCoach>())
+                foreach (var item in models.PromptEffectiveCoach())
                 {
                     try
                     {
-                        models.CheckProfessionalLeve2020(item);
+                        models.CheckProfessionalLevel2020(item);
                     }
                     catch(Exception ex)
                     {

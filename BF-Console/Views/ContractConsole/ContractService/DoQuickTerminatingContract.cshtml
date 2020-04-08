@@ -47,7 +47,15 @@
                         var refund = _model.TotalPaidAmount() - (lessons - remained) * _model.LessonPriceType.ListPrice * _model.CourseContractType.GroupingMemberCount * _model.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount / 100;
 
                     }
-                    已繳服務總費用 @(String.Format("{0:##,###,###,###}", _model.TotalPaidAmount())) 扣除依簽約時課程單價(<span class="col-red">@(String.Format("{0:##,###,###,###}", _model.LessonPriceType.ListPrice))</span>) / 人乘以實際上課堂數(<span class="col-red">@(_model.AttendedLessonCount())</span>)，終止轉收入款項 <span class="col-red">@(String.Format("{0:##,###,###,##0}", refund))</span>元<small> = @(String.Format("{0:##,###,###,###}", _model.TotalPaidAmount())) - ( @(String.Format("{0:##,###,###,###}", _model.LessonPriceType.PriceTypeBundle())) * @(_model.CourseContractType.GroupingMemberCount) * ( @(_model.Lessons) - @(_model.RemainedLessonCount() ))。</small>
+                    已繳服務總費用 @(String.Format("{0:##,###,###,###}", _model.TotalPaidAmount())) 扣除依簽約時課程單價(<span class="col-red">@(String.Format("{0:##,###,###,###}", _model.LessonPriceType.ListPrice))</span>) / 人乘以實際上課堂數(<span class="col-red">@(_model.AttendedLessonCount())</span>)，終止轉收入款項 <span class="col-red">@(String.Format("{0:##,###,###,##0}", refund))</span>元
+                    <small>
+                        = @(String.Format("{0:##,###,###,###}", _model.TotalPaidAmount())) - ( @(String.Format("{0:##,###,###,###}", _model.LessonPriceType.PriceTypeBundle())) * @(_model.CourseContractType.GroupingMemberCount)
+                        @if (_model.CourseContractType.GroupingMemberCount > 1)
+                        {
+                            <text>* @(_model.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount / 100m)</text>
+                        }
+                        * ( @(_model.Lessons) - @(_model.RemainedLessonCount() )))。
+                    </small>
                 </div>
             </div>
         </div>

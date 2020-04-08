@@ -91,9 +91,7 @@
                         <td></td>
                         <td>
                             主管簽約代表：
-                            @{ UserProfile contractAgent = (UserProfile)ViewBag.ContractAgent;}
-
-                            <img src="@(contractAgent!=null ? contractAgent.LoadInstance(models).UserProfileExtension.Signature : _contract.Supervisor?.UserProfileExtension.Signature)" width="200px" class="modifySignDialog_link">
+                            <img src="@(_contract.Supervisor?.UserProfileExtension.Signature)" width="200px" class="modifySignDialog_link">
                         </td>
                     </tr>
                     <tr>

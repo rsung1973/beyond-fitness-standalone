@@ -10,7 +10,7 @@ attributeFormDefault="unqualified">
                 <!--  註銷發票號碼  -->
                 <xsd:element name="VoidInvoiceNumber" type="InvoiceNumberType"/>
                 <!--  發票日期  -->
-                <xsd:element name="InvoiceDate" type=" DateType"/>
+                <xsd:element name="InvoiceDate" type="DateType"/>
                 <!--  買方識別碼  -->
                 <xsd:element name="BuyerId">
                     <xsd:simpleType>

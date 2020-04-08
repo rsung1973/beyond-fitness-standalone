@@ -54,8 +54,8 @@
                             <td colspan="2">
                                 申請項目：@if (_contract.Status >= (int)Naming.CourseContractStatus.待審核)
                                 {
-                                                    ☑
-                                                }
+                                    <text>☑</text>
+                                }
                                 else
                                 {
                                     <input type="checkbox" name="extension" checked="checked" onclick="this.checked = true;" />
@@ -96,11 +96,7 @@
                         <td></td>
                         <td>
                             主管簽約代表：
-                            @{ UserProfile contractAgent = (UserProfile)ViewBag.ContractAgent;}
-                            @if (_contract.Status > (int)Naming.CourseContractStatus.待確認 || contractAgent != null)
-                            {
-                                <img src="@(contractAgent!=null ? contractAgent.LoadInstance(models).UserProfileExtension.Signature : _contract.Supervisor?.UserProfileExtension.Signature)" width="200px" class="modifySignDialog_link">
-                            }
+                            <img src="@(_contract.Supervisor?.UserProfileExtension.Signature)" width="200px" class="modifySignDialog_link">
                         </td>
                     </tr>
                     <tr>

@@ -387,7 +387,7 @@ namespace WebHome.Helper
         {
             AchievementQueryViewModel queryModel = new AchievementQueryViewModel
             {
-                AchievementDateFrom = item.StartDate,
+                AchievementDateFrom = item.StartDate.AddMonths(-1),
                 BypassCondition = true,
             };
 
@@ -430,7 +430,7 @@ namespace WebHome.Helper
                 revenueGoal.CustomRevenueGoal = branchItems.Sum(b => b.LessonTuitionGoal + b.AchievementGoal);
 
                 var baseIndicator = branchIndicator.MonthlyBranchRevenueIndicator.OrderBy(m => m.GradeID).First();
-                revenueGoal.CustomIndicatorPercentage = Math.Round((decimal)revenueGoal.CustomRevenueGoal * (decimal)baseIndicator.MonthlyRevenueGrade.IndicatorPercentage / (decimal)baseIndicator.RevenueGoal, 2);
+                revenueGoal.CustomIndicatorPercentage = Math.Round(((decimal?)revenueGoal.CustomRevenueGoal * (decimal?)baseIndicator.MonthlyRevenueGrade.IndicatorPercentage / (decimal?)baseIndicator.RevenueGoal) ?? 0m, 2);
 
                 revenueGoal.AchievementGoal = branchItems.Sum(b => b.AchievementGoal);
                 revenueGoal.LessonTuitionGoal = branchItems.Sum(b => b.LessonTuitionGoal);

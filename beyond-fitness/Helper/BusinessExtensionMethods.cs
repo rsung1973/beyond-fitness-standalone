@@ -1126,7 +1126,7 @@ namespace WebHome.Helper
             return items;
         }
 
-        public static void CheckProfessionalLeve2020<TEntity>(this ModelSource<TEntity> models, ServingCoach item)
+        public static void CheckProfessionalLevel2020<TEntity>(this ModelSource<TEntity> models, ServingCoach item)
             where TEntity : class, new()
         {
             if (!item.LevelID.HasValue || item.ProfessionalLevel.ProfessionalLevelReview == null)
@@ -1154,6 +1154,7 @@ namespace WebHome.Helper
             //attendanceCount += ((PISessionCount + 1) / 2);
 
             var attendanceCount = (indicators.Sum(i => i.ActualCompleteLessonCount) ?? 0)
+                                + (indicators.Sum(i => i.ActualCompleteTSCount) ?? 0)
                                 + (indicators.Sum(i => i.ActualCompletePICount) ?? 0) / 2;
 
             var tuition = models.GetTuitionAchievement(item.CoachID, quarterStart, ref quarterEnd, null);
