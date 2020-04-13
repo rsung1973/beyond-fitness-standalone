@@ -15,10 +15,10 @@
       "scenarioPhoto": [ "Scenario1.jpg" ]
     },
     {
-      "coachName": "陳芷榆",
-      "nickname": "Genie",
-      "prologue": "真正的成長，是因為經驗了苦痛；是在頻頻回首的大路上，終於領略了生命的喜悅與擔當！",
-      "scenarioPhoto": []
+      "coachName": "詹亞婷",
+      "nickname": "Nini",
+      "prologue": "追求心之所向的同時，別忘了享受已經擁有的一切",
+      "scenarioPhoto": [ "Scenario1.jpg" ]
     },
     {
       "coachName": "黃政浩",
@@ -27,9 +27,27 @@
       "scenarioPhoto": [ "Scenario1.jpg" ]
     },
     {
+      "coachName": "高維之",
+      "nickname": "Vicky",
+      "prologue": "不是每一次努力都會有收穫，但是，每一次收穫都必須努力",
+      "scenarioPhoto": [ "Scenario1.jpg" ]
+    },
+    {
       "coachName": "黃宇承",
       "nickname": "Alan",
-      "prologue": "寧願跑起來被絆倒無數次，也不願規規矩矩走一輩子。就算跌倒也要豪邁的笑。",
+      "prologue": "寧願跑起來被絆倒無數次，也不願規規矩矩走一輩子。就算跌倒也要豪邁的笑",
+      "scenarioPhoto": [ "Scenario1.jpg" ]
+    },
+    {
+      "coachName": "張智鎧",
+      "nickname": "Jack",
+      "prologue": "改變是緩慢且困難的，但隨著時間和努力，任何習慣都是能被重塑的！",
+      "scenarioPhoto": [ "Scenario1.jpg" ]
+    },
+    {
+      "coachName": "李玟融",
+      "nickname": "Micheal",
+      "prologue": "不一定要等到很厲害才能開始 ，但是要先開始才會變的很厲害",
       "scenarioPhoto": [ "Scenario1.jpg" ]
     }
   ]
