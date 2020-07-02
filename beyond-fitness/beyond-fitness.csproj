@@ -2016,19 +2016,6 @@
     <Content Include="img\blogbox\Photo_20160711-01.jpg" />
     <Content Include="img\blogbox\Photo_20160711-02.jpg" />
     <Content Include="img\body.jpg" />
-    <Content Include="img\bonus\bonus_01.jpg" />
-    <Content Include="img\bonus\bonus_01.png" />
-    <Content Include="img\bonus\bonus_02.JPG" />
-    <Content Include="img\bonus\bonus_03.jpg" />
-    <Content Include="img\bonus\bonus_04.jpg" />
-    <Content Include="img\bonus\bonus_05.JPG" />
-    <Content Include="img\bonus\bonus_06.jpg" />
-    <Content Include="img\bonus\bonus_07.JPG" />
-    <Content Include="img\bonus\bonus_08.jpg" />
-    <Content Include="img\bonus\bonus_09.jpg" />
-    <Content Include="img\bonus\bonus_10.jpg" />
-    <Content Include="img\bonus\bonus_11.jpg" />
-    <Content Include="img\bonus\bonus_12.jpg" />
     <Content Include="img\border.png" />
     <Content Include="img\clear.png" />
     <Content Include="img\colorblind-friendly\pt1.png" />
@@ -3808,6 +3795,26 @@
     <Content Include="Content\bootstrap-datetimepicker.css" />
     <Content Include="Views\CornerKick\Module\PromptPayoffDue.cshtml" />
     <Content Include="Views\CornerKick\MyContract.cshtml" />
+    <Content Include="img\bonus\bonus_001.jpg" />
+    <Content Include="img\bonus\bonus_011.jpg" />
+    <Content Include="img\bonus\bonus_021.JPG" />
+    <Content Include="img\bonus\bonus_022.JPG" />
+    <Content Include="img\bonus\bonus_023.jpg" />
+    <Content Include="img\bonus\bonus_023.png" />
+    <Content Include="img\bonus\bonus_031.jpg" />
+    <Content Include="img\bonus\bonus_041.jpg" />
+    <Content Include="img\bonus\bonus_051.JPG" />
+    <Content Include="img\bonus\bonus_061.jpg" />
+    <Content Include="img\bonus\bonus_071.JPG" />
+    <Content Include="img\bonus\bonus_081.jpg" />
+    <Content Include="img\bonus\bonus_091.jpg" />
+    <Content Include="img\bonus\bonus_101.jpg" />
+    <Content Include="img\bonus\bonus_111.jpg" />
+    <Content Include="img\bonus\bonus_121.jpg" />
+    <Content Include="img\bonus\bonus_131.jpg" />
+    <Content Include="img\bonus\bonus_141.jpg" />
+    <Content Include="img\bonus\bonus_151.jpg" />
+    <Content Include="img\bonus\bonus_161.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
