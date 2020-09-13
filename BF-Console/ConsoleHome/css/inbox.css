@@ -85,7 +85,8 @@
 }
 
 .inbox .mail_list .list-group-item .msg {
-	margin-bottom: 0px
+	margin-bottom: 0px;
+    font-size: 13px;
 }
 
 .inbox .mail_list .unread {

@@ -18940,6 +18940,7 @@ textarea:focus {
     font-size: 14px;
     color: #fff;
     font-weight: 700;
+    text-transform: uppercase;
 }
 
 .section-blog .articlelist .author {
@@ -18983,6 +18984,7 @@ textarea:focus {
 
 .section-blog .blog-single .header h1 {
     text-align: justify;
+    text-transform: uppercase;
 }
 
 .section-blog .blog-single .header .datetime {
@@ -19087,16 +19089,18 @@ textarea:focus {
 
 .section-blog .blog-single .reference ul.list-style1 {
     list-style-position: outside;
+    padding-left: .8em;
 }
 
 .section-blog .blog-single .reference ul.list-style1 li::before {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     content: "●";
     display: inline-block;
-    width: 1em;
+    width: 0;
     margin: 0px;
     color: #bfbfbf;
     font-size: 10px;
+    text-indent: -1.33em;
 }
 
 .section-blog .blog-single .reference ul.list-style1 li {

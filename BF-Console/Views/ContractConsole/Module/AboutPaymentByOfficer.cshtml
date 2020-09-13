@@ -42,15 +42,15 @@
                                     //PayoffDueFrom = dateFrom,
                                     PayoffDueTo = dateTo,
                                     IncludeTotalUnpaid = true,
-                                })),@(items.Count()));'>@(items.Count())</a>
-                                <br />
-                                @for (int i = 1; i < 5; i++)
-                                {
-                                    dateFrom = dateTo;
-                                    dateTo = dateTo.AddMonths(1);
-                                    items = toPay.Where(c => c.PayoffDue >= dateFrom && c.PayoffDue < dateTo);
-                                    <text>@($"{dateFrom:yyyy/MM}")：</text>
-                                    <a href = 'javascript:showContractList(@Html.Raw(JsonConvert.SerializeObject(
+                                })),@(items.Count()));'> @(items.Count())</a>
+                <br />
+                @for (int i = 1; i < 5; i++)
+                {
+                    dateFrom = dateTo;
+                    dateTo = dateTo.AddMonths(1);
+                    items = toPay.Where(c => c.PayoffDue >= dateFrom && c.PayoffDue < dateTo);
+                    <text>@($"{dateFrom:yyyy/MM}")：</text>
+                    <a href='javascript:showContractList(@Html.Raw(JsonConvert.SerializeObject(
                                                 new
                                                 {
                                                 ContractQueryMode = Naming.ContractServiceMode.ContractOnly,
@@ -58,9 +58,9 @@
                                                 PayoffDueFrom = dateFrom,
                                                 PayoffDueTo = dateTo,
                                                 })),@(items.Count())); '>@(items.Count())</a>
-                                   <br />
-                                }
-                            </p>
+                    <br />
+                }
+            </p>
                         </div>
                         <div class="col-4 text-right">
                             <a href="#" onclick='showContractList(@Html.Raw(JsonConvert.SerializeObject(

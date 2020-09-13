@@ -84,26 +84,26 @@
                             .Where(c => c.Expiration >= DateTime.Today)
                             .Where(c => c.Renewal.HasValue && c.Renewal == true);}
 
-                    <li class="col-lg-3 col-md-3 col-sm-6">
+                    @*<li class="col-lg-3 col-md-3 col-sm-6">
                         @{ Html.RenderPartial("~/Views/ContractConsole/Module/ToRenewByCoach.cshtml", _model);}
 
-                    </li>
-                    <li class="col-lg-3 col-md-3 col-sm-6">
+                    </li>*@
+                    <li class="col-lg-4 col-md-4 col-sm-6">
                         <div class="body">
                             <div class="row">
                                 <div class="col-12 text-center">
                                     <div class="sparkline-pie">@(newContracts.Count()),@(renewContracts.Count())</div>
                                     <h6 class="m-t-20">新約 V.S. 續約</h6>
-                                    <p class="displayblock m-b-0"><span class="col-amber">@(newContracts.Count())</span> / <span class="col-grey">@(renewContracts.Count())</span></p>
+                                    <p class="displayblock m-b-0"><span class="col-tiffany">@(newContracts.Count())</span> / @(renewContracts.Count())</p>
                                 </div>
                             </div>
                         </div>
                     </li>
-                    <li class="col-lg-3 col-md-3 col-sm-6">
+                    <li class="col-lg-4 col-md-4 col-sm-6">
                         @{ Html.RenderPartial("~/Views/ContractConsole/Module/AboutInstallment.cshtml", _effectiveItems);}
 
                     </li>
-                    <li class="col-lg-3 col-md-3 col-sm-6">
+                    <li class="col-lg-4 col-md-4 col-sm-6">
                         @{ Html.RenderPartial("~/Views/ContractConsole/Module/AboutReceivablesByCoach.cshtml", _model);}
 
                     </li>
@@ -159,7 +159,7 @@
             offset: 90,
             width: '100px',
             height: '100px',
-            sliceColors: ['#f8b500', '#5c636e']
+            sliceColors: ['#64c8c0', '#1B2C48']
         })
 
         //開啟小日曆

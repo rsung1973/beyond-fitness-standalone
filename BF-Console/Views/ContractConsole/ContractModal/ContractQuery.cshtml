@@ -45,52 +45,50 @@
             </div>
             <div class="modal-body">
                 <div class="row clearfix">
+                    @*<div class="col-lg-6 col-md-6 col-sm-6 col-12">
+            <div class="input-group">
+                <input type="text" name="RealName" class="form-control form-control-danger" placeholder="學生姓名(暱稱)" />
+                <span class="input-group-addon">
+                    <i class="zmdi zmdi-search"></i>
+                </span>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+            <div class="input-group">
+                <input type="text" name="ContractNo" class="form-control form-control-danger" placeholder="合約編號" />
+                <span class="input-group-addon">
+                    <i class="zmdi zmdi-search"></i>
+                </span>
+            </div>
+        </div>*@
                     <div class="col-12">
-                        <div class="card action_bar">
-                            <div class="body">
-                                <form>
-                                    <div class="row clearfix">
-                                        <div class="col-lg-6 col-md-6 col-sm-6 col-12">
-                                            <div class="input-group">
-                                                <input type="text" name="RealName" class="form-control form-control-danger" placeholder="學生姓名(暱稱)" />
-                                                <span class="input-group-addon">
-                                                    <i class="zmdi zmdi-search"></i>
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6 col-md-6 col-sm-6 col-12">
-                                            <div class="input-group">
-                                                <input type="text" name="ContractNo" class="form-control form-control-danger" placeholder="合約編號" />
-                                                <span class="input-group-addon">
-                                                    <i class="zmdi zmdi-search"></i>
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6 col-md-6 col-sm-6 col-12">
-                                            <div class="input-group">
-                                                <input type="text" class="form-control date" name="ContractDateFrom" data-date-format="yyyy/mm/dd" readonly="readonly" placeholder="合約起日" value="" />
-                                                <span class="input-group-addon xl-slategray">
-                                                    <i class="zmdi zmdi-time"></i>
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6 col-md-6 col-sm-6 col-12">
-                                            <div class="input-group">
-                                                <input type="text" class="form-control date" name="ContractDateTo" data-date-format="yyyy/mm/dd" readonly="readonly" placeholder="合約迄日" value="" />
-                                                <span class="input-group-addon xl-slategray">
-                                                    <i class="zmdi zmdi-time"></i>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
+                        <div class="input-group">
+                            <input type="text" name="CustomQuery" class="form-control form-control-danger" placeholder="請擇一輸入：學生姓名(暱稱) 或 合約編號" />
+                            <span class="input-group-addon">
+                                <i class="zmdi zmdi-search"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+                        <div class="input-group">
+                            <input type="text" class="form-control date" name="ContractDateFrom" data-date-format="yyyy/mm/dd" readonly="readonly" placeholder="合約起日" value="" />
+                            <span class="input-group-addon">
+                                <i class="zmdi zmdi-time"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+                        <div class="input-group">
+                            <input type="text" class="form-control date" name="ContractDateTo" data-date-format="yyyy/mm/dd" readonly="readonly" placeholder="合約迄日" value="" />
+                            <span class="input-group-addon">
+                                <i class="zmdi zmdi-time"></i>
+                            </span>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-darkteal btn-round waves-effect"><i class="zmdi zmdi-search-for"></i></button>
+                <button type="button" class="btn btn-darkteal btn-round waves-effect">確定，不後悔</button>
             </div>
         </div>
     </div>
@@ -114,7 +112,7 @@
 
             var viewModel = @Html.Raw(JsonConvert.SerializeObject(_viewModel));
             $('#@(_dialogID) button').on('click', function (event) {
-                var $formData = $('#@(_dialogID) form').serializeObject();
+                var $formData = $('#@(_dialogID) input').serializeObject();
                 $global.queryCallback = function () {
                     $global.closeAllModal();
                 };

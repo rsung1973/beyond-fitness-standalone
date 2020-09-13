@@ -22,7 +22,8 @@
 }
 
 ul.mb_list {
-	background-color: #e0eff5;
+/*	background-color: #e0eff5;*/
+    background-color: transparent;
 	list-style: none;
 	padding: 0;
 	margin: 5px 9px 10px 9px;
@@ -56,7 +57,8 @@ ul.mb_list>li {
 	min-height: 31px;
 	line-height: normal;
 	font-size: 14px;
-	color: #444;
+/*	color: #444;*/
+    color: #888
 }
 
 ul.mb_list.xl-pink>li {    
@@ -72,11 +74,12 @@ ul.mb_list.xl-khaki>li {
 }
 
 ul.mb_list>li:nth-child(odd) {
-	background-color: #e0eff5;
+/*	background-color: #e0eff5;*/
 }
 
 ul.mb_list>li:nth-child(even) {
-	background-color: #fff;
+/*	background-color: #fff;*/
+    background-color: rgba(0, 0, 0, .05);
 }
 
 ul.mb_list.xl-pink>li:nth-child(odd) {
@@ -505,7 +508,8 @@ ul.mb_list .tit1 {
 .tb2 .hd_p20 {
 	font-size: 16px;
 	font-weight: bold;
-	color: #444;
+/*	color: #444;*/
+    color: #888;
 	line-height: 1.5em;
 	vertical-align: middle;
 }
@@ -518,14 +522,16 @@ ul.mb_list .tit1 {
 .tb2 .hd_normal {
 	font-size: 16px;
 	font-weight: normal;
-	color: #444;
+/*	color: #444;*/
+    color: #888;
 	line-height: normal;
 }
 
 .tb2 .hd_normalB {
 	font-size: 16px;
 	font-weight: bold;
-	color: #444;
+/*	color: #444;*/
+    color: #888;
 	line-height: normal;
 }
 
@@ -564,7 +570,8 @@ ul.mb_list .tit1 {
 
 .tb2 .hd2 {
 	font-size: 16px;
-	color: #444;
+/*	color: #444;*/
+    color: #888;
 	line-height: 1, 4em;
 	vertical-align: middle;
 }
@@ -667,6 +674,10 @@ ul.mb_colsble .tit {
 
 ul.mb_colsble.open {
 	background-color: #b3b3b3;
+}
+
+ul.mb_colsble.open .mb_list {
+    background-color: #f9f1d8;
 }
 
 ul.mb_colsble.open .tit {

@@ -20,10 +20,10 @@
     <div class="row">
         <div class="col-8">
             <h5 class="m-t-0">即將自動終止</h5>
-            @{ 
+            @{
                 var expiringItems = models.PromptUnpaidExpiringContract();
                 var expiredItems = models.PromptUnpaidExpiredContract();
-                }
+            }
             <p class="text-small">
                 已自動終止：<a href="#" onclick='showContractList(@Html.Raw(JsonConvert.SerializeObject(
                                 new
@@ -33,11 +33,11 @@
                                     Unpaid = true,
                                     Subject = "已自動終止",
                                 })),@(expiredItems.Count()));'>@(expiredItems.Count())</a>
-                            </p>
+            </p>
         </div>
         <div class="col-4 text-right">
             <a href="#" onclick='showContractList(@Html.Raw(JsonConvert.SerializeObject(
-                                new 
+                                new
                                 {
                                     ContractQueryMode = Naming.ContractServiceMode.ContractOnly,
                                     Status = (int)Naming.CourseContractStatus.已生效,
@@ -47,6 +47,7 @@
             </a>
             <small class="info">未收款合約</small>
         </div>
+        @{ Html.RenderPartial("~/Views/ContractConsole/Module/CauseForEnding.cshtml", _model);}
     </div>
 </div>
 

@@ -26,7 +26,7 @@
 <!--我的分店合約-->
 <div class="container-fluid">
     <h4 class="card-outbound-header">我的分店合約</h4>
-    <div class="card widget_2">
+    <div class="card widget_3">
         <ul class="row clearfix list-unstyled m-b-0">
             <li class="col-lg-3 col-md-6 col-sm-12">
                 @{ Html.RenderPartial("~/Views/ContractConsole/Module/AboutExpiringByOfficer.cshtml", _model);}
@@ -46,9 +46,11 @@
             </li>
         </ul>
         <ul class="row clearfix list-unstyled m-b-0">
-            <li class="col-lg-3 col-md-3 col-sm-6">
-                @{ Html.RenderPartial("~/Views/ContractConsole/Module/ToRenewByOfficer.cshtml", _model);}
-
+            @*<li class="col-lg-3 col-md-3 col-sm-6">
+            @{ Html.RenderPartial("~/Views/ContractConsole/Module/ToRenewByOfficer.cshtml", _model);}
+        </li>*@
+            <li class="col-lg-3 col-md-6 col-sm-12">
+                @{ Html.RenderPartial("~/Views/ContractConsole/Module/AboutAutoTermination.cshtml", _model);}
             </li>
             <li class="col-lg-3 col-md-3 col-sm-6">
                 @{ Html.RenderPartial("~/Views/ContractConsole/Module/AboutCompleteLessons.cshtml", _effectiveItems);}

@@ -74,30 +74,22 @@
                     </div>
                     <div class="modal-body">
                         <div class="row clearfix">
-                            <div class="col-12">
-                                <div class="card action_bar">
-                                    <div class="body">
-                                        <div class="row clearfix">
-                                            <div class="col-lg-6 col-md-6 col-sm-6 col-12">
-                                                <div id="donut_chart" class="dashboard-donut-chart"></div>
-                                            </div>
-                                            <div class="col-lg-6 col-md-6 col-sm-6 col-12">
-                                                <table class="table m-t-15 m-b-0">
-                                                    <tbody>
-                                                        @foreach (var g in groups)
-                                                        {
-                                                            <tr>
-                                                                <td>@(((Naming.CauseForEnding)g.Key).ToString())</td>
-                                                                <td>@(Math.Round(g.Count * 100M / totalCount))%</td>
-                                                            </tr>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+                                <div id="donut_chart" class="dashboard-donut-chart"></div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+                                <table class="table m-t-15 m-b-0">
+                                    <tbody>
+                                        @foreach (var g in groups)
+                                        {
+                                            <tr>
+                                                <td>@(((Naming.CauseForEnding)g.Key).ToString())</td>
+                                                <td>@(Math.Round(g.Count * 100M / totalCount))%</td>
+                                            </tr>
 
-                                                        }
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                        }
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
