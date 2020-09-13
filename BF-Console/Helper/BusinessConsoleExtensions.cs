@@ -243,7 +243,7 @@ namespace WebHome.Helper
                     (int)Naming.LessonPriceStatus.團體學員課程,
         };
 
-        public static void UpdateMonthlyAchievement<TEntity>(this MonthlyIndicator item, ModelSource<TEntity> models)
+        public static void UpdateMonthlyAchievement<TEntity>(this MonthlyIndicator item, ModelSource<TEntity> models,bool? forcedUpdate = null)
             where TEntity : class, new()
         {
 
@@ -255,7 +255,11 @@ namespace WebHome.Helper
 
             IQueryable<V_Tuition> lessonItems = queryModel.InquireAchievement(models);
 
-            if (item.StartDate == DateTime.Today.FirstDayOfMonth())
+            if (forcedUpdate == true)
+            {
+                lessonItems = lessonItems.Where(l => l.SettlementID.HasValue);
+            }
+            else if (item.StartDate == DateTime.Today.FirstDayOfMonth())
             {
                 lessonItems = lessonItems.Where(l => l.ClassTime < DateTime.Today);
             }

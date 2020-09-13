@@ -588,23 +588,29 @@ namespace WebHome.Helper
         public static IQueryable<UserProfile> CheckOverlappingBooking<TEntity>(this ModelSource<TEntity> models, LessonTime intendedBooking, LessonTime originalBooking)
                     where TEntity : class, new()
         {
-            List<int> checkHour = new List<int>();
-            DateTime startTime = intendedBooking.ClassTime.Value.AddMinutes(-intendedBooking.ClassTime.Value.Minute);
-            DateTime endTime = intendedBooking.ClassTime.Value.AddMinutes(intendedBooking.DurationInMinutes.Value);
+            //List<int> checkHour = new List<int>();
+            //DateTime startTime = intendedBooking.ClassTime.Value.AddMinutes(-intendedBooking.ClassTime.Value.Minute);
+            //DateTime endTime = intendedBooking.ClassTime.Value.AddMinutes(intendedBooking.DurationInMinutes.Value);
 
-            for (var t = startTime; t < endTime; t = t.AddHours(1))
-            {
-                checkHour.Add(t.Hour);
-            }
+            //for (var t = startTime; t < endTime; t = t.AddHours(1))
+            //{
+            //    checkHour.Add(t.Hour);
+            //}
 
             var oriUID = originalBooking.GroupingLesson.RegisterLesson.Select(r => r.UID).ToArray();
 
-            var overlappingItems = models.GetTable<LessonTimeExpansion>()
-                                .Where(t => t.ClassDate == startTime.Date)
-                                .Where(t => checkHour.Contains(t.Hour))
-                                .Where(t => t.LessonID != originalBooking.LessonID)
-                                .Select(t => t.RegisterLesson.UserProfile)
-                                .Where(u => oriUID.Contains(u.UID));
+            //var overlappingItems = models.GetTable<LessonTimeExpansion>()
+            //                    .Where(t => t.ClassDate == startTime.Date)
+            //                    .Where(t => checkHour.Contains(t.Hour))
+            //                    .Where(t => t.LessonID != originalBooking.LessonID)
+            //                    .Select(t => t.RegisterLesson.UserProfile)
+            //                    .Where(u => oriUID.Contains(u.UID));
+
+            var overlappingItems = models.GetTable<LessonTime>().Where(l => l.LessonID != originalBooking.LessonID)
+                            .Where(l => !(l.ClassTime >= intendedBooking.ClassTime.Value.AddMinutes(intendedBooking.DurationInMinutes.Value)
+                                        || intendedBooking.ClassTime >= l.ClassTime.Value.AddMinutes(l.DurationInMinutes.Value)))
+                            .Select(l => l.RegisterLesson.UserProfile)
+                            .Where(u => oriUID.Contains(u.UID));
 
             return overlappingItems;
 

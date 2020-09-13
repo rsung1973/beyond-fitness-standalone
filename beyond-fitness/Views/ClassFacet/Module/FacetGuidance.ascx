@@ -30,7 +30,9 @@
                 &&*/
                 _model.RegisterLesson.LessonPriceType.Status != (int)Naming.LessonPriceStatus.自主訓練
                 && _model.ClassTime < DateTime.Today.AddDays(1)) && _model.LessonAttendance == null
-                && _model.TrainingBySelf != 2)
+                && _model.TrainingBySelf != 2
+                && _model.RegisterLesson.UID!=2091
+                && _model.RegisterLesson.UID!=3612)
             { %>
         <a onclick="attendLesson(<%= _model.LessonID %>);" class="btn btn-success"><i class="far fa-fw fa-check-square"></i>完成上課</a>
         <%  } %>

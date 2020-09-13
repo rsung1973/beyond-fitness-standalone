@@ -36,13 +36,17 @@
                         {
                             <a class="list-group-item checkAttendance">學生打卡</a>
                         }
+                        @if (_model.CouldBeCancelled(_profile))
+                        {
+                            <a class="list-group-item deleteLesson">取消預約</a>
+                        }
                     </div>
                 </div>
             </div>
         </div>
         @{ Html.RenderPartial("~/Views/ConsoleHome/Shared/BSModalScript.cshtml", model: _dialogID);}
 
-        <script>
+    <script>
         $(function () {
             $('#@(_dialogID) a.checkAttendance').on('click', function (event) {
                 swal({
@@ -87,8 +91,49 @@
                     }
                 });
             });
+
+            $('#@(_dialogID) a.deleteLesson').on('click', function (event) {
+                swal({
+                    title: "不後悔?",
+                    text: "確定取消本次上課！？",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "確定, 不後悔",
+                    cancelButtonText: "不, 點錯了",
+                    closeOnConfirm: false,
+                    closeOnCancel: false
+                }, function (isConfirm) {
+                    if (isConfirm) {
+                        showLoading();
+                        $.post('@Html.Raw(Url.Action("RevokeBooking", "ConsoleEvent"))', { 'keyID': '@(_model.LessonID.EncryptKey())' }, function (data) {
+                            hideLoading();
+                            if ($.isPlainObject(data)) {
+                                if (data.result) {
+                                    swal({
+                                        title: "取消預約成功!",
+                                        text: "課程已經取消 Bye!",
+                                        type: "success",
+                                        showCancelButton: false,
+                                        closeOnConfirm: true
+                                    }, function () {
+                                            showLoading();
+                                            $('').launchDownload('@Html.Raw(Url.Action("LessonOverview", "ConsoleHome"))',$global.viewModel);
+                                    });
+                                } else {
+                                    swal(data.message);
+                                }
+                            } else {
+                                $(data).appendTo($('body'));
+                            }
+                        });
+                    } else {
+                        swal("放棄取消", "你的資料現在非常安全 :)", "error");
+                    }
+                });
+            });
         });
-        </script>
+    </script>
     </div>
 }
 else

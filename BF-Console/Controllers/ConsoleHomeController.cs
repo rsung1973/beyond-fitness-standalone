@@ -142,6 +142,7 @@ namespace WebHome.Controllers
             {
                 viewModel.AuthorID = item.AuthorID;
                 viewModel.Title = item.Title;
+                viewModel.Subtitle = item.Subtitle;
                 viewModel.DocDate = item.Document.DocDate;
                 viewModel.TagID = item.BlogTag.Select(t => (int?)t.CategoryID).ToArray();
             }
@@ -600,6 +601,12 @@ namespace WebHome.Controllers
             }
 
             UserProfile item = ViewBag.DataItem = models.GetTable<UserProfile>().Where(u => u.UID == viewModel.UID).First();
+
+            if (viewModel.ToPrepare != true)
+            {
+                return View("~/Views/ConsoleHome/PrepareLearnerCharacter.cshtml", profile.LoadInstance(models));
+            }
+
             QuestionnaireRequest quest = models.GetTable<QuestionnaireRequest>()
                     .Where(r => r.UID == viewModel.UID)
                     .Where(r => r.QuestionnaireID == viewModel.QuestionnaireID).FirstOrDefault();

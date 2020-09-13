@@ -224,7 +224,7 @@ namespace WebHome.Models.ViewModel
 
         protected bool checkPublicCarrierId(String carrierId)
         {
-            return carrierId != null && Regex.IsMatch(carrierId, "^/[A-Z0-9+-]{7}$");
+            return carrierId != null && Regex.IsMatch(carrierId, "^/[A-Z0-9+-\\.]{7}$");
         }
 
         protected virtual InvoiceException checkPublicCarrier()

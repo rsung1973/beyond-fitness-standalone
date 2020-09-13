@@ -3,6 +3,9 @@
     { %>
     <script>
         alert('<%= HttpUtility.JavaScriptStringEncode(_message) %>');
+        if (hideLoading) {
+            hideLoading();
+        }
     </script>
 <%  }
     if (ViewBag.GoBack == true)

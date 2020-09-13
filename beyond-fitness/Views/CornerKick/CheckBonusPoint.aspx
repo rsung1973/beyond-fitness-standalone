@@ -83,10 +83,20 @@
                            <div class="personal-info">
                               <div class="row valign-wrapper">
                                  <div class="col s4 m2">
-                                     <%  var lesson = _model.RegisterLesson.OrderByDescending(r => r.RegisterID).First();
-                                        var currentBonusPoint = _model.BonusPoint(models) ?? 0; %>
+                                     <%  var advisor = _model.LearnerFitnessAdvisor.Select(a => a.ServingCoach).FirstOrDefault();
+                                         var currentBonusPoint = _model.BonusPoint(models) ?? 0; %>
                                      <%   ViewBag.ImgClass = "circle responsive-img valign";
-                                            Html.RenderPartial("~/Views/CornerKick/Module/ProfileImage.ascx", lesson.ServingCoach.UserProfile); %>
+                                         if (advisor != null)
+                                         {
+                                             Html.RenderPartial("~/Views/CornerKick/Module/ProfileImage.ascx", advisor.UserProfile);
+                                         }
+                                         else
+                                         {
+                                             %>
+                                     <img class="<%= ViewBag.ImgClass ?? "circle" %>" src="<%= ViewBag.NoNameImg ?? "images/avatars/noname.png" %>" id="profileImg" />
+                                     <%
+                                         }
+                                         %>
                                  </div>
                                  <div class="col s8 m10 text-box">
 <!--                                    <span class="black-t18">劉加菲</span>-->

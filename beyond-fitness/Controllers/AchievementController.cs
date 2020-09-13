@@ -754,7 +754,7 @@ namespace WebHome.Controllers
             viewModel.AchievementDateFrom = new DateTime(DateTime.Today.Year, (DateTime.Today.Month - 1) / 3 * 3 + 1, 1);
             viewModel.AchievementDateTo = viewModel.AchievementDateFrom.Value.AddMonths(3).AddDays(-1);
             ViewResult result = (ViewResult)InquirePerformance(viewModel);
-            result.ViewName = "~/Views/Achievement/Module/CoachCurrentQuarterPerformance.ascx";
+            result.ViewName = "~/Views/Achievement/Module/CoachCurrentQuarterPerformance.cshtml";
             return result;
         }
 

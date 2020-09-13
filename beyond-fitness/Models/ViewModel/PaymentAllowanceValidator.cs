@@ -113,7 +113,7 @@ namespace WebHome.Models.ViewModel
                     OriginalDescription = originalInvoice.InvoiceDetails[0].InvoiceProduct.Brief,
                     TaxType = originalInvoice.InvoiceDetails[0].InvoiceProduct.InvoiceProductItem[0].TaxType,
                     No = originalInvoice.InvoiceDetails[0].InvoiceProduct.InvoiceProductItem[0].No,
-                    UnitCost = originalInvoice.InvoiceDetails[0].InvoiceProduct.InvoiceProductItem[0].UnitCost,
+                    UnitCost = originalInvoice.InvoiceAmountType.TotalAmount,   //originalInvoice.InvoiceDetails[0].InvoiceProduct.InvoiceProductItem[0].UnitCost,
                     Remark = _remark,
                 };
             }

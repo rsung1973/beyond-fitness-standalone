@@ -68,6 +68,9 @@
                         if (data.result) {
                             $('#@(_dialogID)').modal('hide');
                             refreshTrainingExecution(data.StageID);
+                            if (data.UpdatePurpose) {
+                                loadMilestone(true);
+                            }
                         } else {
                             hideLoading();
                             swal(data.message);

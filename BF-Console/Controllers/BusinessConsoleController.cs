@@ -40,7 +40,7 @@ namespace WebHome.Controllers
             return View();
         }
 
-        public ActionResult PrepareRevenueGoal(MonthlyIndicatorQueryViewModel viewModel,bool? forcedPrepare)
+        public ActionResult PrepareRevenueGoal(MonthlyIndicatorQueryViewModel viewModel,bool? forcedPrepare, bool? forcedUpdate)
         {
             if (viewModel.KeyID != null)
             {
@@ -65,7 +65,7 @@ namespace WebHome.Controllers
                 item = models.InitializeMonthlyIndicator(viewModel.Year.Value, viewModel.Month.Value, true);
             }
 
-            item.UpdateMonthlyAchievement(models);
+            item.UpdateMonthlyAchievement(models, forcedUpdate);
             item.UpdateMonthlyAchievementGoal(models);
 
             return Json(new { result = true, message = "OK" }, JsonRequestBehavior.AllowGet);

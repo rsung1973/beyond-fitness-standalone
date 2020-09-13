@@ -166,6 +166,15 @@ namespace WebHome.Controllers
             }, JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult TestDateTime()
+        {
+            DateTime t = DateTime.Today.AddHours(18);
+            var items = models.GetTable<LessonTime>()
+                            .Where(l => !(l.ClassTime >= t.AddMinutes(90)
+                                    || t >= l.ClassTime.Value.AddMinutes(l.DurationInMinutes.Value)));
+            return Json(new {Count =  items.Count(),SQL = items.ToString() },JsonRequestBehavior.AllowGet);
+        }
+
     }
 
     public class ViewModelA

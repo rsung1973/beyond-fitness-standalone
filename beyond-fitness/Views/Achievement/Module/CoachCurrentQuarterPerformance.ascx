@@ -64,7 +64,7 @@
                                                 || t.ELStatus != (int)Naming.DocumentLevelDefinition.自主訓練);
                                     var achievement = models.CalcAchievement(lessons, out shares);
                                     summary += achievement;
-                                    Writer.Write(shares > 0 ? $"{shares:0,0}" : "--");
+                                    Writer.Write(achievement > 0 ? $"{achievement:0,0}" : "--");
                                     totalShares += shares; %>
                             </td>
                             <td class="text-right">
@@ -87,7 +87,7 @@
                         <tr>
                             <td class="text-right">總計</td>
                             <td class="text-right"><%= $"{totalCount:0,0}" %></td>
-                            <td class="text-right"><%= $"{totalShares:0,0}" %></td>
+                            <td class="text-right"><%= $"{summary:0,0}" %></td>
                             <td class="text-right"><%= $"{subtotal:0,0}" %></td>
                         </tr>
                     </tfoot>

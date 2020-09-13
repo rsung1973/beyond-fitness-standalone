@@ -176,9 +176,10 @@
                             <i class="zmdi zmdi-notifications"></i>
                         </div>
                         @{
-                            var processingFee = totalPaid * 0.05;
+                            var processingFee = totalPaid * 0.05M;
                         }
                         已繳服務總費用 @(String.Format("{0:##,###,###,###}", totalPaid)) 扣除5％處理費(<span class="col-red">@(String.Format("{0:##,###,###,###}", processingFee))</span>)，退還剩餘款項 <span class="col-red">@(String.Format("{0:##,###,###,###}", totalPaid - processingFee))</span>元。<small>=@(totalPaid) - (@(totalPaid)*0.05)</small>
+                        <input type="hidden" name="ProcessingFee" value="@(processingFee)" />
                     </div>
                 </div>
             </div>

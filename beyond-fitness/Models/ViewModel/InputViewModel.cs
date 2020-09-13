@@ -424,6 +424,7 @@ namespace WebHome.Models.ViewModel
         public int? AuthorID { get; set; }
         public DateTime? DocDate { get; set; }
         public String Title { get; set; }
+        public String Subtitle { get; set; }
         public int?[] TagID { get; set; }
 
     }

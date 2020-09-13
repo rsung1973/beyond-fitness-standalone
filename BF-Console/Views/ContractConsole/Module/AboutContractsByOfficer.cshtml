@@ -20,8 +20,8 @@
     <div class="row">
         <div class="col-8">
             @{ DateTime monthStart = DateTime.Today.FirstDayOfMonth();
-                var items = models.PromptOriginalContract()
-                        .Where(c => c.Status == (int)Naming.CourseContractStatus.已生效);
+                var items = models.PromptContract()
+                        .Where(c => c.Status >= (int)Naming.CourseContractStatus.已生效);
                 var currentItems = items.Where(c => c.EffectiveDate >= DateTime.Today && c.EffectiveDate < DateTime.Today.AddDays(1));}
 
             <h5 class="m-t-0">賀成交</h5>
@@ -30,7 +30,6 @@
                                 new
                                 {
                                     ContractQueryMode = Naming.ContractServiceMode.ContractOnly,
-                                    Status = (int)Naming.CourseContractStatus.已生效,
                                     EffectiveDateFrom = DateTime.Today,
                                     EffectiveDateTo = DateTime.Today.AddDays(1),
                                 })),@(currentItems.Count()));'>@(currentItems.Count())</a>
@@ -42,7 +41,6 @@
                                 new
                                 {
                                     ContractQueryMode = Naming.ContractServiceMode.ContractOnly,
-                                    Status = (int)Naming.CourseContractStatus.已生效,
                                     EffectiveDateFrom = weekStart,
                                     EffectiveDateTo = weekStart.AddDays(7),
                                 })),@(currentItems.Count()));'>@(currentItems.Count())</a>
@@ -53,7 +51,6 @@
                                 new
                                 {
                                     ContractQueryMode = Naming.ContractServiceMode.ContractOnly,
-                                    Status = (int)Naming.CourseContractStatus.已生效,
                                     EffectiveDateFrom = monthStart.AddMonths(-1),
                                     EffectiveDateTo = monthStart,
                                     
@@ -67,7 +64,6 @@
                                 new
                                 {
                                     ContractQueryMode = Naming.ContractServiceMode.ContractOnly,
-                                    Status = (int)Naming.CourseContractStatus.已生效,
                                     EffectiveDateFrom = monthStart,
                                     EffectiveDateTo = monthStart.AddMonths(1),
                                 })),@(currentItems.Count()));'>

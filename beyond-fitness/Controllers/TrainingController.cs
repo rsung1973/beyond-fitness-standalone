@@ -185,23 +185,29 @@ namespace WebHome.Controllers
             }
 
             calculateTotalMinutes(execution, viewModel.StageID.Value);
-
+            bool UpdatePurpose = false;
             if (item.PurposeID.HasValue)
             {
-                if (!viewModel.PurposeID.HasValue)
+                if (viewModel.PurposeID.HasValue)
+                {
+                    models.ExecuteCommand("Update PersonalExercisePurposeItem set PurposeItem = {0} where ItemID = {1}", viewModel.Remark, item.PurposeID);
+                }
+                else
                 {
                     models.ExecuteCommand("delete PersonalExercisePurposeItem where ItemID = {0}", item.PurposeID);
                 }
+                UpdatePurpose = true;
             }
             else if (viewModel.PurposeID == -1 && item.Remark != null)
             {
                 var purpose = item.TrainingExecution.TrainingPlan.LessonTime.RegisterLesson.UserProfile.AssertPurposeItem(models, item.Remark);
-                purpose.CompleteDate = DateTime.Now;
+                purpose.CompleteDate = item.TrainingExecution.TrainingPlan.LessonTime.ClassTime;    //DateTime.Now;
                 item.PurposeID = purpose.ItemID;
                 models.SubmitChanges();
+                UpdatePurpose = true;
             }
 
-            return Json(new { result = true, message = "", viewModel.StageID });
+            return Json(new { result = true, message = "", viewModel.StageID, UpdatePurpose });
 
         }
 
@@ -229,7 +235,7 @@ namespace WebHome.Controllers
         private decimal calculateDuration(IEnumerable<TrainingItem> items)
         {
             decimal totalDuration = 0, duration = 0;
-            var regex = new Regex("\\d+");
+            var regex = new Regex("[0-9]+");
             foreach (var item in items)
             {
                 if (item.TrainingType.BreakMark == true)

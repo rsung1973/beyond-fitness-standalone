@@ -1082,7 +1082,13 @@ namespace WebHome.Helper.BusinessOperation
             if (viewModel.Reason == "終止")
             {
                 if (!viewModel.SettlementPrice.HasValue)
+                {
                     ModelState.AddModelError("SettlementPrice", "請填入課程單價!!");
+                }
+                else if (viewModel.SettlementPrice < item.LessonPriceType.ListPrice)
+                {
+                    ModelState.AddModelError("SettlementPrice", "課程單價不可少於原購買單價!!");
+                }
                 else
                 {
                     var refund = item.TotalPaidAmount() - item.AttendedLessonCount()

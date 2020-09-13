@@ -66,7 +66,7 @@
         _items = models.GetTable<BlogArticle>()
                 .Where(a => a.Document.DocDate < DateTime.Now)
                 //.Where(a => a.Document.CurrentStep == (int)Naming.DocumentLevelDefinition.正常)
-                .OrderByDescending(a => a.DocID)
+                .OrderByDescending(a => a.Document.DocDate)
                 .Take(5).ToList();
 
     }

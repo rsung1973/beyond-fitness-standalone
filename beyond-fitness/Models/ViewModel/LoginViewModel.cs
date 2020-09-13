@@ -734,6 +734,7 @@ namespace WebHome.Models.ViewModel
     {
         public int? UID { get; set; }
         public int? QuestionnaireID { get; set; }
+        public bool? ToPrepare { get; set; }
     }
 
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Policy;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -22,8 +23,8 @@ namespace WebHome
 
             routes.MapRoute(
                 name: "Official",
-                url: "Official/{action}/{id}",
-                defaults: new { controller = "MainActivity", action = "Index", id = UrlParameter.Optional }
+                url: "Official/{action}/{id}/{keyID}",
+                defaults: new { controller = "MainActivity", action = "Index", id = UrlParameter.Optional, keyID = UrlParameter.Optional }
             );
 
             routes.MapRoute(

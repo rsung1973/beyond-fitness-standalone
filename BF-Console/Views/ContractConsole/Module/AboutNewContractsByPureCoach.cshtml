@@ -68,7 +68,7 @@
         </div>
         <div class="col-4 text-right">
             @{ 
-                var totalCount = models.PromptEffectiveContract()
+                var totalCount = models.PromptContract()
                                 .Where(c => c.FitnessConsultant == _model.UID)
                                 .Where(c => c.EffectiveDate >= monthStart && c.EffectiveDate < monthStart.AddMonths(1)).Count();
             }
@@ -77,7 +77,6 @@
                 {
                     FitnessConsultant = _model.UID,
                     ContractQueryMode = Naming.ContractServiceMode.ContractOnly,
-                    Status = (int)Naming.CourseContractStatus.已生效,
                     EffectiveDateFrom = monthStart,
                     EffectiveDateTo = monthStart.AddMonths(1),
                 })),@(totalCount));'>

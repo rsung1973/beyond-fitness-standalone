@@ -123,7 +123,8 @@ namespace WebHome.Models.Locale
             Manager = 9,
             ViceManager = 10,
             Preliminary = 11,
-            Servitor = 12
+            Servitor = 12,
+            FES = 13,
         }
 
         public static readonly String[] RoleName = new String[] {
@@ -139,7 +140,8 @@ namespace WebHome.Models.Locale
             "FM",
             "AFM",
             "體驗學員",
-            "工讀生"
+            "工讀生",
+            "FES"
         };
 
         public static readonly int[] StaffRole = new int[] 
@@ -152,6 +154,7 @@ namespace WebHome.Models.Locale
             (int)RoleID.Officer,
             (int)RoleID.Servitor,
             (int)RoleID.ViceManager,
+            (int)RoleID.FES,
         };
 
         public enum LessonStatus
@@ -202,7 +205,8 @@ namespace WebHome.Models.Locale
             Senior = 1104,
             Junior = 1105,
             FM = 1106,
-            AFM = 1107
+            AFM = 1107,
+            FES = 1108,
         }
 
         public static readonly ProfessionalCategory[] ManagerialLevel = new ProfessionalCategory[]

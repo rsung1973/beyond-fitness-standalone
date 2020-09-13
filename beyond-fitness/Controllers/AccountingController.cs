@@ -1036,8 +1036,8 @@ namespace WebHome.Controllers
                         B = lessonItems.Count(),
                         C = lessonItems.Sum(l=>l.RegisterLesson.LessonPriceType.ListPrice * l.RegisterLesson.GroupingMemberCount * l.RegisterLesson.GroupingLessonDiscount.PercentageOfDiscount / 100) ?? 0,
                     };
-                    i.D = i.C * 20 / 100;
-                    i.E = i.C * 80 / 100;
+                    i.D = (int)Math.Round(i.C * 20m / 100m);
+                    i.E = (int)Math.Round(i.C * 80m / 100m);
                     i.F = (int)Math.Round(i.D / 1.05m);
                     i.G = (int)Math.Round(i.E / 1.05m);
                     subtotal.B += i.B;
@@ -1548,11 +1548,12 @@ namespace WebHome.Controllers
                 DataRow r;
 
                 var coachItems = rule2020
-                    ? salaryItems.Where(s => s.ServingCoach.ProfessionalLevel.CategoryID == (int)Naming.ProfessionalCategory.Special
-                                    || s.ServingCoach.ProfessionalLevel.CategoryID == (int)Naming.ProfessionalCategory.FM
-                                    || s.ServingCoach.ProfessionalLevel.CategoryID == (int)Naming.ProfessionalCategory.AFM)
-                    : salaryItems.Where(s => s.ServingCoach.ProfessionalLevel.CategoryID == (int)Naming.ProfessionalCategory.Special
-                                    || s.ServingCoach.ProfessionalLevel.CategoryID == (int)Naming.ProfessionalCategory.FM);
+                    ? salaryItems.Where(s => s.ProfessionalLevel.CategoryID == (int)Naming.ProfessionalCategory.Special
+                                    || s.ProfessionalLevel.CategoryID == (int)Naming.ProfessionalCategory.FM
+                                    || s.ProfessionalLevel.CategoryID == (int)Naming.ProfessionalCategory.AFM
+                                    || s.ProfessionalLevel.CategoryID == (int)Naming.ProfessionalCategory.FES)
+                    : salaryItems.Where(s => s.ProfessionalLevel.CategoryID == (int)Naming.ProfessionalCategory.Special
+                                    || s.ProfessionalLevel.CategoryID == (int)Naming.ProfessionalCategory.FM);
 
                 foreach (var g in coachItems.OrderBy(c => c.WorkPlace))
                 {
@@ -1599,11 +1600,12 @@ namespace WebHome.Controllers
                 DataRow r;
 
                 var coachItems = rule2020
-                    ? salaryItems.Where(s => s.ServingCoach.ProfessionalLevel.CategoryID != (int)Naming.ProfessionalCategory.Special
-                                    && s.ServingCoach.ProfessionalLevel.CategoryID != (int)Naming.ProfessionalCategory.FM
-                                    && s.ServingCoach.ProfessionalLevel.CategoryID != (int)Naming.ProfessionalCategory.AFM)
-                    : salaryItems.Where(s => s.ServingCoach.ProfessionalLevel.CategoryID != (int)Naming.ProfessionalCategory.Special
-                                    && s.ServingCoach.ProfessionalLevel.CategoryID != (int)Naming.ProfessionalCategory.FM);
+                    ? salaryItems.Where(s => s.ProfessionalLevel.CategoryID != (int)Naming.ProfessionalCategory.Special
+                                    && s.ProfessionalLevel.CategoryID != (int)Naming.ProfessionalCategory.FM
+                                    && s.ProfessionalLevel.CategoryID != (int)Naming.ProfessionalCategory.AFM
+                                    && s.ProfessionalLevel.CategoryID != (int)Naming.ProfessionalCategory.FES)
+                    : salaryItems.Where(s => s.ProfessionalLevel.CategoryID != (int)Naming.ProfessionalCategory.Special
+                                    && s.ProfessionalLevel.CategoryID != (int)Naming.ProfessionalCategory.FM);
 
                 List<DataRow> rows = new List<DataRow>();
                 foreach (var g in coachItems)
