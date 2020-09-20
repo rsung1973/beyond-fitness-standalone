@@ -20,7 +20,7 @@
     _model = (IQueryable<CourseContract>)this.Model;
     _viewModel = ViewBag.ViewModel as CourseContractQueryViewModel;
 }
-<table class="table table-striped table-custom nowrap dataTable-contract" style="width: 100%">
+<table class="table table-striped table-custom nowrap dataTable" style="width: 100%">
     <thead>
         <tr>
             <th>學生</th>
@@ -97,7 +97,7 @@
             $global.dtContract.destroy();
         }
 
-        $global.dtContract = $('.dataTable-contract').DataTable({
+        $global.dtContract = $('.dataTable').DataTable({
             "order": [
                 [0, 'asc']
             ],
@@ -143,7 +143,7 @@
         <text>
         // 讓捲軸用動畫的方式移動到 #header 的 top 位置並加入動畫效果
         $([document.documentElement, document.body]).animate({
-            scrollTop: $(".dataTable-contract").offset().top
+            scrollTop: $(".dataTable").offset().top
         }, 2000);
         </text>
     }

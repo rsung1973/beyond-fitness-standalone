@@ -28,84 +28,76 @@
 <div class="modal fade" id="@(_dialogID)" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
     <div class="@(_allotmentCoach== 3 ? "modal-dialog" : "modal-dialog modal-lg")" role="document">
         <div class="modal-content">
+            @{
+                IHtmlString headerRaw = ViewBag.HeaderRaw as IHtmlString;
+                if (headerRaw != null)
+                {
+                    <div class="header">
+                        @(headerRaw)
+                    </div>
+                }
+            }
             <div class="modal-body">
                 <a href="#" class="closebutton" data-dismiss="modal"></a>
                 <div class="row clearfix">
-                    <div class="col-12">
-                        <div class="card action_bar">
-                            @{
-                                IHtmlString headerRaw = ViewBag.HeaderRaw as IHtmlString;
-                                if (headerRaw != null)
-                                {
-                                    <div class="header">
-                                        @(headerRaw)
-                                    </div>
-                                }
-                            }
-                            <div class="body">
-                                <div class="row clearfix">
-                                    @if (ViewBag.EnableSearch != false)
-                                    {
-                                        <div class="@($"col-sm-{12 / _allotment} col-{12 / _allotment}")">
-                                            <div class="input-group">
-                                                <input type="text" class="form-control xl-aliceblue" placeholder="搜尋姓名(暱稱)" name="KeyWord" />
-                                                <span class="input-group-addon xl-aliceblue">
-                                                    <i class="zmdi zmdi-search"></i>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    }
-                                    @{
-                                        String insertPartial = ViewBag.InsertPartial as String;
-                                        if (insertPartial != null)
-                                        {
-                                            Html.RenderPartial(insertPartial);
-                                        }
-                                    }
-                                </div>
-                                <ul class="new_friend_list list-unstyled row">
-                                    @if (ViewBag.SelectAll == true || _viewModel?.SelectAll == true)
-                                    {
-                                        <li class="@($"col-sm-{12 / _allotmentCoach} col-6")">
-                                            <a href="javascript:commitCoach();">
-                                                <img src="images/avatar/avatars.png" class="img-thumbnail popfit" />
-                                                <h6 class="users_name">全部</h6>
-                                            </a>
-                                        </li>
-                                    }
-                                    @{
-                                        insertPartial = _viewModel?.SelectablePartial;
-                                        if (insertPartial != null)
-                                        {
-                                            Html.RenderPartial(insertPartial);
-                                        }
-                                    }
-                                    @foreach (var item in _model.Select(c => c.UserProfile).ToList()
-                                                .OrderBy(u => $"{u.Nickname}{u.RealName}"))
-                                    {
-                                        <li class="@($"col-sm-{12 / _allotmentCoach} col-6")">
-                                            <a href="javascript:commitCoach(@(item.UID),'@(item.FullName())');">
-                                                @{
-                                                    ViewBag.ProfileClass = "img-thumbnail popfit";
-                                                    Html.RenderPartial("~/Views/Common/ProfileImage.cshtml", item);
-                                                }
-                                                <h6 class="users_name">@(item.RealName)</h6>
-                                                <small class="join_date">@(item.Nickname)</small>
-                                            </a>
-                                        </li>
-                                    }
-                                </ul>
+                    @if (ViewBag.EnableSearch != false)
+                    {
+                        <div class="@($"col-sm-{12 / _allotment} col-{12 / _allotment}")">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="搜尋姓名(暱稱)" name="KeyWord" />
+                                <span class="input-group-addon">
+                                    <i class="zmdi zmdi-search"></i>
+                                </span>
                             </div>
                         </div>
-                    </div>
+                    }
+                    @{
+                        String insertPartial = ViewBag.InsertPartial as String;
+                        if (insertPartial != null)
+                        {
+                            Html.RenderPartial(insertPartial);
+                        }
+                    }
                 </div>
+                <ul class="new_friend_list list-unstyled row">
+                    @if (ViewBag.SelectAll == true || _viewModel?.SelectAll == true)
+                    {
+                        <li class="@($"col-sm-{12 / _allotmentCoach} col-6")">
+                            <a href="javascript:commitCoach();">
+                                <img src="images/avatar/avatars.png" class="img-thumbnail popfit" />
+                                <h6 class="users_name">全部</h6>
+                            </a>
+                        </li>
+                    }
+                    @{
+                        insertPartial = _viewModel?.SelectablePartial;
+                        if (insertPartial != null)
+                        {
+                            Html.RenderPartial(insertPartial);
+                        }
+                    }
+                    @foreach (var item in _model.Select(c => c.UserProfile).ToList()
+                           .OrderBy(u => $"{u.Nickname}{u.RealName}"))
+                    {
+                        <li class="@($"col-sm-{12 / _allotmentCoach} col-6")">
+                            <a href="javascript:commitCoach(@(item.UID),'@(item.FullName())');">
+                                @{
+                                    ViewBag.ProfileClass = "img-thumbnail popfit";
+                                    Html.RenderPartial("~/Views/Common/ProfileImage.cshtml", item);
+                                }
+                                <h6 class="users_name">@(item.RealName)</h6>
+                                <small class="join_date">@(item.Nickname)</small>
+                            </a>
+                        </li>
+                    }
+                </ul>
             </div>
             @{
                 String insertFooter = ViewBag.InsertFooter as String;
                 if (insertFooter != null)
                 {
                     <div class="modal-footer">
-                        @{ 
+                        @{
                             Html.RenderPartial(insertFooter, model: _dialogID);
                         }
                     </div>

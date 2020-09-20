@@ -32,11 +32,7 @@
     <link href="plugins/jquery-datatable/Responsive-2.2.2/css/responsive.bootstrap4.min.css" rel="stylesheet">
     <link href="plugins/jquery-datatable/FixedColumns-3.2.5/css/fixedColumns.bootstrap4.min.css" rel="stylesheet">
     <!-- Bootstrap Datetimepick -->
-    @*<link href="plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
-        <link href="css/datetimepicker.css" rel="stylesheet" />*@
-    
     <link href="css/smartcalendar-2.css" rel="stylesheet" />
-
     <!-- Custom Css -->
     <link rel="stylesheet" href="css/customelist.css?1" />
     <!-- jSignature -->
@@ -60,7 +56,7 @@
 
     <div class="container-fluid">
         <div class="card widget_2">
-            @{ 
+            @{
                 ViewBag.ApplyServiceModel = _item;
                 ViewBag.ApplyService = "~/Views/ContractConsole/ContractService/DoExpirationPostponing.cshtml";
                 Html.RenderPartial("~/Views/ContractConsole/ContractService/ApplyContractService.cshtml", _item);
@@ -84,9 +80,7 @@
     @{ Html.RenderPartial("~/Views/ConsoleHome/Shared/KnobJS.cshtml");}
 
 
-    <script type="text/javascript">
-
-    </script>
+    <script type="text/javascript"></script>
 }
 
 

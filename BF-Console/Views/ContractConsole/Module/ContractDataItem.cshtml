@@ -24,7 +24,7 @@
 }
 
 <div class="header">
-    <h2><strong>合約資料</strong> - @(_model.ContractName()) 
+    <h2><strong>@(_model.ContractName())</strong>
         @{
             Html.RenderPartial("~/Views/Common/BranchStoreName.cshtml", _model.CourseContractExtension.BranchStore);
         }
@@ -35,16 +35,10 @@
 <div class="body">
     <div class="row">
         <div class="col-md-6 col-sm-6 invoice1">
-            <div class="clientlogo">
-                @{
-                    ViewBag.ProfileClass = "fit";
-                    Html.RenderPartial("~/Views/Common/ProfileImage.cshtml", _model.ContractOwner);
-                }
-            </div>
             <address>
                 <strong>@(_model.ContractOwner.FullName())</strong><br />
                 購買堂數：@(_model.Lessons)<br />
-                <span class="p-l-40 col-red">剩餘堂數：@(_model.RemainedLessonCount())</span>
+                <span class="col-red">剩餘堂數：@(_model.RemainedLessonCount())</span>
             </address>
         </div>
         <div class="col-md-6 col-sm-6 text-right">
@@ -67,7 +61,7 @@
             <p>@(_model.Remark)</p>
         </div>
         <div class="col-6 text-right">
-            <h3 class="text-right">專業顧問服務總費用：@($"{_model.TotalCost:##,###,###,###}")</h3>
+            <h3 class="text-right">專業顧問服務總費用：<span class="text-danger">@($"{_model.TotalCost:##,###,###,###}")</span></h3>
         </div>
     </div>
 </div>

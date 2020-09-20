@@ -33,7 +33,7 @@
         <div class="col-12 m-b-20">
             @for (int i = 3; i <= 12; i += 3)
             {
-                <label class="fancy-checkbox displayblock">
+                <label class="fancy-checkbox custom-bgcolor-pink displayblock">
                     <input type="checkbox" name="MonthExtension" value="@(i)" />
                     <span>展延@(i)個月 - @($"{_model.Expiration.Value.AddMonths(i):yyyy/MM/dd}")</span>
                 </label>

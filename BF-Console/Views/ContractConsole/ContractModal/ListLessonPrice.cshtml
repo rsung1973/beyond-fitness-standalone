@@ -47,19 +47,19 @@
 <div class="modal fade" id="@(_dialogID)" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-body">
-                <div class="card">
-                    <div class="body">
-                        <div class="panel-group full-body" id="accordionDetail_ListPrice" role="tablist" aria-multiselectable="true">
-                            <div class="panel">
-                                <div class="panel-heading" role="tab" id="headingListPrice">
-                                    <h4 class="panel-title"> <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordionDetail_listprice" href="#collapseDetail_listprice" aria-expanded="false" aria-controls="collapseDetail_listprice"> <i class="material-icons">subject</i> 標準牌告價格 </a> </h4>
-                                </div>
-                                <div id="collapseDetail_listprice" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="headingListPrice">
-                                    <div class="panel-body no-padding">
-                                        <ul class="mb_list xl-aliceblue">
-                                            @foreach (var item in _normalItems)
-                                            {
+            <a class="closebutton" data-dismiss="modal"></a>
+            <div class="card">
+                <div class="body">
+                    <div class="panel-group full-body" id="accordionDetail_ListPrice" role="tablist" aria-multiselectable="true">
+                        <div class="panel">
+                            <div class="panel-heading" role="tab" id="headingListPrice">
+                                <h4 class="panel-title"> <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordionDetail_listprice" href="#collapseDetail_listprice" aria-expanded="false" aria-controls="collapseDetail_listprice"> <i class="material-icons">subject</i> 標準牌告價格 </a> </h4>
+                            </div>
+                            <div id="collapseDetail_listprice" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="headingListPrice">
+                                <div class="panel-body no-padding">
+                                    <ul class="mb_list">
+                                        @foreach (var item in _normalItems)
+                                        {
                                             <li onclick="commitPrice(@(item.PriceID),'@($"{item.ListPrice:##,###,###,###}")元 / @(item.PriceTypeBundle())',event);">
                                                 <div class="list_tb tb2">
                                                     <div class="list_tr hand">
@@ -70,21 +70,21 @@
                                                     </div>
                                                 </div>
                                             </li>
-                                            }
-                                        </ul>
-                                    </div>
+                                        }
+                                    </ul>
                                 </div>
                             </div>
+                        </div>
 
-                            @if (_profile.IsOfficer() || _profile.IsManager() || _profile.IsViceManager() || _profile.IsAssistant())
-                            {
-                            <div class="panel xl-khaki">
-                                <div class="panel-heading" role="tab" id="headingListPriceDiscount">
+                        @if (_profile.IsOfficer() || _profile.IsManager() || _profile.IsViceManager() || _profile.IsAssistant())
+                        {
+                            <div class="panel">
+                                <div class="panel-heading col-amber" role="tab" id="headingListPriceDiscount">
                                     <h4 class="panel-title material-icons"> <a role="button" data-toggle="collapse" data-parent="#accordionDetail_listprice" href="#collapseListPriceDiscount" aria-expanded="true" aria-controls="collapseListPriceDiscount"> <i class="material-icons">subject</i> 舊生續約價格 </a> </h4>
                                 </div>
                                 <div id="collapseListPriceDiscount" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingListPriceDiscount">
                                     <div class="panel-body no-padding">
-                                        <ul class="mb_list xl-khaki">
+                                        <ul class="mb_list">
                                             @foreach (var item in _discountItems)
                                             {
                                                 <li onclick="commitPrice(@(item.PriceID),'@($"{item.ListPrice:##,###,###,###}")元 / @(item.PriceTypeBundle())(舊生續約)',event);">
@@ -103,8 +103,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="panel xl-pink">
-                                <div class="panel-heading" role="tab" id="headingSpecialPrice">
+                            <div class="panel">
+                                <div class="panel-heading col-pink" role="tab" id="headingSpecialPrice">
                                     <h4 class="panel-title material-icons"> <a role="button" data-toggle="collapse" data-parent="#accordionDetail_ListPrice" href="#collapseSpecialPrice" aria-expanded="true" aria-controls="collapseSpecialPrice"> <i class="material-icons">subject</i> 特別專案價格 </a> </h4>
                                 </div>
                                 <div id="collapseSpecialPrice" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSpecialPrice">
@@ -127,8 +127,7 @@
                                     </div>
                                 </div>
                             </div>
-                            }
-                        </div>
+                        }
                     </div>
                 </div>
             </div>

@@ -24,7 +24,7 @@
     _items = models.GetTable<CourseContractRevision>().Where(r => r.OriginalContract == _model.ContractID)
                 .OrderBy(c => c.RevisionID);
 }
-<table class="table table-striped table-custom nowrap dataTable-contract" style="width: 100%">
+<table class="table table-striped table-custom nowrap dataTable" style="width: 100%">
     <thead>
         <tr>
             <th>服務項目</th>
@@ -78,7 +78,7 @@
             $global.dtContract.destroy();
         }
 
-        $global.dtContract = $('.dataTable-contract').DataTable({
+        $global.dtContract = $('.dataTable').DataTable({
             "order": [
                 [4, 'desc']
             ],

@@ -6,23 +6,18 @@
 }
 <div class="modal fade" id="@(_dialogID)" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-sm" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <a class="closebutton" data-dismiss="modal"></a>
-            </div>
+        <div class="modal-content">        
             <div class="modal-body">
-                <div class="card">
-                    <div class="header">
-                        <h2>訊息</h2>
-                        <p>@(DateTime.Now)</p>
-                    </div>
-                    <div class="body">
-                        @(_message)
+                <a class="closebutton" data-dismiss="modal"></a>
+                <div class="row">
+                    <!-- iPhone -->
+                    <img class="header_iphone" src="images/error.png" alt="BeyondFitness">
+                    <!-- //iPhone -->
+                    <div class="col-md-8 col-md-offset-2 text-center">
+                        <p>Oooops, Something went wrong!<br/><small>@(DateTime.Now)</small></p>
+                        <p class="col-pink">@(_message)</p>
                     </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">關閉</button>
             </div>
         </div>
     </div>

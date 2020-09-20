@@ -50,7 +50,7 @@
         }
 
     <div class="container-fluid">
-        <div class="card">
+        <div class="card white">
             <div class="body">
                 @{ var revision = _item.CourseContractRevision;}
                 @if (revision.Reason == "展延")
@@ -81,11 +81,11 @@
                         <button type="button" class="btn btn-danger btn-round btn-simple btn-round waves-effect waves-red reedit" onclick="rejectContractService();">內容錯誤，刪除申請</button>
                         @if (_item.Status == (int)Naming.CourseContractStatus.待簽名)
                         {
-                            <button type="button" class="btn btn-darkteal btn-round waves-effect float-right next" onclick="confirmSignature();">確定，不後悔</button>
+                            <button type="button" class="btn btn-primary btn-round waves-effect float-right next" onclick="confirmSignature();">確定，不後悔</button>
                         }
                         else
                         {
-                            <button type="button" class="btn btn-darkteal btn-round waves-effect float-right next" onclick="approveContractService();">確定，審核通過</button>
+                            <button type="button" class="btn btn-primary btn-round waves-effect float-right next" onclick="approveContractService();">確定，審核通過</button>
                         }
                     </div>
                 </div>

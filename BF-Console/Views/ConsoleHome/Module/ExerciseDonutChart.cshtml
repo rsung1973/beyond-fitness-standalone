@@ -54,6 +54,7 @@
     <script>
     $(function () {
         Morris.Donut({
+            labelColor: '#999',
             element: '@(_chartID)',
                 data: @Html.Raw(JsonConvert.SerializeObject(result)),
                 //                colors: ['#93e3ff', '#b0dd91', '#ffe699', '#f8cbad', '#a4a4a4'],
