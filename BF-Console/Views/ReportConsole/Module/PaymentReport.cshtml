@@ -36,10 +36,10 @@
                                                             PayoffDateTo = DateTime.Today,
                                                         })));'>
                     <div class="icon">
-                        <i class="zmdi livicon livicon-evo" data-options="name: calculator.svg; size: 60px; style: original; strokeWidth:2px; autoPlay:true"></i>
+                        <i class="zmdi livicon livicon-evo" data-options="name: calculator.svg; size: 60px; style: linesAlt; strokeWidth:2px; autoPlay:true"></i>
                     </div>
                     <div class="file-name">
-                        <p class="m-b-5 text-muted">明細帳</p>
+                        <p class="m-b-5">明細帳</p>
                         <small>本日 <span class="date text-muted">@($"{DateTime.Today:yyyy/MM/dd}")</span></small>
                     </div>
                 </a>
@@ -55,10 +55,10 @@
                                                             PayoffDateTo = DateTime.Today.FirstDayOfMonth().AddDays(-1),
                                                         })));'>
                         <div class="icon">
-                            <i class="zmdi livicon livicon-evo" data-options="name: notebook.svg; size: 60px; style: original; strokeWidth:2px; autoPlay:true"></i>
+                            <i class="zmdi livicon livicon-evo" data-options="name: notebook.svg; size: 60px; style: linesAlt; strokeWidth:2px; autoPlay:true"></i>
                         </div>
                         <div class="file-name">
-                            <p class="m-b-5 text-muted">明細帳</p>
+                            <p class="m-b-5">明細帳</p>
                             <small>上月 <span class="date text-muted">@($"{DateTime.Today.AddMonths(-1):yyyy/MM}")</span></small>
                         </div>
                     </a>
@@ -70,10 +70,10 @@
             <div class="file">
                 <a href="javascript:$('').launchDownload('@Html.Raw(Url.Action("CreateAccountsReceivableXlsx","Accounting"))',{'BypassCondition':true},'report',true);">
                     <div class="icon">
-                        <i class="zmdi livicon livicon-evo" data-options="name: dislike.svg; size: 60px; style: original; strokeWidth:2px; autoPlay:true"></i>
+                        <i class="zmdi livicon livicon-evo" data-options="name: dislike.svg; size: 60px; style: linesAlt; strokeWidth:2px; autoPlay:true"></i>
                     </div>
                     <div class="file-name">
-                        <p class="m-b-5 text-muted">催收帳款清單</p>
+                        <p class="m-b-5">催收帳款清單</p>
                         <small>截至目前 <span class="date text-muted">@($"{DateTime.Today:yyyy/MM/dd}")</span></small>
                     </div>
                 </a>
@@ -90,10 +90,10 @@
             <div class="file">
                 <a href="javascript:selectPeriodAccountingReport();">
                     <div class="icon">
-                        <i class="zmdi livicon livicon-evo" data-options="name: notebook.svg; size: 60px; style: original; strokeWidth:2px; autoPlay:true"></i>
+                        <i class="zmdi livicon livicon-evo" data-options="name: notebook.svg; size: 60px; style: linesAlt; strokeWidth:2px; autoPlay:true"></i>
                     </div>
                     <div class="file-name">
-                        <p class="m-b-5 text-muted">明細帳</p>
+                        <p class="m-b-5">明細帳</p>
                         <small>自訂條件 <span class="date text-muted"><i class="zmdi zmdi-search"></i></span></small>
                     </div>
                 </a>

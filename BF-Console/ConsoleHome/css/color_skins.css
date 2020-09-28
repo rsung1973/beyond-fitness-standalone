@@ -168,12 +168,12 @@ body.theme-nero {
 }
 
 .theme-nero .card .input-group .form-control {
-    color: lightblue;
+    color: lightblue !important;
 }
 
 .theme-nero .input-group-addon {
-    background-color: transparent;
-    border: 1px solid #888;
+    background-color: transparent !important;
+    border: 1px solid #888 !important;
 }
 
 .theme-nero .form-control::-moz-placeholder {
@@ -1196,6 +1196,10 @@ body.theme-nero {
     border: 2px solid #111111;
 }
 
+.theme-nero .dropify-wrapper .dropify-preview {
+    background-color: #1A1A1A;
+}
+
 /**
 * Info Box
 */
@@ -1311,4 +1315,12 @@ body.theme-nero {
 
 .theme-nero .dotdotdot {
     color: #eed !important;
+}
+
+/**
+* 部落格
+*/
+
+.theme-nero .blog-page .single_post h3 a {
+    color: white;
 }

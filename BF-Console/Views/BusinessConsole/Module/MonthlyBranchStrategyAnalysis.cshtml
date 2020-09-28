@@ -21,9 +21,9 @@
     MonthlyIndicatorQueryViewModel _viewModel = (MonthlyIndicatorQueryViewModel)ViewBag.ViewModel;
     MonthlyBranchIndicator item = _model.MonthlyBranchIndicator.Where(i => i.BranchID == _viewModel.BranchID).FirstOrDefault();
 }
-<pre class="col-grey" id="@(_viewID)">@{
+<p id="@(_viewID)">@{
             Html.RenderPartial("~/Views/BusinessConsole/Module/StrategyAnalysis.cshtml", _model);
-        }</pre>
+        }</p>
 <script>
     function makeStrategy() {
         showLoading();

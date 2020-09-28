@@ -23,12 +23,55 @@
 }
 @if (item != null)
 {
-    <h4><strong class="col-grey">策略與總結</strong> <a href="javascript:makeStrategy();" class="text-gray"><i class="zmdi zmdi-edit"></i></a></h4>
-    Html.RenderPartial("~/Views/BusinessConsole/Module/MonthlyBranchStrategyAnalysis.cshtml", _model);
-    @*<ul class="list-unstyled col-grey" id="@(_viewID)">
+    <div class="dotdotdot">
+        <div id="comment">
+            <h4><strong class="col-grey">策略與總結</strong> <a href="javascript:makeStrategy();" class="text-gray"><i class="zmdi zmdi-edit"></i></a></h4>
             @{
-                Html.RenderPartial("~/Views/BusinessConsole/Module/StrategyAnalysis.cshtml", _model);
+                Html.RenderPartial("~/Views/BusinessConsole/Module/MonthlyBranchStrategyAnalysis.cshtml", _model);
             }
-        </ul>*@
+                @*<ul class="list-unstyled col-grey" id="@(_viewID)">
+                @{
+                    Html.RenderPartial("~/Views/BusinessConsole/Module/StrategyAnalysis.cshtml", _model);
+                }
+            </ul>*@
+                <a class="toggle" href="#"></a>
+            </div>
+    </div>
 }
 
+<script>
+    $(function () {
+        /*
+			Toggle full story example
+		*/
+        var xmpl = document.querySelector('#comment');
+        var dot = new Dotdotdot(xmpl, {
+
+            // Prevents the <a class="toggle" /> from being removed
+            keep: '.toggle'
+
+        })
+
+        // Get the dotdotdot API
+        var api = dot.API;
+
+        xmpl.addEventListener('click', (evnt) => {
+            if (evnt.target.closest('.toggle')) {
+                evnt.preventDefault();
+
+                //	When truncated, restore
+                if (xmpl.matches('.ddd-truncated')) {
+                    api.restore();
+                    xmpl.classList.add('full-story');
+                }
+
+                //	Not truncated, truncate
+                else {
+                    xmpl.classList.remove('full-story');
+                    api.truncate();
+                    api.watch();
+                }
+            }
+        });
+    });
+</script>

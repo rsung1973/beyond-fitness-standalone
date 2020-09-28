@@ -33,10 +33,10 @@
             <div class="file">
                 <a href="javascript:$('').launchDownload('@Html.Raw(Url.Action("CreateTrustTrackXlsx","Accounting"))', { 'trustDateFrom': '@($"{DateTime.Today.FirstDayOfMonth().AddMonths(-1):yyyy/MM/dd}")' }, 'report',true);">
                     <div class="icon">
-                        <i class="zmdi livicon livicon-evo" data-options="name: bank.svg; size: 60px; style: original; strokeWidth:2px; autoPlay:true"></i>
+                        <i class="zmdi livicon livicon-evo" data-options="name: bank.svg; size: 60px; style: linesAlt; strokeWidth:2px; autoPlay:true"></i>
                     </div>
                     <div class="file-name">
-                        <p class="m-b-5 text-muted">信託請款表</p>
+                        <p class="m-b-5">信託請款表</p>
                         <small>上月 <span class="date text-muted">@($"{DateTime.Today.FirstDayOfMonth().AddMonths(-1):yyyy/MM}")</span></small>
                     </div>
                 </a>
@@ -48,10 +48,10 @@
             <div class="file">
                 <a href="javascript:$('').launchDownload('@Html.Raw(Url.Action("CreateTrustContractZip","Accounting"))', { 'trustDateFrom': '@($"{DateTime.Today.FirstDayOfMonth().AddMonths(-1):yyyy/MM/dd}")' }, 'report',true);">
                     <div class="icon">
-                        <i class="zmdi livicon livicon-evo" data-options="name: rocket.svg; size: 60px; style: original; strokeWidth:2px; autoPlay:true"></i>
+                        <i class="zmdi livicon livicon-evo" data-options="name: rocket.svg; size: 60px; style: linesAlt; strokeWidth:2px; autoPlay:true"></i>
                     </div>
                     <div class="file-name">
-                        <p class="m-b-5 text-muted">合約電子檔懶人包</p>
+                        <p class="m-b-5">合約電子檔懶人包</p>
                         <small>上月 <span class="date text-muted">@($"{DateTime.Today.FirstDayOfMonth().AddMonths(-1):yyyy/MM}")</span></small>
                     </div>
                 </a>
@@ -68,10 +68,10 @@
             <div class="file">
                 <a href="javascript:selectMonthlyTrust();">
                     <div class="icon">
-                        <i class="zmdi livicon livicon-evo" data-options="name: bank.svg; size: 60px; style: original; strokeWidth:2px; autoPlay:true"></i>
+                        <i class="zmdi livicon livicon-evo" data-options="name: bank.svg; size: 60px; style: linesAlt; strokeWidth:2px; autoPlay:true"></i>
                     </div>
                     <div class="file-name">
-                        <p class="m-b-5 text-muted">信託請款表</p>
+                        <p class="m-b-5">信託請款表</p>
                         <small>自訂條件 <span class="date text-muted"><i class="zmdi zmdi-search"></i></span></small>
                     </div>
                 </a>
@@ -83,10 +83,10 @@
             <div class="file">
                 <a href="javascript:selectMonthlyTrustContract();">
                     <div class="icon">
-                        <i class="zmdi livicon livicon-evo" data-options="name: rocket.svg; size: 60px; style: original; strokeWidth:2px; autoPlay:true"></i>
+                        <i class="zmdi livicon livicon-evo" data-options="name: rocket.svg; size: 60px; style: linesAlt; strokeWidth:2px; autoPlay:true"></i>
                     </div>
                     <div class="file-name">
-                        <p class="m-b-5 text-muted">合約電子檔懶人包</p>
+                        <p class="m-b-5">合約電子檔懶人包</p>
                         <small>自訂條件 <span class="date text-muted"><i class="zmdi zmdi-search"></i></span></small>
                     </div>
                 </a>

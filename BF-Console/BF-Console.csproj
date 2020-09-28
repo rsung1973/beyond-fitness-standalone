@@ -6065,8 +6065,6 @@
     <Content Include="Scripts\umd\popper-utils.min.js" />
     <Content Include="Scripts\umd\popper.js" />
     <Content Include="Scripts\umd\popper.min.js" />
-    <Content Include="Views\Blog\Module\CategoryIndication.ascx" />
-    <Content Include="Views\Blog\Module\PlusIndication.ascx" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.4.1.min.map" />
     <Content Include="Scripts\umd\popper.min.js.map" />
@@ -6274,6 +6272,8 @@
     <Content Include="ConsoleHome\images\landing\portfolio\Annie\Cover.png" />
     <Content Include="ConsoleHome\images\landing\portfolio\Vinson\Scenario1.JPG" />
     <Content Include="ConsoleHome\images\landing\portfolio\Vinson\Cover.png" />
+    <Content Include="Views\ContractConsole\Module\CauseForEnding.cshtml" />
+    <Content Include="Views\InvoiceConsole\Module\downloadinvoicenointervalcsv.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\InitializeType.cs" />

@@ -22,7 +22,7 @@
 
 }
 
-<table class="table table-striped table-custom nowrap dataTable-einvoice" style="width:100%">
+<table class="table table-striped table-custom nowrap dataTable" style="width:100%">
     <thead>
         <tr>
             <th>總/分支機構統編</th>
@@ -101,7 +101,7 @@
             $global.dtInvoiceNo.destroy();
         }
 
-        $global.dtInvoiceNo = $('.dataTable-einvoice').DataTable({
+        $global.dtInvoiceNo = $('.dataTable').DataTable({
             "order": [
                 [0, 'asc'],
                 [2, 'asc']

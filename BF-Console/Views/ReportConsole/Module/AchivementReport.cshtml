@@ -34,10 +34,10 @@
                 <div class="file">
                     <a href="javascript:processMonthlyBonus('@($"{DateTime.Today.FirstDayOfMonth().AddMonths(-1):yyyy/MM/dd}")');">
                         <div class="icon">
-                            <i class="zmdi livicon livicon-evo" data-options="name: piggybank.svg; size: 60px; style: original; strokeWidth:2px; autoPlay:true"></i>
+                            <i class="zmdi livicon livicon-evo" data-options="name: piggybank.svg; size: 60px; style: linesAlt; strokeWidth:2px; autoPlay:true"></i>
                         </div>
                         <div class="file-name">
-                            <p class="m-b-5 text-muted">獎金抽成彙總表</p>
+                            <p class="m-b-5">獎金抽成彙總表</p>
                             <small>上月 <span class="date text-muted">@($"{DateTime.Today.FirstDayOfMonth().AddMonths(-1):yyyy/MM}")</span></small>
                         </div>
                     </a>
@@ -50,10 +50,10 @@
                 <div class="file">
                     <a href="javascript:$('').launchDownload('@Html.Raw(Url.Action("CreateAchievementShareXlsx","Accounting"))', { 'PayoffDateFrom': '@($"{DateTime.Today.FirstDayOfMonth().AddMonths(-1):yyyy/MM/dd}")', 'bypassCondition': true ,'detailsOnly': false }, 'report',true);">
                         <div class="icon">
-                            <i class="zmdi livicon livicon-evo" data-options="name: shoppingcart.svg; size: 60px; style: original; strokeWidth:2px; autoPlay:true"></i>
+                            <i class="zmdi livicon livicon-evo" data-options="name: shoppingcart.svg; size: 60px; style: linesAlt; strokeWidth:2px; autoPlay:true"></i>
                         </div>
                         <div class="file-name">
-                            <p class="m-b-5 text-muted">收款業績彙總</p>
+                            <p class="m-b-5">收款業績彙總</p>
                             <small>上月 <span class="date text-muted">@($"{DateTime.Today.FirstDayOfMonth().AddMonths(-1):yyyy/MM}")</span></small>
                         </div>
                     </a>
@@ -65,10 +65,10 @@
                 <div class="file">
                     <a href="javascript:prepareMonthlyAchievement(true,'@($"{DateTime.Today.FirstDayOfMonth().AddMonths(-1):yyyy/MM/dd}")');">
                         <div class="icon">
-                            <i class="zmdi livicon livicon-evo" data-options="name: magic.svg; size: 60px; style: original; strokeWidth:2px; autoPlay:true"></i>
+                            <i class="zmdi livicon livicon-evo" data-options="name: magic.svg; size: 60px; style: linesAlt; strokeWidth:2px; autoPlay:true"></i>
                         </div>
                         <div class="file-name">
-                            <p class="m-b-5 text-muted">上課業績彙總表</p>
+                            <p class="m-b-5">上課業績彙總表</p>
                             <small>上月 <span class="date text-muted">@($"{DateTime.Today.FirstDayOfMonth().AddMonths(-1):yyyy/MM}")</span></small>
                         </div>
                     </a>
@@ -102,7 +102,7 @@
                 <div class="file">
                     <a href="javascript:selectMonthlyBonusList();">
                         <div class="icon">
-                            <i class="zmdi livicon livicon-evo" data-options="name: users.svg; size: 60px; style: original; strokeWidth:2px; autoPlay:true"></i>
+                            <i class="zmdi livicon livicon-evo" data-options="name: users.svg; size: 60px; style: linesAlt; strokeWidth:2px; autoPlay:true"></i>
                         </div>
                         <div class="file-name">
                             <p class="m-b-5 text-muted">獎金抽成彙總表</p>
@@ -118,7 +118,7 @@
                 <div class="file">
                     <a href="javascript:selectMonthlyShare();">
                         <div class="icon">
-                            <i class="zmdi livicon livicon-evo" data-options="name: shoppingcart.svg; size: 60px; style: original; strokeWidth:2px; autoPlay:true"></i>
+                            <i class="zmdi livicon livicon-evo" data-options="name: shoppingcart.svg; size: 60px; style: linesAlt; strokeWidth:2px; autoPlay:true"></i>
                         </div>
                         <div class="file-name">
                             <p class="m-b-5 text-muted">收款業績彙總</p>
@@ -134,7 +134,7 @@
                 <div class="file">
                     <a href="javascript:selectMonthlyAchievement(true);">
                         <div class="icon">
-                            <i class="zmdi livicon livicon-evo" data-options="name: magic.svg; size: 60px; style: original; strokeWidth:2px; autoPlay:true"></i>
+                            <i class="zmdi livicon livicon-evo" data-options="name: magic.svg; size: 60px; style: linesAlt; strokeWidth:2px; autoPlay:true"></i>
                         </div>
                         <div class="file-name">
                             <p class="m-b-5 text-muted">上課業績彙總表</p>

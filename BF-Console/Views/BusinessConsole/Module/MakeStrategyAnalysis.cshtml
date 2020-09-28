@@ -23,36 +23,28 @@
 <div class="modal fade" id="@(_dialogID)" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <div class="modal-body">
+            <div class="modal-header">
+                <h5>策略與總結</h5>
                 <a class="closebutton" data-dismiss="modal"></a>
-                <div class="list-group">
-                    @*<a class="list-group-item list-group-item-action flex-column align-items-start">
-                        <div class="d-flex w-100 justify-content-between">
-                            <h5 class="title">風險考量</h5>
-                        </div>
-                        <div class="form-group p-t-0">
-                            <textarea rows="1" cols="100" class="form-control" placeholder="請輸入任何您想輸入50個中文字內的內容..." name="RiskPrediction">@Html.Raw(_viewModel.RiskPrediction)</textarea>
-                        </div>
-                    </a>*@
-                    <a class="list-group-item list-group-item-action flex-column align-items-start">
-                        <div class="d-flex w-100 justify-content-between">
-                            <h5 class="title">策略與總結</h5>
-                        </div>
+            </div>
+            <div class="modal-body">
+                <div class="row clearfix">
+                    <div class="col-12">
                         <div class="form-group p-t-0">
                             <textarea rows="15" cols="100" class="form-control" placeholder="請輸入任何您想輸入50個中文字內的內容..." name="Strategy">@Html.Raw(_viewModel.Strategy)</textarea>
                         </div>
-                    </a>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-darkteal btn-round waves-effect btnConfirm"><i class="zmdi zmdi-edit"></i></button>
-                <button type="button" class="btn btn-danger btn-round btn-simple btn-round waves-effect waves-red btnDelete"><i class="zmdi zmdi-delete"></i></button>
-            </div>
+                <button type="button" class="btn btn-danger btn-round btn-simple waves-effect waves-red btnDelete" onclick="javascript:deleteData();">刪除，不想要了</button>
+                <button type="button" class="btn btn-darkteal btn-round waves-effect btnConfirm">確定，不後悔</button>
+            </div>            
         </div>
     </div>
-    @{ Html.RenderPartial("~/Views/ConsoleHome/Shared/BSModalScript.cshtml", model: _dialogID);}
+     @{ Html.RenderPartial("~/Views/ConsoleHome/Shared/BSModalScript.cshtml", model: _dialogID);}
 
-    <script>
+                <script>
         $(function () {
             $('#@(_dialogID) .btnConfirm').on('click', function (event) {
                 showLoading();
@@ -103,6 +95,6 @@
                 });
             });
         });
-    </script>
-</div>
+                </script>
+            </div>
 

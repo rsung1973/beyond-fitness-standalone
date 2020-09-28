@@ -33,7 +33,7 @@
             <div class="file">
                 <a href="javascript:$('').launchDownload('@Html.Raw(Url.Action("GetMonthlySettlement","Accounting"))', { 'settlementDate': '@($"{DateTime.Today.AddMonths(-1):yyyy/MM/dd}")','initialDate':'2018/12/01' }, 'report',true);">
                     <div class="icon">
-                        <i class="zmdi livicon livicon-evo" data-options="name: box.svg; size: 60px; style: original; strokeWidth:2px; autoPlay:true"></i>
+                        <i class="zmdi livicon livicon-evo" data-options="name: box.svg; size: 60px; style: linesAlt; strokeWidth:2px; autoPlay:true"></i>
                     </div>
                     <div class="file-name">
                         <p class="m-b-5 text-muted">合約盤點清單</p>
@@ -48,7 +48,7 @@
             <div class="file">
                 <a href="javascript:$('').launchDownload('@Html.Raw(Url.Action("GetMonthlyLessonsSummary","Accounting"))', { 'settlementDate': '@($"{DateTime.Today.FirstDayOfMonth().AddMonths(-1):yyyy/MM/dd}")' }, 'report',true);">
                     <div class="icon">
-                        <i class="zmdi livicon livicon-evo" data-options="name: magic.svg; size: 60px; style: original; strokeWidth:2px; autoPlay:true"></i>
+                        <i class="zmdi livicon livicon-evo" data-options="name: magic.svg; size: 60px; style: linesAlt; strokeWidth:2px; autoPlay:true"></i>
                     </div>
                     <div class="file-name">
                         <p class="m-b-5 text-muted">上課盤點彙總表</p>
@@ -68,7 +68,7 @@
             <div class="file">
                 <a href="javascript:selectMonthlySettlement();">
                     <div class="icon">
-                        <i class="zmdi livicon livicon-evo" data-options="name: box.svg; size: 60px; style: original; strokeWidth:2px; autoPlay:true"></i>
+                        <i class="zmdi livicon livicon-evo" data-options="name: box.svg; size: 60px; style: linesAlt; strokeWidth:2px; autoPlay:true"></i>
                     </div>
                     <div class="file-name">
                         <p class="m-b-5 text-muted">合約盤點清單</p>
@@ -83,7 +83,7 @@
             <div class="file">
                 <a href="javascript:selectMonthlyLessonsSummary();">
                     <div class="icon">
-                        <i class="zmdi livicon livicon-evo" data-options="name: magic.svg; size: 60px; style: original; strokeWidth:2px; autoPlay:true"></i>
+                        <i class="zmdi livicon livicon-evo" data-options="name: magic.svg; size: 60px; style: linesAlt; strokeWidth:2px; autoPlay:true"></i>
                     </div>
                     <div class="file-name">
                         <p class="m-b-5 text-muted">上課盤點彙總表</p>
@@ -98,7 +98,7 @@
             <div class="file">
                 <a href="javascript:selectContractLessonsSummary();">
                     <div class="icon">
-                        <i class="zmdi livicon livicon-evo" data-options="name: morph-doc.svg; size: 60px; style: original; strokeWidth:2px; autoPlay:true"></i>
+                        <i class="zmdi livicon livicon-evo" data-options="name: morph-doc.svg; size: 60px; style: linesAlt; strokeWidth:2px; autoPlay:true"></i>
                     </div>
                     <div class="file-name">
                         <p class="m-b-5 text-muted">上課盤點清單</p>
