@@ -377,7 +377,21 @@ namespace WebHome.Helper.BusinessOperation
             Expression<Func<CourseContract, bool>> queryExpr = c => false;
             bool subCondition = false;
 
+            viewModel.CustomQuery = viewModel.CustomQuery.GetEfficientString();
             viewModel.ContractNo = viewModel.ContractNo.GetEfficientString();
+            viewModel.RealName = viewModel.RealName.GetEfficientString();
+            if (viewModel.CustomQuery != null)
+            {
+                if (viewModel.ContractNo == null)
+                {
+                    viewModel.ContractNo = viewModel.CustomQuery;
+                }
+                if (viewModel.RealName == null)
+                {
+                    viewModel.RealName = viewModel.CustomQuery;
+                }
+            }
+
             if (viewModel.ContractNo != null)
             {
                 subCondition = true;
@@ -394,7 +408,6 @@ namespace WebHome.Helper.BusinessOperation
                 }
             }
 
-            viewModel.RealName = viewModel.RealName.GetEfficientString();
             if (viewModel.RealName != null)
             {
                 subCondition = true;

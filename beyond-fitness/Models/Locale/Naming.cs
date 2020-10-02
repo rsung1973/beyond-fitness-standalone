@@ -479,5 +479,10 @@ namespace WebHome.Models.Locale
 
         }
 
+        public enum MasterVersion
+        {
+            Ver2020 = 0,
+        }
+
     }
 }

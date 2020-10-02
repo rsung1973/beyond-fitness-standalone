@@ -103,7 +103,8 @@ namespace WebHome.Controllers
             ViewBag.ViewModel = viewModel;
             var profile = HttpContext.GetUser();
             viewModel.KeyID = profile.UID.EncryptKey();
-            return View(profile.LoadInstance(models));
+            //return View(profile.LoadInstance(models));
+            return View("~/Views/ConsoleHome/SimpleCalendar.cshtml", profile.LoadInstance(models));
         }
 
         public ActionResult ContractIndex(CourseContractQueryViewModel viewModel)
@@ -279,7 +280,14 @@ namespace WebHome.Controllers
         public ActionResult CalendarEventItems(FullCalendarViewModel viewModel)
         {
             ViewResult result = (ViewResult)CalendarEvents(viewModel, true);
-            result.ViewName = "~/Views/ConsoleHome/Module/EventItems.cshtml";
+            if(viewModel.MasterVer == Naming.MasterVersion.Ver2020)
+            {
+                result.ViewName = "~/Views/ConsoleHome/Index/Coach/EventItems.cshtml";
+            }
+            else
+            {
+                result.ViewName = "~/Views/ConsoleHome/Module/EventItems.cshtml";
+            }
             return result;
         }
 

@@ -58,8 +58,10 @@
 </script>
 <section class="content">
 
-    @{ ViewBag.BlockHeader = "任意門";
-        Html.RenderPartial("~/Views/ConsoleHome/Module/BlockHeader.cshtml", _model);}
+    @{
+        ViewBag.BlockHeader = "任意門";
+        Html.RenderPartial("~/Views/ConsoleHome/Module/BlockHeader.cshtml", _model);
+    }
 
     <!--本月運動時間-->
     @if (!_model.IsOfficer() || _model.IsCoach())
@@ -80,6 +82,12 @@
             </div>
         </div>
     }
+
+    @if (_model.IsCoach())
+    {
+        Html.RenderPartial("~/Views/ConsoleHome/Index/Coach/Part_1.cshtml", _model);
+    }
+
     <!--我的行事曆卡片-->
     @if (!_model.IsAuthorizedSysAdmin())
     {

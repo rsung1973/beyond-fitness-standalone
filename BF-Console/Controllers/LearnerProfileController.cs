@@ -552,9 +552,27 @@ namespace WebHome.Controllers
 
         }
 
-        public ActionResult ShowLearnerAboutToBirth(int? days)
+        public ActionResult ShowLearnerAboutToBirth(LearnerQueryViewModel viewModel)
         {
-            var items = models.PromptLearnerAboutToBirth(days ?? 14);
+            ViewBag.ViewModel = viewModel;
+            var items = models.PromptLearner(viewModel.IncludeTrial == true);
+
+            if(viewModel.KeyID!=null)
+            {
+                viewModel.CoachID = viewModel.DecryptKeyValue();
+            }
+
+            if(viewModel.CoachID.HasValue)
+            {
+                var coach = models.GetTable<ServingCoach>().Where(c => c.CoachID == viewModel.CoachID).FirstOrDefault();
+                items = items.FilterLearnerByAdvisor(coach, models);
+            }
+
+            if (viewModel.BirthIncomingDays.HasValue)
+            {
+                items = items.FilterLearnerWithBirthday(DateTime.Today, DateTime.Today.AddDays(viewModel.BirthIncomingDays.Value));
+            }
+
             return View("~/Views/LearnerProfile/ProfileModal/LearnerAboutToBirth.cshtml", items);
         }
 

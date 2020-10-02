@@ -27,7 +27,7 @@ namespace WebHome.Models.ViewModel
         public Naming.DataOperationMode? DataOperation { get; set; }
         public String ViewID { get; set; }
         public bool? ScrollToView { get; set; }
-
+        public Naming.MasterVersion? MasterVer { get; set; }
     }
 
     public class LoginViewModel : QueryViewModel
