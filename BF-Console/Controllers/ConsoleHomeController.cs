@@ -885,6 +885,18 @@ namespace WebHome.Controllers
             return View("~/Views/LessonConsole/LessonOverview.cshtml", profile.LoadInstance(models));
         }
 
+        public ActionResult ShowEventDate(LessonTimeBookingViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            if (!viewModel.ClassTimeStart.HasValue)
+            {
+                viewModel.ClassTimeStart = DateTime.Today;
+            }
+
+            return View("~/Views/ConsoleHome/Index/Coach/Part_1/EventDate.cshtml");
+        }
+
+
 
     }
 }

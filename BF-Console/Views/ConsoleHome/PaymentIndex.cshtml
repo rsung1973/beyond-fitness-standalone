@@ -195,7 +195,7 @@
         if (!printerIP || printerIP == '') {
             printerIP = '192.168.1.200';
         }
-        @if (!String.IsNullOrEmpty(WebHome.Properties.Settings.Default.PrintInvoiceWebAp))
+        @if (false @*!String.IsNullOrEmpty(WebHome.Properties.Settings.Default.PrintInvoiceWebAp)*@)
         {
             <text>$('<form>').launchDownload('@Html.Raw(WebHome.Properties.Settings.Default.PrintInvoiceWebAp + Url.Action("LoadInvoiceImageByUID", "Invoice",new { _profile.UID,t = DateTime.Now.Ticks }))', { 'invoiceID': invoiceID, 'printerIP': printerIP }, '_blank');</text>
         }

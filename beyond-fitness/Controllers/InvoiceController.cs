@@ -741,14 +741,14 @@ namespace WebHome.Controllers
         {
             ViewBag.ViewModel = viewModel;
             ViewResult result = (ViewResult)PrintInvoice(viewModel);
-            if (String.IsNullOrEmpty(printerIP))
-            {
-                result.ViewName = "LoadInvoiceImage";
-            }
-            else
+            //if (String.IsNullOrEmpty(printerIP))
+            //{
+            //    result.ViewName = "LoadInvoiceImage";
+            //}
+            //else
             {
                 ViewBag.PrinterIP = printerIP;
-                result.ViewName = "PrintInvoiceImage";
+                result.ViewName = "~/Views/Invoice/PrintInvoiceImage.cshtml";
             }
             return result;
         }
@@ -771,7 +771,7 @@ namespace WebHome.Controllers
         {
             ViewBag.ViewModel = viewModel;
             ViewResult result = (ViewResult)PrintAllowance(viewModel);
-            result.ViewName = "PrintAllowanceImage";
+            result.ViewName = "~/Views/Invoice/PrintAllowanceImage.cshtml";
             ViewBag.PrinterIP = printerIP;
             return result;
         }
