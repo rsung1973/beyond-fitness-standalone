@@ -6297,6 +6297,11 @@
     <Content Include="Views\ConsoleHome\Index\Manager\Part_1.cshtml" />
     <Content Include="Views\ConsoleHome\Index\Manager\Part_1\ContractInfo.cshtml" />
     <Content Include="Views\ConsoleHome\Index\Manager\Part_1\LessonInfo.cshtml" />
+    <Content Include="Views\LearnerProfile\ProfileModal\CreateTrainingItem.cshtml" />
+    <Content Include="Views\LearnerProfile\ProfileModal\EditBreakIntervalView.cshtml" />
+    <Content Include="Views\LearnerProfile\ProfileModal\EditTrainingItemView.cshtml" />
+    <Content Include="Views\LearnerProfile\ProfileModal\LearnerAboutToBirth.cshtml" />
+    <Content Include="Views\LearnerProfile\ProfileModal\ShowLearnerBonusDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\InitializeType.cs" />

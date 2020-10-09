@@ -18,18 +18,16 @@
     models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
     _model = (IQueryable<UserProfile>)this.Model;
 }
-<div class="modal modal-large fade" id="@(_dialogID)" tabindex="-1" role="dialog">
+<div class="modal fade" id="@(_dialogID)" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <a class="closebutton" data-dismiss="modal"></a>
-            </div>
+        <div class="modal-content">            
             <div class="modal-body">
+                <a class="closebutton" data-dismiss="modal"></a>
                 <ul class="new_friend_list list-unstyled row">
                     @foreach (var item in _model.ToArray()
-                        .OrderBy(u=>u.Birthday.Value.Month).ThenBy(u=>u.Birthday.Value.Day))
+                       .OrderBy(u => u.Birthday.Value.Month).ThenBy(u => u.Birthday.Value.Day))
                     {
-                        <li class="col-lg-2 col-md-2 col-sm-3 col-6">
+                        <li class="col-lg-4 col-md-4 col-sm-3 col-6">
                             <a href="javascript:$('').launchDownload('@Html.Raw(Url.Action("LearnerProfile","ConsoleHome"))', { 'keyID': '@(item.UID.EncryptKey())' });">
                                 @{
                                     ViewBag.ProfileClass = "img-thumbnail popfit";

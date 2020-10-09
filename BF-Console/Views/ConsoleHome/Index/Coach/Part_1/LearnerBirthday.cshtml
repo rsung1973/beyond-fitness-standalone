@@ -28,8 +28,7 @@
         <div class="content">
             @{
                 int startDay = DateTime.Today.Month * 100 + DateTime.Today.Day;
-                int todayCount = items.Where(u => u.BirthdateIndex == startDay).Count();
-                int weekCount = items.Count();
+                int todayCount = items.Where(u => u.BirthdateIndex == startDay).Count();                
             }
             <div class="text">今日生日</div>
             <h5 class="number">
@@ -49,6 +48,9 @@
     <div class="body p-10">
         <div class="icon"><i class="zmdi zmdi-cake"></i> </div>
         <div class="content">
+            @{
+                int weekCount = items.Count();
+            }
             <div class="text">本週生日</div>
             <h5 class="number">
                 @if (weekCount > 0)

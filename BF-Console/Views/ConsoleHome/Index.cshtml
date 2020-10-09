@@ -66,24 +66,10 @@
     <!--本月運動時間-->
     @if (!_model.IsOfficer() || _model.IsCoach())
     {
-        <div class="container-fluid">
-            <div class="row clearfix">
-                <div class="col-lg-12 col-md-12">
-                    <div class="card bg-darkteal exerciserank">
-                        <div class="body">
-                            <div class="font-20 align-center">
-                                @{
-                                    Html.RenderPartial("~/Views/LearnerProfile/Module/ExerciseSummary.cshtml", _model);
-                                }
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        Html.RenderPartial("~/Views/LearnerProfile/Module/ExerciseSummary.cshtml", _model);
     }
 
-
+    <!--我的合約與當日行事曆-->
     @if (_model.IsAssistant() || _model.IsOfficer())
     {
         Html.RenderPartial("~/Views/ConsoleHome/Index/Admin/Part_1.cshtml", _model);

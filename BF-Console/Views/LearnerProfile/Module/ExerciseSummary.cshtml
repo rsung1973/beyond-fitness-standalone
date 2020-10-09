@@ -36,12 +36,25 @@
             .Where(l => l.ClassTime >= monthStart.AddMonths(-1) && l.ClassTime < DateTime.Today.AddMonths(-1).AddDays(1))
             .Sum(l => l.DurationInMinutes) ?? 0;
 }
-本月運動：<span class="col-lime counto" data-to="@(totalMinutes / 60)">@(totalMinutes / 60)</span>小時:<span class="col-lime counto" data-to="@(totalMinutes % 60)">@(totalMinutes % 60)</span>分鐘
-@if (totalMinutes > totalMinutesLastMonth)
-{
-    <i class="zmdi zmdi-caret-up zmdi-hc-2x text-danger"></i>
-}
-else if (totalMinutes < totalMinutesLastMonth)
-{
-    <i class="zmdi zmdi-caret-down zmdi-hc-2x text-success"></i>
-}
+
+<div class="container-fluid">
+    <div class="row clearfix">
+        <div class="col-lg-12 col-md-12">
+            <div class="card bg-darkteal exerciserank">
+                <div class="body">
+                    <div class="font-20 align-center">
+                        本月運動：<span class="col-lime counto" data-to="@(totalMinutes / 60)">@(totalMinutes / 60)</span>小時:<span class="col-lime counto" data-to="@(totalMinutes % 60)">@(totalMinutes % 60)</span>分鐘
+                        @if (totalMinutes > totalMinutesLastMonth)
+                        {
+                            <i class="zmdi zmdi-caret-up zmdi-hc-2x text-danger"></i>
+                        }
+                        else if (totalMinutes < totalMinutesLastMonth)
+                        {
+                            <i class="zmdi zmdi-caret-down zmdi-hc-2x text-success"></i>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
