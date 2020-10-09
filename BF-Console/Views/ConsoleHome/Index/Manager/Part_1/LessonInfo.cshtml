@@ -29,7 +29,7 @@
     ViewBag.ViewModel = viewModel;
 
     var items = viewModel.InquireLesson(models);
-    ViewBag.DataItems = items;
+    ViewBag.DataItems = items;    
 
 }
 
@@ -37,8 +37,20 @@
 {
     <div class="icon"><i class="zmdi zmdi-shield-check"></i> </div>
     <div class="content">
+        @{
+            int count = _model.PreferredLessonTimeToApprove(models).Count();
+        }
         <div class="text">跨店待審</div>
-        <h5 class="number"><a href="javascript:void(0);" onclick="showLoading(); window.location.href='@Html.Raw(Url.Action("CrossBranchIndex","ConsoleHome"))';">@(_model.PreferredLessonTimeToApprove(models).Count())</a></h5>
+        <h5 class="number">
+            @if (count > 0)
+            {
+                <a href="javascript:void(0);" onclick="showLoading(); window.location.href='@Html.Raw(Url.Action("CrossBranchIndex","ConsoleHome"))';">@(count)</a>
+            }
+            else
+            {
+                <text>0</text>
+            }
+        </h5>
     </div>
 }
 
