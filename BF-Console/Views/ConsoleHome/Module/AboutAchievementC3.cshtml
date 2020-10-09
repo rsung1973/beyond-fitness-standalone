@@ -26,7 +26,7 @@
         <div class="col-lg-12 col-md-12">
             <div class="row clearfix">
                 <div class="col-12">
-                    <div class="card bg-darkteal">
+                    <div class="card">
                         <div class="header">
                             <h2 id="branchName">
                                 @*@for (int idx = 0; idx < 3; idx++)
@@ -57,14 +57,6 @@
                             </ul>
                         </div>
                         <div class="body">
-                            @if (_model.IsManager() || _model.IsViceManager() || _model.IsAssistant() || _model.IsAuthorizedSysAdmin())
-                            {
-                                <div id="lessonSummary">
-                                    @{
-                                        Html.RenderPartial("~/Views/ConsoleHome/Module/AboutLessonSummary.cshtml", _model);
-                                    }
-                                </div>
-                            }
                             <div id="lessonsBarChart">
                                 @{
                                     Html.RenderPartial("~/Views/ConsoleHome/Module/TodayLessonsBarChartC3.cshtml", _model);

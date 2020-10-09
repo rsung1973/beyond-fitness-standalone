@@ -58,7 +58,7 @@
         totalData[i] += tempData[i];
     }
 }
-<div id="@(_chartID)" class="c3 m-t-20 lessonBar"></div>
+<div id="@(_chartID)" class="c3"></div>
 <script>
 
     var totalData = @Html.Raw(JsonConvert.SerializeObject(totalData));
