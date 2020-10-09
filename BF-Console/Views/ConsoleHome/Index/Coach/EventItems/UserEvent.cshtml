@@ -26,7 +26,10 @@
         <div class="col-10">
             <h6>
                 @(item.Title)
-                <address><i class="zmdi zmdi-pin"></i>@(item.BranchID.HasValue ? item.BranchStore.BranchName : item.Place)</address>
+                @if (item.BranchID.HasValue || item.Place != null)
+                {
+                    <address><i class="zmdi zmdi-pin"></i>@(item.BranchID.HasValue ? item.BranchStore.BranchName : item.Place)</address>
+                }
             </h6>
             <p>@(item.ActivityProgram)</p>            
         </div>

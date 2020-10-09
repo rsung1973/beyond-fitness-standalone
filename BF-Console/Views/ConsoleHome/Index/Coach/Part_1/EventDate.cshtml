@@ -25,13 +25,16 @@
 }
 
 <div class="day-number">
-    <a href="javascript:showEventDate('@($"{eventDate.AddDays(-1):yyyy-MM-dd}")');"><i class="zmdi zmdi-caret-left zmdi-hc-lg"></i></a>　
-    @(eventDate.Day)　
+    <a href="javascript:showEventDate('@($"{eventDate.AddDays(-1):yyyy-MM-dd}")');"><i class="zmdi zmdi-caret-left zmdi-hc-lg"></i></a>
+    <span> @($"{eventDate.Day:00}") </span>
     <a href="javascript:showEventDate('@($"{eventDate.AddDays(1):yyyy-MM-dd}")');"><i class="zmdi zmdi-caret-right zmdi-hc-lg"></i></a>
 </div>
 <div class="date-right">
     <div class="day-name">
-        @(eventDate.DayOfWeek)　
+        @{
+            var culture = new System.Globalization.CultureInfo("zh-TW");
+        }
+        @(culture.DateTimeFormat.GetDayName(eventDate.DayOfWeek))
         <a href="#" class="date"><i class="zmdi zmdi-calendar zmdi-hc-lg"></i></a>
     </div>
     <div class="month">@($"{eventDate:yyyy/MM}")</div>
