@@ -43,6 +43,8 @@
     <link href="css/royalslider.css?1.1" rel="stylesheet" />
     <!-- charts-c3 -->
     <link href="plugins/charts-c3/plugin.css?2.0" rel="stylesheet">
+    <!-- Multi Select Css -->
+    <link href="plugins/multi-select/css/multi-select.css" rel="stylesheet">
 }
 
 <!--Sparkline Plugin Js-->
@@ -97,7 +99,7 @@
     <!--專業文章&我的比賽-->
     @if (_model.IsServitor())
     {
-        
+
         Html.RenderPartial("~/Views/ConsoleHome/Module/AboutStaff.cshtml", _model);
     }
 </section>
@@ -109,6 +111,8 @@
     <script src="bundles/chartscripts.bundle.js"></script>
     <!-- royalslider Plugin Js-->
     <script src="plugins/royalslider/jquery.royalslider.min.js" class="rs-file"></script>
+    <!-- Multi Select Plugin Js -->
+    <script src="plugins/multi-select/js/jquery.multi-select.js"></script>
     <!-- ChartC3 Js -->
     <script src="bundles/cs.bundles.js"></script>
 
