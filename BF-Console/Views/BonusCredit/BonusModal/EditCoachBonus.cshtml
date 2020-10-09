@@ -26,44 +26,34 @@
 <div class="modal fade" id="@(_dialogID)" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <div class="modal-body">
+            <div class="modal-header">
+                <h6 class="title">@(_model.ServingCoach.UserProfile.FullName())</h6>
                 <a class="closebutton" data-dismiss="modal"></a>
+            </div>
+            <div class="modal-body">
                 <div class="row clearfix">
-                    <div class="col-12">
-                        <div class="card action_bar">
-                            <div class="header">
-                                <h2>@(_model.ServingCoach.UserProfile.FullName())</h2>
-                            </div>
-                            <div class="body">
-                                <div class="row clearfix">
-                                    <div class="col-lg-6 col-md-6 col-sm-6 col-12">
-                                        <span>管理獎金</span>
-                                        <div class="input-group">
-                                            <input type="text" name="ManagerBonus" class="form-control form-control-danger" placeholder="管理獎金" value="@(_viewModel.ManagerBonus)" />
-                                            <span class="input-group-addon">
-                                                <i class="zmdi zmdi-shopping-cart-plus"></i>
-                                            </span>
-                                        </div>
-                                        @*<label class="material-icons help-error-text">clear 請輸入管理獎金</label>*@
-                                    </div>
-                                    <div class="col-lg-6 col-md-6 col-sm-6 col-12">
-                                        <span>特別獎金</span>
-                                        <div class="input-group">
-                                            <input type="text" class="form-control form-control-danger" placeholder="特別獎金" name="SpecialBonus" value="@(_viewModel.SpecialBonus)" />
-                                            <span class="input-group-addon">
-                                                <i class="zmdi zmdi-money-box"></i>
-                                            </span>
-                                        </div>
-                                        @*<label class="material-icons help-error-text">clear 請輸特別獎金</label>*@
-                                    </div>
-                                </div>
-                            </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+                        <span>管理獎金</span>
+                        <div class="input-group">
+                            <input type="text" name="ManagerBonus" class="form-control form-control-danger" placeholder="管理獎金" value="@(_viewModel.ManagerBonus)" />
+                            <span class="input-group-addon">
+                                <i class="zmdi zmdi-shopping-cart-plus"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+                        <span>特別獎金</span>
+                        <div class="input-group">
+                            <input type="text" class="form-control form-control-danger" placeholder="特別獎金" name="SpecialBonus" value="@(_viewModel.SpecialBonus)" />
+                            <span class="input-group-addon">
+                                <i class="zmdi zmdi-money-box"></i>
+                            </span>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-darkteal btn-round waves-effect btnConfirm">確定</button>
+                <button type="button" class="btn btn-darkteal btn-round waves-effect btnConfirm">確定，不後悔</button>
             </div>
         </div>
     </div>
