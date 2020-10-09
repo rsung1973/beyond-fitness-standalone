@@ -28,11 +28,11 @@
     }
     @if (count > 0)
     {
-        <a href='javascript:showContractList(@Html.Raw(JsonConvert.SerializeObject(viewModel)),@(count));' class="red">@(count)</a>
+        <a href='javascript:showContractList(@Html.Raw(JsonConvert.SerializeObject(viewModel)),@(count));' class="col-red">@(count)</a>
     }
     else
     {
-        <a href="#" class="">0</a>
+        <text>0</text>
     }
 </h5>
 

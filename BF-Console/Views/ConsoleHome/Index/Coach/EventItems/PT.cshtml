@@ -27,6 +27,7 @@
             <h6>
                 P.T @(String.Join("、", item.GroupingLesson.RegisterLesson.Select(r => r.UserProfile.RealName)))
                 <address><i class="zmdi zmdi-pin"></i>@(item.BranchStore.BranchName)</address>
+                @{ Html.RenderPartial("~/Views/ConsoleHome/Module/RenderLessonCheck.cshtml", item);}
             </h6>
             @{
                 var trainingPlan = item.TrainingPlan.FirstOrDefault();

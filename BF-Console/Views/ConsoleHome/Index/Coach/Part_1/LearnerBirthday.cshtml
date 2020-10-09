@@ -29,9 +29,19 @@
             @{
                 int startDay = DateTime.Today.Month * 100 + DateTime.Today.Day;
                 int todayCount = items.Where(u => u.BirthdateIndex == startDay).Count();
+                int weekCount = items.Count();
             }
             <div class="text">今日生日</div>
-            <h5 class="number">@(todayCount)</h5>
+            <h5 class="number">
+                @if (todayCount > 0)
+                {
+                    <a href="#">@(todayCount)</a>
+                }
+                else
+                {
+                    @(todayCount)
+                }
+            </h5>
         </div>
     </div>
 </div>
@@ -40,7 +50,16 @@
         <div class="icon"><i class="zmdi zmdi-cake"></i> </div>
         <div class="content">
             <div class="text">本週生日</div>
-            <h5 class="number">@(items.Count())</h5>
+            <h5 class="number">
+                @if (weekCount > 0)
+                {
+                    <a href="#">@(weekCount)</a>
+                }
+                else
+                {
+                    @(weekCount)
+                }
+            </h5>
         </div>
     </div>
 </div>

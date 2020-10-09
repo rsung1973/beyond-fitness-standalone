@@ -22,17 +22,25 @@
     if (item.TrainingBySelf == 2)
     {
     <div class="event-name b-ST row" onclick="showLessonEventModal('@(item.LessonID.EncryptKey())',event);">
-        <div class="col-2 text-center">
-            <h4>@($"{item.ClassTime:dd}")<span>@($"{item.ClassTime:MM}")</span><span>@(Naming.DayOfWeek[(int)item.ClassTime.Value.DayOfWeek])</span></h4>
+        <div class="col-2 text-left">
+            <h4><span>@(item.ClassTime.Value.ToString("HH:mm"))</span><span>@(item.ClassTime.Value.AddMinutes(item.DurationInMinutes.Value).ToString("HH:mm"))</span></h4>
         </div>
-        <div class="col-10">
+        <div class="col-10">            
             <h6>
-                @(item.ClassTime.Value.ToString("HH:mm"))-@(item.ClassTime.Value.AddMinutes(item.DurationInMinutes.Value).ToString("HH:mm")) @(item.RegisterLesson.UserProfile.FullName())
+                S.T @(item.RegisterLesson.UserProfile.RealName)
                 @{ Html.RenderPartial("~/Views/ConsoleHome/Module/RenderLessonCheck.cshtml", item);}
-
             </h6>
-            <p class="col-blush">@((item.TrainingPlan.FirstOrDefault()?.TrainingExecution.Emphasis) ?? "重點一片空，學生要來踹你了...")</p>
-            <address><i class="zmdi zmdi-pin"></i></address>
+            @{
+                var trainingPlan = item.TrainingPlan.FirstOrDefault();
+                if (trainingPlan?.TrainingExecution.Emphasis != null)
+                {
+                    <p>@(trainingPlan?.TrainingExecution.Emphasis)</p>
+                }
+                else
+                {
+                    <p class="col-blush">重點一片空，學生來踹你了...</p>
+                }
+            }
         </div>
     </div>
     }

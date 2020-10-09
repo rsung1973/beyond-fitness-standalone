@@ -22,24 +22,24 @@
     if (item.RegisterLesson.LessonPriceType.Status == (int)Naming.DocumentLevelDefinition.教練PI)
     {
         <div class="event-name b-CoachPI row" onclick="showLessonEventModal('@(item.LessonID.EncryptKey())',event);">
-            <div class="col-2 text-center">
-                <h4>@($"{item.ClassTime:dd}")<span>@($"{item.ClassTime:MM}")</span><span>@(Naming.DayOfWeek[(int)item.ClassTime.Value.DayOfWeek])</span></h4>
+            <div class="col-2 text-left">
+                <h4><span>@(item.ClassTime.Value.ToString("HH:mm"))</span><span>@(item.ClassTime.Value.AddMinutes(item.DurationInMinutes.Value).ToString("HH:mm"))</span></h4>
             </div>
             <div class="col-10">
                 <h6>
-                    @(item.ClassTime.Value.ToString("HH:mm"))-@(item.ClassTime.Value.AddMinutes(item.DurationInMinutes.Value).ToString("HH:mm"))
                     @(item.GroupingLesson.RegisterLesson.Count == 1
-                                    ? item.RegisterLesson.UserProfile.FullName()
+                                    ? item.RegisterLesson.UserProfile.RealName
                                     : item.GroupingLesson.RegisterLesson.Where(r => r.MasterRegistration == true)
                                         .Select(r => r.UserProfile).FirstOrDefault()?.RealName + "發起")
+                    <address><i class="zmdi zmdi-pin"></i>@(item.BranchID.HasValue ? item.BranchStore?.BranchName : item.Place)</address>
+                    @{ Html.RenderPartial("~/Views/ConsoleHome/Module/RenderLessonCheck.cshtml", item);}
                 </h6>
-                <p class="col-blush">@((item.TrainingPlan.FirstOrDefault()?.TrainingExecution.Emphasis) ?? "重點一片空，學生要來踹你了...")</p>
-                <address><i class="zmdi zmdi-pin"></i>@(item.BranchID.HasValue ? item.BranchStore?.BranchName : item.Place)</address>
+                <p class="col-blush">@((item.TrainingPlan.FirstOrDefault()?.TrainingExecution.Emphasis) ?? "重點一片空，學生要來踹你了...")</p>                
             </div>
         </div>
     }
     else
     {
-        Html.RenderPartial("~/Views/ConsoleHome/Index/Coach/EventItems/TrialLesson.cshtml");
+        Html.RenderPartial("~/Views/ConsoleHome/Index/Coach/EventItems/TS.cshtml");
     }
 }

@@ -20,23 +20,15 @@
 @{
     UserEvent item = (UserEvent)_model.EventItem;
     <div class="event-name b-custom row" onclick="showUserEventModal('@(item.EventID.EncryptKey())',event);">
-        <div class="col-2 text-center">
-            <h4>@($"{item.StartDate:dd}")<span>@($"{item.StartDate:MM}")</span><span>@(Naming.DayOfWeek[(int)item.StartDate.DayOfWeek])</span></h4>
+        <div class="col-2 text-left">
+            <h4><span>@(item.StartDate.ToString("HH:mm"))</span><span>@(item.EndDate.ToString("HH:mm"))</span></h4>
         </div>
         <div class="col-10">
             <h6>
-                @if ((item.EndDate - item.StartDate).TotalDays >= 1)
-                {
-                    <text>@(item.StartDate.ToString("yyyy/MM/dd"))-@(item.EndDate.ToString("yyyy/MM/dd"))</text>
-                }
-                else
-                {
-                    <text>@(item.StartDate.ToString("HH:mm"))-@(item.EndDate.ToString("HH:mm"))</text>
-                }
                 @(item.Title)
+                <address><i class="zmdi zmdi-pin"></i>@(item.BranchID.HasValue ? item.BranchStore.BranchName : item.Place)</address>
             </h6>
-            <p class="col-blush">@(item.ActivityProgram)</p>
-            <address><i class="zmdi zmdi-pin"></i>@(item.BranchID.HasValue ? item.BranchStore.BranchName : item.Place)</address>
+            <p>@(item.ActivityProgram)</p>            
         </div>
     </div>
 }
