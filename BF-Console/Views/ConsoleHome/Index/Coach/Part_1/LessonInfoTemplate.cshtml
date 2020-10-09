@@ -28,8 +28,18 @@
             <div class="text">本月P.T</div>
             @{ 
                 var PT = items.ByLessonQueryType(Naming.LessonQueryType.一般課程);
+                int PTCount = PT.Count();
             }
-            <h5 class="number"><a href="javascript:void(0);">@(PT.Count())</a></h5>
+            <h5 class="number">
+                @if (PTCount > 0)
+                {
+                    <a href="javascript:void(0);">@(PTCount)</a>
+                }
+                else
+                {
+                    <text>0</text>
+                }
+            </h5>
         </div>
         <hr>
         <div class="icon bg-green"><i class="zmdi zmdi-walk"></i> </div>
@@ -37,9 +47,19 @@
             <div class="text">本月P.I</div>
             @{ 
                 var PI = items.ByLessonQueryType(Naming.LessonQueryType.自主訓練);
+                int PICount = PI.Count();
             }
-            <h5 class="number"><a href="javascript:void(0);">@(PI.Count())</a></h5>
-        </div>
+            <h5 class="number">
+                @if (PICount > 0)
+                {
+                    <a href="javascript:void(0);">@(PICount)</a>
+                }
+                    else
+                {
+                    <text>0</text>
+                }
+            </h5>
+            </div>
     </div>
 </div>
 <div class="col-lg-6 col-md-12 col-sm-12">
@@ -47,7 +67,19 @@
         <div class="icon"><i class="zmdi zmdi-close"></i> </div>
         <div class="content" onclick="lessonOverview();">
             <div class="text">未打卡</div>
-            <h5 class="number"><a href="javascript:void(0);">@(PT.Where(t => !t.LessonPlan.CommitAttendance.HasValue).Count() + PI.Where(t => !t.LessonPlan.CommitAttendance.HasValue).Count())</a></h5>
+            @{                
+                int count = PT.Where(t => !t.LessonPlan.CommitAttendance.HasValue).Count() + PI.Where(t => !t.LessonPlan.CommitAttendance.HasValue).Count();
+            }
+            <h5 class="number">
+                @if (count > 0)
+                {
+                    <a href="javascript:void(0);">@(count)</a>
+                }
+                else
+                {
+                    <text>0</text>
+                }
+            </h5>
         </div>
         <hr>
         @RenderSection("Part_1")

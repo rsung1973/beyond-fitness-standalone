@@ -70,7 +70,7 @@
     }
 
     <!--我的合約與當日行事曆-->
-    @if (_model.IsAssistant() || _model.IsOfficer() || _model.IsServitor())
+    @if (_model.IsAssistant() || _model.IsServitor())
     {
         Html.RenderPartial("~/Views/ConsoleHome/Index/Admin/Part_1.cshtml", _model);
     }

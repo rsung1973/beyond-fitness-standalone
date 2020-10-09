@@ -20,8 +20,6 @@
     _model = (LessonTime)this.Model;
     _profile = Context.GetUser();
 }
-@if ((_profile.IsSysAdmin() || _profile.IsAssistant()))
-{
     <div class="modal fade" id="@(_dialogID)" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-sm" role="document">
             <div class="modal-content">
@@ -32,7 +30,7 @@
                 <div class="modal-popmenu-body">
                     <div class="list-group">
                         <a href="javascript:$('').launchDownload('@Html.Raw(Url.Action("LessonTrainingContent", "ConsoleHome"))', {'keyID':'@(_model.LessonID.EncryptKey())' });" class="list-group-item">編輯課表</a>
-                        @if (!_model.LessonPlan.CommitAttendance.HasValue)
+                        @if (!_model.LessonPlan.CommitAttendance.HasValue && (_profile.IsSysAdmin() || _profile.IsAssistant()))
                         {
                             <a class="list-group-item checkAttendance">學生打卡</a>
                         }
@@ -136,11 +134,3 @@
     </script>
     </div>
 }
-else
-{
-    <script>
-           $('').launchDownload('@Html.Raw(Url.Action("LessonTrainingContent", "ConsoleHome"))', {'keyID':'@(_model.LessonID.EncryptKey())' });
-    </script>
-}
-
-

@@ -71,7 +71,7 @@
         <div class="card">
             <div class="header">
                 <h2><strong>@(coach?.UserProfile.FullName())</strong></h2>
-                @if (_model.IsSysAdmin() || _model.IsAssistant() || _model.IsManager() || _model.IsViceManager())
+                @if (_model.IsSysAdmin() || _model.IsAssistant() || _model.IsManager() || _model.IsViceManager() || _model.IsOfficer())
                 {
                     <ul class="header-dropdown">
                         <li>
@@ -201,13 +201,13 @@
             </div>
             <div class="col-4 text-right">
                 @{
-                    lessonCount = currentItems.Where(t => t.LessonAttendance != null).Count();
+                    lessonCount = currentItems.Count();
                     viewModel = (LessonOverviewQueryViewModel)currentViewModel.Duplicate();
                     //viewModel.LearnerCommitted = true;
                     viewModel.CoachAttended = true;
                 }
                 <a href="#" onclick='showLessonList(@Html.Raw(viewModel.JsonStringify()),@(lessonCount));'><h2>@(lessonCount)</h2></a>
-                <small class="info">完成</small>
+                <small class="info">全部</small>
             </div>
         </div>
     </div>
