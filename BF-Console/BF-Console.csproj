@@ -6274,6 +6274,29 @@
     <Content Include="ConsoleHome\images\landing\portfolio\Vinson\Cover.png" />
     <Content Include="Views\ContractConsole\Module\CauseForEnding.cshtml" />
     <Content Include="Views\InvoiceConsole\Module\downloadinvoicenointervalcsv.cshtml" />
+    <Content Include="Views\ConsoleHome\Index\Admin\Part_1.cshtml" />
+    <Content Include="Views\ConsoleHome\Index\Admin\Part_1\LearnerBirthday.cshtml" />
+    <Content Include="Views\ConsoleHome\Index\Admin\Part_1\ContractInfo.cshtml" />
+    <Content Include="Views\ConsoleHome\Index\Admin\Part_1\LessonInfo.cshtml" />
+    <Content Include="Views\ConsoleHome\Index\Coach\SingleEventItem.cshtml" />
+    <Content Include="Views\ConsoleHome\Index\Coach\Part_1_tempate.cshtml" />
+    <Content Include="Views\ConsoleHome\Index\Coach\EventItems.cshtml" />
+    <Content Include="Views\ConsoleHome\Index\Coach\Part_1.cshtml" />
+    <Content Include="Views\ConsoleHome\Index\Coach\EventItems\PI.cshtml" />
+    <Content Include="Views\ConsoleHome\Index\Coach\EventItems\UserEvent.cshtml" />
+    <Content Include="Views\ConsoleHome\Index\Coach\EventItems\TrialLesson.cshtml" />
+    <Content Include="Views\ConsoleHome\Index\Coach\EventItems\PT.cshtml" />
+    <Content Include="Views\ConsoleHome\Index\Coach\EventItems\CoachPI.cshtml" />
+    <Content Include="Views\ConsoleHome\Index\Coach\EventItems\ST.cshtml" />
+    <Content Include="Views\ConsoleHome\Index\Coach\Part_1\EventDate.cshtml" />
+    <Content Include="Views\ConsoleHome\Index\Coach\Part_1\LearnerBirthday.cshtml" />
+    <Content Include="Views\ConsoleHome\Index\Coach\Part_1\ContractInfo.cshtml" />
+    <Content Include="Views\ConsoleHome\Index\Coach\Part_1\LessonInfo.cshtml" />
+    <Content Include="Views\ConsoleHome\Index\Coach\Part_1\ContractData.cshtml" />
+    <Content Include="Views\ConsoleHome\Index\Coach\Part_1\LessonInfoTemplate.cshtml" />
+    <Content Include="Views\ConsoleHome\Index\Manager\Part_1.cshtml" />
+    <Content Include="Views\ConsoleHome\Index\Manager\Part_1\ContractInfo.cshtml" />
+    <Content Include="Views\ConsoleHome\Index\Manager\Part_1\LessonInfo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\InitializeType.cs" />

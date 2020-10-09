@@ -538,6 +538,11 @@ body.theme-nero {
     color: white !imporatnt;
 }
 
+.theme-nero .sidebar .menu .input-group .form-control:focus, 
+.theme-nero .navbar-nav.navbar-right .input-group .form-control:focus {
+    color: white;
+}
+
 .theme-nero .sidebar .menu .input-group .form-control:focus:-moz-placeholder,
 .theme-nero .navbar-nav.navbar-right .input-group .form-control:focus:-moz-placeholder {
     color: #1A1A1A;

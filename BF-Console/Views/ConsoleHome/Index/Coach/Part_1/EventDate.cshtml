@@ -24,9 +24,9 @@
 
 }
 
-<div class="day-number">@(eventDate.Day)</div><a href="#" class="date"><i class="zmdi zmdi-calendar zmdi-hc-lg"></i></a>
+<div class="day-number"><a href="#"><i class="zmdi zmdi-caret-left zmdi-hc-lg"></i></a>　@(eventDate.Day)　<a href="#"><i class="zmdi zmdi-caret-right zmdi-hc-lg"></i></a></div>
 <div class="date-right">
-    <div class="day-name">@(eventDate.DayOfWeek)</div>
+    <div class="day-name">@(eventDate.DayOfWeek)　<a href="#" class="date"><i class="zmdi zmdi-calendar zmdi-hc-lg"></i></a></div>
     <div class="month">@($"{eventDate:yyyy/MM}")</div>
 </div>
 <script>
