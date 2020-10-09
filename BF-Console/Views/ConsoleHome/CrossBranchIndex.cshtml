@@ -37,7 +37,7 @@
     <link href="plugins/jquery-datatable/Responsive-2.2.2/css/responsive.bootstrap4.min.css" rel="stylesheet">
     <link href="plugins/jquery-datatable/FixedColumns-3.2.5/css/fixedColumns.bootstrap4.min.css" rel="stylesheet">
     <!-- charts-c3 -->
-    <link href="plugins/charts-c3/plugin.css" rel="stylesheet" />
+    <link href="plugins/charts-c3/plugin.css?2.0" rel="stylesheet" />
 }
 
 <!-- Jquery DataTable Plugin Js -->
@@ -61,11 +61,6 @@
             <div class="col-12">
                 <div class="card patients-list">
                     <div class="body">
-                        <div class="p-15 xl-slategray">
-                            <span class="m-r-20"><i class="zmdi zmdi-label col-amber m-r-5"></i>P.T</span>
-                            <span class="m-r-20"><i class="zmdi zmdi-label col-green m-r-5"></i>P.I</span>
-                            <span class="m-r-20"><i class="zmdi zmdi-label col-pink m-r-5"></i>T.S</span>
-                        </div>
                         <div class="table-responsive">
                             @{ Html.RenderPartial("~/Views/LessonConsole/Module/CrossBranchLessonList.cshtml", _model.PreferredLessonTimeToApprove(models));}
 

@@ -25,12 +25,13 @@
 <div class="modal modal-large fade" id="@(_dialogID)" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <a class="closebutton" data-dismiss="modal"></a>
-            <div class="modal-body">
-                <div class="card bg-darkteal">
-                    <div class="body">
-                        @{ Html.RenderPartial("~/Views/ConsoleHome/Module/TodayLessonsBarChartC3.cshtml", _model);}
-                    </div>
+            <div class="modal-header">
+                <h2 class="title">當日上課人數直條圖</h2>
+                <a class="closebutton" data-dismiss="modal"></a>
+            </div>
+            <div class="card square">
+                <div class="body">
+                    @{ Html.RenderPartial("~/Views/ConsoleHome/Module/TodayLessonsBarChartC3.cshtml", _model);}
                 </div>
             </div>
         </div>

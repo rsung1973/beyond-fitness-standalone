@@ -19,7 +19,7 @@
     _model = (IQueryable<LessonTime>)this.Model;
    
 }
-<table class="table table-striped nowrap dataTable-crossBranch" style="width: 100%">
+<table class="table table-striped table-custom m-b-0 nowrap dataTable" style="width: 100%">
     <thead class="bg-darkteal">
         <tr>
             <th>體能顧問</th>
@@ -28,7 +28,6 @@
             <th>類型</th>
             <th>學生</th>
             <th>該時段人數</th>
-            <th>類型佔比</th>
         </tr>
     </thead>
     <tbody>
@@ -54,10 +53,7 @@
                         var lessons = expansion.ConcurrentLessons(models);
                     }
                     @(lessons.ConcurrentRegisterLessons(models).Count())
-                </td>
-                <td>
-                    <div class='sparkline-pie'>@(lessons.PTLesson().Count()),@(lessons.PILesson().Count()),@(lessons.TrialLesson().Count())</div>
-                </td>
+                </td>               
             </tr>
         }
     </tbody>
@@ -69,7 +65,7 @@
             $global.dtContract.destroy();
         }
 
-        $global.dtContract = $('.dataTable-crossBranch').DataTable({
+        $global.dtContract = $('.dataTable').DataTable({
             //"ajax": 'ajax/data/contractlist-2.json',
             "order": [
                 [1, 'desc'],
@@ -103,31 +99,10 @@
             },
             columnDefs: [
                 {
-                    targets: [1, 2, 3, 4, 5, 6],
+                    targets: [1, 2, 3, 4, 5],
                     className: "align-center"
                 }
-            ],
-            "initComplete": function () {
-                var api = this.api();
-                api.$('td').click(function () {
-                    if ($(this).hasClass('more')) {
-                        $("#moreContractActionModal").modal('show');
-                    }
-                });
-                var $pie = $('.sparkline-pie')
-                    .filter(function (idx, elment) {
-                        return $('canvas', this).length === 0;
-                    }).sparkline('html', {
-                        type: 'pie',
-                        offset: 90,
-                        width: '50px',
-                        height: '50px',
-                        sliceColors: ['#FFCC84', '#C5E1A7', '#F58FB0']
-                    });
-            },
-
-            "drawCallback": function (settings) {
-            },
+            ]
         });
 
         setTimeout(function () {
@@ -138,7 +113,7 @@
         }, 1000);
 
 
-        $('.dataTable-crossBranch').resize();
+        $('.dataTable').resize();
 
     });</script>
 
