@@ -35,6 +35,10 @@
                     }
                 </div>
             </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-simple btn-round  waves-effect" onclick="javascript:copyTrainingPlan(@item.LessonID);">確定複製，不後悔</button>
+                <button type="button" class="btn btn-round waves-effect" onclick="javascript:editTrainingContent('@(item.LessonID.EncryptKey())');">確定，繼續編輯</button>
+            </div>
         </div>
     </div>
     @{ Html.RenderPartial("~/Views/ConsoleHome/Shared/BSModalScript.cshtml", model: _dialogID);}

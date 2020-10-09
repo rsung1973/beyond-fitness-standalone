@@ -6302,6 +6302,10 @@
     <Content Include="Views\LearnerProfile\ProfileModal\EditTrainingItemView.cshtml" />
     <Content Include="Views\LearnerProfile\ProfileModal\LearnerAboutToBirth.cshtml" />
     <Content Include="Views\LearnerProfile\ProfileModal\ShowLearnerBonusDetails.cshtml" />
+    <Content Include="Views\ConsoleHome\Module\InvoiceNoIntervalList.cshtml" />
+    <Content Include="Views\ConsoleHome\PrepareLearnerCharacter.cshtml" />
+    <Content Include="Views\ConsoleHome\SamplePage.cshtml" />
+    <Content Include="Views\ConsoleHome\SimpleCalendar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\InitializeType.cs" />

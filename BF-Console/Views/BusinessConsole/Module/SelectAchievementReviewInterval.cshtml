@@ -27,64 +27,57 @@
                     <a class="closebutton" data-dismiss="modal"></a>
                 </div>
                 <div class="modal-body">
-                    <div class="row clearfix">
-                        <div class="col-12">
-                            <div class="card widget_2">
-                                <ul class="row clearfix list-unstyled m-b-0">
-                                    <li class="col-lg-4 col-md-5 col-sm-12">
-                                        <div class="header">
-                                            <h2><strong>快速查詢</strong></h2>
-                                        </div>
-                                        <div class="body">
-                                            <div class="row clearfix">
-                                                <div class="col-12">
-                                                    @{ 
-                                                        var monthStart = DateTime.Today.FirstDayOfMonth();
-                                                    }
-                                                    <a href="javascript:$('#@(_dialogID)').modal('hide');showIntervalReview({'dateFrom':'@($"{monthStart.AddMonths(-6):yyyy-MM-dd}")','dateTo':'@($"{monthStart:yyyy-MM-dd}")'});" class="btn btn-sm bg-blush">近6個月</a>
-                                                    <a href="javascript:$('#@(_dialogID)').modal('hide');showIntervalReview({'dateFrom':'@($"{monthStart.AddMonths(-13):yyyy-MM-dd}")','dateTo':'@($"{monthStart:yyyy-MM-dd}")'});" class="btn btn-sm bg-blush">近13個月</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="col-lg-8 col-md-7 col-sm-12">
-                                        <div class="header">
-                                            <h2><strong>自訂查詢</strong></h2>
-                                        </div>
-                                        <div class="body">
-                                            <div class="row clearfix">
-                                                <div class="col-lg-6 col-md-6 col-sm-6 col-12">
-                                                    <div class="input-group">
-                                                        <input type="text" class="form-control month" data-date-format="yyyy/mm" readonly="readonly" placeholder="自訂起月" name="DateFrom" />
-                                                        <span class="input-group-addon xl-slategray">
-                                                            <i class="zmdi zmdi-time"></i>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-6 col-md-6 col-sm-6 col-12">
-                                                    <div class="input-group">
-                                                        <input type="text" class="form-control month" data-date-format="yyyy/mm" readonly="readonly" placeholder="自訂迄月" name="DateTo" />
-                                                        <span class="input-group-addon xl-slategray">
-                                                            <i class="zmdi zmdi-time"></i>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <div class="col-12 text-right">
-                                                    <small>(查詢區間至少3個月，至多13個月)</small>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
+                    <ul class="row clearfix list-unstyled m-b-0">
+                        <li class="col-lg-4 col-md-5 col-sm-12">
+                            <div class="header">
+                                <h6><strong>快速查詢</strong></h6>
                             </div>
-                        </div>
-                        <div class="col-12">
-                            <button type="button" class="btn btn-darkteal btn-round waves-effect float-right btnConfirm">確定</button>
-                        </div>
-                    </div>
+                            <div class="body">
+                                <div class="row clearfix">
+                                    <div class="col-12">
+                                        @{
+                                            var monthStart = DateTime.Today.FirstDayOfMonth();
+                                        }
+                                        <a href="javascript:$('#@(_dialogID)').modal('hide');showIntervalReview({'dateFrom':'@($"{monthStart.AddMonths(-6):yyyy-MM-dd}")','dateTo':'@($"{monthStart:yyyy-MM-dd}")'});" class="btn btn-sm bg-blush">近6個月</a>
+                                        <a href="javascript:$('#@(_dialogID)').modal('hide');showIntervalReview({'dateFrom':'@($"{monthStart.AddMonths(-13):yyyy-MM-dd}")','dateTo':'@($"{monthStart:yyyy-MM-dd}")'});" class="btn btn-sm bg-blush">近13個月</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="col-lg-8 col-md-7 col-sm-12">
+                            <div class="header">
+                                <h6><strong>自訂查詢</strong></h6>
+                            </div>
+                            <div class="body">
+                                <div class="row clearfix">
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control month" data-date-format="yyyy/mm" readonly="readonly" placeholder="自訂起月" name="DateFrom" />
+                                            <span class="input-group-addon xl-slategray">
+                                                <i class="zmdi zmdi-time"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control month" data-date-format="yyyy/mm" readonly="readonly" placeholder="自訂迄月" name="DateTo" />
+                                            <span class="input-group-addon xl-slategray">
+                                                <i class="zmdi zmdi-time"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 text-right">
+                                        <small>(查詢區間至少3個月，至多13個月)</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-darkteal btn-round waves-effect float-right btnConfirm">確定，不後悔</button>
                 </div>
             </div>
-        </div>
         @{ Html.RenderPartial("~/Views/ConsoleHome/Shared/BSModalScript.cshtml", model: _dialogID);}
 
         <script>
