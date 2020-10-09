@@ -105,22 +105,27 @@
             defaultView: 2,
             forceParse: 0,
         }).on('changeDate', function (ev) {
-            showLoading();
-            $('#eventDate').load('@Html.Raw(Url.Action("ShowEventDate","ConsoleHome"))', { 'classTimeStart': ev.date.toLocaleDateString() });
-            $.post('@Html.Raw(Url.Action("CalendarEventItems", "ConsoleHome", new { KeyID = _model.UID.EncryptKey(), MasterVer = Naming.MasterVersion.Ver2020, }))', { 'dateFrom': ev.date.toLocaleDateString(), 'dateTo': ev.date.toLocaleDateString() }, function (data) {
-
-                hideLoading();
-                if ($.isPlainObject(data)) {
-                    alert(data.message);
-                } else {
-                    if ($eventItems) {
-                        $eventItems.remove();
-                    }
-                    $eventItems = $(data);
-                    $('#eventItems').after($eventItems);
-                }
-            });
+            showEventDate(ev.date.toLocaleDateString());
         });
+    }
+
+    function showEventDate(date) {
+        showLoading();
+        $('#eventDate').load('@Html.Raw(Url.Action("ShowEventDate","ConsoleHome"))', { 'classTimeStart': date });
+        $.post('@Html.Raw(Url.Action("CalendarEventItems", "ConsoleHome", new { KeyID = _model.UID.EncryptKey(), MasterVer = Naming.MasterVersion.Ver2020, }))', { 'dateFrom': date, 'dateTo': date }, function (data) {
+
+            hideLoading();
+            if ($.isPlainObject(data)) {
+                alert(data.message);
+            } else {
+                if ($eventItems) {
+                    $eventItems.remove();
+                }
+                $eventItems = $(data);
+                $('#eventItems').after($eventItems);
+            }
+        });
+
     }
 
     function showLessonEventModal(keyID, event) {
