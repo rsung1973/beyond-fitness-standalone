@@ -1,0 +1,63 @@
+@using System.IO
+@using System.Linq.Expressions
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using WebHome.Models.Schemas.SiteMap
+@using WebHome.Properties
+@using Newtonsoft.Json
+@using Utility
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+
+    Response.Clear();
+    Response.ClearContent();
+    Response.ClearHeaders();
+    Response.AddHeader("Cache-control", "max-age=1");
+    Response.ContentType = "text/xml";
+    Response.AddHeader("Content-Disposition", "attachment;filename=sitemap.xml");
+
+    urlset doc = new urlset();
+    DateTime today = new DateTime(DateTime.Today.Ticks, DateTimeKind.Local);
+    List<urlsetUrl> items = new List<urlsetUrl>();
+    //foreach (var item in models.GetTable<BlogCategoryDefinition>())
+    //{
+    //    items.Add(new urlsetUrl
+    //    {
+    //        loc = Settings.Default.HostDomain + VirtualPathUtility.ToAbsolute($"~/Official/BlogArticleList?CategoryID={item.CategoryID}"),
+    //        priority = 1.0m,
+    //        prioritySpecified = true,
+    //        lastmod = today,
+    //        lastmodSpecified = true,
+    //    });
+    //}
+
+    var blogs = models.GetTable<BlogArticle>()
+    //.Where(b => b.BlogTag.Any(c => c.CategoryID == item.CategoryID))
+    .Where(a => a.Document.DocDate < DateTime.Now)
+            .OrderByDescending(b => b.BlogID);
+
+    foreach (var b in blogs)
+    {
+        items.Add(new urlsetUrl
+        {
+            loc = Settings.Default.HostDomain + VirtualPathUtility.ToAbsolute($"~/Official/BlogSingle?{HttpUtility.UrlEncode(JsonConvert.SerializeObject(new { b.DocID }).EncryptKey())}"),
+            priority = 0.8m,
+            prioritySpecified = true,
+            lastmod = new DateTime(b.Document.DocDate.Ticks, DateTimeKind.Local),
+            lastmodSpecified = true,
+        });
+    }
+
+
+    doc.url = items.ToArray();
+    doc.ConvertToXml().Save(Response.Output);
+    Response.Flush();
+    //Response.End();
+}

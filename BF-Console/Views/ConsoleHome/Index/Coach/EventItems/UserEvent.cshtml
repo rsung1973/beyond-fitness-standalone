@@ -1,0 +1,42 @@
+﻿
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    CalendarEventItem _model;
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = (CalendarEventItem)this.Model;
+}
+@{
+    UserEvent item = (UserEvent)_model.EventItem;
+    <div class="event-name b-custom row" onclick="showUserEventModal('@(item.EventID.EncryptKey())',event);">
+        <div class="col-2 text-center">
+            <h4>@($"{item.StartDate:dd}")<span>@($"{item.StartDate:MM}")</span><span>@(Naming.DayOfWeek[(int)item.StartDate.DayOfWeek])</span></h4>
+        </div>
+        <div class="col-10">
+            <h6>
+                @if ((item.EndDate - item.StartDate).TotalDays >= 1)
+                {
+                    <text>@(item.StartDate.ToString("yyyy/MM/dd"))-@(item.EndDate.ToString("yyyy/MM/dd"))</text>
+                }
+                else
+                {
+                    <text>@(item.StartDate.ToString("HH:mm"))-@(item.EndDate.ToString("HH:mm"))</text>
+                }
+                @(item.Title)
+            </h6>
+            <p class="col-blush">@(item.ActivityProgram)</p>
+            <address><i class="zmdi zmdi-pin"></i>@(item.BranchID.HasValue ? item.BranchStore.BranchName : item.Place)</address>
+        </div>
+    </div>
+}

@@ -1,0 +1,27 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    CalendarEventItem _model;
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = (CalendarEventItem)this.Model;
+}
+@if(_model.EventItem is LessonTime)
+{
+    Html.RenderPartial("~/Views/ConsoleHome/Index/Coach/EventItems/CoachPI.cshtml");
+}
+else if (_model.EventItem is UserEvent)
+{
+    Html.RenderPartial("~/Views/ConsoleHome/Index/Coach/EventItems/UserEvent.cshtml");
+}
