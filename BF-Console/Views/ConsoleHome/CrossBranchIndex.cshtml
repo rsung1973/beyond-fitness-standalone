@@ -136,7 +136,7 @@
                     confirmed: ['已審核成功!', '資料已經更新 Bye!', 'success'],
                     cancelled: ['取消成功', '你的資料現在非常安全 :)', 'error'],
                     afterConfirmed: function () {
-                        window.location.href = '@(VirtualPathUtility.ToAbsolute("~/ConsoleHome/Index"))';
+                        window.location.href='@Html.Raw(Url.Action("CrossBranchIndex","ConsoleHome"))';
                     },
                 });
         };

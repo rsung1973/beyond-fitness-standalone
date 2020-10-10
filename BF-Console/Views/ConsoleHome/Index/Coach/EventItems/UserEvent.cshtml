@@ -16,10 +16,25 @@
     _modelState = (ModelStateDictionary)ViewBag.ModelState;
     models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
     _model = (CalendarEventItem)this.Model;
+
+    var profile = Context.GetUser();
 }
+@helper clickHander(UserEvent item, bool editable)
+{
+    if (editable)
+    {
+        <text>bookingCustomEvent({'keyID':'@(item.EventID.EncryptKey())'});</text>
+    }
+    else
+    {
+        <text>void(0);</text>
+    }
+}
+
 @{
     UserEvent item = (UserEvent)_model.EventItem;
-    <div class="event-name b-custom row" onclick="showUserEventModal('@(item.EventID.EncryptKey())',event);">
+    bool editable = item.UID == profile.UID || profile.IsAssistant();
+    <div class="event-name b-custom row" onclick="@Html.Raw(clickHander(item,editable))">
         <div class="col-2 text-left">
             <h4><span>@(item.StartDate.ToString("HH:mm"))</span><span>@(item.EndDate.ToString("HH:mm"))</span></h4>
         </div>
@@ -31,7 +46,34 @@
                     <address><i class="zmdi zmdi-pin"></i>@(item.BranchID.HasValue ? item.BranchStore.BranchName : item.Place)</address>
                 }
             </h6>
-            <p>@(item.ActivityProgram)</p>            
+            <p>@(item.ActivityProgram)</p>
+            <ul class="list-unstyled team-info margin-0 p-t-5">
+                @{
+                    int idx = 0;
+                    if (item.UID != profile.UID)
+                    {
+                        <li>
+                            @{
+                                Html.RenderPartial("~/Views/Common/ProfileImage.cshtml", item.UserProfile);
+                            }
+                        </li>
+                    }
+                }
+                @foreach (var r in item.GroupEvent.Where(v => v.UID != profile.UID))
+                {
+                    <li>
+                        @{
+                            Html.RenderPartial("~/Views/Common/ProfileImage.cshtml", r.UserProfile);
+                        }
+                    </li>
+                    idx++;
+                    if (idx > 9)
+                    {
+                        <li>...</li>
+                        break;
+                    }
+                }
+            </ul>
         </div>
     </div>
 }

@@ -14,7 +14,7 @@
 
     _modelState = (ModelStateDictionary)ViewBag.ModelState;
     models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
-    _model = (List<CalendarEventItem>)this.Model;
+    _model = ((List<CalendarEventItem>)this.Model).OrderBy(v => v.EventTime).ToList();
 
     int leftPart = Math.Min(Math.Max((_model.Count() + 1) / 2, 6), _model.Count());
 }

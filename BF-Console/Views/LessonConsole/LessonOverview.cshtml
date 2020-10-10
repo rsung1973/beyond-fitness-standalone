@@ -204,7 +204,7 @@
                     lessonCount = currentItems.Count();
                     viewModel = (LessonOverviewQueryViewModel)currentViewModel.Duplicate();
                     //viewModel.LearnerCommitted = true;
-                    viewModel.CoachAttended = true;
+                    //viewModel.CoachAttended = true;
                 }
                 <a href="#" onclick='showLessonList(@Html.Raw(viewModel.JsonStringify()),@(lessonCount));'><h2>@(lessonCount)</h2></a>
                 <small class="info">全部</small>

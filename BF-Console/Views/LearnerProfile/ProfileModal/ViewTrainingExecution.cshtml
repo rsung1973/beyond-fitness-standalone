@@ -36,11 +36,15 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger btn-simple btn-round  waves-effect" onclick="javascript:copyTrainingPlan(@item.LessonID);">確定複製，不後悔</button>
-                <button type="button" class="btn btn-round waves-effect" onclick="javascript:editTrainingContent('@(item.LessonID.EncryptKey())');">確定，繼續編輯</button>
+                @if (_model.LessonID != _viewModel.TargetID)
+                {
+                    <button type="button" class="btn btn-danger btn-simple btn-round  waves-effect" onclick="javascript:copyTrainingPlan(@_model.LessonID);">確定複製，不後悔</button>
+                }
+                <button type="button" class="btn btn-round waves-effect" onclick="javascript:editTrainingContent('@(_model.LessonID.EncryptKey())');">確定，繼續編輯</button>
             </div>
         </div>
     </div>
-    @{ Html.RenderPartial("~/Views/ConsoleHome/Shared/BSModalScript.cshtml", model: _dialogID);}
-
+    @{
+        Html.RenderPartial("~/Views/ConsoleHome/Shared/BSModalScript.cshtml", model: _dialogID);
+    }
 </div>

@@ -44,9 +44,9 @@
     });
 
     //檢視課表
-    function viewTraining(keyID) {
+    function viewTraining(keyID, encTargetID) {
         showLoading();
-        $.post('@Html.Raw(Url.Action("ViewTrainingExecution", "LessonConsole", new { _learner.UID }))', { 'keyID': keyID }, function (data) {
+        $.post('@Html.Raw(Url.Action("ViewTrainingExecution", "LessonConsole", new { _learner.UID }))', { 'keyID': keyID, 'EncTargetID': encTargetID }, function (data) {
             hideLoading();
             if ($.isPlainObject(data)) {
                 swal(data.message);

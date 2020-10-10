@@ -16,9 +16,11 @@
     _modelState = (ModelStateDictionary)ViewBag.ModelState;
     models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
     _model = (IQueryable<LessonTime>)this.Model;
+
 }
 @{
     LessonQueryViewModel _viewModel = (LessonQueryViewModel)ViewBag.ViewModel;
+    String encTargetID = (_viewModel.ExceptionalID ?? 0).EncryptKey();
     IQueryable<LessonTime> items = _model.OrderByDescending(l => l.ClassTime);
     if (_viewModel.CurrentIndex.HasValue)
     {
@@ -76,7 +78,7 @@
                         </ul>
                     }
                                     </div>
-                <h4><a href="javascript:viewTraining('@item.LessonID.EncryptKey()');">@(execution.Emphasis ?? "重點一片空，學生要來踹你了...")</a></h4>
+                <h4><a href="javascript:viewTraining('@item.LessonID.EncryptKey()','@(encTargetID)');">@(execution.Emphasis ?? "重點一片空，學生要來踹你了...")</a></h4>
                 @if (item.LessonPlan.Remark != null)
                 {
                     <span class="comment">@(item.LessonPlan.Remark)<span class="author">@(item.AsAttendingCoach.UserProfile.FullName())</span></span>

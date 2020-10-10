@@ -79,6 +79,7 @@
     <script src="plugins/multi-select/js/jquery.multi-select.js"></script>
 
     <script>
+
         function showLessonEventModal(keyID, event) {
             var event = event || window.event;
             $global.target = $(event.target).closest('div.event-name');
@@ -105,6 +106,42 @@
                     $(data).appendTo($('body'));
                 }
             });
+        }
+
+        function bookingCustomEvent(args) {
+            showLoading();
+            $.post('@Html.Raw(Url.Action("BookingCustomEvent", "ConsoleEvent"))', args, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    swal(data.message);
+                } else {
+                    $(data).appendTo($('body'));
+                }
+            });
+        }
+
+        function deleteUserEvent(keyID) {
+            deleteData(function (onSuccess) {
+                showLoading();
+                $.post('@Html.Raw(Url.Action("RevokeCoachEvent", "ConsoleEvent"))', { 'keyID': keyID }, function (data) {
+                    hideLoading();
+                    if ($.isPlainObject(data)) {
+                        if (data.result) {
+                            refetchCalendarEvents();
+                            $global.closeAllModal();
+                            onSuccess();
+                        } else {
+                            swal(data.message);
+                        }
+                    } else {
+                        $(data).appendTo($('body'));
+                    }
+                });
+            });
+        }
+
+        function refreshEvents() {
+
         }
         //
     </script>

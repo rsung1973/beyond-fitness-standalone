@@ -116,7 +116,10 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger btn-simple btn-round waves-effect" onclick="javascript: void();">刪除，不想要了</button>
+                @if (_viewModel.EventID.HasValue)
+                {
+                    <button type="button" class="btn btn-danger btn-simple btn-round waves-effect" onclick="javascript:deleteUserEvent('@(_viewModel.EventID.Value.EncryptKey())');">刪除，不想要了</button>
+                }
                 <button type="button" class="btn btn-darkteal btn-round waves-effect" onclick="javascript:commitBooking();">確定, 不後悔</button>
             </div>
         </div>

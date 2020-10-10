@@ -8,6 +8,7 @@
 @using WebHome.Controllers
 @using WebHome.Helper.BusinessOperation
 @using Newtonsoft.Json
+@using Utility
 
 @{
     ModelSource<UserProfile> models;
@@ -22,18 +23,21 @@
     IQueryable<CourseContract> items = ViewBag.DataItems as IQueryable<CourseContract>;
 }
 
-<h5 class="number">
-    @{
-        var count = items.Count();
-    }
-    @if (count > 0)
-    {
-        <a href='javascript:showContractList(@Html.Raw(JsonConvert.SerializeObject(viewModel)),@(count));' class="col-red">@(count)</a>
-    }
-    else
-    {
-        <text>0</text>
-    }
-</h5>
+@{
+    var count = items.Count();
+}
+<div class="content" onclick='showContractList(@Html.Raw(viewModel.JsonStringify()),@(count));'>
+    <div class="text">@(viewModel.CustomQuery)</div>
 
+    <h5 class="number">
+        @if (count > 0)
+        {
+            <a href='javascript:void(0);' class="red">@(count)</a>
+        }
+        else
+        {
+            <a href="#" class="">0</a>
+        }
+    </h5>
+</div>
 

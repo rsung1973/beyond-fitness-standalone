@@ -17,15 +17,28 @@
     models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
     _model = (CalendarEventItem)this.Model;
 }
+@helper clickHander(LessonTime item, bool needApprove)
+{
+    if (needApprove)
+    {
+        <text>void(0);</text>
+    }
+    else
+    {
+        <text>$('').launchDownload('@Html.Raw(Url.Action("LessonTrainingContent", "ConsoleHome", new { LearnerID = item.RegisterLesson.UID }))', {'keyID':'@(item.LessonID.EncryptKey())' });</text>
+    }
+}
+
 @{
     LessonTime item = (LessonTime)_model.EventItem;
     if (item.TrainingBySelf == 1)
     {
-        <div class="event-name b-PI row" onclick="showLessonEventModal('@(item.LessonID.EncryptKey())',event);">
+        bool needApprove = item.PreferredLessonTime != null && !item.PreferredLessonTime.ApproverID.HasValue;
+        <div class="@(needApprove ? "event-name b-approve row" : "event-name b-PI row")" onclick="@Html.Raw(clickHander(item,needApprove))">
             <div class="col-2 text-left">
                 <h4><span>@(item.ClassTime.Value.ToString("HH:mm"))</span><span>@(item.ClassTime.Value.AddMinutes(item.DurationInMinutes.Value).ToString("HH:mm"))</span></h4>
             </div>
-            <div class="col-10">                
+            <div class="col-10">
                 <h6>
                     P.I @(item.RegisterLesson.UserProfile.RealName)
                     <address><i class="zmdi zmdi-pin"></i>@(item.BranchStore.BranchName)</address>

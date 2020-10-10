@@ -67,6 +67,15 @@ namespace WebHome.Controllers
                 return View("~/Views/ConsoleHome/Shared/AlertMessage.cshtml", model: "自訂行事曆資料錯誤!!");
             }
 
+            var profile = HttpContext.GetUser();
+            if (profile.IsAssistant() || item.UID == profile.UID)
+            {
+                return BookingCustomEvent(new UserEventViewModel
+                {
+                    EventID = item.EventID,
+                });
+            }
+
             return View("~/Views/ConsoleEvent/EventModal/UserEvent.cshtml", item);
         }
 
