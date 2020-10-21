@@ -27,8 +27,8 @@
     <!-- Bootstrap Datetimepick -->
     @*<link href="plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />*@
     @*<link href="css/datetimepicker.css" rel="stylesheet" />*@
-    
-    
+
+
     <link href="css/smartcalendar-2.css" rel="stylesheet" />
     <!-- Inbox -->
     <link href="css/inbox.css" rel="stylesheet">
@@ -44,9 +44,10 @@
 }
 
 <section class="content profile-page">
-    @{ ViewBag.BlockHeader = "X檔案";
-        Html.RenderPartial("~/Views/ConsoleHome/Module/BlockHeader.cshtml", _model);}
-
+    @{
+        ViewBag.BlockHeader = "X檔案";
+        Html.RenderPartial("~/Views/ConsoleHome/Module/BlockHeader.cshtml", _model);
+    }
     <!--本月運動時間-->
     <div class="container-fluid">
         <div class="row clearfix">
@@ -61,8 +62,10 @@
                                 }
                             </a>
                         </div>
-                        <div class="float-right">
-                            @{ var purpose = _learner.PersonalExercisePurpose;}
+                        <div class="float-right" onclick="javascript:editProfile();">
+                            @{
+                                var purpose = _learner.PersonalExercisePurpose;
+                            }
                             @if (purpose != null && (purpose.Cardiopulmonary.HasValue || purpose.Flexibility.HasValue || purpose.MuscleStrength.HasValue))
                             {
                                 Html.RenderPartial("~/Views/LearnerProfile/Module/PersonalExerciseRadarChart.cshtml", purpose);
@@ -88,20 +91,29 @@
                             <strong>@(_learner.FullName())</strong> <span class="font-12"><i class="zmdi zmdi-cake"></i> @(_learner.YearsOld())</span>
                         </div>
                         <div class="font-20">
-                            @{ 
-                                Html.RenderPartial("~/Views/LearnerProfile/Module/ExerciseSummary.cshtml", _learner);
+                            @{
+                                Html.RenderPartial("~/Views/LearnerProfile/Module/ExerciseSummary2020.cshtml", _learner);
                             }
                         </div>
                         <div class="displayblock col-grey">
                             @{
-                                var answers = _learner.PDQTask.Where(t => t.PDQQuestion.GroupID == 6);
+                                var answers = models.GetTable<PDQTask>()
+                                                .Where(t => t.UID == _learner.UID)
+                                                .Where(t => t.PDQQuestion.GroupID == 6);
                                 var answerCount = answers.Count();
                                 var rightAns = answers.Where(t => t.SuggestionID.HasValue && t.PDQSuggestion.RightAnswer == true);
                             }
-                            @****@
-                            @*目前已參加運動小學堂 @(answerCount) 次囉，得點數 @(rightAns.Count()) 點，目前剩餘 @(_learner.BonusPoint(models) ?? 0)點！*@
-                            @*參考=>beyond-fitness/Views/CornerKick/Module/PromptDailyQuestion.ascx*@
-                            已參加運動小學堂 @(answerCount) 次囉，答題正確率已達 <span class="col-green"> 20%</span>，就讀運動幼幼班，再接再厲！<a href="javascript:showBonusDetails();" class="col-tiffany font-underline">目前已累積 39枚 Beyond💰</a>！
+                            @if (answerCount > 0)
+                            {
+                                var accuracy = rightAns.Count() * 100 / answerCount;
+                                <text>
+                                    已參加運動小學堂 @(answerCount) 次囉，@(AppraiseAccuracy(accuracy))<a href="javascript:showBonusDetails();" class="col-tiffany font-underline">目前已累積 @(_learner.BonusPoint(models) ?? 0)枚 Beyond💰</a>！
+                                </text>
+                            }
+                            else
+                            {
+                                <text>答題正確率已達 <span class="f-green">0%</span>，就讀運動幼幼班，再接再厲！</text>
+                            }
                         </div>
                     </div>
                 </div>
@@ -146,8 +158,8 @@
                 </div>
                 <div class="col-md-12 col-lg-8 col-xl-8">
                     <div class="body">
-                        @{  Html.RenderPartial("~/Views/LearnerProfile/Module/LearnerLessonsReview.cshtml",_learner);   }
-                        @{  Html.RenderAction("LearnerCalendar", "LearnerProfile", new { LearnerID = _learner.UID });   }
+                        @{ Html.RenderPartial("~/Views/LearnerProfile/Module/LearnerLessonsReview.cshtml", _learner); }
+                        @{ Html.RenderAction("LearnerCalendar", "LearnerProfile", new { LearnerID = _learner.UID }); }
                     </div>
                 </div>
             </div>
@@ -165,6 +177,11 @@
     <script src="bundles/countTo.bundle.js"></script>
     <!-- Sparkline Plugin Js -->
     <script src="plugins/jquery-sparkline/jquery.sparkline.js"></script>
+    <!-- Jquery DataTable Plugin Js -->
+    <script src="bundles/datatablescripts.bundle.js"></script>
+    <script src="plugins/jquery-datatable/Responsive-2.2.2/js/dataTables.responsive.min.js"></script>
+    <script src="plugins/jquery-datatable/FixedColumns-3.2.5/js/dataTables.fixedColumns.min.js"></script>
+
     <script>
         $(function () {
 
@@ -217,3 +234,28 @@
         }
     </script>
 }
+
+@helper AppraiseAccuracy(int accuracy)
+{
+    if (accuracy > 80)
+    {
+        <text>答題正確率已達 <span class="f-green">@(accuracy)%</span>，博士等級，非常厲害！維持下去喔！</text>
+    }
+    else if (accuracy > 60)
+    {
+        <text>答題正確率已達 <span class="f-green">@(accuracy)%</span>，大學等級，離成功不遠囉！</text>
+    }
+    else if (accuracy > 40)
+    {
+        <text>答題正確率已達 <span class="f-green">@(accuracy)%</span>，國高中等級，越來越上手喔！</text>
+    }
+    else if (accuracy > 20)
+    {
+        <text>答題正確率已達 <span class="f-green">@(accuracy)%</span>，國小等級，越來越進步囉！</text>
+    }
+    else
+    {
+        <text>答題正確率已達 <span class="f-green">@(accuracy)%</span>，就讀運動幼幼班，再接再厲！</text>
+    }
+}
+

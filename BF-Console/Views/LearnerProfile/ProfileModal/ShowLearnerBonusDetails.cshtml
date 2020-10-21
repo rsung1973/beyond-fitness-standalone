@@ -87,6 +87,7 @@
                 var idx = parseInt($(e.target).data('id'));
                 console.log(idx);
                 loadTabContent(idx);
+                $($(e.target).attr('href')).resize();
             });
     </script>
 </div>

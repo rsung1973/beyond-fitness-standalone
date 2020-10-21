@@ -1,0 +1,48 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Newtonsoft.Json;
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    UserProfile _learner;
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _learner = (UserProfile)this.Model;
+}
+@{
+    String currentID = $"purpose{DateTime.Now.Ticks}";
+}
+@{
+    DateTime monthStart = DateTime.Today.FirstDayOfMonth();
+
+    var selfTraining = models.GetTable<RegisterLesson>()
+        .Where(r => r.UID == _learner.UID)
+        .TotalRegisterLessonItems(models)
+        .Where(l => l.LessonAttendance != null);
+
+    var selfTrainingThisMonth = selfTraining.Where(l => l.ClassTime >= monthStart && l.ClassTime < DateTime.Today.AddDays(1));
+    var totalMinutes = selfTrainingThisMonth.Sum(l => l.DurationInMinutes) ?? 0;
+
+    var totalMinutesLastMonth = selfTraining
+            .Where(l => l.ClassTime >= monthStart.AddMonths(-1) && l.ClassTime < DateTime.Today.AddMonths(-1).AddDays(1))
+            .Sum(l => l.DurationInMinutes) ?? 0;
+}
+
+本月運動：<span class="col-lime counto" data-to="@(totalMinutes / 60)">@(totalMinutes / 60)</span>小時:<span class="col-lime counto" data-to="@(totalMinutes % 60)">@(totalMinutes % 60)</span>分鐘
+@if (totalMinutes > totalMinutesLastMonth)
+{
+    <i class="zmdi zmdi-caret-up zmdi-hc-2x text-danger"></i>
+}
+else if (totalMinutes < totalMinutesLastMonth)
+{
+    <i class="zmdi zmdi-caret-down zmdi-hc-2x text-success"></i>
+}
