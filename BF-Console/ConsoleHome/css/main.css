@@ -2885,13 +2885,13 @@ fieldset[disabled] .btn-link.active {
 }
 
 .bg-darkteal .input-group .form-control {
-    border: 1px solid #888;
+    border: 1px solid #888 !important;
     color: lightblue;
-    background: #052333;
-    border: 1px solid #888;
+    background-color: transparent;
     font-size: 15px;
     font-weight: 800;
-    border-radius: 30px;
+    border-radius: 5px 0 0 5px;
+
 }
 
 .bg-darkteal .input-group .input-group-addon {

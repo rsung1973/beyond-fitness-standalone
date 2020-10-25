@@ -19,7 +19,7 @@
     PaymentQueryViewModel _viewModel = (PaymentQueryViewModel)ViewBag.ViewModel;
     var items = _model;
 }
-<table class="table table-striped table-custom m-b-0 nowrap dataTable-Achievement" style="width:100%">
+<table class="table table-striped table-custom m-b-0 nowrap dataTable" style="width:100%">
     <thead>
         <tr>
             <th>姓名</th>
@@ -51,7 +51,7 @@
             $global.dtAchievement.destroy();
         }
 
-        $global.dtAchievement = $('.dataTable-Achievement').DataTable({
+        $global.dtAchievement = $('.dataTable').DataTable({
             "filter": false,
             "bPaginate": false,
             "info": false,
@@ -83,7 +83,7 @@
             }],
         });
 
-        $('.dataTable-Achievement').resize();
+        $('.dataTable').resize();
 
     });
 

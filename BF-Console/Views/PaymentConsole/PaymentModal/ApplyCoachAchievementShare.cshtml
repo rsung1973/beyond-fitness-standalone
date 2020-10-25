@@ -29,7 +29,11 @@
 
 @helper showHeader(Payment item)
 {
-    <h2>目前<span class="col-red">剩餘</span>分潤金額：<span class="col-red">@($"{item.PayoffAmount - item.TuitionAchievement.Sum(t=>t.ShareAmount):##,###,###,###}")</span></h2>
+
+    <div class="modal-header">
+        <h6 class="title">目前<span class="col-red">剩餘</span>分潤金額：<span class="col-red">@($"{item.PayoffAmount - item.TuitionAchievement.Sum(t=>t.ShareAmount):##,###,###,###}")</span></h6>
+        <a class="closebutton" data-dismiss="modal"></a>
+    </div>
 }
 
 <script>

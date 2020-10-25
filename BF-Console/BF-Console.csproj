@@ -6306,6 +6306,34 @@
     <Content Include="Views\ConsoleHome\PrepareLearnerCharacter.cshtml" />
     <Content Include="Views\ConsoleHome\SamplePage.cshtml" />
     <Content Include="Views\ConsoleHome\SimpleCalendar.cshtml" />
+    <Content Include="ConsoleHome\images\ecommerce\merchandise_26.jpg" />
+    <Content Include="ConsoleHome\images\ecommerce\merchandise_27.jpg" />
+    <Content Include="ConsoleHome\images\ecommerce\merchandise_25.jpg" />
+    <Content Include="ConsoleHome\images\ecommerce\merchandise_19.jpg" />
+    <Content Include="ConsoleHome\images\ecommerce\merchandise_18.jpg" />
+    <Content Include="ConsoleHome\images\ecommerce\merchandise_24.jpg" />
+    <Content Include="ConsoleHome\images\ecommerce\merchandise_08.jpg" />
+    <Content Include="ConsoleHome\images\ecommerce\merchandise_20.jpg" />
+    <Content Include="ConsoleHome\images\ecommerce\merchandise_21.jpg" />
+    <Content Include="ConsoleHome\images\ecommerce\merchandise_09.jpg" />
+    <Content Include="ConsoleHome\images\ecommerce\merchandise_23.jpg" />
+    <Content Include="ConsoleHome\images\ecommerce\merchandise_22.jpg" />
+    <Content Include="ConsoleHome\images\ecommerce\merchandise_13.jpg" />
+    <Content Include="ConsoleHome\images\ecommerce\merchandise_07.jpg" />
+    <Content Include="ConsoleHome\images\ecommerce\merchandise_06.jpg" />
+    <Content Include="ConsoleHome\images\ecommerce\merchandise_12.jpg" />
+    <Content Include="ConsoleHome\images\ecommerce\merchandise_04.jpg" />
+    <Content Include="ConsoleHome\images\ecommerce\merchandise_10.jpg" />
+    <Content Include="ConsoleHome\images\ecommerce\merchandise_11.jpg" />
+    <Content Include="ConsoleHome\images\ecommerce\merchandise_05.jpg" />
+    <Content Include="ConsoleHome\images\ecommerce\merchandise_15.jpg" />
+    <Content Include="ConsoleHome\images\ecommerce\merchandise_01.png" />
+    <Content Include="ConsoleHome\images\ecommerce\merchandise_14.jpg" />
+    <Content Include="ConsoleHome\images\ecommerce\merchandise_00.jpg" />
+    <Content Include="ConsoleHome\images\ecommerce\merchandise_16.jpg" />
+    <Content Include="ConsoleHome\images\ecommerce\merchandise_02.png" />
+    <Content Include="ConsoleHome\images\ecommerce\merchandise_03.png" />
+    <Content Include="ConsoleHome\images\ecommerce\merchandise_17.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\InitializeType.cs" />

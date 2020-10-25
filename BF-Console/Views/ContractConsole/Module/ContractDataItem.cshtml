@@ -24,7 +24,8 @@
 }
 
 <div class="header">
-    <h2><strong>@(_model.ContractName())</strong>
+    <h2>
+        <strong>合約資料</strong> - @(_model.ContractName())
         @{
             Html.RenderPartial("~/Views/Common/BranchStoreName.cshtml", _model.CourseContractExtension.BranchStore);
         }

@@ -33,35 +33,42 @@
             }
         </div>
 
-        <ul class="row clearfix list-unstyled m-b-0 widget_3">
-            <li class="col-lg-4 col-md-4 col-sm-12">
+        <ul class="row clearfix list-unstyled m-b-0 widget_2">
+            @*<li class="col-lg-4 col-md-4 col-sm-12">
+            <div class="body">
+                <div class="row">
+                    @{
+                        Html.RenderPartial("~/Views/PaymentConsole/Module/PaymentForPT.cshtml", items);
+                    }
+                </div>
+            </div>
+        </li>
+        <li class="col-lg-4 col-md-4 col-sm-12">
+            <div class="body">
+                <div class="row">
+                    @{
+                        Html.RenderPartial("~/Views/PaymentConsole/Module/PaymentForPI.cshtml", items);
+                    }
+                </div>
+            </div>
+        </li>
+        <li class="col-lg-4 col-md-4 col-sm-12">
+            <div class="body">
+                <div class="row">
+                    @{
+                        Html.RenderPartial("~/Views/PaymentConsole/Module/PaymentForOthers.cshtml", items);
+                    }
+                </div>
+            </div>
+        </li>*@
+            <li class="col-lg-4 col-md-6 col-sm-12">
                 <div class="body">
                     <div class="row">
-                        @{
-                            Html.RenderPartial("~/Views/PaymentConsole/Module/PaymentForPT.cshtml", items);
-                        }
+                        @{ Html.RenderPartial("~/Views/PaymentConsole/Module/PaymentToday.cshtml", items);}
                     </div>
                 </div>
             </li>
-            <li class="col-lg-4 col-md-4 col-sm-12">
-                <div class="body">
-                    <div class="row">
-                        @{
-                            Html.RenderPartial("~/Views/PaymentConsole/Module/PaymentForPI.cshtml", items);
-                        }
-                    </div>
-                </div>
-            </li>
-            <li class="col-lg-4 col-md-4 col-sm-12">
-                <div class="body">
-                    <div class="row">
-                        @{
-                            Html.RenderPartial("~/Views/PaymentConsole/Module/PaymentForOthers.cshtml", items);
-                        }
-                    </div>
-                </div>
-            </li>
-            <li class="col-lg-6 col-md-6 col-sm-12">
+            <li class="col-lg-4 col-md-6 col-sm-12">
                 <div class="body">
                     <div class="row">
                         @{
@@ -70,7 +77,7 @@
                     </div>
                 </div>
             </li>
-            <li class="col-lg-6 col-md-6 col-sm-12">
+            <li class="col-lg-4 col-md-6 col-sm-12">
                 <div class="body">
                     <div class="row">
                         @{
