@@ -6334,6 +6334,7 @@
     <Content Include="ConsoleHome\images\ecommerce\merchandise_02.png" />
     <Content Include="ConsoleHome\images\ecommerce\merchandise_03.png" />
     <Content Include="ConsoleHome\images\ecommerce\merchandise_17.jpg" />
+    <Content Include="ConsoleHome\images\lesson\stage0.png" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\InitializeType.cs" />
