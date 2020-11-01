@@ -23,19 +23,19 @@
 <div class="modal fade" id="@(_dialogID)" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <a class="closebutton" data-dismiss="modal"></a>
+            <div class="modal-header">
+                <h5><strong>休息/組數</strong></h5>
+                <a class="closebutton" data-dismiss="modal"></a>
+            </div>
             <div class="modal-body">
-                <div class="card">
-                    <div class="header">
-                        <h2>休息/組數</h2>
-                    </div>
-                    <div class="body">
-                        @{
-                            ViewBag.DialogID = _dialogID;
-                            Html.RenderPartial("~/Views/LearnerProfile/ProfileModal/EditBreakIntervalView.cshtml", _model);
-                        }
-                    </div>
-                </div>
+                @{
+                    ViewBag.DialogID = _dialogID;
+                    Html.RenderPartial("~/Views/LearnerProfile/ProfileModal/EditBreakIntervalView.cshtml", _model);
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-round btn-simple btn-round waves-effect waves-red btnDelete">刪除，不想要了</button>
+                <button type="button" class="btn btn-darkteal btn-round waves-effect float-right btnConfirm">確定，不後悔</button>
             </div>
         </div>
     </div>

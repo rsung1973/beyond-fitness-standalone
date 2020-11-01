@@ -23,25 +23,23 @@
 <div class="modal fade" id="@(_dialogID)" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <a class="closebutton" data-dismiss="modal"></a>
-            <div class="modal-body">
-                <div class="card">
-                    <div class="header">
-                        <h2><strong>@(_stage.Stage)</strong></h2>
-                    </div>
-                    <div class="body">
-                        @{
-                            ViewBag.DialogID = _dialogID;
-                            Html.RenderPartial("~/Views/LearnerProfile/ProfileModal/EditTrainingItemView.cshtml", _model);
-                        }
-                    </div>
-                </div>
+            <div class="modal-header">
+                <h5><strong>@(_stage.Stage)</strong></h5>
+                <a class="closebutton" data-dismiss="modal"></a>
             </div>
-        </div>
-    </div>
-    @{ Html.RenderPartial("~/Views/ConsoleHome/Shared/BSModalScript.cshtml", model: _dialogID);}
+            <div class="modal-body">
+                @{
+                    ViewBag.DialogID = _dialogID;
+                    Html.RenderPartial("~/Views/LearnerProfile/ProfileModal/EditTrainingItemView.cshtml", _model);
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-round btn-simple btn-round waves-effect waves-red btnDelete">刪除，不想要了</button>
+                <button type="button" class="btn btn-darkteal btn-round waves-effect float-right btnConfirm">確定，不後悔</button>
+            </div>
+            @{ Html.RenderPartial("~/Views/ConsoleHome/Shared/BSModalScript.cshtml", model: _dialogID);}
 
-    <script>
+            <script>
         $(function () {
 
             var u = navigator.userAgent;
@@ -82,10 +80,10 @@
                 });
             });
         });
-    </script>
-    @if (_model != null)
-    {
-        <script>
+            </script>
+            @if (_model != null)
+            {
+                <script>
             $(function () {
                 $('#@(_dialogID) button.btnDelete').on('click', function () {
                     swal({
@@ -118,6 +116,6 @@
                     });
                 });
             });
-        </script>
-    }
-</div>
+                </script>
+            }
+        </div>
