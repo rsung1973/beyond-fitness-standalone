@@ -58,6 +58,7 @@
                                 <div class="media-heading">
                                     <a class="m-r-10">@($"{item.ClassTime:yyyy/MM/dd hh:mm}") - @(item.RegisterLesson.UserProfile.FullName())</a>
                                     <span class="float-right">
+                                        @(item.RegisterLesson.LessonPriceType?.UsageTypeDescription?.Usage)
                                         <small><time>@(item.AsAttendingCoach.UserProfile.FullName())</time></small>
                                         @{ Html.RenderPartial("~/Views/Common/BranchStoreName.cshtml", item.BranchStore); }
                                     </span>

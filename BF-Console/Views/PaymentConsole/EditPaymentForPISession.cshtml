@@ -9,6 +9,7 @@
 @using WebHome.Models.DataEntity
 @using WebHome.Controllers
 @using Newtonsoft.Json
+@using Utility
 @{
     ModelSource<UserProfile> models;
     ModelStateDictionary _modelState;
@@ -42,7 +43,7 @@
 
 <script>
         $(function () {
-            $global.viewModel = @Html.Raw(JsonConvert.SerializeObject(_viewModel));
+            $global.viewModel = @Html.Raw(_viewModel.JsonStringify());
 
             for (var i = 0; i < $global.onReady.length; i++) {
                 $global.onReady[i]();
@@ -67,11 +68,11 @@
                     </div>
                 </div>
                 <div class="col-lg-5 col-md-5 col-sm-12 bg-darkteal">
-                    <div class="body">
+                    <div class="body" id="forCounter">
                         @{
                             Payment item = models.GetTable<Payment>().Where(p => p.PaymentID == _viewModel.PaymentID).FirstOrDefault();
-                            _viewModel.PayoffAmount = models.CurrentSessionPrice()?.ListPrice;
-                            Html.RenderPartial("~/Views/PaymentConsole/Module/EditPaymentForPI.cshtml", item);
+                            //_viewModel.PayoffAmount = models.CurrentSessionPrice()?.ListPrice;
+                            Html.RenderPartial("~/Views/PaymentConsole/Module/EditPaymentForPI2020.cshtml", item);
                         }
                     </div>
                 </div>

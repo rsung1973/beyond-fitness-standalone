@@ -230,6 +230,24 @@ namespace WebHome.Controllers
             }
         }
 
+        public ActionResult EditPaymentForPI2020(PaymentViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            var profile = HttpContext.GetUser();
+
+            var lesson = models.GetTable<RegisterLesson>().Where(r => r.RegisterID == viewModel.RegisterID).FirstOrDefault();
+            if (!viewModel.RegisterID.HasValue || lesson == null)
+            {
+                return Json(new { result = false, message = "收款自主訓練資料錯誤!!" }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                viewModel.SellerID = lesson.LessonTime.First().BranchID.Value;
+            }
+
+            viewModel.PayoffAmount = lesson.LessonPriceType.ListPrice;
+            return View("~/Views/PaymentConsole/Module/EditPaymentForPI2020.cshtml");
+        }
 
     }
 }

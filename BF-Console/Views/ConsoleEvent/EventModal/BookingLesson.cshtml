@@ -153,20 +153,21 @@
     <script>
 
         var booking;
-        function selectBooking(element, lessonType) {
+        function selectBooking(element, lessonType, priceID) {
             $('input:checkbox').prop('checked', false);
             $(element).prop('checked', true);
             booking = function () {
-                commitBooking(lessonType);
+                commitBooking(lessonType, priceID);
             }
         }
 
-        function commitBooking(lessonType) {
+        function commitBooking(lessonType, priceID) {
 
             var $formData = $('#@(_dialogID) input,select,textarea').serializeObject();
             $formData.coachID = @(_profile.UID);
             $formData.UID = @(_model.UID);
             $formData.sessionStatus = lessonType;
+            $formData.priceID = priceID;
 
             clearErrors();
             switch (lessonType) {
