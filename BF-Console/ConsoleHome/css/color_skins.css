@@ -262,8 +262,8 @@ body.theme-nero {
     white-space: nowrap;
     background-color: #e9ecef;
     border: 1px solid #ced4da;
-    border-top-right-radius: .25rem;
-    border-bottom-right-radius: .25rem;
+    /* border-top-right-radius: .25rem;
+    border-bottom-right-radius: .25rem; */
 }
 
 .theme-nero .card .show > .btn.dropdown-toggle,
