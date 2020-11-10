@@ -61,14 +61,19 @@
                 <div class="header">
                     <h3>
                         @(item.LessonTypeStatus())
+                        @if (item.IsPISession())
+                        {
+                            <text>《@(item.RegisterLesson.LessonPriceType?.UsageTypeDescription?.Usage)》</text>
+                        }
                         @if (item.LessonAttendance != null)
                         {
                             if (item.LessonPlan.CommitAttendance.HasValue)
                             {
-                            <i class="zmdi zmdi-check-all"></i> }
-                        else
-                        {
-                            <i class="zmdi zmdi-check"></i>}
+                                <i class="zmdi zmdi-check-all"></i> }
+                            else
+                            {
+                                <i class="zmdi zmdi-check"></i>
+                            }
                         }
                     </h3>
                     @if (item.LessonID != _viewModel.ExceptionalID && execution.TrainingItem.Count() > 0)

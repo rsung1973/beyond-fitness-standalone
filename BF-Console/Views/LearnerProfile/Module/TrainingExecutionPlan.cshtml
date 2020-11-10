@@ -27,7 +27,13 @@
     <div class="accordion-header">
         <ul class="lesson-box">
             <li class="lesson-spot">
-                <span class="title">@($"{_model.ClassTime:yyyy/MM/dd HH:mm}")-@($"{_model.ClassTime.Value.AddMinutes(_model.DurationInMinutes.Value):HH:mm}") - @(_model.LessonTypeStatus()) @(_model.AsAttendingCoach.UserProfile.FullName())</span>
+                <span class="title">
+                    @($"{_model.ClassTime:yyyy/MM/dd HH:mm}")-@($"{_model.ClassTime.Value.AddMinutes(_model.DurationInMinutes.Value):HH:mm}") - @(_model.LessonTypeStatus())
+                    @if (_model.IsPISession())
+                    {
+                        <text>《@(_model.RegisterLesson.LessonPriceType?.UsageTypeDescription?.Usage)》</text>
+                    } @(_model.AsAttendingCoach.UserProfile.FullName())
+                </span>
                 @if (isModal && plan.FavoriteLesson.Count > 0)
                 {
                     <a href="javascript:void(0);" class="col-red"> <i class="@(plan.FavoriteLesson.Any(f => f.UID == profile.UID) ? "myfavaroit like" : "myfavaroit")"></i> <span>@(plan.FavoriteLesson.Count > 0 ? plan.FavoriteLesson.Count.ToString() : null)</span> </a>

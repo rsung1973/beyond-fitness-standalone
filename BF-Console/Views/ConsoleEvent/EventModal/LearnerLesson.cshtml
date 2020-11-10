@@ -46,7 +46,14 @@
                 <div class="body">
                     <div class="col-12">
                         <p class="text-muted">@(_model.FullLessonDuration())</p>
-                        <address>@(_model.LessonTypeStatus()) <i class="zmdi zmdi-pin"></i>@(_model.BranchID.HasValue ? _model.BranchStore.BranchName : _model.Place)</address>
+                        <address>
+                            @(_model.LessonTypeStatus())
+                            @if (_model.IsPISession())
+                            {
+                                <text>《@(_model.RegisterLesson.LessonPriceType?.UsageTypeDescription?.Usage)》</text>
+                            }
+                            <i class="zmdi zmdi-pin"></i>@(_model.BranchID.HasValue ? _model.BranchStore.BranchName : _model.Place)
+                        </address>
                     </div>
                     <hr>
                     @{ Html.RenderPartial("~/Views/ConsoleEvent/Module/LessonEmphasis.cshtml", _model);}
