@@ -59,7 +59,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger btn-round btn-simple btn-round waves-effect waves-red btnDelete">刪除，不想要了</button>
+                <button type="button" class="btn btn-danger btn-round btn-simple btn-round waves-effect waves-red btnDelete" @(_model==null ? "disabled" : null)>刪除，不想要了</button>
                 <button type="button" class="btn btn-darkteal btn-round waves-effect float-right btnConfirm">確定，不後悔</button>
             </div>
         </div>
@@ -78,7 +78,7 @@
                 });
             }
 
-            $('#@(_dialogID)action button.btnConfirm').on('click', function (element) {
+            function commitTrainingItem(element) {
                 clearErrors();
                 var $formData = $('#@(_dialogID)').find('input,select,textarea').serializeObject();
                 $formData.ItemID = $global.viewModel.ItemID;
@@ -105,9 +105,9 @@
                         $(data).appendTo($('body'));
                     }
                 });
-            });
+            }
 
-            $('#@(_dialogID)reset button.btnConfirm').on('click', function (element) {
+            function commitBreakInterval(element) {
                 clearErrors();
                 var $formData = $('#@(_dialogID)').find('input,select,textarea').serializeObject();
                 $formData.ItemID = $global.viewModel.ItemID;
@@ -127,6 +127,14 @@
                         $(data).appendTo($('body'));
                     }
                 });
+            }
+
+            $('#@(_dialogID) button.btnConfirm').on('click', function (element) {
+                if ($('#@(_dialogID)action').hasClass('active')) {
+                    commitTrainingItem(element);
+                } else if ($('#@(_dialogID)reset').hasClass('active')) {
+                    commitBreakInterval(element);
+                }
             });
 
         });
@@ -135,7 +143,8 @@
     {
         <script>
             $(function () {
-                $('#@(_dialogID)action button.btnDelete').on('click', function () {
+
+                $('#@(_dialogID) button.btnDelete').on('click', function () {
                     swal({
                         title: "確定刪除此項目?",
                         text: "課表",
@@ -164,36 +173,6 @@
                             });
                         }
                     });
-                });
-            });
-            $('#@(_dialogID)reset button.btnDelete').on('click', function () {
-                swal({
-                    title: "確定刪除此項目?",
-                    text: "課表",
-                    //type: "successful",
-                    showCancelButton: true,
-                    confirmButtonColor: "#DD6B55",
-                    confirmButtonText: "確定, 不後悔",
-                    cancelButtonText: "不, 點錯了",
-                    closeOnConfirm: true,
-                    closeOnCancel: true,
-                }, function (isConfirm) {
-                    if (isConfirm) {
-                        showLoading();
-                        $.post('@Html.Raw(Url.Action("DeleteTrainingItem", "Training", new {_viewModel.StageID, _viewModel.ItemID }))', {}, function (data) {
-                            hideLoading();
-                            if ($.isPlainObject(data)) {
-                                if (data.result) {
-                                    $('#@(_dialogID)').modal('hide');
-                                    refreshTrainingExecution(data.StageID);
-                                } else {
-                                    swal(data.message);
-                                }
-                            } else {
-                                $(data).appendTo($('body'));
-                            }
-                        });
-                    }
                 });
             });
         </script>

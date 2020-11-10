@@ -156,6 +156,31 @@
         });
     }
 
+    function deleteLesson(keyID) {
+        deleteData(function (onSuccess) {
+            showLoading();
+            $.post('@Html.Raw(Url.Action("RevokeBooking", "ConsoleEvent"))', { 'keyID': keyID }, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    if (data.result) {
+                        if ($global.target) {
+                            $global.target.remove();
+                        } else {
+                            refreshEvents();
+                        }
+                        refetchCalendarEvents();
+                        $global.closeAllModal();
+                        onSuccess();
+                    } else {
+                        swal(data.message);
+                    }
+                } else {
+                    $(data).appendTo($('body'));
+                }
+            });
+        });
+    }
+
     function bookingCustomEvent(args) {
         showLoading();
         $.post('@Html.Raw(Url.Action("BookingCustomEvent", "ConsoleEvent"))', args, function (data) {

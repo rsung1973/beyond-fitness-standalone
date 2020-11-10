@@ -20,7 +20,7 @@
     models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
     _profile = Context.GetUser();
 }
-@{ 
+@{
     PaymentQueryViewModel _viewModel = (PaymentQueryViewModel)ViewBag.ViewModel;
     if (_profile.IsCoach())
     {
@@ -77,6 +77,21 @@
         var current = $(element).is(':checked');
         $('input:checkbox').prop('checked', false);
         $(element).prop('checked', current);
+        if (current) {
+            showLoading();
+            $.post('@Html.Raw(Url.Action("EditPaymentForPI2020", "PaymentConsole"))', { 'RegisterID': $(element).val() }, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    if (data.result) {
+                    } else {
+                        swal(data.message);
+                    }
+                } else {
+                    $('#forCounter').empty()
+                        .append(data);
+                }
+            });
+        }
     }
 
     function commitPayoff() {
@@ -94,10 +109,10 @@
         }, function (isConfirm) {
             if (isConfirm) {
                 clearErrors();
-                var formData = $('input,select,textarea').serializeObject();
-
+                var $formData = $('input,select,textarea').serializeObject();
+                $formData = $.extend({}, $global.viewModel, $formData);
                 showLoading();
-                $.post('@Html.Raw(Url.Action("CommitPaymentForPISession","Payment",new { _viewModel.PaymentID,TransactionType = (int)Naming.PaymentTransactionType.自主訓練, alertError = false }))', formData, function (data) {
+                $.post('@Html.Raw(Url.Action("CommitPaymentForPISession","Payment",new { _viewModel.PaymentID,TransactionType = (int)Naming.PaymentTransactionType.自主訓練, alertError = false }))', $formData, function (data) {
                     hideLoading();
                     if ($.isPlainObject(data)) {
                         if (data.result) {
