@@ -40,7 +40,7 @@
             </div>
             <div class="col-10">
                 <h6>
-                    P.I @(item.RegisterLesson.UserProfile.RealName)
+                    P.I《@(item.RegisterLesson.LessonPriceType?.UsageTypeDescription?.Usage)》@(item.RegisterLesson.UserProfile.RealName)
                     <address><i class="zmdi zmdi-pin"></i>@(item.BranchStore.BranchName)</address>
                     @{ Html.RenderPartial("~/Views/ConsoleHome/Module/RenderLessonCheck.cshtml", item);}
                 </h6>
