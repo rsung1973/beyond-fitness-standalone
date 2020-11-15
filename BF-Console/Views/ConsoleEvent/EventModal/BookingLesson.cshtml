@@ -37,113 +37,105 @@
 <div class="modal fade" id="@(_dialogID)" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <div class="modal-body">
+            <div class="modal-header">
+                <h2 class="title">預約 <span class="col-red">@(_model.FullName())</span> session</h2>
                 <a class="closebutton" data-dismiss="modal"></a>
+            </div>
+            <div class="modal-body">
                 <div class="row clearfix">
-                    <div class="col-12">
-                        <div class="card action_bar">
-                            <div class="header">
-                                <h2>預約 <span class="col-red">@(_model.FullName())</span> session</h2>
-                            </div>
-                            <div class="body">
-                                <div class="row clearfix">
-                                    <div class="col-lg-6 col-md-6 col-sm-6 col-12 single">
-                                        <div class="input-group">
-                                            <input type="text" class="form-control datetime" data-date-format="yyyy/mm/dd hh:ii" readonly="readonly" placeholder="開始時間" name="ClassDate" value="@($"{_viewModel.StartDate:yyyy/MM/dd HH:mm}")" />
-                                            <span class="input-group-addon xl-slategray">
-                                                <i class="zmdi zmdi-time"></i>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6 col-md-6 col-sm-6 col-12" id="fieldBranch">
-                                        <select class="form-control show-tick" name="BranchID">
-                                            <option value="">-- 請選擇地點 --</option>
-                                            @{ Html.RenderPartial("~/Views/SystemInfo/BranchStoreOptions.cshtml", model: (models.GetTable<CoachWorkplace>().Where(c => c.CoachID == _profile.UID).Select(c => (int?)c.BranchID).FirstOrDefault() ?? -1));}
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="row clearfix">
-                                    <div class="col-12">
-                                        <div class="card xl-blue inbox">
-                                            <div class="cover">
-                                                <ul class="mail_list list-group list-unstyled">
-                                                    <li class="list-group-item xl-blue">
-                                                        <div class="media">
-                                                            <div class="pull-left">
-                                                                <div class="thumb hidden-sm-down m-r-20">
-                                                                    @{
-                                                                        ViewBag.ProfileClass = "rounded-circle popfit";
-                                                                        Html.RenderPartial("~/Views/Common/ProfileImage.cshtml", _model);
-                                                                    }
-                                                                </div>
-                                                            </div>
-                                                            <div class="media-body">
-                                                                <div class="media-heading">
-                                                                    <a class="m-r-10">搜尋結果如下：</a>
-                                                                </div>
-                                                                @{
-                                                                    _pageModel.HasChoice = false;
-                                                                    //_pageModel.PDQStatus = _model.IsCompletePDQ();
-                                                                    var contractLessons = _contracts.Join(models.GetTable<RegisterLessonContract>(), c => c.ContractID, r => r.ContractID, (c, r) => r)
-                                                                                            .Select(r => r.RegisterLesson)
-                                                                                            .Where(r => r.UID == _model.UID)
-                                                                                            .Where(r => r.Attended != (int)Naming.LessonStatus.課程結束);
-                                                                    var enterpriseLessons = _enterpriseContract.Join(models.GetTable<RegisterLessonEnterprise>(), t => t.ContractID, r => r.ContractID, (t, r) => r);
-                                                                    var enterpriseLessonItems = enterpriseLessons.Select(r => r.RegisterLesson).Where(r => r.UID == _model.UID);
-                                                                    @*if (!_pageModel.PDQStatus)
-                                                                    {
-                                                                        <p class="msg col-red"><i class="zmdi zmdi-info-outline"></i>PDQ尚未登打或登打不完全</p>
-                                                                    }*@
-                                                                    @*_pageModel.QuestionnaireStatus =
-                                                                        contractLessons.PromptLessonQuestionnaireRequest(models).Count() > 0
-                                                                        || enterpriseLessonItems.PromptLessonQuestionnaireRequest(models).Count() > 0;
-                                                                    if (_pageModel.QuestionnaireStatus)
-                                                                    {
-                                                                        <p class="msg col-red"><i class="zmdi zmdi-info-outline"></i>階段性調整計劃未填寫，請 <u>立即填寫</u> 階段性調整計劃</p>
-                                                                    }*@
-                                                                }
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                </ul>
-                                                @{
-                                                    var lessons = models.GetTable<RegisterLesson>()
-                                                            .Where(r => r.UID == _model.UID)
-                                                            .Where(r => r.Attended != (int)Naming.LessonStatus.課程結束);
-                                                    var enterpriseTrial = enterpriseLessons.Where(r => r.EnterpriseCourseContent.EnterpriseLessonType.Status == (int)Naming.LessonPriceStatus.體驗課程);
-                                                }
-                                                <ul class="mail_list list-group list-unstyled">
-                                                    @{
-                                                        var attendedCheck = models.GetTable<LessonTime>()
-                                                                .Join(models.GetTable<GroupingLesson>()
-                                                                    .Join(models.GetTable<RegisterLesson>()
-                                                                            .Where(r => r.UID == _model.UID),
-                                                                        g => g.GroupID, r => r.RegisterGroupID, (g, r) => g)
-                                                                    , l => l.GroupID, g => g.GroupID, (l, g) => l);
-                                                    }
-                                                    @if (!attendedCheck.Any() || _model.UserProfileExtension.CurrentTrial.HasValue)
-                                                    {
-                                                        Html.RenderPartial("~/Views/ConsoleEvent/EventModal/BookingTrialLesson.cshtml", _model);
-                                                    }
-                                                    @if (!_model.UserProfileExtension.CurrentTrial.HasValue)
-                                                    {
-                                                        Html.RenderPartial("~/Views/ConsoleEvent/EventModal/BookingLearnerLesson.cshtml", _model);
-                                                    }
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            @if (_pageModel.HasChoice)
-                            {
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-darkteal btn-round waves-effect" onclick="javascript:if(booking) booking();">確定</button>
-                                </div>
-                            }
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-12 single">
+                        <div class="input-group">
+                            <input type="text" class="form-control datetime" data-date-format="yyyy/mm/dd hh:ii" readonly="readonly" placeholder="開始時間" name="ClassDate" value="@($"{_viewModel.StartDate:yyyy/MM/dd HH:mm}")" />
+                            <span class="input-group-addon xl-slategray">
+                                <i class="zmdi zmdi-time"></i>
+                            </span>
                         </div>
                     </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-12" id="fieldBranch">
+                        <select class="form-control show-tick" name="BranchID">
+                            <option value="">-- 請選擇地點 --</option>
+                            @{ Html.RenderPartial("~/Views/SystemInfo/BranchStoreOptions.cshtml", model: (models.GetTable<CoachWorkplace>().Where(c => c.CoachID == _profile.UID).Select(c => (int?)c.BranchID).FirstOrDefault() ?? -1));}
+                        </select>
+                    </div>
                 </div>
+                <div class="row clearfix">
+                    <div class="col-12">
+                        <div class="card square inbox">
+                            <div class="cover">
+                                <ul class="mail_list list-group list-unstyled">
+                                    <li class="list-group-item">
+                                        <div class="media">
+                                            <div class="pull-left">
+                                                <div class="thumb hidden-sm-down m-r-20">
+                                                    @{
+                                                        ViewBag.ProfileClass = "rounded-circle popfit";
+                                                        Html.RenderPartial("~/Views/Common/ProfileImage.cshtml", _model);
+                                                    }
+                                                </div>
+                                            </div>
+                                            <div class="media-body">
+                                                <div class="media-heading">
+                                                    <a class="m-r-10">搜尋結果如下：</a>
+                                                </div>
+                                                @{
+                                                    _pageModel.HasChoice = false;
+                                                    //_pageModel.PDQStatus = _model.IsCompletePDQ();
+                                                    var contractLessons = _contracts.Join(models.GetTable<RegisterLessonContract>(), c => c.ContractID, r => r.ContractID, (c, r) => r)
+                                                                            .Select(r => r.RegisterLesson)
+                                                                            .Where(r => r.UID == _model.UID)
+                                                                            .Where(r => r.Attended != (int)Naming.LessonStatus.課程結束);
+                                                    var enterpriseLessons = _enterpriseContract.Join(models.GetTable<RegisterLessonEnterprise>(), t => t.ContractID, r => r.ContractID, (t, r) => r);
+                                                    var enterpriseLessonItems = enterpriseLessons.Select(r => r.RegisterLesson).Where(r => r.UID == _model.UID);
+                                                    @*if (!_pageModel.PDQStatus)
+                    {
+                        <p class="msg col-red"><i class="zmdi zmdi-info-outline"></i>PDQ尚未登打或登打不完全</p>
+                    }*@
+                                                    @*_pageModel.QuestionnaireStatus =
+                        contractLessons.PromptLessonQuestionnaireRequest(models).Count() > 0
+                        || enterpriseLessonItems.PromptLessonQuestionnaireRequest(models).Count() > 0;
+                    if (_pageModel.QuestionnaireStatus)
+                    {
+                        <p class="msg col-red"><i class="zmdi zmdi-info-outline"></i>階段性調整計劃未填寫，請 <u>立即填寫</u> 階段性調整計劃</p>
+                    }*@
+                                                }
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                                @{
+                                    var lessons = models.GetTable<RegisterLesson>()
+                                            .Where(r => r.UID == _model.UID)
+                                            .Where(r => r.Attended != (int)Naming.LessonStatus.課程結束);
+                                    var enterpriseTrial = enterpriseLessons.Where(r => r.EnterpriseCourseContent.EnterpriseLessonType.Status == (int)Naming.LessonPriceStatus.體驗課程);
+                                }
+                                <ul class="mail_list list-group list-unstyled">
+                                    @{
+                                        var attendedCheck = models.GetTable<LessonTime>()
+                                                .Join(models.GetTable<GroupingLesson>()
+                                                    .Join(models.GetTable<RegisterLesson>()
+                                                            .Where(r => r.UID == _model.UID),
+                                                        g => g.GroupID, r => r.RegisterGroupID, (g, r) => g)
+                                                    , l => l.GroupID, g => g.GroupID, (l, g) => l);
+                                    }
+                                    @if (!attendedCheck.Any() || _model.UserProfileExtension.CurrentTrial.HasValue)
+                                    {
+                                        Html.RenderPartial("~/Views/ConsoleEvent/EventModal/BookingTrialLesson.cshtml", _model);
+                                    }
+                                    @if (!_model.UserProfileExtension.CurrentTrial.HasValue)
+                                    {
+                                        Html.RenderPartial("~/Views/ConsoleEvent/EventModal/BookingLearnerLesson.cshtml", _model);
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>                
+                @if (_pageModel.HasChoice)
+                {
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-darkteal btn-round waves-effect" onclick="javascript:if(booking) booking();">確定, 不後悔</button>
+                    </div>
+                }
             </div>
         </div>
     </div>

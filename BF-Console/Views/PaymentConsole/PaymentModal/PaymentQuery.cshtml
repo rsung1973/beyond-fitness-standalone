@@ -32,45 +32,35 @@
             <div class="modal-body">
                 <div class="row clearfix">
                     <div class="col-12">
-                        <div class="card action_bar">
-                            <div class="body">
-                                <form>
-                                    <div class="row clearfix">
-                                        <div class="col-12">
-                                            <div class="input-group">
-                                                <input type="text" class="form-control form-control-danger" placeholder="請擇一輸入：學生姓名(暱稱) 或 合約編號 或 發票號碼" name="CustomQuery" />
-                                                <span class="input-group-addon">
-                                                    <i class="zmdi zmdi-search"></i>
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6 col-md-6 col-sm-6 col-12">
-                                            <div class="input-group">
-                                                <input type="text" class="form-control date" data-date-format="yyyy/mm/dd" readonly="readonly" placeholder="查詢起日" name="PayoffDateFrom" />
-                                                <span class="input-group-addon xl-slategray">
-                                                    <i class="zmdi zmdi-time"></i>
-                                                </span>
-                                            </div>
-                                            @*<label class="material-icons help-error-text">clear 請選擇查詢起日</label>*@
-                                        </div>
-                                        <div class="col-lg-6 col-md-6 col-sm-6 col-12">
-                                            <div class="input-group">
-                                                <input type="text" class="form-control date" data-date-format="yyyy/mm/dd" readonly="readonly" placeholder="查詢迄日" name="PayoffDateTo" />
-                                                <span class="input-group-addon xl-slategray">
-                                                    <i class="zmdi zmdi-time"></i>
-                                                </span>
-                                            </div>
-                                            @*<label class="material-icons help-error-text">clear 請選擇查詢迄日</label>*@
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
+                        <div class="input-group">
+                            <input type="text" class="form-control form-control-danger" placeholder="請擇一輸入：學生姓名(暱稱) 或 合約編號 或 發票號碼" name="CustomQuery" />
+                            <span class="input-group-addon">
+                                <i class="zmdi zmdi-search"></i>
+                            </span>
                         </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+                        <div class="input-group">
+                            <input type="text" class="form-control date" data-date-format="yyyy/mm/dd" readonly="readonly" placeholder="查詢起日" name="PayoffDateFrom" />
+                            <span class="input-group-addon xl-slategray">
+                                <i class="zmdi zmdi-time"></i>
+                            </span>
+                        </div>
+                        @*<label class="material-icons help-error-text">clear 請選擇查詢起日</label>*@
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+                        <div class="input-group">
+                            <input type="text" class="form-control date" data-date-format="yyyy/mm/dd" readonly="readonly" placeholder="查詢迄日" name="PayoffDateTo" />
+                            <span class="input-group-addon xl-slategray">
+                                <i class="zmdi zmdi-time"></i>
+                            </span>
+                        </div>
+                        @*<label class="material-icons help-error-text">clear 請選擇查詢迄日</label>*@
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-darkteal btn-round waves-effect"><i class="zmdi zmdi-search-for"></i></button>
+                <button type="button" class="btn btn-darkteal btn-round waves-effect">確定，不後悔</button>
             </div>
         </div>
     </div>
@@ -95,7 +85,7 @@
             var viewModel = @Html.Raw(JsonConvert.SerializeObject(_viewModel));
             $('#@(_dialogID) button').on('click', function (event) {
                 clearErrors();
-                var $formData = $('#@(_dialogID) form').serializeObject();
+                var $formData = $('#@(_dialogID) input').serializeObject();
                 $global.queryCallback = function () {
                     $global.closeAllModal();
                 };
