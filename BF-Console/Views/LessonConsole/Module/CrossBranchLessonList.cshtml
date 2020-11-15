@@ -19,7 +19,7 @@
     _model = (IQueryable<LessonTime>)this.Model;
    
 }
-<table class="table table-striped nowrap dataTable-crossBranch" style="width: 100%">
+<table class="table table-striped nowrap crossBranchDT" style="width: 100%">
     <thead class="bg-darkteal">
         <tr>
             <th>體能顧問</th>
@@ -65,7 +65,7 @@
             $global.dtContract.destroy();
         }
 
-        $global.dtContract = $('.dataTable-crossBranch').DataTable({
+        $global.dtContract = $('.crossBranchDT').DataTable({
             //"ajax": 'ajax/data/contractlist-2.json',
             "order": [
                 [1, 'desc'],
@@ -113,7 +113,7 @@
         }, 1000);
 
 
-        $('.dataTable-crossBranch').resize();
+        $('.crossBranchDT').resize();
 
     });</script>
 
