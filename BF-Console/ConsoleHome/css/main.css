@@ -27268,7 +27268,7 @@ section.content {
     height: 25px;
     line-height: 25px;
     padding: 0px 15px;
-    margin-right: 8px;
+    /* margin-right: 8px; */
     margin-left: 0;
 /*    border-bottom: 1px solid #eee !important;*/
     border: 0px;

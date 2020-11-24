@@ -63,7 +63,7 @@
                                     <div class="dd-handle dd3-handle"></div>
                                 }
                                 <div class="dd3-content list-item">
-                                    <span class="badge bg-blue-grey">@(item.TrainingType.BodyParts)</span>
+                                    <span class="badge bg-secondary">@(item.TrainingType.BodyParts)</span>
                                     @foreach (var aid in item.TrainingItemAids)
                                     {
                                         <span class="badge bg-teal">@aid.TrainingAids.ItemName</span>
@@ -72,7 +72,7 @@
                                     <div class="float-right">
                                         @if (item.GoalStrength != null)
                                         {
-                                            <span class="badge bg-black">@(item.GoalStrength)</span>
+                                            <span class="badge">@(item.GoalStrength)</span>
                                         }
                                         @if (item.GoalTurns != null && item.GoalStrength != null)
                                         {
@@ -80,7 +80,7 @@
                                         }
                                         @if (item.GoalTurns != null)
                                         {
-                                            <span class="badge bg-black">@(item.GoalTurns)</span>
+                                            <span class="badge">@(item.GoalTurns)</span>
                                         }
                                     </div>
                                     <span class="list-intro">@(item.Remark)</span>
