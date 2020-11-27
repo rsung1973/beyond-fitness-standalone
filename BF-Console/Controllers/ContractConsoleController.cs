@@ -35,7 +35,7 @@ namespace WebHome.Controllers
     public class ContractConsoleController : SampleController<UserProfile>
     {
         // GET: ContractConsole
-        public ActionResult ShowContractList(CourseContractQueryViewModel viewModel)
+        public ActionResult ShowContractList(CourseContractQueryViewModel viewModel,bool? popupModal)
         {
             if (viewModel.KeyID != null)
             {
@@ -46,7 +46,15 @@ namespace WebHome.Controllers
             ViewBag.Contracts = result.Model;
 
             var profile = HttpContext.GetUser();
-            return View("~/Views/ConsoleHome/ContractIndex.cshtml", profile.LoadInstance(models));
+
+            if (popupModal == true)
+            {
+                return View("~/Views/ConsoleHome/CourseContract/ContractListModal.cshtml", profile.LoadInstance(models));
+            }
+            else
+            {
+                return View("~/Views/ConsoleHome/ContractIndex.cshtml", profile.LoadInstance(models));
+            }
         }
 
         public ActionResult InquireContract(CourseContractQueryViewModel viewModel)

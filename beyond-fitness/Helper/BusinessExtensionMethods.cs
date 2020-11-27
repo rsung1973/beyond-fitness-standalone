@@ -1251,12 +1251,13 @@ namespace WebHome.Helper
             models.SubmitChanges();
             models.ExecuteCommand("update ServingCoach set LevelID={0} where CoachID={1}", ratingItem.LevelID, item.CoachID);
             models.ExecuteCommand(@"
-                UPDATE LessonTimeSettlement
-                SET        ProfessionalLevelID = ServingCoach.LevelID
-                FROM     LessonTime INNER JOIN
-                               LessonTimeSettlement ON LessonTime.LessonID = LessonTimeSettlement.LessonID INNER JOIN
-                               ServingCoach ON LessonTime.AttendingCoach = ServingCoach.CoachID
-                WHERE   (LessonTime.ClassTime >= {0}) AND (ServingCoach.CoachID = {1}) ", quarterEnd, item.CoachID);
+                UPDATE       LessonTimeSettlement
+                SET                ProfessionalLevelID = ServingCoach.LevelID, MarkedGradeIndex = ProfessionalLevel.GradeIndex
+                FROM            LessonTime INNER JOIN
+                                            LessonTimeSettlement ON LessonTime.LessonID = LessonTimeSettlement.LessonID INNER JOIN
+                                            ServingCoach ON LessonTime.AttendingCoach = ServingCoach.CoachID INNER JOIN
+                                            ProfessionalLevel ON ServingCoach.LevelID = ProfessionalLevel.LevelID
+                WHERE        (LessonTime.ClassTime >= {0}) AND (ServingCoach.CoachID = {1}) ", quarterEnd, item.CoachID);
 
         }
 
@@ -1950,10 +1951,15 @@ namespace WebHome.Helper
             return models.GetTable<LessonPriceType>().Where(p => p.Status == (int)Naming.DocumentLevelDefinition.體驗課程).FirstOrDefault();
         }
 
-        public static LessonPriceType CurrentSessionPrice<TEntity>(this ModelSource<TEntity> models, Naming.LessonPriceStatus sessionStatus = Naming.LessonPriceStatus.自主訓練)
+        public static LessonPriceType CurrentSessionPrice<TEntity>(this ModelSource<TEntity> models, Naming.LessonPriceStatus sessionStatus = Naming.LessonPriceStatus.自主訓練,int? priceID = null)
             where TEntity : class, new()
         {
-            return models.GetTable<LessonPriceType>().Where(p => p.Status == (int)sessionStatus).FirstOrDefault();
+            var items = models.GetTable<LessonPriceType>().Where(p => p.Status == (int)sessionStatus);
+            if(priceID.HasValue)
+            {
+                items = items.Where(p => p.PriceID == priceID);
+            }
+            return items.FirstOrDefault();
         }
 
         public static void ExecuteSettlement<TEntity>(this ModelSource<TEntity> models, DateTime startDate, DateTime endExclusiveDate, DateTime? settlementDate = null)

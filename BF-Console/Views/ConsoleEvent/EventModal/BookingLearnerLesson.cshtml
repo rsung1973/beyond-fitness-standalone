@@ -75,6 +75,8 @@
                             .Where(r => r.UID == _model.UID)
                             .Where(r => r.Attended != (int)Naming.LessonStatus.課程結束);
 
+    bool hasBookable = false;
+
 }
 @foreach (var item in contractLessons)
 {
@@ -102,6 +104,14 @@
         if (bookable)
         {
             _pageModel.HasChoice = true;
+            if(hasBookable)
+            {
+                bookable = false;
+            }
+            else
+            {
+                hasBookable = true;
+            }
         }
         <li class="list-group-item">
             <div class="media">

@@ -449,7 +449,7 @@ namespace WebHome.Controllers
 
                 if (viewModel.SessionStatus.HasValue)
                 {
-                    priceType = models.CurrentSessionPrice(viewModel.SessionStatus.Value);
+                    priceType = models.CurrentSessionPrice(viewModel.SessionStatus.Value, viewModel.PriceID);
                 }
                 else
                 {

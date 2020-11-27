@@ -26,6 +26,11 @@ namespace WebHome.Models.ViewModel
             return BitConverter.ToInt32(viewModel.DecryptKey(), 0);
         }
 
+        public static int DecryptKeyValue(this String keyID)
+        {
+            return BitConverter.ToInt32(keyID.DecryptData(), 0);
+        }
+
         public static int DecryptHexKeyValue(this QueryViewModel viewModel)
         {
             return BitConverter.ToInt32(viewModel.DecryptHexKey(), 0);
@@ -71,6 +76,10 @@ namespace WebHome.Models.ViewModel
         public static String DecryptKey(this String data)
         {
             return Encoding.Default.GetString(AppResource.Instance.DecryptSalted(Convert.FromBase64String(data)));
+        }
+        public static byte[] DecryptData(this String data)
+        {
+            return AppResource.Instance.DecryptSalted(Convert.FromBase64String(data));
         }
 
     }

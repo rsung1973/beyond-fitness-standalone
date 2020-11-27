@@ -46,6 +46,13 @@ namespace WebHome.Controllers
             return View("~/Views/LearnerProfile/Module/LearnerCalendar.cshtml", profile.LoadInstance(models));
         }
 
+        public ActionResult LearnerCalendar2020(DailyBookingQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            var profile = HttpContext.GetUser();
+            return View("~/Views/LearnerProfile/Module/LearnerCalendar2020.cshtml", profile.LoadInstance(models));
+        }
+
         public ActionResult LearnerCalendarEvents(FullCalendarViewModel viewModel, bool? toHtml = false)
         {
             ViewBag.ViewModel = viewModel;
@@ -63,6 +70,7 @@ namespace WebHome.Controllers
             IQueryable<UserEvent> eventItems = models.GetTable<UserEvent>()
                 .Where(e => !e.SystemEventID.HasValue)
                 .Where(e => e.UID == viewModel.LearnerID);
+            IQueryable<LessonTime> givingItems = models.GetTable<LessonTime>().Where(l => l.AttendingCoach == viewModel.LearnerID);
             if (viewModel.DateFrom.HasValue && viewModel.DateTo.HasValue)
             {
                 dataItems = dataItems.Where(t => t.ClassTime >= viewModel.DateFrom.Value
@@ -74,18 +82,23 @@ namespace WebHome.Controllers
                     || (t.StartDate >= viewModel.DateFrom.Value && t.StartDate < viewModel.DateTo.Value.AddDays(1))
                     || (t.EndDate >= viewModel.DateFrom.Value && t.EndDate < viewModel.DateTo.Value.AddDays(1))
                     || (t.StartDate < viewModel.DateFrom.Value && t.EndDate >= viewModel.DateTo.Value));
+                givingItems = givingItems.Where(t => t.ClassTime >= viewModel.DateFrom.Value
+                    && t.ClassTime < viewModel.DateTo.Value.AddDays(1));
+
             }
             else if (viewModel.DateFrom.HasValue)
             {
                 dataItems = dataItems.Where(t => t.ClassTime >= viewModel.DateFrom.Value);
                 coachPI = coachPI.Where(t => t.ClassTime >= viewModel.DateFrom.Value);
                 eventItems = eventItems.Where(t => t.StartDate >= viewModel.DateFrom.Value);
+                givingItems = givingItems.Where(t => t.ClassTime >= viewModel.DateFrom.Value);
             }
             else if (viewModel.DateTo.HasValue)
             {
                 dataItems = dataItems.Where(t => t.ClassTime < viewModel.DateTo.Value.AddDays(1));
                 coachPI = coachPI.Where(t => t.ClassTime < viewModel.DateTo.Value.AddDays(1));
                 eventItems = eventItems.Where(t => t.EndDate < viewModel.DateTo.Value.AddDays(1));
+                givingItems = givingItems.Where(t => t.ClassTime < viewModel.DateTo.Value.AddDays(1));
             }
 
             var items = dataItems
@@ -105,6 +118,12 @@ namespace WebHome.Controllers
             items.AddRange(eventItems.Select(v => new CalendarEventItem
             {
                 EventTime = v.StartDate,
+                EventItem = v
+            }));
+
+            items.AddRange(givingItems.Select(v => new CalendarEventItem
+            {
+                EventTime = v.ClassTime,
                 EventItem = v
             }));
 

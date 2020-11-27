@@ -28,7 +28,7 @@
         };
         $('#btnMoreLesson').on('click', function (element) {
             showLoading();
-            $.post('@Html.Raw(Url.Action("InquireLesson", "LessonConsole", new { LearnerID = _learner.UID, PageSize = 12, ExceptionalID = lessonItem?.LessonID }))', { 'CurrentIndex': currentIndex }, function (data) {
+            $.post('@Html.Raw(Url.Action("InquireLesson", "LessonConsole", new { LearnerID = _learner.UID, PageSize = 6, ExceptionalID = lessonItem?.LessonID }))', { 'CurrentIndex': currentIndex }, function (data) {
                 hideLoading();
                 currentIndex++;
                 if ($.isPlainObject(data)) {
@@ -57,7 +57,7 @@
     }
 
 </script>
-@{  Html.RenderAction("InquireLesson", "LessonConsole", new { LearnerID = _learner.UID, PageSize = 12, CurrentIndex = 0, ExceptionalID = lessonItem?.LessonID });  }
+@{  Html.RenderAction("InquireLesson", "LessonConsole", new { LearnerID = _learner.UID, PageSize = 6, CurrentIndex = 0, ExceptionalID = lessonItem?.LessonID });  }
 <li><button id="btnMoreLesson" class="btn btn-default btn-round btn-sm m-t-10 float-right">載入更多 ...</button></li>
 
 

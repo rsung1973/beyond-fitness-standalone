@@ -570,6 +570,9 @@ namespace WebHome.Models.DataEntity
     partial void InsertMonthlyBranchRevenueGoal(MonthlyBranchRevenueGoal instance);
     partial void UpdateMonthlyBranchRevenueGoal(MonthlyBranchRevenueGoal instance);
     partial void DeleteMonthlyBranchRevenueGoal(MonthlyBranchRevenueGoal instance);
+    partial void InsertUsageType(UsageType instance);
+    partial void UpdateUsageType(UsageType instance);
+    partial void DeleteUsageType(UsageType instance);
     #endregion
 		
 		public BFDataContext() : 
@@ -2103,6 +2106,14 @@ namespace WebHome.Models.DataEntity
 			get
 			{
 				return this.GetTable<V_Tuition>();
+			}
+		}
+		
+		public System.Data.Linq.Table<UsageType> UsageType
+		{
+			get
+			{
+				return this.GetTable<UsageType>();
 			}
 		}
 		
@@ -20737,6 +20748,8 @@ namespace WebHome.Models.DataEntity
 		
 		private EntityRef<BranchStore> _BranchStore;
 		
+		private EntityRef<UsageType> _UsageTypeDescription;
+		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -20783,6 +20796,7 @@ namespace WebHome.Models.DataEntity
 			this._PriceSeries = default(EntityRef<LessonPriceSeries>);
 			this._LevelExpression = default(EntityRef<LevelExpression>);
 			this._BranchStore = default(EntityRef<BranchStore>);
+			this._UsageTypeDescription = default(EntityRef<UsageType>);
 			OnCreated();
 		}
 		
@@ -20881,6 +20895,10 @@ namespace WebHome.Models.DataEntity
 			{
 				if ((this._UsageType != value))
 				{
+					if (this._UsageTypeDescription.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
 					this.OnUsageTypeChanging(value);
 					this.SendPropertyChanging();
 					this._UsageType = value;
@@ -21315,6 +21333,40 @@ namespace WebHome.Models.DataEntity
 						this._BranchID = default(Nullable<int>);
 					}
 					this.SendPropertyChanged("BranchStore");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UsageType_LessonPriceType", Storage="_UsageTypeDescription", ThisKey="UsageType", OtherKey="UsageID", IsForeignKey=true)]
+		public UsageType UsageTypeDescription
+		{
+			get
+			{
+				return this._UsageTypeDescription.Entity;
+			}
+			set
+			{
+				UsageType previousValue = this._UsageTypeDescription.Entity;
+				if (((previousValue != value) 
+							|| (this._UsageTypeDescription.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._UsageTypeDescription.Entity = null;
+						previousValue.LessonPriceType.Remove(this);
+					}
+					this._UsageTypeDescription.Entity = value;
+					if ((value != null))
+					{
+						value.LessonPriceType.Add(this);
+						this._UsageType = value.UsageID;
+					}
+					else
+					{
+						this._UsageType = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("UsageTypeDescription");
 				}
 			}
 		}
@@ -55468,6 +55520,120 @@ namespace WebHome.Models.DataEntity
 					this._SettlementID = value;
 				}
 			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.UsageType")]
+	public partial class UsageType : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _UsageID;
+		
+		private string _Usage;
+		
+		private EntitySet<LessonPriceType> _LessonPriceType;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnUsageIDChanging(int value);
+    partial void OnUsageIDChanged();
+    partial void OnUsageChanging(string value);
+    partial void OnUsageChanged();
+    #endregion
+		
+		public UsageType()
+		{
+			this._LessonPriceType = new EntitySet<LessonPriceType>(new Action<LessonPriceType>(this.attach_LessonPriceType), new Action<LessonPriceType>(this.detach_LessonPriceType));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UsageID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int UsageID
+		{
+			get
+			{
+				return this._UsageID;
+			}
+			set
+			{
+				if ((this._UsageID != value))
+				{
+					this.OnUsageIDChanging(value);
+					this.SendPropertyChanging();
+					this._UsageID = value;
+					this.SendPropertyChanged("UsageID");
+					this.OnUsageIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Usage", DbType="NVarChar(64)")]
+		public string Usage
+		{
+			get
+			{
+				return this._Usage;
+			}
+			set
+			{
+				if ((this._Usage != value))
+				{
+					this.OnUsageChanging(value);
+					this.SendPropertyChanging();
+					this._Usage = value;
+					this.SendPropertyChanged("Usage");
+					this.OnUsageChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UsageType_LessonPriceType", Storage="_LessonPriceType", ThisKey="UsageID", OtherKey="UsageType")]
+		public EntitySet<LessonPriceType> LessonPriceType
+		{
+			get
+			{
+				return this._LessonPriceType;
+			}
+			set
+			{
+				this._LessonPriceType.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_LessonPriceType(LessonPriceType entity)
+		{
+			this.SendPropertyChanging();
+			entity.UsageTypeDescription = this;
+		}
+		
+		private void detach_LessonPriceType(LessonPriceType entity)
+		{
+			this.SendPropertyChanging();
+			entity.UsageTypeDescription = null;
 		}
 	}
 	

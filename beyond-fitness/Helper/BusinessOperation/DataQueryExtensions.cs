@@ -374,6 +374,18 @@ namespace WebHome.Helper.BusinessOperation
                 items = items.Where(c => c.ContractDate < viewModel.ContractDateTo.Value);
             }
 
+            if (viewModel.EffectiveDateFrom.HasValue)
+            {
+                hasConditon = true;
+                items = items.Where(c => c.EffectiveDate >= viewModel.EffectiveDateFrom);
+            }
+
+            if (viewModel.EffectiveDateTo.HasValue)
+            {
+                hasConditon = true;
+                items = items.Where(c => c.EffectiveDate < viewModel.EffectiveDateTo);
+            }
+
             Expression<Func<CourseContract, bool>> queryExpr = c => false;
             bool subCondition = false;
 

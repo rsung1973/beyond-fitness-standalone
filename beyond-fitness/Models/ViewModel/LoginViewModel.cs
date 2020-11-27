@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -307,6 +308,7 @@ namespace WebHome.Models.ViewModel
         public int? CurrentTrial { get; set; }
         public Naming.LessonPriceStatus? SessionStatus { get; set; }
         public int[] AttendeeID { get; set; }
+        public int? PriceID { get; set; }
 
     }
 
@@ -628,7 +630,13 @@ namespace WebHome.Models.ViewModel
         public String Remark { get; set; }
         public int? CopyFrom { get; set; }
         public Naming.QuestionnaireGroup? QuestionnaireGroupID { get; set; }
-
+        [JsonIgnore]
+        public int? TargetID { get; set; }
+        public String EncTargetID 
+        {
+            get => TargetID.HasValue ? TargetID.Value.EncryptKey() : null;
+            set => TargetID = (value != null ? value.DecryptKeyValue() : (int?)null);
+        }
     }
 
     public class TrialLearnerViewModel

@@ -862,6 +862,7 @@
       <Association Name="LessonPriceSeries_LessonPriceType" Member="CurrentPriceSeries" Storage="_PriceSeries" ThisKey="SeriesID" OtherKey="PriceID" Type="LessonPriceSeries" IsForeignKey="true" />
       <Association Name="LevelExpression_LessonPriceType" Member="LevelExpression" ThisKey="Status" OtherKey="LevelID" Type="LevelExpression" IsForeignKey="true" />
       <Association Name="BranchStore_LessonPriceType" Member="BranchStore" ThisKey="BranchID" OtherKey="BranchID" Type="BranchStore" IsForeignKey="true" />
+      <Association Name="UsageType_LessonPriceType" Member="UsageTypeDescription" ThisKey="UsageType" OtherKey="UsageID" Type="UsageType" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.CourseContract" Member="CourseContract">
@@ -947,7 +948,7 @@
       <Association Name="CourseContractRevision_ContractElement" Member="ContractElements" ThisKey="RevisionID" OtherKey="RevisionID" Type="ContractElement" />
       <Association Name="CourseContractRevision_CourseContractRevisionItem" Member="CourseContractRevisionItem" ThisKey="RevisionID" OtherKey="RevisionID" Type="CourseContractRevisionItem" Cardinality="One" />
       <Association Name="Attachment_CourseContractRevision" Member="Attachment" ThisKey="AttachmentID" OtherKey="AttachmentID" Type="Attachment" IsForeignKey="true" />
-      <Association Name="CourseContract_CourseContractRevision" Member="CourseContract" ThisKey="RevisionID" OtherKey="ContractID" Type="CourseContract" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true"/>
+      <Association Name="CourseContract_CourseContractRevision" Member="CourseContract" ThisKey="RevisionID" OtherKey="ContractID" Type="CourseContract" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
       <Association Name="CourseContract_CourseContractRevision1" Member="SourceContract" ThisKey="OriginalContract" OtherKey="ContractID" Type="CourseContract" IsForeignKey="true" />
     </Type>
   </Table>
@@ -2426,6 +2427,13 @@
       <Column Name="SettlementStatus" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="CoachWorkPlace" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="SettlementID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.UsageType" Member="UsageType">
+    <Type Name="UsageType">
+      <Column Name="UsageID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Usage" Type="System.String" DbType="NVarChar(64)" CanBeNull="true" />
+      <Association Name="UsageType_LessonPriceType" Member="LessonPriceType" ThisKey="UsageID" OtherKey="UsageType" Type="LessonPriceType" />
     </Type>
   </Table>
   <Function Name="dbo.InquireVacantNo" Method="InquireVacantNo">

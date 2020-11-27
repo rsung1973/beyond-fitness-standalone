@@ -96,6 +96,7 @@
                             //showUserEventModal(calEvent.keyID);
                         } else {
                             $viewModel.KeyID = calEvent.keyID;
+                            $viewModel.LearnerID = calEvent.learnerID;
                             showLoading();
                             $('').launchDownload('@Html.Raw(Url.Action("LessonTrainingContent", "ConsoleHome"))', $viewModel);
                         }

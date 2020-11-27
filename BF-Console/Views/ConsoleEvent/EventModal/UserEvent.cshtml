@@ -59,21 +59,22 @@
                                     }
                                 </li>
                             }
-                        </ul>                        
+                        </ul>
                     </div>
                 </div>
-             }
-                <div class="modal-footer">
-                    @if (_profile.IsAssistant() || _model.UID == _profile.UID)
-                    {
-                        <button type="button" class="btn btn-darkteal btn-round waves-effect" onclick="bookingCustomEvent({'keyID':'@(_model.EventID.EncryptKey())'});"><i class="zmdi zmdi-edit"></i></button>
-                        <button type="button" class="btn btn-danger btn-round btn-simple btn-round waves-effect waves-red" onclick="javascript:deleteUserEvent('@(_model.EventID.EncryptKey())');"><i class="zmdi zmdi-delete"></i></button>
-                    }
-                </div>
+            }
+            <div class="modal-footer">
+                @if (_profile.IsAssistant() || _model.UID == _profile.UID)
+                {
+                    <button type="button" class="btn btn-darkteal btn-round waves-effect" onclick="bookingCustomEvent({'keyID':'@(_model.EventID.EncryptKey())'});"><i class="zmdi zmdi-edit"></i></button>
+                    <button type="button" class="btn btn-danger btn-round btn-simple btn-round waves-effect waves-red" onclick="javascript:deleteUserEvent('@(_model.EventID.EncryptKey())');"><i class="zmdi zmdi-delete"></i></button>
+                }
             </div>
-</div>
-@{ Html.RenderPartial("~/Views/ConsoleHome/Shared/BSModalScript.cshtml", model: _dialogID);}
-
+        </div>
+    </div>
+    @{
+        Html.RenderPartial("~/Views/ConsoleHome/Shared/BSModalScript.cshtml", model: _dialogID);
+    }
 </div>
 
 

@@ -79,7 +79,10 @@
     <script src="plugins/jquery-form/jquery-form.min.js"></script>
     <script src="js/common.js?1.6"></script>
 </head>
-<body class="theme-darkteal menu_darkteal">
+@{ 
+    HttpCookie cookie = Request.Cookies["theme"];
+}
+<body class="theme-darkteal menu_darkteal @(cookie?.Value)">
     <!-- Page Loader -->
     <div class="page-loader-wrapper">
         <div class="loader">
@@ -183,6 +186,7 @@
                                         var $body = $('body');
                                         $body.removeClass('theme-nero');
                                         $body.addClass(theme);
+                                        $.cookie('theme', theme);
                                     }
                                 </script>
                             </div>

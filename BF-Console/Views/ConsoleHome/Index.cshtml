@@ -84,6 +84,10 @@
     {
         Html.RenderPartial("~/Views/ConsoleHome/Index/Coach/Part_1.cshtml", _model);
     }
+    else if (_model.IsOfficer())
+    {
+        Html.RenderPartial("~/Views/ConsoleHome/Index/Admin/Part_1.cshtml", _model);
+    }
 
     <!--我的發票卡片-->
     @if (_model.IsAssistant() || _model.IsAuthorizedSysAdmin())

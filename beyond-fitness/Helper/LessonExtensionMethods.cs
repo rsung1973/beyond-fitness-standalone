@@ -875,12 +875,22 @@ namespace WebHome.Helper
         public static IQueryable<LessonTime> PreferredLessonTimeToApprove<TEntity>(this UserProfile manager, ModelSource<TEntity> models)
             where TEntity : class, new()
         {
-            return models.GetTable<LessonTime>()
+            var items = models.GetTable<LessonTime>()
                     //.Where(l => l.LessonAttendance == null)
-                    .Join(models.GetTable<BranchStore>().Where(b => b.ManagerID == manager.UID || b.ViceManagerID == manager.UID),
-                        l => l.BranchID, b => b.BranchID, (l, b) => l)
                     .Join(models.GetTable<PreferredLessonTime>().Where(p => !p.ApprovalDate.HasValue),
                         l => l.LessonID, p => p.LessonID, (l, p) => l);
+
+            if(manager.IsAssistant())
+            {
+
+            }
+            else
+            {
+                items = items
+                    .Join(models.GetTable<BranchStore>().Where(b => b.ManagerID == manager.UID || b.ViceManagerID == manager.UID),
+                        l => l.BranchID, b => b.BranchID, (l, b) => l);
+            }
+            return items;
         }
 
         public static TrainingPlan CloneTrainingPlan<TEntity>(this ModelSource<TEntity> models, TrainingPlan source,TrainingPlan target = null,bool copyEmphasis = true)
