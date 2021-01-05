@@ -1,0 +1,87 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Newtonsoft.Json
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    UserProfile _model;
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = (UserProfile)this.Model;
+}
+<div class="body">
+    <div class="row">
+        <div class="col-8">
+            @{
+                DateTime monthStart = DateTime.Today.FirstDayOfMonth();
+                var contracts = models.PromptContractService();
+                var currentItems = contracts.Where(c => c.EffectiveDate >= DateTime.Today && c.EffectiveDate < DateTime.Today.AddDays(1));
+                var editingItems = contracts
+                                    .Where(c => c.FitnessConsultant == _model.UID)
+                                    .Where(c => c.Status == (int)Naming.CourseContractStatus.草稿);
+                var toConfirmItems = contracts
+                                    .Where(c => c.Status == (int)Naming.CourseContractStatus.待確認);
+                var toSignItems = contracts
+                                    .Where(c => c.Status == (int)Naming.CourseContractStatus.待簽名);}
+
+            <h5 class="m-t-0">服務申請</h5>
+            <p class="text-small">
+                編輯中：<a href="#" onclick='showContractList(@Html.Raw(JsonConvert.SerializeObject(
+                                new
+                                {
+                                    ContractQueryMode = Naming.ContractServiceMode.ServiceOnly,
+                                    Status = (int)Naming.CourseContractStatus.草稿,
+                                })),@(editingItems.Count()));'>@(editingItems.Count())</a><br />
+                待簽名：<a href="#" onclick='showContractList(@Html.Raw(JsonConvert.SerializeObject(
+                                new
+                                {
+                                    ContractQueryMode = Naming.ContractServiceMode.ServiceOnly,
+                                    Status = (int)Naming.CourseContractStatus.待簽名,
+                                })),@(toSignItems.Count()));'>@(toSignItems.Count())</a><br />
+                待審核：<a href="#" onclick='showContractList(@Html.Raw(JsonConvert.SerializeObject(
+                                new
+                                {
+                                    ContractQueryMode = Naming.ContractServiceMode.ServiceOnly,
+                                    Status = (int)Naming.CourseContractStatus.待確認,
+                                })),@(toConfirmItems.Count()));'>@(toConfirmItems.Count())</a>
+                <br />
+                @{
+                    currentItems = contracts.Where(c => c.EffectiveDate >= monthStart.AddMonths(-1) && c.EffectiveDate < monthStart);
+                }
+                　上月：<a href="#" onclick='showContractList(@Html.Raw(JsonConvert.SerializeObject(
+                                new
+                                {
+                                    ContractQueryMode = Naming.ContractServiceMode.ServiceOnly,
+                                    Status = (int)Naming.CourseContractStatus.已生效,
+                                    EffectiveDateFrom = monthStart.AddMonths(-1),
+                                    EffectiveDateTo = monthStart,
+                                })),@(currentItems.Count()));'>@(currentItems.Count())</a>
+            </p>
+        </div>
+        <div class="col-4 text-right">
+            @{
+                var totalCount = contracts
+                            .Where(c => c.EffectiveDate >= monthStart && c.EffectiveDate < monthStart.AddMonths(1)).Count();
+            }
+            <a href="#" onclick='showContractList(@Html.Raw(JsonConvert.SerializeObject(
+                                new
+                                {
+                                    ContractQueryMode = Naming.ContractServiceMode.ServiceOnly,
+                                    Status = (int)Naming.CourseContractStatus.已生效,
+                                    EffectiveDateFrom = monthStart,
+                                    EffectiveDateTo = monthStart.AddMonths(1),
+                                })),@(totalCount));'>
+                <h2>@(totalCount)</h2>
+            </a>
+            <small class="info">本月</small>
+        </div>
+    </div>
+</div>
+

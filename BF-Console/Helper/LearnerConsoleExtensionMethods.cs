@@ -28,7 +28,7 @@ namespace WebHome.Helper
         public static IQueryable<UserProfile> PromptLearnerByName<TEntity>(this String userName, ModelSource<TEntity> models, bool includeTrial = false)
                 where TEntity : class, new()
         {
-            var items = userName.PromptUserProfileByName(models, models.PromptLearner());
+            var items = userName.PromptUserProfileByName(models, models.PromptLearner(includeTrial));
             return items;
         }
 

@@ -15,8 +15,9 @@
     { %>
 <%--<img id="barcode" alt="" height="22" src="<%= WebHome.Properties.Settings.Default.HostDomain
         + Url.Action("GetBarCode39","Published",new { code = String.Format("{0:000}{1:00}{2}{3}{4}", _model.InvoiceDate.Value.Year - 1911, _model.InvoiceDate.Value.Month, _model.TrackCode, _model.No, _model.RandomNo) }) %>" width="160" />--%>
-<img id="barcode" alt="" height="<%= (bool?)ViewBag.Canvas==true ? "50" : "22" %>" src="<%= String.Format("{0:000}{1:00}{2}{3}{4}", _model.InvoiceDate.Value.Year - 1911, _model.InvoiceDate.Value.Month, _model.TrackCode, _model.No, _model.RandomNo).GetCode39ImageSrc(false,600f) %>"
-    width="<%= (bool?)ViewBag.Canvas==true ? "350" : "160" %>" />
+<%--<img id="barcode" alt="" height="<%= (bool?)ViewBag.Canvas==true ? "50" : "22" %>" src="<%= String.Format("{0:000}{1:00}{2}{3}{4}", _model.InvoiceDate.Value.Year - 1911, _model.InvoiceDate.Value.Month, _model.TrackCode, _model.No, _model.RandomNo).GetCode39ImageSrc(false,600f) %>"
+    width="<%= (bool?)ViewBag.Canvas==true ? "350" : "160" %>" />--%>
+<img id="barcode" alt="" src="<%= String.Format("{0:000}{1:00}{2}{3}{4}", _model.InvoiceDate.Value.Year - 1911, _model.InvoiceDate.Value.Month, _model.TrackCode, _model.No, _model.RandomNo).GetCode39ImageSrc(false,600f) %>" />
 <%  } %>
 
 <script runat="server">

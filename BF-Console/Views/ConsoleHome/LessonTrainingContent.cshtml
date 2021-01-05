@@ -23,8 +23,17 @@
 @{ 
     LessonTime lessonItem = (LessonTime)ViewBag.DataItem;
     UserProfile learner = (UserProfile)ViewBag.Learner;
-    QuestionnaireRequest questionnaire = models.GetEffectiveQuestionnaireRequest(learner, Naming.QuestionnaireGroup.身體心靈密碼).FirstOrDefault();
-    if(questionnaire!=null)
+    QuestionnaireRequest questionnaire = models.GetEffectiveQuestionnaireRequest(learner).FirstOrDefault();
+    if (questionnaire == null)
+    {
+        if(!models.GetTable<QuestionnaireRequest>()
+            .Where(q=>q.UID==learner.UID)
+            .Where(q=>q.GroupID==(int)Naming.QuestionnaireGroup.身體心靈密碼).Any())
+        {
+            questionnaire = learner.UID.AssertQuestionnaire(models, Naming.QuestionnaireGroup.身體心靈密碼, QuestionnaireRequest.PartIDEnum.PartA);
+        }
+    }
+    if (questionnaire != null)
     {
         ViewBag.ViewOnly = true;
     }
@@ -144,7 +153,7 @@
                                                     <div class="bullet pink"></div>
                                                     <div class="time">NEXT</div>
                                                     <div class="desc">
-                                                        <a href="javascript:editLearnerCharacter();">
+                                                        <a href="javascript:editLearnerCharacter(@(questionnaire.QuestionnaireID));">
                                                             <h3 class="col-red">重新了解學生 Go~</h3>
                                                         </a>
                                                     </div>
@@ -424,9 +433,9 @@
             });
         };
 
-        function editLearnerCharacter() {
+        function editLearnerCharacter(QuestionnaireID) {
 
-            $('').launchDownload('@(Html.Raw(Url.Action("EditLearnerCharacter","ConsoleHome",new { KeyID = learner.UID.EncryptKey() })))', {});
+            $('').launchDownload('@(Html.Raw(Url.Action("EditLearnerCharacter","ConsoleHome",new { KeyID = learner.UID.EncryptKey() })))', { 'QuestionnaireID': QuestionnaireID });
 
             @*$global.rejectCharacterDone = function () {
                 $('').launchDownload('@Html.Raw(Url.Action("LessonTrainingContent", "ConsoleHome",new { LearnerID =  learner.UID }))', {'keyID':'@(lessonItem.LessonID.EncryptKey())' });

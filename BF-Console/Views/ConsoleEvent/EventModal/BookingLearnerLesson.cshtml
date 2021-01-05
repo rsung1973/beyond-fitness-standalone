@@ -74,11 +74,11 @@
                             .Select(r => r.RegisterLesson)
                             .Where(r => r.UID == _model.UID)
                             .Where(r => r.Attended != (int)Naming.LessonStatus.課程結束);
-
-    bool hasBookable = false;
-
 }
-@foreach (var item in contractLessons)
+@{ 
+    List<int> installmentID = new List<int>();
+}
+@foreach (var item in contractLessons.OrderBy(r=>r.RegisterLessonContract.ContractID))
 {
     var contract = item.RegisterLessonContract.CourseContract;
     if (contract != null)
@@ -104,13 +104,16 @@
         if (bookable)
         {
             _pageModel.HasChoice = true;
-            if(hasBookable)
+            if (contract.InstallmentID.HasValue)
             {
-                bookable = false;
-            }
-            else
-            {
-                hasBookable = true;
+                if (installmentID.Contains(contract.InstallmentID.Value))
+                {
+                    bookable = false;
+                }
+                else
+                {
+                    installmentID.Add(contract.InstallmentID.Value);
+                }
             }
         }
         <li class="list-group-item">

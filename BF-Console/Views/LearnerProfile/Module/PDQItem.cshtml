@@ -20,11 +20,19 @@
 @{ 
     PDQTask taskItem = null;
     QuestionnaireRequest questionnaire = ViewBag.CurrentQuestionnaire as QuestionnaireRequest;
+    PDQTask referredItem = null;
+    QuestionnaireRequest referredTo = ViewBag.ReferredTo as QuestionnaireRequest;
     if (questionnaire!=null)
     {
         taskItem = models.GetTable<PDQTask>().Where(t => t.QuestionID == _model.QuestionID)
                 .Where(t => t.QuestionnaireID == questionnaire.QuestionnaireID)
                 .FirstOrDefault();
+    }
+    if (referredTo != null)
+    {
+        referredItem = models.GetTable<PDQTask>().Where(t => t.QuestionID == _model.QuestionID)
+            .Where(t => t.QuestionnaireID == referredTo.QuestionnaireID)
+            .FirstOrDefault();
     }
 }
 @if (ViewBag.GroupQuestion == true)
@@ -44,7 +52,7 @@ else
     </label>
 }
 <div class="form-group p-t-0">
-    <textarea rows="1" cols="100" class="form-control" placeholder="其他更多說明" data-id="@(_model.QuestionID)" name="PDQAnswer">@(taskItem?.PDQAnswer)</textarea>
+    <textarea rows="1" cols="100" class="form-control" placeholder="@(referredItem?.PDQAnswer ?? "其他更多說明")" data-id="@(_model.QuestionID)" name="PDQAnswer">@(taskItem?.PDQAnswer)</textarea>
 </div>
 @if(_model.QuestionType==(int)Naming.QuestionType.單選其他 || _model.QuestionType == (int)Naming.QuestionType.單選題)
 {

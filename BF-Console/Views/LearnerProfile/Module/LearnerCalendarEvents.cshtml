@@ -34,11 +34,10 @@
                 keyID = g.LessonID.EncryptKey(),
                 learnerID = g.RegisterLesson.UID,
                 title = String.Concat(g.LessonTypeStatus(),
-                        " session",
                         (g.PreferredLessonTime != null && !g.PreferredLessonTime.ApprovalDate.HasValue ? "(待審核)" : "")),
                 start = String.Format("{0:O}", g.ClassTime),
                 end = String.Format("{0:O}", g.ClassTime.Value.AddMinutes(g.DurationInMinutes.Value)),
-                description = "",
+                description = String.Join("、",g.GroupingLesson.RegisterLesson.Select(r=>r.UserProfile.RealName)),
                 allDay = false,
                 className = g.PreferredLessonTime != null && !g.PreferredLessonTime.ApprovalDate.HasValue
                 ? new String[] { "b-l b-2x b-approve" }

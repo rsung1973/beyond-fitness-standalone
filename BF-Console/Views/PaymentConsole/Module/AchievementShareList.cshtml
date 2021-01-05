@@ -39,12 +39,12 @@
                 </span>
                 @Html.Raw(item.ServingCoach.UserProfile.FullNameHtml("hidden-sm-down"))
             </td>
-            <td>@($"{item.ShareAmount:##,###,###,###}")</td>
+            <td class="text-right">@($"{item.ShareAmount:##,###,###,###}")</td>
         </tr>
         }
     </tbody>
 </table>
-<script>
+@*<script>
     $(function () {
 
         if ($global.dtAchievement != undefined) {
@@ -77,14 +77,19 @@
             scrollX: true,
             scrollCollapse: true,
             "columnDefs": [{
+                targets: [0],
+                className: "more"
+
+            }, {
                 targets: [1],
-                className: "align-right"
+                className: "align-right more"
 
             }],
         });
 
-        $('.shareDT').resize();
+        //$('.shareDT').resize();
+        $global.dtAchievement.draw();
 
     });
 
-</script>
+</script>*@

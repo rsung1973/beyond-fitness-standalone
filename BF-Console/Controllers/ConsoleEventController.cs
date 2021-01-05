@@ -235,8 +235,16 @@ namespace WebHome.Controllers
                 viewModel.EventID = viewModel.DecryptKeyValue();
             }
 
-            var item = models.GetTable<UserEvent>().Where(v => v.EventID == viewModel.EventID
-                && v.UID == profile.UID).FirstOrDefault();
+            UserEvent item;
+            if(profile.IsAssistant())
+            {
+                item = models.GetTable<UserEvent>().Where(v => v.EventID == viewModel.EventID).FirstOrDefault();
+            }
+            else
+            {
+                item = models.GetTable<UserEvent>().Where(v => v.EventID == viewModel.EventID
+                    && v.UID == profile.UID).FirstOrDefault();
+            }
 
             if (item != null)
             {

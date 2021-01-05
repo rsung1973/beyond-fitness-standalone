@@ -29,6 +29,7 @@ namespace WebHome.Models.ViewModel
         public int? lessonID { get; set; }
         public bool editable { get; set; }
         public String keyID { get; set; }
+        public int? learnerID { get; set; }
              
     }
 

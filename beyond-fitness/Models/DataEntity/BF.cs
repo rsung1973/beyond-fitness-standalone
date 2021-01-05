@@ -8,4 +8,13 @@ namespace WebHome.Models.DataEntity
         }
 
     }
+
+    public partial class QuestionnaireRequest
+    {
+        public enum PartIDEnum
+        {
+            PartA = 0,
+            PartB = 1,
+        }
+    }
 }

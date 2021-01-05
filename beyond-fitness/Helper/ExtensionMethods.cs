@@ -140,12 +140,18 @@ namespace WebHome.Helper
 
         public static int AdjustTrustAmount(this int? amount)
         {
-            return (amount * 2 + 5) / 10 ?? 0;
+            return amount.HasValue 
+                ? amount>=0
+                    ? (amount.Value * 2 + 5) / 10
+                    : (amount.Value * 2 - 5) / 10
+                : 0;
         }
 
         public static int AdjustTrustAmount(this int amount)
         {
-            return (amount * 2 + 5) / 10;
+            return amount >= 0
+                    ? (amount * 2 + 5) / 10
+                    : (amount * 2 - 5) / 10;
         }
 
 

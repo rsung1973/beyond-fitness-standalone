@@ -21,7 +21,7 @@
     _modelState = (ModelStateDictionary)ViewBag.ModelState;
     models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
     _model = (CourseContract)this.Model;
-    _profile = Context.GetUser();
+    _profile = Context.GetUser().LoadInstance(models);
 }
 <div class="modal fade" id="@(_dialogID)" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-sm" role="document">
@@ -48,8 +48,11 @@
                     }
                     @if (_model.Status == (int)Naming.CourseContractStatus.已生效)
                     {
-                        <a href="@Html.Raw(Url.Action("GetContractAmendmentPdf", "CourseContract", new { revision.RevisionID }))" target="_blank" class="list-group-item">電子合約</a>
-                        hasItem = true;
+                        if (!(_profile.IsOfficer() && _profile.UserRole.Count() == 1))
+                        {
+                            <a href="@Html.Raw(Url.Action("GetContractAmendmentPdf", "CourseContract", new { revision.RevisionID }))" target="_blank" class="list-group-item">電子合約</a>
+                            hasItem = true;
+                        }
                     }
                     @if (!hasItem)
                     {

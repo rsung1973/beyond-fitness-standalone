@@ -544,6 +544,11 @@ namespace WebHome.Controllers
                 return Json(new { result = true }, JsonRequestBehavior.AllowGet);
             }
 
+            if (!questionnaire.PartID.HasValue && viewModel.PartID == QuestionnaireRequest.PartIDEnum.PartA)
+            {
+                return View("~/Views/ConsoleHome/EditLearnerCharacter/ResumeLearnerCharacterPartA.cshtml", questionnaire);
+            }
+
             return View("~/Views/LearnerProfile/Module/ResumeLearnerCharacter.cshtml", questionnaire);
 
         }

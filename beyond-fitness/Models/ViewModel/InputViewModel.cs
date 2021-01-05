@@ -67,6 +67,7 @@ namespace WebHome.Models.ViewModel
         public bool? Unpaid { get; set; }
         public String Pdf { get; set; }
         public Naming.CauseForEnding? CauseForEnding { get; set; }
+        public int? MemberID { get; set; }
     }
 
     public class CourseContractQueryViewModel : CourseContractViewModel

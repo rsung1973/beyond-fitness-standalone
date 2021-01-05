@@ -33,12 +33,14 @@
 
             </li>
             <li class="col-lg-3 col-md-6 col-sm-12">
-                @{ Html.RenderPartial("~/Views/ContractConsole/Module/AboutContractsByBranch.cshtml", _model);}
-
+                @{
+                    Html.RenderPartial("~/Views/ConsoleHome/ContractIndex/Manager/AboutNewContractsByBranch.cshtml", _model);
+                }
             </li>
             <li class="col-lg-3 col-md-6 col-sm-12">
-                @{ Html.RenderPartial("~/Views/ContractConsole/Module/AboutContractServicesSummaryByBranch.cshtml", _model);}
-
+                @{
+                    Html.RenderPartial("~/Views/ConsoleHome/ContractIndex/Manager/AboutContractServicesByBranch.cshtml", _model);
+                }
             </li>
             <li class="col-lg-3 col-sm-12">
                 @{ Html.RenderPartial("~/Views/ContractConsole/Module/AboutPaymentByBranch.cshtml", _model);}
@@ -47,9 +49,9 @@
         </ul>
         <ul class="row clearfix list-unstyled m-b-0">
             @*<li class="col-lg-3 col-md-3 col-sm-6">
-            @{ Html.RenderPartial("~/Views/ContractConsole/Module/ToRenewByBranch.cshtml", _model);}
+                    @{ Html.RenderPartial("~/Views/ContractConsole/Module/ToRenewByBranch.cshtml", _model);}
 
-        </li>*@
+                </li>*@
             <li class="col-lg-3 col-md-6 col-sm-12">
                 @{ Html.RenderPartial("~/Views/ContractConsole/Module/AboutAutoTermination.cshtml", _model);}
             </li>

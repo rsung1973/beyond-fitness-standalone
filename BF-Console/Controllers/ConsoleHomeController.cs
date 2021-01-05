@@ -569,7 +569,8 @@ namespace WebHome.Controllers
 
             ViewBag.DataItem = models.GetTable<UserProfile>().Where(u => u.UID == viewModel.LearnerID).First();
 
-            return View("~/Views/ConsoleHome/LearnerProfile2020.cshtml", profile.LoadInstance(models));
+            return View("~/Views/ConsoleHome/LearnerProfile2020-1.cshtml", profile.LoadInstance(models));
+            //return View("~/Views/ConsoleHome/LearnerProfile2020.cshtml", profile.LoadInstance(models));
             //return View("~/Views/ConsoleHome/LearnerProfile.cshtml", profile.LoadInstance(models));
         }
 
@@ -598,6 +599,38 @@ namespace WebHome.Controllers
             return View(profile.LoadInstance(models));
         }
 
+        //public ActionResult EditLearnerCharacter(LearnerCharacterViewModel viewModel)
+        //{
+        //    ViewBag.ViewModel = viewModel;
+        //    var profile = HttpContext.GetUser();
+
+        //    if (viewModel.KeyID != null)
+        //    {
+        //        viewModel.UID = viewModel.DecryptKeyValue();
+        //    }
+
+        //    UserProfile item = ViewBag.DataItem = models.GetTable<UserProfile>().Where(u => u.UID == viewModel.UID).First();
+
+        //    if (viewModel.ToPrepare != true)
+        //    {
+        //        return View("~/Views/ConsoleHome/PrepareLearnerCharacter.cshtml", profile.LoadInstance(models));
+        //    }
+
+        //    QuestionnaireRequest quest = models.GetTable<QuestionnaireRequest>()
+        //            .Where(r => r.UID == viewModel.UID)
+        //            .Where(r => r.QuestionnaireID == viewModel.QuestionnaireID).FirstOrDefault();
+
+        //    if (quest == null)
+        //    {
+        //        quest = item.UID.AssertQuestionnaire(models, Naming.QuestionnaireGroup.身體心靈密碼);
+        //        viewModel.QuestionnaireID = quest.QuestionnaireID;
+        //    }
+
+        //    ViewBag.CurrentQuestionnaire = quest;
+
+        //    return View(profile.LoadInstance(models));
+        //}
+
         public ActionResult EditLearnerCharacter(LearnerCharacterViewModel viewModel)
         {
             ViewBag.ViewModel = viewModel;
@@ -610,25 +643,45 @@ namespace WebHome.Controllers
 
             UserProfile item = ViewBag.DataItem = models.GetTable<UserProfile>().Where(u => u.UID == viewModel.UID).First();
 
-            if (viewModel.ToPrepare != true)
-            {
-                return View("~/Views/ConsoleHome/PrepareLearnerCharacter.cshtml", profile.LoadInstance(models));
-            }
-
             QuestionnaireRequest quest = models.GetTable<QuestionnaireRequest>()
-                    .Where(r => r.UID == viewModel.UID)
+                    .Where(r => r.UID == item.UID)
                     .Where(r => r.QuestionnaireID == viewModel.QuestionnaireID).FirstOrDefault();
 
             if (quest == null)
             {
-                quest = item.UID.AssertQuestionnaire(models, Naming.QuestionnaireGroup.身體心靈密碼);
-                viewModel.QuestionnaireID = quest.QuestionnaireID;
+                quest = models.GetEffectiveQuestionnaireRequest(item).FirstOrDefault();
             }
 
+            if (quest == null)
+            {
+                quest = item.UID.AssertQuestionnaire(models, Naming.QuestionnaireGroup.身體心靈密碼, QuestionnaireRequest.PartIDEnum.PartA);
+            }
+
+            if (!quest.Status.HasValue)
+            {
+                ViewBag.ReferredTo = models.GetLastCompleteQuestionnaireRequest(item.UID, (Naming.QuestionnaireGroup)quest.GroupID);
+            }
+
+            viewModel.QuestionnaireID = quest.QuestionnaireID;
             ViewBag.CurrentQuestionnaire = quest;
 
-            return View(profile.LoadInstance(models));
+            if (quest.PartID.HasValue || quest.GroupID == (int)Naming.QuestionnaireGroup.滿意度問卷調查_2017)
+            {
+                viewModel.ToPrepare = true;
+            }
+            else
+            {
+                if (viewModel.ToPrepare == true)
+                {
+                    models.ExecuteCommand("delete PDQTask where QuestionnaireID = {0}", quest.QuestionnaireID);
+                    quest.PartID = (int)QuestionnaireRequest.PartIDEnum.PartA;
+                    models.SubmitChanges();
+                }
+            }
+
+            return View("~/Views/ConsoleHome/PrepareLearnerCharacter2021.cshtml", profile.LoadInstance(models));
         }
+
 
         public ActionResult EditPaymentForContract(CourseContractQueryViewModel viewModel)
         {

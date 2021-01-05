@@ -54,7 +54,7 @@
                                 <option value="請選擇">--請選擇個人行程類別--</option>
                                 <option @(_viewModel.Title == "會議" ? "selected" : null)>會議</option>
                                 @*<option @(_viewModel.Title=="團練" ? "selected": null)>團練</option>*@
-                                <option @(_viewModel.Title == "其他" ? "selected" : null)>其他</option>
+                                <option @(_viewModel.Title == null || _viewModel.Title == "其他" ? "selected" : null)>其他</option>
                             </select>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6 col-12">
@@ -64,7 +64,7 @@
                                     @{ Html.RenderPartial("~/Views/SystemInfo/BranchStoreOptions.cshtml", model: (int?)_viewModel.BranchID);}
 
                                     <option value="@(Naming.BranchName.璞真)" @(_viewModel.Place == Naming.BranchName.璞真.ToString() ? "selected" : null)>璞真</option>
-                                    <option value="@(Naming.BranchName.其他)" @(_viewModel.Place == Naming.BranchName.其他.ToString() ? "selected" : null)>其他</option>
+                                    <option value="@(Naming.BranchName.其他)" @((_viewModel.Place == null && !_viewModel.BranchID.HasValue) || _viewModel.Place == Naming.BranchName.其他.ToString() ? "selected" : null)>其他</option>
                                 </select>
                             </div>
                         </div>

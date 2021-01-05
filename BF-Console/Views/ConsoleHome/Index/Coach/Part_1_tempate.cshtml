@@ -109,7 +109,9 @@
         });
     }
 
+    var classTimeStart = (new Date()).toLocaleDateString();
     function showEventDate(date) {
+        classTimeStart = date;
         showLoading();
         $('#eventDate').load('@Html.Raw(Url.Action("ShowEventDate","ConsoleHome"))', { 'classTimeStart': date });
         $.post('@Html.Raw(Url.Action("CalendarEventItems", "ConsoleHome", new { KeyID = _model.UID.EncryptKey(), MasterVer = Naming.MasterVersion.Ver2020, }))', { 'dateFrom': date, 'dateTo': date }, function (data) {
@@ -126,6 +128,10 @@
             }
         });
 
+    }
+
+    function refreshEvents() {
+        showEventDate(classTimeStart);
     }
 
     function showLessonEventModal(keyID, event) {

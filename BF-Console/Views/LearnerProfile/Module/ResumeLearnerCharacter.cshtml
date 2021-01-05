@@ -16,6 +16,7 @@
     _modelState = (ModelStateDictionary)ViewBag.ModelState;
     models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
     _model = (QuestionnaireRequest)this.Model;
+    LearnerCharacterViewModel _viewModel = (LearnerCharacterViewModel)ViewBag.ViewModel;
 }
 <script>
     $(function () {
@@ -34,7 +35,7 @@
                 if ($global.resumeCharacter) {
                     $global.resumeCharacter();
                 } else {
-                    $('').launchDownload('@(Html.Raw(Url.Action("EditLearnerCharacter","ConsoleHome",new { _model.QuestionnaireID })))', { 'keyID': '@(_model.UID.EncryptKey())' });
+                    $('').launchDownload('@(Html.Raw(Url.Action("EditLearnerCharacter","ConsoleHome",new { _model.QuestionnaireID,_viewModel.PartID })))', { 'keyID': '@(_model.UID.EncryptKey())' });
                 }
             } else {
                 showLoading();

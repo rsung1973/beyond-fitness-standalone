@@ -46,7 +46,7 @@
                                             : _model.ServingCoach.ProfessionalLevel.LevelName)
             @(_model.UserRoleAuthorization.Any(r => r.RoleID == (int)Naming.RoleID.ViceManager) && (int)Naming.ProfessionalCategory.AFM != _model.ServingCoach.ProfessionalLevel.CategoryID.Value ? $" / {_model.ServingCoach.ProfessionalLevel.LevelName}" : null)
         </div>
-        <h5 class="number"><a href="achivement-coach.html">@(_model.ServingCoach.CoachCertificate.Count)</a><span class="font-6">證照</span></h5>
+        <h5 class="number">@(_model.ServingCoach.CoachCertificate.Count)<span class="font-6">證照</span></h5>
     </div>
 }
 

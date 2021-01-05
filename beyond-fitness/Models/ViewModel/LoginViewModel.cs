@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using WebHome.Models.DataEntity;
 using WebHome.Models.Locale;
 
 namespace WebHome.Models.ViewModel
@@ -743,6 +744,7 @@ namespace WebHome.Models.ViewModel
         public int? UID { get; set; }
         public int? QuestionnaireID { get; set; }
         public bool? ToPrepare { get; set; }
+        public QuestionnaireRequest.PartIDEnum? PartID { get; set; }
     }
 
 

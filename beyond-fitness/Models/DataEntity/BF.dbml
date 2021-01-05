@@ -538,6 +538,7 @@
       <Column Name="UID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="Status" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="RegisterID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PartID" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Association Name="QuestionnaireRequest_PDQTask" Member="PDQTask" ThisKey="QuestionnaireID" OtherKey="QuestionnaireID" Type="PDQTask" />
       <Association Name="QuestionnaireRequest_QuestionnaireCoachBypass" Member="QuestionnaireCoachBypass" ThisKey="QuestionnaireID" OtherKey="QuestionnaireID" Type="QuestionnaireCoachBypass" Cardinality="One" />
       <Association Name="LevelExpression_QuestionnaireRequest" Member="LevelExpression" ThisKey="Status" OtherKey="LevelID" Type="LevelExpression" IsForeignKey="true" />

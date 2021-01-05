@@ -1,0 +1,65 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Newtonsoft.Json
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    UserProfile _model;
+    LearnerCharacterViewModel _viewModel;
+
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    _model = (UserProfile)this.Model;
+    _viewModel = (LearnerCharacterViewModel)ViewBag.ViewModel;
+    UserProfile _learner = (UserProfile)ViewBag.DataItem;
+}
+<li data-target="step-0">
+    <a href="javascript:void(0);">
+        <span class="number">0</span>
+        <span class="desc">
+            <label>START</label>
+        </span>
+    </a>
+</li>
+<li data-target="step-1">
+    <a href="javascript:void(0);">
+        <span class="number">1</span>
+        <span class="desc">
+            <img src="images/questionnaire/stage1.png">
+            <label>身體密碼</label>
+        </span>
+    </a>
+</li>
+<li data-target="step-2">
+    <a href="javascript:void(0);">
+        <span class="number">2</span>
+        <span class="desc">
+            <img src="images/questionnaire/stage2.png">
+            <label>心靈密碼</label>
+        </span>
+    </a>
+</li>
+<li data-target="step-3">
+    <a href="javascript:void(0);">
+        <span class="number">3</span>
+        <span class="desc">
+            <img src="images/questionnaire/stage3.png">
+            <label>數據分析</label>
+        </span>
+    </a>
+</li>
+<li data-target="step-4">
+    <a href="javascript:void(0);">
+        <span class="number">4</span>
+        <span class="desc">
+            <img src="images/questionnaire/stage4.png">
+            <label>週期目標</label>
+        </span>
+    </a>
+</li>

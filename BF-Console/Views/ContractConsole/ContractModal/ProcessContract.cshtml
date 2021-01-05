@@ -15,12 +15,10 @@
     String _dialogID = $"contractProcess{DateTime.Now.Ticks}";
     UserProfile _profile;
 
-
-
     _modelState = (ModelStateDictionary)ViewBag.ModelState;
     models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
     _model = (CourseContract)this.Model;
-    _profile = Context.GetUser();
+    _profile = Context.GetUser().LoadInstance(models);
 }
 <div class="modal fade" id="@(_dialogID)" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-sm" role="document">
@@ -46,9 +44,9 @@
                         {
                             <a href="@Html.Raw(Url.Action("SignCourseContract", "ConsoleHome", new { KeyID = _model.ContractID.EncryptKey() }))" class="list-group-item">主管審核</a>
                         }
-                        else if (_model.IsPayable(models) 
+                        else if (_model.IsPayable(models)
                             && (_profile.IsAssistant() || _profile.IsAuthorizedSysAdmin() || _profile.IsServitor()
-                                || (_profile.IsCoach() && models.GetTable<CoachWorkplace>().Any(c=>c.CoachID==_profile.UID && c.BranchID==_model.CourseContractExtension.BranchID))))
+                                || (_profile.IsCoach() && models.GetTable<CoachWorkplace>().Any(c => c.CoachID == _profile.UID && c.BranchID == _model.CourseContractExtension.BranchID))))
                         {
                             <a href="@Html.Raw(Url.Action("EditPaymentForContract", "ConsoleHome", new { KeyID = _model.ContractID.EncryptKey() }))" class="list-group-item">新增收款</a>
                         }
@@ -61,7 +59,10 @@
 
                         if (_model.Status > (int)Naming.CourseContractStatus.待審核 && _model.ContractID > 1045)
                         {
-                            <a href="@Html.Raw(Url.Action("GetContractPdf", "CourseContract", new { KeyID = _model.ContractID.EncryptKey() }))" target="_blank" class="list-group-item">電子合約</a>
+                            if (!(_profile.IsOfficer() && _profile.UserRoleAuthorization.Count() == 1))
+                            {
+                                <a href="@Html.Raw(Url.Action("GetContractPdf", "CourseContract", new { KeyID = _model.ContractID.EncryptKey() }))" target="_blank" class="list-group-item">電子合約</a>
+                            }
                         }
                     }
                     else
@@ -79,7 +80,10 @@
                         }
                         if (_model.Status == (int)Naming.CourseContractStatus.已生效)
                         {
-                            <a href="@Html.Raw(Url.Action("GetContractAmendmentPdf","CourseContract",new { KeyID = _model.ContractID.EncryptKey() }))" target="_blank" class="list-group-item">電子合約</a>
+                            if (!(_profile.IsOfficer() && _profile.UserRoleAuthorization.Count() == 1))
+                            {
+                                <a href="@Html.Raw(Url.Action("GetContractAmendmentPdf","CourseContract",new { KeyID = _model.ContractID.EncryptKey() }))" target="_blank" class="list-group-item">電子合約</a>
+                            }
                         }
                     }
                 </div>

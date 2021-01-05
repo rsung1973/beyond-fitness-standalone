@@ -26,11 +26,11 @@
     if (_profile.IsAssistant() || _profile.IsOfficer() || _profile.IsServitor())
     {
     }
-    else if (_profile.IsManager() || _profile.IsViceManager())
-    {
-        branchID = models.GetTable<BranchStore>().Where(b => b.ManagerID == _profile.UID || b.ViceManagerID == _profile.UID)
-                    .Select(b => b.BranchID).FirstOrDefault();
-    }
+    //else if (_profile.IsManager() || _profile.IsViceManager())
+    //{
+    //    branchID = models.GetTable<BranchStore>().Where(b => b.ManagerID == _profile.UID || b.ViceManagerID == _profile.UID)
+    //                .Select(b => b.BranchID).FirstOrDefault();
+    //}
     else
     {
         relatedID = _profile.UID;

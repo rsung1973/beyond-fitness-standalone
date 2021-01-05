@@ -286,7 +286,7 @@
             alert('請先設定印表機IP!!');
             return;
         }
-        <%  if(WebHome.Properties.Settings.Default.UseSSL)
+        <%  if(false && WebHome.Properties.Settings.Default.UseSSL)
             {  %>
         $('<form>').launchDownload('<%= "http://210.65.88.44/WebInvoice" + Url.Action("LoadInvoiceImageByUID", "Invoice",new { _profile.UID,t = DateTime.Now.Ticks }) %>', { 'invoiceID': invoiceID, 'printerIP': printerIP }, '_blank');
         <%  }
@@ -304,7 +304,7 @@
             alert('請先設定印表機IP!!');
             return;
         }
-        <%  if(WebHome.Properties.Settings.Default.UseSSL)
+        <%  if(false && WebHome.Properties.Settings.Default.UseSSL)
             {  %>
         $('<form>').launchDownload('<%= "http://210.65.88.44/WebInvoice" + Url.Action("LoadInvoiceImageByUID", "Invoice",new { _profile.UID,t = DateTime.Now.Ticks }) %>', { 'invoiceID': invoiceID, 'printerIP': printerIP }, '_blank');
         <%  }
@@ -321,7 +321,7 @@
             alert('請先設定印表機IP!!');
             return;
         }
-        <%  if(WebHome.Properties.Settings.Default.UseSSL)
+        <%  if(false && WebHome.Properties.Settings.Default.UseSSL)
             {  %>
         $('<form>').launchDownload('<%= "http://210.65.88.44/WebInvoice" + Url.Action("PrintAllowanceImageByUID", "Invoice",new { _profile.UID,t = DateTime.Now.Ticks }) %>', { 'allowanceID': allowanceID, 'printerIP': printerIP }, '_blank');
         <%  }

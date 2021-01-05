@@ -30,13 +30,24 @@ namespace WebHome.Helper
 
                 foreach (var r in item.GroupingLesson.RegisterLesson)
                 {
-                    if (groupID == Naming.QuestionnaireGroup.身體心靈密碼)
+                    //if (groupID == Naming.QuestionnaireGroup.身體心靈密碼)
+                    //{
+                    //    r.UID.CheckCurrentQuestionnaireRequest(models, Naming.QuestionnaireGroup.身體心靈密碼);
+                    //}
+                    //else
+                    //{
+                    //    models.CheckLearnerQuestionnaireRequest(r);
+                    //}
+                    if (models.GetTable<QuestionnaireRequest>()
+                        .Where(q => q.UID == r.UID)
+                        .Where(q => q.GroupID == (int)Naming.QuestionnaireGroup.身體心靈密碼)
+                        .Any())
                     {
-                        r.UID.CheckCurrentQuestionnaireRequest(models, Naming.QuestionnaireGroup.身體心靈密碼);
+                        r.UID.CheckCurrentQuestionnaireRequest(models, Naming.QuestionnaireGroup.滿意度問卷調查_2017);
                     }
                     else
                     {
-                        models.CheckLearnerQuestionnaireRequest(r);
+                        r.UID.CheckCurrentQuestionnaireRequest(models, Naming.QuestionnaireGroup.身體心靈密碼);
                     }
                 }
             }
@@ -129,13 +140,11 @@ namespace WebHome.Helper
             return null;
         }
 
-        public static QuestionnaireRequest AssertQuestionnaire<TEntity>(this int learnerID, ModelSource<TEntity> models, Naming.QuestionnaireGroup groupID = Naming.QuestionnaireGroup.滿意度問卷調查_2017) 
+        public static QuestionnaireRequest AssertQuestionnaire<TEntity>(this int learnerID, ModelSource<TEntity> models, Naming.QuestionnaireGroup groupID = Naming.QuestionnaireGroup.滿意度問卷調查_2017,QuestionnaireRequest.PartIDEnum? partID = null) 
             where TEntity : class, new()
         {
-            var item = models.GetTable<QuestionnaireRequest>().Where(q => q.UID == learnerID)
-                    .Where(q => q.GroupID == (int)groupID)
-                    .Where(q => !q.Status.HasValue || q.Status == (int)Naming.IncommingMessageStatus.未讀)
-                    .FirstOrDefault();
+            var item = models.GetEffectiveQuestionnaireRequest(learnerID, groupID)
+                        .FirstOrDefault();
 
             if (item == null)
             {
@@ -143,7 +152,8 @@ namespace WebHome.Helper
                 {
                     GroupID = (int)groupID,
                     RequestDate = DateTime.Now,
-                    UID = learnerID
+                    UID = learnerID,
+                    PartID = (int?)partID,
                 };
                 models.GetTable<QuestionnaireRequest>().InsertOnSubmit(item);
                 models.SubmitChanges();
@@ -177,9 +187,10 @@ namespace WebHome.Helper
                 PI = PI.Where(l => l.ClassTime >= item.RequestDate);
             }
 
-            if (PT.Count() + PI.Count() >= 12)
+            //if (PT.Count() + PI.Count() >= 12)
+            if (PT.Count() >= 15)
             {
-                return learnerID.AssertQuestionnaire(models, groupID);
+                return learnerID.AssertQuestionnaire(models, groupID, QuestionnaireRequest.PartIDEnum.PartB);
             }
 
             return null;
@@ -684,15 +695,37 @@ namespace WebHome.Helper
                 .Where(q => !q.Status.HasValue);
         }
 
-        public static IQueryable<QuestionnaireRequest> GetEffectiveQuestionnaireRequest<TEntity>(this ModelSource<TEntity> models, UserProfile profile,Naming.QuestionnaireGroup groupID)
+        public static IQueryable<QuestionnaireRequest> GetEffectiveQuestionnaireRequest<TEntity>(this ModelSource<TEntity> models, UserProfile profile, Naming.QuestionnaireGroup? groupID = null)
+            where TEntity : class, new()
+        {
+            return models.GetEffectiveQuestionnaireRequest(profile.UID, groupID);
+        }
+
+        public static IQueryable<QuestionnaireRequest> GetEffectiveQuestionnaireRequest<TEntity>(this ModelSource<TEntity> models, int uid, Naming.QuestionnaireGroup? groupID = null)
+            where TEntity : class, new()
+        {
+            var items = models.GetTable<QuestionnaireRequest>()
+                .Where(q => q.UID == uid)
+                .Where(q => !q.Status.HasValue
+                    || q.Status == (int)Naming.IncommingMessageStatus.未讀);
+            if (groupID.HasValue)
+            {
+                items = items.Where(q => q.GroupID == (int?)groupID);
+            }
+            return items;
+        }
+
+        public static QuestionnaireRequest GetLastCompleteQuestionnaireRequest<TEntity>(this ModelSource<TEntity> models, int uid, Naming.QuestionnaireGroup groupID)
             where TEntity : class, new()
         {
             return models.GetTable<QuestionnaireRequest>()
-                .Where(q => q.UID == profile.UID)
+                .Where(q => q.UID == uid)
                 .Where(q => q.GroupID == (int)groupID)
-                .Where(q => !q.Status.HasValue 
-                    || q.Status == (int)Naming.IncommingMessageStatus.未讀);
+                .Where(q => q.Status == (int)Naming.IncommingMessageStatus.已讀)
+                .OrderByDescending(q => q.QuestionnaireID)
+                .FirstOrDefault();
         }
+
 
         public static IQueryable<QuestionnaireRequest> GetEffectiveQuestionnaireRequest<TEntity>(this LessonTime item, ModelSource<TEntity> models, Naming.QuestionnaireGroup group)
             where TEntity : class, new()
@@ -1601,6 +1634,13 @@ namespace WebHome.Helper
             where TEntity : class, new()
         {
             return models.FilterByBranchStoreManager(items, agentID);
+        }
+
+        public static IQueryable<CourseContract> FilterByLearnerMember<TEntity>(this IQueryable<CourseContract> items,ModelSource<TEntity> models,  int? memberID)
+            where TEntity : class, new()
+        {
+            return items.Join(models.GetTable<CourseContractMember>().Where(m => m.UID == memberID),
+                c => c.ContractID, p => p.ContractID, (c, p) => c);
         }
 
         public static IQueryable<CourseContract> GetContractToAllowByAgent<TEntity>(this ModelSource<TEntity> models, UserProfile agent)

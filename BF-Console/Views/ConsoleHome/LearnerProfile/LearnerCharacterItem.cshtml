@@ -1,0 +1,138 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    QuestionnaireRequest _model;
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = (QuestionnaireRequest)this.Model;
+
+    String _viewID = $"_Q_{_model.QuestionnaireID}";
+
+}
+
+<div class="panel panel-primary">
+    <div class="panel-heading" role="tab" id="@($"heading{_viewID}")">
+        <h4 class="panel-title">
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion_13" href="#@($"collapse{_viewID}")" aria-expanded="false" aria-controls="@($"collapse{_viewID}")">
+                @($"{_model.PDQTask.OrderByDescending(t => t.TaskID).FirstOrDefault()?.TaskDate ?? _model.RequestDate:yyyy/MM/dd}")
+                @{
+                    switch ((Naming.IncommingMessageStatus?)_model.Status)
+                    {
+                        case Naming.IncommingMessageStatus.已讀:
+                        case Naming.IncommingMessageStatus.教練代答:
+                            <span class="col-blue">（已檢測）</span>
+                            break;
+                        case Naming.IncommingMessageStatus.拒答:
+                            <text>（我超強，不用瞭解學生）</text>
+                            break;
+                        default:
+                            <span class="col-pink">（待檢測）</span>
+                            break;
+                    }
+                }
+            </a>
+        </h4>
+    </div>
+    @if (_model.Status != (int)Naming.IncommingMessageStatus.拒答)
+    {
+        <div id="@($"collapse{_viewID}")" class="panel-collapse collapse" role="tabpanel" aria-labelledby="@($"heading{_viewID}")">
+            <div class="panel-body">
+                <ul class="list-style1">
+                    @{
+                        foreach (var item in _model.PDQTask
+                            .Where(t => t.PDQQuestion.QuestionNo <= 10))
+                        {
+                            <li>
+                                @Html.Raw(item.PDQQuestion.Question)
+                                <span class="col-green">
+                                    @{
+                                        var ans = item.PDQTaskItem.Select(t => t.PDQSuggestion.Suggestion).ToList();
+                                        ans.Add(item.PDQSuggestion?.Suggestion);
+                                        ans.Add(item.PDQAnswer);
+                                    }
+                                    @(String.Join("、", ans.Where(s => s != null)))
+                                </span>
+                            </li>
+                        }
+                    }
+                    @{
+                        IQueryable<PDQTask> taskItems = models.GetTable<PDQTask>()
+                                                            .Where(t => t.QuestionnaireID == _model.QuestionnaireID);
+                        if (_model.GroupID == (int)Naming.QuestionnaireGroup.身體心靈密碼)
+                        {
+                            if (!_model.PartID.HasValue)
+                            {
+                                var tasks = _model.PDQTask
+                                            .Where(t => t.PDQQuestion.GroupID == (int)Naming.QuestionnaireGroup.身體心靈密碼)
+                                            .Where(t => t.PDQQuestion.QuestionNo > 10)
+                                            .Where(t => t.PDQQuestion.QuestionNo <= 20);
+                                if (tasks.Any())
+                                {
+                                    <li>
+                                        希望增加訓練時間的百分比<small>（最多選擇兩項Stage）</small>
+                                        <span class="col-green">
+                                            @{
+
+                                                List<string> ansItems = new List<string>();
+                                                foreach (var item in tasks)
+                                                {
+                                                    ansItems.AddRange(item.PDQTaskItem.Select(t => t.PDQSuggestion.Suggestion));
+                                                    ansItems.Add(item.PDQSuggestion?.Suggestion);
+                                                    ansItems.Add(item.PDQAnswer);
+                                                }
+                                            }
+                                            @(String.Join("、", ansItems.Where(s => s != null)))
+                                        </span>
+                                    </li>
+                                }
+
+                                taskItems = taskItems
+                                        .Where(t => t.PDQQuestion.QuestionNo > 20)
+                                        .Where(t => t.PDQQuestion.QuestionNo < 30);
+                            }
+                            else if (_model.PartID == (int)QuestionnaireRequest.PartIDEnum.PartA)
+                            {
+                                taskItems = taskItems
+                                            .Where(t => t.PDQQuestion.QuestionNo > 30)
+                                            .Where(t => t.PDQQuestion.QuestionNo < 40);
+
+                            }
+                            else
+                            {
+                                taskItems = taskItems
+                                            .Where(t => false);
+
+                            }
+
+                            foreach (var item in taskItems)
+                            {
+                                <li>
+                                    @Html.Raw(item.PDQQuestion.Question)
+                                    <span class="col-green">
+                                        @{
+                                            var ans = item.PDQTaskItem.Select(t => t.PDQSuggestion.Suggestion).ToList();
+                                            ans.Add(item.PDQSuggestion?.Suggestion);
+                                            ans.Add(item.PDQAnswer);
+                                        }
+                                        @(String.Join("、", ans.Where(s => s != null)))
+                                    </span>
+                                </li>
+                            }
+                        }
+                    }
+                </ul>
+            </div>
+        </div>
+    }
+</div>

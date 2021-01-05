@@ -14071,6 +14071,8 @@ namespace WebHome.Models.DataEntity
 		
 		private System.Nullable<int> _RegisterID;
 		
+		private System.Nullable<int> _PartID;
+		
 		private EntitySet<PDQTask> _PDQTask;
 		
 		private EntityRef<QuestionnaireCoachBypass> _QuestionnaireCoachBypass;
@@ -14099,6 +14101,8 @@ namespace WebHome.Models.DataEntity
     partial void OnStatusChanged();
     partial void OnRegisterIDChanging(System.Nullable<int> value);
     partial void OnRegisterIDChanged();
+    partial void OnPartIDChanging(System.Nullable<int> value);
+    partial void OnPartIDChanged();
     #endregion
 		
 		public QuestionnaireRequest()
@@ -14244,6 +14248,26 @@ namespace WebHome.Models.DataEntity
 					this._RegisterID = value;
 					this.SendPropertyChanged("RegisterID");
 					this.OnRegisterIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PartID", DbType="Int")]
+		public System.Nullable<int> PartID
+		{
+			get
+			{
+				return this._PartID;
+			}
+			set
+			{
+				if ((this._PartID != value))
+				{
+					this.OnPartIDChanging(value);
+					this.SendPropertyChanging();
+					this._PartID = value;
+					this.SendPropertyChanged("PartID");
+					this.OnPartIDChanged();
 				}
 			}
 		}

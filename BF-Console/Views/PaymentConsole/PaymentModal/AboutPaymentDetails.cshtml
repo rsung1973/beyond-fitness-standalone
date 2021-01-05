@@ -175,7 +175,7 @@
                                                         <div class="list_tr">
                                                             <div class="list_td hd">發票號碼</div>
                                                             <div class="list_td rt">
-                                                                @if (invoice.InvoiceID != null)
+                                                                @if (invoice != null)
                                                                 {
                                                                     <text>@(invoice.TrackCode)@(invoice.No)</text>
                                                                 }
@@ -315,6 +315,25 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="panel">
+                            <div class="panel-heading" role="tab" id="headingDivided">
+                                <h4 class="panel-title">
+                                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordionDetail_payment" href="#collapseDetail_divided" aria-expanded="true" aria-controls="collapseDetail_divided">
+                                        <i class="material-icons">subject</i> 分潤詳細資訊
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseDetail_divided" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingDivided">
+                                <div class="panel-body no-padding patients-list">
+                                    <div class="table-responsive">
+                                        @{
+                                            var items = models.GetTable<TuitionAchievement>().Where(t => t.InstallmentID == _model.PaymentID);
+                                            Html.RenderPartial("~/Views/PaymentConsole/Module/AchievementShareList.cshtml", items);
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         @if (contract != null)
                         {
                             <div class="panel">
@@ -336,15 +355,15 @@
                                             }
                                         </ul>
                                         @*<ul class="mb_colsble open">
-                                    <li class="tit">更多資訊</li>
-                                    <li>
-                                        <ul class="mb_list xl-khaki">
-                                            @{
-                                                Html.RenderPartial("~/Views/ContractConsole/Module/ContractPayoff.cshtml", contract);
-                                            }
-                                        </ul>
-                                    </li>
-                                </ul>*@
+                            <li class="tit">更多資訊</li>
+                            <li>
+                                <ul class="mb_list xl-khaki">
+                                    @{
+                                        Html.RenderPartial("~/Views/ContractConsole/Module/ContractPayoff.cshtml", contract);
+                                    }
+                                </ul>
+                            </li>
+                        </ul>*@
                                     </div>
                                 </div>
                             </div>

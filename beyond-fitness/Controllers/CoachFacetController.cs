@@ -869,9 +869,15 @@ namespace WebHome.Controllers
             if (viewModel.BranchID.HasValue)
             {
                 if ((int)viewModel.BranchID <= (int)Naming.BranchName.東門)
+                {
                     item.BranchID = (int)viewModel.BranchID;
+                    item.Place = null;
+                }
                 else
+                {
+                    item.BranchID = null;
                     item.Place = viewModel.BranchID.ToString();
+                }
             }
 
             models.SubmitChanges();

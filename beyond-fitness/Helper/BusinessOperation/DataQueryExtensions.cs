@@ -305,6 +305,12 @@ namespace WebHome.Helper.BusinessOperation
                 items = items.FilterByUnpaidContract(models);
             }
 
+            if(viewModel.MemberID.HasValue)
+            {
+                hasConditon = true;
+                items = items.Where(c => c.CourseContractMember.Any(m => m.UID == viewModel.MemberID));
+            }
+
             viewModel.Subject = viewModel.Subject.GetEfficientString();
             if (viewModel.Subject != null)
             {
@@ -1097,6 +1103,62 @@ namespace WebHome.Helper.BusinessOperation
             }
 
             return items;
+        }
+
+        public static IQueryable<CourseContract> RemainedLessonCount<TEntity>(this UserProfile profile, ModelSource<TEntity> models, out int remainedCount, bool onlyAttended = false)
+            where TEntity : class, new()
+        {
+            var items = models.GetTable<RegisterLesson>()
+                .Where(l => l.LessonPriceType.Status != (int)Naming.DocumentLevelDefinition.自主訓練)
+                .Where(r => r.UID == profile.UID)
+                .OrderByDescending(r => r.RegisterID);
+            var currentLessons = items.Where(i => i.Attended != (int)Naming.LessonStatus.課程結束);
+
+            var contractItems = currentLessons.Join(models.GetTable<RegisterLessonContract>(), r => r.RegisterID, c => c.RegisterID, (r, c) => c)
+                            .Join(models.GetTable<CourseContract>(), c => c.ContractID, n => n.ContractID, (c, n) => n);
+
+            var familyLessons = contractItems.Where(c => c.CourseContractType.ContractCode == "CFA")
+                            .Join(models.GetTable<RegisterLessonContract>(), c => c.ContractID, r => r.ContractID, (c, r) => r)
+                            .Join(models.GetTable<RegisterLesson>(), c => c.RegisterID, r => r.RegisterID, (c, r) => r);
+
+            int totalLessons = currentLessons.Sum(c => (int?)c.Lessons) ?? 0;
+            int attendedLessons = currentLessons.Sum(c => (int?)c.AttendedLessons) ?? 0;
+            int attendance;
+            if (onlyAttended)
+            {
+                attendance = currentLessons.Sum(c => (int?)c.GroupingLesson.LessonTime.Count(l => l.LessonAttendance != null)) ?? 0;
+            }
+            else
+            {
+                attendance = currentLessons.Sum(c => (int?)c.GroupingLesson.LessonTime.Count()) ?? 0;
+            }
+
+            if (familyLessons.Count() > 0)
+            {
+                var exceptFamily = currentLessons.Where(r => r.RegisterLessonContract == null || r.RegisterLessonContract.CourseContract.CourseContractType.ContractCode != "CFA");
+                if (onlyAttended)
+                {
+                    remainedCount = totalLessons
+                                - (exceptFamily.Sum(c => c.AttendedLessons) ?? 0)
+                                - (exceptFamily.Where(c => c.RegisterGroupID.HasValue).Sum(c => (int?)c.GroupingLesson.LessonTime.Count(l => l.LessonAttendance != null)) ?? 0)
+                                - (familyLessons.Sum(c => c.AttendedLessons) ?? 0)
+                                - (familyLessons.Where(c => c.RegisterGroupID.HasValue).Sum(c => (int?)c.GroupingLesson.LessonTime.Count(l => l.LessonAttendance != null)) ?? 0);
+                }
+                else
+                {
+                    remainedCount = totalLessons
+                                - (exceptFamily.Sum(c => c.AttendedLessons) ?? 0)
+                                - (exceptFamily.Where(c => c.RegisterGroupID.HasValue).Sum(c => (int?)c.GroupingLesson.LessonTime.Count()) ?? 0)
+                                - (familyLessons.Sum(c => c.AttendedLessons) ?? 0)
+                                - (familyLessons.Where(c => c.RegisterGroupID.HasValue).Sum(c => (int?)c.GroupingLesson.LessonTime.Count()) ?? 0);
+                }
+            }
+            else
+            {
+                remainedCount = totalLessons - attendedLessons - attendance;
+            }
+
+            return contractItems;
         }
 
     }

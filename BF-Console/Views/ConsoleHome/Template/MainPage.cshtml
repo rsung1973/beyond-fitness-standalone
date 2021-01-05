@@ -50,8 +50,8 @@
 
     @RenderSection("CustomHeader", false)
     <!-- Custom Css -->
-    <link rel="stylesheet" href="css/main.css?1.8">
-    <link rel="stylesheet" href="css/color_skins.css?1.1">
+    <link rel="stylesheet" href="css/main.css?2.0">
+    <link rel="stylesheet" href="css/color_skins.css?2.0">
     <!-- Jquery Core Js -->
     <script src="bundles/libscripts.bundle.js"></script>
     <!-- Lib Scripts Plugin Js -->
@@ -79,7 +79,7 @@
     <script src="plugins/jquery-form/jquery-form.min.js"></script>
     <script src="js/common.js?1.6"></script>
 </head>
-@{ 
+@{
     HttpCookie cookie = Request.Cookies["theme"];
 }
 <body class="theme-darkteal menu_darkteal @(cookie?.Value)">
@@ -171,13 +171,13 @@
                                         </a>
                                     </li>
                                     @*<li>
-                                        <a href="javascript:void(0);">
-                                            <div class="icon-circle bg-amber"><i class="zmdi zmdi-brightness-auto"></i></div>
-                                            <div class="menu-info">
-                                                <h4>智慧選色</h4>
-                                            </div>
-                                        </a>
-                                    </li>*@
+                                            <a href="javascript:void(0);">
+                                                <div class="icon-circle bg-amber"><i class="zmdi zmdi-brightness-auto"></i></div>
+                                                <div class="menu-info">
+                                                    <h4>智慧選色</h4>
+                                                </div>
+                                            </a>
+                                        </li>*@
                                 </ul>
                                 <div class="slimScrollBar" style="background: rgba(0, 0, 0, 0.2); width: 3px; position: absolute; top: 0px; opacity: 0.4; display: block; border-radius: 3px; z-index: 99; right: 1px;"></div>
                                 <div class="slimScrollRail" style="width: 3px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 0px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div>
@@ -369,7 +369,7 @@
         }
 
     </script>
-    @if(ViewBag.Message!=null)
+    @if (ViewBag.Message != null)
     {
         <script>
             $(function () {

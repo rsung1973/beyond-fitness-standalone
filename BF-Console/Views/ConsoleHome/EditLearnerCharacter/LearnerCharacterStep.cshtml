@@ -1,0 +1,31 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Newtonsoft.Json
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    UserProfile _model;
+    LearnerCharacterViewModel _viewModel;
+
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    _model = (UserProfile)this.Model;
+    _viewModel = (LearnerCharacterViewModel)ViewBag.ViewModel;
+    UserProfile _learner = (UserProfile)ViewBag.DataItem;
+    QuestionnaireRequest questionnaire = ViewBag.CurrentQuestionnaire as QuestionnaireRequest;
+}
+
+@if (questionnaire.GroupID == (int)Naming.QuestionnaireGroup.身體心靈密碼)
+{
+    Html.RenderPartial("~/Views/ConsoleHome/EditLearnerCharacter/LearnerCharacterStepPartA.cshtml");
+}
+else
+{
+    Html.RenderPartial("~/Views/ConsoleHome/EditLearnerCharacter/LearnerCharacterStepPartB.cshtml");
+}
