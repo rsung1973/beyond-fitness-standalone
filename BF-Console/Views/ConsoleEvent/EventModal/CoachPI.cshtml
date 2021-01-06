@@ -67,7 +67,7 @@
                     @*@{ Html.RenderPartial("~/Views/ConsoleEvent/Module/LessonEmphasis.cshtml", _model);}
                     *@
                     <div class="col-12 align-left">
-                        <p class="col-red">課表重點：@((_model.TrainingPlan.FirstOrDefault()?.TrainingExecution.Emphasis) ?? "重點一片空 ...")</p>
+                        <p class="col-red">課表重點：@((_model.TrainingPlan.FirstOrDefault()?.TrainingExecution.Emphasis) ?? "Unfinished")</p>
                     </div>
                 </div>
             </div>

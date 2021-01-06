@@ -292,7 +292,7 @@ namespace WebHome.Controllers
             viewModel.Emphasis = viewModel.Emphasis.GetEfficientString();
             if(viewModel.Emphasis==null)
             {
-                return Json(new { result = false, message = "重點一片空？!" });
+                return Json(new { result = false, message = "Unfinished？!" });
             }
             else if (viewModel.Emphasis.Length > 20)
             {

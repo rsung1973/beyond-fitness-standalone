@@ -62,7 +62,7 @@
     <a class="list-group-item list-group-item-action flex-column align-items-start">
         <div class="row clearfix w-100">
             <div class="col-12">
-                <h5 class="title">未完成目標</h5>
+                <h5 class="title">未完成目標<small class="col-red">(與下方近期目標合計最多3個)</small></h5>
                 <ul class="list-unstyled feeds_widget">
                     @foreach (var item in models.GetTable<PersonalExercisePurposeItem>()
                             .Where(p => p.UID == _learner.UID)
@@ -86,7 +86,7 @@
     </a>
     <div class="list-group-item list-group-item-action flex-column align-items-start">
         <div class="d-flex w-100 justify-content-between">
-            <h5 class="title">近期目標-1</h5>
+            <h5 class="title">近期目標-1<small class="col-red">(與上方未完成目標合計最多3個)</small></h5>
         </div>
         <div class="form-group p-t-0">
             <textarea rows="1" cols="100" class="form-control" placeholder="請輸入任何您想輸入10個中文字內的內容..." name="PurposeItem"></textarea>
@@ -94,7 +94,7 @@
     </div>
     <div class="list-group-item list-group-item-action flex-column align-items-start">
         <div class="d-flex w-100 justify-content-between">
-            <h5 class="title">近期目標-2</h5>
+            <h5 class="title">近期目標-2<small class="col-red">(與上方未完成目標合計最多3個)</small></h5>
         </div>
         <div class="form-group p-t-0">
             <textarea rows="1" cols="100" class="form-control" placeholder="請輸入任何您想輸入10個中文字內的內容..." name="PurposeItem"></textarea>
@@ -102,7 +102,7 @@
     </div>
     <div class="list-group-item list-group-item-action flex-column align-items-start">
         <div class="d-flex w-100 justify-content-between">
-            <h5 class="title">近期目標-3</h5>
+            <h5 class="title">近期目標-3<small class="col-red">(與上方未完成目標合計最多3個)</small></h5>
         </div>
         <div class="form-group p-t-0">
             <textarea rows="1" cols="100" class="form-control" placeholder="請輸入任何您想輸入10個中文字內的內容..." name="PurposeItem"></textarea>

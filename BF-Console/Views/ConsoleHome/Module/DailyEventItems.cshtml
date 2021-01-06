@@ -38,7 +38,7 @@
                                     : item.GroupingLesson.RegisterLesson.Where(r => r.MasterRegistration == true)
                                         .Select(r => r.UserProfile).FirstOrDefault()?.RealName + "發起")
                 </h6>
-                <p class="col-blush">@((item.TrainingPlan.FirstOrDefault()?.TrainingExecution.Emphasis) ?? "重點一片空，學生要來踹你了...")</p>
+                <p class="col-blush">@((item.TrainingPlan.FirstOrDefault()?.TrainingExecution.Emphasis) ?? "Unfinished")</p>
                 <address><i class="zmdi zmdi-pin"></i>@(item.BranchID.HasValue ? item.BranchStore?.BranchName : item.Place)</address>
             </div>
         </div>
@@ -61,7 +61,7 @@
                     @{ Html.RenderPartial("~/Views/ConsoleHome/Module/RenderLessonCheck.cshtml", item);}
 
                 </h6>
-                <p class="col-blush">@((item.TrainingPlan.FirstOrDefault()?.TrainingExecution.Emphasis) ?? "重點一片空，學生要來踹你了...")</p>
+                <p class="col-blush">@((item.TrainingPlan.FirstOrDefault()?.TrainingExecution.Emphasis) ?? "Unfinished")</p>
                 <address><i class="zmdi zmdi-pin"></i>@(item.BranchStore.BranchName)</address>
             </div>
         </div>
@@ -84,7 +84,7 @@
                     @{ Html.RenderPartial("~/Views/ConsoleHome/Module/RenderLessonCheck.cshtml", item);}
 
                 </h6>
-                <p class="col-blush">@((item.TrainingPlan.FirstOrDefault()?.TrainingExecution.Emphasis) ?? "重點一片空，學生要來踹你了...")</p>
+                <p class="col-blush">@((item.TrainingPlan.FirstOrDefault()?.TrainingExecution.Emphasis) ?? "Unfinished")</p>
                 <address><i class="zmdi zmdi-pin"></i>@(item.BranchStore.BranchName)</address>
             </div>
         </div>
@@ -107,7 +107,7 @@
                     @{ Html.RenderPartial("~/Views/ConsoleHome/Module/RenderLessonCheck.cshtml", item);}
 
                 </h6>
-                <p class="col-blush">@((item.TrainingPlan.FirstOrDefault()?.TrainingExecution.Emphasis) ?? "重點一片空，學生要來踹你了...")</p>
+                <p class="col-blush">@((item.TrainingPlan.FirstOrDefault()?.TrainingExecution.Emphasis) ?? "Unfinished")</p>
                 <address><i class="zmdi zmdi-pin"></i></address>
             </div>
         </div>
@@ -129,7 +129,7 @@
                     @{ Html.RenderPartial("~/Views/ConsoleHome/Module/RenderLessonCheck.cshtml", item);}
 
                 </h6>
-                <p class="col-blush">@((item.TrainingPlan.FirstOrDefault()?.TrainingExecution.Emphasis) ?? "重點一片空，學生要來踹你了...")</p>
+                <p class="col-blush">@((item.TrainingPlan.FirstOrDefault()?.TrainingExecution.Emphasis) ?? "Unfinished")</p>
                 <address><i class="zmdi zmdi-pin"></i>@(item.BranchStore.BranchName)</address>
             </div>
         </div>

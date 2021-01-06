@@ -39,7 +39,7 @@
                     <address><i class="zmdi zmdi-pin"></i>@(item.BranchID.HasValue ? item.BranchStore?.BranchName : item.Place)</address>
                     @{ Html.RenderPartial("~/Views/ConsoleHome/Module/RenderLessonCheck.cshtml", item);}
                 </h6>
-                <p class="col-blush">@((item.TrainingPlan.FirstOrDefault()?.TrainingExecution.Emphasis) ?? "重點一片空，學生要來踹你了...")</p>
+                <p class="col-blush">@((item.TrainingPlan.FirstOrDefault()?.TrainingExecution.Emphasis) ?? "Unfinished")</p>
             </div>
         </div>
     }
