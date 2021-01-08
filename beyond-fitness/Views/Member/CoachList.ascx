@@ -41,7 +41,7 @@
                                 <%= item.ServingCoach!=null && item.ServingCoach.ProfessionalLevel.CategoryID==(int)Naming.ProfessionalCategory.Senior ? "(資)" : null %>
                             </td>
                             <td>
-                                <%  if(!item.IsSysAdmin())
+                                <%  if(!item.IsSysAdmin() && (_userProfile != null && (_userProfile.CurrentUserRole.RoleID == (int)Naming.RoleID.Administrator)))
                                     { %>
                                 <a onclick="editMember(<%= item.UID %>);" class="btn btn-circle bg-color-yellow"><i class="fa fa-fw fa fa-lg fa-edit" aria-hidden="true"></i></a>&nbsp;&nbsp;
                                 <%  }
@@ -149,11 +149,13 @@
     ModelStateDictionary _modelState;
     ModelSource<UserProfile> models;
     IQueryable<UserProfile> _items;
-
+    UserProfile _userProfile;
+    
     protected override void OnInit(EventArgs e)
     {
         base.OnInit(e);
         _modelState = (ModelStateDictionary)ViewBag.ModelState;
+        _userProfile = Context.GetUser();    
         models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
         int[] roleID = new int[] {(int)Naming.RoleID.Accounting,(int)Naming.RoleID.Assistant,(int)Naming.RoleID.Coach,
             (int)Naming.RoleID.Manager,(int)Naming.RoleID.Officer,(int)Naming.RoleID.ViceManager,(int)Naming.RoleID.Servitor};
