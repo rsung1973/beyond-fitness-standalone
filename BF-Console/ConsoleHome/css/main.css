@@ -25054,7 +25054,7 @@ section.content {
     content: ' ';
     height: 100%;
     width: 1px;
-    background-color: #f0f0f0;
+    background-color: #bfbfbf;
     position: absolute;
     top: 0;
     left: 2.5em;
@@ -25134,6 +25134,9 @@ section.content {
     border: 2px solid #8B572A
 }
 
+.new_timeline .bullet.TS {
+    border: 2px solid #F00A68
+}
 
 .new_timeline .bullet.todo {
     background: #457fca;

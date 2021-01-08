@@ -688,32 +688,38 @@ body.theme-nero {
 
 .theme-nero .page-calendar .b-PT {
     background: #191f28;
-    border-left: 10px solid #F5A623 !important
+    /* border-left: 10px solid #F5A623 !important */
+    border-left: 10px solid #fad79e !important;
 }
 
 .theme-nero .page-calendar .b-PI {
     background: #191f28;
-    border-left: 10px solid #7ED321 !important
+    /* border-left: 10px solid #7ED321 !important */
+    border-left: 10px solid #cdf1a7 !important
 }
 
 .theme-nero .page-calendar .b-ST {
     background: #191f28;
-    border-left: 10px solid #BD10E0 !important
+    /* border-left: 10px solid #464147 !important */
+    border-left: 10px solid #eaa0f8 !important
 }
 
 .theme-nero .page-calendar .b-CoachPI {
     background: #191f28;
-    border-left: 10px solid #c47b3b !important
+    /* border-left: 10px solid #c47b3b !important */
+    border-left: 10px solid #623d1d !important
 }
 
 .theme-nero .page-calendar .b-PE {
     background: #191f28;
-    border-left: 10px solid #F00A68 !important
+    /* border-left: 10px solid #F00A68 !important */
+    border-left: 10px solid #fb9dc4 !important
 }
 
 .theme-nero .page-calendar .b-custom {
     background: #191f28;
-    border-left: 10px solid #4A90E2 !important
+    /* border-left: 10px solid #4A90E2 !important */
+    border-left: 10px solid #a7caf1 !important
 }
 
 .theme-nero .page-calendar .b-finish {
