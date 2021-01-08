@@ -745,6 +745,7 @@ namespace WebHome.Models.ViewModel
         public int? QuestionnaireID { get; set; }
         public bool? ToPrepare { get; set; }
         public QuestionnaireRequest.PartIDEnum? PartID { get; set; }
+        public int? Step { get; set; }
     }
 
 

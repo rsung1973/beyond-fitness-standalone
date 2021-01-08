@@ -248,30 +248,42 @@
 
         //編輯完成上課結語
         this.attendLesson = function () {
-            if ($global.emphasis === '') {
-                swal("請先輸入上課重點!?");
-                return false
-            }
+            //if ($global.emphasis === '') {
+            //    swal("請先輸入上課重點!?");
+            //    return false
+            //}
 
-            swal({
-                title: "@(learner.FullName())的家庭聯絡簿",
-                text: "<span class=\"col-blue font-bold\">範例：昨天喝酒精神狀況不好<br/>今天第一次學甩壺鈴<br/>今天沒吃飯就運動狀況不好，下次記得提前吃飽喔</span>",
-                type: "input",
-                showCancelButton: true,
-                confirmButtonColor: "#DD6B55",
-                confirmButtonText: "確定, 不後悔",
-                cancelButtonText: "不, 點錯了",
-                closeOnConfirm: false,
-                animation: "slide-from-top",
-                inputPlaceholder: "請輸入20個中英文字",
-                html: true
-            }, function (inputValue) {
-                if (inputValue === false) return false;
-                if (inputValue === "") {
-                    swal("你忘了輸入文字嗎!?");
-                    return false
+            showLoading();
+            $.post('@Html.Raw(Url.Action("CheckLessonEmphasis", "Attendance"))', { 'keyID': '@(lessonItem.LessonID.EncryptKey())' }, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    if (data.result) {
+                        swal({
+                            title: "@(learner.FullName())的家庭聯絡簿",
+                            text: "<span class=\"col-blue font-bold\">範例：昨天喝酒精神狀況不好<br/>今天第一次學甩壺鈴<br/>今天沒吃飯就運動狀況不好，下次記得提前吃飽喔</span>",
+                            type: "input",
+                            showCancelButton: true,
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "確定, 不後悔",
+                            cancelButtonText: "不, 點錯了",
+                            closeOnConfirm: false,
+                            animation: "slide-from-top",
+                            inputPlaceholder: "請輸入20個中英文字",
+                            html: true
+                        }, function (inputValue) {
+                            if (inputValue === false) return false;
+                            if (inputValue === "") {
+                                swal("你忘了輸入文字嗎!?");
+                                return false
+                            }
+                            commitAttendance(inputValue);
+                        });
+                    } else {
+                        swal(data.message);
+                    }
+                } else {
+                    $(data).appendTo($('body'));
                 }
-                commitAttendance(inputValue);
             });
         };
 

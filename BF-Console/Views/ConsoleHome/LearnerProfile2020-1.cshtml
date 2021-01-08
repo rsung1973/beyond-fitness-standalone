@@ -157,9 +157,9 @@
                                 </ul>
                             </div>
                             @{
-                                var quest = models.GetEffectiveQuestionnaireRequest(_learner.UID, Naming.QuestionnaireGroup.身體心靈密碼)
+                                var quest = models.GetEffectiveQuestionnaireRequest(_learner.UID)
                                                 .FirstOrDefault();
-                                if (quest == null || !quest.PartID.HasValue || quest.PartID == (int)QuestionnaireRequest.PartIDEnum.PartA)
+                                if (quest == null || quest.GroupID == (int)Naming.QuestionnaireGroup.身體心靈密碼)
                                 {
                                     <button class="btn btn-primary waves-effect float-right btn-sm" onclick="javascript:editLearnerCharacter(@((int)QuestionnaireRequest.PartIDEnum.PartA));">重新了解學生 GO</button>
                                 }

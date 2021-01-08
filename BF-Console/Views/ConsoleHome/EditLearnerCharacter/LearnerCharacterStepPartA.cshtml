@@ -188,13 +188,15 @@
             });
         }
 
-    function startEditingCharacter() {
+    function startEditingCharacter(step) {
 
         $global.rejectCharacterDone = function () {
             $('').launchDownload('@Html.Raw(Url.Action("LearnerProfile","ConsoleHome"))', { 'keyID': '@(_learner.UID.EncryptKey())' });
         };
 
-        nextStep(1);
+        if (step) {
+            nextStep(1);
+        }
     }
 
         //呼叫NextStep

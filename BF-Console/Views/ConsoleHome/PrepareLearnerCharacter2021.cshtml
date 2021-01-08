@@ -130,7 +130,7 @@
             hideLoading();
             if ($.isPlainObject(data)) {
                 if (data.result) {
-                    $('').launchDownload('@(Html.Raw(Url.Action("EditLearnerCharacter","ConsoleHome",new { questionnaire.QuestionnaireID, ToPrepare = true })))', { 'keyID': '@(_learner.UID.EncryptKey())', 'partID': @((int)QuestionnaireRequest.PartIDEnum.PartA) });
+                    $('').launchDownload('@(Html.Raw(Url.Action("EditLearnerCharacter","ConsoleHome",new { questionnaire.QuestionnaireID, ToPrepare = true, Step = 1 })))', { 'keyID': '@(_learner.UID.EncryptKey())', 'partID': @((int)QuestionnaireRequest.PartIDEnum.PartA) });
                 } else {
                     swal(data.message);
                 }
@@ -191,7 +191,7 @@
     {
         <script>
             $(function () {
-                startEditingCharacter();
+                startEditingCharacter(@(_viewModel.Step));
             });
         </script>
     }

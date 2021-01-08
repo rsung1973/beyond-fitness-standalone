@@ -35,7 +35,7 @@
                 if ($global.resumeCharacter) {
                     $global.resumeCharacter();
                 } else {
-                    $('').launchDownload('@(Html.Raw(Url.Action("EditLearnerCharacter","ConsoleHome",new { _model.QuestionnaireID,_viewModel.PartID })))', { 'keyID': '@(_model.UID.EncryptKey())' });
+                    $('').launchDownload('@(Html.Raw(Url.Action("EditLearnerCharacter","ConsoleHome",new { _model.QuestionnaireID,_viewModel.PartID })))', { 'keyID': '@(_model.UID.EncryptKey())'});
                 }
             } else {
                 showLoading();
