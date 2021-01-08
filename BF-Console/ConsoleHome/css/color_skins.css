@@ -923,6 +923,31 @@ body.theme-nero {
     background: #1A1A1A;
 }
 
+.theme-nero .new_timeline .bullet.PT {
+    border: 2px solid #fad79e
+}
+
+.theme-nero .new_timeline .bullet.PI {
+    border: 2px solid #cdf1a7
+}
+
+.theme-nero .new_timeline .bullet.ST {
+    border: 2px solid #eaa0f8
+}
+
+.theme-nero .new_timeline .bullet.CoachPI {
+    border: 2px solid #623d1d
+}
+
+.theme-nero .new_timeline .bullet.TS {
+    border: 2px solid #fb9dc4
+}
+
+.theme-nero .new_timeline .bullet.todo {
+    background: #457fca;
+    border: 2px solid #a7caf1
+}
+
 .theme-nero .new_timeline > ul::before {
     background-color: #373b41;
 }
