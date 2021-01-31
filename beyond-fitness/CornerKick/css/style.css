@@ -637,6 +637,12 @@ img.responsive-img.nodata {
 	box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.12);
 }
 
+.parallax-container .parallax.edgewater {
+	background-blend-mode: darken, normal;
+	background: #B5DCCA;
+	box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.12);
+}
+
 .parallax-container .text-area {
 	position: absolute;
 	top: 0;
@@ -909,6 +915,28 @@ i.right {
 	width: 90%;
 	margin: 0 auto;
 	text-align: left;
+}
+
+.parallax-container .points-text-area h3 {
+    text-align: center;
+	font-size: 19px;
+	font-weight: 600;
+	line-height: 18px;
+	padding: 8px 0;
+}
+
+.parallax-container .points-text-area h3 span {
+	font-size: 14px;
+	line-height: 26px;    
+    display: block;
+    color: #0061d2;
+    text-decoration-line: underline;
+}
+
+.parallax-container .points-text-area img {
+    width: 50%;
+    position: absolute;
+    margin-left: 70px;
 }
 
 .parallax-container .points-text-area h5 {
@@ -1265,6 +1293,7 @@ img.rsImg {
 	border-radius: 30px;
 	color: #3340ff;
 	font-size: 14px;
+	cursor: pointer;
 }
 
 .carousel {
@@ -2375,6 +2404,13 @@ ul.lesson-box li.lesson-item {
 	font-size: 18px;
 	font-weight: normal;
 	line-height: 23px;
+}
+
+ul.lesson-box li.lesson-comment {
+	font-size: 15px;
+	font-weight: normal;
+	line-height: 20px;
+    color: #58a900;
 }
 
 ul.lesson-box li.qa-item {

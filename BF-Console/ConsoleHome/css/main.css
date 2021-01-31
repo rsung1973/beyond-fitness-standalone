@@ -25044,6 +25044,10 @@ section.content {
     margin-top: 2px
 }
 
+.new_timeline .header .color-overlay .day-checked {
+    display: inline-block;
+}
+
 .new_timeline > ul {
     padding: 1em 0 0 2em;
     list-style: none;
