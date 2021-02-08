@@ -29,7 +29,7 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-6">
-                <h1>@Html.Raw(NamingItem.FindAnheBranch)<span>Coming Soon</span></h1>
+                <h1>@Html.Raw(NamingItem.FindAnheBranch)  <span>Coming Soon</span></h1>
                 <a href="https://maps.google.com/?q=台北市大安區安和路二段81號B1" target="_blank" class="add">
                     @Html.Raw(NamingItem.FindAnheBranchAdd)
                 </a>
@@ -404,6 +404,9 @@
 
             mapDongmen.mapTypes.set('map_styles', styledMapType);
             mapDongmen.setMapTypeId('map_styles');
+
+            mapAnhe.mapTypes.set('map_styles', styledMapType);
+            mapAnhe.setMapTypeId('map_styles');
 
         }</script>
 }
