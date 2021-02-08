@@ -276,6 +276,15 @@
   <data name="FindDongmenBranchDesc2" xml:space="preserve">
     <value>客製化訓練場地整合：伸展重訓區與室內草皮結合，引進小型體操訓練場地，豐富訓練多樣化。在專業教練細心指導下，享有隱私安全，且時尚舒適的運動環境。</value>
   </data>
+  <data name="FindAnheBranch" xml:space="preserve">
+    <value>信義安和店</value>
+  </data>
+  <data name="FindAnheBranchAdd" xml:space="preserve">
+    <value>台北市大安區安和路二段81號B1</value>
+  </data>
+   <data name="FindAnheBranchDesc1" xml:space="preserve">
+    <value>位於捷運信義安和捷運站A2號出口，走路約3-5分鐘即可抵達。</value>
+  </data>
   <data name="OurTeam" xml:space="preserve">
     <value>了解團隊</value>
   </data>

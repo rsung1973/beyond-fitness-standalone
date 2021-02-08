@@ -264,6 +264,15 @@
   <data name="FindDongmenBranchDesc2" xml:space="preserve">
     <value>The customized training space integrates stretching, artificial turf and weight training areas providing a dynamic training environment. Under the professional guidance of Beyond Fitness trainers, a safe, comfortable and private training environment is provided.</value>
   </data>
+  <data name="FindAnheBranch" xml:space="preserve">
+    <value>XinyiAnhe Branch</value>
+  </data>
+  <data name="FindAnheBranchAdd" xml:space="preserve">
+    <value>B1, No. 81, Sec. 2, Anhe Rd., Da’an Dist., Taipei City 106, Taiwan (R.O.C.)</value>
+  </data>
+   <data name="FindAnheBranchDesc1" xml:space="preserve">
+    <value>Dongmen Branch is a 3-5 mins walk from MRT XinyiAnhe Station exit A2.</value>
+  </data>
   <data name="OurTeam" xml:space="preserve">
     <value>Our team</value>
   </data>
