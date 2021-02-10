@@ -412,7 +412,7 @@ body.theme-nero {
 .theme-nero .ms-container .ms-selection li.ms-elem-selectable,
 .theme-nero .ms-container .ms-selection li.ms-elem-selection {
     border-color: #373b41;
-    color: #eee;
+    /* color: #eee; */
 }
 
 .theme-nero .pagination .page-item .page-link {
