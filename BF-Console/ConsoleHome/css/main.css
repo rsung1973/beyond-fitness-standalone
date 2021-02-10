@@ -26222,11 +26222,17 @@ section.content {
 
 .new_friend_list li .users_name {
     color: #424242;
-    text-transform: capitalize
+    text-transform: capitalize;
+    margin-top: 0px;
 }
 
 .new_friend_list li .join_date {
     color: #757575
+}
+
+.new_friend_list li .phone {
+    color: #007bb5;
+    display:block;
 }
 
 .card-group .card + .card {
