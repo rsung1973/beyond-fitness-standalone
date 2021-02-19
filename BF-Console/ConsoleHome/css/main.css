@@ -2751,6 +2751,9 @@ fieldset[disabled] .btn-link.active {
     background-color: #fff
 }
 
+.input-group-addon.cursor {
+    cursor: pointer;
+}
 
 .input-group-addon .fancy-radio,
 .input-group-addon .fancy-checkbox {

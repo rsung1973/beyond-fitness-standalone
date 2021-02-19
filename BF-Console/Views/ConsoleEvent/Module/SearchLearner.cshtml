@@ -27,7 +27,7 @@
     models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
 }
 <input type="text" id="@(_viewID)" class="form-control" name="userName" placeholder="搜尋學生..." />
-<span class="input-group-addon">
+<span class="input-group-addon cursor" onclick="searchLearner($('#@(_viewID)').val());">
     <i class="zmdi zmdi-search"></i>
     <script>
         $(function () {
@@ -36,8 +36,14 @@
                 var userName = $(event.target).val();
                 var keycode = (event.keyCode ? event.keyCode : event.which);
                 if (keycode == '13') {
-                    clearErrors();
-                    if (userName.length < 2) {
+                    searchLearner(userName);
+                }
+            });
+        });
+
+        function searchLearner(param) {
+            clearErrors();
+            if (param.length < 2) {
                         swal({
                             title: "Opps！",
                             text: "你忘了學生的姓名嗎？!(至少2個中、英文字)",
@@ -49,9 +55,9 @@
                         }, function () {
 
                         });
-                    } else {
+            } else {
                         showLoading();
-                        $.post('@((String)ViewBag.SearchAction)', { 'userName': userName }, function (data) {
+                $.post('@((String)ViewBag.SearchAction)', { 'userName': param }, function (data) {
                             hideLoading();
                             if ($.isPlainObject(data)) {
                                 if (data.result) {
@@ -74,9 +80,7 @@
                             }
                         });
                     }
-                }
-            });
-        });
+        }
 
     </script>
 </span>
