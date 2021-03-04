@@ -1105,7 +1105,7 @@ namespace WebHome.Helper.BusinessOperation
             return items;
         }
 
-        public static IQueryable<CourseContract> RemainedLessonCount<TEntity>(this UserProfile profile, ModelSource<TEntity> models, out int remainedCount, bool onlyAttended = false)
+        public static IQueryable<CourseContract> RemainedLessonCount<TEntity>(this UserProfile profile, ModelSource<TEntity> models, out int remainedCount,out IQueryable<RegisterLesson> remainedItems, bool onlyAttended = false)
             where TEntity : class, new()
         {
             var items = models.GetTable<RegisterLesson>()
@@ -1113,6 +1113,8 @@ namespace WebHome.Helper.BusinessOperation
                 .Where(r => r.UID == profile.UID)
                 .OrderByDescending(r => r.RegisterID);
             var currentLessons = items.Where(i => i.Attended != (int)Naming.LessonStatus.課程結束);
+
+            remainedItems = currentLessons;
 
             var contractItems = currentLessons.Join(models.GetTable<RegisterLessonContract>(), r => r.RegisterID, c => c.RegisterID, (r, c) => c)
                             .Join(models.GetTable<CourseContract>(), c => c.ContractID, n => n.ContractID, (c, n) => n);

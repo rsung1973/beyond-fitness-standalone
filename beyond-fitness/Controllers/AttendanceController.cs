@@ -131,10 +131,41 @@ namespace WebHome.Controllers
             return model;
         }
 
+        public ActionResult CheckLessonEmphasis(LessonTimeBookingViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            if (viewModel.KeyID != null)
+            {
+                viewModel.LessonID = viewModel.DecryptKeyValue();
+            }
+
+            LessonTime item = models.GetTable<LessonTime>().Where(t => t.LessonID == viewModel.LessonID).FirstOrDefault();
+
+            var items = models.GetTable<TrainingPlan>().Where(p => p.LessonID == viewModel.LessonID)
+                            .Where(p => p.TrainingExecution.Emphasis == null)
+                            .Select(p => p.RegisterLesson);
+
+            int count = items.Count();
+            if (count == 1 && item.TrainingPlan.Count() == 1)
+            {
+                return Json(new { result = false, message = "請先輸入上課重點!?" }, JsonRequestBehavior.AllowGet);
+            }
+            else if (count > 0)
+            {
+                return Json(new { result = false, message = String.Concat(String.Join("、", items.Select(r => r.UserProfile.RealName)), "的上課重點未完成!?") }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(new { result = true }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
 
         public ActionResult AttendLesson(LessonTimeBookingViewModel viewModel)
         {
             ViewBag.ViewModel = viewModel;
+            var profile = HttpContext.GetUser();
+
             if(viewModel.KeyID!=null)
             {
                 viewModel.LessonID = viewModel.DecryptKeyValue();
@@ -145,14 +176,14 @@ namespace WebHome.Controllers
             if (item == null)
                 return Json(new { result = false, message = "未登記此上課時間!!" }, JsonRequestBehavior.AllowGet);
 
-            if (String.IsNullOrEmpty(item.TrainingPlan.Select(p => p.TrainingExecution.Emphasis).FirstOrDefault()))
+            if (item.TrainingPlan.Select(p => p.TrainingExecution.Emphasis).Any(a => a == null))
             {
                 return Json(new { result = false, message = "未輸入課表重點，無法完成上課!!" }, JsonRequestBehavior.AllowGet);
             }
 
             item.LessonPlan.Remark = viewModel.Remark.GetEfficientString();
 
-            models.AttendLesson(item, viewModel.QuestionnaireGroupID);
+            models.AttendLesson(item, profile, viewModel.QuestionnaireGroupID);
             //foreach (var r in item.GroupingLesson.RegisterLesson)
             //{
             //    models.CheckLearnerQuestionnaireRequest(r);
@@ -184,8 +215,8 @@ namespace WebHome.Controllers
 
         public ActionResult CommitAssessment(TrainingAssessmentViewModel viewModel)
         {
-            ActionResult result;
-            LessonTimeExpansion model = storeAssessment(viewModel, out result, true);
+            var profile = HttpContext.GetUser();
+            LessonTimeExpansion model = storeAssessment(viewModel, out ActionResult result, true);
 
             if (result != null)
                 return result;
@@ -202,7 +233,7 @@ namespace WebHome.Controllers
                 }
                 else
                 {
-                    models.AttendLesson(model.LessonTime);
+                    models.AttendLesson(model.LessonTime, profile);
                     //LessonAttendance attendance = model.LessonTime.LessonAttendance;
                     //if (attendance == null)
                     //{

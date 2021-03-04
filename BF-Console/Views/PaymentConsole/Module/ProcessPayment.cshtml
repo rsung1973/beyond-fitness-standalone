@@ -37,7 +37,7 @@
                         {
                             <a href="@Html.Raw(Url.Action("ApplyPaymentAchievement", "ConsoleHome", new { KeyID = _model.PaymentID.EncryptKey() }))" class="list-group-item">業績分潤</a>
                         }
-                        if (_model.VoidPayment == null && !_model.AllowanceID.HasValue)
+                        if (_model.VoidPayment == null && !_model.AllowanceID.HasValue && !_model.ContractTrustTrack.Any(t => t.SettlementID.HasValue))
                         {
                             <a href="@Html.Raw(Url.Action("VoidPayment", "ConsoleHome", new { KeyID = _model.PaymentID.EncryptKey() }))" class="list-group-item">作廢/折讓</a>
                         }

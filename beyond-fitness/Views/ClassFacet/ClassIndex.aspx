@@ -50,11 +50,11 @@
         }
 
         function rebookingByCoach() {
-            showLoading();
+<%--            showLoading();
             $.post('<%= Url.Action("RebookingByCoach","ClassFacet",new { id = _model.LessonID }) %>', {}, function (data) {
                 hideLoading();
                 $(data).appendTo($('body'));
-            });
+            });--%>
         }
 
         $(function () {

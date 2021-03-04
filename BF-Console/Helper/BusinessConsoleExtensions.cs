@@ -159,9 +159,10 @@ namespace WebHome.Helper
                         LessonTuitionGoal = c.LessonTuitionGoal,
                         BRCount = c.BRCount,
                         LevelID = c.ServingCoach.LevelID,
-                        AverageLessonPrice = actualCount > 0
-                            ? (c.ActualLessonAchievement + c.ActualCompleteLessonCount - 1) / actualCount
-                            : 0,
+                        //AverageLessonPrice = actualCount > 0
+                        //    ? (c.ActualLessonAchievement + c.ActualCompleteLessonCount - 1) / actualCount
+                        //    : 0,
+                        AverageLessonPrice = sampleItem.CalculateAverageLessonPrice(models, c.CoachID),
                     };
                     newItem.LessonTuitionGoal = newItem.CompleteLessonsGoal * newItem.AverageLessonPrice;
                 }
@@ -243,7 +244,7 @@ namespace WebHome.Helper
                     (int)Naming.LessonPriceStatus.團體學員課程,
         };
 
-        public static void UpdateMonthlyAchievement<TEntity>(this MonthlyIndicator item, ModelSource<TEntity> models,bool? forcedUpdate = null)
+        public static void UpdateMonthlyAchievement<TEntity>(this MonthlyIndicator item, ModelSource<TEntity> models,bool? forcedUpdate = null,bool? calcAverage = null)
             where TEntity : class, new()
         {
 
@@ -377,6 +378,12 @@ namespace WebHome.Helper
                     coachIndicator.ActualCompletePICount = coachTuitionItems.Where(t => t.PriceStatus == (int)Naming.LessonPriceStatus.自主訓練).Count()
                                     + coachTuitionItems.Where(t => t.ELStatus == (int)Naming.LessonPriceStatus.自主訓練).Count();
 
+                    if (calcAverage == true)
+                    {
+                        coachIndicator.AverageLessonPrice = item.CalculateAverageLessonPrice(models, coachIndicator.CoachID);
+                        coachIndicator.LessonTuitionGoal = coachIndicator.CompleteLessonsGoal * coachIndicator.AverageLessonPrice;
+                    }
+
                     models.SubmitChanges();
                 }
             }
@@ -412,8 +419,8 @@ namespace WebHome.Helper
             lessonAchievement = coachTuitionItems.Where(t => SessionScopeForAchievement.Contains(t.PriceStatus)).Sum(t => t.ListPrice * t.GroupingMemberCount * t.PercentageOfDiscount / 100) ?? 0;
             lessonAchievement += (coachTuitionItems.Where(t => SessionScopeForAchievement.Contains(t.ELStatus)).Sum(l => l.EnterpriseListPrice * l.GroupingMemberCount * l.PercentageOfDiscount / 100) ?? 0);
 
-            var completeLessonCount = Math.Max(coachTuitionItems.Where(t => SessionScopeForComleteLessonCount.Contains(t.PriceStatus)).Count()
-                                    + coachTuitionItems.Where(t => SessionScopeForComleteLessonCount.Contains(t.ELStatus)).Count(), 1);
+            var completeLessonCount = Math.Max(coachTuitionItems.Where(t => SessionScopeForAchievement.Contains(t.PriceStatus)).Count()
+                                    + coachTuitionItems.Where(t => SessionScopeForAchievement.Contains(t.ELStatus)).Count(), 1);
 
             return (lessonAchievement + completeLessonCount - 1) / completeLessonCount;
         }

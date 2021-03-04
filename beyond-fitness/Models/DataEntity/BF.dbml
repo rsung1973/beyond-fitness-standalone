@@ -47,7 +47,6 @@
       <Association Name="LevelExpression_RegisterLesson" Member="RegisterLesson" ThisKey="LevelID" OtherKey="Attended" Type="RegisterLesson" />
       <Association Name="LevelExpression_PDQQuestion" Member="PDQQuestion" ThisKey="LevelID" OtherKey="QuestionType" Type="PDQQuestion" />
       <Association Name="LevelExpression_LessonFeedBack" Member="LessonFeedBack" ThisKey="LevelID" OtherKey="Status" Type="LessonFeedBack" />
-      <Association Name="LevelExpression_QuestionnaireRequest" Member="QuestionnaireRequest" ThisKey="LevelID" OtherKey="Status" Type="QuestionnaireRequest" />
       <Association Name="LevelExpression_LessonComment" Member="LessonComment" ThisKey="LevelID" OtherKey="Status" Type="LessonComment" />
       <Association Name="LevelExpression_BodyDiagnosis" Member="BodyDiagnosis" ThisKey="LevelID" OtherKey="LevelID" Type="BodyDiagnosis" />
       <Association Name="LevelExpression_ProfessionalLevel" Member="ProfessionalLevel" ThisKey="LevelID" OtherKey="CategoryID" Type="ProfessionalLevel" />
@@ -61,6 +60,7 @@
       <Association Name="LevelExpression_CourseContractLevel" Member="CourseContractLevel" ThisKey="LevelID" OtherKey="LevelID" Type="CourseContractLevel" />
       <Association Name="LevelExpression_Payment" Member="Payment" ThisKey="LevelID" OtherKey="Status" Type="Payment" />
       <Association Name="LevelExpression_TrainingPlan" Member="TrainingPlan" ThisKey="LevelID" OtherKey="PlanStatus" Type="TrainingPlan" />
+      <Association Name="LevelExpression_QuestionnaireRequest" Member="QuestionnaireRequest" ThisKey="LevelID" OtherKey="Status" Type="QuestionnaireRequest" />
     </Type>
   </Table>
   <Table Name="dbo.Attachment" Member="Attachments">
@@ -128,13 +128,6 @@
       <Association Name="LessonTime_LessonTrend" Member="LessonTime" ThisKey="LessonID" OtherKey="LessonID" Type="LessonTime" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
-  <Table Name="dbo.LessonAttendance" Member="LessonAttendance">
-    <Type Name="LessonAttendance">
-      <Column Name="LessonID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="CompleteDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Association Name="LessonTime_LessonAttendance" Member="LessonTime" ThisKey="LessonID" OtherKey="LessonID" Type="LessonTime" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
-    </Type>
-  </Table>
   <Table Name="dbo.UserProfile" Member="UserProfile">
     <Type Name="UserProfile">
       <Column Name="UID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -169,7 +162,6 @@
       <Association Name="UserProfile_PDQQuestion" Member="PDQQuestion" ThisKey="UID" OtherKey="AskerID" Type="PDQQuestion" />
       <Association Name="UserProfile_PDQTask" Member="PDQTask" ThisKey="UID" OtherKey="UID" Type="PDQTask" />
       <Association Name="UserProfile_LearnerFitnessAssessment" Member="LearnerFitnessAssessment" ThisKey="UID" OtherKey="UID" Type="LearnerFitnessAssessment" />
-      <Association Name="UserProfile_QuestionnaireRequest" Member="QuestionnaireRequest" ThisKey="UID" OtherKey="UID" Type="QuestionnaireRequest" />
       <Association Name="UserProfile_LessonComment" Member="Speaking" ThisKey="UID" OtherKey="SpeakerID" Type="LessonComment" />
       <Association Name="UserProfile_LessonComment1" Member="Hearing" ThisKey="UID" OtherKey="HearerID" Type="LessonComment" />
       <Association Name="UserProfile_Article" Member="Article" ThisKey="UID" OtherKey="AuthorID" Type="Article" />
@@ -204,6 +196,9 @@
       <Association Name="UserProfile_PreferredLessonTime" Member="PreferredLessonTime" ThisKey="UID" OtherKey="ApproverID" Type="PreferredLessonTime" />
       <Association Name="UserProfile_BlogArticle" Member="BlogArticle" ThisKey="UID" OtherKey="AuthorID" Type="BlogArticle" />
       <Association Name="UserProfile_FavoriteLesson" Member="FavoriteLesson" ThisKey="UID" OtherKey="UID" Type="FavoriteLesson" />
+      <Association Name="UserProfile_QuestionnaireRequest" Member="QuestionnaireRequest" ThisKey="UID" OtherKey="UID" Type="QuestionnaireRequest" />
+      <Association Name="UserProfile_QuestionnaireRequest1" Member="CreatedQuestionnaire" ThisKey="UID" OtherKey="CreatorID" Type="QuestionnaireRequest" />
+      <Association Name="UserProfile_LessonAttendance" Member="LessonAttendance" ThisKey="UID" OtherKey="ActorID" Type="LessonAttendance" />
       <Association Name="Attachment_UserProfile" Member="Attachment" ThisKey="PictureID" OtherKey="AttachmentID" Type="Attachment" IsForeignKey="true" />
       <Association Name="LevelExpression_UserProfile" Member="LevelExpression" ThisKey="LevelID" OtherKey="LevelID" Type="LevelExpression" IsForeignKey="true" />
       <Association Name="UserProfile_UserProfile" Member="UserProfile1" ThisKey="Creator" OtherKey="UID" Type="UserProfile" IsForeignKey="true" />
@@ -278,7 +273,6 @@
       <Column Name="MasterRegistration" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
       <Association Name="RegisterLesson_IntuitionCharge" Member="IntuitionCharge" ThisKey="RegisterID" OtherKey="RegisterID" Type="IntuitionCharge" Cardinality="One" />
       <Association Name="RegisterLesson_LessonFeedBack" Member="LessonFeedBack" ThisKey="RegisterID" OtherKey="RegisterID" Type="LessonFeedBack" />
-      <Association Name="RegisterLesson_QuestionnaireRequest" Member="QuestionnaireRequest" ThisKey="RegisterID" OtherKey="RegisterID" Type="QuestionnaireRequest" />
       <Association Name="RegisterLesson_RegisterLessonContract" Member="RegisterLessonContract" ThisKey="RegisterID" OtherKey="RegisterID" Type="RegisterLessonContract" Cardinality="One" />
       <Association Name="RegisterLesson_RegisterLessonEnterprise" Member="RegisterLessonEnterprise" ThisKey="RegisterID" OtherKey="RegisterID" Type="RegisterLessonEnterprise" Cardinality="One" />
       <Association Name="RegisterLesson_AwardingLessonGift" Member="AwardingLessonGift" ThisKey="RegisterID" OtherKey="RegisterID" Type="AwardingLessonGift" />
@@ -286,6 +280,7 @@
       <Association Name="RegisterLesson_LessonTime" Member="LessonTime" ThisKey="RegisterID" OtherKey="RegisterID" Type="LessonTime" />
       <Association Name="RegisterLesson_LessonTimeExpansion" Member="LessonTimeExpansion" ThisKey="RegisterID" OtherKey="RegisterID" Type="LessonTimeExpansion" />
       <Association Name="RegisterLesson_TrainingPlan" Member="TrainingPlan" ThisKey="RegisterID" OtherKey="RegisterID" Type="TrainingPlan" />
+      <Association Name="RegisterLesson_QuestionnaireRequest" Member="QuestionnaireRequest" ThisKey="RegisterID" OtherKey="RegisterID" Type="QuestionnaireRequest" />
       <Association Name="GroupingLesson_RegisterLesson" Member="GroupingLesson" ThisKey="RegisterGroupID" OtherKey="GroupID" Type="GroupingLesson" IsForeignKey="true" DeleteRule="SET NULL" />
       <Association Name="GroupingLessonDiscount_RegisterLesson" Member="GroupingLessonDiscount" ThisKey="GroupingMemberCount" OtherKey="GroupingMemberCount" Type="GroupingLessonDiscount" IsForeignKey="true" />
       <Association Name="LevelExpression_RegisterLesson" Member="LevelExpression" ThisKey="Attended" OtherKey="LevelID" Type="LevelExpression" IsForeignKey="true" />
@@ -336,8 +331,8 @@
       <Column Name="StartDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Column Name="EndDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Association Name="PDQGroup_PDQQuestion" Member="PDQQuestion" ThisKey="GroupID" OtherKey="GroupID" Type="PDQQuestion" />
-      <Association Name="PDQGroup_QuestionnaireRequest" Member="QuestionnaireRequest" ThisKey="GroupID" OtherKey="GroupID" Type="QuestionnaireRequest" />
       <Association Name="PDQGroup_QuestionnaireGroup" Member="QuestionnaireGroup" ThisKey="GroupID" OtherKey="GroupID" Type="QuestionnaireGroup" Cardinality="One" />
+      <Association Name="PDQGroup_QuestionnaireRequest" Member="QuestionnaireRequest" ThisKey="GroupID" OtherKey="GroupID" Type="QuestionnaireRequest" />
       <Association Name="PDQQuestion_PDQGroup" Member="PDQConclusion" ThisKey="ConclusionID" OtherKey="QuestionID" Type="PDQQuestion" IsForeignKey="true" />
     </Type>
   </Table>
@@ -430,7 +425,7 @@
       <Association Name="PDQQuestion_PDQTask" Member="PDQQuestion" ThisKey="QuestionID" OtherKey="QuestionID" Type="PDQQuestion" IsForeignKey="true" />
       <Association Name="PDQSuggestion_PDQTask" Member="PDQSuggestion" ThisKey="SuggestionID" OtherKey="SuggestionID" Type="PDQSuggestion" IsForeignKey="true" DeleteRule="CASCADE" />
       <Association Name="UserProfile_PDQTask" Member="UserProfile" ThisKey="UID" OtherKey="UID" Type="UserProfile" IsForeignKey="true" />
-      <Association Name="QuestionnaireRequest_PDQTask" Member="QuestionnaireRequest" ThisKey="QuestionnaireID" OtherKey="QuestionnaireID" Type="QuestionnaireRequest" IsForeignKey="true" />
+      <Association Name="QuestionnaireRequest_PDQTask" Member="QuestionnaireRequest" ThisKey="QuestionnaireID" OtherKey="QuestionnaireID" Type="QuestionnaireRequest" IsForeignKey="true" DeleteRule="CASCADE" />
     </Type>
   </Table>
   <Table Name="dbo.LearnerFitnessAssessment" Member="LearnerFitnessAssessment">
@@ -528,23 +523,6 @@
       <Column Name="StartDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
       <Column Name="EndDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
       <Association Name="Article_Publication" Member="Article" ThisKey="DocID" OtherKey="DocID" Type="Article" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
-    </Type>
-  </Table>
-  <Table Name="dbo.QuestionnaireRequest" Member="QuestionnaireRequest">
-    <Type Name="QuestionnaireRequest">
-      <Column Name="QuestionnaireID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="RequestDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Column Name="GroupID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="UID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="Status" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="RegisterID" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="PartID" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Association Name="QuestionnaireRequest_PDQTask" Member="PDQTask" ThisKey="QuestionnaireID" OtherKey="QuestionnaireID" Type="PDQTask" />
-      <Association Name="QuestionnaireRequest_QuestionnaireCoachBypass" Member="QuestionnaireCoachBypass" ThisKey="QuestionnaireID" OtherKey="QuestionnaireID" Type="QuestionnaireCoachBypass" Cardinality="One" />
-      <Association Name="LevelExpression_QuestionnaireRequest" Member="LevelExpression" ThisKey="Status" OtherKey="LevelID" Type="LevelExpression" IsForeignKey="true" />
-      <Association Name="PDQGroup_QuestionnaireRequest" Member="PDQGroup" ThisKey="GroupID" OtherKey="GroupID" Type="PDQGroup" IsForeignKey="true" />
-      <Association Name="RegisterLesson_QuestionnaireRequest" Member="RegisterLesson" ThisKey="RegisterID" OtherKey="RegisterID" Type="RegisterLesson" IsForeignKey="true" />
-      <Association Name="UserProfile_QuestionnaireRequest" Member="UserProfile" ThisKey="UID" OtherKey="UID" Type="UserProfile" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.QuestionnaireGroup" Member="QuestionnaireGroup">
@@ -1917,7 +1895,6 @@
       <Column Name="Place" Type="System.String" DbType="NVarChar(64)" CanBeNull="true" />
       <Association Name="LessonTime_FitnessAssessment" Member="FitnessAssessment" ThisKey="LessonID" OtherKey="LessonID" Type="FitnessAssessment" Cardinality="One" />
       <Association Name="LessonTime_LessonTrend" Member="LessonTrend" ThisKey="LessonID" OtherKey="LessonID" Type="LessonTrend" Cardinality="One" />
-      <Association Name="LessonTime_LessonAttendance" Member="LessonAttendance" ThisKey="LessonID" OtherKey="LessonID" Type="LessonAttendance" Cardinality="One" />
       <Association Name="LessonTime_LessonPlan" Member="LessonPlan" ThisKey="LessonID" OtherKey="LessonID" Type="LessonPlan" Cardinality="One" />
       <Association Name="LessonTime_LessonFeedBack" Member="LessonFeedBack" ThisKey="LessonID" OtherKey="LessonID" Type="LessonFeedBack" />
       <Association Name="LessonTime_LessonFitnessAssessment" Member="LessonFitnessAssessment" ThisKey="LessonID" OtherKey="LessonID" Type="LessonFitnessAssessment" />
@@ -1926,6 +1903,7 @@
       <Association Name="LessonTime_PreferredLessonTime" Member="PreferredLessonTime" ThisKey="LessonID" OtherKey="LessonID" Type="PreferredLessonTime" Cardinality="One" />
       <Association Name="LessonTime_TrainingPlan" Member="TrainingPlan" ThisKey="LessonID" OtherKey="LessonID" Type="TrainingPlan" />
       <Association Name="LessonTime_LessonTimeSettlement" Member="LessonTimeSettlement" ThisKey="LessonID" OtherKey="LessonID" Type="LessonTimeSettlement" Cardinality="One" />
+      <Association Name="LessonTime_LessonAttendance" Member="LessonAttendance" ThisKey="LessonID" OtherKey="LessonID" Type="LessonAttendance" Cardinality="One" />
       <Association Name="BranchStore_LessonTime" Member="BranchStore" ThisKey="BranchID" OtherKey="BranchID" Type="BranchStore" IsForeignKey="true" />
       <Association Name="DailyWorkingHour_LessonTime" Member="DailyWorkingHour" ThisKey="HourOfClassTime" OtherKey="Hour" Type="DailyWorkingHour" IsForeignKey="true" />
       <Association Name="GroupingLesson_LessonTime" Member="GroupingLesson" ThisKey="GroupID" OtherKey="GroupID" Type="GroupingLesson" IsForeignKey="true" />
@@ -1938,8 +1916,8 @@
     <Type Name="QuestionnaireCoachBypass">
       <Column Name="QuestionnaireID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="UID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Association Name="QuestionnaireRequest_QuestionnaireCoachBypass" Member="QuestionnaireRequest" ThisKey="QuestionnaireID" OtherKey="QuestionnaireID" Type="QuestionnaireRequest" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
       <Association Name="UserProfile_QuestionnaireCoachBypass" Member="UserProfile" ThisKey="UID" OtherKey="UID" Type="UserProfile" IsForeignKey="true" />
+      <Association Name="QuestionnaireRequest_QuestionnaireCoachBypass" Member="QuestionnaireRequest" ThisKey="QuestionnaireID" OtherKey="QuestionnaireID" Type="QuestionnaireRequest" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
   <Table Name="dbo.UserEvent" Member="UserEvent">
@@ -2435,6 +2413,34 @@
       <Column Name="UsageID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="Usage" Type="System.String" DbType="NVarChar(64)" CanBeNull="true" />
       <Association Name="UsageType_LessonPriceType" Member="LessonPriceType" ThisKey="UsageID" OtherKey="UsageType" Type="LessonPriceType" />
+    </Type>
+  </Table>
+  <Table Name="dbo.QuestionnaireRequest" Member="QuestionnaireRequest">
+    <Type Name="QuestionnaireRequest">
+      <Column Name="QuestionnaireID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="RequestDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="GroupID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Status" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="RegisterID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PartID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CreatorID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="QuestionnaireRequest_PDQTask" Member="PDQTask" ThisKey="QuestionnaireID" OtherKey="QuestionnaireID" Type="PDQTask" />
+      <Association Name="QuestionnaireRequest_QuestionnaireCoachBypass" Member="QuestionnaireCoachBypass" ThisKey="QuestionnaireID" OtherKey="QuestionnaireID" Type="QuestionnaireCoachBypass" Cardinality="One" />
+      <Association Name="LevelExpression_QuestionnaireRequest" Member="LevelExpression" ThisKey="Status" OtherKey="LevelID" Type="LevelExpression" IsForeignKey="true" />
+      <Association Name="PDQGroup_QuestionnaireRequest" Member="PDQGroup" ThisKey="GroupID" OtherKey="GroupID" Type="PDQGroup" IsForeignKey="true" />
+      <Association Name="RegisterLesson_QuestionnaireRequest" Member="RegisterLesson" ThisKey="RegisterID" OtherKey="RegisterID" Type="RegisterLesson" IsForeignKey="true" />
+      <Association Name="UserProfile_QuestionnaireRequest" Member="UserProfile" ThisKey="UID" OtherKey="UID" Type="UserProfile" IsForeignKey="true" />
+      <Association Name="UserProfile_QuestionnaireRequest1" Member="Creator" ThisKey="CreatorID" OtherKey="UID" Type="UserProfile" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.LessonAttendance" Member="LessonAttendance">
+    <Type Name="LessonAttendance">
+      <Column Name="LessonID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CompleteDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="ActorID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="LessonTime_LessonAttendance" Member="LessonTime" ThisKey="LessonID" OtherKey="LessonID" Type="LessonTime" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="UserProfile_LessonAttendance" Member="UserProfile" ThisKey="ActorID" OtherKey="UID" Type="UserProfile" IsForeignKey="true" />
     </Type>
   </Table>
   <Function Name="dbo.InquireVacantNo" Method="InquireVacantNo">

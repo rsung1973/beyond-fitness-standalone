@@ -41,8 +41,11 @@ namespace WebHome.Helper
                 items = models.GetTable<UserProfile>();
             }
 
-            return items.Where(l => (l.RealName.Contains(userName) || l.Nickname.Contains(userName))
-                        && (l.UserProfileExtension != null));
+            return items
+                    .Where(l => l.UserProfileExtension != null)
+                    .Where(l => l.RealName.Contains(userName)
+                        || l.Nickname.Contains(userName)
+                        || l.Phone == userName);
 
         }
 

@@ -36,6 +36,10 @@
                                     ViewBag.ProfileClass = "img-thumbnail popfit";
                                     Html.RenderPartial("~/Views/Common/ProfileImage.cshtml", item);
                                 }
+                                @if (ViewBag.ShowPhone == true)
+                                {
+                                    <small class="phone">@(item.Phone)</small>
+                                }
                                 @if (item.IsTrialLearner())
                                 {
                                     <h6 class="users_name">@(item.RealName)@(item.Nickname!=null?$"({item.Nickname})":null)</h6>

@@ -8,7 +8,7 @@
 <%@ Import Namespace="WebHome.Models.DataEntity" %>
 <%@ Import Namespace="WebHome.Controllers" %>
 
-<%  if (models.CheckCurrentQuestionnaireRequest(_model) || models.GetQuestionnaireRequest(_model.UserProfile).Count() > 0)
+<%--<%  if (models.CheckCurrentQuestionnaireRequest(_model) || models.GetQuestionnaireRequest(_model.UserProfile).Count() > 0)
     {   %>
 <div class="hp-info pull-right" id="<%= _contentID %>" onclick="$global.promptQuestionnaire(<%= _model.RegisterID %>);">
     <div class="hp-icon">
@@ -25,7 +25,7 @@
         });
     </script>
 </div>
-<%  }  %>
+<%  }  %>--%>
 
 
 <script runat="server">

@@ -27,6 +27,7 @@
     {
         return $"$global.selectLearnerProfile('{item.UID.EncryptKey()}');";
     });
+    ViewBag.ShowPhone = true;
     Html.RenderPartial("~/Views/ConsoleEvent/EventModal/MemberSelector.cshtml", _model);
 }
 

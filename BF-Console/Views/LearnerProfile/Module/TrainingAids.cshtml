@@ -42,7 +42,7 @@
 }
 @foreach (var item in items)
 {
-    <button class="@btnClass[item.StageID-1]" type="button" data-toggle="collapse" data-target="#@($"collapseAid_{item.StageID}")" aria-expanded="false" aria-controls="@($"collapseAid_{item.StageID}")"> @(item.Stage)器材 </button>
+    <button class="@btnClass[item.StageID-1]" type="button" data-toggle="collapse" data-target="#@($"collapseAid_{item.StageID}")" aria-expanded="false" aria-controls="@($"collapseAid_{item.StageID}")" tabindex="-1"> @(item.Stage)器材 </button>
 }
 
 @foreach (var item in items)

@@ -15,6 +15,7 @@ using System.Web.Mvc;
 using System.Web.Security;
 
 using CommonLib.MvcExtension;
+using Newtonsoft.Json;
 using Utility;
 using WebHome.Helper;
 using WebHome.Models.DataEntity;
@@ -166,7 +167,6 @@ namespace WebHome.Controllers
             return Json(new { result = true }, JsonRequestBehavior.AllowGet);
 
         }
-
 
         public ActionResult CheckLessonAttendance(int id)
         {

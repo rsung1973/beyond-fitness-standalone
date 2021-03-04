@@ -22,6 +22,7 @@
     models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
     _model = (UserProfile)this.Model;
     _viewModel = (DailyBookingQueryViewModel)ViewBag.ViewModel;
+    UserProfile _learner = models.GetTable<UserProfile>().Where(u => u.UID == _viewModel.LearnerID).FirstOrDefault();
     startDate = _viewModel.DateFrom ?? DateTime.Today;
 }
 <div id="@(_calendarID)" class="calendar"></div>
@@ -55,7 +56,7 @@
                 allDaySlot: false,
                 editable: false,
                 height: "auto",
-                defaultView: "month",
+                defaultView: '@(_learner?.ServingCoach!=null ? "agendaWeek" : "month")',
                 defaultDate: @Html.Raw(JsonConvert.SerializeObject(startDate)),
                 firstDay: 1,
                 businessHours: {
@@ -75,6 +76,7 @@
 
                     $viewModel.DateFrom = start.format('YYYY-MM-DD');
                     $viewModel.DateTo = end.format('YYYY-MM-DD');
+                    $viewModel.LearnerID = @(_viewModel.LearnerID ?? -1);
                     //$viewModel.DefaultView = defaultView;
                     $.post('@Html.Raw(Url.Action("LearnerCalendarEvents","LearnerProfile"))', $viewModel, function (data) {
                         callback(data);
@@ -97,9 +99,9 @@
                             //showUserEventModal(calEvent.keyID);
                         } else {
                             $viewModel.KeyID = calEvent.keyID;
-                            //$viewModel.LearnerID = calEvent.learnerID;
+                            $viewModel.LearnerID = calEvent.learnerID;
                             showLoading();
-                            $('').launchDownload('@Html.Raw(Url.Action("LessonTrainingContent", "ConsoleHome",new { _viewModel.LearnerID }))', $viewModel);
+                            $('').launchDownload('@Html.Raw(Url.Action("LessonTrainingContent", "ConsoleHome"))', $viewModel);
                         }
                     }
                 },
@@ -283,4 +285,14 @@
 
     });
 </script>
+@*@if (false && _learner.ServingCoach != null)
+{
+<script>
+    $(function () {
+        setTimeout(function () {
+            $('#@(_calendarID)').fullCalendar('changeView', 'agendaWeek');
+        }, 1000);
+    });
+</script>
+}*@
 

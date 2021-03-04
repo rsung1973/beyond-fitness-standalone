@@ -66,7 +66,7 @@ namespace WebHome.Helper
                         if (lastLesson != null)
                         {
                             lastLesson.Attended = (int)Naming.LessonStatus.課程結束;
-                            lesson.Lessons += (lastLesson.Lessons - lastLesson.GroupingLesson.LessonTime.Count);
+                            //lesson.Lessons += (lastLesson.Lessons - lastLesson.GroupingLesson.LessonTime.Count);
                         }
 
                     }

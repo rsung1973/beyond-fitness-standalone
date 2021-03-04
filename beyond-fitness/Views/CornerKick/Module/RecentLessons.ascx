@@ -42,7 +42,7 @@
                 <div class="col s4 m3 l2">
                     <a href="javascript:gtag('event', '課表內容', {  'event_category': '卡片點擊',  'event_label': '卡片總覽'});window.location.href = '<%= Url.Action("ViewLesson","CornerKick",new { keyID = HttpUtility.UrlEncode(item.LessonID.EncryptKey()) }) %>';">
                         <%  ViewBag.ImgClass = "circle responsive-img valign";
-                            Html.RenderPartial("~/Views/CornerKick/Module/ProfileImage.ascx", item.AsAttendingCoach.UserProfile);
+                            Html.RenderPartial("~/Views/CornerKick/Module/ProfileImage.cshtml", item.AsAttendingCoach.UserProfile);
                         %>
                     </a>
                 </div>

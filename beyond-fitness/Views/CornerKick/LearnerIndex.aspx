@@ -31,7 +31,7 @@
     <link href="css/preview-assets/reset.css" rel="stylesheet">
     <link href="css/royalslider/skins/default/rs-default.css" rel="stylesheet" class="rs-file">
     <!-- STYLE 要放最下面  -->
-    <link href="css/style.css?1.2" type="text/css" rel="stylesheet" media="screen,projection" />
+    <link href="css/style.css?1.3" type="text/css" rel="stylesheet" media="screen,projection" />
               <link rel="icon" href="favicons/favicon_96x96.png">
       <!-- Specifying a Webpage Icon for Web Clip -->
       <link rel="apple-touch-icon-precomposed" href="favicons/favicon_57x57.png">
@@ -276,7 +276,7 @@
     </script>
 </body>
 </html>
-<%  Html.RenderPartial("~/Views/Common/JQueryHelper.ascx"); %>
+<%  Html.RenderPartial("~/Views/Common/JQueryHelper.cshtml"); %>
 <script runat="server">
 
     ModelStateDictionary _modelState;

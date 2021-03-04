@@ -347,7 +347,7 @@ namespace WebHome.Models.ViewModel
         public int? TrackID { get; set; }
     }
 
-    public class AwardQueryViewModel : QueryViewModel
+    public class AwardQueryViewModel : LoginViewModel
     {
         public string UserName { get; set; }
         public int? ActorID { get; set; }
@@ -357,7 +357,8 @@ namespace WebHome.Models.ViewModel
         public String PointRange { get; set; }
         public int? Lower { get; set; }
         public int? Upper { get; set; }
-        public int? UID { get; set; }
+        public String WriteoffCode { get; set; }
+        public bool? ViewAward { get; set; }
     }
 
     public class ExerciseGameViewModel

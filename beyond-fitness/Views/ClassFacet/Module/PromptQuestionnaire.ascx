@@ -11,7 +11,7 @@
 <script>
     $(function () {
         $global.promptQuestionnaire = function (registerID, questionnaireID) {
-            showLoading();
+<%--            showLoading();
             $.post('<%= Url.Action("PromptCurrentQuestionnaire", "Html") %>', { 'registerID': registerID, 'questionnaireID': questionnaireID }, function (data) {
                 hideLoading();
                 if ($.isPlainObject(data)) {
@@ -19,7 +19,7 @@
                 } else {
                     $(data).appendTo($('body'));
                 }
-            });
+            });--%>
         };
     });
 </script>

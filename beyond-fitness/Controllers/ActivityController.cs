@@ -626,6 +626,8 @@ namespace WebHome.Controllers
 
         public ActionResult UpdateLessonFitnessAssessment(int assessmentID,int groupID,bool? forHealth)
         {
+            var profile = HttpContext.GetUser();
+
             var fitnessAssessment = models.GetTable<LessonFitnessAssessment>().Where(f => f.AssessmentID == assessmentID).FirstOrDefault();
             if (fitnessAssessment == null)
             {
@@ -643,7 +645,7 @@ namespace WebHome.Controllers
 
             if (models.CouldMarkToAttendLesson(fitnessAssessment.LessonTime))
             {
-                models.AttendLesson(fitnessAssessment.LessonTime);
+                models.AttendLesson(fitnessAssessment.LessonTime, profile);
                 //foreach(var r in fitnessAssessment.LessonTime.GroupingLesson.RegisterLesson)
                 //{
                 //    models.CheckLearnerQuestionnaireRequest(r);
@@ -717,6 +719,7 @@ namespace WebHome.Controllers
 
         public ActionResult UpdateAssessmentReport(FitnessAssessmentReportViewModel viewModel)
         {
+            var profile = HttpContext.GetUser();
             var fitnessAssessment = models.GetTable<LessonFitnessAssessment>().Where(f => f.AssessmentID == viewModel.AssessmentID).FirstOrDefault();
             if (fitnessAssessment == null)
             {
@@ -777,7 +780,7 @@ namespace WebHome.Controllers
 
             if (models.CouldMarkToAttendLesson(fitnessAssessment.LessonTime))
             {
-                models.AttendLesson(fitnessAssessment.LessonTime);
+                models.AttendLesson(fitnessAssessment.LessonTime, profile);
                 //foreach (var r in fitnessAssessment.LessonTime.GroupingLesson.RegisterLesson)
                 //{
                 //    models.CheckLearnerQuestionnaireRequest(r);

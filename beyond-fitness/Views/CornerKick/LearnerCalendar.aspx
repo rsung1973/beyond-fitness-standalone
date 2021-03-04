@@ -31,7 +31,7 @@
       <!-- jalendar  -->
       <link href="css/jalendar/jalendar.css" rel="stylesheet" type="text/css" />
       <!-- STYLE 要放最下面  -->
-      <link href="css/style.css?1.2" type="text/css" rel="stylesheet" media="screen,projection"/>
+      <link href="css/style.css?1.3" type="text/css" rel="stylesheet" media="screen,projection"/>
                  <link rel="icon" href="favicons/favicon_96x96.png">
       <!-- Specifying a Webpage Icon for Web Clip -->
       <link rel="apple-touch-icon-precomposed" href="favicons/favicon_57x57.png">
@@ -77,7 +77,7 @@
             <nav class="dark-bg non-line" role="navigation">
                <div class="nav-wrapper container">
                   <!-- BACK --> 
-                  <%  Html.RenderPartial("~/Views/CornerKick/Module/ReturnHome.ascx"); %>
+                  <%  Html.RenderPartial("~/Views/CornerKick/Module/ReturnHome.cshtml"); %>
                   <!-- // End of BACK --> 
                   <a id="logo-container" href="#" class="brand-logo toptitle center" >我的行事曆</a>
                   <a class="btn waves-effect waves-light right btn-add" onclick="gtag('event', '新增行事曆', { 'event_category': '按鈕點擊', 'event_label': '我的行事曆'});" href="<%= Url.Action("EditUserEvent","CornerKick") %>">＋新增</a>
@@ -178,8 +178,8 @@
       </script>
    </body>
 </html>
-<%  Html.RenderPartial("~/Views/Common/JQueryHelper.ascx"); %>
-<%  Html.RenderPartial("~/Views/CornerKick/Module/ModeGirls.ascx",_model); %>
+<%  Html.RenderPartial("~/Views/Common/JQueryHelper.cshtml"); %>
+<%  Html.RenderPartial("~/Views/CornerKick/Module/ModeGirls.cshtml",_model); %>
 <script runat="server">
 
     ModelStateDictionary _modelState;

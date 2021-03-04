@@ -30,6 +30,9 @@ namespace WebHome.Models.ViewModel
         public String ViewID { get; set; }
         public bool? ScrollToView { get; set; }
         public Naming.MasterVersion? MasterVer { get; set; }
+        [JsonIgnore]
+        public String UrlAction { get; set; }
+        public bool? Confirmed { get; set; }
     }
 
     public class LoginViewModel : QueryViewModel
@@ -55,6 +58,8 @@ namespace WebHome.Models.ViewModel
         public bool RememberMe { get; set; }
 
         public int? UID { get; set; }
+        public String LineID { get; set; }
+
     }
 
     public class FBRegisterViewModel
@@ -100,7 +105,6 @@ namespace WebHome.Models.ViewModel
         [Display(Name = "生日")]
         public DateTime? Birthday { get; set; }
 
-        public String LineID { get; set; }
         public String X001
         {
             get
@@ -115,12 +119,8 @@ namespace WebHome.Models.ViewModel
         public bool? LearnerSettings { get; set; }
     }
 
-    public class PasswordViewModel : QueryViewModel
+    public class PasswordViewModel : LoginViewModel
     {
-
-        [DataType(DataType.Password)]
-        [Display(Name = "密碼")]
-        public string Password { get; set; }
 
         [DataType(DataType.Password)]
         [Display(Name = "確認密碼")]
@@ -130,8 +130,6 @@ namespace WebHome.Models.ViewModel
         [Display(Name = "圖形密碼")]
         public string lockPattern { get; set; }
 
-        public String PID { get; set; }
-        public int? UID { get; set; }
         public Guid? UUID { get; set; }
     }
 

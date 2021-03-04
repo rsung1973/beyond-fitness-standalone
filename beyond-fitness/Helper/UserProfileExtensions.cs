@@ -40,14 +40,18 @@ namespace WebHome.Helper
             }
         }
 
-        public static IQueryable<ServingCoach> PromptEffectiveCoach<TEntity>(this ModelSource<TEntity> models)
+        public static IQueryable<ServingCoach> PromptEffectiveCoach<TEntity>(this ModelSource<TEntity> models,IQueryable<UserProfile> items = null)
                 where TEntity : class, new()
         {
+            if (items == null)
+            {
+                items = models.GetTable<UserProfile>();
+            }
+
+            items = items.Where(u => u.LevelID == (int)Naming.MemberStatusDefinition.Checked);
             return models.GetTable<ServingCoach>()
                     .Where(c => c.LevelID > (int)Naming.ProfessionLevelDefinition.Preliminary)
-                    .Join(models.GetTable<UserProfile>()
-                            .Where(u => u.LevelID == (int)Naming.MemberStatusDefinition.Checked),
-                        c => c.CoachID, u => u.UID, (c, u) => c);
+                    .Join(items, c => c.CoachID, u => u.UID, (c, u) => c);
         }
 
         public static IQueryable<UserProfile> PromptLearnerAboutToBirth<TEntity>(this ModelSource<TEntity> models,int days = 14)

@@ -211,21 +211,23 @@
                                         }
                                     });
                         } else {
-                            $.post('<%= Url.Action("UpdateBookingByCoach","CoachFacet") %>',
-                                    {
-                                        'lessonID': calEvent.lessonID,
-                                        'classTimeStart': calEvent.start.format('YYYY-MM-DD HH:mm:ss'),
-                                        'classTimeEnd': calEvent.end.format('YYYY-MM-DD HH:mm:ss'),
-                                    }, function (data) {
-                                        hideLoading();
-                                        if (data.result) {
-                                            smartAlert(data.message);
-                                        } else {
-                                            revertFunc();
-                                            var $dialog = $(data);
-                                            $dialog.appendTo('body').remove();
-                                        }
-                                    });
+                            hideLoading();
+                            revertFunc();
+                            <%--$.post('<%= Url.Action("UpdateBookingByCoach","CoachFacet") %>',
+                                {
+                                    'lessonID': calEvent.lessonID,
+                                    'classTimeStart': calEvent.start.format('YYYY-MM-DD HH:mm:ss'),
+                                    'classTimeEnd': calEvent.end.format('YYYY-MM-DD HH:mm:ss'),
+                                }, function (data) {
+                                    hideLoading();
+                                    if (data.result) {
+                                        smartAlert(data.message);
+                                    } else {
+                                        revertFunc();
+                                        var $dialog = $(data);
+                                        $dialog.appendTo('body').remove();
+                                    }
+                                });--%>
                         }
                     },
                     eventResize: function (calEvent, delta, revertFunc, jsEvent, ui, view) {
@@ -249,21 +251,23 @@
                                     }
                                 });
                         } else {
-                            $.post('<%= Url.Action("UpdateBookingByCoach","CoachFacet") %>',
-                                    {
-                                        'lessonID': calEvent.lessonID,
-                                        'classTimeStart': calEvent.start.format('YYYY-MM-DD HH:mm:ss'),
-                                        'classTimeEnd': calEvent.end.format('YYYY-MM-DD HH:mm:ss'),
-                                    }, function (data) {
-                                        hideLoading();
-                                        if (data.result) {
-                                            smartAlert(data.message);
-                                        } else {
-                                            revertFunc();
-                                            var $dialog = $(data);
-                                            $dialog.appendTo('body').remove();
-                                        }
-                                    });
+                            hideLoading();
+                            revertFunc();
+<%--                            $.post('<%= Url.Action("UpdateBookingByCoach","CoachFacet") %>',
+                                {
+                                    'lessonID': calEvent.lessonID,
+                                    'classTimeStart': calEvent.start.format('YYYY-MM-DD HH:mm:ss'),
+                                    'classTimeEnd': calEvent.end.format('YYYY-MM-DD HH:mm:ss'),
+                                }, function (data) {
+                                    hideLoading();
+                                    if (data.result) {
+                                        smartAlert(data.message);
+                                    } else {
+                                        revertFunc();
+                                        var $dialog = $(data);
+                                        $dialog.appendTo('body').remove();
+                                    }
+                                });--%>
                         }
                     },
                     windowResize: function (event, ui) {

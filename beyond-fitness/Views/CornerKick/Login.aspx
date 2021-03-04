@@ -30,7 +30,7 @@
       <!-- scrollup-master  -->
       <link href="css/scrollup-master/themes/image.css?1.1" rel="stylesheet" id="scrollUpTheme">
       <!-- STYLE 要放最下面  -->
-      <link href="css/style.css?1.2" type="text/css" rel="stylesheet" media="screen,projection"/>
+      <link href="css/style.css?1.3" type="text/css" rel="stylesheet" media="screen,projection"/>
                  <link rel="icon" href="favicons/favicon_96x96.png">
       <!-- Specifying a Webpage Icon for Web Clip -->
       <link rel="apple-touch-icon-precomposed" href="favicons/favicon_57x57.png">
@@ -196,7 +196,7 @@
        $('').launchDownload('<%= Url.Action("SignOn", "CornerKick") %>',$formData);
    }
 </script>
-<%  Html.RenderPartial("~/Views/Common/JQueryHelper.ascx"); %>
+<%  Html.RenderPartial("~/Views/Common/JQueryHelper.cshtml"); %>
 <%  Html.RenderAction("AutoLogin", "CornerKick"); %>
 <%  Html.RenderPartial("~/Views/Shared/Materialize/ReportInputError.ascx"); %>
 <script runat="server">

@@ -489,6 +489,15 @@ namespace WebHome.Controllers
             return View("~/Views/ContractConsole/Module/ShowCauseForEndingDonutChart.cshtml", profile);
         }
 
+        public ActionResult ShowRemainedLessonList(CourseContractQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            var profile = models.GetTable<UserProfile>().Where(u => u.UID == viewModel.MemberID)
+                .FirstOrDefault() ?? new UserProfile { UID = -1 };
+            _ = profile.RemainedLessonCount(models, out int remainedCount, out IQueryable<RegisterLesson> remainedLessons);
+
+            return View("~/Views/ConsoleHome/CourseContract/RemainedLessonListModal.cshtml", remainedLessons);
+        }
 
     }
 }

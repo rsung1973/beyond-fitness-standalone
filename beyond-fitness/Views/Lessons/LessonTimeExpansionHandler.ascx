@@ -29,7 +29,7 @@
 <%  }
     else
     { %>
-        <li><a onclick="showLoading(true,function(){ window.location.href = '<%= VirtualPathUtility.ToAbsolute("~/Lessons/RebookingByCoach/") + _model.LessonID %>';});"><i class="fa fa-fw fa fa-calendar-alt-check-o" aria-hidden="true"></i>修改上課時間</a></li>
+        <%--<li><a onclick="showLoading(true,function(){ window.location.href = '<%= VirtualPathUtility.ToAbsolute("~/Lessons/RebookingByCoach/") + _model.LessonID %>';});"><i class="fa fa-fw fa fa-calendar-alt-check-o" aria-hidden="true"></i>修改上課時間</a></li>--%>
 <%  }
     if (item.LessonTime.LessonAttendance == null)
     { %>

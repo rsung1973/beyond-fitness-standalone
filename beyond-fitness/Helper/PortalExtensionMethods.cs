@@ -51,19 +51,23 @@ namespace WebHome.Helper
 
             if (item.IsAuthorizedSysAdmin())
             {
-                return url.Action("Index", "CoachFacet", new { KeyID = item.UID.EncryptKey() });
+                //return url.Action("Index", "CoachFacet", new { KeyID = item.UID.EncryptKey() });
+                return VirtualPathUtility.ToAbsolute("~/ConsoleHome/Index");
             }
             else if (item.UserRoleAuthorization.Any(r => r.RoleID == (int)Naming.RoleID.Coach || r.RoleID == (int)Naming.RoleID.Manager || r.RoleID == (int)Naming.RoleID.ViceManager))
             {
-                return url.Action("Index", "CoachFacet", new { KeyID = item.UID.EncryptKey() });
+                //return url.Action("Index", "CoachFacet", new { KeyID = item.UID.EncryptKey() });
+                return VirtualPathUtility.ToAbsolute("~/ConsoleHome/Index");
             }
             else if (item.IsAssistant())
             {
-                return url.Action("Index", "CoachFacet", new { KeyID = item.UID.EncryptKey() });
+                //return url.Action("Index", "CoachFacet", new { KeyID = item.UID.EncryptKey() });
+                return VirtualPathUtility.ToAbsolute("~/ConsoleHome/Index");
             }
             else if (item.IsAccounting())
             {
-                return url.Action("TrustIndex", "Accounting");
+                //return url.Action("TrustIndex", "Accounting");
+                return VirtualPathUtility.ToAbsolute("~/ConsoleHome/Index");
             }
             else if (item.IsServitor())
             {

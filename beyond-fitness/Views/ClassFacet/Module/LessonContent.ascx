@@ -49,7 +49,7 @@
                 <span class="widget-icon"><i class="fa fa-calendar-alt"></i></span>
                 <h2><%= _model.UserProfile.FullName() %>行事曆</h2>
                 <div class="widget-toolbar">
-                    <a href="#" class="btn  btn-primary" onclick="bookingByCoach('<%= DateTime.Today.ToString("yyyy-MM-dd") %>');">預約上課</a>
+                    <%--<a href="#" class="btn  btn-primary" onclick="bookingByCoach('<%= DateTime.Today.ToString("yyyy-MM-dd") %>');">預約上課</a>--%>
                 </div>
             </header>
             <!-- widget div-->

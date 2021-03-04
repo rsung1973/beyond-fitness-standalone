@@ -28,7 +28,7 @@
     <link href="css/scrollup-master/themes/image.css?1.1" rel="stylesheet" id="scrollUpTheme">
     
     <!-- STYLE 要放最下面  -->
-    <link href="css/style.css?1.2" type="text/css" rel="stylesheet" media="screen,projection" />
+    <link href="css/style.css?1.3" type="text/css" rel="stylesheet" media="screen,projection" />
               <link rel="icon" href="favicons/favicon_96x96.png">
       <!-- Specifying a Webpage Icon for Web Clip -->
       <link rel="apple-touch-icon-precomposed" href="favicons/favicon_57x57.png">
@@ -46,7 +46,7 @@
             <nav class="white non-line" role="navigation">
                 <div class="nav-wrapper container">
                     <!-- BACK -->
-                    <%  Html.RenderPartial("~/Views/CornerKick/Module/ReturnHome.ascx"); %>
+                    <%  Html.RenderPartial("~/Views/CornerKick/Module/ReturnHome.cshtml"); %>
                     <!-- // End of BACK -->
                     <a id="logo-container" href="#" class="brand-logo toptitle center">我的通知</a>
                 </div>
@@ -62,7 +62,7 @@
                             <div class="row valign-wrapper">
                                 <div class="col s4 m2">
                                     <%  ViewBag.ImgClass = "circle responsive-img valign";
-                                        Html.RenderPartial("~/Views/CornerKick/Module/ProfileImage.ascx", _model); %>
+                                        Html.RenderPartial("~/Views/CornerKick/Module/ProfileImage.cshtml", _model); %>
                                 </div>
                                 <div class="col s8 m10 text-box"><span class="black-t18"><%= _model.UserName ?? _model.RealName %></span> <span class="black-t12">目前有 <span id="noticeCount"></span> 個提醒通知</span> </div>
                             </div>
@@ -132,7 +132,7 @@
     </script>
 </body>
 </html>
-<%  Html.RenderPartial("~/Views/Common/JQueryHelper.ascx"); %>
+<%  Html.RenderPartial("~/Views/Common/JQueryHelper.cshtml"); %>
 <script>
     $(function () {
 <%  if (events.Count > 0)

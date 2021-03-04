@@ -28,7 +28,7 @@
       <link href="css/scrollup-master/themes/image.css?1.1" rel="stylesheet" id="scrollUpTheme">
       
       <!-- STYLE 要放最下面  -->
-      <link href="css/style.css?1.2" type="text/css" rel="stylesheet" media="screen,projection"/>
+      <link href="css/style.css?1.3" type="text/css" rel="stylesheet" media="screen,projection"/>
                  <link rel="icon" href="favicons/favicon_96x96.png">
       <!-- Specifying a Webpage Icon for Web Clip -->
       <link rel="apple-touch-icon-precomposed" href="favicons/favicon_57x57.png">
@@ -38,7 +38,7 @@
       <link rel="apple-touch-icon-precomposed" sizes="180x180" href="favicons/favicon_180x180.png">       
 
       <script src="js/libs/jquery-2.2.4.min.js"></script> 
-      <%  Html.RenderPartial("~/Views/Common/JQueryHelper.ascx"); %>
+      <%  Html.RenderPartial("~/Views/Common/JQueryHelper.cshtml"); %>
    </head>
    <body>
       <!--//預設值為藍色 / 若要設定女生 請加上 mode-girls /--> 
@@ -49,12 +49,12 @@
                <div class="nav-wrapper container">
                    <%   if (ViewBag.LearnerSettings == true)
                         { %>
-                   <%  Html.RenderPartial("~/Views/CornerKick/Module/ReturnHome.ascx"); %>
+                   <%  Html.RenderPartial("~/Views/CornerKick/Module/ReturnHome.cshtml"); %>
                    <%   } %>
                   <a id="logo-container" href="#" class="brand-logo toptitle center" >我的設定</a>
                   <div class="user-photo">
                       <%  ViewBag.NoNameImg = "images/avatars/noname-edit.jpg";
-                          Html.RenderPartial("~/Views/CornerKick/Module/ProfileImage.ascx", _profile); %>
+                          Html.RenderPartial("~/Views/CornerKick/Module/ProfileImage.cshtml", _profile); %>
                       <input type="file" id="photopic" name="photopic" style="display:none;"/>
                   </div>
                </div>
@@ -178,8 +178,8 @@
       </script>
    </body>
 </html>
-<%  Html.RenderPartial("~/Views/Common/JQueryHelper.ascx"); %>
-<%  Html.RenderPartial("~/Views/CornerKick/Module/ModeGirls.ascx",_profile); %>
+<%  Html.RenderPartial("~/Views/Common/JQueryHelper.cshtml"); %>
+<%  Html.RenderPartial("~/Views/CornerKick/Module/ModeGirls.cshtml",_profile); %>
 <script>
 
     $(function () {
@@ -238,8 +238,8 @@
    }
 
 </script>
-<%  Html.RenderPartial("~/Views/Common/JQueryHelper.ascx"); %>
-<%  Html.RenderPartial("~/Views/CornerKick/Module/ModeGirls.ascx",_profile); %>
+<%  Html.RenderPartial("~/Views/Common/JQueryHelper.cshtml"); %>
+<%  Html.RenderPartial("~/Views/CornerKick/Module/ModeGirls.cshtml",_profile); %>
 <script runat="server">
 
     ModelStateDictionary _modelState;

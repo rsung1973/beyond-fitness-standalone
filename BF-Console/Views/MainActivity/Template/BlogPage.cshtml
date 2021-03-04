@@ -21,6 +21,25 @@
 <!DOCTYPE html>
 <html lang="@(ViewBag.Lang ?? "zh-TW")">
 <head>
+    <!-- Google Tag Manager -->
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        //gtag('config', 'GTM-T5GQNTV');
+        gtag('config', '@WebHome.Properties.Settings.Default.GA_ID_Frontend');
+
+        (function (w, d, s, l, i) {
+            w[l] = w[l] || []; w[l].push({
+                'gtm.start':
+                    new Date().getTime(), event: 'gtm.js'
+            }); var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                    'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-T5GQNTV');
+    </script>
+    <!-- End Google Tag Manager -->
     <meta charset="utf-8" />
     <meta name="description" content="Beyond Fitness | 專業與科學化的私人教練" />
     <meta HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE" />
@@ -75,6 +94,12 @@
 </head>
 
 <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript>
+        <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T5GQNTV"
+                height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
+    <!-- End Google Tag Manager (noscript) -->
     <!-- //Main Nav -->
     <header id="main-nav">
         <div class="container">
@@ -119,12 +144,14 @@
         </div>
     </footer>
     <!-- Global site tag (gtag.js) - Google Analytics -->
+    @*<script async src="https://www.googletagmanager.com/gtm.js?id=GTM-T5GQNTV"></script>*@
     <script async src="https://www.googletagmanager.com/gtag/js?id=@(WebHome.Properties.Settings.Default.GA_ID_Frontend)"></script>
-    <script type="text/javascript">window.dataLayer = window.dataLayer || [];
+    <script type="text/javascript">
+@*window.dataLayer = window.dataLayer || [];
         function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
 
-        gtag('config', '@WebHome.Properties.Settings.Default.GA_ID_Frontend');
+        gtag('config', '@WebHome.Properties.Settings.Default.GA_ID_Frontend');*@
 
 
         this.bindTrackingCode = function (gaEventName, linkURL, linkType) {
@@ -139,6 +166,7 @@
                     window.location.href = linkURL;
                 }
             }
-        }</script>
+        }
+    </script>
 </body>
 </html>

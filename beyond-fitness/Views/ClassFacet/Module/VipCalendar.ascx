@@ -13,7 +13,7 @@
 <script>
     calendarEventHandler = {
         dayClick: function (date, allDay, jsEvent, view) {
-            bookingByCoach(date.format('YYYY-MM-DD')+' 08:00');
+            //bookingByCoach(date.format('YYYY-MM-DD')+' 08:00');
         },
         eventClick: function (calEvent) {
             if(calEvent.id=='course' || calEvent.id=='self' || calEvent.id=='trial' || calEvent.id=='home' || calEvent.id=='coach') {

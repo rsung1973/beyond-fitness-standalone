@@ -20,7 +20,9 @@
     UserProfile _learner = (UserProfile)ViewBag.DataItem;
 }
 @{
-    var pdqItems = models.GetTable<PDQQuestion>().Where(p => p.GroupID == (int)Naming.QuestionnaireGroup.滿意度問卷調查_2017).ToArray();
+    var pdqItems = models.GetTable<PDQQuestion>().Where(p => p.GroupID == (int)Naming.QuestionnaireGroup.滿意度問卷調查_2017)
+        .OrderBy(q => q.QuestionNo)
+        .ToArray();
 }
 <!-- BEGIN STEP-->
 <div class="tsf-step step-1">

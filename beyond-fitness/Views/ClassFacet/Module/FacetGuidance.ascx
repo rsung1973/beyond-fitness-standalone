@@ -21,10 +21,10 @@
         <%  } %>
     </ul>
     <div class="widget-toolbar">
-        <%  if (!_model.ContractTrustTrack.Any(t => t.SettlementID.HasValue) && _model.LessonAttendance==null)
+        <%--<%  if (!_model.ContractTrustTrack.Any(t => t.SettlementID.HasValue) && _model.LessonAttendance==null)
             {   %>
         <a onclick="rebookingByCoach();" class="btn bg-color-yellow" id="modifyBookingDialog_link">修改時間</a>
-        <%  } %>
+        <%  } %>--%>
         <%  if ((/*_model.RegisterLesson.RegisterLessonEnterprise!=null 
                 && _model.RegisterLesson.RegisterLessonEnterprise.EnterpriseCourseContent.EnterpriseLessonType.Status==(int)Naming.LessonPriceStatus.自主訓練 
                 &&*/
@@ -34,7 +34,7 @@
                 && _model.RegisterLesson.UID!=2091
                 && _model.RegisterLesson.UID!=3612)
             { %>
-        <a onclick="attendLesson(<%= _model.LessonID %>);" class="btn btn-success"><i class="far fa-fw fa-check-square"></i>完成上課</a>
+        <%--<a onclick="attendLesson(<%= _model.LessonID %>);" class="btn btn-success"><i class="far fa-fw fa-check-square"></i>完成上課</a>--%>
         <%  } %>
         <a href="javascript:showUndone(<%= _model.LessonID %>,-1);" class="btn btn-default" rel="tooltip" data-placement="bottom" data-original-title="<span class='label bg-color-darken font-md'>前往上一筆未完成資料</span>" data-html="true"><i class="fa fa-arrow-circle-left fa-lg"></i></a>
         <a href="javascript:showUndone(<%= _model.LessonID %>,1);" class="btn btn-default" rel="tooltip" data-placement="bottom" data-original-title="<span class='label bg-color-darken font-md'>前往下一筆未完成資料</span>" data-html="true"><i class="fa fa-arrow-circle-right  fa-lg"></i></a>

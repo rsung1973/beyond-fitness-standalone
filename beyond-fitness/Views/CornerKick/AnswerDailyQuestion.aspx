@@ -37,7 +37,7 @@
       <link rel="apple-touch-icon-precomposed" sizes="180x180" href="favicons/favicon_180x180.png">       
 
       <!-- STYLE 要放最下面  -->
-      <link href="css/style.css?1.2" type="text/css" rel="stylesheet" media="screen,projection"/>
+      <link href="css/style.css?1.3" type="text/css" rel="stylesheet" media="screen,projection"/>
    </head>
    <body>
       <!--//預設值為藍色 / 若要設定女生 請加上 mode-girls /-->
@@ -47,7 +47,7 @@
             <nav class="white non-line" role="navigation">
                <div class="nav-wrapper container">
                   <!-- BACK --> 
-                  <%  Html.RenderPartial("~/Views/CornerKick/Module/ReturnHome.ascx"); %>
+                  <%  Html.RenderPartial("~/Views/CornerKick/Module/ReturnHome.cshtml"); %>
                   <!-- // End of BACK --> 
                   <a id="logo-container" href="#" class="brand-logo toptitle center" >運動小學堂</a> 
                </div>
@@ -128,8 +128,8 @@
       </script> 
    </body>
 </html>
-<%  Html.RenderPartial("~/Views/Common/JQueryHelper.ascx"); %>
-<%  Html.RenderPartial("~/Views/CornerKick/Module/ModeGirls.ascx",_profile); %>
+<%  Html.RenderPartial("~/Views/Common/JQueryHelper.cshtml"); %>
+<%  Html.RenderPartial("~/Views/CornerKick/Module/ModeGirls.cshtml",_profile); %>
 <script>
     function commitAnswer() {
         var $form = $('#ansForm');

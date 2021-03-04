@@ -80,17 +80,33 @@
                                                             </p>
                                                             <script>
                                                                 function rejectLearnerCharacter() {
-                                                                    showLoading();
-                                                                    $.post('@Html.Raw(Url.Action("RejectLearnerCharacter", "LearnerProfile", new {questionnaire.QuestionnaireID }))', { 'keyID': '@(_learner.UID.EncryptKey())' }, function (data) {
-                                                                        hideLoading();
-                                                                        if ($.isPlainObject(data)) {
-                                                                            if (data.result) {
-                                                                                $('').launchDownload('@Html.Raw(Url.Action("LearnerProfile","ConsoleHome"))', { 'keyID': '@(_learner.UID.EncryptKey())' });
-                                                                            } else {
-                                                                                swal(data.message);
-                                                                            }
+                                                                    swal({
+                                                                        title: "我超強，不用瞭解學生?",
+                                                                        text: "系統自動註記放棄瞭解學生!!",
+                                                                        type: "warning",
+                                                                        showCancelButton: true,
+                                                                        confirmButtonColor: "#DD6B55",
+                                                                        confirmButtonText: "確定, 不後悔",
+                                                                        cancelButtonText: "不, 點錯了",
+                                                                        closeOnConfirm: false,
+                                                                        closeOnCancel: false
+                                                                    }, function (isConfirm) {
+                                                                        if (isConfirm) {
+                                                                            showLoading();
+                                                                            $.post('@Html.Raw(Url.Action("RejectLearnerCharacter", "LearnerProfile", new {questionnaire.QuestionnaireID }))', { 'keyID': '@(_learner.UID.EncryptKey())' }, function (data) {
+                                                                                hideLoading();
+                                                                                if ($.isPlainObject(data)) {
+                                                                                    if (data.result) {
+                                                                                        $('').launchDownload('@Html.Raw(Url.Action("LearnerProfile","ConsoleHome"))', { 'keyID': '@(_learner.UID.EncryptKey())' });
+                                                                                    } else {
+                                                                                        swal(data.message);
+                                                                                    }
+                                                                                } else {
+                                                                                    $(data).appendTo($('body'));
+                                                                                }
+                                                                            });
                                                                         } else {
-                                                                            $(data).appendTo($('body'));
+                                                                            swal("取消成功", "請繼續完成瞭解學生 :)", "error");
                                                                         }
                                                                     });
                                                                 }

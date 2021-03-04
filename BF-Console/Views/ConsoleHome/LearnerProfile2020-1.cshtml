@@ -129,9 +129,10 @@
                                     </li>
                                     @{
                                         int remainedCount;
-                                        var remainedItems = _learner.RemainedLessonCount(models, out remainedCount);
+                                        IQueryable<RegisterLesson> remainedLessons;
+                                        var remainedItems = _learner.RemainedLessonCount(models, out remainedCount, out remainedLessons);
                                     }
-                                    <li class="col-lg-6 col-6" onclick='showContractList(@Html.Raw(JsonConvert.SerializeObject(
+                                    <li class="col-lg-6 col-6" onclick='showRemainedLessons(@Html.Raw(JsonConvert.SerializeObject(
                                                 new
                                                 {
                                                     MemberID = _learner.UID,
@@ -226,6 +227,23 @@
 
         }
 
+        function showRemainedLessons(viewModel, alertCount, popupModal) {
+            var event = window.event;
+            if (event) {
+                event.cancelBubble = true;
+            }
+
+            $.post('@Html.Raw(Url.Action("ShowRemainedLessonList", "ContractConsole"))', viewModel, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    swal(data.message);
+                } else {
+                    $('body').append(data);
+                }
+            });
+
+        }
+
 
         function editLearner() {
             showLoading();
@@ -255,6 +273,10 @@
                     $(data).appendTo($('body'));
                 }
             });
+        }
+
+        function processContract(keyID) {
+
         }
     </script>
 }

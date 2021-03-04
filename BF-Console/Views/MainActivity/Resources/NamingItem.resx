@@ -227,7 +227,7 @@
   </data>
   <data name="AboutVedioDeclaration2" xml:space="preserve">
     <value>我們將一起創造專屬於你的價值，進而讓生活更有意義。</value>
-  </data>    
+  </data>
   <data name="FindNanjingBranch" xml:space="preserve">
     <value>南京店</value>
   </data>
@@ -282,7 +282,7 @@
   <data name="FindAnheBranchAdd" xml:space="preserve">
     <value>台北市大安區安和路二段81號B1</value>
   </data>
-   <data name="FindAnheBranchDesc1" xml:space="preserve">
+  <data name="FindAnheBranchDesc1" xml:space="preserve">
     <value>位於捷運信義安和捷運站2A號出口，走路約3分鐘即可抵達。</value>
   </data>
   <data name="OurTeam" xml:space="preserve">
@@ -325,7 +325,7 @@
     <value />
   </data>
   <data name="JoinUsJob2" xml:space="preserve">
-    <value>行銷人員</value>
+    <value>防護教練/恢復教練/營養教練</value>
   </data>
   <data name="JoinUsJob2Desc" xml:space="preserve">
     <value />
@@ -349,9 +349,9 @@
     <value>在壓力鍋中爆炸性成長的專業水準</value>
   </data>
   <data name="OpportunityFeaturesDesc4" xml:space="preserve">
-    <value>一份不算太高但可以舒適過生活的薪水</value>
+    <value>一份可以完成舒適生活的收入目標</value>
   </data>
-    <data name="OpportunityFeaturesDesc5" xml:space="preserve">
+  <data name="OpportunityFeaturesDesc5" xml:space="preserve">
     <value>在工作中玩樂，玩樂中工作</value>
   </data>
   <data name="JoinUsContactTitle" xml:space="preserve">
@@ -380,15 +380,15 @@
   </data>
   <data name="Reservation" xml:space="preserve">
     <value>立即預約</value>
-  </data> 
+  </data>
   <data name="Features1Desc" xml:space="preserve">
-    <value>&lt;p&gt;Beyond Fitness提供以下承諾&lt;/p&gt;&lt;ul class=&quot;features-list&quot;&gt;&lt;li&gt;客製化課程內容，學習更安全，同時讓您得到顯著的運動效果&lt;/li&gt;&lt;li&gt;專業教練帶領下，清楚了解自己的身體狀況與運動進度&lt;/li&gt;&lt;li&gt;透過與您互相討論課程內容，強化掌握運動時的每個環節&lt;/li&gt;&lt;li&gt;固定時間評估並分析身體狀況與課程內容，隨時替您把關上課品質&lt;/li&gt;&lt;/ul&gt;</value>
+    <value>&lt;p&gt;Beyond Fitness提供以下承諾&lt;/p&gt;&lt;ul class="features-list"&gt;&lt;li&gt;客製化課程內容，學習更安全，同時讓您得到顯著的運動效果&lt;/li&gt;&lt;li&gt;專業教練帶領下，清楚了解自己的身體狀況與運動進度&lt;/li&gt;&lt;li&gt;透過與您互相討論課程內容，強化掌握運動時的每個環節&lt;/li&gt;&lt;li&gt;固定時間評估並分析身體狀況與課程內容，隨時替您把關上課品質&lt;/li&gt;&lt;/ul&gt;</value>
   </data>
   <data name="Features2Desc" xml:space="preserve">
-    <value>&lt;p&gt;Beyond Fitness 團隊是業界擁有最多國際級六大專業證照的機構，讓您在專業及安全的環境下運動&lt;/p&gt;&lt;ul class=&quot;features-list&quot;&gt;&lt;li&gt;ACE   美國運動委員會&lt;/li&gt;&lt;li&gt;ACSM  美國運動醫學會&lt;/li&gt;&lt;li&gt;NCAA  國家委員會授證機構&lt;/li&gt;&lt;li&gt;NSCA  美國肌力體能協會&lt;/li&gt;&lt;li&gt;NASM  美國國家運動醫學會&lt;/li&gt;&lt;li&gt;CrossFit   美國混合健身系統&lt;/li&gt;&lt;li&gt;EXOS-XPS   美國最大私人運動員機構&lt;/li&gt;&lt;li&gt;CPR+AED    中華民國紅十字會&lt;/li&gt;&lt;/ul&gt;</value>
+    <value>&lt;p&gt;Beyond Fitness 團隊是業界擁有最多國際級六大專業證照的機構，讓您在專業及安全的環境下運動&lt;/p&gt;&lt;ul class="features-list"&gt;&lt;li&gt;ACE   美國運動委員會&lt;/li&gt;&lt;li&gt;ACSM  美國運動醫學會&lt;/li&gt;&lt;li&gt;NCAA  國家委員會授證機構&lt;/li&gt;&lt;li&gt;NSCA  美國肌力體能協會&lt;/li&gt;&lt;li&gt;NASM  美國國家運動醫學會&lt;/li&gt;&lt;li&gt;CrossFit   美國混合健身系統&lt;/li&gt;&lt;li&gt;EXOS-XPS   美國最大私人運動員機構&lt;/li&gt;&lt;li&gt;CPR+AED    中華民國紅十字會&lt;/li&gt;&lt;/ul&gt;</value>
   </data>
   <data name="Features3Desc" xml:space="preserve">
-    <value>&lt;p&gt;Beyond Fitness成立以來，持續提供您運動時的相關分析，打造屬於您個人的體能分析庫&lt;/p&gt;&lt;ul class=&quot;features-list&quot;&gt;&lt;li&gt;體能分析庫，全面性分析您的運動與身體狀態&lt;/li&gt;&lt;li&gt;雲端課表內容，提供您更了解當下運動內容&lt;/li&gt;&lt;li&gt;實用的專業文章，隨時補充您的運動與健康資訊&lt;/li&gt;&lt;li&gt;有趣的運動小學堂，替您在運動後帶來不同的互動樂趣&lt;/li&gt;&lt;/ul&gt;</value>
+    <value>&lt;p&gt;Beyond Fitness成立以來，持續提供您運動時的相關分析，打造屬於您個人的體能分析庫&lt;/p&gt;&lt;ul class="features-list"&gt;&lt;li&gt;體能分析庫，全面性分析您的運動與身體狀態&lt;/li&gt;&lt;li&gt;雲端課表內容，提供您更了解當下運動內容&lt;/li&gt;&lt;li&gt;實用的專業文章，隨時補充您的運動與健康資訊&lt;/li&gt;&lt;li&gt;有趣的運動小學堂，替您在運動後帶來不同的互動樂趣&lt;/li&gt;&lt;/ul&gt;</value>
   </data>
   <data name="FAQBannerTitle" xml:space="preserve">
     <value>我們樂於協助你，&lt;br /&gt;讓一切輕鬆又簡單。</value>
@@ -404,7 +404,7 @@
   </data>
   <data name="FAQQestion2" xml:space="preserve">
     <value>費用問題？</value>
-  </data>  
+  </data>
   <data name="FAQQestion21" xml:space="preserve">
     <value>如何收費呢？</value>
   </data>
@@ -485,5 +485,5 @@
   </data>
   <data name="Disclaimer" xml:space="preserve">
     <value>相關運動成效與所需時間因人而異，建議與教練共同討論，確保相關品質</value>
-  </data>    
+  </data>
 </root>

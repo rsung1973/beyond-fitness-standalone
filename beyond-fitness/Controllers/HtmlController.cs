@@ -289,39 +289,39 @@ namespace WebHome.Controllers
 
         }
 
-        [CoachOrAssistantAuthorize]
-        public ActionResult PromptCurrentQuestionnaire(int? registerID,int? questionnaireID)
-        {
-            QuestionnaireRequest item = null;
-            if(questionnaireID.HasValue)
-            {
-                item = models.GetTable<QuestionnaireRequest>().Where(q => q.QuestionnaireID == questionnaireID).FirstOrDefault();
-            }
+        //[CoachOrAssistantAuthorize]
+        //public ActionResult PromptCurrentQuestionnaire(int? registerID,int? questionnaireID)
+        //{
+        //    QuestionnaireRequest item = null;
+        //    if(questionnaireID.HasValue)
+        //    {
+        //        item = models.GetTable<QuestionnaireRequest>().Where(q => q.QuestionnaireID == questionnaireID).FirstOrDefault();
+        //    }
 
-            if (item == null)
-            {
-                var lesson = models.GetTable<RegisterLesson>().Where(u => u.RegisterID == registerID).FirstOrDefault();
-                if (lesson == null)
-                {
-                    return View("~/Views/Shared/JsAlert.ascx", model: "資料錯誤!!");
-                }
+        //    if (item == null)
+        //    {
+        //        var lesson = models.GetTable<RegisterLesson>().Where(u => u.RegisterID == registerID).FirstOrDefault();
+        //        if (lesson == null)
+        //        {
+        //            return View("~/Views/Shared/JsAlert.ascx", model: "資料錯誤!!");
+        //        }
 
-                item = models.GetQuestionnaireRequest(lesson.UserProfile).FirstOrDefault();
-                if (item == null && models.CheckCurrentQuestionnaireRequest(lesson))
-                {
-                    item = models.CreateQuestionnaire(lesson);
-                }
-            }
+        //        item = models.GetQuestionnaireRequest(lesson.UserProfile).FirstOrDefault();
+        //        if (item == null && models.CheckCurrentQuestionnaireRequest(lesson))
+        //        {
+        //            item = models.CreateQuestionnaire(lesson);
+        //        }
+        //    }
 
-            if (item != null)
-            {
-                ViewBag.ByCoach = true;
-                return View("~/Views/Html/Module/PromptQuestionnaire.ascx", item);
-            }
+        //    if (item != null)
+        //    {
+        //        ViewBag.ByCoach = true;
+        //        return View("~/Views/Html/Module/PromptQuestionnaire.ascx", item);
+        //    }
 
-            return View("~/Views/Shared/JsAlert.ascx", model: "階段性調整資料待建立!!");
+        //    return View("~/Views/Shared/JsAlert.ascx", model: "階段性調整資料待建立!!");
 
-        }
+        //}
 
         public ActionResult LearnerDailyQuestion()
         {

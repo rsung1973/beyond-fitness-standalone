@@ -131,6 +131,7 @@
             var $menu = $btnSelect.find('select');
             $btnSelect.before($menu);
             $btnSelect.remove();
+            $global.dtCoachIndicator.draw();
         }, 1000);
 
         $('.drevenueDT').resize();

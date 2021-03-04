@@ -195,8 +195,26 @@
         };
 
         if (step) {
-            nextStep(1);
+            swal({
+                title: "",
+                text: "點選確定後，系統產生問卷記錄!!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "確定, 不後悔",
+                cancelButtonText: "不, 點錯了",
+                closeOnConfirm: true,
+                closeOnCancel: true
+            }, function (isConfirm) {
+                if (isConfirm) {
+
+                    if (step) {
+                        nextStep(1);
+                    }
+                }
+            });
         }
+
     }
 
         //呼叫NextStep

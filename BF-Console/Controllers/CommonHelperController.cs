@@ -73,5 +73,15 @@ namespace WebHome.Controllers
             return View("~/Views/Common/BranchStoreWithOther.cshtml", item);
         }
 
+        public ActionResult ChangeTheme(String theme)
+        {
+            HttpCookie cookie = new HttpCookie("_theme", theme);
+            cookie.Expires = DateTime.MaxValue;
+            Response.SetCookie(cookie);
+
+            return Json(new { result = true, message = theme }, JsonRequestBehavior.AllowGet);
+        }
+
+
     }
 }

@@ -9,7 +9,7 @@
 <%@ Import Namespace="WebHome.Controllers" %>
 
 <script src="js/libs/jquery-2.2.4.min.js"></script>
-<%  Html.RenderPartial("~/Views/Common/JQueryHelper.ascx"); %>
+<%  Html.RenderPartial("~/Views/Common/JQueryHelper.cshtml"); %>
 <script>
     console.log('自動登入完成...');
     gtag('event', '登入', {

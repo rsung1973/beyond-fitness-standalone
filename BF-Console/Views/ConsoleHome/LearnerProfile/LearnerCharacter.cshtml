@@ -23,6 +23,7 @@
             .Where(q => q.GroupID == (int)Naming.QuestionnaireGroup.身體心靈密碼
                     || q.GroupID == (int)Naming.QuestionnaireGroup.滿意度問卷調查_2017)
             .Where(q => q.UID == _model.UID)
+            .Where(q => q.Status.HasValue || q.GroupID == (int)Naming.QuestionnaireGroup.滿意度問卷調查_2017)
             .OrderByDescending(q => q.QuestionnaireID)
             .Take(5);
 }

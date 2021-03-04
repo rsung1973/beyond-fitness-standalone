@@ -723,10 +723,11 @@ namespace WebHome.Controllers
         }
 
         [Authorize]
-        public ActionResult CheckBonusPoint()
+        public ActionResult CheckBonusPoint(AwardQueryViewModel viewModel)
         {
+            ViewBag.ViewModel = viewModel;
             var profile = HttpContext.GetUser().LoadInstance(models);
-            return View(profile);
+            return View("~/Views/CornerKick/CheckBonusPoint2021.cshtml", profile);
         }
 
 
@@ -877,7 +878,7 @@ namespace WebHome.Controllers
                 viewModel.Title = item.Title;
             }
 
-            return View("EditUserEvent", profile);
+            return View("~/Views/CornerKick/EditUserEvent.cshtml", profile);
         }
 
         [Authorize]
@@ -970,6 +971,188 @@ namespace WebHome.Controllers
             var profile = HttpContext.GetUser();
             var eventItem = models.DeleteAny<UserEvent>(v => v.UID == profile.UID && v.EventID == viewModel.EventID);
             return View("LearnerCalendar", profile.LoadInstance(models));
+        }
+
+        public ActionResult WriteOffBonusPoint(AwardQueryViewModel viewModel)
+        {
+            if (viewModel.KeyID != null)
+            {
+                viewModel = JsonConvert.DeserializeObject<AwardQueryViewModel>(viewModel.KeyID.DecryptKey());
+            }
+
+            ViewBag.ViewModel = viewModel;
+
+            var profile = HttpContext.GetUser().LoadInstance(models);
+
+
+            var item = models.GetTable<BonusAwardingItem>().Where(i => i.ItemID == viewModel.ItemID).FirstOrDefault();
+            if (item == null)
+            {
+                return Json(new { result = false, message = "兌換商品錯誤!!" }, JsonRequestBehavior.AllowGet);
+            }
+
+            if (profile.BonusPoint(models) < item.PointValue)
+            {
+                return Json(new { result = false, message = "累積點數不足!!" }, JsonRequestBehavior.AllowGet);
+            }
+
+            ViewBag.DataItem = item;
+
+            if (viewModel.Confirmed == true)
+            {
+                return View("~/Views/CornerKick/WriteOffBonusPoint.cshtml", profile);
+            }
+            else
+            {
+                viewModel.Confirmed = true;
+                ViewBag.ViewModel = new QueryViewModel
+                {
+                    UrlAction = Url.Action("WriteOffBonusPoint"),
+                    KeyID = viewModel.JsonStringify().EncryptKey()
+                };
+                return View("~/Views/CornerKick/Shared/ViewModelCommitted.cshtml");
+            }
+        }
+
+        public ActionResult ExchangeBonusPoint(AwardQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            var profile = HttpContext.GetUser().LoadInstance(models);
+
+            var item = models.GetTable<BonusAwardingItem>().Where(i => i.ItemID == viewModel.ItemID).FirstOrDefault();
+            if (item == null)
+            {
+                return Json(new { result = false, message = "兌換商品錯誤!!" }, JsonRequestBehavior.AllowGet);
+            }
+
+            if (profile.BonusPoint(models) < item.PointValue)
+            {
+                return Json(new { result = false, message = "累積點數不足!!" }, JsonRequestBehavior.AllowGet);
+            }
+
+            viewModel.WriteoffCode = viewModel.WriteoffCode.GetEfficientString();
+            int? recipientID = null;
+            if (item.BonusAwardingLesson != null)
+            {
+                viewModel.ActorID = profile.UID;
+
+                if (item.BonusAwardingIndication != null && item.BonusAwardingIndication.Indication == "AwardingLessonGift")
+                {
+                    var users = models.GetTable<UserProfile>()
+                        .Where(u => u.UID != profile.UID)
+                        .Where(u => u.LevelID != (int)Naming.MemberStatusDefinition.Deleted
+                                && u.LevelID != (int)Naming.MemberStatusDefinition.Anonymous)
+                        .Where(l => l.Phone == viewModel.WriteoffCode)
+                        .FilterByLearner(models)
+                        .Where(u => u.UserProfileExtension != null && !u.UserProfileExtension.CurrentTrial.HasValue);
+
+                    int count = users.Count();
+
+                    if (count == 0)
+                    {
+                        ModelState.AddModelError("WriteoffCode", "受贈會員資料錯誤，請確認後再重新輸入");
+                    }
+                    else if (count > 1)
+                    {
+                        ModelState.AddModelError("WriteoffCode", "受贈學員手機號碼重複，請連絡您的體能顧問");
+                    }
+                    else
+                    {
+                        recipientID = users.First().UID;
+                    }
+                }
+            }
+            else
+            {
+                var coach = models.PromptEffectiveCoach(models.GetTable<UserProfile>().Where(l => l.Phone == viewModel.WriteoffCode)).FirstOrDefault();
+                if (coach == null)
+                {
+                    ModelState.AddModelError("WriteoffCode", "兌換核銷密碼欄位資料錯誤，請確認後再重新輸入");
+                }
+                else
+                {
+                    viewModel.ActorID = coach.CoachID;
+                }
+            }
+
+            if(!ModelState.IsValid)
+            {
+                ViewBag.ModelState = this.ModelState;
+                return View("~/Views/CornerKick/Shared/ReportInputError.cshtml");
+            }
+
+            var award = new LearnerAward
+            {
+                UID = profile.UID,
+                AwardDate = DateTime.Now,
+                ItemID = item.ItemID,
+                ActorID = viewModel.ActorID.Value,
+            };
+            models.GetTable<LearnerAward>().InsertOnSubmit(award);
+
+            int usedPoints = item.PointValue;
+            foreach (var bounsItem in profile.BonusPointList(models))
+            {
+                if (usedPoints <= 0)
+                    break;
+                award.BonusExchange.Add(new BonusExchange
+                {
+                    TaskID = bounsItem.TaskID
+                });
+                usedPoints -= bounsItem.PDQTask.PDQQuestion.PDQQuestionExtension.BonusPoint.Value;
+            }
+
+            ///兌換課程
+            ///
+            if (item.BonusAwardingLesson != null)
+            {
+                var lesson = models.GetTable<RegisterLesson>().Where(r => r.UID == profile.UID)
+                    .Join(models.GetTable<RegisterLessonContract>(), r => r.RegisterID, c => c.RegisterID, (r, c) => r)
+                    .OrderByDescending(r => r.RegisterID).First();
+
+                if (item.BonusAwardingIndication != null && item.BonusAwardingIndication.Indication == "AwardingLessonGift")
+                {
+                    var giftLesson = new RegisterLesson
+                    {
+                        RegisterDate = DateTime.Now,
+                        GroupingMemberCount = 1,
+                        ClassLevel = item.BonusAwardingLesson.PriceID,
+                        Lessons = 1,
+                        UID = recipientID.Value,
+                        AdvisorID = lesson.RegisterLessonContract.CourseContract.FitnessConsultant,
+                        Attended = (int)Naming.LessonStatus.準備上課,
+                        GroupingLesson = new GroupingLesson { }
+                    };
+                    award.AwardingLessonGift = new AwardingLessonGift
+                    {
+                        RegisterLesson = giftLesson
+                    };
+                    models.GetTable<RegisterLesson>().InsertOnSubmit(giftLesson);
+                }
+                else
+                {
+                    var awardLesson = new RegisterLesson
+                    {
+                        RegisterDate = DateTime.Now,
+                        GroupingMemberCount = 1,
+                        ClassLevel = item.BonusAwardingLesson.PriceID,
+                        Lessons = 1,
+                        UID = profile.UID,
+                        AdvisorID = lesson.AdvisorID,
+                        Attended = (int)Naming.LessonStatus.準備上課,
+                        GroupingLesson = new GroupingLesson { }
+                    };
+                    award.AwardingLesson = new AwardingLesson
+                    {
+                        RegisterLesson = awardLesson
+                    };
+                    models.GetTable<RegisterLesson>().InsertOnSubmit(awardLesson);
+                }
+            }
+
+            models.SubmitChanges();
+            return Json(new { result = true }, JsonRequestBehavior.AllowGet);
+
         }
 
 

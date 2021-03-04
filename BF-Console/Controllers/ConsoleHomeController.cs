@@ -590,13 +590,29 @@ namespace WebHome.Controllers
                 return View("~/Views/ConsoleHome/Shared/JsGoback.cshtml", model: "資料錯誤!!");
             }
 
-            ViewBag.Learner = models.GetTable<UserProfile>().Where(u => u.UID == viewModel.LearnerID).FirstOrDefault();
-            if (ViewBag.Learner == null)
+            UserProfile learner = models.GetTable<UserProfile>().Where(u => u.UID == viewModel.LearnerID).FirstOrDefault();
+            if (learner == null)
             {
-                ViewBag.Learner = item.GroupingLesson.RegisterLesson.First().UserProfile;
+                learner = item.GroupingLesson.RegisterLesson.First().UserProfile;
             }
 
-            return View(profile.LoadInstance(models));
+            ViewBag.Learner = learner;
+
+            models.ExecuteCommand("delete QuestionnaireRequest where Status is null and UID = {0} and GroupID = {1}", learner.UID, (int)Naming.QuestionnaireGroup.身體心靈密碼);
+
+            QuestionnaireRequest questionnaire = models.GetEffectiveQuestionnaireRequest(learner).FirstOrDefault();
+            if (questionnaire == null)
+            {
+                if (!learner.IsTrialLearner() && !models.GetTable<QuestionnaireRequest>()
+                    .Where(q => q.UID == learner.UID)
+                    .Where(q => q.GroupID == (int)Naming.QuestionnaireGroup.身體心靈密碼).Any())
+                {
+                    questionnaire = learner.UID.AssertQuestionnaire(models, profile, Naming.QuestionnaireGroup.身體心靈密碼, QuestionnaireRequest.PartIDEnum.PartA);
+                }
+            }
+            ViewBag.CurrentQuestionnaire = questionnaire;
+
+            return View("~/Views/ConsoleHome/LessonTrainingContent.cshtml", profile.LoadInstance(models));
         }
 
         //public ActionResult EditLearnerCharacter(LearnerCharacterViewModel viewModel)
@@ -654,7 +670,7 @@ namespace WebHome.Controllers
 
             if (quest == null)
             {
-                quest = item.UID.AssertQuestionnaire(models, Naming.QuestionnaireGroup.身體心靈密碼, QuestionnaireRequest.PartIDEnum.PartA);
+                quest = item.UID.AssertQuestionnaire(models, profile, Naming.QuestionnaireGroup.身體心靈密碼, QuestionnaireRequest.PartIDEnum.PartA);
             }
 
             if (!quest.Status.HasValue)

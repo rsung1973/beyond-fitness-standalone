@@ -16,7 +16,7 @@
         <div class="row valign-wrapper">
             <div class="col s4 m2">
                 <%     ViewBag.ImgClass = "circle responsive-img valign";
-                    Html.RenderPartial("~/Views/CornerKick/Module/ProfileImage.ascx", _model.UserProfile); %>
+                    Html.RenderPartial("~/Views/CornerKick/Module/ProfileImage.cshtml", _model.UserProfile); %>
             </div>
             <div class="col s8 m10 text-box"><span class="black-t18"><%= _model.UserProfile.UserName ?? _model.UserProfile.FullName() %></span> <span class="black-t12">Hi，來點腦力激盪，答對我出的題目可以獲得Beyond💰喔！</span></div>
         </div>

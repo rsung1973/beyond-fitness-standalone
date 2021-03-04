@@ -16,6 +16,7 @@
     List<CalendarEvent> _result;
     UserProfile _userProfile;
 
+    FullCalendarViewModel _viewModel = (FullCalendarViewModel)ViewBag.ViewModel;
 
     _modelState = (ModelStateDictionary)ViewBag.ModelState;
     models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
@@ -32,7 +33,7 @@
             {
                 id = g.LessonID.ToString(),
                 keyID = g.LessonID.EncryptKey(),
-                learnerID = g.RegisterLesson.UID,
+                learnerID = g.GroupingLesson.RegisterLesson.Any(r=>r.UID==_viewModel.LearnerID) ? _viewModel.LearnerID : g.RegisterLesson.UID,
                 title = String.Concat(g.LessonTypeStatus(),
                         (g.PreferredLessonTime != null && !g.PreferredLessonTime.ApprovalDate.HasValue ? "(待審核)" : "")),
                 start = String.Format("{0:O}", g.ClassTime),

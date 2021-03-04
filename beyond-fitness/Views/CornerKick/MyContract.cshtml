@@ -55,7 +55,7 @@
             <nav class="white non-line" role="navigation">
                 <div class="nav-wrapper container">
                     <!-- BACK -->
-                    @{ Html.RenderPartial("~/Views/CornerKick/Module/ReturnHome.ascx");}
+                    @{ Html.RenderPartial("~/Views/CornerKick/Module/ReturnHome.cshtml");}
 
                     <!-- // End of BACK -->
                     <a id="logo-container" href="#" class="brand-logo toptitle center">我的合約</a>
@@ -73,7 +73,7 @@
                                 <div class="col s4 m2">
                                     @{
                                         ViewBag.ImgClass = "circle responsive-img valign";
-                                        Html.RenderPartial("~/Views/CornerKick/Module/ProfileImage.ascx", profile);
+                                        Html.RenderPartial("~/Views/CornerKick/Module/ProfileImage.cshtml", profile);
                                     }
                                 </div>
                                 <div class="col s8 m10 text-box">
@@ -196,7 +196,7 @@
     </script>
 </body>
 </html>
-@{ Html.RenderPartial("~/Views/Common/JQueryHelper.ascx");}
+@{ Html.RenderPartial("~/Views/Common/JQueryHelper.cshtml");}
 
 @helper WriteContractContent(CourseContract item)
 {

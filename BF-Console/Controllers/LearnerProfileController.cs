@@ -69,7 +69,8 @@ namespace WebHome.Controllers
             IQueryable<LessonTime> coachPI = viewModel.LearnerID.Value.PromptCoachPILessons(models);
             IQueryable<UserEvent> eventItems = models.GetTable<UserEvent>()
                 .Where(e => !e.SystemEventID.HasValue)
-                .Where(e => e.UID == viewModel.LearnerID);
+                .Where(e => e.UID == viewModel.LearnerID
+                    || e.GroupEvent.Any(g => g.UID == viewModel.LearnerID));
             IQueryable<LessonTime> givingItems = models.GetTable<LessonTime>().Where(l => l.AttendingCoach == viewModel.LearnerID);
             if (viewModel.DateFrom.HasValue && viewModel.DateTo.HasValue)
             {
@@ -254,6 +255,7 @@ namespace WebHome.Controllers
             {
                 models.ExecuteCommand("delete PDQTask where UID = {0} and QuestionID = {1} and QuestionnaireID = {2}",
                         viewModel.UID, viewModel.QuestionID, viewModel.QuestionnaireID);
+                models.ExecuteCommand("update QuestionnaireRequest set Status = {0} where QuestionnaireID = {1} and Status is null", (int)Naming.IncommingMessageStatus.未讀, viewModel.QuestionnaireID);
             }
 
             var item = new PDQTask
@@ -488,6 +490,8 @@ namespace WebHome.Controllers
         {
             ViewBag.ViewModel = viewModel;
 
+            var profile = HttpContext.GetUser();
+
             if (viewModel.KeyID != null)
             {
                 viewModel.UID = viewModel.DecryptKeyValue();
@@ -498,7 +502,15 @@ namespace WebHome.Controllers
                 var count = models.ExecuteCommand(@"
                     UPDATE       QuestionnaireRequest
                     SET                Status = {0}
-                    WHERE        (UID = {1}) AND (QuestionnaireID = {2})", (int)Naming.IncommingMessageStatus.已讀, viewModel.UID, viewModel.QuestionnaireID);
+                    WHERE        (UID = {1}) AND (QuestionnaireID = {2})", 
+                    (int)Naming.IncommingMessageStatus.已讀, 
+                    viewModel.UID, 
+                    viewModel.QuestionnaireID);
+
+                models.ExecuteCommand("delete QuestionnaireCoachFinish where QuestionnaireID = {0}", viewModel.QuestionnaireID);
+                models.ExecuteCommand(@"
+                    INSERT INTO QuestionnaireCoachFinish  (QuestionnaireID, UID)
+                    values ({0},{1})", viewModel.QuestionnaireID, profile.UID);
             }
 
             return Json(new { result = true });

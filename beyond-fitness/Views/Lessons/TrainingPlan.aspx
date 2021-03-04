@@ -57,7 +57,7 @@
                     <div class="widget-toolbar">
                         <%  if ((_model.LessonTime.TrainingBySelf==1 || models.CouldMarkToAttendLesson(_model.LessonTime)) && _model.LessonTime.LessonAttendance == null)
                             { %>
-                        <a onclick="attendLesson(<%= _model.LessonID %>);" class="btn btn-success"><i class="far fa-fw fa-check-square"></i>完成上課</a>
+                        <%--<a onclick="attendLesson(<%= _model.LessonID %>);" class="btn btn-success"><i class="far fa-fw fa-check-square"></i>完成上課</a>--%>
                         <%  } %>
                         <a onclick="cloneLesson(<%= _model.LessonID %>);" class="btn bg-color-orange"><i class="fa fa-fw fa-files-o"></i> 複製課表</a>
                         <a onclick='previewLesson(<%= JsonConvert.SerializeObject(new

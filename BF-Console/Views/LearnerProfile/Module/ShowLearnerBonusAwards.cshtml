@@ -39,15 +39,21 @@
                     {
                                 <tr>
                                     <td>@($"{item.AwardDate:yyyy/MM/dd}")</td>
-                                    <td>@(item.BonusAwardingItem.ItemName)</td>
+                                    <td>
+                                        @(item.BonusAwardingItem.ItemName)
+                                        @if (item.AwardingLessonGift != null)
+                                        {
+                                            <text>(@(item.AwardingLessonGift.RegisterLesson.UserProfile.RealName))</text>
+                                        }
+                                    </td>
                                     <td>@(item.Actor.FullName())</td>
                                     <td>@(item.BonusAwardingItem.BonusAwardingLesson != null
                                             ? item.AwardingLesson != null
                                                 ? item.AwardingLesson.RegisterLesson.LessonTime.Count > 0
-                                                    ? String.Format("{0:yyyyMMdd}", item.AwardingLesson.RegisterLesson.LessonTime.First().ClassTime)
+                                                    ? String.Format("{0:yyyy/MM/dd}", item.AwardingLesson.RegisterLesson.LessonTime.First().ClassTime)
                                                     : ""
                                                 : item.AwardingLessonGift.RegisterLesson.LessonTime.Count > 0
-                                                    ? String.Format("{0:yyyyMMdd}", item.AwardingLessonGift.RegisterLesson.LessonTime.First().ClassTime)
+                                                    ? String.Format("{0:yyyy/MM/dd}", item.AwardingLessonGift.RegisterLesson.LessonTime.First().ClassTime)
                                                     : ""
                                             : "")</td>
                                 </tr>

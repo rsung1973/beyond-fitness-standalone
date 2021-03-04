@@ -36,7 +36,7 @@
       <link rel="apple-touch-icon-precomposed" sizes="144x144" href="favicons/favicon_144x144.png">
       <link rel="apple-touch-icon-precomposed" sizes="180x180" href="favicons/favicon_180x180.png">       
 
-      <link href="css/style.css?1.2" type="text/css" rel="stylesheet" media="screen,projection"/>
+      <link href="css/style.css?1.3" type="text/css" rel="stylesheet" media="screen,projection"/>
    </head>
    <body class="light-gray">
       <!--//預設值為藍色 / 若要設定女生 請加上 mode-girls /  全版 full-fixed / 背景色 light-gray-->
@@ -46,7 +46,7 @@
             <nav class="white non-line" role="navigation">
                <div class="nav-wrapper container">
                   <!-- BACK --> 
-                   <%  Html.RenderPartial("~/Views/CornerKick/Module/ReturnHome.ascx"); %>
+                   <%  Html.RenderPartial("~/Views/CornerKick/Module/ReturnHome.cshtml"); %>
                   <!-- // End of BACK --> 
                   <a id="logo-container" href="#" class="brand-logo toptitle center" >上課打卡</a> 
                </div>
@@ -62,7 +62,7 @@
                         <div class="row valign-wrapper">
                            <div class="col s4 m2"> 
                                <%   ViewBag.ImgClass = "circle responsive-img valign";
-                                    Html.RenderPartial("~/Views/CornerKick/Module/ProfileImage.ascx", _model); %>
+                                    Html.RenderPartial("~/Views/CornerKick/Module/ProfileImage.cshtml", _model); %>
                            </div>
                            <div class="col s8 m10 text-box"> <span class="black-t18"><%= _model.UserName ?? _model.RealName %></span> <span class="black-t12"><%= _model.UserProfileExtension.Gender=="F" ? "親愛的" : "兄弟" %>，你有 <%= _items.Where(l=>l.ClassTime<DateTime.Today.AddDays(1)).Count() %> 堂課沒打卡</span> </div>
                         </div>
@@ -149,8 +149,8 @@
       </script>       
    </body>
 </html>
-<%  Html.RenderPartial("~/Views/Common/JQueryHelper.ascx"); %>
-<%  Html.RenderPartial("~/Views/CornerKick/Module/ModeGirls.ascx",_model); %>
+<%  Html.RenderPartial("~/Views/Common/JQueryHelper.cshtml"); %>
+<%  Html.RenderPartial("~/Views/CornerKick/Module/ModeGirls.cshtml",_model); %>
 <script>
     function commitAttendance() {
         if ($('form input:checkbox[name="LessonID"]:checked').length > 0) {

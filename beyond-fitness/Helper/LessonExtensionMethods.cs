@@ -720,8 +720,8 @@ namespace WebHome.Helper
                 if (contract != null)
                 {
                     models.ExecuteCommand(@"UPDATE       CourseContract
-                            SET                Status = {0}
-                            WHERE     ContractID = {1} and Status = {0}",
+                            SET                Status = {0}, ValidTo = null
+                            WHERE     ContractID = {1} and Status = {2}",
                         (int)Naming.CourseContractStatus.已生效, contract.ContractID, (int)Naming.CourseContractStatus.已履行);
                 }
                 if (contract != null && contract.CourseContractType.ContractCode == "CFA")
