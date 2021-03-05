@@ -29,12 +29,13 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-6">
-                <h1>@Html.Raw(NamingItem.FindAnheBranch)</h1>
+                <h1>@Html.Raw(NamingItem.FindAnheBranch)<a href="tel://+886-2-2720-0530" class="tel">(02)2720-0530</a></h1>
                 <a href="https://maps.google.com/?q=台北市大安區安和路二段81號B1" target="_blank" class="add">
                     @Html.Raw(NamingItem.FindAnheBranchAdd)
                 </a>
                 <p>@Html.Raw(NamingItem.FindAnheBranchDesc1)</p>
                 <p>@Html.Raw(NamingItem.FindAnheBranchDesc2)</p>
+                <a href="javascript:$('').launchDownload('@(Url.Action("Team", "MainActivity"))', {'branchName':'Xinyi'});bindTrackingCode('專業團隊_信義安和');" class="more">@Html.Raw(NamingItem.OurTeam)<i class="pl-1 fa fa-angle-right"></i></a>
             </div>
             <div class="col-sm-6 p-t-20">
                 <div id="map-anhe" class="map-canvas small"></div>
