@@ -6339,6 +6339,14 @@
     <Content Include="Views\LearnerProfile\Module\ShowLearnerBonusAwards.cshtml" />
     <Content Include="Views\LearnerProfile\Module\ShowLearnerBonusCredits.cshtml" />
     <Content Include="Views\LearnerProfile\Module\ShowLearnerDailyAnswers.cshtml" />
+    <Content Include="ConsoleHome\plugins\sweetalert2\variables.min.css" />
+    <Content Include="ConsoleHome\plugins\sweetalert2\variables.css" />
+    <Content Include="ConsoleHome\plugins\sweetalert2\sweetalert2.all.js" />
+    <Content Include="ConsoleHome\plugins\sweetalert2\sweetalert2.all.min.js" />
+    <Content Include="ConsoleHome\plugins\sweetalert2\sweetalert2.min.js" />
+    <Content Include="ConsoleHome\plugins\sweetalert2\sweetalert2.min.css" />
+    <Content Include="ConsoleHome\plugins\sweetalert2\sweetalert2.js" />
+    <Content Include="ConsoleHome\plugins\sweetalert2\sweetalert2.css" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\InitializeType.cs" />
