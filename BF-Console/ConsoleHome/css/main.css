@@ -22393,7 +22393,7 @@ section.content {
         opacity: 0
     }
 }
-
+.swal2-container,
 .sweet-alert {
     -webkit-border-radius: 0 !important;
     -moz-border-radius: 0 !important;
@@ -22402,6 +22402,7 @@ section.content {
     border-radius: .55rem !important
 }
 
+.swal2-container p
 .sweet-alert p {
     font-size: 14px !important;
     color: #05232d;
@@ -22412,12 +22413,14 @@ section.content {
     top: 23px !important;
     right: 13px !important
 }
-
+/* .swal2-container h2, */
 .sweet-alert h2 {
     font-size: 18px !important;
     margin: 0 0 5px 0 !important
 }
 
+.swal2-container .swal2-cancel,
+.swal2-container .swal2-confirm,
 .sweet-alert .confirm,
 .sweet-alert .cancel {
     font-weight: 400;
@@ -22429,6 +22432,7 @@ section.content {
     margin: 5px 1px
 }
 
+.swal2-container button,
 .sweet-alert button {
     font-size: 15px !important;
     -webkit-border-radius: 0 !important;
