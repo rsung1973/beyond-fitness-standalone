@@ -1704,13 +1704,6 @@
     <Content Include="ConsoleHome\js\pages\tables\editable-table.js" />
     <Content Include="ConsoleHome\js\pages\tables\footable.js" />
     <Content Include="ConsoleHome\js\pages\tables\jquery-datatable.js" />
-    <Content Include="ConsoleHome\js\pages\ui\animations.js" />
-    <Content Include="ConsoleHome\js\pages\ui\dialogs.js" />
-    <Content Include="ConsoleHome\js\pages\ui\modals.js" />
-    <Content Include="ConsoleHome\js\pages\ui\notifications.js" />
-    <Content Include="ConsoleHome\js\pages\ui\range-sliders.js" />
-    <Content Include="ConsoleHome\js\pages\ui\sortable-nestable.js" />
-    <Content Include="ConsoleHome\js\pages\ui\tooltips-popovers.js" />
     <Content Include="ConsoleHome\js\pages\widgets\highcharts\hc_js.js" />
     <Content Include="ConsoleHome\js\pages\widgets\infobox\infobox-1.js" />
     <Content Include="ConsoleHome\js\pages\widgets\infobox\infobox-2.js" />
@@ -6302,7 +6295,6 @@
     <Content Include="Views\LearnerProfile\ProfileModal\EditTrainingItemView.cshtml" />
     <Content Include="Views\LearnerProfile\ProfileModal\LearnerAboutToBirth.cshtml" />
     <Content Include="Views\LearnerProfile\ProfileModal\ShowLearnerBonusDetails.cshtml" />
-    <Content Include="Views\ConsoleHome\Module\InvoiceNoIntervalList.cshtml" />
     <Content Include="Views\ConsoleHome\PrepareLearnerCharacter.cshtml" />
     <Content Include="Views\ConsoleHome\SamplePage.cshtml" />
     <Content Include="Views\ConsoleHome\SimpleCalendar.cshtml" />
@@ -6347,6 +6339,7 @@
     <Content Include="ConsoleHome\plugins\sweetalert2\sweetalert2.min.css" />
     <Content Include="ConsoleHome\plugins\sweetalert2\sweetalert2.js" />
     <Content Include="ConsoleHome\plugins\sweetalert2\sweetalert2.css" />
+    <Content Include="Views\BonusCredit\BonusModal\GiveBonusToCoachOld.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\InitializeType.cs" />
