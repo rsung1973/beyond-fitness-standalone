@@ -42,8 +42,8 @@
         </div>
     </li>
     <li class="col-12">
-        <button type="button" class="btn btn-darkteal btn-round waves-effect float-right finish">確定，不後悔</button>
-        <button type="button" class="btn btn-danger btn-round btn-simple waves-effect quit">不, 點錯了</button>
+        <button type="button" class="btn btn-primary btn-round waves-effect float-right finish">確定作廢</button>
+        <button type="button" class="btn btn-danger btn-round btn-simple waves-effect quit">取消，回上一頁</button>
     </li>
 </ul>
 <script>
@@ -55,23 +55,26 @@
         });
 
         $('#@(_viewID) button.finish').on('click', function (event) {
-            swal({
+            Swal.fire({
                 title: "不後悔?",
                 text: "作廢後資料將無法回復!",
-                type: "warning",
+                icon: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#DD6B55",
-                confirmButtonText: "確定, 不後悔",
-                cancelButtonText: "不, 點錯了",
-                closeOnConfirm: false,
-                closeOnCancel: false
-            }, function (isConfirm) {
-                if (isConfirm) {
+                confirmButtonText: "確定",
+                cancelButtonText: "取消",
+                focusCancel: true
+            }).then((result) => {
+                if (result.isConfirmed) {
                     commitVoiding();
                 } else {
-                    swal("取消成功", "你的資料現在非常安全 :)", "error");
+                    Swal.fire(
+                        '取消成功',
+                        '你的資料現在非常安全 :)',
+                        'info'
+                    )
                 }
-            });
+            });      
         });
 
     });
@@ -94,7 +97,11 @@
                 if (data.result) {
                     backToPaymentIndex();
                 } else {
-                    swal(data.message);
+                    Swal.fire(
+                        'Oops...',
+                        data.message,
+                        'warning'
+                    )
                 }
             }
             else {

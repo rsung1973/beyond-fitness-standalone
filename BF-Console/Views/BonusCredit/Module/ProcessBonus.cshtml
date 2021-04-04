@@ -20,7 +20,7 @@
     _model = (CoachMonthlySalary)this.Model;
     _profile = Context.GetUser();
 }
-@{ 
+@{
     CoachBonusViewModel _viewModel = (CoachBonusViewModel)ViewBag.ViewModel;
 }
 <div class="modal fade" id="@(_dialogID)" tabindex="-1" role="dialog">
@@ -34,56 +34,69 @@
                 <div class="list-group">
                     @if (_model != null)
                     {
-                        <a href="javascript:void();" class="list-group-item btnEdit">編輯資料</a>
-                        <a href="javascript:void();" class="list-group-item btnDelete">刪除資料</a>
+                        <a href="javascript:editBonus();" class="list-group-item">編輯資料</a>
+                        <a href="javascript:deleteBonus();" class="list-group-item">刪除資料</a>
                         <script>
-                            $(function () {
-                                $('#@(_dialogID) .btnEdit').on('click', function (event) {
-                                    showLoading();
+                            function editBonus() {
+                                showLoading();
                                     $.post('@Html.Raw(Url.Action("EditCoachBonus", "BonusCredit"))', @Html.Raw(JsonConvert.SerializeObject(new { KeyID = _viewModel.CoachID.Value.EncryptKey(),_viewModel.SettlementID })), function (data) {
                                         hideLoading();
                                         if ($.isPlainObject(data)) {
-                                            swal(data.message);
+                                            Swal.fire(
+                                                'Oops...',
+                                                data.message,
+                                                'warning'
+                                            )
                                         } else {
                                             $('body').append(data);
                                         }
-                                    });
                                 });
+                            }
 
-                                $('#@(_dialogID) .btnDelete').on('click', function (event) {
-                                    swal({
-                                        title: "不後悔?",
+                            function deleteBonus() {
+                                Swal.fire({
+                                        title: "確定刪除?",
                                         text: "刪除後資料將無法回覆!",
-                                        type: "warning",
+                                        icon: "warning",
                                         showCancelButton: true,
                                         confirmButtonColor: "#DD6B55",
-                                        confirmButtonText: "確定, 不後悔",
-                                        cancelButtonText: "不, 點錯了",
-                                        closeOnConfirm: false,
-                                        closeOnCancel: false
-                                    }, function (isConfirm) {
-                                        if (isConfirm) {
+                                        confirmButtonText: "確定",
+                                        cancelButtonText: "取消",
+                                        focusCancel: true
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
                                             showLoading();
                                             $.post('@Html.Raw(Url.Action("ClearCoachBonus", "BonusCredit"))', @Html.Raw(JsonConvert.SerializeObject(new { KeyID = _viewModel.CoachID.Value.EncryptKey(),_viewModel.SettlementID })), function (data) {
                                                 hideLoading();
                                                 if ($.isPlainObject(data)) {
                                                     if (data.result) {
                                                         $global.closeAllModal();
-                                                        swal("刪除成功!", "資料已經刪除 Bye!", "success");
+                                                        Swal.fire(
+                                                            '刪除成功!',
+                                                            '資料已經刪除 Bye!',
+                                                            'success'
+                                                        )
                                                         showCoachBonusList();
                                                     } else {
-                                                        swal(data.message);
+                                                        Swal.fire(
+                                                            'Oops...',
+                                                            data.message,
+                                                            'warning'
+                                                        )
                                                     }
                                                 } else {
                                                     $('body').append(data);
                                                 }
                                             });
                                         } else {
-                                            swal("取消成功", "你的資料現在非常安全 :)", "error");
+                                            Swal.fire(
+                                                '取消成功',
+                                                '你的資料現在非常安全 :)',
+                                                'info'
+                                            )
                                         }
-                                    });
-                                });
-                            });
+                               });
+                            }
                         </script>
                     }
                 </div>
@@ -91,11 +104,5 @@
         </div>
     </div>
     @{ Html.RenderPartial("~/Views/ConsoleHome/Shared/BSModalScript.cshtml", model: _dialogID);}
-
-    <script>
-        $(function () {
-
-        });
-    </script>
 </div>
 

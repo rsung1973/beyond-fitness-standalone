@@ -114,7 +114,11 @@
             $.post('@Html.Raw(Url.Action("SelectReportByContractNo","ReportConsole"))', {}, function (data) {
                 hideLoading();
                 if ($.isPlainObject(data)) {
-                    swal(data.message);
+                    Swal.fire(
+                        'Oops...',
+                        data.message,
+                        'warning'
+                    )
                 } else {
                     $global.doQuery = function (inputData) {
                         $('').launchDownload('@Html.Raw(Url.Action("GetContractLessonsSummary","Report"))', inputData, 'report', true);
@@ -129,7 +133,11 @@
             $.post('@Html.Raw(Url.Action("SelectMonthlyReport","ReportConsole"))', {}, function (data) {
                 hideLoading();
                 if ($.isPlainObject(data)) {
-                    swal(data.message);
+                    Swal.fire(
+                        'Oops...',
+                        data.message,
+                        'warning'
+                    )
                 } else {
                     $global.doQuery = function (settlementDate) {
                         $('').launchDownload('@Html.Raw(Url.Action("GetMonthlyLessonsSummary","Accounting"))', { 'settlementDate': settlementDate }, 'report', true);
@@ -144,7 +152,11 @@
             $.post('@Html.Raw(Url.Action("SelectMonthlyReport","ReportConsole"))', {}, function (data) {
                 hideLoading();
                 if ($.isPlainObject(data)) {
-                    swal(data.message);
+                    Swal.fire(
+                        'Oops...',
+                        data.message,
+                        'warning'
+                    )
                 } else {
                     $global.doQuery = function (settlementDate) {
                         $('').launchDownload('@Html.Raw(Url.Action("GetMonthlySettlement","Accounting"))', { 'settlementDate': settlementDate, 'initialDate': '2018/12/01' }, 'report', true);

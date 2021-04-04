@@ -26,7 +26,11 @@
     <script>
         $(function () {
             hideLoading();
-            swal("獎金抽成彙總表", "目前尚未執行獎金抽成批次，無法提供下載！", "error");
+            Swal.fire(
+                '獎金抽成彙總表',
+                '目前尚未執行獎金抽成批次，無法提供下載！',
+                'error'
+            )
         });
     </script>
 }

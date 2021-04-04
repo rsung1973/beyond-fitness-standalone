@@ -34,7 +34,11 @@
                 if ($.isPlainObject(data)) {
                     if (data.result) {
                     } else {
-                        swal(data.message);
+                        Swal.fire(
+                            'Oops...',
+                            data.message,
+                            'warning'
+                        )
                     }
                 } else {
                     $(data).insertBefore($('#btnMoreLesson').closest('li'));
@@ -49,7 +53,11 @@
         $.post('@Html.Raw(Url.Action("ViewTrainingExecution", "LessonConsole", new { _learner.UID }))', { 'keyID': keyID, 'EncTargetID': encTargetID }, function (data) {
             hideLoading();
             if ($.isPlainObject(data)) {
-                swal(data.message);
+                Swal.fire(
+                    'Oops...',
+                    data.message,
+                    'warning'
+                )
             } else {
                 $(data).appendTo($('body'));
             }

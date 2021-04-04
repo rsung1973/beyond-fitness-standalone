@@ -71,7 +71,11 @@
                             }
                         } else {
                             hideLoading();
-                            swal(data.message);
+                            Swal.fire(
+                                'Oops...',
+                                data.message,
+                                'warning'
+                            )
                         }
                     } else {
                         hideLoading();
@@ -86,18 +90,17 @@
                 <script>
             $(function () {
                 $('#@(_dialogID) button.btnDelete').on('click', function () {
-                    swal({
-                        title: "確定刪除此項目?",
-                        text: "課表",
-                        //type: "successful",
+                    Swal.fire({
+                        title: '確定刪除?',
+                        text: "刪除後資料將無法回覆",
+                        icon: 'warning',
                         showCancelButton: true,
                         confirmButtonColor: "#DD6B55",
-                        confirmButtonText: "確定, 不後悔",
-                        cancelButtonText: "不, 點錯了",
-                        closeOnConfirm: true,
-                        closeOnCancel: true,
-                    }, function (isConfirm) {
-                        if (isConfirm) {
+                        confirmButtonText: '確定',
+                        cancelButtonText: '取消',
+                        focusCancel: true
+                    }).then((result) => {
+                        if (result.isConfirmed) {
                             showLoading();
                             $.post('@Html.Raw(Url.Action("DeleteTrainingItem", "Training", new {_viewModel.StageID, _viewModel.ItemID }))', {}, function (data) {
                                 hideLoading();
@@ -106,7 +109,11 @@
                                         $('#@(_dialogID)').modal('hide');
                                         refreshTrainingExecution(data.StageID);
                                     } else {
-                                        swal(data.message);
+                                        Swal.fire(
+                                            'Oops...',
+                                            data.message,
+                                            'warning'
+                                        )
                                     }
                                 } else {
                                     $(data).appendTo($('body'));

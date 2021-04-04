@@ -72,7 +72,11 @@
             $.post('@Html.Raw(Url.Action("SelectMonthPeriod", "BusinessConsole"))', null, function (data) {
                 //hideLoading();
                 if ($.isPlainObject(data)) {
-                    swal(data.message);
+                    Swal.fire(
+                        'Oops...',
+                        data.message,
+                        'warning'
+                    )
                 } else {
                     $(data).appendTo($('body'));
                 }

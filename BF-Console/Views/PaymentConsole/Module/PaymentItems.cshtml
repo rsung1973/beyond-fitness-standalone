@@ -41,13 +41,17 @@
         };
     });
 
-            //§ó¦h¬d¸ß±ø¥ó
+            //ï¿½ï¿½hï¿½dï¿½ß±ï¿½ï¿½ï¿½
     function morePaymentQuery() {
         showLoading();
         $.post('@Html.Raw(Url.Action("InvokePaymentQuery", "PaymentConsole"))', {}, function (data) {
             hideLoading();
             if ($.isPlainObject(data)) {
-                swal(data.message);
+                Swal.fire(
+                    'Oops...',
+                    data.message,
+                    'warning'
+                )
             } else {
                 $(data).appendTo($('body'));
             }

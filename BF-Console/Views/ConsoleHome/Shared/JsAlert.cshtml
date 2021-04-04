@@ -6,29 +6,24 @@
 @if (_message != null)
 {
     <script>
-        swal({
-        title: "",
-        text: '@(HttpUtility.JavaScriptStringEncode(_message))',
-        type: "warning",
-        showCancelButton: false,
-        confirmButtonColor: "#DD6B55",
-        confirmButtonText: "關閉",
-        cancelButtonText: "不, 點錯了",
-        closeOnConfirm: true,
-        closeOnCancel: false
-        }, function (isConfirm) {
-        @if (ViewBag.GoBack == true)
-        {
-            <text>
-                window.history.go(-1);
-            </text>
-        }
-        @if (ViewBag.CloseWindow == true)
-        {
-            <text>
-                window.close();
-            </text>
-        }
+        Swal.fire({
+            title: "",
+            text: '@(HttpUtility.JavaScriptStringEncode(_message))',
+            icon: 'warning',
+        }).then((result) => {
+            
+            @if (ViewBag.GoBack == true)
+            {
+                <text>
+                    window.history.go(-1);
+                </text>
+            }
+            @if (ViewBag.CloseWindow == true)
+            {
+                <text>
+                    window.close();
+                </text>
+            }
         });
     </script>
 }

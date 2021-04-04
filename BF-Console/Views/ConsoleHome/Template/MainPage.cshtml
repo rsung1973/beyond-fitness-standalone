@@ -43,15 +43,15 @@
     <!-- LivIconsevo  -->
     <link href='plugins/livIconsevo/css/LivIconsEvo.css' rel='stylesheet' type='text/css'>
     <!-- Sweetalert -->
-    <link href="plugins/sweetalert/sweetalert.css" rel="stylesheet" />
+    <link href="plugins/sweetalert2/sweetalert2.min.css" rel="stylesheet">
     <!-- SmartCalendar Datetimepick -->
     <link href="plugins/smartcalendar/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
 
 
     @RenderSection("CustomHeader", false)
     <!-- Custom Css -->
-    <link rel="stylesheet" href="css/main.css?2.2">
-    <link rel="stylesheet" href="css/color_skins.css?2.2">
+    <link rel="stylesheet" href="css/main.css?2.5">
+    <link rel="stylesheet" href="css/color_skins.css?2.5">
     <!-- Jquery Core Js -->
     <script src="bundles/libscripts.bundle.js"></script>
     <!-- Lib Scripts Plugin Js -->
@@ -73,7 +73,8 @@
     <script src="plugins/moment/moment.min.js"></script>
     <script src="plugins/jquery-cookie/jquery.cookie.js"></script>
     <!-- SweetAlert Plugin Js -->
-    <script src="plugins/sweetalert/sweetalert.min.js"></script>
+    <script src="plugins/sweetalert2/sweetalert2.min.js"></script>
+    <!-- SmartCalendar -->
     <script src="plugins/smartcalendar/js/bootstrap-datetimepicker.min.js"></script>
     <script src="plugins/smartcalendar/js/locales-datetimepicker/bootstrap-datetimepicker.zh-TW.js"></script>
     <script src="plugins/jquery-form/jquery-form.min.js"></script>
@@ -145,8 +146,7 @@
 
 		
                                 <rect x="-19" y="-19" width="4" height="4" fill="none" stroke="#ffffff" style="stroke-width: 2; stroke-linecap: butt; stroke-linejoin: round; opacity: 0;" class="lievo-checkshift lievo-donotdraw lievo-nohoverstroke lievo-nohovercolor" stroke-width="2px"></rect></g></g></g></g>
-	
-<desc>LivIcons Evolution</desc><defs></defs></svg>
+                                <desc>LivIcons Evolution</desc><defs></defs></svg>
                             </div>
                         </i>
                     </a>
@@ -417,7 +417,11 @@
     {
         <script>
             $(function () {
-                swal('@(HttpUtility.JavaScriptStringEncode((String)ViewBag.Message))');
+                Swal.fire({
+                    icon: 'info',
+                    text: '@(HttpUtility.JavaScriptStringEncode((String)ViewBag.Message))',
+                    confirmButtonText: '確定',
+                })
             });
         </script>
     }

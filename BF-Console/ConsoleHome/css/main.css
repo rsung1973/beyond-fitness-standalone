@@ -1570,7 +1570,7 @@ fieldset[disabled] .navbar .navbar-nav > a.btn.active {
 }
 
 .btn-primary {
-    background-color: #0061d2;
+    background-color: #007bff;
     color: #fff
 }
 
@@ -1588,6 +1588,20 @@ fieldset[disabled] .navbar .navbar-nav > a.btn.active {
     background-color: #05232d;
     color: #fff;
     box-shadow: none
+}
+
+.bg-darkteal .btn-primary:hover,
+.bg-darkteal .btn-primary:focus,
+.bg-darkteal .btn-primary:active,
+.bg-darkteal .btn-primary.active,
+.bg-darkteal .btn-primary:active:focus,
+.bg-darkteal .btn-primary:active:hover,
+.bg-darkteal .btn-primary.active:focus,
+.bg-darkteal .btn-primary.active:hover,
+.bg-darkteal .show > .btn-primary.dropdown-toggle,
+.bg-darkteal .show > .btn-primary.dropdown-toggle:focus,
+.bg-darkteal .show > .btn-primary.dropdown-toggle:hover {
+    background-color: #0056b3 !important;
 }
 
 .btn-primary:hover {
@@ -2656,6 +2670,17 @@ fieldset[disabled] .btn-link.active {
     border-color: #1b8d38
 }
 
+.fancy-checkbox.custom-color-blue input[type="checkbox"]:checked + span:before {
+    color: #457fca;
+    background-color: #fff
+}
+
+.fancy-checkbox.custom-bgcolor-blue input[type="checkbox"]:checked + span:before {
+    color: #fff;
+    background-color: #457fca;
+    border-color: #2d5e9f
+}
+
 .fancy-radio {
     margin-right: 10px
 }
@@ -2749,6 +2774,10 @@ fieldset[disabled] .btn-link.active {
 
 .fancy-radio.custom-bgcolor-grey input[type="radio"]:checked + span i:after {
     background-color: #fff
+}
+
+.fancy-radio.custom-color-blue input[type="radio"]:checked + span i:after {
+    background-color: #457fca
 }
 
 .input-group-addon.cursor {
@@ -2990,7 +3019,7 @@ fieldset[disabled] .btn-link.active {
     bottom: 6px;
     min-height: 18px;
     font-size: 11px;
-    color: rgba(253, 92, 99, 0.8);
+    color: rgba(253, 92, 99, 0.8) !important;
 /*    background-color: rgba(222, 222, 222, 0.1);*/
     float: right;
 }
@@ -5498,6 +5527,11 @@ img {
     background-color: #E5E5E5;
 }
 
+.modal-content .modal-header.learnerprofile {
+    display: -webkit-inline-box;
+    padding-bottom: 0px !important;
+}
+
 .modal-content .closebutton {
     position: absolute;
     top: 0;
@@ -5564,6 +5598,14 @@ img {
     display: block;
 }
 
+.modal-content .modal-header h5 small.badge {
+    margin-top: 0px;
+    margin-bottom: 0;
+    display: block;
+    font-size: 12px;
+    font-weight: 800;
+}
+
 .modal-content .modal-body {
     padding-top: 24px;
     padding-right: 24px;
@@ -5605,7 +5647,7 @@ img {
     padding-bottom: 16px;
     padding-left: 24px;
     -webkit-justify-content: space-between;
-    justify-content: space-between
+    justify-content: space-between;
 }
 
 .modal-content .modal-footer button {
@@ -21757,8 +21799,8 @@ section.content {
 .card .bg-black small,
 .card .bg-black .material-icons,
 .card .bg-darkteal h2,
-.card .bg-darkteal small,
-.card .bg-darkteal .material-icons {
+.card .bg-darkteal small {
+/* .card .bg-darkteal .material-icons { */
     color: #fff !important
 }
 

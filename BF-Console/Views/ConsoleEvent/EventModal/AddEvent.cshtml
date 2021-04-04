@@ -62,36 +62,28 @@
         function searchLearner(param) {
             clearErrors();
             if (param.length < 2) {
-                    swal({
-                        title: "Opps！",
-                        text: "你忘了學生的姓名嗎？!(至少2個中、英文字)",
-                        type: "warning",
-                        showCancelButton: false,
-                        confirmButtonColor: "#DD6B55",
-                        confirmButtonText: "重新輸入!",
-                        closeOnConfirm: true
-                    }, function () {
-
-                    });
+                    Swal.fire(
+                        'Oops...',
+                        '你忘了學生的姓名嗎？!(至少2個中、英文字)',
+                        'warning'
+                    ) 
                 } else {
                     showLoading();
                 $.post('@Html.Raw(Url.Action("AttendeeSelector", "ConsoleEvent", new { _viewModel.StartDate }))', { 'userName': param }, function (data) {
                         hideLoading();
                         if ($.isPlainObject(data)) {
                             if (data.result) {
-                                swal(data.message);
+                                Swal.fire(
+                                    'Oops...',
+                                    data.message,
+                                    'warning'
+                                )
                             } else {
-                                swal({
-                                    title: "Opps！",
-                                    text: "你確定有這個學生？!",
-                                    type: "warning",
-                                    showCancelButton: false,
-                                    confirmButtonColor: "#DD6B55",
-                                    confirmButtonText: "重新輸入!",
-                                    closeOnConfirm: true
-                                }, function () {
-
-                                });
+                                Swal.fire(
+                                    'Oops...',
+                                    '模糊搜尋不到相關資料!(姓名/暱稱/電話號碼)',
+                                    'warning'
+                                )                                
                             }
                         } else {
                             $(data).appendTo($('body'));
@@ -105,7 +97,11 @@
             $.post('@Html.Raw(Url.Action("BookingCoachPI", "ConsoleEvent", new { ClassDate = _viewModel.StartDate }))', {}, function (data) {
                 hideLoading();
                 if ($.isPlainObject(data)) {
-                    swal(data.message);
+                    Swal.fire(
+                        'Oops...',
+                        data.message,
+                        'warning'
+                    )
                 } else {
                     $(data).appendTo($('body'));
                 }

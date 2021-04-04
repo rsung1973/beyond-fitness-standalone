@@ -33,21 +33,19 @@
             hideLoading();
             if ($.isPlainObject(data)) {
                 if (data.result) {
-                    swal('課表重點已更新!!');
+                    Swal.fire(
+                        '幹得好!',
+                        '更新上課重點成功!',
+                        'success'
+                    )
                     refreshEvents();
                     $global.closeAllModal();
                 } else {
-                    swal({
-                        title: "Opps！",
-                        text: data.message,
-                        type: "warning",
-                        showCancelButton: false,
-                        confirmButtonColor: "#DD6B55",
-                        confirmButtonText: "重新輸入!",
-                        closeOnConfirm: true
-                    }, function () {
-
-                    });
+                    Swal.fire(
+                        'Oops...',
+                        data.message,
+                        'warning'
+                    )
                 }
             } else {
                 $(data).appendTo($('body'));

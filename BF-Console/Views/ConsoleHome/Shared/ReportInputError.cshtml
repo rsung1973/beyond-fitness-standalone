@@ -20,13 +20,17 @@
 
 @if (_modelState != null && !_modelState.IsValid)
 {
-    <script>
+<script>
         $(function () {
             console.log('@(_modelState.ErrorMessage())');
             @if(ViewBag.AlertError==true)
             {
                 <text>
-            swal('@(HttpUtility.JavaScriptStringEncode(_modelState.ErrorMessage()))');
+                    Swal.fire(
+                        'Oops...',
+                        '@(HttpUtility.JavaScriptStringEncode(_modelState.ErrorMessage()))',
+                        'warning'
+                    )
                 </text>
             }
             @foreach (var key in _modelState.Keys.Where(k => _modelState[k].Errors.Count > 0))
@@ -45,5 +49,5 @@
             </text>
             }
         });
-    </script>
+</script>
 }

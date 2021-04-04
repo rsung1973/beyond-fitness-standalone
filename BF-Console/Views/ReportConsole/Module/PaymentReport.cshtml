@@ -106,7 +106,11 @@
             $.post('@Html.Raw(Url.Action("SelectPeriodReport","ReportConsole"))', {}, function (data) {
                 hideLoading();
                 if ($.isPlainObject(data)) {
-                    swal(data.message);
+                    Swal.fire(
+                        'Oops...',
+                        data.message,
+                        'warning'
+                    )
                 } else {
                     $global.doQuery = function (viewModel) {
                         viewModel.PayoffDateFrom = viewModel.DateFrom;

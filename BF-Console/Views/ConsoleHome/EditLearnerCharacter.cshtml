@@ -103,7 +103,7 @@
                                                         <div class="testimonial-section">
                                                             <h4>Hi，@(_learner.Nickname)您好</h4>
                                                             <p>
-                                                                恭喜您持之以恆的完成了12堂訓練課程，為了讓您未來在更安全的環境中進行有效的訓練<br />
+                                                                恭喜您持之以恆的完成了15堂訓練課程，為了讓您未來在更安全的環境中進行有效的訓練<br />
                                                                 Beyond精靈將與您進行以下的對談，雖然會花費您5分鐘的時間，但是在過程中可替您規劃出更適合的訓練內容喔！
                                                             </p>
                                                             <p class="text-center p-t-10">
@@ -460,10 +460,18 @@
             });
 
             if (done > 2) {
-                swal('Oooops!你回答太多題喔！', '最多選擇兩項Stage喔！', 'error');
+                Swal.fire(
+                    'Oops...',
+                    '最多選擇兩項Stage喔！',
+                    'error'
+                )               
                 return;
             } else if (done == 0) {
-                swal('Oooops!你忘了回答問題喔！', '請至少勾選一項或填寫其他內容喔！', 'error');
+                Swal.fire(
+                    'Oops...',
+                    '請至少勾選一項或填寫其他內容喔！',
+                    'error'
+                )   
                 return;
             }
             
@@ -482,7 +490,11 @@
             $formData.QuestionID = questID;
             $formData.NoChecked = noChecked;
             if (maxCount && Array.isArray($formData.SuggestionID) && $formData.SuggestionID.length > maxCount) {
-                swal('', '最多選擇' + maxCount + '項', 'error');
+                Swal.fire(
+                    'Oops...',
+                    '最多選擇' + maxCount + '項',
+                    'error'
+                )  
                 return;
             }
             $.post('@Html.Raw(Url.Action("CommitPDQ", "LearnerProfile", new { KeyID = _learner.UID.EncryptKey(),_viewModel.QuestionnaireID}))', $formData, function (data) {
@@ -492,7 +504,11 @@
                             onDone();
                         }
                     } else {
-                        swal("Oooops!你忘了回答問題喔！", data.message, "error");
+                        Swal.fire(
+                            'Oops...',
+                            '你忘了回答問題喔！',
+                            'error'
+                        )  
                     }
                 } else {
                     $(data).appendTo($('body'));
@@ -507,7 +523,11 @@
                     if (data.result) {
                         $('').launchDownload('@Html.Raw(Url.Action("LearnerProfile","ConsoleHome",new { KeyID = _learner.UID.EncryptKey() }))', {});
                     } else {
-                        swal("", data.message, "error");
+                        Swal.fire(
+                            'Oops...',
+                            data.message,
+                            'warning'
+                        )
                     }
                 } else {
                     $(data).appendTo($('body'));
@@ -527,7 +547,11 @@
                     if (data.result) {
                         nextStep(1);
                     } else {
-                        swal(data.message);
+                        Swal.fire(
+                            'Oops...',
+                            data.message,
+                            'warning'
+                        )
                     }
                 } else {
                     $(data).appendTo($('body'));

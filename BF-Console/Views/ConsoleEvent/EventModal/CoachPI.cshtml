@@ -92,7 +92,11 @@
             $.post('@Html.Raw(Url.Action("BookingCoachPI", "ConsoleEvent", new { keyID = _model.LessonID.EncryptKey(),CoachID = _model.AttendingCoach }))', {}, function (data) {
                 hideLoading();
                 if ($.isPlainObject(data)) {
-                    swal(data.message);
+                    Swal.fire(
+                        'Oops...',
+                        data.message,
+                        'warning'
+                    )
                 } else {
                     $(data).appendTo($('body'));
                 }

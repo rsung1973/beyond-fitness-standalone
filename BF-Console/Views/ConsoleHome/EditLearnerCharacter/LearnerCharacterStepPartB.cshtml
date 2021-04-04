@@ -87,7 +87,11 @@
             $formData.QuestionID = questID;
             $formData.NoChecked = noChecked;
             if (maxCount && Array.isArray($formData.SuggestionID) && $formData.SuggestionID.length > maxCount) {
-                swal('', '最多選擇' + maxCount + '項', 'error');
+                Swal.fire(
+                    'Oops...',
+                    '最多選擇' + maxCount + '項',
+                    'error'
+                )
                 return;
             }
             $.post('@Html.Raw(Url.Action("CommitPDQ", "LearnerProfile", new { KeyID = _learner.UID.EncryptKey(),_viewModel.QuestionnaireID}))', $formData, function (data) {
@@ -97,7 +101,11 @@
                             onDone();
                         }
                     } else {
-                        swal("Oooops!你忘了回答問題喔！", data.message, "error");
+                        Swal.fire(
+                            'Oops...',
+                            data.message,
+                            'warning'
+                        )
                         $('input[name="HealthCheck"]').prop('checked', false);
                     }
                 } else {
@@ -113,7 +121,11 @@
                     if (data.result) {
                         $('').launchDownload('@Html.Raw(Url.Action("LearnerProfile","ConsoleHome",new { KeyID = _learner.UID.EncryptKey() }))', {});
                     } else {
-                        swal("", data.message, "error");
+                        Swal.fire(
+                            'Oops...',
+                            data.message,
+                            'warning'
+                        )
                     }
                 } else {
                     $(data).appendTo($('body'));

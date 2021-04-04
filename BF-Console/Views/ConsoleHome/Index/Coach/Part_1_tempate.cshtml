@@ -178,7 +178,11 @@
                         $global.closeAllModal();
                         onSuccess();
                     } else {
-                        swal(data.message);
+                        Swal.fire(
+                            'Oops...',
+                            data.message,
+                            'warning'
+                        )
                     }
                 } else {
                     $(data).appendTo($('body'));
@@ -192,7 +196,11 @@
         $.post('@Html.Raw(Url.Action("BookingCustomEvent", "ConsoleEvent"))', args, function (data) {
             hideLoading();
             if ($.isPlainObject(data)) {
-                swal(data.message);
+                Swal.fire(
+                    'Oops...',
+                    data.message,
+                    'warning'
+                )
             } else {
                 $(data).appendTo($('body'));
             }
@@ -215,7 +223,11 @@
                         $global.closeAllModal();
                         onSuccess();
                     } else {
-                        swal(data.message);
+                        Swal.fire(
+                            'Oops...',
+                            data.message,
+                            'warning'
+                        )
                     }
                 } else {
                     $(data).appendTo($('body'));

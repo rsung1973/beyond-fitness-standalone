@@ -179,10 +179,18 @@
                 hideLoading();
                 if ($.isPlainObject(data)) {
                     if (data.result) {
-                        swal('設定完成!! ' + data.message);
+                        Swal.fire(
+                            '幹得好',
+                            '設定完成',
+                            'success'
+                        )
                         @*$('').launchDownload('@Html.Raw(Url.Action("InvoiceOverview", "ConsoleHome",new { _viewModel.DateFrom}))', { });*@
                     } else {
-                        swal(data.message);
+                        Swal.fire(
+                            'Oops...',
+                            data.message,
+                            'warning'
+                        )
                     }
                 } else {
                     $(data).appendTo('body').remove();

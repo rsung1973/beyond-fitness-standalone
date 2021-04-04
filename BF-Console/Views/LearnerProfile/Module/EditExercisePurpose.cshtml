@@ -130,7 +130,11 @@
                     if (data.result) {
                         onDone();
                     } else {
-                        swal(data.message);
+                        Swal.fire(
+                            'Oops...',
+                            data.message,
+                            'warning'
+                        )
                     }
                 } else {
                     $(data).appendTo($('body'));
