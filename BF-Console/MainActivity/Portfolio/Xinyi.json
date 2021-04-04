@@ -1,5 +1,5 @@
 {
-  "branchName": "信義店",
+  "branchName": "信義安和店",
   "arenaView": "images/landing/360/101.jpg",
   "scenarioPhoto": [ "xinyi-01.jpg", "xinyi-02.jpg", "xinyi-03.jpg", "xinyi-04.jpg" ],
   "coachItems": [
@@ -34,16 +34,28 @@
       "scenarioPhoto": [ "Scenario1.jpg" ]
     },
     {
-      "coachName": "顏廷宇",
-      "nickname": "Eugene",
-      "prologue": "Rest at the end, Not in the middle.",
-      "scenarioPhoto": [ "Scenario1.png" ]
+      "coachName": "李瑞傑",
+      "nickname": "Sam",
+      "prologue": "你所辛苦努力的今天，是為了更棒更好的明天",
+      "scenarioPhoto": [ "Scenario1.jpg" ]
     },
     {
       "coachName": "陳芷榆",
       "nickname": "Genie",
       "prologue": "真正的成長，是因為經驗了苦痛；是在頻頻回首的大路上，終於領略了生命的喜悅與擔當！",
       "scenarioPhoto": []
+    },
+    {
+      "coachName": "顏廷宇",
+      "nickname": "Eugene",
+      "prologue": "Rest at the end, Not in the middle.",
+      "scenarioPhoto": [ "Scenario1.png" ]
+    },
+    {
+      "coachName": "黃宇承",
+      "nickname": "Alan",
+      "prologue": "寧願跑起來被絆倒無數次，也不願規規矩矩走一輩子。就算跌倒也要豪邁的笑",
+      "scenarioPhoto": [ "Scenario1.jpg" ]
     }
   ]
 }

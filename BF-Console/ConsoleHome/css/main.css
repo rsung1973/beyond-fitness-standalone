@@ -1570,7 +1570,7 @@ fieldset[disabled] .navbar .navbar-nav > a.btn.active {
 }
 
 .btn-primary {
-    background-color: #0061d2;
+    background-color: #007bff;
     color: #fff
 }
 
@@ -1588,6 +1588,20 @@ fieldset[disabled] .navbar .navbar-nav > a.btn.active {
     background-color: #05232d;
     color: #fff;
     box-shadow: none
+}
+
+.bg-darkteal .btn-primary:hover,
+.bg-darkteal .btn-primary:focus,
+.bg-darkteal .btn-primary:active,
+.bg-darkteal .btn-primary.active,
+.bg-darkteal .btn-primary:active:focus,
+.bg-darkteal .btn-primary:active:hover,
+.bg-darkteal .btn-primary.active:focus,
+.bg-darkteal .btn-primary.active:hover,
+.bg-darkteal .show > .btn-primary.dropdown-toggle,
+.bg-darkteal .show > .btn-primary.dropdown-toggle:focus,
+.bg-darkteal .show > .btn-primary.dropdown-toggle:hover {
+    background-color: #0056b3 !important;
 }
 
 .btn-primary:hover {
@@ -2656,6 +2670,17 @@ fieldset[disabled] .btn-link.active {
     border-color: #1b8d38
 }
 
+.fancy-checkbox.custom-color-blue input[type="checkbox"]:checked + span:before {
+    color: #457fca;
+    background-color: #fff
+}
+
+.fancy-checkbox.custom-bgcolor-blue input[type="checkbox"]:checked + span:before {
+    color: #fff;
+    background-color: #457fca;
+    border-color: #2d5e9f
+}
+
 .fancy-radio {
     margin-right: 10px
 }
@@ -2749,6 +2774,10 @@ fieldset[disabled] .btn-link.active {
 
 .fancy-radio.custom-bgcolor-grey input[type="radio"]:checked + span i:after {
     background-color: #fff
+}
+
+.fancy-radio.custom-color-blue input[type="radio"]:checked + span i:after {
+    background-color: #457fca
 }
 
 .input-group-addon.cursor {
@@ -2990,7 +3019,7 @@ fieldset[disabled] .btn-link.active {
     bottom: 6px;
     min-height: 18px;
     font-size: 11px;
-    color: rgba(253, 92, 99, 0.8);
+    color: rgba(253, 92, 99, 0.8) !important;
 /*    background-color: rgba(222, 222, 222, 0.1);*/
     float: right;
 }
@@ -5472,6 +5501,10 @@ img {
     content: "\ea51"
 }
 
+.modal-open {
+    overflow: hidden !important;
+}
+
 .modal-content {
     /*
 	border-radius: .1875rem;
@@ -5482,7 +5515,7 @@ img {
     background: white;
     border-radius: .55rem;
 /*    box-shadow: 0px 10px 50px 0px rgba(0, 0, 0, 0.5);*/
-    border: 0
+    border: 0;
 }
 
 .modal-content .modal-header {
@@ -5492,6 +5525,11 @@ img {
     padding-bottom: 24px;
     padding-left: 24px;
     background-color: #E5E5E5;
+}
+
+.modal-content .modal-header.learnerprofile {
+    display: -webkit-inline-box;
+    padding-bottom: 0px !important;
 }
 
 .modal-content .closebutton {
@@ -5560,6 +5598,14 @@ img {
     display: block;
 }
 
+.modal-content .modal-header h5 small.badge {
+    margin-top: 0px;
+    margin-bottom: 0;
+    display: block;
+    font-size: 12px;
+    font-weight: 800;
+}
+
 .modal-content .modal-body {
     padding-top: 24px;
     padding-right: 24px;
@@ -5601,7 +5647,7 @@ img {
     padding-bottom: 16px;
     padding-left: 24px;
     -webkit-justify-content: space-between;
-    justify-content: space-between
+    justify-content: space-between;
 }
 
 .modal-content .modal-footer button {
@@ -21753,8 +21799,8 @@ section.content {
 .card .bg-black small,
 .card .bg-black .material-icons,
 .card .bg-darkteal h2,
-.card .bg-darkteal small,
-.card .bg-darkteal .material-icons {
+.card .bg-darkteal small {
+/* .card .bg-darkteal .material-icons { */
     color: #fff !important
 }
 
@@ -22389,7 +22435,7 @@ section.content {
         opacity: 0
     }
 }
-
+.swal2-container,
 .sweet-alert {
     -webkit-border-radius: 0 !important;
     -moz-border-radius: 0 !important;
@@ -22398,6 +22444,7 @@ section.content {
     border-radius: .55rem !important
 }
 
+.swal2-container p
 .sweet-alert p {
     font-size: 14px !important;
     color: #05232d;
@@ -22408,12 +22455,14 @@ section.content {
     top: 23px !important;
     right: 13px !important
 }
-
+/* .swal2-container h2, */
 .sweet-alert h2 {
     font-size: 18px !important;
     margin: 0 0 5px 0 !important
 }
 
+.swal2-container .swal2-cancel,
+.swal2-container .swal2-confirm,
 .sweet-alert .confirm,
 .sweet-alert .cancel {
     font-weight: 400;
@@ -22425,6 +22474,7 @@ section.content {
     margin: 5px 1px
 }
 
+.swal2-container button,
 .sweet-alert button {
     font-size: 15px !important;
     -webkit-border-radius: 0 !important;
@@ -27357,7 +27407,7 @@ section.content {
 	height: 1px;
 	background: #656565;
 	position: relative;
-/*	margin-bottom: 20px;*/
+	margin-bottom: 10px;
     margin-top: 15px;
     min-height: 0px !important;
 }
@@ -27383,7 +27433,9 @@ section.content {
 
 .accordion.custom {
     width: 100%;
+    background: linear-gradient(#052333, #052333), linear-gradient(to bottom, rgba(255, 255, 255, 0.5), rgba(0, 0, 0, 0.5));
 }
+
 .accordion.custom .card-header {
     background: transparent;
 /*    border-color: #f0f0f0;*/

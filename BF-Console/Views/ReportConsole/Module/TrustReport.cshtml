@@ -99,7 +99,11 @@
             $.post('@Html.Raw(Url.Action("SelectMonthlyReport","ReportConsole"))', {}, function (data) {
                 hideLoading();
                 if ($.isPlainObject(data)) {
-                    swal(data.message);
+                    Swal.fire(
+                        'Oops...',
+                        data.message,
+                        'warning'
+                    )
                 } else {
                     $global.doQuery = function (settlementDate) {
                         $('').launchDownload('@Html.Raw(Url.Action("CreateTrustTrackXlsx","Accounting"))', { 'trustDateFrom': settlementDate }, 'report', true);
@@ -114,7 +118,11 @@
             $.post('@Html.Raw(Url.Action("SelectMonthlyReport","ReportConsole"))', {}, function (data) {
                 hideLoading();
                 if ($.isPlainObject(data)) {
-                    swal(data.message);
+                    Swal.fire(
+                        'Oops...',
+                        data.message,
+                        'warning'
+                    )
                 } else {
                     $global.doQuery = function (settlementDate) {
                         $('').launchDownload('@Html.Raw(Url.Action("CreateTrustContractZip","Accounting"))', { 'trustDateFrom': settlementDate }, 'report', true);

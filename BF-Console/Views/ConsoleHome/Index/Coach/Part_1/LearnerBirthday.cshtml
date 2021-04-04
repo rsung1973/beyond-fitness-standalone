@@ -73,7 +73,11 @@
             $.post('@Html.Raw(Url.Action("ShowLearnerAboutToBirth", "LearnerProfile"))', {'keyID':'@(_model.UID.EncryptKey())','BirthIncomingDays':0}, function (data) {
                 hideLoading();
                 if ($.isPlainObject(data)) {
-                    swal(data.message);
+                    Swal.fire(
+                        'Oops...',
+                        data.message,
+                        'warning'
+                    )
                 } else {
                     $(data).appendTo($('body'));
                 }
@@ -89,7 +93,11 @@
             $.post('@Html.Raw(Url.Action("ShowLearnerAboutToBirth", "LearnerProfile"))', {'keyID':'@(_model.UID.EncryptKey())','BirthIncomingDays':7}, function (data) {
                 hideLoading();
                 if ($.isPlainObject(data)) {
-                    swal(data.message);
+                    Swal.fire(
+                        'Oops...',
+                        data.message,
+                        'warning'
+                    )
                 } else {
                     $(data).appendTo($('body'));
                 }

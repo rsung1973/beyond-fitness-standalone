@@ -20,18 +20,16 @@
 }
 <script>
     $(function () {
-        swal({
+        Swal.fire({
             title: "自動帶入資料中",
             text: "阿呆會自動幫您帶入@($"{_model.PDQTask.First().TaskDate:yyyy/MM/dd}")填寫過的內容喔!",
-            //type: "successful",
-            showCancelButton: true,
-            confirmButtonColor: "#DD6B55",
+            icon: "warning",
+            showCancelButton: false,
             confirmButtonText: "繼續，不後悔",
             cancelButtonText: "我超強不用瞭解學生",
-            closeOnConfirm: true,
-            closeOnCancel: true,
-        }, function (isConfirm) {
-            if (isConfirm) {
+            focusCancel: true
+        }).then((result) => {
+            if (result.isConfirmed) {
                 if ($global.resumeCharacter) {
                     $global.resumeCharacter();
                 } else {
@@ -47,7 +45,11 @@
                                 $global.rejectCharacterDone();
                             }
                         } else {
-                            swal(data.message);
+                            Swal.fire(
+                                'Oops...',
+                                data.message,
+                                'warning'
+                            )
                         }
                     } else {
                         $(data).appendTo($('body'));

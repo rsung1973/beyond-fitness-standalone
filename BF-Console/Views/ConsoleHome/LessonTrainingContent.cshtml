@@ -192,24 +192,29 @@
 
         //編輯近期目標
         this.addRecentGoal = function () {
-            swal({
+            Swal.fire({
                 title: "近期目標",
-                text: "",
-                type: "input",
+                input: "text",
                 showCancelButton: true,
                 confirmButtonColor: "#DD6B55",
-                confirmButtonText: "確定, 不後悔",
-                cancelButtonText: "不, 點錯了",
-                closeOnConfirm: false,
-                animation: "slide-from-top",
-                inputPlaceholder: "請輸入20個中英文字"
-            }, function (inputValue) {
-                if (inputValue === false) return false;
-                if (inputValue === "") {
-                    swal.showInputError("你忘了輸入文字嗎!?");
-                    return false
-                }
-                swal("Nice!", "You wrote: " + inputValue, "success");
+                confirmButtonText: "更新目標目標",
+                cancelButtonText: "取消",
+                inputPlaceholder: "請輸入20個中英文字",
+                inputValidator: (value) => {                    
+                    if (!value) {
+                        return '你忘了輸入文字嗎!?';
+                    } else {
+                        if (value.length > 20) {
+                            return '最多僅能輸入20個內的中英文字';
+                        }
+                    }
+                },
+            }).then((result) => {
+                Swal.fire(
+                    '幹得好!',
+                    '更新近期目標成功!',
+                    'success'
+                )
             });
         };
 
@@ -218,62 +223,41 @@
             $("#moreActionModal").modal('show');
         });
 
-        //點選刪除功能
-        this.deleteData = function () {
-            swal({
-                title: "不後悔?",
-                text: "刪除後資料將無法回覆!",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#DD6B55",
-                confirmButtonText: "確定, 不後悔",
-                cancelButtonText: "不, 點錯了",
-                closeOnConfirm: false,
-                closeOnCancel: false
-            }, function (isConfirm) {
-                if (isConfirm) {
-                    swal("刪除成功!", "資料已經刪除 Bye!", "success");
-                } else {
-                    swal("取消成功", "你的資料現在非常安全 :)", "error");
-                }
-            });
-        };
-
-
         //編輯完成上課結語
         this.attendLesson = function () {
-            //if ($global.emphasis === '') {
-            //    swal("請先輸入上課重點!?");
-            //    return false
-            //}
 
             showLoading();
             $.post('@Html.Raw(Url.Action("CheckLessonEmphasis", "Attendance"))', { 'keyID': '@(lessonItem.LessonID.EncryptKey())' }, function (data) {
                 hideLoading();
                 if ($.isPlainObject(data)) {
                     if (data.result) {
-                        swal({
+                        Swal.fire({
                             title: "@(learner.FullName())的家庭聯絡簿",
-                            text: "<span class=\"col-blue font-bold\">範例：昨天喝酒精神狀況不好<br/>今天第一次學甩壺鈴<br/>今天沒吃飯就運動狀況不好，下次記得提前吃飽喔</span>",
-                            type: "input",
-                            showCancelButton: true,
+                            html: '<span class=\"col-blue font-bold\">範例：昨天喝酒精神狀況不好<br/>今天第一次學甩壺鈴<br/>今天沒吃飯就運動狀況不好，下次記得提前吃飽喔</span>',
+                            input: "text",
                             confirmButtonColor: "#DD6B55",
-                            confirmButtonText: "確定, 不後悔",
-                            cancelButtonText: "不, 點錯了",
-                            closeOnConfirm: false,
-                            animation: "slide-from-top",
+                            confirmButtonText: "完成上課",
                             inputPlaceholder: "請輸入20個中英文字",
-                            html: true
-                        }, function (inputValue) {
-                            if (inputValue === false) return false;
-                            if (inputValue === "") {
-                                swal("你忘了輸入文字嗎!?");
-                                return false
+                            inputValidator: (value) => {
+                                if (!value) {
+                                    return '你忘了輸入文字嗎!?';
+                                } else {
+                                    if (value.length > 20) {
+                                        return '最多僅能輸入20個內的中英文字';
+                                    }
+                                }
+                            },
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                commitAttendance(result.value);
                             }
-                            commitAttendance(inputValue);
                         });
                     } else {
-                        swal(data.message);
+                        Swal.fire(
+                            'Oops...',
+                            data.message,
+                            'warning'
+                        )
                     }
                 } else {
                     $(data).appendTo($('body'));
@@ -287,20 +271,18 @@
                 hideLoading();
                 if ($.isPlainObject(data)) {
                     if (data.result) {
-                        swal("Nice!", "You wrote: " + remark, "success");
+                        Swal.fire(
+                            '幹得好!',
+                            '更新家庭聯絡簿成功!',
+                            'success'
+                        )
                         refreshTrainingContent();
                     } else {
-                        swal({
-                            title: "Opps！",
-                            text: data.message,
-                            type: "warning",
-                            showCancelButton: false,
-                            confirmButtonColor: "#DD6B55",
-                            confirmButtonText: "重新輸入!",
-                            closeOnConfirm: true
-                        }, function () {
-
-                        });
+                        Swal.fire(
+                            'Oops...',
+                            data.message,
+                            'warning'
+                        )
                     }
                 } else {
                     $(data).appendTo($('body'));
@@ -310,34 +292,45 @@
 
         //點選同步課表
         this.cloneLearnerTrainingPlan = function (viewModel) {
-            swal({
-                title: "確定要將這張課表複製同步給同伴，不後悔?",
-                text: "同步後課表內容會一模模一樣樣被覆蓋喔!",
-                type: "warning",
+            Swal.fire({
+                title: "確定同步課表?",
+                text: "同步後課表內容將會一樣，且被覆蓋！",
+                icon: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#DD6B55",
-                confirmButtonText: "確定, 不後悔",
-                cancelButtonText: "不, 點錯了",
-                closeOnConfirm: false,
-                closeOnCancel: false
-            }, function (isConfirm) {
-                if (isConfirm) {
+                confirmButtonText: '確定',
+                cancelButtonText: '取消',
+                focusCancel: true     
+            }).then((result) => {
+                if (result.isConfirmed) {
                     showLoading();
                     $.post('@Html.Raw(Url.Action("CloneLearnerTrainingPlan", "LessonConsole", new { KeyID = lessonItem.LessonID.EncryptKey(),learner.UID }))', viewModel, function (data) {
                         hideLoading();
                         if ($.isPlainObject(data)) {
                             if (data.result) {
-                                swal("同步成功!", "資料已經同步 Bye!", "success");
+                                Swal.fire(
+                                    '同步成功!',
+                                    '資料已經同步 Bye!',
+                                    'success'
+                                )
                                 refreshTrainingContent();
                             } else {
-                                swal("同步失敗!", data.message, "error");
+                                Swal.fire(
+                                    'Oops 同步失敗...',
+                                    data.message,
+                                    'error'
+                                )
                             }
                         } else {
                             $(data).appendTo($('body'));
                         }
                     });
                 } else {
-                    swal("取消成功", "你的資料現在非常安全 :)", "error");
+                    Swal.fire(
+                        '取消成功',
+                        '你的資料現在非常安全 :)',
+                        'info'
+                    )
                 }
             });
         };
@@ -347,7 +340,11 @@
             $.post('@Html.Raw(Url.Action("SelectToCloneCoachPITrainingPlan", "LessonConsole", new { KeyID = lessonItem.LessonID.EncryptKey() }))', {}, function (data) {
                 hideLoading();
                 if ($.isPlainObject(data)) {
-                    swal(data.message);
+                    Swal.fire(
+                        'Oops...',
+                        data.message,
+                        'warning'
+                    )
                 } else {
                     $(data).appendTo($('body'));
                     $global.doSelect = function (uid, userName) {
@@ -363,7 +360,11 @@
             $.post('@Html.Raw(Url.Action("SelectToCloneLearnerTrainingPlan", "LessonConsole", new { KeyID = lessonItem.LessonID.EncryptKey() }))', { 'UID': @(learner.UID) }, function (data) {
                 hideLoading();
                 if ($.isPlainObject(data)) {
-                    swal(data.message);
+                    Swal.fire(
+                        'Oops...',
+                        data.message,
+                        'warning'
+                    )
                 } else {
                     $(data).appendTo($('body'));
                     $global.doSelect = function (uid, userName) {
@@ -374,16 +375,14 @@
         }
 
         this.cloneCoachPITrainingPlan = function (viewModel) {
-            swal({
-                title: "不後悔?",
-                text: "同步後課表內容會一模模一樣樣被覆蓋喔!",
-                type: "warning",
+            Swal.fire({
+                title: "確定同步課表?",
+                text: "同步後課表內容將會一樣，且被覆蓋！",
+                icon: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#DD6B55",
                 confirmButtonText: "確定, 不後悔",
                 cancelButtonText: "不, 點錯了",
-                closeOnConfirm: false,
-                closeOnCancel: false
             }, function (isConfirm) {
                 if (isConfirm) {
                     showLoading();
@@ -391,17 +390,29 @@
                         hideLoading();
                         if ($.isPlainObject(data)) {
                             if (data.result) {
-                                swal("同步成功!", "資料已經同步 Bye!", "success");
+                                Swal.fire(
+                                    '同步成功!',
+                                    '資料已經同步 Bye!',
+                                    'success'
+                                )
                                 refreshTrainingContent();
                             } else {
-                                swal("同步失敗!", data.message, "error");
+                                Swal.fire(
+                                    'Oops 同步失敗...',
+                                    data.message,
+                                    'error'
+                                )
                             }
                         } else {
                             $(data).appendTo($('body'));
                         }
                     });
                 } else {
-                    swal("取消成功", "你的資料現在非常安全 :)", "error");
+                    Swal.fire(
+                        '取消成功',
+                        '你的資料現在非常安全 :)',
+                        'info'
+                    )
                 }
             });
         };
@@ -410,21 +421,6 @@
 
             $('').launchDownload('@(Html.Raw(Url.Action("EditLearnerCharacter","ConsoleHome",new { KeyID = learner.UID.EncryptKey() })))', { 'QuestionnaireID': QuestionnaireID });
 
-            @*$global.rejectCharacterDone = function () {
-                $('').launchDownload('@Html.Raw(Url.Action("LessonTrainingContent", "ConsoleHome",new { LearnerID =  learner.UID }))', {'keyID':'@(lessonItem.LessonID.EncryptKey())' });
-            };
-
-            $.post('@Html.Raw(Url.Action("ResumeLearnerCharacter", "LearnerProfile"))', { 'keyID': '@(learner.UID.EncryptKey())' }, function (data) {
-                if ($.isPlainObject(data)) {
-                    if (data.result) {
-                        $('').launchDownload('@(Html.Raw(Url.Action("EditLearnerCharacter","ConsoleHome",new { KeyID = learner.UID.EncryptKey() })))', {});
-                    } else {
-                        swal(data.message);
-                    }
-                } else {
-                    $(data).appendTo($('body'));
-                }
-            });*@
         }
 
 
@@ -433,16 +429,17 @@
     {
         <script>
             this.copyTrainingPlan = function (copyFrom) {
-                swal({
+                Swal.fire({
                     title: "請重新填寫階段性調整問卷。",
                     text: "重新與客戶溝通並優化目前所提供的服務！",
-                    type: "warning",
+                    icon: "warning",
                     showCancelButton: false,
                     confirmButtonColor: "#DD6B55",
                     confirmButtonText: "立即填寫!",
-                    closeOnConfirm: true
-                }, function () {
-                    editLearnerCharacter(@(questionnaire.QuestionnaireID));
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        editLearnerCharacter(@(questionnaire.QuestionnaireID));
+                    }
                 });
             };
         </script>
@@ -451,34 +448,45 @@
     {
         <script>
             this.copyTrainingPlan = function (copyFrom) {
-                swal({
+                Swal.fire({
                     title: "不後悔?",
                     text: "複製後課表內容將會一樣，且被覆蓋！",
-                    type: "warning",
+                    icon: "warning",
                     showCancelButton: true,
                     confirmButtonColor: "#DD6B55",
-                    confirmButtonText: "確定",
-                    cancelButtonText: "取消",
-                    closeOnConfirm: false,
-                    closeOnCancel: false
-                }, function (isConfirm) {
-                    if (isConfirm) {
+                    confirmButtonText: '確定',
+                    cancelButtonText: '取消',
+                    focusCancel: true     
+                }).then((result) => {
+                    if (result.isConfirmed) {
                         showLoading();
                         $.post('@Html.Raw(Url.Action("CopyTrainingPlan", "LessonConsole", new { KeyID = lessonItem.LessonID.EncryptKey(),learner.UID }))', { 'copyFrom': copyFrom }, function (data) {
                             hideLoading();
                             if ($.isPlainObject(data)) {
                                 if (data.result) {
-                                    swal("複製課表!", "資料已經複製 Bye!", "success");
+                                    Swal.fire(
+                                        '複製課表!',
+                                        '資料已經同步 Bye!',
+                                        'success'
+                                    )
                                     refreshTrainingContent();
-                                } else {
-                                    swal("複製失敗!", data.message, "error");
+                                } else {                                   
+                                    Swal.fire(
+                                        'Oops 複製失敗...',
+                                        data.message,
+                                        'error'
+                                    )
                                 }
                             } else {
                                 $(data).appendTo($('body'));
                             }
                         });
                     } else {
-                        swal("取消成功", "你的資料現在非常安全 :)", "error");
+                        Swal.fire(
+                            '取消成功',
+                            '你的資料現在非常安全 :)',
+                            'info'
+                        )
                     }
                 });
             };

@@ -29,7 +29,7 @@
     <tbody>
         @foreach(var item in items)
         {
-        <tr onclick="processAchievementShare('@(item.InstallmentID.EncryptKey())',@(item.CoachID));">
+        <tr onclick="deleteAchievementShare('@(item.InstallmentID.EncryptKey())',@(item.CoachID));">
             <td>
                 <span class='list-icon'>
                     @{

@@ -152,7 +152,11 @@
                 $.post('@Html.Raw(Url.Action("PrepareAchievementDetails","ReportConsole"))', { 'achievementDateFrom': settlementDate, 'bypassCondition': true, 'detailsOnly': detailsOnly, 'coachID': coachID }, function (data) {
                     if ($.isPlainObject(data)) {
                         hideLoading();
-                        swal(data.message);
+                        Swal.fire(
+                            'Oops...',
+                            data.message,
+                            'warning'
+                        )
                     } else {
                         $(data).appendTo($('body'));
                     }
@@ -164,7 +168,11 @@
                 $.post('@Html.Raw(Url.Action("SelectCoachMonthlyReport","ReportConsole"))', {}, function (data) {
                     hideLoading();
                     if ($.isPlainObject(data)) {
-                        swal(data.message);
+                        Swal.fire(
+                            'Oops...',
+                            data.message,
+                            'warning'
+                        )
                     } else {
                         $global.doQuery = function (settlementDate, coachID) {
                             @*$('').launchDownload('@Html.Raw(Url.Action("CreateAchievementSummaryXlsx","Accounting"))', { 'achievementDateFrom': settlementDate, 'bypassCondition': true, 'detailsOnly': detailsOnly, 'coachID': coachID }, 'report', true);*@
@@ -180,7 +188,11 @@
                 $.post('@Html.Raw(Url.Action("PrepareMonthlyBonus","ReportConsole"))', { 'achievementDateFrom': achievementDateFrom }, function (data) {
                     hideLoading();
                     if ($.isPlainObject(data)) {
-                        swal(data.message);
+                        Swal.fire(
+                            'Oops...',
+                            data.message,
+                            'warning'
+                        )
                     } else {
                         $(data).appendTo($('body'));
                     }
@@ -192,7 +204,11 @@
                 $.post('@Html.Raw(Url.Action("SelectCoachMonthlyReport","ReportConsole"))', {}, function (data) {
                     hideLoading();
                     if ($.isPlainObject(data)) {
-                        swal(data.message);
+                        Swal.fire(
+                            'Oops...',
+                            data.message,
+                            'warning'
+                        )
                     } else {
                         $global.doQuery = function (settlementDate, coachID) {
                             $('').launchDownload('@Html.Raw(Url.Action("CreateAchievementShareXlsx","Accounting"))', { 'PayoffDateFrom': settlementDate, 'coachID': coachID }, 'report', true);
@@ -207,7 +223,11 @@
             $.post('@Html.Raw(Url.Action("SelectMonthlyReport","ReportConsole"))', {}, function (data) {
                 hideLoading();
                 if ($.isPlainObject(data)) {
-                    swal(data.message);
+                    Swal.fire(
+                        'Oops...',
+                        data.message,
+                        'warning'
+                    )
                 } else {
                     $global.doQuery = function (settlementDate) {
                         processMonthlyBonus(settlementDate);
@@ -223,7 +243,11 @@
             $.post('@Html.Raw(Url.Action("SelectCoachMonthlyReport","ReportConsole"))', {}, function (data) {
                 hideLoading();
                 if ($.isPlainObject(data)) {
-                    swal(data.message);
+                    Swal.fire(
+                        'Oops...',
+                        data.message,
+                        'warning'
+                    )
                 } else {
                     $global.doQuery = function (settlementDate, coachID) {
                         $('').launchDownload('@Html.Raw(Url.Action("CreateFullAchievementXlsx","Accounting"))', { 'achievementDateFrom': settlementDate, 'bypassCondition': true, 'coachID': coachID }, 'report', true);
@@ -238,7 +262,11 @@
             $.post('@Html.Raw(Url.Action("SelectCoach", "ContractConsole"))', {}, function (data) {
                 hideLoading();
                 if ($.isPlainObject(data)) {
-                    alert(data.message);
+                    Swal.fire(
+                        'Oops...',
+                        data.message,
+                        'warning'
+                    )
                 } else {
                     $(data).appendTo($('body'));
                 }

@@ -126,8 +126,11 @@
                             hideLoading();
                             if (data.result) {
                                 refreshEvents();
-                                //alert(data.message);
-                                swal("幹得好!", "更新時間成功!", "success");
+                                Swal.fire(
+                                    '幹得好!',
+                                    '更新時間成功!',
+                                    'success'
+                                )
                             } else {
                                 revertFunc();
                                 var $dialog = $(data);
@@ -143,7 +146,11 @@
                             hideLoading();
                             if (data.result) {
                                 refreshEvents();
-                                swal("幹得好!", "更新時間成功!", "success");
+                                Swal.fire(
+                                    '幹得好!',
+                                    '更新時間成功!',
+                                    'success'
+                                )
                                 //alert(data.message);
                             } else {
                                 revertFunc();
@@ -166,7 +173,11 @@
                                 hideLoading();
                                 if (data.result) {
                                     refreshEvents();
-                                    swal("幹得好!", "更新時間成功!", "success");
+                                    Swal.fire(
+                                        '幹得好!',
+                                        '更新時間成功!',
+                                        'success'
+                                    )
                                     //alert(data.message);
                                 } else {
                                     revertFunc();
@@ -184,7 +195,11 @@
                                 hideLoading();
                                 if (data.result) {
                                     refreshEvents();
-                                    swal("幹得好!", "更新時間成功!", "success");
+                                    Swal.fire(
+                                        '幹得好!',
+                                        '更新時間成功!',
+                                        'success'
+                                    )
                                     //alert(data.message);
                                 } else {
                                     revertFunc();

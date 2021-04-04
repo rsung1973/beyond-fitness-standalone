@@ -86,16 +86,17 @@ else
         $(function () {
             if (!window.editStageTrainingItem) {
                 window.editStageTrainingItem = function (stageID, itemID) {
-                    swal({
+                    Swal.fire({
                         title: "請重新填寫階段性調整問卷。",
                         text: "重新與客戶溝通並優化目前所提供的服務！",
                         type: "warning",
                         showCancelButton: false,
                         confirmButtonColor: "#DD6B55",
                         confirmButtonText: "立即填寫!",
-                        closeOnConfirm: true
-                    }, function () {
-                        editLearnerCharacter(@((int)QuestionnaireRequest.PartIDEnum.PartA));
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            editLearnerCharacter(@((int)QuestionnaireRequest.PartIDEnum.PartA));
+                        }
                     });
                 };
             }

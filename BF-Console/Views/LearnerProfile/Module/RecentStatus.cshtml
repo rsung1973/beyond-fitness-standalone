@@ -33,7 +33,11 @@
         $.post('@Html.Raw(Url.Action("CommitRecentStatus","ClassFacet",new {_learner.UID }))', { 'recentStatus': $('textarea[name="RecentStatus"]').val() }, function (data) {
             hideLoading();
             if (data) {
-                swal(data.message);
+                Swal.fire(
+                    '幹得好',
+                    '更新成功',
+                    'success'
+                )      
             }
         });
     }

@@ -50,7 +50,11 @@
                             showAchievementShareList();
                         } else {
                             hideLoading();
-                            swal(data.message);
+                            Swal.fire(
+                                'Oops...',
+                                data.message,
+                                'warning'
+                            )
                         }
                     } else {
                         hideLoading();

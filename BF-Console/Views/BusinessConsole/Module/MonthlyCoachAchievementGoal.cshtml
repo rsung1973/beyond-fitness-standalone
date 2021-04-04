@@ -35,7 +35,11 @@
         $.post('@Html.Raw(Url.Action("SelectMonth", "BusinessConsole"))', null, function (data) {
         //hideLoading();
         if ($.isPlainObject(data)) {
-            swal(data.message);
+            Swal.fire(
+                'Oops...',
+                data.message,
+                'warning'
+            )
         } else {
             $(data).appendTo($('body'));
             }
@@ -46,7 +50,11 @@
         $.post('@Html.Raw(Url.Action("ApplyCoachAchievement", "BusinessConsole",new { KeyID = _model.PeriodID.EncryptKey(), _viewModel.BranchID }))', { 'DataOperation': @((int)Naming.DataOperationMode.Create) }, function (data) {
             //hideLoading();
             if ($.isPlainObject(data)) {
-                swal(data.message);
+                Swal.fire(
+                    'Oops...',
+                    data.message,
+                    'warning'
+                )
             } else {
                 $(data).appendTo($('body'));
             }
@@ -69,7 +77,7 @@
         </div>
         <div class="body">
             <div class="table-responsive" id="@(_viewID)">
-                @{ 
+                @{
                     Html.RenderPartial("~/Views/BusinessConsole/Module/MonthlyCoachRevenueIndicatorList.cshtml", _model);
                 }
             </div>
@@ -83,7 +91,11 @@
         $.post('@Html.Raw(Url.Action("LoadCoachRevenueIndicatorList", "BusinessConsole", new { KeyID = _model.PeriodID.EncryptKey(),_viewModel.BranchID }))', {}, function (data) {
             hideLoading();
             if ($.isPlainObject(data)) {
-                    swal(data.message);
+                Swal.fire(
+                    'Oops...',
+                    data.message,
+                    'warning'
+                )
             } else {
                 $('#@(_viewID)').empty()
                     .append(data);
@@ -96,7 +108,11 @@
         $.post('@Html.Raw(Url.Action("EditCoachRevenueIndicator", "BusinessConsole"))', viewModel, function (data) {
             hideLoading();
             if ($.isPlainObject(data)) {
-                swal(data.message);
+                Swal.fire(
+                    'Oops...',
+                    data.message,
+                    'warning'
+                )
             } else {
                 $(data).appendTo($('body'));
             }

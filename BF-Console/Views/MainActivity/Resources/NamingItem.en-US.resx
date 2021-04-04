@@ -271,7 +271,10 @@
     <value>B1, No. 81, Sec. 2, Anhe Rd., Da’an Dist., Taipei City 106, Taiwan (R.O.C.)</value>
   </data>
    <data name="FindAnheBranchDesc1" xml:space="preserve">
-    <value>Dongmen Branch is a 3 mins walk from MRT XinyiAnhe Station exit 2A.</value>
+    <value>Dongmen Branch is a 3 mins walk from MRT XinyiAnhe Station exit 2A.Located in the key area of Dunhua-Anhe, adjacent to the Lih-Jen international Private Elementary &amp; Middle School.</value>
+  </data>
+  <data name="FindAnheBranchDesc2" xml:space="preserve">
+    <value>The private training space with 4m high celling and over 727 square meters, provides 25m sports lawn, individual group class venue, sports recovery rooms and comfortable separate shower room, where you are able to enjoy the professional training and service.</value>
   </data>
   <data name="OurTeam" xml:space="preserve">
     <value>Our team</value>
@@ -313,10 +316,16 @@
     <value />
   </data>
   <data name="JoinUsJob2" xml:space="preserve">
-    <value>Marketing/ PR Personnel</value>
+    <value>Athletic trainer</value>
   </data>
   <data name="JoinUsJob2Desc" xml:space="preserve">
     <value />
+  </data>
+  <data name="JoinUsJob3" xml:space="preserve">
+    <value>Recovery Coach</value>
+  </data>
+    <data name="JoinUsJob4" xml:space="preserve">
+    <value>Nutritionist</value>
   </data>
   <data name="OpportunityBannerTitle" xml:space="preserve">
     <value>Happiness</value>

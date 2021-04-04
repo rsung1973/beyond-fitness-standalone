@@ -25,7 +25,11 @@
 {
     <script>
         $(function () {
-            swal("獎金抽成彙總表", "目前尚未執行獎金抽成批次，無法提供下載！", "error");
+            Swal.fire(
+                '獎金抽成彙總表',
+                '目前尚未執行獎金抽成批次，無法提供下載！',
+                'error'
+            )
         });
     </script>
 }
@@ -33,18 +37,17 @@ else
 {
     <script>
         $(function () {
-            swal({
+            Swal.fire({
                 title: "是否直接下載？",
                 text: "如果想編輯管理獎金與特別獎金，請點選我要編輯獎金資料按鈕",
-                type: "warning",
+                icon: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#DD6B55",
                 confirmButtonText: "確定, 直接下載",
                 cancelButtonText: "我要編輯獎金資料",
-                closeOnConfirm: true,
-                closeOnCancel: true
-            }, function (isConfirm) {
-                if (isConfirm) {
+                focusCancel: true
+            }).then((result) => {
+                if (result.isConfirmed) {
                     $('').launchDownload('@Html.Raw(Url.Action("CreateMonthlyBonusXlsx","Accounting"))', @Html.Raw(JsonConvert.SerializeObject(new { _viewModel.AchievementDateFrom })), 'report', true);
                 } else {
                     showLoading();

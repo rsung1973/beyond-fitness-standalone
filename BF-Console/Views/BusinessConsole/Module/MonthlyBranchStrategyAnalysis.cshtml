@@ -30,7 +30,11 @@
         $.post('@Html.Raw(Url.Action("MakeStrategyAnalysis", "BusinessConsole", new { KeyID = _model.PeriodID.EncryptKey(), _viewModel.BranchID }))', {}, function (data) {
             hideLoading();
             if ($.isPlainObject(data)) {
-                swal(data.message);
+                Swal.fire(
+                    'Oops...',
+                    data.message,
+                    'warning'
+                )
             } else {
                 $(data).appendTo($('body'));
             }
@@ -42,7 +46,11 @@
         $.post('@Html.Raw(Url.Action("LoadStrategyAnalysis", "BusinessConsole", new { KeyID = _model.PeriodID.EncryptKey(), _viewModel.BranchID }))', {}, function (data) {
             hideLoading();
             if ($.isPlainObject(data)) {
-                    swal(data.message);
+                Swal.fire(
+                    'Oops...',
+                    data.message,
+                    'warning'
+                )
             } else {
                 $('#@(_viewID)').empty()
                     .append(data);

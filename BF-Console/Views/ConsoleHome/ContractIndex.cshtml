@@ -197,35 +197,36 @@
 
         //點選刪除功能
         this.deleteData = function(keyID) {
-            swal({
-                title: "不後悔?",
-                text: "刪除後資料將無法回覆!",
-                type: "warning",
+            Swal.fire({
+                title: '確定刪除?',
+                text: "刪除後資料將無法回覆",
+                icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: "#DD6B55",
-                confirmButtonText: "確定, 不後悔",
-                cancelButtonText: "不, 點錯了",
-                closeOnConfirm: false,
-                closeOnCancel: false
-            }, function(isConfirm) {
-                if (isConfirm) {
+                confirmButtonText: '確定',
+                cancelButtonText: '取消',
+                focusCancel: true
+            }).then((result) => {
+                if (result.isConfirmed) {
                     $global.closeAllModal();
                     showLoading();
                     $.post('@Html.Raw(Url.Action("DeleteCourseContract","CourseContract"))', { 'keyID': keyID }, function (data) {
                         hideLoading();
                         if ($.isPlainObject(data)) {
                             if (data.result) {
-                                swal({
+                                Swal.fire({
                                     title: "刪除成功!",
                                     text: "資料已經刪除 Bye!",
-                                    type: "success",
-                                    showCancelButton: false,
-                                    closeOnConfirm: true
-                                }, function () {
+                                    icon: "success",
+                                }).then((result) => {
                                     window.location.href = '@Html.Raw(Url.Action("ContractIndex", "ConsoleHome", new { ScrollToView = false }))';
                                 });
                             } else {
-                                swal("刪除失敗", data.message, "error");
+                                Swal.fire(
+                                    'Oops 刪除失敗...',
+                                    data.message,
+                                    'error'
+                                )
                             }
                         }
                         else {
@@ -233,7 +234,11 @@
                         }
                     });
                 } else {
-                    swal("取消成功", "你的資料現在非常安全 :)", "error");
+                    Swal.fire(
+                        '取消成功',
+                        '你的資料現在非常安全 :)',
+                        'info'
+                    )
                 }
             });
         };

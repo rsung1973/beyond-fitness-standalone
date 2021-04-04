@@ -337,7 +337,11 @@
                                             $.post('@Html.Raw(Url.Action("LoadInstallmentPlan","CourseContract"))', { 'lessons': lessons, 'installments': installments }, function (data) {
                                                 hideLoading();
                                                 if ($.isPlainObject(data)) {
-                                                    swal(data.message);
+                                                    Swal.fire(
+                                                        'Oops...',
+                                                        data.message,
+                                                        'warning'
+                                                    )
                                                 } else {
                                                     $(data).appendTo($installments);
                                                     $installments.selectpicker('refresh');
@@ -381,7 +385,11 @@
                                     $global.viewModel.Remark = $('textarea[name="Remark"]').val();
                                     $.post('@Html.Raw(Url.Action("SaveContract", "ContractConsole", _viewModel.ContractID))', $global.viewModel, function (data) {
                                         if ($.isPlainObject(data)) {
-                                            swal(data.message);
+                                            Swal.fire(
+                                                'Oops...',
+                                                data.message,
+                                                'warning'
+                                            )
                                         }
                                         else {
                                             $(data).appendTo($('body'));
@@ -394,7 +402,11 @@
                                     $global.viewModel.Remark = $('textarea[name="Remark"]').val();
                                     $.post('@Html.Raw(Url.Action("CommitContract", "ContractConsole", _viewModel.ContractID))', $global.viewModel, function (data) {
                                         if ($.isPlainObject(data)) {
-                                            swal(data.message);
+                                            Swal.fire(
+                                                'Oops...',
+                                                data.message,
+                                                'warning'
+                                            )
                                         }
                                         else {
                                             $(data).appendTo($('body'));

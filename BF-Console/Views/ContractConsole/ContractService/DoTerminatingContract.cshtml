@@ -121,7 +121,11 @@
                         var refund = totalPaid - (lessons - remained) * settlementPrice * @($"{_model.CourseContractType.GroupingMemberCount}*{_model.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount}/100");
                         if (refund < 0) {
                             $('input[name="SettlementPrice"]').val('');
-                            swal('Ooops!!!!你確定嗎？計算後學生還要多拿錢出來喔！');
+                            Swal.fire(
+                                'Oops...',
+                                '你確定嗎？計算後學生還要多拿錢出來喔！',
+                                'warning'
+                            )
                             return;
                         }
 
@@ -278,7 +282,11 @@
             success: function (data) {
                 hideLoading();
                 if ($.isPlainObject(data)) {
-                    swal(data.message);
+                    Swal.fire(
+                        'Oops...',
+                        data.message,
+                        'warning'
+                    )
                 }
                 else {
                     $(data).appendTo($('body'));
