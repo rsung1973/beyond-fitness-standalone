@@ -19,16 +19,16 @@
 }
 <script>
     $(function () {
-        swal({
+        Swal.fire({
             title: "題目已更新",
             text: "您@($"{_model.PDQTask.First().TaskDate:yyyy/MM/dd}") 填寫過的內容將在您點選OK後自動刪除，請重新回答全新題目!",
-            type: "warning",
+            icon: "warning",
             showCancelButton: false,
             //confirmButtonColor: "#DD6B55",
             confirmButtonText: "OK",
             closeOnConfirm: true
-        }, function () {
-                $('').launchDownload('@(Html.Raw(Url.Action("EditLearnerCharacter","ConsoleHome",new { _model.QuestionnaireID, ToPrepare = true })))', { 'keyID': '@(_model.UID.EncryptKey())', 'partID': @((int)QuestionnaireRequest.PartIDEnum.PartA), 'Step': 1 });
+        }).then((result) => {
+            $('').launchDownload('@(Html.Raw(Url.Action("EditLearnerCharacter","ConsoleHome",new { _model.QuestionnaireID, ToPrepare = true })))', { 'keyID': '@(_model.UID.EncryptKey())', 'partID': @((int)QuestionnaireRequest.PartIDEnum.PartA), 'Step': 1 });
         });
     });
 </script>

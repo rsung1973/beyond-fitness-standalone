@@ -532,7 +532,10 @@ namespace WebHome.Controllers
             if (items.Count() > 0)
                 return View("~/Views/LearnerProfile/ProfileModal/SelectLearnerProfile.cshtml", items);
             else
-                return View("~/Views/ConsoleHome/Shared/AlertMessage.cshtml", model: "Opps！您確定您輸入的資料正確嗎！？");
+            {
+                //return View("~/Views/ConsoleHome/Shared/AlertMessage.cshtml", model: "Opps！您確定您輸入的資料正確嗎！？");
+                return Json(new { result = false, message = "Opps！您確定您輸入的資料正確嗎！？" }, JsonRequestBehavior.AllowGet);
+            }
 
         }
 

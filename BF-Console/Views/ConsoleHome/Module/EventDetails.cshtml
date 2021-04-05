@@ -46,12 +46,7 @@
         });
     }
 
-
     function deleteLesson(keyID) {
-    }
-
-    function deleteLesson(keyID) {
-
         deleteData(function (onSuccess) {
             showLoading();
             $.post('@Html.Raw(Url.Action("RevokeBooking", "ConsoleEvent"))', { 'keyID': keyID }, function (data) {

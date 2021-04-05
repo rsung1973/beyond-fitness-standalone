@@ -50,7 +50,7 @@
     function completePurposeItem(event) {
         var event = event || window.event;
         var $target = $(event.target);
-        Swal.fire(
+        Swal.fire({
             title: "確定完成此項目?",
             text: "完成近期目標",
             icon: 'warning',

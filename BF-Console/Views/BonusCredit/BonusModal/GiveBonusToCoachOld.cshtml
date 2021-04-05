@@ -118,8 +118,12 @@
                             showCoachBonusList();
                         } else {
                             hideLoading();
-                            smartAlert(data.message);
-                        }
+                            Swal.fire(
+                                'Oops...',
+                                data.message,
+                                'warning'
+                            );
+                         }
                     } else {
                         hideLoading();
                         $(data).appendTo('body').remove();

@@ -260,7 +260,6 @@ beyond-fitness(20160727)/
 temp/
 .DS_Store
 Thumbs.db
-
 *.udl
 
 # Document Folder

@@ -122,48 +122,35 @@
 
         //點選審核
         this.approveLesson = function (keyID) {
-            Swal.fire({
-                title: "同意跨店上課",
-                text: "完成審核後資料將無法回覆!",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#DD6B55",
-                confirmButtonText: '確定',
-                cancelButtonText: '取消',
-                focusCancel: true
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    showLoading();
-                    $.post('@Html.Raw(Url.Action("CommitCrossBranch", "LessonConsole"))', { 'keyID': keyID }, function (data) {
-                        hideLoading();
-                        if ($.isPlainObject(data)) {
-                            if (data.result) {
-                                Swal.fire({
-                                    title: "審核成功!",
-                                    text: "資料已經審核 Bye!",
-                                    icon: "success",
-                                }).then((result) => {
-                                    window.location.href='@Html.Raw(Url.Action("CrossBranchIndex","ConsoleHome"))';
-                                });
-                            } else {
-                                Swal.fire(
+            deleteData(function (onSuccess) {
+                showLoading();
+                $.post('@Html.Raw(Url.Action("CommitCrossBranch", "LessonConsole"))', { 'keyID': keyID }, function (data) {
+                    hideLoading();
+                    if ($.isPlainObject(data)) {
+                        if (data.result) {
+                            onSuccess();
+                        } else {
+                            Swal.fire(
                                     'Oops...',
                                     data.message,
                                     'warning'
-                                )
-                            }
-                        } else {
-                            $(data).appendTo($('body'));
+                                );
                         }
-                    });
-                } else {
-                    Swal.fire(
-                        '取消成功',
-                        '你的資料現在非常安全 :)',
-                        'info'
-                    )
-                }
-           });
+                    } else {
+                        $(data).appendTo($('body'));
+                    }
+                });
+            },
+                {
+                    text: "完成審核後資料將無法回覆!",
+                    confirmButtonText: "確定, 審核通過",
+                    cancelButtonText: "不, 點錯了",
+                    confirmed: ['已審核成功!', '資料已經更新 Bye!', 'success'],
+                    cancelled: ['取消成功', '你的資料現在非常安全 :)', 'error'],
+                    afterConfirmed: function () {
+                        window.location.href='@Html.Raw(Url.Action("CrossBranchIndex","ConsoleHome"))';
+                    },
+                });
         };
 
         // MINI LINE CHARTS

@@ -37,73 +37,75 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger btn-round btn-simple waves-effect waves-red" onclick="deleteStrategy();">刪除，不想要了</button>
-                <button type="button" class="btn btn-darkteal btn-round waves-effect" onclick="commitStrategy();">確定，不後悔</button>
+                <button type="button" class="btn btn-danger btn-round btn-simple waves-effect waves-red btnDelete">刪除，不想要了</button>
+                <button type="button" class="btn btn-darkteal btn-round waves-effect btnConfirm">確定，不後悔</button>
             </div>
         </div>
     </div>
     @{ Html.RenderPartial("~/Views/ConsoleHome/Shared/BSModalScript.cshtml", model: _dialogID);}
 
     <script>
-        function deleteStrategy() {
-            Swal.fire({
-                    title: "確定刪除?",
-                    text: "刪除後資料將無法回覆!",
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#DD6B55",
-                    confirmButtonText: "確定",
-                    cancelButtonText: "取消",
-                    focusCancel: true
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        showLoading();
-                        $.post('@Html.Raw(Url.Action("CommitStrategyAnalysis", "BusinessConsole", new { KeyID = _model.PeriodID.EncryptKey(),_model.BranchID }))', {}, function (data) {
-                            hideLoading();
-                            if ($.isPlainObject(data)) {
-                                if (data.result) {
-                                    $('#@(_dialogID)').modal('hide');
-                                    Swal.fire(
-                                        '刪除成功',
-                                        '資料已經刪除 Bye!',
-                                        'success'
-                                    )
-                                    refreshStrategy();
-                                } else {
-                                    Swal.fire(
-                                        'Oops...',
-                                        data.message,
-                                        'warning'
-                                    )
-                                }
-                            } else {
-                                $(data).appendTo($('body')).remove();
-                            }
-                        });
-                    } else {
-                        Swal.fire(
-                            '取消成功',
-                            '你的資料現在非常安全 :)',
-                            'info'
-                        )
-                    }
-            });
-        }
-
-        function commitStrategy() {
+    $(function () {
+        $('#@(_dialogID) .btnConfirm').on('click', function (event) {
             showLoading();
-                var postData = $('#@(_dialogID)').find('input,select,textArea').serializeObject();
-                $.post('@Html.Raw(Url.Action("CommitStrategyAnalysis", "BusinessConsole", new { KeyID = _model.PeriodID.EncryptKey(),_model.BranchID }))', postData, function (data) {
-                    hideLoading();
-                    if ($.isPlainObject(data)) {
-                        $('#@(_dialogID)').modal('hide');
-                        refreshStrategy();
-                    } else {
-                        $('#@(_dialogID)').modal('hide');
-                        $(data).appendTo($('body'));
-                    }
-                });
-        }
+            var postData = $('#@(_dialogID)').find('input,select,textArea').serializeObject();
+            $.post('@Html.Raw(Url.Action("CommitStrategyAnalysis", "BusinessConsole", new { KeyID = _model.PeriodID.EncryptKey(),_model.BranchID }))', postData, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    $('#@(_dialogID)').modal('hide');
+                    refreshStrategy();
+                } else {
+                    $('#@(_dialogID)').modal('hide');
+                    $(data).appendTo($('body'));
+                }
+            });
+        });
+
+        $('#@(_dialogID) .btnDelete').on('click', function (event) {
+            Swal.fire({
+                title: "確定刪除?",
+                text: "刪除後資料將無法回覆!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "確定",
+                cancelButtonText: "取消",
+                focusCancel: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    showLoading();
+                    $.post('@Html.Raw(Url.Action("CommitStrategyAnalysis", "BusinessConsole", new { KeyID = _model.PeriodID.EncryptKey(),_model.BranchID }))', {}, function (data) {
+                        hideLoading();
+                        if ($.isPlainObject(data)) {
+                            if (data.result) {
+                                $('#@(_dialogID)').modal('hide');
+                                Swal.fire(
+                                    '刪除成功',
+                                    '資料已經刪除 Bye!',
+                                    'success'
+                                )
+                                refreshStrategy();
+                            } else {
+                                Swal.fire(
+                                    'Oops...',
+                                    data.message,
+                                    'warning'
+                                )
+                            }
+                        } else {
+                            $(data).appendTo($('body')).remove();
+                        }
+                    });
+                } else {
+                    Swal.fire(
+                        '取消成功',
+                        '你的資料現在非常安全 :)',
+                        'info'
+                    )
+                }
+            });
+        });
+    });
     </script>
 </div>
 

@@ -164,5 +164,10 @@ namespace WebHome.Controllers
 
             return Json(new { result = true }, JsonRequestBehavior.AllowGet);
         }
+
+        public ActionResult TestMessage()
+        {
+            return Json(new { result = true, message = "資料處理完成!!" }, JsonRequestBehavior.AllowGet);
+        }
     }
 }

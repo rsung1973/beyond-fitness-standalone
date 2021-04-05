@@ -37,10 +37,6 @@ function loadScript(url, callback) {
     document.getElementsByTagName("head")[0].appendChild(script);
 }
 
-function smartAlert(message) {
-    swal(message);
-}
-
 function deleteData(doDelete, options) {
     var defaultOptions = {
         title: "不後悔?",
@@ -52,7 +48,7 @@ function deleteData(doDelete, options) {
         cancelButtonText: "不, 點錯了",
         closeOnConfirm: false,
         closeOnCancel: false,
-        confirmed: ['刪除成功!', '資料已經刪除 Bye!','success'],
+        confirmed: ['刪除成功!', '資料已經刪除 Bye!','OK'],
         cancelled: ['取消成功', '你的資料現在非常安全 :)', 'error'],
         afterConfirmed: null,
     };
@@ -60,23 +56,40 @@ function deleteData(doDelete, options) {
         $.extend(defaultOptions, options);
     }
 
-    swal(defaultOptions, function (isConfirm) {
-        if (isConfirm) {
+    Swal.fire({
+        title: defaultOptions.title,
+        text: defaultOptions.text,
+        icon: defaultOptions.type,
+        showCancelButton: defaultOptions.showCancelButton,
+        confirmButtonColor: defaultOptions.confirmButtonColor,
+        confirmButtonText: defaultOptions.confirmButtonText,
+        cancelButtonText: defaultOptions.cancelButtonText,
+        focusCancel: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            showLoading();
             doDelete(function () {
-                if (defaultOptions.afterConfirmed instanceof Function) {
-                    swal({
-                        'title': defaultOptions.confirmed[0],
-                        'text': defaultOptions.confirmed[1],
-                        'confirmButtonText': defaultOptions.confirmed[2]
-                    }, defaultOptions.afterConfirmed);
-                } else {
-                    swal(defaultOptions.confirmed[0], defaultOptions.confirmed[1], defaultOptions.confirmed[2]);
-                }
+                Swal.fire({
+                    'title': defaultOptions.confirmed[0],
+                    'text': defaultOptions.confirmed[1],
+                    'confirmButtonText': defaultOptions.confirmed[2],
+                    'icon': 'success'
+                }).then((r) => {
+                    if (defaultOptions.afterConfirmed instanceof Function) {
+                        defaultOptions.afterConfirmed();
+                    }
+                });
             });
         } else {
-            swal(defaultOptions.cancelled[0], defaultOptions.cancelled[1], defaultOptions.cancelled[2]);
-            if ($global.closeAllModal)
-                $global.closeAllModal();
+            Swal.fire({
+                'title': defaultOptions.cancelled[0],
+                'text': defaultOptions.cancelled[1],
+                'confirmButtonText': defaultOptions.cancelled[2],
+                'icon': 'info'
+            }).then((r) => {
+                if ($global.closeAllModal)
+                    $global.closeAllModal();
+            });
         }
     });
 }

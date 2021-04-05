@@ -112,6 +112,7 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 clearErrors();
+                delete $global.viewModel.RegisterID;
                 var $formData = $('input,select,textarea').serializeObject();
                 $formData = $.extend({}, $global.viewModel, $formData);
                 showLoading();
