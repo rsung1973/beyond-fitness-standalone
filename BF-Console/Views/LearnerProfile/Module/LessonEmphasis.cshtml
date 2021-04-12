@@ -37,10 +37,11 @@
                     title: "上課重點",
                     input: "text",
                     showCancelButton: false,
+                    allowEnterKey: false,
                     confirmButtonColor: "#DD6B55",
                     confirmButtonText: "更新上課重點",
                     inputPlaceholder: "請輸入20個中英文字",
-                    inputValue: defaultValue,
+                    inputValue: defaultValue,                   
                     inputValidator: (value) => {
                         if (!value) {
                             return '你忘了輸入文字嗎!?';
@@ -49,7 +50,7 @@
                                 return '最多僅能輸入20個內的中英文字';
                             }
                         }
-                    },
+                    }
                 }).then((result) => {
                     if (result.isConfirmed) {
                         commitEmphasis(result.value);

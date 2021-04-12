@@ -3145,6 +3145,10 @@
       return;
     }
 
+    if (!innerParams.allowEnterKey) {
+      return;
+    }
+
     if (e.target && instance.getInput() && e.target.outerHTML === instance.getInput().outerHTML) {
       if (['textarea', 'file'].indexOf(innerParams.input) !== -1) {
         return; // do not submit
