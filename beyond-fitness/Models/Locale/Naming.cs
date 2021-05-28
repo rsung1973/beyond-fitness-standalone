@@ -125,6 +125,7 @@ namespace WebHome.Models.Locale
             Preliminary = 11,
             Servitor = 12,
             FES = 13,
+            Dietitian = 14,
         }
 
         public static readonly String[] RoleName = new String[] {
@@ -141,7 +142,8 @@ namespace WebHome.Models.Locale
             "AFM",
             "體驗學員",
             "工讀生",
-            "FES"
+            "FES",
+            "營養師",
         };
 
         public static readonly int[] StaffRole = new int[] 
@@ -155,6 +157,7 @@ namespace WebHome.Models.Locale
             (int)RoleID.Servitor,
             (int)RoleID.ViceManager,
             (int)RoleID.FES,
+            (int)RoleID.Dietitian,
         };
 
         public enum LessonStatus
@@ -369,9 +372,10 @@ namespace WebHome.Models.Locale
             信義 = 2,
             忠孝 = 3,
             東門 = 4,
-            璞真,
-            甜蜜的家,
-            其他,
+            璞真 = 5,
+            甜蜜的家 = 6,
+            其他 = 7,
+            遠距 = 20,
         }
 
         public enum ContractTypeDefinition
@@ -482,6 +486,14 @@ namespace WebHome.Models.Locale
         public enum MasterVersion
         {
             Ver2020 = 0,
+        }
+
+        public enum SessionTypeDefinition
+        {
+            PT = 1,
+            PI = 2,
+            ST = 3,
+            TS = 4,
         }
 
     }

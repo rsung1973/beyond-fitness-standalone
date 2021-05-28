@@ -1,0 +1,105 @@
+
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Newtonsoft.Json
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    UserProfile _model;
+    MonthlyCoachRevenueIndicatorQueryViewModel _viewModel;
+
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    _model = (UserProfile)this.Model;
+    _viewModel = (MonthlyCoachRevenueIndicatorQueryViewModel)ViewBag.ViewModel;
+
+}
+@{
+    MonthlyCoachRevenueIndicator _item = (MonthlyCoachRevenueIndicator)ViewBag.DataItem;
+    MonthlyIndicator _indicator = _item.MonthlyIndicator;
+
+    DateTime? quarterEnd = null;
+    DateTime quarterStart = new DateTime(_indicator.StartDate.Year, (_indicator.StartDate.Month - 1) / 3 * 3 + 1, 1);
+    quarterEnd = quarterStart.AddMonths(3);
+
+    var indicators = models.GetTable<MonthlyIndicator>().Where(i => i.StartDate >= quarterStart && i.StartDate < quarterEnd)
+                        .Join(models.GetTable<MonthlyCoachRevenueIndicator>().Where(c => c.CoachID == _item.CoachID),
+                            i => i.PeriodID, c => c.PeriodID, (i, c) => c);
+
+
+    var attendanceCount = (indicators.Sum(i => i.ActualCompleteLessonCount) ?? 0)
+                        + (indicators.Sum(i => i.ActualCompleteTSCount) ?? 0)
+                        + (indicators.Sum(i => i.ActualCompletePICount) ?? 0) / 2M;
+
+    var tuition = models.GetTuitionAchievement(_item.CoachID, quarterStart, ref quarterEnd, null);
+    var summary = tuition.Sum(t => t.ShareAmount) ?? 0;
+
+    var review = _item.ServingCoach.ProfessionalLevel.ProfessionalLevelReview;
+
+}
+
+<div class="body">
+    <div class="row">
+        <div class="col-12">
+            <h5 class="m-b-0">本季金額</h5>
+        </div>
+        <div class="col-12">
+            @if (!_item.ServingCoach.LevelID.HasValue || review == null)
+            {
+                <p class="text-small">
+                    上課數：<sapn class="col-blue">@(attendanceCount)堂</sapn> <br />
+                    收款業績：<sapn class="col-blue">@($"{summary:##,###,###,##0}")元</sapn> <br />
+                </p>
+            }
+            else if (!review.PromotionID.HasValue)
+            {
+                List<String> info = new List<string>();
+                if (review.NormalAttendanceCount > attendanceCount)
+                {
+                    info.Add($"{review.NormalAttendanceCount - attendanceCount}堂");
+                }
+                if (review.NormalAchievement > summary)
+                {
+                    info.Add($"{review.NormalAchievement - summary:##,###,###,##0}元");
+                }
+                <p class="text-small">
+                    上課數：<sapn class="col-blue">@(attendanceCount)堂</sapn> / @(review.PromotionAttendanceCount)堂 <br />
+                    收款業績：<sapn class="col-blue">@($"{summary:##,###,###,##0}")元</sapn> / @($"{review.PromotionAchievement:##,###,###,##0}")元 <br />
+                    保級@(review.ProfessionalLevel.LevelName)
+                    @if (info.Count > 0)
+                    {
+                        <text>，還差@(String.Join(" / ",info)) </text>
+                    }
+                </p>
+            }
+            else
+            {
+                List<String> info = new List<string>();
+                if (review.PromotionAttendanceCount > attendanceCount)
+                {
+                    info.Add($"{review.PromotionAttendanceCount - attendanceCount}堂");
+                }
+                if (review.PromotionAchievement > summary)
+                {
+                    info.Add($"{review.PromotionAchievement - summary:##,###,###,##0}元");
+                }
+                <p class="text-small">
+                    上課數：<sapn class="col-blue">@(attendanceCount)堂</sapn> / @(review.PromotionAttendanceCount)堂 <br />
+                    收款業績：<sapn class="col-blue">@($"{summary:##,###,###,##0}")元</sapn> / @($"{review.PromotionAchievement:##,###,###,##0}")元 <br />
+                    升級@(review.PromotionLevel.LevelName)
+                    @if (info.Count > 0)
+                    {
+                        <text>，還差@(String.Join(" / ",info)) </text>
+                    }
+                </p>
+            }
+        </div>
+    </div>
+</div>

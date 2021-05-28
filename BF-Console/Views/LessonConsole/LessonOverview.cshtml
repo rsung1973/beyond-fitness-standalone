@@ -43,15 +43,6 @@
     <link rel="stylesheet" href="css/customelist.css?1" />
 }
 
-<script>
-        $(function () {
-            $global.viewModel = @Html.Raw(_viewModel.JsonStringify());
-
-            for (var i = 0; i < $global.onReady.length; i++) {
-                $global.onReady[i]();
-            }
-        });
-</script>
 <!-- Main Content -->
 <section class="content">
     @{
@@ -64,8 +55,11 @@
             @(_viewModel.Year)年@(_viewModel.Month)月
             <a href="javascript:selectMonth();"><i class="zmdi zmdi-calendar zmdi-hc-lg"></i></a>
             @{
-                ViewBag.Other = "全部";
-                Html.RenderPartial("~/Views/Common/BranchStoreWithOther.cshtml", models.GetTable<BranchStore>().Where(b => b.BranchID == _viewModel.BranchID).FirstOrDefault());
+                if (coach == null)
+                {
+                    ViewBag.Other = "全部";
+                    Html.RenderPartial("~/Views/Common/BranchStoreWithOther.cshtml", models.GetTable<BranchStore>().Where(b => b.BranchID == _viewModel.BranchID).FirstOrDefault());
+                }
             }
         </h4>
         <div class="card">
@@ -86,8 +80,8 @@
                                     viewModel.ByManager = false;
                                 viewModel.KeyID = null;
                                 if (others) {
-                                    viewModel.BranchID = others.branchID;
-                                    viewModel.ByManager = true;
+                                    viewModel.BranchID = others.BranchID;
+                                    viewModel.ByManager = others.ByManager;
                                 } else {
                                     if (!coachID) {
                                         viewModel.BranchID = null;

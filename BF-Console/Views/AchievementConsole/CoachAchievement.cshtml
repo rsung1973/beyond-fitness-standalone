@@ -1,0 +1,232 @@
+
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Newtonsoft.Json
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    UserProfile _model;
+    MonthlyCoachRevenueIndicatorQueryViewModel _viewModel;
+
+    Layout = "~/Views/ConsoleHome/Template/MainPage.cshtml";
+
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    _model = (UserProfile)this.Model;
+    _viewModel = (MonthlyCoachRevenueIndicatorQueryViewModel)ViewBag.ViewModel;
+    if (!_viewModel.ChartType.HasValue)
+    {
+        _viewModel.ChartType = 1;
+    }
+
+}
+@{
+    MonthlyCoachRevenueIndicator _item = (MonthlyCoachRevenueIndicator)ViewBag.DataItem;
+    MonthlyIndicator _indicator = _item.MonthlyIndicator;
+}
+
+@section CustomHeader {
+    <!-- JQuery DataTable Css -->
+    <link href="plugins/jquery-datatable/DataTables-1.10.18/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link href="plugins/jquery-datatable/Responsive-2.2.2/css/responsive.bootstrap4.min.css" rel="stylesheet">
+    <link href="plugins/jquery-datatable/FixedColumns-3.2.5/css/fixedColumns.bootstrap4.min.css" rel="stylesheet">
+    <!-- Bootstrap Datetimepick -->
+    <link href="css/smartcalendar-2.css" rel="stylesheet" />
+}
+
+<!-- Main Content -->
+<section class="content">
+    @{
+        ViewBag.BlockHeader = "個人業績概況";
+        Html.RenderPartial("~/Views/ConsoleHome/Module/BlockHeader.cshtml", _model);
+    }
+    <!--目標與達成率-->
+    <div class="container-fluid">
+        <h4 class="card-outbound-header m-l-15">@(_indicator.Year)年@(_indicator.Month)月</h4>
+        <div class="row clearfix">
+            <div class="col-lg-4 col-md-12 col-sm-12 col-12">
+                <div class="card">
+                    <div class="body">
+                        <div class="row">
+                            <div class="col-12">
+                                @{
+                                    ViewBag.ProfileClass = "rounded-circle sizefixed";
+                                    Html.RenderPartial("~/Views/Common/ProfileImage.cshtml", _item.ServingCoach.UserProfile);
+                                }
+                                @(_item.ServingCoach.UserProfile.FullName())
+                                <h2 class="font-14 float-right text-info">
+                                    <i class="zmdi zmdi-label"></i>
+                                    @{
+                                        Html.RenderPartial("~/Views/ConsoleHome/Index/Coach/Part_1/ProfessionInfo.cshtml", _item.ServingCoach.UserProfile);
+                                    }
+                                </h2>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <p class="text-small">
+                                    <ul class="checked-style">
+                                        @foreach (var c in _item.ServingCoach.CoachCertificate.OrderBy(f => f.Expiration))
+                                        {
+                                            if (c.Expiration < DateTime.Today)
+                                            {
+                                                <li class="closed">@(c.ProfessionalCertificate.Description)：@($"{c.Expiration:yyyy/MM/dd}")（已過期）</li>
+                                            }
+                                            else
+                                            {
+                                                <li>@(c.ProfessionalCertificate.Description)：@($"{c.Expiration:yyyy/MM/dd}")</li>
+                                            }
+                                        }
+                                    </ul>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8 col-md-12 col-sm-12 col-12">
+                <div class="card widget_2">
+                    <div class="header">
+                        @if (_model.IsSysAdmin() || _model.IsAssistant() || _model.IsManager() || _model.IsViceManager() || _model.IsOfficer())
+                        {
+                            <ul class="header-dropdown">
+                                <li>
+                                    <a href="javascript:selectCoach();"><i class="zmdi zmdi-swap"></i></a>
+                                </li>
+                            </ul>
+                            <script>
+                                $(function () {
+                                    $global.commitCoach = function (coachID, coachName) {
+                                        var viewModel = $.extend($global.viewModel, {});
+                                        viewModel.CoachID = coachID;
+                                        viewModel.KeyID = null;
+                                        viewModel.BranchID = null;
+                                        showLoading();
+                                        $('').launchDownload('@Html.Raw(Url.Action("CoachAchievement","ConsoleHome"))', viewModel);
+                                    };
+                                });
+
+                                function selectCoach() {
+                                    showLoading();
+                                    $.post('@Html.Raw(Url.Action("SelectCoach", "AchievementConsole"))', {}, function (data) {
+                                        hideLoading();
+                                        if ($.isPlainObject(data)) {
+                                            Swal.fire(
+                                                'Oops...',
+                                                data.message,
+                                                'warning'
+                                            )
+                                        } else {
+                                            $(data).appendTo($('body'));
+                                        }
+                                    });
+                                }
+
+                            </script>
+                        }
+                    </div>
+                    <ul class="row clearfix list-unstyled m-b-0">
+                        <li class="col-lg-6 col-md-6 col-sm-12">
+                            <div class="body">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <h5 class="m-b-0">本月金額</h5>
+                                    </div>
+                                    <div class="col-12">
+                                        <p class="text-small">
+                                            上課數：
+                                            <sapn class="col-blue">
+                                                @{
+                                                    decimal actualCount = _item.AttendanceCount;
+                                                }
+                                                @(actualCount)堂
+                                            </sapn> / @(_item.CompleteLessonsGoal)堂 <br />
+                                            @{
+                                                var shareSummary = _indicator.GetPaymentAchievementSummary(models, _item.CoachID);
+                                            }
+                                            收款業績：<sapn class="col-blue">@($"{shareSummary:##,###,###,##0}")元</sapn> / @($"{_item.AchievementGoal:##,###,###,##0}")元 <br />
+                                            @{
+                                                List<String> info = new List<string>();
+                                                if (_item.CompleteLessonsGoal > actualCount)
+                                                {
+                                                    info.Add($"{_item.CompleteLessonsGoal - actualCount}堂");
+                                                }
+                                                if (_item.AchievementGoal > shareSummary)
+                                                {
+                                                    info.Add($"{_item.AchievementGoal - shareSummary:##,###,###,##0}元");
+                                                }
+
+                                                if (info.Count > 0)
+                                                {
+                                                    <text>離本月目標，還差 @(String.Join(" / ",info)) </text>
+                                                }
+                                            }
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="col-lg-6 col-md-6 col-sm-12">
+                            @{
+                                Html.RenderPartial("~/Views/AchievementConsole/Module/CoachCurrentQuarterAchievement.cshtml");
+                            }
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    @{
+        Html.RenderPartial("~/Views/AchievementConsole/Module/MonthlyCoachRevenue.cshtml");
+    }
+
+
+</section>
+
+
+@section TailPageJavaScriptInclude {
+    <!-- Echart Js -->
+    <script src="plugins/echarts/echarts.min.js"></script>
+    <!-- Echart Template Js -->
+    <script src="plugins/echarts/theme/macarons.js"></script>
+    <script src="plugins/echarts/theme/macarons_nero.js"></script>
+    <!-- Jquery DataTable Plugin Js -->
+    <script src="bundles/datatablescripts.bundle.js"></script>
+    <script src="plugins/jquery-datatable/Responsive-2.2.2/js/dataTables.responsive.min.js"></script>
+    <script src="plugins/jquery-datatable/FixedColumns-3.2.5/js/dataTables.fixedColumns.min.js"></script>
+
+    <script>
+        $(function () {
+            //var $body = $('body');
+            //if ($body.hasClass('theme-nero')) {
+            //    $.getScript('plugins/echarts/theme/nero/macarons.js', function (script, textStatus,jqXHR) {
+            //        if ($global.echarts.showChart) {
+            //            $global.echarts.showChart();
+            //        }
+            //    });
+            //} else {
+            //    $.getScript('plugins/echarts/theme/macarons.js', function (script, textStatus, jqXHR) {
+            //        if ($global.echarts.showChart) {
+            //            $global.echarts.showChart();
+            //        }
+            //    });
+            //}
+
+            window.onresize = function () {
+                if ($global.echarts.myChart) {
+                    $global.echarts.myChart.resize();
+                }
+            };
+        });
+    </script>
+
+}
+
+

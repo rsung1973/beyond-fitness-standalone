@@ -36,15 +36,6 @@
     <link href="plugins/jquery-datatable/FixedColumns-3.2.5/css/fixedColumns.bootstrap4.min.css" rel="stylesheet">
 }
 
-<script>
-        $(function () {
-            $global.viewModel = @Html.Raw(JsonConvert.SerializeObject(_viewModel));
-
-            for (var i = 0; i < $global.onReady.length; i++) {
-                $global.onReady[i]();
-            }
-        });
-</script>
 <!-- Main Content -->
 <section class="content">
     @{ ViewBag.BlockHeader = "業績分潤";

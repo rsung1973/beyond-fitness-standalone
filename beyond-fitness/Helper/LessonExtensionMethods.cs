@@ -689,7 +689,13 @@ namespace WebHome.Helper
                     return false;
                 }
                 if (profile.IsAssistant() || profile.IsAuthorizedSysAdmin())
+                {
                     return true;
+                }
+                if (item.AttendingCoach != profile.UID)
+                {
+                    return false;
+                }
                 if (item.LessonAttendance == null && !item.LessonPlan.CommitAttendance.HasValue && item.ClassTime.Value >= DateTime.Today.AddDays(-3))
                     return true;
             }
@@ -836,7 +842,7 @@ namespace WebHome.Helper
         public static void ProcessBookingWhenCrossBranch<TEntity>(this LessonTime item, ModelSource<TEntity> models)
             where TEntity : class, new()
         {
-            if (!models.GetTable<CoachWorkplace>()
+            if (!item.BranchStore.IsVirtualClassroom() && !models.GetTable<CoachWorkplace>()
                             .Any(c => c.BranchID == item.BranchID
                                 && c.CoachID == item.AttendingCoach))
             {
@@ -1054,7 +1060,7 @@ namespace WebHome.Helper
                 return ;
             }
 
-            if (!item.IsSTSession() && !models.GetTable<CoachWorkplace>()
+            if (!item.BranchStore.IsVirtualClassroom() && !item.IsSTSession() && !models.GetTable<CoachWorkplace>()
                             .Any(c => c.BranchID == item.BranchID
                                 && c.CoachID == item.AttendingCoach)
                 && viewModel.ClassTimeStart.Value < DateTime.Today.AddDays(1))

@@ -43,15 +43,15 @@
                 <td><%= item.AsAttendingCoach.UserProfile.FullName() %></td>
                 <td><%= item.BranchID.HasValue ? item.BranchStore.BranchName : "其他" %></td>
                 <td>
-                    <a onclick="$global.showLearnerLesson(<%= item.GroupingLesson.RegisterLesson.Select(r=>r.UID).FirstOrDefault() %>,<%= item.LessonID %>);" class="btn btn-circle bg-color-green"><i class="fa fa-fw fa-lg fa-eye" aria-hidden="true"></i> </a>
-                    <a onclick='makeLessonPlan(<%= JsonConvert.SerializeObject(new
+                    <%--<a onclick="$global.showLearnerLesson(<%= item.GroupingLesson.RegisterLesson.Select(r=>r.UID).FirstOrDefault() %>,<%= item.LessonID %>);" class="btn btn-circle bg-color-green"><i class="fa fa-fw fa-lg fa-eye" aria-hidden="true"></i> </a>--%>
+                    <%--<a onclick='makeLessonPlan(<%= JsonConvert.SerializeObject(new
                         {
                             classDate = $"{item.ClassTime:yyyy-MM-dd}",
                             hour = item.ClassTime.Value.Hour,
                             registerID = item.RegisterID,
                             lessonID = item.LessonID
                         }) %>);'
-                        class="btn btn-circle bg-color-yellow"><i class="fa fa-fw fa fa-lg fa-edit" aria-hidden="true"></i></a>
+                        class="btn btn-circle bg-color-yellow"><i class="fa fa-fw fa fa-lg fa-edit" aria-hidden="true"></i></a>--%>
                     <%  if (!item.LessonPlan.CommitAttendance.HasValue 
                             && (_profile.IsAssistant() || _profile.IsManager() || _profile.IsViceManager() || _profile.IsOfficer()) 
                             && item.ClassTime<DateTime.Today.AddDays(1)

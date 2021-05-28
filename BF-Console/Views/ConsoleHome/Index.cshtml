@@ -49,15 +49,6 @@
 
 <!--Sparkline Plugin Js-->
 <script src="plugins/jquery-sparkline/jquery.sparkline.js"></script>
-<script>
-        $(function () {
-            $global.viewModel = @Html.Raw(JsonConvert.SerializeObject(_viewModel));
-
-            for (var i = 0; i < $global.onReady.length; i++) {
-                $global.onReady[i]();
-            }
-        });
-</script>
 <section class="content">
 
     @{
@@ -154,7 +145,7 @@
                     confirmButtonColor: "#DD6B55",
                     confirmButtonText: '確定',
                     cancelButtonText: '取消',
-                    focusCancel: true 
+                    focusCancel: true
                 }).then((result) => {
                     if (result.isConfirmed) {
                         showLoading();

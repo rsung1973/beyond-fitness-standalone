@@ -424,7 +424,8 @@ namespace WebHome.Controllers
                 return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: "未指定體能顧問!!");
             }
 
-            if (viewModel.TrainingBySelf != 2)
+            var branch = models.GetTable<BranchStore>().Where(b => b.BranchID == viewModel.BranchID).FirstOrDefault();
+            if (branch?.IsVirtualClassroom() != true && viewModel.TrainingBySelf != 2)
             {
                 if (!models.GetTable<CoachWorkplace>()
                                 .Any(c => c.BranchID == viewModel.BranchID
@@ -669,7 +670,8 @@ namespace WebHome.Controllers
                 return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: "未指定體能顧問!!");
             }
 
-            if (!models.GetTable<CoachWorkplace>()
+            var branch = models.GetTable<BranchStore>().Where(b => b.BranchID == viewModel.BranchID).FirstOrDefault();
+            if (branch?.IsVirtualClassroom() != true && !models.GetTable<CoachWorkplace>()
                             .Any(c => c.BranchID == viewModel.BranchID
                                 && c.CoachID == viewModel.CoachID)
                 && viewModel.ClassDate.Value < DateTime.Today.AddDays(1))

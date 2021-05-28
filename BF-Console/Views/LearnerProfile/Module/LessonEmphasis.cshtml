@@ -22,70 +22,13 @@
     var execution = plan.TrainingExecution;
     bool isModal = (bool?)ViewBag.IsModal == true ? true : false;
 }
-<a href="javascript:@(isModal ? "void(0)" : $"$global.editEmphasis('{HttpUtility.JavaScriptStringEncode(execution.Emphasis)}')");">
+<a href="javascript:@(isModal ? "void(0)" : $"editEmphasis('{plan.ExecutionID.EncryptKey()}',$('#emphasis').text().replace('Unfinished',''))");">
     <span id="emphasis">@(execution.Emphasis ?? "Unfinished")</span>
     <i class="zmdi livicon-evo" data-options="name: pencil.svg; size: 30px; style: original; strokeStyle:round; strokeColor:#052333; strokeWidth:2px; autoPlay:true"></i>
 </a>
 @if (ViewBag.CurrentQuestionnaire == null)
 {
-    <script>
-        $(function () {
-            $global.emphasis = '@Html.Raw(execution.Emphasis)';
-            //編輯上課重點
-            $global.editEmphasis = function (defaultValue) {
-                Swal.fire({
-                    title: "上課重點",
-                    input: "text",
-                    showCancelButton: false,
-                    allowEnterKey: false,
-                    confirmButtonColor: "#DD6B55",
-                    confirmButtonText: "更新上課重點",
-                    inputPlaceholder: "請輸入20個中英文字",
-                    inputValue: defaultValue,                   
-                    inputValidator: (value) => {
-                        if (!value) {
-                            return '你忘了輸入文字嗎!?';
-                        } else {
-                            if (value.length > 20) {
-                                return '最多僅能輸入20個內的中英文字';
-                            }
-                        }
-                    }
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        commitEmphasis(result.value);
-                    }
-                });
-            };
 
-            function commitEmphasis(emphasis) {
-                showLoading();
-                $.post('@Html.Raw(Url.Action("CommitEmphasis", "Training"))', { 'keyID': '@(plan.ExecutionID.EncryptKey())', 'emphasis': emphasis }, function (data) {
-                    hideLoading();
-                    if ($.isPlainObject(data)) {
-                        if (data.result) {
-                            Swal.fire(
-                                '幹得好!',
-                                '更新上課重點成功!',
-                                'success'
-                            )
-                            $('#emphasis').text(emphasis);
-                            $global.emphasis = emphasis;
-                        } else {
-                            Swal.fire(
-                                'Oops...',
-                                data.message,
-                                'warning'
-                            )
-                        }
-                    } else {
-                        $(data).appendTo($('body'));
-                    }
-                });
-            }
-
-        });
-    </script>
 }
 else
 {

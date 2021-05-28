@@ -573,6 +573,15 @@ namespace WebHome.Models.DataEntity
     partial void InsertLessonAttendance(LessonAttendance instance);
     partial void UpdateLessonAttendance(LessonAttendance instance);
     partial void DeleteLessonAttendance(LessonAttendance instance);
+    partial void InsertObjectiveLessonCatalog(ObjectiveLessonCatalog instance);
+    partial void UpdateObjectiveLessonCatalog(ObjectiveLessonCatalog instance);
+    partial void DeleteObjectiveLessonCatalog(ObjectiveLessonCatalog instance);
+    partial void InsertObjectiveLessonPrice(ObjectiveLessonPrice instance);
+    partial void UpdateObjectiveLessonPrice(ObjectiveLessonPrice instance);
+    partial void DeleteObjectiveLessonPrice(ObjectiveLessonPrice instance);
+    partial void InsertObjectiveLessonLocation(ObjectiveLessonLocation instance);
+    partial void UpdateObjectiveLessonLocation(ObjectiveLessonLocation instance);
+    partial void DeleteObjectiveLessonLocation(ObjectiveLessonLocation instance);
     #endregion
 		
 		public BFDataContext() : 
@@ -2114,6 +2123,30 @@ namespace WebHome.Models.DataEntity
 			get
 			{
 				return this.GetTable<LessonAttendance>();
+			}
+		}
+		
+		public System.Data.Linq.Table<ObjectiveLessonCatalog> ObjectiveLessonCatalog
+		{
+			get
+			{
+				return this.GetTable<ObjectiveLessonCatalog>();
+			}
+		}
+		
+		public System.Data.Linq.Table<ObjectiveLessonPrice> ObjectiveLessonPrice
+		{
+			get
+			{
+				return this.GetTable<ObjectiveLessonPrice>();
+			}
+		}
+		
+		public System.Data.Linq.Table<ObjectiveLessonLocation> ObjectiveLessonLocation
+		{
+			get
+			{
+				return this.GetTable<ObjectiveLessonLocation>();
 			}
 		}
 		
@@ -20265,6 +20298,8 @@ namespace WebHome.Models.DataEntity
 		
 		private EntityRef<IsInternalLesson> _IsInternalLesson;
 		
+		private EntitySet<ObjectiveLessonPrice> _ObjectiveLessonPrice;
+		
 		private EntityRef<LessonPriceSeries> _PriceSeries;
 		
 		private EntityRef<LevelExpression> _LevelExpression;
@@ -20316,6 +20351,7 @@ namespace WebHome.Models.DataEntity
 			this._LessonPriceProperty = new EntitySet<LessonPriceProperty>(new Action<LessonPriceProperty>(this.attach_LessonPriceProperty), new Action<LessonPriceProperty>(this.detach_LessonPriceProperty));
 			this._IsWelfareGiftLesson = default(EntityRef<IsWelfareGiftLesson>);
 			this._IsInternalLesson = default(EntityRef<IsInternalLesson>);
+			this._ObjectiveLessonPrice = new EntitySet<ObjectiveLessonPrice>(new Action<ObjectiveLessonPrice>(this.attach_ObjectiveLessonPrice), new Action<ObjectiveLessonPrice>(this.detach_ObjectiveLessonPrice));
 			this._PriceSeries = default(EntityRef<LessonPriceSeries>);
 			this._LevelExpression = default(EntityRef<LevelExpression>);
 			this._BranchStore = default(EntityRef<BranchStore>);
@@ -20758,6 +20794,19 @@ namespace WebHome.Models.DataEntity
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="LessonPriceType_ObjectiveLessonPrice", Storage="_ObjectiveLessonPrice", ThisKey="PriceID", OtherKey="PriceID")]
+		public EntitySet<ObjectiveLessonPrice> ObjectiveLessonPrice
+		{
+			get
+			{
+				return this._ObjectiveLessonPrice;
+			}
+			set
+			{
+				this._ObjectiveLessonPrice.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="LessonPriceSeries_LessonPriceType", Storage="_PriceSeries", ThisKey="SeriesID", OtherKey="PriceID", IsForeignKey=true)]
 		public LessonPriceSeries CurrentPriceSeries
 		{
@@ -20957,6 +21006,18 @@ namespace WebHome.Models.DataEntity
 		}
 		
 		private void detach_LessonPriceProperty(LessonPriceProperty entity)
+		{
+			this.SendPropertyChanging();
+			entity.LessonPriceType = null;
+		}
+		
+		private void attach_ObjectiveLessonPrice(ObjectiveLessonPrice entity)
+		{
+			this.SendPropertyChanging();
+			entity.LessonPriceType = this;
+		}
+		
+		private void detach_ObjectiveLessonPrice(ObjectiveLessonPrice entity)
 		{
 			this.SendPropertyChanging();
 			entity.LessonPriceType = null;
@@ -23135,6 +23196,8 @@ namespace WebHome.Models.DataEntity
 		
 		private System.Nullable<int> _ViceManagerID;
 		
+		private System.Nullable<int> _Status;
+		
 		private EntitySet<RegisterLesson> _RegisterLesson;
 		
 		private EntitySet<CoachWorkplace> _CoachWorkplace;
@@ -23167,6 +23230,8 @@ namespace WebHome.Models.DataEntity
 		
 		private EntitySet<MonthlyCoachRevenueIndicator> _MonthlyCoachRevenueIndicator;
 		
+		private EntitySet<ObjectiveLessonLocation> _ObjectiveLessonLocation;
+		
 		private EntityRef<UserProfile> _Manager;
 		
 		private EntityRef<UserProfile> _ViceManager;
@@ -23185,6 +23250,8 @@ namespace WebHome.Models.DataEntity
     partial void OnManagerIDChanged();
     partial void OnViceManagerIDChanging(System.Nullable<int> value);
     partial void OnViceManagerIDChanged();
+    partial void OnStatusChanging(System.Nullable<int> value);
+    partial void OnStatusChanged();
     #endregion
 		
 		public BranchStore()
@@ -23205,6 +23272,7 @@ namespace WebHome.Models.DataEntity
 			this._MonthlyBranchRevenueIndicator = new EntitySet<MonthlyBranchRevenueIndicator>(new Action<MonthlyBranchRevenueIndicator>(this.attach_MonthlyBranchRevenueIndicator), new Action<MonthlyBranchRevenueIndicator>(this.detach_MonthlyBranchRevenueIndicator));
 			this._MonthlyBranchIndicator = new EntitySet<MonthlyBranchIndicator>(new Action<MonthlyBranchIndicator>(this.attach_MonthlyBranchIndicator), new Action<MonthlyBranchIndicator>(this.detach_MonthlyBranchIndicator));
 			this._MonthlyCoachRevenueIndicator = new EntitySet<MonthlyCoachRevenueIndicator>(new Action<MonthlyCoachRevenueIndicator>(this.attach_MonthlyCoachRevenueIndicator), new Action<MonthlyCoachRevenueIndicator>(this.detach_MonthlyCoachRevenueIndicator));
+			this._ObjectiveLessonLocation = new EntitySet<ObjectiveLessonLocation>(new Action<ObjectiveLessonLocation>(this.attach_ObjectiveLessonLocation), new Action<ObjectiveLessonLocation>(this.detach_ObjectiveLessonLocation));
 			this._Manager = default(EntityRef<UserProfile>);
 			this._ViceManager = default(EntityRef<UserProfile>);
 			this._Organization = default(EntityRef<Organization>);
@@ -23299,6 +23367,26 @@ namespace WebHome.Models.DataEntity
 					this._ViceManagerID = value;
 					this.SendPropertyChanged("ViceManagerID");
 					this.OnViceManagerIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Status", DbType="Int")]
+		public System.Nullable<int> Status
+		{
+			get
+			{
+				return this._Status;
+			}
+			set
+			{
+				if ((this._Status != value))
+				{
+					this.OnStatusChanging(value);
+					this.SendPropertyChanging();
+					this._Status = value;
+					this.SendPropertyChanged("Status");
+					this.OnStatusChanged();
 				}
 			}
 		}
@@ -23508,6 +23596,19 @@ namespace WebHome.Models.DataEntity
 			set
 			{
 				this._MonthlyCoachRevenueIndicator.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="BranchStore_ObjectiveLessonLocation", Storage="_ObjectiveLessonLocation", ThisKey="BranchID", OtherKey="BranchID")]
+		public EntitySet<ObjectiveLessonLocation> ObjectiveLessonLocation
+		{
+			get
+			{
+				return this._ObjectiveLessonLocation;
+			}
+			set
+			{
+				this._ObjectiveLessonLocation.Assign(value);
 			}
 		}
 		
@@ -23824,6 +23925,18 @@ namespace WebHome.Models.DataEntity
 			this.SendPropertyChanging();
 			entity.BranchStore = null;
 		}
+		
+		private void attach_ObjectiveLessonLocation(ObjectiveLessonLocation entity)
+		{
+			this.SendPropertyChanging();
+			entity.BranchStore = this;
+		}
+		
+		private void detach_ObjectiveLessonLocation(ObjectiveLessonLocation entity)
+		{
+			this.SendPropertyChanging();
+			entity.BranchStore = null;
+		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.LearnerFitnessAdvisor")]
@@ -24024,6 +24137,10 @@ namespace WebHome.Models.DataEntity
 		
 		private string _LineID;
 		
+		private System.Nullable<int> _VipStatus;
+		
+		private string _GeoCode;
+		
 		private EntityRef<UserProfile> _UserProfile;
 		
     #region Extensibility Method Definitions
@@ -24054,6 +24171,10 @@ namespace WebHome.Models.DataEntity
     partial void OnRegisterStatusChanged();
     partial void OnLineIDChanging(string value);
     partial void OnLineIDChanged();
+    partial void OnVipStatusChanging(System.Nullable<int> value);
+    partial void OnVipStatusChanged();
+    partial void OnGeoCodeChanging(string value);
+    partial void OnGeoCodeChanged();
     #endregion
 		
 		public UserProfileExtension()
@@ -24302,6 +24423,46 @@ namespace WebHome.Models.DataEntity
 					this._LineID = value;
 					this.SendPropertyChanged("LineID");
 					this.OnLineIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_VipStatus", DbType="Int")]
+		public System.Nullable<int> VipStatus
+		{
+			get
+			{
+				return this._VipStatus;
+			}
+			set
+			{
+				if ((this._VipStatus != value))
+				{
+					this.OnVipStatusChanging(value);
+					this.SendPropertyChanging();
+					this._VipStatus = value;
+					this.SendPropertyChanged("VipStatus");
+					this.OnVipStatusChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GeoCode", DbType="NVarChar(MAX)")]
+		public string GeoCode
+		{
+			get
+			{
+				return this._GeoCode;
+			}
+			set
+			{
+				if ((this._GeoCode != value))
+				{
+					this.OnGeoCodeChanging(value);
+					this.SendPropertyChanging();
+					this._GeoCode = value;
+					this.SendPropertyChanged("GeoCode");
+					this.OnGeoCodeChanged();
 				}
 			}
 		}
@@ -39921,6 +40082,14 @@ namespace WebHome.Models.DataEntity
 		
 		private int _CheckLevel;
 		
+		private System.Nullable<int> _NormalAttendanceCount;
+		
+		private System.Nullable<int> _NormalAchievement;
+		
+		private System.Nullable<int> _PromotionAttendanceCount;
+		
+		private System.Nullable<int> _PromotionAchievement;
+		
 		private EntityRef<ProfessionalLevel> _ProfessionalLevel;
 		
 		private EntityRef<ProfessionalLevel> _PromotionLevel;
@@ -39939,6 +40108,14 @@ namespace WebHome.Models.DataEntity
     partial void OnDemotionIDChanged();
     partial void OnCheckLevelChanging(int value);
     partial void OnCheckLevelChanged();
+    partial void OnNormalAttendanceCountChanging(System.Nullable<int> value);
+    partial void OnNormalAttendanceCountChanged();
+    partial void OnNormalAchievementChanging(System.Nullable<int> value);
+    partial void OnNormalAchievementChanged();
+    partial void OnPromotionAttendanceCountChanging(System.Nullable<int> value);
+    partial void OnPromotionAttendanceCountChanged();
+    partial void OnPromotionAchievementChanging(System.Nullable<int> value);
+    partial void OnPromotionAchievementChanged();
     #endregion
 		
 		public ProfessionalLevelReview()
@@ -40037,6 +40214,86 @@ namespace WebHome.Models.DataEntity
 					this._CheckLevel = value;
 					this.SendPropertyChanged("CheckLevel");
 					this.OnCheckLevelChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NormalAttendanceCount", DbType="Int")]
+		public System.Nullable<int> NormalAttendanceCount
+		{
+			get
+			{
+				return this._NormalAttendanceCount;
+			}
+			set
+			{
+				if ((this._NormalAttendanceCount != value))
+				{
+					this.OnNormalAttendanceCountChanging(value);
+					this.SendPropertyChanging();
+					this._NormalAttendanceCount = value;
+					this.SendPropertyChanged("NormalAttendanceCount");
+					this.OnNormalAttendanceCountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NormalAchievement", DbType="Int")]
+		public System.Nullable<int> NormalAchievement
+		{
+			get
+			{
+				return this._NormalAchievement;
+			}
+			set
+			{
+				if ((this._NormalAchievement != value))
+				{
+					this.OnNormalAchievementChanging(value);
+					this.SendPropertyChanging();
+					this._NormalAchievement = value;
+					this.SendPropertyChanged("NormalAchievement");
+					this.OnNormalAchievementChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PromotionAttendanceCount", DbType="Int")]
+		public System.Nullable<int> PromotionAttendanceCount
+		{
+			get
+			{
+				return this._PromotionAttendanceCount;
+			}
+			set
+			{
+				if ((this._PromotionAttendanceCount != value))
+				{
+					this.OnPromotionAttendanceCountChanging(value);
+					this.SendPropertyChanging();
+					this._PromotionAttendanceCount = value;
+					this.SendPropertyChanged("PromotionAttendanceCount");
+					this.OnPromotionAttendanceCountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PromotionAchievement", DbType="Int")]
+		public System.Nullable<int> PromotionAchievement
+		{
+			get
+			{
+				return this._PromotionAchievement;
+			}
+			set
+			{
+				if ((this._PromotionAchievement != value))
+				{
+					this.OnPromotionAchievementChanging(value);
+					this.SendPropertyChanging();
+					this._PromotionAchievement = value;
+					this.SendPropertyChanged("PromotionAchievement");
+					this.OnPromotionAchievementChanged();
 				}
 			}
 		}
@@ -52977,6 +53234,8 @@ namespace WebHome.Models.DataEntity
 		
 		private System.Nullable<int> _BRCount;
 		
+		private System.Nullable<int> _STCount;
+		
 		private EntityRef<BranchStore> _BranchStore;
 		
 		private EntityRef<MonthlyIndicator> _MonthlyIndicator;
@@ -53023,6 +53282,8 @@ namespace WebHome.Models.DataEntity
     partial void OnActualCompletePICountChanged();
     partial void OnBRCountChanging(System.Nullable<int> value);
     partial void OnBRCountChanged();
+    partial void OnSTCountChanging(System.Nullable<int> value);
+    partial void OnSTCountChanged();
     #endregion
 		
 		public MonthlyCoachRevenueIndicator()
@@ -53386,6 +53647,26 @@ namespace WebHome.Models.DataEntity
 					this._BRCount = value;
 					this.SendPropertyChanged("BRCount");
 					this.OnBRCountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_STCount", DbType="Int")]
+		public System.Nullable<int> STCount
+		{
+			get
+			{
+				return this._STCount;
+			}
+			set
+			{
+				if ((this._STCount != value))
+				{
+					this.OnSTCountChanging(value);
+					this.SendPropertyChanging();
+					this._STCount = value;
+					this.SendPropertyChanged("STCount");
+					this.OnSTCountChanged();
 				}
 			}
 		}
@@ -55822,6 +56103,484 @@ namespace WebHome.Models.DataEntity
 						this._ActorID = default(Nullable<int>);
 					}
 					this.SendPropertyChanged("UserProfile");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="Project.ObjectiveLessonCatalog")]
+	public partial class ObjectiveLessonCatalog : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _CatalogID;
+		
+		private string _Description;
+		
+		private EntitySet<ObjectiveLessonPrice> _ObjectiveLessonPrice;
+		
+		private EntitySet<ObjectiveLessonLocation> _ObjectiveLessonLocation;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnCatalogIDChanging(int value);
+    partial void OnCatalogIDChanged();
+    partial void OnDescriptionChanging(string value);
+    partial void OnDescriptionChanged();
+    #endregion
+		
+		public ObjectiveLessonCatalog()
+		{
+			this._ObjectiveLessonPrice = new EntitySet<ObjectiveLessonPrice>(new Action<ObjectiveLessonPrice>(this.attach_ObjectiveLessonPrice), new Action<ObjectiveLessonPrice>(this.detach_ObjectiveLessonPrice));
+			this._ObjectiveLessonLocation = new EntitySet<ObjectiveLessonLocation>(new Action<ObjectiveLessonLocation>(this.attach_ObjectiveLessonLocation), new Action<ObjectiveLessonLocation>(this.detach_ObjectiveLessonLocation));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CatalogID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int CatalogID
+		{
+			get
+			{
+				return this._CatalogID;
+			}
+			set
+			{
+				if ((this._CatalogID != value))
+				{
+					this.OnCatalogIDChanging(value);
+					this.SendPropertyChanging();
+					this._CatalogID = value;
+					this.SendPropertyChanged("CatalogID");
+					this.OnCatalogIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Description", DbType="NVarChar(64)")]
+		public string Description
+		{
+			get
+			{
+				return this._Description;
+			}
+			set
+			{
+				if ((this._Description != value))
+				{
+					this.OnDescriptionChanging(value);
+					this.SendPropertyChanging();
+					this._Description = value;
+					this.SendPropertyChanged("Description");
+					this.OnDescriptionChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ObjectiveLessonCatalog_ObjectiveLessonPrice", Storage="_ObjectiveLessonPrice", ThisKey="CatalogID", OtherKey="CatalogID")]
+		public EntitySet<ObjectiveLessonPrice> ObjectiveLessonPrice
+		{
+			get
+			{
+				return this._ObjectiveLessonPrice;
+			}
+			set
+			{
+				this._ObjectiveLessonPrice.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ObjectiveLessonCatalog_ObjectiveLessonLocation", Storage="_ObjectiveLessonLocation", ThisKey="CatalogID", OtherKey="CatalogID")]
+		public EntitySet<ObjectiveLessonLocation> ObjectiveLessonLocation
+		{
+			get
+			{
+				return this._ObjectiveLessonLocation;
+			}
+			set
+			{
+				this._ObjectiveLessonLocation.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_ObjectiveLessonPrice(ObjectiveLessonPrice entity)
+		{
+			this.SendPropertyChanging();
+			entity.ObjectiveLessonCatalog = this;
+		}
+		
+		private void detach_ObjectiveLessonPrice(ObjectiveLessonPrice entity)
+		{
+			this.SendPropertyChanging();
+			entity.ObjectiveLessonCatalog = null;
+		}
+		
+		private void attach_ObjectiveLessonLocation(ObjectiveLessonLocation entity)
+		{
+			this.SendPropertyChanging();
+			entity.ObjectiveLessonCatalog = this;
+		}
+		
+		private void detach_ObjectiveLessonLocation(ObjectiveLessonLocation entity)
+		{
+			this.SendPropertyChanging();
+			entity.ObjectiveLessonCatalog = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="Project.ObjectiveLessonPrice")]
+	public partial class ObjectiveLessonPrice : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _CatalogID;
+		
+		private int _PriceID;
+		
+		private EntityRef<LessonPriceType> _LessonPriceType;
+		
+		private EntityRef<ObjectiveLessonCatalog> _ObjectiveLessonCatalog;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnCatalogIDChanging(int value);
+    partial void OnCatalogIDChanged();
+    partial void OnPriceIDChanging(int value);
+    partial void OnPriceIDChanged();
+    #endregion
+		
+		public ObjectiveLessonPrice()
+		{
+			this._LessonPriceType = default(EntityRef<LessonPriceType>);
+			this._ObjectiveLessonCatalog = default(EntityRef<ObjectiveLessonCatalog>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CatalogID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int CatalogID
+		{
+			get
+			{
+				return this._CatalogID;
+			}
+			set
+			{
+				if ((this._CatalogID != value))
+				{
+					if (this._ObjectiveLessonCatalog.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnCatalogIDChanging(value);
+					this.SendPropertyChanging();
+					this._CatalogID = value;
+					this.SendPropertyChanged("CatalogID");
+					this.OnCatalogIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PriceID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int PriceID
+		{
+			get
+			{
+				return this._PriceID;
+			}
+			set
+			{
+				if ((this._PriceID != value))
+				{
+					if (this._LessonPriceType.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnPriceIDChanging(value);
+					this.SendPropertyChanging();
+					this._PriceID = value;
+					this.SendPropertyChanged("PriceID");
+					this.OnPriceIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="LessonPriceType_ObjectiveLessonPrice", Storage="_LessonPriceType", ThisKey="PriceID", OtherKey="PriceID", IsForeignKey=true)]
+		public LessonPriceType LessonPriceType
+		{
+			get
+			{
+				return this._LessonPriceType.Entity;
+			}
+			set
+			{
+				LessonPriceType previousValue = this._LessonPriceType.Entity;
+				if (((previousValue != value) 
+							|| (this._LessonPriceType.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._LessonPriceType.Entity = null;
+						previousValue.ObjectiveLessonPrice.Remove(this);
+					}
+					this._LessonPriceType.Entity = value;
+					if ((value != null))
+					{
+						value.ObjectiveLessonPrice.Add(this);
+						this._PriceID = value.PriceID;
+					}
+					else
+					{
+						this._PriceID = default(int);
+					}
+					this.SendPropertyChanged("LessonPriceType");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ObjectiveLessonCatalog_ObjectiveLessonPrice", Storage="_ObjectiveLessonCatalog", ThisKey="CatalogID", OtherKey="CatalogID", IsForeignKey=true)]
+		public ObjectiveLessonCatalog ObjectiveLessonCatalog
+		{
+			get
+			{
+				return this._ObjectiveLessonCatalog.Entity;
+			}
+			set
+			{
+				ObjectiveLessonCatalog previousValue = this._ObjectiveLessonCatalog.Entity;
+				if (((previousValue != value) 
+							|| (this._ObjectiveLessonCatalog.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._ObjectiveLessonCatalog.Entity = null;
+						previousValue.ObjectiveLessonPrice.Remove(this);
+					}
+					this._ObjectiveLessonCatalog.Entity = value;
+					if ((value != null))
+					{
+						value.ObjectiveLessonPrice.Add(this);
+						this._CatalogID = value.CatalogID;
+					}
+					else
+					{
+						this._CatalogID = default(int);
+					}
+					this.SendPropertyChanged("ObjectiveLessonCatalog");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="Project.ObjectiveLessonLocation")]
+	public partial class ObjectiveLessonLocation : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _CatalogID;
+		
+		private int _BranchID;
+		
+		private EntityRef<BranchStore> _BranchStore;
+		
+		private EntityRef<ObjectiveLessonCatalog> _ObjectiveLessonCatalog;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnCatalogIDChanging(int value);
+    partial void OnCatalogIDChanged();
+    partial void OnBranchIDChanging(int value);
+    partial void OnBranchIDChanged();
+    #endregion
+		
+		public ObjectiveLessonLocation()
+		{
+			this._BranchStore = default(EntityRef<BranchStore>);
+			this._ObjectiveLessonCatalog = default(EntityRef<ObjectiveLessonCatalog>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CatalogID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int CatalogID
+		{
+			get
+			{
+				return this._CatalogID;
+			}
+			set
+			{
+				if ((this._CatalogID != value))
+				{
+					if (this._ObjectiveLessonCatalog.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnCatalogIDChanging(value);
+					this.SendPropertyChanging();
+					this._CatalogID = value;
+					this.SendPropertyChanged("CatalogID");
+					this.OnCatalogIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BranchID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int BranchID
+		{
+			get
+			{
+				return this._BranchID;
+			}
+			set
+			{
+				if ((this._BranchID != value))
+				{
+					if (this._BranchStore.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnBranchIDChanging(value);
+					this.SendPropertyChanging();
+					this._BranchID = value;
+					this.SendPropertyChanged("BranchID");
+					this.OnBranchIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="BranchStore_ObjectiveLessonLocation", Storage="_BranchStore", ThisKey="BranchID", OtherKey="BranchID", IsForeignKey=true)]
+		public BranchStore BranchStore
+		{
+			get
+			{
+				return this._BranchStore.Entity;
+			}
+			set
+			{
+				BranchStore previousValue = this._BranchStore.Entity;
+				if (((previousValue != value) 
+							|| (this._BranchStore.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._BranchStore.Entity = null;
+						previousValue.ObjectiveLessonLocation.Remove(this);
+					}
+					this._BranchStore.Entity = value;
+					if ((value != null))
+					{
+						value.ObjectiveLessonLocation.Add(this);
+						this._BranchID = value.BranchID;
+					}
+					else
+					{
+						this._BranchID = default(int);
+					}
+					this.SendPropertyChanged("BranchStore");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ObjectiveLessonCatalog_ObjectiveLessonLocation", Storage="_ObjectiveLessonCatalog", ThisKey="CatalogID", OtherKey="CatalogID", IsForeignKey=true)]
+		public ObjectiveLessonCatalog ObjectiveLessonCatalog
+		{
+			get
+			{
+				return this._ObjectiveLessonCatalog.Entity;
+			}
+			set
+			{
+				ObjectiveLessonCatalog previousValue = this._ObjectiveLessonCatalog.Entity;
+				if (((previousValue != value) 
+							|| (this._ObjectiveLessonCatalog.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._ObjectiveLessonCatalog.Entity = null;
+						previousValue.ObjectiveLessonLocation.Remove(this);
+					}
+					this._ObjectiveLessonCatalog.Entity = value;
+					if ((value != null))
+					{
+						value.ObjectiveLessonLocation.Add(this);
+						this._CatalogID = value.CatalogID;
+					}
+					else
+					{
+						this._CatalogID = default(int);
+					}
+					this.SendPropertyChanged("ObjectiveLessonCatalog");
 				}
 			}
 		}

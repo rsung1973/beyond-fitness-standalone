@@ -80,7 +80,8 @@ namespace WebHome.Controllers
                 return View(Properties.Settings.Default.ReportInputError);
             }
 
-            if (!models.GetTable<CoachWorkplace>()
+            var branch = models.GetTable<BranchStore>().Where(b => b.BranchID == viewModel.BranchID).FirstOrDefault();
+            if (branch?.IsVirtualClassroom() != true && !models.GetTable<CoachWorkplace>()
                             .Any(c => c.BranchID == viewModel.BranchID
                                 && c.CoachID == viewModel.CoachID)
                 && viewModel.ClassDate.Value < DateTime.Today.AddDays(1))

@@ -35,15 +35,6 @@
     <link href="plugins/multi-select/css/multi-select.css" rel="stylesheet">
 }
 
-<script>
-        $(function () {
-            $global.viewModel = @Html.Raw(JsonConvert.SerializeObject(_viewModel));
-
-            for (var i = 0; i < $global.onReady.length; i++) {
-                $global.onReady[i]();
-            }
-        });
-</script>
 <section class="content page-calendar">
     @{ ViewBag.BlockHeader = "我的行事曆";
         Html.RenderPartial("~/Views/ConsoleHome/Module/BlockHeader.cshtml", _model);}

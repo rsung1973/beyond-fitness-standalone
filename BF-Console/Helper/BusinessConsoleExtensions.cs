@@ -255,6 +255,10 @@ namespace WebHome.Helper
             };
 
             IQueryable<V_Tuition> lessonItems = queryModel.InquireAchievement(models);
+            IQueryable<LessonTime> STItems = models.GetTable<LessonTime>()
+                .Where(c => c.ClassTime >= item.StartDate)
+                .Where(c => c.ClassTime < item.StartDate.AddMonths(1))
+                .Where(t => t.TrainingBySelf == 2);
 
             if (forcedUpdate == true)
             {
@@ -363,6 +367,7 @@ namespace WebHome.Helper
                     var coachTuitionItems = tuitionItems.Where(t => t.AttendingCoach == coachIndicator.CoachID);
                     var coachAchievementItems = achievementItems.Where(t => t.CoachID == coachIndicator.CoachID);
                     var coachContractItems = contractItems.Where(c => c.FitnessConsultant == coachIndicator.CoachID);
+                    var coachSTItems = STItems.Where(t => t.AttendingCoach == coachIndicator.CoachID);
 
                     lessonAchievement = coachTuitionItems.Where(t => SessionScopeForAchievement.Contains(t.PriceStatus)).Sum(t => t.ListPrice * t.GroupingMemberCount * t.PercentageOfDiscount / 100) ?? 0;
                     lessonAchievement += (coachTuitionItems.Where(t => SessionScopeForAchievement.Contains(t.ELStatus)).Sum(l => l.EnterpriseListPrice * l.GroupingMemberCount * l.PercentageOfDiscount / 100) ?? 0);
@@ -383,6 +388,8 @@ namespace WebHome.Helper
                         coachIndicator.AverageLessonPrice = item.CalculateAverageLessonPrice(models, coachIndicator.CoachID);
                         coachIndicator.LessonTuitionGoal = coachIndicator.CompleteLessonsGoal * coachIndicator.AverageLessonPrice;
                     }
+
+                    coachIndicator.STCount = coachSTItems.Count();
 
                     models.SubmitChanges();
                 }

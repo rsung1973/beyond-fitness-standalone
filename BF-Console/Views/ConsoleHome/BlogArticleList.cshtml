@@ -32,12 +32,6 @@
 
     <script>
         $(function () {
-            $global.viewModel = @Html.Raw(JsonConvert.SerializeObject(_viewModel));
-
-            for (var i = 0; i < $global.onReady.length; i++) {
-                $global.onReady[i]();
-            }
-
             $global.onPaging = function (pageModel) {
                 $.extend($global.viewModel, pageModel);
                 showLoading();

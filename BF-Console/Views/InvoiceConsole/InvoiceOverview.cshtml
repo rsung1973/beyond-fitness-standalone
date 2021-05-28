@@ -39,15 +39,6 @@
     <link href="plugins/charts-c3/plugin.css?2.0" rel="stylesheet">
 }
 
-<script>
-        $(function () {
-            $global.viewModel = @Html.Raw(JsonConvert.SerializeObject(_viewModel));
-
-            for (var i = 0; i < $global.onReady.length; i++) {
-                $global.onReady[i]();
-            }
-        });
-</script>
 <!-- Main Content -->
 <section class="content">
     @{

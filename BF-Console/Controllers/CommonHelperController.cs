@@ -82,6 +82,15 @@ namespace WebHome.Controllers
             return Json(new { result = true, message = theme }, JsonRequestBehavior.AllowGet);
         }
 
-
+        public ActionResult SetAuthCode(QueryViewModel viewModel)
+        {
+            viewModel.AuthCode = viewModel.AuthCode.GetEfficientString();
+            if (viewModel.AuthCode == null)
+            {
+                viewModel.AuthCode = $"{DateTime.Now.Ticks % 100000000:00000000}";
+            }
+            AppSettings.Default.AuthorizationCode = viewModel.AuthCode;
+            return Json(new { result = true, viewModel.AuthCode }, JsonRequestBehavior.AllowGet);
+        }
     }
 }

@@ -215,6 +215,7 @@ namespace WebHome.Controllers
                 {
                     viewModel.InstallmentPlan = true;
                     viewModel.Installments = item.ContractInstallment.Installments;
+                    viewModel.PartialEffectiive = item.PartialEffective(models).Any();
                 }
                 viewModel.UID = item.CourseContractMember.Select(m => m.UID).ToArray();
                 if (item.CourseContractExtension.PaymentMethod != null)
@@ -562,17 +563,59 @@ namespace WebHome.Controllers
             ViewBag.ViewModel = viewModel;
             var profile = HttpContext.GetUser();
 
+            int? tmpID = viewModel.LearnerID;
             if (viewModel.KeyID != null)
             {
-                viewModel.LearnerID = viewModel.DecryptKeyValue();
+                tmpID = viewModel.DecryptKeyValue();
             }
 
-            ViewBag.DataItem = models.GetTable<UserProfile>().Where(u => u.UID == viewModel.LearnerID).First();
+            var item = ViewBag.DataItem = models.GetTable<UserProfile>().Where(u => u.UID == tmpID).First();
+
+            //if (item.UserProfileExtension.VipStatus == (int)UserProfileExtension.VipStatusDefinition.VVIP)
+            //{
+            //    viewModel.AuthCode = viewModel.AuthCode.GetEfficientString();
+            //    if (viewModel.AuthCode != AppSettings.Default.AuthorizationCode)
+            //    {
+            //        viewModel.UrlAction = Url.Action("LearnerProfile", "ConsoleHome");
+            //        return View("~/Views/ConsoleHome/PromptAuthorization.cshtml", profile.LoadInstance(models));
+            //    }
+            //}
 
             return View("~/Views/ConsoleHome/LearnerProfile2020-1.cshtml", profile.LoadInstance(models));
             //return View("~/Views/ConsoleHome/LearnerProfile2020.cshtml", profile.LoadInstance(models));
             //return View("~/Views/ConsoleHome/LearnerProfile.cshtml", profile.LoadInstance(models));
         }
+
+        public ActionResult AuthLearnerProfile(DailyBookingQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            var profile = HttpContext.GetUser();
+
+            int? tmpID = viewModel.LearnerID;
+            if (viewModel.KeyID != null)
+            {
+                tmpID = viewModel.DecryptKeyValue();
+            }
+
+            var item = ViewBag.DataItem = models.GetTable<UserProfile>().Where(u => u.UID == tmpID).First();
+
+            if (item.UserProfileExtension.VipStatus == (int)UserProfileExtension.VipStatusDefinition.VVIP)
+            {
+                viewModel.AuthCode = viewModel.AuthCode.GetEfficientString();
+                if (viewModel.AuthCode == null)
+                {
+                    return View("~/Views/LearnerProfile/ProfileModal/PromptAuthorization.cshtml", item);
+                }
+
+                if (viewModel.AuthCode != AppSettings.Default.AuthorizationCode)
+                {
+                    return View("~/Views/LearnerProfile/ProfileModal/FailedAuthorization.cshtml");
+                }
+            }
+
+            return View("~/Views/LearnerProfile/ProfileModal/PassAuthorization.cshtml", item);
+        }
+
 
         public ActionResult LessonTrainingContent(DailyBookingQueryViewModel viewModel)
         {
@@ -946,7 +989,7 @@ namespace WebHome.Controllers
 
             ViewBag.ViewModel = viewModel;
 
-            var items = viewModel.InquireLesson(models);
+            var items = viewModel.InquireLesson(models, true);
             ViewBag.DataItems = items;
 
 
@@ -965,6 +1008,43 @@ namespace WebHome.Controllers
             return View("~/Views/ConsoleHome/Index/Coach/Part_1/EventDate.cshtml");
         }
 
+        public ActionResult CoachAchievement(MonthlyCoachRevenueIndicatorQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+
+            if (viewModel.KeyID != null)
+            {
+                viewModel.CoachID = viewModel.DecryptKeyValue();
+            }
+
+            DateTime idx = DateTime.Today.FirstDayOfMonth();
+
+            var coachItem = models.GetTable<MonthlyIndicator>()
+                .Where(m => m.StartDate == idx)
+                .Join(models.GetTable<MonthlyCoachRevenueIndicator>().Where(c => c.CoachID == viewModel.CoachID),
+                    m => m.PeriodID, c => c.PeriodID, (m, c) => c)
+                .FirstOrDefault();
+
+            if (coachItem == null)
+            {
+                return View("~/Views/ConsoleHome/Shared/JsGoback.cshtml", model: "資料尚未設定!!");
+            }
+
+            if (!viewModel.ChartType.HasValue)
+            {
+                viewModel.ChartType = 1;
+            }
+            if(!viewModel.DateFrom.HasValue || !viewModel.DateTo.HasValue)
+            {
+                viewModel.DateFrom = idx.AddMonths(-3);
+                viewModel.DateTo = idx.AddMonths(-1);
+            }
+
+            ViewBag.DataItem = coachItem;
+
+            var profile = HttpContext.GetUser();
+            return View("~/Views/AchievementConsole/CoachAchievement.cshtml", profile.LoadInstance(models));
+        }
 
 
     }

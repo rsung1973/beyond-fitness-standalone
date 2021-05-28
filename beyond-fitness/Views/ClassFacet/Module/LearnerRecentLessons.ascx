@@ -20,9 +20,9 @@
         <!-- end row -->
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-primary" id="btnModalClone">
+        <%--<button type="button" class="btn btn-primary" id="btnModalClone">
             複製課表 <i class="fa fa-files-o" aria-hidden="true"></i>
-        </button>
+        </button>--%>
     </div>
 
     <script>

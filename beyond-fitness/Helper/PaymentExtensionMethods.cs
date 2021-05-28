@@ -123,6 +123,20 @@ namespace WebHome.Helper
                     p => p.PaymentID, t => t.InstallmentID, (p, t) => t);
         }
 
+        public static int GetPaymentAchievementSummary<TEntity>(this MonthlyIndicator indicator, ModelSource<TEntity> models, int coachID)
+            where TEntity : class, new()
+        {
+            IQueryable<Payment> items = models.PromptIncomePayment()
+                    .Where(p => p.PayoffDate >= indicator.StartDate)
+                    .Where(p => p.PayoffDate < indicator.EndExclusiveDate);
+
+            IQueryable<TuitionAchievement> coachItems = models.GetTable<TuitionAchievement>().Where(t => t.CoachID == coachID);
+            var shareItems = items.GetPaymentAchievement(models, coachItems);
+            var shareSummary = shareItems.Sum(p => p.ShareAmount) ?? 0;
+            return shareSummary;
+        }
+
+
         public static IQueryable<LessonTime> GetUnpaidPISession<TEntity>(this PaymentQueryViewModel viewModel, ModelSource<TEntity> models)
             where TEntity : class, new()
         {

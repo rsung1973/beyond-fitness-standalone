@@ -226,7 +226,7 @@ namespace WebHome.Models.DataEntity
             if (name == null || name.Length < 2)
                 return name;
             StringBuilder sb = new StringBuilder(name);
-            sb[1] = '○';
+            sb[1] = 'Ｏ';
             return sb.ToString();
         }
 
@@ -359,9 +359,30 @@ namespace WebHome.Models.DataEntity
 
         public static String LessonTypeStatus(this LessonTime item)
         {
-            return item.RegisterLesson.RegisterLessonEnterprise == null
-                    ? item.RegisterLesson.LessonPriceType.Status.LessonTypeStatus()
-                    : item.RegisterLesson.RegisterLessonEnterprise.EnterpriseCourseContent.EnterpriseLessonType.Status.LessonTypeStatus() + "(企)";
+            if (item.RegisterLesson.RegisterLessonEnterprise == null)
+            {
+                switch (item.RegisterLesson.LessonPriceType.Status)
+                {
+                    case (int)Naming.LessonPriceStatus.自主訓練:
+                        return "P.I";
+                    case (int)Naming.LessonPriceStatus.一般課程:
+                    case (int)Naming.LessonPriceStatus.團體學員課程:
+                    case (int)Naming.LessonPriceStatus.已刪除:
+                        return "P.T";
+                    case (int)Naming.LessonPriceStatus.在家訓練:
+                        return "S.T";
+                    case (int)Naming.LessonPriceStatus.教練PI:
+                        return "Coach P.I";
+                    case (int)Naming.LessonPriceStatus.體驗課程:
+                        return "T.S";
+                    default:
+                        return item.RegisterLesson.LessonPriceType.Description;
+                }
+            }
+            else
+            {
+                return item.RegisterLesson.RegisterLessonEnterprise.EnterpriseCourseContent.EnterpriseLessonType.Status.LessonTypeStatus() + "(企)";
+            }
         }
 
         public static IQueryable<TuitionAchievement> FilterByEffective(this IQueryable<TuitionAchievement> items)
@@ -502,5 +523,45 @@ namespace WebHome.Models.DataEntity
     {
         public CourseContract Contract { get; set; }
         public decimal? TotalPaidAmount { get; set; }
+    }
+
+    public partial class UserProfileExtension
+    {
+        public enum VipStatusDefinition
+        {
+            VVIP = 1,
+        }
+    }
+
+    public partial class MonthlyCoachRevenueIndicator
+    {
+        public decimal AttendanceCount => (ActualCompleteLessonCount ?? 0)
+                    + (ActualCompleteTSCount ?? 0)
+                    + (ActualCompletePICount ?? 0M) / 2M;
+    }
+
+    public partial class BranchStore
+    {
+        [Flags]
+        public enum StatusDefinition
+        {
+            CurrentDisabled = 1,
+            VirtualClassroom = 2,
+            GeographicLocation = 4,
+        }
+
+        public bool IsVirtualClassroom()
+        {
+            return (this.Status & (int)StatusDefinition.VirtualClassroom) == (int)StatusDefinition.VirtualClassroom;
+        }
+    }
+
+    public partial class ObjectiveLessonCatalog
+    {
+        public enum CatalogDefinition
+        {
+            OnLine = 1,
+            OnLineFeedback = 2,
+        }
     }
 }

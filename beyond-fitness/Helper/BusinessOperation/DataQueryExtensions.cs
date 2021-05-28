@@ -27,7 +27,7 @@ namespace WebHome.Helper.BusinessOperation
 {
     public static class DataQueryExtensions
     {
-        public static IQueryable<LessonTime> InquireLesson<TEntity>(this LessonOverviewQueryViewModel viewModel, ModelSource<TEntity> models)
+        public static IQueryable<LessonTime> InquireLesson<TEntity>(this LessonOverviewQueryViewModel viewModel, ModelSource<TEntity> models,bool exclusiveCoachOrBranch = false)
             where TEntity : class, new()
         {
 
@@ -49,19 +49,22 @@ namespace WebHome.Helper.BusinessOperation
                 items = items.Where(c => c.AttendingCoach == viewModel.CoachID);
             }
 
-            if (viewModel.BranchID.HasValue)
+            if (exclusiveCoachOrBranch == false || !viewModel.CoachID.HasValue)
             {
-                if (viewModel.ByManager == true)
+                if (viewModel.BranchID.HasValue)
                 {
-                    var allCoach = models.GetTable<CoachWorkplace>().Where(w => w.BranchID == viewModel.BranchID)
-                                    .Where(w => !models.GetTable<CoachWorkplace>().Where(c => c.CoachID == w.CoachID)
-                                                .Any(c => c.BranchID != viewModel.BranchID))
-                                    .Select(w => w.CoachID);
-                    items = items.Where(c => allCoach.Any(w => w == c.AttendingCoach));
-                }
-                else
-                {
-                    items = items.Where(c => c.BranchID == viewModel.BranchID);
+                    if (viewModel.ByManager == true)
+                    {
+                        var allCoach = models.GetTable<CoachWorkplace>().Where(w => w.BranchID == viewModel.BranchID)
+                                        .Where(w => !models.GetTable<CoachWorkplace>().Where(c => c.CoachID == w.CoachID)
+                                                    .Any(c => c.BranchID != viewModel.BranchID))
+                                        .Select(w => w.CoachID);
+                        items = items.Where(c => allCoach.Any(w => w == c.AttendingCoach));
+                    }
+                    else
+                    {
+                        items = items.Where(c => c.BranchID == viewModel.BranchID);
+                    }
                 }
             }
 

@@ -169,5 +169,12 @@ namespace WebHome.Controllers
         {
             return Json(new { result = true, message = "資料處理完成!!" }, JsonRequestBehavior.AllowGet);
         }
+
+        public ActionResult Dump()
+        {
+            String fileName = Path.Combine(Logger.LogDailyPath, "request.txt");
+            Request.SaveAs(fileName, true);
+            return Content(System.IO.File.ReadAllText(fileName), "text/plain");
+        }
     }
 }

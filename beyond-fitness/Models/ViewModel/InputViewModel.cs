@@ -68,6 +68,7 @@ namespace WebHome.Models.ViewModel
         public String Pdf { get; set; }
         public Naming.CauseForEnding? CauseForEnding { get; set; }
         public int? MemberID { get; set; }
+        public bool? PartialEffectiive { get; set; }
     }
 
     public class CourseContractQueryViewModel : CourseContractViewModel
@@ -469,6 +470,17 @@ namespace WebHome.Models.ViewModel
         public String RiskPrediction { get; set; }
         public String Strategy { get; set; }
         public String Comment { get; set; }
+        public int? ChartType { get; set; }
+        public Naming.SessionTypeDefinition[] SessionType { get; set; }
+
+        public static readonly String[] __SessionName =
+        {
+            "",
+            "P.T",
+            "P.I",
+            "S.T",
+            "T.S",
+        };
     }
 
     public class LessonOverviewQueryViewModel : MonthlyIndicatorQueryViewModel

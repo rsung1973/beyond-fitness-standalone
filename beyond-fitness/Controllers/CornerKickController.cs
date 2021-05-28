@@ -1108,7 +1108,7 @@ namespace WebHome.Controllers
             {
                 var lesson = models.GetTable<RegisterLesson>().Where(r => r.UID == profile.UID)
                     .Join(models.GetTable<RegisterLessonContract>(), r => r.RegisterID, c => c.RegisterID, (r, c) => r)
-                    .OrderByDescending(r => r.RegisterID).First();
+                    .OrderByDescending(r => r.RegisterID).FirstOrDefault();
 
                 if (item.BonusAwardingIndication != null && item.BonusAwardingIndication.Indication == "AwardingLessonGift")
                 {
@@ -1119,7 +1119,7 @@ namespace WebHome.Controllers
                         ClassLevel = item.BonusAwardingLesson.PriceID,
                         Lessons = 1,
                         UID = recipientID.Value,
-                        AdvisorID = lesson.RegisterLessonContract.CourseContract.FitnessConsultant,
+                        AdvisorID = lesson?.RegisterLessonContract.CourseContract.FitnessConsultant,
                         Attended = (int)Naming.LessonStatus.準備上課,
                         GroupingLesson = new GroupingLesson { }
                     };
@@ -1138,7 +1138,7 @@ namespace WebHome.Controllers
                         ClassLevel = item.BonusAwardingLesson.PriceID,
                         Lessons = 1,
                         UID = profile.UID,
-                        AdvisorID = lesson.AdvisorID,
+                        AdvisorID = lesson?.AdvisorID,
                         Attended = (int)Naming.LessonStatus.準備上課,
                         GroupingLesson = new GroupingLesson { }
                     };

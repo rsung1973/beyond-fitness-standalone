@@ -200,7 +200,7 @@
                 confirmButtonText: "更新目標目標",
                 cancelButtonText: "取消",
                 inputPlaceholder: "請輸入20個中英文字",
-                inputValidator: (value) => {                    
+                inputValidator: (value) => {
                     if (!value) {
                         return '你忘了輸入文字嗎!?';
                     } else {
@@ -301,7 +301,7 @@
                 confirmButtonColor: "#DD6B55",
                 confirmButtonText: '確定',
                 cancelButtonText: '取消',
-                focusCancel: true     
+                focusCancel: true
             }).then((result) => {
                 if (result.isConfirmed) {
                     showLoading();
@@ -424,6 +424,57 @@
 
         }
 
+            //編輯上課重點
+        function editEmphasis(keyID, defaultValue) {
+            Swal.fire({
+                title: "上課重點",
+                input: "text",
+                showCancelButton: false,
+                allowEnterKey: false,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "更新上課重點",
+                inputPlaceholder: "請輸入20個中英文字",
+                inputValue: defaultValue,
+                inputValidator: (value) => {
+                    if (!value) {
+                        return '你忘了輸入文字嗎!?';
+                    } else {
+                        if (value.length > 20) {
+                            return '最多僅能輸入20個內的中英文字';
+                        }
+                    }
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    commitEmphasis(keyID, result.value);
+                }
+            });
+        }
+
+        function commitEmphasis(keyID, emphasis) {
+            showLoading();
+            $.post('@Html.Raw(Url.Action("CommitEmphasis", "Training"))', { 'keyID': keyID, 'emphasis': emphasis }, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    if (data.result) {
+                        Swal.fire(
+                            '幹得好!',
+                            '更新上課重點成功!',
+                            'success'
+                        )
+                        $('#emphasis').text(emphasis);
+                    } else {
+                        Swal.fire(
+                            'Oops...',
+                            data.message,
+                            'warning'
+                        )
+                    }
+                } else {
+                    $(data).appendTo($('body'));
+                }
+            });
+        }
 
     </script>
     @if (questionnaire != null)

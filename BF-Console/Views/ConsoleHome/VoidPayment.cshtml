@@ -35,15 +35,6 @@
     <link rel="stylesheet" href="css/customelist.css?1" />
 }
 
-<script>
-        $(function () {
-            $global.viewModel = @Html.Raw(JsonConvert.SerializeObject(_viewModel));
-
-            for (var i = 0; i < $global.onReady.length; i++) {
-                $global.onReady[i]();
-            }
-        });
-</script>
 <!-- Main Content -->
 <section class="content">
     @{ ViewBag.BlockHeader = "作廢/折讓收款";

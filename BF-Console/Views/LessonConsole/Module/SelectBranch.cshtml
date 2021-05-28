@@ -7,6 +7,7 @@
 @using WebHome.Models.DataEntity
 @using WebHome.Controllers
 @using Newtonsoft.Json
+@using Utility 
 
 @{
 
@@ -28,7 +29,7 @@
 @foreach (var b in models.GetTable<BranchStore>())
 {
     <li class="@($"col-sm-{12 / _allotmentCoach} col-6")">
-        <a href="javascript:commitCoach(null,null,{'branchID' : @(b.BranchID),'branchName':'@(b.BranchName)'});">
+        <a href='javascript:commitCoach(null,null,@Html.Raw((new { b.BranchID,b.BranchName,ByManager = b.IsVirtualClassroom()==false }).JsonStringify()));'>
             <img src="images/branch.jpg" class="img-thumbnail popfit" />
             <h6 class="users_name">@(b.BranchName)</h6>
         </a>

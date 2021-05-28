@@ -27,6 +27,7 @@
     {
         return $"commitContractMember({item.UID});";
     });
+    ViewBag.ShowPhone = true;
     Html.RenderPartial("~/Views/ConsoleEvent/EventModal/MemberSelector.cshtml", _model);
     }
 

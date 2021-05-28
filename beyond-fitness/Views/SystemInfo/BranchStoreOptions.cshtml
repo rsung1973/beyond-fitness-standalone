@@ -17,7 +17,7 @@
     models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
     _model = this.Model as int?;
 }
-@{ IQueryable<BranchStore> items = (IQueryable<BranchStore>)ViewBag.DataItems ?? models.GetTable<BranchStore>();}
+@{ IQueryable<BranchStore> items = (IQueryable<BranchStore>)ViewBag.DataItems ?? models.PromptAvailableStore();}
 @if (ViewBag.IntentStore != null)
 {
     int[] branchID = (int[])ViewBag.IntentStore;

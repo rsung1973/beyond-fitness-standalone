@@ -49,7 +49,7 @@ function deleteData(doDelete, options) {
         closeOnConfirm: false,
         closeOnCancel: false,
         confirmed: ['刪除成功!', '資料已經刪除 Bye!','OK'],
-        cancelled: ['取消成功', '你的資料現在非常安全 :)', 'error'],
+        cancelled: ['取消成功', '你的資料現在非常安全 :)', 'OK'],
         afterConfirmed: null,
     };
     if (options) {

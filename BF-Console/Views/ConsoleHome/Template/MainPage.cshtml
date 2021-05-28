@@ -7,15 +7,18 @@
 @using WebHome.Models.DataEntity
 @using WebHome.Controllers
 @using Newtonsoft.Json
+@using Utility
 
 @{
     ModelSource<UserProfile> models;
     ModelStateDictionary _modelState;
     UserProfile _model;
+    QueryViewModel _viewModel;
 
     models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
     _modelState = (ModelStateDictionary)ViewBag.ModelState;
     _model = (UserProfile)this.Model;
+    _viewModel = ViewBag.ViewModel as QueryViewModel;
 }
 
 <!doctype html>
@@ -50,7 +53,7 @@
 
     @RenderSection("CustomHeader", false)
     <!-- Custom Css -->
-    <link rel="stylesheet" href="css/main.css?2.5">
+    <link rel="stylesheet" href="css/main.css?2.6">
     <link rel="stylesheet" href="css/color_skins.css?2.5">
     <!-- Jquery Core Js -->
     <script src="bundles/libscripts.bundle.js"></script>
@@ -73,12 +76,24 @@
     <script src="plugins/moment/moment.min.js"></script>
     <script src="plugins/jquery-cookie/jquery.cookie.js"></script>
     <!-- SweetAlert Plugin Js -->
-    <script src="plugins/sweetalert2/sweetalert2.min.js"></script>
+    <script src="plugins/sweetalert2/sweetalert2.min.js?1.0"></script>
     <!-- SmartCalendar -->
     <script src="plugins/smartcalendar/js/bootstrap-datetimepicker.min.js"></script>
     <script src="plugins/smartcalendar/js/locales-datetimepicker/bootstrap-datetimepicker.zh-TW.js"></script>
     <script src="plugins/jquery-form/jquery-form.min.js"></script>
-    <script src="js/common.js?1.7"></script>
+    <script src="js/common.js?1.8"></script>
+    @if (_viewModel != null)
+    {
+        <script>
+            $(function () {
+                $global.viewModel = @Html.Raw(_viewModel.JsonStringify());
+
+                for (var i = 0; i < $global.onReady.length; i++) {
+                    $global.onReady[i]();
+                }
+            });
+        </script>
+    }
 </head>
 @{
     HttpCookie cookie = Request.Cookies["_theme"];
@@ -189,6 +204,7 @@
                                             var $body = $('body');
                                             $body.removeClass('theme-nero');
                                             $body.addClass(theme);
+                                            $global.currentTheme = theme;
                                         }
                                         //$.cookie('theme', theme, { 'path': '/' });
                                         changeTheme(theme);
@@ -200,7 +216,11 @@
                                             hideLoading();
                                             if ($.isPlainObject(data)) {
                                                 if (data.result) {
-
+                                                //    showLoading();
+                                                    //    window.location.reload();
+                                                    if ($global.onChangeTheme) {
+                                                        $global.onChangeTheme(theme);
+                                                    }
                                                 }
                                             } else {
                                                 $(data).appendTo($('body'));
@@ -213,18 +233,22 @@
                                         var hour = (new Date()).getHours();
                                         if (hour >= 6 && hour < 18) {
                                             $body.removeClass('theme-nero');
+                                            $global.currentTheme = '';
                                         } else {
                                             $body.addClass('theme-nero');
+                                            $global.currentTheme = 'theme-nero';
                                         }
                                     }
 
                                     $(function () {
+                                        $global.currentTheme = '@(cookie?.Value)';
                                         var $body = $('body');
                                         if ($body.hasClass('auto-theme')) {
                                             applyAutoTheme();
                                         }
                                         if ($.cookie('_theme') === undefined) {
                                             //$.cookie('theme', 'auto-theme', { 'path': '/' });
+                                            applyAutoTheme();
                                             changeTheme('auto-theme');
                                         }
                                     });
@@ -274,6 +298,15 @@
                     <li>
                         <a href="@(Url.Action("ReportIndex","ConsoleHome"))"><i class="zmdi zmdi-download"></i><span>我的下載</span> </a>
                     </li>
+                    if (!_model.IsOfficer())
+                    {
+                        if (_model.IsCoach() || _model.IsManager() || _model.IsViceManager())
+                        {
+                            <li>
+                                <a href="javascript:showLoading();$('').launchDownload('@Html.Raw(Url.Action("CoachAchievement","ConsoleHome"))', { 'keyID': '@(_model.UID.EncryptKey())'});"><i class="zmdi zmdi-file-text"></i><span>我的個人業績</span> </a>
+                            </li>
+                        }
+                    }
                     if (_model.IsAuthorizedSysAdmin() || _model.IsAssistant() || _model.IsOfficer() || _model.IsManager() || _model.IsViceManager())
                     {
                         <li>

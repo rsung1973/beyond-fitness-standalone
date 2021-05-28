@@ -1246,70 +1246,72 @@ namespace WebHome.Helper
             };
             item.CoachRating.Add(ratingItem);
 
+            var review = item.ProfessionalLevel.ProfessionalLevelReview;
+
             if (!qualifiedCert)
             {
-                if (item.ProfessionalLevel.ProfessionalLevelReview.DemotionID.HasValue)
+                if (review.DemotionID.HasValue)
                 {
-                    ratingItem.LevelID = item.ProfessionalLevel.ProfessionalLevelReview.DemotionID.Value;
+                    ratingItem.LevelID = review.DemotionID.Value;
                 }
             }
-            else if (item.ProfessionalLevel.ProfessionalLevelReview.CheckLevel == (int)Naming.ProfessionalLevelCheck.PT_1)
+            else if (review.CheckLevel == (int)Naming.ProfessionalLevelCheck.PT_1)
             {
-                if (attendanceCount >= 168 && summary >= 250000)
+                if (attendanceCount >= review.PromotionAttendanceCount && summary >= review.PromotionAchievement)
                 {
-                    ratingItem.LevelID = item.ProfessionalLevel.ProfessionalLevelReview.PromotionID.Value;
+                    ratingItem.LevelID = review.PromotionID.Value;
                 }
             }
-            else if (item.ProfessionalLevel.ProfessionalLevelReview.CheckLevel == (int)Naming.ProfessionalLevelCheck.PT_2)
+            else if (review.CheckLevel == (int)Naming.ProfessionalLevelCheck.PT_2)
             {
-                if (attendanceCount >= 188 && summary >= 330000)
+                if (attendanceCount >= review.PromotionAttendanceCount && summary >= review.PromotionAchievement)
                 {
-                    ratingItem.LevelID = item.ProfessionalLevel.ProfessionalLevelReview.PromotionID.Value;
+                    ratingItem.LevelID = review.PromotionID.Value;
                 }
-                else if (!(attendanceCount >= 168 && summary >= 250000))
+                else if (!(attendanceCount >= review.NormalAttendanceCount && summary >= review.NormalAchievement))
                 {
-                    ratingItem.LevelID = item.ProfessionalLevel.ProfessionalLevelReview.DemotionID.Value;
+                    ratingItem.LevelID = review.DemotionID.Value;
                 }
 
             }
-            else if (item.ProfessionalLevel.ProfessionalLevelReview.CheckLevel == (int)Naming.ProfessionalLevelCheck.PT_6)
+            else if (review.CheckLevel == (int)Naming.ProfessionalLevelCheck.PT_6)
             {
-                if (attendanceCount < 280 || summary < 450000)
+                if (!(attendanceCount >= review.NormalAttendanceCount && summary >= review.NormalAchievement))
                 {
-                    ratingItem.LevelID = item.ProfessionalLevel.ProfessionalLevelReview.DemotionID.Value;
+                    ratingItem.LevelID = review.DemotionID.Value;
                 }
             }
-            else if (item.ProfessionalLevel.ProfessionalLevelReview.CheckLevel == (int)Naming.ProfessionalLevelCheck.PT_5)
+            else if (review.CheckLevel == (int)Naming.ProfessionalLevelCheck.PT_5)
             {
-                if (attendanceCount >= 280 && summary >= 510000)
+                if (attendanceCount >= review.PromotionAttendanceCount && summary >= review.PromotionAchievement)
                 {
-                    ratingItem.LevelID = item.ProfessionalLevel.ProfessionalLevelReview.PromotionID.Value;
+                    ratingItem.LevelID = review.PromotionID.Value;
                 }
-                else if (!(attendanceCount >= 248 && summary >= 400000))
+                else if (!(attendanceCount >= review.NormalAttendanceCount && summary >= review.NormalAchievement))
                 {
-                    ratingItem.LevelID = item.ProfessionalLevel.ProfessionalLevelReview.DemotionID.Value;
+                    ratingItem.LevelID = review.DemotionID.Value;
                 }
             }
-            else if (item.ProfessionalLevel.ProfessionalLevelReview.CheckLevel == (int)Naming.ProfessionalLevelCheck.PT_4)
+            else if (review.CheckLevel == (int)Naming.ProfessionalLevelCheck.PT_4)
             {
-                if (attendanceCount >= 248 && summary >= 450000)
+                if (attendanceCount >= review.PromotionAttendanceCount && summary >= review.PromotionAchievement)
                 {
-                    ratingItem.LevelID = item.ProfessionalLevel.ProfessionalLevelReview.PromotionID.Value;
+                    ratingItem.LevelID = review.PromotionID.Value;
                 }
-                else if (!(attendanceCount >= 218 && summary >= 350000))
+                else if (!(attendanceCount >= review.NormalAttendanceCount && summary >= review.NormalAchievement))
                 {
-                    ratingItem.LevelID = item.ProfessionalLevel.ProfessionalLevelReview.DemotionID.Value;
+                    ratingItem.LevelID = review.DemotionID.Value;
                 }
             }
-            else if (item.ProfessionalLevel.ProfessionalLevelReview.CheckLevel == (int)Naming.ProfessionalLevelCheck.PT_3)
+            else if (review.CheckLevel == (int)Naming.ProfessionalLevelCheck.PT_3)
             {
-                if (attendanceCount >= 218 && summary >= 390000)
+                if (attendanceCount >= review.PromotionAttendanceCount && summary >= review.PromotionAchievement)
                 {
-                    ratingItem.LevelID = item.ProfessionalLevel.ProfessionalLevelReview.PromotionID.Value;
+                    ratingItem.LevelID = review.PromotionID.Value;
                 }
-                else if (!(attendanceCount >= 188 && summary >= 300000))
+                else if (!(attendanceCount >= review.NormalAttendanceCount && summary >= review.NormalAchievement))
                 {
-                    ratingItem.LevelID = item.ProfessionalLevel.ProfessionalLevelReview.DemotionID.Value;
+                    ratingItem.LevelID = review.DemotionID.Value;
                 }
             }
             else
@@ -1329,6 +1331,136 @@ namespace WebHome.Helper
                 WHERE        (LessonTime.ClassTime >= {0}) AND (ServingCoach.CoachID = {1}) ", quarterEnd, item.CoachID);
 
         }
+
+
+        //public static void CheckProfessionalLevel2020<TEntity>(this ModelSource<TEntity> models, ServingCoach item)
+        //    where TEntity : class, new()
+        //{
+        //    if (!item.LevelID.HasValue || item.ProfessionalLevel.ProfessionalLevelReview == null)
+        //        return;
+
+        //    DateTime? quarterEnd = new DateTime(DateTime.Today.Year, (DateTime.Today.Month - 1) / 3 * 3 + 1, 1);
+        //    DateTime quarterStart = quarterEnd.Value.AddMonths(-3);
+
+        //    if (models.GetTable<CoachRating>().Any(g => g.CoachID == item.CoachID && g.RatingDate >= quarterEnd))
+        //        return;
+
+        //    var indicators = models.GetTable<MonthlyIndicator>().Where(i => i.StartDate >= quarterStart && i.StartDate < quarterEnd)
+        //                        .Join(models.GetTable<MonthlyCoachRevenueIndicator>().Where(c => c.CoachID == item.CoachID),
+        //                            i => i.PeriodID, c => c.PeriodID, (i, c) => c);
+
+        //    //IQueryable<V_Tuition> items = models.GetTable<V_Tuition>()
+        //    //                                .Where(v => v.AttendingCoach == item.CoachID)
+        //    //                                .Where(v => v.PriceStatus != (int)Naming.LessonPriceStatus.體驗課程)
+        //    //                                .Where(v => v.ELStatus != (int)Naming.LessonPriceStatus.體驗課程)
+        //    //                                .Where(v => v.ClassTime >= quarterStart)
+        //    //                                .Where(v => v.ClassTime < quarterEnd);
+
+        //    //var attendanceCount = items.Where(v => v.PriceStatus != (int)Naming.LessonPriceStatus.自主訓練 && v.ELStatus != (int)Naming.LessonPriceStatus.自主訓練).Count();
+        //    //var PISessionCount = items.Where(v => v.PriceStatus == (int)Naming.LessonPriceStatus.自主訓練 || v.ELStatus == (int)Naming.LessonPriceStatus.自主訓練).Count();
+        //    //attendanceCount += ((PISessionCount + 1) / 2);
+
+        //    var attendanceCount = (indicators.Sum(i => i.ActualCompleteLessonCount) ?? 0)
+        //                        + (indicators.Sum(i => i.ActualCompleteTSCount) ?? 0)
+        //                        + (indicators.Sum(i => i.ActualCompletePICount) ?? 0) / 2;
+
+        //    var tuition = models.GetTuitionAchievement(item.CoachID, quarterStart, ref quarterEnd, null);
+        //    var summary = tuition.Sum(t => t.ShareAmount) ?? 0;
+        //    bool qualifiedCert = item.CoachCertificate.Count(c => c.Expiration >= quarterStart) >= 2;
+
+        //    CoachRating ratingItem = new CoachRating
+        //    {
+        //        AttendanceCount = attendanceCount,
+        //        CoachID = item.CoachID,
+        //        RatingDate = DateTime.Now,
+        //        TuitionSummary = summary,
+        //        LevelID = item.LevelID.Value,
+        //    };
+        //    item.CoachRating.Add(ratingItem);
+
+        //    if (!qualifiedCert)
+        //    {
+        //        if (item.ProfessionalLevel.ProfessionalLevelReview.DemotionID.HasValue)
+        //        {
+        //            ratingItem.LevelID = item.ProfessionalLevel.ProfessionalLevelReview.DemotionID.Value;
+        //        }
+        //    }
+        //    else if (item.ProfessionalLevel.ProfessionalLevelReview.CheckLevel == (int)Naming.ProfessionalLevelCheck.PT_1)
+        //    {
+        //        if (attendanceCount >= 168 && summary >= 250000)
+        //        {
+        //            ratingItem.LevelID = item.ProfessionalLevel.ProfessionalLevelReview.PromotionID.Value;
+        //        }
+        //    }
+        //    else if (item.ProfessionalLevel.ProfessionalLevelReview.CheckLevel == (int)Naming.ProfessionalLevelCheck.PT_2)
+        //    {
+        //        if (attendanceCount >= 188 && summary >= 330000)
+        //        {
+        //            ratingItem.LevelID = item.ProfessionalLevel.ProfessionalLevelReview.PromotionID.Value;
+        //        }
+        //        else if (!(attendanceCount >= 168 && summary >= 250000))
+        //        {
+        //            ratingItem.LevelID = item.ProfessionalLevel.ProfessionalLevelReview.DemotionID.Value;
+        //        }
+
+        //    }
+        //    else if (item.ProfessionalLevel.ProfessionalLevelReview.CheckLevel == (int)Naming.ProfessionalLevelCheck.PT_6)
+        //    {
+        //        if (attendanceCount < 280 || summary < 450000)
+        //        {
+        //            ratingItem.LevelID = item.ProfessionalLevel.ProfessionalLevelReview.DemotionID.Value;
+        //        }
+        //    }
+        //    else if (item.ProfessionalLevel.ProfessionalLevelReview.CheckLevel == (int)Naming.ProfessionalLevelCheck.PT_5)
+        //    {
+        //        if (attendanceCount >= 280 && summary >= 510000)
+        //        {
+        //            ratingItem.LevelID = item.ProfessionalLevel.ProfessionalLevelReview.PromotionID.Value;
+        //        }
+        //        else if (!(attendanceCount >= 248 && summary >= 400000))
+        //        {
+        //            ratingItem.LevelID = item.ProfessionalLevel.ProfessionalLevelReview.DemotionID.Value;
+        //        }
+        //    }
+        //    else if (item.ProfessionalLevel.ProfessionalLevelReview.CheckLevel == (int)Naming.ProfessionalLevelCheck.PT_4)
+        //    {
+        //        if (attendanceCount >= 248 && summary >= 450000)
+        //        {
+        //            ratingItem.LevelID = item.ProfessionalLevel.ProfessionalLevelReview.PromotionID.Value;
+        //        }
+        //        else if (!(attendanceCount >= 218 && summary >= 350000))
+        //        {
+        //            ratingItem.LevelID = item.ProfessionalLevel.ProfessionalLevelReview.DemotionID.Value;
+        //        }
+        //    }
+        //    else if (item.ProfessionalLevel.ProfessionalLevelReview.CheckLevel == (int)Naming.ProfessionalLevelCheck.PT_3)
+        //    {
+        //        if (attendanceCount >= 218 && summary >= 390000)
+        //        {
+        //            ratingItem.LevelID = item.ProfessionalLevel.ProfessionalLevelReview.PromotionID.Value;
+        //        }
+        //        else if (!(attendanceCount >= 188 && summary >= 300000))
+        //        {
+        //            ratingItem.LevelID = item.ProfessionalLevel.ProfessionalLevelReview.DemotionID.Value;
+        //        }
+        //    }
+        //    else
+        //    {
+        //        ratingItem.LevelID = item.LevelID.Value;
+        //    }
+
+        //    models.SubmitChanges();
+        //    models.ExecuteCommand("update ServingCoach set LevelID={0} where CoachID={1}", ratingItem.LevelID, item.CoachID);
+        //    models.ExecuteCommand(@"
+        //        UPDATE       LessonTimeSettlement
+        //        SET                ProfessionalLevelID = ServingCoach.LevelID, MarkedGradeIndex = ProfessionalLevel.GradeIndex
+        //        FROM            LessonTime INNER JOIN
+        //                                    LessonTimeSettlement ON LessonTime.LessonID = LessonTimeSettlement.LessonID INNER JOIN
+        //                                    ServingCoach ON LessonTime.AttendingCoach = ServingCoach.CoachID INNER JOIN
+        //                                    ProfessionalLevel ON ServingCoach.LevelID = ProfessionalLevel.LevelID
+        //        WHERE        (LessonTime.ClassTime >= {0}) AND (ServingCoach.CoachID = {1}) ", quarterEnd, item.CoachID);
+
+        //}
 
 
         public static void CheckProfessionalLeve<TEntity>(this ModelSource<TEntity> models, ServingCoach item)
@@ -2355,6 +2487,28 @@ namespace WebHome.Helper
                     //Console.WriteLine($"{c.ContractID}:{c.ContractID} => {ex}");
                 }
             }
+        }
+
+        public static IQueryable<BranchStore> PromptRealStore<TEntity>(this ModelSource<TEntity> models)
+            where TEntity : class, new()
+        {
+            return models.GetTable<BranchStore>()
+                .Where(b => (b.Status & (int)BranchStore.StatusDefinition.GeographicLocation) == (int)BranchStore.StatusDefinition.GeographicLocation);
+        }
+
+        public static IQueryable<BranchStore> PromptAvailableStore<TEntity>(this ModelSource<TEntity> models)
+            where TEntity : class, new()
+        {
+            return models.GetTable<BranchStore>()
+                .Where(b => (b.Status & (int)BranchStore.StatusDefinition.CurrentDisabled) == (int)BranchStore.StatusDefinition.CurrentDisabled);
+        }
+
+        public static IQueryable<BranchStore> PromptVirtualClassOccurrence<TEntity>(this ModelSource<TEntity> models)
+            where TEntity : class, new()
+        {
+            return models.GetTable<BranchStore>()
+                .Join(models.GetTable<ObjectiveLessonLocation>().Where(c => c.CatalogID == (int)ObjectiveLessonCatalog.CatalogDefinition.OnLine),
+                    b => b.BranchID, c => c.BranchID, (b, c) => b);
         }
 
 

@@ -161,7 +161,8 @@
 @foreach (var item in lessons
     .Where(r => r.LessonPriceType.Status == (int)Naming.LessonPriceStatus.點數兌換課程))
 {
-    bool bookable = item.LessonTime.Count == 0;
+    var remainedCount = item.RemainedLessonCount();
+    bool bookable = remainedCount > 0;
     if (bookable)
     {
         _pageModel.HasChoice = true;
@@ -178,8 +179,8 @@
             </div>
             <div class="media-body">
                 <div class="media-heading">
-                    <a class="m-r-10">P.T session （點數兌換）</a>
-                    <small class="float-right text-muted"><time>@(item.RemainedLessonCount())/@(item.Lessons)</time></small>
+                    <a class="m-r-10">P.T session （@(item.LessonPriceType.Description.Substring(4))）</a>
+                    <small class="float-right text-muted"><time>@(remainedCount)/@(item.Lessons)</time></small>
                 </div>
             </div>
         </div>
@@ -206,7 +207,7 @@
             <div class="media-body">
                 <div class="media-heading">
                     <a class="m-r-10">P.T session （員工福利）</a>
-                    <small class="float-right text-muted"><time>@(item.RemainedLessonCount())/@(item.Lessons)</time></small>
+                    <small class="float-right text-muted"><time>@(remainedCount)/@(item.Lessons)</time></small>
                 </div>
             </div>
         </div>

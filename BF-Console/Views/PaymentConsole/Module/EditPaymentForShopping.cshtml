@@ -56,7 +56,10 @@
         <div class="col-12">
             <select class="form-control show-tick" name="SellerID">
                 <option value="">-- 請選擇收款場地 --</option>
-                @{ Html.RenderPartial("~/Views/SystemInfo/BranchStoreOptions.cshtml", model: -1);}
+                @{ 
+                    ViewBag.DataItems = models.PromptRealStore();
+                    Html.RenderPartial("~/Views/SystemInfo/BranchStoreOptions.cshtml", model: -1);
+                }
             </select>
             @*<label class="material-icons help-error-text" for="BranchID">clear 請選擇收款場地</label>*@
         </div>

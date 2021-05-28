@@ -147,9 +147,7 @@ namespace WebHome.Controllers
             ViewBag.AllotmentCoach = viewModel.AllotmentCoach;
 
             var profile = HttpContext.GetUser();
-            IQueryable<ServingCoach> items = models.GetTable<ServingCoach>()
-                .Join(models.GetTable<UserProfile>().Where(u => u.LevelID != (int)Naming.MemberStatus.已停用), 
-                    s => s.CoachID, u => u.UID, (s, u) => s);
+            IQueryable<ServingCoach> items = models.PromptEffectiveCoach();
             if (profile.IsOfficer() || profile.IsAssistant() || profile.IsSysAdmin())
             {
 

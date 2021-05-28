@@ -35,7 +35,22 @@
     $(function () {
         $global.selectLearnerProfile = function (keyID) {
             @*$('').launchDownload('@Html.Raw(Url.Action("LearnerProfile","ConsoleHome"))', { 'keyID': keyID });*@
-            window.location.href = '@(Url.Action("LearnerProfile", "ConsoleHome"))' + '?keyID=' + encodeURIComponent(keyID);
+        @*window.location.href = '@(Url.Action("LearnerProfile", "ConsoleHome"))' + '?keyID=' + encodeURIComponent(keyID);*@
+            $global.closeAllModal();
+            showLoading();
+            $.post('@Html.Raw(Url.Action("AuthLearnerProfile","ConsoleHome"))', { 'keyID': keyID }, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    Swal.fire(
+                        'Oops...',
+                        data.message,
+                        'warning'
+                    );
+                } else {
+                    $(data).appendTo('body').remove();
+                }
+            });
+
         };
     });
 </script>

@@ -44,25 +44,25 @@
         {
             //var expansion = _model.LessonTimeExpansion.First();
             %>
-            {
+            <%--{
                 html: "<i class='fa fa-edit'></i>&nbsp;編輯",
                 "class": "btn btn-primary",
                 click: function () {
-                    <%-- makeLessonPlan(<%= JsonConvert.SerializeObject(new
+                    makeLessonPlan(<%= JsonConvert.SerializeObject(new
                                 {
                                     classDate = expansion.ClassDate.ToString("yyyy-MM-dd"),
                                     hour = expansion.Hour,
                                     registerID = _model.RegisterID,
                                     lessonID = _model.LessonID
                                 }) %>);
-                    $(this).dialog("close");--%>
+                    $(this).dialog("close");
                     window.location.href = '<%= Url.Action("ClassIndex", "ClassFacet", new { lessonID = _model.LessonID }) %>';
                 }
-            },
+            },--%>
 <%      }
         if (_model.CouldBeCancelled(_profile))
         { %>
-            {
+<%--            {
                 html: "<i class='far fa-trash-alt'></i>&nbsp;取消預約",
                 "class": "btn bg-color-red",
                 click: function () {
@@ -75,7 +75,7 @@
                             $global.renderFullCalendar();
                         });
                     }
-                    <%--                    confirmDialog({
+                                       confirmDialog({
                         title: '取消預約',
                         message: '確定取消預約此課程?',
                         confirm: function (evt) {
@@ -88,9 +88,9 @@
                                 $global.renderFullCalendar();
                             });
                         },
-                    });--%>
+                    });
                 }
-            }
+            }--%>
     <%  }   %>
             ],
             close: function () {

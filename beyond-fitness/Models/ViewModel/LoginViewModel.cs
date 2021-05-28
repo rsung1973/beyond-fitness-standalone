@@ -33,6 +33,7 @@ namespace WebHome.Models.ViewModel
         [JsonIgnore]
         public String UrlAction { get; set; }
         public bool? Confirmed { get; set; }
+        public String AuthCode { get; set; }
     }
 
     public class LoginViewModel : QueryViewModel

@@ -42,15 +42,6 @@
     <link rel="stylesheet" href="css/jsignature.css">
 }
 
-<script>
-        $(function () {
-            $global.viewModel = @Html.Raw(JsonConvert.SerializeObject(_viewModel));
-
-            for (var i = 0; i < $global.onReady.length; i++) {
-                $global.onReady[i]();
-            }
-        });
-</script>
 <!-- Main Content -->
 <section class="content">
     @{ ViewBag.BlockHeader = _item.Status == (int)Naming.CourseContractStatus.待簽名 ? "學生簽名" : "主管審核";

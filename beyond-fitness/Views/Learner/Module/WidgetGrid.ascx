@@ -189,10 +189,7 @@
                     <h2>人員列表</h2>
                     <div class="widget-toolbar">
                         <a onclick="downloadUnallocated();" class="btn bg-color-green"><i class="fa fa-fw fa-cloud-download-alt fa-spin"></i> 未指派體能顧問清單</a>
-                        <%  if (_profile.IsAssistant() || _profile.IsManager() || _profile.IsViceManager() || _profile.IsOfficer())
-                            { %>
                         <a onclick="$global.editLearner();" class="btn btn-primary modifyStudentDialog_link"><i class="fa fa-fw fa-user-plus"></i>新增學員</a>
-                        <%  } %>
                     </div>
                 </header>
                 <!-- widget div-->

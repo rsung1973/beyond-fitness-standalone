@@ -387,5 +387,14 @@ namespace WebHome.Helper
             return seriesItem.FirstOrDefault();
         }
 
+        public static IQueryable<CourseContract> PartialEffective<TEntity>(this CourseContract item, ModelSource<TEntity> models)
+            where TEntity : class, new()
+        {
+            return models.GetTable<CourseContract>().Where(c => c.InstallmentID == item.InstallmentID)
+                    .Where(c => c.Status >= (int)Naming.CourseContractStatus.已生效);
+        }
+
+
+
     }
 }

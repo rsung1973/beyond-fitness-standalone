@@ -427,8 +427,18 @@ namespace WebHome.Controllers
             return View("~/Views/ContractConsole/ContractModal/SelectCoach.cshtml", items);
         }
 
-
-
-
+        public ActionResult RemoteLessonFeedback()
+        {
+            try
+            {
+                models.RegisterRemoteFeedbackLesson();
+                return Json(new { result = true }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return Json(new { result = false, message = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
     }
 }

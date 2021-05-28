@@ -122,7 +122,7 @@ namespace WebHome.Controllers
                 return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: "請選擇上課日期間!!");
             }
 
-            if(!item.IsSTSession() && !models.GetTable<CoachWorkplace>()
+            if(!item.BranchStore.IsVirtualClassroom() && !item.IsSTSession() && !models.GetTable<CoachWorkplace>()
                             .Any(c => c.BranchID == item.BranchID
                                 && c.CoachID == item.AttendingCoach) 
                 && viewModel.ClassDate.Value<DateTime.Today.AddDays(1))
