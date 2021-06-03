@@ -59,6 +59,12 @@ namespace WebHome.Views.MainActivity.Resources {
             }
         }
         
+        public static string OnLine {
+            get {
+                return ResourceManager.GetString("OnLine", resourceCulture);
+            }
+        }
+        
         public static string FAQ {
             get {
                 return ResourceManager.GetString("FAQ", resourceCulture);

@@ -123,6 +123,9 @@
   <data name="FindUs" xml:space="preserve">
     <value>分店一覽</value>
   </data>
+ <data name="OnLine" xml:space="preserve">
+    <value>線上課程</value>
+  </data>    
   <data name="FAQ" xml:space="preserve">
     <value>常見問題</value>
   </data>
@@ -148,7 +151,7 @@
     <value>立即提問</value>
   </data>
   <data name="IndexBannerTitle" xml:space="preserve">
-    <value>我們的堅持</value>
+    <value>健康的未來，正在線上</value>
   </data>
   <data name="IndexBannerSubTitle" xml:space="preserve">
     <value>源自於客戶每一分安心</value>
