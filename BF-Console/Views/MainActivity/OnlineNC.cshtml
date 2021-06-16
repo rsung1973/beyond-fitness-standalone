@@ -1,0 +1,116 @@
+﻿
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Newtonsoft.Json
+@using WebHome.Views.MainActivity.Resources
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+
+    Layout = "~/Views/MainActivity/Template/MainPage.cshtml";
+}
+
+@section CustomHeader {
+
+}
+
+<section class="section-onlinesession">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <h1 class="text-center">@Html.Raw(NamingItem.OnlineNCTitle)</h1>
+                <div class="row clearfix">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <div class="features-box">
+                            <div class="row clearfix">
+                                <div class="col-sm-2 col-xs-2">
+                                    <div class="icon-wrapper"> <img src="images/landing/warm.png" alt="線上課程"> </div>
+                                </div>
+                                <div class="col-sm-10">
+                                    <div class="features-content reason">
+                                        <h2>@Html.Raw(NamingItem.OnlineNCFeature1)</h2>
+                                        <p>@Html.Raw(NamingItem.OnlineNCFeatureDesc1)</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <div class="features-box">
+                            <div class="row clearfix">
+                                <div class="col-sm-2 col-xs-2">
+                                    <div class="icon-wrapper"> <img src="images/landing/inspire.png" alt="線上課程"> </div>
+                                </div>
+                                <div class="col-sm-10">
+                                    <div class="features-content reason">
+                                        <h2>@Html.Raw(NamingItem.OnlineNCFeature2)</h2>
+                                        <p>@Html.Raw(NamingItem.OnlineNCFeatureDesc2)</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row clearfix">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <div class="features-box">
+                            <div class="row clearfix">
+                                <div class="col-sm-2 col-xs-2">
+                                    <div class="icon-wrapper"> <img src="images/landing/smile.png" alt="線上課程"> </div>
+                                </div>
+                                <div class="col-sm-10">
+                                    <div class="features-content reason">
+                                        <h2>@Html.Raw(NamingItem.OnlineNCFeature3)</h2>
+                                        <p>@Html.Raw(NamingItem.OnlineNCFeatureDesc3)</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <div class="features-box">
+                            <div class="row clearfix">
+                                <div class="col-sm-2 col-xs-2">
+                                    <div class="icon-wrapper"> <img src="images/landing/upright.png" alt="線上課程"> </div>
+                                </div>
+                                <div class="col-sm-10">
+                                    <div class="features-content reason">
+                                        <h2>@Html.Raw(NamingItem.OnlineNCFeature4)</h2>
+                                        <p>@Html.Raw(NamingItem.OnlineNCFeatureDesc4)</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- // 雲端數據 -->
+<section class="section-fun-facts nopadding full-width-section bg-black">
+    <div class="full-text-container text-right">
+        <h1>@Html.Raw(NamingItem.OnlineNCSlogon)</h1>
+    </div>
+    <div>
+        <img src="images/landing/online/Demo1.png" alt="營養課程">
+    </div>
+</section>
+
+<!-- // 聯絡我們 -->
+@{ Html.RenderPartial("~/Views/MainActivity/Module/ContactItem.cshtml");}
+
+
+@section TailPageJavaScriptInclude {
+}

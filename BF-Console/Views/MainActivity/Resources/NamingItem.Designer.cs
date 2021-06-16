@@ -808,5 +808,89 @@ namespace WebHome.Views.MainActivity.Resources {
                 return ResourceManager.GetString("Disclaimer", resourceCulture);
             }
         }
+        
+        public static string PersonalTrainer {
+            get {
+                return ResourceManager.GetString("PersonalTrainer", resourceCulture);
+            }
+        }
+        
+        public static string NutritionCoach {
+            get {
+                return ResourceManager.GetString("NutritionCoach", resourceCulture);
+            }
+        }
+        
+        public static string OnlinePTTitle {
+            get {
+                return ResourceManager.GetString("OnlinePTTitle", resourceCulture);
+            }
+        }
+        
+        public static string OnlinePTSlogon {
+            get {
+                return ResourceManager.GetString("OnlinePTSlogon", resourceCulture);
+            }
+        }
+        
+        public static string OnlineNCTitle {
+            get {
+                return ResourceManager.GetString("OnlineNCTitle", resourceCulture);
+            }
+        }
+        
+        public static string OnlineNCSlogon {
+            get {
+                return ResourceManager.GetString("OnlineNCSlogon", resourceCulture);
+            }
+        }
+        
+        public static string OnlineNCFeature1 {
+            get {
+                return ResourceManager.GetString("OnlineNCFeature1", resourceCulture);
+            }
+        }
+        
+        public static string OnlineNCFeatureDesc1 {
+            get {
+                return ResourceManager.GetString("OnlineNCFeatureDesc1", resourceCulture);
+            }
+        }
+        
+        public static string OnlineNCFeature2 {
+            get {
+                return ResourceManager.GetString("OnlineNCFeature2", resourceCulture);
+            }
+        }
+        
+        public static string OnlineNCFeatureDesc2 {
+            get {
+                return ResourceManager.GetString("OnlineNCFeatureDesc2", resourceCulture);
+            }
+        }
+        
+        public static string OnlineNCFeature3 {
+            get {
+                return ResourceManager.GetString("OnlineNCFeature3", resourceCulture);
+            }
+        }
+        
+        public static string OnlineNCFeatureDesc3 {
+            get {
+                return ResourceManager.GetString("OnlineNCFeatureDesc3", resourceCulture);
+            }
+        }
+        
+        public static string OnlineNCFeature4 {
+            get {
+                return ResourceManager.GetString("OnlineNCFeature4", resourceCulture);
+            }
+        }
+        
+        public static string OnlineNCFeatureDesc4 {
+            get {
+                return ResourceManager.GetString("OnlineNCFeatureDesc4", resourceCulture);
+            }
+        }
     }
 }

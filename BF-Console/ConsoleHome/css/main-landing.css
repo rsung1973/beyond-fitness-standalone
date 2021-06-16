@@ -18498,6 +18498,24 @@ textarea:focus {
     line-height: 80px;
 }
 
+.section-online.nopadding {
+    width: 100%;
+    padding: 0;
+}
+
+.section-online {
+    width: 70%;
+    position: relative;
+    overflow: hidden;
+    background: url(../images/online2.jpg);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    margin: 0 auto;
+}
+
+
 .section-fun-facts.nopadding {
     width: 100%;
     padding: 0;
@@ -18558,6 +18576,12 @@ textarea:focus {
 
 .section-team {
     padding: 100px 0;
+    background: #fff;
+}
+
+
+.section-onlinesession {
+    padding: 150px 0 60px;
     background: #fff;
 }
 
@@ -19465,6 +19489,33 @@ textarea:focus {
     padding-left: 2em;
 }
 
+.section-onlinesession.bg-light-gray {
+    padding-top: 80px;
+    background: #f4f6f9;
+}
+.section-onlinesession .icon-wrapper {
+    display: flex;
+    justify-content: center;/*水平置中*/
+    align-items: center; /*垂直置中*/
+    width: 60px;
+    height: 60px;
+    margin-top: 20px;
+}
+
+.section-onlinesession .reason {
+    display: flex;
+    flex-wrap: wrap;
+    height: -webkit-fit-content;
+    height: -moz-fit-content;
+    height: fit-content;
+    border-left: 2px solid #A6C5E4;
+    padding-left: 20px;
+}
+
+.section-onlinesession h3 {
+    font-size: 18px;
+}
+
 #footer {
     padding: 10px 0
 }
@@ -19820,6 +19871,12 @@ textarea:focus {
         padding: 0px 15px;
         margin: 0 auto;
         float: none
+    }
+
+    .section-onlinesession .icon-wrapper {
+        width: 40px;
+        height: 40px;
+        margin-top: 20px;
     }
 }
 

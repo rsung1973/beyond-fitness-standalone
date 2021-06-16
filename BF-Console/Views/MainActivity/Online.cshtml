@@ -1,0 +1,75 @@
+﻿
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Newtonsoft.Json
+@using WebHome.Views.MainActivity.Resources
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+
+    Layout = "~/Views/MainActivity/Template/MainPage.cshtml";
+}
+
+@section CustomHeader {
+
+}
+
+<section class="section-onlinesession">
+    <div class="container">
+        <div class="row grid-space-0" id="price_tables">
+            <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5 isotope-item">
+                <div class="image-box text-center">
+                    <div class="overlay-container">
+                        <h3>@Html.Raw(NamingItem.PersonalTrainer)</h3>
+                        <a href="javascript:bindTrackingCode('一對一私人教練', null, '@(Url.Action("OnlinePT"))', null)" class="more">@Html.Raw(NamingItem.LearnMore)<i class="pl-1 fa fa-angle-right"></i></a>
+                        <img src="images/landing/online/PTSession.jpg" alt="線上課程">
+                        <div class="overlay-top">
+                        </div>
+                        <div class="overlay-bottom">
+                            <div class="links">
+                                <a href="javascript:bindTrackingCode('遠距PT', null, '@(Url.Action("OnlinePT"))', null)" class="btn btn-gray-transparent btn-animated btn-sm">@Html.Raw(NamingItem.LearnMore) <i class="pl-10 fa fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-0 col-sm-2 col-md-2 col-lg-2">
+
+            </div>
+            <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5 isotope-item">
+                <div class="image-box text-center">
+                    <div class="overlay-container">
+                        <h3>@Html.Raw(NamingItem.NutritionCoach)</h3>
+                        <a href="javascript:bindTrackingCode('一對一私人營養教練', null, '@(Url.Action("OnlineNC"))', null)" class="more">@Html.Raw(NamingItem.LearnMore)<i class="pl-1 fa fa-angle-right"></i></a>
+                        <img src="images/landing/online/NutritionistSesioin.jpg" alt="線上課程">
+                        <div class="overlay-top">
+                        </div>
+                        <div class="overlay-bottom">
+                            <div class="links">
+                                <a href="javascript:bindTrackingCode('一對一私人營養教練', null, '@(Url.Action("OnlineNC"))', null)" class="btn btn-gray-transparent btn-animated btn-sm">@Html.Raw(NamingItem.LearnMore) <i class="pl-10 fa fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- // 聯絡我們 -->
+@{ Html.RenderPartial("~/Views/MainActivity/Module/ContactItem.cshtml");}
+
+
+@section TailPageJavaScriptInclude {
+}

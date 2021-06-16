@@ -123,6 +123,9 @@
   <data name="FindUs" xml:space="preserve">
     <value>Find Us</value>
   </data>
+  <data name="OnLine" xml:space="preserve">
+    <value>OnLine</value>
+  </data>
   <data name="FAQ" xml:space="preserve">
     <value>Q&amp;A</value>
   </data>
@@ -495,4 +498,46 @@
   <data name="Disclaimer" xml:space="preserve">
     <value>As the requirements and effects of exercise are different for each person, we recommend consultation with a Beyond Fitness trainer, to guarantee the best performance results.</value>
   </data>  
+  <data name="PersonalTrainer" xml:space="preserve">
+    <value>One to one personal trainer</value>
+  </data>  
+  <data name="NutritionCoach" xml:space="preserve">
+    <value>One to one nutrition coach</value>
+  </data>  
+  <data name="OnlinePTTitle" xml:space="preserve">
+    <value>Is BEYOND ONLINE &lt;br/&gt;a personal trainer suitable for me?</value>
+  </data> 
+  <data name="OnlinePTSlogon" xml:space="preserve">
+    <value>Like a friend, &lt;br /&gt;your fitness consultant</value>
+  </data> 
+  <data name="OnlineNCTitle" xml:space="preserve">
+    <value>Let BEYOND Online &lt;br/&gt; Eat Healthy with You</value>
+  </data> 
+  <data name="OnlineNCSlogon" xml:space="preserve">
+    <value>Change your eating habits</value>
+  </data>
+  <data name="OnlineNCFeature1" xml:space="preserve">
+    <value>Your Exclusive Dietitian</value>
+  </data>
+  <data name="OnlineNCFeatureDesc1" xml:space="preserve">
+    <value>A registered dietitian that keeps track of your water intake, sleep schedule, exercising and stress level.</value>
+  </data>
+  <data name="OnlineNCFeature2" xml:space="preserve">
+    <value>Regular Diet Tracking</value>
+  </data>
+  <data name="OnlineNCFeatureDesc2" xml:space="preserve">
+    <value>Log what you eat everyday and your nutritionist will provide guidance on healthy eating habits and what works best for you so that you can achieve your goal.</value>
+  </data>
+  <data name="OnlineNCFeature3" xml:space="preserve">
+    <value>Three Major Nutrients</value>
+  </data>
+  <data name="OnlineNCFeatureDesc3" xml:space="preserve">
+    <value>Analyze your food intake of the 6 Major Food Groups and tailor your diet!</value>
+  </data>
+  <data name="OnlineNCFeature4" xml:space="preserve">
+    <value>Results Report Analysis</value>
+  </data>
+  <data name="OnlineNCFeatureDesc4" xml:space="preserve">
+    <value>Provide monthly data reports, record your body shapes, diet and change of your lifestyle to show that progress has been made.</value>
+  </data>
 </root>

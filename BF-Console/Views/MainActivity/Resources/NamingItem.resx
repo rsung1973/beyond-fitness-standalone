@@ -498,4 +498,46 @@
   <data name="Disclaimer" xml:space="preserve">
     <value>相關運動成效與所需時間因人而異，建議與教練共同討論，確保相關品質</value>
   </data>
+  <data name="PersonalTrainer" xml:space="preserve">
+    <value>一對一私人教練</value>
+  </data>  
+  <data name="NutritionCoach" xml:space="preserve">
+    <value>一對一營養教練</value>
+  </data>
+  <data name="OnlinePTTitle" xml:space="preserve">
+    <value>BEYOND Online &lt;br/&gt;私人教練也適合我嗎？</value>
+  </data>
+  <data name="OnlinePTSlogon" xml:space="preserve">
+    <value>像好友一樣的，&lt;br /&gt;體能顧問！</value>
+  </data>  
+  <data name="OnlineNCTitle" xml:space="preserve">
+    <value>BEYOND Online &lt;br/&gt;陪您好食?</value>
+  </data> 
+  <data name="OnlineNCSlogon" xml:space="preserve">
+    <value>把吃東西的習慣，&lt;br /&gt;改變吧！</value>
+  </data>
+  <data name="OnlineNCFeature1" xml:space="preserve">
+    <value>專屬營養教練</value>
+  </data>
+  <data name="OnlineNCFeatureDesc1" xml:space="preserve">
+    <value>國家認證營養師，全方位照顧您的水分、睡眠、運動與壓力的溫暖營養教練。</value>
+  </data>
+  <data name="OnlineNCFeature2" xml:space="preserve">
+    <value>定期飲食追蹤</value>
+  </data>
+  <data name="OnlineNCFeatureDesc2" xml:space="preserve">
+    <value>每日傳送飲食紀錄，逐步教您學會選擇適合自己的食物，陪您達成心中的目標。</value>
+  </data>
+  <data name="OnlineNCFeature3" xml:space="preserve">
+    <value>六大營養素</value>
+  </data>
+  <data name="OnlineNCFeatureDesc3" xml:space="preserve">
+    <value>每日傳送飲食紀錄，逐步教您學會選擇適合自己的食物，耐心陪您達成心中的目標</value>
+  </data>
+  <data name="OnlineNCFeature4" xml:space="preserve">
+    <value>成果報告分析</value>
+  </data>
+  <data name="OnlineNCFeatureDesc4" xml:space="preserve">
+    <value>提供每月數據表，紀錄體態、飲食、生活變化努力的過程，讓您進步看得見。</value>
+  </data>
 </root>
