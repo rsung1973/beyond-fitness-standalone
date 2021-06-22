@@ -113,7 +113,7 @@
                             </div>
                             <div class="panel">
                                 <div class="panel-heading" role="tab" id="headingLessonList">
-                                    @{ var attended = _model.ContractType == (int)Naming.ContractTypeDefinition.CFA
+                                    @{ var attended = _model.ContractType == (int)CourseContractType.ContractTypeDefinition.CFA
 ? _model.RegisterLessonContract.Select(r => r.RegisterLesson).Sum(r => r.AttendedLessons)
 : _model.RegisterLessonContract.FirstOrDefault()?.RegisterLesson?.AttendedLessons;}
 

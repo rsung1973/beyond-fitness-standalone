@@ -194,7 +194,7 @@ namespace WebHome.Controllers
             IQueryable<LessonTime> items = (IQueryable<LessonTime>)result.Model;
             if (items == null)
             {
-                return View("~/Views/Shared/JsAlert.ascx", model: "資料錯誤!!");
+                return View("~/Views/Shared/JsAlert.cshtml", model: "資料錯誤!!");
             }
 
             return View("~/Views/CoachFacet/Module/DailyBookingList.ascx", items);
@@ -206,7 +206,7 @@ namespace WebHome.Controllers
             IQueryable<LessonTime> items = (IQueryable<LessonTime>)result.Model;
             if (items == null)
             {
-                return View("~/Views/Shared/JsAlert.ascx", model: "資料錯誤!!");
+                return View("~/Views/Shared/JsAlert.cshtml", model: "資料錯誤!!");
             }
 
             items = items.PTLesson()
@@ -282,7 +282,7 @@ namespace WebHome.Controllers
             if (items == null)
             {
                 ViewBag.GoBack = true;
-                return View("~/Views/Shared/JsAlert.ascx", model: "資料錯誤!!");
+                return View("~/Views/Shared/JsAlert.cshtml", model: "資料錯誤!!");
             }
 
             DataTable dailyTable = new DataTable();
@@ -430,7 +430,7 @@ namespace WebHome.Controllers
             ViewResult result = (ViewResult)InquireDailyLesson(viewModel);
             IQueryable<LessonTime> items = result.Model as IQueryable<LessonTime>;
             if (items == null)
-                return View("~/Views/Shared/JsAlert.ascx", model: "資料錯誤!!");
+                return View("~/Views/Shared/JsAlert.cshtml", model: "資料錯誤!!");
 
             items = items.GetLearnerUncheckedLessons();
 
@@ -521,7 +521,7 @@ namespace WebHome.Controllers
             if (items == null)
             {
                 ViewBag.GoBack = true;
-                return View("~/Views/Shared/JsAlert.ascx", model: "資料錯誤!!");
+                return View("~/Views/Shared/JsAlert.cshtml", model: "資料錯誤!!");
             }
 
             DataTable ratioTable = new DataTable();
@@ -1315,7 +1315,7 @@ namespace WebHome.Controllers
             if (items == null)
             {
                 ViewBag.GoBack = true;
-                return View("~/Views/Shared/JsAlert.ascx", model: "資料錯誤!!");
+                return View("~/Views/Shared/JsAlert.cshtml", model: "資料錯誤!!");
             }
 
             Response.Clear();

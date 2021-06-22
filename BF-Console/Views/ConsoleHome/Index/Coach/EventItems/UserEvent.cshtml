@@ -54,6 +54,7 @@
                     {
                         <li>
                             @{
+                                ViewBag.ProfileClass = "popfit";
                                 Html.RenderPartial("~/Views/Common/ProfileImage.cshtml", item.UserProfile);
                             }
                         </li>

@@ -104,7 +104,7 @@
 </body>
 </html>
 <%  Html.RenderPartial("~/Views/Common/JQueryHelper.cshtml"); %>
-<%  Html.RenderPartial("~/Views/Shared/JsAlert.ascx"); %>
+<%  Html.RenderPartial("~/Views/Shared/JsAlert.cshtml"); %>
 <script>
     function nextStep() {
 <%  if(_bound)

@@ -476,6 +476,58 @@
             });
         }
 
+            //編輯上課重點
+        function editOnlineUrl(keyID, defaultValue) {
+            Swal.fire({
+                title: "視訊連結網址",
+                input: "text",
+                inputValue: defaultValue,
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "確定, 不後悔",
+                cancelButtonText: "不, 點錯了",
+                closeOnConfirm: false,
+                animation: "slide-from-top",
+                inputPlaceholder: "https://zoom.us/j/92400075019?pwd=dWJidHNwbU05QlVmTGh0a2hyOEs0dz09",
+                inputValidator: (value) => {
+                    if (!value) {
+                        return '你忘了輸入網址嗎!?';
+                    } else if (value === '') {
+                        return '你忘了輸入網址嗎!?';
+                    } 
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    commitOnlineUrl(keyID, result.value);
+                }
+            });
+        }
+
+        function commitOnlineUrl(keyID, place) {
+            showLoading();
+            $.post('@Html.Raw(Url.Action("CommitPlace", "LessonConsole"))', { 'keyID': keyID, 'place': place }, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    if (data.result) {
+                        Swal.fire(
+                            '幹得好!',
+                            '更新遠距視訊連結成功!',
+                            'success'
+                        )
+                        $('#onlineUrl').text(place);
+                    } else {
+                        Swal.fire(
+                            'Oops...',
+                            data.message,
+                            'warning'
+                        )
+                    }
+                } else {
+                    $(data).appendTo($('body'));
+                }
+            });
+        }
+
     </script>
     @if (questionnaire != null)
     {

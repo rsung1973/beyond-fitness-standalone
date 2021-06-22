@@ -371,6 +371,17 @@ namespace WebHome.Helper
             return items.Where(l => l.TrainingBySelf == 1);
         }
 
+        public static readonly int[] ReceivableTrainingSession = new int[]
+        {
+            (int)Naming.LessonSelfTraining.自主訓練,
+            (int)Naming.LessonSelfTraining.體驗課程,
+        };
+
+        public static IQueryable<LessonTime> FilterByReceivableTrainingSession(this IQueryable<LessonTime> items)
+        {
+            return items.Where(l => ReceivableTrainingSession.Contains((int)l.TrainingBySelf));
+        }
+
         public static IQueryable<V_Tuition> PILesson(this IQueryable<V_Tuition> items)
         {
             return items.Where(l => l.PriceStatus == (int)Naming.LessonPriceStatus.自主訓練
@@ -430,9 +441,14 @@ namespace WebHome.Helper
             return item.TrainingBySelf == 1;
         }
 
+        public static bool IsReceivableSession(this LessonTime item)
+        {
+            return item.TrainingBySelf.HasValue && ReceivableTrainingSession.Contains(item.TrainingBySelf.Value);
+        }
+
         public static bool IsSTSession(this LessonTime item)
         {
-            return item.TrainingBySelf == 2;
+            return item.TrainingBySelf == (int)LessonTime.SelfTrainingDefinition.在家訓練;
         }
 
         public static Func<LessonTime, bool> CheckTrialLesson = item =>
@@ -681,6 +697,14 @@ namespace WebHome.Helper
             if (item.IsSTSession())
                 return true;
 
+            if (item.IsReceivableSession())
+            {
+                if (item.RegisterLesson.IsPaid)
+                {
+                    return false;
+                }
+            }
+
             if (!item.ContractTrustTrack.Any(s => s.SettlementID.HasValue))
             {
                 if (item.GroupingLesson.RegisterLesson.Any(r => r.RegisterLessonContract != null && r.RegisterLessonContract.CourseContract.RevisionList
@@ -706,7 +730,7 @@ namespace WebHome.Helper
             where TEntity : class, new()
         {
             var registerLesson = item.RegisterLesson;
-            if (item.IsCoachPISession() || item.IsTrialLesson())
+            if (item.IsCoachPISession() || (item.IsTrialLesson() && !registerLesson.BranchStore.IsVirtualClassroom()))
             {
                 if (item.RegisterLesson.MasterRegistration == true)
                 {

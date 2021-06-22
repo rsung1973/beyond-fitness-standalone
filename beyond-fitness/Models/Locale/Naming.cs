@@ -299,7 +299,7 @@ namespace WebHome.Models.Locale
             合約終止沖銷 = 7,
             合約轉點餘額 = 8,
             合約轉讓餘額 = 9,
-            教育訓練  = 10,
+            教育訓練 = 10,
 
         }
 
@@ -376,14 +376,6 @@ namespace WebHome.Models.Locale
             甜蜜的家 = 6,
             其他 = 7,
             遠距 = 20,
-        }
-
-        public enum ContractTypeDefinition
-        {
-            CPA = 1,
-            CFA,
-            CPB,
-            CPC
         }
 
         public enum EnterpriseLessonTypeDefinition

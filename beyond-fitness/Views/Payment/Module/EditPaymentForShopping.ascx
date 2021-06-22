@@ -53,7 +53,7 @@
                                                                 .Select(w => w.BranchStore);
                                         branch = models.GetTable<CoachWorkplace>().Where(w => w.CoachID == _profile.UID).Select(w => w.BranchStore).FirstOrDefault();
                                     }
-                                    Html.RenderPartial("~/Views/SystemInfo/BranchStoreOptions.ascx", model: branch != null ? branch.BranchID : -1); %>
+                                    Html.RenderPartial("~/Views/SystemInfo/BranchStoreOptions.cshtml", model: branch != null ? branch.BranchID : -1); %>
                             </select>
                             <i class="icon-append fa fa-at"></i>
                         </label>

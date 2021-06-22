@@ -335,7 +335,7 @@
 </body>
 </html>
 <%  Html.RenderPartial("~/Views/Common/JQueryHelper.cshtml"); %>
-<%  Html.RenderPartial("~/Views/Shared/InitBarChartNoRegister.ascx"); %>
+<%  Html.RenderPartial("~/Views/Shared/InitBarChartNoRegister.cshtml"); %>
 
 <script runat="server">
 

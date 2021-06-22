@@ -405,7 +405,7 @@ namespace WebHome.Controllers
             if (items.Count() == 0)
             {
                 ViewBag.GoBack = true;
-                return View("~/Views/Shared/JsAlert.ascx", model: "無任何信託資料!!");
+                return View("~/Views/Shared/JsAlert.cshtml", model: "無任何信託資料!!");
             }
 
             var summary = settlementItems.ToArray()
@@ -642,7 +642,7 @@ namespace WebHome.Controllers
             if (!ModelState.IsValid)
             {
                 ViewBag.GoBack = true;
-                return View("~/Views/Shared/JsAlert.ascx", model: "資料錯誤!!");
+                return View("~/Views/Shared/JsAlert.cshtml", model: "資料錯誤!!");
             }
 
             models.GetDataContext().DeleteRedundantTrack();
@@ -722,7 +722,7 @@ namespace WebHome.Controllers
             if (settlement == null)
             {
                 ViewBag.GoBack = true;
-                return View("~/Views/Shared/JsAlert.ascx", model: "無任何信託結算資料!!");
+                return View("~/Views/Shared/JsAlert.cshtml", model: "無任何信託結算資料!!");
             }
 
             var items = models.GetTable<ContractTrustSettlement>()
@@ -1642,11 +1642,12 @@ namespace WebHome.Controllers
                     rows.Add(r);
                 }
 
-                List<int> taxCol = new List<int> { 4, 6, 12, 17 };
+                List<int> taxCol = new List<int> { 4, 6, 12 };
                 for (int i = 0; i < branchItems.Length; i++)
                 {
                     taxCol.Add(branchColIdx + i);
                 }
+                taxCol.Add(branchColIdx + branchItems.Length);
 
                 foreach (var t in rows)
                 {
@@ -2316,7 +2317,7 @@ namespace WebHome.Controllers
 
             if (item == null)
             {
-                return View("~/Shared/JsAlert.ascx", model: "資料錯誤!!");
+                return View("~/Views/Shared/JsAlert.cshtml", model: "資料錯誤!!");
             }
 
             return View("~/Views/Accounting/Module/ContractPaymentList.ascx", item);

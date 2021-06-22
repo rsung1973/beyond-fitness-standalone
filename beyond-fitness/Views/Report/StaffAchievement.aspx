@@ -98,7 +98,7 @@
                                         <label class="select">
                                             <select class="input-lg" name="branchID" id="branchID">
                                                 <option value="">全部</option>
-                                                <%  Html.RenderPartial("~/Views/SystemInfo/BranchStoreOptions.ascx", model: 0); %>
+                                                <%  Html.RenderPartial("~/Views/SystemInfo/BranchStoreOptions.cshtml", model: 0); %>
                                             </select>
                                             <i class="icon-append far fa-keyboard"></i>
                                         </label>

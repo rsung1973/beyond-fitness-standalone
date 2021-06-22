@@ -26,7 +26,7 @@
                 <label class="label">請選擇地點</label>
                 <label class="select">
                     <select name="BranchID">
-                        <%  Html.RenderPartial("~/Views/SystemInfo/BranchStoreOptions.ascx", model: _viewModel.BranchID); %>
+                        <%  Html.RenderPartial("~/Views/SystemInfo/BranchStoreOptions.cshtml", model: _viewModel.BranchID); %>
                         <option value="" <%= !_viewModel.BranchID.HasValue ? "selected": null %>>其他</option>
                     </select>
                     <i class="icon-append far fa-keyboard"></i>

@@ -51,7 +51,7 @@
             </script>
         </div>
         <div class="col-12">
-            @{
+            @*@{
                 ViewBag.DropifyExtension = "gif jpg png pdf";
             }
             <script>
@@ -67,7 +67,7 @@
                         'imageFormat': 'Ooops, 上傳檔案是PDF或圖檔嗎？！ ({{ value }} only).'
                     };
                 });
-            </script>
+            </script>*@
             <form enctype="multipart/form-data" method="post">
                 @{
                     Html.RenderPartial("~/Views/ConsoleHome/Shared/DropifyFileUpload.cshtml");

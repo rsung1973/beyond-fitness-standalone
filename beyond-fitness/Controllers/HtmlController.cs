@@ -64,7 +64,7 @@ namespace WebHome.Controllers
 
             if (item == null)
             {
-                return View("~/Views/Shared/JsAlert.ascx",model:"會員編號錯誤!!");
+                return View("~/Views/Shared/JsAlert.cshtml",model:"會員編號錯誤!!");
             }
 
             viewModel.EMail = viewModel.EMail.GetEfficientString();
@@ -204,7 +204,7 @@ namespace WebHome.Controllers
 
             if (item == null)
             {
-                return View("~/Views/Shared/JsAlert.ascx", model: "會員編號錯誤!!");
+                return View("~/Views/Shared/JsAlert.cshtml", model: "會員編號錯誤!!");
             }
 
             return View("~/Views/Account/CompleteRegister.aspx", item);
@@ -303,7 +303,7 @@ namespace WebHome.Controllers
         //        var lesson = models.GetTable<RegisterLesson>().Where(u => u.RegisterID == registerID).FirstOrDefault();
         //        if (lesson == null)
         //        {
-        //            return View("~/Views/Shared/JsAlert.ascx", model: "資料錯誤!!");
+        //            return View("~/Views/Shared/JsAlert.cshtml", model: "資料錯誤!!");
         //        }
 
         //        item = models.GetQuestionnaireRequest(lesson.UserProfile).FirstOrDefault();
@@ -319,7 +319,7 @@ namespace WebHome.Controllers
         //        return View("~/Views/Html/Module/PromptQuestionnaire.ascx", item);
         //    }
 
-        //    return View("~/Views/Shared/JsAlert.ascx", model: "階段性調整資料待建立!!");
+        //    return View("~/Views/Shared/JsAlert.cshtml", model: "階段性調整資料待建立!!");
 
         //}
 

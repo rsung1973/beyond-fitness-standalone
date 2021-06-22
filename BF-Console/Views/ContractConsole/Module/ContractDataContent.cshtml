@@ -128,7 +128,7 @@
             <div class="list_td rt">
                 @if (_model.CourseContractExtension?.PaymentMethod != null)
                 {
-                     <text>@(_model.CourseContractExtension.PaymentMethod)</text>
+                    <text>@(_model.CourseContractExtension.PaymentMethod)</text>
                 }
             </div>
         </div>
@@ -161,9 +161,32 @@
 <li>
     <div class="list_tb tb2">
         <div class="list_tr">
-            <div class="list_td hd">簽約場所</div>
+            <div class="list_td hd">
+                簽約分店
+                <span class="badge bg-blue">@(_model.LessonPriceType.BranchStore.IsVirtualClassroom() ? "遠距" : null)</span>
+            </div>
             <div class="list_td rt">@(_model.CourseContractExtension?.BranchStore.BranchName)</div>
         </div>
     </div>
 </li>
-
+<li>
+    <div class="list_tb tb2">
+        <div class="list_tr">
+            <div class="list_td hd">學生端線上簽名</div>
+            <div class="list_td rt">@(_model.CourseContractExtension?.SignOnline==true ? "是" : "否")</div>
+        </div>
+    </div>
+</li>
+<li>
+    <div class="list_tb tb2">
+        <div class="list_tr">
+            <div class="list_td hd">代辦委託書</div>
+            <div class="list_td rt">
+                @if (_model.CourseContractExtension.AttachmentID.HasValue)
+                {
+                    <a href="@Html.Raw(Url.Action("GetResourceWithMime","Information",new { HKeyID =_model.CourseContractExtension.AttachmentID.Value.EncryptHexKey() }))" target="_blank">開啟附件</a>
+                }
+            </div>
+        </div>
+    </div>
+</li>

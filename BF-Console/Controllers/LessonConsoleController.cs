@@ -427,11 +427,18 @@ namespace WebHome.Controllers
             return View("~/Views/ContractConsole/ContractModal/SelectCoach.cshtml", items);
         }
 
-        public ActionResult RemoteLessonFeedback()
+        public ActionResult RemoteLessonFeedback(LessonTimeBookingViewModel viewModel)
         {
+            ViewBag.ViewModel = viewModel;
+
             try
             {
-                models.RegisterRemoteFeedbackLesson();
+                IQueryable<LessonTime> items = models.GetTable<LessonTime>();
+                if (viewModel.UID.HasValue)
+                {
+                    items = items.Where(l => l.GroupingLesson.RegisterLesson.Any(r => r.UID == viewModel.UID));
+                }
+                models.RegisterRemoteFeedbackLesson(items);
                 return Json(new { result = true }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
@@ -440,5 +447,38 @@ namespace WebHome.Controllers
                 return Json(new { result = false, message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
+
+        public ActionResult CommitPlace(LessonTimeViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+
+            if (viewModel.KeyID != null)
+            {
+                viewModel.LessonID = viewModel.DecryptKeyValue();
+            }
+
+            var item = models.GetTable<LessonTime>().Where(l => l.LessonID == viewModel.LessonID).FirstOrDefault();
+            if (item == null)
+            {
+                return View("~/Views/ConsoleHome/Shared/AlertMessage.cshtml", model: "課程資料錯誤!!");
+            }
+
+            viewModel.Place = viewModel.Place.GetEfficientString();
+            if (viewModel.Place == null)
+            {
+                return Json(new { result = false, message = "Unfinished？!" });
+            }
+
+            if (!viewModel.Place.ValidateMeetingRoom(item.BranchStore, models))
+            {
+                return Json(new { result = false, message = "請輸入正確會議室連結!!" });
+            }
+
+            item.Place = viewModel.Place;
+            models.SubmitChanges();
+
+            return Json(new { result = true });
+        }
+
     }
 }

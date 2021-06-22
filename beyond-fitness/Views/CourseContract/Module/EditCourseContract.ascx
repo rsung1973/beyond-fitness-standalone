@@ -53,7 +53,7 @@
                                 <%  IQueryable<ServingCoach> items = _profile.IsAssistant()
                                                     ? models.GetTable<ServingCoach>()
                                                     : _profile.GetServingCoachInSameStore(models);
-                                    Html.RenderPartial("~/Views/SystemInfo/ServingCoachOptions.ascx", items); %>
+                                    Html.RenderPartial("~/Views/SystemInfo/ServingCoachOptions.cshtml", items); %>
                             </select>
                             <i class="icon-append far fa-keyboard"></i>
                         </label>
@@ -115,7 +115,7 @@
                                     {
                                         ViewBag.IntentStore = _profile.ServingCoach.CoachWorkplace.Select(w => w.BranchID).ToArray();
                                     }
-                                    Html.RenderPartial("~/Views/SystemInfo/BranchStoreOptions.ascx", model: _viewModel.BranchID);
+                                    Html.RenderPartial("~/Views/SystemInfo/BranchStoreOptions.cshtml", model: _viewModel.BranchID);
                                 %>
                             </select>
                             <i class="icon-append fa fa-at"></i>

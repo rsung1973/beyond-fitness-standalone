@@ -2206,6 +2206,12 @@ span.badge.tag-repet {
 	color: #0061d2 !important;
 }
 
+.red-t12 {
+	font-size: 12px;
+	font-weight: 500;
+	line-height: 19px;
+	color: #ec3b57 !important;
+}
 
 /* QA */
 
@@ -2769,6 +2775,131 @@ ul.lesson-list li.list-intro {
 }
 
 
+/* 遠端視訊
+======================================  */
+.online-wrap {
+	padding: 20px 0 0;
+	background: #fff;
+}
+
+.online-wrap ul {
+	padding: 0;
+	border-top: 1px solid #eee;
+}
+
+.online-wrap ul li {
+	padding: 20px 30px;
+	border-bottom: 1px solid #eee;
+}
+
+.online-wrap ul li i {
+	display: inline-block;
+}
+
+.online-wrap ul li a {
+	color: #4a4a4a;
+}
+
+.online-wrap ul li .desc {
+    padding-left: 30px;
+	color: #0c5279;
+    font-size: 14px;
+    line-height: 1.5626rem;
+}
+
+.online-wrap ul li .desc span{    
+    font-size: 14px;
+    display: block;
+}
+
+.online-wrap ul li a {    
+    text-decoration: underline;
+	color:#0061d2;
+}
+
+.online-wrap ul li .desc .material-icons {
+    font-size: 12px;
+}
+
+/* 合約簽約
+======================================  */
+.contract-wrap {
+	padding: 20px 0 0;
+	background: #fff;
+}
+
+.contract-wrap .collapsible-header {
+	background-color: #eeeeee;
+}
+
+.contract-wrap .collapsible-header.active {
+	background-color: #2196f3;
+	color: #fff;
+}
+
+.mode-girls .contract-wrap .collapsible-header.active {
+	background-color: #fd5c63;
+}
+
+.contract-wrap .step-content {
+	padding-left: 12px;
+	background: #fff;
+}
+
+.contract-wrap .step-content i {
+    display: inline-block;
+}
+
+.contract-wrap .bottom-area {
+	margin-top: 20px !important;
+}
+
+.contract-wrap ul.stepper .step.active .step-content.terms {
+	margin-left: 20px;
+}
+
+.contract-wrap .terms {
+	font-size: 12px;	   	
+}
+
+.contract-wrap .terms ol {	
+	line-height: 130%;
+	list-style: outside;
+	list-style-type: decimal;
+}
+
+.contract-wrap .terms .title{
+	font-size: 14px;
+	font-weight: 800;
+}
+
+.contract-wrap .terms .title p {
+	line-height: 1.2rem;
+	margin-bottom: 10px;
+}
+
+
+.contract-wrap .tearms-content{
+	padding: 20px 40px 0px 20px;
+	background: #fff;
+}
+
+.contract-wrap .tearms-content .row {
+	padding: 0 10px 0 0;
+}
+
+.contract-wrap label {
+	color: #111111;
+	font-size: 14px;
+	font-weight: 800;
+}
+
+.contract-wrap .help-text {
+    font-size: 12px;
+    color: #111111;
+	font-weight: 400;
+}
+
 /* Footer-copyright
 ======================================  */
 
@@ -2957,6 +3088,9 @@ footer.page-footer {
 	background-color: #fd5c63;
 }
 
+.mode-girls ul.stepper .step.active::before, ul.stepper .step.done::before {
+    background-color: #fd5c63;
+}
 
 /* 日期顏色 */
 
@@ -3516,3 +3650,91 @@ footer.page-footer {
 .pie .pie_light span {
 	font-weight: bold;
 }
+
+/*                 TimeLine
+======================================  */
+.timeline {
+	position: relative;
+  }
+  .timeline .timeline-event {
+	position: relative;
+	padding-top: 5px;
+	padding-bottom: 5px;
+  }
+  .timeline .timeline-event .timeline-content {
+	position: relative;
+	width: calc(50% - 50px);
+  }
+  .timeline .timeline-event::before {
+	display: block;
+	content: "";
+	width: 2px;
+	height: calc(50% - 30px);
+	position: absolute;
+	background: #d2d2d2;
+	left: calc(50% - 1px);
+	top: 0;
+  }
+  .timeline .timeline-event::after {
+	display: block;
+	content: "";
+	width: 2px;
+	height: calc(50% - 30px);
+	position: absolute;
+	background: #d2d2d2;
+	left: calc(50% - 1px);
+	top: calc(50% + 30px);
+  }
+  .timeline .timeline-event:first-child::before, .timeline .timeline-event:last-child::after {
+	display: none;
+  }
+  .timeline .timeline-event:nth-child(even) .timeline-content {
+	margin-left: calc(50% + 50px);
+  }
+  .timeline .timeline-event:nth-child(odd) .timeline-content {
+	margin-left: 0;
+  }
+  .timeline .timeline-badge {
+	display: block;
+	position: absolute;
+	width: 16px;
+	height: 16px;
+	background: #d2d2d2;
+	top: calc(50% - 8px);
+	right: calc(50% - 8px);
+	border-radius: 50%;
+	text-align: center;
+	cursor: default;
+  }
+  .timeline .timeline-badge i {
+	font-size: 25px;
+	line-height: 40px;
+  }
+  
+  @media (max-width: 600px) {
+	.timeline .timeline-event .timeline-content {
+	  width: calc(100% - 70px);
+	}
+	.timeline .timeline-event::before, .timeline .timeline-event::after {
+	  left: 19px;
+	}
+	.timeline .timeline-event:nth-child(even) .timeline-content, .timeline .timeline-event:nth-child(odd) .timeline-content {
+	  margin-left: 70px;
+	}
+	.timeline .timeline-badge {
+	  left: 12px;
+	}
+  }
+  .card-title {
+	line-height: 1em;
+  }
+  .card-title.gradient {
+	display: block;
+	position: absolute;
+	bottom: 0px;
+	padding-bottom: 64px;
+	display: block;
+	width: 100%;
+	background-color: rgba(0, 0, 0, 0);
+	background: linear-gradient(to bottom, rgba(125, 185, 232, 0) 0%, rgba(0, 0, 0, 0.4) 50%, rgba(0, 0, 0, 0.8) 100%);
+  }

@@ -170,7 +170,7 @@ namespace WebHome.Controllers
             var item = models.GetTable<UserProfile>().Where(u => u.UID == uid).FirstOrDefault();
             if (item == null)
             {
-                return View("~/Views/Shared/JsAlert.ascx", model: "學員資料不存在!!");
+                return View("~/Views/Shared/JsAlert.cshtml", model: "學員資料不存在!!");
             }
 
             ViewBag.GroupID = groupID;
@@ -364,7 +364,7 @@ namespace WebHome.Controllers
 
             if (item == null)
             {
-                return View("~/Views/Shared/JsAlert.ascx", model: "資料錯誤!!");
+                return View("~/Views/Shared/JsAlert.cshtml", model: "資料錯誤!!");
             }
 
             item.LevelID = (int)Naming.MemberStatusDefinition.Deleted;
@@ -390,7 +390,7 @@ namespace WebHome.Controllers
 
             if (item == null)
             {
-                return View("~/Views/Shared/JsAlert.ascx", model: "資料錯誤!!");
+                return View("~/Views/Shared/JsAlert.cshtml", model: "資料錯誤!!");
             }
 
             item.LevelID = item.UserProfileExtension.RegisterStatus == true ? (int)Naming.MemberStatusDefinition.Checked : (int)Naming.MemberStatusDefinition.ReadyToRegister;
@@ -406,7 +406,7 @@ namespace WebHome.Controllers
             if (items == null)
             {
                 ViewBag.GoBack = true;
-                return View("~/Views/Shared/JsAlert.ascx", model: "資料錯誤!!");
+                return View("~/Views/Shared/JsAlert.cshtml", model: "資料錯誤!!");
             }
 
             items = items.Where(u => !u.LearnerFitnessAdvisor.Any())

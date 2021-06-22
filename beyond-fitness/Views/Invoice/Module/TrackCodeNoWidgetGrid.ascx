@@ -49,7 +49,7 @@
                                         <label class="select">
                                             <select class="input" name="BranchID">
                                                 <option value="">全部</option>
-                                                <%  Html.RenderPartial("~/Views/SystemInfo/BranchStoreOptions.ascx", -1); %>
+                                                <%  Html.RenderPartial("~/Views/SystemInfo/BranchStoreOptions.cshtml", -1); %>
                                             </select>
                                             <i class="icon-append far fa-keyboard"></i>
                                         </label>

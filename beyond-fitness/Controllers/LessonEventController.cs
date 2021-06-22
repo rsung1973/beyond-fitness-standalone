@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -25,12 +26,9 @@ namespace WebHome.Controllers
         {
 
         }
-        // GET: LessonEvent
-        [RoleAuthorize(RoleID = new int[] { (int)Naming.RoleID.Administrator, (int)Naming.RoleID.Assistant, (int)Naming.RoleID.Officer, (int)Naming.RoleID.Coach })]
-        public ActionResult CommitEnterpriseBookingByCoach(LessonTimeViewModel viewModel)
-        {
-            ViewBag.ViewModel = viewModel;
 
+        protected void ValidateCommonBooking(LessonTimeViewModel viewModel, out ServingCoach coach, out BranchStore branch)
+        {
             if (!viewModel.ClassDate.HasValue)
             {
                 ModelState.AddModelError("ClassDate", "請選擇上課日期!!");
@@ -40,16 +38,39 @@ namespace WebHome.Controllers
                 ModelState.AddModelError("ClassDate", "預約時間不可早於今天!!");
             }
 
+            branch = null;
             if (!viewModel.BranchID.HasValue)
             {
                 ModelState.AddModelError("BranchID", "請選擇上課地點!!");
             }
+            else
+            {
+                branch = models.GetTable<BranchStore>().Where(b => b.BranchID == viewModel.BranchID).FirstOrDefault();
+            }
 
-            var coach = models.GetTable<ServingCoach>().Where(s => s.CoachID == viewModel.CoachID).FirstOrDefault();
+            coach = models.GetTable<ServingCoach>().Where(s => s.CoachID == viewModel.CoachID).FirstOrDefault();
             if (coach == null)
             {
                 ModelState.AddModelError("CoachID", "未指定體能顧問!!");
             }
+
+            viewModel.Place = viewModel.Place.GetEfficientString();
+            if (branch?.IsVirtualClassroom() == true)
+            {
+                if (!viewModel.Place.ValidateMeetingRoom(branch, models))
+                {
+                    ModelState.AddModelError("Place", "請輸入正確會議室連結!!");
+                }
+            }
+        }
+
+        // GET: LessonEvent
+        [RoleAuthorize(RoleID = new int[] { (int)Naming.RoleID.Administrator, (int)Naming.RoleID.Assistant, (int)Naming.RoleID.Officer, (int)Naming.RoleID.Coach })]
+        public ActionResult CommitEnterpriseBookingByCoach(LessonTimeViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+
+            ValidateCommonBooking(viewModel, out ServingCoach coach, out BranchStore branch);
 
             RegisterLesson lesson = models.GetTable<RegisterLesson>().Where(r => r.RegisterID == viewModel.RegisterID).FirstOrDefault();
             if (lesson == null)
@@ -80,7 +101,6 @@ namespace WebHome.Controllers
                 return View(Properties.Settings.Default.ReportInputError);
             }
 
-            var branch = models.GetTable<BranchStore>().Where(b => b.BranchID == viewModel.BranchID).FirstOrDefault();
             if (branch?.IsVirtualClassroom() != true && !models.GetTable<CoachWorkplace>()
                             .Any(c => c.BranchID == viewModel.BranchID
                                 && c.CoachID == viewModel.CoachID)
@@ -107,7 +127,8 @@ namespace WebHome.Controllers
                     ProfessionalLevelID = coach.LevelID.Value,
                     MarkedGradeIndex = coach.ProfessionalLevel.GradeIndex,
                     CoachWorkPlace = coach.WorkBranchID(),
-                }
+                },
+                Place = viewModel.Place,
             };
 
             if (models.GetTable<DailyWorkingHour>().Any(d => d.Hour == viewModel.ClassDate.Value.Hour))

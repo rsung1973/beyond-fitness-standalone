@@ -144,6 +144,7 @@ namespace WebHome.Helper
                     .Where(r => r.UID == profile.UID)
                     .Where(r => r.LessonPriceType.Status != (int)Naming.LessonPriceStatus.在家訓練)
                     .Where(r => r.LessonPriceType.Status != (int)Naming.LessonPriceStatus.教練PI)
+                    .Where(r => r.LessonPriceType.Status != (int)Naming.LessonPriceStatus.點數兌換課程)
                     .Join(models.GetTable<GroupingLesson>(), r => r.RegisterGroupID, g => g.GroupID, (r, g) => g)
                     .Join(models.GetTable<LessonTime>(), g => g.GroupID, l => l.GroupID, (g, l) => l)
                     .Where(l => l.LessonPlan.CommitAttendance.HasValue || l.LessonAttendance != null).Count())
@@ -279,6 +280,30 @@ namespace WebHome.Helper
             return null;
 
         }
+
+        public static PromptSignContractEvent CheckSignContractEvent<TEntity>(this UserProfile profile, ModelSource<TEntity> models, bool includeAfterToday = false)
+            where TEntity : class, new()
+        {
+            var items = models.PromptContractToSign(true)
+                .Where(c => c.CourseContractExtension.SignOnline == true)
+                .Where(c => c.OwnerID == profile.UID
+                    || (c.CourseContractType.IsGroup == true
+                        && c.CourseContractMember.Any(m => m.UID == profile.UID)));
+
+
+            if (items.Count() > 0)
+            {
+                return new PromptSignContractEvent
+                {
+                    Profile = profile,
+                    ContractList = items
+                };
+            }
+
+            return null;
+
+        }
+
 
         public static PromptPayoffDueEvent CheckPayoffDueEvent<TEntity>(this UserProfile profile, ModelSource<TEntity> models, bool includeAfterToday = false)
             where TEntity : class, new()

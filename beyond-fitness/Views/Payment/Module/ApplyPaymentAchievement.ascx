@@ -21,7 +21,7 @@
                                 <option value="">請選擇體能顧問</option>
                                 <%  var assignedItems = models.GetTable<TuitionAchievement>().Where(p => p.InstallmentID == _model.PaymentID)
                                         .Select(i => i.CoachID);
-                                    Html.RenderPartial("~/Views/SystemInfo/ServingCoachOptions.ascx", models.GetTable<ServingCoach>().Where(s => !assignedItems.Contains(s.CoachID))); %>
+                                    Html.RenderPartial("~/Views/SystemInfo/ServingCoachOptions.cshtml", models.GetTable<ServingCoach>().Where(s => !assignedItems.Contains(s.CoachID))); %>
                             </select>
                             <i class="icon-append far fa-keyboard"></i>
                         </label>

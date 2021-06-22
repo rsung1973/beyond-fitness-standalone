@@ -192,7 +192,7 @@ namespace WebHome.Controllers
             if (item != null)
             {
                 viewModel.AgentID = item.AgentID;
-                viewModel.ContractType = item.ContractType;
+                viewModel.ContractType = (CourseContractType.ContractTypeDefinition?)item.ContractType;
                 viewModel.ContractDate = item.ContractDate;
                 viewModel.Subject = item.Subject;
                 viewModel.ValidFrom = item.ValidFrom;
@@ -208,7 +208,7 @@ namespace WebHome.Controllers
                 viewModel.FitnessConsultant = item.FitnessConsultant;
                 viewModel.Status = item.Status;
                 viewModel.UID = item.CourseContractMember.Select(m => m.UID).ToArray();
-                viewModel.BranchID = item.CourseContractExtension.BranchID;
+                viewModel.BranchID = priceType.BranchStore.IsVirtualClassroom() ? priceType.BranchID : item.CourseContractExtension.BranchID;
                 viewModel.Renewal = item.Renewal;
                 viewModel.TotalCost = item.TotalCost;
                 if (item.InstallmentID.HasValue)
@@ -222,6 +222,7 @@ namespace WebHome.Controllers
                 {
                     viewModel.PaymentMethod = item.CourseContractExtension.PaymentMethod.Split('/');
                 }
+                viewModel.SignOnline = item.CourseContractExtension.SignOnline;
             }
             else
             {
@@ -758,6 +759,13 @@ namespace WebHome.Controllers
         {
             ViewResult result = (ViewResult)PaymentIndex(viewModel);
             result.ViewName = "~/Views/PaymentConsole/EditPaymentForPISession.cshtml";
+            return result;
+        }
+
+        public ActionResult EditPaymentForSession(PaymentQueryViewModel viewModel)
+        {
+            ViewResult result = (ViewResult)PaymentIndex(viewModel);
+            result.ViewName = "~/Views/PaymentConsole/EditPaymentForSession.cshtml";
             return result;
         }
 

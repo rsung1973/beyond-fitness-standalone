@@ -1,0 +1,59 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Newtonsoft.Json
+@{
+    Layout = "~/Views/ContractConsole/ContractModal/ListLessonPriceTemplate.cshtml";
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    IQueryable<LessonPriceType> _model;
+    UserProfile _profile;
+    CourseContractQueryViewModel _viewModel;
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = (IQueryable<LessonPriceType>)this.Model;
+    _profile = Context.GetUser();
+    _viewModel = (CourseContractQueryViewModel)ViewBag.ViewModel;
+
+}
+
+@section PriceList
+{
+    <div class="panel-group full-body" id="accordionDetail_ListPrice" role="tablist" aria-multiselectable="true">
+        <div class="panel">
+            @{
+                int idx = 0;
+                <div class="panel-heading" role="tab" id="@($"headingListPrice{idx}")">
+                    <h4 class="panel-title"> <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordionDetail_listprice" href="#@($"collapseDetail_listprice{idx}")" aria-expanded="false" aria-controls="@($"collapseDetail_listprice{idx}")"> <i class="material-icons">subject</i> 標準牌告價格 </a> </h4>
+                </div>
+                <div id="@($"collapseDetail_listprice{idx}")" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="@($"headingListPrice{idx}")">
+                    <div class="panel-body no-padding">
+                        <ul class="mb_list">
+                            @foreach (var item in _model)
+                            {
+                                <li onclick="commitPrice(@(item.PriceID),'@($"{item.ListPrice:##,###,###,###}")元 / @(item.Description)',event,@(item.BundleCount));">
+                                    <div class="list_tb tb2">
+                                        <div class="list_tr hand">
+                                            <div class="list_td">
+                                                @(item.SimpleDescription)
+                                            </div>
+                                            <div class="list_td rt">@(String.Format("{0,5:##,###,###,###}", item.ListPrice))</div>
+                                        </div>
+                                    </div>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}

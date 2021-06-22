@@ -40,13 +40,13 @@ namespace WebHome.Controllers
         {
             if (!models.GetTable<TrainingExecution>().Any(t => t.ExecutionID == viewModel.ExecutionID))
             {
-                return View("~/Views/Shared/JsAlert.ascx", model: "資料錯誤!!");
+                return View("~/Views/Shared/JsAlert.cshtml", model: "資料錯誤!!");
             }
 
             var stage = models.GetTable<TrainingStage>().Where(s => s.StageID == viewModel.StageID).FirstOrDefault();
             if (stage == null)
             {
-                return View("~/Views/Shared/JsAlert.ascx", model: "資料錯誤!!");
+                return View("~/Views/Shared/JsAlert.cshtml", model: "資料錯誤!!");
             }
             ViewBag.TrainingStage = stage;
 
@@ -274,7 +274,7 @@ namespace WebHome.Controllers
             var item = models.GetTable<TrainingExecution>().Where(t => t.ExecutionID == viewModel.ExecutionID).FirstOrDefault();
             if(item==null)
             {
-                return View("~/Views/Shared/JsAlert.ascx", model: "資料錯誤!!");
+                return View("~/Views/Shared/JsAlert.cshtml", model: "資料錯誤!!");
             }
 
             return View("~/Views/Training/Module/EditEmphasis.ascx", item);
@@ -330,7 +330,7 @@ namespace WebHome.Controllers
             var stage = models.GetTable<TrainingStage>().Where(s => s.StageID == viewModel.StageID).FirstOrDefault();
             if (stage == null)
             {
-                return View("~/Views/Shared/JsAlert.ascx", model: "資料錯誤!!");
+                return View("~/Views/Shared/JsAlert.cshtml", model: "資料錯誤!!");
             }
 
             TrainingItem item = execution.TrainingItem.Where(i => i.ItemID == viewModel.ItemID).FirstOrDefault();

@@ -72,6 +72,7 @@ namespace WebHome.Controllers
             }
 
             var details = items
+                .ToList()
                 .Select(i => new
                 {
                     合約編號 = i.ContractNo(),
@@ -94,6 +95,7 @@ namespace WebHome.Controllers
                     應收款期限 = $"{i.PayoffDue:yyyyMMdd}",
                     累計收款金額 = i.TotalPaidAmount(),
                     累計收款次數 = i.TotalPayoffCount(),
+                    遠距 = i.LessonPriceType.BranchStore.IsVirtualClassroom() ? "是" : "",
                 });
 
 

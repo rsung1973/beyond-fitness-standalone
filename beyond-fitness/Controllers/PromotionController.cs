@@ -161,7 +161,7 @@ namespace WebHome.Controllers
             var item = loadPromotionItem(viewModel);
             if (item == null)
             {
-                return View("~/Views/Shared/JsAlert.ascx", model: "活動方案資料錯誤!!");
+                return View("~/Views/Shared/JsAlert.cshtml", model: "活動方案資料錯誤!!");
             }
 
             item.PDQQuestion.First().PDQQuestionExtension.Status = (int?)viewModel.Status;
@@ -271,7 +271,7 @@ namespace WebHome.Controllers
             var item = loadPromotionItem(viewModel);
             if (item == null)
             {
-                return View("~/Views/Shared/JsAlert.ascx", model: "活動方案資料錯誤!!");
+                return View("~/Views/Shared/JsAlert.cshtml", model: "活動方案資料錯誤!!");
             }
 
             return View("~/Views/Promotion/Module/EditPromotionParticipant.ascx", item);

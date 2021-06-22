@@ -24,7 +24,7 @@
     <thead>
         <tr>
             <th>學生</th>
-            <th>簽約場所</th>
+            <th>簽約分店</th>
             <th>體能顧問</th>
             <th>合約編號</th>
             <th>合約名稱</th>
@@ -51,7 +51,10 @@
                         @(item.ContractOwner.FullName())
                     }
                 </td>
-                <td>@(item.CourseContractExtension.BranchStore.BranchName)</td>
+                <td>
+                    @(item.CourseContractExtension.BranchStore.BranchName)
+                    <span class="badge bg-blue">@(item.LessonPriceType.BranchStore.IsVirtualClassroom() ? "遠距" : null)</span>
+                </td>
                 <td>@(item.ServingCoach.UserProfile.FullName())</td>
                 <td>@(item.ContractNo())</td>
                 <td>@(item.CourseContractType.TypeName)(@(item.LessonPriceType.DurationInMinutes)分鐘)</td>

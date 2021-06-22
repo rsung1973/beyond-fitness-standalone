@@ -241,7 +241,7 @@ namespace WebHome.Controllers
             var item = models.GetTable<EnterpriseCourseContract>().Where(t => t.ContractID == viewModel.ContractID).FirstOrDefault();
             if(item==null)
             {
-                return View("~/Views/Shared/JsAlert.ascx", model: "合約資料錯誤!!");
+                return View("~/Views/Shared/JsAlert.cshtml", model: "合約資料錯誤!!");
             }
 
             if (itemsOnly == true)
@@ -297,13 +297,13 @@ namespace WebHome.Controllers
         {
             if(!viewModel.UID.HasValue)
             {
-                return View("~/Views/Shared/JsAlert.ascx", model: "請選擇學員!!");
+                return View("~/Views/Shared/JsAlert.cshtml", model: "請選擇學員!!");
             }
 
             var item = models.GetTable<EnterpriseCourseContract>().Where(c => c.ContractID == viewModel.ContractID).FirstOrDefault();
             if(item==null)
             {
-                return View("~/Views/Shared/JsAlert.ascx", model: "合約資料錯誤!!");
+                return View("~/Views/Shared/JsAlert.cshtml", model: "合約資料錯誤!!");
             }
 
             try
@@ -364,7 +364,7 @@ namespace WebHome.Controllers
             var contract = models.GetTable<EnterpriseCourseContract>().Where(m => m.ContractID == viewModel.ContractID).FirstOrDefault();
 
             if (contract == null)
-                return View("~/Views/Shared/JsAlert.ascx", model: "未建立學員!!");
+                return View("~/Views/Shared/JsAlert.cshtml", model: "未建立學員!!");
 
             var group = models.GetTable<EnterpriseCourseContract>().Where(m => m.ContractID == viewModel.ContractID)
                     .SelectMany(d => d.RegisterLessonEnterprise)
@@ -416,7 +416,7 @@ namespace WebHome.Controllers
             var contract = models.GetTable<EnterpriseCourseContract>().Where(m => m.ContractID == viewModel.ContractID).FirstOrDefault();
 
             if (contract == null)
-                return View("~/Views/Shared/JsAlert.ascx", model: "未建立學員!!");
+                return View("~/Views/Shared/JsAlert.cshtml", model: "未建立學員!!");
 
             DataTable table = createEnterpriseLessonSummary(contract);
 
@@ -593,7 +593,7 @@ namespace WebHome.Controllers
             var item = models.GetTable<EnterpriseCourseContract>().Where(t => t.ContractID == viewModel.ContractID).FirstOrDefault();
             if(item==null)
             {
-                return View("~/Views/Shared/JsAlert.ascx", model: "資料錯誤!!");
+                return View("~/Views/Shared/JsAlert.cshtml", model: "資料錯誤!!");
             }
             if (itemsOnly == true)
             {

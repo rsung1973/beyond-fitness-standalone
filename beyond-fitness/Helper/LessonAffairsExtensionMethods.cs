@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CommonLib.DataAccess;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -85,7 +87,7 @@ namespace WebHome.Helper
                         (int)Naming.LessonPriceStatus.點數兌換課程,
             };
 
-        public static void RegisterRemoteFeedbackLesson<TEntity>(this ModelSource<TEntity> models)
+        public static void RegisterRemoteFeedbackLesson<TEntity>(this ModelSource<TEntity> models,IQueryable<LessonTime> items = null)
             where TEntity : class, new()
         {
             var catalog = models.GetTable<ObjectiveLessonCatalog>().Where(c => c.CatalogID == (int)ObjectiveLessonCatalog.CatalogDefinition.OnLineFeedback)
@@ -98,41 +100,59 @@ namespace WebHome.Helper
                 return;
             }
 
-            var items = models.GetTable<LessonTime>()
+            var exceptive = models.GetTable<UserRole>().Where(r => r.RoleID == (int)Naming.RoleID.Dietitian);
+            var exceptivePrice = models.GetTable<ObjectiveLessonPrice>()
+                    .Where(b => b.CatalogID == (int)ObjectiveLessonCatalog.CatalogDefinition.OnLineFeedback
+                        || b.CatalogID == (int)ObjectiveLessonCatalog.CatalogDefinition.OnLine)
+                    .Select(b => b.PriceID)
+                    .ToArray();
+
+            if (items == null)
+            {
+                items = models.GetTable<LessonTime>();
+            }
+
+            items = items
+                .Where(l => !exceptive.Any(x => x.UID == l.AttendingCoach))
                 .Join(models.PromptVirtualClassOccurrence(),
                     l => l.BranchID, b => b.BranchID, (l, b) => l);
-
-            //var individual = items
-            //        .Join(models.GetTable<V_LessonTime>()
-            //            .Where(t => SessionScopeForRemoteFeedback.Contains(t.PriceStatus))
-            //            .Where(t => t.GroupingMemberCount == 1),
-            //        l => l.LessonID, t => t.LessonID, (l, t) => l);
-
-            //var groupLessons = items
-            //        .Join(models.GetTable<V_LessonTime>()
-            //            .Where(t => SessionScopeForRemoteFeedback.Contains(t.PriceStatus))
-            //            .Where(t => t.GroupingMemberCount > 1),
-            //        l => l.LessonID, t => t.LessonID, (l, t) => l);
 
             items = items
                     .Join(models.GetTable<V_LessonTime>()
                         .Where(t => t.CoachAttendance.HasValue)
                         .Where(t => t.CommitAttendance.HasValue)
+                        .Where(t => !exceptivePrice.Contains(t.PriceID))
                         .Where(t => SessionScopeForRemoteFeedback.Contains(t.PriceStatus)),
                     l => l.LessonID, t => t.LessonID, (l, t) => l);
 
             var calcItems = items.GroupBy(l => l.GroupID);
             var table = models.GetTable<RegisterLesson>();
 
-            foreach (var g in calcItems/*.Where(g => g.Count() > 1)*/)
+            var groupingCount = calcItems.Select(g => new
             {
-                var lesson = g.First();
+                g.First().GroupingLesson,
+                UID = g.First().GroupingLesson.RegisterLesson.Select(r => r.UID).OrderBy(u => u).ToArray(),
+                TotalCount = g.Count()
+            })
+                .ToList()
+                .GroupBy(g => g.UID.JsonStringify())
+                .Select(g => new
+                {
+                    g.First().GroupingLesson,
+                    UID = g.Key,
+                    TotalCount = g.Sum(v => v.TotalCount),
+                });
+
+            foreach (var g in groupingCount)
+            {
+                var lesson = g.GroupingLesson;
+                var item = lesson.RegisterLesson.First();
                 GroupingLesson groupLesson = null;
-                foreach (var item in lesson.GroupingLesson.RegisterLesson)
+                foreach (var uid in JsonConvert.DeserializeObject<int[]>(g.UID))
                 {
                     var currentFeedback = table
                         .Where(r => r.ClassLevel == price.PriceID)
-                        .Where(r => r.UID == item.UID)
+                        .Where(r => r.UID == uid)
                         .FirstOrDefault();
 
                     if (currentFeedback == null)
@@ -144,7 +164,7 @@ namespace WebHome.Helper
 
                         currentFeedback = new RegisterLesson
                         {
-                            UID = item.UID,
+                            UID = uid,
                             RegisterDate = DateTime.Now,
                             BranchID = item.BranchID,
                             GroupingMemberCount = item.GroupingMemberCount,
@@ -164,11 +184,46 @@ namespace WebHome.Helper
                         table.InsertOnSubmit(currentFeedback);
                     }
 
-                    currentFeedback.Lessons = g.Count();
+                    if (currentFeedback.Lessons < g.TotalCount)
+                    {
+                        currentFeedback.Lessons = g.TotalCount;
+                        currentFeedback.Attended = (int)Naming.LessonStatus.準備上課;
+                    }
+
                     models.SubmitChanges();
 
                 }
             }
+        }
+
+        public static bool ValidateMeetingRoom(this String url, BranchStore branch, GenericManager<BFDataContext> models)
+        {
+            bool check = false;
+            var branchID = branch.BranchID;
+            url = url?.ToLower();
+            if (url != null)
+            {
+                var c = models.GetTable<ObjectiveLessonLocation>()
+                                    .Where(l => l.BranchID == branchID)
+                                    .Where(l => l.CatalogID == (int)ObjectiveLessonCatalog.CatalogDefinition.OnLine)
+                                    .Where(l => l.PreferredUrl != null)
+                                    .FirstOrDefault();
+                if (c != null)
+                {
+                    check = false;
+                    foreach (var place in JsonConvert.DeserializeObject<String[]>(c.PreferredUrl))
+                    {
+                        if (url.StartsWith(place.ToLower()))
+                        {
+                            check = true;
+                            break;
+                        }
+                    }
+                }
+
+            }
+
+            return check;
         }
 
     }

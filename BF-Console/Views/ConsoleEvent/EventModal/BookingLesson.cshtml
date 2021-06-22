@@ -15,8 +15,6 @@
     CalendarEventViewModel _viewModel;
     String _dialogID = $"booking{DateTime.Now.Ticks}";
     UserProfile _profile;
-    IQueryable<CourseContract> _contracts;
-    IQueryable<EnterpriseCourseContract> _enterpriseContract;
 
     BookingLessonPageModel _pageModel = new BookingLessonPageModel { };
     ViewBag.PageModel = _pageModel;
@@ -26,12 +24,6 @@
     _model = (UserProfile)this.Model;
     _viewModel = (CalendarEventViewModel)ViewBag.ViewModel;
     _profile = Context.GetUser();
-    _contracts = models.GetTable<CourseContractMember>()
-        .Where(m => m.UID == _model.UID)
-            .Join(models.GetTable<CourseContract>(), m => m.ContractID, t => t.ContractID, (m, t) => t);
-    _enterpriseContract = models.GetTable<EnterpriseCourseMember>()
-        .Where(m => m.UID == _model.UID)
-            .Join(models.GetTable<EnterpriseCourseContract>(), m => m.ContractID, t => t.ContractID, (m, t) => t);
 
 }
 <div class="modal fade" id="@(_dialogID)" tabindex="-1" role="dialog">
@@ -54,8 +46,35 @@
                     <div class="col-lg-6 col-md-6 col-sm-6 col-12" id="fieldBranch">
                         <select class="form-control show-tick" name="BranchID">
                             <option value="">-- 請選擇地點 --</option>
-                            @{ Html.RenderPartial("~/Views/SystemInfo/BranchStoreOptions.cshtml", model: (models.GetTable<CoachWorkplace>().Where(c => c.CoachID == _profile.UID).Select(c => (int?)c.BranchID).FirstOrDefault() ?? -1));}
+                            @{
+                                ViewBag.DataItems = models.PromptAvailableStore();
+                                int prefered = models.GetTable<CoachWorkplace>().Where(c => c.CoachID == _profile.UID).Select(c => (int?)c.BranchID).FirstOrDefault() ?? -1;
+                                Html.RenderPartial("~/Views/SystemInfo/BranchStoreOptions.cshtml", model: prefered);
+                            }
                         </select>
+                    </div>
+                </div>
+                <div class="row clearfix">
+                    <div class="col-12">
+                        <span>遠距教學請在下方入Zoom會議室連結</span>
+                        <div class="form-line">
+                            <textarea rows="1" class="form-control no-resize" placeholde="Zoom會議室連結" maxlength="2048" name="Place"></textarea>
+                        </div>
+                        <span>例：https://zoom.us/j/92400075019?pwd=dWJidHNwbU05QlVmTGh0a2hyOEs0dz09 </span>
+                        <script>
+                            $(function () {
+                                $('#@(_dialogID) textarea[name="Place"]').on('change', function (element) {
+                                    var $element = $(this);
+                                    var start = $element.val().indexOf('https');
+                                    if (start >= 0) {
+                                        var end = $element.val().indexOf('\n', start);
+                                        if (end > start) {
+                                            $element.val($element.val().substring(start, end));
+                                        }
+                                    }
+                                });
+                            });
+                        </script>
                     </div>
                 </div>
                 <div class="row clearfix">
@@ -79,35 +98,11 @@
                                                 </div>
                                                 @{
                                                     _pageModel.HasChoice = false;
-                                                    //_pageModel.PDQStatus = _model.IsCompletePDQ();
-                                                    var contractLessons = _contracts.Join(models.GetTable<RegisterLessonContract>(), c => c.ContractID, r => r.ContractID, (c, r) => r)
-                                                                            .Select(r => r.RegisterLesson)
-                                                                            .Where(r => r.UID == _model.UID)
-                                                                            .Where(r => r.Attended != (int)Naming.LessonStatus.課程結束);
-                                                    var enterpriseLessons = _enterpriseContract.Join(models.GetTable<RegisterLessonEnterprise>(), t => t.ContractID, r => r.ContractID, (t, r) => r);
-                                                    var enterpriseLessonItems = enterpriseLessons.Select(r => r.RegisterLesson).Where(r => r.UID == _model.UID);
-                                                    @*if (!_pageModel.PDQStatus)
-                    {
-                        <p class="msg col-red"><i class="zmdi zmdi-info-outline"></i>PDQ尚未登打或登打不完全</p>
-                    }*@
-                                                    @*_pageModel.QuestionnaireStatus =
-                        contractLessons.PromptLessonQuestionnaireRequest(models).Count() > 0
-                        || enterpriseLessonItems.PromptLessonQuestionnaireRequest(models).Count() > 0;
-                    if (_pageModel.QuestionnaireStatus)
-                    {
-                        <p class="msg col-red"><i class="zmdi zmdi-info-outline"></i>階段性調整計劃未填寫，請 <u>立即填寫</u> 階段性調整計劃</p>
-                    }*@
                                                 }
                                             </div>
                                         </div>
                                     </li>
                                 </ul>
-                                @{
-                                    var lessons = models.GetTable<RegisterLesson>()
-                                            .Where(r => r.UID == _model.UID)
-                                            .Where(r => r.Attended != (int)Naming.LessonStatus.課程結束);
-                                    var enterpriseTrial = enterpriseLessons.Where(r => r.EnterpriseCourseContent.EnterpriseLessonType.Status == (int)Naming.LessonPriceStatus.體驗課程);
-                                }
                                 <ul class="mail_list list-group list-unstyled">
                                     @{
                                         var attendedCheck = models.GetTable<LessonTime>()
@@ -120,6 +115,9 @@
                                     @if (!attendedCheck.Any() || _model.UserProfileExtension.CurrentTrial.HasValue)
                                     {
                                         Html.RenderPartial("~/Views/ConsoleEvent/EventModal/BookingTrialLesson.cshtml", _model);
+                                    }
+                                    @{
+                                        Html.RenderPartial("~/Views/ConsoleEvent/EventModal/BookingRemoteTrialLesson.cshtml", _model);
                                     }
                                     @if (!_model.UserProfileExtension.CurrentTrial.HasValue)
                                     {
@@ -142,12 +140,18 @@
 
     @{ Html.RenderPartial("~/Views/ConsoleHome/Shared/BSModalScript.cshtml", model: _dialogID);}
 
-    <script>
+<script>
 
         var booking;
         function selectBooking(element, lessonType, priceID) {
+            var $element = $(element);
             $('input:checkbox').prop('checked', false);
-            $(element).prop('checked', true);
+            $element.prop('checked', true);
+            if ($element.is('[data-location]')) {
+                var $branch = $('#@(_dialogID) select[name="BranchID"]');
+                $branch.find($element.attr('data-location')).prop('selected', true);
+                $branch.selectpicker('refresh');
+            }
             booking = function () {
                 commitBooking(lessonType, priceID);
             }
@@ -172,8 +176,12 @@
                         if ($.isPlainObject(data)) {
                             if (data.result) {
                                 $global.closeAllModal();
-                                refreshEvents();
-                                refetchCalendarEvents();
+                                if (typeof (refreshEvents) == 'function') {
+                                    refreshEvents();
+                                }
+                                if (typeof (refetchCalendarEvents) == 'function') {
+                                    refetchCalendarEvents();
+                                }
                                 Swal.fire(
                                     '幹得好!',
                                     data.message,
@@ -193,13 +201,17 @@
                     break;
 
                 case '@((int)Naming.LessonPriceStatus.自主訓練)':
-                    $formData.trainingBySelf = 1;
+                    $formData.trainingBySelf = @((int)LessonTime.SelfTrainingDefinition.自主訓練);
                     $.post('@Html.Raw(Url.Action("CommitBookingByCoach","Lessons"))', $formData, function (data) {
                         if ($.isPlainObject(data)) {
                             if (data.result) {
                                 $global.closeAllModal();
-                                refreshEvents();
-                                refetchCalendarEvents();
+                                if (typeof (refreshEvents) == 'function') {
+                                    refreshEvents();
+                                }
+                                if (typeof (refetchCalendarEvents) == 'function') {
+                                    refetchCalendarEvents();
+                                }
                                 Swal.fire(
                                     '幹得好!',
                                     data.message,
@@ -218,13 +230,17 @@
                     });
                     break;
                 case '@((int)Naming.LessonPriceStatus.在家訓練)':
-                    $formData.trainingBySelf = 2;
+                    $formData.trainingBySelf = @((int)LessonTime.SelfTrainingDefinition.在家訓練);
                     $.post('@Html.Raw(Url.Action("CommitBookingByCoach","Lessons"))', $formData, function (data) {
                         if ($.isPlainObject(data)) {
                             if (data.result) {
                                 $global.closeAllModal();
-                                refreshEvents();
-                                refetchCalendarEvents();
+                                if (typeof (refreshEvents) == 'function') {
+                                    refreshEvents();
+                                }
+                                if (typeof (refetchCalendarEvents) == 'function') {
+                                    refetchCalendarEvents();
+                                }
                                 Swal.fire(
                                     '幹得好!',
                                     data.message,
@@ -244,13 +260,17 @@
                     break;
 
                 case '@((int)Naming.LessonPriceStatus.體驗課程)':
-                    $formData.trainingBySelf = 3;
+                    $formData.trainingBySelf = @((int)LessonTime.SelfTrainingDefinition.體驗課程);
                     $.post('@Html.Raw(Url.Action("CommitTrialLesson","CoachFacet",new { CoachID = _model.UID }))', $formData, function (data) {
                         if ($.isPlainObject(data)) {
                             if (data.result) {
                                 $global.closeAllModal();
-                                refreshEvents();
-                                refetchCalendarEvents();
+                                if (typeof (refreshEvents) == 'function') {
+                                    refreshEvents();
+                                }
+                                if (typeof (refetchCalendarEvents) == 'function') {
+                                    refetchCalendarEvents();
+                                }
                                 Swal.fire(
                                     '幹得好!',
                                     data.message,
@@ -285,5 +305,5 @@
             });
 
         });
-    </script>
+</script>
 </div>

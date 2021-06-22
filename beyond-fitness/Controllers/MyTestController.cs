@@ -133,7 +133,7 @@ namespace WebHome.Controllers
 
             if (item == null)
             {
-                return View("~/Views/Shared/JsAlert.ascx", model: "登入資料錯誤!!");
+                return View("~/Views/Shared/JsAlert.cshtml", model: "登入資料錯誤!!");
             }
 
             HttpContext.SignOn(item, viewModel.RememberMe);

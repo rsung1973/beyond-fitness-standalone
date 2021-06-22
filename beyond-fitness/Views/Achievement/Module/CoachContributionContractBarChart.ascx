@@ -9,7 +9,7 @@
 <%@ Import Namespace="WebHome.Controllers" %>
 
 <canvas id="<%= _chartID %>" height="80"></canvas>
-<%--<%  Html.RenderPartial("~/Views/Shared/InitBarChartNoRegister.ascx"); %>--%>
+<%--<%  Html.RenderPartial("~/Views/Shared/InitBarChartNoRegister.cshtml"); %>--%>
 <script>
 
     //debugger;

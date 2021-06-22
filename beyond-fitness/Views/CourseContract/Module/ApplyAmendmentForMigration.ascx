@@ -18,7 +18,7 @@
                         //.Where(b => b.BranchID != _model.CourseContractExtension.BranchID)
                         .Where(b => b.BranchID == 2)
                         .Select(b => b.BranchID).ToArray();
-                    Html.RenderPartial("~/Views/SystemInfo/BranchStoreOptions.ascx", model: -1); %>
+                    Html.RenderPartial("~/Views/SystemInfo/BranchStoreOptions.cshtml", model: -1); %>
             </select>
             <i class="icon-append fa fa-at"></i>
         </label>

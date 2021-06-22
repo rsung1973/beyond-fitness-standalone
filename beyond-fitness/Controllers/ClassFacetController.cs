@@ -67,7 +67,7 @@ namespace WebHome.Controllers
             LessonTime item = models.GetTable<LessonTime>().Where(l => l.LessonID == id).FirstOrDefault();
             if (item == null)
             {
-                return View("~/Views/Shared/JsAlert.ascx", model: "修改上課時間資料不存在!!");
+                return View("~/Views/Shared/JsAlert.cshtml", model: "修改上課時間資料不存在!!");
             }
 
             ViewBag.ViewModel = new LessonTimeViewModel
@@ -76,7 +76,7 @@ namespace WebHome.Controllers
                 ClassDate = item.ClassTime.Value,
                 CoachID = item.AttendingCoach.Value,
                 //Duration = item.DurationInMinutes.Value,
-                TrainingBySelf = item.TrainingBySelf,
+                TrainingBySelf = (LessonTime.SelfTrainingDefinition?)item.TrainingBySelf,
                 BranchID = item.BranchID.Value
             };
 
@@ -98,7 +98,7 @@ namespace WebHome.Controllers
             LessonTime item = models.GetTable<LessonTime>().Where(l => l.LessonID == viewModel.LessonID).FirstOrDefault();
             if (item == null)
             {
-                return View("~/Views/Shared/JsAlert.ascx", model: "修改上課時間資料不存在!!");
+                return View("~/Views/Shared/JsAlert.cshtml", model: "修改上課時間資料不存在!!");
             }
 
             if (item.LessonAttendance != null)
@@ -262,7 +262,7 @@ namespace WebHome.Controllers
             UserProfile profile = models.GetTable<UserProfile>().Where(u => u.UID == uid).FirstOrDefault();
             if (profile == null)
             {
-                return View("~/Views/Shared/JsAlert.ascx", model: "學員資料錯誤!!");
+                return View("~/Views/Shared/JsAlert.cshtml", model: "學員資料錯誤!!");
             }
 
             return View("~/Views/ClassFacet/Module/EditRecentStatus.ascx", profile);
@@ -307,7 +307,7 @@ namespace WebHome.Controllers
 
             if (item == null)
             {
-                return View("~/Views/Shared/JsAlert.ascx", model: "課程資料錯誤!!");
+                return View("~/Views/Shared/JsAlert.cshtml", model: "課程資料錯誤!!");
             }
 
             ViewBag.LessonTime = item;
@@ -322,7 +322,7 @@ namespace WebHome.Controllers
 
             if (item == null)
             {
-                return View("~/Views/Shared/JsAlert.ascx", model: "體能分析表資料錯誤!!");
+                return View("~/Views/Shared/JsAlert.cshtml", model: "體能分析表資料錯誤!!");
             }
 
             return View("~/Views/ClassFacet/Module/LearnerAssessment.ascx", item);
@@ -340,7 +340,7 @@ namespace WebHome.Controllers
             var item = models.GetTable<UserProfile>().Where(u => u.UID == viewModel.UID).FirstOrDefault();
             if (item == null)
             {
-                return View("~/Views/Shared/JsAlert.ascx", model: "學員資料錯誤!!");
+                return View("~/Views/Shared/JsAlert.cshtml", model: "學員資料錯誤!!");
             }
 
             if (item.PersonalExercisePurpose == null)
@@ -361,7 +361,7 @@ namespace WebHome.Controllers
             var item = models.GetTable<UserProfile>().Where(u => u.UID == viewModel.UID).FirstOrDefault();
             if (item == null)
             {
-                return View("~/Views/Shared/JsAlert.ascx", model: "學員資料錯誤!!");
+                return View("~/Views/Shared/JsAlert.cshtml", model: "學員資料錯誤!!");
             }
 
             return View("~/Views/ClassFacet/Module/EditPowerAbility.ascx", item);
@@ -424,7 +424,7 @@ namespace WebHome.Controllers
             var item = models.GetTable<UserProfile>().Where(u => u.UID == viewModel.UID).FirstOrDefault();
             if (item == null)
             {
-                return View("~/Views/Shared/JsAlert.ascx", model: "學員資料錯誤!!");
+                return View("~/Views/Shared/JsAlert.cshtml", model: "學員資料錯誤!!");
             }
 
             viewModel.PurposeItem = viewModel.PurposeItem.GetEfficientString();
@@ -447,7 +447,7 @@ namespace WebHome.Controllers
             var item = models.GetTable<PersonalExercisePurpose>().Where(u => u.UID == viewModel.UID).FirstOrDefault();
             if (item == null)
             {
-                return View("~/Views/Shared/JsAlert.ascx", model: "學員資料錯誤!!");
+                return View("~/Views/Shared/JsAlert.cshtml", model: "學員資料錯誤!!");
             }
 
             if (viewModel.IsComplete == true)

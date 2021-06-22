@@ -97,6 +97,10 @@ namespace WebHome.Controllers
             {
                 return Json(new { result = false, message = "課程資料已信託，不可取消!!" });
             }
+            else if (item.RegisterLesson.IsPaid)
+            {
+                return Json(new { result = false, message = "課程資料已收款，不可取消!!" });
+            }
             //else if (item.LessonPlan != null || item.TrainingPlan.Count > 0)
             //{
             //    ViewBag.Message = "請先刪除預編課程!!";

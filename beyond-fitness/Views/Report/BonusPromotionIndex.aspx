@@ -67,7 +67,7 @@
                                         <label class="select">
                                             <select name="ActorID" class="input">
                                                 <option value="">全部</option>
-                                                <%  Html.RenderPartial("~/Views/SystemInfo/ServingCoachOptions.ascx", models.GetTable<ServingCoach>()); %>
+                                                <%  Html.RenderPartial("~/Views/SystemInfo/ServingCoachOptions.cshtml", models.GetTable<ServingCoach>()); %>
                                             </select>
                                             <i class="icon-append far fa-keyboard"></i>
                                         </label>

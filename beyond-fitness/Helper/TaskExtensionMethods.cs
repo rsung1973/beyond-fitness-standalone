@@ -114,7 +114,7 @@ namespace WebHome.Helper
                         var contract = models.InitiateCourseContract(
                             new CourseContractViewModel
                             {
-                                ContractType = item.SourceContract.ContractType,
+                                ContractType = (CourseContractType.ContractTypeDefinition)item.SourceContract.ContractType,
                                 Subject = item.SourceContract.Subject,
                                 OwnerID = item.CourseContract.CourseContractMember.First().UID,
                                 Lessons = item.SourceContract.RemainedLessonCount(),
@@ -228,7 +228,7 @@ namespace WebHome.Helper
                         var contract = models.InitiateCourseContract(
                             new CourseContractViewModel
                             {
-                                ContractType = item.SourceContract.ContractType,
+                                ContractType = (CourseContractType.ContractTypeDefinition)item.SourceContract.ContractType,
                                 Subject = item.SourceContract.Subject,
                                 OwnerID = item.CourseContract.CourseContractMember.First().UID,
                                 Lessons = item.SourceContract.RemainedLessonCount(),

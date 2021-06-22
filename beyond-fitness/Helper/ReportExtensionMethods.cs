@@ -411,12 +411,15 @@ namespace WebHome.Helper
             where TEntity : class, new()
         {
 
-            IQueryable<RegisterLesson> lessons = models.GetTable<RegisterLesson>()
-                    .Join(models.GetTable<LessonTime>().PILesson(), r => r.RegisterID, l => l.RegisterID, (r, l) => r);
-            IQueryable<Payment> items = models.GetTable<Payment>().Join(models.GetTable<TuitionInstallment>()
-                    .Join(lessons,
-                        t => t.RegisterID, r => r.RegisterID, (t, r) => t),
-                p => p.PaymentID, t => t.InstallmentID, (p, t) => p);
+            //IQueryable<RegisterLesson> lessons = models.GetTable<RegisterLesson>()
+            //        .Join(models.GetTable<LessonTime>().FilterByReceivableTrainingSession(), r => r.RegisterID, l => l.RegisterID, (r, l) => r);
+            //IQueryable<Payment> items = models.GetTable<Payment>().Join(models.GetTable<TuitionInstallment>()
+            //        .Join(lessons,
+            //            t => t.RegisterID, r => r.RegisterID, (t, r) => t),
+            //    p => p.PaymentID, t => t.InstallmentID, (p, t) => p);
+
+            IQueryable<Payment> items = models.GetTable<Payment>()
+                    .Where(p => p.TransactionType == (int)Naming.PaymentTransactionType.自主訓練);
 
             IEnumerable<PaymentMonthlyReportItem> details = items
                 .Where(p => p.PayoffDate >= viewModel.PayoffDateFrom && p.PayoffDate < viewModel.PayoffDateTo)
@@ -432,7 +435,7 @@ namespace WebHome.Helper
                         //姓名 = i.TuitionInstallment.IntuitionCharge.RegisterLesson.UserProfile.FullName(),
                         //合約編號 = null,
                         信託 = null,
-                        摘要 = $"銷貨收入-自主訓練{i.TuitionInstallment.IntuitionCharge.RegisterLesson.LessonTime.First().ClassTime:yyyyMMdd}-{i.TuitionInstallment.IntuitionCharge.RegisterLesson.UserProfile.RealName}({i.PaymentType})",
+                        摘要 = $"銷貨收入-{i.PaymentFor}{i.PayoffDate:yyyyMMdd}-{i.TuitionInstallment?.IntuitionCharge.RegisterLesson.UserProfile.RealName}({i.PaymentType})",
                         退款金額_含稅 = null,
                         收款金額_含稅 = i.PayoffAmount,
                         借方金額 = null,
@@ -457,9 +460,9 @@ namespace WebHome.Helper
                                 //合約編號 = null,
                                 信託 = null,
                                 摘要 = i.InvoiceItem.InvoiceCancellation != null
-                                        ? $"(沖:{i.PayoffDate:yyyyMMdd}-作廢)銷貨收入-自主訓練-{i.TuitionInstallment.IntuitionCharge.RegisterLesson.UserProfile.RealName}"
+                                        ? $"(沖:{i.PayoffDate:yyyyMMdd}-作廢)銷貨收入-{i.PaymentFor}-{i.TuitionInstallment?.IntuitionCharge.RegisterLesson.UserProfile.RealName}"
                                         //(沖:20190104-作廢)課程顧問費用-CFA201810091870-00-林妍君
-                                        : $"(沖:{i.PayoffDate:yyyyMMdd}-折讓)銷貨收入-自主訓練-{i.TuitionInstallment.IntuitionCharge.RegisterLesson.UserProfile.RealName}",
+                                        : $"(沖:{i.PayoffDate:yyyyMMdd}-折讓)銷貨收入-{i.PaymentFor}-{i.TuitionInstallment?.IntuitionCharge.RegisterLesson.UserProfile.RealName}",
                                 退款金額_含稅 = i.AllowanceID.HasValue
                                                 ? (int?)(i.InvoiceAllowance.TotalAmount + i.InvoiceAllowance.TaxAmount)
                                                 : i.PayoffAmount,

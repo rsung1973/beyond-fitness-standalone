@@ -66,7 +66,7 @@
                                         <label class="select">
                                             <select name="BranchID">
                                                 <option value="">全部</option>
-                                                <%  Html.RenderPartial("~/Views/SystemInfo/BranchStoreOptions.ascx", model: -1);    %>
+                                                <%  Html.RenderPartial("~/Views/SystemInfo/BranchStoreOptions.cshtml", model: -1);    %>
                                             </select>
                                             <i class="icon-append far fa-keyboard"></i>
                                         </label>
@@ -76,7 +76,7 @@
                                         {
                                             //ViewBag.DataItems = models.GetTable<CoachWorkplace>().Where(w => w.CoachID == _profile.UID)
                                             //.Select(w => w.BranchStore);
-                                            //Html.RenderPartial("~/Views/SystemInfo/BranchStoreOptions.ascx", model: -1);
+                                            //Html.RenderPartial("~/Views/SystemInfo/BranchStoreOptions.cshtml", model: -1);
                                         }   %>--%>
                                 </div>
                             </fieldset>

@@ -64,7 +64,7 @@ namespace WebHome.Controllers
             var item = models.GetTable<CourseContract>().Where(c => c.ContractID == viewModel.ContractID).FirstOrDefault();
             if (item != null)
             {
-                viewModel.ContractType = item.ContractType;
+                viewModel.ContractType = (CourseContractType.ContractTypeDefinition?)item.ContractType;
                 viewModel.ContractDate = item.ContractDate;
                 viewModel.Subject = item.Subject;
                 viewModel.ValidFrom = item.ValidFrom;
@@ -701,7 +701,7 @@ namespace WebHome.Controllers
                 return Json(new { result = false,message = "請選擇課程單價" }, JsonRequestBehavior.AllowGet);
             }
 
-            var typeItem = models.GetTable<CourseContractType>().Where(c => c.TypeID == viewModel.ContractType).FirstOrDefault();
+            var typeItem = models.GetTable<CourseContractType>().Where(c => c.TypeID == (int?)viewModel.ContractType).FirstOrDefault();
             if (typeItem == null)
             {
                 return Json(new { result = false, message = "請選擇合約名稱" }, JsonRequestBehavior.AllowGet);
@@ -848,7 +848,7 @@ namespace WebHome.Controllers
                 items = items.Where(c => c.Status == viewModel.Status);
 
             if(viewModel.ContractType.HasValue)
-                items = items.Where(c => c.ContractType == viewModel.ContractType);
+                items = items.Where(c => c.ContractType == (int)viewModel.ContractType);
 
             if (viewModel.ContractDateFrom.HasValue)
                 items = items.Where(c => c.ContractDate >= viewModel.ContractDateFrom);

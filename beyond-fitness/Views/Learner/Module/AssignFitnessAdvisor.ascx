@@ -22,7 +22,7 @@
                                     !models.GetTable<LearnerFitnessAdvisor>().Where(f => f.UID == _model.UID)
                                         .Select(f => f.CoachID)
                                         .Contains(c.CoachID));
-                                Html.RenderPartial("~/Views/SystemInfo/ServingCoachOptions.ascx",items); %>
+                                Html.RenderPartial("~/Views/SystemInfo/ServingCoachOptions.cshtml",items); %>
                         </select>
                         <i class="icon-append far fa-keyboard"></i>
                     </label>

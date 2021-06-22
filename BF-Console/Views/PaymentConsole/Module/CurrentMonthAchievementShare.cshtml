@@ -37,7 +37,7 @@
                 TransactionType = (int)Naming.PaymentTransactionType.體能顧問費,
                 ShareFor = _viewModel.RelatedID,
             })));'>@($"{PTShare:##,###,###,##0}")</a><br />
-        P.I：<a href="#" onclick='showPaymentList(@Html.Raw(JsonConvert.SerializeObject(
+        T.S/P.I：<a href="#" onclick='showPaymentList(@Html.Raw(JsonConvert.SerializeObject(
             new
             {
                 PayoffDateFrom = DateTime.Today.FirstDayOfMonth(),
@@ -62,7 +62,7 @@
             <div class="sparkline-pie current-share">@(PTShare),@(PIShare),@(othersShare)</div>
             <div class="text">
                 <i class="zmdi zmdi-label col-amber m-r-5"></i>P.T
-                <i class="zmdi zmdi-label col-green m-r-5"></i>P.I
+                <i class="zmdi zmdi-label col-green m-r-5"></i>T.S/P.I
                 <i class="zmdi zmdi-label col-pink m-r-5"></i>其他
             </div>
         </div>

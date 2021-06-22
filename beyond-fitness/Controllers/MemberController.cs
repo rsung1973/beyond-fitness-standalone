@@ -440,7 +440,7 @@ namespace WebHome.Controllers
 
             if (item == null)
             {
-                return View("~/Views/Shared/JsAlert.ascx", model: "資料錯誤!!");
+                return View("~/Views/Shared/JsAlert.cshtml", model: "資料錯誤!!");
             }
 
             return View("~/Views/Member/Module/EditCoachCertificate.ascx", item);
@@ -468,7 +468,7 @@ namespace WebHome.Controllers
 
             if (item == null)
             {
-                return View("~/Views/Shared/JsAlert.ascx", model: "資料錯誤!!");
+                return View("~/Views/Shared/JsAlert.cshtml", model: "資料錯誤!!");
             }
 
             return View("~/Views/Member/Module/AddCoachCertificate.ascx", item);
@@ -483,7 +483,7 @@ namespace WebHome.Controllers
             var coach = models.GetTable<ServingCoach>().Where(u => u.CoachID == viewModel.UID).FirstOrDefault();
             if (coach == null)
             {
-                return View("~/Views/Shared/JsAlert.ascx", model: "資料錯誤!!");
+                return View("~/Views/Shared/JsAlert.cshtml", model: "資料錯誤!!");
             }
 
             if (!viewModel.CertificateID.HasValue)

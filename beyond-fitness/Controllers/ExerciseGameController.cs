@@ -113,7 +113,7 @@ namespace WebHome.Controllers
             var item = models.GetTable<ExerciseGameContestant>().Where(u => u.UID == viewModel.UID).FirstOrDefault();
             if (item == null)
             {
-                return View("~/Views/Shared/JsAlert.ascx", model: "參賽者資料錯誤!!");
+                return View("~/Views/Shared/JsAlert.cshtml", model: "參賽者資料錯誤!!");
             }
 
             return View("~/Views/ExerciseGame/Module/EditExerciseResult.ascx", item);
@@ -154,7 +154,7 @@ namespace WebHome.Controllers
 
             if (contestant.Status != (int)Naming.GeneralStatus.Successful)
             {
-                return View("~/Views/Shared/JsAlert.ascx", model: "參賽者已退賽!!");
+                return View("~/Views/Shared/JsAlert.cshtml", model: "參賽者已退賽!!");
             }
 
             var item = new ExerciseGameResult

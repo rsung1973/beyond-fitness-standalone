@@ -237,7 +237,7 @@ namespace WebHome.Controllers
                 return View("~/Views/Activity/Module/DailyQuestionDataItem.ascx", item);
             }
 
-            return View("~/Views/Shared/JsAlert.ascx", model: "問與答資料錯誤!!");
+            return View("~/Views/Shared/JsAlert.cshtml", model: "問與答資料錯誤!!");
         }
         public ActionResult DeleteQuestion(DailyQuestionViewModel viewModel)
         {
@@ -263,7 +263,7 @@ namespace WebHome.Controllers
                 }
             }
 
-            return View("~/Views/Shared/JsAlert.ascx", model: "問與答資料錯誤!!");
+            return View("~/Views/Shared/JsAlert.cshtml", model: "問與答資料錯誤!!");
         }
 
         public ActionResult CommitQuestionStatus(DailyQuestionViewModel viewModel)
@@ -283,7 +283,7 @@ namespace WebHome.Controllers
                 return Json(new { result = true, item.QuestionID });
             }
 
-            return View("~/Views/Shared/JsAlert.ascx", model: "問與答資料錯誤!!");
+            return View("~/Views/Shared/JsAlert.cshtml", model: "問與答資料錯誤!!");
         }
 
         public ActionResult AnswerDailyQuestion(DailyQuestionViewModel viewModel)

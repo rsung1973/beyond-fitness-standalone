@@ -62,6 +62,12 @@ namespace WebHome.Models.Timeline
         public IEnumerable<CourseContract> ContractList { get; set; }
     }
 
+    public class PromptSignContractEvent : TimelineEvent
+    {
+        public IQueryable<CourseContract> ContractList { get; set; }
+    }
+
+
     public class PersonalExercisePurposeEvent : TimelineEvent
     {
         public IQueryable<PersonalExercisePurposeItem> PurposeItemEventList { get; set; }

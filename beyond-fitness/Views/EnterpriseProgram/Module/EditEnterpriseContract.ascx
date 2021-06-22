@@ -66,7 +66,7 @@
                                 <label class="label">請選擇分店</label>
                                 <label class="select">
                                     <select class="input" name="BranchID">
-                                        <%  Html.RenderPartial("~/Views/SystemInfo/BranchStoreOptions.ascx", model: _viewModel.BranchID ?? -1);    %>
+                                        <%  Html.RenderPartial("~/Views/SystemInfo/BranchStoreOptions.cshtml", model: _viewModel.BranchID ?? -1);    %>
                                     </select>
                                     <i class="icon-append far fa-keyboard"></i>
                                 </label>

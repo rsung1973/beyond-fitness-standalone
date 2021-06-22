@@ -74,13 +74,7 @@
                                                 <div class="list_tr">
                                                     <div class="list_td hd">品項</div>
                                                     <div class="list_td rt">
-                                                        @(((Naming.PaymentTransactionType)_model.TransactionType).ToString())
-                                                        @if (_model.TransactionType == (int)Naming.PaymentTransactionType.運動商品
-                                                           || _model.TransactionType == (int)Naming.PaymentTransactionType.食飲品
-                                                           || _model.TransactionType == (int)Naming.PaymentTransactionType.教育訓練)
-                                                        {
-                                                            <text>(@(String.Join("/", _model.PaymentTransaction.PaymentOrder.Select(p => p.MerchandiseWindow.ProductName))))</text>
-                                                        }
+                                                        @(_model.PaymentFor)
                                                     </div>
                                                 </div>
                                             </div>

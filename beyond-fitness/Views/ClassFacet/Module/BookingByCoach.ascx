@@ -18,15 +18,15 @@
                         <select name="CoachID">
                             <%  if (_profile.IsAssistant() || _profile.IsOfficer())
                                 {
-                                    Html.RenderPartial("~/Views/SystemInfo/ServingCoachOptions.ascx", models.GetTable<ServingCoach>());
+                                    Html.RenderPartial("~/Views/SystemInfo/ServingCoachOptions.cshtml", models.GetTable<ServingCoach>());
                                 }
                                 else if (_profile.IsManager() || _profile.IsViceManager())
                                 {
-                                    Html.RenderPartial("~/Views/SystemInfo/ServingCoachOptions.ascx", _profile.GetServingCoachInSameStore(models));
+                                    Html.RenderPartial("~/Views/SystemInfo/ServingCoachOptions.cshtml", _profile.GetServingCoachInSameStore(models));
                                 }
                                 else
                                 {
-                                    Html.RenderPartial("~/Views/SystemInfo/ServingCoachOptions.ascx", models.GetTable<ServingCoach>().Where(c => c.CoachID == _profile.UID));
+                                    Html.RenderPartial("~/Views/SystemInfo/ServingCoachOptions.cshtml", models.GetTable<ServingCoach>().Where(c => c.CoachID == _profile.UID));
                                 } %>                             
                         </select>
                         <%  if (_profile.IsCoach())
@@ -70,7 +70,7 @@
                     <label class="label">請選擇上課地點</label>
                     <label class="select">
                         <select name="BranchID">
-                            <%  Html.RenderPartial("~/Views/SystemInfo/BranchStoreOptions.ascx", model: _viewModel.BranchID); %>
+                            <%  Html.RenderPartial("~/Views/SystemInfo/BranchStoreOptions.cshtml", model: _viewModel.BranchID); %>
                         </select>
                         <i class="icon-append far fa-keyboard"></i>
                     </label>

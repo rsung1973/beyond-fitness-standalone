@@ -132,7 +132,7 @@
                                 <%  IQueryable<ServingCoach> items = _profile.IsAssistant()
                     ? models.GetTable<ServingCoach>()
                     : _profile.GetServingCoachInSameStore(models);
-                                    Html.RenderPartial("~/Views/SystemInfo/ServingCoachOptions.ascx", items); %>
+                                    Html.RenderPartial("~/Views/SystemInfo/ServingCoachOptions.cshtml", items); %>
                             </select>
                             <i class="icon-append far fa-keyboard"></i>
                         </label>

@@ -1,0 +1,173 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Models.Timeline
+@using WebHome.Controllers
+@using Newtonsoft.Json
+@{
+    Layout = "~/Views/CornerKick/Shared/MainPage.cshtml";
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    UserProfile _model;
+    AwardQueryViewModel _viewModel;
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = (UserProfile)this.Model;
+    _viewModel = ViewBag.ViewModel as AwardQueryViewModel;
+}
+
+<!--品牌LOGO -->
+<!-- // End of 品牌LOGO -->
+<div class="registered-forms">
+    <!-- 登入 - TAB -->
+    <ul id="tabs-swipe-demo" class="tabs col s12">
+        <li class="tab col s6"><a class="active" onclick="gtag('event', '裝備目錄', { 'event_category': '頁籤點擊', 'event_label': '兌換我的裝備'});" href="#test-swipe-1">裝備目錄</a></li>
+        <li class="tab col s6"><a onclick="gtag('event', '已兌換裝備', {  'event_category': '頁籤點擊', 'event_label': '兌換我的裝備'});" href="#test-swipe-2">已兌換裝備</a></li>
+    </ul>
+    <div id="test-swipe-1" class="tab-content acc-content col s12">
+        <!-- QA info -->
+        <div class="point-content">
+            <div class="personal-info">
+                <div class="row valign-wrapper">
+                    @{
+                        Html.RenderPartial("~/Views/CornerKick/CheckBonusPoint/AdvisorImage.cshtml", _model);
+                        var currentBonusPoint = _model.BonusPoint(models) ?? 0;
+                    }
+                    <div class="col s8 m10 text-box">
+                        <!--                                    <span class="black-t18">劉加菲</span>-->
+                        <span class="black-t12">每一枚金幣都是汗水與淚水的結晶，目前已累積 <span class="point">@(currentBonusPoint)枚</span> Beyond💰！ @*@(currentBonusPoint>=35 ? "繼續努力累積，集滿100枚有神秘大禮喔！" : null)*@</span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                @foreach (var item in models.GetTable<BonusAwardingItem>().Where(b => !b.Status.HasValue || b.Status != 0)
+                        .OrderBy(b => b.PointValue))
+                {
+                    <!-- ＩＭＧ -->
+                    <div class="img-block col s12 m6 l6">
+                        <div class="parallax-container">
+                            <div class="section no-pad-bot">
+                                <div class="container">
+                                    <ul class="text-area">
+                                        <li class="white-text left">@(item.ItemName)</li>
+                                        <li class="right">
+                                            @{
+                                                if (currentBonusPoint >= item.PointValue)
+                                                {
+                                                    <span class="point-tag online" onclick="writeOff(@(item.ItemID));">@(item.PointValue)點 / 立即兌換</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="point-tag online">@(item.PointValue)點</span>
+                                                }
+                                            }
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="parallax"><img src="@(item.SampleUrl!=null ? VirtualPathUtility.ToAbsolute(item.SampleUrl) : null)" alt="Unsplashed background img 1" /></div>
+                        </div>
+                    </div>
+                    <!-- // End of ＩＭＧ -->
+                }
+            </div>
+            <!-- 商品 -->
+        </div>
+        <!--//End of QA info-->
+    </div>
+    <div id="test-swipe-2" class="tab-content acc-content col s12">
+        <!-- QA info -->
+        <div class="point-content">
+            @if (_model.LearnerAward.Count > 0)
+            {
+                <div class="personal-info">
+                    <div class="row valign-wrapper">
+                        <div class="col s4 m2">
+                            @{ ViewBag.ImgClass = "circle responsive-img valign";
+                                Html.RenderPartial("~/Views/CornerKick/Module/ProfileImage.cshtml", _model);}
+
+                        </div>
+                        <div class="col s8 m10 text-box">
+                            <span class="black-t12">您截至為止已兌換的裝備如下，繼續努力累積Beyond💰，蒐集裝備吧！</span>
+                        </div>
+                    </div>
+                </div>
+                foreach (var item in _model.LearnerAward)
+                {
+                    <!-- ＩＭＧ -->
+                    <div class="img-block">
+                        <div class="parallax-container">
+                            <div class="section no-pad-bot">
+                                <div class="container">
+                                    <ul class="text-area">
+                                        <li class="white-text left">
+                                            @(item.BonusAwardingItem.ItemName)
+                                            @if (item.AwardingLessonGift != null)
+                                            {
+                                                <text>(@(item.AwardingLessonGift.RegisterLesson.UserProfile.RealName))</text>
+                                            }
+                                        </li>
+                                        <li class="right"><span class="point-tag">@($"{item.AwardDate:yyyy/MM/dd}")</span></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="parallax"><img src="@(item.BonusAwardingItem.SampleUrl != null ? VirtualPathUtility.ToAbsolute(item.BonusAwardingItem.SampleUrl) : null)" alt="Unsplashed background img 1"></div>
+                        </div>
+                    </div>
+                    <!-- // End of ＩＭＧ -->
+                }
+            }
+            else
+            {
+                <img class="responsive-img nodata" src="images/nodata.png">
+                <p class="collection center">
+                    <span class="gray-t16">Oooops！！裝備等著你來換喔！</span>
+                </p>
+            }
+            <!-- 問題 -->
+        </div>
+        <!--//End of QA info-->
+    </div>
+</div>
+<!-- //End of 登入 - TAB -->
+
+@section TailPageJavaScriptInclude
+{
+    <script>
+
+        function writeOff(itemID) {
+            showLoading();
+            $.post('@(Url.Action("WriteOffBonusPoint", "CornerKick"))', { 'itemID': itemID }, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    alert(data.message);
+                } else {
+                    $(data).appendTo($('body'));
+                }
+            });
+        }
+
+    </script>
+    @if (_viewModel?.LineID != null)
+    {
+        <script>
+            gtag('event', '已兌換裝備', {
+                'event_category': '卡片點擊',
+                'event_label': 'LINE圖文選單'
+            });
+        </script>
+    }
+    @if (_viewModel.ViewAward == true)
+    {
+        <script>
+            $(function () {
+                $('a:contains("已兌換裝備")').click();
+            });
+        </script>
+    }
+}

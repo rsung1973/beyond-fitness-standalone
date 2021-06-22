@@ -39,7 +39,7 @@
                         <label class="select">
                             <select name="SellerID">
                                 <%  var w = models.GetTable<CoachWorkplace>().Where(c => c.CoachID == _profile.UID).FirstOrDefault();
-                                    Html.RenderPartial("~/Views/SystemInfo/BranchStoreOptions.ascx", model: w != null ? w.BranchID : -1); %>
+                                    Html.RenderPartial("~/Views/SystemInfo/BranchStoreOptions.cshtml", model: w != null ? w.BranchID : -1); %>
                             </select>
                             <i class="icon-append fa fa-at"></i>
                         </label>

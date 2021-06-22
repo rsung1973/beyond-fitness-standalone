@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using WebHome.Models.DataEntity;
 using WebHome.Models.Locale;
 
 namespace WebHome.Models.ViewModel
@@ -25,7 +26,7 @@ namespace WebHome.Models.ViewModel
     public class CourseContractViewModel : QueryViewModel
     {
         public int? ContractID { get; set; }
-        public int? ContractType { get; set; } = 1;
+        public CourseContractType.ContractTypeDefinition? ContractType { get; set; } = CourseContractType.ContractTypeDefinition.CPA;
         public DateTime? ContractDate { get; set; }
         public String Subject { get; set; }
         public DateTime? ValidFrom { get; set; }
@@ -54,6 +55,7 @@ namespace WebHome.Models.ViewModel
         public bool? Extension { get; set; }
         public bool? Booking { get; set; }
         public bool? Cancel { get; set; }
+        public bool? Agree { get; set; }
         public String PriceName { get; set; }
         public int? InstallmentID { get; set; }
         public int? ManagerID { get; set; }
@@ -69,6 +71,7 @@ namespace WebHome.Models.ViewModel
         public Naming.CauseForEnding? CauseForEnding { get; set; }
         public int? MemberID { get; set; }
         public bool? PartialEffectiive { get; set; }
+        public bool?SignOnline { get; set; }
     }
 
     public class CourseContractQueryViewModel : CourseContractViewModel
@@ -116,6 +119,7 @@ namespace WebHome.Models.ViewModel
     {
         public int? UID { get; set; }
         public String Signature { get; set; }
+        public int? SignatureCount { get; set; }
     }
 
 

@@ -49,7 +49,7 @@
                                         <label class="select">
                                             <select name="AskerID">
                                                 <option value="">全部</option>
-                                                <%  Html.RenderPartial("~/Views/SystemInfo/ServingCoachOptions.ascx", models.GetTable<ServingCoach>());   %>
+                                                <%  Html.RenderPartial("~/Views/SystemInfo/ServingCoachOptions.cshtml", models.GetTable<ServingCoach>());   %>
                                             </select>
                                             <%  if (_viewModel.AskerID.HasValue)
                                                 { %>

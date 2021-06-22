@@ -34,7 +34,7 @@ namespace WebHome.Controllers
             var model = models.GetTable<UserProfile>().Where(u => u.UID == viewModel.UID).FirstOrDefault();
             if(model==null)
             {
-                return View("~/Views/Shared/JsAlert.ascx", model: "學員資料錯誤!!");
+                return View("~/Views/Shared/JsAlert.cshtml", model: "學員資料錯誤!!");
             }
 
             BodyDiagnosis item;
@@ -124,7 +124,7 @@ namespace WebHome.Controllers
                 && u.DiagnosisID==viewModel.DiagnosisID).FirstOrDefault();
             if (item == null)
             {
-                return View("~/Views/Shared/JsAlert.ascx", model: "診斷資料錯誤!!");
+                return View("~/Views/Shared/JsAlert.cshtml", model: "診斷資料錯誤!!");
             }
 
             BodyDiagnosis first = models.GetTable<BodyDiagnosis>().Where(u => u.LearnerID == viewModel.UID)
@@ -142,7 +142,7 @@ namespace WebHome.Controllers
                 && u.DiagnosisID == viewModel.DiagnosisID).FirstOrDefault();
             if (item == null)
             {
-                return View("~/Views/Shared/JsAlert.ascx", model: "診斷資料錯誤!!");
+                return View("~/Views/Shared/JsAlert.cshtml", model: "診斷資料錯誤!!");
             }
 
             ViewBag.ViewModel = viewModel;
@@ -170,7 +170,7 @@ namespace WebHome.Controllers
             var item = models.GetTable<BodyDiagnosis>().Where(u => u.DiagnosisID == viewModel.DiagnosisID).FirstOrDefault();
             if (item == null)
             {
-                return View("~/Views/Shared/JsAlert.ascx", model: "診斷資料錯誤!!");
+                return View("~/Views/Shared/JsAlert.cshtml", model: "診斷資料錯誤!!");
             }
 
             var assessment = item.DiagnosisAssessment.Where(d => d.ItemID == viewModel.ItemID).FirstOrDefault();

@@ -51,15 +51,15 @@
                                                 <option value="">全部</option>
                                                 <%  if (_profile.IsAssistant() || _profile.IsOfficer())
                                                     {
-                                                        Html.RenderPartial("~/Views/SystemInfo/ServingCoachOptions.ascx", models.GetTable<ServingCoach>());
+                                                        Html.RenderPartial("~/Views/SystemInfo/ServingCoachOptions.cshtml", models.GetTable<ServingCoach>());
                                                     }
                                                     else if (_profile.IsManager() || _profile.IsViceManager())
                                                     {
-                                                        Html.RenderPartial("~/Views/SystemInfo/ServingCoachOptions.ascx", _profile.GetServingCoachInSameStore(models));
+                                                        Html.RenderPartial("~/Views/SystemInfo/ServingCoachOptions.cshtml", _profile.GetServingCoachInSameStore(models));
                                                     }
                                                     else
                                                     {
-                                                        Html.RenderPartial("~/Views/SystemInfo/ServingCoachOptions.ascx", models.GetTable<ServingCoach>().Where(c => c.CoachID == _profile.UID));
+                                                        Html.RenderPartial("~/Views/SystemInfo/ServingCoachOptions.cshtml", models.GetTable<ServingCoach>().Where(c => c.CoachID == _profile.UID));
                                                     } %>                                            
                                             </select>
                                             <%  if (_profile.IsCoach())

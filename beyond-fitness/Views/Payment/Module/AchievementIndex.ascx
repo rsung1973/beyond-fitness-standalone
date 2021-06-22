@@ -56,15 +56,15 @@
                                                 <%  } %>
                                                 <%  if (_profile.IsAssistant() || _profile.IsAccounting())
                                                     {
-                                                        Html.RenderPartial("~/Views/SystemInfo/ServingCoachOptions.ascx", models.GetTable<ServingCoach>());
+                                                        Html.RenderPartial("~/Views/SystemInfo/ServingCoachOptions.cshtml", models.GetTable<ServingCoach>());
                                                     }
                                                     else if (_profile.IsManager())
                                                     {
-                                                        Html.RenderPartial("~/Views/SystemInfo/ServingCoachOptions.ascx", _profile.GetServingCoachInSameStore(models));
+                                                        Html.RenderPartial("~/Views/SystemInfo/ServingCoachOptions.cshtml", _profile.GetServingCoachInSameStore(models));
                                                     }
                                                     else
                                                     {
-                                                        Html.RenderPartial("~/Views/SystemInfo/ServingCoachOptions.ascx", models.GetTable<ServingCoach>().Where(c => c.CoachID == _profile.UID));
+                                                        Html.RenderPartial("~/Views/SystemInfo/ServingCoachOptions.cshtml", models.GetTable<ServingCoach>().Where(c => c.CoachID == _profile.UID));
                                                     } %>
                                             </select>
                                             <i class="icon-append far fa-keyboard"></i>
@@ -91,7 +91,7 @@
                                         <label class="select">
                                             <select name="BranchID">
                                                 <option value="">全部</option>
-                                                <%  Html.RenderPartial("~/Views/SystemInfo/BranchStoreOptions.ascx", model: -1);    %>
+                                                <%  Html.RenderPartial("~/Views/SystemInfo/BranchStoreOptions.cshtml", model: -1);    %>
                                             </select>
                                             <i class="icon-append far fa-keyboard"></i>
                                         </label>
@@ -101,7 +101,7 @@
                                     {
                                         //ViewBag.DataItems = models.GetTable<CoachWorkplace>().Where(w => w.CoachID == _profile.UID)
                                             //.Select(w => w.BranchStore);
-                                        //Html.RenderPartial("~/Views/SystemInfo/BranchStoreOptions.ascx", model: -1);
+                                        //Html.RenderPartial("~/Views/SystemInfo/BranchStoreOptions.cshtml", model: -1);
                                     }   %>
                                 </div>
                             </fieldset>

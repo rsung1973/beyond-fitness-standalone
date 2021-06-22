@@ -209,7 +209,9 @@ namespace WebHome.Controllers
         public ActionResult ListLessonPrice(CourseContractQueryViewModel viewModel)
         {
             ViewBag.ViewModel = viewModel;
-            if (!viewModel.BranchID.HasValue)
+            var branch = models.GetTable<BranchStore>()
+                .Where(b => b.BranchID == viewModel.BranchID).FirstOrDefault();
+            if (branch == null)
             {
                 ModelState.AddModelError("BranchID", "請選擇上課場所");
             }
@@ -224,9 +226,49 @@ namespace WebHome.Controllers
                 return View(ConsoleHomeController.InputErrorView);
             }
 
-            IQueryable<LessonPriceType> items = models.PromptEffectiveLessonPrice()
-                .Where(p => p.BranchID == viewModel.BranchID)
+            IQueryable<LessonPriceType> items = models.GetTable<LessonPriceType>()
                 .Where(l => !l.DurationInMinutes.HasValue || l.DurationInMinutes == viewModel.DurationInMinutes);
+
+            if(viewModel.ContractType == CourseContractType.ContractTypeDefinition.CGA)
+            {
+                var catalog = models.GetTable<ObjectiveLessonPrice>().Where(l => l.CatalogID == (int)ObjectiveLessonCatalog.CatalogDefinition.LessonPackage)
+                                .Select(l => l.PriceID);
+                items = items
+                    .Where(p => p.BranchID == viewModel.BranchID)
+                    .Where(p => catalog.Contains(p.PriceID));
+
+                if(items.Any())
+                {
+                    return View("~/Views/ContractConsole/ContractModal/ListLessonPackagePrice.cshtml", items);
+                }
+                else
+                {
+                    return Json(new { result = false, message = "無相符條件的項目!" }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            else if (viewModel.ContractType == CourseContractType.ContractTypeDefinition.CNA)
+            {
+                var catalog = models.GetTable<ObjectiveLessonPrice>().Where(l => l.CatalogID == (int)ObjectiveLessonCatalog.CatalogDefinition.DietaryConsult)
+                                .Select(l => l.PriceID);
+                items = items
+                    .Where(p => p.BranchID == viewModel.BranchID)
+                    .Where(p => catalog.Contains(p.PriceID));
+
+                if (items.Any())
+                {
+                    return View("~/Views/ContractConsole/ContractModal/ListLessonBundlePrice.cshtml", items);
+                }
+                else
+                {
+                    return Json(new { result = false, message = "無相符條件的項目!" }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            else
+            {
+                items = models.PromptEffectiveLessonPrice()
+                    .Where(p => p.BranchID == viewModel.BranchID)
+                    .Where(l => !l.DurationInMinutes.HasValue || l.DurationInMinutes == viewModel.DurationInMinutes);
+            }
 
             return View("~/Views/ContractConsole/ContractModal/ListLessonPrice.cshtml", items);
         }
@@ -236,12 +278,23 @@ namespace WebHome.Controllers
             ViewBag.ViewModel = viewModel;
 
             var item = models.GetTable<LessonPriceType>().Where(p => p.PriceID == viewModel.PriceID).FirstOrDefault();
-            viewModel.TotalCost = item?.ListPrice * viewModel.Lessons;
 
-            var typeItem = models.GetTable<CourseContractType>().Where(t => t.TypeID == viewModel.ContractType).FirstOrDefault();
-            if (typeItem != null)
+            if (item != null)
             {
-                viewModel.TotalCost = viewModel.TotalCost * typeItem.GroupingMemberCount * typeItem.GroupingLessonDiscount.PercentageOfDiscount / 100;
+                if (item.IsPackagePrice || item.IsDietaryConsult)
+                {
+                    viewModel.TotalCost = item.ListPrice;
+                }
+                else
+                {
+                    viewModel.TotalCost = item.ListPrice * viewModel.Lessons;
+
+                    var typeItem = models.GetTable<CourseContractType>().Where(t => t.TypeID == (int?)viewModel.ContractType).FirstOrDefault();
+                    if (typeItem != null)
+                    {
+                        viewModel.TotalCost = viewModel.TotalCost * typeItem.GroupingMemberCount * typeItem.GroupingLessonDiscount.PercentageOfDiscount / 100;
+                    }
+                }
             }
 
             return View("~/Views/ContractConsole/Editing/TotalCostSummary.cshtml");

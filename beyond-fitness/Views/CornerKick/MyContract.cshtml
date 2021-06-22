@@ -18,7 +18,8 @@
     _modelState = (ModelStateDictionary)ViewBag.ModelState;
     models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
     _model = (IQueryable<CourseContract>)this.Model;
-    UserProfile profile = Context.GetUser();
+    IQueryable<RegisterLesson> lessons = ViewBag.DataItems as IQueryable<RegisterLesson>;
+    UserProfile profile = Context.GetUser().LoadInstance(models);
 }
 <!DOCTYPE html>
 <html>
@@ -95,13 +96,12 @@
                         <div class="container">
                             <ul>
                                 @{
-                                    var currentFeedback = models.GetTable<RegisterLesson>()
-                                            .Where(r => r.UID == profile.UID)
+                                    var lessonItems = lessons
                                             .Join(models.GetTable<ObjectiveLessonPrice>()
                                                 .Where(c => c.CatalogID == (int)ObjectiveLessonCatalog.CatalogDefinition.OnLineFeedback),
                                                 r => r.ClassLevel, c => c.PriceID, (r, c) => r);
 
-                                    foreach (var item in currentFeedback)
+                                    foreach (var item in lessonItems)
                                     {
                                         if (item.RemainedLessonCount() == 0)
                                         {
@@ -122,6 +122,21 @@
                                     }
                                 }
                                 @{
+                                    lessonItems = lessons.Where(r => r.LessonPriceType.IsWelfareGiftLesson != null);
+
+                                    foreach (var item in lessonItems)
+                                    {
+                                        if (item.RemainedLessonCount() == 0)
+                                        {
+                                            continue;
+                                        }
+                                        <li>
+                                            <i class="livicon-evo prefix" data-options="name: gift.svg; size: 30px; style: original; autoPlay:true"></i>
+                                            <a>員工福利課 - @(item.RemainedLessonCount())/@(item.Lessons)</a>
+                                        </li>
+                                    }
+                                }
+                                @{
                                     unpaid = unpaid.Where(c => c.PayoffDue < DateTime.Today.AddMonths(1)).ToList();
                                     unpaidCount = unpaid.Count();
                                 }
@@ -133,6 +148,7 @@
                                         <li>
                                             <i class="livicon-evo prefix" data-options="name: alarm.svg; size: 30px; style: original; autoPlay:true"></i>
                                             <a>@(item.ContractName()) - @(item.RemainedLessonCount())/@(item.Lessons)</a>
+                                            <a href="@Html.Raw(Url.Action("GetContractPdf", "CourseContract", new { KeyID = item.ContractID.EncryptKey() }))" target="_blank"><i class="material-icons right">attachment</i></a>
                                             <div class="desc">
                                                 <span class="f-red"><i class="material-icons">warning</i> 提醒您合約繳款截止日即將於@($"{item.PayoffDue:yyyy/MM/dd}")到期，請記得聯絡您的教練喔！</span>
                                                 @(WriteContractContent(item))
@@ -151,6 +167,7 @@
                                         <li>
                                             <i class="livicon-evo prefix" data-options="name: notebook.svg; size: 30px; style: lines-alt; autoPlay:true"></i>
                                             <a>@(item.ContractName()) - @(item.RemainedLessonCount())/@(item.Lessons)</a>
+                                            <a href="@Html.Raw(Url.Action("GetContractPdf", "CourseContract", new { KeyID = item.ContractID.EncryptKey() }))" target="_blank"><i class="material-icons right">attachment</i></a>
                                             <div class="desc">
                                                 <span class="f-red"><i class="material-icons">warning</i> 提醒您合約上課截止日即將於@($"{item.Expiration:yyyy/MM/dd}")到期，請記得聯絡您的教練喔！</span>
                                                 @(WriteContractContent(item))
@@ -163,6 +180,7 @@
                                     <li>
                                         <i class="livicon-evo prefix" data-options="name: notebook.svg; size: 30px; style: lines-alt; autoPlay:true"></i>
                                         <a>@(item.ContractName()) - @(item.RemainedLessonCount())/@(item.Lessons)</a>
+                                        <a href="@Html.Raw(Url.Action("GetContractPdf", "CourseContract", new { KeyID = item.ContractID.EncryptKey() }))" target="_blank"><i class="material-icons right">attachment</i></a>
                                         <div class="desc">
                                             @(WriteContractContent(item))
                                         </div>
@@ -223,7 +241,10 @@
     </script>
 </body>
 </html>
-@{ Html.RenderPartial("~/Views/Common/JQueryHelper.cshtml");}
+@{ 
+    Html.RenderPartial("~/Views/Common/JQueryHelper.cshtml");
+    Html.RenderPartial("~/Views/CornerKick/Module/ModeGirls.cshtml", profile);
+    }
 
 @helper WriteContractContent(CourseContract item)
 {

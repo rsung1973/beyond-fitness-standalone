@@ -315,10 +315,15 @@ namespace WebHome.Helper
         }
 
 
-        public static IQueryable<LessonPriceType> PromptEffectiveLessonPrice<TEntity>(this ModelSource<TEntity> models)
+        public static IQueryable<LessonPriceType> PromptEffectiveLessonPrice<TEntity>(this ModelSource<TEntity> models,IQueryable<LessonPriceType> items = null)
                 where TEntity : class, new()
         {
-            return models.GetTable<LessonPriceType>()
+            if(items==null)
+            {
+                items = models.GetTable<LessonPriceType>();
+            }
+
+            return items
                 .Where(l => l.Status == (int)Naming.LessonSeriesStatus.已啟用)
                 .Where(l => l.LowerLimit.HasValue && (!l.SeriesID.HasValue || l.CurrentPriceSeries.Status == (int)Naming.LessonSeriesStatus.已啟用));
         }
@@ -342,8 +347,8 @@ namespace WebHome.Helper
         public static IQueryable<CourseContract> FilterByAlarmedContract<TEntity>(this IQueryable<CourseContract> items, ModelSource<TEntity> models, int alarmCount)
             where TEntity : class, new()
         {
-            var c0 = items.Where(c => c.ContractType == (int)Naming.ContractTypeDefinition.CFA);
-            var c1 = items.Where(c => c.ContractType != (int)Naming.ContractTypeDefinition.CFA);
+            var c0 = items.Where(c => c.ContractType == (int)CourseContractType.ContractTypeDefinition.CFA);
+            var c1 = items.Where(c => c.ContractType != (int)CourseContractType.ContractTypeDefinition.CFA);
 
             var c2 = c0.Select(c => new { Contract = c, RemainedCount = c.Lessons - c.RegisterLessonContract.Sum(l => l.RegisterLesson.LessonTime.Count()) })
                         .Concat(c1.Select(c => new { Contract = c, RemainedCount = c.Lessons - c.RegisterLessonContract.First().RegisterLesson.GroupingLesson.LessonTime.Count }));

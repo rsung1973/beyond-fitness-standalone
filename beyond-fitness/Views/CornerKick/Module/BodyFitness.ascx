@@ -38,7 +38,7 @@
         <div class="parallax white"></div>
     </div>
 </div>
-<%  Html.RenderPartial("~/Views/Shared/InitBarChartNoRegister.ascx"); %>
+<%  Html.RenderPartial("~/Views/Shared/InitBarChartNoRegister.cshtml"); %>
 
 <script runat="server">
 

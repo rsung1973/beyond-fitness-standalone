@@ -28662,3 +28662,53 @@ ul.list-style1 li span {
     background-color: #05232d !important;
     color: aliceblue !important;
 }
+
+/**
+* Imag rounded-circle
+*/
+
+.rounded-circle.sizefixed {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+}
+
+/**
+* ECharts 
+*/
+
+.echarts {
+    width: 100%;
+    min-height: 400px;
+}
+
+/**
+* list-style-checked
+*/
+ul.checked-style {
+    list-style-position: outside;
+    padding-left: 1.8em;
+    list-style: none;
+}
+
+ul.checked-style li::before {
+    font: normal normal normal 14px/1 'Material-Design-Iconic-Font';
+    content: "\f26b";
+    display: inline-block;
+    width: 0;
+    text-indent: -1.33em;
+    font-weight: 800;
+    font-size: 18px;
+}
+
+ul.checked-style li.closed::before {
+    font: normal normal normal 14px/1 'Material-Design-Iconic-Font';
+    content: "\f136";
+    color: #ec3b57;
+    font-weight: 800;
+    font-size: 18px;
+}
+
+ul.checked-style li.closed {    
+    color: #ec3b57;
+}

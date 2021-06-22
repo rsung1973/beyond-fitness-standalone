@@ -20,6 +20,7 @@ using CommonLib.MvcExtension;
 using Newtonsoft.Json;
 using Utility;
 using WebHome.Helper;
+using WebHome.Helper.BusinessOperation;
 using WebHome.Models.DataEntity;
 using WebHome.Models.Locale;
 using WebHome.Models.Timeline;
@@ -179,7 +180,7 @@ namespace WebHome.Controllers
             {
                 ViewBag.ModelState = this.ModelState;
                 ViewBag.SingleError = true;
-                return View("~/Views/Shared/Materialize/ReportInputError.ascx");
+                return View("~/Views/CornerKick/Shared/ReportInputError.cshtml");
             }
 
             UserProfile item = models.EntityList.Where(u => u.MemberCode == viewModel.MemberCode
@@ -189,7 +190,7 @@ namespace WebHome.Controllers
             {
                 ModelState.AddModelError("PID", "您輸入的資料錯誤，請確認後再重新輸入!!");
                 ViewBag.ModelState = this.ModelState;
-                return View("~/Views/Shared/Materialize/ReportInputError.ascx");
+                return View("~/Views/CornerKick/Shared/ReportInputError.cshtml");
             }
 
             if (item.UserProfileExtension.LineID != null)
@@ -236,7 +237,7 @@ namespace WebHome.Controllers
             {
                 ViewBag.ModelState = this.ModelState;
                 ViewBag.SingleError = true;
-                return View("~/Views/Shared/Materialize/ReportInputError.ascx");
+                return View("~/Views/CornerKick/Shared/ReportInputError.cshtml");
             }
 
             if (item.PID != viewModel.PID)
@@ -292,7 +293,7 @@ namespace WebHome.Controllers
             {
                 ViewBag.ModelState = this.ModelState;
                 ViewBag.SingleError = true;
-                return View("~/Views/Shared/Materialize/ReportInputError.ascx");
+                return View("~/Views/CornerKick/Shared/ReportInputError.cshtml");
             }
 
             UserProfile item = models.EntityList.Where(u => u.MemberCode == viewModel.MemberCode
@@ -302,7 +303,7 @@ namespace WebHome.Controllers
             {
                 ModelState.AddModelError("PID", "您輸入的資料錯誤，請確認後再重新輸入!!");
                 ViewBag.ModelState = this.ModelState;
-                return View("~/Views/Shared/Materialize/ReportInputError.ascx");
+                return View("~/Views/CornerKick/Shared/ReportInputError.cshtml");
             }
 
             if (models.EntityList.Any(u => u.PID == viewModel.PID && u.UID != item.UID))
@@ -339,7 +340,7 @@ namespace WebHome.Controllers
             {
                 ViewBag.ModelState = this.ModelState;
                 ViewBag.SingleError = true;
-                return View("~/Views/Shared/Materialize/ReportInputError.ascx");
+                return View("~/Views/CornerKick/Shared/ReportInputError.cshtml");
             }
 
             if (item.PID != viewModel.PID)
@@ -397,7 +398,7 @@ namespace WebHome.Controllers
             if (!ModelState.IsValid)
             {
                 ViewBag.ModelState = this.ModelState;
-                return View("~/Views/Shared/Materialize/ReportInputError.ascx");
+                return View("~/Views/CornerKick/Shared/ReportInputError.cshtml");
             }
             
             item.UserName = viewModel.UserName;
@@ -420,7 +421,7 @@ namespace WebHome.Controllers
             if (item != null)
             {
                 HttpContext.SignOn(item);
-                return View(item);
+                return View("~/Views/CornerKick/Notice.cshtml", item);
             }
             else
             {
@@ -506,8 +507,14 @@ namespace WebHome.Controllers
             var profile = HttpContext.GetUser();
             var items = models.PromptEffectiveContract()
                 .Where(c => c.CourseContractMember.Any(m => m.UID == profile.UID));
-            if (items.Count() > 0)
+
+            var lessons = models.GetTable<RegisterLesson>()
+                .Where(r => r.UID == profile.UID)
+                .Where(r => r.Attended != (int)Naming.LessonStatus.課程結束);
+
+            if (items.Count() > 0 || lessons.Count() > 0)
             {
+                ViewBag.DataItems = lessons;
                 return View("~/Views/CornerKick/MyContract.cshtml", items);
             }
             else
@@ -521,6 +528,126 @@ namespace WebHome.Controllers
             }
         }
 
+        [Authorize]
+        public ActionResult SignCourseContract(CourseContractQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            if (viewModel.KeyID != null)
+            {
+                viewModel.ContractID = viewModel.DecryptKeyValue();
+            }
+
+            var profile = HttpContext.GetUser();
+
+            var item = models.GetTable<CourseContract>()
+                .Where(c => c.ContractID == viewModel.ContractID)
+                .Where(c => c.CourseContractMember.Any(m => m.UID == profile.UID))
+                .FirstOrDefault();
+
+            if (item == null)
+            {
+                ViewBag.ViewModel = new DataItemViewModel
+                {
+                    Title = "我的合約",
+                    Message = "目前尚未規劃任何訓練，<br/>若有興趣請與您的教練一起規劃訓練內容喔！",
+                };
+                return View("~/Views/CornerKick/DataNotFound.cshtml");
+            }
+
+            return View("~/Views/CornerKick/SignCourseContract.cshtml", item);
+        }
+
+        [Authorize]
+        public ActionResult ConfirmSignature(CourseContractViewModel viewModel, CourseContractSignatureViewModel signatureViewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+
+            if (viewModel.Agree != true)
+            {
+                ModelState.AddModelError("Message", "請勾選同意聲明!!");
+                ViewBag.AlertError = true;
+                ViewBag.ModelState = this.ModelState;
+                return View("~/Views/CornerKick/Shared/ReportInputError.cshtml");
+            }
+
+            if (viewModel.KeyID != null)
+            {
+                viewModel.ContractID = viewModel.DecryptKeyValue();
+            }
+
+            CourseContract item = models.GetTable<CourseContract>().Where(c => c.ContractID == viewModel.ContractID).FirstOrDefault();
+
+            if (item == null)
+            {
+                ModelState.AddModelError("Message", "合約資料錯誤!!");
+                ViewBag.AlertError = true;
+                ViewBag.ModelState = this.ModelState;
+                return View("~/Views/CornerKick/Shared/ReportInputError.cshtml");
+            }
+
+            if(item.InstallmentID.HasValue)
+            {
+                foreach(var c in models.GetTable<CourseContract>().Where(c => c.InstallmentID == item.InstallmentID))
+                {
+                    var contract = commitSignature(viewModel, signatureViewModel, c, out String alertMessage);
+                    if (contract == null)
+                    {
+                        ModelState.AddModelError("Message", alertMessage);
+                        ViewBag.AlertError = true;
+                        ViewBag.ModelState = this.ModelState;
+                        return View("~/Views/CornerKick/Shared/ReportInputError.cshtml");
+                    }
+                }
+            }
+            else
+            {
+                item = commitSignature(viewModel, signatureViewModel, item, out String alertMessage);
+                if (item == null)
+                {
+                    ModelState.AddModelError("Message", alertMessage);
+                    ViewBag.AlertError = true;
+                    ViewBag.ModelState = this.ModelState;
+                    return View("~/Views/CornerKick/Shared/ReportInputError.cshtml");
+                }
+            }
+
+            ViewBag.ViewModel = new QueryViewModel
+            {
+                UrlAction = Url.Action("MyContract"),
+            };
+            return View("~/Views/CornerKick/Shared/ViewModelCommitted.cshtml");
+        }
+
+        private CourseContract commitSignature(CourseContractViewModel viewModel, CourseContractSignatureViewModel signatureViewModel, CourseContract item,out String alertMessage)
+        {
+            var profile = HttpContext.GetUser();
+
+            for (int i = 0; i < (signatureViewModel.SignatureCount ?? 1); i++)
+            {
+                String signatureName = $"{signatureViewModel.SignatureName}{i:#}";
+                var sigItem = models.GetTable<CourseContractSignature>()
+                    .Where(s => s.ContractID == item.ContractID)
+                    .Where(s => s.UID == profile.UID)
+                    .Where(s => s.SignatureName == signatureName)
+                    .FirstOrDefault();
+
+                if (sigItem == null)
+                {
+                    sigItem = new CourseContractSignature
+                    {
+                        ContractID = item.ContractID,
+                        UID = profile.UID,
+                        SignatureName = signatureName,
+                    };
+                    models.GetTable<CourseContractSignature>().InsertOnSubmit(sigItem);
+                }
+
+                sigItem.Signature = signatureViewModel.Signature;
+                models.SubmitChanges();
+            }
+
+            return viewModel.ConfirmContractSignature(this, out alertMessage, out String pdfFile, item);
+        }
 
         [Authorize]
         public ActionResult CommitAnswerDailyQuestion(DailyQuestionViewModel viewModel)
@@ -573,7 +700,7 @@ namespace WebHome.Controllers
         public ActionResult LearnerIndex()
         {
             var profile = HttpContext.GetUser().LoadInstance(models);
-            return View(profile);
+            return View("~/Views/CornerKick/LearnerIndex.cshtml", profile);
         }
 
         public ActionResult Logout(RegisterViewModel viewModel,String message = null)
@@ -587,7 +714,7 @@ namespace WebHome.Controllers
         public ActionResult LearnerNotice()
         {
             var profile = HttpContext.GetUser().LoadInstance(models);
-            return View("Notice", profile);
+            return View("~/Views/CornerKick/Notice.cshtml", profile);
         }
 
         public ActionResult ResetPassword(RegisterViewModel viewModel)
@@ -665,7 +792,7 @@ namespace WebHome.Controllers
             {
                 ViewBag.ModelState = this.ModelState;
                 ViewBag.SingleError = true;
-                return View("~/Views/Shared/Materialize/ReportInputError.ascx");
+                return View("~/Views/CornerKick/Shared/ReportInputError.cshtml");
             }
 
             models.SubmitChanges();
@@ -772,8 +899,18 @@ namespace WebHome.Controllers
 
             ViewBag.DataItem = models.GetTable<LessonTime>().Where(l => l.LessonID == viewModel.LessonID).FirstOrDefault();
             var profile = HttpContext.GetUser().LoadInstance(models);
-            return View("TodayLesson", profile);
+            return View("~/Views/CornerKick/TodayLesson.cshtml", profile);
         }
+
+        [Authorize]
+        public ActionResult AboutOnlineLesson(LessonTimeBookingViewModel viewModel)
+        {
+            ViewResult result = (ViewResult)ViewLesson(viewModel);
+            result.ViewName = "~/Views/CornerKick/AboutOnlineLesson.cshtml";
+
+            return result;
+        }
+
 
         public ActionResult SignOn(LoginViewModel viewModel, string returnUrl)
         {
@@ -809,7 +946,7 @@ namespace WebHome.Controllers
             {
                 ModelState.AddModelError("email", "請輸入您的 email address");
                 ViewBag.ModelState = this.ModelState;
-                return View("~/Views/Shared/Materialize/ReportInputError.ascx");
+                return View("~/Views/CornerKick/Shared/ReportInputError.cshtml");
             }
 
 
@@ -820,7 +957,7 @@ namespace WebHome.Controllers
             {
                 ModelState.AddModelError("email", "您輸入的資料錯誤，請確認後再重新輸入!!");
                 ViewBag.ModelState = this.ModelState;
-                return View("~/Views/Shared/Materialize/ReportInputError.ascx");
+                return View("~/Views/CornerKick/Shared/ReportInputError.cshtml");
             }
 
             ResetPassword toReset = new ResetPassword
@@ -834,7 +971,7 @@ namespace WebHome.Controllers
 
             toReset.NotifyResetPassword(notifyUrl:$"{WebHome.Properties.Settings.Default.HostDomain}{VirtualPathUtility.ToAbsolute("~/CornerKick/NotifyResetPassword")}");
 
-            return View("~/Views/Shared/JsAlert.ascx", model: "重設密碼通知郵件已寄出!!");
+            return View("~/Views/Shared/JsAlert.cshtml", model: "重設密碼通知郵件已寄出!!");
 
         }
 
@@ -921,7 +1058,7 @@ namespace WebHome.Controllers
             if (!ModelState.IsValid)
             {
                 ViewBag.ModelState = ModelState;
-                return View("~/Views/Shared/Materialize/ReportInputError.ascx");
+                return View("~/Views/CornerKick/Shared/ReportInputError.cshtml");
             }
 
             var item = models.GetTable<UserEvent>().Where(u => u.EventID == viewModel.EventID).FirstOrDefault();
@@ -959,7 +1096,7 @@ namespace WebHome.Controllers
             if (lessonItem != null)
             {
                 ViewBag.DataItem = lessonItem;
-                return View("TodayLesson", profile.LoadInstance(models));
+                return View("~/Views/CornerKick/TodayLesson.cshtml", profile.LoadInstance(models));
             }
 
             return View("LearnerCalendar", profile.LoadInstance(models));

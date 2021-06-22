@@ -1858,11 +1858,20 @@ namespace WebHome.Helper
             return items;
         }
 
-        public static IQueryable<CourseContract> PromptContractToSign<TEntity>(this ModelSource<TEntity> models)
+        public static IQueryable<CourseContract> PromptContractToSign<TEntity>(this ModelSource<TEntity> models,bool forInstallmentPlan = false)
             where TEntity : class, new()
         {
             var items = models.PromptContract()
                 .Where(c => c.Status == (int)Naming.CourseContractStatus.待簽名);
+
+            if (forInstallmentPlan)
+            {
+                items = items.Where(c => !models.GetTable<CourseContract>()
+                        .Where(r => r.Status != (int)Naming.CourseContractStatus.待簽名)
+                        .Where(n => n.InstallmentID.HasValue)
+                        .Where(n => n.InstallmentID == c.InstallmentID)
+                        .Any());
+            }
             return items;
         }
 
@@ -2153,10 +2162,22 @@ namespace WebHome.Helper
             return items;
         }
 
-        public static LessonPriceType CurrentTrialLessonPrice<TEntity>(this ModelSource<TEntity> models)
+        public static LessonPriceType CurrentTrialLessonPrice<TEntity>(this ModelSource<TEntity> models, bool isVirtual = false,int? priceID = null)
             where TEntity : class, new()
         {
-            return models.GetTable<LessonPriceType>().Where(p => p.Status == (int)Naming.DocumentLevelDefinition.體驗課程).FirstOrDefault();
+            IQueryable<LessonPriceType> items = models.GetTable<LessonPriceType>().Where(p => p.Status == (int)Naming.DocumentLevelDefinition.體驗課程);
+
+            if (priceID.HasValue)
+            {
+                items = items.Where(p => p.PriceID == priceID);
+            }
+
+            if (isVirtual)
+            {
+                items = items.Where(l => models.GetTable<ObjectiveLessonPrice>()
+                                .Any(t => t.CatalogID == (int)ObjectiveLessonCatalog.CatalogDefinition.OnLine && t.PriceID == l.PriceID));
+            }
+            return items.FirstOrDefault();
         }
 
         public static LessonPriceType CurrentSessionPrice<TEntity>(this ModelSource<TEntity> models, Naming.LessonPriceStatus sessionStatus = Naming.LessonPriceStatus.自主訓練,int? priceID = null)
@@ -2500,7 +2521,7 @@ namespace WebHome.Helper
             where TEntity : class, new()
         {
             return models.GetTable<BranchStore>()
-                .Where(b => (b.Status & (int)BranchStore.StatusDefinition.CurrentDisabled) == (int)BranchStore.StatusDefinition.CurrentDisabled);
+                .Where(b => (b.Status & (int)BranchStore.StatusDefinition.CurrentDisabled) == 0);
         }
 
         public static IQueryable<BranchStore> PromptVirtualClassOccurrence<TEntity>(this ModelSource<TEntity> models)
@@ -2509,6 +2530,15 @@ namespace WebHome.Helper
             return models.GetTable<BranchStore>()
                 .Join(models.GetTable<ObjectiveLessonLocation>().Where(c => c.CatalogID == (int)ObjectiveLessonCatalog.CatalogDefinition.OnLine),
                     b => b.BranchID, c => c.BranchID, (b, c) => b);
+        }
+
+        public static bool IsVirtualClassOccurrence<TEntity>(this ModelSource<TEntity> models,BranchStore store)
+            where TEntity : class, new()
+        {
+            return models.GetTable<ObjectiveLessonLocation>()
+                .Where(c => c.CatalogID == (int)ObjectiveLessonCatalog.CatalogDefinition.OnLine)
+                .Where(b => b.BranchID == store.BranchID)
+                .Any();
         }
 
 

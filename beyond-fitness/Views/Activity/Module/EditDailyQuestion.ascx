@@ -17,7 +17,7 @@
                     <label class="select">
                         <select name="AskerID" class="input">
                             <option value="">請選擇體能顧問</option>
-                            <%  Html.RenderPartial("~/Views/SystemInfo/ServingCoachOptions.ascx", models.GetTable<ServingCoach>()); %>
+                            <%  Html.RenderPartial("~/Views/SystemInfo/ServingCoachOptions.cshtml", models.GetTable<ServingCoach>()); %>
                         </select>
                         <i class="icon-append far fa-keyboard"></i>
                     </label>

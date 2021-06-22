@@ -20,6 +20,7 @@ using CommonLib.MvcExtension;
 using Newtonsoft.Json;
 using Utility;
 using WebHome.Controllers;
+using WebHome.Controllers.Base;
 using WebHome.Helper;
 using WebHome.Helper.BusinessOperation;
 using WebHome.Models.DataEntity;
@@ -32,7 +33,7 @@ using WebHome.Security.Authorization;
 namespace WebHome.Controllers
 {
     [RoleAuthorize(RoleID = new int[] { (int)Naming.RoleID.Administrator, (int)Naming.RoleID.Assistant, (int)Naming.RoleID.Officer, (int)Naming.RoleID.Coach, (int)Naming.RoleID.Servitor })]
-    public class PaymentConsoleController : SampleController<UserProfile>
+    public class PaymentConsoleController : PaymentBaseController
     {
         // GET: PaymentConsole
         public ActionResult ShowPaymentList(PaymentQueryViewModel viewModel)
@@ -248,6 +249,145 @@ namespace WebHome.Controllers
             viewModel.PayoffAmount = lesson.LessonPriceType.ListPrice;
             return View("~/Views/PaymentConsole/Module/EditPaymentForPI2020.cshtml");
         }
+
+        public ActionResult EditPaymentForSession(PaymentViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            var profile = HttpContext.GetUser();
+
+            var lesson = models.GetTable<RegisterLesson>().Where(r => r.RegisterID == viewModel.RegisterID).FirstOrDefault();
+            LessonTime item;
+            if (lesson == null)
+            {
+                return Json(new { result = false, message = "收款資料錯誤!!" }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                item = lesson.LessonTime.First();
+
+                viewModel.SellerID = lesson.BranchStore?.IsVirtualClassroom() == true
+                    ? item.AsAttendingCoach.SelectWorkBranchID()
+                    : lesson.LessonTime.First().BranchID.Value;
+            }
+
+            viewModel.PayoffAmount = lesson.LessonPriceType.ListPrice;
+            return View("~/Views/PaymentConsole/Module/EditPaymentForSession.cshtml", item);
+        }
+
+        public ActionResult CommitPaymentForSession(PaymentViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            var profile = HttpContext.GetUser();
+
+            var lesson = models.GetTable<RegisterLesson>().Where(r => r.RegisterID == viewModel.RegisterID).FirstOrDefault();
+            LessonTime timeItem = null;
+            if (lesson == null)
+            {
+                ModelState.AddModelError("RegisterID", "請選擇收款課程!!");
+            }
+            else
+            {
+                timeItem = lesson.LessonTime.First();
+                viewModel.SellerID = timeItem.BranchStore.IsVirtualClassroom()
+                    ? timeItem.AsAttendingCoach.SelectWorkBranchID()
+                    : timeItem.BranchID.Value;
+            }
+
+            if (!viewModel.PayoffDate.HasValue)
+            {
+                ModelState.AddModelError("PayoffDate", "請選擇收款日期!!");
+            }
+
+            viewModel.ItemNo = new string[] { "01" };
+            viewModel.Brief = new string[] { $"{timeItem.RegisterLesson.LessonPriceType.SimpleDescription}訓練費用" };
+            viewModel.CostAmount = new int?[] { viewModel.PayoffAmount };
+            viewModel.UnitCost = new int?[] { viewModel.PayoffAmount };
+            viewModel.Piece = new int?[] { 1 };
+            viewModel.ItemRemark = new string[] { null };
+            viewModel.InvoiceType = Naming.InvoiceTypeDefinition.一般稅額計算之電子發票;
+            viewModel.CarrierId1 = viewModel.CarrierId1.GetEfficientString();
+            viewModel.TransactionType =  (int)Naming.PaymentTransactionType.自主訓練;
+
+            if (viewModel.CarrierId1 != null)
+            {
+                if (viewModel.CarrierType == null)
+                {
+                    viewModel.CarrierType = "3J0002";
+                }
+            }
+
+            var invoice = checkInvoiceNo(viewModel);
+
+            if (String.IsNullOrEmpty(viewModel.PaymentType))
+            {
+                ModelState.AddModelError("PaymentType", "請選擇收款方式!!");
+            }
+
+            if (!viewModel.InvoiceType.HasValue)
+            {
+                ModelState.AddModelError("InvoiceType", "請選擇發票類型");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                ViewBag.ModelState = ModelState;
+                return View(Settings.Default.ReportInputError);
+            }
+
+            try
+            {
+                Payment item = models.GetTable<Payment>()
+                    .Where(p => p.PaymentID == viewModel.PaymentID).FirstOrDefault();
+
+                if (item == null)
+                {
+                    item = new Payment
+                    {
+                        Status = (int)Naming.CourseContractStatus.已生效,
+                        TuitionInstallment = new TuitionInstallment
+                        {
+
+                        },
+                        PaymentTransaction = new PaymentTransaction
+                        { },
+                        PaymentAudit = new Models.DataEntity.PaymentAudit { }
+                    };
+                    item.TuitionAchievement.Add(new TuitionAchievement
+                    {
+                        CoachID = lesson.AdvisorID.Value,
+                        ShareAmount = viewModel.PayoffAmount,
+                        CoachWorkPlace = lesson.ServingCoach.WorkBranchID()
+                    });
+                    models.GetTable<Payment>().InsertOnSubmit(item);
+                    item.InvoiceItem = invoice;
+                }
+                item.TuitionInstallment.RegisterID = lesson.IntuitionCharge.RegisterID;
+                item.TuitionInstallment.PayoffAmount = viewModel.PayoffAmount;
+                item.TuitionInstallment.PayoffDate = viewModel.PayoffDate;
+
+                item.PaymentTransaction.BranchID = viewModel.SellerID.Value;
+
+                preparePayment(viewModel, profile, item);
+
+                models.SubmitChanges();
+
+                if (timeItem.IsPISession())
+                {
+                    models.AttendLesson(lesson.LessonTime.First(), profile);
+                }
+
+                TaskExtensionMethods.ProcessInvoiceToGov();
+
+                return Json(new { result = true, invoiceNo = item.InvoiceItem.TrackCode + item.InvoiceItem.No, item.InvoiceID, item.InvoiceItem.InvoiceType, item.PaymentID });
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return Json(new { result = false, message = ex.Message });
+            }
+        }
+
+
 
     }
 }

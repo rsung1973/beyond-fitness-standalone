@@ -49,6 +49,11 @@
         });
 
         function commitSignature() {
+
+            if ($("#signature").jSignature('getData', 'native').length < 1) {
+                return;
+            }
+
             var sigData = $("#signature").jSignature("getData");
             if (sigData) {
                 $.post('@Html.Raw(Url.Action("CommitSignature","CourseContract",_viewModel))', { 'Signature': sigData }, function (data) {

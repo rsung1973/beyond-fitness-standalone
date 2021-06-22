@@ -22,36 +22,41 @@
     _model = (UserProfile)this.Model;
     _viewModel = (CalendarEventViewModel)ViewBag.ViewModel;
     _profile = Context.GetUser();
+    LessonPriceType price = models.CurrentTrialLessonPrice();
 }
 
 @{
-    var trialLesson = models.GetTable<RegisterLesson>()
-            .Where(r => r.UID == _model.UID).Where(r => r.LessonPriceType.Status == (int)Naming.LessonPriceStatus.體驗課程);
-    var trialLessonItem = trialLesson.FirstOrDefault();
-    var trialBookable = trialLessonItem == null;
-
-    if (trialBookable)
+    if (price != null)
     {
-        _pageModel.HasChoice = true;
+        var trialLesson = models.GetTable<RegisterLesson>()
+                .Where(r => r.UID == _model.UID)
+                .Where(r => r.LessonPriceType.Status == (int)Naming.LessonPriceStatus.體驗課程)
+                .Where(r => (r.BranchStore.Status & (int)BranchStore.StatusDefinition.VirtualClassroom) == 0);
+        var trialLessonItem = trialLesson.FirstOrDefault();
+        var trialBookable = trialLessonItem == null;
+
+        if (trialBookable)
+        {
+            _pageModel.HasChoice = true;
+        }
+
+        <li class="list-group-item">
+            <div class="media">
+                <div class="pull-left">
+                    <div class="controls">
+                        <label class="fancy-checkbox">
+                            <input type="checkbox" @(trialBookable ? null : "disabled") name="RegisterID" id="trialLesson" value="" onclick="selectBooking(this, '@((int)Naming.LessonPriceStatus.體驗課程)', @(price?.PriceID ?? -1));">
+                            <span></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="media-body">
+                    <div class="media-heading">
+                        <a class="m-r-10">@(price?.SimpleDescription)</a>
+                        <small class="float-right text-muted"><time>@(trialBookable ? 1 : 0)/1</time></small>
+                    </div>
+                </div>
+            </div>
+        </li>
     }
-
-    <li class="list-group-item">
-        <div class="media">
-            <div class="pull-left">
-                <div class="controls">
-                    <label class="fancy-checkbox">
-                        <input type="checkbox" @(trialBookable ? null : "disabled") name="RegisterID" id="trialLesson" value="" onclick="selectBooking(this, '@((int)Naming.LessonPriceStatus.體驗課程)');">
-                        <span></span>
-                    </label>
-                </div>
-            </div>
-            <div class="media-body">
-                <div class="media-heading">
-                    <a class="m-r-10">T.S session</a>
-                    <small class="float-right text-muted"><time>@(trialBookable ? 1 : 0)/1</time></small>
-                </div>
-            </div>
-        </div>
-    </li>
-
 }

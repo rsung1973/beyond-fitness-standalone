@@ -36,7 +36,7 @@
                         <label class="label">分店</label>
                         <label class="select">
                             <select name="BranchID">
-                                <%  Html.RenderPartial("~/Views/SystemInfo/BranchStoreOptions.ascx", model: _viewModel.BranchID ?? -1); %>
+                                <%  Html.RenderPartial("~/Views/SystemInfo/BranchStoreOptions.cshtml", model: _viewModel.BranchID ?? -1); %>
                             </select>
                             <i class="icon-append fa fa-at"></i>
                         </label>

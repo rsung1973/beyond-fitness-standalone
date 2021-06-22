@@ -84,7 +84,7 @@
                               <li>
                                  <input type="checkbox" name="LessonID" value="<%= item.LessonID %>" id="lesson<%=item.LessonID %>" <%= item.ClassTime>=tomorrow ? "disabled" : null %> />
                                  <label for="lesson<%=item.LessonID %>">
-                                     <span class="<%= tagClass %>"><%= item.RegisterLesson.LessonPriceType.Status.LessonTypeStatus().Replace(".session","").Replace("課程","") %></span> <%= $"{item.ClassTime:yyyy/MM/dd HH:mm}" %>-<%= $"{item.ClassTime.Value.AddMinutes(item.DurationInMinutes.Value):HH:mm}" %>
+                                     <span class="<%= tagClass %>"><%= item.LessonTypeStatus().Replace(".session","").Replace("課程","") %></span> <%= $"{item.ClassTime:yyyy/MM/dd HH:mm}" %>-<%= $"{item.ClassTime.Value.AddMinutes(item.DurationInMinutes.Value):HH:mm}" %>
                                      <span class="help-text"> 體能顧問：<%= item.AsAttendingCoach.UserProfile.FullName() %></span>
                                  </label>
                               </li>

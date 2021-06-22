@@ -59,7 +59,7 @@ namespace WebHome.Controllers
             {
                 return View("~/Views/LearnerFacet/Module/CheckBonus.ascx", model);
             }
-            return View("~/Views/Shared/JsAlert.ascx", model: "學員資料錯誤!!");
+            return View("~/Views/Shared/JsAlert.cshtml", model: "學員資料錯誤!!");
         }
 
         public ActionResult CheckBonusAward(int id)
@@ -69,7 +69,7 @@ namespace WebHome.Controllers
             {
                 return View("~/Views/LearnerFacet/Module/CheckBonusAward.ascx", model);
             }
-            return View("~/Views/Shared/JsAlert.ascx", model: "學員資料錯誤!!");
+            return View("~/Views/Shared/JsAlert.cshtml", model: "學員資料錯誤!!");
         }
 
         public ActionResult ExchangeBonusPoint(int uid,int itemID,int? recipientID)
@@ -175,7 +175,7 @@ namespace WebHome.Controllers
             {
                 return View("~/Views/LearnerFacet/Module/CheckLessonAttendance.ascx", model);
             }
-            return View("~/Views/Shared/JsAlert.ascx", model: "學員資料錯誤!!");
+            return View("~/Views/Shared/JsAlert.cshtml", model: "學員資料錯誤!!");
         }
 
         public ActionResult PushComment(int speakerID, String comment)
@@ -256,7 +256,7 @@ namespace WebHome.Controllers
             var model = models.GetTable<UserProfile>().Where(f => f.UID == id).FirstOrDefault();
             if (model == null)
             {
-                return View("~/Views/Shared/JsAlert.ascx", model: "學員資料錯誤!!");
+                return View("~/Views/Shared/JsAlert.cshtml", model: "學員資料錯誤!!");
             }
             return View("~/Views/LearnerFacet/Module/HealthIndex.ascx", model);
         }
@@ -267,7 +267,7 @@ namespace WebHome.Controllers
 
             if (item == null)
             {
-                return View("~/Views/Shared/JsAlert.ascx", model: "學員未建立上課資料!!");
+                return View("~/Views/Shared/JsAlert.cshtml", model: "學員未建立上課資料!!");
             }
 
             ViewBag.LearnerAttendance = attendance;
@@ -282,7 +282,7 @@ namespace WebHome.Controllers
             var profile = models.GetTable<UserProfile>().Where(u => u.UID == viewModel.UID).FirstOrDefault();
             if (profile == null)
             {
-                return View("~/Views/Shared/JsAlert.ascx", model: "學員資料錯誤!!");
+                return View("~/Views/Shared/JsAlert.cshtml", model: "學員資料錯誤!!");
             }
 
             var item = models.GetTable<UserEvent>().Where(u => u.EventID == viewModel.EventID).FirstOrDefault();
@@ -303,7 +303,7 @@ namespace WebHome.Controllers
             var profile = models.GetTable<UserProfile>().Where(u => u.UID == viewModel.UID).FirstOrDefault();
             if (profile == null)
             {
-                return View("~/Views/Shared/JsAlert.ascx", model: "學員資料錯誤!!");
+                return View("~/Views/Shared/JsAlert.cshtml", model: "學員資料錯誤!!");
             }
 
             if (!viewModel.StartDate.HasValue)

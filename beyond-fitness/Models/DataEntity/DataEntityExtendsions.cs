@@ -125,7 +125,7 @@ namespace WebHome.Models.DataEntity
                             ? (item.Lessons ?? 0)
                                 - item.RegisterLessonContract.Sum(c => c.RegisterLesson.LessonTime.Count(l => l.LessonAttendance != null))
                                 - (item.RegisterLessonContract.Sum(c => c.RegisterLesson.AttendedLessons) ?? 0)
-                            : item.RegisterLessonContract.First().RegisterLesson.RemainedLessonCount(onlyAttended)
+                            : item.RegisterLessonContract.Sum(r => r.RegisterLesson.RemainedLessonCount(onlyAttended))
                         : item.Lessons.Value;
             }
             else
@@ -135,7 +135,7 @@ namespace WebHome.Models.DataEntity
                             ? (item.Lessons ?? 0)
                                 - item.RegisterLessonContract.Sum(c => c.RegisterLesson.LessonTime.Count())
                                 - (item.RegisterLessonContract.Sum(c => c.RegisterLesson.AttendedLessons) ?? 0)
-                            : item.RegisterLessonContract.First().RegisterLesson.RemainedLessonCount()
+                            : item.RegisterLessonContract.Sum(r => r.RegisterLesson.RemainedLessonCount())
                         : item.Lessons.Value;
             }
         }
@@ -149,7 +149,7 @@ namespace WebHome.Models.DataEntity
         {
             if (onlyAttended)
             {
-                return item.ContractType == (int)Naming.ContractTypeDefinition.CFA
+                return item.ContractType == (int)CourseContractType.ContractTypeDefinition.CFA
                             ? item.RegisterLessonContract.Sum(c => c.RegisterLesson.LessonTime.Count(l => l.LessonAttendance != null))
                                 + (item.RegisterLessonContract.Sum(c => c.RegisterLesson.AttendedLessons) ?? 0)
                             : item.RegisterLessonContract.First()
@@ -157,7 +157,7 @@ namespace WebHome.Models.DataEntity
             }
             else
             {
-                return item.ContractType == (int)Naming.ContractTypeDefinition.CFA
+                return item.ContractType == (int)CourseContractType.ContractTypeDefinition.CFA
                             ? item.RegisterLessonContract.Sum(c => c.RegisterLesson.LessonTime.Count())
                                 + (item.RegisterLessonContract.Sum(c => c.RegisterLesson.AttendedLessons) ?? 0)
                             : item.RegisterLessonContract.First()
@@ -169,7 +169,7 @@ namespace WebHome.Models.DataEntity
         {
             if (onlyAttended)
             {
-                return item.ContractType == (int)Naming.ContractTypeDefinition.CFA
+                return item.ContractType == (int)CourseContractType.ContractTypeDefinition.CFA
                             ? item.RegisterLessonContract.Sum(c => c.RegisterLesson.LessonTime.Count(l => l.LessonAttendance != null && l.ClassTime < dateBefore))
                                 + (item.RegisterLessonContract.Sum(c => c.RegisterLesson.AttendedLessons) ?? 0)
                             : item.RegisterLessonContract.First()
@@ -177,7 +177,7 @@ namespace WebHome.Models.DataEntity
             }
             else
             {
-                return item.ContractType == (int)Naming.ContractTypeDefinition.CFA
+                return item.ContractType == (int)CourseContractType.ContractTypeDefinition.CFA
                             ? item.RegisterLessonContract.Sum(c => c.RegisterLesson.LessonTime.Count(l=> l.ClassTime < dateBefore))
                                 + (item.RegisterLessonContract.Sum(c => c.RegisterLesson.AttendedLessons) ?? 0)
                             : item.RegisterLessonContract.First()
@@ -189,14 +189,14 @@ namespace WebHome.Models.DataEntity
         {
             if (onlyAttended)
             {
-                return item.ContractType == (int)Naming.ContractTypeDefinition.CFA
+                return item.ContractType == (int)CourseContractType.ContractTypeDefinition.CFA
                             ? item.RegisterLessonContract.SelectMany(c => c.RegisterLesson.LessonTime.Where(l => l.LessonAttendance != null))
                             : item.RegisterLessonContract.First()
                                 .RegisterLesson.AttendedLessonList(onlyAttended);
             }
             else
             {
-                return item.ContractType == (int)Naming.ContractTypeDefinition.CFA
+                return item.ContractType == (int)CourseContractType.ContractTypeDefinition.CFA
                             ? item.RegisterLessonContract.SelectMany(c => c.RegisterLesson.LessonTime)
                             : item.RegisterLessonContract.First()
                                 .RegisterLesson.AttendedLessonList();
@@ -375,6 +375,9 @@ namespace WebHome.Models.DataEntity
                         return "Coach P.I";
                     case (int)Naming.LessonPriceStatus.體驗課程:
                         return "T.S";
+                    case (int)Naming.LessonPriceStatus.點數兌換課程:
+                        return item.RegisterLesson.LessonPriceType.SimpleDescription;
+
                     default:
                         return item.RegisterLesson.LessonPriceType.Description;
                 }
@@ -503,6 +506,19 @@ namespace WebHome.Models.DataEntity
                             ? (int?)item.CoachWorkplace.First().BranchID
                             : (int?)null;
         }
+
+        public static BranchStore CurrentWorkBranch(this ServingCoach item)
+        {
+            return item.CoachWorkplace.Count == 1
+                            ? item.CoachWorkplace.First().BranchStore
+                            : null;
+        }
+
+        public static int? SelectWorkBranchID(this ServingCoach item)
+        {
+            return item.CoachWorkplace.FirstOrDefault()?.BranchID;
+        }
+
     }
 
     public partial class UserProfile
@@ -562,6 +578,67 @@ namespace WebHome.Models.DataEntity
         {
             OnLine = 1,
             OnLineFeedback = 2,
+            LessonPackage = 3,
+            DietaryConsult= 4,
         }
     }
+
+    public partial class Payment
+    {
+        public String PaymentFor => TransactionType == (int)Naming.PaymentTransactionType.自主訓練
+                    ? TuitionInstallment != null
+                        ? this.TuitionInstallment.IntuitionCharge.RegisterLesson.LessonPriceType.SimpleDescription
+                        : "T.S/P.I"
+                    : String.Concat(((Naming.PaymentTransactionType)this.TransactionType).ToString(),
+                        this.TransactionType == (int)Naming.PaymentTransactionType.運動商品
+                            || this.TransactionType == (int)Naming.PaymentTransactionType.食飲品
+                            || this.TransactionType == (int)Naming.PaymentTransactionType.教育訓練
+                        ? String.Join("/", this.PaymentTransaction.PaymentOrder.Select(p => p.MerchandiseWindow.ProductName))
+                        : null);
+    }
+
+    public partial class LessonPriceType
+    {
+        public String SimpleDescription => Description?.Substring(Description.IndexOf('】') + 1);
+        public bool IsPackagePrice => this?.ObjectiveLessonPrice.Any(p => p.CatalogID == (int)ObjectiveLessonCatalog.CatalogDefinition.LessonPackage) == true;
+        public bool IsDietaryConsult => this?.ObjectiveLessonPrice.Any(p => p.CatalogID == (int)ObjectiveLessonCatalog.CatalogDefinition.DietaryConsult) == true;
+    }
+
+    public partial class RegisterLesson
+    {
+        public bool IsPaid => IntuitionCharge.TuitionInstallment
+            .Any(t => t.Payment.VoidPayment == null || t.Payment.VoidPayment.Status != (int)Naming.CourseContractStatus.已生效);
+    }
+
+    public partial class LessonTime
+    {
+        public enum SelfTrainingDefinition
+        {
+            自主訓練 = 1,
+            在家訓練 = 2,
+            體驗課程 = 3,
+        }
+    }
+
+    public partial class CourseContractType
+    {
+        public enum ContractTypeDefinition
+        {
+            CPA = 1,
+            CFA,
+            CPB,
+            CPC,
+            CNA,
+            CGA,
+        }
+
+        public static bool IsSuitableForVirtaulClass(ContractTypeDefinition? ct)
+        {
+            return ct == ContractTypeDefinition.CPA
+                || ct == ContractTypeDefinition.CNA
+                || ct == ContractTypeDefinition.CGA;
+        }
+
+    }
+
 }

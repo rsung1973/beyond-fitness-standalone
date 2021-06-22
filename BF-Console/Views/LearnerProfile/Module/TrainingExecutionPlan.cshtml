@@ -32,7 +32,9 @@
                     @if (_model.IsPISession())
                     {
                         <text>《@(_model.RegisterLesson.LessonPriceType?.UsageTypeDescription?.Usage)》</text>
-                    } @(_model.AsAttendingCoach.UserProfile.FullName())
+                    }
+                    @(_model.AsAttendingCoach.UserProfile.FullName())
+                    <i class="zmdi zmdi-pin"></i>@(_model.BranchID.HasValue ? _model.BranchStore.BranchName : _model.Place)
                 </span>
                 @if (isModal && plan.FavoriteLesson.Count > 0)
                 {
@@ -80,6 +82,15 @@
                     Html.RenderPartial("~/Views/LearnerProfile/Module/LessonEmphasis.cshtml", _model);
                 }
             </li>
+            @if (_model.BranchStore?.IsVirtualClassroom() == true)
+            {
+                <li>
+                    <a href="javascript:editOnlineUrl('@($"{_model.LessonID.EncryptKey()}")',$('#onlineUrl').text());">
+                        編輯遠距視訊連結 <span id="onlineUrl">@(_model.Place)</span>
+                        <i class="zmdi livicon-evo" data-options="name: pencil.svg; size: 20px; style: original; strokeStyle:round; strokeColor:#052333; strokeWidth:2px; autoPlay:true"></i>
+                    </a>
+                </li>
+            }
         </ul>
     </div>
     @{

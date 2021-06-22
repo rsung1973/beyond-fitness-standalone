@@ -33,9 +33,13 @@
 <script>
 
     $(function () {
-        $global.commitPrice = function (priceID, priceName) {
+        $global.commitPrice = function (priceID, priceName, lessons) {
             $global.viewModel.PriceID = priceID;
             $('#searchPrice').attr('placeholder', priceName);
+            if (lessons) {
+                $('input[name="Lessons"]').val(lessons);
+                $global.viewModel.Lessons = lessons;
+            }
             calcTotalCost();
         };
     });
@@ -46,7 +50,11 @@
         $.post('@Html.Raw(Url.Action("ListLessonPrice", "ContractConsole"))', $global.viewModel, function (data) {
             hideLoading();
             if ($.isPlainObject(data)) {
-                alert(data.message);
+                Swal.fire(
+                    'Oops...',
+                    data.message,
+                    'warning'
+                );
             } else {
                 $(data).appendTo($('body'));
             }
