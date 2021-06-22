@@ -659,6 +659,24 @@ namespace WebHome.Views.MainActivity.Resources {
             }
         }
         
+        public static string FAQQestion23 {
+            get {
+                return ResourceManager.GetString("FAQQestion23", resourceCulture);
+            }
+        }
+        
+        public static string FAQQestion231 {
+            get {
+                return ResourceManager.GetString("FAQQestion231", resourceCulture);
+            }
+        }
+        
+        public static string FAQQestion232 {
+            get {
+                return ResourceManager.GetString("FAQQestion232", resourceCulture);
+            }
+        }
+        
         public static string FAQQestion3 {
             get {
                 return ResourceManager.GetString("FAQQestion3", resourceCulture);
@@ -695,9 +713,21 @@ namespace WebHome.Views.MainActivity.Resources {
             }
         }
         
-        public static string FAQAnswer21 {
+        public static string FAQAnswer211 {
             get {
-                return ResourceManager.GetString("FAQAnswer21", resourceCulture);
+                return ResourceManager.GetString("FAQAnswer211", resourceCulture);
+            }
+        }
+        
+        public static string FAQAnswer212 {
+            get {
+                return ResourceManager.GetString("FAQAnswer212", resourceCulture);
+            }
+        }
+        
+        public static string FAQAnswer213 {
+            get {
+                return ResourceManager.GetString("FAQAnswer213", resourceCulture);
             }
         }
         

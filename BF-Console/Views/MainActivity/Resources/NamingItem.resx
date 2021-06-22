@@ -423,6 +423,15 @@
   <data name="FAQQestion22" xml:space="preserve">
     <value>有月費、入會費及手續費嗎？</value>
   </data>
+  <data name="FAQQestion23" xml:space="preserve">
+    <value>『線上訓練課程套組』的費用怎麼計算呢？</value>
+  </data>
+  <data name="FAQQestion231" xml:space="preserve">
+    <value>初階組合價格為  8,600</value>
+  </data>
+  <data name="FAQQestion232" xml:space="preserve">
+    <value>進階組合價格為 12,600</value>
+  </data>
   <data name="FAQQestion3" xml:space="preserve">
     <value>Beyond的團隊為何與眾不同？</value>
   </data>
@@ -441,8 +450,14 @@
   <data name="FAQAnswer12" xml:space="preserve">
     <value>體驗課程如下： &lt;li&gt;您將會了解您的身體狀況諮詢服務。&lt;/li&gt;&lt;li&gt;練將會細心的了解您的運動狀況與生活型態。&lt;/li&gt;&lt;li&gt;教練將帶您期許的運動目標以及運動效果，讓您體驗愉快的課程。&lt;/li&gt;&lt;li&gt;教練將與您一同討論專屬於您的客製化訓練。&lt;/li&gt;</value>
   </data>
-  <data name="FAQAnswer21" xml:space="preserve">
-    <value>專業客製的訓練費用，以堂數做收費計算，規劃訓練價格會依照您的目標、規劃的時間長短及堂數而有所不同 ，價格約落在1700~1900不等。</value>
+  <data name="FAQAnswer211" xml:space="preserve">
+    <value>專業客製的訓練費用，以堂數做收費計算，規劃訓練價格會依照您的目標、規劃的時間長短及堂數而有所不同 ，價格約落在1,700~1,900不等。</value>
+  </data>
+  <data name="FAQAnswer212" xml:space="preserve">
+    <value>線上課程訓練費用，以堂數做收費計算，規劃訓練價格會依照您的目標、規劃的時間長短及堂數而有所不同 ，價格約落在1,200-1,400不等。</value>
+  </data>
+  <data name="FAQAnswer213" xml:space="preserve">
+    <value>營養課程規劃費用，以月週期，單月規劃價格 4,000</value>
   </data>
   <data name="FAQAnswer22" xml:space="preserve">
     <value>BeyondFitness 專注於1對1 客製化專業訓練，您無須再繳交任何月費、入會費及手續費。</value>

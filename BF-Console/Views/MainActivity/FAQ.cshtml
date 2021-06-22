@@ -61,7 +61,7 @@
                         <li class="accordion-item">
                             <input id="q12" class="hide" type="checkbox">
                             <label for="q12" class="accordion-label sub">@Html.Raw(NamingItem.FAQQestion12)</label>
-                            <ul class="accordion-child list-style3">@Html.Raw(NamingItem.FAQAnswer12)</ul>
+                            <div class="accordion-child list-style3">@Html.Raw(NamingItem.FAQAnswer12)</div>
                         </li>
                     </ul>
                 </li>
@@ -72,7 +72,24 @@
                         <li class="accordion-item">
                             <input id="q21" class="hide" type="checkbox">
                             <label for="q21" class="accordion-label sub">@Html.Raw(NamingItem.FAQQestion21)</label>
-                            <p class="accordion-child">@Html.Raw(NamingItem.FAQAnswer21)</p>
+                            <p class="accordion-child"></p>
+                            <div class="accordion-child">
+                                <ul class="list-style1">
+                                    <li>@Html.Raw(NamingItem.FAQAnswer211)</li>
+                                    <li>@Html.Raw(NamingItem.FAQAnswer212)</li>
+                                    <li>@Html.Raw(NamingItem.FAQAnswer212)</li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="accordion-item">
+                            <input id="q23" class="hide" type="checkbox">
+                            <label for="q23" class="accordion-label sub">@Html.Raw(NamingItem.FAQQestion23)</label>
+                            <div class="accordion-child">
+                                <ul class="list-style1">
+                                    <li>初階組合價格為  8,600</li>
+                                    <li>進階組合價格為 12,600</li>
+                                </ul>
+                            </div>
                         </li>
                         <li class="accordion-item">
                             <input id="q22" class="hide" type="checkbox">
