@@ -1712,6 +1712,7 @@ ul.list-style1 li::before {
 }
 
 ul.list-style1 li {
+    list-style-position: outside;
     font-size: 16px;
     font-weight: 400;
 }
@@ -18903,6 +18904,21 @@ textarea:focus {
     width: 1em;
     margin: 5px 0 5px 0;
 
+}
+
+.section-faq-content ul.list-style1 li {
+    list-style-position: outside;
+    font-size: 16px;
+    font-weight: 400;
+    padding-left: 1.33em;
+}
+
+.section-faq-content ul.list-style1 li::before {
+    content: "●";
+    display: inline-block;
+    margin: 10px 0px 0px 0px;
+    text-indent: -1.33em;
+    width: 0px;
 }
 
 .section-faq-content ul.list-style3 li {
