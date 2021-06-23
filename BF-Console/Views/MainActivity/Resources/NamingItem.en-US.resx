@@ -424,13 +424,7 @@
     <value>Are there any monthly fee, membership fee or handling charge?</value>
   </data>
   <data name="FAQQestion23" xml:space="preserve">
-    <value>Price of Virtual Training Course Package</value>
-  </data>
-  <data name="FAQQestion231" xml:space="preserve">
-    <value>Basic package : $8,600</value>
-  </data>
-  <data name="FAQQestion232" xml:space="preserve">
-    <value>Advanced package : $12,600</value>
+    <value>Price of Virtual Training Course Package？</value>
   </data>
   <data name="FAQQestion3" xml:space="preserve">
     <value>Why do we stand out?</value>
@@ -449,18 +443,15 @@
   </data>
   <data name="FAQAnswer12" xml:space="preserve">
     <value>The content is as follows: &lt;li&gt;A careful consultation of your physical condition.&lt;/li&gt;&lt;li&gt;A careful analysis of your exercise habits and lifestyle.&lt;/li&gt;&lt;li&gt;Trainers will bring out your training goals and results, leading you to a personalized program and experience.&lt;/li&gt;&lt;li&gt;Trainers are always by your side customizing your training courses.&lt;/li&gt;</value>
-  </data>
-  <data name="FAQAnswer211" xml:space="preserve">
-    <value>Customized courses are charged by the number of courses. Prices range from NTD$ 1,700-1,900, according to your workout plans and the number of courses you need.</value>
-  </data>
-  <data name="FAQAnswer212" xml:space="preserve">
-    <value>The Online Training Class fee is about $1,200-$1,400 which is calculated based on the number of lessons. According to your goals, the time length the number of lessons will be different.</value>
-  </data>
-  <data name="FAQAnswer213" xml:space="preserve">
-    <value>Nutrition course is on monthly cycle, and the price will be $4,000 per month.</value>
+  </data>  
+  <data name="FAQAnswer21" xml:space="preserve">
+    <value>&lt;li&gt;Customized courses are charged by the number of courses. Prices range from NTD$1700-1900, according to your workout plans and the number of courses you need.&lt;/li&gt;&lt;li&gt;The Online Training Class fee is about $1,200-$1,400 which is calculated based on the number of lessons. According to your goals, the time length the number of lessons will be different.&lt;/li&gt;&lt;li&gt;Nutrition course is on monthly cycle, and the price will be $4,000 per month.&lt;/li&gt;</value>
   </data>
   <data name="FAQAnswer22" xml:space="preserve">
     <value>Beyond fitness provides 1 on 1 customized training. You don’t need to pay any other monthly fee, membership fee or handling charges.</value>
+  </data>
+  <data name="FAQAnswer23" xml:space="preserve">
+    <value>&lt;li&gt;asic package : NTD 8,600&lt;/li&gt;&lt;li&gt;Advanced package : NTD 12,600&lt;/li&gt;</value>
   </data>
   <data name="FAQAnswer3" xml:space="preserve">
     <value>Our team is second to none in the industry. All personnel are qualified for international trainer certification (which must be within the validity period), internal professional team management (performance tests every quarter). With scientific based training as the foundation with systematic records, analysis, we give every customer the most intimate and trustworthy service.</value>
