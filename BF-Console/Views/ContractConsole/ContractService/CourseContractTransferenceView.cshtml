@@ -70,7 +70,7 @@
                             <td colspan="2">
                                 @{ var original = _model.SourceContract;}
 
-                                申請內容：原合約編號 @(original.ContractNo()) 剩餘上課堂數：@(original.RegisterLessonContract.Count > 0 ? original.RegisterLessonContract.First().RegisterLesson.RemainedLessonCount() : original.Lessons)堂，全部轉讓至 @(_contract.ContractOwner.RealName)。
+                                申請內容：原合約編號 @(original.ContractNo()) 剩餘上課堂數：@(original.RemainedLessonCount())堂，全部轉讓至 @(_contract.ContractOwner.RealName)。
                             </td>
                         </tr>
                         <tr style="height: 16cm">

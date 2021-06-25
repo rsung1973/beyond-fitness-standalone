@@ -833,6 +833,7 @@
       <Column Name="DurationInMinutes" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="SeriesID" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="BundleCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="EffectiveMonths" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Association Name="LessonPriceType_RegisterLesson" Member="RegisterLesson" ThisKey="PriceID" OtherKey="ClassLevel" Type="RegisterLesson" />
       <Association Name="LessonPriceType_BonusAwardingLesson" Member="BonusAwardingLesson" ThisKey="PriceID" OtherKey="PriceID" Type="BonusAwardingLesson" />
       <Association Name="LessonPriceType_LessonPriceSeries" Member="LessonPriceSeries" ThisKey="PriceID" OtherKey="PriceID" Type="LessonPriceSeries" Cardinality="One" />
@@ -843,6 +844,7 @@
       <Association Name="LessonPriceType_ObjectiveLessonPrice" Member="ObjectiveLessonPrice" ThisKey="PriceID" OtherKey="PriceID" Type="ObjectiveLessonPrice" />
       <Association Name="LessonPriceType_LessonPricePackage" Member="LessonPricePackage" ThisKey="PriceID" OtherKey="PriceID" Type="LessonPricePackage" />
       <Association Name="LessonPriceType_LessonPricePackage1" Member="AsPackageItem" ThisKey="PriceID" OtherKey="ItemID" Type="LessonPricePackage" />
+      <Association Name="LessonPriceType_ObjectiveContractLessonPrice" Member="ObjectiveContractLessonPrice" ThisKey="PriceID" OtherKey="PriceID" Type="ObjectiveContractLessonPrice" />
       <Association Name="LessonPriceSeries_LessonPriceType" Member="CurrentPriceSeries" Storage="_PriceSeries" ThisKey="SeriesID" OtherKey="PriceID" Type="LessonPriceSeries" IsForeignKey="true" />
       <Association Name="LevelExpression_LessonPriceType" Member="LevelExpression" ThisKey="Status" OtherKey="LevelID" Type="LevelExpression" IsForeignKey="true" />
       <Association Name="BranchStore_LessonPriceType" Member="BranchStore" ThisKey="BranchID" OtherKey="BranchID" Type="BranchStore" IsForeignKey="true" />
@@ -912,8 +914,8 @@
       <Column Name="ContractCode" Type="System.String" DbType="NVarChar(8)" CanBeNull="true" />
       <Column Name="IsGroup" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
       <Column Name="GroupingMemberCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="EffectiveMonths" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Association Name="CourseContractType_CourseContract" Member="CourseContract" ThisKey="TypeID" OtherKey="ContractType" Type="CourseContract" />
+      <Association Name="CourseContractType_ObjectiveContractLessonPrice" Member="ObjectiveContractLessonPrice" ThisKey="TypeID" OtherKey="ContractType" Type="ObjectiveContractLessonPrice" />
       <Association Name="GroupingLessonDiscount_CourseContractType" Member="GroupingLessonDiscount" ThisKey="GroupingMemberCount" OtherKey="GroupingMemberCount" Type="GroupingLessonDiscount" IsForeignKey="true" />
     </Type>
   </Table>
@@ -2493,6 +2495,14 @@
       <Column Name="Lessons" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Association Name="LessonPriceType_LessonPricePackage" Member="LessonPriceType" ThisKey="PriceID" OtherKey="PriceID" Type="LessonPriceType" IsForeignKey="true" />
       <Association Name="LessonPriceType_LessonPricePackage1" Member="PackageItemPrice" ThisKey="ItemID" OtherKey="PriceID" Type="LessonPriceType" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="Project.ObjectiveContractLessonPrice" Member="ObjectiveContractLessonPrice">
+    <Type Name="ObjectiveContractLessonPrice">
+      <Column Name="ContractType" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="PriceID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="CourseContractType_ObjectiveContractLessonPrice" Member="CourseContractType" ThisKey="ContractType" OtherKey="TypeID" Type="CourseContractType" IsForeignKey="true" />
+      <Association Name="LessonPriceType_ObjectiveContractLessonPrice" Member="LessonPriceType" ThisKey="PriceID" OtherKey="PriceID" Type="LessonPriceType" IsForeignKey="true" />
     </Type>
   </Table>
   <Function Name="dbo.InquireVacantNo" Method="InquireVacantNo">

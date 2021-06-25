@@ -231,11 +231,10 @@ namespace WebHome.Controllers
 
             if(viewModel.ContractType == CourseContractType.ContractTypeDefinition.CGA)
             {
-                var catalog = models.GetTable<ObjectiveLessonPrice>().Where(l => l.CatalogID == (int)ObjectiveLessonCatalog.CatalogDefinition.LessonPackage)
-                                .Select(l => l.PriceID);
                 items = items
                     .Where(p => p.BranchID == viewModel.BranchID)
-                    .Where(p => catalog.Contains(p.PriceID));
+                    .Join(models.GetTable<ObjectiveContractLessonPrice>().Where(c => c.ContractType == (int)viewModel.ContractType),
+                        p => p.PriceID, c => c.PriceID, (p, c) => p);
 
                 if(items.Any())
                 {
@@ -248,11 +247,10 @@ namespace WebHome.Controllers
             }
             else if (viewModel.ContractType == CourseContractType.ContractTypeDefinition.CNA)
             {
-                var catalog = models.GetTable<ObjectiveLessonPrice>().Where(l => l.CatalogID == (int)ObjectiveLessonCatalog.CatalogDefinition.DietaryConsult)
-                                .Select(l => l.PriceID);
                 items = items
                     .Where(p => p.BranchID == viewModel.BranchID)
-                    .Where(p => catalog.Contains(p.PriceID));
+                    .Join(models.GetTable<ObjectiveContractLessonPrice>().Where(c => c.ContractType == (int)viewModel.ContractType),
+                        p => p.PriceID, c => c.PriceID, (p, c) => p);
 
                 if (items.Any())
                 {
@@ -281,7 +279,7 @@ namespace WebHome.Controllers
 
             if (item != null)
             {
-                if (item.IsPackagePrice || item.IsDietaryConsult)
+                if (item.IsPackagePrice)
                 {
                     viewModel.TotalCost = item.ListPrice;
                 }

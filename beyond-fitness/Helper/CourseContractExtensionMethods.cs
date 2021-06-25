@@ -351,7 +351,7 @@ namespace WebHome.Helper
             var c1 = items.Where(c => c.ContractType != (int)CourseContractType.ContractTypeDefinition.CFA);
 
             var c2 = c0.Select(c => new { Contract = c, RemainedCount = c.Lessons - c.RegisterLessonContract.Sum(l => l.RegisterLesson.LessonTime.Count()) })
-                        .Concat(c1.Select(c => new { Contract = c, RemainedCount = c.Lessons - c.RegisterLessonContract.First().RegisterLesson.GroupingLesson.LessonTime.Count }));
+                        .Concat(c1.Select(c => new { Contract = c, RemainedCount = c.Lessons - c.RegisterLessonContract.Select(r => r.RegisterLesson).Where(r => r.UID == c.OwnerID).Select(r => r.GroupingLesson.LessonTime).Count() }));
             return c2.Where(c => c.RemainedCount <= alarmCount).Select(c => c.Contract);
         }
 

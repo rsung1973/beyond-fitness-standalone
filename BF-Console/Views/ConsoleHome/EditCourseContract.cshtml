@@ -67,14 +67,14 @@
                                     var ct = $(this).val();
                                     $global.viewModel.ContractType = ct;
                                     buildBranch($(this).find('option:selected').attr('data-virtual'));
-                                    if ($global.viewModel.PriceID) {
-                                        calcTotalCost();
-                                    }
+                                    //if ($global.viewModel.PriceID) {
+                                    //    calcTotalCost();
+                                    //}
                                     resetSignOnline();
                                     resetInstallmentPlan();
-
+                                    resetTotalCost();
                                     if (ct == '5' || ct == '6') {
-                                        $('input[name="Lessons"]').val('');
+                                        //$('input[name="Lessons"]').val('');
                                         $('input[name="Lessons"]').prop('disabled', true);
                                     } else {
                                         $('input[name="Lessons"]').prop('disabled', false);
@@ -137,6 +137,7 @@
                                     $('select[name="BranchID"]').on('change', function (event) {
                                         $global.viewModel.BranchID = $(this).val();
                                         resetInstallmentPlan();
+                                        resetTotalCost();
                                     });
                                 });
                         </script>
@@ -186,18 +187,26 @@
 
                     </div>
                     <script>
-                            function calcTotalCost() {
-                                if ($global.viewModel.PriceID) {
-                                    $.post('@Html.Raw(Url.Action("CalculateTotalCost", "ContractConsole"))', $global.viewModel, function (data) {
-                                        if ($.isPlainObject(data)) {
-                                            alert(data.message);
-                                        } else {
-                                            $('#costSummary').empty()
-                                                .append(data);
-                                        }
-                                    });
-                                }
-                            }//
+                        function resetTotalCost() {
+                            $global.viewModel.PriceID = null;
+                            $global.viewModel.Lessons = null;
+                            $('#searchPrice').attr('placeholder', '');
+                            $('input[name="Lessons"]').val('');
+                            $('#costSummary').empty();
+                        }
+
+                        function calcTotalCost() {
+                            if ($global.viewModel.PriceID) {
+                                $.post('@Html.Raw(Url.Action("CalculateTotalCost", "ContractConsole"))', $global.viewModel, function (data) {
+                                    if ($.isPlainObject(data)) {
+                                        alert(data.message);
+                                    } else {
+                                        $('#costSummary').empty()
+                                            .append(data);
+                                    }
+                                });
+                            }
+                        }
                     </script>
                 </div>
             </div>

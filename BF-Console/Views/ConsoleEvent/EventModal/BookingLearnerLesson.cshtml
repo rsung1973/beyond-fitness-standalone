@@ -151,12 +151,21 @@
                         @if (contract.ContractType == (int)CourseContractType.ContractTypeDefinition.CGA
                             || contract.ContractType == (int)CourseContractType.ContractTypeDefinition.CNA)
                         {
-                            <a class="m-r-10">
-                                P.T session - @(item.LessonPriceType.Description)(@(item.LessonPriceType.DurationInMinutes)分鐘)
-                            </a>
+                            if (item.LessonPriceType.IsDietaryConsult)
                             {
-                                Html.RenderPartial("~/Views/Common/BranchStoreName.cshtml", item.LessonPriceType.BranchStore);
+                                <a class="m-r-10">
+                                    N.S session - @(item.LessonPriceType.SimpleDescription)(@(item.LessonPriceType.DurationInMinutes)分鐘)
+                                </a>
                             }
+                            else
+                            {
+                                <a class="m-r-10">
+                                    P.T session - @(item.LessonPriceType.SimpleDescription)(@(item.LessonPriceType.DurationInMinutes)分鐘)
+                                </a>
+                            }
+
+                            Html.RenderPartial("~/Views/Common/BranchStoreName.cshtml", item.LessonPriceType.BranchStore);
+
                             <small class="float-right text-muted"><time>@(item.RemainedLessonCount())/@(item.Lessons)</time></small>
                         }
                         else
@@ -165,7 +174,14 @@
                                 P.T session - @(contract.CourseContractType.TypeName)(@(contract.LessonPriceType.DurationInMinutes)分鐘)
                             </a>
                             {
-                                Html.RenderPartial("~/Views/Common/BranchStoreName.cshtml", contract.CourseContractExtension.BranchStore);
+                                if (contract.LessonPriceType.BranchStore.IsVirtualClassroom())
+                                {
+                                    Html.RenderPartial("~/Views/Common/BranchStoreName.cshtml", contract.LessonPriceType.BranchStore);
+                                }
+                                else
+                                {
+                                    Html.RenderPartial("~/Views/Common/BranchStoreName.cshtml", contract.CourseContractExtension.BranchStore);
+                                }
                             }
                             <small class="float-right text-muted"><time>@(remainedCount)/@(contract.Lessons)</time></small>
                         }

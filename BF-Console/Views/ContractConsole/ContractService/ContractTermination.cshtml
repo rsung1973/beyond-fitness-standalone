@@ -29,9 +29,7 @@
                                      .Select(r => r.CourseContract)
                                      .Where(c => c.Status < (int)Naming.CourseContractStatus.已生效)
                                      .FirstOrDefault();
-    var bookingCount = _model.CourseContractType.ContractCode == "CFA"
-            ? _model.RegisterLessonContract.Sum(c => c.RegisterLesson.GroupingLesson.LessonTime.Count())
-            : _model.RegisterLessonContract.First().RegisterLesson.GroupingLesson.LessonTime.Count;
+    var bookingCount = _model.CountableRegisterLesson().Sum(r => r.GroupingLesson.LessonTime.Count());
     var contractCost = _model.TotalCost / _model.Lessons * bookingCount;
     var totalPaid = _model.TotalPaidAmount();
     var applicable = true;}

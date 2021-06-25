@@ -77,10 +77,10 @@ namespace WebHome.Helper.BusinessOperation
             item.ContractDate = DateTime.Now;
             item.Subject = viewModel.Subject;
             item.ValidFrom = DateTime.Today;
-            item.Expiration = DateTime.Today.AddMonths(price.BranchStore.IsVirtualClassroom() ? 18 : (contractType.EffectiveMonths ?? 18));
+            item.Expiration = DateTime.Today.AddMonths(price.EffectiveMonths ?? 18);
             item.OwnerID = viewModel.OwnerID.Value;
             item.SequenceNo = 0;// viewModel.SequenceNo;
-            item.Lessons = price.IsDietaryConsult || price.IsPackagePrice ? price.ExpandActualLessonCount(models) : viewModel.Lessons;
+            item.Lessons = price.IsPackagePrice ? price.ExpandActualLessonCount(models) : viewModel.Lessons;
             item.PriceID = viewModel.PriceID.Value;
             item.Remark = viewModel.Remark;
             item.FitnessConsultant = viewModel.FitnessConsultant.Value;
@@ -121,7 +121,7 @@ namespace WebHome.Helper.BusinessOperation
             }
             models.SubmitChanges();
 
-            item.TotalCost = price.IsDietaryConsult || price.IsPackagePrice ? price.ListPrice : item.Lessons * item.LessonPriceType.ListPrice;
+            item.TotalCost = price.IsPackagePrice ? price.ListPrice : item.Lessons * item.LessonPriceType.ListPrice;
             if (item.CourseContractType.GroupingLessonDiscount != null)
             {
                 item.TotalCost = item.TotalCost * item.CourseContractType.GroupingLessonDiscount.GroupingMemberCount * item.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount / 100;
@@ -190,7 +190,7 @@ namespace WebHome.Helper.BusinessOperation
             {
                 ModelState.AddModelError("OwnerID", "請新增合約學生");
             }
-            else 
+            else if (viewModel.ContractType != CourseContractType.ContractTypeDefinition.CFA)
             {
                 var contractType = models.GetTable<CourseContractType>().Where(t => t.TypeID == (int?)viewModel.ContractType)
                                     .FirstOrDefault();
@@ -813,11 +813,11 @@ namespace WebHome.Helper.BusinessOperation
             }
         }
 
-        public static List<KeyValuePair<LessonPriceType, int>> ExpandActualLessonPrice(this LessonPriceType priceItem, GenericManager<BFDataContext> models, List<KeyValuePair<LessonPriceType, int>> container = null)
+        public static List<LessonPriceType> ExpandActualLessonPrice(this LessonPriceType priceItem, GenericManager<BFDataContext> models, List<LessonPriceType> container = null)
         {
             if (container == null)
             {
-                container = new List<KeyValuePair<LessonPriceType, int>>();
+                container = new List<LessonPriceType>();
             }
 
             if (priceItem.LessonPricePackage.Any())
@@ -833,14 +833,14 @@ namespace WebHome.Helper.BusinessOperation
 
         public static int? ExpandActualLessonCount(this LessonPriceType priceItem, GenericManager<BFDataContext> models)
         {
-            return priceItem.ExpandActualLessonPrice(models).Sum(p => p.Value);
+            return priceItem.ExpandActualLessonPrice(models).Sum(p => (p.BundleCount ?? 0));
         }
         
-        public static List<KeyValuePair<LessonPriceType, int>> ExpandActualLessonPrice(this LessonPricePackage package, GenericManager<BFDataContext> models, List<KeyValuePair<LessonPriceType, int>> container = null)
+        public static List<LessonPriceType> ExpandActualLessonPrice(this LessonPricePackage package, GenericManager<BFDataContext> models, List<LessonPriceType> container = null)
         {
             if (container == null)
             {
-                container = new List<KeyValuePair<LessonPriceType, int>>();
+                container = new List<LessonPriceType>();
             }
 
             if (package.PackageItemPrice.LessonPricePackage.Any())
@@ -852,7 +852,7 @@ namespace WebHome.Helper.BusinessOperation
             }
             else
             {
-                container.Add(new KeyValuePair<LessonPriceType, int>(package.PackageItemPrice, package.Lessons ?? 0));
+                container.Add(package.PackageItemPrice);
             }
 
             return container;
@@ -871,10 +871,10 @@ namespace WebHome.Helper.BusinessOperation
             {
                 foreach(var price in priceItems)
                 {
-                    createRegisterLesson(item, models, price.Key, price.Value);
+                    createRegisterLesson(item, models, price, price.BundleCount ?? 0);
                 }
 
-                item.Lessons = priceItems.Sum(p => p.Value);
+                item.Lessons = priceItems.Sum(p => p.BundleCount ?? 0);
                 models.SubmitChanges();
             }
             else

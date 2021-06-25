@@ -8,6 +8,7 @@
 @using WebHome.Models.DataEntity
 @using WebHome.Controllers
 @using Newtonsoft.Json
+@using WebHome.Helper.BusinessOperation
 @{
     Layout = "~/Views/ContractConsole/ContractModal/ListLessonPriceTemplate.cshtml";
 
@@ -41,13 +42,13 @@
                             <ul class="mb_list">
                                 @foreach (var packageItem in item.LessonPricePackage.Select(p=>p.PackageItemPrice))
                                 {
-                                    <li onclick="commitPrice(@(item.PriceID),'@($"{item.ListPrice:##,###,###,###}")元 / @(item.Description)',event);">
+                                    <li onclick="commitPrice(@(item.PriceID),'@($"{item.ListPrice:##,###,###,###}")元 / @(item.Description)',event,@(item.ExpandActualLessonCount(models)));">
                                         <div class="list_tb tb2">
                                             <div class="list_tr hand">
                                                 <div class="list_td">
-                                                    @(packageItem.Description)
+                                                    @(packageItem.SimpleDescription)
                                                 </div>
-                                                <div class="list_td rt">@(String.Format("{0,5:##,###,###,###}", packageItem.ListPrice))</div>
+                                                <div class="list_td rt">@(String.Format("{0,5:##,###,###,###}", packageItem.ListPrice*packageItem.BundleCount))</div>
                                             </div>
                                         </div>
                                     </li>

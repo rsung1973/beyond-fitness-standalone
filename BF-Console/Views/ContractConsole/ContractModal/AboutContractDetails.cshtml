@@ -47,6 +47,9 @@
                                             Html.RenderPartial("~/Views/ContractConsole/Module/ContractDataContent.cshtml", _model);
                                         }
                                     </ul>
+                                    @{
+                                        Html.RenderPartial("~/Views/ContractConsole/Module/ContractPackageContent.cshtml", _model);
+                                    }
                                 </div>
                             </div>
                         </div>
