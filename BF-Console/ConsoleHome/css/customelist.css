@@ -497,6 +497,14 @@ ul.mb_list .tit1 {
 
 
 /*tb2 單筆*/
+ul.mb_list .tit {
+	display: block;
+	line-height: 42px;
+	color: #fff;
+	font-size: 16px;
+	padding: 0 0 0 10px;
+    background-color: #999999;
+}
 
 .tb2 td,
 .tb2 .list_td {
