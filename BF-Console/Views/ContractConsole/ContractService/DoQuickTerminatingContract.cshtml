@@ -23,6 +23,8 @@
     _profile = Context.GetUser();
     _viewID = ViewBag.ViewID as String;
 
+    int? currentSettlementPrice = _model.LessonPriceType.ListPrice;
+
 }
 <div class="header">
     <h2><strong>原課程單價 <span class="badge bg-blue">@(_model.LessonPriceType.PriceTypeBundle())</span>：</strong> <span class="col-red">@($"{_model.LessonPriceType.ListPrice:##,###,###,###}")</span></h2>
@@ -41,21 +43,67 @@
                     <div class="alert-icon">
                         <i class="zmdi zmdi-notifications"></i>
                     </div>
-                    @{
+                    @if (_model.ContractType == (int)CourseContractType.ContractTypeDefinition.CGA)
+                    {
+                        var lessons = _model.CountableRegisterLesson();
+                        var refund = _model.TotalPaidAmount()
+                                - lessons.Where(r => r.LessonPriceType.IsDietaryConsult)
+                                    .Sum(r => r.LessonPriceType.ListPrice * r.LessonTime.Count)
+                                - lessons.Where(r => !r.LessonPriceType.IsDietaryConsult)
+                                    .Sum(r => r.LessonPriceType.ListPrice * r.LessonTime.Count);
+                        <text>
+                            已繳服務總費用 @(String.Format("{0:##,###,###,###}", _model.TotalPaidAmount()))
+                            扣除依簽約時課程單價
+                            @foreach (var lesson in lessons.Where(r => !r.LessonPriceType.IsDietaryConsult))
+                            {
+                                currentSettlementPrice = lesson.LessonPriceType.ListPrice;
+                                <text>
+                                    (<span class="col-red">@(String.Format("{0:##,###,###,###}", lesson.LessonPriceType.ListPrice))</span>) / 人乘以實際上課堂數(<span class="col-red">@(lesson.AttendedLessonCount())</span>)
+                                </text>
+                            }
+                            ，扣除
+                            @foreach (var lesson in lessons.Where(r => r.LessonPriceType.IsDietaryConsult))
+                            {
+                                <text>
+                                    @(lesson.LessonPriceType.SimpleDescription)(<span class="col-red">@(String.Format("{0:##,###,###,###}", lesson.LessonPriceType.ListPrice*lesson.LessonTime.Count))</span>)
+                                </text>
+                            }
+                            ，終止轉收入款項 <span class="col-red">@(String.Format("{0:##,###,###,##0}", refund))</span>元
+                            <small>
+                                = @(String.Format("{0:##,###,###,###}", _model.TotalPaidAmount()))
+                                @foreach (var lesson in lessons.Where(r => !r.LessonPriceType.IsDietaryConsult))
+                                {
+                                    <text>
+                                        - (@(String.Format("{0:##,###,###,###}", lesson.LessonPriceType.ListPrice)) * @(lesson.AttendedLessonCount()))
+                                    </text>
+                                }
+                                @foreach (var lesson in lessons.Where(r => r.LessonPriceType.IsDietaryConsult))
+                                {
+                                    <text>
+                                        - (@(String.Format("{0:##,###,###,###}", lesson.LessonPriceType.ListPrice*lesson.AttendedLessonCount())))
+                                    </text>
+                                }
+                                。
+                            </small>
+                        </text>
+                    }
+                    else
+                    {
                         var remained = _model.RemainedLessonCount();
                         var lessons = _model.Lessons;
                         var refund = _model.TotalPaidAmount() - (lessons - remained) * _model.LessonPriceType.ListPrice * _model.CourseContractType.GroupingMemberCount * _model.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount / 100;
-
+                        <text>
+                            已繳服務總費用 @(String.Format("{0:##,###,###,###}", _model.TotalPaidAmount())) 扣除依簽約時課程單價(<span class="col-red">@(String.Format("{0:##,###,###,###}", _model.LessonPriceType.ListPrice))</span>) / 人乘以實際上課堂數(<span class="col-red">@(_model.AttendedLessonCount())</span>)，終止轉收入款項 <span class="col-red">@(String.Format("{0:##,###,###,##0}", refund))</span>元
+                            <small>
+                                = @(String.Format("{0:##,###,###,###}", _model.TotalPaidAmount())) - ( @(String.Format("{0:##,###,###,###}", _model.LessonPriceType.PriceTypeBundle())) * @(_model.CourseContractType.GroupingMemberCount)
+                                @if (_model.CourseContractType.GroupingMemberCount > 1)
+                                {
+                                    <text>* @(_model.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount / 100m)</text>
+                                }
+                                * ( @(_model.Lessons) - @(_model.RemainedLessonCount() )))。
+                            </small>
+                        </text>
                     }
-                    已繳服務總費用 @(String.Format("{0:##,###,###,###}", _model.TotalPaidAmount())) 扣除依簽約時課程單價(<span class="col-red">@(String.Format("{0:##,###,###,###}", _model.LessonPriceType.ListPrice))</span>) / 人乘以實際上課堂數(<span class="col-red">@(_model.AttendedLessonCount())</span>)，終止轉收入款項 <span class="col-red">@(String.Format("{0:##,###,###,##0}", refund))</span>元
-                    <small>
-                        = @(String.Format("{0:##,###,###,###}", _model.TotalPaidAmount())) - ( @(String.Format("{0:##,###,###,###}", _model.LessonPriceType.PriceTypeBundle())) * @(_model.CourseContractType.GroupingMemberCount)
-                        @if (_model.CourseContractType.GroupingMemberCount > 1)
-                        {
-                            <text>* @(_model.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount / 100m)</text>
-                        }
-                        * ( @(_model.Lessons) - @(_model.RemainedLessonCount() )))。
-                    </small>
                 </div>
             </div>
         </div>
@@ -91,7 +139,7 @@
 
     function commitTerminating() {
         var viewModel = $('#@(_viewID)').find('input,select,textArea').serializeObject();
-        viewModel.SettlementPrice = @(_model.LessonPriceType.ListPrice);
+        viewModel.SettlementPrice = @(currentSettlementPrice);
         viewModel.Reason = '終止';
         viewModel.Status = $global.viewModel.Status;
         viewModel.OperationMode = $global.viewModel.OperationMode;

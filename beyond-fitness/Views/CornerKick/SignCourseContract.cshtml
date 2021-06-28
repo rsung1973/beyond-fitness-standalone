@@ -36,7 +36,7 @@
     <!-- Stepper Master-->
     <link href="css/stepper-master/mstepper.css" rel="stylesheet">
     <!-- Custom List -->
-    <link href="css/customelist.css" rel="stylesheet">
+    <link href="css/customelist.css?1.0" rel="stylesheet">
     <!-- jSignature-->
     <link href="css/jSignature/jsignature.css" rel="stylesheet">
     <!-- *** Favicons *** -->
@@ -84,7 +84,18 @@
                                         <input type="checkbox" name="Extension" id="agree1" value="true" />
                                         <label for="agree1">
                                             展延
-                                            <span class="help-text">無法於上述使用期限內完成課程堂數者，得於到期前30日內申請展延使用，並得就未完成部分協商展延最多3個月內完成。</span>
+                                            <span class="help-text">
+                                                @if (_model.ContractType == (int)CourseContractType.ContractTypeDefinition.CGA
+                                                    || _model.ContractType == (int)CourseContractType.ContractTypeDefinition.CNA
+                                                    || _model.LessonPriceType.BranchStore.IsVirtualClassroom())
+                                                {
+                                                    <text>若未於上述使用期限內完成課程堂數者不得展延。</text>
+                                                }
+                                                else
+                                                {
+                                                    <text>無法於上述使用期限內完成課程堂數者，得於到期前30日內申請展延使用，並得就未完成部分協商展延最多3個月內完成。</text>
+                                                }
+                                            </span>
                                         </label>
                                     </div>
                                 </div>

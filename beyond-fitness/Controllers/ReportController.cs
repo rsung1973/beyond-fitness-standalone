@@ -533,7 +533,7 @@ namespace WebHome.Controllers
                     r[3] = item.LessonPriceType.ListPrice;
                     var count = g.Count();
                     r[4] = count;
-                    r[5] = count * item.LessonPriceType.ListPrice * item.CourseContractType.GroupingMemberCount * item.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount / 100;
+                    r[5] = g.Sum(l => l.RegisterLesson.LessonPriceType.ListPrice) * item.CourseContractType.GroupingMemberCount * item.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount / 100;
                     table.Rows.Add(r);
                 }
 

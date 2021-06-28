@@ -118,26 +118,8 @@ namespace WebHome.Models.DataEntity
 
         public static int RemainedLessonCount(this CourseContract item, bool onlyAttended = false)
         {
-            if (onlyAttended)
-            {
-                return item.RegisterLessonContract.Count > 0
-                        ? item.CourseContractType.ContractCode == "CFA"
-                            ? (item.Lessons ?? 0)
-                                - item.RegisterLessonContract.Sum(c => c.RegisterLesson.LessonTime.Count(l => l.LessonAttendance != null))
-                                - (item.RegisterLessonContract.Sum(c => c.RegisterLesson.AttendedLessons) ?? 0)
-                            : item.RegisterLessonContract.Sum(r => r.RegisterLesson.RemainedLessonCount(onlyAttended))
-                        : item.Lessons.Value;
-            }
-            else
-            {
-                return item.RegisterLessonContract.Count > 0
-                        ? item.CourseContractType.ContractCode == "CFA"
-                            ? (item.Lessons ?? 0)
-                                - item.RegisterLessonContract.Sum(c => c.RegisterLesson.LessonTime.Count())
-                                - (item.RegisterLessonContract.Sum(c => c.RegisterLesson.AttendedLessons) ?? 0)
-                            : item.RegisterLessonContract.Sum(r => r.RegisterLesson.RemainedLessonCount())
-                        : item.Lessons.Value;
-            }
+            return (item.Lessons ?? 0)
+                    - item.AttendedLessonCount(onlyAttended);
         }
 
         public static int UnfinishedLessonCount(this CourseContract item)
@@ -174,23 +156,44 @@ namespace WebHome.Models.DataEntity
             }
         }
 
-        public static IEnumerable<LessonTime> AttendedLessonList(this CourseContract item, bool onlyAttended = false)
+        public static int TotalAttendedCost(this CourseContract item, DateTime dateBefore, bool onlyAttended = false)
         {
-            IEnumerable<LessonTime> items;
+            var items = item.CountableRegisterLesson();
 
-            if (item.ContractType == (int)CourseContractType.ContractTypeDefinition.CFA)
+            if (onlyAttended)
             {
-                items = item.RegisterLessonContract
-                    .Select(c => c.RegisterLesson)
-                    .SelectMany(c => c.LessonTime);
+                return items.Sum(r => ((r.AttendedLessons ?? 0) + r.GroupingLesson.LessonTime.Where(l => l.LessonAttendance != null && l.ClassTime < dateBefore).Count()) 
+                                    * r.LessonPriceType.ListPrice.Value);
             }
             else
             {
-                items = item.RegisterLessonContract
-                    .Select(c => c.RegisterLesson)
-                    .Where(r => r.UID == item.OwnerID)
-                    .SelectMany(c => c.GroupingLesson.LessonTime);
+                return items.Sum(r => ((r.AttendedLessons ?? 0) + r.GroupingLesson.LessonTime.Where(l => l.ClassTime < dateBefore).Count())
+                                    * r.LessonPriceType.ListPrice.Value);
             }
+        }
+
+        public static int TotalAttendedCost(this CourseContract item, DateTime dateFrom, DateTime dateBefore, bool onlyAttended = false)
+        {
+            var items = item.CountableRegisterLesson();
+
+            if (onlyAttended)
+            {
+                return items.Sum(r => ((r.AttendedLessons ?? 0) + r.GroupingLesson.LessonTime.Where(l => l.LessonAttendance != null && l.ClassTime >= dateFrom && l.ClassTime < dateBefore).Count())
+                                    * r.LessonPriceType.ListPrice.Value);
+            }
+            else
+            {
+                return items.Sum(r => ((r.AttendedLessons ?? 0) + r.GroupingLesson.LessonTime.Where(l => l.ClassTime >= dateFrom && l.ClassTime < dateBefore).Count())
+                                    * r.LessonPriceType.ListPrice.Value);
+            }
+        }
+
+
+
+        public static IEnumerable<LessonTime> AttendedLessonList(this CourseContract item, bool onlyAttended = false)
+        {
+            IEnumerable<LessonTime> items = item.CountableRegisterLesson()
+                .SelectMany(c => c.GroupingLesson.LessonTime);
 
             if (onlyAttended)
             {

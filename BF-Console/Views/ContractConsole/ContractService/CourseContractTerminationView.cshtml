@@ -95,7 +95,7 @@
                                     var original = _model.SourceContract;
                                     var totalPaid = original.TotalPaidAmount();
                                     var attened = original.AttendedLessonCount();
-                                    var refund = totalPaid - (original.Lessons - original.RemainedLessonCount()) * _contract.CourseContractExtension.SettlementPrice * _contract.CourseContractType.GroupingMemberCount * _contract.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount / 100;
+                                    int? refund;
                                 }
                                 申請內容：原合約於 <span class="col-red">@(String.Format("{0:yyyy/MM/dd}", _signatureDate))</span> 終止服務，
                                 @if (totalPaid == 0)
@@ -107,14 +107,65 @@
                                 }
                                 else if (attened > 0 || !original.CourseContractExtension.Version.HasValue)
                                 {
-                                    <text>
-                                        已繳服務總費用 @(String.Format("{0:##,###,###,###}", totalPaid)) 扣除依簽約時課程單堂原價(<span class="col-red">@(String.Format("{0:##,###,###,###}", _contract.CourseContractExtension.SettlementPrice))</span>) / 人乘以實際上課堂數(<span class="col-red">@(original.AttendedLessonCount())</span>)，退還剩餘款項 <span class="col-red">@(String.Format("{0:##,###,###,##0}", refund))</span>元<small> = @(String.Format("{0:##,###,###,###}", original.TotalPaidAmount())) - ( @(String.Format("{0:##,###,###,###}", _contract.CourseContractExtension.SettlementPrice)) * @(_contract.CourseContractType.GroupingMemberCount) 
-                                            @if(_contract.CourseContractType.GroupingMemberCount>1)
+                                    if (_contract.ContractType == (int)CourseContractType.ContractTypeDefinition.CGA)
+                                    {
+                                        var lessons = original.CountableRegisterLesson();
+
+                                        refund = totalPaid
+                                                - lessons.Select(r => r.LessonPriceType)
+                                                    .Where(l => l.IsDietaryConsult).Sum(l => l.ListPrice * l.BundleCount)
+                                                - lessons.Where(r => !r.LessonPriceType.IsDietaryConsult)
+                                                    .Sum(r => _contract.CourseContractExtension.SettlementPrice * r.LessonTime.Count);
+
+                                        <text>
+                                            已繳服務總費用 @(String.Format("{0:##,###,###,###}", totalPaid))
+                                            扣除依簽約時課程單堂原價
+                                            @foreach (var lesson in lessons.Where(r => !r.LessonPriceType.IsDietaryConsult))
                                             {
-                                                <text>* @(_contract.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount / 100m)</text>
+                                                <text>
+                                                    (<span class="col-red">@(String.Format("{0:##,###,###,###}", _contract.CourseContractExtension.SettlementPrice))</span>) / 人乘以實際上課堂數(<span class="col-red">@(lesson.AttendedLessonCount())</span>)
+                                                </text>
                                             }
-                                            * ( @(original.Lessons) - @(original.RemainedLessonCount() )))。</small>
-                                    </text>
+                                            ，扣除
+                                            @foreach (var lesson in lessons.Where(r => r.LessonPriceType.IsDietaryConsult))
+                                            {
+                                                <text>
+                                                    @(lesson.LessonPriceType.SimpleDescription)(<span class="col-red">@(String.Format("{0:##,###,###,###}", lesson.LessonPriceType.ListPrice*lesson.LessonPriceType.BundleCount))</span>)
+                                                </text>
+                                            }
+                                            退還剩餘款項 <span class="col-red">@(String.Format("{0:##,###,###,##0}", refund))</span>元
+                                            <small>
+                                                = @(String.Format("{0:##,###,###,###}", original.TotalPaidAmount()))
+                                                @foreach (var lesson in lessons.Where(r => !r.LessonPriceType.IsDietaryConsult))
+                                                {
+                                                    <text>
+                                                        - (@(String.Format("{0:##,###,###,###}", _contract.CourseContractExtension.SettlementPrice)) * @(lesson.AttendedLessonCount()))
+                                                    </text>
+                                                }
+                                                @foreach (var lesson in lessons.Where(r => r.LessonPriceType.IsDietaryConsult))
+                                                {
+                                                    <text>
+                                                        - (@(String.Format("{0:##,###,###,###}", lesson.LessonPriceType.ListPrice*lesson.LessonPriceType.BundleCount)))
+                                                    </text>
+                                                }
+                                                。
+                                            </small>
+                                        </text>
+                                    }
+                                    else
+                                    {
+                                        refund = totalPaid - (original.Lessons - original.RemainedLessonCount()) * _contract.CourseContractExtension.SettlementPrice * _contract.CourseContractType.GroupingMemberCount * _contract.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount / 100;
+                                        <text>
+                                            已繳服務總費用 @(String.Format("{0:##,###,###,###}", totalPaid)) 扣除依簽約時課程單堂原價(<span class="col-red">@(String.Format("{0:##,###,###,###}", _contract.CourseContractExtension.SettlementPrice))</span>) / 人乘以實際上課堂數(<span class="col-red">@(original.AttendedLessonCount())</span>)，退還剩餘款項 <span class="col-red">@(String.Format("{0:##,###,###,##0}", refund))</span>元<small>
+                                                = @(String.Format("{0:##,###,###,###}", original.TotalPaidAmount())) - ( @(String.Format("{0:##,###,###,###}", _contract.CourseContractExtension.SettlementPrice)) * @(_contract.CourseContractType.GroupingMemberCount)
+                                                @if (_contract.CourseContractType.GroupingMemberCount > 1)
+                                                {
+                                                    <text>* @(_contract.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount / 100m)</text>
+                                                }
+                                                * ( @(original.Lessons) - @(original.RemainedLessonCount() )))。
+                                            </small>
+                                        </text>
+                                    }
                                 }
                                 else if ((_contract.ContractDate - original.ValidFrom).Value.TotalDays < 8)
                                 {

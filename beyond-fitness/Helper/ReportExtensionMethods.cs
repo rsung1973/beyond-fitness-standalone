@@ -74,7 +74,7 @@ namespace WebHome.Helper
                 r[7] = halfCount;
                 r[8] = branch.BranchName;
                 var discount = contract.CourseContractType.GroupingLessonDiscount;
-                r[9] = count * contract.LessonPriceType.ListPrice * discount.GroupingMemberCount * discount.PercentageOfDiscount / 100;
+                r[9] = item.Sum(l => l.RegisterLesson.LessonPriceType.ListPrice) * discount.GroupingMemberCount * discount.PercentageOfDiscount / 100;
                 r[10] = contract.Entrusted == true
                     ? "是"
                     : contract.Entrusted == false
@@ -227,7 +227,7 @@ namespace WebHome.Helper
                 r[7] = item.Join(models.GetTable<Settlement>(), l => l.SettlementID, s => s.SettlementID, (l, s) => new { l.CommitAttendance, s.SettlementDate })
                             .Where(l => l.CommitAttendance <= l.SettlementDate).Count();    //item.Where(l => l.AchievementIndex == 0.5m).Count();
                 r[8] = branch.BranchName;
-                r[9] = item.Sum(l=>l.ListPrice * l.GroupingMemberCount * l.PercentageOfDiscount / 100);
+                r[9] = item.Sum(l => l.ListPrice * l.GroupingMemberCount * l.PercentageOfDiscount / 100);
                 r[10] = contract.Entrusted == true
                     ? "是"
                     : contract.Entrusted == false

@@ -141,7 +141,7 @@
                 <div class="pull-left">
                     <div class="controls">
                         <label class="fancy-checkbox">
-                            <input type="checkbox" id="PTSession@(item.RegisterID)" @(bookable && !_currentDisabled ? null : "disabled") name="RegisterID" value="@(item.RegisterID)" onclick="selectBooking(this, '@((int)Naming.LessonPriceStatus.一般課程)');">
+                            <input type="checkbox" id="PTSession@(item.RegisterID)" @(bookable && (!_currentDisabled || item.LessonPriceType.IsDietaryConsult) ? null : "disabled") name="RegisterID" value="@(item.RegisterID)" onclick="selectBooking(this, '@((int)Naming.LessonPriceStatus.一般課程)');">
                             <span></span>
                         </label>
                     </div>

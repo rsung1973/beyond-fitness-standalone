@@ -241,14 +241,24 @@
     </script>
 </body>
 </html>
-@{ 
+@{
     Html.RenderPartial("~/Views/Common/JQueryHelper.cshtml");
     Html.RenderPartial("~/Views/CornerKick/Module/ModeGirls.cshtml", profile);
-    }
+}
 
 @helper WriteContractContent(CourseContract item)
 {
-    <span><i class="material-icons">person_pin_circle</i> 上課地點：@(item.CourseContractExtension.BranchStore.BranchName)</span>
+    <span>
+        <i class="material-icons">person_pin_circle</i>
+        @if (item.LessonPriceType.BranchStore.IsVirtualClassroom())
+        {
+            <text>上課場所/簽約分店：遠距/@(item.CourseContractExtension.BranchStore.BranchName)</text>
+        }
+        else
+        {
+            <text>上課場所：@(item.CourseContractExtension.BranchStore.BranchName)</text>
+        }
+    </span>
     <span><i class="material-icons">calendar_today</i> 合約迄日：@($"{item.Expiration:yyyy/MM/dd}")</span>
     if (item.CourseContractMember.Count > 1)
     {

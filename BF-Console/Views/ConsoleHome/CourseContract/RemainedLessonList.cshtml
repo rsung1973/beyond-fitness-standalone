@@ -37,28 +37,57 @@
             var contract = item.RegisterLessonContract?.CourseContract;
             if (contract != null)
             {
-                <tr onclick="processContract('@(contract.ContractID.EncryptKey())');">
-                    <td>@(contract.ContractNo())</td>
-                    <td>@(contract.CourseContractType.TypeName)(@(contract.LessonPriceType.DurationInMinutes)分鐘)</td>
-                    <td>@(contract.Lessons)</td>
-                    <td>
-                        @(contract.RemainedLessonCount())
-                    </td>
-                    <td>
-                        @(String.Format("{0:yyyy/MM/dd}", contract.CourseContractRevision?.Reason == "終止"
+                if (contract.ContractType == (int)CourseContractType.ContractTypeDefinition.CGA)
+                {
+                    <tr onclick="processContract('@(contract.ContractID.EncryptKey())');">
+                        <td>@(contract.ContractNo())</td>
+                        <td>@(item.LessonPriceType.SimpleDescription)(@(item.LessonPriceType.DurationInMinutes)分鐘)</td>
+                        <td>@(item.Lessons)</td>
+                        <td>
+                            @(item.RemainedLessonCount())
+                        </td>
+                        <td>
+                            @(String.Format("{0:yyyy/MM/dd}", contract.CourseContractRevision?.Reason == "終止"
                                                 ? contract.EffectiveDate
                                                 : contract.Expiration))
-                    </td>
-                    <td>
-                        @(contract.CourseContractRevision == null
+                        </td>
+                        <td>
+                            @(contract.CourseContractRevision == null
+                                ? String.Format("{0:yyyy/MM/dd}", contract.PayoffDue == null
+                                    ? contract.EffectiveDate
+                                    : contract.PayoffDue)
+                                : "")
+                        </td>
+                        <td>@(item.LessonPriceType.BranchStore.BranchName)</td>
+                        <td>@(contract.ServingCoach.UserProfile.FullName())</td>
+                    </tr>
+                }
+                else
+                {
+                    <tr onclick="processContract('@(contract.ContractID.EncryptKey())');">
+                        <td>@(contract.ContractNo())</td>
+                        <td>@(contract.CourseContractType.TypeName)(@(contract.LessonPriceType.DurationInMinutes)分鐘)</td>
+                        <td>@(contract.Lessons)</td>
+                        <td>
+                            @(contract.RemainedLessonCount())
+                        </td>
+                        <td>
+                            @(String.Format("{0:yyyy/MM/dd}", contract.CourseContractRevision?.Reason == "終止"
+                                                ? contract.EffectiveDate
+                                                : contract.Expiration))
+                        </td>
+                        <td>
+                            @(contract.CourseContractRevision == null
                         ? String.Format("{0:yyyy/MM/dd}", contract.PayoffDue == null
                             ? contract.EffectiveDate
                             : contract.PayoffDue)
                         : "")
-                    </td>
-                    <td>@(contract.CourseContractExtension.BranchStore.BranchName)</td>
-                    <td>@(contract.ServingCoach.UserProfile.FullName())</td>
-                </tr>
+                        </td>
+                        <td>@(contract.CourseContractExtension.BranchStore.BranchName)</td>
+                        <td>@(contract.ServingCoach.UserProfile.FullName())</td>
+                    </tr>
+                }
+
             }
             else
             {

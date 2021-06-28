@@ -348,7 +348,7 @@ namespace WebHome.Helper.BusinessOperation
             }
             models.SubmitChanges();
 
-            item.TotalCost = item.Lessons * item.LessonPriceType.ListPrice;
+            item.TotalCost = lessonPrice.IsPackagePrice ? lessonPrice.ListPrice : item.Lessons * item.LessonPriceType.ListPrice;
             if (item.CourseContractType.GroupingLessonDiscount != null)
             {
                 item.TotalCost = item.TotalCost * item.CourseContractType.GroupingLessonDiscount.GroupingMemberCount * item.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount / 100;
@@ -1243,21 +1243,37 @@ namespace WebHome.Helper.BusinessOperation
                 {
                     ModelState.AddModelError("SettlementPrice", "請填入課程單價!!");
                 }
-                else if (viewModel.SettlementPrice < item.LessonPriceType.ListPrice)
-                {
-                    ModelState.AddModelError("SettlementPrice", "課程單價不可少於原購買單價!!");
-                }
                 else
                 {
-                    var refund = item.TotalPaidAmount() - item.AttendedLessonCount()
-                            * viewModel.SettlementPrice
-                            * item.CourseContractType.GroupingMemberCount
-                            * item.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount / 100;
-                    if (refund < 0)
+                    bool checkRefund = true;
+                    if (item.ContractType == (int)CourseContractType.ContractTypeDefinition.CGA)
                     {
-                        ModelState.AddModelError("SettlementPrice", "退款差額不可小於零!!");
+                        if (viewModel.SettlementPrice < 0)
+                        {
+                            ModelState.AddModelError("SettlementPrice", "組合包課程單價錯誤!!");
+                            checkRefund = false;
+                        }
+                    }
+                    else
+                    {
+                        if (viewModel.SettlementPrice < item.LessonPriceType.ListPrice)
+                        {
+                            ModelState.AddModelError("SettlementPrice", "課程單價不可少於原購買單價!!");
+                            checkRefund = false;
+                        }
                     }
 
+                    if (checkRefund)
+                    {
+                        var refund = item.TotalPaidAmount() - item.AttendedLessonCount()
+                                * viewModel.SettlementPrice
+                                * item.CourseContractType.GroupingMemberCount
+                                * item.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount / 100;
+                        if (refund < 0)
+                        {
+                            ModelState.AddModelError("SettlementPrice", "退款差額不可小於零!!");
+                        }
+                    }
                 }
 
                 if (!viewModel.BySelf.HasValue)

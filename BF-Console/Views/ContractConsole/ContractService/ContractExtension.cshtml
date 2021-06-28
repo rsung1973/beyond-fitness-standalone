@@ -42,14 +42,28 @@
             @if (_model.IsContractServiceInProgress(models))
             {
                 applicable = false;
-                <span class="col-red"><i class="zmdi zmdi-block"></i>服務申請進行中</span>
+                <span class="col-red"><i class="zmdi zmdi-block"></i>服務申請進行中</span><br />
             }
             @if (_model.TotalPaidAmount() < _model.TotalCost)
             {
                 applicable = false;
                 <span class="col-red"><i class="zmdi zmdi-block"></i>費用未結清</span><br />
             }
-
+            @if (_model.ContractType == (int)CourseContractType.ContractTypeDefinition.CGA)
+            {
+                applicable = false;
+                <span class="col-red"><i class="zmdi zmdi-block"></i>組合包</span><br />
+            }
+            else if (_model.ContractType == (int)CourseContractType.ContractTypeDefinition.CNA)
+            {
+                applicable = false;
+                <span class="col-red"><i class="zmdi zmdi-block"></i>營養</span><br />
+            }
+            else if (_model.LessonPriceType.BranchStore.IsVirtualClassroom())
+            {
+                applicable = false;
+                <span class="col-red"><i class="zmdi zmdi-block"></i>遠距</span><br />
+            }
         </div>
         <div class="col-4 text-right">
             @{ 

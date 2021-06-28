@@ -65,14 +65,18 @@
                         totalCost = _model.TotalCost;
                     }
                 }
-                <li>
-                    <div class="list_tb tb2">
-                        <div class="list_tr">
-                            <div class="list_td hd">購買堂數</div>
-                            <div class="list_td rt">@(totalLessons)</div>
+                @if (_model.ContractType != (int)CourseContractType.ContractTypeDefinition.CGA
+                        && _model.ContractType != (int)CourseContractType.ContractTypeDefinition.CNA)
+                {
+                    <li>
+                        <div class="list_tb tb2">
+                            <div class="list_tr">
+                                <div class="list_td hd">購買堂數</div>
+                                <div class="list_td rt">@(totalLessons)</div>
+                            </div>
                         </div>
-                    </div>
-                </li>
+                    </li>
+                }
                 <li>
                     <div class="list_tb tb2">
                         <div class="list_tr">
@@ -133,6 +137,9 @@
                     </li>
                 }
             </ul>
+            @{ 
+                Html.RenderPartial("~/Views/CornerKick/Module/ContractPackageContent.cshtml", _model);
+            }
             @if (_model.InstallmentID.HasValue)
             {
                 int idx = 1;

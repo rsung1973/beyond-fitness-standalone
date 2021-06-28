@@ -24,7 +24,18 @@
     _model = (CourseContract)this.Model;
     _profile = Context.GetUser();
     _viewID = ViewBag.ViewID as String;
-    LessonPriceType originalPrice = _model.ContractOriginalSeriesPrice(models);
+    LessonPriceType originalPrice;
+    if (_model.ContractType == (int)CourseContractType.ContractTypeDefinition.CGA)
+    {
+        originalPrice = _model.CountableRegisterLesson()
+                    .Select(r => r.LessonPriceType)
+                    .Where(l => !l.IsDietaryConsult).FirstOrDefault();
+    }
+    else
+    {
+        originalPrice = _model.ContractOriginalSeriesPrice(models);
+    }
+
 }
 <div class="header">
     <h2><strong>原課程單價 <span class="badge bg-blue">@(_model.LessonPriceType.PriceTypeBundle())</span>：</strong> <span class="col-red">@($"{_model.LessonPriceType.ListPrice:##,###,###,###}")</span></h2>
@@ -93,16 +104,93 @@
         }
         else if (attendedCount > 0 || !_model.CourseContractExtension.Version.HasValue)
         {
-            <div class="col-12">
-                <div class="alert xl-pink col-darkteal" role="alert">
-                    <div class="container">
-                        <div class="alert-icon">
-                            <i class="zmdi zmdi-notifications"></i>
+            int? currentSettlementPrice;
+
+            if (_model.ContractType == (int)CourseContractType.ContractTypeDefinition.CGA)
+            {
+                var lessons = _model.CountableRegisterLesson();
+                currentSettlementPrice = 2000;
+                <div class="col-12">
+                    <div class="alert xl-pink col-darkteal" role="alert">
+                        <div class="container">
+                            <div class="alert-icon">
+                                <i class="zmdi zmdi-notifications"></i>
+                            </div>
+                            已繳服務總費用 @(String.Format("{0:##,###,###,###}", totalPaid))
+                            扣除依簽約時課程單堂原價(<span id="refundUnit" class="col-red"></span>) / 人)
+                            乘以實際上課堂數(<span class="col-red">@(lessons.Where(r => !r.LessonPriceType.IsDietaryConsult).Sum(r => r.LessonTime.Count))</span>)，
+                            退還剩餘款項 <span class="col-red" id="refund"></span>元 <small id="formular"></small>。
                         </div>
-                        已繳服務總費用 @(String.Format("{0:##,###,###,###}", totalPaid)) 扣除依簽約時課程單堂原價(<span id="refundUnit" class="col-red"></span>) / 人)乘以實際上課堂數(<span class="col-red">@(_model.AttendedLessonCount())</span>)，退還剩餘款項 <span class="col-red" id="refund"></span>元 <small id="formular"></small>。
                     </div>
                 </div>
-            </div>
+                <script>
+                    function refundInfo(settlementPrice) {
+                        if (!isNaN(settlementPrice)) {
+                            var lessons = @(lessons.Where(r => !r.LessonPriceType.IsDietaryConsult).Sum(r=>r.LessonTime.Count));
+                            var totalPaid = @(totalPaid);
+                            var dietaryCost = @(lessons.Where(r => r.LessonPriceType.IsDietaryConsult).Sum(r => r.LessonPriceType.ListPrice * r.LessonPriceType.BundleCount));
+                            var refund = totalPaid - dietaryCost - lessons * settlementPrice;
+                            if (refund < 0) {
+                                $('input[name="SettlementPrice"]').val('');
+                                Swal.fire(
+                                    'Oops...',
+                                    '你確定嗎？計算後學生還要多拿錢出來喔！',
+                                    'warning'
+                                )
+                                return;
+                            }
+
+                            $('#refund').text(refund);
+                            $('#refundUnit').text(settlementPrice);
+                            $('#formular').text('= ' + totalPaid + ' - ' + dietaryCost + ' - (' + settlementPrice + ' * ' + lessons + ')');
+                        }
+                    }
+                </script>
+            }
+            else
+            {
+                currentSettlementPrice = attendedCount == 0 || originalPrice == null
+                        ? _model.LessonPriceType.ListPrice
+                        : originalPrice.ListPrice;
+
+                <div class="col-12">
+                    <div class="alert xl-pink col-darkteal" role="alert">
+                        <div class="container">
+                            <div class="alert-icon">
+                                <i class="zmdi zmdi-notifications"></i>
+                            </div>
+                            已繳服務總費用 @(String.Format("{0:##,###,###,###}", totalPaid))
+                            扣除依簽約時課程單堂原價(<span id="refundUnit" class="col-red"></span>) / 人)
+                            乘以實際上課堂數(<span class="col-red">@(_model.AttendedLessonCount())</span>)，
+                            退還剩餘款項 <span class="col-red" id="refund"></span>元 <small id="formular"></small>。
+                        </div>
+                    </div>
+                </div>
+                <script>
+                    function refundInfo(settlementPrice) {
+                        if (!isNaN(settlementPrice)) {
+                            var remained = @(_model.RemainedLessonCount());
+                            var lessons = @(_model.Lessons);
+                            var currPrice = @(_model.LessonPriceType.ListPrice);
+                            var totalPaid = @(totalPaid);
+                            var refund = totalPaid - (lessons - remained) * settlementPrice * @($"{_model.CourseContractType.GroupingMemberCount}*{_model.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount}/100");
+                            if (refund < 0) {
+                                $('input[name="SettlementPrice"]').val('');
+                                Swal.fire(
+                                    'Oops...',
+                                    '你確定嗎？計算後學生還要多拿錢出來喔！',
+                                    'warning'
+                                )
+                                return;
+                            }
+
+                            $('#refund').text(refund);
+                            $('#refundUnit').text(settlementPrice);
+                            $('#formular').text('=' + totalPaid + ' - (' + settlementPrice + ' * ' + '@($"{_model.CourseContractType.GroupingMemberCount}") @(_model.CourseContractType.GroupingMemberCount>1 ? $"* {_model.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount / 100m}" : null)* (' + lessons + ' - ' + remained + '))');
+                        }
+                    }
+                </script>
+            }
             <script>
                 $('input[name="SettlementPrice"]').on('change', function (evt) {
                     $('#refund').empty();
@@ -112,32 +200,7 @@
                     refundInfo(settlementPrice);
                 });
 
-                function refundInfo(settlementPrice) {
-                    if (!isNaN(settlementPrice)) {
-                        var remained = @(_model.RemainedLessonCount());
-                        var lessons = @(_model.Lessons);
-                        var currPrice = @(_model.LessonPriceType.ListPrice);
-                        var totalPaid = @(totalPaid);
-                        var refund = totalPaid - (lessons - remained) * settlementPrice * @($"{_model.CourseContractType.GroupingMemberCount}*{_model.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount}/100");
-                        if (refund < 0) {
-                            $('input[name="SettlementPrice"]').val('');
-                            Swal.fire(
-                                'Oops...',
-                                '你確定嗎？計算後學生還要多拿錢出來喔！',
-                                'warning'
-                            )
-                            return;
-                        }
-
-                        $('#refund').text(refund);
-                        $('#refundUnit').text(settlementPrice);
-                        $('#formular').text('=' + totalPaid + ' - (' + settlementPrice + ' * ' + '@($"{_model.CourseContractType.GroupingMemberCount}") @(_model.CourseContractType.GroupingMemberCount>1 ? $"* {_model.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount / 100m}" : null)* (' + lessons + ' - ' + remained + ')))');
-                    }
-                }
             </script>
-            var currentSettlementPrice = attendedCount == 0 || originalPrice == null
-                    ? _model.LessonPriceType.ListPrice
-                    : originalPrice.ListPrice;
             <script>
                 $(function () {
                     $('input[name="SettlementPrice"]').val('@(currentSettlementPrice)');

@@ -625,94 +625,94 @@ namespace WebHome.Controllers
             return File(outFile, "application/x-zip-compressed", $"({DateTime.Now:yyyy-MM-dd HH-mm-ss})信託合約.zip");
         }
 
-        public ActionResult CreateTrustLessonXlsx(TrustQueryViewModel viewModel)
-        {
-            if (!viewModel.TrustDateFrom.HasValue)
-            {
-                if (!String.IsNullOrEmpty(viewModel.TrustYearMonth))
-                {
-                    viewModel.TrustDateFrom = DateTime.ParseExact(viewModel.TrustYearMonth, "yyyy/MM", System.Globalization.CultureInfo.CurrentCulture);
-                }
-                else
-                {
-                    ModelState.AddModelError("TrustYearMonth", "請輸入查詢月份!!");
-                }
-            }
+        //public ActionResult CreateTrustLessonXlsx(TrustQueryViewModel viewModel)
+        //{
+        //    if (!viewModel.TrustDateFrom.HasValue)
+        //    {
+        //        if (!String.IsNullOrEmpty(viewModel.TrustYearMonth))
+        //        {
+        //            viewModel.TrustDateFrom = DateTime.ParseExact(viewModel.TrustYearMonth, "yyyy/MM", System.Globalization.CultureInfo.CurrentCulture);
+        //        }
+        //        else
+        //        {
+        //            ModelState.AddModelError("TrustYearMonth", "請輸入查詢月份!!");
+        //        }
+        //    }
 
-            if (!ModelState.IsValid)
-            {
-                ViewBag.GoBack = true;
-                return View("~/Views/Shared/JsAlert.cshtml", model: "資料錯誤!!");
-            }
+        //    if (!ModelState.IsValid)
+        //    {
+        //        ViewBag.GoBack = true;
+        //        return View("~/Views/Shared/JsAlert.cshtml", model: "資料錯誤!!");
+        //    }
 
-            models.GetDataContext().DeleteRedundantTrack();
+        //    models.GetDataContext().DeleteRedundantTrack();
 
-            IQueryable<ContractTrustTrack> items = models.GetTable<ContractTrustTrack>()
-                .Where(t => t.EventDate >= viewModel.TrustDateFrom && t.EventDate < viewModel.TrustDateFrom.Value.AddMonths(1))
-                .Join(models.GetTable<LessonTime>(), t => t.LessonID, l => l.LessonID, (t, l) => t);
+        //    IQueryable<ContractTrustTrack> items = models.GetTable<ContractTrustTrack>()
+        //        .Where(t => t.EventDate >= viewModel.TrustDateFrom && t.EventDate < viewModel.TrustDateFrom.Value.AddMonths(1))
+        //        .Join(models.GetTable<LessonTime>(), t => t.LessonID, l => l.LessonID, (t, l) => t);
 
-            DataTable table = new DataTable();
-            table.Columns.Add(new DataColumn("合約編號", typeof(String)));
-            table.Columns.Add(new DataColumn("合約總金額", typeof(int)));
-            table.Columns.Add(new DataColumn("課程單價", typeof(int)));
-            table.Columns.Add(new DataColumn("上課日期", typeof(String)));
-            table.Columns.Add(new DataColumn("上課時間", typeof(String)));
-            table.Columns.Add(new DataColumn("上課地點", typeof(String)));
-            table.Columns.Add(new DataColumn("上課時間長度", typeof(int)));
-            table.Columns.Add(new DataColumn("體能顧問姓名", typeof(String)));
-            table.Columns.Add(new DataColumn("學員姓名", typeof(String)));
-            table.Columns.Add(new DataColumn("簽到時間", typeof(String)));
+        //    DataTable table = new DataTable();
+        //    table.Columns.Add(new DataColumn("合約編號", typeof(String)));
+        //    table.Columns.Add(new DataColumn("合約總金額", typeof(int)));
+        //    table.Columns.Add(new DataColumn("課程單價", typeof(int)));
+        //    table.Columns.Add(new DataColumn("上課日期", typeof(String)));
+        //    table.Columns.Add(new DataColumn("上課時間", typeof(String)));
+        //    table.Columns.Add(new DataColumn("上課地點", typeof(String)));
+        //    table.Columns.Add(new DataColumn("上課時間長度", typeof(int)));
+        //    table.Columns.Add(new DataColumn("體能顧問姓名", typeof(String)));
+        //    table.Columns.Add(new DataColumn("學員姓名", typeof(String)));
+        //    table.Columns.Add(new DataColumn("簽到時間", typeof(String)));
 
-            foreach (var item in items.OrderBy(l => l.LessonTime.ClassTime))
-            {
-                var lesson = item.LessonTime;
-                var contract = item.CourseContract;
+        //    foreach (var item in items.OrderBy(l => l.LessonTime.ClassTime))
+        //    {
+        //        var lesson = item.LessonTime;
+        //        var contract = item.CourseContract;
 
-                var r = table.NewRow();
-                r[0] = $"{contract.ContractNo()}";
-                r[1] = contract.TotalCost.AdjustTrustAmount();
-                r[2] = contract.LessonPriceType.ListPrice;
-                r[3] = $"{lesson.ClassTime.Value.Date:yyyy/MM/dd}";
-                r[4] = $"{lesson.ClassTime:HH:mm}~{lesson.ClassTime.Value.AddMinutes(lesson.DurationInMinutes.Value):HH:mm}";
-                if (lesson.BranchID.HasValue)
-                    r[5] = lesson.BranchStore.BranchName;
-                r[6] = lesson.DurationInMinutes;
-                r[7] = lesson.AsAttendingCoach.UserProfile.FullName();
-                if (contract.CourseContractType.ContractCode == "CFA")
-                {
-                    r[8] = contract.ContractOwner.RealName + "(" + String.Join("/", lesson.GroupingLesson.RegisterLesson.Select(g => g.UserProfile.RealName)) + ")";
-                }
-                else
-                {
-                    r[8] = String.Join("/", lesson.GroupingLesson.RegisterLesson.Select(g => g.UserProfile.RealName));
-                }
-                r[9] = $"{lesson.LessonPlan.CommitAttendance:yyyy/MM/dd HH:mm:ss}";
+        //        var r = table.NewRow();
+        //        r[0] = $"{contract.ContractNo()}";
+        //        r[1] = contract.TotalCost.AdjustTrustAmount();
+        //        r[2] = contract.LessonPriceType.ListPrice;
+        //        r[3] = $"{lesson.ClassTime.Value.Date:yyyy/MM/dd}";
+        //        r[4] = $"{lesson.ClassTime:HH:mm}~{lesson.ClassTime.Value.AddMinutes(lesson.DurationInMinutes.Value):HH:mm}";
+        //        if (lesson.BranchID.HasValue)
+        //            r[5] = lesson.BranchStore.BranchName;
+        //        r[6] = lesson.DurationInMinutes;
+        //        r[7] = lesson.AsAttendingCoach.UserProfile.FullName();
+        //        if (contract.CourseContractType.ContractCode == "CFA")
+        //        {
+        //            r[8] = contract.ContractOwner.RealName + "(" + String.Join("/", lesson.GroupingLesson.RegisterLesson.Select(g => g.UserProfile.RealName)) + ")";
+        //        }
+        //        else
+        //        {
+        //            r[8] = String.Join("/", lesson.GroupingLesson.RegisterLesson.Select(g => g.UserProfile.RealName));
+        //        }
+        //        r[9] = $"{lesson.LessonPlan.CommitAttendance:yyyy/MM/dd HH:mm:ss}";
 
-                table.Rows.Add(r);
-            }
+        //        table.Rows.Add(r);
+        //    }
 
-            Response.Clear();
-            Response.ClearContent();
-            Response.ClearHeaders();
-            Response.AppendCookie(new HttpCookie("fileDownloadToken", viewModel.FileDownloadToken));
-            Response.AddHeader("Cache-control", "max-age=1");
-            Response.ContentType = "application/vnd.ms-excel";
-            Response.AddHeader("Content-Disposition", String.Format("attachment;filename={0}({1:yyyy-MM-dd HH-mm-ss}).xlsx", HttpUtility.UrlEncode("TrustLessons"), DateTime.Now));
+        //    Response.Clear();
+        //    Response.ClearContent();
+        //    Response.ClearHeaders();
+        //    Response.AppendCookie(new HttpCookie("fileDownloadToken", viewModel.FileDownloadToken));
+        //    Response.AddHeader("Cache-control", "max-age=1");
+        //    Response.ContentType = "application/vnd.ms-excel";
+        //    Response.AddHeader("Content-Disposition", String.Format("attachment;filename={0}({1:yyyy-MM-dd HH-mm-ss}).xlsx", HttpUtility.UrlEncode("TrustLessons"), DateTime.Now));
 
-            using (DataSet ds = new DataSet())
-            {
-                ds.Tables.Add(table);
+        //    using (DataSet ds = new DataSet())
+        //    {
+        //        ds.Tables.Add(table);
 
-                using (var xls = ds.ConvertToExcel())
-                {
-                    xls.Worksheets.ElementAt(0).Name = "上課明細表" + String.Format("{0:yyyy-MM-dd}~{1:yyyy-MM-dd}", viewModel.TrustDateFrom, viewModel.TrustDateFrom.Value.AddMonths(1).AddDays(-1));
+        //        using (var xls = ds.ConvertToExcel())
+        //        {
+        //            xls.Worksheets.ElementAt(0).Name = "上課明細表" + String.Format("{0:yyyy-MM-dd}~{1:yyyy-MM-dd}", viewModel.TrustDateFrom, viewModel.TrustDateFrom.Value.AddMonths(1).AddDays(-1));
 
-                    xls.SaveAs(Response.OutputStream);
-                }
-            }
+        //            xls.SaveAs(Response.OutputStream);
+        //        }
+        //    }
 
-            return new EmptyResult();
-        }
+        //    return new EmptyResult();
+        //}
 
         public ActionResult CreateContractTrustSummaryXlsx(TrustQueryViewModel viewModel)
         {
@@ -1201,7 +1201,7 @@ namespace WebHome.Controllers
                 r[4] = c.LessonPriceType.ListPrice;
                 var count = c.AttendedLessonList().Where(l => l.ClassTime >= dateFrom && l.ClassTime < dateTo).Count();
                 r[5] = count;
-                r[6] = count * c.LessonPriceType.ListPrice * c.CourseContractType.GroupingMemberCount * c.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount / 100;
+                r[6] = c.TotalAttendedCost(dateFrom, dateTo) * c.CourseContractType.GroupingMemberCount * c.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount / 100;
                 table.Rows.Add(r);
             }
 
@@ -1888,15 +1888,18 @@ namespace WebHome.Controllers
             detailsTable.TableName = $"{viewModel.AchievementDateFrom:yyyyMM} 上課明細";
 
             var tableItems = detailsTable.Rows.Cast<DataRow>()
-                                .Where(l => !l.IsNull(14))
-                                .Where(l => (int)l[6] > 0
-                                    || ((int)l[7] > 0 && !l[11].Equals((int)Naming.LessonPriceStatus.體驗課程)));
-            foreach (var item in tableItems
-                                    .Where(l => l[11].Equals((int)Naming.LessonPriceStatus.員工福利課程)
-                                        || l[11].Equals((int)Naming.LessonPriceStatus.點數兌換課程)))
-            {
-                item[5] = item[9] = 0;
-            }
+                                .Where(l => !l.IsNull(14));
+
+            //var tableItems = detailsTable.Rows.Cast<DataRow>()
+            //                    .Where(l => !l.IsNull(14))
+            //                    .Where(l => (int)l[6] > 0
+            //                        || ((int)l[7] > 0 && !l[11].Equals((int)Naming.LessonPriceStatus.體驗課程)));
+            //foreach (var item in tableItems
+            //                        .Where(l => l[11].Equals((int)Naming.LessonPriceStatus.員工福利課程)
+            //                            || l[11].Equals((int)Naming.LessonPriceStatus.點數兌換課程)))
+            //{
+            //    item[5] = item[9] = 0;
+            //}
 
             int?[] PTSessionScope = new int?[]
             {
@@ -1927,23 +1930,23 @@ namespace WebHome.Controllers
                     r[0] = branch.BranchName;
 
                     var dataItems = branchItems.Where(l => PTSessionScope.Contains((int?)l[11]));
-                    r[1] = dataItems.Sum(l => (int)l[13]);
+                    r[1] = dataItems.Sum(l => (int)l[6]);
                     r[2] = dataItems.Sum(l => (int)l[9]);
 
                     dataItems = branchItems.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.點數兌換課程);
-                    r[3] = dataItems.Sum(l => (int)l[13]);
+                    r[3] = dataItems.Sum(l => (int)l[6]);
 
                     dataItems = branchItems.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.員工福利課程);
-                    r[4] = dataItems.Sum(l => (int)l[13]);
+                    r[4] = dataItems.Sum(l => (int)l[6]);
 
                     //P.T + 點數 + 員工
                     r[5] = (int)r[1] + (int)r[3] + (int)r[4];
 
                     dataItems = branchItems.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.體驗課程);
-                    r[6] = dataItems.Sum(l => (int)l[13]);
+                    r[6] = dataItems.Sum(l => (int)l[6]);
 
                     dataItems = branchItems.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.自主訓練);
-                    r[7] = dataItems.Sum(l => (int)l[13]);
+                    r[7] = dataItems.Sum(l => (int)l[6]);
                     //r[4] = dataItems.Sum(l => (int)l[9]);
 
                     table.Rows.Add(r);
@@ -1983,23 +1986,23 @@ namespace WebHome.Controllers
                     r[0] = branch.BranchName;
 
                     var dataItems = branchItems.Where(l => PTSessionScope.Contains((int?)l[11]));
-                    r[1] = dataItems.Sum(l => (int)l[13]);
+                    r[1] = dataItems.Sum(l => (int)l[6]);
                     r[2] = dataItems.Sum(l => (int)l[9]);                                        
 
                     dataItems = branchItems.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.點數兌換課程);
-                    r[3] = dataItems.Sum(l => (int)l[13]);
+                    r[3] = dataItems.Sum(l => (int)l[6]);
 
                     dataItems = branchItems.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.員工福利課程);
-                    r[4] = dataItems.Sum(l => (int)l[13]);
+                    r[4] = dataItems.Sum(l => (int)l[6]);
 
                     //P.T + 點數 + 員工
                     r[5] = (int)r[1] + (int)r[3] + (int)r[4];
 
                     dataItems = branchItems.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.體驗課程);
-                    r[6] = dataItems.Sum(l => (int)l[13]);                    
+                    r[6] = dataItems.Sum(l => (int)l[6]);                    
 
                     dataItems = branchItems.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.自主訓練);
-                    r[7] = dataItems.Sum(l => (int)l[13]);
+                    r[7] = dataItems.Sum(l => (int)l[6]);
                     //r[4] = dataItems.Sum(l => (int)l[9]);
 
                     table.Rows.Add(r);
@@ -2040,23 +2043,23 @@ namespace WebHome.Controllers
                     r[0] = branch;
 
                     var dataItems = branchItems.Where(l => PTSessionScope.Contains((int?)l[11]));
-                    r[1] = dataItems.Sum(l => (int)l[13]);
+                    r[1] = dataItems.Sum(l => (int)l[6]);
                     r[2] = dataItems.Sum(l => (int)l[9]);
 
                     dataItems = branchItems.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.點數兌換課程);
-                    r[3] = dataItems.Sum(l => (int)l[13]);
+                    r[3] = dataItems.Sum(l => (int)l[6]);
 
                     dataItems = branchItems.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.員工福利課程);
-                    r[4] = dataItems.Sum(l => (int)l[13]);
+                    r[4] = dataItems.Sum(l => (int)l[6]);
 
                     //P.T + 點數 + 員工
                     r[5] = (int)r[1] + (int)r[3] + (int)r[4];
 
                     dataItems = branchItems.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.體驗課程);
-                    r[6] = dataItems.Sum(l => (int)l[13]);
+                    r[6] = dataItems.Sum(l => (int)l[6]);
                                         
                     dataItems = branchItems.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.自主訓練);
-                    r[7] = dataItems.Sum(l => (int)l[13]);
+                    r[7] = dataItems.Sum(l => (int)l[6]);
                     //r[4] = dataItems.Sum(l => (int)l[9]);                    
 
                     table.Rows.Add(r);
@@ -2097,21 +2100,21 @@ namespace WebHome.Controllers
                     r[0] = coach.Key;
                     r[1] = (String)coach.First()[12];
                     var dataItems = coach.Where(l => PTSessionScope.Contains((int?)l[11]));
-                    r[2] = dataItems.Sum(l => (int)l[13]);
+                    r[2] = dataItems.Sum(l => (int)l[6]);
                     r[3] = dataItems.Sum(l => (int)l[9]);
 
                     dataItems = coach.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.點數兌換課程);
-                    r[4] = dataItems.Sum(l => (int)l[13]);
+                    r[4] = dataItems.Sum(l => (int)l[6]);
 
                     dataItems = coach.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.員工福利課程);
-                    r[5] = dataItems.Sum(l => (int)l[13]);
+                    r[5] = dataItems.Sum(l => (int)l[6]);
                     r[6] = (int)r[2] + (int)r[4] + (int)r[5];
 
                     dataItems = coach.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.體驗課程);
-                    r[7] = dataItems.Sum(l => (int)l[13]);
+                    r[7] = dataItems.Sum(l => (int)l[6]);
 
                     dataItems = coach.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.自主訓練);
-                    r[8] = dataItems.Sum(l => (int)l[13]);
+                    r[8] = dataItems.Sum(l => (int)l[6]);
                     //r[5] = dataItems.Sum(l => (int)l[9]);                           
 
                     table.Rows.Add(r);
@@ -2155,7 +2158,7 @@ namespace WebHome.Controllers
                 ds.Tables.Add(table);
 
                 detailsTable.Columns.RemoveAt(14);
-                detailsTable.Columns.RemoveAt(11);
+                //detailsTable.Columns.RemoveAt(11);
                 ds.Tables.Add(detailsTable);
 
                 using (var xls = ds.ConvertToExcel())

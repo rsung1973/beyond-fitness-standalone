@@ -2460,19 +2460,10 @@ namespace WebHome.Helper
                         //    .Select(p => p.InvoiceAllowance).Sum(a => a.TotalAmount + a.TaxAmount) ?? 0);
                     }
 
-                    var lessons = c.AttendedLessonCount(calcDate);
-                    if (lessons > 0)
+                    item.TotalLessonCost = c.TotalAttendedCost(calcDate);
+                    if (c.CourseContractType.GroupingLessonDiscount != null)
                     {
-                        hasItem = true;
-                        item.TotalLessonCost = lessons * c.LessonPriceType.ListPrice.Value;
-                        if (c.CourseContractType.GroupingLessonDiscount != null)
-                        {
-                            item.TotalLessonCost = item.TotalLessonCost * c.CourseContractType.GroupingLessonDiscount.GroupingMemberCount * (c.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount ?? 100) / 100;
-                        }
-                    }
-                    else
-                    {
-                        item.TotalLessonCost = 0;
+                        item.TotalLessonCost = item.TotalLessonCost * c.CourseContractType.GroupingLessonDiscount.GroupingMemberCount * (c.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount ?? 100) / 100;
                     }
 
                     var allowanceItems = c.ContractPayment.Select(p => p.Payment)

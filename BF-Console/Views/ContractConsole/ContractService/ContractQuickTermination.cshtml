@@ -23,7 +23,8 @@
     _profile = Context.GetUser();
 }
 
-@{ CourseContract currentItem = models.GetTable<CourseContractRevision>()
+@{
+    CourseContract currentItem = models.GetTable<CourseContractRevision>()
                                       .Where(c => c.OriginalContract == _model.ContractID)
                                       .Where(r => r.Reason == "終止")
                                       .Select(r => r.CourseContract)
@@ -32,7 +33,8 @@
     var bookingCount = _model.CountableRegisterLesson().Sum(r => r.GroupingLesson.LessonTime.Count());
     var contractCost = _model.TotalCost / _model.Lessons * bookingCount;
     var totalPaid = _model.TotalPaidAmount();
-    var applicable = true;}
+    var applicable = true;
+}
 
 <div class="body">
     <div class="row">
@@ -59,7 +61,7 @@
                 <h2>
                     @{
                         var revision = _model.RevisionList.Where(r => r.Reason == "終止");
-                        var count =  (revision.Where(r => r.OperationMode == (int)Naming.OperationMode.快速終止)).Count();
+                        var count = (revision.Where(r => r.OperationMode == (int)Naming.OperationMode.快速終止)).Count();
                     }
                     @(count)
                 </h2>
@@ -68,7 +70,11 @@
             {
                 <small class="info">@((Naming.ContractServiceStatus)currentItem.Status)</small>
             }
-            else if (_model.Status == (int)Naming.CourseContractStatus.已過期 && applicable && (_profile.IsCoach() || _profile.IsAssistant() || _profile.IsAuthorizedSysAdmin()))
+            else if ((_model.Status == (int)Naming.CourseContractStatus.已過期 
+                            || _model.ContractType == (int)CourseContractType.ContractTypeDefinition.CGA
+                            || _model.ContractType == (int)CourseContractType.ContractTypeDefinition.CNA
+                            || _model.LessonPriceType.BranchStore.IsVirtualClassroom())
+                        && applicable && (_profile.IsCoach() || _profile.IsAssistant() || _profile.IsAuthorizedSysAdmin()))
             {
                 <small class="info">不退款</small>
                 <p>
