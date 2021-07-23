@@ -151,6 +151,15 @@
       <HintPath>bin\ThoughtWorks.QRCode.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
+    <Reference Include="CommonLib">
+      <HintPath>..\BF-Console\bin\CommonLib.dll</HintPath>
+    </Reference>
+    <Reference Include="CommonLib.Logger">
+      <HintPath>..\BF-Console\bin\CommonLib.Logger.dll</HintPath>
+    </Reference>
+    <Reference Include="epos">
+      <HintPath>bin\epos.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Web.Infrastructure">
@@ -3783,6 +3792,11 @@
     <Content Include="_test\TestFB01.htm" />
     <Content Include="_test\CheckToken.ashx" />
     <Content Include="_test\WebDump.ashx" />
+    <Content Include="Views\CornerKick\LearnerIndex.cshtml" />
+    <Content Include="Views\CornerKick\Module\ContractTermsForCGA.cshtml" />
+    <Content Include="Views\CornerKick\Module\ContractTermsForCNA.cshtml" />
+    <Content Include="Views\CornerKick\Module\ContractTermsForCommon.cshtml" />
+    <Content Include="Views\CornerKick\Module\ContractTermsForDistance.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -3991,7 +4005,6 @@
     <Content Include="Views\CornerKick\Module\ContractDataContent.cshtml" />
     <Content Include="Views\CornerKick\Notice.cshtml" />
     <Content Include="Views\CornerKick\Module\PromptSignContract.cshtml" />
-    <Content Include="Views\CornerKick\LearnerIndex.cshtml" />
     <Content Include="Views\CornerKick\Module\SlideOut.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -4008,16 +4021,6 @@
     <Folder Include="Views\LessonEvent\" />
     <Folder Include="Views\LineEvents\" />
     <Folder Include="Views\PaymentBase\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\CommonLib.Logger\CommonLib.Logger.csproj">
-      <Project>{8146e629-552a-4b36-8711-08ae8245b8fa}</Project>
-      <Name>CommonLib.Logger</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CommonLib\CommonLib.csproj">
-      <Project>{c0ad239c-2ac4-46d2-ae7c-5e97266ef4ea}</Project>
-      <Name>CommonLib</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
@@ -4051,6 +4054,11 @@
         </WebProjectProperties>
       </FlavorProperties>
     </VisualStudio>
+    <MonoDevelop>
+      <Properties>
+        <XspParameters Port="8080" Address="127.0.0.1" SslMode="None" SslProtocol="Default" KeyType="None" CertFile="" KeyFile="" PasswordOptions="None" Password="" Verbose="True" />
+      </Properties>
+    </MonoDevelop>
   </ProjectExtensions>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
