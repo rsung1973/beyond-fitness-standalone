@@ -47,7 +47,7 @@ namespace WebHome.Helper.BusinessOperation
                     //AgentID = profile.UID,  //lessonPrice.BranchStore.ManagerID.Value,
                     CourseContractExtension = new CourseContractExtension
                     {
-                        BranchID = lessonPrice.BranchStore.IsVirtualClassroom() ? profile.ServingCoach.WorkBranchID().Value : lessonPrice.BranchID.Value,
+                        BranchID = lessonPrice.BranchStore.IsVirtualClassroom() ? profile.ServingCoach.PreferredBranchID().Value : lessonPrice.BranchID.Value,
                         Version = (int?)viewModel.Version,
                     }
                 };
@@ -222,7 +222,7 @@ namespace WebHome.Helper.BusinessOperation
             {
                 if (lessonPrice.BranchStore.IsVirtualClassroom())
                 {
-                    if (profile.ServingCoach?.WorkBranchID() == null)
+                    if (profile.ServingCoach?.PreferredBranchID().HasValue == false)
                     {
                         ModelState.AddModelError("BranchID", "無法確定簽約分店!!");
                     }
@@ -286,7 +286,7 @@ namespace WebHome.Helper.BusinessOperation
                     AgentID = profile.UID, //lessonPrice.BranchStore.ManagerID.Value,
                     CourseContractExtension = new CourseContractExtension
                     {
-                        BranchID = lessonPrice.BranchID.Value,
+                        BranchID = lessonPrice.BranchStore.IsVirtualClassroom() ? profile.ServingCoach.PreferredBranchID().Value : lessonPrice.BranchID.Value,
                         Version = (int?)viewModel.Version,
                     },
                     SupervisorID = lessonPrice.BranchStore.IsVirtualClassroom() ? profile.ServingCoach.CurrentWorkBranch()?.ManagerID : lessonPrice.BranchStore?.ManagerID,
@@ -384,7 +384,7 @@ namespace WebHome.Helper.BusinessOperation
             {
                 if(lessonPrice.BranchStore.IsVirtualClassroom())
                 {
-                    if (profile.ServingCoach?.WorkBranchID() == null)
+                    if (profile.ServingCoach?.PreferredBranchID().HasValue == false)
                     {
                         ModelState.AddModelError("BranchID", "無法確定簽約分店!!");
                     }

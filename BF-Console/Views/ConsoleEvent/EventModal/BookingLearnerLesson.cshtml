@@ -319,7 +319,7 @@
             <div class="pull-left">
                 <div class="controls">
                     <label class="fancy-checkbox">
-                        <input type="checkbox" @(availableCount <= 0 || _currentDisabled ? "disabled" : null) id="enterprise@(enterprisePT.RegisterID)" name="RegisterID" value="@(enterprisePT.RegisterID)" onclick="selectBooking(this, '@((int)Naming.LessonPriceStatus.企業合作方案)');">
+                        <input type="checkbox" @(availableCount <= 0 ? "disabled" : null) id="enterprise@(enterprisePT.RegisterID)" name="RegisterID" value="@(enterprisePT.RegisterID)" onclick="selectBooking(this, '@((int)Naming.LessonPriceStatus.企業合作方案)');">
                         <span></span>
                     </label>
                 </div>

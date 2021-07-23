@@ -1060,7 +1060,7 @@ namespace WebHome.Helper
             var enterpriseLessons = items.Where(r => r.EnterpriseRegisterID.HasValue);
 
             var tuition = (lessons
-                .Sum(l => l.ListPrice * l.GroupingMemberCount * l.TuitionIndex
+                .Sum(l => l.CoachPayoff * l.GroupingMemberCount * l.TuitionIndex
                     * l.PercentageOfDiscount / 100) ?? 0)
                 + (enterpriseLessons
                     .Sum(l => l.EnterpriseListPrice * l.TuitionIndex
@@ -1076,7 +1076,7 @@ namespace WebHome.Helper
             var enterpriseLessons = items.Where(r => r.EnterpriseRegisterID.HasValue);
 
             var tuition = (lessons
-                .Sum(l => l.ListPrice * l.GroupingMemberCount * l.TuitionIndex
+                .Sum(l => l.CoachPayoff * l.GroupingMemberCount * l.TuitionIndex
                     * l.PercentageOfDiscount / 100) ?? 0)
                 + (enterpriseLessons
                     .Sum(l => l.EnterpriseListPrice * l.TuitionIndex
@@ -1133,7 +1133,7 @@ namespace WebHome.Helper
             var enterpriseItems = items.Where(l => l.EnterpriseRegisterID.HasValue);
 
             shares = ((int?)courseItems
-                .Sum(l => l.ListPrice * l.TuitionIndex
+                .Sum(l => l.CoachPayoff * l.TuitionIndex
                     * l.GroupingMemberCount * l.PercentageOfDiscount / 100
                     * l.MarkedGradeIndex / 100) ?? 0)
                 + ((int?)enterpriseItems
@@ -1153,7 +1153,7 @@ namespace WebHome.Helper
             var enterpriseItems = items.Where(l => l.EnterpriseRegisterID.HasValue);
 
             shares = ((int?)courseItems
-                .Sum(l => l.ListPrice * l.TuitionIndex
+                .Sum(l => l.CoachPayoff * l.TuitionIndex
                     * l.GroupingMemberCount * l.PercentageOfDiscount / 100
                     * l.MarkedGradeIndex / 100) ?? 0)
                 + ((int?)enterpriseItems

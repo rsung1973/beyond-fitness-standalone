@@ -180,7 +180,7 @@ namespace WebHome.Models.ViewModel
         public int? ContractID { get; set; }
         public bool? InvoiceNow { get; set; }
         public int?[] ProductItemID { get; set; }
-
+        public bool? MyCarrier { get; set; }
     }
 
     public class PaymentQueryViewModel : PaymentViewModel
@@ -220,6 +220,32 @@ namespace WebHome.Models.ViewModel
         public DateTime? CancelDateFrom { get; set; }
         public DateTime? CancelDateTo { get; set; }
 
+    }
+
+    public class PayoffViewModel : PaymentViewModel
+    {
+        public String mid { get; set; }
+        public String tid { get; set; }
+        public String oid { get; set; }
+        public String pan { get; set; }
+        public int? transCode { get; set; }
+        public int? transMode { get; set; }
+        public String transDate { get; set; }
+        public String transTime { get; set; }
+        public String transAmt { get; set; }
+        public String approveCode { get; set; }
+        public String responseCode { get; set; }
+        public String responseMsg { get; set; }
+        public String installmentType { get; set; }
+        public int? installment { get; set; }
+        public int? firstAmt { get; set; }
+        public int? eachAmt { get; set; }
+        public int? fee { get; set; }
+        public String redeemType { get; set; }
+        public int? redeemUsed { get; set; }
+        public int? redeemBalance { get; set; }
+        public int? creditAmt { get; set; }
+        public String secureStatus { get; set; }
     }
 
     public class AchievementQueryViewModel : QueryViewModel

@@ -172,7 +172,7 @@ namespace WebHome.Controllers
 
         public ActionResult Dump()
         {
-            String fileName = Path.Combine(Logger.LogDailyPath, "request.txt");
+            String fileName = Path.Combine(Logger.LogDailyPath, $"request{DateTime.Now.Ticks}.txt");
             Request.SaveAs(fileName, true);
             return Content(System.IO.File.ReadAllText(fileName), "text/plain");
         }

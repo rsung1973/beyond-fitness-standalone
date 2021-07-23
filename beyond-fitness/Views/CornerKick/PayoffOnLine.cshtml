@@ -1,0 +1,25 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Models.Timeline
+@using WebHome.Controllers
+@using Newtonsoft.Json
+@{
+
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    PaymentOnLine _model;
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = (PaymentOnLine)this.Model;
+    UserProfile profile = Context.GetUser().LoadInstance(models);
+
+    String url = $"https://eposuat.sinopac.com/HPPRequest?mid=807249282118001&tid=80015064&installment=1&oid={_model.oid}&transMode=0&transAmt={_model.PaymentTransaction.Payment.PayoffAmount}&frontendUrl=https://www.worthitstudio.idv.tw/CornerKick/FrontendPayoff";
+    Response.Redirect(url);
+}

@@ -17,6 +17,7 @@ using System.Web.Security;
 
 using CommonLib.DataAccess;
 using CommonLib.MvcExtension;
+using EPOS;
 using Newtonsoft.Json;
 using Utility;
 using WebHome.Helper;
@@ -1292,6 +1293,128 @@ namespace WebHome.Controllers
 
         }
 
+        public ActionResult PayoffOnLine(PaymentViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            if (viewModel.KeyID != null)
+            {
+                viewModel.PaymentID = viewModel.DecryptKeyValue();
+            }
 
+            var profile = HttpContext.GetUser();
+
+            var item = models.GetTable<Payment>()
+                .Where(c => c.PaymentID == viewModel.PaymentID)
+                .FirstOrDefault();
+
+            if (item == null)
+            {
+                ViewBag.ViewModel = new DataItemViewModel
+                {
+                    Title = "我的付款",
+                    Message = "付款資料錯誤！",
+                };
+                return View("~/Views/CornerKick/DataNotFound.cshtml");
+            }
+
+            PaymentOnLine paymentItem = new PaymentOnLine
+            {
+                PaymentID = item.PaymentID,
+                oid = Guid.NewGuid().ToString(),
+            };
+
+            models.GetTable<PaymentOnLine>().InsertOnSubmit(paymentItem);
+            models.SubmitChanges();
+
+            paymentItem.oid = $"{paymentItem.OrderID:000000000000}";
+            models.SubmitChanges();
+
+            return View("~/Views/CornerKick/PayoffOnLine.cshtml", paymentItem);
+        }
+
+        public ActionResult FrontendPayoff(PayoffViewModel viewModel)
+        {
+            //return CommitPayoff(viewModel);
+            var path = Dump(false);
+            return Content(System.IO.File.ReadAllText(path), "text/plain");
+        }
+
+        public ActionResult CommitPayoff(PayoffViewModel viewModel)
+        {
+            String path = Dump();
+
+            ViewBag.ViewModel = viewModel;
+
+            var profile = HttpContext.GetUser();
+
+            var item = models.GetTable<PaymentOnLine>()
+                .Where(c => c.oid == viewModel.oid)
+                .FirstOrDefault();
+
+            if (item != null)
+            {
+                item.mid = viewModel.mid;
+                item.tid = viewModel.tid;
+                item.oid = viewModel.oid;
+                item.pan = viewModel.pan;
+                item.transCode = viewModel.transCode;
+                item.transMode = viewModel.transMode;
+                item.transDate = viewModel.transDate;
+                item.transTime = viewModel.transTime;
+                item.transAmt = viewModel.transAmt;
+                item.approveCode = viewModel.approveCode;
+                item.responseCode = viewModel.responseCode;
+                item.responseMsg = viewModel.responseMsg;
+                item.installmentType = viewModel.installmentType;
+                item.installment = viewModel.installment;
+                item.firstAmt = viewModel.firstAmt;
+                item.eachAmt = viewModel.eachAmt;
+                item.fee = viewModel.fee;
+                item.redeemType = viewModel.redeemType;
+                item.redeemUsed = viewModel.redeemUsed;
+                item.redeemBalance = viewModel.redeemBalance;
+                item.creditAmt = viewModel.creditAmt;
+                item.secureStatus = viewModel.secureStatus.GetEfficientString();
+
+                models.SubmitChanges();
+
+                if ($"{item.PaymentTransaction.Payment.PayoffAmount}" != item.transAmt)
+                {
+                    int rtnCode = 0;
+                    ApiClient apiClient = new ApiClient();
+
+                    apiClient.clear();
+                    apiClient.setMid(item.mid);
+                    apiClient.setOid(item.oid);
+                    apiClient.setTransCode("01");
+                    apiClient.setDoname("eposuat.sinopac.com");
+                    apiClient.setSecurityId(item.PaymentTransaction.BranchStore.EPOS_SID);
+                    try
+                    {
+                        rtnCode = apiClient.post();
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Error(ex);
+                    }
+                }
+            }
+
+            //return Content(System.IO.File.ReadAllText(path), "text/plain");
+
+            var result = new
+            {
+                viewModel.mid,
+                viewModel.tid,
+                viewModel.oid,
+                transCode = $"{viewModel.transCode:00}",
+                viewModel.approveCode,
+                viewModel.responseCode,
+            };
+
+            Logger.Info(result.JsonStringify());
+            return Json(result, JsonRequestBehavior.AllowGet);
+
+        }
     }
 }

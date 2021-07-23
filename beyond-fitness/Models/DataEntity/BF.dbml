@@ -946,6 +946,9 @@
       <Column Name="ManagerID" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="ViceManagerID" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="Status" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="EPOS_SID" Type="System.String" DbType="NVarChar(64)" CanBeNull="true" />
+      <Column Name="EPOS_MID" Type="System.String" DbType="NVarChar(64)" CanBeNull="true" />
+      <Column Name="EPOS_TID" Type="System.String" DbType="NVarChar(64)" CanBeNull="true" />
       <Association Name="BranchStore_RegisterLesson" Member="RegisterLesson" ThisKey="BranchID" OtherKey="BranchID" Type="RegisterLesson" />
       <Association Name="BranchStore_CoachWorkplace" Member="CoachWorkplace" ThisKey="BranchID" OtherKey="BranchID" Type="CoachWorkplace" />
       <Association Name="BranchStore_LessonPriceType" Member="LessonPriceType" ThisKey="BranchID" OtherKey="BranchID" Type="LessonPriceType" />
@@ -992,6 +995,8 @@
       <Column Name="LineID" Type="System.String" DbType="NVarChar(64)" CanBeNull="true" />
       <Column Name="VipStatus" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="GeoCode" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="CarrierType" Type="System.String" DbType="NVarChar(16)" CanBeNull="true" />
+      <Column Name="CarrierNo" Type="System.String" DbType="NVarChar(64)" CanBeNull="true" />
       <Association Name="UserProfile_UserProfileExtension" Member="UserProfile" ThisKey="UID" OtherKey="UID" Type="UserProfile" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
@@ -1324,6 +1329,7 @@
       <Column Name="PaymentID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="BranchID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Association Name="PaymentTransaction_PaymentOrder" Member="PaymentOrder" ThisKey="PaymentID" OtherKey="PaymentID" Type="PaymentOrder" />
+      <Association Name="PaymentTransaction_PaymentOnLine" Member="PaymentOnLine" ThisKey="PaymentID" OtherKey="PaymentID" Type="PaymentOnLine" />
       <Association Name="BranchStore_PaymentTransaction" Member="BranchStore" ThisKey="BranchID" OtherKey="BranchID" Type="BranchStore" IsForeignKey="true" />
       <Association Name="Payment_PaymentTransaction" Member="Payment" ThisKey="PaymentID" OtherKey="PaymentID" Type="Payment" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
@@ -2410,6 +2416,7 @@
       <Column Name="SettlementStatus" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="CoachWorkPlace" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="SettlementID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CoachPayoff" Type="System.Int32" DbType="Int" CanBeNull="true" />
     </Type>
   </Table>
   <Table Name="dbo.UsageType" Member="UsageType">
@@ -2503,6 +2510,35 @@
       <Column Name="PriceID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Association Name="CourseContractType_ObjectiveContractLessonPrice" Member="CourseContractType" ThisKey="ContractType" OtherKey="TypeID" Type="CourseContractType" IsForeignKey="true" />
       <Association Name="LessonPriceType_ObjectiveContractLessonPrice" Member="LessonPriceType" ThisKey="PriceID" OtherKey="PriceID" Type="LessonPriceType" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PaymentOnLine" Member="PaymentOnLine">
+    <Type Name="PaymentOnLine">
+      <Column Name="OrderID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="PaymentID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="mid" Type="System.String" DbType="NVarChar(15)" CanBeNull="true" />
+      <Column Name="tid" Type="System.String" DbType="NVarChar(8)" CanBeNull="true" />
+      <Column Name="oid" Type="System.String" DbType="NVarChar(40) NOT NULL" CanBeNull="false" />
+      <Column Name="pan" Type="System.String" DbType="NVarChar(16)" CanBeNull="true" />
+      <Column Name="transCode" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="transMode" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="transDate" Type="System.String" DbType="NVarChar(8)" CanBeNull="true" />
+      <Column Name="transTime" Type="System.String" DbType="NVarChar(6)" CanBeNull="true" />
+      <Column Name="transAmt" Type="System.String" DbType="NVarChar(8)" CanBeNull="true" />
+      <Column Name="approveCode" Type="System.String" DbType="NVarChar(8)" CanBeNull="true" />
+      <Column Name="responseCode" Type="System.String" DbType="NVarChar(3)" CanBeNull="true" />
+      <Column Name="responseMsg" Type="System.String" DbType="NVarChar(60)" CanBeNull="true" />
+      <Column Name="installmentType" Type="System.String" DbType="NVarChar(1)" CanBeNull="true" />
+      <Column Name="installment" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="firstAmt" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="eachAmt" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="fee" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="redeemType" Type="System.String" DbType="NVarChar(1)" CanBeNull="true" />
+      <Column Name="redeemUsed" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="redeemBalance" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="creditAmt" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="secureStatus" Type="System.String" DbType="NVarChar(1)" CanBeNull="true" />
+      <Association Name="PaymentTransaction_PaymentOnLine" Member="PaymentTransaction" ThisKey="PaymentID" OtherKey="PaymentID" Type="PaymentTransaction" IsForeignKey="true" />
     </Type>
   </Table>
   <Function Name="dbo.InquireVacantNo" Method="InquireVacantNo">

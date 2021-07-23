@@ -376,6 +376,13 @@ namespace WebHome.Controllers
                     models.AttendLesson(lesson.LessonTime.First(), profile);
                 }
 
+                if (invoice.InvoiceCarrier != null && viewModel.MyCarrier == true)
+                {
+                    lesson.UserProfile.UserProfileExtension.CarrierType = invoice.InvoiceCarrier.CarrierType;
+                    lesson.UserProfile.UserProfileExtension.CarrierNo = invoice.InvoiceCarrier.CarrierNo;
+                    models.SubmitChanges();
+                }
+
                 TaskExtensionMethods.ProcessInvoiceToGov();
 
                 return Json(new { result = true, invoiceNo = item.InvoiceItem.TrackCode + item.InvoiceItem.No, item.InvoiceID, item.InvoiceItem.InvoiceType, item.PaymentID });

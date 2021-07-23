@@ -526,6 +526,11 @@ namespace WebHome.Controllers
                 }
             }
 
+            if (priceType.IsDistanceLesson && branch?.IsVirtualClassroom() != true)
+            {
+                return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: "遠距課程上課地點錯誤!!");
+            }
+
             LessonTime timeItem = new LessonTime
             {
                 InvitedCoach = viewModel.CoachID,
@@ -746,12 +751,16 @@ namespace WebHome.Controllers
                 return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: "學員課程已結束!!");
             }
 
-
             var lessonCount = lesson.GroupingLesson.LessonTime.Count;
 
             if (lessonCount + (lesson.AttendedLessons ?? 0) >= lesson.Lessons)
             {
                 return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: "學員上課堂數已滿!!");
+            }
+
+            if (priceType.IsDistanceLesson && branch?.IsVirtualClassroom() != true)
+            {
+                return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: "遠距課程上課地點錯誤!!");
             }
 
             LessonTime timeItem = new LessonTime

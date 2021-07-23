@@ -143,5 +143,61 @@ namespace WebHome.Controllers
 
             return File(path, "image/png");
         }
+
+        public ActionResult PushMessage(LineMessageViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+
+            viewModel.Message = viewModel.Message.GetEfficientString();
+
+            if (viewModel.Message == null)
+            {
+                return Content("Message is empty !");
+            }
+
+            var item = models.GetTable<UserProfile>()
+                        .Where(u => u.UID == viewModel.UID)
+                        .FirstOrDefault();
+
+            if (item == null)
+            {
+                return Content("User not found !");
+            }
+
+            if (item.UserProfileExtension?.LineID != null)
+            {
+                using (WebClient client = new WebClient())
+                {
+                    var encoding = new UTF8Encoding(false);
+                    client.Headers.Add(HttpRequestHeader.ContentType, "application/json");
+                    client.Headers.Add("Authorization", $"Bearer {Settings.Default.ChannelToken}");
+
+                    var jsonData = new
+                    {
+                        to = item.UserProfileExtension.LineID,
+                        messages = new[]
+                        {
+                            new
+                            {
+                                type =  "text",
+                                text =  viewModel.Message
+                            }
+                        }
+                    };
+
+                    var dataItem = JsonConvert.SerializeObject(jsonData);
+                    var result = client.UploadData(Settings.Default.LinePushMessage, encoding.GetBytes(dataItem));
+
+                    Logger.Info($"push:{dataItem},result:{(result != null ? encoding.GetString(result) : "")}");
+                }
+            }
+            else
+            {
+                Logger.Warn($"device without line ID:{item.PID}");
+            }
+
+            return Content("OK!");
+        }
+
     }
 }

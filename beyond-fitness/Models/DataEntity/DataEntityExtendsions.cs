@@ -523,6 +523,11 @@ namespace WebHome.Models.DataEntity
                             : (int?)null;
         }
 
+        public static int? PreferredBranchID(this ServingCoach item)
+        {
+            return item.CoachWorkplace.FirstOrDefault()?.BranchID;
+        }
+
         public static BranchStore CurrentWorkBranch(this ServingCoach item)
         {
             return item.CoachWorkplace.Count == 1
@@ -618,6 +623,7 @@ namespace WebHome.Models.DataEntity
         public String SimpleDescription => Description?.Substring(Description.IndexOf('】') + 1);
         public bool IsPackagePrice => this?.ObjectiveLessonPrice.Any(p => p.CatalogID == (int)ObjectiveLessonCatalog.CatalogDefinition.LessonPackage) == true;
         public bool IsDietaryConsult => this?.ObjectiveLessonPrice.Any(p => p.CatalogID == (int)ObjectiveLessonCatalog.CatalogDefinition.DietaryConsult) == true;
+        public bool IsDistanceLesson => this?.ObjectiveLessonPrice.Any(p => p.CatalogID == (int)ObjectiveLessonCatalog.CatalogDefinition.OnLine) == true;
     }
 
     public partial class RegisterLesson

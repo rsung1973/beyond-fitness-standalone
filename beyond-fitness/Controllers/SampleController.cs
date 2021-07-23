@@ -81,5 +81,12 @@ namespace WebHome.Controllers
             return base.BeginExecuteCore(callback, state);
         }
 
+        protected String Dump(bool includeHeader = true)
+        {
+            String fileName = Path.Combine(Logger.LogDailyPath, $"request{DateTime.Now.Ticks}.txt");
+            Request.SaveAs(fileName, includeHeader);
+            return fileName;
+        }
+
     }
 }

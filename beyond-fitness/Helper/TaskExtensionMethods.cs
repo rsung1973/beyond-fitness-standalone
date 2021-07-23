@@ -312,8 +312,8 @@ namespace WebHome.Helper
                                 var lessons = original.CountableRegisterLesson();
 
                                 returnAmt = totalPaid
-                                        - lessons.Select(r => r.LessonPriceType)
-                                            .Where(l => l.IsDietaryConsult).Sum(l => l.ListPrice * l.BundleCount)
+                                        - lessons.Where(r => r.LessonPriceType.IsDietaryConsult)
+                                            .Sum(r => r.LessonPriceType.ListPrice * r.LessonTime.Count)
                                         - lessons.Where(r => !r.LessonPriceType.IsDietaryConsult)
                                             .Sum(r => r.LessonPriceType.ListPrice * r.LessonTime.Count);
 
@@ -322,7 +322,7 @@ namespace WebHome.Helper
                                         - (lessons.Select(r => r.LessonPriceType)
                                             .Where(l => l.IsDietaryConsult).Sum(l => l.ListPrice * l.BundleCount) ?? 0)
                                         - (lessons.Where(r => !r.LessonPriceType.IsDietaryConsult)
-                                            .Sum(r => r.LessonPriceType.ListPrice * r.LessonTime.Count) ?? 0);
+                                            .Sum(r => item.CourseContract.CourseContractExtension.SettlementPrice * r.LessonTime.Count) ?? 0);
                             }
                             else
                             {
@@ -429,8 +429,8 @@ namespace WebHome.Helper
                             {
                                 var lessons = original.CountableRegisterLesson();
                                 returnAmt = totalPaid
-                                        - lessons.Select(r => r.LessonPriceType)
-                                            .Where(l => l.IsDietaryConsult).Sum(l => l.ListPrice * l.BundleCount)
+                                        - lessons.Where(r => r.LessonPriceType.IsDietaryConsult)
+                                            .Sum(r => r.LessonPriceType.ListPrice * r.LessonTime.Count)
                                         - lessons.Where(r => !r.LessonPriceType.IsDietaryConsult)
                                             .Sum(r => r.LessonPriceType.ListPrice * r.LessonTime.Count);
                             }

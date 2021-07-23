@@ -763,4 +763,9 @@ namespace WebHome.Models.ViewModel
         public String Assertion { get; set; }
     }
 
+    public class LineMessageViewModel : DataItemViewModel
+    {
+        public int? UID { get; set; }
+    }
+
 }
