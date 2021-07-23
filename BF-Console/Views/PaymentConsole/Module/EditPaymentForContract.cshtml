@@ -60,7 +60,7 @@
         <select class="form-control show-tick" name="PaymentType">
             <option value="">-- 請選擇收款方式 --</option>
             @if (_profile.IsAuthorizedSysAdmin() || _profile.IsAssistant() || _profile.IsManager() || _profile.IsViceManager()
-                    || String.IsNullOrEmpty(_item.CourseContractExtension.PaymentMethod))
+                   || String.IsNullOrEmpty(_item.CourseContractExtension.PaymentMethod))
             {
                 <option value="現金">現金</option>
                 <option value="刷卡">刷卡</option>
@@ -163,8 +163,7 @@
                 <option value="@Html.Raw(true)">是, 我要自行輸入</option>
                 <option value="@Html.Raw(false)">否, 我堅持使用預設</option>
             </select>
-            <script>
-                function customBrief() {
+            <script>function customBrief() {
                     var customBrief = $('select[name="CustomBrief"]').val();
                     if (customBrief == 'True') {
                         $('.custom-brief').css('display', 'block');
@@ -177,8 +176,7 @@
                         customBrief();
                     });
                     customBrief();
-                });
-            </script>
+                });</script>
         </div>
         <div class="col-12 custom-brief">
             <div class="input-group">
@@ -209,6 +207,8 @@
                 </span>
             </div>
         </div>*@
+</div>
+<div class="row clearfix m-t-20">
     <div class="col-12 eInvoice-dialog">
         <div class="input-group">
             <input type="text" class="form-control" name="CarrierId1" placeholder="手機載具條碼，例：/17T448Q" value="@(_viewModel.CarrierId1)" />
@@ -217,6 +217,19 @@
             </span>
         </div>
     </div>
+    <div class="col-12 p-l-20">
+        <label class="fancy-checkbox custom-bgcolor-green">
+            <input type="checkbox">
+            <span class="col-green">加入預設</span>
+        </label>
+    </div>
+    <div class="col-12 eInvoice-dialog">
+        <dv>
+            <input type="hidden" name="errorMessage" />
+        </dv>
+    </div>
+</div>
+<div class="row clearfix m-t-20">
     <div class="col-12">
         <div class="input-group">
             <textarea rows="3" class="form-control no-resize" name="Remark" placeholder="請輸入任何想補充的事項..."></textarea>
