@@ -71,7 +71,7 @@ namespace WebHome.Models.ViewModel
         public Naming.CauseForEnding? CauseForEnding { get; set; }
         public int? MemberID { get; set; }
         public bool? PartialEffectiive { get; set; }
-        public bool?SignOnline { get; set; }
+        public bool? SignOnline { get; set; }
     }
 
     public class CourseContractQueryViewModel : CourseContractViewModel
@@ -458,7 +458,6 @@ namespace WebHome.Models.ViewModel
         }
         public int? AuthorID { get; set; }
         public DateTime? DocDate { get; set; }
-        public String Title { get; set; }
         public String Subtitle { get; set; }
         public int?[] TagID { get; set; }
 

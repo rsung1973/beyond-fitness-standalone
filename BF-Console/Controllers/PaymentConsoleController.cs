@@ -247,6 +247,7 @@ namespace WebHome.Controllers
             }
 
             viewModel.PayoffAmount = lesson.LessonPriceType.ListPrice;
+            viewModel.CarrierId1 = lesson.UserProfile.UserProfileExtension?.CarrierNo;
             return View("~/Views/PaymentConsole/Module/EditPaymentForPI2020.cshtml");
         }
 
@@ -271,6 +272,7 @@ namespace WebHome.Controllers
             }
 
             viewModel.PayoffAmount = lesson.LessonPriceType.ListPrice;
+            viewModel.CarrierId1 = lesson.UserProfile.UserProfileExtension?.CarrierNo;
             return View("~/Views/PaymentConsole/Module/EditPaymentForSession.cshtml", item);
         }
 
@@ -288,7 +290,7 @@ namespace WebHome.Controllers
             else
             {
                 timeItem = lesson.LessonTime.First();
-                viewModel.SellerID = timeItem.BranchStore.IsVirtualClassroom()
+                viewModel.SellerID = timeItem.BranchStore?.IsVirtualClassroom() == true
                     ? timeItem.AsAttendingCoach.SelectWorkBranchID()
                     : timeItem.BranchID.Value;
             }

@@ -22,6 +22,7 @@ using Utility;
 using WebHome.Controllers;
 using WebHome.Helper;
 using WebHome.Helper.BusinessOperation;
+using WebHome.Helper.MessageOperation;
 using WebHome.Models.DataEntity;
 using WebHome.Models.Locale;
 using WebHome.Models.Timeline;
@@ -175,6 +176,20 @@ namespace WebHome.Controllers
             String fileName = Path.Combine(Logger.LogDailyPath, $"request{DateTime.Now.Ticks}.txt");
             Request.SaveAs(fileName, true);
             return Content(System.IO.File.ReadAllText(fileName), "text/plain");
+        }
+
+        public ActionResult Current(int? contractID)
+        {
+            System.Diagnostics.Debugger.Launch();
+            var item = models.GetTable<CourseContract>().Where(c => c.ContractID == contractID).FirstOrDefault();
+            //if (item.CourseContractExtension.SignOnline == true)
+            {
+                String jsonData = this.RenderViewToString("~/Views/LineEvents/Message/NotifyManagerToApproveContract.cshtml", item);
+                jsonData.PushLineMessage();
+                //item.CreateLineReadyToSignContract(models).PushLineMessage();
+            }
+
+            return Content("OK!!");
         }
     }
 }

@@ -628,8 +628,8 @@ namespace WebHome.Models.DataEntity
 
     public partial class RegisterLesson
     {
-        public bool IsPaid => IntuitionCharge.TuitionInstallment
-            .Any(t => t.Payment.VoidPayment == null || t.Payment.VoidPayment.Status != (int)Naming.CourseContractStatus.已生效);
+        public bool IsPaid => IntuitionCharge?.TuitionInstallment?
+            .Any(t => t.Payment.VoidPayment == null || t.Payment.VoidPayment.Status != (int)Naming.CourseContractStatus.已生效) == true;
     }
 
     public partial class LessonTime

@@ -446,14 +446,14 @@
         }
 
     </script>
-    @if (ViewBag.Message != null)
+    @if (_viewModel?.AlertMessage != null)
     {
         <script>
             $(function () {
                 Swal.fire({
                     icon: 'info',
-                    text: '@(HttpUtility.JavaScriptStringEncode((String)ViewBag.Message))',
-                    confirmButtonText: '確定',
+                    text: '@(HttpUtility.JavaScriptStringEncode(_viewModel.AlertMessage))',
+                    confirmButtonText: '朕知道了',
                 })
             });
         </script>

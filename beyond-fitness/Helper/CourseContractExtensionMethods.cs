@@ -15,6 +15,7 @@ using CommonLib.DataAccess;
 using MessagingToolkit.QRCode.Codec;
 using Utility;
 using WebHome.Controllers;
+using WebHome.Helper.BusinessOperation;
 using WebHome.Models.DataEntity;
 using WebHome.Models.Locale;
 using WebHome.Models.Timeline;
@@ -399,7 +400,10 @@ namespace WebHome.Helper
                     .Where(c => c.Status >= (int)Naming.CourseContractStatus.已生效);
         }
 
-
+        public static int? TotalLessonCount(this CourseContract item,GenericManager<BFDataContext> models)
+        {
+            return item.InstallmentID.HasValue ? models.GetTable<CourseContract>().Where(c => c.InstallmentID == item.InstallmentID).Sum(c => c.Lessons) : (item.Lessons ?? item.LessonPriceType?.ExpandActualLessonCount(models));
+        }
 
     }
 }

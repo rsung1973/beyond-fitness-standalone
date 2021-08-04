@@ -20,6 +20,8 @@ using WebHome.Models.Locale;
 using WebHome.Models.Timeline;
 using WebHome.Models.ViewModel;
 using WebHome.Properties;
+using WebHome.Helper.MessageOperation;
+using CommonLib.MvcExtension;
 
 namespace WebHome.Helper.BusinessOperation
 {
@@ -504,6 +506,35 @@ namespace WebHome.Helper.BusinessOperation
                 }
             }
 
+            if (item.Status == (int)Naming.CourseContractStatus.待審核)
+            {
+                if (item.CourseContractExtension.BranchStore.ManagerID.HasValue)
+                {
+                    var jsonData = controller.RenderViewToString("~/Views/LineEvents/Message/NotifyManagerToApproveContract.cshtml", item);
+                    jsonData.PushLineMessage();
+                }
+                if (profile.UID != item.CourseContractExtension.BranchStore.ViceManagerID
+                    && item.CourseContractExtension.BranchStore.ViceManagerID.HasValue)
+                {
+                    var jsonData = controller.RenderViewToString("~/Views/LineEvents/Message/NotifyViceManagerToApproveContract.cshtml", item);
+                    jsonData.PushLineMessage();
+                }
+            }
+            else if (item.Status == (int)Naming.CourseContractStatus.待簽名)
+            {
+                if (item.CourseContractExtension.SignOnline == true)
+                {
+                    //item.CreateLineReadyToSignContract(models).PushLineMessage();
+                    var jsonData = controller.RenderViewToString("~/Views/LineEvents/Message/NotifyLearnerToSignContract.cshtml", item);
+                    jsonData.PushLineMessage();
+                }
+                else
+                {
+                    var jsonData = controller.RenderViewToString("~/Views/LineEvents/Message/NotifyCoachToSignContract.cshtml", item);
+                    jsonData.PushLineMessage();
+                }
+            }
+
             return item;
         }
 
@@ -752,6 +783,43 @@ namespace WebHome.Helper.BusinessOperation
 
                     }
                     models.SubmitChanges();
+
+                    if (viewModel.Status == (int)Naming.CourseContractStatus.待簽名)
+                    {
+                        if (!item.InstallmentID.HasValue)
+                        {
+                            //item.CreateLineReadyToSignContract(models).PushLineMessage();
+                            if (item.CourseContractExtension.SignOnline == true)
+                            {
+                                var jsonData = controller.RenderViewToString("~/Views/LineEvents/Message/NotifyLearnerToSignContract.cshtml", item);
+                                jsonData.PushLineMessage();
+                            }
+                            else
+                            {
+                                var jsonData = controller.RenderViewToString("~/Views/LineEvents/Message/NotifyCoachToSignContract.cshtml", item);
+                                jsonData.PushLineMessage();
+                            }
+                        }
+                        else if (!item.ContractInstallment.CourseContract.Any(c => c.Status != (int)Naming.CourseContractStatus.待簽名))
+                        {
+                            var current = item.ContractInstallment.CourseContract
+                                            .OrderBy(c => c.ContractID)
+                                            .First();
+                            if (item.CourseContractExtension.SignOnline == true)
+                            {
+                                //item.ContractInstallment.CourseContract.OrderBy(c => c.ContractID)
+                                //    .First().CreateLineReadyToSignContract(models).PushLineMessage();
+                                var jsonData = controller.RenderViewToString("~/Views/LineEvents/Message/NotifyLearnerToSignContract.cshtml", current);
+                                jsonData.PushLineMessage();
+                            }
+                            else
+                            {
+                                var jsonData = controller.RenderViewToString("~/Views/LineEvents/Message/NotifyCoachToSignContract.cshtml", current);
+                                jsonData.PushLineMessage();
+                            }
+
+                        }
+                    }
 
                     return item;
                 }
@@ -1504,7 +1572,6 @@ namespace WebHome.Helper.BusinessOperation
             var models = controller.DataSource;
 
             ViewBag.ViewModel = viewModel;
-
             var item = models.GetTable<Payment>().Where(c => c.PaymentID == viewModel.PaymentID).FirstOrDefault();
             if (item != null)
             {

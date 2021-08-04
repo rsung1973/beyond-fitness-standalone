@@ -965,6 +965,47 @@ namespace WebHome.Controllers
 
         }
 
+        public ActionResult ToEditPaymentForContract(CourseContractQueryViewModel viewModel, String encUID)
+        {
+            int? uid = null;
+            if (encUID != null)
+            {
+                uid = encUID.DecryptKeyValue();
+            }
+
+            var item = models.GetTable<UserProfile>().Where(u => u.UID == uid).FirstOrDefault();
+            if (item != null)
+            {
+                HttpContext.SignOn(item);
+                return Redirect(Url.Action("EditPaymentForContract", "ConsoleHome", viewModel));
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+        }
+        public ActionResult ToSignCourseContract(CourseContractQueryViewModel viewModel, String encUID)
+        {
+            int? uid = null;
+            if (encUID != null)
+            {
+                uid = encUID.DecryptKeyValue();
+            }
+
+            var item = models.GetTable<UserProfile>().Where(u => u.UID == uid).FirstOrDefault();
+            if (item != null)
+            {
+                HttpContext.SignOn(item);
+                return Redirect(Url.Action("SignCourseContract", "ConsoleHome", viewModel));
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
+        }
+
+
 
     }
 }

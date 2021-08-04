@@ -514,7 +514,27 @@
                             $global.viewModel.Remark = $('textarea[name="Remark"]').val();
                             $global.viewModel.SignOnline = $('input[name="SignOnline"]').is(':checked');
 
-                            $('form').ajaxForm({
+                            var $formData = $('form').serializeObject();
+                            $formData = $.extend({}, $global.viewModel, $formData);
+
+                            showLoading();
+                            $.post('@Html.Raw(Url.Action("CommitContract", "ContractConsole", _viewModel.ContractID))', $formData, function (data) {
+                                hideLoading();
+                                if ($.isPlainObject(data)) {
+                                    Swal.fire(
+                                        'Oops...',
+                                        data.message,
+                                        'warning'
+                                    )
+                                }
+                                else {
+                                    $(data).appendTo($('body'));
+                                }
+                            }).fail(function (jqXHR, textStatus, errorThrown) {
+                                console.log(textStatus);
+                            });;
+
+                            @*$('form').ajaxForm({
                                 url: '@Html.Raw(Url.Action("CommitContract", "ContractConsole", _viewModel.ContractID))',
                                 data: $global.viewModel,
                                 beforeSubmit: function () {
@@ -536,7 +556,7 @@
                                 error: function () {
                                     hideLoading();
                                 }
-                            }).submit();
+                            }).submit();*@
                         }
                     </script>
                 </li>

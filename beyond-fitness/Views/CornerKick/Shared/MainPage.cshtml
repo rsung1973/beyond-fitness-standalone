@@ -26,7 +26,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>BEYOND FITNESS - 兌換我的裝備</title>
+    <title>BEYOND FITNESS - @(_viewModel.Title)</title>
     <!-- CSS  -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!-- materialize  -->
@@ -73,7 +73,7 @@
                     @{ Html.RenderPartial("~/Views/CornerKick/Module/ReturnHome.cshtml", ViewBag.ReturnUrl as String); }
 
                     <!-- // End of BACK -->
-                    <a id="logo-container" href="#" class="brand-logo toptitle center">兌換我的裝備</a>
+                    <a id="logo-container" href="#" class="brand-logo toptitle center">@(_viewModel.Title)</a>
                 </div>
             </nav>
             <!-- // End of Header -->

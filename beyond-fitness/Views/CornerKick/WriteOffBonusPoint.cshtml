@@ -21,6 +21,8 @@
     models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
     _model = (UserProfile)this.Model;
     _viewModel = ViewBag.ViewModel as AwardQueryViewModel;
+    _viewModel.Title = "兌換我的裝備";
+
     BonusAwardingItem _item = ViewBag.DataItem as BonusAwardingItem;
 }
 

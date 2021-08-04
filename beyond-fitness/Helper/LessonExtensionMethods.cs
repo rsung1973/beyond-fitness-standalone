@@ -730,7 +730,7 @@ namespace WebHome.Helper
             where TEntity : class, new()
         {
             var registerLesson = item.RegisterLesson;
-            if (item.IsCoachPISession() || (item.IsTrialLesson() && !registerLesson.BranchStore.IsVirtualClassroom()))
+            if (item.IsCoachPISession() || (item.IsTrialLesson() && !(item.BranchStore?.IsVirtualClassroom()==true)))
             {
                 if (item.RegisterLesson.MasterRegistration == true)
                 {
@@ -866,7 +866,7 @@ namespace WebHome.Helper
         public static void ProcessBookingWhenCrossBranch<TEntity>(this LessonTime item, ModelSource<TEntity> models)
             where TEntity : class, new()
         {
-            if (!item.BranchStore.IsVirtualClassroom() && !models.GetTable<CoachWorkplace>()
+            if (!(item.BranchStore?.IsVirtualClassroom()==true) && !models.GetTable<CoachWorkplace>()
                             .Any(c => c.BranchID == item.BranchID
                                 && c.CoachID == item.AttendingCoach))
             {
@@ -1084,13 +1084,13 @@ namespace WebHome.Helper
                 return ;
             }
 
-            if (!item.BranchStore.IsVirtualClassroom() && !item.IsSTSession() && !models.GetTable<CoachWorkplace>()
+            if (!(item.BranchStore?.IsVirtualClassroom() == true) && !item.IsSTSession() && !models.GetTable<CoachWorkplace>()
                             .Any(c => c.BranchID == item.BranchID
                                 && c.CoachID == item.AttendingCoach)
                 && viewModel.ClassTimeStart.Value < DateTime.Today.AddDays(1))
             {
                 alertMessage = "此時段不允許跨店預約!!";
-                return ;
+                return;
             }
 
             LessonTime timeItem = new LessonTime

@@ -22,6 +22,7 @@ using Newtonsoft.Json;
 using Utility;
 using WebHome.Helper;
 using WebHome.Helper.BusinessOperation;
+using WebHome.Helper.MessageOperation;
 using WebHome.Models.DataEntity;
 using WebHome.Models.Locale;
 using WebHome.Models.Timeline;
@@ -529,6 +530,28 @@ namespace WebHome.Controllers
             }
         }
 
+        public ActionResult ToSignCourseContract(CourseContractQueryViewModel viewModel, String encUID)
+        {
+            int? uid = null;
+            if (encUID != null)
+            {
+                uid = encUID.DecryptKeyValue();
+            }
+
+            var item = models.GetTable<UserProfile>().Where(u => u.UID == uid).FirstOrDefault();
+            if (item != null)
+            {
+                HttpContext.SignOn(item);
+                return SignCourseContract(viewModel);
+            }
+            else
+            {
+                //ViewBag.Message = "此支裝置尚未設定過專屬服務，請點選下方更多資訊/專屬服務/帳號設定才可使用！";
+                return View("Index");
+            }
+        }
+
+
         [Authorize]
         public ActionResult SignCourseContract(CourseContractQueryViewModel viewModel)
         {
@@ -553,6 +576,15 @@ namespace WebHome.Controllers
                     Message = "目前尚未規劃任何訓練，<br/>若有興趣請與您的教練一起規劃訓練內容喔！",
                 };
                 return View("~/Views/CornerKick/DataNotFound.cshtml");
+            }
+            else if (item.Status != (int)Naming.CourseContractStatus.待簽名)
+            {
+                ViewBag.ViewModel = new DataItemViewModel
+                {
+                    Title = "我的合約",
+                    Message = "合約狀態不符！",
+                };
+                return View("~/Views/CornerKick/ErrorMessage.cshtml");
             }
 
             return View("~/Views/CornerKick/SignCourseContract.cshtml", item);
@@ -611,6 +643,9 @@ namespace WebHome.Controllers
                     return View("~/Views/CornerKick/Shared/ReportInputError.cshtml");
                 }
             }
+
+            String jsonData = this.RenderViewToString("~/Views/LineEvents/Message/NotifyToContractPayment.cshtml", item);
+            jsonData.PushLineMessage();
 
             ViewBag.ViewModel = new QueryViewModel
             {

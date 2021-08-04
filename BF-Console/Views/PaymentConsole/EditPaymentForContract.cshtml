@@ -58,8 +58,8 @@
                 <div class="col-lg-5 col-md-5 col-sm-12 bg-darkteal">
                     <div class="body">
                         @{
-                            TempData["DataItem"] = _item;
-                            Html.RenderAction("EditPaymentForContract", "ContractConsole", new { _item.ContractID, PayoffAmount = _item.TotalCost });
+                                TempData["DataItem"] = _item;
+                                Html.RenderAction("EditPaymentForContract", "ContractConsole", new { _item.ContractID, PayoffAmount = _item.TotalCost, CarrierId1 = _item.ContractOwner.UserProfileExtension?.CarrierNo });
                         }
                         <input type="hidden" name="SellerID" value="@(_item.CourseContractExtension.BranchID)" />
                         <button type="button" class="subscribe btn btn-primary btn-block" onclick="commitPayoff();">確定，不後悔</button>

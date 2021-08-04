@@ -1,4 +1,3 @@
-
 @using System.IO
 @using System.Linq.Expressions
 
@@ -8,13 +7,12 @@
 @using WebHome.Models.DataEntity
 @using WebHome.Controllers
 @using Newtonsoft.Json
+@using Utility
 @{
 
     ModelStateDictionary _modelState;
     ModelSource<UserProfile> models;
     CourseContract _model;
-
-
 
     _modelState = (ModelStateDictionary)ViewBag.ModelState;
     models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
@@ -24,13 +22,14 @@
     $(function () {
 @*$('').launchDownload('@Html.Raw(Url.Action("SignCourseContract","ConsoleHome"))', { 'contractID':@(_model.ContractID)});*@
         $('').launchDownload('@Html.Raw(Url.Action("ShowContractList","ContractConsole"))',
-            @Html.Raw(JsonConvert.SerializeObject(new CourseContractQueryViewModel
+            @Html.Raw((new CourseContractQueryViewModel
                 {
                     //FitnessConsultant = _model.FitnessConsultant,
                     //ContractQueryMode = Naming.ContractServiceMode.ContractOnly,
                     //Status = _model.Status,
-                    KeyID = _model.ContractID.EncryptKey(),
-                })));
+                    KeyID = _model.InstallmentID.HasValue ? null : _model.ContractID.EncryptKey(),
+                    InstallmentID = _model.InstallmentID,
+                }).JsonStringify()));
     });
 </script>
 

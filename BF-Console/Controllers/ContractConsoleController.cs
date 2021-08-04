@@ -412,6 +412,31 @@ namespace WebHome.Controllers
                     return View("~/Views/ConsoleHome/Shared/AlertMessage.cshtml", model: alertMessage);
                 }
             }
+            else if (viewModel.FromStatus == Naming.CourseContractStatus.待審核 && viewModel.Status == (int)Naming.CourseContractStatus.待簽名)
+            {
+                if (item.InstallmentID.HasValue)
+                {
+                    var contractItems = item.ContractInstallment.CourseContract.ToArray();
+                    CourseContract nextItem = null;
+                    int idx = 0;
+                    for (; idx < contractItems.Length; idx++)
+                    {
+                        if (contractItems[idx].Status == (int?)viewModel.FromStatus && contractItems[idx].ContractID != item.ContractID)
+                        {
+                            nextItem = contractItems[idx];
+                            break;
+                        }
+                    }
+
+                    if (nextItem != null)
+                    {
+                        viewModel.UrlAction = Url.Action("SignCourseContract", "ConsoleHome");
+                        viewModel.KeyID = nextItem.ContractID.EncryptKey();
+                        viewModel.AlertMessage = $"總共有{contractItems.Length}張分期合約，請繼續第{idx+1}張分期合約的審核!!";
+                        return View("~/Views/ConsoleHome/Shared/ViewModelCommitted.cshtml", viewModel);
+                    }
+                }
+            }
 
             return View("~/Views/ContractConsole/Editing/ContractStatusChanged.cshtml", item);
         }
@@ -440,6 +465,29 @@ namespace WebHome.Controllers
                 else
                 {
                     return View("~/Views/ConsoleHome/Shared/AlertMessage.cshtml", model: alertMessage);
+                }
+            }
+
+            if (item.InstallmentID.HasValue)
+            {
+                var contractItems = item.ContractInstallment.CourseContract.ToArray();
+                CourseContract nextItem = null;
+                int idx = 0;
+                for (; idx < contractItems.Length; idx++)
+                {
+                    if (contractItems[idx].Status != (int?)Naming.CourseContractStatus.已生效 && contractItems[idx].ContractID != item.ContractID)
+                    {
+                        nextItem = contractItems[idx];
+                        break;
+                    }
+                }
+
+                if (nextItem != null)
+                {
+                    viewModel.UrlAction = Url.Action("SignCourseContract", "ConsoleHome");
+                    viewModel.KeyID = nextItem.ContractID.EncryptKey();
+                    viewModel.AlertMessage = $"總共有{contractItems.Length}張分期合約，請繼續第{idx + 1}張分期合約的簽名!!";
+                    return View("~/Views/ConsoleHome/Shared/ViewModelCommitted.cshtml", viewModel);
                 }
             }
 

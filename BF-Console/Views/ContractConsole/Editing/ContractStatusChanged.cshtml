@@ -40,12 +40,13 @@
             $(function () {
                 $('').launchDownload('@Html.Raw(Url.Action("ShowContractList", "ContractConsole"))',
                     @Html.Raw(JsonConvert.SerializeObject(new CourseContractQueryViewModel
-                    {
-                        //FitnessConsultant = _model.FitnessConsultant,
-                        //ContractQueryMode = Naming.ContractServiceMode.ContractOnly,
-                        //Status = (int)Naming.CourseContractStatus.草稿,
-                        KeyID = _model.ContractID.EncryptKey(),
-                    })));
+               {
+                   //FitnessConsultant = _model.FitnessConsultant,
+                   //ContractQueryMode = Naming.ContractServiceMode.ContractOnly,
+                   //Status = (int)Naming.CourseContractStatus.草稿,
+                   KeyID = _model.InstallmentID.HasValue ? null : _model.ContractID.EncryptKey(),
+                   InstallmentID = _model.InstallmentID,
+               })));
             });
         </script>
     }

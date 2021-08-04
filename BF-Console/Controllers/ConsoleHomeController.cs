@@ -245,36 +245,56 @@ namespace WebHome.Controllers
         [RoleAuthorize(RoleID = new int[] { (int)Naming.RoleID.Administrator, (int)Naming.RoleID.Assistant, (int)Naming.RoleID.Officer, (int)Naming.RoleID.Coach, (int)Naming.RoleID.Servitor })]
         public ActionResult SignCourseContract(CourseContractQueryViewModel viewModel)
         {
-            ViewBag.ViewModel = viewModel;
-            if (viewModel.KeyID != null)
-            {
-                viewModel.ContractID = viewModel.DecryptKeyValue();
-            }
-
-            var profile = HttpContext.GetUser();
-
-            var item = models.GetTable<CourseContract>().Where(c => c.ContractID == viewModel.ContractID).FirstOrDefault();
+            ViewResult result = (ViewResult)LoadCourseContract(viewModel);
+            CourseContract item = (CourseContract)ViewBag.DataItem;
 
             if (item == null)
             {
-                ViewBag.GoBack = true;
-                return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: "合約資料錯誤!!");
+                return View("~/Views/Error/ErrorMessage.cshtml", model: "資料錯誤!!");
             }
 
-            ViewBag.DataItem = item;
+            if (!(item.Status == (int)Naming.CourseContractStatus.待審核 || item.Status == (int)Naming.CourseContractStatus.待簽名))
+            {
+                return View("~/Views/Error/ErrorMessage.cshtml", model: "資料錯誤!!");
+                //return RedirectToAction("Index");
+            }
 
-            return View(profile.LoadInstance(models));
+            result.ViewName = "~/Views/ConsoleHome/SignCourseContract.cshtml";
+            return result;
+        }
+
+        public ActionResult ToSignCourseContract(CourseContractQueryViewModel viewModel, String encUID)
+        {
+            int? uid = null;
+            if (encUID != null)
+            {
+                uid = encUID.DecryptKeyValue();
+            }
+
+            var item = models.GetTable<UserProfile>().Where(u => u.UID == uid).FirstOrDefault();
+            if (item != null)
+            {
+                HttpContext.SignOn(item);
+                return SignCourseContract(viewModel);
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
         }
 
         [RoleAuthorize(RoleID = new int[] { (int)Naming.RoleID.Administrator, (int)Naming.RoleID.Assistant, (int)Naming.RoleID.Officer, (int)Naming.RoleID.Coach, (int)Naming.RoleID.Servitor })]
         public ActionResult SignContractService(CourseContractQueryViewModel viewModel)
         {
-            ViewResult result = (ViewResult)SignCourseContract(viewModel);
+            ViewResult result = (ViewResult)LoadCourseContract(viewModel);
+            CourseContract item = (CourseContract)ViewBag.DataItem;
 
-            if (ViewBag.DataItem is CourseContract item)
+            if (item == null)
             {
-                result.ViewName = "SignContractService";
+                return result;
             }
+
+            result.ViewName = "~/Views/ConsoleHome/SignContractService.cshtml";
 
             return result;
         }
@@ -455,36 +475,45 @@ namespace WebHome.Controllers
         [RoleAuthorize(RoleID = new int[] { (int)Naming.RoleID.Administrator, (int)Naming.RoleID.Assistant, (int)Naming.RoleID.Officer, (int)Naming.RoleID.Coach, (int)Naming.RoleID.Servitor })]
         public ActionResult ApplyContractService(CourseContractQueryViewModel viewModel)
         {
-            ViewResult result = (ViewResult)SignCourseContract(viewModel);
+            ViewResult result = (ViewResult)LoadCourseContract(viewModel);
             CourseContract item = (CourseContract)ViewBag.DataItem;
-            if (item != null)
+
+            if (item == null)
             {
-                result.ViewName = "ApplyContractService";
+                return result;
             }
+
+            result.ViewName = "ApplyContractService";
             return result;
         }
 
         [RoleAuthorize(RoleID = new int[] { (int)Naming.RoleID.Administrator, (int)Naming.RoleID.Assistant, (int)Naming.RoleID.Officer, (int)Naming.RoleID.Coach, (int)Naming.RoleID.Servitor })]
         public ActionResult ReassignFitnessConsultant(CourseContractQueryViewModel viewModel)
         {
-            ViewResult result = (ViewResult)SignCourseContract(viewModel);
+            ViewResult result = (ViewResult)LoadCourseContract(viewModel);
             CourseContract item = (CourseContract)ViewBag.DataItem;
-            if (item != null)
+
+            if (item == null)
             {
-                result.ViewName = "ReassignFitnessConsultant";
+                return result;
             }
+
+            result.ViewName = "ReassignFitnessConsultant";
             return result;
         }
 
         [RoleAuthorize(RoleID = new int[] { (int)Naming.RoleID.Administrator, (int)Naming.RoleID.Assistant, (int)Naming.RoleID.Officer, (int)Naming.RoleID.Coach, (int)Naming.RoleID.Servitor })]
         public ActionResult PostponeContractExpiration(CourseContractQueryViewModel viewModel)
         {
-            ViewResult result = (ViewResult)SignCourseContract(viewModel);
+            ViewResult result = (ViewResult)LoadCourseContract(viewModel);
             CourseContract item = (CourseContract)ViewBag.DataItem;
-            if (item != null)
+
+            if (item == null)
             {
-                result.ViewName = "PostponeContractExpiration";
+                return result;
             }
+
+            result.ViewName = "PostponeContractExpiration";
             viewModel.Version = (Naming.ContractVersion?)item.CourseContractExtension.Version;
             return result;
         }
@@ -492,12 +521,15 @@ namespace WebHome.Controllers
         [RoleAuthorize(RoleID = new int[] { (int)Naming.RoleID.Administrator, (int)Naming.RoleID.Assistant, (int)Naming.RoleID.Officer, (int)Naming.RoleID.Coach, (int)Naming.RoleID.Servitor })]
         public ActionResult TransferContract(CourseContractQueryViewModel viewModel)
         {
-            ViewResult result = (ViewResult)SignCourseContract(viewModel);
+            ViewResult result = (ViewResult)LoadCourseContract(viewModel);
             CourseContract item = (CourseContract)ViewBag.DataItem;
-            if (item != null)
+
+            if (item == null)
             {
-                result.ViewName = "TransferContract";
+                return result;
             }
+
+            result.ViewName = "TransferContract";
             viewModel.Version = (Naming.ContractVersion?)item.CourseContractExtension.Version;
             return result;
         }
@@ -505,12 +537,15 @@ namespace WebHome.Controllers
         [RoleAuthorize(RoleID = new int[] { (int)Naming.RoleID.Administrator, (int)Naming.RoleID.Assistant, (int)Naming.RoleID.Officer, (int)Naming.RoleID.Coach, (int)Naming.RoleID.Servitor })]
         public ActionResult TerminateContract(CourseContractQueryViewModel viewModel)
         {
-            ViewResult result = (ViewResult)SignCourseContract(viewModel);
+            ViewResult result = (ViewResult)LoadCourseContract(viewModel);
             CourseContract item = (CourseContract)ViewBag.DataItem;
-            if (item != null)
+
+            if (item == null)
             {
-                result.ViewName = "TerminateContract";
+                return result;
             }
+
+            result.ViewName = "TerminateContract";
             viewModel.Version = (Naming.ContractVersion?)item.CourseContractExtension.Version;
             return result;
         }
@@ -519,18 +554,23 @@ namespace WebHome.Controllers
         public ActionResult QuickTerminateContract(CourseContractQueryViewModel viewModel)
         {
             var profile = HttpContext.GetUser();
-            ViewResult result = (ViewResult)SignCourseContract(viewModel);
+            ViewResult result = (ViewResult)LoadCourseContract(viewModel);
             CourseContract item = (CourseContract)ViewBag.DataItem;
-            if (item != null)
+
+            if (item == null)
             {
-                if (profile.IsCoach())
-                    viewModel.FitnessConsultant = profile.UID;
-                else
-                    viewModel.FitnessConsultant = item.FitnessConsultant;
-                viewModel.OperationMode = Naming.OperationMode.快速終止;
-                viewModel.Status = (int)Naming.CourseContractStatus.待確認;
-                result.ViewName = "QuickTerminateContract";
+                return result;
             }
+
+            if (profile.IsCoach())
+                viewModel.FitnessConsultant = profile.UID;
+            else
+                viewModel.FitnessConsultant = item.FitnessConsultant;
+
+            viewModel.OperationMode = Naming.OperationMode.快速終止;
+            viewModel.Status = (int)Naming.CourseContractStatus.待確認;
+            result.ViewName = "QuickTerminateContract";
+
             return result;
         }
 
@@ -745,13 +785,38 @@ namespace WebHome.Controllers
 
         public ActionResult EditPaymentForContract(CourseContractQueryViewModel viewModel)
         {
-            ViewResult result = (ViewResult)SignCourseContract(viewModel);
+            ViewResult result = (ViewResult)LoadCourseContract(viewModel);
             CourseContract item = (CourseContract)ViewBag.DataItem;
-            if (item != null)
+            if (item != null && item.IsPayable(models))
             {
                 result.ViewName = "~/Views/PaymentConsole/EditPaymentForContract.cshtml";
             }
+            else
+            {
+                return View("~/Views/Error/ErrorMessage.cshtml", model: "資料錯誤!!");
+            }
             return result;
+
+        }
+
+        public ActionResult ToEditPaymentForContract(CourseContractQueryViewModel viewModel, String encUID)
+        {
+            int? uid = null;
+            if (encUID != null)
+            {
+                uid = encUID.DecryptKeyValue();
+            }
+
+            var item = models.GetTable<UserProfile>().Where(u => u.UID == uid).FirstOrDefault();
+            if (item != null)
+            {
+                HttpContext.SignOn(item);
+                return EditPaymentForContract(viewModel);
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
 
         }
 
@@ -1052,6 +1117,29 @@ namespace WebHome.Controllers
 
             var profile = HttpContext.GetUser();
             return View("~/Views/AchievementConsole/CoachAchievement.cshtml", profile.LoadInstance(models));
+        }
+
+        public ActionResult LoadCourseContract(CourseContractQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            if (viewModel.KeyID != null)
+            {
+                viewModel.ContractID = viewModel.DecryptKeyValue();
+            }
+
+            var profile = HttpContext.GetUser();
+
+            var item = models.GetTable<CourseContract>().Where(c => c.ContractID == viewModel.ContractID).FirstOrDefault();
+
+            if (item == null)
+            {
+                ViewBag.GoBack = true;
+                return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: "合約資料錯誤!!");
+            }
+
+            ViewBag.DataItem = item;
+
+            return View(profile.LoadInstance(models));
         }
 
 
