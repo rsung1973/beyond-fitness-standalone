@@ -30,7 +30,7 @@
         "type": "bubble",
         "hero": {
           "type": "image",
-          "url": "https://www.worthitstudio.idv.tw/ConsoleHome/images/line/pushbody_contract_approve.jpg",
+          "url": "https://www.worthitstudio.idv.tw/ConsoleHome/images/line/contract_approve.jpg",
           "size": "full",
           "aspectRatio": "20:15",
           "aspectMode": "cover",
@@ -182,16 +182,16 @@
                 "type": "uri",
                 "label": "👉立即審核",
                 "uri": "@Html.Raw($"{Settings.Default.HostDomain}{VirtualPathUtility.ToAbsolute("~/Account/ToSignCourseContract")}?KeyID={HttpUtility.UrlEncode(_model.ContractID.EncryptKey())}&encUID={HttpUtility.UrlEncode(_model.CourseContractExtension.BranchStore.ViceManagerID.Value.EncryptKey())}")"
-              }
-            },
-            {
-              "type": "spacer",
-              "size": "sm"
-            }
-          ],
-          "flex": 0
-        }
-      }
-    }
-  ]
-}
+                }
+                },
+                {
+                "type": "spacer",
+                "size": "sm"
+                }
+                ],
+                "flex": 0
+                }
+                }
+                }
+                ]
+                }
