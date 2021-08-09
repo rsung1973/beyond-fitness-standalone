@@ -3797,6 +3797,13 @@
     <Content Include="Views\CornerKick\Module\ContractTermsForCNA.cshtml" />
     <Content Include="Views\CornerKick\Module\ContractTermsForCommon.cshtml" />
     <Content Include="Views\CornerKick\Module\ContractTermsForDistance.cshtml" />
+    <Content Include="Views\LineEvents\Message\NotifyToContractPayment.cshtml" />
+    <Content Include="Views\LineEvents\Message\NotifyLearnerToSignContract.cshtml" />
+    <Content Include="Views\LineEvents\Message\NotifyViceManagerToApproveContract.cshtml" />
+    <Content Include="Views\LineEvents\Message\NotifyCoachToRejectContract.cshtml" />
+    <Content Include="Views\LineEvents\Message\NotifyManagerToApproveContract.cshtml" />
+    <Content Include="Views\LineEvents\Message\NotifyCoachToSignContract.cshtml" />
+    <Content Include="Views\LineEvents\Message\NotifyManagerToApproveExtend.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />

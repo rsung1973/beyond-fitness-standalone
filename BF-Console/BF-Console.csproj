@@ -1577,7 +1577,6 @@
     <Content Include="ConsoleHome\images\blog\Category7.jpg" />
     <Content Include="ConsoleHome\images\blog\Category8.jpg" />
     <Content Include="ConsoleHome\images\blog\DefaultTitle.jpg" />
-    <Content Include="ConsoleHome\images\branch.jpg" />
     <Content Include="ConsoleHome\images\carousel\article-background-1.jpg" />
     <Content Include="ConsoleHome\images\carousel\article-background-2.jpg" />
     <Content Include="ConsoleHome\images\carousel\article-background-3.jpg" />
@@ -1594,7 +1593,6 @@
     <Content Include="ConsoleHome\images\certificate\default.jpg" />
     <Content Include="ConsoleHome\images\certificate\EXOS.png" />
     <Content Include="ConsoleHome\images\certificate\NACA.png" />
-    <Content Include="ConsoleHome\images\declaration.png" />
     <Content Include="ConsoleHome\images\ecommerce\merchandise_00.jpg" />
     <Content Include="ConsoleHome\images\ecommerce\merchandise_01.jpg" />
     <Content Include="ConsoleHome\images\ecommerce\merchandise_02.jpg" />
@@ -6246,13 +6244,18 @@
     <Content Include="Views\LessonConsole\ProcessModal\TodayLessons.ascx" />
     <Content Include="Views\LessonConsole\ProcessModal\ProcessCrossBranch.ascx" />
     <Content Include="Views\LessonConsole\Module\CrossBranchLessonList.ascx" />
-    <Content Include="Views\MainActivity\Module\MobileMenuItem.ascx" />
-    <Content Include="Views\MainActivity\Module\ContactItem.ascx" />
-    <Content Include="Views\MainActivity\Module\JoinItem.ascx" />
-    <Content Include="Views\MainActivity\Module\MenuItem.ascx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="ConsoleHome\images\line\contract_reject.jpg" />
+    <Content Include="ConsoleHome\images\line\extend_conerkicksign.jpg" />
+    <Content Include="ConsoleHome\images\line\contract_approve.jpg" />
+    <Content Include="ConsoleHome\images\line\contract_intrasign.jpg" />
+    <Content Include="ConsoleHome\images\line\extend_approve.jpg" />
+    <Content Include="ConsoleHome\images\line\contract_conerkicksign.jpg" />
+    <Content Include="ConsoleHome\images\line\contract_payment.jpg" />
+    <Content Include="ConsoleHome\images\line\extend_reject.jpg" />
+    <Content Include="ConsoleHome\images\line\extend_intrasign.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\InitializeType.cs" />
@@ -6631,8 +6634,6 @@
     <Content Include="MainActivity\Pricing\Zhongxiao.json" />
     <None Include="packages.config" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
-    <Content Include="Views\MainActivity\Template\MainPage.Master" />
-    <Content Include="Views\MainActivity\Template\BlogPage.Master" />
     <Content Include="Views\MainActivity\Template\BlogPage.cshtml" />
     <Content Include="Views\MainActivity\Template\MainPage.cshtml" />
     <Content Include="Views\MainActivity\Index.cshtml" />
