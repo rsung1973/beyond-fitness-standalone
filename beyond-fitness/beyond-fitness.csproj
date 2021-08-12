@@ -3804,6 +3804,10 @@
     <Content Include="Views\LineEvents\Message\NotifyManagerToApproveContract.cshtml" />
     <Content Include="Views\LineEvents\Message\NotifyCoachToSignContract.cshtml" />
     <Content Include="Views\LineEvents\Message\NotifyManagerToApproveExtend.cshtml" />
+    <Content Include="Views\LineEvents\Message\NotifyViceManagerToApproveExtend.cshtml" />
+    <Content Include="Views\LineEvents\Message\NotifyLearnerToSignExtend.cshtml" />
+    <Content Include="Views\LineEvents\Message\NotifyCoachToSignExtend.cshtml" />
+    <Content Include="Views\LineEvents\Message\NotifyCoachToRejectExtend.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
