@@ -587,8 +587,49 @@ namespace WebHome.Controllers
                 return View("~/Views/CornerKick/ErrorMessage.cshtml");
             }
 
-            return View("~/Views/CornerKick/SignCourseContract.cshtml", item);
+            ViewBag.DataItem = item;
+            return View("~/Views/CornerKick/SignCourseContract.cshtml", profile.LoadInstance(models));
         }
+
+        [Authorize]
+        public ActionResult SignContractService(CourseContractQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            if (viewModel.KeyID != null)
+            {
+                viewModel.ContractID = viewModel.DecryptKeyValue();
+            }
+
+            var profile = HttpContext.GetUser();
+
+            var item = models.GetTable<CourseContract>()
+                .Where(c => c.ContractID == viewModel.ContractID)
+                .Where(c => c.CourseContractMember.Any(m => m.UID == profile.UID))
+                .FirstOrDefault();
+
+            if (item == null)
+            {
+                ViewBag.ViewModel = new DataItemViewModel
+                {
+                    Title = "我的合約",
+                    Message = "目前尚未規劃任何訓練，<br/>若有興趣請與您的教練一起規劃訓練內容喔！",
+                };
+                return View("~/Views/CornerKick/DataNotFound.cshtml");
+            }
+            else if (item.Status != (int)Naming.CourseContractStatus.待簽名)
+            {
+                ViewBag.ViewModel = new DataItemViewModel
+                {
+                    Title = "我的合約",
+                    Message = "合約狀態不符！",
+                };
+                return View("~/Views/CornerKick/ErrorMessage.cshtml");
+            }
+
+            ViewBag.DataItem = item;
+            return View("~/Views/CornerKick/SignContractService.cshtml", profile.LoadInstance(models));
+        }
+
 
         [Authorize]
         public ActionResult ConfirmSignature(CourseContractViewModel viewModel, CourseContractSignatureViewModel signatureViewModel)
@@ -654,6 +695,50 @@ namespace WebHome.Controllers
             return View("~/Views/CornerKick/Shared/ViewModelCommitted.cshtml");
         }
 
+        [Authorize]
+        public ActionResult ConfirmContractServiceSignature(CourseContractViewModel viewModel, CourseContractSignatureViewModel signatureViewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+
+            if (viewModel.Agree != true)
+            {
+                ModelState.AddModelError("Message", "請勾選同意聲明!!");
+                ViewBag.AlertError = true;
+                ViewBag.ModelState = this.ModelState;
+                return View("~/Views/CornerKick/Shared/ReportInputError.cshtml");
+            }
+
+            if (viewModel.KeyID != null)
+            {
+                viewModel.ContractID = viewModel.DecryptKeyValue();
+            }
+
+            CourseContract item = models.GetTable<CourseContract>().Where(c => c.ContractID == viewModel.ContractID).FirstOrDefault();
+
+            if (item == null)
+            {
+                ModelState.AddModelError("Message", "合約資料錯誤!!");
+                ViewBag.AlertError = true;
+                ViewBag.ModelState = this.ModelState;
+                return View("~/Views/CornerKick/Shared/ReportInputError.cshtml");
+            }
+
+            item = commitSignature(viewModel, signatureViewModel, item, out String alertMessage);
+            if (item == null)
+            {
+                ModelState.AddModelError("Message", alertMessage);
+                ViewBag.AlertError = true;
+                ViewBag.ModelState = this.ModelState;
+                return View("~/Views/CornerKick/Shared/ReportInputError.cshtml");
+            }
+
+            ViewBag.ViewModel = new QueryViewModel
+            {
+                UrlAction = Url.Action("MyContract"),
+            };
+            return View("~/Views/CornerKick/Shared/ViewModelCommitted.cshtml");
+        }
+
         private CourseContract commitSignature(CourseContractViewModel viewModel, CourseContractSignatureViewModel signatureViewModel, CourseContract item,out String alertMessage)
         {
             var profile = HttpContext.GetUser();
@@ -682,7 +767,14 @@ namespace WebHome.Controllers
                 models.SubmitChanges();
             }
 
-            return viewModel.ConfirmContractSignature(this, out alertMessage, out String pdfFile, item);
+            if (item.CourseContractRevision != null)
+            {
+                return viewModel.ConfirmContractServiceSignature(this, out alertMessage, out String pdfFile, item.CourseContractRevision);
+            }
+            else
+            {
+                return viewModel.ConfirmContractSignature(this, out alertMessage, out String pdfFile, item);
+            }
         }
 
         [Authorize]

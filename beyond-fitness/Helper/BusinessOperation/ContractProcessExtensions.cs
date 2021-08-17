@@ -820,6 +820,11 @@ namespace WebHome.Helper.BusinessOperation
 
                         }
                     }
+                    else if (viewModel.Drawback == true && profile.UID != item.FitnessConsultant)
+                    {
+                        var jsonData = controller.RenderViewToString("~/Views/LineEvents/Message/NotifyCoachToRejectContract.cshtml", item);
+                        jsonData.PushLineMessage();
+                    }
 
                     return item;
                 }
@@ -1125,7 +1130,7 @@ namespace WebHome.Helper.BusinessOperation
             return item;
         }
 
-        public static CourseContract ConfirmContractServiceSignature<TEntity>(this CourseContractViewModel viewModel, SampleController<TEntity> controller, out String alertMessage, out String pdfFile)
+        public static CourseContract ConfirmContractServiceSignature<TEntity>(this CourseContractViewModel viewModel, SampleController<TEntity> controller, out String alertMessage, out String pdfFile, CourseContractRevision item = null)
             where TEntity : class, new()
         {
             alertMessage = null;
@@ -1138,12 +1143,15 @@ namespace WebHome.Helper.BusinessOperation
             ViewBag.ViewModel = viewModel;
             var profile = HttpContext.GetUser();
 
-            if (viewModel.KeyID != null)
+            if (item == null)
             {
-                viewModel.ContractID = viewModel.DecryptKeyValue();
+                if (viewModel.KeyID != null)
+                {
+                    viewModel.ContractID = viewModel.DecryptKeyValue();
+                }
+                item = models.GetTable<CourseContractRevision>().Where(c => c.RevisionID == viewModel.ContractID).FirstOrDefault();
             }
 
-            var item = models.GetTable<CourseContractRevision>().Where(c => c.RevisionID == viewModel.ContractID).FirstOrDefault();
             if (item != null)
             {
                 CourseContract contract = item.CourseContract;
@@ -1191,7 +1199,7 @@ namespace WebHome.Helper.BusinessOperation
 
                 if (item.Reason == "展延")
                 {
-                    if (viewModel.Booking != true || viewModel.Cancel!=true)
+                    if (viewModel.Booking != true || viewModel.Cancel != true)
                     {
                         alertMessage = "請勾選合約聲明!!";
                         return null;
@@ -1414,6 +1422,7 @@ namespace WebHome.Helper.BusinessOperation
                 {
                     BranchID = item.CourseContractExtension.BranchID,
                     Version = item.CourseContractExtension.Version,
+                    SignOnline = viewModel.SignOnline,
                 },
                 SupervisorID = item.CourseContractExtension.BranchStore.ManagerID,
             };

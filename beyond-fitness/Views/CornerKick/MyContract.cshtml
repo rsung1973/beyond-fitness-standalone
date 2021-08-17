@@ -97,9 +97,12 @@
                             <ul>
                                 @{
                                     var lessonItems = lessons
-                                            .Join(models.GetTable<ObjectiveLessonPrice>()
-                                                .Where(c => c.CatalogID == (int)ObjectiveLessonCatalog.CatalogDefinition.OnLineFeedback),
-                                                r => r.ClassLevel, c => c.PriceID, (r, c) => r);
+                                        .Where(r => r.LessonPriceType.Status == (int)Naming.LessonPriceStatus.點數兌換課程);
+
+                                    //var lessonItems = lessons
+                                    //        .Join(models.GetTable<ObjectiveLessonPrice>()
+                                    //            .Where(c => c.CatalogID == (int)ObjectiveLessonCatalog.CatalogDefinition.OnLineFeedback),
+                                    //            r => r.ClassLevel, c => c.PriceID, (r, c) => r);
 
                                     foreach (var item in lessonItems)
                                     {
@@ -109,7 +112,7 @@
                                         }
                                         <li>
                                             <i class="livicon-evo prefix" data-options="name: gift.svg; size: 30px; style: original; autoPlay:true"></i>
-                                            <a>疫情回饋課程 - @(item.RemainedLessonCount())/@(item.Lessons)</a>
+                                            <a>@(item.LessonPriceType.SimpleDescription) - @(item.RemainedLessonCount())/@(item.Lessons)</a>
                                             <div class="desc">
                                                 @{
                                                     if (item.GroupingMemberCount > 1)
