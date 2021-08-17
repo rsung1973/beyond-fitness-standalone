@@ -151,7 +151,7 @@
     <value>Ask Now</value>
   </data>
   <data name="IndexBannerTitle" xml:space="preserve">
-    <value>Your healthy future is now online</value>
+    <value>Our persistence</value>
   </data>
   <data name="IndexBannerSubTitle" xml:space="preserve">
     <value>Is built on each client’s Peace of Mind</value>
@@ -353,6 +353,9 @@
   </data>
   <data name="OpportunityFeaturesDesc5" xml:space="preserve">
     <value>Combine work and play!</value>
+  </data>
+  <data name="OpportunityFeaturesDesc6" xml:space="preserve">
+    <value>提供勞健保與退休金，移地訓練，員工聚餐，員工旅遊，內部教育訓練。</value>
   </data>
   <data name="JoinUsContactTitle" xml:space="preserve">
     <value>Get discovered!</value>

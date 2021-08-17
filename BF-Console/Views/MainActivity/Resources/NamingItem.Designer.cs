@@ -545,6 +545,12 @@ namespace WebHome.Views.MainActivity.Resources {
             }
         }
         
+        public static string OpportunityFeaturesDesc6 {
+            get {
+                return ResourceManager.GetString("OpportunityFeaturesDesc6", resourceCulture);
+            }
+        }
+        
         public static string JoinUsContactTitle {
             get {
                 return ResourceManager.GetString("JoinUsContactTitle", resourceCulture);

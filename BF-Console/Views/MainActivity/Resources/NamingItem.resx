@@ -151,7 +151,7 @@
     <value>立即提問</value>
   </data>
   <data name="IndexBannerTitle" xml:space="preserve">
-    <value>健康的未來，正在線上</value>
+    <value>我們的堅持</value>
   </data>
   <data name="IndexBannerSubTitle" xml:space="preserve">
     <value>源自於客戶每一分安心</value>
@@ -214,13 +214,13 @@
     <value>品牌信念</value>
   </data>
   <data name="AboutVedioDesc1" xml:space="preserve">
-    <value>BeyondFitness 於2014年所創立，是全台最大運動客製化訓練中心之一，擁有超過50位員工，提供包括個人客製化運動訓練服務，企業團隊健康策略，專業運動教育培訓，與企業健康顧問等服務。</value>
+    <value>BeyondFitness 於2014年所創立，是全台最大運動客製化訓練中心之一，擁有超過50位員工，提供包括個人客製化運動訓練服務，營養諮詢，運動按摩恢復，運動傷害防護，企業團隊健康策略，專業運動教育培訓，與企業健康顧問等服務。</value>
   </data>
   <data name="AboutVedioDesc2" xml:space="preserve">
     <value>對 BeyondFitness 來說，運動是一件認真的事情。</value>
   </data>
   <data name="AboutVedioDesc3" xml:space="preserve">
-    <value>作為一個專業的體能顧問，我們帶著真誠藉由科學與數據條理化的方法與您相互合作，為每一次的運動帶來最高效益與價值。</value>
+    <value>作為一個專業的體能顧問公司，我們帶著真誠的心藉由科學與數據條理化的方法與您相互合作，為每一次的運動帶來最高效益與價值。</value>
   </data>
   <data name="AboutVedioDesc4" xml:space="preserve">
     <value>我們相信「若能幫助您成功的改變生活、邁向健康，自然而然可透過運動創造屬於您的人本價值及生活品質。」</value>
@@ -366,6 +366,9 @@
   <data name="OpportunityFeaturesDesc5" xml:space="preserve">
     <value>在工作中玩樂，玩樂中工作</value>
   </data>
+  <data name="OpportunityFeaturesDesc6" xml:space="preserve">
+    <value>提供勞健保與退休金，移地訓練，員工聚餐，員工旅遊，內部教育訓練。</value>
+  </data>
   <data name="JoinUsContactTitle" xml:space="preserve">
     <value>把握一展長才的機會</value>
   </data>
@@ -415,7 +418,7 @@
     <value>課程內容是什麼呢？</value>
   </data>
   <data name="FAQQestion2" xml:space="preserve">
-    <value>費用問題？</value>
+    <value>服務與費用問題？</value>
   </data>
   <data name="FAQQestion21" xml:space="preserve">
     <value>如何收費呢？</value>
@@ -439,7 +442,7 @@
     <value>如何去Beyond？</value>
   </data>
   <data name="FAQQestion7" xml:space="preserve">
-    <value>營養服務適合誰呢？</value>
+    <value>營養服務，運動防護與運動按摩適合誰呢(我嗎)？</value>
   </data>
   <data name="FAQAnswer11" xml:space="preserve">
     <value>您可以透過以下方式聯繫我們完成您的首次體驗課程</value>
@@ -448,7 +451,7 @@
     <value>體驗課程如下： &lt;li&gt;您將會了解您的身體狀況諮詢服務。&lt;/li&gt;&lt;li&gt;教練將會細心的了解您的運動狀況與生活型態。&lt;/li&gt;&lt;li&gt;遠端課程，專業教練將提前與您視訊確認軟硬體及通訊設備。&lt;/li&gt;&lt;li&gt;專業教練將給您期許的運動目標以及運動效果，讓您體驗愉快且健康的課程。&lt;/li&gt;&lt;li&gt;教練將與您一同討論專屬於您的客製化訓練。&lt;/li&gt;</value>
   </data>
   <data name="FAQAnswer21" xml:space="preserve">
-    <value>&lt;li&gt;實體一對一專業客製的訓練費用，以堂數做收費計算，規劃訓練價格會依照您的目標、規劃的時間長短及堂數而有所不同 ，價格約落在 TWD$1700- TWD$1900不等。&lt;/li&gt;&lt;li&gt;遠端一對一課程訓練費用，以堂數做收費計算，規劃訓練價格會依照您的目標、規劃的時間長短及堂數而有所不同 ，價格約落在 TWD$1200 - TWD$1400不等。&lt;/li&gt;&lt;li&gt;營養課程規劃費用，以「月」為週期已達最佳效果，單月規劃價格 TWD$4,000。&lt;/li&gt;</value>
+    <value>我們的主要服務包含：私人運動訓練（實體，遠端），營養諮詢與規劃，運動傷害防護與運動按摩與伸展&lt;li&gt;實體一對一專業客製的訓練費用以堂數做收費計算，規劃訓練價格會依照您的目標、規劃時間長短及堂數而有所不同 ，價格約落在 TWD$1700- TWD$1900不等。。&lt;/li&gt;&lt;li&gt;遠端課程訓練費用，營養諮詢規劃，運動傷害防護與運動按摩伸展等服務則依您的實際需求與運動狀況作為相關調整，協助您達到最大的成功。&lt;/li&gt;</value>
   </data>
   <data name="FAQAnswer22" xml:space="preserve">
     <value>BeyondFitness 專注於1對1 客製化專業訓練，您無須再繳交任何月費、入會費及手續費。</value>
@@ -457,10 +460,10 @@
     <value>&lt;li&gt;初階（含營養規劃）組合價格為 TWD$8,600&lt;/li&gt;&lt;li&gt;進階（含營養規劃）組合價格為 TWD$12,600&lt;/li&gt;</value>
   </data>
   <data name="FAQAnswer3" xml:space="preserve">
-    <value>Beyond Fitness的教練團隊為業界首屈一指的專業團隊， 所有相關人員皆俱備國際教練認證資格（國際證照且必須在有效期限內），內部專業團隊學術科考核（每季、半年、一年），以真誠認真的心搭配科學化訓練為根本、系統化紀錄、分析，讓每一位來運動的客戶感受最貼心且值得信任的服務Beyond Fitness 的教練團隊為業界首屈一指的專業教練團隊， 不論是私人訓練、營養規劃、運動恢復與傷害防護，所有相關人員皆俱備國際相關教練及專業認證資格（國際證照且必須在有效期限內），內部專業團隊學術科考核（季考核、半年訓、年訓），並以真誠認真的企業文化搭配科學化訓練，並以雲端系統化紀錄地分析與紀錄輔助，讓每位來運動的客戶感受最貼心且最值得信任的服務。</value>
+    <value>Beyond Fitness的教練團隊為業界首屈一指的專業團隊， 所有相關人員皆要求國際教練認證資格（國際證照且必須在有效期限內），內部專業團隊學術科考核（每季、半年、一年），以真誠認真的心搭配科學化訓練為根本、系統化紀錄、分析，讓每一位來運動的客戶感受最貼心且值得信任的服務Beyond Fitness 的教練團隊為業界首屈一指的專業教練團隊， 不論是私人訓練、營養規劃、運動恢復與傷害防護，所有相關人員皆俱備國際相關教練及專業認證資格（國際證照且必須在有效期限內），內部專業團隊學術科考核（季考核、半年訓、年訓），並以真誠認真的企業文化搭配科學化訓練，並以雲端系統化紀錄地分析與紀錄輔助，讓每位來運動的客戶感受最貼心且最值得信任的服務。</value>
   </data>
   <data name="FAQAnswer4" xml:space="preserve">
-    <value>優良的一對一私人教練是針對客戶的目標、生活作息並依據當日身體狀況做出客製化的課程安排，同時給予最好的訓練效果，藉此去幫助您達成改變並確實地陪伴您邁向目標。&lt;br/&gt;&lt;br/&gt;最重要地是協助您規劃您生活中其餘非運動時間需要注意的事項，例如營養攝取、筋膜放鬆與傷害防護等，教練能針對客戶的目標去做訓練，並依照每位客戶的獨特性以及差異化給予最為合適有效果的運動哦！</value>
+    <value>優良的一對一私人教練是針對客戶的目標、營養狀況，肌肉關節品質，生活作息並依據當日身體狀況做出客製化的課程安排，同時給予最好的訓練效果，藉此去幫助您達成改變並確實地陪伴您邁向目標。&lt;br/&gt;&lt;br/&gt;最重要地是協助您規劃您生活中其餘非運動時間需要注意的事項，例如營養攝取、筋膜放鬆與傷害防護等，教練能針對客戶的目標去做訓練，並依照每位客戶的獨特性以及差異化給予最為合適有效果的運動哦！</value>
   </data>
   <data name="FAQAnswer5" xml:space="preserve">
     <value>可以的，我們只提供 BeyondFitness 的客戶登記使用喔，經由規劃專業自主訓練P.I Session，並且進行人數的管控以維持場地以提供客戶最好的運動品質。</value>
@@ -469,7 +472,7 @@
     <value>您可以透過以下交通資訊抵達Beyond</value>
   </data>
   <data name="FAQAnswer7" xml:space="preserve">
-    <value>對於重視自我健康管理者、減重需求者、提升免疫力、三高慢性病族群及重量訓練想提升肌肉量者等，Beyond 的營養課程皆能為您提供良好及完善的成效與服務。</value>
+    <value>&lt;li&gt;營養服務對於重視自我健康管理者、減重需求者、提升免疫力、三高慢性病族群及重量訓練想提升肌肉量者等，Beyond 的營養課程皆能為您提供良好及完善的成效與服務。&lt;/li&gt;&lt;li&gt;運動防護則是確認您全身關節與肌肉狀況不可或缺的最大助力，若您有運動傷害，關節與肌肉相關問題，一位運動防護教練是能協助您回歸正常水準最重要的人員。&lt;/li&gt;&lt;li&gt;運動按摩與伸展對於長期肩頸，下背，或久坐等容易痠痛或狀況的族群，絕對能確實幫助您解決壓力，我們的恢復團隊肯定能讓您展開最健康與舒適的笑容。&lt;/li&gt;</value>
   </data>
   <data name="NanjingMRT" xml:space="preserve">
     <value>松山新店線-台北小巨蛋站1號出口</value>
