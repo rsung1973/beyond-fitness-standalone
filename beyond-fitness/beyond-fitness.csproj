@@ -3808,6 +3808,7 @@
     <Content Include="Views\LineEvents\Message\NotifyLearnerToSignExtend.cshtml" />
     <Content Include="Views\LineEvents\Message\NotifyCoachToSignExtend.cshtml" />
     <Content Include="Views\LineEvents\Message\NotifyCoachToRejectExtend.cshtml" />
+    <Content Include="Views\LineEvents\Message\NotifyToCoachBook.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
