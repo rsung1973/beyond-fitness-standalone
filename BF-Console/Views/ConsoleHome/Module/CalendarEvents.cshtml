@@ -47,7 +47,9 @@
                 : g.LessonAttendance != null
                     ? new String[] { "b-l b-2x b-finish" }
                     : g.IsPTSession() || g.RegisterLesson.LessonPriceType.IsWelfareGiftLesson != null
-                        ? new string[] { "b-l b-2x b-PT" }
+                        ? g.BranchStore?.IsVirtualClassroom() == true
+                            ? new string[] { "b-l b-2x b-PT" }
+                            : new string[] { "b-l b-2x b-PT" }
                         : g.IsPISession()
                             ? new string[] { "b-l b-2x b-PI" }
                             : g.IsTrialLesson()

@@ -1,0 +1,57 @@
+﻿
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Newtonsoft.Json
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+}
+<div id="myChart" class="echarts"></div>
+<script>
+
+    if ($global.echarts === undefined) {
+        $global.echarts = {
+
+        };
+
+        $global.echarts.showChart = function () {
+            // 基於準備好的dom，初始化echarts例項
+            if ($global.echarts.myChart != null) {
+                $global.echarts.myChart.dispose();
+            }
+            var style;
+            if ($global.currentTheme == 'theme-nero') {
+                style = 'macarons_nero';
+            } else {
+                style = 'macarons';
+            }
+            $global.echarts.myChart = echarts.init(document.getElementById('myChart'), style, { height: 400, /*width: 662,*/ locale: "EN" });
+
+            // 使用剛指定的配置項和資料顯示圖表。
+            $global.echarts.myChart.setOption($global.echarts.option);
+        };
+
+        $global.onChangeTheme = $global.echarts.showChart;
+    }
+
+    $(function () {
+
+        setTimeout(function () {
+            if ($global.echarts.myChart != null) {
+                $global.echarts.myChart.resize();
+            }
+        }, 500);
+
+    });
+
+
+</script>
+

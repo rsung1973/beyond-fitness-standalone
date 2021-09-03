@@ -60,6 +60,22 @@ namespace WebHome.Helper
                 .Where(c => !items.Any(t => t.ContractID == c.ContractID));
         }
 
+        public static IQueryable<CourseContract> GetEarlyUnpaidInstallments<TEntity>(this CourseContract contract,ModelSource<TEntity> models)
+                where TEntity : class, new()
+        {
+            var items = models.GetTable<CourseContract>()
+                .Where(c => c.InstallmentID == contract.InstallmentID)
+                .Where(c => c.ContractID < contract.ContractID);
+
+            return items.FilterByUnpaidContract(models);
+        }
+
+        public static bool HasEarlyUnpaidInstallments<TEntity>(this CourseContract contract, ModelSource<TEntity> models)
+                where TEntity : class, new()
+        {
+            return contract.GetEarlyUnpaidInstallments(models).Any();
+        }
+
         public static IQueryable<CourseContract> PromptUnpaidExpiredContract<TEntity>(this ModelSource<TEntity> models)
                 where TEntity : class, new()
         {
@@ -377,6 +393,20 @@ namespace WebHome.Helper
                 item.Subject = "已自動終止";
             }
             models.SubmitChanges();
+
+            foreach (var item in items)
+            {
+                item.TerminateRegisterLesson(models);
+            }
+        }
+
+        public static void TerminateRegisterLesson(this CourseContract contract, GenericManager<BFDataContext> models)
+        {
+            models.ExecuteCommand(@"UPDATE       RegisterLesson
+                    SET                Attended = {0}
+                    FROM            RegisterLessonContract INNER JOIN
+                                             RegisterLesson ON RegisterLessonContract.RegisterID = RegisterLesson.RegisterID
+                    WHERE        (RegisterLessonContract.ContractID = {1})", (int)Naming.LessonStatus.課程結束, contract.ContractID);
         }
 
         public static LessonPriceType ContractOriginalSeriesPrice<TEntity>(this CourseContract item, ModelSource<TEntity> models)

@@ -190,6 +190,14 @@
                                         <li><a href="javascript:gtag('event', '我的合約', {  'event_category': '下拉式選單點擊',  'event_label': '卡片總覽'});window.location.href = '@(Url.Action("SignCourseContract", "CornerKick",new { KeyID = HttpUtility.UrlEncode(c.ContractID.EncryptKey()) }))';">@(_model.UserProfileExtension.Gender == "F" ? "親愛的" : "兄弟")，您有1張合約等待您簽名喔！ <i class="material-icons right">arrow_forward</i></a></li>
                                     }
 
+                                    item = events.Where(v => v is PromptSignContractServiceEvent).FirstOrDefault();
+                                    if (item != null)
+                                    {
+                                        var c = ((PromptSignContractServiceEvent)item).ContractList.First();
+                                        <li><a href="javascript:gtag('event', '我的合約', {  'event_category': '下拉式選單點擊',  'event_label': '卡片總覽'});window.location.href = '@(Url.Action("SignContractService", "CornerKick",new { KeyID = HttpUtility.UrlEncode(c.ContractID.EncryptKey()) }))';">@(_model.UserProfileExtension.Gender == "F" ? "親愛的" : "兄弟")，您有1張合約服務申請等待您簽名喔！ <i class="material-icons right">arrow_forward</i></a></li>
+                                    }
+
+
                                 }
                             </ul>
                             <ul class="hide-on-med-and-down">

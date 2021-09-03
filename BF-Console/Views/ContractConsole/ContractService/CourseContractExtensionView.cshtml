@@ -90,6 +90,14 @@
                     </tbody>
                 </table>
                 <table class="table" style="font-size: 15px">
+                    @if (_viewModel.Pdf == "1" && _contract.CourseContractExtension.SignOnline == true)
+                    {
+                        <tr>
+                            <td colspan="3">
+                                <text>☑ 學生端線上簽名。</text>
+                            </td>
+                        </tr>
+                    }
                     <tr>
                         <td colspan="3">
                             @if (_contract.Status == (int)Naming.ContractServiceStatus.待簽名)
@@ -131,7 +139,7 @@
                             else
                             {
                                 <text>☑ 展延後不得申請轉讓及退費</text>
-                            }                            
+                            }
                         </td>
                     </tr>
                     <tr>

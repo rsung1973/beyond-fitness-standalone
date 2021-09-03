@@ -53930,6 +53930,10 @@ namespace WebHome.Models.DataEntity
 		
 		private System.Nullable<int> _RenewContractSubtotal;
 		
+		private System.Nullable<int> _InstallmentCount;
+		
+		private System.Nullable<int> _InstallmentSubtotal;
+		
 		private EntityRef<MonthlyRevenueIndicator> _MonthlyRevenueIndicator;
 		
     #region Extensibility Method Definitions
@@ -53968,6 +53972,10 @@ namespace WebHome.Models.DataEntity
     partial void OnNewContractSubtotalChanged();
     partial void OnRenewContractSubtotalChanging(System.Nullable<int> value);
     partial void OnRenewContractSubtotalChanged();
+    partial void OnInstallmentCountChanging(System.Nullable<int> value);
+    partial void OnInstallmentCountChanged();
+    partial void OnInstallmentSubtotalChanging(System.Nullable<int> value);
+    partial void OnInstallmentSubtotalChanged();
     #endregion
 		
 		public MonthlyRevenueGoal()
@@ -54304,6 +54312,46 @@ namespace WebHome.Models.DataEntity
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_InstallmentCount", DbType="Int")]
+		public System.Nullable<int> InstallmentCount
+		{
+			get
+			{
+				return this._InstallmentCount;
+			}
+			set
+			{
+				if ((this._InstallmentCount != value))
+				{
+					this.OnInstallmentCountChanging(value);
+					this.SendPropertyChanging();
+					this._InstallmentCount = value;
+					this.SendPropertyChanged("InstallmentCount");
+					this.OnInstallmentCountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_InstallmentSubtotal", DbType="Int")]
+		public System.Nullable<int> InstallmentSubtotal
+		{
+			get
+			{
+				return this._InstallmentSubtotal;
+			}
+			set
+			{
+				if ((this._InstallmentSubtotal != value))
+				{
+					this.OnInstallmentSubtotalChanging(value);
+					this.SendPropertyChanging();
+					this._InstallmentSubtotal = value;
+					this.SendPropertyChanged("InstallmentSubtotal");
+					this.OnInstallmentSubtotalChanged();
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="MonthlyRevenueIndicator_MonthlyRevenueGoal", Storage="_MonthlyRevenueIndicator", ThisKey="PeriodID,GradeID", OtherKey="PeriodID,GradeID", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
 		public MonthlyRevenueIndicator MonthlyRevenueIndicator
 		{
@@ -54401,6 +54449,10 @@ namespace WebHome.Models.DataEntity
 		
 		private System.Nullable<int> _RenewContractSubtotal;
 		
+		private System.Nullable<int> _InstallmentCount;
+		
+		private System.Nullable<int> _InstallmentSubtotal;
+		
 		private EntityRef<MonthlyBranchRevenueIndicator> _MonthlyBranchRevenueIndicator;
 		
     #region Extensibility Method Definitions
@@ -54441,6 +54493,10 @@ namespace WebHome.Models.DataEntity
     partial void OnNewContractSubtotalChanged();
     partial void OnRenewContractSubtotalChanging(System.Nullable<int> value);
     partial void OnRenewContractSubtotalChanged();
+    partial void OnInstallmentCountChanging(System.Nullable<int> value);
+    partial void OnInstallmentCountChanged();
+    partial void OnInstallmentSubtotalChanging(System.Nullable<int> value);
+    partial void OnInstallmentSubtotalChanged();
     #endregion
 		
 		public MonthlyBranchRevenueGoal()
@@ -54797,6 +54853,46 @@ namespace WebHome.Models.DataEntity
 					this._RenewContractSubtotal = value;
 					this.SendPropertyChanged("RenewContractSubtotal");
 					this.OnRenewContractSubtotalChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_InstallmentCount", DbType="Int")]
+		public System.Nullable<int> InstallmentCount
+		{
+			get
+			{
+				return this._InstallmentCount;
+			}
+			set
+			{
+				if ((this._InstallmentCount != value))
+				{
+					this.OnInstallmentCountChanging(value);
+					this.SendPropertyChanging();
+					this._InstallmentCount = value;
+					this.SendPropertyChanged("InstallmentCount");
+					this.OnInstallmentCountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_InstallmentSubtotal", DbType="Int")]
+		public System.Nullable<int> InstallmentSubtotal
+		{
+			get
+			{
+				return this._InstallmentSubtotal;
+			}
+			set
+			{
+				if ((this._InstallmentSubtotal != value))
+				{
+					this.OnInstallmentSubtotalChanging(value);
+					this.SendPropertyChanging();
+					this._InstallmentSubtotal = value;
+					this.SendPropertyChanged("InstallmentSubtotal");
+					this.OnInstallmentSubtotalChanged();
 				}
 			}
 		}

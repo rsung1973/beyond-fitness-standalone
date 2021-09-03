@@ -1,0 +1,50 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Helper.BusinessOperation
+@using WebHome.Helper.DataOperation
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Newtonsoft.Json
+
+@{
+    //Layout = "~/Views/ConsoleHome/Template/MainPage.cshtml";
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+
+    ///本月已終止的合約
+    ///
+    DateTime startDate = DateTime.Today.FirstDayOfMonth();
+    var items = models.PromptEffectiveRevision(startDate, null)
+                        .Where(r => r.Reason == "終止");
+
+    var totalCount = items.Count();
+
+    if (totalCount > 0)
+    {
+        ///依終止原因分類再排序取最大
+        ///
+        var groups = items.GroupBy(r => r.CauseForEnding)
+                        .OrderByDescending(g => g.Count());
+
+        ///原因最多的一項
+        ///
+        var theMost = groups.First();
+
+        ///該項原因是
+        ///
+        var cause = ((Naming.CauseForEnding)theMost.Key).ToString();
+
+        ///百分率
+        ///
+        var percent = Math.Round(theMost.Count() * 100M / totalCount);
+    }
+
+}
+

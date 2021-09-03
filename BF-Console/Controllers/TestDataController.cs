@@ -191,5 +191,22 @@ namespace WebHome.Controllers
 
             return Content("OK!!");
         }
+
+        public ActionResult SpecialGivingLesson(CourseContractViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+
+            try
+            {
+                models.RegisterSpecialGivingLesson2021(viewModel.UID);
+                return Json(new { result = true }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return Json(new { result = false, message = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
     }
 }

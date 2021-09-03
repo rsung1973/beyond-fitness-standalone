@@ -291,7 +291,12 @@ namespace WebHome.Controllers
 
             if (item == null)
             {
-                return result;
+                return View("~/Views/Error/ErrorMessage.cshtml", model: "資料錯誤!!");
+            }
+
+            if (!(item.Status == (int)Naming.CourseContractStatus.待確認 || item.Status == (int)Naming.CourseContractStatus.待簽名))
+            {
+                return View("~/Views/Error/ErrorMessage.cshtml", model: "資料錯誤!!");
             }
 
             result.ViewName = "~/Views/ConsoleHome/SignContractService.cshtml";

@@ -54,15 +54,18 @@
 
         groups = groups.OrderByDescending(g => g.Count).ToList();
 
-        var result = groups.Select(s => new
-        {
-            label = $"{(Naming.CauseForEnding)s.Key}",
-            value = Math.Round((s.Count * 100M) / totalCount, 0, MidpointRounding.AwayFromZero)
-        });
+        var result = groups.Take(5)
+            .Select(s => new
+            {
+                label = $"{(Naming.CauseForEnding)s.Key}",
+                value = Math.Round((s.Count * 100M) / totalCount, 0, MidpointRounding.AwayFromZero)
+            });
 
-        var colors = groups.Select(s => (s.Key < __ColorIndex.Length
-                                            ? __ColorIndex[s.Key.Value]
-                                            : "")).ToArray();
+        //var colors = groups.Select(s => (s.Key < __ColorIndex.Length
+        //                                    ? __ColorIndex[s.Key.Value]
+        //                                    : "")).ToArray();
+
+        String[] colors = { "#f2e8cc", "#93e3ff", "#b0dd91", "#ffe699", "#f8cbad", "#a989bf", "#a4a4a4", "#b2c8ff" };
 
         <!-- 終止原因分析圖Modal -->
         <div class="modal fade" id="@(_dialogID)" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">

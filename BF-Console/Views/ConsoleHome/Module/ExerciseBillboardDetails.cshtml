@@ -7,7 +7,14 @@
 @using WebHome.Models.DataEntity
 @using WebHome.Controllers
 @using Newtonsoft.Json
-
+@functions
+{
+    class StageItem
+    {
+        public String Stage { get; set; }
+        public decimal TotalMinutes { get; set; }
+    }
+}
 @{
     ModelStateDictionary _modelState;
     ModelSource<UserProfile> models;
@@ -25,13 +32,15 @@
     compareDateTo = DateTime.Today.AddMonths(-1).AddDays(1);
 
     var items = _model.GroupBy(l => l.RegisterLesson.UID)
-.Select(g => new
-{
-    g.Key,
-    TotalMinutes = (decimal?)g.Sum(l => l.DurationInMinutes),
-}).ToArray();
+                    .Select(g => new
+                    {
+                        g.Key,
+                        TotalMinutes = (decimal?)g.Sum(l => l.DurationInMinutes),
+                    }).ToArray();
 
     List<String[]> resultData = new List<string[]>();
+
+    var stageItems = models.GetTable<TrainingStage>().ToArray();
 
     int idx = 1;
     var orderItems = items.GroupBy(g => g.TotalMinutes).OrderByDescending(g => g.Key);
@@ -108,14 +117,22 @@
            .Where(l => l.ClassTime >= _viewModel.StartDate && l.ClassTime < _viewModel.EndDate.Value.AddDays(1))
            .Join(models.GetTable<TrainingPlan>(), l => l.LessonID, p => p.LessonID, (l, p) => p)
            .Join(models.GetTable<TrainingExecution>(), p => p.ExecutionID, x => x.ExecutionID, (p, x) => x)
-           .Join(models.GetTable<TrainingExecutionStage>(), x => x.ExecutionID, s => s.ExecutionID, (x, s) => s); ;
+           .Join(models.GetTable<TrainingExecutionStage>(), x => x.ExecutionID, s => s.ExecutionID, (x, s) => s);
 
-        var items2 = models.GetTable<TrainingStage>()
-                .Select(s => new
-                {
-                    s.Stage,
-                    TotalMinutes = lessons.Where(t => t.StageID == s.StageID).Sum(t => t.TotalMinutes) ?? 0
-                }).ToArray();
+        List<StageItem> items2 = new List<StageItem>();
+
+        foreach(var s in stageItems)
+        {
+            var totalMinutes = lessons.Where(t => t.StageID == s.StageID).Sum(t => t.TotalMinutes) ?? 0;
+            items2.Add(new StageItem { Stage = s.Stage, TotalMinutes = totalMinutes });
+        }
+
+        //var items2 = models.GetTable<TrainingStage>()
+        //        .Select(s => new
+        //        {
+        //            s.Stage,
+        //            TotalMinutes = lessons.Where(t => t.StageID == s.StageID).Sum(t => t.TotalMinutes) ?? 0
+        //        }).ToArray();
 
         var total = items2.Sum(t => t.TotalMinutes);
 

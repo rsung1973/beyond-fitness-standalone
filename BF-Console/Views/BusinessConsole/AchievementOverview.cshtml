@@ -85,7 +85,7 @@
                             </ul>
                         </div>
                         @{
-                            Html.RenderPartial("~/Views/BusinessConsole/Module/MonthlyIndicator.cshtml", _item);
+                            Html.RenderPartial("~/Views/BusinessConsole/Module2021/MonthlyIndicator.cshtml", _item);
                         }
                     </div>
                 </div>
@@ -134,6 +134,11 @@
 
 
 @section TailPageJavaScriptInclude {
+    <!-- Echart Js -->
+    <script src="plugins/echarts/echarts.min.js"></script>
+    <!-- Echart Template Js -->
+    <script src="plugins/echarts/theme/macarons.js"></script>
+    <script src="plugins/echarts/theme/macarons_nero.js"></script>
     <!--Sparkline Plugin Js-->
     <script src="plugins/jquery-sparkline/jquery.sparkline.js"></script>
     <!-- SweetAlert Plugin Js -->
@@ -151,7 +156,30 @@
 
     @{ Html.RenderPartial("~/Views/ConsoleHome/Shared/KnobJS.cshtml");}
 
-    <script></script>
+    <script>
+        $(function () {
+            //var $body = $('body');
+            //if ($body.hasClass('theme-nero')) {
+            //    $.getScript('plugins/echarts/theme/nero/macarons.js', function (script, textStatus,jqXHR) {
+            //        if ($global.echarts.showChart) {
+            //            $global.echarts.showChart();
+            //        }
+            //    });
+            //} else {
+            //    $.getScript('plugins/echarts/theme/macarons.js', function (script, textStatus, jqXHR) {
+            //        if ($global.echarts.showChart) {
+            //            $global.echarts.showChart();
+            //        }
+            //    });
+            //}
+
+            window.onresize = function () {
+                if ($global.echarts.myChart) {
+                    $global.echarts.myChart.resize();
+                }
+            };
+        });
+    </script>
 
 }
 

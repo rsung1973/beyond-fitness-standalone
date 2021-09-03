@@ -31,6 +31,22 @@
 <div class="body">
     <div class="row clearfix">
         <div class="col-12 m-b-20">
+            <div class="fancy-checkbox custom-bgcolor-pink">
+                <label><input name="SignOnline" value="true" type="checkbox" /><span><i></i>學生遠端線上簽名</span></label>
+            </div>
+            <script>
+                function resetAttachment() {
+                    $('#attachment').css('display', 'block');
+                    if ($('input[name="SignOnline"]').is(':checked')) {
+                        $('#attachment').css('display', 'none');
+                    }
+                }
+                $(function () {
+                    resetAttachment();
+                });
+            </script>
+        </div>
+        <div class="col-12 m-b-20">
             @for (int i = 3; i <= 12; i += 3)
             {
                 <label class="fancy-checkbox custom-bgcolor-pink displayblock">
@@ -50,7 +66,7 @@
                 });
             </script>
         </div>
-        <div class="col-12">
+        <div class="col-12" id="attachment">
             @*@{
                 ViewBag.DropifyExtension = "gif jpg png pdf";
             }

@@ -1,0 +1,118 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Newtonsoft.Json
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    MonthlyIndicator _model;
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _model = (MonthlyIndicator)this.Model;
+}
+@{ 
+    var _profile = Context.GetUser();
+    MonthlyIndicatorQueryViewModel _viewModel = (MonthlyIndicatorQueryViewModel)ViewBag.ViewModel;
+}
+<ul class="row clearfix list-unstyled m-b-0">
+    <li class="col-12">
+        <div class="body">
+            <div class="row clearfox">
+                <div class="col-lg-8 col-md-6 col-sm-12">
+                    @{ 
+    Html.RenderPartial("~/Views/BusinessConsole/Module/MonthlyAchievementStatus.cshtml", _model);
+                    }
+                    @{ 
+    Html.RenderPartial("~/Views/BusinessConsole/Module/MonthlyBranchBusiness.cshtml", _model);
+                    }
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    @{
+                        Html.RenderPartial("~/Views/BusinessConsole/Module2021/MonthlyAchievementGauge.cshtml", _model);
+                    }
+                </div>
+            </div>
+            <div class="row clearfix">
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                    <div class="table-responsive">
+                        @{
+                            if (_viewModel.BranchID.HasValue)
+                            {
+                                Html.RenderPartial("~/Views/BusinessConsole/Module/MonthlyBranchRevenueGrade.cshtml", _model);
+                            }
+                            else
+                            {
+                                Html.RenderPartial("~/Views/BusinessConsole/Module/MonthlyRevenueGrade.cshtml", _model);
+                            }
+                        }
+                    </div>
+                    @if (_viewModel.BranchID.HasValue)
+                    {
+                        <button class="btn btn-default btn-round btn-sm waves-effect float-right" onclick="javascript:showDialog('@Url.Action("BranchCoachAchievement","BusinessConsole")',@JsonConvert.SerializeObject(new { KeyID = _model.PeriodID.EncryptKey(),_viewModel.BranchID }));">詳細資料</button>
+                    }
+                    else
+                    {
+                        if (_profile.IsSysAdmin())
+                        {
+                            <button class="btn btn-danger btn-round btn-sm waves-effect float-right" onclick="javascript:$('').launchDownload('@(Url.Action("PrepareRevenueGoal","BusinessConsole",new { _model.Year, _model.Month }))',null,'_blank');">Batch Go~</button>
+                        }
+                    }
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                    <div class="table-responsive">
+                        @{ 
+                            Html.RenderPartial("~/Views/BusinessConsole/Module/MonthlyBusinessDetails.cshtml", _model);
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </li>
+    <li class="col-lg-3 col-md-3 col-sm-6">
+        <div class="body">
+            <div class="info-box-2">
+                <div class="content">
+                    @{
+                        Html.RenderPartial("~/Views/BusinessConsole/Module/MonthlyAchievementSparkline.cshtml", _model);
+                    }
+                </div>
+            </div>
+        </div>
+    </li>
+    <li class="col-lg-3 col-md-3 col-sm-6">
+        <div class="body">
+            <div class="info-box-2">
+                <div class="content">
+                    @{
+                        Html.RenderPartial("~/Views/BusinessConsole/Module/MonthlyContractSparkline.cshtml", _model);
+                    }
+                </div>
+            </div>
+        </div>
+    </li>
+    <li class="col-lg-3 col-md-3 col-sm-6">
+        <div class="body">
+            <div class="info-box-2">
+                <div class="content">
+                    @{
+                        Html.RenderPartial("~/Views/BusinessConsole/Module/MonthlyTurnoverSparkline.cshtml", _model);
+                    }
+                </div>
+            </div>
+        </div>
+    </li>
+    <li class="col-lg-3 col-md-3 col-sm-6">
+        <div class="body text-center m-t-30">
+            @{
+                Html.RenderPartial("~/Views/BusinessConsole/Module/MonthlyAveragePrice.cshtml", _model);
+            }
+        </div>
+    </li>
+</ul>
+

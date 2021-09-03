@@ -1065,6 +1065,25 @@ namespace WebHome.Controllers
             }
         }
 
+        public ActionResult ToConsoleCalendar(DailyBookingQueryViewModel viewModel, String encUID)
+        {
+            int? uid = null;
+            if (encUID != null)
+            {
+                uid = encUID.DecryptKeyValue();
+            }
+
+            var item = models.GetTable<UserProfile>().Where(u => u.UID == uid).FirstOrDefault();
+            if (item != null && item.LevelID == (int)Naming.MemberStatusDefinition.Checked)
+            {
+                HttpContext.SignOn(item);
+                return Redirect(Url.Action("Calendar", "ConsoleHome", viewModel));
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
+        }
 
 
     }

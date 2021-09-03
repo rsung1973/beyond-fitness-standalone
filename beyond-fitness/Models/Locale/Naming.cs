@@ -462,6 +462,8 @@ namespace WebHome.Models.Locale
             教練誤開合約後終止,
             分期不付款,
             其他,
+            所屬教練離職,
+            新冠肺炎疫情,
         }
 
         public enum ProfessionalLevelCheck

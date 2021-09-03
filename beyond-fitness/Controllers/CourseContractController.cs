@@ -26,6 +26,7 @@ using WebHome.Models.ViewModel;
 using WebHome.Security.Authorization;
 using WebHome.Properties;
 using WebHome.Helper.BusinessOperation;
+using WebHome.Helper.MessageOperation;
 
 namespace WebHome.Controllers
 {
@@ -95,17 +96,28 @@ namespace WebHome.Controllers
         public ActionResult DeleteCourseContract(CourseContractViewModel viewModel)
         {
             ViewBag.ViewModel = viewModel;
-            if(viewModel.KeyID!=null)
+            if (viewModel.KeyID != null)
             {
                 viewModel.ContractID = viewModel.DecryptKeyValue();
             }
 
+            var profile = HttpContext.GetUser();
+
             bool result = false;
             try
             {
-                var item = models.DeleteAny<CourseContract>(d => d.ContractID == viewModel.ContractID);
+                var item = models.GetTable<CourseContract>().Where(d => d.ContractID == viewModel.ContractID).FirstOrDefault();
+
                 if (item != null)
                 {
+                    if (item.CourseContractRevision != null && item.FitnessConsultant != profile.UID)
+                    {
+                        var jsonData = this.RenderViewToString("~/Views/LineEvents/Message/NotifyCoachToRejectExtend.cshtml", item.CourseContractRevision.SourceContract);
+                        jsonData.PushLineMessage();
+                    }
+
+                    models.ExecuteCommand("delete CourseContract where ContractID = {0}", item.ContractID);
+
                     result = true;
                     ClearPreliminaryMember();
                 }

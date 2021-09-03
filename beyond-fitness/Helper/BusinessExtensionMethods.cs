@@ -1875,6 +1875,17 @@ namespace WebHome.Helper
             return items;
         }
 
+        public static IQueryable<CourseContract> PromptContractServiceToSign<TEntity>(this ModelSource<TEntity> models)
+            where TEntity : class, new()
+        {
+            var items = models.GetTable<CourseContract>()
+                .Where(c => c.CourseContractRevision != null)
+                .Where(c => c.Status == (int)Naming.CourseContractStatus.待簽名);
+
+            return items;
+        }
+
+
         public static IQueryable<CourseContract> GetContractToSignByAgent<TEntity>(this ModelSource<TEntity> models, UserProfile agent)
             where TEntity : class, new()
         {

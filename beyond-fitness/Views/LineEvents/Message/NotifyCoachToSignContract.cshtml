@@ -30,7 +30,7 @@
                 "type": "bubble",
                 "hero": {
                     "type": "image",
-                    "url": "https://www.worthitstudio.idv.tw/ConsoleHome/images/line/contract_intrasign.jpg",
+                    "url": "https://www.beyond-fitness.com.tw/ConsoleHome/images/line/contract_intrasign.jpg",
                     "size": "full",
                     "aspectRatio": "20:15",
                     "aspectMode": "cover",
@@ -159,16 +159,16 @@
                                 "type": "uri",
                                 "label": "👉立即簽名",
                                 "uri": "@Html.Raw($"{Settings.Default.HostDomain}{VirtualPathUtility.ToAbsolute("~/Account/ToSignCourseContract")}?KeyID={HttpUtility.UrlEncode(_model.ContractID.EncryptKey())}&encUID={HttpUtility.UrlEncode(_model.FitnessConsultant.EncryptKey())}")"
-                                }
-                                },
-                                {
-                                "type": "spacer",
-                                "size": "sm"
-                                }
-                                ],
-                                "flex": 0
-                                }
-                                }
-                                }
-                                ]
-                                }
+                            }
+                        },
+                        {
+                            "type": "spacer",
+                            "size": "sm"
+                        }
+                    ],
+                    "flex": 0
+                }
+            }
+        }
+    ]
+}

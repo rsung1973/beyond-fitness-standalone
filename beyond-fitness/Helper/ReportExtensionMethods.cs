@@ -173,7 +173,7 @@ namespace WebHome.Helper
         {
             DataTable table = new DataTable();
             table.Columns.Add(new DataColumn("合約編號", typeof(String)));
-            table.Columns.Add(new DataColumn("體能顧問", typeof(String)));
+            table.Columns.Add(new DataColumn("上課體能顧問", typeof(String)));
             table.Columns.Add(new DataColumn("簽約場所", typeof(String)));
             table.Columns.Add(new DataColumn("學生", typeof(String)));
             table.Columns.Add(new DataColumn("合約名稱", typeof(String)));
@@ -187,6 +187,7 @@ namespace WebHome.Helper
             table.Columns.Add(new DataColumn("體能顧問所屬分店", typeof(String)));
             table.Columns.Add(new DataColumn("預約上課數", typeof(int)));
             table.Columns.Add(new DataColumn("SettlementID", typeof(int)));
+            table.Columns.Add(new DataColumn("簽約體能顧問", typeof(String)));
 
             var details = items.Where(t => t.ContractID.HasValue)
                 .GroupBy(t => new
@@ -244,6 +245,7 @@ namespace WebHome.Helper
                 r[13] = item.Count();
                 if (item.Key.SettlementID.HasValue)
                     r[14] = item.Key.SettlementID;
+                r[15] = contract.ServingCoach.UserProfile.FullName();
                 table.Rows.Add(r);
             }
 

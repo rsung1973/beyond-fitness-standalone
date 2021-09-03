@@ -19,9 +19,10 @@
     _model = (CourseContract)this.Model;
 
     //Response.ContentType = "application/json";
+    var originalContract = _model.CourseContractRevision.SourceContract;
 }
 {
-  "to": "@(_model.CourseContractExtension.BranchStore.Manager.UserProfileExtension.LineID)",
+  "to": "@(_model.CourseContractExtension.BranchStore.ViceManager?.UserProfileExtension.LineID)",
   "messages": [
     {
       "type": "flex",
@@ -30,7 +31,7 @@
         "type": "bubble",
         "hero": {
           "type": "image",
-          "url": "https://www.worthitstudio.idv.tw/ConsoleHome/images/line/extend_approve.jpg",
+          "url": "https://www.beyond-fitness.com.tw/ConsoleHome/images/line/extend_approve.jpg",
           "size": "full",
           "aspectRatio": "20:15",
           "aspectMode": "cover",
@@ -130,7 +131,7 @@
                     },
                     {
                       "type": "text",
-                      "text": "@(_model.TotalLessonCount(models))",
+                      "text": "@(originalContract.RemainedLessonCount())",
                       "wrap": true,
                       "color": "#666666",
                       "size": "sm",
@@ -153,7 +154,7 @@
                     },
                     {
                       "type": "text",
-                      "text": "@(_model.ContractInstallment?.Installments.ToString() ?? "不分期")",
+                      "text": "@((_model.Expiration.Value.Year * 12 + _model.Expiration.Value.Month) - (originalContract.Expiration.Value.Year * 12 + originalContract.Expiration.Value.Month))",
                       "wrap": true,
                       "color": "#666666",
                       "size": "sm",
@@ -176,7 +177,7 @@
                     },
                     {
                       "type": "text",
-                      "text": "@(_model.Expiration())",
+                      "text": "@($"{_model.Expiration:yyyy/MM/dd}")",
                       "wrap": true,
                       "color": "#666666",
                       "size": "sm",
@@ -204,17 +205,17 @@
               "action": {
                 "type": "uri",
                 "label": "👉立即審核",
-                "uri": "@Html.Raw($"{Settings.Default.HostDomain}{VirtualPathUtility.ToAbsolute("~/Account/ToSignCourseContract")}?KeyID={HttpUtility.UrlEncode(_model.ContractID.EncryptKey())}&encUID={HttpUtility.UrlEncode(_model.CourseContractExtension.BranchStore.ManagerID.Value.EncryptKey())}")"
-                }
-                },
-                {
-                "type": "spacer",
-                "size": "sm"
-                }
-                ],
-                "flex": 0
-                }
-                }
-                }
-                ]
-                }
+                "uri": "@Html.Raw($"{Settings.Default.HostDomain}{VirtualPathUtility.ToAbsolute("~/Account/ToSignContractService")}?KeyID={HttpUtility.UrlEncode(_model.ContractID.EncryptKey())}&encUID={HttpUtility.UrlEncode((_model.CourseContractExtension.BranchStore.ViceManagerID ?? -1).EncryptKey())}")"
+              }
+            },
+            {
+              "type": "spacer",
+              "size": "sm"
+            }
+          ],
+          "flex": 0
+        }
+      }
+    }
+  ]
+}

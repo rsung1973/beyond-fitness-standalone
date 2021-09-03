@@ -389,7 +389,7 @@ namespace WebHome.Helper
                         }
 
                         models.SubmitChanges();
-
+                        original.TerminateRegisterLesson(models);
                     }
                 }
                 catch (Exception ex)
@@ -483,7 +483,7 @@ namespace WebHome.Helper
                         }
 
                         models.SubmitChanges();
-
+                        original.TerminateRegisterLesson(models);
                     }
                 }
                 catch (Exception ex)

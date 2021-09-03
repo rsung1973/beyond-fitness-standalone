@@ -551,6 +551,28 @@ namespace WebHome.Controllers
             }
         }
 
+        public ActionResult ToSignContractService(CourseContractQueryViewModel viewModel, String encUID)
+        {
+            int? uid = null;
+            if (encUID != null)
+            {
+                uid = encUID.DecryptKeyValue();
+            }
+
+            var item = models.GetTable<UserProfile>().Where(u => u.UID == uid).FirstOrDefault();
+            if (item != null)
+            {
+                HttpContext.SignOn(item);
+                return SignContractService(viewModel);
+            }
+            else
+            {
+                //ViewBag.Message = "此支裝置尚未設定過專屬服務，請點選下方更多資訊/專屬服務/帳號設定才可使用！";
+                return View("Index");
+            }
+        }
+
+
 
         [Authorize]
         public ActionResult SignCourseContract(CourseContractQueryViewModel viewModel)
@@ -731,6 +753,9 @@ namespace WebHome.Controllers
                 ViewBag.ModelState = this.ModelState;
                 return View("~/Views/CornerKick/Shared/ReportInputError.cshtml");
             }
+
+            var jsonData = this.RenderViewToString("~/Views/LineEvents/Message/NotifyToCoachBook.cshtml", item);
+            jsonData.PushLineMessage();
 
             ViewBag.ViewModel = new QueryViewModel
             {

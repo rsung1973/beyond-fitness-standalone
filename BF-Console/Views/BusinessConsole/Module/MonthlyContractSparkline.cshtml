@@ -31,11 +31,11 @@
         indicator = (MonthlyRevenueGoal)TempData["RevenueGoal"];
     }
 
-    decimal totalCount = Math.Max(((int?)indicator.NewContractSubtotal + (int?)indicator.RenewContractSubtotal) ?? 1, 1);
+    decimal totalCount = Math.Max(((int?)indicator.NewContractSubtotal ?? 0) + ((int?)indicator.RenewContractSubtotal ?? 0) + ((int?)indicator.InstallmentSubtotal ?? 0), 1);
 }
 @if (totalCount > 1)
 {
-    <div class="sparkline-pie m-t-20" id="@(_viewID)">@(Math.Round((indicator.NewContractSubtotal ?? 0) * 100M / totalCount, 1)), @(Math.Round((indicator.RenewContractSubtotal ?? 0) * 100M / totalCount, 1))</div>
+    <div class="sparkline-pie m-t-20" id="@(_viewID)">@(Math.Round((indicator.NewContractSubtotal ?? 0) * 100M / totalCount, 1)), @(Math.Round((indicator.RenewContractSubtotal ?? 0) * 100M / totalCount, 1)), @(Math.Round((indicator.InstallmentSubtotal ?? 0) * 100M / totalCount, 1))</div>
 }
 else
 {
@@ -46,10 +46,11 @@ else
         </div>
     </div>
 }
-    <p class="m-t-20">
-        <i class="zmdi livicon-evo" data-options="name: morph-checkbox-4.svg; size: 30px; style: filled; strokeStyle:round; fillColor:#64c8c0; strokeColor:#64c8c0; strokeWidth:2px; autoPlay:true;"></i> 新單 @(Math.Round((indicator.NewContractSubtotal ?? 0) * 100M / totalCount, 1))% <br />
-        <i class="zmdi livicon-evo" data-options="name: morph-checkbox-4.svg; size: 30px; style: filled; strokeStyle:round; fillColor:#1B2C48; strokeColor:#1B2C48; strokeWidth:2px; autoPlay:true;"></i> 續約 @(Math.Round((indicator.RenewContractSubtotal ?? 0) * 100M / totalCount, 1))%
-    </p>
+<p class="m-t-20">
+    <i class="zmdi livicon-evo" data-options="name: morph-checkbox-4.svg; size: 30px; style: filled; strokeStyle:round; fillColor:#296073; strokeColor:#296073; strokeWidth:2px; autoPlay:true;"></i> 新單 @(Math.Round((indicator.NewContractSubtotal ?? 0) * 100M / totalCount, 1))% <br />
+    <i class="zmdi livicon-evo" data-options="name: morph-checkbox-4.svg; size: 30px; style: filled; strokeStyle:round; fillColor:#3596B5; strokeColor:#3596B5; strokeWidth:2px; autoPlay:true;"></i> 續約 @(Math.Round((indicator.RenewContractSubtotal ?? 0) * 100M / totalCount, 1))% <br />
+    <i class="zmdi livicon-evo" data-options="name: morph-checkbox-4.svg; size: 30px; style: filled; strokeStyle:round; fillColor:#ADC5CF; strokeColor:#ADC5CF; strokeWidth:2px; autoPlay:true;"></i> 分期 @(Math.Round((indicator.InstallmentSubtotal ?? 0) * 100M / totalCount, 1))% <br />
+</p>
 <script>
     $(function () {
         //收款業績與上課業績比例
@@ -58,7 +59,7 @@ else
             offset: 90,
             width: '100px',
             height: '100px',
-            sliceColors: ['#64c8c0', '#1B2C48']
+            sliceColors: ['#296073', '#3596B5', '#ADC5CF']
         });
     });
 </script>

@@ -21,7 +21,7 @@
     //Response.ContentType = "application/json";
 }
 {
-  "to": "@(_model.CourseContractExtension.BranchStore.Manager.UserProfileExtension.LineID)",
+  "to": "@(_model.ServingCoach.UserProfile.UserProfileExtension.LineID)",
   "messages": [
     {
       "type": "flex",
@@ -30,7 +30,7 @@
         "type": "bubble",
         "hero": {
           "type": "image",
-          "url": "https://www.worthitstudio.idv.tw/ConsoleHome/images/line/extend_reject.jpg",
+          "url": "https://www.beyond-fitness.com.tw/ConsoleHome/images/line/extend_reject.jpg",
           "size": "full",
           "aspectRatio": "20:15",
           "aspectMode": "cover",
@@ -90,7 +90,7 @@
                       "size": "sm",
                       "flex": 5
                     }
-
+                  ]
                 },
                 {
                   "type": "box",
@@ -107,59 +107,36 @@
                     },
                     {
                       "type": "text",
-                      "text": "@(_model.TotalLessonCount(models))",
+                      "text": "@(_model.RemainedLessonCount())",
                       "wrap": true,
                       "color": "#666666",
                       "size": "sm",
                       "flex": 5
                     }
                   ]
+                }
+              ]
+            },
+            {
+              "type": "box",
+              "layout": "baseline",
+              "spacing": "sm",
+              "contents": [
+                {
+                  "type": "text",
+                  "text": "合約迄日",
+                  "color": "#aaaaaa",
+                  "size": "sm",
+                  "flex": 3,
+                  "wrap": true
                 },
                 {
-                  "type": "box",
-                  "layout": "baseline",
-                  "spacing": "sm",
-                  "contents": [
-                    {
-                      "type": "text",
-                      "text": "展延月數",
-                      "color": "#aaaaaa",
-                      "size": "sm",
-                      "flex": 3,
-                      "wrap": true
-                    },
-                    {
-                      "type": "text",
-                      "text": "@(_model.ContractInstallment?.Installments.ToString() ?? "不分期")",
-                      "wrap": true,
-                      "color": "#666666",
-                      "size": "sm",
-                      "flex": 5
-                    }
-                  ]
-                },
-                {
-                  "type": "box",
-                  "layout": "baseline",
-                  "spacing": "sm",
-                  "contents": [
-                    {
-                      "type": "text",
-                      "text": "合約迄日",
-                      "color": "#aaaaaa",
-                      "size": "sm",
-                      "flex": 3,
-                      "wrap": true
-                    },
-                    {
-                      "type": "text",
-                      "text": "@(_model.Expiration())",
-                      "wrap": true,
-                      "color": "#666666",
-                      "size": "sm",
-                      "flex": 5
-                    }
-                  ]
+                  "type": "text",
+                  "text": "@($"{_model.Expiration:yyyy/MM/dd}")",
+                  "wrap": true,
+                  "color": "#666666",
+                  "size": "sm",
+                  "flex": 5
                 }
               ]
             }
@@ -181,17 +158,17 @@
               "action": {
                 "type": "uri",
                 "label": "👉立即重新編輯",
-                "uri": "@Html.Raw($"{Settings.Default.HostDomain}{VirtualPathUtility.ToAbsolute("~/Account/ToSignCourseContract")}?KeyID={HttpUtility.UrlEncode(_model.ContractID.EncryptKey())}&encUID={HttpUtility.UrlEncode(_model.CourseContractExtension.BranchStore.ManagerID.Value.EncryptKey())}")"
-                }
-                },
-                {
-                "type": "spacer",
-                "size": "sm"
-                }
-                ],
-                "flex": 0
-                }
-                }
-                }
-                ]
-                }
+                "uri": "@Html.Raw($"{Settings.Default.HostDomain}{VirtualPathUtility.ToAbsolute("~/Account/ToApplyContractService")}?KeyID={HttpUtility.UrlEncode(_model.ContractID.EncryptKey())}&encUID={HttpUtility.UrlEncode(_model.FitnessConsultant.EncryptKey())}")"
+              }
+            },
+            {
+              "type": "spacer",
+              "size": "sm"
+            }
+          ],
+          "flex": 0
+        }
+      }
+    }
+  ]
+}

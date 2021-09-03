@@ -174,18 +174,22 @@
                             var currPrice = @(_model.LessonPriceType.ListPrice);
                             var totalPaid = @(totalPaid);
                             var refund = totalPaid - (lessons - remained) * settlementPrice * @($"{_model.CourseContractType.GroupingMemberCount}*{_model.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount}/100");
-                            if (refund < 0) {
-                                $('input[name="SettlementPrice"]').val('');
-                                Swal.fire(
-                                    'Oops...',
-                                    '你確定嗎？計算後學生還要多拿錢出來喔！',
-                                    'warning'
-                                )
-                                return;
-                            }
-
-                            $('#refund').text(refund);
+                            //if (refund < 0) {
+                            //    $('input[name="SettlementPrice"]').val('');
+                            //    Swal.fire(
+                            //        'Oops...',
+                            //        '你確定嗎？計算後學生還要多拿錢出來喔！',
+                            //        'warning'
+                            //    )
+                            //    return;
+                            //}
                             $('#refundUnit').text(settlementPrice);
+                            if (refund < 0) {
+                                $('#refund').text('0');
+                                //$('#formular').text('');
+                            } else {
+                                $('#refund').text(refund);
+                            }
                             $('#formular').text('=' + totalPaid + ' - (' + settlementPrice + ' * ' + '@($"{_model.CourseContractType.GroupingMemberCount}") @(_model.CourseContractType.GroupingMemberCount>1 ? $"* {_model.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount / 100m}" : null)* (' + lessons + ' - ' + remained + '))');
                         }
                     }
@@ -272,6 +276,8 @@
                 </option>
                 <option value="@((int)Naming.CauseForEnding.學生簽約後不付款)">學生簽約後不付款</option>
                 <option value="@((int)Naming.CauseForEnding.教練誤開合約後終止)">教練誤開合約後終止</option>
+                <option value="@((int)Naming.CauseForEnding.所屬教練離職)">所屬教練離職</option>
+                <option value="@((int)Naming.CauseForEnding.新冠肺炎疫情)">新冠肺炎疫情</option>
                 <option value="@((int)Naming.CauseForEnding.其他)">其他（自行輸入）</option>
             </select>
         </div>

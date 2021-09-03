@@ -30,7 +30,7 @@
                 "type": "bubble",
                 "hero": {
                     "type": "image",
-                    "url": "https://www.worthitstudio.idv.tw/ConsoleHome/images/line/contract_payment.jpg",
+                    "url": "https://www.beyond-fitness.com.tw/ConsoleHome/images/line/contract_payment.jpg",
                     "size": "full",
                     "aspectRatio": "20:15",
                     "aspectMode": "cover",
@@ -142,31 +142,31 @@
 {
     <text>
         ,
-        {
-        "type": "box",
-        "layout": "baseline",
-        "spacing": "sm",
-        "contents": [
-        {
-        "type": "text",
-        "text": "第一期收款",
-        "color": "#aaaaaa",
-        "size": "sm",
-        "flex": 2,
-        "wrap": true
-        },
-        {
-        "type": "text",
-        "text": "@($"TWD ${_model.TotalCost:##,###,###,###}")",
-        "wrap": true,
-        "color": "#666666",
-        "size": "sm",
-        "flex": 4
-        }
-        ]
-        }
+                                    {
+                                        "type": "box",
+                                        "layout": "baseline",
+                                        "spacing": "sm",
+                                        "contents": [
+                                            {
+                                                "type": "text",
+                                                "text": "第一期收款",
+                                                "color": "#aaaaaa",
+                                                "size": "sm",
+                                                "flex": 2,
+                                                "wrap": true
+                                            },
+                                            {
+                                                "type": "text",
+                                                "text": "@($"TWD ${_model.TotalCost:##,###,###,###}")",
+                                                "wrap": true,
+                                                "color": "#666666",
+                                                "size": "sm",
+                                                "flex": 4
+                                            }
+                                        ]
+                                    }
     </text>
-}
+                                }
                             ]
                         }
                     ]
@@ -188,16 +188,16 @@
                                 "type": "uri",
                                 "label": "👉立即收款",
                                 "uri": "@Html.Raw($"{Settings.Default.HostDomain}{VirtualPathUtility.ToAbsolute("~/Account/ToEditPaymentForContract")}?KeyID={HttpUtility.UrlEncode(_model.ContractID.EncryptKey())}&encUID={HttpUtility.UrlEncode(_model.CourseContractExtension.BranchStore.ManagerID.Value.EncryptKey())}")"
-                                }
-                                },
-                                {
-                                "type": "spacer",
-                                "size": "sm"
-                                }
-                                ],
-                                "flex": 0
-                                }
-                                }
-                                }
-                                ]
-                                }
+                            }
+                        },
+                        {
+                            "type": "spacer",
+                            "size": "sm"
+                        }
+                    ],
+                    "flex": 0
+                }
+            }
+        }
+    ]
+}

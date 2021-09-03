@@ -86,6 +86,8 @@ namespace WebHome.Helper
                         RenewContractCount = r.MonthlyRevenueGoal.RenewContractCount,
                         NewContractSubtotal = r.MonthlyRevenueGoal.NewContractSubtotal,
                         RenewContractSubtotal = r.MonthlyRevenueGoal.RenewContractSubtotal,
+                        InstallmentCount = r.MonthlyRevenueGoal.InstallmentCount,
+                        InstallmentSubtotal = r.MonthlyRevenueGoal.InstallmentSubtotal,
                     };
                 }
             }
@@ -134,6 +136,8 @@ namespace WebHome.Helper
                             RenewContractCount = branchGoal.RenewContractCount,
                             NewContractSubtotal = branchGoal.NewContractSubtotal,
                             RenewContractSubtotal = branchGoal.RenewContractSubtotal,
+                            InstallmentCount = branchGoal.InstallmentCount,
+                            InstallmentSubtotal = branchGoal.InstallmentSubtotal,
                         };
                     }
                 }
@@ -293,6 +297,8 @@ namespace WebHome.Helper
                 EffectiveDateTo = item.EndExclusiveDate,
             };
             IQueryable<CourseContract> contractItems = contractQuery.InquireContract(models);
+            IQueryable<CourseContract> installmentItems = contractItems.Where(c => c.Installment.HasValue);
+            IQueryable<CourseContract> nonInstallmentItems = contractItems.Where(c => !c.Installment.HasValue);
 
             int lessonAchievement, tuitionAchievement;
 
@@ -311,10 +317,12 @@ namespace WebHome.Helper
                                     + tuitionItems.Where(t => SessionScopeForComleteLessonCount.Contains(t.ELStatus)).Count();
                     revenueItem.ActualLessonAchievement = lessonAchievement;
                     revenueItem.ActualSharedAchievement = tuitionAchievement;
-                    revenueItem.RenewContractCount = contractItems.Where(c => c.Renewal == true).Count();
-                    revenueItem.NewContractCount = contractItems.Count() - revenueItem.RenewContractCount;
-                    revenueItem.RenewContractSubtotal = contractItems.Where(c => c.Renewal == true).Sum(c => c.TotalCost) ?? 0;
-                    revenueItem.NewContractSubtotal = contractItems.Sum(c => c.TotalCost) - revenueItem.RenewContractSubtotal;
+                    revenueItem.RenewContractCount = nonInstallmentItems.Where(c => c.Renewal == true).Count();
+                    revenueItem.NewContractCount = nonInstallmentItems.Count() - revenueItem.RenewContractCount;
+                    revenueItem.RenewContractSubtotal = nonInstallmentItems.Where(c => c.Renewal == true).Sum(c => c.TotalCost) ?? 0;
+                    revenueItem.NewContractSubtotal = nonInstallmentItems.Sum(c => c.TotalCost) - revenueItem.RenewContractSubtotal;
+                    revenueItem.InstallmentCount = installmentItems.Count();
+                    revenueItem.InstallmentSubtotal = installmentItems.Sum(c => c.TotalCost) ?? 0;
 
                     revenueItem.ActualCompleteTSCount = tuitionItems.Where(t => t.PriceStatus == (int)Naming.LessonPriceStatus.體驗課程).Count()
                                     + tuitionItems.Where(t => t.ELStatus == (int)Naming.LessonPriceStatus.體驗課程).Count();
@@ -332,6 +340,8 @@ namespace WebHome.Helper
                     var branchTuitionItems = tuitionItems.Where(t => t.CoachWorkPlace == branchIndicator.BranchID);
                     var branchAchievementItems = achievementItems.Where(t => t.CoachWorkPlace == branchIndicator.BranchID);
                     var branchContractItems = contractItems.Where(c => c.CourseContractExtension.BranchID == branchIndicator.BranchID);
+                    var branchInstallmentItems = installmentItems.Where(c => c.CourseContractExtension.BranchID == branchIndicator.BranchID);
+                    var branchNonInstallmentItems = nonInstallmentItems.Where(c => c.CourseContractExtension.BranchID == branchIndicator.BranchID);
 
                     var revenueItem = branchIndicator.MonthlyBranchRevenueIndicator
                             .Where(v => v.MonthlyBranchRevenueGoal != null)
@@ -346,10 +356,13 @@ namespace WebHome.Helper
                                         + branchTuitionItems.Where(t => SessionScopeForComleteLessonCount.Contains(t.ELStatus)).Count();
                         revenueItem.ActualLessonAchievement = lessonAchievement;
                         revenueItem.ActualSharedAchievement = tuitionAchievement;
-                        revenueItem.RenewContractCount = branchContractItems.Where(c => c.Renewal == true).Count();
-                        revenueItem.NewContractCount = branchContractItems.Count() - revenueItem.RenewContractCount;
-                        revenueItem.RenewContractSubtotal = branchContractItems.Where(c => c.Renewal == true).Sum(c => c.TotalCost) ?? 0;
-                        revenueItem.NewContractSubtotal = branchContractItems.Sum(c => c.TotalCost) - revenueItem.RenewContractSubtotal;
+                        revenueItem.RenewContractCount = branchNonInstallmentItems.Where(c => c.Renewal == true).Count();
+                        revenueItem.NewContractCount = branchNonInstallmentItems.Count() - revenueItem.RenewContractCount;
+                        revenueItem.RenewContractSubtotal = branchNonInstallmentItems.Where(c => c.Renewal == true).Sum(c => c.TotalCost) ?? 0;
+                        revenueItem.NewContractSubtotal = branchNonInstallmentItems.Sum(c => c.TotalCost) - revenueItem.RenewContractSubtotal;
+                        revenueItem.InstallmentCount = branchInstallmentItems.Count();
+                        revenueItem.InstallmentSubtotal = branchInstallmentItems.Sum(c => c.TotalCost) ?? 0;
+
                         revenueItem.ActualCompleteTSCount = branchTuitionItems.Where(t => t.PriceStatus == (int)Naming.LessonPriceStatus.體驗課程).Count()
                                         + branchTuitionItems.Where(t => t.ELStatus == (int)Naming.LessonPriceStatus.體驗課程).Count();
                         revenueItem.ActualCompletePICount = branchTuitionItems.Where(t => t.PriceStatus == (int)Naming.LessonPriceStatus.自主訓練).Count()

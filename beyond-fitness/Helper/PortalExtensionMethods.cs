@@ -304,6 +304,27 @@ namespace WebHome.Helper
 
         }
 
+        public static PromptSignContractServiceEvent CheckSignContractServiceEvent<TEntity>(this UserProfile profile, ModelSource<TEntity> models)
+            where TEntity : class, new()
+        {
+            var items = models.PromptContractServiceToSign()
+                .Where(c => c.CourseContractExtension.SignOnline == true)
+                .Where(c => c.CourseContractMember.Any(m => m.UID == profile.UID));
+
+
+            if (items.Count() > 0)
+            {
+                return new PromptSignContractServiceEvent
+                {
+                    Profile = profile,
+                    ContractList = items
+                };
+            }
+
+            return null;
+
+        }
+
 
         public static PromptPayoffDueEvent CheckPayoffDueEvent<TEntity>(this UserProfile profile, ModelSource<TEntity> models, bool includeAfterToday = false)
             where TEntity : class, new()

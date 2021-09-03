@@ -267,4 +267,8 @@
     {
         <span><i class="material-icons">people</i> 合約成員：@(String.Join("、", item.CourseContractMember.Select(m => m.UserProfile.RealName)))</span>
     }
+    if (item.RevisionList.Any(r => r.Reason == "展延"))
+    {
+        <span class="tag-blue badge">已展延</span>
+    }
 }

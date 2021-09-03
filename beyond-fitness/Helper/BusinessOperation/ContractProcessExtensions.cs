@@ -491,6 +491,7 @@ namespace WebHome.Helper.BusinessOperation
                     viewModel.Lessons = Math.Min(installment, totalLessons);
                     var c = models.InitiateCourseContract(viewModel, profile, lessonPrice, item.InstallmentID, paymentMethod);
                     c.PayoffDue = payoffDue.AddDays(-1);
+                    c.Installment = true;
                     //c.Remark = $"{c.Remark}帳款應付期限{payoffDue:yyyy/MM/dd}。";
                     if (storedPath != null)
                     {
@@ -528,7 +529,7 @@ namespace WebHome.Helper.BusinessOperation
                     var jsonData = controller.RenderViewToString("~/Views/LineEvents/Message/NotifyLearnerToSignContract.cshtml", item);
                     jsonData.PushLineMessage();
                 }
-                else
+                else if (!profile.IsManager())
                 {
                     var jsonData = controller.RenderViewToString("~/Views/LineEvents/Message/NotifyCoachToSignContract.cshtml", item);
                     jsonData.PushLineMessage();
@@ -784,46 +785,66 @@ namespace WebHome.Helper.BusinessOperation
                     }
                     models.SubmitChanges();
 
-                    if (viewModel.Status == (int)Naming.CourseContractStatus.待簽名)
+                    if (item.CourseContractRevision == null)
                     {
-                        if (!item.InstallmentID.HasValue)
+                        if (viewModel.Status == (int)Naming.CourseContractStatus.待簽名)
                         {
-                            //item.CreateLineReadyToSignContract(models).PushLineMessage();
-                            if (item.CourseContractExtension.SignOnline == true)
+                            if (!item.InstallmentID.HasValue)
                             {
-                                var jsonData = controller.RenderViewToString("~/Views/LineEvents/Message/NotifyLearnerToSignContract.cshtml", item);
-                                jsonData.PushLineMessage();
+                                //item.CreateLineReadyToSignContract(models).PushLineMessage();
+                                if (item.CourseContractExtension.SignOnline == true)
+                                {
+                                    var jsonData = controller.RenderViewToString("~/Views/LineEvents/Message/NotifyLearnerToSignContract.cshtml", item);
+                                    jsonData.PushLineMessage();
+                                }
+                                else
+                                {
+                                    var jsonData = controller.RenderViewToString("~/Views/LineEvents/Message/NotifyCoachToSignContract.cshtml", item);
+                                    jsonData.PushLineMessage();
+                                }
                             }
-                            else
+                            else if (!item.ContractInstallment.CourseContract.Any(c => c.Status != (int)Naming.CourseContractStatus.待簽名))
                             {
-                                var jsonData = controller.RenderViewToString("~/Views/LineEvents/Message/NotifyCoachToSignContract.cshtml", item);
-                                jsonData.PushLineMessage();
+                                var current = item.ContractInstallment.CourseContract
+                                                .OrderBy(c => c.ContractID)
+                                                .First();
+                                if (item.CourseContractExtension.SignOnline == true)
+                                {
+                                    //item.ContractInstallment.CourseContract.OrderBy(c => c.ContractID)
+                                    //    .First().CreateLineReadyToSignContract(models).PushLineMessage();
+                                    var jsonData = controller.RenderViewToString("~/Views/LineEvents/Message/NotifyLearnerToSignContract.cshtml", current);
+                                    jsonData.PushLineMessage();
+                                }
+                                else
+                                {
+                                    var jsonData = controller.RenderViewToString("~/Views/LineEvents/Message/NotifyCoachToSignContract.cshtml", current);
+                                    jsonData.PushLineMessage();
+                                }
+
                             }
                         }
-                        else if (!item.ContractInstallment.CourseContract.Any(c => c.Status != (int)Naming.CourseContractStatus.待簽名))
+                        else if (viewModel.Drawback == true && profile.UID != item.FitnessConsultant)
                         {
-                            var current = item.ContractInstallment.CourseContract
-                                            .OrderBy(c => c.ContractID)
-                                            .First();
-                            if (item.CourseContractExtension.SignOnline == true)
-                            {
-                                //item.ContractInstallment.CourseContract.OrderBy(c => c.ContractID)
-                                //    .First().CreateLineReadyToSignContract(models).PushLineMessage();
-                                var jsonData = controller.RenderViewToString("~/Views/LineEvents/Message/NotifyLearnerToSignContract.cshtml", current);
-                                jsonData.PushLineMessage();
-                            }
-                            else
-                            {
-                                var jsonData = controller.RenderViewToString("~/Views/LineEvents/Message/NotifyCoachToSignContract.cshtml", current);
-                                jsonData.PushLineMessage();
-                            }
-
+                            var jsonData = controller.RenderViewToString("~/Views/LineEvents/Message/NotifyCoachToRejectContract.cshtml", item);
+                            jsonData.PushLineMessage();
                         }
                     }
-                    else if (viewModel.Drawback == true && profile.UID != item.FitnessConsultant)
+                    else if (item.CourseContractRevision.Reason == "展延")
                     {
-                        var jsonData = controller.RenderViewToString("~/Views/LineEvents/Message/NotifyCoachToRejectContract.cshtml", item);
-                        jsonData.PushLineMessage();
+                        //合約服務
+                        if (viewModel.Status == (int)Naming.CourseContractStatus.待簽名)
+                        {
+                            if (item.CourseContractExtension.SignOnline == true)
+                            {
+                                var jsonData = controller.RenderViewToString("~/Views/LineEvents/Message/NotifyLearnerToSignExtend.cshtml", item);
+                                jsonData.PushLineMessage();
+                            }
+                            else if (profile.UID != item.FitnessConsultant)
+                            {
+                                var jsonData = controller.RenderViewToString("~/Views/LineEvents/Message/NotifyCoachToSignExtend.cshtml", item);
+                                jsonData.PushLineMessage();
+                            }
+                        }
                     }
 
                     return item;
@@ -1339,17 +1360,17 @@ namespace WebHome.Helper.BusinessOperation
                         }
                     }
 
-                    if (checkRefund)
-                    {
-                        var refund = item.TotalPaidAmount() - item.AttendedLessonCount()
-                                * viewModel.SettlementPrice
-                                * item.CourseContractType.GroupingMemberCount
-                                * item.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount / 100;
-                        if (refund < 0)
-                        {
-                            ModelState.AddModelError("SettlementPrice", "退款差額不可小於零!!");
-                        }
-                    }
+                    //if (checkRefund)
+                    //{
+                    //    var refund = item.TotalPaidAmount() - item.AttendedLessonCount()
+                    //            * viewModel.SettlementPrice
+                    //            * item.CourseContractType.GroupingMemberCount
+                    //            * item.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount / 100;
+                    //    if (refund < 0)
+                    //    {
+                    //        ModelState.AddModelError("SettlementPrice", "退款差額不可小於零!!");
+                    //    }
+                    //}
                 }
 
                 if (!viewModel.BySelf.HasValue)
@@ -1569,6 +1590,38 @@ namespace WebHome.Helper.BusinessOperation
             }
 
             models.SubmitChanges();
+
+            if (viewModel.Reason == "展延")
+            {
+                if (newItem.Status == (int)Naming.CourseContractStatus.待確認)
+                {
+                    if (newItem.CourseContractExtension.BranchStore.ManagerID.HasValue)
+                    {
+                        var jsonData = controller.RenderViewToString("~/Views/LineEvents/Message/NotifyManagerToApproveExtend.cshtml", newItem);
+                        jsonData.PushLineMessage();
+                    }
+                    if (profile.UID != newItem.CourseContractExtension.BranchStore.ViceManagerID
+                        && newItem.CourseContractExtension.BranchStore.ViceManagerID.HasValue)
+                    {
+                        var jsonData = controller.RenderViewToString("~/Views/LineEvents/Message/NotifyViceManagerToApproveExtend.cshtml", newItem);
+                        jsonData.PushLineMessage();
+                    }
+                }
+                else if (newItem.Status == (int)Naming.CourseContractStatus.待簽名)
+                {
+                    if (newItem.CourseContractExtension.SignOnline == true)
+                    {
+                        //item.CreateLineReadyToSignContract(models).PushLineMessage();
+                        var jsonData = controller.RenderViewToString("~/Views/LineEvents/Message/NotifyLearnerToSignExtend.cshtml", newItem);
+                        jsonData.PushLineMessage();
+                    }
+                    else if (profile.UID != newItem.FitnessConsultant)
+                    {
+                        var jsonData = controller.RenderViewToString("~/Views/LineEvents/Message/NotifyCoachToSignExtend.cshtml", newItem);
+                        jsonData.PushLineMessage();
+                    }
+                }
+            }
 
             return newItem;
         }

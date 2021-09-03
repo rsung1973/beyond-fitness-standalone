@@ -2360,6 +2360,8 @@
       <Column Name="ActualCompletePICount" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="NewContractSubtotal" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="RenewContractSubtotal" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="InstallmentCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="InstallmentSubtotal" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Association Name="MonthlyRevenueIndicator_MonthlyRevenueGoal" Member="MonthlyRevenueIndicator" ThisKey="PeriodID,GradeID" OtherKey="PeriodID,GradeID" Type="MonthlyRevenueIndicator" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
@@ -2382,6 +2384,8 @@
       <Column Name="ActualCompletePICount" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="NewContractSubtotal" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="RenewContractSubtotal" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="InstallmentCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="InstallmentSubtotal" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Association Name="MonthlyBranchRevenueIndicator_MonthlyBranchRevenueGoal" Member="MonthlyBranchRevenueIndicator" ThisKey="PeriodID,BranchID,GradeID" OtherKey="PeriodID,BranchID,GradeID" Type="MonthlyBranchRevenueIndicator" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>

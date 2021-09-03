@@ -95,6 +95,13 @@
             _items.Add(eventItem);
         }
 
+        eventItem = _model.CheckSignContractServiceEvent(models);
+        if (eventItem != null)
+        {
+            _items.Add(eventItem);
+        }
+
+
     }
 
     <li>
