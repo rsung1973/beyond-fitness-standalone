@@ -1,0 +1,18 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="CommonLib.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="IPdfUtilityImpl" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">WKPdfWrapper.PdfUtility,WKPdfWrapper, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</Value>
+    </Setting>
+    <Setting Name="ILoggerImpl" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">CommonLib.Logger.Logger,CommonLib.Logger, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</Value>
+    </Setting>
+    <Setting Name="SqlLog" Type="System.Boolean" Scope="Application">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="EnableJobScheduler" Type="System.Boolean" Scope="Application">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
