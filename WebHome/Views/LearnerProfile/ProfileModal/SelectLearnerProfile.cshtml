@@ -1,0 +1,58 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    IQueryable<UserProfile> _model;
+    CalendarEventQueryViewModel _viewModel;
+    String _dialogID = $"owner{DateTime.Now.Ticks}";
+
+
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (IQueryable<UserProfile>)this.Model;
+    _viewModel = (CalendarEventQueryViewModel)ViewBag.ViewModel;
+}
+@{
+    ViewBag.SelectMember = (Func<UserProfile, String>)(item =>
+    {
+        return $"$global.selectLearnerProfile('{item.UID.EncryptKey()}');";
+    });
+    ViewBag.ShowPhone = true;
+    await Html.RenderPartialAsync("~/Views/ConsoleEvent/EventModal/MemberSelector.cshtml", _model);
+}
+
+<script>
+    $(function () {
+        $global.selectLearnerProfile = function (keyID) {
+            @*$('').launchDownload('@Html.Raw(Url.Action("LearnerProfile","ConsoleHome"))', { 'keyID': keyID });*@
+        @*window.location.href = '@(Url.Action("LearnerProfile", "ConsoleHome"))' + '?keyID=' + encodeURIComponent(keyID);*@
+            $global.closeAllModal();
+            showLoading();
+            $.post('@Html.Raw(Url.Action("AuthLearnerProfile","ConsoleHome"))', { 'keyID': keyID }, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    Swal.fire(
+                        'Oops...',
+                        data.message,
+                        'warning'
+                    );
+                } else {
+                    $(data).appendTo('body').remove();
+                }
+            });
+
+        };
+    });
+</script>
+

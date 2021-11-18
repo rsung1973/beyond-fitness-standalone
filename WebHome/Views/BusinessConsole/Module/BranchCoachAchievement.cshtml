@@ -1,0 +1,159 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    MonthlyIndicatorQueryViewModel _viewModel;
+    String _dialogID = $"coach{DateTime.Now.Ticks}";
+    String _chartID = $"barChart{DateTime.Now.Ticks}";
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _viewModel = (MonthlyIndicatorQueryViewModel)ViewBag.ViewModel;
+    var indicator = models.GetTable<MonthlyIndicator>().Where(m => m.PeriodID == _viewModel.PeriodID).FirstOrDefault();
+}
+@{ 
+    IQueryable<MonthlyCoachRevenueIndicator> _model = (IQueryable<MonthlyCoachRevenueIndicator>)this.Model;
+    var items = _model.ToArray();
+}
+    <div class="modal modal-large fade" id="@(_dialogID)" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content bg-darkteal">
+                <div class="modal-header">
+                    <h6 class="title col-white">@(indicator?.Year)年@(indicator?.Month)月 - 目標設定</h6>
+                    <a class="closebutton" data-dismiss="modal"></a>
+                </div>
+                <div class="modal-body patients-list">
+                    <div id="@(_chartID)" class="c"></div>
+                </div>
+            </div>
+        </div>
+        @{ await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/BSModalScript.cshtml", model: _dialogID);}
+
+        @{ 
+            List<object> data1 = items.Select(a => (object)Math.Round((a.AchievementGoal??0)/10000M,1)).ToList();
+            data1.Insert(0, "data1");
+            List<object> data2 = items.Select(a => (object)Math.Round((a.LessonTuitionGoal ?? 0) / 10000M, 1)).ToList();
+            data2.Insert(0, "data2");
+            List<object> data3 = items.Select(a => (object)a.CompleteLessonsGoal).ToList();
+            data3.Insert(0, "data3");
+            var totals = items.Select(a => Math.Round(((a.AchievementGoal + a.LessonTuitionGoal) ?? 0) / 10000M, 1));
+        }
+        <script>
+            $(function () {
+        //顯示各教練設定目標
+                function showCoachIncomeBarChart() {
+                    var totals = @Html.Raw(JsonConvert.SerializeObject(totals));
+                    var chart = c3.generate({
+                        bindto: '#@(_chartID)', // id of chart wrapper
+                        data: {
+                            columns: [
+                                @Html.Raw(JsonConvert.SerializeObject(data1)),
+                                @Html.Raw(JsonConvert.SerializeObject(data2)),
+                                @Html.Raw(JsonConvert.SerializeObject(data3)),
+                            ],
+                            order: null,
+                            types: {
+                                'data1': 'bar',
+                                'data2': 'bar',
+                                'data3': 'spline'
+                            },
+                            groups: [
+                                ['data1', 'data2']
+                            ],
+                            colors: {
+                                'data1': '#ff6f6f',
+                                'data2': '#ffbb38',
+                                'data3': '#8cff98'
+                            },
+                            names: {
+                                // name of each serie
+                                'data1': '收款業績',
+                                'data2': '上課業績',
+                                'data3': '課數',
+                            },
+                            labels: {
+                                format: {
+                                    data2: function (v, id, i, j) {
+                                        return totals[i];
+                                    },
+                                    data3: function (v, id, i, j) {
+                                        return v;
+                                    },
+                                }
+                            },
+                            axes: {
+                                data1: 'y2',
+                                data2: 'y2',
+                                data3: 'y',
+                            }
+                        },
+                        axis: {
+                            x: {
+                                type: 'category',
+                                // name of each category
+                                categories: @Html.Raw(JsonConvert.SerializeObject(_model.Select(a => a.ServingCoach.UserProfile.RealName))),
+                            },
+                            y: {
+                                show: true,
+                                min: 0,
+                                label: {
+                                    text: '課數',
+                                    position: 'outer-middle'
+                                }
+                            },
+                            y2: {
+                                show: true,
+                                min: 0,
+                                max: @(totals.Max()+50),
+                                label: {
+                                    text: '金額（萬）',
+                                    position: 'outer-middle'
+                                }
+                            }
+                        },
+                        bar: {
+                            width: 'auto'
+                        },
+                        legend: {
+                            show: true, //hide legend
+                        },
+                        padding: {
+                            bottom: 0,
+                            top: 0
+                        },
+                        grid: {
+                            x: {
+                                show: false
+                            },
+                            y: {
+                                show: true,
+                            }
+                        },
+                        point: {
+                            r: 5,
+                            select: {
+                                r: 8
+                            }
+                        }
+                    });
+                    d3.select('#coachIncomeBarChart').selectAll('.c3-texts-data3').selectAll('text.c3-text').attr('dy', -5);
+                }
+
+                $('#@(_dialogID)').on('shown.bs.modal', function () {
+                    showCoachIncomeBarChart();
+                });
+            });
+        </script>
+    </div>
+

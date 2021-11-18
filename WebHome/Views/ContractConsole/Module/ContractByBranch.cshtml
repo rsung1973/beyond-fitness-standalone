@@ -1,0 +1,78 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    UserProfile _model;
+    IQueryable<CourseContract> _effectiveItems;
+    IQueryable<CourseContract> _contractItems;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (UserProfile)this.Model;
+
+    _contractItems = models.PromptOriginalContract().FilterByBranchStoreManager(models, _model.UID);
+    _effectiveItems = models.PromptEffectiveContract().FilterByBranchStoreManager(models, _model.UID);
+}
+<!--我的分店合約-->
+<div class="container-fluid">
+    <h4 class="card-outbound-header">我的分店合約</h4>
+    <div class="card widget_3">
+        <ul class="row clearfix list-unstyled m-b-0">
+            <li class="col-lg-3 col-md-6 col-sm-12">
+                @{ await Html.RenderPartialAsync("~/Views/ContractConsole/Module/AboutExpiringByBranch.cshtml", _model);}
+
+            </li>
+            <li class="col-lg-3 col-md-6 col-sm-12">
+                @{
+                    await Html.RenderPartialAsync("~/Views/ConsoleHome/ContractIndex/Manager/AboutNewContractsByBranch.cshtml", _model);
+                }
+            </li>
+            <li class="col-lg-3 col-md-6 col-sm-12">
+                @{
+                    await Html.RenderPartialAsync("~/Views/ConsoleHome/ContractIndex/Manager/AboutContractServicesByBranch.cshtml", _model);
+                }
+            </li>
+            <li class="col-lg-3 col-sm-12">
+                @{ await Html.RenderPartialAsync("~/Views/ContractConsole/Module/AboutPaymentByBranch.cshtml", _model);}
+
+            </li>
+        </ul>
+        <ul class="row clearfix list-unstyled m-b-0">
+            @*<li class="col-lg-3 col-md-3 col-sm-6">
+                    @{ await Html.RenderPartialAsync("~/Views/ContractConsole/Module/ToRenewByBranch.cshtml", _model);}
+
+                </li>*@
+            <li class="col-lg-3 col-md-6 col-sm-12">
+                @{ await Html.RenderPartialAsync("~/Views/ContractConsole/Module/AboutAutoTermination.cshtml", _model);}
+            </li>
+            <li class="col-lg-3 col-md-3 col-sm-6">
+                @{ await Html.RenderPartialAsync("~/Views/ContractConsole/Module/AboutCompleteLessons.cshtml", _effectiveItems);}
+
+            </li>
+            <li class="col-lg-3 col-md-3 col-sm-6">
+                @{ await Html.RenderPartialAsync("~/Views/ContractConsole/Module/AboutInstallment.cshtml", _effectiveItems);}
+
+            </li>
+            <li class="col-lg-3 col-md-6 col-sm-12">
+                @{ await Html.RenderPartialAsync("~/Views/ContractConsole/Module/AboutReceivablesByBranch.cshtml", _model);}
+
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+
+
+

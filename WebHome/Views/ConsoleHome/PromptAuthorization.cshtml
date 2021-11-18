@@ -1,0 +1,117 @@
+﻿
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+@using Newtonsoft.Json
+@using CommonLib.Utility
+
+@{
+    Layout = "~/Views/ConsoleHome/Template/MainPage.cshtml";
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    UserProfile _model;
+    QueryViewModel _viewModel;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _modelState = ViewContext.ModelState;
+    _model = (UserProfile)this.Model;
+    _viewModel = (QueryViewModel)ViewBag.ViewModel;
+}
+
+@section CustomHeader {
+    <link href="plugins/smartcalendar/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+    <link href="css/smartcalendar-2.css" rel="stylesheet" />
+    <!-- royalslider -->
+    <link href="plugins/royalslider/royalslider.css" rel="stylesheet" />
+    <link href="plugins/royalslider/skins/default/rs-default.css" rel="stylesheet" />
+    <link href="css/royalslider.css?1.1" rel="stylesheet" />
+    <!-- charts-c3 -->
+    <link href="plugins/charts-c3/plugin.css?2.0" rel="stylesheet">
+    <!-- Multi Select Css -->
+    <link href="plugins/multi-select/css/multi-select.css" rel="stylesheet">
+}
+
+<section class="content">
+
+    @{
+        ViewBag.BlockHeader = "驗證授權";
+        await Html.RenderPartialAsync("~/Views/ConsoleHome/Module/BlockHeader.cshtml", _model);
+
+        if (_viewModel.AuthCode == null)
+        {
+        <script>
+                $(function () {
+                    setTimeout(function () {
+                        Swal.fire({
+                            title: "請輸入通關密碼",
+                            input: 'password',
+                            inputPlaceholder: '請輸入通關密碼',
+                            inputAttributes: {
+                                maxlength: 10,
+                                autocapitalize: 'off',
+                                autocorrect: 'off'
+                            },
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: '確定',
+                            cancelButtonText: '取消',
+                            focusCancel: false,
+                            inputValidator: (value) => {
+                                if (!value) {
+                                    return '請輸入通關密碼!!';
+                                }
+                            },
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                showLoading();
+                                $global.viewModel.AuthCode = result.value;
+                                $('').launchDownload('@Html.Raw(_viewModel.UrlAction)', $global.viewModel);
+                            } else {
+                                window.history.go(-1);
+                            }
+                        });
+                    }, 1000);
+                });
+        </script>
+        }
+        else
+        {
+            <div class="container">
+                <div class="row">
+                    <!-- iPhone -->
+                    <img class="header_iphone" src="~/ConsoleHome/images/error.png" alt="BeyondFitness" />
+                    <!-- //iPhone -->
+                    <div class="col-md-8 col-md-offset-2 text-center">
+                        <h1>Oooops, <u>Invalid auth code</u>!</h1>
+                        <h2>You are not authorized to view the content. We apologize.<small></small></h2>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+
+</section>
+
+@section TailPageJavaScriptInclude {
+    <!-- countTo Plugin Js -->
+    <script src="bundles/countTo.bundle.js"></script>
+    <!--ChartJS Plugin Js-->
+    <script src="bundles/chartscripts.bundle.js"></script>
+    <!-- royalslider Plugin Js-->
+    <script src="plugins/royalslider/jquery.royalslider.min.js" class="rs-file"></script>
+    <!-- Multi Select Plugin Js -->
+    <script src="plugins/multi-select/js/jquery.multi-select.js"></script>
+    <!-- ChartC3 Js -->
+    <script src="bundles/cs.bundles.js"></script>
+}
+
+

@@ -1,0 +1,16 @@
+﻿@{
+
+    String _message;
+    _message = (String)this.Model ?? (String)ViewBag.Message;
+}
+
+<script>
+@if (_message != null)
+{
+    <text>alert('@Html.Raw(System.Text.Encodings.Web.JavaScriptEncoder.Default.Encode(_message))');</text>
+}
+ window.history.go(-1);
+</script>
+
+
+

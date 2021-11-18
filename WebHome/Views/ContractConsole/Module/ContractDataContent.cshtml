@@ -1,0 +1,199 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    CourseContract _model;
+    String _dialogID = $"contractDetails{DateTime.Now.Ticks}";
+    UserProfile _profile;
+
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (CourseContract)this.Model;
+    _profile = await Context.GetUserAsync();
+}
+<li>
+    <div class="list_tb tb2">
+        <div class="list_tr">
+            <div class="list_td hd">合約編號</div>
+            <div class="list_td rt">@(_model.ContractNo())</div>
+        </div>
+    </div>
+</li>
+<li>
+    <div class="list_tb tb2">
+        <div class="list_tr">
+            <div class="list_td hd">合約名稱</div>
+            <div class="list_td rt">@(_model.ContractName())</div>
+        </div>
+    </div>
+</li>
+<li>
+    <div class="list_tb tb2">
+        <div class="list_tr">
+            <div class="list_td hd">學生</div>
+            <div class="list_td rt">@(_model.ContractLearner())</div>
+        </div>
+    </div>
+</li>
+<li>
+    <div class="list_tb tb2">
+        <div class="list_tr">
+            <div class="list_td hd">合約起日</div>
+            <div class="list_td rt">@($"{_model.ValidFrom:yyyy/MM/dd}")</div>
+        </div>
+    </div>
+</li>
+<li>
+    <div class="list_tb tb2">
+        <div class="list_tr">
+            <div class="list_td hd">合約迄日</div>
+            @if (_model.ValidTo.HasValue)
+            {
+                <div class="list_td rt col-green">@($"{_model.ValidTo:yyyy/MM/dd}")</div>
+            }
+            else
+            {
+                <div class="list_td rt col-red">@($"{_model.Expiration:yyyy/MM/dd}")</div>
+            }
+        </div>
+    </div>
+</li>
+<li>
+    <div class="list_tb tb2">
+        <div class="list_tr">
+            <div class="list_td hd">合約金額</div>
+            <div class="list_td rt">@($"{_model.TotalCost:##,###,###,###}")</div>
+        </div>
+    </div>
+</li>
+<li>
+    <div class="list_tb tb2">
+        <div class="list_tr">
+            <div class="list_td hd p-l-20">專業顧問服務總費用</div>
+            <div class="list_td rt">@(String.Format("{0:##,###,###,###}", (_model.TotalCost * 8 + 5) / 10))</div>
+        </div>
+    </div>
+</li>
+<li>
+    <div class="list_tb tb2">
+        <div class="list_tr">
+            <div class="list_td hd p-l-20">教練課程費</div>
+            <div class="list_td rt">@(String.Format("{0:##,###,###,###}", (_model.TotalCost * 2 + 5) / 10))</div>
+        </div>
+    </div>
+</li>
+@if (_model.ContractType != (int)CourseContractType.ContractTypeDefinition.CGA)
+{
+    <li>
+        <div class="list_tb tb2">
+            <div class="list_tr">
+                <div class="list_td hd">
+                    課程單價
+                    <span class="badge bg-blue">
+                        @if (_model.LessonPriceType.SeriesID.HasValue)
+                        {
+                            <text>@(_model.LessonPriceType.LowerLimit == 1 ? "單" : _model.LessonPriceType.LowerLimit.ToString())堂</text>
+                        }
+                        else
+                        {
+                            <text>@(_model.LessonPriceType.Description) </text>
+                        }
+                    </span>
+                </div>
+                <div class="list_td rt">@($"{_model.LessonPriceType.ListPrice:##,###,###,###}")</div>
+            </div>
+        </div>
+    </li>
+}
+<li>
+    <div class="list_tb tb2">
+        <div class="list_tr">
+            <div class="list_td hd">應收款期限</div>
+            <div class="list_td rt col-red">@($"{_model.PayoffDue:yyyy/MM/dd}")</div>
+        </div>
+    </div>
+</li>
+<li>
+    <div class="list_tb tb2">
+        <div class="list_tr">
+            <div class="list_td hd">付款方式</div>
+            <div class="list_td rt">
+                @if (_model.CourseContractExtension?.PaymentMethod != null)
+                {
+                    <text>@(_model.CourseContractExtension.PaymentMethod)</text>
+                }
+            </div>
+        </div>
+    </div>
+</li>
+@if (_model.ContractType != (int)CourseContractType.ContractTypeDefinition.CGA)
+{
+    <li>
+        <div class="list_tb tb2">
+            <div class="list_tr">
+                <div class="list_td hd">剩餘/購買堂數</div>
+                <div class="list_td rt">@(_model.RemainedLessonCount())/@(_model.Lessons)</div>
+            </div>
+        </div>
+    </li>
+}
+<li>
+    <div class="list_tb tb2">
+        <div class="list_tr">
+            <div class="list_td hd">其他增補說明</div>
+            <div class="list_td rt">@(_model.Remark)@(_model.PayoffDue.HasValue ? $"帳款應付期限{_model.PayoffDue:yyyy/MM/dd}。" : null)</div>
+        </div>
+    </div>
+</li>
+<li>
+    <div class="list_tb tb2">
+        <div class="list_tr">
+            <div class="list_td hd">合約體能顧問</div>
+            <div class="list_td rt">@(_model.ServingCoach.UserProfile.FullName())</div>
+        </div>
+    </div>
+</li>
+<li>
+    <div class="list_tb tb2">
+        <div class="list_tr">
+            <div class="list_td hd">
+                簽約分店
+                <span class="badge bg-blue">@(_model.LessonPriceType.BranchStore.IsVirtualClassroom() ? "遠距" : null)</span>
+            </div>
+            <div class="list_td rt">@(_model.CourseContractExtension?.BranchStore.BranchName)</div>
+        </div>
+    </div>
+</li>
+<li>
+    <div class="list_tb tb2">
+        <div class="list_tr">
+            <div class="list_td hd">學生端線上簽名</div>
+            <div class="list_td rt">@(_model.CourseContractExtension?.SignOnline==true ? "是" : "否")</div>
+        </div>
+    </div>
+</li>
+<li>
+    <div class="list_tb tb2">
+        <div class="list_tr">
+            <div class="list_td hd">代辦委託書</div>
+            <div class="list_td rt">
+                @if (_model.CourseContractExtension.AttachmentID.HasValue)
+                {
+                    <a href="@Html.Raw(Url.Action("GetResourceWithMime","Information",new { HKeyID =_model.CourseContractExtension.AttachmentID.Value.EncryptHexKey() }))" target="_blank">開啟附件</a>
+                }
+            </div>
+        </div>
+    </div>
+</li>

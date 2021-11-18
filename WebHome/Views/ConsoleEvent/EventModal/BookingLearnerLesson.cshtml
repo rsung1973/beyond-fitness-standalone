@@ -1,0 +1,468 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    UserProfile _model;
+    CalendarEventViewModel _viewModel;
+    String _dialogID = $"booking{DateTime.Now.Ticks}";
+    UserProfile _profile;
+    IQueryable<CourseContract> _contracts;
+    IQueryable<EnterpriseCourseContract> _enterpriseContract;
+
+    BookingLessonPageModel _pageModel = (BookingLessonPageModel)ViewBag.PageModel;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (UserProfile)this.Model;
+    _viewModel = (CalendarEventViewModel)ViewBag.ViewModel;
+    _profile = await Context.GetUserAsync();
+    _contracts = models.GetTable<CourseContractMember>()
+        .Where(m => m.UID == _model.UID)
+            .Join(models.GetTable<CourseContract>(), m => m.ContractID, t => t.ContractID, (m, t) => t);
+    _enterpriseContract = models.GetTable<EnterpriseCourseMember>()
+        .Where(m => m.UID == _model.UID)
+            .Join(models.GetTable<EnterpriseCourseContract>()
+                .Where(c => c.Expiration >= DateTime.Today)
+                , m => m.ContractID, t => t.ContractID, (m, t) => t);
+
+    bool _currentDisabled = false;
+}
+@{
+    var enterpriseLessons = _enterpriseContract.Join(models.GetTable<RegisterLessonEnterprise>(), t => t.ContractID, r => r.ContractID, (t, r) => r);
+    var enterpriseTrial = enterpriseLessons.Where(r => r.EnterpriseCourseContent.EnterpriseLessonType.Status == (int)Naming.LessonPriceStatus.體驗課程);
+    var enterpriseTrialItem = enterpriseTrial.FirstOrDefault();
+}
+
+@{
+    var contractLessons = _contracts.Join(models.GetTable<RegisterLessonContract>(), c => c.ContractID, r => r.ContractID, (c, r) => r)
+                            .Select(r => r.RegisterLesson)
+                            .Where(r => r.UID == _model.UID)
+                            .Where(r => r.Attended != (int)Naming.LessonStatus.課程結束);
+
+    List<int> installmentID = new List<int>();
+
+    var lessons = models.GetTable<RegisterLesson>()
+                    .Where(r => r.UID == _model.UID)
+                    .Where(r => r.Attended != (int)Naming.LessonStatus.課程結束);
+
+}
+@{
+    _currentDisabled = false;
+    foreach (var item in lessons
+        .Where(r => r.LessonPriceType.Status == (int)Naming.LessonPriceStatus.點數兌換課程)
+        .Where(r => models.GetTable<ObjectiveLessonPrice>()
+            .Any(c => c.CatalogID == (int)ObjectiveLessonCatalog.CatalogDefinition.OnLineFeedback
+                && c.PriceID == r.ClassLevel)))
+    {
+        var remainedCount = item.RemainedLessonCount();
+        bool bookable = remainedCount > 0;
+        if (bookable)
+        {
+            _pageModel.HasChoice = true;
+            //_currentDisabled = true;
+        }
+        <li class="list-group-item">
+            <div class="media">
+                <div class="pull-left">
+                    <div class="controls">
+                        <label class="fancy-checkbox">
+                            <input type="checkbox" id="Other@(item.RegisterID)" name="RegisterID" @(bookable ? null : "disabled") value="@(bookable ? item.RegisterID : -1)" onclick="selectBooking(this, '@((int)Naming.LessonPriceStatus.點數兌換課程)');">
+                            <span></span>
+                            @if (bookable)
+                            {
+                                <script>
+                                    $(function () {
+                                        $('#Other@(item.RegisterID)').click();
+                                    });
+                                </script>
+                            }
+                        </label>
+                    </div>
+                </div>
+                <div class="media-body">
+                    <div class="media-heading">
+                        <a class="m-r-10">P.T session （@(item.LessonPriceType.SimpleDescription)）</a>
+                        <small class="float-right text-muted"><time>@(remainedCount)/@(item.Lessons)</time></small>
+                    </div>
+                </div>
+            </div>
+        </li>
+    }
+}
+@foreach (var item in contractLessons.OrderBy(r => r.RegisterLessonContract.ContractID))
+{
+    var contract = item.RegisterLessonContract.CourseContract;
+    if (contract != null)
+    {
+        if (contract.Status == (int)Naming.CourseContractStatus.已終止)
+        {
+            continue;
+        }
+
+        var remainedCount = contract.RemainedLessonCount();
+        if (remainedCount <= 0)
+        {
+            continue;
+        }
+
+        var validContract = contract.Expiration.Value >= DateTime.Today;
+        var bookingCount = contract.AttendedLessonCount();
+        var totalPaid = contract.TotalPaidAmount();
+        var payoffStatus = contract.TotalCost / contract.Lessons * (bookingCount + 1) <= totalPaid;
+        bool revisionStatus = contract.RevisionList.Any(c => c.CourseContract.Status < (int)Naming.CourseContractStatus.已生效);
+        _pageModel.GroupComplete = item.GroupingMemberCount == item.GroupingLesson.RegisterLesson.Count ? true : false;
+        bool bookable = _pageModel.GroupComplete && validContract && payoffStatus && !revisionStatus;
+        if (bookable)
+        {
+            _pageModel.HasChoice = true && !_currentDisabled;
+            if (contract.InstallmentID.HasValue)
+            {
+                if (installmentID.Contains(contract.InstallmentID.Value))
+                {
+                    bookable = false;
+                }
+                else
+                {
+                    installmentID.Add(contract.InstallmentID.Value);
+                }
+            }
+        }
+        <li class="list-group-item">
+            <div class="media">
+                <div class="pull-left">
+                    <div class="controls">
+                        <label class="fancy-checkbox">
+                            <input type="checkbox" id="PTSession@(item.RegisterID)" @(bookable && (!_currentDisabled || item.LessonPriceType.IsDietaryConsult) ? null : "disabled") name="RegisterID" value="@(item.RegisterID)" onclick="selectBooking(this, '@((int)Naming.LessonPriceStatus.一般課程)');">
+                            <span></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="media-body">
+                    <div class="media-heading">
+                        @if (contract.ContractType == (int)CourseContractType.ContractTypeDefinition.CGA
+                            || contract.ContractType == (int)CourseContractType.ContractTypeDefinition.CNA)
+                        {
+                            if (item.LessonPriceType.IsDietaryConsult)
+                            {
+                                <a class="m-r-10">
+                                    N.S session - @(item.LessonPriceType.SimpleDescription)(@(item.LessonPriceType.DurationInMinutes)分鐘)
+                                </a>
+                            }
+                            else
+                            {
+                                <a class="m-r-10">
+                                    P.T session - @(item.LessonPriceType.SimpleDescription)(@(item.LessonPriceType.DurationInMinutes)分鐘)
+                                </a>
+                            }
+
+                            await Html.RenderPartialAsync("~/Views/Common/BranchStoreName.cshtml", item.LessonPriceType.BranchStore);
+
+                            <small class="float-right text-muted"><time>@(item.RemainedLessonCount())/@(item.Lessons)</time></small>
+                        }
+                        else
+                        {
+                            <a class="m-r-10">
+                                P.T session - @(contract.CourseContractType.TypeName)(@(contract.LessonPriceType.DurationInMinutes)分鐘)
+                            </a>
+                            {
+                                if (contract.LessonPriceType.BranchStore.IsVirtualClassroom())
+                                {
+                                    await Html.RenderPartialAsync("~/Views/Common/BranchStoreName.cshtml", contract.LessonPriceType.BranchStore);
+                                }
+                                else
+                                {
+                                    await Html.RenderPartialAsync("~/Views/Common/BranchStoreName.cshtml", contract.CourseContractExtension.BranchStore);
+                                }
+                            }
+                            <small class="float-right text-muted"><time>@(remainedCount)/@(contract.Lessons)</time></small>
+                        }
+                    </div>
+                    @if (!validContract)
+                    {
+                        <p class="msg col-red"><i class="zmdi zmdi-info-outline"></i>合約尚未生效或已過期</p>
+                    }
+                    @if (!payoffStatus)
+                    {
+                        <p class="msg col-red"><i class="zmdi zmdi-info-outline"></i>合約繳款餘額不足（未繳清：@(String.Format("{0:##,###,###,###}", contract.TotalCost - totalPaid))元）</p>
+                    }
+                    @if (revisionStatus)
+                    {
+                        <p class="msg col-red"><i class="zmdi zmdi-info-outline"></i>合約服務申請進行中</p>
+                    }
+                </div>
+            </div>
+        </li>
+    }
+}
+
+@foreach (var item in lessons
+    .Where(r => r.LessonPriceType.Status == (int)Naming.LessonPriceStatus.點數兌換課程)
+    .Where(r => !models.GetTable<ObjectiveLessonPrice>()
+        .Any(c => c.CatalogID == (int)ObjectiveLessonCatalog.CatalogDefinition.OnLineFeedback
+            && c.PriceID == r.ClassLevel)))
+{
+    var remainedCount = item.RemainedLessonCount();
+    bool bookable = remainedCount > 0;
+    if (bookable)
+    {
+        _pageModel.HasChoice = true && !_currentDisabled;
+    }
+    <li class="list-group-item">
+        <div class="media">
+            <div class="pull-left">
+                <div class="controls">
+                    <label class="fancy-checkbox">
+                        <input type="checkbox" id="Other@(item.RegisterID)" name="RegisterID" @(bookable && !_currentDisabled ? null : "disabled") value="@(bookable ? item.RegisterID : -1)" onclick="selectBooking(this, '@(item.LessonPriceType.IsWelfareGiftLesson != null ? (int)Naming.LessonPriceStatus.一般課程 : (int)Naming.LessonPriceStatus.點數兌換課程)');">
+                        <span></span>
+                    </label>
+                </div>
+            </div>
+            <div class="media-body">
+                <div class="media-heading">
+                    <a class="m-r-10">P.T session （@(item.LessonPriceType.SimpleDescription)）</a>
+                    <small class="float-right text-muted"><time>@(remainedCount)/@(item.Lessons)</time></small>
+                </div>
+            </div>
+        </div>
+    </li>
+}
+@foreach (var item in lessons.Where(r => r.LessonPriceType.IsWelfareGiftLesson != null))
+{
+    var remainedCount = item.RemainedLessonCount();
+    bool bookable = remainedCount > 0;
+    if (bookable)
+    {
+        _pageModel.HasChoice = true && !_currentDisabled;
+    }
+    <li class="list-group-item">
+        <div class="media">
+            <div class="pull-left">
+                <div class="controls">
+                    <label class="fancy-checkbox">
+                        <input type="checkbox" id="gift@(item.RegisterID)" name="RegisterID" @(bookable && !_currentDisabled ? null : "disabled") value="@(bookable ? item.RegisterID : -1)" onclick="selectBooking(this, '@((int)Naming.LessonPriceStatus.一般課程)');">
+                        <span></span>
+                    </label>
+                </div>
+            </div>
+            <div class="media-body">
+                <div class="media-heading">
+                    <a class="m-r-10">P.T session （員工福利）</a>
+                    <small class="float-right text-muted"><time>@(remainedCount)/@(item.Lessons)</time></small>
+                </div>
+            </div>
+        </div>
+    </li>
+}
+@{ 
+    //2021-05-28 防疫期不上企業方案
+    _currentDisabled = true;
+}
+@if (enterpriseTrialItem != null)
+{
+    var trialLesson = enterpriseTrial.Select(r => r.RegisterLesson).Where(r => r.UID == _model.UID);
+    var bookableLessons = trialLesson.Where(r => r.LessonTime == null);
+    var item = bookableLessons.FirstOrDefault();
+    if (item != null)
+    {
+        _pageModel.HasChoice = true && !_currentDisabled;
+    }
+    <li class="list-group-item">
+        <div class="media">
+            <div class="pull-left">
+                <div class="controls">
+                    <label class="fancy-checkbox">
+                        <input type="checkbox" id="enterpriseTrial@(item?.RegisterID)" @(item == null || _currentDisabled ? "disabled" : null) name="RegisterID" value="@(item?.RegisterID)" onclick="selectBooking(this, '@((int)Naming.LessonPriceStatus.企業合作方案)');">
+                        <span></span>
+                    </label>
+                </div>
+            </div>
+            <div class="media-body">
+                <div class="media-heading">
+                    <a class="m-r-10">T.S session（企業方案）</a>
+                    <small class="float-right text-muted"><time>@(bookableLessons.Count())/@(trialLesson.Count())</time></small>
+                </div>
+                <p class="msg">@(enterpriseTrialItem.EnterpriseCourseContract.Subject)</p>
+            </div>
+        </div>
+    </li>
+}
+@{
+    var courseContent = _enterpriseContract
+                .Join(models.GetTable<EnterpriseCourseContent>(),
+                    t => t.ContractID, c => c.ContractID, (t, c) => c);
+}
+@foreach (var content in courseContent.Where(r => r.TypeID == (int)Naming.EnterpriseLessonTypeDefinition.體能顧問1對1課程 || r.TypeID == (int)Naming.EnterpriseLessonTypeDefinition.體能顧問1對2課程))
+{
+    var enterprisePT = content.RegisterLessonEnterprise
+            .Select(r => r.RegisterLesson).Where(r => r.UID == _model.UID).FirstOrDefault();
+    if (enterprisePT == null)
+    {
+        continue;
+    }
+
+    var availableCount = enterprisePT.RemainedLessonCount();
+    if (availableCount > 0)
+    {
+        _pageModel.HasChoice = true && !_currentDisabled;
+    }
+    <li class="list-group-item">
+        <div class="media">
+            <div class="pull-left">
+                <div class="controls">
+                    <label class="fancy-checkbox">
+                        <input type="checkbox" @(availableCount <= 0 ? "disabled" : null) id="enterprise@(enterprisePT.RegisterID)" name="RegisterID" value="@(enterprisePT.RegisterID)" onclick="selectBooking(this, '@((int)Naming.LessonPriceStatus.企業合作方案)');">
+                        <span></span>
+                    </label>
+                </div>
+            </div>
+            <div class="media-body">
+                <div class="media-heading">
+                    <a class="m-r-10">P.T session（企業方案）- @(content.EnterpriseLessonType.Description)</a>
+                    <small class="float-right text-muted"><time>@(availableCount)/@(enterprisePT.Lessons)</time></small>
+                </div>
+                <p class="msg">@(content.EnterpriseCourseContract.Subject)</p>
+            </div>
+        </div>
+    </li>
+}
+@{
+    _pageModel.HasChoice = true;
+}
+<li class="list-group-item">
+    <div class="media">
+        <div class="pull-left">
+            <div class="controls">
+                <label class="fancy-checkbox">
+                    <input type="checkbox" id="PILesson" name="RegisterID" value="" onclick="selectBooking(this, '@((int)Naming.LessonPriceStatus.自主訓練)',15);">
+                    <span></span>
+                </label>
+            </div>
+        </div>
+        <div class="media-body">
+            <div class="media-heading">
+                <a class="m-r-10">P.I session《一般自主》</a>
+                <small class="float-right text-muted"><time>NT 300</time></small>
+            </div>
+        </div>
+    </div>
+</li>
+<li class="list-group-item">
+    <div class="media">
+        <div class="pull-left">
+            <div class="controls">
+                <label class="fancy-checkbox">
+                    <input type="checkbox" name="RegisterID" value="" onclick="selectBooking(this, '@((int)Naming.LessonPriceStatus.自主訓練)',383);">
+                    <span></span>
+                </label>
+            </div>
+        </div>
+        <div class="media-body">
+            <div class="media-heading">
+                <a class="m-r-10">
+                    P.I session《有氧自主》
+                </a>
+                <small class="float-right text-muted"><time>NT 150</time></small>
+            </div>
+        </div>
+    </div>
+</li>
+<li class="list-group-item">
+    <div class="media">
+        <div class="pull-left">
+            <div class="controls">
+                <label class="fancy-checkbox">
+                    <input type="checkbox" name="RegisterID" value="" onclick="selectBooking(this, '@((int)Naming.LessonPriceStatus.自主訓練)',384);">
+                    <span></span>
+                </label>
+            </div>
+        </div>
+        <div class="media-body">
+            <div class="media-heading">
+                <a class="m-r-10">
+                    P.I session《親屬自主》
+                </a>
+                <small class="float-right text-muted"><time>NT 150</time></small>
+            </div>
+        </div>
+    </div>
+</li>
+<li class="list-group-item">
+    <div class="media">
+        <div class="pull-left">
+            <div class="controls">
+                <label class="fancy-checkbox">
+                    <input type="checkbox" name="RegisterID" value="" onclick="selectBooking(this, '@((int)Naming.LessonPriceStatus.自主訓練)',385);">
+                    <span></span>
+                </label>
+            </div>
+        </div>
+        <div class="media-body">
+            <div class="media-heading">
+                <a class="m-r-10">
+                    P.I session《恢復課程體驗》
+                </a>
+                <small class="float-right text-muted"><time>NT 300</time></small>
+            </div>
+        </div>
+    </div>
+</li>
+@foreach (var content in courseContent.Where(r => r.TypeID == (int)Naming.EnterpriseLessonTypeDefinition.自主訓練))
+{
+    var enterprisePI = content.RegisterLessonEnterprise
+            .Select(r => r.RegisterLesson).Where(r => r.UID == _model.UID);
+    var bookableLessons = enterprisePI.Where(r => r.LessonTime == null);
+    var item = bookableLessons.FirstOrDefault();
+    if (item != null)
+    {
+        _pageModel.HasChoice = true;
+    }
+    <li class="list-group-item">
+        <div class="media">
+            <div class="pull-left">
+                <div class="controls">
+                    <label class="fancy-checkbox">
+                        <input type="checkbox" @(item == null ? "disabled" : null) id="enterprisePI@(item?.RegisterID)" name="RegisterID" value="@(item?.RegisterID)" onclick="selectBooking(this, '@((int)Naming.LessonPriceStatus.企業合作方案)');">
+                        <span></span>
+                    </label>
+                </div>
+            </div>
+            <div class="media-body">
+                <div class="media-heading">
+                    <a class="m-r-10">P.I session（企業方案）- @(content.EnterpriseLessonType.Description)</a>
+                    <small class="float-right text-muted"><time>@(bookableLessons.Count())/@(enterprisePI.Count())</time></small>
+                </div>
+                <p class="msg">@(content.EnterpriseCourseContract.Subject)</p>
+            </div>
+        </div>
+    </li>
+}
+@{
+    _pageModel.HasChoice = true;
+}
+<li class="list-group-item">
+    <div class="media">
+        <div class="pull-left">
+            <div class="controls">
+                <label class="fancy-checkbox">
+                    <input type="checkbox" id="STLesson" name="RegisterID" value="" onclick="selectBooking(this, '@((int)Naming.LessonPriceStatus.在家訓練)');">
+                    <span></span>
+                </label>
+            </div>
+        </div>
+        <div class="media-body">
+            <div class="media-heading">
+                <a class="m-r-10">S.T session</a>
+            </div>
+        </div>
+    </div>
+</li>

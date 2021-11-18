@@ -1,0 +1,108 @@
+﻿
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    MonthlyCoachRevenueIndicatorQueryViewModel _viewModel;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _modelState = ViewContext.ModelState;
+    _viewModel = (MonthlyCoachRevenueIndicatorQueryViewModel)ViewBag.ViewModel;
+    String _dialogID = _viewModel.DialogID;
+    ViewBag.ReuseModal = true;
+
+}
+<div class="modal" tabindex="-1" role="dialog" id="@(_dialogID)" aria-labelledby="exampleModalLongTitle"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                @RenderSection("HeaderContent")
+                <a class="closebutton" data-dismiss="modal"></a>
+            </div>
+            <div class="modal-body">
+                @RenderSection("QueryCondition", false)
+                <div class="row clearfix">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+                        <div class="input-group">
+                            <input type="text" class="form-control month" data-date-format="yyyy/mm" readonly="readonly" placeholder="自訂起月" name="DateFrom" value="@($"{DateTime.Today.AddMonths(-2):yyyy/MM}")" />
+                            <span class="input-group-addon">
+                                <i class="zmdi zmdi-time"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+                        <div class="input-group">
+                            <input type="text" class="form-control month" data-date-format="yyyy/mm" readonly="readonly" placeholder="自訂迄月" name="DateTo" value="@($"{DateTime.Today:yyyy/MM}")" />
+                            <span class="input-group-addon">
+                                <i class="zmdi zmdi-time"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-12 text-right">
+                        <small>(查詢區間至少3個月，至多13個月)</small>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-round btn-simple waves-effect waves-red btnReset">
+                    重設區間
+                </button>
+                <button type="button" class="btn btn-darkteal btn-round waves-effect btnConfirm">確定，不後悔</button>
+            </div>
+        </div>
+    </div>
+    @{ await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/BSModalScript.cshtml", model: _dialogID);}
+
+<script>
+        $(function () {
+
+            $('#@(_dialogID) .month').datetimepicker({
+                language: "zh-TW",
+                weekStart: 1,
+                todayBtn: 0,
+                clearBtn: 1,
+                autoclose: 1,
+                todayHighlight: true,
+                startView: 3,
+                minView: 3,
+                defaultView: 2,
+                forceParse: 0,
+                endDate: new Date(),
+                autoclose: true
+            });
+
+            $('#@(_dialogID) .btnReset').on('click', function (event) {
+                $('#@(_dialogID) .month').val('');
+            });
+
+            $('#@(_dialogID) .btnConfirm').on('click', function (event) {
+                clearErrors();
+                showLoading();
+                var viewModel = $.extend({}, $global.viewModel, $('#@(_dialogID)').find('input,select,textArea').serializeObject());
+                $.post('@Html.Raw(_viewModel.UrlAction)', viewModel, function (data) {
+                    hideLoading();
+                    if ($.isPlainObject(data)) {
+                        $('#@(_dialogID)').modal('hide');
+                        if (typeof ($global.achievementConsole.doQuery['@(_dialogID)']) == 'function') {
+                            $global.achievementConsole.doQuery['@(_dialogID)'](viewModel);
+                        }
+                    } else {
+                        $(data).appendTo($('body'));
+                    }
+                });
+            });
+        });
+</script>
+    @RenderBody()
+</div>

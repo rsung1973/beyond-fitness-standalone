@@ -1,0 +1,296 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using WebHome.Components
+
+@using WebHome.Helper.BusinessOperation
+@using Newtonsoft.Json
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    UserProfile _model;
+    DailyBookingQueryViewModel _viewModel;
+
+    Layout = "~/Views/ConsoleHome/Template/MainPage.cshtml";
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _modelState = ViewContext.ModelState;
+    _model = (UserProfile)this.Model;
+    _viewModel = (DailyBookingQueryViewModel)ViewBag.ViewModel;
+    UserProfile _learner = (UserProfile)ViewBag.DataItem;
+}
+@section CustomHeader {
+    <!-- Fullcalendar -->
+    <link href="plugins/fullcalendar/fullcalendar.min.css" rel="stylesheet">
+    <!-- Bootstrap Datetimepick -->
+    @*<link href="plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />*@
+    @*<link href="css/datetimepicker.css" rel="stylesheet" />*@
+
+
+    <link href="css/smartcalendar-2.css" rel="stylesheet" />
+    <!-- Inbox -->
+    <link href="css/inbox.css" rel="stylesheet">
+    <!-- Multi Select Css -->
+    <link href="plugins/multi-select/css/multi-select.css" rel="stylesheet">
+    <!--Bootstrap progressbar -->
+    <link rel="stylesheet" href="plugins/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css">
+    <!-- JQuery DataTable Css -->
+    <link href="plugins/jquery-datatable/DataTables-1.10.18/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link href="plugins/jquery-datatable/Responsive-2.2.2/css/responsive.bootstrap4.min.css" rel="stylesheet">
+    <link href="plugins/jquery-datatable/FixedColumns-3.2.5/css/fixedColumns.bootstrap4.min.css" rel="stylesheet">
+
+}
+
+<section class="content profile-page">
+    @{
+        ViewBag.BlockHeader = "X檔案";
+        await Html.RenderPartialAsync("~/Views/ConsoleHome/Module/BlockHeader.cshtml", _model);
+    }
+    @{
+        await Html.RenderPartialAsync("~/Views/ConsoleHome/LearnerProfile/ExerciseDuration.cshtml", _learner);
+    }
+    <!--行事曆-->
+    <div class="container-fluid page-calendar">
+        <div class="card">
+            <div class="body">
+                <div class="row">
+                    <div class="col-lg-5 col-md-5 col-sm-12">
+                        <div class="row clearfix">
+                            <div class="col-md-11 col-lg-12 col-9">
+                            </div>
+                            <div class="col-md-11 col-lg-12 col-3">
+                                <button class="btn btn-default btn-sm hidden-sm-up m-t-0 float-right" data-toggle="collapse" data-target="#open-events" aria-expanded="false" aria-controls="collapseExample">點擊後不再是問題</button>
+                            </div>
+                        </div>
+                        <div class="collapse-xs collapse-sm collapse" id="open-events">
+                            <div class="card">
+                                <ul class="row profile_state list-unstyled leaner_profile_state">
+                                    @{
+                                        int count;
+                                        var toPay = models.PromptAccountingContract()
+                                            .FilterByToPay(models)
+                                            .FilterByLearnerMember(models, _learner.UID);
+                                        count = toPay.Count();
+                                    }
+                                    <li class="col-lg-4 col-6" onclick='showContractList(@Html.Raw(JsonConvert.SerializeObject(
+                                                new
+                                                {
+                                                    MemberID = _learner.UID,
+                                                    ContractQueryMode = Naming.ContractServiceMode.ContractOnly,
+                                                    PayoffMode = Naming.ContractPayoffMode.Unpaid,
+                                                })),@(count), false);'>
+                                        <div class="body">
+                                            <h5 class="m-b-0 number count-to col-red" data-from="0" data-to="@(count)" data-speed="1000" data-fresh-interval="700">@(count)</h5>
+                                            <small>催收帳款</small>
+                                        </div>
+                                    </li>
+                                    @{
+                                        var expiredItems = models.PromptRegisterLessonContract()
+                                                                            .FilterByExpired(models)
+                                                                            .FilterByLearnerMember(models, _learner.UID);
+
+                                        count = expiredItems.Count();
+                                    }
+                                    <li class="col-lg-4 col-6" onclick='showContractList(@Html.Raw(JsonConvert.SerializeObject(
+                                                new
+                                                {
+                                                    MemberID = _learner.UID,
+                                                    IsExpired = true,
+                                                    ContractQueryMode = Naming.ContractServiceMode.ContractOnly,
+                                                    Status = (int)Naming.CourseContractStatus.已過期,
+                                                })),@(count),false);'>
+                                        <div class="body">
+                                            <h5 class="m-b-0 number count-to" data-from="0" data-to="@(count)" data-speed="1000" data-fresh-interval="700">@(count)</h5>
+                                            <small>已過期</small>
+                                        </div>
+                                    </li>
+                                    @{
+                                        var expiringItems = models.PromptExpiringContract()
+                                            .FilterByLearnerMember(models, _learner.UID);
+
+                                        count = expiringItems.Count();
+                                    }
+                                    <li class="col-lg-4 col-6" onclick='showContractList(@Html.Raw(JsonConvert.SerializeObject(
+                                                new
+                                                {
+                                                    MemberID = _learner.UID,
+                                                    ContractQueryMode = Naming.ContractServiceMode.ContractOnly,
+                                                    Status = (int)Naming.CourseContractStatus.已生效,
+                                                    ExpirationFrom = DateTime.Today,
+                                                    ExpirationTo = DateTime.Today.AddMonths(1),
+                                                })),@(count),false);'>
+                                        <div class="body">
+                                            <h5 class="m-b-0 number count-to col-red" data-from="0" data-to="@(count)" data-speed="1000" data-fresh-interval="700">@(count)</h5>
+                                            <small>即將到期</small>
+                                        </div>
+                                    </li>
+                                    @{
+                                        int remainedCount;
+                                        IQueryable<RegisterLesson> remainedLessons;
+                                        var remainedItems = _learner.RemainedLessonCount(models, out remainedCount, out remainedLessons);
+                                    }
+                                    <li class="col-lg-6 col-6" onclick='showRemainedLessons(@Html.Raw(JsonConvert.SerializeObject(
+                                                new
+                                                {
+                                                    MemberID = _learner.UID,
+                                                    ContractQueryMode = Naming.ContractServiceMode.ContractOnly,
+                                                    Status = (int)Naming.CourseContractStatus.已生效,
+                                                })),@(remainedCount),true);'>
+                                        <div class="body">
+                                            <h5 class="m-b-0 number count-to" data-from="0" data-to="@(remainedCount)" data-speed="1000" data-fresh-interval="700">@(remainedCount)</h5>
+                                            <small>剩餘堂數</small>
+                                        </div>
+                                    </li>
+                                    <li class="col-lg-6 col-6" onclick='showContractList(@Html.Raw(JsonConvert.SerializeObject(
+                                                new
+                                                {
+                                                    MemberID = _learner.UID,
+                                                    ContractQueryMode = Naming.ContractServiceMode.ContractOnly,
+                                                })),-1,false);'>
+                                        <div class="body">
+                                            <h5 class="m-b-0"><i class="zmdi zmdi-search-for"></i></h5>
+                                            <small>更多合約</small>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            @{
+                                var quest = models.GetEffectiveQuestionnaireRequest(_learner.UID)
+                                                .FirstOrDefault();
+                                if (quest == null || quest.GroupID == (int)Naming.QuestionnaireGroup.身體心靈密碼)
+                                {
+                                    <button class="btn btn-primary waves-effect float-right btn-sm" onclick="javascript:editLearnerCharacter(@((int)QuestionnaireRequest.PartIDEnum.PartA));">重新了解學生 GO</button>
+                                }
+                            }
+                            @{
+                                await Html.RenderPartialAsync("~/Views/ConsoleHome/LearnerProfile/LearnerCharacter.cshtml", _learner);
+                            }
+                        </div>
+                    </div>
+                    <div class="col-lg-7 col-md-7 col-sm-12">
+                        @{
+                            await Component.InvokeAsync<LearnerCalendar2020ViewComponent>(new DailyBookingQueryViewModel { LearnerID = _learner.UID });
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section TailPageJavaScriptInclude {
+    <!-- Fullcalendar Plugin js -->
+    <script src="bundles/fullcalendarscripts.bundle.js"></script>
+    <script src="plugins/fullcalendar/locale/zh-tw.js"></script>
+    <!-- Multi Select Plugin Js -->
+    <script src="plugins/multi-select/js/jquery.multi-select.js"></script>
+    <!-- countTo Plugin Js -->
+    <script src="bundles/countTo.bundle.js"></script>
+    <!-- Sparkline Plugin Js -->
+    <script src="plugins/jquery-sparkline/jquery.sparkline.js"></script>
+    <!-- Jquery DataTable Plugin Js -->
+    <script src="bundles/datatablescripts.bundle.js"></script>
+    <script src="plugins/jquery-datatable/Responsive-2.2.2/js/dataTables.responsive.min.js"></script>
+    <script src="plugins/jquery-datatable/FixedColumns-3.2.5/js/dataTables.fixedColumns.min.js"></script>
+
+    <script>
+        $(function () {
+
+            $('.counto').countTo();
+
+        });
+
+        function showContractList(viewModel, alertCount, popupModal) {
+            var event = window.event;
+            if (event) {
+                event.cancelBubble = true;
+            }
+
+            if (alertCount == 0)
+                return;
+            viewModel.popupModal = popupModal;
+            showLoading();
+
+            if (popupModal) {
+                $.post('@Html.Raw(Url.Action("ShowContractList","ContractConsole"))', viewModel, function (data) {
+                    hideLoading();
+                    if ($.isPlainObject(data)) {
+                        Swal.fire(
+                            'Oops...',
+                            data.message,
+                            'warning'
+                        )
+                    } else {
+                        $('body').append(data);
+                    }
+                });
+            } else {
+                $('').launchDownload('@Html.Raw(Url.Action("ShowContractList","ContractConsole"))', viewModel);
+            }
+
+        }
+
+        function showRemainedLessons(viewModel, alertCount, popupModal) {
+            var event = window.event;
+            if (event) {
+                event.cancelBubble = true;
+            }
+
+            $.post('@Html.Raw(Url.Action("ShowRemainedLessonList", "ContractConsole"))', viewModel, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    Swal.fire(
+                        'Oops...',
+                        data.message,
+                        'warning'
+                    )
+                } else {
+                    $('body').append(data);
+                }
+            });
+
+        }
+
+
+        function editLearner() {
+            showLoading();
+            $.post('@Html.Raw(Url.Action("EditContractMember", "ContractConsole",new { KeyID = _learner.UID.EncryptKey(), ProfileOnly = true }))', { }, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    alert(data.message);
+                } else {
+                    $(data).appendTo($('body'));
+                }
+            });
+        }
+
+        function editLearnerCharacter(partID) {
+
+            $('').launchDownload('@(Html.Raw(Url.Action("EditLearnerCharacter","ConsoleHome",new { KeyID = _learner.UID.EncryptKey() })))', { 'partID': partID });
+
+        }
+
+        function showBonusDetails() {
+            showLoading();
+            $.post('@Html.Raw(Url.Action("ShowLearnerBonusDetails", "LearnerProfile",new { KeyID = _learner.UID.EncryptKey()}))', {}, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    alert(data.message);
+                } else {
+                    $(data).appendTo($('body'));
+                }
+            });
+        }
+
+        function processContract(keyID) {
+
+        }
+    </script>
+}
+

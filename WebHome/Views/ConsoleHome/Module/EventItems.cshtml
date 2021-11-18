@@ -1,0 +1,28 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    List<CalendarEventItem> _model;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (List<CalendarEventItem>)this.Model;
+}
+@foreach (var g in _model.GroupBy(v => v.EventTime.Value.Date))
+{
+    var items = g.ToList();
+    await Html.RenderPartialAsync("~/Views/ConsoleHome/Module/DailyEventItems.cshtml", items);
+}
+
+

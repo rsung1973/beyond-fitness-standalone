@@ -1,0 +1,61 @@
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+
+    MonthlyCoachRevenueIndicatorQueryViewModel _viewModel = (MonthlyCoachRevenueIndicatorQueryViewModel)ViewBag.ViewModel;
+}
+<div class="col-lg-6 col-md-6 col-sm-6 col-12">
+    <div class="input-group">
+        <input type="text" class="form-control form-control-danger" placeholder="課數" name="CompleteLessonsGoal" value="@(_viewModel.CompleteLessonsGoal)" />
+        <span class="input-group-addon col-grey font-10">
+            課數
+        </span>
+    </div>
+    @*<label class="material-icons help-error-text">clear 請輸入課數</label>*@
+</div>
+@if (_viewModel.DataOperation!=Naming.DataOperationMode.Create)
+{
+<div class="col-lg-6 col-md-6 col-sm-6 col-12">
+    <div class="input-group">
+        <input type="text" class="form-control form-control-danger" placeholder="平均單價" name="AverageLessonPrice" value="@(_viewModel.AverageLessonPrice)" />
+        <span class="input-group-addon col-grey font-10">
+            平均單價
+        </span>
+    </div>
+    @*<label class="material-icons help-error-text">clear 請輸平均單價</label>*@
+</div>
+}
+<div class="col-lg-6 col-md-6 col-sm-6 col-12">
+    <div class="input-group">
+        <input type="text" class="form-control form-control-danger" placeholder="收款業績" name="AchievementGoal" value="@(_viewModel.AchievementGoal)" />
+        <span class="input-group-addon col-grey font-10">
+            收款業績
+        </span>
+    </div>
+    @*<label class="material-icons help-error-text">clear 請輸收款業績</label>*@
+</div>
+<div class="col-lg-6 col-md-6 col-sm-6 col-12">
+    <div class="input-group">
+        <input type="text" class="form-control form-control-danger" placeholder="BR堂數" name="BRCount" value="@(_viewModel.BRCount)" />
+        <span class="input-group-addon col-grey font-10">
+            BR
+        </span>
+    </div>
+    @*<label class="material-icons help-error-text">clear 請輸BR堂數</label>*@
+</div>
+
+

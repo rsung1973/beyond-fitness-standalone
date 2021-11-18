@@ -1,0 +1,136 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using CommonLib.Utility
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    IQueryable<LessonTime> _model;
+
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (IQueryable<LessonTime>)this.Model;
+   
+}
+<table class="table table-striped nowrap crossBranchDT" style="width: 100%">
+    <thead class="bg-darkteal">
+        <tr>
+            <th>體能顧問</th>
+            <th>上課日期</th>
+            <th>上課時間</th>
+            <th>類型</th>
+            <th>學生</th>
+            <th>該時段人數</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in _model)
+        {
+            <tr onclick="processCrossBranch('@(item.LessonID.EncryptKey())');">
+                <td>
+                    <span class='list-icon'>
+                        @{
+                            ViewBag.ProfileClass = "patients-img";
+                            await Html.RenderPartialAsync("~/Views/Common/ProfileImage.cshtml", item.AsAttendingCoach.UserProfile);
+                        }
+                    </span>
+                    @Html.Raw(item.AsAttendingCoach.UserProfile.FullNameHtml())
+                </td>
+                <td>@($"{item.ClassTime:yyyy/MM/dd}")</td>
+                <td>@($"{item.ClassTime:HH:mm}")-@($"{item.ClassTime.Value.AddMinutes(item.DurationInMinutes.Value):HH:mm}")</td>
+                <td>@(item.LessonTypeStatus())</td>
+                <td>@(String.Join("、", item.GroupingLesson.RegisterLesson.Select(r => r.UserProfile.RealName)))</td>
+                <td>
+                    @{
+                        //var expansion = item.LessonTimeExpansion.First();
+                        //var lessons = expansion.ConcurrentLessons(models);
+                        var start = item.ClassTime.Value;
+                        var end = start.AddMinutes(item.DurationInMinutes.Value);
+                        var lessons = models.GetTable<LessonTime>()
+                            .Where(l => l.BranchID == item.BranchID)
+                            .Where(l => l.ClassTime > start.AddDays(-1))
+                            .Where(l => l.ClassTime <= end).ToList();
+
+                        lessons = lessons
+                            .Where(l => (l.ClassTime >= start && l.ClassTime < end)
+                                || (l.ClassTime.Value.AddMinutes(l.DurationInMinutes.Value) > start
+                                        && l.ClassTime.Value.AddMinutes(l.DurationInMinutes.Value) <= end))
+                            .ToList();
+
+                    }
+                    @*@(lessons.ConcurrentRegisterLessons(models).Count())*@
+                    @(lessons.Sum(l=>l.RegisterLesson.GroupingMemberCount))
+                </td>               
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>$(function () {
+
+        if ($global.dtContract != undefined) {
+            $global.dtContract.destroy();
+        }
+
+        $global.dtContract = $('.crossBranchDT').DataTable({
+            //"ajax": 'ajax/data/contractlist-2.json',
+            "order": [
+                [1, 'desc'],
+                [2, 'asc']
+            ],
+            "pageLength": 30,
+            "lengthMenu": [
+                [30, 50, 100, -1],
+                [30, 50, 100, "全部"]
+            ],
+            "language": {
+                "lengthMenu": "每頁顯示 _MENU_ 筆資料",
+                "zeroRecords": "沒有資料也是種福氣",
+                "info": "共 _TOTAL_ 筆，目前顯示第 _PAGE_ / _PAGES_",
+                "infoEmpty": "顯示 0 到 0 筆的資料",
+                "infoFiltered": "(總共從 _MAX_ 筆資料過濾)",
+                "loadingRecords": "快馬加鞭處理中...",
+                "processing": "快馬加鞭處理中...",
+                "search": "快速搜尋：",
+                "paginate": {
+                    "first": "第一頁",
+                    "last": "最後一頁",
+                    "next": "下一頁",
+                    "previous": "前一頁"
+                },
+            },
+            scrollX: true,
+            scrollCollapse: true,
+            fixedColumns: {
+                leftColumns: 1,
+            },
+            columnDefs: [
+                {
+                    targets: [1, 2, 3, 4, 5],
+                    className: "align-center"
+                }
+            ]
+        });
+
+        setTimeout(function () {
+            var $btnSelect = $('.dataTables_length div.btn-group.bootstrap-select.form-control.form-control-sm');
+            var $menu = $btnSelect.find('select');
+            $btnSelect.before($menu);
+            $btnSelect.remove();
+        }, 1000);
+
+
+        $('.crossBranchDT').resize();
+
+    });</script>
+
+

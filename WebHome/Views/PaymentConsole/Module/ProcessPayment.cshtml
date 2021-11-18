@@ -1,0 +1,87 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    Payment _model;
+    String _dialogID = $"contractProcess{DateTime.Now.Ticks}";
+    UserProfile _profile;
+
+
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (Payment)this.Model;
+    _profile = await Context.GetUserAsync();
+}
+<div class="modal fade" id="@(_dialogID)" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="title">請選擇執行功能</h6>
+                <a class="closebutton" data-dismiss="modal"></a>
+            </div>
+            <div class="modal-popmenu-body">
+                <div class="list-group">
+                    @if (_model != null)
+                    {
+                        if (_profile.IsSysAdmin() || _profile.IsAssistant() || _profile.IsManager())
+                        {
+                            <a href="@Html.Raw(Url.Action("ApplyPaymentAchievement", "ConsoleHome", new { KeyID = _model.PaymentID.EncryptKey() }))" class="list-group-item">業績分潤</a>
+                        }
+                        if (_model.VoidPayment == null && !_model.AllowanceID.HasValue && !_model.ContractTrustTrack.Any(t => t.SettlementID.HasValue))
+                        {
+                            <a href="@Html.Raw(Url.Action("VoidPayment", "ConsoleHome", new { KeyID = _model.PaymentID.EncryptKey() }))" class="list-group-item">作廢/折讓</a>
+                        }
+                        <a href="javascript:$global.showPaymentDetails('@(_model.PaymentID.EncryptKey())');" class="list-group-item">詳細資訊</a>
+                        await Html.RenderPartialAsync("~/Views/PaymentConsole/Indication/PaymentDetails.cshtml", _model);
+                    }
+                    @{
+                        var item = _model.InvoiceItem;
+                    }
+                    @if (item.InvoiceType == (byte)Naming.InvoiceTypeDefinition.一般稅額計算之電子發票)
+                    {
+                        if (item.PrintMark == "Y")
+                        {
+                            if (item.InvoiceCancellation == null
+                                && (item.Document.DocumentPrintLog.Count == 0
+                                        || _profile.IsAssistant() || _profile.IsManager() || _profile.IsViceManager()))
+                            {
+                                <a href="#" onclick="printInvoice(@(item.InvoiceID),'@(item.Organization.InvoiceSignature)');" class="list-group-item">列印發票</a>
+                            }
+                        }
+                    }
+                    @if (_model.AllowanceID.HasValue)
+                    {
+                        if (_model.InvoiceAllowance.Document.DocumentPrintLog.Count == 0
+                            || _profile.IsAssistant() || _profile.IsManager() || _profile.IsViceManager())
+                        {
+                        <a href="#" onclick="printAllowance(@(_model.AllowanceID),'@(item.Organization.InvoiceSignature)');" class="list-group-item">列印折讓單</a>
+                        }
+                    }
+                    @{
+                        var testItem = models.GetTable<InvoiceItem>().Where(i => i.InvoiceID == 23417).FirstOrDefault();
+                    }
+                    <a href="javascript:testPrintInvoice(@(testItem?.InvoiceID),'@(testItem?.Organization.InvoiceSignature)');" class="list-group-item">確認連線發票印表機</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    @{ await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/BSModalScript.cshtml", model: _dialogID);}
+
+    <script>
+        $(function () {
+
+        });
+    </script>
+</div>
+

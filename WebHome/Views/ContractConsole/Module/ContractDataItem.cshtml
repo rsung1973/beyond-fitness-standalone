@@ -1,0 +1,69 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Helper.DataOperation
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    CourseContract _model;
+    UserProfile _profile;
+    String _viewID = $"contractItem{DateTime.Now.Ticks}";
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (CourseContract)this.Model;
+    _profile = await Context.GetUserAsync();
+}
+
+<div class="header">
+    <h2>
+        <strong>合約資料</strong> - @(_model.ContractName())
+        @{
+            await Html.RenderPartialAsync("~/Views/Common/BranchStoreName.cshtml", _model.CourseContractExtension.BranchStore);
+        }
+        <a href="javascript:$global.showContractDetails('@(_model.ContractID.EncryptKey())');" class="btn btn-simple btn-info btn-round btn-sm float-right">更多資訊</a>
+    </h2>
+    @{ await Html.RenderPartialAsync("~/Views/ContractConsole/Indication/ContractDetails.cshtml", _model);}
+</div>
+<div class="body">
+    <div class="row">
+        <div class="col-md-6 col-sm-6 invoice1">
+            <address>
+                <strong>@(_model.ContractOwner.FullName())</strong><br />
+                購買堂數：@(_model.Lessons)<br />
+                <span class="col-red">剩餘堂數：@(_model.RemainedLessonCount())</span>
+            </address>
+        </div>
+        <div class="col-md-6 col-sm-6 text-right">
+            <p class="m-b-0"><strong>合約起日: </strong>@($"{_model.ValidFrom:yyyy/MM/dd}")</p>
+            <p class="m-b-0 col-red"><strong>合約迄日: </strong>@($"{_model.Expiration:yyyy/MM/dd}")</p>
+            @{
+                if (_model.PayoffDue != null)
+                {
+                    <p class="m-b-0 col-red"><strong>應收款期限: </strong>@($"{_model.PayoffDue:yyyy/MM/dd}")</p>
+                }
+            }            
+            <p class="m-b-0">@(_model.ContractNo()) <span class="badge bg-green">@((Naming.CourseContractStatus)_model.Status)</span></p>
+        </div>
+    </div>
+    <div class="mt-40"></div>
+    <hr>
+    <div class="row">
+        <div class="col-md-6">
+            <h3>其他增補說明</h3>
+            <p>@(_model.Remark)</p>
+        </div>
+        <div class="col-6 text-right">
+            <h3 class="text-right">專業顧問服務總費用：<span class="text-danger">@($"{_model.TotalCost:##,###,###,###}")</span></h3>
+        </div>
+    </div>
+</div>

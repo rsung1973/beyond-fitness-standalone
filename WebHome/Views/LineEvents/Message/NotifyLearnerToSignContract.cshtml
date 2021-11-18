@@ -1,0 +1,176 @@
+@using System.IO
+@using System.Linq.Expressions
+@using System.Web 
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using WebHome.Properties
+@using WebHome.Helper
+@using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    CourseContract _model;
+
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _model = (CourseContract)this.Model;
+    CourseContract item = _model;
+    //Response.ContentType = "application/json";
+}
+{
+  "to": "@(item.ContractOwner.UserProfileExtension.LineID)",
+  "messages": [
+    {
+      "type": "flex",
+      "altText": "您有一張合約等待確認簽名",
+      "contents": {
+        "type": "bubble",
+        "hero": {
+          "type": "image",
+          "url": "https://www.beyond-fitness.com.tw/ConsoleHome/images/line/contract_conerkicksign.jpg",
+          "size": "full",
+          "aspectRatio": "20:15",
+          "aspectMode": "cover",
+          "offsetTop": "10px"
+        },
+        "body": {
+          "type": "box",
+          "layout": "vertical",
+          "contents": [
+            {
+              "type": "box",
+              "layout": "vertical",
+              "margin": "lg",
+              "spacing": "sm",
+              "contents": [
+                {
+                  "type": "box",
+                  "layout": "baseline",
+                  "spacing": "sm",
+                  "contents": [
+                    {
+                      "type": "text",
+                      "text": "合約名稱",
+                      "color": "#aaaaaa",
+                      "size": "sm",
+                      "flex": 3,
+                      "wrap": true
+                    },
+                    {
+                      "type": "text",
+                      "text": "@(item.CourseContractType.TypeName)",
+                      "wrap": true,
+                      "color": "#666666",
+                      "size": "sm",
+                      "flex": 5
+                    }
+                  ]
+                },
+                {
+                  "type": "box",
+                  "layout": "baseline",
+                  "spacing": "sm",
+                  "contents": [
+                    {
+                      "type": "text",
+                      "text": "@(item.LessonPriceType.BranchStore.IsVirtualClassroom() ? "上課/簽約分店" : "上課場所")",
+                      "color": "#aaaaaa",
+                      "size": "sm",
+                      "flex": 3,
+                      "wrap": true
+                    },
+                    {
+                      "type": "text",
+                      "text": "@(item.LessonPriceType.BranchStore.IsVirtualClassroom() ? $"遠距/{item.CourseContractExtension.BranchStore.BranchName}" : item.CourseContractExtension.BranchStore.BranchName)",
+                      "wrap": true,
+                      "color": "#666666",
+                      "size": "sm",
+                      "flex": 5
+                    }
+                  ]
+                },
+                {
+                  "type": "box",
+                  "layout": "baseline",
+                  "spacing": "sm",
+                  "contents": [
+                    {
+                      "type": "text",
+                      "text": "購買堂數",
+                      "color": "#aaaaaa",
+                      "size": "sm",
+                      "flex": 3,
+                      "wrap": true
+                    },
+                    {
+                      "type": "text",
+                      "text": "@(item.TotalLessonCount(models))",
+                      "wrap": true,
+                      "color": "#666666",
+                      "size": "sm",
+                      "flex": 5
+                    }
+                  ]
+                },
+                {
+                  "type": "box",
+                  "layout": "baseline",
+                  "spacing": "sm",
+                  "contents": [
+                    {
+                      "type": "text",
+                      "text": "簽約體能顧問",
+                      "color": "#aaaaaa",
+                      "size": "sm",
+                      "flex": 3,
+                      "wrap": true
+                    },
+                    {
+                      "type": "text",
+                      "text": "@(item.ServingCoach.UserProfile.FullName())",
+                      "wrap": true,
+                      "color": "#666666",
+                      "size": "sm",
+                      "flex": 5
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "footer": {
+          "type": "box",
+          "layout": "vertical",
+          "spacing": "sm",
+          "contents": [
+            {
+              "type": "separator",
+              "color": "#d9d9d9"
+            },
+            {
+              "type": "button",
+              "style": "link",
+              "height": "sm",
+              "action": {
+                "type": "uri",
+                "label": "👉立即簽名",
+                "uri": "@Html.Raw($"{Startup.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/CornerKick/ToSignCourseContract")}?KeyID={HttpUtility.UrlEncode(item.ContractID.EncryptKey())}&encUID={HttpUtility.UrlEncode(item.OwnerID.EncryptKey())}")"
+                }
+                },
+                {
+                "type": "spacer",
+                "size": "sm"
+                }
+                ],
+                "flex": 0
+                }
+                }
+                }
+                ]
+                }

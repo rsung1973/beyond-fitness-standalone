@@ -1,0 +1,111 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+@using Newtonsoft.Json
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    UserProfile _model;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _modelState = ViewContext.ModelState;
+    _model = (UserProfile)this.Model;
+
+    DateTime start = DateTime.Today.FirstDayOfWeek();
+    //var items = models.PromptLearner().FilterLearnerWithBirthday(start, start.AddDays(7));
+    var items = _model.ServingCoach.PromptLearnerWithBirthday(models, 7);
+
+}
+<div class="col-lg-6 col-md-12 col-sm-12 todayBirth">
+    <div class="body p-10">
+        <div class="icon text-danger"><i class="zmdi livicon-evo" data-options="name: gift.svg; size: 30px; style: original; autoPlay:true"></i> </div>
+        <div class="content">
+            @{
+                int startDay = DateTime.Today.Month * 100 + DateTime.Today.Day;
+                int todayCount = items.Where(u => u.BirthdateIndex == startDay).Count();                
+            }
+            <div class="text">今日生日</div>
+            <h5 class="number">
+                @if (todayCount > 0)
+                {
+                    <a href="#">@(todayCount)</a>
+                }
+                else
+                {
+                    @(todayCount)
+                }
+            </h5>
+        </div>
+    </div>
+</div>
+<div class="col-lg-6 col-md-12 col-sm-12 weekBirth">
+    <div class="body p-10">
+        <div class="icon"><i class="zmdi zmdi-cake"></i> </div>
+        <div class="content">
+            @{
+                int weekCount = items.Count();
+            }
+            <div class="text">本週生日</div>
+            <h5 class="number">
+                @if (weekCount > 0)
+                {
+                    <a href="#">@(weekCount)</a>
+                }
+                else
+                {
+                    @(weekCount)
+                }
+            </h5>
+        </div>
+    </div>
+</div>
+@if (todayCount > 0)
+{
+    <script>
+        $('.todayBirth').on('click',function() {
+            showLoading();
+            $.post('@Html.Raw(Url.Action("ShowLearnerAboutToBirth", "LearnerProfile"))', {'keyID':'@(_model.UID.EncryptKey())','BirthIncomingDays':0}, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    Swal.fire(
+                        'Oops...',
+                        data.message,
+                        'warning'
+                    )
+                } else {
+                    $(data).appendTo($('body'));
+                }
+            });
+        });
+    </script>
+}
+@if (items.Count() > 0)
+{
+    <script>
+        $('.weekBirth').on('click',function() {
+            showLoading();
+            $.post('@Html.Raw(Url.Action("ShowLearnerAboutToBirth", "LearnerProfile"))', {'keyID':'@(_model.UID.EncryptKey())','BirthIncomingDays':7}, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    Swal.fire(
+                        'Oops...',
+                        data.message,
+                        'warning'
+                    )
+                } else {
+                    $(data).appendTo($('body'));
+                }
+            });
+        });
+    </script>
+}
+
+

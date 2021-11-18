@@ -1,0 +1,134 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    UserProfile _model;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _model = (UserProfile)this.Model;
+}
+@{
+    IQueryable<LessonTime> lessons = _model.UID.PromptLearnerLessons(models);
+    IQueryable<LessonTime> coachPI = _model.UID.PromptCoachPILessons(models);
+}
+<div class="tab-content p-l-5 p-r-5">
+    @{
+        DateTime startDate = DateTime.Today.FirstDayOfMonth();
+        var items = lessons.Where(l => l.ClassTime >= startDate && l.ClassTime < startDate.AddMonths(1));
+        var coachPIItems = coachPI.Where(l => l.ClassTime >= startDate && l.ClassTime < startDate.AddMonths(1));
+        var lessonsCount = items.Count() + coachPIItems.Count();
+    }
+    <div class="tab-pane active" id="thismonth">
+        <ul class="row profile_state list-unstyled">
+            <li class="col-lg-3 col-md-3 col-6">
+                <div class="body">
+                    <div class="regular-info">
+                        <div class="icon">
+                            <img src="@(lessonsCount < 4
+                                ? "images/facesmile/easy-2.png"
+                                : lessonsCount > 7
+                                ? "images/facesmile/hard-2.png"
+                                : "images/facesmile/regular-2.png")">
+                        </div>
+                    </div>
+                </div>
+            </li>
+            @{
+                ReviewLesson(items, coachPIItems);
+            }
+        </ul>
+    </div>
+    @{
+        startDate = startDate.AddMonths(-1);
+        items = lessons.Where(l => l.ClassTime >= startDate && l.ClassTime < startDate.AddMonths(1));
+        coachPIItems = coachPI.Where(l => l.ClassTime >= startDate && l.ClassTime < startDate.AddMonths(1));
+        lessonsCount = items.Count() + coachPIItems.Count();
+    }
+    <div class="tab-pane" id="previousmonth">
+        <ul class="row profile_state list-unstyled">
+            <li class="col-lg-3 col-md-3 col-6">
+                <div class="body">
+                    <div class="regular-info">
+                        <div class="icon">
+                            <img src="@(lessonsCount < 4
+                                ? "images/facesmile/easy-2.png"
+                                : lessonsCount > 7
+                                ? "images/facesmile/hard-2.png"
+                                : "images/facesmile/regular-2.png")">
+                        </div>
+                    </div>
+                </div>
+            </li>
+            @{ 
+                ReviewLesson(items, coachPIItems);
+            }
+        </ul>
+    </div>
+    @{
+        startDate = startDate.AddMonths(2);
+        items = lessons.Where(l => l.ClassTime >= startDate && l.ClassTime < startDate.AddMonths(1));
+        coachPIItems = coachPI.Where(l => l.ClassTime >= startDate && l.ClassTime < startDate.AddMonths(1));
+        lessonsCount = items.Count() + coachPIItems.Count();
+    }
+    <div class="tab-pane" id="nextmonth">
+        <ul class="row profile_state list-unstyled">
+            <li class="col-lg-3 col-md-3 col-6">
+                <div class="body">
+                    <div class="regular-info">
+                        <div class="icon">
+                            <img src="@(lessonsCount < 4
+                                ? "images/facesmile/easy-2.png"
+                                : lessonsCount > 7
+                                ? "images/facesmile/hard-2.png"
+                                : "images/facesmile/regular-2.png")">
+                        </div>
+                    </div>
+                </div>
+            </li>
+            @{
+                ReviewLesson(items, coachPIItems);
+            }
+        </ul>
+    </div>
+</div>
+
+@{
+    void ReviewLesson(IQueryable<LessonTime> items, IQueryable<LessonTime> coachPI)
+    {
+        var count = items.PTLesson().Count();
+        <li class="col-lg-3 col-md-3 col-6">
+            <div class="body">
+                <i class="zmdi zmdi-accounts col-amber"></i>
+                <h5 class="m-b-0 number counto" data-from="0" data-to="@count" data-speed="1000" data-fresh-interval="700">@(count)</h5>
+                <small>P.T</small>
+            </div>
+        </li>
+        count = items.PILesson().Count() + coachPI.Count();
+        <li class="col-lg-3 col-md-3 col-6">
+            <div class="body">
+                <i class="zmdi zmdi-account col-purple"></i>
+                <h5 class="m-b-0 number counto" data-from="0" data-to="@count" data-speed="1000" data-fresh-interval="700">@(count)</h5>
+                <small>P.I</small>
+            </div>
+        </li>
+        count = items.STLesson().Count();
+        <li class="col-lg-3 col-md-3 col-6">
+            <div class="body">
+                <i class="zmdi zmdi-home col-green"></i>
+                <h5 class="m-b-0 number counto" data-from="0" data-to="@count" data-speed="1000" data-fresh-interval="700">@(count)</h5>
+                <small>S.T</small>
+            </div>
+        </li>
+    }
+}

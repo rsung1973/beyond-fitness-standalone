@@ -1,0 +1,113 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    LessonTime _model;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (LessonTime)this.Model;
+    var profile = await Context.GetUserAsync();
+}
+@{ 
+    UserProfile learner = (UserProfile)ViewBag.Learner;
+    var plan = _model.AssertTrainingPlan(models, UID: learner.UID);
+    bool isModal = (bool?)ViewBag.IsModal == true ? true : false;
+}
+<div class="accordion custom" id="accordion">
+    <div class="accordion-header">
+        <ul class="lesson-box">
+            <li class="lesson-spot">
+                <span class="title">
+                    @($"{_model.ClassTime:yyyy/MM/dd HH:mm}")-@($"{_model.ClassTime.Value.AddMinutes(_model.DurationInMinutes.Value):HH:mm}") - @(_model.LessonTypeStatus())
+                    @if (_model.IsPISession())
+                    {
+                        <text>《@(_model.RegisterLesson.LessonPriceType?.UsageTypeDescription?.Usage)》</text>
+                    }
+                    @(_model.AsAttendingCoach.UserProfile.FullName())
+                    <i class="zmdi zmdi-pin"></i>@(_model.BranchID.HasValue ? _model.BranchStore.BranchName : _model.Place)
+                </span>
+                @if (isModal && plan.FavoriteLesson.Count > 0)
+                {
+                    <a href="javascript:void(0);" class="col-red"> <i class="@(plan.FavoriteLesson.Any(f => f.UID == profile.UID) ? "myfavaroit like" : "myfavaroit")"></i> <span>@(plan.FavoriteLesson.Count > 0 ? plan.FavoriteLesson.Count.ToString() : null)</span> </a>
+                }
+                @{
+                    await Html.RenderPartialAsync("~/Views/LearnerProfile/Module/LessonContentSparkline.cshtml", _model);
+                }
+                @if (_model.IsCoachPISession())
+                {
+                    <ul class="list-unstyled team-info margin-0 float-right inlineblock">
+                        @{
+                            ViewBag.ProfileClass = "popfit";
+                        }
+                        @foreach (var item in _model.GroupingLesson.LessonTime.Where(l => l.LessonID != _model.LessonID))
+                        {
+                            var lessonItem = item.RegisterLesson;
+                            <li onclick="$('').launchDownload('@Html.Raw(Url.Action("LessonTrainingContent", "ConsoleHome", new { KeyID = item.LessonID.EncryptKey(), LearnerID = lessonItem.UID }))', { });">
+                                @{
+                                    await Html.RenderPartialAsync("~/Views/Common/ProfileImage.cshtml", lessonItem.UserProfile);
+                                }
+                            </li>
+                        }
+                    </ul>
+                }
+                else if (_model.GroupingLesson.RegisterLesson.Count > 1)
+                {
+                    <ul class="list-unstyled team-info margin-0 float-right inlineblock">
+                        @{
+                            ViewBag.ProfileClass = "popfit";
+                        }
+                        @foreach (var item in _model.GroupingLesson.RegisterLesson.Where(r => r.UID != learner.UID))
+                        {
+                            <li onclick="$('').launchDownload('@Html.Raw(Url.Action("LessonTrainingContent", "ConsoleHome", new { KeyID = _model.LessonID.EncryptKey(), LearnerID = item.UID }))', { });">
+                                @{
+                                    await Html.RenderPartialAsync("~/Views/Common/ProfileImage.cshtml", item.UserProfile);
+                                }
+                            </li>
+                        }
+                    </ul>
+                }
+            </li>
+            <li class="lesson-item">
+                @{
+                    await Html.RenderPartialAsync("~/Views/LearnerProfile/Module/LessonEmphasis.cshtml", _model);
+                }
+            </li>
+            @if (_model.BranchStore?.IsVirtualClassroom() == true)
+            {
+                <li>
+                    <a href="javascript:editOnlineUrl('@($"{_model.LessonID.EncryptKey()}")',$('#onlineUrl').text());">
+                        編輯遠距視訊連結 <span id="onlineUrl">@(_model.Place)</span>
+                        <i class="zmdi livicon-evo" data-options="name: pencil.svg; size: 20px; style: original; strokeStyle:round; strokeColor:#052333; strokeWidth:2px; autoPlay:true"></i>
+                    </a>
+                </li>
+            }
+        </ul>
+    </div>
+    @{
+        await Html.RenderPartialAsync("~/Views/LearnerProfile/Module/LessonTrainingPlan.cshtml", _model);
+    }
+</div>
+<script>
+
+    function sparkline($current) {
+        $current.sparkline('html', {
+            type: "pie",
+            offset: 90,
+            width: "40px",
+            height: "40px",
+            sliceColors: ['rgba(245, 166, 35, .8)', 'rgba(255, 78, 100, .8)', 'rgba(126, 211, 33, .8)', 'rgba(74, 144, 226, .8)', 'rgba(244, 237, 0, .8)']
+        });
+    }
+
+</script>

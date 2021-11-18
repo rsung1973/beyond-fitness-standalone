@@ -1,0 +1,144 @@
+﻿
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using WebHome.Helper.BusinessOperation
+@using Newtonsoft.Json
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    MonthlyIndicator _model;
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (MonthlyIndicator)this.Model;
+}
+@{
+    MonthlyIndicatorQueryViewModel _viewModel = (MonthlyIndicatorQueryViewModel)ViewBag.ViewModel;
+    IQueryable<MonthlyCoachRevenueIndicator> items = models.GetTable<MonthlyCoachRevenueIndicator>().Where(r => r.PeriodID == _model.PeriodID);
+
+    if (_viewModel.BranchID.HasValue)
+    {
+        items = items.Where(r => r.BranchID == _viewModel.BranchID);
+    }
+
+}
+<table class="table table-striped table-custom nowrap revenueDT" style="width:100%">
+    <thead>
+        <tr>
+            <th>體能顧問</th>
+            <th>Level</th>
+            <th>課數</th>
+            <th>平均單價</th>
+            <th>上課業績</th>
+            <th>收款業績</th>
+            <th>總業績</th>
+            <th>BR</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in items)
+        {
+            <tr onclick='processCoachIndicator(@Html.Raw(JsonConvert.SerializeObject(new { KeyID = item.PeriodID.EncryptKey(),item.CoachID,item.BranchID })));'>
+                <td>
+                    <span class="list-icon">
+                        @{
+                            ViewBag.ProfileClass = "patients-img";
+                            await Html.RenderPartialAsync("~/Views/Common/ProfileImage.cshtml", item.ServingCoach.UserProfile);
+                        }
+                    </span>
+                    <span class="hidden-sm-down">@(item.ServingCoach.UserProfile.FullName())</span>
+                </td>
+                <td>@(item.ProfessionalLevel?.LevelName)</td>
+                <td>@(item.CompleteLessonsGoal)</td>
+                <td>@($"{item.AverageLessonPrice:##,###,###,###}")</td>
+                <td>@($"{item.LessonTuitionGoal:##,###,###,###}")</td>
+                <td>@($"{item.AchievementGoal:##,###,###,###}")</td>
+                <td>@($"{item.LessonTuitionGoal + item.AchievementGoal:##,###,###,###}")</td>
+                <td class="text-center">@(item.BRCount)</td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <th><strong>總計</strong></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th>@($"{items.Sum(i => i.LessonTuitionGoal):##,###,###,###}")</th>
+            <th>@($"{items.Sum(i => i.AchievementGoal):##,###,###,###}")</th>
+            <th>@($"{items.Sum(i => i.LessonTuitionGoal + i.AchievementGoal):##,###,###,###}")</th>
+            <th>@(items.Sum(i => i.BRCount))</th>
+        </tr>
+    </tfoot>
+</table>
+<script>
+
+    $(function () {
+
+        if ($global.dtCoachIndicator != undefined) {
+            $global.dtCoachIndicator.destroy();
+        }
+
+        $global.dtCoachIndicator = $('.revenueDT').DataTable({
+            "filter": false,
+            "bPaginate": false,
+            "info": true,
+            "order": [
+                [1, 'asc']
+            ],
+            "ordering": true,
+            "language": {
+                "lengthMenu": "每頁顯示 _MENU_ 筆資料",
+                "zeroRecords": "沒有資料也是種福氣",
+                "info": "共 _TOTAL_ 筆，目前顯示第 _START_ 至 _END_筆資料",
+                "infoEmpty": "顯示 0 筆的資料",
+                "infoFiltered": "(總共從 _MAX_ 筆資料過濾)",
+                "loadingRecords": "快馬加鞭處理中...",
+                "processing": "快馬加鞭處理中...",
+                "search": "快速搜尋：",
+                "paginate": {
+                    "first": "第一頁",
+                    "last": "最後一頁",
+                    "next": "下一頁",
+                    "previous": "前一頁"
+                },
+            },
+            scrollX: true,
+            scrollCollapse: true,
+            fixedColumns: {
+                leftColumns: 1
+            },
+            "columnDefs": [{
+                targets: [2, 3, 4, 5, 6],
+                className: "align-center more"
+
+            },
+            {
+                targets: [0, 1],
+                className: "more"
+
+            }
+            ],
+        });
+
+        setTimeout(function () {
+            var $btnSelect = $('.dataTables_length div.btn-group.bootstrap-select.form-control.form-control-sm');
+            var $menu = $btnSelect.find('select');
+            $btnSelect.before($menu);
+            $btnSelect.remove();
+            $global.dtCoachIndicator.draw();
+        }, 1000);
+
+        $('.drevenueDT').resize();
+
+
+    });
+
+</script>
+

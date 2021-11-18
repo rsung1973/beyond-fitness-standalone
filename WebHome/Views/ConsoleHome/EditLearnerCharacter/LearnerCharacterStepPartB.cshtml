@@ -1,0 +1,228 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using WebHome.Components
+
+@using Newtonsoft.Json
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    UserProfile _model;
+    LearnerCharacterViewModel _viewModel;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _modelState = ViewContext.ModelState;
+    _model = (UserProfile)this.Model;
+    _viewModel = (LearnerCharacterViewModel)ViewBag.ViewModel;
+    UserProfile _learner = (UserProfile)ViewBag.DataItem;
+}
+@{
+    var pdqItems = models.GetTable<PDQQuestion>().Where(p => p.GroupID == (int)Naming.QuestionnaireGroup.滿意度問卷調查_2017)
+        .OrderBy(q => q.QuestionNo)
+        .ToArray();
+}
+<!-- BEGIN STEP-->
+<div class="tsf-step step-1">
+    <div class="row">
+        <div class="cwidget-scroll">
+            <ul class="chat-widget m-r-5 clearfix">
+                <li class="left float-left step10">
+                    <img src="images/questionnaire/genie.png" class="rounded-circle">
+                    <div class="chat-info">
+                        <span class="message">Hello, @(_learner.Nickname)<br>為了讓您的教練的上課內容跟目標更貼近您的近期的生活與體能變化，Beyond Fitness需要問您幾個簡短且重要的問題喔以給予您個人最大的幫助喔。</span>
+                    </div>
+                </li>
+                @{
+                    var items = pdqItems;
+                    foreach (var item in items)
+                    {
+                        <li class="left float-left m-l-50 step11">
+                            @*<img src="images/avatar/noname-2.jpg" class="rounded-circle">*@
+                            <div class="chat-info">
+                                @{
+                                    if(item.QuestionType == (int)Naming.QuestionType.單選題)
+                                    {
+                                        await Html.RenderPartialAsync("~/Views/ConsoleHome/EditLearnerCharacter/PDQItemSelection.cshtml", item);
+                                    }
+                                    else
+                                    {
+                                        await Html.RenderPartialAsync("~/Views/LearnerProfile/Module/PDQItem.cshtml", item);
+                                    }
+                                }
+                            </div>
+                        </li>
+                                    }
+                }
+                <li class="right step24 next">
+                    @{
+                        ViewBag.ProfileClass = "rounded-circle";
+                        await Html.RenderPartialAsync("~/Views/Common/ProfileImage.cshtml", _learner);
+                    }
+                    <div class="chat-info" onclick="javascript:saveNext(0,@(JsonConvert.SerializeObject(items.Select(p=>p.QuestionID))), 2);">
+                        <span class="message">
+                            BEYOND FITNESS已經確實瞭解您的想法，接著討論訓練目標吧。<i class="zmdi livicon-evo" data-options="name: hand-right.svg; size: 30px; style: original; strokeStyle:round; strokeColor:#052333; strokeWidth:2px; autoPlay:true"></i>
+                        </span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END STEP-->
+<!-- BEGIN STEP-->
+<div class="tsf-step step-2">
+    @{
+        await Component.InvokeAsync(typeof(EditExercisePurposeViewComponent), new ExercisePurposeViewModel { KeyID = _learner.UID.EncryptKey() });
+    }
+    <button type="button" class="btn bg-darkteal btn-round float-right" onclick="javascript: $global.commitExercisePurpose(function () { commitLearnerCharacter(); });">確定，不後悔</button>
+</div>
+<!-- END STEP-->
+<script>
+
+        function saveCurrent(questID, onDone, maxCount,noChecked) {
+            var $formData = $('[data-id="' + questID + '"]').serializeObject();
+            $formData.QuestionID = questID;
+            $formData.NoChecked = noChecked;
+            if (maxCount && Array.isArray($formData.SuggestionID) && $formData.SuggestionID.length > maxCount) {
+                Swal.fire(
+                    'Oops...',
+                    '最多選擇' + maxCount + '項',
+                    'error'
+                )
+                return;
+            }
+            $.post('@Html.Raw(Url.Action("CommitPDQ", "LearnerProfile", new { KeyID = _learner.UID.EncryptKey(),_viewModel.QuestionnaireID}))', $formData, function (data) {
+                if ($.isPlainObject(data)) {
+                    if (data.result) {
+                        if (onDone) {
+                            onDone();
+                        }
+                    } else {
+                        Swal.fire(
+                            'Oops...',
+                            data.message,
+                            'warning'
+                        )
+                        $('input[name="HealthCheck"]').prop('checked', false);
+                    }
+                } else {
+                    $(data).appendTo($('body'));
+                }
+            });
+        }
+
+        function commitLearnerCharacter() {
+            showLoading();
+            $.post('@Html.Raw(Url.Action("CommitLearnerCharacter", "LearnerProfile"))', @Html.Raw(JsonConvert.SerializeObject(_viewModel)), function (data) {
+                if ($.isPlainObject(data)) {
+                    if (data.result) {
+                        $('').launchDownload('@Html.Raw(Url.Action("LearnerProfile","ConsoleHome",new { KeyID = _learner.UID.EncryptKey() }))', {});
+                    } else {
+                        Swal.fire(
+                            'Oops...',
+                            data.message,
+                            'warning'
+                        )
+                    }
+                } else {
+                    $(data).appendTo($('body'));
+                }
+            });
+        }
+
+    function startEditingCharacter(step) {
+
+        if (step) {
+            nextStep(1);
+        } else {
+            $global.rejectCharacterDone = function () {
+                $('').launchDownload('@Html.Raw(Url.Action("LearnerProfile","ConsoleHome"))', { 'keyID': '@(_learner.UID.EncryptKey())' });
+            };
+        }
+    }
+
+        //呼叫NextStep
+        this.nextStep = function (index) {
+            _tsfWizard.nextStep();
+            if (index < 4) {
+                nextQuestion(index, -1, true);
+            }
+
+            if (index == 3) {
+
+            }
+        }
+
+        //顯示下一題
+        this.nextQuestion = function (index, index2, show) {
+            var nextClassName = '.chat-widget li' + '.step' + index + (index2 + 1);
+            var className = '.chat-widget li' + '.step' + index + index2 + '.next';
+            var thisName = '.chat-widget li' + '.step' + index + index2;
+            if (show) {
+                $(className).hide();
+            } else {
+                $(thisName).hide();
+            }
+
+            $(nextClassName).slideDown(1000);
+
+            if (index == 2 && index2 == 0) {
+                //顯示8次上課內的各階段圓餅圖總計
+                showStagePie();
+            }
+        }
+
+        //顯示上一題
+        this.preQuestion = function (index, index2, show) {
+            var preClassName = '.chat-widget li' + '.step' + index + (index2 - 1);
+            var className = '.chat-widget li' + '.step' + index + index2 + '.next';
+            var thisName = '.chat-widget li' + '.step' + index + index2;
+            if (show) {
+                $(className).hide();
+            } else {
+                $(thisName).hide();
+            }
+
+            $(preClassName).slideDown(1000);
+        }
+
+    function saveNext(idx,questID,toStepIndex) {
+        if (idx < questID.length - 1) {
+            saveCurrent(questID[idx], function () {
+                saveNext(idx + 1, questID, toStepIndex);
+            });
+        } else {
+            saveCurrent(questID[idx], function () {
+                nextStep(2);
+            });
+        }
+    }
+
+    $('input[name="HealthCheck"]').change(function (event) {
+        if (event.currentTarget.checked) {
+            //saveCurrent(event.currentTarget.value, function () {
+            //    setTimeout(function () {
+            //        nextStep(2);
+            //    }, 1000);
+            //});
+            saveNext(0,@(JsonConvert.SerializeObject(pdqItems.Take(4).Select(p=>p.QuestionID))), 2);
+        }
+    });
+
+        //顯示8次上課內的各階段圓餅圖總計
+        this.showStagePie = function () {
+            $(".sparkline-pie").sparkline('html', {
+                type: "pie",
+                offset: 90,
+                width: "40px",
+                height: "40px",
+                sliceColors: ['rgba(245, 166, 35, .8)', 'rgba(74, 144, 226, .8)', 'rgba(126, 211, 33, .8)', 'rgba(255, 78, 100, .8)', 'rgba(244, 237, 0, .8)']
+            });
+        }
+</script>

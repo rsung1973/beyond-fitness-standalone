@@ -1,0 +1,42 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    IEnumerable<CourseContract> _model;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (IEnumerable<CourseContract>)this.Model;
+}
+@{
+    IEnumerable<CourseContract> items = _model;
+}
+@if (items.Count() > 0)
+{
+    <hr />
+    foreach (var item in items)
+    {
+        <div class="event-name b-PE row" onclick="$('').launchDownload('@Html.Raw(Url.Action("EditPaymentForContract", "ConsoleHome", new { KeyID = item.ContractID.EncryptKey() }))');">
+            <div class="col-2 text-center">
+                <h4>@(item.RemainedLessonCount())<span>@(item.Lessons)</span></h4>
+            </div>
+            <div class="col-10">
+                <h6>@(item.ContractName())</h6>
+                <p class="col-blush">收款期限 @($"{item.PayoffDue:yyyy/MM/dd}")</p>
+                <p class="col-green">@(item.ServingCoach.UserProfile.FullName())</p>
+                <address><i class="zmdi zmdi-pin"></i> @(item.CourseContractExtension.BranchStore.BranchName) - 合約迄日：@($"{item.Expiration:yyyy/MM/dd}")</address>
+            </div>
+        </div>
+    }
+}
+

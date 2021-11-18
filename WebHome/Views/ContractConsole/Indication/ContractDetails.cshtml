@@ -1,0 +1,44 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    CourseContract _model;
+
+
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (CourseContract)this.Model;
+}
+<script>
+    //點選合約詳細資料
+    $(function () {
+        if (!$global.showContractDetails) {
+            $global.showContractDetails = function (keyID) {
+                showLoading();
+                $.post('@Html.Raw(Url.Action("ShowContractDetails", "ContractConsole"))', { 'keyID': keyID }, function (data) {
+                    hideLoading();
+                    if ($.isPlainObject(data)) {
+                        alert(data.message);
+                    } else {
+                        $(data).appendTo($('body'));
+                    }
+                });
+            };
+        }
+    });
+
+</script>
+
+

@@ -1,0 +1,83 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@using WebHome.Views.MainActivity.Resources
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _modelState = ViewContext.ModelState;
+
+    Layout = "~/Views/MainActivity/Template/MainPage.cshtml";
+
+}
+
+@section CustomHeader {
+
+}
+
+@section TailPageJavaScriptInclude {
+    <!-- // 安心承諾 -->
+    <section class="features-btm">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 text-center">
+                    <div class="image wow zoomIn" data-wow-delay=".3s">
+                        <img src="images/landing/banner/banner-about.jpg">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <h1>@Html.Raw(NamingItem.IndexFeature1)</h1>
+                    @Html.Raw(NamingItem.Features1Desc)
+                    <a href="javascript:bindTrackingCode('預約諮詢', 'AddToWishlist', '@(Url.Action("BookNow"))', null)" class="btn btn-default btn-round btn-simple">@Html.Raw(NamingItem.BookNow)</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- // 安心承諾 -->
+    <section class="features-btm white">
+        <div class="container">
+            <div class="row reverse">
+                <div class="col-md-6">
+                    <h1>@Html.Raw(NamingItem.IndexFeature2)</h1>
+                    @Html.Raw(NamingItem.Features2Desc)
+                </div>
+                <div class="col-md-6 text-center">
+                    <div class="image wow zoomIn" data-wow-delay=".8s">
+                        <img src="images/landing/banner/banner-index.jpg">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- // 安心承諾 -->
+    <section class="features-btm">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 text-center">
+                    <div class="image wow zoomIn" data-wow-delay=".3s">
+                        <img src="images/landing/banner/banner-join.jpg">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <h1>@Html.Raw(NamingItem.IndexFeature3)</h1>
+                    @Html.Raw(NamingItem.Features3Desc)
+                    <a href="javascript:bindTrackingCode('預約諮詢', 'AddToWishlist', '@(Url.Action("BookNow"))', null)" class="btn btn-default btn-round btn-simple">@Html.Raw(NamingItem.BookNow)</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- // 聯絡我們 -->
+    @{ await Html.RenderPartialAsync("~/Views/MainActivity/Module/ContactItem.cshtml");}
+
+}

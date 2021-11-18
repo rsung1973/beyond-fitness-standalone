@@ -1,0 +1,44 @@
+
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@using CommonLib.Utility
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _modelState = ViewContext.ModelState;
+
+    String[] _model = (String[])this.Model;
+
+}
+<h2>查詢區間：<span id="@(_model[0])"></span></h2>
+@if (ViewBag.DisabledMenu != true)
+{
+    <ul class="header-dropdown">
+        <li class="dropdown">
+            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown"
+               role="button" aria-haspopup="true" aria-expanded="false">
+                <i class="zmdi zmdi-search-for"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-right slideUp float-right">
+                <li><a href="@Html.Raw(_model[1])">前3個月</a></li>
+                <li><a href="@Html.Raw(_model[2])">前6個月</a></li>
+                <li><a href="@Html.Raw(_model[3])">前13個月</a></li>
+                <li><a href="@Html.Raw(_model[4])">自訂區間查詢</a></li>
+            </ul>
+        </li>
+        @RenderSection("OtherMenu", false)
+    </ul>
+}
+
+@RenderBody()

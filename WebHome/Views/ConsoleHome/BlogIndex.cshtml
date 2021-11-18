@@ -1,0 +1,89 @@
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+@using Newtonsoft.Json
+@{
+    Layout = "~/Views/ConsoleHome/Template/MainPage.cshtml";
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    CourseContract _item;
+    UserProfile _model;
+    BlogArticleQueryViewModel _viewModel;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _modelState = ViewContext.ModelState;
+    _model = (UserProfile)this.Model;
+    _viewModel = (BlogArticleQueryViewModel)ViewBag.ViewModel;
+    _item = (CourseContract)ViewBag.DataItem;
+
+}
+
+
+@section CustomHeader {
+    <!-- JQuery DataTable Css -->
+    <link href="plugins/jquery-datatable/DataTables-1.10.18/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link href="plugins/jquery-datatable/Responsive-2.2.2/css/responsive.bootstrap4.min.css" rel="stylesheet">
+    <link href="plugins/jquery-datatable/FixedColumns-3.2.5/css/fixedColumns.bootstrap4.min.css" rel="stylesheet">
+    <!-- Bootstrap Datetimepick -->
+    
+    <link href="css/smartcalendar-2.css" rel="stylesheet" />
+    <!-- Custom Css -->
+    <link rel="stylesheet" href="css/customelist.css?1.1" />
+}
+
+<!-- Main Content -->
+<section class="content file_manager">
+    @{
+        ViewBag.BlockHeader = "我的部落格";
+        ViewBag.InsertPartial = "~/Views/Blog/Module/PlusIndication.cshtml";
+        await Html.RenderPartialAsync("~/Views/ConsoleHome/Module/BlockHeader.cshtml", _model);
+    }
+
+    <div class="container-fluid">
+        <div class="row clearfix">
+            @foreach (var item in models.GetTable<BlogCategoryDefinition>())
+            {
+                <div class="col-lg-3 col-md-4 col-sm-12">
+                    <div class="card">
+                        <div class="file">
+                            <a href="@(Url.Action("BlogArticleList","ConsoleHome",new { item.CategoryID }))">
+                                <div class="image">
+                                    <img src="@(item.CategoryIndication)" class="img-fluid" />
+                                </div>
+                                <div class="file-name">
+                                    <p class="m-b-5 text-muted">@(item.Category)</p>
+                                    <small>共：@(item.BlogTag.Count)篇</small>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+@section TailPageJavaScriptInclude {
+    <!--Sparkline Plugin Js-->
+    <script src="plugins/jquery-sparkline/jquery.sparkline.js"></script>
+    <!-- SweetAlert Plugin Js -->
+    <script src="plugins/sweetalert/sweetalert.min.js"></script>
+    <!-- Jquery DataTable Plugin Js -->
+    <script src="bundles/datatablescripts.bundle.js"></script>
+    <script src="plugins/jquery-datatable/Responsive-2.2.2/js/dataTables.responsive.min.js"></script>
+    <script src="plugins/jquery-datatable/FixedColumns-3.2.5/js/dataTables.fixedColumns.min.js"></script>
+
+    @{ await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/KnobJS.cshtml");}
+
+
+    <script type="text/javascript"></script>
+}
+
+

@@ -1,0 +1,128 @@
+
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@using CommonLib.Utility
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    MonthlyIndicatorQueryViewModel _viewModel;
+    IQueryable<MonthlyIndicator> _model;
+
+    String _chartID = ViewBag.ChartID as String;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _modelState = ViewContext.ModelState;
+    _viewModel = (MonthlyIndicatorQueryViewModel)ViewBag.ViewModel;
+
+    _model = (IQueryable<MonthlyIndicator>)this.Model;
+
+    IQueryable<MonthlyIndicator> monthlyItems = _model;
+    MonthlyRevenueGoal[] items = models.GetTable<MonthlyRevenueGoal>()
+            .Join(monthlyItems, g => g.PeriodID, i => i.PeriodID, (g, i) => g)
+            .ToArray();
+
+    var groups = items
+            .GroupBy(g => g.MonthlyRevenueIndicator.MonthlyIndicator.StartDate)
+            .OrderBy(g => g.Key).ToArray();
+
+    TempData["GroupItems"] = groups;
+
+    //var totalAmt = groups.Select(g => Math.Round((g.Sum(b => b.ActualSharedAchievement + b.ActualLessonAchievement) ?? 0) / 10000M, 1)).ToArray();
+    //var achievement = groups.Select(g => Math.Round((g.Sum(b => b.ActualSharedAchievement) ?? 0) / 10000M, 1)).ToList();
+    var tuition = groups.Select(g => Math.Round((g.Sum(b => b.ActualLessonAchievement ?? 0)) / 10000M, 2)).ToArray();
+    var attendance = groups.Select(g => g.Sum(b => b.ActualCompleteLessonCount ?? 0)).ToArray();
+}
+<script>
+
+    $(function () {
+    //指定圖表的配置項和資料
+        $global.echarts.option['@(_chartID)'] = {
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'cross',
+                        crossStyle: {
+                            color: '#999'
+                        }
+                    }
+                },
+                toolbox: {
+                    feature: {
+                        magicType: {show: true, type: ['line', 'bar']},
+                        restore: {show: true},
+                        saveAsImage: {show: true}
+                    }
+                },
+                legend: {
+                    data: ['上課業績', '上課數']
+                },
+                xAxis: [
+                    {
+                        type: 'category',
+                        data: @Html.Raw(items.Select(c => $"{c.MonthlyRevenueIndicator.MonthlyIndicator.StartDate:yyyyMM}").ToArray().JsonStringify()),
+                        axisPointer: {
+                            type: 'shadow'
+                        }
+                    }
+                ],
+                yAxis: [
+                    {
+                        type: 'value',
+                        name: '金額',
+                        min: 0,
+                        axisLabel: {
+                            formatter: '{value} 萬元'
+                        }
+                    },
+                    {
+                        type: 'value',
+                        name: '上課數',
+                        min: 0,
+                        axisLabel: {
+                            formatter: '{value} 堂'
+                        }
+                    }
+                ],
+                series: [
+                    {
+                        name: '上課數',
+                        type: 'line',
+                        yAxisIndex: 1,
+                        data: @Html.Raw(JsonConvert.SerializeObject(attendance)),
+                    },
+                    {
+                        name: '上課業績',
+                        type: 'bar',
+                        stack: 'achivement',
+                        label: {
+                            show:true,
+                            normal: {
+                                position: 'inside',
+                                formatter: function (v) {
+                                    var str = v.value.toString();
+                                    let reg = str.indexOf(".") > -1 ? /(\d)(?=(\d{3})+\.)/g : /(\d)(?=(?:\d{3})+$)/g;
+                                    return str.replace(reg,"$1,");
+                                }
+                            },
+                            formatter: function (v) {
+                                var str = v.value.toString();
+                                let reg = str.indexOf(".") > -1 ? /(\d)(?=(\d{3})+\.)/g : /(\d)(?=(?:\d{3})+$)/g;
+                                return str.replace(reg,"$1,");
+                            }
+                        },
+                        data: @Html.Raw(JsonConvert.SerializeObject(tuition)),
+                    }
+                ],
+            };
+    });
+
+</script>

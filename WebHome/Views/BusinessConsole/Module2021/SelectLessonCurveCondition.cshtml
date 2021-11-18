@@ -1,0 +1,63 @@
+﻿
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+    Layout = "~/Views/AchievementConsole/Module/QueryModalTemplate.cshtml";
+
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    MonthlyCoachRevenueIndicatorQueryViewModel _viewModel;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _modelState = ViewContext.ModelState;
+    _viewModel = (MonthlyCoachRevenueIndicatorQueryViewModel)ViewBag.ViewModel;
+    String _dialogID = _viewModel.DialogID ?? $"curve{DateTime.Now.Ticks}";
+    if (_viewModel.DialogID == null)
+    {
+        _viewModel.DialogID = _dialogID;
+    }
+    _viewModel.UrlAction = Url.Action("ShowMonthlyRevenueCurve", "AchievementConsole");
+
+}
+
+@section HeaderContent
+{
+    <h5>上課數折線圖查詢條件</h5>
+}
+
+@section QueryCondition
+{
+    @{ 
+        await Html.RenderPartialAsync("~/Views/AchievementConsole/Module/SelectLessonCondition.cshtml");
+    }
+}
+
+<script>
+    function showLessonCurveChart(viewModel) {
+
+        $global.hideAllModal();
+
+        showLoading();
+        $.post('@Html.Raw(Url.Action("InquireBreakEvent", "AchievementConsole"))', $global.viewModel, function (data) {
+            hideLoading();
+            if ($.isPlainObject(data)) {
+                alert(data.message);
+            } else {
+                $('#indicatorList').empty()
+                    .append($(data));
+            }
+        });
+    }
+        $(function () {
+            $global.$currentModal = $('#@(_dialogID)');
+        });
+</script>

@@ -1,0 +1,422 @@
+﻿
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using WebHome.Properties
+@using WebHome.Helper.BusinessOperation
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    CourseContract _model;
+    CourseContractMember _owner;
+    DateTime? _signatureDate;
+
+    CourseContractViewModel _viewModel = (CourseContractViewModel)ViewBag.ViewModel;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (CourseContract)this.Model;
+    _owner = _model.CourseContractMember.Where(m => m.UID == _model.OwnerID).First();
+    var item = _model.CourseContractLevel.Where(l => l.LevelID == (int)Naming.CourseContractStatus.待審核).FirstOrDefault();
+    if (item != null)
+    {
+        _signatureDate = item.LevelDate;
+    }
+    else
+    {
+        _signatureDate = DateTime.Now;
+    }
+}
+
+<div class="row" style="margin-top: 20px;margin-bottom: 5px;">
+    <div class="col-md-12">
+        <div style="@(_viewModel.Pdf == "1" ? "width: 21.5cm; height: 28cm" : "")">
+            <h1 class="text-center" style="margin-bottom: 0px"><b>體能顧問聘請服務合約</b></h1>
+            <table class="table" style="font-size: 15px">
+                <tbody>
+                    @if (_model.ContractNo != null)
+                    {
+                        <tr>
+                            <td colspan="3">合約編號：@(_model.ContractNo())</td>
+                        </tr>
+                    }
+                    <tr style="border-width: 1px; border-bottom-style: dashed;">
+                        <td colspan="3">學員資料</td>
+                    </tr>
+                    @{
+                        IEnumerable<CourseContractMember> items;
+                    }
+                    @if (_model.CourseContractType.ContractCode == "CFA")
+                    {
+                        items = _model.CourseContractMember.Where(m => m.UID == _model.OwnerID);
+                    }
+                    else
+                    {
+                        items = _model.CourseContractMember;
+                    }
+                    @foreach (var m in items)
+                    {
+                        <tr>
+                            <td>姓名：@(m.UserProfile.RealName)</td>
+                            <td colspan="2">身份證字號/護照號碼：@(m.UserProfile.UserProfileExtension.IDNo)</td>
+                        </tr>
+                        <tr>
+                            <td>性別：@(m.UserProfile.UserProfileExtension.Gender == "F" ? "女" : "男")</td>
+                            <td>出生：@(String.Format("{0:yyyy/MM/dd}", m.UserProfile.Birthday))</td>
+                            <td>聯絡電話：@(m.UserProfile.Phone)</td>
+                        </tr>
+                        <tr>
+                            <td>緊急聯絡人姓名：@(m.UserProfile.UserProfileExtension.EmergencyContactPerson)</td>
+                            <td>關係：@(m.UserProfile.UserProfileExtension.Relationship)</td>
+                            <td>緊急聯絡電話：@(m.UserProfile.UserProfileExtension.EmergencyContactPhone)</td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">地址：@(m.UserProfile.Address())</td>
+                        </tr>
+                    }
+                    <tr style="height: 1cm; border-width: 1px; border-top-style: dashed;">
+                        <td colspan="3">課程內容</td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr>
+                        <td colspan="2">名稱：@(_model.CourseContractType.TypeName)(@(_model.LessonPriceType.DurationInMinutes)分鐘)</td>
+                        <td>
+                            @if (_model.LessonPriceType.BranchStore.IsVirtualClassroom())
+                            {
+                                <text>上課場所/簽約分店：遠距/@(_model.CourseContractExtension.BranchStore.BranchName)</text>
+                            }
+                            else
+                            {
+                                <text>上課場所：@(_model.CourseContractExtension.BranchStore.BranchName)</text>
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">專業顧問建置與諮詢費：@(String.Format("{0:##,###,###,###}", (_model.TotalCost * 8 + 5) / 10))</td>
+                        <td>教練課程費：@(String.Format("{0:##,###,###,###}", (_model.TotalCost * 2 + 5) / 10))</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">購買堂數：@(_model.Lessons ?? _model.LessonPriceType?.ExpandActualLessonCount(models))</td>
+                        <td>專業顧問服務總費用：@(String.Format("{0:##,###,###,###}", _model.TotalCost))</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">顧問服務使用期限：自 @(String.Format("{0:yyyy/MM/dd}", _model.ValidFrom)) 起，至 @(String.Format("{0:yyyy/MM/dd}", _model.Expiration)) 止。</td>
+                        <td>
+                            @if (_model.CourseContractExtension?.PaymentMethod != null)
+                            {
+                                <text>付款方式：@(_model.CourseContractExtension.PaymentMethod)</text>
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="height: 2cm">備註：@(_model.Remark)@(_model.PayoffDue.HasValue ? $"帳款應付期限{_model.PayoffDue:yyyy/MM/dd}。" : null)</td>
+                        <td>
+                            @if (_model.CourseContractExtension.AttachmentID.HasValue)
+                            {
+                                <text>代辦委託書：</text>
+                                <u><a href="@Html.Raw($"{Startup.Properties["HostDomain"]}{Url.Action("GetResourceWithMime", "Information", new { HKeyID = _model.CourseContractExtension.AttachmentID.Value.EncryptHexKey() })}")" target="_blank">開啟附件</a>。</u>
+                            }
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div style="@(_viewModel.Pdf == "1" ? "font-size: 15px; position: absolute; bottom: 0px;width: 21.5cm" : "font-size: 15px")" ;>
+                <table class="table" style="margin-bottom: 0px">
+                    @if (_viewModel.Pdf != "1" && _model.CourseContractExtension.SignOnline == true)
+                    {
+                        <tr>
+                            <td colspan="2">
+                                <label class="fancy-checkbox custom-bgcolor-pink">
+                                    <input type="checkbox" checked="checked" disabled="disabled" />
+                                    <span class="col-pink">學生端線上簽名</span>
+                                </label>
+                            </td>
+                        </tr>
+                    }
+                    <tr>
+                        @if (_model.Status < (int)Naming.CourseContractStatus.待審核)
+                        {
+                            <td width="100px">
+                                <label class="fancy-checkbox custom-bgcolor-pink">
+                                    <input type="checkbox" name="extension">
+                                    <span>展延：</span>
+                                </label>
+                            </td>
+                        }
+                        else if (_model.Status == (int)Naming.CourseContractStatus.待審核)
+                        {
+                            <td width="100px">
+                                <label class="fancy-checkbox">
+                                    <input type="checkbox" name="extension" checked="checked" disabled="disabled">
+                                    <span>展延：</span>
+                                </label>
+                            </td>
+                        }
+                        else
+                        {
+                            <td width="100px">
+                                ☑ 展延：
+                            </td>
+                        }
+                    <td>
+                        @if (_model.ContractType == (int)CourseContractType.ContractTypeDefinition.CGA
+                            || _model.ContractType == (int)CourseContractType.ContractTypeDefinition.CNA
+                            || _model.LessonPriceType.BranchStore.IsVirtualClassroom())
+                        {
+                            <text>若未於上述使用期限內完成課程堂數者不得展延。</text>
+                        }
+                        else
+                        {
+                            <text>無法於上述使用期限內完成課程堂數者，得於到期前30日內申請展延使用，並得就未完成部分協商展延最多3個月內完成。</text>
+                        }
+                    </td>
+                    </tr>
+                    <tr>
+                        @if (_model.Status < (int)Naming.CourseContractStatus.待審核)
+                        {
+                            <td width="100px">
+                                <label class="fancy-checkbox custom-bgcolor-pink">
+                                    <input type="checkbox" name="booking">
+                                    <span>預約：</span>
+                                </label>
+                            </td>
+                        }
+                        else if (_model.Status == (int)Naming.CourseContractStatus.待審核)
+                        {
+                            <td width="100px">
+                                <label class="fancy-checkbox">
+                                    <input type="checkbox" name="booking" checked="checked" disabled="disabled">
+                                    <span>預約：</span>
+                                </label>
+                            </td>
+                        }
+                        else
+                        {
+                            <td width="100px">
+                                ☑ 預約：
+                            </td>
+                        }
+                        <td>須於欲使用其體能顧問服務時段至少24小時前向其負責之體能顧問預約其服務與其場地租用權力。</td>
+                    </tr>
+                    <tr>
+                        @if (_model.Status < (int)Naming.CourseContractStatus.待審核)
+                        {
+                            <td width="100px">
+                                <label class="fancy-checkbox custom-bgcolor-pink">
+                                    <input type="checkbox" name="cancel">
+                                    <span>取消：</span>
+                                </label>
+                            </td>
+                        }
+                        else if (_model.Status == (int)Naming.CourseContractStatus.待審核)
+                        {
+                            <td width="100px">
+                                <label class="fancy-checkbox">
+                                    <input type="checkbox" name="cancel" checked="checked" disabled="disabled">
+                                    <span>取消：</span>
+                                </label>
+                            </td>
+                        }
+                        else
+                        {
+                            <td width="100px">
+                                ☑ 取消：
+                            </td>
+                        }
+                        <td>如欲取消預約時段，學員必須於原定時間24小時前通知負責之體能顧問，否則該未使用之預約顧問服務仍應記入已使用之體能顧問課程堂數內。</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">您已確認並瞭解於簽署本合約後，即表示即日起您同意接受本合約正面及背面條款之相關約束及其責任。</td>
+                    </tr>
+                </table>
+                <table class="table" style="margin-bottom: 0px">
+                    <tr>
+                        <td class="p-t-0"></td>
+                        <td class="p-0">Beyond Fitness超越體能顧問有限公司</td>
+                        @if (_viewModel.Pdf == "1")
+                        {
+                            <td rowspan="3" width="150px" class="p-0 text-right"><img src="images/sign/seal.png" width="150px" /></td>
+                        }
+                    </tr>
+                    <tr>
+                        <td class="p-t-0">
+                            學員簽名：
+                            @{ ViewBag.SignatureName = "Signature";}
+                            @if (_model.CourseContractType.IsGroup == true)
+                            {
+                                foreach (var m in _model.CourseContractMember)
+                                {
+                                    await Html.RenderPartialAsync("~/Views/ContractConsole/Module/SignHere.cshtml", m);
+                                }
+                            }
+                            else
+                            {
+                                await Html.RenderPartialAsync("~/Views/ContractConsole/Module/SignHere.cshtml", _owner);
+                            }
+                        </td>
+                        <td class="p-0">
+                            @if (_model.Status >= (int)Naming.CourseContractStatus.待簽名)
+                            {
+                                <text>主管簽核代表：</text>
+                                <img src="@(_model.Status == (int)Naming.CourseContractStatus.待審核 && _viewModel.Pdf != "1"
+? (await Context.GetUserAsync()).LoadInstance(models).UserProfileExtension.Signature
+: _model.Supervisor?.UserProfileExtension.Signature)" width="200px" class="modifySignDialog_link">
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="p-t-0">
+                            @if (_model.CheckMinorLearner())
+                            {
+                                <text>家長/監護人簽名：</text>
+                                ViewBag.SignatureName = "GuardianSignature";
+                                await Html.RenderPartialAsync("~/Views/ContractConsole/Module/SignHere.cshtml", _owner);
+                            }
+                        </td>
+                        <td class="p-0">簽約體能顧問：<img src="@(_model.ServingCoach.UserProfile.UserProfileExtension.Signature)" width="200px" class="modifySignDialog_link"></td>
+                    </tr>
+                    <tr>
+                        <td class="p-t-0">日期：@(String.Format("{0:yyyy/MM/dd}", _signatureDate))</td>
+                        <td class="p-0">日期：@(String.Format("{0:yyyy/MM/dd}", _signatureDate))</td>
+                    </tr>
+                    <tr style="font-size:10px" class="p-t-0">
+                        <td colspan="2">業者名稱：超越體能顧問有限公司 / 代表人：黃政浩 / 電話：02-27152733 / 網址：https://www.beyond-fitness.com.tw/<br />營業所在地：台北市松山區南京東路四段17號B1 / 營業登記證字號：10653882400 / 修訂日期：2019/08/01</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row" style="page-break-before: always;">
+    <div class="col-md-12">
+        <div class="p-t-0" style="@(_viewModel.Pdf == "1" ? "width: 21.5cm; height: 29cm" : "")">
+            <h2 class="text-center" style="margin-bottom: 0px"><b>Beyond Fitness訓練特約條款</b></h2>
+            <table class="table" style="font-size:13px;height:2.5cm">
+                <tr>
+                    <td>
+                        本場館為超越體能顧問有限公司 (以下簡稱本公司)負責經營管理並提供各項體能顧問服務，學員權利義務均以本合約與特約條款之規定為準，相關內容應於申請時詳加閱讀，並同意遵守以維護場館之環境品質。<br />
+                        超越體能顧問有限公司已提供7天之合約審閱期，您已確認閱讀完畢。
+                    </td>
+                </tr>
+            </table>
+            @{ 
+                switch ((CourseContractType.ContractTypeDefinition)_model.ContractType)
+                {
+                    case CourseContractType.ContractTypeDefinition.CGA:
+                        await Html.RenderPartialAsync("~/Views/ContractConsole/Module/ContractTermsForCGA.cshtml");
+                        break;
+                    case CourseContractType.ContractTypeDefinition.CNA:
+                        await Html.RenderPartialAsync("~/Views/ContractConsole/Module/ContractTermsForCNA.cshtml");
+                        break;
+                    default:
+                        if (_model.LessonPriceType.BranchStore.IsVirtualClassroom())
+                        {
+                            await Html.RenderPartialAsync("~/Views/ContractConsole/Module/ContractTermsForDistance.cshtml");
+                        }
+                        else
+                        {
+                            await Html.RenderPartialAsync("~/Views/ContractConsole/Module/ContractTermsForCommon.cshtml");
+                        }
+                        break;
+                }
+            }
+            <table class="table" style="font-size:12px">
+                <tr>
+                    <td>
+                        學員簽名：
+                        @{ ViewBag.SignatureName = "Signature1";}
+                    @if (_model.CourseContractType.IsGroup == true)
+                    {
+                        foreach (var m in _model.CourseContractMember)
+                        {
+                            await Html.RenderPartialAsync("~/Views/ContractConsole/Module/SignHere.cshtml", m);
+                        }
+                    }
+                        else
+                        {
+                            await Html.RenderPartialAsync("~/Views/ContractConsole/Module/SignHere.cshtml", _owner);
+                        }
+                日期：@(String.Format("{0:yyyy/MM/dd}", _signatureDate))
+            </td>
+            @if (_viewModel.Pdf == "1")
+                    {
+                        <td rowspan="2" width="150px" class="p-0 text-right">
+                            <img src="images/sign/seal.png" width="150px" />
+                        </td>
+                    }
+                </tr>
+                <tr>
+                    <td class="p-t-0">
+                        @if (_model.CheckMinorLearner())
+                        {
+                            <text>家長/監護人簽名：</text>
+                            ViewBag.SignatureName = "GuardianSignature1";
+                    await Html.RenderPartialAsync("~/Views/ContractConsole/Module/SignHere.cshtml", _owner);
+                }
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+@if (_model.CourseContractType.ContractCode == "CFA")
+{
+    <div class="row" style="margin-top: 30px; margin-bottom: 20px;">
+        <div class="col-md-12">
+            <div class="p-t-10" style="@(_viewModel.Pdf=="1" ? "width: 21.5cm;" : "")">
+                <h2 class="text-center" style="margin-top: 0px; margin-bottom: 10px"><b>附表-學員名單</b></h2>
+                <div>
+                    <table class="table" style="font-size: 15px">
+                        <tr>
+                            <td>本人同意並授權以下人員得使用本人與超越體能顧問有限公司購買之體能顧問服務課程，任一人員(含本人)使用體能顧問服務，皆需計入體能顧問服務次數內，並應共同遵守合約及特約條款之規定。</td>
+                        </tr>
+                    </table>
+                    <table class="table table-bordered" style="font-size: 15px">
+                        <thead>
+                        <th>姓名</th>
+                        <th>身分證字號</th>
+                        <th>行動電話</th>
+                        <th>出生日期</th>
+                        <th>性別</th>
+                        </thead>
+                        <tbody>
+                            @foreach (var m in _model.CourseContractMember)
+                            {
+                                <tr>
+                                    <td>@(m.UserProfile.RealName)</td>
+                                    <td>@(m.UserProfile.UserProfileExtension.IDNo)</td>
+                                    <td>@(m.UserProfile.Phone)</td>
+                                    <td>@(String.Format("{0:yyyy/MM/dd}", m.UserProfile.Birthday))</td>
+                                    <td>@(m.UserProfile.UserProfileExtension.Gender == "F" ? "女" : "男")</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <table class="table" style="font-size: 15px">
+                        <tr>
+                            <td class="text-right">
+                                簽名：
+                                @{ ViewBag.SignatureName = "Signature2";
+                                    await Html.RenderPartialAsync("~/Views/ContractConsole/Module/SignHere.cshtml", _owner);
+                                }
+                                日期：@(String.Format("{0:yyyy/MM/dd}", _signatureDate))
+                            </td>
+                            @if (_viewModel.Pdf == "1")
+                            {
+                                <td class="p-0 text-right" width="150px"><img src="images/sign/seal.png" width="150px" /></td>
+                            }
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+}

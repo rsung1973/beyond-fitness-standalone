@@ -1,0 +1,104 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    TrainingItem _model;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (TrainingItem)this.Model;
+    TrainingItemViewModel _viewModel = (TrainingItemViewModel)ViewBag.ViewModel;
+    TrainingStage _stage = (TrainingStage)ViewBag.TrainingStage;
+    String _dialogID = (String)ViewBag.DialogID;
+}
+<div class="row clearfix">
+    <div class="col-sm-6 col-12">
+        <select name="TrainingID" class="form-control show-tick">
+            <option value="">- 請選擇類別 -</option>
+            @foreach (var item in models.GetTable<TrainingStageItem>().Where(t => t.StageID == _stage.StageID)
+                    .Select(t => t.TrainingType)
+                    .Where(t => !t.BreakMark.HasValue || t.BreakMark == false)
+                    .Where(t => t.TrainingID >= 8)
+                    .OrderByDescending(t => t.OrderIndex))
+            {
+                <option value="@item.TrainingID">@item.BodyParts</option>
+            }
+        </select>
+        <script>
+            $(function () {
+                $('#@(_dialogID) select[name="TrainingID"]').val('@_viewModel.TrainingID');
+            });
+        </script>
+    </div>
+    <div class="col-sm-6 col-12">
+        <div class="input-group">
+            <input type="text" name="Description" class="form-control form-control-danger" placeholder="動作" value="@_viewModel.Description" />
+            <span class="input-group-addon">
+                <i class="zmdi zmdi-run"></i>
+            </span>
+        </div>
+    </div>
+    <div class="col-12 p-b-10">
+        <script>
+            $(function () {
+                $global.viewModel = @(Html.Raw(JsonConvert.SerializeObject(_viewModel)));
+            });
+        </script>
+        @{
+            await Html.RenderPartialAsync("~/Views/LearnerProfile/Module/TrainingAids.cshtml", _model);
+        }
+    </div>
+    <div class="col-sm-6 col-12">
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="強度" name="GoalStrength" value="@_viewModel.GoalStrength" />
+            <span class="input-group-addon font-10">
+                強度
+            </span>
+        </div>
+    </div>
+    <div class="col-sm-6 col-12">
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="次數" value="@_viewModel.GoalTurns" name="GoalTurns" />
+            <span class="input-group-addon font-10">
+                次
+            </span>
+        </div>
+    </div>
+    <div class="col-sm-6 col-12">
+        <div class="input-group">
+            <input type="text" class="form-control form-control-danger" placeholder="時間" value="@($"{_viewModel.DurationInSeconds:.}")" name="DurationInSeconds" />
+            <span class="input-group-addon font-10">
+                秒
+            </span>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="form-group">
+            <textarea rows="2" class="form-control no-resize" placeholder="其他更多說明" name="Remark">@_viewModel.Remark</textarea>
+        </div>
+    </div>
+    <div class="col-12">
+        <label class="fancy-checkbox custom-bgcolor-pink">
+            <input name="PurposeID" value="@(_viewModel.PurposeID ?? -1)" type="checkbox" />
+            <span>自動加入里程碑<small>(輸入於其他更多說明欄位)</small></span>
+        </label>
+        @if (_viewModel.PurposeID.HasValue)
+        {
+            <script>
+                $(function () {
+                    $('input[name="PurposeID"]').prop('checked', true);
+                });
+            </script>
+        }
+    </div>
+</div>

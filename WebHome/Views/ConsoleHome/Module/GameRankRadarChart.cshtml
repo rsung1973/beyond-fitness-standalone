@@ -1,0 +1,90 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+@using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    ExerciseGameContestant _model;
+    ExerciseGameContestant _item;
+    string _chartID = "radarChart" + DateTime.Now.Ticks;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _item = _model = (ExerciseGameContestant)this.Model;
+}
+@if (_item != null && _item.Status == (int)Naming.GeneralStatus.Successful)
+{
+    var rankItems = _item.ExerciseGameRank.Where(r => r.RankingScore.HasValue);
+    if (rankItems.Count() > 0)
+    {
+        var exerciseItems = models.GetTable<ExerciseGameItem>();
+        <canvas id="@(_chartID)" height="100"></canvas>
+        <script>
+            $(function () {
+                var RadarConfig = {
+                    type: 'radar',
+                    data: {
+                        labels: @Html.Raw(JsonConvert.SerializeObject(exerciseItems.Select(x => x.Exercise).ToArray())),
+                        datasets: [{
+                            label: "分佈圖",
+                            backgroundColor: "rgba(179,214,255,.8)",
+                            pointBackgroundColor: "rgba(230,241,255,1)",
+                            data: @Html.Raw(JsonConvert.SerializeObject(exerciseItems.Select(x => x.ExerciseGameRank.Where(r => r.UID == _item.UID).Select(r => r.RankingScore).FirstOrDefault() ?? 0).ToArray())),
+                        }]
+                    },
+                    options: {
+                        legend: {
+                            display: false
+                        },
+
+                        scale: {
+                            reverse: false,
+                            display: true,
+                            ticks: {
+                                showLabelBackdrop: false,
+                                beginAtZero: true,
+                                backdropColor: '#e6f1ff',
+                                maxTicksLimit: 5,
+                                //max: 100,
+                                fontSize: 5,
+                                backdropPaddingX: 5,
+                                backdropPaddingY: 5
+                            },
+                            gridLines: {
+                                color: "#fff",
+                                lineWidth: 1
+                            },
+                            pointLabels: {
+                                fontSize: 12,
+                                fontColor: "#fff"
+                            }
+                        }
+                    }
+                };
+
+                var initGraph = $global.initGraph;
+                $global.initGraph = function () {
+                    if (initGraph) {
+                        initGraph();
+                    }
+                    window.myRadar = new Chart(document.getElementById("@(_chartID)"), RadarConfig);
+                };
+
+            });
+        </script>
+    }
+}
+@{ await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/InitBarChartNoRegister.cshtml");}
+
+
+

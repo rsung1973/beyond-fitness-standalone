@@ -1,0 +1,164 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+@using Newtonsoft.Json
+
+@{
+    Layout = "~/Views/ConsoleHome/Template/MainPage.cshtml";
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    UserProfile _model;
+    IQueryable<LessonTime> _lessons;
+    LessonTimeBookingViewModel _viewModel;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _modelState = ViewContext.ModelState;
+    _model = (UserProfile)this.Model;
+    _viewModel = (LessonTimeBookingViewModel)ViewBag.ViewModel;
+
+    IQueryable<LessonTime> items = models.GetTable<LessonTime>().Where(l => l.AttendingCoach == _model.UID);
+    //.FilterByUserRoleScope(models, _model);
+    ViewBag.LessonTimeItems = items;
+
+    _lessons = items.PTLesson()
+        .Union(items.Where(l => l.TrainingBySelf == 1))
+        .Union(items.TrialLesson());
+
+    //items = models.GetTable<LessonTime>().FilterByUserRoleScope(models, _model);
+}
+
+@section CustomHeader {
+    <link href="plugins/smartcalendar/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+    <link href="css/smartcalendar-2.css" rel="stylesheet" />
+    <!-- royalslider -->
+    <link href="plugins/royalslider/royalslider.css" rel="stylesheet" />
+    <link href="plugins/royalslider/skins/default/rs-default.css" rel="stylesheet" />
+    <link href="css/royalslider.css?1.1" rel="stylesheet" />
+    <!-- charts-c3 -->
+    <link href="plugins/charts-c3/plugin.css?2.0" rel="stylesheet">
+    <!-- Multi Select Css -->
+    <link href="plugins/multi-select/css/multi-select.css" rel="stylesheet">
+}
+
+<!--Sparkline Plugin Js-->
+<script src="plugins/jquery-sparkline/jquery.sparkline.js"></script>
+<section class="content">
+
+    @{
+        ViewBag.BlockHeader = "任意門";
+        await Html.RenderPartialAsync("~/Views/ConsoleHome/Module/BlockHeader.cshtml", _model);
+    }
+
+    <!--本月運動時間-->
+    @if (!_model.IsOfficer() || _model.IsCoach())
+    {
+        await Html.RenderPartialAsync("~/Views/LearnerProfile/Module/ExerciseSummary.cshtml", _model);
+    }
+
+    <!--我的合約與當日行事曆-->
+    @if (_model.IsAssistant() || _model.IsServitor())
+    {
+        await Html.RenderPartialAsync("~/Views/ConsoleHome/Index/Admin/Part_1.cshtml", _model);
+    }
+    else if (_model.IsManager() || _model.IsViceManager())
+    {
+        await Html.RenderPartialAsync("~/Views/ConsoleHome/Index/Manager/Part_1.cshtml", _model);
+    }
+    else if (_model.IsCoach())
+    {
+        await Html.RenderPartialAsync("~/Views/ConsoleHome/Index/Coach/Part_1.cshtml", _model);
+    }
+    else if (_model.IsOfficer())
+    {
+        await Html.RenderPartialAsync("~/Views/ConsoleHome/Index/Admin/Part_1.cshtml", _model);
+    }
+
+    <!--我的發票卡片-->
+    @if (_model.IsAssistant() || _model.IsAuthorizedSysAdmin())
+    {
+        await Html.RenderPartialAsync("~/Views/ConsoleHome/Module/AboutInvoice.cshtml", _model);
+    }
+    <!--我的分店業績卡片-->
+    @if (!_model.IsServitor())
+    {
+        await Html.RenderPartialAsync("~/Views/ConsoleHome/Module/AboutAchievementC3.cshtml", _model);
+    }
+
+    <!--專業文章&我的比賽-->
+    @if (_model.IsServitor())
+    {
+
+        await Html.RenderPartialAsync("~/Views/ConsoleHome/Module/AboutStaff.cshtml", _model);
+    }
+</section>
+
+@section TailPageJavaScriptInclude {
+    <!-- countTo Plugin Js -->
+    <script src="bundles/countTo.bundle.js"></script>
+    <!--ChartJS Plugin Js-->
+    <script src="bundles/chartscripts.bundle.js"></script>
+    <!-- royalslider Plugin Js-->
+    <script src="plugins/royalslider/jquery.royalslider.min.js" class="rs-file"></script>
+    <!-- Multi Select Plugin Js -->
+    <script src="plugins/multi-select/js/jquery.multi-select.js"></script>
+    <!-- ChartC3 Js -->
+    <script src="bundles/cs.bundles.js"></script>
+
+    <script>
+
+        $(function () {
+
+            $('.counto').countTo();
+
+        });
+
+        //本月運動時間卡片
+        $(".exerciserank").on('click', function (event) {
+            window.location.href = '@Html.Raw(Url.Action("ExerciseBillboard","ConsoleHome"))';
+        });
+
+
+        function showContractList(viewModel, alertCount) {
+            var event = window.event;
+            if (event) {
+                event.cancelBubble = true;
+            }
+
+            if (alertCount == 0) {
+                viewModel.scrollToView = false;
+            } else {
+                viewModel.scrollToView = true;
+            }
+            if (alertCount && alertCount > 300) {
+                Swal.fire({
+                    title: "繼續載入?",
+                    text: "讀取大量資料，將影響系統效能!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: '確定',
+                    cancelButtonText: '取消',
+                    focusCancel: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        showLoading();
+                        $('').launchDownload('@Html.Raw(Url.Action("ShowContractList","ContractConsole"))', viewModel);
+                    }
+                })
+            } else {
+                showLoading();
+                $('').launchDownload('@Html.Raw(Url.Action("ShowContractList","ContractConsole"))', viewModel);
+            }
+        }
+
+    </script>
+}
+
+

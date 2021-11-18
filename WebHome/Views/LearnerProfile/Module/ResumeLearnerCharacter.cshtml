@@ -1,0 +1,63 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    QuestionnaireRequest _model;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (QuestionnaireRequest)this.Model;
+    LearnerCharacterViewModel _viewModel = (LearnerCharacterViewModel)ViewBag.ViewModel;
+}
+<script>
+    $(function () {
+        Swal.fire({
+            title: "自動帶入資料中",
+            text: "阿呆會自動幫您帶入@($"{_model.PDQTask.First().TaskDate:yyyy/MM/dd}")填寫過的內容喔!",
+            icon: "warning",
+            showCancelButton: false,
+            confirmButtonText: "繼續，不後悔",
+            cancelButtonText: "我超強不用瞭解學生",
+            focusCancel: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                if ($global.resumeCharacter) {
+                    $global.resumeCharacter();
+                } else {
+                    $('').launchDownload('@(Html.Raw(Url.Action("EditLearnerCharacter","ConsoleHome",new { _model.QuestionnaireID,_viewModel.PartID })))', { 'keyID': '@(_model.UID.EncryptKey())'});
+                }
+            } else {
+                showLoading();
+                $.post('@Html.Raw(Url.Action("RejectLearnerCharacter", "LearnerProfile", new {_model.QuestionnaireID }))', { 'keyID': '@(_model.UID.EncryptKey())' }, function (data) {
+                    hideLoading();
+                    if ($.isPlainObject(data)) {
+                        if (data.result) {
+                            if ($global.rejectCharacterDone) {
+                                $global.rejectCharacterDone();
+                            }
+                        } else {
+                            Swal.fire(
+                                'Oops...',
+                                data.message,
+                                'warning'
+                            )
+                        }
+                    } else {
+                        $(data).appendTo($('body'));
+                    }
+                });
+
+            }
+        });
+    });
+</script>

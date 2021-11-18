@@ -1,0 +1,34 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    LessonTime _model;
+    CalendarEventQueryViewModel _viewModel;
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (LessonTime)this.Model;
+    _viewModel = (CalendarEventQueryViewModel)ViewBag.ViewModel;
+}
+@if (_model.RegisterLesson.LessonPriceType.Status == (int)Naming.DocumentLevelDefinition.教練PI)
+{
+    await Html.RenderPartialAsync("~/Views/ConsoleEvent/EventModal/CoachPI.cshtml", _model);
+}
+else if (_model.GroupingLesson.RegisterLesson.Count > 1)
+{
+    await Html.RenderPartialAsync("~/Views/ConsoleEvent/EventModal/OtherLesson.cshtml", _model);
+}
+else
+{
+    await Html.RenderPartialAsync("~/Views/ConsoleEvent/EventModal/LearnerLesson.cshtml", _model);
+}
+
+

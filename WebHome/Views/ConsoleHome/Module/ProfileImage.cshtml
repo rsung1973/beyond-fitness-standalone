@@ -1,0 +1,25 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    UserProfile _model;
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (UserProfile)this.Model;
+}
+<img src="@(_model.PictureID.HasValue
+                              ? VirtualPathUtility.ToAbsolute("~/Information/GetResource/") + _model.PictureID + "?stretch=true"
+                              : ViewBag.NoNameImg ?? "images/avatar/noname.png")" />
+
+

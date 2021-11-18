@@ -1,0 +1,70 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    String _dialogID = $"reportQuery{DateTime.Now.Ticks}";
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    Payment _model = (Payment)this.Model;
+}
+@{
+    ViewBag.HeaderRaw = (Action)showHeader;
+    ViewBag.InsertPartial = "~/Views/PaymentConsole/PaymentModal/ApplyShareAmount.cshtml";
+    ViewBag.SelectAll = false;
+    ViewBag.EnableClose = false;
+    ViewBag.Allotment = 2;
+    ViewBag.AllotmentCoach = 4;
+    await Html.RenderPartialAsync("~/Views/ContractConsole/ContractModal/SelectCoach.cshtml", models.PromptEffectiveCoach());
+}
+
+@{
+    void showHeader()
+    {
+        Payment item = _model;
+        <div class="modal-header">
+            <h6 class="title">目前<span class="col-red">剩餘</span>分潤金額：<span class="col-red">@($"{item.PayoffAmount - item.TuitionAchievement.Sum(t => t.ShareAmount):##,###,###,###}")</span></h6>
+            <a class="closebutton" data-dismiss="modal"></a>
+        </div>
+    }
+}
+
+<script>
+    $(function () {
+        $global.commitCoach = function (coachID, coachName, $dialog) {
+            var amount = $dialog.find('input[name="ShareAmount"]').val();
+            if (!isNaN(amount)) {
+                clearErrors();
+                showLoading();
+                $.post('@Html.Raw(Url.Action("CommitToApplyCoachAchievement","Payment",new { KeyID = _model.PaymentID.EncryptKey() }))', { 'coachID': coachID, 'shareAmount': amount }, function (data) {
+                    if ($.isPlainObject(data)) {
+                        if (data.result) {
+                            $dialog.modal('hide');
+                            showAchievementShareList();
+                        } else {
+                            hideLoading();
+                            Swal.fire(
+                                'Oops...',
+                                data.message,
+                                'warning'
+                            )
+                        }
+                    } else {
+                        hideLoading();
+                        $(data).appendTo('body').remove();
+                    }
+                });
+            }
+        };
+    });
+</script>

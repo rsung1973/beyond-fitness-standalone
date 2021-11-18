@@ -1,0 +1,49 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    UserProfile _model;
+    List<Article> _items;
+    String[] __Articles = 
+        {
+            "images/carousel/article-background-1.jpg",
+            "images/carousel/article-background-2.jpg",
+            "images/carousel/article-background-3.jpg",
+            "images/carousel/article-background-4.jpg",
+            "images/carousel/article-background-5.jpg"
+        };
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (UserProfile)this.Model;
+
+    _items = models.GetTable<Article>()
+            .Where(a => a.Document.CurrentStep == (int)Naming.DocumentLevelDefinition.正常)
+            .OrderByDescending(a => a.DocID)
+            .Take(5).ToList();
+
+}
+<div class="container-fluid">
+    <div class="row clearfix">
+        <div class="col-lg-12 col-md-12">
+            <div class="row clearfix">
+                @{ ViewBag.Allotment = 3;
+                    await Html.RenderPartialAsync("~/Views/ConsoleHome/Module/AboutDailyQuestion.cshtml", _model);
+                    await Html.RenderPartialAsync("~/Views/ConsoleHome/Module/AboutContest.cshtml", _model);
+                    await Html.RenderPartialAsync("~/Views/ConsoleHome/Module/AboutArticle.cshtml", _model);
+                }
+            </div>
+        </div>
+    </div>
+</div>

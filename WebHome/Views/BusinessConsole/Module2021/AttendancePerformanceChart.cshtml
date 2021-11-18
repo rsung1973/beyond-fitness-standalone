@@ -1,0 +1,33 @@
+
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@using CommonLib.Utility
+@{
+    Layout = "~/Views/BusinessConsole/Module2021/InitMultipleEchartsTemplate.cshtml";
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    MonthlyIndicatorQueryViewModel _viewModel;
+
+    String _chartID = ViewBag.ChartID = "attendance";
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _modelState = ViewContext.ModelState;
+    _viewModel = (MonthlyIndicatorQueryViewModel)ViewBag.ViewModel;
+
+}
+
+@section ChartOption
+{
+    @{
+        await Html.RenderPartialAsync("~/Views/BusinessConsole/Module2021/AttendancePerformanceChartOption.cshtml");
+    }
+}

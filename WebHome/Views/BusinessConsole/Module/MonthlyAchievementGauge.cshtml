@@ -1,0 +1,106 @@
+﻿
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    MonthlyIndicator _model;
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (MonthlyIndicator)this.Model;
+}
+@{
+    String _viewID = $"revenue{DateTime.Now.Ticks}";
+    MonthlyIndicatorQueryViewModel _viewModel = (MonthlyIndicatorQueryViewModel)ViewBag.ViewModel;
+}
+@{
+    int totalAchievementAmt = 0;
+    decimal indicatorAmt = 1;
+    decimal basePercentage = 100;
+    if (_viewModel.BranchID.HasValue)
+    {
+        MonthlyBranchRevenueGoal indicator = (MonthlyBranchRevenueGoal)TempData["RevenueGoal"];
+        indicatorAmt = (decimal)indicator.MonthlyBranchRevenueIndicator.RevenueGoal;
+        basePercentage = indicator.MonthlyBranchRevenueIndicator.MonthlyRevenueGrade.IndicatorPercentage;
+        totalAchievementAmt = (indicator.ActualLessonAchievement + indicator.ActualSharedAchievement) ?? 0;
+    }
+    else
+    {
+        MonthlyRevenueGoal indicator = (MonthlyRevenueGoal)TempData["RevenueGoal"];
+        indicatorAmt = (decimal)(indicator.CustomRevenueGoal ?? indicator.MonthlyRevenueIndicator.RevenueGoal);
+        basePercentage = (decimal)(indicator.CustomIndicatorPercentage ?? indicator.MonthlyRevenueIndicator.MonthlyRevenueGrade.IndicatorPercentage);
+        totalAchievementAmt = (indicator.ActualLessonAchievement + indicator.ActualSharedAchievement) ?? 0;
+    }
+    decimal achievementRatio = totalAchievementAmt * basePercentage / indicatorAmt;
+}
+    <h2 class="m-b-0"><span id="@($"{_viewID}_text")"></span><span class="font-12">%</span></h2>
+    <canvas id="@($"{_viewID}_gauge")" height="150"></canvas>
+    <script>
+    $(function () {
+        var zoneGauge = new Gauge(document.getElementById("@($"{_viewID}_gauge")"));
+            var opts = {
+                angle: 0,
+                lineWidth: 0.4,
+                radiusScale: 1,
+                pointer: {
+                    length: 0.5,
+                    strokeWidth: 0.05,
+                    color: '#888'
+                },
+                staticLabels: {
+                    font: "12px Material-Design-Iconic-Font",
+                    color: "#888",
+                    labels: [100, 110, 120, 130],
+                    fractionDigits: 0
+                },
+                staticZones: [{
+                    //                        strokeStyle: "#F15F79",
+                    strokeStyle: "#DD2B35",
+                    min: 0,
+                    max: 100
+                },
+                {
+                    //                        strokeStyle: "#FFC107",
+                    strokeStyle: "#F18336",
+                    min: 101,
+                    max: 110
+                },
+                {
+                    //                        strokeStyle: "#457fca",
+                    strokeStyle: "#FED52B",
+                    min: 111,
+                    max: 120
+                },
+                {
+                    //                        strokeStyle: "#78b83e",
+                    strokeStyle: "#96C641",
+                    min: 121,
+                    max: 130
+                },
+                {
+                    strokeStyle: "#3B9740",
+                    min: 131,
+                    max: 150
+                }
+                ],
+                limitMax: false,
+                limitMin: false,
+                highDpiSupport: true,
+                generateGradient: true
+            }
+            zoneGauge.setOptions(opts);
+            zoneGauge.setTextField(document.getElementById("@($"{_viewID}_text")"));
+            zoneGauge.minValue = 0;
+            zoneGauge.maxValue = 150;
+            zoneGauge.set(@(Math.Round(achievementRatio)));
+    });
+    </script>
+

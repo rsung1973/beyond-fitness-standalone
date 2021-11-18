@@ -1,0 +1,70 @@
+﻿
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    CalendarEventItem _model;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _model = (CalendarEventItem)this.Model;
+}
+@{
+    object clickHander(LessonTime item, bool needApprove)
+    {
+        if (needApprove)
+        {
+            <text>void(0);</text>
+        }
+        else
+        {
+            <text>$('').launchDownload('@Html.Raw(Url.Action("LessonTrainingContent", "ConsoleHome", new { LearnerID = item.RegisterLesson.UID }))', {'keyID':'@(item.LessonID.EncryptKey())' });</text>
+        }
+        return null;
+    }
+}
+
+@{
+    LessonTime item = (LessonTime)_model.EventItem;
+    if (item.TrainingBySelf == 1)
+    {
+        bool needApprove = item.PreferredLessonTime != null && !item.PreferredLessonTime.ApproverID.HasValue;
+        <div class="@(needApprove ? "event-name b-approve row" : "event-name b-PI row")" onclick="@Html.Raw(clickHander(item,needApprove))">
+            <div class="col-2 text-left">
+                <h4><span>@(item.ClassTime.Value.ToString("HH:mm"))</span><span>@(item.ClassTime.Value.AddMinutes(item.DurationInMinutes.Value).ToString("HH:mm"))</span></h4>
+            </div>
+            <div class="col-10">
+                <h6>
+                    P.I《@(item.RegisterLesson.LessonPriceType?.UsageTypeDescription?.Usage)》@(item.RegisterLesson.UserProfile.RealName)
+                    <address><i class="zmdi zmdi-pin"></i>@(item.BranchStore.BranchName)</address>
+                    @{ await Html.RenderPartialAsync("~/Views/ConsoleHome/Module/RenderLessonCheck.cshtml", item);}
+                </h6>
+                @{
+                    var trainingPlan = item.TrainingPlan.FirstOrDefault();
+                    if (trainingPlan?.TrainingExecution.Emphasis != null)
+                    {
+                        <p>@(trainingPlan?.TrainingExecution.Emphasis)</p>
+                    }
+                    else
+                    {
+                        <p class="col-blush">Unfinished</p>
+                    }
+                }
+            </div>
+        </div>
+    }
+    else
+    {
+        await Html.RenderPartialAsync("~/Views/ConsoleHome/Index/Coach/EventItems/ST.cshtml");
+    }
+}

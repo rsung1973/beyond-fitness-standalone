@@ -1,0 +1,54 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+@{ var weekStart = DateTime.Today.FirstDayOfWeek();}
+
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    IQueryable<LessonTime> _items;
+    UserProfile _model;
+    int _allotment;
+    String _viewID = $"preferred{DateTime.Now.Ticks}";
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (UserProfile)this.Model;
+    _allotment = ((int?)ViewBag.Allotment) ?? 2;
+
+    _items = _model.PreferredLessonTimeToApprove(models);
+}
+
+<li id="@(_viewID)" class="@($"col-sm-{12/_allotment} col-{12/_allotment}")" onclick="window.location.href='@Html.Raw(Url.Action("CrossBranchIndex","ConsoleHome"))';">
+    <div class="body">
+        <i class="zmdi livicon-evo" data-options="name: legal.svg; size: 40px; style: original; strokeWidth:2px; autoPlay:true"></i>
+        <h4>
+            @{ var count =
+                 _items
+                     //.Where(l => l.ClassTime >= weekStart && l.ClassTime < weekStart.AddDays(7))
+                     .Count();}
+
+        @(count)
+    </h4>
+    <span>預約待審核</span>
+</div>
+@if (count > 0)
+{
+    <script>
+        $(function () {
+            $('#@(_viewID)').on('click',function (event) {
+
+            });
+        });
+    </script>
+}
+</li>
+
+

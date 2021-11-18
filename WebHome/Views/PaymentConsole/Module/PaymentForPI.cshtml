@@ -1,0 +1,45 @@
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    IQueryable<Payment> _model;
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (IQueryable<Payment>)this.Model;
+}
+@{
+    PaymentQueryViewModel _viewModel = (PaymentQueryViewModel)ViewBag.ViewModel;
+    IQueryable<Payment> items = _model.Where(p => p.TransactionType == (int)Naming.PaymentTransactionType.自主訓練);
+}
+<div class="col-6">
+    <h5 class="m-t-0">本日P.I</h5>
+    @{
+        PaymentQueryViewModel tempViewModel = new PaymentQueryViewModel
+        {
+            PayoffDateFrom = DateTime.Today,
+            PayoffDateTo = DateTime.Today.AddDays(1),
+            TransactionType = (int)Naming.PaymentTransactionType.自主訓練,
+            RelatedID = _viewModel.RelatedID,
+        };
+
+        ViewBag.ViewModel = tempViewModel;
+        ViewBag.VoidPayment = models.GetTable<VoidPayment>().Where(v => v.VoidDate >= DateTime.Today)
+                                            .Join(items, v => v.VoidID, p => p.PaymentID, (v, p) => p);
+        await Html.RenderPartialAsync("~/Views/PaymentConsole/Module/PaymentSummary.cshtml", items.Where(p => p.PayoffDate >= DateTime.Today));
+    }
+</div>
+@{
+    tempViewModel.PayoffDateFrom = tempViewModel.PayoffDateTo = null;
+    tempViewModel.BypassCondition = true;
+    await Html.RenderPartialAsync("~/Views/PaymentConsole/Module/InvoiceToPrintOut.cshtml", items);
+}
+

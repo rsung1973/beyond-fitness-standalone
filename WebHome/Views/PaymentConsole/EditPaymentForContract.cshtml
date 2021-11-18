@@ -1,0 +1,92 @@
+
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using WebHome.Components 
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    CourseContract _item;
+    UserProfile _model;
+    CourseContractQueryViewModel _viewModel;
+
+    Layout = "~/Views/ConsoleHome/Template/MainPage.cshtml";
+
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _modelState = ViewContext.ModelState;
+    _model = (UserProfile)this.Model;
+    _viewModel = (CourseContractQueryViewModel)ViewBag.ViewModel;
+    _item = (CourseContract)ViewBag.DataItem;
+}
+@{ 
+    UserProfile _profile = _model;
+}
+@section CustomHeader {
+    <!-- JQuery DataTable Css -->
+    <link href="plugins/jquery-datatable/DataTables-1.10.18/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link href="plugins/jquery-datatable/Responsive-2.2.2/css/responsive.bootstrap4.min.css" rel="stylesheet">
+    <link href="plugins/jquery-datatable/FixedColumns-3.2.5/css/fixedColumns.bootstrap4.min.css" rel="stylesheet">
+    <!-- Bootstrap Datetimepick -->
+    
+    <link href="css/smartcalendar-2.css" rel="stylesheet" />
+    <!-- Custom Css -->
+    <link rel="stylesheet" href="css/customelist.css?1.1" />
+}
+
+<!-- Main Content -->
+<section class="content">
+    @{
+        ViewBag.BlockHeader = "編輯收款";
+        ViewBag.InsertPartial = "~/Views/ConsoleHome/Shared/MyContractHeader.cshtml";
+        await Html.RenderPartialAsync("~/Views/ConsoleHome/Module/BlockHeader.cshtml", _model);
+    }
+
+    <!--合約詳細資料&收款資料-->
+    <div class="container-fluid">
+        <div class="card">
+            <div class="row">
+                <div class="col-lg-7 col-md-7 col-sm-12">
+                    @{ await Html.RenderPartialAsync("~/Views/ContractConsole/Module/ContractDataItem.cshtml", _item);}
+                </div>
+                <div class="col-lg-5 col-md-5 col-sm-12 bg-darkteal">
+                    <div class="body">
+                        @{
+                            TempData["DataItem"] = _item;
+                            await Component.InvokeAsync<EditPaymentForContractViewComponent>(new PaymentViewModel { ContractID = _item.ContractID, PayoffAmount = _item.TotalCost, CarrierId1 = _item.ContractOwner.UserProfileExtension?.CarrierNo });
+                        }
+                        <input type="hidden" name="SellerID" value="@(_item.CourseContractExtension.BranchID)" />
+                        <button type="button" class="subscribe btn btn-primary btn-block" onclick="commitPayoff();">確定，不後悔</button>
+                        @*<button type="reset" class="btn btn-danger btn-round btn-simple waves-effect quit" onclick="quitPayoff();">不, 重新輸入</button>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section TailPageJavaScriptInclude {
+    <!--Sparkline Plugin Js-->
+    <script src="plugins/jquery-sparkline/jquery.sparkline.js"></script>
+    <!-- SweetAlert Plugin Js -->
+    <script src="plugins/sweetalert/sweetalert.min.js"></script>
+    <!-- Jquery DataTable Plugin Js -->
+    <script src="bundles/datatablescripts.bundle.js"></script>
+    <script src="plugins/jquery-datatable/Responsive-2.2.2/js/dataTables.responsive.min.js"></script>
+    <script src="plugins/jquery-datatable/FixedColumns-3.2.5/js/dataTables.fixedColumns.min.js"></script>
+    <!-- Bootstrap datetimepicker Plugin Js -->
+
+    @{ await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/KnobJS.cshtml");}
+
+    
+}
+
+

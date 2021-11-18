@@ -1,0 +1,37 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    UserProfile _model;
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (UserProfile)this.Model;
+}
+
+@if (_model.IsAssistant() || _model.IsOfficer() || _model.IsServitor())
+{
+    await Html.RenderPartialAsync("~/Views/ContractConsole/Module/AboutAutoTerminationByOfficer.cshtml", _model);
+}
+else if (_model.IsManager() || _model.IsViceManager())
+{
+    await Html.RenderPartialAsync("~/Views/ContractConsole/Module/AboutAutoTerminationByBranch.cshtml", _model);
+}
+else
+{
+    ViewBag.EnableToCreate = false;
+    await Html.RenderPartialAsync("~/Views/ContractConsole/Module/AboutAutoTerminationByCoach.cshtml", _model);
+}
+
+
+

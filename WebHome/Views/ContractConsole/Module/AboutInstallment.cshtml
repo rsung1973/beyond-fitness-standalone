@@ -1,0 +1,67 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    IQueryable<CourseContract> _model;
+    IQueryable<CourseContract> _contractItems;
+    String _knobID = $"installmentRate{DateTime.Now.Ticks}";
+
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = _contractItems = (IQueryable<CourseContract>)this.Model;
+}
+@{ DateTime calcStart = new DateTime(2018, 12, 1);
+    var calculatedItems = _contractItems.Where(c => c.EffectiveDate >= calcStart);
+    var calculatedInstallment = calculatedItems.Where(c => c.InstallmentID.HasValue);
+    var ratio = calculatedInstallment.Count() * 100 / Math.Max(calculatedItems.Count(), 1);}
+
+<div class="body">
+    <div class="row">
+        <div class="col-12 text-center">
+            <input type="text" class="knob" data-linecap="round" data-width="90" data-height="90" data-thickness="0.25" data-anglearc="250" data-angleoffset="-125" data-fgcolor="#8bc3fe" readonly id="@(_knobID)" />
+            <script>
+                $(function () {
+                    drawKnob($("#@(_knobID)"),@(ratio), 3800);
+                });
+            </script>
+            <h6 class="m-t-20">分期比率</h6>
+            <p class="displayblock m-b-0">
+                @{ DateTime monthStart = DateTime.Today.FirstDayOfMonth();
+                    var currentMonthContracts = _contractItems.Where(c => c.EffectiveDate >= monthStart);
+                    var currentMonthContractsInstallment = currentMonthContracts.Where(c => c.InstallmentID.HasValue);
+                    ratio = currentMonthContractsInstallment.Count() * 100 / Math.Max(currentMonthContracts.Count(), 1);
+                    var contractsLastMonth = _contractItems.Where(c => c.EffectiveDate >= monthStart.AddMonths(-1) && c.EffectiveDate < monthStart);
+                    var contractsLastMonthInstallment = contractsLastMonth.Where(c => c.InstallmentID.HasValue);
+                    var currentCount = currentMonthContractsInstallment.Count();
+                    var lastMonthCount = contractsLastMonthInstallment.Count();
+                }
+                @(ratio)% 本月平均
+                @if (currentCount < lastMonthCount)
+                {
+                    <i class="zmdi zmdi-trending-down col-green"></i>
+                }
+                else if (currentCount > lastMonthCount)
+                {
+                    <i class="zmdi zmdi-trending-up col-red"></i>
+                }
+            </p>
+        </div>
+    </div>
+</div>
+
+
+
+
+

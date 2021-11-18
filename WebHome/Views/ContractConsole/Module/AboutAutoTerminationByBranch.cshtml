@@ -1,0 +1,58 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    UserProfile _model;
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (UserProfile)this.Model;
+}
+<div class="body">
+    <div class="row">
+        <div class="col-8">
+            <h5 class="m-t-0">即將自動終止</h5>
+            @{
+                var expiringItems = models.PromptUnpaidExpiringContract()
+                    .FilterByBranchStoreManager(models, _model.UID);
+                var expiredItems = models.PromptUnpaidExpiredContract()
+                    .FilterByBranchStoreManager(models, _model.UID);
+            }
+            <p class="text-small">
+                已自動終止：<a href="#" onclick='showContractList(@Html.Raw(JsonConvert.SerializeObject(
+                                new
+                                {
+                                    ManagerID = _model.UID,
+                                    Status = (int)Naming.CourseContractStatus.已終止,
+                                    ContractQueryMode = Naming.ContractServiceMode.ContractOnly,
+                                    Unpaid = true,
+                                    Subject = "已自動終止",
+                                })),@(expiredItems.Count()));'>@(expiredItems.Count())</a>
+            </p>
+        </div>
+        <div class="col-4 text-right">
+            <a href="#" onclick='showContractList(@Html.Raw(JsonConvert.SerializeObject(
+                                new
+                                {
+                                    ManagerID = _model.UID,
+                                    ContractQueryMode = Naming.ContractServiceMode.ContractOnly,
+                                    Status = (int)Naming.CourseContractStatus.已生效,
+                                    UnpaidExpiring = true,
+                                })),@(expiringItems.Count()));'>
+                <h2 class="@(expiringItems.Count() > 0 ? "col-red" : "")">@(expiringItems.Count())</h2>
+            </a>
+            <small class="info">未收款合約</small>
+        </div>
+        @{ await Html.RenderPartialAsync("~/Views/ContractConsole/Module/CauseForEnding.cshtml", _model);}
+    </div>
+</div>
+

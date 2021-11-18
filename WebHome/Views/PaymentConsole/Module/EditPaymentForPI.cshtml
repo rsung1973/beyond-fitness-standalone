@@ -1,0 +1,106 @@
+
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    Payment _model;
+    PaymentViewModel _viewModel;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _modelState = ViewContext.ModelState;
+    _model = this.Model as Payment;
+    _viewModel = (PaymentViewModel)ViewBag.ViewModel;
+}
+@{
+    UserProfile _profile = await Context.GetUserAsync();
+}
+<h2><strong>結帳櫃檯</strong></h2>
+<div class="table-responsive">
+    <table class="table table-black table-hover m-b-0">
+        <thead>
+            <tr>
+                <th>品項</th>
+                <th class="text-right">單價</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>P.I Session</td>
+                <td>
+                    <div class="input-group">
+                        <input type="text" class="form-control col-red" onkeyup="$('#payoffAmount').text('TWD ' + this.value);" name="PayoffAmount" placeholder="收款金額" value="@(_viewModel.PayoffAmount)" />
+                        <span class="input-group-addon">
+                            <i class="zmdi zmdi-money-box"></i>
+                        </span>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td>總計：</td>
+                <td class="text-danger text-right">
+                    <h6 id="payoffAmount">TWD @(_viewModel.PayoffAmount)</h6>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+<div class="row clearfix m-t-20">
+    <div class="col-12">
+        <select class="form-control show-tick" name="PaymentType">
+            <option value="">-- 請選擇收款方式 --</option>
+            <option value="現金">現金</option>
+            <option value="刷卡">刷卡</option>
+            <option value="轉帳">轉帳</option>
+        </select>
+    </div>
+    <div class="col-12">
+        <div class="input-group">
+            <input type="text" class="form-control" name="BuyerReceiptNo" placeholder="買受人統編" />
+            <span class="input-group-addon">
+                <i class="zmdi zmdi-text-format"></i>
+            </span>
+        </div>
+    </div>
+</div>
+<div class="row clearfix m-t-20">
+    <div class="col-12 eInvoice-dialog">
+        <div class="input-group">
+            <input type="text" class="form-control" name="CarrierId1" placeholder="手機載具條碼，例：/17T448Q" value="@(_viewModel.CarrierId1)" />
+            <span class="input-group-addon">
+                <i class="zmdi zmdi-money-box"></i>
+            </span>
+        </div>
+    </div>
+    <div class="col-12 p-l-20">
+        <label class="fancy-checkbox custom-bgcolor-green">
+            <input type="checkbox" name="MyCarrier" value="True" />
+            <span class="col-green">加入預設</span>
+        </label>
+    </div>
+    <div class="col-12 eInvoice-dialog">
+        <dv>
+            <input type="hidden" name="errorMessage" />
+        </dv>
+    </div>
+</div>
+<div class="row clearfix m-t-20">
+    <div class="col-12">
+        <div class="input-group">
+            <textarea rows="3" class="form-control no-resize" name="Remark" placeholder="請輸入任何想補充的事項..."></textarea>
+        </div>
+    </div>
+</div>
+<button class="subscribe btn btn-primary btn-block" type="button" onclick="commitPayoff();"> 確定，不後悔  </button>
+

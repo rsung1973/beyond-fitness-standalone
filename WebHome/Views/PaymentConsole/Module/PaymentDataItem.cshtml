@@ -1,0 +1,123 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Helper.DataOperation
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    Payment _model;
+    UserProfile _profile;
+    String _viewID = $"contractItem{DateTime.Now.Ticks}";
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (Payment)this.Model;
+    _profile = await Context.GetUserAsync();
+    InvoiceItem invoice = _model.InvoiceItem;
+}
+
+<div class="header">
+    <h2><strong>收款資料</strong> <a href="javascript:$global.showPaymentDetails('@(_model.PaymentID.EncryptKey())');" class="btn btn-simple btn-info btn-round btn-sm float-right">更多資訊</a></h2>
+    @{ await Html.RenderPartialAsync("~/Views/PaymentConsole/Indication/PaymentDetails.cshtml", _model);}
+</div>
+<div class="body invoice1">
+    <div class="invoice-top clearfix">
+        <div class="row">
+            <div class="col-md-6 col-12">
+                <div class="clientlogo">
+                    @{
+                        ViewBag.ProfileClass = "rounded-circle img-fluid fit";
+                        await Html.RenderPartialAsync("~/Views/Common/ProfileImage.cshtml", _model.UserProfile);
+                    }
+                </div>
+                <div class="info">
+                    <h6 class="col-red">
+                        電子發票：
+                        @if (invoice != null)
+                        {
+                            <text>@(invoice.TrackCode)@(invoice.No)</text>
+                        }
+                    </h6>
+                    <p>發票日期：@($"{invoice?.InvoiceDate:yyyy/MM/dd}") <br />收款方式：@(_model.PaymentType)</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-12">
+                @{
+                    var payer = _model.Payer();
+                }
+                <div class="clientlogo">
+                    @if (payer != null)
+                    {
+                        ViewBag.ProfileClass = "rounded-circle img-fluid fit";
+                        await Html.RenderPartialAsync("~/Views/Common/ProfileImage.cshtml", payer);
+                    }
+                </div>
+                <div class="info">
+                    <h6>@(payer?.FullName())</h6>
+                    <p>
+                        @{
+                            if (_model.ContractPayment != null)
+                            {
+                                <text>@(_model.ContractPayment.CourseContract.ContractName())</text>
+                            }
+                        }
+                        @if (invoice != null && !invoice.InvoiceBuyer.IsB2C())
+                        {
+                            <text><br />買受人統編：@(invoice.InvoiceBuyer.ReceiptNo)</text>
+                        }
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    @if (invoice != null)
+    {
+        <div class="table-responsive">
+            <table class="table table-striped table-custom nowrap">
+                <thead>
+                    <tr>
+                        <th>品項</th>
+                        <th>數量</th>
+                        <th>單價</th>
+                        <th style="width: 80px;">總價</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var p in invoice.InvoiceDetails.Select(d => d.InvoiceProduct))
+                    {
+                        foreach (var i in p.InvoiceProductItem)
+                        {
+                            <tr>
+                                <td>@(p.Brief)</td>
+                                <td class="text-right">@($"{i.Piece:.}")</td>
+                                <td class="text-right">@($"{i.UnitCost:##,###,###,###}")</td>
+                                <td class="text-right">@($"{i.CostAmount:##,###,###,###}")</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    <hr>
+    <div class="row clearfix">
+        <div class="col-md-6">
+            <h5>其他增補說明</h5>
+            <p>@(_model.Remark)</p>
+        </div>
+        <div class="col-md-6 text-right">
+            <p class="m-b-0"><b>應稅銷售額：</b> @($"{invoice?.InvoiceAmountType.SalesAmount:##,###,###,###}")</p>
+            <p class="m-b-0">營業稅：@($"{invoice?.InvoiceAmountType.TaxAmount:##,###,###,###}")</p>
+            <h3 class="m-b-0 m-t-10 text-right col-red">發票金額：@($"{invoice?.InvoiceAmountType.TotalAmount:##,###,###,###}")</h3>
+        </div>
+    </div>
+</div>

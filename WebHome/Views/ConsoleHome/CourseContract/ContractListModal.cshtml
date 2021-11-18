@@ -1,0 +1,45 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+@using Newtonsoft.Json
+@{
+
+    String _dialogID = $"contractDetails{DateTime.Now.Ticks}";
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    UserProfile _model;
+    CourseContractQueryViewModel _viewModel;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _modelState = ViewContext.ModelState;
+    _model = (UserProfile)this.Model;
+    _viewModel = (CourseContractQueryViewModel)ViewBag.ViewModel;
+}
+<div class="modal fade" id="@(_dialogID)" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <a class="closebutton" data-dismiss="modal"></a>
+            <div class="card">
+                <div class="body">
+                    <div class="table-responsive">
+                        @{
+                            IQueryable<CourseContract> items = (IQueryable<CourseContract>)ViewBag.Contracts;
+                            await Html.RenderPartialAsync("~/Views/ConsoleHome/CourseContract/ContractList.cshtml", items);
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @{ await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/BSModalScript.cshtml", model: _dialogID);}
+
+</div>
+

@@ -1,0 +1,88 @@
+
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@using WebHome.Views.MainActivity.Resources
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _modelState = ViewContext.ModelState;
+
+    Layout = "~/Views/MainActivity/Template/MainPage.cshtml";
+
+}
+
+@section CustomHeader {
+
+}
+
+<!-- // Banner -->
+<section class="section-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2 text-center">
+                <h1 class="wow fadeInUp animated" data-wow-delay=".3s" data-effect="mfp-zoom-in">@Html.Raw(NamingItem.AboutBannerTitle)</h1>
+                <h2 class="wow fadeInUp animated col-white" data-wow-delay=".3s" data-effect="mfp-zoom-in">@Html.Raw(NamingItem.AboutBannerSubTitle)</h2>
+                <a href="@(Url.Action("BookNow"))" class="btn btn-default btn-round fadeInUp animated hidden-md-up" data-wow-delay=".6s" data-effect="mfp-zoom-in">@Html.Raw(NamingItem.BookNow)</a>
+            </div>
+            <!-- iPhone -->
+            <div class="col-md-8 col-md-offset-2 text-center">
+                <img class="header_iphone wow fadeInUp animated" src="images/landing/banner/banner-about.jpg" alt="私人教練" data-wow-delay=".3s" data-effect="mfp-zoom-in">
+            </div>
+            <!-- //iPhone -->
+        </div>
+    </div>
+</section>
+<section class="section-vedio bg-white tall">
+    <div class="container">
+        <div class="row">
+            <h1>@Html.Raw(NamingItem.AboutVedioTitle)</h1>
+            <hr />
+            <div class="col-md-6">
+                <p class="col-dark-grey">@Html.Raw(NamingItem.AboutVedioDesc1)</p>
+                <p class="col-dark-grey">@Html.Raw(NamingItem.AboutVedioDesc2)</p><br />
+                <p class="col-dark-grey">@Html.Raw(NamingItem.AboutVedioDesc3)</p><br />
+                <p class="col-dark-grey">@Html.Raw(NamingItem.AboutVedioDesc4)</p>
+            </div>
+            <div class="col-md-6">
+                <div class="wow fadeIn p-t-20" data-wow-delay="0.15s">
+                    <div class="popup-gallery">
+                        <a class="popup-youtube" href="https://www.youtube-nocookie.com/embed/q-XoF1jUM20?autoplay=1" onclick="javascript:bindTrackingCode('影片播放_叔叔溫暖篇')">
+                            <img src="images/landing/video/about-1.jpg" alt="大安區健身">
+                            <span class="eye-wrapper">
+                                <i class="zmdi zmdi-youtube-play"></i>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="section-vedio">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <div class="wow fadeIn" data-wow-delay="0.3s">
+                    <h1><i class="fas fa-hands"></i> @Html.Raw(NamingItem.AboutVedioDeclaration1)</h1>
+                    <h1>@Html.Raw(NamingItem.AboutVedioDeclaration2)</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section TailPageJavaScriptInclude {
+
+}

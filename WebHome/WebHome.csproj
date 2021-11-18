@@ -1,0 +1,168 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <RazorCompileOnPublish>true</RazorCompileOnPublish>
+    <ApplicationIcon />
+    <OutputType>Exe</OutputType>
+    <StartupObject />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Helper\LineEvent\LineEventsController.cs" />
+    <Compile Remove="Models\DataEntity\BFDataContext.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Views\LessonConsole\ProcessModal\ProcessCrossBranch.ascx" />
+    <None Remove="Views\LessonConsole\ProcessModal\TodayLessons.ascx" />
+    <None Remove="Views\MainActivity\Module\ContactItem.ascx" />
+    <None Remove="Views\MainActivity\Module\JoinItem.ascx" />
+    <None Remove="Views\MainActivity\Module\MenuItem.ascx" />
+    <None Remove="Views\MainActivity\Module\MobileMenuItem.ascx" />
+    <None Remove="Views\MainActivity\Template\BlogPage.Master" />
+    <None Remove="Views\MainActivity\Template\MainPage.Master" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Views\LessonConsole\ProcessModal\ProcessCrossBranch.ascx" />
+    <Content Include="Views\LessonConsole\ProcessModal\TodayLessons.ascx" />
+    <Content Include="Views\MainActivity\Module\ContactItem.ascx" />
+    <Content Include="Views\MainActivity\Module\JoinItem.ascx" />
+    <Content Include="Views\MainActivity\Module\MenuItem.ascx" />
+    <Content Include="Views\MainActivity\Module\MobileMenuItem.ascx" />
+    <Content Include="Views\MainActivity\Template\BlogPage.Master" />
+    <Content Include="Views\MainActivity\Template\MainPage.Master" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ClosedXML" Version="0.95.4" />
+    <PackageReference Include="CoreHtmlToImage" Version="1.0.6" />
+    <PackageReference Include="HtmlTextWriter" Version="2.1.0" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.18.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="5.0.11" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.11" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.11" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.11">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="5.0.11" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="5.0.11" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.11" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.11">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
+    <PackageReference Include="System.Text.Encodings.Web" Version="5.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CommonLib.Core\CommonLib.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="epos">
+      <HintPath>bin\Dependencies\Lib\epos.dll</HintPath>
+    </Reference>
+    <Reference Include="LineMessagingAPISDK">
+      <HintPath>bin\Dependencies\LineMessagingAPISDK\netstandard2.0\LineMessagingAPISDK.dll</HintPath>
+    </Reference>
+    <Reference Include="MessagingToolkit.QRCode">
+      <HintPath>bin\Dependencies\Lib\MessagingToolkit.QRCode.dll</HintPath>
+    </Reference>
+    <Reference Include="QREncrypter">
+      <HintPath>bin\Dependencies\Lib\QREncrypter.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.Linq">
+      <HintPath>..\CommonLib.Core\bin\Dependencies\Lib\System.Data.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="ThoughtWorks.QRCode">
+      <HintPath>bin\Dependencies\Lib\ThoughtWorks.QRCode.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Models\MIG3_1\C0401.cs">
+      <DependentUpon>C0401.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Models\MIG3_1\C0501.cs">
+      <DependentUpon>C0501.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Models\MIG3_1\C0701.cs">
+      <DependentUpon>C0701.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Models\MIG3_1\D0401.cs">
+      <DependentUpon>D0401.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Models\MIG3_1\D0501.cs">
+      <DependentUpon>D0501.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Models\MIG3_1\E0401.cs">
+      <DependentUpon>E0401.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Models\MIG3_1\E0402.cs">
+      <DependentUpon>E0402.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Models\MIG3_1\E0501.cs">
+      <DependentUpon>E0501.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Models\Schemas\SiteMap\sitemap.cs">
+      <DependentUpon>sitemap.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Views\MainActivity\Resources\NamingItem.Designer.cs">
+      <DependentUpon>NamingItem.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Models\MIG3_1\C0401.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Models\MIG3_1\C0501.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Models\MIG3_1\C0701.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Models\MIG3_1\D0401.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Models\MIG3_1\D0501.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Models\MIG3_1\E0401.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Models\MIG3_1\E0402.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Models\MIG3_1\E0501.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Models\MIG3_1\GenericType_3.1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Models\Schemas\SiteMap\sitemap.xsd">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Views\CommonHelper\" />
+    <Folder Include="Views\ContractConsole\Items\" />
+    <Folder Include="Views\SystemInfo\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Views\MainActivity\Resources\NamingItem.resx">
+      <SubType>Designer</SubType>
+      <LastGenOutput>NamingItem.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>

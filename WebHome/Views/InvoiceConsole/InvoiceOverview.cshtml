@@ -1,0 +1,170 @@
+
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    UserProfile _model;
+    InvoiceQueryViewModel _viewModel;
+
+    Layout = "~/Views/ConsoleHome/Template/MainPage.cshtml";
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _modelState = ViewContext.ModelState;
+    _model = (UserProfile)this.Model;
+    _viewModel = (InvoiceQueryViewModel)ViewBag.ViewModel;
+
+}
+@{
+    IQueryable<InvoiceItem> _items = (IQueryable<InvoiceItem>)ViewBag.DataItems;
+}
+@section CustomHeader {
+    <!-- JQuery DataTable Css -->
+    <link href="plugins/jquery-datatable/DataTables-1.10.18/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link href="plugins/jquery-datatable/Responsive-2.2.2/css/responsive.bootstrap4.min.css" rel="stylesheet">
+    <link href="plugins/jquery-datatable/FixedColumns-3.2.5/css/fixedColumns.bootstrap4.min.css" rel="stylesheet">
+    <!-- Bootstrap Datetimepick -->
+    <link href="css/smartcalendar-2.css" rel="stylesheet" />
+    <!-- Custom Css -->
+    <link rel="stylesheet" href="css/customelist.css?1.1" />
+    <!-- charts-c3 -->
+    <link href="plugins/charts-c3/plugin.css?2.0" rel="stylesheet">
+}
+
+<!-- Main Content -->
+<section class="content">
+    @{
+        ViewBag.BlockHeader = "我的電子發票";
+        ViewBag.InsertPartial = "~/Views/InvoiceConsole/Module/PlusIndication.cshtml";
+        await Html.RenderPartialAsync("~/Views/ConsoleHome/Module/BlockHeader.cshtml", _model);
+    }
+    <!--本月發票總數-->
+    <div class="container-fluid">
+        <div class="row clearfix">
+            <div class="col-lg-12 col-md-12">
+                <div class="card bg-darkteal" onclick="javascript:$('').launchDownload('@Html.Raw(Url.Action("InvoiceNoIndex", "ConsoleHome",new { _viewModel.DateFrom }))', { });">                    
+                    <div class="body">
+                        <div class="font-20 align-center">
+                            @{
+                                var invoiceCount = _items.Count();
+                                var lastCount = models.GetTable<InvoiceItem>()
+                                    .Where(i => i.InvoiceType == (int)Naming.InvoiceTypeDefinition.一般稅額計算之電子發票)
+                                    .Where(i => i.InvoiceDate >= _viewModel.DateFrom.Value.AddMonths(-2) && i.InvoiceDate < _viewModel.DateTo.Value.AddMonths(-2)).Count();
+                            }
+                            @(_viewModel.DateFrom.Value.Year)年@(_viewModel.DateFrom.Value.Month) - @(_viewModel.DateFrom.Value.Month + 1)月：<span class="col-lime counto" data-to="@(invoiceCount)">@(invoiceCount)</span>張
+                            @if (invoiceCount > lastCount)
+                            {
+                                <i class="zmdi zmdi-caret-up text-danger"></i>
+                            }
+                            else if (invoiceCount < lastCount)
+                            {
+                                <i class="zmdi zmdi-caret-down text-success"></i>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--本月發票卡片-->
+    <div class="container-fluid">
+        <div class="row clearfix">            
+            <div class="col-lg-12">
+                <div class="card">
+                    <ul class="row clearfix list-unstyled m-b-0 widget_3">
+                        @foreach (var branch in models.GetTable<BranchStore>())
+                        {
+                            <li class="col-lg-3 col-md-6 col-sm-12">
+                                <div class="body">
+                                    <div class="row">
+                                        @{
+                                            await Html.RenderPartialAsync("~/Views/ConsoleHome/Module/InvoiceSummary.cshtml", branch);
+                                        }
+                                    </div>
+                                </div>
+                            </li>
+                        }
+                        <li class="col-lg-6 col-md-12 col-sm-12">
+                            <div class="body">
+                                <div class="row">
+                                    @{
+                                        await Html.RenderPartialAsync("~/Views/ConsoleHome/Module/InvoiceNoSummary.cshtml", _viewModel.DateFrom.Value);
+                                    }
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--詳細資料-->
+    <div class="container-fluid einvoice">
+        <div class="row clearfix">
+            <h4 class="card-outbound-header m-l-15">詳細資料</h4>
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="header">
+                        <ul class="header-dropdown">
+                            <li class="dropdown">
+                                <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class="zmdi zmdi-download"></i> </a>
+                                <ul class="dropdown-menu dropdown-menu-right slideUp float-right">
+                                    <li><a href="javascript:$('').launchDownload('@Html.Raw(Url.Action("DownloadInvoiceNoIntervalCsv", "InvoiceConsole",new { _viewModel.DateFrom }))', { });">下載配號</a></li>
+                                    <li><a href="javascript:$('').launchDownload('@Html.Raw(Url.Action("CheckTurnkeyLogs", "InvoiceConsole",new { _viewModel.DateFrom }))', { });">下載未上傳發票清單</a></li>
+                                 </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="body">
+                        <div class="table-responsive">
+                            @{
+                                await Html.RenderPartialAsync("~/Views/InvoiceConsole/Module/InvoiceNoIntervalList.cshtml");
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+@section TailPageJavaScriptInclude {
+    <!-- countTo Plugin Js -->
+    <script src="bundles/countTo.bundle.js"></script>
+    <!--Sparkline Plugin Js-->
+    <script src="plugins/jquery-sparkline/jquery.sparkline.js"></script>
+    <!-- SweetAlert Plugin Js -->
+    <script src="plugins/sweetalert/sweetalert.min.js"></script>
+    <!-- Jquery DataTable Plugin Js -->
+    <script src="bundles/datatablescripts.bundle.js"></script>
+    <script src="plugins/jquery-datatable/Responsive-2.2.2/js/dataTables.responsive.min.js"></script>
+    <script src="plugins/jquery-datatable/FixedColumns-3.2.5/js/dataTables.fixedColumns.min.js"></script>
+    <!--Gauge Plugin Js-->
+    <script src="plugins/gauge/gauge.min.js"></script>
+    <!-- ChartC3 Js -->
+    <script src="bundles/cs.bundles.js"></script>
+
+    @{ await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/KnobJS.cshtml");}
+
+    <script>
+
+        $(function () {
+
+            $('.counto').countTo();
+
+        });
+    </script>
+
+}
+
+

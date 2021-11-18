@@ -1,0 +1,325 @@
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    IQueryable<Payment> _model;
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _model = (IQueryable<Payment>)this.Model;
+}
+@{
+    String _chartID = $"paymentDonut{DateTime.Now.Ticks}";
+
+    UserProfile _profile = await Context.GetUserAsync();
+    PaymentQueryViewModel _viewModel = (PaymentQueryViewModel)ViewBag.ViewModel;
+    DateTime dateFrom = DateTime.Today.FirstDayOfMonth();
+    _viewModel.PayoffDateFrom = dateFrom;
+
+    IQueryable<Payment> items = null;
+    IQueryable<Payment> lastMonthItems;
+
+    if (_viewModel.BranchID.HasValue)
+    {
+        items = _model.Where(p => p.PayoffDate >= dateFrom)
+           .Where(p => p.VoidPayment == null)
+           .Where(p => p.PaymentTransaction.BranchID == _viewModel.BranchID);
+        lastMonthItems = models.GetTable<Payment>()
+           .Where(p => p.PayoffDate >= dateFrom.AddMonths(-1))
+           .Where(p => p.PayoffDate < dateFrom)
+           .Where(p => p.VoidPayment == null)
+           .Where(p => p.PaymentTransaction.BranchID == _viewModel.BranchID);
+
+    }
+    else
+    {
+        items = _model.Where(p => p.PayoffDate >= dateFrom)
+           .Where(p => p.VoidPayment == null);
+
+        lastMonthItems = models.GetTable<Payment>()
+           .Where(p => p.PayoffDate >= dateFrom.AddMonths(-1))
+           .Where(p => p.PayoffDate < dateFrom)
+           .Where(p => p.VoidPayment == null);
+    }
+
+}
+<div class="card">
+    <div class="header">
+        <h2>
+            <strong>本月總計</strong>
+            @{
+                ViewBag.Other = "全部";
+                await Html.RenderPartialAsync("~/Views/Common/BranchStoreWithOther.cshtml", models.GetTable<BranchStore>().Where(b => b.BranchID == _viewModel.BranchID).FirstOrDefault());
+            }
+        </h2>
+        <ul class="header-dropdown">
+            <li class="dropdown">
+                <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class="zmdi zmdi-swap"></i> </a>
+                <ul class="dropdown-menu dropdown-menu-right slideUp float-right">
+                    <li>
+                        <a onclick='reloadPaymentView(@Html.Raw(JsonConvert.SerializeObject(
+new
+{
+    _viewModel.PayoffDateFrom,
+    BranchID = (String)null,
+})));'>全部</a>
+                    </li>
+                    @foreach (var item in models.GetTable<BranchStore>())
+                    {
+                        <li>
+                            <a onclick='reloadPaymentView(@Html.Raw(JsonConvert.SerializeObject(
+new
+{
+    _viewModel.PayoffDateFrom,
+    BranchID = item.BranchID,
+})));'>@(item.BranchName)</a>
+                        </li>
+                    }
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <ul class="row clearfix list-unstyled m-b-0 widget_2">
+        <li class="col-lg-12 col-md-12 col-sm-12">
+            <div class="body">
+                <div class="row clearfix">
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12">
+                        @if (items.Count() > 0)
+                        {
+                            <div id="@(_chartID)" class="dashboard-donut-chart p-t-40 m-t-20"></div>
+                        }
+                        else
+                        {
+                            <div class="pie_chart">
+                                <div class="pie_light">
+                                    目前沒有<br />
+                                    <span>收款資料</span>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <div class="col-lg-8 col-md-6 col-sm-6 col-12">
+                        <table class="table m-t-15 m-b-0">
+                            <thead>
+                                <tr>
+                                    <td></td>
+                                    <td class="text-right">實際收款</td>
+                                    <td class="text-right col-red">未分潤</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>全部</td>
+                                    <td class="text-right" onclick='showPaymentList(@Html.Raw(JsonConvert.SerializeObject(
+new
+{
+    _viewModel.PayoffDateFrom,
+    _viewModel.BranchID,
+    IsCancelled = false,
+})));'>
+                                        @{
+                                            var totalPayoff = items.Sum(p => p.PayoffAmount) ?? 0;
+                                        }@($"{totalPayoff:##,###,###,##0}")
+                                        @{showIntent(totalPayoff, lastMonthItems.Sum(p => p.PayoffAmount) ?? 0); }
+                                    </td>
+                                    <td class="text-right" onclick='showPaymentList(@Html.Raw(JsonConvert.SerializeObject(
+new
+{
+    _viewModel.PayoffDateFrom,
+    _viewModel.BranchID,
+    IsCancelled = false,
+    HasShare = false,
+})));'>
+                                        @($"{totalPayoff - (items.GetPaymentAchievement(models).Sum(t => t.ShareAmount) ?? 0):##,###,###,##0}")
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>P.T session</td>
+                                    <td class="text-right" onclick='showPaymentList(@Html.Raw(JsonConvert.SerializeObject(
+new
+{
+    _viewModel.PayoffDateFrom,
+    _viewModel.BranchID,
+    TransactionType = (int)Naming.PaymentTransactionType.體能顧問費,
+    IsCancelled = false,
+})));'>
+                                        @{
+                                            var PTItems = items.Where(p => p.TransactionType == (int)Naming.PaymentTransactionType.體能顧問費);
+                                            var PTPayoff = PTItems.Sum(p => p.PayoffAmount) ?? 0;
+                                        }@($"{PTPayoff:##,###,###,##0}") @{showIntent(PTPayoff, lastMonthItems.Where(p => p.TransactionType == (int)Naming.PaymentTransactionType.體能顧問費).Sum(p => p.PayoffAmount) ?? 0); }
+                                    </td>
+                                    <td class="text-right" onclick='showPaymentList(@Html.Raw(JsonConvert.SerializeObject(
+new
+{
+    _viewModel.PayoffDateFrom,
+    _viewModel.BranchID,
+    TransactionType = (int)Naming.PaymentTransactionType.體能顧問費,
+    IsCancelled = false,
+    HasShare = false,
+})));'>
+                                        @($"{PTPayoff - (items.Where(p => p.TransactionType == (int)Naming.PaymentTransactionType.體能顧問費).GetPaymentAchievement(models).Sum(t => t.ShareAmount) ?? 0):##,###,###,##0}")
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>T.S/P.I sesion</td>
+                                    <td class="text-right" onclick='showPaymentList(@Html.Raw(JsonConvert.SerializeObject(
+new
+{
+    _viewModel.PayoffDateFrom,
+    _viewModel.BranchID,
+    TransactionType = (int)Naming.PaymentTransactionType.自主訓練,
+    IsCancelled = false,
+})));'>
+                                        @{
+                                            var PIPayoff = items.Where(p => p.TransactionType == (int)Naming.PaymentTransactionType.自主訓練).Sum(p => p.PayoffAmount) ?? 0;
+                                        }@($"{PIPayoff:##,###,###,##0}") @{showIntent(PIPayoff, lastMonthItems.Where(p => p.TransactionType == (int)Naming.PaymentTransactionType.自主訓練).Sum(p => p.PayoffAmount) ?? 0); }
+                                    </td>
+                                    <td class="text-right" onclick='showPaymentList(@Html.Raw(JsonConvert.SerializeObject(
+new
+{
+    _viewModel.PayoffDateFrom,
+    _viewModel.BranchID,
+    TransactionType = (int)Naming.PaymentTransactionType.自主訓練,
+    IsCancelled = false,
+    HasShare = false,
+})));'>
+                                        @($"{PIPayoff - (items.Where(p => p.TransactionType == (int)Naming.PaymentTransactionType.自主訓練).GetPaymentAchievement(models).Sum(t => t.ShareAmount) ?? 0):##,###,###,##0}")
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>食飲品</td>
+                                    <td class="text-right" onclick='showPaymentList(@Html.Raw(JsonConvert.SerializeObject(
+new
+{
+    _viewModel.PayoffDateFrom,
+    _viewModel.BranchID,
+    TransactionType = (int)Naming.PaymentTransactionType.食飲品,
+    IsCancelled = false,
+})));'>
+                                        @{
+                                            var foodsPayoff = items.Where(p => p.TransactionType == (int)Naming.PaymentTransactionType.食飲品).Sum(p => p.PayoffAmount) ?? 0;
+                                        }
+                                        @($"{foodsPayoff:##,###,###,##0}") @{showIntent(foodsPayoff, lastMonthItems.Where(p => p.TransactionType == (int)Naming.PaymentTransactionType.食飲品).Sum(p => p.PayoffAmount) ?? 0); }
+                                    </td>
+                                    <td class="text-right" onclick='showPaymentList(@Html.Raw(JsonConvert.SerializeObject(
+new
+{
+    _viewModel.PayoffDateFrom,
+    _viewModel.BranchID,
+    TransactionType = (int)Naming.PaymentTransactionType.食飲品,
+    IsCancelled = false,
+    HasShare = false,
+})));'>
+                                        @($"{foodsPayoff - (items.Where(p => p.TransactionType == (int)Naming.PaymentTransactionType.食飲品).GetPaymentAchievement(models).Sum(t => t.ShareAmount) ?? 0):##,###,###,##0}")
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>運動商品</td>
+                                    <td class="text-right" onclick='showPaymentList(@Html.Raw(JsonConvert.SerializeObject(
+new
+{
+    _viewModel.PayoffDateFrom,
+    _viewModel.BranchID,
+    TransactionType = (int)Naming.PaymentTransactionType.運動商品,
+    IsCancelled = false,
+})));'>
+                                        @{
+                                            var itemsPayoff = items.Where(p => p.TransactionType == (int)Naming.PaymentTransactionType.運動商品).Sum(p => p.PayoffAmount) ?? 0;
+                                        }
+                                        @($"{itemsPayoff:##,###,###,##0}") @{showIntent(itemsPayoff, lastMonthItems.Where(p => p.TransactionType == (int)Naming.PaymentTransactionType.運動商品).Sum(p => p.PayoffAmount) ?? 0); }
+                                    </td>
+                                    <td class="text-right" onclick='showPaymentList(@Html.Raw(JsonConvert.SerializeObject(
+new
+{
+    _viewModel.PayoffDateFrom,
+    _viewModel.BranchID,
+    TransactionType = (int)Naming.PaymentTransactionType.運動商品,
+    IsCancelled = false,
+    HasShare = false,
+})));'>
+                                        @($"{itemsPayoff - (items.Where(p => p.TransactionType == (int)Naming.PaymentTransactionType.運動商品).GetPaymentAchievement(models).Sum(t => t.ShareAmount) ?? 0):##,###,###,##0}")
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>教育訓練</td>
+                                    <td class="text-right" onclick='showPaymentList(@Html.Raw(JsonConvert.SerializeObject(
+new
+{
+    _viewModel.PayoffDateFrom,
+    _viewModel.BranchID,
+    TransactionType = (int)Naming.PaymentTransactionType.教育訓練,
+    IsCancelled = false,
+})));'>
+                                        @{
+                                            var trainingPayoff = items.Where(p => p.TransactionType == (int)Naming.PaymentTransactionType.教育訓練).Sum(p => p.PayoffAmount) ?? 0;
+                                        }@($"{trainingPayoff:##,###,###,##0}") @{showIntent(trainingPayoff, lastMonthItems.Where(p => p.TransactionType == (int)Naming.PaymentTransactionType.教育訓練).Sum(p => p.PayoffAmount) ?? 0); }
+                                    </td>
+                                    <td class="text-right" onclick='showPaymentList(@Html.Raw(JsonConvert.SerializeObject(
+new
+{
+    _viewModel.PayoffDateFrom,
+    _viewModel.BranchID,
+    TransactionType = (int)Naming.PaymentTransactionType.教育訓練,
+    IsCancelled = false,
+    HasShare = false,
+})));'>
+                                        @($"{trainingPayoff - (items.Where(p => p.TransactionType == (int)Naming.PaymentTransactionType.教育訓練).GetPaymentAchievement(models).Sum(t => t.ShareAmount) ?? 0):##,###,###,##0}")
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    @if (totalPayoff > 0)
+                    {
+                        <script>
+                $(function () {
+                    Morris.Donut({
+                        labelColor: '#999',
+                        element: '@(_chartID)',
+                        data: [{
+                            label: 'P.T session',
+                            value: @Math.Round(PTPayoff * 100m / totalPayoff) }, {
+                            label: 'P.I session',
+                            value: @Math.Round(PIPayoff * 100m / totalPayoff) }, {
+                            label: '食飲品',
+                            value: @Math.Round(foodsPayoff * 100m / totalPayoff) }, {
+                            label: '運動商品',
+                            value: @Math.Round(itemsPayoff * 100m / totalPayoff) }, {
+                            label: '教育訓練',
+                            value: @Math.Round(trainingPayoff * 100m / totalPayoff) }],
+                        colors: ['#ffe699', '#edbae7', '#93e3ff', '#cbd1d9', '#6c757d'],
+                        formatter: function (y) {
+                            return y + '%'
+                        }
+                    });
+                });
+                        </script>
+
+                    }
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
+
+@{
+    void showIntent(int a1, int a2)
+    {
+        if (a1 > a2)
+        {
+            <i class="zmdi zmdi-caret-up text-danger"></i>
+        }
+        else if (a1 < a2)
+        {
+            <i class="zmdi zmdi-caret-down text-success"></i>
+        }
+    }
+}

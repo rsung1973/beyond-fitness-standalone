@@ -1,0 +1,47 @@
+﻿
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@using CommonLib.Utility
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    MonthlyIndicatorQueryViewModel _viewModel;
+    IQueryable<MonthlyIndicator> _model;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _modelState = ViewContext.ModelState;
+    _viewModel = (MonthlyIndicatorQueryViewModel)ViewBag.ViewModel;
+    _model = (IQueryable<MonthlyIndicator>)this.Model;
+
+    String _chartID = ViewBag.ChartID = "myChart";
+
+}
+@{ 
+    await Html.RenderPartialAsync("~/Views/BusinessConsole/Module2021/BreakEventChartOption.cshtml");
+}
+
+@{
+    dynamic[] items = TempData["DataItems"] as dynamic[];
+    await Html.RenderPartialAsync("~/Views/BusinessConsole/Module2021/RevenueIndicatorList.cshtml", items);
+}
+
+<script>
+    $(function () {
+        $('#multiDimension').css('display', '');
+        $('#multiDimension ul').css('display', 'none');
+        $global.echarts.displayChart('@(_chartID)');
+        $('#queryInterval_2').text('@($"{_viewModel.DateFrom:yyyyMM}")-@($"{_viewModel.DateTo:yyyyMM}")');
+        $global.viewModel = @Html.Raw(_viewModel.JsonStringify());
+        delete $global.viewModel.DateFrom;
+        delete $global.viewModel.DateTo;
+    });
+</script>

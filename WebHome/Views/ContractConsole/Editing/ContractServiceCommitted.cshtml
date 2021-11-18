@@ -1,0 +1,34 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    CourseContract _model;
+
+
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (CourseContract)this.Model;
+}
+<script>
+    $(function () {
+        $('').launchDownload('@Html.Raw(Url.Action("ApplyContractService","ConsoleHome"))',
+            @Html.Raw(JsonConvert.SerializeObject(new CourseContractQueryViewModel
+                {
+                    KeyID = _model.CourseContractRevision.OriginalContract.Value.EncryptKey(),
+                })));
+    });
+</script>
+
+

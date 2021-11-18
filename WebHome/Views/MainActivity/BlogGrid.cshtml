@@ -1,0 +1,66 @@
+
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _modelState = ViewContext.ModelState;
+
+    Layout = "~/Views/MainActivity/Template/BlogPage.cshtml";
+
+}
+
+@section CustomHeader {
+
+}
+
+<!-- Main Content -->
+<section class="section-blog dark">
+    <div class="container">
+        <div class="row clearfix">
+            <div class="col-12">
+                <span class="mode p-r-20">
+                    <a href="javascript:bindTrackingCode('列表分類', '@(Url.Action("BlogList"))', null)"><i class="fas fa-th-list"></i></a>
+                </span>
+            </div>
+        </div>
+        <div class="row clearfix">
+            @foreach (var item in models.GetTable<BlogCategoryDefinition>())
+            {
+                <div class="col-xs-6 col-sm-4 col-md-3 col-lg-3">
+                    <div class="blog-item text-center">
+                        <div class="blog-img">
+                            <img class="img-fluid" src="@(item.CategoryIndication)">
+                            <div class="blog-overlay" onclick="javascript:bindTrackingCode('@($"文章列表_{ item.Category}")', '@(Url.Action("BlogArticleList","MainActivity",new { item.CategoryID }))', null)">
+                                <div class="overlay-social-icon text-center">
+                                    <ul class="social-icons">
+                                        <li><a href="javascript:bindTrackingCode('@($"文章列表_{ item.Category}")', '@(Url.Action("BlogArticleList","MainActivity",new { item.CategoryID }))', null)">了解更多</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="info-text">
+                            <h3>@(item.Category)</h3>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+@section TailPageJavaScriptInclude {
+
+}

@@ -1,0 +1,39 @@
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    IQueryable<Payment> _model;
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (IQueryable<Payment>)this.Model;
+}
+@{ 
+    await Html.RenderPartialAsync("~/Views/PaymentConsole/Module/CurrentMonthPaymentView.cshtml", _model);
+    String _viewID = (String)ViewBag.ViewID;
+}
+<script>
+    function reloadPaymentView(viewModel) {
+        showLoading();
+        $.post('@Html.Raw(Url.Action("ShowCurrentMonthPaymentView", "PaymentConsole"))', viewModel, function (data) {
+            hideLoading();
+            if ($.isPlainObject(data)) {
+                Swal.fire(
+                    'Oops...',
+                    data.message,
+                    'warning'
+                )
+            } else {
+                $('#@(_viewID)').empty().append(data);
+            }
+        });
+    }
+</script>

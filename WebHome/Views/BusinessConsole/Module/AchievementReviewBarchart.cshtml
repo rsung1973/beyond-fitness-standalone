@@ -1,0 +1,180 @@
+﻿
+@using System.IO
+@using System.Linq.Expressions
+@using System.Web
+ 
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    MonthlyIndicator _model;
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (MonthlyIndicator)this.Model;
+}
+@{
+    String _viewID = $"achievementBar{DateTime.Now.Ticks}";
+    MonthlyIndicatorQueryViewModel _viewModel = (MonthlyIndicatorQueryViewModel)ViewBag.ViewModel;
+}
+@{
+    DateTime startDate = _model.StartDate.AddMonths(-3);
+
+    var monthlyItems = models.GetTable<MonthlyIndicator>().Where(i => i.StartDate > startDate && i.StartDate <= _model.StartDate);
+
+    var revenueItems = monthlyItems
+    .Join(models.GetTable<MonthlyBranchRevenueIndicator>(),
+        i => i.PeriodID, b => b.PeriodID, (i, b) => b);
+
+    if (_viewModel.BranchID.HasValue)
+    {
+        revenueItems = revenueItems.Where(b => b.BranchID == _viewModel.BranchID);
+        MonthlyBranchRevenueGoal item = _model.MonthlyBranchRevenueIndicator.Where(r => r.BranchID == _viewModel.BranchID)
+                .Where(r => r.MonthlyBranchRevenueGoal != null)
+                .Select(r => r.MonthlyBranchRevenueGoal).FirstOrDefault();
+        TempData["RevenueGoal"] = item;
+    }
+    else
+    {
+        MonthlyRevenueGoal item = _model.MonthlyRevenueIndicator.Where(r => r.MonthlyRevenueGoal != null)
+                .Select(r => r.MonthlyRevenueGoal).FirstOrDefault();
+        TempData["RevenueGoal"] = item;
+    }
+
+    var indicatorItems = revenueItems.Where(b => b.MonthlyBranchRevenueGoal != null);
+
+    var groups = indicatorItems
+        .Select(b => b.MonthlyBranchRevenueGoal).ToArray()
+        .GroupBy(g => g.MonthlyBranchRevenueIndicator.MonthlyIndicator.StartDate)
+        .OrderBy(g => g.Key).ToArray();
+
+    TempData["PeriodGroup"] = groups;
+
+    var totalAmt = groups.Select(g => Math.Round((g.Sum(b => b.ActualSharedAchievement + b.ActualLessonAchievement) ?? 0) / 10000M, 1)).ToArray();
+    var achievement = groups.Select(g => (object)Math.Round((g.Sum(b => b.ActualSharedAchievement) ?? 0) / 10000M, 1)).ToList();
+    var tuition = groups.Select(g => (object)Math.Round((g.Sum(b => b.ActualLessonAchievement) ?? 0) / 10000M, 1)).ToList();
+
+    achievement.Insert(0, "data1");
+    tuition.Insert(0, "data2");
+
+    var gradeItems = revenueItems.Where(r => r.PeriodID == _model.PeriodID)
+            .GroupBy(r => r.GradeID)
+            .OrderBy(g => g.Key)
+            .Select(g => new { GradeID = g.Key, Goal = g.Sum(i => i.RevenueGoal) }).ToArray();
+
+    var category = groups.Select(g => $"{g.Key:yyyyMM}");
+    TempData["Category"] = category;
+
+    if (gradeItems.Length == 0)
+    {
+        Context.Response.Redirect("~/Error/Goback?message="+HttpUtility.UrlEncode("資料未設定!!"));
+    }
+
+    var goal130 = gradeItems.Length > 0 ? Math.Round(gradeItems[gradeItems.Length - 1].Goal / 10000M, 1) : 0;
+    var yMax = totalAmt.Length>0 ? Math.Max(goal130, totalAmt.OrderByDescending(t => t).First()) : 0;
+}
+<div id="@(_viewID)" class="c3"></div>
+<script>
+        //顯示比較近三個月上課與收款業績概況
+    $(function () {
+
+        var totals = @Html.Raw(JsonConvert.SerializeObject(totalAmt));
+        var chart = c3.generate({
+            bindto: '#@(_viewID)', // id of chart wrapper
+            data: {
+                columns: [
+                    //                        ['data1', 173.9350, 217.5390, 180.4690],
+                    //                        ['data2', 162.4020, 158.7020, 162.1840],
+                    @Html.Raw(JsonConvert.SerializeObject(achievement)),
+                    @Html.Raw(JsonConvert.SerializeObject(tuition)),
+                    //                        ['data3', 210.88, 230.95, 188.45],
+                    //                        ['data4', 135.59, 160.2, 162.88],
+                ],
+                order: null,
+                types: {
+                    'data1': 'bar',
+                    'data2': 'bar',
+                    //                        'data3': 'bar',
+                    //                        'data4': 'bar'
+                },
+                groups: [
+                    ['data1', 'data2'],
+                    //                        ['data3', 'data4'],
+                ],
+                colors: {
+                    'data1': '#C2454F',
+                    'data2': '#F1A139',
+                    //                        'data3': '#d87a80',
+                    //                        'data4': '#97b552',
+                },
+                names: {
+                    // name of each serie
+                    'data1': '收款業績',
+                    'data2': '上課業績',
+                    //                        'data3': '收款(簽約場所)',
+                    //                        'data4': '上課(上課場所)'
+                },
+                labels: {
+                    format: {
+                        data2: function (v, id, i, j) {
+                            return totals[i];
+                        },
+                    }
+                }
+            },
+            axis: {
+                x: {
+                    type: 'category',
+                    // name of each category
+                    categories: @Html.Raw(JsonConvert.SerializeObject(category)),
+                },
+                y: {
+                    show: true,
+                    max: @(yMax),
+                    label: {
+                        text: '元（萬）',
+                        position: 'outer-middle'
+                    }
+                }
+            },
+            bar: {
+                width: 'auto'
+            },
+            legend: {
+                show: true, //hide legend
+            },
+            padding: {
+                bottom: 0,
+                top: 0
+            },
+            grid: {
+                x: {
+                    show: false
+                },
+                y: {
+                    show: false,
+                    lines: [{
+                        value: @(gradeItems.Length>0 ? Math.Round(gradeItems[0].Goal/10000M,1) : 0),
+                        text: '100%',
+                        position: 'start',
+                        class: 'target'
+                    },
+                    {
+                        value: @(goal130),
+                        text: '130%',
+                        position: 'start',
+                        class: 'target'
+                    }
+                    ]
+                }
+            }
+        });
+        d3.select('#@(_viewID)').selectAll('.c3-texts-data1').selectAll('text.c3-text').attr('dy', 80);
+    });
+
+</script>

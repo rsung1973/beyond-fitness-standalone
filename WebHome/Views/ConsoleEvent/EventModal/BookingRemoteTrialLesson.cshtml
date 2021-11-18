@@ -1,0 +1,54 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    UserProfile _model;
+    CalendarEventViewModel _viewModel;
+    UserProfile _profile;
+
+    BookingLessonPageModel _pageModel = (BookingLessonPageModel)ViewBag.PageModel;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (UserProfile)this.Model;
+    _viewModel = (CalendarEventViewModel)ViewBag.ViewModel;
+    _profile = await Context.GetUserAsync();
+    LessonPriceType price = models.CurrentTrialLessonPrice(true);
+}
+
+@{
+    if (price != null)
+    {
+        _pageModel.HasChoice = true;
+
+        <li class="list-group-item">
+            <div class="media">
+                <div class="pull-left">
+                    <div class="controls">
+                        <label class="fancy-checkbox">
+                            <input type="checkbox" name="RegisterID" id="trialRemote" value="" onclick="selectBooking(this, '@((int)Naming.LessonPriceStatus.體驗課程)', @(price.PriceID));" data-location="option.virtual-store" />
+                            <span></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="media-body">
+                    <div class="media-heading">
+                        <a class="m-r-10">@(price.SimpleDescription)</a>
+                        <small class="float-right text-muted"><time>TWD @(price.ListPrice)</time></small>
+                    </div>
+                </div>
+            </div>
+        </li>
+    }
+
+}

@@ -1,0 +1,51 @@
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    IQueryable<Payment> _model;
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (IQueryable<Payment>)this.Model;
+}
+@{
+    UserProfile _profile = await Context.GetUserAsync();
+    PaymentQueryViewModel _viewModel = (PaymentQueryViewModel)ViewBag.ViewModel;
+    IQueryable<Payment> items = _model;
+
+}
+<div class="container-fluid">
+    <div class="card">
+        <div class="header">
+            @{
+                await Html.RenderPartialAsync("~/Views/PaymentConsole/Module/EditPaymentDropdown.cshtml", items);
+            }
+        </div>
+        <ul class="row clearfix list-unstyled m-b-0 widget_2">
+            <li class="col-lg-6 col-md-6 col-sm-12">
+                <div class="body">
+                    <div class="row">
+                        @{ await Html.RenderPartialAsync("~/Views/PaymentConsole/Module/PaymentToday.cshtml", items);}
+                    </div>
+                </div>
+            </li>
+            <li class="col-lg-6 col-md-6 col-sm-12">
+                <div class="body">
+                    <div class="row">
+                        @{
+                            await Html.RenderPartialAsync("~/Views/PaymentConsole/Module/CurrentMonthPayment.cshtml", items);
+                        }
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>

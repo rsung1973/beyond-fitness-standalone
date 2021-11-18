@@ -1,0 +1,52 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    UserProfile _model;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (UserProfile)this.Model;
+}
+@{
+    IQueryable<LessonTime> lessons = _model.UID.PromptLearnerLessons(models);
+    DateTime monthStart = DateTime.Today.FirstDayOfMonth();
+}
+<ul class="nav nav-tabs-new2 darkteal p-t-0" id="tabs">
+    <li class="nav-item"><a class="nav-link" data-toggle="tab" onclick="$global.calendarToDate('@(monthStart.AddMonths(-1).ToString("yyyy-MM-dd"))');" href="#previousmonth">上月</a></li>
+    <li class="nav-item"><a class="nav-link active" data-toggle="tab" onclick="$global.calendarToDate('@(monthStart.ToString("yyyy-MM-dd"))');" href="#thismonth">本月</a></li>
+    <li class="nav-item"><a class="nav-link" data-toggle="tab" onclick="$global.calendarToDate('@(monthStart.AddMonths(1).ToString("yyyy-MM-dd"))');" href="#nextmonth">次月</a></li>
+</ul>
+@{  await Html.RenderPartialAsync("~/Views/LearnerProfile/Module/LearnerLessonsReviewDetails.cshtml", _model);}
+<script>
+    var refreshEvents;
+    $(function () {
+        refreshEvents = function () {
+            showLoading();
+            $.post('@Html.Raw(Url.Action("LearnerLessonsReviewDetails", "LearnerProfile", new { KeyID = _model.UID.EncryptKey() }))', {}, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    Swal.fire(
+                        'Oops...',
+                        data.message,
+                        'warning'
+                    )
+                } else {
+                    var $tabs = $('#tabs');
+                    $tabs.next('div').remove();
+                    $tabs.after(data);
+                }
+            });
+        }
+    });
+</script>

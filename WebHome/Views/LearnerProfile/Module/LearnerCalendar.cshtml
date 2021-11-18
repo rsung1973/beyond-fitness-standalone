@@ -1,0 +1,301 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    UserProfile _model;
+    String _calendarID = $"calendar{DateTime.Now.Ticks}";
+    DateTime? startDate;
+    DailyBookingQueryViewModel _viewModel;
+
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (UserProfile)this.Model;
+    _viewModel = (DailyBookingQueryViewModel)ViewBag.ViewModel;
+    startDate = _viewModel.DateFrom ?? DateTime.Today;
+}
+<div class="row">
+    <div class="col-12 text-right">
+        <button class="btn btn-default btn-simple btn-icon  btn-icon-mini btn-round waves-effect" id="ag">週</button>
+        <button class="btn btn-default btn-simple btn-icon  btn-icon-mini btn-round waves-effect" id="mt">月</button>
+    </div>
+</div>
+<div id="@(_calendarID)" class="m-t-20"></div>
+<script>
+    var refetchCalendarEvents;
+
+    $(function () {
+
+        var $viewModel = @Html.Raw(JsonConvert.SerializeObject(_viewModel));
+        showLoading();
+
+        if ($("#@(_calendarID)").length) {
+            var date = new Date();
+            var d = date.getDate();
+            var m = date.getMonth();
+            var y = date.getFullYear();
+
+            var calendar = $('#@(_calendarID)').fullCalendar({
+                draggable: true,
+                selectable: false,
+                selectHelper: true,
+                unselectAuto: false,
+                disableResizing: false,
+                allDaySlot: false,
+                editable: false,
+                height: "auto",
+                defaultView: "month",
+                defaultDate: @Html.Raw(JsonConvert.SerializeObject(startDate)),
+                firstDay: 1,
+                businessHours: {
+                    start: '08:00',
+                    end: '22:00',
+                    dow: [1, 2, 3, 4, 5, 6, 0]
+                },
+                minTime: "06:00:00",
+                maxTime: "24:00:00",
+                header: {
+                    left: 'prev',
+                    center: 'title',
+                    right: 'next'
+                },
+                eventLimit: 3,
+                events: function (start, end, timezone, callback) {
+
+                    $viewModel.DateFrom = start.format('YYYY-MM-DD');
+                    $viewModel.DateTo = end.format('YYYY-MM-DD');
+                    //$viewModel.DefaultView = defaultView;
+                    $.post('@Html.Raw(Url.Action("LearnerCalendarEvents","LearnerProfile"))', $viewModel, function (data) {
+                        callback(data);
+                    });
+                },
+                eventRender: function (event, element, icon) {
+                    if (!event.description == "") {
+                        element.find('.fc-title').append("<br/><span class='ultra-light'>" + event.description + "</span>");
+                    }
+                    if (!event.icon == "") {
+                        element.find('.fc-title').append("<i class='" + event.icon + " '></i>");
+                    }
+                },
+
+                eventClick: function (calEvent, jsEvent, view) {
+                    if (calEvent.allDay == true) {
+
+                    } else {
+                        if (calEvent.id.indexOf('my') == 0) {
+                            //showUserEventModal(calEvent.keyID);
+                        } else {
+                            $viewModel.KeyID = calEvent.keyID;
+                            $viewModel.LearnerID = calEvent.learnerID;
+                            showLoading();
+                            $('').launchDownload('@Html.Raw(Url.Action("LessonTrainingContent", "ConsoleHome"))', $viewModel);
+                        }
+                    }
+                },
+
+                dayClick: function (date, allDay, jsEvent, view) {
+                    showLoading();
+                    $.post('@Html.Raw(Url.Action("BookingLesson", "ConsoleEvent",new { KeyID = _viewModel.LearnerID.Value.EncryptKey() }))', { 'startDate': date.format('YYYY-MM-DD HH:mm:ss') }, function (data) {
+                        hideLoading();
+                        if ($.isPlainObject(data)) {
+                            alert(data.message);
+                        } else {
+                            $(data).appendTo($('body'));
+                        }
+                    });
+                },
+                eventDrop: function (calEvent, delta, revertFunc, jsEvent, ui, view) {
+
+                    showLoading();
+                    if (calEvent.id.indexOf('my') == 0) {
+                        $.post('@Html.Raw(Url.Action("UpdateCoachEvent","CoachFacet",new { _model.UID }))', {
+                            'startDate': calEvent.start.format('YYYY-MM-DD HH:mm:ss'),
+                            'endDate': calEvent.end.format('YYYY-MM-DD HH:mm:ss'),
+                            'keyID': calEvent.keyID,
+                        }, function (data) {
+                            hideLoading();
+                            if (data.result) {
+                                refreshEvents();
+                                Swal.fire(
+                                    '幹得好!',
+                                    '更新時間成功!',
+                                    'success'
+                                )
+                            } else {
+                                revertFunc();
+                                var $dialog = $(data);
+                                $dialog.appendTo('body').remove();
+                            }
+                        });
+                    } else {
+                        $.post('@Html.Raw(Url.Action("UpdateBookingByCoach","CoachFacet"))', {
+                            'keyID': calEvent.keyID,
+                            'classTimeStart': calEvent.start.format('YYYY-MM-DD HH:mm:ss'),
+                            'classTimeEnd': calEvent.end.format('YYYY-MM-DD HH:mm:ss'),
+                        }, function (data) {
+                            hideLoading();
+                            if (data.result) {
+                                refreshEvents();
+                                Swal.fire(
+                                    '幹得好!',
+                                    '更新時間成功!',
+                                    'success'
+                                )
+                                //alert(data.message);
+                            } else {
+                                revertFunc();
+                                var $dialog = $(data);
+                                $dialog.appendTo('body').remove();
+                            }
+                        });
+                    }
+                },
+                eventResize: function (calEvent, delta, revertFunc, jsEvent, ui, view) {
+
+                    showLoading();
+                    if (calEvent.id.indexOf('my') == 0) {
+                        $.post('@Html.Raw(Url.Action("UpdateCoachEvent","CoachFacet",new { _model.UID }))',
+                            {
+                                'keyID': calEvent.keyID,
+                                'startDate': calEvent.start.format('YYYY-MM-DD HH:mm:ss'),
+                                'endDate': calEvent.end.format('YYYY-MM-DD HH:mm:ss'),
+                            }, function (data) {
+                                hideLoading();
+                                if (data.result) {
+                                    refreshEvents();
+                                    Swal.fire(
+                                        '幹得好!',
+                                        '更新時間成功!',
+                                        'success'
+                                    )
+                                    //alert(data.message);
+                                } else {
+                                    revertFunc();
+                                    var $dialog = $(data);
+                                    $dialog.appendTo('body').remove();
+                                }
+                            });
+                    } else {
+                        $.post('@Html.Raw(Url.Action("UpdateBookingByCoach","CoachFacet"))',
+                            {
+                                'keyID': calEvent.keyID,
+                                'classTimeStart': calEvent.start.format('YYYY-MM-DD HH:mm:ss'),
+                                'classTimeEnd': calEvent.end.format('YYYY-MM-DD HH:mm:ss'),
+                            }, function (data) {
+                                hideLoading();
+                                if (data.result) {
+                                    refreshEvents();
+                                    Swal.fire(
+                                        '幹得好!',
+                                        '更新時間成功!',
+                                        'success'
+                                    )
+                                    //alert(data.message);
+                                } else {
+                                    revertFunc();
+                                    var $dialog = $(data);
+                                    $dialog.appendTo('body').remove();
+                                }
+                            });
+                    }
+                },
+                windowResize: function (event, ui) {
+                    $('#@(_calendarID)').fullCalendar('render');
+                },
+                eventAfterAllRender: function (view) {
+                    hideLoading();
+                },
+            });
+
+            refetchCalendarEvents = function () {
+                $('#@(_calendarID)').fullCalendar("refetchEvents");
+            };
+
+        }
+
+
+        /* hide default buttons */
+        // Previous month action
+        $('#cal-prev').on('click', function () {
+            $('#@(_calendarID)').fullCalendar('prev');
+        });
+
+        // Next month action
+        $('#cal-next').on('click', function () {
+            $('#@(_calendarID)').fullCalendar('next');
+        });
+
+        // calendar today
+        $('#@(_calendarID)-buttons #btn-today').click(function () {
+            $('.fc-button-today').click();
+            return false;
+        });
+
+
+        // calendar agenda day
+        $('#td').click(function () {
+            $('#@(_calendarID)').fullCalendar('changeView', 'agendaDay');
+        });
+
+        // Change to month view
+        $('#mt').on('click', function () {
+            $('#@(_calendarID)').fullCalendar('changeView', 'month');
+
+            // safari fix
+            $('#content .main').fadeOut(0, function () {
+                setTimeout(function () {
+                    $('#content .main').css({ 'display': 'table' });
+                }, 0);
+            });
+
+        });
+
+        // Change to week view
+        $('#ag').on('click', function () {
+            $('#@(_calendarID)').fullCalendar('changeView', 'agendaWeek');
+
+            // safari fix
+            $('#content .main').fadeOut(0, function () {
+                setTimeout(function () {
+                    $('#content .main').css({ 'display': 'table' });
+                }, 0);
+            });
+
+        });
+
+        // Change to day view
+        $('#td').on('click', function () {
+            $('#@(_calendarID)').fullCalendar('changeView', 'agendaDay');
+
+            // safari fix
+            $('#content .main').fadeOut(0, function () {
+                setTimeout(function () {
+                    $('#content .main').css({ 'display': 'table' });
+                }, 0);
+            });
+
+        });
+
+        // Change to today view
+        $('#today').on('click', function () {
+            $('#@(_calendarID)').fullCalendar('today');
+        });
+
+        $global.calendarToDate = function (toDate) {
+            $('#@(_calendarID)').fullCalendar('gotoDate', toDate);
+        };
+
+    });
+</script>
+

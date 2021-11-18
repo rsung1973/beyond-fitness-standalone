@@ -1,0 +1,28 @@
+@{
+    Layout = ViewBag.AlertLayout;
+    String _message;
+    String _dialogID = $"alert{DateTime.Now.Ticks}";
+    _message = (String)this.Model ?? (String)ViewBag.Message;
+}
+<div class="modal fade" id="@(_dialogID)" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">        
+            <div class="modal-body">
+                <a class="closebutton" data-dismiss="modal"></a>
+                <div class="row">
+                    <!-- iPhone -->
+                    <img class="header_iphone" src="images/error.png" alt="BeyondFitness">
+                    <!-- //iPhone -->
+                    <div class="col-md-8 col-md-offset-2 text-center">
+                        <p>Oooops, Something went wrong!<br/><small>@(DateTime.Now)</small></p>
+                        <p class="col-pink">@(_message)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @{ await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/BSModalScript.cshtml", model: _dialogID);}
+
+</div>
+
+

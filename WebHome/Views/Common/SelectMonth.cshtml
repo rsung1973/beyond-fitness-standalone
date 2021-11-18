@@ -1,0 +1,75 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    MonthlySelectorViewModel _viewModel;
+    String _dialogID = $"pcb{DateTime.Now.Ticks}";
+
+
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _viewModel = (MonthlySelectorViewModel)ViewBag.ViewModel;
+}
+@{ 
+    DateTime startDate = DateTime.Today.FirstDayOfMonth();
+}
+<div class="modal modal-mini fade" id="@(_dialogID)" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="title">請選擇月份</h6>
+                <a class="closebutton" data-dismiss="modal"></a>
+            </div>
+            <div class="modal-popmenu-body">
+                <div class="list-group">
+                    @for (int i = 0; i < (_viewModel.RecentCount ?? 6); i++)
+                    {
+                        DateTime item = startDate.AddMonths(-i);
+                    <a href="javascript:selectTheMonth(@(item.Year),@(item.Month));" class="list-group-item">@(item.Year)年@(item.Month)月</a>
+                    }
+                    <div class="list-group-item input-group m-b-0">
+                        <input type="text" class="form-control selectMonth" placeholder="自訂月份 YYYYMM" />
+                        <span class="input-group-addon">
+                            <i class="zmdi zmdi-calendar"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @{ await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/BSModalScript.cshtml", model: _dialogID);}
+
+    <script>
+        $('#@(_dialogID) .selectMonth').keypress(function (event) {
+            var event = event || window.event;
+            var $target = $(event.target);
+             var keycode = (event.keyCode ? event.keyCode : event.which);
+            if (keycode == '13') {
+                var data = $target.val();
+                if (data.length == 6 && data.match(/[0-9]+/)) {
+                    clearErrors();
+                    selectTheMonth(data.substring(0, 4), data.substring(4, 6));
+                }
+            }
+        });
+
+        function selectTheMonth(year,month) {
+            if ($global.doSelect) {
+                $global.doSelect(year, month);
+            }
+        }
+    </script>
+</div>
+

@@ -1,0 +1,382 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    Payment _model;
+    String _dialogID = $"contractDetails{DateTime.Now.Ticks}";
+    UserProfile _profile;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (Payment)this.Model;
+    _profile = await Context.GetUserAsync();
+}
+@{ 
+    InvoiceItem invoice = _model.InvoiceItem;
+    CourseContract contract = _model.ContractPayment?.CourseContract;
+    VoidPayment voidItem = _model.VoidPayment;
+    InvoiceAllowance allowance = _model.InvoiceAllowance;
+}
+<div class="modal fade" id="@(_dialogID)" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <a class="closebutton" data-dismiss="modal"></a>
+            <div class="card">
+                <div class="body">
+                    <div class="panel-group full-body" id="accordionDetail_payment" role="tablist" aria-multiselectable="true">
+                        <div class="panel">
+                            <div class="panel-heading" role="tab" id="headingPayment">
+                                <h4 class="panel-title material-icons">
+                                    <a role="button" data-toggle="collapse" data-parent="#accordionDetail_payment" href="#collapseDetail_payment" aria-expanded="true" aria-controls="collapseDetail_payment">
+                                        <i class="material-icons">subject</i> 收款詳細資訊
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseDetail_payment" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="headingPayment">
+                                <div class="panel-body no-padding">
+                                    <ul class="mb_list">
+                                        <li>
+                                            <div class="list_tb tb2">
+                                                <div class="list_tr">
+                                                    <div class="list_td hd">賣方分店/統編</div>
+                                                    <div class="list_td rt">@(_model.PaymentTransaction.BranchStore.BranchName) / @(_model.PaymentTransaction.BranchStore.Organization.ReceiptNo)</div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="list_tb tb2 Fixed_w">
+                                                <div class="list_tr">
+                                                    <div class="list_td hd">收款人</div>
+                                                    <div class="list_td rt">@(_model.UserProfile.FullName())</div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="list_tb tb2">
+                                                <div class="list_tr">
+                                                    <div class="list_td hd">學員</div>
+                                                    <div class="list_td rt">@(_model.PayerName())</div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="list_tb tb2">
+                                                <div class="list_tr">
+                                                    <div class="list_td hd">品項</div>
+                                                    <div class="list_td rt">
+                                                        @(_model.PaymentFor)
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        @if (_model.TransactionType != (int)Naming.PaymentTransactionType.體能顧問費)
+                                        {
+                                            <li>
+                                                <div class="list_tb tb2">
+                                                    <div class="list_tr">
+                                                        <div class="list_td hd">數量</div>
+                                                        <div class="list_td rt">@(invoice?.InvoiceDetails.Sum(d => d.InvoiceProduct.InvoiceProductItem.Count))</div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        }
+                                        <li>
+                                            <div class="list_tb tb2">
+                                                <div class="list_tr">
+                                                    <div class="list_td hd">收款方式</div>
+                                                    <div class="list_td rt">@(_model.PaymentType)</div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="list_tb tb2">
+                                                <div class="list_tr">
+                                                    <div class="list_td hd">收款金額</div>
+                                                    <div class="list_td rt">@($"{_model.PayoffAmount:##,###,###,###}")</div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="list_tb tb2">
+                                                <div class="list_tr">
+                                                    <div class="list_td hd">收款日</div>
+                                                    <div class="list_td rt">@($"{_model.PayoffDate:yyyy/MM/dd}")</div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="list_tb tb2">
+                                                <div class="list_tr">
+                                                    <div class="list_td hd">買受人統編</div>
+                                                    <div class="list_td rt">
+                                                        @if (invoice != null)
+                                                        {
+                                                            <text>@(!invoice.InvoiceBuyer.IsB2C() ? invoice.InvoiceBuyer.ReceiptNo : null)</text>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="list_tb tb2">
+                                                <div class="list_tr">
+                                                    <div class="list_td hd">其他增補說明</div>
+                                                    <div class="list_td rt">@(_model.Remark)</div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel">
+                            <div class="panel-heading" role="tab" id="headingInvoice">
+                                <h4 class="panel-title">
+                                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordionDetail_payment" href="#collapseDetail_Invoice" aria-expanded="false" aria-controls="collapseDetail_Invoice">
+                                        <i class="material-icons">subject</i> 發票詳細資訊<small></small>
+                                        @if (voidItem == null)
+                                        {
+                                            <span class="badge bg-green">已開立</span>
+                                        }
+                                        else if (_model.AllowanceID.HasValue)
+                                        {
+                                            <span class="badge bg-red">已折讓</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-red">已作廢</span>
+                                        }
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseDetail_Invoice" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingInvoice">
+                                <div class="panel-body no-padding">
+                                    <div class="row">
+                                        <div class="col-md-6 col-sm-6 col-12">
+                                            <ul class="mb_list">
+                                                <li>
+                                                    <div class="list_tb tb2">
+                                                        <div class="list_tr">
+                                                            <div class="list_td hd">發票號碼</div>
+                                                            <div class="list_td rt">
+                                                                @if (invoice != null)
+                                                                {
+                                                                    <text>@(invoice.TrackCode)@(invoice.No)</text>
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="list_tb tb2">
+                                                        <div class="list_tr">
+                                                            <div class="list_td hd">發票類型</div>
+                                                            <div class="list_td rt">
+                                                                @(invoice != null
+                                                                    ? invoice.InvoiceType == (int)Naming.InvoiceTypeDefinition.一般稅額計算之電子發票
+                                                                        ? "電子發票"
+                                                                        : "紙本"
+                                                                    : "--")
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="list_tb tb2">
+                                                        <div class="list_tr">
+                                                            <div class="list_td hd">發票日</div>
+                                                            <div class="list_td rt">@($"{invoice?.InvoiceDate:yyyy/MM/dd}")</div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="list_tb tb2">
+                                                        <div class="list_tr">
+                                                            <div class="list_td hd">發票金額</div>
+                                                            <div class="list_td rt">@($"{invoice?.InvoiceAmountType.TotalAmount:##,###,###,###}")</div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="list_tb tb2">
+                                                        <div class="list_tr">
+                                                            <div class="list_td hd">應稅銷售額</div>
+                                                            <div class="list_td rt">@($"{invoice?.InvoiceAmountType.SalesAmount:##,###,###,###}")</div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="list_tb tb2">
+                                                        <div class="list_tr">
+                                                            <div class="list_td hd">營業稅額</div>
+                                                            <div class="list_td rt">@($"{invoice?.InvoiceAmountType.TaxAmount:##,###,###,###}")</div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="list_tb tb2">
+                                                        <div class="list_tr">
+                                                            <div class="list_td hd">載具號碼</div>
+                                                            <div class="list_td rt">@(invoice?.InvoiceCarrier?.CarrierNo)</div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="list_tb tb2">
+                                                        <div class="list_tr">
+                                                            <div class="list_td hd">列印次數</div>
+                                                            <div class="list_td rt">@(invoice?.Document.DocumentPrintLog.Count)</div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="list_tb tb2">
+                                                        <div class="list_tr">
+                                                            <div class="list_td hd">發票品項</div>
+                                                            <div class="list_td rt">@Html.Raw(String.Join("<br/>", invoice?.InvoiceDetails.Select(d => d.InvoiceProduct.Brief)))</div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-md-6 col-sm-6 col-12">
+                                            <ul class="mb_list">
+                                                <li>
+                                                    <div class="list_tb tb2">
+                                                        <div class="list_tr">
+                                                            <div class="list_td hd col-pink">作廢/折讓日</div>
+                                                            <div class="list_td rt col-pink">@($"{voidItem?.VoidDate:yyyy/MM/dd}")</div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="list_tb tb2 Fixed_w">
+                                                        <div class="list_tr">
+                                                            <div class="list_td hd col-pink">作廢/折讓(含稅)</div>
+                                                            <div class="list_td rt col-pink">
+                                                                @(voidItem != null
+                                                                        ? allowance != null
+                                                                            ? $"{allowance.TotalAmount + allowance.TaxAmount:##,###,###,###}"
+                                                                            : $"{invoice.InvoiceAmountType.TotalAmount:##,###,###,###}"
+                                                                        : null)
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="list_tb tb2">
+                                                        <div class="list_tr">
+                                                            <div class="list_td hd col-pink">作廢/折讓(未稅)</div>
+                                                            <div class="list_td rt col-pink">
+                                                                @(voidItem != null
+                                                                            ? allowance != null
+                                                                                ? $"{allowance.TotalAmount:##,###,###,###}"
+                                                                                : $"{invoice.InvoiceAmountType.SalesAmount:##,###,###,###}"
+                                                                            : null)
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="list_tb tb2">
+                                                        <div class="list_tr">
+                                                            <div class="list_td hd col-pink">其他增補說明</div>
+                                                            <div class="list_td rt col-pink">@(voidItem?.Remark)</div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="list_tb tb2">
+                                                        <div class="list_tr">
+                                                            <div class="list_td hd col-pink">列印次數</div>
+                                                            <div class="list_td rt col-pink">@(allowance?.Document.DocumentPrintLog.Count)</div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel">
+                            <div class="panel-heading" role="tab" id="headingDivided">
+                                <h4 class="panel-title">
+                                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordionDetail_payment" href="#collapseDetail_divided" aria-expanded="true" aria-controls="collapseDetail_divided">
+                                        <i class="material-icons">subject</i> 分潤詳細資訊
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseDetail_divided" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingDivided">
+                                <div class="panel-body no-padding patients-list">
+                                    <div class="table-responsive">
+                                        @{
+                                            var items = models.GetTable<TuitionAchievement>().Where(t => t.InstallmentID == _model.PaymentID);
+                                            await Html.RenderPartialAsync("~/Views/PaymentConsole/Module/AchievementShareList.cshtml", items);
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @if (contract != null)
+                        {
+                            <div class="panel">
+                                <div class="panel-heading" role="tab" id="headingContract">
+                                    <h4 class="panel-title col-amber">
+                                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordionDetail_payment" href="#collapseContract" aria-expanded="false" aria-controls="collapseContract">
+                                            <i class="material-icons">subject</i> 合約詳細資訊
+                                            @{
+                                                await Html.RenderPartialAsync("~/Views/ContractConsole/Module/ContractDataStatus.cshtml", contract);
+                                            }
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseContract" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingContract">
+                                    <div class="panel-body no-padding">
+                                        <ul class="mb_list">
+                                            @{
+                                                await Html.RenderPartialAsync("~/Views/ContractConsole/Module/ContractDataContent.cshtml", contract);
+                                            }
+                                        </ul>
+                                        @*<ul class="mb_colsble open">
+                            <li class="tit">更多資訊</li>
+                            <li>
+                                <ul class="mb_list xl-khaki">
+                                    @{
+                                        await Html.RenderPartialAsync("~/Views/ContractConsole/Module/ContractPayoff.cshtml", contract);
+                                    }
+                                </ul>
+                            </li>
+                        </ul>*@
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @{ await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/BSModalScript.cshtml", model: _dialogID);}
+
+    <script>
+        $(function () {
+            $('#@(_dialogID) .panel-collapse').on('shown.bs.collapse', function (event) {
+                @*$('#@(_dialogID)').resize();*@
+                //$('.modal.fade.show').resize();
+            });
+        });
+    </script>
+</div>
+

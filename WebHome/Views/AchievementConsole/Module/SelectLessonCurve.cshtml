@@ -1,0 +1,102 @@
+﻿
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    MonthlyCoachRevenueIndicatorQueryViewModel _viewModel;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _modelState = ViewContext.ModelState;
+    _viewModel = (MonthlyCoachRevenueIndicatorQueryViewModel)ViewBag.ViewModel;
+    String _dialogID = _viewModel.DialogID ?? $"curve{DateTime.Now.Ticks}";
+    if (_viewModel.DialogID == null)
+    {
+        _viewModel.DialogID = _dialogID;
+    }
+    _viewModel.UrlAction = Url.Action("ShowMonthlyRevenueCurve", "AchievementConsole");
+
+    ViewBag.ReuseModal = true;
+}
+
+<div class="modal fade" tabindex="-1" role="dialog" id="@(_dialogID)" aria-labelledby="exampleModalLongTitle"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5>上課數折線圖查詢條件</h5>
+                <a class="closebutton" data-dismiss="modal"></a>
+            </div>
+            <div class="modal-body">
+                <div class="row clearfix">
+                    <div class="col-12">
+                        <h6><strong>顯示設定</strong></h6>
+                        <div class="row clearfix">
+                            <div class="col-12">
+                                <div class="fancy-checkbox">
+                                    <label><input name="SelectType" value="" type="checkbox"><span><i></i>全部</span></label>
+                                    <label><input name="SessionType" value="@((int)Naming.SessionTypeDefinition.PT)" type="checkbox" checked="checked"><span><i></i>P.T</span></label>
+                                    <label><input name="SessionType" value="@((int)Naming.SessionTypeDefinition.PI)" type="checkbox"><span><i></i>P.I</span></label>
+                                    <label><input name="SessionType" value="@((int)Naming.SessionTypeDefinition.ST)" type="checkbox"><span><i></i>S.T</span></label>
+                                    <label><input name="SessionType" value="@((int)Naming.SessionTypeDefinition.TS)" type="checkbox"><span><i></i>T.S</span></label>
+                                    <script>
+                                        $(function () {
+                                            $('#@(_dialogID) input[name="SelectType"]').on('click', function (event) {
+                                                var $this = $(this);
+                                                $('#@(_dialogID) input[name="SessionType"]').prop('checked', $this.is(':checked'));
+                                            });
+
+                                            $('#@(_dialogID) input[name="SessionType"]').on('click', function (event) {
+                                                var $this = $(this);
+                                                if ($this.is(':checked') == false) {
+                                                    $('#@(_dialogID) input[name="SelectType"]').prop('checked', false);
+                                                }
+                                            });
+                                        });
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-darkteal btn-round waves-effect btnConfirm">確定，不後悔</button>
+            </div>
+        </div>
+    </div>
+    @{ await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/BSModalScript.cshtml", model: _dialogID);}
+
+<script>
+        $(function () {
+
+            $('#@(_dialogID) .btnConfirm').on('click', function (event) {
+                clearErrors();
+                showLoading();
+                var viewModel = $.extend({}, $global.viewModel, $('#@(_dialogID)').find('input,select,textArea').serializeObject());
+                $.post('@Html.Raw(_viewModel.UrlAction)', viewModel, function (data) {
+                    hideLoading();
+                    if ($.isPlainObject(data)) {
+                        $('#@(_dialogID)').modal('hide');
+                        inquireMonthlyCoachRevenue(viewModel);
+                    } else {
+                        $(data).appendTo($('body'));
+                    }
+                });
+            });
+
+            $global.$currentModal = $('#@(_dialogID)');
+        });
+</script>
+</div>
+

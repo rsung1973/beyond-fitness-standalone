@@ -1,0 +1,49 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Helper.DataOperation
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    UserProfile _profile;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _profile = await Context.GetUserAsync();
+}
+@{
+    IQueryable<MerchandiseWindow> _model = (IQueryable<MerchandiseWindow>)this.Model;
+    PaymentQueryViewModel _viewModel = (PaymentQueryViewModel)ViewBag.ViewModel;
+}
+
+@foreach (var item in _model.OrderBy(p=>p.ProductName))
+{
+    <div class="col-lg-4 col-md-6 col-sm-12">
+        <div class="card product_item">
+            <div class="body">
+                <div class="cp_img">
+                    <img src="@(item.SampleUrl ?? "images/ecommerce/merchandise_00.jpg")" class="img-fluid2" />
+                    <div class="hover">
+                        <a href='javascript:addItem(@Html.Raw(JsonConvert.SerializeObject(new { item.ProductID,item.ProductName,item.UnitPrice })),-1);' class="btn bg-darkteal btn-round waves-effect"><i class="zmdi zmdi-minus"></i></a>
+                        <a href='javascript:addItem(@Html.Raw(JsonConvert.SerializeObject(new { item.ProductID,item.ProductName,item.UnitPrice })),1);' class="btn bg-darkteal btn-round waves-effect"><i class="zmdi zmdi-plus"></i></a>
+                    </div>
+                </div>
+                <div class="product_details">
+                    <h5><a href="product-details.html">@(item.ProductName)</a></h5>
+                    <ul class="product_price list-unstyled">
+                        <li class="new_price">TWD @(item.UnitPrice)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+}

@@ -1,0 +1,97 @@
+﻿
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    MonthlyIndicator _model;
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _model = (MonthlyIndicator)this.Model;
+}
+@{
+    MonthlyIndicatorQueryViewModel _viewModel = (MonthlyIndicatorQueryViewModel)ViewBag.ViewModel;
+}
+@{
+    String _viewID = $"strategy{DateTime.Now.Ticks}";
+    IGrouping<DateTime, MonthlyBranchRevenueGoal>[] groups = (IGrouping<DateTime, MonthlyBranchRevenueGoal>[])TempData["PeriodGroup"];
+}
+<table class="table table-black m-t-0 m-b-0">
+    <tbody>
+        @if (groups.Length > 1)
+        {
+            var current = groups[groups.Length - 1];
+            var last = groups[groups.Length - 2];
+
+            int[] totalAmt = new int[]
+            {
+                last.Sum(b => b.ActualSharedAchievement + b.ActualLessonAchievement) ?? 1,
+                current.Sum(b => b.ActualSharedAchievement + b.ActualLessonAchievement) ?? 1
+                                                    };
+            int[] achievement = new int[]
+            {
+                last.Sum(b => b.ActualSharedAchievement) ?? 1,
+                current.Sum(b => b.ActualSharedAchievement) ?? 1
+                                                    };
+            int[] tuition = new int[]
+            {
+                last.Sum(b => b.ActualLessonAchievement) ?? 1,
+                current.Sum(b => b.ActualLessonAchievement) ?? 1
+                                                    };
+            <tr>
+                <td><i class="zmdi zmdi-dot-circle"></i> 收款業績@{compare(achievement[0], achievement[1]); }</td>
+            </tr>
+            <tr>
+                <td><i class="zmdi zmdi-dot-circle"></i> 上課業績@{compare(tuition[0], tuition[1]); }</td>
+            </tr>
+            <tr>
+                <td><i class="zmdi zmdi-dot-circle"></i> 整體業績@{compare(totalAmt[0], totalAmt[1]); }</td>
+
+            </tr>
+        }
+        @if (_viewModel.BranchID.HasValue)
+        {
+            <tr onclick="javascript:makeStrategy();">
+                <td>
+                    <i class="zmdi zmdi-edit"></i>
+                    @{
+                        await Html.RenderPartialAsync("~/Views/BusinessConsole/Module/MonthlyBranchStrategyAnalysis.cshtml", _model);
+                    }
+                </td>
+            </tr>
+        }
+        @*<tr onclick="javascript:showEditActionModal();">
+                <td>
+                    <i class="zmdi zmdi-edit"></i> 本月雖然有Game Day、耶誕節、跨年4天連假影響，影響新客戶的開發
+                </td>
+            </tr>
+            <tr onclick="javascript:showEditActionModal();">
+                <td>
+                    <i class="zmdi zmdi-edit"></i> 資深教練出國，整店上課數有受到影響
+                </td>
+            </tr>*@
+    </tbody>
+</table>
+@{
+    void compare(int last, int current)
+    {
+        var diff = Math.Abs(current - last);
+        if (current > last)
+        {
+            <text>比上月<span class="col-red">成長</span> @(diff * 100 / last)%（$@($"{diff:##,###,###,###}"))</text>
+
+        }
+        else if (current < last)
+        {
+            <text>比上月<span class="col-green">下滑</span> @(diff * 100 / last)%（$@($"{diff:##,###,###,###}"))</text>
+        }
+    }
+}

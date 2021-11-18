@@ -1,0 +1,47 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    LessonTime _model;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (LessonTime)this.Model;
+}
+@{
+    UserProfile learner = (UserProfile)ViewBag.Learner;
+    var plan = _model.AssertTrainingPlan(models, UID: learner.UID);
+    var execution = plan.TrainingExecution;
+    UserProfile profile = await Context.GetUserAsync();
+}
+<a href="javascript:addToFavorites();" class="col-red"> <i class="@(plan.FavoriteLesson.Any(f => f.UID == profile.UID) ? "myfavaroit like" : "myfavaroit")"></i> <span>@(plan.FavoriteLesson.Count > 0 ? plan.FavoriteLesson.Count.ToString() : null)</span> </a>
+<script>
+    //加入我的最愛課表
+    function addToFavorites() {
+        if ($(".myfavaroit.like").length > 0) {
+            $(".myfavaroit.like").removeClass("like");
+        } else {
+            $(".myfavaroit").addClass("like");
+        }
+
+        $.post('@Html.Raw(Url.Action("SwitchLessonFavorite", "LessonConsole", new { plan.ExecutionID,profile.UID }))', {}, function (data) {
+            if ($.isPlainObject(data)) {
+                if (data.result) {
+                    $(".myfavaroit").next().text(data.message == '0' ? '' : data.message);
+                }
+            } else {
+                $(data).appendTo($('body'));
+            }
+        });
+
+    }
+</script>

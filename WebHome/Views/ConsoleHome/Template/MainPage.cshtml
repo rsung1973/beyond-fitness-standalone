@@ -1,0 +1,469 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+
+@using Microsoft.AspNetCore.Http
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@using CommonLib.Utility
+
+@{
+    HttpRequest Request = ViewContext.HttpContext.Request;
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    UserProfile _model;
+    QueryViewModel _viewModel;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];
+    _modelState = ViewContext.ModelState;   //ViewContext.ModelState;
+    _model = (UserProfile)this.Model;
+    _viewModel = ViewBag.ViewModel as QueryViewModel;
+}
+
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <meta name="description" content="Responsive Bootstrap 4 and web Application ui kit.">
+    <title>BEYOND FITNESS 全方位雲端管理</title>
+    <!-- Favicon-->
+    <link rel="icon" href="favicons/favicon_96x96.png">
+    <!-- Specifying a Webpage Icon for Web Clip -->
+    <link rel="apple-touch-icon-precomposed" href="favicons/favicon_57x57.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="favicons/favicon_72x72.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="favicons/favicon_114x114.png">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="favicons/favicon_144x144.png">
+    <link rel="apple-touch-icon-precomposed" sizes="180x180" href="favicons/favicon_180x180.png">
+    <!-- Bootstrap -->
+    <link href="plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Select Css -->
+    <link href="plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
+    <!-- Scrollup-master  -->
+    <link href="plugins/scrollup-master/css/themes/image.css?1" rel="stylesheet" id="scrollUpTheme">
+    <!-- LivIconsevo  -->
+    <link href='plugins/livIconsevo/css/LivIconsEvo.css' rel='stylesheet' type='text/css'>
+    <!-- Sweetalert -->
+    <link href="plugins/sweetalert2/sweetalert2.min.css" rel="stylesheet">
+    <!-- SmartCalendar Datetimepick -->
+    <link href="plugins/smartcalendar/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+
+
+    @RenderSection("CustomHeader", false)
+    <!-- Custom Css -->
+    <link rel="stylesheet" href="css/main.css?2.7">
+    <link rel="stylesheet" href="css/color_skins.css?2.5">
+    <!-- Jquery Core Js -->
+    <script src="bundles/libscripts.bundle.js"></script>
+    <!-- Lib Scripts Plugin Js -->
+    <script src="bundles/vendorscripts.bundle.js"></script>
+    <!-- Lib Scripts Plugin Js -->
+    <!-- Morris Plugin Js -->
+    <script src="bundles/morrisscripts.bundle.js"></script>
+    <!-- LivIconsEvo  -->
+    <script src="plugins/livIconsevo/js/tools/snap.svg-min.js"></script>
+    <script src="plugins/livIconsevo/js/tools/TweenMax.min.js"></script>
+    <script src="plugins/livIconsevo/js/tools/DrawSVGPlugin.min.js"></script>
+    <script src="plugins/livIconsevo/js/tools/MorphSVGPlugin.min.js"></script>
+    <script src="plugins/livIconsevo/js/tools/verge.min.js"></script>
+    <script src="plugins/livIconsevo/js/LivIconsEvo.Tools.js"></script>
+    <script src="plugins/livIconsevo/js/LivIconsEvo.defaults.js"></script>
+    <script src="plugins/livIconsevo/js/LivIconsEvo.js"></script>
+    <!-- Scrollup-master  Plugin js-->
+    <script src="plugins/scrollup-master/jquery.scrollUp.min.js"></script>
+    <script src="plugins/moment/moment.min.js"></script>
+    <script src="plugins/jquery-cookie/jquery.cookie.js"></script>
+    <!-- SweetAlert Plugin Js -->
+    <script src="plugins/sweetalert2/sweetalert2.min.js?1.0"></script>
+    <!-- SmartCalendar -->
+    <script src="plugins/smartcalendar/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="plugins/smartcalendar/js/locales-datetimepicker/bootstrap-datetimepicker.zh-TW.js"></script>
+    <script src="plugins/jquery-form/jquery-form.min.js"></script>
+    <script src="js/common.js?1.9"></script>
+    @if (_viewModel != null)
+    {
+        <script>
+            $(function () {
+                $global.viewModel = @Html.Raw(_viewModel.JsonStringify());
+
+                for (var i = 0; i < $global.onReady.length; i++) {
+                    $global.onReady[i]();
+                }
+            });
+        </script>
+    }
+</head>
+@{
+    var cookie = Request.Cookies["_theme"];
+}
+<body class="theme-darkteal menu_darkteal @(cookie)">
+    <!-- Page Loader -->
+    <div class="page-loader-wrapper">
+        <div class="loader">
+            <div class="m-t-30">
+                <img class="zmdi-hc-spin" src="plugins/livIconsevo/svg/loader-11.svg" width="48" height="48" alt="BEYOND FITNESS">
+            </div>
+            <p>快馬加鞭處理中...</p>
+        </div>
+    </div>
+    <!-- Overlay For Sidebars -->
+    <div class="overlay"></div>
+    <!-- Top Bar -->
+    <nav class="navbar">
+        <div class="col-12">
+            <a href="javascript:void(0);" class="bars"></a>
+            <ul class="nav navbar-nav navbar-left">
+                <li>
+                    <a href="javascript:void(0);" class="ls-toggle-btn" data-close="true"><i class="zmdi zmdi-menu"></i></a>
+                </li>
+            </ul>
+            <a class="navbar-brand" href="@(Url.Action("Index","ConsoleHome"))">
+                <img src="images/logo.png" width="80" alt="BeyondFitness">
+            </a>
+            <ul class="nav navbar-nav navbar-right">
+                @if (_model.IsCoach() || _model.IsAssistant() || _model.IsSysAdmin())
+                {
+                    <li class="hidden-sm-down">
+                        <div class="input-group">
+                            @{
+                                ViewBag.SearchAction = Url.Action("SearchLearner", "LearnerProfile");
+                                await Html.RenderPartialAsync("~/Views/ConsoleEvent/Module/SearchLearner.cshtml");
+                            }
+                        </div>
+                    </li>
+                }
+                @if (_model.IsLearner() || (_model.EmployeeWelfare != null && _model.EmployeeWelfare.MonthlyGiftLessons > 0))
+                {
+                    <li><a href="@(Url.Action("LearnerIndex","CornerKick"))" class="mega-menu" data-close="true" target="_blank"><i class="zmdi livicon-evo" data-options="name: dashboard.svg; size: 30px; style: linesAlt; strokeColor:#fff; strokeWidth:2px; autoPlay:true"></i></a></li>
+                }
+                <li class="dropdown">
+                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                        <i class="zmdi livicon-evo livicon-evo-holder" data-options="name: brush.svg; size: 30px; style: linesAlt; strokeColor:#fff; strokeWidth:1px; autoPlay:true" style="visibility: visible; width: 30px;">
+                            <div class="lievo-svg-wrapper">
+                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 60 60" xml:space="preserve" data-animoptions="{'duration':'3', 'repeat':'0', 'repeatDelay':'0.7'}" preserveAspectRatio="xMinYMin meet" style="left: -0.4375px; top: 0.416667px;"><g class="lievo-setrotation"><g class="lievo-setsharp"><g class="lievo-setflip"><g class="lievo-main">
+                                <g class="lievo-common">
+                                <path class="lievo-donotdraw lievo-savelinecap lievo-altstroke" fill="none" stroke="#f9b32f" stroke-width="3px" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M30,10c11.05,0,20,8.95,20,20c0,11.05-8.95,20-20,20c-11.05,0-20-8.95-20-20C10,18.95,18.95,10,30,10z" opacity="0" style="opacity: 0; stroke-dashoffset: 1e-05; stroke-dasharray: none;"></path>
+                                <path class="lievo-donotdraw lievo-savelinecap lievo-likestroke lievo-altstroke" fill="#f9b32f" stroke="#f9b32f" stroke-width="3px" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M22,22c1.1,0,2,0.9,2,2s-0.9,2-2,2s-2-0.9-2-2S20.9,22,22,22z" opacity="0" style="opacity: 0; stroke-dashoffset: 1e-05; stroke-dasharray: none;"></path>
+                                <path class="lievo-donotdraw lievo-savelinecap lievo-likestroke lievo-altstroke" fill="#f9b32f" stroke="#f9b32f" stroke-width="3px" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M38,22c-1.1,0-2,0.9-2,2s0.9,2,2,2s2-0.9,2-2S39.1,22,38,22z" opacity="0" style="opacity: 0; stroke-dashoffset: 1e-05; stroke-dasharray: none;"></path>
+                                <path class="lievo-donotdraw lievo-savelinecap lievo-altstroke" fill="none" stroke="#f9b32f" stroke-width="3px" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M20,36c0,0,3,6,10,6s10-6,10-6" opacity="0" style="opacity: 0; stroke-dashoffset: 1e-05; stroke-dasharray: none;"></path>
+		</g>
+
+                                <g class="lievo-filledicon lievo-lineicon">
+                                <g data-svg-origin="11.319998741149902 10.998751640319824" transform="matrix(1,0,0,1,0,0)">
+                                <g data-svg-origin="11.319998741149902 47.00023937225342" transform="matrix(1,0,0,1,0,0)" style="">
+                                <path fill="none" stroke="#ffffff" stroke-width="2px" stroke-linecap="square" stroke-miterlimit="10" d="M50.63,11.37c0.52,0.52,0.48,1.44-0.07,2.08c-2.26,2.62-12.33,13.78-14.36,16.36c-1.42,1.81-3.66,5.66-7.86,7.86c-0.38,0.2-0.69,0.7-1.07,1.07c-0.61,0.58-1.47,0.67-2.14,0.01l-2-2c-0.66-0.66-0.49-1.45,0.13-2.02c0.39-0.37,0.87-0.69,1.07-1.07c2.2-4.2,6.05-6.44,7.86-7.86c2.58-2.03,13.74-12.1,16.36-14.36C49.19,10.89,50.11,10.84,50.63,11.37z" style=""></path>
+                                <path class="lievo-altstroke" fill="none" stroke="#f9b32f" stroke-width="2px" stroke-linecap="square" stroke-miterlimit="10" d="M24.06,37.72l-1.02-1.02c-7.79-1.6-5.35,7.48-11.72,9.66c6.37,2.1,15.99-1.11,13.86-7.52L24.06,37.72z" style=""></path>
+				</g>
+			</g>
+		</g>
+
+		
+                                <rect x="-19" y="-19" width="4" height="4" fill="none" stroke="#ffffff" style="stroke-width: 2; stroke-linecap: butt; stroke-linejoin: round; opacity: 0;" class="lievo-checkshift lievo-donotdraw lievo-nohoverstroke lievo-nohovercolor" stroke-width="2px"></rect></g></g></g></g>
+                                <desc>LivIcons Evolution</desc><defs></defs></svg>
+                            </div>
+                        </i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-right slideDown">
+                        <li class="body">
+                            <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 180px;">
+                                <ul class="menu list-unstyled" style="overflow: hidden; width: auto; height: 180px;">
+                                    <li>
+                                        <a href="javascript:selectTheme('');">
+                                            <div class="icon-circle bg-grey"></div>
+                                            <div class="menu-info">
+                                                <h4>清新淺色</h4>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:selectTheme('theme-nero');">
+                                            <div class="icon-circle bg-darkteal"></div>
+                                            <div class="menu-info">
+                                                <h4>暗黑深色</h4>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:selectTheme('auto-theme');">
+                                            <div class="icon-circle bg-amber"><i class="zmdi zmdi-brightness-auto"></i></div>
+                                            <div class="menu-info">
+                                                <h4>智慧選色</h4>
+                                            </div>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <div class="slimScrollBar" style="background: rgba(0, 0, 0, 0.2); width: 3px; position: absolute; top: 0px; opacity: 0.4; display: block; border-radius: 3px; z-index: 99; right: 1px;"></div>
+                                <div class="slimScrollRail" style="width: 3px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 0px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div>
+                                <script>
+                                    function selectTheme(theme) {
+                                        if (theme == 'auto-theme') {
+                                            applyAutoTheme();
+                                        } else {
+                                            var $body = $('body');
+                                            $body.removeClass('theme-nero');
+                                            $body.addClass(theme);
+                                            $global.currentTheme = theme;
+                                        }
+                                        //$.cookie('theme', theme, { 'path': '/' });
+                                        changeTheme(theme);
+                                    }
+
+                                    function changeTheme(theme) {
+                                        showLoading();
+                                        $.post('@(Url.Action("ChangeTheme", "CommonHelper"))', { 'theme': theme }, function (data) {
+                                            hideLoading();
+                                            if ($.isPlainObject(data)) {
+                                                if (data.result) {
+                                                //    showLoading();
+                                                    //    window.location.reload();
+                                                    if ($global.onChangeTheme) {
+                                                        $global.onChangeTheme(theme);
+                                                    }
+                                                }
+                                            } else {
+                                                $(data).appendTo($('body'));
+                                            }
+                                        });
+                                    }
+
+                                    function applyAutoTheme() {
+                                        var $body = $('body');
+                                        var hour = (new Date()).getHours();
+                                        if (hour >= 6 && hour < 18) {
+                                            $body.removeClass('theme-nero');
+                                            $global.currentTheme = '';
+                                        } else {
+                                            $body.addClass('theme-nero');
+                                            $global.currentTheme = 'theme-nero';
+                                        }
+                                    }
+
+                                    $(function () {
+                                        $global.currentTheme = '@(cookie)';
+                                        var $body = $('body');
+                                        if ($body.hasClass('auto-theme')) {
+                                            applyAutoTheme();
+                                        }
+                                        if ($.cookie('_theme') === undefined) {
+                                            //$.cookie('theme', 'auto-theme', { 'path': '/' });
+                                            applyAutoTheme();
+                                            changeTheme('auto-theme');
+                                        }
+                                    });
+
+                                </script>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="@(Url.Action("Calendar","ConsoleHome"))" class="mega-menu" data-close="true"><i class="zmdi livicon-evo" data-options="name: calendar.svg; size: 24px; style: lines; strokeColor:#fff; strokeWidth:2px; autoPlay:true"></i></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <!-- Left Sidebar -->
+    <aside id="leftsidebar" class="sidebar">
+        <div class="menu">
+            <ul class="list">
+                <li>
+                    <div class="user-info">
+                        <div class="image">
+                            <a href="javascript:void(0);">
+                                @{
+                                    await Html.RenderPartialAsync("~/Views/ConsoleHome/Module/ProfileImage.cshtml", _model);
+                                }
+                            </a>
+                        </div>
+                        <div class="detail">
+                            <h4 style="cursor:pointer;" onclick="showLoading(); $('').launchDownload('@Url.Action("Logout","Account")', {});">
+                                @(_model.RealName)
+                                <i class="zmdi zmdi-power"></i>
+                            </h4>
+                            <small>@(_model.Nickname)</small>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <a href="@(Url.Action("ContractIndex","ConsoleHome",new { ScrollToView = false}))"><i class="zmdi zmdi-file-text"></i><span>我的合約</span> </a>
+                </li>
+                <li>
+                    <a href="@(Url.Action("PaymentIndex","ConsoleHome"))"><i class="zmdi zmdi-file-text"></i><span>我的收款</span> </a>
+                </li>
+                @if (!_model.IsServitor())
+                {
+                    <li>
+                        <a href="javascript:void(0);"><i class="zmdi zmdi-accounts-list"></i><span>我的學生</span> </a>
+                    </li>
+                    <li>
+                        <a href="@(Url.Action("ReportIndex","ConsoleHome"))"><i class="zmdi zmdi-download"></i><span>我的下載</span> </a>
+                    </li>
+                    if (!_model.IsOfficer())
+                    {
+                        if (_model.IsCoach() || _model.IsManager() || _model.IsViceManager())
+                        {
+                            <li>
+                                <a href="javascript:showLoading();$('').launchDownload('@Html.Raw(Url.Action("CoachAchievement","ConsoleHome"))', { 'keyID': '@(_model.UID.EncryptKey())'});"><i class="zmdi zmdi-file-text"></i><span>我的個人業績</span> </a>
+                            </li>
+                        }
+                    }
+                    if (_model.IsAuthorizedSysAdmin() || _model.IsAssistant() || _model.IsOfficer() || _model.IsManager() || _model.IsViceManager())
+                    {
+                        <li>
+                            <a href="javascript:$('').launchDownload('@Html.Raw(Url.Action("AchievementOverview", "ConsoleHome",new { BranchID = models.GetTable<V_WorkPlace>().Where(v=>v.CoachID==_model.UID).FirstOrDefault()?.WorkPlace }))', { });"><i class="zmdi zmdi-file-text"></i><span>我的分店業績</span> </a>
+                        </li>
+                    }
+                }
+                @if (_model.IsAssistant() || _model.IsAuthorizedSysAdmin() || _model.IsServitor())
+                {
+                    <li>
+                        <a href="@(Url.Action("BlogIndex","ConsoleHome"))"><i class="zmdi zmdi-blogger"></i><span>我的部落格</span> </a>
+                    </li>
+                }
+                @if (_model.IsCoach())
+                {
+                    <li>
+                        <a href="javascript:void(0);"><i class="zmdi zmdi-comment-edit"></i><span>運動小學堂</span> </a>
+                    </li>
+                }
+                @if (_model.IsCoach() || _model.IsAssistant() || _model.IsSysAdmin())
+                {
+                    <li>
+                        <a href="@(Url.Action("Index","CoachFacet"))"><i class="zmdi zmdi-time-restore"></i><span>時光機</span> </a>
+                    </li>
+                }
+                <li>
+                    <a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-search-replace"></i><span>價格詢問球</span> </a>
+                    <ul class="ml-menu">
+                        <li>
+                            <a href="@(Url.Action("PricingList","MainActivity",new { branchName = "Nanjing" }))" class="waves-effect waves-block" target="_blank"><i class="zmdi zmdi-label col-red"></i><span>南京</span></a>
+                        </li>
+                        <li>
+                            <a href="@(Url.Action("PricingList","MainActivity",new { branchName = "Xinyi" }))" class="waves-effect waves-block" target="_blank"><i class="zmdi zmdi-label col-purple"></i><span>信義</span></a>
+                        </li>
+                        <li>
+                            <a href="@(Url.Action("PricingList","MainActivity",new { branchName = "Zhongxiao" }))" class="waves-effect waves-block" target="_blank"><i class="zmdi zmdi-label col-blue"></i><span>忠孝</span></a>
+                        </li>
+                        <li>
+                            <a href="@(Url.Action("PricingList","MainActivity",new { branchName = "Dongmen" }))" class="waves-effect waves-block" target="_blank"><i class="zmdi zmdi-label col-tiffany"></i><span>東門</span></a>
+                        </li>
+                    </ul>
+                </li>
+                @if (_model.IsCoach() || _model.IsAssistant() || _model.IsSysAdmin())
+                {
+                    <li class="header hidden-md-up">更多搜尋</li>
+                    <li class="hidden-md-up">
+                        <div class="input-group">
+                            @{
+                                ViewBag.SearchAction = Url.Action("SearchLearner", "LearnerProfile");
+                                await Html.RenderPartialAsync("~/Views/ConsoleEvent/Module/SearchLearner.cshtml");
+                            }
+                        </div>
+                    </li>
+                }
+            </ul>
+        </div>
+    </aside>
+    <!-- Main Content -->
+    @RenderBody()
+    @RenderSection("TailPageJavaScriptInclude", false)
+
+    <script src="bundles/mainscripts.bundle.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $(window).bind("pageshow", function (event) {
+                //$(".page-loader-wrapper").fadeOut();
+                if (event.originalEvent.persisted) {
+                    window.location.reload()
+                }
+            });
+
+            $(window).bind("pagehide", function (event) {
+                $(".page-loader-wrapper").css('display', 'block');
+            });
+
+            $.scrollUp({
+                animation: 'fade',
+                scrollImg: {
+                    active: true,
+                    type: 'background',
+                    src: 'images/top.png'
+                }
+            });
+
+            $(".ls-toggle-btn").click();
+
+        });
+
+        function equipDatetimePicker(param) {
+            var dateOptions = {
+                language: 'zh-TW',
+                weekStart: 1,
+                todayBtn: 0,
+                clearBtn: 1,
+                autoclose: 1,
+                todayHighlight: 1,
+                startView: 2,
+                minView: 2,
+                defaultView: 2,
+                forceParse: 0,
+                startDate: '@(String.Format("{0:yyyy-MM-dd}",DateTime.Today))',
+                defaultDate: '@(String.Format("{0:yyyy-MM-dd}",DateTime.Today))',
+            };
+            if (param) {
+                dateOptions = $.extend(dateOptions, param);
+            }
+
+            $('.date').datetimepicker(dateOptions);
+            $('.time').datetimepicker({
+                language: 'zh-TW',
+                weekStart: 1,
+                todayBtn: 0,
+                clearBtn: 1,
+                autoclose: 1,
+                todayHighlight: 1,
+                startView: 1,
+                minView: 1,
+                defaultView: 1,
+                minuteStep: 30,
+                forceParse: 0
+            });
+            $('.datetime').datetimepicker({
+                language: 'zh-TW',
+                weekStart: 1,
+                todayBtn: 0,
+                showMeridian: 1,
+                clearBtn: 1,
+                autoclose: 1,
+                todayHighlight: 1,
+                startView: 2,
+                minView: 0,
+                defaultView: 2,
+                minuteStep: 30,
+                forceParse: 0,
+                startDate: '@(String.Format("{0:yyyy-MM-dd}",DateTime.Today))',
+            });
+        }
+
+    </script>
+    @if (_viewModel?.AlertMessage != null)
+    {
+        <script>
+            $(function () {
+                Swal.fire({
+                    icon: 'info',
+                    text: '@(System.Text.Encodings.Web.JavaScriptEncoder.Default.Encode(_viewModel.AlertMessage))',
+                    confirmButtonText: '朕知道了',
+                })
+            });
+        </script>
+    }
+</body>
+</html>
+

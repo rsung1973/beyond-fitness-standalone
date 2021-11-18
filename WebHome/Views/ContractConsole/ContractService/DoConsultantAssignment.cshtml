@@ -1,0 +1,90 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Helper.DataOperation
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    CourseContract _model;
+    UserProfile _profile;
+    String _viewID;
+
+
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (CourseContract)this.Model;
+    _profile = await Context.GetUserAsync();
+    _viewID = ViewBag.ViewID as String;
+}
+<div class="header">
+    <h2><strong>原負責體能顧問</strong> - <strong>@(_model.ServingCoach.UserProfile.FullName())</strong></h2>
+</div>
+<div class="body">
+    <div class="row clearfix">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-12 m-b-20">
+            <label class="fancy-checkbox custom-bgcolor-pink">
+                <input id="checkbox14" type="checkbox" checked="checked" name="FitnessConsultant" value="@(_profile.UID)" onclick="this.checked = true;" />
+                <span class="col-red">轉換為自己</span>
+            </label>
+        </div>
+        <div class="col-12">
+            <div class="form-group">
+                <textarea rows="3" class="form-control no-resize" name="Remark" placeholder="請輸入任何想補充的事項..."></textarea>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+    $(function () {
+
+        $('#@(_viewID) button.quit').on('click', function (event) {
+            cancelAssignment();
+        });
+
+        $('#@(_viewID) button.finish').on('click', function (event) {
+            commitAssignment();
+        });
+
+    });
+
+    function cancelAssignment() {
+        $('').launchDownload('@Html.Raw(Url.Action("ApplyContractService","ConsoleHome"))',
+            @Html.Raw(JsonConvert.SerializeObject(new CourseContractQueryViewModel
+                {
+                    KeyID = _model.ContractID.EncryptKey(),
+                })));
+    }
+
+    function commitAssignment() {
+        var viewModel = $('#@(_viewID)').find('input,select,textArea').serializeObject();
+        viewModel.Reason = '轉換體能顧問';
+        clearErrors();
+        showLoading();
+        $.post('@Html.Raw(Url.Action("CommitContractService", "ContractConsole",new { KeyID = _model.ContractID.EncryptKey() }))', viewModel, function (data) {
+            hideLoading();
+            if ($.isPlainObject(data)) {
+                Swal.fire(
+                    'Oops...',
+                    data.message,
+                    'warning'
+                )
+            }
+            else {
+                $(data).appendTo($('body'));
+            }
+        });
+    }//
+
+</script>
+

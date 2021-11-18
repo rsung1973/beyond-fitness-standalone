@@ -1,0 +1,63 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    UserProfile _model;
+    CalendarEventViewModel _viewModel;
+    UserProfile _profile;
+
+    BookingLessonPageModel _pageModel = (BookingLessonPageModel)ViewBag.PageModel;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (UserProfile)this.Model;
+    _viewModel = (CalendarEventViewModel)ViewBag.ViewModel;
+    _profile = await Context.GetUserAsync();
+    LessonPriceType price = models.CurrentTrialLessonPrice();
+}
+
+@{
+    if (price != null)
+    {
+        var trialLesson = models.GetTable<RegisterLesson>()
+                .Where(r => r.UID == _model.UID)
+                .Where(r => r.LessonPriceType.Status == (int)Naming.LessonPriceStatus.體驗課程)
+                .Where(r => (r.BranchStore.Status & (int)BranchStore.StatusDefinition.VirtualClassroom) == 0);
+        var trialLessonItem = trialLesson.FirstOrDefault();
+        var trialBookable = trialLessonItem == null;
+
+        if (trialBookable)
+        {
+            _pageModel.HasChoice = true;
+        }
+
+        <li class="list-group-item">
+            <div class="media">
+                <div class="pull-left">
+                    <div class="controls">
+                        <label class="fancy-checkbox">
+                            <input type="checkbox" @(trialBookable ? null : "disabled") name="RegisterID" id="trialLesson" value="" onclick="selectBooking(this, '@((int)Naming.LessonPriceStatus.體驗課程)', @(price?.PriceID ?? -1));">
+                            <span></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="media-body">
+                    <div class="media-heading">
+                        <a class="m-r-10">@(price?.SimpleDescription)</a>
+                        <small class="float-right text-muted"><time>@(trialBookable ? 1 : 0)/1</time></small>
+                    </div>
+                </div>
+            </div>
+        </li>
+    }
+}

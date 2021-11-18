@@ -1,0 +1,29 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    LessonTime _model;
+    UserProfile _userProfile;
+
+
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (LessonTime)this.Model;
+    _userProfile = await Context.GetUserAsync();
+}
+@if (_model.CouldBeCancelled(_userProfile))
+{
+    <button type="button" class="btn btn-danger btn-round btn-simple btn-round waves-effect waves-red" onclick="javascript:deleteLesson('@(_model.LessonID.EncryptKey())');"><i class="zmdi zmdi-delete"></i></button>
+}
+

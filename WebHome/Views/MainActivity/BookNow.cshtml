@@ -1,0 +1,60 @@
+
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@using WebHome.Views.MainActivity.Resources
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _modelState = ViewContext.ModelState;
+
+    Layout = "~/Views/MainActivity/Template/MainPage.cshtml";
+
+}
+
+@section CustomHeader {
+
+}
+
+<section class="section-flow">
+    <div class="container">
+        <div class="row">
+            <h1 class="align-center">@Html.Raw(NamingItem.BookNowTitle)</h1>
+            <div class="col-md-4 align-center">
+                <div class="wow fadeIn p-t-20" data-wow-delay="0.15s">
+                    <div class="image">
+                        <img src="images/landing/contact.png">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <hr />
+                <ul class="list-style2">
+                    <li>@Html.Raw(NamingItem.BookNowStep1)</li>
+                    <li>@Html.Raw(NamingItem.BookNowStep2)</li>
+                    <li>@Html.Raw(NamingItem.BookNowStep3)</li>
+                    <li>@Html.Raw(NamingItem.BookNowStep4)</li>
+                </ul>
+                <div class="col-grey p-l-30 p-b-10">@Html.Raw(NamingItem.Disclaimer)</div>
+                <a href="javascript:bindTrackingCode('立即預約', 'AddToPaymentInfo', 'https://forms.gle/SLZx5NCwCDa15Q5t5', '_blank')" class="btn btn-default btn-round wow fadeInUp animated" data-wow-delay=".6s" data-effect="mfp-zoom-in">@Html.Raw(NamingItem.Reservation)</a>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- // 公告事項 -->
+@*@{ await Html.RenderPartialAsync("~/Views/MainActivity/Module/DeclarationItem.cshtml");}*@
+
+@section TailPageJavaScriptInclude {
+
+}

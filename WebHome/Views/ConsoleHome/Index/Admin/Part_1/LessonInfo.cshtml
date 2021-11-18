@@ -1,0 +1,57 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+@using WebHome.Helper.BusinessOperation
+@using Newtonsoft.Json
+
+@{
+    Layout = "~/Views/ConsoleHome/Index/Coach/Part_1/LessonInfoTemplate.cshtml";
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    UserProfile _model;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _modelState = ViewContext.ModelState;
+    _model = (UserProfile)this.Model;
+
+    LessonOverviewQueryViewModel viewModel = new LessonOverviewQueryViewModel
+    {
+        Year = DateTime.Today.Year,
+        Month = DateTime.Today.Month,
+    };
+    ViewBag.ViewModel = viewModel;
+
+    var items = viewModel.InquireLesson(models);
+    ViewBag.DataItems = items;
+
+}
+
+@section Part_1
+{
+    <div class="icon"><i class="zmdi zmdi-shield-check"></i> </div>
+    <div class="content">
+        @{
+            int count = _model.PreferredLessonTimeToApprove(models).Count();
+        }
+        <div class="text">跨店待審</div>
+        <h5 class="number">
+            @if (count > 0)
+            {
+                <a href="javascript:void(0);" onclick="showLoading(); window.location.href='@Html.Raw(Url.Action("CrossBranchIndex","ConsoleHome"))';">@(count)</a>
+            }
+            else
+            {
+                <text>0</text>
+            }
+        </h5>
+    </div>
+}
+
+

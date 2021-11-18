@@ -1,0 +1,102 @@
+
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@using CommonLib.Utility
+@functions
+{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    MonthlyIndicatorQueryViewModel _viewModel;
+    IQueryable<MonthlyIndicator> _model;
+    String _chartID;
+
+    int[] BuildData(Naming.SessionTypeDefinition sessionType)
+    {
+
+        switch (sessionType)
+        {
+            case Naming.SessionTypeDefinition.PT:
+                return _model.Select(i=>i.MonthlyCoachRevenueIndicator.Sum(m => m.ActualCompleteLessonCount) ?? 0).ToArray();
+            case Naming.SessionTypeDefinition.PI:
+                return _model.Select(i => i.MonthlyCoachRevenueIndicator.Sum(m => m.ActualCompletePICount) ?? 0).ToArray();
+            case Naming.SessionTypeDefinition.ST:
+                return _model.Select(i => i.MonthlyCoachRevenueIndicator.Sum(m => m.STCount) ?? 0).ToArray();
+            case Naming.SessionTypeDefinition.TS:
+                return _model.Select(i => i.MonthlyCoachRevenueIndicator.Sum(m => m.ActualCompleteTSCount) ?? 0).ToArray();
+        }
+        return new int[] { };
+    }
+
+}
+@{
+
+    _chartID = ViewBag.ChartID as String;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _modelState = ViewContext.ModelState;
+    _viewModel = (MonthlyIndicatorQueryViewModel)ViewBag.ViewModel;
+
+    _model = (IQueryable<MonthlyIndicator>)this.Model;
+
+}
+<script>
+    //指定圖表的配置項和資料
+    $(function () {
+        $global.echarts.option['@(_chartID)'] = {
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: @Html.Raw(_viewModel.SessionType.Select(t=> MonthlyCoachRevenueIndicatorQueryViewModel.__SessionName[(int)t]).JsonStringify()),
+            },
+            toolbox: {
+                feature: {
+                    saveAsImage: {}
+                }
+            },
+            xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                data: @Html.Raw(_model.Select(c => $"{c.StartDate:yyyyMM}").ToArray().JsonStringify()),
+            },
+            yAxis: {
+                type: 'value',
+                axisLine: {
+                    show: false
+                },
+                axisTick: {
+                    show: false
+                },
+            },
+            series: @Html.Raw(_viewModel.SessionType.Select(t => new
+                    {
+                        name = MonthlyCoachRevenueIndicatorQueryViewModel.__SessionName[(int)t],
+                        type =  "line",
+                        symbol = "triangle",
+                        symbolSize =  10,
+                        //stack: 'Total',
+                        // label: {
+                        //     normal: {
+                        //         formatter: function (v) {
+                        //            return ptDT[v.dataIndex];
+                        //         }
+                        //     },
+                        //     formatter: function (v) {
+                        //         return ptDT[v.dataIndex];
+                        //     }
+                        // },
+                        data = BuildData(t),
+                    }).JsonStringify()),
+        };
+    });
+
+</script>

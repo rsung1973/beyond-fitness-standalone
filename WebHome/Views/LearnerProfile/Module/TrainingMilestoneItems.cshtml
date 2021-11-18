@@ -1,0 +1,70 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@{
+    /**/
+
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    IQueryable<PersonalExercisePurposeItem> _model = (IQueryable<PersonalExercisePurposeItem>)this.Model;
+    ExercisePurposeViewModel _viewModel = (ExercisePurposeViewModel)ViewBag.ViewModel;
+}
+@{
+    IQueryable<PersonalExercisePurposeItem> items;
+    if (_viewModel.CurrentIndex.HasValue)
+    {
+        items = _model.Skip(_viewModel.CurrentIndex.Value).Take(3);
+    }
+    else
+    {
+        items = _model.Take(3);
+    }
+    //_viewModel.CurrentIndex = (_viewModel.CurrentIndex ?? 0) + items.Count();
+    var count = items.Count();
+}
+@if (count > 0)
+{
+    foreach (var item in items)
+    {
+        <li>
+            <div class="feeds-left">
+                <i class="zmdi livicon-evo" data-options="name: trophy.svg; size: 20px; style: original; strokeStyle:round; strokeColor:#052333; strokeWidth:2px; autoPlay:true"></i>
+            </div>
+            <div class="feeds-body">
+                <h4 class="title">@(item.PurposeItem) <small class="float-right text-muted">@($"{item.CompleteDate:yyyy/MM/dd}")</small></h4>
+            </div>
+        </li>
+    }
+    <script>
+    $(function () {
+        if ($global.currentIndex === undefined) {
+            $global.currentIndex = 0;
+        } else {
+            jQuery('.livicon-evo').addLiviconEvo();
+        }
+        $global.currentIndex = $global.currentIndex + @items.Count();
+    });
+    </script>
+}
+@if (count < 3)
+{
+    <script>
+        $(function () {
+            if (typeof ($global.nomoreMilestone) === 'function') {
+                $global.nomoreMilestone();
+            }
+        });
+    </script>
+}
+

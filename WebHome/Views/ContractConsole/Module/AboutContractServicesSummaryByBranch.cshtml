@@ -1,0 +1,83 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    UserProfile _model;
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (UserProfile)this.Model;
+}
+<div class="body">
+    <div class="row">
+        <div class="col-8">
+            @{ DateTime monthStart = DateTime.Today.FirstDayOfMonth();
+                var items = models.PromptContractService()
+                            .FilterByBranchStoreManager(models, _model.UID);
+                var currentItems = items.Where(c => c.EffectiveDate >= DateTime.Today && c.EffectiveDate < DateTime.Today.AddDays(1));}
+
+            <h5 class="m-t-0">服務申請</h5>
+            <p class="text-small">
+                今日：<a href="#" onclick='showContractList(@Html.Raw(JsonConvert.SerializeObject(
+                                new
+                                {
+                                    ContractQueryMode = Naming.ContractServiceMode.ServiceOnly,
+                                    ManagerID = _model.UID,
+                                    Status = (int)Naming.CourseContractStatus.已生效,
+                                    EffectiveDateFrom = DateTime.Today,
+                                    EffectiveDateTo = DateTime.Today.AddDays(1),
+                                })),@(currentItems.Count()));'>@(currentItems.Count())</a>
+                                <br />
+                                @{ var weekStart = DateTime.Today.FirstDayOfWeek();
+                        currentItems = items.Where(c => c.EffectiveDate >= weekStart && c.EffectiveDate < weekStart.AddDays(7));}
+
+                                本週：<a href="#" onclick='showContractList(@Html.Raw(JsonConvert.SerializeObject(
+                                new
+                                {
+                                    ContractQueryMode = Naming.ContractServiceMode.ServiceOnly,
+                                    ManagerID = _model.UID,
+                                    Status = (int)Naming.CourseContractStatus.已生效,
+                                    EffectiveDateFrom = weekStart,
+                                    EffectiveDateTo = weekStart.AddDays(7),
+                                })),@(currentItems.Count()));'>@(currentItems.Count())</a>
+                                <br />
+                                @{ currentItems = items.Where(c => c.EffectiveDate >= monthStart.AddMonths(-1) && c.EffectiveDate < monthStart);}
+
+                                上月：<a href="#" onclick='showContractList(@Html.Raw(JsonConvert.SerializeObject(
+                                new
+                                {
+                                    ContractQueryMode = Naming.ContractServiceMode.ServiceOnly,
+                                    ManagerID = _model.UID,
+                                    Status = (int)Naming.CourseContractStatus.已生效,
+                                    EffectiveDateFrom = monthStart.AddMonths(-1),
+                                    EffectiveDateTo = monthStart,
+                                })),@(currentItems.Count()));'>@(currentItems.Count())</a>
+                            </p>
+        </div>
+        <div class="col-4 text-right">
+            @{ currentItems = items.Where(c => c.EffectiveDate >= monthStart && c.EffectiveDate < monthStart.AddMonths(1));}
+            <a href="#" onclick='showContractList(@Html.Raw(JsonConvert.SerializeObject(
+                                new
+                                {
+                                    ContractQueryMode = Naming.ContractServiceMode.ServiceOnly,
+                                    ManagerID = _model.UID,
+                                    Status = (int)Naming.CourseContractStatus.已生效,
+                                    EffectiveDateFrom = monthStart,
+                                    EffectiveDateTo = monthStart.AddMonths(1),
+                                })),@(currentItems.Count()));'>
+                <h2>@(currentItems.Count())</h2>
+            </a>
+            <small class="info">本月</small>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,33 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    IQueryable<LessonTime> _model;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (IQueryable<LessonTime>)this.Model;
+}
+<div class="col-lg-5 col-md-4 col-sm-6 col-12">
+    @{ 
+        await Html.RenderPartialAsync("~/Views/ConsoleHome/Module/ExerciseDonutChart.cshtml", _model);
+    }
+</div>
+<div class="col-lg-7 col-md-8 col-sm-6 col-12">
+    @{ 
+        ViewBag.CompareToLastMonth = true;
+        await Html.RenderPartialAsync("~/Views/ConsoleHome/Module/ExerciseBillboard.cshtml", _model);
+    }
+</div>
+

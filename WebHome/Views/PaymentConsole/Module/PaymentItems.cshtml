@@ -1,0 +1,62 @@
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    IQueryable<Payment> _model;
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (IQueryable<Payment>)this.Model;
+}
+@{ 
+    var items = _model;
+}
+    <div class="card">
+        <div class="header">
+            <ul class="header-dropdown">
+                <li>
+                    <a href="javascript:morePaymentQuery();"><i class="zmdi zmdi-search-for"></i></a>
+                </li>
+            </ul>
+        </div>
+        <div class="body">
+            <div class="table-responsive" id="paymentList">
+                @{ 
+                    await Html.RenderPartialAsync("~/Views/PaymentConsole/Module/PaymentItemsList.cshtml", _model);
+                }
+            </div>
+        </div>
+    </div>
+<script>
+    $(function () {
+        $global.showPayment = function (data) {
+            $('#paymentList').empty().append($(data));
+        };
+    });
+
+            //更多查詢條件
+    function morePaymentQuery() {
+        showLoading();
+        $.post('@Html.Raw(Url.Action("InvokePaymentQuery", "PaymentConsole"))', {}, function (data) {
+            hideLoading();
+            if ($.isPlainObject(data)) {
+                Swal.fire(
+                    'Oops...',
+                    data.message,
+                    'warning'
+                )
+            } else {
+                $(data).appendTo($('body'));
+            }
+        });
+    }
+
+</script>

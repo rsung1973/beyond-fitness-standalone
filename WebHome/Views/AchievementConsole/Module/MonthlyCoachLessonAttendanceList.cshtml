@@ -1,0 +1,75 @@
+
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+
+@functions
+{
+
+    IQueryable<MonthlyCoachRevenueIndicator> _model;
+
+    int BuildData(MonthlyCoachRevenueIndicator m,Naming.SessionTypeDefinition sessionType)
+    {
+
+        switch (sessionType)
+        {
+            case Naming.SessionTypeDefinition.PT:
+                return m.ActualCompleteLessonCount ?? 0;
+            case Naming.SessionTypeDefinition.PI:
+                return m.ActualCompletePICount ?? 0;
+            case Naming.SessionTypeDefinition.ST:
+                return m.STCount ?? 0;
+            case Naming.SessionTypeDefinition.TS:
+                return m.ActualCompleteTSCount ?? 0;
+        }
+        return 0;
+    }
+}
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    MonthlyCoachRevenueIndicatorQueryViewModel _viewModel;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _modelState = ViewContext.ModelState;
+    _model = (IQueryable<MonthlyCoachRevenueIndicator>)this.Model;
+    _viewModel = (MonthlyCoachRevenueIndicatorQueryViewModel)ViewBag.ViewModel;
+
+}
+
+<table class="table table-striped table-custom nowrap dtAchivement" style="width:100%">
+    <thead class="bg-darkteal">
+        <tr>
+            <th class="text-center">月份</th>
+            @foreach (var t in _viewModel.SessionType)
+            {
+                <th class="text-center">@(MonthlyCoachRevenueIndicatorQueryViewModel.__SessionName[(int)t])</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in _model)
+        {
+            <tr>
+                <td>@($"{item.MonthlyIndicator.StartDate:yyyyMM}")</td>
+                @foreach (var t in _viewModel.SessionType)
+                {
+                    <td>@(BuildData(item,t))</td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+<script>
+    $(function () {
+        showAchivementList(@(_viewModel.SessionType.Length));
+    });
+</script>

@@ -1,0 +1,141 @@
+
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@using WebHome.Views.MainActivity.Resources
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _modelState = ViewContext.ModelState;
+
+    Layout = "~/Views/MainActivity/Template/MainPage.cshtml";
+
+}
+
+@section CustomHeader {
+
+}
+
+<!-- // Banner -->
+<section class="section-faq">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</section>
+<!-- // 常見問題 -->
+<section class="section-faq-content">
+    <div class="container">
+        <ul class="accordion">
+            <li class="accordion-item">
+                <input id="q1" class="hide" type="checkbox">
+                <label for="q1" class="accordion-label">@Html.Raw(NamingItem.FAQQestion1)</label>
+                <ul class="accordion-child accordion sub">
+                    <li class="accordion-item">
+                        <input id="q11" class="hide" type="checkbox">
+                        <label for="q11" class="accordion-label sub">@Html.Raw(NamingItem.FAQQestion11)</label>
+                        <ul class="accordion-child list-style3">
+                            @Html.Raw(NamingItem.FAQAnswer11)
+                            <br />
+                            <li>
+                                @Html.Raw(NamingItem.Tel)
+                                <span>@Html.Raw(NamingItem.FindNanjingBranch)：<a href="tel://+886-2-2715-2733" class="more">(02)-2715-2733</a></span>
+                                <span>@Html.Raw(NamingItem.FindAnheBranch)：<a href="tel://+886-2-2720-0530" class="more">(02)2720-0530</a></span>
+                                <span>@Html.Raw(NamingItem.FindZhongxiaoBranch)：<a href="tel://+886-2-2776-9932" class="more">(02)2776-9932</a></span>
+                                <span>@Html.Raw(NamingItem.FindDongmenBranch)：<a href="tel://+886-2-2396-0776" class="more">(02)2396-0776</a></span>
+                            </li>
+                            <li>Facebook：<a href="https://www.facebook.com/beyond.fitness.pro/" target="_blank" class="more">@Html.Raw(NamingItem.Go)<i class="pl-1 fa fa-angle-right"></i></a></li>
+                            <li>@Html.Raw(NamingItem.OnlineReservation)：<a href="@(Url.Action("BookNow"))" class="more">@Html.Raw(NamingItem.BookNow)<i class="pl-1 fa fa-angle-right"></i></a></li>
+                        </ul>
+                    </li>
+                    <li class="accordion-item">
+                        <input id="q12" class="hide" type="checkbox">
+                        <label for="q12" class="accordion-label sub">@Html.Raw(NamingItem.FAQQestion12)</label>
+                        <ul class="accordion-child list-style3">@Html.Raw(NamingItem.FAQAnswer12)</ul>
+                    </li>
+                </ul>
+            </li>
+            <li class="accordion-item">
+                <input id="q2" class="hide" type="checkbox">
+                <label for="q2" class="accordion-label">@Html.Raw(NamingItem.FAQQestion2)</label>
+                <ul class="accordion-child accordion sub">
+                    <li class="accordion-item">
+                        <input id="q21" class="hide" type="checkbox">
+                        <label for="q21" class="accordion-label sub">@Html.Raw(NamingItem.FAQQestion21)</label>
+                        <ul class="accordion-child list-style1">@Html.Raw(NamingItem.FAQAnswer21)</ul>
+                    </li>
+                    <li class="accordion-item">
+                        <input id="q23" class="hide" type="checkbox">
+                        <label for="q23" class="accordion-label sub">@Html.Raw(NamingItem.FAQQestion23)</label>
+                        <ul class="accordion-child list-style1">@Html.Raw(NamingItem.FAQAnswer23)</ul>
+                    </li>
+                    <li class="accordion-item">
+                        <input id="q22" class="hide" type="checkbox">
+                        <label for="q22" class="accordion-label sub">@Html.Raw(NamingItem.FAQQestion22)</label>
+                        <p class="accordion-child">@Html.Raw(NamingItem.FAQAnswer22)</p>
+                    </li>
+                </ul>
+            </li>
+            <li class="accordion-item">
+                <input id="q7" class="hide" type="checkbox">
+                <label for="q7" class="accordion-label">@Html.Raw(NamingItem.FAQQestion7)</label>
+                <ul class="accordion-child list-style1">@Html.Raw(NamingItem.FAQAnswer7)</ul>
+            </li>
+            <li class="accordion-item">
+                <input id="q3" class="hide" type="checkbox">
+                <label for="q3" class="accordion-label">@Html.Raw(NamingItem.FAQQestion3)</label>
+                <p class="accordion-child">@Html.Raw(NamingItem.FAQAnswer3)</p>
+            </li>
+            <li class="accordion-item">
+                <input id="q4" class="hide" type="checkbox">
+                <label for="q4" class="accordion-label">@Html.Raw(NamingItem.FAQQestion4)</label>
+                <p class="accordion-child">@Html.Raw(NamingItem.FAQAnswer4)</p>
+            </li>
+            <li class="accordion-item">
+                <input id="q5" class="hide" type="checkbox">
+                <label for="q5" class="accordion-label">@Html.Raw(NamingItem.FAQQestion5)</label>
+                <p class="accordion-child">@Html.Raw(NamingItem.FAQAnswer5)</p>
+            </li>
+            <li class="accordion-item">
+                <input id="q6" class="hide" type="checkbox">
+                <label for="q6" class="accordion-label">@Html.Raw(NamingItem.FAQQestion6)</label>
+                <ul class="accordion-child list-style3">
+                    @Html.Raw(NamingItem.FAQAnswer6)
+                    <br />
+                    <li>
+                        @Html.Raw(NamingItem.Walk)
+                        <span>@Html.Raw(NamingItem.FindNanjingBranch)：<a href="https://maps.google.com/?q=台北市大安區大安路一段75巷21號B1" target="_blank" class="more">@Html.Raw(NamingItem.FindNanjingBranchAdd)</a></span>
+                        <span>@Html.Raw(NamingItem.FindAnheBranch)：<a href="https://maps.google.com/?q=台北市大安區安和路二段81號B1" target="_blank" class="more">@Html.Raw(NamingItem.FindAnheBranchAdd)</a></span>
+                        <span>@Html.Raw(NamingItem.FindZhongxiaoBranch)：<a href="https://maps.google.com/?q=台北市大安區大安路一段75巷21號B1" target="_blank" class="more">@Html.Raw(NamingItem.FindZhongxiaoBranchAdd)</a></span>
+                        <span>@Html.Raw(NamingItem.FindDongmenBranch)：<a href="https://maps.google.com/?q=台北市大安區信義路二段28號" target="_blank" class="more">@Html.Raw(NamingItem.FindDongmenBranchAdd)</a></span>
+                    </li>
+                    <li>
+                        @Html.Raw(NamingItem.MRT)
+                        <span>@Html.Raw(NamingItem.FindNanjingBranch)：@Html.Raw(NamingItem.NanjingMRT)</span>
+                        <span>@Html.Raw(NamingItem.FindAnheBranch)：@Html.Raw(NamingItem.AnheMRT)</a></span>
+                        <span>@Html.Raw(NamingItem.FindZhongxiaoBranch)：@Html.Raw(NamingItem.ZhongxiaoMRT)</a></span>
+                        <span>@Html.Raw(NamingItem.FindDongmenBranch)：@Html.Raw(NamingItem.DongmenMRT)</a></span>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</section>
+<!-- // 聯絡我們 -->
+@{ await Html.RenderPartialAsync("~/Views/MainActivity/Module/ContactItem.cshtml");}
+
+
+@section TailPageJavaScriptInclude {
+
+}

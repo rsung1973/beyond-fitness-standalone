@@ -1,0 +1,71 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    UserProfile _model;
+    IQueryable<CourseContract> _contractItems;
+    IQueryable<CourseContract> _effectiveItems;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (UserProfile)this.Model;
+
+    _effectiveItems = models.PromptEffectiveContract();
+    _contractItems = models.PromptOriginalContract();
+}
+<!--我的分店合約-->
+<div class="container-fluid">
+    <h4 class="card-outbound-header">我的分店合約</h4>
+    <div class="card widget_3">
+        <ul class="row clearfix list-unstyled m-b-0">
+            <li class="col-lg-3 col-md-6 col-sm-12">
+                @{ await Html.RenderPartialAsync("~/Views/ContractConsole/Module/AboutExpiringByOfficer.cshtml", _model);}
+
+            </li>
+            <li class="col-lg-3 col-md-6 col-sm-12">
+                @{ await Html.RenderPartialAsync("~/Views/ConsoleHome/ContractIndex/Admin/AboutNewContractsByOfficer.cshtml", _model);}
+            </li>
+            <li class="col-lg-3 col-md-6 col-sm-12">
+                @{ await Html.RenderPartialAsync("~/Views/ConsoleHome/ContractIndex/Admin/AboutContractServicesByOfficer.cshtml", _model);}
+            </li>
+            <li class="col-lg-3 col-sm-12">
+                @{ await Html.RenderPartialAsync("~/Views/ContractConsole/Module/AboutPaymentByOfficer.cshtml", _model);}
+
+            </li>
+        </ul>
+        <ul class="row clearfix list-unstyled m-b-0">
+            @*<li class="col-lg-3 col-md-3 col-sm-6">
+            @{ await Html.RenderPartialAsync("~/Views/ContractConsole/Module/ToRenewByOfficer.cshtml", _model);}
+        </li>*@
+            <li class="col-lg-3 col-md-6 col-sm-12">
+                @{ await Html.RenderPartialAsync("~/Views/ContractConsole/Module/AboutAutoTermination.cshtml", _model);}
+            </li>
+            <li class="col-lg-3 col-md-3 col-sm-6">
+                @{ await Html.RenderPartialAsync("~/Views/ContractConsole/Module/AboutCompleteLessons.cshtml", _effectiveItems);}
+
+            </li>
+            <li class="col-lg-3 col-md-3 col-sm-6">
+                @{ await Html.RenderPartialAsync("~/Views/ContractConsole/Module/AboutInstallment.cshtml", _effectiveItems);}
+
+            </li>
+            <li class="col-lg-3 col-md-3 col-sm-6">
+                @{ await Html.RenderPartialAsync("~/Views/ContractConsole/Module/AboutReceivablesByOfficer.cshtml", _model);}
+
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+

@@ -1,0 +1,45 @@
+﻿
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    MonthlyCoachRevenueIndicatorQueryViewModel _viewModel;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _modelState = ViewContext.ModelState;
+    _viewModel = (MonthlyCoachRevenueIndicatorQueryViewModel)ViewBag.ViewModel;
+    String _dialogID = $"chartModal{DateTime.Now.Ticks}";
+    ViewBag.ReuseModal = true;
+}
+<div class="modal modal-mini fade" tabindex="-1" role="dialog" id="@(_dialogID)">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="title">請選擇執行功能</h6>
+                <a class="closebutton" data-dismiss="modal"></a>
+            </div>
+            <div class="modal-popmenu-body">
+                <div class="list-group">
+                    <a href="javascript:$global.viewModel.ChartType=1;showThreeMonthBarChart(true);" class="list-group-item">近況查詢</a>
+                    <a href="javascript:$global.viewModel.ChartType=2;showLessonQueryModal();" class="list-group-item">上課數折線圖</a>
+                    <a href="javascript:$global.viewModel.ChartType=3;showThreeMonthBarChart(true);" class="list-group-item">業績柱狀圖</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    @{ await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/BSModalScript.cshtml", model: _dialogID);}
+
+    <script>
+
+    </script>
+</div>

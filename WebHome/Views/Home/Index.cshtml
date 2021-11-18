@@ -1,0 +1,23 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+
+
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];
+    _modelState = ViewContext.ModelState;
+
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome(@(models.GetTable<UserProfile>().Count()))</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <div>test</div>
+</div>

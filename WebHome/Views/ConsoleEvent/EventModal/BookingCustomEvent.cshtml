@@ -1,0 +1,174 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    UserEventViewModel _viewModel;
+    String _dialogID = $"customEvent{DateTime.Now.Ticks}";
+    UserProfile _profile;
+
+
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _viewModel = (UserEventViewModel)ViewBag.ViewModel;
+    _profile = await Context.GetUserAsync();
+}
+<div class="modal fade" id="@(_dialogID)" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="title">自訂個人行事曆</h2>
+                <a class="closebutton" data-dismiss="modal"></a>
+            </div>
+            <div class="modal-body">
+                <div class="row clearfix">
+                    <div class="row clearfix">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-12 single">
+                            <div class="input-group">
+                                <input type="text" class="form-control datetime" data-date-format="yyyy/mm/dd hh:ii" readonly="readonly" placeholder="開始時間" name="StartDate" value="@($"{_viewModel.StartDate:yyyy/MM/dd HH:mm}")" />
+                                <span class="input-group-addon xl-slategray">
+                                    <i class="zmdi zmdi-time"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-12 single">
+                            <div class="input-group">
+                                <input type="text" class="form-control datetime" data-date-format="yyyy/mm/dd hh:ii" readonly="readonly" placeholder="結束時間" name="EndDate" value="@($"{_viewModel.EndDate:yyyy/MM/dd HH:mm}")" />
+                                <span class="input-group-addon xl-slategray">
+                                    <i class="zmdi zmdi-time"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+                            <select class="form-control show-tick" name="Title">
+                                <option value="請選擇">--請選擇個人行程類別--</option>
+                                <option selected="@(_viewModel.Title == "會議")">會議</option>
+                                @*<option selected="@(_viewModel.Title == "團練")">團練</option>*@
+                                <option selected="@(_viewModel.Title == null || _viewModel.Title == "其他")">其他</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+                            <div>
+                                <select class="form-control show-tick" name="BranchID">
+                                    <option value="@(Naming.BranchName.請選擇)">-- 請選擇地點 --</option>
+                                    @{
+                                        await Html.RenderPartialAsync("~/Views/SystemInfo/BranchStoreOptions.cshtml", model: (int?)_viewModel.BranchID);
+                                    }
+                                    <option value="@(Naming.BranchName.璞真)" selected="@(_viewModel.Place == Naming.BranchName.璞真.ToString())">璞真</option>
+                                    <option value="@(Naming.BranchName.其他)" selected="@((_viewModel.Place == null && !_viewModel.BranchID.HasValue) || _viewModel.Place == Naming.BranchName.其他.ToString())">其他</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group@*has-danger*@">
+                                <div class="form-line">
+                                    <textarea rows="1" name="ActivityProgram" class="form-control no-resize" placeholder="輸入任何你想輸入的自訂行程...">@(_viewModel.ActivityProgram)</textarea>
+                                    @*<label class="material-icons help-error-text">clear 此欄位一定要輸入喔！</label>*@
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <label>與誰同行?</label>
+                            <div class="row clearfix">
+                                <div class="col-sm-12">
+                                    @{ await Html.RenderPartialAsync("~/Views/ConsoleEvent/Module/CoachPIAttendeeSelector.cshtml", _viewModel.MemberID);}
+                                    @*<select name="MemberID" class="ms employeegroup" multiple="multiple">
+                                            <optgroup label="其他">
+                                                @{ var roles = models.GetTable<UserRoleAuthorization>().Where(r => r.RoleID == (int)Naming.RoleID.Assistant);
+                                                    var users = models.GetTable<UserProfile>()
+                                                            .Where(u => u.LevelID == (int)Naming.MemberStatusDefinition.Checked)
+                                                            .Where(u => roles.Any(r => r.UID == u.UID));}
+                                                @foreach (var u in users)
+                                                {
+                                                    <option value="@(u.UID)">@(u.FullName())</option>
+                                                }
+                                            </optgroup>
+                                            @foreach (var branch in models.GetTable<BranchStore>())
+                                            {
+                                                <optgroup label="@(branch.BranchName)">
+                                                    @{ var items = models.GetTable<CoachWorkplace>().Where(w => w.BranchID == branch.BranchID)
+                                                             .Select(w => w.ServingCoach)
+                                                             .Where(s => s.CoachID != _profile.UID)
+                                                             .Where(s => s.UserProfile.LevelID == (int)Naming.MemberStatusDefinition.Checked);
+                                                        await Html.RenderPartialAsync("~/Views/SystemInfo/ServingCoachOptions.cshtml", items);}
+
+                                                </optgroup>
+                                            }
+                                        </select>*@
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="form-line">
+                                        <textarea rows="1" name="Accompanist" class="form-control no-resize" placeholder="或輸入其他玩伴..." maxlength="20">@(_viewModel.Accompanist)</textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                @if (_viewModel.EventID.HasValue)
+                {
+                    <button type="button" class="btn btn-danger btn-simple btn-round waves-effect" onclick="javascript:deleteUserEvent('@(_viewModel.EventID.Value.EncryptKey())');">刪除，不想要了</button>
+                }
+                <button type="button" class="btn btn-darkteal btn-round waves-effect" onclick="javascript:commitBooking();">確定, 不後悔</button>
+            </div>
+        </div>
+    </div>
+
+    @{ await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/BSModalScript.cshtml", model: _dialogID);}
+
+    <script>
+
+        function commitBooking() {
+
+            var $formData = $('#@(_dialogID) input,select,textarea').serializeObject();
+            clearErrors();
+            showLoading();
+            $.post('@Html.Raw(Url.Action("CommitCoachEvent","CoachFacet",new { UID = _viewModel.UID,EventID = _viewModel.EventID }))', $formData, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    if (data.result) {
+                        $global.closeAllModal();
+                        refreshEvents();
+                        refetchCalendarEvents();
+                        Swal.fire(
+                            '幹得好!',
+                            data.message,
+                            'success'
+                        );
+                    } else {
+                        Swal.fire(
+                            'Oops...',
+                            data.message,
+                            'warning'
+                        );
+                    }
+                } else {
+                    $(data).appendTo('body').remove();
+                }
+            });
+        }
+
+        $(function () {
+            equipDatetimePicker();
+            @*$('.employeegroup').multiSelect();
+
+            @if (_viewModel.MemberID != null && _viewModel.MemberID.Length > 0)
+            {
+            <text>$('.employeegroup').multiSelect('select',@Html.Raw(JsonConvert.SerializeObject(_viewModel.MemberID.Select(m=>m.ToString()))));</text>
+            }*@
+        });
+    </script>
+</div>

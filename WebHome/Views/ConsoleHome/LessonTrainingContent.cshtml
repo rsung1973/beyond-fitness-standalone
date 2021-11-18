@@ -1,0 +1,601 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+@using Newtonsoft.Json
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    UserProfile _model;
+    DailyBookingQueryViewModel _viewModel;
+
+    Layout = "~/Views/ConsoleHome/Template/MainPage.cshtml";
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _modelState = ViewContext.ModelState;
+    _model = (UserProfile)this.Model;
+    _viewModel = (DailyBookingQueryViewModel)ViewBag.ViewModel;
+}
+@{
+    LessonTime lessonItem = (LessonTime)ViewBag.DataItem;
+    UserProfile learner = (UserProfile)ViewBag.Learner;
+    QuestionnaireRequest questionnaire = (QuestionnaireRequest)ViewBag.CurrentQuestionnaire;
+    if (questionnaire != null)
+    {
+        ViewBag.ViewOnly = true;
+    }
+}
+@section CustomHeader {
+    <!-- Bootstrap Datetimepick -->
+    @*<link href="plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />*@
+    @*<link href="css/datetimepicker.css" rel="stylesheet" />*@
+    <!-- Jquery Nestable -->
+    <link rel="stylesheet" href="plugins/nestable/jquery-nestable.css" />
+    <!-- Custom Css -->
+    <link rel="stylesheet" href="css/customelist.css?2" />
+
+}
+
+<section class="content">
+    @{
+        ViewBag.BlockHeader = "編輯課表";
+        ViewBag.InsertPartial = "~/Views/LearnerProfile/Module/ProfileHeader.cshtml";
+        await Html.RenderPartialAsync("~/Views/ConsoleHome/Module/BlockHeader.cshtml", _model);
+    }
+
+    <!--編輯課表-->
+    <div class="container-fluid">
+        <div class="card">
+            <div class="header">
+                <h2>
+                    <strong>@(learner.FullName())</strong> -
+                    <span class="@(learner.PersonalExercisePurpose.PowerAbliityCss())">@(learner.PersonalExercisePurpose.ExercisePurposeDescription())</span>
+                </h2>
+                <ul class="header-dropdown">
+                    <li>
+                        @{
+                            await Html.RenderPartialAsync("~/Views/LearnerProfile/Module/FavoriteLesson.cshtml", lessonItem);
+                        }
+                    </li>
+                    <li class="dropdown" id="slideMenu">
+                        <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class="zmdi zmdi-more"></i> </a>
+                        <ul class="dropdown-menu dropdown-menu-right slideUp float-right">
+                            @{
+                                bool hasSlideItem = false;
+                            }
+                            @if (lessonItem.IsCoachPISession())
+                            {
+                                if (lessonItem.GroupingLesson.LessonTime.Count > 1)
+                                {
+                                    hasSlideItem = true;
+                                    if (lessonItem.ClassTime >= DateTime.Today)
+                                    {
+                                        <li><a href="javascript:cloneCoachPITrainingPlan();">我的課表<i class="zmdi zmdi-arrow-right"></i>同伴</a></li>
+                                    }
+                                    <li><a href="javascript:selectToClonePITrainingPlan();">同伴課表<i class="zmdi zmdi-arrow-right"></i>我</a></li>
+                                }
+                            }
+                            else if (lessonItem.GroupingLesson.RegisterLesson.Count > 1)
+                            {
+                                hasSlideItem = true;
+                                <li><a href="javascript:cloneLearnerTrainingPlan();">我的課表<i class="zmdi zmdi-arrow-right"></i>同伴</a></li>
+                                <li><a href="javascript:selectToCloneLearnerTrainingPlan();">同伴課表<i class="zmdi zmdi-arrow-right"></i>我</a></li>
+                            }
+                            @if (lessonItem.CheckToAttendLesson(models))
+                            {
+                                hasSlideItem = true;
+                                <li><a href="javascript:attendLesson();">完成上課</a></li>
+                            }
+                            @if (!hasSlideItem)
+                            {
+                                <li>
+                                    <script>
+                                        $(function () {
+                                            $('#slideMenu').remove();
+                                        });
+                                    </script>
+                                </li>
+                            }
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="body p-0">
+                <div class="row">
+                    <div class="col-md-12 col-lg-4 col-xl-4">
+                        <div class="body">
+                            <div class="row clearfix">
+                                <div class="col-12">
+                                    <button class="btn btn-default btn-sm hidden-lg-up m-t-0 float-right" data-toggle="collapse" data-target="#open-events" aria-expanded="false" aria-controls="collapseExample">點擊後不再是問題</button>
+                                </div>
+                            </div>
+                            <div class="collapse-sm collapse" id="open-events">
+                                <div class="row clearfix">
+                                    <div class="col-12">
+                                        <ul class="nav nav-tabs-new2 p-t-0" id="tabs">
+                                            <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#recent">了解學生</a></li>
+                                            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#mildstone">里程碑</a></li>
+                                        </ul>
+                                        <div class="tab-content p-l-5 p-r-5">
+                                            <div class="tab-pane active" id="recent">
+                                                @{
+                                                    await Html.RenderPartialAsync("~/Views/LearnerProfile/Module/RecentStatus.cshtml", learner);
+                                                }
+                                            </div>
+                                            <div class="tab-pane" id="mildstone">
+                                                @{
+                                                    await Html.RenderPartialAsync("~/Views/LearnerProfile/Module/TrainingMilestone.cshtml", learner);
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="new_timeline">
+                                    <ul>
+                                        <li>
+                                            @{
+                                                await Html.RenderPartialAsync("~/Views/LearnerProfile/Module/TrainingGoal.cshtml", learner);
+                                            }
+                                        </li>
+                                        @if (questionnaire != null)
+                                        {
+                                            <li>
+                                                <div class="bullet pink"></div>
+                                                <div class="time">NEXT</div>
+                                                <div class="desc">
+                                                    <a href="javascript:editLearnerCharacter(@(questionnaire.QuestionnaireID));">
+                                                        <h3 class="col-red">重新了解學生 Go~</h3>
+                                                    </a>
+                                                </div>
+                                            </li>
+                                        }
+                                        @{
+                                            await Html.RenderPartialAsync("~/Views/LearnerProfile/Module/LessonList.cshtml", learner);
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-lg-8 col-xl-8">
+                        <div class="body">
+                            <div class="row">
+                                @{ await Html.RenderPartialAsync("~/Views/LearnerProfile/Module/TrainingExecutionPlan.cshtml", lessonItem); }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section TailPageJavaScriptInclude {
+    <!-- Sparkline Plugin Js -->
+    <script src="plugins/jquery-sparkline/jquery.sparkline.js"></script>
+    <!-- Jquery Nestable -->
+    <script src="plugins/nestable/jquery.nestable.js"></script>
+    <script>
+
+        function refreshTrainingContent() {
+            editTrainingContent('@(lessonItem.LessonID.EncryptKey())');
+        }
+
+        function editTrainingContent(keyID) {
+            $('').launchDownload('@Html.Raw(Url.Action("LessonTrainingContent", "ConsoleHome",new { LearnerID = learner.UID }))', { 'keyID': keyID });
+        }
+
+
+        //編輯近期目標
+        this.addRecentGoal = function () {
+            Swal.fire({
+                title: "近期目標",
+                input: "text",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "更新目標目標",
+                cancelButtonText: "取消",
+                inputPlaceholder: "請輸入20個中英文字",
+                inputValidator: (value) => {
+                    if (!value) {
+                        return '你忘了輸入文字嗎!?';
+                    } else {
+                        if (value.length > 20) {
+                            return '最多僅能輸入20個內的中英文字';
+                        }
+                    }
+                },
+            }).then((result) => {
+                Swal.fire(
+                    '幹得好!',
+                    '更新近期目標成功!',
+                    'success'
+                )
+            });
+        };
+
+        //近期目標更多功能
+        $('.more').on('click', function () {
+            $("#moreActionModal").modal('show');
+        });
+
+        //編輯完成上課結語
+        this.attendLesson = function () {
+
+            showLoading();
+            $.post('@Html.Raw(Url.Action("CheckLessonEmphasis", "Attendance"))', { 'keyID': '@(lessonItem.LessonID.EncryptKey())' }, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    if (data.result) {
+                        Swal.fire({
+                            title: "@(learner.FullName())的家庭聯絡簿",
+                            html: '<span class=\"col-blue font-bold\">範例：昨天喝酒精神狀況不好<br/>今天第一次學甩壺鈴<br/>今天沒吃飯就運動狀況不好，下次記得提前吃飽喔</span>',
+                            input: "text",
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "完成上課",
+                            inputPlaceholder: "請輸入20個中英文字",
+                            allowEnterKey: false,
+                            inputValidator: (value) => {
+                                if (!value) {
+                                    return '你忘了輸入文字嗎!?';
+                                } else {
+                                    if (value.length > 20) {
+                                        return '最多僅能輸入20個內的中英文字';
+                                    }
+                                }
+                            },
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                commitAttendance(result.value);
+                            }
+                        });
+                    } else {
+                        Swal.fire(
+                            'Oops...',
+                            data.message,
+                            'warning'
+                        )
+                    }
+                } else {
+                    $(data).appendTo($('body'));
+                }
+            });
+        };
+
+        function commitAttendance(remark) {
+            showLoading();
+            $.post('@Html.Raw(Url.Action("AttendLesson", "Attendance",new { QuestionnaireGroupID = (int)Naming.QuestionnaireGroup.身體心靈密碼 }))', { 'keyID': '@(lessonItem.LessonID.EncryptKey())', 'remark': remark }, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    if (data.result) {
+                        Swal.fire(
+                            '幹得好!',
+                            '更新家庭聯絡簿成功!',
+                            'success'
+                        )
+                        refreshTrainingContent();
+                    } else {
+                        Swal.fire(
+                            'Oops...',
+                            data.message,
+                            'warning'
+                        )
+                    }
+                } else {
+                    $(data).appendTo($('body'));
+                }
+            });
+        }
+
+        //點選同步課表
+        this.cloneLearnerTrainingPlan = function (viewModel) {
+            Swal.fire({
+                title: "確定同步課表?",
+                text: "同步後課表內容將會一樣，且被覆蓋！",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: '確定',
+                cancelButtonText: '取消',
+                focusCancel: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    showLoading();
+                    $.post('@Html.Raw(Url.Action("CloneLearnerTrainingPlan", "LessonConsole", new { KeyID = lessonItem.LessonID.EncryptKey(),learner.UID }))', viewModel, function (data) {
+                        hideLoading();
+                        if ($.isPlainObject(data)) {
+                            if (data.result) {
+                                Swal.fire(
+                                    '同步成功!',
+                                    '資料已經同步 Bye!',
+                                    'success'
+                                )
+                                refreshTrainingContent();
+                            } else {
+                                Swal.fire(
+                                    'Oops 同步失敗...',
+                                    data.message,
+                                    'error'
+                                )
+                            }
+                        } else {
+                            $(data).appendTo($('body'));
+                        }
+                    });
+                } else {
+                    Swal.fire(
+                        '取消成功',
+                        '你的資料現在非常安全 :)',
+                        'info'
+                    )
+                }
+            });
+        };
+
+        function selectToClonePITrainingPlan() {
+            showLoading();
+            $.post('@Html.Raw(Url.Action("SelectToCloneCoachPITrainingPlan", "LessonConsole", new { KeyID = lessonItem.LessonID.EncryptKey() }))', {}, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    Swal.fire(
+                        'Oops...',
+                        data.message,
+                        'warning'
+                    )
+                } else {
+                    $(data).appendTo($('body'));
+                    $global.doSelect = function (uid, userName) {
+                        cloneCoachPITrainingPlan({ 'CopyFrom': uid });
+                    };
+                }
+            });
+
+        }
+
+        function selectToCloneLearnerTrainingPlan() {
+            showLoading();
+            $.post('@Html.Raw(Url.Action("SelectToCloneLearnerTrainingPlan", "LessonConsole", new { KeyID = lessonItem.LessonID.EncryptKey() }))', { 'UID': @(learner.UID) }, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    Swal.fire(
+                        'Oops...',
+                        data.message,
+                        'warning'
+                    )
+                } else {
+                    $(data).appendTo($('body'));
+                    $global.doSelect = function (uid, userName) {
+                        cloneLearnerTrainingPlan({ 'CopyFrom': uid });
+                    };
+                }
+            });
+        }
+
+        this.cloneCoachPITrainingPlan = function (viewModel) {
+            Swal.fire({
+                title: "確定同步課表?",
+                text: "同步後課表內容將會一樣，且被覆蓋！",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "確定, 不後悔",
+                cancelButtonText: "不, 點錯了",
+            }, function (isConfirm) {
+                if (isConfirm) {
+                    showLoading();
+                    $.post('@Html.Raw(Url.Action("CloneCoachPITrainingPlan", "LessonConsole", new { KeyID = lessonItem.LessonID.EncryptKey() }))', viewModel, function (data) {
+                        hideLoading();
+                        if ($.isPlainObject(data)) {
+                            if (data.result) {
+                                Swal.fire(
+                                    '同步成功!',
+                                    '資料已經同步 Bye!',
+                                    'success'
+                                )
+                                refreshTrainingContent();
+                            } else {
+                                Swal.fire(
+                                    'Oops 同步失敗...',
+                                    data.message,
+                                    'error'
+                                )
+                            }
+                        } else {
+                            $(data).appendTo($('body'));
+                        }
+                    });
+                } else {
+                    Swal.fire(
+                        '取消成功',
+                        '你的資料現在非常安全 :)',
+                        'info'
+                    )
+                }
+            });
+        };
+
+        function editLearnerCharacter(QuestionnaireID) {
+
+            $('').launchDownload('@(Html.Raw(Url.Action("EditLearnerCharacter","ConsoleHome",new { KeyID = learner.UID.EncryptKey() })))', { 'QuestionnaireID': QuestionnaireID });
+
+        }
+
+            //編輯上課重點
+        function editEmphasis(keyID, defaultValue) {
+            Swal.fire({
+                title: "上課重點",
+                input: "text",
+                showCancelButton: false,
+                allowEnterKey: false,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "更新上課重點",
+                inputPlaceholder: "請輸入20個中英文字",
+                inputValue: defaultValue,
+                inputValidator: (value) => {
+                    if (!value) {
+                        return '你忘了輸入文字嗎!?';
+                    } else {
+                        if (value.length > 20) {
+                            return '最多僅能輸入20個內的中英文字';
+                        }
+                    }
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    commitEmphasis(keyID, result.value);
+                }
+            });
+        }
+
+        function commitEmphasis(keyID, emphasis) {
+            showLoading();
+            $.post('@Html.Raw(Url.Action("CommitEmphasis", "Training"))', { 'keyID': keyID, 'emphasis': emphasis }, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    if (data.result) {
+                        Swal.fire(
+                            '幹得好!',
+                            '更新上課重點成功!',
+                            'success'
+                        )
+                        $('#emphasis').text(emphasis);
+                    } else {
+                        Swal.fire(
+                            'Oops...',
+                            data.message,
+                            'warning'
+                        )
+                    }
+                } else {
+                    $(data).appendTo($('body'));
+                }
+            });
+        }
+
+            //編輯上課重點
+        function editOnlineUrl(keyID, defaultValue) {
+            Swal.fire({
+                title: "視訊連結網址",
+                input: "text",
+                inputValue: defaultValue,
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "確定, 不後悔",
+                cancelButtonText: "不, 點錯了",
+                closeOnConfirm: false,
+                animation: "slide-from-top",
+                inputPlaceholder: "https://zoom.us/j/92400075019?pwd=dWJidHNwbU05QlVmTGh0a2hyOEs0dz09",
+                inputValidator: (value) => {
+                    if (!value) {
+                        return '你忘了輸入網址嗎!?';
+                    } else if (value === '') {
+                        return '你忘了輸入網址嗎!?';
+                    } 
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    commitOnlineUrl(keyID, result.value);
+                }
+            });
+        }
+
+        function commitOnlineUrl(keyID, place) {
+            showLoading();
+            $.post('@Html.Raw(Url.Action("CommitPlace", "LessonConsole"))', { 'keyID': keyID, 'place': place }, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    if (data.result) {
+                        Swal.fire(
+                            '幹得好!',
+                            '更新遠距視訊連結成功!',
+                            'success'
+                        )
+                        $('#onlineUrl').text(place);
+                    } else {
+                        Swal.fire(
+                            'Oops...',
+                            data.message,
+                            'warning'
+                        )
+                    }
+                } else {
+                    $(data).appendTo($('body'));
+                }
+            });
+        }
+
+    </script>
+    @if (questionnaire != null)
+    {
+        <script>
+            this.copyTrainingPlan = function (copyFrom) {
+                Swal.fire({
+                    title: "請重新填寫階段性調整問卷。",
+                    text: "重新與客戶溝通並優化目前所提供的服務！",
+                    icon: "warning",
+                    showCancelButton: false,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "立即填寫!",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        editLearnerCharacter(@(questionnaire.QuestionnaireID));
+                    }
+                });
+            };
+        </script>
+    }
+    else
+    {
+        <script>
+            this.copyTrainingPlan = function (copyFrom) {
+                Swal.fire({
+                    title: "不後悔?",
+                    text: "複製後課表內容將會一樣，且被覆蓋！",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: '確定',
+                    cancelButtonText: '取消',
+                    focusCancel: true     
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        showLoading();
+                        $.post('@Html.Raw(Url.Action("CopyTrainingPlan", "LessonConsole", new { KeyID = lessonItem.LessonID.EncryptKey(),learner.UID }))', { 'copyFrom': copyFrom }, function (data) {
+                            hideLoading();
+                            if ($.isPlainObject(data)) {
+                                if (data.result) {
+                                    Swal.fire(
+                                        '複製課表!',
+                                        '資料已經同步 Bye!',
+                                        'success'
+                                    )
+                                    refreshTrainingContent();
+                                } else {                                   
+                                    Swal.fire(
+                                        'Oops 複製失敗...',
+                                        data.message,
+                                        'error'
+                                    )
+                                }
+                            } else {
+                                $(data).appendTo($('body'));
+                            }
+                        });
+                    } else {
+                        Swal.fire(
+                            '取消成功',
+                            '你的資料現在非常安全 :)',
+                            'info'
+                        )
+                    }
+                });
+            };
+        </script>
+    }
+}

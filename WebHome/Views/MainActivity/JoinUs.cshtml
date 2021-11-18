@@ -1,0 +1,122 @@
+
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@using WebHome.Views.MainActivity.Resources
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _modelState = ViewContext.ModelState;
+
+    Layout = "~/Views/MainActivity/Template/MainPage.cshtml";
+
+}
+
+@section CustomHeader {
+
+}
+
+<!-- // 加入執行團隊 -->
+<section class="section-features">
+    <div class="container">
+        <div class="row mb-30">
+            <div class="col-md-12">
+                <h1 class="text-center">@Html.Raw(NamingItem.JoinUsTitle)</h1>
+                <p>@Html.Raw(NamingItem.JoinUsDesc)</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1 col-sm-12">
+                <div class="row">
+                    <div class="col-md-6 col-sm-6 features-item left wow zoomIn" data-wow-delay=".3s">
+                        <div class="icon-wrapper">
+                            <img src="images/landing/smile.png" alt="微笑">
+                        </div>
+                        <h3>@Html.Raw(NamingItem.JoinUsFeature1)<small>@Html.Raw(NamingItem.JoinUsFeature1Desc)</small></h3>
+                    </div>
+                    <div class="col-md-6 col-sm-6 features-item left wow zoomIn" data-wow-delay=".6s">
+                        <div class="icon-wrapper">
+                            <img src="images/landing/inspire.png" alt="啟發">
+                        </div>
+                        <h3>@Html.Raw(NamingItem.JoinUsFeature2)<small>@Html.Raw(NamingItem.JoinUsFeature2Desc)</small></h3>
+                    </div>
+                    <div class="col-md-6 col-sm-6 features-item left wow zoomIn" data-wow-delay=".9s">
+                        <div class="icon-wrapper">
+                            <img src="images/landing/warm.png" alt="溫暖">
+                        </div>
+                        <h3>@Html.Raw(NamingItem.JoinUsFeature3)<small>@Html.Raw(NamingItem.JoinUsFeature3Desc)</small></h3>
+                    </div>
+                    <div class="col-md-6 col-sm-6 features-item left wow zoomIn" data-wow-delay="1.2s">
+                        <div class="icon-wrapper">
+                            <img src="images/landing/upright.png" alt="正直">
+                        </div>
+                        <h3>@Html.Raw(NamingItem.JoinUsFeature4)<small>@Html.Raw(NamingItem.JoinUsFeature4Desc)</small></h3>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+<section class="section-job">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <div class="row clearfix">
+                    <div class="col-md-6 col-sm-6">
+                        <div class="features-box">
+                            <div class="features-icon title"><i class="fas fa-user-tag"></i> @Html.Raw(NamingItem.JoinUsJob1)</div>
+                            <div class="features-content">
+                                <a href="javascript:bindTrackingCode('工作機會', null, '@(Url.Action("Opportunity"))', null)" class="more">@Html.Raw(NamingItem.LearnMore)<i class="pl-1 fa fa-angle-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6">
+                        <div class="features-box">
+                            <div class="features-icon title"><i class="fas fa-user-tag"></i> @Html.Raw(NamingItem.JoinUsJob2)</div>
+                            <div class="features-content">
+                                <a href="javascript:bindTrackingCode('工作機會', null, '@(Url.Action("Opportunity"))', null)" class="more">@Html.Raw(NamingItem.LearnMore)<i class="pl-1 fa fa-angle-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row clearfix">
+                    <div class="col-md-6 col-sm-6">
+                        <div class="features-box">
+                            <div class="features-icon title"><i class="fas fa-user-tag"></i> @Html.Raw(NamingItem.JoinUsJob3)</div>
+                            <div class="features-content">
+                                <a href="javascript:bindTrackingCode('工作機會', null, '@(Url.Action("Opportunity"))', null)" class="more">@Html.Raw(NamingItem.LearnMore)<i class="pl-1 fa fa-angle-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6">
+                        <div class="features-box">
+                            <div class="features-icon title"><i class="fas fa-user-tag"></i> @Html.Raw(NamingItem.JoinUsJob4)</div>
+                            <div class="features-content">
+                                <a href="javascript:bindTrackingCode('工作機會', null, '@(Url.Action("Opportunity"))', null)" class="more">@Html.Raw(NamingItem.LearnMore)<i class="pl-1 fa fa-angle-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- // 聯絡我們 -->
+@{ await Html.RenderPartialAsync("~/Views/MainActivity/Module/JoinItem.cshtml");}
+
+
+@section TailPageJavaScriptInclude {
+
+}

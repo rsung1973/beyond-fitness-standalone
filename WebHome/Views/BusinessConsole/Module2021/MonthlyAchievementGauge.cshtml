@@ -1,0 +1,135 @@
+﻿
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    MonthlyIndicator _model;
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (MonthlyIndicator)this.Model;
+}
+@{
+    String _viewID = $"revenue{DateTime.Now.Ticks}";
+    MonthlyIndicatorQueryViewModel _viewModel = (MonthlyIndicatorQueryViewModel)ViewBag.ViewModel;
+}
+@{
+    int totalAchievementAmt = 0;
+    decimal indicatorAmt = 1;
+    decimal basePercentage = 100;
+    if (_viewModel.BranchID.HasValue)
+    {
+        MonthlyBranchRevenueGoal indicator = (MonthlyBranchRevenueGoal)TempData["RevenueGoal"];
+        indicatorAmt = (decimal)indicator.MonthlyBranchRevenueIndicator.RevenueGoal;
+        basePercentage = indicator.MonthlyBranchRevenueIndicator.MonthlyRevenueGrade.IndicatorPercentage;
+        totalAchievementAmt = (indicator.ActualLessonAchievement + indicator.ActualSharedAchievement) ?? 0;
+    }
+    else
+    {
+        MonthlyRevenueGoal indicator = (MonthlyRevenueGoal)TempData["RevenueGoal"];
+        indicatorAmt = (decimal)(indicator.CustomRevenueGoal ?? indicator.MonthlyRevenueIndicator.RevenueGoal);
+        basePercentage = (decimal)(indicator.CustomIndicatorPercentage ?? indicator.MonthlyRevenueIndicator.MonthlyRevenueGrade.IndicatorPercentage);
+        totalAchievementAmt = (indicator.ActualLessonAchievement + indicator.ActualSharedAchievement) ?? 0;
+    }
+    decimal achievementRatio = totalAchievementAmt * basePercentage / indicatorAmt;
+}
+@{ 
+    await Html.RenderPartialAsync("~/Views/BusinessConsole/Module2021/InitEcharts.cshtml");
+}
+<script>
+    $global.echarts.option = {
+        series: [{
+            type: 'gauge',
+            startAngle: 180,
+            endAngle: 0,
+            min: 0,
+            max: 15,
+            splitNumber: 15,
+            axisLine: {
+                lineStyle: {
+                    width: 20,
+                    color: [
+                        [0.66, '#FF6E76'],
+                        [0.73, '#FDDD60'],
+                        [0.8, '#58D9F9'],
+                        [0.86, '#7CFFB2'],
+                        [0.93, '#cbb0e3'],
+                        [1, '#9a7fd1']
+                    ]
+                }
+            },
+            pointer: {
+                icon: 'path://M12.8,0.7l12,40.1H0.7L12.8,0.7z',
+                length: '12%',
+                width: 20,
+                offsetCenter: [0, '-60%'],
+                itemStyle: {
+                    color: 'auto'
+                }
+            },
+            axisTick: {
+                length: 12,
+                lineStyle: {
+                    color: 'auto',
+                    width: 2
+                }
+            },
+            splitLine: {
+                length: 20,
+                lineStyle: {
+                    color: 'auto',
+                    width: 5
+                }
+            },
+            axisLabel: {
+                // color: '#464646',
+                fontSize: 14,
+                distance: -60,
+                formatter: function (value) {
+                    if (value === 15) {
+                        return '150';
+                    } else if (value === 14) {
+                        return '140';
+                    } else if (value === 13) {
+                        return '130';
+                    } else if (value === 12) {
+                        return '120';
+                    } else if (value === 11) {
+                        return '110';
+                    }
+                    else if (value === 10) {
+                        return '100';
+                    }
+                }
+            },
+            detail: {
+                fontSize: 30,
+                offsetCenter: [0, '0%'],
+                valueAnimation: true,
+                formatter: function (value) {
+                    return (value * 10).toFixed(2) + '%';
+                },
+                color: 'auto'
+            },
+            data: [{
+                value: @(Math.Round(achievementRatio/10M,3)),
+            }]
+        }]
+    };
+
+    $(function () {
+        if ($global.echarts.showChart) {
+            $global.echarts.showChart();
+        }
+    });
+
+</script>
+

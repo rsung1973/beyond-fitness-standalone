@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "CommonLib.Core": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "Test": "123"
+      }
+    }
+  }
+}

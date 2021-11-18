@@ -1,0 +1,71 @@
+@using System.IO
+@using System.Linq.Expressions
+@using System.Web 
+@using Microsoft.AspNetCore.WebUtilities 
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using WebHome.Models.Schemas.SiteMap
+@using WebHome.Properties
+@using Newtonsoft.Json
+@using CommonLib.Utility
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _modelState = ViewContext.ModelState;
+
+    var Response = ViewContext.HttpContext.Response;
+
+    Response.Headers.Add("Cache-control", "max-age=1");
+    Response.ContentType = "text/xml";
+    Response.Headers.Add("Content-Disposition", "attachment;filename=sitemap.xml");
+
+    urlset doc = new urlset();
+    DateTime today = new DateTime(DateTime.Today.Ticks, DateTimeKind.Local);
+    List<urlsetUrl> items = new List<urlsetUrl>();
+    //foreach (var item in models.GetTable<BlogCategoryDefinition>())
+    //{
+    //    items.Add(new urlsetUrl
+    //    {
+    //        loc = Startup.Properties["HostDomain"] + VirtualPathUtility.ToAbsolute($"~/Official/BlogArticleList?CategoryID={item.CategoryID}"),
+    //        priority = 1.0m,
+    //        prioritySpecified = true,
+    //        lastmod = today,
+    //        lastmodSpecified = true,
+    //    });
+    //}
+
+    var blogs = models.GetTable<BlogArticle>()
+    //.Where(b => b.BlogTag.Any(c => c.CategoryID == item.CategoryID))
+    .Where(a => a.Document.DocDate < DateTime.Now)
+            .OrderByDescending(b => b.BlogID);
+
+    foreach (var b in blogs)
+    {
+        items.Add(new urlsetUrl
+        {
+            loc = Startup.Properties["HostDomain"] + VirtualPathUtility.ToAbsolute($"~/Official/BlogSingle?{HttpUtility.UrlEncode(JsonConvert.SerializeObject(new { b.DocID }).EncryptKey())}"),
+            priority = 0.8m,
+            prioritySpecified = true,
+            lastmod = new DateTime(b.Document.DocDate.Ticks, DateTimeKind.Local),
+            lastmodSpecified = true,
+        });
+    }
+
+    doc.url = items.ToArray();
+    using (FileBufferingWriteStream output = new FileBufferingWriteStream())
+    {
+        doc.ConvertToXml().Save(output);
+        //output.Seek(0, SeekOrigin.Begin);
+        await output.DrainBufferAsync(Response.Body);
+    }
+
+    await Response.Body.FlushAsync();
+
+    //Response.End();
+}

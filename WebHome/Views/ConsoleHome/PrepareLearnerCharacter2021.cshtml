@@ -1,0 +1,227 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+@using Newtonsoft.Json
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    UserProfile _model;
+    LearnerCharacterViewModel _viewModel;
+
+    Layout = "~/Views/ConsoleHome/Template/MainPage.cshtml";
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _modelState = ViewContext.ModelState;
+    _model = (UserProfile)this.Model;
+    _viewModel = (LearnerCharacterViewModel)ViewBag.ViewModel;
+    UserProfile _learner = (UserProfile)ViewBag.DataItem;
+    QuestionnaireRequest questionnaire = ViewBag.CurrentQuestionnaire as QuestionnaireRequest;
+}
+@section CustomHeader {
+    <link href="plugins/timon-stepformwizard/css/parsley.css" rel="stylesheet" />
+    <link href="plugins/timon-stepformwizard/css/gsi-step-indicator.css" rel="stylesheet" />
+    <link href="plugins/timon-stepformwizard/css/tsf-wizard.bundle.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="plugins/nouislider/nouislider.min.css" />
+}
+
+<section class="content profile-page">
+    @{
+        ViewBag.Learner = _learner;
+        ViewBag.BlockHeader = "編輯X檔案";
+        ViewBag.InsertPartial = "~/Views/LearnerProfile/Module/ProfileHeader.cshtml";
+        await Html.RenderPartialAsync("~/Views/ConsoleHome/Module/BlockHeader.cshtml", _model);
+    }
+
+    <!--本月運動時間-->
+    <div class="container-fluid">
+        <div class="row clearfix">
+            <div class="col-12">
+                <div class="card">
+                    <div class="body">
+                        <div class="tsf-wizard">
+                            <div class="tsf-nav-step">
+                                <ul>
+                                    @if (questionnaire.GroupID == (int)Naming.QuestionnaireGroup.身體心靈密碼)
+                                    {
+                                        await Html.RenderPartialAsync("~/Views/ConsoleHome/EditLearnerCharacter/StepIndicationPartA.cshtml");
+                                    }
+                                    else
+                                    {
+                                        await Html.RenderPartialAsync("~/Views/ConsoleHome/EditLearnerCharacter/StepIndicationPartB.cshtml");
+                                    }
+                                    <!-- ADD YOUR STEPS HERE -->
+                                </ul>
+                            </div>
+                            <!-- BEGIN STEP CONTAINER -->
+                            <div class="tsf-container">
+                                <form class="tsf-content noborder">
+                                    <!-- BEGIN STEP-->
+                                    <div class="tsf-step step-0 active">
+                                        <div class="row clearfix">
+                                            <div class="col-12">
+                                                <div class="testimonial3 aliceblue">
+                                                    <div class="testimonial-section">
+                                                        <h4>Hi，@(_learner.Nickname)您好</h4>
+                                                        <p>
+                                                            Beyond精靈將與您進行以下的對談，雖然會花費您5分鐘的時間，但是Beyond Fitness在過程中可替您規劃出更適合的訓練內容喔！
+                                                        </p>
+                                                        @if (questionnaire != null)
+                                                        {
+                                                            <p class="p-t-10">
+                                                                <a href="javascript:rejectLearnerCharacter();" class="text-left">
+                                                                    <i class="zmdi livicon-evo " data-options="name: like.svg; size: 50px; style: original; strokeStyle:round; strokeColor:#052333; strokeWidth:2px; autoPlay:true"></i>
+                                                                    我超強，不用瞭解學生
+                                                                </a>
+                                                            </p>
+                                                            <script>
+                                                                function rejectLearnerCharacter() {
+                                                                    Swal.fire({
+                                                                        title: "我超強，不用瞭解學生?",
+                                                                        text: "系統自動註記放棄瞭解學生!!",
+                                                                        icon: 'warning',
+                                                                        showCancelButton: true,
+                                                                        confirmButtonColor: "#DD6B55",
+                                                                        confirmButtonText: '確定',
+                                                                        cancelButtonText: '取消',
+                                                                        focusCancel: true
+                                                                    }).then((result) => {
+                                                                        if (result.isConfirmed) {
+                                                                            showLoading();
+                                                                            $.post('@Html.Raw(Url.Action("RejectLearnerCharacter", "LearnerProfile", new {questionnaire.QuestionnaireID }))', { 'keyID': '@(_learner.UID.EncryptKey())' }, function (data) {
+                                                                                hideLoading();
+                                                                                if ($.isPlainObject(data)) {
+                                                                                    if (data.result) {
+                                                                                        $('').launchDownload('@Html.Raw(Url.Action("LearnerProfile","ConsoleHome"))', { 'keyID': '@(_learner.UID.EncryptKey())' });
+                                                                                    } else {
+                                                                                        Swal.fire(
+                                                                                            'Oops...',
+                                                                                            data.message,
+                                                                                            'warning'
+                                                                                        )
+                                                                                    }
+                                                                                } else {
+                                                                                    $(data).appendTo($('body'));
+                                                                                }
+                                                                            });
+                                                                        } else {
+                                                                            Swal.fire(
+                                                                                '取消成功',
+                                                                                '請抽空繼續完成身心靈密碼  :)',
+                                                                                'info'
+                                                                            )
+                                                                        }
+                                                                    });
+                                                                }
+                                                            </script>
+                                                        }
+                                                    </div>
+                                                    <div class="testimonial-desc">
+                                                        <a href="javascript:startEditingCharacter(1);" class="float-right">
+                                                            <i class="zmdi livicon-evo " data-options="name: pencil.svg; size: 50px; style: original; strokeStyle:round; strokeColor:#052333; strokeWidth:2px; autoPlay:true"></i>
+                                                            LET'S GO~
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @if (_viewModel.ToPrepare == true)
+                                    {
+                                        await Html.RenderPartialAsync("~/Views/ConsoleHome/EditLearnerCharacter/LearnerCharacterStep.cshtml");
+                                    }
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@if (_viewModel.ToPrepare != true)
+{
+<script>
+    function startEditingCharacter() {
+        showLoading();
+        $.post('@Html.Raw(Url.Action("ResumeLearnerCharacter", "LearnerProfile"))', { 'keyID': '@(_learner.UID.EncryptKey())', 'partID': @((int)QuestionnaireRequest.PartIDEnum.PartA) }, function (data) {
+            hideLoading();
+            if ($.isPlainObject(data)) {
+                if (data.result) {
+                    $('').launchDownload('@(Html.Raw(Url.Action("EditLearnerCharacter","ConsoleHome",new { questionnaire.QuestionnaireID, ToPrepare = true, Step = 1 })))', { 'keyID': '@(_learner.UID.EncryptKey())', 'partID': @((int)QuestionnaireRequest.PartIDEnum.PartA) });
+                } else {
+                    Swal.fire(
+                        'Oops...',
+                        data.message,
+                        'warning'
+                    )
+                }
+            } else {
+                $(data).appendTo($('body'));
+            }
+        });
+    }
+</script>
+}
+
+
+@section TailPageJavaScriptInclude {
+    <!-- Sparkline Plugin Js -->
+    <script src="plugins/jquery-sparkline/jquery.sparkline.js"></script>
+    <script src="plugins/timon-stepformwizard/js/parsley.min.js"></script>
+    <script src="plugins/timon-stepformwizard/js/tsf-wizard.bundle.min.js"></script>
+    <!-- noUISlider Plugin Js -->
+    <script src="plugins/nouislider/nouislider.min.js"></script>
+
+    <script>
+        $(function () {
+            generateWizard();
+            //$(".chat-widget li").hide();
+        });
+
+        //產生Step精靈
+        this.generateWizard = function () {
+            //Step精靈
+            _tsfWizard = $('.tsf-wizard').tsfWizard({
+                stepEffect: 'slideUpDown',
+                stepStyle: 'style11',
+                navPosition: 'left',
+                validation: false,
+                stepTransition: true,
+                showButtons: false,
+                showStepNum: false,
+                height: 'auto',
+                disableSteps: 'after_current',
+                onBeforeNextButtonClick: function (e, validation) {
+                },
+                onAfterNextButtonClick: function (e, from, to, validation) {
+                },
+                onBeforePrevButtonClick: function (e, from, to) {
+                },
+                onAfterPrevButtonClick: function (e, from, to) {
+                },
+                onBeforeFinishButtonClick: function (e, validation) {
+                },
+                onAfterFinishButtonClick: function (e, validation) {
+                }
+            });
+        };
+
+    </script>
+
+    @if (_viewModel.ToPrepare == true)
+    {
+        <script>
+            $(function () {
+                startEditingCharacter(@(_viewModel.Step));
+            });
+        </script>
+    }
+}

@@ -1,0 +1,297 @@
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+@using Newtonsoft.Json
+@{
+    Layout = "~/Views/ConsoleHome/Template/MainPage.cshtml";
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    BlogArticle _blog;
+    UserProfile _model;
+    BlogArticleQueryViewModel _viewModel;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _modelState = ViewContext.ModelState;
+    _model = (UserProfile)this.Model;
+    _blog = ViewBag.BlogArticle as BlogArticle;
+    _viewModel = (BlogArticleQueryViewModel)ViewBag.ViewModel;
+
+}
+
+@section CustomHeader {
+    <!-- Blog Css -->
+    <link href="css/blog.css?1.0" rel="stylesheet" />
+    
+    
+    <link href="css/smartcalendar-2.css" rel="stylesheet" />
+    <!-- Multi Select Css -->
+    <link href="plugins/multi-select/css/multi-select.css" rel="stylesheet">
+}
+
+<!-- Main Content -->
+<section class="content blog-page">
+    @{ ViewBag.BlockHeader = "部落格撰稿";
+        ViewBag.InsertPartial = "~/Views/Blog/Module/CategoryIndication.cshtml";
+        await Html.RenderPartialAsync("~/Views/ConsoleHome/Module/BlockHeader.cshtml", _model);}
+
+    <div class="container-fluid">
+        <form enctype="multipart/form-data" method="post">
+            <!--文章資訊-->
+            <div class="container-fluid">
+                <h4 class="card-outbound-header">撰稿資訊</h4>
+                <div class="card">
+
+                    <div class="header">
+                        <h2><strong>@(_viewModel.Title)</strong> - @(_blog?.UserProfile.FullName())</h2>
+                    </div>
+                    <div class="body">
+                        <div class="row clearfix">
+                            <div class="col-12">
+                                <div class="input-group">
+                                    <input type="text" class="form-control form-control-danger" placeholder="撰稿標題" name="Title" value="@(_viewModel.Title)" />
+                                    <span class="input-group-addon">
+                                        <i class="zmdi zmdi-text-format"></i>
+                                    </span>
+                                </div>
+                                @*<label class="material-icons help-error-text">clear 請輸入撰稿標題</label>*@
+                            </div>
+                            <div class="col-12">
+                                <div class="input-group">
+                                    <input type="text" class="form-control form-control-danger" placeholder="內容簡短說明" name="Subtitle" value="@(_viewModel.Subtitle)" />
+                                    <span class="input-group-addon">
+                                        <i class="zmdi zmdi-text-format"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+                                <div class="input-group">
+                                    <input type="text" class="form-control form-control-danger" id="searchCoach" name="AuthorName" placeholder="撰稿人員" readonly onclick="selectCoach();" />
+                                    <span class="input-group-addon xl-slategray">
+                                        <i class="zmdi zmdi-account"></i>
+                                    </span>
+                                </div>
+                                @*<label class="material-icons help-error-text">clear 請選擇撰稿人員</label>*@
+                            </div>
+                            <script>
+
+                                        $(function () {
+                                            $global.commitCoach = function (coachID, coachName) {
+                                                $global.viewModel.AuthorID = coachID;
+                                                $('#searchCoach').val(coachName);
+                                            };
+                                        });
+
+                                        function selectCoach() {
+                                            showLoading();
+                                            $.post('@Html.Raw(Url.Action("SelectCoach", "ContractConsole"))', {}, function (data) {
+                                                hideLoading();
+                                                if ($.isPlainObject(data)) {
+                                                    alert(data.message);
+                                                } else {
+                                                    $(data).appendTo($('body'));
+                                                }
+                                            });
+                                        }
+                            </script>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+                                <div class="input-group">
+                                    <input type="text" class="form-control date" data-date-format="yyyy/mm/dd" readonly="readonly" placeholder="發佈時間" name="DocDate" value="@($"{_viewModel.DocDate:yyyy/MM/dd}")" />
+                                    <span class="input-group-addon xl-slategray">
+                                        <i class="zmdi zmdi-calendar"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-12 m-t-20">
+                                <select class="ms group" multiple="multiple" name="TagID">
+                                    @foreach (var c in models.GetTable<BlogCategoryDefinition>())
+                                    {
+                                        <option value="@(c.CategoryID)">@(c.Category)</option>
+                                    }
+                                </select>
+                            </div>
+                            <input type="hidden" name="Category" />
+                            <script>
+                            $(function () {
+                                $('.group').multiSelect();
+                                @if (_viewModel.TagID != null && _viewModel.TagID.Length > 0)
+                                {
+                                    <text>
+                                        $('.group').multiSelect('select', @Html.Raw(JsonConvert.SerializeObject(_viewModel.TagID.Select(i => i.ToString()))));
+                                    </text>
+                                }
+                            });
+                            </script>
+                        </div>
+                        <div class="row clearfix">
+                            <div class="col-sm-12">
+                                <button type="button" class="btn btn-primary btn-round float-right next" onclick="commitArticle();">確定，不後悔</button>
+                                <button type="button" class="btn btn-danger btn-round btn-simple save" onclick="deleteArticle();">刪除文章</button>
+                            </div>
+                        </div>
+                        <script>
+                                    function commitArticle() {
+                                        clearErrors();
+                                        var viewModel = $('form').serializeObject();
+                                        viewModel.DocID = $global.viewModel.DocID;
+                                        viewModel.AuthorID = $global.viewModel.AuthorID;
+                                        showLoading();
+                                        $.post('@Html.Raw(Url.Action("CommitArticle", "MainActivity"))', viewModel, function (data) {
+                                        hideLoading();
+                                        if ($.isPlainObject(data)) {
+                                            if (data.result) {
+
+                                                $global.viewModel.DocID = data.DocID;
+                                                Swal.fire(
+                                                    '資料已儲存',
+                                                    '',
+                                                    'success'
+                                                )
+                                                if ($('#uploadContent').find(":first-child").length == 0) {
+                                                    $.post('@Html.Raw(Url.Action("DropifyUpload", "MainActivity"))', {}, function (data) {
+                                                            $(data).appendTo($('#uploadContent'));
+                                                        });
+                                                    }
+                                                } else {
+                                                    Swal.fire(
+                                                        'Oops...',
+                                                        data.message,
+                                                        'warning'
+                                                    )
+                                                }
+                                            } else {
+                                                $(data).appendTo($('body'));
+                                            }
+                                        });
+                                    }
+
+                                    function deleteArticle() {
+                                        if ($global.viewModel.DocID) {
+                                            Swal.fire({
+                                                title: "確定刪除?",
+                                                text: "文章刪除後無法復原!",
+                                                icon: "warning",
+                                                showCancelButton: true,
+                                                confirmButtonColor: "#DD6B55",
+                                                confirmButtonText: '確定',
+                                                cancelButtonText: '取消',
+                                                focusCancel: true
+                                            }).then((result) => {
+                                                if (result.isConfirmed) {
+                                                    showLoading();
+                                                    $.post('@Html.Raw(Url.Action("DeleteArticle", "MainActivity"))', {
+                                                        'DocID': $global.viewModel.DocID
+                                                    }, function(data) {
+                                                        hideLoading();
+                                                        if ($.isPlainObject(data)) {
+                                                            if (data.result) {
+                                                                $('').launchDownload('@Html.Raw(Url.Action("BlogIndex","ConsoleHome"))');
+                                                            } else {
+                                                                Swal.fire(
+                                                                    'Oops...',
+                                                                    data.message,
+                                                                    'warning'
+                                                                )
+                                                            }
+                                                        } else {
+                                                            $(data).appendTo($('body'));
+                                                        }
+                                                    });
+                                                } else {
+                                                    Swal.fire(
+                                                        '取消成功',
+                                                        '你的資料現在非常安全 :)',
+                                                        'info'
+                                                    )
+                                                }
+                                            });
+                                        }
+                                    }
+
+                        </script>
+
+                    </div>
+                </div>
+            </div>
+            <!--上傳內容-->
+            <div class="container-fluid" id="uploadContent">
+                @if (_blog != null)
+                {
+                    await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/DropifyUpload.cshtml");
+                }
+            </div>
+        </form>
+    </div>
+</section>
+
+<script>
+        $(function () {
+            $global.uploadFile = function ($file, done) {
+                var postData = {
+                    'DocID': $global.viewModel.DocID
+                };
+
+                $('form').ajaxForm({
+                    url: '@Html.Raw(Url.Action("CommitArticleContent","MainActivity"))',
+                    data: postData,
+                    beforeSubmit: function () {
+                        showLoading();
+                    },
+                    success: function (data) {
+                        hideLoading();
+                        if (data.result) {
+                            Swal.fire({
+                                title: "文章內容存檔完成",
+                                text: "",
+                                icon: "success",
+                                showCancelButton: false,
+                                confirmButtonColor: "#DD6B55",
+                                confirmButtonText: "確定",
+                                closeOnConfirm: true
+                            }.then((result) => {
+                                //$('#uploadContent').empty();
+                                $('').launchDownload('@Html.Raw(Url.Action("BlogSingle","MainActivity"))', data, "_blank");
+                            });
+                        } else {
+                            Swal.fire(
+                                'Oops...',
+                                data.message,
+                                'warning'
+                            )
+                        }
+                    },
+                    error: function () {
+                        hideLoading();
+                    }
+                }).submit();
+            }
+        });
+</script>
+
+@section TailPageJavaScriptInclude {
+    <!-- Multi Select Plugin Js -->
+    <script src="plugins/multi-select/js/jquery.multi-select.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $('.date').datetimepicker({
+                language: 'zh-TW',
+                weekStart: 1,
+                todayBtn: 1,
+                clearBtn: 1,
+                autoclose: 1,
+                todayHighlight: 1,
+                startView: 2,
+                minView: 2,
+                defaultView: 2,
+                forceParse: 0,
+                defaultDate: '@(String.Format("{0:yyyy-MM-dd}",DateTime.Today))',
+            });
+        });
+    </script>
+}

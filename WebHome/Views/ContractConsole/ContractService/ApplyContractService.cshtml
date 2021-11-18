@@ -1,0 +1,47 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Helper.DataOperation
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    CourseContract _model;
+    UserProfile _profile;
+    String _viewID = $"assign{DateTime.Now.Ticks}";
+
+
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (CourseContract)this.Model;
+    _profile = await Context.GetUserAsync();
+}
+
+<ul class="row clearfix list-unstyled m-b-0" id="@(_viewID)">
+    <li class="col-lg-6 col-md-12 col-sm-12">
+        @{ await Html.RenderPartialAsync("~/Views/ContractConsole/Module/ContractDataItem.cshtml", _model);}
+    </li>
+    <li class="col-lg-6 col-md-12 col-sm-12">
+        @{ 
+            String applyPartial = ViewBag.ApplyService as String;
+            if (applyPartial != null)
+            {
+                ViewBag.ViewID = _viewID;
+                await Html.RenderPartialAsync(applyPartial, model: (object)ViewBag.ApplyServiceModel);
+            }
+        }
+    </li>
+    <li class="col-12">
+        <button type="button" class="btn btn-primary btn-round waves-effect float-right finish">確定，不後悔</button>
+        <button type="button" class="btn btn-danger btn-round btn-simple waves-effect quit">不, 點錯了</button>
+    </li>
+</ul>

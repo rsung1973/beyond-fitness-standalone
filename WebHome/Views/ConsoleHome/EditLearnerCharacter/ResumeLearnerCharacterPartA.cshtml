@@ -1,0 +1,36 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    QuestionnaireRequest _model;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (QuestionnaireRequest)this.Model;
+}
+<script>
+    $(function () {
+        Swal.fire({
+            title: "題目已更新",
+            text: "您@($"{_model.PDQTask.First().TaskDate:yyyy/MM/dd}") 填寫過的內容將在您點選OK後自動刪除，請重新回答全新題目!",
+            icon: "warning",
+            showCancelButton: false,
+            //confirmButtonColor: "#DD6B55",
+            confirmButtonText: "OK",
+            closeOnConfirm: true
+        }).then((result) => {
+            $('').launchDownload('@(Html.Raw(Url.Action("EditLearnerCharacter","ConsoleHome",new { _model.QuestionnaireID, ToPrepare = true })))', { 'keyID': '@(_model.UID.EncryptKey())', 'partID': @((int)QuestionnaireRequest.PartIDEnum.PartA), 'Step': 1 });
+        });
+    });
+</script>

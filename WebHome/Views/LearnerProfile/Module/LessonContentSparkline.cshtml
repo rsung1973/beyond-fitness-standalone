@@ -1,0 +1,58 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using WebHome.Components
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    LessonTime _model;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (LessonTime)this.Model;
+}
+@{
+    String currentID = $"content{DateTime.Now.Ticks}";
+    UserProfile learner = (UserProfile)ViewBag.Learner;
+    bool isModal = (bool?)ViewBag.IsModal == true ? true : false;
+}
+<div id="@(currentID)" class="sparkline-pie float-right inlineblock">
+    @{
+        await Component.InvokeAsync<LessonContentDetailsViewComponent>(new LessonTimeBookingViewModel { LessonID = _model.LessonID, UID =  learner.UID });
+    }
+</div>
+@if (isModal == true)
+{
+    <script>
+        $(function () {
+            setTimeout(function () {
+                sparkline($('#@(currentID)'));
+            }, 200);
+        });
+    </script>
+}
+else
+{
+    <script>
+        $(function () {
+
+            @*$global.reloadContentDetails = function ($current) {
+                $current.empty();
+                $.post('@Html.Raw(Url.Action("LessonContentDetails", "LessonConsole", new { _model.LessonID, learner.UID }))', {}, function (data) {
+                    $current.text(data);
+                    sparkline($current);
+                });
+            };*@
+
+            sparkline($('#@(currentID)'));
+        });
+
+    </script>
+}

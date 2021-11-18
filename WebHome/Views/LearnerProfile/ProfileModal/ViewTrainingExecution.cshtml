@@ -1,0 +1,51 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    LessonTime _model;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (LessonTime)this.Model;
+    LessonTimeBookingViewModel _viewModel = (LessonTimeBookingViewModel)ViewBag.ViewModel;
+    String _dialogID = $"editItem{DateTime.Now.Ticks}";
+}
+@{
+    UserProfile learner = (UserProfile)ViewBag.Learner;
+}
+<div class="modal fade" id="@(_dialogID)" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <a class="closebutton" data-dismiss="modal"></a>
+            <div class="modal-body">
+                <div class="row">
+                    @{
+                        ViewBag.ViewOnly = true;
+                        ViewBag.IsModal = true;
+                        await Html.RenderPartialAsync("~/Views/LearnerProfile/Module/TrainingExecutionPlan.cshtml", _model);
+                    }
+                </div>
+            </div>
+            <div class="modal-footer">
+                @if (_model.LessonID != _viewModel.TargetID)
+                {
+                <button type="button" class="btn btn-danger btn-simple btn-round  waves-effect" onclick="javascript:copyTrainingPlan(@_model.LessonID);">確定複製</button>
+                }
+            <button type="button" class="btn btn-round waves-effect" onclick="javascript:editTrainingContent('@(_model.LessonID.EncryptKey())');">回溯編輯</button>
+            </div>
+        </div>
+    </div>
+    @{
+        await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/BSModalScript.cshtml", model: _dialogID);
+    }
+</div>
