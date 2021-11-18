@@ -30,14 +30,32 @@
     {
       "coachName": "侯炫竹",
       "nickname": "Ted",
-      "prologue": "肯定自己，相信自己，超越自己",
+      "prologue": "肯定自己，相信自己，超越自己。",
       "scenarioPhoto": [ "Scenario1.jpg" ]
     },
     {
       "coachName": "劉家瑜",
       "nickname": "Peter Liu",
-      "prologue": "危機就是轉機，你的選擇比努力更重要",
+      "prologue": "危機就是轉機，你的選擇比努力更重要。",
       "scenarioPhoto": [ "Scenario1.jpg" ]
+    },
+    {
+      "coachName": "廖思淇",
+      "nickname": "Kiki",
+      "prologue": "人生是考驗，也是旅行；是體驗，也是學習；是探險，也是尋寶。生命從不要你成為最好的，但可以為自己做出最大的努力。",
+      "scenarioPhoto": []
+    },
+    {
+      "coachName": "林雅婷",
+      "nickname": "Arika",
+      "prologue": "訓練是一段長期而持續累積的過程。",
+      "scenarioPhoto": []
+    },
+    {
+      "coachName": "周主民",
+      "nickname": "Joe",
+      "prologue": "持續精進不斷努力，踏出這一步有我陪你。",
+      "scenarioPhoto": []
     }
   ]
 }

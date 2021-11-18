@@ -2,12 +2,7 @@
   "branchName": "東門店",
    "scenarioPhoto": [ "Dongmen-01.jpg", "Dongmen-02.jpg", "Dongmen-03.jpg"],
   "coachItems": [
-    {
-      "coachName": "戴悟修",
-      "nickname": "Bryant",
-      "prologue": "舒適圈就是失敗圈，成功者永遠走在恐懼的邊緣。",
-      "scenarioPhoto": [ "Scenario1.jpg" ]
-    },
+
     {
       "coachName": "蔡雅欣",
       "nickname": "Sammie",
@@ -27,16 +22,46 @@
       "scenarioPhoto": [ "Scenario1.jpg" ]
     },
     {
-      "coachName": "高維之",
-      "nickname": "Vicky",
-      "prologue": "不是每一次努力都會有收穫，但是，每一次收穫都必須努力",
-      "scenarioPhoto": [ "Scenario1.jpg" ]
-    },
-    {
       "coachName": "李玟融",
       "nickname": "Micheal",
       "prologue": "不一定要等到很厲害才能開始 ，但是要先開始才會變的很厲害",
       "scenarioPhoto": [ "Scenario1.jpg" ]
+    },
+    {
+      "coachName": "陳芷榆",
+      "nickname": "Genie",
+      "prologue": "真正的成長，是因為經驗了苦痛；是在頻頻回首的大路上，終於領略了生命的喜悅與擔當！",
+      "scenarioPhoto": []
+    },
+    {
+      "coachName": "何子丞",
+      "nickname": "Kins",
+      "prologue": "你不用很厲害才能開始，但你要開始才能很厲害。",
+      "scenarioPhoto": []
+    },
+    {
+      "coachName": "薛皓云",
+      "nickname": "Sina",
+      "prologue": "Better late than never.",
+      "scenarioPhoto": []
+    },
+    {
+      "coachName": "賴雯琪",
+      "nickname": "Betty",
+      "prologue": "一切偉大的行動和思想，都有一個微不足道的開始。",
+      "scenarioPhoto": []
+    },
+    {
+      "coachName": "莊琮揚",
+      "nickname": "Kevin",
+      "prologue": "只要有心，沒有完成不了的目標。",
+      "scenarioPhoto": []
+    },
+    {
+      "coachName": "陳柏瑋",
+      "nickname": "Nick",
+      "prologue": "征服畏懼、建立自信的最快的方法，就是去做你害怕的事， 直到你獲得成功的經驗。",
+      "scenarioPhoto": []
     }
   ]
 }

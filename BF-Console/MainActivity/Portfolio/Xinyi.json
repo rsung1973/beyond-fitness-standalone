@@ -4,9 +4,9 @@
   "scenarioPhoto": [ "xinyi-01.jpg", "xinyi-02.jpg", "xinyi-03.jpg", "xinyi-04.jpg" ],
   "coachItems": [
     {
-      "coachName": "沈柏宇",
-      "nickname": "Shen",
-      "prologue": "思維影響行動，行動產生結果。",
+      "coachName": "戴悟修",
+      "nickname": "Bryant",
+      "prologue": "舒適圈就是失敗圈，成功者永遠走在恐懼的邊緣。",
       "scenarioPhoto": [ "Scenario1.jpg" ]
     },
     {
@@ -16,9 +16,9 @@
       "scenarioPhoto": [ "Scenario1.jpg" ]
     },
     {
-      "coachName": "陳彥龍",
-      "nickname": "Billy",
-      "prologue": "折騰你的不是你爬的那座山，而是你鞋子裡的小石頭。",
+      "coachName": "黃宇承",
+      "nickname": "Alan",
+      "prologue": "寧願跑起來被絆倒無數次，也不願規規矩矩走一輩子。就算跌倒也要豪邁的笑",
       "scenarioPhoto": [ "Scenario1.jpg" ]
     },
     {
@@ -40,22 +40,28 @@
       "scenarioPhoto": [ "Scenario1.jpg" ]
     },
     {
-      "coachName": "陳芷榆",
-      "nickname": "Genie",
-      "prologue": "真正的成長，是因為經驗了苦痛；是在頻頻回首的大路上，終於領略了生命的喜悅與擔當！",
-      "scenarioPhoto": []
-    },
-    {
       "coachName": "顏廷宇",
       "nickname": "Eugene",
       "prologue": "Rest at the end, Not in the middle.",
       "scenarioPhoto": [ "Scenario1.png" ]
     },
     {
-      "coachName": "黃宇承",
-      "nickname": "Alan",
-      "prologue": "寧願跑起來被絆倒無數次，也不願規規矩矩走一輩子。就算跌倒也要豪邁的笑",
-      "scenarioPhoto": [ "Scenario1.jpg" ]
+      "coachName": "蘇柏銓",
+      "nickname": "Ryan",
+      "prologue": "想讓自己發光發熱，就必須做一個有溫度的人。",
+      "scenarioPhoto": []
+    },
+    {
+      "coachName": "羅子韜",
+      "nickname": "Thomas",
+      "prologue": "我們要做的是提升生活品質，而不是延緩死亡。",
+      "scenarioPhoto": []
+    },
+    {
+      "coachName": "曾瀚聞",
+      "nickname": "Hanson",
+      "prologue": "我們必須非常努力，才能看起來毫不費力。",
+      "scenarioPhoto": []
     }
   ]
 }

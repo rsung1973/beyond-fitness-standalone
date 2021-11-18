@@ -55,8 +55,20 @@
     {
       "coachName": "蔡恆易",
       "nickname": "Henry",
-      "prologue": "菁英與一般人的唯一差別就是：菁英比其他人更擅長基本功",
+      "prologue": "菁英與一般人的唯一差別就是：菁英比其他人更擅長基本功。",
       "scenarioPhoto": [ "Scenario1.jpg" ]
+    },
+    {
+      "coachName": "謝宇傑",
+      "nickname": "Jay",
+      "prologue": "今天你做了別人不想做的事，以後你可以做到別人做不到的事。",
+      "scenarioPhoto": []
+    },
+    {
+      "coachName": "張書瑋",
+      "nickname": "Jeff",
+      "prologue": "在你想要放棄的那一刻時，想想為什麼當初堅持走到了這裡。",
+      "scenarioPhoto": []
     }
   ]
 }
