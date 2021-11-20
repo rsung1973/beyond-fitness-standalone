@@ -79,23 +79,23 @@ namespace WebHome
             //                 sqlOptions => sqlOptions.CommandTimeout((int)TimeSpan.FromMinutes(30).TotalSeconds));
             //    });
 
-            //±q²ÕºAÅª¨úµn¤J¹O®É³]©w
+            //å¾çµ„æ…‹è®€å–ç™»å…¥é€¾æ™‚è¨­å®š
             double LoginExpireMinute = webHome.GetValue<double>("LoginExpireMinute");
-            //µù¥U CookieAuthentication¡AScheme¥²¶ñ
+            //è¨»å†Š CookieAuthenticationï¼ŒSchemeå¿…å¡«
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(option =>
             {
-                //©Î³\­n±q²ÕºAÀÉÅª¨ú¡A¦Û¤v·r°u¨M©w
-                option.LoginPath = new PathString(webHome["LoginUrl"]);//µn¤J­¶
-                option.LogoutPath = new PathString(webHome["LogoutUrl"]);//µn¥XAction
-                //¥Î¤á­¶­±°±¯d¤Ó¤[¡Aµn¤J¹O´Á¡A©ÎControllerªºAction¸Ì¥Î¤áµn¤J®É¡A¤]¥i¥H³]©w¡õ
-                option.ExpireTimeSpan = TimeSpan.FromMinutes(LoginExpireMinute);//¨Sµ¹¹w³]14¤Ñ
-                //¡õ¸ê¦w«ØÄ³false¡A¥Õ½c®z±½³nÅé·|­n¨Dcookie¤£¯à©µ®i®Ä´Á¡A³o®É³]falseÅÜ¦¨µ´¹ï¹O´Á®É¶¡
-                //¡õ¦pªG§Aªº«È¤á¤ÏÀ³©ú©ú¤@ª½¦b¨Ï¥Î¨t²Î«o®e©ö³Q¦Û°Êµn¥Xªº¸Ü¡A§A¦A³]¬°true(µM«á®z±½policy½Ğ«È¤á²¤¹L¦¹¶µÀË¬d) 
+                //æˆ–è¨±è¦å¾çµ„æ…‹æª”è®€å–ï¼Œè‡ªå·±æ–Ÿé…Œæ±ºå®š
+                option.LoginPath = new PathString(webHome["LoginUrl"]);//ç™»å…¥é 
+                option.LogoutPath = new PathString(webHome["LogoutUrl"]);//ç™»å‡ºAction
+                //ç”¨æˆ¶é é¢åœç•™å¤ªä¹…ï¼Œç™»å…¥é€¾æœŸï¼Œæˆ–Controllerçš„Actionè£¡ç”¨æˆ¶ç™»å…¥æ™‚ï¼Œä¹Ÿå¯ä»¥è¨­å®šâ†“
+                option.ExpireTimeSpan = TimeSpan.FromMinutes(LoginExpireMinute);//æ²’çµ¦é è¨­14å¤©
+                //â†“è³‡å®‰å»ºè­°falseï¼Œç™½ç®±å¼±æƒè»Ÿé«”æœƒè¦æ±‚cookieä¸èƒ½å»¶å±•æ•ˆæœŸï¼Œé€™æ™‚è¨­falseè®Šæˆçµ•å°é€¾æœŸæ™‚é–“
+                //â†“å¦‚æœä½ çš„å®¢æˆ¶åæ‡‰æ˜æ˜ä¸€ç›´åœ¨ä½¿ç”¨ç³»çµ±å»å®¹æ˜“è¢«è‡ªå‹•ç™»å‡ºçš„è©±ï¼Œä½ å†è¨­ç‚ºtrue(ç„¶å¾Œå¼±æƒpolicyè«‹å®¢æˆ¶ç•¥éæ­¤é …æª¢æŸ¥) 
                 option.SlidingExpiration = true;
             });
 
             services.AddControllersWithViews(options => {
-                //¡õ©MCSRF¸ê¦w¦³Ãö¡A³o¸Ì´N¥[¤J¥ş°ìÅçÃÒ½d³òFilterªº¸Ü¡A«İ·|Controller´N¤£¥²¦A¥[¤W[AutoValidateAntiforgeryToken]Äİ©Ê
+                //â†“å’ŒCSRFè³‡å®‰æœ‰é—œï¼Œé€™è£¡å°±åŠ å…¥å…¨åŸŸé©—è­‰ç¯„åœFilterçš„è©±ï¼Œå¾…æœƒControllerå°±ä¸å¿…å†åŠ ä¸Š[AutoValidateAntiforgeryToken]å±¬æ€§
                 //options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
             });
 
@@ -122,9 +122,9 @@ namespace WebHome
             app.UseRouting();
 
             //app.UseAuthorization();
-            //¯d·N¼gCode¶¶§Ç¡A¥ı°õ¦æÅçÃÒ...
+            //ç•™æ„å¯«Codeé †åºï¼Œå…ˆåŸ·è¡Œé©—è­‰...
             app.UseAuthentication();
-            app.UseAuthorization();//Controller¡BAction¤~¯à¥[¤W [Authorize] Äİ©Ê
+            app.UseAuthorization();//Controllerã€Actionæ‰èƒ½åŠ ä¸Š [Authorize] å±¬æ€§
             app.UseSession();
 
             app.Use(next =>
