@@ -1,0 +1,44 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    UserProfile _model;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (UserProfile)this.Model;
+}
+
+<div class="block-header">
+    <div class="row">
+        <div class="col-lg-7 col-md-6 col-sm-12">
+            <h2>
+                @(ViewBag.BlockHeader)<small class="col-tiffany">
+                    @{ await Html.RenderPartialAsync("~/Views/ConsoleHome/Module/InspirationalTitle.cshtml", _model);}
+                </small>
+            </h2>
+        </div>
+        @{ 
+            String insertPartial = ViewBag.InsertPartial as String;
+            if (insertPartial != null)
+            {
+                await Html.RenderPartialAsync(insertPartial, _model);
+                //insertPartial();
+            }
+            //await Html.RenderPartialAsync("~/Views/Blog/Module/PlusIndication.cshtml", _model);
+        }
+    </div>
+</div>
+

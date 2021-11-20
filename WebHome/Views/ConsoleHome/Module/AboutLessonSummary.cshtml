@@ -1,0 +1,60 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    UserProfile _model;
+    LessonTimeBookingViewModel _viewModel;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (UserProfile)this.Model;
+    _viewModel = (LessonTimeBookingViewModel)ViewBag.ViewModel;
+
+    IQueryable<LessonTime> items = models.GetTable<LessonTime>();
+    if (_viewModel.BranchID.HasValue)
+    {
+        items = items.Where(l => l.BranchID == _viewModel.BranchID);
+    }
+
+    DateTime monthStart = DateTime.Today.FirstDayOfMonth();
+    var currentMonthLessons = items.Where(l => l.ClassTime >= monthStart && l.ClassTime < monthStart.AddMonths(1));
+    var beforeCurrentLessons = items.Where(l => l.ClassTime < monthStart);
+
+    var currentMonthPT = currentMonthLessons.PTLesson();
+    var beforeCurrentPT = beforeCurrentLessons.PTLesson();
+    var currentMonthPI = currentMonthLessons.LearnerPILesson();
+    var beforeCurrentPI = beforeCurrentLessons.LearnerPILesson();
+
+}
+
+<div class="row text-center calendar-todo" onclick="showLoading();$('').launchDownload('@(Url.Action("LessonOverview","ConsoleHome",new { _viewModel.BranchID, ByManager = _viewModel.BranchID.HasValue }))');">
+    <div class="col-sm-3 col-6">
+        <h4 class="margin-0">@(currentMonthPT.Where(l => l.LessonAttendance == null).Count())</h4>
+        <p class="margin-0"> 本月P.T 編輯中</p>
+    </div>
+    <div class="col-sm-3 col-6">
+        <h4 class="margin-0">@(currentMonthPI.Where(l => l.LessonAttendance == null).Count())</h4>
+        <p class="margin-0"> 本月P.I 編輯中</p>
+    </div>
+    <div class="col-sm-3 col-6">
+        <h4 class="margin-0">@(beforeCurrentPT.Where(l => l.LessonAttendance == null).Count())</h4>
+        <p class="margin-0"> 截至上月P.T 未完成</p>
+    </div>
+    <div class="col-sm-3 col-6">
+        <h4 class="margin-0">@(beforeCurrentPI.Where(l => l.LessonAttendance == null).Count())</h4>
+        <p class="margin-0"> 截至上月P.I 未完成</p>
+    </div>
+</div>
+

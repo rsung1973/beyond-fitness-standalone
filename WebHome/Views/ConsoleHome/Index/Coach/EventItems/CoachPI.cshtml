@@ -1,0 +1,57 @@
+﻿
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    CalendarEventItem _model;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _model = (CalendarEventItem)this.Model;
+}
+@{
+    object clickHander(LessonTime item)
+    {
+        <text>$('').launchDownload('@Html.Raw(Url.Action("LessonTrainingContent", "ConsoleHome", new { LearnerID = item.RegisterLesson.UID }))', {'keyID':'@(item.LessonID.EncryptKey())' });</text>
+        return null;
+    }
+}
+
+@{
+    LessonTime item = _model.EventItem as LessonTime;
+    if (item.RegisterLesson.LessonPriceType.Status == (int)Naming.DocumentLevelDefinition.教練PI)
+    {
+        <div class="event-name b-CoachPI row" onclick="@Html.Raw(clickHander(item))">
+            <div class="col-2 text-left">
+                <h4><span>@(item.ClassTime.Value.ToString("HH:mm"))</span><span>@(item.ClassTime.Value.AddMinutes(item.DurationInMinutes.Value).ToString("HH:mm"))</span></h4>
+            </div>
+            <div class="col-10">
+                <h6>
+                    @(item.GroupingLesson.RegisterLesson.Count == 1
+                                    ? item.RegisterLesson.UserProfile.RealName
+                                    : item.GroupingLesson.RegisterLesson.Where(r => r.MasterRegistration == true)
+                                        .Select(r => r.UserProfile).FirstOrDefault()?.RealName + "發起")
+                    <address><i class="zmdi zmdi-pin"></i>@(item.BranchID.HasValue ? item.BranchStore?.BranchName : item.Place)</address>
+                    @{
+                        await Html.RenderPartialAsync("~/Views/ConsoleHome/Module/RenderLessonCheck.cshtml", item);
+                    }
+                </h6>
+                <p class="col-blush">@((item.TrainingPlan.FirstOrDefault()?.TrainingExecution.Emphasis) ?? "Unfinished")</p>
+            </div>
+        </div>
+    }
+    else
+    {
+        await Html.RenderPartialAsync("~/Views/ConsoleHome/Index/Coach/EventItems/TS.cshtml");
+    }
+}

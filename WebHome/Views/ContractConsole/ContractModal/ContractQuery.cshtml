@@ -1,0 +1,125 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    CourseContractQueryViewModel _viewModel;
+    String _dialogID = $"contractQuery{DateTime.Now.Ticks}";
+    UserProfile _profile;
+
+
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _viewModel = (CourseContractQueryViewModel)ViewBag.ViewModel;
+    _profile = await Context.GetUserAsync();
+    /*
+    if (_profile.IsAssistant() || _profile.IsOfficer())
+    {
+        _viewModel.OfficerID = _profile.UID;
+    }
+    else if (_profile.IsManager() || _profile.IsViceManager())
+    {
+        _viewModel.ManagerID = _profile.UID;
+    }
+    else
+    {
+        _viewModel.FitnessConsultant = _profile.UID;
+    }*/
+}
+<div class="modal fade" id="@(_dialogID)" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5>更多查詢條件</h5>
+                <a class="closebutton" data-dismiss="modal"></a>
+            </div>
+            <div class="modal-body">
+                <div class="row clearfix">
+                    @*<div class="col-lg-6 col-md-6 col-sm-6 col-12">
+            <div class="input-group">
+                <input type="text" name="RealName" class="form-control form-control-danger" placeholder="學生姓名(暱稱)" />
+                <span class="input-group-addon">
+                    <i class="zmdi zmdi-search"></i>
+                </span>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+            <div class="input-group">
+                <input type="text" name="ContractNo" class="form-control form-control-danger" placeholder="合約編號" />
+                <span class="input-group-addon">
+                    <i class="zmdi zmdi-search"></i>
+                </span>
+            </div>
+        </div>*@
+                    <div class="col-12">
+                        <div class="input-group">
+                            <input type="text" name="CustomQuery" class="form-control form-control-danger" placeholder="請擇一輸入：學生姓名(暱稱) 或 合約編號" />
+                            <span class="input-group-addon">
+                                <i class="zmdi zmdi-search"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+                        <div class="input-group">
+                            <input type="text" class="form-control date" name="EffectiveDateFrom" data-date-format="yyyy/mm/dd" readonly="readonly" placeholder="合約起日" value="" />
+                            <span class="input-group-addon">
+                                <i class="zmdi zmdi-time"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+                        <div class="input-group">
+                            <input type="text" class="form-control date" name="EffectiveDateTo" data-date-format="yyyy/mm/dd" readonly="readonly" placeholder="合約迄日" value="" />
+                            <span class="input-group-addon">
+                                <i class="zmdi zmdi-time"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-darkteal btn-round waves-effect">確定，不後悔</button>
+            </div>
+        </div>
+    </div>
+    @{ await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/BSModalScript.cshtml", model: _dialogID);}
+
+    <script>
+        $(function () {
+            $('.date').datetimepicker({
+                language: 'zh-TW',
+                weekStart: 1,
+                todayBtn: 1,
+                clearBtn: 1,
+                autoclose: 1,
+                todayHighlight: 1,
+                startView: 2,
+                minView: 2,
+                defaultView: 2,
+                forceParse: 0,
+                defaultDate: '@(String.Format("{0:yyyy-MM-dd}",DateTime.Today))',
+            });
+
+            var viewModel = @Html.Raw(JsonConvert.SerializeObject(_viewModel));
+            $('#@(_dialogID) button').on('click', function (event) {
+                var $formData = $('#@(_dialogID) input').serializeObject();
+                $global.queryCallback = function () {
+                    $global.closeAllModal();
+                };
+                showContractList($.extend({}, viewModel, $formData), -1);
+            });
+        });
+    </script>
+</div>
+

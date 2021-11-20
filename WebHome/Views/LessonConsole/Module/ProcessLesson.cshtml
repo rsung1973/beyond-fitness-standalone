@@ -1,0 +1,151 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    LessonTime _model;
+    String _dialogID = $"contractProcess{DateTime.Now.Ticks}";
+    UserProfile _profile;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (LessonTime)this.Model;
+    _profile = await Context.GetUserAsync();
+}
+    <div class="modal fade" id="@(_dialogID)" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="title">請選擇執行功能</h6>
+                    <a class="closebutton" data-dismiss="modal"></a>
+                </div>
+                <div class="modal-popmenu-body">
+                    <div class="list-group">
+                        <a href="javascript:$('').launchDownload('@Html.Raw(Url.Action("LessonTrainingContent", "ConsoleHome"))', {'keyID':'@(_model.LessonID.EncryptKey())' });" class="list-group-item">編輯課表</a>
+                        @if (!_model.LessonPlan.CommitAttendance.HasValue && (_profile.IsSysAdmin() || _profile.IsAssistant()))
+                        {
+                            <a class="list-group-item checkAttendance">學生打卡</a>
+                        }
+                        @if (_model.CouldBeCancelled(_profile))
+                        {
+                            <a class="list-group-item deleteLesson">取消預約</a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        @{ await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/BSModalScript.cshtml", model: _dialogID);}
+
+    <script>
+        $(function () {
+            $('#@(_dialogID) a.checkAttendance').on('click', function (event) {
+                Swal.fire({
+                    title: "學生打卡?",
+                    text: "確定將該筆資料認定學生確實有來上課！？",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: '確定',
+                    cancelButtonText: '取消',
+                    focusCancel: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        showLoading();
+                        $.post('@Html.Raw(Url.Action("LearnerAttendLesson", "Attendance"))', { 'keyID': '@(_model.LessonID.EncryptKey())' }, function (data) {
+                            hideLoading();
+                            if ($.isPlainObject(data)) {
+                                if (data.result) {
+                                    Swal.fire({
+                                        title: "全部打卡成功!",
+                                        text: "資料已經完成打卡 Bye!",
+                                        icon: "success",
+                                        showCancelButton: false,
+                                        closeOnConfirm: true
+                                    }).then((result) => {
+                                            $global.viewModel.ScrollToView = true;
+                                            $global.viewModel.KeyID = '@(_model.LessonID.EncryptKey())';
+                                            showLoading();
+                                            $('').launchDownload('@Html.Raw(Url.Action("LessonOverview", "ConsoleHome"))',$global.viewModel);
+                                    });
+                                } else {
+                                    Swal.fire(
+                                        'Oops...',
+                                        data.message,
+                                        'warning'
+                                    )
+                                }
+                            } else {
+                                $(data).appendTo($('body'));
+                            }
+                        });
+
+                    } else {
+                        Swal.fire(
+                            '取消成功',
+                            '你的資料現在非常安全 :)',
+                            'info'
+                        )
+                    }
+                });
+            });
+
+            $('#@(_dialogID) a.deleteLesson').on('click', function (event) {
+                Swal.fire({
+                    title: "取消預約?",
+                    text: "確定取消本次上課！？",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: '確定',
+                    cancelButtonText: '取消',
+                    focusCancel: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        showLoading();
+                        $.post('@Html.Raw(Url.Action("RevokeBooking", "ConsoleEvent"))', { 'keyID': '@(_model.LessonID.EncryptKey())' }, function (data) {
+                            hideLoading();
+                            if ($.isPlainObject(data)) {
+                                if (data.result) {
+                                    Swal.fire({
+                                        title: "取消預約成功!",
+                                        text: "課程已經取消 Bye!",
+                                        icon: "success",
+                                        showCancelButton: false,
+                                        closeOnConfirm: true
+                                    }).then((result) => {
+                                            showLoading();
+                                            $('').launchDownload('@Html.Raw(Url.Action("LessonOverview", "ConsoleHome"))',$global.viewModel);
+                                    });
+                                } else {
+                                    Swal.fire(
+                                        'Oops...',
+                                        data.message,
+                                        'warning'
+                                    )
+                                }
+                            } else {
+                                $(data).appendTo($('body'));
+                            }
+                        });
+                    } else {
+                        Swal.fire(
+                            '取消成功',
+                            '你的資料現在非常安全 :)',
+                            'info'
+                        )
+                    }
+                });
+            });
+        });
+    </script>
+    </div>
+}

@@ -1,0 +1,59 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    int[] _model;
+    UserProfile _profile;
+
+
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = this.Model as int[];
+    _profile = await Context.GetUserAsync();
+}
+<select name="AttendeeID" class="ms employeegroup" multiple="multiple">
+    @*<optgroup label="其他">
+                                                               @{ var roles = models.GetTable<UserRoleAuthorization>().Where(r => r.RoleID == (int)Naming.RoleID.Assistant);
+                                                                   var users = models.GetTable<UserProfile>()
+                                                                           .Where(u => u.LevelID == (int)Naming.MemberStatusDefinition.Checked)
+                                                                           .Where(u => roles.Any(r => r.UID == u.UID));}
+        @foreach (var u in users)
+                                                                   {
+                                                               <option value="@(u.UID)">@(u.FullName())</option>
+                                                               }
+                                                           </optgroup>*@
+    @foreach (var branch in models.GetTable<BranchStore>())
+    {
+        <optgroup label="@(branch.BranchName)">
+            @{ var items = models.GetTable<CoachWorkplace>().Where(w => w.BranchID == branch.BranchID)
+                                                                      .Select(w => w.ServingCoach)
+                                                                      .Where(s => s.CoachID != _profile.UID)
+                                                                      .Where(s => s.UserProfile.LevelID == (int)Naming.MemberStatusDefinition.Checked);
+                await Html.RenderPartialAsync("~/Views/SystemInfo/ServingCoachOptions.cshtml", items);}
+
+        </optgroup>
+    }
+</select>
+<script>
+    $(function () {
+        $('.employeegroup').multiSelect();
+@if (_model != null && _model.Length > 0)
+    {
+        <text>$('.employeegroup').multiSelect('select',@Html.Raw(JsonConvert.SerializeObject(_model.Select(i => i.ToString()))));</text>
+}
+    });
+</script>
+
+

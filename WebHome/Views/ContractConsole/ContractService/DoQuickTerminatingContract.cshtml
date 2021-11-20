@@ -1,0 +1,167 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Helper.DataOperation
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    CourseContract _model;
+    UserProfile _profile;
+    String _viewID;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (CourseContract)this.Model;
+    _profile = await Context.GetUserAsync();
+    _viewID = ViewBag.ViewID as String;
+
+    int? currentSettlementPrice = _model.LessonPriceType.ListPrice;
+
+}
+<div class="header">
+    <h2><strong>原課程單價 <span class="badge bg-blue">@(_model.LessonPriceType.PriceTypeBundle())</span>：</strong> <span class="col-red">@($"{_model.LessonPriceType.ListPrice:##,###,###,###}")</span></h2>
+</div>
+<div class="body">
+    <div class="row clearfix">
+        <div class="col-sm-12">
+            <label class="fancy-checkbox custom-bgcolor-pink">
+                <input id="checkbox14" type="checkbox" name="FitnessConsultant" value="@(_model.FitnessConsultant)" checked="checked" onclick="this.checked = true;" />
+                <span class="col-red">終止轉收入</span>
+            </label>
+        </div>
+        <div class="col-sm-12">
+            <div class="alert xl-pink col-darkteal" role="alert">
+                <div class="container">
+                    <div class="alert-icon">
+                        <i class="zmdi zmdi-notifications"></i>
+                    </div>
+                    @if (_model.ContractType == (int)CourseContractType.ContractTypeDefinition.CGA)
+                    {
+                        var lessons = _model.CountableRegisterLesson();
+                        var refund = _model.TotalPaidAmount()
+                                - lessons.Where(r => r.LessonPriceType.IsDietaryConsult)
+                                    .Sum(r => r.LessonPriceType.ListPrice * r.LessonTime.Count)
+                                - lessons.Where(r => !r.LessonPriceType.IsDietaryConsult)
+                                    .Sum(r => r.LessonPriceType.ListPrice * r.LessonTime.Count);
+                        <text>
+                            已繳服務總費用 @(String.Format("{0:##,###,###,###}", _model.TotalPaidAmount()))
+                            扣除依簽約時課程單價
+                            @foreach (var lesson in lessons.Where(r => !r.LessonPriceType.IsDietaryConsult))
+                            {
+                                currentSettlementPrice = lesson.LessonPriceType.ListPrice;
+                                <text>
+                                    (<span class="col-red">@(String.Format("{0:##,###,###,###}", lesson.LessonPriceType.ListPrice))</span>) / 人乘以實際上課堂數(<span class="col-red">@(lesson.AttendedLessonCount())</span>)
+                                </text>
+                            }
+                            ，扣除
+                            @foreach (var lesson in lessons.Where(r => r.LessonPriceType.IsDietaryConsult))
+                            {
+                                <text>
+                                    @(lesson.LessonPriceType.SimpleDescription)(<span class="col-red">@(String.Format("{0:##,###,###,###}", lesson.LessonPriceType.ListPrice*lesson.LessonTime.Count))</span>)
+                                </text>
+                            }
+                            ，終止轉收入款項 <span class="col-red">@(String.Format("{0:##,###,###,##0}", refund))</span>元
+                            <small>
+                                = @(String.Format("{0:##,###,###,###}", _model.TotalPaidAmount()))
+                                @foreach (var lesson in lessons.Where(r => !r.LessonPriceType.IsDietaryConsult))
+                                {
+                                    <text>
+                                        - (@(String.Format("{0:##,###,###,###}", lesson.LessonPriceType.ListPrice)) * @(lesson.AttendedLessonCount()))
+                                    </text>
+                                }
+                                @foreach (var lesson in lessons.Where(r => r.LessonPriceType.IsDietaryConsult))
+                                {
+                                    <text>
+                                        - (@(String.Format("{0:##,###,###,###}", lesson.LessonPriceType.ListPrice*lesson.AttendedLessonCount())))
+                                    </text>
+                                }
+                                。
+                            </small>
+                        </text>
+                    }
+                    else
+                    {
+                        var remained = _model.RemainedLessonCount();
+                        var lessons = _model.Lessons;
+                        var refund = _model.TotalPaidAmount() - (lessons - remained) * _model.LessonPriceType.ListPrice * _model.CourseContractType.GroupingMemberCount * _model.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount / 100;
+                        <text>
+                            已繳服務總費用 @(String.Format("{0:##,###,###,###}", _model.TotalPaidAmount())) 扣除依簽約時課程單價(<span class="col-red">@(String.Format("{0:##,###,###,###}", _model.LessonPriceType.ListPrice))</span>) / 人乘以實際上課堂數(<span class="col-red">@(_model.AttendedLessonCount())</span>)，終止轉收入款項 <span class="col-red">@(String.Format("{0:##,###,###,##0}", refund))</span>元
+                            <small>
+                                = @(String.Format("{0:##,###,###,###}", _model.TotalPaidAmount())) - ( @(String.Format("{0:##,###,###,###}", _model.LessonPriceType.PriceTypeBundle())) * @(_model.CourseContractType.GroupingMemberCount)
+                                @if (_model.CourseContractType.GroupingMemberCount > 1)
+                                {
+                                    <text>* @(_model.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount / 100m)</text>
+                                }
+                                * ( @(_model.Lessons) - @(_model.RemainedLessonCount() )))。
+                            </small>
+                        </text>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <div class="form-group">
+                <textarea rows="3" class="form-control no-resize" name="Remark" placeholder="請輸入任何想補充的事項..."></textarea>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $(function () {
+
+        $('#@(_viewID) button.quit').on('click', function (event) {
+            cancelTerminating();
+        });
+
+        $('#@(_viewID) button.finish').on('click', function (event) {
+            commitTerminating();
+        });
+
+    });
+
+    function cancelTerminating() {
+        $('').launchDownload('@Html.Raw(Url.Action("ApplyContractService","ConsoleHome"))',
+            @Html.Raw(JsonConvert.SerializeObject(new CourseContractQueryViewModel
+                {
+                    KeyID = _model.ContractID.EncryptKey(),
+                })));
+    }
+
+    function commitTerminating() {
+        var viewModel = $('#@(_viewID)').find('input,select,textArea').serializeObject();
+        viewModel.SettlementPrice = @(currentSettlementPrice);
+        viewModel.Reason = '終止';
+        viewModel.Status = $global.viewModel.Status;
+        viewModel.OperationMode = $global.viewModel.OperationMode;
+        viewModel.FitnessConsultant = $global.viewModel.FitnessConsultant;
+        viewModel.BySelf = $global.viewModel.BySelf;
+        clearErrors();
+        showLoading();
+        $.post('@Html.Raw(Url.Action("CommitContractService", "ContractConsole",new { KeyID = _model.ContractID.EncryptKey() }))', viewModel, function (data) {
+            hideLoading();
+            if ($.isPlainObject(data)) {
+                Swal.fire(
+                    'Oops...',
+                    data.message,
+                    'warning'
+                )
+            }
+            else {
+                $(data).appendTo($('body'));
+            }
+        });
+    }//
+
+</script>
+

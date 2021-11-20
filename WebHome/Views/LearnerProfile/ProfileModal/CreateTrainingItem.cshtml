@@ -1,0 +1,192 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    TrainingItem _model;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (TrainingItem)this.Model;
+    TrainingItemViewModel _viewModel = (TrainingItemViewModel)ViewBag.ViewModel;
+    String _dialogID = $"editItem{DateTime.Now.Ticks}";
+    TrainingStage _stage = (TrainingStage)ViewBag.TrainingStage;
+}
+<div class="modal fade" id="@(_dialogID)" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <ul class="nav nav-tabs p-t-0">
+                    @if (_viewModel.ItemMode != Naming.TrainingItemMode.ForBreakInterval)
+                    {
+                        <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#@(_dialogID)action">@(_stage.Stage)</a></li>
+                    }
+                    @if (_viewModel.ItemMode != Naming.TrainingItemMode.ForTrainingItem)
+                    {
+                        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#@(_dialogID)reset">休息/組數</a></li>
+                    }
+                </ul>
+                <a class="closebutton" data-dismiss="modal"></a>
+            </div>
+            <div class="modal-body">
+                <div class="tab-content">
+                    @if (_viewModel.ItemMode != Naming.TrainingItemMode.ForBreakInterval)
+                    {
+                        <div class="tab-pane active" id="@(_dialogID)action">
+                            @{
+                                ViewBag.DialogID = _dialogID;
+                                await Html.RenderPartialAsync("~/Views/LearnerProfile/ProfileModal/EditTrainingItemView.cshtml", _model);
+                            }
+                        </div>
+                    }
+                    @if (_viewModel.ItemMode != Naming.TrainingItemMode.ForTrainingItem)
+                    {
+                        <div class="tab-pane" id="@(_dialogID)reset">
+                            @{
+                                ViewBag.DialogID = _dialogID;
+                                await Html.RenderPartialAsync("~/Views/LearnerProfile/ProfileModal/EditBreakIntervalView.cshtml", _model);
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-round btn-simple btn-round waves-effect waves-red btnDelete" @(_model==null ? "disabled" : null)>刪除，不想要了</button>
+                <button type="button" class="btn btn-round waves-effect float-right btnConfirm">確定，不後悔</button>
+            </div>
+        </div>
+    </div>
+    @{ await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/BSModalScript.cshtml", model: _dialogID);}
+
+    <script>
+        $(function () {
+
+            var u = navigator.userAgent;
+            var isApple = u.indexOf('iPhone') >= 0 || u.indexOf('iPad') >= 0;
+
+            if (isApple) {
+                $('#@(_dialogID)').on('hidden.bs.modal', function () {
+                    scrollToStage($global.$stage);
+                });
+            }
+
+            function commitTrainingItem(element) {
+                clearErrors();
+                var $formData = $('#@(_dialogID)').find('input,select,textarea').serializeObject();
+                $formData.ItemID = $global.viewModel.ItemID;
+                $formData.ExecutionID = $global.viewModel.ExecutionID;
+                $formData.StageID = $global.viewModel.StageID;
+                if (!$('input[name="PurposeID"]').is(':checked')) {
+                    delete $formData.PurposeID;
+                }
+                showLoading();
+                $.post('@Html.Raw(Url.Action("CommitTrainingItem", "Training"))', $formData, function (data) {
+                    if ($.isPlainObject(data)) {
+                        if (data.result) {
+                            $('#@(_dialogID)').modal('hide');
+                            refreshTrainingExecution(data.StageID);
+                            if (data.UpdatePurpose) {
+                                loadMilestone(true);
+                            }
+                        } else {
+                            hideLoading();
+                            Swal.fire(
+                                'Oops...',
+                                data.message,
+                                'warning'
+                            )
+                        }
+                    } else {
+                        hideLoading();
+                        $(data).appendTo($('body'));
+                    }
+                });
+            }
+
+            function commitBreakInterval(element) {
+                clearErrors();
+                var $formData = $('#@(_dialogID)').find('input,select,textarea').serializeObject();
+                $formData.ItemID = $global.viewModel.ItemID;
+                $formData.ExecutionID = $global.viewModel.ExecutionID;
+                $formData.StageID = $global.viewModel.StageID;
+                showLoading();
+                $.post('@Html.Raw(Url.Action("CommitBreakInterval", "Training"))', $formData, function (data) {
+                    if ($.isPlainObject(data)) {
+                        if (data.result) {
+                            $('#@(_dialogID)').modal('hide');
+                            refreshTrainingExecution(data.StageID);;
+                        } else {
+                            hideLoading();
+                            Swal.fire(
+                                'Oops...',
+                                data.message,
+                                'warning'
+                            )
+                        }
+                    } else {
+                        $(data).appendTo($('body'));
+                    }
+                });
+            }
+
+            $('#@(_dialogID) button.btnConfirm').on('click', function (element) {
+                if ($('#@(_dialogID)action').hasClass('active')) {
+                    commitTrainingItem(element);
+                } else if ($('#@(_dialogID)reset').hasClass('active')) {
+                    commitBreakInterval(element);
+                }
+            });
+
+        });
+    </script>
+    @if (_model != null)
+    {
+        <script>
+            $(function () {
+
+                $('#@(_dialogID) button.btnDelete').on('click', function () {
+                    Swal.fire({
+                        title: '確定刪除?',
+                        text: "刪除後資料將無法回覆",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: '確定',
+                        cancelButtonText: '取消',
+                        focusCancel: true
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            showLoading();
+                            $.post('@Html.Raw(Url.Action("DeleteTrainingItem", "Training", new {_viewModel.StageID, _viewModel.ItemID }))', {}, function (data) {
+                                hideLoading();
+                                if ($.isPlainObject(data)) {
+                                    if (data.result) {
+                                        $('#@(_dialogID)').modal('hide');
+                                        refreshTrainingExecution(data.StageID);
+                                    } else {
+                                        Swal.fire(
+                                            'Oops...',
+                                            data.message,
+                                            'warning'
+                                        )
+                                    }
+                                } else {
+                                    $(data).appendTo($('body'));
+                                }
+                            });
+                        }
+                    });
+                });
+            });
+        </script>
+    }
+</div>

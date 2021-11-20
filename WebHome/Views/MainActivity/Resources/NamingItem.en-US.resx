@@ -1,0 +1,561 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AboutUs" xml:space="preserve">
+    <value>About Us</value>
+  </data>
+  <data name="FindUs" xml:space="preserve">
+    <value>Find Us</value>
+  </data>
+  <data name="OnLine" xml:space="preserve">
+    <value>OnLine</value>
+  </data>
+  <data name="FAQ" xml:space="preserve">
+    <value>Q&amp;A</value>
+  </data>
+  <data name="Blog" xml:space="preserve">
+    <value>Blog</value>
+  </data>
+  <data name="JoinUs" xml:space="preserve">
+    <value>Join Us</value>
+  </data>
+  <data name="BookNow" xml:space="preserve">
+    <value>Reservation</value>
+  </data>
+  <data name="LearnMore" xml:space="preserve">
+    <value>Learn more</value>
+  </data>
+  <data name="ContactTitle" xml:space="preserve">
+    <value>Take your first step!</value>
+  </data>
+  <data name="ContactSubTitle" xml:space="preserve">
+    <value>We’re always here to help.</value>
+  </data>
+  <data name="ContactAskNow" xml:space="preserve">
+    <value>Ask Now</value>
+  </data>
+  <data name="IndexBannerTitle" xml:space="preserve">
+    <value>Our persistence</value>
+  </data>
+  <data name="IndexBannerSubTitle" xml:space="preserve">
+    <value>Is built on each client’s Peace of Mind</value>
+  </data>
+  <data name="IndexFeature1" xml:space="preserve">
+    <value>Our commitment</value>
+  </data>
+  <data name="IndexFeature1Desc" xml:space="preserve">
+    <value>Stems from Trust in our Professionalism.We focus on listening and communication.Together we work hard to reach your goals.</value>
+  </data>
+  <data name="IndexFeature2" xml:space="preserve">
+    <value>Our certificates</value>
+  </data>
+  <data name="IndexFeature2Desc" xml:space="preserve">
+    <value>Six major international certificates.Provide you with a safe and professional training environment</value>
+  </data>
+  <data name="IndexFeature3" xml:space="preserve">
+    <value>Fitness Data</value>
+  </data>
+  <data name="IndexFeature3Desc" xml:space="preserve">
+    <value>Innovative fitness analytics. Customized training program to inspire your unlimited power!</value>
+  </data>
+  <data name="IndexVedioTitle" xml:space="preserve">
+    <value>To whom that wonders where to begin...</value>
+  </data>
+  <data name="IndexVedioSubTitle" xml:space="preserve">
+    <value>Dream Achievers</value>
+  </data>
+  <data name="IndexVedioDesc" xml:space="preserve">
+    <value>Check out the following videos to see how Mr. Huang &lt;span class="hidden-sm-down"&gt;and Mrs. Chen &lt;/span&gt;recognize the value of exercise through professional training.</value>
+  </data>
+  <data name="IndexFunFactsTitle" xml:space="preserve">
+    <value>Analyze fitness data,&lt;br /&gt;created in the Cloud.</value>
+  </data>
+  <data name="IndexSlick1Desc" xml:space="preserve">
+    <value>Professionalism lies on providing clients with the highest standards. Beyond Fitness proves the effectiveness to combine fitness with physical therapy.</value>
+  </data>
+  <data name="IndexSlick1Title" xml:space="preserve">
+    <value>Physical therapist</value>
+  </data>
+  <data name="IndexSlick1Name" xml:space="preserve">
+    <value>Yan-ping, Wang</value>
+  </data>
+  <data name="IndexSlick2Desc" xml:space="preserve">
+    <value>At beyond fitness, we take good care of your eating and fitness habits.</value>
+  </data>
+  <data name="IndexSlick2Title" xml:space="preserve">
+    <value>Dietician</value>
+  </data>
+  <data name="IndexSlick2Name" xml:space="preserve">
+    <value>Chia-hsiang, Liao</value>
+  </data>
+  <data name="AboutBannerTitle" xml:space="preserve">
+    <value>Professionalism comes from sincerity</value>
+  </data>
+  <data name="AboutBannerSubTitle" xml:space="preserve">
+    <value>Trust that will give you a hearty smile.</value>
+  </data>
+  <data name="AboutVedioTitle" xml:space="preserve">
+    <value>Our belief</value>
+  </data>
+  <data name="AboutVedioDeclaration1" xml:space="preserve">
+    <value>Thank you!</value>
+  </data>
+  <data name="AboutVedioDeclaration2" xml:space="preserve">
+    <value>Together we build values and attitudes towards fitness that bring meaning to life.</value>
+  </data>    
+  <data name="FindNanjingBranch" xml:space="preserve">
+    <value>Nanjing Branch</value>
+  </data>
+  <data name="FindNanjingBranchAdd" xml:space="preserve">
+    <value>B1, No.17, Sec. 4, Nanjing E. Rd., Songshan Dist., Taipei City 105, Taiwan</value>
+  </data>
+  <data name="FindNanjingBranchDesc1" xml:space="preserve">
+    <value>Across from the Taipei Arena, close to the Breeze Center, Taipei Arena shopping district, and 1 minute walk from the MRT Taipei Arena Station Exit 1.</value>
+  </data>
+  <data name="FindNanjingBranchDesc2" xml:space="preserve">
+    <value>With more than 300 square meters of professional fitness space combined with a variety of training equipment, you can optimize your training by exercising without restrictions.</value>
+  </data>
+  <data name="FindXinyiBranch" xml:space="preserve">
+    <value>Xinyi Anhe Branch</value>
+  </data>
+  <data name="FindXinyiBranchAdd" xml:space="preserve">
+    <value>B1, No. 81, Sec. 2, Anhe Rd., Da’an Dist., Taipei City 106, Taiwan</value>
+  </data>
+  <data name="FindXinyiBranchDesc1" xml:space="preserve">
+    <value>Across from Taipei 101, right at the MRT Taipei 101/World Trade Center Exit 3.</value>
+  </data>
+  <data name="FindXinyiBranchDesc2" xml:space="preserve">
+    <value>A unique personal training venue with indoor and outdoor space in the heart of Taipei City. Professional, spacious and private training space, combined with an outdoor sports lawn and PU runway, increasing the diversity of training programs. Not only fitness, but function toward life improvement.</value>
+  </data>
+  <data name="FindZhongxiaoBranch" xml:space="preserve">
+    <value>Zhongxiao Branch</value>
+  </data>
+  <data name="FindZhongxiaoBranchAdd" xml:space="preserve">
+    <value>B1, No.21, Ln. 75, Sec. 1, Da’an Rd., Da’an Dist., Taipei City 106, Taiwan</value>
+  </data>
+  <data name="FindZhongxiaoBranchDesc1" xml:space="preserve">
+    <value>Located at B1 of the building behind Dinghao Market, 2 minute walk from MRT Zongxiao Fuxing station Exit 3 (or Exit 14 of East Metro Mall)</value>
+  </data>
+  <data name="FindZhongxiaoBranchDesc2" xml:space="preserve">
+    <value>Rarely seen high-ceiling indoor personal training venue, bright lighting space, combined with a variety of training equipment, separate bath and shower, allowing you to freshen up more comfortably.</value>
+  </data>
+  <data name="FindDongmenBranch" xml:space="preserve">
+    <value>Dongmen Branch</value>
+  </data>
+  <data name="FindDongmenBranchAdd" xml:space="preserve">
+    <value>No.28, Sec. 2, Xinyi Rd., Da’an Dist., Taipei City 106, Taiwan</value>
+  </data>
+  <data name="FindDongmenBranchDesc1" xml:space="preserve">
+    <value>Dongmen Branch is a 3 mins walk from MRT Dongmen Station exit 3, with ample space and natural sunlight.</value>
+  </data>
+  <data name="FindDongmenBranchDesc2" xml:space="preserve">
+    <value>The customized training space integrates stretching, artificial turf and weight training areas providing a dynamic training environment. Under the professional guidance of Beyond Fitness trainers, a safe, comfortable and private training environment is provided.</value>
+  </data>
+  <data name="FindAnheBranch" xml:space="preserve">
+    <value>XinyiAnhe Branch</value>
+  </data>
+  <data name="FindAnheBranchAdd" xml:space="preserve">
+    <value>B1, No. 81, Sec. 2, Anhe Rd., Da’an Dist., Taipei City 106, Taiwan</value>
+  </data>
+   <data name="FindAnheBranchDesc1" xml:space="preserve">
+    <value>XinyiAnhe Branch is a 3 mins walk from MRT XinyiAnhe Station exit 2A.Located in the key area of Dunhua-Anhe, adjacent to the Lih-Jen international Private Elementary &amp; Middle School.</value>
+  </data>
+  <data name="FindAnheBranchDesc2" xml:space="preserve">
+    <value>The private training space with 4m high celling and over 727 square meters, provides 25m sports lawn, individual group class venue, sports recovery rooms and comfortable separate shower room, where you are able to enjoy the professional training and service.</value>
+  </data>
+  <data name="OurTeam" xml:space="preserve">
+    <value>Our team</value>
+  </data>
+  <data name="JoinUsTitle" xml:space="preserve">
+    <value>Join Us</value>
+  </data>
+  <data name="JoinUsDesc" xml:space="preserve">
+    <value>Founded in 2014, Beyond Fitness is devoted to developing professional one-on-one personal trainers. Beyond Fitness was established at Nanjing E. Road, by Taipei Arena and has since expanded to Xinyi (Taipei 101) and Zhongxiao Dunhua branches in three years. Behind all this, we are just a group of partners who want to let action and professional practice speak louder than words; and most importantly, provide service to the clients who have faith in us. We believe that education should be personalized so as training. We should customize accordingly to individuals’ need that is most suitable for "people", guiding customers to live a better life.</value>
+  </data>
+  <data name="JoinUsFeature1" xml:space="preserve">
+    <value>Smile</value>
+  </data>
+  <data name="JoinUsFeature1Desc" xml:space="preserve">
+    <value>Anytime and anywhere, we give warm feedback</value>
+  </data>
+  <data name="JoinUsFeature2" xml:space="preserve">
+    <value>Inspiration</value>
+  </data>
+  <data name="JoinUsFeature2Desc" xml:space="preserve">
+    <value>We teach, learn, and grow together</value>
+  </data>
+  <data name="JoinUsFeature3" xml:space="preserve">
+    <value>Warmth</value>
+  </data>
+  <data name="JoinUsFeature3Desc" xml:space="preserve">
+    <value>Care from the heart, bond as a family</value>
+  </data>
+  <data name="JoinUsFeature4" xml:space="preserve">
+    <value>Integrity</value>
+  </data>
+  <data name="JoinUsFeature4Desc" xml:space="preserve">
+    <value>Offer professional consultation</value>
+  </data>
+  <data name="JoinUsJob1" xml:space="preserve">
+    <value>Personal Trainers</value>
+  </data>
+  <data name="JoinUsJob1Desc" xml:space="preserve">
+    <value />
+  </data>
+  <data name="JoinUsJob2" xml:space="preserve">
+    <value>Athletic trainer</value>
+  </data>
+  <data name="JoinUsJob2Desc" xml:space="preserve">
+    <value />
+  </data>
+  <data name="JoinUsJob3" xml:space="preserve">
+    <value>Recovery Coach</value>
+  </data>
+    <data name="JoinUsJob4" xml:space="preserve">
+    <value>Nutritionist</value>
+  </data>
+  <data name="OpportunityBannerTitle" xml:space="preserve">
+    <value>Happiness</value>
+  </data>
+  <data name="OpportunityBannerSubTitle" xml:space="preserve">
+    <value>is putting health at the right place</value>
+  </data>
+  <data name="OpportunityFeaturesTitle" xml:space="preserve">
+    <value>What will you get?</value>
+  </data>
+  <data name="OpportunityFeaturesDesc1" xml:space="preserve">
+    <value>Opportunity to work with outstanding partners</value>
+  </data>
+  <data name="OpportunityFeaturesDesc2" xml:space="preserve">
+    <value>World-class training platforms</value>
+  </data>
+  <data name="OpportunityFeaturesDesc3" xml:space="preserve">
+    <value>Grow explosively to professional level</value>
+  </data>
+  <data name="OpportunityFeaturesDesc4" xml:space="preserve">
+    <value>A salary that allows you to live a comfortable life</value>
+  </data>
+  <data name="OpportunityFeaturesDesc5" xml:space="preserve">
+    <value>Combine work and play!</value>
+  </data>
+  <data name="OpportunityFeaturesDesc6" xml:space="preserve">
+    <value>Provide labor and health insurance, retirement funds, off-site training, staff dinner gathering, company trip, internal education and training.</value>
+  </data>
+  <data name="JoinUsContactTitle" xml:space="preserve">
+    <value>Get discovered!</value>
+  </data>
+  <data name="JoinUsContactDesc" xml:space="preserve">
+    <value>Introduce yourself, and we’ll get in touch if there’s a role that seems like a good match.</value>
+  </data>
+  <data name="HereWeGo" xml:space="preserve">
+    <value>Get started</value>
+  </data>
+  <data name="AboutVedioDesc1" xml:space="preserve">
+    <value>Founded in 2014, Beyond Fitness is one of the largest custom training centers in Taiwan. We have more than 50 employees, providing personalized training services, health strategies, professional sports education training programs, certified health consultants and much more...</value>
+  </data>
+  <data name="AboutVedioDesc2" xml:space="preserve">
+    <value>Beyond Fitness is all about exercise.</value>
+  </data>
+  <data name="AboutVedioDesc3" xml:space="preserve">
+    <value>As professional fitness instructors, we provide training in a scientific and systematic way. We help you in a sincere manner and bring the highest benefits and value to each training course.</value>
+  </data>
+  <data name="AboutVedioDesc4" xml:space="preserve">
+    <value>We believe that if we help you change your lifestyle and lead you to a healthier life, you will naturally find the value and quality of your life.</value>
+  </data>
+  <data name="BookNowTitle" xml:space="preserve">
+    <value>Just four steps away!</value>
+  </data>
+  <data name="BookNowStep1" xml:space="preserve">
+    <value>Book&lt;span&gt;Directly via online, phone, email with our staff and get further information.&lt;/span&gt;</value>
+  </data>
+  <data name="BookNowStep2" xml:space="preserve">
+    <value>Consultation&lt;span&gt;You will be carefully and thoroughly evaluated according to your conditions and needs. We assure you that the details of our trial course are clearly explained.&lt;/span&gt;</value>
+  </data>
+  <data name="BookNowStep3" xml:space="preserve">
+    <value>Trial and experience&lt;span&gt;Head to the branch you choose or distance learnging, there will be professional trainer giving you one-on-one training course based on your physical condition. Meanwhile, you will not only know your physical status but also our training process and venue.&lt;/span&gt;</value>
+  </data>
+  <data name="BookNowStep4" xml:space="preserve">
+    <value>Customization&lt;span&gt;Professional trainers will explain the purpose of workout sessions. Your physical condition and status will be discussed with suitable advice made just for you.&lt;/span&gt;</value>
+  </data>  
+  <data name="Reservation" xml:space="preserve">
+    <value>Reservation</value>
+  </data>      
+  <data name="Features1Desc" xml:space="preserve">
+    <value>&lt;p&gt;Beyond Fitness commits to…&lt;/p&gt;&lt;ul class=&quot;features-list&quot;&gt;&lt;li&gt;Customized training program to give you safe and significant outcomes.&lt;/li&gt;&lt;li&gt;Professional coaches that clearly understand your physical condition and training progress.&lt;/li&gt;&lt;li&gt;Enhance every step of progress by discussing the course content with you.&lt;/li&gt;&lt;li&gt;Review your physical condition and course content periodically. We monitor your training quality.&lt;/li&gt;&lt;/ul&gt;</value>
+  </data>
+  <data name="Features2Desc" xml:space="preserve">
+    <value>&lt;p&gt;Beyond Fitness owns six major international certificates in the fitness industry, allowing you to exercise in a professional and safe environment&lt;/p&gt;&lt;ul class=&quot;features-list&quot;&gt;&lt;li&gt;American Council on Exercise (ACE)&lt;/li&gt;&lt;li&gt;The American College of Sports Medicine (ACSM)&lt;/li&gt;&lt;li&gt;National Collegiate Athletic Association (NCAA)&lt;/li&gt;&lt;li&gt;National Strength and Conditioning Association (NSCA)&lt;/li&gt;&lt;li&gt;National Academy of Sports Medicine (NASM)&lt;/li&gt;&lt;li&gt;CrossFit&lt;/li&gt;&lt;li&gt;EXOS-XPS (The largest private athlete community in the US)&lt;/li&gt;&lt;li&gt;CPR+AED (The red cross society of the Republic of China, Taiwan)&lt;/li&gt;&lt;/ul&gt;</value>
+  </data>
+  <data name="Features3Desc" xml:space="preserve">
+    <value>&lt;p&gt;Since the establishment of Beyond Fitness, we’ve continued to provide you with analysis during your workout and create your personalized physical data.&lt;/p&gt;&lt;ul class=&quot;features-list&quot;&gt;&lt;li&gt;Fitness analysis library comprehensively analyzes your exercise and physical status.&lt;/li&gt;&lt;li&gt;Class schedule and content in the Cloud, offering you a better understanding of training session.&lt;/li&gt;&lt;li&gt;Practical articles to supply you with sports and health information at any time.&lt;/li&gt;&lt;li&gt;Interesting sports &amp; healthy Q&amp;A, bringing you fun interactions after the workout.&lt;/li&gt;&lt;/ul&gt;</value>
+  </data>
+  <data name="FAQBannerTitle" xml:space="preserve">
+    <value>We're happy to help&lt;br /&gt;make it easy and simple!</value>
+  </data>
+  <data name="FAQQestion1" xml:space="preserve">
+    <value>Book your first trial course?</value>
+  </data>
+  <data name="FAQQestion11" xml:space="preserve">
+    <value>How to book for trial course?</value>
+  </data>
+  <data name="FAQQestion12" xml:space="preserve">
+    <value>What is the content of the course?</value>
+  </data>
+  <data name="FAQQestion2" xml:space="preserve">
+    <value>Fees</value>
+  </data>
+  <data name="FAQQestion21" xml:space="preserve">
+    <value>How to charge?</value>
+  </data>
+  <data name="FAQQestion22" xml:space="preserve">
+    <value>Are there any monthly fee, membership fee or handling charge?</value>
+  </data>
+  <data name="FAQQestion23" xml:space="preserve">
+    <value>Price of Virtual Training Course Package？</value>
+  </data>
+  <data name="FAQQestion3" xml:space="preserve">
+    <value>Why do we stand out?</value>
+  </data>
+  <data name="FAQQestion4" xml:space="preserve">
+    <value>What is the difference between a personal training course and a group training course?</value>
+  </data>
+  <data name="FAQQestion5" xml:space="preserve">
+    <value>Outside of classes, can I train by myself at Beyond Fitness?</value>
+  </data>
+  <data name="FAQQestion6" xml:space="preserve">
+    <value>How to get to Beyond Fitness?</value>
+  </data>
+  <data name="FAQQestion7" xml:space="preserve">
+    <value>Am I suitable for nutrition service, sports protection and sport massage?</value>
+  </data>
+  <data name="FAQAnswer11" xml:space="preserve">
+    <value>Contact us to start your trial course.</value>
+  </data>
+  <data name="FAQAnswer12" xml:space="preserve">
+    <value>The content is as follows: &lt;li&gt;A careful consultation of your physical condition.&lt;/li&gt;&lt;li&gt;A careful analysis of your exercise habits and lifestyle.&lt;/li&gt;&lt;li&gt;Before Online course, trainer will check the hardware and software equipment with you in advance.&lt;/li&gt;&lt;li&gt;Trainers will bring out your training goals and results, leading you to a personalized program and experience.&lt;/li&gt;&lt;li&gt;Trainers are always by your side customizing your training courses.&lt;/li&gt;</value>
+  </data>  
+  <data name="FAQAnswer21" xml:space="preserve">
+    <value>&lt;li&gt;In person one-on-one training fee is charged based on  the number of courses. Price ranges from TWD$1,700 to TWD$1,900.&lt;/li&gt;&lt;li&gt;Online one-on-one training fee is about TWD$1,200 to TWD$1,400 which is calculated based on the number of lessons.&lt;/li&gt;&lt;li&gt;Nutrition course will be reach the best effect with a “monthly” cycle, and the price will be TWD$4,000 per month.&lt;/li&gt;</value>
+  </data>
+  <data name="FAQAnswer22" xml:space="preserve">
+    <value>Beyond fitness provides 1 on 1 customized training. You don’t need to pay any other monthly fee, membership fee or handling charges.</value>
+  </data>
+  <data name="FAQAnswer23" xml:space="preserve">
+    <value>&lt;li&gt;Basic package (including nutrition planning): TWD$8,600.&lt;/li&gt;&lt;li&gt;Advanced package (including nutrition planning) : TWD$12,600.&lt;/li&gt;</value>
+  </data>
+  <data name="FAQAnswer3" xml:space="preserve">
+    <value>Our team is second to none in the industry. Regardless of personal training, nutrition planning, recovery and injury prevention, all relevant personnel must equipped with relevant international and professional certification qualifications (which must be within the validity period), internal professional team management (performance tests every quarter). With scientific based training as the foundation with systematic records, analysis, we give every customer the most intimate and trustworthy service.</value>
+  </data>
+  <data name="FAQAnswer4" xml:space="preserve">
+    <value>An excellent one-on-one personal trainer will customize training programs according to your goals, life style, physical condition of the day, helping you achieve goals together.&lt;br/&gt;&lt;br/&gt;It is important to help you organize the rest of the non-exercise time with nutrition intake, fascia relaxation and injury prevention. We focus on your uniqueness and differentiation, and  provide the most effective training!</value>
+  </data>
+  <data name="FAQAnswer5" xml:space="preserve">
+    <value>Of course! We provide customers who take training courses at Beyond Fitness with registration for self-training. Your trainer will schedule and customize training session (shown as P.I. Session) for you. By registration, the number of people is controlled to maintain the venue to provide you with the best training quality.</value>
+  </data>
+  <data name="FAQAnswer6" xml:space="preserve">
+    <value>Follow the directions below to reach us</value>
+  </data>
+  <data name="FAQAnswer7" xml:space="preserve">
+    <value>&lt;li&gt;Nutrition course is designed for those who value self-health management, need to to lose weight, improve immunity, the three-high chronic disease group, and those who want to increase muscle mass through weight training. Beyond’s nutrition course provides you with good result and services.&lt;/li&gt;&lt;li&gt;Athletic Trainer (Sports protection) provides the most indispensable help to confirm the condition of your joints and muscles throughout your body. If you have sports injuries or joint and muscle-related issue, an athletic trainer can help you return to normal levels.&lt;/li&gt;&lt;li&gt;Our recovery coach team provides sport massage and stretching service which can help relieve stress for people who are prone to soreness such as long-term shoulders, necks, lower back or sitting for a long time.&lt;/li&gt;</value>
+  </data>
+  <data name="NanjingMRT" xml:space="preserve">
+    <value>Green line( Songshan–Xindian) MRT Taipei Arena Station Exit 1</value>
+  </data>
+  <data name="XinyiMRT" xml:space="preserve">
+    <value>Red line (Tamsui–Xinyi) MRT Taipei 101/World Trade Center Station Exit 3</value>
+  </data>
+  <data name="ZhongxiaoMRT" xml:space="preserve">
+    <value>Blue line (Bannan) MRT Zongxiao Fuxing station Exit 3 (or Exit 14 of East Metro Mall)</value>
+  </data>
+  <data name="DongmenMRT" xml:space="preserve">
+    <value>Red line (Tamsui–Xinyi) MRT Dongmen station Exit 3</value>
+  </data>
+  <data name="AnheMRT" xml:space="preserve">
+    <value>Red line (Tamsui–Xinyi) MRT Xinyi Anhe Station Exit 2A</value>
+  </data>
+  <data name="Walk" xml:space="preserve">
+    <value>Drive/Walk</value>
+  </data>
+  <data name="MRT" xml:space="preserve">
+    <value>MRT</value>
+  </data>
+  <data name="Tel" xml:space="preserve">
+    <value>Tel</value>
+  </data>  
+  <data name="Go" xml:space="preserve">
+    <value>Go</value>
+  </data>
+  <data name="OnlineReservation" xml:space="preserve">
+    <value>Online reservation</value>
+  </data>
+  <data name="TeamTitle" xml:space="preserve">
+    <value>Our Team</value>
+  </data>
+  <data name="BlogBack" xml:space="preserve">
+    <value>Back Official Site</value>
+  </data>
+  <data name="PricingTitle" xml:space="preserve">
+    <value>Choose your ideal plan</value>
+  </data>
+  <data name="Disclaimer" xml:space="preserve">
+    <value>As the requirements and effects of exercise are different for each person, we recommend consultation with a Beyond Fitness trainer, to guarantee the best performance results.</value>
+  </data>  
+  <data name="PersonalTrainer" xml:space="preserve">
+    <value>One to one personal trainer</value>
+  </data>  
+  <data name="NutritionCoach" xml:space="preserve">
+    <value>One to one nutrition coach</value>
+  </data>  
+  <data name="OnlinePTTitle" xml:space="preserve">
+    <value>BEYOND ONLINE &lt;br/&gt;Is it suitable for me</value>
+  </data> 
+  <data name="OnlinePTSlogon" xml:space="preserve">
+    <value>Like a friend, &lt;br /&gt;your fitness consultant</value>
+  </data> 
+  <data name="OnlineNCTitle" xml:space="preserve">
+    <value>BEYOND ONLINE &lt;br/&gt; Eat Healthy !</value>
+  </data> 
+  <data name="OnlineNCSlogon" xml:space="preserve">
+    <value>Change your eating habits</value>
+  </data>
+  <data name="OnlineNCFeature1" xml:space="preserve">
+    <value>Your Exclusive Dietitian</value>
+  </data>
+  <data name="OnlineNCFeatureDesc1" xml:space="preserve">
+    <value>A registered dietitian that keeps track of your water intake, sleep schedule, exercising and stress level.</value>
+  </data>
+  <data name="OnlineNCFeature2" xml:space="preserve">
+    <value>Regular Diet Tracking</value>
+  </data>
+  <data name="OnlineNCFeatureDesc2" xml:space="preserve">
+    <value>Log what you eat everyday and your nutritionist will provide guidance on healthy eating habits and what works best for you so that you can achieve your goal.</value>
+  </data>
+  <data name="OnlineNCFeature3" xml:space="preserve">
+    <value>Three Major Nutrients</value>
+  </data>
+  <data name="OnlineNCFeatureDesc3" xml:space="preserve">
+    <value>Analyze your food intake of the 6 Major Food Groups and tailor your diet!</value>
+  </data>
+  <data name="OnlineNCFeature4" xml:space="preserve">
+    <value>Results Report Analysis</value>
+  </data>
+  <data name="OnlineNCFeatureDesc4" xml:space="preserve">
+    <value>Provide monthly data reports, record your body shapes, diet and change of your lifestyle to show that progress has been made.</value>
+  </data>
+</root>

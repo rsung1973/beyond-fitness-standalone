@@ -1,0 +1,34 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    LessonTime _model;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (LessonTime)this.Model;
+    LessonTimeBookingViewModel _viewModel = (LessonTimeBookingViewModel)ViewBag.ViewModel;
+}
+@{
+    TrainingExecution item = _model.AssertTrainingPlan(models, UID: _viewModel.UID)?.TrainingExecution;
+}
+@if (item != null)
+{
+    var items = models.GetTable<TrainingStage>().ToArray();
+    var total = item.TrainingExecutionStage.Sum(t => t.TotalMinutes) ?? 1;
+    if (total <= 0)
+    {
+        total = 1;
+    }
+    <text>@String.Join(",",items.Select(t => Math.Round((item.TrainingExecutionStage.Where(x => x.StageID == t.StageID).Select(x => x.TotalMinutes).FirstOrDefault() ?? 0) * 100 / total)))</text>
+}

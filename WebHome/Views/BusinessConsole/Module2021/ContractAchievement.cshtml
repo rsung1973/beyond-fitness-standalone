@@ -1,0 +1,125 @@
+
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    MonthlyIndicatorQueryViewModel _viewModel;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _modelState = ViewContext.ModelState;
+    _viewModel = (MonthlyIndicatorQueryViewModel)ViewBag.ViewModel;
+
+}
+<div class="header">
+    @{
+        await Html.RenderPartialAsync("~/Views/Common/SelectMonthlyIntervalWithBranch.cshtml",
+                            new String[]
+                            {
+                                "queryInterval_1",
+                                "javascript:showThreeMonthBarChart_1();",
+                                "javascript:showSixMonthBarChart_1();",
+                                "javascript:showYearBarChart_1();",
+                                "javascript:showMoreQueryModal_1();",
+                                });
+    }
+    <script>
+        function onBranchSelected(branchID) {
+            $global.viewModel.BranchID = branchID;
+            $('').launchDownload('@Html.Raw(Url.Action("RevenueReview", "ConsoleHome"))', $global.viewModel);
+        }
+    </script>
+</div>
+<div class="body">
+    <div class="row clearfix">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+            @{
+                await Html.RenderPartialAsync("~/Views/BusinessConsole/Module2021/ContractAchievementChart.cshtml");
+            }
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-12" id="achievementList">
+            @{
+                IGrouping<DateTime, dynamic>[] items = TempData["GroupItems"] as IGrouping<DateTime, dynamic>[];
+                await Html.RenderPartialAsync("~/Views/BusinessConsole/Module2021/ContractAchievementList.cshtml", items);
+            }
+        </div>
+    </div>
+</div>
+@{
+    DateTime idx = DateTime.Today.AddMonths(-1).FirstDayOfMonth();
+}
+<script>
+
+    function showThreeMonthBarChart_1() {
+        $global.viewModel.DateFrom = '@($"{idx.AddMonths(-2):yyyy/MM/dd}")';
+        $global.viewModel.DateTo = '@($"{idx:yyyy/MM/dd}")';
+        inquireContractAchievement($global.viewModel);
+        inquireAttendancePerformance($global.viewModel);
+    }
+
+    function showSixMonthBarChart_1() {
+        $global.viewModel.DateFrom = '@($"{idx.AddMonths(-5):yyyy/MM/dd}")';
+        $global.viewModel.DateTo = '@($"{idx:yyyy/MM/dd}")';
+        inquireContractAchievement($global.viewModel);
+        inquireAttendancePerformance($global.viewModel);
+    }
+
+    function showYearBarChart_1() {
+        $global.viewModel.DateFrom = '@($"{idx.AddMonths(-12):yyyy/MM/dd}")';
+        $global.viewModel.DateTo = '@($"{idx:yyyy/MM/dd}")';
+        inquireContractAchievement($global.viewModel);
+        inquireAttendancePerformance($global.viewModel);
+    }
+
+    function inquireContractAchievement(viewModel) {
+
+        showLoading();
+        $.post('@Html.Raw(Url.Action("InquireContractAchievement", "AchievementConsole"))', viewModel, function (data) {
+            hideLoading();
+            if ($.isPlainObject(data)) {
+                alert(data.message);
+            } else {
+                $('#achievementList').empty()
+                    .append($(data));
+            }
+        });
+    }
+
+    function showMoreQueryModal_1() {
+
+        if ($global.appliedDialog && $global.appliedDialog['achievementQuery']) {
+            $global.appliedDialog['achievementQuery'].modal('show');
+            return;
+        }
+        $global.achievementConsole.doQuery['achievementQuery'] = function (viewModel) {
+            inquireAttendancePerformance(viewModel);
+            inquireContractAchievement(viewModel);
+        };
+        $global.viewModel.DialogID = 'achievementQuery';
+
+        showLoading();
+        $.post('@Html.Raw(Url.Action("SelectQueryCondition", "AchievementConsole"))', $global.viewModel, function (data) {
+            hideLoading();
+            if ($.isPlainObject(data)) {
+                alert(data.message);
+            } else {
+                $(data).appendTo($('body'));
+            }
+        });
+    }
+
+    $(function () {
+        $('#queryInterval').text('@($"{_viewModel.DateFrom:yyyyMM}")-@($"{_viewModel.DateTo:yyyyMM}")');
+        $('#queryInterval_1').text('@($"{_viewModel.DateFrom:yyyyMM}")-@($"{_viewModel.DateTo:yyyyMM}")');
+    });
+
+</script>

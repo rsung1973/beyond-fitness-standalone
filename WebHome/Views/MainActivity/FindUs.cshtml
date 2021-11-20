@@ -1,0 +1,368 @@
+﻿
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@using WebHome.Views.MainActivity.Resources
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _modelState = ViewContext.ModelState;
+
+    Layout = "~/Views/MainActivity/Template/MainPage.cshtml";
+
+}
+
+@section CustomHeader {
+
+}
+<section class="section-branch">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <h1>@Html.Raw(NamingItem.FindAnheBranch)<a href="tel://+886-2-2720-0530" class="tel">(02)2720-0530</a></h1>
+                <a href="https://maps.google.com/?q=台北市大安區安和路二段81號B1" target="_blank" class="add">
+                    @Html.Raw(NamingItem.FindAnheBranchAdd)
+                </a>
+                <p>@Html.Raw(NamingItem.FindAnheBranchDesc1)</p>
+                <p>@Html.Raw(NamingItem.FindAnheBranchDesc2)</p>
+                <a href="javascript:$('').launchDownload('@(Url.Action("Team", "MainActivity"))', {'branchName':'Xinyi'});bindTrackingCode('專業團隊_信義安和');" class="more">@Html.Raw(NamingItem.OurTeam)<i class="pl-1 fa fa-angle-right"></i></a>
+            </div>
+            <div class="col-sm-6 p-t-20">
+                <div id="map-anhe" class="map-canvas small"></div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="section-branch second">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <h1>@Html.Raw(NamingItem.FindDongmenBranch) <a href="tel://+886-2-2396-0776" class="tel">(02)2396-0776</a></h1>
+                <a href="https://maps.google.com/?q=台北市大安區信義路二段28號" target="_blank" class="add">
+                    @Html.Raw(NamingItem.FindDongmenBranchAdd)
+                </a>
+                <p>@Html.Raw(NamingItem.FindDongmenBranchDesc1)</p>
+                <p>@Html.Raw(NamingItem.FindDongmenBranchDesc2)</p>
+                <a href="javascript:$('').launchDownload('@(Url.Action("Team", "MainActivity"))', {'branchName':'Dongmen'});bindTrackingCode('專業團隊_東門');" class="more">@Html.Raw(NamingItem.OurTeam)<i class="pl-1 fa fa-angle-right"></i></a>
+            </div>
+            <div class="col-sm-6 p-t-20">
+                <div id="map-dongmen" class="map-canvas small"></div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="section-branch second">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <h1>
+                    @Html.Raw(NamingItem.FindNanjingBranch)
+                    <a href="tel://+886-2-2715-2733" class="tel">(02)2715-2733</a>
+                </h1>
+                <a href="https://maps.google.com/?q=台北市大安區大安路一段75巷21號B1" target="_blank" class="add">
+                    @Html.Raw(NamingItem.FindNanjingBranchAdd)
+                </a>
+                <p>@Html.Raw(NamingItem.FindNanjingBranchDesc1)</p>
+                <p>@Html.Raw(NamingItem.FindNanjingBranchDesc2)</p>
+                <a href="javascript:$('').launchDownload('@(Url.Action("Team", "MainActivity"))', {'branchName':'Nanjing'});bindTrackingCode('專業團隊_南京');" class="more">@Html.Raw(NamingItem.OurTeam)<i class="pl-1 fa fa-angle-right"></i></a>
+            </div>
+            <div class="col-sm-6 p-t-20">
+                <div id="map-arena" class="map-canvas small"></div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="section-branch second">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <h1>
+                    @Html.Raw(NamingItem.FindZhongxiaoBranch)
+                <a href="tel://+886-2-2776-9932" class="tel">(02)2776-9932</a>
+            </h1>
+            <a href="https://maps.google.com/?q=台北市大安區大安路一段75巷21號B1" target="_blank" class="add">
+                @Html.Raw(NamingItem.FindZhongxiaoBranchAdd)
+            </a>
+            <p>@Html.Raw(NamingItem.FindZhongxiaoBranchDesc1)</p>
+            <p>@Html.Raw(NamingItem.FindZhongxiaoBranchDesc2)</p>
+            <a href="javascript:$('').launchDownload('@(Url.Action("Team", "MainActivity"))', {'branchName':'Zhongxiao'});bindTrackingCode('專業團隊_忠孝');" class="more">@Html.Raw(NamingItem.OurTeam)<i class="pl-1 fa fa-angle-right"></i></a>
+        </div>
+        <div class="col-sm-6 p-t-20">
+            <div id="map-sogo" class="map-canvas small"></div>
+        </div>
+    </div>
+</div>
+</section>
+<!-- // 聯絡我們 -->
+@{ await Html.RenderPartialAsync("~/Views/MainActivity/Module/ContactItem.cshtml");}
+
+
+@section TailPageJavaScriptInclude {
+    <!-- Google map-->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA3OuzgVBIrXUdm0wsRqiPUxAXg3CAULFI&callback=initMap" async defer></script>
+    <script>function initMap() {
+            var arenaStation = new google.maps.LatLng(25.0519269, 121.55007599999999); //南京
+            var sogoStation = new google.maps.LatLng(25.042265, 121.547384); //忠孝
+            var dongmenStation = new google.maps.LatLng(25.034532, 121.525470); //東門
+            var anheStation = new google.maps.LatLng(25.030270902445004, 121.55235312870134); //信義安和
+
+            var mapArenaOptions = {
+                scaleControl: true,
+                center: arenaStation,
+                zoom: 17,
+                zoomControl: true,
+                panControl: false,
+                mapTypeControl: false,
+                streetViewControl: false,
+                scrollwheel: false,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+
+            var mapSogoOptions = {
+                scaleControl: true,
+                center: sogoStation,
+                zoom: 18,
+                zoomControl: true,
+                panControl: false,
+                mapTypeControl: false,
+                streetViewControl: false,
+                scrollwheel: false,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+
+            var mapDongmenOptions = {
+                scaleControl: true,
+                center: { lat: 25.034532, lng: 121.526890 },
+                zoom: 17,
+                zoomControl: false,
+                panControl: false,
+                mapTypeControl: false,
+                streetViewControl: false,
+                scrollwheel: false,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+
+            var mapAnheOptions = {
+                scaleControl: true,
+                center: { lat: 25.0308, lng: 121.55235312870134 },
+                zoom: 16,
+                zoomControl: false,
+                panControl: false,
+                mapTypeControl: false,
+                streetViewControl: false,
+                scrollwheel: false,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+
+            var myIcon = new google.maps.MarkerImage("images/landing/marker.png", null, null, null, new google.maps.Size(50, 50));
+
+            var mapArena = new google.maps.Map(document.getElementById('map-arena'), mapArenaOptions);
+            var mapSogo = new google.maps.Map(document.getElementById('map-sogo'), mapSogoOptions);
+            var mapDongmen = new google.maps.Map(document.getElementById('map-dongmen'), mapDongmenOptions);
+            var mapAnhe = new google.maps.Map(document.getElementById('map-anhe'), mapAnheOptions);
+
+            var arenaMarker = new google.maps.Marker({
+                position: arenaStation,
+                map: mapArena,
+                icon: myIcon
+            });
+            var sogoMarker = new google.maps.Marker({
+                position: sogoStation,
+                map: mapSogo,
+                icon: myIcon
+            });
+            var dongmenMarker = new google.maps.Marker({
+                position: dongmenStation,
+                map: mapDongmen,
+                icon: myIcon
+            });
+            var anheMarker = new google.maps.Marker({
+                position: anheStation,
+                map: mapAnhe,
+                icon: myIcon
+            });
+
+            google.maps.event.addListener(arenaMarker, 'click', function () {
+                window.open("http://maps.google.com/?q=台北市松山區南京東路四段17號B1");
+            });
+
+            google.maps.event.addListener(sogoMarker, 'click', function () {
+                window.open("http://maps.google.com/?q=台北市大安區大安路一段75巷21號1F");
+            });
+
+            google.maps.event.addListener(dongmenMarker, 'click', function () {
+                window.open("http://maps.google.com/?q=台北市大安區信義路二段28號");
+            });
+
+            google.maps.event.addListener(anheMarker, 'click', function () {
+                window.open("http://maps.google.com/?q=台北市大安區安和路二段81號B1");
+            });
+
+            var styledMapType = new google.maps.StyledMapType(
+                [{
+                    elementType: 'geometry',
+                    stylers: [{
+                        color: '#242f3e'
+                    }]
+                },
+                {
+                    elementType: 'labels.text.stroke',
+                    stylers: [{
+                        color: '#242f3e'
+                    }]
+                },
+                {
+                    elementType: 'labels.text.fill',
+                    stylers: [{
+                        color: '#746855'
+                    }]
+                },
+                {
+                    featureType: 'administrative.locality',
+                    elementType: 'labels.text.fill',
+                    stylers: [{
+                        color: '#d59563'
+                    }]
+                }, {
+                    featureType: "poi.business",
+                    elementType: "labels.text",
+                    stylers: [{
+                        visibility: "off"
+                    }]
+                }, {
+                    featureType: "poi.business",
+                    elementType: "labels.icon",
+                    stylers: [{
+                        visibility: "off"
+                    }]
+                }, {
+                    featureType: "poi.place_of_worship",
+                    elementType: "labels.text",
+                    stylers: [{
+                        visibility: "off"
+                    }]
+                }, {
+                    featureType: "poi.place_of_worship",
+                    elementType: "labels.icon",
+                    stylers: [{
+                        visibility: "off"
+                    }]
+                }, {
+                    featureType: "poi.government",
+                    elementType: "labels.text",
+                    stylers: [{
+                        color: '#d59563'
+                    }]
+                }, {
+                    featureType: "poi.government",
+                    elementType: "labels.icon",
+                    stylers: [{
+                        color: '#d59563'
+                    }]
+                },
+                {
+                    featureType: 'road',
+                    elementType: 'geometry',
+                    stylers: [{
+                        color: '#38414e'
+                    }]
+                },
+                {
+                    featureType: 'road',
+                    elementType: 'geometry.stroke',
+                    stylers: [{
+                        color: '#212a37'
+                    }]
+                },
+                {
+                    featureType: 'road',
+                    elementType: 'labels.text.fill',
+                    stylers: [{
+                        color: '#9ca5b3'
+                    }]
+                },
+                {
+                    featureType: 'road.highway',
+                    elementType: 'geometry',
+                    stylers: [{
+                        color: '#746855'
+                    }]
+                },
+                {
+                    featureType: 'road.highway',
+                    elementType: 'geometry.stroke',
+                    stylers: [{
+                        color: '#1f2835'
+                    }]
+                },
+                {
+                    featureType: 'road.highway',
+                    elementType: 'labels.text.fill',
+                    stylers: [{
+                        color: '#f3d19c'
+                    }]
+                },
+                {
+                    featureType: 'transit',
+                    elementType: 'geometry',
+                    stylers: [{
+                        color: '#2f3948'
+                    }]
+                },
+                {
+                    featureType: 'transit.station',
+                    elementType: 'labels.text.fill',
+                    stylers: [{
+                        color: '#d59563'
+                    }]
+                },
+                {
+                    featureType: 'water',
+                    elementType: 'geometry',
+                    stylers: [{
+                        color: '#17263c'
+                    }]
+                },
+                {
+                    featureType: 'water',
+                    elementType: 'labels.text.fill',
+                    stylers: [{
+                        color: '#515c6d'
+                    }]
+                },
+                {
+                    featureType: 'water',
+                    elementType: 'labels.text.stroke',
+                    stylers: [{
+                        color: '#17263c'
+                    }]
+                }
+                ], {
+                name: 'Styled Map'
+            });
+
+            mapArena.mapTypes.set('map_styles', styledMapType);
+            mapArena.setMapTypeId('map_styles');
+
+            mapSogo.mapTypes.set('map_styles', styledMapType);
+            mapSogo.setMapTypeId('map_styles');
+
+            mapDongmen.mapTypes.set('map_styles', styledMapType);
+            mapDongmen.setMapTypeId('map_styles');
+
+            mapAnhe.mapTypes.set('map_styles', styledMapType);
+            mapAnhe.setMapTypeId('map_styles');
+
+        }</script>
+}

@@ -1,0 +1,33 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    UserProfile _model;
+
+
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (UserProfile)this.Model;
+
+    InvoiceQueryViewModel _viewModel = (InvoiceQueryViewModel)ViewBag.ViewModel;
+
+}
+
+<div class="col-lg-5 col-md-6 col-sm-12">
+    <ul class="breadcrumb float-md-right">
+        <li class="breadcrumb-item"><a href="@Html.Raw(Url.Action("InvoiceOverview","ConsoleHome",new {  _viewModel?.DateFrom,_viewModel?.DateTo }))"><i class="zmdi zmdi-file-text"></i>&nbsp;我的電子發票</a></li>
+    </ul>
+</div>
+

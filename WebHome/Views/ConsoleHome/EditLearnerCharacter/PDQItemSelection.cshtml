@@ -1,0 +1,64 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    PDQQuestion _model;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (PDQQuestion)this.Model;
+
+}
+@{
+    PDQTask taskItem = null;
+    QuestionnaireRequest questionnaire = ViewBag.CurrentQuestionnaire as QuestionnaireRequest;
+    PDQTask referredItem = null;
+    QuestionnaireRequest referredTo = ViewBag.ReferredTo as QuestionnaireRequest;
+    if (questionnaire != null)
+    {
+        taskItem = models.GetTable<PDQTask>().Where(t => t.QuestionID == _model.QuestionID)
+                .Where(t => t.QuestionnaireID == questionnaire.QuestionnaireID)
+                .FirstOrDefault();
+    }
+    if (referredTo != null)
+    {
+        referredItem = models.GetTable<PDQTask>().Where(t => t.QuestionID == _model.QuestionID)
+            .Where(t => t.QuestionnaireID == referredTo.QuestionnaireID)
+            .FirstOrDefault();
+    }
+}
+@if (ViewBag.GroupQuestion == true)
+{
+    <span class="m-r-20"><i class="@(ViewBag.GroupCSS)"></i>@(_model.Question)</span>
+}
+else
+{
+    <span class="message">@(_model.QuestionNo%10).@Html.Raw(_model.Question)</span>
+}
+
+<select class="form-control show-tick" data-id="@(_model.QuestionID)" name="SuggestionID">
+    <option value="">-- 請選分數 --</option>
+    @foreach (var q in _model.PDQSuggestion)
+    {
+        <option value="@(q.SuggestionID)" selected="@(taskItem != null && (taskItem.SuggestionID == q.SuggestionID || taskItem.PDQTaskItem.Any(t => t.SuggestionID == q.SuggestionID)))">@(q.Suggestion)</option>
+    }
+</select>
+
+@if (_model.QuestionType == (int)Naming.QuestionType.單選其他)
+{
+    <div class="form-group p-t-0">
+        <textarea rows="1" cols="100" class="form-control" placeholder="@(referredItem?.PDQAnswer ?? "其他更多說明")" data-id="@(_model.QuestionID)" name="PDQAnswer">@(taskItem?.PDQAnswer)</textarea>
+    </div>
+}
+
+

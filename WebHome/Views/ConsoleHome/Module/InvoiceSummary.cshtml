@@ -1,0 +1,65 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    BranchStore _model;
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    BranchStore branch = _model = (BranchStore)this.Model;
+}
+@{
+    var items = models.GetTable<InvoiceItem>().Where(i => i.InvoiceType == (int)Naming.InvoiceTypeDefinition.一般稅額計算之電子發票);
+    var invoiceItems = (IQueryable<InvoiceItem>)ViewBag.DataItems;
+    var cancellationItems = (IQueryable<InvoiceCancellation>)ViewBag.CancellationItems;
+    var allowanceItems = (IQueryable<InvoiceAllowance>)ViewBag.AllowanceItems;
+}
+
+<div class="col-8">
+    @{ 
+        var calcItems = invoiceItems.Where(p => p.SellerID == branch.BranchID);
+        var calcCancellation = items.Where(i => i.SellerID == branch.BranchID)
+            .Join(models.GetTable<Payment>()
+                    .Join(models.GetTable<VoidPayment>().Where(v => v.Status == (int)Naming.CourseContractStatus.已生效),
+                        p => p.PaymentID, v => v.VoidID, (p, v) => p),
+                i => i.InvoiceID, p => p.InvoiceID, (i, p) => i)
+            .Join(cancellationItems, i => i.InvoiceID, c => c.InvoiceID, (i, c) => c);
+        var calcAllowance = items.Where(i => i.SellerID == branch.BranchID)
+            .Join(allowanceItems, i => i.InvoiceID, c => c.InvoiceID, (i, c) => c);
+
+        var invTurnkeyLogs = calcItems.Join(models.GetTable<InvoiceItemDispatchLog>(), i => i.InvoiceID, d => d.InvoiceID, (i, d) => d);
+        var cancellationTurnkeyLogs = calcCancellation.Join(models.GetTable<InvoiceCancellationDispatchLog>(), i => i.InvoiceID, d => d.InvoiceID, (i, d) => d);
+        var allowanceTurnkeyLogs = calcAllowance.Join(models.GetTable<InvoiceAllowanceDispatchLog>(), i => i.AllowanceID, d => d.AllowanceID, (i, d) => d);
+
+        int totalItems = calcItems.Count() + calcCancellation.Count() + calcAllowance.Count();
+        int uploadItems = invTurnkeyLogs.Where(i => i.Status == (int)Naming.GeneralStatus.Successful).Count()
+                        + allowanceTurnkeyLogs.Where(i => i.Status == (int)Naming.GeneralStatus.Successful).Count()
+                        + cancellationTurnkeyLogs.Where(i => i.Status == (int)Naming.GeneralStatus.Successful).Count();
+    }
+        
+
+    <h5 class="m-t-0">@(branch.BranchName)</h5>
+    <p class="text-small">
+        新增：@(calcItems.Count())<br />
+        作廢：@(calcCancellation.Count())<br />
+        折讓：@(calcAllowance.Count())<br />
+    </p>
+</div>
+<div class="col-4 text-right">
+    <h2 class="@(totalItems != uploadItems ? "col-red" : "")">
+        @(uploadItems)
+    </h2>
+    <small class="info">上傳成功</small>
+</div>
+
+

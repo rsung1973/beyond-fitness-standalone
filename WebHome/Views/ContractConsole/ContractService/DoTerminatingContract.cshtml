@@ -1,0 +1,373 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Helper.DataOperation
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    CourseContract _model;
+    UserProfile _profile;
+    String _viewID;
+
+
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (CourseContract)this.Model;
+    _profile = await Context.GetUserAsync();
+    _viewID = ViewBag.ViewID as String;
+    LessonPriceType originalPrice;
+    if (_model.ContractType == (int)CourseContractType.ContractTypeDefinition.CGA)
+    {
+        originalPrice = _model.CountableRegisterLesson()
+                    .Select(r => r.LessonPriceType)
+                    .Where(l => !l.IsDietaryConsult).FirstOrDefault();
+    }
+    else
+    {
+        originalPrice = _model.ContractOriginalSeriesPrice(models);
+    }
+
+}
+<div class="header">
+    <h2><strong>原課程單價 <span class="badge bg-blue">@(_model.LessonPriceType.PriceTypeBundle())</span>：</strong> <span class="col-red">@($"{_model.LessonPriceType.ListPrice:##,###,###,###}")</span></h2>
+</div>
+<div class="body">
+    <div class="row clearfix">
+        <div class="col-sm-5">
+            <input type="hidden" name="FitnessConsultant" value="@(_model.FitnessConsultant)" />
+            <label class="fancy-checkbox custom-bgcolor-pink">
+                <input type="checkbox" name="BySelf" value="@((int)Naming.Actor.BySelf)" />
+                <span>本人 辦理終止</span>
+            </label>
+            <label class="fancy-checkbox custom-bgcolor-pink">
+                <input type="checkbox" name="BySelf" value="@((int)Naming.Actor.ByOther)" />
+                <span>代理人 辦理終止</span>
+            </label>
+            <script>
+                $(function () {
+                    function check(element) {
+                        $('input:checkbox[name="BySelf"]').prop('checked', false);
+                        $(element).prop('checked', true);
+                        if (element.value == '@((int)Naming.Actor.ByOther)') {
+                            $('.byOther').css('display', 'block');
+                        } else {
+                            $('.byOther').css('display', 'none');
+                        }
+                    }
+                    $('input:checkbox[name="BySelf"]').on('click', function (event) {
+                        check(this);
+                    });
+                });
+            </script>
+        </div>
+        <div class="col-sm-6">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="請輸入課程單堂價格" name="SettlementPrice" value="" />
+                <span class="input-group-addon">
+                    <i class="zmdi zmdi-money-box"></i>
+                </span>
+            </div>
+        </div>
+        @{
+            var totalPaid = _model.TotalPaidAmount();
+            var attendedCount = _model.AttendedLessonCount();
+        }
+        @if (totalPaid == 0)
+        {
+            <div class="col-12">
+                <div class="alert xl-pink col-darkteal" role="alert">
+                    <div class="container">
+                        <div class="alert-icon">
+                            <i class="zmdi zmdi-notifications"></i>
+                        </div>
+                        契約簽訂後未繳納費用 @(String.Format("{0:##,###,###,###}", _model.TotalCost)) 元，退還剩餘款項
+                        <span class="col-red">0</span>元。
+                    </div>
+                </div>
+            </div>
+            <script>
+            $(function () {
+                $('input[name="SettlementPrice"]').val('@(originalPrice?.ListPrice ?? _model.LessonPriceType.ListPrice)')
+                    .parent().parent()
+                    .css('display', 'none');
+            });
+            </script>
+        }
+        else if (attendedCount > 0 || !_model.CourseContractExtension.Version.HasValue)
+        {
+            int? currentSettlementPrice;
+
+            if (_model.ContractType == (int)CourseContractType.ContractTypeDefinition.CGA)
+            {
+                var lessons = _model.CountableRegisterLesson();
+                currentSettlementPrice = 2000;
+                <div class="col-12">
+                    <div class="alert xl-pink col-darkteal" role="alert">
+                        <div class="container">
+                            <div class="alert-icon">
+                                <i class="zmdi zmdi-notifications"></i>
+                            </div>
+                            已繳服務總費用 @(String.Format("{0:##,###,###,###}", totalPaid))
+                            扣除依簽約時課程單堂原價(<span id="refundUnit" class="col-red"></span>) / 人)
+                            乘以實際上課堂數(<span class="col-red">@(lessons.Where(r => !r.LessonPriceType.IsDietaryConsult).Sum(r => r.LessonTime.Count))</span>)，
+                            退還剩餘款項 <span class="col-red" id="refund"></span>元 <small id="formular"></small>。
+                        </div>
+                    </div>
+                </div>
+                <script>
+                    function refundInfo(settlementPrice) {
+                        if (!isNaN(settlementPrice)) {
+                            var lessons = @(lessons.Where(r => !r.LessonPriceType.IsDietaryConsult).Sum(r=>r.LessonTime.Count));
+                            var totalPaid = @(totalPaid);
+                            var dietaryCost = @(lessons.Where(r => r.LessonPriceType.IsDietaryConsult).Sum(r => r.LessonPriceType.ListPrice * r.LessonPriceType.BundleCount));
+                            var refund = totalPaid - dietaryCost - lessons * settlementPrice;
+                            if (refund < 0) {
+                                $('input[name="SettlementPrice"]').val('');
+                                Swal.fire(
+                                    'Oops...',
+                                    '你確定嗎？計算後學生還要多拿錢出來喔！',
+                                    'warning'
+                                )
+                                return;
+                            }
+
+                            $('#refund').text(refund);
+                            $('#refundUnit').text(settlementPrice);
+                            $('#formular').text('= ' + totalPaid + ' - ' + dietaryCost + ' - (' + settlementPrice + ' * ' + lessons + ')');
+                        }
+                    }
+                </script>
+            }
+            else
+            {
+                currentSettlementPrice = attendedCount == 0 || originalPrice == null
+                        ? _model.LessonPriceType.ListPrice
+                        : originalPrice.ListPrice;
+
+                <div class="col-12">
+                    <div class="alert xl-pink col-darkteal" role="alert">
+                        <div class="container">
+                            <div class="alert-icon">
+                                <i class="zmdi zmdi-notifications"></i>
+                            </div>
+                            已繳服務總費用 @(String.Format("{0:##,###,###,###}", totalPaid))
+                            扣除依簽約時課程單堂原價(<span id="refundUnit" class="col-red"></span>) / 人)
+                            乘以實際上課堂數(<span class="col-red">@(_model.AttendedLessonCount())</span>)，
+                            退還剩餘款項 <span class="col-red" id="refund"></span>元 <small id="formular"></small>。
+                        </div>
+                    </div>
+                </div>
+                <script>
+                    function refundInfo(settlementPrice) {
+                        if (!isNaN(settlementPrice)) {
+                            var remained = @(_model.RemainedLessonCount());
+                            var lessons = @(_model.Lessons);
+                            var currPrice = @(_model.LessonPriceType.ListPrice);
+                            var totalPaid = @(totalPaid);
+                            var refund = totalPaid - (lessons - remained) * settlementPrice * @($"{_model.CourseContractType.GroupingMemberCount}*{_model.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount}/100");
+                            //if (refund < 0) {
+                            //    $('input[name="SettlementPrice"]').val('');
+                            //    Swal.fire(
+                            //        'Oops...',
+                            //        '你確定嗎？計算後學生還要多拿錢出來喔！',
+                            //        'warning'
+                            //    )
+                            //    return;
+                            //}
+                            $('#refundUnit').text(settlementPrice);
+                            if (refund < 0) {
+                                $('#refund').text('0');
+                                //$('#formular').text('');
+                            } else {
+                                $('#refund').text(refund);
+                            }
+                            $('#formular').text('=' + totalPaid + ' - (' + settlementPrice + ' * ' + '@($"{_model.CourseContractType.GroupingMemberCount}") @(_model.CourseContractType.GroupingMemberCount>1 ? $"* {_model.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount / 100m}" : null)* (' + lessons + ' - ' + remained + '))');
+                        }
+                    }
+                </script>
+            }
+            <script>
+                $('input[name="SettlementPrice"]').on('change', function (evt) {
+                    $('#refund').empty();
+                    $('#refundUnit').empty();
+                    $('#formular').empty();
+                    var settlementPrice = parseInt($(this).val());
+                    refundInfo(settlementPrice);
+                });
+
+            </script>
+            <script>
+                $(function () {
+                    $('input[name="SettlementPrice"]').val('@(currentSettlementPrice)');
+                    refundInfo(@(currentSettlementPrice));
+                });
+            </script>
+        }
+        else if ((DateTime.Today - _model.ValidFrom.Value).TotalDays < 8)
+        {
+            <div class="col-12">
+                <div class="alert xl-pink col-darkteal" role="alert">
+                    <div class="container">
+                        <div class="alert-icon">
+                            <i class="zmdi zmdi-notifications"></i>
+                        </div>
+                        契約簽訂後七日內未使用所約定服務(課程)，全額退還已繳費用 <span class="col-red">@(String.Format("{0:##,###,###,###}", totalPaid))</span> 元。
+                    </div>
+                </div>
+            </div>
+            <script>
+            $(function () {
+                $('input[name="SettlementPrice"]').val('@(_model.LessonPriceType.ListPrice)')
+                    .parent().parent()
+                    .css('display', 'none');
+            });
+            </script>
+        }
+        else
+        {
+            <div class="col-12">
+                <div class="alert xl-pink col-darkteal" role="alert">
+                    <div class="container col-red">
+                        <div class="alert-icon">
+                            <i class="zmdi zmdi-alert-triangle"></i>
+                        </div>
+                        契約簽訂後逾七日未使用所約定服務(課程)
+                    </div>
+                    <div class="container">
+                        <div class="alert-icon">
+                            <i class="zmdi zmdi-notifications"></i>
+                        </div>
+                        @{
+                            var processingFee = totalPaid * 0.05M;
+                        }
+                        已繳服務總費用 @(String.Format("{0:##,###,###,###}", totalPaid)) 扣除5％處理費(<span class="col-red">@(String.Format("{0:##,###,###,###}", processingFee))</span>)，退還剩餘款項 <span class="col-red">@(String.Format("{0:##,###,###,###}", totalPaid - processingFee))</span>元。<small>=@(totalPaid) - (@(totalPaid)*0.05)</small>
+                        <input type="hidden" name="ProcessingFee" value="@((int)processingFee)" />
+                    </div>
+                </div>
+            </div>
+            <script>
+                $(function () {
+                    $('input[name="SettlementPrice"]').val('@(_model.LessonPriceType.ListPrice)')
+                        .parent().parent()
+                        .css('display', 'none');
+                });
+            </script>
+        }
+
+        <div class="col-12">
+            <select class="form-control show-tick" name="CauseForEnding">
+                <option value="">-- 請選擇終止原因 --</option>
+                <option value="@((int)Naming.CauseForEnding.合約到期轉新約)">合約到期轉新約</option>
+                <option value="@((int)Naming.CauseForEnding.轉讓)">轉讓</option>
+                <option value="@((int)Naming.CauseForEnding.私人原因)">
+                    私人原因（工作、搬家、懷孕、受傷）
+                </option>
+                <option value="@((int)Naming.CauseForEnding.更改合約類型)">
+                    更改合約類型（個人合約改家庭合約）
+                </option>
+                <option value="@((int)Naming.CauseForEnding.學生簽約後不付款)">學生簽約後不付款</option>
+                <option value="@((int)Naming.CauseForEnding.教練誤開合約後終止)">教練誤開合約後終止</option>
+                <option value="@((int)Naming.CauseForEnding.所屬教練離職)">所屬教練離職</option>
+                <option value="@((int)Naming.CauseForEnding.新冠肺炎疫情)">新冠肺炎疫情</option>
+                <option value="@((int)Naming.CauseForEnding.其他)">其他（自行輸入）</option>
+            </select>
+        </div>
+
+        <div class="col-12 byOther" style="display:none;">
+            @*@{
+                ViewBag.DropifyExtension = "pdf";
+            }
+            <script>
+                $(function () {
+                    $global.dropifyMessage = {
+                        'default': '點選或拖拉代辦委任書（PDF）到這邊',
+                        'replace': '點選或拖拉代辦委任書（PDF）取代目前內容',
+                        'remove': '刪除內容',
+                        'error': 'Ooops, 肯定做錯了什麼'
+                    };
+                    $global.dropifyError = {
+                        'fileSize': 'Ooops, 上傳的檔案太大了啦！ ({{ value }} max).',
+                        'imageFormat': 'Ooops, 上傳檔案是PDF嗎？！ ({{ value }} only).'
+                    };
+                });
+            </script>*@
+            <form enctype="multipart/form-data" method="post">
+                @{
+                    await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/DropifyFileUpload.cshtml");
+                }
+            </form>
+        </div>
+        <div class="col-12">
+            <div class="form-group">
+                <textarea rows="3" class="form-control no-resize" name="Remark" placeholder="請輸入任何想補充的事項..."></textarea>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $(function () {
+
+        $('#@(_viewID) button.quit').on('click', function (event) {
+            cancelTerminating();
+        });
+
+        $('#@(_viewID) button.finish').on('click', function (event) {
+            commitTerminating();
+        });
+
+    });
+
+    function cancelTerminating() {
+        $('').launchDownload('@Html.Raw(Url.Action("ApplyContractService","ConsoleHome"))',
+            @Html.Raw(JsonConvert.SerializeObject(new CourseContractQueryViewModel
+                {
+                    KeyID = _model.ContractID.EncryptKey(),
+                })));
+    }
+
+    function commitTerminating() {
+        var viewModel = $('#@(_viewID)').find('input,select,textArea').serializeObject();
+        viewModel.Reason = '終止';
+        viewModel.FitnessConsultant = @(_profile.UID);
+        clearErrors();
+        showLoading();
+        $('form').ajaxForm({
+            url: '@Html.Raw(Url.Action("CommitContractService", "ContractConsole",new { KeyID = _model.ContractID.EncryptKey() }))',
+            data: viewModel,
+            beforeSubmit: function () {
+                showLoading();
+            },
+            success: function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    Swal.fire(
+                        'Oops...',
+                        data.message,
+                        'warning'
+                    )
+                }
+                else {
+                    $(data).appendTo($('body'));
+                }
+            },
+            error: function () {
+                hideLoading();
+            }
+        }).submit();
+
+    }
+
+</script>
+

@@ -1,0 +1,90 @@
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    IQueryable<Payment> _model;
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (IQueryable<Payment>)this.Model;
+}
+@{
+    UserProfile _profile = await Context.GetUserAsync();
+    PaymentQueryViewModel _viewModel = (PaymentQueryViewModel)ViewBag.ViewModel;
+    _viewModel.RelatedID = _profile.UID;
+    ViewBag.ViewModel = _viewModel;
+    IQueryable<Payment> items = _model.Where(p => p.HandlerID == _profile.UID)
+                                    .Union(_model.Where(p => p.ContractPayment.CourseContract.FitnessConsultant == _profile.UID))
+                                    .Union(_model.Where(p => p.TuitionInstallment.IntuitionCharge.RegisterLesson.LessonTime.Any(l => l.AttendingCoach == _profile.UID)));
+
+}
+<div class="container-fluid">
+    <div class="card">
+        @if (_profile.IsSysAdmin() || _profile.IsAssistant() || _profile.IsServitor())
+        {
+        <div class="header">
+            @{
+                await Html.RenderPartialAsync("~/Views/PaymentConsole/Module/EditPaymentDropdown.cshtml", items);
+            }
+        </div>
+        }
+        <ul class="row clearfix list-unstyled m-b-0 widget_3">
+            <li class="col-lg-4 col-md-4 col-sm-12">
+                <div class="body">
+                    <div class="row">
+                        @{
+                            await Html.RenderPartialAsync("~/Views/PaymentConsole/Module/PaymentForPT.cshtml", items);
+                        }
+                    </div>
+                </div>
+            </li>
+            <li class="col-lg-4 col-md-4 col-sm-12">
+                <div class="body">
+                    <div class="row">
+                        @{
+                            await Html.RenderPartialAsync("~/Views/PaymentConsole/Module/PaymentForPI.cshtml", items);
+                        }
+                    </div>
+                </div>
+            </li>
+            <li class="col-lg-4 col-md-4 col-sm-12">
+                <div class="body">
+                    <div class="row">
+                        @{
+                            await Html.RenderPartialAsync("~/Views/PaymentConsole/Module/PaymentForOthers.cshtml", items);
+                        }
+                    </div>
+                </div>
+            </li>
+            <li class="col-lg-6 col-md-6 col-sm-12">
+                <div class="body">
+                    <div class="row">
+                        @{
+                            await Html.RenderPartialAsync("~/Views/PaymentConsole/Module/CurrentMonthPayment.cshtml", items);
+                        }
+                    </div>
+                </div>
+            </li>
+            @if (_profile.IsCoach())
+            {
+                <li class="col-lg-6 col-md-6 col-sm-12">
+                    <div class="body">
+                        <div class="row">
+                            @{
+                                await Html.RenderPartialAsync("~/Views/PaymentConsole/Module/CurrentMonthAchievementShare.cshtml", _model);
+                            }
+                        </div>
+                    </div>
+                </li>
+            }
+        </ul>
+    </div>
+</div>

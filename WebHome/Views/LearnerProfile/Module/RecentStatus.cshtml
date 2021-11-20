@@ -1,0 +1,68 @@
+﻿
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    UserProfile _learner;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _learner = (UserProfile)this.Model;
+}
+<div class="new_post">
+    <div class="form-group">
+        <textarea rows="10" cols="80" name="RecentStatus" class="form-control" placeholder="請輸入任何您想輸入的..." onkeyup="autogrow();">@(_learner.RecentStatus)</textarea>
+    </div>
+    <div class="post-toolbar-b">
+        <button class="btn btn-round float-right btn-sm" onclick="commitRecentStatus();">更新</button>
+        <div class="autogrow" onclick="autogrow();"><i class="zmdi zmdi-chevron-down"></i><span>展開全部</span></div>
+        <div class="decrease" onclick="autodecrease();"><i class="zmdi zmdi-chevron-up"></i><span>收合</span></div>    
+    </div>
+</div>
+<script>
+    function commitRecentStatus() {
+        showLoading();
+        $.post('@Html.Raw(Url.Action("CommitRecentStatus","ClassFacet",new {_learner.UID }))', { 'recentStatus': $('textarea[name="RecentStatus"]').val() }, function (data) {
+            hideLoading();
+            if (data) {
+                Swal.fire(
+                    '幹得好',
+                    '更新成功',
+                    'success'
+                )      
+            }
+        });
+    }
+
+        //全部展開我的近況
+        function autogrow(){
+            var textarea = $('textarea[name="RecentStatus"]').get(0);
+            var adjustedHeight = textarea.clientHeight;
+            adjustedHeight = Math.max(textarea.scrollHeight, adjustedHeight);
+            if (adjustedHeight > textarea.clientHeight){
+                textarea.style.height = adjustedHeight+'px';
+            }
+
+            $(".autogrow").hide();
+            $(".decrease").show();
+        }
+
+        //全部收和我的近況
+        function autodecrease(){
+            var textarea = $('textarea[name="RecentStatus"]').get(0);
+            textarea.style.height = 290 +'px';
+            $(".autogrow").show();
+            $(".decrease").hide();
+        }
+</script>
+
+

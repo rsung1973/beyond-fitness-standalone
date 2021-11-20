@@ -1,0 +1,154 @@
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+@using Newtonsoft.Json
+@functions
+{
+    class StageItem
+    {
+        public String Stage { get; set; }
+        public decimal TotalMinutes { get; set; }
+    }
+}
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    IQueryable<LessonTime> _model;
+    ExerciseBillboardQueryViewModel _viewModel;
+    DateTime compareDateFrom, compareDateTo;
+    object result;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (IQueryable<LessonTime>)this.Model;
+    _viewModel = (ExerciseBillboardQueryViewModel)ViewBag.ViewModel;
+
+    compareDateFrom = DateTime.Today.FirstDayOfMonth().AddMonths(-1);
+    compareDateTo = DateTime.Today.AddMonths(-1).AddDays(1);
+
+    var items = _model.GroupBy(l => l.RegisterLesson.UID)
+                    .Select(g => new
+                    {
+                        g.Key,
+                        TotalMinutes = (decimal?)g.Sum(l => l.DurationInMinutes),
+                    }).ToArray();
+
+    List<String[]> resultData = new List<string[]>();
+
+    var stageItems = models.GetTable<TrainingStage>().ToArray();
+
+    int idx = 1;
+    var orderItems = items.GroupBy(g => g.TotalMinutes).OrderByDescending(g => g.Key);
+    foreach (var i in orderItems)
+    {
+        foreach (var v in i.OrderByDescending(m => m.Key))
+        {
+            resultData.Add(new string[] {
+                buildParticipant(v.Key),
+                workPlace(v.Key),
+                buildScore(v.Key,v.TotalMinutes),
+                buildAnalysis(v.Key),
+                $"<span class='{(idx==1 ? "badge bg-red" : "badge badge-info")}'>{idx}</span>",
+                v.Key.EncryptKey()
+            });
+        }
+        idx++;
+    }
+
+    result = new
+    {
+        data = resultData.ToArray()
+    };
+
+    String buildParticipant(int uid)
+    {
+        var u = models.GetTable<UserProfile>().Where(p => p.UID == uid).First();
+        return $"<span class='list-icon'><img class='patients-img' src='{buildPhoto(u)}'></span> {u.FullNameHtml("hidden-sm-down")}";
+    }
+
+    String buildPhoto(UserProfile profile)
+    {
+        return profile.PictureID.HasValue
+                              ? VirtualPathUtility.ToAbsolute("~/Information/GetResource/") + profile.PictureID + "?stretch=true"
+                              : "images/avatar/noname.png";
+    }
+
+    String workPlace(int uid)
+    {
+        var workPlacesStr = models.GetTable<CoachWorkplace>().Where(p => p.CoachID == uid);
+        var w = workPlacesStr.FirstOrDefault();
+        if (w == null || workPlacesStr.Count() > 1)
+        {
+            return null;
+        }
+        return w.BranchStore.BranchName;
+    }
+
+    String buildScore(int uid, decimal? totalMinutes)
+    {
+        var lessons = models.GetTable<RegisterLesson>().Where(r => r.UID == uid);
+        var totalMinutesLastMonth = lessons.TotalRegisterLessonItems(models).Where(l => l.LessonAttendance != null)
+                .Where(l => l.ClassTime >= compareDateFrom && l.ClassTime < compareDateTo)
+                .Sum(l => l.DurationInMinutes) ?? 0;
+        if (totalMinutes > totalMinutesLastMonth)
+        {
+            return $"{(int)(totalMinutes / 60)}:{totalMinutes % 60:00} <i class='zmdi zmdi-caret-up zmdi-hc-2x text-danger float-right'></i>";
+        }
+        else if (totalMinutes < totalMinutesLastMonth)
+        {
+            return $"{(int)(totalMinutes / 60)}:{totalMinutes % 60:00} <i class='zmdi zmdi-caret-down zmdi-hc-2x text-success float-right'></i>";
+        }
+        else
+        {
+            return $"{(int)(totalMinutes / 60)}:{totalMinutes % 60:00}";
+        }
+    }
+
+    String buildAnalysis(int uid)
+    {
+        var lessons = models.GetTable<RegisterLesson>().Where(f => f.UID == uid)
+           .TotalRegisterLessonItems(models)
+           .Where(l=>l.LessonAttendance!=null)
+           .Where(l => l.ClassTime >= _viewModel.StartDate && l.ClassTime < _viewModel.EndDate.Value.AddDays(1))
+           .Join(models.GetTable<TrainingPlan>(), l => l.LessonID, p => p.LessonID, (l, p) => p)
+           .Join(models.GetTable<TrainingExecution>(), p => p.ExecutionID, x => x.ExecutionID, (p, x) => x)
+           .Join(models.GetTable<TrainingExecutionStage>(), x => x.ExecutionID, s => s.ExecutionID, (x, s) => s);
+
+        List<StageItem> items2 = new List<StageItem>();
+
+        foreach(var s in stageItems)
+        {
+            var totalMinutes = lessons.Where(t => t.StageID == s.StageID).Sum(t => t.TotalMinutes) ?? 0;
+            items2.Add(new StageItem { Stage = s.Stage, TotalMinutes = totalMinutes });
+        }
+
+        //var items2 = models.GetTable<TrainingStage>()
+        //        .Select(s => new
+        //        {
+        //            s.Stage,
+        //            TotalMinutes = lessons.Where(t => t.StageID == s.StageID).Sum(t => t.TotalMinutes) ?? 0
+        //        }).ToArray();
+
+        var total = items2.Sum(t => t.TotalMinutes);
+
+        if (total == 0)
+            total = 1m;
+
+        return $"<div class='sparkline-pie'>{JsonArrayValue(JsonConvert.SerializeObject(items2.Select(t => Math.Round(t.TotalMinutes * 100 / total)).ToArray()))}</div>";
+
+    }
+
+    String JsonArrayValue(String jsonValue)
+    {
+        return jsonValue != null ? jsonValue.Substring(1, jsonValue.Length - 2) : null;
+    }
+}
+
+@Html.Raw(JsonConvert.SerializeObject(result))

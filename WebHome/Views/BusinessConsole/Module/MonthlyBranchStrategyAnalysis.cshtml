@@ -1,0 +1,62 @@
+﻿
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    MonthlyIndicator _model;
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (MonthlyIndicator)this.Model;
+    String _viewID = $"strategy{DateTime.Now.Ticks}";
+}
+@{
+    MonthlyIndicatorQueryViewModel _viewModel = (MonthlyIndicatorQueryViewModel)ViewBag.ViewModel;
+    MonthlyBranchIndicator item = _model.MonthlyBranchIndicator.Where(i => i.BranchID == _viewModel.BranchID).FirstOrDefault();
+}
+<p id="@(_viewID)" class="col-grey">@{
+            await Html.RenderPartialAsync("~/Views/BusinessConsole/Module/StrategyAnalysis.cshtml", _model);
+        }</p>
+<script>
+    function makeStrategy() {
+        showLoading();
+        $.post('@Html.Raw(Url.Action("MakeStrategyAnalysis", "BusinessConsole", new { KeyID = _model.PeriodID.EncryptKey(), _viewModel.BranchID }))', {}, function (data) {
+            hideLoading();
+            if ($.isPlainObject(data)) {
+                Swal.fire(
+                    'Oops...',
+                    data.message,
+                    'warning'
+                )
+            } else {
+                $(data).appendTo($('body'));
+            }
+        });
+    }
+
+    function refreshStrategy() {
+        showLoading();
+        $.post('@Html.Raw(Url.Action("LoadStrategyAnalysis", "BusinessConsole", new { KeyID = _model.PeriodID.EncryptKey(), _viewModel.BranchID }))', {}, function (data) {
+            hideLoading();
+            if ($.isPlainObject(data)) {
+                Swal.fire(
+                    'Oops...',
+                    data.message,
+                    'warning'
+                )
+            } else {
+                $('#@(_viewID)').empty()
+                    .append(data);
+            }
+        });
+    }
+</script>
+

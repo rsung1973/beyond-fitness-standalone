@@ -1,0 +1,106 @@
+﻿
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    IQueryable<LessonTime> _model;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (IQueryable<LessonTime>)this.Model;
+
+}
+@{
+    LessonQueryViewModel _viewModel = (LessonQueryViewModel)ViewBag.ViewModel;
+    String encTargetID = (_viewModel.ExceptionalID ?? 0).EncryptKey();
+    IQueryable<LessonTime> items = _model.OrderByDescending(l => l.ClassTime);
+    if (_viewModel.CurrentIndex.HasValue)
+    {
+        items = items.Skip(_viewModel.PageSize.Value * _viewModel.CurrentIndex.Value);
+    }
+    items = items.Take(_viewModel.PageSize.Value);
+    var count = items.Count();
+}
+@if (count > 0)
+{
+    var idx = 0;
+    foreach (var item in items)
+    {
+        idx++;
+        var btnclass = "btn btn-icon btn-round btn-sm float-right m-l-5 ";
+        if (idx % 2 == 0)
+        {
+            btnclass += "bg-darkteal";
+        }
+        else
+        {
+            btnclass += "btn-simple";
+        }
+        var plan = item.AssertTrainingPlan(models, UID: _viewModel.LearnerID);
+        var execution = plan.TrainingExecution;
+        <li class="lessonitem">
+            <div class="@(item.IsPTSession()
+                            ? "bullet PT"
+                            : item.IsCoachPISession()
+                                ? "bullet CoachPI"
+                                : item.IsPISession()
+                                    ? "bullet PI"
+                                    : item.IsSTSession()
+                                        ? "bullet ST"
+                                        : "bullet TS")"></div>
+            <div class="time">@($"{item.ClassTime:MM/dd}")<br />@($"{item.ClassTime:yyyy}")</div>
+            <div class="desc">
+                <div class="header">
+                    <h3>
+                        @(item.LessonTypeStatus())
+                        @if (item.IsReceivableSession())
+                        {
+                            <text>《@(item.RegisterLesson.LessonPriceType?.UsageTypeDescription?.Usage)》</text>
+                        }
+                        @if (item.LessonAttendance != null)
+                        {
+                            if (item.LessonPlan.CommitAttendance.HasValue)
+                            {
+                                <i class="zmdi zmdi-check-all"></i> }
+                            else
+                            {
+                                <i class="zmdi zmdi-check"></i>
+                            }
+                        }
+                    </h3>
+                    @if (item.LessonID != _viewModel.ExceptionalID && execution.TrainingItem.Count() > 0)
+                    {
+                        <ul class="header-dropdown">
+                            <li class="dropdown"><a href="javascript:copyTrainingPlan(@item.LessonID);"><i class="zmdi zmdi-copy"></i></a></li>
+                        </ul>
+                    }
+                                    </div>
+                <h4><a href="javascript:viewTraining('@item.LessonID.EncryptKey()','@(encTargetID)');">@(execution.Emphasis ?? "Unfinished")</a></h4>
+                @if (item.LessonPlan.Remark != null)
+                {
+                    <span class="comment">@(item.LessonPlan.Remark)<span class="author">@(item.AsAttendingCoach.UserProfile.FullName())</span></span>
+                }                
+            </div>
+        </li>
+    }
+}
+@if (count < _viewModel.PageSize.Value)
+{
+    <script>$(function () {
+            if (typeof ($global.nomoreLesson) === 'function') {
+                $global.nomoreLesson();
+            }
+        });</script>
+}
+
+
+

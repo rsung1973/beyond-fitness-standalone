@@ -1,0 +1,31 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    int? _model;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = this.Model as int?;
+}
+@{
+    IQueryable<BranchStore> items = models.PromptVirtualClassOccurrence();
+}
+
+@foreach (var b in items)
+{
+    <option class="virtual-store" value="@(b.BranchID)" selected="@(_model == b.BranchID)">@(b.BranchName)</option>
+}
+
+
+

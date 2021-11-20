@@ -1,0 +1,73 @@
+﻿
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using WebHome.Components 
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    UserProfile _learner;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _learner = (UserProfile)this.Model;
+}
+@{ 
+    LessonTime lessonItem = (LessonTime)ViewBag.DataItem;
+}
+<script>
+    $(function () {
+        var currentIndex = 1;
+        $global.nomoreLesson = function () {
+            $('#btnMoreLesson').remove();
+        };
+        $('#btnMoreLesson').on('click', function (element) {
+            showLoading();
+            $.post('@Html.Raw(Url.Action("InquireLesson", "LessonConsole", new { LearnerID = _learner.UID, PageSize = 6, ExceptionalID = lessonItem?.LessonID }))', { 'CurrentIndex': currentIndex }, function (data) {
+                hideLoading();
+                currentIndex++;
+                if ($.isPlainObject(data)) {
+                    if (data.result) {
+                    } else {
+                        Swal.fire(
+                            'Oops...',
+                            data.message,
+                            'warning'
+                        )
+                    }
+                } else {
+                    $(data).insertBefore($('#btnMoreLesson').closest('li'));
+                }
+            });
+        });
+    });
+
+    //檢視課表
+    function viewTraining(keyID, encTargetID) {
+        showLoading();
+        $.post('@Html.Raw(Url.Action("ViewTrainingExecution", "LessonConsole", new { _learner.UID }))', { 'keyID': keyID, 'EncTargetID': encTargetID }, function (data) {
+            hideLoading();
+            if ($.isPlainObject(data)) {
+                Swal.fire(
+                    'Oops...',
+                    data.message,
+                    'warning'
+                )
+            } else {
+                $(data).appendTo($('body'));
+            }
+        });
+    }
+
+</script>
+@{  await Component.InvokeAsync<InquireLessonViewComponent>(new LessonQueryViewModel { LearnerID = _learner.UID, PageSize = 6, CurrentIndex = 0, ExceptionalID = lessonItem?.LessonID });  }
+<li><button id="btnMoreLesson" class="btn btn-default btn-round btn-sm m-t-10 float-right">載入更多 ...</button></li>
+
+

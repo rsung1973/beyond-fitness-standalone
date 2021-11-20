@@ -1,0 +1,83 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    String _dialogID;
+    String _viewID = $"btnDelete{DateTime.Now.Ticks}";
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _dialogID = (String)this.Model;
+
+    MonthlyCoachRevenueIndicatorQueryViewModel _viewModel = (MonthlyCoachRevenueIndicatorQueryViewModel)ViewBag.ViewModel;
+}
+@{
+    MonthlyCoachRevenueIndicator indicator = models.GetTable<MonthlyCoachRevenueIndicator>().Where(c => c.PeriodID == _viewModel.PeriodID && c.CoachID == _viewModel.CoachID).FirstOrDefault();
+}
+@if (indicator != null)
+{
+    <button id="@(_viewID)" type="button" class="btn btn-danger btn-round btn-simple btn-round waves-effect waves-red float-right">刪除，不想要了</button>
+    <script>
+        $(function () {
+            $('#@(_viewID)').on('click', function (event) {
+                $('#@(_viewID)').on('click', function (event) {
+                    Swal.fire({
+                        title: '確定刪除?',
+                        text: "刪除後資料將無法回覆",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: '確定',
+                        cancelButtonText: '取消',
+                        focusCancel: true
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            showLoading();
+                            $.post('@Html.Raw(Url.Action("DeleteCoachRevenueIndicator", "BusinessConsole", new { KeyID = indicator.PeriodID.EncryptKey(),indicator.CoachID }))', {}, function (data) {
+                                hideLoading();
+                                if ($.isPlainObject(data)) {
+                                    if (data.result) {
+                                        $('#@(_dialogID)').modal('hide');
+                                        Swal.fire(
+                                            '刪除成功',
+                                            '資料已經刪除 Bye!',
+                                            'success'
+                                        )
+                                        refreshCoachIndicatorList();
+                                    } else {
+                                        Swal.fire(
+                                            'Oops...',
+                                            data.message,
+                                            'warning'
+                                        )
+                                    }
+                                } else {
+                                    $(data).appendTo($('body')).remove();
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                '取消成功',
+                                '你的資料現在非常安全 :)',
+                                'info'
+                            )
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+
+}
+
+

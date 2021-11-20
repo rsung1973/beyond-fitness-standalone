@@ -1,0 +1,79 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    UserEvent _model;
+    CalendarEventQueryViewModel _viewModel;
+    String _dialogID = $"userEvent{DateTime.Now.Ticks}";
+    UserProfile _profile;
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (UserEvent)this.Model;
+    _viewModel = (CalendarEventQueryViewModel)ViewBag.ViewModel;
+    _profile = await Context.GetUserAsync();
+}
+<div class="modal fade" id="@(_dialogID)" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="title">
+                    @(_model.Title == null ? _model.ActivityProgram : $"{_model.Title}：{_model.ActivityProgram}")
+                    <small>
+                        @if ((_model.EndDate - _model.StartDate).TotalDays >= 1)
+                        {
+                            <text>@(_model.StartDate.ToString("yyyy/MM/dd"))~@(_model.EndDate.ToString("yyyy/MM/dd"))</text>
+                        }
+                        else
+                        {
+                            <text>@(_model.StartDate.ToString("yyyy/MM/dd HH:mm"))~@(_model.EndDate.ToString("HH:mm"))</text>
+                        }
+                    </small>
+                </h2>
+                <a class="closebutton" data-dismiss="modal"></a>
+            </div>
+            <div class="modal-body">
+                @if (_model.GroupEvent.Count >= 1)
+                {
+                <ul class="list-unstyled team-info margin-0">
+                    <li>
+                        @{
+                            ViewBag.ProfileClass = "large popfit";
+                            await Html.RenderPartialAsync("~/Views/Common/ProfileImage.cshtml", _model.UserProfile);
+                        }
+                    </li>
+                    @foreach (var r in _model.GroupEvent)
+                    {
+                        <li>
+                            @{
+                                ViewBag.ProfileClass = "large popfit";
+                                await Html.RenderPartialAsync("~/Views/Common/ProfileImage.cshtml", r.UserProfile);
+                            }
+                        </li>
+                    }
+                </ul>
+                }
+            </div>            
+            @if (_profile.IsAssistant() || _model.UID == _profile.UID)
+            {
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-darkteal btn-round waves-effect" onclick="bookingCustomEvent({'keyID':'@(_model.EventID.EncryptKey())'});"><i class="zmdi zmdi-edit"></i></button>
+                    <button type="button" class="btn btn-danger btn-round btn-simple btn-round waves-effect waves-red" onclick="javascript:deleteUserEvent('@(_model.EventID.EncryptKey())');"><i class="zmdi zmdi-delete"></i></button>                    
+                </div>
+            }
+            </div>
+    </div>
+    @{
+        await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/BSModalScript.cshtml", model: _dialogID);
+    }
+</div>
+
+

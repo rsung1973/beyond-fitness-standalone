@@ -1,0 +1,78 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    CourseContract _model;
+    String _dialogID = $"serviceProcess{DateTime.Now.Ticks}";
+    UserProfile _profile;
+
+
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (CourseContract)this.Model;
+    _profile = (await Context.GetUserAsync()).LoadInstance(models);
+}
+<div class="modal fade" id="@(_dialogID)" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="title">請選擇執行功能</h6>
+                <a class="closebutton" data-dismiss="modal"></a>
+            </div>
+            <div class="modal-popmenu-body">
+                <div class="list-group">
+                    @{
+                        var revision = _model.CourseContractRevision;
+                        bool hasItem = false;
+                    }
+                    @if (_model.IsServiceApprovable(models, _profile))
+                    {
+                        <a href="@(Url.Action("SignContractService","ConsoleHome",new { KeyID = _model.ContractID.EncryptKey() }))" class="list-group-item">主管審核</a>
+                        hasItem = true;
+                    }
+                    else if (_model.IsServiceSignable(models, _profile))
+                    {
+                        <a href="@(Url.Action("SignContractService","ConsoleHome",new { KeyID = _model.ContractID.EncryptKey() }))" class="list-group-item">學生簽名</a>
+                        hasItem = true;
+                    }
+                    @if (_model.Status == (int)Naming.CourseContractStatus.已生效)
+                    {
+                        if (!(_profile.IsOfficer() && _profile.UserRole.Count() == 1))
+                        {
+                            <a href="@Html.Raw(Url.Action("GetContractAmendmentPdf", "CourseContract", new { revision.RevisionID }))" target="_blank" class="list-group-item">電子合約</a>
+                            hasItem = true;
+                        }
+                    }
+                    @if (!hasItem)
+                    {
+                        <script>
+                            $(function () {
+                                $('#@(_dialogID)').modal('hide');
+                            });
+                        </script>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    @{ await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/BSModalScript.cshtml", model: _dialogID);}
+
+    <script>
+        $(function () {
+
+        });
+    </script>
+</div>
+

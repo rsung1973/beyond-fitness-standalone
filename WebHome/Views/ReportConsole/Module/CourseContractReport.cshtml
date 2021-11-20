@@ -1,0 +1,166 @@
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    CourseContract _item;
+    UserProfile _model;
+    CourseContractQueryViewModel _viewModel;
+
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _modelState = ViewContext.ModelState;
+    _model = (UserProfile)this.Model;
+    _viewModel = (CourseContractQueryViewModel)ViewBag.ViewModel;
+    _item = (CourseContract)ViewBag.DataItem;
+
+}
+
+
+<div class="row clearfix">
+    <div class="col-12">
+        <h4 class="card-outbound-header">懶人包</h4>
+    </div>
+    <div class="col-lg-2 col-md-3 col-sm-6">
+        <div class="card">
+            <div class="file">
+                <a href='javascript:downloadContractReport(@Html.Raw(JsonConvert.SerializeObject(new
+                                                        {
+                                                            EffectiveDateFrom = DateTime.Today.FirstDayOfMonth().AddMonths(-1),
+                                                            EffectiveDateTo = DateTime.Today.FirstDayOfMonth(),
+                                                            ContractQueryMode = (int)Naming.ContractServiceMode.ContractOnly,
+                                                            Status = (int)Naming.CourseContractStatus.已生效,
+                                                        })));'>
+                    <div class="icon">
+                        <i class="zmdi livicon livicon-evo" data-options="name: box.svg; size: 60px; style: linesAlt; strokeWidth:2px; autoPlay:true"></i>
+                    </div>
+                    <div class="file-name">
+                        <p class="m-b-5">合約清單</p>
+                        <small>上月簽約 <span class="date text-muted">@($"{DateTime.Today.AddMonths(-1):yyyy/MM}")</span></small>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-2 col-md-3 col-sm-6">
+        <div class="card">
+            <div class="file">
+                <a href='javascript:downloadServiceReport(@Html.Raw(JsonConvert.SerializeObject(new
+                                                        {
+                                                            EffectiveDateFrom = DateTime.Today.FirstDayOfMonth().AddMonths(-1),
+                                                            EffectiveDateTo = DateTime.Today.FirstDayOfMonth(),
+                                                            ContractQueryMode = (int)Naming.ContractServiceMode.ServiceOnly,
+                                                            Status = (int)Naming.CourseContractStatus.已生效,
+                                                        })));'>
+                    <div class="icon">
+                        <i class="zmdi livicon livicon-evo" data-options="name: briefcase.svg; size: 60px; style: linesAlt; strokeWidth:2px; autoPlay:true"></i>
+                    </div>
+                    <div class="file-name">
+                        <p class="m-b-5">服務申請清單</p>
+                        <small>上月申請 <span class="date text-muted">@($"{DateTime.Today.AddMonths(-1):yyyy/MM}")</span></small>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row clearfix">
+    <div class="col-12">
+        <h4 class="card-outbound-header">自訂條件</h4>
+    </div>
+    <div class="col-lg-2 col-md-3 col-sm-6">
+        <div class="card">
+            <div class="file">
+                <a href="javascript:selectPeriodContractReport();">
+                    <div class="icon">
+                        <i class="zmdi livicon livicon-evo" data-options="name: box.svg; size: 60px; style: linesAlt; strokeWidth:2px; autoPlay:true"></i>
+                    </div>
+                    <div class="file-name">
+                        <p class="m-b-5">合約清單</p>
+                        <small>自訂條件 <span class="date text-muted"><i class="zmdi zmdi-search"></i></span></small>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-2 col-md-3 col-sm-6">
+        <div class="card">
+            <div class="file">
+                <a href="javascript:selectPeriodServiceReport();">
+                    <div class="icon">
+                        <i class="zmdi livicon livicon-evo" data-options="name: briefcase.svg; size: 60px; style: linesAlt; strokeWidth:2px; autoPlay:true"></i>
+                    </div>
+                    <div class="file-name">
+                        <p class="m-b-5">服務申請清單</p>
+                        <small>自訂條件 <span class="date text-muted"><i class="zmdi zmdi-search"></i></span></small>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+    <script>
+        function selectPeriodContractReport() {
+            showLoading();
+            $.post('@Html.Raw(Url.Action("SelectPeriodReport","ReportConsole"))', {}, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    Swal.fire(
+                        'Oops...',
+                        data.message,
+                        'warning'
+                    )
+                } else {
+                    $global.doQuery = function (viewModel) {
+                        viewModel.EffectiveDateFrom = viewModel.DateFrom;
+                        viewModel.EffectiveDateTo = moment(viewModel.DateTo).add(1, 'days').format('YYYY-MM-DD');
+                        viewModel.ContractQueryMode = @((int)Naming.ContractServiceMode.ContractOnly);
+                        viewModel.Status = @((int)Naming.CourseContractStatus.已生效);
+                        downloadContractReport(viewModel);
+                    }
+                    $(data).appendTo($('body'));
+                }
+            });
+        }
+
+        function downloadContractReport(viewModel) {
+            $('').launchDownload('@Html.Raw(Url.Action("CreateContractQueryXlsx", "ReportConsole"))', viewModel, 'report', true);
+        }
+
+        function selectPeriodServiceReport() {
+            showLoading();
+            $.post('@Html.Raw(Url.Action("SelectPeriodReport","ReportConsole"))', {}, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    Swal.fire(
+                        'Oops...',
+                        data.message,
+                        'warning'
+                    )
+                } else {
+                    $global.doQuery = function (viewModel) {
+                        viewModel.EffectiveDateFrom = viewModel.DateFrom;
+                        viewModel.EffectiveDateTo = moment(viewModel.DateTo).add(1, 'days').format('YYYY-MM-DD');
+                        viewModel.Status = @((int)Naming.CourseContractStatus.已生效);
+                        viewModel.ContractQueryMode = @((int)Naming.ContractServiceMode.ServiceOnly);
+                        downloadServiceReport(viewModel);
+                    }
+                    $(data).appendTo($('body'));
+                }
+            });
+        }
+
+        function downloadServiceReport(viewModel) {
+            $('').launchDownload('@Html.Raw(Url.Action("CreateContractServiceQueryXlsx", "ReportConsole"))', viewModel, 'report', true);
+        }
+
+    </script>
+</div>

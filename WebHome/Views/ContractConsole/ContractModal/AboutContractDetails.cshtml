@@ -1,0 +1,154 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    CourseContract _model;
+    String _dialogID = $"contractDetails{DateTime.Now.Ticks}";
+    UserProfile _profile;
+
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (CourseContract)this.Model;
+    _profile = await Context.GetUserAsync();
+}
+<div class="modal fade" id="@(_dialogID)" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <a class="closebutton" data-dismiss="modal"></a>
+            <div class="card">
+                <div class="body">
+                    <div class="panel-group full-body" id="accordionDetail_contract" role="tablist" aria-multiselectable="true">
+                        <div class="panel">
+                            <div class="panel-heading" role="tab" id="headingDetailContract">
+                                <h4 class="panel-title">
+                                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordionDetail_contract" href="#collapseDetail_contract" aria-expanded="false" aria-controls="collapseDetail_contract">
+                                        <i class="material-icons">subject</i> 合約詳細資訊
+                                        @{
+                                            await Html.RenderPartialAsync("~/Views/ContractConsole/Module/ContractDataStatus.cshtml", _model);
+                                        }
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseDetail_contract" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="headingDetailContract">
+                                <div class="panel-body no-padding">
+                                    <ul class="mb_list">
+                                        @{
+                                            await Html.RenderPartialAsync("~/Views/ContractConsole/Module/ContractDataContent.cshtml", _model);
+                                        }
+                                    </ul>
+                                    @{
+                                        await Html.RenderPartialAsync("~/Views/ContractConsole/Module/ContractPackageContent.cshtml", _model);
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        @if (!_profile.IsServitor())
+                        {
+                            <div class="panel">
+                                <div class="panel-heading" role="tab" id="headingLearnerlist">
+                                    <h4 class="panel-title"><a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordionDetail_contract" href="#collapseLearnerlist" aria-expanded="false" aria-controls="collapseLearnerlist"><i class="material-icons">subject</i> 學生詳細資訊 </a></h4>
+                                </div>
+                                <div id="collapseLearnerlist" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingLearnerlist">
+                                    <div class="panel-body no-padding">
+                                        <div class="table-responsive">
+                                            @{ await Html.RenderPartialAsync("~/Views/ContractConsole/Module/ContractMemberList.cshtml", _model.CourseContractMember.Select(m => m.UserProfile));}
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        @if (_model.InstallmentID.HasValue)
+                        {
+                            <div class="panel">
+                                <div class="panel-heading col-amber" role="tab" id="headingInstallmentList">
+                                    <h4 class="panel-title"><a role="button" data-toggle="collapse" data-parent="#accordionDetail_contract" href="#collapseInstallmentList" aria-expanded="false" aria-controls="collapseInstallmentList"><i class="material-icons">subject</i> 分期詳細資訊 </a></h4>
+                                </div>
+                                <div id="collapseInstallmentList" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingInstallmentList">
+                                    <div class="panel-body no-padding">
+                                        <div class="row">
+                                            <div class="col-md-12 col-12">
+                                                @{ await Html.RenderPartialAsync("~/Views/ContractConsole/Module/ContractInstallmentList.cshtml", models.GetTable<CourseContract>().Where(c => c.InstallmentID == _model.InstallmentID));}
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        @if (_model.Status >= (int)Naming.CourseContractStatus.已生效)
+                        {
+                            <div class="panel">
+                                <div class="panel-heading col-pink" role="tab" id="headingInvoiceList">
+                                    <h4 class="panel-title"><a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordionDetail_contract" href="#collapseInvoiceList" aria-expanded="false" aria-controls="collapseInvoiceList"><i class="material-icons">subject</i> 收款詳細資訊 </a></h4>
+                                </div>
+                                <div id="collapseInvoiceList" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingInvoiceList">
+                                    <div class="panel-body no-padding">
+                                        <div class="row">
+                                            <div class="col-md-12 col-12">
+                                                <ul class="mb_list xl-pink">
+                                                    @{
+                                                        await Html.RenderPartialAsync("~/Views/ContractConsole/Module/ContractPayoff.cshtml", _model);
+                                                    }
+                                                </ul>
+                                            </div>
+                                            <div class="col-md-12 col-12">
+                                                @{ await Html.RenderPartialAsync("~/Views/ContractConsole/Module/ContractPaymentList.cshtml",
+                                                             models.GetTable<ContractPayment>()
+                                                             .Where(c => c.ContractID == _model.ContractID)
+                                                             .Select(c => c.Payment)
+                                                             .Where(p => p.TransactionType == (int)Naming.PaymentTransactionType.體能顧問費));}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel">
+                                <div class="panel-heading" role="tab" id="headingLessonList">
+                                    @{ var attended = _model.ContractType == (int)CourseContractType.ContractTypeDefinition.CFA
+? _model.RegisterLessonContract.Select(r => r.RegisterLesson).Sum(r => r.AttendedLessons)
+: _model.RegisterLessonContract.FirstOrDefault()?.RegisterLesson?.AttendedLessons;}
+
+                                    <h4 class="panel-title"><a role="button" data-toggle="collapse" data-parent="#accordionDetail_contract" href="#collapseLessonList" aria-expanded="false" aria-controls="collapseLessonList"><i class="material-icons">subject</i> 上課詳細資訊 @(attended > 0 ? $"({attended})" : null)</a></h4>
+                                </div>
+                                <div id="collapseLessonList" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingLessonList">
+                                    <div class="panel-body no-padding">
+                                        <div class="row">
+                                            <div class="col-md-12 col-12">
+                                                @{ await Html.RenderPartialAsync("~/Views/ContractConsole/Module/ContractLessonList.cshtml", _model.AttendedLessonList());}
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @{ await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/BSModalScript.cshtml", model: _dialogID);}
+
+    <script>
+        $(function () {
+            $('#@(_dialogID) .panel-collapse').on('shown.bs.collapse', function (event) {
+                @*$('#@(_dialogID)').resize();*@
+                //$('.modal.fade.show').resize();
+            });
+        });
+    </script>
+</div>
+

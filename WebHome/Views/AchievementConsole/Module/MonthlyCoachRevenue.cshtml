@@ -1,0 +1,286 @@
+
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using WebHome.Components 
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@using CommonLib.Utility
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    MonthlyCoachRevenueIndicatorQueryViewModel _viewModel;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _modelState = ViewContext.ModelState;
+    _viewModel = (MonthlyCoachRevenueIndicatorQueryViewModel)ViewBag.ViewModel;
+
+}
+
+<!--不同維度分析卡片-->
+<div class="container-fluid">
+    <h4 class="card-outbound-header m-l-15">不同維度分析 <a href="javascript:showMoreActionModal();"><i class="zmdi livicon-evo" data-options="name: zoom-in.svg; size: 30px; style: lines-alt; strokeWidth:2; autoPlay:true"></i></a></h4>
+    <div class="row clearfix">
+        <div class="col-12">
+            <div class="card">
+                <div class="header">
+                    @{ 
+                        await Html.RenderPartialAsync("~/Views/Common/SelectMonthlyInterval.cshtml",
+                            new String[] 
+                            {
+                                "queryInterval",
+                                "javascript:showThreeMonthBarChart();",
+                                "javascript:showSixMonthBarChart();",
+                                "javascript:showYearBarChart();",
+                                "javascript:showMoreQueryModal();",
+                            });
+                    }
+                </div>
+                <div class="body">
+                    <div class="row clearfix">
+                        <div class="col-lg-7 col-md-12 col-sm-12 col-12">
+                            <div id="myChart" class="echarts"></div>
+                        </div>
+                        <div class="col-lg-5 col-md-12 col-sm-12 col-12" id="achievementList">
+                            @{
+                                await Component.InvokeAsync<InquireMonthlyCoachRevenueViewComponent>(_viewModel);
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@{ 
+    DateTime idx = DateTime.Today.AddMonths(-1).FirstDayOfMonth();
+}
+<script>
+
+    $(function () {
+        if ($global.achievementConsole === undefined) {
+            $global.achievementConsole = {
+                'doQuery': {},
+            };
+        }
+
+        setTimeout(function () {
+            if ($global.echarts.myChart != null) {
+                $global.echarts.myChart.resize();
+            }
+        }, 500);
+
+    });
+
+    var dtAchivement;
+    function showAchivementList(itemCount) {
+        if (dtAchivement != undefined) {
+            dtAchivement.destroy();
+        }
+
+        var columns = [];
+        for (var idx = 1; idx <= itemCount; idx++) {
+            columns.push(idx);
+        }
+
+        dtAchivement = $('.dtAchivement').DataTable({
+            "filter": false,
+            "bPaginate": false,
+            "info": false,
+            "order": [
+                [0, 'desc']
+            ],
+            "language": {
+                "lengthMenu": "每頁顯示 _MENU_ 筆資料",
+                "zeroRecords": "沒有資料也是種福氣",
+                "info": "共 _TOTAL_ 筆，目前顯示第 _START_ 至 _END_筆資料",
+                "infoEmpty": "顯示 0 筆的資料",
+                "infoFiltered": "(總共從 _MAX_ 筆資料過濾)",
+                "loadingRecords": "快馬加鞭處理中...",
+                "processing": "快馬加鞭處理中...",
+                "search": "快速搜尋：",
+                "paginate": {
+                    "first": "第一頁",
+                    "last": "最後一頁",
+                    "next": "下一頁",
+                    "previous": "前一頁"
+                },
+            },
+            scrollX: true,
+            scrollCollapse: true,
+            fixedColumns: {
+                leftColumns: 1
+            },
+            "columnDefs": [
+                {
+                    targets: [0],
+                    className: "align-center"
+                },
+                {
+                    targets: columns,
+                    className: "align-right"
+                }
+            ]
+        });
+
+        $('.dtAchivement').resize();
+
+    }
+
+    function showMoreActionModal() {
+
+        if ($global.appliedDialog && $global.appliedDialog['chartModal']) {
+            $global.appliedDialog['chartModal'].modal('show');
+            return;
+        }
+
+        $global.viewModel.DialogID = 'chartModal';
+        showLoading();
+        $.post('@Html.Raw(Url.Action("SelectChartModal", "AchievementConsole"))', $global.viewModel, function (data) {
+            hideLoading();
+            if ($.isPlainObject(data)) {
+                alert(data.message);
+            } else {
+                $(data).appendTo($('body'));
+            }
+        });
+    }
+
+    function closeActionModal() {
+        $global.hideAllModal();
+    }
+
+    function showThreeMonthBarChart(close) {
+        if (close) {
+            closeActionModal();
+        }
+        $global.viewModel.DateFrom = '@($"{idx.AddMonths(-2):yyyy/MM/dd}")';
+        $global.viewModel.DateTo = '@($"{idx:yyyy/MM/dd}")';
+        inquireMonthlyCoachRevenue($global.viewModel);
+    }
+
+    function showSixMonthBarChart() {
+        $global.viewModel.DateFrom = '@($"{idx.AddMonths(-5):yyyy/MM/dd}")';
+        $global.viewModel.DateTo = '@($"{idx:yyyy/MM/dd}")';
+        inquireMonthlyCoachRevenue($global.viewModel);
+    }
+
+    function showYearBarChart() {
+        $global.viewModel.DateFrom = '@($"{idx.AddMonths(-12):yyyy/MM/dd}")';
+        $global.viewModel.DateTo = '@($"{idx:yyyy/MM/dd}")';
+        inquireMonthlyCoachRevenue($global.viewModel);
+    }
+
+    function inquireMonthlyCoachRevenue(viewModel) {
+
+        showLoading();
+        $.post('@Html.Raw(Url.Action("InquireMonthlyCoachRevenue", "AchievementConsole"))', viewModel, function (data) {
+            hideLoading();
+            if ($.isPlainObject(data)) {
+                alert(data.message);
+            } else {
+                $('#achievementList').empty()
+                    .append($(data));
+            }
+        });
+    }
+
+    function showLineQueryModal() {
+        closeActionModal();
+        if ($global.appliedDialog && $global.appliedDialog['curveCondition']) {
+            $global.appliedDialog['curveCondition'].modal('show');
+            return;
+        }
+        $global.achievementConsole.doQuery['curveCondition'] = function (viewModel) {
+            inquireMonthlyCoachRevenue(viewModel);
+        };
+        $global.viewModel.DialogID = 'curveCondition';
+        showLoading();
+        $.post('@Html.Raw(Url.Action("SelectCurveCondition", "AchievementConsole"))', $global.viewModel, function (data) {
+            hideLoading();
+            if ($.isPlainObject(data)) {
+                alert(data.message);
+            } else {
+                $(data).appendTo($('body'));
+            }
+        });
+    }
+
+    function showLessonQueryModal() {
+        closeActionModal();
+        if ($global.appliedDialog && $global.appliedDialog['lessonCurve']) {
+            $global.appliedDialog['lessonCurve'].modal('show');
+            return;
+        }
+
+        $global.achievementConsole.doQuery['lessonCurve'] = function (viewModel) {
+            inquireMonthlyCoachRevenue(viewModel);
+        };
+        $global.viewModel.DialogID = 'lessonCurve';
+        $global.viewModel.DateFrom = '@($"{idx.AddMonths(-2):yyyy/MM/dd}")';
+        $global.viewModel.DateTo = '@($"{idx:yyyy/MM/dd}")';
+
+        showLoading();
+        $.post('@Html.Raw(Url.Action("SelectLessonCurve", "AchievementConsole"))', $global.viewModel, function (data) {
+            hideLoading();
+            if ($.isPlainObject(data)) {
+                alert(data.message);
+            } else {
+                $(data).appendTo($('body'));
+            }
+        });
+    }
+
+    function showStackBarQueryModal() {
+        closeActionModal();
+        if ($global.appliedDialog && $global.appliedDialog['chartCondition']) {
+            $global.appliedDialog['chartCondition'].modal('show');
+            return;
+        }
+
+        $global.achievementConsole.doQuery['chartCondition'] = function (viewModel) {
+            inquireMonthlyCoachRevenue(viewModel);
+        };
+
+        $global.viewModel.DialogID = 'chartCondition';
+        showLoading();
+        $.post('@Html.Raw(Url.Action("SelectChartCondition", "AchievementConsole"))', $global.viewModel, function (data) {
+            hideLoading();
+            if ($.isPlainObject(data)) {
+                alert(data.message);
+            } else {
+                $(data).appendTo($('body'));
+            }
+        });
+    }
+
+    function showMoreQueryModal() {
+
+        if ($global.appliedDialog && $global.appliedDialog['queryCondition']) {
+            $global.appliedDialog['queryCondition'].modal('show');
+            return;
+        }
+
+        $global.achievementConsole.doQuery['queryCondition'] = function (viewModel) {
+            inquireMonthlyCoachRevenue(viewModel);
+        };
+
+        $global.viewModel.DialogID = 'queryCondition';
+        showLoading();
+        $.post('@Html.Raw(Url.Action("SelectQueryCondition", "AchievementConsole"))', $global.viewModel, function (data) {
+            hideLoading();
+            if ($.isPlainObject(data)) {
+                alert(data.message);
+            } else {
+                $(data).appendTo($('body'));
+            }
+        });
+    }
+
+</script>

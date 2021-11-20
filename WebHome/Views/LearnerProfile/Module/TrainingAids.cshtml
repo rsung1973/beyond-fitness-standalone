@@ -1,0 +1,80 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    TrainingItem _model;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (TrainingItem)this.Model;
+    TrainingItemViewModel _viewModel = (TrainingItemViewModel)ViewBag.ViewModel;
+    TrainingStage _stage = (TrainingStage)ViewBag.TrainingStage;
+    var items = models.GetTable<TrainingStage>().OrderBy(s => s.StageID).Take(5);
+}
+@{
+    string[] cssClass = new string[]
+    {
+"collapse xl-khaki collapse",
+"collapse xl-pink collapse",
+"collapse xl-seagreen collapse",
+"collapse xl-blue collapse",
+"collapse l-khaki collapse"
+    };
+
+    cssClass[_stage.StageID - 1] += " show";
+
+    string[] btnClass = new string[]
+    {
+"btn btn-raised bg-amber btn-sm btn-round waves-effect",
+"btn btn-raised bg-pink btn-sm btn-round waves-effect",
+"btn btn-raised bg-green btn-sm btn-round waves-effect",
+"btn btn-raised bg-blue btn-sm btn-round waves-effect",
+"btn btn-raised bg-lime btn-sm btn-round waves-effect"
+    };
+}
+@foreach (var item in items)
+{
+    <button class="@btnClass[item.StageID-1]" type="button" data-toggle="collapse" data-target="#@($"collapseAid_{item.StageID}")" aria-expanded="false" aria-controls="@($"collapseAid_{item.StageID}")" tabindex="-1"> @(item.Stage)器材 </button>
+}
+
+@foreach (var item in items)
+{
+    if (item.TrainingAids.Where(a => a.Status == (int)Naming.GeneralStatus.Successful)
+                        .Count() == 0)
+    {
+        continue;
+    }
+    <div class="@(cssClass[item.StageID-1])" id="@($"collapseAid_{item.StageID}")">
+        <div class="well">
+            <div class="row">
+                @foreach (var aid in item.TrainingAids
+                            .Where(t => t.Status == (int)Naming.GeneralStatus.Successful))
+                {
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-6">
+                        <label class="fancy-checkbox">
+                            <input name="AidID" value="@aid.AidID" type="checkbox" />
+                            <span>@(aid.ItemName)</span>
+                        </label>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}
+<script>$(function () {
+        if ($global.viewModel.AidID && $global.viewModel.AidID.length > 0) {
+            $global.viewModel.AidID.forEach(function (item, idx) {
+                $('input:checkbox[name="AidID"][value=' + item + ']').prop('checked', true);
+            });
+        }
+    });</script>
+

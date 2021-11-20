@@ -1,0 +1,129 @@
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+
+@functions
+{
+    class _GroupIndex
+    {
+        public int? Key { get; set; }
+        public int Count { get; set; }
+    }
+}
+
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    UserProfile _model;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (UserProfile)this.Model;
+    String _dialogID = $"coursecontractrevision{DateTime.Now.Ticks}";
+
+    //DateTime dateFrom = DateTime.Today.FirstDayOfMonth();
+    //DateTime dateTo = DateTime.Today.FirstDayOfMonth().AddMonths(1);
+
+    var revision = _model.PromptContractCauseForEnding(models, out IQueryable<CourseContract> unpaidOverdueItems);
+    var unpaidCount = unpaidOverdueItems.Count();
+    var totalCount = revision.Count() + unpaidCount;
+
+    if (totalCount > 0)
+    {
+        var groups = revision.GroupBy(r => r.CauseForEnding)
+                        .Select(g => new _GroupIndex
+                        {
+                            Key = g.Key,
+                            Count = g.Count()
+                        }).ToList();
+
+        if (unpaidCount > 0)
+        {
+            groups.Add(new _GroupIndex
+            {
+                Key = (int)Naming.CauseForEnding.分期不付款,
+                Count = unpaidCount
+            });
+        }
+
+        groups = groups.OrderByDescending(g => g.Count).ToList();
+
+        var result = groups.Take(5)
+            .Select(s => new
+            {
+                label = $"{(Naming.CauseForEnding)s.Key}",
+                value = Math.Round((s.Count * 100M) / totalCount, 0, MidpointRounding.AwayFromZero)
+            });
+
+        //var colors = groups.Select(s => (s.Key < __ColorIndex.Length
+        //                                    ? __ColorIndex[s.Key.Value]
+        //                                    : "")).ToArray();
+
+        String[] colors = { "#f2e8cc", "#93e3ff", "#b0dd91", "#ffe699", "#f8cbad", "#a989bf", "#a4a4a4", "#b2c8ff" };
+
+        <!-- 終止原因分析圖Modal -->
+        <div class="modal fade" id="@(_dialogID)" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5>終止原因分析</h5>
+                        <a class="closebutton" data-dismiss="modal"></a>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row clearfix">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+                                <div id="donut_chart" class="dashboard-donut-chart"></div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+                                <table class="table m-t-15 m-b-0">
+                                    <tbody>
+                                        @foreach (var g in groups)
+                                        {
+                                            <tr>
+                                                <td>@(((Naming.CauseForEnding)g.Key).ToString())</td>
+                                                <td>@(Math.Round(g.Count * 100M / totalCount))%</td>
+                                            </tr>
+
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @{ await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/BSModalScript.cshtml", model: _dialogID);}
+
+            <script>
+                //顯示終止合約分析圖
+                $('#@(_dialogID)').on('shown.bs.modal', function () {
+                    if (donut_chart != undefined) {
+                        donut_chart = null;
+                    }
+                    Morris.Donut({
+                        element: 'donut_chart',
+                        data: @Html.Raw(JsonConvert.SerializeObject(result)),
+                        colors: @Html.Raw(JsonConvert.SerializeObject(colors)),
+                        formatter: function (y) {
+                            return y + '%'
+                        }
+                    });
+                });
+            </script>
+        </div>
+
+    }
+}
+
+@functions  {
+    static String[] __ColorIndex = new string[] { "", "#f2e8cc", "#93e3ff", "#b0dd91", "#ffe699", "#f8cbad", "#a989bf", "#a4a4a4", "#b2c8ff" };
+}
+

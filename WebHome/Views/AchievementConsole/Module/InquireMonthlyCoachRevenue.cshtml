@@ -1,0 +1,100 @@
+﻿
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@using CommonLib.Utility
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    MonthlyCoachRevenueIndicatorQueryViewModel _viewModel;
+    IQueryable<MonthlyCoachRevenueIndicator> _model;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _modelState = ViewContext.ModelState;
+    _viewModel = (MonthlyCoachRevenueIndicatorQueryViewModel)ViewBag.ViewModel;
+    _model = (IQueryable<MonthlyCoachRevenueIndicator>)this.Model;
+
+    bool enlarge = _viewModel.DateFrom?.AddMonths(9) <= _viewModel.DateTo;
+}
+<script>
+    if ($global.echarts === undefined) {
+        $global.echarts = {
+
+        };
+
+        $global.echarts.showChart = function () {
+            // 基於準備好的dom，初始化echarts例項
+            if ($global.echarts.myChart != null) {
+                $global.echarts.myChart.dispose();
+            }
+            var style;
+            if ($global.currentTheme == 'theme-nero') {
+                style = 'macarons_nero';
+            } else {
+                style = 'macarons';
+            }
+            $global.echarts.myChart = echarts.init(document.getElementById('myChart'), style, { height: 400, /*width: 662,*/ locale: "EN" });
+
+            // 使用剛指定的配置項和資料顯示圖表。
+            $global.echarts.myChart.setOption($global.echarts.option);
+        };
+
+        $global.onChangeTheme = $global.echarts.showChart;
+    }
+
+    $(function () {
+        var enlarge = @(enlarge ? "true":"false");
+        var $div = $('#myChart').parent();
+        var $div1 = $div.next();
+        $div.removeClass('col-lg-7').removeClass('col-lg-12');
+        $div1.removeClass('col-lg-5')
+            .removeClass('col-lg-6')
+            .removeClass('col-lg-offset-3')
+            .removeClass('col-md-offset-3');
+        if (enlarge) {
+            $div.addClass('col-lg-12');
+            $div1.addClass('col-lg-6 col-lg-offset-3 col-md-offset-3');
+        } else {
+            $div.addClass('col-lg-7');
+            $div1.addClass('col-lg-5');
+        }
+    });
+</script>
+@{
+    switch (_viewModel.ChartType)
+    {
+        case 1:
+            await Html.RenderPartialAsync("~/Views/AchievementConsole/Module/MonthlyCoachRevenueList.cshtml", _model);
+            await Html.RenderPartialAsync("~/Views/AchievementConsole/Module/ShowMonthlyCoachRevenueBarChart.cshtml", _model);
+            break;
+
+        case 2:
+            await Html.RenderPartialAsync("~/Views/AchievementConsole/Module/MonthlyCoachLessonAttendanceList.cshtml", _model);
+            await Html.RenderPartialAsync("~/Views/AchievementConsole/Module/ShowMonthlyCoachRevenueLineChart.cshtml", _model);
+            break;
+
+        case 3:
+            await Html.RenderPartialAsync("~/Views/AchievementConsole/Module/MonthlyCoachRevenueList.cshtml", _model);
+            await Html.RenderPartialAsync("~/Views/AchievementConsole/Module/ShowMonthlyCoachRevenueStackChart.cshtml", _model);
+            break;
+    }
+
+}
+
+<script>
+    $(function () {
+        if ($global.echarts.showChart) {
+            $global.echarts.showChart();
+        }
+        $('#queryInterval').text('@($"{_viewModel.DateFrom:yyyyMM}")-@($"{_viewModel.DateTo:yyyyMM}")');
+        $global.viewModel = @Html.Raw(_viewModel.JsonStringify());
+    });
+</script>

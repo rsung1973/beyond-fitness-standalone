@@ -1,0 +1,85 @@
+﻿
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    CalendarEventItem _model;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _model = (CalendarEventItem)this.Model;
+
+    var profile = await Context.GetUserAsync();
+}
+@{
+    object clickHander(UserEvent item, bool editable)
+    {
+        if (editable)
+        {
+            <text>bookingCustomEvent({'keyID':'@(item.EventID.EncryptKey())'});</text>
+        }
+        else
+        {
+            <text>void(0);</text>
+        }
+        return null;
+    }
+}
+
+@{
+    UserEvent item = (UserEvent)_model.EventItem;
+    bool editable = item.UID == profile.UID || profile.IsAssistant();
+    <div class="event-name b-custom row" onclick="@Html.Raw(clickHander(item,editable))">
+        <div class="col-2 text-left">
+            <h4><span>@(item.StartDate.ToString("HH:mm"))</span><span>@(item.EndDate.ToString("HH:mm"))</span></h4>
+        </div>
+        <div class="col-10">
+            <h6>
+                @(item.Title)
+                @if (item.BranchID.HasValue || item.Place != null)
+                {
+                    <address><i class="zmdi zmdi-pin"></i>@(item.BranchID.HasValue ? item.BranchStore.BranchName : item.Place)</address>
+                }
+            </h6>
+            <p>@(item.ActivityProgram)</p>
+            <ul class="list-unstyled team-info margin-0 p-t-5">
+                @{
+                    int idx = 0;
+                    if (item.UID != profile.UID)
+                    {
+                        <li>
+                            @{
+                                ViewBag.ProfileClass = "popfit";
+                                await Html.RenderPartialAsync("~/Views/Common/ProfileImage.cshtml", item.UserProfile);
+                            }
+                        </li>
+                    }
+                }
+                @foreach (var r in item.GroupEvent.Where(v => v.UID != profile.UID))
+                {
+                    <li>
+                        @{
+                            await Html.RenderPartialAsync("~/Views/Common/ProfileImage.cshtml", r.UserProfile);
+                        }
+                    </li>
+                    idx++;
+                    if (idx > 4)
+                    {
+                        <li><img src="images/more.png"></li>
+                        break;
+                    }
+                }
+            </ul>
+        </div>
+    </div>
+}

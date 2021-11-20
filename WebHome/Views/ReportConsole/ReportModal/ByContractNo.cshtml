@@ -1,0 +1,32 @@
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    String _dialogID;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _dialogID = this.Model as String;
+}
+<input type="text" class="form-control" placeholder="合約編號" name="contractNo" />
+<span class="input-group-addon">
+    <i class="zmdi zmdi-search"></i>
+</span>
+<script>
+    $(function () {
+        var queryObj = @(_dialogID);
+        queryObj.appendCheck(function (inputData) {
+            return inputData.contractNo !== '';
+        });
+    });
+</script>

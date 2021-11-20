@@ -1,0 +1,36 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    ContractMemberViewModel _viewModel;
+
+
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _viewModel = (ContractMemberViewModel)ViewBag.ViewModel;
+}
+
+<script>
+    $(function () {
+        $('#@(_viewModel.DialogID)').modal('hide');
+        $global.viewModel.OwnerID = @(_viewModel.OwnerID.HasValue ? _viewModel.OwnerID.ToString() : "null");
+        if ($global.commitContractMemberOnce) {
+            $global.commitContractMemberOnce();
+            $global.commitContractMemberOnce = null;
+        } else {
+            loadMemberList();
+        }
+    });
+</script>
+

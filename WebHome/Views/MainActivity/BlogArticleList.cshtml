@@ -1,0 +1,83 @@
+
+
+@using System.IO
+@using System.Linq.Expressions
+@using System.Web 
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    IQueryable<BlogArticle> _model;
+    BlogArticleQueryViewModel _viewModel;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _modelState = (ModelStateDictionary) ViewBag.ModelState;
+    _model = (IQueryable<BlogArticle>)this.Model;
+    _viewModel = (BlogArticleQueryViewModel) ViewBag.ViewModel;
+
+    Layout = "~/Views/MainActivity/Template/BlogPage.cshtml";
+
+}
+
+@section CustomHeader {
+
+}
+
+<!-- Main Content -->
+<section class="section-blog dark">
+    <div class="container">
+        <div class="row clearfix">
+            <div class="col-12">
+                <span class="mode p-r-20">
+                    <a href="javascript:(history.back());"><i class="fas fa-backward"></i></a>
+                </span>
+            </div>
+        </div>
+        <ul class="list-group list-group-flush articlelist">
+            @{
+                var items = _model
+                    .Where(a => a.Document.DocDate < DateTime.Now)
+                    .OrderByDescending(b => b.BlogID).ToArray();
+            }
+            @for (int idx = 0; idx < items.Length;)
+            {
+                    <div class="row clearfix">
+                    @for (int i = 0; i < 2 && idx < items.Length; i++, idx++)
+                    {
+                        var item = items[idx];
+                        <div class="col-md-6 col-xs-12">
+                            <li class="list-group-item">
+                                <div class="media">
+                                    <div class="media-body">
+                                        <a href="@($"{Url.Action("BlogSingle", "MainActivity")}?{HttpUtility.UrlEncode(JsonConvert.SerializeObject(new { item.DocID }).EncryptKey())}")" class="title">@(item.Title)</a>
+                                        <span class="author">@(item.UserProfile.FullName())</span>
+                                        <span class="date">@($"{item.Document.DocDate:yyyy-MM-dd}")</span>
+                                    </div>
+                                    <div class="media-right">
+                                        <a href="@($"{Url.Action("BlogSingle", "MainActivity")}?{HttpUtility.UrlEncode(JsonConvert.SerializeObject(new { item.DocID }).EncryptKey())}")">
+                                            @{ var imgUrl = $"Blog/{item.BlogID}/images/Title.jpg";}
+
+                                            <img class="blog-img" src="images/blog/DefaultTitle.jpg" onload="@(System.IO.File.Exists(Startup.MapPath(imgUrl)) ? $"this.onload = null;this.src = '{imgUrl}';" : null)" />
+                                        </a>
+                                    </div>
+                                </div>
+                            </li>
+                        </div>
+                    }
+                    </div>
+            }
+        </ul>
+    </div>
+</section>
+
+@section TailPageJavaScriptInclude {
+
+}

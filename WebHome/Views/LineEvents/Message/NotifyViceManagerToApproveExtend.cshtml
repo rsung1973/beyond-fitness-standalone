@@ -1,0 +1,223 @@
+@using System.IO
+@using System.Linq.Expressions
+@using System.Web
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using WebHome.Properties
+@using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    CourseContract _model;
+
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _model = (CourseContract)this.Model;
+
+    //Response.ContentType = "application/json";
+    var originalContract = _model.CourseContractRevision.SourceContract;
+}
+{
+  "to": "@(_model.CourseContractExtension.BranchStore.ViceManager?.UserProfileExtension.LineID)",
+  "messages": [
+    {
+      "type": "flex",
+      "altText": "您有一張展延服務申請等待您審核",
+      "contents": {
+        "type": "bubble",
+        "hero": {
+          "type": "image",
+          "url": "https://www.beyond-fitness.com.tw/ConsoleHome/images/line/extend_approve.jpg",
+          "size": "full",
+          "aspectRatio": "20:15",
+          "aspectMode": "cover",
+          "offsetTop": "10px"
+        },
+        "body": {
+          "type": "box",
+          "layout": "vertical",
+          "contents": [
+            {
+              "type": "box",
+              "layout": "vertical",
+              "margin": "lg",
+              "spacing": "sm",
+              "contents": [
+                {
+                  "type": "box",
+                  "layout": "baseline",
+                  "spacing": "sm",
+                  "contents": [
+                    {
+                      "type": "text",
+                      "text": "合約名稱",
+                      "color": "#aaaaaa",
+                      "size": "sm",
+                      "flex": 3,
+                      "wrap": true
+                    },
+                    {
+                      "type": "text",
+                      "text": "@(_model.CourseContractType.TypeName)",
+                      "wrap": true,
+                      "color": "#666666",
+                      "size": "sm",
+                      "flex": 5
+                    }
+                  ]
+                },
+                {
+                  "type": "box",
+                  "layout": "baseline",
+                  "spacing": "sm",
+                  "contents": [
+                    {
+                      "type": "text",
+                      "text": "展延申請人",
+                      "color": "#aaaaaa",
+                      "size": "sm",
+                      "flex": 3,
+                      "wrap": true
+                    },
+                    {
+                      "type": "text",
+                      "text": "@(_model.ServingCoach.UserProfile.FullName())",
+                      "wrap": true,
+                      "color": "#666666",
+                      "size": "sm",
+                      "flex": 5
+                    }
+                  ]
+                },
+                {
+                  "type": "box",
+                  "layout": "baseline",
+                  "spacing": "sm",
+                  "contents": [
+                    {
+                      "type": "text",
+                      "text": "學生姓名",
+                      "color": "#aaaaaa",
+                      "size": "sm",
+                      "flex": 3,
+                      "wrap": true
+                    },
+                    {
+                      "type": "text",
+                      "text": "@(_model.ContractLearnerName())",
+                      "wrap": true,
+                      "color": "#666666",
+                      "size": "sm",
+                      "flex": 5
+                    }
+                  ]
+                },
+                {
+                  "type": "box",
+                  "layout": "baseline",
+                  "spacing": "sm",
+                  "contents": [
+                    {
+                      "type": "text",
+                      "text": "剩餘堂數",
+                      "color": "#aaaaaa",
+                      "size": "sm",
+                      "flex": 3,
+                      "wrap": true
+                    },
+                    {
+                      "type": "text",
+                      "text": "@(originalContract.RemainedLessonCount())",
+                      "wrap": true,
+                      "color": "#666666",
+                      "size": "sm",
+                      "flex": 5
+                    }
+                  ]
+                },
+                {
+                  "type": "box",
+                  "layout": "baseline",
+                  "spacing": "sm",
+                  "contents": [
+                    {
+                      "type": "text",
+                      "text": "展延月數",
+                      "color": "#aaaaaa",
+                      "size": "sm",
+                      "flex": 3,
+                      "wrap": true
+                    },
+                    {
+                      "type": "text",
+                      "text": "@((_model.Expiration.Value.Year * 12 + _model.Expiration.Value.Month) - (originalContract.Expiration.Value.Year * 12 + originalContract.Expiration.Value.Month))",
+                      "wrap": true,
+                      "color": "#666666",
+                      "size": "sm",
+                      "flex": 5
+                    }
+                  ]
+                },
+                {
+                  "type": "box",
+                  "layout": "baseline",
+                  "spacing": "sm",
+                  "contents": [
+                    {
+                      "type": "text",
+                      "text": "合約迄日",
+                      "color": "#aaaaaa",
+                      "size": "sm",
+                      "flex": 3,
+                      "wrap": true
+                    },
+                    {
+                      "type": "text",
+                      "text": "@($"{_model.Expiration:yyyy/MM/dd}")",
+                      "wrap": true,
+                      "color": "#666666",
+                      "size": "sm",
+                      "flex": 5
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "footer": {
+          "type": "box",
+          "layout": "vertical",
+          "spacing": "sm",
+          "contents": [
+            {
+              "type": "separator",
+              "color": "#d9d9d9"
+            },
+            {
+              "type": "button",
+              "style": "link",
+              "height": "sm",
+              "action": {
+                "type": "uri",
+                "label": "👉立即審核",
+                "uri": "@Html.Raw($"{Startup.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/Account/ToSignContractService")}?KeyID={HttpUtility.UrlEncode(_model.ContractID.EncryptKey())}&encUID={HttpUtility.UrlEncode((_model.CourseContractExtension.BranchStore.ViceManagerID ?? -1).EncryptKey())}")"
+                }
+                },
+                {
+                "type": "spacer",
+                "size": "sm"
+                }
+                ],
+                "flex": 0
+                }
+                }
+                }
+                ]
+                }

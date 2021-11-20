@@ -1,0 +1,97 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+@using WebHome.Helper.BusinessOperation
+@using Newtonsoft.Json
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    UserProfile _model;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _modelState = ViewContext.ModelState;
+    _model = (UserProfile)this.Model;
+
+    LessonOverviewQueryViewModel viewModel = ViewBag.ViewModel as LessonOverviewQueryViewModel;
+    IQueryable<LessonTime> items = ViewBag.DataItems as IQueryable<LessonTime>;
+}
+<div class="col-lg-6 col-md-12 col-sm-12">
+    <div class="body p-10">
+        <div class="icon bg-amber"><i class="zmdi zmdi-run"></i> </div>
+        <div class="content" onclick="lessonOverview();">
+            <div class="text">本月P.T</div>
+            @{ 
+                var PT = items.ByLessonQueryType(Naming.LessonQueryType.一般課程);
+                int PTCount = PT.Count();
+            }
+            <h5 class="number">
+                @if (PTCount > 0)
+                {
+                    <a href="javascript:void(0);">@(PTCount)</a>
+                }
+                else
+                {
+                    <text>0</text>
+                }
+            </h5>
+        </div>
+        <hr>
+        <div class="icon bg-green"><i class="zmdi zmdi-walk"></i> </div>
+        <div class="content" onclick="lessonOverview();">
+            <div class="text">本月P.I</div>
+            @{ 
+                var PI = items.ByLessonQueryType(Naming.LessonQueryType.自主訓練);
+                int PICount = PI.Count();
+            }
+            <h5 class="number">
+                @if (PICount > 0)
+                {
+                    <a href="javascript:void(0);">@(PICount)</a>
+                }
+                    else
+                {
+                    <text>0</text>
+                }
+            </h5>
+            </div>
+    </div>
+</div>
+<div class="col-lg-6 col-md-12 col-sm-12">
+    <div class="body p-10">
+        <div class="icon"><i class="zmdi zmdi-close"></i> </div>
+        <div class="content" onclick="lessonOverview();">
+            <div class="text">未打卡</div>
+            @{                
+                int count = PT.Where(t => !t.LessonPlan.CommitAttendance.HasValue).Count() + PI.Where(t => !t.LessonPlan.CommitAttendance.HasValue).Count();
+            }
+            <h5 class="number">
+                @if (count > 0)
+                {
+                    <a href="javascript:void(0);">@(count)</a>
+                }
+                else
+                {
+                    <text>0</text>
+                }
+            </h5>
+        </div>
+        <hr>
+        @RenderSection("Part_1")
+    </div>
+</div>
+<script>
+    function lessonOverview() {
+        var viewModel = @Html.Raw(JsonConvert.SerializeObject(viewModel));
+        showLoading();
+        $('').launchDownload('@Html.Raw(Url.Action("LessonOverview","ConsoleHome"))', viewModel);
+    }
+</script>
+

@@ -1,0 +1,88 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    UserProfile _model;
+    List<BlogArticle> _items;
+    int _allotment;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (UserProfile)this.Model;
+
+    var items = models.GetTable<BlogArticle>()
+            //.Where(a => a.Document.CurrentStep == (int)Naming.DocumentLevelDefinition.正常)
+            //.Where(a => a.DocID >= 21961)
+            .OrderByDescending(a => a.DocID);
+
+    var totalCount = items.Count();
+    //Random rand = new Random((int)DateTime.Now.Ticks & 0x0000FFFF);
+    int idx = (int)(DateTime.Now.Ticks % Math.Max(totalCount, 1));
+
+    _items = new List<BlogArticle>();
+    while (_items.Count < Math.Min(totalCount, 5))
+    {
+        //var idx = rand.Next(totalCount);
+        var item = items.Skip(idx).Take(1).FirstOrDefault();
+        if (item != null)
+        {
+            _items.Add(item);
+        }
+        idx++;
+        idx = (idx * idx * idx) % Math.Max(totalCount, 1);
+    }
+    _allotment = ((int?)ViewBag.Allotment) ?? 2;
+}
+<div class="@($"col-sm-{12/_allotment} col-12")">
+    <h4 class="card-outbound-header">專業文章</h4>
+    <div class="parallax-img-card">
+        <div class="royalSlider contentSlider rsDefault" id="article-slider">
+            @foreach (var item in _items)
+            {
+                <div class="rsTextSlide">
+                    @{ var imgUrl = $"blog/{item.BlogID}/images/Title.jpg";}
+
+                    <img class="rsImg" src="images/blog/DefaultTitle.jpg" onload="@(System.IO.File.Exists(Startup.MapPath(imgUrl)) ? $"this.onload = null;this.src = '{imgUrl}';" : null)" data-rsh="" data-rsw="" />
+                    <a href="@(Url.Action("BlogSingle", "MainActivity", new { item.DocID }))" target="_blank">
+                        <h3 class="bottommask">@(item.Title)</h3>
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('#article-slider').royalSlider({
+            autoHeight: true,
+            arrowsNav: true,
+            arrowsNavAutoHide: false,
+            fadeinLoadedSlide: false,
+            controlNavigationSpacing: 0,
+            controlNavigation: 'none',
+            imageScaleMode: 'none',
+            imageAlignCenter: false,
+            loop: true,
+            loopRewind: true,
+            numImagesToPreload: 5,
+            keyboardNavEnabled: true,
+            usePreloader: false,
+            transitionType: 'fade'
+        }).resize();
+    });
+</script>
+
+
+

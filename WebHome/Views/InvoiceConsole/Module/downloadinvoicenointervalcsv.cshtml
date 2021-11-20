@@ -1,0 +1,58 @@
+
+@using System.IO
+@using System.Linq.Expressions
+@using System.Web
+@using Microsoft.AspNetCore.WebUtilities
+@using Microsoft.AspNetCore.Http
+ 
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    IQueryable<InvoiceTrackCode> _model;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _model = (IQueryable<InvoiceTrackCode>)this.Model;
+
+    InvoiceQueryViewModel _viewModel = (InvoiceQueryViewModel)ViewBag.ViewModel;
+}
+
+@if (_model.Count() > 0)
+{
+
+    Context.Response.Clear();
+    Context.Response.Headers.Add("Cache-control", "max-age=1");
+    Context.Response.ContentType = "application/octet-stream";
+    Context.Response.Headers.Add("Content-Disposition", String.Format("attachment;filename={0}", HttpUtility.UrlEncode("BranchNo_" + "(" + String.Format("{0:yyyy-MM-dd}", DateTime.Today) + ").csv")));
+
+
+    foreach (InvoiceTrackCode track in _model)
+    {
+        await Context.Response.WriteAsync($"M,{track.Year - 1911}{track.PeriodNo * 2:00},{track.TrackCode},{track.EndNo:00000000},{track.StartNo:00000000},07,24928211\r\n");
+        int idx = 0;
+        foreach (var a in track.InvoiceTrackCodeAssignment)
+        {
+            foreach (var item in a.InvoiceNoInterval)
+            {
+                await Context.Response.WriteAsync($"D,{a.Organization.ReceiptNo},{idx++:00000},{a.Organization.TaxNo},{DateTime.Today:yyyyMMdd},{track.Year - 1911}{track.PeriodNo * 2:00},{track.TrackCode},{item.StartNo:00000000},{item.EndNo:00000000},{(item.EndNo - item.StartNo + 1) / 50},07,{DateTime.Today:yyyyMMdd},{a.Organization.ReceiptNo}\r\n");
+            }
+        }
+    }
+
+    await Context.Response.Body.FlushAsync();
+}
+else
+{
+    <script>
+        alert('無資料可供下載!!');
+        window.history.go(-1);
+    </script>
+}
+

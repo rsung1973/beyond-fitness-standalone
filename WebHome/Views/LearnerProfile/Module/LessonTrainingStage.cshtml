@@ -1,0 +1,182 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    LessonTime _model;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (LessonTime)this.Model;
+}
+@{
+    UserProfile learner = ((UserProfile)ViewBag.Learner).LoadInstance(models);
+    var plan = _model.AssertTrainingPlan(models, UID: learner.UID);
+    var execution = plan.TrainingExecution;
+    TrainingStage stage = (TrainingStage)ViewBag.TrainingStage;
+    var items = models.GetTable<TrainingItem>()
+            .Where(t => t.ExecutionID == execution.ExecutionID)
+            .Where(t => t.TrainingType.TrainingStageItem.StageID == stage.StageID)
+            .OrderBy(t => t.Sequence);
+
+    String currentID = $"{DateTime.Now.Ticks}";
+
+    bool viewOnly = (bool?)ViewBag.ViewOnly == true ? true : false;
+    bool isModal = (bool?)ViewBag.IsModal == true ? true : false;
+    String indication = learner.UserProfileExtension?.Gender == "F" ? "girl" : "boy";
+}
+<div>
+    <div class="card-header" id="@($"heading_{stage.StageID}{currentID}")">
+        <h3 class="m-b-0">
+            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#@($"collapse_{stage.StageID}{currentID}")" aria-expanded="true" aria-controls="@($"collapse_{stage.StageID}{currentID}")">
+                <img src="@($"images/lesson/stage0.png")" class="img-thumbnail popfit">
+                @(stage.Stage)
+                @{
+                    var duration = execution.TrainingExecutionStage.Where(s => s.StageID == stage.StageID).FirstOrDefault();
+                }
+                - @(String.Format("{0:0.#}", duration?.TotalMinutes ?? 0)) min
+            </button>
+            @if (!isModal)
+            {
+                <a href="javascript:editStageTrainingItem(@stage.StageID,null,$('#@($"heading_{stage.StageID}{currentID}")'));"><i class="zmdi zmdi-plus-circle-o-duplicate zmdi-hc-lg float-right m-t-25 col-grey"></i></a>
+            }
+        </h3>
+    </div>
+    <div id="@($"collapse_{stage.StageID}{currentID}")" class="collapse show" aria-labelledby="@($"heading_{stage.StageID}{currentID}")" data-parent="#accordion">
+        <div class="card-body">
+            <div class="dd nestable-with-handle nestable-dark-theme" id="@($"nestable_{stage.StageID}{currentID}")">
+                <ol class="dd-list lesson-list">
+                    @foreach (var item in items)
+                    {
+                        if (item.TrainingType.BreakMark != true)
+                        {
+                            <li class="dd-item dd3-item list-action" data-id="@(item.ItemID)" onclick="@(isModal ? "void(0)" : $"editStageTrainingItem({stage.StageID},{item.ItemID},$('#heading_{stage.StageID}{currentID}'))");">
+                                @if (!isModal)
+                                {
+                                    <div class="dd-handle dd3-handle"></div>
+                                }
+                                <div class="dd3-content list-item">
+                                    <span class="badge bg-secondary">@(item.TrainingType.BodyParts)</span>
+                                    @foreach (var aid in item.TrainingItemAids)
+                                    {
+                                        <span class="badge bg-teal">@aid.TrainingAids.ItemName</span>
+                                    }
+                                    @(item.Description)
+                                    <div class="float-right">
+                                        @if (item.GoalStrength != null)
+                                        {
+                                            <span class="badge">@(item.GoalStrength)</span>
+                                        }
+                                        @if (item.GoalTurns != null && item.GoalStrength != null)
+                                        {
+                                            <text>X</text>
+                                        }
+                                        @if (item.GoalTurns != null)
+                                        {
+                                            <span class="badge">@(item.GoalTurns)</span>
+                                        }
+                                    </div>
+                                    <span class="list-intro">@(item.Remark)</span>
+                                </div>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="dd-item dd3-item list-line" data-id="@item.ItemID" onclick="@(isModal ? "void(0)" : $"editStageBreakInterval({stage.StageID},{item.ItemID},$('#heading_{stage.StageID}{currentID}'))");">
+                                @if (!isModal)
+                                {
+                                    <div class="dd-handle dd3-handle t--12"></div>
+                                }
+                                <div class="dd3-content">
+                                    <span class="tag-repet badge col-grey">
+                                        @if (item.BreakIntervalInSecond != null)
+                                        {
+                                            <text>Break @(item.BreakIntervalInSecond) sec.</text>
+                                        }
+                                        @if (item.BreakIntervalInSecond != null && item.Repeats != null)
+                                        {
+                                            <text> / </text>
+                                        }
+                                        @if (item.Repeats != null)
+                                        {
+                                            <text>Repeat * @(item.Repeats)</text>
+                                        }
+                                    </span>
+                                    @if (item.Remark != null)
+                                    {
+                                        <span class="list-intro">@(item.Remark)</span>
+                                    }
+                                </div>
+                            </li>
+                        }
+                    }
+                </ol>
+            </div>            @*<div class="clearfix m-b-0">
+                    @if (!isModal)
+                    {
+                        <div class="btn-group float-right" role="group">
+                            <a id="btnGroupDrop1" class="dropdown-toggle col-white" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="zmdi zmdi-plus-circle-o-duplicate zmdi-hc-2x float-right m-t-25 col-grey"></i>
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                <a class="dropdown-item" href="javascript:editStageTrainingItem(@stage.StageID,null,$('#@($"heading_{stage.StageID}{currentID}")'));">新增動作</a>
+                                <a class="dropdown-item" href="javascript:editStageBreakInterval(@stage.StageID,null,$('#@($"heading_{stage.StageID}{currentID}")'));">新增休息/組數</a>
+                            </div>
+                        </div>
+                    }
+                </div>*@
+        </div>
+    </div>
+</div>
+@if (viewOnly != true)
+{
+    <script>
+    $(function () {
+        $('#@($"nestable_{stage.StageID}{currentID}")').nestable({
+            group: @(stage.StageID),
+            maxDepth: 1
+        });
+    });
+    </script>
+}
+@if (ViewBag.StageID == stage.StageID)
+{
+    <script>
+        $(function () {
+            var u = navigator.userAgent;
+            var isApple = u.indexOf('iPhone') >= 0 || u.indexOf('iPad') >= 0;
+            if (isApple) {
+                $([document.documentElement, document.body]).scrollTop($('#@($"heading_{stage.StageID}{currentID}")').offset().top);
+            }
+        });
+    </script>
+}
+@functions
+{
+
+    String stageColor(int stageID)
+    {
+        switch (stageID)
+        {
+            case 1:
+                return "col-amber";
+            case 2:
+                return "col-pink";
+            case 3:
+                return "col-green";
+            case 4:
+                return "col-blue";
+            case 5:
+                return "col-yellow";
+        }
+        return null;
+    }
+}

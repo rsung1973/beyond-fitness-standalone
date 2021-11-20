@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="dsPKCS7" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="dsPKCS7" msdata:IsDataSet="true" msdata:Locale="zh-TW" msdata:EnforceConstraints="False" msprop:Generator_UserDSName="dsPKCS7" msprop:Generator_DataSetName="dsPKCS7">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="pkcs7Envelop" msprop:Generator_UserTableName="pkcs7Envelop" msprop:Generator_RowDeletedName="pkcs7EnvelopRowDeleted" msprop:Generator_TableClassName="pkcs7EnvelopDataTable" msprop:Generator_RowChangedName="pkcs7EnvelopRowChanged" msprop:Generator_RowClassName="pkcs7EnvelopRow" msprop:Generator_RowChangingName="pkcs7EnvelopRowChanging" msprop:Generator_RowEvArgName="pkcs7EnvelopRowChangeEvent" msprop:Generator_RowEvHandlerName="pkcs7EnvelopRowChangeEventHandler" msprop:Generator_TablePropName="pkcs7Envelop" msprop:Generator_TableVarName="tablepkcs7Envelop" msprop:Generator_RowDeletingName="pkcs7EnvelopRowDeleting">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="UniqueID" msprop:Generator_UserColumnName="UniqueID" msprop:Generator_ColumnPropNameInRow="UniqueID" msprop:Generator_ColumnVarNameInTable="columnUniqueID" msprop:Generator_ColumnPropNameInTable="UniqueIDColumn" type="xs:string" minOccurs="0" />
+              <xs:element name="NotBefore" msprop:Generator_UserColumnName="NotBefore" msprop:Generator_ColumnPropNameInRow="NotBefore" msprop:Generator_ColumnVarNameInTable="columnNotBefore" msprop:Generator_ColumnPropNameInTable="NotBeforeColumn" type="xs:string" minOccurs="0" />
+              <xs:element name="NotAfter" msprop:Generator_UserColumnName="NotAfter" msprop:Generator_ColumnPropNameInRow="NotAfter" msprop:Generator_ColumnVarNameInTable="columnNotAfter" msprop:Generator_ColumnPropNameInTable="NotAfterColumn" type="xs:string" minOccurs="0" />
+              <xs:element name="Subject" msprop:Generator_UserColumnName="Subject" msprop:Generator_ColumnPropNameInRow="Subject" msprop:Generator_ColumnVarNameInTable="columnSubject" msprop:Generator_ColumnPropNameInTable="SubjectColumn" type="xs:string" minOccurs="0" />
+              <xs:element name="Issuer" msprop:Generator_UserColumnName="Issuer" msprop:Generator_ColumnPropNameInRow="Issuer" msprop:Generator_ColumnVarNameInTable="columnIssuer" msprop:Generator_ColumnPropNameInTable="IssuerColumn" type="xs:string" minOccurs="0" />
+              <xs:element name="DataToSign" msprop:Generator_UserColumnName="DataToSign" msprop:Generator_ColumnPropNameInRow="DataToSign" msprop:Generator_ColumnVarNameInTable="columnDataToSign" msprop:Generator_ColumnPropNameInTable="DataToSignColumn" type="xs:string" minOccurs="0" />
+              <xs:element name="DataSignature" msprop:Generator_UserColumnName="DataSignature" msprop:Generator_ColumnPropNameInRow="DataSignature" msprop:Generator_ColumnVarNameInTable="columnDataSignature" msprop:Generator_ColumnPropNameInTable="DataSignatureColumn" type="xs:string" minOccurs="0" />
+              <xs:element name="Message" msprop:Generator_UserColumnName="Message" msprop:Generator_ColumnPropNameInRow="Message" msprop:Generator_ColumnVarNameInTable="columnMessage" msprop:Generator_ColumnPropNameInTable="MessageColumn" type="xs:string" minOccurs="0" />
+              <xs:element name="ActionTime" msprop:Generator_UserColumnName="ActionTime" msprop:Generator_ColumnPropNameInRow="ActionTime" msprop:Generator_ColumnVarNameInTable="columnActionTime" msprop:Generator_ColumnPropNameInTable="ActionTimeColumn" type="xs:dateTime" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

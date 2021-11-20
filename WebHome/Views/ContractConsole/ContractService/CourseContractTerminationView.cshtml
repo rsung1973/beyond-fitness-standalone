@@ -1,0 +1,262 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using WebHome.Properties
+
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    CourseContractRevision _model;
+    CourseContractMember _owner;
+    CourseContract _contract;
+    DateTime? _signatureDate;
+
+    CourseContractViewModel _viewModel = (CourseContractViewModel)ViewBag.ViewModel;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (CourseContractRevision)this.Model;
+    _contract = _model.CourseContract;
+    _owner = _contract.CourseContractMember.Where(m => m.UID == _contract.OwnerID).First();
+    var item = _contract.CourseContractLevel.Where(l => l.LevelID == (int)Naming.CourseContractStatus.待簽名).FirstOrDefault();
+    if (item != null)
+    {
+        _signatureDate = item.LevelDate;
+    }
+    else
+    {
+        _signatureDate = _contract.EffectiveDate ?? _contract.ContractDate;
+    }
+}
+<div class="row" style="margin-top: 20px;margin-bottom: 20px;">
+    <div class="col-md-12">
+        <div class="p-t-0" style="@(_viewModel.Pdf=="1" ? "width: 21.5cm; height: 28cm" : "")">
+            <h1 class="text-center"><b>學員服務申請表</b></h1>
+            <div class="@(_viewModel.Pdf=="1" ? "seal" : "")">
+                <table class="table" style="font-size: 16px">
+                    <tbody>
+                        <tr>
+                            <td colspan="2">合約編號：@(_contract.ContractNo())</td>
+                        </tr>
+                        <tr>
+                            <td>姓名：@(_contract.ContractOwner.RealName)</td>
+                            <td>聯絡電話：@(_contract.ContractOwner.Phone)</td>
+                        </tr>
+                    </tbody>
+                    <tbody>
+                        <tr>
+                            <td colspan="2">
+                                申請項目：
+                                @if (_contract.Status == (int)Naming.ContractServiceStatus.已生效)
+                                {
+                                    if (_model.BySelf == (int)Naming.Actor.BySelf)
+                                    {
+                                        <text>
+                                            ☑ 本人 辦理終止
+                                        </text>
+                                    }
+                                    else
+                                    {
+                                        <text>
+                                            ☑ 代理人 辦理終止
+                                        </text>
+                                    }
+                                }
+                                else
+                                {
+                                <label class="fancy-checkbox">
+                                    <input type="checkbox" name="extension" checked="checked" disabled="disabled" />
+                                    @if (_model.BySelf == (int)Naming.Actor.BySelf)
+                                    {
+                                    <span>本人 辦理終止</span>
+                                    }
+                                    else
+                                    {
+                                    <span>代理人 辦理終止</span>
+                                    }
+                                </label>
+                                }
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">申請日期：@(String.Format("{0:yyyy/MM/dd}", _contract.ContractDate))</td>
+                        </tr>
+                        <tr>
+                        <tr>
+                            <td colspan="2">
+                                @{
+                                    var original = _model.SourceContract;
+                                    var totalPaid = original.TotalPaidAmount();
+                                    var attened = original.AttendedLessonCount();
+                                    int? refund;
+                                }
+                                申請內容：原合約於 <span class="col-red">@(String.Format("{0:yyyy/MM/dd}", _signatureDate))</span> 終止服務，
+                                @if (totalPaid == 0)
+                                {
+                                    <text>
+                                        契約簽訂後未繳納費用 @(String.Format("{0:##,###,###,###}", original.TotalCost)) 元，退還剩餘款項
+                                        <span class="col-red">0</span>元。
+                                    </text>
+                                }
+                                else if (attened > 0 || !original.CourseContractExtension.Version.HasValue)
+                                {
+                                    if (_contract.ContractType == (int)CourseContractType.ContractTypeDefinition.CGA)
+                                    {
+                                        var lessons = original.CountableRegisterLesson();
+
+                                        refund = totalPaid
+                                                - lessons.Select(r => r.LessonPriceType)
+                                                    .Where(l => l.IsDietaryConsult).Sum(l => l.ListPrice * l.BundleCount)
+                                                - lessons.Where(r => !r.LessonPriceType.IsDietaryConsult)
+                                                    .Sum(r => _contract.CourseContractExtension.SettlementPrice * r.LessonTime.Count);
+
+                                        <text>
+                                            已繳服務總費用 @(String.Format("{0:##,###,###,###}", totalPaid))
+                                            扣除依簽約時課程單堂原價
+                                            @foreach (var lesson in lessons.Where(r => !r.LessonPriceType.IsDietaryConsult))
+                                            {
+                                                <text>
+                                                    (<span class="col-red">@(String.Format("{0:##,###,###,###}", _contract.CourseContractExtension.SettlementPrice))</span>) / 人乘以實際上課堂數(<span class="col-red">@(lesson.AttendedLessonCount())</span>)
+                                                </text>
+                                            }
+                                            ，扣除
+                                            @foreach (var lesson in lessons.Where(r => r.LessonPriceType.IsDietaryConsult))
+                                            {
+                                                <text>
+                                                    @(lesson.LessonPriceType.SimpleDescription)(<span class="col-red">@(String.Format("{0:##,###,###,###}", lesson.LessonPriceType.ListPrice*lesson.LessonPriceType.BundleCount))</span>)
+                                                </text>
+                                            }
+                                            退還剩餘款項 <span class="col-red">@(String.Format("{0:##,###,###,##0}", refund))</span>元
+                                            <small>
+                                                = @(String.Format("{0:##,###,###,###}", original.TotalPaidAmount()))
+                                                @foreach (var lesson in lessons.Where(r => !r.LessonPriceType.IsDietaryConsult))
+                                                {
+                                                    <text>
+                                                        - (@(String.Format("{0:##,###,###,###}", _contract.CourseContractExtension.SettlementPrice)) * @(lesson.AttendedLessonCount()))
+                                                    </text>
+                                                }
+                                                @foreach (var lesson in lessons.Where(r => r.LessonPriceType.IsDietaryConsult))
+                                                {
+                                                    <text>
+                                                        - (@(String.Format("{0:##,###,###,###}", lesson.LessonPriceType.ListPrice*lesson.LessonPriceType.BundleCount)))
+                                                    </text>
+                                                }
+                                                。
+                                            </small>
+                                        </text>
+                                    }
+                                    else
+                                    {
+                                        refund = totalPaid - (original.Lessons - original.RemainedLessonCount()) * _contract.CourseContractExtension.SettlementPrice * _contract.CourseContractType.GroupingMemberCount * _contract.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount / 100;
+                                        <text>
+                                            已繳服務總費用 @(String.Format("{0:##,###,###,###}", totalPaid)) 扣除依簽約時課程單堂原價(<span class="col-red">@(String.Format("{0:##,###,###,###}", _contract.CourseContractExtension.SettlementPrice))</span>) / 人乘以實際上課堂數(<span class="col-red">@(original.AttendedLessonCount())</span>)，退還剩餘款項 <span class="col-red">@(String.Format("{0:##,###,###,##0}", Math.Max(refund ?? 0,0)))</span>元<small>
+                                                = @(String.Format("{0:##,###,###,###}", original.TotalPaidAmount())) - ( @(String.Format("{0:##,###,###,###}", _contract.CourseContractExtension.SettlementPrice)) * @(_contract.CourseContractType.GroupingMemberCount)
+                                                @if (_contract.CourseContractType.GroupingMemberCount > 1)
+                                                {
+                                                    <text>* @(_contract.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount / 100m)</text>
+                                                }
+                                                * ( @(original.Lessons) - @(original.RemainedLessonCount() )))。
+                                            </small>
+                                        </text>
+                                    }
+                                }
+                                else if ((_contract.ContractDate - original.ValidFrom).Value.TotalDays < 8)
+                                {
+                                    <text>
+                                        契約簽訂後七日內未使用所約定服務(課程)，全額退還已繳費用 <span class="col-red">@(String.Format("{0:##,###,###,###}", totalPaid))</span> 元。
+                                    </text>
+                                }
+                                else
+                                {
+                                    var processingFee = totalPaid * 0.05;
+                                    <text>
+                                        契約簽訂後逾七日未使用所約定服務(課程)，已繳服務總費用 @(String.Format("{0:##,###,###,###}", totalPaid)) 扣除5％處理費(<span class="col-red">@(String.Format("{0:##,###,###,###}", processingFee))</span>)，退還剩餘款項 <span class="col-red">@(String.Format("{0:##,###,###,###}", totalPaid - processingFee))</span>元。<small>=@(totalPaid) - (@(totalPaid)*0.05)</small>
+                                    </text>
+                                }
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                代辦申請書：
+                                @if (_model.AttachmentID.HasValue)
+                                {
+                                    <u><a href="@Html.Raw($"{Startup.Properties["HostDomain"]}{Url.Action("GetResourceWithMime","Information",new { HKeyID =_model.AttachmentID.Value.EncryptHexKey() })}")" target="_blank">開啟附件</a></u>
+                                }
+                            </td>
+                        </tr>
+                        <tr style="@(_viewModel.Pdf=="1" ? "height: 12cm" : "height: 2cm")">
+                            <td colspan="2">
+                                其他更多說明：
+                                @if (_contract.Status == (int)Naming.ContractServiceStatus.待簽名)
+                                {
+                                    if (!_model.CauseForEnding.HasValue)
+                                    {
+                                        <text>@(_contract.Remark)</text>
+                                    }
+                                }
+                                else
+                                {
+                                    if (_model.CauseForEnding.HasValue)
+                                    {
+                                        <text>終止原因—@($"{(Naming.CauseForEnding)_model.CauseForEnding}") </text>
+                                        if (_model.CauseForEnding == (int)Naming.CauseForEnding.其他)
+                                        {
+                                            <text>（@(_contract.Remark)）</text>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <text>@(_contract.Remark)</text>
+                                    }
+                                }
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="table" style="font-size: 15px">
+                    <tr>
+                        <td colspan="3">備註：各項申請內容皆應依體能顧問聘請合約之規定辦理並經雙方簽署後始生效力</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">日期：@(String.Format("{0:yyyy/MM/dd}", _signatureDate))</td>
+                        <td>超越體能顧問有限公司</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            學員簽名：
+                            @{ ViewBag.SignatureName = "Signature";
+                                await Html.RenderPartialAsync("~/Views/ContractConsole/Module/SignHere.cshtml", _owner);}
+
+                        </td>
+                        <td></td>
+                        <td style="vertical-align: middle;">
+                            主管簽約代表：
+                            <img src="@(_contract.Supervisor?.UserProfileExtension.Signature)" width="200px" class="modifySignDialog_link">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            @if (_contract.CheckMinorLearner())
+                            {
+                                <text>家長/監護人簽名：</text>
+                                ViewBag.SignatureName = "GuardianSignature";
+                                await Html.RenderPartialAsync("~/Views/ContractConsole/Module/SignHere.cshtml", _owner);
+                            }
+                        </td>
+                        <td>簽約體能顧問：<img src="@(_contract.ServingCoach.UserProfile.UserProfileExtension.Signature)" width="200px" class="modifySignDialog_link" /></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+

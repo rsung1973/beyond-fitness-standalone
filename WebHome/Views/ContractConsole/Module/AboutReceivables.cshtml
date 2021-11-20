@@ -1,0 +1,48 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    IQueryable<CourseContract> _model;
+    IQueryable<CourseContract> _contractItems;
+    String _knobID = $"toPayRatio{DateTime.Now.Ticks}";
+
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = _contractItems = (IQueryable<CourseContract>)this.Model;
+}
+@{ var totalAmt = _contractItems.Sum(c => c.TotalCost) ?? 1;
+    var toPayItems = _contractItems.QueryContractPayment(models)
+                        .Where(p => !p.TotalPaidAmount.HasValue || p.Contract.TotalCost > p.TotalPaidAmount);
+    var totalAmtToPay = toPayItems.Sum(c => c.Contract.TotalCost - (c.TotalPaidAmount ?? 0));}
+
+
+<div class="body">
+    <div class="row">
+        <div class="col-12 text-center">
+            <input type="text" class="knob" data-linecap="round" data-width="90" data-height="90" data-thickness="0.25" data-anglearc="250" data-angleoffset="-125" data-fgcolor="#F15F79" readonly id="@(_knobID)" />
+            <script>
+                $(function () {
+                    drawKnob($("#@(_knobID)"),@((totalAmtToPay*100 / totalAmt) ?? 0), 3800);
+                });
+            </script>
+            <h6 class="m-t-20">催收帳款比率</h6>
+            <p class="displayblock m-b-0">$@($"{totalAmtToPay:##,###,###,##0}")</p>
+        </div>
+    </div>
+</div>
+
+
+
+

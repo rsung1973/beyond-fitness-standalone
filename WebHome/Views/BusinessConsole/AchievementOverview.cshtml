@@ -1,0 +1,187 @@
+
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    UserProfile _model;
+    MonthlyIndicatorQueryViewModel _viewModel;
+
+    Layout = "~/Views/ConsoleHome/Template/MainPage.cshtml";
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _modelState = ViewContext.ModelState;
+    _model = (UserProfile)this.Model;
+    _viewModel = (MonthlyIndicatorQueryViewModel)ViewBag.ViewModel;
+
+}
+@{
+    MonthlyIndicator _item = (MonthlyIndicator)ViewBag.DataItem;
+}
+@section CustomHeader {
+    <!-- JQuery DataTable Css -->
+    <link href="plugins/jquery-datatable/DataTables-1.10.18/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link href="plugins/jquery-datatable/Responsive-2.2.2/css/responsive.bootstrap4.min.css" rel="stylesheet">
+    <link href="plugins/jquery-datatable/FixedColumns-3.2.5/css/fixedColumns.bootstrap4.min.css" rel="stylesheet">
+    <!-- Bootstrap Datetimepick -->
+    <link href="css/smartcalendar-2.css" rel="stylesheet" />
+    <!-- Custom Css -->
+    <link rel="stylesheet" href="css/customelist.css?1.1" />
+    <!-- charts-c3 -->
+    <link href="plugins/charts-c3/plugin.css?2.0" rel="stylesheet">
+    <!-- dotdotdot JS -->
+    <link href="plugins/dotdotdot/dotdotdot.css?2.0" rel="stylesheet" />
+}
+
+<!-- Main Content -->
+<section class="content">
+    @{
+        ViewBag.BlockHeader = "損益平衡概況";
+        await Html.RenderPartialAsync("~/Views/ConsoleHome/Module/BlockHeader.cshtml", _model);
+    }
+    <!--目標與達成率-->
+    <div class="container-fluid">
+        @if (_item != null)
+        {
+            <div class="row clearfix">
+                <h4 class="card-outbound-header m-l-15">
+                    @(_item.Year)年@(_item.Month)月
+                    <a href="javascript:selectMonth();"><i class="zmdi zmdi-calendar zmdi-hc-lg"></i></a>
+                    @{
+                        ViewBag.Other = "全部";
+                        await Html.RenderPartialAsync("~/Views/Common/BranchStoreWithOther.cshtml", models.GetTable<BranchStore>().Where(b => b.BranchID == _viewModel.BranchID).FirstOrDefault());
+                    }
+                </h4>
+                <script>
+                    function applyAchievement(branchID) {
+                        $('').launchDownload('@Html.Raw(Url.Action("ApplyAchievementGoal", "ConsoleHome"))', { 'year': @(_viewModel.Year), 'month': @(_viewModel.Month), 'branchID': branchID });
+                    }
+                    function showAchievementOverview(branchID) {
+                         $('').launchDownload('@Html.Raw(Url.Action("AchievementOverview", "ConsoleHome"))', { 'year': @(_viewModel.Year), 'month': @(_viewModel.Month), 'branchID': branchID });
+                    }
+                </script>
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="header">
+                            <ul class="header-dropdown">
+                                <li class="dropdown">
+                                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class="zmdi zmdi-swap"></i> </a>
+                                    <ul class="dropdown-menu dropdown-menu-right slideUp float-right">
+                                        <li><a href="javascript:showAchievementOverview();">全部</a></li>
+                                        @foreach (var branch in models.GetTable<BranchStore>())
+                                        {
+                                            <li><a href="javascript:showAchievementOverview(@(branch.BranchID));">@(branch.BranchName)</a></li>
+                                        }
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        @{
+                            await Html.RenderPartialAsync("~/Views/BusinessConsole/Module2021/MonthlyIndicator.cshtml", _item);
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <ul class="header-dropdown">
+                <li class="dropdown">
+                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class="zmdi zmdi-swap"></i> </a>
+                    <ul class="dropdown-menu dropdown-menu-right slideUp float-right">
+                        <li><a href="javascript:showAchievementOverview();">全部</a></li>
+                        @foreach (var branch in models.GetTable<BranchStore>())
+                        {
+                            <li><a href="javascript:showAchievementOverview(@(branch.BranchID));">@(branch.BranchName)</a></li>
+                        }
+                    </ul>
+                </li>
+            </ul>
+        }
+    </div>
+    <script>
+        function selectMonth() {
+            //showLoading();
+            $.post('@Html.Raw(Url.Action("SelectMonth", "BusinessConsole"))', null, function (data) {
+                //hideLoading();
+                if ($.isPlainObject(data)) {
+                    Swal.fire(
+                        'Oops...',
+                        data.message,
+                        'warning'
+                    )
+                } else {
+                    $(data).appendTo($('body'));
+                }
+            });
+        }
+
+        $(function () {
+            $global.doSelect = function (year, month) {
+                $('').launchDownload('@Html.Raw(Url.Action("AchievementOverview", "ConsoleHome"))', { 'year': year, 'month': month, 'branchID': '@(_viewModel.BranchID)' });
+            };
+        });
+    </script>
+</section>
+
+
+@section TailPageJavaScriptInclude {
+    <!-- Echart Js -->
+    <script src="plugins/echarts/echarts.min.js"></script>
+    <!-- Echart Template Js -->
+    <script src="plugins/echarts/theme/macarons.js"></script>
+    <script src="plugins/echarts/theme/macarons_nero.js"></script>
+    <!--Sparkline Plugin Js-->
+    <script src="plugins/jquery-sparkline/jquery.sparkline.js"></script>
+    <!-- SweetAlert Plugin Js -->
+    <script src="plugins/sweetalert/sweetalert.min.js"></script>
+    <!-- Jquery DataTable Plugin Js -->
+    <script src="bundles/datatablescripts.bundle.js"></script>
+    <script src="plugins/jquery-datatable/Responsive-2.2.2/js/dataTables.responsive.min.js"></script>
+    <script src="plugins/jquery-datatable/FixedColumns-3.2.5/js/dataTables.fixedColumns.min.js"></script>
+    <!--Gauge Plugin Js-->
+    <script src="plugins/gauge/gauge.min.js"></script>
+    <!-- dotdotodt Js -->
+    <script src="plugins/dotdotdot/dotdotdot.js"></script>
+    <!-- ChartC3 Js -->
+    <script src="bundles/cs.bundles.js"></script>
+
+    @{ await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/KnobJS.cshtml");}
+
+    <script>
+        $(function () {
+            //var $body = $('body');
+            //if ($body.hasClass('theme-nero')) {
+            //    $.getScript('plugins/echarts/theme/nero/macarons.js', function (script, textStatus,jqXHR) {
+            //        if ($global.echarts.showChart) {
+            //            $global.echarts.showChart();
+            //        }
+            //    });
+            //} else {
+            //    $.getScript('plugins/echarts/theme/macarons.js', function (script, textStatus, jqXHR) {
+            //        if ($global.echarts.showChart) {
+            //            $global.echarts.showChart();
+            //        }
+            //    });
+            //}
+
+            window.onresize = function () {
+                if ($global.echarts.myChart) {
+                    $global.echarts.myChart.resize();
+                }
+            };
+        });
+    </script>
+
+}
+
+

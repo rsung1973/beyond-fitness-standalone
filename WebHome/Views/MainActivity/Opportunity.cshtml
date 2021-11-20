@@ -1,0 +1,73 @@
+
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@using WebHome.Views.MainActivity.Resources
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _modelState = ViewContext.ModelState;
+
+    Layout = "~/Views/MainActivity/Template/MainPage.cshtml";
+
+}
+
+@section CustomHeader {
+
+}
+
+<!-- // Banner -->
+<section class="section-header bg-darkteal small">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2 text-center">
+                <h1 class="wow fadeInUp animated" data-wow-delay=".3s" data-effect="mfp-zoom-in">@Html.Raw(NamingItem.OpportunityBannerTitle)</h1>
+                <p class="wow fadeInUp animated" data-wow-delay=".3s" data-effect="mfp-zoom-in">@Html.Raw(NamingItem.OpportunityBannerSubTitle)</p>
+                <a href="@(Url.Action("BookNow"))" class="btn btn-primary btn-round wow fadeInUp animated hidden-md-up" data-wow-delay=".6s" data-effect="mfp-zoom-in">@Html.Raw(NamingItem.BookNow)</a>
+            </div>
+            <!-- iPhone -->
+            <div class="col-md-8 col-md-offset-2 text-center">
+                <img class="header_iphone wow fadeInUp animated" src="images/landing/banner/banner-join.jpg" alt="孕婦健身" data-wow-delay=".3s" data-effect="mfp-zoom-in">
+            </div>
+            <!-- //iPhone -->
+        </div>
+    </div>
+</section>
+<section class="section-join">
+    <div class="container">
+        <div class="row">
+            <h3 class="section-title col-black align-center"> @Html.Raw(NamingItem.OpportunityFeaturesTitle)</h3>
+            <div class="col-md-5 align-center">
+                <img src="images/landing/org.png">
+            </div>
+            <div class="col-md-7">
+                <ul class="features-list">
+                    <li>@Html.Raw(NamingItem.OpportunityFeaturesDesc1)</li>
+                    <li>@Html.Raw(NamingItem.OpportunityFeaturesDesc2)</li>
+                    <li>@Html.Raw(NamingItem.OpportunityFeaturesDesc3)</li>
+                    <li>@Html.Raw(NamingItem.OpportunityFeaturesDesc4)</li>
+                    <li>@Html.Raw(NamingItem.OpportunityFeaturesDesc5)</li>
+                    <li>@Html.Raw(NamingItem.OpportunityFeaturesDesc6)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- // 聯絡我們 -->
+@{ await Html.RenderPartialAsync("~/Views/MainActivity/Module/JoinItem.cshtml");}
+
+
+@section TailPageJavaScriptInclude {
+
+}

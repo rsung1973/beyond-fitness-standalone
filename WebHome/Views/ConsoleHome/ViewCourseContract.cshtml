@@ -1,0 +1,81 @@
+﻿
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+@using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    CourseContract _model;
+    String _msg = DateTime.Now.Ticks.ToString();
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (CourseContract)this.Model;
+    ViewBag.ScrollUp = false;
+}
+<!DOCTYPE html>
+<html class="no-js">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <meta name="description" content="Responsive Bootstrap 4 and web Application ui kit.">
+    <title>BEYOND FITNESS 全方位雲端管理</title>
+    <!-- Favicon-->
+    <link rel="icon" href="favicons/favicon_96x96.png">
+    <!-- Specifying a Webpage Icon for Web Clip -->
+    <link rel="apple-touch-icon-precomposed" href="favicons/favicon_57x57.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="favicons/favicon_72x72.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="favicons/favicon_114x114.png">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="favicons/favicon_144x144.png">
+    <link rel="apple-touch-icon-precomposed" sizes="180x180" href="favicons/favicon_180x180.png">
+    <!-- Bootstrap -->
+    <link href="plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom Css -->
+    <link rel="stylesheet" href="css/main.css?2.7">
+    <link rel="stylesheet" href="css/color_skins.css?2.2">
+    <!-- jSignature -->
+    <link rel="stylesheet" href="css/jsignature.css">
+    <style type="text/css">
+        body {
+            background-color: #fff;
+        }
+    </style>
+</head>
+
+<body class="theme-white">
+    <!-- Main Content -->
+    <section>
+        <div class="container-fluid">
+            @{ await Html.RenderPartialAsync($"~/Views/ContractConsole/Module/CourseContractView{_model.CourseContractExtension.Version}.cshtml", _model);}
+        </div>
+    </section>
+</body>
+</html>
+
+<script>
+    var done = false;
+    var $signatureImage;
+    function signaturePanel(contractID, uid, signatureName) {
+        if (done)
+            return;
+        var event = event || window.event;
+        $signatureImage = $(event.target);
+        //showLoading();
+        $.post('@(Url.Action("SignaturePanel","CourseContract"))', { 'contractID': contractID, 'uid': uid, 'signatureName': signatureName }, function (data) {
+            //hideLoading();
+            $(data).appendTo($('body'));
+        });
+    }
+</script>
+
+

@@ -1,0 +1,263 @@
+
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+@using Newtonsoft.Json
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    UserProfile _model;
+    CourseContractQueryViewModel _viewModel;
+    IQueryable<CourseContract> _effectiveItems;
+
+    Layout = "~/Views/ConsoleHome/Template/MainPage.cshtml";
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _modelState = ViewContext.ModelState;
+    _model = (UserProfile)this.Model;
+    _viewModel = (CourseContractQueryViewModel)ViewBag.ViewModel;
+
+    _effectiveItems = models.PromptEffectiveContract()
+        .Where(c => c.FitnessConsultant == _model.UID);
+}
+@section CustomHeader {
+    <!-- JQuery DataTable Css -->
+    <link href="plugins/jquery-datatable/DataTables-1.10.18/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link href="plugins/jquery-datatable/Responsive-2.2.2/css/responsive.bootstrap4.min.css" rel="stylesheet">
+    <link href="plugins/jquery-datatable/FixedColumns-3.2.5/css/fixedColumns.bootstrap4.min.css" rel="stylesheet">
+    <!-- Bootstrap Datetimepick -->
+    
+    <link href="css/smartcalendar-2.css" rel="stylesheet" />
+
+    <!-- Custom Css -->
+    <link rel="stylesheet" href="css/customelist.css?1.1" />
+}
+
+<!-- Main Content -->
+<section class="content">
+    @{ ViewBag.BlockHeader = "我的合約";
+        await Html.RenderPartialAsync("~/Views/ConsoleHome/Module/BlockHeader.cshtml", _model);}
+
+
+    @if (_model.IsCoach())
+    {
+        <!--我的合約-->
+        <div class="container-fluid">
+            <div class="card widget_3">
+                <ul class="row clearfix list-unstyled m-b-0">
+                    <li class="col-lg-3 col-md-6 col-sm-12">
+                        @{ await Html.RenderPartialAsync("~/Views/ContractConsole/Module/AboutExpiringByCoach.cshtml", _model);}
+
+                    </li>
+                    <li class="col-lg-3 col-md-6 col-sm-12">
+                        @{ await Html.RenderPartialAsync("~/Views/ContractConsole/Module/AboutNewContractsByCoach.cshtml", _model);}
+
+                    </li>
+                    <li class="col-lg-3 col-md-6 col-sm-12">
+                        @{ await Html.RenderPartialAsync("~/Views/ContractConsole/Module/AboutContractServicesByCoach.cshtml", _model);}
+
+                    </li>
+                    <li class="col-lg-3 col-md-6 col-sm-12">
+                        @{ await Html.RenderPartialAsync("~/Views/ContractConsole/Module/AboutPaymentByCoach.cshtml", _model);}
+                    </li>
+                </ul>
+                <ul class="row clearfix list-unstyled m-b-0">
+                    @{ var newContracts = _effectiveItems
+                             .Where(c => c.Expiration >= DateTime.Today)
+                             .Where(c => !c.Renewal.HasValue || c.Renewal == false);
+                        var renewContracts = _effectiveItems
+                            .Where(c => c.Expiration >= DateTime.Today)
+                            .Where(c => c.Renewal.HasValue && c.Renewal == true);}
+
+                    @*<li class="col-lg-3 col-md-3 col-sm-6">
+                        @{ await Html.RenderPartialAsync("~/Views/ContractConsole/Module/ToRenewByCoach.cshtml", _model);}
+
+                    </li>*@
+                    <li class="col-lg-4 col-md-4 col-sm-6">
+                        <div class="body">
+                            <div class="row">
+                                <div class="col-12 text-center">
+                                    <div class="sparkline-pie">@(newContracts.Count()),@(renewContracts.Count())</div>
+                                    <h6 class="m-t-20">新約 V.S. 續約</h6>
+                                    <p class="displayblock m-b-0"><span class="col-tiffany">@(newContracts.Count())</span> / @(renewContracts.Count())</p>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="col-lg-4 col-md-4 col-sm-6">
+                        @{ await Html.RenderPartialAsync("~/Views/ContractConsole/Module/AboutInstallment.cshtml", _effectiveItems);}
+
+                    </li>
+                    <li class="col-lg-4 col-md-4 col-sm-6">
+                        @{ await Html.RenderPartialAsync("~/Views/ContractConsole/Module/AboutReceivablesByCoach.cshtml", _model);}
+
+                    </li>
+                </ul>
+            </div>
+        </div>
+    }
+
+    @if (_model.IsViceManager() || _model.IsManager())
+    {
+        await Html.RenderPartialAsync("~/Views/ContractConsole/Module/ContractByBranch.cshtml", _model);
+    }
+    else if (_model.IsOfficer() || _model.IsAssistant() || _model.IsAuthorizedSysAdmin() || _model.IsServitor())
+    {
+        await Html.RenderPartialAsync("~/Views/ContractConsole/Module/ContractByOfficer.cshtml", _model);
+    }
+
+    @{ await Html.RenderPartialAsync("~/Views/ContractConsole/Module/ContractDetails.cshtml", _model);}
+
+</section>
+
+@section TailPageJavaScriptInclude {
+    <!--Sparkline Plugin Js-->
+    <script src="plugins/jquery-sparkline/jquery.sparkline.js"></script>
+    <!-- SweetAlert Plugin Js -->
+    <script src="plugins/sweetalert/sweetalert.min.js"></script>
+    <!-- Jquery DataTable Plugin Js -->
+    <script src="bundles/datatablescripts.bundle.js"></script>
+    <script src="plugins/jquery-datatable/Responsive-2.2.2/js/dataTables.responsive.min.js"></script>
+    <script src="plugins/jquery-datatable/FixedColumns-3.2.5/js/dataTables.fixedColumns.min.js"></script>
+
+    @{ await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/KnobJS.cshtml");}
+
+
+    <script type="text/javascript">
+        var dtLearner;
+        var dtPaymentList;
+        $(function() {
+            $.scrollUp({
+                animation: 'fade',
+                scrollImg: {
+                    active: true,
+                    type: 'background',
+                    src: 'images/top.png'
+                }
+            });
+            //$(".ls-toggle-btn").click();
+        });
+
+        //合約新開立與續約比例
+        $('.sparkline-pie').sparkline('html', {
+            type: 'pie',
+            offset: 90,
+            width: '100px',
+            height: '100px',
+            sliceColors: ['#64c8c0', '#1B2C48']
+        })
+
+        //開啟小日曆
+        $('.date').datetimepicker({
+            language: 'zh-TW',
+            weekStart: 0,
+            todayBtn: 1,
+            clearBtn: 1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 2,
+            forceParse: 0,
+            startDate: '@(String.Format("{0:yyyy-MM-dd}",DateTime.Today))'
+        });
+
+
+        //點選合約詳細資料更多
+        $('.mb_colsble').on('click', function(event) {
+            var $collapseArea = $('.mb_colsble');
+            var $list = $collapseArea.find('.mb_list');
+            console.log($list);
+            var $titleArea = $collapseArea.find('.tit');
+            $titleArea.on('click', function(e) {
+                if ($collapseArea.hasClass('open')) {
+                    $list.slideToggle(undefined, function() {
+                        $collapseArea.toggleClass('open');
+                    });
+                } else {
+                    $collapseArea.toggleClass('open');
+                    $list.slideToggle();
+                }
+                return false;
+            });
+        });
+
+        //點選刪除功能
+        this.deleteData = function(keyID) {
+            Swal.fire({
+                title: '確定刪除?',
+                text: "刪除後資料將無法回覆",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: '確定',
+                cancelButtonText: '取消',
+                focusCancel: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $global.closeAllModal();
+                    showLoading();
+                    $.post('@Html.Raw(Url.Action("DeleteCourseContract","CourseContract"))', { 'keyID': keyID }, function (data) {
+                        hideLoading();
+                        if ($.isPlainObject(data)) {
+                            if (data.result) {
+                                Swal.fire({
+                                    title: "刪除成功!",
+                                    text: "資料已經刪除 Bye!",
+                                    icon: "success",
+                                }).then((result) => {
+                                    window.location.href = '@Html.Raw(Url.Action("ContractIndex", "ConsoleHome", new { ScrollToView = false }))';
+                                });
+                            } else {
+                                Swal.fire(
+                                    'Oops 刪除失敗...',
+                                    data.message,
+                                    'error'
+                                )
+                            }
+                        }
+                        else {
+                            $(data).appendTo($('body'));
+                        }
+                    });
+                } else {
+                    Swal.fire(
+                        '取消成功',
+                        '你的資料現在非常安全 :)',
+                        'info'
+                    )
+                }
+            });
+        };
+
+        //搜尋體能顧問
+        this.showSearchCoach = function() {
+            $("#searchCoachModal").modal('show');
+        };        
+    </script>
+
+
+    <script>
+
+        function processContract(keyID) {
+            showLoading();
+            $.post('@Html.Raw(Url.Action("ProcessContract", "ContractConsole"))', { 'keyID': keyID }, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    alert(data.message);
+                } else {
+                    $(data).appendTo($('body'));
+                }
+            });
+        }
+        //
+    </script>
+}
+
+

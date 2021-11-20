@@ -1,0 +1,53 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    IQueryable<CourseContract> _model;
+    IQueryable<CourseContract> _contractItems;
+    String _knobID = $"installmentRate{DateTime.Now.Ticks}";
+
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = _contractItems = (IQueryable<CourseContract>)this.Model;
+}
+@{ var totalLessons = _contractItems.Sum(c => c.Lessons) ?? 0;
+    var completeLessons = _contractItems
+        .Join(models.GetTable<RegisterLessonContract>(),
+            c => c.ContractID, r => r.ContractID, (c, r) => r)
+        .Join(models.GetTable<RegisterLesson>(), c => c.RegisterID, r => r.RegisterID, (c, r) => r)
+        .Join(models.GetTable<LessonTime>(), r => r.RegisterID, l => l.RegisterID, (r, l) => l)
+        .Where(l => l.LessonAttendance != null).Count();
+
+    var ratio = completeLessons * 100 / Math.Max(totalLessons, 1);}
+
+<div class="body">
+    <div class="row">
+        <div class="col-12 text-center">
+            <input type="text" class="knob knobRate3" data-linecap="round" data-width="90" data-height="90" data-thickness="0.25" data-anglearc="250" data-angleoffset="-125" data-fgcolor="#64c8c0" readonly id="@(_knobID)" />
+            <script>
+                $(function () {
+                    drawKnob($("#@(_knobID)"),@(ratio), 3800);
+                });
+            </script>
+            <h6 class="m-t-20">合約上課比例</h6>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+

@@ -1,0 +1,27 @@
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    UserProfile _model;
+
+    _modelState = (ModelStateDictionary) ViewBag.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (UserProfile)this.Model;
+}
+
+<div class="col-lg-5 col-md-6 col-sm-12">
+    <ul class="breadcrumb float-md-right">
+        <li class="breadcrumb-item"><a href="@(Url.Action("BlogIndex","ConsoleHome"))"><i class="zmdi zmdi-view-module"></i> 部落格分類</a></li>
+    </ul>
+</div>
+

@@ -1,0 +1,65 @@
+﻿
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using CommonLib.Utility
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    IQueryable<UserProfile> _model;
+    String _dialogID = $"attendee{DateTime.Now.Ticks}";
+    Func<UserProfile, String> _buildSelect;
+
+
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (IQueryable<UserProfile>)this.Model;
+    _buildSelect = (Func<UserProfile, String>)ViewBag.SelectMember;
+}
+<div class="modal fade" id="@(_dialogID)" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">           
+            <div class="modal-body">
+                <a class="closebutton" data-dismiss="modal"></a>
+                <ul class="new_friend_list list-unstyled row">
+                    @foreach (var item in _model)
+                    {
+                        <li class="col-lg-4 col-md-4 col-6">
+                            <a onclick="@(_buildSelect(item))">
+                                @{
+                                    ViewBag.ProfileClass = "img-thumbnail popfit";
+                                    await Html.RenderPartialAsync("~/Views/Common/ProfileImage.cshtml", item);
+                                }
+                                @if (ViewBag.ShowPhone == true)
+                                {
+                                    <small class="phone">@(item.Phone.Mask(4,4,'*'))</small>
+                                }
+                                @if (item.IsTrialLearner())
+                                {
+                                    <h6 class="users_name">@(item.UserProfileExtension.VipStatus==(int)UserProfileExtension.VipStatusDefinition.VVIP ? item.RealName.MaskedName() : item.RealName)@(item.Nickname!=null?$"({item.Nickname})":null)</h6>
+                                    <small class="join_date">體驗學生</small>
+                                }
+                                else
+                                {
+                                    <h6 class="users_name">@(item.UserProfileExtension.VipStatus == (int)UserProfileExtension.VipStatusDefinition.VVIP ? item.RealName.MaskedName() : item.RealName)</h6>
+                                    <small class="join_date">@(item.Nickname)</small>
+                                }
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+    @{ await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/BSModalScript.cshtml", model: _dialogID);}
+
+</div>
+

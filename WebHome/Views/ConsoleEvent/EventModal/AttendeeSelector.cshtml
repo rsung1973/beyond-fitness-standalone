@@ -1,0 +1,50 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    IQueryable<UserProfile> _model;
+    CalendarEventQueryViewModel _viewModel;
+    String _dialogID = $"attendee{DateTime.Now.Ticks}";
+    UserProfile _profile;
+
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (IQueryable<UserProfile>)this.Model;
+    _viewModel = (CalendarEventQueryViewModel)ViewBag.ViewModel;
+    _profile = await Context.GetUserAsync();
+}
+@{ 
+    ViewBag.SelectMember = (Func<UserProfile, String>)(item =>
+    {
+        return $"showBookEvent('{item.UID.EncryptKey()}');";
+    });
+    await Html.RenderPartialAsync("~/Views/ConsoleEvent/EventModal/MemberSelector.cshtml", _model);
+}
+
+<script>
+        function showBookEvent(keyID) {
+            showLoading();
+            $.post('@Html.Raw(Url.Action("BookingLesson", "ConsoleEvent", new { _viewModel.StartDate }))', { 'keyID': keyID }, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    alert(data.message);
+                } else {
+                    $(data).appendTo($('body'));
+                }
+            });
+        }
+</script>
+
+
+

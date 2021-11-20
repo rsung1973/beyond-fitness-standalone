@@ -1,0 +1,88 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    MonthlyCoachRevenueIndicatorQueryViewModel _viewModel;
+    String _dialogID = $"coach{DateTime.Now.Ticks}";
+    String _chartID = $"barChart{DateTime.Now.Ticks}";
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _viewModel = (MonthlyCoachRevenueIndicatorQueryViewModel)ViewBag.ViewModel;
+}
+@{
+    MonthlyIndicator _model = (MonthlyIndicator)this.Model;
+    var coaches = models.GetTable<MonthlyCoachRevenueIndicator>().Where(r => r.PeriodID == _model.PeriodID);
+    IQueryable<ServingCoach> items = null;
+    if (_viewModel.CoachID.HasValue)
+    {
+        items = models.GetTable<ServingCoach>().Where(c => c.CoachID == ((MonthlyCoachRevenueIndicatorQueryViewModel)_viewModel).CoachID);
+    }
+    else
+    {
+        items = models.PromptEffectiveCoach().Where(c => !coaches.Any(r => r.CoachID == c.CoachID));
+        if (_viewModel.BranchID.HasValue)
+        {
+            items = items.Join(models.GetTable<CoachWorkplace>().Where(w => w.BranchID == _viewModel.BranchID), c => c.CoachID, w => w.CoachID, (c, w) => c);
+        }
+    }
+}
+@{
+    ViewBag.HeaderRaw = (Action)showHeader;
+    ViewBag.InsertPartial = "~/Views/BusinessConsole/Module/CoachAchievementGoal.cshtml";
+    ViewBag.SelectAll = false;
+    ViewBag.EnableClose = false;
+    ViewBag.EnableSearch = !_viewModel.CoachID.HasValue;
+    ViewBag.Allotment = 1;
+    ViewBag.AllotmentCoach = 4;
+    if (_viewModel.CoachID.HasValue)
+    {
+        ViewBag.InsertFooter = "~/Views/BusinessConsole/Module/ConfirmToDeleteCoachRevenueIndicator.cshtml";
+    }
+    await Html.RenderPartialAsync("~/Views/ContractConsole/ContractModal/SelectCoach.cshtml", items);
+}
+@{
+    void showHeader()
+    {
+
+    }
+}
+
+<script>
+    $(function () {
+        $global.commitCoach = function (coachID, coachName, $dialog) {
+            var viewModel = $dialog.find('input,select,textArea').serializeObject();
+            viewModel.coachID = coachID;
+            clearErrors();
+            showLoading();
+            $.post('@Html.Raw(Url.Action("CommitCoachRevenueIndicator", "BusinessConsole", new { KeyID = _model.PeriodID.EncryptKey(),_viewModel.BranchID,_viewModel.DataOperation }))', viewModel, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    if (data.result) {
+                        $dialog.modal('hide');
+                        refreshCoachIndicatorList();
+                    } else {
+                        Swal.fire(
+                            'Oops...',
+                            data.message,
+                            'warning'
+                        )
+                    }
+                } else {
+                    $(data).appendTo($('body')).remove();
+                }
+            });
+        };
+    });
+</script>

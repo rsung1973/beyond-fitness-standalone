@@ -1,0 +1,81 @@
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    String _dialogID = $"reportQuery{DateTime.Now.Ticks}";
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+}
+
+<div class="modal fade" id="@(_dialogID)" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5>更多查詢條件</h5>
+                <a class="closebutton" data-dismiss="modal"></a>
+            </div>
+            <div class="modal-body">
+                <div class="row clearfix">
+                    <div class="col-12">
+                        <div class="card action_bar">
+                            <div class="body">
+                                <div class="row clearfix">
+                                    <div class="col-12">
+                                        <div class="input-group">
+                                            @{ await Html.RenderPartialAsync((String)ViewBag.ConditionView, model: _dialogID);}
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-darkteal btn-round waves-effect"><i class="zmdi zmdi-download"></i></button>
+            </div>
+        </div>
+    </div>
+    @{ await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/BSModalScript.cshtml", model: _dialogID);}
+
+    <script>
+        var @(_dialogID) = (function () {
+            var _checkInputChain = function (inputData) {
+                return true;
+            };
+            return {
+                appendCheck: function (checkInput) {
+                    var currentCheck = _checkInputChain;
+                    _checkInputChain = function (inputData) {
+                        return checkInput(inputData) && currentCheck(inputData);
+                    };
+                    this._checkInputChain = _checkInputChain;
+                },
+            };
+        })();
+        $(function () {
+            var queryObject = @(_dialogID);
+            $('#@(_dialogID) button').on('click', function (event) {
+                var inputData = $('#@(_dialogID) input,textarea,select').serializeObject();
+                if ($global.doQuery) {
+                    if (!queryObject._checkInputChain || queryObject._checkInputChain(inputData)) {
+                        $('#@(_dialogID)').modal('hide');
+                        $global.doQuery(inputData);
+                    }
+                }
+            });
+        });
+    </script>
+</div>

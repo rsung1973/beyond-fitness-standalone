@@ -1,0 +1,124 @@
+﻿
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using WebHome.Helper.BusinessOperation
+@using Newtonsoft.Json
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    MonthlyIndicator _model;
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (MonthlyIndicator)this.Model;
+}
+@{
+    MonthlyIndicatorQueryViewModel _viewModel = (MonthlyIndicatorQueryViewModel)ViewBag.ViewModel;
+    String _viewID = $"indicator{DateTime.Now.Ticks}";
+}
+<h4 class="card-outbound-header m-l-15">
+    @(_model.Year)年@($"{_model.Month:00}")月
+    <a href="javascript:selectMonth();"><i class="zmdi zmdi-calendar zmdi-hc-lg"></i></a>
+    @{
+        ViewBag.Other = "全部";
+        await Html.RenderPartialAsync("~/Views/Common/BranchStoreWithOther.cshtml", models.GetTable<BranchStore>().Where(b => b.BranchID == _viewModel.BranchID).FirstOrDefault());
+    }
+</h4>
+<script>
+   function selectMonth() {
+        //showLoading();
+        $.post('@Html.Raw(Url.Action("SelectMonth", "BusinessConsole"))', null, function (data) {
+        //hideLoading();
+        if ($.isPlainObject(data)) {
+            Swal.fire(
+                'Oops...',
+                data.message,
+                'warning'
+            )
+        } else {
+            $(data).appendTo($('body'));
+            }
+        });
+   }
+    function applyAchievementGoal() {
+        //showLoading();
+        $.post('@Html.Raw(Url.Action("ApplyCoachAchievement", "BusinessConsole",new { KeyID = _model.PeriodID.EncryptKey(), _viewModel.BranchID }))', { 'DataOperation': @((int)Naming.DataOperationMode.Create) }, function (data) {
+            //hideLoading();
+            if ($.isPlainObject(data)) {
+                Swal.fire(
+                    'Oops...',
+                    data.message,
+                    'warning'
+                )
+            } else {
+                $(data).appendTo($('body'));
+            }
+        });
+    }
+    $(function () {
+         $global.doSelect = function (year, month) {
+             $('').launchDownload('@Html.Raw(Url.Action("ApplyAchievementGoal", "ConsoleHome"))', { 'year': year, 'month': month, 'branchID': '@(_viewModel.BranchID)' });
+         };
+    });
+</script>
+<div class="col-lg-12">
+    <div class="card patients-list">
+        <div class="header">
+            <ul class="header-dropdown">
+                <li>
+                    <a href="javascript:applyAchievementGoal();"><i class="zmdi zmdi-plus-circle-o-duplicate"></i></a>
+                </li>
+            </ul>
+        </div>
+        <div class="body">
+            <div class="table-responsive" id="@(_viewID)">
+                @{
+                    await Html.RenderPartialAsync("~/Views/BusinessConsole/Module/MonthlyCoachRevenueIndicatorList.cshtml", _model);
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+    function refreshCoachIndicatorList() {
+        showLoading();
+        $.post('@Html.Raw(Url.Action("LoadCoachRevenueIndicatorList", "BusinessConsole", new { KeyID = _model.PeriodID.EncryptKey(),_viewModel.BranchID }))', {}, function (data) {
+            hideLoading();
+            if ($.isPlainObject(data)) {
+                Swal.fire(
+                    'Oops...',
+                    data.message,
+                    'warning'
+                )
+            } else {
+                $('#@(_viewID)').empty()
+                    .append(data);
+            }
+        });
+    }
+
+    function processCoachIndicator(viewModel) {
+        showLoading();
+        $.post('@Html.Raw(Url.Action("EditCoachRevenueIndicator", "BusinessConsole"))', viewModel, function (data) {
+            hideLoading();
+            if ($.isPlainObject(data)) {
+                Swal.fire(
+                    'Oops...',
+                    data.message,
+                    'warning'
+                )
+            } else {
+                $(data).appendTo($('body'));
+            }
+        });
+    }
+</script>
+
+

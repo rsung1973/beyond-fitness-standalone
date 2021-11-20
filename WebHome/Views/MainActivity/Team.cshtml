@@ -1,0 +1,94 @@
+
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@using WebHome.Views.MainActivity.Resources
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    CoachData _viewModel;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _modelState = ViewContext.ModelState;
+    _viewModel = (CoachData)this.Model;
+    Layout = "~/Views/MainActivity/Template/MainPage.cshtml";
+
+}
+
+@section CustomHeader {
+
+}
+
+<section class="section-team">
+    <div class="container">
+        <div class="row">
+            <h1 class="align-center">@Html.Raw(NamingItem.TeamTitle)</h1>
+            <h2 class="align-center">@(_viewModel.branchName)</h2>
+        </div>
+        <div class="row grid-space-0">
+            @foreach (var c in _viewModel.coachItems)
+            {
+                <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3 isotope-item">
+                    <div class="image-box text-center">
+                        <div class="overlay-container">
+                            <img src="@($"images/landing/portfolio/{ c.nickname}/Cover.png")" alt="私人教練">
+                            <div class="overlay-top">
+                                <div class="text">
+                                    <h3>@(c.coachName) <small>@(c.nickname)</small></h3>
+                                </div>
+                            </div>
+                            <div class="overlay-bottom">
+                                <div class="links">
+                                    <a href='javascript:showDetails(@Html.Raw(JsonConvert.SerializeObject(c)));bindTrackingCode("@($"體能顧問_{ c.nickname}")");' class="btn btn-gray-transparent btn-animated btn-sm">@Html.Raw(NamingItem.LearnMore) <i class="pl-10 fa fa-arrow-right"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            <script>
+                    function showDetails(coachItem) {
+                        $('').launchDownload('@Html.Raw(Url.Action("CoachDetails", "MainActivity"))', coachItem);
+                    }
+            </script>
+        </div>
+    </div>
+</section>
+<!-- 教學場景 -->
+@if (_viewModel.scenarioPhoto != null && _viewModel.scenarioPhoto.Count > 0)
+{
+<section class="section-slick nopadding">
+    <div class="testimonials-slick-slide">
+        @foreach (var photo in _viewModel.scenarioPhoto)
+        {
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3">
+                    <img class="fullwidth" src="@($"images/landing/360/{photo}")" alt="私人教練" />
+                </div>
+            </div>
+        }
+    </div>
+</section>
+}
+    <!-- // 聯絡我們 -->
+    @{ await Html.RenderPartialAsync("~/Views/MainActivity/Module/ContactItem.cshtml");}
+
+
+    @section TailPageJavaScriptInclude {
+        <script>
+        $(function () {
+            reloadPage = function () {
+                $('').launchDownload('@Html.Raw(Url.Action("Team", "MainActivity"))', {'branchName':'@(ViewBag.BranchName)'});
+            };
+        });
+        </script>
+    }

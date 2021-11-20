@@ -1,0 +1,63 @@
+@{
+    String _dialogID = (String)this.Model;
+
+}
+
+<script>
+
+    $(function () {
+        var u = navigator.userAgent;
+        var isApple = u.indexOf('iPhone') >= 0 || u.indexOf('iPad') >= 0;
+        $('#@(_dialogID)').modal('show');
+		$('#@(_dialogID)').css('overflow','auto');
+
+        $('#@(_dialogID)').on('shown.bs.modal', function () {
+            document.body.style.overflow = 'hidden';
+            if (isApple) {
+                document.body.style.position = 'fixed';
+            }
+            //if ($('body').hasClass('modal-open') == false) {
+            //   $('body').addClass('modal-open');
+            //};
+        });
+
+        $('#@(_dialogID)').on('hidden.bs.modal', function () {
+            document.body.style.overflow = 'visible';
+            if (isApple) {
+                document.body.style.position = 'relative';
+            }
+            @if (ViewBag.ReuseModal != true)
+            {
+                <text>$('#@(_dialogID)').remove();</text>
+            }
+        });
+
+
+        var closeModal = $global.closeAllModal;
+        $global.closeAllModal = function () {
+            $('#@(_dialogID)').modal('hide');
+            if (closeModal) {
+                closeModal();
+                $global.closeAllModal = null;
+            }
+        };
+
+        $('#@(_dialogID) select.form-control').selectpicker();
+
+        if ($global.appliedDialog === undefined) {
+            $global.appliedDialog = {
+            };
+        }
+
+        $global.appliedDialog['@(_dialogID)'] = $('#@(_dialogID)');
+
+        if ($global.hideAllModal === undefined) {
+            $global.hideAllModal = function () {
+                for (var id in $global.appliedDialog) {
+                    $global.appliedDialog[id].modal('hide');
+                }
+            };
+        }
+
+    });
+</script>

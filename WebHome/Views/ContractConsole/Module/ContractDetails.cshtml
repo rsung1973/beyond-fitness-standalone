@@ -1,0 +1,124 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    UserProfile _model;
+    String _viewID = $"contractDetails{DateTime.Now.Ticks}";
+    IQueryable<CourseContract> _contractItems;
+
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (UserProfile)this.Model;
+    _contractItems = ViewBag.Contracts as IQueryable<CourseContract>;
+    if (_contractItems == null)
+    {
+        _contractItems = models.GetTable<CourseContract>().Where(c => false);
+    }
+}
+<!--合約詳細資料-->
+<div class="container-fluid contract">
+    <div class="row clearfix">
+        <h4 class="card-outbound-header m-l-15">詳細資料</h4>
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="header">
+                    <ul class="header-dropdown">
+                        <li>
+                            <a href="javascript:moreContractQuery();"><i class="zmdi zmdi-search-for"></i></a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="body" id="@(_viewID)">
+                    @{ await Html.RenderPartialAsync("~/Views/ContractConsole/Module/ContractList.cshtml", _contractItems);}
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+        //更多查詢條件
+    function moreContractQuery() {
+        showLoading();
+        $.post('@Html.Raw(Url.Action("InvokeContractQuery", "ContractConsole"))', {}, function (data) {
+            hideLoading();
+            if ($.isPlainObject(data)) {
+                alert(data.message);
+            } else {
+                $(data).appendTo($('body'));
+            }
+        });
+    }
+
+    function showContractList(viewModel, alertCount) {
+        var event = window.event;
+        if (event) {
+            event.cancelBubble = true;
+        }
+
+        if (alertCount == 0)
+            return;
+        clearErrors();
+        if (alertCount && alertCount > 300) {
+            Swal.fire({
+                title: "繼續載入?",
+                text: "讀取大量資料，將影響系統效能!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: '確定',
+                cancelButtonText: '取消',
+                focusCancel: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    showLoading();
+                    $.post('@Html.Raw(Url.Action("InquireContract", "ContractConsole"))', viewModel, function (data) {
+                        hideLoading();
+                        if ($.isPlainObject(data)) {
+                            Swal.fire(
+                                'Oops...',
+                                data.message,
+                                'warning'
+                            )
+                        } else {
+                            $('#@(_viewID)').empty()
+                                .append(data);
+                            $('#@(_viewID)').resize();
+                        }
+                    });
+                }
+            });
+        } else {
+            showLoading();
+            $.post('@Html.Raw(Url.Action("InquireContract", "ContractConsole"))', viewModel, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    Swal.fire(
+                        'Oops...',
+                        data.message,
+                        'warning'
+                    )
+                } else {
+                    $('#@(_viewID)').empty()
+                        .append(data);
+                    $('#@(_viewID)').resize();
+                }
+            });
+        }
+    }
+    //
+</script>
+
+

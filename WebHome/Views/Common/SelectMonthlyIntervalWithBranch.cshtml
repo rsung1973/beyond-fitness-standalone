@@ -1,0 +1,38 @@
+﻿
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@using CommonLib.Utility
+@{
+    Layout = "~/Views/Common/SelectMonthlyIntervalTemplate.cshtml";
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _modelState = ViewContext.ModelState;
+
+    String[] _model = (String[])this.Model;
+
+}
+
+@section OtherMenu
+{
+    <li class="dropdown">
+        <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class="zmdi zmdi-swap"></i> </a>
+        <ul class="dropdown-menu dropdown-menu-right slideUp float-right">
+            <li><a href="javascript:onBranchSelected();">全部</a></li>
+            @foreach (var branch in models.GetTable<BranchStore>())
+            {
+                <li><a href="javascript:onBranchSelected(@(branch.BranchID));">@(branch.BranchName)</a></li>
+            }
+        </ul>
+    </li>
+}

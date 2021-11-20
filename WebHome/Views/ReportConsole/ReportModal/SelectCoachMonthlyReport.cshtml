@@ -1,0 +1,41 @@
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    String _dialogID = $"reportQuery{DateTime.Now.Ticks}";
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+
+}
+@{
+    ViewBag.InsertPartial = "~/Views/ReportConsole/ReportModal/SelectMonth.cshtml";
+    ViewBag.SelectAll = true;
+    ViewBag.EnableClose = false;
+    ViewBag.Allotment = 2;
+    ViewBag.AllotmentCoach = 4;
+    await Html.RenderPartialAsync("~/Views/ContractConsole/ContractModal/SelectCoach.cshtml", models.PromptEffectiveCoach());
+}
+<script>
+$(function () {
+            $global.commitCoach = function (coachID, coachName, $dialog) {
+                var dateVal = $dialog.find('input.month').val();
+                if (dateVal != '') {
+                    dateVal = dateVal + '/01';
+                    if ($global.doQuery) {
+                        $global.doQuery(dateVal, coachID);
+                        $dialog.modal('hide');
+                    }
+                }
+            };
+        });</script>

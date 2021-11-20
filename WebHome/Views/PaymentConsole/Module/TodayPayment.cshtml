@@ -1,0 +1,67 @@
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    IQueryable<Payment> _model;
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (IQueryable<Payment>)this.Model;
+}
+@{
+    UserProfile _profile = await Context.GetUserAsync();
+    IQueryable<Payment> items = _model.Where(p => p.PayoffDate >= DateTime.Today);
+    IQueryable<Payment> voidItems = models.GetTable<VoidPayment>().Where(v => v.VoidDate >= DateTime.Today)
+                                            .Join(_model, v => v.VoidID, p => p.PaymentID, (v, p) => p);
+
+    int? relatedID = null;
+    int? branchID = null;
+    if (_profile.IsAssistant() || _profile.IsOfficer() || _profile.IsServitor())
+    {
+    }
+    else if (_profile.IsManager() || _profile.IsViceManager())
+    {
+        branchID = models.GetTable<BranchStore>().Where(b => b.ManagerID == _profile.UID || b.ViceManagerID == _profile.UID)
+                    .Select(b => b.BranchID).FirstOrDefault();
+    }
+    else
+    {
+        relatedID = _profile.UID;
+    }
+}
+    <div class="col-8">
+        <h5 class="m-t-0">本日收款</h5>
+        @{
+            PaymentQueryViewModel tempViewModel = new PaymentQueryViewModel
+            {
+                PayoffDateFrom = DateTime.Today,
+                PayoffDateTo = DateTime.Today.AddDays(1),
+                RelatedID = relatedID,
+                BranchID = branchID,
+            };
+            ViewBag.ViewModel = tempViewModel;
+            ViewBag.VoidPayment = voidItems;
+            await Html.RenderPartialAsync("~/Views/PaymentConsole/Module/PaymentSummary.cshtml", items);
+        }
+    </div>
+<div class="col-4 text-right">
+    <a href="#" onclick='showPaymentList(@Html.Raw(JsonConvert.SerializeObject(
+        new
+        {
+            PayoffDateFrom = DateTime.Today,
+            RelatedID = relatedID,
+            BranchID = branchID,
+        })));'>
+        <h2>@(items.Count() + voidItems.Count())</h2>
+    </a>
+    <small class="info"></small>
+</div>
+

@@ -1,0 +1,57 @@
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    IQueryable<Payment> _model;
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (IQueryable<Payment>)this.Model;
+}
+@{
+    PaymentQueryViewModel _viewModel = (PaymentQueryViewModel)ViewBag.ViewModel;
+    IQueryable<Payment> items = _model.Where(p => p.PayoffDate >= DateTime.Today.FirstDayOfMonth());
+    IQueryable<Payment> voidItems = models.GetTable<VoidPayment>().Where(v => v.VoidDate >= DateTime.Today.FirstDayOfMonth())
+                                            .Join(_model, v => v.VoidID, p => p.PaymentID, (v, p) => p);
+}
+<div class="col-6">
+    <br /><br />
+    <p class="text-small">
+        收款<br />
+        作廢<br />
+        折讓
+    </p>
+</div>
+<div class="col-6 text-right">
+    <h5 class="m-t-0"><strong class="col-red">本月</strong>金額</h5>
+    <a href="#" onclick='showPaymentList(@Html.Raw(JsonConvert.SerializeObject(
+            new
+            {
+                PayoffDateFrom = DateTime.Today.FirstDayOfMonth(),
+                _viewModel.RelatedID,
+                IncomeOnly = true,
+            })));'>@($"{items.Sum(p => p.PayoffAmount) ?? 0:##,###,###,##0}")</a><br />
+    <a href="#" onclick='showPaymentList(@Html.Raw(JsonConvert.SerializeObject(
+            new
+            {
+                CancelDateFrom = DateTime.Today.FirstDayOfMonth(),
+                _viewModel.RelatedID,
+                HasCancellation = true,
+            })));'>@($"{voidItems.ExtractVoidPayment(models,true).Sum(p => p.PayoffAmount) ?? 0:##,###,###,##0}")</a><br />
+    <a href="#" onclick='showPaymentList(@Html.Raw(JsonConvert.SerializeObject(
+            new
+            {
+                AllowanceDateFrom = DateTime.Today.FirstDayOfMonth(),
+                _viewModel.RelatedID,
+                HasAllowance = true
+            })));'>@($"{_model.ExtractPaymentAllowance(models,models.GetTable<InvoiceAllowance>().Where(a=>a.AllowanceDate>=DateTime.Today.FirstDayOfMonth())).Sum(a=>a.TotalAmount+a.TaxAmount) ?? 0:##,###,###,##0}")</a><br />
+</div>
+

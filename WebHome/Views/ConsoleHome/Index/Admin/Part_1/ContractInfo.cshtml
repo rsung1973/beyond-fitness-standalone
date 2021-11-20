@@ -1,0 +1,117 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+@using WebHome.Helper.BusinessOperation
+@using Newtonsoft.Json
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    UserProfile _model;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _modelState = ViewContext.ModelState;
+    _model = (UserProfile)this.Model;
+
+}
+
+<div class="col-lg-6 col-md-12 col-sm-12">
+    <div class="body p-10 contract">
+        <div class="icon"><i class="zmdi zmdi-block-alt"></i> </div>
+        @{
+            var expiredItems = models.PromptRegisterLessonContract()
+                .FilterByExpired(models);
+            ViewBag.DataItems = expiredItems;
+
+            CourseContractQueryViewModel viewModel = new CourseContractQueryViewModel
+            {
+                IsExpired = true,
+                ContractQueryMode = Naming.ContractServiceMode.ContractOnly,
+                Status = (int)Naming.CourseContractStatus.已過期,
+                CustomQuery = "已過期",
+            };
+            ViewBag.ViewModel = viewModel;
+        }
+        @{
+            await Html.RenderPartialAsync("~/Views/ConsoleHome/Index/Coach/Part_1/ContractData.cshtml");
+        }
+        <hr/>
+        <div class="icon text-success"><i class="zmdi livicon-evo" data-options="name: bomb.svg; size: 40px; style: original; strokeWidth:2px; autoPlay:false"></i> </div>
+        @{
+            var expiringItems = models.PromptExpiringContract();
+            ViewBag.DataItems = expiringItems;
+
+            viewModel = new CourseContractQueryViewModel
+            {
+                ContractQueryMode = Naming.ContractServiceMode.ContractOnly,
+                Status = (int)Naming.CourseContractStatus.已生效,
+                ExpirationFrom = DateTime.Today,
+                ExpirationTo = DateTime.Today.AddMonths(1),
+                CustomQuery = "即將到期",
+            };
+            ViewBag.ViewModel = viewModel;
+        }
+        @{
+            await Html.RenderPartialAsync("~/Views/ConsoleHome/Index/Coach/Part_1/ContractData.cshtml");
+        }
+    </div>
+</div>
+<div class="col-lg-6 col-md-12 col-sm-12">
+    <div class="body p-10 contract">
+        <div class="icon"><i class="zmdi livicon-evo" data-options="name: lightning.svg; size: 40px; style: solid; strokeWidth:2px; autoPlay:false"></i> </div>
+        @{
+            expiringItems = models.PromptUnpaidExpiringContract();
+            ViewBag.DataItems = expiringItems;
+
+            viewModel = new CourseContractQueryViewModel
+            {
+                ContractQueryMode = Naming.ContractServiceMode.ContractOnly,
+                Status = (int)Naming.CourseContractStatus.已生效,
+                UnpaidExpiring = true,
+                CustomQuery = "即將終止",
+            };
+            ViewBag.ViewModel = viewModel;
+        }
+        @{
+            await Html.RenderPartialAsync("~/Views/ConsoleHome/Index/Coach/Part_1/ContractData.cshtml");
+        }
+        <hr />
+        <div class="icon"><i class="zmdi zmdi-money"></i> </div>
+        @{
+            var contractItems = models.PromptAccountingContract()
+                .FilterByToPay(models);
+
+            DateTime dateFrom = DateTime.Today.FirstDayOfMonth();
+            DateTime dateTo = dateFrom.AddMonths(1);
+
+            contractItems = contractItems.Where(c => !c.PayoffDue.HasValue
+                                || (/*c.PayoffDue >= dateFrom &&*/ c.PayoffDue < dateTo));
+
+            ViewBag.DataItems = contractItems;
+
+            viewModel = new CourseContractQueryViewModel
+            {
+                ContractQueryMode = Naming.ContractServiceMode.ContractOnly,
+                PayoffMode = Naming.ContractPayoffMode.Unpaid,
+                //PayoffDueFrom = dateFrom,
+                PayoffDueTo = dateTo,
+                IncludeTotalUnpaid = true,
+                CustomQuery = "本月催收",
+            };
+            ViewBag.ViewModel = viewModel;
+        }
+        @{
+            await Html.RenderPartialAsync("~/Views/ConsoleHome/Index/Coach/Part_1/ContractData.cshtml");
+        }
+    </div>
+</div>
+
+
+

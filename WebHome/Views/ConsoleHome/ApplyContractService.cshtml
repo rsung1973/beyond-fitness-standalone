@@ -1,0 +1,140 @@
+
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Helper.DataOperation
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+@using Newtonsoft.Json
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    CourseContract _item;
+    UserProfile _model;
+    CourseContractQueryViewModel _viewModel;
+
+    Layout = "~/Views/ConsoleHome/Template/MainPage.cshtml";
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _modelState = ViewContext.ModelState;
+    _model = (UserProfile)this.Model;
+    _viewModel = (CourseContractQueryViewModel)ViewBag.ViewModel;
+    _item = (CourseContract)ViewBag.DataItem;
+
+}
+@section CustomHeader {
+    <!-- JQuery DataTable Css -->
+    <link href="plugins/jquery-datatable/DataTables-1.10.18/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link href="plugins/jquery-datatable/Responsive-2.2.2/css/responsive.bootstrap4.min.css" rel="stylesheet">
+    <link href="plugins/jquery-datatable/FixedColumns-3.2.5/css/fixedColumns.bootstrap4.min.css" rel="stylesheet">
+    <!-- Bootstrap Datetimepick -->
+    @*<link href="plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+        <link href="css/datetimepicker.css" rel="stylesheet" />*@
+    
+    <link href="css/smartcalendar-2.css" rel="stylesheet" />
+
+    <!-- Custom Css -->
+    <link rel="stylesheet" href="css/customelist.css?1.1" />
+    <!-- jSignature -->
+    <link rel="stylesheet" href="css/jsignature.css">
+}
+
+
+<!-- Main Content -->
+<section class="content">
+    @{ 
+        ViewBag.BlockHeader = "合約服務申請";
+        ViewBag.InsertPartial = "~/Views/ConsoleHome/Shared/MyContractHeader.cshtml";
+        await Html.RenderPartialAsync("~/Views/ConsoleHome/Module/BlockHeader.cshtml", _model);
+    }
+
+    <!--服務申請-->
+    <div class="container-fluid">
+        <div class="card widget_2">
+            <div class="header">
+                <h2><strong>@(_item.ContractOwner.RealName)</strong> @(_item.ContractName())
+                    @{
+                        await Html.RenderPartialAsync("~/Views/Common/BranchStoreName.cshtml", _item.CourseContractExtension.BranchStore);
+                    }
+                    <a href="javascript:$global.showContractDetails('@(_item.ContractID.EncryptKey())');" class="btn btn-simple btn-info btn-round btn-sm float-right">更多資訊</a>
+                </h2>
+                @{ await Html.RenderPartialAsync("~/Views/ContractConsole/Indication/ContractDetails.cshtml", _item);}
+
+            </div>
+            <ul class="row clearfix list-unstyled m-b-0">
+                <li class="col-lg-3 col-md-6 col-sm-12">
+                    @{ await Html.RenderPartialAsync("~/Views/ContractConsole/ContractService/ContractExtension.cshtml", _item);}
+
+                </li>
+                <li class="col-lg-3 col-md-6 col-sm-12">
+                    @{ await Html.RenderPartialAsync("~/Views/ContractConsole/ContractService/ContractTermination.cshtml", _item);}
+
+                </li>
+                <li class="col-lg-3 col-md-6 col-sm-12">
+                    @{ await Html.RenderPartialAsync("~/Views/ContractConsole/ContractService/ContractQuickTermination.cshtml", _item);}
+
+                </li>
+                <li class="col-lg-3 col-md-6 col-sm-12">
+                    @{ await Html.RenderPartialAsync("~/Views/ContractConsole/ContractService/ContractCoachReplacement.cshtml", _item);}
+
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!--詳細資料-->
+    <div class="container-fluid contract">
+        <div class="row clearfix">
+            <h4 class="card-outbound-header m-l-15">詳細資料</h4>
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="body">
+                        <div class="table-responsive">
+                            @{ await Html.RenderPartialAsync("~/Views/ContractConsole/ContractService/ContractServiceHistory.cshtml", _item);}
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+<script>
+        function processContractService(keyID) {
+            showLoading();
+            $.post('@Html.Raw(Url.Action("ProcessContractService", "ContractConsole"))', { 'keyID': keyID }, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    alert(data.message);
+                } else {
+                    $(data).appendTo($('body'));
+                }
+            });
+        }
+        //
+</script>
+
+@section TailPageJavaScriptInclude {
+    <!--Sparkline Plugin Js-->
+    <script src="plugins/jquery-sparkline/jquery.sparkline.js"></script>
+    <!-- SweetAlert Plugin Js -->
+    <script src="plugins/sweetalert/sweetalert.min.js"></script>
+    <!-- Jquery DataTable Plugin Js -->
+    <script src="bundles/datatablescripts.bundle.js"></script>
+    <script src="plugins/jquery-datatable/Responsive-2.2.2/js/dataTables.responsive.min.js"></script>
+    <script src="plugins/jquery-datatable/FixedColumns-3.2.5/js/dataTables.fixedColumns.min.js"></script>
+    @{ await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/KnobJS.cshtml");}
+
+
+    <script type="text/javascript">
+
+    </script>
+}
+
+

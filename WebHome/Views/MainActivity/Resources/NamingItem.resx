@@ -1,0 +1,561 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AboutUs" xml:space="preserve">
+    <value>關於我們</value>
+  </data>
+  <data name="FindUs" xml:space="preserve">
+    <value>分店一覽</value>
+  </data>
+ <data name="OnLine" xml:space="preserve">
+    <value>線上課程</value>
+  </data>    
+  <data name="FAQ" xml:space="preserve">
+    <value>常見問題</value>
+  </data>
+  <data name="Blog" xml:space="preserve">
+    <value>知識分享</value>
+  </data>
+  <data name="JoinUs" xml:space="preserve">
+    <value>加入團隊</value>
+  </data>
+  <data name="BookNow" xml:space="preserve">
+    <value>立即體驗</value>
+  </data>
+  <data name="LearnMore" xml:space="preserve">
+    <value>了解更多</value>
+  </data>
+  <data name="ContactTitle" xml:space="preserve">
+    <value>開始您的第一步</value>
+  </data>
+  <data name="ContactSubTitle" xml:space="preserve">
+    <value>我們隨時提供協助。</value>
+  </data>
+  <data name="ContactAskNow" xml:space="preserve">
+    <value>立即提問</value>
+  </data>
+  <data name="IndexBannerTitle" xml:space="preserve">
+    <value>我們的堅持</value>
+  </data>
+  <data name="IndexBannerSubTitle" xml:space="preserve">
+    <value>源自於客戶每一分安心</value>
+  </data>
+  <data name="IndexFeature1" xml:space="preserve">
+    <value>安心承諾</value>
+  </data>
+  <data name="IndexFeature1Desc" xml:space="preserve">
+    <value>真正的專業來自於信任，我們專注於溝通及傾聽，與您攜手合作獲得成功。</value>
+  </data>
+  <data name="IndexFeature2" xml:space="preserve">
+    <value>證照背書</value>
+  </data>
+  <data name="IndexFeature2Desc" xml:space="preserve">
+    <value>擁有國際級六大專業證照，讓您在專業及安全的環境下運動。</value>
+  </data>
+  <data name="IndexFeature3" xml:space="preserve">
+    <value>數據管理</value>
+  </data>
+  <data name="IndexFeature3Desc" xml:space="preserve">
+    <value>全新體能分析庫、個人化課表內容、每月挑戰，全為激發你的源源動力。</value>
+  </data>
+  <data name="IndexVedioTitle" xml:space="preserve">
+    <value>給 不知道如何開始 背後的你</value>
+  </data>
+  <data name="IndexVedioSubTitle" xml:space="preserve">
+    <value>夢想實踐者</value>
+  </data>
+  <data name="IndexVedioDesc" xml:space="preserve">
+    <value>看看 黃伯伯 &lt;span class="hidden-sm-down"&gt;和 陳阿姨 &lt;/span&gt;如何透過專業的訓練，更加了解運動的價值。</value>
+  </data>
+  <data name="IndexFunFactsTitle" xml:space="preserve">
+    <value>數據體能分析，&lt;br /&gt;創造強而有力的新雲端</value>
+  </data>
+  <data name="IndexSlick1Desc" xml:space="preserve">
+    <value>專業是細心且提升客戶的保障，Beyond 運動與物理治療的配合是有效的</value>
+  </data>
+  <data name="IndexSlick1Title" xml:space="preserve">
+    <value>物理治療師</value>
+  </data>
+  <data name="IndexSlick1Name" xml:space="preserve">
+    <value>王妍萍</value>
+  </data>
+  <data name="IndexSlick2Desc" xml:space="preserve">
+    <value>在溫馨與專業的Beyond，確保你的飲食以及運動都得到妥善照顧</value>
+  </data>
+  <data name="IndexSlick2Title" xml:space="preserve">
+    <value>營養師</value>
+  </data>
+  <data name="IndexSlick2Name" xml:space="preserve">
+    <value>廖家祥</value>
+  </data>
+  <data name="AboutBannerTitle" xml:space="preserve">
+    <value>專業起於真誠</value>
+  </data>
+  <data name="AboutBannerSubTitle" xml:space="preserve">
+    <value>一種令人微笑的信任</value>
+  </data>
+  <data name="AboutVedioTitle" xml:space="preserve">
+    <value>品牌信念</value>
+  </data>
+  <data name="AboutVedioDesc1" xml:space="preserve">
+    <value>BeyondFitness 於2014年所創立，是全台最大運動客製化訓練中心之一，擁有超過50位員工，提供包括個人客製化運動訓練服務，營養諮詢，運動按摩恢復，運動傷害防護，企業團隊健康策略，專業運動教育培訓，與企業健康顧問等服務。</value>
+  </data>
+  <data name="AboutVedioDesc2" xml:space="preserve">
+    <value>對 BeyondFitness 來說，運動是一件認真的事情。</value>
+  </data>
+  <data name="AboutVedioDesc3" xml:space="preserve">
+    <value>作為一個專業的體能顧問公司，我們帶著真誠的心藉由科學與數據條理化的方法與您相互合作，為每一次的運動帶來最高效益與價值。</value>
+  </data>
+  <data name="AboutVedioDesc4" xml:space="preserve">
+    <value>我們相信「若能幫助您成功的改變生活、邁向健康，自然而然可透過運動創造屬於您的人本價值及生活品質。」</value>
+  </data>
+  <data name="AboutVedioDeclaration1" xml:space="preserve">
+    <value>謝謝您，</value>
+  </data>
+  <data name="AboutVedioDeclaration2" xml:space="preserve">
+    <value>我們將一起創造專屬於你的價值，進而讓生活更有意義。</value>
+  </data>
+  <data name="FindNanjingBranch" xml:space="preserve">
+    <value>南京店</value>
+  </data>
+  <data name="FindNanjingBranchAdd" xml:space="preserve">
+    <value>台北市松山區南京東路四段17號B1</value>
+  </data>
+  <data name="FindNanjingBranchDesc1" xml:space="preserve">
+    <value>位於台北小巨蛋正對面，鄰近微風百貨，小巨蛋商圈，捷運台北小巨蛋站1號出口，走路1分鐘即可抵達。</value>
+  </data>
+  <data name="FindNanjingBranchDesc2" xml:space="preserve">
+    <value>擁有超過百坪的專業場地，結合多樣化訓練設備，提供您在運動的同時不受一般場地侷限，讓您的訓練品質最佳化。</value>
+  </data>
+  <data name="FindXinyiBranch" xml:space="preserve">
+    <value>信義店</value>
+  </data>
+  <data name="FindXinyiBranchAdd" xml:space="preserve">
+    <value>台北市信義區信義路五段16號2樓之2</value>
+  </data>
+  <data name="FindXinyiBranchDesc1" xml:space="preserve">
+    <value>位於台北101正對面，捷運台北101/世貿站3號出口即可抵達。</value>
+  </data>
+  <data name="FindXinyiBranchDesc2" xml:space="preserve">
+    <value>台北市獨一無二同時擁有室內與戶外的私人教練場地。專業、寬敞與隱私的訓練空間，並且結合戶外大草皮運動區與PU跑道，讓您不侷限於室內場地。同時擁有戶外區的運動空間，增加訓練項目多元化，讓健身不僅止於健身，而是更佳的生活與功能化。</value>
+  </data>
+  <data name="FindZhongxiaoBranch" xml:space="preserve">
+    <value>忠孝店</value>
+  </data>
+  <data name="FindZhongxiaoBranchAdd" xml:space="preserve">
+    <value>台北市大安區大安路一段75巷21號1F/B1</value>
+  </data>
+  <data name="FindZhongxiaoBranchDesc1" xml:space="preserve">
+    <value>位於頂好名店城後方大樓1F/B1，捷運忠孝復興站3號(地下街14號)出口，走路2分鐘即可抵達。</value>
+  </data>
+  <data name="FindZhongxiaoBranchDesc2" xml:space="preserve">
+    <value>少數擁有室內挑高私人教練場地，明亮採光的運動空間，結合多樣化訓練設備，提供乾濕分離衛浴設備，方便您更舒適換穿衣物及梳洗。</value>
+  </data>
+  <data name="FindDongmenBranch" xml:space="preserve">
+    <value>東門店</value>
+  </data>
+  <data name="FindDongmenBranchAdd" xml:space="preserve">
+    <value>台北市大安區信義路二段28號</value>
+  </data>
+  <data name="FindDongmenBranchDesc1" xml:space="preserve">
+    <value>位於捷運東門捷運站3號出口，走路約3分鐘即可抵達。永康商圈一樓旗艦店，規劃寬敞明亮、百坪訓練空間。</value>
+  </data>
+  <data name="FindDongmenBranchDesc2" xml:space="preserve">
+    <value>客製化訓練場地整合：伸展重訓區與室內草皮結合，引進小型體操訓練場地，豐富訓練多樣化。在專業教練細心指導下，享有隱私安全，且時尚舒適的運動環境。</value>
+  </data>
+  <data name="FindAnheBranch" xml:space="preserve">
+    <value>信義安和店</value>
+  </data>
+  <data name="FindAnheBranchAdd" xml:space="preserve">
+    <value>台北市大安區安和路二段81號B1</value>
+  </data>
+  <data name="FindAnheBranchDesc1" xml:space="preserve">
+    <value>位於捷運信義安和捷運站2A號出口，走路約3分鐘即可抵達。座落於敦化安和重點區域，比鄰國際立人國中小學校區。</value>
+  </data>
+  <data name="FindAnheBranchDesc2" xml:space="preserve">
+    <value>挑高4米超過220坪的私人運動環境，擁有25米活動草皮區、獨立團課訓練場地、運動按摩恢復室，與舒適獨立淋浴室，您可以享受到最專業運動的場地與服務，我們能確保您更能在此得到真正放心及最優質的服務。</value>
+  </data>
+  <data name="OurTeam" xml:space="preserve">
+    <value>了解團隊</value>
+  </data>
+  <data name="JoinUsTitle" xml:space="preserve">
+    <value>加入執行團隊</value>
+  </data>
+  <data name="JoinUsDesc" xml:space="preserve">
+    <value>Beyond Fitness 創立於 2014 年，致力於發展專業一對一私人教練。Beyond Fitness 從南京小巨蛋發跡，成立以來陸續拓展了信義 101 與忠孝敦化等分店，在這些的背後，是一群想用行動與專業實踐理想的夥伴，與背後願意相信 我們的客戶們。我們相信，教育應該是個別化的，訓練也應該是，我們針對個人化的需求去客製最符合「人」的訓練模式，進而引領客戶走向更美好的生活為目標。</value>
+  </data>
+  <data name="JoinUsFeature1" xml:space="preserve">
+    <value>微笑</value>
+  </data>
+  <data name="JoinUsFeature1Desc" xml:space="preserve">
+    <value>隨時隨地，熱情回饋</value>
+  </data>
+  <data name="JoinUsFeature2" xml:space="preserve">
+    <value>啟發</value>
+  </data>
+  <data name="JoinUsFeature2Desc" xml:space="preserve">
+    <value>教學互長，一起成長</value>
+  </data>
+  <data name="JoinUsFeature3" xml:space="preserve">
+    <value>溫暖</value>
+  </data>
+  <data name="JoinUsFeature3Desc" xml:space="preserve">
+    <value>如同家人般的關懷</value>
+  </data>
+  <data name="JoinUsFeature4" xml:space="preserve">
+    <value>正直</value>
+  </data>
+  <data name="JoinUsFeature4Desc" xml:space="preserve">
+    <value>專業坦率，提供最真切的建議</value>
+  </data>
+  <data name="JoinUsJob1" xml:space="preserve">
+    <value>私人教練</value>
+  </data>
+  <data name="JoinUsJob1Desc" xml:space="preserve">
+    <value />
+  </data>
+  <data name="JoinUsJob2" xml:space="preserve">
+    <value>防護教練</value>
+  </data>  
+  <data name="JoinUsJob2Desc" xml:space="preserve">
+    <value />
+  </data>
+  <data name="JoinUsJob3" xml:space="preserve">
+    <value>恢復教練</value>
+  </data>
+    <data name="JoinUsJob4" xml:space="preserve">
+    <value>營養教練</value>
+  </data>
+  <data name="OpportunityBannerTitle" xml:space="preserve">
+    <value>幸福</value>
+  </data>
+  <data name="OpportunityBannerSubTitle" xml:space="preserve">
+    <value>是把健康安放在最適當的位置</value>
+  </data>
+  <data name="OpportunityFeaturesTitle" xml:space="preserve">
+    <value>你可以獲得什麼</value>
+  </data>
+  <data name="OpportunityFeaturesDesc1" xml:space="preserve">
+    <value>與優秀夥伴共事的機會</value>
+  </data>
+  <data name="OpportunityFeaturesDesc2" xml:space="preserve">
+    <value>一個世界級視野的訓練平台</value>
+  </data>
+  <data name="OpportunityFeaturesDesc3" xml:space="preserve">
+    <value>在壓力鍋中爆炸性成長的專業水準</value>
+  </data>
+  <data name="OpportunityFeaturesDesc4" xml:space="preserve">
+    <value>一份可以達到生活目標的收入</value>
+  </data>
+  <data name="OpportunityFeaturesDesc5" xml:space="preserve">
+    <value>在工作中玩樂，玩樂中工作</value>
+  </data>
+  <data name="OpportunityFeaturesDesc6" xml:space="preserve">
+    <value>提供勞健保、退休金、移地訓練、員工聚餐、員工旅遊與內部教育訓練。</value>
+  </data>
+  <data name="JoinUsContactTitle" xml:space="preserve">
+    <value>把握一展長才的機會</value>
+  </data>
+  <data name="JoinUsContactDesc" xml:space="preserve">
+    <value>請向Beyond Fitness自我介紹，如果有適合您的職缺，我們會與您聯繫。</value>
+  </data>
+  <data name="HereWeGo" xml:space="preserve">
+    <value>立即行動</value>
+  </data>
+  <data name="BookNowTitle" xml:space="preserve">
+    <value>諮詢四步驟</value>
+  </data>
+  <data name="BookNowStep1" xml:space="preserve">
+    <value>預約&lt;span&gt;可直接透過線上，電話，E-Mail 與專業人員預約時間以及了解內容&lt;/span&gt;</value>
+  </data>
+  <data name="BookNowStep2" xml:space="preserve">
+    <value>諮詢&lt;span&gt;我們將細心地瞭解您的狀況以及需求來幫助您，同時告知體驗相關流程，讓您放心理解細節&lt;/span&gt;</value>
+  </data>
+  <data name="BookNowStep3" xml:space="preserve">
+    <value>體驗&lt;span&gt;輕鬆的前往各分店或遠距視訊，專業人員將針對您的狀況帶您做一次適合的運動，並同時可以了解自身狀況以及運動流程以及環境&lt;/span&gt;</value>
+  </data>
+  <data name="BookNowStep4" xml:space="preserve">
+    <value>量身定做&lt;span&gt;專業人員將與您解釋詳細運動細節以及身體狀況，並一同討論您的狀況以及給予真正適合您的建議&lt;/span&gt;</value>
+  </data>
+  <data name="Reservation" xml:space="preserve">
+    <value>立即預約</value>
+  </data>
+  <data name="Features1Desc" xml:space="preserve">
+    <value>&lt;p&gt;Beyond Fitness提供以下承諾&lt;/p&gt;&lt;ul class="features-list"&gt;&lt;li&gt;客製化課程內容，學習更安全，同時讓您得到顯著的運動效果&lt;/li&gt;&lt;li&gt;專業教練帶領下，清楚了解自己的身體狀況與運動進度&lt;/li&gt;&lt;li&gt;透過與您互相討論課程內容，強化掌握運動時的每個環節&lt;/li&gt;&lt;li&gt;固定時間評估並分析身體狀況與課程內容，隨時替您把關上課品質&lt;/li&gt;&lt;/ul&gt;</value>
+  </data>
+  <data name="Features2Desc" xml:space="preserve">
+    <value>&lt;p&gt;Beyond Fitness 團隊是業界擁有最多國際級六大專業證照的機構，讓您在專業及安全的環境下運動&lt;/p&gt;&lt;ul class="features-list"&gt;&lt;li&gt;ACE   美國運動委員會&lt;/li&gt;&lt;li&gt;ACSM  美國運動醫學會&lt;/li&gt;&lt;li&gt;NCAA  國家委員會授證機構&lt;/li&gt;&lt;li&gt;NSCA  美國肌力體能協會&lt;/li&gt;&lt;li&gt;NASM  美國國家運動醫學會&lt;/li&gt;&lt;li&gt;CrossFit   美國混合健身系統&lt;/li&gt;&lt;li&gt;EXOS-XPS   美國最大私人運動員機構&lt;/li&gt;&lt;li&gt;CPR+AED    中華民國紅十字會&lt;/li&gt;&lt;/ul&gt;</value>
+  </data>
+  <data name="Features3Desc" xml:space="preserve">
+    <value>&lt;p&gt;Beyond Fitness成立以來，持續提供您運動時的相關分析，打造屬於您個人的體能分析庫&lt;/p&gt;&lt;ul class="features-list"&gt;&lt;li&gt;體能分析庫，全面性分析您的運動與身體狀態&lt;/li&gt;&lt;li&gt;雲端課表內容，提供您更了解當下運動內容&lt;/li&gt;&lt;li&gt;實用的專業文章，隨時補充您的運動與健康資訊&lt;/li&gt;&lt;li&gt;有趣的運動小學堂，替您在運動後帶來不同的互動樂趣&lt;/li&gt;&lt;/ul&gt;</value>
+  </data>
+  <data name="FAQBannerTitle" xml:space="preserve">
+    <value>我們樂於協助你，&lt;br /&gt;讓一切輕鬆又簡單。</value>
+  </data>
+  <data name="FAQQestion1" xml:space="preserve">
+    <value>首次體驗如何預約？</value>
+  </data>
+  <data name="FAQQestion11" xml:space="preserve">
+    <value>預約方式</value>
+  </data>
+  <data name="FAQQestion12" xml:space="preserve">
+    <value>課程內容是什麼呢？</value>
+  </data>
+  <data name="FAQQestion2" xml:space="preserve">
+    <value>服務與費用問題？</value>
+  </data>
+  <data name="FAQQestion21" xml:space="preserve">
+    <value>如何收費呢？</value>
+  </data>
+  <data name="FAQQestion22" xml:space="preserve">
+    <value>有月費、入會費及手續費嗎？</value>
+  </data>
+  <data name="FAQQestion23" xml:space="preserve">
+    <value>『一次到位訓練課程套組』的費用怎麼計算呢？</value>
+  </data>
+  <data name="FAQQestion3" xml:space="preserve">
+    <value>Beyond的團隊為何與眾不同？</value>
+  </data>
+  <data name="FAQQestion4" xml:space="preserve">
+    <value>一對一私人教練的優點？</value>
+  </data>
+  <data name="FAQQestion5" xml:space="preserve">
+    <value>除了教練課之外，平時也可以去健身房運動嗎？</value>
+  </data>
+  <data name="FAQQestion6" xml:space="preserve">
+    <value>如何去Beyond？</value>
+  </data>
+  <data name="FAQQestion7" xml:space="preserve">
+    <value>營養服務，運動防護與運動按摩適合誰呢(我嗎)？</value>
+  </data>
+  <data name="FAQAnswer11" xml:space="preserve">
+    <value>您可以透過以下方式聯繫我們完成您的首次體驗課程</value>
+  </data>
+  <data name="FAQAnswer12" xml:space="preserve">
+    <value>體驗課程如下： &lt;li&gt;您將會了解您的身體狀況諮詢服務。&lt;/li&gt;&lt;li&gt;教練將會細心的了解您的運動狀況與生活型態。&lt;/li&gt;&lt;li&gt;遠端課程，專業教練將提前與您視訊確認軟硬體及通訊設備。&lt;/li&gt;&lt;li&gt;專業教練將給您期許的運動目標以及運動效果，讓您體驗愉快且健康的課程。&lt;/li&gt;&lt;li&gt;教練將與您一同討論專屬於您的客製化訓練。&lt;/li&gt;</value>
+  </data>
+  <data name="FAQAnswer21" xml:space="preserve">
+    <value>我們的主要服務包含：私人運動訓練（實體，遠端），營養諮詢與規劃，運動傷害防護與運動按摩與伸展&lt;li&gt;實體一對一專業客製的訓練費用以堂數做收費計算，規劃訓練價格會依照您的目標、規劃時間長短及堂數而有所不同 ，價格約落在 TWD$1700- TWD$1900不等。。&lt;/li&gt;&lt;li&gt;遠端課程訓練費用，營養諮詢規劃，運動傷害防護與運動按摩伸展等服務則依您的實際需求與運動狀況作為相關調整，協助您達到最大的成功。&lt;/li&gt;</value>
+  </data>
+  <data name="FAQAnswer22" xml:space="preserve">
+    <value>BeyondFitness 專注於1對1 客製化專業訓練，您無須再繳交任何月費、入會費及手續費。</value>
+  </data>
+  <data name="FAQAnswer23" xml:space="preserve">
+    <value>&lt;li&gt;初階（含營養規劃）組合價格為 TWD$8,600&lt;/li&gt;&lt;li&gt;進階（含營養規劃）組合價格為 TWD$12,600&lt;/li&gt;</value>
+  </data>
+  <data name="FAQAnswer3" xml:space="preserve">
+    <value>Beyond Fitness的教練團隊為業界首屈一指的專業團隊， 所有相關人員皆要求國際教練認證資格（國際證照且必須在有效期限內），內部專業團隊學術科考核（每季、半年、一年），以真誠認真的心搭配科學化訓練為根本、系統化紀錄、分析，讓每一位來運動的客戶感受最貼心且值得信任的服務Beyond Fitness 的教練團隊為業界首屈一指的專業教練團隊， 不論是私人訓練、營養規劃、運動恢復與傷害防護，所有相關人員皆俱備國際相關教練及專業認證資格（國際證照且必須在有效期限內），內部專業團隊學術科考核（季考核、半年訓、年訓），並以真誠認真的企業文化搭配科學化訓練，並以雲端系統化紀錄地分析與紀錄輔助，讓每位來運動的客戶感受最貼心且最值得信任的服務。</value>
+  </data>
+  <data name="FAQAnswer4" xml:space="preserve">
+    <value>優良的一對一私人教練是針對客戶的目標、營養狀況，肌肉關節品質，生活作息並依據當日身體狀況做出客製化的課程安排，同時給予最好的訓練效果，藉此去幫助您達成改變並確實地陪伴您邁向目標。&lt;br/&gt;&lt;br/&gt;最重要地是協助您規劃您生活中其餘非運動時間需要注意的事項，例如營養攝取、筋膜放鬆與傷害防護等，教練能針對客戶的目標去做訓練，並依照每位客戶的獨特性以及差異化給予最為合適有效果的運動哦！</value>
+  </data>
+  <data name="FAQAnswer5" xml:space="preserve">
+    <value>可以的，我們只提供 BeyondFitness 的客戶登記使用喔，經由規劃專業自主訓練P.I Session，並且進行人數的管控以維持場地以提供客戶最好的運動品質。</value>
+  </data>
+  <data name="FAQAnswer6" xml:space="preserve">
+    <value>您可以透過以下交通資訊抵達Beyond</value>
+  </data>
+  <data name="FAQAnswer7" xml:space="preserve">
+    <value>&lt;li&gt;營養服務對於重視自我健康管理者、減重需求者、提升免疫力、三高慢性病族群及重量訓練想提升肌肉量者等，Beyond 的營養課程皆能為您提供良好及完善的成效與服務。&lt;/li&gt;&lt;li&gt;運動防護則是確認您全身關節與肌肉狀況不可或缺的最大助力，若您有運動傷害，關節與肌肉相關問題，一位運動防護教練是能協助您回歸正常水準最重要的人員。&lt;/li&gt;&lt;li&gt;運動按摩與伸展對於長期肩頸，下背，或久坐等容易痠痛或狀況的族群，絕對能確實幫助您解決壓力，我們的恢復團隊肯定能讓您展開最健康與舒適的笑容。&lt;/li&gt;</value>
+  </data>
+  <data name="NanjingMRT" xml:space="preserve">
+    <value>松山新店線-台北小巨蛋站1號出口</value>
+  </data>
+  <data name="XinyiMRT" xml:space="preserve">
+    <value>淡水信義線-台北101/世貿站3號出口</value>
+  </data>
+  <data name="ZhongxiaoMRT" xml:space="preserve">
+    <value>板南線-忠孝復興站3號出口（地下街14號）</value>
+  </data>
+  <data name="DongmenMRT" xml:space="preserve">
+    <value>淡水信義線-東門站3號出口</value>
+  </data>
+  <data name="AnheMRT" xml:space="preserve">
+    <value>淡水信義線-信義安和2A號出口</value>
+  </data>
+  <data name="Walk" xml:space="preserve">
+    <value>開車/徒步</value>
+  </data>
+  <data name="MRT" xml:space="preserve">
+    <value>捷運</value>
+  </data>
+  <data name="Tel" xml:space="preserve">
+    <value>電話</value>
+  </data>
+  <data name="Go" xml:space="preserve">
+    <value>立即前往</value>
+  </data>
+  <data name="OnlineReservation" xml:space="preserve">
+    <value>線上預約</value>
+  </data>
+  <data name="TeamTitle" xml:space="preserve">
+    <value>專業團隊</value>
+  </data>
+  <data name="BlogBack" xml:space="preserve">
+    <value>回官網首頁</value>
+  </data>
+  <data name="PricingTitle" xml:space="preserve">
+    <value>選擇最適合您的方案</value>
+  </data>
+  <data name="Disclaimer" xml:space="preserve">
+    <value>相關運動成效與所需時間因人而異，建議與教練共同討論，確保相關品質</value>
+  </data>
+  <data name="PersonalTrainer" xml:space="preserve">
+    <value>一對一私人教練</value>
+  </data>  
+  <data name="NutritionCoach" xml:space="preserve">
+    <value>一對一營養教練</value>
+  </data>
+  <data name="OnlinePTTitle" xml:space="preserve">
+    <value>BEYOND Online &lt;br/&gt;私人教練也適合我嗎？</value>
+  </data>
+  <data name="OnlinePTSlogon" xml:space="preserve">
+    <value>像好友一樣的，&lt;br /&gt;體能顧問！</value>
+  </data>  
+  <data name="OnlineNCTitle" xml:space="preserve">
+    <value>BEYOND Online &lt;br/&gt;陪您好食?</value>
+  </data> 
+  <data name="OnlineNCSlogon" xml:space="preserve">
+    <value>把吃東西的習慣，&lt;br /&gt;改變吧！</value>
+  </data>
+  <data name="OnlineNCFeature1" xml:space="preserve">
+    <value>專屬營養教練</value>
+  </data>
+  <data name="OnlineNCFeatureDesc1" xml:space="preserve">
+    <value>國家認證營養師，全方位照顧您的水分、睡眠、運動與壓力的溫暖營養教練。</value>
+  </data>
+  <data name="OnlineNCFeature2" xml:space="preserve">
+    <value>定期飲食追蹤</value>
+  </data>
+  <data name="OnlineNCFeatureDesc2" xml:space="preserve">
+    <value>每日傳送飲食紀錄，逐步教您學會選擇適合自己的食物，陪您達成心中的目標。</value>
+  </data>
+  <data name="OnlineNCFeature3" xml:space="preserve">
+    <value>六大營養素</value>
+  </data>
+  <data name="OnlineNCFeatureDesc3" xml:space="preserve">
+    <value>幫您細心分析六大類食物攝取狀況，量身打造屬於您的黃金三大營養素比例！</value>
+  </data>
+  <data name="OnlineNCFeature4" xml:space="preserve">
+    <value>成果報告分析</value>
+  </data>
+  <data name="OnlineNCFeatureDesc4" xml:space="preserve">
+    <value>提供每月數據表，紀錄體態、飲食、生活變化努力的過程，讓您進步看得見。</value>
+  </data>
+</root>

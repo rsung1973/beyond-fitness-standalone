@@ -1,0 +1,191 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+@using Newtonsoft.Json
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    UserProfile _model;
+    LearnerCharacterViewModel _viewModel;
+
+    Layout = "~/Views/ConsoleHome/Template/MainPage.cshtml";
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _modelState = ViewContext.ModelState;
+    _model = (UserProfile)this.Model;
+    _viewModel = (LearnerCharacterViewModel)ViewBag.ViewModel;
+    UserProfile _learner = (UserProfile)ViewBag.DataItem;
+}
+
+@section CustomHeader {
+    <link href="plugins/timon-stepformwizard/css/parsley.css" rel="stylesheet" />
+    <link href="plugins/timon-stepformwizard/css/gsi-step-indicator.css" rel="stylesheet" />
+    <link href="plugins/timon-stepformwizard/css/tsf-wizard.bundle.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="plugins/nouislider/nouislider.min.css" />
+}
+
+<section class="content profile-page">
+    @{
+        ViewBag.Learner = _learner;
+        ViewBag.BlockHeader = "編輯X檔案";
+        ViewBag.InsertPartial = "~/Views/LearnerProfile/Module/ProfileHeader.cshtml";
+        await Html.RenderPartialAsync("~/Views/ConsoleHome/Module/BlockHeader.cshtml", _model);
+    }
+
+    <!--本月運動時間-->
+    <div class="container-fluid">
+        <div class="row clearfix">
+            <div class="col-12">
+                <div class="card">
+                    <div class="body">
+                        <div class="tsf-wizard">
+                            <div class="tsf-nav-step">
+                                <ul>
+                                    <li data-target="step-0">
+                                        <a href="javascript:void(0);">
+                                            <span class="number">0</span>
+                                            <span class="desc">
+                                                <label>START</label>
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li data-target="step-1">
+                                        <a href="javascript:void(0);">
+                                            <span class="number">1</span>
+                                            <span class="desc">
+                                                <img src="images/lesson/stage5-girl-clear.png">
+                                                <label>身體密碼</label>
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li data-target="step-2">
+                                        <a href="javascript:void(0);">
+                                            <span class="number">2</span>
+                                            <span class="desc">
+                                                <img src="images/lesson/stage4-girl-clear.png">
+                                                <label>心靈密碼</label>
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li data-target="step-3">
+                                        <a href="javascript:void(0);">
+                                            <span class="number">3</span>
+                                            <span class="desc">
+                                                <img src="images/lesson/stage2.png">
+                                                <label>數據分析</label>
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li data-target="step-4">
+                                        <a href="javascript:void(0);">
+                                            <span class="number">4</span>
+                                            <span class="desc">
+                                                <img src="images/lesson/stage3.png">
+                                                <label>週期性目標</label>
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <!-- ADD YOUR STEPS HERE -->
+                                </ul>
+                            </div>
+                            <!-- BEGIN STEP CONTAINER -->
+                            <div class="tsf-container">
+                                <form class="tsf-content noborder">
+                                    <!-- BEGIN STEP-->
+                                    <div class="tsf-step step-0 active">
+                                        <div class="row clearfix">
+                                            <div class="col-12">
+                                                <div class="testimonial3 aliceblue">
+                                                    <div class="testimonial-section">
+                                                        <h4>Hi，@(_learner.Nickname)您好</h4>
+                                                        <p>
+                                                            恭喜您持之以恆的完成了15堂訓練課程，為了讓您未來在更安全的環境中進行有效的訓練<br />
+                                                            Beyond精靈將與您進行以下的對談，雖然會花費您5分鐘的時間，但是在過程中可替您規劃出更適合的訓練內容喔！
+                                                        </p>
+                                                        <p class="text-center p-t-10">
+                                                            <a href="javascript:startEditingCharacter();">
+                                                                <i class="zmdi livicon-evo " data-options="name: touch.svg; size: 50px; style: original; strokeStyle:round; strokeColor:#052333; strokeWidth:2px; autoPlay:true"></i>
+                                                                LET'S GO~
+                                                            </a>
+                                                        </p>
+                                                    </div>
+                                                    <div class="testimonial-desc">
+                                                        @{
+                                                            ViewBag.ProfileClass = "media-object rounded-circle shadow";
+                                                            await Html.RenderPartialAsync("~/Views/Common/ProfileImage.cshtml", _model);
+                                                        }
+                                                        <div class="testimonial-writer">
+                                                            <h6>@(_model.UserName)</h6>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+@section TailPageJavaScriptInclude {
+    <!-- Sparkline Plugin Js -->
+    <script src="plugins/jquery-sparkline/jquery.sparkline.js"></script>
+    <script src="plugins/timon-stepformwizard/js/parsley.min.js"></script>
+    <script src="plugins/timon-stepformwizard/js/tsf-wizard.bundle.min.js"></script>
+    <!-- noUISlider Plugin Js -->
+    <script src="plugins/nouislider/nouislider.min.js"></script>
+
+    <script>
+        $(function () {
+            generateWizard();
+            $(".chat-widget li").hide();
+        });
+
+        //產生Step精靈
+        this.generateWizard = function () {
+            //Step精靈
+            _tsfWizard = $('.tsf-wizard').tsfWizard({
+                stepEffect: 'slideUpDown',
+                stepStyle: 'style11',
+                navPosition: 'left',
+                validation: false,
+                stepTransition: true,
+                showButtons: false,
+                showStepNum: false,
+                height: 'auto',
+                disableSteps: 'after_current',
+                onBeforeNextButtonClick: function (e, validation) {
+                },
+                onAfterNextButtonClick: function (e, from, to, validation) {
+                },
+                onBeforePrevButtonClick: function (e, from, to) {
+                },
+                onAfterPrevButtonClick: function (e, from, to) {
+                },
+                onBeforeFinishButtonClick: function (e, validation) {
+                },
+                onAfterFinishButtonClick: function (e, validation) {
+                }
+            });
+        };
+
+        function startEditingCharacter() {
+            showLoading();
+            $('').launchDownload('@(Html.Raw(Url.Action("EditLearnerCharacter","ConsoleHome",new { KeyID = _learner.UID.EncryptKey(),ToPrepare = true })))', {});
+        }
+
+    </script>
+}

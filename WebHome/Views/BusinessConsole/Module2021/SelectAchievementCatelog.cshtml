@@ -1,0 +1,121 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+
+    QueryViewModel _viewModel = (QueryViewModel)ViewBag.ViewModel;
+    String _dialogID = _viewModel.DialogID ?? $"catelog{DateTime.Now.Ticks}";
+    ViewBag.ReuseModal = true;
+}
+
+<div id="@(_dialogID)" class="modal modal-mini" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="title">請選擇執行功能</h6>
+                <a class="closebutton" data-dismiss="modal"></a>
+            </div>
+            <div class="modal-popmenu-body">
+                <div class="list-group">
+                    <a href="javascript:showBreakEventLineQueryModal();" class="list-group-item">損益兩平同期比較折線圖</a>
+                    <a href="javascript:showLineQueryModal();" class="list-group-item">上課數折線圖查詢</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    @{
+        await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/BSModalScript.cshtml", model: _dialogID);
+    }
+    @{
+        DateTime idx = DateTime.Today.AddMonths(-1).FirstDayOfMonth();
+    }
+    <script>
+        function showBreakEventLineQueryModal() {
+
+            if ($global.appliedDialog && $global.appliedDialog['breakEvent']) {
+                $global.appliedDialog['breakEvent'].modal('show');
+                return;
+            }
+
+            showLoading();
+            $.post('@Html.Raw(Url.Action("SelectBreakEventCondition", "AchievementConsole"))', { 'DialogID':'breakEvent'}, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    alert(data.message);
+                } else {
+                    $(data).appendTo($('body'));
+                }
+            });
+        }
+
+        function showLineQueryModal() {
+
+            delete $global.viewModel.SessionType;
+            if ($global.appliedDialog && $global.appliedDialog['curveCondition']) {
+                $global.appliedDialog['curveCondition'].modal('show');
+                return;
+            }
+            $global.achievementConsole.doQuery['curveCondition'] = function (viewModel) {
+                inquireMonthlyIndicator(viewModel);
+            };
+            $global.viewModel.DialogID = 'curveCondition';
+            showLoading();
+            $.post('@Html.Raw(Url.Action("SelectCurveCondition", "AchievementConsole"))', $global.viewModel, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    alert(data.message);
+                } else {
+                    $(data).appendTo($('body'));
+                }
+            });
+
+        }
+
+        function inquireMonthlyIndicator(viewModel) {
+            showLoading();
+            $.post('@Html.Raw(Url.Action("InquireMonthlyIndicator", "AchievementConsole"))', viewModel, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    alert(data.message);
+                } else {
+                    $('#indicatorList').empty()
+                        .append($(data));
+                    $global.hideAllModal();
+                }
+            });
+        }
+
+        function showThreeMonthBarChart_2() {
+            $global.viewModel.DateFrom = '@($"{idx.AddMonths(-2):yyyy/MM/dd}")';
+            $global.viewModel.DateTo = '@($"{idx:yyyy/MM/dd}")';
+            inquireMonthlyIndicator($global.viewModel);
+        }
+
+        function showSixMonthBarChart_2() {
+            $global.viewModel.DateFrom = '@($"{idx.AddMonths(-5):yyyy/MM/dd}")';
+            $global.viewModel.DateTo = '@($"{idx:yyyy/MM/dd}")';
+            inquireMonthlyIndicator($global.viewModel);
+        }
+
+        function showYearBarChart_2() {
+            $global.viewModel.DateFrom = '@($"{idx.AddMonths(-12):yyyy/MM/dd}")';
+            $global.viewModel.DateTo = '@($"{idx:yyyy/MM/dd}")';
+            inquireMonthlyIndicator($global.viewModel);
+        }
+
+    </script>
+</div>
+

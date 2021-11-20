@@ -1,0 +1,45 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+@using WebHome.Helper.BusinessOperation
+@using Newtonsoft.Json
+@using CommonLib.Utility
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    UserProfile _model;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _modelState = ViewContext.ModelState;
+    _model = (UserProfile)this.Model;
+
+    CourseContractQueryViewModel viewModel = ViewBag.ViewModel as CourseContractQueryViewModel;
+    IQueryable<CourseContract> items = ViewBag.DataItems as IQueryable<CourseContract>;
+}
+
+@{
+    var count = items.Count();
+}
+<div class="content" onclick='showContractList(@Html.Raw(viewModel.JsonStringify()),@(count));'>
+    <div class="text">@(viewModel.CustomQuery)</div>
+
+    <h5 class="number">
+        @if (count > 0)
+        {
+            <a href='javascript:void(0);' class="col-red">@(count)</a>
+        }
+        else
+        {
+            <a href="#" class="">0</a>
+        }
+    </h5>
+</div>
+

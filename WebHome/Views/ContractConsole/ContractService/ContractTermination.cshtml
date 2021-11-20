@@ -1,0 +1,94 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Helper.DataOperation
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    CourseContract _model;
+    UserProfile _profile;
+
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (CourseContract)this.Model;
+    _profile = await Context.GetUserAsync();
+}
+
+@{ CourseContract currentItem = models.GetTable<CourseContractRevision>()
+                                     .Where(c => c.OriginalContract == _model.ContractID)
+                                     .Where(r => r.Reason == "終止")
+                                     .Select(r => r.CourseContract)
+                                     .Where(c => c.Status < (int)Naming.CourseContractStatus.已生效)
+                                     .FirstOrDefault();
+    var bookingCount = _model.CountableRegisterLesson().Sum(r => r.GroupingLesson.LessonTime.Count());
+    var contractCost = _model.TotalCost / _model.Lessons * bookingCount;
+    var totalPaid = _model.TotalPaidAmount();
+    var applicable = true;}
+
+<div class="body">
+    <div class="row">
+        <div class="col-8">
+            <h5 class="m-t-0">終止</h5>
+            @if (_model.Status == (int)Naming.CourseContractStatus.已終止 || _model.Status == (int)Naming.CourseContractStatus.已履行)
+            {
+                applicable = false;
+                <span class="col-red"><i class="zmdi zmdi-block"></i>合約@((Naming.CourseContractStatus)_model.Status)</span><br />
+            }
+            @if (_model.IsContractServiceInProgress(models))
+            {
+                applicable = false;
+                <span class="col-red"><i class="zmdi zmdi-block"></i>服務申請進行中</span><br />
+            }
+            @if (contractCost > totalPaid)
+            {
+                applicable = false;
+                <span class="col-red"><i class="zmdi zmdi-block"></i>合約繳款餘額不足！（不足：@(String.Format("{0:##,###,###,###}", contractCost - totalPaid))元）</span>
+            }
+            @if (_model.PromptLearnerLessons(models).Any(l => l.LessonAttendance == null))
+            {
+                applicable = false;
+                <span class="col-red"><i class="zmdi zmdi-block"></i>尚有未完成課表！</span>
+            }
+        </div>
+        <div class="col-4 text-right">
+            <a href="javascript:void();">
+                <h2>
+                    @{
+                        var revision = _model.RevisionList.Where(r => r.Reason == "終止");
+                        var count =  (revision.Where(r => r.OperationMode != (int)Naming.OperationMode.快速終止)).Count();
+                    }
+                    @(count)
+                </h2>
+            </a>
+            @if (currentItem != null)
+            {
+                <small class="info">@((Naming.ContractServiceStatus)currentItem.Status)</small>
+            }
+            else if (applicable && _profile.IsCoach())
+            {
+                <p>
+                    <button class="btn btn-icon btn-icon-mini btn-round waves-effect float-right" onclick="terminateContract();"><i class="zmdi zmdi-plus"></i></button>
+                </p>
+            }
+        </div>
+    </div>
+</div>
+<script>
+    function terminateContract() {
+        $('').launchDownload('@Html.Raw(Url.Action("TerminateContract", "ConsoleHome"))',
+            @Html.Raw(JsonConvert.SerializeObject(new
+            {
+                KeyID = _model.ContractID.EncryptKey()
+            })));
+    }//
+</script>

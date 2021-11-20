@@ -1,0 +1,118 @@
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    CourseContract _item;
+    UserProfile _model;
+    CourseContractQueryViewModel _viewModel;
+
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _modelState = ViewContext.ModelState;
+    _model = (UserProfile)this.Model;
+    _viewModel = (CourseContractQueryViewModel)ViewBag.ViewModel;
+    _item = (CourseContract)ViewBag.DataItem;
+
+}
+
+<div class="row clearfix">
+    <div class="col-12">
+        <h4 class="card-outbound-header">懶人包</h4>
+    </div>
+    <div class="col-lg-2 col-md-3 col-sm-6">
+        <div class="card">
+            <div class="file">
+                <a href="javascript:$('').launchDownload('@Html.Raw(Url.Action("CreateUnallocatedLearnerListXlsx","Learner"))');">
+                    <div class="icon">
+                        <i class="zmdi livicon livicon-evo" data-options="name: users.svg; size: 60px; style: linesAlt; strokeWidth:2px; autoPlay:true"></i>
+                    </div>
+                    <div class="file-name">
+                        <p class="m-b-5">未指派體能顧問清單</p>
+                        <small>截至今日 <span class="date text-muted">@($"{DateTime.Today:yyyy/MM/dd}")</span></small>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-2 col-md-3 col-sm-6">
+        <div class="card">
+            <div class="file">
+                <a href="javascript:$('').launchDownload('@Html.Raw(Url.Action("CreateBonusAwardXlsx","ReportConsole"))');">
+                    <div class="icon">
+                        <i class="zmdi livicon livicon-evo" data-options="name: shoppingcart-out.svg; size: 60px; style: linesAlt; strokeWidth:2px; autoPlay:true"></i>
+                    </div>
+                    <div class="file-name">
+                        <p class="m-b-5">Beyond幣兌換紀錄清單</p>
+                        <small>截至今日 <span class="date text-muted">@($"{DateTime.Today:yyyy/MM/dd}")</span></small>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-2 col-md-3 col-sm-6">
+        <div class="card">
+            <div class="file">
+                <a href="javascript:$('').launchDownload('@Html.Raw(Url.Action("CreateBonusCreditXlsx","ReportConsole"))');">
+                    <div class="icon">
+                        <i class="zmdi livicon livicon-evo" data-options="name: piggybank.svg; size: 60px; style: linesAlt; strokeWidth:2px; autoPlay:true"></i>
+                    </div>
+                    <div class="file-name">
+                        <p class="m-b-5">Beyond幣彙總清單</p>
+                        <small>截至今日 <span class="date text-muted">@($"{DateTime.Today:yyyy/MM/dd}")</span></small>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row clearfix">
+    <div class="col-12">
+        <h4 class="card-outbound-header">自訂條件</h4>
+    </div>
+    <div class="col-lg-2 col-md-3 col-sm-6">
+        <div class="card">
+            <div class="file">
+                <a href="javascript:selectBonusAward();">
+                    <div class="icon">
+                        <i class="zmdi livicon livicon-evo" data-options="name: shoppingcart-out.svg; size: 60px; style: linesAlt; strokeWidth:2px; autoPlay:true"></i>
+                    </div>
+                    <div class="file-name">
+                        <p class="m-b-5">Beyond幣兌換紀錄清單</p>
+                        <small>兌換商品 <span class="date text-muted"><i class="zmdi zmdi-search"></i></span></small>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+    <script>
+
+        function selectBonusAward() {
+            showLoading();
+            $.post('@Html.Raw(Url.Action("SelectAwardItem","ReportConsole"))', {}, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    Swal.fire(
+                        'Oops...',
+                        data.message,
+                        'warning'
+                    )
+                } else {
+                    $global.doQuery = function (inputData) {
+                        $('').launchDownload('@Html.Raw(Url.Action("CreateBonusAwardXlsx", "ReportConsole"))', inputData, 'report', true);
+                    }
+                    $(data).appendTo($('body'));
+                }
+            });
+        }
+    </script>
+</div>

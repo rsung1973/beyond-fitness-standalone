@@ -1,0 +1,54 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    DateTime? _lessonDate;
+    IQueryable<UserProfile> _items;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _lessonDate = DateTime.Today;   //(DateTime?)this.Model;
+
+    _items = models.PromptLearnerAboutToBirth(14);
+
+}
+@if (_items.Count() > 0)
+{
+    <a href="javascript:showLearnerBirth();">
+        <i class="zmdi livicon-evo" data-options="name: gift.svg; size: 30px; style: original; strokeWidth:2px;"></i>
+        @if (_items.Any(u => u.Birthday.Value.Month == DateTime.Today.Month && u.Birthday.Value.Day == DateTime.Today.Day))
+        {
+            <span class="zmdi-heartbit"></span>
+        }
+    </a>
+    <script>
+        function showLearnerBirth() {
+            showLoading();
+            $.post('@Html.Raw(Url.Action("ShowLearnerAboutToBirth", "LearnerProfile"))', {}, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    Swal.fire(
+                        'Oops...',
+                        data.message,
+                        'warning'
+                    );
+                } else {
+                    $(data).appendTo($('body'));
+                }
+            });
+        }
+    </script>
+}
+
+

@@ -1,0 +1,155 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Helper.DataOperation
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    CourseContract _model;
+    UserProfile _profile;
+    String _viewID;
+
+
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (CourseContract)this.Model;
+    _profile = await Context.GetUserAsync();
+    _viewID = ViewBag.ViewID as String;
+}
+<div class="header">
+    <h2><strong>展延資料</strong></h2>
+</div>
+<div class="body">
+    <div class="row clearfix">
+        <div class="col-12 m-b-20">
+            <div class="fancy-checkbox custom-bgcolor-pink">
+                <label><input name="SignOnline" value="true" type="checkbox" /><span><i></i>學生遠端線上簽名</span></label>
+            </div>
+            <script>
+                function resetAttachment() {
+                    $('#attachment').css('display', 'block');
+                    if ($('input[name="SignOnline"]').is(':checked')) {
+                        $('#attachment').css('display', 'none');
+                    }
+                }
+                $(function () {
+                    resetAttachment();
+                });
+            </script>
+        </div>
+        <div class="col-12 m-b-20">
+            @for (int i = 3; i <= 12; i += 3)
+            {
+                <label class="fancy-checkbox custom-bgcolor-pink displayblock">
+                    <input type="checkbox" name="MonthExtension" value="@(i)" />
+                    <span>展延@(i)個月 - @($"{_model.Expiration.Value.AddMonths(i):yyyy/MM/dd}")</span>
+                </label>
+            }
+            <script>
+                $(function () {
+                    function check(element) {
+                        $('input:checkbox[name="MonthExtension"]').prop('checked', false);
+                        $(element).prop('checked', true);
+                    }
+                    $('input:checkbox[name="MonthExtension"]').on('click', function (event) {
+                        check(this);
+                    });
+                });
+            </script>
+        </div>
+        <div class="col-12" id="attachment">
+            @*@{
+                ViewBag.DropifyExtension = "gif jpg png pdf";
+            }
+            <script>
+                $(function () {
+                    $global.dropifyMessage = {
+                        'default': '點選或拖拉證明文件(可上傳格式PDF、GIF、JPG、PNG)到這邊',
+                        'replace': '點選或拖拉證明文件(可上傳格式PDF、GIF、JPG、PNG)取代目前內容',
+                        'remove': '刪除內容',
+                        'error': 'Ooops, 肯定做錯了什麼'
+                    };
+                    $global.dropifyError = {
+                        'fileSize': 'Ooops, 上傳的檔案太大了啦！ ({{ value }} max).',
+                        'imageFormat': 'Ooops, 上傳檔案是PDF或圖檔嗎？！ ({{ value }} only).'
+                    };
+                });
+            </script>*@
+            <form enctype="multipart/form-data" method="post">
+                @{
+                    await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/DropifyFileUpload.cshtml");
+                }
+            </form>
+        </div>
+        <div class="col-12">
+            <div class="form-group">
+                <textarea rows="3" class="form-control no-resize" name="Remark" placeholder="請輸入任何想補充的事項..."></textarea>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+    $(function () {
+
+        $('#@(_viewID) button.quit').on('click', function (event) {
+            cancelPostponing();
+        });
+
+        $('#@(_viewID) button.finish').on('click', function (event) {
+            commitPostponing();
+        });
+
+    });
+
+    function cancelPostponing() {
+        $('').launchDownload('@Html.Raw(Url.Action("ApplyContractService","ConsoleHome"))',
+            @Html.Raw(JsonConvert.SerializeObject(new CourseContractQueryViewModel
+                {
+                    KeyID = _model.ContractID.EncryptKey(),
+                })));
+    }
+
+    function commitPostponing() {
+        var viewModel = $('#@(_viewID)').find('input,select,textArea').serializeObject();
+        viewModel.Reason = '展延';
+        viewModel.FitnessConsultant = @(_profile.UID);
+        clearErrors();
+        showLoading();
+        $('form').ajaxForm({
+            url: '@Html.Raw(Url.Action("CommitContractService", "ContractConsole",new { KeyID = _model.ContractID.EncryptKey() }))',
+            data: viewModel,
+            beforeSubmit: function () {
+                showLoading();
+            },
+            success: function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    Swal.fire(
+                        'Oops...',
+                        data.message,
+                        'warning'
+                    )
+                }
+                else {
+                    $(data).appendTo($('body'));
+                }
+            },
+            error: function () {
+                hideLoading();
+            }
+        }).submit();
+    }//
+
+</script>
+

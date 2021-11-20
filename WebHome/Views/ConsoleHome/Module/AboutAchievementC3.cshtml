@@ -1,0 +1,156 @@
+﻿
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    UserProfile _model;
+    LessonTimeBookingViewModel _viewModel;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (UserProfile)this.Model;
+    _viewModel = (LessonTimeBookingViewModel)ViewBag.ViewModel;
+}
+
+<div class="container-fluid">
+    <div class="row clearfix">
+        <h4 class="card-outbound-header m-l-15">我的分店一覽</h4>
+        <div class="col-lg-12 col-md-12">
+            <div class="row clearfix">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2 id="branchName">
+                                @*@for (int idx = 0; idx < 3; idx++)
+                                {
+                                    var dayIdx = DateTime.Today.AddDays(idx);
+                                    <a href="#lessonSummary" onclick="inquireDailyBarChart('@($"{dayIdx:yyyy-MM-dd}")',event);" class="btn btn-simple btn-sm inquireDaily @(_viewModel.ClassTimeStart == dayIdx ? "disabled" : null)">@($"{dayIdx:yyyy/MM/dd}")</a>
+                                }*@
+                                @{
+                                    <a href="#lessonSummary" onclick="inquireDailyBarChart('@($"{DateTime.Today:yyyy-MM-dd}")',event);" class="btn btn-simple btn-sm inquireDaily disabled">今</a>
+                                }
+                                <input type="text" class="btn btn-simple btn-sm inquireDaily" data-date-format="yyyy/mm/dd" readonly="readonly" value="" size="12" placeholder="自選日期..." />
+                                @{
+                                    ViewBag.Other = "全部";
+                                    await Html.RenderPartialAsync("~/Views/Common/BranchStoreWithOther.cshtml", models.GetTable<BranchStore>().Where(b => b.BranchID == _viewModel.BranchID).FirstOrDefault());
+                                }
+                            </h2>
+                            <ul class="header-dropdown">
+                                <li class="dropdown">
+                                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class="zmdi zmdi-swap"></i> </a>
+                                    <ul class="dropdown-menu dropdown-menu-right slideUp float-right">
+                                        <li><a href="#lessonSummary" onclick="inquireLessonsBarChart();">全部</a></li>
+                                        @foreach (var b in models.GetTable<BranchStore>())
+                                        {
+                                            <li><a href="#lessonSummary" onclick="inquireLessonsBarChart(@(b.BranchID));">@(b.BranchName)</a></li>
+                                        }
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="body">
+                            <div id="lessonsBarChart">
+                                @{
+                                    await Html.RenderPartialAsync("~/Views/ConsoleHome/Module/TodayLessonsBarChartC3.cshtml", _model);
+                                }
+                            </div>
+                        </div>
+                        <script>
+                            $(function () {
+                                var $input = $('input.inquireDaily');
+                                $input.datetimepicker({
+                                    language: 'zh-TW',
+                                    format: 'yyyy/mm/dd',
+                                    defaultDate: new Date(),
+                                    weekStart: 1,
+                                    todayBtn: 1,
+                                    clearBtn: 1,
+                                    autoclose: 1,
+                                    todayHighlight: 1,
+                                    startView: 2,
+                                    minView: 2,
+                                    defaultView: 2,
+                                    forceParse: 0,
+                                }).on('changeDate', function (ev) {
+                                    $('a.inquireDaily').removeClass('disabled');
+                                    $global.viewModel.ClassTimeStart = $input.val();
+                                    drawLessonsBarChart();
+                                });
+
+                            });
+                            function inquireLessonsBarChart(branchID) {
+                                var event = event || window.event;
+                                var branchName = $(event.target).text();
+                                $global.viewModel.BranchID = branchID;
+                                $global.viewModel.BranchName = branchName;
+                                drawLessonsBarChart();
+                                showLessonSummary();
+                                showBranchStore();
+                            }
+
+                            function inquireDailyBarChart(daily, event) {
+                                var event = event || window.event;
+                                $('a.inquireDaily').removeClass('disabled');
+                                $(event.target).addClass('disabled');
+                                $global.viewModel.ClassTimeStart = daily;
+                                drawLessonsBarChart();
+                            }
+
+                            function drawLessonsBarChart() {
+                                $('#lessonsBarChart').empty();
+                                showLoading();
+                                $.post('@Url.Action("DailyLessonsBarChart", "ConsoleHome")', $global.viewModel, function (data) {
+                                    hideLoading();
+                                    if ($.isPlainObject(data)) {
+                                        alert(data.message);
+                                    } else {
+                                        $(data).appendTo($('#lessonsBarChart'));
+                                    }
+                                });
+                            }
+
+                            function showLessonSummary() {
+                                $('#lessonSummary').empty();
+                                showLoading();
+                                $.post('@Url.Action("ShowLessonSummary", "ConsoleHome")', $global.viewModel, function (data) {
+                                    hideLoading();
+                                    if ($.isPlainObject(data)) {
+                                        alert(data.message);
+                                    } else {
+                                        $(data).appendTo($('#lessonSummary'));
+                                    }
+                                });
+                            }
+
+                            function showBranchStore() {
+                                $('#branchName').find('span').remove();
+                                showLoading();
+                                $.post('@Url.Action("ViewBranchStore", "CommonHelper")', $global.viewModel, function (data) {
+                                    hideLoading();
+                                    if ($.isPlainObject(data)) {
+                                        alert(data.message);
+                                    } else {
+                                        $(data).appendTo($('#branchName'));
+                                    }
+                                });
+                            }
+
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

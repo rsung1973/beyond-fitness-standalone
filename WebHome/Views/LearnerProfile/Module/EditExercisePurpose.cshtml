@@ -1,0 +1,146 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json;
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    UserProfile _learner;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _learner = (UserProfile)this.Model;
+    ExercisePurposeViewModel _viewModel = (ExercisePurposeViewModel)ViewBag.ViewModel;
+}
+@{
+    String currentID = $"purpose{DateTime.Now.Ticks}";
+}
+<div class="list-group" id="@(currentID)">
+    <a class="list-group-item list-group-item-action flex-column align-items-start l-lightgray">
+        <div class="w-100 profile-header">
+            <div class="profile-image float-right">
+                @{
+                    ViewBag.ProfileClass = "small";
+                    await Html.RenderPartialAsync("~/Views/Common/ProfileImage.cshtml", _learner);
+                }
+            </div>
+            <h4 class="m-t-0 m-b-0 col-darkteal">規劃學生15堂課內的個人目標 </h4>
+            <h3 class="m-t-0 m-b-0"><strong>@(_learner.RealName)</strong> (@(_learner.Nickname ?? "N/A")) - <small class="col-pink font-bold">@(_viewModel.Purpose ?? "？")期</small></h3>
+        </div>
+    </a>
+    <a class="list-group-item list-group-item-action flex-column align-items-start">
+        <div class="row clearfix w-100">
+            <div class="col-12">
+                <h5 class="title">週期性目標</h5>
+                <select class="form-control show-tick" name="Purpose">
+                    <option value="">-- 週期性目標 --</option>
+                    <option value="輔助">輔助期</option>
+                    <option value="耐力">耐力期</option>
+                    <option value="增肌">增肌期</option>
+                    <option value="力量">力量期</option>
+                    <option value="運能">運能期</option>
+                    <option value="目標">目標期</option>
+                </select>
+                @if (_viewModel.Purpose != null)
+                {
+                    <script>
+                        $(function () {
+                            $('#@(currentID) select[name="Purpose"]').val('@(_viewModel.Purpose)');
+                        });
+                    </script>
+                }
+            </div>
+        </div>
+    </a>
+    @{
+        var incompleteItems = models.GetTable<PersonalExercisePurposeItem>()
+                            .Where(p => p.UID == _learner.UID)
+                            .Where(p => !p.CompleteDate.HasValue);
+    }
+    @if (incompleteItems.Count() > 0)
+    {
+        <a class="list-group-item list-group-item-action flex-column align-items-start">
+            <div class="row clearfix w-100">
+                <div class="col-12">
+                    <h5 class="title">未完成目標<small class="col-red">(與下方近期目標合計最多3個)</small></h5>
+                    <ul class="list-unstyled feeds_widget">
+                        @foreach (var item in incompleteItems)
+                        {
+                            <li>
+                                <div class="feeds-body todo_list">
+                                    <div class="todo_list">
+                                        <label class="fancy-checkbox">
+                                            <input type="checkbox" name="ItemID" value="@(item.ItemID)" />
+                                            <span>@(item.PurposeItem)</span>
+                                        </label>
+                                        <small class="float-right text-muted">@($"{item.InitialDate:yyyy/MM/dd}")</small>
+                                    </div>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </a>
+    }
+    <div class="list-group-item list-group-item-action flex-column align-items-start">
+        <div class="d-flex w-100 justify-content-between">
+            <h5 class="title">近期目標-1<small class="col-red">(與上方未完成目標合計最多3個)</small></h5>
+        </div>
+        <div class="form-group p-t-0">
+            <textarea rows="1" cols="100" class="form-control" placeholder="請輸入任何您想輸入10個中文字內的內容..." name="PurposeItem"></textarea>
+        </div>
+    </div>
+    <div class="list-group-item list-group-item-action flex-column align-items-start">
+        <div class="d-flex w-100 justify-content-between">
+            <h5 class="title">近期目標-2<small class="col-red">(與上方未完成目標合計最多3個)</small></h5>
+        </div>
+        <div class="form-group p-t-0">
+            <textarea rows="1" cols="100" class="form-control" placeholder="請輸入任何您想輸入10個中文字內的內容..." name="PurposeItem"></textarea>
+        </div>
+    </div>
+    <div class="list-group-item list-group-item-action flex-column align-items-start">
+        <div class="d-flex w-100 justify-content-between">
+            <h5 class="title">近期目標-3<small class="col-red">(與上方未完成目標合計最多3個)</small></h5>
+        </div>
+        <div class="form-group p-t-0">
+            <textarea rows="1" cols="100" class="form-control" placeholder="請輸入任何您想輸入10個中文字內的內容..." name="PurposeItem"></textarea>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+
+        var $viewModel = @Html.Raw(JsonConvert.SerializeObject(_viewModel));
+
+        $global.commitExercisePurpose = function (onDone) {
+            $viewModel.Items = $('#@(currentID)').find('input,select,textarea').serializeObject();
+            clearErrors();
+            showLoading();
+            $.post('@Html.Raw(Url.Action("CommitExercisePurpose", "LearnerProfile"))', $viewModel, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    if (data.result) {
+                        onDone();
+                    } else {
+                        Swal.fire(
+                            'Oops...',
+                            data.message,
+                            'warning'
+                        )
+                    }
+                } else {
+                    $(data).appendTo($('body'));
+                }
+            });
+        };
+    });
+</script>

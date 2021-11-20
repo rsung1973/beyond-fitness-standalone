@@ -1,0 +1,58 @@
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    IQueryable<Payment> _model;
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (IQueryable<Payment>)this.Model;
+}
+@{
+    PaymentQueryViewModel _viewModel = (PaymentQueryViewModel)ViewBag.ViewModel;
+    IQueryable<Payment> voidItems = (IQueryable<Payment>)ViewBag.VoidPayment;
+}
+<p class="text-small">
+    收款：<a href="#" onclick='showPaymentList(@Html.Raw(JsonConvert.SerializeObject(
+            new
+            {
+                _viewModel.PayoffDateFrom,
+                _viewModel.PayoffDateTo,
+                _viewModel.TransactionType,
+                _viewModel.CompoundType,
+                _viewModel.RelatedID,
+                _viewModel.BranchID,
+                IncomeOnly = true,
+            })));'>@(_model.Count())</a><br />
+    作廢：<a href="#" onclick='showPaymentList(@Html.Raw(JsonConvert.SerializeObject(
+            new
+            {
+                CancelDateFrom = _viewModel.PayoffDateFrom,
+                CancelDateTo = _viewModel.PayoffDateTo,
+                _viewModel.TransactionType,
+                _viewModel.CompoundType,
+                HasCancellation = true,
+                _viewModel.RelatedID,
+                _viewModel.BranchID,
+            })));'>@(voidItems.ExtractVoidPayment(models,true).Count())</a><br />
+    折讓：<a href="#" onclick='showPaymentList(@Html.Raw(JsonConvert.SerializeObject(
+            new
+            {
+                AllowanceDateFrom = _viewModel.PayoffDateFrom,
+                AllowanceDateTo =_viewModel.PayoffDateTo,
+                _viewModel.TransactionType,
+                _viewModel.CompoundType,
+                HasAllowance = true,
+                _viewModel.RelatedID,
+                _viewModel.BranchID,
+            })));'>@(voidItems.Where(p=>p.AllowanceID.HasValue).Count())</a><br />
+</p>
+

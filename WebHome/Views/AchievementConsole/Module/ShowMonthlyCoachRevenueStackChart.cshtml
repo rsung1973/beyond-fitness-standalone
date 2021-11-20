@@ -1,0 +1,154 @@
+
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
+@using CommonLib.Utility
+@functions
+{
+    IQueryable<MonthlyCoachRevenueIndicator> _model;
+    MonthlyCoachRevenueIndicator[] items;
+}
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    MonthlyCoachRevenueIndicatorQueryViewModel _viewModel;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _modelState = ViewContext.ModelState;
+    _model = (IQueryable<MonthlyCoachRevenueIndicator>)this.Model;
+
+    _viewModel = (MonthlyCoachRevenueIndicatorQueryViewModel)ViewBag.ViewModel;
+
+    items = _model.ToArray();
+
+    var achievement = items.Select(c => new
+    {
+        ActualLessonAchievement =  c.ActualLessonAchievement ?? 0,
+        PaymentAchievement = c.MonthlyIndicator.GetPaymentAchievementSummary(models, c.CoachID),
+    }).ToArray();
+}
+
+<script>
+
+    //指定圖表的配置項和資料
+    $global.echarts.option = {
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'cross',
+                crossStyle: {
+                    color: '#999'
+                }
+            }
+        },
+        toolbox: {
+            feature: {
+                magicType: { show: true, type: ['line', 'bar'] },
+                restore: { show: true },
+                saveAsImage: { show: true }
+            }
+        },
+        legend: {
+            data: ['上課業績', '收款業績']
+        },
+        xAxis: [
+            {
+                type: 'category',
+                data: @Html.Raw(items.Select(c => $"{c.MonthlyIndicator.StartDate:yyyyMM}").ToArray().JsonStringify()),
+                axisPointer: {
+                    type: 'shadow'
+                }
+            }
+        ],
+        yAxis: [
+            {
+                type: 'value',
+                name: '金額',
+                min: 0,
+                max: 600000,
+                axisLabel: {
+                    formatter: '{value} 元'
+                }
+            }
+        ],
+        series: [
+            {
+                name: '總業績',
+                type: 'bar',
+                barGap: '-100%',         // 左移100%，stack不再与上面两个在一列
+                label: {
+                    normal: {
+                        show: true,
+                        position: 'top',       //  位置设为top
+                        formatter: function (v) {
+                            var str = v.value.toString();
+                            let reg = str.indexOf(".") > -1 ? /(\d)(?=(\d{3})+\.)/g : /(\d)(?=(?:\d{3})+$)/g;
+                            return str.replace(reg, "$1,");
+                        },
+                        textStyle: { color: '#07a2a4' }
+                    }
+                },
+                itemStyle: {
+                    normal: {
+                        color: 'rgba(128, 128, 128, 0.3)'    // 仍为透明
+                    }
+                },
+                data: @Html.Raw(achievement.Select(c => c.ActualLessonAchievement + c.PaymentAchievement).ToArray().JsonStringify()),
+            },
+            {
+                name: '上課業績',
+                type: 'bar',
+                stack: 'achivement',
+                label: {
+                    show: false
+                    // normal: {
+                    //     position: 'inside',
+                    //     formatter: function (v) {
+                    //         var str = v.value.toString();
+                    //         let reg = str.indexOf(".") > -1 ? /(\d)(?=(\d{3})+\.)/g : /(\d)(?=(?:\d{3})+$)/g;
+                    //         return str.replace(reg,"$1,");
+                    //     }
+                    // },
+                    // formatter: function (v) {
+                    //     var str = v.value.toString();
+                    //     let reg = str.indexOf(".") > -1 ? /(\d)(?=(\d{3})+\.)/g : /(\d)(?=(?:\d{3})+$)/g;
+                    //     return str.replace(reg,"$1,");
+                    // }
+                },
+                data:@Html.Raw(achievement.Select(c => c.ActualLessonAchievement).ToArray().JsonStringify()),
+            },
+            {
+                name: '收款業績',
+                type: 'bar',
+                stack: 'achivement',
+                label: {
+                    show: false
+                    // normal: {
+                    //     position: 'inside',
+                    //     formatter: function (v) {
+                    //         var str = v.value.toString();
+                    //         let reg = str.indexOf(".") > -1 ? /(\d)(?=(\d{3})+\.)/g : /(\d)(?=(?:\d{3})+$)/g;
+                    //         return str.replace(reg,"$1,");
+                    //     }
+                    // },
+                    // formatter: function (v) {
+                    //     var str = v.value.toString();
+                    //     let reg = str.indexOf(".") > -1 ? /(\d)(?=(\d{3})+\.)/g : /(\d)(?=(?:\d{3})+$)/g;
+                    //     return str.replace(reg,"$1,");
+                    // }
+                },
+                data: @Html.Raw(achievement.Select(c => c.PaymentAchievement).ToArray().JsonStringify()),
+            }
+        ],
+    };
+
+</script>

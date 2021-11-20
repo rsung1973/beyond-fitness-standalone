@@ -1,0 +1,185 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    UserProfile _learner;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _learner = (UserProfile)this.Model;
+    ExercisePurposeViewModel _viewModel = (ExercisePurposeViewModel)ViewBag.ViewModel;
+}
+@{ 
+    String currentID = $"personal{DateTime.Now.Ticks}";
+}
+<div class="list-group" id="@(currentID)">
+    <a class="list-group-item list-group-item-action flex-column align-items-start l-lightgray">
+        <div class="w-100 profile-header">
+            <div class="profile-image float-right">
+                @{
+                    ViewBag.ProfileClass = "small";
+                    await Html.RenderPartialAsync("~/Views/Common/ProfileImage.cshtml", _learner);
+                }
+            </div>
+            <h4 class="m-t-0 m-b-0 col-darkteal">分析學生的各項運動屬性 </h4>
+            <h3 class="m-t-0 m-b-0"><strong>@(_learner.RealName)</strong> (@(_learner.Nickname ?? "N/A")) - <small class="@(_viewModel.AbilityLevel.PowerAbliityCss("font-bold"))">@(_viewModel.Ability ?? "無")</small></h3>
+        </div>
+    </a>
+    <div class="list-group-item list-group-item-action flex-column align-items-start">
+        <div class="row clearfix w-100">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+                <h5 class="title">運動所屬類型</h5>
+                <select class="form-control show-tick" name="AbilityStyle">
+                    <option value="">-- 請選擇運動類型 --</option>
+                    <option value="多變型">多變型</option>
+                    <option value="混合型">混合型</option>
+                    <option value="保守型">保守型</option>
+                </select>
+                @if(_viewModel.AbilityStyle!=null)
+                {
+                    <script>
+                        $(function () {
+                            $('#@(currentID) select[name="AbilityStyle"]').val('@(_viewModel.AbilityStyle)');
+                        });
+                    </script>
+                }
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+                <h5 class="title">Level</h5>
+                <select class="form-control show-tick" name="AbilityLevel">
+                    <option value="">-- 請選擇Level--</option>
+                    <option value="1">低階</option>
+                    <option value="2">中階</option>
+                    <option value="3">高階</option>
+                </select>
+                @if (_viewModel.AbilityLevel != null)
+                {
+                    <script>
+                        $(function () {
+                            $('#@(currentID) select[name="AbilityLevel"]').val('@((int?)_viewModel.AbilityLevel)');
+                        });
+                    </script>
+                }
+            </div>
+        </div>
+    </div>
+    <a class="list-group-item list-group-item-action flex-column align-items-start">
+        <div class="row clearfix w-100">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+                <div class="chart-box">
+                    @{ 
+                        ViewBag.DisableHeight = true;
+                        await Html.RenderPartialAsync("~/Views/LearnerProfile/Module/PersonalExerciseRadarChart.cshtml", _learner.PersonalExercisePurpose);
+                    }
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+                <div class="row clearfix">
+                    <div class="col-12">
+                        <p><b>心肺適能</b> <span class="badge round col-blue js-nouislider-value"></span></p>
+                        <div id="nouislider_heart" class="m-b-20"></div>
+                        <input type="hidden" name="StrengthFeature" />
+                    </div>
+                    <div class="col-12">
+                        <p><b>相對肌力</b> <span class="badge round col-blue js-nouislider-value"></span></p>
+                        <div id="nouislider_muscle" class="m-b-20"></div>
+                        <input type="hidden" name="StrengthFeature" />
+                    </div>
+                    <div class="col-12">
+                        <p><b>柔軟度</b> <span class="badge round col-blue js-nouislider-value"></span></p>
+                        <div id="nouislider_flexibility" class="m-b-20"></div>
+                        <input type="hidden" name="StrengthFeature" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </a>
+</div>
+<script>
+
+    $(function () {
+
+        var $viewModel = @Html.Raw(JsonConvert.SerializeObject(_viewModel));
+
+        //產生Slider
+         function generateSlider(slider, value) {
+            noUiSlider.create(slider, {
+                start: [value],
+                connect: 'lower',
+                step: 1,
+                range: {
+                    'min': [0],
+                    'max': [5]
+                }
+            });
+
+        }
+
+        function getNoUISliderValue(slider, onDone) {
+            slider.noUiSlider.on('update', function () {
+                var val = slider.noUiSlider.get();
+                val = parseInt(val);
+                $(slider).parent().find('span.js-nouislider-value').text(val);
+                onDone(val);
+                if ($global.exerciseRadar) {
+                    $global.updateExerciseRadar([$viewModel.MuscleStrength, $viewModel.Flexibility, $viewModel.Cardiopulmonary]);
+                }
+            });
+        }
+
+        //產生Slider
+        var slider_heart = document.getElementById('nouislider_heart');
+        generateSlider(slider_heart, @(_viewModel.Cardiopulmonary ?? 0));
+        getNoUISliderValue(slider_heart, function (val) {
+            $viewModel.Cardiopulmonary = val;
+        });
+
+        var slider_muscle = document.getElementById('nouislider_muscle');
+        generateSlider(slider_muscle, @(_viewModel.MuscleStrength ?? 0));
+        getNoUISliderValue(slider_muscle, function (val) {
+            $viewModel.MuscleStrength = val;
+        });
+
+        var slider_flexibility = document.getElementById('nouislider_flexibility');
+        generateSlider(slider_flexibility, @(_viewModel.Flexibility ?? 0));
+        getNoUISliderValue(slider_flexibility, function (val) {
+            $viewModel.Flexibility = val;
+        });
+
+        $global.commitLearnerFeature = function (onDone) {
+            var $formData = $.extend($viewModel, $('#@(currentID)').find('input,select,textarea').serializeObject());
+            clearErrors();
+            showLoading();
+            $.post('@Html.Raw(Url.Action("CommitLearnerFeature", "LearnerProfile"))', $formData, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    if (data.result) {
+                        onDone();
+                    } else {
+                        Swal.fire(
+                            'Oops...',
+                            data.message,
+                            'warning'
+                        )
+                    }
+                } else {
+                    $(data).appendTo($('body'));
+                }
+            });
+        };
+    });
+
+
+</script>
+

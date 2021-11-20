@@ -1,0 +1,60 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    CourseContractQueryViewModel _viewModel;
+
+
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _viewModel = (CourseContractQueryViewModel)ViewBag.ViewModel;
+}
+
+<script>
+
+    $(function () {
+        $global.viewModel.UID = @Html.Raw(JsonConvert.SerializeObject(_viewModel.UID));
+        $global.contractMemberInitComplete = function (dt) {
+            var api = dt.api();
+            api.$('tr').click(function () {
+                var id = $(this).data('id');
+                processMember(id);
+            });
+        };
+
+        function processMember(uid) {
+            showLoading();
+            $.post('@Html.Raw(Url.Action("ProcessContractMember", "ContractConsole"))', { 'uid': uid }, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    alert(data.message);
+                } else {
+                    $(data).appendTo($('body'));
+                }
+            });
+        }
+
+    });
+
+</script>
+
+<div class="table-responsive">
+    @{ ViewBag.OwnerID = _viewModel.OwnerID;
+        await Html.RenderPartialAsync("~/Views/ContractConsole/Module/ContractMemberList.cshtml", _viewModel.UID.PromptContractMembers(models));}
+
+</div>
+
+
+

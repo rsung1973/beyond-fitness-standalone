@@ -1,0 +1,55 @@
+﻿
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@using WebHome.Views.MainActivity.Resources
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _modelState = ViewContext.ModelState;
+
+    Layout = "~/Views/MainActivity/Template/MainPage.cshtml";
+}
+
+@section CustomHeader {
+
+}
+
+<section class="section-onlinesession">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <h1 class="text-center">@Html.Raw(NamingItem.OnlinePTTitle)</h1>
+                <img src="images/landing/online/compare.jpg" alt="線上課程" class="hidden-sm-down">
+                <img src="images/landing/online/compare_mobile.jpg" alt="線上課程" class="hidden-md-up">
+            </div>
+        </div>
+    </div>
+</section>
+<!-- // 雲端數據 -->
+<section class="section-fun-facts nopadding full-width-section">
+    <div class="full-text-container bg-black text-right">
+        <h1>@Html.Raw(NamingItem.OnlinePTSlogon)</h1>
+    </div>
+    <div>
+        <img src="images/landing/online/Demo2.jpg" alt="線上課程">
+    </div>
+</section>
+
+<!-- // 聯絡我們 -->
+@{ await Html.RenderPartialAsync("~/Views/MainActivity/Module/ContactItem.cshtml");}
+
+
+@section TailPageJavaScriptInclude {
+}

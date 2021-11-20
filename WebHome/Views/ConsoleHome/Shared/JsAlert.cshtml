@@ -1,0 +1,32 @@
+﻿@{
+
+    String _message;
+    _message = (String)this.Model ?? (String)ViewBag.Message;
+}
+@if (_message != null)
+{
+    <script>
+        Swal.fire({
+            title: "",
+            text: '@(System.Text.Encodings.Web.JavaScriptEncoder.Default.Encode(_message))',
+            icon: 'warning',
+        }).then((result) => {
+            
+            @if (ViewBag.GoBack == true)
+            {
+                <text>
+                    window.history.go(-1);
+                </text>
+            }
+            @if (ViewBag.CloseWindow == true)
+            {
+                <text>
+                    window.close();
+                </text>
+            }
+        });
+    </script>
+}
+
+
+

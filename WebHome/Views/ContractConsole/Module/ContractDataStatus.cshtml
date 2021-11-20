@@ -1,0 +1,44 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    CourseContract _model;
+    String _dialogID = $"contractDetails{DateTime.Now.Ticks}";
+    UserProfile _profile;
+
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (CourseContract)this.Model;
+    _profile = await Context.GetUserAsync();
+}
+@{ var bgColor = "bg-cyan";}
+@if (_model.Status <= (int)Naming.ContractQueryStatus.待審核)
+{
+    bgColor = "bg-orange";
+}
+else if (_model.Status == (int)Naming.CourseContractStatus.已生效)
+{
+    bgColor = "bg-green";
+}
+else if (_model.Status == (int)Naming.CourseContractStatus.已履行)
+{
+    bgColor = "bg-darkteal";
+}
+else
+{
+    bgColor = "bg-red";
+}
+<span class="@($"badge {bgColor}")">@(_model.ContractCurrentStatus())</span>
+

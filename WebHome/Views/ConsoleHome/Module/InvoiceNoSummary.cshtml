@@ -1,0 +1,109 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    DateTime _model = (DateTime)this.Model;
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+}
+@{
+    int periodNo = (_model.Month + 1) / 2;
+    var trackCodeItems = models.GetTable<InvoiceTrackCode>().Where(t => t.Year == _model.Year && t.PeriodNo == periodNo);
+    var assignmentItems = models.GetTable<InvoiceTrackCodeAssignment>()
+            .Join(trackCodeItems, a => a.TrackID, t => t.TrackID, (a, t) => a);
+    List<int> issued = new List<int>();
+}
+<div class="col-9">
+    <h5 class="m-t-0">發票本數 <a href="javascript:selectMonth();"><i class="zmdi zmdi-search-for"></i></a></h5>
+    <p class="text-small">
+        @foreach (var branch in models.GetTable<BranchStore>())
+        {
+            var intervalItems = assignmentItems.Where(a => a.SellerID == branch.BranchID)
+                    .SelectMany(a => a.InvoiceNoInterval);
+            int assignedCount = 0;
+            int remainedCount = 0;
+            int issuedCount = 0;
+            foreach (var v in intervalItems)
+            {
+                var intervalCount = v.EndNo - v.StartNo + 1;
+                assignedCount += (intervalCount);
+                var noItem = v.InvoiceNoAssignment.OrderByDescending(n => n.InvoiceID).FirstOrDefault();
+                issuedCount += v.InvoiceNoAssignment.Count;
+                if (noItem != null)
+                {
+                    remainedCount += (v.EndNo - noItem.InvoiceNo.Value);
+                }
+                else
+                {
+                    remainedCount += intervalCount;
+                }
+            }
+            issued.Add(issuedCount);
+            if (remainedCount > 0) {
+                <text>@(branch.BranchName)：共 @(assignedCount / 50) 本，</text>
+                if (remainedCount < 50)
+                {
+                    <span class="col-red">尚有0本@(remainedCount)張</span>
+                }
+                else
+                {
+                    <text>尚有@(remainedCount / 50)本@(remainedCount % 50)張</text>
+                }
+                <br />
+            }
+        }
+    </p>
+</div>
+<div class="col-3 text-right">
+    <div id="invoiceNoPie" class="sparkline-pie m-t-25">@(String.Join(",",issued.Select(i=>i.ToString())))</div>
+</div>
+<script>
+    function selectMonth() {
+            //showLoading();
+            $.post('@Html.Raw(Url.Action("SelectMonthPeriod", "BusinessConsole"))', null, function (data) {
+                //hideLoading();
+                if ($.isPlainObject(data)) {
+                    Swal.fire(
+                        'Oops...',
+                        data.message,
+                        'warning'
+                    )
+                } else {
+                    $(data).appendTo($('body'));
+                }
+            });
+     }
+
+    $(function () {
+        //查詢月份
+        $global.doSelect = function (year, month) {
+            $('').launchDownload('@Html.Raw(Url.Action("InvoiceOverview", "ConsoleHome"))', { 'year': year, 'month': month });
+        };
+        //本月發票
+        $('#invoiceNoPie').sparkline('html', {
+            type: 'pie',
+            offset: 85,
+            width: '90px',
+            height: '90px',
+            sliceColors: ['#eeaaaa', '#c5b6e2', '#93e3ff', '#6DD0CD']
+        });
+    });
+</script>
+@*<div class="col-3 text-right">
+        <h2 class="">@(periodNo * 2 - 1)~@(periodNo * 2)</h2>
+        <small class="info">月</small>
+    </div>*@
+
+
+

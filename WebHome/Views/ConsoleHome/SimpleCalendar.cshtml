@@ -1,0 +1,181 @@
+
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+@using Newtonsoft.Json
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    UserProfile _model;
+    DailyBookingQueryViewModel _viewModel;
+
+    Layout = "~/Views/ConsoleHome/Template/MainPage.cshtml";
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _modelState = ViewContext.ModelState;
+    _model = (UserProfile)this.Model;
+    _viewModel = (DailyBookingQueryViewModel)ViewBag.ViewModel;
+}
+@section CustomHeader {
+    <!-- Fullcalendar -->
+    <link href="plugins/fullcalendar/fullcalendar.min.css" rel="stylesheet">
+    <!-- Bootstrap Datetimepick -->
+    @*<link href="plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />*@
+    @*<link href="css/datetimepicker.css" rel="stylesheet" />*@
+    <link href="css/smartcalendar-2.css" rel="stylesheet" />
+    <!-- Inbox -->
+    <link href="css/inbox.css" rel="stylesheet">
+    <!-- Multi Select Css -->
+    <link href="plugins/multi-select/css/multi-select.css" rel="stylesheet">
+}
+
+
+<section class="content page-calendar">
+    @{ ViewBag.BlockHeader = "我的行事曆";
+        await Html.RenderPartialAsync("~/Views/ConsoleHome/Module/BlockHeader.cshtml", _model);}
+
+    <!--行事曆-->
+    <div class="container-fluid">
+        <div class="card">
+            <div class="row">
+                <div class="col-12">
+                    <div class="body">
+                        <div class="row">
+                            <div class="col-md-8 col-lg-8 col-sm-8 col-12">
+                                <button class="btn btn-default btn-simple btn-icon  btn-icon-mini btn-round waves-effect" id="today">今</button>
+                                <button class="btn btn-default btn-simple btn-icon  btn-icon-mini btn-round waves-effect" id="td">天</button>
+                                <button class="btn btn-default btn-simple btn-icon  btn-icon-mini btn-round waves-effect" id="ag">週</button>
+                                <button class="btn btn-default btn-simple btn-icon  btn-icon-mini btn-round waves-effect" id="mt">月</button>
+                            </div>
+                        </div>
+                        @{ await Html.RenderPartialAsync("~/Views/ConsoleHome/Module/MainCalendar.cshtml", _model);}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section TailPageJavaScriptInclude {
+    <!-- Fullcalendar Plugin js -->
+    <script src="bundles/fullcalendarscripts.bundle.js"></script>
+    <script src="plugins/fullcalendar/locale/zh-tw.js"></script>
+    <!-- Multi Select Plugin Js -->
+    <script src="plugins/multi-select/js/jquery.multi-select.js"></script>
+
+    <script>
+
+        function showLessonEventModal(keyID, event) {
+            var event = event || window.event;
+            $global.target = $(event.target).closest('div.event-name');
+            showLoading();
+            $.post('@Html.Raw(Url.Action("ShowLessonEventModal", "ConsoleEvent"))', { 'keyID': keyID }, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    alert(data.message);
+                } else {
+                    $(data).appendTo($('body'));
+                }
+            });
+        }
+
+        function showUserEventModal(keyID, event) {
+            var event = event || window.event;
+            $global.target = $(event.target).closest('div.event-name');
+            showLoading();
+            $.post('@Html.Raw(Url.Action("ShowUserEventModal", "ConsoleEvent"))', { 'keyID': keyID }, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    alert(data.message);
+                } else {
+                    $(data).appendTo($('body'));
+                }
+            });
+        }
+
+        function bookingCustomEvent(args) {
+            showLoading();
+            $.post('@Html.Raw(Url.Action("BookingCustomEvent", "ConsoleEvent"))', args, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    Swal.fire(
+                        'Oops...',
+                        data.message,
+                        'warning'
+                    )
+                } else {
+                    $(data).appendTo($('body'));
+                }
+            });
+        }
+
+        function deleteLesson(keyID) {
+            deleteData(function (onSuccess) {
+                showLoading();
+                $.post('@Html.Raw(Url.Action("RevokeBooking", "ConsoleEvent"))', { 'keyID': keyID }, function (data) {
+                    hideLoading();
+                    if ($.isPlainObject(data)) {
+                        if (data.result) {
+                            if ($global.target) {
+                                $global.target.remove();
+                            } else {
+                                refreshEvents();
+                            }
+                            refetchCalendarEvents();
+                            $global.closeAllModal();
+                            onSuccess();
+                        } else {
+                            Swal.fire(
+                                'Oops...',
+                                data.message,
+                                'warning'
+                            )
+                        }
+                    } else {
+                        $(data).appendTo($('body'));
+                    }
+                });
+            });
+        }
+
+        function deleteUserEvent(keyID) {
+            deleteData(function (onSuccess) {
+                showLoading();
+                $.post('@Html.Raw(Url.Action("RevokeCoachEvent", "ConsoleEvent"))', { 'keyID': keyID }, function (data) {
+                    hideLoading();
+                    if ($.isPlainObject(data)) {
+                        if (data.result) {
+                            refetchCalendarEvents();
+                            $global.closeAllModal();
+                            onSuccess();
+                        } else {
+                            Swal.fire(
+                                'Oops...',
+                                data.message,
+                                'warning'
+                            )
+                        }
+                    } else {
+                        $(data).appendTo($('body'));
+                    }
+                });
+            });
+        }
+
+        function refreshEvents() {
+
+        }
+        //
+    </script>
+}
+
+

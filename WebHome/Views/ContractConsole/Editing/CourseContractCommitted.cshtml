@@ -1,0 +1,55 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@using CommonLib.Utility
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    CourseContract _model;
+
+
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (CourseContract)this.Model;
+}
+@if (_model.Status == (int)Naming.CourseContractStatus.待簽名 && _model.InstallmentID.HasValue)
+{
+    <script>
+        $(function () {
+            $('').launchDownload('@Html.Raw(Url.Action("ShowContractList", "ContractConsole"))',@Html.Raw(new CourseContractQueryViewModel
+                                                                                       {
+                                                                                           FitnessConsultant = _model.FitnessConsultant,
+                                                                                           ContractQueryMode = Naming.ContractServiceMode.ContractOnly,
+                                                                                           Status = (int)Naming.CourseContractStatus.待簽名,
+                                                                                           InstallmentID = _model.InstallmentID,
+                                                                                       }).JsonStringify());
+        });
+    </script>
+}
+else
+{
+    <script>
+        $(function () {
+            $('').launchDownload('@Html.Raw(Url.Action("ShowContractList", "ContractConsole"))',@Html.Raw((new CourseContractQueryViewModel
+                                                                                                   {
+                                                                                                       //FitnessConsultant = _model.FitnessConsultant,
+                                                                                                       //ContractQueryMode = Naming.ContractServiceMode.ContractOnly,
+                                                                                                       //Status = (int)Naming.CourseContractStatus.待簽名,
+                                                                                                       KeyID = _model.ContractID.EncryptKey(),
+                                                                                                   }).JsonStringify()));
+        });
+    </script>
+}
+
+
+

@@ -1,0 +1,166 @@
+﻿
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@using WebHome.Views.MainActivity.Resources
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _modelState = ViewContext.ModelState;
+
+    Layout = "~/Views/MainActivity/Template/MainPage.cshtml";
+}
+
+@section CustomHeader {
+
+}
+
+<!-- // Banner -->
+<section class="section-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2 text-center">
+                <h1 class="wow zoomIn" data-wow-delay=".3s">@Html.Raw(NamingItem.IndexBannerTitle)</h1>
+                <h2 class="wow zoomIn col-white" data-wow-delay=".6s">@Html.Raw(NamingItem.IndexBannerSubTitle)</h2>
+                <a href="javascript:bindTrackingCode('線上課程', null, '@(Url.Action("Online"))', null)" class="btn btn-default btn-round fadeInUp animated hidden-md-up" data-wow-delay=".6s" data-effect="mfp-zoom-in">@Html.Raw(NamingItem.LearnMore)</a>
+            </div>
+            <!-- iPhone -->
+            <div class="col-md-8 col-md-offset-2 text-center">
+                <img class="header_iphone wow fadeInUp animated" src="images/landing/banner/banner-index.jpg" alt="線上課程" data-wow-delay=".3s" data-effect="mfp-zoom-in">
+            </div>
+            <!-- //iPhone -->
+        </div>
+    </div>
+</section>
+<!-- // 三大保證 -->
+<section class="section-features white hidden-sm-down">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-4 features-item">
+                <div class="icon-wrapper"> <img src="images/landing/icon.png" alt="安心承諾"> </div>
+                <h2>@Html.Raw(NamingItem.IndexFeature1)</h2>
+                <hr />
+                <p> @Html.Raw(NamingItem.IndexFeature1Desc) </p>
+                <a href="javascript:bindTrackingCode('三大保證', null, '@(Url.Action("Features"))', null)" class="more">@Html.Raw(NamingItem.LearnMore)<i class="pl-1 fa fa-angle-right"></i></a>
+            </div>
+
+            <div class="col-sm-4 features-item  ">
+                <div class="icon-wrapper"> <img src="images/landing/icon2.png" alt="證照背書"> </div>
+                <h2>@Html.Raw(NamingItem.IndexFeature2)</h2>
+                <hr />
+                <p> @Html.Raw(NamingItem.IndexFeature2Desc) </p>
+                <a href="javascript:bindTrackingCode('三大保證', null, '@(Url.Action("Features"))', null)" class="more">@Html.Raw(NamingItem.LearnMore)<i class="pl-1 fa fa-angle-right"></i></a>
+            </div>
+            <div class="col-sm-4 features-item  ">
+                <div class="icon-wrapper"> <img src="images/landing/icon3.png" alt="數據管理"> </div>
+                <h2>@Html.Raw(NamingItem.IndexFeature3)</h2>
+                <hr />
+                <p> @Html.Raw(NamingItem.IndexFeature3Desc) </p>
+                <a href="javascript:bindTrackingCode('三大保證', null, '@(Url.Action("Features"))', null)" class="more">@Html.Raw(NamingItem.LearnMore)<i class="pl-1 fa fa-angle-right"></i></a>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- // 三大保證 -->
+<section class="section-fun-facts nopadding full-width-section hidden-md-up">
+    <div class="text-center">
+        <a href="javascript:bindTrackingCode('三大保證', null, '@(Url.Action("Features"))', null)"><img src="images/landing/guarantee-1.png" alt="私人教練" class="small"></a>
+    </div>
+</section>
+<!-- // 影片分享 -->
+<section class="section-vedio">
+    <div class="container">
+        <div class="row mb-30">
+            <div class="col-md-12">
+                <h2>@Html.Raw(NamingItem.IndexVedioTitle)</h2>
+                <h1>@Html.Raw(NamingItem.IndexVedioSubTitle)</h1>
+                <p>@Html.Raw(NamingItem.IndexVedioDesc)</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="popup-gallery">
+                    <a class="popup-youtube" href="https://www.youtube-nocookie.com/embed/x88BkpwEvKc?autoplay=1&rel=0&showinfo=0&loop=1" onclick="javascript:bindTrackingCode('影片播放_中天採訪')">
+                        <img src="images/landing/video/index-1.jpg" alt="銀髮族運動" class="wow zoomin" data-wow-delay=".3s">
+                        <span class="eye-wrapper">
+                            <i class="zmdi zmdi-youtube-play"></i>
+                        </span>
+                    </a>
+                </div>
+            </div>
+            <div class="col-sm-6 hidden-sm-down">
+                <div class="popup-gallery">
+                    <a class="popup-youtube" href="https://www.youtube-nocookie.com/embed/5chW8tcwMr0?autoplay=1&rel=0&showinfo=0&loop=1" onclick="javascript:bindTrackingCode('影片播放_教練在做什麼')">
+                        <img src="images/landing/video/index-2.jpg" alt="信義區健身" class="wow zoomin" data-wow-delay=".3s">
+                        <span class="eye-wrapper">
+                            <i class="zmdi zmdi-youtube-play"></i>
+                        </span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- // 雲端數據 -->
+<section class="section-fun-facts nopadding full-width-section">
+    <div class="full-text-container bg-light-gray text-right">
+        <h1>@Html.Raw(NamingItem.IndexFunFactsTitle)</h1>
+    </div>
+    <div>
+        <img src="images/landing/mobile.jpg" class="wow zoomIn" data-wow-delay=".3s" alt="客製化健身藍圖">
+    </div>
+</section>
+<!-- // 經驗分享 -->
+<section class="section-slick">
+    <div class="testimonials-slick-slide">
+        <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-4 testimonials">
+                <div class="body text-center">
+                    <div class="m-t-30">
+                        <img class="media-object rounded-circle shadow" src="images/avatar/therapist.jpg" alt="物理治療">
+                    </div>
+                    <p>@Html.Raw(NamingItem.IndexSlick1Desc)</p>
+                    <h4 class="m-b-0">@Html.Raw(NamingItem.IndexSlick1Name)</h4>
+                    <h5 class="m-t-0">@Html.Raw(NamingItem.IndexSlick1Title)</h5>
+                    <span><i class="fa fa-star small col-amber"></i><i class="fa fa-star small col-amber"></i><i class="fa fa-star small col-amber"></i><i class="fa fa-star small col-amber"></i><i class="fa fa-star small col-amber"></i></span>
+                </div>
+            </div>
+            <div class="col-md-4"></div>
+        </div>
+        <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-4 testimonials">
+                <div class="body text-center">
+                    <div class="m-t-30">
+                        <img class="media-object rounded-circle shadow" src="images/avatar/dietitian.jpg" alt="運動營養">
+                    </div>
+                    <p>@Html.Raw(NamingItem.IndexSlick2Desc)</p>
+                    <h4 class="m-b-0">@Html.Raw(NamingItem.IndexSlick2Name)</h4>
+                    <h5 class="m-t-0">@Html.Raw(NamingItem.IndexSlick2Title)</h5>
+                    <span><i class="fa fa-star small col-amber"></i><i class="fa fa-star small col-amber"></i><i class="fa fa-star small col-amber"></i><i class="fa fa-star small col-amber"></i><i class="fa fa-star small col-amber"></i></span>
+                </div>
+            </div>
+            <div class="col-md-4"></div>
+        </div>
+    </div>
+</section>
+<!-- // 聯絡我們 -->
+@{ await Html.RenderPartialAsync("~/Views/MainActivity/Module/ContactItem.cshtml");}
+<!-- // 公告事項 -->
+@*@{ await Html.RenderPartialAsync("~/Views/MainActivity/Module/DeclarationItem.cshtml");}*@
+
+
+@section TailPageJavaScriptInclude {
+}

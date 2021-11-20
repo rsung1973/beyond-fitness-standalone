@@ -1,0 +1,247 @@
+
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@using CommonLib.Utility
+@functions
+{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    MonthlyIndicatorQueryViewModel _viewModel;
+    IQueryable<MonthlyIndicator> _model;
+    int[] yearItems;
+    IGrouping<int, MonthlyRevenueGoal>[] groups;
+    String _chartID;
+    IEnumerable<int> monthIdx;
+    int lastMonthOfYear = DateTime.Today.AddMonths(-1).Year;
+    int lastMonth = DateTime.Today.AddMonths(-1).Month;
+
+    IEnumerable<decimal> BuildMonthlyAchievementRatio(IGrouping<int, MonthlyRevenueGoal> grouping)
+    {
+        var result = monthIdx
+            .Select(m => grouping.Where(g => g.MonthlyRevenueIndicator.MonthlyIndicator.Month == m).FirstOrDefault())
+            .Select(i => CalcRatio(i));
+        return result;
+    }
+
+    decimal CalcRatio(MonthlyRevenueGoal indicator)
+    {
+        if (indicator == null)
+            return 0M;
+
+        decimal indicatorAmt = (decimal)(indicator.CustomRevenueGoal ?? indicator.MonthlyRevenueIndicator.RevenueGoal);
+        decimal basePercentage = (decimal)(indicator.CustomIndicatorPercentage ?? indicator.MonthlyRevenueIndicator.MonthlyRevenueGrade.IndicatorPercentage);
+        decimal totalAchievementAmt = (indicator.ActualLessonAchievement + indicator.ActualSharedAchievement) ?? 0;
+
+        decimal achievementRatio = totalAchievementAmt * basePercentage / indicatorAmt;
+        return Math.Round(achievementRatio, 2);
+    }
+
+    IEnumerable<decimal> BuildMonthlyAchievementSubtotal(IGrouping<int, MonthlyRevenueGoal> grouping)
+    {
+        var result = monthIdx
+            .Select(m => grouping.Where(g => g.MonthlyRevenueIndicator.MonthlyIndicator.Month == m).FirstOrDefault())
+            .Select(i => i == null
+                            ? 0M
+                            : Math.Round(((i.ActualLessonAchievement + i.ActualSharedAchievement) ?? 0M) / 10000M, 2));
+        return result;
+    }
+
+    IEnumerable<int> BuildMonthlyCoachCount(IGrouping<int, MonthlyRevenueGoal> grouping)
+    {
+        var result = monthIdx
+            .Select(m => grouping.Where(g => g.MonthlyRevenueIndicator.MonthlyIndicator.Month == m).FirstOrDefault())
+            .Select(i => i == null
+                            ? 0
+                            : i.MonthlyRevenueIndicator.MonthlyIndicator.MonthlyCoachRevenueIndicator.Count());
+        return result;
+    }
+
+}
+@{
+
+    _chartID = ViewBag.ChartID as String;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _modelState = ViewContext.ModelState;
+    _viewModel = (MonthlyIndicatorQueryViewModel)ViewBag.ViewModel;
+
+    _model = (IQueryable<MonthlyIndicator>)this.Model;
+
+    IQueryable<MonthlyIndicator> monthlyItems = _model;
+    MonthlyRevenueGoal[] items = models.GetTable<MonthlyRevenueGoal>()
+            .Join(monthlyItems, g => g.PeriodID, i => i.PeriodID, (g, i) => g)
+            .ToArray();
+
+    yearItems = _model.GroupBy(m => m.Year)
+                        .Select(g => g.Key).ToArray();
+
+    var yearIdx = yearItems.Select(y => $"{y}達成率")
+                    .Concat(yearItems.Select(y => $"{y}業績"))
+                    .ToArray();
+
+    monthIdx = Enumerable.Range(1, 12);
+
+    groups = items
+            .GroupBy(g => g.MonthlyRevenueIndicator.MonthlyIndicator.Year)
+            .OrderBy(g => g.Key).ToArray();
+
+    TempData["DataItems"] = items;
+
+}
+<script>
+    //指定圖表的配置項和資料
+    $(function () {
+        $global.echarts.option['@(_chartID)'] = {
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'cross',
+                    crossStyle: {
+                        color: '#999'
+                    }
+                }
+            },
+            toolbox: {
+                feature: {
+                    magicType: { show: true, type: ['line', 'bar'] },
+                    restore: { show: true },
+                    saveAsImage: { show: true }
+                }
+            },
+            legend: {
+                data: @Html.Raw(yearIdx.JsonStringify()),
+            },
+            xAxis: [
+                {
+                    type: 'category',
+                    data: @Html.Raw(monthIdx.Select(m=>$"{m}月").JsonStringify()),
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                }
+            ],
+            yAxis: [
+                {
+                    type: 'value',
+                    name: '達成率',
+                    min: 0,
+                    axisLabel: {
+                        formatter: '{value} %'
+                    }
+                },
+                {
+                    type: 'value',
+                    name: '金額',
+                    min: 0,
+                    axisLabel: {
+                        formatter: '{value} 萬元'
+                    }
+                }
+            ],
+            series: [
+            ],
+        };
+    });
+
+</script>
+
+@{
+    for (int i = 0; i < yearItems.Length; i++)
+    {
+        int yy = yearItems[i];
+        IGrouping<int, MonthlyRevenueGoal> grouping = groups[i];
+        var ratioItems = BuildMonthlyAchievementRatio(grouping).ToArray();
+            var headCount = BuildMonthlyCoachCount(grouping).ToArray();
+    <script>
+            $(function () {
+                $global.echarts.option['@(_chartID)'].series.push(
+                    {
+                        name: '@(yy)達成率',
+                        type: 'line',
+                        label: {
+                            show: false,
+                        },
+                        smooth: false,
+                        markPoint: {
+                            symbol: 'path://m 0,0 h 48 v 20 h -30 l -6,10 l -6,-10 h -6 z',
+                            symbolOffset: ['34%', '-50%'],
+                            symbolKeepAspect: true,
+                            symbolSize: function (v) {
+                                return [textSize(v, "12px").width + 15, 45]
+                            },
+                            symbolKeepAspect: true,
+                            label: {
+                                show: true,
+                                position: "insideTop",
+                                distance: 7,
+                                formatter: function (v) {
+                                return v.value + '%' + '\n' + @(headCount[lastMonth - 1]) + '人';
+                                }
+                            },
+                            data: [
+                                /*{ type: 'max', name: '最大值' },*/
+                                { name: '上月', value: @(ratioItems[lastMonth-1]), xAxis: '@(lastMonth)月', yAxis: @(ratioItems[lastMonth-1]) },
+                            ]
+                        },
+                        itemStyle: {
+                            normal: {
+                                color: '@Html.Raw(i==0? "#91ca8c" : "#dd6b66")'
+                            }
+                        },
+                        data: @Html.Raw(ratioItems.JsonStringify()),
+                    });
+            });
+    </script>
+    }
+}
+
+@{
+    if (_viewModel.ChartType.HasValue)
+    {
+        for (int i = 0; i < yearItems.Length; i++)
+        {
+            int yy = yearItems[i];
+            IGrouping<int, MonthlyRevenueGoal> grouping = groups[i];
+            <script>
+                $(function () {
+                    var current = 12;
+                    $global.echarts.option['@(_chartID)'].series.push(
+                        {
+                            name: '@(yy)業績',
+                            type: 'bar',
+                            yAxisIndex: 1,
+                            label: {
+                                normal: {
+                                    show: true,
+                                    position: 'top',       //  位置设为top
+                                    formatter: function (v) {
+                                        if (v.dataIndex == current - 1) {
+                                            return v.value;
+                                        } else {
+                                            return '';
+                                        }
+                                    },
+                                    textStyle: { color: '#457fca' }
+                                }
+                            },
+                            itemStyle: {
+                                normal: {
+                                    color: 'rgba(128, 128, 128, 0.3)'    // 仍为透明
+                                }
+                            },
+                            data: @Html.Raw(BuildMonthlyAchievementSubtotal(grouping).JsonStringify()),
+                        });
+                });
+            </script>
+        }
+    }
+}

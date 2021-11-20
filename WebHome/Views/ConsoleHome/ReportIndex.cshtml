@@ -1,0 +1,94 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+@using Newtonsoft.Json
+
+@{
+    Layout = "~/Views/ConsoleHome/Template/MainPage.cshtml";
+
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    CourseContract _item;
+    UserProfile _model;
+    CourseContractQueryViewModel _viewModel;
+
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _modelState = ViewContext.ModelState;
+    _model = (UserProfile)this.Model;
+    _viewModel = (CourseContractQueryViewModel)ViewBag.ViewModel;
+    _item = (CourseContract)ViewBag.DataItem;
+
+}
+@section CustomHeader {
+    <!-- Bootstrap Datetimepick -->
+    
+    <link href="css/smartcalendar-2.css" rel="stylesheet" />
+}
+
+<!-- Main Content -->
+<section class="content file_manager">
+    @{ ViewBag.BlockHeader = "我的下載";
+        await Html.RenderPartialAsync("~/Views/ConsoleHome/Module/BlockHeader.cshtml", _model);}
+
+    <div class="container-fluid">
+        <div class="row clearfix">
+            <div class="col-lg-12">
+                <div class="card">
+                    <ul class="nav nav-tabs">
+                        @if (_model.IsOfficer() || _model.IsManager() || _model.IsViceManager() || _model.IsAssistant() || _model.IsAuthorizedSysAdmin())
+                        {
+                            <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#contract">合約</a></li>
+                            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#payment">收款</a></li>
+                            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#learner">學生</a></li>
+                            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#achivement">業績</a></li>
+                        } else if (_model.IsCoach()) {
+                            <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#payment">收款</a></li>
+                            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#learner">學生</a></li>
+                        }
+                        @if (_model.IsAssistant() || _model.IsAuthorizedSysAdmin())
+                        {
+                            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#trust">信託</a></li>
+                            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#inventory">盤點</a></li>
+                        }
+                    </ul>
+                </div>
+                <div class="tab-content">
+                    <div class="@(_model.IsCoach() ? "tab-pane" : "tab-pane active")" id="contract">
+                        @{ await Html.RenderPartialAsync("~/Views/ReportConsole/Module/CourseContractReport.cshtml", _model);}
+                    </div>
+                    <div class="@(_model.IsCoach() ? "tab-pane active" : "tab-pane")" id="payment">
+                        @{ await Html.RenderPartialAsync("~/Views/ReportConsole/Module/PaymentReport.cshtml", _model);}
+                    </div>
+                    <div class="tab-pane" id="learner">
+                        @{ await Html.RenderPartialAsync("~/Views/ReportConsole/Module/LearnerReport.cshtml", _model);}
+                    </div>
+                    <div class="tab-pane" id="achivement">
+                        @{ await Html.RenderPartialAsync("~/Views/ReportConsole/Module/AchivementReport.cshtml", _model);}
+                    </div>
+                    <div class="tab-pane" id="trust">
+                        @{ await Html.RenderPartialAsync("~/Views/ReportConsole/Module/TrustReport.cshtml", _model);}
+                    </div>
+                    <div class="tab-pane" id="inventory">
+                        @{ await Html.RenderPartialAsync("~/Views/ReportConsole/Module/InventoryReport.cshtml", _model);}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+@section TailPageJavaScriptInclude {
+    <!-- Bootstrap datetimepicker Plugin Js -->
+    <script src="plugins/smartcalendar/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="plugins/smartcalendar/js/locales-datetimepicker/bootstrap-datetimepicker.zh-TW.js"></script>
+    <script type="text/javascript"></script>
+}

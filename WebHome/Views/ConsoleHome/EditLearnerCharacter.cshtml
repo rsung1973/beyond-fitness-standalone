@@ -1,0 +1,633 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using WebHome.Components
+
+@using Newtonsoft.Json
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    UserProfile _model;
+    LearnerCharacterViewModel _viewModel;
+
+    Layout = "~/Views/ConsoleHome/Template/MainPage.cshtml";
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _modelState = ViewContext.ModelState;
+    _model = (UserProfile)this.Model;
+    _viewModel = (LearnerCharacterViewModel)ViewBag.ViewModel;
+    UserProfile _learner = (UserProfile)ViewBag.DataItem;
+}
+@section CustomHeader {
+    <link href="plugins/timon-stepformwizard/css/parsley.css" rel="stylesheet" />
+    <link href="plugins/timon-stepformwizard/css/gsi-step-indicator.css" rel="stylesheet" />
+    <link href="plugins/timon-stepformwizard/css/tsf-wizard.bundle.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="plugins/nouislider/nouislider.min.css" />
+}
+
+    <section class="content profile-page">
+        @{
+            ViewBag.Learner = _learner;
+            ViewBag.BlockHeader = "編輯X檔案";
+            ViewBag.InsertPartial = "~/Views/LearnerProfile/Module/ProfileHeader.cshtml";
+            await Html.RenderPartialAsync("~/Views/ConsoleHome/Module/BlockHeader.cshtml", _model);
+        }
+        
+        <!--本月運動時間-->
+        <div class="container-fluid">
+            <div class="row clearfix">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="body">
+                            <div class="tsf-wizard">
+                                <div class="tsf-nav-step">
+                                    <ul>
+                                        <li data-target="step-0">
+                                            <a href="javascript:void(0);">
+                                                <span class="number">0</span>
+                                                <span class="desc">
+                                                    <label>START</label>
+                                                </span>
+                                            </a>
+                                        </li>
+                                        <li data-target="step-1">
+                                            <a href="javascript:void(0);">
+                                                <span class="number">1</span>
+                                                <span class="desc">
+                                                    <img src="images/lesson/stage5-girl-clear.png">
+                                                    <label>身體密碼</label>
+                                                </span>
+                                            </a>
+                                        </li>
+                                        <li data-target="step-2">
+                                            <a href="javascript:void(0);">
+                                                <span class="number">2</span>
+                                                <span class="desc">
+                                                    <img src="images/lesson/stage4-girl-clear.png">
+                                                    <label>心靈密碼</label>
+                                                </span>
+                                            </a>
+                                        </li>
+                                        <li data-target="step-3">
+                                            <a href="javascript:void(0);">
+                                                <span class="number">3</span>
+                                                <span class="desc">
+                                                    <img src="images/lesson/stage2.png">
+                                                    <label>數據分析</label>
+                                                </span>
+                                            </a>
+                                        </li>
+                                        <li data-target="step-4">
+                                            <a href="javascript:void(0);">
+                                                <span class="number">4</span>
+                                                <span class="desc">
+                                                    <img src="images/lesson/stage3.png">
+                                                    <label>週期性目標</label>
+                                                </span>
+                                            </a>
+                                        </li>
+                                        <!-- ADD YOUR STEPS HERE -->
+                                    </ul>
+                                </div>
+                                <!-- BEGIN STEP CONTAINER -->
+                                <div class="tsf-container">
+                                    <form class="tsf-content noborder">
+                                        <!-- BEGIN STEP-->
+                                        <div class="tsf-step step-0 active">
+                                            <div class="row clearfix">
+                                                <div class="col-12">
+                                                    <div class="testimonial3 aliceblue">
+                                                        <div class="testimonial-section">
+                                                            <h4>Hi，@(_learner.Nickname)您好</h4>
+                                                            <p>
+                                                                恭喜您持之以恆的完成了15堂訓練課程，為了讓您未來在更安全的環境中進行有效的訓練<br />
+                                                                Beyond精靈將與您進行以下的對談，雖然會花費您5分鐘的時間，但是在過程中可替您規劃出更適合的訓練內容喔！
+                                                            </p>
+                                                            <p class="text-center p-t-10">
+                                                                <a href="javascript:startEditingCharacter();">
+                                                                    <i class="zmdi livicon-evo " data-options="name: touch.svg; size: 50px; style: original; strokeStyle:round; strokeColor:#052333; strokeWidth:2px; autoPlay:true"></i>
+                                                                    LET'S GO~
+                                                                </a>
+                                                            </p>
+                                                        </div>
+                                                        <div class="testimonial-desc">
+                                                            @{
+                                                                ViewBag.ProfileClass = "media-object rounded-circle shadow";
+                                                                await Html.RenderPartialAsync("~/Views/Common/ProfileImage.cshtml", _model);
+                                                            }
+                                                            <div class="testimonial-writer">
+                                                                <h6>@(_model.UserName)</h6>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- BEGIN STEP-->
+                                        <div class="tsf-step step-1">
+                                            <div class="row">
+                                                <div class="cwidget-scroll">
+                                                    <ul class="chat-widget m-r-5 clearfix">
+                                                        <li class="left float-left step10">
+                                                            <img src="images/avatar/noname-2.jpg" class="rounded-circle">
+                                                            <div class="chat-info">
+                                                                <span class="message">Hello, @(_learner.Nickname)<br>為保障您運動時的安全，請您務必詳閱，並於確實閱讀瞭解後簽名。</span>
+                                                            </div>
+                                                        </li>
+                                                        <li class="right step10 next">
+                                                            @{
+                                                                ViewBag.ProfileClass = "rounded-circle";
+                                                                await Html.RenderPartialAsync("~/Views/Common/ProfileImage.cshtml", _learner);
+                                                            }
+                                                            <div class="chat-info" onclick="javascript:nextQuestion(1, 0, true);">
+                                                                <span class="message">
+                                                                    好的，我已經清楚了解囉。<i class="zmdi livicon-evo" data-options="name: hand-right.svg; size: 30px; style: original; strokeStyle:round; strokeColor:#052333; strokeWidth:2px; autoPlay:true"></i>
+                                                                </span>
+                                                            </div>
+                                                        </li>
+                                                        @{ 
+                                                            var pdqItems = models.GetTable<PDQQuestion>().Where(p => p.GroupID == 10).ToArray();
+                                                        }
+                                                        <li class="left float-left step11">
+                                                            <img src="images/avatar/noname-2.jpg" class="rounded-circle">
+                                                            <div class="chat-info">
+                                                                @{  await Html.RenderPartialAsync("~/Views/LearnerProfile/Module/PDQItem.cshtml", pdqItems[0]);   }
+                                                            </div>
+                                                        </li>
+                                                        <li class="right step11 next">
+                                                            @{
+                                                                ViewBag.ProfileClass = "rounded-circle";
+                                                                await Html.RenderPartialAsync("~/Views/Common/ProfileImage.cshtml", _learner);
+                                                            }
+
+                                                            <div class="chat-info" onclick="javascript:saveCurrent(@(pdqItems[0].QuestionID),function(){ nextQuestion(1, 1, true);});">
+                                                                <span class="message">
+                                                                    已誠實填寫，請繼續提問。<i class="zmdi livicon-evo" data-options="name: hand-right.svg; size: 30px; style: original; strokeStyle:round; strokeColor:#052333; strokeWidth:2px; autoPlay:true"></i>
+                                                                </span>
+                                                            </div>
+                                                        </li>
+                                                        <li class="left float-left step12">
+                                                            <img src="images/avatar/noname-2.jpg" class="rounded-circle">
+                                                            <div class="chat-info">
+                                                                @{ await Html.RenderPartialAsync("~/Views/LearnerProfile/Module/PDQItem.cshtml", pdqItems[1]); }
+                                                            </div>
+                                                        </li>
+                                                        <li class="right step12 next">
+                                                            @{
+                                                                ViewBag.ProfileClass = "rounded-circle";
+                                                                await Html.RenderPartialAsync("~/Views/Common/ProfileImage.cshtml", _learner);
+                                                            }
+
+                                                            <div class="chat-info" onclick="javascript:saveCurrent(@(pdqItems[1].QuestionID),function(){ nextQuestion(1, 2, true);});">
+                                                                <span class="message">
+                                                                    已誠實填寫，請繼續提問。<i class="zmdi livicon-evo" data-options="name: hand-right.svg; size: 30px; style: original; strokeStyle:round; strokeColor:#052333; strokeWidth:2px; autoPlay:true"></i>
+                                                                </span>
+                                                            </div>
+                                                        </li>
+                                                        <li class="left float-left step13">
+                                                            <img src="images/avatar/noname-2.jpg" class="rounded-circle">
+                                                            <div class="chat-info">
+                                                                @{ await Html.RenderPartialAsync("~/Views/LearnerProfile/Module/PDQItem.cshtml", pdqItems[2]); }
+                                                            </div>
+                                                        </li>
+                                                        <li class="right step13 next">
+                                                            @{
+                                                                ViewBag.ProfileClass = "rounded-circle";
+                                                                await Html.RenderPartialAsync("~/Views/Common/ProfileImage.cshtml", _learner);
+                                                            }
+
+                                                            <div class="chat-info" onclick="javascript:saveCurrent(@(pdqItems[2].QuestionID),function(){ nextQuestion(1, 3, true);});">
+                                                                <span class="message">
+                                                                    已誠實填寫，請繼續提問。<i class="zmdi livicon-evo" data-options="name: hand-right.svg; size: 30px; style: original; strokeStyle:round; strokeColor:#052333; strokeWidth:2px; autoPlay:true"></i>
+                                                                </span>
+                                                            </div>
+                                                        </li>
+                                                        <li class="left float-left step14">
+                                                            <img src="images/avatar/noname-2.jpg" class="rounded-circle">
+                                                            <div class="chat-info">
+                                                                @{ await Html.RenderPartialAsync("~/Views/LearnerProfile/Module/PDQItem.cshtml", pdqItems[3]); }
+                                                            </div>
+                                                        </li>
+                                                        <li class="right step14">
+                                                            @{
+                                                                ViewBag.ProfileClass = "rounded-circle";
+                                                                await Html.RenderPartialAsync("~/Views/Common/ProfileImage.cshtml", _learner);
+                                                            }
+                                                            <div class="chat-info">
+                                                                <label class="fancy-checkbox custom-bgcolor-pink">
+                                                                    <input type="checkbox" name="HealthCheck" value="@(pdqItems[3].QuestionID)" />
+                                                                    <span class="message">以上相關問題，本人已誠實作答，若有任何隱瞞自行負責後續相關責任。 </span>
+                                                                </label>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- END STEP-->
+                                        <!-- BEGIN STEP-->
+                                        <div class="tsf-step step-2">
+                                            <div class="row">
+                                                <div class="cwidget-scroll">
+                                                    <ul class="chat-widget m-r-5 clearfix">
+                                                        <li class="left float-left step20">
+                                                            <img src="images/avatar/noname-2.jpg" class="rounded-circle">
+                                                            <div class="chat-info">
+                                                                <span class="message">Hello, @(_learner.Nickname)<br>為了幫助您未來的上課內容更貼近您的預期目標，阿呆會認真傾聽您的內心話喔。</span>
+                                                            </div>
+                                                        </li>
+                                                        <li class="right step20 next">
+                                                            @{
+                                                                ViewBag.ProfileClass = "rounded-circle";
+                                                                await Html.RenderPartialAsync("~/Views/Common/ProfileImage.cshtml", _learner);
+                                                            }
+
+                                                            <div class="chat-info" onclick="javascript:nextQuestion(2, 0, true);">
+                                                                <span class="message">
+                                                                    好的，我已經清楚了解囉。<i class="zmdi livicon-evo" data-options="name: hand-right.svg; size: 30px; style: original; strokeStyle:round; strokeColor:#052333; strokeWidth:2px; autoPlay:true"></i>
+                                                                </span>
+                                                            </div>
+                                                        </li>
+                                                        <li class="left float-left step21">
+                                                            <img src="images/avatar/noname-2.jpg" class="rounded-circle">
+                                                            <div class="chat-info">
+                                                                @{
+                                                                    ViewBag.GroupQuestion = true;
+                                                                }
+                                                                <span class="message">
+                                                                    1.希望增加訓練時間的百分比<small>（最多選擇兩項Stage）</small>
+                                                                    @{ 
+                                                                        var lessonItems = _learner.UID.PromptLearnerLessons(models)
+                                                                                .PTLesson()
+                                                                                .Where(l => l.LessonAttendance != null)
+                                                                                .OrderByDescending(l => l.ClassTime).Take(12);
+                                                                    }
+                                                                    <div class="sparkline-pie float-right inlineblock">
+                                                                        @{  await Html.RenderPartialAsync("~/Views/LessonConsole/Module/TrainingSparkleDetails.cshtml", lessonItems);  }
+                                                                    </div>
+                                                                </span>
+                                                                <div class="blockquote blockquote-aliceblue">
+                                                                    @{ 
+                                                                        ViewBag.GroupCSS = "zmdi zmdi-label col-amber m-r-5";
+                                                                        await Html.RenderPartialAsync("~/Views/LearnerProfile/Module/PDQItem.cshtml", pdqItems[4]);
+                                                                        }
+                                                                </div>
+                                                                <div class="blockquote blockquote-aliceblue">
+                                                                    @{ 
+                                                                        ViewBag.GroupCSS = "zmdi zmdi-label col-pink m-r-5";
+                                                                        await Html.RenderPartialAsync("~/Views/LearnerProfile/Module/PDQItem.cshtml", pdqItems[5]);
+                                                                        }
+                                                                </div>
+                                                                <div class="blockquote blockquote-aliceblue">
+                                                                    @{ 
+                                                                        ViewBag.GroupCSS = "zmdi zmdi-label col-green m-r-5";
+                                                                        await Html.RenderPartialAsync("~/Views/LearnerProfile/Module/PDQItem.cshtml", pdqItems[6]); }
+                                                                </div>
+                                                                <div class="blockquote blockquote-aliceblue">
+                                                                    @{ 
+                                                                        ViewBag.GroupCSS = "zmdi zmdi-label col-blue m-r-5";
+                                                                        await Html.RenderPartialAsync("~/Views/LearnerProfile/Module/PDQItem.cshtml", pdqItems[7]); }
+                                                                </div>
+                                                                <div class="blockquote blockquote-aliceblue">
+                                                                    @{ 
+                                                                        ViewBag.GroupCSS = "zmdi zmdi-label col-yellow m-r-5";
+                                                                        await Html.RenderPartialAsync("~/Views/LearnerProfile/Module/PDQItem.cshtml", pdqItems[8]); }
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                        <li class="right step21 next">
+                                                            @{
+                                                                ViewBag.ProfileClass = "rounded-circle";
+                                                                await Html.RenderPartialAsync("~/Views/Common/ProfileImage.cshtml", _learner);
+                                                            }
+
+                                                            <div class="chat-info" onclick="javascript: saveMultiple(@(Html.Raw(JsonConvert.SerializeObject(pdqItems.Skip(4).Take(5).Select(q=>q.QuestionID).ToArray()))),function() { nextQuestion(2, 1, true);});">
+                                                                <span class="message">
+                                                                    已填寫完畢，請繼續提問。<i class="zmdi livicon-evo" data-options="name: hand-right.svg; size: 30px; style: original; strokeStyle:round; strokeColor:#052333; strokeWidth:2px; autoPlay:true"></i>
+                                                                </span>
+                                                            </div>
+                                                        </li>
+                                                        <!--
+                                                                                                            <li class="left float-left step22">
+                                                                                                                <img src="images/avatar/noname.png" class="rounded-circle">
+                                                                                                                <div class="chat-info" onclick="javascript:preQuestion(2, 2, false);">
+                                                                                                                    <span class="message">
+                                                                                                                        若您要重新回答上一提，請點選此。<i class="zmdi livicon-evo" data-options="name: hand-left.svg; size: 30px; style: original; strokeStyle:round; strokeColor:#052333; strokeWidth:2px; autoPlay:true"></i>
+                                                                                                                    </span>
+                                                                                                                </div>
+                                                                                                            </li>
+                                                    -->
+                                                        @{ 
+                                                            ViewBag.GroupQuestion = null;
+                                                        }
+                                                        <li class="left float-left step22">
+                                                            <img src="images/avatar/noname-2.jpg" class="rounded-circle">
+                                                            <div class="chat-info">
+                                                                @{ await Html.RenderPartialAsync("~/Views/LearnerProfile/Module/PDQItem.cshtml", pdqItems[9]); }
+                                                            </div>
+                                                        </li>
+                                                        <li class="right step22 next">
+                                                            @{
+                                                                ViewBag.ProfileClass = "rounded-circle";
+                                                                await Html.RenderPartialAsync("~/Views/Common/ProfileImage.cshtml", _learner);
+                                                            }
+                                                            <div class="chat-info" onclick="javascript:saveCurrent(@(pdqItems[9].QuestionID),function(){ nextQuestion(2, 2, true);},3);">
+                                                                <span class="message">
+                                                                    已填寫完畢，請繼續提問。<i class="zmdi livicon-evo" data-options="name: hand-right.svg; size: 30px; style: original; strokeStyle:round; strokeColor:#052333; strokeWidth:2px; autoPlay:true"></i>
+                                                                </span>
+                                                            </div>
+                                                        </li>
+                                                        <li class="left float-left step23">
+                                                            <img src="images/avatar/noname-2.jpg" class="rounded-circle">
+                                                            <div class="chat-info">
+                                                                @{ await Html.RenderPartialAsync("~/Views/LearnerProfile/Module/PDQItem.cshtml", pdqItems[10]); }
+                                                            </div>
+                                                        </li>
+                                                        <li class="right step23 next">
+                                                            @{
+                                                                ViewBag.ProfileClass = "rounded-circle";
+                                                                await Html.RenderPartialAsync("~/Views/Common/ProfileImage.cshtml", _learner);
+                                                            }
+                                                            <div class="chat-info" onclick="javascript:saveCurrent(@(pdqItems[10].QuestionID),function(){ nextQuestion(2, 3, true);});">
+                                                                <span class="message">
+                                                                    已填寫完畢，請繼續提問。<i class="zmdi livicon-evo" data-options="name: hand-right.svg; size: 30px; style: original; strokeStyle:round; strokeColor:#052333; strokeWidth:2px; autoPlay:true"></i>
+                                                                </span>
+                                                            </div>
+                                                        </li>
+                                                        <li class="left float-left step24">
+                                                            <img src="images/avatar/noname-2.jpg" class="rounded-circle">
+                                                            <div class="chat-info">
+                                                                @{ await Html.RenderPartialAsync("~/Views/LearnerProfile/Module/PDQItem.cshtml", pdqItems[11]); }
+                                                            </div>
+                                                        </li>
+                                                        <li class="right step24 next">
+                                                            @{
+                                                                ViewBag.ProfileClass = "rounded-circle";
+                                                                await Html.RenderPartialAsync("~/Views/Common/ProfileImage.cshtml", _learner);
+                                                            }
+                                                            <div class="chat-info" onclick="javascript:saveCurrent(@(pdqItems[11].QuestionID),function(){ nextStep(3);});">
+                                                                <span class="message">
+                                                                    阿呆已了解您的想法了，接下來請與您的體能顧問一起規劃未來的訓練目標吧！。<i class="zmdi livicon-evo" data-options="name: hand-right.svg; size: 30px; style: original; strokeStyle:round; strokeColor:#052333; strokeWidth:2px; autoPlay:true"></i>
+                                                                </span>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- END STEP-->
+                                        <!-- BEGIN STEP-->
+                                        <div class="tsf-step step-3">
+                                            @{
+                                                await Component.InvokeAsync(typeof(EditLearnerFeatureViewComponent), new ExercisePurposeViewModel { KeyID = _learner.UID.EncryptKey() });
+                                            }
+                                            <button type="button" class="btn bg-darkteal btn-round float-right" onclick="javascript: $global.commitLearnerFeature(function () { nextStep(4); });">確定，不後悔</button>
+                                        </div>
+                                        <!-- END STEP-->
+                                        <!-- BEGIN STEP-->
+                                        <div class="tsf-step step-4">
+                                            @{ 
+                                                await Component.InvokeAsync(typeof(EditExercisePurposeViewComponent), new ExercisePurposeViewModel { KeyID = _learner.UID.EncryptKey() });
+                                            }
+                                            <button type="button" class="btn bg-darkteal btn-round float-right" onclick="javascript: $global.commitExercisePurpose(function () { commitLearnerCharacter(); });">確定，不後悔</button>
+                                        </div>
+                                        <!-- END STEP-->
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+@section TailPageJavaScriptInclude {
+    <!-- Sparkline Plugin Js -->
+    <script src="plugins/jquery-sparkline/jquery.sparkline.js"></script>
+    <script src="plugins/timon-stepformwizard/js/parsley.min.js"></script>
+    <script src="plugins/timon-stepformwizard/js/tsf-wizard.bundle.min.js"></script>
+    <!-- noUISlider Plugin Js -->
+    <script src="plugins/nouislider/nouislider.min.js"></script>
+
+    <script>
+        $(function () {
+            generateWizard();
+            $(".chat-widget li").hide();
+            startEditingCharacter();
+        });
+
+        //產生Step精靈
+        this.generateWizard = function () {
+            //Step精靈
+            _tsfWizard = $('.tsf-wizard').tsfWizard({
+                stepEffect: 'slideUpDown',
+                stepStyle: 'style11',
+                navPosition: 'left',
+                validation: false,
+                stepTransition: true,
+                showButtons: false,
+                showStepNum: false,
+                height: 'auto',
+                disableSteps: 'after_current',
+                onBeforeNextButtonClick: function (e, validation) {
+                },
+                onAfterNextButtonClick: function (e, from, to, validation) {
+                },
+                onBeforePrevButtonClick: function (e, from, to) {
+                },
+                onAfterPrevButtonClick: function (e, from, to) {
+                },
+                onBeforeFinishButtonClick: function (e, validation) {
+                },
+                onAfterFinishButtonClick: function (e, validation) {
+                }
+            });
+        };
+
+        function saveMultiple(questID, onDone) {
+            var done = 0;
+
+            questID.forEach(function (id, idx) {
+                var ans = $('[data-id="' + id + '"]').serializeObject();
+                if ((ans.SuggestionID && ans.SuggestionID.length > 0) || ans.PDQAnswer != '') {
+                    done++;
+                }
+            });
+
+            if (done > 2) {
+                Swal.fire(
+                    'Oops...',
+                    '最多選擇兩項Stage喔！',
+                    'error'
+                )               
+                return;
+            } else if (done == 0) {
+                Swal.fire(
+                    'Oops...',
+                    '請至少勾選一項或填寫其他內容喔！',
+                    'error'
+                )   
+                return;
+            }
+            
+            questID.forEach(function (id, idx) {
+                saveCurrent(id, function () {
+                    done++;
+                    if (questID.length == done && onDone) {
+                        onDone();
+                    }
+                }, null, true);
+            });
+        }
+
+        function saveCurrent(questID, onDone, maxCount,noChecked) {
+            var $formData = $('[data-id="' + questID + '"]').serializeObject();
+            $formData.QuestionID = questID;
+            $formData.NoChecked = noChecked;
+            if (maxCount && Array.isArray($formData.SuggestionID) && $formData.SuggestionID.length > maxCount) {
+                Swal.fire(
+                    'Oops...',
+                    '最多選擇' + maxCount + '項',
+                    'error'
+                )  
+                return;
+            }
+            $.post('@Html.Raw(Url.Action("CommitPDQ", "LearnerProfile", new { KeyID = _learner.UID.EncryptKey(),_viewModel.QuestionnaireID}))', $formData, function (data) {
+                if ($.isPlainObject(data)) {
+                    if (data.result) {
+                        if (onDone) {
+                            onDone();
+                        }
+                    } else {
+                        Swal.fire(
+                            'Oops...',
+                            '你忘了回答問題喔！',
+                            'error'
+                        )  
+                    }
+                } else {
+                    $(data).appendTo($('body'));
+                }
+            });
+        }
+
+        function commitLearnerCharacter() {
+            showLoading();
+            $.post('@Html.Raw(Url.Action("CommitLearnerCharacter", "LearnerProfile"))', @Html.Raw(JsonConvert.SerializeObject(_viewModel)), function (data) {
+                if ($.isPlainObject(data)) {
+                    if (data.result) {
+                        $('').launchDownload('@Html.Raw(Url.Action("LearnerProfile","ConsoleHome",new { KeyID = _learner.UID.EncryptKey() }))', {});
+                    } else {
+                        Swal.fire(
+                            'Oops...',
+                            data.message,
+                            'warning'
+                        )
+                    }
+                } else {
+                    $(data).appendTo($('body'));
+                }
+            });
+        }
+
+        function startEditingCharacter() {
+            $global.rejectCharacterDone = function () {
+                $('').launchDownload('@Html.Raw(Url.Action("LearnerProfile","ConsoleHome"))', { 'keyID': '@(_learner.UID.EncryptKey())' });
+            };
+            $global.resumeCharacter = function () {
+                nextStep(1);
+            };
+            $.post('@Html.Raw(Url.Action("ResumeLearnerCharacter", "LearnerProfile"))', { 'keyID': '@(_learner.UID.EncryptKey())' }, function (data) {
+                if ($.isPlainObject(data)) {
+                    if (data.result) {
+                        nextStep(1);
+                    } else {
+                        Swal.fire(
+                            'Oops...',
+                            data.message,
+                            'warning'
+                        )
+                    }
+                } else {
+                    $(data).appendTo($('body'));
+                }
+            });
+        }
+
+        //呼叫NextStep
+        this.nextStep = function (index) {
+            _tsfWizard.nextStep();
+            if (index < 4) {
+                nextQuestion(index, -1, true);
+            }
+
+            if (index == 3) {
+
+            }
+        }
+
+        //顯示下一題
+        this.nextQuestion = function (index, index2, show) {
+            var nextClassName = '.chat-widget li' + '.step' + index + (index2 + 1);
+            var className = '.chat-widget li' + '.step' + index + index2 + '.next';
+            var thisName = '.chat-widget li' + '.step' + index + index2;
+            if (show) {
+                $(className).hide();
+            } else {
+                $(thisName).hide();
+            }
+
+            $(nextClassName).slideDown(1000);
+
+            if (index == 2 && index2 == 0) {
+                //顯示8次上課內的各階段圓餅圖總計
+                showStagePie();
+            }
+        }
+
+        //顯示上一題
+        this.preQuestion = function (index, index2, show) {
+            var preClassName = '.chat-widget li' + '.step' + index + (index2 - 1);
+            var className = '.chat-widget li' + '.step' + index + index2 + '.next';
+            var thisName = '.chat-widget li' + '.step' + index + index2;
+            if (show) {
+                $(className).hide();
+            } else {
+                $(thisName).hide();
+            }
+
+            $(preClassName).slideDown(1000);
+        }
+
+        //
+        $('input[name="HealthCheck"]').change(function (event) {
+            if (event.currentTarget.checked) {
+                saveCurrent(event.currentTarget.value, function () {
+                    setTimeout(function () {
+                        nextStep(2);
+                    }, 1000);
+                });
+            }
+        });
+
+        //顯示8次上課內的各階段圓餅圖總計
+        this.showStagePie = function () {
+            $(".sparkline-pie").sparkline('html', {
+                type: "pie",
+                offset: 90,
+                width: "40px",
+                height: "40px",
+                sliceColors: ['rgba(245, 166, 35, .8)', 'rgba(74, 144, 226, .8)', 'rgba(126, 211, 33, .8)', 'rgba(255, 78, 100, .8)', 'rgba(244, 237, 0, .8)']
+            });
+        }
+
+    </script>
+}

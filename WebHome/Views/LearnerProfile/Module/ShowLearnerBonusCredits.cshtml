@@ -1,0 +1,106 @@
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    UserProfile _model;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (UserProfile)this.Model;
+
+}
+@{ 
+
+///撈資料參考：/Report/BonusPromotionIndex
+}
+<div class="table-responsive">
+    <table class="table table-striped table-custom nowrap dataTable-point" style="width:100%">
+        <thead>
+            <tr>
+                <th>活動項目</th>
+                <th>時間</th>
+                <th>點數</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{ 
+                var taskItems = models.GetTable<PDQTask>()
+                                    .Join(models.GetTable<PDQTaskBonus>(),
+                                        t => t.TaskID, q => q.TaskID, (t, q) => t)
+                                    .Where(t => t.UID == _model.UID);
+                foreach(var g in taskItems.GroupBy(t=>t.PDQQuestion.GroupID))
+                {
+                    var item = g.First();
+                        <tr>
+                            <td>@(item.PDQQuestion.PDQGroup.GroupName)</td>
+                            <td>@(g.Count()==1 ? $"{item.TaskDate:yyyy/MM/dd}" : null)</td>
+                            <td>@(g.Sum(t=>t.PDQQuestion.PDQQuestionExtension.BonusPoint))</td>
+                        </tr>
+                }
+            }
+        </tbody>
+    </table>
+    <script>
+            $(function () {
+
+                if ($global.dtPoint != undefined) {
+                    $global.dtPoint.destroy();
+                }
+
+                $global.dtPoint = $('.dataTable-point').DataTable({
+                    "filter": false,
+                    "bPaginate": false,
+                    "info": false,
+                    "order": [
+                        [2, 'desc']
+                    ],
+                    "language": {
+                        "lengthMenu": "每頁顯示 _MENU_ 筆資料",
+                        "zeroRecords": "沒有資料也是種福氣",
+                        "info": "共 _TOTAL_ 筆，目前顯示第 _START_ 至 _END_筆資料",
+                        "infoEmpty": "顯示 0 筆的資料",
+                        "infoFiltered": "(總共從 _MAX_ 筆資料過濾)",
+                        "loadingRecords": "快馬加鞭處理中...",
+                        "processing": "快馬加鞭處理中...",
+                        "search": "快速搜尋：",
+                        "paginate": {
+                            "first": "第一頁",
+                            "last": "最後一頁",
+                            "next": "下一頁",
+                            "previous": "前一頁"
+                        },
+                    },
+                    "columnDefs": [{
+                        targets: [1, 2],
+                        className: "align-center"
+                    }],
+                    scrollX: true,
+                    scrollCollapse: true,
+                    fixedColumns: {
+                        leftColumns: 1,
+                    },
+                });
+
+                //setTimeout(function () {
+                //    var $btnSelect = $('.dataTables_length div.btn-group.bootstrap-select.form-control.form-control-sm');
+                //    var $menu = $btnSelect.find('select');
+                //    $btnSelect.before($menu);
+                //    $btnSelect.remove();
+                //}, 1000);
+
+                $('.dataTable-point').resize();
+
+
+            });
+    </script>
+</div>

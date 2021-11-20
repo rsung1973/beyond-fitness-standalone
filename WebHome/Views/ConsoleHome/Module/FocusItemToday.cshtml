@@ -1,0 +1,67 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    GlobalStaticViewModel globalViewModel = GlobalStaticViewModel.Instance;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+
+    if (globalViewModel.LessonTimeItem == null || globalViewModel.LessonTimeExpiration < DateTime.Now.Ticks)
+    {
+        lock (this.GetType())
+        {
+            if (globalViewModel.LessonTimeItem == null || globalViewModel.LessonTimeExpiration < DateTime.Now.Ticks)
+            {
+                globalViewModel.LessonTimeExpiration = DateTime.Today.AddDays(1).Ticks;
+
+                var finished = models.GetTable<LessonTime>()
+                                .Where(l => l.ClassTime >= DateTime.Today.AddDays(-7))
+                                .Where(l => l.LessonAttendance != null).PTorPILesson()
+                                .OrderBy(l => l.LessonID);
+
+                var finishedCount = finished.Count();
+                if (finishedCount > 0)
+                {
+                    int skipCount = (int)(DateTime.Now.Ticks % finishedCount);
+                    globalViewModel.LessonTimeItem = finished.Skip(skipCount).Take(1).FirstOrDefault();
+                }
+            }
+        }
+    }
+
+}
+<li class="col-lg-4 col-md-4 col-12">
+    <div class="body mylearner">
+        <div class="user-info">
+            <div class="image">
+                @if (globalViewModel.LessonTimeItem != null)
+                {
+                    var lessonItem = models.GetTable<LessonTime>().Where(l => l.LessonID == globalViewModel.LessonTimeItem.LessonID).First();
+                    <a href="javascript:$('').launchDownload('@Html.Raw(Url.Action("LessonTrainingContent", "ConsoleHome",new { LearnerID = lessonItem.RegisterLesson.UID }))', {'keyID':'@(lessonItem.LessonID.EncryptKey())' });">
+                        @{ await Html.RenderPartialAsync("~/Views/Common/ProfileImage.cshtml", lessonItem.AsAttendingCoach.UserProfile);   }
+                    </a>
+                }
+                else
+                {
+                    <img src="images/avatar/noname.png" />
+                }
+            </div>
+        </div>
+        <h6 class="m-t-10">本日頭條</h6>
+    </div>
+</li>
+
+
+

@@ -1,0 +1,44 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    LessonTime _model;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (LessonTime)this.Model;
+}
+@if (_model.LessonAttendance != null)
+{
+    if (_model.LessonPlan.CommitAttendance.HasValue)
+    {
+        <i class="zmdi zmdi-check-all"></i>
+    }
+    else
+    {
+        <i class="zmdi zmdi-check"></i>
+    }
+}
+else
+{
+    if (_model.LessonPlan.CommitAttendance.HasValue)
+    {
+        <i class="zmdi zmdi-check"></i>
+    }
+    else
+    {
+    }
+}
+
+

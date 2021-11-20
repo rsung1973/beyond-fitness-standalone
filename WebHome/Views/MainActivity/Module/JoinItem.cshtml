@@ -1,0 +1,41 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@using WebHome.Views.MainActivity.Resources
+
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+
+    _modelState = (ModelStateDictionary) ViewBag.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+
+}
+
+<section class="section-contact">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <h1>@Html.Raw(NamingItem.JoinUsContactTitle)</h1>
+                <p class="lead">@Html.Raw(NamingItem.JoinUsContactDesc)</p>
+                <a href="javascript:bindTrackingCode('立即行動', null, 'https://goo.gl/forms/58gaS4bpPBkrPX9E3', '_blank')" class="more" target="_blank">@Html.Raw(NamingItem.HereWeGo)<i class="pl-1 fa fa-angle-right"></i></a>
+                <ul class="contact_social">
+                    <li><a href="javascript:bindTrackingCode('Facebook', null, 'https://www.facebook.com/beyond.fitness.pro/', '_blank')"><i class="zmdi zmdi-facebook"></i></a></li>
+                    <li><a href="javascript:bindTrackingCode('Instagram', null, 'https://www.instagram.com/beyond_ft/', '_blank')"><i class="zmdi zmdi-instagram"></i></a></li>
+                    <li><a href="javascript:bindTrackingCode('Youtube', null, 'https://www.youtube.com/channel/UCPIcjPGaFFB1o8cFDUrT-4g', '_blank')"><i class="zmdi zmdi-youtube-play"></i></a></li>
+                    <li><a href="javascript:bindTrackingCode('Line', null, '@("line://ti/p/@itj9410x")', '_blank')" target="_blank"><i class="fab fa-line"></i></a></li>
+                </ul>
+                <div class="copyright">Copyright © 2018 Beyond Fitness. All Rights Reserved</div>
+            </div>
+        </div>
+    </div>
+</section>

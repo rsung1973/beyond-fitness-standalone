@@ -1,0 +1,134 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+    Layout = "~/Views/ContractConsole/ContractModal/ListLessonPriceTemplate.cshtml";
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    IQueryable<LessonPriceType> _model;
+    IQueryable<LessonPriceType> _discountItems;
+    IQueryable<LessonPriceType> _normalItems;
+    IQueryable<LessonPriceType> _specialItems;
+    UserProfile _profile;
+    CourseContractQueryViewModel _viewModel;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (IQueryable<LessonPriceType>)this.Model;
+    _profile = await Context.GetUserAsync();
+    _viewModel = (CourseContractQueryViewModel)ViewBag.ViewModel;
+
+
+    _normalItems = _model
+        .Where(l => !l.LessonPriceProperty.Any() || !l.LessonPriceProperty.Any(p => p.PropertyID == (int)Naming.LessonPriceFeature.舊會員續約))
+        .Where(p => p.SeriesID.HasValue)
+        .OrderBy(l => l.LowerLimit).ThenBy(l => l.ListPrice);
+
+    _discountItems = _model
+        .Where(l => l.LessonPriceProperty.Any(p => p.PropertyID == (int)Naming.LessonPriceFeature.舊會員續約))
+        .Where(p => p.SeriesID.HasValue)
+        .OrderBy(l => l.LowerLimit).ThenBy(l => l.ListPrice);
+
+    _specialItems = _model
+        .Where(p => !p.SeriesID.HasValue)
+        .OrderBy(l => l.LowerLimit).ThenBy(l => l.ListPrice);
+
+}
+
+@section PriceList
+{
+    <div class="panel-group full-body" id="accordionDetail_ListPrice" role="tablist" aria-multiselectable="true">
+        <div class="panel">
+            <div class="panel-heading" role="tab" id="headingListPrice">
+                <h4 class="panel-title"> <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordionDetail_listprice" href="#collapseDetail_listprice" aria-expanded="false" aria-controls="collapseDetail_listprice"> <i class="material-icons">subject</i> 標準牌告價格 </a> </h4>
+            </div>
+            <div id="collapseDetail_listprice" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="headingListPrice">
+                <div class="panel-body no-padding">
+                    <ul class="mb_list">
+                        @foreach (var item in _normalItems)
+                        {
+                            <li onclick="commitPrice(@(item.PriceID),'@($"{item.ListPrice:##,###,###,###}")元 / @(item.PriceTypeBundle())',event);">
+                                <div class="list_tb tb2">
+                                    <div class="list_tr hand">
+                                        <div class="list_td">
+                                            @(item.PriceTypeBundle())
+                                        </div>
+                                        <div class="list_td rt">@(String.Format("{0,5:##,###,###,###}", item.ListPrice))</div>
+                                    </div>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        @if (_profile.IsOfficer() || _profile.IsManager() || _profile.IsViceManager() || _profile.IsAssistant())
+        {
+            if (_discountItems.Any())
+            {
+                <div class="panel">
+                    <div class="panel-heading col-amber" role="tab" id="headingListPriceDiscount">
+                        <h4 class="panel-title material-icons"> <a role="button" data-toggle="collapse" data-parent="#accordionDetail_listprice" href="#collapseListPriceDiscount" aria-expanded="true" aria-controls="collapseListPriceDiscount"> <i class="material-icons">subject</i> 舊生續約價格 </a> </h4>
+                    </div>
+                    <div id="collapseListPriceDiscount" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingListPriceDiscount">
+                        <div class="panel-body no-padding">
+                            <ul class="mb_list">
+                                @foreach (var item in _discountItems)
+                                {
+                                    <li onclick="commitPrice(@(item.PriceID),'@($"{item.ListPrice:##,###,###,###}")元 / @(item.PriceTypeBundle())(舊生續約)',event);">
+                                        <div class="list_tb tb2">
+                                            <div class="list_tr hand">
+                                                <div class="list_td">
+                                                    @(item.PriceTypeBundle())
+                                                </div>
+                                                <div class="list_td rt">@(String.Format("{0,5:##,###,###,###}", item.ListPrice))</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                }
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            }
+            if (_specialItems.Any())
+            {
+                <div class="panel">
+                    <div class="panel-heading col-pink" role="tab" id="headingSpecialPrice">
+                        <h4 class="panel-title material-icons"> <a role="button" data-toggle="collapse" data-parent="#accordionDetail_ListPrice" href="#collapseSpecialPrice" aria-expanded="true" aria-controls="collapseSpecialPrice"> <i class="material-icons">subject</i> 特別專案價格 </a> </h4>
+                    </div>
+                    <div id="collapseSpecialPrice" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSpecialPrice">
+                        <div class="panel-body no-padding">
+                            <ul class="mb_list xl-pink">
+                                @foreach (var item in _specialItems)
+                                {
+                                    <li onclick="commitPrice(@(item.PriceID),'@($"{item.ListPrice:##,###,###,###}")元 / @(item.PriceTypeBundle())',event);">
+                                        <div class="list_tb tb2">
+                                            <div class="list_tr hand">
+                                                <div class="list_td">
+                                                    @(item.PriceTypeBundle())
+                                                </div>
+                                                <div class="list_td rt">@(String.Format("{0,5:##,###,###,###}", item.ListPrice))</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+}
