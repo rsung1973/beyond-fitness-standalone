@@ -1,0 +1,60 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    UserProfile _model;
+    string _chartID = "pieChart" + DateTime.Now.Ticks;
+    IQueryable<TrainingExecutionStage> _items;
+
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];
+    _model = (UserProfile)this.Model;
+
+    DateTime startDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+
+    _items = models.GetTable<RegisterLesson>().Where(f => f.UID == _model.UID)
+       .TotalLessons(models)
+       .Where(l => l.ClassTime >= startDate && l.ClassTime < DateTime.Today.AddDays(1))
+       .Join(models.GetTable<TrainingPlan>(), l => l.LessonID, p => p.LessonID, (l, p) => p)
+       .Join(models.GetTable<TrainingExecution>(), p => p.ExecutionID, x => x.ExecutionID, (p, x) => x)
+       .Join(models.GetTable<TrainingExecutionStage>(), x => x.ExecutionID, s => s.ExecutionID, (x, s) => s);
+
+    DateTime lastStart = startDate.AddMonths(-1);
+
+    var compareTo = models.GetTable<RegisterLesson>().Where(f => f.UID == _model.UID)
+       .TotalLessons(models)
+       .Where(l => l.ClassTime >= lastStart && l.ClassTime < startDate)
+       .Join(models.GetTable<TrainingPlan>(), l => l.LessonID, p => p.LessonID, (l, p) => p)
+       .Join(models.GetTable<TrainingExecution>(), p => p.ExecutionID, x => x.ExecutionID, (p, x) => x)
+       .Join(models.GetTable<TrainingExecutionStage>(), x => x.ExecutionID, s => s.ExecutionID, (x, s) => s);
+
+    ViewBag.CompareTo = compareTo;
+}
+@if (_items.Count() > 0)
+{
+    await Html.RenderPartialAsync("~/Views/CornerKick/Module/TrainingContentPieChart.cshtml", _items);
+}
+else
+{
+    <div class="pie">
+        <div class="pie_light">
+            您沒有<br />
+            <span>相關累計運動時間</span>
+        </div>
+    </div>
+}
+
+
+

@@ -1,0 +1,255 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Models.Timeline
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using WebHome.Helper.BusinessOperation
+@using WebHome.Properties
+@using Newtonsoft.Json
+@{
+    Layout = "~/Views/CornerKick/Shared/MainPage.cshtml";
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    CourseContract _item;
+    QueryViewModel _viewModel;
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];
+    _item = (CourseContract)ViewBag.DataItem;
+    UserProfile profile = this.Model as UserProfile;
+    _viewModel = ViewBag.ViewModel as QueryViewModel;
+    _viewModel.Title = "我的合約";
+
+    var revision = _item.CourseContractRevision;
+    var originalContract = revision.SourceContract;
+}
+
+@section CustomHeader
+{
+    <!-- Custom List -->
+    <link href="css/customelist.css?1.0" rel="stylesheet" />
+    <!-- jSignature-->
+    <link href="css/jSignature/jsignature.css" rel="stylesheet" />
+}
+
+<!--品牌LOGO -->
+<!-- // End of 品牌LOGO -->
+<div class="contract-wrap">
+    <div class="step-content">
+        <ul class="mb_list">
+            <li>
+                <div class="list_tb tb2">
+                    <div class="list_tr">
+                        <div class="list_td hd">合約名稱</div>
+                        <div class="list_td rt">@(_item.ContractName())</div>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="list_tb tb2">
+                    <div class="list_tr">
+                        <div class="list_td hd">合約起日</div>
+                        <div class="list_td rt">@($"{_item.ValidFrom:yyyy/MM/dd}")</div>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="list_tb tb2">
+                    <div class="list_tr">
+                        <div class="list_td hd">合約迄日</div>
+                        <div class="list_td rt col-red">@($"{originalContract.ValidTo ?? originalContract.Expiration:yyyy/MM/dd}")</div>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="list_tb tb2">
+                    <div class="list_tr">
+                        <div class="list_td hd f-red">合約展延後迄日</div>
+                        <div class="list_td rt f-red">@($"{_item.ValidTo ?? _item.Expiration:yyyy/MM/dd}")</div>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="list_tb tb2">
+                    <div class="list_tr">
+                        <div class="list_td hd">購買堂數</div>
+                        <div class="list_td rt">@(originalContract.Lessons ?? originalContract.LessonPriceType?.ExpandActualLessonCount(models))</div>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="list_tb tb2">
+                    <div class="list_tr">
+                        <div class="list_td hd">剩餘堂數</div>
+                        <div class="list_td rt">@(originalContract.RemainedLessonCount())</div>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="list_tb tb2">
+                    <div class="list_tr">
+                        <div class="list_td hd">體能顧問</div>
+                        <div class="list_td rt">@(_item.ServingCoach.UserProfile.FullName())</div>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="list_tb tb2">
+                    <div class="list_tr">
+                        @if (_item.LessonPriceType.BranchStore.IsVirtualClassroom())
+                        {
+                            <div class="list_td hd">上課/簽約分店</div>
+                            <div class="list_td rt">遠距/@(_item.CourseContractExtension.BranchStore.BranchName)</div>
+                        }
+                        else
+                        {
+                            <div class="list_td hd">上課場所</div>
+                            <div class="list_td rt">@(_item.CourseContractExtension.BranchStore.BranchName)</div>
+                        }
+                    </div>
+                </div>
+            </li>
+            @if (revision.AttachmentID.HasValue)
+            {
+                <li>
+                    <div class="list_tb tb2">
+                        <div class="list_tr">
+                            <div class="list_td hd">相關上傳文件</div>
+                            <div class="list_td rt">
+                                <a href="@Html.Raw($"{Startup.Properties["HostDomain"]}{Url.Action("GetResourceWithMime","Information",new { HKeyID = revision.AttachmentID.Value.EncryptHexKey() })}")" target="_blank"><i class="material-icons">attach_file</i></a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            }
+        </ul>
+        <div class="tearms-content-extend">
+            <div class="row">
+                <div class="col s12">
+                    <input type="checkbox" id="agree1" name="Extension" value="true" />
+                    <label for="agree1">本人同意本合約使用截止日<span class="f-red">由 @($"{originalContract.ValidTo ?? originalContract.Expiration:yyyy/MM/dd}")，展延至@($"{_item.ValidTo ?? _item.Expiration:yyyy/MM/dd}")止。</span></label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12">
+                    <input type="checkbox" id="agree2" name="Booking" value="true" />
+                    <label for="agree2">合約僅能展延乙次，逾期失效。</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12">
+                    <input type="checkbox" id="agree3" name="Cancel" value="true" />
+                    <label for="agree3">展延後不得申請轉讓及退費</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12">
+                    <input type="checkbox" id="agree4" name="Agree" value="true" />
+                    <label for="agree4"><span class="f-red">已詳閱上述各項記載、申請服務之項目及各項特約條款，並同意以遵循以上條款。</span> </label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 center-align">
+                    <span class="memo-text">請在下方簽上您的正楷大名</span>
+                    <div id="signatureparent">
+                        <div id="signature"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Button -->
+    <div class="bottom-area">
+        <button class="btn waves-effect waves-light btn-cancel" type="button" name="cancel">重新簽名</button>
+        <button class="btn waves-effect waves-light btn-confirm" type="button" name="confirm" onclick="javascript:confirmSignature();">確定送出</button>
+    </div>
+    <!--// End of button-->
+</div>
+
+
+@section TailPageJavaScriptInclude
+{
+    <!-- jSignature Plugin Js -->
+    <script src="js/plugin/jSignature/jSignature.js"></script>
+    <script src="js/plugin/jSignature/plugins/jSignature.CompressorBase30.js"></script>
+    <script src="js/plugin/jSignature/plugins/jSignature.CompressorSVG.js"></script>
+    <script src="js/plugin/jSignature/plugins/jSignature.UndoButton.js"></script>
+    <script src="js/plugin/jSignature/plugins/signhere/jSignature.SignHere.js"></script>
+    <script>
+
+            var openIdx;
+            $(function () {
+                //var stepper = document.querySelector('.stepper');
+                //var stepperInstace = new MStepper(stepper, {
+                //    // options
+                //    firstActive: 0, // this is the default
+                //    linearStepsNavigation: true,
+                //})
+
+                var contractCollpas = $('.collapsible');
+                contractCollpas.collapsible('open', 0);
+
+                contractCollpas.collapsible({
+                    accordion: true, // A setting that changes the collapsible behavior to expandable instead of the default accordion style
+                    onOpen: function (el) {
+                        openIdx = Number(el.attr('data-idx'));
+                    },
+                    onClose: function (el) {
+                        var idx = Number(el.attr('data-idx'));
+
+                        if (openIdx == idx && idx != 2) {
+                            openIdx = (idx + 1) % 3;
+                            contractCollpas.collapsible('open', openIdx);
+                        }
+                    } // Callback for Collapsible close
+                });
+
+
+                $("#signature").empty();
+                $("#signature").jSignature({
+                    width: '100%',
+                    height: 150,
+                    'UndoButton': true,
+                    'sizeRatio': 2
+                });
+
+                //點擊重新簽名
+                $(".btn-cancel").on('click', function (event) {
+                    $("#signature").jSignature('reset');
+                });
+
+            });
+
+            function confirmSignature() {
+
+                if ($("#signature").jSignature('getData', 'native').length < 1) {
+                    alert('請簽名!!');
+                    return;
+                }
+
+                var viewModel = $('input,select,textArea').serializeObject();
+                viewModel.Signature = $("#signature").jSignature("getData");
+                viewModel.SignatureName = 'Signature';
+                viewModel.SignatureCount = @(_item.CourseContractType.ContractCode == "CFA" ? 3 : 2);
+
+                showLoading();
+                $.post('@Html.Raw(Url.Action("ConfirmContractServiceSignature", "CornerKick",new { KeyID = _item.ContractID.EncryptKey() }))', viewModel, function (data) {
+                    hideLoading();
+                    if ($.isPlainObject(data)) {
+                        alert(data.message);
+                    }
+                    else {
+                        $(data).appendTo($('body'));
+                    }
+                });
+            }
+
+    </script>
+}
+

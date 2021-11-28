@@ -215,7 +215,7 @@ namespace WebHome.Controllers
             return View("~/Views/Account/CompleteRegister.aspx", item);
         }
 
-        public async Task<ActionResult> AutoLogin(long? timeTicks)
+        public async Task<ActionResult> AutoLoginAsync(long? timeTicks)
         {
             //HttpCookie cookie = Request.Cookies["loginToken"];
             //if (cookie != null && !String.IsNullOrEmpty(cookie.Value))

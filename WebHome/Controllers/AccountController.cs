@@ -42,25 +42,7 @@ namespace WebHome.Controllers
         [AllowAnonymous]
         public ActionResult Login(bool? autoLogin = true)
         {
-            //UserProfile profile = await HttpContext.GetUserAsync();
-            //if (profile == null)
-            //    return View();
-            //else
-            //    return processLogin(profile);
-            //this.HttpContext.Logout();
-            //Session.Abandon();
-
-            //if (autoLogin == true)
-            //{
-            //    var item = await HttpContext.GetUserAsync();
-            //    if (item != null)
-            //    {
-            //        await HttpContext.SignOnAsync(item, true);
-            //        return processLogin(item);
-            //    }
-            //}
-
-            return View();
+            return RedirectToAction("Index", "CornerKick");
         }
 
         

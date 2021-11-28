@@ -1,0 +1,51 @@
+@using System.IO
+@using System.Linq.Expressions
+@using System.Web
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    bool _singleError;
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];
+    _singleError = ViewBag.SingleError == true;
+}
+
+@if (_modelState != null && !_modelState.IsValid)
+{
+    <script>
+        $(function () {
+            console.log('@(_modelState.ErrorMessage())');
+            @if (ViewBag.AlertError == true)
+            {
+                <text>
+                    alert('@(HttpUtility.JavaScriptStringEncode(_modelState.ErrorMessage()))');
+                </text>
+            }
+            @foreach (var key in _modelState.Keys.Where(k => _modelState[k].Errors.Count > 0))
+            {
+            <text>
+                $('[name="@(key)"]').after(
+                    $('<span class="help-error-text" for="@(key)"></span>')
+                        .text('@(HttpUtility.JavaScriptStringEncode(_singleError
+                                                    ? _modelState[key].Errors[0].ErrorMessage
+                                                    : String.Join("、", _modelState[key].Errors.Select(r => r.ErrorMessage))))')
+                );
+                @if (_singleError)
+                {
+                    break;
+                }
+            </text>
+            }
+        });
+    </script>
+}

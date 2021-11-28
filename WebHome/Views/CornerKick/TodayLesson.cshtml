@@ -1,0 +1,180 @@
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Models.Timeline
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    UserProfile _model;
+    RegisterViewModel _viewModel;
+
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];
+    _model = (UserProfile)this.Model;
+    _viewModel = ViewBag.ViewModel as RegisterViewModel;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>BEYOND FITNESS - 課表內容</title>
+    <!-- CSS  -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- materialize  -->
+    <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection" />
+    <!-- livIconsevo  -->
+    <link href='css/livIconsevo/LivIconsEvo.css' rel='stylesheet' type='text/css'>
+    <link href="css/livIconsevo/LivIconsEvo.css" rel="stylesheet" type="text/css">
+    <!-- scrollup-master  -->
+    <link href="css/scrollup-master/themes/image.css?1.1" rel="stylesheet" id="scrollUpTheme">
+
+    <!--ionicons -->
+    <link href='css/ionicons/ionicons.min.css' rel="stylesheet" type="text/css" media="screen" />
+    <!-- STYLE 要放最下面  -->
+    <link href="css/style.css?1.3" type="text/css" rel="stylesheet" media="screen,projection" />
+    <link rel="icon" href="favicons/favicon_96x96.png">
+    <!-- Specifying a Webpage Icon for Web Clip -->
+    <link rel="apple-touch-icon-precomposed" href="favicons/favicon_57x57.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="favicons/favicon_72x72.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="favicons/favicon_114x114.png">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="favicons/favicon_144x144.png">
+    <link rel="apple-touch-icon-precomposed" sizes="180x180" href="favicons/favicon_180x180.png">
+
+    <script src="js/libs/jquery-2.2.4.min.js"></script>
+    <script>
+        var $global = {
+            'onReady': [],
+            call: function (name) {
+                var fn = $global[name];
+                if (typeof fn === 'function') {
+                    fn();
+                }
+            },
+        };
+    </script>
+</head>
+<body>
+    <!--//預設值為藍色 / 若要設定女生 請加上 mode-girls /-->
+    <div class="wrapper full-fixed">
+        <div class="wrapper-fixed">
+            <!--Header -->
+            <nav class="white non-line" role="navigation">
+                <div class="nav-wrapper container">
+                    <!-- BACK -->
+                    @{ await Html.RenderPartialAsync("~/Views/CornerKick/Module/ReturnHome.cshtml");}
+
+                    <!-- // End of BACK -->
+                    <a id="logo-container" href="#" class="brand-logo toptitle center">課表內容</a>
+                </div>
+            </nav>
+            <!-- // End of Header -->
+            <!-- main -->
+            <div class="main main-fixed">
+                <div class="container">
+                    @{
+                        LessonTime item = (LessonTime)ViewBag.DataItem;
+                    }
+                    @if (item == null)
+                    {
+                        item = models.GetTable<RegisterLesson>().Where(r => r.UID == _model.UID)
+                            .TotalLessons(models).Where(l => l.ClassTime >= DateTime.Today && l.ClassTime < DateTime.Today.AddDays(1)).FirstOrDefault();
+                    }
+
+                    @if (item != null)
+                    {
+                        <!--品牌LOGO -->
+                        <!-- // End of 品牌LOGO -->
+                        await Html.RenderPartialAsync("~/Views/CornerKick/Module/LessonContent.cshtml", item);
+
+                        <!-- //End of 登入 - TAB -->
+                    }
+                    else
+                    {
+                        <img class="responsive-img nodata" src="images/nodata.png" />
+                        <p class="collection center">
+                            <span class="gray-t16">Ooooooops！今日沒有上課耶！</span>
+                        </p>
+                    }
+                </div>
+            </div>
+            <!-- // End of main -->
+        </div>
+        <!--// End of wrapper-fixed-->
+    </div>
+    <!--// End of wrapper-->
+    <!-- Footer -->
+    <!--<footer class="page-footer teal">
+         <div class="footer-copyright">
+           <div class="container"><a class="brown-text text-lighten-3" href="#">BEYOND FITNESS</a> </div>
+         </div>
+         </footer>-->
+    <!-- // End of Footer -->
+    <!--  Scripts-->
+    <script src="js/materialize.js"></script>
+    <script src="js/init.js"></script>
+    <!-- LivIconsEvo  -->
+    <script src="js/plugin/LivIconsEvo/tools/snap.svg-min.js"></script>
+    <script src="js/plugin/LivIconsEvo/tools/TweenMax.min.js"></script>
+    <script src="js/plugin/LivIconsEvo/tools/DrawSVGPlugin.min.js"></script>
+    <script src="js/plugin/LivIconsEvo/tools/MorphSVGPlugin.min.js"></script>
+    <script src="js/plugin/LivIconsEvo/tools/verge.min.js"></script>
+    <script src="js/plugin/LivIconsEvo/LivIconsEvo.Tools.js"></script>
+    <script src="js/plugin/LivIconsEvo/LivIconsEvo.defaults.js"></script>
+    <script src="js/plugin/LivIconsEvo/LivIconsEvo.js"></script>
+    <!-- scrollup-master  -->
+    <script src="js/plugin/scrollup-master/jquery.scrollUp.min.js"></script>
+    <!--chartjs plugin-->
+    <script src="js/plugin/chartjs/chart.min.js"></script>
+    <script>
+        $(function () {
+            $.scrollUp({
+                animation: 'fade',
+
+                scrollImg: {
+                    active: true,
+                    type: 'background',
+                    src: '../images/top.png'
+                }
+            });
+            //countup
+            $('.countuptime').each(function () {
+                // no need to specify options unless they differ from the defaults
+                var target = this;
+                var endVal = parseInt($(this).attr('data-endVal'));
+                theAnimation = new countUp(target, 0, endVal, 0, 2.5);
+                theAnimation.start();
+            });
+
+        });
+
+
+
+    </script>
+</body>
+</html>
+@{ await Html.RenderPartialAsync("~/Views/Common/JQueryHelper.cshtml");}
+
+@{ await Html.RenderPartialAsync("~/Views/CornerKick/Module/ModeGirls.cshtml", _model);}
+
+@{ await Html.RenderPartialAsync("~/Views/Shared/InitBarChartNoRegister.cshtml");}
+
+@if (_viewModel?.LineID != null)
+{
+    <script>
+        gtag('event', '課表內容', {
+            'event_category': '卡片點擊',
+            'event_label': 'LINE圖文選單'
+        });
+    </script>
+}
+

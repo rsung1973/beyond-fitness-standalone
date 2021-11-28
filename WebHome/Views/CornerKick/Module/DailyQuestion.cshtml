@@ -1,0 +1,52 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Models.Timeline
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    PDQQuestion _model;
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];
+    _model = (PDQQuestion)this.Model;
+}
+<div class="qa-content">
+    <div class="personal-info">
+        <div class="row valign-wrapper">
+            <div class="col s4 m2">
+                @{ ViewBag.ImgClass = "circle responsive-img valign";
+                    await Html.RenderPartialAsync("~/Views/CornerKick/Module/ProfileImage.cshtml", _model.UserProfile);}
+
+            </div>
+            <div class="col s8 m10 text-box"><span class="black-t18">@(_model.UserProfile.UserName ?? _model.UserProfile.FullName())</span> <span class="black-t12">Hi，來點腦力激盪，答對我出的題目可以獲得Beyond💰喔！</span></div>
+        </div>
+    </div>
+    <!-- 問題 -->
+    <p class="collection"><span class="gray-t16" id="question">@(_model.Question)</span></p>
+    <form action="@(Url.Action("CommitAnswerDailyQuestion","CornerKick",new { keyID = _model.QuestionID.EncryptKey() }))" method="post" id="ansForm">
+        @foreach (var quest in _model.PDQSuggestion)
+        {
+            <p>
+                <input class="with-gap" name="suggestionID" value="@(quest.SuggestionID)" type="radio" id="ans@(quest.SuggestionID)" />
+                <label for="ans@(quest.SuggestionID)">@(quest.Suggestion)</label>
+            </p>
+        }
+    </form>
+    <!-- Button -->
+    <div class="content-area">
+        <button class="btn waves-effect waves-light btn-send" type="button" name="action" onclick="commitAnswer();">我超聰明</button>
+    </div>
+    <!--// End of button-->
+</div>
+

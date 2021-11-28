@@ -1,0 +1,40 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];
+}
+<script>
+
+    $(function () {
+
+        if ($global.chartJS == undefined) {
+            loadScript('@(VirtualPathUtility.ToAbsolute("~/js/plugin/chartjs2_7_2/chart.min.js"))', function () {
+                $global.chartJS = true;
+
+                if ($global.initGraph) {
+                    $global.initGraph();
+                }
+
+            });
+        } else {
+
+        }
+
+    });
+</script>
+
+
+

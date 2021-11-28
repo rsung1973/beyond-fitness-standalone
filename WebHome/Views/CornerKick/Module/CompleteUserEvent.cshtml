@@ -1,0 +1,33 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    UserEvent _model;
+    UserEventViewModel _viewModel;
+
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];
+    _model = (UserEvent)this.Model;
+    _viewModel = (UserEventViewModel)ViewBag.ViewModel;
+}
+<script>
+        gtag('event', '@(_viewModel.CreateNew==true ? "新增" : "修改")', {
+            'event_category': '按鈕點擊',
+            'event_label': '編輯行事曆'
+        });
+        window.location.href = '@(Url.Action("LearnerCalendar","CornerKick"))';
+</script>
+
+
+

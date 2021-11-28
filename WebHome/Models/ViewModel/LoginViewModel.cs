@@ -37,6 +37,12 @@ namespace WebHome.Models.ViewModel
         [JsonIgnore]
         public String Title { get; set; }
         public String AlertMessage { get; set; }
+        [JsonIgnore]
+        public String Message
+        {
+            get => AlertMessage;
+            set => AlertMessage = value;
+        }
     }
 
     public class LoginViewModel : QueryViewModel
@@ -498,12 +504,6 @@ namespace WebHome.Models.ViewModel
         public DateTime? LessonDate { get; set; }
         public DateTime? EndQueryDate { get; set; }
         public String Category { get; set; }
-        [JsonIgnore]
-        public String Message 
-        { 
-            get => AlertMessage; 
-            set => AlertMessage = value; 
-        }
     }
 
     public class LessonPriceViewModel
@@ -521,12 +521,6 @@ namespace WebHome.Models.ViewModel
     {
         public String ByName { get; set; }
         public Naming.RoleID? RoleID { get; set; }
-        [JsonIgnore]
-        public String Message
-        {
-            get => AlertMessage;
-            set => AlertMessage = value;
-        }
     }
 
     public class InstallmentViewModel
@@ -774,7 +768,6 @@ namespace WebHome.Models.ViewModel
 
     public class DataItemViewModel : QueryViewModel
     {
-        public String Message { get; set; }
         public String Assertion { get; set; }
     }
 

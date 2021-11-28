@@ -1,0 +1,39 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Models.Timeline
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    String _model;
+    String _gaEvent = "卡片總覽";
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];
+    _model = this.Model as String;
+    if (_model != null)
+    {
+        if (_model.Contains("Settings"))
+        {
+            _gaEvent = "我的設定";
+        }
+        else if (_model.Contains("LearnerCalendar"))
+        {
+            _gaEvent = "我的行事曆";
+        }
+    }
+}
+
+<a href="#" class="button-collapse" onclick="gtag('event', '@(_gaEvent)', {'event_category': '連結點擊','event_label': '返回'});window.location.href = '@(_model ?? Url.Action("LearnerIndex","CornerKick"))';">
+    <i class="livicon-evo" data-options="name: angle-wide-left.svg; size: 40px; style: original; strokeWidth:2px; autoPlay:true"></i>
+</a>
+

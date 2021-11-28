@@ -1,0 +1,35 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Models.Timeline
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+    Layout = "~/Views/CornerKick/Shared/MainPage.cshtml";
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];
+
+    DataItemViewModel _viewModel = (DataItemViewModel)ViewBag.ViewModel;
+}
+
+<div class="notice-wrap">
+    <div class="container center">
+        <p>
+            <img class="responsive-img nodata" src="images/nodata.png">
+            <span class="gray-t16">@Html.Raw(_viewModel.Message)</span>
+            @if (_viewModel.Assertion != null)
+            {
+                <span class="help-error-text">@(_viewModel.Assertion)</span>
+            }
+        </p>
+    </div>
+</div>

@@ -1,0 +1,134 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Models.Timeline
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+    Layout = "~/Views/CornerKick/Shared/MainPage.cshtml";
+    ViewBag.ReturnUrl = Url.Action("CheckBonusPoint", "CornerKick");
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    UserProfile _model;
+    AwardQueryViewModel _viewModel;
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];
+    _model = (UserProfile)this.Model;
+    _viewModel = ViewBag.ViewModel as AwardQueryViewModel;
+    _viewModel.Title = "兌換我的裝備";
+
+    BonusAwardingItem _item = ViewBag.DataItem as BonusAwardingItem;
+}
+
+<!--品牌LOGO -->
+<!-- // End of 品牌LOGO -->
+<div class="registered-forms">
+    <!-- QA info -->
+    <div class="point-content">
+        <div class="personal-info">
+            <div class="row valign-wrapper">
+                @{
+                    await Html.RenderPartialAsync("~/Views/CornerKick/CheckBonusPoint/AdvisorImage.cshtml", _model);
+                }
+                <div class="col s8 m10 text-box">
+                    @if (_item.BonusAwardingIndication?.Indication == "AwardingLessonGift")
+                    {
+                        <span class="black-t12">提醒：使用點數 <span class="point">@(_item.PointValue)點</span> Beyond💰，輸入受贈會員手機號碼後，點選確定兌換及立即兌換完成！</span>
+                    }
+                    else if (_item.BonusAwardingLesson != null)
+                    {
+                        <span class="black-t12">提醒：使用點數 <span class="point">@(_item.PointValue)點</span> Beyond💰，點選後則立即兌換！</span>
+                    }
+                    else
+                    {
+                        <span class="black-t12">提醒：使用點數 <span class="point">@(_item.PointValue)點</span> Beyond💰，請至現場與教練做兌換！</span>
+                    }
+                </div>
+            </div>
+        </div>
+        <!-- //End of 點數選擇 -->
+        <div class="row">
+            <!-- ＩＭＧ -->
+            <div class="img-block col s12 m6 l6">
+                <div id="" class="parallax-container">
+                    <div class="section no-pad-bot">
+                        <div class="container">
+                            <ul class="text-area">
+                                <li class="white-text left">@(_item.ItemName)</li>
+                                <li class="right"><span class="point-tag">@(_item.PointValue)點</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="parallax"><img src="@(_item.SampleUrl!=null ? VirtualPathUtility.ToAbsolute(_item.SampleUrl) : null)" alt="Unsplashed background img 1" /></div>
+                </div>
+            </div>
+            <!-- // End of ＩＭＧ -->
+        </div>
+        <!--//End of QA info-->
+        @if (_item.BonusAwardingLesson == null || _item.BonusAwardingIndication?.Indication == "AwardingLessonGift")
+        {
+            <div class="row">
+                <form class="col s12">
+                    <div class="row">
+                        <!--1-->
+                        <div class="input-field col s12">
+                            <i class="livicon-evo prefix" data-options="name: unlock.svg; size: 30px; style: lines; strokeColor:#05232d; autoPlay:true"></i>
+                            <label class="active" for="nickname">@(_item.BonusAwardingIndication?.Indication == "AwardingLessonGift" ? "請輸入受贈會員手機號碼" : "兌換核銷密碼")</label>
+                            <input id="nickname" name="WriteoffCode" type="text" class="validate" maxlength="10" data-length="10" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        }
+    </div>
+    <!-- //End of 登入 - TAB -->
+</div>
+<!-- //End of 登入 - TAB -->
+<!-- Botton -->
+<div class="content-area">
+    <button class="btn waves-effect waves-light btn-send" type="button" onclick="javascript:exchangeBonus();">確定兌換</button>
+</div>
+<!--// End of wrapper-fixed-->
+
+@section TailPageJavaScriptInclude
+{
+    <script>
+
+        function exchangeBonus() {
+            var viewModel = $.extend({ 'itemID': @(_item.ItemID) }, $('form').serializeObject());
+            clearErrors();
+            showLoading();
+            $.post('@(Url.Action("ExchangeBonusPoint","CornerKick"))', viewModel, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    if (data.result) {
+                        alert('兌換完成!!');
+                        showLoading();
+                        $('').launchDownload('@(Url.Action("CheckBonusPoint","CornerKick"))', { 'viewAward': true });
+                    } else {
+                        alert(data.message);
+                    }
+                } else {
+                    $(data).appendTo($('body'));
+                }
+            });
+        }
+
+    </script>
+    @if (_viewModel?.LineID != null)
+    {
+        <script>
+            gtag('event', '已兌換裝備', {
+                'event_category': '卡片點擊',
+                'event_label': 'LINE圖文選單'
+            });
+        </script>
+    }
+}

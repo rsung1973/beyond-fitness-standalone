@@ -1,0 +1,51 @@
+
+@using System.IO
+@using System.Linq.Expressions
+@using System.Web 
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Models.Timeline
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    UserProfile _model;
+    List<TimelineEvent> _items;
+    PromptSignContractEvent _item;
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];
+    _model = (UserProfile)this.Model;
+    _items = (List<TimelineEvent>)ViewBag.UserNotice;
+
+    _item = _model.CheckSignContractEvent(models);
+
+    if (_item != null)
+    {
+        _items.Add(_item);
+    }
+}
+
+@if (_item != null)
+{
+    int count = _item.ContractList.Where(c => !c.InstallmentID.HasValue).Count()
+                    + _item.ContractList.Where(c => c.InstallmentID.HasValue)
+                        .GroupBy(c => c.InstallmentID).Count();
+
+    foreach (var item in _item.ContractList)
+    {
+        <li>
+            <i class="livicon-evo" data-options="name: bell.svg; size: 30px; style: original; strokeWidth:2px; autoPlay:true"></i>
+            <a href="javascript:gtag('event', '我的合約', {  'event_category': '連結點擊',  'event_label': '我的通知'});window.location.href = '@(Url.Action("SignCourseContract", "CornerKick",new { KeyID = HttpUtility.UrlEncode(item.ContractID.EncryptKey()) }))';">@($"{(_model.UserProfileExtension.Gender == "F" ? "親愛的 " : "兄弟")}")，您有@(count)張合約等待您簽名喔！</a>
+        </li>
+        break;
+    }
+}
+
+

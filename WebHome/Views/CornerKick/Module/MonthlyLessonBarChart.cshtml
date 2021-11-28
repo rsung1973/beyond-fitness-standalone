@@ -1,0 +1,86 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@functions{
+
+    UserProfile _model;
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    string _chartID = "barChart" + DateTime.Now.Ticks;
+
+    IEnumerable<String> getLabels(DateTime startDate, DateTime endDate)
+    {
+        for (DateTime t = startDate; t < endDate; t = t.AddMonths(1))
+        {
+            yield return $"{t:yyyy/MM}";
+        }
+    }
+
+    IEnumerable<int> getData(DateTime startDate, DateTime endDate)
+    {
+        for (DateTime t = startDate; t < endDate; t = t.AddMonths(1))
+        {
+            yield return _model.TotalLessonMinutes(models, t, t.AddMonths(1));
+        }
+    }
+
+}
+@{
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];
+    _model = (UserProfile)this.Model;
+
+}
+<canvas id="@(_chartID)"></canvas>
+@{ DateTime endDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1).AddMonths(1);
+    DateTime startDate = endDate.AddMonths(-12);}
+
+<script>
+    $(function () {
+
+        var barChartData = {
+            labels: @(JsonConvert.SerializeObject(getLabels(startDate,endDate))),
+            datasets: [{
+                backgroundColor: "@(_model.UserProfileExtension.Gender=="F" ? "rgba(253,92,99, .43)" : "rgba(0,97,210,.43)")",
+                pointBackgroundColor: "@(_model.UserProfileExtension.Gender=="F" ? "rgba(253,92,99, 1)" : "rgba(0,97,210, 1)")",
+                hoverPointBackgroundColor: "#fff",
+                pointHighlightStroke: "rgba(151,187,205, 1)",
+                data: @(JsonConvert.SerializeObject(getData(startDate,endDate))),
+            }]
+        };
+
+        var BarConfig = {
+            type: 'bar',
+            data: barChartData,
+            options: {
+                responsive: true,
+                legend: {
+                    display: false,
+                },
+                title: {
+                    display: false,
+                }
+            }
+        };
+
+        var initGraph = $global.initGraph;
+        $global.initGraph = function() {
+            if(initGraph) {
+                initGraph();
+            }
+            window.myBarChart = new Chart(document.getElementById("@(_chartID)"), BarConfig);
+        };
+
+    });
+</script>
+
+

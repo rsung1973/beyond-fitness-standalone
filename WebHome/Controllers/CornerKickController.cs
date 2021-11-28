@@ -56,9 +56,15 @@ namespace WebHome.Controllers
             throw new Exception("Test Error...");
         }
 
-        public ActionResult Login(RegisterViewModel viewModel)
+        public async Task<ActionResult> LoginAsync(RegisterViewModel viewModel)
         {
             ViewBag.ViewModel = viewModel;
+            ViewResult result = (await AutoLoginAsync(viewModel)) as ViewResult;
+            if (result != null)
+            {
+                return result;
+            }
+
             return View("Login");
         }
 
@@ -82,7 +88,7 @@ namespace WebHome.Controllers
             if (item != null)
             {
                 await HttpContext.SignOnAsync(item);
-                return View("~/Views/CornerKick/Module/AutoLogin.ascx", model: this.ProcessLogin(item));
+                return View("~/Views/CornerKick/Module/AutoLogin.cshtml", model: this.ProcessLogin(item));
             }
 
             return new EmptyResult();
@@ -97,7 +103,7 @@ namespace WebHome.Controllers
             if (item != null)
             {
                 await HttpContext.SignOnAsync(item);
-                return View("~/Views/CornerKick/Module/AutoLogin.ascx", model: this.ProcessLogin(item, true));
+                return View("~/Views/CornerKick/Module/AutoLogin.cshtml", model: this.ProcessLogin(item, true));
             }
             else
             {
@@ -395,7 +401,7 @@ namespace WebHome.Controllers
             item.UserName = viewModel.UserName;
             models.SubmitChanges();
 
-            return View("~/Views/Html/Module/AutoLogin.ascx", model: this.ProcessLogin(item, true));
+            return View("~/Views/Html/Module/AutoLogin.cshtml", model: this.ProcessLogin(item, true));
 
         }
 
@@ -912,7 +918,7 @@ namespace WebHome.Controllers
 
             if (item == null)
             {
-                return Login(viewModel);
+                return await LoginAsync(viewModel);
             }
 
             var pwd = (viewModel.Password).MakePassword();
@@ -944,7 +950,7 @@ namespace WebHome.Controllers
                 await HttpContext.SignOnAsync(item);
             //}
 
-            return View("~/Views/CornerKick/Module/CommitPassword.ascx", item);
+            return View("~/Views/CornerKick/Module/CommitPassword.cshtml", item);
 
         }
 
@@ -1075,10 +1081,10 @@ namespace WebHome.Controllers
 
             if (!String.IsNullOrEmpty(returnUrl))
             {
-                return View("~/Views/Html/Module/AutoLogin.ascx", model: returnUrl);
+                return View("~/Views/Html/Module/AutoLogin.cshtml", model: returnUrl);
             }
 
-            return View("~/Views/Html/Module/AutoLogin.ascx", model: this.ProcessLogin(item, false));
+            return View("~/Views/Html/Module/AutoLogin.cshtml", model: this.ProcessLogin(item, false));
 
         }
 
@@ -1134,7 +1140,7 @@ namespace WebHome.Controllers
         {
             ViewBag.StartDate = dateFrom;
             var profile = (await HttpContext.GetUserAsync()).LoadInstance(models);
-            return View("~/Views/CornerKick/Module/LearnerEvents.ascx", profile);
+            return View("~/Views/CornerKick/Module/LearnerEvents.cshtml", profile);
         }
 
         [Authorize]
@@ -1220,7 +1226,7 @@ namespace WebHome.Controllers
 
             models.SubmitChanges();
 
-            return View("~/Views/CornerKick/Module/CompleteUserEvent.ascx", item);
+            return View("~/Views/CornerKick/Module/CompleteUserEvent.cshtml", item);
         }
 
         [Authorize]

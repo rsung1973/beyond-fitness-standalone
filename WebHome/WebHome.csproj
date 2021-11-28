@@ -158,6 +158,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Views\Shared\Materialize\ReportInputError.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <EmbeddedResource Update="Views\MainActivity\Resources\NamingItem.resx">
       <SubType>Designer</SubType>
       <LastGenOutput>NamingItem.Designer.cs</LastGenOutput>

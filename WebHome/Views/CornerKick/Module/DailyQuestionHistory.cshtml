@@ -1,0 +1,46 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Models.Timeline
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    IQueryable<PDQTask> _items;
+    UserProfile _profile;
+
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];
+    _profile = await Context.GetUserAsync();
+
+    _items = models.GetTable<PDQTask>().Where(t => t.UID == _profile.UID)
+            .Join(models.GetTable<PDQQuestion>().Where(q => q.GroupID == 6),
+                t => t.QuestionID, q => q.QuestionID, (t, q) => t)
+            .OrderByDescending(t => t.TaskID)
+            .Take(5);
+}
+@if (_items.Count() > 0)
+{
+    <div class="accordion js-accordion">
+        @foreach (var item in _items)
+        {
+            await Html.RenderPartialAsync("~/Views/CornerKick/Module/AnsweredDailyQuestion.cshtml", item);
+        }
+    </div>
+}
+else
+{
+    await Html.RenderPartialAsync("~/Views/CornerKick/Module/AnsweredQuestionNotFound.cshtml");
+}
+
+

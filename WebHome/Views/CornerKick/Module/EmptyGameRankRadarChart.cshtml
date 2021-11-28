@@ -1,0 +1,81 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    string _chartID = "radarChart" + DateTime.Now.Ticks;
+    UserProfile _model;
+
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];
+    _model = (UserProfile)this.Model;
+}
+<canvas id="@(_chartID)" class="chart-box"></canvas>
+<script>
+    $(function () {
+        var RadarConfig = {
+            type: 'radar',
+            data: {
+                labels: ["身體質量", "相對肌力", "爆發力", "柔軟度", "心肺適能"],
+                datasets: [{
+                    label: "分佈圖",
+                    backgroundColor: "@(_model.UserProfileExtension.Gender=="F" ? "rgba(253,92,99,.43)" : "rgba(0,97,210,.43)")",
+                    pointBackgroundColor: "@(_model.UserProfileExtension.Gender=="F" ? "rgba(253,92,99,1)" : "rgba(0,97,210,1)")",
+                    data: [0, 0, 0, 0, 0],
+                }]
+            },
+            options: {
+                legend: {
+                    display: false
+                },
+
+                scale: {
+                    reverse: false,
+                    display: true,
+                    ticks: {
+                        showLabelBackdrop: false,
+                        beginAtZero: true,
+                        backdropColor: '#0061d2',
+                        maxTicksLimit: 5,
+                        max: 10,
+                        fontSize: 5,
+                        backdropPaddingX: 5,
+                        backdropPaddingY: 5
+                    },
+                    gridLines: {
+                        color: "#888888",
+                        lineWidth: 1
+                    },
+                    pointLabels: {
+                        fontSize: 12,
+                        fontColor: "#AAAAAA"
+                    }
+                }
+            }
+        };
+
+        var initGraph = $global.initGraph;
+        $global.initGraph = function() {
+            if(initGraph) {
+                initGraph();
+            }
+            window.myRadar = new Chart(document.getElementById("@(_chartID)"), RadarConfig);
+            $global.call('showRadarChartBottom');
+        };
+
+    });
+</script>
+
+
+
