@@ -13,6 +13,7 @@ using WebHome.Models.Locale;
 using WebHome.Models.ViewModel;
 using Microsoft.EntityFrameworkCore;
 using CommonLib.DataAccess;
+using Microsoft.Extensions.Logging;
 
 namespace WebHome.Helper
 {
@@ -73,7 +74,18 @@ namespace WebHome.Helper
         public static ClosedXML.Excel.XLWorkbook ConvertToExcel(this DataSet ds)
         {
             ClosedXML.Excel.XLWorkbook xls = new ClosedXML.Excel.XLWorkbook();
-            xls.Worksheets.Add(ds);
+            try
+            {
+                for (int i = 0; i < ds.Tables.Count; i++)
+                {
+                    ds.Tables[i].TableName = $"_{ds.Tables[i].TableName}";
+                }
+                xls.Worksheets.Add(ds);
+            }
+            catch(Exception ex)
+            {
+                ApplicationLogging.CreateLogger("QueryExtensionMethods").LogError(ex, ex.Message);
+            }
             return xls;
         }
 

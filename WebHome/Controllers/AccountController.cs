@@ -42,7 +42,8 @@ namespace WebHome.Controllers
         [AllowAnonymous]
         public ActionResult Login(bool? autoLogin = true)
         {
-            return RedirectToAction("Index", "CornerKick");
+            return new RedirectToActionResult("Login", "CornerKick", null);
+            //return RedirectToAction("Index", "CornerKick");
         }
 
         

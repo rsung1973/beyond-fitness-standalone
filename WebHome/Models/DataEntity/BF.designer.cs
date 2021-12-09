@@ -49174,6 +49174,8 @@ namespace WebHome.Models.DataEntity
 		
 		private System.Nullable<int> _BranchTotalTuition;
 		
+		private System.Nullable<int> _VoidShare;
+		
 		private EntityRef<BranchStore> _BranchStore;
 		
 		private EntityRef<CoachMonthlySalary> _CoachMonthlySalary;
@@ -49198,6 +49200,8 @@ namespace WebHome.Models.DataEntity
     partial void OnBranchTotalAttendanceCountChanged();
     partial void OnBranchTotalTuitionChanging(System.Nullable<int> value);
     partial void OnBranchTotalTuitionChanged();
+    partial void OnVoidShareChanging(System.Nullable<int> value);
+    partial void OnVoidShareChanged();
     #endregion
 		
 		public CoachBranchMonthlyBonus()
@@ -49379,6 +49383,26 @@ namespace WebHome.Models.DataEntity
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_VoidShare", DbType="Int")]
+		public System.Nullable<int> VoidShare
+		{
+			get
+			{
+				return this._VoidShare;
+			}
+			set
+			{
+				if ((this._VoidShare != value))
+				{
+					this.OnVoidShareChanging(value);
+					this.SendPropertyChanging();
+					this._VoidShare = value;
+					this.SendPropertyChanged("VoidShare");
+					this.OnVoidShareChanged();
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="BranchStore_CoachBranchMonthlyBonus", Storage="_BranchStore", ThisKey="BranchID", OtherKey="BranchID", IsForeignKey=true)]
 		public BranchStore BranchStore
 		{
@@ -49494,6 +49518,8 @@ namespace WebHome.Models.DataEntity
 		
 		private System.Nullable<decimal> _AchievementShareRatio;
 		
+		private System.Nullable<int> _VoidShare;
+		
 		private EntitySet<CoachBranchMonthlyBonus> _CoachBranchMonthlyBonus;
 		
 		private EntityRef<BranchStore> _BranchStore;
@@ -49526,6 +49552,8 @@ namespace WebHome.Models.DataEntity
     partial void OnPerformanceAchievementChanged();
     partial void OnAchievementShareRatioChanging(System.Nullable<decimal> value);
     partial void OnAchievementShareRatioChanged();
+    partial void OnVoidShareChanging(System.Nullable<int> value);
+    partial void OnVoidShareChanged();
     #endregion
 		
 		public CoachMonthlySalary()
@@ -49730,6 +49758,26 @@ namespace WebHome.Models.DataEntity
 					this._AchievementShareRatio = value;
 					this.SendPropertyChanged("AchievementShareRatio");
 					this.OnAchievementShareRatioChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_VoidShare", DbType="Int")]
+		public System.Nullable<int> VoidShare
+		{
+			get
+			{
+				return this._VoidShare;
+			}
+			set
+			{
+				if ((this._VoidShare != value))
+				{
+					this.OnVoidShareChanging(value);
+					this.SendPropertyChanging();
+					this._VoidShare = value;
+					this.SendPropertyChanged("VoidShare");
+					this.OnVoidShareChanged();
 				}
 			}
 		}
@@ -51295,6 +51343,8 @@ namespace WebHome.Models.DataEntity
 		
 		private System.Nullable<int> _CoachWorkPlace;
 		
+		private System.Nullable<int> _VoidShare;
+		
 		private EntityRef<BranchStore> _BranchStore;
 		
 		private EntityRef<Payment> _Payment;
@@ -51315,6 +51365,8 @@ namespace WebHome.Models.DataEntity
     partial void OnCommitShareChanged();
     partial void OnCoachWorkPlaceChanging(System.Nullable<int> value);
     partial void OnCoachWorkPlaceChanged();
+    partial void OnVoidShareChanging(System.Nullable<int> value);
+    partial void OnVoidShareChanged();
     #endregion
 		
 		public TuitionAchievement()
@@ -51433,6 +51485,26 @@ namespace WebHome.Models.DataEntity
 					this._CoachWorkPlace = value;
 					this.SendPropertyChanged("CoachWorkPlace");
 					this.OnCoachWorkPlaceChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_VoidShare", DbType="Int")]
+		public System.Nullable<int> VoidShare
+		{
+			get
+			{
+				return this._VoidShare;
+			}
+			set
+			{
+				if ((this._VoidShare != value))
+				{
+					this.OnVoidShareChanging(value);
+					this.SendPropertyChanging();
+					this._VoidShare = value;
+					this.SendPropertyChanged("VoidShare");
+					this.OnVoidShareChanged();
 				}
 			}
 		}

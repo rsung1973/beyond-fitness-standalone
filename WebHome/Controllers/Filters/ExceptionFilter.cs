@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -16,8 +17,10 @@ namespace WebHome.Controllers.Filters
     {
         public void OnException(ExceptionContext filterContext)
         {
+            var actionContext = filterContext.HttpContext.RequestServices.GetRequiredService<IActionContextAccessor>().ActionContext;
+            var urlHelper = new UrlHelper(actionContext);
             //IUrlHelper urlHelper = new UrlHelper(new ActionContext(filterContext.HttpContext, filterContext.RouteData, filterContext.ActionDescriptor));
-            var urlHelper = filterContext.HttpContext.RequestServices.GetRequiredService<IUrlHelper>();
+            //var urlHelper = filterContext.HttpContext.RequestServices.GetRequiredService<IUrlHelper>();
 
             if (filterContext.Exception is CryptographicException)
             {
@@ -29,7 +32,7 @@ namespace WebHome.Controllers.Filters
                 {
                     ApplicationLogging.CreateLogger<ExceptionFilter>().LogError(filterContext.Exception, filterContext.Exception.Message);
                 }
-                filterContext.Result = new RedirectToActionResult("CornerKick", "Error", null);
+                filterContext.Result = new RedirectToActionResult("Error", "CornerKick", null);
                 //filterContext.HttpContext.Response.Redirect(urlHelper.Action("Error", "CornerKick"));
             }
         }

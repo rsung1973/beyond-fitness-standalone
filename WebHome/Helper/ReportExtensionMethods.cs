@@ -411,6 +411,32 @@ namespace WebHome.Helper
             return table;
         }
 
+        public static DataTable CreateVoidShareList(this GenericManager<BFDataContext> models, IQueryable<TuitionAchievement> items)
+
+        {
+            var details = items.ToArray().Select(item => new
+            {
+                體能顧問 = item.ServingCoach.UserProfile.FullName(),
+                學生 = item.Payment.TuitionInstallment != null
+                        ? item.Payment.TuitionInstallment.IntuitionCharge.RegisterLesson.UserProfile.FullName()
+                        : item.Payment.ContractPayment != null
+                            ? item.Payment.ContractPayment.CourseContract.ContractLearner()
+                            : "--",
+                分潤業績 = -item.VoidShare,
+                類別 = ((Naming.PaymentTransactionType?)item.Payment.TransactionType).ToString(),
+                發票號碼 = item.Payment.InvoiceID.HasValue
+                    ? item.Payment.InvoiceItem.TrackCode + item.Payment.InvoiceItem.No : null,
+                折讓日期 = String.Format("{0:yyyy/MM/dd}", item.Payment.InvoiceAllowance.AllowanceDate),
+                簽約場所 = item.Payment.PaymentTransaction.BranchStore.BranchName,
+                體能顧問所屬分店 = item.CoachWorkPlace.HasValue ? item.BranchStore.BranchName : "其他",
+                是否續約 = item.Payment.ContractPayment?.CourseContract.Renewal.TruthValue(),
+                分期期別 = item.Payment.ContractPayment?.CourseContract.GetInstallmentPeriodNo(models),
+            });
+
+            DataTable table = details.ToDataTable();
+            return table;
+        }
+
         public static IEnumerable<PaymentMonthlyReportItem> CreateMonthlyPaymentReportForPISession(this PaymentQueryViewModel viewModel, GenericManager<BFDataContext> models)
             
         {
@@ -790,6 +816,106 @@ namespace WebHome.Helper
                 else
                 {
                     calcCoachAchievement();
+                }
+            }
+        }
+
+        public static void ExecuteVoidShareSettlement(this GenericManager<BFDataContext> models, DateTime startDate, DateTime endExclusiveDate)
+
+        {
+            var settlement = models.GetTable<Settlement>().Where(s => startDate <= s.SettlementDate && endExclusiveDate > s.SettlementDate).FirstOrDefault();
+            if (settlement == null)
+                return;
+
+
+            var coachItems = models.PromptEffectiveCoach();
+            var salaryTable = models.GetTable<CoachMonthlySalary>();
+
+            var voidPayment = models.GetTable<VoidPayment>().Where(p => p.VoidDate >= settlement.StartDate && p.VoidDate < settlement.EndExclusiveDate)
+                                .Join(models.GetTable<Payment>().Where(p => p.AllowanceID.HasValue), v => v.VoidID, p => p.PaymentID, (v, p) => p);
+            //.FilterByEffective();
+            foreach(var voidItem in voidPayment)
+            {
+                if(voidItem.TuitionAchievement.Any())
+                {
+                    var voidAmt = (int?)(voidItem.InvoiceAllowance.TotalAmount + voidItem.InvoiceAllowance.TaxAmount);
+                    var totalShare = voidItem.TuitionAchievement.Sum(t => t.ShareAmount) ?? 1;
+
+                    foreach(var t in voidItem.TuitionAchievement)
+                    {
+                        t.VoidShare = (int?)((decimal?)voidAmt * (decimal?)t.ShareAmount / totalShare);
+                    }
+                }
+                models.SubmitChanges();
+            }
+
+            var voidTuition = voidPayment
+                                .Join(models.GetTable<TuitionAchievement>(), p => p.PaymentID, t => t.InstallmentID, (p, t) => t);
+
+            foreach (var coach in coachItems)
+            {
+                var salary = salaryTable.Where(s => s.CoachID == coach.CoachID && s.SettlementID == settlement.SettlementID).FirstOrDefault();
+                if (salary == null)
+                {
+                    salary = new CoachMonthlySalary
+                    {
+                        CoachID = coach.CoachID,
+                        SettlementID = settlement.SettlementID,
+                    };
+                    salaryTable.InsertOnSubmit(salary);
+                }
+
+                if (coach.CoachWorkplace.Count == 1)
+                {
+                    salary.WorkPlace = coach.CoachWorkplace.First().BranchID;
+                }
+
+
+                var voidItems = voidTuition.Where(t => t.CoachID == coach.CoachID);
+                salary.VoidShare = voidItems.Sum(t => t.VoidShare) ?? 0;
+
+                models.SubmitChanges();
+
+                BranchStore branch;
+                if (coach.UserProfile.IsOfficer())
+                {
+                    foreach (var g in voidPayment.GroupBy(l => l.PaymentTransaction.BranchID))
+                    {
+                        var branchBonus = salary.CoachBranchMonthlyBonus.Where(b => b.BranchID == g.Key).FirstOrDefault();
+                        if (branchBonus == null)
+                        {
+                            branchBonus = new CoachBranchMonthlyBonus
+                            {
+                                CoachMonthlySalary = salary,
+                                BranchID = g.Key
+                            };
+                        }
+
+                        branchBonus.VoidShare = (int?)voidPayment
+                                .Join(models.GetTable<PaymentTransaction>().Where(t => t.BranchID == g.Key), p => p.PaymentID, t => t.PaymentID, (p, t) => p)
+                                .Join(models.GetTable<InvoiceAllowance>(), p => p.AllowanceID, t => t.AllowanceID, (p, t) => t)
+                                .Sum(a => a.TotalAmount + a.TaxAmount);
+                        models.SubmitChanges();
+                    }
+                }
+                else if ((branch = models.GetTable<BranchStore>().Where(b => b.ManagerID == coach.CoachID || b.ViceManagerID == coach.CoachID).FirstOrDefault()) != null)
+                {
+                    var branchBonus = salary.CoachBranchMonthlyBonus.Where(b => b.BranchID == branch.BranchID).FirstOrDefault();
+                    if (branchBonus == null)
+                    {
+                        branchBonus = new CoachBranchMonthlyBonus
+                        {
+                            CoachMonthlySalary = salary,
+                            BranchID = branch.BranchID
+                        };
+                        salary.CoachBranchMonthlyBonus.Add(branchBonus);
+                    }
+
+                    branchBonus.VoidShare = (int?)voidPayment
+                            .Join(models.GetTable<PaymentTransaction>().Where(t => t.BranchID == branch.BranchID), p => p.PaymentID, t => t.PaymentID, (p, t) => p)
+                            .Join(models.GetTable<InvoiceAllowance>(), p => p.AllowanceID, t => t.AllowanceID, (p, t) => t)
+                            .Sum(a => a.TotalAmount + a.TaxAmount);
+                    models.SubmitChanges();
                 }
             }
         }

@@ -113,7 +113,7 @@ namespace WebHome.Helper
 
         public static async Task SaveAsExcelAsync(this DataSet ds,HttpResponse response,String disposition,String fileDownloadToken = null)
         {
-            response.Cookies.Append("fileDownloadToken", disposition);
+            response.Cookies.Append("fileDownloadToken", fileDownloadToken);
             response.Headers.Add("Cache-control", "max-age=1");
             response.ContentType = "application/vnd.ms-excel";
             response.Headers.Add("Content-Disposition", disposition);

@@ -81,7 +81,7 @@ namespace WebHome.Controllers
 
         public async Task<ActionResult> ChangeThemeAsync(LoginViewModel viewModel)
         {
-            await Request.SaveAsAsync("G:\\temp\\request.txt");
+            //await Request.SaveAsAsync("G:\\temp\\request.txt");
             Response.Cookies.Append("_theme", viewModel.Theme, new Microsoft.AspNetCore.Http.CookieOptions
             {
                 Expires = DateTime.MaxValue,
