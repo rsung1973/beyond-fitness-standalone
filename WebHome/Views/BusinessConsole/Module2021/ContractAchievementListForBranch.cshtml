@@ -29,24 +29,38 @@
             <th class="text-center">續約金額</th>
             <th class="text-center">分期金額</th>
             <th class="text-center">其他收款</th>
+            <th class="text-center">終止折讓金額</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var g in _model)
         {
+            var branchID = g.First().BranchID;
+            var allowanceItems = models.GetTable<VoidPayment>()
+                .Where(v => v.VoidDate >= g.Key)
+                .Where(v => v.VoidDate < g.Key.AddMonths(1))
+                .Join(models.GetTable<Payment>()
+                        .Join(models.GetTable<PaymentTransaction>().Where(t => t.BranchID == branchID), p => p.PaymentID, t => t.PaymentID, (p, t) => p),
+                    v => v.VoidID, p => p.PaymentID, (v, p) => p)
+                .Join(models.GetTable<InvoiceAllowance>(),
+                    p => p.AllowanceID, a => a.AllowanceID, (p, a) => a);
+
+
             var newContract = g.Sum(b => b.NewContractAchievement ?? 0);
             var renew = g.Sum(b => b.RenewContractAchievement ?? 0);
             var installment = g.Sum(b => b.InstallmentAchievement ?? 0);
             var subtotal = g.Sum(b => b.ActualSharedAchievement ?? 0);
-            <tr>
-                <td>@($"{g.Key:yyyyMM}")</td>
-                <td class="text-right">@($"{newContract:##,###,###,###}")</td>
-                <td class="text-right">@($"{renew:##,###,###,###}")</td>
-                <td class="text-right">@($"{installment:##,###,###,###}")</td>
-                <td class="text-right">@($"{subtotal-newContract-renew-installment:##,###,###,###}")</td>
-            </tr>
-        }
-    </tbody>
+            var allowanceAmt = allowanceItems.Sum(a => a.TotalAmount + a.TaxAmount);
+        <tr>
+            <td>@($"{g.Key:yyyyMM}")</td>
+            <td class="text-right">@($"{newContract:##,###,###,###}")</td>
+            <td class="text-right">@($"{renew:##,###,###,###}")</td>
+            <td class="text-right">@($"{installment:##,###,###,###}")</td>
+            <td class="text-right">@($"{subtotal-newContract-renew-installment:##,###,###,###}")</td>
+            <td class="text-right">@($"{allowanceAmt:##,###,###,###}")</td>
+        </tr>
+    }
+</tbody>
 </table>
     
 <script>
