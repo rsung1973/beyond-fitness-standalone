@@ -31,12 +31,14 @@ namespace WebHome.Components
 
         public LearnerCalendarViewComponent()
         {
-            models = (ModelSource<UserProfile>)HttpContext.Items["Models"];
-            _modelState = ViewContext.ModelState;
+
         }
 
         public Task<IViewComponentResult> InvokeAsync(DailyBookingQueryViewModel viewModel)
         {
+            models = (ModelSource<UserProfile>)HttpContext.Items["Models"];
+            _modelState = ViewContext.ModelState;
+
             return LearnerCalendarAsync(viewModel);
         }
 
