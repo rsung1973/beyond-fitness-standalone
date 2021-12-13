@@ -67,7 +67,7 @@
     }
 
 </script>
-@{  await Component.InvokeAsync<InquireLessonViewComponent>(new LessonQueryViewModel { LearnerID = _learner.UID, PageSize = 6, CurrentIndex = 0, ExceptionalID = lessonItem?.LessonID });  }
+@(  await Component.InvokeAsync<InquireLessonViewComponent>(new LessonQueryViewModel { LearnerID = _learner.UID, PageSize = 6, CurrentIndex = 0, ExceptionalID = lessonItem?.LessonID }))
 <li><button id="btnMoreLesson" class="btn btn-default btn-round btn-sm m-t-10 float-right">載入更多 ...</button></li>
 
 

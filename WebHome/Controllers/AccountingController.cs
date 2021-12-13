@@ -1129,6 +1129,7 @@ namespace WebHome.Controllers
                 //							
                 DataTable table = new DataTable();
                 table.Columns.Add(new DataColumn("簽約場所", typeof(String)));
+                table.Columns.Add(new DataColumn("實際收款業績", typeof(int)));
                 table.Columns.Add(new DataColumn("分潤業績", typeof(int)));
                 table.Columns.Add(new DataColumn("體能顧問費", typeof(int)));
                 table.Columns.Add(new DataColumn("終止折讓金額", typeof(int)));
@@ -1154,51 +1155,51 @@ namespace WebHome.Controllers
 
                     r = table.NewRow();
                     r[0] = branch.BranchName;
-                    r[1] = branchItems.Sum(t => (int)t[2]);
+                    r[2] = branchItems.Sum(t => (int)t[2]);
                     var dataItems = branchItems.Where(p => (String)p[3] == Naming.PaymentTransactionType.體能顧問費.ToString());
-                    r[2] = dataItems.Sum(t => (int)t[2]);
-                    r[3] = -allowanceItems.Sum(a => a.TotalAmount + a.TaxAmount) ?? 0;
+                    r[3] = dataItems.Sum(t => (int)t[2]);
+                    r[4] = -allowanceItems.Sum(a => a.TotalAmount + a.TaxAmount) ?? 0;
 
                     dataItems = branchItems.Where(p => (String)p[3] == Naming.PaymentTransactionType.自主訓練.ToString());
-                    r[9] = dataItems.Sum(t => (int)t[2]);
+                    r[10] = dataItems.Sum(t => (int)t[2]);
 
                     dataItems = branchItems.Where(p => (String)p[3] == Naming.PaymentTransactionType.運動商品.ToString()
                                                 || (String)p[3] == Naming.PaymentTransactionType.食飲品.ToString());
-                    r[11] = dataItems.Sum(t => (int)t[2]);
+                    r[12] = dataItems.Sum(t => (int)t[2]);
 
-                    decimal total = Math.Max((int)r[1], 1);
-                    r[4] = Math.Round((int)r[2] * 100m / total);
-                    r[10] = Math.Round((int)r[9] * 100m / total);
-                    r[12] = Math.Round((int)r[11] * 100m / total);
+                    decimal total = Math.Max((int)r[2], 1);
+                    r[5] = Math.Round((int)r[3] * 100m / total);
+                    r[11] = Math.Round((int)r[10] * 100m / total);
+                    r[13] = Math.Round((int)r[12] * 100m / total);
 
                     dataItems = branchItems.Where(p => !p.IsNull(8) && (String)p[8] == "否");
-                    r[5] = dataItems.Sum(t => (int)t[2]);
+                    r[6] = dataItems.Sum(t => (int)t[2]);
                     dataItems = branchItems.Where(p => !p.IsNull(8) && (String)p[8] == "是");
-                    r[7] = dataItems.Sum(t => (int)t[2]);
+                    r[8] = dataItems.Sum(t => (int)t[2]);
 
 
-                    total = Math.Max((int)r[2], 1);
-                    r[6] = Math.Round((int)r[5] * 100m / total);
-                    r[8] = Math.Round((int)r[7] * 100m / total);
-
+                    total = Math.Max((int)r[3], 1);
+                    r[7] = Math.Round((int)r[6] * 100m / total);
+                    r[9] = Math.Round((int)r[8] * 100m / total);
+                    r[1] = (int)r[2] + (int)r[4];
                     table.Rows.Add(r);
                 }
 
                 r = table.NewRow();
                 r[0] = "總計";
                 var data = table.Rows.Cast<DataRow>();
-                foreach (int idx in (new int[] { 1, 2, 3, 5, 7, 9, 11 }))
+                foreach (int idx in (new int[] { 1, 2, 3, 4, 6, 8, 10, 12 }))
                 {
                     r[idx] = data.Sum(d => (int)d[idx]);
                 }
-                decimal totalAmt = Math.Max((int)r[1], 1);
-                r[4] = Math.Round((int)r[2] * 100m / totalAmt);
-                r[10] = Math.Round((int)r[9] * 100m / totalAmt);
-                r[12] = Math.Round((int)r[11] * 100m / totalAmt);
+                decimal totalAmt = Math.Max((int)r[2], 1);
+                r[5] = Math.Round((int)r[3] * 100m / totalAmt);
+                r[11] = Math.Round((int)r[10] * 100m / totalAmt);
+                r[13] = Math.Round((int)r[12] * 100m / totalAmt);
 
-                totalAmt = Math.Max((int)r[2], 1);
-                r[6] = Math.Round((int)r[5] * 100m / totalAmt);
-                r[8] = Math.Round((int)r[7] * 100m / totalAmt);
+                totalAmt = Math.Max((int)r[3], 1);
+                r[7] = Math.Round((int)r[6] * 100m / totalAmt);
+                r[9] = Math.Round((int)r[8] * 100m / totalAmt);
 
                 table.Rows.Add(r);
                 return table;
@@ -1208,6 +1209,7 @@ namespace WebHome.Controllers
             {
                 DataTable table = new DataTable();
                 table.Columns.Add(new DataColumn("所屬分店", typeof(String)));
+                table.Columns.Add(new DataColumn("實際收款業績", typeof(int)));
                 table.Columns.Add(new DataColumn("分潤業績", typeof(int)));
                 table.Columns.Add(new DataColumn("體能顧問費", typeof(int)));
                 table.Columns.Add(new DataColumn("終止折讓金額", typeof(int)));
@@ -1233,52 +1235,52 @@ namespace WebHome.Controllers
 
                     r = table.NewRow();
                     r[0] = branch;
-                    r[1] = branchItems.Sum(t => (int)t[2]);
+                    r[2] = branchItems.Sum(t => (int)t[2]);
                     var dataItems = branchItems.Where(p => (String)p[3] == Naming.PaymentTransactionType.體能顧問費.ToString());
-                    r[2] = dataItems.Sum(t => (int)t[2]);
+                    r[3] = dataItems.Sum(t => (int)t[2]);
 
                     dataItems = branchVoidItems.Where(p => (String)p[3] == Naming.PaymentTransactionType.體能顧問費.ToString());
-                    r[3] = dataItems.Sum(t => t.IsNull(2) ? 0 : (int)t[2]);
+                    r[4] = dataItems.Sum(t => t.IsNull(2) ? 0 : (int)t[2]);
 
                     dataItems = branchItems.Where(p => (String)p[3] == Naming.PaymentTransactionType.自主訓練.ToString());
-                    r[9] = dataItems.Sum(t => (int)t[2]);
+                    r[10] = dataItems.Sum(t => (int)t[2]);
 
                     dataItems = branchItems.Where(p => (String)p[3] == Naming.PaymentTransactionType.運動商品.ToString()
                                                 || (String)p[3] == Naming.PaymentTransactionType.食飲品.ToString());
-                    r[11] = dataItems.Sum(t => (int)t[2]);
+                    r[12] = dataItems.Sum(t => (int)t[2]);
 
-                    decimal total = Math.Max((int)r[1], 1);
-                    r[4] = Math.Round((int)r[2] * 100m / total);
-                    r[10] = Math.Round((int)r[9] * 100m / total);
-                    r[12] = Math.Round((int)r[11] * 100m / total);
+                    decimal total = Math.Max((int)r[2], 1);
+                    r[5] = Math.Round((int)r[3] * 100m / total);
+                    r[11] = Math.Round((int)r[10] * 100m / total);
+                    r[13] = Math.Round((int)r[12] * 100m / total);
 
                     dataItems = branchItems.Where(p => !p.IsNull(8) && (String)p[8] == "否");
-                    r[5] = dataItems.Sum(t => (int)t[2]);
+                    r[6] = dataItems.Sum(t => (int)t[2]);
                     dataItems = branchItems.Where(p => !p.IsNull(8) && (String)p[8] == "是");
-                    r[7] = dataItems.Sum(t => (int)t[2]);
+                    r[8] = dataItems.Sum(t => (int)t[2]);
 
-                    total = Math.Max((int)r[2], 1);
-                    r[6] = Math.Round((int)r[5] * 100m / total);
-                    r[8] = Math.Round((int)r[7] * 100m / total);
-
+                    total = Math.Max((int)r[3], 1);
+                    r[7] = Math.Round((int)r[6] * 100m / total);
+                    r[9] = Math.Round((int)r[8] * 100m / total);
+                    r[1] = (int)r[2] + (int)r[4];
                     table.Rows.Add(r);
                 }
 
                 r = table.NewRow();
                 r[0] = "總計";
                 var data = table.Rows.Cast<DataRow>();
-                foreach (int idx in (new int[] { 1, 2, 3, 5, 7, 9, 11 }))
+                foreach (int idx in (new int[] { 1, 2, 3, 4, 6, 8, 10, 12 }))
                 {
                     r[idx] = data.Sum(d => (int)d[idx]);
                 }
-                decimal totalAmt = Math.Max((int)r[1], 1);
-                r[4] = Math.Round((int)r[2] * 100m / totalAmt);
-                r[10] = Math.Round((int)r[9] * 100m / totalAmt);
-                r[12] = Math.Round((int)r[11] * 100m / totalAmt);
+                decimal totalAmt = Math.Max((int)r[2], 1);
+                r[5] = Math.Round((int)r[3] * 100m / totalAmt);
+                r[11] = Math.Round((int)r[10] * 100m / totalAmt);
+                r[13] = Math.Round((int)r[12] * 100m / totalAmt);
 
-                totalAmt = Math.Max((int)r[2], 1);
-                r[6] = Math.Round((int)r[5] * 100m / totalAmt);
-                r[8] = Math.Round((int)r[7] * 100m / totalAmt);
+                totalAmt = Math.Max((int)r[3], 1);
+                r[7] = Math.Round((int)r[6] * 100m / totalAmt);
+                r[9] = Math.Round((int)r[8] * 100m / totalAmt);
 
                 table.Rows.Add(r);
 
@@ -1291,6 +1293,7 @@ namespace WebHome.Controllers
                 DataTable table = new DataTable();
                 table.Columns.Add(new DataColumn("體能顧問", typeof(String)));
                 table.Columns.Add(new DataColumn("所屬分店", typeof(String)));
+                table.Columns.Add(new DataColumn("實際收款業績", typeof(int)));
                 table.Columns.Add(new DataColumn("分潤業績", typeof(int)));
                 table.Columns.Add(new DataColumn("終止折讓金額", typeof(int)));
                 table.Columns.Add(new DataColumn("體能顧問費", typeof(int)));
@@ -1315,33 +1318,34 @@ namespace WebHome.Controllers
 
                     r[0] = g.Key;
                     r[1] = g.First()[7];
-                    r[2] = g.Sum(t => (int)t[2]);
+                    r[3] = g.Sum(t => (int)t[2]);
                     var dataItems = g.Where(p => (String)p[3] == Naming.PaymentTransactionType.體能顧問費.ToString());
-                    r[4] = dataItems.Sum(t => (int)t[2]);
-                    r[3] = coachVoidItems.Any() 
-                        ? coachVoidItems.Sum(t => (int)t[2]) 
+                    r[5] = dataItems.Sum(t => (int)t[2]);
+                    r[4] = coachVoidItems.Any()
+                        ? coachVoidItems.Sum(t => (int)t[2])
                         : 0;
 
                     dataItems = g.Where(p => (String)p[3] == Naming.PaymentTransactionType.自主訓練.ToString());
-                    r[10] = dataItems.Sum(t => (int)t[2]);
+                    r[11] = dataItems.Sum(t => (int)t[2]);
 
                     dataItems = g.Where(p => (String)p[3] == Naming.PaymentTransactionType.運動商品.ToString()
                                                 || (String)p[3] == Naming.PaymentTransactionType.食飲品.ToString());
-                    r[12] = dataItems.Sum(t => (int)t[2]);
+                    r[13] = dataItems.Sum(t => (int)t[2]);
 
-                    decimal total = Math.Max((int)r[2], 1);
-                    r[5] = Math.Round((int)r[4] * 100m / total);
-                    r[11] = Math.Round((int)r[10] * 100m / total);
-                    r[13] = Math.Round((int)r[12] * 100m / total);
+                    decimal total = Math.Max((int)r[3], 1);
+                    r[6] = Math.Round((int)r[5] * 100m / total);
+                    r[12] = Math.Round((int)r[11] * 100m / total);
+                    r[14] = Math.Round((int)r[13] * 100m / total);
 
                     dataItems = g.Where(p => !p.IsNull(8) && (String)p[8] == "否");
-                    r[6] = dataItems.Sum(t => (int)t[2]);
+                    r[7] = dataItems.Sum(t => (int)t[2]);
                     dataItems = g.Where(p => !p.IsNull(8) && (String)p[8] == "是");
-                    r[8] = dataItems.Sum(t => (int)t[2]);
+                    r[9] = dataItems.Sum(t => (int)t[2]);
 
-                    total = Math.Max((int)r[4], 1);
-                    r[7] = Math.Round((int)r[6] * 100m / total);
-                    r[9] = Math.Round((int)r[8] * 100m / total);
+                    total = Math.Max((int)r[5], 1);
+                    r[8] = Math.Round((int)r[7] * 100m / total);
+                    r[10] = Math.Round((int)r[9] * 100m / total);
+                    r[2] = (int)r[3] + (int)r[4];
 
                     table.Rows.Add(r);
                 }
@@ -1349,18 +1353,18 @@ namespace WebHome.Controllers
                 r = table.NewRow();
                 r[0] = "總計";
                 var data = table.Rows.Cast<DataRow>();
-                foreach (int idx in (new int[] { 2, 3, 4, 6, 8, 10, 12 }))
+                foreach (int idx in (new int[] { 2, 3, 4, 5, 7, 9, 11, 13 }))
                 {
                     r[idx] = data.Sum(d => (int)d[idx]);
                 }
-                decimal totalAmt = Math.Max((int)r[2], 1);
-                r[5] = Math.Round((int)r[4] * 100m / totalAmt);
-                r[11] = Math.Round((int)r[10] * 100m / totalAmt);
-                r[13] = Math.Round((int)r[12] * 100m / totalAmt);
+                decimal totalAmt = Math.Max((int)r[3], 1);
+                r[6] = Math.Round((int)r[5] * 100m / totalAmt);
+                r[12] = Math.Round((int)r[11] * 100m / totalAmt);
+                r[14] = Math.Round((int)r[13] * 100m / totalAmt);
 
-                totalAmt = Math.Max((int)r[4], 1);
-                r[7] = Math.Round((int)r[6] * 100m / totalAmt);
-                r[9] = Math.Round((int)r[8] * 100m / totalAmt);
+                totalAmt = Math.Max((int)r[5], 1);
+                r[8] = Math.Round((int)r[7] * 100m / totalAmt);
+                r[10] = Math.Round((int)r[9] * 100m / totalAmt);
                 table.Rows.Add(r);
                 return table;
             }

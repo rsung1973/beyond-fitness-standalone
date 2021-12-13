@@ -31,8 +31,15 @@ namespace WebHome.Components
 
         public LearnerProfileViewComponent()
         {
+
+        }
+
+        public virtual IViewComponentResult Invoke(ExercisePurposeViewModel viewModel)
+        {
             models = (ModelSource<UserProfile>)HttpContext.Items["Models"];
             _modelState = ViewContext.ModelState;
+
+            return View();
         }
 
         protected IViewComponentResult PrepareLearner(ExercisePurposeViewModel viewModel, out UserProfile item)
@@ -82,32 +89,6 @@ namespace WebHome.Components
 
             result.ViewName = "~/Views/LearnerProfile/Module/EditExercisePurpose.cshtml";
             return result;
-        }
-
-        public async Task<IViewComponentResult> LearnerCalendarAsync(DailyBookingQueryViewModel viewModel)
-        {
-            ViewBag.ViewModel = viewModel;
-            var profile = await HttpContext.GetUserAsync();
-            return View("~/Views/LearnerProfile/Module/LearnerCalendar.cshtml", profile.LoadInstance(models));
-        }
-
-        public async Task<IViewComponentResult> LearnerCalendar2020Async(DailyBookingQueryViewModel viewModel)
-        {
-            ViewBag.ViewModel = viewModel;
-            var profile = await HttpContext.GetUserAsync();
-            return View("~/Views/LearnerProfile/Module/LearnerCalendar2020.cshtml", profile.LoadInstance(models));
-        }
-
-        public IViewComponentResult LoadCompleteExercisePurposeItems(ExercisePurposeViewModel viewModel)
-        {
-            ViewBag.ViewModel = viewModel;
-
-            var items = models.GetTable<PersonalExercisePurposeItem>()
-                .Where(p => p.UID == viewModel.UID)
-                .Where(p => p.CompleteDate.HasValue)
-                .OrderByDescending(p => p.CompleteDate);
-
-            return View("~/Views/LearnerProfile/Module/TrainingMilestoneItems.cshtml", items);
         }
 
     }

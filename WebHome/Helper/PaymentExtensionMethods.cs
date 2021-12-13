@@ -151,6 +151,22 @@ namespace WebHome.Helper
             return shareSummary;
         }
 
+        public static IQueryable<TuitionAchievement> GetVoidShare(this MonthlyIndicator indicator, GenericManager<BFDataContext> models, int? coachID)
+        {
+            IQueryable<VoidPayment> voidItems = models.GetTable<VoidPayment>()
+                    .Where(v => v.VoidDate >= indicator.StartDate)
+                    .Where(v => v.VoidDate < indicator.EndExclusiveDate);
+
+            var items = voidItems.GetVoidShare(models);
+            if(coachID.HasValue)
+            {
+                items = items.Where(t => t.CoachID == coachID);
+            }
+            return items;
+
+        }
+
+
 
         public static IQueryable<LessonTime> GetUnpaidPISession(this PaymentQueryViewModel viewModel, GenericManager<BFDataContext> models)
             

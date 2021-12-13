@@ -1121,8 +1121,8 @@ namespace WebHome.Controllers
             }
             if(!viewModel.DateFrom.HasValue || !viewModel.DateTo.HasValue)
             {
-                viewModel.DateFrom = idx.AddMonths(-3);
-                viewModel.DateTo = idx.AddMonths(-1);
+                viewModel.DateFrom = idx.AddMonths(-2);
+                viewModel.DateTo = idx;
             }
 
             ViewBag.DataItem = coachItem;

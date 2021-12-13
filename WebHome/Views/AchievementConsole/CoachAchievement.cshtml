@@ -151,8 +151,9 @@
                                             </sapn> / @(_item.CompleteLessonsGoal)堂 <br />
                                             @{
                                                 var shareSummary = _indicator.GetPaymentAchievementSummary(models, _item.CoachID);
+                                                var voidItems = _indicator.GetVoidShare(models, _item.CoachID);
                                             }
-                                            收款業績：<sapn class="col-blue">@($"{shareSummary:##,###,###,##0}")元</sapn> / @($"{_item.AchievementGoal:##,###,###,##0}")元 <br />
+                                            實際收款業績：<sapn class="col-blue">@($"{shareSummary - (voidItems.Sum(t=>t.VoidShare) ?? 0):##,###,###,##0}")元</sapn> / @($"{_item.AchievementGoal:##,###,###,##0}")元 <br />
                                             @{
                                                 List<String> info = new List<string>();
                                                 if (_item.CompleteLessonsGoal > actualCount)

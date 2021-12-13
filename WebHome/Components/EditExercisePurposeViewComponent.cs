@@ -30,8 +30,11 @@ namespace WebHome.Components
 
         }
 
-        public IViewComponentResult Invoke(ExercisePurposeViewModel viewModel)
+        public override IViewComponentResult Invoke(ExercisePurposeViewModel viewModel)
         {
+            models = (ModelSource<UserProfile>)HttpContext.Items["Models"];
+            _modelState = ViewContext.ModelState;
+
             return EditExercisePurpose(viewModel);
         }
 

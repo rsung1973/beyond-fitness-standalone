@@ -93,9 +93,7 @@
                 <div class="col-md-12 col-lg-8 col-xl-8">
                     <div class="body">
                         @{ await Html.RenderPartialAsync("~/Views/LearnerProfile/Module/LearnerLessonsReview.cshtml", _learner); }
-                        @{
-                            await Component.InvokeAsync<LearnerCalendarViewComponent>(new DailyBookingQueryViewModel { LearnerID = _learner.UID });
-                        }
+                        @(await Component.InvokeAsync<LearnerCalendarViewComponent>(new DailyBookingQueryViewModel { LearnerID = _learner.UID }))
                     </div>
                 </div>
             </div>

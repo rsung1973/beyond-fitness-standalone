@@ -32,9 +32,17 @@ namespace WebHome.Components
 
         public AchievementConsoleViewComponent()
         {
+
+        }
+
+        public IViewComponentResult Invoke(MonthlyCoachRevenueIndicatorQueryViewModel viewModel)
+        {
             models = (ModelSource<UserProfile>)HttpContext.Items["Models"];
             _modelState = ViewContext.ModelState;
+
+            return InquireMonthlyCoachRevenue(viewModel);
         }
+
 
         public IViewComponentResult InquireMonthlyCoachRevenue(MonthlyCoachRevenueIndicatorQueryViewModel viewModel)
         {

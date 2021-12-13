@@ -1171,11 +1171,15 @@ namespace WebHome.Helper
 
 
 
-        public static IQueryable<TuitionAchievement> GetTuitionAchievement(this GenericManager<BFDataContext> models, int? coachID, DateTime? dateFrom, ref DateTime? dateTo, int? month)
+        public static IQueryable<TuitionAchievement> GetTuitionAchievement(this GenericManager<BFDataContext> models, int? coachID, DateTime? dateFrom, ref DateTime? dateTo, int? month,bool filterByEffective = true)
             
         {
-            IQueryable<TuitionAchievement> items = models.GetTable<TuitionAchievement>()
-                .FilterByEffective();
+            IQueryable<TuitionAchievement> items = models.GetTable<TuitionAchievement>();
+
+            if (filterByEffective == true)
+            {
+                items = items.FilterByEffective();
+            }
 
             DateTime? queryDateTo = dateTo;
 
@@ -1199,6 +1203,43 @@ namespace WebHome.Helper
             {
                 items = items.Where(t => t.CoachID == coachID);
             }
+
+            return items;
+        }
+
+        public static IQueryable<TuitionAchievement> GetVoidTuition(this GenericManager<BFDataContext> models, int? coachID, DateTime? dateFrom, ref DateTime? dateTo, int? month)
+
+        {
+            IQueryable<TuitionAchievement> items = models.GetTable<TuitionAchievement>();
+
+            IQueryable<VoidPayment> voidItems = models.GetTable<VoidPayment>();
+
+            DateTime? queryDateTo = dateTo;
+
+            if (dateFrom.HasValue)
+            {
+                voidItems = voidItems.Where(v => v.VoidDate >= dateFrom);
+            }
+
+            if (queryDateTo.HasValue)
+            {
+                voidItems = voidItems.Where(v => v.VoidDate < queryDateTo.Value.AddDays(1));
+            }
+            else if (month.HasValue)
+            {
+                queryDateTo = dateFrom.Value.AddMonths(month.Value);
+                voidItems = voidItems.Where(v => v.VoidDate < queryDateTo);
+                queryDateTo = queryDateTo.Value.AddDays(-1);
+                dateTo = queryDateTo;
+            }
+
+            if (coachID.HasValue)
+            {
+                items = items.Where(t => t.CoachID == coachID);
+            }
+
+            items = voidItems.Join(models.GetTable<Payment>(), v => v.VoidID, p => p.PaymentID, (v, p) => p)
+                    .Join(items, p => p.PaymentID, t => t.InstallmentID, (p, t) => t);
 
             return items;
         }

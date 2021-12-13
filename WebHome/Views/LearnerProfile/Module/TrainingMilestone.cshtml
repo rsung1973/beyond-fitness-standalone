@@ -31,9 +31,7 @@
     });
 </script>
 <ul class="list-unstyled feeds_widget" id="milestoneItems">
-    @{ 
-        await Component.InvokeAsync<LoadCompleteExercisePurposeItemsViewComponent>(new ExercisePurposeViewModel { UID = _learner.UID });
-    }
+    @(await Component.InvokeAsync<LoadCompleteExercisePurposeItemsViewComponent>(new ExercisePurposeViewModel { UID = _learner.UID }))
 </ul>
 <button id="btnMoreMilestone" onclick="loadMilestone();" class="btn btn-round btn-sm m-t-0 float-right">載入更多 ...</button>
 <script>

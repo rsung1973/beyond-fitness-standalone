@@ -61,7 +61,7 @@
                     <div class="body">
                         @{
                             TempData["DataItem"] = _item;
-                            await Component.InvokeAsync<EditPaymentForContractViewComponent>(new PaymentViewModel { ContractID = _item.ContractID, PayoffAmount = _item.TotalCost, CarrierId1 = _item.ContractOwner.UserProfileExtension?.CarrierNo });
+                            Write(await Component.InvokeAsync<EditPaymentForContractViewComponent>(new PaymentViewModel { ContractID = _item.ContractID, PayoffAmount = _item.TotalCost, CarrierId1 = _item.ContractOwner.UserProfileExtension?.CarrierNo }));
                         }
                         <input type="hidden" name="SellerID" value="@(_item.CourseContractExtension.BranchID)" />
                         <button type="button" class="subscribe btn btn-primary btn-block" onclick="commitPayoff();">確定，不後悔</button>

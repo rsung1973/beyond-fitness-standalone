@@ -32,14 +32,21 @@ namespace WebHome.Components
 
         public ContractConsoleViewComponent()
         {
-            models = (ModelSource<UserProfile>)HttpContext.Items["Models"];
-            _modelState = ViewContext.ModelState;
+
         }
 
         public IViewComponentResult EditPaymentForContract(PaymentViewModel viewModel)
         {
             Payment item = viewModel.EditPaymentForContract(this.HttpContext);
             return View("~/Views/ContractConsole/Module/EditPaymentForContract.cshtml", item);
+        }
+
+        public IViewComponentResult Invoke(PaymentViewModel viewModel)
+        {
+            models = (ModelSource<UserProfile>)HttpContext.Items["Models"];
+            _modelState = ViewContext.ModelState;
+
+            return EditPaymentForContract(viewModel);
         }
 
     }

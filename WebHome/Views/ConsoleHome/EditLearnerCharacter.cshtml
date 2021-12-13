@@ -384,17 +384,13 @@
                                         <!-- END STEP-->
                                         <!-- BEGIN STEP-->
                                         <div class="tsf-step step-3">
-                                            @{
-                                                await Component.InvokeAsync(typeof(EditLearnerFeatureViewComponent), new ExercisePurposeViewModel { KeyID = _learner.UID.EncryptKey() });
-                                            }
+                                            @(await Component.InvokeAsync(typeof(EditLearnerFeatureViewComponent), new ExercisePurposeViewModel { KeyID = _learner.UID.EncryptKey() }))
                                             <button type="button" class="btn bg-darkteal btn-round float-right" onclick="javascript: $global.commitLearnerFeature(function () { nextStep(4); });">確定，不後悔</button>
                                         </div>
                                         <!-- END STEP-->
                                         <!-- BEGIN STEP-->
                                         <div class="tsf-step step-4">
-                                            @{ 
-                                                await Component.InvokeAsync(typeof(EditExercisePurposeViewComponent), new ExercisePurposeViewModel { KeyID = _learner.UID.EncryptKey() });
-                                            }
+                                            @(await Component.InvokeAsync(typeof(EditExercisePurposeViewComponent), new ExercisePurposeViewModel { KeyID = _learner.UID.EncryptKey() }))
                                             <button type="button" class="btn bg-darkteal btn-round float-right" onclick="javascript: $global.commitExercisePurpose(function () { commitLearnerCharacter(); });">確定，不後悔</button>
                                         </div>
                                         <!-- END STEP-->

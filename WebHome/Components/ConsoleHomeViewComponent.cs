@@ -31,8 +31,7 @@ namespace WebHome.Components
 
         public ConsoleHomeViewComponent()
         {
-            models = (ModelSource<UserProfile>)HttpContext.Items["Models"];
-            _modelState = ViewContext.ModelState;
+
         }
 
         public IViewComponentResult CalendarEventItems(FullCalendarViewModel viewModel)
@@ -139,7 +138,13 @@ namespace WebHome.Components
 
         }
 
+        public IViewComponentResult Invoke(FullCalendarViewModel viewModel)
+        {
+            models = (ModelSource<UserProfile>)HttpContext.Items["Models"];
+            _modelState = ViewContext.ModelState;
 
+            return CalendarEventItems(viewModel);
+        }
 
     }
 }

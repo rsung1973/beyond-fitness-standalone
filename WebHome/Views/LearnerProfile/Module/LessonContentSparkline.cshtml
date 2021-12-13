@@ -24,9 +24,7 @@
     bool isModal = (bool?)ViewBag.IsModal == true ? true : false;
 }
 <div id="@(currentID)" class="sparkline-pie float-right inlineblock">
-    @{
-        await Component.InvokeAsync<LessonContentDetailsViewComponent>(new LessonTimeBookingViewModel { LessonID = _model.LessonID, UID =  learner.UID });
-    }
+    @(await Component.InvokeAsync<LessonContentDetailsViewComponent>(new LessonTimeBookingViewModel { LessonID = _model.LessonID, UID =  learner.UID }))
 </div>
 @if (isModal == true)
 {

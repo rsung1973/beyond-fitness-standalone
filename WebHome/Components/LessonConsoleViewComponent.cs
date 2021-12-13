@@ -31,8 +31,15 @@ namespace WebHome.Components
 
         public LessonConsoleViewComponent()
         {
+
+        }
+
+        public virtual IViewComponentResult Invoke(LessonTimeBookingViewModel viewModel)
+        {
             models = (ModelSource<UserProfile>)HttpContext.Items["Models"];
             _modelState = ViewContext.ModelState;
+
+            return View();
         }
 
         public IViewComponentResult LessonContentDetails(LessonTimeBookingViewModel viewModel)
@@ -54,40 +61,6 @@ namespace WebHome.Components
 
             return View("~/Views/LessonConsole/Module/LessonContentDetails.cshtml", item);
 
-        }
-
-        public IViewComponentResult InquireLesson(LessonQueryViewModel viewModel)
-        {
-            ViewBag.ViewModel = viewModel;
-
-            IQueryable<LessonTime> items = models.GetTable<LessonTime>();
-            IQueryable<LessonTime> coachPI;
-            if (viewModel.LearnerID.HasValue)
-            {
-                items = viewModel.LearnerID.Value.PromptLearnerLessons(models);
-                coachPI = viewModel.LearnerID.Value.PromptCoachPILessons(models);
-            }
-            else
-            {
-                coachPI = models.GetTable<LessonTime>().Where(l => false);
-            }
-
-            if (viewModel.CoachID.HasValue)
-                items = items.Where(t => t.AttendingCoach == viewModel.CoachID);
-
-            if (viewModel.QueryStart.HasValue)
-            {
-                items = items.Where(t => t.ClassTime >= viewModel.QueryStart && t.ClassTime < viewModel.QueryStart.Value.AddMonths(1));
-                coachPI = coachPI.Where(t => t.ClassTime >= viewModel.QueryStart && t.ClassTime < viewModel.QueryStart.Value.AddMonths(1));
-            }
-
-            if (viewModel.ClassTime.HasValue)
-            {
-                items = items.Where(t => t.ClassTime >= viewModel.ClassTime && t.ClassTime < viewModel.ClassTime.Value.AddDays(1));
-                coachPI = coachPI.Where(t => t.ClassTime >= viewModel.ClassTime && t.ClassTime < viewModel.ClassTime.Value.AddDays(1));
-            }
-
-            return View("~/Views/LearnerProfile/Module/LessonItems.cshtml", items.Union(coachPI));
         }
 
     }

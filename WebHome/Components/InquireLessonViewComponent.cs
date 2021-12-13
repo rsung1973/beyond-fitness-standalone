@@ -19,21 +19,63 @@ using WebHome.Models.DataEntity;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using WebHome.Models.ViewModel;
 using WebHome.Models.Locale;
+using WebHome.Helper;
 
 namespace WebHome.Components
 {
-    public class InquireLessonViewComponent : LessonConsoleViewComponent
+    public class InquireLessonViewComponent : ViewComponent
     {
 
-        public InquireLessonViewComponent() : base()
+        protected ModelSource<UserProfile> models;
+        protected ModelStateDictionary _modelState;
+
+        public InquireLessonViewComponent()
         {
 
         }
 
         public IViewComponentResult Invoke(LessonQueryViewModel viewModel)
         {
+            models = (ModelSource<UserProfile>)HttpContext.Items["Models"];
+            _modelState = ViewContext.ModelState;
+
             return InquireLesson(viewModel);
         }
+
+        public IViewComponentResult InquireLesson(LessonQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+
+            IQueryable<LessonTime> items = models.GetTable<LessonTime>();
+            IQueryable<LessonTime> coachPI;
+            if (viewModel.LearnerID.HasValue)
+            {
+                items = viewModel.LearnerID.Value.PromptLearnerLessons(models);
+                coachPI = viewModel.LearnerID.Value.PromptCoachPILessons(models);
+            }
+            else
+            {
+                coachPI = models.GetTable<LessonTime>().Where(l => false);
+            }
+
+            if (viewModel.CoachID.HasValue)
+                items = items.Where(t => t.AttendingCoach == viewModel.CoachID);
+
+            if (viewModel.QueryStart.HasValue)
+            {
+                items = items.Where(t => t.ClassTime >= viewModel.QueryStart && t.ClassTime < viewModel.QueryStart.Value.AddMonths(1));
+                coachPI = coachPI.Where(t => t.ClassTime >= viewModel.QueryStart && t.ClassTime < viewModel.QueryStart.Value.AddMonths(1));
+            }
+
+            if (viewModel.ClassTime.HasValue)
+            {
+                items = items.Where(t => t.ClassTime >= viewModel.ClassTime && t.ClassTime < viewModel.ClassTime.Value.AddDays(1));
+                coachPI = coachPI.Where(t => t.ClassTime >= viewModel.ClassTime && t.ClassTime < viewModel.ClassTime.Value.AddDays(1));
+            }
+
+            return View("~/Views/LearnerProfile/Module/LessonItems.cshtml", items.Union(coachPI));
+        }
+
 
     }
 }

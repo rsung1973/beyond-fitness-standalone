@@ -22,18 +22,35 @@ using WebHome.Models.Locale;
 
 namespace WebHome.Components
 {
-    public class LoadCompleteExercisePurposeItemsViewComponent : LearnerProfileViewComponent
+    public class LoadCompleteExercisePurposeItemsViewComponent : ViewComponent
     {
 
-        public LoadCompleteExercisePurposeItemsViewComponent() : base()
+        protected ModelSource<UserProfile> models;
+        protected ModelStateDictionary _modelState;
+
+        public LoadCompleteExercisePurposeItemsViewComponent()
         {
 
         }
 
         public IViewComponentResult Invoke(ExercisePurposeViewModel viewModel)
         {
+            models = (ModelSource<UserProfile>)HttpContext.Items["Models"];
+            _modelState = ViewContext.ModelState;
+
             return LoadCompleteExercisePurposeItems(viewModel);
         }
 
+        public IViewComponentResult LoadCompleteExercisePurposeItems(ExercisePurposeViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+
+            var items = models.GetTable<PersonalExercisePurposeItem>()
+                .Where(p => p.UID == viewModel.UID)
+                .Where(p => p.CompleteDate.HasValue)
+                .OrderByDescending(p => p.CompleteDate);
+
+            return View("~/Views/LearnerProfile/Module/TrainingMilestoneItems.cshtml", items);
+        }
     }
 }

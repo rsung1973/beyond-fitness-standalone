@@ -30,10 +30,5 @@ namespace WebHome.Components
 
         }
 
-        public IViewComponentResult Invoke(FullCalendarViewModel viewModel)
-        {
-            return CalendarEventItems(viewModel);
-        }
-
     }
 }

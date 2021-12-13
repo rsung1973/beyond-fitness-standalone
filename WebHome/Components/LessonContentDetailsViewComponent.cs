@@ -30,8 +30,11 @@ namespace WebHome.Components
 
         }
 
-        public IViewComponentResult Invoke(LessonTimeBookingViewModel viewModel)
+        public override IViewComponentResult Invoke(LessonTimeBookingViewModel viewModel)
         {
+            models = (ModelSource<UserProfile>)HttpContext.Items["Models"];
+            _modelState = ViewContext.ModelState;
+
             return LessonContentDetails(viewModel);
         }
 

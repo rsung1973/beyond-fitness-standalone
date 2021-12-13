@@ -174,9 +174,7 @@
                         </div>
                     </div>
                     <div class="col-lg-7 col-md-7 col-sm-12">
-                        @{
-                            await Component.InvokeAsync<LearnerCalendar2020ViewComponent>(new DailyBookingQueryViewModel { LearnerID = _learner.UID });
-                        }
+                        @(await Component.InvokeAsync<LearnerCalendar2020ViewComponent>(new DailyBookingQueryViewModel { LearnerID = _learner.UID }))
                     </div>
                 </div>
             </div>

@@ -29,7 +29,7 @@
                 <text>
             $('[name="@(key)"]').closest('div').append(
                 $('<span class="help-error-text" for="@(key)"></span>')
-                    .text('@(HttpUtility.JavaScriptStringEncode(_singleError
+                    .text('@(Html.Raw(_singleError
                                  ? _modelState[key].Errors[0].ErrorMessage
                                  : String.Join("、", _modelState[key].Errors.Select(r => r.ErrorMessage))))')
             );

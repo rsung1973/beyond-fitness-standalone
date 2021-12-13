@@ -48,9 +48,7 @@
                             <div id="myChart" class="echarts"></div>
                         </div>
                         <div class="col-lg-5 col-md-12 col-sm-12 col-12" id="achievementList">
-                            @{
-                                await Component.InvokeAsync<InquireMonthlyCoachRevenueViewComponent>(_viewModel);
-                            }
+                            @(await Component.InvokeAsync<InquireMonthlyCoachRevenueViewComponent>(_viewModel))
                         </div>
                     </div>
                 </div>
@@ -59,7 +57,7 @@
     </div>
 </div>
 @{ 
-    DateTime idx = DateTime.Today.AddMonths(-1).FirstDayOfMonth();
+    DateTime idx = DateTime.Today.FirstDayOfMonth();
 }
 <script>
 

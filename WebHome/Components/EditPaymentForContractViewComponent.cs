@@ -30,10 +30,5 @@ namespace WebHome.Components
 
         }
 
-        public IViewComponentResult Invoke(PaymentViewModel viewModel)
-        {
-            return EditPaymentForContract(viewModel);
-        }
-
     }
 }

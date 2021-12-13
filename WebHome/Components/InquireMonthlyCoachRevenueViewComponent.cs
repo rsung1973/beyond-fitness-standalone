@@ -30,10 +30,5 @@ namespace WebHome.Components
 
         }
 
-        public IViewComponentResult Invoke(MonthlyCoachRevenueIndicatorQueryViewModel viewModel)
-        {
-            return InquireMonthlyCoachRevenue(viewModel);
-        }
-
     }
 }

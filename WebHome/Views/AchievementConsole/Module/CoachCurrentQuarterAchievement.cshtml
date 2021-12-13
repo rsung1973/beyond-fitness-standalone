@@ -16,7 +16,7 @@
     UserProfile _model;
     MonthlyCoachRevenueIndicatorQueryViewModel _viewModel;
 
-    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
     _modelState = ViewContext.ModelState;
     _model = (UserProfile)this.Model;
     _viewModel = (MonthlyCoachRevenueIndicatorQueryViewModel)ViewBag.ViewModel;
@@ -39,11 +39,13 @@
                         + (indicators.Sum(i => i.ActualCompleteTSCount) ?? 0)
                         + (indicators.Sum(i => i.ActualCompletePICount) ?? 0) / 2M;
 
-    var tuition = models.GetTuitionAchievement(_item.CoachID, quarterStart, ref quarterEnd, null);
+    var tuition = models.GetTuitionAchievement(_item.CoachID, quarterStart, ref quarterEnd, null, false);
     var summary = tuition.Sum(t => t.ShareAmount) ?? 0;
 
     var review = _item.ServingCoach.ProfessionalLevel.ProfessionalLevelReview;
-
+    //折讓收款
+    var voidItems = models.GetVoidTuition(_item.CoachID, quarterStart, ref quarterEnd, null);
+    var voidShare = voidItems.Sum(t => t.VoidShare) ?? 0;
 }
 
 <div class="body">
@@ -56,7 +58,7 @@
             {
                 <p class="text-small">
                     上課數：<sapn class="col-blue">@(attendanceCount)堂</sapn> <br />
-                    收款業績：<sapn class="col-blue">@($"{summary:##,###,###,##0}")元</sapn> <br />
+                    實際收款業績：<sapn class="col-blue">@($"{summary - voidShare:##,###,###,##0}")元</sapn> <br />
                 </p>
             }
             else if (!review.PromotionID.HasValue)
@@ -72,7 +74,7 @@
                 }
                 <p class="text-small">
                     上課數：<sapn class="col-blue">@(attendanceCount)堂</sapn> / @(review.PromotionAttendanceCount)堂 <br />
-                    收款業績：<sapn class="col-blue">@($"{summary:##,###,###,##0}")元</sapn> / @($"{review.PromotionAchievement:##,###,###,##0}")元 <br />
+                    實際收款業績：<sapn class="col-blue">@($"{summary - voidShare:##,###,###,##0}")元</sapn> / @($"{review.PromotionAchievement:##,###,###,##0}")元 <br />
                     保級@(review.ProfessionalLevel.LevelName)
                     @if (info.Count > 0)
                     {
@@ -93,7 +95,7 @@
                 }
                 <p class="text-small">
                     上課數：<sapn class="col-blue">@(attendanceCount)堂</sapn> / @(review.PromotionAttendanceCount)堂 <br />
-                    收款業績：<sapn class="col-blue">@($"{summary:##,###,###,##0}")元</sapn> / @($"{review.PromotionAchievement:##,###,###,##0}")元 <br />
+                    實際收款業績：<sapn class="col-blue">@($"{summary - voidShare:##,###,###,##0}")元</sapn> / @($"{review.PromotionAchievement:##,###,###,##0}")元 <br />
                     升級@(review.PromotionLevel.LevelName)
                     @if (info.Count > 0)
                     {
