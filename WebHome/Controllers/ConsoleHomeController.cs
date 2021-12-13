@@ -57,6 +57,12 @@ namespace WebHome.Controllers
 
         public const String InputErrorView = "~/Views/ConsoleHome/Shared/ReportInputError.cshtml";
 
+        public Task<ActionResult> MainAsync(LessonTimeBookingViewModel viewModel)
+        {
+            return IndexAsync(viewModel);
+        }
+
+
         [RoleAuthorize(new int[] { (int)Naming.RoleID.Administrator, (int)Naming.RoleID.Assistant, (int)Naming.RoleID.Officer, (int)Naming.RoleID.Coach, (int)Naming.RoleID.Servitor })]
         public async Task<ActionResult> IndexAsync(LessonTimeBookingViewModel viewModel)
         {
@@ -78,7 +84,7 @@ namespace WebHome.Controllers
                 }
             }
 
-            return View(profile.LoadInstance(models));
+            return View("~/Views/ConsoleHome/Index.cshtml", profile.LoadInstance(models));
         }
 
         [RoleAuthorize(new int[] { (int)Naming.RoleID.Administrator, (int)Naming.RoleID.Assistant, (int)Naming.RoleID.Officer, (int)Naming.RoleID.Coach, (int)Naming.RoleID.Servitor })]
