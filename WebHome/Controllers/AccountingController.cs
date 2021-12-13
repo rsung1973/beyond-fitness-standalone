@@ -602,7 +602,7 @@ namespace WebHome.Controllers
                 }
             }
 
-            Response.Cookies.Append("fileDownloadToken", viewModel.FileDownloadToken);
+            Response.Cookies.Append("fileDownloadToken", viewModel.FileDownloadToken ?? "");
             return new PhysicalFileResult(outFile, "application/x-zip-compressed")
             {
                 FileDownloadName = $"({DateTime.Now:yyyy-MM-dd HH-mm-ss})信託合約.zip"

@@ -42,6 +42,17 @@ namespace WebHome
             Properties = Configuration.GetSection("WebHome");
             _ = new CommonLib.Core.Startup(Configuration);
             ApplicationPath = Properties["ApplicationPath"];
+
+            BusinessExtensionMethods.ContractViewUrl = item =>
+            {
+                return $"{Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/CommonHelper/ViewContract")}?pdf=1&contractID={item.ContractID}&t={DateTime.Now.Ticks}";
+            };
+
+            BusinessExtensionMethods.ContractServiceViewUrl = item =>
+            {
+                return $"{Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/CommonHelper/ViewContractService")}?pdf=1&revisionID={item.RevisionID}&t={DateTime.Now.Ticks}";
+            };
+
         }
 
         public IConfiguration Configuration { get; }

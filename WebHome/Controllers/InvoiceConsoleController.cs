@@ -190,7 +190,7 @@ namespace WebHome.Controllers
             }
 
 
-            Response.Cookies.Append("fileDownloadToken", viewModel.FileDownloadToken);
+            Response.Cookies.Append("fileDownloadToken", viewModel.FileDownloadToken ?? "");
             Response.Headers.Add("Cache-control", "max-age=1");
             Response.ContentType = "application/vnd.ms-excel";
             Response.Headers.Add("Content-Disposition", String.Format("attachment;filename={0}({1:yyyy-MM-dd HH-mm-ss}).xlsx", HttpUtility.UrlEncode("IncompleteTurnkeyLogs"), DateTime.Now));

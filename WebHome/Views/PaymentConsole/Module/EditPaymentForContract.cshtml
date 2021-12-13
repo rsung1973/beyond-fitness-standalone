@@ -23,7 +23,7 @@
 }
 @{
     UserProfile _profile = await Context.GetUserAsync();
-    CourseContract _item = TempData["DataItem"] as CourseContract;
+    CourseContract _item = ViewContext.ViewData["DataItem"] as CourseContract;
 }
 <h2>
     <strong>結帳櫃檯</strong>

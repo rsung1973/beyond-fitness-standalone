@@ -417,12 +417,12 @@ namespace WebHome.Controllers
             items = items.Where(u => !u.LearnerFitnessAdvisor.Any())
                         .Where(l => l.UserProfileExtension != null && !l.UserProfileExtension.CurrentTrial.HasValue);
 
-            await renderToXlsxAsync(items, $"UnallocatedLearner({DateTime.Now:yyyy-MM-dd HH-mm-ss})");
+            await renderToXlsxAsync(items, $"UnallocatedLearner({DateTime.Now:yyyy-MM-dd HH-mm-ss})", viewModel.FileDownloadToken);
             return new EmptyResult();
         }
 
 
-        private async Task renderToXlsxAsync(IQueryable<UserProfile> items, String fileName)
+        private async Task renderToXlsxAsync(IQueryable<UserProfile> items, String fileName, String fileDownloadToken)
         {
             models.ExecuteCommand(@"UPDATE RegisterLesson
                         SET        BranchID = CourseContractExtension.BranchID
@@ -453,14 +453,11 @@ namespace WebHome.Controllers
             {
                 ds.Tables.Add(details);
 
-                await ds.SaveAsExcelAsync(Response, String.Format("attachment;filename={0}({1:yyyy-MM-dd HH-mm-ss}).xlsx", HttpUtility.UrlEncode(fileName), DateTime.Now));
+                await ds.SaveAsExcelAsync(Response, String.Format("attachment;filename={0}({1:yyyy-MM-dd HH-mm-ss}).xlsx", HttpUtility.UrlEncode(fileName), DateTime.Now), fileDownloadToken);
             }
 
             details.Dispose();
         }
-
-
-
 
     }
 }

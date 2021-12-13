@@ -73,7 +73,7 @@ namespace WebHome.Controllers
 
             if (items.Count() == 0)
             {
-                Response.Cookies.Append("fileDownloadToken", viewModel.FileDownloadToken);
+                Response.Cookies.Append("fileDownloadToken", viewModel.FileDownloadToken ?? "");
                 return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: "資料不存在!!");
             }
 
@@ -105,7 +105,7 @@ namespace WebHome.Controllers
                 });
 
 
-            Response.Cookies.Append("fileDownloadToken", viewModel.FileDownloadToken);
+            Response.Cookies.Append("fileDownloadToken", viewModel.FileDownloadToken ?? "");
             Response.Headers.Add("Cache-control", "max-age=1");
             Response.ContentType = "application/vnd.ms-excel";
             Response.Headers.Add("Content-Disposition", String.Format("attachment;filename={0}({1:yyyy-MM-dd HH-mm-ss}).xlsx", HttpUtility.UrlEncode("ContractDetails"), DateTime.Now));
@@ -143,7 +143,7 @@ namespace WebHome.Controllers
 
             if (items.Count() == 0)
             {
-                Response.Cookies.Append("fileDownloadToken", viewModel.FileDownloadToken);
+                Response.Cookies.Append("fileDownloadToken", viewModel.FileDownloadToken ?? "");
                 return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: "資料不存在!!");
             }
 
@@ -260,7 +260,7 @@ namespace WebHome.Controllers
                 ds.Tables.Add(table);
             }
 
-            Response.Cookies.Append("fileDownloadToken", viewModel.FileDownloadToken);
+            Response.Cookies.Append("fileDownloadToken", viewModel.FileDownloadToken ?? "");
             Response.Headers.Add("Cache-control", "max-age=1");
             Response.ContentType = "application/vnd.ms-excel";
             Response.Headers.Add("Content-Disposition", String.Format("attachment;filename={0}({1:yyyy-MM-dd HH-mm-ss}).xlsx", HttpUtility.UrlEncode("ContractServiceDetails"), DateTime.Now));
@@ -306,7 +306,7 @@ namespace WebHome.Controllers
 
             if (items.Count() == 0)
             {
-                Response.Cookies.Append("fileDownloadToken", viewModel.FileDownloadToken);
+                Response.Cookies.Append("fileDownloadToken", viewModel.FileDownloadToken ?? "");
                 return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: "資料不存在!!");
             }
 
@@ -318,7 +318,7 @@ namespace WebHome.Controllers
                 });
 
 
-            Response.Cookies.Append("fileDownloadToken", viewModel.FileDownloadToken);
+            Response.Cookies.Append("fileDownloadToken", viewModel.FileDownloadToken ?? "");
             Response.Headers.Add("Cache-control", "max-age=1");
             Response.ContentType = "application/vnd.ms-excel";
             Response.Headers.Add("Content-Disposition", String.Format("attachment;filename={0}({1:yyyy-MM-dd HH-mm-ss}).xlsx", HttpUtility.UrlEncode("BonusAccumulation"), DateTime.Now));
@@ -362,7 +362,7 @@ namespace WebHome.Controllers
 
             if (items.Count() == 0)
             {
-                Response.Cookies.Append("fileDownloadToken", viewModel.FileDownloadToken);
+                Response.Cookies.Append("fileDownloadToken", viewModel.FileDownloadToken ?? "");
                 return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: "資料不存在!!");
             }
 
@@ -388,8 +388,7 @@ namespace WebHome.Controllers
                     贈與學員 = item.AwardingLessonGift != null ? item.AwardingLessonGift.RegisterLesson.UserProfile.FullName(true) : "",
                 });
 
-
-            Response.Cookies.Append("fileDownloadToken", viewModel.FileDownloadToken);
+            Response.Cookies.Append("fileDownloadToken", viewModel.FileDownloadToken ?? "");
             Response.Headers.Add("Cache-control", "max-age=1");
             Response.ContentType = "application/vnd.ms-excel";
             Response.Headers.Add("Content-Disposition", String.Format("attachment;filename={0}({1:yyyy-MM-dd HH-mm-ss}).xlsx", HttpUtility.UrlEncode("BonusAward"), DateTime.Now));

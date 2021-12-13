@@ -43,6 +43,7 @@ namespace WebHome.Components
 
         public IViewComponentResult Invoke(PaymentViewModel viewModel)
         {
+            ViewBag.ViewModel = viewModel;
             models = (ModelSource<UserProfile>)HttpContext.Items["Models"];
             _modelState = ViewContext.ModelState;
 

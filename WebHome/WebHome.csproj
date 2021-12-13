@@ -63,6 +63,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="ABCpdf">
+      <HintPath>bin\Dependencies\Lib\ABCpdf.dll</HintPath>
+    </Reference>
+    <Reference Include="ABCPdfWrapper">
+      <HintPath>bin\Dependencies\Lib\ABCPdfWrapper.dll</HintPath>
+    </Reference>
     <Reference Include="epos">
       <HintPath>bin\Dependencies\Lib\epos.dll</HintPath>
     </Reference>
