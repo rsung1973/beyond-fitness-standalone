@@ -32,7 +32,7 @@ namespace WebHome.Helper.BusinessOperation
     public static class ContractProcessExtensions
     {
         public static CourseContract InitiateCourseContract(this GenericManager<BFDataContext> models, CourseContractViewModel viewModel, UserProfile profile, LessonPriceType lessonPrice, int? installmentID = null, String paymentMethod = null)
-            
+
         {
             if (viewModel.KeyID != null)
             {
@@ -120,10 +120,9 @@ namespace WebHome.Helper.BusinessOperation
             if (viewModel.UID != null && viewModel.UID.Length > 0)
             {
                 models.DeleteAllOnSubmit<CourseContractMember>(m => m.ContractID == item.ContractID);
-                models.GetTable<CourseContractMember>().InsertAllOnSubmit(viewModel.UID.Select(u => new CourseContractMember
+                item.CourseContractMember.AddRange(viewModel.UID.Select(u => new CourseContractMember
                 {
-                    UID = u,
-                    ContractID = item.ContractID,
+                    UID = u
                 }));
             }
             models.SubmitChanges();

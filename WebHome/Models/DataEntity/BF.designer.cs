@@ -53448,6 +53448,8 @@ namespace WebHome.Models.DataEntity
 		
 		private System.Nullable<int> _InstallmentAchievement;
 		
+		private System.Nullable<int> _VoidShare;
+		
 		private EntityRef<BranchStore> _BranchStore;
 		
 		private EntityRef<MonthlyIndicator> _MonthlyIndicator;
@@ -53510,6 +53512,8 @@ namespace WebHome.Models.DataEntity
     partial void OnInstallmentSubtotalChanged();
     partial void OnInstallmentAchievementChanging(System.Nullable<int> value);
     partial void OnInstallmentAchievementChanged();
+    partial void OnVoidShareChanging(System.Nullable<int> value);
+    partial void OnVoidShareChanged();
     #endregion
 		
 		public MonthlyCoachRevenueIndicator()
@@ -54037,6 +54041,26 @@ namespace WebHome.Models.DataEntity
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_VoidShare", DbType="Int")]
+		public System.Nullable<int> VoidShare
+		{
+			get
+			{
+				return this._VoidShare;
+			}
+			set
+			{
+				if ((this._VoidShare != value))
+				{
+					this.OnVoidShareChanging(value);
+					this.SendPropertyChanging();
+					this._VoidShare = value;
+					this.SendPropertyChanged("VoidShare");
+					this.OnVoidShareChanged();
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="BranchStore_MonthlyCoachRevenueIndicator", Storage="_BranchStore", ThisKey="BranchID", OtherKey="BranchID", IsForeignKey=true)]
 		public BranchStore BranchStore
 		{
@@ -54242,6 +54266,8 @@ namespace WebHome.Models.DataEntity
 		
 		private System.Nullable<int> _InstallmentAchievement;
 		
+		private System.Nullable<int> _VoidShare;
+		
 		private EntityRef<MonthlyRevenueIndicator> _MonthlyRevenueIndicator;
 		
     #region Extensibility Method Definitions
@@ -54290,6 +54316,8 @@ namespace WebHome.Models.DataEntity
     partial void OnRenewContractAchievementChanged();
     partial void OnInstallmentAchievementChanging(System.Nullable<int> value);
     partial void OnInstallmentAchievementChanged();
+    partial void OnVoidShareChanging(System.Nullable<int> value);
+    partial void OnVoidShareChanged();
     #endregion
 		
 		public MonthlyRevenueGoal()
@@ -54726,6 +54754,26 @@ namespace WebHome.Models.DataEntity
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_VoidShare", DbType="Int")]
+		public System.Nullable<int> VoidShare
+		{
+			get
+			{
+				return this._VoidShare;
+			}
+			set
+			{
+				if ((this._VoidShare != value))
+				{
+					this.OnVoidShareChanging(value);
+					this.SendPropertyChanging();
+					this._VoidShare = value;
+					this.SendPropertyChanged("VoidShare");
+					this.OnVoidShareChanged();
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="MonthlyRevenueIndicator_MonthlyRevenueGoal", Storage="_MonthlyRevenueIndicator", ThisKey="PeriodID,GradeID", OtherKey="PeriodID,GradeID", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
 		public MonthlyRevenueIndicator MonthlyRevenueIndicator
 		{
@@ -54833,6 +54881,8 @@ namespace WebHome.Models.DataEntity
 		
 		private System.Nullable<int> _InstallmentAchievement;
 		
+		private System.Nullable<int> _VoidShare;
+		
 		private EntityRef<MonthlyBranchRevenueIndicator> _MonthlyBranchRevenueIndicator;
 		
     #region Extensibility Method Definitions
@@ -54883,6 +54933,8 @@ namespace WebHome.Models.DataEntity
     partial void OnRenewContractAchievementChanged();
     partial void OnInstallmentAchievementChanging(System.Nullable<int> value);
     partial void OnInstallmentAchievementChanged();
+    partial void OnVoidShareChanging(System.Nullable<int> value);
+    partial void OnVoidShareChanged();
     #endregion
 		
 		public MonthlyBranchRevenueGoal()
@@ -55339,6 +55391,26 @@ namespace WebHome.Models.DataEntity
 					this._InstallmentAchievement = value;
 					this.SendPropertyChanged("InstallmentAchievement");
 					this.OnInstallmentAchievementChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_VoidShare", DbType="Int")]
+		public System.Nullable<int> VoidShare
+		{
+			get
+			{
+				return this._VoidShare;
+			}
+			set
+			{
+				if ((this._VoidShare != value))
+				{
+					this.OnVoidShareChanging(value);
+					this.SendPropertyChanging();
+					this._VoidShare = value;
+					this.SendPropertyChanged("VoidShare");
+					this.OnVoidShareChanged();
 				}
 			}
 		}

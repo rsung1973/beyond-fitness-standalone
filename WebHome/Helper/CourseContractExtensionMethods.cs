@@ -432,6 +432,8 @@ namespace WebHome.Helper
                     .OrderByDescending(s => s.PriceID);
 
             return seriesItem.FirstOrDefault();
+
+            //return item.LessonPriceType.CurrentPriceSeries?.AllLessonPrice.Where(p => p.LowerLimit == 1).FirstOrDefault();
         }
 
         public static IQueryable<CourseContract> PartialEffective(this CourseContract item, GenericManager<BFDataContext> models)

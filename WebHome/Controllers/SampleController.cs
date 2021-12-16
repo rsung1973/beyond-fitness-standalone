@@ -15,6 +15,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using WebHome.Models.DataEntity;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 namespace WebHome.Controllers
 {
@@ -78,6 +79,8 @@ namespace WebHome.Controllers
             if (_viewRenderService == null)
             {
                 _viewRenderService = ServiceProvider.GetRequiredService<IViewRenderService>();
+                _viewRenderService.HttpContext = this.HttpContext;
+                //_viewRenderService.ActionContext = ServiceProvider.GetRequiredService<IActionContextAccessor>().ActionContext;
             }
             return await _viewRenderService.RenderToStringAsync(viewName, model);
         }

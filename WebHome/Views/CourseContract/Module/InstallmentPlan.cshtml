@@ -1,0 +1,47 @@
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    CourseContractQueryViewModel _viewModel;
+    UserProfile _profile;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _viewModel = (CourseContractQueryViewModel)ViewBag.ViewModel;
+    _profile = await Context.GetUserAsync();
+}
+@if (_viewModel.Lessons.HasValue)
+{
+    <option value="">-- 請選擇分期轉開次數 --</option>
+    <option value="2" selected="@(_viewModel.Installments==2)">2次</option>
+    <option value="3" selected="@(_viewModel.Installments==3)">3次</option>
+    if (_profile.IsAuthorized(new int[] { (int)Naming.RoleID.Administrator, (int)Naming.RoleID.Assistant, (int)Naming.RoleID.Officer, (int)Naming.RoleID.Manager, (int)Naming.RoleID.ViceManager }))
+    {
+        <option value="4" selected="@(_viewModel.Installments==4)">4次</option>
+        <option value="5" selected="@(_viewModel.Installments==5)">5次</option>
+        <option value="6" selected="@(_viewModel.Installments==6)">6次</option>
+    }
+    else
+    {
+        if (_viewModel.Lessons >= 25)
+        {
+            <option value="4" selected="@(_viewModel.Installments==4)">4次</option>
+        }
+        if (_viewModel.Lessons >= 75)
+        {
+            <option value="5" selected="@(_viewModel.Installments==5)">5次</option>
+        }
+    }
+}
+
+
+

@@ -522,6 +522,8 @@
                             showLoading();
                             $.post('@Html.Raw(Url.Action("CommitContract", "ContractConsole", _viewModel.ContractID))', $formData, function (data) {
                                 hideLoading();
+                                debugger;
+                                console.log(data);
                                 if ($.isPlainObject(data)) {
                                     Swal.fire(
                                         'Oops...',

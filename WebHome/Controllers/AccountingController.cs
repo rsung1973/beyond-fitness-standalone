@@ -718,7 +718,7 @@ namespace WebHome.Controllers
                 DateTime execDate = settlementDate.Value;
                 DateTime startDate = execDate.FirstDayOfMonth();
                 models.ExecuteLessonPerformanceSettlement(startDate, startDate.AddMonths(1));
-                models.ExecuteVoidShareSettlement(startDate, startDate.AddMonths(1));
+                //models.ExecuteVoidShareSettlement(startDate, startDate.AddMonths(1));
             });
 
             return Json(new { result = true });

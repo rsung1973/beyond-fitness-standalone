@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using CommonLib.Core.Utility;
 using CommonLib.PlugInAdapter;
 
 namespace CommonLib.Core.Helper
@@ -23,10 +24,17 @@ namespace CommonLib.Core.Helper
             {
                 if (!String.IsNullOrEmpty(Startup.Properties["IPdfUtilityImpl"]))
                 {
+                    FileLogger.Logger.Info("Pdf Utility intent type => " + Startup.Properties["IPdfUtilityImpl"]);
+
                     Type type = Type.GetType(Startup.Properties["IPdfUtilityImpl"]);
-                    if (type.GetInterface("CommonLib.PlugInAdapter.IPdfUtility") != null)
+                    if (type!=null && type.GetInterface("CommonLib.PlugInAdapter.IPdfUtility") != null)
                     {
                         _pdfUtility = (IPdfUtility)type.Assembly.CreateInstance(type.FullName);
+                        FileLogger.Logger.Info("Pdf Utility => " + _pdfUtility.GetType().FullName);
+                    }
+                    else
+                    {
+                        FileLogger.Logger.Warn("Pdf Utility intent type not found => " + Startup.Properties["IPdfUtilityImpl"]);
                     }
                 }
             }

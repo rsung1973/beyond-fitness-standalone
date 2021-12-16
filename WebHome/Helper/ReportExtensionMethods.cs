@@ -682,6 +682,9 @@ namespace WebHome.Helper
             //.FilterByEffective();
             IQueryable<TuitionAchievement> achievementItems = paymentItems.GetPaymentAchievement(models);
 
+            var voidPayment = models.GetTable<VoidPayment>().Where(p => p.VoidDate >= startDate && p.VoidDate < endExclusiveDate)
+                                .Join(models.GetTable<Payment>().Where(p => p.AllowanceID.HasValue), v => v.VoidID, p => p.PaymentID, (v, p) => p);
+
             foreach (var coach in coachItems)
             {
                 var lessonItem = countableItems.Where(l => l.AttendingCoach == coach.CoachID).FirstOrDefault();
@@ -768,6 +771,14 @@ namespace WebHome.Helper
                     }
 
                     salary.AchievementShareRatio = shareRatio;
+
+                    var voidTuition = voidPayment
+                        .Join(models.GetTable<TuitionAchievement>()
+                                .Where(t => t.CoachID == coach.CoachID),
+                            p => p.PaymentID, t => t.InstallmentID, (p, t) => t);
+
+                    salary.VoidShare = voidTuition.Sum(t => t.VoidShare) ?? 0;
+
                     models.SubmitChanges();
                 };
 
@@ -789,6 +800,13 @@ namespace WebHome.Helper
 
                         branchBonus.BranchTotalAttendanceCount = g.Count();
                         branchBonus.BranchTotalTuition = g.CalcTuition(models);
+
+                        var voidTuition = voidPayment
+                            .Join(models.GetTable<PaymentTransaction>().Where(t => t.BranchID == g.Key), p => p.PaymentID, t => t.PaymentID, (p, t) => p)
+                            .Join(models.GetTable<TuitionAchievement>(), p => p.PaymentID, t => t.InstallmentID, (p, t) => t);
+
+                        branchBonus.VoidShare = voidTuition.Sum(t => t.VoidShare) ?? 0;
+
                         models.SubmitChanges();
                     }
 
@@ -809,6 +827,13 @@ namespace WebHome.Helper
                     var branchItems = countableItems.Where(w => w.WorkPlace == branch.BranchID);
                     branchBonus.BranchTotalAttendanceCount = branchItems.Count();
                     branchBonus.BranchTotalTuition = branchItems.CalcTuition(models);
+
+                    var voidTuition = voidPayment
+                        .Join(models.GetTable<PaymentTransaction>().Where(t => t.BranchID == branch.BranchID), p => p.PaymentID, t => t.PaymentID, (p, t) => p)
+                        .Join(models.GetTable<TuitionAchievement>(), p => p.PaymentID, t => t.InstallmentID, (p, t) => t);
+
+                    branchBonus.VoidShare = voidTuition.Sum(t => t.VoidShare) ?? 0;
+
                     models.SubmitChanges();
 
                     calcCoachAchievement();

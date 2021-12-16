@@ -1085,7 +1085,7 @@ namespace WebHome.Controllers
         public ActionResult LoadInstallmentPlan(CourseContractQueryViewModel viewModel)
         {
             ViewBag.ViewModel = viewModel;
-            return View("~/Views/CourseContract/Module/InstallmentPlan.ascx");
+            return View("~/Views/CourseContract/Module/InstallmentPlan.cshtml");
         }
 
     }

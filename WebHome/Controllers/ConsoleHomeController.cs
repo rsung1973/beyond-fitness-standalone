@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using System.Web;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Logging;
 
 using CommonLib.DataAccess;
 
@@ -30,6 +31,7 @@ using WebHome.Models.ViewModel;
 using WebHome.Security.Authorization;
 using WebHome.Properties;
 using System.Data.Linq;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace WebHome.Controllers
 {

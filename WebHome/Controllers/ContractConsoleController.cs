@@ -14,9 +14,13 @@ using System.Threading.Tasks;
 using System.Web;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.Extensions.DependencyInjection;
 
 using CommonLib.DataAccess;
-
 using Newtonsoft.Json;
 using CommonLib.Utility;
 using WebHome.Controllers;
@@ -175,7 +179,18 @@ namespace WebHome.Controllers
 
         public async Task<ActionResult> CommitContractAsync(CourseContractViewModel viewModel)
         {
-            var item = await viewModel.CommitCourseContractAsync(this, true);
+            CourseContract item = null;
+            try
+            {
+                item = await viewModel.CommitCourseContractAsync(this, true);
+            }
+            catch(Exception ex)
+            {
+                var logger = ServiceProvider.GetRequiredService<ILogger<ContractConsoleController>>();
+                logger.LogError(ex, ex.Message);
+                ModelState.AddModelError("Message", ex.Message);
+            }
+
             if (item == null)
             {
                 if (!ModelState.IsValid)

@@ -15,6 +15,8 @@ namespace CommonLib.Core.Utility
     public interface IViewRenderService
     {
         Task<string> RenderToStringAsync(string viewName, object model);
+        HttpContext HttpContext { get; set; }
+        ActionContext ActionContext { get; set; }
     }
 
     public class ViewRenderService : IViewRenderService
@@ -22,6 +24,7 @@ namespace CommonLib.Core.Utility
         private readonly IRazorViewEngine _razorViewEngine;
         private readonly ITempDataProvider _tempDataProvider;
         private readonly IServiceProvider _serviceProvider;
+
 
         public ViewRenderService(IRazorViewEngine razorViewEngine,
             ITempDataProvider tempDataProvider,
@@ -32,14 +35,34 @@ namespace CommonLib.Core.Utility
             _serviceProvider = serviceProvider;
         }
 
+        public ActionContext ActionContext { get; set; }
+        public HttpContext HttpContext { get; set; } 
+
         public async Task<string> RenderToStringAsync(string viewName, object model)
         {
-            var httpContext = new DefaultHttpContext { RequestServices = _serviceProvider };
-            var actionContext = new ActionContext(httpContext, new RouteData(), new ActionDescriptor());
+            if (HttpContext == null)
+            {
+                HttpContext = new DefaultHttpContext { RequestServices = _serviceProvider };
+            }
+
+            if (ActionContext == null)
+            {
+                ActionContext = new ActionContext(HttpContext, new RouteData(), new ActionDescriptor());
+            }
 
             using (var sw = new StringWriter())
             {
-                var viewResult = _razorViewEngine.FindView(actionContext, viewName, false);
+                if (viewName.StartsWith("~/Views/", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    viewName = viewName.Replace("~/Views/", "", StringComparison.CurrentCultureIgnoreCase);
+                }
+
+                if (viewName.EndsWith(".cshtml", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    viewName = viewName.Replace(".cshtml", "", StringComparison.CurrentCultureIgnoreCase);
+                }
+
+                var viewResult = _razorViewEngine.FindView(ActionContext, viewName, false);
 
                 if (viewResult.View == null)
                 {
@@ -52,13 +75,15 @@ namespace CommonLib.Core.Utility
                 };
 
                 var viewContext = new ViewContext(
-                    actionContext,
+                    ActionContext,
                     viewResult.View,
                     viewDictionary,
-                    new TempDataDictionary(actionContext.HttpContext, _tempDataProvider),
+                    new TempDataDictionary(HttpContext, _tempDataProvider),
                     sw,
                     new HtmlHelperOptions()
                 );
+
+                viewContext.HttpContext = HttpContext;
 
                 await viewResult.View.RenderAsync(viewContext);
                 return sw.ToString();

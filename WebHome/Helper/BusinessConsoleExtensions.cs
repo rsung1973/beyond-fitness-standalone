@@ -248,8 +248,32 @@ namespace WebHome.Helper
                     (int)Naming.LessonPriceStatus.團體學員課程,
         };
 
-        public static void UpdateMonthlyAchievement(this MonthlyIndicator item, GenericManager<BFDataContext> models,bool? forcedUpdate = null,bool? calcAverage = null)
-            
+        public static IQueryable<Payment> UpdateVoidShare(this GenericManager<BFDataContext> models, DateTime startDate, DateTime endExclusiveDate)
+        {
+
+            var voidPayment = models.GetTable<VoidPayment>().Where(p => p.VoidDate >= startDate && p.VoidDate < endExclusiveDate)
+                                .Join(models.GetTable<Payment>().Where(p => p.AllowanceID.HasValue), v => v.VoidID, p => p.PaymentID, (v, p) => p);
+            //.FilterByEffective();
+            foreach (var voidItem in voidPayment)
+            {
+                if (voidItem.TuitionAchievement.Any())
+                {
+                    var voidAmt = (int?)(voidItem.InvoiceAllowance.TotalAmount + voidItem.InvoiceAllowance.TaxAmount);
+                    var totalShare = voidItem.TuitionAchievement.Sum(t => t.ShareAmount) ?? 1;
+
+                    foreach (var t in voidItem.TuitionAchievement)
+                    {
+                        t.VoidShare = (int?)((decimal?)voidAmt * (decimal?)t.ShareAmount / totalShare);
+                    }
+                }
+                models.SubmitChanges();
+            }
+
+            return voidPayment;
+        }
+
+        public static void UpdateMonthlyAchievement(this MonthlyIndicator item, GenericManager<BFDataContext> models, bool? forcedUpdate = null, bool? calcAverage = null)
+
         {
 
             AchievementQueryViewModel queryModel = new AchievementQueryViewModel
@@ -257,6 +281,8 @@ namespace WebHome.Helper
                 AchievementDateFrom = item.StartDate,
                 BypassCondition = true,
             };
+
+            IQueryable<Payment> voidPayment = UpdateVoidShare(models, item.StartDate, item.EndExclusiveDate);
 
             IQueryable<V_Tuition> lessonItems = queryModel.InquireAchievement(models);
             IQueryable<LessonTime> STItems = models.GetTable<LessonTime>()
@@ -304,6 +330,9 @@ namespace WebHome.Helper
 
             void calcHeadquarterAchievement()
             {
+                var voidTuition = voidPayment
+                                    .Join(models.GetTable<TuitionAchievement>(), p => p.PaymentID, t => t.InstallmentID, (p, t) => t);
+
                 lessonAchievement = tuitionItems.Where(t => SessionScopeForAchievement.Contains(t.PriceStatus)).Sum(t => t.ListPrice * t.GroupingMemberCount * t.PercentageOfDiscount / 100) ?? 0;
                 lessonAchievement += (tuitionItems.Where(t => SessionScopeForAchievement.Contains(t.ELStatus)).Sum(l => l.EnterpriseListPrice * l.GroupingMemberCount * l.PercentageOfDiscount / 100) ?? 0);
                 tuitionAchievement = achievementItems.Sum(a => a.ShareAmount) ?? 0;
@@ -358,6 +387,7 @@ namespace WebHome.Helper
                     revenueItem.NewContractAchievement = newContractAchievementItems.Sum(t => t.ShareAmount) ?? 0;
                     revenueItem.RenewContractAchievement = renewContractAchievementItems.Sum(t => t.ShareAmount) ?? 0;
                     revenueItem.InstallmentAchievement = installmentContractAchievementItems.Sum(t => t.ShareAmount) ?? 0;
+                    revenueItem.VoidShare = voidTuition.Sum(t => t.VoidShare) ?? 0;
 
                     models.SubmitChanges();
                 }
@@ -367,6 +397,10 @@ namespace WebHome.Helper
             {
                 foreach (var branchIndicator in item.MonthlyBranchIndicator)
                 {
+                    var voidTuition = voidPayment
+                        .Join(models.GetTable<PaymentTransaction>().Where(t => t.BranchID == branchIndicator.BranchID), p => p.PaymentID, t => t.PaymentID, (p, t) => p)
+                        .Join(models.GetTable<TuitionAchievement>(), p => p.PaymentID, t => t.InstallmentID, (p, t) => t);
+
                     var branchTuitionItems = tuitionItems.Where(t => t.CoachWorkPlace == branchIndicator.BranchID);
                     var branchAchievementItems = achievementItems.Where(t => t.CoachWorkPlace == branchIndicator.BranchID);
                     var branchContractItems = contractItems.Where(c => c.CourseContractExtension.BranchID == branchIndicator.BranchID);
@@ -430,7 +464,7 @@ namespace WebHome.Helper
                         revenueItem.NewContractAchievement = branchNewContractAchievementItems.Sum(t => t.ShareAmount) ?? 0;
                         revenueItem.RenewContractAchievement = branchRenewContractAchievementItems.Sum(t => t.ShareAmount) ?? 0;
                         revenueItem.InstallmentAchievement = branchInstallmentContractAchievementItems.Sum(t => t.ShareAmount) ?? 0;
-
+                        revenueItem.VoidShare = voidTuition.Sum(t => t.VoidShare) ?? 0;
 
                         models.SubmitChanges();
                     }
@@ -441,6 +475,11 @@ namespace WebHome.Helper
             {
                 foreach (var coachIndicator in item.MonthlyCoachRevenueIndicator)
                 {
+                    var voidTuition = voidPayment
+                        .Join(models.GetTable<TuitionAchievement>()
+                            .Where(t => t.CoachID == coachIndicator.CoachID),
+                            p => p.PaymentID, t => t.InstallmentID, (p, t) => t);
+
                     var coachTuitionItems = tuitionItems.Where(t => t.AttendingCoach == coachIndicator.CoachID);
                     var coachAchievementItems = achievementItems.Where(t => t.CoachID == coachIndicator.CoachID);
                     var coachContractItems = contractItems.Where(c => c.FitnessConsultant == coachIndicator.CoachID);
@@ -509,6 +548,7 @@ namespace WebHome.Helper
                     }
 
                     coachIndicator.STCount = coachSTItems.Count();
+                    coachIndicator.VoidShare = voidTuition.Sum(t => t.VoidShare) ?? 0;
 
                     models.SubmitChanges();
                 }
