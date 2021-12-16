@@ -35,7 +35,7 @@ namespace CommonLib.Core.Utility
             {
                 case LogLevel.Critical:
                 case LogLevel.Error:
-                    _Logger.Error(result);
+                    _Logger.Error(exception);
                     break;
                 case LogLevel.Debug:
                     _Logger.Debug(result);

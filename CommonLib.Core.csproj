@@ -51,12 +51,7 @@
   <ItemGroup>
     <ProjectReference Include="..\CommonLib.Logger\CommonLib.Logger.csproj" />
     <ProjectReference Include="..\CommonLib.Utility\CommonLib.Utility.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="System.Data.Linq">
-      <HintPath>bin\Dependencies\Lib\System.Data.Linq.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\DotNetLib\System.Data.Linq\System.Data.Linq.csproj" />
   </ItemGroup>
 
 </Project>
