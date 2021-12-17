@@ -94,6 +94,7 @@ namespace WebHome.Helper.BusinessOperation
             item.CourseContractExtension.PaymentMethod = paymentMethod;
             item.CourseContractExtension.Version = (int?)viewModel.Version;
             item.CourseContractExtension.SignOnline = viewModel.SignOnline;
+            item.CourseContractExtension.UnitPriceID = price.GetOriginalSeriesPrice(models)?.PriceID;
 
             if (viewModel.InstallmentPlan == true)
             {
