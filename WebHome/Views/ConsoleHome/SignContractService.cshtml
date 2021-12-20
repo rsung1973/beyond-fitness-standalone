@@ -29,6 +29,9 @@
     {
         ViewBag.ContractAgent = _model;
     }
+
+    ViewBag.Supervisor = _model;
+
 }
 @section CustomHeader {
     <!-- jSignature -->
@@ -137,6 +140,7 @@
                                     ? (int)Naming.CourseContractStatus.已生效
                                     : (int)Naming.CourseContractStatus.待簽名,
                                 FromStatus = _item.Status,
+                                SupervisorID = _model.UID,
                             }))', {}, function (data) {
                 hideLoading();
                 if ($.isPlainObject(data)) {

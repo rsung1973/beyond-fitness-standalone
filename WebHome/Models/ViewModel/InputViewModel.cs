@@ -72,6 +72,7 @@ namespace WebHome.Models.ViewModel
         public int? MemberID { get; set; }
         public bool? PartialEffectiive { get; set; }
         public bool? SignOnline { get; set; }
+        public int? SupervisorID { get; set; }
     }
 
     public class CourseContractQueryViewModel : CourseContractViewModel

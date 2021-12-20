@@ -37,7 +37,7 @@
                     <h4 class="m-t-0 p-t-10">@(_model.RegisterLesson.UserProfile.FullName())</h4>
                 </div>
                 <div class="member-img">
-                    <a href="javascript:$('').launchDownload('@Html.Raw(Url.Action("LearnerProfile","ConsoleHome"))', { 'keyID': '@(_model.RegisterLesson.UID.EncryptKey())' });">
+                    <a href="javascript:$('').launchDownload('@Html.Raw(Url.Action("LearnerProfile","ConsoleHome"))', { 'keyID': '@Html.Raw(_model.RegisterLesson.UID.EncryptKey())' });">
                         @{
                             ViewBag.ProfileClass = "rounded-circle popfit";
                             await Html.RenderPartialAsync("~/Views/Common/ProfileImage.cshtml", _model.RegisterLesson.UserProfile);
@@ -64,8 +64,8 @@
             <div class="modal-footer">
                 @if (_model.PreferredLessonTime == null || _model.PreferredLessonTime.ApproverID.HasValue)
                 {
-                    <button type="button" class="btn btn-darkteal btn-round waves-effect" onclick="javascript:$('').launchDownload('@Html.Raw(Url.Action("LessonTrainingContent", "ConsoleHome", new { LearnerID = _model.RegisterLesson.UID }))', {'keyID':'@(_model.LessonID.EncryptKey())' });"><i class="zmdi zmdi-edit"></i></button>
-                    @*<button type="button" class="btn btn-darkteal btn-round waves-effect" onclick="javascript:$('').launchDownload('@Html.Raw(Url.Action("LearnerProfile","ConsoleHome"))', { 'keyID': '@(_model.RegisterLesson.UID.EncryptKey())' });"><i class="zmdi zmdi-edit"></i></button>*@
+                    <button type="button" class="btn btn-darkteal btn-round waves-effect" onclick="javascript:$('').launchDownload('@Html.Raw(Url.Action("LessonTrainingContent", "ConsoleHome", new { LearnerID = _model.RegisterLesson.UID }))', {'keyID': '@Html.Raw(_model.LessonID.EncryptKey())' });"><i class="zmdi zmdi-edit"></i></button>
+                    @*<button type="button" class="btn btn-darkteal btn-round waves-effect" onclick="javascript:$('').launchDownload('@Html.Raw(Url.Action("LearnerProfile","ConsoleHome"))', { 'keyID': '@Html.Raw(_model.RegisterLesson.UID.EncryptKey())' });"><i class="zmdi zmdi-edit"></i></button>*@
                     <button type="button" class="btn btn-simple btn-round waves-effect" onclick="commitEmphasis('@(plan.ExecutionID.EncryptKey())');">更新重點</button>
                 }
                 @{ await Html.RenderPartialAsync("~/Views/ConsoleEvent/Module/RevokeLesson.cshtml", _model);}

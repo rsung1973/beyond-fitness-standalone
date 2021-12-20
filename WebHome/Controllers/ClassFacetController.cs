@@ -417,7 +417,7 @@ namespace WebHome.Controllers
 
             var data = item.PersonalExercisePurpose;
 
-            return Json(new { data.Cardiopulmonary, data.Flexibility, data.MuscleStrength, data.PowerAbility });
+            return Content(new { data.Cardiopulmonary, data.Flexibility, data.MuscleStrength, data.PowerAbility }.JsonStringify(), "application/json");
 
         }
 

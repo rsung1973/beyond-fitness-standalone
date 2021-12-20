@@ -330,7 +330,7 @@ namespace WebHome.Controllers
 
                 TaskExtensionMethods.ProcessInvoiceToGov();
 
-                return Json(new { result = true, invoiceNo = item.InvoiceItem.TrackCode + item.InvoiceItem.No, item.InvoiceID, item.InvoiceItem.InvoiceType, item.PaymentID, keyID = contract.ContractID.EncryptKey() });
+                return Content(new { result = true, invoiceNo = item.InvoiceItem.TrackCode + item.InvoiceItem.No, item.InvoiceID, item.InvoiceItem.InvoiceType, item.PaymentID, keyID = contract.ContractID.EncryptKey() }.JsonStringify(), "application/json");
             }
             catch (Exception ex)
             {
@@ -414,7 +414,7 @@ namespace WebHome.Controllers
 
                 models.SubmitChanges();
 
-                return Json(new { result = true, item.PaymentID });
+                return Content(new { result = true, item.PaymentID }.JsonStringify(), "application/json");
             }
             catch (Exception ex)
             {
@@ -577,7 +577,7 @@ namespace WebHome.Controllers
 
                 TaskExtensionMethods.ProcessInvoiceToGov();
 
-                return Json(new { result = true, invoiceNo = item.InvoiceItem.TrackCode + item.InvoiceItem.No, item.InvoiceID, item.InvoiceItem.InvoiceType, item.PaymentID });
+                return Content(new { result = true, invoiceNo = item.InvoiceItem.TrackCode + item.InvoiceItem.No, InvoiceID = item.InvoiceID, InvoiceType = item.InvoiceItem.InvoiceType, PaymentID = item.PaymentID }.JsonStringify(), "application/json");
             }
             catch (Exception ex)
             {
@@ -723,7 +723,7 @@ namespace WebHome.Controllers
                 //    models.ExecuteCommand(@"delete Payment where InvoiceID = {0} and PaymentID <> {1}", invoice.InvoiceID, item.PaymentID);
                 //}
 
-                return Json(new { result = true, invoiceNo = item.InvoiceItem.TrackCode + item.InvoiceItem.No, item.InvoiceID, item.InvoiceItem.InvoiceType, item.PaymentID });
+                return Content(new { result = true, invoiceNo = item.InvoiceItem.TrackCode + item.InvoiceItem.No, item.InvoiceID, item.InvoiceItem.InvoiceType, item.PaymentID }.JsonStringify(), "application/json");
             }
             catch (Exception ex)
             {
@@ -812,7 +812,7 @@ namespace WebHome.Controllers
 
                 TaskExtensionMethods.ProcessInvoiceToGov();
 
-                return Json(new { result = true, invoiceNo = item.InvoiceItem.TrackCode + item.InvoiceItem.No, item.InvoiceID, item.InvoiceItem.InvoiceType, item.PaymentID });
+                return Content(new { result = true, invoiceNo = item.InvoiceItem.TrackCode + item.InvoiceItem.No, item.InvoiceID, item.InvoiceItem.InvoiceType, item.PaymentID }.JsonStringify(), "application/json");
             }
             catch (Exception ex)
             {

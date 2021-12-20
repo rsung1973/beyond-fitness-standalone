@@ -72,7 +72,7 @@
                                 </select>
                                 <script>
                                     $(function () {
-                                        $('select[name="Year"]').val('@(_viewModel.DateFrom?.Year)');
+                                        $('select[name="Year"]').val('@Html.Raw(_viewModel.DateFrom?.Year)');
                                     });
                                 </script>
                             </div>
@@ -88,7 +88,7 @@
                                 </select>
                                 <script>
                                     $(function () {
-                                        $('select[name="PeriodNo"]').val('@(_viewModel.TrackPeriodNo)');
+                                        $('select[name="PeriodNo"]').val('@Html.Raw(_viewModel.TrackPeriodNo)');
                                     });
                                 </script>
                             </div>

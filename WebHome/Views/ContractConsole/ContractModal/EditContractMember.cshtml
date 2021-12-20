@@ -75,7 +75,7 @@
                                     <option value="F">女</option>
                                 </select>
                                 <script>
-                                                $('select[name="Gender"]').val('@(_viewModel.Gender)')
+                                                $('select[name="Gender"]').val('@Html.Raw(_viewModel.Gender)')
                                 </script>
                             </div>
                             <div class="col-sm-3 col-12">
@@ -122,7 +122,7 @@
                                 </select>
                                 <script>
                                                 $(function () {
-                                                    $('select[name="AdministrativeArea"]').val('@(_viewModel.AdministrativeArea)');
+                                                    $('select[name="AdministrativeArea"]').val('@Html.Raw(_viewModel.AdministrativeArea)');
                                                 });
                                 </script>
                                 @*<label class="material-icons help-error-text">clear 請選擇縣市</label>*@
@@ -157,7 +157,7 @@
                                 </select>
                                 <script>
                                                 $(function () {
-                                                    $('select[name="Relationship"]').val('@(_viewModel.Relationship)');
+                                                    $('select[name="Relationship"]').val('@Html.Raw(_viewModel.Relationship)');
                                                 });
                                 </script>
                                 @*<label class="material-icons help-error-text">clear 請選擇關係</label>*@

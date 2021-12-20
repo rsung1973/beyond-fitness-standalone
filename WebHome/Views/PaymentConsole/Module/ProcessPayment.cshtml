@@ -40,7 +40,17 @@
                         }
                         if (_model.VoidPayment == null && !_model.AllowanceID.HasValue && !_model.ContractTrustTrack.Any(t => t.SettlementID.HasValue))
                         {
-                            <a href="@Html.Raw(Url.Action("VoidPayment", "ConsoleHome", new { KeyID = _model.PaymentID.EncryptKey() }))" class="list-group-item">作廢/折讓</a>
+                            if (_model.ContractPayment == null)
+                            {
+                                if (_model.InvoiceItem.InvoiceDate.Value.Year < DateTime.Today.Year || (_model.InvoiceItem.InvoiceDate.Value.Month + 1) / 2 < (DateTime.Today.Month + 1) / 2)
+                                {
+                                    //折讓
+                                }
+                                else
+                                {
+                                    <a href="@Html.Raw(Url.Action("VoidPayment", "ConsoleHome", new { KeyID = _model.PaymentID.EncryptKey() }))" class="list-group-item">作廢</a>
+                                }
+                            }
                         }
                         <a href="javascript:$global.showPaymentDetails('@(_model.PaymentID.EncryptKey())');" class="list-group-item">詳細資訊</a>
                         await Html.RenderPartialAsync("~/Views/PaymentConsole/Indication/PaymentDetails.cshtml", _model);
@@ -65,7 +75,7 @@
                         if (_model.InvoiceAllowance.Document.DocumentPrintLog.Count == 0
                             || _profile.IsAssistant() || _profile.IsManager() || _profile.IsViceManager())
                         {
-                        <a href="#" onclick="printAllowance(@(_model.AllowanceID),'@(item.Organization.InvoiceSignature)');" class="list-group-item">列印折讓單</a>
+                            <a href="#" onclick="printAllowance(@(_model.AllowanceID),'@(item.Organization.InvoiceSignature)');" class="list-group-item">列印折讓單</a>
                         }
                     }
                     @{

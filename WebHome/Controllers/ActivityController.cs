@@ -284,7 +284,7 @@ namespace WebHome.Controllers
             {
                 item.Status = viewModel.Status;
                 models.SubmitChanges();
-                return Json(new { result = true, item.QuestionID });
+                return Content(new { result = true, item.QuestionID }.JsonStringify(), "application/json");
             }
 
             return View("~/Views/Shared/JsAlert.cshtml", model: "問與答資料錯誤!!");
@@ -452,7 +452,7 @@ namespace WebHome.Controllers
             //item.PDQQuestionExtension.BonusPoint = viewModel.BonusPoint;
 
             models.SubmitChanges();
-            return Json(new { result = true, item.QuestionID });
+            return Content(new { result = true, item.QuestionID }.JsonStringify(), "application/json");
 
         }
 
@@ -804,12 +804,12 @@ namespace WebHome.Controllers
                 return Json(new object[] { });
             }
 
-            return Json(item.LessonFitnessAssessmentReport.Where(r => r.FitnessAssessmentItem.GroupID == 3)
+            return Content(item.LessonFitnessAssessmentReport.Where(r => r.FitnessAssessmentItem.GroupID == 3)
                 .Select(r => new
                 {
                     label = r.FitnessAssessmentItem.ItemName + " " + (int)r.TotalAssessment + "分鐘",
                     data = r.TotalAssessment
-                }).ToArray());
+                }).ToArray().JsonStringify(), "application/json");
 
         }
 
@@ -828,12 +828,12 @@ namespace WebHome.Controllers
                 return Json(new object[] { });
             }
 
-            return Json(items.GroupBy(r=>r.FitnessAssessmentItem.GroupID)
+            return Content(items.GroupBy(r=>r.FitnessAssessmentItem.GroupID)
                 .Select(r => new
                 {
                     label = r.First().FitnessAssessmentItem.FitnessAssessmentGroup.GroupName + " " + (int)r.Sum(t => ((t.TotalAssessment ?? 0) + (t.SingleAssessment ?? 0) * (t.ByTimes ?? 0)) * (t.BySingleSide == true ? 2 : 1)) + "KG",
                     data = r.Sum(t => ((t.TotalAssessment ?? 0) + (t.SingleAssessment ?? 0) * (t.ByTimes ?? 0)) * (t.BySingleSide == true ? 2 : 1))
-                }).ToArray());
+                }).ToArray().JsonStringify(), "application/json");
 
         }
 

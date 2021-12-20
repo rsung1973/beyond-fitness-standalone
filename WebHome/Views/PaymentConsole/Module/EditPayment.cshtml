@@ -111,7 +111,7 @@
                         $('.eInvoice-dialog').css('display', 'block');
                         $('.paper-invoice').css('display', 'none');
                         $('.eInvoice-disable').prop('disabled', true);
-                        $('input[name="PayoffDate"]').val('@(String.Format("{0:yyyy/MM/dd}",DateTime.Today))');
+                        $('input[name="PayoffDate"]').val('@Html.Raw(String.Format("{0:yyyy/MM/dd}",DateTime.Today))');
                     } else if (invoiceType == '@((int)Naming.InvoiceTypeDefinition.二聯式收銀機)') {
                         $('.eInvoice-dialog').css('display', 'none');
                         $('.paper-invoice').css('display', 'block');

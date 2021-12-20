@@ -34,11 +34,11 @@
                 if ($global.resumeCharacter) {
                     $global.resumeCharacter();
                 } else {
-                    $('').launchDownload('@(Html.Raw(Url.Action("EditLearnerCharacter","ConsoleHome",new { _model.QuestionnaireID,_viewModel.PartID })))', { 'keyID': '@(_model.UID.EncryptKey())'});
+                    $('').launchDownload('@(Html.Raw(Url.Action("EditLearnerCharacter","ConsoleHome",new { _model.QuestionnaireID,_viewModel.PartID })))', { 'keyID': '@Html.Raw(_model.UID.EncryptKey())'});
                 }
             } else {
                 showLoading();
-                $.post('@Html.Raw(Url.Action("RejectLearnerCharacter", "LearnerProfile", new {_model.QuestionnaireID }))', { 'keyID': '@(_model.UID.EncryptKey())' }, function (data) {
+                $.post('@Html.Raw(Url.Action("RejectLearnerCharacter", "LearnerProfile", new {_model.QuestionnaireID }))', { 'keyID': '@Html.Raw(_model.UID.EncryptKey())' }, function (data) {
                     hideLoading();
                     if ($.isPlainObject(data)) {
                         if (data.result) {

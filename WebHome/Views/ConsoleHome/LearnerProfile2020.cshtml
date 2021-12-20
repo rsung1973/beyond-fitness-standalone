@@ -140,9 +140,9 @@
             $('').launchDownload('@(Html.Raw(Url.Action("EditLearnerCharacter","ConsoleHome",new { KeyID = _learner.UID.EncryptKey() })))', {});
 
             @*$global.rejectCharacterDone = function () {
-                $('').launchDownload('@Html.Raw(Url.Action("LearnerProfile","ConsoleHome"))', { 'keyID': '@(_learner.UID.EncryptKey())' });
+                $('').launchDownload('@Html.Raw(Url.Action("LearnerProfile","ConsoleHome"))', { 'keyID': '@Html.Raw(_learner.UID.EncryptKey())' });
             };
-            $.post('@Html.Raw(Url.Action("ResumeLearnerCharacter", "LearnerProfile"))', { 'keyID': '@(_learner.UID.EncryptKey())' }, function (data) {
+            $.post('@Html.Raw(Url.Action("ResumeLearnerCharacter", "LearnerProfile"))', { 'keyID': '@Html.Raw(_learner.UID.EncryptKey())' }, function (data) {
                 if ($.isPlainObject(data)) {
                     if (data.result) {
                         $('').launchDownload('@(Html.Raw(Url.Action("EditLearnerCharacter","ConsoleHome",new { KeyID = _learner.UID.EncryptKey() })))', {});

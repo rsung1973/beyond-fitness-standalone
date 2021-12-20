@@ -30,7 +30,7 @@
                 </div>
                 <div class="modal-popmenu-body">
                     <div class="list-group">
-                        <a href="javascript:$('').launchDownload('@Html.Raw(Url.Action("LessonTrainingContent", "ConsoleHome"))', {'keyID':'@(_model.LessonID.EncryptKey())' });" class="list-group-item">編輯課表</a>
+                        <a href="javascript:$('').launchDownload('@Html.Raw(Url.Action("LessonTrainingContent", "ConsoleHome"))', {'keyID': '@Html.Raw(_model.LessonID.EncryptKey())' });" class="list-group-item">編輯課表</a>
                         @if (!_model.LessonPlan.CommitAttendance.HasValue && (_profile.IsSysAdmin() || _profile.IsAssistant()))
                         {
                             <a class="list-group-item checkAttendance">學生打卡</a>
@@ -60,7 +60,7 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         showLoading();
-                        $.post('@Html.Raw(Url.Action("LearnerAttendLesson", "Attendance"))', { 'keyID': '@(_model.LessonID.EncryptKey())' }, function (data) {
+                        $.post('@Html.Raw(Url.Action("LearnerAttendLesson", "Attendance"))', { 'keyID': '@Html.Raw(_model.LessonID.EncryptKey())' }, function (data) {
                             hideLoading();
                             if ($.isPlainObject(data)) {
                                 if (data.result) {
@@ -111,7 +111,7 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         showLoading();
-                        $.post('@Html.Raw(Url.Action("RevokeBooking", "ConsoleEvent"))', { 'keyID': '@(_model.LessonID.EncryptKey())' }, function (data) {
+                        $.post('@Html.Raw(Url.Action("RevokeBooking", "ConsoleEvent"))', { 'keyID': '@Html.Raw(_model.LessonID.EncryptKey())' }, function (data) {
                             hideLoading();
                             if ($.isPlainObject(data)) {
                                 if (data.result) {

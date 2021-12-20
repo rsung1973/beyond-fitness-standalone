@@ -105,7 +105,7 @@ namespace WebHome.Controllers
 
             calculateTotalMinutes(execution, viewModel.StageID.Value);
 
-            return Json(new { result = true, viewModel.StageID });
+            return Content(new { result = true, viewModel.StageID }.JsonStringify(), "application/json");
         }
 
         public ActionResult CommitTrainingItem(TrainingItemViewModel viewModel)
@@ -363,7 +363,7 @@ namespace WebHome.Controllers
                 calculateTotalMinutes(execution, stage.StageID);
             }
 
-            return Json(new { result = true, message = "", stage.StageID });
+            return Content(new { result = true, message = "", stage.StageID }.JsonStringify(), "application/json");
 
         }
 
@@ -543,7 +543,7 @@ namespace WebHome.Controllers
                     label = "其他",
                     data = result.Skip(4).Sum(r => r.Count)
                 });
-                return Json(resultData);
+                return Content(resultData.JsonStringify(), "application/json");
             }
             else
             {
@@ -554,7 +554,7 @@ namespace WebHome.Controllers
                         data = r.Count
                     }).ToList();
 
-                return Json(resultData);
+                return Content(resultData.JsonStringify(), "application/json");
             }
 
         }

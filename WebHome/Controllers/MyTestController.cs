@@ -209,7 +209,7 @@ namespace WebHome.Controllers
             var items = models.GetTable<LessonTime>()
                             .Where(l => !(l.ClassTime >= t.AddMinutes(90)
                                     || t >= l.ClassTime.Value.AddMinutes(l.DurationInMinutes.Value)));
-            return Json(new {Count =  items.Count(),SQL = items.ToString() });
+            return Content(new {Count =  items.Count(),SQL = items.ToString() }.JsonStringify(), "application/json");
         }
 
     }

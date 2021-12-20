@@ -160,7 +160,7 @@
             'event_category': '按鈕點擊',
             'event_label': 'LINE設定'
         });
-        $('').launchDownload('@(Url.Action("CommitUnbound","CornerKick"))', { 'keyID': '@(_model.UID.EncryptKey())','lineID':'@(_model.UserProfileExtension.LineID)' });
+        $('').launchDownload('@(Url.Action("CommitUnbound","CornerKick"))', { 'keyID': '@Html.Raw(_model.UID.EncryptKey())','lineID':'@(_model.UserProfileExtension.LineID)' });
     }
 
 </script>

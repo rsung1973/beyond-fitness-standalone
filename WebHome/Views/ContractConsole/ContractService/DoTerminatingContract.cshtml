@@ -97,7 +97,7 @@
             </div>
             <script>
             $(function () {
-                $('input[name="SettlementPrice"]').val('@(originalPrice?.ListPrice ?? _model.LessonPriceType.ListPrice)')
+                $('input[name="SettlementPrice"]').val('@Html.Raw(originalPrice?.ListPrice ?? _model.LessonPriceType.ListPrice)')
                     .parent().parent()
                     .css('display', 'none');
             });
@@ -208,7 +208,7 @@
             </script>
             <script>
                 $(function () {
-                    $('input[name="SettlementPrice"]').val('@(currentSettlementPrice)');
+                    $('input[name="SettlementPrice"]').val('@Html.Raw(currentSettlementPrice)');
                     refundInfo(@(currentSettlementPrice));
                 });
             </script>
@@ -227,7 +227,7 @@
             </div>
             <script>
             $(function () {
-                $('input[name="SettlementPrice"]').val('@(_model.LessonPriceType.ListPrice)')
+                $('input[name="SettlementPrice"]').val('@Html.Raw(_model.LessonPriceType.ListPrice)')
                     .parent().parent()
                     .css('display', 'none');
             });
@@ -257,7 +257,7 @@
             </div>
             <script>
                 $(function () {
-                    $('input[name="SettlementPrice"]').val('@(_model.LessonPriceType.ListPrice)')
+                    $('input[name="SettlementPrice"]').val('@Html.Raw(_model.LessonPriceType.ListPrice)')
                         .parent().parent()
                         .css('display', 'none');
                 });

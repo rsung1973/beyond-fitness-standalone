@@ -28,7 +28,7 @@
     <script>
         function showLearner() {
             showLoading();
-            $.post('@Html.Raw(Url.Action("AuthLearnerProfile","ConsoleHome"))', { 'keyID': '@(learner.UID.EncryptKey())' }, function (data) {
+            $.post('@Html.Raw(Url.Action("AuthLearnerProfile","ConsoleHome"))', { 'keyID': '@Html.Raw(learner.UID.EncryptKey())' }, function (data) {
                 hideLoading();
                 if ($.isPlainObject(data)) {
                     Swal.fire(

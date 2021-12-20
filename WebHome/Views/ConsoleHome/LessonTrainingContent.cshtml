@@ -229,7 +229,7 @@
         this.attendLesson = function () {
 
             showLoading();
-            $.post('@Html.Raw(Url.Action("CheckLessonEmphasis", "Attendance"))', { 'keyID': '@(lessonItem.LessonID.EncryptKey())' }, function (data) {
+            $.post('@Html.Raw(Url.Action("CheckLessonEmphasis", "Attendance"))', { 'keyID': '@Html.Raw(lessonItem.LessonID.EncryptKey())' }, function (data) {
                 hideLoading();
                 if ($.isPlainObject(data)) {
                     if (data.result) {
@@ -270,7 +270,7 @@
 
         function commitAttendance(remark) {
             showLoading();
-            $.post('@Html.Raw(Url.Action("AttendLesson", "Attendance",new { QuestionnaireGroupID = (int)Naming.QuestionnaireGroup.身體心靈密碼 }))', { 'keyID': '@(lessonItem.LessonID.EncryptKey())', 'remark': remark }, function (data) {
+            $.post('@Html.Raw(Url.Action("AttendLesson", "Attendance",new { QuestionnaireGroupID = (int)Naming.QuestionnaireGroup.身體心靈密碼 }))', { 'keyID': '@Html.Raw(lessonItem.LessonID.EncryptKey())', 'remark': remark }, function (data) {
                 hideLoading();
                 if ($.isPlainObject(data)) {
                     if (data.result) {

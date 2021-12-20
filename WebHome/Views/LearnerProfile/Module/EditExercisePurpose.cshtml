@@ -53,7 +53,7 @@
                 {
                     <script>
                         $(function () {
-                            $('#@(currentID) select[name="Purpose"]').val('@(_viewModel.Purpose)');
+                            $('#@(currentID) select[name="Purpose"]').val('@Html.Raw(_viewModel.Purpose)');
                         });
                     </script>
                 }

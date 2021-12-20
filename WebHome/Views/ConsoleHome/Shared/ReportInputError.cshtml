@@ -30,7 +30,7 @@
                 <text>
                     Swal.fire(
                         'Oops...',
-                        '@Html.Raw(System.Text.Encodings.Web.JavaScriptEncoder.Default.Encode(_modelState.ErrorMessage()))',
+                        '@Html.Raw(_modelState.ErrorMessage())',
                         'warning'
                     )
                 </text>
@@ -40,9 +40,9 @@
             <text>
                 $('[name="@(key)"]').closest('div').after(
                     $('<label class="material-icons help-error-text" for="@(key)"></label>')
-                        .text('clear @Html.Raw(System.Text.Encodings.Web.JavaScriptEncoder.Default.Encode(_singleError
+                        .text('clear @Html.Raw(_singleError
                                                     ? _modelState[key].Errors[0].ErrorMessage
-                                                    : String.Join("、", _modelState[key].Errors.Select(r => r.ErrorMessage))))')
+                                                    : String.Join("、", _modelState[key].Errors.Select(r => r.ErrorMessage)))')
                 );
                 @if (_singleError)
                 {

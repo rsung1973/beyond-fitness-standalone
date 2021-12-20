@@ -30,7 +30,7 @@
             confirmButtonText: "OK",
             closeOnConfirm: true
         }).then((result) => {
-            $('').launchDownload('@(Html.Raw(Url.Action("EditLearnerCharacter","ConsoleHome",new { _model.QuestionnaireID, ToPrepare = true })))', { 'keyID': '@(_model.UID.EncryptKey())', 'partID': @((int)QuestionnaireRequest.PartIDEnum.PartA), 'Step': 1 });
+            $('').launchDownload('@(Html.Raw(Url.Action("EditLearnerCharacter","ConsoleHome",new { _model.QuestionnaireID, ToPrepare = true })))', { 'keyID': '@Html.Raw(_model.UID.EncryptKey())', 'partID': @((int)QuestionnaireRequest.PartIDEnum.PartA), 'Step': 1 });
         });
     });
 </script>

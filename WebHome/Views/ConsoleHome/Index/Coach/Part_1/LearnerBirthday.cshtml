@@ -72,7 +72,7 @@
     <script>
         $('.todayBirth').on('click',function() {
             showLoading();
-            $.post('@Html.Raw(Url.Action("ShowLearnerAboutToBirth", "LearnerProfile"))', {'keyID':'@(_model.UID.EncryptKey())','BirthIncomingDays':0}, function (data) {
+            $.post('@Html.Raw(Url.Action("ShowLearnerAboutToBirth", "LearnerProfile"))', {'keyID': '@Html.Raw(_model.UID.EncryptKey())','BirthIncomingDays':0}, function (data) {
                 hideLoading();
                 if ($.isPlainObject(data)) {
                     Swal.fire(
@@ -92,7 +92,7 @@
     <script>
         $('.weekBirth').on('click',function() {
             showLoading();
-            $.post('@Html.Raw(Url.Action("ShowLearnerAboutToBirth", "LearnerProfile"))', {'keyID':'@(_model.UID.EncryptKey())','BirthIncomingDays':7}, function (data) {
+            $.post('@Html.Raw(Url.Action("ShowLearnerAboutToBirth", "LearnerProfile"))', {'keyID': '@Html.Raw(_model.UID.EncryptKey())','BirthIncomingDays':7}, function (data) {
                 hideLoading();
                 if ($.isPlainObject(data)) {
                     Swal.fire(

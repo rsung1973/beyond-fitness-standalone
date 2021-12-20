@@ -94,11 +94,11 @@
                                                                     }).then((result) => {
                                                                         if (result.isConfirmed) {
                                                                             showLoading();
-                                                                            $.post('@Html.Raw(Url.Action("RejectLearnerCharacter", "LearnerProfile", new {questionnaire.QuestionnaireID }))', { 'keyID': '@(_learner.UID.EncryptKey())' }, function (data) {
+                                                                            $.post('@Html.Raw(Url.Action("RejectLearnerCharacter", "LearnerProfile", new {questionnaire.QuestionnaireID }))', { 'keyID': '@Html.Raw(_learner.UID.EncryptKey())' }, function (data) {
                                                                                 hideLoading();
                                                                                 if ($.isPlainObject(data)) {
                                                                                     if (data.result) {
-                                                                                        $('').launchDownload('@Html.Raw(Url.Action("LearnerProfile","ConsoleHome"))', { 'keyID': '@(_learner.UID.EncryptKey())' });
+                                                                                        $('').launchDownload('@Html.Raw(Url.Action("LearnerProfile","ConsoleHome"))', { 'keyID': '@Html.Raw(_learner.UID.EncryptKey())' });
                                                                                     } else {
                                                                                         Swal.fire(
                                                                                             'Oops...',
@@ -151,11 +151,11 @@
 <script>
     function startEditingCharacter() {
         showLoading();
-        $.post('@Html.Raw(Url.Action("ResumeLearnerCharacter", "LearnerProfile"))', { 'keyID': '@(_learner.UID.EncryptKey())', 'partID': @((int)QuestionnaireRequest.PartIDEnum.PartA) }, function (data) {
+        $.post('@Html.Raw(Url.Action("ResumeLearnerCharacter", "LearnerProfile"))', { 'keyID': '@Html.Raw(_learner.UID.EncryptKey())', 'partID': @((int)QuestionnaireRequest.PartIDEnum.PartA) }, function (data) {
             hideLoading();
             if ($.isPlainObject(data)) {
                 if (data.result) {
-                    $('').launchDownload('@(Html.Raw(Url.Action("EditLearnerCharacter","ConsoleHome",new { questionnaire.QuestionnaireID, ToPrepare = true, Step = 1 })))', { 'keyID': '@(_learner.UID.EncryptKey())', 'partID': @((int)QuestionnaireRequest.PartIDEnum.PartA) });
+                    $('').launchDownload('@(Html.Raw(Url.Action("EditLearnerCharacter","ConsoleHome",new { questionnaire.QuestionnaireID, ToPrepare = true, Step = 1 })))', { 'keyID': '@Html.Raw(_learner.UID.EncryptKey())', 'partID': @((int)QuestionnaireRequest.PartIDEnum.PartA) });
                 } else {
                     Swal.fire(
                         'Oops...',

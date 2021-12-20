@@ -22,7 +22,7 @@
 @{
     object clickHander(LessonTime item)
     {
-        <text>$('').launchDownload('@Html.Raw(Url.Action("LessonTrainingContent", "ConsoleHome", new { LearnerID = item.RegisterLesson.UID }))', {'keyID':'@(item.LessonID.EncryptKey())' });</text>
+        <text>$('').launchDownload('@Html.Raw(Url.Action("LessonTrainingContent", "ConsoleHome", new { LearnerID = item.RegisterLesson.UID }))', {'keyID': '@Html.Raw(item.LessonID.EncryptKey())' });</text>
         return null;
     }
 }

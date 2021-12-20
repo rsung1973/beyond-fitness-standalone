@@ -7,7 +7,7 @@
 <script>
 @if (_message != null)
 {
-    <text>alert('@Html.Raw(System.Text.Encodings.Web.JavaScriptEncoder.Default.Encode(_message))');</text>
+    <text>alert('@Html.Raw(_message)');</text>
 }
  window.history.go(-1);
 </script>

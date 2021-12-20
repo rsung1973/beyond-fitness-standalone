@@ -8,7 +8,7 @@
     <script>
         Swal.fire({
             title: "",
-            text: '@(System.Text.Encodings.Web.JavaScriptEncoder.Default.Encode(_message))',
+            text: '@(Html.Raw(_message))',
             icon: 'warning',
         }).then((result) => {
             

@@ -29,7 +29,7 @@
                        .OrderBy(u => u.Birthday.Value.Month).ThenBy(u => u.Birthday.Value.Day))
                     {
                         <li class="col-lg-4 col-md-4 col-sm-3 col-6">
-                            <a href="javascript:$('').launchDownload('@Html.Raw(Url.Action("LearnerProfile","ConsoleHome"))', { 'keyID': '@(item.UID.EncryptKey())' });">
+                            <a href="javascript:$('').launchDownload('@Html.Raw(Url.Action("LearnerProfile","ConsoleHome"))', { 'keyID': '@Html.Raw(item.UID.EncryptKey())' });">
                                 @{
                                     ViewBag.ProfileClass = "img-thumbnail popfit";
                                     await Html.RenderPartialAsync("~/Views/Common/ProfileImage.cshtml", item);

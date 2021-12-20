@@ -787,6 +787,10 @@ namespace WebHome.Helper.BusinessOperation
                         }
 
                     }
+                    if (viewModel.SupervisorID.HasValue)
+                    {
+                        item.SupervisorID = viewModel.SupervisorID;
+                    }
                     models.SubmitChanges();
 
                     if (item.CourseContractRevision == null)

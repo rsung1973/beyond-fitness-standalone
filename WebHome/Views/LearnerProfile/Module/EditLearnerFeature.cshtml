@@ -50,7 +50,7 @@
                 {
                     <script>
                         $(function () {
-                            $('#@(currentID) select[name="AbilityStyle"]').val('@(_viewModel.AbilityStyle)');
+                            $('#@(currentID) select[name="AbilityStyle"]').val('@Html.Raw(_viewModel.AbilityStyle)');
                         });
                     </script>
                 }
@@ -67,7 +67,7 @@
                 {
                     <script>
                         $(function () {
-                            $('#@(currentID) select[name="AbilityLevel"]').val('@((int?)_viewModel.AbilityLevel)');
+                            $('#@(currentID) select[name="AbilityLevel"]').val('@Html.Raw((int?)_viewModel.AbilityLevel)');
                         });
                     </script>
                 }

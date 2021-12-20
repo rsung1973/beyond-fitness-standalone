@@ -392,7 +392,7 @@ namespace WebHome.Controllers
 
                 TaskExtensionMethods.ProcessInvoiceToGov();
 
-                return Json(new { result = true, invoiceNo = item.InvoiceItem.TrackCode + item.InvoiceItem.No, item.InvoiceID, item.InvoiceItem.InvoiceType, item.PaymentID });
+                return Content(new { result = true, invoiceNo = item.InvoiceItem.TrackCode + item.InvoiceItem.No, item.InvoiceID, item.InvoiceItem.InvoiceType, item.PaymentID }.JsonStringify(), "application/json");
             }
             catch (Exception ex)
             {

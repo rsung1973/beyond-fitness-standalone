@@ -357,7 +357,7 @@ namespace WebHome.Controllers
                 }
             }
 
-            return Json(new { result = true, status = item.Status, contractID = item.ContractID });
+            return Content(new { result = true, status = item.Status, contractID = item.ContractID }.JsonStringify(), "application/json");
         }
 
         public async Task<ActionResult> SaveContractAsync(CourseContractViewModel viewModel)

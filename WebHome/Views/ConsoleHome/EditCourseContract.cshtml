@@ -64,7 +64,7 @@
                         </select>
                         <script>
                             $(function () {
-                                $('select[name="ContractType"]').val('@((int?)_viewModel.ContractType)');
+                                $('select[name="ContractType"]').val('@Html.Raw((int?)_viewModel.ContractType)');
                                 $('select[name="ContractType"]').on('change', function (event) {
                                     var ct = $(this).val();
                                     $global.viewModel.ContractType = ct;
@@ -103,7 +103,7 @@
                         </select>
                         <script>
                                 $(function () {
-                                    $('select[name="Renewal"]').val('@(_viewModel.Renewal)');
+                                    $('select[name="Renewal"]').val('@Html.Raw(_viewModel.Renewal)');
                                     $('select[name="Renewal"]').on('change', function (event) {
                                         $global.viewModel.Renewal = $(this).val();
                                     });
@@ -130,7 +130,7 @@
                             $(function () {
                                     @if (_viewModel.BranchID.HasValue)
                                     {
-                                        <text>$('select[name="BranchID"]').val('@(_viewModel.BranchID)');</text>
+                                        <text>$('select[name="BranchID"]').val('@Html.Raw(_viewModel.BranchID)');</text>
                                     }
                                     else
                                     {
@@ -153,7 +153,7 @@
                         </select>
                         <script>
                                 $(function () {
-                                    $('select[name="DurationInMinutes"]').val('@(_viewModel.DurationInMinutes)');
+                                    $('select[name="DurationInMinutes"]').val('@Html.Raw(_viewModel.DurationInMinutes)');
                                     $('select[name="DurationInMinutes"]').on('change', function (event) {
                                         $global.viewModel.DurationInMinutes = $(this).val();
                                     });
@@ -170,7 +170,7 @@
                         </div>
                         <script>
                                 $(function () {
-                                    $('input[name="Lessons"]').val('@(_viewModel.Lessons)');
+                                    $('input[name="Lessons"]').val('@Html.Raw(_viewModel.Lessons)');
                                     $('input[name="Lessons"]').on('change', function (event) {
                                         $global.viewModel.Lessons = $(this).val();
                                         calcTotalCost();

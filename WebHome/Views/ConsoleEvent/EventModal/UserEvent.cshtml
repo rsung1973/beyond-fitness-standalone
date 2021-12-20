@@ -65,7 +65,7 @@
             @if (_profile.IsAssistant() || _model.UID == _profile.UID)
             {
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-darkteal btn-round waves-effect" onclick="bookingCustomEvent({'keyID':'@(_model.EventID.EncryptKey())'});"><i class="zmdi zmdi-edit"></i></button>
+                    <button type="button" class="btn btn-darkteal btn-round waves-effect" onclick="bookingCustomEvent({'keyID': '@Html.Raw(_model.EventID.EncryptKey())'});"><i class="zmdi zmdi-edit"></i></button>
                     <button type="button" class="btn btn-danger btn-round btn-simple btn-round waves-effect waves-red" onclick="javascript:deleteUserEvent('@(_model.EventID.EncryptKey())');"><i class="zmdi zmdi-delete"></i></button>                    
                 </div>
             }

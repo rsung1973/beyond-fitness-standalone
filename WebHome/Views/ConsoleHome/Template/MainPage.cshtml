@@ -309,7 +309,7 @@
                         if (_model.IsCoach() || _model.IsManager() || _model.IsViceManager())
                         {
                             <li>
-                                <a href="javascript:showLoading();$('').launchDownload('@Html.Raw(Url.Action("CoachAchievement","ConsoleHome"))', { 'keyID': '@(_model.UID.EncryptKey())'});"><i class="zmdi zmdi-file-text"></i><span>我的個人業績</span> </a>
+                                <a href="javascript:showLoading();$('').launchDownload('@Html.Raw(Url.Action("CoachAchievement","ConsoleHome"))', { 'keyID': '@Html.Raw(_model.UID.EncryptKey())'});"><i class="zmdi zmdi-file-text"></i><span>我的個人業績</span> </a>
                             </li>
                         }
                     }
@@ -458,7 +458,7 @@
             $(function () {
                 Swal.fire({
                     icon: 'info',
-                    text: '@(System.Text.Encodings.Web.JavaScriptEncoder.Default.Encode(_viewModel.AlertMessage))',
+                    text: '@(Html.Raw(_viewModel.AlertMessage))',
                     confirmButtonText: '朕知道了',
                 })
             });

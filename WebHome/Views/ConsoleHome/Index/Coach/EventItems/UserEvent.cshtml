@@ -26,7 +26,7 @@
     {
         if (editable)
         {
-            <text>bookingCustomEvent({'keyID':'@(item.EventID.EncryptKey())'});</text>
+            <text>bookingCustomEvent({'keyID': '@Html.Raw(item.EventID.EncryptKey())'});</text>
         }
         else
         {

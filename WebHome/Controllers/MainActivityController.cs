@@ -241,7 +241,7 @@ namespace WebHome.Controllers
                 }
             }
 
-            return Json(new { result = true, item.DocID, item.BlogID });
+            return Content(new { result = true, item.DocID, item.BlogID }.JsonStringify(), "application/json");
         }
 
         public ActionResult CommitArticleContent(BlogArticleQueryViewModel viewModel)
@@ -288,7 +288,7 @@ namespace WebHome.Controllers
                     }
                     //zip.ExtractToDirectory(blogPath);
                 }
-                return Json(new { result = true, item.DocID, item.BlogID });
+                return Content(new { result = true, item.DocID, item.BlogID }.JsonStringify(), "application/json");
             }
             catch(Exception ex)
             {

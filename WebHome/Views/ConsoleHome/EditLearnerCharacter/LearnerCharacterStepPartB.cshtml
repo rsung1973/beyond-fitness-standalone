@@ -140,7 +140,7 @@
             nextStep(1);
         } else {
             $global.rejectCharacterDone = function () {
-                $('').launchDownload('@Html.Raw(Url.Action("LearnerProfile","ConsoleHome"))', { 'keyID': '@(_learner.UID.EncryptKey())' });
+                $('').launchDownload('@Html.Raw(Url.Action("LearnerProfile","ConsoleHome"))', { 'keyID': '@Html.Raw(_learner.UID.EncryptKey())' });
             };
         }
     }

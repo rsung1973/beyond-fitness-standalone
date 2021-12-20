@@ -239,7 +239,7 @@
                         <td></td>
                         <td style="vertical-align: middle;">
                             主管簽約代表：
-                            <img src="@(_contract.Supervisor?.UserProfileExtension.Signature)" width="200px" class="modifySignDialog_link">
+                            <img src="@(ViewBag.Supervisor != null ? ((UserProfile)ViewBag.Supervisor).UserProfileExtension.Signature :_contract.Supervisor?.UserProfileExtension.Signature)" width="200px" class="modifySignDialog_link">
                         </td>
                     </tr>
                     <tr>
