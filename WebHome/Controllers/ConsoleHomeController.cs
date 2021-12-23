@@ -716,6 +716,24 @@ namespace WebHome.Controllers
             }
             ViewBag.CurrentQuestionnaire = questionnaire;
 
+            ViewBag.ToCommitLessons = (new LessonOverviewQueryViewModel
+            {
+                CoachID = profile.UID,
+                DateTo = DateTime.Today,
+                CoachAttended = false,
+                CombinedStatus = new Naming.LessonPriceStatus?[]
+                        {
+                            Naming.LessonPriceStatus.一般課程,
+                            Naming.LessonPriceStatus.團體學員課程,
+                            Naming.LessonPriceStatus.已刪除,
+                            Naming.LessonPriceStatus.點數兌換課程,
+                            Naming.LessonPriceStatus.員工福利課程,
+                            Naming.LessonPriceStatus.自主訓練,
+                            Naming.LessonPriceStatus.體驗課程,
+                            Naming.LessonPriceStatus.企業合作方案,
+                        },
+            }).InquireLesson(models);
+
             return View("~/Views/ConsoleHome/LessonTrainingContent.cshtml", profile.LoadInstance(models));
         }
 
@@ -1187,8 +1205,45 @@ namespace WebHome.Controllers
             var profile = await HttpContext.GetUserAsync();
             return View("~/Views/BusinessConsole/RevenueReview.cshtml", profile.LoadInstance(models));
 
-
         }
+
+        public async Task<ActionResult> LessonIndexAsync(LessonOverviewQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            if (!viewModel.DateFrom.HasValue)
+            {
+                viewModel.DateFrom = DateTime.Today.FirstDayOfMonth();
+            }
+            if (!viewModel.DateTo.HasValue)
+            {
+                viewModel.DateTo = viewModel.DateFrom.Value.AddMonths(1);
+            }
+
+            var profile = await HttpContext.GetUserAsync();
+            if (!viewModel.CoachID.HasValue)
+            {
+                viewModel.CoachID = profile.UID;
+            }
+
+            var items = viewModel.InquireLesson(models, true);
+            ViewBag.DataItems = items;
+
+            return View("~/Views/LessonConsole/LessonIndex.cshtml", profile.LoadInstance(models));
+        }
+
+        public async Task<ActionResult> ProfileIndexAsync(CoachViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+
+            var profile = await HttpContext.GetUserAsync();
+            if (!viewModel.UID.HasValue)
+            {
+                viewModel.UID = profile.UID;
+            }
+
+            return View("~/Views/ConsoleHome/ProfileIndex.cshtml", profile.LoadInstance(models));
+        }
+
 
     }
 }

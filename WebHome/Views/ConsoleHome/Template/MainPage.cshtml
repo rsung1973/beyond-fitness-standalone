@@ -275,7 +275,7 @@
                 <li>
                     <div class="user-info">
                         <div class="image">
-                            <a href="javascript:void(0);">
+                            <a href="@(Url.Action("ProfileIndex","ConsoleHome"))">
                                 @{
                                     await Html.RenderPartialAsync("~/Views/ConsoleHome/Module/ProfileImage.cshtml", _model);
                                 }
@@ -464,6 +464,7 @@
             });
         </script>
     }
+    @RenderSection("AppendToMainPage", false)
 </body>
 </html>
 

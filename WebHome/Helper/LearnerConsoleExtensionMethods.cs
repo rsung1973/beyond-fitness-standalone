@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading;
 using System.Web;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using CommonLib.DataAccess;
 using CommonLib.Utility;
 using WebHome.Models.DataEntity;
@@ -47,6 +48,27 @@ namespace WebHome.Helper
 
         }
 
+        public static String PreparePreivew(this Models.DataEntity.Attachment item, String previewStore)
+        {
+            if (item != null)
+            {
+                if (System.IO.File.Exists(item.StoredPath))
+                {
+                    previewStore.CheckStoredPath();
+                    String fileName = $"{Path.GetFileNameWithoutExtension(item.StoredPath)}.jpg";
+
+                    using (Bitmap img = new Bitmap(item.StoredPath))
+                    {
+                        using (Bitmap m = new Bitmap(img, new Size(Startup.Properties.GetValue<int>("ResourceMaxWidth"), img.Height * Startup.Properties.GetValue<int>("ResourceMaxWidth") / img.Width)))
+                        {
+                            m.Save(Path.Combine(previewStore, fileName), ImageFormat.Jpeg);
+                        }
+                    }
+                    return fileName;
+                }
+            }
+            return null;
+        }
 
     }
 }

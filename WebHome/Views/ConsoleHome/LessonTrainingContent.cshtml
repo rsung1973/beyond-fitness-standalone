@@ -6,6 +6,7 @@
 @using WebHome.Models.ViewModel
 @using WebHome.Models.DataEntity
 @using WebHome.Controllers
+@using CommonLib.Utility 
 @using Microsoft.AspNetCore.Mvc.ModelBinding
 
 @using Newtonsoft.Json
@@ -21,12 +22,19 @@
     _modelState = ViewContext.ModelState;
     _model = (UserProfile)this.Model;
     _viewModel = (DailyBookingQueryViewModel)ViewBag.ViewModel;
+
+    IQueryable<LessonTime> _toCommit = (IQueryable<LessonTime>)ViewBag.ToCommitLessons;
+    var countToCommit = _toCommit.Count();
 }
 @{
     LessonTime lessonItem = (LessonTime)ViewBag.DataItem;
     UserProfile learner = (UserProfile)ViewBag.Learner;
     QuestionnaireRequest questionnaire = (QuestionnaireRequest)ViewBag.CurrentQuestionnaire;
     if (questionnaire != null)
+    {
+        ViewBag.ViewOnly = true;
+    }
+    else if (countToCommit > 0)
     {
         ViewBag.ViewOnly = true;
     }
@@ -386,8 +394,8 @@
                 confirmButtonColor: "#DD6B55",
                 confirmButtonText: "確定, 不後悔",
                 cancelButtonText: "不, 點錯了",
-            }, function (isConfirm) {
-                if (isConfirm) {
+            }).then((result) => {
+                if (result.isConfirmed) {
                     showLoading();
                     $.post('@Html.Raw(Url.Action("CloneCoachPITrainingPlan", "LessonConsole", new { KeyID = lessonItem.LessonID.EncryptKey() }))', viewModel, function (data) {
                         hideLoading();
@@ -597,5 +605,40 @@
                 });
             };
         </script>
+    }
+
+}
+
+@section AppendToMainPage
+{
+    @if (countToCommit > 0)
+    {
+<script>
+
+            $(function () {
+                checkUnfinishLesson();
+            });
+
+            function checkUnfinishLesson() {
+                Swal.fire({
+                    title: "未完成課表：@(countToCommit)",
+                    text: "請您完成後即可繼續編輯",
+                    icon: "warning",
+                    showCancelButton: false,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "前往每月上課概況→",
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $('').launchDownload('@Html.Raw(Url.Action("LessonIndex", "ConsoleHome"))', @Html.Raw((new LessonOverviewQueryViewModel
+                                                                                              {
+                                                                                                  CoachID = _model.UID,
+                                                                                                  QueryStart = DateTime.Today.FirstDayOfMonth(),
+                                                                                              }).JsonStringify()));
+                    }
+                });
+            }
+</script>
     }
 }

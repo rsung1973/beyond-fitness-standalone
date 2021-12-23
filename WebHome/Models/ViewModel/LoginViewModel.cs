@@ -209,7 +209,7 @@ namespace WebHome.Models.ViewModel
     }
 
 
-    public class CoachViewModel
+    public class CoachViewModel : QueryViewModel
     {
         public CoachViewModel()
         {

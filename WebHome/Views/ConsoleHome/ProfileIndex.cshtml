@@ -1,0 +1,284 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+@using Newtonsoft.Json
+
+@{
+    Layout = "~/Views/ConsoleHome/Template/MainPage.cshtml";
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    UserProfile _model;
+
+    CoachViewModel _viewModel;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    _model = (UserProfile)this.Model;
+    _viewModel = (CoachViewModel)ViewBag.ViewModel;
+
+}
+
+@section CustomHeader {
+    <link href="plugins/smartcalendar/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+    <link href="css/smartcalendar-2.css" rel="stylesheet" />
+    <!-- royalslider -->
+    <link href="plugins/royalslider/royalslider.css" rel="stylesheet" />
+    <link href="plugins/royalslider/skins/default/rs-default.css" rel="stylesheet" />
+    <link href="css/royalslider.css?1.1" rel="stylesheet" />
+    <!-- charts-c3 -->
+    <link href="plugins/charts-c3/plugin.css?2.0" rel="stylesheet">
+    <!-- Multi Select Css -->
+    <link href="plugins/multi-select/css/multi-select.css" rel="stylesheet">
+    <!-- jSignature -->
+    <link rel="stylesheet" href="css/jsignature.css">
+}
+
+<!--Sparkline Plugin Js-->
+<script src="plugins/jquery-sparkline/jquery.sparkline.js"></script>
+<section class="content">
+
+    @{
+        ViewBag.BlockHeader = "我的機密檔案";
+        await Html.RenderPartialAsync("~/Views/ConsoleHome/Module/BlockHeader.cshtml", _model);
+    }
+
+    <!--基本資料-->
+    <div class="container-fluid">
+        <div class="card widget_3">
+            <ul class="row clearfix list-unstyled m-b-0">
+                <li class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="body">
+                        <div class="row">
+                            <div class="col-12">
+                                <h5 class="m-t-0">大頭貼</h5>
+                            </div>
+                            <div class="col-12">
+                                <form enctype="multipart/form-data" method="post">
+                                    @{
+                                        String previewPath = "../temp";
+                                        String fileName = _model.Attachment.PreparePreivew(Startup.MapPath("temp"));
+                                        ViewBag.DropifyDefaultFile = fileName != null
+                                              ? $"{previewPath}/{fileName}"
+                                              : "images/avatar/noname.png";
+                                        ViewBag.DropifyExtension = "gif jpg jpeg png";
+                                        await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/DropifyFileUpload.cshtml");
+                                    }
+                                </form>
+                                <script>
+                                    $(function () {
+                                        $global.uploadFile = function ($file, done) {
+
+                                            $('form').ajaxForm({
+                                                url: '@Html.Raw(Url.Action("UpdateProfileImage", "Account"))',
+                                                data: $global.viewModel,
+                                                beforeSubmit: function () {
+                                                    showLoading();
+                                                },
+                                                success: function (data) {
+                                                    hideLoading();
+                                                    if (data.result) {
+                                                        Swal.fire({
+                                                            title: "大頭貼更新完成",
+                                                            text: "",
+                                                            icon: "success",
+                                                            showCancelButton: false,
+                                                            confirmButtonColor: "#DD6B55",
+                                                            confirmButtonText: "確定",
+                                                            closeOnConfirm: true
+                                                        }).then((result) => {
+
+                                                        });
+                                                    } else {
+                                                        Swal.fire(
+                                                            'Oops...',
+                                                            data.message,
+                                                            'warning'
+                                                        );
+                                                    }
+                                                },
+                                                error: function () {
+                                                    hideLoading();
+                                                }
+                                            }).submit();
+                                        }
+                                    });
+                                </script>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="body">
+                        <div class="row">
+                            <div class="col-12">
+                                <h5 class="m-t-0">
+                                    個人簽名檔
+                                    <img id="sigImg" src="@(_model.UserProfileExtension != null && _model.UserProfileExtension.Signature != null ? _model.UserProfileExtension.Signature : VirtualPathUtility.ToAbsolute("~/img/SignHere.png"))" width="200px" />
+                                </h5>
+                            </div>
+                            <div class="col-12">
+                                <div id="signatureparent">
+                                    <div id="signature"></div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <button type="button" class="btn btn-darkteal btn-round waves-effect float-right" onclick="confirmSignature();">確定，寫很美</button>
+                                <button type="button" class="btn btn-danger btn-round btn-simple btn-round waves-effect waves-red resign btnReset">太醜了, 重來一次</button>
+                            </div>
+                            <script>
+                                $(function () {
+                                    $("#signature").empty();
+                                    $("#signature").jSignature({
+                                        width: '100%',
+                                        height: 150,
+                                        'UndoButton': true,
+                                        'sizeRatio': 2
+                                    });
+
+                                    $(".btnReset").on('click', function (event) {
+                                        $("#signature").jSignature('reset');
+                                    });
+
+                                });
+
+                                function confirmSignature() {
+
+                                    if ($("#signature").jSignature('getData', 'native').length < 1) {
+                                        Swal.fire(
+                                            'Oops...',
+                                            '請簽名!!',
+                                            'warning'
+                                        );
+                                        return;
+                                    }
+
+                                    var viewModel = { 'keyID': '@Html.Raw(_model.UID.EncryptKey())' };
+                                    viewModel.Signature = $("#signature").jSignature("getData");
+
+                                    showLoading();
+                                    $.post('@(Url.Action("CommitSignature", "Account"))', viewModel, function (data) {
+                                        hideLoading();
+                                        if ($.isPlainObject(data)) {
+                                            if (data.result) {
+                                                $('#sigImg')[0].src = viewModel.Signature;
+                                            } else {
+                                                Swal.fire(
+                                                    'Oops...',
+                                                    data.message,
+                                                    'warning'
+                                                );
+                                            }
+                                        }
+                                        else {
+                                            $(data).appendTo($('body'));
+                                        }
+                                    });
+                                }
+                            </script>
+                        </div>
+                    </div>
+                </li>
+                <li class="col-lg-4 col-md-12 col-sm-12">
+                    <div class="body" id="inputArea">
+                        <div class="row">
+                            <div class="col-12">
+                                <h5 class="m-t-0">登入資訊</h5>
+                            </div>
+                            <div class="col-12">
+                                <div class="input-group">
+                                    <input type="text" class="form-control form-control-danger" name="EMail" placeholder="Email" value="@(_model.PID)" />
+                                    <span class="input-group-addon">
+                                        <i class="zmdi zmdi-email"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="input-group">
+                                    <input type="password" class="form-control form-control-danger" name="Password" placeholder="請輸入6~10位英數字新密碼" />
+                                    <span class="input-group-addon">
+                                        <i class="zmdi zmdi-text-format"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="input-group">
+                                    <input type="password" class="form-control form-control-danger" name="Password2" placeholder="請再次輸入6~10位英數字新密碼" />
+                                    <span class="input-group-addon">
+                                        <i class="zmdi zmdi-text-format"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <button type="button" class="btn btn-darkteal btn-round waves-effect float-right" onclick="commitProfile();">更新</button>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+</section>
+
+@section TailPageJavaScriptInclude {
+    <!-- countTo Plugin Js -->
+    <script src="bundles/countTo.bundle.js"></script>
+    <!--ChartJS Plugin Js-->
+    <script src="bundles/chartscripts.bundle.js"></script>
+    <!-- royalslider Plugin Js-->
+    <script src="plugins/royalslider/jquery.royalslider.min.js" class="rs-file"></script>
+    <!-- Multi Select Plugin Js -->
+    <script src="plugins/multi-select/js/jquery.multi-select.js"></script>
+    <!-- ChartC3 Js -->
+    <script src="bundles/cs.bundles.js"></script>
+
+    <script src="../js/plugin/jSignature/jSignature.js"></script>
+    <script src="../js/plugin/jSignature/plugins/jSignature.CompressorBase30.js"></script>
+    <script src="../js/plugin/jSignature/plugins/jSignature.CompressorSVG.js"></script>
+    <script src="../js/plugin/jSignature/plugins/jSignature.UndoButton.js"></script>
+    <script src="../js/plugin/jSignature/plugins/signhere/jSignature.SignHere.js"></script>
+
+    <script>
+
+        $(function () {
+
+        });
+
+        function commitProfile() {
+            var viewModel = $('#inputArea').find('input,select,textArea').serializeObject();
+            clearErrors();
+            showLoading();
+            $.post('@Html.Raw(Url.Action("CommitProfile", "Account"))', viewModel, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    if (data.result) {
+                        Swal.fire(
+                            '幹得好!',
+                            '更新完成!!',
+                            'success'
+                        );
+                    } else {
+                        Swal.fire(
+                            'Oops...',
+                            data.message,
+                            'warning'
+                        );
+                    }
+                }
+                else {
+                    $(data).appendTo($('body'));
+                }
+            });
+        }
+
+    </script>
+}
+
+
