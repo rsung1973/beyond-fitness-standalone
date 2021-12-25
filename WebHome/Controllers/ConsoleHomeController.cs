@@ -721,7 +721,7 @@ namespace WebHome.Controllers
                 CoachID = profile.UID,
                 DateTo = DateTime.Today,
                 CoachAttended = false,
-                CombinedStatus = new Naming.LessonPriceStatus?[]
+                CombinedStatus = new Naming.LessonPriceStatus[]
                         {
                             Naming.LessonPriceStatus.一般課程,
                             Naming.LessonPriceStatus.團體學員課程,

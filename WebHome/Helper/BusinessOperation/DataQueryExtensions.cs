@@ -103,7 +103,7 @@ namespace WebHome.Helper.BusinessOperation
 
             if (viewModel.CombinedStatus != null && viewModel.CombinedStatus.Length > 0)
             {
-                var tuition = models.GetTable<V_Tuition>().Where(v => viewModel.CombinedStatus.Contains((Naming.LessonPriceStatus?)v.PriceStatus));
+                var tuition = models.GetTable<V_Tuition>().Where(v => viewModel.CombinedStatus.Contains((Naming.LessonPriceStatus)v.PriceStatus));
                 items = items.Join(tuition, l => l.LessonID, v => v.LessonID, (l, v) => l);
             }
 

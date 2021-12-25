@@ -18,7 +18,7 @@
 @if (_message != null)
 {
     <script>
-        alert('@(HttpUtility.JavaScriptStringEncode(_message))');
+        alert('@Html.Raw(HttpUtility.JavaScriptStringEncode(_message))');
         if (typeof (hideLoading) === 'function') {
             hideLoading();
         }

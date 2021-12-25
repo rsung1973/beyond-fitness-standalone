@@ -526,7 +526,7 @@ namespace WebHome.Models.ViewModel
         public bool? LearnerCommitted { get; set; }
         public Naming.LessonQueryType? LessonType { get; set; }
         public bool? ByManager { get; set; }
-        public Naming.LessonPriceStatus?[] CombinedStatus { get; set; }
+        public Naming.LessonPriceStatus[] CombinedStatus { get; set; }
 
     }
 

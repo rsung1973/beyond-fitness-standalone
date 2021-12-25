@@ -8,6 +8,7 @@
 @using WebHome.Models.ViewModel
 @using WebHome.Models.DataEntity
 @using WebHome.Controllers
+@using WebHome.Helper.BusinessOperation
 @using Microsoft.AspNetCore.Mvc.ModelBinding
 @using Newtonsoft.Json
 @using CommonLib.Utility
@@ -170,7 +171,9 @@
                         <div class="table-responsive" id="lessonList">
                             @{
                                 _viewModel.ScrollToView = false;
-                                await Html.RenderPartialAsync("~/Views/LessonConsole/Module/LessonList.cshtml", _items);
+                                var tmpModel = (LessonOverviewQueryViewModel)_viewModel.Duplicate();
+                                tmpModel.CoachAttended = false;
+                                await Html.RenderPartialAsync("~/Views/LessonConsole/Module/LessonList.cshtml", tmpModel.InquireLesson(models, true));
                             }
                         </div>
                     </div>

@@ -32,7 +32,7 @@
     //{
     //    items.Add(new urlsetUrl
     //    {
-    //        loc = Startup.Properties["HostDomain"] + VirtualPathUtility.ToAbsolute($"~/Official/BlogArticleList?CategoryID={item.CategoryID}"),
+    //        loc = Startup.Properties["HostDomain"] + VirtualPathUtility.ToAbsolute($"~/MainActivity/BlogArticleList?CategoryID={item.CategoryID}"),
     //        priority = 1.0m,
     //        prioritySpecified = true,
     //        lastmod = today,
@@ -49,7 +49,7 @@
     {
         items.Add(new urlsetUrl
         {
-            loc = Startup.Properties["HostDomain"] + VirtualPathUtility.ToAbsolute($"~/Official/BlogSingle?{HttpUtility.UrlEncode(JsonConvert.SerializeObject(new { b.DocID }).EncryptKey())}"),
+            loc = Startup.Properties["HostDomain"] + VirtualPathUtility.ToAbsolute($"~/MainActivity/BlogSingle?id={b.DocID }"),
             priority = 0.8m,
             prioritySpecified = true,
             lastmod = new DateTime(b.Document.DocDate.Ticks, DateTimeKind.Local),

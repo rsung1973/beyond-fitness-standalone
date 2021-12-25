@@ -28,7 +28,7 @@
             @if (ViewBag.AlertError == true)
             {
                 <text>
-                    alert('@(HttpUtility.JavaScriptStringEncode(_modelState.ErrorMessage()))');
+                    alert('@Html.Raw(HttpUtility.JavaScriptStringEncode(_modelState.ErrorMessage()))');
                 </text>
             }
             @foreach (var key in _modelState.Keys.Where(k => _modelState[k].Errors.Count > 0))
@@ -36,7 +36,7 @@
             <text>
                 $('[name="@(key)"]').after(
                     $('<span class="help-error-text" for="@(key)"></span>')
-                        .text('@(HttpUtility.JavaScriptStringEncode(_singleError
+                        .text('@Html.Raw(HttpUtility.JavaScriptStringEncode(_singleError
                                                     ? _modelState[key].Errors[0].ErrorMessage
                                                     : String.Join("、", _modelState[key].Errors.Select(r => r.ErrorMessage))))')
                 );

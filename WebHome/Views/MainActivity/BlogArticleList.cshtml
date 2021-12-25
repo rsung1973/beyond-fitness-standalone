@@ -57,12 +57,12 @@
                             <li class="list-group-item">
                                 <div class="media">
                                     <div class="media-body">
-                                        <a href="@($"{Url.Action("BlogSingle", "MainActivity")}?{HttpUtility.UrlEncode(JsonConvert.SerializeObject(new { item.DocID }).EncryptKey())}")" class="title">@(item.Title)</a>
+                                        <a href="@($"{Url.Action("BlogSingle", "MainActivity")}?id={item.DocID}")" class="title">@(item.Title)</a>
                                         <span class="author">@(item.UserProfile.FullName())</span>
                                         <span class="date">@($"{item.Document.DocDate:yyyy-MM-dd}")</span>
                                     </div>
                                     <div class="media-right">
-                                        <a href="@($"{Url.Action("BlogSingle", "MainActivity")}?{HttpUtility.UrlEncode(JsonConvert.SerializeObject(new { item.DocID }).EncryptKey())}")">
+                                        <a href="@($"{Url.Action("BlogSingle", "MainActivity")}?id={item.DocID}")">
                                             @{ var imgUrl = $"Blog/{item.BlogID}/images/Title.jpg";}
 
                                             <img class="blog-img" src="images/blog/DefaultTitle.jpg" onload="@(System.IO.File.Exists(Startup.MapPath(imgUrl)) ? $"this.onload = null;this.src = '{imgUrl}';" : null)" />

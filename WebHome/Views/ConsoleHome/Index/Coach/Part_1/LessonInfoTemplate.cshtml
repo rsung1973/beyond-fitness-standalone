@@ -6,6 +6,7 @@
 @using WebHome.Models.ViewModel
 @using WebHome.Models.DataEntity
 @using WebHome.Controllers
+@using CommonLib.Utility
 @using Microsoft.AspNetCore.Mvc.ModelBinding
 
 @using WebHome.Helper.BusinessOperation
@@ -89,7 +90,7 @@
 </div>
 <script>
     function lessonOverview() {
-        var viewModel = @Html.Raw(JsonConvert.SerializeObject(viewModel));
+        var viewModel = @Html.Raw(viewModel.JsonStringify());
         showLoading();
         $('').launchDownload('@Html.Raw(Url.Action("LessonOverview","ConsoleHome"))', viewModel);
     }
