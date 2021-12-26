@@ -634,7 +634,7 @@
                         $('').launchDownload('@Html.Raw(Url.Action("LessonIndex", "ConsoleHome"))', @Html.Raw((new LessonOverviewQueryViewModel
                                                                                               {
                                                                                                   CoachID = _model.UID,
-                                                                                                  QueryStart = DateTime.Today.FirstDayOfMonth(),
+                                                                                                  DateFrom = DateTime.Today.FirstDayOfMonth(),
                                                                                               }).JsonStringify()));
                     }
                 });

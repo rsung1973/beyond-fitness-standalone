@@ -482,12 +482,6 @@ namespace WebHome.Models.ViewModel
         public int? Year { get; set; }
         public int? Month { get; set; }
         public int? BranchID { get; set; }
-        [JsonIgnore]
-        public DateTime? DateFrom 
-        { 
-            get => QueryStart;
-            set => QueryStart = value; 
-        }
         public DateTime? DateTo { get; set; }
         public int? ChartType { get; set; }
         public Naming.SessionTypeDefinition[] SessionType { get; set; }

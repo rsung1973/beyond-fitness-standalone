@@ -759,8 +759,8 @@ namespace WebHome.Controllers
             IQueryable<LessonTime> items = models.GetTable<LessonTime>();
             if (viewModel.CoachID.HasValue)
                 items = items.Where(t => t.AttendingCoach == viewModel.CoachID);
-            if (viewModel.QueryStart.HasValue)
-                items = items.Where(t => t.ClassTime >= viewModel.QueryStart && t.ClassTime < viewModel.QueryStart.Value.AddMonths(1));
+            if (viewModel.DateFrom.HasValue)
+                items = items.Where(t => t.ClassTime >= viewModel.DateFrom && t.ClassTime < viewModel.DateFrom.Value.AddMonths(1));
             if (viewModel.ClassTime.HasValue)
                 items = items.Where(t => t.ClassTime >= viewModel.ClassTime && t.ClassTime < viewModel.ClassTime.Value.AddDays(1));
 
@@ -817,9 +817,9 @@ namespace WebHome.Controllers
                 items = items.Where(q => !q.PDQTask.Any());
             }
 
-            if (viewModel.QueryStart.HasValue)
+            if (viewModel.DateFrom.HasValue)
             {
-                items = items.Where(q => q.RequestDate >= viewModel.QueryStart && q.RequestDate < viewModel.QueryStart.Value.AddMonths(1));
+                items = items.Where(q => q.RequestDate >= viewModel.DateFrom && q.RequestDate < viewModel.DateFrom.Value.AddMonths(1));
             }
             if (viewModel.CoachID.HasValue)
             {

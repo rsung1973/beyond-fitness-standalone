@@ -158,7 +158,7 @@
         if (close) {
             closeActionModal();
         }
-        $global.viewModel.DateFrom = '@($"{idx.AddMonths(-2):yyyy/MM/dd}")';
+        $global.viewModel.DateFrom = '@($"{idx.AddMonths(-3):yyyy/MM/dd}")';
         $global.viewModel.DateTo = '@($"{idx:yyyy/MM/dd}")';
         inquireMonthlyCoachRevenue($global.viewModel);
     }
