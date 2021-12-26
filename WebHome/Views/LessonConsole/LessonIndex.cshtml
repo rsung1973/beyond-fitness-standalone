@@ -171,9 +171,23 @@
                         <div class="table-responsive" id="lessonList">
                             @{
                                 _viewModel.ScrollToView = false;
-                                var tmpModel = (LessonOverviewQueryViewModel)_viewModel.Duplicate();
-                                tmpModel.CoachAttended = false;
-                                await Html.RenderPartialAsync("~/Views/LessonConsole/Module/LessonList.cshtml", tmpModel.InquireLesson(models, true));
+                                await Html.RenderPartialAsync("~/Views/LessonConsole/Module/LessonList.cshtml", (new LessonOverviewQueryViewModel
+                                {
+                                    CoachID = _model.UID,
+                                    DateTo = DateTime.Today,
+                                    CoachAttended = false,
+                                    CombinedStatus = new Naming.LessonPriceStatus[]
+                                        {
+                                            Naming.LessonPriceStatus.一般課程,
+                                            Naming.LessonPriceStatus.團體學員課程,
+                                            Naming.LessonPriceStatus.已刪除,
+                                            Naming.LessonPriceStatus.點數兌換課程,
+                                            Naming.LessonPriceStatus.員工福利課程,
+                                            Naming.LessonPriceStatus.自主訓練,
+                                            Naming.LessonPriceStatus.體驗課程,
+                                            Naming.LessonPriceStatus.企業合作方案,
+                                        },
+                                }).InquireLesson(models));
                             }
                         </div>
                     </div>
