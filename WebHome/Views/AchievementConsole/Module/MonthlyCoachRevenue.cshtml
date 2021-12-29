@@ -57,7 +57,8 @@
     </div>
 </div>
 @{ 
-    DateTime idx = DateTime.Today.FirstDayOfMonth();
+    DateTime recent = DateTime.Today.FirstDayOfMonth();
+    DateTime idx = recent.AddMonths(-1);
 }
 <script>
 
@@ -158,10 +159,20 @@
         if (close) {
             closeActionModal();
         }
-        $global.viewModel.DateFrom = '@($"{idx.AddMonths(-3):yyyy/MM/dd}")';
+        $global.viewModel.DateFrom = '@($"{idx.AddMonths(-2):yyyy/MM/dd}")';
         $global.viewModel.DateTo = '@($"{idx:yyyy/MM/dd}")';
         inquireMonthlyCoachRevenue($global.viewModel);
     }
+
+    function showRecentMonthBarChart(close) {
+        if (close) {
+            closeActionModal();
+        }
+        $global.viewModel.DateFrom = '@($"{recent.AddMonths(-3):yyyy/MM/dd}")';
+        $global.viewModel.DateTo = '@($"{recent:yyyy/MM/dd}")';
+        inquireMonthlyCoachRevenue($global.viewModel);
+    }
+
 
     function showSixMonthBarChart() {
         $global.viewModel.DateFrom = '@($"{idx.AddMonths(-5):yyyy/MM/dd}")';
@@ -221,8 +232,8 @@
             inquireMonthlyCoachRevenue(viewModel);
         };
         $global.viewModel.DialogID = 'lessonCurve';
-        $global.viewModel.DateFrom = '@($"{idx.AddMonths(-2):yyyy/MM/dd}")';
-        $global.viewModel.DateTo = '@($"{idx:yyyy/MM/dd}")';
+        $global.viewModel.DateFrom = '@($"{recent.AddMonths(-3):yyyy/MM/dd}")';
+        $global.viewModel.DateTo = '@($"{recent:yyyy/MM/dd}")';
 
         showLoading();
         $.post('@Html.Raw(Url.Action("SelectLessonCurve", "AchievementConsole"))', $global.viewModel, function (data) {

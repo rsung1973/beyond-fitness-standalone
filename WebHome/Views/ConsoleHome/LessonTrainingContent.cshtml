@@ -30,11 +30,14 @@
     LessonTime lessonItem = (LessonTime)ViewBag.DataItem;
     UserProfile learner = (UserProfile)ViewBag.Learner;
     QuestionnaireRequest questionnaire = (QuestionnaireRequest)ViewBag.CurrentQuestionnaire;
+
+    bool alertUndone = countToCommit > 0 && lessonItem.ClassTime >= DateTime.Today;
+
     if (questionnaire != null)
     {
         ViewBag.ViewOnly = true;
     }
-    else if (countToCommit > 0)
+    else if (alertUndone)
     {
         ViewBag.ViewOnly = true;
     }
@@ -611,7 +614,7 @@
 
 @section AppendToMainPage
 {
-    @if (countToCommit > 0)
+    @if (alertUndone)
     {
 <script>
 
