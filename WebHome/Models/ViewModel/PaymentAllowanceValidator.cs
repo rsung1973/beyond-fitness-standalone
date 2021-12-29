@@ -86,17 +86,17 @@ namespace WebHome.Models.ViewModel
             _productItems = new List<InvoiceAllowanceItem>();
             var invTable = _mgr.GetTable<InvoiceItem>();
 
-                InvoiceItem originalInvoice = _payment.InvoiceItem;
+            InvoiceItem originalInvoice = _payment.InvoiceItem;
 
-                if (originalInvoice == null)
-                {
-                    return new Exception("發票資料不存在!!");
-                }
+            if (originalInvoice == null)
+            {
+                return new Exception("發票資料不存在!!");
+            }
 
-                if (originalInvoice.InvoiceCancellation != null)
-                {
-                    return new Exception("該發票已作廢，不可折讓。");
-                }
+            if (originalInvoice.InvoiceCancellation != null)
+            {
+                return new Exception("該發票已作廢，不可折讓。");
+            }
 
             InvoiceAllowanceItem allowanceItem;
             if (originalInvoice.InvoiceType == (int)Naming.InvoiceTypeDefinition.一般稅額計算之電子發票)
@@ -140,9 +140,9 @@ namespace WebHome.Models.ViewModel
             allowanceItem.Tax = _totalAllowanceAmount - allowanceItem.Amount;
 
             _productItems.Add(allowanceItem);
-            
 
-            _newItem = new InvoiceAllowance() 
+
+            _newItem = new InvoiceAllowance()
             {
                 Document = new Document
                 {
@@ -150,7 +150,7 @@ namespace WebHome.Models.ViewModel
                     DocType = (int)Naming.DocumentTypeDefinition.E_Allowance
                 },
                 AllowanceDate = _allowanceDate,
-                AllowanceNumber = originalInvoice.TrackCode+originalInvoice.No,
+                AllowanceNumber = originalInvoice.TrackCode + originalInvoice.No,
                 AllowanceType = 1,
                 InvoiceID = originalInvoice.InvoiceID,
                 BuyerId = originalInvoice.InvoiceBuyer.ReceiptNo,
@@ -181,11 +181,9 @@ namespace WebHome.Models.ViewModel
                 }
             };
 
-            var detailsTable = _mgr.GetTable<InvoiceAllowanceDetails>();
-            detailsTable.InsertAllOnSubmit(_productItems.Select(p => new InvoiceAllowanceDetails 
+            _newItem.InvoiceAllowanceDetails.AddRange(_productItems.Select(p => new InvoiceAllowanceDetails
             {
                 InvoiceAllowanceItem = p,
-                InvoiceAllowance = _newItem,
             }));
 
             _payment.InvoiceAllowance = _newItem;

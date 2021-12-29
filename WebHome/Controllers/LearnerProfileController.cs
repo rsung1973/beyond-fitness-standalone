@@ -272,17 +272,16 @@ namespace WebHome.Controllers
                 QuestionnaireID = viewModel.QuestionnaireID,
             };
 
-            if (sugguestion!=null)
+            if (sugguestion != null)
             {
                 if (sugguestion.Length > 0)
                 {
                     if (question.QuestionType == (int)Naming.QuestionType.多重選 || question.QuestionType == (int)Naming.QuestionType.多重選其他)
                     {
-                        models.GetTable<PDQTaskItem>().InsertAllOnSubmit(viewModel.SuggestionID
+                        item.PDQTaskItem.AddRange(viewModel.SuggestionID
                             .Where(s => s.HasValue)
                             .Select(s => new PDQTaskItem
                             {
-                                TaskID = item.TaskID,
                                 SuggestionID = s.Value
                             }));
                     }

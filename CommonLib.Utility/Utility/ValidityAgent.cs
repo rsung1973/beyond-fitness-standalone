@@ -217,7 +217,7 @@ namespace CommonLib.Utility
 
         public static string GetDateStylePath(this string prefix, DateTime date)
         {
-            string path = Path.Combine(prefix, String.Format("{0:yyyy}\\{0:MM}\\{0:dd}", date));
+            string path = Path.Combine(prefix, $"{date:yyyy}", $"{date:MM}", $"{date:dd}");
 
             if (!Directory.Exists(path))
                 Directory.CreateDirectory(path);

@@ -32,7 +32,7 @@ namespace WebHome
 
         public static String MapPath(String path)
         {
-            return Path.Combine(Environment.WebRootPath, path.Replace("~", ""));
+            return Path.Combine(Environment.WebRootPath, path.Replace("~/", "").Replace('/', Path.DirectorySeparatorChar));
         }
 
         public Startup(IConfiguration configuration)

@@ -142,7 +142,7 @@ namespace CommonLib.Logger
                 }
                 else
                 {
-                    filePath = String.Format("{0}\\{1:000000000000}_({3}).{2}", LogDailyPath, Interlocked.Increment(ref _fileID), qName, ((ILogObject)obj).Subject);
+                    filePath = Path.Combine(LogDailyPath, String.Format("{0:000000000000}_({2}).{1}",  Interlocked.Increment(ref _fileID), qName, ((ILogObject)obj).Subject));
                     result = obj.ToString();
 
                     File.AppendAllText(filePath, $"{DateTime.Now:yyyy/MM/dd HH:mm:ss}\r\n", Encoding.UTF8);

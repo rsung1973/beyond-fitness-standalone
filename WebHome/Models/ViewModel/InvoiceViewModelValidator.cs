@@ -146,14 +146,12 @@ namespace WebHome.Models.ViewModel
                 Remark = _invItem.Remark,
             };
 
-            var detailsTable = _mgr.GetTable<InvoiceDetails>();
-            detailsTable.InsertAllOnSubmit(_productItems.Select(p => new InvoiceDetails
+            _newItem.InvoiceDetails.AddRange(_productItems.Select(p => new InvoiceDetails
             {
                 InvoiceProduct = p.InvoiceProduct,
-                InvoiceItem = _newItem,
             }));
 
-            if(_newItem.InvoiceBuyer.ReceiptNo!= "0000000000")
+            if (_newItem.InvoiceBuyer.ReceiptNo != "0000000000")
             {
                 _newItem.PrintMark = "Y";
             }

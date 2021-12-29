@@ -210,6 +210,7 @@ namespace WebHome.Models.Locale
             FM = 1106,
             AFM = 1107,
             FES = 1108,
+            Health = 1109,
         }
 
         public static readonly ProfessionalCategory[] ManagerialLevel = new ProfessionalCategory[]

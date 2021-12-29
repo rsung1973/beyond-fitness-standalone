@@ -922,8 +922,8 @@ namespace WebHome.Helper
             return items;
         }
 
-        public static TrainingPlan CloneTrainingPlan(this GenericManager<BFDataContext> models, TrainingPlan source,TrainingPlan target = null,bool copyEmphasis = true)
-            
+        public static TrainingPlan CloneTrainingPlan(this GenericManager<BFDataContext> models, TrainingPlan source, TrainingPlan target = null, bool copyEmphasis = true)
+
         {
             if (source == target || source == null)
             {
@@ -953,12 +953,11 @@ namespace WebHome.Helper
             {
                 target.TrainingExecution.Emphasis = source.TrainingExecution.Emphasis;
             }
-            models.GetTable<TrainingExecutionStage>().InsertAllOnSubmit(source.TrainingExecution.TrainingExecutionStage
+            target.TrainingExecution.TrainingExecutionStage.AddRange(source.TrainingExecution.TrainingExecutionStage
                 .Select(t => new TrainingExecutionStage
                 {
                     StageID = t.StageID,
-                    TotalMinutes = t.TotalMinutes,
-                    ExecutionID = target.TrainingExecution.ExecutionID
+                    TotalMinutes = t.TotalMinutes
                 }));
 
             foreach (var i in source.TrainingExecution.TrainingItem)
@@ -979,11 +978,10 @@ namespace WebHome.Helper
                 };
 
                 target.TrainingExecution.TrainingItem.Add(item);
-                models.GetTable<TrainingItemAids>().InsertAllOnSubmit(i.TrainingItemAids
+                item.TrainingItemAids.AddRange(i.TrainingItemAids
                     .Select(a => new TrainingItemAids
                     {
-                        AidID = a.AidID,
-                        TrainingItem = item
+                        AidID = a.AidID
                     }));
 
             }

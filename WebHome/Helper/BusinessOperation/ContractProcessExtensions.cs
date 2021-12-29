@@ -210,8 +210,8 @@ namespace WebHome.Helper.BusinessOperation
            
         }
 
-        public static async Task<CourseContract> SaveCourseContractAsync(this CourseContractViewModel viewModel, SampleController<UserProfile> controller, bool checkPayment=false)
-                
+        public static async Task<CourseContract> SaveCourseContractAsync(this CourseContractViewModel viewModel, SampleController<UserProfile> controller, bool checkPayment = false)
+
         {
             var Request = controller.Request;
             var ModelState = controller.ModelState;
@@ -348,12 +348,10 @@ namespace WebHome.Helper.BusinessOperation
             if (viewModel.UID != null && viewModel.UID.Length > 0)
             {
                 models.DeleteAllOnSubmit<CourseContractMember>(m => m.ContractID == item.ContractID);
-                models.GetTable<CourseContractMember>()
-                    .InsertAllOnSubmit(viewModel.UID.Select(u => new CourseContractMember
-                    {
-                        UID = u,
-                        ContractID = item.ContractID,
-                    }));
+                item.CourseContractMember.AddRange(viewModel.UID.Select(u => new CourseContractMember
+                {
+                    UID = u
+                }));
             }
             models.SubmitChanges();
 
@@ -1302,8 +1300,8 @@ namespace WebHome.Helper.BusinessOperation
         }
 
 
-        public static async Task<CourseContract> CommitContractServiceAsync(this CourseContractViewModel viewModel, SampleController<UserProfile> controller,  String attachment = null)
-            
+        public static async Task<CourseContract> CommitContractServiceAsync(this CourseContractViewModel viewModel, SampleController<UserProfile> controller, String attachment = null)
+
         {
             var ModelState = controller.ModelState;
             var ViewBag = controller.ViewBag;
@@ -1387,7 +1385,7 @@ namespace WebHome.Helper.BusinessOperation
                     }
                 }
 
-                if(viewModel.OperationMode != Naming.OperationMode.快速終止)
+                if (viewModel.OperationMode != Naming.OperationMode.快速終止)
                 {
                     if (!viewModel.CauseForEnding.HasValue)
                     {
@@ -1499,10 +1497,9 @@ namespace WebHome.Helper.BusinessOperation
             {
                 case "展延":
 
-                    models.GetTable<CourseContractMember>().InsertAllOnSubmit(item.CourseContractMember.Select(u => new CourseContractMember
+                    newItem.CourseContractMember.AddRange(item.CourseContractMember.Select(u => new CourseContractMember
                     {
-                        UID = u.UID,
-                        CourseContract = newItem,
+                        UID = u.UID
                     }));
 
                     newItem.Expiration = newItem.Expiration.Value.AddMonths(viewModel.MonthExtension.Value);
@@ -1511,10 +1508,9 @@ namespace WebHome.Helper.BusinessOperation
 
                 case "轉點":
 
-                    models.GetTable<CourseContractMember>().InsertAllOnSubmit(item.CourseContractMember.Select(u => new CourseContractMember
+                    newItem.CourseContractMember.AddRange(item.CourseContractMember.Select(u => new CourseContractMember
                     {
-                        UID = u.UID,
-                        CourseContract = newItem,
+                        UID = u.UID
                     }));
 
                     var price = models.GetTable<LessonPriceType>().Where(p => p.PriceID == viewModel.PriceID).First();
@@ -1540,10 +1536,9 @@ namespace WebHome.Helper.BusinessOperation
 
                 case "終止":
 
-                    models.GetTable< CourseContractMember>().InsertAllOnSubmit(item.CourseContractMember.Select(u => new CourseContractMember
+                    newItem.CourseContractMember.AddRange(item.CourseContractMember.Select(u => new CourseContractMember
                     {
-                        UID = u.UID,
-                        CourseContract = newItem,
+                        UID = u.UID
                     }));
 
                     newItem.CourseContractExtension.SettlementPrice = viewModel.SettlementPrice;
@@ -1564,10 +1559,9 @@ namespace WebHome.Helper.BusinessOperation
 
                 case "轉換體能顧問":
 
-                    models.GetTable<CourseContractMember>().InsertAllOnSubmit(item.CourseContractMember.Select(u => new CourseContractMember
+                    newItem.CourseContractMember.AddRange(item.CourseContractMember.Select(u => new CourseContractMember
                     {
-                        UID = u.UID,
-                        CourseContract = newItem
+                        UID = u.UID
                     }));
 
                     newItem.FitnessConsultant = viewModel.FitnessConsultant.Value;
