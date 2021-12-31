@@ -23,7 +23,7 @@
     //Response.ContentType = "application/json";
 }
 {
-  "to": "@(item.ContractOwner.UserProfileExtension.LineID)",
+  "to": "@Html.Raw(item.ContractOwner.UserProfileExtension.LineID)",
   "messages": [
     {
       "type": "flex",
@@ -63,7 +63,7 @@
                     },
                     {
                       "type": "text",
-                      "text": "@(item.CourseContractType.TypeName)",
+                      "text": "@Html.Raw(item.CourseContractType.TypeName)",
                       "wrap": true,
                       "color": "#666666",
                       "size": "sm",
@@ -78,7 +78,7 @@
                   "contents": [
                     {
                       "type": "text",
-                      "text": "@(item.LessonPriceType.BranchStore.IsVirtualClassroom() ? "上課/簽約分店" : "上課場所")",
+                      "text": "@Html.Raw(item.LessonPriceType.BranchStore.IsVirtualClassroom() ? "上課/簽約分店" : "上課場所")",
                       "color": "#aaaaaa",
                       "size": "sm",
                       "flex": 3,
@@ -86,7 +86,7 @@
                     },
                     {
                       "type": "text",
-                      "text": "@(item.LessonPriceType.BranchStore.IsVirtualClassroom() ? $"遠距/{item.CourseContractExtension.BranchStore.BranchName}" : item.CourseContractExtension.BranchStore.BranchName)",
+                      "text": "@Html.Raw(item.LessonPriceType.BranchStore.IsVirtualClassroom() ? $"遠距/{item.CourseContractExtension.BranchStore.BranchName}" : item.CourseContractExtension.BranchStore.BranchName)",
                       "wrap": true,
                       "color": "#666666",
                       "size": "sm",
@@ -109,7 +109,7 @@
                     },
                     {
                       "type": "text",
-                      "text": "@(item.TotalLessonCount(models))",
+                      "text": "@Html.Raw(item.TotalLessonCount(models))",
                       "wrap": true,
                       "color": "#666666",
                       "size": "sm",
@@ -132,7 +132,7 @@
                     },
                     {
                       "type": "text",
-                      "text": "@(item.ServingCoach.UserProfile.FullName())",
+                      "text": "@Html.Raw(item.ServingCoach.UserProfile.FullName())",
                       "wrap": true,
                       "color": "#666666",
                       "size": "sm",

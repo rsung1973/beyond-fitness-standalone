@@ -30,8 +30,8 @@
                 labels: ["柔軟度", "相對肌力", "心肺適能"],
                 datasets: [{
                     label: "分佈圖",
-                    backgroundColor: "@(_item.UserProfile.UserProfileExtension.Gender=="F" ? "rgba(253,92,99,.43)" : "rgba(0,97,210,.43)")",
-                    pointBackgroundColor: "@(_item.UserProfile.UserProfileExtension.Gender=="F" ? "rgba(253,92,99,1)" : "rgba(0,97,210,1)")",
+                    backgroundColor: "@Html.Raw(_item.UserProfile.UserProfileExtension.Gender=="F" ? "rgba(253,92,99,.43)" : "rgba(0,97,210,.43)")",
+                    pointBackgroundColor: "@Html.Raw(_item.UserProfile.UserProfileExtension.Gender=="F" ? "rgba(253,92,99,1)" : "rgba(0,97,210,1)")",
                     data: @(_item!=null ? $"[{_item.Flexibility},{_item.MuscleStrength},{_item.Cardiopulmonary}]" : "[, , ]"),
                 }]
             },

@@ -37,8 +37,8 @@
                         labels: @(JsonConvert.SerializeObject(exerciseItems.Select(x=>x.Exercise).ToArray())),
                         datasets: [{
                             label: "分佈圖",
-                            backgroundColor: "@(_item.UserProfile.UserProfileExtension.Gender=="F" ? "rgba(253,92,99,.43)" : "rgba(0,97,210,.43)")",
-                            pointBackgroundColor: "@(_item.UserProfile.UserProfileExtension.Gender=="F" ? "rgba(253,92,99,1)" : "rgba(0,97,210,1)")",
+                            backgroundColor: "@Html.Raw(_item.UserProfile.UserProfileExtension.Gender=="F" ? "rgba(253,92,99,.43)" : "rgba(0,97,210,.43)")",
+                            pointBackgroundColor: "@Html.Raw(_item.UserProfile.UserProfileExtension.Gender=="F" ? "rgba(253,92,99,1)" : "rgba(0,97,210,1)")",
                             data: @(JsonConvert.SerializeObject(exerciseItems.Select(x=>x.ExerciseGameRank.Where(r=>r.UID==_item.UID).Select(r=>r.RankingScore).FirstOrDefault()).ToArray())),
                         }]
                     },

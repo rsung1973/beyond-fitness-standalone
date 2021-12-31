@@ -27,20 +27,20 @@
 
 @section CustomHeader {
     <!-- og -->
-    <meta property="og:title" content="@(_model.Title)" />
+    <meta property="og:title" content="@Html.Raw(_model.Title)" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Beyond Fitness | 專業與科學化的私人教練" />
-    <meta property="og:url" content="@($"{Startup.Properties["HostDomain"]}{UriHelper.GetEncodedUrl(Context.Request)}")" />
-    <meta property="og:image" content="@($"{Startup.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute($"~/MainActivity/Blog/{_model.BlogID}/images/Title.jpg")}")" />
-    <meta property="og:description" content="@(_model.Subtitle)" />
+    <meta property="og:url" content="@Html.Raw($"{Startup.Properties["HostDomain"]}{UriHelper.GetEncodedUrl(Context.Request)}")" />
+    <meta property="og:image" content="@Html.Raw($"{Startup.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute($"~/MainActivity/Blog/{_model.BlogID}/images/Title.jpg")}")" />
+    <meta property="og:description" content="@Html.Raw(_model.Subtitle)" />
     <meta property="fb:app_id" content="1729720864007103" />
 }
 
 <!-- Main Content -->
 <div id="content" />
 <script>
-    $("#content").load("@($"blog/{_model.BlogID}/content.html")", function (data) {
-        bindTrackingCode('@($"文章_{_model.Title}")');
+    $("#content").load("@Html.Raw($"blog/{_model.BlogID}/content.html")", function (data) {
+        bindTrackingCode('@Html.Raw($"文章_{_model.Title}")');
     });
 </script>
 

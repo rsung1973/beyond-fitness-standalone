@@ -31,34 +31,34 @@
                                                                            .Where(u => roles.Any(r => r.UID == u.UID));}
         @foreach (var u in users)
                                                                    {
-                                                               <option value="@(u.UID)">@(u.FullName())</option>
+                                                               <option value="@Html.Raw(u.UID)">@(u.FullName())</option>
                                                                }
                                                            </optgroup>*@
     @foreach (var branch in models.GetTable<BranchStore>())
     {
-        <optgroup label="@(branch.BranchName)">
+        <optgroup label="@Html.Raw(branch.BranchName)">
             @{ var items = models.GetTable<V_BranchStaff>().Where(w => w.BranchID == branch.BranchID)
-                           .Join(models.GetTable<UserProfile>(), v => v.UID, u => u.UID, (v, u) => u)
-                           .Where(s => s.LevelID == (int)Naming.MemberStatusDefinition.Checked)
-                           .Where(s => s.UID != _profile.UID).ToList()
-                           .OrderBy(u => $"{u.Nickname}{u.RealName}");
+                            .Join(models.GetTable<UserProfile>(), v => v.UID, u => u.UID, (v, u) => u)
+                            .Where(s => s.LevelID == (int)Naming.MemberStatusDefinition.Checked)
+                            .Where(s => s.UID != _profile.UID).ToList()
+                            .OrderBy(u => $"{u.Nickname}{u.RealName}");
                 foreach (var user in items)
                 {
-                    <option value="@(user.UID)">@(user.FullName())</option>
+                    <option value="@(user.UID)">@Html.Raw(user.FullName())</option>
                 }
             }
         </optgroup>
     }
     <optgroup label="其他">
-        @{  
+        @{
             var others = models.GetTable<V_BranchStaff>().Where(w => !w.BranchID.HasValue)
                      .Join(models.GetTable<UserProfile>(), v => v.UID, u => u.UID, (v, u) => u)
                      .Where(s => s.LevelID == (int)Naming.MemberStatusDefinition.Checked)
                      .Where(s => s.UID != _profile.UID).ToList()
-                     .OrderBy(u => $"{u.Nickname}{u.RealName}"); 
+                     .OrderBy(u => $"{u.Nickname}{u.RealName}");
             foreach (var user in others)
             {
-                <option value="@(user.UID)">@(user.FullName())</option>
+                <option value="@(user.UID)">@Html.Raw(user.FullName())</option>
             }
         }
     </optgroup>

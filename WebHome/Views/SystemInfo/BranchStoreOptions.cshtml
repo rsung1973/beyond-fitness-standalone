@@ -27,7 +27,7 @@
 
 @foreach (var b in items)
 {
-    <option class="@(b.IsVirtualClassroom() ? "virtual-store" : null)" value="@(b.BranchID)" selected="@(_model == b.BranchID)">@(b.BranchName)</option>
+    <option class="@(b.IsVirtualClassroom() ? "virtual-store" : null)" value="@(b.BranchID)" selected="@(_model == b.BranchID)">@Html.Raw(b.BranchName)</option>
 }
 
 

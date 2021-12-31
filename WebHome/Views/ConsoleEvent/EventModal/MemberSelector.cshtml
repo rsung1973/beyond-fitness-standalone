@@ -33,7 +33,7 @@
                     @foreach (var item in _model)
                     {
                         <li class="col-lg-4 col-md-4 col-6">
-                            <a onclick="@(_buildSelect(item))">
+                            <a onclick="@Html.Raw(_buildSelect(item))">
                                 @{
                                     ViewBag.ProfileClass = "img-thumbnail popfit";
                                     await Html.RenderPartialAsync("~/Views/Common/ProfileImage.cshtml", item);

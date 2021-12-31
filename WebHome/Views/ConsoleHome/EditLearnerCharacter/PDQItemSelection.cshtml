@@ -57,7 +57,7 @@ else
 @if (_model.QuestionType == (int)Naming.QuestionType.單選其他)
 {
     <div class="form-group p-t-0">
-        <textarea rows="1" cols="100" class="form-control" placeholder="@(referredItem?.PDQAnswer ?? "其他更多說明")" data-id="@(_model.QuestionID)" name="PDQAnswer">@(taskItem?.PDQAnswer)</textarea>
+        <textarea rows="1" cols="100" class="form-control" placeholder="@Html.Raw(referredItem?.PDQAnswer ?? "其他更多說明")" data-id="@(_model.QuestionID)" name="PDQAnswer">@(taskItem?.PDQAnswer)</textarea>
     </div>
 }
 

@@ -61,12 +61,12 @@
                         <div class="col-lg-6 col-md-6 col-sm-6 col-12">
                             <div>
                                 <select class="form-control show-tick" name="BranchID">
-                                    <option value="@(Naming.BranchName.請選擇)">-- 請選擇地點 --</option>
+                                    <option value="@Html.Raw(Naming.BranchName.請選擇)">-- 請選擇地點 --</option>
                                     @{
                                         await Html.RenderPartialAsync("~/Views/SystemInfo/BranchStoreOptions.cshtml", model: (int?)_viewModel.BranchID);
                                     }
-                                    <option value="@(Naming.BranchName.璞真)" selected="@(_viewModel.Place == Naming.BranchName.璞真.ToString())">璞真</option>
-                                    <option value="@(Naming.BranchName.其他)" selected="@((_viewModel.Place == null && !_viewModel.BranchID.HasValue) || _viewModel.Place == Naming.BranchName.其他.ToString())">其他</option>
+                                    <option value="@Html.Raw(Naming.BranchName.璞真)" selected="@(_viewModel.Place == Naming.BranchName.璞真.ToString())">璞真</option>
+                                    <option value="@Html.Raw(Naming.BranchName.其他)" selected="@((_viewModel.Place == null && !_viewModel.BranchID.HasValue) || _viewModel.Place == Naming.BranchName.其他.ToString())">其他</option>
                                 </select>
                             </div>
                         </div>
@@ -84,28 +84,28 @@
                                 <div class="col-sm-12">
                                     @{ await Html.RenderPartialAsync("~/Views/ConsoleEvent/Module/CoachPIAttendeeSelector.cshtml", _viewModel.MemberID);}
                                     @*<select name="MemberID" class="ms employeegroup" multiple="multiple">
-                                            <optgroup label="其他">
-                                                @{ var roles = models.GetTable<UserRoleAuthorization>().Where(r => r.RoleID == (int)Naming.RoleID.Assistant);
-                                                    var users = models.GetTable<UserProfile>()
-                                                            .Where(u => u.LevelID == (int)Naming.MemberStatusDefinition.Checked)
-                                                            .Where(u => roles.Any(r => r.UID == u.UID));}
-                                                @foreach (var u in users)
-                                                {
-                                                    <option value="@(u.UID)">@(u.FullName())</option>
-                                                }
-                                            </optgroup>
-                                            @foreach (var branch in models.GetTable<BranchStore>())
-                                            {
-                                                <optgroup label="@(branch.BranchName)">
-                                                    @{ var items = models.GetTable<CoachWorkplace>().Where(w => w.BranchID == branch.BranchID)
-                                                             .Select(w => w.ServingCoach)
-                                                             .Where(s => s.CoachID != _profile.UID)
-                                                             .Where(s => s.UserProfile.LevelID == (int)Naming.MemberStatusDefinition.Checked);
-                                                        await Html.RenderPartialAsync("~/Views/SystemInfo/ServingCoachOptions.cshtml", items);}
+            <optgroup label="其他">
+                @{ var roles = models.GetTable<UserRoleAuthorization>().Where(r => r.RoleID == (int)Naming.RoleID.Assistant);
+                    var users = models.GetTable<UserProfile>()
+                            .Where(u => u.LevelID == (int)Naming.MemberStatusDefinition.Checked)
+                            .Where(u => roles.Any(r => r.UID == u.UID));}
+                @foreach (var u in users)
+                {
+                    <option value="@(u.UID)">@Html.Raw(u.FullName())</option>
+                }
+            </optgroup>
+            @foreach (var branch in models.GetTable<BranchStore>())
+            {
+                <optgroup label="@Html.Raw(branch.BranchName)">
+                    @{ var items = models.GetTable<CoachWorkplace>().Where(w => w.BranchID == branch.BranchID)
+                             .Select(w => w.ServingCoach)
+                             .Where(s => s.CoachID != _profile.UID)
+                             .Where(s => s.UserProfile.LevelID == (int)Naming.MemberStatusDefinition.Checked);
+                        await Html.RenderPartialAsync("~/Views/SystemInfo/ServingCoachOptions.cshtml", items);}
 
-                                                </optgroup>
-                                            }
-                                        </select>*@
+                </optgroup>
+            }
+        </select>*@
                                 </div>
                                 <div class="col-sm-12">
                                     <div class="form-line">

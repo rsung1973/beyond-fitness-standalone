@@ -24,7 +24,7 @@
     var originalContract = _model.CourseContractRevision.SourceContract;
 }
 {
-  "to": "@(_model.ContractAgent.UserProfileExtension.LineID)",
+  "to": "@Html.Raw(_model.ContractAgent.UserProfileExtension.LineID)",
   "messages": [
     {
       "type": "flex",
@@ -64,7 +64,7 @@
                     },
                     {
                       "type": "text",
-                      "text": "@(_model.CourseContractType.TypeName)",
+                      "text": "@Html.Raw(_model.CourseContractType.TypeName)",
                       "wrap": true,
                       "color": "#666666",
                       "size": "sm",
@@ -87,7 +87,7 @@
                     },
                     {
                       "type": "text",
-                      "text": "@(_model.ServingCoach.UserProfile.FullName())",
+                      "text": "@Html.Raw(_model.ServingCoach.UserProfile.FullName())",
                       "wrap": true,
                       "color": "#666666",
                       "size": "sm",
@@ -110,7 +110,7 @@
                     },
                     {
                       "type": "text",
-                      "text": "@(_model.ContractLearnerName())",
+                      "text": "@Html.Raw(_model.ContractLearnerName())",
                       "wrap": true,
                       "color": "#666666",
                       "size": "sm",
@@ -133,7 +133,7 @@
                     },
                     {
                       "type": "text",
-                      "text": "@(originalContract.RemainedLessonCount())",
+                      "text": "@Html.Raw(originalContract.RemainedLessonCount())",
                       "wrap": true,
                       "color": "#666666",
                       "size": "sm",
@@ -156,7 +156,7 @@
                     },
                     {
                       "type": "text",
-                      "text": "@((_model.Expiration.Value.Year * 12 + _model.Expiration.Value.Month) - (originalContract.Expiration.Value.Year * 12 + originalContract.Expiration.Value.Month))",
+                      "text": "@Html.Raw((_model.Expiration.Value.Year * 12 + _model.Expiration.Value.Month) - (originalContract.Expiration.Value.Year * 12 + originalContract.Expiration.Value.Month))",
                       "wrap": true,
                       "color": "#666666",
                       "size": "sm",
@@ -179,7 +179,7 @@
                     },
                     {
                       "type": "text",
-                      "text": "@($"{_model.Expiration:yyyy/MM/dd}")",
+                      "text": "@Html.Raw($"{_model.Expiration:yyyy/MM/dd}")",
                       "wrap": true,
                       "color": "#666666",
                       "size": "sm",

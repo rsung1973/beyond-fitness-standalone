@@ -30,8 +30,8 @@
                 labels: ["身體質量", "相對肌力", "爆發力", "柔軟度", "心肺適能"],
                 datasets: [{
                     label: "分佈圖",
-                    backgroundColor: "@(_model.UserProfileExtension.Gender=="F" ? "rgba(253,92,99,.43)" : "rgba(0,97,210,.43)")",
-                    pointBackgroundColor: "@(_model.UserProfileExtension.Gender=="F" ? "rgba(253,92,99,1)" : "rgba(0,97,210,1)")",
+                    backgroundColor: "@Html.Raw(_model.UserProfileExtension.Gender=="F" ? "rgba(253,92,99,.43)" : "rgba(0,97,210,.43)")",
+                    pointBackgroundColor: "@Html.Raw(_model.UserProfileExtension.Gender=="F" ? "rgba(253,92,99,1)" : "rgba(0,97,210,1)")",
                     data: [0, 0, 0, 0, 0],
                 }]
             },

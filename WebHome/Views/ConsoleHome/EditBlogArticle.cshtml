@@ -55,7 +55,7 @@
                         <div class="row clearfix">
                             <div class="col-12">
                                 <div class="input-group">
-                                    <input type="text" class="form-control form-control-danger" placeholder="撰稿標題" name="Title" value="@(_viewModel.Title)" />
+                                    <input type="text" class="form-control form-control-danger" placeholder="撰稿標題" name="Title" value="@Html.Raw(_viewModel.Title)" />
                                     <span class="input-group-addon">
                                         <i class="zmdi zmdi-text-format"></i>
                                     </span>
@@ -64,7 +64,7 @@
                             </div>
                             <div class="col-12">
                                 <div class="input-group">
-                                    <input type="text" class="form-control form-control-danger" placeholder="內容簡短說明" name="Subtitle" value="@(_viewModel.Subtitle)" />
+                                    <input type="text" class="form-control form-control-danger" placeholder="內容簡短說明" name="Subtitle" value="@Html.Raw(_viewModel.Subtitle)" />
                                     <span class="input-group-addon">
                                         <i class="zmdi zmdi-text-format"></i>
                                     </span>
@@ -112,7 +112,7 @@
                                 <select class="ms group" multiple="multiple" name="TagID">
                                     @foreach (var c in models.GetTable<BlogCategoryDefinition>())
                                     {
-                                        <option value="@(c.CategoryID)">@(c.Category)</option>
+                                        <option value="@(c.CategoryID)">@Html.Raw(c.Category)</option>
                                     }
                                 </select>
                             </div>

@@ -60,7 +60,7 @@
                                         <select name="ByCoachID" class="ms employeegroup" multiple="multiple">
                                             @foreach (var branch in models.GetTable<BranchStore>())
                                             {
-                                                <optgroup label="@(branch.BranchName)">
+                                                <optgroup label="@Html.Raw(branch.BranchName)">
                                                     @{ 
                                                         var items = targetItems.Where(t => t.WorkPlace == branch.BranchID)
                                                                         .Select(t => t.ServingCoach.UserProfile).ToList()
@@ -80,7 +80,7 @@
 
                                                     foreach (var user in others)
                                                     {
-                                                        <option value="@(user.UID)">@(user.FullName())</option>
+                                                        <option value="@(user.UID)">@Html.Raw(user.FullName())</option>
                                                     }
                                                 }
                                             </optgroup>

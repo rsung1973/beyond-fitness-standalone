@@ -468,7 +468,9 @@ namespace WebHome.Models.DataEntity
 
         public static int? SeriesSingleLessonPrice(this LessonPriceType item)
         {
-            return item.CurrentPriceSeries?.AllLessonPrice.Where(p => p.LowerLimit == 1).FirstOrDefault()?.ListPrice;
+            return item.LessonUnitPrice != null
+                ? item.LessonUnitPrice.PriceTypeItem.ListPrice
+                : item.CurrentPriceSeries?.AllLessonPrice.Where(p => p.LowerLimit == 1).FirstOrDefault()?.ListPrice;
         }
 
         public static string ExercisePowerAbility(this PersonalExercisePurpose purpose)

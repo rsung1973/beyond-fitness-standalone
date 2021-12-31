@@ -50,8 +50,8 @@
         var barChartData = {
             labels: @(JsonConvert.SerializeObject(getLabels(startDate,endDate))),
             datasets: [{
-                backgroundColor: "@(_model.UserProfileExtension.Gender=="F" ? "rgba(253,92,99, .43)" : "rgba(0,97,210,.43)")",
-                pointBackgroundColor: "@(_model.UserProfileExtension.Gender=="F" ? "rgba(253,92,99, 1)" : "rgba(0,97,210, 1)")",
+                backgroundColor: "@Html.Raw(_model.UserProfileExtension.Gender=="F" ? "rgba(253,92,99, .43)" : "rgba(0,97,210,.43)")",
+                pointBackgroundColor: "@Html.Raw(_model.UserProfileExtension.Gender=="F" ? "rgba(253,92,99, 1)" : "rgba(0,97,210, 1)")",
                 hoverPointBackgroundColor: "#fff",
                 pointHighlightStroke: "rgba(151,187,205, 1)",
                 data: @(JsonConvert.SerializeObject(getData(startDate,endDate))),

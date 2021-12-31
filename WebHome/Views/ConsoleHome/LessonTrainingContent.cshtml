@@ -195,7 +195,7 @@
     <script>
 
         function refreshTrainingContent() {
-            editTrainingContent('@(lessonItem.LessonID.EncryptKey())');
+            editTrainingContent('@Html.Raw(lessonItem.LessonID.EncryptKey())');
         }
 
         function editTrainingContent(keyID) {
@@ -245,7 +245,7 @@
                 if ($.isPlainObject(data)) {
                     if (data.result) {
                         Swal.fire({
-                            title: "@(learner.FullName())的家庭聯絡簿",
+                            title: "@Html.Raw(learner.FullName())的家庭聯絡簿",
                             html: '<span class=\"col-blue font-bold\">範例：昨天喝酒精神狀況不好<br/>今天第一次學甩壺鈴<br/>今天沒吃飯就運動狀況不好，下次記得提前吃飽喔</span>',
                             input: "text",
                             confirmButtonColor: "#DD6B55",

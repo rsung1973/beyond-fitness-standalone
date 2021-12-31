@@ -205,7 +205,7 @@
 
             $('<form method="post" id="myForm" enctype="multipart/form-data"></form>')
             .append(fileUpload).ajaxForm({
-                url: "@(VirtualPathUtility.ToAbsolute("~/Account/UpdateMemberPicture"))",
+                url: "@Html.Raw(VirtualPathUtility.ToAbsolute("~/Account/UpdateMemberPicture"))",
                 data: { 'memberCode': '@(_profile.MemberCode)' },
                 beforeSubmit: function () {
                     //status.show();

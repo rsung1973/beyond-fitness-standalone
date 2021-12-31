@@ -31,16 +31,16 @@
                                                                            .Where(u => roles.Any(r => r.UID == u.UID));}
         @foreach (var u in users)
                                                                    {
-                                                               <option value="@(u.UID)">@(u.FullName())</option>
+                                                               <option value="@(u.UID)">@Html.Raw(u.FullName())</option>
                                                                }
                                                            </optgroup>*@
     @foreach (var branch in models.GetTable<BranchStore>())
     {
-        <optgroup label="@(branch.BranchName)">
+        <optgroup label="@Html.Raw(branch.BranchName)">
             @{ var items = models.GetTable<CoachWorkplace>().Where(w => w.BranchID == branch.BranchID)
-                                                                      .Select(w => w.ServingCoach)
-                                                                      .Where(s => s.CoachID != _profile.UID)
-                                                                      .Where(s => s.UserProfile.LevelID == (int)Naming.MemberStatusDefinition.Checked);
+                                                                       .Select(w => w.ServingCoach)
+                                                                       .Where(s => s.CoachID != _profile.UID)
+                                                                       .Where(s => s.UserProfile.LevelID == (int)Naming.MemberStatusDefinition.Checked);
                 await Html.RenderPartialAsync("~/Views/SystemInfo/ServingCoachOptions.cshtml", items);}
 
         </optgroup>

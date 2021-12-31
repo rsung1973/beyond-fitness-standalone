@@ -593,6 +593,9 @@ namespace WebHome.Models.DataEntity
     partial void InsertCourseContractExtension(CourseContractExtension instance);
     partial void UpdateCourseContractExtension(CourseContractExtension instance);
     partial void DeleteCourseContractExtension(CourseContractExtension instance);
+    partial void InsertLessonUnitPrice(LessonUnitPrice instance);
+    partial void UpdateLessonUnitPrice(LessonUnitPrice instance);
+    partial void DeleteLessonUnitPrice(LessonUnitPrice instance);
     #endregion
 		
 		public BFDataContext() : 
@@ -2182,6 +2185,14 @@ namespace WebHome.Models.DataEntity
 			get
 			{
 				return this.GetTable<CourseContractExtension>();
+			}
+		}
+		
+		public System.Data.Linq.Table<LessonUnitPrice> LessonUnitPrice
+		{
+			get
+			{
+				return this.GetTable<LessonUnitPrice>();
 			}
 		}
 		
@@ -20375,6 +20386,10 @@ namespace WebHome.Models.DataEntity
 		
 		private EntitySet<CourseContractExtension> _CourseContractExtension;
 		
+		private EntityRef<LessonUnitPrice> _LessonUnitPrice;
+		
+		private EntitySet<LessonUnitPrice> _AsUnitPrice;
+		
 		private EntityRef<LessonPriceSeries> _PriceSeries;
 		
 		private EntityRef<LevelExpression> _LevelExpression;
@@ -20435,6 +20450,8 @@ namespace WebHome.Models.DataEntity
 			this._AsPackageItem = new EntitySet<LessonPricePackage>(new Action<LessonPricePackage>(this.attach_AsPackageItem), new Action<LessonPricePackage>(this.detach_AsPackageItem));
 			this._ObjectiveContractLessonPrice = new EntitySet<ObjectiveContractLessonPrice>(new Action<ObjectiveContractLessonPrice>(this.attach_ObjectiveContractLessonPrice), new Action<ObjectiveContractLessonPrice>(this.detach_ObjectiveContractLessonPrice));
 			this._CourseContractExtension = new EntitySet<CourseContractExtension>(new Action<CourseContractExtension>(this.attach_CourseContractExtension), new Action<CourseContractExtension>(this.detach_CourseContractExtension));
+			this._LessonUnitPrice = default(EntityRef<LessonUnitPrice>);
+			this._AsUnitPrice = new EntitySet<LessonUnitPrice>(new Action<LessonUnitPrice>(this.attach_AsUnitPrice), new Action<LessonUnitPrice>(this.detach_AsUnitPrice));
 			this._PriceSeries = default(EntityRef<LessonPriceSeries>);
 			this._LevelExpression = default(EntityRef<LevelExpression>);
 			this._BranchStore = default(EntityRef<BranchStore>);
@@ -20982,6 +20999,48 @@ namespace WebHome.Models.DataEntity
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="LessonPriceType_LessonUnitPrice", Storage="_LessonUnitPrice", ThisKey="PriceID", OtherKey="PriceID", IsUnique=true, IsForeignKey=false)]
+		public LessonUnitPrice LessonUnitPrice
+		{
+			get
+			{
+				return this._LessonUnitPrice.Entity;
+			}
+			set
+			{
+				LessonUnitPrice previousValue = this._LessonUnitPrice.Entity;
+				if (((previousValue != value) 
+							|| (this._LessonUnitPrice.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._LessonUnitPrice.Entity = null;
+						previousValue.LessonPriceType = null;
+					}
+					this._LessonUnitPrice.Entity = value;
+					if ((value != null))
+					{
+						value.LessonPriceType = this;
+					}
+					this.SendPropertyChanged("LessonUnitPrice");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="LessonPriceType_LessonUnitPrice1", Storage="_AsUnitPrice", ThisKey="PriceID", OtherKey="UnitID")]
+		public EntitySet<LessonUnitPrice> AsUnitPrice
+		{
+			get
+			{
+				return this._AsUnitPrice;
+			}
+			set
+			{
+				this._AsUnitPrice.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="LessonPriceSeries_LessonPriceType", Storage="_PriceSeries", ThisKey="SeriesID", OtherKey="PriceID", IsForeignKey=true)]
 		public LessonPriceSeries CurrentPriceSeries
 		{
@@ -21244,6 +21303,18 @@ namespace WebHome.Models.DataEntity
 		{
 			this.SendPropertyChanging();
 			entity.LessonPriceType = null;
+		}
+		
+		private void attach_AsUnitPrice(LessonUnitPrice entity)
+		{
+			this.SendPropertyChanging();
+			entity.PriceTypeItem = this;
+		}
+		
+		private void detach_AsUnitPrice(LessonUnitPrice entity)
+		{
+			this.SendPropertyChanging();
+			entity.PriceTypeItem = null;
 		}
 	}
 	
@@ -58821,6 +58892,174 @@ namespace WebHome.Models.DataEntity
 						this._UnitPriceID = default(Nullable<int>);
 					}
 					this.SendPropertyChanged("LessonPriceType");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.LessonUnitPrice")]
+	public partial class LessonUnitPrice : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _PriceID;
+		
+		private int _UnitID;
+		
+		private EntityRef<LessonPriceType> _LessonPriceType;
+		
+		private EntityRef<LessonPriceType> _PriceTypeItem;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnPriceIDChanging(int value);
+    partial void OnPriceIDChanged();
+    partial void OnUnitIDChanging(int value);
+    partial void OnUnitIDChanged();
+    #endregion
+		
+		public LessonUnitPrice()
+		{
+			this._LessonPriceType = default(EntityRef<LessonPriceType>);
+			this._PriceTypeItem = default(EntityRef<LessonPriceType>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PriceID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int PriceID
+		{
+			get
+			{
+				return this._PriceID;
+			}
+			set
+			{
+				if ((this._PriceID != value))
+				{
+					if (this._LessonPriceType.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnPriceIDChanging(value);
+					this.SendPropertyChanging();
+					this._PriceID = value;
+					this.SendPropertyChanged("PriceID");
+					this.OnPriceIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UnitID", DbType="Int NOT NULL")]
+		public int UnitID
+		{
+			get
+			{
+				return this._UnitID;
+			}
+			set
+			{
+				if ((this._UnitID != value))
+				{
+					if (this._PriceTypeItem.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnUnitIDChanging(value);
+					this.SendPropertyChanging();
+					this._UnitID = value;
+					this.SendPropertyChanged("UnitID");
+					this.OnUnitIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="LessonPriceType_LessonUnitPrice", Storage="_LessonPriceType", ThisKey="PriceID", OtherKey="PriceID", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public LessonPriceType LessonPriceType
+		{
+			get
+			{
+				return this._LessonPriceType.Entity;
+			}
+			set
+			{
+				LessonPriceType previousValue = this._LessonPriceType.Entity;
+				if (((previousValue != value) 
+							|| (this._LessonPriceType.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._LessonPriceType.Entity = null;
+						previousValue.LessonUnitPrice = null;
+					}
+					this._LessonPriceType.Entity = value;
+					if ((value != null))
+					{
+						value.LessonUnitPrice = this;
+						this._PriceID = value.PriceID;
+					}
+					else
+					{
+						this._PriceID = default(int);
+					}
+					this.SendPropertyChanged("LessonPriceType");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="LessonPriceType_LessonUnitPrice1", Storage="_PriceTypeItem", ThisKey="UnitID", OtherKey="PriceID", IsForeignKey=true)]
+		public LessonPriceType PriceTypeItem
+		{
+			get
+			{
+				return this._PriceTypeItem.Entity;
+			}
+			set
+			{
+				LessonPriceType previousValue = this._PriceTypeItem.Entity;
+				if (((previousValue != value) 
+							|| (this._PriceTypeItem.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._PriceTypeItem.Entity = null;
+						previousValue.AsUnitPrice.Remove(this);
+					}
+					this._PriceTypeItem.Entity = value;
+					if ((value != null))
+					{
+						value.AsUnitPrice.Add(this);
+						this._UnitID = value.PriceID;
+					}
+					else
+					{
+						this._UnitID = default(int);
+					}
+					this.SendPropertyChanged("PriceTypeItem");
 				}
 			}
 		}

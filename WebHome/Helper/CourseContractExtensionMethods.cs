@@ -423,7 +423,7 @@ namespace WebHome.Helper
         public static LessonPriceType ContractOriginalSeriesPrice(this CourseContract item, GenericManager<BFDataContext> models)
                     
         {
-            return item.CourseContractExtension.LessonPriceType ?? item.LessonPriceType.GetOriginalSeriesPrice(models);
+            return item.LessonPriceType.LessonUnitPrice?.PriceTypeItem ?? item.LessonPriceType.GetOriginalSeriesPrice(models);
 
             //return item.LessonPriceType.CurrentPriceSeries?.AllLessonPrice.Where(p => p.LowerLimit == 1).FirstOrDefault();
         }

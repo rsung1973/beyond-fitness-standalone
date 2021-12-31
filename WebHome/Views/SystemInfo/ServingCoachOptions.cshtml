@@ -20,7 +20,7 @@
 }
 @foreach (var item in _model)
 {
-    <option value="@(item.CoachID)">@(item.UserProfile.FullName())</option>
+    <option value="@(item.CoachID)">@Html.Raw(item.UserProfile.FullName())</option>
 }
 
 

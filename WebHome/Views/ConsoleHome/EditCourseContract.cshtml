@@ -59,7 +59,7 @@
                             <option value="">-- 請選擇合約類型 --</option>
                             @foreach (var item in models.GetTable<CourseContractType>())
                             {
-                                <option value="@(item.TypeID)" data-virtual="@(CourseContractType.IsSuitableForVirtaulClass((CourseContractType.ContractTypeDefinition)item.TypeID))">@(item.TypeName)</option>
+                                <option value="@(item.TypeID)" data-virtual="@(CourseContractType.IsSuitableForVirtaulClass((CourseContractType.ContractTypeDefinition)item.TypeID))">@Html.Raw(item.TypeName)</option>
                             }
                         </select>
                         <script>
@@ -296,7 +296,7 @@
                                     $(function () {
                                         @foreach(var p in _viewModel.PaymentMethod)
                                         {
-                                            <text>$('input:checkbox[name="PaymentMethod"][value="@(p)"]').prop('checked', true);</text>
+                                            <text>$('input:checkbox[name="PaymentMethod"][value="@Html.Raw(p)"]').prop('checked', true);</text>
                                         }
                                     });
                                 </script>
