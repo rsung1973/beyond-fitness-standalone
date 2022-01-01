@@ -1117,7 +1117,7 @@ namespace WebHome.Controllers
             DataTable details = models.CreateAchievementShareList(achievementItems);
             details.TableName = $"{viewModel.PayoffDateFrom:yyyyMM} 分潤業績明細(含稅)";
 
-            DataTable voidDetails = models.CreateVoidShareList(voidShares);
+            DataTable voidDetails = models.CreateVoidShareList(voidShares.Where(t => t.VoidShare.HasValue));
             voidDetails.TableName = $"{viewModel.PayoffDateFrom:yyyyMM} 終止折讓分潤明細(含稅)";
 
 

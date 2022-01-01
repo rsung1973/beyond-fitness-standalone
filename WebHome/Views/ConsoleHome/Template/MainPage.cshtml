@@ -298,9 +298,9 @@
                 </li>
                 @if (!_model.IsServitor())
                 {
-                    <li>
+                    @*<li>
                         <a href="javascript:void(0);"><i class="zmdi zmdi-accounts-list"></i><span>我的學生</span> </a>
-                    </li>
+                    </li>*@
                     <li>
                         <a href="@(Url.Action("ReportIndex","ConsoleHome"))"><i class="zmdi zmdi-download"></i><span>我的下載</span> </a>
                     </li>
@@ -334,9 +334,9 @@
                 }
                 @if (_model.IsCoach() || _model.IsAssistant() || _model.IsSysAdmin())
                 {
-                    <li>
+                    @*<li>
                         <a href="@(Url.Action("Index","CoachFacet"))"><i class="zmdi zmdi-time-restore"></i><span>時光機</span> </a>
-                    </li>
+                    </li>*@
                 }
                 <li>
                     <a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-search-replace"></i><span>價格詢問球</span> </a>
