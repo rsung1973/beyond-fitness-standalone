@@ -1,4 +1,4 @@
-
+﻿
 @using System.IO
 @using System.Linq.Expressions
 
@@ -19,7 +19,7 @@
     LessonTimeBookingViewModel _viewModel;
 
     _modelState = ViewContext.ModelState;
-    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
     _model = (UserProfile)this.Model;
     _hourIdx = Enumerable.Range(7, 16);
     _viewModel = (LessonTimeBookingViewModel)ViewBag.ViewModel;
@@ -62,89 +62,96 @@
         totalData[i] += tempData[i];
     }
 }
-<div id="@(_chartID)" class="c3"></div>
 <script>
-
-    var totalData = @Html.Raw(JsonConvert.SerializeObject(totalData));
-    $(function () {
-        var chart = c3.generate({
-            bindto: '#@(_chartID)', // id of chart wrapper
-            data: {
-                columns: [
-                    // each columns data
-                ],
-                order: null,
-                type: 'bar', // default type of chart
-                groups: [
-                    ['data1', 'data2', 'data3']
-                ],
-                colors: {
-                    'data1': '#F1A139',
-                    'data2': '#3B9740',
-                    'data3': '#C2454F'
-                },
-                names: {
-                    'data1': 'P.T',
-                    'data2': 'P.I',
-                    'data3': 'T.S'
-                },
-                labels: {
-                        format: {
-                            data3: function(v, id, i, j) {
-                                if (totalData[i] > 0) {
-                                    return totalData[i];
-                                } else {
-                                    return "";
-                                }
-                            },
-                        }
-                    },
-            },
-            axis: {
-                x: {
-                    type: 'category',
-                    // name of each category
-                    categories: @Html.Raw(JsonConvert.SerializeObject(_hourIdx.Select(h=>$"{h:00}:00"))),
-                },
-            },
-            bar: {
-                width: 'auto'
-            },
-            legend: {
-                show: true, //hide legend
-            },
-            padding: {
-                bottom: 0,
-                top: 0
-            },
-            grid: {
-                x: {
-                    show: false
-                },
-                y: {
-                    show: true
-                }
+    $global.echarts.option = {
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
             }
-        });
-        setTimeout(function() {
-                chart.load({
-                    columns: [
-                        @Html.Raw(JsonConvert.SerializeObject(getDistributionC3("data1",PTLessons,_hourIdx))),
-                        @Html.Raw(JsonConvert.SerializeObject(getDistributionC3("data2",PILessons,_hourIdx))),
-                        @Html.Raw(JsonConvert.SerializeObject(getDistributionC3("data3",TrialLessons,_hourIdx))),
+        },
+        legend: {
+            left: 'center',
+            data: ['P.T', 'P.I', 'T.S']
+        },
+        xAxis: [
+            {
+                type: 'category',
+                data: @Html.Raw(JsonConvert.SerializeObject(_hourIdx.Select(h=>$"{h:00}:00"))),
+            }
+        ],
+        yAxis: [
+            {
+                type: 'value',
+                name: '人數',
+                nameLocation: 'middle',
+                nameGap: 20
+            }
+        ],
+        series: [
+            {
+                name: '總計',
+                type: 'bar',
+                barGap: '-100%',         // 左移100%，stack不再与上面两个在一列
+                lable: {
+                    normal: {
+                        show: true,
+                        position: 'top',       //  位置设为top
+                        textStyle: { color: '#07a2a4' }
+                    }
+                },
+                itemStyle: {
+                    normal: {
+                        color: 'rgba(128, 128, 128, 0.3)'    // 仍为透明
+                    }
+                },
+                data: @Html.Raw(JsonConvert.SerializeObject(totalData)),
+            },
+            {
+                name: 'P.T',
+                type: 'bar',
+                stack: 'total',
+                label: {
+                    show: false,
+                },
+                data: @Html.Raw(JsonConvert.SerializeObject(getDistribution(PTLessons, _hourIdx).ToArray())),
+            },
+            {
+                name: 'P.I',
+                type: 'bar',
+                stack: 'total',
+                label: {
+                    show: false,
+                },
+                data: @Html.Raw(JsonConvert.SerializeObject(getDistribution(PILessons, _hourIdx).ToArray())),
+            },
+            {
+                name: 'T.S',
+                type: 'bar',
+                stack: 'total',
+                label: {
+                    show: false,
+                },
+                data: @Html.Raw(JsonConvert.SerializeObject(getDistribution(TrialLessons, _hourIdx).ToArray())),
+            }
+        ],
+        //color:['rgb(254, 203, 160)', 'rgb(141,193,169)','rgb(254, 173, 188)'],
+        emphasis: {
+            itemStyle: {
+                shadowBlur: 10,
+                shadowOffsetX: 0,
+                shadowColor: 'rgba(0, 0, 0, 0.5)'
+            }
+        }
+    };
 
-                    ]
-                });
-            }, 500);
-        setTimeout(function() {
-                chart.groups([
-                    ['data1', 'data2', 'data3']
-                ])
-        }, 1000);
+    $(function () {
+        if ($global.echarts.showChart) {
+            $global.echarts.showChart();
+        }
     });
-</script>
-@{ await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/InitBarChartNoRegister.cshtml");}
 
+</script>
 
 @functions{
     class _Counting
@@ -161,15 +168,5 @@
         }
     }
 
-    IEnumerable<object> getDistributionC3(String columnName, IEnumerable<_Counting> items, IEnumerable<int> hourIdx)
-    {
-        List<object> result = new List<object>();
-        result.Add(columnName);
-        foreach (var h in hourIdx)
-        {
-            result.Add(items.Where(i => i.Hour == h).Select(i => i.Count).FirstOrDefault());
-        }
-        return result;
-    }
 }
 

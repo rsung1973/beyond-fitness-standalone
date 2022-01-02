@@ -18,7 +18,7 @@
     IQueryable<LessonTime> _lessons;
     LessonTimeBookingViewModel _viewModel;
 
-    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
     _modelState = ViewContext.ModelState;
     _model = (UserProfile)this.Model;
     _viewModel = (LessonTimeBookingViewModel)ViewBag.ViewModel;
@@ -88,7 +88,7 @@
     <!--我的分店業績卡片-->
     @if (!_model.IsServitor())
     {
-        await Html.RenderPartialAsync("~/Views/ConsoleHome/Module/AboutAchievementC3.cshtml", _model);
+        await Html.RenderPartialAsync("~/Views/ConsoleHome/Module/AboutAchievementEChart.cshtml", _model);
     }
 
     <!--專業文章&我的比賽-->
@@ -100,6 +100,11 @@
 </section>
 
 @section TailPageJavaScriptInclude {
+    <!-- Echart Js -->
+    <script src="plugins/echarts/echarts.min.js"></script>
+    <!-- Echart Template Js -->
+    <script src="plugins/echarts/theme/macarons.js"></script>
+    <script src="plugins/echarts/theme/macarons_nero.js"></script>
     <!-- countTo Plugin Js -->
     <script src="bundles/countTo.bundle.js"></script>
     <!--ChartJS Plugin Js-->

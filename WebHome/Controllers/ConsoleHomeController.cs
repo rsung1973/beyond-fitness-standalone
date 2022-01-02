@@ -594,7 +594,7 @@ namespace WebHome.Controllers
             return result;
         }
 
-        public async Task<ActionResult> DailyLessonsBarChartAsync(LessonTimeBookingViewModel viewModel)
+        public async Task<ActionResult> DailyLessonsBarChartAsync(LessonTimeBookingViewModel viewModel, String chartType)
         {
             ViewBag.ViewModel = viewModel;
             if (!viewModel.ClassTimeStart.HasValue)
@@ -603,7 +603,14 @@ namespace WebHome.Controllers
             }
 
             var profile = await HttpContext.GetUserAsync();
-            return View("~/Views/ConsoleHome/Module/TodayLessonsBarChartC3.cshtml", profile.LoadInstance(models));
+            if (chartType == "Echart")
+            {
+                return View("~/Views/ConsoleHome/Module/TodayLessonsBarEChart.cshtml", profile.LoadInstance(models));
+            }
+            else
+            {
+                return View("~/Views/ConsoleHome/Module/TodayLessonsBarChartC3.cshtml", profile.LoadInstance(models));
+            }
         }
 
         public async Task<ActionResult> ShowLessonSummaryAsync(LessonTimeBookingViewModel viewModel)
