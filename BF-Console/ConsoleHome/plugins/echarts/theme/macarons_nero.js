@@ -1,17 +1,38 @@
+/*
+* Licensed to the Apache Software Foundation (ASF) under one
+* or more contributor license agreements.  See the NOTICE file
+* distributed with this work for additional information
+* regarding copyright ownership.  The ASF licenses this file
+* to you under the Apache License, Version 2.0 (the
+* "License"); you may not use this file except in compliance
+* with the License.  You may obtain a copy of the License at
+*
+*   http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing,
+* software distributed under the License is distributed on an
+* "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+* KIND, either express or implied.  See the License for the
+* specific language governing permissions and limitations
+* under the License.
+*/
 
-(function (root, factory) {
+(function(root, factory) {
     if (typeof define === 'function' && define.amd) {
         // AMD. Register as an anonymous module.
         define(['exports', 'echarts'], factory);
-    } else if (typeof exports === 'object' && typeof exports.nodeName !== 'string') {
+    } else if (
+        typeof exports === 'object' &&
+        typeof exports.nodeName !== 'string'
+    ) {
         // CommonJS
-        factory(exports, require('echarts'));
+        factory(exports, require('echarts/lib/echarts'));
     } else {
         // Browser globals
         factory({}, root.echarts);
     }
-}(this, function (exports, echarts) {
-    var log = function (msg) {
+})(this, function(exports, echarts) {
+    var log = function(msg) {
         if (typeof console !== 'undefined') {
             console && console.error && console.error(msg);
         }
@@ -20,8 +41,8 @@
         log('ECharts is not Loaded');
         return;
     }
-    echarts.registerTheme('macarons_nero', {
-        "color": [
+
+    var colorPalette = [
             "#ffb980",
             "#d87a80",
             "#2ec7c9",
@@ -42,9 +63,12 @@
             "#7eb00a",
             "#6f5553",
             "#c14089"
-        ],
+    ];
+
+    var theme = {
+        color: colorPalette,
         "backgroundColor": "#1c222c",
-        "textStyle": {},
+
         "title": {
             "textStyle": {
                 "color": "#008acd",
@@ -56,6 +80,55 @@
                 "fontSize": "14"
             }
         },
+
+        "visualMap": {
+            itemWidth: 15,
+            "color": ["#5ab1ef", "#e0ffff"]
+        },
+
+        "toolbox": {
+            "iconStyle": {
+                "normal": {
+                    "borderColor": "#97b552"
+                },
+                "emphasis": {
+                    "borderColor": "#97b552"
+                }
+            }
+        },
+
+        "tooltip": {
+            "axisPointer": {
+                "lineStyle": {
+                    "color": "#999999",
+                    "width": "1"
+                },
+                "crossStyle": {
+                    "color": "#999999",
+                    "width": "1"
+                }
+            }
+        },
+
+        "dataZoom": {
+            "backgroundColor": "rgba(47,69,84,0)",
+            "dataBackgroundColor": "#efefff",
+            "fillerColor": "rgba(182,162,222,0.2)",
+            "handleColor": "#008acd",
+            "handleSize": "100%",
+            "textStyle": {
+                "color": "#333333"
+            }
+        },
+
+        grid: {
+            borderColor: '#eee',
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+
         "line": {
             "itemStyle": {
                 "borderWidth": 1
@@ -83,19 +156,6 @@
             "symbolSize": 3,
             "symbol": "emptyCircle",
             "smooth": true
-        },
-        "bar": {      
-            "itemStyle": {
-                "barBorderWidth": "0",
-                "barBorderColor": "#ccc"
-            },
-            "label" : {
-                "show": "true",
-                "fontWeight": "bold",
-                "position": "top",
-                "textBorderColor": "transparent",
-                "color": "#fff"
-            },
         },
         "pie": {
             "itemStyle": {
@@ -356,6 +416,20 @@
                 }
             }
         },
+
+        "bar": {      
+            "itemStyle": {
+                //"barBorderWidth": "0",
+                //"barBorderColor": "#ccc"
+            },
+            "label" : {
+                "show": "true",
+                "fontWeight": "bold",
+                "position": "top",
+                "textBorderColor": "transparent",
+                "color": "#fff"
+            },
+        },
         "timeAxis": {
             "axisLine": {
                 "show": true,
@@ -393,33 +467,13 @@
                 }
             }
         },
-        "toolbox": {
-            "iconStyle": {
-                "normal": {
-                    "borderColor": "#97b552"
-                },
-                "emphasis": {
-                    "borderColor": "#97b552"
-                }
-            }
-        },
+
         "legend": {
             "textStyle": {
                 "color": "#cccccc"
             }
         },
-        "tooltip": {
-            "axisPointer": {
-                "lineStyle": {
-                    "color": "#999999",
-                    "width": "1"
-                },
-                "crossStyle": {
-                    "color": "#999999",
-                    "width": "1"
-                }
-            }
-        },
+
         "timeline": {
             "lineStyle": {
                 "color": "#008acd",
@@ -463,22 +517,7 @@
                 }
             }
         },
-        "visualMap": {
-            "color": [
-                "#5ab1ef",
-                "#e0ffff"
-            ]
-        },
-        "dataZoom": {
-            "backgroundColor": "rgba(47,69,84,0)",
-            "dataBackgroundColor": "#efefff",
-            "fillerColor": "rgba(182,162,222,0.2)",
-            "handleColor": "#008acd",
-            "handleSize": "100%",
-            "textStyle": {
-                "color": "#333333"
-            }
-        },
+
         "markPoint": {
             "label": {
                 "color": "#eeeeee"
@@ -489,5 +528,7 @@
                 }
             }
         }
-    });
-}));
+    };
+
+    echarts.registerTheme('macarons_nero', theme);
+});
