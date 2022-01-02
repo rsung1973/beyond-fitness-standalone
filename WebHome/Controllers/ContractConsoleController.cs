@@ -480,6 +480,7 @@ namespace WebHome.Controllers
             {
                 if (!ModelState.IsValid)
                 {
+                    ViewBag.AlertError = true;
                     return View(ConsoleHomeController.InputErrorView);
                 }
                 else

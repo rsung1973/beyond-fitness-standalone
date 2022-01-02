@@ -1,0 +1,175 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+@using Newtonsoft.Json
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    UserProfile _model;
+    string _chartID = "lessonsBar" + DateTime.Now.Ticks;
+    IEnumerable<int> _hourIdx;
+    LessonTimeBookingViewModel _viewModel;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (UserProfile)this.Model;
+    _hourIdx = Enumerable.Range(7, 16);
+    _viewModel = (LessonTimeBookingViewModel)ViewBag.ViewModel;
+}
+
+@{
+    var items = models.GetTable<LessonTime>().Where(l => l.ClassTime >= _viewModel.ClassTimeStart && l.ClassTime < _viewModel.ClassTimeStart.Value.AddDays(1))
+                    .ToList();
+    if (_viewModel.BranchID.HasValue)
+    {
+        items = items.Where(l => l.BranchID == _viewModel.BranchID)
+                    .ToList();
+    }
+
+    var PTLessons = items.PTLesson()
+            .Select(l => new { Hour = l.ClassTime.Value.Hour, Persons = l.GroupingLesson.RegisterLesson.Count })
+            .GroupBy(h => h.Hour)
+            .Select(g => new _Counting { Hour = g.Key, Count = g.Sum(p => p.Persons) })
+            .ToList();
+    var PILessons = items.Where(l => l.TrainingBySelf == 1)
+            .Select(l => l.ClassTime.Value.Hour)
+            .GroupBy(h => h)
+            .Select(g => new _Counting { Hour = g.Key, Count = g.Count() })
+            .ToList();
+    var TrialLessons = items.TrialLesson()
+            .Select(l => l.ClassTime.Value.Hour)
+            .GroupBy(h => h)
+            .Select(g => new _Counting { Hour = g.Key, Count = g.Count() })
+            .ToList();
+
+    var totalData = getDistribution(PTLessons, _hourIdx).ToArray();
+    var tempData = getDistribution(PILessons, _hourIdx).ToArray();
+    for (int i = 0; i < totalData.Length; i++)
+    {
+        totalData[i] += tempData[i];
+    }
+    tempData = getDistribution(TrialLessons, _hourIdx).ToArray();
+    for (int i = 0; i < totalData.Length; i++)
+    {
+        totalData[i] += tempData[i];
+    }
+}
+<div id="@(_chartID)" class="c3"></div>
+<script>
+
+    var totalData = @Html.Raw(JsonConvert.SerializeObject(totalData));
+    $(function () {
+        var chart = c3.generate({
+            bindto: '#@(_chartID)', // id of chart wrapper
+            data: {
+                columns: [
+                    // each columns data
+                ],
+                order: null,
+                type: 'bar', // default type of chart
+                groups: [
+                    ['data1', 'data2', 'data3']
+                ],
+                colors: {
+                    'data1': '#F1A139',
+                    'data2': '#3B9740',
+                    'data3': '#C2454F'
+                },
+                names: {
+                    'data1': 'P.T',
+                    'data2': 'P.I',
+                    'data3': 'T.S'
+                },
+                labels: {
+                        format: {
+                            data3: function(v, id, i, j) {
+                                if (totalData[i] > 0) {
+                                    return totalData[i];
+                                } else {
+                                    return "";
+                                }
+                            },
+                        }
+                    },
+            },
+            axis: {
+                x: {
+                    type: 'category',
+                    // name of each category
+                    categories: @Html.Raw(JsonConvert.SerializeObject(_hourIdx.Select(h=>$"{h:00}:00"))),
+                },
+            },
+            bar: {
+                width: 'auto'
+            },
+            legend: {
+                show: true, //hide legend
+            },
+            padding: {
+                bottom: 0,
+                top: 0
+            },
+            grid: {
+                x: {
+                    show: false
+                },
+                y: {
+                    show: true
+                }
+            }
+        });
+        setTimeout(function() {
+                chart.load({
+                    columns: [
+                        @Html.Raw(JsonConvert.SerializeObject(getDistributionC3("data1",PTLessons,_hourIdx))),
+                        @Html.Raw(JsonConvert.SerializeObject(getDistributionC3("data2",PILessons,_hourIdx))),
+                        @Html.Raw(JsonConvert.SerializeObject(getDistributionC3("data3",TrialLessons,_hourIdx))),
+
+                    ]
+                });
+            }, 500);
+        setTimeout(function() {
+                chart.groups([
+                    ['data1', 'data2', 'data3']
+                ])
+        }, 1000);
+    });
+</script>
+@{ await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/InitBarChartNoRegister.cshtml");}
+
+
+@functions{
+    class _Counting
+    {
+        public int Hour { get; set; }
+        public int Count { get; set; }
+    }
+
+    IEnumerable<int> getDistribution(IEnumerable<_Counting> items, IEnumerable<int> hourIdx)
+    {
+        foreach (var h in hourIdx)
+        {
+            yield return items.Where(i => i.Hour == h).Select(i => i.Count).FirstOrDefault();
+        }
+    }
+
+    IEnumerable<object> getDistributionC3(String columnName, IEnumerable<_Counting> items, IEnumerable<int> hourIdx)
+    {
+        List<object> result = new List<object>();
+        result.Add(columnName);
+        foreach (var h in hourIdx)
+        {
+            result.Add(items.Where(i => i.Hour == h).Select(i => i.Count).FirstOrDefault());
+        }
+        return result;
+    }
+}
+

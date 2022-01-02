@@ -326,12 +326,12 @@
                         <a href="@(Url.Action("BlogIndex","ConsoleHome"))"><i class="zmdi zmdi-blogger"></i><span>我的部落格</span> </a>
                     </li>
                 }
-                @if (_model.IsCoach())
+                @*@if (_model.IsCoach())
                 {
                     <li>
                         <a href="javascript:void(0);"><i class="zmdi zmdi-comment-edit"></i><span>運動小學堂</span> </a>
                     </li>
-                }
+                }*@
                 @if (_model.IsCoach() || _model.IsAssistant() || _model.IsSysAdmin())
                 {
                     @*<li>

@@ -172,12 +172,19 @@
                                     <div class="col s12">
                                         <div class="time-box">
                                             <span class="flow-text">
-                                                @($"{totalMinutes/60:00}"):@($"{totalMinutes%60:00}")
+                                                @($"{totalMinutes / 60:00}"):@($"{totalMinutes % 60:00}")
                                                 <small>
-                                                    小時:分鐘@if (totalMinutes > totalMinutesCompareTo)
-                                                    {<span class="f-red">▲</span>}
-                                                    else if (totalMinutes < totalMinutesCompareTo)
-                                                    {<span class="f-darkgreen">▼</span>}
+                                                    小時:分鐘
+                                                    @{
+                                                        if (totalMinutes > totalMinutesCompareTo)
+                                                        {
+                                                            <span class="f-red">▲</span>
+                                                        }
+                                                        else if (totalMinutes < totalMinutesCompareTo)
+                                                        {
+                                                            <span class="f-darkgreen">▼</span>
+                                                        }
+                                                    }
                                                 </small>
                                             </span>
                                         </div>
