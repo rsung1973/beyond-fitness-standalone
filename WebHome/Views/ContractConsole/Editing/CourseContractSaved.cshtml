@@ -9,6 +9,7 @@
 @using WebHome.Controllers
 @using Microsoft.AspNetCore.Mvc.ModelBinding
 @using Newtonsoft.Json
+@using CommonLib.Utility 
 @{
 
     ModelStateDictionary _modelState;
@@ -26,13 +27,13 @@
     $(function () {
         showLoading();
         $('').launchDownload('@Html.Raw(Url.Action("ShowContractList","ContractConsole"))',
-            @Html.Raw(JsonConvert.SerializeObject(new CourseContractQueryViewModel
+            @Html.Raw((new CourseContractQueryViewModel
                 {
                     //FitnessConsultant = _model.FitnessConsultant,
                     //ContractQueryMode = Naming.ContractServiceMode.ContractOnly,
                     //Status = (int)Naming.CourseContractStatus.草稿,
                     KeyID = _model.ContractID.EncryptKey(),
-                })));
+                }).JsonStringify()));
     });
 </script>
 

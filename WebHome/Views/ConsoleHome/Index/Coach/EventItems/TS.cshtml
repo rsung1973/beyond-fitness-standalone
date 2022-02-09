@@ -20,17 +20,20 @@
     _model = (CalendarEventItem)this.Model;
 }
 @{
-    object clickHander(LessonTime item, bool needApprove)
+    String clickHander(LessonTime item, bool needApprove)
     {
         if (needApprove)
         {
-            <text>void(0);</text>
+            return "void(0);";
         }
         else
         {
-            <text>$('').launchDownload('@Html.Raw(Url.Action("LessonTrainingContent", "ConsoleHome", new { LearnerID = item.RegisterLesson.UID }))', {'keyID': '@Html.Raw(item.LessonID.EncryptKey())' });</text>
+            return String.Concat("$('').launchDownload('",
+                Url.Action("LessonTrainingContent", "ConsoleHome", new { LearnerID = item.RegisterLesson.UID }),
+                "', {'keyID': '",
+                item.LessonID.EncryptKey(),
+                "'});");
         }
-        return null;
     }
 }
 @{

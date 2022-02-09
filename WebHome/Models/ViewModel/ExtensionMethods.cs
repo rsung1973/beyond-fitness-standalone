@@ -52,6 +52,12 @@ namespace WebHome.Models.ViewModel
             return Convert.ToBase64String(AppResource.Instance.EncryptSalted(data));
         }
 
+        public static String EncryptKeyNormal(this byte[] data)
+        {
+            return Convert.ToBase64String(AppResource.Instance.EncryptSalted(data));
+        }
+
+
 
         public static String EncryptHexKey(this byte[] data)
         {
@@ -63,6 +69,12 @@ namespace WebHome.Models.ViewModel
         {
             return BitConverter.GetBytes(keyID).EncryptKey();
         }
+
+        public static String EncryptKeyNormal(this int keyID)
+        {
+            return BitConverter.GetBytes(keyID).EncryptKeyNormal();
+        }
+
         public static String EncryptHexKey(this int keyID)
         {
             return BitConverter.GetBytes(keyID).EncryptHexKey();
@@ -72,6 +84,12 @@ namespace WebHome.Models.ViewModel
         {
             return Encoding.Default.GetBytes(keyID).EncryptKey();
         }
+
+        public static String EncryptKeyNormal(this String keyID)
+        {
+            return Encoding.Default.GetBytes(keyID).EncryptKeyNormal();
+        }
+
         public static String DecryptKey(this String data)
         {
             return Encoding.Default.GetString(AppResource.Instance.DecryptSalted(Convert.FromBase64String(data)));

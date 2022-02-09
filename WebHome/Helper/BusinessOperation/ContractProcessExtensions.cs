@@ -572,7 +572,7 @@ namespace WebHome.Helper.BusinessOperation
 
         }
 
-        public static async Task<UserProfile> CommitUserProfileAsync(this ContractMemberViewModel viewModel, SampleController<UserProfile> controller)
+        public static async Task<UserProfile> CommitUserProfileAsync(this LearnerViewModel viewModel, SampleController<UserProfile> controller)
             
         {
             var ModelState = controller.ModelState;
@@ -654,12 +654,13 @@ namespace WebHome.Helper.BusinessOperation
             }
 
             viewModel.Phone = viewModel.Phone.GetEfficientString();
-            if (String.IsNullOrEmpty(viewModel.Phone))
+            if (viewModel.Phone == null)
             {
                 ModelState.AddModelError("Phone", "請輸入聯絡電話");
             }
 
-            if (String.IsNullOrEmpty(viewModel.Gender))
+            viewModel.Gender = viewModel.Gender.GetEfficientString();
+            if (viewModel.Gender == null)
             {
                 ModelState.AddModelError("Gender", "請選擇性別");
             }
@@ -848,6 +849,23 @@ namespace WebHome.Helper.BusinessOperation
                             else if (profile.UID != item.AgentID)
                             {
                                 var jsonData = await controller.RenderViewToStringAsync("~/Views/LineEvents/Message/NotifyCoachToSignExtend.cshtml", item);
+                                jsonData.PushLineMessage();
+                            }
+                        }
+                    }
+                    else if (item.CourseContractRevision.Reason == "終止")
+                    {
+                        //合約服務
+                        if (viewModel.Status == (int)Naming.CourseContractStatus.待簽名)
+                        {
+                            if (item.CourseContractExtension.SignOnline == true)
+                            {
+                                var jsonData = await controller.RenderViewToStringAsync("~/Views/LineEvents/Message/NotifyLearnerToSignTermination.cshtml", item);
+                                jsonData.PushLineMessage();
+                            }
+                            else if (profile.UID != item.AgentID)
+                            {
+                                var jsonData = await controller.RenderViewToStringAsync("~/Views/LineEvents/Message/NotifyCoachToSignTermination.cshtml", item);
                                 jsonData.PushLineMessage();
                             }
                         }
@@ -1342,13 +1360,13 @@ namespace WebHome.Helper.BusinessOperation
                 }
                 else
                 {
-                    bool checkRefund = true;
+                    //bool checkRefund = true;
                     if (item.ContractType == (int)CourseContractType.ContractTypeDefinition.CGA)
                     {
                         if (viewModel.SettlementPrice < 0)
                         {
                             ModelState.AddModelError("SettlementPrice", "組合包課程單價錯誤!!");
-                            checkRefund = false;
+                            //checkRefund = false;
                         }
                     }
                     else
@@ -1356,7 +1374,7 @@ namespace WebHome.Helper.BusinessOperation
                         if (viewModel.SettlementPrice < item.LessonPriceType.ListPrice)
                         {
                             ModelState.AddModelError("SettlementPrice", "課程單價不可少於原購買單價!!");
-                            checkRefund = false;
+                            //checkRefund = false;
                         }
                     }
 
@@ -1591,6 +1609,13 @@ namespace WebHome.Helper.BusinessOperation
 
             models.SubmitChanges();
 
+            await PushLineNotification(viewModel, controller, profile, newItem);
+
+            return newItem;
+        }
+
+        private static async Task PushLineNotification(CourseContractViewModel viewModel, SampleController<UserProfile> controller, UserProfile profile, CourseContract newItem)
+        {
             if (viewModel.Reason == "展延")
             {
                 if (newItem.Status == (int)Naming.CourseContractStatus.待確認)
@@ -1622,8 +1647,72 @@ namespace WebHome.Helper.BusinessOperation
                     }
                 }
             }
+            else if (viewModel.Reason == "終止")
+            {
+                if (newItem.Status == (int)Naming.CourseContractStatus.待確認)
+                {
+                    if (viewModel.OperationMode == Naming.OperationMode.快速終止)
+                    {
+                        if (newItem.CourseContractExtension.BranchStore.ManagerID.HasValue)
+                        {
+                            var jsonData = await controller.RenderViewToStringAsync("~/Views/LineEvents/Message/NotifyManagerToApproveQuickTermination.cshtml", newItem);
+                            jsonData.PushLineMessage();
+                        }
+                        if (profile.UID != newItem.CourseContractExtension.BranchStore.ViceManagerID
+                            && newItem.CourseContractExtension.BranchStore.ViceManagerID.HasValue)
+                        {
+                            var jsonData = await controller.RenderViewToStringAsync("~/Views/LineEvents/Message/NotifyViceManagerToApproveQuickTermination.cshtml", newItem);
+                            jsonData.PushLineMessage();
+                        }
+                    }
+                    else
+                    {
+                        if (newItem.CourseContractExtension.BranchStore.ManagerID.HasValue)
+                        {
+                            var jsonData = await controller.RenderViewToStringAsync("~/Views/LineEvents/Message/NotifyManagerToApproveTermination.cshtml", newItem);
+                            jsonData.PushLineMessage();
+                        }
+                        if (profile.UID != newItem.CourseContractExtension.BranchStore.ViceManagerID
+                            && newItem.CourseContractExtension.BranchStore.ViceManagerID.HasValue)
+                        {
+                            var jsonData = await controller.RenderViewToStringAsync("~/Views/LineEvents/Message/NotifyViceManagerToApproveTermination.cshtml", newItem);
+                            jsonData.PushLineMessage();
+                        }
+                    }
 
-            return newItem;
+                }
+                else if (newItem.Status == (int)Naming.CourseContractStatus.待簽名)
+                {
+                    if (newItem.CourseContractExtension.SignOnline == true)
+                    {
+                        //item.CreateLineReadyToSignContract(models).PushLineMessage();
+                        var jsonData = await controller.RenderViewToStringAsync("~/Views/LineEvents/Message/NotifyLearnerToSignTermination.cshtml", newItem);
+                        jsonData.PushLineMessage();
+                    }
+                    else if (profile.UID != newItem.AgentID)
+                    {
+                        var jsonData = await controller.RenderViewToStringAsync("~/Views/LineEvents/Message/NotifyCoachToSignTermination.cshtml", newItem);
+                        jsonData.PushLineMessage();
+                    }
+                }
+            }
+            else if (viewModel.Reason == "轉換體能顧問")
+            {
+                if (newItem.Status == (int)Naming.CourseContractStatus.待確認)
+                {
+                    if (newItem.CourseContractExtension.BranchStore.ManagerID.HasValue)
+                    {
+                        var jsonData = await controller.RenderViewToStringAsync("~/Views/LineEvents/Message/NotifyManagerToApproveAssignment.cshtml", newItem);
+                        jsonData.PushLineMessage();
+                    }
+                    if (profile.UID != newItem.CourseContractExtension.BranchStore.ViceManagerID
+                        && newItem.CourseContractExtension.BranchStore.ViceManagerID.HasValue)
+                    {
+                        var jsonData = await controller.RenderViewToStringAsync("~/Views/LineEvents/Message/NotifyViceManagerToApproveAssignment.cshtml", newItem);
+                        jsonData.PushLineMessage();
+                    }
+                }
+            }
         }
 
         public static Payment EditPaymentForContract(this PaymentViewModel viewModel, HttpContext context)

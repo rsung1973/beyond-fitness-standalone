@@ -1,0 +1,174 @@
+
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using WebHome.Components
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@using CommonLib.Utility
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    UserProfile _model;
+
+    CoachViewModel _viewModel;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    _model = (UserProfile)this.Model;
+    _viewModel = (CoachViewModel)ViewBag.ViewModel;
+
+}
+
+<!--每月薪資獎金卡片-->
+<div class="container-fluid">
+    <h4 class="card-outbound-header m-l-15">每月薪資獎金 
+        <a href="javascript:showMoreQueryModal();"><i class="zmdi zmdi-search-for zmdi-hc-lg"></i></a> 
+    </h4>
+    <div class="row clearfix" id="queryArea" style="display:none;">
+        <div class="col-12">
+            <div class="card salary">
+                <div class="header">
+                    <h2>查詢區間：<span id="queryInterval"></span></h2>
+                </div>
+                <div class="body">
+                    <div class="table-responsive" id="achievementList">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $(function () {
+        if ($global.achievementConsole === undefined) {
+            $global.achievementConsole = {
+                'doQuery': {},
+            };
+        }
+    });
+
+    var dtAchivement;
+    function showAchivementList(itemCount) {
+        if (dtAchivement != undefined) {
+            dtAchivement.destroy();
+        }
+
+        var columns = [];
+        for (var idx = 1; idx <= itemCount; idx++) {
+            columns.push(idx);
+        }
+
+        dtAchivement = $('.dtAchivement').DataTable({
+            "filter": false,
+            "bPaginate": false,
+            "info": false,
+            "order": [
+                [0, 'desc']
+            ],
+            "language": {
+                "lengthMenu": "每頁顯示 _MENU_ 筆資料",
+                "zeroRecords": "沒有資料也是種福氣",
+                "info": "共 _TOTAL_ 筆，目前顯示第 _START_ 至 _END_筆資料",
+                "infoEmpty": "顯示 0 筆的資料",
+                "infoFiltered": "(總共從 _MAX_ 筆資料過濾)",
+                "loadingRecords": "快馬加鞭處理中...",
+                "processing": "快馬加鞭處理中...",
+                "search": "快速搜尋：",
+                "paginate": {
+                    "first": "第一頁",
+                    "last": "最後一頁",
+                    "next": "下一頁",
+                    "previous": "前一頁"
+                },
+            },
+            scrollX: true,
+            scrollCollapse: true,
+            fixedColumns: {
+                leftColumns: 1
+            },
+            "columnDefs": [
+                {
+                    targets: [0],
+                    className: "align-center"
+                },
+                {
+                    targets: columns,
+                    className: "align-right"
+                }
+            ]
+        });
+
+        $('.dtAchivement').resize();
+
+    }
+
+    function inquireMonthlySalary(viewModel) {
+
+        showLoading();
+        $.post('@Html.Raw(Url.Action("InquireMonthlySalary", "AchievementConsole"))', viewModel, function (data) {
+            hideLoading();
+            if ($.isPlainObject(data)) {
+                alert(data.message);
+            } else {
+                $('#achievementList').empty()
+                    .append($(data));
+            }
+        });
+    }
+
+    function showMoreQueryModal() {
+
+        if ($global.appliedDialog && $global.appliedDialog['queryCondition']) {
+            $global.appliedDialog['queryCondition'].modal('show');
+            return;
+        }
+
+        $global.achievementConsole.doQuery['queryCondition'] = function (viewModel) {
+            viewModel.KeyID = '@Html.Raw(_model.UID.EncryptKey())';
+            inquireMonthlySalary(viewModel);
+        };
+
+        $global.viewModel.DialogID = 'queryCondition';
+        showLoading();
+        $.post('@Html.Raw(Url.Action("SelectQueryInterval", "AchievementConsole"))', $global.viewModel, function (data) {
+            hideLoading();
+            $('#queryArea').css('display', '');
+            if ($.isPlainObject(data)) {
+                alert(data.message);
+            } else {
+                $(data).appendTo($('body'));
+            }
+        });
+    }
+
+    function showSalaryDetails(keyID) {
+        if ($global.appliedDialog && $global.appliedDialog['salaryDetails']) {
+            prepareSalaryDetails(keyID, function () {
+                $global.appliedDialog['salaryDetails'].modal('show');
+            });
+            return;
+        }
+
+        $global.viewModel.DialogID = 'salaryDetails';
+        $global.viewModel.KeyID = keyID;
+        showLoading();
+        $.post('@Html.Raw(Url.Action("ShowSalaryDetails", "AchievementConsole"))', $global.viewModel, function (data) {
+            hideLoading();
+            if ($.isPlainObject(data)) {
+                alert(data.message);
+            } else {
+                $(data).appendTo($('body'));
+            }
+        });
+    }
+
+</script>

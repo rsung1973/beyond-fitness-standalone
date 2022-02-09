@@ -275,7 +275,7 @@
                 <li>
                     <div class="user-info">
                         <div class="image">
-                            <a href="@(Url.Action("ProfileIndex","ConsoleHome"))">
+                            <a href="javascript:checkPassword();">
                                 @{
                                     await Html.RenderPartialAsync("~/Views/ConsoleHome/Module/ProfileImage.cshtml", _model);
                                 }
@@ -451,6 +451,75 @@
             });
         }
 
+        function sendPassword() {
+            var $target = $(window.event.target);
+
+            $target.prop('disabled', true);
+            setTimeout(function () {
+                $target.prop('disabled', false);
+            }, 300000);
+
+            showLoading();
+            $.post('@Html.Raw(Url.Action("PushPIN", "LineEvents"))', { }, function (data) {
+                hideLoading();
+                console.log(data);
+                //Swal.update({
+                //    allowOutsideClick: false,
+                //});
+                if ($.isPlainObject(data)) {
+
+                } else {
+
+                }
+            });
+        }
+
+        function checkPassword() {
+
+            Swal.fire({
+                icon: 'info', //新增屬性
+                title: '請輸入通關密碼',
+                input: 'text',
+                background: '#F4F6F9',
+                html: '請點選 👉<button type="button" role="button" tabindex="0" class="btn btn-darkteal sendPasswd" onclick="sendPassword();">發送密碼</button>👈 並至LINE取得密碼',
+                showCancelButton: false,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: '確定進入',
+                allowEscapeKey: false,
+                //inputValidator: (value) => {
+                //    if (!value) {
+                //        return '請輸入通關密碼';
+                //    }
+                //},
+                preConfirm: (value) => {
+                    if (!value) {
+                        Swal.showValidationMessage('請輸入通關密碼');
+                        return false;
+                    }
+                    showLoading();
+                    return $.post('@Html.Raw(Url.Action("ProfileIndex", "ConsoleHome"))', { 'PIN': value }, function (data) {
+                        hideLoading();
+                    }).done(function (data, textStatus, jqXHR) {
+                        console.log(data);
+                        if ($.isPlainObject(data)) {
+                            if (data.result) {
+                                return data;
+                            } else {
+                                Swal.showValidationMessage(data.message);
+                            }
+                        } else {
+
+                        }
+                        return false;
+                    });
+                },
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    showLoading();
+                    $('').launchDownload('@Html.Raw(Url.Action("ProfileIndex", "ConsoleHome"))', { 'AuthCode': result.value.message });
+                }
+            });
+        }
     </script>
     @if (_viewModel?.AlertMessage != null)
     {

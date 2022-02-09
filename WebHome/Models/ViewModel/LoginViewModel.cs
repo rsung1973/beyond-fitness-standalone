@@ -70,6 +70,7 @@ namespace WebHome.Models.ViewModel
         public int? UID { get; set; }
         public String LineID { get; set; }
         public String Theme { get; set; }
+        public bool? ViewAward { get; set; }
 
     }
 
@@ -175,6 +176,13 @@ namespace WebHome.Models.ViewModel
         public String Address { get; set; }
         public Naming.RoleID? RoleID { get; set; }
         public int? UID { get; set; }
+        public String UserName { get; set; }
+        public String IDNo { get; set; }
+        public string Nickname { get; set; }
+        public String EmergencyContactPerson { get; set; }
+        public String EmergencyContactPhone { get; set; }
+        public String Relationship { get; set; }
+        public String AdministrativeArea { get; set; }
     }
 
     public class LessonViewModel
@@ -265,6 +273,7 @@ namespace WebHome.Models.ViewModel
         public int?[] AuthorizedRole { get; set; }
         public bool? HasGiftLessons { get; set; }
         public int? MonthlyGiftLessons { get; set; }
+        public String PIN { get; set; }
 
     }
 
@@ -627,6 +636,12 @@ namespace WebHome.Models.ViewModel
         public DateTime? ClassTime { get; set; }
         public int? LearnerID { get; set; }
         public int? ExceptionalID { get; set; }
+        public DateTime? DateTo { get; set; }
+        public int? UID
+        {
+            get ;
+            set ;
+        }
     }
 
     public class LessonTimeBookingViewModel : QueryViewModel

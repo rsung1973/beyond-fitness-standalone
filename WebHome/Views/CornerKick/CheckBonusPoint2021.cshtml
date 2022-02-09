@@ -14,12 +14,12 @@
     ModelStateDictionary _modelState;
     ModelSource<UserProfile> models;
     UserProfile _model;
-    AwardQueryViewModel _viewModel;
+    LoginViewModel _viewModel;
 
     _modelState = (ModelStateDictionary)ViewBag.ModelState;
     models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];
     _model = (UserProfile)this.Model;
-    _viewModel = ViewBag.ViewModel as AwardQueryViewModel;
+    _viewModel = ViewBag.ViewModel as LoginViewModel;
     _viewModel.Title = "兌換我的裝備";
 }
 

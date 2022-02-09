@@ -82,7 +82,8 @@ namespace WebHome.Models.Locale
             教練PI = 1005,
             體驗課程 = 1006,
             點數兌換課程 = 1007,
-            舊會員續約 = 1008
+            舊會員續約 = 1008,
+            半堂計算 = 1011,
         }
 
         public enum LessonSeriesStatus
@@ -125,7 +126,7 @@ namespace WebHome.Models.Locale
             Preliminary = 11,
             Servitor = 12,
             FES = 13,
-            Dietitian = 14,
+            HealthCare = 14,    //Dietitian = 14,
         }
 
         public static readonly String[] RoleName = new String[] {
@@ -157,7 +158,7 @@ namespace WebHome.Models.Locale
             (int)RoleID.Servitor,
             (int)RoleID.ViceManager,
             (int)RoleID.FES,
-            (int)RoleID.Dietitian,
+            (int)RoleID.HealthCare,
         };
 
         public enum LessonStatus

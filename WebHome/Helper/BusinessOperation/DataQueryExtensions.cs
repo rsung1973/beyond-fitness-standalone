@@ -1183,6 +1183,22 @@ namespace WebHome.Helper.BusinessOperation
             return items;
         }
 
+        public static IQueryable<Settlement> InquireMonthlySettlement(this LessonQueryViewModel viewModel, GenericManager<BFDataContext> models)
+        {
+            IQueryable<Settlement> items = models.GetTable<Settlement>();
+            if (viewModel.DateFrom.HasValue)
+            {
+                items = items.Where(m => m.StartDate >= viewModel.DateFrom);
+            }
+
+            if (viewModel.DateTo.HasValue)
+            {
+                items = items.Where(m => m.StartDate < viewModel.DateTo.Value.AddMonths(1));
+            }
+
+            return items;
+        }
+
         public static IQueryable<MonthlyIndicator> InquireYearlyIndicator(this MonthlyIndicatorQueryViewModel viewModel, GenericManager<BFDataContext> models)
         {
             viewModel.DateTo = DateTime.Today;

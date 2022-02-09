@@ -65,5 +65,30 @@ namespace WebHome.Helper
                     .Where(l => l.CoachAttendance.HasValue
                         || (!l.CoachAttendance.HasValue && !(l.PriceStatus==(int)Naming.LessonPriceFeature.體驗課程 || l.ELStatus == (int)Naming.LessonPriceFeature.體驗課程)));
 
+        public IQueryable<V_Tuition> PTSessionForAchievement => LessonItems
+                    .Where(t => BusinessConsoleExtensions.SessionScopeForAchievement.Contains(t.PriceStatus)
+                            || BusinessConsoleExtensions.SessionScopeForAchievement.Contains(t.ELStatus));
+        public IQueryable<V_Tuition> PTSession => LessonItems
+                    .Where(t => BusinessConsoleExtensions.SessionScopeForComleteLessonCount.Contains(t.PriceStatus)
+                            || BusinessConsoleExtensions.SessionScopeForComleteLessonCount.Contains(t.ELStatus));
+
+        public IQueryable<V_Tuition> ContractPTSession => LessonItems
+                    .Where(t => BusinessConsoleExtensions.SessionScopeForComleteLessonCount.Contains(t.PriceStatus));
+
+        public IQueryable<V_Tuition> EnterprisePTSession => LessonItems
+                    .Where(t => BusinessConsoleExtensions.SessionScopeForComleteLessonCount.Contains(t.ELStatus));
+
+        public IQueryable<V_Tuition> FilterByWholeOne(IQueryable<V_Tuition> items)
+        {
+            IQueryable<LessonPriceProperty> halfCount = models.GetTable<LessonPriceProperty>().Where(p => p.PropertyID == (int)Naming.LessonPriceFeature.半堂計算);
+            return items.Where(v => !halfCount.Any(p => p.PriceID == v.PriceID));
+        }
+
+        public IQueryable<V_Tuition> FilterByHalfCount(IQueryable<V_Tuition> items)
+        {
+            IQueryable<LessonPriceProperty> halfCount = models.GetTable<LessonPriceProperty>().Where(p => p.PropertyID == (int)Naming.LessonPriceFeature.半堂計算);
+            return items.Where(v => halfCount.Any(p => p.PriceID == v.PriceID));
+        }
+
     }
 }

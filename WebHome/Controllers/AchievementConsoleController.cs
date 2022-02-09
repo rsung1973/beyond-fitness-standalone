@@ -58,6 +58,35 @@ namespace WebHome.Controllers
             return View("~/Views/AchievementConsole/Module/InquireMonthlyCoachRevenue.cshtml", items);
         }
 
+        public ActionResult InquireMonthlySalary(LessonQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+
+            if (viewModel.KeyID != null)
+            {
+                viewModel.UID = viewModel.DecryptKeyValue();
+            }
+
+            var salaryItems = models.GetTable<MonthlySalary>()
+                .Where(t => t.Payday <= DateTime.Today);
+
+            if(viewModel.DateFrom.HasValue)
+            {
+                salaryItems = salaryItems.Where(t => t.Payday >= viewModel.DateFrom);
+            }
+            if(viewModel.DateTo.HasValue)
+            {
+                salaryItems = salaryItems.Where(t => t.Payday < viewModel.DateTo.Value.AddMonths(1));
+            }
+
+            IQueryable<MonthlySalaryDetails> items = models.GetTable<MonthlySalaryDetails>()
+                //.Where(t => t.SettlementID.HasValue)
+                .Where(c => c.UID == viewModel.UID)
+                .Join(salaryItems, s => s.SalaryID, m => m.SalaryID, (s, m) => s);
+
+            return View("~/Views/ConsoleHome/Salary/MonthlySalaryList.cshtml", items);
+        }
+
         public ActionResult SelectChartModal(MonthlyCoachRevenueIndicatorQueryViewModel viewModel)
         {
             ViewBag.ViewModel = viewModel;
@@ -89,7 +118,11 @@ namespace WebHome.Controllers
             return View("~/Views/AchievementConsole/Module/SelectQueryCondition.cshtml");
         }
 
-
+        public ActionResult SelectQueryInterval(LessonQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            return View("~/Views/AchievementConsole/Module/SelectQueryInterval.cshtml");
+        }
 
         public ActionResult ShowMonthlyRevenueCurve(MonthlyCoachRevenueIndicatorQueryViewModel viewModel)
         {
@@ -158,6 +191,74 @@ namespace WebHome.Controllers
             }
 
             return Json(new { result = true });
+
+        }
+
+        public ActionResult ShowMonthlySalary(LessonQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+
+            if (!viewModel.DateFrom.HasValue)
+            {
+                ModelState.AddModelError("DateFrom", "請選擇起月");
+            }
+
+            if (!viewModel.DateTo.HasValue)
+            {
+                ModelState.AddModelError("DateTo", "請選擇迄月");
+            }
+
+            if (ModelState.IsValid)
+            {
+                if (!(viewModel.DateFrom <= viewModel.DateTo.Value && viewModel.DateTo.Value <= viewModel.DateFrom.Value.AddMonths(12)))
+                {
+                    ModelState.AddModelError("DateFrom", "查詢月數區間錯誤");
+                }
+            }
+
+            if (!ModelState.IsValid)
+            {
+                ViewBag.ModelState = ModelState;
+                return View(ConsoleHomeController.InputErrorView);
+            }
+
+            return Json(new { result = true });
+
+        }
+
+        public ActionResult ShowSalaryDetails(CoachBonusViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            CoachBonusViewModel tmpModel = viewModel;
+            if (viewModel.KeyID != null)
+            {
+                tmpModel = JsonConvert.DeserializeObject<CoachBonusViewModel>(viewModel.KeyID.DecryptKey());
+            }
+
+            var salary = models.GetTable<MonthlySalaryDetails>()
+                .Where(s => s.SalaryID == tmpModel.SalaryID)
+                .Where(s => s.UID == tmpModel.UID).FirstOrDefault();
+
+            if (salary == null)
+            {
+                ModelState.AddModelError("Message", "資料錯誤!!");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                ViewBag.AlertError = true;
+                ViewBag.ModelState = ModelState;
+                return View(ConsoleHomeController.InputErrorView);
+            }
+
+            if (viewModel.DialogID != null)
+            {
+                return View("~/Views/ConsoleHome/Salary/SalaryDetailsModal.cshtml", salary);
+            }
+            else
+            {
+                return View("~/Views/ConsoleHome/Salary/SalaryDetails.cshtml", salary);
+            }
 
         }
 

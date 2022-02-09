@@ -44,7 +44,11 @@ namespace WebHome.Controllers
         // GET: MainActivity
         public ActionResult Index()
         {
-            return View();
+            return View("~/Views/MainActivity/Index.cshtml");
+        }
+        public ActionResult Main()
+        {
+            return Index();
         }
 
         public ActionResult ChangeLanguate(String lang)
@@ -120,15 +124,19 @@ namespace WebHome.Controllers
         public ActionResult BlogSingle(BlogArticleQueryViewModel viewModel)
         {
             ViewBag.ViewModel = viewModel;
-            if(viewModel.KeyID!=null)
+            if (viewModel.KeyID != null)
             {
                 viewModel.DocID = viewModel.DecryptKeyValue();
             }
 
-            //if (Request.QueryString.HasValue)
-            //{
-            //    ViewBag.ViewModel = viewModel = JsonConvert.DeserializeObject<BlogArticleQueryViewModel>(Request.QueryString.Value.DecryptKey());
-            //}
+            if(!viewModel.DocID.HasValue)
+            {
+                if (Request.QueryString.HasValue)
+                {
+                    ViewBag.ViewModel = viewModel = JsonConvert.DeserializeObject<BlogArticleQueryViewModel>(HttpUtility.UrlDecode(Request.QueryString.Value[1..])
+                        .UrlDecodeBase64String().DecryptKey());
+                }
+            }
 
             var item = models.GetTable<BlogArticle>().Where(b => b.DocID == viewModel.DocID).FirstOrDefault();
             if (item == null)

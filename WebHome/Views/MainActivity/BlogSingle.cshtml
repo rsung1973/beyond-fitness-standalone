@@ -39,7 +39,7 @@
 <!-- Main Content -->
 <div id="content" />
 <script>
-    $("#content").load("@Html.Raw($"blog/{_model.BlogID}/content.html")", function (data) {
+    $("#content").load("@Html.Raw($"../BlogContent/blog/{_model.BlogID}/content.html")", function (data) {
         bindTrackingCode('@Html.Raw($"文章_{_model.Title}")');
     });
 </script>

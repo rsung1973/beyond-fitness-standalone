@@ -30,7 +30,7 @@
 <section class="section-blog dark">
     <div class="container">
         <span class="mode">
-            <a href="javascript:bindTrackingCode('圖文分類', '@(Url.Action("BlogGrid"))', null)"><i class="fas fa-th-large"></i></a>
+            <a href="javascript:bindTrackingCode('圖文分類', '@(Url.Action("BlogGrid", "MainActivity"))', null)"><i class="fas fa-th-large"></i></a>
         </span>
         <ul class="list-group list-group-flush">
             @foreach (var item in models.GetTable<BlogCategoryDefinition>())

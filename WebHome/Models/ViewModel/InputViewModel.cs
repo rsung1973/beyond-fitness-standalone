@@ -106,14 +106,8 @@ namespace WebHome.Models.ViewModel
 
     public class ContractMemberViewModel : LearnerViewModel
     {
-        public String EmergencyContactPhone { get; set; }
-        public String EmergencyContactPerson { get; set; }
-        public String Relationship { get; set; }
-        public String AdministrativeArea { get; set; }
-        public String IDNo { get; set; }
         public int? OwnerID { get; set; }
         public int? ContractType { get; set; }
-        public string Nickname { get; set; }
         public bool? ProfileOnly { get; set; }
     }
 
@@ -148,7 +142,6 @@ namespace WebHome.Models.ViewModel
 
     public class LearnerQueryViewModel : LearnerViewModel
     {
-        public String IDNo { get; set; }
         public int? CoachID { get; set; }
         public int?[] LessonID { get; set; }
         public int? BirthIncomingDays { get; set; } = 14;
@@ -276,6 +269,12 @@ namespace WebHome.Models.ViewModel
         public int? SettlementID { get; set; }
         public int? ManagerBonus { get; set; }
         public int? SpecialBonus { get; set; }
+        public int? UID
+        {
+            get => CoachID;
+            set => CoachID = value;
+        }
+        public int? SalaryID { get; set; }
     }
 
     public class MonthlyBonusViewModel : AchievementQueryViewModel
@@ -391,7 +390,6 @@ namespace WebHome.Models.ViewModel
         public int? Lower { get; set; }
         public int? Upper { get; set; }
         public String WriteoffCode { get; set; }
-        public bool? ViewAward { get; set; }
     }
 
     public class ExerciseGameViewModel
@@ -482,7 +480,6 @@ namespace WebHome.Models.ViewModel
         public int? Year { get; set; }
         public int? Month { get; set; }
         public int? BranchID { get; set; }
-        public DateTime? DateTo { get; set; }
         public int? ChartType { get; set; }
         public Naming.SessionTypeDefinition[] SessionType { get; set; }
 

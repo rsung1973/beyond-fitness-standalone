@@ -52,6 +52,18 @@ namespace WebHome.Helper
                     .Join(items, c => c.CoachID, u => u.UID, (c, u) => c);
         }
 
+        public static IQueryable<UserProfile> PromptEffectiveEmployee(this GenericManager<BFDataContext> models, IQueryable<UserProfile> items = null)
+        {
+            if (items == null)
+            {
+                items = models.GetTable<UserProfile>();
+            }
+
+            items = items.Where(u => u.LevelID == (int)Naming.MemberStatusDefinition.Checked);
+            return models.GetTable<ForEmployee>()
+                    .Join(items, c => c.UID, u => u.UID, (c, u) => u);
+        }
+
         public static IQueryable<UserProfile> PromptLearnerAboutToBirth(this GenericManager<BFDataContext> models, int days = 14)
         {
             DateTime start = DateTime.Today;

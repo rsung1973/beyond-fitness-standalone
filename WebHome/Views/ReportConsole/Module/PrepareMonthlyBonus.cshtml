@@ -49,7 +49,7 @@ else
                 focusCancel: true
             }).then((result) => {
                 if (result.isConfirmed) {
-                    $('').launchDownload('@Html.Raw(Url.Action("CreateMonthlyBonusXlsx","Accounting"))', @Html.Raw(JsonConvert.SerializeObject(new { _viewModel.AchievementDateFrom })), 'report', true);
+                    $('').launchDownload('@Html.Raw(Url.Action("CreateMonthlyBonusXlsx2022","Accounting"))', @Html.Raw(JsonConvert.SerializeObject(new { _viewModel.AchievementDateFrom })), 'report', true);
                 } else {
                     showLoading();
                     $('').launchDownload('@Html.Raw(Url.Action("CoachBonusIndex","ConsoleHome"))', @Html.Raw(JsonConvert.SerializeObject(new { _viewModel.AchievementDateFrom })));

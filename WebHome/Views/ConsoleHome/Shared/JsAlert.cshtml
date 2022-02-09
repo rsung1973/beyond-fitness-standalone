@@ -1,7 +1,17 @@
-﻿@{
+﻿@using System.IO
+@using System.Linq.Expressions
+@using System.Web
 
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@{
+    QueryViewModel _viewModel = ViewBag.ViewModel as QueryViewModel;
     String _message;
-    _message = (String)this.Model ?? (String)ViewBag.Message;
+    _message = (this.Model as String) ?? (String)ViewBag.Message ?? _viewModel?.Message;
 }
 @if (_message != null)
 {
@@ -9,9 +19,9 @@
         Swal.fire({
             title: "",
             text: '@(Html.Raw(_message))',
-            icon: 'warning',
+            icon: '@(ViewBag.Icon ?? "warning")',
         }).then((result) => {
-            
+
             @if (ViewBag.GoBack == true)
             {
                 <text>

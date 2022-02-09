@@ -1,6 +1,7 @@
 
 @using System.IO
 @using System.Linq.Expressions
+@using System.Web
 
 @using WebHome.Helper
 @using WebHome.Models.Locale
@@ -10,6 +11,7 @@
 @using WebHome.Controllers
 @using Microsoft.AspNetCore.Mvc.ModelBinding
 @using Newtonsoft.Json
+@using CommonLib.Utility
 @{
 
     ModelStateDictionary _modelState;
@@ -37,7 +39,7 @@
         {
             <div class="rsTextSlide">
                 <img class="rsImg" src="../ConsoleHome/blog/@(_items[i].BlogID)/images/Title.jpg" data-rsh="" data-rsw="">
-                <a onclick="gtag('event', '專業文章', {  'event_category': '卡片點擊',  'event_label': '卡片總覽'});" href="@("../../MainActivity/BlogSingle?id=" + _items[i].DocID)" target="_blank">
+                <a onclick="gtag('event', '專業文章', {  'event_category': '卡片點擊',  'event_label': '卡片總覽'});" href="@Html.Raw($"../MainActivity/BlogSingle?{(new { DocID = _items[i].DocID }).JsonStringify().EncryptKeyNormal().UrlEncodeBase64String()}")" target="_blank">
                     <h3 class="bottommask">@(_items[i].Title)</h3>
                 </a>
             </div>

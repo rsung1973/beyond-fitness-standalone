@@ -100,7 +100,7 @@ namespace WebHome.Helper
                 return;
             }
 
-            var exceptive = models.GetTable<UserRole>().Where(r => r.RoleID == (int)Naming.RoleID.Dietitian);
+            var exceptive = models.GetTable<UserRole>().Where(r => r.RoleID == (int)Naming.RoleID.HealthCare);
             var exceptivePrice = models.GetTable<ObjectiveLessonPrice>()
                     .Where(b => b.CatalogID == (int)ObjectiveLessonCatalog.CatalogDefinition.OnLineFeedback
                         || b.CatalogID == (int)ObjectiveLessonCatalog.CatalogDefinition.OnLine)

@@ -486,7 +486,7 @@ namespace WebHome.Controllers
             {
                 ModelState.AddModelError("pid", "登入資料錯誤!!");
                 ViewBag.ModelState = ModelState;
-                return View("LoginByMail");
+                return RedirectToAction("Login", "CornerKick");
             }
 
             await HttpContext.SignOnAsync(item, viewModel.RememberMe);
@@ -496,7 +496,7 @@ namespace WebHome.Controllers
                 return Redirect(returnUrl);
             }
 
-            return processLogin(item);
+            return Redirect(this.ProcessLogin(item, false));
 
         }
 

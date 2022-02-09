@@ -13,7 +13,7 @@
     ModelStateDictionary _modelState;
     ModelSource<UserProfile> models;
     IQueryable<UserProfile> _model;
-    CalendarEventQueryViewModel _viewModel;
+    LearnerViewModel _viewModel;
     String _dialogID = $"owner{DateTime.Now.Ticks}";
 
 
@@ -21,7 +21,7 @@
     _modelState = ViewContext.ModelState;
     models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
     _model = (IQueryable<UserProfile>)this.Model;
-    _viewModel = (CalendarEventQueryViewModel)ViewBag.ViewModel;
+    _viewModel = (LearnerViewModel)ViewBag.ViewModel;
 }
 @{
     ViewBag.SelectMember = (Func<UserProfile, String>)(item =>

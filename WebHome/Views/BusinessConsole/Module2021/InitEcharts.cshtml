@@ -51,6 +51,10 @@
             }
         }, 500);
 
+        window.onresize = function () {
+            $global.echarts.myChart.resize();
+        };
+
     });
 
 

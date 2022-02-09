@@ -36,7 +36,10 @@ namespace WebHome.Controllers
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
-            models.Dispose();
+            if(_dbInstance)
+            {
+                models.Dispose();
+            }
         }
 
         public ModelSource<TEntity> DataSource => _dataSource;

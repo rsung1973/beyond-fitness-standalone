@@ -185,13 +185,13 @@ namespace WebHome.Controllers
             return Content(System.IO.File.ReadAllText(fileName), "text/plain");
         }
 
-        public async Task<ActionResult> CurrentAsync(int? contractID)
+        public async Task<ActionResult> CurrentAsync(int? contractID, String view)
         {
-            System.Diagnostics.Debugger.Launch();
+            //System.Diagnostics.Debugger.Launch();
             var item = models.GetTable<CourseContract>().Where(c => c.ContractID == contractID).FirstOrDefault();
             //if (item.CourseContractExtension.SignOnline == true)
             {
-                String jsonData = await RenderViewToStringAsync("~/Views/LineEvents/Message/NotifyManagerToApproveContract.cshtml", item);
+                String jsonData = await RenderViewToStringAsync($"~/Views/LineEvents/Message/{view ?? "NotifyManagerToApproveQuickTermination.cshtml"}", item);
                 jsonData.PushLineMessage();
                 //item.CreateLineReadyToSignContract(models).PushLineMessage();
             }

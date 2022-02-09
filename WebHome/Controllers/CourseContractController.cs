@@ -118,8 +118,21 @@ namespace WebHome.Controllers
                 {
                     if (item.CourseContractRevision != null && item.FitnessConsultant != profile.UID)
                     {
-                        var jsonData = await this.RenderViewToStringAsync("~/Views/LineEvents/Message/NotifyCoachToRejectExtend.cshtml", item.CourseContractRevision.SourceContract);
-                        jsonData.PushLineMessage();
+                        if (item.CourseContractRevision.Reason == "展延")
+                        {
+                            var jsonData = await this.RenderViewToStringAsync("~/Views/LineEvents/Message/NotifyCoachToRejectExtend.cshtml", item.CourseContractRevision.SourceContract);
+                            jsonData.PushLineMessage();
+                        }
+                        else if (item.CourseContractRevision.Reason == "終止")
+                        {
+                            var jsonData = await this.RenderViewToStringAsync("~/Views/LineEvents/Message/NotifyCoachToRejectTermination.cshtml", item.CourseContractRevision.SourceContract);
+                            jsonData.PushLineMessage();
+                        }
+                        else if (item.CourseContractRevision.Reason == "轉換體能顧問")
+                        {
+                            var jsonData = await this.RenderViewToStringAsync("~/Views/LineEvents/Message/NotifyCoachToRejectAssignment.cshtml", item);
+                            jsonData.PushLineMessage();
+                        }
                     }
 
                     models.ExecuteCommand("delete CourseContract where ContractID = {0}", item.ContractID);

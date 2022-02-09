@@ -1,0 +1,88 @@
+
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@using CommonLib.Utility
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    IQueryable<MonthlySalaryDetails> _model;
+    LessonQueryViewModel _viewModel;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = ViewContext.ModelState;
+    _model = (IQueryable<MonthlySalaryDetails>)this.Model;
+    _viewModel = (LessonQueryViewModel)ViewBag.ViewModel;
+
+}
+
+<table class="table table-striped table-custom nowrap dtAchivement" style="width:100%">
+    <thead class="bg-darkteal">
+        <tr>
+            <th class="text-center">月份</th>
+            <th class="text-center">發薪日</th>
+            <th class="text-center">應發金額</th>
+            <th class="text-center">應扣金額</th>
+            <th class="text-center">實發金額</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in _model)
+        {
+            int salary = (item.Salary ?? 0)
+            + (item.Subsistence ?? 0);
+
+            if (item.MonthlySalary.SalaryType == (int)MonthlySalary.SalaryTypeEnum.RegularPay)
+            {
+                var coachSalary = models.GetTable<CoachMonthlySalary>()
+                    .Where(c => c.CoachID == item.UID)
+                    .Where(c => c.SettlementID == item.SettlementID)
+                    .FirstOrDefault();
+
+                if (coachSalary != null)
+                {
+                    salary += ((coachSalary.ManagerBonus ?? 0)
+                        + (coachSalary.SpecialBonus ?? 0)
+                        + (coachSalary.AttendanceBonus ?? 0)
+                        + (coachSalary.AchievementBonus ?? 0));
+                }
+            }
+            else
+            {
+                salary += (item.SpecialBonus ?? 0);
+            }
+
+            int subtractiveAmt = (item.Tax ?? 0)
+                    + (item.LaborInsurrance ?? 0)
+                    + (item.HealthInsurrance ?? 0)
+                    + (item.HealthSupplement ?? 0)
+                    + (item.SickLeave ?? 0)
+                    + (item.EpidemicPL ?? 0)
+                    + (item.PersonalLeave ?? 0)
+                    + (item.WillingContribution ?? 0);
+
+        <tr onclick="showSalaryDetails('@Html.Raw((new { item.SalaryID,item.UID }).JsonStringify().EncryptKey())');">
+            <td class="text-center">@($"{(item.Settlement?.StartDate ?? item.MonthlySalary.Payday):yyyyMM}") <i class="zmdi zmdi-eye zmdi-hc-lg"></i></td>
+            <td class="text-center">@($"{item.MonthlySalary.Payday:yyyyMMdd}")</td>
+            <td class="text-right">@($"{salary:##,###,###,##0}")</td>
+            <td class="text-right">
+                @($"{subtractiveAmt:##,###,###,##0}")
+            </td>
+            <td class="text-right">@($"{item.ActualAmount:##,###,###,##0}")</td>
+        </tr>
+        }
+    </tbody>
+</table>
+<script>
+    $(function () {
+        showAchivementList(4);
+    });
+</script>

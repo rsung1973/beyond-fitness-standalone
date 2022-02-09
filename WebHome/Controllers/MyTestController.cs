@@ -147,6 +147,11 @@ namespace WebHome.Controllers
                 viewModel.UID = viewModel.DecryptKeyValue();
             }
 
+            if (Request.Host.HasValue && Request.Host.Host.ToLower().Contains("beyond-fitness.com.tw"))
+            {
+                return RedirectToAction("Login", "CornerKick");
+            }
+
             //var items = models.DataContext.UserProfile
             //    .Include(u => u.UserRole)
             //    .Include(u => u.UserRoleAuthorization);

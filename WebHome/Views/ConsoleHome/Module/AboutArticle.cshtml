@@ -8,6 +8,7 @@
 @using WebHome.Models.DataEntity
 @using WebHome.Controllers
 @using Microsoft.AspNetCore.Mvc.ModelBinding
+@using CommonLib.Utility
 
 @{
 
@@ -54,7 +55,7 @@
                     @{ var imgUrl = $"blog/{item.BlogID}/images/Title.jpg";}
 
                     <img class="rsImg" src="images/blog/DefaultTitle.jpg" onload="@(System.IO.File.Exists(Startup.MapPath(imgUrl)) ? $"this.onload = null;this.src = '{imgUrl}';" : null)" data-rsh="" data-rsw="" />
-                    <a href="@(Url.Action("BlogSingle", "MainActivity", new { item.DocID }))" target="_blank">
+                    <a href="@($"{Url.Action("BlogSingle", "MainActivity")}?{(new { item.DocID }).JsonStringify().UrlEncodeBase64String()}")" target="_blank">
                         <h3 class="bottommask">@(item.Title)</h3>
                     </a>
                 </div>

@@ -30,9 +30,13 @@ namespace WebHome
         public static String ApplicationPath { get; private set; } = "";
         public static  IConfiguration GlobalConfiguration { get; private set; }
 
-        public static String MapPath(String path)
+        public static String MapPath(String path, bool isStatic = true)
         {
-            return Path.Combine(Environment.WebRootPath, path.Replace("~/", "").Replace('/', Path.DirectorySeparatorChar));
+            return isStatic
+                ? Path.Combine(Environment.WebRootPath, path.Replace("~/", "")
+                    .TrimStart('/').Replace('/', Path.DirectorySeparatorChar))
+                : Path.Combine(Environment.ContentRootPath, path.Replace("~/", "")
+                    .TrimStart('/').Replace('/', Path.DirectorySeparatorChar));
         }
 
         public Startup(IConfiguration configuration)
@@ -80,7 +84,8 @@ namespace WebHome
             {
                 options.SuppressMapClientErrors = true;
                 options.SuppressModelStateInvalidFilter = true;
-            });
+            })
+            .AddRazorRuntimeCompilation();
                 
             //services.AddDbContext<BFDataContext>(options =>
             //    {
@@ -147,6 +152,17 @@ namespace WebHome
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllerRoute(
+                        name: "Official",
+                        pattern: "Official/{action}/{id?}/{keyID?}",
+                        defaults: new { controller = "MainActivity", action = "Index" }
+                    );
+
+                endpoints.MapControllerRoute(
+                    name: "OfficialActionName",
+                    pattern: "Official/{*actionName}",
+                    defaults: new { controller = "MainActivity", action = "HandleUnknownAction" });
+
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");

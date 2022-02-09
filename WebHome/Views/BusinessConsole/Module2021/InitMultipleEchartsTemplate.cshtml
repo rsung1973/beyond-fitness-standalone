@@ -85,6 +85,10 @@
             }
         }, 500);
 
+        window.onresize = function () {
+            $global.echarts.myChart['@(_chartID)'].resize();
+        };
+
     });
 </script>
 

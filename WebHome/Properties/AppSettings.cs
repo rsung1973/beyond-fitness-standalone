@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -35,7 +36,7 @@ namespace WebHome.Properties
         protected void Save()
         {
             String fileName = "App.settings.json";
-            String filePath = Path.Combine(AppRoot, fileName);
+            String filePath = Path.Combine(AppRoot, "App_Data", fileName);
             String propertyName = typeof(AppSettings).Namespace;
             _Settings[propertyName] = JObject.FromObject(this);
             File.WriteAllText(filePath, _Settings.ToString());
@@ -47,7 +48,7 @@ namespace WebHome.Properties
             T currentSettings;
             //String fileName = $"{Assembly.GetExecutingAssembly().GetName()}.settings.json";
             String fileName = "App.settings.json";
-            String filePath = Path.Combine(AppRoot, fileName);
+            String filePath = Path.Combine(AppRoot, "App_Data", fileName);
             if (File.Exists(filePath))
             {
                 _Settings = (JObject)JsonConvert.DeserializeObject(File.ReadAllText(filePath));
@@ -108,6 +109,14 @@ namespace WebHome.Properties
             get;
             set;
         }
+    }
+
+    public class Settings
+    {
+        static Settings _default = new Settings { };
+
+        public static Settings Default => _default;
+        public String BFDbConnection => Startup.GlobalConfiguration.GetConnectionString("BFDbConnection");
 
     }
 }

@@ -26,12 +26,19 @@
 }
 
 @section CustomHeader {
+    <!-- JQuery DataTable Css -->
+    <link href="plugins/jquery-datatable/DataTables-1.10.18/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link href="plugins/jquery-datatable/Responsive-2.2.2/css/responsive.bootstrap4.min.css" rel="stylesheet">
+    <link href="plugins/jquery-datatable/FixedColumns-3.2.5/css/fixedColumns.bootstrap4.min.css" rel="stylesheet">
+
     <link href="plugins/smartcalendar/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
     <link href="css/smartcalendar-2.css" rel="stylesheet" />
     <!-- royalslider -->
     <link href="plugins/royalslider/royalslider.css" rel="stylesheet" />
     <link href="plugins/royalslider/skins/default/rs-default.css" rel="stylesheet" />
     <link href="css/royalslider.css?1.1" rel="stylesheet" />
+    <!-- Custom Css -->
+    <link rel="stylesheet" href="css/customelist.css?1.1" />
     <!-- charts-c3 -->
     <link href="plugins/charts-c3/plugin.css?2.0" rel="stylesheet">
     <!-- Multi Select Css -->
@@ -120,7 +127,10 @@
                             <div class="col-12">
                                 <h5 class="m-t-0">
                                     個人簽名檔
-                                    <img id="sigImg" src="@(_model.UserProfileExtension != null && _model.UserProfileExtension.Signature != null ? _model.UserProfileExtension.Signature : VirtualPathUtility.ToAbsolute("~/img/SignHere.png"))" width="200px" />
+                                    @if (_model.UserProfileExtension != null && _model.UserProfileExtension.Signature != null)
+                                    {
+                                        <img id="sigImg" src="@(_model.UserProfileExtension.Signature)" width="200px" />
+                                    }
                                 </h5>
                             </div>
                             <div class="col-12">
@@ -225,6 +235,9 @@
         </div>
     </div>
 
+    @{
+        await Html.RenderPartialAsync("~/Views/ConsoleHome/Salary/PersonalSalaryInfo.cshtml", _model);
+    }
 </section>
 
 @section TailPageJavaScriptInclude {
@@ -238,7 +251,10 @@
     <script src="plugins/multi-select/js/jquery.multi-select.js"></script>
     <!-- ChartC3 Js -->
     <script src="bundles/cs.bundles.js"></script>
-
+    <!-- Jquery DataTable Plugin Js -->
+    <script src="bundles/datatablescripts.bundle.js"></script>
+    <script src="plugins/jquery-datatable/Responsive-2.2.2/js/dataTables.responsive.min.js"></script>
+    <script src="plugins/jquery-datatable/FixedColumns-3.2.5/js/dataTables.fixedColumns.min.js"></script>
     <script src="../js/plugin/jSignature/jSignature.js"></script>
     <script src="../js/plugin/jSignature/plugins/jSignature.CompressorBase30.js"></script>
     <script src="../js/plugin/jSignature/plugins/jSignature.CompressorSVG.js"></script>

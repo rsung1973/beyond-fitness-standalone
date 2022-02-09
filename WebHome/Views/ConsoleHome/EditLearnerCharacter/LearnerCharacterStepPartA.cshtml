@@ -96,7 +96,7 @@
                         ViewBag.ProfileClass = "rounded-circle";
                         await Html.RenderPartialAsync("~/Views/Common/ProfileImage.cshtml", _learner);
                     }
-                    <div class="chat-info" onclick="javascript:saveNext(0,@(JsonConvert.SerializeObject(items.Select(p=>p.QuestionID))), 3);">
+                    <div class="chat-info" onclick="javascript:saveNext(0,@Html.Raw(JsonConvert.SerializeObject(items.Select(p=>p.QuestionID))), 3);">
                         <span class="message">
                             BEYOND FITNESS已經確實瞭解您的想法，接著討論訓練目標吧。<i class="zmdi livicon-evo" data-options="name: hand-right.svg; size: 30px; style: original; strokeStyle:round; strokeColor:#052333; strokeWidth:2px; autoPlay:true"></i>
                         </span>
@@ -298,7 +298,7 @@
             //        nextStep(2);
             //    }, 1000);
             //});
-            saveNext(0,@(JsonConvert.SerializeObject(pdqItems.Take(4).Select(p=>p.QuestionID))), 2);
+            saveNext(0,@Html.Raw(JsonConvert.SerializeObject(pdqItems.Take(4).Select(p=>p.QuestionID))), 2);
         }
     });
 

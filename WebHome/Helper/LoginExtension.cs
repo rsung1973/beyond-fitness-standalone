@@ -264,6 +264,18 @@ namespace WebHome.Helper
             return profile != null && (profile.CurrentUserRole.RoleID == (int)Naming.RoleID.Servitor || profile.UserRoleAuthorization.Any(r => r.RoleID == (int)Naming.RoleID.Servitor));
         }
 
+        public static bool IsHealthCare(this UserProfile profile)
+        {
+            return profile != null && (profile.CurrentUserRole.RoleID == (int)Naming.RoleID.HealthCare ||
+                profile.UserRoleAuthorization.Any(r => r.RoleID == (int)Naming.RoleID.HealthCare));
+        }
+
+        public static bool IsFES(this UserProfile profile)
+        {
+            return profile != null && (profile.CurrentUserRole.RoleID == (int)Naming.RoleID.FES ||
+                profile.UserRoleAuthorization.Any(r => r.RoleID == (int)Naming.RoleID.FES));
+        }
+
 
         public static bool IsAuthorizedSysAdmin(this UserProfile profile)
         {

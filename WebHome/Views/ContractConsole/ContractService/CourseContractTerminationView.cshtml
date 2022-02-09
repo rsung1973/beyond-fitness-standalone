@@ -194,29 +194,7 @@
                         </tr>
                         <tr style="@(_viewModel.Pdf=="1" ? "height: 12cm" : "height: 2cm")">
                             <td colspan="2">
-                                其他更多說明：
-                                @if (_contract.Status == (int)Naming.ContractServiceStatus.待簽名)
-                                {
-                                    if (!_model.CauseForEnding.HasValue)
-                                    {
-                                        <text>@(_contract.Remark)</text>
-                                    }
-                                }
-                                else
-                                {
-                                    if (_model.CauseForEnding.HasValue)
-                                    {
-                                        <text>終止原因—@($"{(Naming.CauseForEnding)_model.CauseForEnding}") </text>
-                                        if (_model.CauseForEnding == (int)Naming.CauseForEnding.其他)
-                                        {
-                                            <text>（@(_contract.Remark)）</text>
-                                        }
-                                    }
-                                    else
-                                    {
-                                        <text>@(_contract.Remark)</text>
-                                    }
-                                }
+                                其他更多說明：終止原因—@Html.Raw(_model.TerminationReason()) 
                             </td>
                         </tr>
                     </tbody>

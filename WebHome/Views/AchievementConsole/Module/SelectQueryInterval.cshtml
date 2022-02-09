@@ -1,0 +1,46 @@
+﻿
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+    Layout = "~/Views/AchievementConsole/Module/QueryModalTemplate.cshtml";
+
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    LessonQueryViewModel _viewModel;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _modelState = ViewContext.ModelState;
+    _viewModel = (LessonQueryViewModel)ViewBag.ViewModel;
+    String _dialogID = _viewModel.DialogID ?? $"curve{DateTime.Now.Ticks}";
+    if (_viewModel.DialogID == null)
+    {
+        _viewModel.DialogID = _dialogID;
+    }
+    _viewModel.UrlAction = Url.Action("ShowMonthlySalary", "AchievementConsole");
+    if(!_viewModel.DateFrom.HasValue)
+    {
+        _viewModel.DateFrom = DateTime.Today.FirstDayOfMonth();
+        _viewModel.DateTo = _viewModel.DateFrom;
+    }
+    ViewBag.QueryHint = "至多13個月";
+}
+
+@section HeaderContent
+{
+    <h5>自訂查詢區間</h5>
+}
+
+<script>
+        $(function () {
+            $global.$currentModal = $('#@(_dialogID)');
+        });
+</script>

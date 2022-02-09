@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using WebHome.Models;
 using WebHome.Models.DataEntity;
+using WebHome.Models.ViewModel;
+using CommonLib.Utility;
 
 namespace WebHome.Controllers
 {
@@ -21,7 +23,16 @@ namespace WebHome.Controllers
 
         public IActionResult Index()
         {
-            return View("~/Views/Home/Index.cshtml");
+            //var residentID = "00001-1011400";
+            //var jsonData = new
+            //{
+            //    ResidentID = residentID,
+            //    AuthToken = new String[] { residentID.EncryptKey(), residentID.EncryptKey(), residentID.EncryptKey() }
+            //};
+
+            //var json = jsonData.JsonStringify();
+            return RedirectToAction("Main", "MainActivity");
+            //return View("~/Views/Home/Index.cshtml");
         }
 
         public IActionResult Privacy()

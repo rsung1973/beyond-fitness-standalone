@@ -34,7 +34,7 @@
             type: 'pie',
             data: {
                 datasets: [{
-                    data: @(JsonConvert.SerializeObject(items.Select(t=>Math.Round((_model.TrainingExecutionStage.Where(x=>x.StageID==t.StageID).Select(x=>x.TotalMinutes).FirstOrDefault() ?? 0)*100/total)).ToArray())),
+                    data: @Html.Raw(JsonConvert.SerializeObject(items.Select(t=>Math.Round((_model.TrainingExecutionStage.Where(x=>x.StageID==t.StageID).Select(x=>x.TotalMinutes).FirstOrDefault() ?? 0)*100/total)).ToArray())),
                     backgroundColor: [
                         'rgba(245, 166, 35, .8)',
                         'rgba(255, 78, 100, .8)',
@@ -45,7 +45,7 @@
                     label: '',
                     borderWidth: [1, 1, 1, 1],
                 }],
-                labels: @(JsonConvert.SerializeObject(items.Select(t=>t.Stage).ToArray())),
+                labels: @Html.Raw(JsonConvert.SerializeObject(items.Select(t=>t.Stage).ToArray())),
             },
             options: {
                 responsive: true,

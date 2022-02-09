@@ -13,11 +13,11 @@
 @{
     ModelSource<UserProfile> models;
     ModelStateDictionary _modelState;
-    MonthlyCoachRevenueIndicatorQueryViewModel _viewModel;
+    LessonQueryViewModel _viewModel;
 
     models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
     _modelState = ViewContext.ModelState;
-    _viewModel = (MonthlyCoachRevenueIndicatorQueryViewModel)ViewBag.ViewModel;
+    _viewModel = (LessonQueryViewModel)ViewBag.ViewModel;
     String _dialogID = _viewModel.DialogID;
     ViewBag.ReuseModal = true;
 
@@ -35,7 +35,7 @@
                 <div class="row clearfix">
                     <div class="col-lg-6 col-md-6 col-sm-6 col-12">
                         <div class="input-group">
-                            <input type="text" class="form-control month" data-date-format="yyyy/mm" readonly="readonly" placeholder="自訂起月" name="DateFrom" value="@($"{DateTime.Today.AddMonths(-2):yyyy/MM}")" />
+                            <input type="text" class="form-control month" data-date-format="yyyy/mm" readonly="readonly" placeholder="自訂起月" name="DateFrom" value="@($"{_viewModel.DateFrom ?? DateTime.Today.AddMonths(-2):yyyy/MM}")" />
                             <span class="input-group-addon">
                                 <i class="zmdi zmdi-time"></i>
                             </span>
@@ -43,14 +43,14 @@
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6 col-12">
                         <div class="input-group">
-                            <input type="text" class="form-control month" data-date-format="yyyy/mm" readonly="readonly" placeholder="自訂迄月" name="DateTo" value="@($"{DateTime.Today:yyyy/MM}")" />
+                            <input type="text" class="form-control month" data-date-format="yyyy/mm" readonly="readonly" placeholder="自訂迄月" name="DateTo" value="@($"{_viewModel.DateTo ?? DateTime.Today:yyyy/MM}")" />
                             <span class="input-group-addon">
                                 <i class="zmdi zmdi-time"></i>
                             </span>
                         </div>
                     </div>
                     <div class="col-12 text-right">
-                        <small>(查詢區間至少3個月，至多13個月)</small>
+                        <small>(@Html.Raw(ViewBag.QueryHint ?? "查詢區間至少3個月，至多13個月") )</small>
                     </div>
                 </div>
             </div>

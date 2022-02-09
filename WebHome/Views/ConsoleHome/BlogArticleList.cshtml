@@ -82,9 +82,9 @@
                             <div class="img-post">
                                 <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
                                     <div class="img-post m-b-15">
-                                        @{ var imgUrl = $"Blog/{item.BlogID}/images/Title.jpg";}
+                                        @{ var imgUrl = $"BlogContent/Blog/{item.BlogID}/images/Title.jpg";}
 
-                                        <a href="javascript:editArticle(@(item.DocID));"><img src="images/blog/DefaultTitle.jpg" onload="@(System.IO.File.Exists(Startup.MapPath(imgUrl)) ? $"this.onload = null;this.src = '{imgUrl}';" : null)" /></a>
+                                        <img class="blog-img" src="images/blog/DefaultTitle.jpg" onload="@(System.IO.File.Exists(Startup.MapPath(imgUrl)) ? $"this.onload = null;this.src = '../{imgUrl}';" : null)" />                                        
                                         <div class="social_share">
                                             <button class="btn btn-danger btn-icon btn-icon-mini btn-round" onclick="viewArticle(@(item.DocID));"><i class="zmdi zmdi-eye"></i></button>
                                             <button class="btn btn-danger btn-icon btn-icon-mini btn-round" onclick="editArticle(@(item.DocID));"><i class="zmdi zmdi-edit"></i></button>

@@ -50,6 +50,9 @@ namespace WebHome.Helper.MessageOperation
                         client.Headers.Add(HttpRequestHeader.ContentType, "application/json");
                         client.Headers.Add("Authorization", $"Bearer {Startup.Properties["ChannelToken"]}");
 
+                        ApplicationLogging.LoggerFactory.CreateLogger(typeof(MessageExtensions))
+                            .LogInformation($"push:{dataItem}");
+
                         var result = client.UploadData(Startup.Properties["LinePushMessage"], encoding.GetBytes(dataItem));
 
                         ApplicationLogging.LoggerFactory.CreateLogger(typeof(MessageExtensions))

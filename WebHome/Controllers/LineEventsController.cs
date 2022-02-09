@@ -204,5 +204,55 @@ namespace WebHome.Controllers
             return Content("OK!");
         }
 
+        public async Task<ActionResult> PushPINAsync()
+        {
+            UserProfile profile = await HttpContext.GetUserAsync();
+            if (profile == null)
+            {
+                return Content("User not found !");
+            }
+
+            String linePIN = $"{DateTime.Now.Ticks % 1000000:000000}";
+            profile = profile.LoadInstance(models);
+            profile.UserProfileExtension.PIN = linePIN;
+            profile.UserProfileExtension.PINExpiration = DateTime.Now.AddMinutes(5);
+            models.SubmitChanges();
+
+            var item = profile.LoadInstance(models);
+            if (item.UserProfileExtension?.LineID != null)
+            {
+                using (WebClient client = new WebClient())
+                {
+                    var encoding = new UTF8Encoding(false);
+                    client.Headers.Add(HttpRequestHeader.ContentType, "application/json");
+                    client.Headers.Add("Authorization", $"Bearer {Startup.Properties["ChannelToken"]}");
+
+                    var jsonData = new
+                    {
+                        to = item.UserProfileExtension.LineID,
+                        messages = new[]
+                        {
+                            new
+                            {
+                                type =  "text",
+                                text =  $"通關密碼：{linePIN}"
+                            }
+                        }
+                    };
+
+                    var dataItem = JsonConvert.SerializeObject(jsonData);
+                    var result = client.UploadData(Startup.Properties["LinePushMessage"], encoding.GetBytes(dataItem));
+
+                    ApplicationLogging.CreateLogger<LineEventsController>().LogInformation($"push:{dataItem},result:{(result != null ? encoding.GetString(result) : "")}");
+                }
+            }
+            else
+            {
+                ApplicationLogging.CreateLogger<LineEventsController>().LogWarning($"device without line ID:{item.PID}");
+            }
+
+            return Content("OK!");
+        }
+
     }
 }

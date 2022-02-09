@@ -522,22 +522,38 @@ namespace WebHome.Controllers
 
         }
 
-        public ActionResult SearchLearner(String userName)
+        public async Task<ActionResult> SearchLearnerAsync(LearnerViewModel viewModel)
         {
-            userName = userName.GetEfficientString();
-            if (userName == null)
+            ViewBag.ViewModel = viewModel;
+            viewModel.UserName = viewModel.UserName.GetEfficientString();
+            if (viewModel.UserName == null)
             {
                 this.ModelState.AddModelError("userName", "請輸入查詢學員!!");
                 ViewBag.ModelState = this.ModelState;
                 return View(ConsoleHomeController.InputErrorView);
             }
 
-            var items = userName.PromptUserProfileByName(models);
+            var profile = await HttpContext.GetUserAsync();
 
-            if (items.Count() > 0)
+            var items = viewModel.UserName.PromptUserProfileByName(models);
+
+            if (items.Any())
+            {
                 return View("~/Views/LearnerProfile/ProfileModal/SelectLearnerProfile.cshtml", items);
+            }
             else
             {
+                if (viewModel.UserName.IsMobilPhone())
+                {
+                    viewModel.Phone = viewModel.UserName;
+                    viewModel.CurrentTrial = 1;
+                    return View("~/Views/LearnerProfile/ProfileModal/CreateLearnerProfile.cshtml");
+                }
+                else if((String.Compare(viewModel.UserName, "null", true) == 0 && profile.IsAssistant()))
+                {
+                    viewModel.CurrentTrial = 1;
+                    return View("~/Views/LearnerProfile/ProfileModal/CreateLearnerProfile.cshtml");
+                }
                 //return View("~/Views/ConsoleHome/Shared/AlertMessage.cshtml", model: "Opps！您確定您輸入的資料正確嗎！？");
                 return Json(new { result = false, message = "Opps！您確定您輸入的資料正確嗎！？" });
             }
@@ -684,6 +700,62 @@ namespace WebHome.Controllers
 
             return View("~/Views/LearnerProfile/Module/ShowLearnerDailyAnswers.cshtml", item);
         }
+
+        public async Task<ActionResult> CommitTrialLearner(LearnerViewModel viewModel)
+        {
+            var profile = await HttpContext.GetUserAsync();
+
+            ViewBag.ViewModel = viewModel;
+            viewModel.RealName = viewModel.RealName.GetEfficientString();
+            if (viewModel.RealName == null)
+            {
+                ModelState.AddModelError("realName", "請輸入學員姓名!!");
+            }
+
+            viewModel.Phone = viewModel.Phone.GetEfficientString();
+            //if (viewModel.Phone == null)
+            //{
+            //    ModelState.AddModelError("Phone", "請輸入聯絡電話");
+            //}
+
+            if (!ModelState.IsValid)
+            {
+                return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: ModelState.ErrorMessage());
+            }
+
+            if (viewModel.KeyID != null)
+            {
+                viewModel.UID = viewModel.DecryptKeyValue();
+            }
+
+            UserProfile profileItem = null;
+            if (!viewModel.UID.HasValue)
+            {
+                profileItem = models.GetTable<UserProfile>().Where(u => u.UID == viewModel.UID).FirstOrDefault();
+            }
+
+            if (profileItem == null)
+            {
+                profileItem = models.CreateLearner(viewModel);
+
+                if (profileItem == null)
+                {
+                    return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: "無法新增體驗學員!!");
+                }
+                viewModel.UID = profile.UID;
+            }
+            else
+            {
+                profileItem.RealName = viewModel.RealName;
+                profileItem.UserProfileExtension.Gender = viewModel.Gender;
+                profileItem.Phone = viewModel.Phone;
+                models.SubmitChanges();
+            }
+
+            ViewBag.Icon = "success";
+            return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", "資料已更新!!");
+        }
+
 
 
     }

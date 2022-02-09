@@ -137,6 +137,10 @@
         showEventDate(classTimeStart);
     }
 
+    $(function() {
+        refreshEvents();
+    });
+
     function showLessonEventModal(keyID, event) {
         var event = event || window.event;
         $global.target = $(event.target).closest('div.event-name');

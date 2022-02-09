@@ -17,4 +17,13 @@ namespace WebHome.Models.DataEntity
             PartB = 1,
         }
     }
+
+    public partial class MonthlySalary
+    {
+        public enum SalaryTypeEnum
+        {
+            RegularPay = 1,
+            Additional = 2,
+        }
+    }
 }

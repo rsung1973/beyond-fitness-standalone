@@ -20,10 +20,8 @@ namespace WebHome.Models.DataEntity
 	using System.Linq.Expressions;
 	using System.ComponentModel;
 	using System;
-	using Microsoft.Extensions.Configuration;
-
-
-
+	
+	
 	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="BeyondFitnessProd2")]
 	public partial class BFDataContext : System.Data.Linq.DataContext
 	{
@@ -596,10 +594,34 @@ namespace WebHome.Models.DataEntity
     partial void InsertLessonUnitPrice(LessonUnitPrice instance);
     partial void UpdateLessonUnitPrice(LessonUnitPrice instance);
     partial void DeleteLessonUnitPrice(LessonUnitPrice instance);
+    partial void InsertSalaryDetails(SalaryDetails instance);
+    partial void UpdateSalaryDetails(SalaryDetails instance);
+    partial void DeleteSalaryDetails(SalaryDetails instance);
+    partial void InsertProfessionalLevelBasicSalary(ProfessionalLevelBasicSalary instance);
+    partial void UpdateProfessionalLevelBasicSalary(ProfessionalLevelBasicSalary instance);
+    partial void DeleteProfessionalLevelBasicSalary(ProfessionalLevelBasicSalary instance);
+    partial void InsertProfessionalLevelBasicSalary1(ProfessionalLevelBasicSalary1 instance);
+    partial void UpdateProfessionalLevelBasicSalary1(ProfessionalLevelBasicSalary1 instance);
+    partial void DeleteProfessionalLevelBasicSalary1(ProfessionalLevelBasicSalary1 instance);
+    partial void InsertEmployeeSalaryExtension(EmployeeSalaryExtension instance);
+    partial void UpdateEmployeeSalaryExtension(EmployeeSalaryExtension instance);
+    partial void DeleteEmployeeSalaryExtension(EmployeeSalaryExtension instance);
+    partial void InsertBranchMonthlySummary(BranchMonthlySummary instance);
+    partial void UpdateBranchMonthlySummary(BranchMonthlySummary instance);
+    partial void DeleteBranchMonthlySummary(BranchMonthlySummary instance);
+    partial void InsertForEmployee(ForEmployee instance);
+    partial void UpdateForEmployee(ForEmployee instance);
+    partial void DeleteForEmployee(ForEmployee instance);
+    partial void InsertMonthlySalary(MonthlySalary instance);
+    partial void UpdateMonthlySalary(MonthlySalary instance);
+    partial void DeleteMonthlySalary(MonthlySalary instance);
+    partial void InsertMonthlySalaryDetails(MonthlySalaryDetails instance);
+    partial void UpdateMonthlySalaryDetails(MonthlySalaryDetails instance);
+    partial void DeleteMonthlySalaryDetails(MonthlySalaryDetails instance);
     #endregion
 		
 		public BFDataContext() : 
-				base(Startup.GlobalConfiguration.GetConnectionString("BFDbConnection"), mappingSource)
+				base(global::WebHome.Properties.Settings.Default.BFDbConnection, mappingSource)
 		{
 			OnCreated();
 		}
@@ -2193,6 +2215,70 @@ namespace WebHome.Models.DataEntity
 			get
 			{
 				return this.GetTable<LessonUnitPrice>();
+			}
+		}
+		
+		public System.Data.Linq.Table<SalaryDetails> SalaryDetails
+		{
+			get
+			{
+				return this.GetTable<SalaryDetails>();
+			}
+		}
+		
+		public System.Data.Linq.Table<ProfessionalLevelBasicSalary> ProfessionalLevelBasicSalary
+		{
+			get
+			{
+				return this.GetTable<ProfessionalLevelBasicSalary>();
+			}
+		}
+		
+		public System.Data.Linq.Table<ProfessionalLevelBasicSalary1> ProfessionalLevelBasicSalary1
+		{
+			get
+			{
+				return this.GetTable<ProfessionalLevelBasicSalary1>();
+			}
+		}
+		
+		public System.Data.Linq.Table<EmployeeSalaryExtension> EmployeeSalaryExtension
+		{
+			get
+			{
+				return this.GetTable<EmployeeSalaryExtension>();
+			}
+		}
+		
+		public System.Data.Linq.Table<BranchMonthlySummary> BranchMonthlySummary
+		{
+			get
+			{
+				return this.GetTable<BranchMonthlySummary>();
+			}
+		}
+		
+		public System.Data.Linq.Table<ForEmployee> ForEmployee
+		{
+			get
+			{
+				return this.GetTable<ForEmployee>();
+			}
+		}
+		
+		public System.Data.Linq.Table<MonthlySalary> MonthlySalary
+		{
+			get
+			{
+				return this.GetTable<MonthlySalary>();
+			}
+		}
+		
+		public System.Data.Linq.Table<MonthlySalaryDetails> MonthlySalaryDetails
+		{
+			get
+			{
+				return this.GetTable<MonthlySalaryDetails>();
 			}
 		}
 		
@@ -5151,6 +5237,12 @@ namespace WebHome.Models.DataEntity
 		
 		private EntitySet<LessonAttendance> _LessonAttendance;
 		
+		private EntityRef<EmployeeSalaryExtension> _EmployeeSalaryExtension;
+		
+		private EntityRef<ForEmployee> _ForEmployee;
+		
+		private EntitySet<MonthlySalaryDetails> _MonthlySalaryDetails;
+		
 		private EntityRef<Attachment> _Attachment;
 		
 		private EntityRef<LevelExpression> _LevelExpression;
@@ -5257,6 +5349,9 @@ namespace WebHome.Models.DataEntity
 			this._QuestionnaireRequest = new EntitySet<QuestionnaireRequest>(new Action<QuestionnaireRequest>(this.attach_QuestionnaireRequest), new Action<QuestionnaireRequest>(this.detach_QuestionnaireRequest));
 			this._CreatedQuestionnaire = new EntitySet<QuestionnaireRequest>(new Action<QuestionnaireRequest>(this.attach_CreatedQuestionnaire), new Action<QuestionnaireRequest>(this.detach_CreatedQuestionnaire));
 			this._LessonAttendance = new EntitySet<LessonAttendance>(new Action<LessonAttendance>(this.attach_LessonAttendance), new Action<LessonAttendance>(this.detach_LessonAttendance));
+			this._EmployeeSalaryExtension = default(EntityRef<EmployeeSalaryExtension>);
+			this._ForEmployee = default(EntityRef<ForEmployee>);
+			this._MonthlySalaryDetails = new EntitySet<MonthlySalaryDetails>(new Action<MonthlySalaryDetails>(this.attach_MonthlySalaryDetails), new Action<MonthlySalaryDetails>(this.detach_MonthlySalaryDetails));
 			this._Attachment = default(EntityRef<Attachment>);
 			this._LevelExpression = default(EntityRef<LevelExpression>);
 			this._UserProfile1 = default(EntityRef<UserProfile>);
@@ -6420,6 +6515,77 @@ namespace WebHome.Models.DataEntity
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserProfile_EmployeeSalaryExtension", Storage="_EmployeeSalaryExtension", ThisKey="UID", OtherKey="UID", IsUnique=true, IsForeignKey=false)]
+		public EmployeeSalaryExtension EmployeeSalaryExtension
+		{
+			get
+			{
+				return this._EmployeeSalaryExtension.Entity;
+			}
+			set
+			{
+				EmployeeSalaryExtension previousValue = this._EmployeeSalaryExtension.Entity;
+				if (((previousValue != value) 
+							|| (this._EmployeeSalaryExtension.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._EmployeeSalaryExtension.Entity = null;
+						previousValue.UserProfile = null;
+					}
+					this._EmployeeSalaryExtension.Entity = value;
+					if ((value != null))
+					{
+						value.UserProfile = this;
+					}
+					this.SendPropertyChanged("EmployeeSalaryExtension");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserProfile_ForEmployee", Storage="_ForEmployee", ThisKey="UID", OtherKey="UID", IsUnique=true, IsForeignKey=false)]
+		public ForEmployee ForEmployee
+		{
+			get
+			{
+				return this._ForEmployee.Entity;
+			}
+			set
+			{
+				ForEmployee previousValue = this._ForEmployee.Entity;
+				if (((previousValue != value) 
+							|| (this._ForEmployee.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._ForEmployee.Entity = null;
+						previousValue.UserProfile = null;
+					}
+					this._ForEmployee.Entity = value;
+					if ((value != null))
+					{
+						value.UserProfile = this;
+					}
+					this.SendPropertyChanged("ForEmployee");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserProfile_MonthlySalaryDetails", Storage="_MonthlySalaryDetails", ThisKey="UID", OtherKey="UID")]
+		public EntitySet<MonthlySalaryDetails> MonthlySalaryDetails
+		{
+			get
+			{
+				return this._MonthlySalaryDetails;
+			}
+			set
+			{
+				this._MonthlySalaryDetails.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Attachment_UserProfile", Storage="_Attachment", ThisKey="PictureID", OtherKey="AttachmentID", IsForeignKey=true)]
 		public Attachment Attachment
 		{
@@ -7075,6 +7241,18 @@ namespace WebHome.Models.DataEntity
 		}
 		
 		private void detach_LessonAttendance(LessonAttendance entity)
+		{
+			this.SendPropertyChanging();
+			entity.UserProfile = null;
+		}
+		
+		private void attach_MonthlySalaryDetails(MonthlySalaryDetails entity)
+		{
+			this.SendPropertyChanging();
+			entity.UserProfile = this;
+		}
+		
+		private void detach_MonthlySalaryDetails(MonthlySalaryDetails entity)
 		{
 			this.SendPropertyChanging();
 			entity.UserProfile = null;
@@ -18395,6 +18573,10 @@ namespace WebHome.Models.DataEntity
 		
 		private EntitySet<MonthlyCoachRevenueIndicator> _MonthlyCoachRevenueIndicator;
 		
+		private EntityRef<ProfessionalLevelBasicSalary> _ProfessionalLevelBasicSalary;
+		
+		private EntityRef<ProfessionalLevelBasicSalary1> _ProfessionalLevelBasicSalary1;
+		
 		private EntityRef<LevelExpression> _LevelExpression;
 		
     #region Extensibility Method Definitions
@@ -18423,6 +18605,8 @@ namespace WebHome.Models.DataEntity
 			this._CoachMonthlySalaries = new EntitySet<CoachMonthlySalary>(new Action<CoachMonthlySalary>(this.attach_CoachMonthlySalaries), new Action<CoachMonthlySalary>(this.detach_CoachMonthlySalaries));
 			this._LessonTimeSettlements = new EntitySet<LessonTimeSettlement>(new Action<LessonTimeSettlement>(this.attach_LessonTimeSettlements), new Action<LessonTimeSettlement>(this.detach_LessonTimeSettlements));
 			this._MonthlyCoachRevenueIndicator = new EntitySet<MonthlyCoachRevenueIndicator>(new Action<MonthlyCoachRevenueIndicator>(this.attach_MonthlyCoachRevenueIndicator), new Action<MonthlyCoachRevenueIndicator>(this.detach_MonthlyCoachRevenueIndicator));
+			this._ProfessionalLevelBasicSalary = default(EntityRef<ProfessionalLevelBasicSalary>);
+			this._ProfessionalLevelBasicSalary1 = default(EntityRef<ProfessionalLevelBasicSalary1>);
 			this._LevelExpression = default(EntityRef<LevelExpression>);
 			OnCreated();
 		}
@@ -18648,6 +18832,64 @@ namespace WebHome.Models.DataEntity
 			set
 			{
 				this._MonthlyCoachRevenueIndicator.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ProfessionalLevel_ProfessionalLevelBasicSalary", Storage="_ProfessionalLevelBasicSalary", ThisKey="LevelID", OtherKey="LevelID", IsUnique=true, IsForeignKey=false)]
+		public ProfessionalLevelBasicSalary ProfessionalLevelBasicSalary
+		{
+			get
+			{
+				return this._ProfessionalLevelBasicSalary.Entity;
+			}
+			set
+			{
+				ProfessionalLevelBasicSalary previousValue = this._ProfessionalLevelBasicSalary.Entity;
+				if (((previousValue != value) 
+							|| (this._ProfessionalLevelBasicSalary.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._ProfessionalLevelBasicSalary.Entity = null;
+						previousValue.ProfessionalLevel = null;
+					}
+					this._ProfessionalLevelBasicSalary.Entity = value;
+					if ((value != null))
+					{
+						value.ProfessionalLevel = this;
+					}
+					this.SendPropertyChanged("ProfessionalLevelBasicSalary");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ProfessionalLevel_ProfessionalLevelBasicSalary1", Storage="_ProfessionalLevelBasicSalary1", ThisKey="LevelID", OtherKey="LevelID", IsUnique=true, IsForeignKey=false)]
+		public ProfessionalLevelBasicSalary1 ProfessionalLevelBasicSalary1
+		{
+			get
+			{
+				return this._ProfessionalLevelBasicSalary1.Entity;
+			}
+			set
+			{
+				ProfessionalLevelBasicSalary1 previousValue = this._ProfessionalLevelBasicSalary1.Entity;
+				if (((previousValue != value) 
+							|| (this._ProfessionalLevelBasicSalary1.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._ProfessionalLevelBasicSalary1.Entity = null;
+						previousValue.ProfessionalLevel = null;
+					}
+					this._ProfessionalLevelBasicSalary1.Entity = value;
+					if ((value != null))
+					{
+						value.ProfessionalLevel = this;
+					}
+					this.SendPropertyChanged("ProfessionalLevelBasicSalary1");
+				}
 			}
 		}
 		
@@ -23560,6 +23802,8 @@ namespace WebHome.Models.DataEntity
 		
 		private EntitySet<CourseContractExtension> _CourseContractExtension;
 		
+		private EntitySet<BranchMonthlySummary> _BranchMonthlySummary;
+		
 		private EntityRef<UserProfile> _Manager;
 		
 		private EntityRef<UserProfile> _ViceManager;
@@ -23607,6 +23851,7 @@ namespace WebHome.Models.DataEntity
 			this._MonthlyCoachRevenueIndicator = new EntitySet<MonthlyCoachRevenueIndicator>(new Action<MonthlyCoachRevenueIndicator>(this.attach_MonthlyCoachRevenueIndicator), new Action<MonthlyCoachRevenueIndicator>(this.detach_MonthlyCoachRevenueIndicator));
 			this._ObjectiveLessonLocation = new EntitySet<ObjectiveLessonLocation>(new Action<ObjectiveLessonLocation>(this.attach_ObjectiveLessonLocation), new Action<ObjectiveLessonLocation>(this.detach_ObjectiveLessonLocation));
 			this._CourseContractExtension = new EntitySet<CourseContractExtension>(new Action<CourseContractExtension>(this.attach_CourseContractExtension), new Action<CourseContractExtension>(this.detach_CourseContractExtension));
+			this._BranchMonthlySummary = new EntitySet<BranchMonthlySummary>(new Action<BranchMonthlySummary>(this.attach_BranchMonthlySummary), new Action<BranchMonthlySummary>(this.detach_BranchMonthlySummary));
 			this._Manager = default(EntityRef<UserProfile>);
 			this._ViceManager = default(EntityRef<UserProfile>);
 			this._Organization = default(EntityRef<Organization>);
@@ -24006,6 +24251,19 @@ namespace WebHome.Models.DataEntity
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="BranchStore_BranchMonthlySummary", Storage="_BranchMonthlySummary", ThisKey="BranchID", OtherKey="BranchID")]
+		public EntitySet<BranchMonthlySummary> BranchMonthlySummary
+		{
+			get
+			{
+				return this._BranchMonthlySummary;
+			}
+			set
+			{
+				this._BranchMonthlySummary.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserProfile_BranchStore", Storage="_Manager", ThisKey="ManagerID", OtherKey="UID", IsForeignKey=true)]
 		public UserProfile Manager
 		{
@@ -24331,6 +24589,18 @@ namespace WebHome.Models.DataEntity
 			this.SendPropertyChanging();
 			entity.BranchStore = null;
 		}
+		
+		private void attach_BranchMonthlySummary(BranchMonthlySummary entity)
+		{
+			this.SendPropertyChanging();
+			entity.BranchStore = this;
+		}
+		
+		private void detach_BranchMonthlySummary(BranchMonthlySummary entity)
+		{
+			this.SendPropertyChanging();
+			entity.BranchStore = null;
+		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.LearnerFitnessAdvisor")]
@@ -24539,6 +24809,10 @@ namespace WebHome.Models.DataEntity
 		
 		private string _CarrierNo;
 		
+		private string _PIN;
+		
+		private System.Nullable<System.DateTime> _PINExpiration;
+		
 		private EntityRef<UserProfile> _UserProfile;
 		
     #region Extensibility Method Definitions
@@ -24577,6 +24851,10 @@ namespace WebHome.Models.DataEntity
     partial void OnCarrierTypeChanged();
     partial void OnCarrierNoChanging(string value);
     partial void OnCarrierNoChanged();
+    partial void OnPINChanging(string value);
+    partial void OnPINChanged();
+    partial void OnPINExpirationChanging(System.Nullable<System.DateTime> value);
+    partial void OnPINExpirationChanged();
     #endregion
 		
 		public UserProfileExtension()
@@ -24905,6 +25183,46 @@ namespace WebHome.Models.DataEntity
 					this._CarrierNo = value;
 					this.SendPropertyChanged("CarrierNo");
 					this.OnCarrierNoChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PIN", DbType="NVarChar(64)")]
+		public string PIN
+		{
+			get
+			{
+				return this._PIN;
+			}
+			set
+			{
+				if ((this._PIN != value))
+				{
+					this.OnPINChanging(value);
+					this.SendPropertyChanging();
+					this._PIN = value;
+					this.SendPropertyChanged("PIN");
+					this.OnPINChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PINExpiration", DbType="DateTime")]
+		public System.Nullable<System.DateTime> PINExpiration
+		{
+			get
+			{
+				return this._PINExpiration;
+			}
+			set
+			{
+				if ((this._PINExpiration != value))
+				{
+					this.OnPINExpirationChanging(value);
+					this.SendPropertyChanging();
+					this._PINExpiration = value;
+					this.SendPropertyChanged("PINExpiration");
+					this.OnPINExpirationChanged();
 				}
 			}
 		}
@@ -33879,6 +34197,8 @@ namespace WebHome.Models.DataEntity
 		
 		private System.DateTime _EndExclusiveDate;
 		
+		private System.Nullable<int> _Status;
+		
 		private EntitySet<ContractTrustSettlement> _ContractTrustSettlement;
 		
 		private EntitySet<ContractTrustTrack> _ContractTrustTrack;
@@ -33886,6 +34206,10 @@ namespace WebHome.Models.DataEntity
 		private EntitySet<CoachMonthlySalary> _CoachMonthlySalaries;
 		
 		private EntitySet<LessonTimeSettlement> _LessonTimeSettlements;
+		
+		private EntitySet<BranchMonthlySummary> _BranchMonthlySummary;
+		
+		private EntitySet<MonthlySalaryDetails> _MonthlySalaryDetails;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -33899,6 +34223,8 @@ namespace WebHome.Models.DataEntity
     partial void OnStartDateChanged();
     partial void OnEndExclusiveDateChanging(System.DateTime value);
     partial void OnEndExclusiveDateChanged();
+    partial void OnStatusChanging(System.Nullable<int> value);
+    partial void OnStatusChanged();
     #endregion
 		
 		public Settlement()
@@ -33907,6 +34233,8 @@ namespace WebHome.Models.DataEntity
 			this._ContractTrustTrack = new EntitySet<ContractTrustTrack>(new Action<ContractTrustTrack>(this.attach_ContractTrustTrack), new Action<ContractTrustTrack>(this.detach_ContractTrustTrack));
 			this._CoachMonthlySalaries = new EntitySet<CoachMonthlySalary>(new Action<CoachMonthlySalary>(this.attach_CoachMonthlySalaries), new Action<CoachMonthlySalary>(this.detach_CoachMonthlySalaries));
 			this._LessonTimeSettlements = new EntitySet<LessonTimeSettlement>(new Action<LessonTimeSettlement>(this.attach_LessonTimeSettlements), new Action<LessonTimeSettlement>(this.detach_LessonTimeSettlements));
+			this._BranchMonthlySummary = new EntitySet<BranchMonthlySummary>(new Action<BranchMonthlySummary>(this.attach_BranchMonthlySummary), new Action<BranchMonthlySummary>(this.detach_BranchMonthlySummary));
+			this._MonthlySalaryDetails = new EntitySet<MonthlySalaryDetails>(new Action<MonthlySalaryDetails>(this.attach_MonthlySalaryDetails), new Action<MonthlySalaryDetails>(this.detach_MonthlySalaryDetails));
 			OnCreated();
 		}
 		
@@ -33990,6 +34318,26 @@ namespace WebHome.Models.DataEntity
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Status", DbType="Int")]
+		public System.Nullable<int> Status
+		{
+			get
+			{
+				return this._Status;
+			}
+			set
+			{
+				if ((this._Status != value))
+				{
+					this.OnStatusChanging(value);
+					this.SendPropertyChanging();
+					this._Status = value;
+					this.SendPropertyChanged("Status");
+					this.OnStatusChanged();
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Settlement_ContractTrustSettlement", Storage="_ContractTrustSettlement", ThisKey="SettlementID", OtherKey="SettlementID")]
 		public EntitySet<ContractTrustSettlement> ContractTrustSettlement
 		{
@@ -34039,6 +34387,32 @@ namespace WebHome.Models.DataEntity
 			set
 			{
 				this._LessonTimeSettlements.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Settlement_BranchMonthlySummary", Storage="_BranchMonthlySummary", ThisKey="SettlementID", OtherKey="SettlementID")]
+		public EntitySet<BranchMonthlySummary> BranchMonthlySummary
+		{
+			get
+			{
+				return this._BranchMonthlySummary;
+			}
+			set
+			{
+				this._BranchMonthlySummary.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Settlement_MonthlySalaryDetails", Storage="_MonthlySalaryDetails", ThisKey="SettlementID", OtherKey="SettlementID")]
+		public EntitySet<MonthlySalaryDetails> MonthlySalaryDetails
+		{
+			get
+			{
+				return this._MonthlySalaryDetails;
+			}
+			set
+			{
+				this._MonthlySalaryDetails.Assign(value);
 			}
 		}
 		
@@ -34105,6 +34479,30 @@ namespace WebHome.Models.DataEntity
 		}
 		
 		private void detach_LessonTimeSettlements(LessonTimeSettlement entity)
+		{
+			this.SendPropertyChanging();
+			entity.Settlement = null;
+		}
+		
+		private void attach_BranchMonthlySummary(BranchMonthlySummary entity)
+		{
+			this.SendPropertyChanging();
+			entity.Settlement = this;
+		}
+		
+		private void detach_BranchMonthlySummary(BranchMonthlySummary entity)
+		{
+			this.SendPropertyChanging();
+			entity.Settlement = null;
+		}
+		
+		private void attach_MonthlySalaryDetails(MonthlySalaryDetails entity)
+		{
+			this.SendPropertyChanging();
+			entity.Settlement = this;
+		}
+		
+		private void detach_MonthlySalaryDetails(MonthlySalaryDetails entity)
 		{
 			this.SendPropertyChanging();
 			entity.Settlement = null;
@@ -49273,6 +49671,10 @@ namespace WebHome.Models.DataEntity
 		
 		private System.Nullable<int> _BranchTotalTuition;
 		
+		private System.Nullable<int> _BranchTotalPTCount;
+		
+		private System.Nullable<int> _BranchTotalPTTuition;
+		
 		private System.Nullable<int> _VoidShare;
 		
 		private EntityRef<BranchStore> _BranchStore;
@@ -49299,6 +49701,10 @@ namespace WebHome.Models.DataEntity
     partial void OnBranchTotalAttendanceCountChanged();
     partial void OnBranchTotalTuitionChanging(System.Nullable<int> value);
     partial void OnBranchTotalTuitionChanged();
+    partial void OnBranchTotalPTCountChanging(System.Nullable<int> value);
+    partial void OnBranchTotalPTCountChanged();
+    partial void OnBranchTotalPTTuitionChanging(System.Nullable<int> value);
+    partial void OnBranchTotalPTTuitionChanged();
     partial void OnVoidShareChanging(System.Nullable<int> value);
     partial void OnVoidShareChanged();
     #endregion
@@ -49482,6 +49888,46 @@ namespace WebHome.Models.DataEntity
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BranchTotalPTCount", DbType="Int")]
+		public System.Nullable<int> BranchTotalPTCount
+		{
+			get
+			{
+				return this._BranchTotalPTCount;
+			}
+			set
+			{
+				if ((this._BranchTotalPTCount != value))
+				{
+					this.OnBranchTotalPTCountChanging(value);
+					this.SendPropertyChanging();
+					this._BranchTotalPTCount = value;
+					this.SendPropertyChanged("BranchTotalPTCount");
+					this.OnBranchTotalPTCountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BranchTotalPTTuition", DbType="Int")]
+		public System.Nullable<int> BranchTotalPTTuition
+		{
+			get
+			{
+				return this._BranchTotalPTTuition;
+			}
+			set
+			{
+				if ((this._BranchTotalPTTuition != value))
+				{
+					this.OnBranchTotalPTTuitionChanging(value);
+					this.SendPropertyChanging();
+					this._BranchTotalPTTuition = value;
+					this.SendPropertyChanged("BranchTotalPTTuition");
+					this.OnBranchTotalPTTuitionChanged();
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_VoidShare", DbType="Int")]
 		public System.Nullable<int> VoidShare
 		{
@@ -49619,6 +50065,14 @@ namespace WebHome.Models.DataEntity
 		
 		private System.Nullable<int> _VoidShare;
 		
+		private System.Nullable<int> _PTAttendanceCount;
+		
+		private System.Nullable<int> _PTAverageUnitPrice;
+		
+		private System.Nullable<int> _AttendanceBonus;
+		
+		private System.Nullable<int> _AchievementBonus;
+		
 		private EntitySet<CoachBranchMonthlyBonus> _CoachBranchMonthlyBonus;
 		
 		private EntityRef<BranchStore> _BranchStore;
@@ -49653,6 +50107,14 @@ namespace WebHome.Models.DataEntity
     partial void OnAchievementShareRatioChanged();
     partial void OnVoidShareChanging(System.Nullable<int> value);
     partial void OnVoidShareChanged();
+    partial void OnPTAttendanceCountChanging(System.Nullable<int> value);
+    partial void OnPTAttendanceCountChanged();
+    partial void OnPTAverageUnitPriceChanging(System.Nullable<int> value);
+    partial void OnPTAverageUnitPriceChanged();
+    partial void OnAttendanceBonusChanging(System.Nullable<int> value);
+    partial void OnAttendanceBonusChanged();
+    partial void OnAchievementBonusChanging(System.Nullable<int> value);
+    partial void OnAchievementBonusChanged();
     #endregion
 		
 		public CoachMonthlySalary()
@@ -49877,6 +50339,86 @@ namespace WebHome.Models.DataEntity
 					this._VoidShare = value;
 					this.SendPropertyChanged("VoidShare");
 					this.OnVoidShareChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PTAttendanceCount", DbType="Int")]
+		public System.Nullable<int> PTAttendanceCount
+		{
+			get
+			{
+				return this._PTAttendanceCount;
+			}
+			set
+			{
+				if ((this._PTAttendanceCount != value))
+				{
+					this.OnPTAttendanceCountChanging(value);
+					this.SendPropertyChanging();
+					this._PTAttendanceCount = value;
+					this.SendPropertyChanged("PTAttendanceCount");
+					this.OnPTAttendanceCountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PTAverageUnitPrice", DbType="Int")]
+		public System.Nullable<int> PTAverageUnitPrice
+		{
+			get
+			{
+				return this._PTAverageUnitPrice;
+			}
+			set
+			{
+				if ((this._PTAverageUnitPrice != value))
+				{
+					this.OnPTAverageUnitPriceChanging(value);
+					this.SendPropertyChanging();
+					this._PTAverageUnitPrice = value;
+					this.SendPropertyChanged("PTAverageUnitPrice");
+					this.OnPTAverageUnitPriceChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AttendanceBonus", DbType="Int")]
+		public System.Nullable<int> AttendanceBonus
+		{
+			get
+			{
+				return this._AttendanceBonus;
+			}
+			set
+			{
+				if ((this._AttendanceBonus != value))
+				{
+					this.OnAttendanceBonusChanging(value);
+					this.SendPropertyChanging();
+					this._AttendanceBonus = value;
+					this.SendPropertyChanged("AttendanceBonus");
+					this.OnAttendanceBonusChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AchievementBonus", DbType="Int")]
+		public System.Nullable<int> AchievementBonus
+		{
+			get
+			{
+				return this._AchievementBonus;
+			}
+			set
+			{
+				if ((this._AchievementBonus != value))
+				{
+					this.OnAchievementBonusChanging(value);
+					this.SendPropertyChanging();
+					this._AchievementBonus = value;
+					this.SendPropertyChanged("AchievementBonus");
+					this.OnAchievementBonusChanged();
 				}
 			}
 		}
@@ -59060,6 +59602,1805 @@ namespace WebHome.Models.DataEntity
 						this._UnitID = default(int);
 					}
 					this.SendPropertyChanged("PriceTypeItem");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.SalaryDetails")]
+	public partial class SalaryDetails : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _SalaryID;
+		
+		private int _Year;
+		
+		private System.Nullable<int> _PermanentWage;
+		
+		private System.Nullable<int> _ApprenticeWage;
+		
+		private System.Nullable<decimal> _CommissionGrade;
+		
+		private EntitySet<ProfessionalLevelBasicSalary> _ProfessionalLevelBasicSalary;
+		
+		private EntitySet<ProfessionalLevelBasicSalary1> _ProfessionalLevelBasicSalary1;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnSalaryIDChanging(int value);
+    partial void OnSalaryIDChanged();
+    partial void OnYearChanging(int value);
+    partial void OnYearChanged();
+    partial void OnPermanentWageChanging(System.Nullable<int> value);
+    partial void OnPermanentWageChanged();
+    partial void OnApprenticeWageChanging(System.Nullable<int> value);
+    partial void OnApprenticeWageChanged();
+    partial void OnCommissionGradeChanging(System.Nullable<decimal> value);
+    partial void OnCommissionGradeChanged();
+    #endregion
+		
+		public SalaryDetails()
+		{
+			this._ProfessionalLevelBasicSalary = new EntitySet<ProfessionalLevelBasicSalary>(new Action<ProfessionalLevelBasicSalary>(this.attach_ProfessionalLevelBasicSalary), new Action<ProfessionalLevelBasicSalary>(this.detach_ProfessionalLevelBasicSalary));
+			this._ProfessionalLevelBasicSalary1 = new EntitySet<ProfessionalLevelBasicSalary1>(new Action<ProfessionalLevelBasicSalary1>(this.attach_ProfessionalLevelBasicSalary1), new Action<ProfessionalLevelBasicSalary1>(this.detach_ProfessionalLevelBasicSalary1));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SalaryID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int SalaryID
+		{
+			get
+			{
+				return this._SalaryID;
+			}
+			set
+			{
+				if ((this._SalaryID != value))
+				{
+					this.OnSalaryIDChanging(value);
+					this.SendPropertyChanging();
+					this._SalaryID = value;
+					this.SendPropertyChanged("SalaryID");
+					this.OnSalaryIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Year", DbType="Int NOT NULL")]
+		public int Year
+		{
+			get
+			{
+				return this._Year;
+			}
+			set
+			{
+				if ((this._Year != value))
+				{
+					this.OnYearChanging(value);
+					this.SendPropertyChanging();
+					this._Year = value;
+					this.SendPropertyChanged("Year");
+					this.OnYearChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PermanentWage", DbType="Int")]
+		public System.Nullable<int> PermanentWage
+		{
+			get
+			{
+				return this._PermanentWage;
+			}
+			set
+			{
+				if ((this._PermanentWage != value))
+				{
+					this.OnPermanentWageChanging(value);
+					this.SendPropertyChanging();
+					this._PermanentWage = value;
+					this.SendPropertyChanged("PermanentWage");
+					this.OnPermanentWageChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ApprenticeWage", DbType="Int")]
+		public System.Nullable<int> ApprenticeWage
+		{
+			get
+			{
+				return this._ApprenticeWage;
+			}
+			set
+			{
+				if ((this._ApprenticeWage != value))
+				{
+					this.OnApprenticeWageChanging(value);
+					this.SendPropertyChanging();
+					this._ApprenticeWage = value;
+					this.SendPropertyChanged("ApprenticeWage");
+					this.OnApprenticeWageChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CommissionGrade", DbType="Decimal(18,2)")]
+		public System.Nullable<decimal> CommissionGrade
+		{
+			get
+			{
+				return this._CommissionGrade;
+			}
+			set
+			{
+				if ((this._CommissionGrade != value))
+				{
+					this.OnCommissionGradeChanging(value);
+					this.SendPropertyChanging();
+					this._CommissionGrade = value;
+					this.SendPropertyChanged("CommissionGrade");
+					this.OnCommissionGradeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="SalaryDetails_ProfessionalLevelBasicSalary", Storage="_ProfessionalLevelBasicSalary", ThisKey="SalaryID", OtherKey="SalaryID")]
+		public EntitySet<ProfessionalLevelBasicSalary> ProfessionalLevelBasicSalary
+		{
+			get
+			{
+				return this._ProfessionalLevelBasicSalary;
+			}
+			set
+			{
+				this._ProfessionalLevelBasicSalary.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="SalaryDetails_ProfessionalLevelBasicSalary1", Storage="_ProfessionalLevelBasicSalary1", ThisKey="SalaryID", OtherKey="SalaryID")]
+		public EntitySet<ProfessionalLevelBasicSalary1> ProfessionalLevelBasicSalary1
+		{
+			get
+			{
+				return this._ProfessionalLevelBasicSalary1;
+			}
+			set
+			{
+				this._ProfessionalLevelBasicSalary1.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_ProfessionalLevelBasicSalary(ProfessionalLevelBasicSalary entity)
+		{
+			this.SendPropertyChanging();
+			entity.SalaryDetails = this;
+		}
+		
+		private void detach_ProfessionalLevelBasicSalary(ProfessionalLevelBasicSalary entity)
+		{
+			this.SendPropertyChanging();
+			entity.SalaryDetails = null;
+		}
+		
+		private void attach_ProfessionalLevelBasicSalary1(ProfessionalLevelBasicSalary1 entity)
+		{
+			this.SendPropertyChanging();
+			entity.SalaryDetails = this;
+		}
+		
+		private void detach_ProfessionalLevelBasicSalary1(ProfessionalLevelBasicSalary1 entity)
+		{
+			this.SendPropertyChanging();
+			entity.SalaryDetails = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ProfessionalLevelBasicSalary")]
+	public partial class ProfessionalLevelBasicSalary : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _LevelID;
+		
+		private int _SalaryID;
+		
+		private EntityRef<ProfessionalLevel> _ProfessionalLevel;
+		
+		private EntityRef<SalaryDetails> _SalaryDetails;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnLevelIDChanging(int value);
+    partial void OnLevelIDChanged();
+    partial void OnSalaryIDChanging(int value);
+    partial void OnSalaryIDChanged();
+    #endregion
+		
+		public ProfessionalLevelBasicSalary()
+		{
+			this._ProfessionalLevel = default(EntityRef<ProfessionalLevel>);
+			this._SalaryDetails = default(EntityRef<SalaryDetails>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LevelID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int LevelID
+		{
+			get
+			{
+				return this._LevelID;
+			}
+			set
+			{
+				if ((this._LevelID != value))
+				{
+					if (this._ProfessionalLevel.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnLevelIDChanging(value);
+					this.SendPropertyChanging();
+					this._LevelID = value;
+					this.SendPropertyChanged("LevelID");
+					this.OnLevelIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SalaryID", DbType="Int NOT NULL")]
+		public int SalaryID
+		{
+			get
+			{
+				return this._SalaryID;
+			}
+			set
+			{
+				if ((this._SalaryID != value))
+				{
+					if (this._SalaryDetails.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnSalaryIDChanging(value);
+					this.SendPropertyChanging();
+					this._SalaryID = value;
+					this.SendPropertyChanged("SalaryID");
+					this.OnSalaryIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ProfessionalLevel_ProfessionalLevelBasicSalary", Storage="_ProfessionalLevel", ThisKey="LevelID", OtherKey="LevelID", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public ProfessionalLevel ProfessionalLevel
+		{
+			get
+			{
+				return this._ProfessionalLevel.Entity;
+			}
+			set
+			{
+				ProfessionalLevel previousValue = this._ProfessionalLevel.Entity;
+				if (((previousValue != value) 
+							|| (this._ProfessionalLevel.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._ProfessionalLevel.Entity = null;
+						previousValue.ProfessionalLevelBasicSalary = null;
+					}
+					this._ProfessionalLevel.Entity = value;
+					if ((value != null))
+					{
+						value.ProfessionalLevelBasicSalary = this;
+						this._LevelID = value.LevelID;
+					}
+					else
+					{
+						this._LevelID = default(int);
+					}
+					this.SendPropertyChanged("ProfessionalLevel");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="SalaryDetails_ProfessionalLevelBasicSalary", Storage="_SalaryDetails", ThisKey="SalaryID", OtherKey="SalaryID", IsForeignKey=true)]
+		public SalaryDetails SalaryDetails
+		{
+			get
+			{
+				return this._SalaryDetails.Entity;
+			}
+			set
+			{
+				SalaryDetails previousValue = this._SalaryDetails.Entity;
+				if (((previousValue != value) 
+							|| (this._SalaryDetails.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._SalaryDetails.Entity = null;
+						previousValue.ProfessionalLevelBasicSalary.Remove(this);
+					}
+					this._SalaryDetails.Entity = value;
+					if ((value != null))
+					{
+						value.ProfessionalLevelBasicSalary.Add(this);
+						this._SalaryID = value.SalaryID;
+					}
+					else
+					{
+						this._SalaryID = default(int);
+					}
+					this.SendPropertyChanged("SalaryDetails");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ProfessionalLevelBasicSalary")]
+	public partial class ProfessionalLevelBasicSalary1 : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _LevelID;
+		
+		private int _SalaryID;
+		
+		private EntityRef<ProfessionalLevel> _ProfessionalLevel;
+		
+		private EntityRef<SalaryDetails> _SalaryDetails;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnLevelIDChanging(int value);
+    partial void OnLevelIDChanged();
+    partial void OnSalaryIDChanging(int value);
+    partial void OnSalaryIDChanged();
+    #endregion
+		
+		public ProfessionalLevelBasicSalary1()
+		{
+			this._ProfessionalLevel = default(EntityRef<ProfessionalLevel>);
+			this._SalaryDetails = default(EntityRef<SalaryDetails>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LevelID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int LevelID
+		{
+			get
+			{
+				return this._LevelID;
+			}
+			set
+			{
+				if ((this._LevelID != value))
+				{
+					if (this._ProfessionalLevel.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnLevelIDChanging(value);
+					this.SendPropertyChanging();
+					this._LevelID = value;
+					this.SendPropertyChanged("LevelID");
+					this.OnLevelIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SalaryID", DbType="Int NOT NULL")]
+		public int SalaryID
+		{
+			get
+			{
+				return this._SalaryID;
+			}
+			set
+			{
+				if ((this._SalaryID != value))
+				{
+					if (this._SalaryDetails.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnSalaryIDChanging(value);
+					this.SendPropertyChanging();
+					this._SalaryID = value;
+					this.SendPropertyChanged("SalaryID");
+					this.OnSalaryIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ProfessionalLevel_ProfessionalLevelBasicSalary1", Storage="_ProfessionalLevel", ThisKey="LevelID", OtherKey="LevelID", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public ProfessionalLevel ProfessionalLevel
+		{
+			get
+			{
+				return this._ProfessionalLevel.Entity;
+			}
+			set
+			{
+				ProfessionalLevel previousValue = this._ProfessionalLevel.Entity;
+				if (((previousValue != value) 
+							|| (this._ProfessionalLevel.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._ProfessionalLevel.Entity = null;
+						previousValue.ProfessionalLevelBasicSalary1 = null;
+					}
+					this._ProfessionalLevel.Entity = value;
+					if ((value != null))
+					{
+						value.ProfessionalLevelBasicSalary1 = this;
+						this._LevelID = value.LevelID;
+					}
+					else
+					{
+						this._LevelID = default(int);
+					}
+					this.SendPropertyChanged("ProfessionalLevel");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="SalaryDetails_ProfessionalLevelBasicSalary1", Storage="_SalaryDetails", ThisKey="SalaryID", OtherKey="SalaryID", IsForeignKey=true)]
+		public SalaryDetails SalaryDetails
+		{
+			get
+			{
+				return this._SalaryDetails.Entity;
+			}
+			set
+			{
+				SalaryDetails previousValue = this._SalaryDetails.Entity;
+				if (((previousValue != value) 
+							|| (this._SalaryDetails.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._SalaryDetails.Entity = null;
+						previousValue.ProfessionalLevelBasicSalary1.Remove(this);
+					}
+					this._SalaryDetails.Entity = value;
+					if ((value != null))
+					{
+						value.ProfessionalLevelBasicSalary1.Add(this);
+						this._SalaryID = value.SalaryID;
+					}
+					else
+					{
+						this._SalaryID = default(int);
+					}
+					this.SendPropertyChanged("SalaryDetails");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="Report.EmployeeSalaryExtension")]
+	public partial class EmployeeSalaryExtension : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _UID;
+		
+		private System.Nullable<int> _DutyAllowance;
+		
+		private EntityRef<UserProfile> _UserProfile;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnUIDChanging(int value);
+    partial void OnUIDChanged();
+    partial void OnDutyAllowanceChanging(System.Nullable<int> value);
+    partial void OnDutyAllowanceChanged();
+    #endregion
+		
+		public EmployeeSalaryExtension()
+		{
+			this._UserProfile = default(EntityRef<UserProfile>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int UID
+		{
+			get
+			{
+				return this._UID;
+			}
+			set
+			{
+				if ((this._UID != value))
+				{
+					if (this._UserProfile.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnUIDChanging(value);
+					this.SendPropertyChanging();
+					this._UID = value;
+					this.SendPropertyChanged("UID");
+					this.OnUIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DutyAllowance", DbType="Int")]
+		public System.Nullable<int> DutyAllowance
+		{
+			get
+			{
+				return this._DutyAllowance;
+			}
+			set
+			{
+				if ((this._DutyAllowance != value))
+				{
+					this.OnDutyAllowanceChanging(value);
+					this.SendPropertyChanging();
+					this._DutyAllowance = value;
+					this.SendPropertyChanged("DutyAllowance");
+					this.OnDutyAllowanceChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserProfile_EmployeeSalaryExtension", Storage="_UserProfile", ThisKey="UID", OtherKey="UID", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public UserProfile UserProfile
+		{
+			get
+			{
+				return this._UserProfile.Entity;
+			}
+			set
+			{
+				UserProfile previousValue = this._UserProfile.Entity;
+				if (((previousValue != value) 
+							|| (this._UserProfile.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._UserProfile.Entity = null;
+						previousValue.EmployeeSalaryExtension = null;
+					}
+					this._UserProfile.Entity = value;
+					if ((value != null))
+					{
+						value.EmployeeSalaryExtension = this;
+						this._UID = value.UID;
+					}
+					else
+					{
+						this._UID = default(int);
+					}
+					this.SendPropertyChanged("UserProfile");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="Report.BranchMonthlySummary")]
+	public partial class BranchMonthlySummary : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _SettlementID;
+		
+		private int _BranchID;
+		
+		private decimal _AchievementRatio;
+		
+		private EntityRef<BranchStore> _BranchStore;
+		
+		private EntityRef<Settlement> _Settlement;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnSettlementIDChanging(int value);
+    partial void OnSettlementIDChanged();
+    partial void OnBranchIDChanging(int value);
+    partial void OnBranchIDChanged();
+    partial void OnAchievementRatioChanging(decimal value);
+    partial void OnAchievementRatioChanged();
+    #endregion
+		
+		public BranchMonthlySummary()
+		{
+			this._BranchStore = default(EntityRef<BranchStore>);
+			this._Settlement = default(EntityRef<Settlement>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SettlementID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int SettlementID
+		{
+			get
+			{
+				return this._SettlementID;
+			}
+			set
+			{
+				if ((this._SettlementID != value))
+				{
+					if (this._Settlement.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnSettlementIDChanging(value);
+					this.SendPropertyChanging();
+					this._SettlementID = value;
+					this.SendPropertyChanged("SettlementID");
+					this.OnSettlementIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BranchID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int BranchID
+		{
+			get
+			{
+				return this._BranchID;
+			}
+			set
+			{
+				if ((this._BranchID != value))
+				{
+					if (this._BranchStore.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnBranchIDChanging(value);
+					this.SendPropertyChanging();
+					this._BranchID = value;
+					this.SendPropertyChanged("BranchID");
+					this.OnBranchIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AchievementRatio", DbType="Decimal(18,2) NOT NULL")]
+		public decimal AchievementRatio
+		{
+			get
+			{
+				return this._AchievementRatio;
+			}
+			set
+			{
+				if ((this._AchievementRatio != value))
+				{
+					this.OnAchievementRatioChanging(value);
+					this.SendPropertyChanging();
+					this._AchievementRatio = value;
+					this.SendPropertyChanged("AchievementRatio");
+					this.OnAchievementRatioChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="BranchStore_BranchMonthlySummary", Storage="_BranchStore", ThisKey="BranchID", OtherKey="BranchID", IsForeignKey=true)]
+		public BranchStore BranchStore
+		{
+			get
+			{
+				return this._BranchStore.Entity;
+			}
+			set
+			{
+				BranchStore previousValue = this._BranchStore.Entity;
+				if (((previousValue != value) 
+							|| (this._BranchStore.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._BranchStore.Entity = null;
+						previousValue.BranchMonthlySummary.Remove(this);
+					}
+					this._BranchStore.Entity = value;
+					if ((value != null))
+					{
+						value.BranchMonthlySummary.Add(this);
+						this._BranchID = value.BranchID;
+					}
+					else
+					{
+						this._BranchID = default(int);
+					}
+					this.SendPropertyChanged("BranchStore");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Settlement_BranchMonthlySummary", Storage="_Settlement", ThisKey="SettlementID", OtherKey="SettlementID", IsForeignKey=true)]
+		public Settlement Settlement
+		{
+			get
+			{
+				return this._Settlement.Entity;
+			}
+			set
+			{
+				Settlement previousValue = this._Settlement.Entity;
+				if (((previousValue != value) 
+							|| (this._Settlement.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Settlement.Entity = null;
+						previousValue.BranchMonthlySummary.Remove(this);
+					}
+					this._Settlement.Entity = value;
+					if ((value != null))
+					{
+						value.BranchMonthlySummary.Add(this);
+						this._SettlementID = value.SettlementID;
+					}
+					else
+					{
+						this._SettlementID = default(int);
+					}
+					this.SendPropertyChanged("Settlement");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ForEmployee")]
+	public partial class ForEmployee : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _UID;
+		
+		private System.Nullable<System.DateTime> _EmploymentDate;
+		
+		private EntityRef<UserProfile> _UserProfile;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnUIDChanging(int value);
+    partial void OnUIDChanged();
+    partial void OnEmploymentDateChanging(System.Nullable<System.DateTime> value);
+    partial void OnEmploymentDateChanged();
+    #endregion
+		
+		public ForEmployee()
+		{
+			this._UserProfile = default(EntityRef<UserProfile>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int UID
+		{
+			get
+			{
+				return this._UID;
+			}
+			set
+			{
+				if ((this._UID != value))
+				{
+					if (this._UserProfile.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnUIDChanging(value);
+					this.SendPropertyChanging();
+					this._UID = value;
+					this.SendPropertyChanged("UID");
+					this.OnUIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EmploymentDate", DbType="Date")]
+		public System.Nullable<System.DateTime> EmploymentDate
+		{
+			get
+			{
+				return this._EmploymentDate;
+			}
+			set
+			{
+				if ((this._EmploymentDate != value))
+				{
+					this.OnEmploymentDateChanging(value);
+					this.SendPropertyChanging();
+					this._EmploymentDate = value;
+					this.SendPropertyChanged("EmploymentDate");
+					this.OnEmploymentDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserProfile_ForEmployee", Storage="_UserProfile", ThisKey="UID", OtherKey="UID", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public UserProfile UserProfile
+		{
+			get
+			{
+				return this._UserProfile.Entity;
+			}
+			set
+			{
+				UserProfile previousValue = this._UserProfile.Entity;
+				if (((previousValue != value) 
+							|| (this._UserProfile.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._UserProfile.Entity = null;
+						previousValue.ForEmployee = null;
+					}
+					this._UserProfile.Entity = value;
+					if ((value != null))
+					{
+						value.ForEmployee = this;
+						this._UID = value.UID;
+					}
+					else
+					{
+						this._UID = default(int);
+					}
+					this.SendPropertyChanged("UserProfile");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="Report.MonthlySalary")]
+	public partial class MonthlySalary : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _SalaryID;
+		
+		private System.Nullable<System.DateTime> _Payday;
+		
+		private System.Nullable<int> _SalaryType;
+		
+		private EntitySet<MonthlySalaryDetails> _MonthlySalaryDetails;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnSalaryIDChanging(int value);
+    partial void OnSalaryIDChanged();
+    partial void OnPaydayChanging(System.Nullable<System.DateTime> value);
+    partial void OnPaydayChanged();
+    partial void OnSalaryTypeChanging(System.Nullable<int> value);
+    partial void OnSalaryTypeChanged();
+    #endregion
+		
+		public MonthlySalary()
+		{
+			this._MonthlySalaryDetails = new EntitySet<MonthlySalaryDetails>(new Action<MonthlySalaryDetails>(this.attach_MonthlySalaryDetails), new Action<MonthlySalaryDetails>(this.detach_MonthlySalaryDetails));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SalaryID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int SalaryID
+		{
+			get
+			{
+				return this._SalaryID;
+			}
+			set
+			{
+				if ((this._SalaryID != value))
+				{
+					this.OnSalaryIDChanging(value);
+					this.SendPropertyChanging();
+					this._SalaryID = value;
+					this.SendPropertyChanged("SalaryID");
+					this.OnSalaryIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Payday", DbType="Date")]
+		public System.Nullable<System.DateTime> Payday
+		{
+			get
+			{
+				return this._Payday;
+			}
+			set
+			{
+				if ((this._Payday != value))
+				{
+					this.OnPaydayChanging(value);
+					this.SendPropertyChanging();
+					this._Payday = value;
+					this.SendPropertyChanged("Payday");
+					this.OnPaydayChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SalaryType", DbType="Int")]
+		public System.Nullable<int> SalaryType
+		{
+			get
+			{
+				return this._SalaryType;
+			}
+			set
+			{
+				if ((this._SalaryType != value))
+				{
+					this.OnSalaryTypeChanging(value);
+					this.SendPropertyChanging();
+					this._SalaryType = value;
+					this.SendPropertyChanged("SalaryType");
+					this.OnSalaryTypeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="MonthlySalary_MonthlySalaryDetails", Storage="_MonthlySalaryDetails", ThisKey="SalaryID", OtherKey="SalaryID")]
+		public EntitySet<MonthlySalaryDetails> MonthlySalaryDetails
+		{
+			get
+			{
+				return this._MonthlySalaryDetails;
+			}
+			set
+			{
+				this._MonthlySalaryDetails.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_MonthlySalaryDetails(MonthlySalaryDetails entity)
+		{
+			this.SendPropertyChanging();
+			entity.MonthlySalary = this;
+		}
+		
+		private void detach_MonthlySalaryDetails(MonthlySalaryDetails entity)
+		{
+			this.SendPropertyChanging();
+			entity.MonthlySalary = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="Report.MonthlySalaryDetails")]
+	public partial class MonthlySalaryDetails : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _SalaryID;
+		
+		private int _UID;
+		
+		private System.Nullable<int> _SettlementID;
+		
+		private System.Nullable<int> _Salary;
+		
+		private System.Nullable<int> _Subsistence;
+		
+		private System.Nullable<int> _SpecialBonus;
+		
+		private System.Nullable<int> _WillingContribution;
+		
+		private System.Nullable<int> _LaborInsurrance;
+		
+		private System.Nullable<int> _HealthInsurrance;
+		
+		private System.Nullable<int> _Tax;
+		
+		private System.Nullable<int> _ActualAmount;
+		
+		private string _Remark;
+		
+		private System.Nullable<int> _SickLeave;
+		
+		private System.Nullable<int> _PersonalLeave;
+		
+		private System.Nullable<int> _EpidemicPL;
+		
+		private System.Nullable<int> _BasicWage;
+		
+		private System.Nullable<int> _DutyAllowance;
+		
+		private System.Nullable<int> _HealthSupplement;
+		
+		private System.Nullable<int> _LaborInsurranceByEmployer;
+		
+		private System.Nullable<int> _HealthInsurranceByEmployer;
+		
+		private System.Nullable<int> _Pension;
+		
+		private EntityRef<MonthlySalary> _MonthlySalary;
+		
+		private EntityRef<Settlement> _Settlement;
+		
+		private EntityRef<UserProfile> _UserProfile;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnSalaryIDChanging(int value);
+    partial void OnSalaryIDChanged();
+    partial void OnUIDChanging(int value);
+    partial void OnUIDChanged();
+    partial void OnSettlementIDChanging(System.Nullable<int> value);
+    partial void OnSettlementIDChanged();
+    partial void OnSalaryChanging(System.Nullable<int> value);
+    partial void OnSalaryChanged();
+    partial void OnSubsistenceChanging(System.Nullable<int> value);
+    partial void OnSubsistenceChanged();
+    partial void OnSpecialBonusChanging(System.Nullable<int> value);
+    partial void OnSpecialBonusChanged();
+    partial void OnWillingContributionChanging(System.Nullable<int> value);
+    partial void OnWillingContributionChanged();
+    partial void OnLaborInsurranceChanging(System.Nullable<int> value);
+    partial void OnLaborInsurranceChanged();
+    partial void OnHealthInsurranceChanging(System.Nullable<int> value);
+    partial void OnHealthInsurranceChanged();
+    partial void OnTaxChanging(System.Nullable<int> value);
+    partial void OnTaxChanged();
+    partial void OnActualAmountChanging(System.Nullable<int> value);
+    partial void OnActualAmountChanged();
+    partial void OnRemarkChanging(string value);
+    partial void OnRemarkChanged();
+    partial void OnSickLeaveChanging(System.Nullable<int> value);
+    partial void OnSickLeaveChanged();
+    partial void OnPersonalLeaveChanging(System.Nullable<int> value);
+    partial void OnPersonalLeaveChanged();
+    partial void OnEpidemicPLChanging(System.Nullable<int> value);
+    partial void OnEpidemicPLChanged();
+    partial void OnBasicWageChanging(System.Nullable<int> value);
+    partial void OnBasicWageChanged();
+    partial void OnDutyAllowanceChanging(System.Nullable<int> value);
+    partial void OnDutyAllowanceChanged();
+    partial void OnHealthSupplementChanging(System.Nullable<int> value);
+    partial void OnHealthSupplementChanged();
+    partial void OnLaborInsurranceByEmployerChanging(System.Nullable<int> value);
+    partial void OnLaborInsurranceByEmployerChanged();
+    partial void OnHealthInsurranceByEmployerChanging(System.Nullable<int> value);
+    partial void OnHealthInsurranceByEmployerChanged();
+    partial void OnPensionChanging(System.Nullable<int> value);
+    partial void OnPensionChanged();
+    #endregion
+		
+		public MonthlySalaryDetails()
+		{
+			this._MonthlySalary = default(EntityRef<MonthlySalary>);
+			this._Settlement = default(EntityRef<Settlement>);
+			this._UserProfile = default(EntityRef<UserProfile>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SalaryID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int SalaryID
+		{
+			get
+			{
+				return this._SalaryID;
+			}
+			set
+			{
+				if ((this._SalaryID != value))
+				{
+					if (this._MonthlySalary.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnSalaryIDChanging(value);
+					this.SendPropertyChanging();
+					this._SalaryID = value;
+					this.SendPropertyChanged("SalaryID");
+					this.OnSalaryIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int UID
+		{
+			get
+			{
+				return this._UID;
+			}
+			set
+			{
+				if ((this._UID != value))
+				{
+					if (this._UserProfile.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnUIDChanging(value);
+					this.SendPropertyChanging();
+					this._UID = value;
+					this.SendPropertyChanged("UID");
+					this.OnUIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SettlementID", DbType="Int")]
+		public System.Nullable<int> SettlementID
+		{
+			get
+			{
+				return this._SettlementID;
+			}
+			set
+			{
+				if ((this._SettlementID != value))
+				{
+					if (this._Settlement.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnSettlementIDChanging(value);
+					this.SendPropertyChanging();
+					this._SettlementID = value;
+					this.SendPropertyChanged("SettlementID");
+					this.OnSettlementIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Salary", DbType="Int")]
+		public System.Nullable<int> Salary
+		{
+			get
+			{
+				return this._Salary;
+			}
+			set
+			{
+				if ((this._Salary != value))
+				{
+					this.OnSalaryChanging(value);
+					this.SendPropertyChanging();
+					this._Salary = value;
+					this.SendPropertyChanged("Salary");
+					this.OnSalaryChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Subsistence", DbType="Int")]
+		public System.Nullable<int> Subsistence
+		{
+			get
+			{
+				return this._Subsistence;
+			}
+			set
+			{
+				if ((this._Subsistence != value))
+				{
+					this.OnSubsistenceChanging(value);
+					this.SendPropertyChanging();
+					this._Subsistence = value;
+					this.SendPropertyChanged("Subsistence");
+					this.OnSubsistenceChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SpecialBonus", DbType="Int")]
+		public System.Nullable<int> SpecialBonus
+		{
+			get
+			{
+				return this._SpecialBonus;
+			}
+			set
+			{
+				if ((this._SpecialBonus != value))
+				{
+					this.OnSpecialBonusChanging(value);
+					this.SendPropertyChanging();
+					this._SpecialBonus = value;
+					this.SendPropertyChanged("SpecialBonus");
+					this.OnSpecialBonusChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_WillingContribution", DbType="Int")]
+		public System.Nullable<int> WillingContribution
+		{
+			get
+			{
+				return this._WillingContribution;
+			}
+			set
+			{
+				if ((this._WillingContribution != value))
+				{
+					this.OnWillingContributionChanging(value);
+					this.SendPropertyChanging();
+					this._WillingContribution = value;
+					this.SendPropertyChanged("WillingContribution");
+					this.OnWillingContributionChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LaborInsurrance", DbType="Int")]
+		public System.Nullable<int> LaborInsurrance
+		{
+			get
+			{
+				return this._LaborInsurrance;
+			}
+			set
+			{
+				if ((this._LaborInsurrance != value))
+				{
+					this.OnLaborInsurranceChanging(value);
+					this.SendPropertyChanging();
+					this._LaborInsurrance = value;
+					this.SendPropertyChanged("LaborInsurrance");
+					this.OnLaborInsurranceChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_HealthInsurrance", DbType="Int")]
+		public System.Nullable<int> HealthInsurrance
+		{
+			get
+			{
+				return this._HealthInsurrance;
+			}
+			set
+			{
+				if ((this._HealthInsurrance != value))
+				{
+					this.OnHealthInsurranceChanging(value);
+					this.SendPropertyChanging();
+					this._HealthInsurrance = value;
+					this.SendPropertyChanged("HealthInsurrance");
+					this.OnHealthInsurranceChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Tax", DbType="Int")]
+		public System.Nullable<int> Tax
+		{
+			get
+			{
+				return this._Tax;
+			}
+			set
+			{
+				if ((this._Tax != value))
+				{
+					this.OnTaxChanging(value);
+					this.SendPropertyChanging();
+					this._Tax = value;
+					this.SendPropertyChanged("Tax");
+					this.OnTaxChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ActualAmount", DbType="Int")]
+		public System.Nullable<int> ActualAmount
+		{
+			get
+			{
+				return this._ActualAmount;
+			}
+			set
+			{
+				if ((this._ActualAmount != value))
+				{
+					this.OnActualAmountChanging(value);
+					this.SendPropertyChanging();
+					this._ActualAmount = value;
+					this.SendPropertyChanged("ActualAmount");
+					this.OnActualAmountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Remark", DbType="NVarChar(256)")]
+		public string Remark
+		{
+			get
+			{
+				return this._Remark;
+			}
+			set
+			{
+				if ((this._Remark != value))
+				{
+					this.OnRemarkChanging(value);
+					this.SendPropertyChanging();
+					this._Remark = value;
+					this.SendPropertyChanged("Remark");
+					this.OnRemarkChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SickLeave", DbType="Int")]
+		public System.Nullable<int> SickLeave
+		{
+			get
+			{
+				return this._SickLeave;
+			}
+			set
+			{
+				if ((this._SickLeave != value))
+				{
+					this.OnSickLeaveChanging(value);
+					this.SendPropertyChanging();
+					this._SickLeave = value;
+					this.SendPropertyChanged("SickLeave");
+					this.OnSickLeaveChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PersonalLeave", DbType="Int")]
+		public System.Nullable<int> PersonalLeave
+		{
+			get
+			{
+				return this._PersonalLeave;
+			}
+			set
+			{
+				if ((this._PersonalLeave != value))
+				{
+					this.OnPersonalLeaveChanging(value);
+					this.SendPropertyChanging();
+					this._PersonalLeave = value;
+					this.SendPropertyChanged("PersonalLeave");
+					this.OnPersonalLeaveChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EpidemicPL", DbType="Int")]
+		public System.Nullable<int> EpidemicPL
+		{
+			get
+			{
+				return this._EpidemicPL;
+			}
+			set
+			{
+				if ((this._EpidemicPL != value))
+				{
+					this.OnEpidemicPLChanging(value);
+					this.SendPropertyChanging();
+					this._EpidemicPL = value;
+					this.SendPropertyChanged("EpidemicPL");
+					this.OnEpidemicPLChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BasicWage", DbType="Int")]
+		public System.Nullable<int> BasicWage
+		{
+			get
+			{
+				return this._BasicWage;
+			}
+			set
+			{
+				if ((this._BasicWage != value))
+				{
+					this.OnBasicWageChanging(value);
+					this.SendPropertyChanging();
+					this._BasicWage = value;
+					this.SendPropertyChanged("BasicWage");
+					this.OnBasicWageChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DutyAllowance", DbType="Int")]
+		public System.Nullable<int> DutyAllowance
+		{
+			get
+			{
+				return this._DutyAllowance;
+			}
+			set
+			{
+				if ((this._DutyAllowance != value))
+				{
+					this.OnDutyAllowanceChanging(value);
+					this.SendPropertyChanging();
+					this._DutyAllowance = value;
+					this.SendPropertyChanged("DutyAllowance");
+					this.OnDutyAllowanceChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_HealthSupplement", DbType="Int")]
+		public System.Nullable<int> HealthSupplement
+		{
+			get
+			{
+				return this._HealthSupplement;
+			}
+			set
+			{
+				if ((this._HealthSupplement != value))
+				{
+					this.OnHealthSupplementChanging(value);
+					this.SendPropertyChanging();
+					this._HealthSupplement = value;
+					this.SendPropertyChanged("HealthSupplement");
+					this.OnHealthSupplementChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LaborInsurranceByEmployer", DbType="Int")]
+		public System.Nullable<int> LaborInsurranceByEmployer
+		{
+			get
+			{
+				return this._LaborInsurranceByEmployer;
+			}
+			set
+			{
+				if ((this._LaborInsurranceByEmployer != value))
+				{
+					this.OnLaborInsurranceByEmployerChanging(value);
+					this.SendPropertyChanging();
+					this._LaborInsurranceByEmployer = value;
+					this.SendPropertyChanged("LaborInsurranceByEmployer");
+					this.OnLaborInsurranceByEmployerChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_HealthInsurranceByEmployer", DbType="Int")]
+		public System.Nullable<int> HealthInsurranceByEmployer
+		{
+			get
+			{
+				return this._HealthInsurranceByEmployer;
+			}
+			set
+			{
+				if ((this._HealthInsurranceByEmployer != value))
+				{
+					this.OnHealthInsurranceByEmployerChanging(value);
+					this.SendPropertyChanging();
+					this._HealthInsurranceByEmployer = value;
+					this.SendPropertyChanged("HealthInsurranceByEmployer");
+					this.OnHealthInsurranceByEmployerChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Pension", DbType="Int")]
+		public System.Nullable<int> Pension
+		{
+			get
+			{
+				return this._Pension;
+			}
+			set
+			{
+				if ((this._Pension != value))
+				{
+					this.OnPensionChanging(value);
+					this.SendPropertyChanging();
+					this._Pension = value;
+					this.SendPropertyChanged("Pension");
+					this.OnPensionChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="MonthlySalary_MonthlySalaryDetails", Storage="_MonthlySalary", ThisKey="SalaryID", OtherKey="SalaryID", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public MonthlySalary MonthlySalary
+		{
+			get
+			{
+				return this._MonthlySalary.Entity;
+			}
+			set
+			{
+				MonthlySalary previousValue = this._MonthlySalary.Entity;
+				if (((previousValue != value) 
+							|| (this._MonthlySalary.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._MonthlySalary.Entity = null;
+						previousValue.MonthlySalaryDetails.Remove(this);
+					}
+					this._MonthlySalary.Entity = value;
+					if ((value != null))
+					{
+						value.MonthlySalaryDetails.Add(this);
+						this._SalaryID = value.SalaryID;
+					}
+					else
+					{
+						this._SalaryID = default(int);
+					}
+					this.SendPropertyChanged("MonthlySalary");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Settlement_MonthlySalaryDetails", Storage="_Settlement", ThisKey="SettlementID", OtherKey="SettlementID", IsForeignKey=true)]
+		public Settlement Settlement
+		{
+			get
+			{
+				return this._Settlement.Entity;
+			}
+			set
+			{
+				Settlement previousValue = this._Settlement.Entity;
+				if (((previousValue != value) 
+							|| (this._Settlement.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Settlement.Entity = null;
+						previousValue.MonthlySalaryDetails.Remove(this);
+					}
+					this._Settlement.Entity = value;
+					if ((value != null))
+					{
+						value.MonthlySalaryDetails.Add(this);
+						this._SettlementID = value.SettlementID;
+					}
+					else
+					{
+						this._SettlementID = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("Settlement");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserProfile_MonthlySalaryDetails", Storage="_UserProfile", ThisKey="UID", OtherKey="UID", IsForeignKey=true)]
+		public UserProfile UserProfile
+		{
+			get
+			{
+				return this._UserProfile.Entity;
+			}
+			set
+			{
+				UserProfile previousValue = this._UserProfile.Entity;
+				if (((previousValue != value) 
+							|| (this._UserProfile.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._UserProfile.Entity = null;
+						previousValue.MonthlySalaryDetails.Remove(this);
+					}
+					this._UserProfile.Entity = value;
+					if ((value != null))
+					{
+						value.MonthlySalaryDetails.Add(this);
+						this._UID = value.UID;
+					}
+					else
+					{
+						this._UID = default(int);
+					}
+					this.SendPropertyChanged("UserProfile");
 				}
 			}
 		}

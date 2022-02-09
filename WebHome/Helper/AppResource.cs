@@ -104,6 +104,12 @@ namespace WebHome.Helper
             return Encrypt(data.Concat(BitConverter.GetBytes(DateTime.Now.Ticks)).ToArray());
         }
 
+        public byte[] EncryptNormal(byte[] data)
+        {
+            return Encrypt(data.Concat(BitConverter.GetBytes(0L)).ToArray());
+        }
+
+
         public byte[] DecryptSalted(byte[] data)
         {
             byte[] result = Decrypt(data);

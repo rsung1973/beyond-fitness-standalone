@@ -542,6 +542,21 @@ namespace WebHome.Models.DataEntity
             return item.CoachWorkplace.FirstOrDefault()?.BranchID;
         }
 
+        public static String TerminationReason(this CourseContractRevision item)
+        {
+            StringBuilder sb = new StringBuilder();
+            if(item.CauseForEnding.HasValue)
+            {
+                sb.Append((Naming.CauseForEnding)item.CauseForEnding);
+            }
+            if (item.CourseContract.Remark != null)
+            {
+                sb.Append($"（{item.CourseContract.Remark}）");
+            }
+
+            return sb.ToString();
+        }
+
     }
 
     public partial class UserProfile

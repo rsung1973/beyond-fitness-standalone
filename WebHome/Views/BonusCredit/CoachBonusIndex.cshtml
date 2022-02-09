@@ -79,7 +79,7 @@
                                 <a href="javascript:downloadBonus();"><i class="zmdi zmdi-download btnDownload"></i></a>
                                 <script>
                                     function downloadBonus() {
-                                        $('').launchDownload('@Html.Raw(Url.Action("CreateMonthlyBonusXlsx","Accounting"))', @Html.Raw(JsonConvert.SerializeObject(new { _viewModel.AchievementDateFrom })), 'report', true);
+                                        $('').launchDownload('@Html.Raw(Url.Action("CreateMonthlyBonusXlsx2022","Accounting"))', @Html.Raw(JsonConvert.SerializeObject(new { _viewModel.AchievementDateFrom })), 'report', true);
                                     }
                                 </script>
                             </li>

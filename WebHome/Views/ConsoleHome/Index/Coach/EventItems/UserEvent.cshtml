@@ -22,17 +22,18 @@
     var profile = await Context.GetUserAsync();
 }
 @{
-    object clickHander(UserEvent item, bool editable)
+    String clickHander(UserEvent item, bool editable)
     {
         if (editable)
         {
-            <text>bookingCustomEvent({'keyID': '@Html.Raw(item.EventID.EncryptKey())'});</text>
+            return String.Concat("bookingCustomEvent({'keyID': '",
+                item.EventID.EncryptKey(),
+                "'});");
         }
         else
         {
-            <text>void(0);</text>
+            return "void(0);";
         }
-        return null;
     }
 }
 

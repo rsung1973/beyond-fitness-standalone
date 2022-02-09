@@ -405,7 +405,7 @@ namespace WebHome.Controllers
 
         }
 
-        public async Task<ActionResult> Notice(RegisterViewModel viewModel)
+        public async Task<ActionResult> NoticeAsync(RegisterViewModel viewModel)
         {
             ViewBag.ViewModel = viewModel;
             if (viewModel.KeyID != null)
@@ -443,7 +443,7 @@ namespace WebHome.Controllers
 
         public async Task<ActionResult> CheckAttendanceAsync(RegisterViewModel viewModel)
         {
-            ViewResult result = (ViewResult)await Notice(viewModel);
+            ViewResult result = (ViewResult)await NoticeAsync(viewModel);
             UserProfile item = result.Model as UserProfile;
 
             if(item!=null)
@@ -1008,7 +1008,7 @@ namespace WebHome.Controllers
 
         public async Task<ActionResult> TodayLessonAsync(RegisterViewModel viewModel)
         {
-            ViewResult result = (ViewResult)await Notice(viewModel);
+            ViewResult result = (ViewResult)await NoticeAsync(viewModel);
             UserProfile item = result.Model as UserProfile;
 
             if (item != null)
@@ -1023,12 +1023,12 @@ namespace WebHome.Controllers
 
         public async Task<ActionResult> CheckBonusPointByLineAsync(RegisterViewModel viewModel)
         {
-            ViewResult result = (ViewResult)await Notice(viewModel);
+            ViewResult result = (ViewResult)await NoticeAsync(viewModel);
             UserProfile item = result.Model as UserProfile;
 
             if (item != null)
             {
-                return View("CheckBonusPoint", item);
+                return View("~/Views/CornerKick/CheckBonusPoint2021.cshtml", item);
             }
             else
             {

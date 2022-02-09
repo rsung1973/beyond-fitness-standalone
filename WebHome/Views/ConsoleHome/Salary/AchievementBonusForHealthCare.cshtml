@@ -1,0 +1,51 @@
+﻿
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    CoachBonusViewModel _viewModel;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = ViewContext.ModelState;
+    _viewModel = (CoachBonusViewModel)ViewBag.ViewModel;
+    MonthlySalaryDetails _model = (MonthlySalaryDetails)this.Model;
+    CoachMonthlySalary _salary = (CoachMonthlySalary)ViewBag.SalaryItem;
+
+}
+<div class="panel">
+    <div class="panel-heading col-amber" role="tab" id="headingLessonBonusList">
+        <h4 class="panel-title material-icons"> <a role="button" data-toggle="collapse" data-parent="#accordionDetail_lessonbonus" href="#collapseLessonBonus" aria-expanded="true" aria-controls="collapseLessonBonus"> <i class="material-icons">subject</i> 上課業績獎金明細 </a> </h4>
+    </div>
+    <div id="collapseLessonBonus" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="headingLessonBonusList">
+        <div class="panel-body no-padding">
+            <ul class="mb_list">
+                <li>
+                    <div class="list_tb tb2">
+                        <div class="list_tr">
+                            <div class="list_td hd">抽成平均單價（含稅）</div>
+                            <div class="list_td rt">@($"{_salary?.PTAverageUnitPrice:##,###,###,###}")</div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="list_tb tb2">
+                        <div class="list_tr">
+                            <div class="list_td hd">P.T Session堂數（含基本20堂）</div>
+                            <div class="list_td rt">@($"{_salary?.PTAttendanceCount:##,###,###,###}")</div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

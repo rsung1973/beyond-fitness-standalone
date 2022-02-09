@@ -1243,12 +1243,34 @@ namespace WebHome.Controllers
             ViewBag.ViewModel = viewModel;
 
             var profile = await HttpContext.GetUserAsync();
-            if (!viewModel.UID.HasValue)
+
+            if (profile == null)
             {
-                viewModel.UID = profile.UID;
+                return Json(new { result = false, message = "資料錯誤!!" });
             }
 
-            return View("~/Views/ConsoleHome/ProfileIndex.cshtml", profile.LoadInstance(models));
+            viewModel.AuthCode = viewModel.AuthCode.GetEfficientString();
+            if (viewModel.AuthCode != null
+                && profile.UID == viewModel.AuthCode.DecryptKeyValue())
+            {
+                viewModel.KeyID = profile.UID.EncryptKey();
+                return View("~/Views/ConsoleHome/ProfileIndex.cshtml", profile.LoadInstance(models));
+            }
+
+            profile = profile.LoadInstance(models);
+            viewModel.PIN = viewModel.PIN.GetEfficientString();
+            if (viewModel.PIN != profile.UserProfileExtension.PIN)
+            {
+                return Json(new { result = false, message = "通關密碼錯誤!!" });
+            }
+
+            if (!profile.UserProfileExtension.PINExpiration.HasValue
+                    || profile.UserProfileExtension.PINExpiration.Value < DateTime.Now)
+            {
+                return Json(new { result = false, message = "通關密碼過期!!" });
+            }
+
+            return Json(new { result = true, message = profile.UID.EncryptKey() });
         }
 
 

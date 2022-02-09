@@ -96,5 +96,10 @@
         }
         $('#queryInterval').text('@($"{_viewModel.DateFrom:yyyyMM}")-@($"{_viewModel.DateTo:yyyyMM}")');
         $global.viewModel = @Html.Raw(_viewModel.JsonStringify());
+
+        window.onresize = function () {
+            $global.echarts.myChart.resize();
+        };
+
     });
 </script>
