@@ -10,7 +10,7 @@
 @using WebHome.Controllers
 @using Microsoft.AspNetCore.Mvc.ModelBinding
 @using Newtonsoft.Json
-@using WebHome.Views.MainActivity.Resources
+@using WebHome.Models.Resources
 
 @{
     ModelSource<UserProfile> models;
@@ -74,12 +74,7 @@
                         <input id="q21" class="hide" type="checkbox">
                         <label for="q21" class="accordion-label sub">@Html.Raw(NamingItem.FAQQestion21)</label>
                         <ul class="accordion-child list-style1">@Html.Raw(NamingItem.FAQAnswer21)</ul>
-                    </li>
-                    <li class="accordion-item">
-                        <input id="q23" class="hide" type="checkbox">
-                        <label for="q23" class="accordion-label sub">@Html.Raw(NamingItem.FAQQestion23)</label>
-                        <ul class="accordion-child list-style1">@Html.Raw(NamingItem.FAQAnswer23)</ul>
-                    </li>
+                    </li>                    
                     <li class="accordion-item">
                         <input id="q22" class="hide" type="checkbox">
                         <label for="q22" class="accordion-label sub">@Html.Raw(NamingItem.FAQQestion22)</label>
