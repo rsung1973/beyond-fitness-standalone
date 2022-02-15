@@ -18,12 +18,12 @@
     _modelState = (ModelStateDictionary)ViewBag.ModelState;
     models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];
 }
-<script async src="https://www.googletagmanager.com/gtag/js?id=@(Startup.Properties["GA_ID_Frontend"])"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=@(WebHome.Startup.Properties["GA_ID_Frontend"])"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
-  gtag('config', '@(Startup.Properties["GA_ID_Frontend"])');
+  gtag('config', '@(WebHome.Startup.Properties["GA_ID_Frontend"])');
 </script>
 

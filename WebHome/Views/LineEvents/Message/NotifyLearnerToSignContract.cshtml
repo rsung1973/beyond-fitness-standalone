@@ -160,7 +160,7 @@
               "action": {
                 "type": "uri",
                 "label": "👉立即簽名",
-                "uri": "@Html.Raw($"{Startup.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/CornerKick/ToSignCourseContract")}?KeyID={HttpUtility.UrlEncode(item.ContractID.EncryptKey())}&encUID={HttpUtility.UrlEncode(item.OwnerID.EncryptKey())}")"
+                "uri": "@Html.Raw($"{WebHome.Startup.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/CornerKick/ToSignCourseContract")}?KeyID={HttpUtility.UrlEncode(item.ContractID.EncryptKey())}&encUID={HttpUtility.UrlEncode(item.OwnerID.EncryptKey())}")"
                 }
                 },
                 {

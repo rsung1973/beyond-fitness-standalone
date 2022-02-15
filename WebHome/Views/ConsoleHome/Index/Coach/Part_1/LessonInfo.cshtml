@@ -60,7 +60,7 @@
                 function showCoachAchievement() {
                     var viewModel = {};
                     viewModel.ByManager = false;
-                    viewModel.KeyID = '@(_model.UID.EncryptKey())';
+                    viewModel.KeyID = '@Html.Raw(_model.UID.EncryptKey())';
                     showLoading();
                     $('').launchDownload('@Html.Raw(Url.Action("CoachAchievement","ConsoleHome"))', viewModel);
                 }

@@ -26,7 +26,7 @@
 }
 
 <div class="header">
-    <h2><strong>收款資料</strong> <a href="javascript:$global.showPaymentDetails('@(_model.PaymentID.EncryptKey())');" class="btn btn-simple btn-info btn-round btn-sm float-right">更多資訊</a></h2>
+    <h2><strong>收款資料</strong> <a href="javascript:$global.showPaymentDetails('@Html.Raw(_model.PaymentID.EncryptKey())');" class="btn btn-simple btn-info btn-round btn-sm float-right">更多資訊</a></h2>
     @{ await Html.RenderPartialAsync("~/Views/PaymentConsole/Indication/PaymentDetails.cshtml", _model);}
 </div>
 <div class="body invoice1">

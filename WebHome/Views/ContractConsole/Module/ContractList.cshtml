@@ -41,7 +41,7 @@
     <tbody>
         @foreach (var item in _model)
         {
-            <tr onclick="processContract('@(item.ContractID.EncryptKey())');">
+            <tr onclick="processContract('@Html.Raw(item.ContractID.EncryptKey())');">
                 <td>
                     @if (item.CourseContractType.IsGroup == true)
                     {

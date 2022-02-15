@@ -72,7 +72,7 @@
                                         closeOnConfirm: true
                                     }).then((result) => {
                                             $global.viewModel.ScrollToView = true;
-                                            $global.viewModel.KeyID = '@(_model.LessonID.EncryptKey())';
+                                            $global.viewModel.KeyID = '@Html.Raw(_model.LessonID.EncryptKey())';
                                             showLoading();
                                             $('').launchDownload('@Html.Raw(Url.Action("LessonOverview", "ConsoleHome"))',$global.viewModel);
                                     });

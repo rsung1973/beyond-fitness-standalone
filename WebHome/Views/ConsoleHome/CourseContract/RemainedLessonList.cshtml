@@ -41,7 +41,7 @@
             {
                 if (contract.ContractType == (int)CourseContractType.ContractTypeDefinition.CGA)
                 {
-                    <tr onclick="processContract('@(contract.ContractID.EncryptKey())');">
+                    <tr onclick="processContract('@Html.Raw(contract.ContractID.EncryptKey())');">
                         <td>@(contract.ContractNo())</td>
                         <td>@(item.LessonPriceType.SimpleDescription)(@(item.LessonPriceType.DurationInMinutes)分鐘)</td>
                         <td>@(item.Lessons)</td>
@@ -66,7 +66,7 @@
                 }
                 else
                 {
-                    <tr onclick="processContract('@(contract.ContractID.EncryptKey())');">
+                    <tr onclick="processContract('@Html.Raw(contract.ContractID.EncryptKey())');">
                         <td>@(contract.ContractNo())</td>
                         <td>@(contract.CourseContractType.TypeName)(@(contract.LessonPriceType.DurationInMinutes)分鐘)</td>
                         <td>@(contract.Lessons)</td>

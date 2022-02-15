@@ -67,7 +67,7 @@
                                         <a href="@($"{Url.Action("BlogSingle", "MainActivity")}?{encodedKeyID}")">
                                             @{ var imgUrl = $"BlogContent/Blog/{item.BlogID}/images/Title.jpg";}
 
-                                            <img class="blog-img" src="images/blog/DefaultTitle.jpg" onload="@(System.IO.File.Exists(Startup.MapPath(imgUrl)) ? $"this.onload = null;this.src = '../{imgUrl}';" : null)" />
+                                            <img class="blog-img" src="images/blog/DefaultTitle.jpg" onload="@(System.IO.File.Exists(WebHome.Startup.MapPath(imgUrl)) ? $"this.onload = null;this.src = '../{imgUrl}';" : null)" />
                                         </a>
                                     </div>
                                 </div>

@@ -52,7 +52,7 @@
                                 }
                             }
                         }
-                        <a href="javascript:$global.showPaymentDetails('@(_model.PaymentID.EncryptKey())');" class="list-group-item">詳細資訊</a>
+                        <a href="javascript:$global.showPaymentDetails('@Html.Raw(_model.PaymentID.EncryptKey())');" class="list-group-item">詳細資訊</a>
                         await Html.RenderPartialAsync("~/Views/PaymentConsole/Indication/PaymentDetails.cshtml", _model);
                     }
                     @{

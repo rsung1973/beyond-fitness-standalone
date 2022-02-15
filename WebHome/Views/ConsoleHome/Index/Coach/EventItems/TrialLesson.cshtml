@@ -23,7 +23,7 @@
     LessonTime item = (LessonTime)_model.EventItem;
     if (item.IsTrialLesson())
     {
-        <div class="event-name b-PE row" onclick="showLessonEventModal('@(item.LessonID.EncryptKey())',event);">
+        <div class="event-name b-PE row" onclick="showLessonEventModal('@Html.Raw(item.LessonID.EncryptKey())',event);">
             <div class="col-2 text-center">
                 <h4>@($"{item.ClassTime:dd}")<span>@($"{item.ClassTime:MM}")</span><span>@(Naming.DayOfWeek[(int)item.ClassTime.Value.DayOfWeek])</span></h4>
             </div>

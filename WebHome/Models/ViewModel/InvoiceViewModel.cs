@@ -25,7 +25,12 @@ namespace WebHome.Models.ViewModel
         public String SellerReceiptNo { get; set; }
         public String BuyerReceiptNo { get; set; }
         public String No { get; set; }
-        public DateTime? InvoiceDate { get; set; }
+        DateTime? _invoiceDate;
+        public DateTime? InvoiceDate
+        { 
+            get => _invoiceDate?.CurrentLocalTime();
+            set => _invoiceDate = value;
+        }
         public String Remark { get; set; }
         public String BuyerRemark { get; set; }
         public String CustomsClearanceMark { get; set; }

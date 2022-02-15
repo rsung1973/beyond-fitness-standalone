@@ -10,7 +10,7 @@
 @using WebHome.Controllers
 @using Microsoft.AspNetCore.Mvc.ModelBinding
 @using Newtonsoft.Json
-@using WebHome.Views.MainActivity.Resources
+@using WebHome.Models.Resources
 
 @{
     ModelSource<UserProfile> models;
@@ -29,7 +29,7 @@
         gtag('js', new Date());
 
         //gtag('config', 'GTM-T5GQNTV');
-        gtag('config', '@Startup.Properties["GA_ID_Frontend"]');
+        gtag('config', '@WebHome.Startup.Properties["GA_ID_Frontend"]');
 
         (function (w, d, s, l, i) {
             w[l] = w[l] || []; w[l].push({
@@ -146,7 +146,7 @@
     </footer>
     <!-- Global site tag (gtag.js) - Google Analytics -->
     @*<script async src="https://www.googletagmanager.com/gtm.js?id=GTM-T5GQNTV"></script>*@
-    <script async src="https://www.googletagmanager.com/gtag/js?id=@(Startup.Properties["GA_ID_Frontend"])"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=@(WebHome.Startup.Properties["GA_ID_Frontend"])"></script>
     <script type="text/javascript">
 @*window.dataLayer = window.dataLayer || [];
         function gtag() { dataLayer.push(arguments); }

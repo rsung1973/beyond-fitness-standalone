@@ -99,6 +99,11 @@ namespace WebHome.Models.ViewModel
             return AppResource.Instance.DecryptSalted(Convert.FromBase64String(data));
         }
 
+        public static DateTime CurrentLocalTime(this DateTime date)
+        {
+            return date.Kind == DateTimeKind.Utc ? date.ToLocalTime() : date;
+        }
+
     }
 
 }

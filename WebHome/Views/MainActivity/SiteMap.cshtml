@@ -49,7 +49,7 @@
     {
         items.Add(new urlsetUrl
         {
-            loc = Startup.Properties["HostDomain"] + VirtualPathUtility.ToAbsolute($"~/MainActivity/BlogSingle?{(new { DocID = b.DocID }).JsonStringify().EncryptKeyNormal().UrlEncodeBase64String()}"),
+            loc = WebHome.Startup.Properties["HostDomain"] + VirtualPathUtility.ToAbsolute($"~/MainActivity/BlogSingle?{(new { DocID = b.DocID }).JsonStringify().EncryptKeyNormal().UrlEncodeBase64String()}"),
             priority = 0.8m,
             prioritySpecified = true,
             lastmod = new DateTime(b.Document.DocDate.Ticks, DateTimeKind.Local),

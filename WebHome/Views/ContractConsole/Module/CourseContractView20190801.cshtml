@@ -122,7 +122,7 @@
                             @if (_model.CourseContractExtension.AttachmentID.HasValue)
                             {
                                 <text>代辦委託書：</text>
-                                <u><a href="@Html.Raw($"{Startup.Properties["HostDomain"]}{Url.Action("GetResourceWithMime", "Information", new { HKeyID = _model.CourseContractExtension.AttachmentID.Value.EncryptHexKey() })}")" target="_blank">開啟附件</a>。</u>
+                                <u><a href="@Html.Raw($"{WebHome.Startup.Properties["HostDomain"]}{Url.Action("GetResourceWithMime", "Information", new { HKeyID = _model.CourseContractExtension.AttachmentID.Value.EncryptHexKey() })}")" target="_blank">開啟附件</a>。</u>
                             }
                         </td>
                     </tr>

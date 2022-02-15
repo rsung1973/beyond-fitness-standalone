@@ -84,7 +84,7 @@
                         </ul>
                     }
                                     </div>
-                <h4><a href="javascript:viewTraining('@item.LessonID.EncryptKey()','@(encTargetID)');">@(execution.Emphasis ?? "Unfinished")</a></h4>
+                <h4><a href="javascript:viewTraining('@Html.Raw(item.LessonID.EncryptKey())','@(encTargetID)');">@(execution.Emphasis ?? "Unfinished")</a></h4>
                 @if (item.LessonPlan.Remark != null)
                 {
                     <span class="comment">@(item.LessonPlan.Remark)<span class="author">@(item.AsAttendingCoach.UserProfile.FullName())</span></span>

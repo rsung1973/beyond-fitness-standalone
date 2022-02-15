@@ -310,5 +310,11 @@ namespace WebHome.Helper
             return profile.UserProfileExtension?.CurrentTrial == 1;
         }
 
+        public static bool IsEmployee(this UserProfile profile)
+        {
+            return profile.UserRole.Any(r => r.RoleID == (int)Naming.RoleID.Coach)
+                || profile.UserRole.Any(r => r.RoleID == (int)Naming.RoleID.Assistant);
+        }
+
     }
 }

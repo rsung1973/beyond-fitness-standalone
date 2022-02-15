@@ -37,7 +37,7 @@
         @foreach(var item in items)
         {
             var lesson = models.GetTable<LessonTime>().Where(l => l.LessonID == item.LessonID).First();
-        <tr onclick="processLesson('@(item.LessonID.EncryptKey())');">
+        <tr onclick="processLesson('@Html.Raw(item.LessonID.EncryptKey())');">
             <td>
                 @(item.BranchStore?.BranchName)
             </td>

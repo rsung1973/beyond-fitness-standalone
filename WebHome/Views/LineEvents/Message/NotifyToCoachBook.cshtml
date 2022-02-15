@@ -184,7 +184,7 @@
                             "action": {
                                 "type": "uri",
                                 "label": "👉立即預約上課",
-                                "uri": "@Html.Raw($"{Startup.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/Account/ToConsoleCalendar")}?encUID={HttpUtility.UrlEncode(_model.FitnessConsultant.EncryptKey())}")"
+                                "uri": "@Html.Raw($"{WebHome.Startup.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/Account/ToConsoleCalendar")}?encUID={HttpUtility.UrlEncode(_model.FitnessConsultant.EncryptKey())}")"
                                 }
                                 },
                                 {

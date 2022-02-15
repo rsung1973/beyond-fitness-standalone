@@ -28,7 +28,7 @@
     <hr />
     foreach (var item in items.OrderBy(l => l.ClassTime))
     {
-        <div class="event-name b-CoachPI row" onclick="showLessonEventModal('@(item.LessonID.EncryptKey())',event);">
+        <div class="event-name b-CoachPI row" onclick="showLessonEventModal('@Html.Raw(item.LessonID.EncryptKey())',event);">
             <div class="col-2 text-center">
                 <h4>@($"{item.ClassTime:dd}")<span>@($"{item.ClassTime:MM}")</span><span>@(Naming.DayOfWeek[(int)item.ClassTime.Value.DayOfWeek])</span></h4>
             </div>
@@ -53,7 +53,7 @@
     <hr />
     foreach (var item in items.OrderBy(l => l.ClassTime))
     {
-        <div class="event-name b-PE row" onclick="showLessonEventModal('@(item.LessonID.EncryptKey())',event);">
+        <div class="event-name b-PE row" onclick="showLessonEventModal('@Html.Raw(item.LessonID.EncryptKey())',event);">
             <div class="col-2 text-center">
                 <h4>@($"{item.ClassTime:dd}")<span>@($"{item.ClassTime:MM}")</span><span>@(Naming.DayOfWeek[(int)item.ClassTime.Value.DayOfWeek])</span></h4>
             </div>
@@ -76,7 +76,7 @@
     <hr />
     foreach (var item in items.OrderBy(l => l.ClassTime))
     {
-        <div class="event-name b-PI row" onclick="showLessonEventModal('@(item.LessonID.EncryptKey())',event);">
+        <div class="event-name b-PI row" onclick="showLessonEventModal('@Html.Raw(item.LessonID.EncryptKey())',event);">
             <div class="col-2 text-center">
                 <h4>@($"{item.ClassTime:dd}")<span>@($"{item.ClassTime:MM}")</span><span>@(Naming.DayOfWeek[(int)item.ClassTime.Value.DayOfWeek])</span></h4>
             </div>
@@ -99,7 +99,7 @@
     <hr />
     foreach (var item in items.OrderBy(l => l.ClassTime))
     {
-        <div class="event-name b-ST row" onclick="showLessonEventModal('@(item.LessonID.EncryptKey())',event);">
+        <div class="event-name b-ST row" onclick="showLessonEventModal('@Html.Raw(item.LessonID.EncryptKey())',event);">
             <div class="col-2 text-center">
                 <h4>@($"{item.ClassTime:dd}")<span>@($"{item.ClassTime:MM}")</span><span>@(Naming.DayOfWeek[(int)item.ClassTime.Value.DayOfWeek])</span></h4>
             </div>
@@ -121,7 +121,7 @@
     <hr />
     foreach (var item in items.OrderBy(l => l.ClassTime))
     {
-        <div class="event-name b-PT row" onclick="showLessonEventModal('@(item.LessonID.EncryptKey())',event);">
+        <div class="event-name b-PT row" onclick="showLessonEventModal('@Html.Raw(item.LessonID.EncryptKey())',event);">
             <div class="col-2 text-center">
                 <h4>@($"{item.ClassTime:dd}")<span>@($"{item.ClassTime:MM}")</span><span>@(Naming.DayOfWeek[(int)item.ClassTime.Value.DayOfWeek])</span></h4>
             </div>
@@ -142,7 +142,7 @@
     <hr />
     foreach (var item in eventItems.OrderBy(v => v.StartDate))
     {
-        <div class="event-name b-custom row" onclick="showUserEventModal('@(item.EventID.EncryptKey())',event);">
+        <div class="event-name b-custom row" onclick="showUserEventModal('@Html.Raw(item.EventID.EncryptKey())',event);">
             <div class="col-2 text-center">
                 <h4>@($"{item.StartDate:dd}")<span>@($"{item.StartDate:MM}")</span><span>@(Naming.DayOfWeek[(int)item.StartDate.DayOfWeek])</span></h4>
             </div>

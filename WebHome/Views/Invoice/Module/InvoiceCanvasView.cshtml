@@ -35,7 +35,7 @@
                     <div class="cutfield" style="/*width: 5cm;*/ border-top: 0px; border: 0px; /*font-weight: bold;*/">
                         @if (_seller != null && _seller.LogoURL != null)
                         {
-                            <img class="logo" style="/*width: 200px;*/ height: auto;" src='@(Startup.Properties["HostDomain"] + VirtualPathUtility.ToAbsolute("~/" + _seller.LogoURL) + "?" + DateTime.Now.Ticks)' />
+                            <img class="logo" style="/*width: 200px;*/ height: auto;" src='@(WebHome.Startup.Properties["HostDomain"] + VirtualPathUtility.ToAbsolute("~/" + _seller.LogoURL) + "?" + DateTime.Now.Ticks)' />
                         }
                         else
                         {

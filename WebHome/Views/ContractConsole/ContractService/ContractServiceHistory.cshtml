@@ -46,7 +46,7 @@
         @foreach (var item in _items)
         {
             var contract = item.CourseContract;
-            <tr onclick="processContractService('@(item.RevisionID.EncryptKey())');">
+            <tr onclick="processContractService('@Html.Raw(item.RevisionID.EncryptKey())');">
                 <td>@(item.Reason)</td>
                 <td>@(contract.ContractLearner())</td>
                 <td>@(contract.CourseContractExtension.BranchStore.BranchName)</td>

@@ -86,7 +86,7 @@
             @if (_model.BranchStore?.IsVirtualClassroom() == true)
             {
                 <li>
-                    <a href="javascript:editOnlineUrl('@($"{_model.LessonID.EncryptKey()}")',$('#onlineUrl').text());">
+                    <a href="javascript:editOnlineUrl('@Html.Raw($"{_model.LessonID.EncryptKey()}")',$('#onlineUrl').text());">
                         編輯遠距視訊連結 <span id="onlineUrl">@(_model.Place)</span>
                         <i class="zmdi livicon-evo" data-options="name: pencil.svg; size: 20px; style: original; strokeStyle:round; strokeColor:#052333; strokeWidth:2px; autoPlay:true"></i>
                     </a>

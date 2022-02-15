@@ -122,7 +122,7 @@
                         <div class="list_tr">
                             <div class="list_td hd">相關上傳文件</div>
                             <div class="list_td rt">
-                                <a href="@Html.Raw($"{Startup.Properties["HostDomain"]}{Url.Action("GetResourceWithMime","Information",new { HKeyID = revision.AttachmentID.Value.EncryptHexKey() })}")" target="_blank"><i class="material-icons">attach_file</i></a>
+                                <a href="@Html.Raw($"{WebHome.Startup.Properties["HostDomain"]}{Url.Action("GetResourceWithMime","Information",new { HKeyID = revision.AttachmentID.Value.EncryptHexKey() })}")" target="_blank"><i class="material-icons">attach_file</i></a>
                             </div>
                         </div>
                     </div>

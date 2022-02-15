@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WebHome.Views.MainActivity.Resources {
+namespace WebHome.Models.Resources {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace WebHome.Views.MainActivity.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("WebHome.Views.MainActivity.Resources.NamingItem", typeof(NamingItem).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("WebHome.Models.Resources.NamingItem", typeof(NamingItem).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

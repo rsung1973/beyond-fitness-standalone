@@ -26,12 +26,16 @@ namespace WebHome.Models.ViewModel
 
     public class CourseContractViewModel : QueryViewModel
     {
+        private DateTime? expiration;
+        private DateTime? validFrom;
+        private DateTime? contractDate;
+
         public int? ContractID { get; set; }
         public CourseContractType.ContractTypeDefinition? ContractType { get; set; } = CourseContractType.ContractTypeDefinition.CPA;
-        public DateTime? ContractDate { get; set; }
+        public DateTime? ContractDate { get => contractDate?.CurrentLocalTime(); set => contractDate = value; }
         public String Subject { get; set; }
-        public DateTime? ValidFrom { get; set; }
-        public DateTime? Expiration { get; set; }
+        public DateTime? ValidFrom { get => validFrom?.CurrentLocalTime(); set => validFrom = value; }
+        public DateTime? Expiration { get => expiration?.CurrentLocalTime(); set => expiration = value; }
         public int? OwnerID { get; set; }
         public int? SequenceNo { get; set; } = 0;
         public int? Lessons { get; set; }
@@ -78,24 +82,33 @@ namespace WebHome.Models.ViewModel
 
     public class CourseContractQueryViewModel : CourseContractViewModel
     {
+        private DateTime? payoffDueTo;
+        private DateTime? payoffDueFrom;
+        private DateTime? effectiveDateTo;
+        private DateTime? effectiveDateFrom;
+        private DateTime? expirationTo;
+        private DateTime? expirationFrom;
+        private DateTime? contractDateTo;
+        private DateTime? contractDateFrom;
+
         public CourseContractQueryViewModel()
         {
             //ContractDateFrom = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
             //ContractDateTo = ContractDateFrom.Value.AddMonths(1).AddDays(-1);
         }
         public String RealName { get; set; }
-        public DateTime? ContractDateFrom { get; set; }
-        public DateTime? ContractDateTo { get; set; }
+        public DateTime? ContractDateFrom { get => contractDateFrom?.CurrentLocalTime(); set => contractDateFrom = value; }
+        public DateTime? ContractDateTo { get => contractDateTo?.CurrentLocalTime(); set => contractDateTo = value; }
         public String ContractNo { get; set; }
         public bool? IsExpired { get; set; }
         public Naming.ContractServiceMode? ContractQueryMode { get; set; }
-        public DateTime? ExpirationFrom { get; set; }
-        public DateTime? ExpirationTo { get; set; }
-        public DateTime? EffectiveDateFrom { get; set; }
-        public DateTime? EffectiveDateTo { get; set; }
+        public DateTime? ExpirationFrom { get => expirationFrom?.CurrentLocalTime(); set => expirationFrom = value; }
+        public DateTime? ExpirationTo { get => expirationTo?.CurrentLocalTime(); set => expirationTo = value; }
+        public DateTime? EffectiveDateFrom { get => effectiveDateFrom?.CurrentLocalTime(); set => effectiveDateFrom = value; }
+        public DateTime? EffectiveDateTo { get => effectiveDateTo?.CurrentLocalTime(); set => effectiveDateTo = value; }
         public Naming.ContractPayoffMode? PayoffMode { get; set; }
-        public DateTime? PayoffDueFrom { get; set; }
-        public DateTime? PayoffDueTo { get; set; }
+        public DateTime? PayoffDueFrom { get => payoffDueFrom?.CurrentLocalTime(); set => payoffDueFrom = value; }
+        public DateTime? PayoffDueTo { get => payoffDueTo?.CurrentLocalTime(); set => payoffDueTo = value; }
         public int? OfficerID { get; set; }
         public bool? ByCustom { get; set; }
         public bool? IncludeTotalUnpaid { get; set; }
@@ -109,6 +122,7 @@ namespace WebHome.Models.ViewModel
         public int? OwnerID { get; set; }
         public int? ContractType { get; set; }
         public bool? ProfileOnly { get; set; }
+        public bool? HasReset { get; set; }
     }
 
     public class UserSignatureViewModel : QueryViewModel
@@ -153,7 +167,23 @@ namespace WebHome.Models.ViewModel
     {
         public int? PaymentID { get; set; }
         //public int? PayoffAmount { get; set; }
-        public DateTime? PayoffDate { get; set; } = DateTime.Today;
+
+        DateTime? _payoffDate;
+        public DateTime? PayoffDate
+        {
+            get
+            {
+                if (!_payoffDate.HasValue)
+                {
+                    _payoffDate = DateTime.Today;
+                }
+                return _payoffDate?.CurrentLocalTime();
+            }
+            set
+            {
+                _payoffDate = value;
+            }
+        }
         public int? Status { get; set; }
         public int? HandlerID { get; set; }
         public string PaymentType { get; set; } //= "現金";
@@ -180,6 +210,13 @@ namespace WebHome.Models.ViewModel
 
     public class PaymentQueryViewModel : PaymentViewModel
     {
+        private DateTime? cancelDateTo;
+        private DateTime? cancelDateFrom;
+        private DateTime? allowanceDateTo;
+        private DateTime? allowanceDateFrom;
+        private DateTime? payoffDateTo;
+        private DateTime? payoffDateFrom;
+
         public PaymentQueryViewModel() : base()
         {
             InvoiceType = null;
@@ -188,8 +225,8 @@ namespace WebHome.Models.ViewModel
         public string UserName { get; set; }
         public int? BranchID { get; set; }
         public bool? IsCancelled { get; set; }
-        public DateTime? PayoffDateFrom { get; set; }
-        public DateTime? PayoffDateTo { get; set; }
+        public DateTime? PayoffDateFrom { get => payoffDateFrom?.CurrentLocalTime(); set => payoffDateFrom = value; }
+        public DateTime? PayoffDateTo { get => payoffDateTo?.CurrentLocalTime(); set => payoffDateTo = value; }
         public bool? Entrusting { get; set; }
         public DateTime? SettlementDate
         {
@@ -210,10 +247,10 @@ namespace WebHome.Models.ViewModel
         public bool? HasShare { get; set; }
         public int? RelatedID { get; set; }
         public int? TransactionID { get; set; }
-        public DateTime? AllowanceDateFrom { get; set; }
-        public DateTime? AllowanceDateTo { get; set; }
-        public DateTime? CancelDateFrom { get; set; }
-        public DateTime? CancelDateTo { get; set; }
+        public DateTime? AllowanceDateFrom { get => allowanceDateFrom?.CurrentLocalTime(); set => allowanceDateFrom = value; }
+        public DateTime? AllowanceDateTo { get => allowanceDateTo?.CurrentLocalTime(); set => allowanceDateTo = value; }
+        public DateTime? CancelDateFrom { get => cancelDateFrom?.CurrentLocalTime(); set => cancelDateFrom = value; }
+        public DateTime? CancelDateTo { get => cancelDateTo?.CurrentLocalTime(); set => cancelDateTo = value; }
 
     }
 
@@ -245,17 +282,21 @@ namespace WebHome.Models.ViewModel
 
     public class AchievementQueryViewModel : QueryViewModel
     {
+        private DateTime? classTime;
+        private DateTime? achievementDateTo;
+        private DateTime? achievementDateFrom;
+
         public AchievementQueryViewModel()
         {
         }
         public int? BranchID { get; set; }
         public int? CoachID { get; set; }
-        public DateTime? AchievementDateFrom { get; set; }
-        public DateTime? AchievementDateTo { get; set; }
+        public DateTime? AchievementDateFrom { get => achievementDateFrom?.CurrentLocalTime(); set => achievementDateFrom = value; }
+        public DateTime? AchievementDateTo { get => achievementDateTo?.CurrentLocalTime(); set => achievementDateTo = value; }
         public String AchievementYearMonthFrom { get; set; }
         public String AchievementYearMonthTo { get; set; }
         public int?[] ByCoachID { get; set; }
-        public DateTime? ClassTime { get; set; }
+        public DateTime? ClassTime { get => classTime?.CurrentLocalTime(); set => classTime = value; }
         public Naming.LessonQueryType? QueryType { get; set; }
         public Naming.QueryIntervalDefinition? QueryInterval { get; set; }
         public bool? BypassCondition { get; set; }
@@ -295,13 +336,16 @@ namespace WebHome.Models.ViewModel
 
     public class TrustQueryViewModel : QueryViewModel
     {
+        private DateTime? trustDateTo;
+        private DateTime? trustDateFrom;
+
         public TrustQueryViewModel()
         {
         }
         public int? BranchID { get; set; }
         public String TrustType { get; set; }
-        public DateTime? TrustDateFrom { get; set; }
-        public DateTime? TrustDateTo { get; set; }
+        public DateTime? TrustDateFrom { get => trustDateFrom?.CurrentLocalTime(); set => trustDateFrom = value; }
+        public DateTime? TrustDateTo { get => trustDateTo?.CurrentLocalTime(); set => trustDateTo = value; }
         public String TrustYearMonth { get; set; }
         public String ContractNo { get; set; }
 
@@ -309,8 +353,12 @@ namespace WebHome.Models.ViewModel
 
     public class EnterpriseContractViewModel : QueryViewModel
     {
+        private DateTime? expiration;
+        private DateTime? validFrom;
+        private DateTime? contractDate;
+
         public int? ContractID { get; set; }
-        public DateTime? ContractDate { get; set; }
+        public DateTime? ContractDate { get => contractDate?.CurrentLocalTime(); set => contractDate = value; }
         public String Subject { get; set; }
         public String Remark { get; set; }
         public int[] UID { get; set; }
@@ -324,8 +372,8 @@ namespace WebHome.Models.ViewModel
         public int?[] EnterpriseListPrice { get; set; }
         public int? TotalCost { get; set; }
         public int? BranchID { get; set; }
-        public DateTime? ValidFrom { get; set; }
-        public DateTime? Expiration { get; set; }
+        public DateTime? ValidFrom { get => validFrom?.CurrentLocalTime(); set => validFrom = value; }
+        public DateTime? Expiration { get => expiration?.CurrentLocalTime(); set => expiration = value; }
     }
 
     public class EnterpriseProgramItemViewModel
@@ -363,10 +411,13 @@ namespace WebHome.Models.ViewModel
 
     public class InvoiceQueryViewModel : InvoiceNoViewModel
     {
+        private DateTime? dateTo;
+        private DateTime? dateFrom;
+
         public int? HandlerID { get; set; }
         public bool? IsPrinted { get; set; }
-        public DateTime? DateFrom { get; set; }
-        public DateTime? DateTo { get; set; }
+        public DateTime? DateFrom { get => dateFrom?.CurrentLocalTime(); set => dateFrom = value; }
+        public DateTime? DateTo { get => dateTo?.CurrentLocalTime(); set => dateTo = value; }
         public String InvoiceNo { get; set; }
         public int?[] InvoiceID { get; set; }
         public int? UID { get; set; }
@@ -381,11 +432,14 @@ namespace WebHome.Models.ViewModel
 
     public class AwardQueryViewModel : LoginViewModel
     {
+        private DateTime? dateTo;
+        private DateTime? dateFrom;
+
         public string UserName { get; set; }
         public int? ActorID { get; set; }
         public int? ItemID { get; set; }
-        public DateTime? DateFrom { get; set; }
-        public DateTime? DateTo { get; set; }
+        public DateTime? DateFrom { get => dateFrom?.CurrentLocalTime(); set => dateFrom = value; }
+        public DateTime? DateTo { get => dateTo?.CurrentLocalTime(); set => dateTo = value; }
         public String PointRange { get; set; }
         public int? Lower { get; set; }
         public int? Upper { get; set; }
@@ -394,10 +448,12 @@ namespace WebHome.Models.ViewModel
 
     public class ExerciseGameViewModel
     {
+        private DateTime? testDate;
+
         public int? UID { get; set; }
         public int? Status { get; set; }
         public decimal? Score { get; set; }
-        public DateTime? TestDate { get; set; }
+        public DateTime? TestDate { get => testDate?.CurrentLocalTime(); set => testDate = value; }
         public int? ExerciseID { get; set; }
         public int? TestID { get; set; }
     }
@@ -415,10 +471,13 @@ namespace WebHome.Models.ViewModel
 
     public class PromotionViewModel : QueryViewModel
     {
+        private DateTime? endDate;
+        private DateTime? startDate;
+
         public int? GroupID { get; set; }
         public String GroupName { get; set; }
-        public DateTime? StartDate { get; set; }
-        public DateTime? EndDate { get; set; }
+        public DateTime? StartDate { get => startDate?.CurrentLocalTime(); set => startDate = value; }
+        public DateTime? EndDate { get => endDate?.CurrentLocalTime(); set => endDate = value; }
         public int? QuestionID { get; set; }
         public String Question { get; set; }
         public int? BonusPoint { get; set; }
@@ -436,8 +495,11 @@ namespace WebHome.Models.ViewModel
 
     public class ContractSettlementViewModel
     {
-        public DateTime? SettlementDate { get; set; }
-        public DateTime? SettlementFrom { get; set; }
+        private DateTime? settlementFrom;
+        private DateTime? settlementDate;
+
+        public DateTime? SettlementDate { get => settlementDate?.CurrentLocalTime(); set => settlementDate = value; }
+        public DateTime? SettlementFrom { get => settlementFrom?.CurrentLocalTime(); set => settlementFrom = value; }
         public DateTime? SettlementTo
         {
             get => SettlementDate;

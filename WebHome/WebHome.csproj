@@ -14,28 +14,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Views\LessonConsole\ProcessModal\ProcessCrossBranch.ascx" />
-    <None Remove="Views\LessonConsole\ProcessModal\TodayLessons.ascx" />
-    <None Remove="Views\MainActivity\Module\ContactItem.ascx" />
-    <None Remove="Views\MainActivity\Module\JoinItem.ascx" />
-    <None Remove="Views\MainActivity\Module\MenuItem.ascx" />
-    <None Remove="Views\MainActivity\Module\MobileMenuItem.ascx" />
-    <None Remove="Views\MainActivity\Template\BlogPage.Master" />
-    <None Remove="Views\MainActivity\Template\MainPage.Master" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="Views\LessonConsole\ProcessModal\ProcessCrossBranch.ascx" />
-    <Content Include="Views\LessonConsole\ProcessModal\TodayLessons.ascx" />
-    <Content Include="Views\MainActivity\Module\ContactItem.ascx" />
-    <Content Include="Views\MainActivity\Module\JoinItem.ascx" />
-    <Content Include="Views\MainActivity\Module\MenuItem.ascx" />
-    <Content Include="Views\MainActivity\Module\MobileMenuItem.ascx" />
-    <Content Include="Views\MainActivity\Template\BlogPage.Master" />
-    <Content Include="Views\MainActivity\Template\MainPage.Master" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="ClosedXML" Version="0.95.4" />
     <PackageReference Include="CoreHtmlToImage" Version="1.0.6" />
     <PackageReference Include="HtmlTextWriter" Version="2.1.0" />
@@ -115,11 +93,6 @@
     <Compile Update="Models\Schemas\SiteMap\sitemap.cs">
       <DependentUpon>sitemap.xsd</DependentUpon>
     </Compile>
-    <Compile Update="Views\MainActivity\Resources\NamingItem.Designer.cs">
-      <DependentUpon>NamingItem.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
   </ItemGroup>
 
   <ItemGroup>
@@ -156,6 +129,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Models\Resources\" />
     <Folder Include="Views\CommonHelper\" />
     <Folder Include="Views\ContractConsole\Items\" />
     <Folder Include="Views\SystemInfo\" />
@@ -163,14 +137,6 @@
 
   <ItemGroup>
     <None Include="Views\Shared\Materialize\ReportInputError.cshtml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Update="Views\MainActivity\Resources\NamingItem.resx">
-      <SubType>Designer</SubType>
-      <LastGenOutput>NamingItem.Designer.cs</LastGenOutput>
-      <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

@@ -173,8 +173,10 @@
         });
 
         function editLearner() {
+            $global.viewModel.KeyID = '@Html.Raw(_learner.UID.EncryptKey())';
+            $global.viewModel.ProfileOnly = true;
             showLoading();
-            $.post('@Html.Raw(Url.Action("EditContractMember", "ContractConsole",new { KeyID = _learner.UID.EncryptKey(), ProfileOnly = true }))', { }, function (data) {
+            $.post('@Html.Raw(Url.Action("EditContractMember", "ContractConsole"))', $global.viewModel, function (data) {
                 hideLoading();
                 if ($.isPlainObject(data)) {
                     alert(data.message);

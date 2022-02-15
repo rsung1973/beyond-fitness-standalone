@@ -35,7 +35,7 @@
     <tbody>
         @foreach (var item in _model)
         {
-            <tr onclick="processCrossBranch('@(item.LessonID.EncryptKey())');">
+            <tr onclick="processCrossBranch('@Html.Raw(item.LessonID.EncryptKey())');">
                 <td>
                     <span class='list-icon'>
                         @{

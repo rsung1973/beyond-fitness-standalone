@@ -189,7 +189,7 @@
                             "action": {
                                 "type": "uri",
                                 "label": "👉立即收款",
-                                "uri": "@Html.Raw($"{Startup.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/Account/ToEditPaymentForContract")}?KeyID={HttpUtility.UrlEncode(_model.ContractID.EncryptKey())}&encUID={HttpUtility.UrlEncode(_model.FitnessConsultant.EncryptKey())}")"
+                                "uri": "@Html.Raw($"{WebHome.Startup.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/Account/ToEditPaymentForContract")}?KeyID={HttpUtility.UrlEncode(_model.ContractID.EncryptKey())}&encUID={HttpUtility.UrlEncode(_model.FitnessConsultant.EncryptKey())}")"
                                 }
                                 },
                                 {

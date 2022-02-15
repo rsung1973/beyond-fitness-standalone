@@ -41,7 +41,7 @@
                 {
                 <button type="button" class="btn btn-danger btn-simple btn-round  waves-effect" onclick="javascript:copyTrainingPlan(@_model.LessonID);">確定複製</button>
                 }
-            <button type="button" class="btn btn-round waves-effect" onclick="javascript:editTrainingContent('@(_model.LessonID.EncryptKey())');">回溯編輯</button>
+            <button type="button" class="btn btn-round waves-effect" onclick="javascript:editTrainingContent('@Html.Raw(_model.LessonID.EncryptKey())');">回溯編輯</button>
             </div>
         </div>
     </div>

@@ -133,8 +133,11 @@ namespace WebHome.Controllers
             {
                 if (Request.QueryString.HasValue)
                 {
-                    ViewBag.ViewModel = viewModel = JsonConvert.DeserializeObject<BlogArticleQueryViewModel>(HttpUtility.UrlDecode(Request.QueryString.Value[1..])
-                        .UrlDecodeBase64String().DecryptKey());
+                    int fbclid = Request.QueryString.Value.IndexOf("&fbclid");
+                    ViewBag.ViewModel = viewModel = JsonConvert.DeserializeObject<BlogArticleQueryViewModel>(
+                        fbclid > 0
+                        ? Request.QueryString.Value[1..fbclid].UrlDecodeBase64String().DecryptKey()
+                        : Request.QueryString.Value[1..].UrlDecodeBase64String().DecryptKey());
                 }
             }
 

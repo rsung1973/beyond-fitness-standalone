@@ -1148,6 +1148,140 @@ namespace WebHome.Controllers
             return Json(new { result = true });
         }
 
+        [RoleAuthorize(new int[] { (int)Naming.RoleID.Administrator, (int)Naming.RoleID.Coach, (int)Naming.RoleID.Assistant })]
+        public ActionResult CommitPID(RegisterViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+
+            UserProfile item = null;
+            viewModel.PID = viewModel.PID.GetEfficientString();
+            if (viewModel.PID == null || !viewModel.PID.IsEmail())
+            {
+                ModelState.AddModelError("PID", "請輸入正確email!!");
+            }
+            else
+            {
+                if (viewModel.KeyID != null)
+                {
+                    viewModel.UID = viewModel.DecryptKeyValue();
+                }
+
+                item = models.GetTable<UserProfile>().Where(u => u.UID == viewModel.UID).FirstOrDefault();
+                if (item == null)
+                {
+                    ViewBag.AlertError = true;
+                    ModelState.AddModelError("Message", "資料錯誤!!");
+                }
+            }
+
+
+            if (ModelState.IsValid)
+            {
+                if (item.PID != viewModel.PID && models.GetTable<UserProfile>().Any(u => u.PID == viewModel.PID))
+                {
+                    ModelState.AddModelError("PID", "EMAIL重複");
+                }
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View("~/Views/ConsoleHome/Shared/ReportInputError.cshtml");
+            }
+
+            item.PID = viewModel.PID;
+            models.SubmitChanges();
+
+            return Json(new { result = true });
+        }
+
+        [RoleAuthorize(new int[] { (int)Naming.RoleID.Administrator, (int)Naming.RoleID.Coach, (int)Naming.RoleID.Assistant })]
+        public ActionResult CommitToResetPassword(RegisterViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+
+            if(viewModel.KeyID!=null)
+            {
+                viewModel.UID = viewModel.DecryptKeyValue();
+            }
+
+            UserProfile item = models.GetTable<UserProfile>().Where(u => u.UID == viewModel.UID).FirstOrDefault();
+            if (item == null)
+            {
+                ViewBag.AlertError = true;
+                ModelState.AddModelError("Message", "資料錯誤!!");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View("~/Views/ConsoleHome/Shared/ReportInputError.cshtml");
+            }
+
+            item.Password = ("BEYOND").MakePassword();
+            models.SubmitChanges();
+
+            return Json(new { result = true });
+        }
+
+        [RoleAuthorize(new int[] { (int)Naming.RoleID.Administrator, (int)Naming.RoleID.Coach, (int)Naming.RoleID.Assistant })]
+        public ActionResult CommitToUnbind(RegisterViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+
+            if (viewModel.KeyID != null)
+            {
+                viewModel.UID = viewModel.DecryptKeyValue();
+            }
+
+            UserProfile item = models.GetTable<UserProfile>().Where(u => u.UID == viewModel.UID).FirstOrDefault();
+            if (item == null)
+            {
+                ViewBag.AlertError = true;
+                ModelState.AddModelError("Message", "資料錯誤!!");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View("~/Views/ConsoleHome/Shared/ReportInputError.cshtml");
+            }
+
+            item.UserProfileExtension.LineID = null;
+            models.SubmitChanges();
+
+            return Json(new { result = true });
+        }
+
+        [RoleAuthorize(new int[] { (int)Naming.RoleID.Administrator, (int)Naming.RoleID.Coach, (int)Naming.RoleID.Assistant })]
+        public ActionResult CommitUserStatus(UserProfileViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+
+            if (viewModel.KeyID != null)
+            {
+                viewModel.UID = viewModel.DecryptKeyValue();
+            }
+
+            UserProfile item = models.GetTable<UserProfile>().Where(u => u.UID == viewModel.UID).FirstOrDefault();
+            if (item == null || !viewModel.LevelID.HasValue)
+            {
+                ViewBag.AlertError = true;
+                ModelState.AddModelError("Message", "資料錯誤!!");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View("~/Views/ConsoleHome/Shared/ReportInputError.cshtml");
+            }
+
+            item.LevelID = viewModel.LevelID;
+            if (viewModel.LevelID == (int)Naming.MemberStatusDefinition.Deleted)
+            {
+                item.UserProfileExtension.LineID = null;
+            }
+            models.SubmitChanges();
+
+            return Json(new { result = true });
+        }
+
 
     }
 }

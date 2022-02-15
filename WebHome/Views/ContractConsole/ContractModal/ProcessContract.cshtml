@@ -56,7 +56,7 @@
                         {
                             <a href="@Html.Raw(Url.Action("ApplyContractService", "ConsoleHome", new { KeyID = _model.ContractID.EncryptKey() }))" class="list-group-item">服務申請</a>
                         }
-                        <a href="javascript:$global.showContractDetails('@(_model.ContractID.EncryptKey())');" class="list-group-item">詳細資訊</a>
+                        <a href="javascript:$global.showContractDetails('@Html.Raw(_model.ContractID.EncryptKey())');" class="list-group-item">詳細資訊</a>
                         await Html.RenderPartialAsync("~/Views/ContractConsole/Indication/ContractDetails.cshtml", _model);
 
                         if (_model.Status > (int)Naming.CourseContractStatus.待審核 && _model.ContractID > 1045)

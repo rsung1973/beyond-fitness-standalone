@@ -9,9 +9,12 @@ namespace WebHome.Models.ViewModel
 {
     public class ExerciseBillboardQueryViewModel : QueryViewModel
     {
+        private DateTime? endDate;
+        private DateTime? startDate;
+
         public int? BranchID { get; set; }
-        public DateTime? StartDate { get; set; }
-        public DateTime? EndDate { get; set; }
+        public DateTime? StartDate { get => startDate?.CurrentLocalTime(); set => startDate = value; }
+        public DateTime? EndDate { get => endDate?.CurrentLocalTime(); set => endDate = value; }
     }
 
     public class CalendarEventQueryViewModel : UserEventViewModel 

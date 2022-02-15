@@ -35,7 +35,9 @@ namespace WebHome.Models.ViewModel
 
     public class CalendarEventItem
     {
-        public DateTime? EventTime { get; set; }
+        private DateTime? eventTime;
+
+        public DateTime? EventTime { get => eventTime?.CurrentLocalTime(); set => eventTime = value; }
         public Object EventItem { get; set; }
     }
 

@@ -1,5 +1,6 @@
 @using System.IO
 @using System.Linq.Expressions
+@using System.Text
 
 @using WebHome.Helper
 @using WebHome.Models.Locale
@@ -14,7 +15,7 @@
     ModelSource<UserProfile> models;
     String _dialogID = $"contractMember{DateTime.Now.Ticks}";
     ContractMemberViewModel _viewModel;
-
+    UserProfile _model = this.Model as UserProfile;
 
 
     _modelState = ViewContext.ModelState;
@@ -26,7 +27,28 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header learnerprofile">
-                <h5>體驗/正式學生/員工 <small class="badge bg-blue-grey">幽靈</small></h5>
+                @{
+                    List<String> roles = new List<string>();
+                    if(_model.IsTrialLearner())
+                    {
+                        roles.Add("體驗");
+                    }
+                    if(_model.IsLearner())
+                    {
+                        roles.Add("正式學生");
+                    }
+                    if(_model.IsEmployee())
+                    {
+                        roles.Add("員工");
+                    }
+                }
+                <h5>
+                    @Html.Raw(String.Join("/",roles)) 
+                    @if (_model.LevelID == (int)Naming.MemberStatusDefinition.Anonymous)
+                    {
+                        <small class="badge bg-blue-grey">幽靈</small>
+                    }
+                </h5>
                 <span class="social_icon bg-amber">BR</span>
                 <a class="closebutton" data-dismiss="modal"></a>
             </div>
@@ -201,32 +223,9 @@
                             </div>
                         </div>
                         <div class="tab-pane" id="loginTab">
-                            <div class="body">
-                                <div class="row clearfix">
-                                    <div class="col-12">
-                                        <div class="row clearfix">
-                                            <div class="col-sm-12 col-12">
-                                                <div class="input-group">
-                                                    <input type="text" class="form-control form-control-danger"
-                                                           placeholder="Email" value="garfaild@gmail.com">
-                                                    <span class="input-group-addon">
-                                                        <i class="zmdi zmdi-account-box-mail"></i>
-                                                    </span>
-                                                </div>
-                                                <label class="material-icons help-error-text">
-                                                    clear
-                                                    請輸入正確Email格式
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="footer">
-                                <button type="button" class="btn btn-darkteal btn-round waves-effect float-right" onclick="javascript:updateEmail();">更新 Email</button>
-                                <button type="button" class="btn btn-danger btn-round waves-effect" onclick="javascript:resetPassword();">重置密碼</button>
-                                <button type="button" class="btn btn-success btn-round waves-effect" onclick="javascript:unBindLine();">解除 LINE 綁定</button>
-                            </div>
+                            @{
+                                await Html.RenderPartialAsync("~/Views/ContractConsole/ContractModal/ResetMemberPassword.cshtml", _model);
+                            }
                         </div>
                         <div class="tab-pane" id="brTab">
                             <div class="body">

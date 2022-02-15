@@ -41,7 +41,7 @@
     <tbody>
         @foreach(var item in items)
         {
-        <tr onclick="processPayment('@(item.PaymentID.EncryptKey())');">
+        <tr onclick="processPayment('@Html.Raw(item.PaymentID.EncryptKey())');">
             <td>
                 @if (item.InvoiceID.HasValue)
                 {

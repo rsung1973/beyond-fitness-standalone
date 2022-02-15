@@ -38,7 +38,7 @@
     <tbody>
         @foreach (var item in _model)
         {
-            <tr onclick="processContract('@(item.ContractID.EncryptKey())');">
+            <tr onclick="processContract('@Html.Raw(item.ContractID.EncryptKey())');">
                 <td>@(item.ContractNo())</td>
                 <td>@(item.CourseContractType.TypeName)(@(item.LessonPriceType.DurationInMinutes)分鐘)</td>
                 <td>@(item.Lessons)</td>

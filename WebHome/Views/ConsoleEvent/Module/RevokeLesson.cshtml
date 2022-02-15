@@ -24,6 +24,6 @@
 }
 @if (_model.CouldBeCancelled(_userProfile))
 {
-    <button type="button" class="btn btn-danger btn-round btn-simple btn-round waves-effect waves-red" onclick="javascript:deleteLesson('@(_model.LessonID.EncryptKey())');"><i class="zmdi zmdi-delete"></i></button>
+    <button type="button" class="btn btn-danger btn-round btn-simple btn-round waves-effect waves-red" onclick="javascript:deleteLesson('@Html.Raw(_model.LessonID.EncryptKey())');"><i class="zmdi zmdi-delete"></i></button>
 }
 

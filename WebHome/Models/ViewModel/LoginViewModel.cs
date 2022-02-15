@@ -145,13 +145,8 @@ namespace WebHome.Models.ViewModel
         public Guid? UUID { get; set; }
     }
 
-    public class LearnerViewModel : QueryViewModel
+    public class UserProfileViewModel : QueryViewModel
     {
-        //public LearnerViewModel()
-        //{
-        //    ClassLevel = 1;
-        //}
-
         [Display(Name = "真實姓名")]
         public string RealName { get; set; }
 
@@ -168,14 +163,27 @@ namespace WebHome.Models.ViewModel
         [Display(Name = "生日")]
         public DateTime? Birthday { get; set; }
 
+        public int? UID { get; set; }
+
         public String Gender { get; set; }
+
+        public int? LevelID { get; set; } 
+
+    }
+
+    public class LearnerViewModel : UserProfileViewModel
+    {
+        //public LearnerViewModel()
+        //{
+        //    ClassLevel = 1;
+        //}
+
         public int? AthleticLevel { get; set; }
         public int? CurrentTrial { get; set; }
 
         public Naming.MemberStatusDefinition? MemberStatus { get; set; }
         public String Address { get; set; }
         public Naming.RoleID? RoleID { get; set; }
-        public int? UID { get; set; }
         public String UserName { get; set; }
         public String IDNo { get; set; }
         public string Nickname { get; set; }
@@ -217,24 +225,12 @@ namespace WebHome.Models.ViewModel
     }
 
 
-    public class CoachViewModel : QueryViewModel
+    public class CoachViewModel : UserProfileViewModel
     {
         public CoachViewModel()
         {
             //CoachRole = (int)Naming.RoleID.Coach;
         }
-
-        [Required]
-        [Display(Name = "真實姓名")]
-        public string RealName { get; set; }
-
-        [Display(Name = "EMail")]
-        [EmailAddress]
-        public string Email { get; set; }
-
-
-        [Display(Name = "電話")]
-        public string Phone { get; set; }
 
         [Display(Name = "體能顧問身份")]
         public int? CoachRole
@@ -256,18 +252,9 @@ namespace WebHome.Models.ViewModel
             }
         }
 
-        [Display(Name = "會員編號")]
-        public string MemberCode { get; set; }
-
-        [Display(Name = "生日")]
-        public DateTime? Birthday { get; set; }
-
         public String Description { get; set; }
 
-        public int? LevelID { get; set; } 
-
         public bool? IsCoach { get; set; }
-        public int? UID { get; set; }
         public int? BranchID { get; set; }
         public int? LevelCategory { get; set; } = (int)Naming.ProfessionalCategory.新制;
         public int?[] AuthorizedRole { get; set; }
@@ -279,6 +266,9 @@ namespace WebHome.Models.ViewModel
 
     public class LessonTimeViewModel : QueryViewModel
     {
+        private DateTime? classEndTime;
+        private DateTime? classDate;
+
         public LessonTimeViewModel()
         {
             //ClassDate = DateTime.Today;
@@ -293,8 +283,8 @@ namespace WebHome.Models.ViewModel
         public int? CoachID { get; set; }
 
         [Display(Name = "上課日期")]
-        public DateTime? ClassDate { get; set; }
-        public DateTime? ClassEndTime { get; set; }
+        public DateTime? ClassDate { get => classDate?.CurrentLocalTime(); set => classDate = value; }
+        public DateTime? ClassEndTime { get => classEndTime?.CurrentLocalTime(); set => classEndTime = value; }
 
         public DateTime? ClassTimeStart
         {
@@ -304,7 +294,7 @@ namespace WebHome.Models.ViewModel
 
         public DateTime? ClassTimeEnd
         {
-            get => ClassEndTime; 
+            get => ClassEndTime;
             set => ClassEndTime = value;
         }
 
@@ -333,7 +323,9 @@ namespace WebHome.Models.ViewModel
 
     public class LessonTimeExpansionViewModel
     {
-        public DateTime? ClassDate { get; set; }
+        private DateTime? classDate;
+
+        public DateTime? ClassDate { get => classDate?.CurrentLocalTime(); set => classDate = value; }
         public int Hour { get; set; }
         public int RegisterID { get; set; }
         public int LessonID { get; set; }
@@ -499,8 +491,13 @@ namespace WebHome.Models.ViewModel
 
     public class DailyBookingQueryViewModel : QueryViewModel
     {
-        public DateTime? DateFrom { get; set; }
-        public DateTime? DateTo { get; set; }
+        private DateTime? endQueryDate;
+        private DateTime? lessonDate;
+        private DateTime? dateTo;
+        private DateTime? dateFrom;
+
+        public DateTime? DateFrom { get => dateFrom?.CurrentLocalTime(); set => dateFrom = value; }
+        public DateTime? DateTo { get => dateTo?.CurrentLocalTime(); set => dateTo = value; }
         public String UserName { get; set; }
         public int? CoachID { get; set; }
         public int? MonthInterval { get; set; }
@@ -510,8 +507,8 @@ namespace WebHome.Models.ViewModel
         public int? LessonStatus { get; set; }
         public int? BranchID { get; set; }
         public int? LearnerID { get; set; }
-        public DateTime? LessonDate { get; set; }
-        public DateTime? EndQueryDate { get; set; }
+        public DateTime? LessonDate { get => lessonDate?.CurrentLocalTime(); set => lessonDate = value; }
+        public DateTime? EndQueryDate { get => endQueryDate?.CurrentLocalTime(); set => endQueryDate = value; }
         public String Category { get; set; }
     }
 
@@ -541,10 +538,12 @@ namespace WebHome.Models.ViewModel
 
     public class SingleInstallmentViewModel
     {
+        private DateTime? payoffDate;
+
         public int RegisterID { get; set; }
         public int CoachID { get; set; }
         public int? PayoffAmount { get; set; }
-        public DateTime? PayoffDate { get; set; }
+        public DateTime? PayoffDate { get => payoffDate?.CurrentLocalTime(); set => payoffDate = value; }
     }
 
     public class AchievementShareViewModel
@@ -556,12 +555,15 @@ namespace WebHome.Models.ViewModel
 
     public class LearnerPaymentViewModel
     {
+        private DateTime? dateTo;
+        private DateTime? dateFrom;
+
         public int? CoachID { get; set; }
         public bool? Payoff { get; set; }
         public String UserName { get; set; }
         public bool? HasQuery { get; set; }
-        public DateTime? DateFrom { get; set; }
-        public DateTime? DateTo { get; set; }
+        public DateTime? DateFrom { get => dateFrom?.CurrentLocalTime(); set => dateFrom = value; }
+        public DateTime? DateTo { get => dateTo?.CurrentLocalTime(); set => dateTo = value; }
     }
 
     public class PDQQuestionViewModel
@@ -614,15 +616,20 @@ namespace WebHome.Models.ViewModel
 
     public class MotivationalWordsViewModel
     {
+        private DateTime? startDate;
+        private DateTime? endDate;
+
         public int? DocID { get; set; }
         public String Title { get; set; }
-        public DateTime? StartDate { get; set; }
-        public DateTime? EndDate { get; set; }
+        public DateTime? StartDate { get => startDate?.CurrentLocalTime(); set => startDate = value; }
+        public DateTime? EndDate { get => endDate?.CurrentLocalTime(); set => endDate = value; }
     }
 
     public class FullCalendarViewModel : DailyBookingQueryViewModel
     {
-        public DateTime? DefaultDate { get; set; }
+        private DateTime? defaultDate;
+
+        public DateTime? DefaultDate { get => defaultDate?.CurrentLocalTime(); set => defaultDate = value; }
         public String DefaultView { get; set; }
         public int? Duration { get; set; }
         public int? UID { get; set; }
@@ -631,24 +638,31 @@ namespace WebHome.Models.ViewModel
 
     public class LessonQueryViewModel : QueryViewModel
     {
+        private DateTime? dateTo;
+        private DateTime? classTime;
+        private DateTime? dateFrom;
+
         public int? CoachID { get; set; }
-        public DateTime? DateFrom { get; set; }
-        public DateTime? ClassTime { get; set; }
+        public DateTime? DateFrom { get => dateFrom?.CurrentLocalTime(); set => dateFrom = value; }
+        public DateTime? ClassTime { get => classTime?.CurrentLocalTime(); set => classTime = value; }
         public int? LearnerID { get; set; }
         public int? ExceptionalID { get; set; }
-        public DateTime? DateTo { get; set; }
+        public DateTime? DateTo { get => dateTo?.CurrentLocalTime(); set => dateTo = value; }
         public int? UID
         {
-            get ;
-            set ;
+            get;
+            set;
         }
     }
 
     public class LessonTimeBookingViewModel : QueryViewModel
     {
+        private DateTime? classTimeEnd;
+        private DateTime? classTimeStart;
+
         public int? LessonID { get; set; }
-        public DateTime? ClassTimeStart { get; set; }
-        public DateTime? ClassTimeEnd { get; set; }
+        public DateTime? ClassTimeStart { get => classTimeStart?.CurrentLocalTime(); set => classTimeStart = value; }
+        public DateTime? ClassTimeEnd { get => classTimeEnd?.CurrentLocalTime(); set => classTimeEnd = value; }
         public int? BranchID { get; set; }
         public String BranchName { get; set; }
         public String ViewName { get; set; }
@@ -658,7 +672,7 @@ namespace WebHome.Models.ViewModel
         public Naming.QuestionnaireGroup? QuestionnaireGroupID { get; set; }
         [JsonIgnore]
         public int? TargetID { get; set; }
-        public String EncTargetID 
+        public String EncTargetID
         {
             get => TargetID.HasValue ? TargetID.Value.EncryptKey() : null;
             set => TargetID = (value != null ? value.DecryptKeyValue() : (int?)null);
@@ -677,10 +691,13 @@ namespace WebHome.Models.ViewModel
 
     public class UserEventViewModel : QueryViewModel
     {
+        private DateTime? endDate;
+        private DateTime? startDate;
+
         public int? EventID { get; set; }
         public int? UID { get; set; }
-        public DateTime? StartDate { get; set; }
-        public DateTime? EndDate { get; set; }
+        public DateTime? StartDate { get => startDate?.CurrentLocalTime(); set => startDate = value; }
+        public DateTime? EndDate { get => endDate?.CurrentLocalTime(); set => endDate = value; }
         public String ActivityProgram { get; set; }
         public int[] MemberID { get; set; }
         public String Accompanist { get; set; }
@@ -712,26 +729,33 @@ namespace WebHome.Models.ViewModel
 
     public class UserEventBookingViewModel : QueryViewModel
     {
+        private DateTime? endDate;
+        private DateTime? startDate;
+
         public int? EventID { get; set; }
-        public DateTime? StartDate { get; set; }
-        public DateTime? EndDate { get; set; }
+        public DateTime? StartDate { get => startDate?.CurrentLocalTime(); set => startDate = value; }
+        public DateTime? EndDate { get => endDate?.CurrentLocalTime(); set => endDate = value; }
         public int? UID { get; set; }
 
     }
 
     public class CoachCertificateViewModel
     {
+        private DateTime? expiration;
+
         public int? CertificateID { get; set; }
-        public DateTime? Expiration { get; set; }
+        public DateTime? Expiration { get => expiration?.CurrentLocalTime(); set => expiration = value; }
         public int? UID { get; set; }
 
     }
 
     public class ExercisePurposeViewModel : QueryViewModel
     {
+        private DateTime? completeDate;
+
         public int? UID { get; set; }
         public String Purpose { get; set; }
-        public DateTime? CompleteDate { get; set; }
+        public DateTime? CompleteDate { get => completeDate?.CurrentLocalTime(); set => completeDate = value; }
         public String PurposeItem { get; set; }
         public int? ItemID { get; set; }
         public bool? IsComplete { get; set; }

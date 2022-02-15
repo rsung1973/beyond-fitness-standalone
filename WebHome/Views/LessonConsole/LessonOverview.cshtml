@@ -82,8 +82,8 @@
                                     viewModel.BranchID = others.BranchID;
                                     viewModel.ByManager = others.ByManager;
                                 } else {
-                                    if (!coachID) {
-                                        viewModel.BranchID = null;
+                                    if (!isNaN(coachID)) {
+                                        delete viewModel.BranchID;
                                     }
                                 }
                                 showLoading();
