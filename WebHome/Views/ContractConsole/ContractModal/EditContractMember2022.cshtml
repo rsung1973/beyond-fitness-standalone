@@ -49,7 +49,7 @@
                         <small class="badge bg-blue-grey">幽靈</small>
                     }
                 </h5>
-                <span class="social_icon bg-amber">BR</span>
+                @* <span class="social_icon bg-amber">BR</span> *@
                 <a class="closebutton" data-dismiss="modal"></a>
             </div>
             <div class="card">
@@ -63,7 +63,7 @@
                             <a class="nav-link" data-toggle="tab" data-id="loginTab"
                                href="#loginTab">登入設定</a>
                         </li>
-                        <li class="nav-item">
+                        @* <li class="nav-item">
                             <a class="nav-link" data-toggle="tab" data-id="brTab"
                                href="#brTab">B.R.設定</a>
                         </li>
@@ -78,7 +78,7 @@
                         <li class="nav-item">
                             <a class="nav-link" data-toggle="tab" data-id="moreTab"
                                href="#moreTab">更多設定</a>
-                        </li>
+                        </li> *@
                     </ul>
                     <div class="tab-content p-l-5 p-r-5">
                         <div class="tab-pane active" id="basicTab">
@@ -226,89 +226,9 @@
                             @{
                                 await Html.RenderPartialAsync("~/Views/ContractConsole/ContractModal/ResetMemberPassword.cshtml", _model);
                             }
-                        </div>
-                        <div class="tab-pane" id="brTab">
-                            <div class="body">
-                                <div class="row clearfix">
-                                    <div class="col-sm-6 col-12">
-                                        <label class="fancy-checkbox">
-                                            <input type="checkbox" name="BR" value="1" checked>
-                                            <span>BR(陳芷瑜)</span>
-                                        </label>
-                                    </div>
-                                    <div class="col-sm-6 col-12">
-                                        <div class="input-group">
-                                            <input type="text" class="form-control form-control-danger"
-                                                   placeholder="搜尋學生..">
-                                            <span class="input-group-addon">
-                                                <i class="zmdi zmdi-search"></i>
-                                            </span>
-                                        </div>
-                                        <label class="material-icons help-error-text">clear 請選擇推薦人</label>
-                                    </div>
-                                    <div class="col-sm-12 col-12">
-                                        <select class="form-control show-tick">
-                                            <option value="">- 請選擇關係 -</option>
-                                            <option value="1">父母</option>
-                                            <option value="3">親子</option>
-                                            <option value="2">夫婦</option>
-                                            <option value="4">兄弟姊妹</option>
-                                            <option value="6">朋友</option>
-                                            <option value="7">情侶</option>
-                                        </select>
-                                        <label class="material-icons help-error-text">clear 請選擇BR關係</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="footer">
-                                <button type="button"
-                                        class="btn btn-darkteal btn-round waves-effect float-right">
-                                    更新B.R.設定
-                                </button>
-                            </div>
-                        </div>
-                        <div class="tab-pane" id="coachListTab">
-                            <div class="table-responsive">
-                                <table class="table table-striped table-custom nowrap dataTable dataTable-coachList" style="width:100%">
-                                    <thead>
-                                        <tr>
-                                            <th>體能顧問</th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>李玟融(Michael)</td>
-                                            <td><i class="zmdi zmdi-flag zmdi-hc-2x col-pink"></i></td>
-                                        </tr>
-                                        <tr>
-                                            <td>黃政浩(Bill Huang)</td>
-                                            <td><button type="button" class="btn btn-default btn-sm waves-effect">設定成主教練</button></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="footer">
-                                <button type="button" class="btn btn-darkteal btn-round waves-effect float-right">認領學生</button>
-                            </div>
-                        </div>
-                        <div class="tab-pane" id="qrcodeTab">
-                            <ul class="mb_list">
-                                <li class="tit text-center">
-                                    劉加菲
-                                </li>
-                                <li class="text-center">
-                                    <img src="images/profileqrcode-sample.png">
-                                </li>
-                            </ul>
-                        </div>
+                        </div>                        
                     </div>
                 </div>
-            </div>
-
-            <div class="modal-body">
-            </div>
-            <div class="modal-footer">
             </div>
         </div>
     </div>
