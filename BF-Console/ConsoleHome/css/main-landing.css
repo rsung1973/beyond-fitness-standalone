@@ -4418,7 +4418,7 @@ fieldset[disabled] .btn-link:focus {
 
 .btn-block {
     display: block;
-    width: 100%
+    width: 100%    
 }
 
 .btn-block + .btn-block {
@@ -10563,7 +10563,7 @@ fieldset[disabled] .btn-link:focus,
 fieldset[disabled] .btn-link.focus,
 fieldset[disabled] .btn-link:active,
 fieldset[disabled] .btn-link.active {
-    background-color: transparent
+    background-color: transparent;    
 }
 
 .btn-lg,
@@ -11973,7 +11973,8 @@ body {
 }
 
 .bg-default {
-    background-color: #888 !important
+    background-color: #1A1A1A !important;
+    color: #F6D3B0;
 }
 
 .bg-primary {
@@ -13358,7 +13359,7 @@ img {
 .section-contact .copyright {
     font-size: 8px;
     padding-top: 20px;
-    color: ##777777;
+    color: #9e9e9e;
 }
 
 .footer .copyright {
@@ -18236,10 +18237,20 @@ textarea:focus {
     color: #333333;
 }
 
-.section-features {
+.section-features.aliceblue {
     padding: 100px 0;
+    background: #f4f6f9;
+    color: #333333;
+}
+
+.section-features {
+    padding: 0 0 50px;
     background: 1A1A1A;
     color: #fff
+}
+
+.section-features img {
+    max-width: 90%;
 }
 
 .section-features .features-item {
@@ -18286,6 +18297,12 @@ textarea:focus {
     line-height: 100px;
     text-align: center;
     color: #fff
+}
+
+.section-features .more {
+    color: #F6D3B0;
+    display: block;
+    padding: 50px 0 0 0;
 }
 
 .features-btm {
@@ -18394,7 +18411,7 @@ textarea:focus {
 }
 
 .section-vedio {
-    padding: 30px 0;
+    padding: 60px 0 60px;
     color: #f4f6f9;
 }
 
@@ -18403,7 +18420,7 @@ textarea:focus {
 }
 
 .section-vedio.bg-white {
-    padding: 50px 0;
+    padding: 100px 0;
     background: #fff;
     color: #001226;
 }
@@ -18413,7 +18430,7 @@ textarea:focus {
 }
 
 .section-vedio h1 {
-    margin: 0.67em 0.67em;
+     margin: 0.67em 0em;
 }
 
 .section-vedio .popup-gallery {
@@ -18426,7 +18443,11 @@ textarea:focus {
     width: 100%;
     height: auto;
     transition: all 0.25s ease-in-out;
-    border-radius: 6px;
+    /* border-radius: 6px; */
+}
+
+.section-vedio .popup-gallery img.small{ 
+    width: 10%;
 }
 
 .section-vedio .popup-gallery span.eye-wrapper {
@@ -18520,6 +18541,7 @@ textarea:focus {
 .section-fun-facts.nopadding {
     width: 100%;
     padding: 0;
+    max-width: 1170px;
 }
 
 .section-fun-facts {
@@ -18532,7 +18554,8 @@ textarea:focus {
     background-attachment: fixed;
     background-size: cover;
     margin: 0 auto;
-    background: #fff;
+    /* background: #fff; */
+    color: #fff;
 }
 
 .section-fun-facts .fun-facts-box {
@@ -18582,7 +18605,7 @@ textarea:focus {
 
 
 .section-onlinesession {
-    padding: 150px 0 60px;
+    padding: 100px 0 60px;
     background: #fff;
 }
 
@@ -18826,9 +18849,17 @@ textarea:focus {
 }
 
 .section-contact {
-    padding: 100px 0;
+    padding: 100px 0 0;
     background: #fafafa;
 }
+
+/* .section-contact h1 {
+    color: #fff;
+}
+
+.section-contact .lead {
+    color: #fff;
+} */
 
 .section-contact p.small {
     font-weight: 400;
@@ -18860,6 +18891,23 @@ textarea:focus {
     transition: all .5s ease-in-out;
     -moz-transition: all .25s ease-in-out;
     -webkit-transition: all .25s ease-in-out
+}
+
+.clients {
+    padding: 30px 0 80px;
+    background: #f4f7f6;
+}
+
+
+.clients .section-title {
+    color: #585b60;
+    font-size: 34px;
+    text-align: center;
+    letter-spacing: 1px;
+    line-height: 1;
+    margin-bottom: 20px;
+    padding: 0 10px;
+    position: relative;
 }
 
 .section-faq {
@@ -19060,12 +19108,13 @@ textarea:focus {
     font-weight: 400;
     padding: 10px;
     line-height: 1.75em;
+    margin-left: 10px;
 }
 
 .section-blog .blog-single ul.list-style1 li span {
     font-size: 15px;
     font-weight: 400;
-    padding-left: 2em;
+    /* padding-left: 2em; */
     padding-top: 5px;
     padding-bottom: 5px;
     display: block
@@ -19074,20 +19123,25 @@ textarea:focus {
 .section-blog .blog-single ul.list-style1 li::before {
     font-family: "Font Awesome 5 Free";
     content: "\f0da";
-    display: inline-block;
-    width: 1em;
-    margin: 0 5px 0 5px;
+    /* display: inline-block; */
+    /* width: 1em; */
+    width: 0;
+    margin:0;
     font-size: 16px;
     font-weight: 900;
+    text-indent: -1em;
 }
 
 .section-blog .blog-single ul.list-style2 li::before {
     content: "●";
     display: inline-block;
-    width: 1em;
-    margin: 0 5px 0 5px;
+    /* width: 1em;
+    margin: 0 5px 0 5px; */
     font-size: 14px;
     color: lightsalmon;
+    width: 0px;
+    margin: 0;
+    text-indent: -1.67em;
 }
 
 .section-blog .blog-single ul.list-style2 li.dotgrey::before {
@@ -19097,25 +19151,27 @@ textarea:focus {
 .section-blog .blog-single ul.list-style2 li.checked::before {
     font-family: "Font Awesome 5 Free";
     content: "\f00c";
-    color: aliceblue;
+    color: aliceblue;    
 }
 
 .section-blog .blog-single ul.list-style2 li {
     font-size: 16px;
     font-weight: 800;
     color: #e6e6e6;
-    padding: 10px;
+    padding: 15px;
     line-height: 1.75em;
+    margin-left: 10px;
 }
 
 .section-blog .blog-single ul.list-style2 li span {
     font-size: 15px;
     font-weight: 400;
-    padding-left: 2em;
+    padding-left: 0;
     padding-top: 5px;
     padding-bottom: 5px;
     display: block
 }
+
 
 .section-blog .blog-single .reference p {
     font-size: 12px;
@@ -19617,7 +19673,7 @@ textarea:focus {
         top: 41px
     }
 
-    .section-features,
+    /* .section-features, */
     .features-btm,
     #services,
     .section-fun-facts,
@@ -19638,6 +19694,7 @@ textarea:focus {
     .section-features .feature {
         padding: 0px 0px
     }
+    
 
     .section-features .feature .f-icon {
         margin-bottom: 48px
@@ -19679,7 +19736,8 @@ textarea:focus {
 
     .section-faq .header_image,
     .section-header .header_iphone {
-        width: 100%
+        width: 100%;
+        margin-right: 10px;
     }
     
     .section-faq {
@@ -19894,6 +19952,15 @@ textarea:focus {
         height: 40px;
         margin-top: 20px;
     }
+
+    .section-features img {
+        max-width: 100%;
+    }
+
+    .section-features .features-item .icon-wrapper img {
+        max-width: 60%;
+    }
+    
 }
 
 @media only screen and (max-width: 574px) {
@@ -20757,6 +20824,82 @@ screen and (max-height: 300px) {
     border-radius: 30px;
     -webkit-transition: background-color 0.3s;
     transition: background-color 0.3s
+}
+
+/* ==========================================================================
+Pricing Table Style
+========================================================================== */
+.section-pricing {
+    padding: 80px 0;
+    background: #fff;
+    color: #333333;
+}
+
+.section-pricing .section-title {
+    color: #585b60;
+    font-size: 34px;
+    text-align: center;
+    letter-spacing: 1px;
+    line-height: 1;
+    margin-bottom: 20px;
+    padding: 0 10px;
+    position: relative;
+}
+
+.pricing2 .body {
+    margin-top: 10px;
+    padding: 10px; 
+    text-align: center; 
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,0.1); 
+    border-radius: .55rem; 
+    overflow: hidden; 
+    background: #f4f7f6;
+}
+.pricing2 .pricing-plan{
+    border-bottom: none;
+    flex-basis: 100%;
+    padding: 25px 0 0 0;
+}
+.pricing2 .pricing-plan .pricing-img {
+    max-width: 100%;
+}
+.pricing2 .pricing-plan .pricing-header {
+    color: #777;
+    font-weight: 600;
+    letter-spacing: 1px;
+    font-size: 30px;
+}
+.pricing2 .pricing-plan .pricing-features {
+    letter-spacing: 1px;
+    margin: 50px 0 25px;
+    line-height: 30px;
+    list-style: none;
+}
+.pricing2 .pricing-plan .pricing-price {
+    display: block;
+    font-size: 32px;
+    font-weight: 700;
+}
+.pricing2 .pricing-plan .btn {
+    margin-top: 20px;
+}
+
+@media only screen and (max-width: 575px) {
+    .pricing2 {
+        width: 340px;
+        max-width: 100%;
+        padding: 0px 15px;
+        margin: 0 auto;
+        float: none
+    }
+
+    .pricing2 .pricing-plan .pricing-img {
+        max-width: 30%;
+    }
+
+    .section-pricing .section-title {
+        font-size: 28px;
+    }    
 }
 
 @media screen and (max-width: 1400px) {
