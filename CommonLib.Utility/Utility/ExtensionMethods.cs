@@ -1103,6 +1103,16 @@ namespace CommonLib.Utility
             return source;
         }
 
+        public static String UrlEncodeBase64String(this String base64)
+        {
+            return base64?.Replace('+', '-').Replace('/', '_').Replace('=', '.');
+        }
+
+        public static String UrlDecodeBase64String(this String encodedBase64)
+        {
+            return encodedBase64?.Replace('-', '+').Replace('_', '/').Replace('.', '=');
+        }
+
     }
 
     public class EventArgs<T> : EventArgs
