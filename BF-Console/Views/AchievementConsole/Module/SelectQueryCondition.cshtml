@@ -19,7 +19,11 @@
     models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
     _modelState = (ModelStateDictionary)ViewBag.ModelState;
     _viewModel = (MonthlyCoachRevenueIndicatorQueryViewModel)ViewBag.ViewModel;
-    String _dialogID = _viewModel.DialogID = $"curve{DateTime.Now.Ticks}";
+    String _dialogID = _viewModel.DialogID ?? $"curve{DateTime.Now.Ticks}";
+    if (_viewModel.DialogID == null)
+    {
+        _viewModel.DialogID = _dialogID;
+    }
     _viewModel.UrlAction = Url.Action("ShowMonthlyRevenueChart", "AchievementConsole");
 
 }
@@ -32,6 +36,5 @@
 <script>
         $(function () {
             $global.$currentModal = $('#@(_dialogID)');
-            $global.achievementConsole.$selectQueryCondition = $('#@(_dialogID)');
         });
 </script>

@@ -29,22 +29,27 @@
             <th class="text-center">堂數</th>
             <th class="text-center">上課金額</th>
             <th class="text-center">收款金額</th>
+            <th class="text-center">折讓金額</th>
+            @*<th class="text-center">上課平均單價</th>*@
         </tr>
     </thead>
     <tbody>
         @foreach (var item in _model)
         {
+            var voidItems = item.MonthlyIndicator.GetVoidShare(models, item.CoachID);
             <tr>
                 <td>@($"{item.MonthlyIndicator.StartDate:yyyyMM}")</td>
                 <td>@(item.AttendanceCount)</td>
                 <td>@($"{item.ActualLessonAchievement:##,###,###,##0}")</td>
                 <td>@($"{item.MonthlyIndicator.GetPaymentAchievementSummary(models, item.CoachID):##,###,###,##0}")</td>
+                <td>@($"{(voidItems.Sum(t=>t.VoidShare) ?? 0):##,###,###,##0}")</td>
+                @*<td>@($"{item.AverageLessonPrice:##,###,###,##0}")</td>*@
             </tr>
         }
     </tbody>
 </table>
 <script>
     $(function () {
-        showAchivementList(3);
+        showAchivementList(4);
     });
 </script>

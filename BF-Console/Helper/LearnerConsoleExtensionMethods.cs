@@ -49,6 +49,26 @@ namespace WebHome.Helper
 
         }
 
+        public static String PreparePreivew(this Models.DataEntity.Attachment item,String previewStore)
+        {
+            if (item != null)
+            {
+                if (System.IO.File.Exists(item.StoredPath))
+                {
+                    previewStore = previewStore.CheckStoredPath();
+                    String fileName = $"{Path.GetFileNameWithoutExtension(item.StoredPath)}.jpg";
 
+                    using (Bitmap img = new Bitmap(item.StoredPath))
+                    {
+                        using (Bitmap m = new Bitmap(img, new Size(Settings.Default.ResourceMaxWidth, img.Height * Settings.Default.ResourceMaxWidth / img.Width)))
+                        {
+                            m.Save(Path.Combine(previewStore,fileName), ImageFormat.Jpeg);
+                        }
+                    }
+                    return fileName;
+                }
+            }
+            return null;
+        }
     }
 }

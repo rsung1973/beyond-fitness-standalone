@@ -21,7 +21,7 @@
     ViewBag.ReuseModal = true;
 
 }
-<div class="modal fade" tabindex="-1" role="dialog" id="@(_dialogID)" aria-labelledby="exampleModalLongTitle"
+<div class="modal" tabindex="-1" role="dialog" id="@(_dialogID)" aria-labelledby="exampleModalLongTitle"
      aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -63,7 +63,7 @@
     </div>
     @{ Html.RenderPartial("~/Views/ConsoleHome/Shared/BSModalScript.cshtml", model: _dialogID);}
 
-    <script>
+<script>
         $(function () {
 
             $('#@(_dialogID) .month').datetimepicker({
@@ -93,13 +93,15 @@
                     hideLoading();
                     if ($.isPlainObject(data)) {
                         $('#@(_dialogID)').modal('hide');
-                        inquireMonthlyCoachRevenue(viewModel);
+                        if (typeof ($global.achievementConsole.doQuery['@(_dialogID)']) == 'function') {
+                            $global.achievementConsole.doQuery['@(_dialogID)'](viewModel);
+                        }
                     } else {
                         $(data).appendTo($('body'));
                     }
                 });
             });
         });
-    </script>
+</script>
     @RenderBody()
 </div>

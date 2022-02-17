@@ -22,6 +22,7 @@
     var coachIndicatorItems = models.GetTable<MonthlyCoachRevenueIndicator>().Where(c => c.BRCount.HasValue);
 
     dynamic indicator = null;
+    decimal regressionAmt;
     if (_viewModel.BranchID.HasValue)
     {
         var goal = (MonthlyBranchRevenueGoal)TempData["RevenueGoal"];
@@ -30,6 +31,7 @@
             .Where(c => c.BranchID == goal.BranchID);
 
         indicator = goal;
+        regressionAmt = Math.Max((goal.ActualSharedAchievement ?? 0) - (goal.VoidShare ?? 0), 0);
     }
     else
     {
@@ -37,7 +39,9 @@
         coachIndicatorItems = coachIndicatorItems
             .Where(c => c.PeriodID == goal.PeriodID);
         indicator = goal;
+        regressionAmt = Math.Max((goal.ActualSharedAchievement ?? 0) - (goal.VoidShare ?? 0), 0);
     }
+
 }
     <table class="table table-black table-hover m-b-0">
         <thead>
@@ -63,8 +67,8 @@
             <tr onclick="javascript:achievementReview();">
                 <td>收款業績 <small class="col-grey">@($"{indicator.AchievementGoal:##,###,###,###}")</small></td>
                 <td>@(indicator.AchievementGoal >0 
-                        ? Math.Round((indicator.ActualSharedAchievement ?? 0) * 100M / (indicator.AchievementGoal ?? 1))
-                        : 0)% <small class="col-green">@($"{indicator.ActualSharedAchievement:##,###,###,###}")</small></td>
+                        ? Math.Round(regressionAmt * 100M / (indicator.AchievementGoal ?? 1))
+                        : 0)% <small class="col-green">@($"{regressionAmt:##,###,###,###}")</small></td>
             </tr>
             <tr onclick="javascript:showSoldDetail();">
                 <td>BR <small class="col-grey">@(coachIndicatorItems.Sum(c=>c.BRCount) ?? 0)堂</small></td>
@@ -80,8 +84,9 @@
             </tr>
         </tbody>
     </table>
-<script>
+    <script>
     function achievementReview() {
-        $('').launchDownload('@Html.Raw(Url.Action("AchievementReview","ConsoleHome",new { _viewModel?.BranchID, _viewModel?.KeyID,_viewModel?.Year,_viewModel?.Month }))', {});
+        $('').launchDownload('@Html.Raw(Url.Action("RevenueReview","ConsoleHome",new { _viewModel?.BranchID, _viewModel?.Year, _viewModel?.Month }))', {});
+        @*$('').launchDownload('@Html.Raw(Url.Action("AchievementReview","ConsoleHome",new { _viewModel?.BranchID, _viewModel?.KeyID,_viewModel?.Year,_viewModel?.Month }))', {});*@
     }
-</script>
+    </script>

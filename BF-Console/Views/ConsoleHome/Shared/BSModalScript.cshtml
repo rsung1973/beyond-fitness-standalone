@@ -3,7 +3,7 @@
 
 }
 
-    <script>
+<script>
 
     $(function () {
         var u = navigator.userAgent;
@@ -43,5 +43,21 @@
         };
 
         $('#@(_dialogID) select.form-control').selectpicker();
+
+        if ($global.appliedDialog === undefined) {
+            $global.appliedDialog = {
+            };
+        }
+
+        $global.appliedDialog['@(_dialogID)'] = $('#@(_dialogID)');
+
+        if ($global.hideAllModal === undefined) {
+            $global.hideAllModal = function () {
+                for (var id in $global.appliedDialog) {
+                    $global.appliedDialog[id].modal('hide');
+                }
+            };
+        }
+
     });
-    </script>
+</script>

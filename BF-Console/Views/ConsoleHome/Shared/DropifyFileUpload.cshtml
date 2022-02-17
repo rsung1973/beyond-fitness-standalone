@@ -17,7 +17,7 @@
 
 <!--dropify-->
 <link rel="stylesheet" href="plugins/dropify/css/dropify.min.css">
-<input type="file" class="dropify" name="uploadFile" id="@(_dropifyID)" data-max-file-size="10M" data-show-remove="true" data-show-errors="true" data-errors-position="outside" data-allowed-file-extensions="@(allowedExt)" />
+<input type="file" class="dropify" name="uploadFile" id="@(_dropifyID)" data-max-file-size="10M" data-show-remove="true" data-show-errors="true" data-errors-position="outside" data-default-file="@(ViewBag.DropifyDefaultFile)" data-allowed-file-extensions="@(allowedExt)" />
 <script>
     $(function () {
 

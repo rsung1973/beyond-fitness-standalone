@@ -29,14 +29,14 @@
         MonthlyBranchRevenueGoal indicator = (MonthlyBranchRevenueGoal)TempData["RevenueGoal"];
         indicatorAmt = (decimal)indicator.MonthlyBranchRevenueIndicator.RevenueGoal;
         basePercentage = indicator.MonthlyBranchRevenueIndicator.MonthlyRevenueGrade.IndicatorPercentage;
-        totalAchievementAmt = (indicator.ActualLessonAchievement + indicator.ActualSharedAchievement) ?? 0;
+        totalAchievementAmt = (indicator.ActualLessonAchievement + indicator.ActualSharedAchievement - (indicator.VoidShare ?? 0)) ?? 0;
     }
     else
     {
         MonthlyRevenueGoal indicator = (MonthlyRevenueGoal)TempData["RevenueGoal"];
         indicatorAmt = (decimal)(indicator.CustomRevenueGoal ?? indicator.MonthlyRevenueIndicator.RevenueGoal);
         basePercentage = (decimal)(indicator.CustomIndicatorPercentage ?? indicator.MonthlyRevenueIndicator.MonthlyRevenueGrade.IndicatorPercentage);
-        totalAchievementAmt = (indicator.ActualLessonAchievement + indicator.ActualSharedAchievement) ?? 0;
+        totalAchievementAmt = (indicator.ActualLessonAchievement + indicator.ActualSharedAchievement - (indicator.VoidShare ?? 0)) ?? 0;
     }
     decimal achievementRatio = totalAchievementAmt * basePercentage / indicatorAmt;
 }

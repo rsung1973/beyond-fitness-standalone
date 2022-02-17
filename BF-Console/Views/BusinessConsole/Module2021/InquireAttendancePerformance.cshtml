@@ -1,0 +1,57 @@
+﻿
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Newtonsoft.Json
+@using Utility
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    MonthlyIndicatorQueryViewModel _viewModel;
+    IQueryable<MonthlyIndicator> _model;
+
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    _viewModel = (MonthlyIndicatorQueryViewModel)ViewBag.ViewModel;
+    _model = (IQueryable<MonthlyIndicator>)this.Model;
+
+    String _chartID = ViewBag.ChartID = "attendance";
+    bool enlarge = _viewModel.DateFrom?.AddMonths(9) <= _viewModel.DateTo;
+
+}
+@{ 
+    Html.RenderPartial("~/Views/BusinessConsole/Module2021/AttendancePerformanceChartOption.cshtml");
+}
+
+@{
+    IGrouping<DateTime, dynamic>[] items = TempData["GroupItems"] as IGrouping<DateTime, dynamic>[];
+    Html.RenderPartial("~/Views/BusinessConsole/Module2021/AttendancePerformanceList.cshtml", items);
+}
+
+<script>
+    $(function () {
+        if ($global.echarts.showChart['@(_chartID)']) {
+            $global.echarts.showChart['@(_chartID)']();
+        }
+        $('#queryInterval').text('@($"{_viewModel.DateFrom:yyyyMM}")-@($"{_viewModel.DateTo:yyyyMM}")');
+        $global.viewModel = @Html.Raw(_viewModel.JsonStringify());
+
+        var enlarge = @(enlarge ? "true":"false");
+        var $div = $('#@(_chartID)').closest('div.card').parent();
+        if (enlarge) {
+            $div.removeClass('col-lg-6')
+                .addClass('col-lg-12');
+        } else {
+            $div.removeClass('col-lg-12')
+                .addClass('col-lg-6');
+        }
+        $global.echarts.myChart['@(_chartID)'].resize();
+        $global.dtAttendance.draw();
+    });
+</script>

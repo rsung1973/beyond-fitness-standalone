@@ -372,10 +372,10 @@ namespace WebHome.Controllers
             if (viewModel.CoachID.HasValue)
                 items = items.Where(t => t.AttendingCoach == viewModel.CoachID);
 
-            if (viewModel.QueryStart.HasValue)
+            if (viewModel.DateFrom.HasValue)
             {
-                items = items.Where(t => t.ClassTime >= viewModel.QueryStart && t.ClassTime < viewModel.QueryStart.Value.AddMonths(1));
-                coachPI = coachPI.Where(t => t.ClassTime >= viewModel.QueryStart && t.ClassTime < viewModel.QueryStart.Value.AddMonths(1));
+                items = items.Where(t => t.ClassTime >= viewModel.DateFrom && t.ClassTime < viewModel.DateFrom.Value.AddMonths(1));
+                coachPI = coachPI.Where(t => t.ClassTime >= viewModel.DateFrom && t.ClassTime < viewModel.DateFrom.Value.AddMonths(1));
             }
 
             if (viewModel.ClassTime.HasValue)

@@ -1,7 +1,7 @@
 ﻿<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
   <Import Project="..\packages\Microsoft.Net.Compilers.3.0.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.3.0.0\build\Microsoft.Net.Compilers.props')" />
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -15,7 +15,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>WebHome</RootNamespace>
     <AssemblyName>BF-Console</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
     <IISExpressSSLPort />
@@ -26,6 +26,7 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TypeScriptToolsVersion>3.1</TypeScriptToolsVersion>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -61,39 +62,74 @@
     <Reference Include="FastMember.Signed, Version=1.4.1.0, Culture=neutral, PublicKeyToken=9e8f22703bef9a29, processorArchitecture=MSIL">
       <HintPath>..\packages\FastMember.Signed.1.4.1\lib\net461\FastMember.Signed.dll</HintPath>
     </Reference>
+    <Reference Include="HtmlRenderer, Version=1.5.0.6, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlRenderer.Core.1.5.0.6\lib\net45\HtmlRenderer.dll</HintPath>
+    </Reference>
+    <Reference Include="HtmlRenderer.WinForms, Version=1.5.0.6, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlRenderer.WinForms.1.5.0.6\lib\net45\HtmlRenderer.WinForms.dll</HintPath>
+    </Reference>
+    <Reference Include="LineMessagingAPISDK, Version=1.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\LineMessagingAPI.CSharp.1.6.0\lib\LineMessagingAPISDK.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=2.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel.Annotations, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.ComponentModel.Annotations.4.5.0\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
     </Reference>
+    <Reference Include="System.Configuration.ConfigurationManager, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Configuration.ConfigurationManager.5.0.0\lib\net461\System.Configuration.ConfigurationManager.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Data.OracleClient" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.IO.FileSystem.Primitives, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.IO.FileSystem.Primitives.4.3.0\lib\net46\System.IO.FileSystem.Primitives.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.IO.Packaging, Version=4.0.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.IO.Packaging.4.5.0\lib\net46\System.IO.Packaging.dll</HintPath>
     </Reference>
+    <Reference Include="System.Net" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Net.Http.Formatting, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.7\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime" />
+    <Reference Include="System.Runtime.InteropServices" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Security.AccessControl, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.AccessControl.5.0.0\lib\net461\System.Security.AccessControl.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Permissions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Permissions.5.0.0\lib\net461\System.Security.Permissions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Principal.Windows, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Principal.Windows.5.0.0\lib\net461\System.Security.Principal.Windows.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Threading.Thread" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.Helpers.dll</HintPath>
     </Reference>
@@ -118,25 +154,13 @@
     <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="WindowsBase" />
-    <Reference Include="CommonLib">
-      <HintPath>bin\CommonLib.dll</HintPath>
-    </Reference>
-    <Reference Include="CommonLib.Logger">
-      <HintPath>bin\CommonLib.Logger.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="Microsoft.Web.Infrastructure">
-      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="ConsoleHome\bundles\c3.bundle.js" />
@@ -1577,6 +1601,7 @@
     <Content Include="ConsoleHome\images\blog\Category7.jpg" />
     <Content Include="ConsoleHome\images\blog\Category8.jpg" />
     <Content Include="ConsoleHome\images\blog\DefaultTitle.jpg" />
+    <Content Include="ConsoleHome\images\branch.jpg" />
     <Content Include="ConsoleHome\images\carousel\article-background-1.jpg" />
     <Content Include="ConsoleHome\images\carousel\article-background-2.jpg" />
     <Content Include="ConsoleHome\images\carousel\article-background-3.jpg" />
@@ -1593,6 +1618,7 @@
     <Content Include="ConsoleHome\images\certificate\default.jpg" />
     <Content Include="ConsoleHome\images\certificate\EXOS.png" />
     <Content Include="ConsoleHome\images\certificate\NACA.png" />
+    <Content Include="ConsoleHome\images\declaration.png" />
     <Content Include="ConsoleHome\images\ecommerce\merchandise_00.jpg" />
     <Content Include="ConsoleHome\images\ecommerce\merchandise_01.jpg" />
     <Content Include="ConsoleHome\images\ecommerce\merchandise_02.jpg" />
@@ -1693,6 +1719,15 @@
     <Content Include="ConsoleHome\images\lesson\stage5-girl-clear.png" />
     <Content Include="ConsoleHome\images\lesson\stage5-girl.png" />
     <Content Include="ConsoleHome\images\lesson\stage5.png" />
+    <Content Include="ConsoleHome\images\line\contract_approve.jpg" />
+    <Content Include="ConsoleHome\images\line\contract_conerkicksign.jpg" />
+    <Content Include="ConsoleHome\images\line\contract_intrasign.jpg" />
+    <Content Include="ConsoleHome\images\line\contract_payment.jpg" />
+    <Content Include="ConsoleHome\images\line\contract_reject.jpg" />
+    <Content Include="ConsoleHome\images\line\extend_approve.jpg" />
+    <Content Include="ConsoleHome\images\line\extend_conerkicksign.jpg" />
+    <Content Include="ConsoleHome\images\line\extend_intrasign.jpg" />
+    <Content Include="ConsoleHome\images\line\extend_reject.jpg" />
     <Content Include="ConsoleHome\images\login.jpg" />
     <Content Include="ConsoleHome\images\logo.png" />
     <Content Include="ConsoleHome\images\logo.svg" />
@@ -6127,30 +6162,6 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Global.asax" />
     <Content Include="MainActivity\Blog\Default\DefaultTitle.jpg" />
-    <Content Include="Scripts\bootstrap-datetimepicker.js" />
-    <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
-    <Content Include="Scripts\bootstrap.bundle.js" />
-    <Content Include="Scripts\bootstrap.bundle.min.js" />
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Scripts\esm\popper-utils.js" />
-    <Content Include="Scripts\esm\popper-utils.min.js" />
-    <Content Include="Scripts\esm\popper.js" />
-    <Content Include="Scripts\esm\popper.min.js" />
-    <Content Include="Scripts\esm\popper.min.js.map" />
-    <Content Include="Scripts\esm\popper.js.map" />
-    <Content Include="Scripts\esm\popper-utils.min.js.map" />
-    <Content Include="Scripts\esm\popper-utils.js.map" />
-    <Content Include="Scripts\bootstrap.min.js.map" />
-    <Content Include="Scripts\bootstrap.js.map" />
-    <Content Include="Scripts\bootstrap.bundle.min.js.map" />
-    <Content Include="Scripts\bootstrap.bundle.js.map" />
-    <Content Include="Content\bootstrap.min.css.map" />
-    <Content Include="Content\bootstrap.css.map" />
-    <Content Include="Content\bootstrap-reboot.min.css.map" />
-    <Content Include="Content\bootstrap-reboot.css.map" />
-    <Content Include="Content\bootstrap-grid.min.css.map" />
-    <Content Include="Content\bootstrap-grid.css.map" />
     <Content Include="MainActivity\Portfolio\Dongmen.json" />
     <Content Include="MainActivity\Pricing\Dongmen.json" />
     <Content Include="ConsoleHome\plugins\echarts\.DS_Store" />
@@ -6164,10 +6175,29 @@
     <Content Include="ConsoleHome\plugins\echarts\theme\json\westeros.json" />
     <Content Include="ConsoleHome\plugins\echarts\theme\json\westeros_nero.json" />
     <Content Include="ConsoleHome\plugins\slider-master\.DS_Store" />
+    <Content Include="Content\bootstrap.min.css.map" />
+    <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Content\bootstrap-reboot.min.css.map" />
+    <Content Include="Content\bootstrap-reboot.css.map" />
+    <Content Include="Content\bootstrap-grid.min.css.map" />
+    <Content Include="Content\bootstrap-grid.css.map" />
     <None Include="Models\Schemas\SiteMap\sitemap.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Scripts\jquery-3.4.1.intellisense.js" />
+    <Content Include="Resource\AllMenu.json" />
+    <Content Include="Resource\LineButtonMessage.json" />
+    <Content Include="Resource\LineNotifyToSignContract.json" />
+    <Content Include="Resource\LineNotifyToApproveContract.json" />
+    <Content Include="Scripts\bootstrap-datetimepicker.js" />
+    <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
+    <Content Include="Scripts\bootstrap.bundle.js" />
+    <Content Include="Scripts\bootstrap.bundle.min.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\esm\popper-utils.js" />
+    <Content Include="Scripts\esm\popper-utils.min.js" />
+    <Content Include="Scripts\esm\popper.js" />
+    <Content Include="Scripts\esm\popper.min.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.js" />
@@ -6184,17 +6214,6 @@
     <Content Include="Scripts\umd\popper-utils.min.js" />
     <Content Include="Scripts\umd\popper.js" />
     <Content Include="Scripts\umd\popper.min.js" />
-    <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
-    <Content Include="Scripts\jquery-3.4.1.min.map" />
-    <Content Include="Scripts\umd\popper.min.js.map" />
-    <Content Include="Scripts\umd\popper.js.map" />
-    <Content Include="Scripts\umd\popper-utils.min.js.map" />
-    <Content Include="Scripts\umd\popper-utils.js.map" />
-    <Content Include="Scripts\README.md" />
-    <Content Include="Scripts\popper.min.js.map" />
-    <Content Include="Scripts\popper.js.map" />
-    <Content Include="Scripts\popper-utils.min.js.map" />
-    <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\ConsoleHome\ViewCourseContract.cshtml" />
     <Content Include="Views\ConsoleHome\Module\AboutAchievement.cshtml" />
     <Content Include="Views\ConsoleHome\Module\AboutAchievementC3.cshtml" />
@@ -6243,100 +6262,13 @@
     <Content Include="Views\ConsoleHome\Shared\JsAlert.cshtml" />
     <Content Include="Views\LessonConsole\ProcessModal\TodayLessons.ascx" />
     <Content Include="Views\LessonConsole\ProcessModal\ProcessCrossBranch.ascx" />
-    <Content Include="Views\LessonConsole\Module\CrossBranchLessonList.ascx" />
+    <Content Include="Views\MainActivity\Module\MobileMenuItem.ascx" />
+    <Content Include="Views\MainActivity\Module\ContactItem.ascx" />
+    <Content Include="Views\MainActivity\Module\JoinItem.ascx" />
+    <Content Include="Views\MainActivity\Module\MenuItem.ascx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="ConsoleHome\images\line\contract_reject.jpg" />
-    <Content Include="ConsoleHome\images\line\extend_conerkicksign.jpg" />
-    <Content Include="ConsoleHome\images\line\contract_approve.jpg" />
-    <Content Include="ConsoleHome\images\line\contract_intrasign.jpg" />
-    <Content Include="ConsoleHome\images\line\extend_approve.jpg" />
-    <Content Include="ConsoleHome\images\line\contract_conerkicksign.jpg" />
-    <Content Include="ConsoleHome\images\line\contract_payment.jpg" />
-    <Content Include="ConsoleHome\images\line\extend_reject.jpg" />
-    <Content Include="ConsoleHome\images\line\extend_intrasign.jpg" />
-    <Content Include="Views\BusinessConsole\Module2021\MonthlyIndicator.cshtml" />
-    <Content Include="Views\BusinessConsole\Module2021\InitEcharts.cshtml" />
-    <Content Include="Views\BusinessConsole\Module2021\MonthlyAchievementGauge.cshtml" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Alan\Scenario1.jpg" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Alan\Cover.png" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Annie\Scenario1.jpg" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Annie\Cover.png" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Arika\Cover.png" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Betty\Cover.png" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Bill\Scenario1.jpg" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Bill\Cover.png" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Billy\Scenario1.jpg" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Billy\Cover.png" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Bryant\Scenario1.jpg" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Bryant\Cover.png" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Candy\Scenario1.jpg" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Candy\Cover.png" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Doreen\Scenario1.jpg" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Doreen\Cover.png" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Eda\Cover.png" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Eugene\Scenario1.png" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Eugene\Cover.png" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Fiona\Scenario1.png" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Fiona\Cover.png" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Galai\Scenario1.JPG" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Galai\Cover.png" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Genie\Cover.png" />
-    <None Include="ConsoleHome\images\landing\portfolio\Grace\Scenario1.jpeg" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Grace\Cover.png" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Hanson\Cover.png" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Hardy\Scenario1.jpg" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Hardy\Cover.png" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Henry\Scenario1.JPG" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Henry\Cover.png" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Irene\Scenario1.jpg" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Irene\Cover.png" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Iron\Scenario1.jpg" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Iron\Cover.png" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Jack\Scenario1.JPG" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Jack\Cover.png" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Jay\Cover.png" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Jeff\Cover.png" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Joe\Cover.png" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Joei\Scenario1.JPG" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Joei\Cover.png" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Kevin\Cover.png" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Kiki\Cover.png" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Kins\Cover.png" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Lucy\Scenario1.jpg" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Lucy\Cover.png" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Micheal\Scenario1.JPG" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Micheal\Cover.png" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Neil\Scenario1.jpg" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Neil\Cover.png" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Nick\Cover.png" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Nini\Scenario1.JPG" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Nini\Cover.png" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Peter\Scenario1.jpg" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Peter\Cover.png" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Peter Liu\Scenario1.jpg" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Peter Liu\Cover.png" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Sabrina\Scenario1.jpg" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Sabrina\Cover.png" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Sam\Scenario1.jpg" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Sam\Cover.png" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Shen\Scenario1.JPG" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Shen\Cover.png" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Sina\Cover.png" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Ted\Scenario1.jpg" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Ted\Cover.png" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Thomas\Cover.png" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Vic\Scenario1.jpg" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Vic\Cover.png" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Vicky\Scenario1.JPG" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Vicky\Cover.png" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Vinson\Scenario1.JPG" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Vinson\Cover.png" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Wayne\Scenario1.jpg" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Wayne\Cover.png" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Zoe\Scenario1.jpg" />
-    <Content Include="ConsoleHome\images\landing\portfolio\Zoe\Cover.png" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\InitializeType.cs" />
@@ -6715,6 +6647,8 @@
     <Content Include="MainActivity\Pricing\Zhongxiao.json" />
     <None Include="packages.config" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <Content Include="Views\MainActivity\Template\MainPage.Master" />
+    <Content Include="Views\MainActivity\Template\BlogPage.Master" />
     <Content Include="Views\MainActivity\Template\BlogPage.cshtml" />
     <Content Include="Views\MainActivity\Template\MainPage.cshtml" />
     <Content Include="Views\MainActivity\Index.cshtml" />
@@ -6791,6 +6725,7 @@
     <Content Include="Views\ContractConsole\ContractService\ContractTermination.cshtml" />
     <Content Include="Views\ContractConsole\ContractService\ContractTransference.cshtml" />
     <Content Include="Views\ContractConsole\ContractService\CourseContractExtensionView.cshtml" />
+    <Content Include="Views\ContractConsole\ContractService\CourseContractOtherAmendmentView.cshtml" />
     <Content Include="Views\ContractConsole\ContractService\CourseContractTerminationView.cshtml" />
     <Content Include="Views\ContractConsole\ContractService\CourseContractTransferenceView.cshtml" />
     <Content Include="Views\ContractConsole\ContractService\DoConsultantAssignment.cshtml" />
@@ -7131,6 +7066,92 @@
     <Content Include="Views\ContractConsole\ContractModal\ListLessonPriceTemplate.cshtml" />
     <Content Include="Views\ContractConsole\ContractModal\ListLessonPackagePrice.cshtml" />
     <Content Include="Views\ContractConsole\ContractModal\ListLessonBundlePrice.cshtml" />
+    <Content Include="Views\ContractConsole\Module\ContractTermsForCommon.cshtml" />
+    <Content Include="Views\ContractConsole\Module\ContractTermsForCGA.cshtml" />
+    <Content Include="Views\ContractConsole\Module\ContractTermsForCNA.cshtml" />
+    <Content Include="Views\ContractConsole\Module\ContractTermsForDistance.cshtml" />
+    <Content Include="Views\ContractConsole\Module\ContractPackageContent.cshtml" />
+    <Content Include="Views\ConsoleHome\Shared\ViewModelCommitted.cshtml" />
+    <Content Include="Views\LineEvents\Message\NotifyManagerToApproveContract.cshtml" />
+    <Content Include="Views\LineEvents\Message\NotifyLearnerToSignContract.cshtml" />
+    <Content Include="Views\LineEvents\Message\NotifyViceManagerToApproveContract.cshtml" />
+    <Content Include="Views\LineEvents\Message\NotifyToContractPayment.cshtml" />
+    <Content Include="Views\Error\ErrorMessage.cshtml" />
+    <Content Include="Views\LineEvents\Message\NotifyCoachToSignContract.cshtml" />
+    <Content Include="Views\LineEvents\Message\NotifyCoachToRejectContract.cshtml" />
+    <Content Include="Views\LineEvents\Message\NotifyCoachToRejectExtend.cshtml" />
+    <Content Include="Views\LineEvents\Message\NotifyCoachToSignExtend.cshtml" />
+    <Content Include="Views\LineEvents\Message\NotifyLearnerToSignExtend.cshtml" />
+    <Content Include="Views\LineEvents\Message\NotifyManagerToApproveExtend.cshtml" />
+    <Content Include="Views\LineEvents\Message\NotifyViceManagerToApproveExtend.cshtml" />
+    <Content Include="Views\LineEvents\Message\NotifyToCoachBook.cshtml" />
+    <Content Include="Views\BusinessConsole\Module2021\MonthlyIndicator.cshtml" />
+    <Content Include="Views\BusinessConsole\Module2021\MonthlyAchievementGauge.cshtml" />
+    <Content Include="Views\BusinessConsole\Module2021\InitEcharts.cshtml" />
+    <Content Include="Views\BusinessConsole\RevenueReview.cshtml" />
+    <Content Include="Views\Common\SelectMonthlyInterval.cshtml" />
+    <Content Include="Views\BusinessConsole\Module2021\AttendancePerformance.cshtml" />
+    <Content Include="Views\BusinessConsole\Module2021\InitMultipleEchartsTemplate.cshtml" />
+    <Content Include="Views\BusinessConsole\Module2021\AttendancePerformanceChart.cshtml" />
+    <Content Include="Views\BusinessConsole\Module2021\AttendancePerformanceList.cshtml" />
+    <Content Include="Views\BusinessConsole\Module2021\InquireAttendancePerformance.cshtml" />
+    <Content Include="Views\BusinessConsole\Module2021\AttendancePerformanceChartOption.cshtml" />
+    <Content Include="Views\BusinessConsole\Module2021\ContractAchievement.cshtml" />
+    <Content Include="Views\BusinessConsole\Module2021\ContractAchievementChart.cshtml" />
+    <Content Include="Views\BusinessConsole\Module2021\ContractAchievementChartOption.cshtml" />
+    <Content Include="Views\BusinessConsole\Module2021\ContractAchievementList.cshtml" />
+    <Content Include="Views\BusinessConsole\Module2021\InquireContractAchievement.cshtml" />
+    <Content Include="Views\BusinessConsole\Module2021\SelectAchievementCatelog.cshtml" />
+    <Content Include="Views\BusinessConsole\Module2021\SelectBreakEventCondition.cshtml" />
+    <Content Include="Views\BusinessConsole\Module2021\InquireBreakEvent.cshtml" />
+    <Content Include="Views\BusinessConsole\Module2021\BreakEventChartOption.cshtml" />
+    <Content Include="Views\BusinessConsole\Module2021\MultiDimensionChart.cshtml" />
+    <Content Include="Views\BusinessConsole\Module2021\RevenueIndicatorList.cshtml" />
+    <Content Include="Views\AchievementConsole\Module\SelectLessonCondition.cshtml" />
+    <Content Include="Views\BusinessConsole\Module2021\SelectLessonCurveCondition.cshtml" />
+    <Content Include="Views\BusinessConsole\Module2021\InquireMonthlyIndicator.cshtml" />
+    <Content Include="Views\BusinessConsole\Module2021\LessonCurveChartOption.cshtml" />
+    <Content Include="Views\BusinessConsole\Module2021\MonthlyLessonAttendanceList.cshtml" />
+    <Content Include="Views\BusinessConsole\Module2021\AttendancePerformanceChartOptionForBranch.cshtml" />
+    <Content Include="Views\BusinessConsole\Module2021\AttendancePerformanceChartOptionForOfficer.cshtml" />
+    <Content Include="Views\BusinessConsole\Module2021\AttendancePerformanceListForOfficer.cshtml" />
+    <Content Include="Views\BusinessConsole\Module2021\AttendancePerformanceListForBranch.cshtml" />
+    <Content Include="Views\BusinessConsole\Module2021\ContractAchievementChartOptionForBranch.cshtml" />
+    <Content Include="Views\BusinessConsole\Module2021\ContractAchievementChartOptionForOfficer.cshtml" />
+    <Content Include="Views\BusinessConsole\Module2021\ContractAchievementListForOfficer.cshtml" />
+    <Content Include="Views\BusinessConsole\Module2021\ContractAchievementListForBranch.cshtml" />
+    <Content Include="Views\BusinessConsole\Module2021\BreakEventChartOptionForBranch.cshtml" />
+    <Content Include="Views\BusinessConsole\Module2021\BreakEventChartOptionForOfficer.cshtml" />
+    <Content Include="Views\BusinessConsole\Module2021\RevenueIndicatorForOfficer.cshtml" />
+    <Content Include="Views\BusinessConsole\Module2021\RevenueIndicatorListForBranch.cshtml" />
+    <Content Include="Views\BusinessConsole\Module2021\RevenueIndicatorListForOfficer.cshtml" />
+    <Content Include="Views\BusinessConsole\Module2021\LessonCurveChartOptionForOfficer.cshtml" />
+    <Content Include="Views\BusinessConsole\Module2021\LessonCurveChartOptionForBranch.cshtml" />
+    <Content Include="Views\BusinessConsole\Module2021\MonthlyLessonAttendanceListForOfficer.cshtml" />
+    <Content Include="Views\BusinessConsole\Module2021\MonthlyLessonAttendanceListForBranch.cshtml" />
+    <Content Include="Views\Common\SelectMonthlyIntervalTemplate.cshtml" />
+    <Content Include="Views\Common\SelectMonthlyIntervalWithBranch.cshtml" />
+    <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
+    <Content Include="Scripts\jquery-3.4.1.min.map" />
+    <Content Include="Scripts\umd\popper.min.js.map" />
+    <Content Include="Scripts\umd\popper.js.map" />
+    <Content Include="Scripts\umd\popper-utils.min.js.map" />
+    <Content Include="Scripts\umd\popper-utils.js.map" />
+    <Content Include="Scripts\README.md" />
+    <Content Include="Scripts\popper.min.js.map" />
+    <Content Include="Scripts\popper.js.map" />
+    <Content Include="Scripts\popper-utils.min.js.map" />
+    <Content Include="Scripts\popper-utils.js.map" />
+    <Content Include="Scripts\esm\popper.min.js.map" />
+    <Content Include="Scripts\esm\popper.js.map" />
+    <Content Include="Scripts\esm\popper-utils.min.js.map" />
+    <Content Include="Scripts\esm\popper-utils.js.map" />
+    <Content Include="Scripts\bootstrap.min.js.map" />
+    <Content Include="Scripts\bootstrap.js.map" />
+    <Content Include="Scripts\bootstrap.bundle.min.js.map" />
+    <Content Include="Scripts\bootstrap.bundle.js.map" />
+    <Content Include="Views\LessonConsole\LessonIndex.cshtml" />
+    <Content Include="Views\ConsoleHome\ProfileIndex.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -7159,12 +7180,20 @@
       <Project>{c49821ff-96c8-466b-aef4-137ec84fdefc}</Project>
       <Name>beyond-fitness</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <TypeScriptCompile Include="Scripts\index.d.ts" />
+    <ProjectReference Include="..\CommonLib.Logger\CommonLib.Logger.csproj">
+      <Project>{c80d4cb7-32fe-4892-8991-583dcd73a286}</Project>
+      <Name>CommonLib.Logger</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CommonLib\CommonLib.csproj">
+      <Project>{c0ad239c-2ac4-46d2-ae7c-5e97266ef4ea}</Project>
+      <Name>CommonLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="Scripts\index.d.ts" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

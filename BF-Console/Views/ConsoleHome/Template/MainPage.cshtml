@@ -81,7 +81,7 @@
     <script src="plugins/smartcalendar/js/bootstrap-datetimepicker.min.js"></script>
     <script src="plugins/smartcalendar/js/locales-datetimepicker/bootstrap-datetimepicker.zh-TW.js"></script>
     <script src="plugins/jquery-form/jquery-form.min.js"></script>
-    <script src="js/common.js?1.8"></script>
+    <script src="js/common.js?1.9"></script>
     @if (_viewModel != null)
     {
         <script>
@@ -271,7 +271,7 @@
                 <li>
                     <div class="user-info">
                         <div class="image">
-                            <a href="javascript:void(0);">
+                            <a href="@(Url.Action("ProfileIndex","ConsoleHome"))">
                                 @{ Html.RenderPartial("~/Views/ConsoleHome/Module/ProfileImage.cshtml", _model);}
                             </a>
                         </div>
@@ -458,6 +458,7 @@
             });
         </script>
     }
+    @RenderSection("AppendToMainPage", false)
 </body>
 </html>
 

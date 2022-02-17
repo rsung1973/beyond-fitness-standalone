@@ -73,13 +73,13 @@ namespace WebHome.Controllers
             return View("~/Views/Common/BranchStoreWithOther.cshtml", item);
         }
 
-        public ActionResult ChangeTheme(String theme)
+        public ActionResult ChangeTheme(LoginViewModel viewModel)
         {
-            HttpCookie cookie = new HttpCookie("_theme", theme);
+            HttpCookie cookie = new HttpCookie("_theme", viewModel.Theme);
             cookie.Expires = DateTime.MaxValue;
             Response.SetCookie(cookie);
 
-            return Json(new { result = true, message = theme }, JsonRequestBehavior.AllowGet);
+            return Json(new { result = true, message = viewModel.Theme }, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult SetAuthCode(QueryViewModel viewModel)

@@ -37,7 +37,7 @@
                         {
                             <a href="@Html.Raw(Url.Action("ApplyPaymentAchievement", "ConsoleHome", new { KeyID = _model.PaymentID.EncryptKey() }))" class="list-group-item">業績分潤</a>
                         }
-                        if (_model.VoidPayment == null && !_model.AllowanceID.HasValue && !_model.ContractTrustTrack.Any(t => t.SettlementID.HasValue))
+                        if (_model.ContractPayment == null && _model.VoidPayment == null && !_model.AllowanceID.HasValue && !_model.ContractTrustTrack.Any(t => t.SettlementID.HasValue))
                         {
                             <a href="@Html.Raw(Url.Action("VoidPayment", "ConsoleHome", new { KeyID = _model.PaymentID.EncryptKey() }))" class="list-group-item">作廢/折讓</a>
                         }
@@ -64,7 +64,7 @@
                         if (_model.InvoiceAllowance.Document.DocumentPrintLog.Count == 0
                             || _profile.IsAssistant() || _profile.IsManager() || _profile.IsViceManager())
                         {
-                        <a href="#" onclick="printAllowance(@(_model.AllowanceID),'@(item.Organization.InvoiceSignature)');" class="list-group-item">列印折讓單</a>
+                            <a href="#" onclick="printAllowance(@(_model.AllowanceID),'@(item.Organization.InvoiceSignature)');" class="list-group-item">列印折讓單</a>
                         }
                     }
                     @{

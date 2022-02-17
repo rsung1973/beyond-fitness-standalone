@@ -7,6 +7,7 @@
 @using WebHome.Models.ViewModel
 @using WebHome.Models.DataEntity
 @using WebHome.Controllers
+@using Utility
 @{
 
     ModelStateDictionary _modelState;
@@ -49,10 +50,24 @@
                 <td>@(String.Join("、", item.GroupingLesson.RegisterLesson.Select(r => r.UserProfile.RealName)))</td>
                 <td>
                     @{
-                        var expansion = item.LessonTimeExpansion.First();
-                        var lessons = expansion.ConcurrentLessons(models);
+                        //var expansion = item.LessonTimeExpansion.First();
+                        //var lessons = expansion.ConcurrentLessons(models);
+                        var start = item.ClassTime.Value;
+                        var end = start.AddMinutes(item.DurationInMinutes.Value);
+                        var lessons = models.GetTable<LessonTime>()
+                            .Where(l => l.BranchID == item.BranchID)
+                            .Where(l => l.ClassTime > start.AddDays(-1))
+                            .Where(l => l.ClassTime <= end).ToList();
+
+                        lessons = lessons
+                            .Where(l => (l.ClassTime >= start && l.ClassTime < end)
+                                || (l.ClassTime.Value.AddMinutes(l.DurationInMinutes.Value) > start
+                                        && l.ClassTime.Value.AddMinutes(l.DurationInMinutes.Value) <= end))
+                            .ToList();
+
                     }
-                    @(lessons.ConcurrentRegisterLessons(models).Count())
+                    @*@(lessons.ConcurrentRegisterLessons(models).Count())*@
+                    @(lessons.Sum(l=>l.RegisterLesson.GroupingMemberCount))
                 </td>               
             </tr>
         }

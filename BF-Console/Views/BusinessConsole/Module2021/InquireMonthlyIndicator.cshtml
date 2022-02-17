@@ -1,0 +1,43 @@
+﻿
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Newtonsoft.Json
+@using Utility
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    MonthlyIndicatorQueryViewModel _viewModel;
+    IQueryable<MonthlyIndicator> _model;
+
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    _viewModel = (MonthlyIndicatorQueryViewModel)ViewBag.ViewModel;
+    _model = (IQueryable<MonthlyIndicator>)this.Model;
+
+    String _chartID = ViewBag.ChartID = "myChart";
+
+}
+@{ 
+    Html.RenderPartial("~/Views/BusinessConsole/Module2021/LessonCurveChartOption.cshtml");
+}
+
+@{
+    Html.RenderPartial("~/Views/BusinessConsole/Module2021/MonthlyLessonAttendanceList.cshtml");
+}
+
+<script>
+    $(function () {
+        $('#multiDimension').css('display', '');
+        $('#multiDimension ul').css('display', '');
+        $global.echarts.displayChart('@(_chartID)');
+        $('#queryInterval_2').text('@($"{_viewModel.DateFrom:yyyyMM}")-@($"{_viewModel.DateTo:yyyyMM}")');
+        $global.viewModel = @Html.Raw(_viewModel.JsonStringify());
+    });
+</script>

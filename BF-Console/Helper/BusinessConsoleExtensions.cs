@@ -248,6 +248,30 @@ namespace WebHome.Helper
                     (int)Naming.LessonPriceStatus.團體學員課程,
         };
 
+        public static IQueryable<Payment> UpdateVoidShare(this GenericManager<BFDataContext> models, DateTime startDate, DateTime endExclusiveDate)
+        {
+
+            var voidPayment = models.GetTable<VoidPayment>().Where(p => p.VoidDate >= startDate && p.VoidDate < endExclusiveDate)
+                                .Join(models.GetTable<Payment>().Where(p => p.AllowanceID.HasValue), v => v.VoidID, p => p.PaymentID, (v, p) => p);
+            //.FilterByEffective();
+            foreach (var voidItem in voidPayment)
+            {
+                if (voidItem.TuitionAchievement.Any())
+                {
+                    var voidAmt = (int?)(voidItem.InvoiceAllowance.TotalAmount + voidItem.InvoiceAllowance.TaxAmount);
+                    var totalShare = voidItem.TuitionAchievement.Sum(t => t.ShareAmount) ?? 1;
+
+                    foreach (var t in voidItem.TuitionAchievement)
+                    {
+                        t.VoidShare = (int?)((decimal?)voidAmt * (decimal?)t.ShareAmount / totalShare);
+                    }
+                }
+                models.SubmitChanges();
+            }
+
+            return voidPayment;
+        }
+
         public static void UpdateMonthlyAchievement<TEntity>(this MonthlyIndicator item, ModelSource<TEntity> models,bool? forcedUpdate = null,bool? calcAverage = null)
             where TEntity : class, new()
         {
@@ -257,6 +281,8 @@ namespace WebHome.Helper
                 AchievementDateFrom = item.StartDate,
                 BypassCondition = true,
             };
+
+            IQueryable<Payment> voidPayment = UpdateVoidShare(models, item.StartDate, item.EndExclusiveDate);
 
             IQueryable<V_Tuition> lessonItems = queryModel.InquireAchievement(models);
             IQueryable<LessonTime> STItems = models.GetTable<LessonTime>()
@@ -304,9 +330,38 @@ namespace WebHome.Helper
 
             void calcHeadquarterAchievement()
             {
+                var voidTuition = voidPayment
+                                    .Join(models.GetTable<TuitionAchievement>(), p => p.PaymentID, t => t.InstallmentID, (p, t) => t);
+
                 lessonAchievement = tuitionItems.Where(t => SessionScopeForAchievement.Contains(t.PriceStatus)).Sum(t => t.ListPrice * t.GroupingMemberCount * t.PercentageOfDiscount / 100) ?? 0;
                 lessonAchievement += (tuitionItems.Where(t => SessionScopeForAchievement.Contains(t.ELStatus)).Sum(l => l.EnterpriseListPrice * l.GroupingMemberCount * l.PercentageOfDiscount / 100) ?? 0);
                 tuitionAchievement = achievementItems.Sum(a => a.ShareAmount) ?? 0;
+
+                IQueryable<TuitionAchievement> newContractAchievementItems = paymentItems
+                    .Join(models.GetTable<ContractPayment>()
+                            .Join(models.GetTable<CourseContract>()
+                                .Where(t => !t.Installment.HasValue)
+                                .Where(t => !t.Renewal.HasValue || t.Renewal != true),
+                                c => c.ContractID, t => t.ContractID, (c, t) => c),
+                        p => p.PaymentID, c => c.PaymentID, (p, c) => p)
+                    .GetPaymentAchievement(models);
+
+                IQueryable<TuitionAchievement> renewContractAchievementItems = paymentItems
+                    .Join(models.GetTable<ContractPayment>()
+                            .Join(models.GetTable<CourseContract>()
+                                .Where(t => !t.Installment.HasValue)
+                                .Where(t => t.Renewal == true),
+                                c => c.ContractID, t => t.ContractID, (c, t) => c),
+                        p => p.PaymentID, c => c.PaymentID, (p, c) => p)
+                    .GetPaymentAchievement(models);
+
+                IQueryable<TuitionAchievement> installmentContractAchievementItems = paymentItems
+                    .Join(models.GetTable<ContractPayment>()
+                            .Join(models.GetTable<CourseContract>()
+                                .Where(t => t.Installment.HasValue),
+                                c => c.ContractID, t => t.ContractID, (c, t) => c),
+                        p => p.PaymentID, c => c.PaymentID, (p, c) => p)
+                    .GetPaymentAchievement(models);
 
                 var revenueItem = item.MonthlyRevenueIndicator.Where(r => r.MonthlyRevenueGoal != null)
                         .Select(r => r.MonthlyRevenueGoal)
@@ -329,6 +384,11 @@ namespace WebHome.Helper
                     revenueItem.ActualCompletePICount = tuitionItems.Where(t => t.PriceStatus == (int)Naming.LessonPriceStatus.自主訓練).Count()
                                     + tuitionItems.Where(t => t.ELStatus == (int)Naming.LessonPriceStatus.自主訓練).Count();
 
+                    revenueItem.NewContractAchievement = newContractAchievementItems.Sum(t => t.ShareAmount) ?? 0;
+                    revenueItem.RenewContractAchievement = renewContractAchievementItems.Sum(t => t.ShareAmount) ?? 0;
+                    revenueItem.InstallmentAchievement = installmentContractAchievementItems.Sum(t => t.ShareAmount) ?? 0;
+                    revenueItem.VoidShare = voidTuition.Sum(t => t.VoidShare) ?? 0;
+
                     models.SubmitChanges();
                 }
             }
@@ -337,11 +397,44 @@ namespace WebHome.Helper
             {
                 foreach (var branchIndicator in item.MonthlyBranchIndicator)
                 {
+                    var voidTuition = voidPayment
+                        .Join(models.GetTable<PaymentTransaction>().Where(t => t.BranchID == branchIndicator.BranchID), p => p.PaymentID, t => t.PaymentID, (p, t) => p)
+                        .Join(models.GetTable<TuitionAchievement>(), p => p.PaymentID, t => t.InstallmentID, (p, t) => t);
+
                     var branchTuitionItems = tuitionItems.Where(t => t.CoachWorkPlace == branchIndicator.BranchID);
                     var branchAchievementItems = achievementItems.Where(t => t.CoachWorkPlace == branchIndicator.BranchID);
                     var branchContractItems = contractItems.Where(c => c.CourseContractExtension.BranchID == branchIndicator.BranchID);
                     var branchInstallmentItems = installmentItems.Where(c => c.CourseContractExtension.BranchID == branchIndicator.BranchID);
                     var branchNonInstallmentItems = nonInstallmentItems.Where(c => c.CourseContractExtension.BranchID == branchIndicator.BranchID);
+
+                    IQueryable<TuitionAchievement> branchNewContractAchievementItems = paymentItems
+                        .Join(models.GetTable<ContractPayment>()
+                                .Join(models.GetTable<CourseContract>()
+                                    .Where(t => !t.Installment.HasValue)
+                                    .Where(t => !t.Renewal.HasValue || t.Renewal != true),
+                                    c => c.ContractID, t => t.ContractID, (c, t) => c),
+                            p => p.PaymentID, c => c.PaymentID, (p, c) => p)
+                        .GetPaymentAchievement(models)
+                        .Where(t => t.CoachWorkPlace == branchIndicator.BranchID);
+
+                    IQueryable<TuitionAchievement> branchRenewContractAchievementItems = paymentItems
+                        .Join(models.GetTable<ContractPayment>()
+                                .Join(models.GetTable<CourseContract>()
+                                    .Where(t => !t.Installment.HasValue)
+                                    .Where(t => t.Renewal == true),
+                                    c => c.ContractID, t => t.ContractID, (c, t) => c),
+                            p => p.PaymentID, c => c.PaymentID, (p, c) => p)
+                        .GetPaymentAchievement(models)
+                        .Where(t => t.CoachWorkPlace == branchIndicator.BranchID);
+
+                    IQueryable<TuitionAchievement> branchInstallmentContractAchievementItems = paymentItems
+                        .Join(models.GetTable<ContractPayment>()
+                                .Join(models.GetTable<CourseContract>()
+                                    .Where(t => t.Installment.HasValue),
+                                    c => c.ContractID, t => t.ContractID, (c, t) => c),
+                            p => p.PaymentID, c => c.PaymentID, (p, c) => p)
+                        .GetPaymentAchievement(models)
+                        .Where(t => t.CoachWorkPlace == branchIndicator.BranchID);
 
                     var revenueItem = branchIndicator.MonthlyBranchRevenueIndicator
                             .Where(v => v.MonthlyBranchRevenueGoal != null)
@@ -368,6 +461,11 @@ namespace WebHome.Helper
                         revenueItem.ActualCompletePICount = branchTuitionItems.Where(t => t.PriceStatus == (int)Naming.LessonPriceStatus.自主訓練).Count()
                                         + branchTuitionItems.Where(t => t.ELStatus == (int)Naming.LessonPriceStatus.自主訓練).Count();
 
+                        revenueItem.NewContractAchievement = branchNewContractAchievementItems.Sum(t => t.ShareAmount) ?? 0;
+                        revenueItem.RenewContractAchievement = branchRenewContractAchievementItems.Sum(t => t.ShareAmount) ?? 0;
+                        revenueItem.InstallmentAchievement = branchInstallmentContractAchievementItems.Sum(t => t.ShareAmount) ?? 0;
+                        revenueItem.VoidShare = voidTuition.Sum(t => t.VoidShare) ?? 0;
+
                         models.SubmitChanges();
                     }
                 }
@@ -377,10 +475,48 @@ namespace WebHome.Helper
             {
                 foreach (var coachIndicator in item.MonthlyCoachRevenueIndicator)
                 {
+                    var voidTuition = voidPayment
+                        .Join(models.GetTable<TuitionAchievement>()
+                            .Where(t => t.CoachID == coachIndicator.CoachID),
+                            p => p.PaymentID, t => t.InstallmentID, (p, t) => t);
+
                     var coachTuitionItems = tuitionItems.Where(t => t.AttendingCoach == coachIndicator.CoachID);
                     var coachAchievementItems = achievementItems.Where(t => t.CoachID == coachIndicator.CoachID);
                     var coachContractItems = contractItems.Where(c => c.FitnessConsultant == coachIndicator.CoachID);
+                    IQueryable<CourseContract> coachInstallmentItems = coachContractItems.Where(c => c.Installment.HasValue);
+                    IQueryable<CourseContract> coachNonInstallmentItems = coachContractItems.Where(c => !c.Installment.HasValue);
+
                     var coachSTItems = STItems.Where(t => t.AttendingCoach == coachIndicator.CoachID);
+
+                    IQueryable<TuitionAchievement> coachNewContractAchievementItems = paymentItems
+                        .Join(models.GetTable<ContractPayment>()
+                                .Join(models.GetTable<CourseContract>()
+                                    .Where(t => !t.Installment.HasValue)
+                                    .Where(t => !t.Renewal.HasValue || t.Renewal != true),
+                                    c => c.ContractID, t => t.ContractID, (c, t) => c),
+                            p => p.PaymentID, c => c.PaymentID, (p, c) => p)
+                        .GetPaymentAchievement(models)
+                        .Where(t => t.CoachID == coachIndicator.CoachID);
+
+                    IQueryable<TuitionAchievement> coachRenewContractAchievementItems = paymentItems
+                        .Join(models.GetTable<ContractPayment>()
+                                .Join(models.GetTable<CourseContract>()
+                                    .Where(t => !t.Installment.HasValue)
+                                    .Where(t => t.Renewal == true),
+                                    c => c.ContractID, t => t.ContractID, (c, t) => c),
+                            p => p.PaymentID, c => c.PaymentID, (p, c) => p)
+                        .GetPaymentAchievement(models)
+                        .Where(t => t.CoachID == coachIndicator.CoachID);
+
+                    IQueryable<TuitionAchievement> coachInstallmentContractAchievementItems = paymentItems
+                        .Join(models.GetTable<ContractPayment>()
+                                .Join(models.GetTable<CourseContract>()
+                                    .Where(t => t.Installment.HasValue),
+                                    c => c.ContractID, t => t.ContractID, (c, t) => c),
+                            p => p.PaymentID, c => c.PaymentID, (p, c) => p)
+                        .GetPaymentAchievement(models)
+                        .Where(t => t.CoachID == coachIndicator.CoachID);
+
 
                     lessonAchievement = coachTuitionItems.Where(t => SessionScopeForAchievement.Contains(t.PriceStatus)).Sum(t => t.ListPrice * t.GroupingMemberCount * t.PercentageOfDiscount / 100) ?? 0;
                     lessonAchievement += (coachTuitionItems.Where(t => SessionScopeForAchievement.Contains(t.ELStatus)).Sum(l => l.EnterpriseListPrice * l.GroupingMemberCount * l.PercentageOfDiscount / 100) ?? 0);
@@ -389,12 +525,21 @@ namespace WebHome.Helper
                     coachIndicator.ActualCompleteLessonCount = coachTuitionItems.Where(t => SessionScopeForComleteLessonCount.Contains(t.PriceStatus)).Count()
                                     + coachTuitionItems.Where(t => SessionScopeForComleteLessonCount.Contains(t.ELStatus)).Count();
                     coachIndicator.ActualLessonAchievement = lessonAchievement;
-                    coachIndicator.ActualRenewContractAchievement = coachContractItems.Where(c => c.Renewal == true).Count();
-                    coachIndicator.ActualNewContractAchievement = coachContractItems.Count() - coachIndicator.ActualRenewContractAchievement;
+                    coachIndicator.ActualRenewContractAchievement = coachRenewContractAchievementItems.Sum(t => t.ShareAmount) ?? 0;
+                    coachIndicator.ActualNewContractAchievement = coachNewContractAchievementItems.Sum(t => t.ShareAmount) ?? 0;
                     coachIndicator.ActualCompleteTSCount = coachTuitionItems.Where(t => t.PriceStatus == (int)Naming.LessonPriceStatus.體驗課程).Count()
                                     + coachTuitionItems.Where(t => t.ELStatus == (int)Naming.LessonPriceStatus.體驗課程).Count();
                     coachIndicator.ActualCompletePICount = coachTuitionItems.Where(t => t.PriceStatus == (int)Naming.LessonPriceStatus.自主訓練).Count()
                                     + coachTuitionItems.Where(t => t.ELStatus == (int)Naming.LessonPriceStatus.自主訓練).Count();
+
+                    coachIndicator.InstallmentAchievement = coachInstallmentContractAchievementItems.Sum(t => t.ShareAmount) ?? 0;
+                    coachIndicator.RenewContractCount = coachNonInstallmentItems.Where(t => t.Renewal == true).Count();
+                    coachIndicator.NewContractCount = coachNonInstallmentItems.Count() - coachIndicator.RenewContractCount;
+                    coachIndicator.RenewContractSubtotal = coachNonInstallmentItems.Where(c => c.Renewal == true).Sum(c => c.TotalCost) ?? 0;
+                    coachIndicator.NewContractSubtotal = coachNonInstallmentItems.Sum(c => c.TotalCost) - coachIndicator.RenewContractSubtotal;
+                    coachIndicator.InstallmentCount = coachInstallmentItems.Count();
+                    coachIndicator.InstallmentSubtotal = coachInstallmentItems.Sum(c => c.TotalCost) ?? 0;
+
 
                     if (calcAverage == true)
                     {
@@ -403,6 +548,7 @@ namespace WebHome.Helper
                     }
 
                     coachIndicator.STCount = coachSTItems.Count();
+                    coachIndicator.VoidShare = voidTuition.Sum(t => t.VoidShare) ?? 0;
 
                     models.SubmitChanges();
                 }

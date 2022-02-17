@@ -252,7 +252,7 @@
                                 confirmButtonColor: "#DD6B55",
                                 confirmButtonText: "確定",
                                 closeOnConfirm: true
-                            }.then((result) => {
+                            }).then((result) => {
                                 //$('#uploadContent').empty();
                                 $('').launchDownload('@Html.Raw(Url.Action("BlogSingle","MainActivity"))', data, "_blank");
                             });

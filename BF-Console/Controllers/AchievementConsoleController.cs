@@ -45,15 +45,7 @@ namespace WebHome.Controllers
                 coachID = viewModel.DecryptKeyValue();
             }
 
-            IQueryable<MonthlyIndicator> indicatorItems = models.GetTable<MonthlyIndicator>();
-            if(viewModel.DateFrom.HasValue)
-            {
-                indicatorItems = indicatorItems.Where(m => m.StartDate >= viewModel.DateFrom);
-            }
-            if (viewModel.DateTo.HasValue)
-            {
-                indicatorItems = indicatorItems.Where(m => m.StartDate < viewModel.DateTo.Value.AddMonths(1));
-            }
+            IQueryable<MonthlyIndicator> indicatorItems = viewModel.InquireMonthlyIndicator(models);
 
             IQueryable<MonthlyCoachRevenueIndicator> items = models.GetTable<MonthlyCoachRevenueIndicator>()
                 .Where(c => c.CoachID == viewModel.CoachID)
@@ -196,6 +188,53 @@ namespace WebHome.Controllers
 
             return View("~/Views/ContractConsole/ContractModal/SelectCoach.cshtml", items);
         }
+
+        public ActionResult InquireMonthlyIndicator(MonthlyIndicatorQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+
+            IQueryable<MonthlyIndicator> items = viewModel.InquireMonthlyIndicator(models);
+
+            return View("~/Views/BusinessConsole/Module2021/InquireMonthlyIndicator.cshtml", items);
+        }
+
+        public ActionResult InquireAttendancePerformance(MonthlyIndicatorQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+
+            IQueryable<MonthlyIndicator> items = viewModel.InquireMonthlyIndicator(models);
+
+            return View("~/Views/BusinessConsole/Module2021/InquireAttendancePerformance.cshtml", items);
+        }
+
+        public ActionResult InquireContractAchievement(MonthlyIndicatorQueryViewModel viewModel)
+        {
+            ViewResult result = (ViewResult)InquireAttendancePerformance(viewModel);
+            result.ViewName = "~/Views/BusinessConsole/Module2021/InquireContractAchievement.cshtml";
+            return result;
+        }
+
+        public ActionResult selectAchievementCatelog(QueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            return View("~/Views/BusinessConsole/Module2021/selectAchievementCatelog.cshtml");
+        }
+
+        public ActionResult InquireBreakEvent(MonthlyIndicatorQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+
+            IQueryable<MonthlyIndicator> items = viewModel.InquireYearlyIndicator(models);
+
+            return View("~/Views/BusinessConsole/Module2021/InquireBreakEvent.cshtml", items);
+        }
+
+        public ActionResult SelectBreakEventCondition(MonthlyIndicatorQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            return View("~/Views/BusinessConsole/Module2021/SelectBreakEventCondition.cshtml");
+        }
+
 
     }
 }

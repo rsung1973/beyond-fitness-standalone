@@ -1,0 +1,378 @@
+
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Helper.BusinessOperation
+@using WebHome.Controllers
+@using Newtonsoft.Json
+@using Utility
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    UserProfile _model;
+    LessonOverviewQueryViewModel _viewModel;
+
+    Layout = "~/Views/ConsoleHome/Template/MainPage.cshtml";
+
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    _model = (UserProfile)this.Model;
+    _viewModel = (LessonOverviewQueryViewModel)ViewBag.ViewModel;
+
+    IQueryable<LessonTime> _items = (IQueryable<LessonTime>)ViewBag.DataItems;
+
+}
+@{
+    UserProfile _profile = Context.GetUser();
+    var coach = models.GetTable<ServingCoach>().Where(c => c.CoachID == _viewModel.CoachID).FirstOrDefault();
+}
+@section CustomHeader {
+    <!-- JQuery DataTable Css -->
+    <link href="plugins/jquery-datatable/DataTables-1.10.18/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link href="plugins/jquery-datatable/Responsive-2.2.2/css/responsive.bootstrap4.min.css" rel="stylesheet">
+    <link href="plugins/jquery-datatable/FixedColumns-3.2.5/css/fixedColumns.bootstrap4.min.css" rel="stylesheet">
+    <!-- Bootstrap Datetimepick -->
+
+    <link href="css/smartcalendar-2.css" rel="stylesheet" />
+
+    <!-- Custom Css -->
+    <link rel="stylesheet" href="css/customelist.css?1.1" />
+}
+
+<!-- Main Content -->
+<section class="content">
+    @{
+        ViewBag.BlockHeader = "每月上課概況";
+        Html.RenderPartial("~/Views/ConsoleHome/Module/BlockHeader.cshtml", _model);
+    }
+    <!--我的待辦-->
+    <div class="container-fluid">
+        <h4 class="card-outbound-header m-l-15">
+            @(_viewModel.DateFrom?.Year)年@(_viewModel.DateFrom?.Month)月
+            <a href="javascript:selectMonth();"><i class="zmdi zmdi-calendar zmdi-hc-lg"></i></a>
+            @{
+                if (coach == null)
+                {
+                    ViewBag.Other = "全部";
+                    Html.RenderPartial("~/Views/Common/BranchStoreWithOther.cshtml", models.GetTable<BranchStore>().Where(b => b.BranchID == _viewModel.BranchID).FirstOrDefault());
+                }
+            }
+        </h4>
+        <div class="card">
+            <div class="header">
+                <h2><strong>@(coach?.UserProfile.FullName())</strong></h2>
+                @if (_model.IsSysAdmin() || _model.IsAssistant() || _model.IsManager() || _model.IsViceManager() || _model.IsOfficer())
+                {
+                    <ul class="header-dropdown">
+                        <li>
+                            <a href="javascript:selectCoach();"><i class="zmdi zmdi-swap"></i></a>
+                        </li>
+                    </ul>
+                    <script>
+                        $(function () {
+                            $global.commitCoach = function (coachID, coachName, $dialog, others) {
+                                var viewModel = $.extend($global.viewModel, {});
+                                viewModel.CoachID = coachID;
+                                    viewModel.ByManager = false;
+                                viewModel.KeyID = null;
+                                if (others) {
+                                    viewModel.BranchID = others.BranchID;
+                                    viewModel.ByManager = others.ByManager;
+                                } else {
+                                    if (!coachID) {
+                                        viewModel.BranchID = null;
+                                    }
+                                }
+                                showLoading();
+                                $('').launchDownload('@Html.Raw(Url.Action("LessonIndex","ConsoleHome"))', viewModel);
+                            };
+                        });
+
+                        function selectCoach() {
+                            showLoading();
+                            $.post('@Html.Raw(Url.Action("SelectCoachWithBranch", "LessonConsole"))', { 'selectAll': true, 'WorkPlace': $global.viewModel.BranchID }, function (data) {
+                                hideLoading();
+                                if ($.isPlainObject(data)) {
+                                    Swal.fire(
+                                        'Oops...',
+                                        data.message,
+                                        'warning'
+                                    )
+                                } else {
+                                    $(data).appendTo($('body'));
+                                }
+                            });
+                        }
+
+                    </script>
+                }
+            </div>
+            <ul class="row clearfix list-unstyled m-b-0 widget_2">
+                @{
+                    var currentItems = _items.ByLessonQueryType(Naming.LessonQueryType.一般課程);
+                    var currentViewModel = (LessonOverviewQueryViewModel)_viewModel.Duplicate();
+                    currentViewModel.KeyID = null;
+                    currentViewModel.LessonType = Naming.LessonQueryType.一般課程;
+                }
+                <li class="col-lg-3 col-md-6 col-sm-12">
+                    @(lessonsSummary(currentItems, currentViewModel, "P.T", true))
+                </li>
+                @{
+                    currentItems = _items.ByLessonQueryType(Naming.LessonQueryType.自主訓練);
+                    currentViewModel = (LessonOverviewQueryViewModel)_viewModel.Duplicate();
+                    currentViewModel.KeyID = null;
+                    currentViewModel.LessonType = Naming.LessonQueryType.自主訓練;
+                }
+                <li class="col-lg-3 col-md-6 col-sm-12">
+                    @(lessonsSummary(currentItems, currentViewModel, "P.I", true))
+                </li>
+                @{
+                    currentItems = _items.ByLessonQueryType(Naming.LessonQueryType.體驗課程);
+                    currentViewModel = (LessonOverviewQueryViewModel)_viewModel.Duplicate();
+                    currentViewModel.KeyID = null;
+                    currentViewModel.LessonType = Naming.LessonQueryType.體驗課程;
+                }
+                <li class="col-lg-3 col-md-6 col-sm-12">
+                    @(lessonsSummary(currentItems, currentViewModel, "T.S", true))
+                </li>
+                @{
+                    currentItems = _items.ByLessonQueryType(Naming.LessonQueryType.教練PI);
+                    currentViewModel = (LessonOverviewQueryViewModel)_viewModel.Duplicate();
+                    currentViewModel.KeyID = null;
+                    currentViewModel.LessonType = Naming.LessonQueryType.教練PI;
+                }
+                <li class="col-lg-3 col-md-6 col-sm-12">
+                    @(lessonsSummary(currentItems, currentViewModel, "Coach P.I", false))
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!--詳細資料-->
+    <div class="container-fluid">
+        <div class="row clearfix">
+            <h4 class="card-outbound-header m-l-15">詳細資料</h4>
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="body">
+                        <div class="table-responsive" id="lessonList">
+                            @{
+                                _viewModel.ScrollToView = false;
+                                Html.RenderPartial("~/Views/LessonConsole/Module/LessonList.cshtml", (new LessonOverviewQueryViewModel
+                                {
+                                    CoachID = _model.UID,
+                                    DateTo = DateTime.Today,
+                                    CoachAttended = false,
+                                    CombinedStatus = new Naming.LessonPriceStatus[]
+                                        {
+                                            Naming.LessonPriceStatus.一般課程,
+                                            Naming.LessonPriceStatus.團體學員課程,
+                                            Naming.LessonPriceStatus.已刪除,
+                                            Naming.LessonPriceStatus.點數兌換課程,
+                                            Naming.LessonPriceStatus.員工福利課程,
+                                            Naming.LessonPriceStatus.自主訓練,
+                                            Naming.LessonPriceStatus.體驗課程,
+                                            Naming.LessonPriceStatus.企業合作方案,
+                                        },
+                                }).InquireLesson(models));
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- #END# Basic Examples -->
+    </div>
+
+</section>
+
+@helper lessonsSummary(IQueryable<LessonTime> currentItems, LessonOverviewQueryViewModel currentViewModel, String lessonTypeName, bool hasLearner)
+{
+    <div class="body">
+        <div class="row">
+            <div class="col-8">
+                <h5 class="m-t-0">@(lessonTypeName)</h5>
+                <p class="text-small">
+                    @{
+                        var lessonCount = currentItems.Where(t => t.LessonAttendance == null).Count();
+                        var viewModel = (LessonOverviewQueryViewModel)currentViewModel.Duplicate();
+                        viewModel.CoachAttended = false;
+                    }
+                    編輯中：<a href="#" onclick='showLessonList(@Html.Raw(viewModel.JsonStringify()),@(lessonCount));'>@(lessonCount)</a><br />
+                    @if (hasLearner)
+                    {
+
+                        lessonCount = currentItems.Where(t => !t.LessonPlan.CommitAttendance.HasValue).Count();
+                        viewModel = (LessonOverviewQueryViewModel)currentViewModel.Duplicate();
+                        viewModel.LearnerCommitted = false;
+                        <text>學生未打卡：</text>
+                        <a href="#" onclick='showLessonList(@Html.Raw(viewModel.JsonStringify()),@(lessonCount));'>@(lessonCount)</a>
+                    }
+                </p>
+            </div>
+            <div class="col-4 text-right">
+                @{
+                    lessonCount = currentItems.Count();
+                    viewModel = (LessonOverviewQueryViewModel)currentViewModel.Duplicate();
+                    //viewModel.LearnerCommitted = true;
+                    //viewModel.CoachAttended = true;
+                }
+                <a href="#" onclick='showLessonList(@Html.Raw(viewModel.JsonStringify()),@(lessonCount));'><h2>@(lessonCount)</h2></a>
+                <small class="info">全部</small>
+            </div>
+        </div>
+    </div>
+}
+
+@section TailPageJavaScriptInclude {
+    <!--Sparkline Plugin Js-->
+    <script src="plugins/jquery-sparkline/jquery.sparkline.js"></script>
+    <!-- SweetAlert Plugin Js -->
+    <script src="plugins/sweetalert/sweetalert.min.js"></script>
+    <!-- Jquery DataTable Plugin Js -->
+    <script src="bundles/datatablescripts.bundle.js"></script>
+    <script src="plugins/jquery-datatable/Responsive-2.2.2/js/dataTables.responsive.min.js"></script>
+    <script src="plugins/jquery-datatable/FixedColumns-3.2.5/js/dataTables.fixedColumns.min.js"></script>
+
+    @{ Html.RenderPartial("~/Views/ConsoleHome/Shared/KnobJS.cshtml");}
+
+    <script>
+    function selectMonth() {
+        //showLoading();
+        $.post('@Html.Raw(Url.Action("SelectMonth", "BusinessConsole"))', null, function (data) {
+            //hideLoading();
+            if ($.isPlainObject(data)) {
+                Swal.fire(
+                    'Oops...',
+                    data.message,
+                    'warning'
+                )
+            } else {
+                $(data).appendTo($('body'));
+            }
+        });
+    }
+
+    $(function () {
+        $global.doSelect = function (year, month) {
+            var viewModel = $.extend($global.viewModel, { 'Year': year, 'Month': month });
+            $('').launchDownload('@Html.Raw(Url.Action("LessonIndex", "ConsoleHome"))', viewModel);
+        };
+
+        $global.showLesson = function (data) {
+            $('#lessonList').empty().append($(data));
+        };
+
+    });
+
+        function showLessonList(viewModel, alertCount) {
+            var event = window.event;
+            if (event) {
+                event.cancelBubble = true;
+                if ($(event.target).text() == '0') {
+                    return false;
+                }
+            }
+
+            if (alertCount == 0) {
+                viewModel.scrollToView = false;
+            } else {
+                viewModel.scrollToView = true;
+            }
+
+            if (alertCount && alertCount > 300) {
+                Swal.fire({
+                    title: "繼續載入?",
+                    text: "讀取大量資料，將影響系統效能!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: '確定',
+                    cancelButtonText: '取消',
+                    focusCancel: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        loadLessonList(viewModel);
+                    }
+                });
+            } else {
+                loadLessonList(viewModel);
+            }
+        }
+
+    function loadLessonList(viewModel) {
+        showLoading();
+        $.post('@Html.Raw(Url.Action("ShowLessonList", "LessonConsole"))', viewModel, function (data) {
+            hideLoading();
+            if ($.isPlainObject(data)) {
+                Swal.fire(
+                    'Oops...',
+                    data.message,
+                    'warning'
+                )
+            } else {
+                if ($global.showLesson) {
+                    $global.showLesson(data);
+                }
+            }
+        });
+    }
+
+    function inquireLesson(viewModel) {
+        showLoading();
+        $.post('@Html.Raw(Url.Action("InquireLesson", "LessonConsole"))', viewModel, function (data) {
+            hideLoading();
+            if ($.isPlainObject(data)) {
+                Swal.fire(
+                    'Oops...',
+                    data.message,
+                    'warning'
+                )
+            } else {
+                if ($global.showLesson) {
+                    $global.showLesson(data);
+                }
+            }
+        });
+    }
+
+
+        function processLesson(keyID) {
+            showLoading();
+            $.post('@Html.Raw(Url.Action("ProcessLesson", "LessonConsole"))', { 'keyID': keyID }, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    Swal.fire(
+                        'Oops...',
+                        data.message,
+                        'warning'
+                    )
+                } else {
+                    $(data).appendTo($('body'));
+                }
+            });
+        }
+
+    </script>
+
+    @if (_viewModel.KeyID != null)
+    {
+        <script>
+            $(function () {
+                showLessonList(@Html.Raw(JsonConvert.SerializeObject(
+                     new
+                     {
+                        _viewModel.KeyID,
+                        BypassCondition = true,
+                     })));
+            });
+        </script>
+    }
+
+}
+
+

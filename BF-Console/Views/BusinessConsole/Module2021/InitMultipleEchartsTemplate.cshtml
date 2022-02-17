@@ -1,0 +1,89 @@
+﻿
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Newtonsoft.Json
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+
+    String _chartID = ViewBag.ChartID as String ?? $"myChart{DateTime.Now.Ticks}";
+
+}
+<div id="@(_chartID)" class="echarts"></div>
+<script>
+    if ($global.echarts === undefined) {
+        $global.echarts = {
+            myChart: {},
+            showChart: {},
+            option: {}
+        };
+
+        $global.onChangeTheme = function () { };
+
+        $global.echarts.initializeChart = function (chartID) {
+
+            $global.echarts.showChart[chartID] = function () {
+                // 基於準備好的dom，初始化echarts例項
+                if ($global.echarts.myChart[chartID] != null) {
+                    $global.echarts.myChart[chartID].dispose();
+                }
+                var style;
+                if ($global.currentTheme == 'theme-nero') {
+                    style = 'macarons_nero';
+                } else {
+                    style = 'macarons';
+                }
+                $global.echarts.myChart[chartID] = echarts.init(document.getElementById(chartID), style, { height: 400, /*width: 662,*/ locale: "EN" });
+
+                // 使用剛指定的配置項和資料顯示圖表。
+                $global.echarts.myChart[chartID].setOption($global.echarts.option[chartID]);
+
+            };
+
+            var tmp = $global.onChangeTheme;
+            $global.onChangeTheme = function () {
+                tmp();
+                $global.echarts.showChart[chartID]();
+            }
+        };
+
+        $global.echarts.displayChart = function (chartID) {
+            if ($global.echarts.showChart[chartID] === undefined) {
+                $global.echarts.initializeChart(chartID);
+            } 
+            $global.echarts.showChart[chartID]();
+        };
+    }
+</script>
+<script>
+
+    $(function () {
+        $global.echarts.initializeChart('@(_chartID)');
+    });
+
+</script>
+
+@RenderSection("ChartOption", true)
+
+<script>
+    $(function () {
+
+        $global.echarts.showChart['@(_chartID)']();
+
+        setTimeout(function () {
+            if ($global.echarts.myChart['@(_chartID)'] != null) {
+                $global.echarts.myChart['@(_chartID)'].resize();
+            }
+        }, 500);
+
+    });
+</script>
+

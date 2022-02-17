@@ -7,6 +7,7 @@
 @using WebHome.Models.DataEntity
 @using WebHome.Controllers
 @using WebHome.Helper.BusinessOperation
+@using Utility
 @using Newtonsoft.Json
 
 @{
@@ -87,7 +88,7 @@
 </div>
 <script>
     function lessonOverview() {
-        var viewModel = @Html.Raw(JsonConvert.SerializeObject(viewModel));
+        var viewModel = @Html.Raw(viewModel.JsonStringify());
         showLoading();
         $('').launchDownload('@Html.Raw(Url.Action("LessonOverview","ConsoleHome"))', viewModel);
     }

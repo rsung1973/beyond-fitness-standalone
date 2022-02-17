@@ -1,0 +1,111 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Newtonsoft.Json
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+
+    QueryViewModel _viewModel = (QueryViewModel)ViewBag.ViewModel;
+    String _dialogID = _viewModel.DialogID ?? $"breakEvent{DateTime.Now.Ticks}";
+    ViewBag.ReuseModal = true;
+}
+<div id="@(_dialogID)" class="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5>損益兩平同期比較折線圖查詢條件</h5>
+                <a class="closebutton" data-dismiss="modal"></a>
+            </div>
+            <div class="modal-body">
+                <div class="row clearfix">
+                    <div class="col-lg-6 col-md-6 col-sm-12">
+                        <h6><strong>同期比較設定</strong></h6>
+                        <div class="fancy-checkbox">
+                            <label><input name="Year" value="" type="checkbox" checked onclick="javascript:selectSingleCheckBox();"><span><i></i>近1年</span></label>
+                            <label><input name="Year" value="-1" type="checkbox" onclick="javascript:selectSingleCheckBox();"><span><i></i>近2年</span></label>
+                        </div>
+                        <small>(最遠僅能查詢至2019年)</small>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12">
+                        <h6><strong>顯示設定：業績柱狀</strong></h6>
+                        <div class="row clearfix">
+                            <div class="col-12">
+                                <div class="fancy-checkbox">
+                                    <label><input name="ChartType" value="" type="checkbox" checked onclick="javascript:selectSingleCheckBox();"><span><i></i>否</span></label>
+                                    <label><input name="ChartType" value="1" type="checkbox" onclick="javascript:selectSingleCheckBox();"><span><i></i>是</span></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="reset" class="btn btn-danger btn-round btn-simple waves-effect waves-red btnReset">
+                    重設條件
+                </button>
+                <button type="button" class="btn btn-darkteal btn-round waves-effect" onclick="javascript:showBreakEventLineChart();">確定，不後悔</button>
+            </div>
+        </div>
+    </div>
+    @{
+        Html.RenderPartial("~/Views/ConsoleHome/Shared/BSModalScript.cshtml", model: _dialogID);
+    }
+<script>
+
+        $(function () {
+            $('#@(_dialogID) .btnReset').on('click', function (event) {
+                $('#@(_dialogID) input:checkbox').prop('checked', false);
+            });
+        });
+
+        function textSize(text, fontSize) {
+            var span = document.createElement("span");
+            var result = {
+                "width": span.offsetWidth,
+                "height": span.offsetHeight
+            };
+            span.style.visibility = "hidden";
+            span.style.fontSize = fontSize || "14px";
+            document.body.appendChild(span);
+
+            if (typeof span.textContent != "undefined")
+                span.textContent = text || "国";
+            else span.innerText = text || "国";
+
+            result.width = span.offsetWidth - result.width;
+            result.height = span.offsetHeight - result.height;
+            span.parentNode.removeChild(span);
+            return result;
+        }
+
+        function showBreakEventLineChart() {
+
+            $global.hideAllModal();
+            $global.viewModel.Year = $('#@(_dialogID) input[name="Year"]:checked').val();
+            $global.viewModel.ChartType = $('#@(_dialogID) input[name="ChartType"]:checked').val();
+
+            showLoading();
+            $.post('@Html.Raw(Url.Action("InquireBreakEvent", "AchievementConsole"))', $global.viewModel, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    alert(data.message);
+                } else {
+                    $('#indicatorList').empty()
+                        .append($(data));
+                }
+            });
+        }
+</script>
+</div>
+

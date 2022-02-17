@@ -1,0 +1,35 @@
+
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Newtonsoft.Json
+@using Utility
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    MonthlyIndicatorQueryViewModel _viewModel;
+    IQueryable<MonthlyIndicator> _model;
+
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    _viewModel = (MonthlyIndicatorQueryViewModel)ViewBag.ViewModel;
+
+    _model = (IQueryable<MonthlyIndicator>)this.Model;
+
+    if(_viewModel.BranchID.HasValue)
+    {
+        Html.RenderPartial("~/Views/BusinessConsole/Module2021/AttendancePerformanceChartOptionForBranch.cshtml", _model);
+    }
+    else
+    {
+        Html.RenderPartial("~/Views/BusinessConsole/Module2021/AttendancePerformanceChartOptionForOfficer.cshtml", _model);
+    }
+
+}
+

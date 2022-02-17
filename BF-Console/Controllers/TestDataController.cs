@@ -171,6 +171,21 @@ namespace WebHome.Controllers
             return Json(new { result = true, message = "資料處理完成!!" }, JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult TestLineMessage(CourseContractViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            if(viewModel.KeyID!=null)
+            {
+                viewModel.ContractID = viewModel.DecryptHexKeyValue();
+            }
+
+            var item = models.GetTable<CourseContract>().Where(c => c.ContractID == viewModel.ContractID).First();
+            var jsonData = this.RenderViewToString(viewModel.UrlAction, item);
+            jsonData.PushLineMessage();
+
+            return Content("OK!!");
+        }
+
         public ActionResult Dump()
         {
             String fileName = Path.Combine(Logger.LogDailyPath, $"request{DateTime.Now.Ticks}.txt");

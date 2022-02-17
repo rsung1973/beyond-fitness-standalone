@@ -1,0 +1,30 @@
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Newtonsoft.Json
+@using Utility
+
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    MonthlyIndicatorQueryViewModel _viewModel;
+
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _viewModel = (MonthlyIndicatorQueryViewModel)ViewBag.ViewModel;
+
+    if (_viewModel.BranchID.HasValue)
+    {
+        Html.RenderPartial("~/Views/BusinessConsole/Module2021/BreakEventChartOptionForBranch.cshtml");
+    }
+    else
+    {
+        Html.RenderPartial("~/Views/BusinessConsole/Module2021/BreakEventChartOptionForOfficer.cshtml");
+    }
+
+}

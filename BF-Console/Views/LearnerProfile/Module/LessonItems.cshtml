@@ -61,7 +61,7 @@
                 <div class="header">
                     <h3>
                         @(item.LessonTypeStatus())
-                        @if (item.IsReceivableSession())
+                        @if (item.IsPISession() /* item.IsReceivableSession()*/)
                         {
                             <text>《@(item.RegisterLesson.LessonPriceType?.UsageTypeDescription?.Usage)》</text>
                         }

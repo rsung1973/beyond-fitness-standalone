@@ -1,0 +1,176 @@
+
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Newtonsoft.Json
+@using Utility
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    MonthlyIndicatorQueryViewModel _viewModel;
+    IQueryable<MonthlyIndicator> _model;
+
+    String _chartID = ViewBag.ChartID as String;
+
+    models = ((SampleController<UserProfile>)ViewContext.Controller).DataSource;
+    _modelState = (ModelStateDictionary)ViewBag.ModelState;
+    _viewModel = (MonthlyIndicatorQueryViewModel)ViewBag.ViewModel;
+
+    _model = (IQueryable<MonthlyIndicator>)this.Model;
+
+    IQueryable<MonthlyIndicator> monthlyItems = _model;
+    MonthlyRevenueGoal[] items = models.GetTable<MonthlyRevenueGoal>()
+            .Join(monthlyItems, g => g.PeriodID, i => i.PeriodID, (g, i) => g)
+            .ToArray();
+
+    IGrouping<DateTime, MonthlyRevenueGoal>[] groups = TempData["GroupItems"] as IGrouping<DateTime, MonthlyRevenueGoal>[];
+
+    if (groups == null)
+    {
+        groups = items
+        .GroupBy(g => g.MonthlyRevenueIndicator.MonthlyIndicator.StartDate)
+        .OrderBy(g => g.Key).ToArray();
+
+        TempData["GroupItems"] = groups;
+    }
+
+    var newContract = groups.Select(g => Math.Round((g.Sum(b => b.NewContractAchievement ?? 0)) / 10000M, 2)).ToArray();
+    var renew = groups.Select(g => Math.Round((g.Sum(b => b.RenewContractAchievement ?? 0)) / 10000M, 2)).ToArray();
+    var installment = groups.Select(g => Math.Round((g.Sum(b => b.InstallmentAchievement ?? 0)) / 10000M, 2)).ToArray();
+    var subtotal = groups.Select(g => Math.Round((g.Sum(b => (b.ActualSharedAchievement ?? 0))) / 10000M, 2)).ToArray();
+}
+<script>
+
+    $(function () {
+    //指定圖表的配置項和資料
+        $global.echarts.option['@(_chartID)'] = {
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'cross',
+                        crossStyle: {
+                            color: '#999'
+                        }
+                    }
+                },
+                toolbox: {
+                    feature: {
+                        magicType: {show: true, type: ['line', 'bar']},
+                        restore: {show: true},
+                        saveAsImage: {show: true}
+                    }
+                },
+                legend: {
+                    data: ['新單業績','續約業績', '分期業績']
+                },
+                xAxis: [
+                    {
+                        type: 'category',
+                        data: @Html.Raw(items.Select(c => $"{c.MonthlyRevenueIndicator.MonthlyIndicator.StartDate:yyyyMM}").ToArray().JsonStringify()),
+                        axisPointer: {
+                            type: 'shadow'
+                        }
+                    }
+                ],
+                yAxis: [
+                    {
+                        type: 'value',
+                        name: '金額',
+                        min: 0,
+                        axisLabel: {
+                            formatter: '{value} 萬元'
+                        }
+                    }
+                ],
+                series: [
+                    {
+                        name: '總收款業績',
+                            type: 'bar',
+                            barGap: '-100%',         // 左移100%，stack不再与上面两个在一列
+                            label: {
+                                normal: {
+                                    show: true,
+                                    position: 'top',       //  位置设为top
+                                    formatter: function (v) {
+                                        var str = v.value.toString();
+                                        let reg = str.indexOf(".") > -1 ? /(\d)(?=(\d{3})+\.)/g : /(\d)(?=(?:\d{3})+$)/g;
+                                        return str.replace(reg,"$1,");
+                                    },
+                                    textStyle: { color: '#07a2a4' }
+                                }
+                            },
+                            itemStyle: {
+                                normal: {
+                                    color: 'rgba(128, 128, 128, 0.3)'    // 仍为透明
+                                }
+                            },
+                            data: @Html.Raw(JsonConvert.SerializeObject(subtotal)),
+                    },
+                    {
+                        name: '新單業績',
+                        type: 'bar',
+                        stack: 'achivement',
+                        label: {
+                            show:true,
+                            normal: {
+                                position: 'inside',
+                                formatter: function (v) {
+                                    var str = v.value.toString();
+                                    let reg = str.indexOf(".") > -1 ? /(\d)(?=(\d{3})+\.)/g : /(\d)(?=(?:\d{3})+$)/g;
+                                    return str.replace(reg,"$1,");
+                                }
+                            },
+                            formatter: function (v) {
+                                var str = v.value.toString();
+                                let reg = str.indexOf(".") > -1 ? /(\d)(?=(\d{3})+\.)/g : /(\d)(?=(?:\d{3})+$)/g;
+                                return str.replace(reg,"$1,");
+                            }
+                        },
+                        data: @Html.Raw(JsonConvert.SerializeObject(newContract)),
+                    },
+                    {
+                        name: '續約業績',
+                        type: 'bar',
+                        stack: 'achivement',
+                        label: {
+                            show:true,
+                            normal: {
+                                position: 'inside',
+                                formatter: function (v) {
+                                    var str = v.value.toString();
+                                    let reg = str.indexOf(".") > -1 ? /(\d)(?=(\d{3})+\.)/g : /(\d)(?=(?:\d{3})+$)/g;
+                                    return str.replace(reg,"$1,");
+                                }
+                            },
+                        },
+                        data: @Html.Raw(JsonConvert.SerializeObject(renew)),
+                    },
+                    {
+                        name: '分期業績',
+                        type: 'bar',
+                        stack: 'achivement',
+                        label: {
+                            show:true,
+                            normal: {
+                                position: 'inside',
+                                formatter: function (v) {
+                                    var str = v.value.toString();
+                                    let reg = str.indexOf(".") > -1 ? /(\d)(?=(\d{3})+\.)/g : /(\d)(?=(?:\d{3})+$)/g;
+                                    return str.replace(reg,"$1,");
+                                }
+                            },
+                        },
+                        data: @Html.Raw(JsonConvert.SerializeObject(installment)),
+                    }
+                ],
+                color: ['#b6a2de', '#5ab1ef', '#8d98b3']
+            };
+    });
+
+</script>

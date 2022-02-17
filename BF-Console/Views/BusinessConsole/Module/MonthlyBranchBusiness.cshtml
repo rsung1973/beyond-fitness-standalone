@@ -37,41 +37,41 @@
                 <a class="toggle" href="#"></a>
             </div>
     </div>
+    <script>
+        $(function () {
+            /*
+                Toggle full story example
+            */
+            var xmpl = document.querySelector('#comment');
+            var dot = new Dotdotdot(xmpl, {
+
+                // Prevents the <a class="toggle" /> from being removed
+                keep: '.toggle'
+
+            })
+
+            // Get the dotdotdot API
+            var api = dot.API;
+
+            xmpl.addEventListener('click', (evnt) => {
+                if (evnt.target.closest('.toggle')) {
+                    evnt.preventDefault();
+
+                    //	When truncated, restore
+                    if (xmpl.matches('.ddd-truncated')) {
+                        api.restore();
+                        xmpl.classList.add('full-story');
+                    }
+
+                    //	Not truncated, truncate
+                    else {
+                        xmpl.classList.remove('full-story');
+                        api.truncate();
+                        api.watch();
+                    }
+                }
+            });
+        });
+    </script>
 }
 
-<script>
-    $(function () {
-        /*
-			Toggle full story example
-		*/
-        var xmpl = document.querySelector('#comment');
-        var dot = new Dotdotdot(xmpl, {
-
-            // Prevents the <a class="toggle" /> from being removed
-            keep: '.toggle'
-
-        })
-
-        // Get the dotdotdot API
-        var api = dot.API;
-
-        xmpl.addEventListener('click', (evnt) => {
-            if (evnt.target.closest('.toggle')) {
-                evnt.preventDefault();
-
-                //	When truncated, restore
-                if (xmpl.matches('.ddd-truncated')) {
-                    api.restore();
-                    xmpl.classList.add('full-story');
-                }
-
-                //	Not truncated, truncate
-                else {
-                    xmpl.classList.remove('full-story');
-                    api.truncate();
-                    api.watch();
-                }
-            }
-        });
-    });
-</script>
