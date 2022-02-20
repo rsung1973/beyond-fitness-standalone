@@ -676,7 +676,7 @@ namespace WebHome.Helper.BusinessOperation
             {
                 if (item.PID != viewModel.Email && models.GetTable<UserProfile>().Any(u => u.PID == viewModel.Email))
                 {
-                    ModelState.AddModelError("PID", "您的Email已經是註冊使用者!!");
+                    ModelState.AddModelError("PID", "您的電子郵件信箱已經是註冊使用者!!");
                 }
                 else
                 {

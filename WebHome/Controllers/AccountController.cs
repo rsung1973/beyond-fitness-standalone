@@ -307,7 +307,7 @@ namespace WebHome.Controllers
             if (models.GetTable<UserProfile>().Any(u => u.PID == viewModel.EMail && u.UID!=item.UID))
             {
                 HttpContext.SetCacheValue("UID", null);
-                ModelState.AddModelError("EMail", "您的Email已經是註冊使用者!!請直接登入系統!!");
+                ModelState.AddModelError("EMail", "您的電子郵件信箱已經是註冊使用者!!請直接登入系統!!");
                 ViewBag.ModelState = ModelState;
                 ViewBag.ViewModel = viewModel;
                 return View("RegisterByMail", item);
@@ -342,7 +342,7 @@ namespace WebHome.Controllers
             email = email.GetEfficientString();
             if (email==null)
             {
-                ModelState.AddModelError("email", "請輸入Email");
+                ModelState.AddModelError("email", "請輸入電子郵件信箱");
                 ViewBag.ModelState = ModelState;
                 return View("RegisterByFB");
             }
@@ -575,7 +575,7 @@ namespace WebHome.Controllers
         {
             if(String.IsNullOrEmpty(email))
             {
-                ModelState.AddModelError("email", "請輸入您的 email address");
+                ModelState.AddModelError("email", "請輸入您的電子郵件信箱");
                 ViewBag.ModelState = this.ModelState;
                 return View("~/Views/Shared/ReportInputError.ascx");
             }
@@ -586,7 +586,7 @@ namespace WebHome.Controllers
 
             if (item == null)
             {
-                ModelState.AddModelError("email", "您提供的email資料不存在!!");
+                ModelState.AddModelError("email", "您提供的電子郵件信箱資料不存在!!");
                 ViewBag.ModelState = this.ModelState;
                 return View("~/Views/Shared/ReportInputError.ascx");
             }
@@ -828,7 +828,7 @@ namespace WebHome.Controllers
             viewModel.EMail = viewModel.EMail.GetEfficientString();
             if (viewModel.EMail == null)
             {
-                this.ModelState.AddModelError("email", "請輸入Email");
+                this.ModelState.AddModelError("email", "請輸入電子郵件信箱!");
                 ViewBag.ModelState = ModelState;
                 return View(viewModel);
             }
@@ -838,7 +838,7 @@ namespace WebHome.Controllers
             {
                 if (item.PID != viewModel.EMail && models.GetTable<UserProfile>().Any(u => u.PID == viewModel.EMail))
                 {
-                    ViewBag.Message = "您的Email已經是註冊使用者!!請重新設定Email!!";
+                    ViewBag.Message = "您的電子郵件信箱已經是註冊使用者!!請重新設定電子郵件信箱!!";
                     return View(viewModel);
                 }
                 item.PID = viewModel.EMail;
@@ -1120,14 +1120,14 @@ namespace WebHome.Controllers
             }
             else if (!Regex.IsMatch(viewModel.EMail, @"^([\w-]+\.)*?[\w-]+@[\w-]+\.([\w-]+\.)*?[\w]+$"))
             {
-                ModelState.AddModelError("EMail", "EMAIL格式錯誤");
+                ModelState.AddModelError("EMail", "電子郵件信箱格式錯誤");
             }
 
             if (ModelState.IsValid)
             {
                 if (item.PID != viewModel.EMail && models.GetTable<UserProfile>().Any(u => u.PID == viewModel.EMail))
                 {
-                    ModelState.AddModelError("EMail", "EMAIL重複");
+                    ModelState.AddModelError("EMail", "電子郵件信箱重複");
                 }
             }
 
@@ -1157,7 +1157,7 @@ namespace WebHome.Controllers
             viewModel.PID = viewModel.PID.GetEfficientString();
             if (viewModel.PID == null || !viewModel.PID.IsEmail())
             {
-                ModelState.AddModelError("PID", "請輸入正確email!!");
+                ModelState.AddModelError("PID", "請輸入正確的電子郵件信箱格式!");
             }
             else
             {
@@ -1179,7 +1179,7 @@ namespace WebHome.Controllers
             {
                 if (item.PID != viewModel.PID && models.GetTable<UserProfile>().Any(u => u.PID == viewModel.PID))
                 {
-                    ModelState.AddModelError("PID", "EMAIL重複");
+                    ModelState.AddModelError("PID", "電子郵件信箱重複");
                 }
             }
 
