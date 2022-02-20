@@ -39,7 +39,6 @@
     }
 }
 @{
-    ViewBag.HeaderRaw = (Action)showHeader;
     ViewBag.InsertPartial = "~/Views/BusinessConsole/Module/CoachAchievementGoal.cshtml";
     ViewBag.SelectAll = false;
     ViewBag.EnableClose = false;
@@ -52,12 +51,7 @@
     }
     await Html.RenderPartialAsync("~/Views/ContractConsole/ContractModal/SelectCoach.cshtml", items);
 }
-@{
-    void showHeader()
-    {
 
-    }
-}
 
 <script>
     $(function () {

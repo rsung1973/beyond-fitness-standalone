@@ -13,34 +13,38 @@
 
     ModelStateDictionary _modelState;
     ModelSource<UserProfile> models;
-    IQueryable<UserProfile> _model;
-    String _dialogID = $"selectUser{DateTime.Now.Ticks}";
+    IQueryable<ServingCoach> _model;
+    String _dialogID = $"selectCoach{DateTime.Now.Ticks}";
     int _allotment;
     int _allotmentCoach;
 
     _modelState = ViewContext.ModelState;
     models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
-    _model = (IQueryable<UserProfile>)this.Model;
-    _allotment = ((int?)ViewBag.Allotment) ?? 1;
-    _allotmentCoach = ((int?)ViewBag.AllotmentCoach) ?? 3;
+    _model = (IQueryable<ServingCoach>)ViewBag.DataItems;
+    ServingCoachQueryViewModel _viewModel = ViewBag.ViewModel as ServingCoachQueryViewModel;
+    _allotment = ((int?)ViewBag.Allotment) ?? _viewModel?.Allotment ?? 1;
+    _allotmentCoach = ((int?)ViewBag.AllotmentCoach) ?? _viewModel?.AllotmentCoach ?? 3;
 }
 
 <div class="modal fade" id="@(_dialogID)" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
     <div class="@(_allotmentCoach== 3 ? "modal-dialog" : "modal-dialog modal-lg")" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                <a class="closebutton" data-dismiss="modal"></a>
-            </div>
+            @{
+                RenderSection("HeaderRaw", false);
+            }
             <div class="modal-body">
                 <div class="row clearfix">
-                    <div class="@($"col-sm-{12 / _allotment} col-{12 / _allotment}")">
-                        <div class="input-group">
-                            <input type="text" class="form-control xl-aliceblue" placeholder="搜尋姓名(暱稱)" name="KeyWord" />
-                            <span class="input-group-addon xl-aliceblue">
-                                <i class="zmdi zmdi-search"></i>
-                            </span>
+                    @if (ViewBag.EnableSearch != false)
+                    {
+                        <div class="@($"col-sm-{12 / _allotment} col-{12 / _allotment}")">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="搜尋姓名(暱稱)" name="KeyWord" />
+                                <span class="input-group-addon">
+                                    <i class="zmdi zmdi-search"></i>
+                                </span>
+                            </div>
                         </div>
-                    </div>
+                    }
                     @{
                         String insertPartial = ViewBag.InsertPartial as String;
                         if (insertPartial != null)
@@ -50,20 +54,27 @@
                     }
                 </div>
                 <ul class="new_friend_list list-unstyled row">
-                    @if (ViewBag.SelectAll == true)
+                    @if (ViewBag.SelectAll == true || _viewModel?.SelectAll == true)
                     {
                         <li class="@($"col-sm-{12 / _allotmentCoach} col-6")">
-                            <a href="javascript:commitSelecting();">
+                            <a href="javascript:commitCoach();">
                                 <img src="images/avatar/avatars.png" class="img-thumbnail popfit" />
                                 <h6 class="users_name">全部</h6>
                             </a>
                         </li>
                     }
-                    @foreach (var item in _model.ToList()
-                             .OrderBy(u => $"{u.Nickname}{u.RealName}"))
+                    @{
+                        insertPartial = _viewModel?.SelectablePartial;
+                        if (insertPartial != null)
+                        {
+                            await Html.RenderPartialAsync(insertPartial);
+                        }
+                    }
+                    @foreach (var item in _model.Select(c => c.UserProfile).ToList()
+                           .OrderBy(u => $"{u.Nickname}{u.RealName}"))
                     {
                         <li class="@($"col-sm-{12 / _allotmentCoach} col-6")">
-                            <a href="javascript:commitSelecting(@(item.UID),'@(item.FullName())');">
+                            <a href="javascript:commitCoach(@(item.UID),'@(item.FullName())');">
                                 @{
                                     ViewBag.ProfileClass = "img-thumbnail popfit";
                                     await Html.RenderPartialAsync("~/Views/Common/ProfileImage.cshtml", item);
@@ -75,6 +86,17 @@
                     }
                 </ul>
             </div>
+            @{
+                String insertFooter = ViewBag.InsertFooter as String;
+                if (insertFooter != null)
+                {
+                    <div class="modal-footer">
+                        @{
+                            await Html.RenderPartialAsync(insertFooter, model: _dialogID);
+                        }
+                    </div>
+                }
+            }
         </div>
     </div>
 </div>
@@ -107,9 +129,9 @@
 
     });
 
-    function commitSelecting(uid, userName) {
-        if ($global.commitSelecting) {
-            $global.commitSelecting(uid, userName, $('#@(_dialogID)'));
+    function commitCoach(coachID, coachName, others) {
+        if ($global.commitCoach) {
+            $global.commitCoach(coachID, coachName, $('#@(_dialogID)'), others);
         }
             @if (ViewBag.EnableClose != false)
             {
@@ -119,3 +141,5 @@
     }
 
 </script>
+
+@RenderBody()

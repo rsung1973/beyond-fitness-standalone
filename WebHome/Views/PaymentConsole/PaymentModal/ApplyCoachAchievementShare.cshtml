@@ -19,18 +19,18 @@
     Payment _model = (Payment)this.Model;
 }
 @{
-    ViewBag.HeaderRaw = (Action)showHeader;
+    Layout = "~/Views/ContractConsole/ContractModal/SelectCoachTemplate.cshtml";
     ViewBag.InsertPartial = "~/Views/PaymentConsole/PaymentModal/ApplyShareAmount.cshtml";
     ViewBag.SelectAll = false;
     ViewBag.EnableClose = false;
     ViewBag.Allotment = 2;
     ViewBag.AllotmentCoach = 4;
-    await Html.RenderPartialAsync("~/Views/ContractConsole/ContractModal/SelectCoach.cshtml", models.PromptEffectiveCoach());
+    ViewBag.DataItems = models.PromptEffectiveCoach();
 }
 
-@{
-    void showHeader()
-    {
+@section HeaderRaw
+{
+    @{
         Payment item = _model;
         <div class="modal-header">
             <h6 class="title">目前<span class="col-red">剩餘</span>分潤金額：<span class="col-red">@($"{item.PayoffAmount - item.TuitionAchievement.Sum(t => t.ShareAmount):##,###,###,###}")</span></h6>

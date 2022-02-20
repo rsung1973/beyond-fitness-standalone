@@ -23,20 +23,12 @@
     AchievementQueryViewModel _viewModel = (AchievementQueryViewModel)ViewBag.ViewModel;
     var targetItems = _model.Where(d => !d.SpecialBonus.HasValue && !d.ManagerBonus.HasValue);
 
-    ViewBag.HeaderRaw = (Action)showHeader;
     ViewBag.InsertPartial = "~/Views/BonusCredit/BonusModal/GiveBonusAmount.cshtml";
     ViewBag.SelectAll = false;
     ViewBag.EnableClose = false;
     ViewBag.Allotment = 1;
     ViewBag.AllotmentCoach = 4;
     await Html.RenderPartialAsync("~/Views/ContractConsole/ContractModal/SelectCoach.cshtml", models.PromptEffectiveCoach());
-}
-
-@{
-    void showHeader()
-    {
-
-    }
 }
 
     <script>

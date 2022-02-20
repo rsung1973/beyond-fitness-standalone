@@ -380,7 +380,15 @@ namespace WebHome.Controllers
             viewModel.Address = item.Address;
             viewModel.Nickname = item.Nickname;
 
-            return View("~/Views/ContractConsole/ContractModal/EditContractMember2022.cshtml", item);
+            if (viewModel.UseVersion == "2022")
+            {
+                return View("~/Views/ContractConsole/ContractModal/EditContractMember2022.cshtml", item);
+            }
+            else
+            {
+                return View("~/Views/ContractConsole/ContractModal/EditContractMember.cshtml", item);
+            }
+
         }
 
         public async Task<ActionResult> CommitContractMemberAsync(ContractMemberViewModel viewModel)

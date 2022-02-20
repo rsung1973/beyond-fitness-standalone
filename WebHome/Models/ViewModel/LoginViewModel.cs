@@ -43,6 +43,7 @@ namespace WebHome.Models.ViewModel
             get => AlertMessage;
             set => AlertMessage = value;
         }
+        public String UseVersion { get; set; }
     }
 
     public class LoginViewModel : QueryViewModel
