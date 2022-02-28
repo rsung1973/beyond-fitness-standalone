@@ -78,5 +78,10 @@ namespace WebHome.Helper
             return null;
         }
 
+        public static bool IsContractOwner(this UserProfile profile, GenericManager<BFDataContext> models)
+        {
+            return models.GetTable<CourseContract>().Any(c => c.OwnerID == profile.UID);
+        }
+
     }
 }

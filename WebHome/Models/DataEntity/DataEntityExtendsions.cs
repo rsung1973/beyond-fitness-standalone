@@ -571,6 +571,8 @@ namespace WebHome.Models.DataEntity
 
         public int? DailyQuestionID { get; set; }
 
+        public bool IsVIP { get => UserProfileExtension?.VipStatus == (int)UserProfileExtension.VipStatusDefinition.VVIP; }
+        
     }
 
     public class CourseContractPayment
