@@ -63,7 +63,15 @@
                         <input type="checkbox" name="OwnerID" value="@(_viewModel.UID)" checked="@(!_viewModel.OwnerID.HasValue || _viewModel.OwnerID == _viewModel.UID)">
                         <span class="col-red">主簽約人</span>
                      </label>
-                }                            
+                } else {
+                    if(_model.IsContractOwner(models)) {
+                        <span class="social_icon bg-blue">主簽</span>
+                    }
+                }
+                @if (_model.IsVIP)
+                {
+                    <span class="social_icon bg-amber">VIP</span>
+                }
                 </div>
                 @* <span class="social_icon bg-amber">BR</span> *@
                 <a class="closebutton" data-dismiss="modal"></a>
