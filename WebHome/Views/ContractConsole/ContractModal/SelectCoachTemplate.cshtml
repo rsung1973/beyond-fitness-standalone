@@ -33,6 +33,9 @@
                 RenderSection("HeaderRaw", false);
             }
             <div class="modal-body">
+                @{ 
+                    RenderSection("BodyHeader", false);
+                }
                 <div class="row clearfix">
                     @if (ViewBag.EnableSearch != false)
                     {

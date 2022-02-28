@@ -543,7 +543,7 @@ namespace WebHome.Controllers
             }
             else
             {
-                if (viewModel.UserName.IsMobilPhone())
+                if (viewModel.UserName.IsMobilPhone() && (profile.IsAssistant() || profile.IsManager() || profile.IsViceManager()))
                 {
                     viewModel.Phone = viewModel.UserName;
                     viewModel.CurrentTrial = 1;
@@ -558,6 +558,24 @@ namespace WebHome.Controllers
                 return Json(new { result = false, message = "Opps！您確定您輸入的資料正確嗎！？" });
             }
 
+        }
+
+        public ActionResult SearchContractLeader(String userName)
+        {
+            userName = userName.GetEfficientString();
+            if (userName == null)
+            {
+                this.ModelState.AddModelError("userName", "請輸入查詢學員!!");
+                ViewBag.ModelState = this.ModelState;
+                return View("~/Views/ConsoleHome/Shared/ReportInputError.cshtml");
+            }
+
+            var items = userName.PromptLeaderByName(models, true);
+
+            if (items.Count() > 0)
+                return View("~/Views/LearnerProfile/ProfileModal/SelectContractLeader.cshtml", items);
+            else
+                return View("~/Views/ConsoleHome/Shared/AlertMessage.cshtml", model: "Opps！您確定您輸入的資料正確嗎！？");
         }
 
         public ActionResult ResumeLearnerCharacter(LearnerCharacterViewModel viewModel)

@@ -27,7 +27,7 @@
 @{ 
     ViewBag.SelectMember = (Func<UserProfile, String>)(item =>
     {
-        return $"showBookEvent('{item.UID.EncryptKey()}');";
+        return $"showBookEvent(\"{item.UID.EncryptKey()}\");";
     });
     await Html.RenderPartialAsync("~/Views/ConsoleEvent/EventModal/MemberSelector.cshtml", _model);
 }

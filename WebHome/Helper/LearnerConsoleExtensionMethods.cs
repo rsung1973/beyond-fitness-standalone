@@ -25,9 +25,17 @@ namespace WebHome.Helper
     {
 
         public static IQueryable<UserProfile> PromptLearnerByName(this String userName, GenericManager<BFDataContext> models, bool includeTrial = false)
-                
         {
             var items = userName.PromptUserProfileByName(models, models.PromptLearner(includeTrial));
+            return items;
+        }
+
+        public static IQueryable<UserProfile> PromptLeaderByName(this String userName, GenericManager<BFDataContext> models, bool includeTrial = false)
+        {
+            var items = userName.PromptUserProfileByName(models, models.PromptLearner(includeTrial));
+            
+            DateTime legalDate = DateTime.Today.AddYears(-18);
+            items = items.Where(u => u.Birthday <= legalDate);
             return items;
         }
 

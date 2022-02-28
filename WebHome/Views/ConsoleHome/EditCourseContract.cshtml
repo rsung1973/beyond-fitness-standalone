@@ -57,7 +57,7 @@
                     <div class="col-lg-6 col-md-6 col-sm-6 col-12">
                         <select class="form-control show-tick" name="ContractType">
                             <option value="">-- 請選擇合約類型 --</option>
-                            @foreach (var item in models.GetTable<CourseContractType>())
+                            @foreach (var item in models.GetTable<CourseContractType>().Where(t => t.TypeID < 6))
                             {
                                 <option value="@(item.TypeID)" data-virtual="@(CourseContractType.IsSuitableForVirtaulClass((CourseContractType.ContractTypeDefinition)item.TypeID))">@Html.Raw(item.TypeName)</option>
                             }

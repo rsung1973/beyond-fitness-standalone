@@ -386,7 +386,7 @@ namespace WebHome.Controllers
             }
             else
             {
-                return View("~/Views/ContractConsole/ContractModal/EditContractMember.cshtml", item);
+                return View("~/Views/ContractConsole/ContractModal/EditContractMember2022.cshtml", item);
             }
 
         }
@@ -394,6 +394,7 @@ namespace WebHome.Controllers
         public async Task<ActionResult> CommitContractMemberAsync(ContractMemberViewModel viewModel)
         {
             var item = await viewModel.CommitUserProfileAsync(this);
+
             if (item == null)
             {
                 if (!ModelState.IsValid)
@@ -404,6 +405,36 @@ namespace WebHome.Controllers
                 {
                     return View("~/Views/ConsoleHome/Shared/AlertMessage.cshtml", model: ModelState.ErrorMessage());
                 }
+            }
+            else
+            {
+                if (viewModel.ProfileOnly == true)
+                {
+
+                }
+                else
+                {
+                    if (viewModel.OwnerID == item.UID)
+                    {
+                        if (item.Address == null)
+                        {
+                            ModelState.AddModelError("OwnerID", "主簽約人必需有地址!!");
+                        }
+                        else if (item.Phone == null)
+                        {
+                            ModelState.AddModelError("OwnerID", "主簽約人必需有手機號碼!!");
+                        }
+                        else if (item.UserProfileExtension?.IDNo == null)
+                        {
+                            ModelState.AddModelError("OwnerID", "主簽約人必需有身分證字號/護照號碼!!");
+                        }
+                    }
+                }
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(ConsoleHomeController.InputErrorView);
             }
 
             if (viewModel.ProfileOnly == true)

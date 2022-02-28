@@ -572,7 +572,7 @@ namespace WebHome.Helper.BusinessOperation
 
         }
 
-        public static async Task<UserProfile> CommitUserProfileAsync(this LearnerViewModel viewModel, SampleController<UserProfile> controller)
+        public static async Task<UserProfile> CommitUserProfileAsync(this ContractMemberViewModel viewModel, SampleController<UserProfile> controller)
             
         {
             var ModelState = controller.ModelState;
@@ -588,7 +588,7 @@ namespace WebHome.Helper.BusinessOperation
             viewModel.IDNo = viewModel.IDNo.GetEfficientString();
             if (viewModel.IDNo == null)
             {
-                if (viewModel.CurrentTrial != 1)
+                if (viewModel.CurrentTrial != 1 && viewModel.IsAdult)
                 {
                     ModelState.AddModelError("IDNo", "請輸入身分證字號/護照號碼");
                 }
@@ -620,11 +620,13 @@ namespace WebHome.Helper.BusinessOperation
                     ModelState.AddModelError("Birthday", "請輸入出生");
                 }
 
-                if (String.IsNullOrEmpty(viewModel.AdministrativeArea))
+                viewModel.AdministrativeArea = viewModel.AdministrativeArea.GetEfficientString();
+                if (viewModel.AdministrativeArea == null && viewModel.IsAdult)
                 {
                     ModelState.AddModelError("AdministrativeArea", "請選擇縣市");
                 }
-                if (String.IsNullOrEmpty(viewModel.Address))
+                viewModel.Address = viewModel.Address.GetEfficientString();
+                if (viewModel.Address == null && viewModel.IsAdult)
                 {
                     ModelState.AddModelError("Address", "請輸入居住地址");
                 }
@@ -653,11 +655,53 @@ namespace WebHome.Helper.BusinessOperation
                 ModelState.AddModelError("RealName", "請輸入真實姓名");
             }
 
-            viewModel.Phone = viewModel.Phone.GetEfficientString();
-            if (viewModel.Phone == null)
+            void validatePhone()
             {
-                ModelState.AddModelError("Phone", "請輸入聯絡電話");
+                viewModel.Phone = viewModel.Phone.GetEfficientString();
+                if (viewModel.Phone == null)
+                {
+                    if (!viewModel.IsAdult)
+                    {
+                        if (viewModel.PhoneType?.Contains(ContractMemberViewModel.PhoneUsage.Relational) == true)
+                        {
+                            viewModel.RelationMemo = viewModel.RelationMemo.GetEfficientString();
+                            if (!viewModel.RelationID.HasValue)
+                            {
+                                ModelState.AddModelError("UserName", "請選擇非本人手機聯絡人");
+                                return;
+                            }
+                            else if (viewModel.RelationMemo == null)
+                            {
+                                ModelState.AddModelError("RelationMemo", "請選擇關係");
+                                return;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("Phone", "請輸入手機號碼");
+                    }
+                }
+                else
+                {
+                    if (viewModel.UID.HasValue)
+                    {
+                        if (models.GetTable<UserProfile>().Any(u => u.Phone == viewModel.Phone && u.UID != viewModel.UID))
+                        {
+                            ModelState.AddModelError("Phone", "手機號碼不得與其他人相同!!");
+                        }
+                    }
+                    else
+                    {
+                        if (models.GetTable<UserProfile>().Any(u => u.Phone == viewModel.Phone))
+                        {
+                            ModelState.AddModelError("Phone", "手機號碼不得與其他人相同!!");
+                        }
+                    }
+                }
             }
+
+            validatePhone();
 
             viewModel.Gender = viewModel.Gender.GetEfficientString();
             if (viewModel.Gender == null)
@@ -725,6 +769,28 @@ namespace WebHome.Helper.BusinessOperation
             if (viewModel.CurrentTrial != 1)
             {
                 models.ExecuteCommand("update UserRole set RoleID={0} where UID={1} and RoleID={2} ", (int)Naming.RoleID.Learner, item.UID, (int)Naming.RoleID.Preliminary);
+            }
+
+            if (viewModel.RelationID.HasValue)
+            {
+                models.ExecuteCommand("delete UserRelationship where UID={0} and RelationFor={1}",
+                    item.UID, (int)UserRelationship.RelationForDefinition.NotMySelfPhone);
+
+                var relation = models.GetTable<UserRelationship>().Where(r => r.LeaderID == viewModel.RelationID)
+                        .Where(r => r.UID == item.UID).FirstOrDefault();
+
+                if (relation == null)
+                {
+                    relation = new UserRelationship
+                    {
+                        UID = item.UID,
+                        LeaderID = viewModel.RelationID.Value,
+                    };
+                    models.GetTable<UserRelationship>().InsertOnSubmit(relation);
+                }
+                relation.Memo = viewModel.RelationMemo;
+                relation.RelationFor = (int)UserRelationship.RelationForDefinition.NotMySelfPhone;
+                models.SubmitChanges();
             }
 
             return item;

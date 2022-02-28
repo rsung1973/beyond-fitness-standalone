@@ -680,4 +680,12 @@ namespace WebHome.Models.DataEntity
 
     }
 
+    public partial class UserRelationship
+    {
+        public enum RelationForDefinition
+        {
+            NotMySelfPhone = 1,
+        }
+
+    }
 }

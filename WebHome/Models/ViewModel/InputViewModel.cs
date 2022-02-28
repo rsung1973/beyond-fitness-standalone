@@ -123,6 +123,12 @@ namespace WebHome.Models.ViewModel
         public int? ContractType { get; set; }
         public bool? ProfileOnly { get; set; }
         public bool? HasReset { get; set; }
+        public enum PhoneUsage
+        {
+            MyOwn = 0,
+            Relational = 1,
+        }
+        public PhoneUsage?[] PhoneType { get; set; }
     }
 
     public class UserSignatureViewModel : QueryViewModel

@@ -217,75 +217,75 @@ namespace WebHome.Controllers
             return View("~/Views/CourseContract/Module/MemberSelector.ascx", items);
         }
 
-        public ActionResult EditContractMember(ContractMemberViewModel viewModel,int? referenceUID)
-        {
-            ViewBag.ViewModel = viewModel;
+        //public ActionResult EditContractMember(ContractMemberViewModel viewModel,int? referenceUID)
+        //{
+        //    ViewBag.ViewModel = viewModel;
 
-            UserProfile item;
-            if (referenceUID.HasValue)
-            {
-                item = models.GetTable<UserProfile>().Where(u => u.UID == referenceUID).FirstOrDefault();
-                if (item != null)
-                {
-                    viewModel.Address = item.Address;
-                    viewModel.EmergencyContactPhone = item.UserProfileExtension.EmergencyContactPhone;
-                    viewModel.EmergencyContactPerson = item.UserProfileExtension.EmergencyContactPerson;
-                    viewModel.Relationship = item.UserProfileExtension.Relationship;
-                    viewModel.AdministrativeArea = item.UserProfileExtension.AdministrativeArea;
-                }
-            }
-            else
-            {
-                item = models.GetTable<UserProfile>().Where(u => u.UID == viewModel.UID).FirstOrDefault();
+        //    UserProfile item;
+        //    if (referenceUID.HasValue)
+        //    {
+        //        item = models.GetTable<UserProfile>().Where(u => u.UID == referenceUID).FirstOrDefault();
+        //        if (item != null)
+        //        {
+        //            viewModel.Address = item.Address;
+        //            viewModel.EmergencyContactPhone = item.UserProfileExtension.EmergencyContactPhone;
+        //            viewModel.EmergencyContactPerson = item.UserProfileExtension.EmergencyContactPerson;
+        //            viewModel.Relationship = item.UserProfileExtension.Relationship;
+        //            viewModel.AdministrativeArea = item.UserProfileExtension.AdministrativeArea;
+        //        }
+        //    }
+        //    else
+        //    {
+        //        item = models.GetTable<UserProfile>().Where(u => u.UID == viewModel.UID).FirstOrDefault();
 
-                if (item != null)
-                {
-                    viewModel.Gender = item.UserProfileExtension.Gender;
-                    viewModel.EmergencyContactPhone = item.UserProfileExtension.EmergencyContactPhone;
-                    viewModel.EmergencyContactPerson = item.UserProfileExtension.EmergencyContactPerson;
-                    viewModel.Relationship = item.UserProfileExtension.Relationship;
-                    viewModel.AdministrativeArea = item.UserProfileExtension.AdministrativeArea;
-                    viewModel.IDNo = item.UserProfileExtension.IDNo;
-                    viewModel.Phone = item.Phone;
-                    viewModel.Birthday = item.Birthday;
-                    viewModel.AthleticLevel = item.UserProfileExtension.AthleticLevel;
-                    viewModel.RealName = item.RealName;
-                    viewModel.Address = item.Address;
-                    viewModel.Nickname = item.Nickname;
+        //        if (item != null)
+        //        {
+        //            viewModel.Gender = item.UserProfileExtension.Gender;
+        //            viewModel.EmergencyContactPhone = item.UserProfileExtension.EmergencyContactPhone;
+        //            viewModel.EmergencyContactPerson = item.UserProfileExtension.EmergencyContactPerson;
+        //            viewModel.Relationship = item.UserProfileExtension.Relationship;
+        //            viewModel.AdministrativeArea = item.UserProfileExtension.AdministrativeArea;
+        //            viewModel.IDNo = item.UserProfileExtension.IDNo;
+        //            viewModel.Phone = item.Phone;
+        //            viewModel.Birthday = item.Birthday;
+        //            viewModel.AthleticLevel = item.UserProfileExtension.AthleticLevel;
+        //            viewModel.RealName = item.RealName;
+        //            viewModel.Address = item.Address;
+        //            viewModel.Nickname = item.Nickname;
 
-                }
-            }
+        //        }
+        //    }
 
-            return View("~/Views/CourseContract/Module/EditContractMember.ascx");
-        }
+        //    return View("~/Views/CourseContract/Module/EditContractMember.ascx");
+        //}
 
-        public async Task<ActionResult> CommitContractMemberAsync(ContractMemberViewModel viewModel)
-        {
-            var item = await viewModel.CommitUserProfileAsync(this);
-            if (item == null)
-            {
-                if (!ModelState.IsValid)
-                {
-                    return View("~/Views/Shared/ReportInputError.ascx");
-                }
-                else
-                {
-                    return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: ModelState.ErrorMessage());
-                }
-            }
+        //public async Task<ActionResult> CommitContractMemberAsync(ContractMemberViewModel viewModel)
+        //{
+        //    var item = await viewModel.CommitUserProfileAsync(this);
+        //    if (item == null)
+        //    {
+        //        if (!ModelState.IsValid)
+        //        {
+        //            return View("~/Views/Shared/ReportInputError.ascx");
+        //        }
+        //        else
+        //        {
+        //            return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: ModelState.ErrorMessage());
+        //        }
+        //    }
 
-            return Json(new
-            {
-                result = true,
-                UID = item.UID,
-                RealName = item.RealName,
-                OwnerID = viewModel.OwnerID == -1
-                            ? item.UID
-                            : viewModel.OwnerID.HasValue
-                                ? viewModel.OwnerID
-                                : (int?)null
-            });
-        }
+        //    return Json(new
+        //    {
+        //        result = true,
+        //        UID = item.UID,
+        //        RealName = item.RealName,
+        //        OwnerID = viewModel.OwnerID == -1
+        //                    ? item.UID
+        //                    : viewModel.OwnerID.HasValue
+        //                        ? viewModel.OwnerID
+        //                        : (int?)null
+        //    });
+        //}
 
         public ActionResult GetLessonPriceList(int branchID,int? duration)
         {

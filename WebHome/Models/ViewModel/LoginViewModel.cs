@@ -168,7 +168,8 @@ namespace WebHome.Models.ViewModel
 
         public String Gender { get; set; }
 
-        public int? LevelID { get; set; } 
+        public int? LevelID { get; set; }
+        public bool IsAdult => Birthday.HasValue && Birthday <= DateTime.Today.AddYears(-18);
 
     }
 
@@ -192,6 +193,9 @@ namespace WebHome.Models.ViewModel
         public String EmergencyContactPhone { get; set; }
         public String Relationship { get; set; }
         public String AdministrativeArea { get; set; }
+        public int? RelationID { get; set; }
+        public String RelationMemo { get; set; }
+
     }
 
     public class LessonViewModel

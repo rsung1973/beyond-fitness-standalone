@@ -618,6 +618,9 @@ namespace WebHome.Models.DataEntity
     partial void InsertMonthlySalaryDetails(MonthlySalaryDetails instance);
     partial void UpdateMonthlySalaryDetails(MonthlySalaryDetails instance);
     partial void DeleteMonthlySalaryDetails(MonthlySalaryDetails instance);
+    partial void InsertUserRelationship(UserRelationship instance);
+    partial void UpdateUserRelationship(UserRelationship instance);
+    partial void DeleteUserRelationship(UserRelationship instance);
     #endregion
 		
 		public BFDataContext() : 
@@ -2279,6 +2282,14 @@ namespace WebHome.Models.DataEntity
 			get
 			{
 				return this.GetTable<MonthlySalaryDetails>();
+			}
+		}
+		
+		public System.Data.Linq.Table<UserRelationship> UserRelationships
+		{
+			get
+			{
+				return this.GetTable<UserRelationship>();
 			}
 		}
 		
@@ -5243,6 +5254,10 @@ namespace WebHome.Models.DataEntity
 		
 		private EntitySet<MonthlySalaryDetails> _MonthlySalaryDetails;
 		
+		private EntitySet<UserRelationship> _UserRelationship;
+		
+		private EntitySet<UserRelationship> _AsRelationship;
+		
 		private EntityRef<Attachment> _Attachment;
 		
 		private EntityRef<LevelExpression> _LevelExpression;
@@ -5352,6 +5367,8 @@ namespace WebHome.Models.DataEntity
 			this._EmployeeSalaryExtension = default(EntityRef<EmployeeSalaryExtension>);
 			this._ForEmployee = default(EntityRef<ForEmployee>);
 			this._MonthlySalaryDetails = new EntitySet<MonthlySalaryDetails>(new Action<MonthlySalaryDetails>(this.attach_MonthlySalaryDetails), new Action<MonthlySalaryDetails>(this.detach_MonthlySalaryDetails));
+			this._UserRelationship = new EntitySet<UserRelationship>(new Action<UserRelationship>(this.attach_UserRelationship), new Action<UserRelationship>(this.detach_UserRelationship));
+			this._AsRelationship = new EntitySet<UserRelationship>(new Action<UserRelationship>(this.attach_AsRelationship), new Action<UserRelationship>(this.detach_AsRelationship));
 			this._Attachment = default(EntityRef<Attachment>);
 			this._LevelExpression = default(EntityRef<LevelExpression>);
 			this._UserProfile1 = default(EntityRef<UserProfile>);
@@ -6586,6 +6603,32 @@ namespace WebHome.Models.DataEntity
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserProfile_UserRelationship", Storage="_UserRelationship", ThisKey="UID", OtherKey="LeaderID")]
+		public EntitySet<UserRelationship> UserRelationship
+		{
+			get
+			{
+				return this._UserRelationship;
+			}
+			set
+			{
+				this._UserRelationship.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserProfile_UserRelationship1", Storage="_AsRelationship", ThisKey="UID", OtherKey="UID")]
+		public EntitySet<UserRelationship> AsRelationship
+		{
+			get
+			{
+				return this._AsRelationship;
+			}
+			set
+			{
+				this._AsRelationship.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Attachment_UserProfile", Storage="_Attachment", ThisKey="PictureID", OtherKey="AttachmentID", IsForeignKey=true)]
 		public Attachment Attachment
 		{
@@ -7256,6 +7299,30 @@ namespace WebHome.Models.DataEntity
 		{
 			this.SendPropertyChanging();
 			entity.UserProfile = null;
+		}
+		
+		private void attach_UserRelationship(UserRelationship entity)
+		{
+			this.SendPropertyChanging();
+			entity.UserProfile = this;
+		}
+		
+		private void detach_UserRelationship(UserRelationship entity)
+		{
+			this.SendPropertyChanging();
+			entity.UserProfile = null;
+		}
+		
+		private void attach_AsRelationship(UserRelationship entity)
+		{
+			this.SendPropertyChanging();
+			entity.AsRelated = this;
+		}
+		
+		private void detach_AsRelationship(UserRelationship entity)
+		{
+			this.SendPropertyChanging();
+			entity.AsRelated = null;
 		}
 	}
 	
@@ -61401,6 +61468,222 @@ namespace WebHome.Models.DataEntity
 						this._UID = default(int);
 					}
 					this.SendPropertyChanged("UserProfile");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.UserRelationship")]
+	public partial class UserRelationship : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _LeaderID;
+		
+		private int _UID;
+		
+		private string _Memo;
+		
+		private System.Nullable<int> _RelationFor;
+		
+		private EntityRef<UserProfile> _UserProfile;
+		
+		private EntityRef<UserProfile> _AsRelated;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnLeaderIDChanging(int value);
+    partial void OnLeaderIDChanged();
+    partial void OnUIDChanging(int value);
+    partial void OnUIDChanged();
+    partial void OnMemoChanging(string value);
+    partial void OnMemoChanged();
+    partial void OnRelationForChanging(System.Nullable<int> value);
+    partial void OnRelationForChanged();
+    #endregion
+		
+		public UserRelationship()
+		{
+			this._UserProfile = default(EntityRef<UserProfile>);
+			this._AsRelated = default(EntityRef<UserProfile>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LeaderID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int LeaderID
+		{
+			get
+			{
+				return this._LeaderID;
+			}
+			set
+			{
+				if ((this._LeaderID != value))
+				{
+					if (this._UserProfile.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnLeaderIDChanging(value);
+					this.SendPropertyChanging();
+					this._LeaderID = value;
+					this.SendPropertyChanged("LeaderID");
+					this.OnLeaderIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int UID
+		{
+			get
+			{
+				return this._UID;
+			}
+			set
+			{
+				if ((this._UID != value))
+				{
+					if (this._AsRelated.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnUIDChanging(value);
+					this.SendPropertyChanging();
+					this._UID = value;
+					this.SendPropertyChanged("UID");
+					this.OnUIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Memo", DbType="NVarChar(16)")]
+		public string Memo
+		{
+			get
+			{
+				return this._Memo;
+			}
+			set
+			{
+				if ((this._Memo != value))
+				{
+					this.OnMemoChanging(value);
+					this.SendPropertyChanging();
+					this._Memo = value;
+					this.SendPropertyChanged("Memo");
+					this.OnMemoChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RelationFor", DbType="Int")]
+		public System.Nullable<int> RelationFor
+		{
+			get
+			{
+				return this._RelationFor;
+			}
+			set
+			{
+				if ((this._RelationFor != value))
+				{
+					this.OnRelationForChanging(value);
+					this.SendPropertyChanging();
+					this._RelationFor = value;
+					this.SendPropertyChanged("RelationFor");
+					this.OnRelationForChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserProfile_UserRelationship", Storage="_UserProfile", ThisKey="LeaderID", OtherKey="UID", IsForeignKey=true)]
+		public UserProfile UserProfile
+		{
+			get
+			{
+				return this._UserProfile.Entity;
+			}
+			set
+			{
+				UserProfile previousValue = this._UserProfile.Entity;
+				if (((previousValue != value) 
+							|| (this._UserProfile.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._UserProfile.Entity = null;
+						previousValue.UserRelationship.Remove(this);
+					}
+					this._UserProfile.Entity = value;
+					if ((value != null))
+					{
+						value.UserRelationship.Add(this);
+						this._LeaderID = value.UID;
+					}
+					else
+					{
+						this._LeaderID = default(int);
+					}
+					this.SendPropertyChanged("UserProfile");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserProfile_UserRelationship1", Storage="_AsRelated", ThisKey="UID", OtherKey="UID", IsForeignKey=true)]
+		public UserProfile AsRelated
+		{
+			get
+			{
+				return this._AsRelated.Entity;
+			}
+			set
+			{
+				UserProfile previousValue = this._AsRelated.Entity;
+				if (((previousValue != value) 
+							|| (this._AsRelated.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._AsRelated.Entity = null;
+						previousValue.AsRelationship.Remove(this);
+					}
+					this._AsRelated.Entity = value;
+					if ((value != null))
+					{
+						value.AsRelationship.Add(this);
+						this._UID = value.UID;
+					}
+					else
+					{
+						this._UID = default(int);
+					}
+					this.SendPropertyChanged("AsRelated");
 				}
 			}
 		}

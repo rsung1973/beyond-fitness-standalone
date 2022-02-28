@@ -7,42 +7,25 @@
 @using WebHome.Models.ViewModel
 @using WebHome.Models.DataEntity
 @using WebHome.Controllers
+@using CommonLib.Utility
 @using Microsoft.AspNetCore.Mvc.ModelBinding
 @{
 
     ModelStateDictionary _modelState;
     ModelSource<UserProfile> models;
     IQueryable<UserProfile> _model;
-    CalendarEventQueryViewModel _viewModel;
     String _dialogID = $"attendee{DateTime.Now.Ticks}";
-
-
 
     _modelState = ViewContext.ModelState;
     models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
     _model = (IQueryable<UserProfile>)this.Model;
-    _viewModel = (CalendarEventQueryViewModel)ViewBag.ViewModel;
 }
 @{
     ViewBag.SelectMember = (Func<UserProfile, String>)(item =>
     {
-        return $"selectContractMember({item.UID});";
+        return $"commitRelationship({(new { UID = item.UID, RealName = item.RealName, Phone = item.Phone }).JsonStringify()});";
     });
     ViewBag.ShowPhone = true;
     await Html.RenderPartialAsync("~/Views/ConsoleEvent/EventModal/MemberSelector.cshtml", _model);
 }
-
-<script>
-    function selectContractMember(uid) {
-        if (!$global.viewModel.UID) {
-            $global.viewModel.UID = [];
-        }
-        $global.commitContractMemberOnce = function () {
-            $global.viewModel.UID.push(uid);
-            loadMemberList();
-        };
-        $global.closeAllModal();
-        editContractMember(uid);
-    }
-</script>
 

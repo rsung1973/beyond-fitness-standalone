@@ -25,9 +25,9 @@
 
     _items = models.GetTable<RegisterLesson>().Where(r => r.UID == _model.UID)
                 .TotalLessons(models)
-                .OrderByDescending(l => l.ClassTime)
-                .Take(3)
-                .OrderBy(l => l.ClassTime).ToList();
+                .Where(l => l.ClassTime > DateTime.Today)
+                .OrderBy(l => l.ClassTime)
+                .Take(3).ToList();
 
 }
 <div class="class-block">

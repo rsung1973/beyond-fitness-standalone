@@ -707,7 +707,7 @@ namespace WebHome.Controllers
 
             ViewBag.ViewModel = new QueryViewModel
             {
-                UrlAction = Url.Action("MyContract"),
+                UrlAction = Url.Action("MyContract", "CornerKick"),
             };
             return View("~/Views/CornerKick/Shared/ViewModelCommitted.cshtml");
         }
@@ -754,7 +754,7 @@ namespace WebHome.Controllers
 
             ViewBag.ViewModel = new QueryViewModel
             {
-                UrlAction = Url.Action("MyContract"),
+                UrlAction = Url.Action("MyContract", "CornerKick"),
             };
             return View("~/Views/CornerKick/Shared/ViewModelCommitted.cshtml");
         }

@@ -1,4 +1,4 @@
-
+﻿
 @using System.IO
 @using System.Linq.Expressions
 
@@ -13,7 +13,7 @@
     ModelStateDictionary _modelState;
     ModelSource<UserProfile> models;
     ContractMemberViewModel _viewModel;
-
+    UserProfile _model = this.Model as UserProfile;
 
 
     _modelState = ViewContext.ModelState;
@@ -22,8 +22,10 @@
 }
 
 <script>
-    $(function () {
-        $('#@(_viewModel.DialogID)').modal('hide');
-    });
+    Swal.fire(
+        '更新成功',
+        '資料已經更新 Bye!',
+        'success'
+    );
 </script>
 

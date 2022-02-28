@@ -26,7 +26,7 @@
 @{
     ViewBag.SelectMember = (Func<UserProfile, String>)(item =>
     {
-        return $"$global.selectLearnerProfile('{item.UID.EncryptKey()}');";
+        return $"$global.selectLearnerProfile(\"{item.UID.EncryptKey()}\");";
     });
     ViewBag.ShowPhone = true;
     await Html.RenderPartialAsync("~/Views/ConsoleEvent/EventModal/MemberSelector.cshtml", _model);
