@@ -80,7 +80,7 @@ namespace WebHome.Helper
 
         public static bool IsContractOwner(this UserProfile profile, GenericManager<BFDataContext> models)
         {
-            return models.GetTable<CourseContract>().Any(c => c.OwnerID == profile.UID);
+            return models.GetTable<CourseContract>().Any(c => c.OwnerID == profile.UID && c.Status == (int) Naming.ContractQueryStatus.生效中);
         }
 
     }
