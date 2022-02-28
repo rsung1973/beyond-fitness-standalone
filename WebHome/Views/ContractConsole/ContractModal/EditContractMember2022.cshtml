@@ -54,17 +54,17 @@
                             roleStatus.Add("幽靈");
                         }                    
                     }
-                        <small class="badge bg-blue-grey">@Html.Raw(String.Join("/",roleStatus))</small>
-                        <div class="flot-left">
-                        @if (_viewModel.ProfileOnly != true)
-                        {
-                            <label class="fancy-checkbox custom-bgcolor-pink">
-                                <input type="checkbox" name="OwnerID" value="@(_viewModel.UID)" checked="@(!_viewModel.OwnerID.HasValue || _viewModel.OwnerID == _viewModel.UID)">
-                                <span class="col-red">主簽約人</span>
-                            </label>
-                        }                            
-                        </div>
+                        <small class="badge bg-blue-grey">@Html.Raw(String.Join("/",roleStatus))</small>                        
                 </h5>
+                <div class="flot-right">
+                 @if (_viewModel.ProfileOnly != true)
+                 {
+                     <label class="fancy-checkbox custom-bgcolor-pink">
+                        <input type="checkbox" name="OwnerID" value="@(_viewModel.UID)" checked="@(!_viewModel.OwnerID.HasValue || _viewModel.OwnerID == _viewModel.UID)">
+                        <span class="col-red">主簽約人</span>
+                     </label>
+                }                            
+                </div>
                 @* <span class="social_icon bg-amber">BR</span> *@
                 <a class="closebutton" data-dismiss="modal"></a>
             </div>
