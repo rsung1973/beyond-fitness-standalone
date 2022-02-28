@@ -32,34 +32,38 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header learnerprofile">
-                @{
-                    List<String> roles = new List<string>();
-                    if (_model.IsTrialLearner())
-                    {
-                        roles.Add("體驗");
-                    }
-                    if (_model.IsLearner())
-                    {
-                        roles.Add("正式學生");
-                    }
-                    if (_model.IsEmployee())
-                    {
-                        roles.Add("員工");
-                    }
-                }
                 <h5>
-                    @Html.Raw(String.Join("/",roles))
-                    @if (_model.LevelID == (int)Naming.MemberStatusDefinition.Anonymous)
-                    {
-                        <small class="badge bg-blue-grey">幽靈</small>
+                    @{                    
+                        if (_model.IsEmployee())
+                        {
+                            <text>員工</text>
+                        } else {
+                            <text>學生</text>
+                        }              
+
+                        List<String> roleStatus= new List<string>(); 
+
+                        if (_model.IsTrialLearner()){
+                            roleStatus.Add("體驗");
+                        } else if (_model.IsLearner()) {
+                            roleStatus.Add("正式");
+                        }
+                        
+                        if (_model.LevelID == (int)Naming.MemberStatusDefinition.Anonymous)
+                        {
+                            roleStatus.Add("幽靈");
+                        }                    
                     }
-                    @if (_viewModel.ProfileOnly != true)
-                    {
-                        <label class="fancy-checkbox custom-bgcolor-pink">
-                            <input type="checkbox" name="OwnerID" value="@(_viewModel.UID)" checked="@(!_viewModel.OwnerID.HasValue || _viewModel.OwnerID == _viewModel.UID)">
-                            <span class="col-red">主簽約人</span>
-                        </label>
-                    }
+                        <small class="badge bg-blue-grey">@Html.Raw(String.Join("/",roleStatus))</small>
+                        <div class="flot-left">
+                        @if (_viewModel.ProfileOnly != true)
+                        {
+                            <label class="fancy-checkbox custom-bgcolor-pink">
+                                <input type="checkbox" name="OwnerID" value="@(_viewModel.UID)" checked="@(!_viewModel.OwnerID.HasValue || _viewModel.OwnerID == _viewModel.UID)">
+                                <span class="col-red">主簽約人</span>
+                            </label>
+                        }                            
+                        </div>
                 </h5>
                 @* <span class="social_icon bg-amber">BR</span> *@
                 <a class="closebutton" data-dismiss="modal"></a>
