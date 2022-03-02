@@ -124,7 +124,7 @@
     <value>分店一覽</value>
   </data>
  <data name="OnLine" xml:space="preserve">
-    <value>線上課程</value>
+    <value>專屬服務</value>
   </data>    
   <data name="FAQ" xml:space="preserve">
     <value>常見問題</value>
@@ -136,7 +136,7 @@
     <value>加入團隊</value>
   </data>
   <data name="BookNow" xml:space="preserve">
-    <value>立即體驗</value>
+    <value>立即免費體驗</value>
   </data>
   <data name="LearnMore" xml:space="preserve">
     <value>了解更多</value>
@@ -151,10 +151,10 @@
     <value>立即提問</value>
   </data>
   <data name="IndexBannerTitle" xml:space="preserve">
-    <value>我們的堅持</value>
+    <value>離家最近</value>
   </data>
   <data name="IndexBannerSubTitle" xml:space="preserve">
-    <value>源自於客戶每一分安心</value>
+    <value>發揮自信魅力的1對1私人教練課</value>
   </data>
   <data name="IndexFeature1" xml:space="preserve">
     <value>安心承諾</value>
@@ -175,17 +175,23 @@
     <value>全新體能分析庫、個人化課表內容、每月挑戰，全為激發你的源源動力。</value>
   </data>
   <data name="IndexVedioTitle" xml:space="preserve">
-    <value>給 不知道如何開始 背後的你</value>
+    <value>全方位照顧你的健康</value>
   </data>
   <data name="IndexVedioSubTitle" xml:space="preserve">
-    <value>夢想實踐者</value>
+    <value>除了可擁有專屬的體能教練外&lt;br /&gt;還有業界唯一的「健康部門」團隊幫助您&lt;br/&gt;</value>
   </data>
   <data name="IndexVedioDesc" xml:space="preserve">
-    <value>看看 黃伯伯 &lt;span class="hidden-sm-down"&gt;和 陳阿姨 &lt;/span&gt;如何透過專業的訓練，更加了解運動的價值。</value>
+    <value>&lt;b&gt;運動傷害評估師&lt;/b&gt;&lt;br /&gt;&lt;b&gt;國際營養諮詢師&lt;/b&gt;&lt;br /&gt;&lt;b&gt;運動按摩恢復師&lt;/b&gt;</value>
   </data>
   <data name="IndexFunFactsTitle" xml:space="preserve">
-    <value>數據體能分析，&lt;br /&gt;創造強而有力的新雲端</value>
+    <value>增肌減脂卡關嗎？</value>
   </data>
+  <data name="IndexFunFactsContent" xml:space="preserve">
+    <value>&lt;br/&gt;請放心&lt;br /&gt;教練會細心了解妳的身體狀況，設計最適合你的課程內容</value>
+  </data>
+  <data name="IndexPartnerTitle" xml:space="preserve">
+    <value>合作夥伴</value>
+  </data>  
   <data name="IndexSlick1Desc" xml:space="preserve">
     <value>專業是細心且提升客戶的保障，Beyond 運動與物理治療的配合是有效的</value>
   </data>
@@ -502,7 +508,7 @@
     <value>立即前往</value>
   </data>
   <data name="OnlineReservation" xml:space="preserve">
-    <value>線上預約</value>
+    <value>課程推薦</value>
   </data>
   <data name="TeamTitle" xml:space="preserve">
     <value>專業團隊</value>

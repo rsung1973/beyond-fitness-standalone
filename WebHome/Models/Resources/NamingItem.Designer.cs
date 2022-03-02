@@ -806,7 +806,25 @@ namespace WebHome.Models.Resources {
                 return ResourceManager.GetString("IndexFunFactsTitle", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;br/&gt;請放心&lt;br /&gt;教練會細心了解妳的身體狀況，設計最適合你的課程內容
+        /// </summary>
+        public static string IndexFunFactsContent {
+            get {
+                return ResourceManager.GetString("IndexFunFactsContent", resourceCulture);
+            }
+        }        
         
+        /// <summary>
+        ///   Looks up a localized string similar to 合作夥伴
+        /// </summary>
+        public static string IndexPartnerTitle {
+            get {
+                return ResourceManager.GetString("IndexPartnerTitle", resourceCulture);
+            }
+        }   
+
         /// <summary>
         ///   Looks up a localized string similar to 專業是細心且提升客戶的保障，Beyond 運動與物理治療的配合是有效的.
         /// </summary>

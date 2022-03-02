@@ -136,7 +136,7 @@
     <value>Join Us</value>
   </data>
   <data name="BookNow" xml:space="preserve">
-    <value>Reservation</value>
+    <value>Book your free trial now!</value>
   </data>
   <data name="LearnMore" xml:space="preserve">
     <value>Learn more</value>
@@ -151,10 +151,10 @@
     <value>Ask Now</value>
   </data>
   <data name="IndexBannerTitle" xml:space="preserve">
-    <value>Our persistence</value>
+    <value>Your nearest gym!</value>
   </data>
   <data name="IndexBannerSubTitle" xml:space="preserve">
-    <value>Is built on each client’s Peace of Mind</value>
+    <value>1-on-1 personal training class that brings you self-confidence and charms.</value>
   </data>
   <data name="IndexFeature1" xml:space="preserve">
     <value>Our commitment</value>
@@ -175,17 +175,23 @@
     <value>Innovative fitness analytics. Customized training program to inspire your unlimited power!</value>
   </data>
   <data name="IndexVedioTitle" xml:space="preserve">
-    <value>To whom that wonders where to begin...</value>
+    <value>We care about you in many ways.</value>
   </data>
   <data name="IndexVedioSubTitle" xml:space="preserve">
-    <value>Dream Achievers</value>
+    <value>Besides having a personal trainer on your own,&lt;br /&gt;we are the only one in the industry that have wellness department to help clients.&lt;br/&gt;</value>
   </data>
   <data name="IndexVedioDesc" xml:space="preserve">
-    <value>Check out the following videos to see how Mr. Huang &lt;span class="hidden-sm-down"&gt;and Mrs. Chen &lt;/span&gt;recognize the value of exercise through professional training.</value>
+    <value>&lt;b&gt;Sport injury Professional&lt;/b&gt;&lt;br /&gt;&lt;b&gt;Certified dietitian Consult&lt;/b&gt;&lt;br /&gt;&lt;b&gt;Sports massage therapist&lt;/b&gt;</value>
   </data>
   <data name="IndexFunFactsTitle" xml:space="preserve">
-    <value>Analyze fitness data,&lt;br /&gt;created in the Cloud.</value>
+    <value>Having trouble gaining muscle or losing fat?</value>
   </data>
+  <data name="IndexFunFactsContent" xml:space="preserve">
+    <value>&lt;br/&gt;Don’t worry.&lt;br /&gt;Our certified personal trainer will design a new program for your physical condition.</value>
+  </data>  
+  <data name="IndexPartnerTitle" xml:space="preserve">
+    <value>Our partner</value>
+  </data>   
   <data name="IndexSlick1Desc" xml:space="preserve">
     <value>Professionalism lies on providing clients with the highest standards. Beyond Fitness proves the effectiveness to combine fitness with physical therapy.</value>
   </data>
