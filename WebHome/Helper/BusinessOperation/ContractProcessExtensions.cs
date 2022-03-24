@@ -128,7 +128,23 @@ namespace WebHome.Helper.BusinessOperation
             }
             models.SubmitChanges();
 
-            item.TotalCost = price.IsPackagePrice ? price.ListPrice : item.Lessons * item.LessonPriceType.ListPrice;
+            int? CalcTotalPrice()
+            {
+                if (price.IsPackagePrice)
+                {
+                    return price.ListPrice;
+                }
+                else if (price.IsCombination)
+                {
+                    return item.CourseContractOrder.Sum(o => o.Lessons * o.LessonPriceType.ListPrice);
+                }
+                else
+                {
+                    return item.Lessons * item.LessonPriceType.ListPrice;
+                }
+            }
+
+            item.TotalCost = CalcTotalPrice(); //price.IsPackagePrice ? price.ListPrice : item.Lessons * item.LessonPriceType.ListPrice;
             if (item.CourseContractType.GroupingLessonDiscount != null)
             {
                 item.TotalCost = item.TotalCost * item.CourseContractType.GroupingLessonDiscount.GroupingMemberCount * item.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount / 100;
@@ -355,7 +371,24 @@ namespace WebHome.Helper.BusinessOperation
             }
             models.SubmitChanges();
 
-            item.TotalCost = lessonPrice.IsPackagePrice ? lessonPrice.ListPrice : item.Lessons * item.LessonPriceType.ListPrice;
+            int? CalcTotalPrice()
+            {
+                if (lessonPrice.IsPackagePrice)
+                {
+                        return lessonPrice.ListPrice;
+                }
+                else if (lessonPrice.IsCombination)
+                {
+                    return item.CourseContractOrder.Sum(o => o.Lessons * o.LessonPriceType.ListPrice);
+                }
+                else
+                {
+                    return item.Lessons * item.LessonPriceType.ListPrice;
+                }
+            }
+
+
+            item.TotalCost = CalcTotalPrice();  //lessonPrice.IsPackagePrice ? lessonPrice.ListPrice : item.Lessons * item.LessonPriceType.ListPrice;
             if (item.CourseContractType.GroupingLessonDiscount != null)
             {
                 item.TotalCost = item.TotalCost * item.CourseContractType.GroupingLessonDiscount.GroupingMemberCount * item.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount / 100;
@@ -1048,10 +1081,17 @@ namespace WebHome.Helper.BusinessOperation
             if (!item.ExecuteContractStatus(profile, Naming.CourseContractStatus.已生效, fromStatus))
                 return null;
 
-            var priceItems = item.LessonPriceType.ExpandActualLessonPrice(models);
-
-            if (priceItems.Count > 0)
+            if(item.LessonPriceType.IsCombination)
             {
+                foreach (var order in item.CourseContractOrder)
+                {
+                    createRegisterLesson(item, models, order.LessonPriceType, order.Lessons);
+                }
+            }
+            else if (item.LessonPriceType.IsPackagePrice)
+            {
+                var priceItems = item.LessonPriceType.ExpandActualLessonPrice(models);
+
                 foreach(var price in priceItems)
                 {
                     createRegisterLesson(item, models, price, price.BundleCount ?? 0);
@@ -1081,7 +1121,6 @@ namespace WebHome.Helper.BusinessOperation
         }
 
         private static void createRegisterLesson(CourseContract item, GenericManager<BFDataContext> models,LessonPriceType price,int lessons) 
-            
         {
 
             var groupLesson = new GroupingLesson { };

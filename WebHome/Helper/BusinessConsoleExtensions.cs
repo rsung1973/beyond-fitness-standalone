@@ -398,8 +398,9 @@ namespace WebHome.Helper
                 foreach (var branchIndicator in item.MonthlyBranchIndicator)
                 {
                     var voidTuition = voidPayment
-                        .Join(models.GetTable<PaymentTransaction>().Where(t => t.BranchID == branchIndicator.BranchID), p => p.PaymentID, t => t.PaymentID, (p, t) => p)
-                        .Join(models.GetTable<TuitionAchievement>(), p => p.PaymentID, t => t.InstallmentID, (p, t) => t);
+                        .Join(models.GetTable<TuitionAchievement>(), 
+                            p => p.PaymentID, t => t.InstallmentID, (p, t) => t)
+                        .Where(t => t.CoachWorkPlace == branchIndicator.BranchID);
 
                     var branchTuitionItems = tuitionItems.Where(t => t.CoachWorkPlace == branchIndicator.BranchID);
                     var branchAchievementItems = achievementItems.Where(t => t.CoachWorkPlace == branchIndicator.BranchID);

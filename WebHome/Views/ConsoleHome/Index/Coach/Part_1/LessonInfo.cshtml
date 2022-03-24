@@ -44,7 +44,7 @@
             }
         </div>
         <h5 class="number">
-            <a href="javascript:void(0);">@(_model.ServingCoach.CoachCertificate.Count)</a>
+            <a href="javascript:void(0);">@(_model.ServingCoach.CoachCertificate.Where(c=>!c.Expiration.HasValue || c.Expiration>=DateTime.Today).Count())</a>
             <span class="font-6">證照</span>
         </h5>
         @if (_model.IsOfficer())

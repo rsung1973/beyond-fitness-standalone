@@ -54,6 +54,17 @@
                                     </div>
                                 </div>
                             </li>
+                            @if(_model.SalaryDutyAllowance>0)
+                            {
+                            <li>
+                                <div class="list_tb tb2">
+                                    <div class="list_tr">
+                                        <div class="list_td hd">職務加給</div>
+                                        <div class="list_td rt">@($"{_model.SalaryDutyAllowance:##,###,###,###}")</div>
+                                    </div>
+                                </div>
+                            </li>
+                            }
                             <li>
                                 <div class="list_tb tb2">
                                     <div class="list_tr">

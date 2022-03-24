@@ -1276,7 +1276,8 @@ namespace WebHome.Helper
                                 + (indicators.Sum(i => i.ActualCompletePICount) ?? 0) / 2;
 
             var tuition = models.GetTuitionAchievement(item.CoachID, quarterStart, ref quarterEnd, null);
-            var summary = tuition.Sum(t => t.ShareAmount) ?? 0;
+            var summary = (tuition.Sum(t => t.ShareAmount) ?? 0)
+                            - (tuition.Sum(t => t.VoidShare) ?? 0);
             bool qualifiedCert = item.CoachCertificate.Count(c => c.Expiration >= quarterStart) >= 2;
 
             CoachRating ratingItem = new CoachRating

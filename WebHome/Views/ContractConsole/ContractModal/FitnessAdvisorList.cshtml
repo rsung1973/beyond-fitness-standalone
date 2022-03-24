@@ -1,0 +1,86 @@
+@using System.IO
+@using System.Linq.Expressions
+@using System.Text
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    ContractMemberViewModel _viewModel;
+    UserProfile _model = this.Model as UserProfile;
+    String _viewID = $"advisor{DateTime.Now.Ticks % 1000000}";
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _viewModel = (ContractMemberViewModel)ViewBag.ViewModel;
+
+    var advisor = await Context.GetUserAsync();
+
+}
+<style>
+    .display-none {
+        display: none;
+    }
+</style>
+<div class="table-responsive" id="@(_viewID)">
+    @{
+        await Html.RenderPartialAsync("~/Views/ContractConsole/ContractModal/AdvisorList.cshtml", _model);
+    }
+</div>
+@if (advisor.IsCoach())
+{
+    <div class="footer" id="@($"{_viewID}_footer")">
+        @{
+            bool asserted = models.GetTable<LearnerFitnessAdvisor>()
+                            .Where(f => f.UID == _model.UID)
+                            .Where(f => f.CoachID == advisor.UID)
+                            .Any();
+        }
+        <button type="button" onclick="javascript:commitAdvisor(this,@((int)Naming.DataOperationMode.Delete));"
+        class="btn btn-darkteal btn-round waves-effect float-right @(asserted==true ? null : "display-none" )">
+            解除認領
+        </button>
+        <button type="button" onclick="javascript:commitAdvisor(this,@((int)Naming.DataOperationMode.Create));"
+        class="btn btn-darkteal btn-round waves-effect float-right @(asserted==false ? null : "display-none")">
+            認領學生
+        </button>
+    </div>
+    <script>
+        function commitAdvisor(element, operation) {
+            var $btn = $(element);
+            var viewModel = {
+                'CoachID': @(advisor.UID),
+                'KeyID': '@Html.Raw(_model.UID.EncryptKey())',
+                'DataOperation': operation
+            };
+
+            showLoading();
+            $.post('@Html.Raw(Url.Action("CommitAdvisorAssignment", "Learner"))', viewModel, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    if (data.result) {
+                        $('#@($"{_viewID}_footer") button').removeClass('display-none');
+                        $btn.addClass('display-none');
+                        $('#@($"{_viewID}")').loadContent('@Html.Raw(Url.Action("ShowAdvisorList", "ContractConsole"))', viewModel);
+                    } else {
+                        Swal.fire(
+                            'Oops...',
+                            data.message,
+                            'warning'
+                        );
+                    }
+                } else {
+                    $('body')
+                        .append(data);
+                }
+            });
+        }
+    </script>
+}

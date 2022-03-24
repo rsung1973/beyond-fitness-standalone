@@ -3990,11 +3990,8 @@ body {
 }
 
 .nav.nav-tabs-new > li > a.active {
-    /* border: 1px solid #052333; */
+    border: 1px solid #052333;
     color: #052333;
-    border: 0px;
-    border-bottom: 1px solid #888;
-    color: #888;
 }
 
 .nav.nav-tabs-new2 {

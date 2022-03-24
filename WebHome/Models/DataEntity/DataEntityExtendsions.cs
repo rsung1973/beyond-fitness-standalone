@@ -620,6 +620,7 @@ namespace WebHome.Models.DataEntity
             OnLineFeedback = 2,
             LessonPackage = 3,
             DietaryConsult= 4,
+            CustomCombination = 5,
         }
     }
 
@@ -643,6 +644,7 @@ namespace WebHome.Models.DataEntity
         public bool IsPackagePrice => this?.ObjectiveLessonPrice.Any(p => p.CatalogID == (int)ObjectiveLessonCatalog.CatalogDefinition.LessonPackage) == true;
         public bool IsDietaryConsult => this?.ObjectiveLessonPrice.Any(p => p.CatalogID == (int)ObjectiveLessonCatalog.CatalogDefinition.DietaryConsult) == true;
         public bool IsDistanceLesson => this?.ObjectiveLessonPrice.Any(p => p.CatalogID == (int)ObjectiveLessonCatalog.CatalogDefinition.OnLine) == true;
+        public bool IsCombination => this?.ObjectiveLessonPrice.Any(p => p.CatalogID == (int)ObjectiveLessonCatalog.CatalogDefinition.CustomCombination) == true;
     }
 
     public partial class RegisterLesson

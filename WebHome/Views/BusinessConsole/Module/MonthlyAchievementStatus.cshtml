@@ -29,7 +29,8 @@
         MonthlyBranchRevenueGoal item = _model.MonthlyBranchRevenueIndicator.Where(r => r.BranchID == _viewModel.BranchID)
                 .Where(r => r.MonthlyBranchRevenueGoal != null)
                 .Select(r => r.MonthlyBranchRevenueGoal).FirstOrDefault();
-        totalAchievementAmt = item?.ActualLessonAchievement + item?.ActualSharedAchievement;
+        totalAchievementAmt = item?.ActualLessonAchievement + item?.ActualSharedAchievement
+                                - (item?.VoidShare ?? 0);
 
         TempData["RevenueGoal"] = item;
 
@@ -38,14 +39,16 @@
                             .Where(r => r.MonthlyBranchRevenueGoal != null), i => i.PeriodID, r => r.PeriodID, (i, r) => r)
                         .Select(r => r.MonthlyBranchRevenueGoal)
                         .FirstOrDefault();
-        totalAchievementAmtLastMonth = lastMonth?.ActualLessonAchievement + lastMonth?.ActualSharedAchievement;
+        totalAchievementAmtLastMonth = lastMonth?.ActualLessonAchievement + lastMonth?.ActualSharedAchievement
+                                        - (lastMonth?.VoidShare ?? 0);
 
     }
     else
     {
         MonthlyRevenueGoal item = _model.MonthlyRevenueIndicator.Where(r => r.MonthlyRevenueGoal != null)
                 .Select(r => r.MonthlyRevenueGoal).FirstOrDefault();
-        totalAchievementAmt = item?.ActualLessonAchievement + item?.ActualSharedAchievement;
+        totalAchievementAmt = item?.ActualLessonAchievement + item?.ActualSharedAchievement
+                                - (item?.VoidShare ?? 0);
 
         TempData["RevenueGoal"] = item;
 
@@ -54,7 +57,8 @@
                             .Where(r => r.MonthlyRevenueGoal != null), i => i.PeriodID, r => r.PeriodID, (i, r) => r)
                         .Select(r => r.MonthlyRevenueGoal)
                         .FirstOrDefault();
-        totalAchievementAmtLastMonth = lastMonth?.ActualLessonAchievement + lastMonth?.ActualSharedAchievement;
+        totalAchievementAmtLastMonth = lastMonth?.ActualLessonAchievement + lastMonth?.ActualSharedAchievement
+                                    - (lastMonth?.VoidShare ?? 0);
     }
 
     if (TempData["RevenueGoal"] == null)

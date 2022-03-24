@@ -51,7 +51,7 @@ namespace WebHome.Controllers
             return Index();
         }
 
-        public ActionResult ChangeLanguate(String lang)
+        public ActionResult ChangeLanguage(String lang)
         {
             Response.Cookies.Append("cLang", lang);
             return Json(new { result = true, message = System.Globalization.CultureInfo.CurrentCulture.Name });

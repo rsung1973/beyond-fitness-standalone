@@ -49,7 +49,7 @@
                         <span class="help-text">
                             @if (_item.ContractType == (int)CourseContractType.ContractTypeDefinition.CGA
                                 || _item.ContractType == (int)CourseContractType.ContractTypeDefinition.CNA
-                                || _item.LessonPriceType.BranchStore.IsVirtualClassroom())
+                                || _item.LessonPriceType.BranchStore?.IsVirtualClassroom() == true)
                             {
                                 <text>若未於上述使用期限內完成課程堂數者不得展延。</text>
                             }

@@ -78,7 +78,7 @@
     <!-- Magnific Popup -->
     <link href="plugins/magnific-popup/magnific-popup.css" rel="stylesheet" type="text/css" />
     <!-- Magnific Popup -->
-    <link href="css/main-landing.css?2.0" type="text/css" rel="stylesheet" />
+    <link href="css/main-landing.css?2.1" type="text/css" rel="stylesheet" />
 
     @RenderSection("CustomHeader", false)
 
@@ -92,7 +92,7 @@
     <script src="js/wow.js"></script>
     <!-- Main Script -->
     <script src="js/main-landing.js?1.5"></script>
-    <script src="js/common.js?1.8"></script>
+    <script src="js/common.js?2.2"></script>
     <!-- Facebook Pixel Code -->
     <script>
         (function (f, b, e, v, n, t, s) {
@@ -158,7 +158,7 @@
                     <script>
                         var reloadPage;
                         function changeLanguage(lang) {
-                            $.post('@(Url.Action("ChangeLanguate", "Official"))', { 'lang': lang }, function (data) {
+                            $.post('@(Url.Action("ChangeLanguage", "Official"))', { 'lang': lang }, function (data) {
                                 if ($.isPlainObject(data)) {
                                     if (data.result) {
                                         if (reloadPage) {

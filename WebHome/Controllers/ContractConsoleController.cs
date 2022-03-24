@@ -252,7 +252,7 @@ namespace WebHome.Controllers
             if(viewModel.ContractType == CourseContractType.ContractTypeDefinition.CGA)
             {
                 items = items
-                    .Where(p => p.BranchID == viewModel.BranchID)
+                    .Where(p => !p.BranchID.HasValue || p.BranchID == viewModel.BranchID)
                     .Join(models.GetTable<ObjectiveContractLessonPrice>().Where(c => c.ContractType == (int)viewModel.ContractType),
                         p => p.PriceID, c => c.PriceID, (p, c) => p);
 
@@ -354,17 +354,11 @@ namespace WebHome.Controllers
 
         public ActionResult EditContractMember(ContractMemberViewModel viewModel)
         {
-            ViewBag.ViewModel = viewModel;
-
-            if (viewModel.KeyID != null)
-            {
-                viewModel.UID = viewModel.DecryptKeyValue();
-            }
-
-            UserProfile item = models.GetTable<UserProfile>().Where(u => u.UID == viewModel.UID).FirstOrDefault();
+            ViewResult result = (ViewResult)LoadContractMember(viewModel);
+            UserProfile item = result.Model as UserProfile;
             if (item == null)
             {
-                return View("~/Views/ConsoleHome/Shared/AlertMessage.cshtml", model: "Opps！您確定您輸入的資料正確嗎！？");
+                return result;
             }
 
             viewModel.Gender = item.UserProfileExtension.Gender;
@@ -388,8 +382,9 @@ namespace WebHome.Controllers
             {
                 return View("~/Views/ContractConsole/ContractModal/EditContractMember2022.cshtml", item);
             }
-
         }
+
+
 
         public async Task<ActionResult> CommitContractMemberAsync(ContractMemberViewModel viewModel)
         {
@@ -447,6 +442,36 @@ namespace WebHome.Controllers
                 return View("~/Views/ContractConsole/Editing/ContractMemberCommitted.cshtml", item);
             }
 
+        }
+
+        public ActionResult LoadContractMember(ContractMemberViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+
+            if (viewModel.KeyID != null)
+            {
+                viewModel.UID = viewModel.DecryptKeyValue();
+            }
+
+            UserProfile item = models.GetTable<UserProfile>().Where(u => u.UID == viewModel.UID).FirstOrDefault();
+            if (item == null)
+            {
+                return View("~/Views/ConsoleHome/Shared/AlertMessage.cshtml", model: "Opps！您確定您輸入的資料正確嗎！？");
+            }
+
+            return View(item);
+        }
+
+        public ActionResult ShowAdvisorList(ContractMemberViewModel viewModel)
+        {
+            ViewResult result = (ViewResult)LoadContractMember(viewModel);
+            UserProfile item = result.Model as UserProfile;
+            if (item == null)
+            {
+                return result;
+            }
+
+            return View("~/Views/ContractConsole/ContractModal/AdvisorList.cshtml", item);
         }
 
         public ActionResult SignaturePanel(CourseContractSignatureViewModel viewModel)

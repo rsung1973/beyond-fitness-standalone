@@ -88,11 +88,11 @@
                                 <a class="nav-link" data-toggle="tab" data-id="loginTab"
                                    href="#loginTab">登入設定</a>
                             </li>
-                            @*<li class="nav-item">
+                            <li class="nav-item">
                                 <a class="nav-link" data-toggle="tab" data-id="coachListTab"
-                                href="#coachListTab">體能顧問</a>
-                                </li>
-                                <li class="nav-item">
+                                   href="#coachListTab">體能顧問</a>
+                            </li>
+                            @*<li class="nav-item">
                                 <a class="nav-link" data-toggle="tab" data-id="brTab"
                                 href="#brTab">B.R.</a>
                                 </li>
@@ -157,14 +157,6 @@
                                                         </span>
                                                     </div>
                                                 </div>
-                                                @*<div class="col-sm-3 col-12">
-                                                    <div class="input-group">
-                                                        <input type="text" class="form-control form-control-danger" placeholder="聯絡電話" name="Phone" value="@(_viewModel.Phone)" />
-                                                        <span class="input-group-addon">
-                                                            <i class="zmdi zmdi-smartphone"></i>
-                                                        </span>
-                                                    </div>
-                                                </div>*@
                                                 <div class="col-sm-6 col-12">
                                                     <select class="form-control show-tick" name="AdministrativeArea">
                                                         <option value="">- 請選擇縣市 -</option>
@@ -196,13 +188,11 @@
                                                             $('select[name="AdministrativeArea"]').val('@Html.Raw(_viewModel.AdministrativeArea)');
                                                         });
                                                     </script>
-                                                    @*<label class="material-icons help-error-text">clear 請選擇縣市</label>*@
                                                 </div>
                                                 <div class="col-12">
                                                     <div class="form-group">
                                                         <textarea rows="4" class="form-control no-resize" name="Address" placeholder="居住地址">@(_viewModel.Address)</textarea>
                                                     </div>
-                                                    @*<label class="material-icons help-error-text">clear 請輸入居住地址</label>*@
                                                 </div>
                                             </div>
                                         </div>
@@ -223,9 +213,9 @@
                                                         </span>
                                                     </div>
                                                     @*<label class="material-icons help-error-text">
-                    clear
-                    請輸入本人手機
-                </label>*@
+                                                        clear
+                                                        請輸入本人手機
+                                                        </label>*@
                                                 </div>
                                             </div>
                                             <div class="row clearfix for-relation">
@@ -269,9 +259,9 @@
                                                         }
                                                     </div>
                                                     @*<label class="material-icons help-error-text">
-                    clear
-                    請選擇聯絡人
-                </label>*@
+                                                        clear
+                                                        請選擇聯絡人
+                                                        </label>*@
                                                 </div>
                                                 <div class="col-sm-6 col-12">
                                                     <select class="form-control show-tick" name="RelationMemo">
@@ -284,9 +274,9 @@
                                                         <option>情侶</option>
                                                     </select>
                                                     @*<label class="material-icons help-error-text">
-                    clear
-                    請選擇關係
-                </label>*@
+                                                        clear
+                                                        請選擇關係
+                                                        </label>*@
                                                 </div>
                                             </div>
                                             @if(_relation!=null)
@@ -387,6 +377,11 @@
                             <div class="tab-pane" id="loginTab">
                                 @{
                                     await Html.RenderPartialAsync("~/Views/ContractConsole/ContractModal/ResetMemberPassword.cshtml", _model);
+                                }
+                            </div>
+                            <div class="tab-pane" id="coachListTab">
+                                @{
+                                    await Html.RenderPartialAsync("~/Views/ContractConsole/ContractModal/FitnessAdvisorList.cshtml", _model);
                                 }
                             </div>
                         </div>

@@ -32,7 +32,7 @@
         var trialLesson = models.GetTable<RegisterLesson>()
                 .Where(r => r.UID == _model.UID)
                 .Where(r => r.LessonPriceType.Status == (int)Naming.LessonPriceStatus.體驗課程)
-                .Where(r => (r.BranchStore.Status & (int)BranchStore.StatusDefinition.VirtualClassroom) == 0);
+                .Where(r => !r.BranchStore.Status.HasValue || (r.BranchStore.Status & (int)BranchStore.StatusDefinition.VirtualClassroom) == 0);
         var trialLessonItem = trialLesson.FirstOrDefault();
         var trialBookable = trialLessonItem == null;
 

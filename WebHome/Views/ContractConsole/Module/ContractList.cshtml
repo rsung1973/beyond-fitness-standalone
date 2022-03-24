@@ -54,7 +54,7 @@
                 </td>
                 <td>
                     @(item.CourseContractExtension.BranchStore.BranchName)
-                    <span class="badge bg-blue">@(item.LessonPriceType.BranchStore.IsVirtualClassroom() ? "遠距" : null)</span>
+                    <span class="badge bg-blue">@(item.LessonPriceType.BranchStore?.IsVirtualClassroom() == true ? "遠距" : null)</span>
                 </td>
                 <td>@(item.ServingCoach.UserProfile.FullName())</td>
                 <td>@(item.ContractNo())</td>

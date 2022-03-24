@@ -122,7 +122,7 @@
                     <div class="list_tb tb2">
                         <div class="list_tr">
                             <div class="list_td hd">上課場所</div>
-                            <div class="list_td rt">@(_model.LessonPriceType.BranchStore.IsVirtualClassroom() ? "遠距" : _model.CourseContractExtension?.BranchStore.BranchName)</div>
+                            <div class="list_td rt">@(_model.LessonPriceType.BranchStore?.IsVirtualClassroom() == true ? "遠距" : _model.CourseContractExtension?.BranchStore.BranchName)</div>
                         </div>
                     </div>
                 </li>
@@ -297,7 +297,7 @@
                         await Html.RenderPartialAsync("~/Views/CornerKick/Module/ContractTermsForCNA.cshtml");
                         break;
                     default:
-                        if (_model.LessonPriceType.BranchStore.IsVirtualClassroom())
+                        if (_model.LessonPriceType.BranchStore?.IsVirtualClassroom() == true)
                         {
                             await Html.RenderPartialAsync("~/Views/CornerKick/Module/ContractTermsForDistance.cshtml");
                         }

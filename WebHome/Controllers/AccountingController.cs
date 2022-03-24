@@ -1537,7 +1537,7 @@ namespace WebHome.Controllers
                     t[11] = (int)t[12] + (int)t[branchColIdx + branchItems.Length];
                     t[8] = (int)t[9] + (int)t[10] + (int)t[11];
                 }
-                rows.RemoveAll(t => (int)t[8] == 0);
+                //rows.RemoveAll(t => (int)t[8] == 0);
 
                 foreach (var t in rows.OrderBy(t => t[1]))
                 {
@@ -1856,7 +1856,7 @@ namespace WebHome.Controllers
                     t[(int)CoachBonusFields.月中上課加業績獎金] = (int)t[(int)CoachBonusFields.上課獎金] + (int)t[(int)CoachBonusFields.業績獎金];
                     t[(int)CoachBonusFields.總獎金] = (int)t[(int)CoachBonusFields.管理獎金] + (int)t[(int)CoachBonusFields.特別獎金] + (int)t[(int)CoachBonusFields.月中上課加業績獎金];
                 }
-                rows.RemoveAll(t => (int)t[(int)CoachBonusFields.總獎金] == 0);
+                //rows.RemoveAll(t => (int)t[(int)CoachBonusFields.總獎金] == 0);
 
                 foreach (var t in rows.OrderBy(t => t[(int)CoachBonusFields.所屬分店]))
                 {

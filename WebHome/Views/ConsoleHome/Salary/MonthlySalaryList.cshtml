@@ -38,7 +38,8 @@
         @foreach (var item in _model)
         {
             int salary = (item.Salary ?? 0)
-            + (item.Subsistence ?? 0);
+            + (item.Subsistence ?? 0)
+            + (item.SalaryDutyAllowance ?? 0);
 
             if (item.MonthlySalary.SalaryType == (int)MonthlySalary.SalaryTypeEnum.RegularPay)
             {

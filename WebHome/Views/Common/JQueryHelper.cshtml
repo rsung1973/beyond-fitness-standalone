@@ -120,6 +120,23 @@
         form.appendTo('body').submit().remove();
     };
 
+    $.fn.loadContent = function (url, viewModel) {
+        showLoading();
+        $.post(url, viewModel, function (data) {
+            hideLoading();
+            if ($.isPlainObject(data)) {
+                Swal.fire(
+                    'Oops...',
+                    data.message,
+                    'warning'
+                );
+            } else {
+                this.empty()
+                    .append($(data));
+            }
+        });
+    }
+
 
 </script>
 @{

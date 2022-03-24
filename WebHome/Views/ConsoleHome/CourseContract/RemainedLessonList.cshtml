@@ -60,7 +60,7 @@
                                     : contract.PayoffDue)
                                 : "")
                         </td>
-                        <td>@(item.LessonPriceType.BranchStore.BranchName)</td>
+                        <td>@(item.LessonPriceType.BranchStore?.BranchName ?? contract.CourseContractExtension.BranchStore.BranchName)</td>
                         <td>@(contract.ServingCoach.UserProfile.FullName())</td>
                     </tr>
                 }

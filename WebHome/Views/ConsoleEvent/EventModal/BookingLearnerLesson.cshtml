@@ -165,7 +165,7 @@
                                 </a>
                             }
 
-                            await Html.RenderPartialAsync("~/Views/Common/BranchStoreName.cshtml", item.LessonPriceType.BranchStore);
+                            await Html.RenderPartialAsync("~/Views/Common/BranchStoreName.cshtml", item.LessonPriceType.BranchStore ?? contract.CourseContractExtension.BranchStore);
 
                             <small class="float-right text-muted"><time>@(item.RemainedLessonCount())/@(item.Lessons)</time></small>
                         }
@@ -175,7 +175,7 @@
                                 P.T session - @(contract.CourseContractType.TypeName)(@(contract.LessonPriceType.DurationInMinutes)分鐘)
                             </a>
                             {
-                                if (contract.LessonPriceType.BranchStore.IsVirtualClassroom())
+                                if (contract.LessonPriceType.BranchStore?.IsVirtualClassroom() == true)
                                 {
                                     await Html.RenderPartialAsync("~/Views/Common/BranchStoreName.cshtml", contract.LessonPriceType.BranchStore);
                                 }
