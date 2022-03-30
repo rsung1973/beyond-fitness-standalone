@@ -368,6 +368,13 @@ namespace WebHome.Models.DataEntity
                     return "Coach P.I";
                 case (int)Naming.LessonPriceStatus.體驗課程:
                     return "T.S";
+                case (int)Naming.LessonPriceStatus.營養課程:
+                    return "S.D";
+                case (int)Naming.LessonPriceStatus.運動恢復課程:
+                    return "S.R";
+                case (int)Naming.LessonPriceStatus.運動防護課程:
+                    return "A.T";
+
                 default:
                     return ((Naming.LessonPriceStatus)status).ToString();
             }
@@ -393,7 +400,12 @@ namespace WebHome.Models.DataEntity
                         return "T.S";
                     case (int)Naming.LessonPriceStatus.點數兌換課程:
                         return item.RegisterLesson.LessonPriceType.SimpleDescription;
-
+                    case (int)Naming.LessonPriceStatus.營養課程:
+                        return "S.D";
+                    case (int)Naming.LessonPriceStatus.運動恢復課程:
+                        return "S.R";
+                    case (int)Naming.LessonPriceStatus.運動防護課程:
+                        return "A.T";
                     default:
                         return item.RegisterLesson.LessonPriceType.Description;
                 }
@@ -593,7 +605,10 @@ namespace WebHome.Models.DataEntity
     {
         public decimal AttendanceCount => (ActualCompleteLessonCount ?? 0)
                     + (ActualCompleteTSCount ?? 0)
-                    + (ActualCompletePICount ?? 0M) / 2M;
+                    + (ActualCompletePICount ?? 0M) / 2M
+                    + (ATCount ?? 0)
+                    + (SRCount ?? 0)
+                    + (SDCount ?? 0);
     }
 
     public partial class BranchStore

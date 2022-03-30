@@ -40,6 +40,18 @@
                 return _model.Select(i => i.MonthlyCoachRevenueIndicator
                     .Where(m => m.BranchID == _viewModel.BranchID)
                     .Sum(m => m.ActualCompleteTSCount) ?? 0).ToArray();
+            case Naming.SessionTypeDefinition.AT:
+                return _model.Select(i => i.MonthlyCoachRevenueIndicator
+                    .Where(m => m.BranchID == _viewModel.BranchID)
+                    .Sum(m => m.ATCount) ?? 0).ToArray();
+            case Naming.SessionTypeDefinition.SR:
+                return _model.Select(i => i.MonthlyCoachRevenueIndicator
+                    .Where(m => m.BranchID == _viewModel.BranchID)
+                    .Sum(m => m.SRCount) ?? 0).ToArray();
+            case Naming.SessionTypeDefinition.SD:
+                return _model.Select(i => i.MonthlyCoachRevenueIndicator
+                    .Where(m => m.BranchID == _viewModel.BranchID)
+                    .Sum(m => m.SDCount) ?? 0).ToArray();
         }
         return new int[] { };
     }

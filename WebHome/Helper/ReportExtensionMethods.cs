@@ -173,22 +173,24 @@ namespace WebHome.Helper
             
         {
             DataTable table = new DataTable();
-            table.Columns.Add(new DataColumn("合約編號", typeof(String)));
-            table.Columns.Add(new DataColumn("上課體能顧問", typeof(String)));
-            table.Columns.Add(new DataColumn("簽約場所", typeof(String)));
-            table.Columns.Add(new DataColumn("學生", typeof(String)));
-            table.Columns.Add(new DataColumn("合約名稱", typeof(String)));
-            table.Columns.Add(new DataColumn("課程單價", typeof(int)));
-            table.Columns.Add(new DataColumn("已完成上課", typeof(int)));
-            table.Columns.Add(new DataColumn("學員打卡", typeof(int)));
-            table.Columns.Add(new DataColumn("上課場所", typeof(String)));
-            table.Columns.Add(new DataColumn("上課金額", typeof(int)));
-            table.Columns.Add(new DataColumn("是否信託", typeof(String)));
-            table.Columns.Add(new DataColumn("課程代碼", typeof(int)));
-            table.Columns.Add(new DataColumn("體能顧問所屬分店", typeof(String)));
-            table.Columns.Add(new DataColumn("預約上課數", typeof(int)));
-            table.Columns.Add(new DataColumn("SettlementID", typeof(int)));
-            table.Columns.Add(new DataColumn("簽約體能顧問", typeof(String)));
+            table.Columns.Add(new DataColumn("合約編號", typeof(String)));	//	0
+            table.Columns.Add(new DataColumn("上課體能顧問", typeof(String)));	//	1
+            table.Columns.Add(new DataColumn("簽約場所", typeof(String)));	//	2
+            table.Columns.Add(new DataColumn("學生", typeof(String)));	//	3
+            table.Columns.Add(new DataColumn("合約名稱", typeof(String)));	//	4
+            table.Columns.Add(new DataColumn("課程單價", typeof(int)));	//	5
+            table.Columns.Add(new DataColumn("已完成上課", typeof(int)));	//	6
+            table.Columns.Add(new DataColumn("學員打卡", typeof(int)));	//	7
+            table.Columns.Add(new DataColumn("上課場所", typeof(String)));	//	8
+            table.Columns.Add(new DataColumn("上課金額", typeof(int)));	//	9
+            table.Columns.Add(new DataColumn("是否信託", typeof(String)));	//	10
+            table.Columns.Add(new DataColumn("課程代碼", typeof(int)));	//	11
+            table.Columns.Add(new DataColumn("體能顧問所屬分店", typeof(String)));	//	12
+            table.Columns.Add(new DataColumn("預約上課數", typeof(int)));	//	13
+            table.Columns.Add(new DataColumn("SettlementID", typeof(int)));	//	14
+            table.Columns.Add(new DataColumn("簽約體能顧問", typeof(String)));	//	15
+            table.Columns.Add(new DataColumn("CoachID", typeof(int)));	//	16
+
 
             var details = items.Where(t => t.ContractID.HasValue)
                 .GroupBy(t => new
@@ -247,6 +249,7 @@ namespace WebHome.Helper
                 if (item.Key.SettlementID.HasValue)
                     r[14] = item.Key.SettlementID;
                 r[15] = contract.ServingCoach.UserProfile.FullName();
+                r[16] = coach.CoachID;
                 table.Rows.Add(r);
             }
 

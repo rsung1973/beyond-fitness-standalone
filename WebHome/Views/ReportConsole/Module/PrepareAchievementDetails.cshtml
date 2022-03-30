@@ -16,13 +16,13 @@
     AchievementQueryViewModel _viewModel;
 
 
-    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
     _modelState = ViewContext.ModelState;
     _model = (IQueryable<CoachMonthlySalary>)this.Model;
     _viewModel = (AchievementQueryViewModel)ViewBag.ViewModel;
 
 }
-@if(_model.Count()==0)
+@if (_model.Count() == 0)
 {
     <script>
         $(function () {

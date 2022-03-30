@@ -54225,6 +54225,18 @@ namespace WebHome.Models.DataEntity
 		
 		private System.Nullable<int> _VoidShare;
 		
+		private System.Nullable<int> _ATCount;
+		
+		private System.Nullable<int> _ATAchievement;
+		
+		private System.Nullable<int> _SRCount;
+		
+		private System.Nullable<int> _SRAchievement;
+		
+		private System.Nullable<int> _SDCount;
+		
+		private System.Nullable<int> _SDAchievement;
+		
 		private EntityRef<BranchStore> _BranchStore;
 		
 		private EntityRef<MonthlyIndicator> _MonthlyIndicator;
@@ -54289,6 +54301,18 @@ namespace WebHome.Models.DataEntity
     partial void OnInstallmentAchievementChanged();
     partial void OnVoidShareChanging(System.Nullable<int> value);
     partial void OnVoidShareChanged();
+    partial void OnATCountChanging(System.Nullable<int> value);
+    partial void OnATCountChanged();
+    partial void OnATAchievementChanging(System.Nullable<int> value);
+    partial void OnATAchievementChanged();
+    partial void OnSRCountChanging(System.Nullable<int> value);
+    partial void OnSRCountChanged();
+    partial void OnSRAchievementChanging(System.Nullable<int> value);
+    partial void OnSRAchievementChanged();
+    partial void OnSDCountChanging(System.Nullable<int> value);
+    partial void OnSDCountChanged();
+    partial void OnSDAchievementChanging(System.Nullable<int> value);
+    partial void OnSDAchievementChanged();
     #endregion
 		
 		public MonthlyCoachRevenueIndicator()
@@ -54836,6 +54860,126 @@ namespace WebHome.Models.DataEntity
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ATCount", DbType="Int")]
+		public System.Nullable<int> ATCount
+		{
+			get
+			{
+				return this._ATCount;
+			}
+			set
+			{
+				if ((this._ATCount != value))
+				{
+					this.OnATCountChanging(value);
+					this.SendPropertyChanging();
+					this._ATCount = value;
+					this.SendPropertyChanged("ATCount");
+					this.OnATCountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ATAchievement", DbType="Int")]
+		public System.Nullable<int> ATAchievement
+		{
+			get
+			{
+				return this._ATAchievement;
+			}
+			set
+			{
+				if ((this._ATAchievement != value))
+				{
+					this.OnATAchievementChanging(value);
+					this.SendPropertyChanging();
+					this._ATAchievement = value;
+					this.SendPropertyChanged("ATAchievement");
+					this.OnATAchievementChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SRCount", DbType="Int")]
+		public System.Nullable<int> SRCount
+		{
+			get
+			{
+				return this._SRCount;
+			}
+			set
+			{
+				if ((this._SRCount != value))
+				{
+					this.OnSRCountChanging(value);
+					this.SendPropertyChanging();
+					this._SRCount = value;
+					this.SendPropertyChanged("SRCount");
+					this.OnSRCountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SRAchievement", DbType="Int")]
+		public System.Nullable<int> SRAchievement
+		{
+			get
+			{
+				return this._SRAchievement;
+			}
+			set
+			{
+				if ((this._SRAchievement != value))
+				{
+					this.OnSRAchievementChanging(value);
+					this.SendPropertyChanging();
+					this._SRAchievement = value;
+					this.SendPropertyChanged("SRAchievement");
+					this.OnSRAchievementChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SDCount", DbType="Int")]
+		public System.Nullable<int> SDCount
+		{
+			get
+			{
+				return this._SDCount;
+			}
+			set
+			{
+				if ((this._SDCount != value))
+				{
+					this.OnSDCountChanging(value);
+					this.SendPropertyChanging();
+					this._SDCount = value;
+					this.SendPropertyChanged("SDCount");
+					this.OnSDCountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SDAchievement", DbType="Int")]
+		public System.Nullable<int> SDAchievement
+		{
+			get
+			{
+				return this._SDAchievement;
+			}
+			set
+			{
+				if ((this._SDAchievement != value))
+				{
+					this.OnSDAchievementChanging(value);
+					this.SendPropertyChanging();
+					this._SDAchievement = value;
+					this.SendPropertyChanged("SDAchievement");
+					this.OnSDAchievementChanged();
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="BranchStore_MonthlyCoachRevenueIndicator", Storage="_BranchStore", ThisKey="BranchID", OtherKey="BranchID", IsForeignKey=true)]
 		public BranchStore BranchStore
 		{
@@ -55043,6 +55187,18 @@ namespace WebHome.Models.DataEntity
 		
 		private System.Nullable<int> _VoidShare;
 		
+		private System.Nullable<int> _ATCount;
+		
+		private System.Nullable<int> _ATAchievement;
+		
+		private System.Nullable<int> _SRCount;
+		
+		private System.Nullable<int> _SRAchievement;
+		
+		private System.Nullable<int> _SDCount;
+		
+		private System.Nullable<int> _SDAchievement;
+		
 		private EntityRef<MonthlyRevenueIndicator> _MonthlyRevenueIndicator;
 		
     #region Extensibility Method Definitions
@@ -55093,6 +55249,18 @@ namespace WebHome.Models.DataEntity
     partial void OnInstallmentAchievementChanged();
     partial void OnVoidShareChanging(System.Nullable<int> value);
     partial void OnVoidShareChanged();
+    partial void OnATCountChanging(System.Nullable<int> value);
+    partial void OnATCountChanged();
+    partial void OnATAchievementChanging(System.Nullable<int> value);
+    partial void OnATAchievementChanged();
+    partial void OnSRCountChanging(System.Nullable<int> value);
+    partial void OnSRCountChanged();
+    partial void OnSRAchievementChanging(System.Nullable<int> value);
+    partial void OnSRAchievementChanged();
+    partial void OnSDCountChanging(System.Nullable<int> value);
+    partial void OnSDCountChanged();
+    partial void OnSDAchievementChanging(System.Nullable<int> value);
+    partial void OnSDAchievementChanged();
     #endregion
 		
 		public MonthlyRevenueGoal()
@@ -55549,6 +55717,126 @@ namespace WebHome.Models.DataEntity
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ATCount", DbType="Int")]
+		public System.Nullable<int> ATCount
+		{
+			get
+			{
+				return this._ATCount;
+			}
+			set
+			{
+				if ((this._ATCount != value))
+				{
+					this.OnATCountChanging(value);
+					this.SendPropertyChanging();
+					this._ATCount = value;
+					this.SendPropertyChanged("ATCount");
+					this.OnATCountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ATAchievement", DbType="Int")]
+		public System.Nullable<int> ATAchievement
+		{
+			get
+			{
+				return this._ATAchievement;
+			}
+			set
+			{
+				if ((this._ATAchievement != value))
+				{
+					this.OnATAchievementChanging(value);
+					this.SendPropertyChanging();
+					this._ATAchievement = value;
+					this.SendPropertyChanged("ATAchievement");
+					this.OnATAchievementChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SRCount", DbType="Int")]
+		public System.Nullable<int> SRCount
+		{
+			get
+			{
+				return this._SRCount;
+			}
+			set
+			{
+				if ((this._SRCount != value))
+				{
+					this.OnSRCountChanging(value);
+					this.SendPropertyChanging();
+					this._SRCount = value;
+					this.SendPropertyChanged("SRCount");
+					this.OnSRCountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SRAchievement", DbType="Int")]
+		public System.Nullable<int> SRAchievement
+		{
+			get
+			{
+				return this._SRAchievement;
+			}
+			set
+			{
+				if ((this._SRAchievement != value))
+				{
+					this.OnSRAchievementChanging(value);
+					this.SendPropertyChanging();
+					this._SRAchievement = value;
+					this.SendPropertyChanged("SRAchievement");
+					this.OnSRAchievementChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SDCount", DbType="Int")]
+		public System.Nullable<int> SDCount
+		{
+			get
+			{
+				return this._SDCount;
+			}
+			set
+			{
+				if ((this._SDCount != value))
+				{
+					this.OnSDCountChanging(value);
+					this.SendPropertyChanging();
+					this._SDCount = value;
+					this.SendPropertyChanged("SDCount");
+					this.OnSDCountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SDAchievement", DbType="Int")]
+		public System.Nullable<int> SDAchievement
+		{
+			get
+			{
+				return this._SDAchievement;
+			}
+			set
+			{
+				if ((this._SDAchievement != value))
+				{
+					this.OnSDAchievementChanging(value);
+					this.SendPropertyChanging();
+					this._SDAchievement = value;
+					this.SendPropertyChanged("SDAchievement");
+					this.OnSDAchievementChanged();
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="MonthlyRevenueIndicator_MonthlyRevenueGoal", Storage="_MonthlyRevenueIndicator", ThisKey="PeriodID,GradeID", OtherKey="PeriodID,GradeID", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
 		public MonthlyRevenueIndicator MonthlyRevenueIndicator
 		{
@@ -55658,6 +55946,18 @@ namespace WebHome.Models.DataEntity
 		
 		private System.Nullable<int> _VoidShare;
 		
+		private System.Nullable<int> _ATCount;
+		
+		private System.Nullable<int> _ATAchievement;
+		
+		private System.Nullable<int> _SRCount;
+		
+		private System.Nullable<int> _SRAchievement;
+		
+		private System.Nullable<int> _SDCount;
+		
+		private System.Nullable<int> _SDAchievement;
+		
 		private EntityRef<MonthlyBranchRevenueIndicator> _MonthlyBranchRevenueIndicator;
 		
     #region Extensibility Method Definitions
@@ -55710,6 +56010,18 @@ namespace WebHome.Models.DataEntity
     partial void OnInstallmentAchievementChanged();
     partial void OnVoidShareChanging(System.Nullable<int> value);
     partial void OnVoidShareChanged();
+    partial void OnATCountChanging(System.Nullable<int> value);
+    partial void OnATCountChanged();
+    partial void OnATAchievementChanging(System.Nullable<int> value);
+    partial void OnATAchievementChanged();
+    partial void OnSRCountChanging(System.Nullable<int> value);
+    partial void OnSRCountChanged();
+    partial void OnSRAchievementChanging(System.Nullable<int> value);
+    partial void OnSRAchievementChanged();
+    partial void OnSDCountChanging(System.Nullable<int> value);
+    partial void OnSDCountChanged();
+    partial void OnSDAchievementChanging(System.Nullable<int> value);
+    partial void OnSDAchievementChanged();
     #endregion
 		
 		public MonthlyBranchRevenueGoal()
@@ -56186,6 +56498,126 @@ namespace WebHome.Models.DataEntity
 					this._VoidShare = value;
 					this.SendPropertyChanged("VoidShare");
 					this.OnVoidShareChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ATCount", DbType="Int")]
+		public System.Nullable<int> ATCount
+		{
+			get
+			{
+				return this._ATCount;
+			}
+			set
+			{
+				if ((this._ATCount != value))
+				{
+					this.OnATCountChanging(value);
+					this.SendPropertyChanging();
+					this._ATCount = value;
+					this.SendPropertyChanged("ATCount");
+					this.OnATCountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ATAchievement", DbType="Int")]
+		public System.Nullable<int> ATAchievement
+		{
+			get
+			{
+				return this._ATAchievement;
+			}
+			set
+			{
+				if ((this._ATAchievement != value))
+				{
+					this.OnATAchievementChanging(value);
+					this.SendPropertyChanging();
+					this._ATAchievement = value;
+					this.SendPropertyChanged("ATAchievement");
+					this.OnATAchievementChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SRCount", DbType="Int")]
+		public System.Nullable<int> SRCount
+		{
+			get
+			{
+				return this._SRCount;
+			}
+			set
+			{
+				if ((this._SRCount != value))
+				{
+					this.OnSRCountChanging(value);
+					this.SendPropertyChanging();
+					this._SRCount = value;
+					this.SendPropertyChanged("SRCount");
+					this.OnSRCountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SRAchievement", DbType="Int")]
+		public System.Nullable<int> SRAchievement
+		{
+			get
+			{
+				return this._SRAchievement;
+			}
+			set
+			{
+				if ((this._SRAchievement != value))
+				{
+					this.OnSRAchievementChanging(value);
+					this.SendPropertyChanging();
+					this._SRAchievement = value;
+					this.SendPropertyChanged("SRAchievement");
+					this.OnSRAchievementChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SDCount", DbType="Int")]
+		public System.Nullable<int> SDCount
+		{
+			get
+			{
+				return this._SDCount;
+			}
+			set
+			{
+				if ((this._SDCount != value))
+				{
+					this.OnSDCountChanging(value);
+					this.SendPropertyChanging();
+					this._SDCount = value;
+					this.SendPropertyChanged("SDCount");
+					this.OnSDCountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SDAchievement", DbType="Int")]
+		public System.Nullable<int> SDAchievement
+		{
+			get
+			{
+				return this._SDAchievement;
+			}
+			set
+			{
+				if ((this._SDAchievement != value))
+				{
+					this.OnSDAchievementChanging(value);
+					this.SendPropertyChanging();
+					this._SDAchievement = value;
+					this.SendPropertyChanged("SDAchievement");
+					this.OnSDAchievementChanged();
 				}
 			}
 		}

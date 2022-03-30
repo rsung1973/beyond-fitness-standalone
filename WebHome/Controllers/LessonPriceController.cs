@@ -60,26 +60,26 @@ namespace WebHome.Controllers
             return View("~/Views/LessonPrice/Module/PriceSeriesList.ascx", items);
         }
 
-        public ActionResult InquireProjectCourse(LessonPriceQueryViewModel viewModel)
-        {
-            IQueryable<LessonPriceType> items = models.GetTable<LessonPriceType>()
-                .Where(p => !p.SeriesID.HasValue)
-                .Where(p => p.BranchID.HasValue)
-                .Where(p => p.IsInternalLesson == null)
-                .Where(p => p.IsWelfareGiftLesson == null)
-                .Where(p => p.Status == (int)Naming.LessonPriceStatus.一般課程 || p.Status == (int)Naming.LessonPriceStatus.已刪除);
+        //public ActionResult InquireProjectCourse(LessonPriceQueryViewModel viewModel)
+        //{
+        //    IQueryable<LessonPriceType> items = models.GetTable<LessonPriceType>()
+        //        .Where(p => !p.SeriesID.HasValue)
+        //        .Where(p => p.BranchID.HasValue)
+        //        .Where(p => p.IsInternalLesson == null)
+        //        .Where(p => p.IsWelfareGiftLesson == null)
+        //        .Where(p => p.Status == (int)Naming.LessonPriceStatus.一般課程 || p.Status == (int)Naming.LessonPriceStatus.已刪除);
 
-            if (viewModel.Status.HasValue)
-            {
-                items = items.Where(p => p.Status == viewModel.Status);
-            }
-            if (viewModel.BranchID.HasValue)
-            {
-                items = items.Where(p => p.BranchID == viewModel.BranchID);
-            }
+        //    if (viewModel.Status.HasValue)
+        //    {
+        //        items = items.Where(p => p.Status == viewModel.Status);
+        //    }
+        //    if (viewModel.BranchID.HasValue)
+        //    {
+        //        items = items.Where(p => p.BranchID == viewModel.BranchID);
+        //    }
 
-            return View("~/Views/LessonPrice/Module/ProjectCourseList.ascx", items);
-        }
+        //    return View("~/Views/LessonPrice/Module/ProjectCourseList.ascx", items);
+        //}
 
         public ActionResult DeleteLessonPrice(LessonPriceQueryViewModel viewModel)
         {

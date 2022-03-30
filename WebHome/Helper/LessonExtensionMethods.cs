@@ -309,6 +309,9 @@ namespace WebHome.Helper
                         (int)Naming.LessonPriceStatus.已刪除,
                         (int)Naming.LessonPriceStatus.點數兌換課程,
                         (int)Naming.LessonPriceStatus.員工福利課程,
+                        (int)Naming.LessonPriceStatus.營養課程,
+                        (int)Naming.LessonPriceStatus.運動恢復課程,
+                        (int)Naming.LessonPriceStatus.運動防護課程,
         };
 
         public static IQueryable<LessonTime> PTorPILesson(this IQueryable<LessonTime> items)

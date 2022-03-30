@@ -39,6 +39,18 @@
                 return i.MonthlyCoachRevenueIndicator
                     .Where(m => m.BranchID == _viewModel.BranchID)
                     .Sum(m => m.ActualCompleteTSCount) ?? 0;
+            case Naming.SessionTypeDefinition.AT:
+                return i.MonthlyCoachRevenueIndicator
+                    .Where(m => m.BranchID == _viewModel.BranchID)
+                    .Sum(m => m.ATCount) ?? 0;
+            case Naming.SessionTypeDefinition.SR:
+                return i.MonthlyCoachRevenueIndicator
+                    .Where(m => m.BranchID == _viewModel.BranchID)
+                    .Sum(m => m.SRCount) ?? 0;
+            case Naming.SessionTypeDefinition.SD:
+                return i.MonthlyCoachRevenueIndicator
+                    .Where(m => m.BranchID == _viewModel.BranchID)
+                    .Sum(m => m.SDCount) ?? 0;
         }
         return 0;
     }

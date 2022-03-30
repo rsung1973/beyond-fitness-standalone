@@ -31,6 +31,12 @@
                 return items.Select(m => m.STCount ?? 0).ToArray();
             case Naming.SessionTypeDefinition.TS:
                 return items.Select(m => m.ActualCompleteTSCount ?? 0).ToArray();
+            case Naming.SessionTypeDefinition.AT:
+                return items.Select(m => m.ATCount ?? 0).ToArray();
+            case Naming.SessionTypeDefinition.SR:
+                return items.Select(m => m.SRCount ?? 0).ToArray();
+            case Naming.SessionTypeDefinition.SD:
+                return items.Select(m => m.SDCount ?? 0).ToArray();
         }
         return new int[] { };
     }

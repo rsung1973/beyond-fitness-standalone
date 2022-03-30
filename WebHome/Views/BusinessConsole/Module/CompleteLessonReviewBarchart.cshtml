@@ -25,14 +25,20 @@
 
     IGrouping<DateTime, MonthlyBranchRevenueGoal>[] groups = (IGrouping<DateTime, MonthlyBranchRevenueGoal>[])TempData["PeriodGroup"];
 
-    var totals = groups.Select(g => g.Sum(b => b.ActualCompleteLessonCount + b.ActualCompletePICount + b.ActualCompleteTSCount)).ToArray();
+    var totals = groups.Select(g => g.Sum(b => b.ActualCompleteLessonCount + b.ActualCompletePICount + b.ActualCompleteTSCount + b.ATCount + b.SRCount + b.SDCount)).ToArray();
     var PTCount = groups.Select(g => (object)g.Sum(b => b.ActualCompleteLessonCount)).ToList();
     var PICount = groups.Select(g => (object)g.Sum(b => b.ActualCompletePICount)).ToList();
     var TSCount = groups.Select(g => (object)g.Sum(b => b.ActualCompleteTSCount)).ToList();
+    var ATCount = groups.Select(g => (object)g.Sum(b => b.ATCount)).ToList();
+    var SRCount = groups.Select(g => (object)g.Sum(b => b.SRCount)).ToList();
+    var SDCount = groups.Select(g => (object)g.Sum(b => b.SDCount)).ToList();
 
     PTCount.Insert(0, "data1");
     PICount.Insert(0, "data2");
     TSCount.Insert(0, "data3");
+    ATCount.Insert(0, "data4");
+    SRCount.Insert(0, "data5");
+    SDCount.Insert(0, "data6");
 
 }
 <div id="@(_viewID)" class="c3"></div>
@@ -48,26 +54,38 @@
                     @Html.Raw(JsonConvert.SerializeObject(PTCount)),
                     @Html.Raw(JsonConvert.SerializeObject(PICount)),
                     @Html.Raw(JsonConvert.SerializeObject(TSCount)),
+                    @Html.Raw(JsonConvert.SerializeObject(ATCount)),
+                    @Html.Raw(JsonConvert.SerializeObject(SRCount)),
+                    @Html.Raw(JsonConvert.SerializeObject(SDCount)),
                 ],
                 order: null,
                 types: {
                     'data1': 'bar',
                     'data2': 'bar',
                     'data3': 'bar',
+                    'data4': 'bar',
+                    'data5': 'bar',
+                    'data6': 'bar',
                 },
                 groups: [
-                    ['data1', 'data2', 'data3']
+                    ['data1', 'data2', 'data3','data4', 'data5', 'data6']
                 ],
                 colors: {
                     'data1': '#F1A139',
                     'data2': '#3B9740',
-                    'data3': '#C2454F'
+                    'data3': '#C2454F',
+                    'data4': '#42454F',
+                    'data5': '#C2554F',
+                    'data6': '#A2456F',
                 },
                 names: {
                     // name of each serie
                     'data1': 'P.T',
                     'data2': 'P.I',
                     'data3': 'T.S',
+                    'data4': 'A.T',
+                    'data5': 'S.R',
+                    'data6': 'S.D',
                 },
                 labels: {
                     format: {

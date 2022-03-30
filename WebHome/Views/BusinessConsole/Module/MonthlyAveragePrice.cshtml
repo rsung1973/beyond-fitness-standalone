@@ -28,9 +28,19 @@
     if (_viewModel.BranchID.HasValue)
     {
         var goal = (MonthlyBranchRevenueGoal)TempData["RevenueGoal"];
-        if (goal.ActualCompleteLessonCount.HasValue && goal.ActualLessonAchievement.HasValue && goal.ActualCompleteLessonCount > 0)
+        var totalCount = (goal.ActualCompleteLessonCount ?? 0)
+            + (goal.ATCount ?? 0)
+            + (goal.SRCount ?? 0)
+            + (goal.SDCount ?? 0);
+
+        var totalAchievement = (goal.ActualLessonAchievement ?? 0)
+            + (goal.ATAchievement ?? 0)
+            + (goal.SRAchievement ?? 0)
+            + (goal.SDAchievement ?? 0);
+
+        if (totalCount > 0)
         {
-            averagePrice = goal.ActualLessonAchievement / goal.ActualCompleteLessonCount;
+            averagePrice = totalAchievement / totalCount;
         }
         indicator = goal;
     }
@@ -39,12 +49,18 @@
         var goal = (MonthlyRevenueGoal)TempData["RevenueGoal"];
         var items = models.GetTable<MonthlyBranchRevenueGoal>()
                         .Where(g => g.PeriodID == goal.PeriodID)
-                        .Where(g => g.GradeID == goal.GradeID)
-                        .Where(g => g.ActualLessonAchievement.HasValue)
-                        .Where(g => g.ActualCompleteLessonCount.HasValue).ToList();
-        var actualTotalAchievement = items.Sum(g => g.ActualLessonAchievement);
-        var actualTotalCount = items.Sum(g => g.ActualCompleteLessonCount);
-        if (actualTotalCount.HasValue && actualTotalCount > 0)
+                        .Where(g => g.GradeID == goal.GradeID).ToList();
+        //.Where(g => g.ActualLessonAchievement.HasValue)
+                        //.Where(g => g.ActualCompleteLessonCount.HasValue).ToList();
+        var actualTotalAchievement = (items.Sum(g => g.ActualLessonAchievement) ?? 0)
+            + (items.Sum(g => g.ATAchievement) ?? 0)
+            + (items.Sum(g => g.SRAchievement) ?? 0)
+            + (items.Sum(g => g.SDAchievement) ?? 0);
+        var actualTotalCount = (items.Sum(g => g.ActualCompleteLessonCount) ?? 0)
+            + (items.Sum(g => g.ATCount) ?? 0)
+            + (items.Sum(g => g.SRCount) ?? 0)
+            + (items.Sum(g => g.SDCount) ?? 0);
+        if (actualTotalCount > 0)
         {
             averagePrice = actualTotalAchievement / actualTotalCount;
         }

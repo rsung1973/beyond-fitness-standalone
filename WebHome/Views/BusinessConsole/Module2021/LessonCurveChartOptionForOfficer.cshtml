@@ -32,6 +32,12 @@
                 return _model.Select(i => i.MonthlyCoachRevenueIndicator.Sum(m => m.STCount) ?? 0).ToArray();
             case Naming.SessionTypeDefinition.TS:
                 return _model.Select(i => i.MonthlyCoachRevenueIndicator.Sum(m => m.ActualCompleteTSCount) ?? 0).ToArray();
+            case Naming.SessionTypeDefinition.AT:
+                return _model.Select(i => i.MonthlyCoachRevenueIndicator.Sum(m => m.ATCount) ?? 0).ToArray();
+            case Naming.SessionTypeDefinition.SR:
+                return _model.Select(i => i.MonthlyCoachRevenueIndicator.Sum(m => m.SRCount) ?? 0).ToArray();
+            case Naming.SessionTypeDefinition.SD:
+                return _model.Select(i => i.MonthlyCoachRevenueIndicator.Sum(m => m.SDCount) ?? 0).ToArray();
         }
         return new int[] { };
     }

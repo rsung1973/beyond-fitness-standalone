@@ -35,8 +35,8 @@
         {
             <tr>
                 <td>@($"{g.Key:yyyyMM}")</td>
-                <td class="text-center">@(g.Sum(b => b.ActualCompleteLessonCount) ?? 0)</td>
-                <td class="text-right">@($"{(g.Sum(b => b.ActualLessonAchievement) ?? 0):##,###,###,##0}")</td>
+                <td class="text-center">@((g.Sum(b => b.ActualCompleteLessonCount) ?? 0) +(g.Sum(b => b.ATCount) ?? 0) +(g.Sum(b => b.SRCount) ?? 0) +(g.Sum(b => b.SDCount) ?? 0))</td>
+                <td class="text-right">@($"{(g.Sum(b => b.ActualLessonAchievement) ?? 0)+(g.Sum(b => b.ATAchievement) ?? 0)+(g.Sum(b => b.SRAchievement) ?? 0)+(g.Sum(b => b.SDAchievement) ?? 0):##,###,###,##0}")</td>
             </tr>
         }
     </tbody>

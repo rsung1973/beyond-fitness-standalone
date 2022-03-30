@@ -31,6 +31,12 @@
                 return i.MonthlyCoachRevenueIndicator.Sum(m => m.STCount) ?? 0;
             case Naming.SessionTypeDefinition.TS:
                 return i.MonthlyCoachRevenueIndicator.Sum(m => m.ActualCompleteTSCount) ?? 0;
+            case Naming.SessionTypeDefinition.AT:
+                return i.MonthlyCoachRevenueIndicator.Sum(m => m.ATCount) ?? 0;
+            case Naming.SessionTypeDefinition.SR:
+                return i.MonthlyCoachRevenueIndicator.Sum(m => m.SRCount) ?? 0;
+            case Naming.SessionTypeDefinition.SD:
+                return i.MonthlyCoachRevenueIndicator.Sum(m => m.SDCount) ?? 0;
         }
         return 0;
     }

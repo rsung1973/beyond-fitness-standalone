@@ -388,6 +388,12 @@ namespace WebHome.Helper
                     revenueItem.RenewContractAchievement = renewContractAchievementItems.Sum(t => t.ShareAmount) ?? 0;
                     revenueItem.InstallmentAchievement = installmentContractAchievementItems.Sum(t => t.ShareAmount) ?? 0;
                     revenueItem.VoidShare = voidTuition.Sum(t => t.VoidShare) ?? 0;
+                    revenueItem.ATCount = tuitionItems.Where(t => t.PriceStatus == (int)Naming.LessonPriceStatus.運動防護課程).Count();
+                    revenueItem.ATAchievement = tuitionItems.Where(t => t.PriceStatus == (int)Naming.LessonPriceStatus.運動防護課程).Sum(t => t.ListPrice) ?? 0;
+                    revenueItem.SRCount = tuitionItems.Where(t => t.PriceStatus == (int)Naming.LessonPriceStatus.運動恢復課程).Count();
+                    revenueItem.SRAchievement = tuitionItems.Where(t => t.PriceStatus == (int)Naming.LessonPriceStatus.運動恢復課程).Sum(t => t.ListPrice) ?? 0;
+                    revenueItem.SDCount = tuitionItems.Where(t => t.PriceStatus == (int)Naming.LessonPriceStatus.營養課程).Count();
+                    revenueItem.SDAchievement = tuitionItems.Where(t => t.PriceStatus == (int)Naming.LessonPriceStatus.營養課程).Sum(t => t.ListPrice) ?? 0;
 
                     models.SubmitChanges();
                 }
@@ -466,6 +472,12 @@ namespace WebHome.Helper
                         revenueItem.RenewContractAchievement = branchRenewContractAchievementItems.Sum(t => t.ShareAmount) ?? 0;
                         revenueItem.InstallmentAchievement = branchInstallmentContractAchievementItems.Sum(t => t.ShareAmount) ?? 0;
                         revenueItem.VoidShare = voidTuition.Sum(t => t.VoidShare) ?? 0;
+                        revenueItem.ATCount = branchTuitionItems.Where(t => t.PriceStatus == (int)Naming.LessonPriceStatus.運動防護課程).Count();
+                        revenueItem.ATAchievement = branchTuitionItems.Where(t => t.PriceStatus == (int)Naming.LessonPriceStatus.運動防護課程).Sum(t => t.ListPrice) ?? 0;
+                        revenueItem.SRCount = branchTuitionItems.Where(t => t.PriceStatus == (int)Naming.LessonPriceStatus.運動恢復課程).Count();
+                        revenueItem.SRAchievement = branchTuitionItems.Where(t => t.PriceStatus == (int)Naming.LessonPriceStatus.運動恢復課程).Sum(t => t.ListPrice) ?? 0;
+                        revenueItem.SDCount = branchTuitionItems.Where(t => t.PriceStatus == (int)Naming.LessonPriceStatus.營養課程).Count();
+                        revenueItem.SDAchievement = branchTuitionItems.Where(t => t.PriceStatus == (int)Naming.LessonPriceStatus.營養課程).Sum(t => t.ListPrice) ?? 0;
 
                         models.SubmitChanges();
                     }
@@ -550,6 +562,12 @@ namespace WebHome.Helper
 
                     coachIndicator.STCount = coachSTItems.Count();
                     coachIndicator.VoidShare = voidTuition.Sum(t => t.VoidShare) ?? 0;
+                    coachIndicator.ATCount = coachTuitionItems.Where(t => t.PriceStatus == (int)Naming.LessonPriceStatus.運動防護課程).Count();
+                    coachIndicator.ATAchievement = coachTuitionItems.Where(t => t.PriceStatus == (int)Naming.LessonPriceStatus.運動防護課程).Sum(t => t.ListPrice) ?? 0;
+                    coachIndicator.SRCount = coachTuitionItems.Where(t => t.PriceStatus == (int)Naming.LessonPriceStatus.運動恢復課程).Count();
+                    coachIndicator.SRAchievement = coachTuitionItems.Where(t => t.PriceStatus == (int)Naming.LessonPriceStatus.運動恢復課程).Sum(t => t.ListPrice) ?? 0;
+                    coachIndicator.SDCount = coachTuitionItems.Where(t => t.PriceStatus == (int)Naming.LessonPriceStatus.營養課程).Count();
+                    coachIndicator.SDAchievement = coachTuitionItems.Where(t => t.PriceStatus == (int)Naming.LessonPriceStatus.營養課程).Sum(t => t.ListPrice) ?? 0;
 
                     models.SubmitChanges();
                 }

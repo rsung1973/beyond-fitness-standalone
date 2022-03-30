@@ -575,6 +575,9 @@ namespace WebHome.Models.ViewModel
             "P.I",
             "S.T",
             "T.S",
+            "A.T",
+            "S.R",
+            "S.D",
         };
     }
 

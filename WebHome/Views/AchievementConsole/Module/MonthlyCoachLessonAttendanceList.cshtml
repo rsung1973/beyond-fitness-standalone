@@ -29,6 +29,12 @@
                 return m.STCount ?? 0;
             case Naming.SessionTypeDefinition.TS:
                 return m.ActualCompleteTSCount ?? 0;
+            case Naming.SessionTypeDefinition.AT:
+                return m.ATCount ?? 0;
+            case Naming.SessionTypeDefinition.SR:
+                return m.SRCount ?? 0;
+            case Naming.SessionTypeDefinition.SD:
+                return m.SDCount ?? 0;
         }
         return 0;
     }

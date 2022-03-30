@@ -73,6 +73,9 @@ namespace WebHome.Models.Locale
             團體學員課程 = 1008,
             在家訓練 = 1009,
             員工福利課程 = 1010,
+            營養課程 = 1012,
+            運動防護課程 = 1013,
+            運動恢復課程 = 1014,
         }
 
         public enum LessonPriceFeature
@@ -490,6 +493,9 @@ namespace WebHome.Models.Locale
             PI = 2,
             ST = 3,
             TS = 4,
+            AT = 5,
+            SR = 6,
+            SD = 7,
         }
 
     }

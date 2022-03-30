@@ -738,6 +738,9 @@ namespace WebHome.Controllers
                             Naming.LessonPriceStatus.自主訓練,
                             Naming.LessonPriceStatus.體驗課程,
                             Naming.LessonPriceStatus.企業合作方案,
+                            Naming.LessonPriceStatus.營養課程,
+                            Naming.LessonPriceStatus.運動恢復課程,
+                            Naming.LessonPriceStatus.運動防護課程,
                         },
             }).InquireLesson(models);
 

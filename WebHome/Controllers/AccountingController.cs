@@ -2020,6 +2020,12 @@ namespace WebHome.Controllers
             return new EmptyResult();
         }
 
+        public static readonly int?[] RegularPTSessionScope = new int?[]
+                {
+                        (int)Naming.LessonPriceStatus.一般課程,
+                        (int)Naming.LessonPriceStatus.已刪除,
+                        (int)Naming.LessonPriceStatus.團體學員課程,
+                };
         public async Task<ActionResult> CreateAchievementSummaryXlsxAsync(AchievementQueryViewModel viewModel)
         {
             var detailsTable = createAchievementDetailsXlsx(viewModel, out IQueryable<V_Tuition> items);
@@ -2039,20 +2045,30 @@ namespace WebHome.Controllers
             //    item[5] = item[9] = 0;
             //}
 
-            int?[] PTSessionScope = BusinessConsoleExtensions.SessionScopeForAchievement;
+            DateTime? idx = viewModel.AchievementDateFrom?.FirstDayOfMonth();
 
             DataTable buildBranchDetails()
             {
                 DataTable table = new DataTable();
-                table.Columns.Add(new DataColumn("上課場所", typeof(String)));
-                table.Columns.Add(new DataColumn("P.T上課總數", typeof(int)));
-                table.Columns.Add(new DataColumn("P.T上課金額(含稅)", typeof(int)));  
-                table.Columns.Add(new DataColumn("活動贈品P.T上課總數", typeof(int)));
-                table.Columns.Add(new DataColumn("員工福利P.T上課總數", typeof(int)));                
-                table.Columns.Add(new DataColumn("C.S上課總數", typeof(int)));
-                table.Columns.Add(new DataColumn("T.S上課總數", typeof(int)));
-                table.Columns.Add(new DataColumn("P.I上課總數", typeof(int)));
-                //table.Columns.Add(new DataColumn("P.I計上課金額", typeof(int)));
+                table.Columns.Add(new DataColumn("上課場所", typeof(String)));	        //	0
+                table.Columns.Add(new DataColumn("P.T上課總數", typeof(int)));	        //	1
+                table.Columns.Add(new DataColumn("P.T上課金額(含稅)", typeof(int)));	    //	2
+                table.Columns.Add(new DataColumn("活動贈品P.T上課總數", typeof(int)));	//	3
+                table.Columns.Add(new DataColumn("員工福利P.T上課總數", typeof(int)));   //	4
+                table.Columns.Add(new DataColumn("C.S上課總數", typeof(int)));	        //	5
+                table.Columns.Add(new DataColumn("T.S上課總數", typeof(int)));	        //	6
+                table.Columns.Add(new DataColumn("P.I上課總數", typeof(int)));	        //	7
+                table.Columns.Add(new DataColumn("A.T上課總數", typeof(int)));	        //	8
+                table.Columns.Add(new DataColumn("A.T上課金額(含稅)", typeof(int)));	    //	9
+                table.Columns.Add(new DataColumn("S.R上課總數", typeof(int)));	        //	10
+                table.Columns.Add(new DataColumn("S.R上課金額(含稅)", typeof(int)));	    //	11
+                table.Columns.Add(new DataColumn("S.D上課總數", typeof(int)));	        //	12
+                table.Columns.Add(new DataColumn("S.D上課金額(含稅)", typeof(int)));	    //	13
+                table.Columns.Add(new DataColumn("健康課程上課總數", typeof(int)));	    //	14
+                table.Columns.Add(new DataColumn("健康課程上課金額(含稅)", typeof(int))); //	15
+                table.Columns.Add(new DataColumn("C.S上課金額(含稅)", typeof(int)));      //	16
+
+
 
                 DataRow r;
 
@@ -2062,18 +2078,18 @@ namespace WebHome.Controllers
                     r = table.NewRow();
                     r[0] = branch.BranchName;
 
-                    var dataItems = branchItems.Where(l => PTSessionScope.Contains((int?)l[11]));
+                    var dataItems = branchItems.Where(l => RegularPTSessionScope.Contains((int?)l[11]));
                     r[1] = dataItems.Sum(l => (int)l[6]);
                     r[2] = dataItems.Sum(l => (int)l[9]);
+                    r[16] = r[2];
 
                     dataItems = branchItems.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.點數兌換課程);
                     r[3] = dataItems.Sum(l => (int)l[6]);
+                    r[16] = (int)r[16] + dataItems.Sum(l => (int)l[9]);
 
                     dataItems = branchItems.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.員工福利課程);
                     r[4] = dataItems.Sum(l => (int)l[6]);
-
-                    //P.T + 點數 + 員工
-                    r[5] = (int)r[1] + (int)r[3] + (int)r[4];
+                    r[16] = (int)r[16] + dataItems.Sum(l => (int)l[9]);
 
                     dataItems = branchItems.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.體驗課程);
                     r[6] = dataItems.Sum(l => (int)l[6]);
@@ -2082,17 +2098,39 @@ namespace WebHome.Controllers
                     r[7] = dataItems.Sum(l => (int)l[6]);
                     //r[4] = dataItems.Sum(l => (int)l[9]);
 
+                    dataItems = branchItems.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.運動防護課程);
+                    r[8] = dataItems.Sum(l => (int)l[6]);
+                    r[9] = dataItems.Sum(l => (int)l[9]);
+
+                    dataItems = branchItems.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.運動恢復課程);
+                    r[10] = dataItems.Sum(l => (int)l[6]);
+                    r[11] = dataItems.Sum(l => (int)l[9]);
+
+                    dataItems = branchItems.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.營養課程);
+                    r[12] = dataItems.Sum(l => (int)l[6]);
+                    r[13] = dataItems.Sum(l => (int)l[9]);
+
+                    //P.T + 點數 + 員工
+                    r[14] = (int)r[8] + (int)r[10] + (int)r[12];
+                    r[5] = (int)r[1] + (int)r[3] + (int)r[4] + (int)r[14];
+                    r[15] = (int)r[9] + (int)r[11] + (int)r[13];
+                    r[16] = (int)r[15] + (int)r[16];
+
                     table.Rows.Add(r);
                 }
 
                 r = table.NewRow();
                 r[0] = "總計";
                 var data = table.Rows.Cast<DataRow>();
-                for (int idx = 1; idx <= 7; idx++)
+                for (int idx = 1; idx <= 16; idx++)
                 {
                     r[idx] = data.Sum(d => (int)d[idx]);
                 }
                 table.Rows.Add(r);
+
+                table.Columns[6].SetOrdinal(16);
+                table.Columns[6].SetOrdinal(16);
+
                 return table;
             }
 
@@ -2100,15 +2138,23 @@ namespace WebHome.Controllers
             DataTable buildContractBranchDetails()
             {
                 DataTable table = new DataTable();
-                table.Columns.Add(new DataColumn("簽約場所", typeof(String)));
-                table.Columns.Add(new DataColumn("P.T上課總數", typeof(int)));
-                table.Columns.Add(new DataColumn("P.T上課金額(含稅)", typeof(int)));  
-                table.Columns.Add(new DataColumn("活動贈品P.T上課總數", typeof(int)));
-                table.Columns.Add(new DataColumn("員工福利P.T上課總數", typeof(int)));                
-                table.Columns.Add(new DataColumn("總上課數", typeof(int)));
-                table.Columns.Add(new DataColumn("T.S上課總數", typeof(int)));
-                table.Columns.Add(new DataColumn("P.I上課總數", typeof(int)));
-                //table.Columns.Add(new DataColumn("P.I計上課金額", typeof(int)));
+                table.Columns.Add(new DataColumn("簽約場所", typeof(String)));              //	0
+                table.Columns.Add(new DataColumn("P.T上課總數", typeof(int)));              //	1
+                table.Columns.Add(new DataColumn("P.T上課金額(含稅)", typeof(int)));        //	2
+                table.Columns.Add(new DataColumn("活動贈品P.T上課總數", typeof(int)));      //	3
+                table.Columns.Add(new DataColumn("員工福利P.T上課總數", typeof(int)));      //	4
+                table.Columns.Add(new DataColumn("總上課數", typeof(int)));                 //	5
+                table.Columns.Add(new DataColumn("T.S上課總數", typeof(int)));              //	6
+                table.Columns.Add(new DataColumn("P.I上課總數", typeof(int)));              //	7
+                table.Columns.Add(new DataColumn("A.T上課總數", typeof(int)));              //	8
+                table.Columns.Add(new DataColumn("A.T上課金額(含稅)", typeof(int)));        //	9
+                table.Columns.Add(new DataColumn("S.R上課總數", typeof(int)));              //	10
+                table.Columns.Add(new DataColumn("S.R上課金額(含稅)", typeof(int)));        //	11
+                table.Columns.Add(new DataColumn("S.D上課總數", typeof(int)));              //	12
+                table.Columns.Add(new DataColumn("S.D上課金額(含稅)", typeof(int)));        //	13
+                table.Columns.Add(new DataColumn("健康課程上課總數", typeof(int)));         //	14
+                table.Columns.Add(new DataColumn("健康課程上課金額(含稅)", typeof(int)));	   //	15
+                table.Columns.Add(new DataColumn("C.S上課金額(含稅)", typeof(int)));      //	16
 
                 DataRow r;
 
@@ -2118,25 +2164,42 @@ namespace WebHome.Controllers
                     r = table.NewRow();
                     r[0] = branch.BranchName;
 
-                    var dataItems = branchItems.Where(l => PTSessionScope.Contains((int?)l[11]));
+                    var dataItems = branchItems.Where(l => RegularPTSessionScope.Contains((int?)l[11]));
                     r[1] = dataItems.Sum(l => (int)l[6]);
-                    r[2] = dataItems.Sum(l => (int)l[9]);                                        
+                    r[2] = dataItems.Sum(l => (int)l[9]);
+                    r[16] = r[2];
 
                     dataItems = branchItems.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.點數兌換課程);
                     r[3] = dataItems.Sum(l => (int)l[6]);
+                    r[16] = (int)r[16] + dataItems.Sum(l => (int)l[9]);
 
                     dataItems = branchItems.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.員工福利課程);
                     r[4] = dataItems.Sum(l => (int)l[6]);
-
-                    //P.T + 點數 + 員工
-                    r[5] = (int)r[1] + (int)r[3] + (int)r[4];
+                    r[16] = (int)r[16] + dataItems.Sum(l => (int)l[9]);
 
                     dataItems = branchItems.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.體驗課程);
                     r[6] = dataItems.Sum(l => (int)l[6]);                    
 
                     dataItems = branchItems.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.自主訓練);
                     r[7] = dataItems.Sum(l => (int)l[6]);
-                    //r[4] = dataItems.Sum(l => (int)l[9]);
+
+                    dataItems = branchItems.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.運動防護課程);
+                    r[8] = dataItems.Sum(l => (int)l[6]);
+                    r[9] = dataItems.Sum(l => (int)l[9]);
+
+                    dataItems = branchItems.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.運動恢復課程);
+                    r[10] = dataItems.Sum(l => (int)l[6]);
+                    r[11] = dataItems.Sum(l => (int)l[9]);
+
+                    dataItems = branchItems.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.營養課程);
+                    r[12] = dataItems.Sum(l => (int)l[6]);
+                    r[13] = dataItems.Sum(l => (int)l[9]);
+
+                    //P.T + 點數 + 員工
+                    r[14] = (int)r[8] + (int)r[10] + (int)r[12];
+                    r[5] = (int)r[1] + (int)r[3] + (int)r[4] + (int)r[14];
+                    r[15] = (int)r[9] + (int)r[11] + (int)r[13];
+                    r[16] = (int)r[15] + (int)r[16];
 
                     table.Rows.Add(r);
                 }
@@ -2144,56 +2207,117 @@ namespace WebHome.Controllers
                 r = table.NewRow();
                 r[0] = "總計";
                 var data = table.Rows.Cast<DataRow>();
-                for (int idx = 1; idx <= 7; idx++)
+                for (int idx = 1; idx <= 16; idx++)
                 {
                     r[idx] = data.Sum(d => (int)d[idx]);
                 }
                 table.Rows.Add(r);
+
+                table.Columns[6].SetOrdinal(16);
+                table.Columns[6].SetOrdinal(16);
+
                 return table;
             }
 
             DataTable buildCoachBranchDetails()
             {
                 DataTable table = new DataTable();
-                table.Columns.Add(new DataColumn("所屬分店", typeof(String)));
-                table.Columns.Add(new DataColumn("P.T上課總數", typeof(int)));
-                table.Columns.Add(new DataColumn("P.T上課金額(含稅)", typeof(int)));  
-                table.Columns.Add(new DataColumn("活動贈品P.T上課總數", typeof(int)));
-                table.Columns.Add(new DataColumn("員工福利P.T上課總數", typeof(int)));                
-                table.Columns.Add(new DataColumn("C.S上課總數", typeof(int)));
-                table.Columns.Add(new DataColumn("T.S上課總數", typeof(int)));
-                table.Columns.Add(new DataColumn("P.I上課總數", typeof(int)));
-                //table.Columns.Add(new DataColumn("P.I計上課金額", typeof(int)));                
+                table.Columns.Add(new DataColumn("所屬分店", typeof(String)));	//	0
+                table.Columns.Add(new DataColumn("P.T上課總數", typeof(int)));	//	1
+                table.Columns.Add(new DataColumn("P.T上課金額(含稅)", typeof(int)));  	//	2
+                table.Columns.Add(new DataColumn("活動贈品P.T上課總數", typeof(int)));	//	3
+                table.Columns.Add(new DataColumn("員工福利P.T上課總數", typeof(int)));   //	4
+                table.Columns.Add(new DataColumn("C.S上課總數", typeof(int)));	//	5
+                table.Columns.Add(new DataColumn("T.S上課總數", typeof(int)));	//	6
+                table.Columns.Add(new DataColumn("P.I上課總數", typeof(int)));	//	7
+                table.Columns.Add(new DataColumn("A.T上課總數", typeof(int)));	//	8
+                table.Columns.Add(new DataColumn("A.T上課金額(含稅)", typeof(int)));	//	9
+                table.Columns.Add(new DataColumn("S.R上課總數", typeof(int)));	//	10
+                table.Columns.Add(new DataColumn("S.R上課金額(含稅)", typeof(int)));	//	11
+                table.Columns.Add(new DataColumn("S.D上課總數", typeof(int)));	//	12
+                table.Columns.Add(new DataColumn("S.D上課金額(含稅)", typeof(int)));	//	13
+                table.Columns.Add(new DataColumn("健康課程上課總數", typeof(int)));	//	14
+                table.Columns.Add(new DataColumn("健康課程上課金額(含稅)", typeof(int)));	//	15
+                table.Columns.Add(new DataColumn("C.S上課金額(含稅)", typeof(int)));      //	16
+                table.Columns.Add(new DataColumn("目標上課總數", typeof(int)));      //	17
+                table.Columns.Add(new DataColumn("上課總數達成率(%)", typeof(int)));      //	18
+                table.Columns.Add(new DataColumn("目標上課金額", typeof(int)));      //	19
+                table.Columns.Add(new DataColumn("上課金額達成率(%)", typeof(int)));      //	20
+
 
                 DataRow r;
 
-                var branchName = models.GetTable<BranchStore>().Select(b => b.BranchName).ToList();
-                branchName.Add("其他");
-                foreach (var branch in branchName)
-                {
-                    var branchItems = tableItems.Where(l => (String)l[12] == branch);
-                    r = table.NewRow();
-                    r[0] = branch;
+                var branchList = models.GetTable<BranchStore>().Select(b => new KeyValuePair<int,String>(b.BranchID, b.BranchName)).ToList();
+                branchList.Add(new KeyValuePair<int, string>(-1, "其他"));
 
-                    var dataItems = branchItems.Where(l => PTSessionScope.Contains((int?)l[11]));
+                var indicator = models.GetTable<MonthlyIndicator>()
+                    .Where(m => m.StartDate == idx)
+                    .FirstOrDefault();
+
+                foreach (var branch in branchList)
+                {
+                    var branchItems = tableItems.Where(l => (String)l[12] == branch.Value);
+                    r = table.NewRow();
+                    r[0] = branch.Value;
+
+                    var dataItems = branchItems.Where(l => RegularPTSessionScope.Contains((int?)l[11]));
                     r[1] = dataItems.Sum(l => (int)l[6]);
                     r[2] = dataItems.Sum(l => (int)l[9]);
+                    r[16] = r[2];
 
                     dataItems = branchItems.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.點數兌換課程);
                     r[3] = dataItems.Sum(l => (int)l[6]);
+                    r[16] = (int)r[16] + dataItems.Sum(l => (int)l[9]);
 
                     dataItems = branchItems.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.員工福利課程);
                     r[4] = dataItems.Sum(l => (int)l[6]);
-
-                    //P.T + 點數 + 員工
-                    r[5] = (int)r[1] + (int)r[3] + (int)r[4];
+                    r[16] = (int)r[16] + dataItems.Sum(l => (int)l[9]);
 
                     dataItems = branchItems.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.體驗課程);
                     r[6] = dataItems.Sum(l => (int)l[6]);
                                         
                     dataItems = branchItems.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.自主訓練);
                     r[7] = dataItems.Sum(l => (int)l[6]);
-                    //r[4] = dataItems.Sum(l => (int)l[9]);                    
+
+                    dataItems = branchItems.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.運動防護課程);
+                    r[8] = dataItems.Sum(l => (int)l[6]);
+                    r[9] = dataItems.Sum(l => (int)l[9]);
+
+                    dataItems = branchItems.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.運動恢復課程);
+                    r[10] = dataItems.Sum(l => (int)l[6]);
+                    r[11] = dataItems.Sum(l => (int)l[9]);
+
+                    dataItems = branchItems.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.營養課程);
+                    r[12] = dataItems.Sum(l => (int)l[6]);
+                    r[13] = dataItems.Sum(l => (int)l[9]);
+
+                    //P.T + 點數 + 員工
+                    r[14] = (int)r[8] + (int)r[10] + (int)r[12];
+                    r[5] = (int)r[1] + (int)r[3] + (int)r[4] + (int)r[14];
+                    r[15] = (int)r[9] + (int)r[11] + (int)r[13];
+                    r[16] = (int)r[15] + (int)r[16];
+
+                    var branchIndicator = indicator.MonthlyBranchIndicator.Where(b => b.BranchID == branch.Key).FirstOrDefault();
+                    if(branchIndicator!=null)
+                    {
+                        var revenueGoal = branchIndicator
+                            .MonthlyBranchRevenueIndicator.Where(r => r.MonthlyBranchRevenueGoal != null)
+                                            .Select(r => r.MonthlyBranchRevenueGoal).FirstOrDefault();
+                        if (revenueGoal != null)
+                        {
+                            if (revenueGoal.CompleteLessonsGoal > 0)
+                            {
+                                r[17] = revenueGoal.CompleteLessonsGoal;
+                                r[18] = (int)Math.Round((int)r[5] * 100M / (int)r[17]);
+                            }
+
+                            if (revenueGoal.LessonTuitionGoal > 0)
+                            {
+                                r[19] = revenueGoal.LessonTuitionGoal;
+                                r[20] = (int)Math.Round((int)r[16] * 100M / (int)r[19]);
+                            }
+                        }
+                    }
 
                     table.Rows.Add(r);
                 }
@@ -2201,27 +2325,44 @@ namespace WebHome.Controllers
                 r = table.NewRow();
                 r[0] = "總計";
                 var data = table.Rows.Cast<DataRow>();
-                for (int idx = 1; idx <= 7; idx++)
+                for (int idx = 1; idx <= 16; idx++)
                 {
                     r[idx] = data.Sum(d => (int)d[idx]);
                 }
                 table.Rows.Add(r);
+
+                table.Columns[6].SetOrdinal(16);
+                table.Columns[6].SetOrdinal(16);
+
                 return table;
             }
 
             DataTable buildCoachDetails()
             {
                 DataTable table = new DataTable();
-                table.Columns.Add(new DataColumn("體能顧問", typeof(String)));
-                table.Columns.Add(new DataColumn("所屬分店", typeof(String)));
-                table.Columns.Add(new DataColumn("P.T上課總數", typeof(int)));
-                table.Columns.Add(new DataColumn("P.T上課金額(含稅）", typeof(int)));  
-                table.Columns.Add(new DataColumn("活動贈品P.T上課總數", typeof(int)));
-                table.Columns.Add(new DataColumn("員工福利P.T上課總數", typeof(int)));                
-                table.Columns.Add(new DataColumn("C.S上課總數", typeof(int)));
-                table.Columns.Add(new DataColumn("T.S上課總數", typeof(int)));
-                table.Columns.Add(new DataColumn("P.I上課總數", typeof(int)));
-                //table.Columns.Add(new DataColumn("P.I計上課金額", typeof(int)));    
+                table.Columns.Add(new DataColumn("體能顧問", typeof(String)));	//	0
+                table.Columns.Add(new DataColumn("所屬分店", typeof(String)));	//	1
+                table.Columns.Add(new DataColumn("P.T上課總數", typeof(int)));	//	2
+                table.Columns.Add(new DataColumn("P.T上課金額(含稅）", typeof(int)));  	//	3
+                table.Columns.Add(new DataColumn("活動贈品P.T上課總數", typeof(int)));	//	4
+                table.Columns.Add(new DataColumn("員工福利P.T上課總數", typeof(int)));   //	5
+                table.Columns.Add(new DataColumn("C.S上課總數", typeof(int)));	//	6
+                table.Columns.Add(new DataColumn("T.S上課總數", typeof(int)));	//	7
+                table.Columns.Add(new DataColumn("P.I上課總數", typeof(int)));	//	8
+                table.Columns.Add(new DataColumn("A.T上課總數", typeof(int)));	//	9
+                table.Columns.Add(new DataColumn("A.T上課金額(含稅)", typeof(int)));	//	10
+                table.Columns.Add(new DataColumn("S.R上課總數", typeof(int)));	//	11
+                table.Columns.Add(new DataColumn("S.R上課金額(含稅)", typeof(int)));	//	12
+                table.Columns.Add(new DataColumn("S.D上課總數", typeof(int)));	//	13
+                table.Columns.Add(new DataColumn("S.D上課金額(含稅)", typeof(int)));	//	14
+                table.Columns.Add(new DataColumn("健康課程上課總數", typeof(int)));	//	15
+                table.Columns.Add(new DataColumn("健康課程上課金額(含稅)", typeof(int)));	//	16
+                table.Columns.Add(new DataColumn("C.S上課金額(含稅)", typeof(int)));      //	17
+                table.Columns.Add(new DataColumn("目標上課總數", typeof(int)));      //	18
+                table.Columns.Add(new DataColumn("上課總數達成率(%)", typeof(int)));      //	19
+                table.Columns.Add(new DataColumn("目標上課金額", typeof(int)));      //	20
+                table.Columns.Add(new DataColumn("上課金額達成率(%)", typeof(int)));      //	21
+
 
                 DataRow r;
 
@@ -2232,23 +2373,64 @@ namespace WebHome.Controllers
                     r = table.NewRow();
                     r[0] = coach.Key;
                     r[1] = (String)coach.First()[12];
-                    var dataItems = coach.Where(l => PTSessionScope.Contains((int?)l[11]));
+                    var dataItems = coach.Where(l => RegularPTSessionScope.Contains((int?)l[11]));
                     r[2] = dataItems.Sum(l => (int)l[6]);
                     r[3] = dataItems.Sum(l => (int)l[9]);
+                    r[17] = r[3];
 
                     dataItems = coach.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.點數兌換課程);
                     r[4] = dataItems.Sum(l => (int)l[6]);
+                    r[17] = (int)r[17] + dataItems.Sum(l => (int)l[9]);
 
                     dataItems = coach.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.員工福利課程);
                     r[5] = dataItems.Sum(l => (int)l[6]);
-                    r[6] = (int)r[2] + (int)r[4] + (int)r[5];
+                    r[17] = (int)r[17] + dataItems.Sum(l => (int)l[9]);
 
                     dataItems = coach.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.體驗課程);
                     r[7] = dataItems.Sum(l => (int)l[6]);
+                    r[17] = (int)r[17] + dataItems.Sum(l => (int)l[9]);
 
                     dataItems = coach.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.自主訓練);
                     r[8] = dataItems.Sum(l => (int)l[6]);
-                    //r[5] = dataItems.Sum(l => (int)l[9]);                           
+
+                    dataItems = coach.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.運動防護課程);
+                    r[9] = dataItems.Sum(l => (int)l[6]);
+                    r[10] = dataItems.Sum(l => (int)l[9]);
+
+                    dataItems = coach.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.運動恢復課程);
+                    r[11] = dataItems.Sum(l => (int)l[6]);
+                    r[12] = dataItems.Sum(l => (int)l[9]);
+
+                    dataItems = coach.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.營養課程);
+                    r[13] = dataItems.Sum(l => (int)l[6]);
+                    r[14] = dataItems.Sum(l => (int)l[9]);
+
+                    //P.T + 點數 + 員工
+                    r[15] = (int)r[9] + (int)r[11] + (int)r[13];
+                    r[6] = (int)r[2] + (int)r[4] + (int)r[5] + (int)r[15];
+                    r[16] = (int)r[10] + (int)r[12] + (int)r[14];
+                    r[17] = (int)r[16] + (int)r[17];
+
+                    var coachItem = models.GetTable<MonthlyIndicator>()
+                        .Where(m => m.StartDate == idx)
+                        .Join(models.GetTable<MonthlyCoachRevenueIndicator>().Where(c => c.CoachID == (int)coach.First()[16]),
+                            m => m.PeriodID, c => c.PeriodID, (m, c) => c)
+                        .FirstOrDefault();
+
+                    if(coachItem != null)
+                    {
+                        if (coachItem.CompleteLessonsGoal > 0)
+                        {
+                            r[18] = coachItem.CompleteLessonsGoal;
+                            r[19] = (int)Math.Round((int)r[6] * 100M / (int)r[18]);
+                        }
+
+                        if (coachItem.LessonTuitionGoal > 0)
+                        {
+                            r[20] = coachItem.LessonTuitionGoal;
+                            r[21] = (int)Math.Round((int)r[17] * 100M / (int)r[20]);
+                        }
+                    }
 
                     table.Rows.Add(r);
                 }
@@ -2256,11 +2438,15 @@ namespace WebHome.Controllers
                 r = table.NewRow();
                 r[0] = "總計";
                 var data = table.Rows.Cast<DataRow>();
-                for (int idx = 2; idx <= 8; idx++)
+                for (int idx = 2; idx <= 17; idx++)
                 {
                     r[idx] = data.Sum(d => (int)d[idx]);
                 }
                 table.Rows.Add(r);
+
+                table.Columns[7].SetOrdinal(17);
+                table.Columns[7].SetOrdinal(17);
+
                 return table;
             }
 
@@ -2283,7 +2469,7 @@ namespace WebHome.Controllers
                 ds.Tables.Add(table);
 
                 detailsTable.Columns.RemoveAt(14);
-                //detailsTable.Columns.RemoveAt(11);
+                detailsTable.Columns.RemoveAt(15);
                 ds.Tables.Add(detailsTable);
 
                 await ds.SaveAsExcelAsync(Response, String.Format("attachment;filename={0}({1:yyyy-MM-dd HH-mm-ss}).xlsx", HttpUtility.UrlEncode("LessonAchievementSummary"), DateTime.Now), viewModel.FileDownloadToken);

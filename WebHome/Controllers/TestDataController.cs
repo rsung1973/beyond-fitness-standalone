@@ -129,6 +129,12 @@ namespace WebHome.Controllers
                                     + coachTuitionItems.Where(t => t.ELStatus == (int)Naming.LessonPriceStatus.體驗課程).Count();
                     coachIndicator.ActualCompletePICount = coachTuitionItems.Where(t => t.PriceStatus == (int)Naming.LessonPriceStatus.自主訓練).Count()
                                     + coachTuitionItems.Where(t => t.ELStatus == (int)Naming.LessonPriceStatus.自主訓練).Count();
+                    coachIndicator.ATCount = coachTuitionItems.Where(t => t.PriceStatus == (int)Naming.LessonPriceStatus.運動防護課程).Count();
+                    coachIndicator.ATAchievement = coachTuitionItems.Where(t => t.PriceStatus == (int)Naming.LessonPriceStatus.運動防護課程).Sum(t => t.ListPrice) ?? 0;
+                    coachIndicator.SRCount = coachTuitionItems.Where(t => t.PriceStatus == (int)Naming.LessonPriceStatus.運動恢復課程).Count();
+                    coachIndicator.SRAchievement = coachTuitionItems.Where(t => t.PriceStatus == (int)Naming.LessonPriceStatus.運動恢復課程).Sum(t => t.ListPrice) ?? 0;
+                    coachIndicator.SDCount = coachTuitionItems.Where(t => t.PriceStatus == (int)Naming.LessonPriceStatus.營養課程).Count();
+                    coachIndicator.SDAchievement = coachTuitionItems.Where(t => t.PriceStatus == (int)Naming.LessonPriceStatus.營養課程).Sum(t => t.ListPrice) ?? 0;
 
                     models.SubmitChanges();
                 }

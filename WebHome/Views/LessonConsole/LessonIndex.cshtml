@@ -1,5 +1,3 @@
-
-
 @using System.IO
 @using System.Linq.Expressions
 
@@ -33,16 +31,16 @@
     var coach = models.GetTable<ServingCoach>().Where(c => c.CoachID == _viewModel.CoachID).FirstOrDefault();
 }
 @section CustomHeader {
-    <!-- JQuery DataTable Css -->
-    <link href="plugins/jquery-datatable/DataTables-1.10.18/css/dataTables.bootstrap4.min.css" rel="stylesheet">
-    <link href="plugins/jquery-datatable/Responsive-2.2.2/css/responsive.bootstrap4.min.css" rel="stylesheet">
-    <link href="plugins/jquery-datatable/FixedColumns-3.2.5/css/fixedColumns.bootstrap4.min.css" rel="stylesheet">
-    <!-- Bootstrap Datetimepick -->
+<!-- JQuery DataTable Css -->
+<link href="plugins/jquery-datatable/DataTables-1.10.18/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+<link href="plugins/jquery-datatable/Responsive-2.2.2/css/responsive.bootstrap4.min.css" rel="stylesheet">
+<link href="plugins/jquery-datatable/FixedColumns-3.2.5/css/fixedColumns.bootstrap4.min.css" rel="stylesheet">
+<!-- Bootstrap Datetimepick -->
 
-    <link href="css/smartcalendar-2.css" rel="stylesheet" />
+<link href="css/smartcalendar-2.css" rel="stylesheet" />
 
-    <!-- Custom Css -->
-    <link rel="stylesheet" href="css/customelist.css?1.1" />
+<!-- Custom Css -->
+<link rel="stylesheet" href="css/customelist.css?1.1" />
 }
 
 <!-- Main Content -->
@@ -177,16 +175,19 @@
                                     DateTo = DateTime.Today,
                                     CoachAttended = false,
                                     CombinedStatus = new Naming.LessonPriceStatus[]
-                                        {
-                                            Naming.LessonPriceStatus.一般課程,
-                                            Naming.LessonPriceStatus.團體學員課程,
-                                            Naming.LessonPriceStatus.已刪除,
-                                            Naming.LessonPriceStatus.點數兌換課程,
-                                            Naming.LessonPriceStatus.員工福利課程,
-                                            Naming.LessonPriceStatus.自主訓練,
-                                            Naming.LessonPriceStatus.體驗課程,
-                                            Naming.LessonPriceStatus.企業合作方案,
-                                        },
+                                {
+                                                Naming.LessonPriceStatus.一般課程,
+                                                Naming.LessonPriceStatus.團體學員課程,
+                                                Naming.LessonPriceStatus.已刪除,
+                                                Naming.LessonPriceStatus.點數兌換課程,
+                                                Naming.LessonPriceStatus.員工福利課程,
+                                                Naming.LessonPriceStatus.自主訓練,
+                                                Naming.LessonPriceStatus.體驗課程,
+                                                Naming.LessonPriceStatus.企業合作方案,
+                                                Naming.LessonPriceStatus.營養課程,
+                                                Naming.LessonPriceStatus.運動恢復課程,
+                                                Naming.LessonPriceStatus.運動防護課程,
+                                },
                                 }).InquireLesson(models));
                             }
                         </div>
@@ -202,56 +203,58 @@
 @{
     void lessonsSummary(IQueryable<LessonTime> currentItems, LessonOverviewQueryViewModel currentViewModel, String lessonTypeName, bool hasLearner)
     {
-    <div class="body">
-        <div class="row">
-            <div class="col-8">
-                <h5 class="m-t-0">@(lessonTypeName)</h5>
-                <p class="text-small">
-                    @{
-                        var lessonCount = currentItems.Where(t => t.LessonAttendance == null).Count();
-                        var viewModel = (LessonOverviewQueryViewModel)currentViewModel.Duplicate();
-                        viewModel.CoachAttended = false;
-                    }
-                    編輯中：<a href="#" onclick='showLessonList(@Html.Raw(viewModel.JsonStringify()),@(lessonCount));'>@(lessonCount)</a><br />
-                    @if (hasLearner)
-                    {
+        <div class="body">
+            <div class="row">
+                <div class="col-8">
+                    <h5 class="m-t-0">@(lessonTypeName)</h5>
+                    <p class="text-small">
+                        @{
+                            var lessonCount = currentItems.Where(t => t.LessonAttendance == null).Count();
+                            var viewModel = (LessonOverviewQueryViewModel)currentViewModel.Duplicate();
+                            viewModel.CoachAttended = false;
+                        }
+                        編輯中：<a href="#" onclick='showLessonList(@Html.Raw(viewModel.JsonStringify()),@(lessonCount));'>@(lessonCount)</a><br />
+                        @if (hasLearner)
+                        {
 
-                        lessonCount = currentItems.Where(t => !t.LessonPlan.CommitAttendance.HasValue).Count();
+                            lessonCount = currentItems.Where(t => !t.LessonPlan.CommitAttendance.HasValue).Count();
+                            viewModel = (LessonOverviewQueryViewModel)currentViewModel.Duplicate();
+                            viewModel.LearnerCommitted = false;
+                            <text>學生未打卡：</text>
+                            <a href="#" onclick='showLessonList(@Html.Raw(viewModel.JsonStringify()),@(lessonCount));'>@(lessonCount)</a>
+                        }
+                    </p>
+                </div>
+                <div class="col-4 text-right">
+                    @{
+                        lessonCount = currentItems.Count();
                         viewModel = (LessonOverviewQueryViewModel)currentViewModel.Duplicate();
-                        viewModel.LearnerCommitted = false;
-                        <text>學生未打卡：</text>
-                        <a href="#" onclick='showLessonList(@Html.Raw(viewModel.JsonStringify()),@(lessonCount));'>@(lessonCount)</a>
+                        //viewModel.LearnerCommitted = true;
+                        //viewModel.CoachAttended = true;
                     }
-                </p>
-            </div>
-            <div class="col-4 text-right">
-                @{
-                    lessonCount = currentItems.Count();
-                    viewModel = (LessonOverviewQueryViewModel)currentViewModel.Duplicate();
-                    //viewModel.LearnerCommitted = true;
-                    //viewModel.CoachAttended = true;
-                }
-                <a href="#" onclick='showLessonList(@Html.Raw(viewModel.JsonStringify()),@(lessonCount));'><h2>@(lessonCount)</h2></a>
-                <small class="info">全部</small>
+                    <a href="#" onclick='showLessonList(@Html.Raw(viewModel.JsonStringify()),@(lessonCount));'><h2>@(lessonCount)</h2></a>
+                    <small class="info">全部</small>
+                </div>
             </div>
         </div>
-    </div>
-                        }
-                    }
+    }
+}
 
 @section TailPageJavaScriptInclude {
-    <!--Sparkline Plugin Js-->
-    <script src="plugins/jquery-sparkline/jquery.sparkline.js"></script>
-    <!-- SweetAlert Plugin Js -->
-    <script src="plugins/sweetalert/sweetalert.min.js"></script>
-    <!-- Jquery DataTable Plugin Js -->
-    <script src="bundles/datatablescripts.bundle.js"></script>
-    <script src="plugins/jquery-datatable/Responsive-2.2.2/js/dataTables.responsive.min.js"></script>
-    <script src="plugins/jquery-datatable/FixedColumns-3.2.5/js/dataTables.fixedColumns.min.js"></script>
+<!--Sparkline Plugin Js-->
+<script src="plugins/jquery-sparkline/jquery.sparkline.js"></script>
+<!-- SweetAlert Plugin Js -->
+<script src="plugins/sweetalert/sweetalert.min.js"></script>
+<!-- Jquery DataTable Plugin Js -->
+<script src="bundles/datatablescripts.bundle.js"></script>
+<script src="plugins/jquery-datatable/Responsive-2.2.2/js/dataTables.responsive.min.js"></script>
+<script src="plugins/jquery-datatable/FixedColumns-3.2.5/js/dataTables.fixedColumns.min.js"></script>
 
-    @{ await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/KnobJS.cshtml");}
+    @{
+    await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/KnobJS.cshtml");
+}
 
-    <script>
+<script>
     function selectMonth() {
         //showLoading();
         $.post('@Html.Raw(Url.Action("SelectMonth", "BusinessConsole"))', null, function (data) {
@@ -368,20 +371,20 @@
             });
         }
 
-    </script>
+</script>
 
     @if (_viewModel.KeyID != null)
     {
-        <script>
-            $(function () {
-                showLessonList(@Html.Raw(JsonConvert.SerializeObject(
-                     new
-                     {
-                        _viewModel.KeyID,
-                        BypassCondition = true,
-                     })));
-            });
-        </script>
+<script>
+    $(function () {
+        showLessonList(@Html.Raw(JsonConvert.SerializeObject(
+             new
+             {
+                _viewModel.KeyID,
+                BypassCondition = true,
+             })));
+    });
+</script>
     }
 
 }
