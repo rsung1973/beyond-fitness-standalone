@@ -2064,8 +2064,8 @@ namespace WebHome.Controllers
                 table.Columns.Add(new DataColumn("S.R上課金額(含稅)", typeof(int)));	    //	11
                 table.Columns.Add(new DataColumn("S.D上課總數", typeof(int)));	        //	12
                 table.Columns.Add(new DataColumn("S.D上課金額(含稅)", typeof(int)));	    //	13
-                table.Columns.Add(new DataColumn("健康課程上課總數", typeof(int)));	    //	14
-                table.Columns.Add(new DataColumn("健康課程上課金額(含稅)", typeof(int))); //	15
+                table.Columns.Add(new DataColumn("H.S上課總數", typeof(int)));	    //	14
+                table.Columns.Add(new DataColumn("H.S上課金額(含稅)", typeof(int))); //	15
                 table.Columns.Add(new DataColumn("C.S上課金額(含稅)", typeof(int)));      //	16
 
 
@@ -2152,8 +2152,8 @@ namespace WebHome.Controllers
                 table.Columns.Add(new DataColumn("S.R上課金額(含稅)", typeof(int)));        //	11
                 table.Columns.Add(new DataColumn("S.D上課總數", typeof(int)));              //	12
                 table.Columns.Add(new DataColumn("S.D上課金額(含稅)", typeof(int)));        //	13
-                table.Columns.Add(new DataColumn("健康課程上課總數", typeof(int)));         //	14
-                table.Columns.Add(new DataColumn("健康課程上課金額(含稅)", typeof(int)));	   //	15
+                table.Columns.Add(new DataColumn("H.S上課總數", typeof(int)));         //	14
+                table.Columns.Add(new DataColumn("H.S上課金額(含稅)", typeof(int)));	   //	15
                 table.Columns.Add(new DataColumn("C.S上課金額(含稅)", typeof(int)));      //	16
 
                 DataRow r;
@@ -2236,8 +2236,8 @@ namespace WebHome.Controllers
                 table.Columns.Add(new DataColumn("S.R上課金額(含稅)", typeof(int)));	//	11
                 table.Columns.Add(new DataColumn("S.D上課總數", typeof(int)));	//	12
                 table.Columns.Add(new DataColumn("S.D上課金額(含稅)", typeof(int)));	//	13
-                table.Columns.Add(new DataColumn("健康課程上課總數", typeof(int)));	//	14
-                table.Columns.Add(new DataColumn("健康課程上課金額(含稅)", typeof(int)));	//	15
+                table.Columns.Add(new DataColumn("H.S上課總數", typeof(int)));	//	14
+                table.Columns.Add(new DataColumn("H.S上課金額(含稅)", typeof(int)));	//	15
                 table.Columns.Add(new DataColumn("C.S上課金額(含稅)", typeof(int)));      //	16
                 table.Columns.Add(new DataColumn("目標上課總數", typeof(int)));      //	17
                 table.Columns.Add(new DataColumn("上課總數達成率(%)", typeof(int)));      //	18
@@ -2355,8 +2355,8 @@ namespace WebHome.Controllers
                 table.Columns.Add(new DataColumn("S.R上課金額(含稅)", typeof(int)));	//	12
                 table.Columns.Add(new DataColumn("S.D上課總數", typeof(int)));	//	13
                 table.Columns.Add(new DataColumn("S.D上課金額(含稅)", typeof(int)));	//	14
-                table.Columns.Add(new DataColumn("健康課程上課總數", typeof(int)));	//	15
-                table.Columns.Add(new DataColumn("健康課程上課金額(含稅)", typeof(int)));	//	16
+                table.Columns.Add(new DataColumn("H.S上課總數", typeof(int)));	//	15
+                table.Columns.Add(new DataColumn("H.S上課金額(含稅)", typeof(int)));	//	16
                 table.Columns.Add(new DataColumn("C.S上課金額(含稅)", typeof(int)));      //	17
                 table.Columns.Add(new DataColumn("目標上課總數", typeof(int)));      //	18
                 table.Columns.Add(new DataColumn("上課總數達成率(%)", typeof(int)));      //	19
