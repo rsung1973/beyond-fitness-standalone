@@ -1,6 +1,4 @@
-﻿
-
-@using System.IO
+﻿@using System.IO
 @using System.Linq.Expressions
 
 @using WebHome.Helper
@@ -16,7 +14,7 @@
     ModelStateDictionary _modelState;
     MonthlyCoachRevenueIndicatorQueryViewModel _viewModel;
 
-    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
     _modelState = ViewContext.ModelState;
     _viewModel = (MonthlyCoachRevenueIndicatorQueryViewModel)ViewBag.ViewModel;
     String _dialogID = _viewModel.DialogID ?? $"curve{DateTime.Now.Ticks}";
@@ -27,6 +25,8 @@
     _viewModel.UrlAction = Url.Action("ShowMonthlyRevenueCurve", "AchievementConsole");
 
     ViewBag.ReuseModal = true;
+
+    var profile = await Context.GetUserAsync();
 }
 
 <div class="modal fade" tabindex="-1" role="dialog" id="@(_dialogID)" aria-labelledby="exampleModalLongTitle"
@@ -45,13 +45,19 @@
                             <div class="col-12">
                                 <div class="fancy-checkbox">
                                     <label><input name="SelectType" value="" type="checkbox"><span><i></i>全部</span></label>
-                                    <label><input name="SessionType" value="@((int)Naming.SessionTypeDefinition.PT)" type="checkbox" checked="checked"><span><i></i>P.T</span></label>
-                                    <label><input name="SessionType" value="@((int)Naming.SessionTypeDefinition.PI)" type="checkbox"><span><i></i>P.I</span></label>
-                                    <label><input name="SessionType" value="@((int)Naming.SessionTypeDefinition.ST)" type="checkbox"><span><i></i>S.T</span></label>
-                                    <label><input name="SessionType" value="@((int)Naming.SessionTypeDefinition.TS)" type="checkbox"><span><i></i>T.S</span></label>
-                                    <label><input name="SessionType" value="@((int)Naming.SessionTypeDefinition.AT)" type="checkbox"><span><i></i>A.T</span></label>
-                                    <label><input name="SessionType" value="@((int)Naming.SessionTypeDefinition.SR)" type="checkbox"><span><i></i>S.R</span></label>
-                                    <label><input name="SessionType" value="@((int)Naming.SessionTypeDefinition.SD)" type="checkbox"><span><i></i>S.D</span></label>
+                                    @if (profile.IsSysAdmin() || profile.IsAssistant() || profile.IsManager() || profile.IsViceManager() || (profile.IsCoach() && !profile.IsHealthCare()))
+                                    {
+                                        <label><input name="SessionType" value="@((int)Naming.SessionTypeDefinition.PT)" type="checkbox" checked="checked"><span><i></i>P.T</span></label>
+                                        <label><input name="SessionType" value="@((int)Naming.SessionTypeDefinition.PI)" type="checkbox"><span><i></i>P.I</span></label>
+                                        <label><input name="SessionType" value="@((int)Naming.SessionTypeDefinition.ST)" type="checkbox"><span><i></i>S.T</span></label>
+                                        <label><input name="SessionType" value="@((int)Naming.SessionTypeDefinition.TS)" type="checkbox"><span><i></i>T.S</span></label>
+                                    }
+                                    @if (profile.IsSysAdmin() || profile.IsAssistant() || profile.IsManager() || profile.IsViceManager() || (profile.IsHealthCare()))
+                                    {
+                                        <label><input name="SessionType" value="@((int)Naming.SessionTypeDefinition.AT)" type="checkbox"><span><i></i>A.T</span></label>
+                                        <label><input name="SessionType" value="@((int)Naming.SessionTypeDefinition.SR)" type="checkbox"><span><i></i>S.R</span></label>
+                                        <label><input name="SessionType" value="@((int)Naming.SessionTypeDefinition.SD)" type="checkbox"><span><i></i>S.D</span></label>
+                                    }
                                     <script>
                                         $(function () {
                                             $('#@(_dialogID) input[name="SelectType"]').on('click', function (event) {
@@ -78,9 +84,11 @@
             </div>
         </div>
     </div>
-    @{ await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/BSModalScript.cshtml", model: _dialogID);}
+    @{
+        await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/BSModalScript.cshtml", model: _dialogID);
+    }
 
-<script>
+    <script>
         $(function () {
 
             $('#@(_dialogID) .btnConfirm').on('click', function (event) {
@@ -100,6 +108,6 @@
 
             $global.$currentModal = $('#@(_dialogID)');
         });
-</script>
+    </script>
 </div>
 

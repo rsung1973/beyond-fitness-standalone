@@ -120,7 +120,7 @@
                 }
                 <li class="col-lg-3 col-md-6 col-sm-12">
                     @{
-                        lessonsSummary(currentItems, currentViewModel, "P.T", true);
+                        lessonsSummary(currentItems, currentViewModel, _profile.IsHealthCare() ? "H.S" : "P.T", true);
                     }
                 </li>
                 @{

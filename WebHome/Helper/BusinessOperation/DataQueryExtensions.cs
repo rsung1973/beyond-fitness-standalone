@@ -1029,11 +1029,10 @@ namespace WebHome.Helper.BusinessOperation
         }
 
         public static IQueryable<V_Tuition> InquireAchievement(this AchievementQueryViewModel viewModel, GenericManager<BFDataContext> models,UserProfile profile = null)
-                
         {
 
             IQueryable<V_Tuition> items = models.GetTable<V_Tuition>()
-                                    .Where(v => v.PriceStatus != (int)Naming.DocumentLevelDefinition.教練PI);
+                                    .Where(v => v.PriceStatus != (int)Naming.LessonPriceStatus.教練PI);
 
             if (viewModel.IgnoreAttendance == true)
             {

@@ -1,5 +1,4 @@
-﻿
-@using System.IO
+﻿@using System.IO
 @using System.Linq.Expressions
 
 @using WebHome.Helper
@@ -15,7 +14,7 @@
     ModelSource<UserProfile> models;
     MonthlyIndicator _model;
     _modelState = ViewContext.ModelState;
-    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
     _model = (MonthlyIndicator)this.Model;
 }
 @{
@@ -44,50 +43,54 @@
     }
 
 }
-    <table class="table table-black table-hover m-b-0">
-        <thead>
-            <tr>
-                <th>目標</th>
-                <th>達成率</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr onclick="javascript:achievementReview();">
-                <td>課數 <small class="col-grey">@(indicator.CompleteLessonsGoal)堂</small></td>
-                @{ 
-                    decimal lessonCount = (indicator.ActualCompleteLessonCount ?? 0) + (indicator.ActualCompleteTSCount ?? 0);
-                }
-                <td>@(Math.Round(lessonCount*100M / (indicator.CompleteLessonsGoal ?? 1)))% <small class="col-green">@(lessonCount)堂</small></td>
-            </tr>
-            <tr onclick="javascript:achievementReview();">
-                <td>上課業績 <small class="col-grey">@($"{indicator.LessonTuitionGoal:##,###,###,###}")</small></td>
-                <td>@(indicator.LessonTuitionGoal>0 
-                        ? Math.Round((indicator.ActualLessonAchievement ?? 0) * 100M / (indicator.LessonTuitionGoal ?? 1))
-                        : 0)% <small class="col-green">@($"{indicator.ActualLessonAchievement:##,###,###,###}")</small></td>
-            </tr>
-            <tr onclick="javascript:achievementReview();">
-                <td>收款業績 <small class="col-grey">@($"{indicator.AchievementGoal:##,###,###,###}")</small></td>
-                <td>@(indicator.AchievementGoal >0 
-                        ? Math.Round(regressionAmt * 100M / (indicator.AchievementGoal ?? 1))
-                        : 0)% <small class="col-green">@($"{regressionAmt:##,###,###,###}")</small></td>
-            </tr>
-            <tr onclick="javascript:showSoldDetail();">
-                <td>BR <small class="col-grey">@(coachIndicatorItems.Sum(c=>c.BRCount) ?? 0)堂</small></td>
-                <td><small class="col-grey">敬請期待</small></td>
-            </tr>
-            <tr onclick="javascript:showSoldDetail();">
-                <td>BR簽約率 <small class="col-grey"></small></td>
-                <td><small class="col-grey">敬請期待</small></td>
-            </tr>
-            <tr onclick="javascript:showSoldDetail();">
-                <td>TS簽約率</td>
-                <td><small class="col-grey">敬請期待</small></td>
-            </tr>
-        </tbody>
-    </table>
-    <script>
+<table class="table table-black table-hover m-b-0">
+    <thead>
+        <tr>
+            <th>目標</th>
+            <th>達成率</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr onclick="javascript:achievementReview();">
+            <td>課數 <small class="col-grey">@(indicator.CompleteLessonsGoal)堂</small></td>
+            @{
+                decimal lessonCount = (indicator.ActualCompleteLessonCount ?? 0);   // + (indicator.ActualCompleteTSCount ?? 0);
+            }
+            <td>@(Math.Round(lessonCount*100M / (indicator.CompleteLessonsGoal ?? 1)))% <small class="col-green">@(lessonCount)堂</small></td>
+        </tr>
+        <tr onclick="javascript:achievementReview();">
+            <td>上課業績 <small class="col-grey">@($"{indicator.LessonTuitionGoal:##,###,###,###}")</small></td>
+            <td>
+                @(indicator.LessonTuitionGoal>0
+                ? Math.Round((indicator.ActualLessonAchievement ?? 0) * 100M / (indicator.LessonTuitionGoal ?? 1))
+                : 0)% <small class="col-green">@($"{indicator.ActualLessonAchievement:##,###,###,###}")</small>
+            </td>
+        </tr>
+        <tr onclick="javascript:achievementReview();">
+            <td>收款業績 <small class="col-grey">@($"{indicator.AchievementGoal:##,###,###,###}")</small></td>
+            <td>
+                @(indicator.AchievementGoal >0
+                ? Math.Round(regressionAmt * 100M / (indicator.AchievementGoal ?? 1))
+                : 0)% <small class="col-green">@($"{regressionAmt:##,###,###,###}")</small>
+            </td>
+        </tr>
+        <tr onclick="javascript:showSoldDetail();">
+            <td>BR <small class="col-grey">@(coachIndicatorItems.Sum(c=>c.BRCount) ?? 0)堂</small></td>
+            <td><small class="col-grey">敬請期待</small></td>
+        </tr>
+        <tr onclick="javascript:showSoldDetail();">
+            <td>BR簽約率 <small class="col-grey"></small></td>
+            <td><small class="col-grey">敬請期待</small></td>
+        </tr>
+        <tr onclick="javascript:showSoldDetail();">
+            <td>TS簽約率</td>
+            <td><small class="col-grey">敬請期待</small></td>
+        </tr>
+    </tbody>
+</table>
+<script>
     function achievementReview() {
         $('').launchDownload('@Html.Raw(Url.Action("RevenueReview","ConsoleHome",new { _viewModel?.BranchID, _viewModel?.Year, _viewModel?.Month }))', {});
-        @*$('').launchDownload('@Html.Raw(Url.Action("AchievementReview","ConsoleHome",new { _viewModel?.BranchID, _viewModel?.KeyID,_viewModel?.Year,_viewModel?.Month }))', {});*@
+    @*$('').launchDownload('@Html.Raw(Url.Action("AchievementReview","ConsoleHome",new { _viewModel?.BranchID, _viewModel?.KeyID,_viewModel?.Year,_viewModel?.Month }))', {});*@
     }
-    </script>
+</script>

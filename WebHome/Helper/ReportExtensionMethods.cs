@@ -646,9 +646,11 @@ namespace WebHome.Helper
             public int G { get; set; }
         };
 
-        static readonly int[] PerformanceAchievementIndex = new int[] { 250000, 188000 };
-        static readonly decimal[] ShareRatioIncrementForPerformance = new decimal[] { 2m, 1m };
-        static readonly int[] AttendingLessonIndex = new int[] { 152, 142, 132, 112, 92 };
+        static readonly int[] PerformanceAchievementIndex = new int[] { 320000, 250000, 188000 };
+        static readonly decimal[] ShareRatioIncrementForPerformance = new decimal[] { 5.3m, 4.5m, 3.7m };
+        //static readonly int[] AttendingLessonIndex = new int[] { 152, 142, 132, 112, 92 };
+        //static readonly decimal[] ShareRatioIncrementForAttendance = new decimal[] { 2m, 1.5m, 1.25m, 1m, 0.5m };
+        static readonly int[] AttendingLessonIndex = new int[] { 142, 132, 122, 112, 92 };
         static readonly decimal[] ShareRatioIncrementForAttendance = new decimal[] { 2m, 1.5m, 1.25m, 1m, 0.5m };
         static readonly int[][] HealthCareBonusIndex = new int[][] {
             new int[]{33 ,350  ,380   ,400   ,21000},
@@ -794,7 +796,7 @@ namespace WebHome.Helper
                     {
                         if (netAchievement >= PerformanceAchievementIndex[i])
                         {
-                            shareRatio += ShareRatioIncrementForPerformance[i];
+                            shareRatio = ShareRatioIncrementForPerformance[i];
                             break;
                         }
                     }
@@ -814,7 +816,7 @@ namespace WebHome.Helper
                             ? (int?)(PTItems.Where(v => v.AttendingCoach == coach.CoachID).CalcTuition(models) / (decimal?)salary.PTAttendanceCount + 0.5M)
                             : 0;
 
-                    if (coach.CoachID == 29445)
+                    if (/*coach.CoachID == 29445 || */coach.CoachID == 24032)
                     {
                         salary.GradeIndex = 31;
                     }
@@ -1090,7 +1092,7 @@ namespace WebHome.Helper
                     calcGeneralAchievement();
 
                 }
-                else if (coach.CoachID == 29445)
+                else if (/*coach.CoachID == 29445 || */coach.CoachID == 24032)
                 {
                     if (forRole != "coach")
                     {

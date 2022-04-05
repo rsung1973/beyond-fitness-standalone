@@ -2128,6 +2128,7 @@ namespace WebHome.Controllers
                 }
                 table.Rows.Add(r);
 
+                table.Columns[5].SetOrdinal(15);
                 table.Columns[6].SetOrdinal(16);
                 table.Columns[6].SetOrdinal(16);
 
@@ -2331,6 +2332,7 @@ namespace WebHome.Controllers
                 }
                 table.Rows.Add(r);
 
+                table.Columns[5].SetOrdinal(15);
                 table.Columns[6].SetOrdinal(16);
                 table.Columns[6].SetOrdinal(16);
 
@@ -2444,6 +2446,7 @@ namespace WebHome.Controllers
                 }
                 table.Rows.Add(r);
 
+                table.Columns[6].SetOrdinal(16);
                 table.Columns[7].SetOrdinal(17);
                 table.Columns[7].SetOrdinal(17);
 
