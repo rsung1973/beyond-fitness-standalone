@@ -567,4 +567,7 @@
   <data name="OnlineNCFeatureDesc4" xml:space="preserve">
     <value>Provide monthly data reports, record your body shapes, diet and change of your lifestyle to show that progress has been made.</value>
   </data>
+  <data name="PTTitle" xml:space="preserve">
+    <value>BEYOND &lt;br/&gt;s it suitable for me</value>
+  </data>
 </root>

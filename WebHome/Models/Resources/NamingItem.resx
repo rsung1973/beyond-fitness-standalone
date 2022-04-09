@@ -538,7 +538,7 @@
     <value>像好友一樣的，&lt;br /&gt;體能顧問！</value>
   </data>  
   <data name="OnlineNCTitle" xml:space="preserve">
-    <value>BEYOND Online &lt;br/&gt;陪您好食?</value>
+    <value>BEYOND &lt;br/&gt;陪您好食?</value>
   </data> 
   <data name="OnlineNCSlogon" xml:space="preserve">
     <value>把吃東西的習慣，&lt;br /&gt;改變吧！</value>
@@ -566,5 +566,8 @@
   </data>
   <data name="OnlineNCFeatureDesc4" xml:space="preserve">
     <value>提供每月數據表，紀錄體態、飲食、生活變化努力的過程，讓您進步看得見。</value>
+  </data>
+  <data name="PTTitle" xml:space="preserve">
+    <value>BEYOND &lt;br/&gt;私人教練也適合我嗎？</value>
   </data>
 </root>

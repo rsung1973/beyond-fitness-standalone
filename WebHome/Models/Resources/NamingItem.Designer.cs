@@ -1238,6 +1238,15 @@ namespace WebHome.Models.Resources {
                 return ResourceManager.GetString("OnlinePTTitle", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to BEYOND Online &lt;br/&gt;私人教練也適合我嗎？.
+        /// </summary>
+        public static string PTTitle {
+            get {
+                return ResourceManager.GetString("PTTitle", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Looks up a localized string similar to 線上預約.
