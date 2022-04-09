@@ -1121,6 +1121,15 @@ namespace WebHome.Models.Resources {
                 return ResourceManager.GetString("OnLine", resourceCulture);
             }
         }
+
+         /// <summary>
+        ///   Looks up a localized string similar to 線上課程.
+        /// </summary>
+        public static string Service {
+            get {
+                return ResourceManager.GetString("Service", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Looks up a localized string similar to 專屬營養教練.

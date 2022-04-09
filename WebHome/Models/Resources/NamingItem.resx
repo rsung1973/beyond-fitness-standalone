@@ -125,7 +125,10 @@
   </data>
  <data name="OnLine" xml:space="preserve">
     <value>專屬服務</value>
-  </data>    
+  </data>   
+  <data name="Service" xml:space="preserve">
+    <value>專屬服務</value>
+  </data>  
   <data name="FAQ" xml:space="preserve">
     <value>常見問題</value>
   </data>

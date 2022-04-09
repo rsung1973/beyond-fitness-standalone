@@ -1,0 +1,56 @@
+﻿
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@using WebHome.Models.Resources
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _modelState = ViewContext.ModelState;
+
+    Layout = "~/Views/MainActivity/Template/MainPage.cshtml";
+}
+
+@section CustomHeader {
+
+}
+    <!-- // 三大保證 -->
+        <section class="section-features white">
+            <div class="container">
+                <div class="row">                    
+                    <div class="col-md-12 text-center">
+                        <a href="javascript:bindTrackingCode('一對一私人教練', null, '@(Url.Action("PT", "MainActivity"))', null)"> <img src="images/landing/service/service-1.png" alt="一對一私人教練"></a>
+                        <img src="images/landing/service/service-2.png" alt="私人教練">
+                        <a href="javascript:bindTrackingCode('一對一私人營養教練', null, '@(Url.Action("OnlineNC", "MainActivity"))', null)"> <img src="images/landing/service/service-3.png" alt="私人教練"></a>
+                        <img src="images/landing/service/service-4.png" alt="私人教練">
+                    </div>                    
+                </div>
+            </div>
+        </section>        
+    <section class="section-vedio">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <div>
+                        <h1>如果沒時間，</h1>
+                        <h1>我們還有線上課程隨時關心您的健康。</h1>
+                        <a href="javascript:bindTrackingCode('一對一私人教練', null, '@(Url.Action("OnlinePT", "MainActivity"))', null)" class="more">瞭解更多<i class="pl-1 fa fa-angle-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+@section TailPageJavaScriptInclude {
+}

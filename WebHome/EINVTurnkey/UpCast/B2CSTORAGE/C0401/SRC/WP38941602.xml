@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<Invoice xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="urn:GEINV:eInvoiceMessage:C0401:3.1">
+  <Main>
+    <InvoiceNumber>WP38941602</InvoiceNumber>
+    <InvoiceDate>20220102</InvoiceDate>
+    <InvoiceTime>13:29:40.9700000+08:00</InvoiceTime>
+    <Seller>
+      <Identifier>76320833</Identifier>
+      <Name>超越體能顧問有限公司東門門市</Name>
+      <Address>台北市大安區信義路二段28號</Address>
+      <PersonInCharge />
+      <TelephoneNumber />
+      <FacsimileNumber />
+      <EmailAddress />
+      <CustomerNumber />
+      <RoleRemark />
+    </Seller>
+    <Buyer>
+      <Identifier>0000000000</Identifier>
+      <Name>WSKN</Name>
+      <Address />
+      <PersonInCharge />
+      <TelephoneNumber />
+      <FacsimileNumber />
+      <EmailAddress />
+      <CustomerNumber />
+      <RoleRemark />
+    </Buyer>
+    <InvoiceType>07</InvoiceType>
+    <DonateMark>0</DonateMark>
+    <CarrierType>3J0002</CarrierType>
+    <CarrierId1>/17T448Q</CarrierId1>
+    <CarrierId2>/17T448Q</CarrierId2>
+    <PrintMark>N</PrintMark>
+    <NPOBAN />
+    <RandomNumber>0890</RandomNumber>
+  </Main>
+  <Details>
+    <ProductItem>
+      <Description>專業顧問建置與諮詢費</Description>
+      <Quantity>1.00000</Quantity>
+      <UnitPrice>30000.00000</UnitPrice>
+      <Amount>30000.00000</Amount>
+      <SequenceNumber>00</SequenceNumber>
+    </ProductItem>
+    <ProductItem>
+      <Description>教練課程費</Description>
+      <Quantity>1.00000</Quantity>
+      <UnitPrice>7500.00000</UnitPrice>
+      <Amount>7500.00000</Amount>
+      <SequenceNumber>01</SequenceNumber>
+    </ProductItem>
+  </Details>
+  <Amount>
+    <SalesAmount>37500</SalesAmount>
+    <FreeTaxSalesAmount>0</FreeTaxSalesAmount>
+    <ZeroTaxSalesAmount>0</ZeroTaxSalesAmount>
+    <TaxType>1</TaxType>
+    <TaxRate>0.05000</TaxRate>
+    <TaxAmount>0</TaxAmount>
+    <TotalAmount>37500</TotalAmount>
+  </Amount>
+</Invoice>

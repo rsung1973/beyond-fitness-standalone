@@ -1,0 +1,15 @@
+.datetimepicker.datetimepicker-dropdown-bottom-right.dropdown-menu {
+    right: auto;
+    color: #4a4a4a;
+}
+
+.datetimepicker th.prev,
+.datetimepicker th.next,
+.datetimepicker th.switch {
+    background: #05232d;
+    color: #fff;
+}
+
+.datetimepicker thead tr:first-child th:hover, .datetimepicker tfoot th:hover {
+    color: #05232d;
+}

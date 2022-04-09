@@ -17994,20 +17994,8 @@ textarea:focus {
     right: 4px
 }
 
-.section-header {
-    padding: 150px 0 50px;
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-size: cover;
-    position: relative;
-    overflow: hidden;
-    text-align: center;
-/*    height: 100vh;*/
-    background: #1A1A1A !important;
-/*
-    background: linear-gradient(#1A1A1A 90%, #fff 0);
-    color: #FFF;
-*/
+.section-header.white{   
+    background: #fff !important;
 }
 
 .section-header.dark {
@@ -18027,7 +18015,7 @@ textarea:focus {
     top: 0;
     z-index: 1;
     /*    background: url("../images/banner_background.jpg") center center no-repeat;*/
-    background: linear-gradient(#1A1A1A, #1A1A1A), linear-gradient(to bottom, rgba(255, 255, 255, 0.5), rgba(0, 0, 0, 0.5)) !important;
+    /* background: linear-gradient(#1A1A1A, #1A1A1A), linear-gradient(to bottom, rgba(255, 255, 255, 0.5), rgba(0, 0, 0, 0.5)) !important; */
     content: '';
     background-size: cover;
     opacity: 0.8
@@ -18249,8 +18237,11 @@ textarea:focus {
     color: #fff
 }
 
-.section-features img {
-    max-width: 90%;
+.section-features img {    
+    max-width: 50%;
+    margin-left: -4px;
+    /* margin-top: 0px; */
+    /* vertical-align:top;    */
 }
 
 .section-features .features-item {
@@ -19951,10 +19942,6 @@ textarea:focus {
         width: 40px;
         height: 40px;
         margin-top: 20px;
-    }
-
-    .section-features img {
-        max-width: 100%;
     }
 
     .section-features .features-item .icon-wrapper img {

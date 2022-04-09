@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<Invoice xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="urn:GEINV:eInvoiceMessage:C0401:3.1">
+  <Main>
+    <InvoiceNumber>WP38941600</InvoiceNumber>
+    <InvoiceDate>20220101</InvoiceDate>
+    <InvoiceTime>11:00:20.4470000+08:00</InvoiceTime>
+    <Seller>
+      <Identifier>76320833</Identifier>
+      <Name>超越體能顧問有限公司東門門市</Name>
+      <Address>台北市大安區信義路二段28號</Address>
+      <PersonInCharge />
+      <TelephoneNumber />
+      <FacsimileNumber />
+      <EmailAddress />
+      <CustomerNumber />
+      <RoleRemark />
+    </Seller>
+    <Buyer>
+      <Identifier>0000000000</Identifier>
+      <Name>PJAS</Name>
+      <Address />
+      <PersonInCharge />
+      <TelephoneNumber />
+      <FacsimileNumber />
+      <EmailAddress />
+      <CustomerNumber />
+      <RoleRemark />
+    </Buyer>
+    <InvoiceType>07</InvoiceType>
+    <DonateMark>0</DonateMark>
+    <CarrierType>3J0002</CarrierType>
+    <CarrierId1>/17T448Q</CarrierId1>
+    <CarrierId2>/17T448Q</CarrierId2>
+    <PrintMark>N</PrintMark>
+    <NPOBAN />
+    <RandomNumber>8610</RandomNumber>
+  </Main>
+  <Details>
+    <ProductItem>
+      <Description>P.I session訓練費用</Description>
+      <Quantity>1.00000</Quantity>
+      <UnitPrice>300.00000</UnitPrice>
+      <Amount>300.00000</Amount>
+      <SequenceNumber>00</SequenceNumber>
+    </ProductItem>
+  </Details>
+  <Amount>
+    <SalesAmount>300</SalesAmount>
+    <FreeTaxSalesAmount>0</FreeTaxSalesAmount>
+    <ZeroTaxSalesAmount>0</ZeroTaxSalesAmount>
+    <TaxType>1</TaxType>
+    <TaxRate>0.05000</TaxRate>
+    <TaxAmount>0</TaxAmount>
+    <TotalAmount>300</TotalAmount>
+  </Amount>
+</Invoice>

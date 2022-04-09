@@ -126,6 +126,9 @@
   <data name="OnLine" xml:space="preserve">
     <value>OnLine</value>
   </data>
+  <data name="Service" xml:space="preserve">
+    <value>Service</value>
+  </data> 
   <data name="FAQ" xml:space="preserve">
     <value>Q&amp;A</value>
   </data>
