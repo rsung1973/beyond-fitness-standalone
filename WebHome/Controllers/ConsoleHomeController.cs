@@ -206,8 +206,19 @@ namespace WebHome.Controllers
             var item = models.GetTable<CourseContract>().Where(c => c.ContractID == viewModel.ContractID).FirstOrDefault();
             if (item != null)
             {
+                ViewBag.DataItem = item;
                 viewModel.AgentID = item.AgentID;
-                viewModel.ContractType = (CourseContractType.ContractTypeDefinition?)item.ContractType;
+                viewModel.KeyID = item.ContractID.EncryptKey();
+                if(item.CourseContractType.IsCombination)
+                {
+                    viewModel.ContractType = CourseContractType.ContractTypeDefinition.CGA_Aux;
+                    viewModel.ContractTypeAux = (CourseContractType.ContractTypeDefinition?)item.ContractType;
+                }
+                else
+                {
+                    viewModel.ContractType = (CourseContractType.ContractTypeDefinition?)item.ContractType;
+                }
+                viewModel.PriceAdjustment = (CourseContractExtension.UnitPriceAdjustmentDefinition?)item.CourseContractExtension.UnitPriceAdjustmentType;
                 viewModel.ContractDate = item.ContractDate;
                 viewModel.Subject = item.Subject;
                 viewModel.ValidFrom = item.ValidFrom;
@@ -215,15 +226,26 @@ namespace WebHome.Controllers
                 viewModel.OwnerID = item.OwnerID;
                 viewModel.SequenceNo = item.SequenceNo;
                 viewModel.Lessons = item.Lessons;
-                viewModel.PriceID = item.PriceID;
+                if (item.CourseContractOrder.Any())
+                {
+                    viewModel.PriceID = models.GetCandidateCustomCombinationPrice()?.PriceID;
+                    var priceType = item.CourseContractOrder.First().LessonPriceType;
+                    viewModel.PriceName = $"{priceType.PriceTypeBundle()} / {(priceType.LessonPriceProperty.Any(p => p.PropertyID == (int)Naming.LessonPriceFeature.舊會員續約) ? "(舊會員續約)" : null)}{string.Format("{0,5:##,###,###,###}", priceType.ListPrice)}";
+                    viewModel.BranchID = item.CourseContractExtension.BranchID;
+                    viewModel.OrderPriceID = new int?[] { priceType.PriceID };
+                }
+                else
+                {
+                    viewModel.PriceID = item.PriceID;
+                    var priceType = item.LessonPriceType;
+                    viewModel.PriceName = $"{priceType.PriceTypeBundle()}{(priceType.LessonPriceProperty.Any(p => p.PropertyID == (int)Naming.LessonPriceFeature.舊會員續約) ? "(舊會員續約)" : null)}{string.Format("{0,5:##,###,###,###}", priceType.ListPrice)}";
+                    viewModel.BranchID = priceType.BranchStore?.IsVirtualClassroom() == true ? priceType.BranchID : item.CourseContractExtension.BranchID;
+                }
                 viewModel.DurationInMinutes = item.LessonPriceType.DurationInMinutes;
-                var priceType = item.LessonPriceType;
-                viewModel.PriceName = $"{priceType.PriceTypeBundle()}{(priceType.LessonPriceProperty.Any(p => p.PropertyID == (int)Naming.LessonPriceFeature.舊會員續約) ? "(舊會員續約)" : null)}{string.Format("{0,5:##,###,###,###}", priceType.ListPrice)}";
                 viewModel.Remark = item.Remark;
                 viewModel.FitnessConsultant = item.FitnessConsultant;
                 viewModel.Status = item.Status;
                 viewModel.UID = item.CourseContractMember.Select(m => m.UID).ToArray();
-                viewModel.BranchID = priceType.BranchStore.IsVirtualClassroom() ? priceType.BranchID : item.CourseContractExtension.BranchID;
                 viewModel.Renewal = item.Renewal;
                 viewModel.TotalCost = item.TotalCost;
                 if (item.InstallmentID.HasValue)
@@ -254,7 +276,7 @@ namespace WebHome.Controllers
                 viewModel.ManagerID = profile.UID;
             }
             ViewBag.ViewModel = viewModel;
-            return View(profile.LoadInstance(models));
+            return View("~/Views/ConsoleHome/EditCourseContract.cshtml", profile.LoadInstance(models));
         }
 
         [RoleAuthorize(new int[] { (int)Naming.RoleID.Administrator, (int)Naming.RoleID.Assistant, (int)Naming.RoleID.Officer, (int)Naming.RoleID.Coach, (int)Naming.RoleID.Servitor })]

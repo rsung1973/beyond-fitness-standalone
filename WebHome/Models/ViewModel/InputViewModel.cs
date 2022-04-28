@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using WebHome.Models.DataEntity;
@@ -31,7 +32,8 @@ namespace WebHome.Models.ViewModel
         private DateTime? contractDate;
 
         public int? ContractID { get; set; }
-        public CourseContractType.ContractTypeDefinition? ContractType { get; set; } = CourseContractType.ContractTypeDefinition.CPA;
+        public CourseContractType.ContractTypeDefinition? ContractType { get; set; } /*= CourseContractType.ContractTypeDefinition.CPA;*/
+        public CourseContractType.ContractTypeDefinition? ContractTypeAux { get; set; }
         public DateTime? ContractDate { get => contractDate?.CurrentLocalTime(); set => contractDate = value; }
         public String Subject { get; set; }
         public DateTime? ValidFrom { get => validFrom?.CurrentLocalTime(); set => validFrom = value; }
@@ -40,6 +42,9 @@ namespace WebHome.Models.ViewModel
         public int? SequenceNo { get; set; } = 0;
         public int? Lessons { get; set; }
         public int? PriceID { get; set; }
+        public int?[] OrderLessons { get; set; }
+        public int?[] OrderPriceID { get; set; }
+
         public String Remark { get; set; }
         public int? FitnessConsultant { get; set; }
         public int? Status { get; set; }
@@ -78,6 +83,7 @@ namespace WebHome.Models.ViewModel
         public bool? PartialEffectiive { get; set; }
         public bool? SignOnline { get; set; }
         public int? SupervisorID { get; set; }
+        public CourseContractExtension.UnitPriceAdjustmentDefinition? PriceAdjustment { get; set; }
     }
 
     public class CourseContractQueryViewModel : CourseContractViewModel

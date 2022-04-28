@@ -16,24 +16,29 @@
 @if (_message != null)
 {
     <script>
-        Swal.fire({
-            title: "",
-            text: '@(Html.Raw(_message))',
-            icon: '@(ViewBag.Icon ?? "warning")',
-        }).then((result) => {
+        $(function(){
+            Swal.fire({
+                title: "",
+                text: '@(Html.Raw(_message))',
+                icon: '@(ViewBag.Icon ?? "warning")',
+            }).then((result) => {
 
-            @if (ViewBag.GoBack == true)
-            {
-                <text>
-                    window.history.go(-1);
-                </text>
-            }
-            @if (ViewBag.CloseWindow == true)
-            {
-                <text>
-                    window.close();
-                </text>
-            }
+                @if (ViewBag.GoBack == true)
+                {
+                    <text>
+                                window.history.go(-1);
+                    </text>
+                }
+                @if (ViewBag.CloseWindow == true)
+                {
+                    <text>
+                                window.close();
+                    </text>
+                }
+            });
+            setTimeout(function(){
+                $('.swal2-select').css('display','none');
+            },500);
         });
     </script>
 }

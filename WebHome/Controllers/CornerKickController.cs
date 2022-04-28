@@ -98,7 +98,9 @@ namespace WebHome.Controllers
         {
             ViewBag.ViewModel = viewModel;
             var item = models.GetTable<UserProfileExtension>().Where(u => u.LineID == viewModel.LineID)
-                    .Select(u => u.UserProfile).FirstOrDefault();
+                    .Select(u => u.UserProfile)
+                    .Where(u => u.LevelID == (int)Naming.MemberStatusDefinition.Checked)
+                    .FirstOrDefault();
 
             if (item != null)
             {
@@ -180,8 +182,11 @@ namespace WebHome.Controllers
                 return View("~/Views/CornerKick/Shared/ReportInputError.cshtml");
             }
 
-            UserProfile item = models.GetTable<UserProfile>().Where(u => u.MemberCode == viewModel.MemberCode
-                || u.UserProfileExtension.IDNo == viewModel.MemberCode).FirstOrDefault();
+            UserProfile item = models.GetTable<UserProfile>()
+                .Where(u => u.MemberCode == viewModel.MemberCode
+                        || u.UserProfileExtension.IDNo == viewModel.MemberCode)
+                .Where(u => u.LevelID == (int)Naming.MemberStatusDefinition.Checked)
+                .FirstOrDefault();
 
             if (item == null)
             {
@@ -413,7 +418,9 @@ namespace WebHome.Controllers
                 viewModel.LineID = viewModel.KeyID.DecryptKey();
             }
             var item = models.GetTable<UserProfileExtension>().Where(u => u.LineID == viewModel.LineID)
-                    .Select(u => u.UserProfile).FirstOrDefault();
+                    .Select(u => u.UserProfile)
+                    .Where(u => u.LevelID == (int)Naming.MemberStatusDefinition.Checked)
+                    .FirstOrDefault();
 
             if (item != null)
             {

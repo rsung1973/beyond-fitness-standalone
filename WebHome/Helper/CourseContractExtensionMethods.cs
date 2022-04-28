@@ -455,5 +455,100 @@ namespace WebHome.Helper
             return item.InstallmentID.HasValue ? models.GetTable<CourseContract>().Where(c => c.InstallmentID == item.InstallmentID).Sum(c => c.Lessons) : (item.Lessons ?? item.LessonPriceType?.ExpandActualLessonCount(models));
         }
 
+        public static LessonPriceType GetCandidateCustomCombinationPrice(this GenericManager<BFDataContext> models)
+        {
+            return models.GetTable<ObjectiveLessonPrice>()
+                .Where(p => p.CatalogID == (int)ObjectiveLessonCatalog.CatalogDefinition.CustomCombination)
+                .Select(p => p.LessonPriceType)
+                .FirstOrDefault();
+        }
+
+        public static List<LessonPriceType> EvaluateCustomCombinationTotalCost(this GenericManager<BFDataContext> models,CourseContractViewModel viewModel, List<LessonPriceType> items, out int totalLessons,out int totalCost)
+        {
+            totalLessons = 0;
+            totalCost = 0;
+
+            CourseContractType typeItem;
+            if (viewModel.ContractType == CourseContractType.ContractTypeDefinition.CGA_Aux)
+            {
+                typeItem = models.GetTable<CourseContractType>().Where(t => t.TypeID == (int?)viewModel.ContractTypeAux).FirstOrDefault();
+            }
+            else
+            {
+                typeItem = models.GetTable<CourseContractType>().Where(t => t.TypeID == (int?)viewModel.ContractType).FirstOrDefault();
+            }
+
+            bool isNullOrEmpty = items == null || items.Count == 0;
+            if (items == null)
+            {
+                items = new List<LessonPriceType>();
+            }
+
+            for (int i = 0; i < viewModel.OrderPriceID.Length; i++)
+            {
+                LessonPriceType item;
+                if(isNullOrEmpty)
+                {
+                    item = models.GetTable<LessonPriceType>().Where(p => p.PriceID == viewModel.OrderPriceID[i]).FirstOrDefault();
+                    items.Add(item);
+                }
+                else
+                {
+                    item = items[i];
+                }
+
+                if (viewModel.OrderLessons[i] > 0)
+                {
+                    if (item != null)
+                    {
+                        int lessons = ((item.BundleCount ?? 1) * viewModel.OrderLessons[i].Value);
+                        int cost = (item.ListPrice ?? 0) * lessons;
+                        totalLessons += lessons;
+
+                        if (typeItem != null)
+                        {
+                            if (item.LessonPriceProperty.Any(p => p.PropertyID == (int)Naming.LessonPriceFeature.一對一課程))
+                            {
+                                totalCost += cost;
+                            }
+                            else
+                            {
+                                totalCost += cost * (typeItem.GroupingMemberCount ?? 1) * (typeItem.GroupingLessonDiscount.PercentageOfDiscount ?? 100) / 100;
+                            }
+                        }
+                    }
+                }
+            }
+            return items;
+        }
+
+        public static void EvaluateCustomCombinationTotalCost(this CourseContract item, out int totalLessons, out int totalCost)
+        {
+            totalLessons = 0;
+            totalCost = 0;
+
+            CourseContractType typeItem = item.CourseContractType;
+            foreach (var order in item.CourseContractOrder)
+            {
+                LessonPriceType priceItem = order.LessonPriceType;
+
+                int lessons = ((priceItem.BundleCount ?? 1) * order.Lessons);
+                int cost = (priceItem.ListPrice ?? 0) * lessons;
+                totalLessons += lessons;
+
+                if (typeItem != null)
+                {
+                    if (priceItem.LessonPriceProperty.Any(p => p.PropertyID == (int)Naming.LessonPriceFeature.一對一課程))
+                    {
+                        totalCost += cost;
+                    }
+                    else
+                    {
+                        totalCost += cost * (typeItem.GroupingMemberCount ?? 1) * (typeItem.GroupingLessonDiscount.PercentageOfDiscount ?? 100) / 100;
+                    }
+                }
+            }
+        }
+
     }
 }

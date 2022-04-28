@@ -636,6 +636,9 @@ namespace WebHome.Models.DataEntity
             LessonPackage = 3,
             DietaryConsult= 4,
             CustomCombination = 5,
+            AT = 6,
+            SR = 7,
+            SD = 8,
         }
     }
 
@@ -682,21 +685,42 @@ namespace WebHome.Models.DataEntity
     {
         public enum ContractTypeDefinition
         {
+            CGA_Aux = -1,
             CPA = 1,
             CFA,
             CPB,
             CPC,
             CNA,
             CGA,
+            CGF,
+            CGB,
+            CGC,
+            CNR,
+            CMP,
         }
 
         public static bool IsSuitableForVirtaulClass(ContractTypeDefinition? ct)
         {
             return ct == ContractTypeDefinition.CPA
                 || ct == ContractTypeDefinition.CNA
-                || ct == ContractTypeDefinition.CGA;
+                /*|| ct == ContractTypeDefinition.CGA*/;
         }
 
+        public bool IsCombination => this.ContractCode?.StartsWith("CG") == true;
+
+
+    }
+
+    public partial class CourseContractExtension
+    {
+        public enum UnitPriceAdjustmentDefinition
+        {
+            //是否彈性設定購買單價
+            T1 = 1, //否，不可彈性設定購買單價
+            T2 = 2, //是，轉讓予第三人允許彈性設定購買單價
+            T3 = 3, //是，轉開新合約允許彈性設定購買單價
+            T4 = 4,	//是，企業簽訂優惠允許彈性設定購買單價
+        }
     }
 
     public partial class UserRelationship

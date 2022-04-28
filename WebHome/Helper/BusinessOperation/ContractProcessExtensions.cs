@@ -161,7 +161,178 @@ namespace WebHome.Helper.BusinessOperation
             return item;
         }
 
-        public static void ValidateContractApplication(this CourseContractViewModel viewModel, SampleController<UserProfile> controller, out LessonPriceType lessonPrice)
+        public static CourseContract InitiateCourseContract2022(this GenericManager<BFDataContext> models, CourseContractViewModel viewModel, UserProfile profile, LessonPriceType lessonPrice, int? installmentID = null, String paymentMethod = null,bool draftOnly = false)
+        {
+            if (viewModel.KeyID != null)
+            {
+                viewModel.ContractID = viewModel.DecryptKeyValue();
+            }
+
+            var item = models.GetTable<CourseContract>().Where(c => c.ContractID == viewModel.ContractID).FirstOrDefault();
+            if (item == null)
+            {
+                item = new CourseContract
+                {
+                    //AgentID = profile.UID,  //lessonPrice.BranchStore.ManagerID.Value,
+                    CourseContractExtension = new CourseContractExtension
+                    {
+                        BranchID = lessonPrice.BranchStore?.IsVirtualClassroom() == true 
+                            ? profile.ServingCoach.PreferredBranchID().Value 
+                            : lessonPrice.BranchID ?? viewModel.BranchID.Value,
+                        Version = (int?)viewModel.Version,
+                    }
+                };
+                models.GetTable<CourseContract>().InsertOnSubmit(item);
+            }
+            else
+            {
+                models.ExecuteCommand("delete CourseContractOrder where ContractID = {0}", item.ContractID);
+            }
+
+            item.AgentID = profile.UID;
+            if(draftOnly)
+            {
+                item.Status = (int)Naming.CourseContractStatus.草稿;
+            }
+            else
+            {
+                if (profile.IsManager())
+                {
+                    item.SupervisorID = profile.UID;
+                    item.Status = (int)Naming.CourseContractStatus.待簽名;  //  (int)checkInitialStatus(viewModel, profile);
+                }
+                else
+                {
+                    item.SupervisorID = lessonPrice.BranchStore.IsVirtualClassroom() ? profile.ServingCoach.CurrentWorkBranch()?.ManagerID : lessonPrice.BranchStore?.ManagerID;
+                    item.Status = (int)Naming.CourseContractStatus.待審核;
+                }
+
+                if (viewModel.InstallmentPlan == true)
+                {
+                    if (installmentID.HasValue)
+                    {
+                        item.InstallmentID = installmentID.Value;
+                    }
+                    else
+                    {
+                        if (item.ContractInstallment == null)
+                        {
+                            item.ContractInstallment = new ContractInstallment { };
+                        }
+                        item.ContractInstallment.Installments = viewModel.Installments.Value;
+                    }
+                }
+                else
+                {
+                    models.DeleteAllOnSubmit<ContractInstallment>(t => t.InstallmentID == item.InstallmentID);
+                    item.InstallmentID = null;
+                }
+            }
+
+            item.CourseContractLevel.Add(new CourseContractLevel
+            {
+                LevelDate = DateTime.Now,
+                ExecutorID = profile.UID,
+                LevelID = item.Status
+            });
+
+            item.ContractType = viewModel.ContractType == CourseContractType.ContractTypeDefinition.CGA_Aux
+                        ? (int)viewModel.ContractTypeAux.Value
+                        : (int)viewModel.ContractType.Value;
+            item.ContractDate = DateTime.Now;
+            item.OwnerID = viewModel.OwnerID.Value;
+            item.Subject = viewModel.Subject;
+            item.ValidFrom = DateTime.Today;
+            item.Expiration = DateTime.Today.AddMonths(lessonPrice.EffectiveMonths ?? 18);
+            item.SequenceNo = 0;// viewModel.SequenceNo;
+            //item.Lessons = lessonPrice.IsPackagePrice
+            //    ? lessonPrice.ExpandActualLessonCount(models)
+            //    : lessonPrice.IsCombination
+            //        ? totalLessons
+            //        : viewModel.Lessons;
+            item.PriceID = lessonPrice.PriceID;
+            item.Remark = viewModel.Remark;
+            item.FitnessConsultant = viewModel.FitnessConsultant.Value;
+            item.Renewal = viewModel.Renewal;
+            item.CourseContractExtension.PaymentMethod = paymentMethod;
+            item.CourseContractExtension.Version = (int?)viewModel.Version;
+            item.CourseContractExtension.SignOnline = viewModel.SignOnline;
+            item.CourseContractExtension.UnitPriceID = lessonPrice.GetOriginalSeriesPrice(models)?.PriceID;
+            item.CourseContractExtension.UnitPriceAdjustmentType = (int?)viewModel.PriceAdjustment;
+
+
+            //item.Status = viewModel.Status;
+            if (viewModel.UID != null && viewModel.UID.Length > 0)
+            {
+                models.DeleteAllOnSubmit<CourseContractMember>(m => m.ContractID == item.ContractID);
+                item.CourseContractMember.AddRange(viewModel.UID.Select(u => new CourseContractMember
+                {
+                    UID = u
+                }));
+            }
+
+            models.SubmitChanges();
+
+            void CalcTotalPrice()
+            {
+                if (lessonPrice.IsCombination)
+                {
+                    List<LessonPriceType> combinationPrice = models.EvaluateCustomCombinationTotalCost(viewModel, null, out int totalLessons, out int totalCost);
+                    item.Lessons = totalLessons;
+                    item.TotalCost = totalCost;
+
+                    for (int i = 0; i < combinationPrice.Count; i++)
+                    {
+                        var p = combinationPrice[i];
+                        if (p != null && viewModel.OrderLessons[i] > 0)
+                        {
+                            item.CourseContractOrder.Add(new CourseContractOrder
+                            {
+                                LessonPriceType = p,
+                                Lessons = viewModel.OrderLessons[i].Value,
+                            });
+                        }
+                    }
+                }
+                else
+                {
+                    if (lessonPrice.IsPackagePrice)
+                    {
+                        item.Lessons = lessonPrice.ExpandActualLessonCount(models);
+                        item.TotalCost =  lessonPrice.ListPrice;
+                    }
+                    else
+                    {
+                        item.Lessons = viewModel.Lessons;
+                        item.TotalCost = item.Lessons * item.LessonPriceType.ListPrice;
+                    }
+
+                    if (item.CourseContractType.GroupingLessonDiscount != null)
+                    {
+                        item.TotalCost = item.TotalCost * item.CourseContractType.GroupingLessonDiscount.GroupingMemberCount * item.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount / 100;
+                    }
+
+                }
+            }
+
+            CalcTotalPrice(); //price.IsPackagePrice ? price.ListPrice : item.Lessons * item.LessonPriceType.ListPrice;
+
+            models.SubmitChanges();
+
+            if(!draftOnly)
+            {
+                foreach (var uid in viewModel.UID)
+                {
+                    models.ExecuteCommand("update UserProfileExtension set CurrentTrial = null where UID = {0}", uid);
+                }
+
+                item.MarkContractNo(models);
+            }
+
+            return item;
+        }
+
+        public static void ValidateContractApplication(this CourseContractViewModel viewModel, SampleController<UserProfile> controller, out LessonPriceType lessonPrice,bool draftOnly = false)
                 
         {
             var ModelState = controller.ModelState;
@@ -172,25 +343,78 @@ namespace WebHome.Helper.BusinessOperation
             {
                 ModelState.AddModelError("ContractType", "請選擇合約類型");
             }
+            else if (viewModel.ContractType == CourseContractType.ContractTypeDefinition.CGA_Aux)
+            {
+                if ( !viewModel.ContractTypeAux.HasValue)
+                {
+                    ModelState.AddModelError("ContractTypeAux", "請選擇人數");
+                }
+            }
+
+            lessonPrice = viewModel.ValidateTotalCost(controller);
+
             if (!viewModel.BranchID.HasValue)
             {
                 ModelState.AddModelError("BranchID", "請選擇上課場所");
             }
 
-            //請選擇上課時間長度
-            if (!viewModel.Renewal.HasValue)
+            if(!draftOnly)
             {
-                ModelState.AddModelError("Renewal", "請選擇是否為舊生續約");
+                //請選擇上課時間長度
+                if (!viewModel.Renewal.HasValue)
+                {
+                    ModelState.AddModelError("Renewal", "請選擇是否為VIP續約");
+                }
+
+                if (viewModel.InstallmentPlan == true)
+                {
+                    if (!viewModel.Installments.HasValue)
+                    {
+                        ModelState.AddModelError("Installments", "請選擇分期");
+                    }
+                }
             }
 
-            if (!viewModel.PriceID.HasValue)
+            if (!viewModel.OwnerID.HasValue)
             {
-                ModelState.AddModelError("PriceID", "請選擇課程單價");
+                ModelState.AddModelError("OwnerID", "請設定主簽約人");
+            }
+            else if (viewModel.UID == null || viewModel.UID.Length < 1)
+            {
+                ModelState.AddModelError("OwnerID", "請新增合約學生");
+            }
+            else if (viewModel.ContractType == CourseContractType.ContractTypeDefinition.CFA)
+            {
+
+            }
+            else if (viewModel.ContractType == CourseContractType.ContractTypeDefinition.CGA_Aux)
+            {
+                if (viewModel.ContractTypeAux == CourseContractType.ContractTypeDefinition.CGF)
+                {
+
+                }
+                else
+                {
+                    var contractType = models.GetTable<CourseContractType>().Where(t => t.TypeID == (int?)viewModel.ContractTypeAux)
+                                        .FirstOrDefault();
+
+                    if (contractType?.GroupingMemberCount != viewModel.UID.Length)
+                    {
+                        ModelState.AddModelError("OwnerID", "請再次確認一次合約人數與合約類型是否相符");
+                    }
+                }
             }
             else
             {
-                lessonPrice = models.GetTable<LessonPriceType>().Where(l => l.PriceID == viewModel.PriceID).FirstOrDefault();
+                var contractType = models.GetTable<CourseContractType>().Where(t => t.TypeID == (int?)viewModel.ContractType)
+                                    .FirstOrDefault();
+
+                if (contractType?.GroupingMemberCount != viewModel.UID.Length)
+                {
+                    ModelState.AddModelError("OwnerID", "請再次確認一次合約人數與合約類型是否相符");
+                }
             }
+
 
             if (!viewModel.FitnessConsultant.HasValue)
             {
@@ -205,25 +429,6 @@ namespace WebHome.Helper.BusinessOperation
                 }
             }
 
-            if (!viewModel.OwnerID.HasValue)
-            {
-                ModelState.AddModelError("OwnerID", "請設定主簽約人");
-            }
-            else if (viewModel.UID == null || viewModel.UID.Length < 1)
-            {
-                ModelState.AddModelError("OwnerID", "請新增合約學生");
-            }
-            else if (viewModel.ContractType != CourseContractType.ContractTypeDefinition.CFA)
-            {
-                var contractType = models.GetTable<CourseContractType>().Where(t => t.TypeID == (int?)viewModel.ContractType)
-                                    .FirstOrDefault();
-
-                if (contractType?.GroupingMemberCount != viewModel.UID.Length)
-                {
-                    ModelState.AddModelError("OwnerID", "請再次確認一次合約人數與合約類型是否相符");
-                }
-            }
-           
         }
 
         public static async Task<CourseContract> SaveCourseContractAsync(this CourseContractViewModel viewModel, SampleController<UserProfile> controller, bool checkPayment = false)
@@ -438,14 +643,6 @@ namespace WebHome.Helper.BusinessOperation
                 }
             }
 
-            if (viewModel.InstallmentPlan == true)
-            {
-                if (!viewModel.Installments.HasValue)
-                {
-                    ModelState.AddModelError("Installments", "請選擇分期");
-                }
-            }
-
             String paymentMethod = null;
             if (checkPayment)
             {
@@ -570,6 +767,317 @@ namespace WebHome.Helper.BusinessOperation
                 {
                     var jsonData = await controller.RenderViewToStringAsync("~/Views/LineEvents/Message/NotifyCoachToSignContract.cshtml", item);
                     jsonData.PushLineMessage();
+                }
+            }
+
+            return item;
+        }
+
+        private static void UpdateCustomCombinationTotalCost(this CourseContract contract, CourseContractViewModel viewModel)
+        {
+            int totalLessons = 0;
+            int totalCost = 0;
+            CourseContractType typeItem = contract.CourseContractType;
+
+            for (int i = 0; i < viewModel.OrderPriceID.Length; i++)
+            {
+                CourseContractOrder order = contract.CourseContractOrder.Where(c => c.PriceID == viewModel.OrderPriceID[i]).FirstOrDefault();
+                if (order == null)
+                    continue;
+
+                if (viewModel.OrderLessons[i] > 0)
+                {
+                    order.Lessons = viewModel.OrderLessons[i].Value;
+
+                    LessonPriceType item = order.LessonPriceType;
+                    int lessons = ((item.BundleCount ?? 1) * viewModel.OrderLessons[i].Value);
+                    int cost = (item.ListPrice ?? 0) * lessons;
+                    totalLessons += lessons;
+
+                    if (item.LessonPriceProperty.Any(p => p.PropertyID == (int)Naming.LessonPriceFeature.一對一課程))
+                    {
+                        totalCost += cost;
+                    }
+                    else
+                    {
+                        totalCost += cost * (typeItem.GroupingMemberCount ?? 1) * (typeItem.GroupingLessonDiscount.PercentageOfDiscount ?? 100) / 100;
+                    }
+                }
+                else
+                {
+                    order.Lessons = 0;
+                }
+            }
+            contract.Lessons = totalLessons;
+            contract.TotalCost = totalCost;
+        }
+
+        public static async Task<CourseContract> CommitCourseContract2022Async(this CourseContractViewModel viewModel, SampleController<UserProfile> controller, bool checkPayment = false,bool draftOnly = false)
+        {
+            var Request = controller.Request;
+            var ModelState = controller.ModelState;
+            var ViewBag = controller.ViewBag;
+            var HttpContext = controller.HttpContext;
+            var models = controller.DataSource;
+
+            ViewBag.ViewModel = viewModel;
+            var profile = (await HttpContext.GetUserAsync()).LoadInstance(models);
+
+            viewModel.ValidateContractApplication(controller, out LessonPriceType lessonPrice, draftOnly);
+
+            if (lessonPrice != null)
+            {
+                if (lessonPrice.BranchStore?.IsVirtualClassroom() == true)
+                {
+                    if (profile.ServingCoach?.PreferredBranchID().HasValue == false)
+                    {
+                        ModelState.AddModelError("BranchID", "無法確定簽約分店!!");
+                    }
+                    else if (!CourseContractType.IsSuitableForVirtaulClass(viewModel.ContractType))
+                    {
+                        ModelState.AddModelError("ContractType", "遠距只能是1對1體能顧問課程!!");
+                    }
+                }
+                else if (lessonPrice.BranchID.HasValue && !lessonPrice.BranchStore.ManagerID.HasValue)
+                {
+                    ModelState.AddModelError("BranchID", "該分店未指定店長!!");
+                }
+            }
+
+            String paymentMethod = null;
+            if (checkPayment)
+            {
+                if (viewModel.PaymentMethod != null)
+                {
+                    paymentMethod = String.Join("/", viewModel.PaymentMethod.Where(p => p != null && p.Length > 0)).GetEfficientString();
+                }
+
+                if (paymentMethod == null)
+                {
+                    ModelState.AddModelError("PaymentMethod", "請選擇支付方式");
+                }
+            }
+
+
+            if (!ModelState.IsValid)
+            {
+                ViewBag.ModelState = ModelState;
+                return null;
+            }
+
+            if (viewModel.KeyID != null)
+            {
+                viewModel.ContractID = viewModel.DecryptKeyValue();
+            }
+            CourseContract item = models.GetTable<CourseContract>().Where(c => c.ContractID == viewModel.ContractID).FirstOrDefault();
+            if (item != null)
+            {
+                if (item.Status != (int)Naming.CourseContractStatus.草稿)
+                {
+                    ModelState.AddModelError("Message", "合約狀態錯誤，請重新檢查!!");
+                    return null;
+                }
+            }
+
+            String storedPath = null;
+            if (Request.Form.Files.Count > 0)
+            {
+                storedPath = Path.Combine(FileLogger.Logger.LogDailyPath, Guid.NewGuid().ToString() + Path.GetExtension(Request.Form.Files[0].FileName));
+                Request.Form.Files[0].SaveAs(storedPath);
+            }
+
+            item = models.InitiateCourseContract2022(viewModel, profile, lessonPrice, paymentMethod: paymentMethod, draftOnly: draftOnly);
+            DateTime payoffDue = item.ContractDate.Value.AddMonths(1).FirstDayOfMonth();
+            item.PayoffDue = payoffDue.AddDays(-1);
+            if (storedPath != null)
+            {
+                item.CourseContractExtension.Attachment = new Attachment
+                {
+                    StoredPath = storedPath,
+                };
+            }
+            models.SubmitChanges();
+
+            if (!draftOnly)
+            {
+                if (item.InstallmentID.HasValue)
+                {
+                    if (lessonPrice.IsCombination)
+                    {
+                        int?[] viewModelLessons = new int?[viewModel.OrderLessons.Length];
+                        int[] installment = viewModel.OrderLessons.Select(t => Math.Max((t ?? 0) / item.ContractInstallment.Installments, 1)).ToArray();
+                        viewModel.OrderLessons.CopyTo(viewModelLessons, 0);
+
+                        for (int i = 0; i < viewModel.OrderLessons.Length; i++)
+                        {
+                            if (viewModel.OrderLessons[i].HasValue)
+                            {
+                                viewModel.OrderLessons[i] = installment[i];
+                                if (viewModelLessons[i] > item.ContractInstallment.Installments)
+                                {
+                                    viewModel.OrderLessons[i] += (viewModelLessons[i] % item.ContractInstallment.Installments);
+                                }
+                            }
+                        }
+
+                        item.UpdateCustomCombinationTotalCost(viewModel);
+                        models.SubmitChanges();
+
+                        for (int s = 0; s < viewModelLessons.Length; s++)
+                        {
+                            if (viewModelLessons[s].HasValue)
+                            {
+                                viewModelLessons[s] -= viewModel.OrderLessons[s];
+                            }
+                        }
+
+                        payoffDue = payoffDue.AddMonths(1);
+                        viewModel.ContractID = null;
+                        viewModel.KeyID = null;
+
+                        for (int idx = 0; idx < item.ContractInstallment.Installments - 1; idx++)
+                        {
+                            for (int i = 0; i < viewModel.OrderLessons.Length; i++)
+                            {
+                                if (viewModel.OrderLessons[i].HasValue)
+                                {
+                                    viewModel.OrderLessons[i] = Math.Min(installment[i], viewModelLessons[i].Value);
+                                }
+                            }
+
+                            var c = models.InitiateCourseContract2022(viewModel, profile, lessonPrice, item.InstallmentID, paymentMethod);
+                            c.PayoffDue = payoffDue.AddDays(-1);
+                            c.Installment = true;
+                            //c.Remark = $"{c.Remark}帳款應付期限{payoffDue:yyyy/MM/dd}。";
+                            if (storedPath != null)
+                            {
+                                c.CourseContractExtension.Attachment = new Attachment
+                                {
+                                    StoredPath = storedPath,
+                                };
+                            }
+                            models.SubmitChanges();
+
+                            payoffDue = payoffDue.AddMonths(1);
+                            for (int s = 0; s < viewModelLessons.Length; s++)
+                            {
+                                if (viewModelLessons[s].HasValue)
+                                {
+                                    viewModelLessons[s] -= viewModel.OrderLessons[s];
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        int totalLessons = item.Lessons.Value;
+                        int installment = totalLessons / item.ContractInstallment.Installments;
+                        //if(item.Remark!=null)
+                        //{
+                        //    var idx = item.Remark.IndexOf("本合約分期轉開次數");
+                        //    if (idx >= 0)
+                        //    {
+                        //        item.Remark = item.Remark.Substring(0, idx);
+                        //    }
+                        //}
+
+                        //viewModel.Remark = item.Remark = $"{item.Remark}本合約分期轉開次數{item.ContractInstallment.Installments}次。";
+                        item.Lessons = installment + (totalLessons % item.ContractInstallment.Installments);
+                        item.TotalCost = item.TotalCost * item.Lessons / totalLessons;
+                        //item.Remark = $"{item.Remark}帳款應付期限{payoffDue:yyyy/MM/dd}。";
+                        models.SubmitChanges();
+
+                        totalLessons -= item.Lessons.Value;
+                        payoffDue = payoffDue.AddMonths(1);
+                        viewModel.ContractID = null;
+                        viewModel.KeyID = null;
+                        while (totalLessons > 0)
+                        {
+                            viewModel.Lessons = Math.Min(installment, totalLessons);
+                            var c = models.InitiateCourseContract(viewModel, profile, lessonPrice, item.InstallmentID, paymentMethod);
+                            c.PayoffDue = payoffDue.AddDays(-1);
+                            c.Installment = true;
+                            //c.Remark = $"{c.Remark}帳款應付期限{payoffDue:yyyy/MM/dd}。";
+                            if (storedPath != null)
+                            {
+                                c.CourseContractExtension.Attachment = new Attachment
+                                {
+                                    StoredPath = storedPath,
+                                };
+                            }
+                            models.SubmitChanges();
+
+                            payoffDue = payoffDue.AddMonths(1);
+                            totalLessons -= installment;
+                        }
+                    }
+                }
+
+                if (item.Status == (int)Naming.CourseContractStatus.待審核)
+                {
+                    if (item.CourseContractExtension.BranchStore.ManagerID.HasValue)
+                    {
+                        var jsonData = await controller.RenderViewToStringAsync("~/Views/LineEvents/Message/NotifyManagerToApproveContract.cshtml", item);
+                        jsonData.PushLineMessage();
+                    }
+                    if (profile.UID != item.CourseContractExtension.BranchStore.ViceManagerID
+                        && item.CourseContractExtension.BranchStore.ViceManagerID.HasValue)
+                    {
+                        var jsonData = await controller.RenderViewToStringAsync("~/Views/LineEvents/Message/NotifyViceManagerToApproveContract.cshtml", item);
+                        jsonData.PushLineMessage();
+                    }
+                }
+                else if (item.Status == (int)Naming.CourseContractStatus.待簽名)
+                {
+                    if (item.CourseContractExtension.SignOnline == true)
+                    {
+                        //item.CreateLineReadyToSignContract(models).PushLineMessage();
+                        var jsonData = await controller.RenderViewToStringAsync("~/Views/LineEvents/Message/NotifyLearnerToSignContract.cshtml", item);
+                        jsonData.PushLineMessage();
+                    }
+                    else if (!profile.IsManager())
+                    {
+                        var jsonData = await controller.RenderViewToStringAsync("~/Views/LineEvents/Message/NotifyCoachToSignContract.cshtml", item);
+                        jsonData.PushLineMessage();
+                    }
+                }
+            }
+
+            return item;
+        }
+
+        public static LessonPriceType ValidateTotalCost(this CourseContractViewModel viewModel, SampleController<UserProfile> controller)
+        {
+            var ModelState = controller.ModelState;
+            var HttpContext = controller.HttpContext;
+            var models = controller.DataSource;
+
+            var item = models.GetTable<LessonPriceType>().Where(p => p.PriceID == viewModel.PriceID).FirstOrDefault();
+            if (item == null)
+            {
+                ModelState.AddModelError("PriceID", "請選擇課程單價");
+            }
+            else if(!viewModel.Lessons.HasValue)
+            {
+                if (viewModel.OrderLessons == null || viewModel.OrderLessons.Length == 0)
+                {
+                    ModelState.AddModelError("OrderLessons", "請輸入購買堂數");
+                }
+                else if (!viewModel.OrderLessons[0].HasValue || viewModel.OrderLessons[0] <= 0)
+                {
+                    ModelState.AddModelError("OrderLessons,0", "請輸入P.T堂數");
+                }
+                else if (viewModel.OrderLessons.Length > 1 && viewModel.OrderLessons[1] <= 0)
+                {
+                    ModelState.AddModelError("OrderLessons,1", "請輸入A.T堂數");
+                }
+                else if (viewModel.OrderLessons.Length > 2 && viewModel.OrderLessons[2] <= 0)
+                {
+                    ModelState.AddModelError("OrderLessons,2", "請輸入S.R堂數");
+                }
+                else if (viewModel.OrderLessons.Length > 3 && viewModel.OrderLessons[3] <= 0)
+                {
+                    ModelState.AddModelError("OrderLessons,3", "請輸入S.D堂數");
                 }
             }
 
@@ -860,10 +1368,49 @@ namespace WebHome.Helper.BusinessOperation
                         {
                             if (viewModel.Status == (int)Naming.CourseContractStatus.草稿)
                             {
-                                var totalLessons = item.ContractInstallment.CourseContract.Sum(c => c.Lessons);
-                                item.TotalCost = item.TotalCost * totalLessons / item.Lessons;
-                                item.Lessons = totalLessons;
-                                models.DeleteAllOnSubmit<CourseContract>(t => t.ContractID != item.ContractID && t.InstallmentID == item.InstallmentID);
+                                if (item.CourseContractOrder.Count > 0)
+                                {
+                                    var installments = models.GetTable<CourseContract>()
+                                        .Where(t => t.InstallmentID == item.InstallmentID)
+                                        .Where(t => t.ContractID != item.ContractID);
+
+                                    foreach(var c in installments)
+                                    {
+                                        foreach(var source in c.CourseContractOrder)
+                                        {
+                                            var destPrice = item.CourseContractOrder.Where(d => d.PriceID == source.PriceID).FirstOrDefault();
+                                            if (destPrice != null)
+                                            {
+                                                destPrice.Lessons += source.Lessons; ;
+                                            }
+                                            else
+                                            {
+                                                item.CourseContractOrder.Add(new CourseContractOrder 
+                                                {
+                                                    CourseContract = item,
+                                                    Lessons = source.Lessons,
+                                                    PriceID = source.PriceID,
+                                                    LessonPriceType = source.LessonPriceType,
+                                                });
+                                            }
+                                        }
+                                        models.GetTable<CourseContract>().DeleteOnSubmit(c);
+                                    }
+
+                                    item.EvaluateCustomCombinationTotalCost(out int totalLessons, out int totalCost);
+                                    item.Lessons = totalLessons;
+                                    item.TotalCost = totalCost;
+                                }
+                                else
+                                {
+                                    var totalLessons = item.ContractInstallment.CourseContract.Sum(c => c.Lessons);
+                                    if (item.Lessons > 0)
+                                    {
+                                        item.TotalCost = item.TotalCost * totalLessons / item.Lessons;
+                                    }
+                                    item.Lessons = totalLessons;
+                                    models.DeleteAllOnSubmit<CourseContract>(t => t.ContractID != item.ContractID && t.InstallmentID == item.InstallmentID);
+                                }
 
                                 //var idx = item.Remark.IndexOf("本合約分期轉開次數");
                                 //if (idx >= 0)
@@ -1159,7 +1706,8 @@ namespace WebHome.Helper.BusinessOperation
                     }
                 };
 
-                if (item.CourseContractType.ContractCode == "CFA")
+                if (item.CourseContractType.ContractCode == CourseContractType.ContractTypeDefinition.CFA.ToString()
+                    || item.CourseContractType.ContractCode == CourseContractType.ContractTypeDefinition.CGF.ToString())
                 {
                     lesson.GroupingMemberCount = 1;
                     lesson.GroupingLesson = new GroupingLesson { };
@@ -1567,6 +2115,7 @@ namespace WebHome.Helper.BusinessOperation
                     BranchID = item.CourseContractExtension.BranchID,
                     Version = item.CourseContractExtension.Version,
                     SignOnline = viewModel.SignOnline,
+                    UnitPriceAdjustmentType = item.CourseContractExtension.UnitPriceAdjustmentType,
                 },
                 SupervisorID = item.CourseContractExtension.BranchStore.ManagerID,
             };

@@ -1,0 +1,57 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    IQueryable<LessonPriceType> _model;
+    CourseContractQueryViewModel _viewModel;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (IQueryable<LessonPriceType>)this.Model;
+    _viewModel = (CourseContractQueryViewModel)ViewBag.ViewModel;
+    LessonPriceType customPrice = ViewBag.CustomPrice as LessonPriceType;
+}
+@if (customPrice != null)
+{
+    <script>
+        $(function () {
+            $global.viewModel.PriceID = @(customPrice.PriceID);
+            $global.commitPrice = function (priceID, priceName, lessons) {
+                $global.viewModel.OrderPriceID[0] = priceID;
+                $('#searchPrice').attr('placeholder', priceName);
+                $('#PTUnitPrice').text('60分鐘 / '+priceName);
+                if (lessons) {
+                    $('input[name="OrderLessons"].forPT').val(lessons);
+                }
+            };
+        });
+    </script>
+}
+else
+{
+    <script>
+        $(function () {
+            $global.commitPrice = function (priceID, priceName, lessons) {
+                $global.viewModel.PriceID = priceID;
+                $('#searchPrice').attr('placeholder', priceName);
+                $('#PTUnitPrice').text('60分鐘 / '+priceName);
+                if (lessons) {
+                    $('input[name="OrderLessons"].forPT').val(lessons);
+                }
+            };
+        });
+    </script>
+}
+@{
+    await Html.RenderPartialAsync("~/Views/ContractConsole/ContractModal/ListLessonPrice.cshtml",_model);
+}

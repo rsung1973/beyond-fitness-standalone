@@ -207,9 +207,69 @@ namespace WebHome.Controllers
             return View("~/Views/ContractConsole/Editing/CourseContractCommitted.cshtml", item);
         }
 
+        public async Task<ActionResult> CommitContract2022Async(CourseContractViewModel viewModel)
+        {
+            CourseContract item = null;
+            try
+            {
+                item = await viewModel.CommitCourseContract2022Async(this, true);
+            }
+            catch (Exception ex)
+            {
+                var logger = ServiceProvider.GetRequiredService<ILogger<ContractConsoleController>>();
+                logger.LogError(ex, ex.Message);
+                ModelState.AddModelError("Message", ex.Message);
+            }
+
+            if (item == null)
+            {
+                if (!ModelState.IsValid)
+                {
+                    ViewBag.AlertError = true;
+                    return View(ConsoleHomeController.InputErrorView);
+                }
+                else
+                {
+                    return View("~/Views/ConsoleHome/Shared/AlertMessage.cshtml", model: ModelState.ErrorMessage());
+                }
+            }
+
+            return View("~/Views/ContractConsole/Editing/CourseContractCommitted.cshtml", item);
+        }
+
         public async Task<ActionResult> SaveContractAsync(CourseContractViewModel viewModel)
         {
             var item = await viewModel.SaveCourseContractAsync(this, true);
+            if (item == null)
+            {
+                if (!ModelState.IsValid)
+                {
+                    ViewBag.AlertError = true;
+                    return View(ConsoleHomeController.InputErrorView);
+                }
+                else
+                {
+                    return View("~/Views/ConsoleHome/Shared/AlertMessage.cshtml", model: ModelState.ErrorMessage());
+                }
+            }
+
+            return View("~/Views/ContractConsole/Editing/CourseContractSaved.cshtml", item);
+        }
+
+        public async Task<ActionResult> SaveContract2022Async(CourseContractViewModel viewModel)
+        {
+            CourseContract item = null;
+            try
+            {
+                item = await viewModel.CommitCourseContract2022Async(this, false, true);
+            }
+            catch (Exception ex)
+            {
+                var logger = ServiceProvider.GetRequiredService<ILogger<ContractConsoleController>>();
+                logger.LogError(ex, ex.Message);
+                ModelState.AddModelError("Message", ex.Message);
+            }
+
             if (item == null)
             {
                 if (!ModelState.IsValid)
@@ -291,6 +351,76 @@ namespace WebHome.Controllers
             return View("~/Views/ContractConsole/ContractModal/ListLessonPrice.cshtml", items);
         }
 
+        public ActionResult ListLessonPrice2022(CourseContractQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            var branch = models.GetTable<BranchStore>()
+                .Where(b => b.BranchID == viewModel.BranchID).FirstOrDefault();
+            if (branch == null)
+            {
+                ModelState.AddModelError("BranchID", "請選擇上課場所");
+            }
+
+            if (!viewModel.ContractType.HasValue)
+            {
+                ModelState.AddModelError("ContractType", "請選擇合約類型");
+            }
+            else if (viewModel.ContractType == CourseContractType.ContractTypeDefinition.CGA_Aux
+                && !viewModel.ContractTypeAux.HasValue)
+            {
+                ModelState.AddModelError("ContractTypeAux", "請選擇人數");
+            }
+
+
+            //if (!viewModel.DurationInMinutes.HasValue)
+            //{
+            //    ModelState.AddModelError("DurationInMinutes", "請選擇上課時間長度");
+            //}
+
+            if (!ModelState.IsValid)
+            {
+                ViewBag.ModelState = ModelState;
+                return View(ConsoleHomeController.InputErrorView);
+            }
+
+            IQueryable<LessonPriceType> items = models.GetTable<LessonPriceType>()
+                .Where(l => !l.DurationInMinutes.HasValue || l.DurationInMinutes == viewModel.DurationInMinutes);
+
+            if (viewModel.ContractType == CourseContractType.ContractTypeDefinition.CNA)
+            {
+                items = models.GetTable<LessonPriceType>().Where(p => p.Status == (int)Naming.LessonPriceStatus.營養課程);
+            }
+            else if (viewModel.ContractType == CourseContractType.ContractTypeDefinition.CNR)
+            {
+                items = models.GetTable<LessonPriceType>().Where(p => p.Status == (int)Naming.LessonPriceStatus.運動恢復課程);
+            }
+            else
+            {
+                if (viewModel.ContractType == CourseContractType.ContractTypeDefinition.CGA_Aux)
+                {
+                    LessonPriceType customPrice =  ViewBag.CustomPrice = models.GetCandidateCustomCombinationPrice();
+                    if (customPrice == null)
+                    {
+                        return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", "自訂組合包價目未設定");
+                    }
+                }
+
+                items = models.PromptEffectiveLessonPrice()
+                    .Where(p => p.BranchID == viewModel.BranchID)
+                    .Where(l => !l.DurationInMinutes.HasValue || l.DurationInMinutes == viewModel.DurationInMinutes);
+            }
+
+            if (items.Any())
+            {
+                return View("~/Views/ContractConsole/ContractModal/ListLessonPrice2022.cshtml", items);
+            }
+            else
+            {
+                return Json(new { result = false, message = "無相符條件的項目!" });
+            }
+
+        }
+
         public ActionResult CalculateTotalCost(CourseContractQueryViewModel viewModel)
         {
             ViewBag.ViewModel = viewModel;
@@ -316,6 +446,31 @@ namespace WebHome.Controllers
             }
 
             return View("~/Views/ContractConsole/Editing/TotalCostSummary.cshtml");
+        }
+
+        public ActionResult CalculateTotalCost2022(CourseContractQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+
+            if (!viewModel.ContractType.HasValue)
+            {
+                ModelState.AddModelError("ContractType", "請選擇合約類型");
+            }
+            else if (viewModel.ContractType == CourseContractType.ContractTypeDefinition.CGA_Aux
+                && !viewModel.ContractTypeAux.HasValue)
+            {
+                ModelState.AddModelError("ContractTypeAux", "請選擇人數");
+            }
+
+            var item = viewModel.ValidateTotalCost(this);
+
+            if (!ModelState.IsValid)
+            {
+                ViewBag.ModelState = this.ModelState;
+                return View("~/Views/ConsoleHome/Shared/ReportInputError.cshtml");
+            }
+
+            return View("~/Views/ContractConsole/Editing/TotalCostSummary2022.cshtml", item);
         }
 
         public ActionResult ListContractMember(CourseContractQueryViewModel viewModel)
@@ -483,7 +638,6 @@ namespace WebHome.Controllers
         public async Task<ActionResult> ExecuteContractStatusAsync(CourseContractViewModel viewModel)
         {
             ViewBag.ViewModel = viewModel;
-
             var item = await viewModel.ExecuteContractStatusAsync(this);
             if (item == null)
             {

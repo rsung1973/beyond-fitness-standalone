@@ -87,6 +87,10 @@ namespace WebHome.Models.Locale
             點數兌換課程 = 1007,
             舊會員續約 = 1008,
             半堂計算 = 1011,
+            營養課程 = 1012,
+            運動防護課程 = 1013,
+            運動恢復課程 = 1014,
+            一對一課程 = 1015,
         }
 
         public enum LessonSeriesStatus

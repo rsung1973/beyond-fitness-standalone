@@ -1790,7 +1790,6 @@ namespace WebHome.Helper
         }
 
         public static UserProfile LoadInstance(this UserProfile profile, GenericManager<BFDataContext> models)
-            
         {
             return models.GetTable<UserProfile>().Where(u => u.UID == profile.UID).First();
         }

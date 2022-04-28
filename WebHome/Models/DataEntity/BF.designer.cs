@@ -59590,6 +59590,8 @@ namespace WebHome.Models.DataEntity
 		
 		private System.Nullable<int> _UnitPriceID;
 		
+		private System.Nullable<int> _UnitPriceAdjustmentType;
+		
 		private EntityRef<Attachment> _Attachment;
 		
 		private EntityRef<BranchStore> _BranchStore;
@@ -59622,6 +59624,8 @@ namespace WebHome.Models.DataEntity
     partial void OnSignOnlineChanged();
     partial void OnUnitPriceIDChanging(System.Nullable<int> value);
     partial void OnUnitPriceIDChanged();
+    partial void OnUnitPriceAdjustmentTypeChanging(System.Nullable<int> value);
+    partial void OnUnitPriceAdjustmentTypeChanged();
     #endregion
 		
 		public CourseContractExtension()
@@ -59830,6 +59834,26 @@ namespace WebHome.Models.DataEntity
 					this._UnitPriceID = value;
 					this.SendPropertyChanged("UnitPriceID");
 					this.OnUnitPriceIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UnitPriceAdjustmentType", DbType="Int")]
+		public System.Nullable<int> UnitPriceAdjustmentType
+		{
+			get
+			{
+				return this._UnitPriceAdjustmentType;
+			}
+			set
+			{
+				if ((this._UnitPriceAdjustmentType != value))
+				{
+					this.OnUnitPriceAdjustmentTypeChanging(value);
+					this.SendPropertyChanging();
+					this._UnitPriceAdjustmentType = value;
+					this.SendPropertyChanged("UnitPriceAdjustmentType");
+					this.OnUnitPriceAdjustmentTypeChanged();
 				}
 			}
 		}

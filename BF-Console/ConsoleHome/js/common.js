@@ -163,6 +163,24 @@ $.fn.launchDownload = function (url, params, target, loading) {
     form.appendTo('body').submit().remove();
 };
 
+$.fn.loadContent = function (url, viewModel) {
+    var $element = this;
+    showLoading();
+    $.post(url, viewModel, function (data) {
+        hideLoading();
+        if ($.isPlainObject(data)) {
+            Swal.fire(
+                'Oops...',
+                data.message,
+                'warning'
+            );
+        } else {
+            $element.empty()
+                .append($(data));
+        }
+    });
+}
+
 function finishDownload() {
     window.clearInterval(fileDownloadCheckTimer);
     $.removeCookie('fileDownloadToken'); //clears this cookie value

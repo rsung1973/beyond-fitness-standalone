@@ -211,8 +211,12 @@ namespace WebHome.Helper
 
         private static UserProfile getLoginUser(this String pid)
         {
-            using ModelSource<UserProfile> Models = new();
-            UserProfile profile = Models.EntityList.Where(u => u.PID == pid).FirstOrDefault();
+            using ModelSource<UserProfile> models = new();
+            UserProfile profile = models.EntityList
+                .Where(u => u.PID == pid)
+                .Where(u => u.LevelID == (int)Naming.MemberStatusDefinition.Checked)
+                .FirstOrDefault();
+
             if (profile != null)
             {
                 var roles = profile.UserRole.Select(r => r.UserRoleDefinition).ToArray();

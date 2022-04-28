@@ -203,6 +203,17 @@ namespace WebHome.Controllers
 
         }
 
+        public ActionResult BookingLesson2022(CalendarEventViewModel viewModel)
+        {
+            var result = BookingLesson(viewModel);
+            if (result is ViewResult)
+            {
+                ((ViewResult)result).ViewName = "~/Views/ConsoleEvent/EventModal/BookingLesson2022.cshtml";
+            }
+            return result;
+        }
+
+
         public ActionResult BookingCoachPI(LessonTimeViewModel viewModel)
         {
             ViewBag.ViewModel = viewModel;

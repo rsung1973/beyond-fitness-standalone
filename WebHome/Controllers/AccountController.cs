@@ -1276,6 +1276,8 @@ namespace WebHome.Controllers
             if (viewModel.LevelID == (int)Naming.MemberStatusDefinition.Deleted)
             {
                 item.UserProfileExtension.LineID = null;
+                item.Password = null;
+                item.PID = item.MemberCode;
             }
             models.SubmitChanges();
 

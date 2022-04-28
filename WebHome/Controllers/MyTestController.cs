@@ -20,6 +20,7 @@ using CommonLib.DataAccess;
 using Microsoft.AspNetCore.Http;
 //using System.Data.Entity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebHome.Controllers
 {
@@ -215,6 +216,14 @@ namespace WebHome.Controllers
                             .Where(l => !(l.ClassTime >= t.AddMinutes(90)
                                     || t >= l.ClassTime.Value.AddMinutes(l.DurationInMinutes.Value)));
             return Content(new {Count =  items.Count(),SQL = items.ToString() }.JsonStringify(), "application/json");
+        }
+
+        [AllowAnonymous]
+        public ActionResult HandleUnknownAction(string actionName, IFormCollection forms, QueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            return View(actionName, forms);
+            //this.View(actionName).ExecuteResult(this.ControllerContext);
         }
 
     }

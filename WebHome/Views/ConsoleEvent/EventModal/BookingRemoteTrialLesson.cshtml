@@ -1,4 +1,3 @@
-
 @using System.IO
 @using System.Linq.Expressions
 
@@ -19,7 +18,7 @@
     BookingLessonPageModel _pageModel = (BookingLessonPageModel)ViewBag.PageModel;
 
     _modelState = ViewContext.ModelState;
-    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
     _model = (UserProfile)this.Model;
     _viewModel = (CalendarEventViewModel)ViewBag.ViewModel;
     _profile = await Context.GetUserAsync();
@@ -45,6 +44,11 @@
                     <div class="media-heading">
                         <a class="m-r-10">@(price.SimpleDescription)</a>
                         <small class="float-right text-muted"><time>TWD @(price.ListPrice)</time></small>
+                        <div class="msg">
+                            <span class="float-right">
+                                <span class="badge bg-green"><i class="zmdi zmdi-pin"></i> 遠距</span>
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>
