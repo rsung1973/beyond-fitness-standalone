@@ -91,7 +91,7 @@
                 </div>
                 <div class="media-body">
                     <div class="media-heading">
-                        <a class="m-r-10">P.T session （@(item.LessonPriceType.SimpleDescription)）</a>
+                        <a class="m-r-10">@(item.LessonPriceType.SimpleDescription)</a>
                         <small class="float-right text-muted"><time>@(remainedCount)/@(item.Lessons)</time></small>
                     </div>
                 </div>
@@ -109,7 +109,17 @@
             continue;
         }
 
-        var remainedCount = contract.RemainedLessonCount();
+        switch (item.LessonPriceType.Status)
+        {
+            case (int)Naming.LessonPriceStatus.營養課程:
+                continue;
+            case (int)Naming.LessonPriceStatus.運動恢復課程:
+                continue;
+            case (int)Naming.LessonPriceStatus.運動防護課程:
+                continue;
+        }
+
+        var remainedCount = item.RemainedLessonCount();
         if (remainedCount <= 0)
         {
             continue;
@@ -149,44 +159,24 @@
                 </div>
                 <div class="media-body">
                     <div class="media-heading">
-                        @if (contract.ContractType == (int)CourseContractType.ContractTypeDefinition.CGA
-                            || contract.ContractType == (int)CourseContractType.ContractTypeDefinition.CNA)
-                        {
-                            if (item.LessonPriceType.IsDietaryConsult)
+                        <a class="m-r-10">
+                            @(contract.CourseContractType.TypeName)(@(contract.LessonPriceType.DurationInMinutes)分鐘)
+                        </a>
+                        @{
+                            if (contract.LessonPriceType.BranchStore?.IsVirtualClassroom() == true)
                             {
-                                <a class="m-r-10">
-                                    N.S session - @(item.LessonPriceType.SimpleDescription)(@(item.LessonPriceType.DurationInMinutes)分鐘)
-                                </a>
+                                await Html.RenderPartialAsync("~/Views/Common/BranchStoreName.cshtml", contract.LessonPriceType.BranchStore);
                             }
                             else
                             {
-                                <a class="m-r-10">
-                                    P.T session - @(item.LessonPriceType.SimpleDescription)(@(item.LessonPriceType.DurationInMinutes)分鐘)
-                                </a>
+                                await Html.RenderPartialAsync("~/Views/Common/BranchStoreName.cshtml", contract.CourseContractExtension.BranchStore);
                             }
-
-                            await Html.RenderPartialAsync("~/Views/Common/BranchStoreName.cshtml", item.LessonPriceType.BranchStore ?? contract.CourseContractExtension.BranchStore);
-
-                            <small class="float-right text-muted"><time>@(item.RemainedLessonCount())/@(item.Lessons)</time></small>
                         }
-                        else
-                        {
-                            <a class="m-r-10">
-                                P.T session - @(contract.CourseContractType.TypeName)(@(contract.LessonPriceType.DurationInMinutes)分鐘)
-                            </a>
-                            {
-                                if (contract.LessonPriceType.BranchStore?.IsVirtualClassroom() == true)
-                                {
-                                    await Html.RenderPartialAsync("~/Views/Common/BranchStoreName.cshtml", contract.LessonPriceType.BranchStore);
-                                }
-                                else
-                                {
-                                    await Html.RenderPartialAsync("~/Views/Common/BranchStoreName.cshtml", contract.CourseContractExtension.BranchStore);
-                                }
-                            }
-                            <small class="float-right text-muted"><time>@(remainedCount)/@(contract.Lessons)</time></small>
-                        }
+                        <small class="float-right text-muted"><time>@(remainedCount)/@(item.Lessons)</time></small>
                     </div>
+                    <p class="msg col-blue">
+                        <i class="zmdi zmdi-alarm-check"></i> 合約迄日：@($"{contract.Expiration:yyyy/MM/dd}")
+                    </p>
                     @if (!validContract)
                     {
                         <p class="msg col-red"><i class="zmdi zmdi-info-outline"></i>合約尚未生效或已過期</p>
@@ -229,7 +219,7 @@
             </div>
             <div class="media-body">
                 <div class="media-heading">
-                    <a class="m-r-10">P.T session （@(item.LessonPriceType.SimpleDescription)）</a>
+                    <a class="m-r-10">@(item.LessonPriceType.SimpleDescription)</a>
                     <small class="float-right text-muted"><time>@(remainedCount)/@(item.Lessons)</time></small>
                 </div>
             </div>
@@ -256,7 +246,7 @@
             </div>
             <div class="media-body">
                 <div class="media-heading">
-                    <a class="m-r-10">P.T session （員工福利）</a>
+                    <a class="m-r-10">員工福利</a>
                     <small class="float-right text-muted"><time>@(remainedCount)/@(item.Lessons)</time></small>
                 </div>
             </div>
@@ -292,6 +282,9 @@
                     <small class="float-right text-muted"><time>@(bookableLessons.Count())/@(trialLesson.Count())</time></small>
                 </div>
                 <p class="msg">@(enterpriseTrialItem.EnterpriseCourseContract.Subject)</p>
+                <p class="msg col-blue">
+                    <i class="zmdi zmdi-alarm-check"></i> 合約迄日：@($"{item.RegisterLessonEnterprise.EnterpriseCourseContract.Expiration:yyyy/MM/dd}")
+                </p>
             </div>
         </div>
     </li>
@@ -327,10 +320,13 @@
             </div>
             <div class="media-body">
                 <div class="media-heading">
-                    <a class="m-r-10">P.T session（企業方案）- @(content.EnterpriseLessonType.Description)</a>
+                    <a class="m-r-10">企業方案 - @(content.EnterpriseLessonType.Description)</a>
                     <small class="float-right text-muted"><time>@(availableCount)/@(enterprisePT.Lessons)</time></small>
                 </div>
                 <p class="msg">@(content.EnterpriseCourseContract.Subject)</p>
+                <p class="msg col-blue">
+                    <i class="zmdi zmdi-alarm-check"></i> 合約迄日：@($"{content.EnterpriseCourseContract.Expiration:yyyy/MM/dd}")
+                </p>
             </div>
         </div>
     </li>

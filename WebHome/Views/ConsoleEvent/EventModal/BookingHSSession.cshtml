@@ -112,28 +112,34 @@
                 </div>
                 <div class="media-body">
                     <div class="media-heading">
-                        @if (item.LessonPriceType.Status==(int)Naming.LessonPriceStatus.營養課程)
-                        {
-                            <a class="m-r-10">
-                                @(contract.CourseContractType.TypeName)(@(contract.LessonPriceType.DurationInMinutes)分鐘)
-                            </a>
-                            <small class="float-right text-muted"><time>@(remainedCount)/@(contract.Lessons)</time></small>
-                            <div class="msg">
-                                @switch(item.LessonPriceType.Status)
-                                {
-                                    case (int)Naming.LessonPriceStatus.營養課程:
-                                        <text>S.D Session</text>
-                                        break;
+                        <a class="m-r-10">
+                            @(contract.CourseContractType.TypeName)
+                        </a>
+                        <small class="float-right text-muted"><time>@(remainedCount)/@(contract.Lessons)</time></small>
+                        <div class="msg">
+                            @switch(item.LessonPriceType.Status)
+                            {
+                                case (int)Naming.LessonPriceStatus.營養課程:
+                                    <text>S.D Session</text>
+                                    break;
+                                case (int)Naming.LessonPriceStatus.運動恢復課程:
+                                    <text>S.R Session</text>
+                                    break;
+                                case (int)Naming.LessonPriceStatus.運動防護課程:
+                                    <text>A.T Session</text>
+                                    break;
+                            }
+                            (@(item.LessonPriceType.DurationInMinutes)分鐘)
+                            <span class="float-right">
+                                @{
+                                    await Html.RenderPartialAsync("~/Views/Common/BranchStoreName.cshtml", contract.CourseContractExtension.BranchStore);
                                 }
-                                (60分鐘)
-                                <span class="float-right">
-                                    @{
-                                        await Html.RenderPartialAsync("~/Views/Common/BranchStoreName.cshtml", contract.CourseContractExtension.BranchStore);
-                                    }
-                                </span>
-                            </div>
-                        }
+                            </span>
+                        </div>
                     </div>
+                    <p class="msg col-blue">
+                        <i class="zmdi zmdi-alarm-check"></i> 合約迄日：@($"{contract.Expiration:yyyy/MM/dd}")
+                    </p>
                     @if (!validContract)
                     {
                         <p class="msg col-red"><i class="zmdi zmdi-info-outline"></i>合約尚未生效或已過期</p>
@@ -152,264 +158,4 @@
     }
 }
 
-@foreach (var item in lessons
-    .Where(r => r.LessonPriceType.Status == (int)Naming.LessonPriceStatus.點數兌換課程)
-    .Where(r => !models.GetTable<ObjectiveLessonPrice>()
-        .Any(c => c.CatalogID == (int)ObjectiveLessonCatalog.CatalogDefinition.OnLineFeedback
-            && c.PriceID == r.ClassLevel)))
-{
-    var remainedCount = item.RemainedLessonCount();
-    bool bookable = remainedCount > 0;
-    if (bookable)
-    {
-        _pageModel.HasChoice = true && !_currentDisabled;
-    }
-    <li class="list-group-item">
-        <div class="media">
-            <div class="pull-left">
-                <div class="controls">
-                    <label class="fancy-checkbox">
-                        <input type="checkbox" id="Other@(item.RegisterID)" name="RegisterID" @(bookable && !_currentDisabled ? null : "disabled") value="@(bookable ? item.RegisterID : -1)" onclick="selectBooking(this, '@(item.LessonPriceType.IsWelfareGiftLesson != null ? (int)Naming.LessonPriceStatus.一般課程 : (int)Naming.LessonPriceStatus.點數兌換課程)');">
-                        <span></span>
-                    </label>
-                </div>
-            </div>
-            <div class="media-body">
-                <div class="media-heading">
-                    <a class="m-r-10">P.T session （@(item.LessonPriceType.SimpleDescription)）</a>
-                    <small class="float-right text-muted"><time>@(remainedCount)/@(item.Lessons)</time></small>
-                </div>
-            </div>
-        </div>
-    </li>
-}
-@foreach (var item in lessons.Where(r => r.LessonPriceType.IsWelfareGiftLesson != null))
-{
-    var remainedCount = item.RemainedLessonCount();
-    bool bookable = remainedCount > 0;
-    if (bookable)
-    {
-        _pageModel.HasChoice = true && !_currentDisabled;
-    }
-    <li class="list-group-item">
-        <div class="media">
-            <div class="pull-left">
-                <div class="controls">
-                    <label class="fancy-checkbox">
-                        <input type="checkbox" id="gift@(item.RegisterID)" name="RegisterID" @(bookable && !_currentDisabled ? null : "disabled") value="@(bookable ? item.RegisterID : -1)" onclick="selectBooking(this, '@((int)Naming.LessonPriceStatus.一般課程)');">
-                        <span></span>
-                    </label>
-                </div>
-            </div>
-            <div class="media-body">
-                <div class="media-heading">
-                    <a class="m-r-10">P.T session （員工福利）</a>
-                    <small class="float-right text-muted"><time>@(remainedCount)/@(item.Lessons)</time></small>
-                </div>
-            </div>
-        </div>
-    </li>
-}
-@{ 
-    //2021-05-28 防疫期不上企業方案
-    _currentDisabled = true;
-}
-@if (enterpriseTrialItem != null)
-{
-    var trialLesson = enterpriseTrial.Select(r => r.RegisterLesson).Where(r => r.UID == _model.UID);
-    var bookableLessons = trialLesson.Where(r => r.LessonTime == null);
-    var item = bookableLessons.FirstOrDefault();
-    if (item != null)
-    {
-        _pageModel.HasChoice = true && !_currentDisabled;
-    }
-    <li class="list-group-item">
-        <div class="media">
-            <div class="pull-left">
-                <div class="controls">
-                    <label class="fancy-checkbox">
-                        <input type="checkbox" id="enterpriseTrial@(item?.RegisterID)" @(item == null || _currentDisabled ? "disabled" : null) name="RegisterID" value="@(item?.RegisterID)" onclick="selectBooking(this, '@((int)Naming.LessonPriceStatus.企業合作方案)');">
-                        <span></span>
-                    </label>
-                </div>
-            </div>
-            <div class="media-body">
-                <div class="media-heading">
-                    <a class="m-r-10">T.S session（企業方案）</a>
-                    <small class="float-right text-muted"><time>@(bookableLessons.Count())/@(trialLesson.Count())</time></small>
-                </div>
-                <p class="msg">@(enterpriseTrialItem.EnterpriseCourseContract.Subject)</p>
-            </div>
-        </div>
-    </li>
-}
-@{
-    var courseContent = _enterpriseContract
-                .Join(models.GetTable<EnterpriseCourseContent>(),
-                    t => t.ContractID, c => c.ContractID, (t, c) => c);
-}
-@foreach (var content in courseContent.Where(r => r.TypeID == (int)Naming.EnterpriseLessonTypeDefinition.體能顧問1對1課程 || r.TypeID == (int)Naming.EnterpriseLessonTypeDefinition.體能顧問1對2課程))
-{
-    var enterprisePT = content.RegisterLessonEnterprise
-            .Select(r => r.RegisterLesson).Where(r => r.UID == _model.UID).FirstOrDefault();
-    if (enterprisePT == null)
-    {
-        continue;
-    }
 
-    var availableCount = enterprisePT.RemainedLessonCount();
-    if (availableCount > 0)
-    {
-        _pageModel.HasChoice = true && !_currentDisabled;
-    }
-    <li class="list-group-item">
-        <div class="media">
-            <div class="pull-left">
-                <div class="controls">
-                    <label class="fancy-checkbox">
-                        <input type="checkbox" @(availableCount <= 0 ? "disabled" : null) id="enterprise@(enterprisePT.RegisterID)" name="RegisterID" value="@(enterprisePT.RegisterID)" onclick="selectBooking(this, '@((int)Naming.LessonPriceStatus.企業合作方案)');">
-                        <span></span>
-                    </label>
-                </div>
-            </div>
-            <div class="media-body">
-                <div class="media-heading">
-                    <a class="m-r-10">P.T session（企業方案）- @(content.EnterpriseLessonType.Description)</a>
-                    <small class="float-right text-muted"><time>@(availableCount)/@(enterprisePT.Lessons)</time></small>
-                </div>
-                <p class="msg">@(content.EnterpriseCourseContract.Subject)</p>
-            </div>
-        </div>
-    </li>
-}
-@{
-    _pageModel.HasChoice = true;
-}
-<li class="list-group-item">
-    <div class="media">
-        <div class="pull-left">
-            <div class="controls">
-                <label class="fancy-checkbox">
-                    <input type="checkbox" id="PILesson" name="RegisterID" value="" onclick="selectBooking(this, '@((int)Naming.LessonPriceStatus.自主訓練)',15);">
-                    <span></span>
-                </label>
-            </div>
-        </div>
-        <div class="media-body">
-            <div class="media-heading">
-                <a class="m-r-10">P.I session《一般自主》</a>
-                <small class="float-right text-muted"><time>NT 300</time></small>
-            </div>
-        </div>
-    </div>
-</li>
-<li class="list-group-item">
-    <div class="media">
-        <div class="pull-left">
-            <div class="controls">
-                <label class="fancy-checkbox">
-                    <input type="checkbox" name="RegisterID" value="" onclick="selectBooking(this, '@((int)Naming.LessonPriceStatus.自主訓練)',383);">
-                    <span></span>
-                </label>
-            </div>
-        </div>
-        <div class="media-body">
-            <div class="media-heading">
-                <a class="m-r-10">
-                    P.I session《有氧自主》
-                </a>
-                <small class="float-right text-muted"><time>NT 150</time></small>
-            </div>
-        </div>
-    </div>
-</li>
-<li class="list-group-item">
-    <div class="media">
-        <div class="pull-left">
-            <div class="controls">
-                <label class="fancy-checkbox">
-                    <input type="checkbox" name="RegisterID" value="" onclick="selectBooking(this, '@((int)Naming.LessonPriceStatus.自主訓練)',384);">
-                    <span></span>
-                </label>
-            </div>
-        </div>
-        <div class="media-body">
-            <div class="media-heading">
-                <a class="m-r-10">
-                    P.I session《親屬自主》
-                </a>
-                <small class="float-right text-muted"><time>NT 150</time></small>
-            </div>
-        </div>
-    </div>
-</li>
-<li class="list-group-item">
-    <div class="media">
-        <div class="pull-left">
-            <div class="controls">
-                <label class="fancy-checkbox">
-                    <input type="checkbox" name="RegisterID" value="" onclick="selectBooking(this, '@((int)Naming.LessonPriceStatus.自主訓練)',385);">
-                    <span></span>
-                </label>
-            </div>
-        </div>
-        <div class="media-body">
-            <div class="media-heading">
-                <a class="m-r-10">
-                    P.I session《恢復課程體驗》
-                </a>
-                <small class="float-right text-muted"><time>NT 300</time></small>
-            </div>
-        </div>
-    </div>
-</li>
-@foreach (var content in courseContent.Where(r => r.TypeID == (int)Naming.EnterpriseLessonTypeDefinition.自主訓練))
-{
-    var enterprisePI = content.RegisterLessonEnterprise
-            .Select(r => r.RegisterLesson).Where(r => r.UID == _model.UID);
-    var bookableLessons = enterprisePI.Where(r => r.LessonTime == null);
-    var item = bookableLessons.FirstOrDefault();
-    if (item != null)
-    {
-        _pageModel.HasChoice = true;
-    }
-    <li class="list-group-item">
-        <div class="media">
-            <div class="pull-left">
-                <div class="controls">
-                    <label class="fancy-checkbox">
-                        <input type="checkbox" @(item == null ? "disabled" : null) id="enterprisePI@(item?.RegisterID)" name="RegisterID" value="@(item?.RegisterID)" onclick="selectBooking(this, '@((int)Naming.LessonPriceStatus.企業合作方案)');">
-                        <span></span>
-                    </label>
-                </div>
-            </div>
-            <div class="media-body">
-                <div class="media-heading">
-                    <a class="m-r-10">P.I session（企業方案）- @(content.EnterpriseLessonType.Description)</a>
-                    <small class="float-right text-muted"><time>@(bookableLessons.Count())/@(enterprisePI.Count())</time></small>
-                </div>
-                <p class="msg">@(content.EnterpriseCourseContract.Subject)</p>
-            </div>
-        </div>
-    </li>
-}
-@{
-    _pageModel.HasChoice = true;
-}
-<li class="list-group-item">
-    <div class="media">
-        <div class="pull-left">
-            <div class="controls">
-                <label class="fancy-checkbox">
-                    <input type="checkbox" id="STLesson" name="RegisterID" value="" onclick="selectBooking(this, '@((int)Naming.LessonPriceStatus.在家訓練)');">
-                    <span></span>
-                </label>
-            </div>
-        </div>
-        <div class="media-body">
-            <div class="media-heading">
-                <a class="m-r-10">S.T session</a>
-            </div>
-        </div>
-    </div>
-</li>

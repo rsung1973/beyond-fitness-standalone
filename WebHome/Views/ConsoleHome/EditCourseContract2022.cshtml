@@ -92,17 +92,20 @@
                             }
                         </script>
                     </div>
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-12" id="forContractTypeAux">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-12">
                         <select class="form-control show-tick" name="ContractTypeAux">
-                            <option value="">-- 請選擇1對?人 --</option>
-                            <option value="@((int)CourseContractType.ContractTypeDefinition.CGA)">1對1</option>
-                            <option value="@((int)CourseContractType.ContractTypeDefinition.CGF)">1對1 - 多人共享</option>
-                            <option value="@((int)CourseContractType.ContractTypeDefinition.CGB)">1對2</option>
-                            <option value="@((int)CourseContractType.ContractTypeDefinition.CGC)">1對3</option>
+                            <option value="" class="forAux">-- 請選擇1對?人 --</option>
+                            <option value="@((int)CourseContractType.ContractTypeDefinition.CGA)" selected="selected">1對1</option>
+                            <option value="@((int)CourseContractType.ContractTypeDefinition.CGF)" class="forAux">1對1 - 多人共享</option>
+                            <option value="@((int)CourseContractType.ContractTypeDefinition.CGB)" class="forAux">1對2</option>
+                            <option value="@((int)CourseContractType.ContractTypeDefinition.CGC)" class="forAux">1對3</option>
                         </select>
                         <script>
                             $(function(){
-                                $('select[name="ContractTypeAux"]').val('@Html.Raw((int?)_viewModel.ContractTypeAux)');
+                                var ctAux = '@Html.Raw((int?)_viewModel.ContractTypeAux)';
+                                if(ctAux!='') {
+                                    $('select[name="ContractTypeAux"]').val(ctAux);
+                                }
                                 $('select[name="ContractTypeAux"]').on('change', function (event) {
                                     var ct = $(this).val();
                                     $global.viewModel.ContractTypeAux = ct;
@@ -113,11 +116,11 @@
                             function resetContractTypeAux() {
                                 var ct = $('select[name="ContractType"]').val();
 
-                                $('#forContractTypeAux').css('visibility','hidden');
+                                $('.forAux').css('display','none');
                                 $('.forAddon').css('visibility','hidden');
                                 $('.forPT').css('visibility','visible');
                                 if (ct == '-1') {
-                                    $('#forContractTypeAux').css('visibility','visible');
+                                    $('.forAux').css('display','');
                                     $('.forAddon').css('visibility','visible');
                                 } else if(ct==11) {
                                     $('.forPT').css('visibility','hidden');

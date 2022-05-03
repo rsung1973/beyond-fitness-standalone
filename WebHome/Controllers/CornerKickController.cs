@@ -185,7 +185,8 @@ namespace WebHome.Controllers
             UserProfile item = models.GetTable<UserProfile>()
                 .Where(u => u.MemberCode == viewModel.MemberCode
                         || u.UserProfileExtension.IDNo == viewModel.MemberCode)
-                .Where(u => u.LevelID == (int)Naming.MemberStatusDefinition.Checked)
+                .Where(u => u.LevelID == (int)Naming.MemberStatusDefinition.Checked
+                    || u.LevelID == (int)Naming.MemberStatusDefinition.ReadyToRegister)
                 .FirstOrDefault();
 
             if (item == null)

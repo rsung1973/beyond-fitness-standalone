@@ -276,7 +276,7 @@ namespace WebHome.Controllers
                 viewModel.ManagerID = profile.UID;
             }
             ViewBag.ViewModel = viewModel;
-            return View("~/Views/ConsoleHome/EditCourseContract.cshtml", profile.LoadInstance(models));
+            return View("~/Views/ConsoleHome/EditCourseContract2022.cshtml", profile.LoadInstance(models));
         }
 
         [RoleAuthorize(new int[] { (int)Naming.RoleID.Administrator, (int)Naming.RoleID.Assistant, (int)Naming.RoleID.Officer, (int)Naming.RoleID.Coach, (int)Naming.RoleID.Servitor })]

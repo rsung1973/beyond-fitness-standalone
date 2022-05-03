@@ -123,10 +123,10 @@
                                         }
                                         @if (!attendedCheck.Any() || _model.UserProfileExtension.CurrentTrial.HasValue)
                                         {
-                                            await Html.RenderPartialAsync("~/Views/ConsoleEvent/EventModal/BookingTrialLesson.cshtml", _model);
+                                            await Html.RenderPartialAsync("~/Views/ConsoleEvent/EventModal/BookingTrialLesson2022.cshtml", _model);
                                         }
                                         @{
-                                            await Html.RenderPartialAsync("~/Views/ConsoleEvent/EventModal/BookingRemoteTrialLesson.cshtml", _model);
+                                            await Html.RenderPartialAsync("~/Views/ConsoleEvent/EventModal/BookingRemoteTrialLesson2022.cshtml", _model);
                                         }
                                         <li class="list-group-item">
                                             <div class="media">
@@ -141,7 +141,7 @@
                                                 <div class="media-body">
                                                     <div class="media-heading">
                                                         <a class="m-r-10">
-                                                            P.I session《恢復課程體驗》
+                                                            運動恢復(40分鐘)
                                                         </a>
                                                         <small class="float-right text-muted"><time>NT 300</time></small>
                                                     </div>

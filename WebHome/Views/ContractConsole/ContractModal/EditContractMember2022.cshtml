@@ -84,10 +84,15 @@
                                 <a class="nav-link active" data-toggle="tab" data-id="basicTab"
                                    href="#basicTab">基本資料</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" data-toggle="tab" data-id="loginTab"
-                                   href="#loginTab">登入設定</a>
-                            </li>
+                            @if (_model.LevelID == (int)Naming.MemberStatusDefinition.Checked
+                               || _model.LevelID == (int)Naming.MemberStatusDefinition.Deleted
+                               || _model.LevelID == (int)Naming.MemberStatusDefinition.Anonymous)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" data-id="loginTab"
+                                       href="#loginTab">登入設定</a>
+                                </li>
+                            }
                             <li class="nav-item">
                                 <a class="nav-link" data-toggle="tab" data-id="coachListTab"
                                    href="#coachListTab">體能顧問</a>
@@ -374,11 +379,16 @@
                                     }
                                 </div>
                             </div>
-                            <div class="tab-pane" id="loginTab">
-                                @{
-                                    await Html.RenderPartialAsync("~/Views/ContractConsole/ContractModal/ResetMemberPassword.cshtml", _model);
-                                }
-                            </div>
+                            @if (_model.LevelID == (int)Naming.MemberStatusDefinition.Checked
+                               || _model.LevelID == (int)Naming.MemberStatusDefinition.Deleted
+                               || _model.LevelID == (int)Naming.MemberStatusDefinition.Anonymous)
+                            {
+                                <div class="tab-pane" id="loginTab">
+                                    @{
+                                        await Html.RenderPartialAsync("~/Views/ContractConsole/ContractModal/ResetMemberPassword.cshtml", _model);
+                                    }
+                                </div>
+                            }
                             <div class="tab-pane" id="coachListTab">
                                 @{
                                     await Html.RenderPartialAsync("~/Views/ContractConsole/ContractModal/FitnessAdvisorList.cshtml", _model);

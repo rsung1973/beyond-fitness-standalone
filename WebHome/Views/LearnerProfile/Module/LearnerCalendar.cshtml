@@ -106,7 +106,7 @@
 
                 dayClick: function (date, allDay, jsEvent, view) {
                     showLoading();
-                    $.post('@Html.Raw(Url.Action("BookingLesson", "ConsoleEvent",new { KeyID = _viewModel.LearnerID.Value.EncryptKey() }))', { 'startDate': date.format('YYYY-MM-DD HH:mm:ss') }, function (data) {
+                    $.post('@Html.Raw(Url.Action("BookingLesson2022", "ConsoleEvent",new { KeyID = _viewModel.LearnerID.Value.EncryptKey() }))', { 'startDate': date.format('YYYY-MM-DD HH:mm:ss') }, function (data) {
                         hideLoading();
                         if ($.isPlainObject(data)) {
                             alert(data.message);
