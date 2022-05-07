@@ -1769,23 +1769,23 @@ namespace WebHome.Helper.BusinessOperation
                     return null;
                 }
 
-                if (item.CourseContractType.IsGroup == true)
-                {
-                    if (item.CourseContractMember.Any(m => m.CourseContractSignature.Count(s => s.SignatureName.StartsWith("Signature") && s.Signature != null) < 2))
-                    {
-                        ModelState.AddModelError("Message", "未完成簽名!!");
-                        return null;
-                    }
+                //if (item.CourseContractType.IsGroup == true)
+                //{
+                //    if (item.CourseContractMember.Any(m => m.CourseContractSignature.Count(s => s.SignatureName.StartsWith("Signature") && s.Signature != null) < 2))
+                //    {
+                //        ModelState.AddModelError("Message", "未完成簽名!!");
+                //        return null;
+                //    }
 
-                    foreach (var m in item.CourseContractMember)
-                    {
-                        if (m.UserProfile.CurrentYearsOld() < 18 && owner.CourseContractSignature.Count(s => s.SignatureName.StartsWith("Guardian") && s.Signature != null) < 2)
-                        {
-                            ModelState.AddModelError("Message", "家長/監護人未完成簽名!!");
-                            return null;
-                        }
-                    }
-                }
+                //    foreach (var m in item.CourseContractMember)
+                //    {
+                //        if (m.UserProfile.CurrentYearsOld() < 18 && owner.CourseContractSignature.Count(s => s.SignatureName.StartsWith("Guardian") && s.Signature != null) < 2)
+                //        {
+                //            ModelState.AddModelError("Message", "家長/監護人未完成簽名!!");
+                //            return null;
+                //        }
+                //    }
+                //}
             }
 
             if (viewModel.Extension != true || viewModel.Booking != true || viewModel.Cancel != true)

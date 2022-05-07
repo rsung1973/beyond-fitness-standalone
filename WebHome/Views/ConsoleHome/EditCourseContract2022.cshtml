@@ -103,7 +103,9 @@
                         <script>
                             $(function(){
                                 var ctAux = '@Html.Raw((int?)_viewModel.ContractTypeAux)';
-                                if(ctAux!='') {
+                                if(ctAux=='') {
+                                    $global.viewModel.ContractTypeAux = '@((int)CourseContractType.ContractTypeDefinition.CGA)';
+                                } else {
                                     $('select[name="ContractTypeAux"]').val(ctAux);
                                 }
                                 $('select[name="ContractTypeAux"]').on('change', function (event) {
@@ -196,39 +198,6 @@
                         </script>
                         @*<label class="material-icons help-error-text">clear 請選擇上課場所</label>*@
                     </div>
-                    @*<div class="col-lg-6 col-md-6 col-sm-6 col-12">
-                        <select class="form-control show-tick" name="DurationInMinutes">
-                            <option value="">-- 請選擇上課時間長度 --</option>
-                            <option value="60">60分鐘</option>
-                            <option value="90">90分鐘</option>
-                        </select>
-                        <script>
-                                $(function () {
-                                    $('select[name="DurationInMinutes"]').val('@Html.Raw(_viewModel.DurationInMinutes)');
-                                    $('select[name="DurationInMinutes"]').on('change', function (event) {
-                                        $global.viewModel.DurationInMinutes = $(this).val();
-                                    });
-                                });
-                        </script>
-                    </div>*@
-                    @*<div class="col-lg-6 col-md-6 col-sm-6 col-12">
-                        <div class="input-group">
-                            <input type="text" class="form-control form-control-danger" name="Lessons" placeholder="購買堂數" />
-                            <span class="input-group-addon">
-                                <i class="zmdi zmdi-shopping-cart-plus"></i>
-                            </span>
-                        </div>
-                        <script>
-                                $(function () {
-                                    $('input[name="Lessons"]').val('@Html.Raw(_viewModel.Lessons)');
-                                    $('input[name="Lessons"]').on('change', function (event) {
-                                        $global.viewModel.Lessons = $(this).val();
-                                        calcTotalCost();
-                                        loadInstallments($global.viewModel.Lessons);
-                                    });
-                                });
-                        </script>
-                    </div>*@
                     <div class="col-lg-6 col-md-6 col-sm-6 col-12">
                         @{ 
                             await Html.RenderPartialAsync("~/Views/ContractConsole/Editing/SelectLessonPrice2022.cshtml", _model);
@@ -237,8 +206,6 @@
                     <script>
                         function resetTotalCost() {
                             $('.btnConfirm').addClass('disabled');
-                            $global.viewModel.OrderPriceID[0] = null;
-                            $global.viewModel.OrderLessons = null;
                             $('#searchPrice').attr('placeholder', '');
                             $('input[name="OrderLessons"]').val('');
                             $('#costSummary').empty();
@@ -269,129 +236,12 @@
                         }
                     </script>
                 </div>
-                <div class="row">
-                    <div class="col-lg-3 col-md-6 col-sm-6 col-12 forPT">
-                        @if (_viewModel.OrderPriceID != null && _viewModel.OrderPriceID.Length > 0)
-                        {
-                            <script>
-                                $(function(){
-                                    $global.viewModel.OrderPriceID[0] = @(_viewModel.OrderPriceID[0]);
-                                });
-                            </script>
-                        }
-                        <div class="header">
-                            P.T Session(私人教練)<small class="badge badge-info" id="PTUnitPrice">@Html.Raw(_viewModel.PriceName!=null ? $"60分鐘 / {_viewModel.PriceName}" : "60分鐘 / 課程單價")</small>
-                        </div>
-                        <div class="input-group">
-                            <input type="text" class="form-control form-control-danger forPT" name="OrderLessons" placeholder="請輸入堂數" value="@(_contract!=null ? (_contract.CourseContractOrder.Any() ? _contract.CourseContractOrder[0].Lessons : _contract.Lessons).ToString() : "")" />
-                            <span class="input-group-addon">
-                                <i class="zmdi zmdi-shopping-cart-plus"></i>
-                            </span>
-                        </div>
-                        @*<label class="material-icons help-error-text">clear 請輸入P.T</label>*@
-                    </div>
+                <div class="row" id="pricePackage">
                     @{
-                        var ATPrice = models.GetTable<LessonPriceProperty>()
-                                        .Where(p => p.PropertyID == (int)Naming.LessonPriceFeature.運動防護課程)
-                                        .OrderByDescending(p => p.PriceID)
-                                        .Select(p => p.LessonPriceType)
-                                        .FirstOrDefault();
-                    }
-                    @if(ATPrice==null)
-                    {
-                        await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/JsAlert.cshtml", "A.T Session(運動防護)價目未設定");
-                    }
-                    else
-                    {
-                        <div class="col-lg-3 col-md-6 col-sm-6 col-12 forAddon">
-                            <script>
-                                $(function(){
-                                    $global.viewModel.OrderPriceID[1] = @(ATPrice.PriceID);
-                                });
-                            </script>
-                            <div class="header">
-                                <span class="col-red">加購</span>A.T Session(運動防護)<small class="badge badge-info">60分鐘 / @($"{ATPrice.ListPrice:##,###}")元</small>
-                            </div>
-                            <div class="input-group">
-                                <input type="text" class="form-control form-control-danger" name="OrderLessons" placeholder="請輸入堂數" value="@(_contract?.CourseContractOrder.Where(t=>t.PriceID==ATPrice.PriceID).FirstOrDefault()?.Lessons)" />
-                                <span class="input-group-addon">
-                                    <i class="zmdi zmdi-shopping-cart-plus"></i>
-                                </span>
-                            </div>
-                            @*<label class="material-icons help-error-text">clear 請輸入A.T</label>*@
-                        </div>
-                    }
-                    @{
-                        var SRPrice = models.GetTable<LessonPriceProperty>()
-                                        .Where(p => p.PropertyID == (int)Naming.LessonPriceFeature.運動恢復課程)
-                                        .OrderByDescending(p => p.PriceID)
-                                        .Select(p => p.LessonPriceType)
-                                        .FirstOrDefault();
-                    }
-                    @if(SRPrice==null)
-                    {
-                        await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/JsAlert.cshtml", "S.R Session(運動恢復)價目未設定");
-                    }
-                    else
-                    {
-                        <div class="col-lg-3 col-md-6 col-sm-6 col-12 forAddon">
-                            <script>
-                                $(function(){
-                                    $global.viewModel.OrderPriceID[2] = @(SRPrice.PriceID);
-                                });
-                            </script>
-                            <div class="header">
-                                <span class="col-red">加購</span>S.R Session(運動恢復)<small class="badge badge-info">40分鐘 / @(SRPrice.ListPrice)元</small>
-                            </div>
-                            <div class="input-group">
-                                <input type="text" class="form-control form-control-danger" name="OrderLessons" placeholder="請輸入堂數" value="@(_contract?.CourseContractOrder.Where(t=>t.PriceID==SRPrice.PriceID).FirstOrDefault()?.Lessons)"  />
-                                <span class="input-group-addon">
-                                    <i class="zmdi zmdi-shopping-cart-plus"></i>
-                                </span>
-                            </div>
-                        @*<label class="material-icons help-error-text">clear 請輸入S.R堂數</label>*@
-                    </div>
-                    }
-                    @{
-                        var SDPrice = models.GetTable<LessonPriceProperty>()
-                                        .Where(p => p.PropertyID == (int)Naming.LessonPriceFeature.營養課程)
-                                        .OrderByDescending(p => p.PriceID)
-                                        .Select(p => p.LessonPriceType)
-                                        .FirstOrDefault();
-                    }
-                    @if (SDPrice == null)
-                    {
-                        await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/JsAlert.cshtml", "S.D Session(營養諮詢)價目未設定");
-                    }
-                    else
-                    {
-                        <div class="col-lg-3 col-md-6 col-sm-6 col-12 forAddon">
-                            <script>
-                                $(function(){
-                                    $global.viewModel.OrderPriceID[3] = @(SDPrice.PriceID);
-                                });
-                            </script>
-                            <div class="header">
-                                <span class="col-red">加購</span>S.D Session(營養諮詢)<small class="badge badge-info">一個月 / @($"{SDPrice.ListPrice*SDPrice.BundleCount:##,###,###,###}") 元</small>
-                            </div>
-                            <div class="input-group">
-                                <input type="text" class="form-control form-control-danger" name="OrderLessons" placeholder="請輸入月數" value="@(_contract?.CourseContractOrder.Where(t=>t.PriceID==SDPrice.PriceID).FirstOrDefault()?.Lessons)"  />
-                                <span class="input-group-addon">
-                                    <i class="zmdi zmdi-shopping-cart-plus"></i>
-                                </span>
-                            </div>
-                            @*<label class="material-icons help-error-text">clear 請輸入S.D堂數</label>*@
-                            <button type="button" class="btn btn-warning btn-sm btn-round waves-effect float-right" onclick="calcTotalCost();">計算堂數與價格</button>
-                        </div>
+                        await Html.RenderPartialAsync("~/Views/ContractConsole/Editing/ListPricePackageItems.cshtml");
                     }
                 </div>
                 <div class="row" id="costSummary">
-                    <!-- <div class="col-12 text-right">
-                        <label class="fancy-checkbox custom-bgcolor-green">
-                            <input type="checkbox" id="sessionplus">
-                            <span class="col-green">加購健康課程</span>
-                        </label>
-                    </div>                         -->
                 </div>
             </div>
         </div>

@@ -91,6 +91,7 @@ namespace WebHome.Models.Locale
             運動防護課程 = 1013,
             運動恢復課程 = 1014,
             一對一課程 = 1015,
+            BundlePackage = 1016,
         }
 
         public enum LessonSeriesStatus

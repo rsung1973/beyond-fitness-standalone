@@ -1,4 +1,3 @@
-
 @using System.IO
 @using System.Linq.Expressions
 
@@ -16,7 +15,7 @@
     CourseContractQueryViewModel _viewModel;
 
     _modelState = ViewContext.ModelState;
-    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
     _model = (IQueryable<LessonPriceType>)this.Model;
     _viewModel = (CourseContractQueryViewModel)ViewBag.ViewModel;
     LessonPriceType customPrice = ViewBag.CustomPrice as LessonPriceType;
@@ -27,12 +26,13 @@
         $(function () {
             $global.viewModel.PriceID = @(customPrice.PriceID);
             $global.commitPrice = function (priceID, priceName, lessons) {
-                $global.viewModel.OrderPriceID[0] = priceID;
                 $('#searchPrice').attr('placeholder', priceName);
-                $('#PTUnitPrice').text('60分鐘 / '+priceName);
-                if (lessons) {
-                    $('input[name="OrderLessons"].forPT').val(lessons);
-                }
+                $('#pricePackage').empty();
+                $('#costSummary').empty();
+                delete $global.viewModel.OrderPriceID;
+                delete $global.viewModel.OrderLessons;
+                $global.viewModel.Lessons = null;
+                $('#pricePackage').load('@Html.Raw(Url.Action("ListPackagePrice","ContractConsole"))', { 'PriceID': priceID });
             };
         });
     </script>
@@ -44,14 +44,16 @@ else
             $global.commitPrice = function (priceID, priceName, lessons) {
                 $global.viewModel.PriceID = priceID;
                 $('#searchPrice').attr('placeholder', priceName);
-                $('#PTUnitPrice').text('60分鐘 / '+priceName);
-                if (lessons) {
-                    $('input[name="OrderLessons"].forPT').val(lessons);
-                }
+                $('#pricePackage').empty();
+                $('#costSummary').empty();
+                delete $global.viewModel.OrderPriceID;
+                delete $global.viewModel.OrderLessons;
+                $global.viewModel.Lessons = null;
+                $('#pricePackage').load('@Html.Raw(Url.Action("ListPackagePrice","ContractConsole"))', { 'PriceID': priceID });
             };
         });
     </script>
 }
 @{
-    await Html.RenderPartialAsync("~/Views/ContractConsole/ContractModal/ListLessonPrice.cshtml",_model);
+    await Html.RenderPartialAsync("~/Views/ContractConsole/ContractModal/ListLessonPrice.cshtml", _model);
 }

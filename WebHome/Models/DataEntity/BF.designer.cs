@@ -624,6 +624,9 @@ namespace WebHome.Models.DataEntity
     partial void InsertCourseContractOrder(CourseContractOrder instance);
     partial void UpdateCourseContractOrder(CourseContractOrder instance);
     partial void DeleteCourseContractOrder(CourseContractOrder instance);
+    partial void InsertLessonPriceExchange(LessonPriceExchange instance);
+    partial void UpdateLessonPriceExchange(LessonPriceExchange instance);
+    partial void DeleteLessonPriceExchange(LessonPriceExchange instance);
     #endregion
 		
 		public BFDataContext() : 
@@ -2301,6 +2304,14 @@ namespace WebHome.Models.DataEntity
 			get
 			{
 				return this.GetTable<CourseContractOrder>();
+			}
+		}
+		
+		public System.Data.Linq.Table<LessonPriceExchange> LessonPriceExchange
+		{
+			get
+			{
+				return this.GetTable<LessonPriceExchange>();
 			}
 		}
 		
@@ -20712,6 +20723,10 @@ namespace WebHome.Models.DataEntity
 		
 		private EntitySet<CourseContractOrder> _CourseContractOrder;
 		
+		private EntitySet<LessonPriceExchange> _ExchangeablePriceItem;
+		
+		private EntitySet<LessonPriceExchange> _AsExchangedPriceItem;
+		
 		private EntityRef<LessonPriceSeries> _PriceSeries;
 		
 		private EntityRef<LevelExpression> _LevelExpression;
@@ -20775,6 +20790,8 @@ namespace WebHome.Models.DataEntity
 			this._LessonUnitPrice = default(EntityRef<LessonUnitPrice>);
 			this._AsUnitPrice = new EntitySet<LessonUnitPrice>(new Action<LessonUnitPrice>(this.attach_AsUnitPrice), new Action<LessonUnitPrice>(this.detach_AsUnitPrice));
 			this._CourseContractOrder = new EntitySet<CourseContractOrder>(new Action<CourseContractOrder>(this.attach_CourseContractOrder), new Action<CourseContractOrder>(this.detach_CourseContractOrder));
+			this._ExchangeablePriceItem = new EntitySet<LessonPriceExchange>(new Action<LessonPriceExchange>(this.attach_ExchangeablePriceItem), new Action<LessonPriceExchange>(this.detach_ExchangeablePriceItem));
+			this._AsExchangedPriceItem = new EntitySet<LessonPriceExchange>(new Action<LessonPriceExchange>(this.attach_AsExchangedPriceItem), new Action<LessonPriceExchange>(this.detach_AsExchangedPriceItem));
 			this._PriceSeries = default(EntityRef<LessonPriceSeries>);
 			this._LevelExpression = default(EntityRef<LevelExpression>);
 			this._BranchStore = default(EntityRef<BranchStore>);
@@ -21377,6 +21394,32 @@ namespace WebHome.Models.DataEntity
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="LessonPriceType_LessonPriceExchange", Storage="_ExchangeablePriceItem", ThisKey="PriceID", OtherKey="SourceID")]
+		public EntitySet<LessonPriceExchange> ExchangeablePriceItem
+		{
+			get
+			{
+				return this._ExchangeablePriceItem;
+			}
+			set
+			{
+				this._ExchangeablePriceItem.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="LessonPriceType_LessonPriceExchange1", Storage="_AsExchangedPriceItem", ThisKey="PriceID", OtherKey="TargetID")]
+		public EntitySet<LessonPriceExchange> AsExchangedPriceItem
+		{
+			get
+			{
+				return this._AsExchangedPriceItem;
+			}
+			set
+			{
+				this._AsExchangedPriceItem.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="LessonPriceSeries_LessonPriceType", Storage="_PriceSeries", ThisKey="SeriesID", OtherKey="PriceID", IsForeignKey=true)]
 		public LessonPriceSeries CurrentPriceSeries
 		{
@@ -21663,6 +21706,30 @@ namespace WebHome.Models.DataEntity
 		{
 			this.SendPropertyChanging();
 			entity.LessonPriceType = null;
+		}
+		
+		private void attach_ExchangeablePriceItem(LessonPriceExchange entity)
+		{
+			this.SendPropertyChanging();
+			entity.SourcePrice = this;
+		}
+		
+		private void detach_ExchangeablePriceItem(LessonPriceExchange entity)
+		{
+			this.SendPropertyChanging();
+			entity.SourcePrice = null;
+		}
+		
+		private void attach_AsExchangedPriceItem(LessonPriceExchange entity)
+		{
+			this.SendPropertyChanging();
+			entity.TargetPrice = this;
+		}
+		
+		private void detach_AsExchangedPriceItem(LessonPriceExchange entity)
+		{
+			this.SendPropertyChanging();
+			entity.TargetPrice = null;
 		}
 	}
 	
@@ -22994,6 +23061,8 @@ namespace WebHome.Models.DataEntity
 		
 		private int _PropertyID;
 		
+		private string _Description;
+		
 		private EntityRef<LessonPriceType> _LessonPriceType;
 		
 		private EntityRef<LevelExpression> _LevelExpression;
@@ -23006,6 +23075,8 @@ namespace WebHome.Models.DataEntity
     partial void OnPriceIDChanged();
     partial void OnPropertyIDChanging(int value);
     partial void OnPropertyIDChanged();
+    partial void OnDescriptionChanging(string value);
+    partial void OnDescriptionChanged();
     #endregion
 		
 		public LessonPriceProperty()
@@ -23059,6 +23130,26 @@ namespace WebHome.Models.DataEntity
 					this._PropertyID = value;
 					this.SendPropertyChanged("PropertyID");
 					this.OnPropertyIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Description", DbType="NVarChar(64)")]
+		public string Description
+		{
+			get
+			{
+				return this._Description;
+			}
+			set
+			{
+				if ((this._Description != value))
+				{
+					this.OnDescriptionChanging(value);
+					this.SendPropertyChanging();
+					this._Description = value;
+					this.SendPropertyChanged("Description");
+					this.OnDescriptionChanged();
 				}
 			}
 		}
@@ -62423,6 +62514,198 @@ namespace WebHome.Models.DataEntity
 						this._PriceID = default(int);
 					}
 					this.SendPropertyChanged("LessonPriceType");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.LessonPriceExchange")]
+	public partial class LessonPriceExchange : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _SourceID;
+		
+		private int _TargetID;
+		
+		private System.Nullable<int> _ExchangeRate;
+		
+		private EntityRef<LessonPriceType> _SourcePrice;
+		
+		private EntityRef<LessonPriceType> _TargetPrice;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnSourceIDChanging(int value);
+    partial void OnSourceIDChanged();
+    partial void OnTargetIDChanging(int value);
+    partial void OnTargetIDChanged();
+    partial void OnExchangeRateChanging(System.Nullable<int> value);
+    partial void OnExchangeRateChanged();
+    #endregion
+		
+		public LessonPriceExchange()
+		{
+			this._SourcePrice = default(EntityRef<LessonPriceType>);
+			this._TargetPrice = default(EntityRef<LessonPriceType>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SourceID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int SourceID
+		{
+			get
+			{
+				return this._SourceID;
+			}
+			set
+			{
+				if ((this._SourceID != value))
+				{
+					if (this._SourcePrice.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnSourceIDChanging(value);
+					this.SendPropertyChanging();
+					this._SourceID = value;
+					this.SendPropertyChanged("SourceID");
+					this.OnSourceIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TargetID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int TargetID
+		{
+			get
+			{
+				return this._TargetID;
+			}
+			set
+			{
+				if ((this._TargetID != value))
+				{
+					if (this._TargetPrice.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnTargetIDChanging(value);
+					this.SendPropertyChanging();
+					this._TargetID = value;
+					this.SendPropertyChanged("TargetID");
+					this.OnTargetIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ExchangeRate", DbType="Int")]
+		public System.Nullable<int> ExchangeRate
+		{
+			get
+			{
+				return this._ExchangeRate;
+			}
+			set
+			{
+				if ((this._ExchangeRate != value))
+				{
+					this.OnExchangeRateChanging(value);
+					this.SendPropertyChanging();
+					this._ExchangeRate = value;
+					this.SendPropertyChanged("ExchangeRate");
+					this.OnExchangeRateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="LessonPriceType_LessonPriceExchange", Storage="_SourcePrice", ThisKey="SourceID", OtherKey="PriceID", IsForeignKey=true)]
+		public LessonPriceType SourcePrice
+		{
+			get
+			{
+				return this._SourcePrice.Entity;
+			}
+			set
+			{
+				LessonPriceType previousValue = this._SourcePrice.Entity;
+				if (((previousValue != value) 
+							|| (this._SourcePrice.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._SourcePrice.Entity = null;
+						previousValue.ExchangeablePriceItem.Remove(this);
+					}
+					this._SourcePrice.Entity = value;
+					if ((value != null))
+					{
+						value.ExchangeablePriceItem.Add(this);
+						this._SourceID = value.PriceID;
+					}
+					else
+					{
+						this._SourceID = default(int);
+					}
+					this.SendPropertyChanged("SourcePrice");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="LessonPriceType_LessonPriceExchange1", Storage="_TargetPrice", ThisKey="TargetID", OtherKey="PriceID", IsForeignKey=true)]
+		public LessonPriceType TargetPrice
+		{
+			get
+			{
+				return this._TargetPrice.Entity;
+			}
+			set
+			{
+				LessonPriceType previousValue = this._TargetPrice.Entity;
+				if (((previousValue != value) 
+							|| (this._TargetPrice.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._TargetPrice.Entity = null;
+						previousValue.AsExchangedPriceItem.Remove(this);
+					}
+					this._TargetPrice.Entity = value;
+					if ((value != null))
+					{
+						value.AsExchangedPriceItem.Add(this);
+						this._TargetID = value.PriceID;
+					}
+					else
+					{
+						this._TargetID = default(int);
+					}
+					this.SendPropertyChanged("TargetPrice");
 				}
 			}
 		}

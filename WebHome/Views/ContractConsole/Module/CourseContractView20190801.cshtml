@@ -250,16 +250,18 @@
                         <td class="p-t-0">
                             學員簽名：
                             @{ ViewBag.SignatureName = "Signature";}
-                            @if (_model.CourseContractType.IsGroup == true)
-                            {
-                                foreach (var m in _model.CourseContractMember)
-                                {
-                                    await Html.RenderPartialAsync("~/Views/ContractConsole/Module/SignHere.cshtml", m);
-                                }
-                            }
-                            else
-                            {
-                                await Html.RenderPartialAsync("~/Views/ContractConsole/Module/SignHere.cshtml", _owner);
+                            @{
+                                //if (_model.CourseContractType.IsGroup == true)
+                                //{
+                                //    foreach (var m in _model.CourseContractMember)
+                                //    {
+                                //        await Html.RenderPartialAsync("~/Views/ContractConsole/Module/SignHere.cshtml", m);
+                                //    }
+                                //}
+                                //else
+                                //{
+                                    await Html.RenderPartialAsync("~/Views/ContractConsole/Module/SignHere.cshtml", _owner);
+                                //}
                             }
                         </td>
                         <td class="p-0">
@@ -333,16 +335,18 @@
                     <td>
                         學員簽名：
                         @{ ViewBag.SignatureName = "Signature1";}
-                    @if (_model.CourseContractType.IsGroup == true)
-                    {
-                        foreach (var m in _model.CourseContractMember)
-                        {
-                            await Html.RenderPartialAsync("~/Views/ContractConsole/Module/SignHere.cshtml", m);
-                        }
-                    }
-                        else
-                        {
-                            await Html.RenderPartialAsync("~/Views/ContractConsole/Module/SignHere.cshtml", _owner);
+                        @{
+                            //if (_model.CourseContractType.IsGroup == true)
+                            //{
+                            //    foreach (var m in _model.CourseContractMember)
+                            //    {
+                            //        await Html.RenderPartialAsync("~/Views/ContractConsole/Module/SignHere.cshtml", m);
+                            //    }
+                            //}
+                            //else
+                            //{
+                                await Html.RenderPartialAsync("~/Views/ContractConsole/Module/SignHere.cshtml", _owner);
+                            //}
                         }
                 日期：@(String.Format("{0:yyyy/MM/dd}", _signatureDate))
             </td>
@@ -359,8 +363,8 @@
                         {
                             <text>家長/監護人簽名：</text>
                             ViewBag.SignatureName = "GuardianSignature1";
-                    await Html.RenderPartialAsync("~/Views/ContractConsole/Module/SignHere.cshtml", _owner);
-                }
+                            await Html.RenderPartialAsync("~/Views/ContractConsole/Module/SignHere.cshtml", _owner);
+                        }
                     </td>
                 </tr>
             </table>
@@ -404,7 +408,8 @@
                         <tr>
                             <td class="text-right">
                                 簽名：
-                                @{ ViewBag.SignatureName = "Signature2";
+                                @{ 
+                                    ViewBag.SignatureName = "Signature2";
                                     await Html.RenderPartialAsync("~/Views/ContractConsole/Module/SignHere.cshtml", _owner);
                                 }
                                 日期：@(String.Format("{0:yyyy/MM/dd}", _signatureDate))

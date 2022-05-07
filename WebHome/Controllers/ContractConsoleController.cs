@@ -388,11 +388,15 @@ namespace WebHome.Controllers
 
             if (viewModel.ContractType == CourseContractType.ContractTypeDefinition.CNA)
             {
-                items = models.GetTable<LessonPriceType>().Where(p => p.Status == (int)Naming.LessonPriceStatus.營養課程);
+                items = models.GetTable<LessonPriceType>()
+                    .Where(p => p.BranchID == viewModel.BranchID)
+                    .Where(p => p.Status == (int)Naming.LessonPriceStatus.營養課程);
             }
             else if (viewModel.ContractType == CourseContractType.ContractTypeDefinition.CNR)
             {
-                items = models.GetTable<LessonPriceType>().Where(p => p.Status == (int)Naming.LessonPriceStatus.運動恢復課程);
+                items = models.GetTable<LessonPriceType>()
+                    .Where(p => p.BranchID == viewModel.BranchID)
+                    .Where(p => p.Status == (int)Naming.LessonPriceStatus.運動恢復課程);
             }
             else
             {
@@ -401,7 +405,7 @@ namespace WebHome.Controllers
                     LessonPriceType customPrice =  ViewBag.CustomPrice = models.GetCandidateCustomCombinationPrice();
                     if (customPrice == null)
                     {
-                        return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", "自訂組合包價目未設定");
+                        return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", "複合式顧問課程價目未設定");
                     }
                 }
 
@@ -418,6 +422,29 @@ namespace WebHome.Controllers
             {
                 return Json(new { result = false, message = "無相符條件的項目!" });
             }
+
+        }
+
+        public ActionResult ListPackagePrice(CourseContractQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+
+            var priceItem = models.GetTable<LessonPriceType>()
+                .Where(p => p.PriceID == viewModel.PriceID)
+                .FirstOrDefault();
+
+            if (priceItem == null)
+            {
+                ModelState.AddModelError("PriceID", "請選擇課程單價");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                ViewBag.ModelState = ModelState;
+                return View(ConsoleHomeController.InputErrorView);
+            }
+
+            return View("~/Views/ContractConsole/Editing/ListPricePackageItems.cshtml", priceItem);
 
         }
 
