@@ -58654,6 +58654,8 @@ namespace WebHome.Models.DataEntity
 		
 		private System.Nullable<int> _Lessons;
 		
+		private string _Title;
+		
 		private EntityRef<LessonPriceType> _LessonPriceType;
 		
 		private EntityRef<LessonPriceType> _PackageItemPrice;
@@ -58668,6 +58670,8 @@ namespace WebHome.Models.DataEntity
     partial void OnItemIDChanged();
     partial void OnLessonsChanging(System.Nullable<int> value);
     partial void OnLessonsChanged();
+    partial void OnTitleChanging(string value);
+    partial void OnTitleChanged();
     #endregion
 		
 		public LessonPricePackage()
@@ -58741,6 +58745,26 @@ namespace WebHome.Models.DataEntity
 					this._Lessons = value;
 					this.SendPropertyChanged("Lessons");
 					this.OnLessonsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Title", DbType="NVarChar(64)")]
+		public string Title
+		{
+			get
+			{
+				return this._Title;
+			}
+			set
+			{
+				if ((this._Title != value))
+				{
+					this.OnTitleChanging(value);
+					this.SendPropertyChanging();
+					this._Title = value;
+					this.SendPropertyChanged("Title");
+					this.OnTitleChanged();
 				}
 			}
 		}
@@ -62549,7 +62573,7 @@ namespace WebHome.Models.DataEntity
 		
 		private int _TargetID;
 		
-		private System.Nullable<int> _ExchangeRate;
+		private decimal _ExchangeRate;
 		
 		private EntityRef<LessonPriceType> _SourcePrice;
 		
@@ -62563,7 +62587,7 @@ namespace WebHome.Models.DataEntity
     partial void OnSourceIDChanged();
     partial void OnTargetIDChanging(int value);
     partial void OnTargetIDChanged();
-    partial void OnExchangeRateChanging(System.Nullable<int> value);
+    partial void OnExchangeRateChanging(decimal value);
     partial void OnExchangeRateChanged();
     #endregion
 		
@@ -62622,8 +62646,8 @@ namespace WebHome.Models.DataEntity
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ExchangeRate", DbType="Int")]
-		public System.Nullable<int> ExchangeRate
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ExchangeRate", DbType="Decimal(12,2) NOT NULL")]
+		public decimal ExchangeRate
 		{
 			get
 			{
