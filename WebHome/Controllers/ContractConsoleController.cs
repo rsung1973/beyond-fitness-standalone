@@ -388,13 +388,13 @@ namespace WebHome.Controllers
 
             if (viewModel.ContractType == CourseContractType.ContractTypeDefinition.CNA)
             {
-                items = models.GetTable<LessonPriceType>()
+                items = items
                     .Where(p => p.BranchID == viewModel.BranchID)
                     .Where(p => p.Status == (int)Naming.LessonPriceStatus.營養課程);
             }
             else if (viewModel.ContractType == CourseContractType.ContractTypeDefinition.CNR)
             {
-                items = models.GetTable<LessonPriceType>()
+                items = items
                     .Where(p => p.BranchID == viewModel.BranchID)
                     .Where(p => p.Status == (int)Naming.LessonPriceStatus.運動恢復課程);
             }

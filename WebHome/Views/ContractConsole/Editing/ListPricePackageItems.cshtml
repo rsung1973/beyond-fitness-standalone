@@ -38,6 +38,10 @@
             $global.viewModel.OrderPriceID = [];
             $global.viewModel.OrderPriceID[0] = @(_model.PriceID);
             $global.viewModel.OrderLessons = [];
+            $('input[name="OrderLessons"]').on('change',function(){
+                $('#costSummary').empty();
+                $('.btnConfirm').addClass('disabled');
+            });
         });
     </script>
 
@@ -66,7 +70,7 @@
             @{
                 var order = _contract?.CourseContractOrder?.Where(o => o.PriceID == _model.PriceID).FirstOrDefault();
             }
-            <input type="text" class="form-control form-control-danger forPT" name="OrderLessons" placeholder="請輸入堂數" value="@(order?.Lessons)" />
+            <input type="number" class="form-control form-control-danger forPT" name="OrderLessons" placeholder="請輸入單位數" value="@(order?.Lessons)" />
             <span class="input-group-addon">
                 <i class="zmdi zmdi-shopping-cart-plus"></i>
             </span>
@@ -128,7 +132,7 @@
                 order = _contract?.CourseContractOrder?.Where(o => o.PriceID == item.PriceID).FirstOrDefault();
             }
             <div class="input-group">
-                <input type="text" class="form-control form-control-danger" name="OrderLessons" placeholder="請輸入堂數" value="@(order?.Lessons)" />
+                <input type="number" class="form-control form-control-danger" name="OrderLessons" placeholder="請輸入單位數" value="@(order?.Lessons)" />
                 <span class="input-group-addon">
                     <i class="zmdi zmdi-shopping-cart-plus"></i>
                 </span>

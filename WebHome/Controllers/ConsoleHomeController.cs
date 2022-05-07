@@ -525,7 +525,7 @@ namespace WebHome.Controllers
                 return result;
             }
 
-            result.ViewName = "ApplyContractService";
+            result.ViewName = "~/Views/ConsoleHome/ApplyContractService2022.cshtml";
             return result;
         }
 
