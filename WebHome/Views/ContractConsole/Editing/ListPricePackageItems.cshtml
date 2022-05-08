@@ -71,7 +71,7 @@
                 var order = _contract?.CourseContractOrder?.Where(o => o.PriceID == _model.PriceID).FirstOrDefault();
             }
             <input type="number" class="form-control form-control-danger forPT" name="OrderLessons" placeholder="請輸入單位數" value="@(order?.Lessons)" />
-            <span class="input-group-addon">
+            <span class="input-group-addon" style="border-radius: 0px 30px 30px 0px;">
                 <i class="zmdi zmdi-shopping-cart-plus"></i>
             </span>
             <script>
@@ -133,7 +133,7 @@
             }
             <div class="input-group">
                 <input type="number" class="form-control form-control-danger" name="OrderLessons" placeholder="請輸入單位數" value="@(order?.Lessons)" />
-                <span class="input-group-addon">
+                <span class="input-group-addon" style="border-radius: 0px 30px 30px 0px;">
                     <i class="zmdi zmdi-shopping-cart-plus"></i>
                 </span>
                 <script>

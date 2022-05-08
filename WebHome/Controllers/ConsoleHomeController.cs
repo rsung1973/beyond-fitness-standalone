@@ -214,6 +214,11 @@ namespace WebHome.Controllers
                     viewModel.ContractType = CourseContractType.ContractTypeDefinition.CGA_Aux;
                     viewModel.ContractTypeAux = (CourseContractType.ContractTypeDefinition?)item.ContractType;
                 }
+                else if (item.CourseContractType.IsVirtualCourse)
+                {
+                    viewModel.ContractType = CourseContractType.ContractTypeDefinition.CVA_Aux;
+                    viewModel.ContractTypeAux = (CourseContractType.ContractTypeDefinition?)(item.ContractType - CourseContractType.OffsetFromCGA2CVA);
+                }
                 else
                 {
                     viewModel.ContractType = (CourseContractType.ContractTypeDefinition?)item.ContractType;

@@ -19,7 +19,7 @@
     LessonPriceType _model = this.Model as LessonPriceType;
 }
 
-@if (_model != null && _model.IsCombination)
+@if (_model != null /*&& _model.IsCombination*/)
 {
     int totalLessons = 0;
     int totalCost = 0;
@@ -27,7 +27,7 @@
 
     <div class="col-12 text-right m-t-10">
         <p>
-            複合式顧問課程堂數：@(totalLessons)堂<br />
+            顧問課程堂數：@(totalLessons)堂<br />
             <b>專業顧問建置與諮詢費：</b> @($"{(totalCost * 8 + 5) / 10:##,###,###}")<br />
             教練課程費：@($"{(totalCost * 2 + 5) / 10:##,###,###}")
         </p>

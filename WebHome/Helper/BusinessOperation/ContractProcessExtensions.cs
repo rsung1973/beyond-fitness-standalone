@@ -238,7 +238,9 @@ namespace WebHome.Helper.BusinessOperation
 
             item.ContractType = viewModel.ContractType == CourseContractType.ContractTypeDefinition.CGA_Aux
                         ? (int)viewModel.ContractTypeAux.Value
-                        : (int)viewModel.ContractType.Value;
+                        : viewModel.ContractType == CourseContractType.ContractTypeDefinition.CVA_Aux
+                            ? (int)viewModel.ContractTypeAux.Value + CourseContractType.OffsetFromCGA2CVA
+                            : (int)viewModel.ContractType.Value;
             item.ContractDate = DateTime.Now;
             item.OwnerID = viewModel.OwnerID.Value;
             item.Subject = viewModel.Subject;
@@ -343,7 +345,8 @@ namespace WebHome.Helper.BusinessOperation
             {
                 ModelState.AddModelError("ContractType", "請選擇合約類型");
             }
-            else if (viewModel.ContractType == CourseContractType.ContractTypeDefinition.CGA_Aux)
+            else if (viewModel.ContractType == CourseContractType.ContractTypeDefinition.CGA_Aux
+                    || viewModel.ContractType == CourseContractType.ContractTypeDefinition.CVA_Aux)
             {
                 if ( !viewModel.ContractTypeAux.HasValue)
                 {
@@ -387,7 +390,8 @@ namespace WebHome.Helper.BusinessOperation
             {
 
             }
-            else if (viewModel.ContractType == CourseContractType.ContractTypeDefinition.CGA_Aux)
+            else if (viewModel.ContractType == CourseContractType.ContractTypeDefinition.CGA_Aux
+                    || viewModel.ContractType == CourseContractType.ContractTypeDefinition.CVA_Aux)
             {
                 if (viewModel.ContractTypeAux == CourseContractType.ContractTypeDefinition.CGF)
                 {

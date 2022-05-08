@@ -473,6 +473,10 @@ namespace WebHome.Helper
             {
                 typeItem = models.GetTable<CourseContractType>().Where(t => t.TypeID == (int?)viewModel.ContractTypeAux).FirstOrDefault();
             }
+            else if (viewModel.ContractType == CourseContractType.ContractTypeDefinition.CVA_Aux)
+            {
+                typeItem = models.GetTable<CourseContractType>().Where(t => t.TypeID == ((int?)viewModel.ContractTypeAux + CourseContractType.OffsetFromCGA2CVA)).FirstOrDefault();
+            }
             else
             {
                 typeItem = models.GetTable<CourseContractType>().Where(t => t.TypeID == (int?)viewModel.ContractType).FirstOrDefault();

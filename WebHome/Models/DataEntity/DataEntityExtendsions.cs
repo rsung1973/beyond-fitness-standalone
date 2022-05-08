@@ -686,6 +686,7 @@ namespace WebHome.Models.DataEntity
         public enum ContractTypeDefinition
         {
             CGA_Aux = -1,
+            CVA_Aux = -2,
             CPA = 1,
             CFA,
             CPB,
@@ -697,6 +698,10 @@ namespace WebHome.Models.DataEntity
             CGC,
             CNR,
             CMP,
+            CVA,
+            CVF,
+            CVB,
+            CVC,
         }
 
         public static bool IsSuitableForVirtaulClass(ContractTypeDefinition? ct)
@@ -708,7 +713,9 @@ namespace WebHome.Models.DataEntity
 
         public bool IsCombination => this.ContractCode?.StartsWith("CG") == true;
 
+        public bool IsVirtualCourse => this.ContractCode?.StartsWith("CV") == true;
 
+        public const int OffsetFromCGA2CVA = (int)ContractTypeDefinition.CVA - (int)ContractTypeDefinition.CGA;
     }
 
     public partial class CourseContractExtension

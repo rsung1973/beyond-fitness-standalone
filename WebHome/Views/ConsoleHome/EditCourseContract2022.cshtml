@@ -60,6 +60,7 @@
                         <select class="form-control show-tick" name="ContractType">
                             <option value="">-- 請選擇合約類型 --</option>
                             <option value="@((int)CourseContractType.ContractTypeDefinition.CGA_Aux)">1對N 複合式顧問課程</option>
+                            <option value="@((int)CourseContractType.ContractTypeDefinition.CVA_Aux)" data-virtual="True">1對N 遠距顧問課程</option>
                             <option value="@((int)CourseContractType.ContractTypeDefinition.CNR)">1對1運動恢復課程</option>
                             <option value="@((int)CourseContractType.ContractTypeDefinition.CNA)">1對1營養顧問課程</option>
                             <option value="@((int)CourseContractType.ContractTypeDefinition.CMP)">月月付自主訓練課程</option>
@@ -78,15 +79,19 @@
                                     resetInstallmentPlan();
                                     resetTotalCost();
                                     resetContractTypeAux();
+                                    resetBranch();
                                 });
-                                @*buildBranch('@((int?)_viewModel.ContractType)');*@
                             });
 
                             function buildBranch(forVirtual) {
+                                $('select[name="BranchID"] option').prop('selected',false);
                                 var $store = $('select[name="BranchID"] option.virtual-store');
-                                $store.css('display', 'none');
                                 if (forVirtual == 'True') {
-                                    $store.css('display', 'block');
+                                    $('select[name="BranchID"] option').css('display', 'none');
+                                    $store.css('display', '');
+                                } else {
+                                    $('select[name="BranchID"] option').css('display', '');
+                                    $store.css('display', 'none');
                                 }
                                 $('select[name="BranchID"]').selectpicker('refresh');
                             }
@@ -121,7 +126,7 @@
                                 $('.forAux').css('display','none');
                                 $('.forAddon').css('visibility','hidden');
                                 $('.forPT').css('visibility','visible');
-                                if (ct == '-1') {
+                                if (ct == '-1' || ct == '-2') {
                                     $('.forAux').css('display','');
                                     $('.forAddon').css('visibility','visible');
                                 } else if(ct==11) {
@@ -195,6 +200,11 @@
                                     });
                                     $global.viewModel.DurationInMinutes = 60;
                                 });
+
+                            function resetBranch() {
+                                var ct = $('select[name="ContractType"] option:selected').attr('data-virtual');
+                                buildBranch(ct);
+                            }
                         </script>
                         @*<label class="material-icons help-error-text">clear 請選擇上課場所</label>*@
                     </div>

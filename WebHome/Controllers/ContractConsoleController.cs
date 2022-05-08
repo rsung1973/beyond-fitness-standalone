@@ -365,7 +365,8 @@ namespace WebHome.Controllers
             {
                 ModelState.AddModelError("ContractType", "請選擇合約類型");
             }
-            else if (viewModel.ContractType == CourseContractType.ContractTypeDefinition.CGA_Aux
+            else if ((viewModel.ContractType == CourseContractType.ContractTypeDefinition.CGA_Aux 
+                        || viewModel.ContractType == CourseContractType.ContractTypeDefinition.CVA_Aux)
                 && !viewModel.ContractTypeAux.HasValue)
             {
                 ModelState.AddModelError("ContractTypeAux", "請選擇人數");
@@ -389,18 +390,19 @@ namespace WebHome.Controllers
             if (viewModel.ContractType == CourseContractType.ContractTypeDefinition.CNA)
             {
                 items = items
-                    .Where(p => p.BranchID == viewModel.BranchID)
+                    .Where(p => p.BranchID == viewModel.BranchID || !p.BranchID.HasValue)
                     .Where(p => p.Status == (int)Naming.LessonPriceStatus.營養課程);
             }
             else if (viewModel.ContractType == CourseContractType.ContractTypeDefinition.CNR)
             {
                 items = items
-                    .Where(p => p.BranchID == viewModel.BranchID)
+                    .Where(p => p.BranchID == viewModel.BranchID || !p.BranchID.HasValue)
                     .Where(p => p.Status == (int)Naming.LessonPriceStatus.運動恢復課程);
             }
             else
             {
-                if (viewModel.ContractType == CourseContractType.ContractTypeDefinition.CGA_Aux)
+                if (viewModel.ContractType == CourseContractType.ContractTypeDefinition.CGA_Aux
+                    || viewModel.ContractType == CourseContractType.ContractTypeDefinition.CVA_Aux)
                 {
                     LessonPriceType customPrice =  ViewBag.CustomPrice = models.GetCandidateCustomCombinationPrice();
                     if (customPrice == null)
@@ -483,7 +485,8 @@ namespace WebHome.Controllers
             {
                 ModelState.AddModelError("ContractType", "請選擇合約類型");
             }
-            else if (viewModel.ContractType == CourseContractType.ContractTypeDefinition.CGA_Aux
+            else if ((viewModel.ContractType == CourseContractType.ContractTypeDefinition.CGA_Aux
+                        || viewModel.ContractType == CourseContractType.ContractTypeDefinition.CVA_Aux)
                 && !viewModel.ContractTypeAux.HasValue)
             {
                 ModelState.AddModelError("ContractTypeAux", "請選擇人數");
