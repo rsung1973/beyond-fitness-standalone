@@ -472,10 +472,12 @@ namespace WebHome.Models.DataEntity
         public static String PriceTypeBundle(this LessonPriceType item)
         {
             return item.SeriesID.HasValue
-                        ? item.LowerLimit == 1
+                    ? item.Status == (int)Naming.LessonPriceStatus.營養課程
+                        ? item.Description
+                        : item.LowerLimit == 1
                             ? "單堂"
                             : item.LowerLimit + "堂"
-                        : item.Description;
+                    : item.Description;
         }
 
         public static int? SeriesSingleLessonPrice(this LessonPriceType item)

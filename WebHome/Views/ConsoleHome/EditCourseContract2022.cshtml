@@ -59,10 +59,10 @@
                     <div class="col-lg-6 col-md-6 col-sm-6 col-12">
                         <select class="form-control show-tick" name="ContractType">
                             <option value="">-- 請選擇合約類型 --</option>
-                            <option value="@((int)CourseContractType.ContractTypeDefinition.CGA_Aux)">1 對 N 複合式顧問課程</option>
-                            <option value="@((int)CourseContractType.ContractTypeDefinition.CVA_Aux)" data-virtual="True">1對 N 遠距顧問課程</option>
-                            <option value="@((int)CourseContractType.ContractTypeDefinition.CNR)">1 對 1 運動恢復課程</option>
-                            <option value="@((int)CourseContractType.ContractTypeDefinition.CNA)" data-virtual="True">1 對 1 營養顧問課程</option>
+                            <option value="@((int)CourseContractType.ContractTypeDefinition.CGA_Aux)">複合式顧問課程</option>
+                            <option value="@((int)CourseContractType.ContractTypeDefinition.CNR)">運動恢復課程</option>
+                            <option value="@((int)CourseContractType.ContractTypeDefinition.CNA)" data-virtual="True">營養顧問課程</option>
+                            <option value="@((int)CourseContractType.ContractTypeDefinition.CVA_Aux)" data-virtual="True">遠距顧問課程</option>
                             @* <option value="@((int)CourseContractType.ContractTypeDefinition.CMP)">月月付自主訓練課程</option> *@
                         </select>
                         <script>
@@ -137,14 +137,14 @@
                     <div class="col-lg-6 col-md-6 col-sm-6 col-12">
                         <select class="form-control show-tick" name="PriceAdjustment">
                             <option value="">-- 是否彈性設定購買單價 --</option>
-                            <option value="@((int)CourseContractExtension.UnitPriceAdjustmentDefinition.T1)" selected="selected">否，不可彈性設定購買單價</option>
+                            <option value="@((int)CourseContractExtension.UnitPriceAdjustmentDefinition.T1)">否，不可彈性設定購買單價</option>
                             <option value="@((int)CourseContractExtension.UnitPriceAdjustmentDefinition.T2)">是，轉讓予第三人允許彈性設定購買單價</option>
                             <option value="@((int)CourseContractExtension.UnitPriceAdjustmentDefinition.T3)">是，轉開新合約允許彈性設定購買單價</option>
                             <option value="@((int)CourseContractExtension.UnitPriceAdjustmentDefinition.T4)">是，企業簽訂優惠允許彈性設定購買單價</option>
                         </select>
                         <script>
                                 $(function () {
-                                    $('select[name="PriceAdjustment"]').val('@Html.Raw(_viewModel.PriceAdjustment)');
+                                    $('select[name="PriceAdjustment"]').val('@Html.Raw((int)(_viewModel.PriceAdjustment ?? CourseContractExtension.UnitPriceAdjustmentDefinition.T1))');
                                     $('select[name="PriceAdjustment"]').on('change', function (event) {
                                         $global.viewModel.PriceAdjustment = $(this).val();
                                     });

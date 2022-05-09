@@ -48,19 +48,19 @@
     <div class="col-lg-3 col-md-6 col-sm-6 col-12 forPT">
         <div class="header">
             @{
-                switch((Naming.LessonPriceStatus?)_model.Status)
+                switch ((Naming.LessonPriceStatus?)_model.Status)
                 {
                     case Naming.LessonPriceStatus.營養課程:
-                        <text>S.D Session</text>
+                        <text>S.D Session(營養諮詢)</text>
                         break;
                     case Naming.LessonPriceStatus.運動恢復課程:
-                        <text>S.R Session</text>
+                        <text>S.R Session(運動恢復)</text>
                         break;
                     case Naming.LessonPriceStatus.運動防護課程:
-                        <text>A.T Session</text>
+                        <text>A.T Session(運動防護)</text>
                         break;
                     default:
-                        <text>P.T Session</text>
+                        <text>P.T Session(私人教練)</text>
                         break;
                 }
             }
@@ -99,7 +99,7 @@
         }
     </div>
     int idx = 1;
-    foreach (var packageItem in _model.LessonPricePackage)
+    foreach (var packageItem in _model.LessonPricePackage.OrderBy(p => p.Title).ThenBy(p => p.ItemID))
     {
         var item = packageItem.PackageItemPrice;
         <div class="col-lg-3 col-md-6 col-sm-6 col-12 forAddon">
@@ -130,7 +130,7 @@
                 <small class="badge badge-info">
                     @{
                         property = item.LessonPriceProperty.Where(p => p.PropertyID == (int)Naming.LessonPriceFeature.BundlePackage).FirstOrDefault();
-                        if(property!=null)
+                        if (property != null)
                         {
                             <text>@Html.Raw(property.Description)</text>
                         }
@@ -139,7 +139,8 @@
                             <text>@Html.Raw(item.DurationInMinutes)分鐘</text>
                         }
                     }
-                     / @($"{item.ListPrice * (item.BundleCount ?? 1):##,###}")元</small>
+                    / @($"{item.ListPrice * (item.BundleCount ?? 1):##,###}")元
+                </small>
             </div>
             @{
                 order = _contract?.CourseContractOrder?.Where(o => o.PriceID == item.PriceID).FirstOrDefault();
