@@ -59,11 +59,11 @@
                     <div class="col-lg-6 col-md-6 col-sm-6 col-12">
                         <select class="form-control show-tick" name="ContractType">
                             <option value="">-- 請選擇合約類型 --</option>
-                            <option value="@((int)CourseContractType.ContractTypeDefinition.CGA_Aux)">1對N 複合式顧問課程</option>
-                            <option value="@((int)CourseContractType.ContractTypeDefinition.CVA_Aux)" data-virtual="True">1對N 遠距顧問課程</option>
-                            <option value="@((int)CourseContractType.ContractTypeDefinition.CNR)">1對1運動恢復課程</option>
-                            <option value="@((int)CourseContractType.ContractTypeDefinition.CNA)">1對1營養顧問課程</option>
-                            <option value="@((int)CourseContractType.ContractTypeDefinition.CMP)">月月付自主訓練課程</option>
+                            <option value="@((int)CourseContractType.ContractTypeDefinition.CGA_Aux)">1 對 N 複合式顧問課程</option>
+                            <option value="@((int)CourseContractType.ContractTypeDefinition.CVA_Aux)" data-virtual="True">1對 N 遠距顧問課程</option>
+                            <option value="@((int)CourseContractType.ContractTypeDefinition.CNR)">1 對 1 運動恢復課程</option>
+                            <option value="@((int)CourseContractType.ContractTypeDefinition.CNA)">1 對 1 營養顧問課程</option>
+                            @* <option value="@((int)CourseContractType.ContractTypeDefinition.CMP)">月月付自主訓練課程</option> *@
                         </select>
                         <script>
                             $(function () {
@@ -99,8 +99,8 @@
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6 col-12">
                         <select class="form-control show-tick" name="ContractTypeAux">
-                            <option value="" class="forAux">-- 請選擇1對?人 --</option>
-                            <option value="@((int)CourseContractType.ContractTypeDefinition.CGA)" selected="selected">1對1</option>
+                            <option value="" class="forAux" selected="selected">-- 請選擇1對?人 --</option>
+                            <option value="@((int)CourseContractType.ContractTypeDefinition.CGA)">1對1</option>
                             <option value="@((int)CourseContractType.ContractTypeDefinition.CGF)" class="forAux">1對1 - 多人共享</option>
                             <option value="@((int)CourseContractType.ContractTypeDefinition.CGB)" class="forAux">1對2</option>
                             <option value="@((int)CourseContractType.ContractTypeDefinition.CGC)" class="forAux">1對3</option>
@@ -153,7 +153,7 @@
                     <div class="col-lg-6 col-md-6 col-sm-6 col-12">
                         <select class="form-control show-tick" name="PriceAdjustment">
                             <option value="">-- 是否彈性設定購買單價 --</option>
-                            <option value="@((int)CourseContractExtension.UnitPriceAdjustmentDefinition.T1)">否，不可彈性設定購買單價</option>
+                            <option value="@((int)CourseContractExtension.UnitPriceAdjustmentDefinition.T1)" selected="selected">否，不可彈性設定購買單價</option>
                             <option value="@((int)CourseContractExtension.UnitPriceAdjustmentDefinition.T2)">是，轉讓予第三人允許彈性設定購買單價</option>
                             <option value="@((int)CourseContractExtension.UnitPriceAdjustmentDefinition.T3)">是，轉開新合約允許彈性設定購買單價</option>
                             <option value="@((int)CourseContractExtension.UnitPriceAdjustmentDefinition.T4)">是，企業簽訂優惠允許彈性設定購買單價</option>
