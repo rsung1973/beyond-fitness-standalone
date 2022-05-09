@@ -101,16 +101,16 @@
                     switch ((Naming.LessonPriceStatus?)item.Status)
                     {
                         case Naming.LessonPriceStatus.營養課程:
-                            <text>S.D Session</text>
+                            <text>S.D Session(營養諮詢)</text>
                             break;
                         case Naming.LessonPriceStatus.運動恢復課程:
-                            <text>S.R Session</text>
+                            <text>S.R Session(運動恢復)</text>
                             break;
                         case Naming.LessonPriceStatus.運動防護課程:
-                            <text>A.T Session</text>
+                            <text>A.T Session(運動防護)</text>
                             break;
                         default:
-                            <text>P.T Session</text>
+                            <text>P.T Session(私人教練)</text>
                             break;
                     }
                 }
@@ -132,7 +132,7 @@
                 order = _contract?.CourseContractOrder?.Where(o => o.PriceID == item.PriceID).FirstOrDefault();
             }
             <div class="input-group">
-                <input type="number" class="form-control form-control-danger" name="OrderLessons" placeholder="請輸入單位數" value="@(order?.Lessons)" />
+                <input type="number" class="form-control form-control-danger" name="OrderLessons" placeholder="請輸入購買單位" value="@(order?.Lessons)" />
                 <span class="input-group-addon" style="border-radius: 0px 30px 30px 0px;">
                     <i class="zmdi zmdi-shopping-cart-plus"></i>
                 </span>
