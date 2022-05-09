@@ -39,7 +39,7 @@
         .OrderBy(l => l.LowerLimit).ThenBy(l => l.ListPrice);
 
     _specialItems = _model
-        .Where(p => !p.SeriesID.HasValue)
+        .Where(l => l.LessonPriceProperty.Any(p => p.PropertyID == (int)Naming.LessonPriceFeature.特別專案))
         .OrderBy(l => l.LowerLimit).ThenBy(l => l.ListPrice);
 
 }

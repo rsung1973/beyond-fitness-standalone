@@ -92,6 +92,7 @@ namespace WebHome.Models.Locale
             運動恢復課程 = 1014,
             一對一課程 = 1015,
             BundlePackage = 1016,
+            特別專案 = 1017,
         }
 
         public enum LessonSeriesStatus
