@@ -385,7 +385,8 @@ namespace WebHome.Controllers
             }
 
             IQueryable<LessonPriceType> items = models.GetTable<LessonPriceType>()
-                .Where(l => !l.DurationInMinutes.HasValue || l.DurationInMinutes == viewModel.DurationInMinutes);
+                .Where(l => !l.DurationInMinutes.HasValue 
+                    || l.DurationInMinutes == viewModel.DurationInMinutes);
 
             if (viewModel.ContractType == CourseContractType.ContractTypeDefinition.CNA)
             {
@@ -395,7 +396,10 @@ namespace WebHome.Controllers
             }
             else if (viewModel.ContractType == CourseContractType.ContractTypeDefinition.CNR)
             {
-                items = items
+                items = models.GetTable<LessonPriceType>()
+                    .Where(l => !l.DurationInMinutes.HasValue
+                        || l.DurationInMinutes == viewModel.DurationInMinutes
+                        || l.DurationInMinutes == 40)
                     .Where(p => p.BranchID == viewModel.BranchID || !p.BranchID.HasValue)
                     .Where(p => p.Status == (int)Naming.LessonPriceStatus.運動恢復課程);
             }
