@@ -71,10 +71,7 @@
                                 $('select[name="ContractType"]').on('change', function (event) {
                                     var ct = $(this).val();
                                     $global.viewModel.ContractType = ct;
-                                    //buildBranch($(this).find('option:selected').attr('data-virtual'));
-                                    //if ($global.viewModel.PriceID) {
-                                    //    calcTotalCost();
-                                    //}
+
                                     resetSignOnline();
                                     resetInstallmentPlan();
                                     resetTotalCost();
@@ -82,19 +79,6 @@
                                     resetBranch();
                                 });
                             });
-
-                            function buildBranch(forVirtual) {
-                                $('select[name="BranchID"] option').prop('selected',false);
-                                var $store = $('select[name="BranchID"] option.virtual-store');
-                                if (forVirtual == 'True') {
-                                    $('select[name="BranchID"] option').css('display', 'none');
-                                    $store.css('display', '');
-                                } else {
-                                    $('select[name="BranchID"] option').css('display', '');
-                                    $store.css('display', 'none');
-                                }
-                                $('select[name="BranchID"]').selectpicker('refresh');
-                            }
                         </script>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6 col-12">
@@ -185,26 +169,36 @@
                         </select>
                         <script>
                             $(function () {
-                                    @if (_viewModel.BranchID.HasValue)
-                                    {
-                                        <text>$('select[name="BranchID"]').val('@Html.Raw(_viewModel.BranchID)');</text>
-                                    }
-                                    else
-                                    {
-                                        <text>$global.viewModel.BranchID = $('select[name="BranchID"]').val();</text>
-                                    }
+                                    $('select[name="BranchID"]').val('@Html.Raw(_viewModel.BranchID)');                                    
                                     $('select[name="BranchID"]').on('change', function (event) {
                                         $global.viewModel.BranchID = $(this).val();
                                         resetInstallmentPlan();
                                         resetTotalCost();
                                     });
                                     $global.viewModel.DurationInMinutes = 60;
+                                    resetBranch();
                                 });
 
                             function resetBranch() {
                                 var ct = $('select[name="ContractType"] option:selected').attr('data-virtual');
                                 buildBranch(ct);
+                                $global.viewModel.BranchID = $('select[name="BranchID"]').val();
                             }
+
+                            function buildBranch(forVirtual) {
+                                $('select[name="BranchID"] option').prop('selected',false);
+                                var $store = $('select[name="BranchID"] option.virtual-store');
+                                if (forVirtual == 'True') {
+                                    $('select[name="BranchID"] option').slice(1).prop('disabled',true);
+                                    $store.prop('disabled',false);
+                                } else {
+                                    $('select[name="BranchID"] option').prop('disabled',false);
+                                    $store.prop('disabled',true);
+                                }
+                                $('select[name="BranchID"] option:enabled').slice(1).prop('selected',true);
+                                $('select[name="BranchID"]').selectpicker('refresh');
+                            }
+
                         </script>
                         @*<label class="material-icons help-error-text">clear 請選擇上課場所</label>*@
                     </div>

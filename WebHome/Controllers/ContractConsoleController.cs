@@ -412,7 +412,7 @@ namespace WebHome.Controllers
                 }
 
                 items = models.PromptEffectiveLessonPrice()
-                    .Where(p => p.BranchID == viewModel.BranchID)
+                    .Where(p => p.BranchID == viewModel.BranchID || !p.BranchID.HasValue)
                     .Where(l => !l.DurationInMinutes.HasValue || l.DurationInMinutes == viewModel.DurationInMinutes);
             }
 
