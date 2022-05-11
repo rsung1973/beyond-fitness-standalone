@@ -53,7 +53,9 @@
                     @{
                         IEnumerable<CourseContractMember> items;
                     }
-                    @if (_model.CourseContractType.ContractCode == "CFA")
+                    @if (_model.CourseContractType.ContractCode == "CFA"
+                        || _model.CourseContractType.ContractCode == "CGF"
+                        || _model.CourseContractType.ContractCode == "CVF")
                     {
                         items = _model.CourseContractMember.Where(m => m.UID == _model.OwnerID);
                     }
@@ -371,7 +373,9 @@
         </div>
     </div>
 </div>
-@if (_model.CourseContractType.ContractCode == "CFA")
+@if (_model.CourseContractType.ContractCode == "CFA"
+        || _model.CourseContractType.ContractCode == "CGF"
+        || _model.CourseContractType.ContractCode == "CVF")
 {
     <div class="row" style="margin-top: 30px; margin-bottom: 20px;">
         <div class="col-md-12">

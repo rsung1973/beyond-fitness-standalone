@@ -53,7 +53,9 @@
                     @{
                         IEnumerable<CourseContractMember> items;
                     }
-                    @if (_model.CourseContractType.ContractCode == "CFA")
+                    @if (_model.CourseContractType.ContractCode == "CFA"
+                        || _model.CourseContractType.ContractCode == "CGF"
+                        || _model.CourseContractType.ContractCode == "CVF")
                     {
                         items = _model.CourseContractMember.Where(m => m.UID == _model.OwnerID);
                     }
@@ -100,7 +102,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="2">複合式課程購買堂數：@(_model.Lessons ?? _model.LessonPriceType?.ExpandActualLessonCount(models))堂（含P.T私人教練60分鐘OO堂，S.R運動恢復40分鐘OO堂，A.T運動防護60分鐘OO堂，加購營養諮詢OO月OO堂）</td>
+                        <td colspan="2">複合式課程購買堂數：@(_model.Lessons)堂（含 @(String.Join("，",_model.ExpandContractLessonDetails(models)))）</td>
                      </tr>
                     <tr>
                         <td colspan="2">專業顧問建置與諮詢費：@(String.Format("{0:##,###,###,###}", (_model.TotalCost * 8 + 5) / 10))</td>
@@ -276,16 +278,18 @@
                         <td class="p-t-0">
                             學員簽名：
                             @{ ViewBag.SignatureName = "Signature";}
-                            @if (_model.CourseContractType.IsGroup == true)
-                            {
-                                foreach (var m in _model.CourseContractMember)
-                                {
-                                    await Html.RenderPartialAsync("~/Views/ContractConsole/Module/SignHere.cshtml", m);
-                                }
-                            }
-                            else
-                            {
-                                await Html.RenderPartialAsync("~/Views/ContractConsole/Module/SignHere.cshtml", _owner);
+                            @{
+                                //if (_model.CourseContractType.IsGroup == true)
+                                //{
+                                //    foreach (var m in _model.CourseContractMember)
+                                //    {
+                                //        await Html.RenderPartialAsync("~/Views/ContractConsole/Module/SignHere.cshtml", m);
+                                //    }
+                                //}
+                                //else
+                                //{
+                                    await Html.RenderPartialAsync("~/Views/ContractConsole/Module/SignHere.cshtml", _owner);
+                                //}
                             }
                         </td>
                         <td class="p-0">
@@ -356,16 +360,18 @@
                     <td>
                         學員簽名：
                         @{ ViewBag.SignatureName = "Signature1";}
-                    @if (_model.CourseContractType.IsGroup == true)
-                    {
-                        foreach (var m in _model.CourseContractMember)
-                        {
-                            await Html.RenderPartialAsync("~/Views/ContractConsole/Module/SignHere.cshtml", m);
-                        }
-                    }
-                        else
-                        {
-                            await Html.RenderPartialAsync("~/Views/ContractConsole/Module/SignHere.cshtml", _owner);
+                        @{
+                            //if (_model.CourseContractType.IsGroup == true)
+                            //{
+                            //    foreach (var m in _model.CourseContractMember)
+                            //    {
+                            //        await Html.RenderPartialAsync("~/Views/ContractConsole/Module/SignHere.cshtml", m);
+                            //    }
+                            //}
+                            //else
+                            //{
+                                await Html.RenderPartialAsync("~/Views/ContractConsole/Module/SignHere.cshtml", _owner);
+                            //}
                         }
                 日期：@(String.Format("{0:yyyy/MM/dd}", _signatureDate))
             </td>
@@ -382,15 +388,17 @@
                         {
                             <text>家長/監護人簽名：</text>
                             ViewBag.SignatureName = "GuardianSignature1";
-                    await Html.RenderPartialAsync("~/Views/ContractConsole/Module/SignHere.cshtml", _owner);
-                }
+                            await Html.RenderPartialAsync("~/Views/ContractConsole/Module/SignHere.cshtml", _owner);
+                        }
                     </td>
                 </tr>
             </table>
         </div>
     </div>
 </div>
-@if (_model.CourseContractType.ContractCode == "CFA")
+@if (_model.CourseContractType.ContractCode == "CFA"
+        || _model.CourseContractType.ContractCode == "CGF"
+        || _model.CourseContractType.ContractCode == "CVF")
 {
     <div class="row" style="margin-top: 30px; margin-bottom: 20px;">
         <div class="col-md-12">
@@ -427,7 +435,8 @@
                         <tr>
                             <td class="text-right">
                                 簽名：
-                                @{ ViewBag.SignatureName = "Signature2";
+                                @{ 
+                                    ViewBag.SignatureName = "Signature2";
                                     await Html.RenderPartialAsync("~/Views/ContractConsole/Module/SignHere.cshtml", _owner);
                                 }
                                 日期：@(String.Format("{0:yyyy/MM/dd}", _signatureDate))

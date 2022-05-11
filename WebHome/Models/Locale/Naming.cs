@@ -427,6 +427,7 @@ namespace WebHome.Models.Locale
         public enum ContractVersion
         {
             Ver2019 = 20190801,
+            Ver2022 = 20220601,
         }
 
         public enum Actor

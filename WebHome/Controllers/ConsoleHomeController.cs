@@ -201,7 +201,7 @@ namespace WebHome.Controllers
             {
                 viewModel.ContractID = viewModel.DecryptKeyValue();
             }
-            viewModel.Version = Naming.ContractVersion.Ver2019;
+            viewModel.Version = Naming.ContractVersion.Ver2022;
             var profile = await HttpContext.GetUserAsync();
             var item = models.GetTable<CourseContract>().Where(c => c.ContractID == viewModel.ContractID).FirstOrDefault();
             if (item != null)

@@ -1652,7 +1652,35 @@ namespace WebHome.Helper.BusinessOperation
         {
             return priceItem.ExpandActualLessonPrice(models).Sum(p => (p.BundleCount ?? 0));
         }
-        
+
+        public static List<String> ExpandContractLessonDetails(this CourseContract item, GenericManager<BFDataContext> models)
+        {
+            if(item.CourseContractOrder.Any())
+            {
+                return item.CourseContractOrder.OrderBy(o => o.SeqNo)
+                    .Select(o => o.ContractOrderLessonDetails())
+                    .ToList();
+            }
+
+            return new List<string>();
+        }
+
+        public static String ContractOrderLessonDetails(this CourseContractOrder order)
+        {
+            var item = order.LessonPriceType;
+            switch ((Naming.LessonPriceStatus?)item.Status)
+            {
+                case Naming.LessonPriceStatus.營養課程:
+                    return $"加購營養諮詢{order.Lessons}月{order.Lessons * (item.BundleCount ?? 1)}堂";
+                case Naming.LessonPriceStatus.運動恢復課程:
+                    return $"S.R運動恢復{item.DurationInMinutes}分鐘{order.Lessons * (item.BundleCount ?? 1)}堂";
+                case Naming.LessonPriceStatus.運動防護課程:
+                    return $"A.T運動防護{item.DurationInMinutes}分鐘{order.Lessons * (item.BundleCount ?? 1)}堂";
+                default:
+                    return $"私人教練{item.DurationInMinutes}分鐘{order.Lessons * (item.BundleCount ?? 1)}堂";
+            }
+        }
+
         public static List<LessonPriceType> ExpandActualLessonPrice(this LessonPricePackage package, GenericManager<BFDataContext> models, List<LessonPriceType> container = null)
         {
             if (container == null)
@@ -1806,7 +1834,9 @@ namespace WebHome.Helper.BusinessOperation
 
             var owner = item.CourseContractMember.Where(m => m.UID == item.OwnerID).First();
 
-            if (item.CourseContractType.ContractCode == "CFA")
+            if (item.CourseContractType.ContractCode == "CFA"
+                || item.CourseContractType.ContractCode == "CGF"
+                || item.CourseContractType.ContractCode == "CVF")
             {
                 if (owner.CourseContractSignature.Count(s => s.SignatureName.StartsWith("Signature") && s.Signature != null) < 3)
                 {
@@ -1904,7 +1934,9 @@ namespace WebHome.Helper.BusinessOperation
                 CourseContract contract = item.CourseContract;
                 var owner = contract.CourseContractMember.Where(m => m.UID == contract.OwnerID).First();
 
-                if (contract.CourseContractType.ContractCode == "CFA")
+                if (contract.CourseContractType.ContractCode == "CFA"
+                    || contract.CourseContractType.ContractCode == "CGF"
+                    || contract.CourseContractType.ContractCode == "CVF")
                 {
                     if (owner.CourseContractSignature.Count(s => s.SignatureName.StartsWith("Signature") && s.Signature != null) < 1)
                     {
