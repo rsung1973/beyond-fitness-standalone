@@ -42,8 +42,8 @@
                 var keys = key.Split(',');
                 <text>
                     $('[name="@(keys[0])"]:enabled').eq(@(keys[1])).closest('div').after(
-                    $('<label class="material-icons help-error-text" for="@(keys[0])"></label>')
-                    .text('clear @Html.Raw(_singleError
+                    $('<label class="zmdi zmdi-close help-error-text" for="@(keys[0])"></label>')
+                    .text('@Html.Raw(_singleError
                                                 ? _modelState[key].Errors[0].ErrorMessage
                                                 : String.Join("、", _modelState[key].Errors.Select(r => r.ErrorMessage)))')
                     );
@@ -53,8 +53,8 @@
             {
                 <text>
                     $('[name="@(key)"]').closest('div').after(
-                    $('<label class="material-icons help-error-text" for="@(key)"></label>')
-                    .text('clear @Html.Raw(_singleError
+                    $('<label class="zmdi zmdi-close help-error-text" for="@(key)"></label>')
+                    .text('@Html.Raw(_singleError
                                                 ? _modelState[key].Errors[0].ErrorMessage
                                                 : String.Join("、", _modelState[key].Errors.Select(r => r.ErrorMessage)))')
                     );

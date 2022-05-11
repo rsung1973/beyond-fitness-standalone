@@ -3018,8 +3018,8 @@ fieldset[disabled] .btn-link.active {
     right: 15px;
     bottom: 6px;
     min-height: 18px;
-    font-size: 11px;
-    color: rgba(253, 92, 99, 0.8) !important;
+    font-size: 12px !important;
+    color: rgba(253, 92, 99, 1) !important;
 /*    background-color: rgba(222, 222, 222, 0.1);*/
     float: right;
 }
@@ -3990,8 +3990,11 @@ body {
 }
 
 .nav.nav-tabs-new > li > a.active {
-    border: 1px solid #052333;
+    /* border: 1px solid #052333; */
     color: #052333;
+    border: 0px;
+    border-bottom: 1px solid #888;
+    color: #888;
 }
 
 .nav.nav-tabs-new2 {
@@ -23802,7 +23805,8 @@ section.content {
 
 .media .media-body {
     color: #616161;
-    font-size: 14px
+    font-size: 14px;
+    text-align: left;
 }
 
 .media .media-body .media-heading {
@@ -26022,8 +26026,12 @@ section.content {
      border-radius: .55rem .55rem 0 0
 }
 
+.member-card .sessionbody {
+    padding: 20px;
+}
+
 .member-card .header {
-    min-height: 150px;   
+    min-height: 120px;   
 }
 
 .member-card .member-img {
