@@ -231,17 +231,17 @@ namespace WebHome.Controllers
                 viewModel.OwnerID = item.OwnerID;
                 viewModel.SequenceNo = item.SequenceNo;
                 viewModel.Lessons = item.Lessons;
+                viewModel.PriceID = item.PriceID;
                 if (item.CourseContractOrder.Any())
                 {
-                    viewModel.PriceID = models.GetCandidateCustomCombinationPrice()?.PriceID;
-                    var priceType = item.CourseContractOrder.First().LessonPriceType;
+                    var priceType = item.CourseContractOrder.OrderBy(o => o.SeqNo)
+                        .First().LessonPriceType;
                     viewModel.PriceName = $"{priceType.PriceTypeBundle()} / {(priceType.LessonPriceProperty.Any(p => p.PropertyID == (int)Naming.LessonPriceFeature.舊會員續約) ? "(舊會員續約)" : null)}{string.Format("{0,5:##,###,###,###}", priceType.ListPrice)}";
                     viewModel.BranchID = item.CourseContractExtension.BranchID;
                     viewModel.OrderPriceID = new int?[] { priceType.PriceID };
                 }
                 else
                 {
-                    viewModel.PriceID = item.PriceID;
                     var priceType = item.LessonPriceType;
                     viewModel.PriceName = $"{priceType.PriceTypeBundle()}{(priceType.LessonPriceProperty.Any(p => p.PropertyID == (int)Naming.LessonPriceFeature.舊會員續約) ? "(舊會員續約)" : null)}{string.Format("{0,5:##,###,###,###}", priceType.ListPrice)}";
                     viewModel.BranchID = priceType.BranchStore?.IsVirtualClassroom() == true ? priceType.BranchID : item.CourseContractExtension.BranchID;

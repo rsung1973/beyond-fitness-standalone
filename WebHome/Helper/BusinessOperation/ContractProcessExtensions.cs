@@ -292,6 +292,7 @@ namespace WebHome.Helper.BusinessOperation
                             {
                                 LessonPriceType = p,
                                 Lessons = viewModel.OrderLessons[i].Value,
+                                SeqNo = item.CourseContractOrder.Count,
                             });
                         }
                     }
@@ -301,7 +302,7 @@ namespace WebHome.Helper.BusinessOperation
                     if (lessonPrice.IsPackagePrice)
                     {
                         item.Lessons = lessonPrice.ExpandActualLessonCount(models);
-                        item.TotalCost =  lessonPrice.ListPrice;
+                        item.TotalCost = lessonPrice.ListPrice;
                     }
                     else
                     {
@@ -1065,23 +1066,71 @@ namespace WebHome.Helper.BusinessOperation
             {
                 if (viewModel.OrderLessons == null || viewModel.OrderLessons.Length == 0)
                 {
-                    ModelState.AddModelError("OrderLessons", "請輸入購買堂數");
+                    ModelState.AddModelError("OrderLessons", "請輸入購買單位");
                 }
                 else if (!viewModel.OrderLessons[0].HasValue || viewModel.OrderLessons[0] <= 0)
                 {
-                    ModelState.AddModelError("OrderLessons,0", "請輸入P.T堂數");
+                    ModelState.AddModelError("OrderLessons,0", "請輸入購買單位");
                 }
-                else if (viewModel.OrderLessons.Length > 1 && viewModel.OrderLessons[1] <= 0)
+                else
                 {
-                    ModelState.AddModelError("OrderLessons,1", "請輸入A.T堂數");
-                }
-                else if (viewModel.OrderLessons.Length > 2 && viewModel.OrderLessons[2] <= 0)
-                {
-                    ModelState.AddModelError("OrderLessons,2", "請輸入S.R堂數");
-                }
-                else if (viewModel.OrderLessons.Length > 3 && viewModel.OrderLessons[3] <= 0)
-                {
-                    ModelState.AddModelError("OrderLessons,3", "請輸入S.D堂數");
+                    var priceItem = models.GetTable<LessonPriceType>().Where(p => p.PriceID == viewModel.OrderPriceID[0]).FirstOrDefault();
+                    if (priceItem == null)
+                    {
+                        ModelState.AddModelError("OrderLessons,0", "請選擇課程單價");
+                    }
+                    else
+                    {
+                        if (viewModel.OrderLessons[0] < priceItem.LowerLimit)
+                        {
+                            ModelState.AddModelError("OrderLessons,0", $"購買最少{priceItem.LowerLimit}單位");
+                        }
+                        else if (viewModel.OrderLessons[0] >= priceItem.UpperBound)
+                        {
+                            ModelState.AddModelError("OrderLessons,0", $"購買不可大於(含){priceItem.UpperBound}單位");
+                        }
+                        else if (viewModel.OrderLessons.Length > 1 && viewModel.OrderLessons[1] < 0)
+                        {
+                            ModelState.AddModelError("OrderLessons,1", "請輸入購買單位");
+                        }
+                        else if (viewModel.OrderLessons.Length > 2 && viewModel.OrderLessons[2] < 0)
+                        {
+                            ModelState.AddModelError("OrderLessons,2", "請輸入購買單位");
+                        }
+                        else if (viewModel.OrderLessons.Length > 3 && viewModel.OrderLessons[3] < 0)
+                        {
+                            ModelState.AddModelError("OrderLessons,3", "請輸入購買單位");
+                        }
+                    }
+
+                    if (ModelState.IsValid)
+                    {
+                        for (int i = 1; i < viewModel.OrderPriceID.Length; i++)
+                        {
+                            priceItem = models.GetTable<LessonPriceType>().Where(p => p.PriceID == viewModel.OrderPriceID[i]).FirstOrDefault();
+                            if (priceItem == null)
+                            {
+                                ModelState.AddModelError($"OrderLessons,{i}", "請選擇課程單價");
+                                continue;
+                            }
+
+                            if (priceItem.Status == (int)Naming.LessonPriceStatus.運動恢復課程
+                                || priceItem.Status == (int)Naming.LessonPriceStatus.運動防護課程)
+                            {
+                                if (viewModel.OrderLessons[i] > viewModel.OrderLessons[0])
+                                {
+                                    ModelState.AddModelError($"OrderLessons,{i}", $"購買不可大於{viewModel.OrderLessons[0]}單位");
+                                }
+                            }
+                            else if (priceItem.Status == (int)Naming.LessonPriceStatus.營養課程)
+                            {
+                                if (viewModel.OrderLessons[i] > priceItem.UpperBound)
+                                {
+                                    ModelState.AddModelError($"OrderLessons,{i}", $"購買不可大於{priceItem.UpperBound}單位");
+                                }
+                            }
+                        }
+                    }
                 }
             }
 
@@ -1395,6 +1444,7 @@ namespace WebHome.Helper.BusinessOperation
                                                     Lessons = source.Lessons,
                                                     PriceID = source.PriceID,
                                                     LessonPriceType = source.LessonPriceType,
+                                                    SeqNo = item.CourseContractOrder.Count,
                                                 });
                                             }
                                         }

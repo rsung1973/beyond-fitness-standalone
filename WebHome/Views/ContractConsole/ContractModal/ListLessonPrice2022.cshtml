@@ -24,36 +24,15 @@
 {
     <script>
         $(function () {
-            $global.viewModel.PriceID = @(customPrice.PriceID);
             $global.commitPrice = function (priceID, priceName, lessons) {
+                resetPricePackage();
+                $global.viewModel.PriceID = @(customPrice.PriceID);
                 $('#searchPrice').attr('placeholder', priceName);
-                $('#pricePackage').empty();
-                $('#costSummary').empty();
-                delete $global.viewModel.OrderPriceID;
-                delete $global.viewModel.OrderLessons;
-                $global.viewModel.Lessons = null;
                 $('#pricePackage').load('@Html.Raw(Url.Action("ListPackagePrice","ContractConsole"))', { 'PriceID': priceID });
             };
         });
     </script>
-}
-else
-{
-    <script>
-        $(function () {
-            $global.commitPrice = function (priceID, priceName, lessons) {
-                $global.viewModel.PriceID = priceID;
-                $('#searchPrice').attr('placeholder', priceName);
-                $('#pricePackage').empty();
-                $('#costSummary').empty();
-                delete $global.viewModel.OrderPriceID;
-                delete $global.viewModel.OrderLessons;
-                $global.viewModel.Lessons = null;
-                $('#pricePackage').load('@Html.Raw(Url.Action("ListPackagePrice","ContractConsole"))', { 'PriceID': priceID });
-            };
-        });
-    </script>
-}
-@{
+
     await Html.RenderPartialAsync("~/Views/ContractConsole/ContractModal/ListLessonPrice.cshtml", _model);
 }
+

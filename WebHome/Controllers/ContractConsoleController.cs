@@ -384,6 +384,13 @@ namespace WebHome.Controllers
                 return View(ConsoleHomeController.InputErrorView);
             }
 
+            LessonPriceType customPrice = ViewBag.CustomPrice = models.GetCandidateCustomCombinationPrice();
+            if (customPrice == null)
+            {
+                return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", "複合式顧問課程價目未設定");
+            }
+
+
             IQueryable<LessonPriceType> items = models.GetTable<LessonPriceType>()
                 .Where(l => !l.DurationInMinutes.HasValue 
                     || l.DurationInMinutes == viewModel.DurationInMinutes);
@@ -405,15 +412,15 @@ namespace WebHome.Controllers
             }
             else
             {
-                if (viewModel.ContractType == CourseContractType.ContractTypeDefinition.CGA_Aux
-                    || viewModel.ContractType == CourseContractType.ContractTypeDefinition.CVA_Aux)
-                {
-                    LessonPriceType customPrice =  ViewBag.CustomPrice = models.GetCandidateCustomCombinationPrice();
-                    if (customPrice == null)
-                    {
-                        return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", "複合式顧問課程價目未設定");
-                    }
-                }
+                //if (viewModel.ContractType == CourseContractType.ContractTypeDefinition.CGA_Aux
+                //    || viewModel.ContractType == CourseContractType.ContractTypeDefinition.CVA_Aux)
+                //{
+                //    LessonPriceType customPrice =  ViewBag.CustomPrice = models.GetCandidateCustomCombinationPrice();
+                //    if (customPrice == null)
+                //    {
+                //        return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", "複合式顧問課程價目未設定");
+                //    }
+                //}
 
                 items = models.PromptEffectiveLessonPrice()
                     .Where(l => !l.DurationInMinutes.HasValue || l.DurationInMinutes == viewModel.DurationInMinutes);
@@ -493,6 +500,9 @@ namespace WebHome.Controllers
         public ActionResult CalculateTotalCost2022(CourseContractQueryViewModel viewModel)
         {
             ViewBag.ViewModel = viewModel;
+
+            viewModel.TotalCost = null;
+            viewModel.Lessons = null;
 
             if (!viewModel.ContractType.HasValue)
             {

@@ -62383,6 +62383,8 @@ namespace WebHome.Models.DataEntity
 		
 		private int _Lessons;
 		
+		private System.Nullable<int> _SeqNo;
+		
 		private EntityRef<CourseContract> _CourseContract;
 		
 		private EntityRef<LessonPriceType> _LessonPriceType;
@@ -62397,6 +62399,8 @@ namespace WebHome.Models.DataEntity
     partial void OnPriceIDChanged();
     partial void OnLessonsChanging(int value);
     partial void OnLessonsChanged();
+    partial void OnSeqNoChanging(System.Nullable<int> value);
+    partial void OnSeqNoChanged();
     #endregion
 		
 		public CourseContractOrder()
@@ -62470,6 +62474,26 @@ namespace WebHome.Models.DataEntity
 					this._Lessons = value;
 					this.SendPropertyChanged("Lessons");
 					this.OnLessonsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SeqNo", DbType="Int")]
+		public System.Nullable<int> SeqNo
+		{
+			get
+			{
+				return this._SeqNo;
+			}
+			set
+			{
+				if ((this._SeqNo != value))
+				{
+					this.OnSeqNoChanging(value);
+					this.SendPropertyChanging();
+					this._SeqNo = value;
+					this.SendPropertyChanged("SeqNo");
+					this.OnSeqNoChanged();
 				}
 			}
 		}
