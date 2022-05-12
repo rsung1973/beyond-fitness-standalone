@@ -203,7 +203,7 @@ namespace WebHome.Helper.BusinessOperation
                 }
                 else
                 {
-                    item.SupervisorID = lessonPrice.BranchStore.IsVirtualClassroom() ? profile.ServingCoach.CurrentWorkBranch()?.ManagerID : lessonPrice.BranchStore?.ManagerID;
+                    item.SupervisorID = !lessonPrice.BranchID.HasValue || lessonPrice.BranchStore.IsVirtualClassroom() ? profile.ServingCoach.CurrentWorkBranch()?.ManagerID : lessonPrice.BranchStore?.ManagerID;
                     item.Status = (int)Naming.CourseContractStatus.待審核;
                 }
 
