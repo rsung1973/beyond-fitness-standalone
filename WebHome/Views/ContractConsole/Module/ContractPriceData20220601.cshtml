@@ -1,0 +1,38 @@
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    CourseContract _model;
+    String _dialogID = $"contractDetails{DateTime.Now.Ticks}";
+    UserProfile _profile;
+
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _model = (CourseContract)this.Model;
+    _profile = await Context.GetUserAsync();
+}
+
+<li>
+    <div class="list_tb tb2">
+        <div class="list_tr">
+            <div class="list_td hd">
+                課程單價
+                <span class="badge bg-blue">
+                    @(CourseContractExtension.PriceAdjustment[((int?)_model.CourseContractExtension.UnitPriceAdjustmentType ?? 0)])
+                </span>
+            </div>
+            <div class="list_td rt">@($"{_model.CourseContractOrder.OrderBy(o=>o.SeqNo).FirstOrDefault()?.LessonPriceType.ListPrice:##,###,###,###}")</div>
+        </div>
+    </div>
+</li>

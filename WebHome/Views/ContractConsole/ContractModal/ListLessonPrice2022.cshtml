@@ -28,7 +28,9 @@
                 resetPricePackage();
                 $global.viewModel.PriceID = @(customPrice.PriceID);
                 $('#searchPrice').attr('placeholder', priceName);
-                $('#pricePackage').load('@Html.Raw(Url.Action("ListPackagePrice","ContractConsole"))', { 'PriceID': priceID });
+                var $viewModel = $.extend({},$global.viewModel);
+                $viewModel.PriceID = priceID;
+                $('#pricePackage').load('@Html.Raw(Url.Action("ListPackagePrice","ContractConsole"))', $viewModel);
             };
         });
     </script>

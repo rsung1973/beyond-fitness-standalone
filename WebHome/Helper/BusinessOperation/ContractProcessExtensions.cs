@@ -387,10 +387,10 @@ namespace WebHome.Helper.BusinessOperation
             {
                 ModelState.AddModelError("OwnerID", "請新增合約學生");
             }
-            else if (viewModel.ContractType == CourseContractType.ContractTypeDefinition.CFA)
-            {
+            //else if (viewModel.ContractType == CourseContractType.ContractTypeDefinition.CFA)
+            //{
 
-            }
+            //}
             else if (viewModel.ContractType == CourseContractType.ContractTypeDefinition.CGA_Aux
                     || viewModel.ContractType == CourseContractType.ContractTypeDefinition.CVA_Aux)
             {
@@ -1081,11 +1081,11 @@ namespace WebHome.Helper.BusinessOperation
                     }
                     else
                     {
-                        if (viewModel.OrderLessons[0] < priceItem.LowerLimit)
+                        if (viewModel.PriceAdjustment == CourseContractExtension.UnitPriceAdjustmentDefinition.T1 && viewModel.OrderLessons[0] < priceItem.LowerLimit)
                         {
                             ModelState.AddModelError("OrderLessons,0", $"購買最少{priceItem.LowerLimit}單位");
                         }
-                        else if (viewModel.OrderLessons[0] >= priceItem.UpperBound)
+                        else if (viewModel.PriceAdjustment == CourseContractExtension.UnitPriceAdjustmentDefinition.T1 && viewModel.OrderLessons[0] >= priceItem.UpperBound)
                         {
                             ModelState.AddModelError("OrderLessons,0", $"購買不可大於(含){priceItem.UpperBound}單位");
                         }
@@ -1105,28 +1105,31 @@ namespace WebHome.Helper.BusinessOperation
 
                     if (ModelState.IsValid)
                     {
-                        for (int i = 1; i < viewModel.OrderPriceID.Length; i++)
+                        //if(viewModel.PriceAdjustment == CourseContractExtension.UnitPriceAdjustmentDefinition.T1)
                         {
-                            priceItem = models.GetTable<LessonPriceType>().Where(p => p.PriceID == viewModel.OrderPriceID[i]).FirstOrDefault();
-                            if (priceItem == null)
+                            for (int i = 1; i < viewModel.OrderPriceID.Length; i++)
                             {
-                                ModelState.AddModelError($"OrderLessons,{i}", "請選擇課程單價");
-                                continue;
-                            }
-
-                            if (priceItem.Status == (int)Naming.LessonPriceStatus.運動恢復課程
-                                || priceItem.Status == (int)Naming.LessonPriceStatus.運動防護課程)
-                            {
-                                if (viewModel.OrderLessons[i] > viewModel.OrderLessons[0])
+                                priceItem = models.GetTable<LessonPriceType>().Where(p => p.PriceID == viewModel.OrderPriceID[i]).FirstOrDefault();
+                                if (priceItem == null)
                                 {
-                                    ModelState.AddModelError($"OrderLessons,{i}", $"購買不可大於{viewModel.OrderLessons[0]}單位");
+                                    ModelState.AddModelError($"OrderLessons,{i}", "請選擇課程單價");
+                                    continue;
                                 }
-                            }
-                            else if (priceItem.Status == (int)Naming.LessonPriceStatus.營養課程)
-                            {
-                                if (viewModel.OrderLessons[i] > priceItem.UpperBound)
+
+                                if (priceItem.Status == (int)Naming.LessonPriceStatus.運動恢復課程
+                                    || priceItem.Status == (int)Naming.LessonPriceStatus.運動防護課程)
                                 {
-                                    ModelState.AddModelError($"OrderLessons,{i}", $"購買不可大於{priceItem.UpperBound}單位");
+                                    if (viewModel.OrderLessons[i] > viewModel.OrderLessons[0])
+                                    {
+                                        ModelState.AddModelError($"OrderLessons,{i}", $"購買不可大於{viewModel.OrderLessons[0]}單位");
+                                    }
+                                }
+                                else if (priceItem.Status == (int)Naming.LessonPriceStatus.營養課程)
+                                {
+                                    if (viewModel.OrderLessons[i] > priceItem.UpperBound)
+                                    {
+                                        ModelState.AddModelError($"OrderLessons,{i}", $"購買不可大於{priceItem.UpperBound}單位");
+                                    }
                                 }
                             }
                         }
@@ -1710,11 +1713,11 @@ namespace WebHome.Helper.BusinessOperation
             if (!item.ExecuteContractStatus(profile, Naming.CourseContractStatus.已生效, fromStatus))
                 return null;
 
-            if(item.LessonPriceType.IsCombination)
+            if(item.CourseContractOrder.Any())
             {
                 foreach (var order in item.CourseContractOrder)
                 {
-                    createRegisterLesson(item, models, order.LessonPriceType, order.Lessons);
+                    createRegisterLesson(item, models, order.LessonPriceType, order.Lessons, order.SeqNo > 0 ? "加購" : null);
                 }
             }
             else if (item.LessonPriceType.IsPackagePrice)
@@ -1749,11 +1752,12 @@ namespace WebHome.Helper.BusinessOperation
             return pdfFile;
         }
 
-        private static void createRegisterLesson(CourseContract item, GenericManager<BFDataContext> models,LessonPriceType price,int lessons) 
+        private static void createRegisterLesson(CourseContract item, GenericManager<BFDataContext> models,LessonPriceType price,int lessons,String title = null) 
         {
 
             var groupLesson = new GroupingLesson { };
             var table = models.GetTable<RegisterLesson>();
+            List<RegisterLesson> sharingItems = new List<RegisterLesson>();
 
             foreach (var m in item.CourseContractMember)
             {
@@ -1784,25 +1788,52 @@ namespace WebHome.Helper.BusinessOperation
                     UID = m.UID,
                     RegisterLessonContract = new RegisterLessonContract
                     {
-                        ContractID = item.ContractID
+                        ContractID = item.ContractID,
+                        Title = title,
                     }
                 };
 
-                if (item.CourseContractType.ContractCode == CourseContractType.ContractTypeDefinition.CFA.ToString()
-                    || item.CourseContractType.ContractCode == CourseContractType.ContractTypeDefinition.CGF.ToString())
+                if (item.ContractType == (int)CourseContractType.ContractTypeDefinition.CFA
+                    || item.ContractType == (int)CourseContractType.ContractTypeDefinition.CGF
+                    || item.ContractType == (int)CourseContractType.ContractTypeDefinition.CVF)
                 {
                     lesson.GroupingMemberCount = 1;
                     lesson.GroupingLesson = new GroupingLesson { };
+                    lesson.RegisterLessonContract.ForShared = true;
+                    sharingItems.Add(lesson);
                 }
                 else
                 {
-                    lesson.GroupingLesson = groupLesson;
+                    if(price.IsOneByOne)
+                    {
+                        lesson.GroupingMemberCount = 1;
+                        lesson.GroupingLesson = new GroupingLesson { };
+                        lesson.RegisterLessonContract.ForShared = true;
+                        sharingItems.Add(lesson);
+                    }
+                    else
+                    {
+                        lesson.GroupingLesson = groupLesson;
+                    }
                 }
 
                 table.InsertOnSubmit(lesson);
             }
 
             models.SubmitChanges();
+
+            if (sharingItems.Count > 1)
+            {
+                models.GetTable<RegisterLessonSharing>()
+                    .InsertAllOnSubmit(sharingItems.Select(s => 
+                        new RegisterLessonSharing 
+                        {
+                            ShareID = sharingItems[0].RegisterID,
+                            RegisterID = s.RegisterID,
+                        }));
+
+                models.SubmitChanges();
+            }
         }
 
         public static async Task<CourseContract> ConfirmContractSignatureAsync(this CourseContractViewModel viewModel, SampleController<UserProfile> controller,CourseContract item = null)

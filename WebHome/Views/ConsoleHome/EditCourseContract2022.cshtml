@@ -147,6 +147,7 @@
                         <script>
                                 $(function () {
                                     $('select[name="PriceAdjustment"]').val('@Html.Raw((int)(_viewModel.PriceAdjustment ?? CourseContractExtension.UnitPriceAdjustmentDefinition.T1))');
+                                    $global.viewModel.PriceAdjustment = $('select[name="PriceAdjustment"]').val();
                                     $('select[name="PriceAdjustment"]').on('change', function (event) {
                                         $global.viewModel.PriceAdjustment = $(this).val();
                                     });

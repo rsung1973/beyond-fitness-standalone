@@ -49,11 +49,15 @@
                                         }
                                     </ul>
                                     @{
-                                        await Html.RenderPartialAsync("~/Views/ContractConsole/Module/ContractPackageContent.cshtml", _model);
+                                        await Html.RenderPartialAsync("~/Views/ContractConsole/Module/LessonCombinationContent.cshtml", _model);
                                     }
                                 </div>
                             </div>
                         </div>
+                        @if(_model.CourseContractOrder.Any())
+                        {
+                            await Html.RenderPartialAsync("~/Views/ContractConsole/Items/LessonCombinationDetails.cshtml");
+                        }
                         @if (!_profile.IsServitor())
                         {
                             <div class="panel">
@@ -117,9 +121,7 @@
                             </div>
                             <div class="panel">
                                 <div class="panel-heading" role="tab" id="headingLessonList">
-                                    @{ var attended = _model.ContractType == (int)CourseContractType.ContractTypeDefinition.CFA
-? _model.RegisterLessonContract.Select(r => r.RegisterLesson).Sum(r => r.AttendedLessons)
-: _model.RegisterLessonContract.FirstOrDefault()?.RegisterLesson?.AttendedLessons;}
+                                    @{ var attended = _model.AttendedLessonCount();}
 
                                     <h4 class="panel-title"><a role="button" data-toggle="collapse" data-parent="#accordionDetail_contract" href="#collapseLessonList" aria-expanded="false" aria-controls="collapseLessonList"><i class="material-icons">subject</i> 上課詳細資訊 @(attended > 0 ? $"({attended})" : null)</a></h4>
                                 </div>

@@ -1122,9 +1122,9 @@ namespace WebHome.Helper.BusinessOperation
             var contractItems = currentLessons.Join(models.GetTable<RegisterLessonContract>(), r => r.RegisterID, c => c.RegisterID, (r, c) => c)
                             .Join(models.GetTable<CourseContract>(), c => c.ContractID, n => n.ContractID, (c, n) => n);
 
-            var familyLessons = contractItems.Where(c => c.CourseContractType.ContractCode == "CFA"
-                                || c.CourseContractType.ContractCode == "CGF"
-                                || c.CourseContractType.ContractCode == "CVF")
+            var familyLessons = contractItems.Where(c => c.ContractType == (int)CourseContractType.ContractTypeDefinition.CFA
+                                || c.ContractType == (int)CourseContractType.ContractTypeDefinition.CGF
+                                || c.ContractType == (int)CourseContractType.ContractTypeDefinition.CVF)
                             .Join(models.GetTable<RegisterLessonContract>(), c => c.ContractID, r => r.ContractID, (c, r) => r)
                             .Join(models.GetTable<RegisterLesson>(), c => c.RegisterID, r => r.RegisterID, (c, r) => r);
 
@@ -1143,9 +1143,9 @@ namespace WebHome.Helper.BusinessOperation
             if (familyLessons.Count() > 0)
             {
                 var exceptFamily = currentLessons.Where(r => r.RegisterLessonContract == null 
-                    || (r.RegisterLessonContract.CourseContract.CourseContractType.ContractCode != "CFA"
-                            && r.RegisterLessonContract.CourseContract.CourseContractType.ContractCode != "CGF"
-                            && r.RegisterLessonContract.CourseContract.CourseContractType.ContractCode != "CVF"));
+                    || (r.RegisterLessonContract.CourseContract.ContractType != (int)CourseContractType.ContractTypeDefinition.CFA
+                            && r.RegisterLessonContract.CourseContract.ContractType != (int)CourseContractType.ContractTypeDefinition.CGF
+                            && r.RegisterLessonContract.CourseContract.ContractType != (int)CourseContractType.ContractTypeDefinition.CVF));
                 if (onlyAttended)
                 {
                     remainedCount = totalLessons

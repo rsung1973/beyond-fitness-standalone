@@ -627,6 +627,9 @@ namespace WebHome.Models.DataEntity
     partial void InsertLessonPriceExchange(LessonPriceExchange instance);
     partial void UpdateLessonPriceExchange(LessonPriceExchange instance);
     partial void DeleteLessonPriceExchange(LessonPriceExchange instance);
+    partial void InsertRegisterLessonSharing(RegisterLessonSharing instance);
+    partial void UpdateRegisterLessonSharing(RegisterLessonSharing instance);
+    partial void DeleteRegisterLessonSharing(RegisterLessonSharing instance);
     #endregion
 		
 		public BFDataContext() : 
@@ -2312,6 +2315,14 @@ namespace WebHome.Models.DataEntity
 			get
 			{
 				return this.GetTable<LessonPriceExchange>();
+			}
+		}
+		
+		public System.Data.Linq.Table<RegisterLessonSharing> RegisterLessonSharing
+		{
+			get
+			{
+				return this.GetTable<RegisterLessonSharing>();
 			}
 		}
 		
@@ -8437,6 +8448,10 @@ namespace WebHome.Models.DataEntity
 		
 		private EntitySet<QuestionnaireRequest> _QuestionnaireRequest;
 		
+		private EntityRef<RegisterLessonSharing> _RegisterLessonSharing;
+		
+		private EntitySet<RegisterLessonSharing> _SharingReference;
+		
 		private EntityRef<GroupingLesson> _GroupingLesson;
 		
 		private EntityRef<GroupingLessonDiscount> _GroupingLessonDiscount;
@@ -8493,6 +8508,8 @@ namespace WebHome.Models.DataEntity
 			this._LessonTimeExpansion = new EntitySet<LessonTimeExpansion>(new Action<LessonTimeExpansion>(this.attach_LessonTimeExpansion), new Action<LessonTimeExpansion>(this.detach_LessonTimeExpansion));
 			this._TrainingPlan = new EntitySet<TrainingPlan>(new Action<TrainingPlan>(this.attach_TrainingPlan), new Action<TrainingPlan>(this.detach_TrainingPlan));
 			this._QuestionnaireRequest = new EntitySet<QuestionnaireRequest>(new Action<QuestionnaireRequest>(this.attach_QuestionnaireRequest), new Action<QuestionnaireRequest>(this.detach_QuestionnaireRequest));
+			this._RegisterLessonSharing = default(EntityRef<RegisterLessonSharing>);
+			this._SharingReference = new EntitySet<RegisterLessonSharing>(new Action<RegisterLessonSharing>(this.attach_SharingReference), new Action<RegisterLessonSharing>(this.detach_SharingReference));
 			this._GroupingLesson = default(EntityRef<GroupingLesson>);
 			this._GroupingLessonDiscount = default(EntityRef<GroupingLessonDiscount>);
 			this._LevelExpression = default(EntityRef<LevelExpression>);
@@ -8949,6 +8966,48 @@ namespace WebHome.Models.DataEntity
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="RegisterLesson_RegisterLessonSharing", Storage="_RegisterLessonSharing", ThisKey="RegisterID", OtherKey="RegisterID", IsUnique=true, IsForeignKey=false)]
+		public RegisterLessonSharing RegisterLessonSharing
+		{
+			get
+			{
+				return this._RegisterLessonSharing.Entity;
+			}
+			set
+			{
+				RegisterLessonSharing previousValue = this._RegisterLessonSharing.Entity;
+				if (((previousValue != value) 
+							|| (this._RegisterLessonSharing.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._RegisterLessonSharing.Entity = null;
+						previousValue.RegisterLesson = null;
+					}
+					this._RegisterLessonSharing.Entity = value;
+					if ((value != null))
+					{
+						value.RegisterLesson = this;
+					}
+					this.SendPropertyChanged("RegisterLessonSharing");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="RegisterLesson_RegisterLessonSharing1", Storage="_SharingReference", ThisKey="RegisterID", OtherKey="ShareID")]
+		public EntitySet<RegisterLessonSharing> SharingReference
+		{
+			get
+			{
+				return this._SharingReference;
+			}
+			set
+			{
+				this._SharingReference.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="GroupingLesson_RegisterLesson", Storage="_GroupingLesson", ThisKey="RegisterGroupID", OtherKey="GroupID", IsForeignKey=true, DeleteRule="SET NULL")]
 		public GroupingLesson GroupingLesson
 		{
@@ -9289,6 +9348,18 @@ namespace WebHome.Models.DataEntity
 		{
 			this.SendPropertyChanging();
 			entity.RegisterLesson = null;
+		}
+		
+		private void attach_SharingReference(RegisterLessonSharing entity)
+		{
+			this.SendPropertyChanging();
+			entity.LessonRefernece = this;
+		}
+		
+		private void detach_SharingReference(RegisterLessonSharing entity)
+		{
+			this.SendPropertyChanging();
+			entity.LessonRefernece = null;
 		}
 	}
 	
@@ -19852,6 +19923,10 @@ namespace WebHome.Models.DataEntity
 		
 		private int _ContractID;
 		
+		private System.Nullable<bool> _ForShared;
+		
+		private string _Title;
+		
 		private EntityRef<RegisterLesson> _RegisterLesson;
 		
 		private EntityRef<CourseContract> _CourseContract;
@@ -19864,6 +19939,10 @@ namespace WebHome.Models.DataEntity
     partial void OnRegisterIDChanged();
     partial void OnContractIDChanging(int value);
     partial void OnContractIDChanged();
+    partial void OnForSharedChanging(System.Nullable<bool> value);
+    partial void OnForSharedChanged();
+    partial void OnTitleChanging(string value);
+    partial void OnTitleChanged();
     #endregion
 		
 		public RegisterLessonContract()
@@ -19917,6 +19996,46 @@ namespace WebHome.Models.DataEntity
 					this._ContractID = value;
 					this.SendPropertyChanged("ContractID");
 					this.OnContractIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ForShared", DbType="Bit")]
+		public System.Nullable<bool> ForShared
+		{
+			get
+			{
+				return this._ForShared;
+			}
+			set
+			{
+				if ((this._ForShared != value))
+				{
+					this.OnForSharedChanging(value);
+					this.SendPropertyChanging();
+					this._ForShared = value;
+					this.SendPropertyChanged("ForShared");
+					this.OnForSharedChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Title", DbType="NVarChar(64)")]
+		public string Title
+		{
+			get
+			{
+				return this._Title;
+			}
+			set
+			{
+				if ((this._Title != value))
+				{
+					this.OnTitleChanging(value);
+					this.SendPropertyChanging();
+					this._Title = value;
+					this.SendPropertyChanged("Title");
+					this.OnTitleChanged();
 				}
 			}
 		}
@@ -62385,6 +62504,8 @@ namespace WebHome.Models.DataEntity
 		
 		private System.Nullable<int> _SeqNo;
 		
+		private string _Title;
+		
 		private EntityRef<CourseContract> _CourseContract;
 		
 		private EntityRef<LessonPriceType> _LessonPriceType;
@@ -62401,6 +62522,8 @@ namespace WebHome.Models.DataEntity
     partial void OnLessonsChanged();
     partial void OnSeqNoChanging(System.Nullable<int> value);
     partial void OnSeqNoChanged();
+    partial void OnTitleChanging(string value);
+    partial void OnTitleChanged();
     #endregion
 		
 		public CourseContractOrder()
@@ -62494,6 +62617,26 @@ namespace WebHome.Models.DataEntity
 					this._SeqNo = value;
 					this.SendPropertyChanged("SeqNo");
 					this.OnSeqNoChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Title", DbType="NVarChar(64)")]
+		public string Title
+		{
+			get
+			{
+				return this._Title;
+			}
+			set
+			{
+				if ((this._Title != value))
+				{
+					this.OnTitleChanging(value);
+					this.SendPropertyChanging();
+					this._Title = value;
+					this.SendPropertyChanged("Title");
+					this.OnTitleChanged();
 				}
 			}
 		}
@@ -62754,6 +62897,174 @@ namespace WebHome.Models.DataEntity
 						this._TargetID = default(int);
 					}
 					this.SendPropertyChanged("TargetPrice");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.RegisterLessonSharing")]
+	public partial class RegisterLessonSharing : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _RegisterID;
+		
+		private int _ShareID;
+		
+		private EntityRef<RegisterLesson> _RegisterLesson;
+		
+		private EntityRef<RegisterLesson> _LessonRefernece;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnRegisterIDChanging(int value);
+    partial void OnRegisterIDChanged();
+    partial void OnShareIDChanging(int value);
+    partial void OnShareIDChanged();
+    #endregion
+		
+		public RegisterLessonSharing()
+		{
+			this._RegisterLesson = default(EntityRef<RegisterLesson>);
+			this._LessonRefernece = default(EntityRef<RegisterLesson>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RegisterID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int RegisterID
+		{
+			get
+			{
+				return this._RegisterID;
+			}
+			set
+			{
+				if ((this._RegisterID != value))
+				{
+					if (this._RegisterLesson.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnRegisterIDChanging(value);
+					this.SendPropertyChanging();
+					this._RegisterID = value;
+					this.SendPropertyChanged("RegisterID");
+					this.OnRegisterIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ShareID", DbType="Int NOT NULL")]
+		public int ShareID
+		{
+			get
+			{
+				return this._ShareID;
+			}
+			set
+			{
+				if ((this._ShareID != value))
+				{
+					if (this._LessonRefernece.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnShareIDChanging(value);
+					this.SendPropertyChanging();
+					this._ShareID = value;
+					this.SendPropertyChanged("ShareID");
+					this.OnShareIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="RegisterLesson_RegisterLessonSharing", Storage="_RegisterLesson", ThisKey="RegisterID", OtherKey="RegisterID", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public RegisterLesson RegisterLesson
+		{
+			get
+			{
+				return this._RegisterLesson.Entity;
+			}
+			set
+			{
+				RegisterLesson previousValue = this._RegisterLesson.Entity;
+				if (((previousValue != value) 
+							|| (this._RegisterLesson.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._RegisterLesson.Entity = null;
+						previousValue.RegisterLessonSharing = null;
+					}
+					this._RegisterLesson.Entity = value;
+					if ((value != null))
+					{
+						value.RegisterLessonSharing = this;
+						this._RegisterID = value.RegisterID;
+					}
+					else
+					{
+						this._RegisterID = default(int);
+					}
+					this.SendPropertyChanged("RegisterLesson");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="RegisterLesson_RegisterLessonSharing1", Storage="_LessonRefernece", ThisKey="ShareID", OtherKey="RegisterID", IsForeignKey=true)]
+		public RegisterLesson LessonRefernece
+		{
+			get
+			{
+				return this._LessonRefernece.Entity;
+			}
+			set
+			{
+				RegisterLesson previousValue = this._LessonRefernece.Entity;
+				if (((previousValue != value) 
+							|| (this._LessonRefernece.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._LessonRefernece.Entity = null;
+						previousValue.SharingReference.Remove(this);
+					}
+					this._LessonRefernece.Entity = value;
+					if ((value != null))
+					{
+						value.SharingReference.Add(this);
+						this._ShareID = value.RegisterID;
+					}
+					else
+					{
+						this._ShareID = default(int);
+					}
+					this.SendPropertyChanged("LessonRefernece");
 				}
 			}
 		}

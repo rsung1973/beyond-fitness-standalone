@@ -1,0 +1,78 @@
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    CourseContract _model;
+    UserProfile _profile;
+
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _model = (CourseContract)this.Model;
+    _profile = await Context.GetUserAsync();
+}
+@if (_model.CourseContractOrder.Any())
+{
+    <ul class="mb_list">
+        <li class="tit">
+            <i class="zmdi zmdi-folder-star-alt"></i> 複合式服務合約資訊<span class="badge bg-orange">@(_model.Lessons)堂@*/VIP學生續約*@</span>
+        </li>
+        @{
+            var orderItems = _model.CourseContractOrder.OrderBy(o => o.SeqNo).ToArray();
+            var order = orderItems[0];
+            var priceItem = order.LessonPriceType;
+        }
+        <li>
+            <div class="list_tb tb2">
+                <div class="list_tr">
+                    <div class="list_td hd">P.T Session《@(priceItem.DurationInMinutes)分鐘 / @($"{priceItem.ListPrice*(priceItem.BundleCount??1):##,###,###,###}")》</div>
+                    <div class="list_td rt">@(order.Lessons)</div>
+                </div>
+            </div>
+        </li>
+        @{
+            for (int i = 1; i < orderItems.Length; i++)
+            {
+                order = orderItems[i];
+                priceItem = order.LessonPriceType;
+                <li>
+                    <div class="list_tb tb2">
+                        <div class="list_tr">
+                            <div class="list_td hd">
+                                <span class="col-red">加購</span>
+                                @{
+                                    switch ((Naming.LessonPriceStatus?)priceItem.Status)
+                                    {
+                                        case Naming.LessonPriceStatus.營養課程:
+                                            <text>S.D Session《一個月 / @($"{priceItem.ListPrice*(priceItem.BundleCount??1):##,###,###,###}")》</text>
+                                            break;
+                                        case Naming.LessonPriceStatus.運動恢復課程:
+                                            <text>S.R Session《@(priceItem.DurationInMinutes)分鐘 / @($"{priceItem.ListPrice*(priceItem.BundleCount??1):##,###,###,###}")》</text>
+                                            break;
+                                        case Naming.LessonPriceStatus.運動防護課程:
+                                            <text>A.T Session《@(priceItem.DurationInMinutes)分鐘 / @($"{priceItem.ListPrice*(priceItem.BundleCount??1):##,###,###,###}")》</text>
+                                            break;
+                                        default:
+                                            <text>P.T Session《@(priceItem.DurationInMinutes)分鐘 / @($"{priceItem.ListPrice*(priceItem.BundleCount??1):##,###,###,###}")》</text>
+                                            break;
+                                    }
+                                }
+                            </div>
+                            <div class="list_td rt">@(order.Lessons)</div>
+                        </div>
+                    </div>
+                </li>
+            }
+        }
+    </ul>
+}

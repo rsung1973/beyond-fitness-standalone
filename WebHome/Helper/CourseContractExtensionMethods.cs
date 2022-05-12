@@ -375,11 +375,15 @@ namespace WebHome.Helper
         public static IQueryable<CourseContract> FilterByAlarmedContract(this IQueryable<CourseContract> items, GenericManager<BFDataContext> models, int alarmCount)
             
         {
-            var c0 = items.Where(c => c.ContractType == (int)CourseContractType.ContractTypeDefinition.CFA);
-            var c1 = items.Where(c => c.ContractType != (int)CourseContractType.ContractTypeDefinition.CFA);
+            var c0 = items.Where(c => c.ContractType == (int)CourseContractType.ContractTypeDefinition.CFA 
+                                    || c.ContractType == (int)CourseContractType.ContractTypeDefinition.CGF
+                                    || c.ContractType == (int)CourseContractType.ContractTypeDefinition.CVF);
+            var c1 = items.Where(c => c.ContractType != (int)CourseContractType.ContractTypeDefinition.CFA
+                                    && c.ContractType != (int)CourseContractType.ContractTypeDefinition.CGF
+                                    && c.ContractType != (int)CourseContractType.ContractTypeDefinition.CVF);
 
-            var c2 = c0.Select(c => new { Contract = c, RemainedCount = c.Lessons - c.RegisterLessonContract.Sum(l => l.RegisterLesson.LessonTime.Count()) })
-                        .Concat(c1.Select(c => new { Contract = c, RemainedCount = c.Lessons - c.RegisterLessonContract.Select(r => r.RegisterLesson).Where(r => r.UID == c.OwnerID).Select(r => r.GroupingLesson.LessonTime).Count() }));
+            var c2 = c0.Select(c => new { Contract = c, RemainedCount = c.RemainedLessonCount(false) })
+                        .Concat(c1.Select(c => new { Contract = c, RemainedCount = c.RemainedLessonCount(false) }));
             return c2.Where(c => c.RemainedCount <= alarmCount).Select(c => c.Contract);
         }
 

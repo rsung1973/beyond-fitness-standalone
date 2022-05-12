@@ -756,9 +756,9 @@ namespace WebHome.Helper
                             WHERE     ContractID = {1} and Status = {2}",
                         (int)Naming.CourseContractStatus.已生效, contract.ContractID, (int)Naming.CourseContractStatus.已履行);
                 }
-                if (contract != null && (contract.CourseContractType.ContractCode == "CFA"
-                        || contract.CourseContractType.ContractCode == "CGF"
-                        || contract.CourseContractType.ContractCode == "CVF"))
+                if (contract != null && (contract.ContractType == (int)CourseContractType.ContractTypeDefinition.CFA
+                        || contract.ContractType == (int)CourseContractType.ContractTypeDefinition.CGF
+                        || contract.ContractType == (int)CourseContractType.ContractTypeDefinition.CVF))
                 {
                     models.ExecuteCommand(@"UPDATE RegisterLesson
                     SET                Attended = {2}

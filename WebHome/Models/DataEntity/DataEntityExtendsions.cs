@@ -56,16 +56,21 @@ namespace WebHome.Models.DataEntity
         {
             //return item.Lessons
             //        - item.GroupingLesson.LessonTime.Count(/*l=>l.LessonAttendance!= null*/);
-            if (onlyAttended)
-            {
-                return item.Lessons - (item.AttendedLessons ?? 0)
-                        - (item.RegisterGroupID.HasValue ? item.GroupingLesson.LessonTime.Count(l => l.LessonAttendance != null) : item.LessonTime.Count(l => l.LessonAttendance != null));
-            }
-            else
-            {
-                return item.Lessons - (item.AttendedLessons ?? 0)
-                    - (item.RegisterGroupID.HasValue ? item.GroupingLesson.LessonTime.Count : item.LessonTime.Count);
-            }
+            //if (onlyAttended)
+            //{
+            //    return item.Lessons - (item.AttendedLessons ?? 0)
+            //            - (item.RegisterGroupID.HasValue 
+            //                ? item.GroupingLesson.LessonTime.Count(l => l.LessonAttendance != null) 
+            //                : item.LessonTime.Count(l => l.LessonAttendance != null));
+            //}
+            //else
+            //{
+            //    return item.Lessons - (item.AttendedLessons ?? 0)
+            //        - (item.RegisterGroupID.HasValue ? item.GroupingLesson.LessonTime.Count : item.LessonTime.Count);
+            //}
+
+            return item.Lessons - item.AttendedLessonCount(onlyAttended);
+
         }
 
         public static int AttendedLessonCount(this RegisterLesson item, bool onlyAttended = false)
@@ -73,15 +78,37 @@ namespace WebHome.Models.DataEntity
             if (onlyAttended)
             {
                 return (item.AttendedLessons ?? 0)
-                        + (item.RegisterGroupID.HasValue 
-                            ? item.GroupingLesson.LessonTime.Count(l => l.LessonAttendance != null) 
-                            : item.LessonTime.Count(l => l.LessonAttendance != null));
+                        + (item.RegisterLessonSharing != null
+                            ? item.RegisterLessonSharing
+                                .LessonRefernece.SharingReference.Sum(r => r.RegisterLesson.SpecifiedAttendedLessonCount(onlyAttended))
+                            : item.RegisterGroupID.HasValue
+                                ? item.GroupingLesson.LessonTime.Count(l => l.LessonAttendance != null)
+                                : item.LessonTime.Count(l => l.LessonAttendance != null));
             }
             else
             {
                 return (item.AttendedLessons ?? 0)
-                    + (item.RegisterGroupID.HasValue 
-                        ? item.GroupingLesson.LessonTime.Count 
+                    + (item.RegisterLessonSharing != null
+                            ? item.RegisterLessonSharing
+                                .LessonRefernece.SharingReference.Sum(r => r.RegisterLesson.SpecifiedAttendedLessonCount(onlyAttended))
+                            : item.RegisterGroupID.HasValue 
+                                ? item.GroupingLesson.LessonTime.Count 
+                                : item.LessonTime.Count);
+            }
+        }
+
+        public static int SpecifiedAttendedLessonCount(this RegisterLesson item, bool onlyAttended = false)
+        {
+            if (onlyAttended)
+            {
+                return (item.RegisterGroupID.HasValue
+                            ? item.GroupingLesson.LessonTime.Count(l => l.LessonAttendance != null)
+                            : item.LessonTime.Count(l => l.LessonAttendance != null));
+            }
+            else
+            {
+                return (item.RegisterGroupID.HasValue
+                        ? item.GroupingLesson.LessonTime.Count
                         : item.LessonTime.Count);
             }
         }
@@ -206,18 +233,25 @@ namespace WebHome.Models.DataEntity
 
         public static IEnumerable<RegisterLesson> CountableRegisterLesson(this CourseContract item)
         {
+            //if (item.ContractType == (int)CourseContractType.ContractTypeDefinition.CFA)
+            //{
+            //    return item.RegisterLessonContract
+            //        .Select(c => c.RegisterLesson);
+            //}
+            //else
+            //{
+            //    return item.RegisterLessonContract
+            //        .Select(c => c.RegisterLesson)
+            //        .Where(r => r.UID == item.OwnerID);
+            //}
 
-            if (item.ContractType == (int)CourseContractType.ContractTypeDefinition.CFA)
-            {
-                return item.RegisterLessonContract
-                    .Select(c => c.RegisterLesson);
-            }
-            else
-            {
-                return item.RegisterLessonContract
+            return item.RegisterLessonContract.Where(r => r.ForShared == true)
+                .Select(c => c.RegisterLesson)
+                .Concat(item.RegisterLessonContract
+                    .Where(c => !c.ForShared.HasValue || c.ForShared == false)
                     .Select(c => c.RegisterLesson)
-                    .Where(r => r.UID == item.OwnerID);
-            }
+                    .Where(r => r.UID == item.OwnerID));
+
         }
 
 
@@ -665,6 +699,7 @@ namespace WebHome.Models.DataEntity
         public bool IsDietaryConsult => this?.ObjectiveLessonPrice.Any(p => p.CatalogID == (int)ObjectiveLessonCatalog.CatalogDefinition.DietaryConsult) == true;
         public bool IsDistanceLesson => this?.ObjectiveLessonPrice.Any(p => p.CatalogID == (int)ObjectiveLessonCatalog.CatalogDefinition.OnLine) == true;
         public bool IsCombination => this?.ObjectiveLessonPrice.Any(p => p.CatalogID == (int)ObjectiveLessonCatalog.CatalogDefinition.CustomCombination) == true;
+        public bool IsOneByOne => this?.LessonPriceProperty.Any(p => p.PropertyID == (int)Naming.LessonPriceFeature.一對一課程) == true;
     }
 
     public partial class RegisterLesson
@@ -730,6 +765,15 @@ namespace WebHome.Models.DataEntity
             T3 = 3, //是，轉開新合約允許彈性設定購買單價
             T4 = 4,	//是，企業簽訂優惠允許彈性設定購買單價
         }
+
+        public static readonly String[] PriceAdjustment =
+            {
+                "",
+                "固定牌告單位數",
+                "轉讓第三人",
+                "轉開新合約",
+                "特別簽訂優惠",
+            };
     }
 
     public partial class UserRelationship

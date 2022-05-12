@@ -172,9 +172,9 @@
     </li>
     @{
         IEnumerable<CourseContractMember> items;
-        if (_model.CourseContractType.ContractCode == "CFA"
-            || _model.CourseContractType.ContractCode == "CGF"
-            || _model.CourseContractType.ContractCode == "CVF")
+        if (_model.ContractType == (int)CourseContractType.ContractTypeDefinition.CFA
+            || _model.ContractType == (int)CourseContractType.ContractTypeDefinition.CGF
+            || _model.ContractType == (int)CourseContractType.ContractTypeDefinition.CVF)
         {
             items = _model.CourseContractMember.Where(m => m.UID == _model.OwnerID);
         }
@@ -250,9 +250,9 @@
                     </li>
                 </ul>
             }
-            @if (_model.CourseContractType.ContractCode == "CFA"
-                || _model.CourseContractType.ContractCode == "CGF"
-                || _model.CourseContractType.ContractCode == "CVF")
+            @if (_model.ContractType == (int)CourseContractType.ContractTypeDefinition.CFA
+                || _model.ContractType == (int)CourseContractType.ContractTypeDefinition.CGF
+                || _model.ContractType == (int)CourseContractType.ContractTypeDefinition.CVF)
             {
                 <p class="black-t12">本人同意並授權以下人員得使用本人與超越體能顧問有限公司購買之體能顧問服務課程，任一人員(含本人)使用體能顧問服務，皆需計入體能顧問服務次數內，並應共同遵守合約及特約條款之規定</p>
 

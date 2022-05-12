@@ -236,7 +236,10 @@
                 var viewModel = $('input,select,textArea').serializeObject();
                 viewModel.Signature = $("#signature").jSignature("getData");
                 viewModel.SignatureName = 'Signature';
-                viewModel.SignatureCount = @(_item.CourseContractType.ContractCode == "CFA" || _item.CourseContractType.ContractCode == "CGF" || _item.CourseContractType.ContractCode == "CVF" ? 3 : 2);
+                viewModel.SignatureCount = @(_item.ContractType == (int)CourseContractType.ContractTypeDefinition.CFA 
+                                    || _item.ContractType == (int)CourseContractType.ContractTypeDefinition.CGF 
+                                    || _item.ContractType == (int)CourseContractType.ContractTypeDefinition.CVF 
+                                ? 3 : 2);
 
                 showLoading();
                 $.post('@Html.Raw(Url.Action("ConfirmContractServiceSignature", "CornerKick",new { KeyID = _item.ContractID.EncryptKey() }))', viewModel, function (data) {

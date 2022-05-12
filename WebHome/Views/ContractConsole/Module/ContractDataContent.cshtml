@@ -94,30 +94,10 @@
         </div>
     </div>
 </li>
-@if (_model.ContractType != (int)CourseContractType.ContractTypeDefinition.CGA)
-{
-    <li>
-        <div class="list_tb tb2">
-            <div class="list_tr">
-                <div class="list_td hd">
-                    課程單價
-                    <span class="badge bg-blue">
-                        @if (_model.LessonPriceType.SeriesID.HasValue)
-                        {
-                            <text>@(_model.LessonPriceType.LowerLimit == 1 ? "單" : _model.LessonPriceType.LowerLimit.ToString())堂</text>
-                        }
-                        else
-                        {
-                            <text>@(_model.LessonPriceType.Description) </text>
-                        }
-                    </span>
-                </div>
-                <div class="list_td rt">@($"{_model.LessonPriceType.ListPrice:##,###,###,###}")</div>
-            </div>
-        </div>
-    </li>
+@{
+    await Html.RenderPartialAsync($"~/Views/ContractConsole/Module/ContractPriceData{_model.CourseContractExtension.Version}.cshtml");
 }
-<li>
+@*<li>
     <div class="list_tb tb2">
         <div class="list_tr">
             <div class="list_td hd">應收款期限</div>
@@ -137,23 +117,21 @@
             </div>
         </div>
     </div>
-</li>
-@if (_model.ContractType != (int)CourseContractType.ContractTypeDefinition.CGA)
-{
-    <li>
-        <div class="list_tb tb2">
-            <div class="list_tr">
-                <div class="list_td hd">剩餘/購買堂數</div>
-                <div class="list_td rt">@(_model.RemainedLessonCount())/@(_model.Lessons)</div>
-            </div>
-        </div>
-    </li>
-}
+</li>*@
+
 <li>
     <div class="list_tb tb2">
         <div class="list_tr">
-            <div class="list_td hd">其他增補說明</div>
-            <div class="list_td rt">@(_model.Remark)@(_model.PayoffDue.HasValue ? $"帳款應付期限{_model.PayoffDue:yyyy/MM/dd}。" : null)</div>
+            <div class="list_td hd">剩餘/購買堂數</div>
+            <div class="list_td rt">@(_model.RemainedLessonCount())/@(_model.Lessons)</div>
+        </div>
+    </div>
+</li>
+<li>
+    <div class="list_tb tb2">
+        <div class="list_tr">
+            <div class="list_td hd">備註</div>
+            <div class="list_td rt">@(_model.Remark)@*@(_model.PayoffDue.HasValue ? $"帳款應付期限{_model.PayoffDue:yyyy/MM/dd}。" : null)*@</div>
         </div>
     </div>
 </li>
