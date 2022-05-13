@@ -143,9 +143,9 @@
                     {
                         <tr>
                             <td colspan="2">
-                                <label class="fancy-checkbox custom-bgcolor-green">
+                                <label class="fancy-checkbox  custom-bgcolor-green">
                                     <input type="checkbox" checked="checked" disabled="disabled" />
-                                    <span class="col-pink">學生端線上簽名</span>
+                                    <span class="col-green">學生端線上簽名</span>
                                 </label>
                             </td>
                         </tr>
@@ -248,14 +248,14 @@
                             {
                                 <label class="fancy-checkbox custom-bgcolor-pink">
                                     <input type="checkbox" name="agreement">
-                                    <span>我已閱讀並同意超越體能顧問有限公司隱私政策、服務條款、相關使用及消費合約，即表示即日起您同意接受本合約正面及背面條款之相關約束及其責任</span>
+                                    <span class="col-red">我已閱讀並同意超越體能顧問有限公司隱私政策、服務條款、相關使用及消費合約，即表示即日起您同意接受本合約正面及背面條款之相關約束及其責任</span>
                                 </label>
                             }
                             else if (_model.Status == (int)Naming.CourseContractStatus.待審核)
                             {
-                                <label class="fancy-checkbox">
-                                    <input type="checkbox" name="agreement" checked="checked" disabled="disabled">
-                                    <span>我已閱讀並同意超越體能顧問有限公司隱私政策、服務條款、相關使用及消費合約，即表示即日起您同意接受本合約正面及背面條款之相關約束及其責任</span>
+                                <label class="fancy-checkbox custom-bgcolor-pink">
+                                    <input type="checkbox" name="agreement" checked="checked" disabled="disabled" class="">
+                                    <span class="col-red">我已閱讀並同意超越體能顧問有限公司隱私政策、服務條款、相關使用及消費合約，即表示即日起您同意接受本合約正面及背面條款之相關約束及其責任</span>
                                 </label>
                             }
                             else

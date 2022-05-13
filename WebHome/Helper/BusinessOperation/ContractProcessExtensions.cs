@@ -1674,13 +1674,13 @@ namespace WebHome.Helper.BusinessOperation
             switch ((Naming.LessonPriceStatus?)item.Status)
             {
                 case Naming.LessonPriceStatus.營養課程:
-                    return $"加購營養諮詢{order.Lessons}月{order.Lessons * (item.BundleCount ?? 1)}堂";
+                    return $"加購S.D Session(營養諮詢){order.Lessons}月{order.Lessons * (item.BundleCount ?? 1)}堂";
                 case Naming.LessonPriceStatus.運動恢復課程:
-                    return $"S.R運動恢復{item.DurationInMinutes}分鐘{order.Lessons * (item.BundleCount ?? 1)}堂";
+                    return $"S.R Session(運動恢復){item.DurationInMinutes}分鐘{order.Lessons * (item.BundleCount ?? 1)}堂";
                 case Naming.LessonPriceStatus.運動防護課程:
-                    return $"A.T運動防護{item.DurationInMinutes}分鐘{order.Lessons * (item.BundleCount ?? 1)}堂";
+                    return $"A.T Session(運動防護){item.DurationInMinutes}分鐘{order.Lessons * (item.BundleCount ?? 1)}堂";
                 default:
-                    return $"私人教練{item.DurationInMinutes}分鐘{order.Lessons * (item.BundleCount ?? 1)}堂";
+                    return $"P.T Session(私人教練){item.DurationInMinutes}分鐘{order.Lessons * (item.BundleCount ?? 1)}堂";
             }
         }
 
