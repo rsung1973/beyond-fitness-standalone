@@ -102,7 +102,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="2">複合式課程購買堂數：@(_model.Lessons)堂（含 @(String.Join("，",_model.ExpandContractLessonDetails(models)))）</td>
+                        <td colspan="2">複合式課程購買堂數：@(_model.Lessons)堂，含 @(String.Join("，",_model.ExpandContractLessonDetails(models)))</td>
                      </tr>
                     <tr>
                         <td colspan="2">專業顧問建置與諮詢費：@(String.Format("{0:##,###,###,###}", (_model.TotalCost * 8 + 5) / 10))</td>
