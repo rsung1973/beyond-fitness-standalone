@@ -1057,7 +1057,9 @@ namespace WebHome.Helper.BusinessOperation
             var HttpContext = controller.HttpContext;
             var models = controller.DataSource;
 
+            List<LessonPriceType> priceItems = new List<LessonPriceType>();
             var item = models.GetTable<LessonPriceType>().Where(p => p.PriceID == viewModel.PriceID).FirstOrDefault();
+
             if (item == null)
             {
                 ModelState.AddModelError("PriceID", "請選擇課程單價");
@@ -1081,6 +1083,8 @@ namespace WebHome.Helper.BusinessOperation
                     }
                     else
                     {
+                        priceItems.Add(priceItem);
+
                         if (viewModel.PriceAdjustment == CourseContractExtension.UnitPriceAdjustmentDefinition.T1 && viewModel.OrderLessons[0] < priceItem.LowerLimit)
                         {
                             ModelState.AddModelError("OrderLessons,0", $"購買最少{priceItem.LowerLimit}單位");
@@ -1110,6 +1114,8 @@ namespace WebHome.Helper.BusinessOperation
                             for (int i = 1; i < viewModel.OrderPriceID.Length; i++)
                             {
                                 priceItem = models.GetTable<LessonPriceType>().Where(p => p.PriceID == viewModel.OrderPriceID[i]).FirstOrDefault();
+                                priceItems.Add(priceItem);
+
                                 if (priceItem == null)
                                 {
                                     ModelState.AddModelError($"OrderLessons,{i}", "請選擇課程單價");
@@ -1135,6 +1141,11 @@ namespace WebHome.Helper.BusinessOperation
                         }
                     }
                 }
+            }
+
+            if(ModelState.IsValid)
+            {
+                controller.ViewBag.PriceItems = priceItems;
             }
 
             return item;

@@ -50,7 +50,7 @@
                                         <div class="list_td hd">
                                             <span class="col-red">@(rc.Title)</span>
                                             @{
-                                                switch ((Naming.LessonPriceStatus?)priceItem.Status)
+                                                switch((Naming.LessonPriceStatus?)priceItem.Status)
                                                 {
                                                     case Naming.LessonPriceStatus.營養課程:
                                                         <text>S.D Session《一個月 / @($"{priceItem.ListPrice*(priceItem.BundleCount??1):##,###,###,###}")》</text>

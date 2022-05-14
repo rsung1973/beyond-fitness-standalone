@@ -26,7 +26,7 @@
 <li>
     <div class="list_tb tb2">
         <div class="list_tr">
-            <div class="list_td hd">合約編號</div>
+            <div class="list_td hd">合約編號 <span class="badge badge-danger">@(_model.Renewal == true ? "續約" : "新約" )</span></div>
             <div class="list_td rt">@(_model.ContractNo())</div>
         </div>
     </div>

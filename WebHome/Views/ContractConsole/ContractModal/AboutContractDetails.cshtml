@@ -54,7 +54,10 @@
                                 </div>
                             </div>
                         </div>
-                        @if(_model.CourseContractOrder.Any())
+                        @if(_model.Status >= (int)Naming.CourseContractStatus.已生效
+                            && _model.ContractType != (int)CourseContractType.ContractTypeDefinition.CNA
+                            && _model.ContractType != (int)CourseContractType.ContractTypeDefinition.CNR
+                            && _model.CourseContractOrder.Any())
                         {
                             await Html.RenderPartialAsync("~/Views/ContractConsole/Items/LessonCombinationDetails.cshtml");
                         }
@@ -121,9 +124,10 @@
                             </div>
                             <div class="panel">
                                 <div class="panel-heading" role="tab" id="headingLessonList">
-                                    @{ var attended = _model.AttendedLessonCount();}
-
-                                    <h4 class="panel-title"><a role="button" data-toggle="collapse" data-parent="#accordionDetail_contract" href="#collapseLessonList" aria-expanded="false" aria-controls="collapseLessonList"><i class="material-icons">subject</i> 上課詳細資訊 @(attended > 0 ? $"({attended})" : null)</a></h4>
+                                    @{ 
+                                        var attended = _model.AttendedLessonCount();
+                                    }
+                                    <h4 class="panel-title"><a role="button" data-toggle="collapse" data-parent="#accordionDetail_contract" href="#collapseLessonList" aria-expanded="false" aria-controls="collapseLessonList"><i class="material-icons">subject</i> 上課詳細資訊 @*@(attended > 0 ? $"({attended})" : null)*@</a></h4>
                                 </div>
                                 <div id="collapseLessonList" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingLessonList">
                                     <div class="panel-body no-padding">

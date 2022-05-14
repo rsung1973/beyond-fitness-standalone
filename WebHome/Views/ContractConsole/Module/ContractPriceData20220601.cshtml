@@ -32,7 +32,10 @@
                     @(CourseContractExtension.PriceAdjustment[((int?)_model.CourseContractExtension.UnitPriceAdjustmentType ?? 0)])
                 </span>
             </div>
-            <div class="list_td rt">@($"{_model.CourseContractOrder.OrderBy(o=>o.SeqNo).FirstOrDefault()?.LessonPriceType.ListPrice:##,###,###,###}")</div>
+            @{
+                var priceItem = _model.CourseContractOrder.OrderBy(o => o.SeqNo).FirstOrDefault()?.LessonPriceType;
+            }
+            <div class="list_td rt">@($"{priceItem?.ListPrice * (priceItem?.BundleCount ?? 1):##,###,###,###}")</div>
         </div>
     </div>
 </li>

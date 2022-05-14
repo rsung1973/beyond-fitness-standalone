@@ -1,6 +1,4 @@
-﻿
-
-@using System.IO
+﻿@using System.IO
 @using System.Linq.Expressions
 
 @using WebHome.Helper
@@ -20,7 +18,7 @@
     Layout = "~/Views/ConsoleHome/Template/MainPage.cshtml";
 
 
-    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
     _modelState = ViewContext.ModelState;
     _model = (UserProfile)this.Model;
     _viewModel = (CourseContractQueryViewModel)ViewBag.ViewModel;
@@ -29,15 +27,15 @@
 
 }
 @section CustomHeader {
-    <!-- JQuery DataTable Css -->
-    <link href="plugins/jquery-datatable/DataTables-1.10.18/css/dataTables.bootstrap4.min.css" rel="stylesheet">
-    <link href="plugins/jquery-datatable/Responsive-2.2.2/css/responsive.bootstrap4.min.css" rel="stylesheet">
-    <link href="plugins/jquery-datatable/FixedColumns-3.2.5/css/fixedColumns.bootstrap4.min.css" rel="stylesheet">
-    <!-- Bootstrap Datetimepick -->
-    
-    <link href="css/smartcalendar-2.css" rel="stylesheet" />
-    <!-- Custom Css -->
-    <link rel="stylesheet" href="css/customelist.css?1.1" />
+<!-- JQuery DataTable Css -->
+<link href="plugins/jquery-datatable/DataTables-1.10.18/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+<link href="plugins/jquery-datatable/Responsive-2.2.2/css/responsive.bootstrap4.min.css" rel="stylesheet">
+<link href="plugins/jquery-datatable/FixedColumns-3.2.5/css/fixedColumns.bootstrap4.min.css" rel="stylesheet">
+<!-- Bootstrap Datetimepick -->
+
+<link href="css/smartcalendar-2.css" rel="stylesheet" />
+<!-- Custom Css -->
+<link rel="stylesheet" href="css/customelist.css?1.1" />
 }
 
 <!-- Main Content -->
@@ -52,7 +50,9 @@
     <div class="container-fluid">
         <div class="card">
             <div class="header">
-                @{ await Html.RenderPartialAsync("~/Views/ContractConsole/Editing/SelectConsultant.cshtml", _model);}
+                @{
+                    await Html.RenderPartialAsync("~/Views/ContractConsole/Editing/SelectConsultant.cshtml", _model);
+                }
             </div>
             <div class="body">
                 <div class="row clearfix">
@@ -92,7 +92,7 @@
                         </select>
                         <script>
                             $(function(){
-                                //var ctAux = '@Html.Raw((int?)_viewModel.ContractTypeAux)';
+                                var ctAux = @Html.Raw(((int?)_viewModel.ContractTypeAux)?.ToString() ?? "null");
                                 //if(ctAux=='') {
                                 //    $global.viewModel.ContractTypeAux = '@((int)CourseContractType.ContractTypeDefinition.CGA)';
                                 //} else {
@@ -102,10 +102,10 @@
                                     var ct = $(this).val();
                                     $global.viewModel.ContractTypeAux = ct;
                                 });
-                                resetContractTypeAux();
+                                resetContractTypeAux(ctAux);
                             });
 
-                            function resetContractTypeAux() {
+                            function resetContractTypeAux(ctAux) {
                                 var ct = $('select[name="ContractType"]').val();
                                 $('select[name="ContractTypeAux"] option').prop('selected',false);
 
@@ -115,7 +115,11 @@
                                     $('select[name="ContractTypeAux"] option').prop('disabled',false);
                                     $('select[name="ContractTypeAux"] option.forAux').prop('disabled',true);
                                 }
-                                $('select[name="ContractTypeAux"] option:enabled').eq(0).prop('selected',true);
+                                if(ctAux) {
+                                    $('select[name="ContractTypeAux"]').val(ctAux);
+                                } else {
+                                    $('select[name="ContractTypeAux"] option:enabled').eq(0).prop('selected',true);
+                                }
                                 $('select[name="ContractTypeAux"]').selectpicker('refresh');
                                 $global.viewModel.ContractTypeAux = $('select[name="ContractTypeAux"]').val();
                             }
@@ -128,12 +132,12 @@
                             <option value="False">新約</option>
                         </select>
                         <script>
-                                $(function () {
-                                    $('select[name="Renewal"]').val('@Html.Raw(_viewModel.Renewal)');
-                                    $('select[name="Renewal"]').on('change', function (event) {
-                                        $global.viewModel.Renewal = $(this).val();
-                                    });
+                            $(function () {
+                                $('select[name="Renewal"]').val('@Html.Raw(_viewModel.Renewal)');
+                                $('select[name="Renewal"]').on('change', function (event) {
+                                    $global.viewModel.Renewal = $(this).val();
                                 });
+                            });
                         </script>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6 col-12">
@@ -145,13 +149,13 @@
                             <option value="@((int)CourseContractExtension.UnitPriceAdjustmentDefinition.T4)">特別專案優惠</option>
                         </select>
                         <script>
-                                $(function () {
-                                    $('select[name="PriceAdjustment"]').val('@Html.Raw((int)(_viewModel.PriceAdjustment ?? CourseContractExtension.UnitPriceAdjustmentDefinition.T1))');
-                                    $global.viewModel.PriceAdjustment = $('select[name="PriceAdjustment"]').val();
-                                    $('select[name="PriceAdjustment"]').on('change', function (event) {
-                                        $global.viewModel.PriceAdjustment = $(this).val();
-                                    });
+                            $(function () {
+                                $('select[name="PriceAdjustment"]').val('@Html.Raw((int)(_viewModel.PriceAdjustment ?? CourseContractExtension.UnitPriceAdjustmentDefinition.T1))');
+                                $global.viewModel.PriceAdjustment = $('select[name="PriceAdjustment"]').val();
+                                $('select[name="PriceAdjustment"]').on('change', function (event) {
+                                    $global.viewModel.PriceAdjustment = $(this).val();
                                 });
+                            });
                         </script>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6 col-12">
@@ -172,7 +176,7 @@
                         </select>
                         <script>
                             $(function () {
-                                    $('select[name="BranchID"]').val('@Html.Raw(_viewModel.BranchID)');                                    
+                                    $('select[name="BranchID"]').val('@Html.Raw(_viewModel.BranchID)');
                                     $('select[name="BranchID"]').on('change', function (event) {
                                         $global.viewModel.BranchID = $(this).val();
                                         resetInstallmentPlan();
@@ -206,7 +210,7 @@
                         @*<label class="material-icons help-error-text">clear 請選擇上課場所</label>*@
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6 col-12">
-                        @{ 
+                        @{
                             await Html.RenderPartialAsync("~/Views/ContractConsole/Editing/SelectLessonPrice2022.cshtml", _model);
                         }
                     </div>
@@ -275,14 +279,18 @@
                         <h2><strong>學生基本資料</strong></h2>
                         <div class="col-md-8 col-lg-8 col-8 float-right">
                             <div class="input-group">
-                                @{ ViewBag.SearchAction = Url.Action("SearchContractMember", "ContractConsole");
-                                    await Html.RenderPartialAsync("~/Views/ConsoleEvent/Module/SearchLearner.cshtml");}
+                                @{
+                                    ViewBag.SearchAction = Url.Action("SearchContractMember", "ContractConsole");
+                                    await Html.RenderPartialAsync("~/Views/ConsoleEvent/Module/SearchLearner.cshtml");
+                                }
 
                             </div>
                         </div>
                     </div>
                     <div class="body" id="contractMember">
-                        @{ await Html.RenderPartialAsync("~/Views/ContractConsole/Editing/ListContractMember.cshtml", _model);}
+                        @{
+                            await Html.RenderPartialAsync("~/Views/ContractConsole/Editing/ListContractMember.cshtml", _model);
+                        }
 
                     </div>
                     <input type="hidden" name="OwnerID" />
@@ -346,10 +354,10 @@
                             {
                                 <script>
                                     $(function () {
-                                        @foreach(var p in _viewModel.PaymentMethod)
-                                        {
-                                            <text>$('input:checkbox[name="PaymentMethod"][value="@Html.Raw(p)"]').prop('checked', true);</text>
-                                        }
+                                    @foreach (var p in _viewModel.PaymentMethod)
+                                    {
+                                        <text>$('input:checkbox[name="PaymentMethod"][value="@Html.Raw(p)"]').prop('checked', true);</text>
+                                    }
                                     });
                                 </script>
                             }
@@ -362,74 +370,100 @@
                                 </label>
                             </div>
                             <div class="col-lg-8 col-md-8 col-sm-12 col-12">
-                                <select class="form-control show-tick installments" name="Installments" onchange="installmentPlanRemark();"></select>
+                                <select class="form-control show-tick installments" name="Installments" onchange="installmentPlanRemark2022();"></select>
                                 <script>
 
-                                    function installmentPlanRemark() {
-                                        var $installments = $('select[name="Installments"]');
-                                        $global.viewModel.Installments = $installments.val();
-                                        if ($installments.val() != '') {
-                                            var content = '本合約總共購買' + $global.viewModel.Lessons + '堂，分期轉開次數' + $installments.val() + '次。';
-                                            $global.viewModel.Remark = prepareRemark(content);
-                                        }
-                                    }
-
-                                    function prepareRemark(remark) {
-                                        var $remark = $('textarea[name="Remark"]');
-                                        var content = $remark.val();
-                                        content = remark + content.replace(/本合約.*次。/g, '');
-                                        $remark.val(content);
-                                        return content;
-                                    }
-
-                                    function checkInstallmentPlan() {
-                                        var $installmentPlan = $('input[name="InstallmentPlan"]');
-                                        var $installments = $('.installments');
-                                        if ($installmentPlan.is(':checked')) {
-                                            $installments.css('display', 'block');
-                                            $global.viewModel.InstallmentPlan = true;
-                                        } else {
-                                            $installments.css('display', 'none');
-                                            $('select[name="Installments"]').selectpicker('val', '');
-                                            $global.viewModel.InstallmentPlan = false;
-                                            $global.viewModel.Remark = prepareRemark('');
-                                        }
-                                    }
-
-                                        $(function () {
-                                            checkInstallmentPlan();
-                                        });
-
-                                        function loadInstallments(lessons, installments) {
-                                            var $installments = $('select[name="Installments"]');
-                                            if (!installments) {
-                                                installments = $installments.val();
-                                            }
-                                            $installments.empty();
-                                            if (lessons == '' || isNaN(Number(lessons))) {
-                                                return;
-                                            }
-                                            showLoading();
-                                            $.post('@Html.Raw(Url.Action("LoadInstallmentPlan","CourseContract"))', { 'lessons': lessons, 'installments': installments }, function (data) {
-                                                hideLoading();
-                                                if ($.isPlainObject(data)) {
-                                                    Swal.fire(
-                                                        'Oops...',
-                                                        data.message,
-                                                        'warning'
-                                                    )
-                                                } else {
-                                                    $(data).appendTo($installments);
-                                                    $installments.selectpicker('refresh');
+                                                function installmentPlanRemark() {
+                                                    var $installments = $('select[name="Installments"]');
+                                                    $global.viewModel.Installments = $installments.val();
+                                                    if ($installments.val() != '') {
+                                                        var content = '本合約總共購買' + $global.viewModel.Lessons + '堂，分期轉開次數' + $installments.val() + '次。';
+                                                        $global.viewModel.Remark = prepareRemark(content);
+                                                    }
                                                 }
-                                            });
-                                        }
+
+                                                function installmentPlanRemark2022() { 
+                                                    var $installments = $('select[name="Installments"]');
+                                                    $global.viewModel.Installments = $installments.val();
+                                                    showLoading();
+                                                    $.post('/ContractConsole/BuildInstallmentRemark', $global.viewModel, function (data) {
+                                                        hideLoading();
+                                                        if ($.isPlainObject(data)) {
+                                                                    Swal.fire(
+                                                                        'Oops...',
+                                                                        data.message,
+                                                                        'warning'
+                                                                    );
+                                                        } else {
+                                                            var nodes = $.parseHTML(data);
+                                                                var $remark = $('textarea[name="Remark"]');
+                                                            if(nodes.length == 1 && nodes[0].nodeName == "#text") {
+                                                                $remark.val(nodes[0].nodeValue.trim());
+                                                            } else {
+                                                                $remark.val();
+                                                                $('body').append(data);
+                                                            }
+                                                        }
+                                                    });
+                                                }
+
+                                                function prepareRemark(remark) {
+                                                    var $remark = $('textarea[name="Remark"]');
+                                                    var content = $remark.val();
+                                                    content = remark + content.replace(/本合約.*次。/g, '');
+                                                    $remark.val(content);
+                                                    return content;
+                                                }
+
+                                                function checkInstallmentPlan() {
+                                                    var $installmentPlan = $('input[name="InstallmentPlan"]');
+                                                    var $installments = $('.installments');
+                                                    if ($installmentPlan.is(':checked')) {
+                                                        $installments.css('display', 'block');
+                                                        $global.viewModel.InstallmentPlan = true;
+                                                    } else {
+                                                        $installments.css('display', 'none');
+                                                        $('select[name="Installments"]').selectpicker('val', '');
+                                                        $global.viewModel.InstallmentPlan = false;
+                                                        $('textarea[name="Remark"]').val('');
+                                                        $global.viewModel.Remark = null;
+                                                    }
+                                                }
+
+                                                    $(function () {
+                                                        checkInstallmentPlan();
+                                                    });
+
+                                                    function loadInstallments(lessons, installments) {
+                                                        var $installments = $('select[name="Installments"]');
+                                                        if (!installments) {
+                                                            installments = $installments.val();
+                                                        }
+                                                        $installments.empty();
+                                                        if (lessons == '' || isNaN(Number(lessons))) {
+                                                            return;
+                                                        }
+                                                        showLoading();
+                                                        $.post('@Html.Raw(Url.Action("LoadInstallmentPlan","CourseContract"))', { 'lessons': lessons, 'installments': installments }, function (data) {
+                                                            hideLoading();
+                                                            if ($.isPlainObject(data)) {
+                                                                Swal.fire(
+                                                                    'Oops...',
+                                                                    data.message,
+                                                                    'warning'
+                                                                )
+                                                            } else {
+                                                                $(data).appendTo($installments);
+                                                                $installments.selectpicker('refresh');
+                                                            }
+                                                        });
+                                                    }
                                     @if (_viewModel.InstallmentPlan == true || _viewModel.Lessons > 0)
                                     {
                                         <text>
-                                        $(function () {
-                                                loadInstallments('@(_viewModel.Lessons)', '@(_viewModel.Installments)');
-                                        });
+                                                        $(function () {
+                                                                loadInstallments('@(_viewModel.Lessons)', '@(_viewModel.Installments)');
+                                                        });
                                         </text>
                                     }
                                 </script>
@@ -472,7 +506,7 @@
                             <div class="col-12 m-b-20 signOnline">
                                 @*<div class="fancy-checkbox custom-bgcolor-pink">
                                     <label><input name="SignOnline" value="true" type="checkbox" onclick="resetAttachment();" @(_viewModel.SignOnline == true ? "checked" : null) /><span><i></i>學生遠端線上簽名</span></label>
-                                </div>*@
+                                    </div>*@
                                 <script>
                                     function resetAttachment() {
                                         $('#attachment').css('display', 'block');
@@ -501,19 +535,19 @@
                             </script>
                             <div class="col-12" id="attachment">
                                 @*<script>
-                $(function () {
-                    $global.dropifyMessage = {
-                        'default': '點選或拖拉代辦委託書(可上傳格式PDF、GIF、JPG、PNG)到這邊',
-                        'replace': '點選或拖拉代辦委託書(可上傳格式PDF、GIF、JPG、PNG)取代目前內容',
-                        'remove': '刪除內容',
-                        'error': 'Ooops, 肯定做錯了什麼'
-                    };
-                    $global.dropifyError = {
-                        'fileSize': 'Ooops, 上傳的檔案太大了啦！ ({{ value }} max).',
-                        'imageFormat': 'Ooops, 上傳檔案是PDF或圖檔嗎？！ ({{ value }} only).'
-                    };
-                });
-            </script>*@
+                                    $(function () {
+                                    $global.dropifyMessage = {
+                                    'default': '點選或拖拉代辦委託書(可上傳格式PDF、GIF、JPG、PNG)到這邊',
+                                    'replace': '點選或拖拉代辦委託書(可上傳格式PDF、GIF、JPG、PNG)取代目前內容',
+                                    'remove': '刪除內容',
+                                    'error': 'Ooops, 肯定做錯了什麼'
+                                    };
+                                    $global.dropifyError = {
+                                    'fileSize': 'Ooops, 上傳的檔案太大了啦！ ({{ value }} max).',
+                                    'imageFormat': 'Ooops, 上傳檔案是PDF或圖檔嗎？！ ({{ value }} only).'
+                                    };
+                                    });
+                                    </script>*@
                                 <form enctype="multipart/form-data" method="post">
                                     @{
                                         await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/DropifyFileUpload.cshtml");
@@ -568,31 +602,31 @@
                             $global.viewModel.Remark = $('textarea[name="Remark"]').val();
                             $global.viewModel.SignOnline = $('input[name="SignOnline"]').is(':checked');
 
-                            @*
+                        @*
                             var $formData = $('form').serializeObject();
                             $formData = $.extend({}, $global.viewModel, $formData);
-                            *@
+                        *@
 
                             showLoading();
-                            @*
+                        @*
                             $.post('@Html.Raw(Url.Action("CommitContract2022", "ContractConsole", _viewModel.ContractID))', $formData, function (data) {
-                                hideLoading();
-                                debugger;
-                                console.log(data);
-                                if ($.isPlainObject(data)) {
-                                    Swal.fire(
-                                        'Oops...',
-                                        data.message,
-                                        'warning'
-                                    )
-                                }
-                                else {
-                                    $(data).appendTo($('body'));
-                                }
+                            hideLoading();
+                            debugger;
+                            console.log(data);
+                            if ($.isPlainObject(data)) {
+                            Swal.fire(
+                            'Oops...',
+                            data.message,
+                            'warning'
+                            )
+                            }
+                            else {
+                            $(data).appendTo($('body'));
+                            }
                             }).fail(function (jqXHR, textStatus, errorThrown) {
-                                console.log(textStatus);
+                            console.log(textStatus);
                             });
-                            *@
+                        *@
 
                             $('form').ajaxForm({
                                 url: '@Html.Raw(Url.Action("CommitContract2022", "ContractConsole", _viewModel.ContractID))',
@@ -626,21 +660,23 @@
 </section>
 
 @section TailPageJavaScriptInclude {
-    <!--Sparkline Plugin Js-->
-    <script src="plugins/jquery-sparkline/jquery.sparkline.js"></script>
-    <!-- SweetAlert Plugin Js -->
-    <script src="plugins/sweetalert/sweetalert.min.js"></script>
-    <!-- Jquery DataTable Plugin Js -->
-    <script src="bundles/datatablescripts.bundle.js"></script>
-    <script src="plugins/jquery-datatable/Responsive-2.2.2/js/dataTables.responsive.min.js"></script>
-    <script src="plugins/jquery-datatable/FixedColumns-3.2.5/js/dataTables.fixedColumns.min.js"></script>
+<!--Sparkline Plugin Js-->
+<script src="plugins/jquery-sparkline/jquery.sparkline.js"></script>
+<!-- SweetAlert Plugin Js -->
+<script src="plugins/sweetalert/sweetalert.min.js"></script>
+<!-- Jquery DataTable Plugin Js -->
+<script src="bundles/datatablescripts.bundle.js"></script>
+<script src="plugins/jquery-datatable/Responsive-2.2.2/js/dataTables.responsive.min.js"></script>
+<script src="plugins/jquery-datatable/FixedColumns-3.2.5/js/dataTables.fixedColumns.min.js"></script>
 
-    @{ await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/KnobJS.cshtml");}
+    @{
+    await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/KnobJS.cshtml");
+}
 
 
-    <script type="text/javascript">
+<script type="text/javascript">
 
-    </script>
+</script>
 }
 
 

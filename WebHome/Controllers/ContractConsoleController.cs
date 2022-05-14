@@ -526,6 +526,25 @@ namespace WebHome.Controllers
             return View("~/Views/ContractConsole/Editing/TotalCostSummary2022.cshtml", item);
         }
 
+        public ActionResult BuildInstallmentRemark(CourseContractQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+
+            viewModel.TotalCost = null;
+            viewModel.Lessons = null;
+
+            var item = viewModel.ValidateTotalCost(this);
+
+            if (!ModelState.IsValid)
+            {
+                ViewBag.ModelState = this.ModelState;
+                return View("~/Views/ConsoleHome/Shared/ReportInputError.cshtml");
+            }
+
+            return View("~/Views/ContractConsole/Editing/InstallmentRemark.cshtml", item);
+        }
+
+
         public ActionResult ListContractMember(CourseContractQueryViewModel viewModel)
         {
             ViewBag.ViewModel = viewModel;
