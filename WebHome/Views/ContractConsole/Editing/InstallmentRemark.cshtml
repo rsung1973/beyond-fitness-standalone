@@ -1,0 +1,69 @@
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@{
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];
+    _viewModel = (CourseContractQueryViewModel)ViewBag.ViewModel;
+    LessonPriceType _model = this.Model as LessonPriceType;
+    _priceItems = (List<LessonPriceType>)ViewBag.PriceItems;
+
+}
+@functions
+{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    CourseContractQueryViewModel _viewModel;
+    List<LessonPriceType> _priceItems;
+
+    void BuildContent()
+    {
+        BuildContentItem(0);
+        for(int i=1;i<_priceItems.Count;i++)
+        {
+            <text>，加購</text>
+            BuildContentItem(i); 
+        }
+    }
+
+    void BuildContentItem(int idx)
+    {
+        LessonPriceType priceItem = _priceItems[idx];
+        switch ((Naming.LessonPriceStatus?)priceItem.Status)
+        {
+            case Naming.LessonPriceStatus.營養課程:
+                <text>S.D Session (營養諮詢)@(_viewModel.OrderLessons[idx])個月@($"{_viewModel.OrderLessons[idx]*(priceItem.BundleCount??1):##,###,###,###}")堂</text>
+                break;
+            case Naming.LessonPriceStatus.運動恢復課程:
+                <text>S.R Session  (運動恢復)@(priceItem.DurationInMinutes)分鐘@($"{_viewModel.OrderLessons[idx]*(priceItem.BundleCount??1):##,###,###,###}")堂</text>
+                break;
+            case Naming.LessonPriceStatus.運動防護課程:
+                <text>A.T Session (運動防護)@(priceItem.DurationInMinutes)分鐘@($"{_viewModel.OrderLessons[idx]*(priceItem.BundleCount??1):##,###,###,###}")堂</text>
+                break;
+            default:
+                <text>P.T Session (私人教練)@(priceItem.DurationInMinutes)分鐘@($"{_viewModel.OrderLessons[idx]*(priceItem.BundleCount??1):##,###,###,###}")堂</text>
+                break;
+        }
+    }
+
+}
+
+@if (_viewModel.InstallmentPlan == true)
+{
+    if (_viewModel.Installments.HasValue)
+    {
+        int totalLessons = 0;
+        int totalCost = 0;
+        List<LessonPriceType> items = models.EvaluateCustomCombinationTotalCost(_viewModel, null, out totalLessons, out totalCost);
+
+        <text>本合約總共購買@(totalLessons)堂，含@{ BuildContent();}，分期轉開次數@(_viewModel.Installments)次，每張轉開合約之費用皆為躉繳並於每月月底前繳清。</text>
+    }
+}
+
