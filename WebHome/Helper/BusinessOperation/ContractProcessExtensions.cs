@@ -1811,7 +1811,7 @@ namespace WebHome.Helper.BusinessOperation
                     lesson.GroupingMemberCount = 1;
                     lesson.GroupingLesson = new GroupingLesson { };
                     lesson.RegisterLessonContract.ForShared = true;
-                    sharingItems.Add(lesson);
+                    //sharingItems.Add(lesson);
                 }
                 else
                 {
@@ -1820,7 +1820,7 @@ namespace WebHome.Helper.BusinessOperation
                         lesson.GroupingMemberCount = 1;
                         lesson.GroupingLesson = new GroupingLesson { };
                         lesson.RegisterLessonContract.ForShared = true;
-                        sharingItems.Add(lesson);
+                        //sharingItems.Add(lesson);
                     }
                     else
                     {
@@ -1828,12 +1828,13 @@ namespace WebHome.Helper.BusinessOperation
                     }
                 }
 
+                sharingItems.Add(lesson);
                 table.InsertOnSubmit(lesson);
             }
 
             models.SubmitChanges();
 
-            if (sharingItems.Count > 1)
+            if (sharingItems.Count > 0)
             {
                 models.GetTable<RegisterLessonSharing>()
                     .InsertAllOnSubmit(sharingItems.Select(s => 
@@ -1844,6 +1845,17 @@ namespace WebHome.Helper.BusinessOperation
                         }));
 
                 models.SubmitChanges();
+
+                for (int i = 1; i <= lessons; i++)
+                {
+                    models.GetTable<RegisterLessonBooking>().InsertOnSubmit(new RegisterLessonBooking 
+                    {
+                        BookingID = i,
+                        RegisterID = sharingItems[0].RegisterID,
+                    });
+
+                    models.SubmitChanges();
+                }
             }
         }
 

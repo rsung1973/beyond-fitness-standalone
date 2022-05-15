@@ -406,7 +406,14 @@ namespace WebHome.Controllers
             }
             else
             {
-                return await CommitCourseContractBookingByCoachAsync(viewModel);
+                if (viewModel.Version == Naming.ContractVersion.Ver2022)
+                {
+                    return CommitCourseContractBookingByCoach2022(viewModel);
+                }
+                else
+                {
+                    return await CommitCourseContractBookingByCoachAsync(viewModel);
+                }
             }
         }
 
@@ -519,15 +526,21 @@ namespace WebHome.Controllers
                         return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: "合約尚未生效或已過期!!");
                     }
 
-                    var lessonCount = lesson.GroupingLesson.LessonTime.Count;
-                    if (contract.CourseContractType.ContractCode == "CFA"
-                            || contract.CourseContractType.ContractCode == "CGF"
-                            || contract.CourseContractType.ContractCode == "CVF")
-                    {
-                        lessonCount = contract.RegisterLessonContract.Sum(c => c.RegisterLesson.GroupingLesson.LessonTime.Count());
-                    }
+                    var lessonCount = lesson.AttendedLessonCount();
+                    //var lessonCount = lesson.GroupingLesson.LessonTime.Count;
+                    //if (contract.CourseContractType.ContractCode == "CFA"
+                    //        || contract.CourseContractType.ContractCode == "CGF"
+                    //        || contract.CourseContractType.ContractCode == "CVF")
+                    //{
+                    //    lessonCount = contract.RegisterLessonContract.Sum(c => c.RegisterLesson.GroupingLesson.LessonTime.Count());
+                    //}
 
-                    if (lessonCount + (lesson.AttendedLessons ?? 0) >= lesson.Lessons)
+                    //if (lessonCount + (lesson.AttendedLessons ?? 0) >= lesson.Lessons)
+                    //{
+                    //    return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: "學員上課堂數已滿!!");
+                    //}
+
+                    if (lessonCount >= lesson.Lessons)
                     {
                         return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: "學員上課堂數已滿!!");
                     }
@@ -564,7 +577,7 @@ namespace WebHome.Controllers
                     MarkedGradeIndex = coach.ProfessionalLevel.GradeIndex,
                     CoachWorkPlace = coach.WorkBranchID(),
                 },
-                Place = branch.IsVirtualClassroom() ? viewModel.Place : null,
+                Place = branch?.IsVirtualClassroom() == true ? viewModel.Place : null,
             };
             if (models.GetTable<DailyWorkingHour>().Any(d => d.Hour == viewModel.ClassDate.Value.Hour))
                 timeItem.HourOfClassTime = viewModel.ClassDate.Value.Hour;
@@ -576,7 +589,7 @@ namespace WebHome.Controllers
             else
             {
                 var users = models.CheckOverlapedBooking(timeItem, lesson);
-                if (users.Count() > 0)
+                if (users.Any())
                 {
                     ViewBag.Message = "學員(" + String.Join("、", users.Select(u => u.RealName)) + ")上課時間重複!!";
                     return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml");
@@ -635,6 +648,35 @@ namespace WebHome.Controllers
             {
                 ApplicationLogging.CreateLogger<LessonsController>().LogError(ex, ex.Message);
                 return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: "預約未完成，請重新預約!!");
+            }
+
+            return Json(new { result = true, message = "上課時間預約完成!!" });
+        }
+
+        public ActionResult CommitCourseContractBookingByCoach2022(LessonTimeViewModel viewModel)
+        {
+            LessonTime item = viewModel.CommitCourseContractBookingByCoach(this);
+            if (item != null)
+            {
+                if (item.RegisterLesson.LessonPriceType.Status == (int)Naming.LessonPriceStatus.營養課程)
+                {
+                    viewModel.ClassDate = viewModel.ClassDate.Value.AddMonths(1);
+                    LessonTime nextItem = viewModel.CommitCourseContractBookingByCoach(this);
+
+                    if (nextItem == null)
+                    {
+                        models.ExecuteCommand("delete LessonTime where LessonID = {0}", item.LessonID);
+                        ModelState.AddModelError("Message", "預約未完成，請重新預約!!");
+                        item = null;
+                    }
+                }
+            }
+
+            if (!ModelState.IsValid)
+            {
+                ViewBag.ModelState = this.ModelState;
+                ViewBag.AlertError = true;
+                return View("~/Views/ConsoleHome/Shared/ReportInputError.cshtml");
             }
 
             return Json(new { result = true, message = "上課時間預約完成!!" });

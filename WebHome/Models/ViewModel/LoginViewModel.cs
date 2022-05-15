@@ -324,6 +324,8 @@ namespace WebHome.Models.ViewModel
         public int[] AttendeeID { get; set; }
         public int? PriceID { get; set; }
         public String Place { get; set; }
+        public Naming.ContractVersion? Version { get; set; }
+
     }
 
     public class LessonTimeExpansionViewModel

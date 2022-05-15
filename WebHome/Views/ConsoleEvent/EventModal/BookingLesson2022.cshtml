@@ -115,11 +115,11 @@
                                     <ul class="mail_list list-group list-unstyled">
                                         @{
                                             var attendedCheck = models.GetTable<LessonTime>()
-                                            .Join(models.GetTable<GroupingLesson>()
-                                            .Join(models.GetTable<RegisterLesson>()
-                                            .Where(r => r.UID == _model.UID),
-                                            g => g.GroupID, r => r.RegisterGroupID, (g, r) => g)
-                                            , l => l.GroupID, g => g.GroupID, (l, g) => l);
+                                                .Join(models.GetTable<GroupingLesson>()
+                                                    .Join(models.GetTable<RegisterLesson>()
+                                                        .Where(r => r.UID == _model.UID),
+                                                    g => g.GroupID, r => r.RegisterGroupID, (g, r) => g),
+                                                l => l.GroupID, g => g.GroupID, (l, g) => l);
                                         }
                                         @if (!attendedCheck.Any() || _model.UserProfileExtension.CurrentTrial.HasValue)
                                         {
@@ -214,6 +214,9 @@
             $formData.UID = @(_model.UID);
             $formData.sessionStatus = lessonType;
             $formData.priceID = priceID;
+
+            var $item = $('#@(_dialogID) input[name="RegisterID"]:checked');
+            $formData.Version = $item.attr('data-version');
 
             clearErrors();
             switch (lessonType) {
