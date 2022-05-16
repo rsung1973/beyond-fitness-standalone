@@ -55,7 +55,7 @@
                             </div>
                         </div>
                         @if(_model.Status >= (int)Naming.CourseContractStatus.已生效
-                            && _model.ContractType != (int)CourseContractType.ContractTypeDefinition.CNA
+                            && _model.ContractType != (int)CourseContractType.ContractTypeDefinition.CRA
                             && _model.ContractType != (int)CourseContractType.ContractTypeDefinition.CNR
                             && _model.CourseContractOrder.Any())
                         {

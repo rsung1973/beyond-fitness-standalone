@@ -67,7 +67,7 @@
                     }
                 }
                 @if (_model.ContractType != (int)CourseContractType.ContractTypeDefinition.CGA
-                        && _model.ContractType != (int)CourseContractType.ContractTypeDefinition.CNA)
+                        && _model.ContractType != (int)CourseContractType.ContractTypeDefinition.CRA)
                 {
                     <li>
                         <div class="list_tb tb2">
@@ -297,7 +297,7 @@
                     case CourseContractType.ContractTypeDefinition.CGA:
                         await Html.RenderPartialAsync("~/Views/CornerKick/Module/ContractTermsForCGA.cshtml");
                         break;
-                    case CourseContractType.ContractTypeDefinition.CNA:
+                    case CourseContractType.ContractTypeDefinition.CRA:
                         await Html.RenderPartialAsync("~/Views/CornerKick/Module/ContractTermsForCNA.cshtml");
                         break;
                     default:

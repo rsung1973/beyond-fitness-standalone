@@ -728,7 +728,7 @@ namespace WebHome.Models.DataEntity
             CFA,
             CPB,
             CPC,
-            CNA,
+            CRA,
             CGA,
             CGF,
             CGB,
@@ -744,7 +744,7 @@ namespace WebHome.Models.DataEntity
         public static bool IsSuitableForVirtaulClass(ContractTypeDefinition? ct)
         {
             return ct == ContractTypeDefinition.CPA
-                || ct == ContractTypeDefinition.CNA
+                || ct == ContractTypeDefinition.CRA
                 /*|| ct == ContractTypeDefinition.CGA*/;
         }
 

@@ -60,9 +60,9 @@
                 .Join(models.GetTable<EnterpriseCourseContent>(),
                     t => t.ContractID, c => c.ContractID, (t, c) => c);
 }
-@{
+@*@{
     _pageModel.HasChoice = true;
-}
+}*@
 <li class="list-group-item">
     <div class="media">
         <div class="pull-left">

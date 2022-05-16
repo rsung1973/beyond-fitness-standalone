@@ -100,7 +100,7 @@
                         </div>
                         <div class="row clearfix">
                             <div class="col-12">
-                                <ul class="nav nav-tabs-new2 p-t-0" id="pointTabs">
+                                <ul class="nav nav-tabs-new2 p-t-0" id="pointTabs" onclick="javascript:clearBooking();">
                                     <li class="nav-item"><a class="nav-link" data-toggle="tab" data-id="basicTab" href="#TSTab">T.S Session</a></li>
                                     <li class="nav-item"><a class="nav-link active" data-toggle="tab" data-id="basicTab" href="#PTTab">P.T Session</a></li>
                                     <li class="nav-item"><a class="nav-link" data-toggle="tab" data-id="loginTab" href="#PITab">P.I Session</a></li>
@@ -179,12 +179,12 @@
                         </div>                        
                     </div>
                 </div>
-                @if (_pageModel.HasChoice)
-                {
+                @*@if (_pageModel.HasChoice)
+                {*@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-darkteal btn-round waves-effect" onclick="javascript:if(booking) booking();">確定, 不後悔</button>
                     </div>
-                }
+                @*}*@
         </div>
     </div>
 
@@ -204,6 +204,17 @@
             }
             booking = function () {
                 commitBooking(lessonType, priceID);
+            }
+        }
+
+        function clearBooking() {
+            $('#@(_dialogID) input:checkbox').prop('checked', false);
+            booking = function () {
+                                Swal.fire(
+                                    'Oops...',
+                                    '請勾選課程！',
+                                    'warning'
+                                );
             }
         }
 

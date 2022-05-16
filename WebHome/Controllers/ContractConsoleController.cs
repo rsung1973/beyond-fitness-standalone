@@ -325,7 +325,7 @@ namespace WebHome.Controllers
                     return Json(new { result = false, message = "無相符條件的項目!" });
                 }
             }
-            else if (viewModel.ContractType == CourseContractType.ContractTypeDefinition.CNA)
+            else if (viewModel.ContractType == CourseContractType.ContractTypeDefinition.CRA)
             {
                 items = items
                     .Where(p => p.BranchID == viewModel.BranchID)
@@ -395,7 +395,7 @@ namespace WebHome.Controllers
                 .Where(l => !l.DurationInMinutes.HasValue 
                     || l.DurationInMinutes == viewModel.DurationInMinutes);
 
-            if (viewModel.ContractType == CourseContractType.ContractTypeDefinition.CNA)
+            if (viewModel.ContractType == CourseContractType.ContractTypeDefinition.CRA)
             {
                 items = items
                     .Where(p => p.BranchID == viewModel.BranchID || !p.BranchID.HasValue)

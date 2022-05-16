@@ -57,7 +57,7 @@
 
 }
 @{
-    _currentDisabled = false;
+    _currentDisabled = _profile.IsHealthCare() == false;
 }
 @foreach (var item in contractLessons
     .Where(r => r.LessonPriceType.Status == (int)Naming.LessonPriceStatus.營養課程
@@ -84,10 +84,9 @@
         var totalPaid = contract.TotalPaidAmount();
         var payoffStatus = contract.TotalCost / contract.Lessons * (bookingCount + 1) <= totalPaid;
         bool revisionStatus = contract.RevisionList.Any(c => c.CourseContract.Status < (int)Naming.CourseContractStatus.已生效);
-        bool bookable = validContract && payoffStatus && !revisionStatus;
+        bool bookable = validContract && payoffStatus && !revisionStatus && !_currentDisabled;
         if (bookable)
         {
-            _pageModel.HasChoice = true && !_currentDisabled;
             if (contract.InstallmentID.HasValue)
             {
                 if (installmentID.Contains(contract.InstallmentID.Value))
@@ -100,6 +99,11 @@
                 }
             }
         }
+
+        @*if(bookable)
+        {
+            _pageModel.HasChoice = true;
+        }*@
         <li class="list-group-item">
             <div class="media">
                 <div class="pull-left">

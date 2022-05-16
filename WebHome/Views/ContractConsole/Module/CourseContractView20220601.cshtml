@@ -127,7 +127,13 @@
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="3" style="height: 2cm">備註：@(_model.Remark)</td>  
+                        <td colspan="3" style="height: 2cm">
+                            備註：@(_model.Remark)
+                            @if (_model.Status == (int)Naming.CourseContractStatus.待審核)
+                            {
+                                <text>@(_model.Remark !=null ? "。" : null)  @(CourseContractExtension.PriceAdjustment[_model.CourseContractExtension.UnitPriceAdjustmentType??0])</text>
+                            }
+                        </td>  
                     </tr>        
                 </tbody>
             </table>           
@@ -158,7 +164,7 @@
                         {
                             <td width="100px">
                                 <label class="fancy-checkbox">
-                                    <input type="checkbox" name="extension" checked="checked" disabled="disabled">
+                                    <input type="checkbox" name="extension" checked="checked" disabled="disabled" />
                                     <span>展延：</span>
                                 </label>
                             </td>
@@ -170,7 +176,7 @@
                             </td>
                         }
                     <td>
-                        @if (_model.ContractType == (int)CourseContractType.ContractTypeDefinition.CNA
+                        @if (_model.ContractType == (int)CourseContractType.ContractTypeDefinition.CRA
                             || _model.LessonPriceType.BranchStore?.IsVirtualClassroom() == true)
                         {
                             <text>若未於上述使用期限內完成課程堂數者不得展延。</text>
@@ -186,7 +192,7 @@
                         {
                             <td width="100px">
                                 <label class="fancy-checkbox custom-bgcolor-pink">
-                                    <input type="checkbox" name="booking">
+                                    <input type="checkbox" name="booking" />
                                     <span>預約：</span>
                                 </label>
                             </td>
@@ -195,7 +201,7 @@
                         {
                             <td width="100px">
                                 <label class="fancy-checkbox">
-                                    <input type="checkbox" name="booking" checked="checked" disabled="disabled">
+                                    <input type="checkbox" name="booking" checked="checked" disabled="disabled" />
                                     <span>預約：</span>
                                 </label>
                             </td>
@@ -213,7 +219,7 @@
                         {
                             <td width="100px">
                                 <label class="fancy-checkbox custom-bgcolor-pink">
-                                    <input type="checkbox" name="cancel">
+                                    <input type="checkbox" name="cancel" />
                                     <span>取消：</span>
                                 </label>
                             </td>
@@ -240,14 +246,14 @@
                             @if (_model.Status < (int)Naming.CourseContractStatus.待審核)
                             {
                                 <label class="fancy-checkbox custom-bgcolor-pink">
-                                    <input type="checkbox" name="agreement">
+                                    <input type="checkbox" name="Agree" />
                                     <span class="col-red">我已閱讀並同意超越體能顧問有限公司隱私政策、服務條款、相關使用及消費合約，即表示即日起您同意接受本合約正面及背面條款之相關約束及其責任。</span>
                                 </label>
                             }
                             else if (_model.Status == (int)Naming.CourseContractStatus.待審核)
                             {
                                 <label class="fancy-checkbox custom-bgcolor-pink">
-                                    <input type="checkbox" name="agreement" checked="checked" disabled="disabled" class="">
+                                    <input type="checkbox" name="Agree" checked="checked" disabled="disabled" class="">
                                     <span class="col-red">我已閱讀並同意超越體能顧問有限公司隱私政策、服務條款、相關使用及消費合約，即表示即日起您同意接受本合約正面及背面條款之相關約束及其責任。</span>
                                 </label>
                             }
@@ -333,7 +339,7 @@
                     case CourseContractType.ContractTypeDefinition.CGA:
                         await Html.RenderPartialAsync("~/Views/ContractConsole/Module/ContractTermsForCGA.cshtml");
                         break;
-                    case CourseContractType.ContractTypeDefinition.CNA:
+                    case CourseContractType.ContractTypeDefinition.CRA:
                         await Html.RenderPartialAsync("~/Views/ContractConsole/Module/ContractTermsForCNA.cshtml");
                         break;
                     default:

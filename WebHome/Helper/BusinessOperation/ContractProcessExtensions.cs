@@ -621,7 +621,7 @@ namespace WebHome.Helper.BusinessOperation
             var profile = (await HttpContext.GetUserAsync()).LoadInstance(models);
 
             viewModel.ValidateContractApplication(controller, out LessonPriceType lessonPrice);
-            if (!(viewModel.ContractType == CourseContractType.ContractTypeDefinition.CGA || viewModel.ContractType == CourseContractType.ContractTypeDefinition.CNA))
+            if (!(viewModel.ContractType == CourseContractType.ContractTypeDefinition.CGA || viewModel.ContractType == CourseContractType.ContractTypeDefinition.CRA))
             {
                 if (!viewModel.Lessons.HasValue || viewModel.Lessons < 1)
                 {
@@ -1927,7 +1927,7 @@ namespace WebHome.Helper.BusinessOperation
                 //}
             }
 
-            if (viewModel.Extension != true || viewModel.Booking != true || viewModel.Cancel != true)
+            if (viewModel.Extension != true || viewModel.Booking != true || viewModel.Cancel != true || viewModel.Agree != true)
             {
                 ModelState.AddModelError("Message", "請勾選合約聲明!!");
                 return null;
