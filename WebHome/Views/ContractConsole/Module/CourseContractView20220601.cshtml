@@ -38,7 +38,7 @@
 <div class="row" style="margin-top: 20px;margin-bottom: 5px;">
     <div class="col-md-12">
         <div style="@(_viewModel.Pdf == "1" ? "width: 21.5cm; height: 28cm" : "")">
-            <h1 class="text-center" style="margin-bottom: 0px"><b>體能顧問聘請服務合約</b></h1>
+            <h1 class="text-center" style="margin-bottom: 0px"><b>Beyond Fitness顧問服務購買合約書</b></h1>
             <table class="table" style="font-size: 15px">
                 <tbody>
                     @if (_model.ContractNo != null)
@@ -47,7 +47,7 @@
                             <td colspan="3">合約編號：@(_model.ContractNo())</td>
                         </tr>
                     }
-                    <tr style="border-width: 1px; border-bottom-style: dashed;">
+                    <tr style="border-width: 1px; border-top-style: dashed;">
                         <td colspan="3">學員資料</td>
                     </tr>
                     @{
@@ -82,12 +82,10 @@
                         <tr>
                             <td colspan="3">地址：@(m.UserProfile.Address())</td>
                         </tr>
-                    }
-                    <tr style="height: 1cm; border-width: 1px; border-top-style: dashed;">
-                        <td colspan="3">課程內容</td>
-                    </tr>
-                </tbody>
-                <tbody>
+                        <tr style="border-width: 1px; border-top-style: dashed;">
+                            <td colspan="3">課程內容</td>
+                        </tr>
+                    }                                      
                     <tr>
                         <td colspan="2">名稱：@(_model.CourseContractType.TypeName)(@(_model.LessonPriceType.DurationInMinutes)分鐘)</td>
                         <td>
@@ -102,7 +100,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="2">複合式課程購買堂數：@(_model.Lessons)堂，含 @(String.Join("，",_model.ExpandContractLessonDetails(models)))</td>
+                        <td colspan="2">複合式課程購買堂數：總共@(_model.Lessons)堂，詳細資訊如下：@(String.Join("，",_model.ExpandContractLessonDetails(models)))</td>
                      </tr>
                     <tr>
                         <td colspan="2">專業顧問建置與諮詢費：@(String.Format("{0:##,###,###,###}", (_model.TotalCost * 8 + 5) / 10))</td>
@@ -113,14 +111,14 @@
                     </tr>
                     <tr>
                         <td colspan="2">顧問服務使用期限：自 @(String.Format("{0:yyyy/MM/dd}", _model.ValidFrom)) 起，至 @(String.Format("{0:yyyy/MM/dd}", _model.Expiration)) 止。</td>                        
-                    </tr>
-                    <tr style="height: 1cm; border-width: 1px; border-top-style: dashed;">
-                        <td colspan="2">繳費內容</td>
-                    </tr>
+                    </tr>                    
                 </tbody>
             </table>
             <table class="table" style="font-size: 15px;margin-bottom: 0px">
                 <tbody>
+                    <tr style="border-width: 1px; border-top-style: dashed;">
+                        <td colspan="4">繳費內容</td>
+                    </tr>
                     <tr>
                         <td>繳費方式：@(_model.CourseContractExtension.PaymentMethod)</td>
                         <td>繳費時間：@(_model.PayoffDue.HasValue ? $"躉繳，應於{_model.PayoffDue:yyyy/MM/dd}前繳清" : null) </td>                       
@@ -176,15 +174,14 @@
                             </td>
                         }
                     <td>
-                        @if (_model.ContractType == (int)CourseContractType.ContractTypeDefinition.CGA
-                            || _model.ContractType == (int)CourseContractType.ContractTypeDefinition.CNA
+                        @if (_model.ContractType == (int)CourseContractType.ContractTypeDefinition.CNA
                             || _model.LessonPriceType.BranchStore?.IsVirtualClassroom() == true)
                         {
                             <text>若未於上述使用期限內完成課程堂數者不得展延。</text>
                         }
                         else
                         {
-                            <text>無法於上述使用期限內完成課程堂數者，得於到期前30日內申請展延使用，並得就未完成部分協商展延最多3個月內完成。</text>
+                            <text>無法於上述使用期限內完成課程堂數者，得於到期前30日內申請展延使用，並得就未完成部分協商展延3個月內完成</text>
                         }
                     </td>
                     </tr>
@@ -248,19 +245,19 @@
                             {
                                 <label class="fancy-checkbox custom-bgcolor-pink">
                                     <input type="checkbox" name="agreement">
-                                    <span class="col-red">我已閱讀並同意超越體能顧問有限公司隱私政策、服務條款、相關使用及消費合約，即表示即日起您同意接受本合約正面及背面條款之相關約束及其責任</span>
+                                    <span class="col-red">我已閱讀並同意超越體能顧問有限公司隱私政策、服務條款、相關使用及消費合約，即表示即日起您同意接受本合約正面及背面條款之相關約束及其責任。</span>
                                 </label>
                             }
                             else if (_model.Status == (int)Naming.CourseContractStatus.待審核)
                             {
                                 <label class="fancy-checkbox custom-bgcolor-pink">
                                     <input type="checkbox" name="agreement" checked="checked" disabled="disabled" class="">
-                                    <span class="col-red">我已閱讀並同意超越體能顧問有限公司隱私政策、服務條款、相關使用及消費合約，即表示即日起您同意接受本合約正面及背面條款之相關約束及其責任</span>
+                                    <span class="col-red">我已閱讀並同意超越體能顧問有限公司隱私政策、服務條款、相關使用及消費合約，即表示即日起您同意接受本合約正面及背面條款之相關約束及其責任。</span>
                                 </label>
                             }
                             else
                             {
-                                <text>☑ 我已閱讀並同意超越體能顧問有限公司隱私政策、服務條款、相關使用及消費合約，即表示即日起您同意接受本合約正面及背面條款之相關約束及其責任</text>
+                                <text>☑ 我已閱讀並同意超越體能顧問有限公司隱私政策、服務條款、相關使用及消費合約，即表示即日起您同意接受本合約正面及背面條款之相關約束及其責任。</text>
                             }
                         </td>
                     </tr>

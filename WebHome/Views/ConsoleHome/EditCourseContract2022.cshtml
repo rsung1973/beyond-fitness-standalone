@@ -377,7 +377,7 @@
                                                     var $installments = $('select[name="Installments"]');
                                                     $global.viewModel.Installments = $installments.val();
                                                     if ($installments.val() != '') {
-                                                        var content = '本合約總共購買' + $global.viewModel.Lessons + '堂，分期轉開次數' + $installments.val() + '次。';
+                                                        var content = '本合約總共購買' + $global.viewModel.Lessons + '堂，分期轉開次數' + $installments.val() + '次，每張轉開合約之費用皆為躉繳並於每月月底前繳清。';
                                                         $global.viewModel.Remark = prepareRemark(content);
                                                     }
                                                 }

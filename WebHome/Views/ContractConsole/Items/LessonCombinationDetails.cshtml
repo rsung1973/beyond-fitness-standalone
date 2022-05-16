@@ -26,7 +26,7 @@
         <h4 class="panel-title">
             <a class="collapsed" role="button" data-toggle="collapse"
                data-parent="#accordionDetail_contract" href="#collapseCSlist" aria-expanded="false"
-               aria-controls="collapseCSlist"> <i class="material-icons">subject</i> 複合式服務堂數資訊 
+               aria-controls="collapseCSlist"> <i class="material-icons">subject</i> 剩餘堂數資訊 
            </a>
         </h4>
     </div>
@@ -53,16 +53,16 @@
                                                 switch((Naming.LessonPriceStatus?)priceItem.Status)
                                                 {
                                                     case Naming.LessonPriceStatus.營養課程:
-                                                        <text>S.D Session《一個月 / @($"{priceItem.ListPrice*(priceItem.BundleCount??1):##,###,###,###}")》</text>
+                                                        <text>S.D Session《一個月》</text>
                                                         break;
                                                     case Naming.LessonPriceStatus.運動恢復課程:
-                                                        <text>S.R Session《@(priceItem.DurationInMinutes)分鐘 / @($"{priceItem.ListPrice*(priceItem.BundleCount??1):##,###,###,###}")》</text>
+                                                        <text>S.R Session《@(priceItem.DurationInMinutes)分鐘》</text>
                                                         break;
                                                     case Naming.LessonPriceStatus.運動防護課程:
-                                                        <text>A.T Session《@(priceItem.DurationInMinutes)分鐘 / @($"{priceItem.ListPrice*(priceItem.BundleCount??1):##,###,###,###}")》</text>
+                                                        <text>A.T Session《@(priceItem.DurationInMinutes)分鐘》</text>
                                                         break;
                                                     default:
-                                                        <text>P.T Session《@(priceItem.DurationInMinutes)分鐘 / @($"{priceItem.ListPrice*(priceItem.BundleCount??1):##,###,###,###}")》</text>
+                                                        <text>P.T Session《@(priceItem.DurationInMinutes)分鐘》</text>
                                                         break;
                                                 }
                                             }
