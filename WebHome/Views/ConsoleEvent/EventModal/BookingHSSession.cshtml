@@ -115,18 +115,18 @@
                         <a class="m-r-10">
                             @(contract.CourseContractType.TypeName)
                         </a>
-                        <small class="float-right text-muted"><time>@(remainedCount)/@(contract.Lessons)</time></small>
+                        <small class="float-right text-muted"><time>@(remainedCount)/@(item.Lessons)</time></small>
                         <div class="msg">
                             @switch(item.LessonPriceType.Status)
                             {
                                 case (int)Naming.LessonPriceStatus.營養課程:
-                                    <text>S.D Session</text>
+                                    <text>@(item.RegisterLessonContract.Title)S.D Session</text>
                                     break;
                                 case (int)Naming.LessonPriceStatus.運動恢復課程:
-                                    <text>S.R Session</text>
+                                    <text>@(item.RegisterLessonContract.Title)S.R Session</text>
                                     break;
                                 case (int)Naming.LessonPriceStatus.運動防護課程:
-                                    <text>A.T Session</text>
+                                    <text>@(item.RegisterLessonContract.Title)A.T Session</text>
                                     break;
                             }
                             (@(item.LessonPriceType.DurationInMinutes)分鐘)

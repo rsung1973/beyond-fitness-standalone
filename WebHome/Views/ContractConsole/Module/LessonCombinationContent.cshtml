@@ -23,24 +23,26 @@
 }
 @if (_model.CourseContractOrder.Any())
 {
+    var priceItem = _model.CourseContractOrder.OrderBy(o => o.SeqNo)
+                        .First().LessonPriceType;
     <ul class="mb_list">
         <li class="tit">
             <i class="zmdi zmdi-folder-star-alt"></i> 複合式服務合約資訊
             <span class="badge bg-orange">
-                @if (_model.LessonPriceType.SeriesID.HasValue)
+                @if (priceItem.SeriesID.HasValue)
                 {
-                    <text>@(_model.LessonPriceType.LowerLimit == 1 ? "單" : _model.LessonPriceType.LowerLimit.ToString())堂</text>
+                    <text>@(priceItem.LowerLimit == 1 ? "單" : priceItem.LowerLimit.ToString())堂</text>
                 }
                 else
                 {
-                    <text>@(_model.LessonPriceType.Description) </text>
+                    <text>@(priceItem.Description) </text>
                 }
             </span>
         </li>
         @{
             var orderItems = _model.CourseContractOrder.OrderBy(o => o.SeqNo).ToArray();
             var order = orderItems[0];
-            var priceItem = order.LessonPriceType;
+            priceItem = order.LessonPriceType;
         }
         <li>
             <div class="list_tb tb2">
