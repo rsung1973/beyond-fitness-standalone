@@ -353,7 +353,7 @@ namespace WebHome.Helper
 
             return items
                 .Where(l => l.Status == (int)Naming.LessonSeriesStatus.已啟用)
-                .Where(l => l.LowerLimit.HasValue && (!l.SeriesID.HasValue || l.CurrentPriceSeries.Status == (int)Naming.LessonSeriesStatus.已啟用));
+                .Where(l => /*l.LowerLimit.HasValue &&*/ (!l.SeriesID.HasValue || l.CurrentPriceSeries.Status == (int)Naming.LessonSeriesStatus.已啟用));
         }
 
         public static IQueryable<UserProfile> PromptContractMembers(this int[] uid, GenericManager<BFDataContext> models)
