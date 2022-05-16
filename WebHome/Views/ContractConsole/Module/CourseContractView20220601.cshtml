@@ -100,7 +100,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="3">複合式課程購買堂數：總共@(_model.Lessons)堂，@(String.Join("，",_model.ExpandContractLessonDetails(models)))</td>
+                        <td colspan="3">購買堂數：@(String.Join("，",_model.ExpandContractLessonDetails(models)))，總共@(_model.Lessons)堂</td>
                      </tr>
                     <tr>
                         <td>專業顧問建置與諮詢費：@(String.Format("{0:##,###,###,###}", (_model.TotalCost * 8 + 5) / 10))</td>
@@ -233,7 +233,7 @@
                                 ☑ 取消：
                             </td>
                         }
-                        <td>如欲取消預約時段，學員必須於原定時間24小時前通知負責之體能顧問，否則該未使用之預約顧問服務仍應記入已使用之體能顧問課程堂數內。</td>
+                        <td>如欲取消預約時段，學員必須於原定時間24小時前通知負責之體能顧問，逾期未通知者若欲補課，學員須給付每堂新臺幣參佰元整(NTD$300-600)作為補課場地手續費，方可進行補課之服務。補課課程之日期、時間、內容與服務教練無法保證與缺課課程一致；逾期未通知者若不補課則記入已使用之體能顧問課程堂數內。</td>
                     </tr>
                     <tr>
                         <td colspan="2">
