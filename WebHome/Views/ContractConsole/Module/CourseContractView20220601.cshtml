@@ -81,14 +81,14 @@
                         </tr>
                         <tr>
                             <td colspan="3">地址：@(m.UserProfile.Address())</td>
-                        </tr>
-                        <tr style="border-width: 1px; border-top-style: dashed;">
-                            <td colspan="3">課程內容</td>
-                        </tr>
-                    }                                      
+                        </tr>                        
+                    } 
+                    <tr style="border-width: 1px; border-top-style: dashed;">
+                        <td colspan="3">課程內容</td>
+                    </tr>
                     <tr>
-                        <td colspan="2">名稱：@(_model.CourseContractType.TypeName)(@(_model.LessonPriceType.DurationInMinutes)分鐘)</td>
-                        <td>
+                        <td>名稱：@(_model.CourseContractType.TypeName)(@(_model.LessonPriceType.DurationInMinutes)分鐘)</td>
+                        <td colspan="2">
                             @if (_model.LessonPriceType.BranchStore?.IsVirtualClassroom() == true)
                             {
                                 <text>上課場所/簽約分店：遠距/@(_model.CourseContractExtension.BranchStore.BranchName)</text>
@@ -100,24 +100,20 @@
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="2">複合式課程購買堂數：總共@(_model.Lessons)堂，詳細資訊如下：@(String.Join("，",_model.ExpandContractLessonDetails(models)))</td>
+                        <td colspan="3">複合式課程購買堂數：總共@(_model.Lessons)堂，詳細資訊如下：@(String.Join("，",_model.ExpandContractLessonDetails(models)))</td>
                      </tr>
                     <tr>
-                        <td colspan="2">專業顧問建置與諮詢費：@(String.Format("{0:##,###,###,###}", (_model.TotalCost * 8 + 5) / 10))</td>
-                        <td>教練課程費：@(String.Format("{0:##,###,###,###}", (_model.TotalCost * 2 + 5) / 10))</td>
+                        <td>專業顧問建置與諮詢費：@(String.Format("{0:##,###,###,###}", (_model.TotalCost * 8 + 5) / 10))</td>
+                        <td colspan="2">教練課程費：@(String.Format("{0:##,###,###,###}", (_model.TotalCost * 2 + 5) / 10))</td>
                     </tr>                    
                     <tr>
-                         <td>專業顧問服務總費用：@(String.Format("{0:##,###,###,###}", _model.TotalCost))</td>
+                        <td colspan="3">專業顧問服務總費用：@(String.Format("{0:##,###,###,###}", _model.TotalCost))</td>
                     </tr>
                     <tr>
-                        <td colspan="2">顧問服務使用期限：自 @(String.Format("{0:yyyy/MM/dd}", _model.ValidFrom)) 起，至 @(String.Format("{0:yyyy/MM/dd}", _model.Expiration)) 止。</td>                        
-                    </tr>                    
-                </tbody>
-            </table>
-            <table class="table" style="font-size: 15px;margin-bottom: 0px">
-                <tbody>
+                        <td colspan="3">顧問服務使用期限：自 @(String.Format("{0:yyyy/MM/dd}", _model.ValidFrom)) 起，至 @(String.Format("{0:yyyy/MM/dd}", _model.Expiration)) 止。</td>                        
+                    </tr>
                     <tr style="border-width: 1px; border-top-style: dashed;">
-                        <td colspan="4">繳費內容</td>
+                        <td colspan="3">繳費內容</td>
                     </tr>
                     <tr>
                         <td>繳費方式：@(_model.CourseContractExtension.PaymentMethod)</td>
@@ -132,9 +128,9 @@
                     </tr>
                     <tr>
                         <td colspan="3" style="height: 2cm">備註：@(_model.Remark)</td>  
-                    </tr>                                       
+                    </tr>        
                 </tbody>
-            </table>
+            </table>           
             <div style="@(_viewModel.Pdf == "1" ? "font-size: 15px; position: absolute; bottom: 0px;width: 21.5cm" : "font-size: 15px")" ;>
                 <table class="table" style="margin-bottom: 0px">
                     @if (_viewModel.Pdf != "1" && _model.CourseContractExtension.SignOnline == true)
