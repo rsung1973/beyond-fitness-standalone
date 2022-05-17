@@ -63,7 +63,7 @@
         int totalCost = 0;
         List<LessonPriceType> items = models.EvaluateCustomCombinationTotalCost(_viewModel, null, out totalLessons, out totalCost);
 
-        <text>本合約總共購買@(totalLessons)堂，含@{ BuildContent();}，分期轉開次數@(_viewModel.Installments)次，每張轉開合約之費用皆為躉繳並於每月月底前繳清。</text>
+        <text>本合約總共購買@(totalLessons)堂，@*含@{ BuildContent();}，*@分期轉開次數@(_viewModel.Installments)次，每張轉開合約之費用皆為躉繳並於每月月底前繳清。</text>
     }
 }
 

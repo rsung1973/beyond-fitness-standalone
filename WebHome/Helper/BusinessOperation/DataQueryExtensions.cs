@@ -1119,8 +1119,9 @@ namespace WebHome.Helper.BusinessOperation
 
             remainedItems = currentLessons;
 
-            var contractItems = currentLessons.Join(models.GetTable<RegisterLessonContract>(), r => r.RegisterID, c => c.RegisterID, (r, c) => c)
-                            .Join(models.GetTable<CourseContract>(), c => c.ContractID, n => n.ContractID, (c, n) => n);
+            var lessonContract = currentLessons.Join(models.GetTable<RegisterLessonContract>(), r => r.RegisterID, c => c.RegisterID, (r, c) => c);
+
+            var contractItems = models.GetTable<CourseContract>().Where(c => lessonContract.Any(a => a.ContractID == c.ContractID));
 
             var familyLessons = contractItems.Where(c => c.ContractType == (int)CourseContractType.ContractTypeDefinition.CFA
                                 || c.ContractType == (int)CourseContractType.ContractTypeDefinition.CGF

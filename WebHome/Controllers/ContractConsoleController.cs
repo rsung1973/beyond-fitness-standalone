@@ -906,7 +906,7 @@ namespace WebHome.Controllers
                 .FirstOrDefault() ?? new UserProfile { UID = -1 };
             _ = profile.RemainedLessonCount(models, out int remainedCount, out IQueryable<RegisterLesson> remainedLessons);
 
-            return View("~/Views/ConsoleHome/CourseContract/RemainedLessonListModal.cshtml", remainedLessons);
+            return View("~/Views/ConsoleHome/CourseContract/RemainedLessonListModal2022.cshtml", remainedLessons);
         }
 
     }
