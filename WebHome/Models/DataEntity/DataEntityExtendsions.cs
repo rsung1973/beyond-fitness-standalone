@@ -69,7 +69,7 @@ namespace WebHome.Models.DataEntity
             //        - (item.RegisterGroupID.HasValue ? item.GroupingLesson.LessonTime.Count : item.LessonTime.Count);
             //}
 
-            return item.Lessons - item.AttendedLessonCount(onlyAttended);
+            return item.Lessons - item.AttendedLessonCount(onlyAttended) / item.GroupingMemberCount;
 
         }
 
