@@ -29,7 +29,7 @@
         <li class="tit">
             <i class="zmdi zmdi-folder-star-alt"></i> 複合式服務合約資訊
             <span class="badge bg-orange">
-                @if (priceItem.SeriesID.HasValue)
+                @if (priceItem.SeriesID.HasValue && priceItem.LowerLimit.HasValue)
                 {
                     <text>@(priceItem.LowerLimit == 1 ? "單" : priceItem.LowerLimit.ToString())堂</text>
                 }
@@ -47,8 +47,12 @@
         <li>
             <div class="list_tb tb2">
                 <div class="list_tr">
-                    <div class="list_td hd">P.T Session《@(priceItem.DurationInMinutes)分鐘 / @($"{priceItem.ListPrice*(priceItem.BundleCount??1):##,###,###,###}")》</div>
-                    <div class="list_td rt">@(order.Lessons)</div>
+                    <div class="list_td hd">
+                        @{
+                            BuildLessonOrder(priceItem);
+                        }
+                    </div>
+                    <div class="list_td rt">@(order.Lessons*(priceItem.BundleCount??1)) 堂</div>
                 </div>
             </div>
         </li>
@@ -63,28 +67,36 @@
                             <div class="list_td hd">
                                 <span class="col-red">加購</span>
                                 @{
-                                    switch((Naming.LessonPriceStatus?)priceItem.Status)
-                                    {
-                                        case Naming.LessonPriceStatus.營養課程:
-                                            <text>S.D Session《一個月 / @($"{priceItem.ListPrice*(priceItem.BundleCount??1):##,###,###,###}")》</text>
-                                            break;
-                                        case Naming.LessonPriceStatus.運動恢復課程:
-                                            <text>S.R Session《@(priceItem.DurationInMinutes)分鐘 / @($"{priceItem.ListPrice*(priceItem.BundleCount??1):##,###,###,###}")》</text>
-                                            break;
-                                        case Naming.LessonPriceStatus.運動防護課程:
-                                            <text>A.T Session《@(priceItem.DurationInMinutes)分鐘 / @($"{priceItem.ListPrice*(priceItem.BundleCount??1):##,###,###,###}")》</text>
-                                            break;
-                                        default:
-                                            <text>P.T Session《@(priceItem.DurationInMinutes)分鐘 / @($"{priceItem.ListPrice*(priceItem.BundleCount??1):##,###,###,###}")》</text>
-                                            break;
-                                    }
+                                    BuildLessonOrder(priceItem);
                                 }
                             </div>
-                            <div class="list_td rt">@(order.Lessons)</div>
+                            <div class="list_td rt">@(order.Lessons*(priceItem.BundleCount??1)) 堂</div>
                         </div>
                     </div>
                 </li>
             }
         }
     </ul>
+}
+
+@functions
+{
+    void BuildLessonOrder(LessonPriceType priceItem)
+    {
+        switch ((Naming.LessonPriceStatus?)priceItem.Status)
+        {
+            case Naming.LessonPriceStatus.營養課程:
+                <text>S.D Session《一個月 / @($"{priceItem.ListPrice*(priceItem.BundleCount??1):##,###,###,###}")》</text>
+                break;
+            case Naming.LessonPriceStatus.運動恢復課程:
+                <text>S.R Session《@(priceItem.DurationInMinutes)分鐘 / @($"{priceItem.ListPrice*(priceItem.BundleCount??1):##,###,###,###}")》</text>
+                break;
+            case Naming.LessonPriceStatus.運動防護課程:
+                <text>A.T Session《@(priceItem.DurationInMinutes)分鐘 / @($"{priceItem.ListPrice*(priceItem.BundleCount??1):##,###,###,###}")》</text>
+                break;
+            default:
+                <text>P.T Session《@(priceItem.DurationInMinutes)分鐘 / @($"{priceItem.ListPrice*(priceItem.BundleCount??1):##,###,###,###}")》</text>
+                break;
+        }
+    }
 }

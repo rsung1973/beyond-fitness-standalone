@@ -283,6 +283,10 @@ namespace WebHome.Helper.BusinessOperation
                     item.Lessons = totalLessons;
                     item.TotalCost = totalCost;
 
+                    item.Expiration = combinationPrice.Any()
+                        ? DateTime.Today.AddMonths(combinationPrice[0].EffectiveMonths ?? 18)
+                        : null;
+
                     for (int i = 0; i < combinationPrice.Count; i++)
                     {
                         var p = combinationPrice[i];
@@ -1040,7 +1044,7 @@ namespace WebHome.Helper.BusinessOperation
                         var jsonData = await controller.RenderViewToStringAsync("~/Views/LineEvents/Message/NotifyLearnerToSignContract.cshtml", item);
                         jsonData.PushLineMessage();
                     }
-                    else if (!profile.IsManager())
+                    else if (!profile.IsManager() || item.FitnessConsultant != profile.UID)
                     {
                         var jsonData = await controller.RenderViewToStringAsync("~/Views/LineEvents/Message/NotifyCoachToSignContract.cshtml", item);
                         jsonData.PushLineMessage();
@@ -1686,7 +1690,7 @@ namespace WebHome.Helper.BusinessOperation
             switch ((Naming.LessonPriceStatus?)item.Status)
             {
                 case Naming.LessonPriceStatus.營養課程:
-                    return $"{(order.SeqNo > 0 ? "加購" : null)}營養諮詢(S.D){order.Lessons}月{order.Lessons * (item.BundleCount ?? 1)}堂";
+                    return $"{(order.SeqNo > 0 ? "加購" : null)}營養諮詢(S.D){order.Lessons}個月{order.Lessons * (item.BundleCount ?? 1)}堂";
                 case Naming.LessonPriceStatus.運動恢復課程:
                     return $"{(order.SeqNo > 0 ? "加購" : null)}運動恢復(S.R){item.DurationInMinutes}分鐘{order.Lessons * (item.BundleCount ?? 1)}堂";
                 case Naming.LessonPriceStatus.運動防護課程:
@@ -1729,7 +1733,7 @@ namespace WebHome.Helper.BusinessOperation
             {
                 foreach (var order in item.CourseContractOrder)
                 {
-                    createRegisterLesson(item, models, order.LessonPriceType, order.Lessons, order.SeqNo > 0 ? "加購" : null);
+                    createRegisterLesson(item, models, order.LessonPriceType, order.Lessons * (order.LessonPriceType.BundleCount ?? 1), order.SeqNo > 0 ? "加購" : null);
                 }
             }
             else if (item.LessonPriceType.IsPackagePrice)
