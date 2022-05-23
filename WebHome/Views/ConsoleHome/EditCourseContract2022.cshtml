@@ -386,7 +386,7 @@
                                                     var $installments = $('select[name="Installments"]');
                                                     $global.viewModel.Installments = $installments.val();
                                                     showLoading();
-                                                    $.post('/ContractConsole/BuildInstallmentRemark', $global.viewModel, function (data) {
+                                                    $.post('@Url.Action("BuildInstallmentRemark","ContractConsole")', $global.viewModel, function (data) {
                                                         hideLoading();
                                                         if ($.isPlainObject(data)) {
                                                                     Swal.fire(

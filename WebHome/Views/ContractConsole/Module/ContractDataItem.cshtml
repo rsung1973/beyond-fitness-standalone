@@ -36,13 +36,9 @@
 </div>
 <div class="body">
     <div class="row">
-        <div class="col-md-6 col-sm-6 invoice1">
-            <address>
-                <strong>@(_model.ContractOwner.FullName())</strong><br />
-                購買堂數：@(_model.Lessons)<br />
-                <span class="col-red">剩餘堂數：@(_model.RemainedLessonCount())</span>
-            </address>
-        </div>
+        @{
+            await Html.RenderPartialAsync("~/Views/ContractConsole/Items/ContractDataItemDetails2022.cshtml", _model);
+        }
         <div class="col-md-6 col-sm-6 text-right">
             <p class="m-b-0"><strong>合約起日: </strong>@($"{_model.ValidFrom:yyyy/MM/dd}")</p>
             <p class="m-b-0 col-red"><strong>合約迄日: </strong>@($"{_model.Expiration:yyyy/MM/dd}")</p>

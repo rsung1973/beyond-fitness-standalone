@@ -708,6 +708,11 @@ namespace WebHome.Helper
                 }
             }
 
+            if(item.RegisterLesson.LessonPriceType.Status == (int)Naming.LessonPriceStatus.營養課程)
+            {
+                return false;
+            }
+
             if (!item.ContractTrustTrack.Any(s => s.SettlementID.HasValue))
             {
                 if (item.GroupingLesson.RegisterLesson.Any(r => r.RegisterLessonContract != null && r.RegisterLessonContract.CourseContract.RevisionList

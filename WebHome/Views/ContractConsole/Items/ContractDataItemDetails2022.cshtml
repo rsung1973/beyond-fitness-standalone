@@ -1,0 +1,81 @@
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Helper.DataOperation
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile>
+    models;
+    CourseContract _model;
+    UserProfile _profile;
+    String _viewID = $"contractItem{DateTime.Now.Ticks}";
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];
+    _model = (CourseContract)this.Model;
+    _profile = await Context.GetUserAsync();
+    var sharings = models.GetTable<RegisterLessonSharing>();
+    lessonItems = _model.RegisterLessonContract
+        .Where(r => sharings.Any(s => s.ShareID == r.RegisterID))
+        .OrderBy(c => c.RegisterID).ToList();
+}
+
+<div class="col-md-6 col-sm-6 invoice1">
+    <address>
+        <strong>@(_model.ContractOwner.FullName())</strong>
+    </address>
+    <p>
+        @{
+            BuildContent();
+        }
+    </p>
+</div>
+
+@functions
+{
+    List<RegisterLessonContract> lessonItems;
+
+    void BuildContent()
+    {
+        foreach (var item in lessonItems)
+        {
+            if (item.RegisterLesson.RegisterLessonSharing == null
+                || item.RegisterLesson.RegisterLessonSharing.ShareID == item.RegisterID)
+            {
+                <text>@(item.Title)</text>
+                BuildContentItem(item);
+            }
+        }
+    }
+
+    void BuildContentItem(RegisterLessonContract lessonContract)
+    {
+        RegisterLesson lesson = lessonContract.RegisterLesson;
+        LessonPriceType priceItem = lesson.LessonPriceType;
+        switch ((Naming.LessonPriceStatus?)priceItem.Status)
+        {
+            case Naming.LessonPriceStatus.營養課程:
+                <text>S.D Session</text>
+                break;
+            case Naming.LessonPriceStatus.運動恢復課程:
+                <text>S.R Session</text>
+                break;
+            case Naming.LessonPriceStatus.運動防護課程:
+                <text>A.T Session</text>
+                break;
+            default:
+                <text>P.T Session</text>
+                break;
+        }
+        <span class="col-red">@(lesson.RemainedLessonCount())</span>@($"/{lesson.Lessons}")<br/>
+
+    }
+}

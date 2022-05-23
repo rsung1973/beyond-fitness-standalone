@@ -566,6 +566,22 @@ namespace WebHome.Controllers
         }
 
         [RoleAuthorize(new int[] { (int)Naming.RoleID.Administrator, (int)Naming.RoleID.Assistant, (int)Naming.RoleID.Officer, (int)Naming.RoleID.Coach, (int)Naming.RoleID.Servitor })]
+        public async Task<ActionResult> ExchangeContractLessonAsync(CourseContractQueryViewModel viewModel)
+        {
+            ViewResult result = (ViewResult)(await LoadCourseContractAsync(viewModel));
+            CourseContract item = (CourseContract)ViewBag.DataItem;
+
+            if (item == null)
+            {
+                return result;
+            }
+
+            result.ViewName = "ExchangeContractLesson";
+            viewModel.Version = (Naming.ContractVersion?)item.CourseContractExtension.Version;
+            return result;
+        }
+
+        [RoleAuthorize(new int[] { (int)Naming.RoleID.Administrator, (int)Naming.RoleID.Assistant, (int)Naming.RoleID.Officer, (int)Naming.RoleID.Coach, (int)Naming.RoleID.Servitor })]
         public async Task<ActionResult> TransferContractAsync(CourseContractQueryViewModel viewModel)
         {
             ViewResult result = (ViewResult)(await LoadCourseContractAsync(viewModel));

@@ -84,6 +84,10 @@ namespace WebHome.Models.ViewModel
         public bool? SignOnline { get; set; }
         public int? SupervisorID { get; set; }
         public CourseContractExtension.UnitPriceAdjustmentDefinition? PriceAdjustment { get; set; }
+        public int?[] SourcePriceID { get; set; }
+        public int?[] ContractLessonRegisterID { get; set; }
+        public int?[] TargetPriceID { get; set; }
+        public int?[] TargetSubtotal { get; set; }
     }
 
     public class CourseContractQueryViewModel : CourseContractViewModel

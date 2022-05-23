@@ -784,4 +784,13 @@ namespace WebHome.Models.DataEntity
         }
 
     }
+
+    public partial class LessonPriceExchange
+    {
+        public enum ExchangeStatus
+        {
+            已停用 = 0,
+        }
+
+    }
 }

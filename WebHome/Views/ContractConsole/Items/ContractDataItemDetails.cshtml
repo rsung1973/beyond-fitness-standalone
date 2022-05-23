@@ -1,0 +1,33 @@
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Helper.DataOperation
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile>
+    models;
+    CourseContract _model;
+    UserProfile _profile;
+    String _viewID = $"contractItem{DateTime.Now.Ticks}";
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];
+    _model = (CourseContract)this.Model;
+    _profile = await Context.GetUserAsync();
+}
+
+<div class="col-md-6 col-sm-6 invoice1">
+    <address>
+        <strong>@(_model.ContractOwner.FullName())</strong><br />
+        購買堂數：@(_model.Lessons)<br />
+        <span class="col-red">剩餘堂數：@(_model.RemainedLessonCount())</span>
+    </address>
+</div>

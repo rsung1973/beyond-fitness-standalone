@@ -1,0 +1,181 @@
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Helper.DataOperation
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    CourseContract _model;
+    UserProfile _profile;
+    String _viewID;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _model = (CourseContract)this.Model;
+    _profile = await Context.GetUserAsync();
+    _viewID = ViewBag.ViewID as String;
+}
+@functions
+{
+    void BuildContentItem(LessonPriceType priceItem)
+    {
+        switch ((Naming.LessonPriceStatus?)priceItem.Status)
+        {
+            case Naming.LessonPriceStatus.營養課程:
+                <text>S.D Session</text>
+                break;
+            case Naming.LessonPriceStatus.運動恢復課程:
+                <text>S.R Session</text>
+                break;
+            case Naming.LessonPriceStatus.運動防護課程:
+                <text>A.T Session</text>
+                break;
+            default:
+                <text>P.T Session</text>
+                break;
+        }
+    }
+}
+<div class="header">
+    <h2><strong>轉換課程堂數資料</strong></h2>
+</div>
+<div class="body">
+    <div class="row clearfix">
+    <script>
+        $(function(){
+            $global.viewModel.ContractLessonRegisterID = [];
+            $global.viewModel.SourcePriceID = [];
+            $global.viewModel.TargetPriceID = [];
+            delete $global.viewModel.TargetSubtotal;
+        });
+    </script>
+    @{
+            var sharings = models.GetTable<RegisterLessonSharing>();
+            var lessonItems = _model.RegisterLessonContract
+                .Where(r => sharings.Any(s => s.ShareID == r.RegisterID))
+                .OrderBy(c => c.RegisterID).ToList();
+
+            foreach(var item in lessonItems)
+            {
+                var register = item.RegisterLesson;
+                LessonPriceType priceItem = register.LessonPriceType;
+
+                if(!priceItem.ExchangeablePriceItem.Any())
+                {
+                    continue;
+                }
+
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <script>
+                        $(function(){
+                            $global.viewModel.SourcePriceID[$global.viewModel.SourcePriceID.length] = @(register.ClassLevel);
+                            $global.viewModel.TargetPriceID[$global.viewModel.TargetPriceID.length] = @(register.ClassLevel);
+                            $global.viewModel.ContractLessonRegisterID[$global.viewModel.ContractLessonRegisterID.length] = @(register.RegisterID);
+                        });
+                    </script>
+                    <div class="header">
+                        @{
+                            BuildContentItem(priceItem);
+                        }
+                        <small class="badge badge-info">@(priceItem.DurationInMinutes)分鐘 / 剩餘@(register.RemainedLessonCount())堂</small>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" class="form-control form-control-danger" placeholder="請輸入調整後堂數" name="TargetSubtotal" value="" />
+                        <span class="input-group-addon">
+                            <i class="zmdi zmdi-shopping-cart-plus"></i>
+                        </span>
+                    </div>
+                </div>
+                foreach(var target in priceItem.ExchangeablePriceItem)
+                {
+                    register = _model.RegisterLessonContract
+                                        .Select(c => c.RegisterLesson)
+                                        .Where(r => r.ClassLevel == target.TargetID).FirstOrDefault();
+                    priceItem = target.TargetPrice;
+
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <script>
+                            $(function(){
+                                $global.viewModel.SourcePriceID[$global.viewModel.SourcePriceID.length] = @(target.SourceID);
+                                $global.viewModel.TargetPriceID[$global.viewModel.TargetPriceID.length] = @(target.TargetID);
+                                $global.viewModel.ContractLessonRegisterID[$global.viewModel.ContractLessonRegisterID.length] = @(register?.RegisterID.ToString() ?? "null");
+                            });
+                        </script>
+                        <div class="header">
+                            @{
+                                BuildContentItem(priceItem);
+                            }
+                            <small class="badge badge-info">@(priceItem.DurationInMinutes)分鐘 / 剩餘@(register?.RemainedLessonCount() ?? 0)堂</small>
+                        </div>
+                        <div class="input-group">
+                            <input type="text" class="form-control form-control-danger" placeholder="請輸入調整後堂數" name="TargetSubtotal" value="" />
+                            <span class="input-group-addon">
+                                <i class="zmdi zmdi-shopping-cart-plus"></i>
+                            </span>
+                        </div>
+                    </div>
+                }
+            }
+        }
+
+        <div class="col-12">
+            <div class="form-group">
+                <textarea rows="3" class="form-control no-resize" name="Remark" placeholder="請輸入任何想補充的事項..."></textarea>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+    $(function () {
+
+        $('#@(_viewID) button.quit').on('click', function (event) {
+            cancelExchange();
+        });
+
+        $('#@(_viewID) button.finish').on('click', function (event) {
+            commitExchange();
+        });
+
+    });
+
+    function cancelExchange() {
+        $('').launchDownload('@Html.Raw(Url.Action("ApplyContractService","ConsoleHome"))',
+            @Html.Raw(JsonConvert.SerializeObject(new CourseContractQueryViewModel
+                {
+                    KeyID = _model.ContractID.EncryptKey(),
+                })));
+    }
+
+    function commitExchange() {
+        var viewModel = $('#@(_viewID)').find('input,select,textArea').serializeObject();
+        viewModel.Reason = '轉換課程堂數';
+        viewModel.FitnessConsultant = @(_profile.UID);
+        viewModel = $.extend({},$global.viewModel,viewModel);
+        clearErrors();
+        showLoading();
+        $.post('@Html.Raw(Url.Action("CommitContractService", "ContractConsole",new { KeyID = _model.ContractID.EncryptKey() }))', viewModel, function (data) {
+            hideLoading();
+            if ($.isPlainObject(data)) {
+                Swal.fire(
+                    'Oops...',
+                    data.message,
+                    'warning'
+                );
+            }
+            else {
+                $(data).appendTo($('body'));
+            }
+        });
+    }//
+
+</script>
+
