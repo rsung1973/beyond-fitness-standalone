@@ -51,7 +51,7 @@
                 @{ var revision = _item.CourseContractRevision;}
                 @if (revision.Reason == "展延")
                 {
-                    await Html.RenderPartialAsync("~/Views/ContractConsole/ContractService/CourseContractExtensionView.cshtml", revision);
+                    await Html.RenderPartialAsync("~/Views/ContractConsole/ContractService/CourseContractExtensionView20220601.cshtml", revision);
                 }
                 else if (revision.Reason == "終止")
                 {

@@ -1672,31 +1672,31 @@ namespace WebHome.Helper.BusinessOperation
             return priceItem.ExpandActualLessonPrice(models).Sum(p => (p.BundleCount ?? 0));
         }
 
-        public static List<String> ExpandContractLessonDetails(this CourseContract item, GenericManager<BFDataContext> models)
+        public static List<String> ExpandContractLessonDetails(this CourseContract item, GenericManager<BFDataContext> models, String prefix = null)
         {
             if(item.CourseContractOrder.Any())
             {
                 return item.CourseContractOrder.OrderBy(o => o.SeqNo)
-                    .Select(o => o.ContractOrderLessonDetails())
+                    .Select(o => o.ContractOrderLessonDetails(prefix))
                     .ToList();
             }
 
             return new List<string>();
         }
 
-        public static String ContractOrderLessonDetails(this CourseContractOrder order)
+        public static String ContractOrderLessonDetails(this CourseContractOrder order, String prefix = null)
         {
             var item = order.LessonPriceType;
             switch ((Naming.LessonPriceStatus?)item.Status)
             {
                 case Naming.LessonPriceStatus.營養課程:
-                    return $"{(order.SeqNo > 0 ? "加購" : null)}營養諮詢(S.D){order.Lessons}個月{order.Lessons * (item.BundleCount ?? 1)}堂";
+                    return $"{prefix}{(order.SeqNo > 0 ? "加購" : null)}營養諮詢(S.D){order.Lessons}個月{order.Lessons * (item.BundleCount ?? 1)}堂";
                 case Naming.LessonPriceStatus.運動恢復課程:
-                    return $"{(order.SeqNo > 0 ? "加購" : null)}運動恢復(S.R){item.DurationInMinutes}分鐘{order.Lessons * (item.BundleCount ?? 1)}堂";
+                    return $"{prefix}{(order.SeqNo > 0 ? "加購" : null)}運動恢復(S.R){item.DurationInMinutes}分鐘{order.Lessons * (item.BundleCount ?? 1)}堂";
                 case Naming.LessonPriceStatus.運動防護課程:
-                    return $"{(order.SeqNo > 0 ? "加購" : null)}運動防護(A.T){item.DurationInMinutes}分鐘{order.Lessons * (item.BundleCount ?? 1)}堂";
+                    return $"{prefix}{(order.SeqNo > 0 ? "加購" : null)}運動防護(A.T){item.DurationInMinutes}分鐘{order.Lessons * (item.BundleCount ?? 1)}堂";
                 default:
-                    return $"{(order.SeqNo > 0 ? "加購" : null)}私人教練(P.T){item.DurationInMinutes}分鐘{order.Lessons * (item.BundleCount ?? 1)}堂";
+                    return $"{prefix}{(order.SeqNo > 0 ? "加購" : null)}私人教練(P.T){item.DurationInMinutes}分鐘{order.Lessons * (item.BundleCount ?? 1)}堂";
             }
         }
 
