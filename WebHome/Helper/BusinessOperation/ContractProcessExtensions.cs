@@ -1733,7 +1733,7 @@ namespace WebHome.Helper.BusinessOperation
             {
                 foreach (var order in item.CourseContractOrder.OrderBy(o => o.SeqNo))
                 {
-                    createRegisterLesson(item, models, order.LessonPriceType, order.Lessons * (order.LessonPriceType.BundleCount ?? 1), order.SeqNo > 0 ? "加購" : null);
+                    CreateRegisterLesson(item, models, order.LessonPriceType, order.Lessons * (order.LessonPriceType.BundleCount ?? 1), order.SeqNo > 0 ? "加購" : null);
                 }
             }
             else if (item.LessonPriceType.IsPackagePrice)
@@ -1742,7 +1742,7 @@ namespace WebHome.Helper.BusinessOperation
 
                 foreach(var price in priceItems)
                 {
-                    createRegisterLesson(item, models, price, price.BundleCount ?? 0);
+                    CreateRegisterLesson(item, models, price, price.BundleCount ?? 0);
                 }
 
                 item.Lessons = priceItems.Sum(p => p.BundleCount ?? 0);
@@ -1750,7 +1750,7 @@ namespace WebHome.Helper.BusinessOperation
             }
             else
             {
-                createRegisterLesson(item, models, item.LessonPriceType, item.Lessons.Value);
+                CreateRegisterLesson(item, models, item.LessonPriceType, item.Lessons.Value);
             }
 
             foreach (var m in item.CourseContractMember)
@@ -1768,7 +1768,7 @@ namespace WebHome.Helper.BusinessOperation
             return pdfFile;
         }
 
-        private static List<RegisterLesson> createRegisterLesson(CourseContract item, GenericManager<BFDataContext> models,LessonPriceType price,int lessons,String title = null) 
+        public static List<RegisterLesson> CreateRegisterLesson(this CourseContract item, GenericManager<BFDataContext> models,LessonPriceType price,int lessons,String title = null) 
         {
 
             var groupLesson = new GroupingLesson { };
@@ -2111,6 +2111,10 @@ namespace WebHome.Helper.BusinessOperation
                     models.SubmitChanges();
                     break;
 
+                case "轉換課程堂數":
+                    item.ProcessContractLessonExchange();
+                    break;
+
             }
 
             return true;
@@ -2151,8 +2155,6 @@ namespace WebHome.Helper.BusinessOperation
             {
                 ModelState.AddModelError("Reason", "請選擇申請項目!!");
             }
-
-            Dictionary<int, decimal> checkSubtotal = null;
 
             if (viewModel.Reason == "終止")
             {
@@ -2261,7 +2263,7 @@ namespace WebHome.Helper.BusinessOperation
                 }
                 else
                 {
-                    checkSubtotal = new Dictionary<int, decimal>();
+                    Dictionary<int, decimal>  checkSubtotal = new Dictionary<int, decimal>();
 
                     for (int i = 0; i < viewModel.ContractLessonRegisterID.Length; i++)
                     {
@@ -2479,6 +2481,23 @@ namespace WebHome.Helper.BusinessOperation
                         UID = u.UID
                     }));
 
+                    for (int i = 0; i < viewModel.ContractLessonRegisterID.Length; i++)
+                    {
+                        RegisterLesson register = item.RegisterLessonContract
+                                                .Where(r => r.RegisterID == viewModel.ContractLessonRegisterID[i])
+                                                .FirstOrDefault()?.RegisterLesson;
+
+                        newItem.CourseContractRevision.CourseContractLessonExchange.Add(
+                            new CourseContractLessonExchange
+                            {
+                                TargetRegisterID = register?.RegisterID,
+                                TargetPriceID = viewModel.TargetPriceID[i],
+                                TargetSubtotal = register.Lessons,
+                            });
+
+                        models.SubmitChanges();
+                    }
+
                     if (profile.IsManager())
                     {
                         //newItem.SupervisorID = profile.UID;
@@ -2492,84 +2511,6 @@ namespace WebHome.Helper.BusinessOperation
             }
 
             models.SubmitChanges();
-
-            if (viewModel.Reason == "轉換課程堂數")
-            {
-                void clearSubtotal(RegisterLesson lesson)
-                {
-
-                    models.ExecuteCommand(@"UPDATE RegisterLesson
-                        SET        Lessons = {0}
-                        FROM     RegisterLesson INNER JOIN
-                                       RegisterLessonSharing ON RegisterLesson.RegisterID = RegisterLessonSharing.RegisterID
-                        WHERE   (RegisterLessonSharing.ShareID = {1})", lesson.RemainedLessonCount(), lesson.RegisterID);
-
-                    models.ExecuteCommand(@"DELETE FROM RegisterLessonBooking
-                        FROM     RegisterLessonSharing INNER JOIN
-                                       RegisterLessonBooking ON RegisterLessonSharing.RegisterID = RegisterLessonBooking.RegisterID
-                        WHERE   (RegisterLessonSharing.ShareID = {0}) AND (RegisterLessonBooking.LessonID IS NULL)", lesson.RegisterID);
-                }
-
-                void resetSubtotal(RegisterLesson lesson,int lessons)
-                {
-                    lesson.Lessons = lessons;
-
-                    if(lesson.SharingReference.Any())
-                    {
-                        var bookingCount = models.GetTable<RegisterLessonBooking>()
-                                .Where(b => b.RegisterID == lesson.RegisterID).Count();
-                        int bookingID = models.GetTable<RegisterLessonBooking>()
-                                .Where(b => b.RegisterID == lesson.RegisterID)
-                                .OrderByDescending(b => b.BookingID)
-                                .FirstOrDefault()?.BookingID ?? 1;
-                        for (int i = bookingCount; i < lessons; i++)
-                        {
-                            models.GetTable<RegisterLessonBooking>().InsertOnSubmit(new RegisterLessonBooking
-                            {
-                                BookingID = bookingID++,
-                                RegisterID = lesson.RegisterID,
-                            });
-                        }
-                    }
-
-                    models.SubmitChanges();
-                }
-
-                for (int i = 0; i < viewModel.ContractLessonRegisterID.Length; i++)
-                {
-                    RegisterLesson register = item.RegisterLessonContract.Where(r => r.RegisterID == viewModel.ContractLessonRegisterID[i])
-                                                .FirstOrDefault()?.RegisterLesson;
-                    if (register != null)
-                    {
-                        int resetCount = register.Lessons + ((viewModel.TargetSubtotal[i] ?? 0) - register.RemainedLessonCount());
-                        clearSubtotal(register);
-                        resetSubtotal(register, resetCount);
-                    }
-                    else
-                    {
-                        var targetPrice = models.GetTable<LessonPriceType>()
-                            .Where(p => p.PriceID == viewModel.TargetPriceID[i]).FirstOrDefault();
-
-                        if (targetPrice != null)
-                        {
-                            var sharingItems = createRegisterLesson(item, models, targetPrice, viewModel.TargetSubtotal[i] ?? 0, "轉換堂數");
-                            register = sharingItems[0];
-                        }
-                    }
-
-                    if (register != null)
-                    {
-                        newItem.CourseContractRevision.CourseContractLessonExchange.Add(
-                            new CourseContractLessonExchange
-                            {
-                                TargetRegisterID = register.RegisterID,
-                                TargetSubtotal = register.Lessons,
-                            });
-
-                        models.SubmitChanges();
-                    }
-                }
-            }
 
             await PushLineNotification(viewModel, controller, profile, newItem);
 

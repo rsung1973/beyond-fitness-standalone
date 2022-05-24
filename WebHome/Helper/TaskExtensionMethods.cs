@@ -498,6 +498,95 @@ namespace WebHome.Helper
             });
         }
 
+        public static void ProcessContractLessonExchange(this CourseContractRevision item, UserProfile handler = null)
+        {
+            ThreadPool.QueueUserWorkItem(t =>
+            {
+                try
+                {
+                    using (var models = new ModelSource<UserProfile>())
+                    {
+                        item = models.GetTable<CourseContractRevision>()
+                            .Where(r => r.RevisionID == item.RevisionID).First();
+
+                        var newItem = item.CourseContract;
+                        var original = item.SourceContract;
+
+                        void clearSubtotal(RegisterLesson lesson)
+                        {
+
+                            models.ExecuteCommand(@"UPDATE RegisterLesson
+                                SET        Lessons = {0}
+                                FROM     RegisterLesson INNER JOIN
+                                               RegisterLessonSharing ON RegisterLesson.RegisterID = RegisterLessonSharing.RegisterID
+                                WHERE   (RegisterLessonSharing.ShareID = {1})", lesson.RemainedLessonCount(), lesson.RegisterID);
+
+                                    models.ExecuteCommand(@"DELETE FROM RegisterLessonBooking
+                                FROM     RegisterLessonSharing INNER JOIN
+                                               RegisterLessonBooking ON RegisterLessonSharing.RegisterID = RegisterLessonBooking.RegisterID
+                                WHERE   (RegisterLessonSharing.ShareID = {0}) AND (RegisterLessonBooking.LessonID IS NULL)", lesson.RegisterID);
+                        }
+
+                        void resetSubtotal(RegisterLesson lesson, int lessons)
+                        {
+                            lesson.Lessons = lessons;
+
+                            if (lesson.SharingReference.Any())
+                            {
+                                var bookingCount = models.GetTable<RegisterLessonBooking>()
+                                        .Where(b => b.RegisterID == lesson.RegisterID).Count();
+                                int bookingID = models.GetTable<RegisterLessonBooking>()
+                                        .Where(b => b.RegisterID == lesson.RegisterID)
+                                        .OrderByDescending(b => b.BookingID)
+                                        .FirstOrDefault()?.BookingID ?? 1;
+                                for (int i = bookingCount; i < lessons; i++)
+                                {
+                                    models.GetTable<RegisterLessonBooking>().InsertOnSubmit(new RegisterLessonBooking
+                                    {
+                                        BookingID = bookingID++,
+                                        RegisterID = lesson.RegisterID,
+                                    });
+                                }
+                            }
+
+                            models.SubmitChanges();
+                        }
+
+                        foreach (var exchangeItem in item.CourseContractLessonExchange)
+                        {
+                            RegisterLesson register = exchangeItem.RegisterLessonContract?.RegisterLesson;
+                            if (register != null)
+                            {
+                                int resetCount = register.Lessons + ((exchangeItem.TargetSubtotal ?? 0) - register.RemainedLessonCount());
+                                clearSubtotal(register);
+                                resetSubtotal(register, resetCount);
+                            }
+                            else
+                            {
+                                var targetPrice = models.GetTable<LessonPriceType>()
+                                    .Where(p => p.PriceID == exchangeItem.TargetPriceID).FirstOrDefault();
+
+                                if (targetPrice != null)
+                                {
+                                    var sharingItems = original.CreateRegisterLesson(models, targetPrice, exchangeItem.TargetSubtotal ?? 0, "轉換堂數");
+                                    register = sharingItems[0];
+                                }
+                            }
+
+                            models.SubmitChanges();
+                        }
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ApplicationLogging.LoggerFactory.CreateLogger(typeof(TaskExtensionMethods))
+                        .LogError(ex, ex.Message);
+                }
+            });
+        }
+
+
         public readonly static String C0401Outbound ;
         public readonly static String C0501Outbound ;
         public readonly static String D0401Outbound;

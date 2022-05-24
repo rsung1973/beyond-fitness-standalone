@@ -20924,6 +20924,8 @@ namespace WebHome.Models.DataEntity
 		
 		private EntitySet<LessonPriceExchange> _AsExchangedPriceItem;
 		
+		private EntitySet<CourseContractLessonExchange> _CourseContractLessonExchange;
+		
 		private EntityRef<LessonPriceSeries> _PriceSeries;
 		
 		private EntityRef<LevelExpression> _LevelExpression;
@@ -20989,6 +20991,7 @@ namespace WebHome.Models.DataEntity
 			this._CourseContractOrder = new EntitySet<CourseContractOrder>(new Action<CourseContractOrder>(this.attach_CourseContractOrder), new Action<CourseContractOrder>(this.detach_CourseContractOrder));
 			this._ExchangeablePriceItem = new EntitySet<LessonPriceExchange>(new Action<LessonPriceExchange>(this.attach_ExchangeablePriceItem), new Action<LessonPriceExchange>(this.detach_ExchangeablePriceItem));
 			this._AsExchangedPriceItem = new EntitySet<LessonPriceExchange>(new Action<LessonPriceExchange>(this.attach_AsExchangedPriceItem), new Action<LessonPriceExchange>(this.detach_AsExchangedPriceItem));
+			this._CourseContractLessonExchange = new EntitySet<CourseContractLessonExchange>(new Action<CourseContractLessonExchange>(this.attach_CourseContractLessonExchange), new Action<CourseContractLessonExchange>(this.detach_CourseContractLessonExchange));
 			this._PriceSeries = default(EntityRef<LessonPriceSeries>);
 			this._LevelExpression = default(EntityRef<LevelExpression>);
 			this._BranchStore = default(EntityRef<BranchStore>);
@@ -21617,6 +21620,19 @@ namespace WebHome.Models.DataEntity
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="LessonPriceType_CourseContractLessonExchange", Storage="_CourseContractLessonExchange", ThisKey="PriceID", OtherKey="TargetPriceID")]
+		public EntitySet<CourseContractLessonExchange> CourseContractLessonExchange
+		{
+			get
+			{
+				return this._CourseContractLessonExchange;
+			}
+			set
+			{
+				this._CourseContractLessonExchange.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="LessonPriceSeries_LessonPriceType", Storage="_PriceSeries", ThisKey="SeriesID", OtherKey="PriceID", IsForeignKey=true)]
 		public LessonPriceSeries CurrentPriceSeries
 		{
@@ -21927,6 +21943,18 @@ namespace WebHome.Models.DataEntity
 		{
 			this.SendPropertyChanging();
 			entity.TargetPrice = null;
+		}
+		
+		private void attach_CourseContractLessonExchange(CourseContractLessonExchange entity)
+		{
+			this.SendPropertyChanging();
+			entity.LessonPriceType = this;
+		}
+		
+		private void detach_CourseContractLessonExchange(CourseContractLessonExchange entity)
+		{
+			this.SendPropertyChanging();
+			entity.LessonPriceType = null;
 		}
 	}
 	
@@ -63470,13 +63498,19 @@ namespace WebHome.Models.DataEntity
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
+		private int _ExchangeID;
+		
 		private int _RevisionID;
 		
-		private int _TargetRegisterID;
+		private System.Nullable<int> _TargetPriceID;
+		
+		private System.Nullable<int> _TargetRegisterID;
 		
 		private System.Nullable<int> _TargetSubtotal;
 		
 		private EntityRef<CourseContractRevision> _CourseContractRevision;
+		
+		private EntityRef<LessonPriceType> _LessonPriceType;
 		
 		private EntityRef<RegisterLessonContract> _RegisterLessonContract;
 		
@@ -63484,9 +63518,13 @@ namespace WebHome.Models.DataEntity
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
     partial void OnCreated();
+    partial void OnExchangeIDChanging(int value);
+    partial void OnExchangeIDChanged();
     partial void OnRevisionIDChanging(int value);
     partial void OnRevisionIDChanged();
-    partial void OnTargetRegisterIDChanging(int value);
+    partial void OnTargetPriceIDChanging(System.Nullable<int> value);
+    partial void OnTargetPriceIDChanged();
+    partial void OnTargetRegisterIDChanging(System.Nullable<int> value);
     partial void OnTargetRegisterIDChanged();
     partial void OnTargetSubtotalChanging(System.Nullable<int> value);
     partial void OnTargetSubtotalChanged();
@@ -63495,8 +63533,29 @@ namespace WebHome.Models.DataEntity
 		public CourseContractLessonExchange()
 		{
 			this._CourseContractRevision = default(EntityRef<CourseContractRevision>);
+			this._LessonPriceType = default(EntityRef<LessonPriceType>);
 			this._RegisterLessonContract = default(EntityRef<RegisterLessonContract>);
 			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ExchangeID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int ExchangeID
+		{
+			get
+			{
+				return this._ExchangeID;
+			}
+			set
+			{
+				if ((this._ExchangeID != value))
+				{
+					this.OnExchangeIDChanging(value);
+					this.SendPropertyChanging();
+					this._ExchangeID = value;
+					this.SendPropertyChanged("ExchangeID");
+					this.OnExchangeIDChanged();
+				}
+			}
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RevisionID", DbType="Int NOT NULL", IsPrimaryKey=true)]
@@ -63523,8 +63582,32 @@ namespace WebHome.Models.DataEntity
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TargetRegisterID", DbType="Int NOT NULL", IsPrimaryKey=true)]
-		public int TargetRegisterID
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TargetPriceID", DbType="Int")]
+		public System.Nullable<int> TargetPriceID
+		{
+			get
+			{
+				return this._TargetPriceID;
+			}
+			set
+			{
+				if ((this._TargetPriceID != value))
+				{
+					if (this._LessonPriceType.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnTargetPriceIDChanging(value);
+					this.SendPropertyChanging();
+					this._TargetPriceID = value;
+					this.SendPropertyChanged("TargetPriceID");
+					this.OnTargetPriceIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TargetRegisterID", DbType="Int")]
+		public System.Nullable<int> TargetRegisterID
 		{
 			get
 			{
@@ -63601,6 +63684,40 @@ namespace WebHome.Models.DataEntity
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="LessonPriceType_CourseContractLessonExchange", Storage="_LessonPriceType", ThisKey="TargetPriceID", OtherKey="PriceID", IsForeignKey=true)]
+		public LessonPriceType LessonPriceType
+		{
+			get
+			{
+				return this._LessonPriceType.Entity;
+			}
+			set
+			{
+				LessonPriceType previousValue = this._LessonPriceType.Entity;
+				if (((previousValue != value) 
+							|| (this._LessonPriceType.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._LessonPriceType.Entity = null;
+						previousValue.CourseContractLessonExchange.Remove(this);
+					}
+					this._LessonPriceType.Entity = value;
+					if ((value != null))
+					{
+						value.CourseContractLessonExchange.Add(this);
+						this._TargetPriceID = value.PriceID;
+					}
+					else
+					{
+						this._TargetPriceID = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("LessonPriceType");
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="RegisterLessonContract_CourseContractLessonExchange", Storage="_RegisterLessonContract", ThisKey="TargetRegisterID", OtherKey="RegisterID", IsForeignKey=true)]
 		public RegisterLessonContract RegisterLessonContract
 		{
@@ -63628,7 +63745,7 @@ namespace WebHome.Models.DataEntity
 					}
 					else
 					{
-						this._TargetRegisterID = default(int);
+						this._TargetRegisterID = default(Nullable<int>);
 					}
 					this.SendPropertyChanged("RegisterLessonContract");
 				}
