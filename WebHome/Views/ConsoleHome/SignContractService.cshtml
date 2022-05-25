@@ -68,6 +68,10 @@
                 {
                     await Html.RenderPartialAsync("~/Views/ContractConsole/ContractService/ContractConsultantReassignmentView.cshtml", revision);
                 }
+                else if (revision.Reason == "轉換課程堂數")
+                {
+                    await Html.RenderPartialAsync("~/Views/ContractConsole/ContractService/CourseContractExchangeView20220601.cshtml", revision);
+                }
                 else if (revision.Reason == "其他")
                 {
                     await Html.RenderPartialAsync("~/Views/ContractConsole/ContractService/CourseContractOtherAmendmentView.cshtml", revision);
@@ -110,7 +114,7 @@
             showLoading();
             $.post('@Html.Raw(Url.Action("ConfirmContractServiceSignature","ContractConsole",new { KeyID = _item.ContractID.EncryptKey() }))',
                 {
-                    'Extension': $('input[name="extension"]').is(':checked'),
+                    'Extension': true/*$('input[name="extension"]').is(':checked')*/,
                     'Booking': $('input[name="booking"]').is(':checked'),
                     'Cancel': $('input[name="cancel"]').is(':checked'),
                     'Agree': $('input[name="Agree"]').is(':checked'),

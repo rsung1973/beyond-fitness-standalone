@@ -63508,6 +63508,8 @@ namespace WebHome.Models.DataEntity
 		
 		private System.Nullable<int> _TargetSubtotal;
 		
+		private System.Nullable<int> _OriginalRemainedCount;
+		
 		private EntityRef<CourseContractRevision> _CourseContractRevision;
 		
 		private EntityRef<LessonPriceType> _LessonPriceType;
@@ -63528,6 +63530,8 @@ namespace WebHome.Models.DataEntity
     partial void OnTargetRegisterIDChanged();
     partial void OnTargetSubtotalChanging(System.Nullable<int> value);
     partial void OnTargetSubtotalChanged();
+    partial void OnOriginalRemainedCountChanging(System.Nullable<int> value);
+    partial void OnOriginalRemainedCountChanged();
     #endregion
 		
 		public CourseContractLessonExchange()
@@ -63646,6 +63650,26 @@ namespace WebHome.Models.DataEntity
 					this._TargetSubtotal = value;
 					this.SendPropertyChanged("TargetSubtotal");
 					this.OnTargetSubtotalChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OriginalRemainedCount", DbType="Int")]
+		public System.Nullable<int> OriginalRemainedCount
+		{
+			get
+			{
+				return this._OriginalRemainedCount;
+			}
+			set
+			{
+				if ((this._OriginalRemainedCount != value))
+				{
+					this.OnOriginalRemainedCountChanging(value);
+					this.SendPropertyChanging();
+					this._OriginalRemainedCount = value;
+					this.SendPropertyChanged("OriginalRemainedCount");
+					this.OnOriginalRemainedCountChanged();
 				}
 			}
 		}

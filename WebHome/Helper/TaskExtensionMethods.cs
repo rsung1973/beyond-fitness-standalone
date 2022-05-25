@@ -529,7 +529,8 @@ namespace WebHome.Helper
 
                         void resetSubtotal(RegisterLesson lesson, int lessons)
                         {
-                            lesson.Lessons = lessons;
+                            models.ExecuteCommand("update RegisterLesson set Lessons = {0} where RegisterID = {1}",
+                                    lessons, lesson.RegisterID);
 
                             if (lesson.SharingReference.Any())
                             {
@@ -538,18 +539,14 @@ namespace WebHome.Helper
                                 int bookingID = models.GetTable<RegisterLessonBooking>()
                                         .Where(b => b.RegisterID == lesson.RegisterID)
                                         .OrderByDescending(b => b.BookingID)
-                                        .FirstOrDefault()?.BookingID ?? 1;
+                                        .FirstOrDefault()?.BookingID ?? 0;
                                 for (int i = bookingCount; i < lessons; i++)
                                 {
-                                    models.GetTable<RegisterLessonBooking>().InsertOnSubmit(new RegisterLessonBooking
-                                    {
-                                        BookingID = bookingID++,
-                                        RegisterID = lesson.RegisterID,
-                                    });
+                                    bookingID++;
+                                    models.ExecuteCommand("insert RegisterLessonBooking (BookingID,RegisterID) values ({0},{1})",
+                                            bookingID, lesson.RegisterID);
                                 }
                             }
-
-                            models.SubmitChanges();
                         }
 
                         foreach (var exchangeItem in item.CourseContractLessonExchange)
@@ -571,9 +568,11 @@ namespace WebHome.Helper
                                     var sharingItems = original.CreateRegisterLesson(models, targetPrice, exchangeItem.TargetSubtotal ?? 0, "轉換堂數");
                                     register = sharingItems[0];
                                 }
+
+                                models.SubmitChanges();
+
                             }
 
-                            models.SubmitChanges();
                         }
 
                     }

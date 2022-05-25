@@ -12,14 +12,6 @@
 @using WebHome.Helper.BusinessOperation
 @{
 
-    ModelStateDictionary _modelState;
-    ModelSource<UserProfile> models;
-    CourseContractRevision _model;
-    CourseContractMember _owner;
-    CourseContract _contract;
-    DateTime? _signatureDate;
-    CourseContract _original;
-
     CourseContractViewModel _viewModel = (CourseContractViewModel)ViewBag.ViewModel;
 
     _modelState = ViewContext.ModelState;
@@ -36,6 +28,42 @@
     else
     {
         _signatureDate = DateTime.Now;
+    }
+}
+@functions
+{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    CourseContractRevision _model;
+    CourseContractMember _owner;
+    CourseContract _contract;
+    DateTime? _signatureDate;
+    CourseContract _original;
+
+    void BuildContentItem(CourseContractLessonExchange exchangeItem)
+    {
+        RegisterLesson lesson = exchangeItem.RegisterLessonContract?.RegisterLesson;
+        LessonPriceType priceItem = lesson?.LessonPriceType;
+        if (priceItem == null)
+        {
+            priceItem = models.GetTable<LessonPriceType>().Where(p => p.PriceID == exchangeItem.TargetPriceID).FirstOrDefault();
+        }
+
+        switch ((Naming.LessonPriceStatus?)priceItem.Status)
+        {
+            case Naming.LessonPriceStatus.營養課程:
+                <text>營養諮詢(S.D)</text>
+                break;
+            case Naming.LessonPriceStatus.運動恢復課程:
+                <text>運動恢復(S.R)</text>
+                break;
+            case Naming.LessonPriceStatus.運動防護課程:
+                <text>運動防護(A.T)</text>
+                break;
+            default:
+                <text>私人教練(P.T)</text>
+                break;
+        }
     }
 }
 <div class="row" style="@(_viewModel.Pdf == "1" ? "font-size: 15px; margin: 0px; width: 21.5cm;height: 28cm" : "font-size: 15px; margin: 0 5px 0 0;")"">
@@ -106,14 +134,19 @@
                     <tr>
                         <td colspan="2">申請說明：契約經雙方同意於 2022/03/02 依據轉換上課堂數規則
                             <p style="margin-left:80px;margin-bottom: 0px;">
-                                 ※1堂私人教練(P.T)得轉換為2堂運動恢復(S.R)或2堂運動恢復(S.R)得轉換為1堂私人教練(P.T)<br />
-                                 ※1堂私人教練(P.T)得轉換1堂運動防護(A.T)或1堂運動防護(A.T)得轉換為1堂私人教練(P.T)<br />
-                                 ※2堂私人教練(P.T)得轉換1個月營養諮詢(S.D)或1個月營養諮詢(S.D)得轉換為2堂私人教練(P.T)<br />
-                                 以下轉換皆不另行收取費用。截至當日結算實際上課堂數如下：<br />
-                                 1. 私人教練(P.T) 原購買OO堂，調整為OO堂。<br />
-                                 2. 運動恢復(S.R) 原購買OO堂，調整為OO堂。<br />
-                                 3. 運動防護(A.T) 原購買OO堂，調整為OO堂。<br />
-                                 4. 營養諮詢(S.D) 原購買OO堂，調整為OO堂。<br />
+                                ※1堂私人教練(P.T)得轉換為2堂運動恢復(S.R)或2堂運動恢復(S.R)得轉換為1堂私人教練(P.T)<br />
+                                ※1堂私人教練(P.T)得轉換1堂運動防護(A.T)或1堂運動防護(A.T)得轉換為1堂私人教練(P.T)<br />
+                                ※2堂私人教練(P.T)得轉換1個月營養諮詢(S.D)或1個月營養諮詢(S.D)得轉換為2堂私人教練(P.T)<br />
+                                以下轉換皆不另行收取費用。截至當日結算實際上課堂數如下：<br />
+                                @{
+                                    for (int i = 0; i < _model.CourseContractLessonExchange.Count; i++)
+                                    {
+                                        var exchangeItem = _model.CourseContractLessonExchange[i];
+                                        <text>@(i+1). </text>
+                                        BuildContentItem(exchangeItem);
+                                        <text>原剩餘@(exchangeItem.OriginalRemainedCount)堂，調整為@(exchangeItem.TargetSubtotal)堂。<br /></text>
+                                    }
+                                }
                             </p>
                         </td>
                     </tr>
@@ -142,8 +175,8 @@
                         {
                             <td colspan="3">                                
                                 <label class="fancy-checkbox custom-bgcolor-pink">
-                                    <input type="checkbox" name="booking">
-                                    <span>轉換課程類別僅能展延乙次。</span>
+                                    <input type="checkbox" name="booking" />
+                                    <span>轉換課程類別僅能乙次。</span>
                                 </label>
                             </td>
                         }
@@ -152,13 +185,13 @@
                             <td colspan="3">
                                 <label class="fancy-checkbox">
                                     <input type="checkbox" name="booking" checked="checked" disabled="disabled">
-                                    <span>轉換課程類別僅能展延乙次。</span>
+                                    <span>轉換課程類別僅能乙次。</span>
                                 </label>
                             </td>
                         }
                         else
                         {                           
-                            <text><td colspan="3" style="padding:0"><span style="font-size:20px">☑</span> 轉換課程類別僅能展延乙次。</td></text>
+                            <td colspan="3" style="padding:0"><span style="font-size:20px">☑</span> 轉換課程類別僅能展延乙次。</td>
                         }
                     </tr>                                                        
                     <tr>
@@ -182,7 +215,7 @@
                         }
                         else
                         {
-                            <text><td colspan="3" style="padding:0"><span style="font-size:20px">☑</span> 我已閱讀並同意超越體能顧問有限公司隱私政策、服務條款、相關使用及消費合約，即表示即日起您同意接受本合約正面及背面條款之相關約束及其責任。</td></text>
+                            <td colspan="3" style="padding:0"><span style="font-size:20px">☑</span> 我已閱讀並同意超越體能顧問有限公司隱私政策、服務條款、相關使用及消費合約，即表示即日起您同意接受本合約正面及背面條款之相關約束及其責任。</td>
                         }
                     </tr>
                     <tr>
@@ -200,7 +233,7 @@
                                 await Html.RenderPartialAsync("~/Views/ContractConsole/Module/SignHere.cshtml", _owner);}                            
                         </td>
                         <td class="p-0">
-                            主管簽核代表：<img src="@(ViewBag.Supervisor != null ? ((UserProfile)ViewBag.Supervisor).UserProfileExtension.Signature :_contract.Supervisor?.UserProfileExtension.Signature)" width="200px" class="modifySignDialog_link">                            
+                            主管簽核代表：<img src="@(ViewBag.Supervisor != null ? ((UserProfile)ViewBag.Supervisor).UserProfileExtension.Signature :_contract.Supervisor?.UserProfileExtension.Signature)" width="200px" class="modifySignDialog_link" />                            
                         </td>
                     </tr>
                     <tr>

@@ -80,6 +80,10 @@
             {
                 await Html.RenderPartialAsync("~/Views/ContractConsole/ContractService/ContractConsultantReassignmentView.cshtml", _model);
             }
+            else if (_model.Reason == "轉換課程堂數")
+            {
+                await Html.RenderPartialAsync("~/Views/ContractConsole/ContractService/CourseContractExchangeView20220601.cshtml", _model);
+            }
         </div>
     </section>
 </body>

@@ -2039,7 +2039,15 @@ namespace WebHome.Helper.BusinessOperation
 
                 if (item.Reason == "展延")
                 {
-                    if (viewModel.Booking != true || viewModel.Cancel != true)
+                    if (viewModel.Booking != true || viewModel.Cancel != true || viewModel.Agree != true)
+                    {
+                        ModelState.AddModelError("Message", "請勾選合約聲明!!");
+                        return null;
+                    }
+                }
+                else if (item.Reason == "轉換課程堂數")
+                {
+                    if (viewModel.Booking != true || viewModel.Agree != true)
                     {
                         ModelState.AddModelError("Message", "請勾選合約聲明!!");
                         return null;
@@ -2256,61 +2264,76 @@ namespace WebHome.Helper.BusinessOperation
                 if (viewModel.ContractLessonRegisterID == null || viewModel.ContractLessonRegisterID.Length < 1
                     || viewModel.SourcePriceID == null || viewModel.SourcePriceID.Length != viewModel.ContractLessonRegisterID.Length
                     || viewModel.TargetPriceID == null || viewModel.TargetPriceID.Length != viewModel.ContractLessonRegisterID.Length
-                    || viewModel.TargetSubtotal == null || viewModel.TargetSubtotal.Length != viewModel.ContractLessonRegisterID.Length
-                    || viewModel.TargetSubtotal.Any(t => !t.HasValue || t < 0))
+                    || viewModel.TargetSubtotal == null || viewModel.TargetSubtotal.Length != viewModel.ContractLessonRegisterID.Length)
                 {
                     ModelState.AddModelError("TargetSubtotal", "請輸入調整後堂數!!");
                 }
                 else
                 {
-                    Dictionary<int, decimal>  checkSubtotal = new Dictionary<int, decimal>();
-
-                    for (int i = 0; i < viewModel.ContractLessonRegisterID.Length; i++)
+                    for (int i = 0; i < viewModel.TargetSubtotal.Length; i++)
                     {
-                        if (!checkSubtotal.ContainsKey(viewModel.SourcePriceID[i].Value))
+                        if(viewModel.TargetSubtotal[i] < 0)
                         {
-                            checkSubtotal[viewModel.SourcePriceID[i].Value] = 0;
+                            ModelState.AddModelError("TargetSubtotal,{i}", "請輸入調整後堂數!!");
                         }
-
-                        RegisterLesson register = item.RegisterLessonContract.Where(r => r.RegisterID == viewModel.ContractLessonRegisterID[i])
-                                                    .FirstOrDefault()?.RegisterLesson;
-
-                        if (viewModel.SourcePriceID[i] != viewModel.TargetPriceID[i])
-                        {
-                            var exchangeItem = models.GetTable<LessonPriceExchange>().Where(x => x.SourceID == viewModel.SourcePriceID[i] && x.TargetID == viewModel.TargetPriceID[i])
-                                    .FirstOrDefault();
-
-                            if (exchangeItem == null)
-                            {
-                                ModelState.AddModelError($"TargetSubtotal,{i}", "該課程不可轉換!!");
-                                break;
-                            }
-                            else if (exchangeItem.TargetPrice.BundleCount.HasValue
-                                && (viewModel.TargetSubtotal[i] % exchangeItem.TargetPrice.BundleCount) != 0)
-                            {
-                                ModelState.AddModelError($"TargetSubtotal,{i}", $"調整後堂數需以{exchangeItem.TargetPrice.BundleCount}堂為單位!!");
-                                break;
-                            }
-
-                            checkSubtotal[viewModel.SourcePriceID[i].Value] += ((viewModel.TargetSubtotal[i] ?? 0) - (register?.RemainedLessonCount() ?? 0)) / exchangeItem.ExchangeRate;
-
-                        }
-                        else
-                        {
-                            if (register == null)
-                            {
-                                ModelState.AddModelError($"TargetSubtotal,{i}", "請輸入正確調整後堂數!!");
-                                break;
-                            }
-
-                            checkSubtotal[viewModel.SourcePriceID[i].Value] += ((viewModel.TargetSubtotal[i] ?? 0) - register.RemainedLessonCount());
-                        }
-
                     }
 
-                    if (checkSubtotal.Values.Any(v => v != 0))
+                    if(ModelState.IsValid)
                     {
-                        ModelState.AddModelError($"TargetSubtotal", "調整後堂數檢核不符!!");
+                        Dictionary<int, decimal> checkSubtotal = new Dictionary<int, decimal>();
+
+                        for (int i = 0; i < viewModel.ContractLessonRegisterID.Length; i++)
+                        {
+                            if (!viewModel.TargetSubtotal[i].HasValue)
+                            {
+                                continue;
+                            }
+
+                            if (!checkSubtotal.ContainsKey(viewModel.SourcePriceID[i].Value))
+                            {
+                                checkSubtotal[viewModel.SourcePriceID[i].Value] = 0;
+                            }
+
+                            RegisterLesson register = item.RegisterLessonContract.Where(r => r.RegisterID == viewModel.ContractLessonRegisterID[i])
+                                                        .FirstOrDefault()?.RegisterLesson;
+
+                            if (viewModel.SourcePriceID[i] != viewModel.TargetPriceID[i])
+                            {
+                                var exchangeItem = models.GetTable<LessonPriceExchange>().Where(x => x.SourceID == viewModel.SourcePriceID[i] && x.TargetID == viewModel.TargetPriceID[i])
+                                        .FirstOrDefault();
+
+                                if (exchangeItem == null)
+                                {
+                                    ModelState.AddModelError($"TargetSubtotal,{i}", "該課程不可轉換!!");
+                                    break;
+                                }
+                                else if (exchangeItem.TargetPrice.BundleCount.HasValue
+                                    && (viewModel.TargetSubtotal[i] % exchangeItem.TargetPrice.BundleCount) != 0)
+                                {
+                                    ModelState.AddModelError($"TargetSubtotal,{i}", $"調整後堂數需以{exchangeItem.TargetPrice.BundleCount}堂為單位!!");
+                                    break;
+                                }
+
+                                checkSubtotal[viewModel.SourcePriceID[i].Value] += ((viewModel.TargetSubtotal[i] ?? 0) - (register?.RemainedLessonCount() ?? 0)) / exchangeItem.ExchangeRate;
+
+                            }
+                            else
+                            {
+                                if (register == null)
+                                {
+                                    ModelState.AddModelError($"TargetSubtotal,{i}", "請輸入正確調整後堂數!!");
+                                    break;
+                                }
+
+                                checkSubtotal[viewModel.SourcePriceID[i].Value] += ((viewModel.TargetSubtotal[i] ?? 0) - register.RemainedLessonCount());
+                            }
+
+                        }
+
+                        if (checkSubtotal.Values.Any(v => v != 0))
+                        {
+                            ModelState.AddModelError($"TargetSubtotal", "調整後堂數檢核不符!!");
+                        }
                     }
                 }
             }
@@ -2483,6 +2506,11 @@ namespace WebHome.Helper.BusinessOperation
 
                     for (int i = 0; i < viewModel.ContractLessonRegisterID.Length; i++)
                     {
+                        if (!viewModel.TargetSubtotal[i].HasValue || viewModel.TargetSubtotal[i] < 0)
+                        {
+                            continue;
+                        }
+
                         RegisterLesson register = item.RegisterLessonContract
                                                 .Where(r => r.RegisterID == viewModel.ContractLessonRegisterID[i])
                                                 .FirstOrDefault()?.RegisterLesson;
@@ -2492,21 +2520,13 @@ namespace WebHome.Helper.BusinessOperation
                             {
                                 TargetRegisterID = register?.RegisterID,
                                 TargetPriceID = viewModel.TargetPriceID[i],
-                                TargetSubtotal = register.Lessons,
+                                TargetSubtotal = viewModel.TargetSubtotal[i],
+                                OriginalRemainedCount = register?.RemainedLessonCount() ?? 0,
                             });
 
                         models.SubmitChanges();
                     }
 
-                    if (profile.IsManager())
-                    {
-                        //newItem.SupervisorID = profile.UID;
-                        newItem.CourseContractRevision.EnableContractAmendment(models, profile, null);
-                    }
-                    else
-                    {
-                        newItem.ExecuteContractStatus(profile, Naming.CourseContractStatus.待確認, null);
-                    }
                     break;
             }
 
