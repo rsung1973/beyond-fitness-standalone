@@ -40,8 +40,8 @@
 }
 <div class="row" style="@(_viewModel.Pdf == "1" ? "font-size: 15px; margin: 0px; width: 21.5cm;height: 28cm" : "font-size: 15px; margin: 0 5px 0 0;")"">
     <div class="col-md-12">
-        <div style="@(_viewModel.Pdf == "1" ? "width: 21.5cm; height: 21cm" : "")"">
-            <h4 class="text-center" style="margin: 0px"><b>Beyond Fitness 顧問服務展延申請書</b></h4>
+        <div style="@(_viewModel.Pdf == "1" ? "width: 21.5cm;" : "")"">
+            <h4 class="text-center" style="margin: 0px"><b>Beyond Fitness 顧問服務轉換課程類別申請書</b></h4>
              <table class="table">
                 <tbody>
                     <tr>
@@ -69,7 +69,7 @@
                             <td>姓名：@(m.UserProfile.RealName)</td>
                             <td>聯絡電話：@(m.UserProfile.Phone)</td>
                         </tr>                                                             
-                    }                             
+                    }                                 
                     <tr style="border-width: 1px; border-top-style: dashed;">
                         <td colspan="2">原合約內容</td>
                     </tr>
@@ -101,18 +101,21 @@
                         <td colspan="2">申請日期：@(String.Format("{0:yyyy/MM/dd}", _contract.ContractDate))</td>                        
                     </tr>                    
                     <tr>
-                        <td>項目：展延</td>
-                        @if (_model.AttachmentID.HasValue)
-                        {
-                            <text><td>相關證明文件：<u><a href="@Html.Raw($"{WebHome.Startup.Properties["HostDomain"]}{Url.Action("GetResourceWithMime","Information",new { HKeyID =_model.AttachmentID.Value.EncryptHexKey() })}")" target="_blank">開啟附件</a></u></text>
-                        }                       
+                        <td colspan="2">項目：轉換課程類別</td>                    
                     </tr>    
                     <tr>
-                        <td colspan="2">申請說明：契約到期日由 @(String.Format("{0:yyyy/MM/dd}", _original.Expiration))  ，展延至 <sapn class="col-red">@(String.Format("{0:yyyy/MM/dd}", _contract.Expiration))</sapn> 止
-                        @if (_contract.Remark !=null)
-                        {
-                            <text>（@(_contract.Remark)）。</text>
-                        }</td>
+                        <td colspan="2">申請說明：契約經雙方同意於 2022/03/02 依據轉換上課堂數規則
+                            <p style="margin-left:80px;margin-bottom: 0px;">
+                                 ※1堂私人教練(P.T)得轉換為2堂運動恢復(S.R)或2堂運動恢復(S.R)得轉換為1堂私人教練(P.T)<br />
+                                 ※1堂私人教練(P.T)得轉換1堂運動防護(A.T)或1堂運動防護(A.T)得轉換為1堂私人教練(P.T)<br />
+                                 ※2堂私人教練(P.T)得轉換1個月營養諮詢(S.D)或1個月營養諮詢(S.D)得轉換為2堂私人教練(P.T)<br />
+                                 以下轉換皆不另行收取費用。截至當日結算實際上課堂數如下：<br />
+                                 1. 私人教練(P.T) 原購買OO堂，調整為OO堂。<br />
+                                 2. 運動恢復(S.R) 原購買OO堂，調整為OO堂。<br />
+                                 3. 運動防護(A.T) 原購買OO堂，調整為OO堂。<br />
+                                 4. 營養諮詢(S.D) 原購買OO堂，調整為OO堂。<br />
+                            </p>
+                        </td>
                     </tr>
                     <tr>
                         <td colspan="2">
@@ -140,7 +143,7 @@
                             <td colspan="3">                                
                                 <label class="fancy-checkbox custom-bgcolor-pink">
                                     <input type="checkbox" name="booking">
-                                    <span>合約僅能展延乙次，逾期失效。</span>
+                                    <span>轉換課程類別僅能展延乙次。</span>
                                 </label>
                             </td>
                         }
@@ -149,39 +152,15 @@
                             <td colspan="3">
                                 <label class="fancy-checkbox">
                                     <input type="checkbox" name="booking" checked="checked" disabled="disabled">
-                                    <span>合約僅能展延乙次，逾期失效。</span>
+                                    <span>轉換課程類別僅能展延乙次。</span>
                                 </label>
                             </td>
                         }
                         else
                         {                           
-                            <text><td colspan="3" style="padding:0"><span style="font-size:20px">☑</span> 合約僅能展延乙次，逾期失效。</td></text>
+                            <text><td colspan="3" style="padding:0"><span style="font-size:20px">☑</span> 轉換課程類別僅能展延乙次。</td></text>
                         }
-                    </tr>
-                    <tr>
-                       @if (_contract.Status == (int)Naming.ContractServiceStatus.待簽名)
-                        {
-                            <td colspan="3">
-                                <label class="fancy-checkbox custom-bgcolor-pink">
-                                    <input type="checkbox" name="cancel">
-                                    <span>展延後不得申請轉讓及退費。</span>
-                                </label>
-                            </td>
-                        }
-                        else if (_contract.Status == (int)Naming.ContractServiceStatus.待審核)
-                        {
-                            <td colspan="3">
-                                <label class="fancy-checkbox">
-                                    <input type="checkbox" name="cancel" checked="checked" disabled="disabled">
-                                    <span>展延後不得申請轉讓及退費。</span>
-                                </label>
-                            </td>
-                        }
-                        else
-                        {
-                            <text><td colspan="3" style="padding:0"><span style="font-size:20px">☑</span>  展延後不得申請轉讓及退費。</td></text>
-                        }
-                    </tr>                                        
+                    </tr>                                                        
                     <tr>
                         @if (_contract.Status < (int)Naming.CourseContractStatus.待審核)
                         {
