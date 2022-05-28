@@ -33,7 +33,7 @@
         </p>
         <h3 class="text-right col-blush">專業顧問服務總費用：@(String.Format("{0:##,###,###,###}", totalCost))</h3>
         <script>
-            $('.btnConfirm').removeClass('disabled');
+            $('.btnConfirm').css('display','block');
             $global.viewModel.Lessons = @(totalLessons);
             $global.viewModel.TotalCost = @(totalCost);
             resetInstallmentPlan();

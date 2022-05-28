@@ -216,7 +216,7 @@
                     </div>
                     <script>
                         function resetTotalCost() {
-                            $('.btnConfirm').addClass('disabled');
+                            $('.btnConfirm').css('display','none');
                             $('#searchPrice').attr('placeholder', '');
                             $('input[name="OrderLessons"]').val('');
                             $('#costSummary').empty();
@@ -564,8 +564,8 @@
                     </div>
                 </li>
                 <li class="col-12">
-                    <button type="button" class="btn btn-primary btn-round waves-effect float-right btnConfirm disabled" onclick="commitContract();">確定，不後悔</button>
-                    <button type="button" class="btn btn-danger btn-simple btn-round waves-effect btnConfirm disabled" onclick="saveContract();">暫時存檔</button>
+                    <button type="button" class="btn btn-primary btn-round waves-effect float-right btnConfirm" style="display:none;" onclick="commitContract();">確定，不後悔</button>
+                    <button type="button" class="btn btn-danger btn-simple btn-round waves-effect btnConfirm" style="display:none;" onclick="saveContract();">暫時存檔</button>
                     <script>
                         function saveContract() {
                             clearErrors();
