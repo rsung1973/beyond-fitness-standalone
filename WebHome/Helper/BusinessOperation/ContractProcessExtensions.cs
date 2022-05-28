@@ -2650,6 +2650,37 @@ namespace WebHome.Helper.BusinessOperation
                     }
                 }
             }
+            else if (viewModel.Reason == "轉換課程堂數")
+            {
+                //if (newItem.Status == (int)Naming.CourseContractStatus.待確認)
+                //{
+                //    if (newItem.CourseContractExtension.BranchStore.ManagerID.HasValue)
+                //    {
+                //        var jsonData = await controller.RenderViewToStringAsync("~/Views/LineEvents/Message/NotifyManagerToApproveExtend.cshtml", newItem);
+                //        jsonData.PushLineMessage();
+                //    }
+                //    if (profile.UID != newItem.CourseContractExtension.BranchStore.ViceManagerID
+                //        && newItem.CourseContractExtension.BranchStore.ViceManagerID.HasValue)
+                //    {
+                //        var jsonData = await controller.RenderViewToStringAsync("~/Views/LineEvents/Message/NotifyViceManagerToApproveExtend.cshtml", newItem);
+                //        jsonData.PushLineMessage();
+                //    }
+                //}
+                //else if (newItem.Status == (int)Naming.CourseContractStatus.待簽名)
+                //{
+                //    if (newItem.CourseContractExtension.SignOnline == true)
+                //    {
+                //        //item.CreateLineReadyToSignContract(models).PushLineMessage();
+                //        var jsonData = await controller.RenderViewToStringAsync("~/Views/LineEvents/Message/NotifyLearnerToSignExtend.cshtml", newItem);
+                //        jsonData.PushLineMessage();
+                //    }
+                //    else if (profile.UID != newItem.AgentID)
+                //    {
+                //        var jsonData = await controller.RenderViewToStringAsync("~/Views/LineEvents/Message/NotifyCoachToSignExtend.cshtml", newItem);
+                //        jsonData.PushLineMessage();
+                //    }
+                //}
+            }
         }
 
         public static Payment EditPaymentForContract(this PaymentViewModel viewModel, HttpContext context)
