@@ -80,9 +80,10 @@
         }
 
         var validContract = contract.Expiration.Value >= DateTime.Today;
-        var bookingCount = contract.AttendedLessonCount();
+        @*var bookingCount = contract.AttendedLessonCount();*@
         var totalPaid = contract.TotalPaidAmount();
-        var payoffStatus = contract.TotalCost / contract.Lessons * (bookingCount + 1) <= totalPaid;
+        @*var payoffStatus = contract.TotalCost / contract.Lessons * (bookingCount + 1) <= totalPaid;*@
+        var payoffStatus = totalPaid > 0;
         bool revisionStatus = contract.RevisionList.Any(c => c.CourseContract.Status < (int)Naming.CourseContractStatus.已生效);
         bool bookable = validContract && payoffStatus && !revisionStatus && !_currentDisabled;
         if (bookable)
