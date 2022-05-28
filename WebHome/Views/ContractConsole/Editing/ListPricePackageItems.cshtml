@@ -40,7 +40,7 @@
             $global.viewModel.OrderLessons = [];
             $('input[name="OrderLessons"]').on('change',function(){
                 $('#costSummary').empty();
-                $('.btnConfirm').addClass('disabled');
+                $('.btnConfirm').css('display','none');
             });
         });
     </script>
@@ -51,16 +51,16 @@
                 switch((Naming.LessonPriceStatus?)_model.Status)
                 {
                     case Naming.LessonPriceStatus.營養課程:
-                        <text>S.D Session(營養諮詢)</text>
+                                <text>S.D Session(營養諮詢)</text>
                         break;
                     case Naming.LessonPriceStatus.運動恢復課程:
-                        <text>S.R Session(運動恢復)</text>
+                                <text>S.R Session(運動恢復)</text>
                         break;
                     case Naming.LessonPriceStatus.運動防護課程:
-                        <text>A.T Session(運動防護)</text>
+                                <text>A.T Session(運動防護)</text>
                         break;
                     default:
-                        <text>P.T Session(私人教練)</text>
+                                <text>P.T Session(私人教練)</text>
                         break;
                 }
             }
@@ -69,11 +69,11 @@
                     var property = _model.LessonPriceProperty.Where(p => p.PropertyID == (int)Naming.LessonPriceFeature.BundlePackage).FirstOrDefault();
                     if (property != null)
                     {
-                        <text>@Html.Raw(property.Description)</text>
+                                <text>@Html.Raw(property.Description)</text>
                     }
                     else
                     {
-                        <text>@Html.Raw(_model.DurationInMinutes)分鐘</text>
+                                <text>@Html.Raw(_model.DurationInMinutes)分鐘</text>
                     }
                 }
                 / @($"{_model.ListPrice * (_model.BundleCount ?? 1):##,###}")元
@@ -83,7 +83,7 @@
             @{
                 var order = _contract?.CourseContractOrder?.Where(o => o.PriceID == _model.PriceID).FirstOrDefault();
             }
-            <input type="number" class="form-control form-control-danger forPT" name="OrderLessons" placeholder="請輸入單位數" value="@(order?.Lessons ?? (_viewModel.PriceAdjustment == CourseContractExtension.UnitPriceAdjustmentDefinition.T1 ? _model.LowerLimit : null))" />
+            <input type="number" class="form-control form-control-danger forPT" name="OrderLessons" placeholder="請輸入單位數" value="@(order?.Lessons ?? (_viewModel.PriceAdjustment == CourseContractExtension.UnitPriceAdjustmentDefinition.T1 ? _model.LowerLimit : null))" onfocus="resetSimpleTotalCost();" />
             <span class="input-group-addon" style="border-radius: 0px 30px 30px 0px;">
                 <i class="zmdi zmdi-shopping-cart-plus"></i>
             </span>
@@ -114,16 +114,16 @@
                     switch((Naming.LessonPriceStatus?)item.Status)
                     {
                         case Naming.LessonPriceStatus.營養課程:
-                            <text>S.D Session(營養諮詢)</text>
+                                    <text>S.D Session(營養諮詢)</text>
                             break;
                         case Naming.LessonPriceStatus.運動恢復課程:
-                            <text>S.R Session(運動恢復)</text>
+                                    <text>S.R Session(運動恢復)</text>
                             break;
                         case Naming.LessonPriceStatus.運動防護課程:
-                            <text>A.T Session(運動防護)</text>
+                                    <text>A.T Session(運動防護)</text>
                             break;
                         default:
-                            <text>P.T Session(私人教練)</text>
+                                    <text>P.T Session(私人教練)</text>
                             break;
                     }
                 }
@@ -132,11 +132,11 @@
                         property = item.LessonPriceProperty.Where(p => p.PropertyID == (int)Naming.LessonPriceFeature.BundlePackage).FirstOrDefault();
                         if (property != null)
                         {
-                            <text>@Html.Raw(property.Description)</text>
+                                    <text>@Html.Raw(property.Description)</text>
                         }
                         else
                         {
-                            <text>@Html.Raw(item.DurationInMinutes)分鐘</text>
+                                    <text>@Html.Raw(item.DurationInMinutes)分鐘</text>
                         }
                     }
                     / @($"{item.ListPrice * (item.BundleCount ?? 1):##,###}")元
@@ -146,7 +146,7 @@
                 order = _contract?.CourseContractOrder?.Where(o => o.PriceID == item.PriceID).FirstOrDefault();
             }
             <div class="input-group">
-                <input type="number" class="form-control form-control-danger" name="OrderLessons" placeholder="請輸入購買單位" value="@(order?.Lessons)" />
+                <input type="number" class="form-control form-control-danger" name="OrderLessons" placeholder="請輸入購買單位" value="@(order?.Lessons)" onfocus="resetSimpleTotalCost();" />
                 <span class="input-group-addon" style="border-radius: 0px 30px 30px 0px;">
                     <i class="zmdi zmdi-shopping-cart-plus"></i>
                 </span>
@@ -168,7 +168,7 @@
 {
     void BuildCalcTotalInfo()
     {
-        <button type="button" class="btn btn-warning btn-sm btn-round waves-effect float-right" onclick="calcTotalCost();">計算堂數與價格</button>        
+    <button type="button" class="btn btn-warning btn-sm btn-round waves-effect float-right" onclick="calcTotalCost();">計算堂數與價格</button>        
     }
 }
 

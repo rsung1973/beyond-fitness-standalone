@@ -222,6 +222,12 @@
                             $('#costSummary').empty();
                         }
 
+                        function resetSimpleTotalCost() {
+                            $('.btnConfirm').css('display','none');
+                            $('#costSummary').empty();
+                        }
+
+
                         function calcTotalCost() {
                             $global.viewModel.Lessons = null;
                             $global.viewModel.TotalCost = null;
