@@ -89,7 +89,8 @@
                     <tr>
                         <td>名稱：@(_model.CourseContractType.TypeName)(@(_model.LessonPriceType.DurationInMinutes)分鐘)</td>
                         <td colspan="2">
-                            @if (_model.LessonPriceType.BranchStore?.IsVirtualClassroom() == true)
+                            @if (_model.LessonPriceType.BranchStore?.IsVirtualClassroom() == true
+                                    || _model.CourseContractType.ForVirtaulClass)
                             {
                                 <text>上課場所/簽約分店：遠距/@(_model.CourseContractExtension.BranchStore.BranchName)</text>
                             }
@@ -175,8 +176,8 @@
                             </td>
                         }
                         <td>
-                            @if (_model.ContractType == (int)CourseContractType.ContractTypeDefinition.CRA
-                                || _model.LessonPriceType.BranchStore?.IsVirtualClassroom() == true)
+                            @if (_model.LessonPriceType.BranchStore?.IsVirtualClassroom() == true
+                                    || _model.CourseContractType.ForVirtaulClass)
                             {
                                 <text>若未於上述使用期限內完成課程堂數者不得展延。</text>
                             }
@@ -340,11 +341,12 @@
                     case CourseContractType.ContractTypeDefinition.CGA:
                         await Html.RenderPartialAsync("~/Views/ContractConsole/Module/ContractTermsForCGA.cshtml");
                         break;
-                    case CourseContractType.ContractTypeDefinition.CRA:
+                    case CourseContractType.ContractTypeDefinition.CNA:
                         await Html.RenderPartialAsync("~/Views/ContractConsole/Module/ContractTermsForCNA.cshtml");
                         break;
                     default:
-                        if (_model.LessonPriceType.BranchStore?.IsVirtualClassroom() == true)
+                        if (_model.LessonPriceType.BranchStore?.IsVirtualClassroom() == true
+                            || _model.CourseContractType.ForVirtaulClass)
                         {
                             await Html.RenderPartialAsync("~/Views/ContractConsole/Module/ContractTermsForDistance.cshtml");
                         }

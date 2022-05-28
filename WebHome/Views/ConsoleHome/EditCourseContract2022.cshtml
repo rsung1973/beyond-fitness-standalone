@@ -444,7 +444,7 @@
                                                             return;
                                                         }
                                                         showLoading();
-                                                        $.post('@Html.Raw(Url.Action("LoadInstallmentPlan","CourseContract"))', { 'lessons': lessons, 'installments': installments }, function (data) {
+                                                        $.post('@Html.Raw(Url.Action("LoadInstallmentPlan2022","CourseContract"))', { 'lessons': lessons, 'installments': installments }, function (data) {
                                                             hideLoading();
                                                             if ($.isPlainObject(data)) {
                                                                 Swal.fire(
@@ -484,7 +484,7 @@
                                 $('.installment-plan').css('display', 'block');
                                 var ct = $('select[name="ContractType"]').val();
                                 var $store = $('select[name="BranchID"] option.virtual-store');
-                                if ($store.is(':selected') || ct == '5' || ct == '6') {
+                                if (/*$store.is(':selected') ||*/ ct == '5' || ct == '6' || $global.viewModel.Lessons < 25) {
                                     $('.installment-plan').css('display', 'none');
                                     $('input[name="InstallmentPlan"]').prop('checked', false);
                                     checkInstallmentPlan();

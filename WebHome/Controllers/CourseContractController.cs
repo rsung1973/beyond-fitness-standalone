@@ -1096,5 +1096,11 @@ namespace WebHome.Controllers
             return View("~/Views/CourseContract/Module/InstallmentPlan.cshtml");
         }
 
+        public ActionResult LoadInstallmentPlan2022(CourseContractQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            return View("~/Views/CourseContract/Module/InstallmentPlan2022.cshtml");
+        }
+
     }
 }

@@ -152,7 +152,7 @@
                 <div class="pull-left">
                     <div class="controls">
                         <label class="fancy-checkbox">
-                            <input type="checkbox" id="PTSession@(item.RegisterID)" disabled="@(!bookable || _currentDisabled)" name="RegisterID" value="@(item.RegisterID)" onclick="selectBooking(this, '@((int)Naming.LessonPriceStatus.一般課程)');" data-version="@(contract.CourseContractExtension.Version)" />
+                            <input type="checkbox" id="PTSession@(item.RegisterID)" disabled="@(!bookable || _currentDisabled)" name="RegisterID" value="@(item.RegisterID)" onclick="selectBooking(this, '@((int)Naming.LessonPriceStatus.一般課程)');" data-version="@(contract.CourseContractExtension.Version)" data-location="@(item.LessonPriceType.BranchStore?.IsVirtualClassroom() == true ? "option.virtual-store" : "")" />
                             <span></span>
                         </label>
                     </div>

@@ -17,8 +17,6 @@
     CalendarEventQueryViewModel _viewModel;
     String _dialogID = $"boy{DateTime.Now.Ticks}";
 
-
-
     _modelState = ViewContext.ModelState;
     models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
     _model = (LessonTime)this.Model;

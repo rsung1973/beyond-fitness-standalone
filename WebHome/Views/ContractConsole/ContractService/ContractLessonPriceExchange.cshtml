@@ -40,6 +40,10 @@
                     CourseContractType.ContractTypeDefinition.CGB,
                     CourseContractType.ContractTypeDefinition.CGC,
                     CourseContractType.ContractTypeDefinition.CGF,
+                    CourseContractType.ContractTypeDefinition.CVA,
+                    CourseContractType.ContractTypeDefinition.CVB,
+                    CourseContractType.ContractTypeDefinition.CVC,
+                    CourseContractType.ContractTypeDefinition.CVF,
                 };
 }
 
@@ -70,7 +74,7 @@
             @if (!AvailableToExchange.Contains((CourseContractType.ContractTypeDefinition)_model.ContractType) && !forceToApply)
             {
                 applicable = false;
-                <span class="col-red"><i class="zmdi zmdi-block"></i>合約類型不符(CGA/CBG/CGC/CGF)</span><br />
+                <span class="col-red"><i class="zmdi zmdi-block"></i>合約類型不符(CGA/CBG/CGC/CGF/遠距)</span><br />
             }
             @{
                 var exchangeCount = _model.RevisionList.Where(r => r.Reason == "轉換課程堂數").Count();

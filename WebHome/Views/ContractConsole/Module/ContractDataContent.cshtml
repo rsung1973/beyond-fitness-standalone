@@ -148,7 +148,7 @@
         <div class="list_tr">
             <div class="list_td hd">
                 簽約分店
-                <span class="badge bg-blue">@(_model.LessonPriceType.BranchStore?.IsVirtualClassroom() == true ? "遠距" : null)</span>
+                <span class="badge bg-blue">@(_model.LessonPriceType.BranchStore?.IsVirtualClassroom() == true || _model.CourseContractType.ForVirtaulClass ? "遠距" : null)</span>
             </div>
             <div class="list_td rt">@(_model.CourseContractExtension?.BranchStore.BranchName)</div>
         </div>

@@ -67,7 +67,7 @@
                     }
                 }
                 @if (_model.ContractType != (int)CourseContractType.ContractTypeDefinition.CGA
-                        && _model.ContractType != (int)CourseContractType.ContractTypeDefinition.CRA)
+                        && _model.ContractType != (int)CourseContractType.ContractTypeDefinition.CNA)
                 {
                     <li>
                         <div class="list_tb tb2">
@@ -122,7 +122,7 @@
                     <div class="list_tb tb2">
                         <div class="list_tr">
                             <div class="list_td hd">上課場所</div>
-                            <div class="list_td rt">@(_model.LessonPriceType.BranchStore?.IsVirtualClassroom() == true ? "遠距" : _model.CourseContractExtension?.BranchStore.BranchName)</div>
+                            <div class="list_td rt">@(_model.LessonPriceType.BranchStore?.IsVirtualClassroom() == true || _model.CourseContractType.ForVirtaulClass ? "遠距" : _model.CourseContractExtension?.BranchStore.BranchName)</div>
                         </div>
                     </div>
                 </li>
@@ -297,11 +297,12 @@
                     case CourseContractType.ContractTypeDefinition.CGA:
                         await Html.RenderPartialAsync("~/Views/CornerKick/Module/ContractTermsForCGA.cshtml");
                         break;
-                    case CourseContractType.ContractTypeDefinition.CRA:
+                    case CourseContractType.ContractTypeDefinition.CNA:
                         await Html.RenderPartialAsync("~/Views/CornerKick/Module/ContractTermsForCNA.cshtml");
                         break;
                     default:
-                        if (_model.LessonPriceType.BranchStore?.IsVirtualClassroom() == true)
+                        if (_model.LessonPriceType.BranchStore?.IsVirtualClassroom() == true
+                            || _model.CourseContractType.ForVirtaulClass)
                         {
                             await Html.RenderPartialAsync("~/Views/CornerKick/Module/ContractTermsForDistance.cshtml");
                         }

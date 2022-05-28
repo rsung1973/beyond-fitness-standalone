@@ -109,7 +109,7 @@
                 <div class="pull-left">
                     <div class="controls">
                         <label class="fancy-checkbox">
-                            <input type="checkbox" id="PTSession@(item.RegisterID)" disabled="@(!(bookable && !_currentDisabled))"  name="RegisterID" value="@(item.RegisterID)" onclick="selectBooking(this, '@((int)Naming.LessonPriceStatus.一般課程)');" data-version="@(contract.CourseContractExtension.Version)"/>
+                            <input type="checkbox" id="PTSession@(item.RegisterID)" disabled="@(!(bookable && !_currentDisabled))"  name="RegisterID" value="@(item.RegisterID)" onclick="selectBooking(this, '@((int)Naming.LessonPriceStatus.一般課程)');" data-version="@(contract.CourseContractExtension.Version)" data-location="@(item.LessonPriceType.Status==(int)Naming.LessonPriceStatus.營養課程 ? "option.virtual-store" : "")"/>
                             <span></span>
                         </label>
                     </div>
@@ -136,7 +136,7 @@
                             (@(item.LessonPriceType.DurationInMinutes)分鐘)
                             <span class="float-right">
                                 @{
-                                    await Html.RenderPartialAsync("~/Views/Common/BranchStoreName.cshtml", contract.CourseContractExtension.BranchStore);
+                                    await Html.RenderPartialAsync("~/Views/Common/BranchStoreName.cshtml", item.LessonPriceType.BranchStore ?? contract.CourseContractExtension.BranchStore);
                                 }
                             </span>
                         </div>
