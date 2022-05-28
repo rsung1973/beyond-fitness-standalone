@@ -102,7 +102,8 @@
             <li>
                 <div class="list_tb tb2">
                     <div class="list_tr">
-                        @if (_item.LessonPriceType.BranchStore?.IsVirtualClassroom() == true)
+                        @if (_item.LessonPriceType.BranchStore?.IsVirtualClassroom() == true
+                            || _item.CourseContractType.ForVirtaulClass)
                         {
                             <div class="list_td hd">上課/簽約分店</div>
                             <div class="list_td rt">遠距/@(_item.CourseContractExtension.BranchStore.BranchName)</div>

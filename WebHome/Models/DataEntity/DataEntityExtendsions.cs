@@ -728,12 +728,12 @@ namespace WebHome.Models.DataEntity
             CFA,
             CPB,
             CPC,
-            CRA,
+            CNA,
             CGA,
             CGF,
             CGB,
             CGC,
-            CNR,
+            CRA,
             CMP,
             CVA,
             CVF,
@@ -744,9 +744,14 @@ namespace WebHome.Models.DataEntity
         public static bool IsSuitableForVirtaulClass(ContractTypeDefinition? ct)
         {
             return ct == ContractTypeDefinition.CPA
-                || ct == ContractTypeDefinition.CRA
-                /*|| ct == ContractTypeDefinition.CGA*/;
+                || ct == ContractTypeDefinition.CNA
+                || ct == ContractTypeDefinition.CVA
+                || ct == ContractTypeDefinition.CVB
+                || ct == ContractTypeDefinition.CVC
+                || ct == ContractTypeDefinition.CVF;
         }
+
+        public bool ForVirtaulClass => IsSuitableForVirtaulClass((ContractTypeDefinition)TypeID);
 
         public bool IsCombination => this.ContractCode?.StartsWith("CG") == true;
 
@@ -790,6 +795,15 @@ namespace WebHome.Models.DataEntity
         public enum ExchangeStatus
         {
             已停用 = 0,
+        }
+
+    }
+
+    public partial class CourseContractAction
+    {
+        public enum ActionType
+        {
+            轉換課程堂數 = 1,
         }
 
     }

@@ -325,7 +325,7 @@ namespace WebHome.Controllers
                     return Json(new { result = false, message = "無相符條件的項目!" });
                 }
             }
-            else if (viewModel.ContractType == CourseContractType.ContractTypeDefinition.CRA)
+            else if (viewModel.ContractType == CourseContractType.ContractTypeDefinition.CNA)
             {
                 items = items
                     .Where(p => p.BranchID == viewModel.BranchID)
@@ -395,13 +395,13 @@ namespace WebHome.Controllers
                 .Where(l => !l.DurationInMinutes.HasValue 
                     || l.DurationInMinutes == viewModel.DurationInMinutes);
 
-            if (viewModel.ContractType == CourseContractType.ContractTypeDefinition.CRA)
+            if (viewModel.ContractType == CourseContractType.ContractTypeDefinition.CNA)
             {
                 items = items
                     .Where(p => p.BranchID == viewModel.BranchID || !p.BranchID.HasValue)
                     .Where(p => p.Status == (int)Naming.LessonPriceStatus.營養課程);
             }
-            else if (viewModel.ContractType == CourseContractType.ContractTypeDefinition.CNR)
+            else if (viewModel.ContractType == CourseContractType.ContractTypeDefinition.CRA)
             {
                 items = models.GetTable<LessonPriceType>()
                     .Where(l => !l.DurationInMinutes.HasValue

@@ -47,6 +47,11 @@
     <div class="row">
         <div class="col-8">
             <h5 class="m-t-0">轉換課程堂數</h5>
+            @{
+                bool forceToApply = models.GetTable<CourseContractAction>()
+                    .Where(c => c.ContractID == _model.ContractID)
+                    .Where(c => c.ActionID == (int)CourseContractAction.ActionType.轉換課程堂數).Any();
+            }
             @if (_model.Status.In((int)Naming.CourseContractStatus.已過期, (int)Naming.CourseContractStatus.已終止, (int)Naming.CourseContractStatus.已履行))
             {
                 applicable = false;
@@ -62,20 +67,22 @@
                 applicable = false;
                 <span class="col-red"><i class="zmdi zmdi-block"></i>費用未結清</span><br />
             }
-            @if (!AvailableToExchange.Contains((CourseContractType.ContractTypeDefinition)_model.ContractType))
+            @if (!AvailableToExchange.Contains((CourseContractType.ContractTypeDefinition)_model.ContractType) && !forceToApply)
             {
                 applicable = false;
                 <span class="col-red"><i class="zmdi zmdi-block"></i>合約類型不符(CGA/CBG/CGC/CGF)</span><br />
             }
-        </div>
-        <div class="col-4 text-right">
-            @{ 
+            @{
                 var exchangeCount = _model.RevisionList.Where(r => r.Reason == "轉換課程堂數").Count();
-                if (exchangeCount > 0)
+                if (exchangeCount > 0 && !forceToApply)
                 {
                     applicable = false;
+                    <span class="col-red"><i class="zmdi zmdi-block"></i>合約課程堂數已轉換</span>
+                    <br />
                 }
             }
+        </div>
+        <div class="col-4 text-right">
             <a href="javascript:void();">
                 <h2>@(exchangeCount)</h2>
             </a>

@@ -50,20 +50,28 @@
                 applicable = false;
                 <span class="col-red"><i class="zmdi zmdi-block"></i>費用未結清</span><br />
             }
-            @if (_model.ContractType == (int)CourseContractType.ContractTypeDefinition.CGA)
-            {
-                applicable = false;
-                <span class="col-red"><i class="zmdi zmdi-block"></i>組合包</span><br />
-            }
-            else if (_model.ContractType == (int)CourseContractType.ContractTypeDefinition.CRA)
-            {
-                applicable = false;
-                <span class="col-red"><i class="zmdi zmdi-block"></i>營養</span><br />
-            }
-            else if (_model.LessonPriceType.BranchStore?.IsVirtualClassroom() == true)
-            {
-                applicable = false;
-                <span class="col-red"><i class="zmdi zmdi-block"></i>遠距</span><br />
+            @{
+                //if (_model.ContractType == (int)CourseContractType.ContractTypeDefinition.CGA)
+                //{
+                //    applicable = false;
+                //    <span class="col-red"><i class="zmdi zmdi-block"></i>組合包</span>
+
+                //    <br />
+                //}
+                //else 
+                if (_model.ContractType == (int)CourseContractType.ContractTypeDefinition.CNA)
+                {
+                    applicable = false;
+                    <span class="col-red"><i class="zmdi zmdi-block"></i>營養</span>
+                    <br />
+                }
+                else if (_model.LessonPriceType.BranchStore?.IsVirtualClassroom() == true 
+                        || _model.CourseContractType.ForVirtaulClass)
+                {
+                    applicable = false;
+                    <span class="col-red"><i class="zmdi zmdi-block"></i>遠距</span>
+                    <br />
+                }
             }
         </div>
         <div class="col-4 text-right">

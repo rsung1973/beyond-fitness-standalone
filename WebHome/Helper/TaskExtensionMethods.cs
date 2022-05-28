@@ -575,6 +575,7 @@ namespace WebHome.Helper
 
                         }
 
+                        models.ExecuteCommand("delete CourseContractAction where ContractID = {0} and ActionID = {1}", original.ContractID, (int)CourseContractAction.ActionType.轉換課程堂數);
                     }
                 }
                 catch (Exception ex)

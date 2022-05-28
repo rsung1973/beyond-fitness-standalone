@@ -73,8 +73,9 @@
             }
             else if ((_model.Status == (int)Naming.CourseContractStatus.已過期 
                             || _model.ContractType == (int)CourseContractType.ContractTypeDefinition.CGA
-                            || _model.ContractType == (int)CourseContractType.ContractTypeDefinition.CRA
-                            || _model.LessonPriceType.BranchStore?.IsVirtualClassroom() == true)
+                            || _model.ContractType == (int)CourseContractType.ContractTypeDefinition.CNA
+                            || _model.LessonPriceType.BranchStore?.IsVirtualClassroom() == true
+                            || _model.CourseContractType.ForVirtaulClass)
                         && applicable && (_profile.IsCoach() || _profile.IsAssistant() || _profile.IsAuthorizedSysAdmin()))
             {
                 <small class="info">不退款</small>

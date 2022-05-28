@@ -261,7 +261,8 @@
     {
         <span>
             <i class="material-icons">person_pin_circle</i>
-            @if (item.LessonPriceType.BranchStore?.IsVirtualClassroom() == true)
+            @if (item.LessonPriceType.BranchStore?.IsVirtualClassroom() == true
+                || item.CourseContractType.ForVirtaulClass)
             {
                 <text>上課場所/簽約分店：遠距/@(item.CourseContractExtension.BranchStore.BranchName)</text>
             }

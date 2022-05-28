@@ -176,9 +176,9 @@ namespace WebHome.Helper.BusinessOperation
                     //AgentID = profile.UID,  //lessonPrice.BranchStore.ManagerID.Value,
                     CourseContractExtension = new CourseContractExtension
                     {
-                        BranchID = lessonPrice.BranchStore?.IsVirtualClassroom() == true 
-                            ? profile.ServingCoach.PreferredBranchID().Value 
-                            : lessonPrice.BranchID ?? viewModel.BranchID.Value,
+                        //BranchID = lessonPrice.BranchStore?.IsVirtualClassroom() == true 
+                        //    ? profile.ServingCoach.PreferredBranchID().Value 
+                        //    : lessonPrice.BranchID ?? viewModel.BranchID.Value,
                         Version = (int?)viewModel.Version,
                     }
                 };
@@ -188,6 +188,8 @@ namespace WebHome.Helper.BusinessOperation
             {
                 models.ExecuteCommand("delete CourseContractOrder where ContractID = {0}", item.ContractID);
             }
+
+            BranchStore branch = models.GetTable<BranchStore>().Where(b => b.BranchID == viewModel.BranchID).First();
 
             item.AgentID = profile.UID;
             if(draftOnly)
@@ -203,7 +205,7 @@ namespace WebHome.Helper.BusinessOperation
                 }
                 else
                 {
-                    item.SupervisorID = !lessonPrice.BranchID.HasValue || lessonPrice.BranchStore.IsVirtualClassroom() ? profile.ServingCoach.CurrentWorkBranch()?.ManagerID : lessonPrice.BranchStore?.ManagerID;
+                    item.SupervisorID = branch.IsVirtualClassroom() ? profile.ServingCoach.CurrentWorkBranch()?.ManagerID : branch.ManagerID;
                     item.Status = (int)Naming.CourseContractStatus.待審核;
                 }
 
@@ -241,6 +243,18 @@ namespace WebHome.Helper.BusinessOperation
                         : viewModel.ContractType == CourseContractType.ContractTypeDefinition.CVA_Aux
                             ? (int)viewModel.ContractTypeAux.Value + CourseContractType.OffsetFromCGA2CVA
                             : (int)viewModel.ContractType.Value;
+
+            if(CourseContractType.IsSuitableForVirtaulClass((CourseContractType.ContractTypeDefinition)item.ContractType))
+            {
+                item.CourseContractExtension.BranchID = branch.IsVirtualClassroom()
+                    ? profile.ServingCoach.PreferredBranchID().Value
+                    : branch.BranchID;
+            }
+            else
+            {
+                item.CourseContractExtension.BranchID = branch.BranchID;
+            }
+
             item.ContractDate = DateTime.Now;
             item.OwnerID = viewModel.OwnerID.Value;
             item.Subject = viewModel.Subject;
@@ -625,7 +639,7 @@ namespace WebHome.Helper.BusinessOperation
             var profile = (await HttpContext.GetUserAsync()).LoadInstance(models);
 
             viewModel.ValidateContractApplication(controller, out LessonPriceType lessonPrice);
-            if (!(viewModel.ContractType == CourseContractType.ContractTypeDefinition.CGA || viewModel.ContractType == CourseContractType.ContractTypeDefinition.CRA))
+            if (!(viewModel.ContractType == CourseContractType.ContractTypeDefinition.CGA || viewModel.ContractType == CourseContractType.ContractTypeDefinition.CNA))
             {
                 if (!viewModel.Lessons.HasValue || viewModel.Lessons < 1)
                 {
@@ -834,24 +848,24 @@ namespace WebHome.Helper.BusinessOperation
 
             viewModel.ValidateContractApplication(controller, out LessonPriceType lessonPrice, draftOnly);
 
-            if (lessonPrice != null)
-            {
-                if (lessonPrice.BranchStore?.IsVirtualClassroom() == true)
-                {
-                    if (profile.ServingCoach?.PreferredBranchID().HasValue == false)
-                    {
-                        ModelState.AddModelError("BranchID", "無法確定簽約分店!!");
-                    }
-                    else if (!CourseContractType.IsSuitableForVirtaulClass(viewModel.ContractType))
-                    {
-                        ModelState.AddModelError("ContractType", "遠距只能是1對1體能顧問課程!!");
-                    }
-                }
-                else if (lessonPrice.BranchID.HasValue && !lessonPrice.BranchStore.ManagerID.HasValue)
-                {
-                    ModelState.AddModelError("BranchID", "該分店未指定店長!!");
-                }
-            }
+            //if (lessonPrice != null)
+            //{
+            //    if (lessonPrice.BranchStore?.IsVirtualClassroom() == true)
+            //    {
+            //        if (profile.ServingCoach?.PreferredBranchID().HasValue == false)
+            //        {
+            //            ModelState.AddModelError("BranchID", "無法確定簽約分店!!");
+            //        }
+            //        else if (!CourseContractType.IsSuitableForVirtaulClass(viewModel.ContractType))
+            //        {
+            //            ModelState.AddModelError("ContractType", "遠距只能是1對1體能顧問課程!!");
+            //        }
+            //    }
+            //    else if (lessonPrice.BranchID.HasValue && !lessonPrice.BranchStore.ManagerID.HasValue)
+            //    {
+            //        ModelState.AddModelError("BranchID", "該分店未指定店長!!");
+            //    }
+            //}
 
             String paymentMethod = null;
             if (checkPayment)

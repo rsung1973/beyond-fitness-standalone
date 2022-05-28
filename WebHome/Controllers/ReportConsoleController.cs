@@ -101,7 +101,7 @@ namespace WebHome.Controllers
                     應收款期限 = $"{i.PayoffDue:yyyyMMdd}",
                     累計收款金額 = i.TotalPaidAmount(),
                     累計收款次數 = i.TotalPayoffCount(),
-                    遠距 = i.LessonPriceType.BranchStore?.IsVirtualClassroom() == true ? "是" : "",
+                    遠距 = i.LessonPriceType.BranchStore?.IsVirtualClassroom() == true || i.CourseContractType.ForVirtaulClass ? "是" : "",
                 });
 
 
