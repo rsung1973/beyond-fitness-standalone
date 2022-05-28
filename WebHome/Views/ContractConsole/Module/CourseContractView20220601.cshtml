@@ -35,9 +35,9 @@
     }
 }
 
-<div class="row" style="@(_viewModel.Pdf == "1" ? "font-size: 15px; margin: 0px; width: 21.5cm;height: 28cm" : "font-size: 15px; margin: 0 5px 0 0;")"">
+<div class="row" style="@(_viewModel.Pdf == "1" ? "font-size: 15px; margin: 0px; width: 21cm;height: 29.7cm" : "font-size: 15px; margin: 0 5px 0 0;")"">
     <div class="col-md-12">
-        <div style="@(_viewModel.Pdf == "1" ? "width: 21.5cm;" : "")"">
+        <div style="@(_viewModel.Pdf == "1" ? "width: 21cm;" : "")"">
             <h4 class="text-center" style="margin: 0px"><b>Beyond Fitness顧問服務購買合約書</b></h4>
             <table class="table" style="font-size: 15px">
                 <tbody>
@@ -138,7 +138,7 @@
                     </tr>        
                 </tbody>
             </table>           
-            <table class="table" style="margin-bottom: 0px">
+            <table class="table" style="margin-bottom: 0px; padding: 0px">
                     @if (_viewModel.Pdf != "1" && _model.CourseContractExtension.SignOnline == true)
                     {
                         <tr>
@@ -153,10 +153,18 @@
                     <tr>
                         @if (_model.Status < (int)Naming.CourseContractStatus.待審核)
                         {
-                            <td width="100px">
+                            <td colspan="2">
                                 <label class="fancy-checkbox custom-bgcolor-pink">
                                     <input type="checkbox" name="extension">
-                                    <span>展延：</span>
+                                    @if (_model.LessonPriceType.BranchStore?.IsVirtualClassroom() == true
+                                        || _model.CourseContractType.ForVirtaulClass)
+                                    {
+                                        <span>展延：若未於上述使用期限內完成課程堂數者不得展延。</span>
+                                    }
+                                    else 
+                                    {
+                                        <span>展延：無法於上述使用期限內完成課程堂數者，得於到期前30日內申請展延使用，並得就未完成部分協商展延3個月內完成</span>
+                                    }
                                 </label>
                             </td>
                         }
@@ -165,81 +173,85 @@
                             <td width="100px">
                                 <label class="fancy-checkbox">
                                     <input type="checkbox" name="extension" checked="checked" disabled="disabled" />
-                                    <span>展延：</span>
+                                    @if (_model.LessonPriceType.BranchStore?.IsVirtualClassroom() == true
+                                        || _model.CourseContractType.ForVirtaulClass)
+                                    {
+                                         <span>展延：若未於上述使用期限內完成課程堂數者不得展延。</span>
+                                    }
+                                    else
+                                    {
+                                        <span>展延：無法於上述使用期限內完成課程堂數者，得於到期前30日內申請展延使用，並得就未完成部分協商展延3個月內完成</span>
+                                    }                                   
                                 </label>
                             </td>
                         }
                         else
                         {
-                            <td width="100px" style="padding:0">
-                                <span style="font-size:20px">☑</span> 展延：
-                            </td>
-                        }
-                        <td>
-                            @if (_model.LessonPriceType.BranchStore?.IsVirtualClassroom() == true
+                            if (_model.LessonPriceType.BranchStore?.IsVirtualClassroom() == true
                                     || _model.CourseContractType.ForVirtaulClass)
                             {
-                                <text>若未於上述使用期限內完成課程堂數者不得展延。</text>
+                                <td colspan="2" style="padding:0">
+                                    <span style="font-size:20px">☑</span> 展延：若未於上述使用期限內完成課程堂數者不得展延。
+                                </td>
                             }
-                            else
-                            {
-                                <text>無法於上述使用期限內完成課程堂數者，得於到期前30日內申請展延使用，並得就未完成部分協商展延3個月內完成</text>
+                            else {
+                                <td colspan="2" style="padding:0">
+                                    <span style="font-size:20px">☑</span> 展延：無法於上述使用期限內完成課程堂數者，得於到期前30日內申請展延使用，並得就未完成部分協商展延3個月內完成
+                                </td>
                             }
-                        </td>
+                        }                        
                     </tr>
                     <tr>
                         @if (_model.Status < (int)Naming.CourseContractStatus.待審核)
                         {
-                            <td width="100px">
+                            <td colspan="2">
                                 <label class="fancy-checkbox custom-bgcolor-pink">
                                     <input type="checkbox" name="booking" />
-                                    <span>預約：</span>
+                                    <span>預約：須於欲使用其體能顧問服務時段至少24小時前向其負責之體能顧問預約其服務與其場地租用權力。</span>
                                 </label>
                             </td>
                         }
                         else if (_model.Status == (int)Naming.CourseContractStatus.待審核)
                         {
-                            <td width="100px">
+                            <td colspan="2">
                                 <label class="fancy-checkbox">
                                     <input type="checkbox" name="booking" checked="checked" disabled="disabled" />
-                                    <span>預約：</span>
+                                    <span>預約：須於欲使用其體能顧問服務時段至少24小時前向其負責之體能顧問預約其服務與其場地租用權力。</span>
                                 </label>
                             </td>
                         }
                         else
                         {
-                            <td width="100px" style="padding:0">
-                                <span style="font-size:20px">☑</span> 預約：
+                            <td colspan="2" style="padding:0">
+                                <span style="font-size:20px">☑</span> 預約：須於欲使用其體能顧問服務時段至少24小時前向其負責之體能顧問預約其服務與其場地租用權力。
                             </td>
                         }
-                        <td>須於欲使用其體能顧問服務時段至少24小時前向其負責之體能顧問預約其服務與其場地租用權力。</td>
                     </tr>
                     <tr>
                         @if (_model.Status < (int)Naming.CourseContractStatus.待審核)
                         {
-                            <td width="100px">
+                            <td colspan="2">
                                 <label class="fancy-checkbox custom-bgcolor-pink">
                                     <input type="checkbox" name="cancel" />
-                                    <span>取消：</span>
+                                    <span>取消：如欲取消預約時段，學員必須於原定時間24小時前通知負責之體能顧問，逾期未通知者若欲補課，學員須給付每堂新臺幣參佰元整(NTD$300-600)作為補課場地手續費，方可進行補課之服務。補課課程之日期、時間、內容與服務教練無法保證與缺課課程一致；逾期未通知者若不補課則記入已使用之體能顧問課程堂數內。</span>
                                 </label>
                             </td>
                         }
                         else if (_model.Status == (int)Naming.CourseContractStatus.待審核)
                         {
-                            <td width="100px">
+                            <td colspan="2">
                                 <label class="fancy-checkbox">
                                     <input type="checkbox" name="cancel" checked="checked" disabled="disabled">
-                                    <span>取消：</span>
+                                    <span>取消：如欲取消預約時段，學員必須於原定時間24小時前通知負責之體能顧問，逾期未通知者若欲補課，學員須給付每堂新臺幣參佰元整(NTD$300-600)作為補課場地手續費，方可進行補課之服務。補課課程之日期、時間、內容與服務教練無法保證與缺課課程一致；逾期未通知者若不補課則記入已使用之體能顧問課程堂數內。</span>
                                 </label>
                             </td>
                         }
                         else
                         {
-                            <td width="100px" style="padding:0">
-                                <span style="font-size:20px">☑</span> 取消：
+                            <td colspan="2" style="padding:0">
+                                <span style="font-size:20px">☑</span> 取消：如欲取消預約時段，學員必須於原定時間24小時前通知負責之體能顧問，逾期未通知者若欲補課，學員須給付每堂新臺幣參佰元整(NTD$300-600)作為補課場地手續費，方可進行補課之服務。補課課程之日期、時間、內容與服務教練無法保證與缺課課程一致；逾期未通知者若不補課則記入已使用之體能顧問課程堂數內。
                             </td>
                         }
-                        <td>如欲取消預約時段，學員必須於原定時間24小時前通知負責之體能顧問，逾期未通知者若欲補課，學員須給付每堂新臺幣參佰元整(NTD$300-600)作為補課場地手續費，方可進行補課之服務。補課課程之日期、時間、內容與服務教練無法保證與缺課課程一致；逾期未通知者若不補課則記入已使用之體能顧問課程堂數內。</td>
                     </tr>
                     <tr>
                         @if (_model.Status < (int)Naming.CourseContractStatus.待審核)
@@ -267,7 +279,7 @@
                         </td>
                     </tr>
                 </table>
-                <table class="table" style="margin-bottom: 0px">
+                <table class="table" style="margin-bottom: 0px; font-size:12px">
                     <tr>
                         <td class="p-t-0"></td>
                         <td class="p-0">Beyond Fitness超越體能顧問有限公司</td>
@@ -300,7 +312,7 @@
                                 <text>主管簽核代表：</text>
                                 <img src="@(_model.Status == (int)Naming.CourseContractStatus.待審核 && _viewModel.Pdf != "1"
                                     ? (await Context.GetUserAsync()).LoadInstance(models).UserProfileExtension.Signature
-                                    : _model.Supervisor?.UserProfileExtension.Signature)"  width="200px" height="85px" class="modifySignDialog_link">
+                                    : _model.Supervisor?.UserProfileExtension.Signature)"  width="180px" height="80px" class="modifySignDialog_link">
                             }
                         </td>
                     </tr>
@@ -313,7 +325,7 @@
                                 await Html.RenderPartialAsync("~/Views/ContractConsole/Module/SignHere.cshtml", _owner);
                             }
                         </td>
-                        <td class="p-0">簽約體能顧問：<img src="@(_model.ServingCoach.UserProfile.UserProfileExtension.Signature)" width="200px" height="85px" class="modifySignDialog_link"></td>
+                        <td class="p-0">簽約體能顧問：<img src="@(_model.ServingCoach.UserProfile.UserProfileExtension.Signature)" width="180px" height="80px" class="modifySignDialog_link"></td>
                     </tr>
                     <tr>
                         <td class="p-0">日期：@(String.Format("{0:yyyy/MM/dd}", _signatureDate))</td>

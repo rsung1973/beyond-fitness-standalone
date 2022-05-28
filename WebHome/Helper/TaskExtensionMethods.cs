@@ -565,7 +565,7 @@ namespace WebHome.Helper
 
                                 if (targetPrice != null)
                                 {
-                                    var sharingItems = original.CreateRegisterLesson(models, targetPrice, exchangeItem.TargetSubtotal ?? 0, "轉換堂數");
+                                    var sharingItems = original.CreateRegisterLesson(models, targetPrice, exchangeItem.TargetSubtotal ?? 0, "轉換");
                                     register = sharingItems[0];
                                 }
 
