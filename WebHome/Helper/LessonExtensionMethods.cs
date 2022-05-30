@@ -716,7 +716,7 @@ namespace WebHome.Helper
             if (!item.ContractTrustTrack.Any(s => s.SettlementID.HasValue))
             {
                 if (item.GroupingLesson.RegisterLesson.Any(r => r.RegisterLessonContract != null && r.RegisterLessonContract.CourseContract.RevisionList
-                    .Where(v => v.Reason != "展延" && v.Reason != "轉換體能顧問").Count() > 0))
+                    .Where(v => v.Reason != "展延" && v.Reason != "轉換體能顧問" && v.Reason != "轉換課程堂數").Count() > 0))
                 {
                     return false;
                 }
