@@ -133,7 +133,7 @@
                                     @{
                                         int remainedCount;
                                         IQueryable<RegisterLesson> remainedLessons;
-                                        var remainedItems = _learner.RemainedLessonCount(models, out remainedCount, out remainedLessons);
+                                        var remainedItems = _learner.RemainedLessonCount2022(models, out remainedCount, out remainedLessons);
                                     }
                                     <li class="col-lg-6 col-6" onclick='showRemainedLessons(@Html.Raw(JsonConvert.SerializeObject(
                                                 new

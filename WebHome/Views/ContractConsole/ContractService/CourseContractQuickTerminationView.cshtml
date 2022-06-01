@@ -71,20 +71,20 @@
                         <tr>
                         <tr>
                             <td colspan="2">
-                                @{
-                                    int? refund;
-                                    var original = _model.SourceContract;
+                                    @{
+                                        int? refund;
+                                        var original = _model.SourceContract;
 
-                                    if (original.ContractType == (int)CourseContractType.ContractTypeDefinition.CGA)
-                                    {
-                                        var lessons = original.CountableRegisterLesson();
+                                        if (original.ContractType == (int)CourseContractType.ContractTypeDefinition.CGA)
+                                        {
+                                            var lessons = original.RegisterLessonContract.Select(c => c.RegisterLesson);
 
-                                        refund = original.TotalPaidAmount()
-                                                - lessons.Where(r => r.LessonPriceType.IsDietaryConsult)
-                                                    .Sum(r => r.LessonPriceType.ListPrice * r.LessonTime.Count)
-                                                - lessons.Where(r => !r.LessonPriceType.IsDietaryConsult)
-                                                    .Sum(r => r.LessonPriceType.ListPrice * r.LessonTime.Count);
-                                        <text>
+                                            refund = original.TotalPaidAmount()
+                                                    - lessons.Where(r => r.LessonPriceType.IsDietaryConsult)
+                                                        .Sum(r => r.LessonPriceType.ListPrice * r.LessonTime.Count)
+                                                    - lessons.Where(r => !r.LessonPriceType.IsDietaryConsult)
+                                                        .Sum(r => r.LessonPriceType.ListPrice * r.LessonTime.Count * r.GroupingMemberCount * (r.GroupingLessonDiscount.PercentageOfDiscount ?? 100) / 100);
+                                            <text>
                                             申請內容：原合約於 <span class="col-red">@(String.Format("{0:yyyy/MM/dd}", _signatureDate))</span> 終止服務，已繳服務總費用 @(String.Format("{0:##,###,###,###}", original.TotalPaidAmount()))
                                             扣除依簽約時課程單價
                                             @foreach (var lesson in lessons.Where(r => !r.LessonPriceType.IsDietaryConsult))

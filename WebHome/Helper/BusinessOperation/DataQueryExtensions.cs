@@ -1108,7 +1108,7 @@ namespace WebHome.Helper.BusinessOperation
             return items;
         }
 
-        public static IQueryable<CourseContract> RemainedLessonCount(this UserProfile profile, GenericManager<BFDataContext> models, out int remainedCount,out IQueryable<RegisterLesson> remainedItems, bool onlyAttended = false)
+        public static IQueryable<CourseContract> RemainedLessonCount2022(this UserProfile profile, GenericManager<BFDataContext> models, out int remainedCount,out IQueryable<RegisterLesson> remainedItems, bool onlyAttended = false)
             
         {
             var items = models.GetTable<RegisterLesson>()
@@ -1119,58 +1119,85 @@ namespace WebHome.Helper.BusinessOperation
 
             remainedItems = currentLessons;
 
-            var lessonContract = currentLessons.Join(models.GetTable<RegisterLessonContract>(), r => r.RegisterID, c => c.RegisterID, (r, c) => c);
+            var lessonContract = currentLessons
+                .Join(models.GetTable<RegisterLessonContract>(), r => r.RegisterID, c => c.RegisterID, (r, c) => c);
 
             var contractItems = models.GetTable<CourseContract>().Where(c => lessonContract.Any(a => a.ContractID == c.ContractID));
 
-            var familyLessons = contractItems.Where(c => c.ContractType == (int)CourseContractType.ContractTypeDefinition.CFA
-                                || c.ContractType == (int)CourseContractType.ContractTypeDefinition.CGF
-                                || c.ContractType == (int)CourseContractType.ContractTypeDefinition.CVF)
-                            .Join(models.GetTable<RegisterLessonContract>(), c => c.ContractID, r => r.ContractID, (c, r) => r)
-                            .Join(models.GetTable<RegisterLesson>(), c => c.RegisterID, r => r.RegisterID, (c, r) => r);
+            var contractLessons = currentLessons.Join(models.GetTable<RegisterLessonSharing>(), r => r.RegisterID, s => s.RegisterID, (r, s) => s)
+                                    .Join(models.GetTable<RegisterLesson>(), s => s.ShareID, r => r.RegisterID, (s, r) => r);
 
-            int totalLessons = currentLessons.Sum(c => (int?)c.Lessons) ?? 0;
-            int attendedLessons = currentLessons.Sum(c => (int?)c.AttendedLessons) ?? 0;
-            int attendance;
-            if (onlyAttended)
-            {
-                attendance = currentLessons.Sum(c => (int?)c.GroupingLesson.LessonTime.Count(l => l.LessonAttendance != null)) ?? 0;
-            }
-            else
-            {
-                attendance = currentLessons.Sum(c => (int?)c.GroupingLesson.LessonTime.Count()) ?? 0;
-            }
+            var individualLessons = currentLessons.Where(r => !models.GetTable<RegisterLessonSharing>().Any(s => s.RegisterID == r.RegisterID));
 
-            if (familyLessons.Count() > 0)
-            {
-                var exceptFamily = currentLessons.Where(r => r.RegisterLessonContract == null 
-                    || (r.RegisterLessonContract.CourseContract.ContractType != (int)CourseContractType.ContractTypeDefinition.CFA
-                            && r.RegisterLessonContract.CourseContract.ContractType != (int)CourseContractType.ContractTypeDefinition.CGF
-                            && r.RegisterLessonContract.CourseContract.ContractType != (int)CourseContractType.ContractTypeDefinition.CVF));
-                if (onlyAttended)
-                {
-                    remainedCount = totalLessons
-                                - (exceptFamily.Sum(c => c.AttendedLessons) ?? 0)
-                                - (exceptFamily.Where(c => c.RegisterGroupID.HasValue).Sum(c => (int?)c.GroupingLesson.LessonTime.Count(l => l.LessonAttendance != null)) ?? 0)
-                                - (familyLessons.Sum(c => c.AttendedLessons) ?? 0)
-                                - (familyLessons.Where(c => c.RegisterGroupID.HasValue).Sum(c => (int?)c.GroupingLesson.LessonTime.Count(l => l.LessonAttendance != null)) ?? 0);
-                }
-                else
-                {
-                    remainedCount = totalLessons
-                                - (exceptFamily.Sum(c => c.AttendedLessons) ?? 0)
-                                - (exceptFamily.Where(c => c.RegisterGroupID.HasValue).Sum(c => (int?)c.GroupingLesson.LessonTime.Count()) ?? 0)
-                                - (familyLessons.Sum(c => c.AttendedLessons) ?? 0)
-                                - (familyLessons.Where(c => c.RegisterGroupID.HasValue).Sum(c => (int?)c.GroupingLesson.LessonTime.Count()) ?? 0);
-                }
-            }
-            else
-            {
-                remainedCount = totalLessons - attendedLessons - attendance;
-            }
+            remainedCount = contractLessons.ToList().Sum(r => r.RemainedLessonCount(onlyAttended))
+                    + individualLessons.ToList().Sum(r => r.RemainedLessonCount(onlyAttended));
 
             return contractItems;
         }
+
+        //public static IQueryable<CourseContract> RemainedLessonCount(this UserProfile profile, GenericManager<BFDataContext> models, out int remainedCount, out IQueryable<RegisterLesson> remainedItems, bool onlyAttended = false)
+
+        //{
+        //    var items = models.GetTable<RegisterLesson>()
+        //        .Where(l => l.LessonPriceType.Status != (int)Naming.DocumentLevelDefinition.自主訓練)
+        //        .Where(r => r.UID == profile.UID)
+        //        .OrderByDescending(r => r.RegisterID);
+        //    var currentLessons = items.Where(i => i.Attended != (int)Naming.LessonStatus.課程結束);
+
+        //    remainedItems = currentLessons;
+
+        //    var lessonContract = currentLessons.Join(models.GetTable<RegisterLessonContract>(), r => r.RegisterID, c => c.RegisterID, (r, c) => c);
+
+        //    var contractItems = models.GetTable<CourseContract>().Where(c => lessonContract.Any(a => a.ContractID == c.ContractID));
+
+        //    var familyLessons = contractItems.Where(c => c.ContractType == (int)CourseContractType.ContractTypeDefinition.CFA
+        //                        || c.ContractType == (int)CourseContractType.ContractTypeDefinition.CGF
+        //                        || c.ContractType == (int)CourseContractType.ContractTypeDefinition.CVF)
+        //                    .Join(models.GetTable<RegisterLessonContract>(), c => c.ContractID, r => r.ContractID, (c, r) => r)
+        //                    .Join(models.GetTable<RegisterLesson>(), c => c.RegisterID, r => r.RegisterID, (c, r) => r);
+
+        //    int totalLessons = currentLessons.Sum(c => (int?)c.Lessons) ?? 0;
+        //    int attendedLessons = currentLessons.Sum(c => (int?)c.AttendedLessons) ?? 0;
+        //    int attendance;
+        //    if (onlyAttended)
+        //    {
+        //        attendance = currentLessons.Sum(c => (int?)c.GroupingLesson.LessonTime.Count(l => l.LessonAttendance != null)) ?? 0;
+        //    }
+        //    else
+        //    {
+        //        attendance = currentLessons.Sum(c => (int?)c.GroupingLesson.LessonTime.Count()) ?? 0;
+        //    }
+
+        //    if (familyLessons.Count() > 0)
+        //    {
+        //        var exceptFamily = currentLessons.Where(r => r.RegisterLessonContract == null
+        //            || (r.RegisterLessonContract.CourseContract.ContractType != (int)CourseContractType.ContractTypeDefinition.CFA
+        //                    && r.RegisterLessonContract.CourseContract.ContractType != (int)CourseContractType.ContractTypeDefinition.CGF
+        //                    && r.RegisterLessonContract.CourseContract.ContractType != (int)CourseContractType.ContractTypeDefinition.CVF));
+        //        if (onlyAttended)
+        //        {
+        //            remainedCount = totalLessons
+        //                        - (exceptFamily.Sum(c => c.AttendedLessons) ?? 0)
+        //                        - (exceptFamily.Where(c => c.RegisterGroupID.HasValue).Sum(c => (int?)c.GroupingLesson.LessonTime.Count(l => l.LessonAttendance != null)) ?? 0)
+        //                        - (familyLessons.Sum(c => c.AttendedLessons) ?? 0)
+        //                        - (familyLessons.Where(c => c.RegisterGroupID.HasValue).Sum(c => (int?)c.GroupingLesson.LessonTime.Count(l => l.LessonAttendance != null)) ?? 0);
+        //        }
+        //        else
+        //        {
+        //            remainedCount = totalLessons
+        //                        - (exceptFamily.Sum(c => c.AttendedLessons) ?? 0)
+        //                        - (exceptFamily.Where(c => c.RegisterGroupID.HasValue).Sum(c => (int?)c.GroupingLesson.LessonTime.Count()) ?? 0)
+        //                        - (familyLessons.Sum(c => c.AttendedLessons) ?? 0)
+        //                        - (familyLessons.Where(c => c.RegisterGroupID.HasValue).Sum(c => (int?)c.GroupingLesson.LessonTime.Count()) ?? 0);
+        //        }
+        //    }
+        //    else
+        //    {
+        //        remainedCount = totalLessons - attendedLessons - attendance;
+        //    }
+
+        //    return contractItems;
+        //}
 
         public static IQueryable<MonthlyIndicator> InquireMonthlyIndicator(this MonthlyIndicatorQueryViewModel viewModel, GenericManager<BFDataContext> models)
         {

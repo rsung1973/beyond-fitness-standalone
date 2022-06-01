@@ -69,7 +69,7 @@ namespace WebHome.Models.DataEntity
             //        - (item.RegisterGroupID.HasValue ? item.GroupingLesson.LessonTime.Count : item.LessonTime.Count);
             //}
 
-            return item.Lessons - item.AttendedLessonCount(onlyAttended) / item.GroupingMemberCount;
+            return item.Lessons - item.AttendedLessonCount(onlyAttended);
 
         }
 
@@ -78,21 +78,15 @@ namespace WebHome.Models.DataEntity
             if (onlyAttended)
             {
                 return (item.AttendedLessons ?? 0)
-                        + (item.RegisterLessonSharing != null
-                            ? item.RegisterLessonSharing
-                                .LessonRefernece.SharingReference.Sum(r => r.RegisterLesson.SpecifiedAttendedLessonCount(onlyAttended))
-                            : item.RegisterGroupID.HasValue
-                                ? item.GroupingLesson.LessonTime.Count(l => l.LessonAttendance != null)
+                        + (item.RegisterGroupID.HasValue
+                                ? item.GroupingLesson.LessonTime.Count(l => l.LessonAttendance != null) / item.GroupingMemberCount
                                 : item.LessonTime.Count(l => l.LessonAttendance != null));
             }
             else
             {
                 return (item.AttendedLessons ?? 0)
-                    + (item.RegisterLessonSharing != null
-                            ? item.RegisterLessonSharing
-                                .LessonRefernece.SharingReference.Sum(r => r.RegisterLesson.SpecifiedAttendedLessonCount(onlyAttended))
-                            : item.RegisterGroupID.HasValue 
-                                ? item.GroupingLesson.LessonTime.Count 
+                    + (item.RegisterGroupID.HasValue
+                                ? item.GroupingLesson.LessonTime.Count / item.GroupingMemberCount
                                 : item.LessonTime.Count);
             }
         }
@@ -145,8 +139,10 @@ namespace WebHome.Models.DataEntity
 
         public static int RemainedLessonCount(this CourseContract item, bool onlyAttended = false)
         {
-            return (item.Lessons ?? 0)
-                    - item.AttendedLessonCount(onlyAttended);
+            return item.RegisterLessonContract
+                .Select(c => c.RegisterLesson)
+                .Where(r => r.SharingReference.Any())
+                .Sum(r => r.RemainedLessonCount(onlyAttended));
         }
 
         public static int UnfinishedLessonCount(this CourseContract item)
@@ -156,71 +152,53 @@ namespace WebHome.Models.DataEntity
 
         public static int AttendedLessonCount(this CourseContract item, bool onlyAttended = false)
         {
-            var items = item.CountableRegisterLesson();
+            var items = item.RegisterLessonContract.Select(c => c.RegisterLesson);
 
-            if (onlyAttended)
-            {
-                return items.Sum(r => (r.AttendedLessons ?? 0) + r.GroupingLesson.LessonTime.Where(l => l.LessonAttendance != null).Count());
-            }
-            else
-            {
-                return items.Sum(r => (r.AttendedLessons ?? 0) + r.GroupingLesson.LessonTime.Count());
-            }
-
+            return items.Sum(r => r.AttendedLessonCount(onlyAttended));
         }
 
         public static int AttendedLessonCount(this CourseContract item,DateTime dateBefore, bool onlyAttended = false)
         {
-            var items = item.CountableRegisterLesson();
+            var items = item.RegisterLessonContract.Select(c => c.RegisterLesson);
 
-            if (onlyAttended)
-            {
-                return items.Sum(r => (r.AttendedLessons ?? 0) + r.GroupingLesson.LessonTime.Where(l => l.LessonAttendance != null && l.ClassTime < dateBefore).Count());
-            }
-            else
-            {
-                return items.Sum(r => (r.AttendedLessons ?? 0) + r.GroupingLesson.LessonTime.Where(l => l.ClassTime < dateBefore).Count());
-            }
+            return items.Sum(r => r.AttendedLessonCount(dateBefore, onlyAttended));
+
         }
 
         public static int TotalAttendedCost(this CourseContract item, DateTime dateBefore, bool onlyAttended = false)
         {
-            var items = item.CountableRegisterLesson();
+            var items = item.RegisterLessonContract.Select(c => c.RegisterLesson);
 
-            if (onlyAttended)
-            {
-                return items.Sum(r => ((r.AttendedLessons ?? 0) + r.GroupingLesson.LessonTime.Where(l => l.LessonAttendance != null && l.ClassTime < dateBefore).Count()) 
-                                    * r.LessonPriceType.ListPrice.Value);
-            }
-            else
-            {
-                return items.Sum(r => ((r.AttendedLessons ?? 0) + r.GroupingLesson.LessonTime.Where(l => l.ClassTime < dateBefore).Count())
-                                    * r.LessonPriceType.ListPrice.Value);
-            }
+            return items.Sum(r => r.AttendedLessonCount(dateBefore, onlyAttended)
+                                * r.LessonPriceType.ListPrice.Value * (r.GroupingLessonDiscount.PercentageOfDiscount ?? 100) / 100);
+
         }
 
-        public static int TotalAttendedCost(this CourseContract item, DateTime dateFrom, DateTime dateBefore, bool onlyAttended = false)
-        {
-            var items = item.CountableRegisterLesson();
+        //public static int TotalAttendedCost(this CourseContract item, DateTime dateFrom, DateTime dateBefore, bool onlyAttended = false)
+        //{
+        //    var items = item.CountableRegisterLesson();
 
-            if (onlyAttended)
-            {
-                return items.Sum(r => ((r.AttendedLessons ?? 0) + r.GroupingLesson.LessonTime.Where(l => l.LessonAttendance != null && l.ClassTime >= dateFrom && l.ClassTime < dateBefore).Count())
-                                    * r.LessonPriceType.ListPrice.Value);
-            }
-            else
-            {
-                return items.Sum(r => ((r.AttendedLessons ?? 0) + r.GroupingLesson.LessonTime.Where(l => l.ClassTime >= dateFrom && l.ClassTime < dateBefore).Count())
-                                    * r.LessonPriceType.ListPrice.Value);
-            }
-        }
+        //    if (onlyAttended)
+        //    {
+        //        return items.Sum(r => ((r.AttendedLessons ?? 0) + r.GroupingLesson.LessonTime.Where(l => l.LessonAttendance != null && l.ClassTime >= dateFrom && l.ClassTime < dateBefore).Count())
+        //                            * r.LessonPriceType.ListPrice.Value);
+        //    }
+        //    else
+        //    {
+        //        return items.Sum(r => ((r.AttendedLessons ?? 0) + r.GroupingLesson.LessonTime.Where(l => l.ClassTime >= dateFrom && l.ClassTime < dateBefore).Count())
+        //                            * r.LessonPriceType.ListPrice.Value);
+        //    }
+        //}
 
 
 
         public static IEnumerable<LessonTime> AttendedLessonList(this CourseContract item, bool onlyAttended = false)
         {
-            IEnumerable<LessonTime> items = item.CountableRegisterLesson()
-                .SelectMany(c => c.GroupingLesson.LessonTime);
+            var items = item.RegisterLessonContract
+                .Select(c => c.RegisterLesson)
+                .GroupBy(r => r.GroupingLesson)
+                .Select(g => g.Key)
+                .SelectMany(g => g.LessonTime);
 
             if (onlyAttended)
             {
@@ -231,28 +209,28 @@ namespace WebHome.Models.DataEntity
             return items;
         }
 
-        public static IEnumerable<RegisterLesson> CountableRegisterLesson(this CourseContract item)
-        {
-            //if (item.ContractType == (int)CourseContractType.ContractTypeDefinition.CFA)
-            //{
-            //    return item.RegisterLessonContract
-            //        .Select(c => c.RegisterLesson);
-            //}
-            //else
-            //{
-            //    return item.RegisterLessonContract
-            //        .Select(c => c.RegisterLesson)
-            //        .Where(r => r.UID == item.OwnerID);
-            //}
+        //public static IEnumerable<RegisterLesson> CountableRegisterLesson(this CourseContract item)
+        //{
+        //    //if (item.ContractType == (int)CourseContractType.ContractTypeDefinition.CFA)
+        //    //{
+        //    //    return item.RegisterLessonContract
+        //    //        .Select(c => c.RegisterLesson);
+        //    //}
+        //    //else
+        //    //{
+        //    //    return item.RegisterLessonContract
+        //    //        .Select(c => c.RegisterLesson)
+        //    //        .Where(r => r.UID == item.OwnerID);
+        //    //}
 
-            return item.RegisterLessonContract.Where(r => r.ForShared == true)
-                .Select(c => c.RegisterLesson)
-                .Concat(item.RegisterLessonContract
-                    .Where(c => !c.ForShared.HasValue || c.ForShared == false)
-                    .Select(c => c.RegisterLesson)
-                    .Where(r => r.UID == item.OwnerID));
+        //    return item.RegisterLessonContract.Where(r => r.ForShared == true)
+        //        .Select(c => c.RegisterLesson)
+        //        .Concat(item.RegisterLessonContract
+        //            .Where(c => !c.ForShared.HasValue || c.ForShared == false)
+        //            .Select(c => c.RegisterLesson)
+        //            .Where(r => r.UID == item.OwnerID));
 
-        }
+        //}
 
 
         public static String FullName(this UserProfile item, bool mask = false)

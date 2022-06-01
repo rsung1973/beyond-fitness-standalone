@@ -104,19 +104,20 @@
                                     <text>
                                         契約簽訂後未繳納費用 @(String.Format("{0:##,###,###,###}", original.TotalCost)) 元，退還剩餘款項
                                         <span class="col-red">0</span>元。
-                                    </text>
-                                }
-                                else if (attened > 0 || !original.CourseContractExtension.Version.HasValue)
-                                {
-                                    if (_contract.ContractType == (int)CourseContractType.ContractTypeDefinition.CGA)
+                                        </text>
+                                    }
+                                    else if (attened > 0 || !original.CourseContractExtension.Version.HasValue)
                                     {
-                                        var lessons = original.CountableRegisterLesson();
+                                        if (_contract.ContractType == (int)CourseContractType.ContractTypeDefinition.CGA)
+                                        {
+                                            var lessons = original.RegisterLessonContract.Select(c => c.RegisterLesson);
 
                                         refund = totalPaid
                                                 - lessons.Select(r => r.LessonPriceType)
-                                                    .Where(l => l.IsDietaryConsult).Sum(l => l.ListPrice * l.BundleCount)
+                                                    .Where(l => l.IsDietaryConsult)
+                                                    .Sum(l => l.ListPrice * l.BundleCount)
                                                 - lessons.Where(r => !r.LessonPriceType.IsDietaryConsult)
-                                                    .Sum(r => _contract.CourseContractExtension.SettlementPrice * r.LessonTime.Count);
+                                                    .Sum(r => _contract.CourseContractExtension.SettlementPrice * r.LessonTime.Count * r.GroupingMemberCount * (r.GroupingLessonDiscount.PercentageOfDiscount ?? 100) / 100);
 
                                         <text>
                                             已繳服務總費用 @(String.Format("{0:##,###,###,###}", totalPaid))

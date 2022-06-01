@@ -46,12 +46,12 @@
                     </div>
                     @if (_model.ContractType == (int)CourseContractType.ContractTypeDefinition.CGA)
                     {
-                        var lessons = _model.CountableRegisterLesson();
+                        var lessons = _model.RegisterLessonContract.Select(c => c.RegisterLesson);
                         var refund = _model.TotalPaidAmount()
                                 - lessons.Where(r => r.LessonPriceType.IsDietaryConsult)
                                     .Sum(r => r.LessonPriceType.ListPrice * r.LessonTime.Count)
                                 - lessons.Where(r => !r.LessonPriceType.IsDietaryConsult)
-                                    .Sum(r => r.LessonPriceType.ListPrice * r.LessonTime.Count);
+                                    .Sum(r => r.LessonPriceType.ListPrice * r.LessonTime.Count * r.GroupingMemberCount * (r.GroupingLessonDiscount.PercentageOfDiscount ?? 100) / 100);
                         <text>
                             已繳服務總費用 @(String.Format("{0:##,###,###,###}", _model.TotalPaidAmount()))
                             扣除依簽約時課程單價

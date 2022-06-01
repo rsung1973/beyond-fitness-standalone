@@ -1024,65 +1024,65 @@ namespace WebHome.Controllers
             return new EmptyResult();
         }
 
-        public async Task<ActionResult> GetMonthlyLessonsListAsync(DateTime? settlementDate, String fileDownloadToken)
-        {
-            if (!settlementDate.HasValue)
-            {
-                settlementDate = DateTime.Today;
-            }
+        //public async Task<ActionResult> GetMonthlyLessonsListAsync(DateTime? settlementDate, String fileDownloadToken)
+        //{
+        //    if (!settlementDate.HasValue)
+        //    {
+        //        settlementDate = DateTime.Today;
+        //    }
 
-            var dateFrom = settlementDate.Value.FirstDayOfMonth();
-            var dateTo = dateFrom.AddMonths(1);
+        //    var dateFrom = settlementDate.Value.FirstDayOfMonth();
+        //    var dateTo = dateFrom.AddMonths(1);
 
 
-            IQueryable<int> items = models.GetTable<LessonTime>()
-                    .AllCompleteLesson()
-                    .Where(l => l.ClassTime >= dateFrom && l.ClassTime < dateTo)
-                    .Join(models.GetTable<GroupingLesson>(), l => l.GroupID, g => g.GroupID, (l, g) => g)
-                    .Join(models.GetTable<RegisterLesson>(), g => g.GroupID, r => r.RegisterGroupID, (g, r) => r)
-                    .Join(models.GetTable<RegisterLessonContract>(), r => r.RegisterID, c => c.RegisterID, (r, c) => c.ContractID)
-                    .Distinct();
+        //    IQueryable<int> items = models.GetTable<LessonTime>()
+        //            .AllCompleteLesson()
+        //            .Where(l => l.ClassTime >= dateFrom && l.ClassTime < dateTo)
+        //            .Join(models.GetTable<GroupingLesson>(), l => l.GroupID, g => g.GroupID, (l, g) => g)
+        //            .Join(models.GetTable<RegisterLesson>(), g => g.GroupID, r => r.RegisterGroupID, (g, r) => r)
+        //            .Join(models.GetTable<RegisterLessonContract>(), r => r.RegisterID, c => c.RegisterID, (r, c) => c.ContractID)
+        //            .Distinct();
 
-            //										
-            //           累計上課金額
+        //    //										
+        //    //           累計上課金額
 
-            DataTable table = new DataTable();
-            table.Columns.Add(new DataColumn("合約編號", typeof(String)));
-            table.Columns.Add(new DataColumn("分店", typeof(String)));
-            table.Columns.Add(new DataColumn("姓名", typeof(String)));
-            table.Columns.Add(new DataColumn("是否信託", typeof(String)));
-            table.Columns.Add(new DataColumn("課程單價", typeof(int)));
-            table.Columns.Add(new DataColumn("本月上課堂數", typeof(int)));
-            table.Columns.Add(new DataColumn("累計上課金額", typeof(int)));
+        //    DataTable table = new DataTable();
+        //    table.Columns.Add(new DataColumn("合約編號", typeof(String)));
+        //    table.Columns.Add(new DataColumn("分店", typeof(String)));
+        //    table.Columns.Add(new DataColumn("姓名", typeof(String)));
+        //    table.Columns.Add(new DataColumn("是否信託", typeof(String)));
+        //    table.Columns.Add(new DataColumn("課程單價", typeof(int)));
+        //    table.Columns.Add(new DataColumn("本月上課堂數", typeof(int)));
+        //    table.Columns.Add(new DataColumn("累計上課金額", typeof(int)));
 
-            foreach (var item in items)
-            {
-                var c = models.GetTable<CourseContract>().Where(t => t.ContractID == item).First();
+        //    foreach (var item in items)
+        //    {
+        //        var c = models.GetTable<CourseContract>().Where(t => t.ContractID == item).First();
 
-                var r = table.NewRow();
-                r[0] = c.ContractNo();
-                r[1] = c.CourseContractExtension.BranchStore.BranchName;
-                r[2] = c.ContractLearner();
-                r[3] = c.ContractTrustSettlement.Any() ? "是" : "否";
-                r[4] = c.LessonPriceType.ListPrice;
-                var count = c.AttendedLessonList().Where(l => l.ClassTime >= dateFrom && l.ClassTime < dateTo).Count();
-                r[5] = count;
-                r[6] = c.TotalAttendedCost(dateFrom, dateTo) * c.CourseContractType.GroupingMemberCount * c.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount / 100;
-                table.Rows.Add(r);
-            }
+        //        var r = table.NewRow();
+        //        r[0] = c.ContractNo();
+        //        r[1] = c.CourseContractExtension.BranchStore.BranchName;
+        //        r[2] = c.ContractLearner();
+        //        r[3] = c.ContractTrustSettlement.Any() ? "是" : "否";
+        //        r[4] = c.LessonPriceType.ListPrice;
+        //        var count = c.AttendedLessonList().Where(l => l.ClassTime >= dateFrom && l.ClassTime < dateTo).Count();
+        //        r[5] = count;
+        //        r[6] = c.TotalAttendedCost(dateFrom, dateTo) * c.CourseContractType.GroupingMemberCount * c.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount / 100;
+        //        table.Rows.Add(r);
+        //    }
 
-            table.TableName = $"上課盤點清單{dateFrom:yyyy-MM}";
+        //    table.TableName = $"上課盤點清單{dateFrom:yyyy-MM}";
 
-            using (DataSet ds = new DataSet())
-            {
-                ds.Tables.Add(table);
+        //    using (DataSet ds = new DataSet())
+        //    {
+        //        ds.Tables.Add(table);
 
-                await ds.SaveAsExcelAsync(Response, String.Format("attachment;filename={0}({1:yyyy-MM-dd HH-mm-ss}).xlsx", HttpUtility.UrlEncode("LessonsInventory"), DateTime.Now), fileDownloadToken);
+        //        await ds.SaveAsExcelAsync(Response, String.Format("attachment;filename={0}({1:yyyy-MM-dd HH-mm-ss}).xlsx", HttpUtility.UrlEncode("LessonsInventory"), DateTime.Now), fileDownloadToken);
 
-            }
+        //    }
 
-            return new EmptyResult();
-        }
+        //    return new EmptyResult();
+        //}
 
         class _AchievementGroupItem
         {

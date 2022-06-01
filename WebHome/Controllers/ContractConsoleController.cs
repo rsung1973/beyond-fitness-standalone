@@ -904,7 +904,7 @@ namespace WebHome.Controllers
             ViewBag.ViewModel = viewModel;
             var profile = models.GetTable<UserProfile>().Where(u => u.UID == viewModel.MemberID)
                 .FirstOrDefault() ?? new UserProfile { UID = -1 };
-            _ = profile.RemainedLessonCount(models, out int remainedCount, out IQueryable<RegisterLesson> remainedLessons);
+            _ = profile.RemainedLessonCount2022(models, out int remainedCount, out IQueryable<RegisterLesson> remainedLessons);
 
             return View("~/Views/ConsoleHome/CourseContract/RemainedLessonListModal2022.cshtml", remainedLessons);
         }

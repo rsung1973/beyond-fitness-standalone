@@ -30,7 +30,7 @@
                                      .Select(r => r.CourseContract)
                                      .Where(c => c.Status < (int)Naming.CourseContractStatus.已生效)
                                      .FirstOrDefault();
-    var bookingCount = _model.CountableRegisterLesson().Sum(r => r.GroupingLesson.LessonTime.Count());
+    var bookingCount = _model.AttendedLessonCount();
     var contractCost = _model.TotalCost / _model.Lessons * bookingCount;
     var totalPaid = _model.TotalPaidAmount();
     var applicable = true;}

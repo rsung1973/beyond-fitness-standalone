@@ -2515,10 +2515,10 @@ namespace WebHome.Helper
                     }
 
                     item.TotalLessonCost = c.TotalAttendedCost(calcDate);
-                    if (c.CourseContractType.GroupingLessonDiscount != null)
-                    {
-                        item.TotalLessonCost = item.TotalLessonCost * c.CourseContractType.GroupingLessonDiscount.GroupingMemberCount * (c.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount ?? 100) / 100;
-                    }
+                    //if (c.CourseContractType.GroupingLessonDiscount != null)
+                    //{
+                    //    item.TotalLessonCost = item.TotalLessonCost * c.CourseContractType.GroupingLessonDiscount.GroupingMemberCount * (c.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount ?? 100) / 100;
+                    //}
 
                     var allowanceItems = c.ContractPayment.Select(p => p.Payment)
                             //.Where(p => p.TransactionType == (int)Naming.PaymentTransactionType.體能顧問費

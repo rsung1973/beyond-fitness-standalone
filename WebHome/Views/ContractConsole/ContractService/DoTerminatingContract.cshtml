@@ -28,7 +28,7 @@
     LessonPriceType originalPrice;
     if (_model.ContractType == (int)CourseContractType.ContractTypeDefinition.CGA)
     {
-        originalPrice = _model.CountableRegisterLesson()
+        originalPrice = _model.RegisterLessonContract.Select(c => c.RegisterLesson)
                     .Select(r => r.LessonPriceType)
                     .Where(l => !l.IsDietaryConsult).FirstOrDefault();
     }
@@ -109,7 +109,7 @@
 
             if (_model.ContractType == (int)CourseContractType.ContractTypeDefinition.CGA)
             {
-                var lessons = _model.CountableRegisterLesson();
+                var lessons = _model.RegisterLessonContract.Select(c => c.RegisterLesson);
                 currentSettlementPrice = 2000;
                 <div class="col-12">
                     <div class="alert xl-pink col-darkteal" role="alert">
@@ -119,7 +119,7 @@
                             </div>
                             已繳服務總費用 @(String.Format("{0:##,###,###,###}", totalPaid))
                             扣除依簽約時課程單堂原價(<span id="refundUnit" class="col-red"></span>) / 人)
-                            乘以實際上課堂數(<span class="col-red">@(lessons.Where(r => !r.LessonPriceType.IsDietaryConsult).Sum(r => r.LessonTime.Count))</span>)，
+                            乘以實際上課堂數(<span class="col-red">@(lessons.Where(r => !r.LessonPriceType.IsDietaryConsult).Sum(r => r.LessonTime.Count * r.GroupingMemberCount))</span>)，
                             退還剩餘款項 <span class="col-red" id="refund"></span>元 <small id="formular"></small>。
                         </div>
                     </div>
@@ -127,7 +127,7 @@
                 <script>
                     function refundInfo(settlementPrice) {
                         if (!isNaN(settlementPrice)) {
-                            var lessons = @(lessons.Where(r => !r.LessonPriceType.IsDietaryConsult).Sum(r=>r.LessonTime.Count));
+                            var lessons = @(lessons.Where(r => !r.LessonPriceType.IsDietaryConsult).Sum(r=>r.LessonTime.Count * r.GroupingMemberCount));
                             var totalPaid = @(totalPaid);
                             var dietaryCost = @(lessons.Where(r => r.LessonPriceType.IsDietaryConsult).Sum(r => r.LessonPriceType.ListPrice * r.LessonPriceType.BundleCount));
                             var refund = totalPaid - dietaryCost - lessons * settlementPrice;

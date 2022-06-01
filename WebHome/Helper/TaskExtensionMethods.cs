@@ -312,7 +312,7 @@ namespace WebHome.Helper
 
                             if (original.ContractType == (int)CourseContractType.ContractTypeDefinition.CGA)
                             {
-                                var lessons = original.CountableRegisterLesson();
+                                var lessons = original.RegisterLessonContract.Select(c => c.RegisterLesson);
 
                                 returnAmt = totalPaid
                                         - lessons.Where(r => r.LessonPriceType.IsDietaryConsult)
@@ -431,7 +431,7 @@ namespace WebHome.Helper
                             int? returnAmt;
                             if (original.ContractType == (int)CourseContractType.ContractTypeDefinition.CGA)
                             {
-                                var lessons = original.CountableRegisterLesson();
+                                var lessons = original.RegisterLessonContract.Select(c => c.RegisterLesson);
                                 returnAmt = totalPaid
                                         - lessons.Where(r => r.LessonPriceType.IsDietaryConsult)
                                             .Sum(r => r.LessonPriceType.ListPrice * r.LessonTime.Count)
