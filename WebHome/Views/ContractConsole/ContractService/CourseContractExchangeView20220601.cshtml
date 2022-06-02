@@ -66,7 +66,7 @@
         }
     }
 }
-<div class="row" style="@(_viewModel.Pdf == "1" ? "font-size: 15px; margin: 0px; width: 21.5cm;height: 28cm" : "font-size: 15px; margin: 0 5px 0 0;")"">
+<div class="row" style="@(_viewModel.Pdf == "1" ? "font-size: 15px; margin: 0px; width: 21.5cm;height: 29.7cm" : "font-size: 15px; margin: 0 5px 0 0;")"">
     <div class="col-md-12">
         <div style="@(_viewModel.Pdf == "1" ? "width: 21.5cm;" : "")"">
             <h4 class="text-center" style="margin: 0px"><b>Beyond Fitness 顧問服務轉換課程類別申請書</b></h4>
@@ -133,7 +133,7 @@
                         <td colspan="2">項目：轉換課程類別</td>                    
                     </tr>    
                     <tr>
-                        <td colspan="2">申請說明：契約經雙方同意於 2022/03/02 依據轉換上課堂數規則
+                        <td colspan="2">申請說明：契約經雙方同意於 @(String.Format("{0:yyyy/MM/dd}", _signatureDate)) 依據轉換上課堂數規則
                             <p style="margin-left:80px;margin-bottom: 0px;">
                                 ※1堂私人教練(P.T)得轉換為2堂運動恢復(S.R)或2堂運動恢復(S.R)得轉換為1堂私人教練(P.T)<br />
                                 ※1堂私人教練(P.T)得轉換1堂運動防護(A.T)或1堂運動防護(A.T)得轉換為1堂私人教練(P.T)<br />
