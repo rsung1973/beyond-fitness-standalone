@@ -1,0 +1,73 @@
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Helper.DataOperation
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    CourseContract _model;
+    UserProfile _profile;
+
+    CourseContractViewModel _viewModel = ViewBag.ViewModel as CourseContractViewModel;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _model = (CourseContract)this.Model;
+    _profile = await Context.GetUserAsync();
+
+    LessonPriceType originalPrice;
+    if (_model.ContractType == (int)CourseContractType.ContractTypeDefinition.CGA)
+    {
+        originalPrice = _model.RegisterLessonContract.Select(c => c.RegisterLesson)
+                    .Select(r => r.LessonPriceType)
+                    .Where(l => !l.IsDietaryConsult).FirstOrDefault();
+    }
+    else
+    {
+        originalPrice = _model.ContractOriginalSeriesPrice(models);
+    }
+
+}
+<div class="header">
+    <h2><strong>退款資訊</strong></h2>
+</div>
+<div class="body">
+    <div class="row clearfix">
+        <div class="col-12" id="refundInfo">
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <div class="input-group">
+                <input type="text" class="form-control form-control-danger" placeholder="輸入退款銀行代碼" name="BankID" />
+                <span class="input-group-addon">
+                    <i class="zmdi zmdi-balance"></i>
+                </span>
+            </div>
+            @*<label class="material-icons help-error-text">clear 請輸入退款銀行代碼</label>*@
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <div class="input-group">
+                <input type="text" class="form-control form-control-danger" placeholder="輸入退款銀行帳號" name="BankAccount" />
+                <span class="input-group-addon">
+                    <i class="zmdi zmdi-paypale"></i>
+                </span>
+            </div>
+            @*<label class="material-icons help-error-text">clear 請輸入退款銀行帳號</label>*@
+        </div>
+        <div class="col-xs-12">
+            <h6><i class="zmdi zmdi-cloud-upload"></i> 上傳帳戶存摺封面掃描圖片（需顯示完整退款帳號）</h6>
+            @{
+                ViewBag.DropifyExtension = "gif jpg jpeg png";
+                await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/DropifyFileUpload.cshtml", model: "accountInfo");
+            }
+        </div>
+    </div>
+</div>
+

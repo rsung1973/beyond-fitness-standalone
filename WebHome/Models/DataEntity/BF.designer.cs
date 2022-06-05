@@ -639,6 +639,9 @@ namespace WebHome.Models.DataEntity
     partial void InsertCourseContractAction(CourseContractAction instance);
     partial void UpdateCourseContractAction(CourseContractAction instance);
     partial void DeleteCourseContractAction(CourseContractAction instance);
+    partial void InsertCourseContractTermination(CourseContractTermination instance);
+    partial void UpdateCourseContractTermination(CourseContractTermination instance);
+    partial void DeleteCourseContractTermination(CourseContractTermination instance);
     #endregion
 		
 		public BFDataContext() : 
@@ -2359,6 +2362,14 @@ namespace WebHome.Models.DataEntity
 			}
 		}
 		
+		public System.Data.Linq.Table<CourseContractTermination> CourseContractTermination
+		{
+			get
+			{
+				return this.GetTable<CourseContractTermination>();
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.InquireVacantNo")]
 		public ISingleResult<InquireVacantNoResult> InquireVacantNo([global::System.Data.Linq.Mapping.ParameterAttribute(Name="SellerID", DbType="Int")] System.Nullable<int> sellerID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Year", DbType="Int")] System.Nullable<int> year, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="PeriodNo", DbType="Int")] System.Nullable<int> periodNo)
 		{
@@ -3872,6 +3883,8 @@ namespace WebHome.Models.DataEntity
 		
 		private EntitySet<CourseContractExtension> _CourseContractExtension;
 		
+		private EntitySet<CourseContractTermination> _CourseContractTermination;
+		
 		private EntityRef<Document> _Document;
 		
     #region Extensibility Method Definitions
@@ -3891,6 +3904,7 @@ namespace WebHome.Models.DataEntity
 			this._UserProfile = new EntitySet<UserProfile>(new Action<UserProfile>(this.attach_UserProfile), new Action<UserProfile>(this.detach_UserProfile));
 			this._Article = new EntitySet<Article>(new Action<Article>(this.attach_Article), new Action<Article>(this.detach_Article));
 			this._CourseContractExtension = new EntitySet<CourseContractExtension>(new Action<CourseContractExtension>(this.attach_CourseContractExtension), new Action<CourseContractExtension>(this.detach_CourseContractExtension));
+			this._CourseContractTermination = new EntitySet<CourseContractTermination>(new Action<CourseContractTermination>(this.attach_CourseContractTermination), new Action<CourseContractTermination>(this.detach_CourseContractTermination));
 			this._Document = default(EntityRef<Document>);
 			OnCreated();
 		}
@@ -3998,6 +4012,19 @@ namespace WebHome.Models.DataEntity
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Attachment_CourseContractTermination", Storage="_CourseContractTermination", ThisKey="AttachmentID", OtherKey="AccountInfo")]
+		public EntitySet<CourseContractTermination> CourseContractTermination
+		{
+			get
+			{
+				return this._CourseContractTermination;
+			}
+			set
+			{
+				this._CourseContractTermination.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Document_Attachment", Storage="_Document", ThisKey="DocID", OtherKey="DocID", IsForeignKey=true)]
 		public Document Document
 		{
@@ -4083,6 +4110,18 @@ namespace WebHome.Models.DataEntity
 		}
 		
 		private void detach_CourseContractExtension(CourseContractExtension entity)
+		{
+			this.SendPropertyChanging();
+			entity.Attachment = null;
+		}
+		
+		private void attach_CourseContractTermination(CourseContractTermination entity)
+		{
+			this.SendPropertyChanging();
+			entity.Attachment = this;
+		}
+		
+		private void detach_CourseContractTermination(CourseContractTermination entity)
 		{
 			this.SendPropertyChanging();
 			entity.Attachment = null;
@@ -23820,6 +23859,8 @@ namespace WebHome.Models.DataEntity
 		
 		private EntitySet<CourseContractLessonExchange> _CourseContractLessonExchange;
 		
+		private EntityRef<CourseContractTermination> _CourseContractTermination;
+		
 		private EntityRef<Attachment> _Attachment;
 		
 		private EntityRef<CourseContract> _CourseContract;
@@ -23858,6 +23899,7 @@ namespace WebHome.Models.DataEntity
 			this._CourseContractRevisionItem = default(EntityRef<CourseContractRevisionItem>);
 			this._CourseContractExtension = new EntitySet<CourseContractExtension>(new Action<CourseContractExtension>(this.attach_CourseContractExtension), new Action<CourseContractExtension>(this.detach_CourseContractExtension));
 			this._CourseContractLessonExchange = new EntitySet<CourseContractLessonExchange>(new Action<CourseContractLessonExchange>(this.attach_CourseContractLessonExchange), new Action<CourseContractLessonExchange>(this.detach_CourseContractLessonExchange));
+			this._CourseContractTermination = default(EntityRef<CourseContractTermination>);
 			this._Attachment = default(EntityRef<Attachment>);
 			this._CourseContract = default(EntityRef<CourseContract>);
 			this._SourceContract = default(EntityRef<CourseContract>);
@@ -24141,6 +24183,35 @@ namespace WebHome.Models.DataEntity
 			set
 			{
 				this._CourseContractLessonExchange.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="CourseContractRevision_CourseContractTermination", Storage="_CourseContractTermination", ThisKey="RevisionID", OtherKey="RevisionID", IsUnique=true, IsForeignKey=false)]
+		public CourseContractTermination CourseContractTermination
+		{
+			get
+			{
+				return this._CourseContractTermination.Entity;
+			}
+			set
+			{
+				CourseContractTermination previousValue = this._CourseContractTermination.Entity;
+				if (((previousValue != value) 
+							|| (this._CourseContractTermination.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._CourseContractTermination.Entity = null;
+						previousValue.CourseContractRevision = null;
+					}
+					this._CourseContractTermination.Entity = value;
+					if ((value != null))
+					{
+						value.CourseContractRevision = this;
+					}
+					this.SendPropertyChanged("CourseContractTermination");
+				}
 			}
 		}
 		
@@ -63962,6 +64033,222 @@ namespace WebHome.Models.DataEntity
 						this._ContractID = default(int);
 					}
 					this.SendPropertyChanged("CourseContract");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.CourseContractTermination")]
+	public partial class CourseContractTermination : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _RevisionID;
+		
+		private System.Nullable<int> _AccountInfo;
+		
+		private string _BankID;
+		
+		private string _BankAccount;
+		
+		private EntityRef<Attachment> _Attachment;
+		
+		private EntityRef<CourseContractRevision> _CourseContractRevision;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnRevisionIDChanging(int value);
+    partial void OnRevisionIDChanged();
+    partial void OnAccountInfoChanging(System.Nullable<int> value);
+    partial void OnAccountInfoChanged();
+    partial void OnBankIDChanging(string value);
+    partial void OnBankIDChanged();
+    partial void OnBankAccountChanging(string value);
+    partial void OnBankAccountChanged();
+    #endregion
+		
+		public CourseContractTermination()
+		{
+			this._Attachment = default(EntityRef<Attachment>);
+			this._CourseContractRevision = default(EntityRef<CourseContractRevision>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RevisionID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int RevisionID
+		{
+			get
+			{
+				return this._RevisionID;
+			}
+			set
+			{
+				if ((this._RevisionID != value))
+				{
+					if (this._CourseContractRevision.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnRevisionIDChanging(value);
+					this.SendPropertyChanging();
+					this._RevisionID = value;
+					this.SendPropertyChanged("RevisionID");
+					this.OnRevisionIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AccountInfo", DbType="Int")]
+		public System.Nullable<int> AccountInfo
+		{
+			get
+			{
+				return this._AccountInfo;
+			}
+			set
+			{
+				if ((this._AccountInfo != value))
+				{
+					if (this._Attachment.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnAccountInfoChanging(value);
+					this.SendPropertyChanging();
+					this._AccountInfo = value;
+					this.SendPropertyChanged("AccountInfo");
+					this.OnAccountInfoChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BankID", DbType="NVarChar(8)")]
+		public string BankID
+		{
+			get
+			{
+				return this._BankID;
+			}
+			set
+			{
+				if ((this._BankID != value))
+				{
+					this.OnBankIDChanging(value);
+					this.SendPropertyChanging();
+					this._BankID = value;
+					this.SendPropertyChanged("BankID");
+					this.OnBankIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BankAccount", DbType="NVarChar(32)")]
+		public string BankAccount
+		{
+			get
+			{
+				return this._BankAccount;
+			}
+			set
+			{
+				if ((this._BankAccount != value))
+				{
+					this.OnBankAccountChanging(value);
+					this.SendPropertyChanging();
+					this._BankAccount = value;
+					this.SendPropertyChanged("BankAccount");
+					this.OnBankAccountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Attachment_CourseContractTermination", Storage="_Attachment", ThisKey="AccountInfo", OtherKey="AttachmentID", IsForeignKey=true)]
+		public Attachment Attachment
+		{
+			get
+			{
+				return this._Attachment.Entity;
+			}
+			set
+			{
+				Attachment previousValue = this._Attachment.Entity;
+				if (((previousValue != value) 
+							|| (this._Attachment.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Attachment.Entity = null;
+						previousValue.CourseContractTermination.Remove(this);
+					}
+					this._Attachment.Entity = value;
+					if ((value != null))
+					{
+						value.CourseContractTermination.Add(this);
+						this._AccountInfo = value.AttachmentID;
+					}
+					else
+					{
+						this._AccountInfo = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("Attachment");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="CourseContractRevision_CourseContractTermination", Storage="_CourseContractRevision", ThisKey="RevisionID", OtherKey="RevisionID", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public CourseContractRevision CourseContractRevision
+		{
+			get
+			{
+				return this._CourseContractRevision.Entity;
+			}
+			set
+			{
+				CourseContractRevision previousValue = this._CourseContractRevision.Entity;
+				if (((previousValue != value) 
+							|| (this._CourseContractRevision.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._CourseContractRevision.Entity = null;
+						previousValue.CourseContractTermination = null;
+					}
+					this._CourseContractRevision.Entity = value;
+					if ((value != null))
+					{
+						value.CourseContractTermination = this;
+						this._RevisionID = value.RevisionID;
+					}
+					else
+					{
+						this._RevisionID = default(int);
+					}
+					this.SendPropertyChanged("CourseContractRevision");
 				}
 			}
 		}

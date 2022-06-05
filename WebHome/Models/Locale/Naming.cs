@@ -476,6 +476,7 @@ namespace WebHome.Models.Locale
             其他,
             所屬教練離職,
             新冠肺炎疫情,
+            不宜運動,
         }
 
         public enum ProfessionalLevelCheck

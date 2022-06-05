@@ -1,0 +1,154 @@
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Helper.DataOperation
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    CourseContract _model;
+    UserProfile _profile;
+
+    CourseContractViewModel _viewModel = ViewBag.ViewModel as CourseContractViewModel;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _model = (CourseContract)this.Model;
+    _profile = await Context.GetUserAsync();
+
+    LessonPriceType originalPrice;
+    if (_model.ContractType == (int)CourseContractType.ContractTypeDefinition.CGA)
+    {
+        originalPrice = _model.RegisterLessonContract.Select(c => c.RegisterLesson)
+                    .Select(r => r.LessonPriceType)
+                    .Where(l => !l.IsDietaryConsult).FirstOrDefault();
+    }
+    else
+    {
+        originalPrice = _model.ContractOriginalSeriesPrice(models);
+    }
+
+}
+@{
+    var totalPaid = _model.TotalPaidAmount();
+    var attendedCount = _model.AttendedLessonCount();
+    int processingFee = 0;
+}
+@if (totalPaid == 0)
+{
+    <div class="alert xl-pink col-darkteal" role="alert">
+        <div class="container">
+            <div class="alert-icon">
+                <i class="zmdi zmdi-notifications"></i>
+            </div>
+            契約簽訂後未繳納費用 @(String.Format("{0:##,###,###,###}", _model.TotalCost)) 元，退還剩餘款項
+            <span class="col-red">0</span>元。
+        </div>
+    </div>
+    <script>
+        $(function() {
+            $('input[name="SettlementPrice"]').val('@Html.Raw(originalPrice?.ListPrice ?? _model.LessonPriceType.ListPrice)')
+                .parent().parent()
+                .css('display', 'none');
+        });
+    </script>
+}
+else if (attendedCount > 0)
+{
+    var remained = _model.CalculateReturnAmount(totalPaid, out processingFee);
+    if (_viewModel.CauseForEnding == Naming.CauseForEnding.合約到期轉新約
+    || _viewModel.CauseForEnding == Naming.CauseForEnding.轉讓)
+    {
+        processingFee = 0;
+    }
+
+    <div class="alert xl-pink col-darkteal" role="alert">
+        <div class="container">
+            <div class="alert-icon">
+                <i class="zmdi zmdi-notifications"></i>
+            </div>
+            應退餘額 @($"{remained:##,###,###,###}")：按未完成服務堂數（@(_model.RemainedLessonCount())堂）占合約總價額比例退還餘額
+        </div>
+        @if (processingFee > 0)
+        {
+            <div class="container">
+                <div class="alert-icon">
+                    <i class="zmdi zmdi-notifications"></i>
+                </div>
+                手續費 @($"{processingFee:##,###,###,###}")：應退餘額20%計算
+            </div>
+        }
+        <div class="container col-pink">
+            <div class="alert-icon">
+                <i class="zmdi zmdi-alert-triangle"></i>
+            </div>
+            實際退還剩餘款項 @($"{remained - processingFee:##,###,###,###}")
+        </div>
+        @{
+            if (_viewModel.CauseForEnding == Naming.CauseForEnding.合約到期轉新約
+            || _viewModel.CauseForEnding == Naming.CauseForEnding.轉讓)
+            {
+                <div class="container col-pink">
+                    <div class="alert-icon">
+                        <i class="zmdi zmdi-alert-triangle"></i>
+                    </div>
+                    另外收取手續費新台幣300元整
+                </div>
+            }
+        }
+    </div>
+}
+else if ((DateTime.Today - _model.ValidFrom.Value).TotalDays < 8)
+{
+    <div class="alert xl-pink col-darkteal" role="alert">
+        <div class="container">
+            <div class="alert-icon">
+                <i class="zmdi zmdi-notifications"></i>
+            </div>
+            契約簽訂後七日內未使用所約定服務(課程)，全額退還已繳費用 <span class="col-red">@(String.Format("{0:##,###,###,###}", totalPaid))</span> 元。
+        </div>
+    </div>
+    <script>
+        $(function() {
+            $('input[name="SettlementPrice"]').val('@Html.Raw(_model.LessonPriceType.ListPrice)')
+                .parent().parent()
+                .css('display', 'none');
+        });
+    </script>
+}
+else
+{
+    <div class="alert xl-pink col-darkteal" role="alert">
+        <div class="container col-red">
+            <div class="alert-icon">
+                <i class="zmdi zmdi-alert-triangle"></i>
+            </div>
+            契約簽訂後逾七日未使用所約定服務(課程)
+        </div>
+        <div class="container">
+            <div class="alert-icon">
+                <i class="zmdi zmdi-notifications"></i>
+            </div>
+            @{
+                processingFee = Math.Min(totalPaid * 5 / 100, 9000);
+            }
+            已繳服務總費用 @(String.Format("{0:##,###,###,###}", totalPaid)) 扣除5％處理費(<span class="col-red">@(String.Format("{0:##,###,###,###}", processingFee))</span>)，退還剩餘款項 <span class="col-red">@(String.Format("{0:##,###,###,###}", totalPaid - processingFee))</span>元。<small>=@(totalPaid) - (@(totalPaid)*0.05)</small>
+        </div>
+    </div>
+    <script>
+        $(function() {
+            $('input[name="SettlementPrice"]').val('@Html.Raw(_model.LessonPriceType.ListPrice)')
+                .parent().parent()
+                .css('display', 'none');
+        });
+    </script>
+}
+<input type="hidden" name="ProcessingFee" value="@((int)processingFee)" />
+

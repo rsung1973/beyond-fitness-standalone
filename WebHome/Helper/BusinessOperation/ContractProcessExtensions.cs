@@ -2124,7 +2124,7 @@ namespace WebHome.Helper.BusinessOperation
                     }
                     else
                     {
-                        item.ProcessContractTermination(profile);
+                        item.ProcessContractTermination2022(profile);
                     }
                     break;
                 case "轉換體能顧問":
@@ -2144,7 +2144,7 @@ namespace WebHome.Helper.BusinessOperation
         }
 
 
-        public static async Task<CourseContract> CommitContractServiceAsync(this CourseContractViewModel viewModel, SampleController<UserProfile> controller, String attachment = null)
+        public static async Task<CourseContract> CommitContractServiceAsync(this CourseContractViewModel viewModel, SampleController<UserProfile> controller, String attachment = null, String bankAccountInfo = null)
 
         {
             var ModelState = controller.ModelState;
@@ -2180,42 +2180,42 @@ namespace WebHome.Helper.BusinessOperation
 
             if (viewModel.Reason == "終止")
             {
-                if (!viewModel.SettlementPrice.HasValue)
-                {
-                    ModelState.AddModelError("SettlementPrice", "請填入課程單價!!");
-                }
-                else
-                {
-                    //bool checkRefund = true;
-                    if (item.ContractType == (int)CourseContractType.ContractTypeDefinition.CGA)
-                    {
-                        if (viewModel.SettlementPrice < 0)
-                        {
-                            ModelState.AddModelError("SettlementPrice", "組合包課程單價錯誤!!");
-                            //checkRefund = false;
-                        }
-                    }
-                    else
-                    {
-                        if (viewModel.SettlementPrice < item.LessonPriceType.ListPrice)
-                        {
-                            ModelState.AddModelError("SettlementPrice", "課程單價不可少於原購買單價!!");
-                            //checkRefund = false;
-                        }
-                    }
+                //if (!viewModel.SettlementPrice.HasValue)
+                //{
+                //    ModelState.AddModelError("SettlementPrice", "請填入課程單價!!");
+                //}
+                //else
+                //{
+                //    //bool checkRefund = true;
+                //    if (item.ContractType == (int)CourseContractType.ContractTypeDefinition.CGA)
+                //    {
+                //        if (viewModel.SettlementPrice < 0)
+                //        {
+                //            ModelState.AddModelError("SettlementPrice", "組合包課程單價錯誤!!");
+                //            //checkRefund = false;
+                //        }
+                //    }
+                //    else
+                //    {
+                //        if (viewModel.SettlementPrice < item.LessonPriceType.ListPrice)
+                //        {
+                //            ModelState.AddModelError("SettlementPrice", "課程單價不可少於原購買單價!!");
+                //            //checkRefund = false;
+                //        }
+                //    }
 
-                    //if (checkRefund)
-                    //{
-                    //    var refund = item.TotalPaidAmount() - item.AttendedLessonCount()
-                    //            * viewModel.SettlementPrice
-                    //            * item.CourseContractType.GroupingMemberCount
-                    //            * item.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount / 100;
-                    //    if (refund < 0)
-                    //    {
-                    //        ModelState.AddModelError("SettlementPrice", "退款差額不可小於零!!");
-                    //    }
-                    //}
-                }
+                //    //if (checkRefund)
+                //    //{
+                //    //    var refund = item.TotalPaidAmount() - item.AttendedLessonCount()
+                //    //            * viewModel.SettlementPrice
+                //    //            * item.CourseContractType.GroupingMemberCount
+                //    //            * item.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount / 100;
+                //    //    if (refund < 0)
+                //    //    {
+                //    //        ModelState.AddModelError("SettlementPrice", "退款差額不可小於零!!");
+                //    //    }
+                //    //}
+                //}
 
                 if (!viewModel.BySelf.HasValue)
                 {
@@ -2225,7 +2225,7 @@ namespace WebHome.Helper.BusinessOperation
                 {
                     if (attachment == null)
                     {
-                        ModelState.AddModelError("uploadFile", "請提供代辦委任書");
+                        ModelState.AddModelError("attachment", "請提供代辦委任書");
                     }
                 }
 
@@ -2242,6 +2242,23 @@ namespace WebHome.Helper.BusinessOperation
                         {
                             ModelState.AddModelError("Remark", "請填入其他終止原因");
                         }
+                    }
+
+                    viewModel.BankID = viewModel.BankID.GetEfficientString();
+                    if (viewModel.BankID == null)
+                    {
+                        ModelState.AddModelError("BankID", "請輸入退款銀行代碼");
+                    }
+
+                    viewModel.BankAccount = viewModel.BankAccount.GetEfficientString();
+                    if (viewModel.BankAccount == null)
+                    {
+                        ModelState.AddModelError("BankAccount", "請輸入退款銀行帳號");
+                    }
+
+                    if (bankAccountInfo == null)
+                    {
+                        ModelState.AddModelError("accountInfo", "請上傳帳戶存摺封面掃描圖片");
                     }
                 }
             }
@@ -2468,6 +2485,15 @@ namespace WebHome.Helper.BusinessOperation
                     newItem.CourseContractRevision.BySelf = (int?)viewModel.BySelf;
                     newItem.CourseContractRevision.ProcessingFee = viewModel.ProcessingFee;
                     newItem.CourseContractRevision.CauseForEnding = (int?)viewModel.CauseForEnding;
+                    newItem.CourseContractRevision.CourseContractTermination = new CourseContractTermination
+                    {
+                        BankAccount = viewModel.BankAccount,
+                        BankID = viewModel.BankID,
+                        Attachment = new Attachment
+                        {
+                            StoredPath = bankAccountInfo,
+                        },
+                    };
 
                     if (viewModel.OperationMode == Naming.OperationMode.快速終止)
                     {

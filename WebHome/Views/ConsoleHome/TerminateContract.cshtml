@@ -52,8 +52,8 @@
         <div class="card widget_2">
             @{ 
                 ViewBag.ApplyServiceModel = _item;
-                ViewBag.ApplyService = "~/Views/ContractConsole/ContractService/DoTerminatingContract.cshtml";
-                await Html.RenderPartialAsync("~/Views/ContractConsole/ContractService/ApplyContractService.cshtml", _item);
+                ViewBag.ApplyService = "~/Views/ContractConsole/ContractService/DoTerminatingContract2022.cshtml";
+                await Html.RenderPartialAsync("~/Views/ContractConsole/ContractService/ApplyContractTermination.cshtml", _item);
             }
 
         </div>

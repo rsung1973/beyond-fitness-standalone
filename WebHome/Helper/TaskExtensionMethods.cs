@@ -498,6 +498,172 @@ namespace WebHome.Helper
             });
         }
 
+        public static void ProcessContractTermination2022(this CourseContractRevision item, UserProfile handler = null)
+        {
+            ThreadPool.QueueUserWorkItem(t =>
+            {
+                try
+                {
+                    using (var models = new ModelSource<UserProfile>())
+                    {
+                        item = models.GetTable<CourseContractRevision>()
+                            .Where(r => r.RevisionID == item.RevisionID).First();
+                        ///1.變更狀態
+                        ///
+                        item.SourceContract.Status = (int)Naming.CourseContractStatus.已終止;
+                        item.SourceContract.ValidTo = DateTime.Now;
+                        item.CourseContract.EffectiveDate = DateTime.Now;
+                        foreach (var lesson in item.SourceContract.RegisterLessonContract)
+                        {
+                            lesson.RegisterLesson.Attended = (int)Naming.LessonStatus.課程結束;
+                        }
+                        ///2.回沖繳款餘額
+                        ///
+                        var original = item.SourceContract;
+                        var totalPaid = original.TotalPaidAmount();
+                        if (totalPaid > 0)
+                        {
+                            int refund;
+                            int returnAmt = original.CalculateReturnAmount(totalPaid, out int processingFee);
+
+                            refund = returnAmt
+                                - (item.ProcessingFee ?? 0);
+
+                            refund = Math.Max(refund, 0);
+                            var adjustment = returnAmt - refund;
+
+                            var dummyInvoice = models.GetTable<InvoiceItem>().Where(i => i.No == "--").FirstOrDefault();
+                            Payment balancedPayment = null;
+                            balancedPayment = new Payment
+                            {
+                                Status = (int)Naming.CourseContractStatus.已生效,
+                                ContractPayment = new ContractPayment { },
+                                PaymentTransaction = new PaymentTransaction
+                                {
+                                    BranchID = item.SourceContract.CourseContractExtension.BranchID
+                                },
+                                PaymentAudit = new Models.DataEntity.PaymentAudit { },
+                                PayoffAmount = -refund,
+                                PayoffDate = DateTime.Today,
+                                Remark = "終止退款",
+                                HandlerID = handler != null ? handler.UID : item.CourseContract.AgentID,
+                                PaymentType = "現金",
+                                TransactionType = (int)Naming.PaymentTransactionType.合約終止沖銷,
+                                AdjustmentAmount = adjustment != 0 ? adjustment : (int?)null,
+                            };
+                            balancedPayment.ContractPayment.ContractID = item.OriginalContract.Value;
+                            if (dummyInvoice != null)
+                                balancedPayment.InvoiceID = dummyInvoice.InvoiceID;
+                            models.GetTable<Payment>().InsertOnSubmit(balancedPayment);
+
+                            if (models.GetTable<ContractTrustTrack>().Any(a => a.ContractID == item.OriginalContract))
+                            {
+                                models.GetTable<ContractTrustTrack>().InsertOnSubmit(new ContractTrustTrack
+                                {
+                                    ContractID = item.OriginalContract.Value,
+                                    EventDate = balancedPayment.PayoffDate.Value,
+                                    TrustType = Naming.TrustType.S.ToString(),
+                                    ReturnAmount = returnAmt,
+                                });
+                            }
+
+                            if (refund > 0)
+                            {
+                                //Logger.Debug("RevisionID: " + item.RevisionID);
+                                //Logger.Debug("balance: " + balance);
+                                models.CreateAllowanceForContract(original, refund, handler);
+                            }
+                        }
+
+                        models.SubmitChanges();
+                        original.TerminateRegisterLesson(models);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ApplicationLogging.LoggerFactory.CreateLogger(typeof(TaskExtensionMethods))
+                        .LogError(ex, ex.Message);
+                }
+            });
+        }
+
+        public static void ProcessContractQuickTermination2022(this CourseContractRevision item, UserProfile handler = null)
+        {
+            ThreadPool.QueueUserWorkItem(t =>
+            {
+                try
+                {
+                    using (var models = new ModelSource<UserProfile>())
+                    {
+                        item = models.GetTable<CourseContractRevision>()
+                            .Where(r => r.RevisionID == item.RevisionID).First();
+                        ///1.變更狀態
+                        ///
+                        item.SourceContract.Status = (int)Naming.CourseContractStatus.已終止;
+                        item.SourceContract.ValidTo = DateTime.Now;
+                        item.CourseContract.EffectiveDate = DateTime.Now;
+                        foreach (var lesson in item.SourceContract.RegisterLessonContract)
+                        {
+                            lesson.RegisterLesson.Attended = (int)Naming.LessonStatus.課程結束;
+                        }
+                        ///2.回沖繳款餘額
+                        ///
+                        var original = item.SourceContract;
+                        var totalPaid = original.TotalPaidAmount();
+                        if (totalPaid > 0)
+                        {
+                            int returnAmt = original.CalculateReturnAmount(totalPaid, out int processingFee);
+
+                            var dummyInvoice = models.GetTable<InvoiceItem>().Where(i => i.No == "--").FirstOrDefault();
+                            Payment balancedPayment = null;
+                            balancedPayment = new Payment
+                            {
+                                Status = (int)Naming.CourseContractStatus.已生效,
+                                ContractPayment = new ContractPayment { },
+                                PaymentTransaction = new PaymentTransaction
+                                {
+                                    BranchID = item.SourceContract.CourseContractExtension.BranchID
+                                },
+                                PaymentAudit = new Models.DataEntity.PaymentAudit { },
+                                PayoffAmount = -returnAmt,
+                                PayoffDate = DateTime.Today,
+                                Remark = "終止退款",
+                                HandlerID = handler != null ? handler.UID : item.CourseContract.AgentID,
+                                PaymentType = "現金",
+                                TransactionType = (int)Naming.PaymentTransactionType.合約終止沖銷,
+                                AdjustmentAmount = returnAmt,
+                            };
+                            balancedPayment.ContractPayment.ContractID = item.OriginalContract.Value;
+                            if (dummyInvoice != null)
+                                balancedPayment.InvoiceID = dummyInvoice.InvoiceID;
+                            models.GetTable<Payment>().InsertOnSubmit(balancedPayment);
+
+                            if (models.GetTable<ContractTrustTrack>().Any(a => a.ContractID == item.OriginalContract))
+                            {
+                                models.GetTable<ContractTrustTrack>().InsertOnSubmit(new ContractTrustTrack
+                                {
+                                    ContractID = item.OriginalContract.Value,
+                                    EventDate = balancedPayment.PayoffDate.Value,
+                                    TrustType = Naming.TrustType.S.ToString(),
+                                    ReturnAmount = returnAmt,
+                                });
+                            }
+
+                        }
+
+                        models.SubmitChanges();
+                        original.TerminateRegisterLesson(models);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ApplicationLogging.LoggerFactory.CreateLogger(typeof(TaskExtensionMethods))
+                        .LogError(ex, ex.Message);
+                }
+            });
+        }
+
+
         public static void ProcessContractLessonExchange(this CourseContractRevision item, UserProfile handler = null)
         {
             ThreadPool.QueueUserWorkItem(t =>

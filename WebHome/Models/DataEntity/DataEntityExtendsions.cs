@@ -52,42 +52,45 @@ namespace WebHome.Models.DataEntity
                                         : "編輯課程內容中";
         }
 
-        public static int RemainedLessonCount(this RegisterLesson item,bool onlyAttended = false)
+        public static int RemainedLessonCount(this RegisterLesson item, bool onlyAttended = false)
         {
-            //return item.Lessons
-            //        - item.GroupingLesson.LessonTime.Count(/*l=>l.LessonAttendance!= null*/);
-            //if (onlyAttended)
-            //{
-            //    return item.Lessons - (item.AttendedLessons ?? 0)
-            //            - (item.RegisterGroupID.HasValue 
-            //                ? item.GroupingLesson.LessonTime.Count(l => l.LessonAttendance != null) 
-            //                : item.LessonTime.Count(l => l.LessonAttendance != null));
-            //}
-            //else
-            //{
-            //    return item.Lessons - (item.AttendedLessons ?? 0)
-            //        - (item.RegisterGroupID.HasValue ? item.GroupingLesson.LessonTime.Count : item.LessonTime.Count);
-            //}
-
-            return item.Lessons - item.AttendedLessonCount(onlyAttended);
-
+            return item.Lessons - item.RegisterLessonSharing.LessonRefernece.SharingReference
+                .Select(r => r.RegisterLesson)
+                .Sum(r => r.AttendedLessonCount(onlyAttended, true));
         }
 
-        public static int AttendedLessonCount(this RegisterLesson item, bool onlyAttended = false)
+        public static int AttendedLessonCount(this RegisterLesson item, bool onlyAttended = false, bool singleMode = false)
         {
-            if (onlyAttended)
+            if (singleMode)
             {
-                return (item.AttendedLessons ?? 0)
-                        + (item.RegisterGroupID.HasValue
-                                ? item.GroupingLesson.LessonTime.Count(l => l.LessonAttendance != null) / item.GroupingMemberCount
-                                : item.LessonTime.Count(l => l.LessonAttendance != null));
+                if (onlyAttended)
+                {
+                    return (item.AttendedLessons ?? 0)
+                            + (item.LessonTime.Count(l => l.LessonAttendance != null));
+                }
+                else
+                {
+                    return (item.AttendedLessons ?? 0)
+                        + (item.LessonTime.Count);
+                }
             }
             else
             {
-                return (item.AttendedLessons ?? 0)
-                    + (item.RegisterGroupID.HasValue
-                                ? item.GroupingLesson.LessonTime.Count / item.GroupingMemberCount
-                                : item.LessonTime.Count);
+
+                if (onlyAttended)
+                {
+                    return (item.AttendedLessons ?? 0)
+                            + (item.RegisterGroupID.HasValue
+                                    ? item.GroupingLesson.LessonTime.Count(l => l.LessonAttendance != null) / item.GroupingMemberCount
+                                    : item.LessonTime.Count(l => l.LessonAttendance != null));
+                }
+                else
+                {
+                    return (item.AttendedLessons ?? 0)
+                        + (item.RegisterGroupID.HasValue
+                                    ? item.GroupingLesson.LessonTime.Count / item.GroupingMemberCount
+                                    : item.LessonTime.Count);
+                }
             }
         }
 
@@ -119,21 +122,38 @@ namespace WebHome.Models.DataEntity
             }
         }
 
-        public static int AttendedLessonCount(this RegisterLesson item,DateTime dateBefore, bool onlyAttended = false)
+        public static int AttendedLessonCount(this RegisterLesson item, DateTime dateBefore, bool onlyAttended = false, bool singleMode = false)
         {
-            if (onlyAttended)
+            if (singleMode)
             {
-                return (item.AttendedLessons ?? 0)
-                        + (item.RegisterGroupID.HasValue
-                            ? item.GroupingLesson.LessonTime.Count(l => l.LessonAttendance != null && l.ClassTime<dateBefore)
-                            : item.LessonTime.Count(l => l.LessonAttendance != null && l.ClassTime<dateBefore));
+                if (onlyAttended)
+                {
+                    return (item.AttendedLessons ?? 0)
+                            + (item.LessonTime.Count(l => l.LessonAttendance != null && l.ClassTime < dateBefore));
+                }
+                else
+                {
+                    return (item.AttendedLessons ?? 0)
+                        + (item.LessonTime.Count(l => l.ClassTime < dateBefore));
+                }
             }
             else
             {
-                return (item.AttendedLessons ?? 0)
-                    + (item.RegisterGroupID.HasValue
-                        ? item.GroupingLesson.LessonTime.Count(l => l.ClassTime < dateBefore)
-                        : item.LessonTime.Count(l => l.ClassTime < dateBefore));
+
+                if (onlyAttended)
+                {
+                    return (item.AttendedLessons ?? 0)
+                            + (item.RegisterGroupID.HasValue
+                                ? item.GroupingLesson.LessonTime.Count(l => l.LessonAttendance != null && l.ClassTime < dateBefore)
+                                : item.LessonTime.Count(l => l.LessonAttendance != null && l.ClassTime < dateBefore));
+                }
+                else
+                {
+                    return (item.AttendedLessons ?? 0)
+                        + (item.RegisterGroupID.HasValue
+                            ? item.GroupingLesson.LessonTime.Count(l => l.ClassTime < dateBefore)
+                            : item.LessonTime.Count(l => l.ClassTime < dateBefore));
+                }
             }
         }
 
@@ -142,7 +162,7 @@ namespace WebHome.Models.DataEntity
             return item.RegisterLessonContract
                 .Select(c => c.RegisterLesson)
                 .Where(r => r.SharingReference.Any())
-                .Sum(r => r.RemainedLessonCount(onlyAttended));
+                .Sum(r => r.Lessons) - item.AttendedLessonCount(onlyAttended);
         }
 
         public static int UnfinishedLessonCount(this CourseContract item)
@@ -154,14 +174,14 @@ namespace WebHome.Models.DataEntity
         {
             var items = item.RegisterLessonContract.Select(c => c.RegisterLesson);
 
-            return items.Sum(r => r.AttendedLessonCount(onlyAttended));
+            return items.Sum(r => r.AttendedLessonCount(onlyAttended, singleMode: true));
         }
 
         public static int AttendedLessonCount(this CourseContract item,DateTime dateBefore, bool onlyAttended = false)
         {
             var items = item.RegisterLessonContract.Select(c => c.RegisterLesson);
 
-            return items.Sum(r => r.AttendedLessonCount(dateBefore, onlyAttended));
+            return items.Sum(r => r.AttendedLessonCount(dateBefore, onlyAttended, singleMode: true));
 
         }
 

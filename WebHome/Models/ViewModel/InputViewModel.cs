@@ -88,6 +88,9 @@ namespace WebHome.Models.ViewModel
         public int?[] ContractLessonRegisterID { get; set; }
         public int?[] TargetPriceID { get; set; }
         public int?[] TargetSubtotal { get; set; }
+        public String BankID { get; set; }
+        public String BankAccount { get; set; }
+
     }
 
     public class CourseContractQueryViewModel : CourseContractViewModel

@@ -1,23 +1,25 @@
 @using Newtonsoft.Json
 
 @{
-    int partialCount;
-    if (TempData["PartialCount"] == null)
+    String _model = (this.Model as String) ?? "uploadFile";
+    int uploadIdx = 0;
+    if (ViewContext.HttpContext.Items["uploadIdx"] != null)
     {
-        partialCount = 0;
-    }
-    else
-    {
-        partialCount = (int)TempData["PartialCount"];
+        uploadIdx = (int)ViewContext.HttpContext.Items["uploadIdx"];
     }
 
-    String _dropifyID = $"dropify{partialCount}";
+    ViewContext.HttpContext.Items["uploadIdx"] = uploadIdx + 1;
+
+    String _dropifyID = $"dropify{uploadIdx}";
     String allowedExt = ViewBag.DropifyExtension ?? "gif jpg jpeg png pdf";
 }
 
 <!--dropify-->
-<link rel="stylesheet" href="plugins/dropify/css/dropify.min.css">
-<input type="file" class="dropify" name="uploadFile" id="@(_dropifyID)" data-max-file-size="10M" data-show-remove="true" data-show-errors="true" data-errors-position="outside" data-default-file="@(ViewBag.DropifyDefaultFile)" data-allowed-file-extensions="@(allowedExt)" />
+@if (uploadIdx == 0)
+{
+    <link rel="stylesheet" href="plugins/dropify/css/dropify.min.css" />
+}
+<input type="file" class="dropify" name="@(_model)" id="@(_dropifyID)" data-max-file-size="10M" data-show-remove="true" data-show-errors="true" data-errors-position="outside" data-default-file="@(ViewBag.DropifyDefaultFile)" data-allowed-file-extensions="@(allowedExt)" />
 <script>
     $(function () {
 

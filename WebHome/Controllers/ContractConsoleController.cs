@@ -33,6 +33,7 @@ using WebHome.Models.ViewModel;
 
 using WebHome.Security.Authorization;
 using CommonLib.Core.Utility;
+using Microsoft.AspNetCore.Http;
 
 namespace WebHome.Controllers
 {
@@ -848,15 +849,31 @@ namespace WebHome.Controllers
                 return View("~/Views/ConsoleHome/Shared/AlertMessage.cshtml", model: "合約資料錯誤!!");
         }
 
-        public async Task<ActionResult> CommitContractServiceAsync(CourseContractViewModel viewModel)
+        public async Task<ActionResult> CommitContractServiceAsync(CourseContractViewModel viewModel, IFormFile attachment, IFormFile accountInfo)
         {
             String storedPath = null;
-            if (Request.Form.Files.Count > 0)
+            //if (Request.Form.Files.Count > 0)
+            //{
+
+            //    storedPath = Path.Combine(FileLogger.Logger.LogDailyPath, Guid.NewGuid().ToString() + Path.GetExtension(Request.Form.Files[0].FileName));
+            //    Request.Form.Files[0].SaveAs(storedPath);
+            //}
+            if (attachment != null)
             {
-                storedPath = Path.Combine(FileLogger.Logger.LogDailyPath, Guid.NewGuid().ToString() + Path.GetExtension(Request.Form.Files[0].FileName));
-                Request.Form.Files[0].SaveAs(storedPath);
+
+                storedPath = Path.Combine(FileLogger.Logger.LogDailyPath, Guid.NewGuid().ToString() + Path.GetExtension(attachment.FileName));
+                attachment.SaveAs(storedPath);
             }
-            var item = await viewModel.CommitContractServiceAsync(this, storedPath);
+
+            String bankAccountInfo = null;
+            if (accountInfo != null)
+            {
+
+                bankAccountInfo = Path.Combine(FileLogger.Logger.LogDailyPath, Guid.NewGuid().ToString() + Path.GetExtension(accountInfo.FileName));
+                accountInfo.SaveAs(bankAccountInfo);
+            }
+            var item = await viewModel.CommitContractServiceAsync(this, storedPath, bankAccountInfo);
+
             if (item == null)
             {
                 if (!ModelState.IsValid)
@@ -870,6 +887,28 @@ namespace WebHome.Controllers
             }
 
             return View("~/Views/ContractConsole/Editing/ContractServiceCommitted.cshtml", item);
+        }
+
+        public ActionResult BuildRefundInfo(CourseContractViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+
+            if (viewModel.KeyID != null)
+            {
+                viewModel.ContractID = viewModel.DecryptKeyValue();
+            }
+            var item = models.GetTable<CourseContract>().Where(c => c.ContractID == viewModel.ContractID).FirstOrDefault();
+            if (item == null)
+            {
+                ModelState.AddModelError("Message", "合約資料錯誤!!");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(ConsoleHomeController.InputErrorView);
+            }
+
+            return View("~/Views/ContractConsole/ContractService/RefundInfo.cshtml", item);
         }
 
         public ActionResult SearchContractOwner(String userName)

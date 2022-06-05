@@ -558,5 +558,17 @@ namespace WebHome.Helper
             }
         }
 
+        public static int CalculateReturnAmount(this CourseContract contract,int totalPaid,out int processingFee)
+        {
+            int attendanceFee = 0;
+            foreach (var r in contract.RegisterLessonContract
+                    .Select(c => c.RegisterLesson))
+            {
+                attendanceFee += ((r.AttendedLessonCount(singleMode: true) * r.GroupingMemberCount * r.LessonPriceType.ListPrice * r.GroupingLessonDiscount.PercentageOfDiscount / 100) ?? 0);
+            }
+            int remained = totalPaid - attendanceFee;
+            processingFee = Math.Min(remained * 20 / 100, 9000);
+            return remained;
+        }
     }
 }
