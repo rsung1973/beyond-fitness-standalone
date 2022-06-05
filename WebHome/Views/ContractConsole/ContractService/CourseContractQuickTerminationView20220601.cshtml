@@ -7,6 +7,8 @@
 @using WebHome.Models.DataEntity
 @using WebHome.Controllers
 @using Microsoft.AspNetCore.Mvc.ModelBinding
+@using WebHome.Helper.BusinessOperation
+
 @{
 
     ModelStateDictionary _modelState;
@@ -14,6 +16,7 @@
     CourseContractRevision _model;
     CourseContractMember _owner;
     CourseContract _contract;
+    CourseContract _original;
     DateTime? _signatureDate;
 
     CourseContractViewModel _viewModel = (CourseContractViewModel)ViewBag.ViewModel;
@@ -110,7 +113,7 @@
                             ■ 加購運動防護(A.T)OO堂，未完成服務OO堂，購買每堂單價2,000元。<br />
                             ■ 加購運動恢復(S.R)OO堂，未完成服務OO堂，購買每堂單價購1,000元。<br />
                             ■ 加購營養諮詢(S.D)OO個月，未完成服務OO月，購買每月單價3,000元。<br /><br />
-                            以上按未完成服務堂數之購買單價計算終止轉收入餘額 <span class="col-red">@(String.Format("{0:##,###,###,##0}", refund))</span> 元整。
+                            以上按未完成服務堂數之購買單價計算終止轉收入餘額 <span class="col-red">OOOO</span> 元整。
                         </p>
                     </td>
                 </tr>

@@ -9,6 +9,7 @@
 @using WebHome.Controllers
 @using Microsoft.AspNetCore.Mvc.ModelBinding
 @using WebHome.Properties
+@using WebHome.Helper.BusinessOperation
 
 @{
 
@@ -17,6 +18,7 @@
     CourseContractRevision _model;
     CourseContractMember _owner;
     CourseContract _contract;
+    CourseContract _original;
     DateTime? _signatureDate;
 
     CourseContractViewModel _viewModel = (CourseContractViewModel)ViewBag.ViewModel;
