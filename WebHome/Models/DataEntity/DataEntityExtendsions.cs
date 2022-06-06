@@ -54,9 +54,17 @@ namespace WebHome.Models.DataEntity
 
         public static int RemainedLessonCount(this RegisterLesson item, bool onlyAttended = false)
         {
-            return item.Lessons - item.RegisterLessonSharing.LessonRefernece.SharingReference
-                .Select(r => r.RegisterLesson)
-                .Sum(r => r.AttendedLessonCount(onlyAttended, true));
+            if (item.RegisterLessonSharing != null)
+            {
+                return item.Lessons - item.RegisterLessonSharing.LessonRefernece.SharingReference
+                    .Select(r => r.RegisterLesson)
+                    .Sum(r => r.AttendedLessonCount(onlyAttended, true));
+
+            }
+            else
+            {
+                return item.Lessons - item.AttendedLessonCount(onlyAttended, true);
+            }
         }
 
         public static int AttendedLessonCount(this RegisterLesson item, bool onlyAttended = false, bool singleMode = false)
