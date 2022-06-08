@@ -132,7 +132,7 @@
                             備註：@(_model.Remark)
                             @if (_model.Status == (int)Naming.CourseContractStatus.待審核)
                             {
-                                <text>@(_model.Remark !=null ? "。" : null)  @(CourseContractExtension.PriceAdjustment[_model.CourseContractExtension.UnitPriceAdjustmentType??0])</text>
+                                <text>@(_model.Remark !=null ? "<br/>" : null)  @(CourseContractExtension.PriceAdjustment[_model.CourseContractExtension.UnitPriceAdjustmentType??0])</text>
                             }
                         </td>  
                     </tr>        

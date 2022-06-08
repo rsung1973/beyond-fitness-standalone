@@ -158,33 +158,9 @@
                         {                           
                             <text><td colspan="3" style="padding:0"><span style="font-size:20px">☑</span> 合約僅能展延乙次，逾期失效。</td></text>
                         }
-                    </tr>
+                    </tr>                                                    
                     <tr>
-                       @if (_contract.Status == (int)Naming.ContractServiceStatus.待簽名)
-                        {
-                            <td colspan="3">
-                                <label class="fancy-checkbox custom-bgcolor-pink">
-                                    <input type="checkbox" name="cancel">
-                                    <span>展延後不得申請轉讓及退費。</span>
-                                </label>
-                            </td>
-                        }
-                        else if (_contract.Status == (int)Naming.ContractServiceStatus.待審核)
-                        {
-                            <td colspan="3">
-                                <label class="fancy-checkbox">
-                                    <input type="checkbox" name="cancel" checked="checked" disabled="disabled">
-                                    <span>展延後不得申請轉讓及退費。</span>
-                                </label>
-                            </td>
-                        }
-                        else
-                        {
-                            <text><td colspan="3" style="padding:0"><span style="font-size:20px">☑</span>  展延後不得申請轉讓及退費。</td></text>
-                        }
-                    </tr>                                        
-                    <tr>
-                        @if (_contract.Status < (int)Naming.CourseContractStatus.待審核)
+                        @if (_contract.Status == (int)Naming.ContractServiceStatus.待簽名)
                         {
                             <td colspan="3">
                                 <label class="fancy-checkbox custom-bgcolor-pink">
@@ -193,7 +169,7 @@
                                 </label>
                             </td>
                         }
-                        else if (_contract.Status == (int)Naming.CourseContractStatus.待審核)
+                        else if (_contract.Status == (int)Naming.ContractServiceStatus.待審核)
                         {
                             <td colspan="3">
                                 <label class="fancy-checkbox custom-bgcolor-pink">
