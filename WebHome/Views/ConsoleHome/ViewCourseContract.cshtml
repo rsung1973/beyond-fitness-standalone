@@ -52,22 +52,21 @@
         ol {
             padding: 0 0 0 15px;
             margin: 0;
-            list-style-type: number;
-            list-style-type: decimal;
+            list-style-type:decimal;
             list-style-position: outside;
         }
-
         ol li li {
             padding: 0 0 0 5px;
         }
-
         ol li::marker {
             font-weight: bold;
+        }        
+        li li::marker{
+            content: counters(list-item,".",list-item)" ";
+            font-weight: normal;            
         }
-
-        li li::marker {
-            content: counters(list-item, ".", list-item)" ";
-            font-weight: normal;
+        ol ol {
+            padding-left: 23px;
         }
     </style>
 </head>
