@@ -64072,6 +64072,8 @@ namespace WebHome.Models.DataEntity
 		
 		private string _BankAccount;
 		
+		private System.Nullable<int> _FeeChargeStatus;
+		
 		private EntityRef<Attachment> _Attachment;
 		
 		private EntityRef<CourseContractRevision> _CourseContractRevision;
@@ -64088,6 +64090,8 @@ namespace WebHome.Models.DataEntity
     partial void OnBankIDChanged();
     partial void OnBankAccountChanging(string value);
     partial void OnBankAccountChanged();
+    partial void OnFeeChargeStatusChanging(System.Nullable<int> value);
+    partial void OnFeeChargeStatusChanged();
     #endregion
 		
 		public CourseContractTermination()
@@ -64181,6 +64185,26 @@ namespace WebHome.Models.DataEntity
 					this._BankAccount = value;
 					this.SendPropertyChanged("BankAccount");
 					this.OnBankAccountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FeeChargeStatus", DbType="Int")]
+		public System.Nullable<int> FeeChargeStatus
+		{
+			get
+			{
+				return this._FeeChargeStatus;
+			}
+			set
+			{
+				if ((this._FeeChargeStatus != value))
+				{
+					this.OnFeeChargeStatusChanging(value);
+					this.SendPropertyChanging();
+					this._FeeChargeStatus = value;
+					this.SendPropertyChanged("FeeChargeStatus");
+					this.OnFeeChargeStatusChanged();
 				}
 			}
 		}
