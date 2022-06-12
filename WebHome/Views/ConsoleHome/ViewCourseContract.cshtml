@@ -48,6 +48,7 @@
     <style type="text/css">
         body {
             background-color: #fff;
+            counter-reset: page-number; /* 初始化，名字可自訂，數值為0 */
         }
         ol {
             padding: 0 0 0 15px;
@@ -67,6 +68,13 @@
         }
         ol ol {
             padding-left: 23px;
+        }
+
+        @@page {
+            size: portrait; /* 直向 */
+            size: A4 portrait; /* 混合使用 */
+            
+            margin: 1cm; /* 邊界與內容的距離 */
         }
     </style>
 </head>
