@@ -75,7 +75,7 @@
                             || _model.ContractType == (int)CourseContractType.ContractTypeDefinition.CGA
                             || _model.ContractType == (int)CourseContractType.ContractTypeDefinition.CNA
                             || _model.LessonPriceType.BranchStore?.IsVirtualClassroom() == true
-                            || _model.CourseContractType.ForVirtaulClass)
+                            || _model.CourseContractExtension.CourseBranch?.IsVirtualClassroom() == true)
                         && applicable && (_profile.IsCoach() || _profile.IsAssistant() || _profile.IsAuthorizedSysAdmin()))
             {
                 <small class="info">不退款</small>

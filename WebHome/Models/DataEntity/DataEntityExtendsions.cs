@@ -810,7 +810,50 @@ namespace WebHome.Models.DataEntity
         public enum ActionType
         {
             轉換課程堂數 = 1,
+            合約終止手續費 = 2,
         }
 
     }
+
+    public partial class CourseContractRevision
+    {
+        public static String CauseForEndingMeaning(Naming.CauseForEnding? cause)
+        {
+            switch (cause)
+            {
+                case Naming.CauseForEnding.合約到期轉新約:
+                    return "合約到期轉新約";
+                case Naming.CauseForEnding.轉讓:
+                    return "轉讓予第三人";
+                case Naming.CauseForEnding.私人原因:
+                    return "私人原因（工作、搬家、懷孕、受傷）";
+                case Naming.CauseForEnding.更改合約類型:
+                    return "更改合約類型（個人合約改家庭合約）";
+                case Naming.CauseForEnding.學生簽約後不付款:
+                    return "簽約後反悔";
+                case Naming.CauseForEnding.所屬教練離職:
+                    return "所屬教練離職";
+                case Naming.CauseForEnding.新冠肺炎疫情:
+                    return "新冠肺炎疫情";
+                case Naming.CauseForEnding.不宜運動:
+                    return "傷害、疾病或身體不適致不宜運動（須檢附醫生證明）";
+                case Naming.CauseForEnding.其他:
+                    return "其他（自行輸入）";
+                default:
+                    return null;
+
+            }
+        }
+    }
+
+    public partial class CourseContractTermination
+    {
+        public enum FeeChargeType
+        {
+            不收 = 0,
+            已收 = 1,
+            待收 = 2,
+        }
+    }
+
 }

@@ -22,6 +22,7 @@
             <li><a href="@Html.Raw(Url.Action("EditPaymentForShopping","ConsoleHome"))">收款 - 食飲品</a></li>
             <li><a href="@Html.Raw(Url.Action("EditPaymentForShopping","ConsoleHome",new { TransactionType = (int)Naming.PaymentTransactionType.運動商品}))">收款 - 運動商品</a></li>
             <li><a href="@Html.Raw(Url.Action("EditPaymentForShopping","ConsoleHome",new { TransactionType = (int)Naming.PaymentTransactionType.教育訓練}))">收款 - 教育訓練</a></li>
+            <li><a href="@Html.Raw(Url.Action("EditPaymentForTerminationCharge","ConsoleHome",new { TransactionType = (int)Naming.PaymentTransactionType.手續費}))">收款 - 手續費</a></li>
         </ul>
     </li>
 </ul>

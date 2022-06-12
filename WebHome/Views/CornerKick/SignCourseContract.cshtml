@@ -48,7 +48,7 @@
                         展延
                         <span class="help-text">
                             @if (_item.LessonPriceType.BranchStore?.IsVirtualClassroom() == true
-                                || _item.CourseContractType.ForVirtaulClass)
+                                || _item.CourseContractExtension.CourseBranch?.IsVirtualClassroom() == true)
                             {
                                 <text>若未於上述使用期限內完成課程堂數者不得展延。</text>
                             }

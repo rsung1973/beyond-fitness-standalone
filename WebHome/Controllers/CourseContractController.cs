@@ -638,25 +638,25 @@ namespace WebHome.Controllers
             return Json(new { result = true });
         }
 
-        public async Task<ActionResult> ConfirmSignatureForAmendmentAsync(CourseContractViewModel viewModel, bool? extension)
-        {
-            var item = await viewModel.ConfirmContractServiceSignatureAsync(this);
+        //public async Task<ActionResult> ConfirmSignatureForAmendmentAsync(CourseContractViewModel viewModel, bool? extension)
+        //{
+        //    var item = await viewModel.ConfirmContractServiceSignatureAsync(this);
 
-            if (item == null)
-            {
-                if (!ModelState.IsValid)
-                {
-                    return View("~/Views/Shared/ReportInputError.ascx");
-                }
-                else
-                {
-                    return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: ModelState.ErrorMessage());
-                }
-            }
+        //    if (item == null)
+        //    {
+        //        if (!ModelState.IsValid)
+        //        {
+        //            return View("~/Views/Shared/ReportInputError.ascx");
+        //        }
+        //        else
+        //        {
+        //            return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: ModelState.ErrorMessage());
+        //        }
+        //    }
 
-            return Json(new { result = true});
+        //    return Json(new { result = true});
 
-        }
+        //}
 
         public async Task<ActionResult> EnableContractAmendmentAsync(CourseContractViewModel viewModel)
         {

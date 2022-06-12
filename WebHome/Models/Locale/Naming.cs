@@ -311,6 +311,7 @@ namespace WebHome.Models.Locale
             合約轉點餘額 = 8,
             合約轉讓餘額 = 9,
             教育訓練 = 10,
+            手續費 = 11,
 
         }
 

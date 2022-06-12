@@ -186,6 +186,16 @@ namespace WebHome.Helper
             return items;
         }
 
+        public static IQueryable<CourseContract> GetUnpaidTerminationCharge(this GenericManager<BFDataContext> models)
+        {
+            return models.GetTable<CourseContract>()
+                .Join(models.GetTable<CourseContractRevision>()
+                        .Join(models.GetTable<CourseContractTermination>(), r => r.RevisionID, t => t.RevisionID, (r, t) => r),
+                    c => c.ContractID, r => r.RevisionID, (c, r) => c)
+                .Where(r => models.GetTable<CourseContractAction>().Where(a => a.ActionID == (int)CourseContractAction.ActionType.合約終止手續費)
+                                    .Any(a => a.ContractID == r.ContractID));
+        }
+
         public static IQueryable<RegisterLesson> FilterByUnpaidLesson(this GenericManager<BFDataContext> models, IQueryable<RegisterLesson> items = null)
             
         {

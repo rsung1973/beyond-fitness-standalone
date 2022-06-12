@@ -111,6 +111,7 @@
         }
 
         function confirmSignature() {
+            clearErrors();
             showLoading();
             $.post('@Html.Raw(Url.Action("ConfirmContractServiceSignature","ContractConsole",new { KeyID = _item.ContractID.EncryptKey() }))',
                 {

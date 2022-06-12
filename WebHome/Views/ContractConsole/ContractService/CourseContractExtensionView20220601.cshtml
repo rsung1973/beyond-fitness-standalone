@@ -77,7 +77,7 @@
                         <td>名稱：@(_original.CourseContractType.TypeName)(@(_original.LessonPriceType.DurationInMinutes)分鐘)</td>
                         <td>
                             @if (_original.LessonPriceType.BranchStore?.IsVirtualClassroom() == true
-                                    || _original.CourseContractType.ForVirtaulClass)
+                                    || _original.CourseContractExtension.CourseBranch?.IsVirtualClassroom() == true)
                             {
                                 <text>上課場所/簽約分店：遠距/@(_original.CourseContractExtension.BranchStore.BranchName)</text>
                             }

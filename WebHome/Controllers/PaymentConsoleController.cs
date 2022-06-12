@@ -281,6 +281,29 @@ namespace WebHome.Controllers
             return View("~/Views/PaymentConsole/Module/EditPaymentForSession.cshtml", item);
         }
 
+        public async Task<ActionResult> EditPaymentForTerminationChargeAsync(PaymentViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            var profile = await HttpContext.GetUserAsync();
+
+            var contract = models.GetUnpaidTerminationCharge()
+                .Where(r => r.ContractID == viewModel.ContractID)
+                .FirstOrDefault();
+
+            if (contract == null)
+            {
+                return Json(new { result = false, message = "收款資料錯誤!!" });
+            }
+            else
+            {
+                viewModel.SellerID = contract.CourseContractExtension.BranchID;
+            }
+
+            viewModel.PayoffAmount = 300;
+            viewModel.CarrierId1 = contract.ContractOwner.UserProfileExtension?.CarrierNo;
+            return View("~/Views/PaymentConsole/Module/EditPaymentForTerminationCharge.cshtml", contract);
+        }
+
         public async Task<ActionResult> CommitPaymentForSessionAsync(PaymentViewModel viewModel)
         {
             ViewBag.ViewModel = viewModel;
@@ -402,7 +425,115 @@ namespace WebHome.Controllers
             }
         }
 
+        public async Task<ActionResult> CommitPaymentForTerminationChargeAsync(PaymentViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            var profile = await HttpContext.GetUserAsync();
 
+            var contract = models.GetUnpaidTerminationCharge()
+                .Where(r => r.ContractID == viewModel.ContractID)
+                .FirstOrDefault();
+
+            if (contract == null)
+            {
+                ModelState.AddModelError("ContractID", "請選擇手續費收款!!");
+            }
+            else
+            {
+                viewModel.SellerID = contract.CourseContractExtension.BranchID;
+            }
+
+            if (!viewModel.PayoffDate.HasValue)
+            {
+                ModelState.AddModelError("PayoffDate", "請選擇收款日期!!");
+            }
+
+            viewModel.ItemNo = new string[] { "01" };
+            viewModel.Brief = new string[] { $"{contract.ContractNo()}終止手續費" };
+            viewModel.CostAmount = new int?[] { viewModel.PayoffAmount };
+            viewModel.UnitCost = new int?[] { viewModel.PayoffAmount };
+            viewModel.Piece = new int?[] { 1 };
+            viewModel.ItemRemark = new string[] { null };
+            viewModel.InvoiceType = Naming.InvoiceTypeDefinition.一般稅額計算之電子發票;
+            viewModel.CarrierId1 = viewModel.CarrierId1.GetEfficientString();
+            viewModel.TransactionType = (int)Naming.PaymentTransactionType.手續費;
+
+            if (viewModel.CarrierId1 != null)
+            {
+                if (viewModel.CarrierType == null)
+                {
+                    viewModel.CarrierType = "3J0002";
+                }
+            }
+
+            var invoice = checkInvoiceNo(viewModel);
+
+            if (String.IsNullOrEmpty(viewModel.PaymentType))
+            {
+                ModelState.AddModelError("PaymentType", "請選擇收款方式!!");
+            }
+
+            if (!viewModel.InvoiceType.HasValue)
+            {
+                ModelState.AddModelError("InvoiceType", "請選擇發票類型");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                ViewBag.ModelState = ModelState;
+                return View("~/Views/ConsoleHome/Shared/ReportInputError.cshtml");
+            }
+
+            try
+            {
+                Payment item = models.GetTable<Payment>()
+                    .Where(p => p.PaymentID == viewModel.PaymentID).FirstOrDefault();
+
+                if (item == null)
+                {
+                    item = new Payment
+                    {
+                        Status = (int)Naming.CourseContractStatus.已生效,
+                        PaymentTransaction = new PaymentTransaction
+                        {
+
+                        },
+                        PaymentAudit = new Models.DataEntity.PaymentAudit { }
+                    };
+
+                    models.GetTable<Payment>().InsertOnSubmit(item);
+                    item.InvoiceItem = invoice;
+                }
+
+                item.PaymentTransaction.BranchID = viewModel.SellerID.Value;
+
+                preparePayment(viewModel, profile, item);
+                models.SubmitChanges();
+
+                contract.CourseContractRevision.CourseContractTermination.FeeChargeStatus
+                    = (int)CourseContractTermination.FeeChargeType.已收;
+                models.SubmitChanges();
+
+                models.ExecuteCommand("delete CourseContractAction where ContractID = {0} and ActionID = {1}", contract.ContractID, (int)CourseContractAction.ActionType.合約終止手續費);
+
+                if (invoice.InvoiceCarrier != null && viewModel.MyCarrier == true)
+                {
+                    contract.ContractOwner.UserProfileExtension.CarrierType = invoice.InvoiceCarrier.CarrierType;
+                    contract.ContractOwner.UserProfileExtension.CarrierNo = invoice.InvoiceCarrier.CarrierNo;
+                    models.SubmitChanges();
+                }
+
+                TaskExtensionMethods.ProcessInvoiceToGov();
+
+                return Content(new { result = true, invoiceNo = item.InvoiceItem.TrackCode + item.InvoiceItem.No, item.InvoiceID, item.InvoiceItem.InvoiceType, item.PaymentID }.JsonStringify(), "application/json");
+            }
+            catch (Exception ex)
+            {
+                ApplicationLogging.CreateLogger<PaymentConsoleController>()
+                    .LogError(ex, ex.Message);
+                return Json(new { result = false, message = ex.Message });
+            }
+        }
 
     }
 }

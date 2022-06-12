@@ -822,7 +822,15 @@ namespace WebHome.Controllers
                 }
             }
 
-            return View("~/Views/ContractConsole/Editing/CourseContractSigned.cshtml", item);
+            if (item.CourseContractAction.Any(c => c.ActionID == (int)CourseContractAction.ActionType.合約終止手續費))
+            {
+                return View("~/Views/ContractConsole/Editing/ContractTerminationSigned.cshtml", item);
+            }
+            else
+            {
+                return View("~/Views/ContractConsole/Editing/CourseContractSigned.cshtml", item);
+            }
+
         }
 
         public async Task<ActionResult> EnableContractStatusAsync(CourseContractViewModel viewModel)

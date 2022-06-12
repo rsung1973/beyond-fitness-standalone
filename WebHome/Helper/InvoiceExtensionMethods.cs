@@ -121,19 +121,23 @@ namespace WebHome.Helper
             if (item.InvoiceItem.InvoiceType == (int)Naming.InvoiceTypeDefinition.一般稅額計算之電子發票)
                 newItem.InvoiceAllowanceDispatch = new InvoiceAllowanceDispatch { };
             models.GetTable<InvoiceAllowance>().InsertOnSubmit(newItem);
-            item.VoidPayment = new VoidPayment
+            models.SubmitChanges();
+
+            if (item.VoidPayment == null)
             {
-                Remark = remark,
-                Status = (int)Naming.CourseContractStatus.已生效,
-                VoidDate = DateTime.Now
-            };
+                item.VoidPayment = new VoidPayment { };
+            }
+            item.VoidPayment.Remark = remark;
+            item.VoidPayment.Status = (int)Naming.CourseContractStatus.已生效;
+            item.VoidPayment.VoidDate = DateTime.Now;
+            models.SubmitChanges();
 
             ///刪除當月已分潤
             /// 
             DateTime startDate = DateTime.Today.FirstDayOfMonth();
             if(item.PayoffDate >= startDate && item.PayoffDate < startDate.AddMonths(1))
             {
-                models.DeleteAllOnSubmit<TuitionAchievement>(t => t.InstallmentID == item.PaymentID);
+                models.ExecuteCommand("delete TuitionAchievement where IntallmentID = {0}", item.PaymentID);
             }
 
             return newItem;

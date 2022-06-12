@@ -92,7 +92,7 @@
                         <td colspan="2">名稱：@(_model.CourseContractType.TypeName)(@(_model.LessonPriceType.DurationInMinutes)分鐘)</td>
                         <td>
                             @if (_model.LessonPriceType.BranchStore?.IsVirtualClassroom() == true
-                                    || _model.CourseContractType.ForVirtaulClass)
+                                    || _model.CourseContractExtension.CourseBranch?.IsVirtualClassroom() == true)
                             {
                                 <text>上課場所/簽約分店：遠距/@(_model.CourseContractExtension.BranchStore.BranchName)</text>
                             }
@@ -171,7 +171,7 @@
                         }
                     <td>
                         @if (_model.LessonPriceType.BranchStore?.IsVirtualClassroom() == true
-                                || _model.CourseContractType.ForVirtaulClass)
+                                || _model.CourseContractExtension.CourseBranch?.IsVirtualClassroom() == true)
                         {
                             <text>若未於上述使用期限內完成課程堂數者不得展延。</text>
                         }
@@ -322,7 +322,7 @@
                         break;
                     default:
                         if (_model.LessonPriceType.BranchStore?.IsVirtualClassroom() == true
-                            || _model.CourseContractType.ForVirtaulClass)
+                            || _model.CourseContractExtension.CourseBranch?.IsVirtualClassroom() == true)
                         {
                             await Html.RenderPartialAsync("~/Views/ContractConsole/Module/ContractTermsForDistance.cshtml");
                         }

@@ -244,7 +244,7 @@ namespace WebHome.Helper.BusinessOperation
                             ? (int)viewModel.ContractTypeAux.Value + CourseContractType.OffsetFromCGA2CVA
                             : (int)viewModel.ContractType.Value;
 
-            if(CourseContractType.IsSuitableForVirtaulClass((CourseContractType.ContractTypeDefinition)item.ContractType))
+            if(branch.IsVirtualClassOccurrence(models))
             {
                 item.CourseContractExtension.BranchID = branch.IsVirtualClassroom()
                     ? profile.ServingCoach.PreferredBranchID().Value
@@ -254,7 +254,7 @@ namespace WebHome.Helper.BusinessOperation
             {
                 item.CourseContractExtension.BranchID = branch.BranchID;
             }
-
+            item.CourseContractExtension.CoursePlace = branch.BranchID;
             item.ContractDate = DateTime.Now;
             item.OwnerID = viewModel.OwnerID.Value;
             item.Subject = viewModel.Subject;
@@ -2051,6 +2051,15 @@ namespace WebHome.Helper.BusinessOperation
                     return null;
                 }
 
+                if (item.Reason == "終止")
+                {
+                    if (viewModel.Agree != true)
+                    {
+                        ModelState.AddModelError("Agree", "請閱讀並勾選同意超越體能顧問有限公司服務條款、相關使用及消費合約");
+                        return null;
+                    }
+                }
+
                 if (item.Reason == "展延")
                 {
                     if (viewModel.Booking != true || viewModel.Agree != true)
@@ -2074,7 +2083,31 @@ namespace WebHome.Helper.BusinessOperation
                     return null;
                 }
 
-                _ = item.CreateContractAmendmentPDF(true);
+                if (item.Reason == "終止")
+                {
+                    if (viewModel.Agree != true)
+                    {
+                        ModelState.AddModelError("Agree", "請閱讀並勾選同意超越體能顧問有限公司服務條款、相關使用及消費合約");
+                        return null;
+                    }
+
+                    if (item.CauseForEnding == (int)Naming.CauseForEnding.轉讓
+                        || item.CauseForEnding == (int)Naming.CauseForEnding.合約到期轉新約)
+                    {
+                        if (!item.CourseContract.CourseContractAction.Any(c => c.ActionID == (int)CourseContractAction.ActionType.合約終止手續費))
+                        {
+                            item.CourseContract.CourseContractAction
+                                .Add(
+                                    new CourseContractAction
+                                    {
+                                        ActionID = (int)CourseContractAction.ActionType.合約終止手續費
+                                    });
+                            models.SubmitChanges();
+                        }
+                    }
+                }
+
+                //_ = item.CreateContractAmendmentPDF(true);
                 return contract;
             }
             else
@@ -2384,6 +2417,7 @@ namespace WebHome.Helper.BusinessOperation
                     Version = item.CourseContractExtension.Version,
                     SignOnline = viewModel.SignOnline,
                     UnitPriceAdjustmentType = item.CourseContractExtension.UnitPriceAdjustmentType,
+                    CoursePlace = item.CourseContractExtension.CoursePlace,
                 },
                 SupervisorID = item.CourseContractExtension.BranchStore.ManagerID,
             };

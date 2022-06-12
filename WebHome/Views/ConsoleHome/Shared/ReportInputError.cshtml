@@ -25,14 +25,14 @@
     <script>
         $(function () {
             console.log('@Html.Raw(_modelState.ErrorMessage())');
-        @if (ViewBag.AlertError == true)
-        {
-            <text>
-                        Swal.fire(
-                            'Oops...',
-                            '@Html.Raw(_modelState.ErrorMessage())',
-                            'warning'
-                        )
+            @if (ViewBag.AlertError == true)
+                {
+                <text>
+                Swal.fire(
+                    'Oops...',
+                    '@Html.Raw(_modelState.ErrorMessage())',
+                    'warning'
+                );
             </text>
         }
         @foreach (var key in _modelState.Keys.Where(k => _modelState[k].Errors.Count > 0))
@@ -41,8 +41,7 @@
             {
                 var keys = key.Split(',');
                 <text>
-                    $('[name="@(keys[0])"]:enabled').eq(@(keys[1])).closest('div').after(
-                    $('<label class="zmdi zmdi-close help-error-text" for="@(keys[0])"></label>')
+                    $('[name="@(keys[0])"]:enabled').eq(@(keys[1])).closest('div').after($('<label class="zmdi zmdi-close help-error-text" for="@(keys[0])"></label>')
                     .text('@Html.Raw(_singleError
                                                 ? _modelState[key].Errors[0].ErrorMessage
                                                 : String.Join("、", _modelState[key].Errors.Select(r => r.ErrorMessage)))')
@@ -52,8 +51,7 @@
             else
             {
                 <text>
-                    $('[name="@(key)"]').closest('div').after(
-                    $('<label class="zmdi zmdi-close help-error-text" for="@(key)"></label>')
+                    $('[name="@(key)"]').closest('div').after($('<label class="zmdi zmdi-close help-error-text" for="@(key)"></label>')
                     .text('@Html.Raw(_singleError
                                                 ? _modelState[key].Errors[0].ErrorMessage
                                                 : String.Join("、", _modelState[key].Errors.Select(r => r.ErrorMessage)))')

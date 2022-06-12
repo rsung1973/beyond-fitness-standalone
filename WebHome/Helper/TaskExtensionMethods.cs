@@ -300,6 +300,8 @@ namespace WebHome.Helper
                         {
                             lesson.RegisterLesson.Attended = (int)Naming.LessonStatus.課程結束;
                         }
+                        models.SubmitChanges();
+
                         ///2.回沖繳款餘額
                         ///
                         var original = item.SourceContract;
@@ -382,16 +384,17 @@ namespace WebHome.Helper
                                     ReturnAmount = returnAmt,
                                 });
                             }
+                            models.SubmitChanges();
 
                             if (refund > 0)
                             {
                                 //Logger.Debug("RevisionID: " + item.RevisionID);
                                 //Logger.Debug("balance: " + balance);
                                 models.CreateAllowanceForContract(original, refund, handler);
+                                models.SubmitChanges();
                             }
                         }
 
-                        models.SubmitChanges();
                         original.TerminateRegisterLesson(models);
                     }
                 }
@@ -517,6 +520,7 @@ namespace WebHome.Helper
                         {
                             lesson.RegisterLesson.Attended = (int)Naming.LessonStatus.課程結束;
                         }
+                        models.SubmitChanges();
                         ///2.回沖繳款餘額
                         ///
                         var original = item.SourceContract;
@@ -566,16 +570,17 @@ namespace WebHome.Helper
                                     ReturnAmount = returnAmt,
                                 });
                             }
+                            models.SubmitChanges();
 
                             if (refund > 0)
                             {
                                 //Logger.Debug("RevisionID: " + item.RevisionID);
                                 //Logger.Debug("balance: " + balance);
                                 models.CreateAllowanceForContract(original, refund, handler);
+                                models.SubmitChanges();
                             }
                         }
 
-                        models.SubmitChanges();
                         original.TerminateRegisterLesson(models);
                     }
                 }

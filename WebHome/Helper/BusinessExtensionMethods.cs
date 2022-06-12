@@ -2579,8 +2579,8 @@ namespace WebHome.Helper
                     b => b.BranchID, c => c.BranchID, (b, c) => b);
         }
 
-        public static bool IsVirtualClassOccurrence(this GenericManager<BFDataContext> models,BranchStore store)
-            
+        public static bool IsVirtualClassOccurrence(this BranchStore store, GenericManager<BFDataContext> models)
+
         {
             return models.GetTable<ObjectiveLessonLocation>()
                 .Where(c => c.CatalogID == (int)ObjectiveLessonCatalog.CatalogDefinition.OnLine)
