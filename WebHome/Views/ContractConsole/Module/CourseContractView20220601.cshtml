@@ -102,7 +102,7 @@
                     </tr>
                 </tbody>
             </table>
-            <table class="table" style="@(_viewModel.Pdf=="1" ? "margin:0;padding:0;" : "")">
+            <table class="table" style="margin:0;padding:0;">
                 <tbody>
                     <tr>
                         <td width="100px">購買堂數：</td>
@@ -136,7 +136,7 @@
                      </tr>
                 </tbody>
             </table>
-            <table class="table" style="@(_viewModel.Pdf=="1" ? "margin:0;padding:0;" : "")">
+            <table class="table" style="margin:0;padding:0;">
                 <tbody>
                     <tr>
                         <td>專業顧問建置與諮詢費：@(String.Format("{0:##,###,###,###}", (_model.TotalCost * 8 + 5) / 10))</td>
@@ -220,15 +220,15 @@
                         {
                             <td>
                                 <label class="fancy-checkbox custom-bgcolor-pink">
-                                    <input type="checkbox" name="extension">
-                                    <span>預約/取消我已閱讀並同意第9條服務預約之規定。</span>
+                                    <input type="checkbox" name="booking">
+                                    <span>預約/取消：我已閱讀並同意第9條服務預約之規定。</span>
                                 </label>
                             </td>
                         } 
                         else if(_viewModel.Pdf == "1")
                         {
                             <td style="padding:0;">
-                                <b style="font-size:20px">☑</b> <b>預約/取消我已閱讀並同意第9條服務預約之規定。</b>
+                                        <b style="font-size:20px">☑</b> <b>預約/取消：我已閱讀並同意第9條服務預約之規定。</b>
                             </td>
                         }
                     </tr>

@@ -28,7 +28,27 @@
     _item = (CourseContract)ViewBag.DataItem;
 
 }
+@section CustomHeader {
+    <style type="text/css">
+        ol {
+            padding: 0 0 0 5px;
+            margin: 0;
+            list-style-type: decimal;
+            list-style-position: outside;
+            counter-reset: nested; 
+            list-style-type: none;
+        }
 
+        ol li li {
+            padding: 0 0 0 5px;
+        }
+     
+        ol li::before {
+            counter-increment: nested;
+            content: counters(nested, ".") " ";
+        }            
+    </style>
+}
 <!-- Main Content -->
 <section class="content">
     @{ ViewBag.BlockHeader = _item.Status == (int)Naming.CourseContractStatus.待簽名 ? "學生簽名" : "主管審核";
@@ -89,6 +109,7 @@
                     'Booking': $('input[name="booking"]').is(':checked'),
                     'Cancel': $('input[name="cancel"]').is(':checked'),
                     'Agree': $('input[name="Agree"]').is(':checked'),
+                    'GDPRAgree': $('input[name="GDPRAgree"]').is(':checked'),
                 }, function (data) {
                     hideLoading();
                     if ($.isPlainObject(data)) {

@@ -1947,9 +1947,20 @@ namespace WebHome.Helper.BusinessOperation
                 //}
             }
 
-            if (viewModel.Extension != true || viewModel.Booking != true || viewModel.Cancel != true || viewModel.Agree != true)
+            if (viewModel.Extension != true || viewModel.Booking != true)
             {
-                ModelState.AddModelError("Message", "請勾選合約聲明!!");
+                ModelState.AddModelError("Message", "請閱讀並勾選同意超越體能顧問有限公司服務條款、相關使用及消費合約");
+                return null;
+            }
+
+            if (viewModel.Agree != true)
+            {
+                ModelState.AddModelError("Message", "請閱讀並同意BF隱私政策、服務條款、相關使用及消費合約，即表示即日起您同意接受本合約正面及背面條款之相關約束及其責任");
+                return null;
+            }
+
+            if (viewModel.GDPRAgree != true) {
+                ModelState.AddModelError("Message", "請勾選同意BF得依本告知暨同意書之內容蒐集、處理、利用及國際傳輸本人之個人資料。就其中有關本人家屬和親友之個人資料，由本人負責告知，並使其充分知悉和同意本告知暨同意書之內容。");
                 return null;
             }
 

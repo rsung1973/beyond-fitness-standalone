@@ -120,7 +120,7 @@
                 @if (_model.Status < (int)Naming.CourseContractStatus.待審核)
                 {
                     <label class="fancy-checkbox custom-bgcolor-pink">
-                        <input type="checkbox" name="GDPRA">
+                        <input type="checkbox" name="GDPRAgree">
                         <span>就上開告知內容本人已受告知、並已充分知悉，本人同意BF得依本告知暨同意書之內容蒐集、處理、利用及國際傳輸本人之個人資料。就其中有關本人家屬和親友之個人資料，由本人負責告知，並使其充分知悉和同意本告知暨同意書之內容。</span>
                     </label>
                 }
@@ -138,7 +138,10 @@
             <td colspan="3">
                 此致<br />超越體能顧問有限公司
             </td>
-            <td rowspan="2" width="150px" class="p-0 text-right"><img src="images/sign/seal.png" width="150px" /></td>
+            @if (_viewModel.Pdf == "1")
+            {
+                <td rowspan="2" width="150px" class="p-0 text-right"><img src="images/sign/seal.png" width="150px" /></td>
+            }
         </tr>
         <tr>
             <td>主簽約姓名：<u>@(_model.ContractOwner.RealName)</u></td>
