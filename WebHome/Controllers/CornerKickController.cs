@@ -663,7 +663,7 @@ namespace WebHome.Controllers
 
             if (viewModel.Agree != true)
             {
-                ModelState.AddModelError("Message", "請勾選同意聲明!!");
+                ModelState.AddModelError("Message", "請閱讀並同意BF隱私政策、服務條款、相關使用及消費合約，即表示即日起您同意接受本合約正面及背面條款之相關約束及其責任");
                 ViewBag.AlertError = true;
                 ViewBag.ModelState = this.ModelState;
                 return View("~/Views/CornerKick/Shared/ReportInputError.cshtml");
@@ -727,7 +727,7 @@ namespace WebHome.Controllers
 
             if (viewModel.Agree != true)
             {
-                ModelState.AddModelError("Message", "請閱讀並勾選同意超越體能顧問有限公司服務條款、相關使用及消費合約");
+                ModelState.AddModelError("Message", "請閱讀並同意BF隱私政策、服務條款、相關使用及消費合約，即表示即日起您同意接受本合約正面及背面條款之相關約束及其責任");
                 ViewBag.AlertError = true;
                 ViewBag.ModelState = this.ModelState;
                 return View("~/Views/CornerKick/Shared/ReportInputError.cshtml");

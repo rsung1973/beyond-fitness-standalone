@@ -64,7 +64,7 @@ else if (attendedCount > 0)
 {
     var remained = _model.CalculateReturnAmount(totalPaid, out processingFee);
     if (_viewModel.CauseForEnding == Naming.CauseForEnding.合約到期轉新約
-    || _viewModel.CauseForEnding == Naming.CauseForEnding.轉讓)
+    || _viewModel.CauseForEnding == Naming.CauseForEnding.轉讓第三人)
     {
         processingFee = 0;
     }
@@ -82,27 +82,36 @@ else if (attendedCount > 0)
                 <div class="alert-icon">
                     <i class="zmdi zmdi-notifications"></i>
                 </div>
-                手續費 @($"{processingFee:##,###,###,###}")：應退餘額20%計算
+                手續費 @($"{processingFee:##,###,###,###}")元：應退餘額20%計算
             </div>
+        }
+        else 
+        {
+            <div class="container">
+                <div class="alert-icon">
+                    <i class="zmdi zmdi-notifications"></i>
+                </div>
+                手續費 0元：免手續費
+            </div>
+        }
+        @{
+            if (_viewModel.CauseForEnding == Naming.CauseForEnding.合約到期轉新約
+            || _viewModel.CauseForEnding == Naming.CauseForEnding.轉讓第三人)
+            {
+                <div class="container col-pink">
+                    <div class="alert-icon">
+                        <i class="zmdi zmdi-alert-triangle"></i>
+                    </div>
+                    手續費 300元：額外付款
+                </div>
+            }
         }
         <div class="container col-pink">
             <div class="alert-icon">
                 <i class="zmdi zmdi-alert-triangle"></i>
             </div>
             實際退還剩餘款項 @($"{remained - processingFee:##,###,###,###}")
-        </div>
-        @{
-            if (_viewModel.CauseForEnding == Naming.CauseForEnding.合約到期轉新約
-            || _viewModel.CauseForEnding == Naming.CauseForEnding.轉讓)
-            {
-                <div class="container col-pink">
-                    <div class="alert-icon">
-                        <i class="zmdi zmdi-alert-triangle"></i>
-                    </div>
-                    另外收取手續費新台幣300元整
-                </div>
-            }
-        }
+        </div>        
     </div>
 }
 else if ((DateTime.Today - _model.ValidFrom.Value).TotalDays < 8)
@@ -112,9 +121,22 @@ else if ((DateTime.Today - _model.ValidFrom.Value).TotalDays < 8)
             <div class="alert-icon">
                 <i class="zmdi zmdi-notifications"></i>
             </div>
-            契約簽訂後七日內未使用所約定服務(課程)，全額退還已繳費用 <span class="col-red">@(String.Format("{0:##,###,###,###}", totalPaid))</span> 元。
+            應退餘額 @(String.Format("{0:##,###,###,###}", totalPaid))：按未完成服務堂數（@(_model.RemainedLessonCount())堂)
         </div>
+        <div class="container">
+                <div class="alert-icon">
+                    <i class="zmdi zmdi-notifications"></i>
+                </div>
+                手續費 0元：簽約後7日內未使用免手續費
+        </div>        
+        <div class="container col-pink">
+            <div class="alert-icon">
+                <i class="zmdi zmdi-alert-triangle"></i>
+            </div>
+            實際退還剩餘款項 @(String.Format("{0:##,###,###,###}", totalPaid))
+        </div>        
     </div>
+
     <script>
         $(function() {
             $('input[name="SettlementPrice"]').val('@Html.Raw(_model.LessonPriceType.ListPrice)')
@@ -125,23 +147,28 @@ else if ((DateTime.Today - _model.ValidFrom.Value).TotalDays < 8)
 }
 else
 {
+    processingFee = Math.Min(totalPaid * 5 / 100, 9000);
     <div class="alert xl-pink col-darkteal" role="alert">
-        <div class="container col-red">
-            <div class="alert-icon">
-                <i class="zmdi zmdi-alert-triangle"></i>
-            </div>
-            契約簽訂後逾七日未使用所約定服務(課程)
-        </div>
         <div class="container">
             <div class="alert-icon">
                 <i class="zmdi zmdi-notifications"></i>
             </div>
-            @{
-                processingFee = Math.Min(totalPaid * 5 / 100, 9000);
-            }
-            已繳服務總費用 @(String.Format("{0:##,###,###,###}", totalPaid)) 扣除5％處理費(<span class="col-red">@(String.Format("{0:##,###,###,###}", processingFee))</span>)，退還剩餘款項 <span class="col-red">@(String.Format("{0:##,###,###,###}", totalPaid - processingFee))</span>元。<small>=@(totalPaid) - (@(totalPaid)*0.05)</small>
+            應退餘額 @(String.Format("{0:##,###,###,###}", totalPaid))：按未完成服務堂數（@(_model.RemainedLessonCount())堂)
         </div>
+        <div class="container">
+                <div class="alert-icon">
+                    <i class="zmdi zmdi-notifications"></i>
+                </div>
+                手續費 @(String.Format("{0:##,###,###,###}", processingFee))元：應退餘額5%計算
+        </div>        
+        <div class="container col-pink">
+            <div class="alert-icon">
+                <i class="zmdi zmdi-alert-triangle"></i>
+            </div>
+            實際退還剩餘款項 @(String.Format("{0:##,###,###,###}", totalPaid - processingFee))
+        </div>        
     </div>
+    
     <script>
         $(function() {
             $('input[name="SettlementPrice"]').val('@Html.Raw(_model.LessonPriceType.ListPrice)')

@@ -823,8 +823,8 @@ namespace WebHome.Models.DataEntity
             {
                 case Naming.CauseForEnding.合約到期轉新約:
                     return "合約到期轉新約";
-                case Naming.CauseForEnding.轉讓:
-                    return "轉讓予第三人";
+                case Naming.CauseForEnding.轉讓第三人:
+                    return "轉讓第三人";
                 case Naming.CauseForEnding.私人原因:
                     return "私人原因（工作、搬家、懷孕、受傷）";
                 case Naming.CauseForEnding.更改合約類型:

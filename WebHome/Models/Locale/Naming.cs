@@ -468,7 +468,7 @@ namespace WebHome.Models.Locale
         public enum CauseForEnding
         {
             合約到期轉新約 = 1,
-            轉讓,
+            轉讓第三人,
             私人原因,
             更改合約類型,
             學生簽約後不付款,
