@@ -101,6 +101,7 @@
                                 $('select[name="ContractTypeAux"]').on('change', function (event) {
                                     var ct = $(this).val();
                                     $global.viewModel.ContractTypeAux = ct;
+                                    resetSimpleTotalCost();
                                 });
                                 resetContractTypeAux(ctAux);
                             });
@@ -146,7 +147,10 @@
                             <option value="@((int)CourseContractExtension.UnitPriceAdjustmentDefinition.T1)">固定牌告單位數</option>
                             <option value="@((int)CourseContractExtension.UnitPriceAdjustmentDefinition.T2)">轉讓第三人</option>
                             <option value="@((int)CourseContractExtension.UnitPriceAdjustmentDefinition.T3)">轉開新合約</option>
-                            <option value="@((int)CourseContractExtension.UnitPriceAdjustmentDefinition.T4)">特別專案優惠</option>
+                            @if (_model.IsAssistant() || _model.IsOfficer() || _model.IsManager() || _model.IsViceManager())
+                            {
+                                <option value="@((int)CourseContractExtension.UnitPriceAdjustmentDefinition.T4)">特別專案優惠</option>
+                            }
                         </select>
                         <script>
                             $(function () {

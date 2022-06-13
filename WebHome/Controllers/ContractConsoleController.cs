@@ -857,7 +857,7 @@ namespace WebHome.Controllers
                 return View("~/Views/ConsoleHome/Shared/AlertMessage.cshtml", model: "合約資料錯誤!!");
         }
 
-        public async Task<ActionResult> CommitContractServiceAsync(CourseContractViewModel viewModel, IFormFile attachment, IFormFile accountInfo)
+        public async Task<ActionResult> CommitContractServiceAsync(CourseContractViewModel viewModel, IFormFile attachment, IFormFile accountInfo, IFormFile diagnosis)
         {
             String storedPath = null;
             //if (Request.Form.Files.Count > 0)
@@ -879,6 +879,13 @@ namespace WebHome.Controllers
 
                 bankAccountInfo = Path.Combine(FileLogger.Logger.LogDailyPath, Guid.NewGuid().ToString() + Path.GetExtension(accountInfo.FileName));
                 accountInfo.SaveAs(bankAccountInfo);
+            }
+
+            String diagnosisPaper = null;
+            if (diagnosis != null)
+            {
+                diagnosisPaper = Path.Combine(FileLogger.Logger.LogDailyPath, Guid.NewGuid().ToString() + Path.GetExtension(diagnosis.FileName));
+                diagnosis.SaveAs(diagnosisPaper);
             }
             var item = await viewModel.CommitContractServiceAsync(this, storedPath, bankAccountInfo);
 

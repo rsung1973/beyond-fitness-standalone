@@ -2189,7 +2189,7 @@ namespace WebHome.Helper.BusinessOperation
         }
 
 
-        public static async Task<CourseContract> CommitContractServiceAsync(this CourseContractViewModel viewModel, SampleController<UserProfile> controller, String attachment = null, String bankAccountInfo = null)
+        public static async Task<CourseContract> CommitContractServiceAsync(this CourseContractViewModel viewModel, SampleController<UserProfile> controller, String attachment = null, String bankAccountInfo = null, String diagnosisPaper = null)
 
         {
             var ModelState = controller.ModelState;
@@ -2286,6 +2286,13 @@ namespace WebHome.Helper.BusinessOperation
                         if (viewModel.Remark == null)
                         {
                             ModelState.AddModelError("Remark", "請填入其他終止原因");
+                        }
+                    }
+                    else if (viewModel.CauseForEnding == Naming.CauseForEnding.不宜運動)
+                    {
+                        if (diagnosisPaper == null)
+                        {
+                            ModelState.AddModelError("diagnosis", "請檢附醫生證明");
                         }
                     }
 

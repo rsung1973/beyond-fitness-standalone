@@ -87,7 +87,7 @@
             </script>*@
             <form enctype="multipart/form-data" method="post">
                 @{
-                    await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/DropifyFileUpload.cshtml");
+                    await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/DropifyFileUpload.cshtml", model: "attachment");
                 }
             </form>
         </div>
