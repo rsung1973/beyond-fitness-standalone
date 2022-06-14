@@ -1,0 +1,162 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Helper.DataOperation
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    CourseContract _model;
+    UserProfile _profile;
+    String _viewID;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (CourseContract)this.Model;
+    _profile = await Context.GetUserAsync();
+    _viewID = ViewBag.ViewID as String;
+
+    int? currentSettlementPrice = _model.LessonPriceType.ListPrice;
+
+}
+<div class="header">
+    <h2><strong>原課程單價 <span class="badge bg-blue">@(_model.LessonPriceType.PriceTypeBundle())</span>：</strong> <span class="col-red">@($"{_model.LessonPriceType.ListPrice:##,###,###,###}")</span></h2>
+</div>
+<div class="body">
+    <div class="row clearfix">
+        @*<div class="col-sm-12">
+            <label class="fancy-checkbox custom-bgcolor-pink">
+                <input id="checkbox14" type="checkbox" name="FitnessConsultant" value="@(_model.FitnessConsultant)" checked="checked" onclick="this.checked = true;" />
+                <span class="col-red">終止轉收入</span>
+            </label>
+        </div>*@
+        <div class="col-sm-12">
+            <div class="alert xl-pink col-darkteal" role="alert">
+                <div class="container">
+                    <div class="alert-icon">
+                        <i class="zmdi zmdi-notifications"></i>
+                    </div>
+                    @{
+                        var totalPaid = _model.TotalPaidAmount();
+                        var remained = _model.CalculateReturnAmount(totalPaid, out int processingFee);
+                                <text>
+                                    終止轉收餘額 @($"{remained:##,###,###,###}")：按未完成服務堂數（@(_model.RemainedLessonCount())堂）占合約總價額比例退還餘額
+                                </text>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <select class="form-control show-tick" name="CauseForEnding" onchange="buildRefundInfo();">
+                <option value="">-- 請選擇終止原因 --</option>
+                <option value="@((int)Naming.CauseForEnding.合約到期轉新約)">合約到期轉新約</option>
+                <option value="@((int)Naming.CauseForEnding.轉讓第三人)">轉讓予第三人</option>
+                <option value="@((int)Naming.CauseForEnding.私人原因)">
+                    私人原因（工作、搬家、懷孕、受傷）
+                </option>
+                <option value="@((int)Naming.CauseForEnding.更改合約類型)">
+                    更改合約類型（個人合約改家庭合約）
+                </option>
+                <option value="@((int)Naming.CauseForEnding.學生簽約後不付款)">簽約後反悔</option>
+                <option value="@((int)Naming.CauseForEnding.所屬教練離職)">所屬教練離職</option>
+                <option value="@((int)Naming.CauseForEnding.新冠肺炎疫情)">新冠肺炎疫情</option>
+                <option value="@((int)Naming.CauseForEnding.不宜運動)">傷害、疾病或身體不適致不宜運動（須檢附醫生證明）</option>
+                <option value="@((int)Naming.CauseForEnding.其他)">其他（自行輸入）</option>
+            </select>
+        </div>
+        <div class="col-12 m-t-30 byPaper" style="display:none;">
+            <h6><i class="zmdi zmdi-cloud-upload"></i> 檢附醫生證明(一份PDF)</h6>
+            <form enctype="multipart/form-data" method="post">
+                <div>
+                    @{
+                        ViewBag.DropifyExtension = "gif jpg jpeg png pdf";
+                        await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/DropifyFileUpload.cshtml", model: "diagnosis");
+                    }
+                </div>
+            </form>
+        </div>
+        <div class="col-sm-12">
+            <div class="form-group">
+                <textarea rows="3" class="form-control no-resize" name="Remark" placeholder="請輸入任何想補充的事項..."></textarea>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $(function () {
+
+        $('#@(_viewID) button.quit').on('click', function (event) {
+            cancelTerminating();
+        });
+
+        $('#@(_viewID) button.finish').on('click', function (event) {
+            commitTerminating();
+        });
+
+    });
+
+    function cancelTerminating() {
+        $('').launchDownload('@Html.Raw(Url.Action("ApplyContractService","ConsoleHome"))',
+            @Html.Raw(JsonConvert.SerializeObject(new CourseContractQueryViewModel
+                {
+                    KeyID = _model.ContractID.EncryptKey(),
+                })));
+    }
+
+    function commitTerminating() {
+        var viewModel = $('#@(_viewID)').find('input,select,textArea').serializeObject();
+        viewModel.SettlementPrice = @(currentSettlementPrice);
+        viewModel.Reason = '終止';
+        viewModel.Status = $global.viewModel.Status;
+        viewModel.OperationMode = $global.viewModel.OperationMode;
+        viewModel.FitnessConsultant = $global.viewModel.FitnessConsultant;
+        viewModel.BySelf = $global.viewModel.BySelf;
+        clearErrors();
+        $('form').ajaxForm({
+            url: '@Html.Raw(Url.Action("CommitContractService", "ContractConsole",new { KeyID = _model.ContractID.EncryptKey() }))',
+            data: viewModel,
+            beforeSubmit: function () {
+                showLoading();
+            },
+            success: function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    Swal.fire(
+                        'Oops...',
+                        data.message,
+                        'warning'
+                    );
+                }
+                else {
+                    $(data).appendTo($('body'));
+                }
+            },
+            error: function () {
+                hideLoading();
+            }
+        }).submit();
+    }
+
+    function buildRefundInfo() {
+        $formData = $.extend({}, $global.viewModel);
+        $formData.CauseForEnding = $('select[name="CauseForEnding"]').val();
+        if ($formData.CauseForEnding == '@((int)Naming.CauseForEnding.不宜運動)') {
+            $('.byPaper').css('display', 'block');
+        } else {
+            $('.byPaper').css('display', 'none');
+        }
+    }
+
+
+</script>
+

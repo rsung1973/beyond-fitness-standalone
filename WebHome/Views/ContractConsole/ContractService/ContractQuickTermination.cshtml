@@ -72,7 +72,6 @@
                 <small class="info">@((Naming.ContractServiceStatus)currentItem.Status)</small>
             }
             else if ((_model.Status == (int)Naming.CourseContractStatus.已過期 
-                            || _model.ContractType == (int)CourseContractType.ContractTypeDefinition.CGA
                             || _model.ContractType == (int)CourseContractType.ContractTypeDefinition.CNA
                             || _model.LessonPriceType.BranchStore?.IsVirtualClassroom() == true
                             || _model.CourseContractExtension.CourseBranch?.IsVirtualClassroom() == true)

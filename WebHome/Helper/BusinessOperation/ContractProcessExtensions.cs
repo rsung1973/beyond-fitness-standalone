@@ -2274,43 +2274,48 @@ namespace WebHome.Helper.BusinessOperation
                     }
                 }
 
+                if (!viewModel.CauseForEnding.HasValue)
+                {
+                    ModelState.AddModelError("CauseForEnding", "請選擇終止原因");
+                }
+                else if (viewModel.CauseForEnding == Naming.CauseForEnding.其他)
+                {
+                    viewModel.Remark = viewModel.Remark.GetEfficientString();
+                    if (viewModel.Remark == null)
+                    {
+                        ModelState.AddModelError("Remark", "請填入其他終止原因");
+                    }
+                }
+                else if (viewModel.CauseForEnding == Naming.CauseForEnding.不宜運動)
+                {
+                    if (diagnosisPaper == null)
+                    {
+                        ModelState.AddModelError("diagnosis", "請檢附醫生證明");
+                    }
+                }
+
                 if (viewModel.OperationMode != Naming.OperationMode.快速終止)
                 {
-                    if (!viewModel.CauseForEnding.HasValue)
+
+                    if (!(viewModel.CauseForEnding == Naming.CauseForEnding.轉讓第三人
+                        || viewModel.CauseForEnding == Naming.CauseForEnding.合約到期轉新約))
                     {
-                        ModelState.AddModelError("CauseForEnding", "請選擇終止原因");
-                    }
-                    else if (viewModel.CauseForEnding == Naming.CauseForEnding.其他)
-                    {
-                        viewModel.Remark = viewModel.Remark.GetEfficientString();
-                        if (viewModel.Remark == null)
+                        viewModel.BankID = viewModel.BankID.GetEfficientString();
+                        if (viewModel.BankID == null)
                         {
-                            ModelState.AddModelError("Remark", "請填入其他終止原因");
+                            ModelState.AddModelError("BankID", "請輸入退款銀行代碼");
                         }
-                    }
-                    else if (viewModel.CauseForEnding == Naming.CauseForEnding.不宜運動)
-                    {
-                        if (diagnosisPaper == null)
+
+                        viewModel.BankAccount = viewModel.BankAccount.GetEfficientString();
+                        if (viewModel.BankAccount == null)
                         {
-                            ModelState.AddModelError("diagnosis", "請檢附醫生證明");
+                            ModelState.AddModelError("BankAccount", "請輸入退款銀行帳號");
                         }
-                    }
 
-                    viewModel.BankID = viewModel.BankID.GetEfficientString();
-                    if (viewModel.BankID == null)
-                    {
-                        ModelState.AddModelError("BankID", "請輸入退款銀行代碼");
-                    }
-
-                    viewModel.BankAccount = viewModel.BankAccount.GetEfficientString();
-                    if (viewModel.BankAccount == null)
-                    {
-                        ModelState.AddModelError("BankAccount", "請輸入退款銀行帳號");
-                    }
-
-                    if (bankAccountInfo == null)
-                    {
-                        ModelState.AddModelError("accountInfo", "請上傳帳戶存摺封面掃描圖片");
+                        if (bankAccountInfo == null)
+                        {
+                            ModelState.AddModelError("accountInfo", "請上傳帳戶存摺封面掃描圖片");
+                        }
                     }
                 }
             }
@@ -2538,15 +2543,26 @@ namespace WebHome.Helper.BusinessOperation
                     newItem.CourseContractRevision.BySelf = (int?)viewModel.BySelf;
                     newItem.CourseContractRevision.ProcessingFee = viewModel.ProcessingFee;
                     newItem.CourseContractRevision.CauseForEnding = (int?)viewModel.CauseForEnding;
-                    newItem.CourseContractRevision.CourseContractTermination = new CourseContractTermination
+                    if (bankAccountInfo != null)
                     {
-                        BankAccount = viewModel.BankAccount,
-                        BankID = viewModel.BankID,
-                        Attachment = new Attachment
+                        newItem.CourseContractRevision.CourseContractTermination = new CourseContractTermination
                         {
-                            StoredPath = bankAccountInfo,
-                        },
-                    };
+                            BankAccount = viewModel.BankAccount,
+                            BankID = viewModel.BankID,
+                            Attachment = new Attachment
+                            {
+                                StoredPath = bankAccountInfo,
+                            },
+                        };
+                    }
+
+                    if (diagnosisPaper != null)
+                    {
+                        newItem.CourseContractRevision.Attachment = new Attachment
+                        {
+                            StoredPath = diagnosisPaper
+                        };
+                    }
 
                     if (viewModel.OperationMode == Naming.OperationMode.快速終止)
                     {

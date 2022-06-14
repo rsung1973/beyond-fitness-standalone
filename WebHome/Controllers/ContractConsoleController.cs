@@ -887,7 +887,7 @@ namespace WebHome.Controllers
                 diagnosisPaper = Path.Combine(FileLogger.Logger.LogDailyPath, Guid.NewGuid().ToString() + Path.GetExtension(diagnosis.FileName));
                 diagnosis.SaveAs(diagnosisPaper);
             }
-            var item = await viewModel.CommitContractServiceAsync(this, storedPath, bankAccountInfo);
+            var item = await viewModel.CommitContractServiceAsync(this, storedPath, bankAccountInfo, diagnosisPaper);
 
             if (item == null)
             {
