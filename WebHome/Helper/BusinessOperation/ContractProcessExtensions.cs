@@ -2543,16 +2543,18 @@ namespace WebHome.Helper.BusinessOperation
                     newItem.CourseContractRevision.BySelf = (int?)viewModel.BySelf;
                     newItem.CourseContractRevision.ProcessingFee = viewModel.ProcessingFee;
                     newItem.CourseContractRevision.CauseForEnding = (int?)viewModel.CauseForEnding;
+
+                    newItem.CourseContractRevision.CourseContractTermination = new CourseContractTermination
+                    {
+                        BankAccount = viewModel.BankAccount,
+                        BankID = viewModel.BankID,
+                    };
+
                     if (bankAccountInfo != null)
                     {
-                        newItem.CourseContractRevision.CourseContractTermination = new CourseContractTermination
+                        newItem.CourseContractRevision.CourseContractTermination.Attachment = new Attachment
                         {
-                            BankAccount = viewModel.BankAccount,
-                            BankID = viewModel.BankID,
-                            Attachment = new Attachment
-                            {
-                                StoredPath = bankAccountInfo,
-                            },
+                            StoredPath = bankAccountInfo,
                         };
                     }
 
