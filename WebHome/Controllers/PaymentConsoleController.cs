@@ -448,12 +448,19 @@ namespace WebHome.Controllers
                 ModelState.AddModelError("PayoffDate", "請選擇收款日期!!");
             }
 
+            if (!ModelState.IsValid)
+            {
+                ViewBag.AlertError = true;
+                ViewBag.ModelState = ModelState;
+                return View("~/Views/ConsoleHome/Shared/ReportInputError.cshtml");
+            }
+
             viewModel.ItemNo = new string[] { "01" };
-            viewModel.Brief = new string[] { $"{contract.ContractNo()}終止手續費" };
+            viewModel.Brief = new string[] { $"手續費" };
             viewModel.CostAmount = new int?[] { viewModel.PayoffAmount };
             viewModel.UnitCost = new int?[] { viewModel.PayoffAmount };
             viewModel.Piece = new int?[] { 1 };
-            viewModel.ItemRemark = new string[] { null };
+            viewModel.ItemRemark = new string[] { $"合約{contract?.ContractNo()}終止手續費" };
             viewModel.InvoiceType = Naming.InvoiceTypeDefinition.一般稅額計算之電子發票;
             viewModel.CarrierId1 = viewModel.CarrierId1.GetEfficientString();
             viewModel.TransactionType = (int)Naming.PaymentTransactionType.手續費;
