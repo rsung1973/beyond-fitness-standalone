@@ -1140,8 +1140,8 @@ namespace WebHome.Controllers
                 table.Columns.Add(new DataColumn("續約佔比(%)", typeof(int)));
                 table.Columns.Add(new DataColumn("P.I Session", typeof(int)));
                 table.Columns.Add(new DataColumn("P.I Session佔比(%)", typeof(int)));
-                table.Columns.Add(new DataColumn("其他販售商品", typeof(int)));
-                table.Columns.Add(new DataColumn("其他販售商品占比(%)", typeof(int)));
+                table.Columns.Add(new DataColumn("其他販售商品及手續費收入", typeof(int)));
+                table.Columns.Add(new DataColumn("其他販售商品及手續費收入占比(%)", typeof(int)));
 
                 DataRow r;
                 foreach (var branch in models.GetTable<BranchStore>())
@@ -1220,8 +1220,8 @@ namespace WebHome.Controllers
                 table.Columns.Add(new DataColumn("續約佔比(%)", typeof(int)));
                 table.Columns.Add(new DataColumn("P.I Session", typeof(int)));
                 table.Columns.Add(new DataColumn("P.I Session佔比(%)", typeof(int)));
-                table.Columns.Add(new DataColumn("其他販售商品", typeof(int)));
-                table.Columns.Add(new DataColumn("其他販售商品占比(%)", typeof(int)));
+                table.Columns.Add(new DataColumn("其他販售商品及手續費收入", typeof(int)));
+                table.Columns.Add(new DataColumn("其他販售商品及手續費收入占比(%)", typeof(int)));
 
 
                 DataRow r;
@@ -1304,8 +1304,8 @@ namespace WebHome.Controllers
                 table.Columns.Add(new DataColumn("續約佔比(%)", typeof(int)));
                 table.Columns.Add(new DataColumn("P.I Session", typeof(int)));
                 table.Columns.Add(new DataColumn("P.I Session佔比(%)", typeof(int)));
-                table.Columns.Add(new DataColumn("其他販售商品", typeof(int)));
-                table.Columns.Add(new DataColumn("其他販售商品占比(%)", typeof(int)));
+                table.Columns.Add(new DataColumn("其他販售商品及手續費收入", typeof(int)));
+                table.Columns.Add(new DataColumn("其他販售商品及手續費收入占比(%)", typeof(int)));
 
                 DataRow r;
 

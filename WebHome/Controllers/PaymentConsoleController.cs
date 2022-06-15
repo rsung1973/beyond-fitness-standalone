@@ -496,7 +496,10 @@ namespace WebHome.Controllers
                         Status = (int)Naming.CourseContractStatus.已生效,
                         PaymentTransaction = new PaymentTransaction
                         {
+                            PaymentContractTermination = new PaymentContractTermination
+                            {
 
+                            },
                         },
                         PaymentAudit = new Models.DataEntity.PaymentAudit { }
                     };
@@ -506,6 +509,8 @@ namespace WebHome.Controllers
                 }
 
                 item.PaymentTransaction.BranchID = viewModel.SellerID.Value;
+                item.PaymentTransaction.PaymentContractTermination.RevisionID 
+                    = contract.CourseContractRevision.CourseContractTermination.RevisionID;
 
                 preparePayment(viewModel, profile, item);
                 models.SubmitChanges();

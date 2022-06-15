@@ -274,6 +274,33 @@ new
                                         @($"{trainingPayoff - (items.Where(p => p.TransactionType == (int)Naming.PaymentTransactionType.教育訓練).GetPaymentAchievement(models).Sum(t => t.ShareAmount) ?? 0):##,###,###,##0}")
                                     </td>
                                 </tr>
+                                <tr>
+                                    <td>手續費</td>
+                                    <td class="text-right" onclick='showPaymentList(@Html.Raw(JsonConvert.SerializeObject(
+new
+{
+    _viewModel.PayoffDateFrom,
+    _viewModel.BranchID,
+    TransactionType = (int)Naming.PaymentTransactionType.手續費,
+    IsCancelled = false,
+})));'>
+                                        @{
+                                            var feeChargePayoff = items.Where(p => p.TransactionType == (int)Naming.PaymentTransactionType.手續費).Sum(p => p.PayoffAmount) ?? 0;
+                                        }
+                                        @($"{feeChargePayoff:##,###,###,##0}") @{showIntent(feeChargePayoff, lastMonthItems.Where(p => p.TransactionType == (int)Naming.PaymentTransactionType.手續費).Sum(p => p.PayoffAmount) ?? 0); }
+                                    </td>
+                                    <td class="text-right" onclick='showPaymentList(@Html.Raw(JsonConvert.SerializeObject(
+new
+{
+    _viewModel.PayoffDateFrom,
+    _viewModel.BranchID,
+    TransactionType = (int)Naming.PaymentTransactionType.手續費,
+    IsCancelled = false,
+    HasShare = false,
+})));'>
+                                        @($"{feeChargePayoff - (items.Where(p => p.TransactionType == (int)Naming.PaymentTransactionType.手續費).GetPaymentAchievement(models).Sum(t => t.ShareAmount) ?? 0):##,###,###,##0}")
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -294,8 +321,10 @@ new
                             label: '運動商品',
                             value: @Math.Round(itemsPayoff * 100m / totalPayoff) }, {
                             label: '教育訓練',
-                            value: @Math.Round(trainingPayoff * 100m / totalPayoff) }],
-                        colors: ['#ffe699', '#edbae7', '#93e3ff', '#cbd1d9', '#6c757d'],
+                            value: @Math.Round(trainingPayoff * 100m / totalPayoff) },{
+                            label: '教育訓練',
+                            value: @Math.Round(feeChargePayoff * 100m / totalPayoff) }],
+                        colors: ['#ffe699', '#edbae7', '#93e3ff', '#cbd1d9', '#6c757d', '#3c759d'],
                         formatter: function (y) {
                             return y + '%'
                         }

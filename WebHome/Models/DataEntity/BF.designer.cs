@@ -642,6 +642,9 @@ namespace WebHome.Models.DataEntity
     partial void InsertCourseContractExtension(CourseContractExtension instance);
     partial void UpdateCourseContractExtension(CourseContractExtension instance);
     partial void DeleteCourseContractExtension(CourseContractExtension instance);
+    partial void InsertPaymentContractTermination(PaymentContractTermination instance);
+    partial void UpdatePaymentContractTermination(PaymentContractTermination instance);
+    partial void DeletePaymentContractTermination(PaymentContractTermination instance);
     #endregion
 		
 		public BFDataContext() : 
@@ -2367,6 +2370,14 @@ namespace WebHome.Models.DataEntity
 			get
 			{
 				return this.GetTable<CourseContractExtension>();
+			}
+		}
+		
+		public System.Data.Linq.Table<PaymentContractTermination> PaymentContractTermination
+		{
+			get
+			{
+				return this.GetTable<PaymentContractTermination>();
 			}
 		}
 		
@@ -33188,6 +33199,8 @@ namespace WebHome.Models.DataEntity
 		
 		private EntitySet<PaymentOnLine> _PaymentOnLine;
 		
+		private EntityRef<PaymentContractTermination> _PaymentContractTermination;
+		
 		private EntityRef<BranchStore> _BranchStore;
 		
 		private EntityRef<Payment> _Payment;
@@ -33206,6 +33219,7 @@ namespace WebHome.Models.DataEntity
 		{
 			this._PaymentOrder = new EntitySet<PaymentOrder>(new Action<PaymentOrder>(this.attach_PaymentOrder), new Action<PaymentOrder>(this.detach_PaymentOrder));
 			this._PaymentOnLine = new EntitySet<PaymentOnLine>(new Action<PaymentOnLine>(this.attach_PaymentOnLine), new Action<PaymentOnLine>(this.detach_PaymentOnLine));
+			this._PaymentContractTermination = default(EntityRef<PaymentContractTermination>);
 			this._BranchStore = default(EntityRef<BranchStore>);
 			this._Payment = default(EntityRef<Payment>);
 			OnCreated();
@@ -33282,6 +33296,35 @@ namespace WebHome.Models.DataEntity
 			set
 			{
 				this._PaymentOnLine.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PaymentTransaction_PaymentContractTermination", Storage="_PaymentContractTermination", ThisKey="PaymentID", OtherKey="PaymentID", IsUnique=true, IsForeignKey=false)]
+		public PaymentContractTermination PaymentContractTermination
+		{
+			get
+			{
+				return this._PaymentContractTermination.Entity;
+			}
+			set
+			{
+				PaymentContractTermination previousValue = this._PaymentContractTermination.Entity;
+				if (((previousValue != value) 
+							|| (this._PaymentContractTermination.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._PaymentContractTermination.Entity = null;
+						previousValue.PaymentTransaction = null;
+					}
+					this._PaymentContractTermination.Entity = value;
+					if ((value != null))
+					{
+						value.PaymentTransaction = this;
+					}
+					this.SendPropertyChanged("PaymentContractTermination");
+				}
 			}
 		}
 		
@@ -63619,6 +63662,8 @@ namespace WebHome.Models.DataEntity
 		
 		private System.Nullable<int> _FeeChargeStatus;
 		
+		private EntitySet<PaymentContractTermination> _PaymentContractTermination;
+		
 		private EntityRef<Attachment> _Attachment;
 		
 		private EntityRef<CourseContractRevision> _CourseContractRevision;
@@ -63641,6 +63686,7 @@ namespace WebHome.Models.DataEntity
 		
 		public CourseContractTermination()
 		{
+			this._PaymentContractTermination = new EntitySet<PaymentContractTermination>(new Action<PaymentContractTermination>(this.attach_PaymentContractTermination), new Action<PaymentContractTermination>(this.detach_PaymentContractTermination));
 			this._Attachment = default(EntityRef<Attachment>);
 			this._CourseContractRevision = default(EntityRef<CourseContractRevision>);
 			OnCreated();
@@ -63754,6 +63800,19 @@ namespace WebHome.Models.DataEntity
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="CourseContractTermination_PaymentContractTermination", Storage="_PaymentContractTermination", ThisKey="RevisionID", OtherKey="RevisionID")]
+		public EntitySet<PaymentContractTermination> PaymentContractTermination
+		{
+			get
+			{
+				return this._PaymentContractTermination;
+			}
+			set
+			{
+				this._PaymentContractTermination.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Attachment_CourseContractTermination", Storage="_Attachment", ThisKey="AccountInfo", OtherKey="AttachmentID", IsForeignKey=true)]
 		public Attachment Attachment
 		{
@@ -63840,6 +63899,18 @@ namespace WebHome.Models.DataEntity
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
+		}
+		
+		private void attach_PaymentContractTermination(PaymentContractTermination entity)
+		{
+			this.SendPropertyChanging();
+			entity.CourseContractTermination = this;
+		}
+		
+		private void detach_PaymentContractTermination(PaymentContractTermination entity)
+		{
+			this.SendPropertyChanging();
+			entity.CourseContractTermination = null;
 		}
 	}
 	
@@ -64366,6 +64437,174 @@ namespace WebHome.Models.DataEntity
 						this._UnitPriceID = default(Nullable<int>);
 					}
 					this.SendPropertyChanged("LessonPriceType");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.PaymentContractTermination")]
+	public partial class PaymentContractTermination : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _PaymentID;
+		
+		private int _RevisionID;
+		
+		private EntityRef<CourseContractTermination> _CourseContractTermination;
+		
+		private EntityRef<PaymentTransaction> _PaymentTransaction;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnPaymentIDChanging(int value);
+    partial void OnPaymentIDChanged();
+    partial void OnRevisionIDChanging(int value);
+    partial void OnRevisionIDChanged();
+    #endregion
+		
+		public PaymentContractTermination()
+		{
+			this._CourseContractTermination = default(EntityRef<CourseContractTermination>);
+			this._PaymentTransaction = default(EntityRef<PaymentTransaction>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PaymentID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int PaymentID
+		{
+			get
+			{
+				return this._PaymentID;
+			}
+			set
+			{
+				if ((this._PaymentID != value))
+				{
+					if (this._PaymentTransaction.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnPaymentIDChanging(value);
+					this.SendPropertyChanging();
+					this._PaymentID = value;
+					this.SendPropertyChanged("PaymentID");
+					this.OnPaymentIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RevisionID", DbType="Int NOT NULL")]
+		public int RevisionID
+		{
+			get
+			{
+				return this._RevisionID;
+			}
+			set
+			{
+				if ((this._RevisionID != value))
+				{
+					if (this._CourseContractTermination.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnRevisionIDChanging(value);
+					this.SendPropertyChanging();
+					this._RevisionID = value;
+					this.SendPropertyChanged("RevisionID");
+					this.OnRevisionIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="CourseContractTermination_PaymentContractTermination", Storage="_CourseContractTermination", ThisKey="RevisionID", OtherKey="RevisionID", IsForeignKey=true)]
+		public CourseContractTermination CourseContractTermination
+		{
+			get
+			{
+				return this._CourseContractTermination.Entity;
+			}
+			set
+			{
+				CourseContractTermination previousValue = this._CourseContractTermination.Entity;
+				if (((previousValue != value) 
+							|| (this._CourseContractTermination.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._CourseContractTermination.Entity = null;
+						previousValue.PaymentContractTermination.Remove(this);
+					}
+					this._CourseContractTermination.Entity = value;
+					if ((value != null))
+					{
+						value.PaymentContractTermination.Add(this);
+						this._RevisionID = value.RevisionID;
+					}
+					else
+					{
+						this._RevisionID = default(int);
+					}
+					this.SendPropertyChanged("CourseContractTermination");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PaymentTransaction_PaymentContractTermination", Storage="_PaymentTransaction", ThisKey="PaymentID", OtherKey="PaymentID", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public PaymentTransaction PaymentTransaction
+		{
+			get
+			{
+				return this._PaymentTransaction.Entity;
+			}
+			set
+			{
+				PaymentTransaction previousValue = this._PaymentTransaction.Entity;
+				if (((previousValue != value) 
+							|| (this._PaymentTransaction.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._PaymentTransaction.Entity = null;
+						previousValue.PaymentContractTermination = null;
+					}
+					this._PaymentTransaction.Entity = value;
+					if ((value != null))
+					{
+						value.PaymentContractTermination = this;
+						this._PaymentID = value.PaymentID;
+					}
+					else
+					{
+						this._PaymentID = default(int);
+					}
+					this.SendPropertyChanged("PaymentTransaction");
 				}
 			}
 		}

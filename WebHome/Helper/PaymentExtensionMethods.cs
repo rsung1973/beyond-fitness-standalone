@@ -102,6 +102,7 @@ namespace WebHome.Helper
             (int)Naming.PaymentTransactionType.食飲品,
             (int)Naming.PaymentTransactionType.體能顧問費,
             (int)Naming.PaymentTransactionType.教育訓練,
+            (int)Naming.PaymentTransactionType.手續費,
         };
         public static IQueryable<Payment> PromptIncomePayment(this GenericManager<BFDataContext> models)
             
