@@ -197,11 +197,20 @@ function buildRefundInfo() {
                     .append(data);
             }
         });
+
         if($formData.CauseForEnding == '@((int)Naming.CauseForEnding.不宜運動)') {
             $('.byPaper').css('display','block');
         } else {
             $('.byPaper').css('display','none');
         }
+
+        if($formData.CauseForEnding == '@((int)Naming.CauseForEnding.合約到期轉新約)'
+            || $formData.CauseForEnding == '@((int)Naming.CauseForEnding.轉讓第三人)') {
+            $('.byCause').css('display','none');
+        } else {
+            $('.byCause').css('display','block');
+        }
+
 
 }
 </script>
