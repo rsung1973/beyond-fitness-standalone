@@ -829,8 +829,8 @@ namespace WebHome.Models.DataEntity
                     return "私人原因（工作、搬家、懷孕、受傷）";
                 case Naming.CauseForEnding.更改合約類型:
                     return "更改合約類型（個人合約改家庭合約）";
-                case Naming.CauseForEnding.學生簽約後不付款:
-                    return "簽約後反悔";
+                case Naming.CauseForEnding.學生簽約後反悔:
+                    return "學生簽約後反悔";
                 case Naming.CauseForEnding.所屬教練離職:
                     return "所屬教練離職";
                 case Naming.CauseForEnding.新冠肺炎疫情:

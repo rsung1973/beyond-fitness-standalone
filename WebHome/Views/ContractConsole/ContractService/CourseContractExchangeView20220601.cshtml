@@ -115,11 +115,34 @@
                             }
                         </td>
                     </tr>
+                </tbody>
+            </table>
+            <table class="table" style="margin:0;padding:0;">
+                <tbody>
                     <tr>
-                        <td colspan="2">購買堂數：共@(_original.Lessons)堂<br/>
-                            <p style="margin-left: 60px;margin-bottom: 0px;">@Html.Raw(String.Join("<br/>",_original.ExpandContractLessonDetails(models, "■ ")))</p>
+                        <td width="100px">購買堂數：</td>
+                        <td>
+                        @if (_original.ContractType == (int)CourseContractType.ContractTypeDefinition.CGA
+                                  || _original.ContractType == (int)CourseContractType.ContractTypeDefinition.CGB
+                                  || _original.ContractType == (int)CourseContractType.ContractTypeDefinition.CGC
+                                  || _original.ContractType == (int)CourseContractType.ContractTypeDefinition.CGF
+                                  || _original.ContractType == (int)CourseContractType.ContractTypeDefinition.CVA
+                                  || _original.ContractType == (int)CourseContractType.ContractTypeDefinition.CVB
+                                  || _original.ContractType == (int)CourseContractType.ContractTypeDefinition.CVF)
+                        {
+                            <text>共 @(_original.Lessons)堂。</text> <br/>
+                            @Html.Raw(String.Join("<br/>", _original.ExpandContractLessonDetails(models, "● ")))                                               
+                        }
+                        else
+                        {
+                            <text>@(_original.Lessons) 堂</text>
+                        }                            
                         </td>
-                     </tr>                    
+                     </tr>
+                </tbody>    
+            </table>
+            <table class="table" style="margin:0;padding:0;">
+                <tbody>             
                     <tr>
                         <td colspan="2">顧問服務使用期限：自 @(String.Format("{0:yyyy/MM/dd}", _original.ValidFrom)) 起，至 @(String.Format("{0:yyyy/MM/dd}", _original.Expiration)) 止。</td>                        
                     </tr>
@@ -133,12 +156,15 @@
                         <td colspan="2">項目：轉換課程類別</td>                    
                     </tr>    
                     <tr>
-                        <td colspan="2">申請說明：契約經雙方同意於 @(String.Format("{0:yyyy/MM/dd}", _signatureDate)) 依據轉換上課堂數規則
+                        <td colspan="2">申請說明：合約經雙方同意於 @(String.Format("{0:yyyy/MM/dd}", _signatureDate)) 依據轉換上課堂數規則，以下轉換皆不另行收取費用。
                             <p style="margin-left:80px;margin-bottom: 0px;">
-                                ※1堂私人教練(P.T)得轉換為2堂運動恢復(S.R)或2堂運動恢復(S.R)得轉換為1堂私人教練(P.T)<br />
-                                ※1堂私人教練(P.T)得轉換1堂運動防護(A.T)或1堂運動防護(A.T)得轉換為1堂私人教練(P.T)<br />
-                                ※2堂私人教練(P.T)得轉換1個月營養諮詢(S.D)或1個月營養諮詢(S.D)得轉換為2堂私人教練(P.T)<br />
-                                以下轉換皆不另行收取費用。截至當日結算實際上課堂數如下：<br />
+                                ● 1堂私人教練(P.T)得轉換為2堂運動恢復(S.R) <br />
+                                ● 2堂運動恢復(S.R)得轉換為1堂私人教練(P.T) <br />
+                                ● 1堂私人教練(P.T)得轉換1堂運動防護(A.T) <br />
+                                ● 1堂運動防護(A.T)得轉換為1堂私人教練(P.T) <br />
+                                ● 2堂私人教練(P.T)得轉換1個月營養諮詢(S.D) <br />
+                                ● 1個月營養諮詢(S.D)得轉換為2堂私人教練(P.T) <br />
+                                截至當日結算實際上課堂數如下：<br />
                                 @{
                                     for (int i = 0; i < _model.CourseContractLessonExchange.Count; i++)
                                     {
@@ -192,7 +218,7 @@
                         }
                         else
                         {                           
-                            <td colspan="3" style="padding:0"><span style="font-size:20px">☑</span> 轉換課程類別僅能展延乙次。</td>
+                            <td colspan="3" style="padding:0"><b style="font-size:20px">☑</b> <b>轉換課程類別僅能展延乙次。</b></td>
                         }
                     </tr>                                                        
                     <tr>
@@ -216,7 +242,7 @@
                         }
                         else
                         {
-                            <td colspan="3" style="padding:0"><span style="font-size:20px">☑</span> 我已閱讀並同意超越體能顧問有限公司隱私政策、服務條款、相關使用及消費合約，即表示即日起您同意接受本合約正面及背面條款之相關約束及其責任。</td>
+                            <td colspan="3" style="padding:0"><b style="font-size:20px">☑</b> <b>我已閱讀並同意超越體能顧問有限公司隱私政策、服務條款、相關使用及消費合約，即表示即日起您同意接受本合約正面及背面條款之相關約束及其責任。</b></td>
                         }
                     </tr>
                     <tr>

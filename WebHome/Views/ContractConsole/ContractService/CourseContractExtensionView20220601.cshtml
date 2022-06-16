@@ -86,11 +86,34 @@
                             }
                         </td>
                     </tr>
+                </tbody>
+            </table>
+            <table class="table" style="margin:0;padding:0;">
+                <tbody>
                     <tr>
-                        <td colspan="2">購買堂數：共@(_original.Lessons)堂<br/>
-                            <p style="margin-left: 60px;margin-bottom: 0px;">@Html.Raw(String.Join("<br/>",_original.ExpandContractLessonDetails(models, "■ ")))</p>
+                        <td width="100px">購買堂數：</td>
+                        <td>
+                        @if (_original.ContractType == (int)CourseContractType.ContractTypeDefinition.CGA
+                                  || _original.ContractType == (int)CourseContractType.ContractTypeDefinition.CGB
+                                  || _original.ContractType == (int)CourseContractType.ContractTypeDefinition.CGC
+                                  || _original.ContractType == (int)CourseContractType.ContractTypeDefinition.CGF
+                                  || _original.ContractType == (int)CourseContractType.ContractTypeDefinition.CVA
+                                  || _original.ContractType == (int)CourseContractType.ContractTypeDefinition.CVB
+                                  || _original.ContractType == (int)CourseContractType.ContractTypeDefinition.CVF)
+                        {
+                            <text>共 @(_original.Lessons)堂。</text> <br />
+                            @Html.Raw(String.Join("<br/>", _original.ExpandContractLessonDetails(models, "● ")))                                               
+                        }
+                        else
+                        {
+                            <text>@(_original.Lessons) 堂</text>
+                        }                            
                         </td>
-                     </tr>                    
+                     </tr>
+                </tbody>    
+            </table>
+            <table class="table" style="margin:0;padding:0;">
+                <tbody>                                              
                     <tr>
                         <td colspan="2">顧問服務使用期限：自 @(String.Format("{0:yyyy/MM/dd}", _original.ValidFrom)) 起，至 @(String.Format("{0:yyyy/MM/dd}", _original.Expiration)) 止。</td>                        
                     </tr>
@@ -108,7 +131,7 @@
                         }                       
                     </tr>    
                     <tr>
-                        <td colspan="2">申請說明：契約到期日由 @(String.Format("{0:yyyy/MM/dd}", _original.Expiration))  ，展延至 <sapn class="col-red">@(String.Format("{0:yyyy/MM/dd}", _contract.Expiration))</sapn> 止
+                        <td colspan="2">申請說明：合約到期日由 @(String.Format("{0:yyyy/MM/dd}", _original.Expiration))  ，展延至 <sapn class="col-red">@(String.Format("{0:yyyy/MM/dd}", _contract.Expiration))</sapn> 止
                         @if (_contract.Remark !=null)
                         {
                             <text>（@(_contract.Remark)）。</text>

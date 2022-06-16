@@ -88,6 +88,8 @@
                             }
                         </td>
                     </tr>
+                </tbody>
+            </table>
             <table class="table" style="margin:0;padding:0;">
                 <tbody>
                     <tr>
@@ -102,7 +104,7 @@
                                    || _original.ContractType == (int)CourseContractType.ContractTypeDefinition.CVF)
                         {
                             <text>共 @(_original.Lessons)堂。</text><br />
-                                        @Html.Raw(String.Join("<br/>",_original.ExpandContractLessonDetails(models, "√ ")))
+                            @Html.Raw(String.Join("<br/>",_original.ExpandContractLessonDetails(models, "● ")))
                         }
                         else
                         {
@@ -143,8 +145,8 @@
                     </tr>
                     <tr>
                         <td colspan="2">
-                              申請說明：契約經雙方同意於 @(String.Format("{0:yyyy/MM/dd}", _signatureDate)) 終止服務
-                              <p style="margin-left:80px;margin-bottom: 0px;">
+                              申請說明：合約經雙方同意於 @(String.Format("{0:yyyy/MM/dd}", _signatureDate)) 終止服務
+                              <p style="margin-left:70px;margin-bottom: 0px;">
                                 @{
                                     var totalPaid = _original.TotalPaidAmount();
                                     var attendedCount = _original.AttendedLessonCount();
@@ -152,13 +154,13 @@
                                 }
                                 @if (totalPaid == 0)
                                 {
-                                    <text>契約簽訂後未繳納費用 @(String.Format("{0:##,###,###,###}", _original.TotalCost)) 元，退還剩餘款項<span class="col-red">0</span>元。</text>
+                                    <text>合約簽訂未繳納服務總費用新台幣 @(String.Format("{0:##,###,###,###}", _original.TotalCost)) 元整，退還學員費用 0 元。</text>
                                 }
                                 else if (attendedCount > 0)
                                 {
                                     var remained = _original.CalculateReturnAmount(totalPaid, out int processingFee);
 
-                                    <text>@(_model.CauseForEnding == (int)Naming.CauseForEnding.轉讓第三人 ? "並轉讓予第三人" : null)截至當日結算實際上課堂數如下：<br/></text>
+                                    <text>@(_model.CauseForEnding == (int)Naming.CauseForEnding.轉讓第三人 ? "轉讓予第三人" : null)截至當日結算實際上課堂數如下：<br/></text>
                                     foreach (var rc in _original.RegisterLessonContract.OrderBy(c=>c.Title))
                                     {
                                         var registerItem = rc.RegisterLesson;
@@ -172,69 +174,80 @@
                                         {
                                         case Naming.LessonPriceStatus.營養課程:
                                             <text>
-                                                ■
+                                                ● 
                                                 @(rc.Title)營養諮詢(S.D)@(registerItem.Lessons/priceItem.BundleCount)個月，未完成服務@(registerItem.RemainedLessonCount()/priceItem.BundleCount)月，購買每月單價@($"{priceItem.ListPrice*priceItem.BundleCount:##,###,####,###}")元。<br />
                                             </text>
                                             break;
                                             case Naming.LessonPriceStatus.運動恢復課程:
                                             <text>
-                                                ■
+                                                ● 
                                                 @(rc.Title)運動恢復(S.R)@(registerItem.Lessons/priceItem.BundleCount)堂，未完成服務@(registerItem.RemainedLessonCount())堂，購買每堂單價購@($"{priceItem.ListPrice:##,###,####,###}")元。<br />
                                             </text>
                                             break;
                                             case Naming.LessonPriceStatus.運動防護課程:
                                             <text>
-                                                ■
+                                                ● 
                                                 @(rc.Title)運動防護(A.T)@(registerItem.Lessons/priceItem.BundleCount)堂，未完成服務@(registerItem.RemainedLessonCount())堂，購買每堂單價購@($"{priceItem.ListPrice:##,###,####,###}")元。<br />
                                             </text>
                                             break;
                                             default:
                                             <text>
-                                                ■
+                                                ● 
                                                 @(rc.Title)私人教練(P.T)@(registerItem.Lessons/priceItem.BundleCount)堂，未完成服務@(registerItem.RemainedLessonCount())堂，購買每堂單價購@($"{priceItem.ListPrice:##,###,####,###}")元。<br />
                                             </text>
                                             break;
                                         }
                                     }
 
-                                <text>
-                                    <br/>以上按未完成服務堂數之購買單價計算應退還餘額@($"{remained:##,###,###,###}")元，
-                                </text>
-                                if (_model.CauseForEnding == (int)Naming.CauseForEnding.合約到期轉新約
-                                    || _model.CauseForEnding == (int)Naming.CauseForEnding.轉讓第三人)
-                                {
+                                    <text>
+                                        <br/>以上按未完成服務堂數之購買單價計算應退還餘額@($"{remained:##,###,###,###}")元，
+                                    </text>
+                                    if (_model.CauseForEnding == (int)Naming.CauseForEnding.合約到期轉新約
+                                        || _model.CauseForEnding == (int)Naming.CauseForEnding.轉讓第三人)
+                                    {
                                         returnAmt = remained;
-                                    <text>並另外收取手續費新台幣300元整。</text>
-                                }
-                                else
-                                {
-                                    returnAmt = remained-(_model.ProcessingFee ?? 0);
-                                    <text>並扣除手續費以退還餘額之20%計算(最高9,000)為@($"{_model.ProcessingFee:##,###,###,###}")元，實際退還剩餘款項為@($"{returnAmt:##,###,###,###}")元整。</text>
-                                }
+                                        <text>並另外收取手續費新台幣300元整。</text>
+                                    }
+                                    else if (_model.CauseForEnding == (int)Naming.CauseForEnding.不宜運動)
+                                    {
+                                        returnAmt = remained;
+                                        <text>因特殊情況免手續費。</text>
+                                    }
+                                    else
+                                    {
+                                        returnAmt = remained-(_model.ProcessingFee ?? 0);
+                                        <text>並扣除手續費以退還餘額之20%計算(最高9,000)為@($"{_model.ProcessingFee:##,###,###,###}")元，實際退還剩餘款項為新台幣 @($"{returnAmt:##,###,###,###}")元整。</text>
+                                    }
                                 }
                                 else if ((_contract.ContractDate.Value - _original.ValidFrom.Value).TotalDays < 8)
                                 {
                                     <text>
-                                        合約簽訂後七日內未使用所約定服務(課程)而解除契約，已繳服務總費用新台幣@(String.Format("{0:##,###,###,###}", totalPaid))元整，全額退還學員已繳費用。
+                                        合約簽訂後七日內未使用所約定服務(課程)而解除合約，已繳服務總費用新台幣@(String.Format("{0:##,###,###,###}", totalPaid))元整，全額退還學員已繳費用。
                                     </text>
                                 }
                                 else
                                 {
-                                    returnAmt = totalPaid-(_model.ProcessingFee ?? 0);
-                                    <text>
-                                        契約簽訂後逾七日，已繳服務總費用新台幣@(String.Format("{0:##,###,###,###}", totalPaid))元整，將從退費金額內收取退費金額5%（新台幣@($"{_model.ProcessingFee:##,###,###,###}")元整）作為手續費，退還剩餘款項新台幣@($"{returnAmt:##,###,###,###}")元整。
-                                    </text>
+                                    if (_model.CauseForEnding == (int)Naming.CauseForEnding.不宜運動) 
+                                    {                                        
+                                        returnAmt = totalPaid;
+                                        <text>
+                                            合約簽訂後逾七日未使用所約定服務(課程)而解除合約，已繳服務總費用新台幣@(String.Format("{0:##,###,###,###}", totalPaid))元整，因特殊情況免手續費，退還剩餘款項新台幣@($"{returnAmt:##,###,###,###}")元整。
+                                        </text>
+                                    }
+                                    else
+                                    {
+                                        returnAmt = totalPaid - (_model.ProcessingFee ?? 0);
+                                        <text>
+                                            合約簽訂後逾七日未使用所約定服務(課程)而解除合約，已繳服務總費用新台幣@(String.Format("{0:##,###,###,###}", totalPaid))元整，將從退費金額內收取退費金額5%（新台幣@($"{_model.ProcessingFee:##,###,###,###}")元整）作為手續費，退還剩餘款項新台幣@($"{returnAmt:##,###,###,###}")元整。
+                                        </text>
+                                    }
+                                    
                                 }
                               </p>
                            </td>
                     </tr>
                     <tr>
-                        <td colspan="2">終止原因：@Html.Raw(_model.TerminationReason()) 
-                            @if (_contract.Remark !=null)
-                            {
-                                <text>（@(_contract.Remark)）。</text>
-                            }
-                        </td>
+                        <td colspan="2">終止原因：@Html.Raw(_model.TerminationReason()) </td>
                     </tr>
                     <tr>
                         <td colspan="2">備註： 各項申請內容皆應依體能顧問聘請合約之規定辦理並經雙方簽署後始生效力。</td>
@@ -243,15 +256,15 @@
             </table>
             @if(_viewModel.Pdf == "1")
             {
-            <table class="table" style="@(_viewModel.Pdf=="1" ? "margin:0;padding:0;" : "")">
+            <table class="table" style="margin:0;padding:0;">
                 <tr>
                     <td colspan="3" style="padding:0">
-                        <span style="font-size:20px">☑</span>我已閱讀並同意超越體能顧問有限公司隱私政策、服務條款、相關使用及各項申請內容皆應依體能顧問展延服務申請之規定辦理，即表示即日起您同意接受本合約正面及背面條款之相關約束及其責任。
+                        <b style="font-size:20px">☑</b><b>我已閱讀並同意超越體能顧問有限公司隱私政策、服務條款、相關使用及各項申請內容皆應依體能顧問展延服務申請之規定辦理，即表示即日起您同意接受本合約正面及背面條款之相關約束及其責任。</b>
                     </td>
                 </tr>
                 <tr>
-                    <td class="p-t-0"></td>
-                    <td class="p-0">Beyond Fitness超越體能顧問有限公司</td>
+                    <td></td>
+                    <td>Beyond Fitness超越體能顧問有限公司</td>
                     <td rowspan="3" width="150px" class="p-0 text-right"><img src="images/sign/seal.png" width="150px" /></td>
                 </tr>
                 <tr>
@@ -261,7 +274,7 @@
                             await Html.RenderPartialAsync("~/Views/ContractConsole/Module/SignHere.cshtml", _owner);}                            
                     </td>
                     <td class="p-0">
-                        主管簽核代表：<img src="@(ViewBag.Supervisor != null ? ((UserProfile)ViewBag.Supervisor).UserProfileExtension.Signature :_contract.Supervisor?.UserProfileExtension.Signature)" width="200px" height="150px" class="modifySignDialog_link" />                            
+                        主管簽核代表：<img src="@(ViewBag.Supervisor != null ? ((UserProfile)ViewBag.Supervisor).UserProfileExtension.Signature :_contract.Supervisor?.UserProfileExtension.Signature)"  width="150px" height="50px" class="modifySignDialog_link" />                            
                     </td>
                 </tr>
                 <tr>
@@ -273,7 +286,7 @@
                         await Html.RenderPartialAsync("~/Views/ContractConsole/Module/SignHere.cshtml", _owner);
                     }
                     </td>
-                    <td class="p-0">簽約體能顧問：<img src="@(_contract.ServingCoach.UserProfile.UserProfileExtension.Signature)" width="200px" height="85px" class="modifySignDialog_link" /></td>
+                    <td class="p-0">簽約體能顧問：<img src="@(_contract.ServingCoach.UserProfile.UserProfileExtension.Signature)" width="150px" height="50px" class="modifySignDialog_link" /></td>
                 </tr>
                 <tr>
                     <td class="p-t-0">日期：@(String.Format("{0:yyyy/MM/dd}", _signatureDate))</td>
@@ -282,17 +295,22 @@
             </table>
             }            
         </div>
-        <div style="@(_viewModel.Pdf=="1" ? "margin:0;padding:0;" : "")">
-            @if(_viewModel.Pdf == "1")
-            {
-                <h4 class="text-center" style="margin-bottom: 0px"><b>Beyond Fitness 顧問服務終止申請書</b></h4>
-            }
+        <div style="@(_viewModel.Pdf=="1" ? "page-break-before:always;margin:0;padding:0;" : "")">            
             @{
                 var invoice = _original.ContractPayment.FirstOrDefault()?.Payment.InvoiceItem;
                 var allowance = _original.ContractPayment.FirstOrDefault()?.Payment.InvoiceAllowance;
                 var product = invoice?.InvoiceDetails.FirstOrDefault()?.InvoiceProduct;
                 var productItem = product?.InvoiceProductItem.FirstOrDefault();
             }
+           
+            @if ( !(_model.CauseForEnding == (int)Naming.CauseForEnding.轉讓第三人
+                || _model.CauseForEnding == (int)Naming.CauseForEnding.合約到期轉新約
+                || totalPaid <= 0))
+            {
+                if(_viewModel.Pdf == "1")
+                {
+                    <h4 class="text-center" style="margin-bottom: 0px"><b>Beyond Fitness 顧問服務終止申請書</b></h4>
+                }
             <table class="table"style="@(_viewModel.Pdf=="1" ? "margin:0;padding:0;" : "")">
                 <tbody>
                     <tr style="border-width: 1px; border-top-style: dashed;background-color: #f2f2f2;">
@@ -341,10 +359,17 @@
                         </td>
                     </tr>
                 </tbody>
-            </table>
+            </table>            
+            }       
+            
+            @if (_viewModel.Pdf != "1" || 
+                   !(_model.CauseForEnding == (int)Naming.CauseForEnding.轉讓第三人
+                || _model.CauseForEnding == (int)Naming.CauseForEnding.合約到期轉新約
+                || totalPaid <= 0))
+            {
             <table class="table"style="@(_viewModel.Pdf=="1" ? "margin:0;padding:0;" : "")">                                                                       
                 <tr>
-                    @if (_contract.Status < (int)Naming.CourseContractStatus.待審核)
+                    @if (_contract.Status == (int)Naming.ContractServiceStatus.待簽名)
                     {
                         <td colspan="3">
                             <label class="fancy-checkbox custom-bgcolor-pink">
@@ -353,18 +378,18 @@
                             </label>
                         </td>
                     }
-                    else if (_contract.Status == (int)Naming.CourseContractStatus.待審核)
+                    else if (_contract.Status < (int)Naming.CourseContractStatus.待審核)
                     {
                         <td colspan="3">
                             <label class="fancy-checkbox custom-bgcolor-pink">
-                                <input type="checkbox" name="Agree" checked="checked" disabled="disabled" class="">
+                                <input type="checkbox" name="Agree" checked="checked" disabled="disabled">
                                 <span class="col-red">我已閱讀並同意超越體能顧問有限公司隱私政策、服務條款、相關使用及消費合約，即表示即日起您同意接受本合約正面及背面條款之相關約束及其責任。</span>
                             </label>
                         </td>
                     }
                     else
                     {
-                        <td colspan="3" style="padding:0"><span style="font-size:20px">☑</span> 我已閱讀並同意超越體能顧問有限公司隱私政策、服務條款、相關使用及消費合約，即表示即日起您同意接受本合約正面及背面條款之相關約束及其責任。</td>
+                        <td colspan="3" style="padding:0"><b style="font-size:20px">☑</b> <b>我已閱讀並同意超越體能顧問有限公司隱私政策、服務條款、相關使用及消費合約，即表示即日起您同意接受本合約正面及背面條款之相關約束及其責任。</b></td>
                     }
                 </tr>
                 <tr>
@@ -382,7 +407,7 @@
                             await Html.RenderPartialAsync("~/Views/ContractConsole/Module/SignHere.cshtml", _owner);}                            
                     </td>
                     <td class="p-0">
-                        主管簽核代表：<img src="@(ViewBag.Supervisor != null ? ((UserProfile)ViewBag.Supervisor).UserProfileExtension.Signature :_contract.Supervisor?.UserProfileExtension.Signature)" width="200px" height="85px" height="150px" class="modifySignDialog_link" />                            
+                            主管簽核代表：<img src="@(ViewBag.Supervisor != null ? ((UserProfile)ViewBag.Supervisor).UserProfileExtension.Signature :_contract.Supervisor?.UserProfileExtension.Signature)" width="150px" height="50px" class="modifySignDialog_link" />                            
                     </td>
                 </tr>
                 <tr>
@@ -394,13 +419,14 @@
                             await Html.RenderPartialAsync("~/Views/ContractConsole/Module/SignHere.cshtml", _owner);
                         }
                     </td>
-                    <td class="p-0">簽約體能顧問：<img src="@(_contract.ServingCoach.UserProfile.UserProfileExtension.Signature)" width="200px" height="85px" class="modifySignDialog_link" /></td>
+                        <td class="p-0">簽約體能顧問：<img src="@(_contract.ServingCoach.UserProfile.UserProfileExtension.Signature)" width="150px" height="50px" class="modifySignDialog_link" /></td>
                 </tr>
                 <tr>
                     <td class="p-t-0">日期：@(String.Format("{0:yyyy/MM/dd}", _signatureDate))</td>
                     <td class="p-0">日期：@(String.Format("{0:yyyy/MM/dd}", _signatureDate))</td>
                 </tr>                   
-            </table>
+            </table>    
+            } 
         </div>
     </div>
 </div>

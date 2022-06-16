@@ -21,7 +21,7 @@
     CourseContractViewModel _viewModel = (CourseContractViewModel)ViewBag.ViewModel;
 
     _modelState = ViewContext.ModelState;
-    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;    
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
     _model = (CourseContract)this.Model;
     _owner = _model.CourseContractMember.Where(m => m.UID == _model.OwnerID).First();
     var item = _model.CourseContractLevel.Where(l => l.LevelID == (int)Naming.CourseContractStatus.待審核).FirstOrDefault();
@@ -38,24 +38,19 @@
     <tbody>
         <tr>
             <td>
-                <h4 class="text-center" style="@(_viewModel.Pdf=="1" ? "margin:0;padding:0;" : "")"><b>Beyond Fitness<br />蒐集、處理及利用個人資料告知事項暨同意書</b></h4>
+                <h4 class="text-center" style="@(_viewModel.Pdf=="1" ? "margin:0;padding:0;" : "")"><b>Beyond
+                        Fitness<br />蒐集、處理及利用個人資料告知事項暨同意書</b></h4>
                 Beyond Fitness
                 即超越體能顧問有限公司（下稱「BF」）<b><u>基於建立、維繫和履行與台端間體能顧問服務(包含但不限於私人教練、運動防護、運動恢復、營養諮詢等服務以及課程履約保證)之需要</u></b>，而蒐集、處理、利用及國際傳輸台端之各項個人及往來等資料，<b>BF將尊重台端隱私權益，依誠實信用原則及正當合理方法而為之</b>。茲依個人資料保護法第8、9、19、20、54條規定，並參照法務部頒佈之「個人資料保護法之特定目的及個人資料之類別」，謹告知下列事項：
             </td>
         </tr>
         <tr>
             <td>
-                <ol start="1">
+                <ol>
                     <li>
                         <b>集個人資料之特定目的<br />為BF之企業營運管理、委託他人處理相關事務及其他法令所准許或要求之目的；包括下列項目：</b><br />063依法定義務所進行者、069契約、類似契約或其他法律關係事務、090客戶管理與服務、116場所進出安全管理、143
                         運動休閒業務、157調查、統計與研究分析、158 學員資料管理 、181其他經營合於營業登記項目或組織章程所定之業務。
                     </li>
-                </ol>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <ol start="2">
                     <li>
                         <b>蒐集個人資料之類別<br />以BF所實際蒐集者為準；包括下列項目：</b>
                         <ol>
@@ -68,12 +63,6 @@
                             <li>其他資訊C132，例如無法歸類之電子郵件等。</li>
                         </ol>
                     </li>
-                </ol>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <ol start="3">
                     <li>
                         <b>利用個人資料之期間、地區、對象及方式</b>
                         <ol>
@@ -83,12 +72,6 @@
                             <li>方式：符合個人資料保護相關法令，以電話、傳真、電子郵件、紙本或其他自動化或非自動化之適當方式。</li>
                         </ol>
                     </li>
-                </ol>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <ol start="4">
                     <li>
                         <b>就自己之個人資料，台端得依法行使下列權利：</b>
                         <ol>
@@ -98,21 +81,14 @@
                             <li>台端若擬行使上述任一權利，須檢附證明以書面提出請求，BF將即於法定期限內回覆處理決定。</li>
                         </ol>
                     </li>
-                </ol>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <ol start="5">
                     <li>
                         <b>BF向台端預收之部分費用，依法令規定須交付銀行（即信託業者）開立信託專戶管理，以辦理履約保證，以保障學員權益。故學員同意BF得於管理學員信託專戶之目的內，永久保存學員之真實姓名、連絡電話、聯絡地址及身分證字號等資訊。</b>
                     </li>
+                    <li>
+                        <b>台端得自由選擇是否提供各項個人資料，惟若選擇不提供時，台端
+                            <u>@(_model.ContractOwner.RealName)</u>明確認知，此將可能影響與BF間權利義務關係之建立、維繫或履行。</b>
+                    </li>
                 </ol>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <b>台端得自由選擇是否提供各項個人資料，惟若選擇不提供時，台端 <u>@(_model.ContractOwner.RealName)</u>明確認知，此將可能影響與BF間權利義務關係之建立、維繫或履行。</b>
             </td>
         </tr>
         <tr>
@@ -124,10 +100,11 @@
                         <span>就上開告知內容本人已受告知、並已充分知悉，本人同意BF得依本告知暨同意書之內容蒐集、處理、利用及國際傳輸本人之個人資料。就其中有關本人家屬和親友之個人資料，由本人負責告知，並使其充分知悉和同意本告知暨同意書之內容。</span>
                     </label>
                 }
-                else 
+                else
                 {
-                    <b style="font-size:20px">☑</b><b>就上開告知內容本人已受告知、並已充分知悉，本人同意BF得依本告知暨同意書之內容蒐集、處理、利用及國際傳輸本人之個人資料。就其中有關本人家屬和親友之個人資料，由本人負責告知，並使其充分知悉和同意本告知暨同意書之內容。</b>
-                }                
+                    <b
+                    style="font-size:20px">☑</b><b>就上開告知內容本人已受告知、並已充分知悉，本人同意BF得依本告知暨同意書之內容蒐集、處理、利用及國際傳輸本人之個人資料。就其中有關本人家屬和親友之個人資料，由本人負責告知，並使其充分知悉和同意本告知暨同意書之內容。</b>
+                }
             </td>
         </tr>
     </tbody>
@@ -151,7 +128,7 @@
         <tr>
             <td colspan="5">
                 ※與BF間權利義務關係解除後，為與台端保有日後再次提供服務之機會，請同意個人資料電子文件永久保存。<br />簽名：
-                @{ 
+                @{
                     ViewBag.SignatureName = "Signature1";
                     await Html.RenderPartialAsync("~/Views/ContractConsole/Module/SignHere.cshtml", _owner);
                 }

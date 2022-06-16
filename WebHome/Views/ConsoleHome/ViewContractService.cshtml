@@ -75,11 +75,11 @@
             {
                 if(_model.OperationMode==(int)Naming.OperationMode.快速終止)
                 {
-                    await Html.RenderPartialAsync("~/Views/ContractConsole/ContractService/CourseContractQuickTerminationView.cshtml", _model);
+                    await Html.RenderPartialAsync("~/Views/ContractConsole/ContractService/CourseContractQuickTerminationView20220601.cshtml", _model);
                 }
                 else
                 {
-                    await Html.RenderPartialAsync("~/Views/ContractConsole/ContractService/CourseContractTerminationView.cshtml", _model);
+                    await Html.RenderPartialAsync("~/Views/ContractConsole/ContractService/CourseContractTerminationView20220601.cshtml", _model);
                 }
             }
             else if (_model.Reason == "轉換體能顧問")

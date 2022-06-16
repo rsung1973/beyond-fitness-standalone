@@ -28725,3 +28725,40 @@ ul.checked-style li.closed::before {
 ul.checked-style li.closed {    
     color: #ec3b57;
 }
+
+
+.scroll-container {
+  width: 100%;
+  height: 33em;
+  margin: 0;
+  padding: 0 0 0 5px;
+  overflow-y: auto;
+  background-color: #e6e6e6;
+  scrollbar-color: #D4AA70 #e4e4e4;
+  scrollbar-width: thin;
+  border-radius: 15px;
+}
+
+.scroll-container::-webkit-scrollbar {
+  width: 10px;
+}
+.scroll-container::-webkit-scrollbar-thumb {
+  border-radius: 15px;
+  /* background-image:linear-gradient(45deg, #49cdd0, #ab9ae5); */
+  background-color: #999999;
+  box-shadow: inset 2px 2px 5px 0 rgba(#fff, 0.5);
+}
+
+.scroll-container:hover, .scroll-container:focus {
+  overflow-y: auto;
+}
+
+.scroll-container .scrollDown {
+    background-image: url(../images/down.png);
+    position: absolute;
+    bottom: 50px;
+    right: 20px;
+    width: 38px;
+    height: 38px;
+    z-index: 1;
+}

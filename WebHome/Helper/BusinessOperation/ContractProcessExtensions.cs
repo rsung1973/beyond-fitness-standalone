@@ -2298,7 +2298,8 @@ namespace WebHome.Helper.BusinessOperation
                 {
 
                     if (!(viewModel.CauseForEnding == Naming.CauseForEnding.轉讓第三人
-                        || viewModel.CauseForEnding == Naming.CauseForEnding.合約到期轉新約))
+                        || viewModel.CauseForEnding == Naming.CauseForEnding.合約到期轉新約
+                        || item.TotalPaidAmount() <= 0))
                     {
                         viewModel.BankID = viewModel.BankID.GetEfficientString();
                         if (viewModel.BankID == null)

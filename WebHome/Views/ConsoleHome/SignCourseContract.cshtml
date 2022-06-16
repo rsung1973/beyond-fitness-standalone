@@ -68,7 +68,7 @@
                             {
                                 <button type="button" class="btn btn-danger btn-round btn-simple btn-round waves-effect waves-red reedit" onclick="processContract(@(JsonConvert.SerializeObject(new { KeyID = _item.ContractID.EncryptKey(), Status = (int)Naming.CourseContractStatus.草稿, FromStatus = (int)Naming.CourseContractStatus.待簽名, Drawback = true, })));">內容錯誤，重新編輯</button>
                             }
-                            <button type="button" class="btn btn-primary btn-round waves-effect float-right next" onclick="confirmSignature();">確定，不後悔</button>
+                                <button type="button" class="btn btn-primary btn-round waves-effect float-right next" onclick="confirmSignature();">確定同意購買此合約</button>
                         }
                         else
                         {
