@@ -1046,6 +1046,23 @@ namespace WebHome.Controllers
                                            LessonTime ON LessonAttendance.LessonID = LessonTime.LessonID
                             WHERE   (LessonTime.RegisterID = {0})", item.Payment.TuitionInstallment.IntuitionCharge.RegisterLesson.RegisterID);
             }
+            else if (item.Payment.TransactionType == (int)Naming.PaymentTransactionType.手續費)
+            {
+                var revision = item.Payment.PaymentTransaction.PaymentContractTermination?.CourseContractTermination.CourseContractRevision;
+                if (revision != null)
+                {
+                    if (!revision.CourseContract.CourseContractAction.Any(c => c.ActionID == (int)CourseContractAction.ActionType.合約終止手續費))
+                    {
+                        revision.CourseContract.CourseContractAction
+                            .Add(
+                                new CourseContractAction
+                                {
+                                    ActionID = (int)CourseContractAction.ActionType.合約終止手續費
+                                });
+                        models.SubmitChanges();
+                    }
+                }
+            }
 
             if (item.Payment.InvoiceItem.InvoiceCancellation != null)
             {

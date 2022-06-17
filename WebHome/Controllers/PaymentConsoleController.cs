@@ -299,7 +299,6 @@ namespace WebHome.Controllers
                 viewModel.SellerID = contract.CourseContractExtension.BranchID;
             }
 
-            viewModel.PayoffAmount = 300;
             viewModel.CarrierId1 = contract.ContractOwner.UserProfileExtension?.CarrierNo;
             return View("~/Views/PaymentConsole/Module/EditPaymentForTerminationCharge.cshtml", contract);
         }

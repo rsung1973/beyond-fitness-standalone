@@ -21,6 +21,7 @@
     models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
     _modelState = ViewContext.ModelState;
     _viewModel = (PaymentViewModel)ViewBag.ViewModel;
+    _viewModel.PayoffAmount = 300;
 }
 @{
     UserProfile _profile = await Context.GetUserAsync();
@@ -44,14 +45,14 @@
                             });
                         </script>
                 </td>
-                <td class="text-right">300</td>
+                <td class="text-right">@(_viewModel.PayoffAmount)</td>
             </tr>
         </tbody>
         <tfoot>
             <tr>
                 <td>總計：</td>
                 <td class="text-danger text-right">
-                    <h6 id="payoffAmount">TWD 300</h6>
+                    <h6 id="payoffAmount">TWD @(_viewModel.PayoffAmount)</h6>
                 </td>
             </tr>
         </tfoot>
