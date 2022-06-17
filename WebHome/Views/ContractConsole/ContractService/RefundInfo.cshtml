@@ -60,7 +60,7 @@
                 <div class="alert-icon">
                     <i class="zmdi zmdi-alert-triangle"></i>
                 </div>
-                實際退還剩餘款項 0元
+                實際退還剩餘款項： 0元
             </div>
         </div>    
     <script>
@@ -99,17 +99,9 @@ else if (attendedCount > 0)
         }
         else 
         {
-            <div class="container">
-                <div class="alert-icon">
-                    <i class="zmdi zmdi-notifications"></i>
-                </div>
-                手續費 0元：免手續費
-            </div>
-        }
-        @{
             if (_viewModel.CauseForEnding == Naming.CauseForEnding.合約到期轉新約
             || _viewModel.CauseForEnding == Naming.CauseForEnding.轉讓第三人)
-            {
+            {                
                 <div class="container col-pink">
                     <div class="alert-icon">
                         <i class="zmdi zmdi-alert-triangle"></i>
@@ -117,12 +109,24 @@ else if (attendedCount > 0)
                     手續費 300元：額外付款
                 </div>
             }
+            else
+            {
+                <div class="container">
+                    <div class="alert-icon">
+                        <i class="zmdi zmdi-notifications"></i>
+                    </div>
+                    手續費 0元：特殊情況免手續費
+                </div>
+            }
+        }
+        @{
+            
         }
         <div class="container col-pink">
             <div class="alert-icon">
                 <i class="zmdi zmdi-alert-triangle"></i>
             </div>
-            實際退還剩餘款項 @($"{remained - processingFee:##,###,###,###}")
+            實際退還剩餘款項： @($"{remained - processingFee:##,###,###,###}") 元
         </div>        
     </div>
 }
@@ -145,7 +149,7 @@ else if ((DateTime.Today - _model.ValidFrom.Value).TotalDays < 8)
             <div class="alert-icon">
                 <i class="zmdi zmdi-alert-triangle"></i>
             </div>
-            實際退還剩餘款項 @(String.Format("{0:##,###,###,###}", totalPaid))
+            實際退還剩餘款項： @(String.Format("{0:##,###,###,###}", totalPaid)) 元
         </div>        
     </div>
 
@@ -173,13 +177,13 @@ else
                     <div class="alert-icon">
                         <i class="zmdi zmdi-notifications"></i>
                     </div>
-                    手續費 0元：免手續費
+                    手續費 0元：特殊情況免手續費
             </div>        
             <div class="container col-pink">
                 <div class="alert-icon">
                     <i class="zmdi zmdi-alert-triangle"></i>
                 </div>
-                實際退還剩餘款項 @(String.Format("{0:##,###,###,###}", totalPaid - processingFee))
+                實際退還剩餘款項： @(String.Format("{0:##,###,###,###}", totalPaid - processingFee)) 元
             </div>        
         </div>
     }
@@ -204,7 +208,7 @@ else
                 <div class="alert-icon">
                     <i class="zmdi zmdi-alert-triangle"></i>
                 </div>
-                實際退還剩餘款項 @(String.Format("{0:##,###,###,###}", totalPaid))
+                實際退還剩餘款項： @(String.Format("{0:##,###,###,###}", totalPaid)) 元
             </div>        
         </div>
     } 
@@ -229,7 +233,7 @@ else
                 <div class="alert-icon">
                     <i class="zmdi zmdi-alert-triangle"></i>
                 </div>
-                實際退還剩餘款項 @(String.Format("{0:##,###,###,###}", totalPaid - processingFee))
+                實際退還剩餘款項： @(String.Format("{0:##,###,###,###}", totalPaid - processingFee)) 元
             </div>        
         </div>
     }    
