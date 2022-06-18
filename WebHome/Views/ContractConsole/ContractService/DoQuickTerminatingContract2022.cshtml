@@ -71,8 +71,8 @@
             <form enctype="multipart/form-data" method="post">
                 <div>
                     @{
-                        ViewBag.DropifyExtension = "gif jpg jpeg png pdf";
-                        await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/DropifyFileUpload.cshtml", model: "diagnosis");
+                        ViewBag.DropifyExtension = "pdf";
+                        await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/DropifyFileUpload.cshtml", model: "attachment");
                     }
                 </div>
             </form>

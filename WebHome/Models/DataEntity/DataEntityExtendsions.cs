@@ -555,7 +555,7 @@ namespace WebHome.Models.DataEntity
                             ? item.ContractPayment.CourseContract.CourseContractType.IsGroup == true
                                 ? String.Join("/", item.ContractPayment.CourseContract.CourseContractMember.Select(m => m.UserProfile).ToArray().Select(u => u.FullName()))
                                 : item.ContractPayment.CourseContract.ContractOwner.FullName()
-                            : insteadOfNull;
+                            : item.PaymentTransaction.PaymentContractTermination?.CourseContractTermination.CourseContractRevision.CourseContract.ContractOwner.FullName() ?? insteadOfNull;
         }
 
         public static UserProfile Payer(this Payment item)
@@ -811,6 +811,7 @@ namespace WebHome.Models.DataEntity
         {
             轉換課程堂數 = 1,
             合約終止手續費 = 2,
+            免收手續費 = 3,
         }
 
     }

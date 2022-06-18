@@ -51,16 +51,28 @@
                     function check(element) {
                         $('input:checkbox[name="BySelf"]').prop('checked', false);
                         $(element).prop('checked', true);
-                        if (element.value == '@((int)Naming.Actor.ByOther)') {
-                            $('.byOther').css('display', 'block');
-                        } else {
-                            $('.byOther').css('display', 'none');
-                        }
+                        checkAttachment();
                     }
                     $('input:checkbox[name="BySelf"]').on('click', function (event) {
                         check(this);
                     });
                 });
+
+                function checkAttachment() {
+                    $('.attachment').css('display', 'none');
+                    $('.byOther').css('display', 'none');
+                    $('.byPaper').css('display', 'none');
+                    if ($('input:checkbox[name="BySelf"]:checked').val() == '@((int)Naming.Actor.ByOther)') {
+                        $('.byOther').css('display', 'block');
+                        $('.attachment').css('display', 'block');
+                    } 
+                    if ($('select[name="CauseForEnding"]').val() == '@((int)Naming.CauseForEnding.不宜運動)') {
+                        if ($('.byOther').css('display') != 'block') {
+                            $('.byPaper').css('display', 'block');
+                        }
+                        $('.attachment').css('display', 'block');
+                    }
+                }
             </script>
         </div>
         <div class="col-12">
@@ -82,7 +94,7 @@
             </select>
         </div>
 
-        <div class="col-12 m-t-30 byOther" style="display:none;">
+        <div class="col-12 m-t-30 attachment" style="display:none;">
             @*@{
                 ViewBag.DropifyExtension = "pdf";
             }
@@ -100,23 +112,24 @@
                     };
                 });
             </script>*@
-            <h6><i class="zmdi zmdi-cloud-upload"></i> 上傳超越體能顧問有限公司代辦委託書/相關證明(一份PDF)</h6>
+            <h6 class="byOther" style="display:none;"><i class="zmdi zmdi-cloud-upload"></i> 上傳超越體能顧問有限公司代辦委託書/相關證明/檢附醫生證明(一份PDF)</h6>
+            <h6 class="byPaper" style="display:none;"><i class="zmdi zmdi-cloud-upload"></i> 檢附醫生證明(一份PDF)</h6>            
             <div>
                 @{
-                    ViewBag.DropifyExtension = "gif jpg jpeg png pdf";
+                    ViewBag.DropifyExtension = "pdf";
                     await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/DropifyFileUpload.cshtml", model: "attachment");
                 }
             </div>
         </div>
-        <div class="col-12 m-t-30 byPaper" style="display:none;">
+        @*<div class="col-12 m-t-30 byPaper" style="display:none;">
             <h6><i class="zmdi zmdi-cloud-upload"></i> 檢附醫生證明(一份PDF)</h6>
             <div>
                 @{
-                    ViewBag.DropifyExtension = "gif jpg jpeg png pdf";
+                    ViewBag.DropifyExtension = "pdf";
                     await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/DropifyFileUpload.cshtml", model: "diagnosis");
                 }
             </div>
-        </div>
+        </div>*@
         <div class="col-12">
             <div class="form-group">
                 <textarea rows="3" class="form-control no-resize" name="Remark" placeholder="請輸入任何想補充的事項..."></textarea>
@@ -198,11 +211,7 @@ function buildRefundInfo(totalPaid) {
             }
         });
 
-        if($formData.CauseForEnding == '@((int)Naming.CauseForEnding.不宜運動)') {
-            $('.byPaper').css('display','block');
-        } else {
-            $('.byPaper').css('display','none');
-        }
+        checkAttachment();
 
         if($formData.CauseForEnding == '@((int)Naming.CauseForEnding.合約到期轉新約)'
             || $formData.CauseForEnding == '@((int)Naming.CauseForEnding.轉讓第三人)'

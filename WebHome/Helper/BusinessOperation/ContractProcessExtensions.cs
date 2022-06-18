@@ -2288,9 +2288,9 @@ namespace WebHome.Helper.BusinessOperation
                 }
                 else if (viewModel.CauseForEnding == Naming.CauseForEnding.不宜運動)
                 {
-                    if (diagnosisPaper == null)
+                    if (attachment == null)
                     {
-                        ModelState.AddModelError("diagnosis", "請檢附醫生證明");
+                        ModelState.AddModelError("attachment", "請檢附醫生證明");
                     }
                 }
 

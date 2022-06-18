@@ -29,7 +29,9 @@
             var PTShare = PTShareItems.Sum(p => p.ShareAmount) ?? 0;
             var PIShareItems = items.Where(p => p.TransactionType == (int)Naming.PaymentTransactionType.自主訓練).GetPaymentAchievement(models, coachItems);
             var PIShare = PIShareItems.Sum(p => p.ShareAmount) ?? 0;
-            var othersShare = items.Where(p => p.TransactionType == (int)Naming.PaymentTransactionType.運動商品 || p.TransactionType == (int)Naming.PaymentTransactionType.食飲品).GetPaymentAchievement(models, coachItems).Sum(p => p.ShareAmount) ?? 0;
+            var othersShare = items.Where(p => p.TransactionType == (int)Naming.PaymentTransactionType.運動商品 
+                || p.TransactionType == (int)Naming.PaymentTransactionType.食飲品
+                || p.TransactionType == (int)Naming.PaymentTransactionType.手續費).GetPaymentAchievement(models, coachItems).Sum(p => p.ShareAmount) ?? 0;
         }
         P.T：<a href="#" onclick='showPaymentList(@Html.Raw(JsonConvert.SerializeObject(
             new
@@ -51,7 +53,8 @@
                 PayoffDateFrom = DateTime.Today.FirstDayOfMonth(),
                 CompoundType = new Naming.PaymentTransactionType?[] {
                     Naming.PaymentTransactionType.運動商品,
-                    Naming.PaymentTransactionType.食飲品
+                    Naming.PaymentTransactionType.食飲品,
+                    Naming.PaymentTransactionType.手續費
                 },
                 ShareFor = _viewModel.RelatedID,
             })));'>@($"{othersShare:##,###,###,##0}")</a>
