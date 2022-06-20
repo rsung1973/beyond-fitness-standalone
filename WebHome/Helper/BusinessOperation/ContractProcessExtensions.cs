@@ -2103,18 +2103,21 @@ namespace WebHome.Helper.BusinessOperation
                         return null;
                     }
 
-                    if (item.CauseForEnding == (int)Naming.CauseForEnding.轉讓第三人 
-                        || item.CauseForEnding == (int)Naming.CauseForEnding.合約到期轉新約)
+                    if (!item.SourceContract.CourseContractAction.Any(a => a.ActionID == (int)CourseContractAction.ActionType.免收手續費))
                     {
-                        if (!item.CourseContract.CourseContractAction.Any(c => c.ActionID == (int)CourseContractAction.ActionType.合約終止手續費))
+                        if (item.CauseForEnding == (int)Naming.CauseForEnding.轉讓第三人
+                            || item.CauseForEnding == (int)Naming.CauseForEnding.合約到期轉新約)
                         {
-                            item.CourseContract.CourseContractAction
-                                .Add(
-                                    new CourseContractAction
-                                    {
-                                        ActionID = (int)CourseContractAction.ActionType.合約終止手續費
-                                    });
-                            models.SubmitChanges();
+                            if (!item.CourseContract.CourseContractAction.Any(c => c.ActionID == (int)CourseContractAction.ActionType.合約終止手續費))
+                            {
+                                item.CourseContract.CourseContractAction
+                                    .Add(
+                                        new CourseContractAction
+                                        {
+                                            ActionID = (int)CourseContractAction.ActionType.合約終止手續費
+                                        });
+                                models.SubmitChanges();
+                            }
                         }
                     }
                 }

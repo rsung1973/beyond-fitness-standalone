@@ -75,8 +75,9 @@ else if (attendedCount > 0)
 {
     var remained = _model.CalculateReturnAmount(totalPaid, out processingFee);
     if (_viewModel.CauseForEnding == Naming.CauseForEnding.合約到期轉新約
-    || _viewModel.CauseForEnding == Naming.CauseForEnding.轉讓第三人
-    || _viewModel.CauseForEnding == Naming.CauseForEnding.不宜運動)
+        || _viewModel.CauseForEnding == Naming.CauseForEnding.轉讓第三人
+        || _viewModel.CauseForEnding == Naming.CauseForEnding.不宜運動
+        || _model.CourseContractAction.Any(a => a.ActionID == (int)CourseContractAction.ActionType.免收手續費))
     {
         processingFee = 0;
     }
@@ -99,8 +100,9 @@ else if (attendedCount > 0)
         }
         else 
         {
-            if (_viewModel.CauseForEnding == Naming.CauseForEnding.合約到期轉新約
-            || _viewModel.CauseForEnding == Naming.CauseForEnding.轉讓第三人)
+            if ((_viewModel.CauseForEnding == Naming.CauseForEnding.合約到期轉新約
+                    || _viewModel.CauseForEnding == Naming.CauseForEnding.轉讓第三人)
+                && !_model.CourseContractAction.Any(a => a.ActionID == (int)CourseContractAction.ActionType.免收手續費))
             {                
                 <div class="container col-pink">
                     <div class="alert-icon">
@@ -163,7 +165,8 @@ else if ((DateTime.Today - _model.ValidFrom.Value).TotalDays < 8)
 }
 else
 {
-    if (_viewModel.CauseForEnding == Naming.CauseForEnding.不宜運動)
+    if (_viewModel.CauseForEnding == Naming.CauseForEnding.不宜運動
+        || _model.CourseContractAction.Any(a => a.ActionID == (int)CourseContractAction.ActionType.免收手續費))
     {
         processingFee = 0;
         <div class="alert xl-pink col-darkteal" role="alert">
