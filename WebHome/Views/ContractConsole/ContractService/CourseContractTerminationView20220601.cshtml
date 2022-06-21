@@ -208,10 +208,10 @@
                                         returnAmt = remained;
                                         <text>並另外收取手續費新台幣300元整。</text>
                                     }
-                                    else if (_model.CauseForEnding == (int)Naming.CauseForEnding.不宜運動)
+                                    else if (_model.CauseForEnding == (int)Naming.CauseForEnding.不宜運動 || _original.CourseContractAction.Any(a => a.ActionID == (int)CourseContractAction.ActionType.免收手續費))
                                     {
                                         returnAmt = remained;
-                                        <text>因特殊情況免手續費。</text>
+                                        <text>並減免手續費。</text>
                                     }
                                     else
                                     {
@@ -227,11 +227,11 @@
                                 }
                                 else
                                 {
-                                    if (_model.CauseForEnding == (int)Naming.CauseForEnding.不宜運動) 
+                                    if (_model.CauseForEnding == (int)Naming.CauseForEnding.不宜運動 || _original.CourseContractAction.Any(a => a.ActionID == (int)CourseContractAction.ActionType.免收手續費))
                                     {                                        
                                         returnAmt = totalPaid;
                                         <text>
-                                            合約簽訂後逾七日未使用所約定服務(課程)而解除合約，已繳服務總費用新台幣@(String.Format("{0:##,###,###,###}", totalPaid))元整，因特殊情況免手續費，全額退還學員已繳費用。
+                                            合約簽訂後逾七日未使用所約定服務(課程)而解除合約，已繳服務總費用新台幣@(String.Format("{0:##,###,###,###}", totalPaid))元整，並減免手續費，全額退還學員已繳費用。
                                         </text>
                                     }
                                     else
