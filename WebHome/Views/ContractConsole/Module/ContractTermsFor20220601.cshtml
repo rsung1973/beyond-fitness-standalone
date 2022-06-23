@@ -408,3 +408,21 @@
         </tbody>
     </table>
 </div>
+<script>
+$(function(){
+    $global.hasViewedDetails = false;
+	$('.scroll-container').scroll(function(){ 
+		//scroll-container捲軸高度
+		var scrollHeight = $('.scroll-container').prop('scrollHeight');
+		//scroll-container顯示高度
+		var height = $('.scroll-container').height();
+		//捲到底的高度
+		var total = scrollHeight-height * 2;
+		
+		if($('.scroll-container').scrollTop() > total ) { 
+			    $global.hasViewedDetails = true;
+		} 
+	});
+});
+
+</script>

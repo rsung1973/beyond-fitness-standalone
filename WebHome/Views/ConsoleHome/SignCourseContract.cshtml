@@ -102,6 +102,15 @@
         }
 
         function confirmSignature() {
+            if ($global.hasViewedDetails != true) {
+                Swal.fire(
+                    'Oops...',
+                    '請先詳讀BEYOND FITNESS產品及服務特約條款',
+                    'warning'
+                );
+
+                return ;
+            }
             showLoading();
             $.post('@Html.Raw(Url.Action("ConfirmSignature","ContractConsole",new { KeyID = _item.ContractID.EncryptKey() }))',
                 {
@@ -117,7 +126,7 @@
                             'Oops...',
                             data.message,
                             'warning'
-                        )
+                        );
                     }
                     else {
                         $(data).appendTo($('body'));
