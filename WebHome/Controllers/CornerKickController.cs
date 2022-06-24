@@ -970,6 +970,14 @@ namespace WebHome.Controllers
         }
 
         [Authorize]
+        public async Task<ActionResult> AnnouncementAsync()
+        {
+            var profile = (await HttpContext.GetUserAsync()).LoadInstance(models);
+            return View(profile);
+        }
+
+
+        [Authorize]
         public async Task<ActionResult> LearnerTrainingGoalAsync()
         {
             var profile = (await HttpContext.GetUserAsync()).LoadInstance(models);

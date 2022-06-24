@@ -223,6 +223,14 @@
                         </ul>
                     </div>
                     <!-- // End of 活動通知 -->
+                    <!-- 公告條款 -->
+                    <div class="goal-block">
+                        <div class="parallax-container" onclick="javascript:gtag('event', '公告訊息', {  'event_category': '卡片點擊',  'event_label': '卡片總覽'});window.location.assign('@(Url.Action("Announcement","CornerKick"))');">
+                            <div class="parallax"><img src="images/carousel/announcement_background.jpg">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 公告條款 -->
                     <!-- 體能分析圖 -->
                     @{ await Html.RenderPartialAsync("~/Views/CornerKick/Module/BodyFitness.cshtml", _model);}
 
