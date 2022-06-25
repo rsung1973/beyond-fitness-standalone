@@ -17,7 +17,6 @@
     ModelSource<UserProfile> models;
     UserProfile _model;
 
-
     _modelState = (ModelStateDictionary)ViewBag.ModelState;
     models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];
     _model = (UserProfile)this.Model;
@@ -116,7 +115,12 @@
             <!-- // End of main -->
             <!-- Button -->
             <div class="content-area">
-                <button class="btn waves-effect waves-light btn-send" type="submit" name="action">確定了解與同意</button>
+                @{
+                    UserEvent eventItem = ViewBag.EventItem as UserEvent;
+                }
+                <form action="@(Url.Action("CommitCurrentUserEvent","CornerKick",new { KeyID = eventItem?.EventID.EncryptKey()}))" method="post">
+                    <button class="btn waves-effect waves-light btn-send" type="submit" name="action">確定了解與同意</button>
+                </form>
             </div>
             <!--// End of button-->
         </div>

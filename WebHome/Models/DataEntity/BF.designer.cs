@@ -645,6 +645,9 @@ namespace WebHome.Models.DataEntity
     partial void InsertPaymentContractTermination(PaymentContractTermination instance);
     partial void UpdatePaymentContractTermination(PaymentContractTermination instance);
     partial void DeletePaymentContractTermination(PaymentContractTermination instance);
+    partial void InsertUserEventCommitment(UserEventCommitment instance);
+    partial void UpdateUserEventCommitment(UserEventCommitment instance);
+    partial void DeleteUserEventCommitment(UserEventCommitment instance);
     #endregion
 		
 		public BFDataContext() : 
@@ -2378,6 +2381,14 @@ namespace WebHome.Models.DataEntity
 			get
 			{
 				return this.GetTable<PaymentContractTermination>();
+			}
+		}
+		
+		public System.Data.Linq.Table<UserEventCommitment> UserEventCommitment
+		{
+			get
+			{
+				return this.GetTable<UserEventCommitment>();
 			}
 		}
 		
@@ -46668,6 +46679,8 @@ namespace WebHome.Models.DataEntity
 		
 		private EntitySet<GroupEvent> _GroupEvent;
 		
+		private EntityRef<UserEventCommitment> _UserEventCommitment;
+		
 		private EntityRef<BranchStore> _BranchStore;
 		
 		private EntityRef<UserProfile> _UserProfile;
@@ -46705,6 +46718,7 @@ namespace WebHome.Models.DataEntity
 		public UserEvent()
 		{
 			this._GroupEvent = new EntitySet<GroupEvent>(new Action<GroupEvent>(this.attach_GroupEvent), new Action<GroupEvent>(this.detach_GroupEvent));
+			this._UserEventCommitment = default(EntityRef<UserEventCommitment>);
 			this._BranchStore = default(EntityRef<BranchStore>);
 			this._UserProfile = default(EntityRef<UserProfile>);
 			this._SystemEventBulletin = default(EntityRef<SystemEventBulletin>);
@@ -46953,6 +46967,35 @@ namespace WebHome.Models.DataEntity
 			set
 			{
 				this._GroupEvent.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserEvent_UserEventCommitment", Storage="_UserEventCommitment", ThisKey="EventID", OtherKey="EventID", IsUnique=true, IsForeignKey=false)]
+		public UserEventCommitment UserEventCommitment
+		{
+			get
+			{
+				return this._UserEventCommitment.Entity;
+			}
+			set
+			{
+				UserEventCommitment previousValue = this._UserEventCommitment.Entity;
+				if (((previousValue != value) 
+							|| (this._UserEventCommitment.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._UserEventCommitment.Entity = null;
+						previousValue.UserEvent = null;
+					}
+					this._UserEventCommitment.Entity = value;
+					if ((value != null))
+					{
+						value.UserEvent = this;
+					}
+					this.SendPropertyChanged("UserEventCommitment");
+				}
 			}
 		}
 		
@@ -64605,6 +64648,133 @@ namespace WebHome.Models.DataEntity
 						this._PaymentID = default(int);
 					}
 					this.SendPropertyChanged("PaymentTransaction");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.UserEventCommitment")]
+	public partial class UserEventCommitment : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _EventID;
+		
+		private System.DateTime _CommitmentDate;
+		
+		private EntityRef<UserEvent> _UserEvent;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnEventIDChanging(int value);
+    partial void OnEventIDChanged();
+    partial void OnCommitmentDateChanging(System.DateTime value);
+    partial void OnCommitmentDateChanged();
+    #endregion
+		
+		public UserEventCommitment()
+		{
+			this._UserEvent = default(EntityRef<UserEvent>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EventID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int EventID
+		{
+			get
+			{
+				return this._EventID;
+			}
+			set
+			{
+				if ((this._EventID != value))
+				{
+					if (this._UserEvent.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnEventIDChanging(value);
+					this.SendPropertyChanging();
+					this._EventID = value;
+					this.SendPropertyChanged("EventID");
+					this.OnEventIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CommitmentDate", DbType="DateTime NOT NULL")]
+		public System.DateTime CommitmentDate
+		{
+			get
+			{
+				return this._CommitmentDate;
+			}
+			set
+			{
+				if ((this._CommitmentDate != value))
+				{
+					this.OnCommitmentDateChanging(value);
+					this.SendPropertyChanging();
+					this._CommitmentDate = value;
+					this.SendPropertyChanged("CommitmentDate");
+					this.OnCommitmentDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserEvent_UserEventCommitment", Storage="_UserEvent", ThisKey="EventID", OtherKey="EventID", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public UserEvent UserEvent
+		{
+			get
+			{
+				return this._UserEvent.Entity;
+			}
+			set
+			{
+				UserEvent previousValue = this._UserEvent.Entity;
+				if (((previousValue != value) 
+							|| (this._UserEvent.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._UserEvent.Entity = null;
+						previousValue.UserEventCommitment = null;
+					}
+					this._UserEvent.Entity = value;
+					if ((value != null))
+					{
+						value.UserEventCommitment = this;
+						this._EventID = value.EventID;
+					}
+					else
+					{
+						this._EventID = default(int);
+					}
+					this.SendPropertyChanged("UserEvent");
 				}
 			}
 		}

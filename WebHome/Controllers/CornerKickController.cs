@@ -499,6 +499,39 @@ namespace WebHome.Controllers
         }
 
         [Authorize]
+        public async Task<ActionResult> CommitCurrentUserEventAsync(UserEventViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            var profile = (await HttpContext.GetUserAsync()).LoadInstance(models);
+
+            if (viewModel.KeyID != null)
+            {
+                viewModel.EventID = viewModel.DecryptKeyValue();
+            }
+
+            var eventItem = models.GetTable<UserEvent>()
+                    .Where(v => v.EventID == viewModel.EventID)
+                    .Where(v => v.UID == profile.UID)
+                    .FirstOrDefault();
+
+            if (eventItem != null)
+            {
+                if (eventItem.UserEventCommitment == null)
+                {
+                    eventItem.UserEventCommitment = new UserEventCommitment
+                    {
+                        CommitmentDate = DateTime.Now,
+                    };
+                    models.SubmitChanges();
+                }
+            }
+
+            return View("~/Views/CornerKick/LearnerIndex.cshtml", profile);
+
+        }
+
+
+        [Authorize]
         public async Task<ActionResult> AnswerDailyQuestionAsync()
         {
             var profile = await HttpContext.GetUserAsync();
@@ -970,10 +1003,28 @@ namespace WebHome.Controllers
         }
 
         [Authorize]
-        public async Task<ActionResult> AnnouncementAsync()
+        public async Task<ActionResult> AnnouncementAsync(UserEventViewModel viewModel)
         {
             var profile = (await HttpContext.GetUserAsync()).LoadInstance(models);
-            return View(profile);
+            if (viewModel.KeyID != null)
+            {
+                viewModel.EventID = viewModel.DecryptKeyValue();
+            }
+
+            var eventItem = models.GetTable<UserEvent>()
+                    .Where(v => v.EventID == viewModel.EventID)
+                    .Where(v => v.UID == profile.UID)
+                    .FirstOrDefault();
+
+            if (eventItem != null)
+            {
+                ViewBag.EventItem = eventItem;
+                return View(profile);
+            }
+            else
+            {
+                return View("~/Views/CornerKick/LearnerIndex.cshtml", profile);
+            }
         }
 
 

@@ -45,8 +45,8 @@
         </div>
     </li>
     <li><a href="javascript:gtag('event', '我的行事曆', {  'event_category': '連結點擊',  'event_label': '漢堡選單'});window.location.href = '@(Url.Action("LearnerCalendar","CornerKick"))';">我的行事曆</a></li>
-    @{ TimelineEvent eventItem = _model.CheckLessonAttendanceEvent(models);}
     @{ 
+        TimelineEvent eventItem = _model.CheckLessonAttendanceEvent(models);
         if (eventItem != null)
         {
             _items.Add(eventItem);
@@ -58,6 +58,12 @@
         }
 
         eventItem = _model.CheckUserGuideEvent(models);
+        if (eventItem != null)
+        {
+            _items.Add(eventItem);
+        }
+
+        eventItem = _model.CheckCurrentAnnouncementEvent(models);
         if (eventItem != null)
         {
             _items.Add(eventItem);

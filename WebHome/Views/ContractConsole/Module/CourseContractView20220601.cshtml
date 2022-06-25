@@ -169,7 +169,12 @@
                         <td colspan="3" style="height: 1.5cm">                                                        
                             @if (_model.Status == (int)Naming.CourseContractStatus.待審核)
                             {
-                                <text>備註：@(_model.Remark)@(_model.Remark !=null ? "<br/>" : null)  @(CourseContractExtension.PriceAdjustment[_model.CourseContractExtension.UnitPriceAdjustmentType??0])</text>
+                                <text>備註：@(_model.Remark)</text>
+                                if(_model.Remark !=null)
+                                {
+                                    <br/>
+                                }
+                                <text>@(CourseContractExtension.PriceAdjustment[_model.CourseContractExtension.UnitPriceAdjustmentType??0])</text>
                             }
                             else
                             {

@@ -47,6 +47,11 @@ namespace WebHome.Models.Timeline
         public IQueryable<UserEvent> GuideEventList { get; set; }
     }
 
+    public class SimpleAnnouncementEvent : TimelineEvent
+    {
+        public UserEvent Announcement { get; set; }
+    }
+
     public class ExpiringContractEvent : TimelineEvent
     {
         public CourseContract ExpiringContract { get; set; }

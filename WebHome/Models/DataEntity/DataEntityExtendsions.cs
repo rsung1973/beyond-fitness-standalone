@@ -857,4 +857,14 @@ namespace WebHome.Models.DataEntity
         }
     }
 
+    public partial class SystemEventBulletin
+    {
+        public enum BulletinEventType
+        {
+            新手上路 = 1,
+            新手上路導覽推播 = 2,
+            系統公告 = 3,
+        }
+    }
+
 }

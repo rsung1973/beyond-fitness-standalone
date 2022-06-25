@@ -25,11 +25,13 @@
     models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];
     _model = (UserProfile)this.Model;
 
-    var userEventItem = models.GetTable<UserEvent>().Where(v => v.UID == _model.UID && v.SystemEventID == 2).FirstOrDefault();
+    var userEventItem = models.GetTable<UserEvent>().Where(v => v.UID == _model.UID && v.SystemEventID == (int)SystemEventBulletin.BulletinEventType.新手上路導覽推播).FirstOrDefault();
     if (userEventItem != null)
     {
         Context.Response.Redirect(Url.Action("StartNavigation", "CornerKick", new UserEventViewModel { CreateNew = true, KeyID = userEventItem.EventID.EncryptKey() }));
     }
+
+    SimpleAnnouncementEvent announcement = null;
 }
 <!DOCTYPE html>
 <html>
@@ -110,9 +112,11 @@
                         </li>
                     </ul>
                     <!-- 側邊選單 -->
-                    @{ List<TimelineEvent> events = new List<TimelineEvent>();
+                    @{ 
+                        List<TimelineEvent> events = new List<TimelineEvent>();
                         ViewBag.UserNotice = events;
-                        await Html.RenderPartialAsync("~/Views/CornerKick/Module/SlideOut.cshtml", _model);}
+                        await Html.RenderPartialAsync("~/Views/CornerKick/Module/SlideOut.cshtml", _model);
+                    }
 
                     <a href="@(Url.Action("LearnerCalendar","CornerKick"))" data-activates="slide-out" class="button-collapse">
                         <i class="livicon-evo" data-options="name: morph-menu-collapse.svg; size: 40px; style: lines; strokeColor:#0f244a; strokeWidth:2px; autoPlay:true"></i>
@@ -150,6 +154,13 @@
                                             <li><a href="javascript:gtag('event', '新手上路', {  'event_category': '下拉式選單點擊',  'event_label': '卡片總覽'});window.location.href = '@(Url.Action(eventItem.SystemEventBulletin.ActionName,eventItem.SystemEventBulletin.ControllerName,new { keyID =  eventItem.EventID.EncryptKey() }))';">@(_model.UserProfileExtension.Gender=="F" ? "親愛的" : "兄弟")，跟著 Beyond 走，新手導航去 <i class="material-icons right">arrow_forward</i></a> </li>
                                         }
                                     }
+
+                                    announcement = events.Where(v => v is SimpleAnnouncementEvent).FirstOrDefault() as SimpleAnnouncementEvent;
+                                    if (announcement != null)
+                                    {
+                                        <li><a href="javascript:gtag('event', '公告訊息', {  'event_category': '下拉式選單點擊',  'event_label': '卡片總覽'});window.location.href = '@Html.Raw(Url.Action("Announcement","CornerKick",new { KeyID = HttpUtility.UrlEncode(announcement.Announcement.EventID.EncryptKey())}))';">@(_model.UserProfileExtension.Gender=="F" ? "親愛的" : "兄弟")，學員約定條款變更通知 <i class="material-icons right">arrow_forward</i></a></li>
+                                    }
+
                                     item = events.Where(v => v is PersonalExercisePurposeEvent && !(v is PersonalExercisePurposeAccomplishedEvent)).FirstOrDefault();
                                     if (item != null)
                                     {
@@ -215,21 +226,25 @@
                         </ul>
                         <ul class="hide-on-med-and-down notice-non">
                             <!-- Dropdown Trigger -->
-                            @{ var endDate = DateTime.Today.AddDays(1);
+                            @{ 
+                                var endDate = DateTime.Today.AddDays(1);
                                 var startDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
-                                var totalMinutes = _model.TotalLessonMinutes(models, startDate, endDate);}
-
+                                var totalMinutes = _model.TotalLessonMinutes(models, startDate, endDate);
+                            }
                             <li><a class="dropdown-button" data-activates="dropdown2">本月：<span class="f-green countuptime" data-to="@(totalMinutes)">@(totalMinutes)</span>分鐘（<span class="f-green countuptime" data-to="@(totalMinutes/60)">@(totalMinutes/60)</span>小時:<span class="f-green countuptime" data-to="@(totalMinutes % 60)">@(totalMinutes % 60)</span>分鐘）</a></li>
                         </ul>
                     </div>
                     <!-- // End of 活動通知 -->
                     <!-- 公告條款 -->
-                    <div class="goal-block">
-                        <div class="parallax-container" onclick="javascript:gtag('event', '公告訊息', {  'event_category': '卡片點擊',  'event_label': '卡片總覽'});window.location.assign('@(Url.Action("Announcement","CornerKick"))');">
-                            <div class="parallax"><img src="images/carousel/announcement_background.jpg">
+                    @if (announcement != null)
+                    {
+                        <div class="goal-block">
+                            <div class="parallax-container" onclick="javascript:gtag('event', '公告訊息', {  'event_category': '卡片點擊',  'event_label': '卡片總覽'});window.location.assign('@Html.Raw(Url.Action("Announcement","CornerKick",new { KeyID = HttpUtility.UrlEncode(announcement.Announcement.EventID.EncryptKey()) }))');">
+                                <div class="parallax"><img src="images/carousel/announcement_background.jpg">
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    }
                     <!-- 公告條款 -->
                     <!-- 體能分析圖 -->
                     @{ await Html.RenderPartialAsync("~/Views/CornerKick/Module/BodyFitness.cshtml", _model);}
