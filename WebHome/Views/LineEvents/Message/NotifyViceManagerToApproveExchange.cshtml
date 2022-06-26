@@ -28,12 +28,12 @@
   "messages": [
     {
       "type": "flex",
-      "altText": "您有一張展延服務申請等待您審核",
+      "altText": "您有一張轉換課程堂數服務申請等待您審核",
       "contents": {
         "type": "bubble",
         "hero": {
           "type": "image",
-          "url": "https://www.beyond-fitness.com.tw/ConsoleHome/images/line/extend_approve.jpg",
+          "url": "https://www.beyond-fitness.com.tw/ConsoleHome/images/line/exchange_approve.jpg",
           "size": "full",
           "aspectRatio": "20:15",
           "aspectMode": "cover",
@@ -79,7 +79,7 @@
                   "contents": [
                     {
                       "type": "text",
-                      "text": "展延申請人",
+                      "text": "轉換課程堂數申請人",
                       "color": "#aaaaaa",
                       "size": "sm",
                       "flex": 3,
@@ -125,7 +125,7 @@
                   "contents": [
                     {
                       "type": "text",
-                      "text": "剩餘總堂數",
+                      "text": "剩餘堂數",
                       "color": "#aaaaaa",
                       "size": "sm",
                       "flex": 3,
@@ -134,29 +134,6 @@
                     {
                       "type": "text",
                       "text": "@Html.Raw(originalContract.RemainedLessonCount())",
-                      "wrap": true,
-                      "color": "#666666",
-                      "size": "sm",
-                      "flex": 5
-                    }
-                  ]
-                },
-                {
-                  "type": "box",
-                  "layout": "baseline",
-                  "spacing": "sm",
-                  "contents": [
-                    {
-                      "type": "text",
-                      "text": "展延月數",
-                      "color": "#aaaaaa",
-                      "size": "sm",
-                      "flex": 3,
-                      "wrap": true
-                    },
-                    {
-                      "type": "text",
-                      "text": "@Html.Raw((_model.Expiration.Value.Year * 12 + _model.Expiration.Value.Month) - (originalContract.Expiration.Value.Year * 12 + originalContract.Expiration.Value.Month))",
                       "wrap": true,
                       "color": "#666666",
                       "size": "sm",

@@ -158,7 +158,7 @@
                                     announcement = events.Where(v => v is SimpleAnnouncementEvent).FirstOrDefault() as SimpleAnnouncementEvent;
                                     if (announcement != null)
                                     {
-                                        <li><a href="javascript:gtag('event', '公告訊息', {  'event_category': '下拉式選單點擊',  'event_label': '卡片總覽'});window.location.href = '@Html.Raw(Url.Action("Announcement","CornerKick",new { KeyID = HttpUtility.UrlEncode(announcement.Announcement.EventID.EncryptKey())}))';">【公告】Beyond Fitness 學員約定條款變更通知 <i class="material-icons right">arrow_forward</i></a></li>
+                                                    <li><a href="javascript:gtag('event', '公告訊息', {  'event_category': '下拉式選單點擊',  'event_label': '卡片總覽'});window.location.href = '@Html.Raw(Url.Action("Announcement","CornerKick",new { KeyID = HttpUtility.UrlEncode(announcement.Announcement.EventID.EncryptKey())}))';">【公告】Beyond Fitness 學員約定條款變更通知 <i class="material-icons right">arrow_forward</i></a></li>
                                     }
 
                                     item = events.Where(v => v is PersonalExercisePurposeEvent && !(v is PersonalExercisePurposeAccomplishedEvent)).FirstOrDefault();

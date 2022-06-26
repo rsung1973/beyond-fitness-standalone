@@ -21,19 +21,18 @@
     _model = (CourseContract)this.Model;
 
     //Response.ContentType = "application/json";
-    var originalContract = _model.CourseContractRevision.SourceContract;
 }
 {
-  "to": "@Html.Raw(_model.CourseContractExtension.BranchStore.ViceManager?.UserProfileExtension.LineID)",
+  "to": "@Html.Raw(_model.ServingCoach.UserProfile.UserProfileExtension.LineID)",
   "messages": [
     {
       "type": "flex",
-      "altText": "您有一張展延服務申請等待您審核",
+      "altText": "您有一張轉換課程堂數服務申請被退審，請聯絡您的主管並盡快重新編輯",
       "contents": {
         "type": "bubble",
         "hero": {
           "type": "image",
-          "url": "https://www.beyond-fitness.com.tw/ConsoleHome/images/line/extend_approve.jpg",
+          "url": "https://www.beyond-fitness.com.tw/ConsoleHome/images/line/exchange_reject.jpg",
           "size": "full",
           "aspectRatio": "20:15",
           "aspectMode": "cover",
@@ -79,29 +78,6 @@
                   "contents": [
                     {
                       "type": "text",
-                      "text": "展延申請人",
-                      "color": "#aaaaaa",
-                      "size": "sm",
-                      "flex": 3,
-                      "wrap": true
-                    },
-                    {
-                      "type": "text",
-                      "text": "@Html.Raw(_model.ServingCoach.UserProfile.FullName())",
-                      "wrap": true,
-                      "color": "#666666",
-                      "size": "sm",
-                      "flex": 5
-                    }
-                  ]
-                },
-                {
-                  "type": "box",
-                  "layout": "baseline",
-                  "spacing": "sm",
-                  "contents": [
-                    {
-                      "type": "text",
                       "text": "學生姓名",
                       "color": "#aaaaaa",
                       "size": "sm",
@@ -133,59 +109,36 @@
                     },
                     {
                       "type": "text",
-                      "text": "@Html.Raw(originalContract.RemainedLessonCount())",
+                      "text": "@Html.Raw(_model.RemainedLessonCount())",
                       "wrap": true,
                       "color": "#666666",
                       "size": "sm",
                       "flex": 5
                     }
                   ]
+                }
+              ]
+            },
+            {
+              "type": "box",
+              "layout": "baseline",
+              "spacing": "sm",
+              "contents": [
+                {
+                  "type": "text",
+                  "text": "合約迄日",
+                  "color": "#aaaaaa",
+                  "size": "sm",
+                  "flex": 3,
+                  "wrap": true
                 },
                 {
-                  "type": "box",
-                  "layout": "baseline",
-                  "spacing": "sm",
-                  "contents": [
-                    {
-                      "type": "text",
-                      "text": "展延月數",
-                      "color": "#aaaaaa",
-                      "size": "sm",
-                      "flex": 3,
-                      "wrap": true
-                    },
-                    {
-                      "type": "text",
-                      "text": "@Html.Raw((_model.Expiration.Value.Year * 12 + _model.Expiration.Value.Month) - (originalContract.Expiration.Value.Year * 12 + originalContract.Expiration.Value.Month))",
-                      "wrap": true,
-                      "color": "#666666",
-                      "size": "sm",
-                      "flex": 5
-                    }
-                  ]
-                },
-                {
-                  "type": "box",
-                  "layout": "baseline",
-                  "spacing": "sm",
-                  "contents": [
-                    {
-                      "type": "text",
-                      "text": "合約迄日",
-                      "color": "#aaaaaa",
-                      "size": "sm",
-                      "flex": 3,
-                      "wrap": true
-                    },
-                    {
-                      "type": "text",
-                      "text": "@Html.Raw($"{_model.Expiration:yyyy/MM/dd}")",
-                      "wrap": true,
-                      "color": "#666666",
-                      "size": "sm",
-                      "flex": 5
-                    }
-                  ]
+                  "type": "text",
+                  "text": "@Html.Raw($"{_model.Expiration:yyyy/MM/dd}")",
+                  "wrap": true,
+                  "color": "#666666",
+                  "size": "sm",
+                  "flex": 5
                 }
               ]
             }
@@ -206,8 +159,8 @@
               "height": "sm",
               "action": {
                 "type": "uri",
-                "label": "👉立即審核",
-                "uri": "@Html.Raw($"{WebHome.Startup.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/Account/ToSignContractService")}?KeyID={HttpUtility.UrlEncode(_model.ContractID.EncryptKey())}&encUID={HttpUtility.UrlEncode((_model.CourseContractExtension.BranchStore.ViceManagerID ?? -1).EncryptKey())}")"
+                "label": "👉立即重新編輯",
+                "uri": "@Html.Raw($"{WebHome.Startup.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/Account/ToApplyContractService")}?KeyID={HttpUtility.UrlEncode(_model.ContractID.EncryptKey())}&encUID={HttpUtility.UrlEncode(_model.FitnessConsultant.EncryptKey())}")"
                 }
                 },
                 {

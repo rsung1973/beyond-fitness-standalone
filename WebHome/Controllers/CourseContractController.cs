@@ -133,6 +133,11 @@ namespace WebHome.Controllers
                             var jsonData = await this.RenderViewToStringAsync("~/Views/LineEvents/Message/NotifyCoachToRejectAssignment.cshtml", item);
                             jsonData.PushLineMessage();
                         }
+                        else if (item.CourseContractRevision.Reason == "轉換課程堂數")
+                        {
+                            var jsonData = await this.RenderViewToStringAsync("~/Views/LineEvents/Message/NotifyCoachToRejectExchange.cshtml", item.CourseContractRevision.SourceContract);
+                            jsonData.PushLineMessage();
+                        }
                     }
 
                     models.ExecuteCommand("delete CourseContract where ContractID = {0}", item.ContractID);
