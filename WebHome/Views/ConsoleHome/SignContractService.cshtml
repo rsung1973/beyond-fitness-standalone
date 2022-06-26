@@ -28,9 +28,9 @@
     if (_item.Status < (int)Naming.ContractServiceStatus.待簽名)
     {
         ViewBag.ContractAgent = _model;
+        ViewBag.Supervisor = _model;
     }
 
-    ViewBag.Supervisor = _model;
 
 }
 @section CustomHeader {
