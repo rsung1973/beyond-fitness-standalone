@@ -120,12 +120,12 @@ namespace WebHome.Controllers
                     {
                         if (item.CourseContractRevision.Reason == "展延")
                         {
-                            var jsonData = await this.RenderViewToStringAsync("~/Views/LineEvents/Message/NotifyCoachToRejectExtend.cshtml", item.CourseContractRevision.SourceContract);
+                            var jsonData = await this.RenderViewToStringAsync("~/Views/LineEvents/Message/NotifyCoachToRejectExtend.cshtml", item);
                             jsonData.PushLineMessage();
                         }
                         else if (item.CourseContractRevision.Reason == "終止")
                         {
-                            var jsonData = await this.RenderViewToStringAsync("~/Views/LineEvents/Message/NotifyCoachToRejectTermination.cshtml", item.CourseContractRevision.SourceContract);
+                            var jsonData = await this.RenderViewToStringAsync("~/Views/LineEvents/Message/NotifyCoachToRejectTermination.cshtml", item);
                             jsonData.PushLineMessage();
                         }
                         else if (item.CourseContractRevision.Reason == "轉換體能顧問")
@@ -135,7 +135,7 @@ namespace WebHome.Controllers
                         }
                         else if (item.CourseContractRevision.Reason == "轉換課程堂數")
                         {
-                            var jsonData = await this.RenderViewToStringAsync("~/Views/LineEvents/Message/NotifyCoachToRejectExchange.cshtml", item.CourseContractRevision.SourceContract);
+                            var jsonData = await this.RenderViewToStringAsync("~/Views/LineEvents/Message/NotifyCoachToRejectExchange.cshtml", item);
                             jsonData.PushLineMessage();
                         }
                     }

@@ -15,10 +15,10 @@
     ModelSource<UserProfile> models;
     CourseContract _model;
 
-
     _modelState = ViewContext.ModelState;
     models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
     _model = (CourseContract)this.Model;
+    CourseContract original = _model.CourseContractRevision.SourceContract;
 
     //Response.ContentType = "application/json";
 }
@@ -109,7 +109,7 @@
                     },
                     {
                       "type": "text",
-                      "text": "@Html.Raw(_model.RemainedLessonCount())",
+                      "text": "@Html.Raw(original.RemainedLessonCount())",
                       "wrap": true,
                       "color": "#666666",
                       "size": "sm",
@@ -160,7 +160,7 @@
               "action": {
                 "type": "uri",
                 "label": "👉立即重新編輯",
-                "uri": "@Html.Raw($"{WebHome.Startup.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/Account/ToApplyContractService")}?KeyID={HttpUtility.UrlEncode(_model.ContractID.EncryptKey())}&encUID={HttpUtility.UrlEncode(_model.FitnessConsultant.EncryptKey())}")"
+                "uri": "@Html.Raw($"{WebHome.Startup.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/Account/ToApplyContractService")}?KeyID={HttpUtility.UrlEncode(original.ContractID.EncryptKey())}&encUID={HttpUtility.UrlEncode(_model.FitnessConsultant.EncryptKey())}")"
                 }
                 },
                 {
