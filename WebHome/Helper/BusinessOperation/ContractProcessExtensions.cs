@@ -1603,6 +1603,23 @@ namespace WebHome.Helper.BusinessOperation
                             }
                         }
                     }
+                    else if (item.CourseContractRevision.Reason == "轉換課程堂數")
+                    {
+                        //合約服務
+                        if (viewModel.Status == (int)Naming.CourseContractStatus.待簽名)
+                        {
+                            if (item.CourseContractExtension.SignOnline == true)
+                            {
+                                var jsonData = await controller.RenderViewToStringAsync("~/Views/LineEvents/Message/NotifyLearnerToSignExchange.cshtml", item);
+                                jsonData.PushLineMessage();
+                            }
+                            else if (profile.UID != item.AgentID)
+                            {
+                                var jsonData = await controller.RenderViewToStringAsync("~/Views/LineEvents/Message/NotifyCoachToSignExchange.cshtml", item);
+                                jsonData.PushLineMessage();
+                            }
+                        }
+                    }
 
                     return item;
                 }
