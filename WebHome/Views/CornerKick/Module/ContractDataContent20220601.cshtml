@@ -153,7 +153,7 @@
                                     <div class="list_td hd">
                                         @if (order.Title != null)
                                         {
-                                            <span class="f-red">@(order.Title)</span>
+                                            <span class="f-red">@($"{(order.SeqNo > 0 ? "加購" : null)}")</span>
                                         }
                                         @{
                                             BuildLessonOrder(priceItem);
