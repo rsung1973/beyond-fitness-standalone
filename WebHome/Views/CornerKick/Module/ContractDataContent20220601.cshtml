@@ -134,8 +134,38 @@
                 }
             </ul>
             @{
-                await Html.RenderPartialAsync("~/Views/CornerKick/Module/ContractPackageContent.cshtml", _model);
+                List<CourseContractOrder> lessonItems = installment.Any()
+                    ? installment.SelectMany(c => c.CourseContractOrder).ToList()
+                    : _model.CourseContractOrder.ToList();
             }
+            <ul class="mb_list">
+                <li class="tit"><i class="zmdi zmdi-folder-star-alt"></i> 複合式服務合約資訊</li>
+                @{
+                    foreach(var g in lessonItems.GroupBy(l=>l.PriceID)
+                            .OrderBy(v=>v.First().SeqNo))
+                    {
+                        var order = g.First();
+                        var priceItem = order.LessonPriceType;
+
+                        <li>
+                            <div class="list_tb tb2">
+                                <div class="list_tr">
+                                    <div class="list_td hd">
+                                        @if (order.Title != null)
+                                        {
+                                            <span class="col-red">@(order.Title)</span>
+                                        }
+                                        @{
+                                            BuildLessonOrder(priceItem);
+                                        }
+                                    </div>
+                                    <div class="list_td rt">@(g.Sum(o=>o.Lessons))</div>
+                                </div>
+                            </div>
+                        </li>
+                    }
+                }
+            </ul>
             @if (_model.InstallmentID.HasValue)
             {
                 int idx = 1;
@@ -316,3 +346,25 @@
         });
     });
 </script>
+
+@functions
+{
+    void BuildLessonOrder(LessonPriceType priceItem)
+    {
+        switch ((Naming.LessonPriceStatus?)priceItem.Status)
+        {
+            case Naming.LessonPriceStatus.營養課程:
+                <text>S.D Session《一個月 / @($"{priceItem.ListPrice*(priceItem.BundleCount??1):##,###,###,###}")》</text>
+                            break;
+                        case Naming.LessonPriceStatus.運動恢復課程:
+                <text>S.R Session《@(priceItem.DurationInMinutes)分鐘 / @($"{priceItem.ListPrice*(priceItem.BundleCount??1):##,###,###,###}")》</text>
+                            break;
+                        case Naming.LessonPriceStatus.運動防護課程:
+                <text>A.T Session《@(priceItem.DurationInMinutes)分鐘 / @($"{priceItem.ListPrice*(priceItem.BundleCount??1):##,###,###,###}")》</text>
+                            break;
+                        default:
+                <text>P.T Session《@(priceItem.DurationInMinutes)分鐘 / @($"{priceItem.ListPrice*(priceItem.BundleCount??1):##,###,###,###}")》</text>
+                            break;
+        }
+    }
+}

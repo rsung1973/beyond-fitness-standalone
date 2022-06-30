@@ -307,12 +307,15 @@ namespace WebHome.Helper
         public static PromptSignContractEvent CheckSignContractEvent(this UserProfile profile, GenericManager<BFDataContext> models, bool includeAfterToday = false)
             
         {
+            //var items = models.PromptContractToSign(true)
+            //    .Where(c => c.CourseContractExtension.SignOnline == true)
+            //    .Where(c => c.OwnerID == profile.UID
+            //        || (c.CourseContractType.IsGroup == true
+            //            && c.CourseContractMember.Any(m => m.UID == profile.UID)));
+
             var items = models.PromptContractToSign(true)
                 .Where(c => c.CourseContractExtension.SignOnline == true)
-                .Where(c => c.OwnerID == profile.UID
-                    || (c.CourseContractType.IsGroup == true
-                        && c.CourseContractMember.Any(m => m.UID == profile.UID)));
-
+                .Where(c => c.OwnerID == profile.UID);
 
             if (items.Count() > 0)
             {
