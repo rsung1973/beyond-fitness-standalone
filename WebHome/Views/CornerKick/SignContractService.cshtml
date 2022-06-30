@@ -143,12 +143,12 @@
                     <label for="agree2">合約僅能展延乙次，逾期失效。</label>
                 </div>
             </div>
-            <div class="row">
+            @* <div class="row">
                 <div class="col s12">
                     <input type="checkbox" id="agree3" name="Cancel" value="true" />
                     <label for="agree3">展延後不得申請轉讓及退費</label>
                 </div>
-            </div>
+            </div> *@
             <div class="row">
                 <div class="col s12">
                     <input type="checkbox" id="agree4" name="Agree" value="true" />
@@ -230,7 +230,7 @@
             function confirmSignature() {
 
                 if ($("#signature").jSignature('getData', 'native').length < 1) {
-                    alert('請簽名!!');
+                    alert('請在上方簽上您的正楷大名!!');
                     return;
                 }
 

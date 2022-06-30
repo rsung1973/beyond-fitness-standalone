@@ -72,7 +72,6 @@
                                     var ct = $(this).val();
                                     $global.viewModel.ContractType = ct;
 
-                                    resetSignOnline();
                                     resetInstallmentPlan();
                                     resetTotalCost();
                                     resetContractTypeAux();
@@ -529,21 +528,7 @@
                                         resetAttachment();
                                     });
                                 </script>
-                            </div>
-                            <script>
-                                function resetSignOnline() {
-                                    $('.signOnline').css('display', 'block');
-                                    var ct = $('select[name="ContractType"]').val();
-                                    if (ct == '3' || ct == '4') {
-                                        $('.signOnline').css('display', 'none');
-                                        $('input[name="SignOnline"]').prop('checked', false);
-                                        resetAttachment();
-                                    }
-                                }
-                                $(function () {
-                                    resetSignOnline();
-                                });
-                            </script>
+                            </div>                          
                             <div class="col-12" id="attachment">
                                 @*<script>
                                     $(function () {
