@@ -89,7 +89,7 @@
     <!-- Button -->
     <div class="bottom-area">
         <button class="btn waves-effect waves-light btn-cancel" type="button" name="cancel">重新簽名</button>
-        <button class="btn waves-effect waves-light btn-confirm" type="button" name="confirm" onclick="javascript:confirmSignature();">確定送出</button>
+        <button class="btn waves-effect waves-light btn-confirm" type="button" name="confirm" onclick="javascript:confirmSignature();">下一步</button>
     </div>
     <!--// End of button-->
 </div>
@@ -150,7 +150,7 @@
             function confirmSignature() {
 
                 if ($("#signature").jSignature('getData', 'native').length < 1) {
-                    alert('請簽名!!');
+                    alert('請在上方簽上您的正楷大名!!');
                     return;
                 }
 

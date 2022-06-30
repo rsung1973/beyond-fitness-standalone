@@ -423,7 +423,7 @@ img.responsive-img.nodata {
 /* 並排  */
 
 .bottom-area .btn-confirm {
-	min-width: 140px;
+	min-width: 150px;
 	width: 30%;
 	height: 50px;
 	font-size: 16px;
@@ -433,7 +433,7 @@ img.responsive-img.nodata {
 }
 
 .bottom-area .btn-cancel {
-	min-width: 140px;
+	min-width: 150px;
 	width: 30%;
 	height: 50px;
 	font-size: 16px;
@@ -2859,16 +2859,45 @@ ul.lesson-list li.list-intro {
 }
 
 .contract-wrap .terms {
-	font-size: 12px;	   	
+	font-size: 15px;	   	
 }
 
-.contract-wrap .terms ol {	
+/* .contract-wrap .terms ol {	
 	line-height: 130%;
 	list-style: outside;
-	list-style-type: decimal;
+	list-style-type: none;
+} */
+
+.contract-wrap .terms ol {
+	/* padding: 0 0 0 15px; */
+	line-height: 130%;
+	/* list-style-type: decimal; */
+	list-style-position: outside;
+	counter-reset: nested;
 }
 
-.contract-wrap .terms .title{
+.contract-wrap .terms ol li {
+	padding: 5px;
+}
+
+.contract-wrap .terms ol li li {
+	padding: 5px;
+}
+
+.contract-wrap .terms ol li::before {
+	font-weight: bold;
+}
+
+.contract-wrap .terms ol li::marker {
+	content: '';
+}
+
+.contract-wrap .terms ol li::before {
+	counter-increment: nested;
+	content: counters(nested, ".") " ";
+}
+
+/* .contract-wrap .terms .title{
 	font-size: 14px;
 	font-weight: 800;
 }
@@ -2876,11 +2905,17 @@ ul.lesson-list li.list-intro {
 .contract-wrap .terms .title p {
 	line-height: 1.2rem;
 	margin-bottom: 10px;
-}
+} */
 
 
 .contract-wrap .tearms-content{
 	padding: 20px 40px 0px 20px;
+	background: #fff;
+}
+
+
+.contract-wrap .tearms-content-extend{
+	padding: 20px 20px 0px 20px;
 	background: #fff;
 }
 
@@ -3737,4 +3772,43 @@ footer.page-footer {
 	width: 100%;
 	background-color: rgba(0, 0, 0, 0);
 	background: linear-gradient(to bottom, rgba(125, 185, 232, 0) 0%, rgba(0, 0, 0, 0.4) 50%, rgba(0, 0, 0, 0.8) 100%);
+  }
+
+
+  .scroll-container {
+  	width: 100%;
+  	height: 33em;
+  	margin: 0;
+  	padding: 0 0 0 5px;
+  	overflow-y: auto;
+  	background-color: #e6e6e6;
+  	scrollbar-color: #D4AA70 #e4e4e4;
+  	scrollbar-width: thin;
+  	/* border-radius: 15px; */
+  }
+
+  .scroll-container::-webkit-scrollbar {
+  	width: 10px;
+  }
+
+  .scroll-container::-webkit-scrollbar-thumb {
+  	/* border-radius: 15px; */
+  	/* background-image:linear-gradient(45deg, #49cdd0, #ab9ae5); */
+  	background-color: #999999;
+  	box-shadow: inset 2px 2px 5px 0 rgba(#fff, 0.5);
+  }
+
+  .scroll-container:hover,
+  .scroll-container:focus {
+  	overflow-y: auto;
+  }
+
+  .scroll-container .scrollDown {
+  	background-image: url(../images/down.png);
+  	position: absolute;
+  	bottom: 50px;
+  	right: 20px;
+  	width: 38px;
+  	height: 38px;
+  	z-index: 1;
   }
