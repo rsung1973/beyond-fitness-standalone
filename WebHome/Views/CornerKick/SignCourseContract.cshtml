@@ -38,50 +38,42 @@
 <div class="contract-wrap">
     <div class="step-content">
         @{
-            await Html.RenderPartialAsync("~/Views/CornerKick/Module/ContractDataContent.cshtml", _item);
+            await Html.RenderPartialAsync("~/Views/CornerKick/Module/ContractDataContent20220601.cshtml", _item);
         }
         <div class="tearms-content">
             <div class="row">
-                <div class="col s12">
-                    <input type="checkbox" name="Extension" id="agree1" value="true" />
-                    <label for="agree1">
-                        展延
-                        <span class="help-text">
-                            @if (_item.LessonPriceType.BranchStore?.IsVirtualClassroom() == true
-                                || _item.CourseContractExtension.CourseBranch?.IsVirtualClassroom() == true)
-                            {
-                                <text>若未於上述使用期限內完成課程堂數者不得展延。</text>
-                            }
-                            else
-                            {
-                                <text>無法於上述使用期限內完成課程堂數者，得於到期前30日內申請展延使用，並得就未完成部分協商展延最多3個月內完成。</text>
-                            }
-                        </span>
-                    </label>
+                <div class="input-field col s12">
+                    <i class="livicon-evo prefix"
+                       data-options="name: unlock.svg; size: 30px; style: lines; strokeColor:#05232d; autoPlay:true"></i>
+                    <input value="@($"{_item.CourseContractExtension.SignerPIN?.Substring(0,2)}-")" name="SignerPIN" type="text" class="validate" maxlength="10" data-length="10" />
+                    <label class="active" for="nickname">請輸入動態密碼</label>
+                    @*<span class="help-error-text">動態密碼輸入錯誤，請確認後再重新輸入</span>*@
                 </div>
             </div>
             <div class="row">
                 <div class="col s12">
                     <input type="checkbox" name="Booking" value="true" id="agree2" />
                     <label for="agree2">
-                        預約
-                        <span class="help-text">須於欲使用其體能顧問服務時段至少24小時前向其負責之體能顧問預約其服務與其場地租用權力。</span>
+                        預約/取消：
+                        <span class="help-text">預約/取消：我已閱讀並同意第8條服務預約之規定。</span>
                     </label>
                 </div>
             </div>
             <div class="row">
                 <div class="col s12">
-                    <input type="checkbox" name="Cancel" value="true" id="agree3" />
+                    <input type="checkbox" name="Extension" id="agree1" value="true" />
+                    <label for="agree1">
+                        展延：
+                        <span class="help-text">我已閱讀並同意第9條體能/健康顧問服務期間與一般展延之申請之規定。</span>
+                    </label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12">
+                    <input type="checkbox" name="Agree" value="true" id="agree3" />
                     <label for="agree3">
-                        取消
-                        <span class="help-text">如欲取消預約時段，學員必須於原定時間24小時前通知負責之體能顧問，否則該未使用之預約顧問服務仍應記入已使用之體能顧問課程堂數內。</span>
+                        <span class="f-red">我已閱讀並同意超越體能顧問有限公司隱私政策、服務條款、相關使用及消費合約，即表示即日起您同意接受本合約正面及背面條款之相關約束及其責任。</span>
                     </label>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col s12">
-                    <input type="checkbox" id="agree4" name="Agree" value="true" />
-                    <label for="agree4"><span class="f-red">已詳閱上述各項記載、購買服務之項目及各項特約條款，並同意以遵循以上條款。</span> </label>
                 </div>
             </div>
             <div class="row">
@@ -143,7 +135,7 @@
                 $("#signature").empty();
                 $("#signature").jSignature({
                     width: '100%',
-                    height: 150,
+                    height: 200,
                     'UndoButton': true,
                     'sizeRatio': 2
                 });
@@ -159,6 +151,11 @@
 
                 if ($("#signature").jSignature('getData', 'native').length < 1) {
                     alert('請簽名!!');
+                    return;
+                }
+
+                if ($global.hasViewedDetails != true) {
+                    alert('請將卷軸拉至最底，以確認您已詳閱BEYOND FITNESS產品及服務特約條款內容');
                     return;
                 }
 

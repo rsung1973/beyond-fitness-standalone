@@ -2803,6 +2803,7 @@
       <Column Name="UnitPriceID" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="UnitPriceAdjustmentType" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="CoursePlace" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SignerPIN" Type="System.String" DbType="NVarChar(64)" CanBeNull="true" />
       <Association Name="Attachment_CourseContractExtension" Member="Attachment" ThisKey="AttachmentID" OtherKey="AttachmentID" Type="Attachment" IsForeignKey="true" DeleteRule="SET NULL" />
       <Association Name="BranchStore_CourseContractExtension" Member="BranchStore" ThisKey="BranchID" OtherKey="BranchID" Type="BranchStore" IsForeignKey="true" />
       <Association Name="BranchStore_CourseContractExtension1" Member="CourseBranch" Storage="_BranchStore1" ThisKey="CoursePlace" OtherKey="BranchID" Type="BranchStore" IsForeignKey="true" />

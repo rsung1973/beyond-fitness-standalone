@@ -701,6 +701,33 @@ namespace WebHome.Controllers
                 ViewBag.ModelState = this.ModelState;
                 return View("~/Views/CornerKick/Shared/ReportInputError.cshtml");
             }
+            else if (viewModel.Booking != true)
+            {
+                ModelState.AddModelError("Message", "請閱讀並同意第8條服務預約之規定");
+                ViewBag.AlertError = true;
+                ViewBag.ModelState = this.ModelState;
+                return View("~/Views/CornerKick/Shared/ReportInputError.cshtml");
+            }
+            else if (viewModel.Extension != true)
+            {
+                ModelState.AddModelError("Message", "請閱讀並同意第9條體能/健康顧問服務期間與一般展延之申請之規定");
+                ViewBag.AlertError = true;
+                ViewBag.ModelState = this.ModelState;
+                return View("~/Views/CornerKick/Shared/ReportInputError.cshtml");
+            }
+
+            viewModel.SignerPIN = viewModel.SignerPIN.GetEfficientString();
+            if (viewModel.SignerPIN == null)
+            {
+                ModelState.AddModelError("SignerPIN", "動態密碼輸入錯誤，請確認後再重新輸入");
+                ViewBag.AlertError = true;
+                ViewBag.ModelState = this.ModelState;
+                return View("~/Views/CornerKick/Shared/ReportInputError.cshtml");
+            }
+            else
+            {
+                viewModel.SignerPIN = viewModel.SignerPIN.Replace("-", "");
+            }
 
             if (viewModel.KeyID != null)
             {
@@ -717,7 +744,15 @@ namespace WebHome.Controllers
                 return View("~/Views/CornerKick/Shared/ReportInputError.cshtml");
             }
 
-            if(item.InstallmentID.HasValue)
+            if (viewModel.SignerPIN != item.CourseContractExtension.SignerPIN)
+            {
+                ModelState.AddModelError("SignerPIN", "動態密碼輸入錯誤，請確認後再重新輸入");
+                ViewBag.AlertError = true;
+                ViewBag.ModelState = this.ModelState;
+                return View("~/Views/CornerKick/Shared/ReportInputError.cshtml");
+            }
+
+            if (item.InstallmentID.HasValue)
             {
                 foreach(var c in models.GetTable<CourseContract>().Where(c => c.InstallmentID == item.InstallmentID))
                 {

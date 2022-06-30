@@ -963,5 +963,25 @@ namespace WebHome.Controllers
             return View("~/Views/ConsoleHome/CourseContract/RemainedLessonListModal2022.cshtml", remainedLessons);
         }
 
+        public async Task<ActionResult> NotifyLearnerToSignContractAsync(CourseContractViewModel viewModel)
+        {
+            var profile = await HttpContext.GetUserAsync();
+            if (viewModel.KeyID != null)
+            {
+                viewModel.ContractID = viewModel.DecryptKeyValue();
+            }
+            var item = models.GetTable<CourseContract>().Where(c => c.ContractID == viewModel.ContractID).FirstOrDefault();
+            if (item != null)
+            {
+                await item.NotifyLearnerToSignContractAsync(this);
+                return Json(new { result = true });
+            }
+            else
+            {
+                return View("~/Views/ConsoleHome/Shared/AlertMessage.cshtml", model: "合約資料錯誤!!");
+            }
+        }
+
+
     }
 }

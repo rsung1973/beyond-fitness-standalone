@@ -570,5 +570,13 @@ namespace WebHome.Helper
             processingFee = Math.Min(remained * 20 / 100, 9000);
             return remained;
         }
+
+        public static String CreatePIN(this GenericManager<BFDataContext> models, CourseContractExtension extension)
+        {
+            var pinCode = DateTime.Now.Ticks % 1000000;
+            extension.SignerPIN = $"{(char)('A' + (pinCode % 26))}{(char)('A' + (pinCode % 1000 % 26))}{pinCode:000000}";
+            models.SubmitChanges();
+            return extension.SignerPIN;
+        }
     }
 }

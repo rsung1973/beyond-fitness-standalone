@@ -1636,6 +1636,23 @@ namespace WebHome.Helper.BusinessOperation
             }
         }
 
+        public static async Task NotifyLearnerToSignContractAsync(this CourseContract item, SampleController<UserProfile> controller)
+        {
+            var ModelState = controller.ModelState;
+            var ViewBag = controller.ViewBag;
+            var HttpContext = controller.HttpContext;
+            var models = controller.DataSource;
+
+            if (item.Status == (int)Naming.CourseContractStatus.待簽名)
+            {
+                if (item.CourseContractExtension.SignOnline == true)
+                {
+                    var jsonData = await controller.RenderViewToStringAsync("~/Views/LineEvents/Message/NotifyLearnerToSignContract.cshtml", item);
+                    jsonData.PushLineMessage();
+                }
+            }
+        }
+
         public static async Task<CourseContract> EnableContractAmendmentAsync(this CourseContractViewModel viewModel, SampleController<UserProfile> controller, Naming.CourseContractStatus? fromStatus = Naming.CourseContractStatus.待簽名)
             
         {

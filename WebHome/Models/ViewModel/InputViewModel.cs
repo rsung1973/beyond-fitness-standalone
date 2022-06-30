@@ -91,6 +91,7 @@ namespace WebHome.Models.ViewModel
         public int?[] TargetSubtotal { get; set; }
         public String BankID { get; set; }
         public String BankAccount { get; set; }
+        public String SignerPIN { get; set; }
 
     }
 

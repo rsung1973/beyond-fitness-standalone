@@ -63985,6 +63985,8 @@ namespace WebHome.Models.DataEntity
 		
 		private System.Nullable<int> _CoursePlace;
 		
+		private string _SignerPIN;
+		
 		private EntityRef<Attachment> _Attachment;
 		
 		private EntityRef<BranchStore> _BranchStore;
@@ -64023,6 +64025,8 @@ namespace WebHome.Models.DataEntity
     partial void OnUnitPriceAdjustmentTypeChanged();
     partial void OnCoursePlaceChanging(System.Nullable<int> value);
     partial void OnCoursePlaceChanged();
+    partial void OnSignerPINChanging(string value);
+    partial void OnSignerPINChanged();
     #endregion
 		
 		public CourseContractExtension()
@@ -64276,6 +64280,26 @@ namespace WebHome.Models.DataEntity
 					this._CoursePlace = value;
 					this.SendPropertyChanged("CoursePlace");
 					this.OnCoursePlaceChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SignerPIN", DbType="NVarChar(64)")]
+		public string SignerPIN
+		{
+			get
+			{
+				return this._SignerPIN;
+			}
+			set
+			{
+				if ((this._SignerPIN != value))
+				{
+					this.OnSignerPINChanging(value);
+					this.SendPropertyChanging();
+					this._SignerPIN = value;
+					this.SendPropertyChanged("SignerPIN");
+					this.OnSignerPINChanged();
 				}
 			}
 		}
