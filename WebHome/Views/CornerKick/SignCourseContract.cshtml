@@ -45,7 +45,7 @@
                 <div class="input-field col s12">
                     <i class="livicon-evo prefix"
                        data-options="name: unlock.svg; size: 30px; style: lines; strokeColor:#05232d; autoPlay:true"></i>
-                    <input value="@($"{_item.CourseContractExtension.SignerPIN?.Substring(0,2)}-")" name="SignerPIN" type="text" class="validate" maxlength="10" data-length="10" />
+                    <input value="@($"{_item.CourseContractExtension.SignerPIN?.Substring(0,3)}")" name="SignerPIN" type="text" class="validate" maxlength="10" data-length="10" />
                     <label class="active" for="nickname">請輸入動態密碼</label>
                     @*<span class="help-error-text">動態密碼輸入錯誤，請確認後再重新輸入</span>*@
                 </div>
@@ -166,7 +166,9 @@
                                     || _item.ContractType == (int)CourseContractType.ContractTypeDefinition.CGF 
                                     || _item.ContractType == (int)CourseContractType.ContractTypeDefinition.CVF 
                                 ? 3 : 2);
+                viewModel.GDPRAgree = true;
 
+                clearErrors();
                 showLoading();
                 $.post('@Html.Raw(Url.Action("ConfirmSignature","CornerKick",new { KeyID = _item.ContractID.EncryptKey() }))', viewModel, function (data) {
                     hideLoading();

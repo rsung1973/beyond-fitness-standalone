@@ -143,7 +143,7 @@ namespace WebHome.Controllers
                     models.ExecuteCommand("delete CourseContract where ContractID = {0}", item.ContractID);
 
                     result = true;
-                    ClearPreliminaryMember();
+                    //ClearPreliminaryMember();
                 }
             }
             catch(Exception ex)

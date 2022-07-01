@@ -724,10 +724,6 @@ namespace WebHome.Controllers
                 ViewBag.ModelState = this.ModelState;
                 return View("~/Views/CornerKick/Shared/ReportInputError.cshtml");
             }
-            else
-            {
-                viewModel.SignerPIN = viewModel.SignerPIN.Replace("-", "");
-            }
 
             if (viewModel.KeyID != null)
             {
