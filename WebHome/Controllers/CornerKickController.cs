@@ -650,6 +650,36 @@ namespace WebHome.Controllers
         }
 
         [Authorize]
+        public async Task<ActionResult> SignGDPRAgreementAsync(CourseContractQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            if (viewModel.KeyID != null)
+            {
+                viewModel.ContractID = viewModel.DecryptKeyValue();
+            }
+
+            var profile = await HttpContext.GetUserAsync();
+
+            var item = models.GetTable<CourseContract>()
+                .Where(c => c.ContractID == viewModel.ContractID)
+                .Where(c => c.CourseContractMember.Any(m => m.UID == profile.UID))
+                .FirstOrDefault();
+
+            if (item == null)
+            {
+                ViewBag.ViewModel = new DataItemViewModel
+                {
+                    Title = "我的合約",
+                    Message = "目前尚未規劃任何訓練，<br/>若有興趣請與您的教練一起規劃訓練內容喔！",
+                };
+                return View("~/Views/CornerKick/DataNotFound.cshtml");
+            }
+
+            ViewBag.DataItem = item;
+            return View("~/Views/CornerKick/SignGDPRAgreement.cshtml", profile.LoadInstance(models));
+        }
+
+        [Authorize]
         public async Task<ActionResult> SignContractServiceAsync(CourseContractQueryViewModel viewModel)
         {
             ViewBag.ViewModel = viewModel;
@@ -693,6 +723,7 @@ namespace WebHome.Controllers
         public async Task<ActionResult> ConfirmSignatureAsync(CourseContractViewModel viewModel, CourseContractSignatureViewModel signatureViewModel)
         {
             ViewBag.ViewModel = viewModel;
+            var profile = await HttpContext.GetUserAsync();
 
             if (viewModel.Agree != true)
             {
@@ -751,6 +782,72 @@ namespace WebHome.Controllers
             if (item.InstallmentID.HasValue)
             {
                 foreach(var c in models.GetTable<CourseContract>().Where(c => c.InstallmentID == item.InstallmentID))
+                {
+                    var contract = await commitSignatureAsync(viewModel, signatureViewModel, c);
+                    if (contract == null)
+                    {
+                        ModelState.AddModelError("Message", ModelState.ErrorMessage());
+                        ViewBag.AlertError = true;
+                        ViewBag.ModelState = this.ModelState;
+                        return View("~/Views/CornerKick/Shared/ReportInputError.cshtml");
+                    }
+                }
+            }
+            else
+            {
+                item = await commitSignatureAsync(viewModel, signatureViewModel, item);
+                if (item == null)
+                {
+                    ModelState.AddModelError("Message", ModelState.ErrorMessage());
+                    ViewBag.AlertError = true;
+                    ViewBag.ModelState = this.ModelState;
+                    return View("~/Views/CornerKick/Shared/ReportInputError.cshtml");
+                }
+            }
+
+            if (signatureViewModel.NextStep == true)
+            {
+                ViewBag.ViewModel = new QueryViewModel
+                {
+                    UrlAction = Url.Action("SignGDPRAgreement", "CornerKick", new { KeyID = item.ContractID.EncryptKey() }),
+                };
+                return View("~/Views/CornerKick/Shared/ViewModelCommitted.cshtml");
+            }
+
+            String jsonData = await RenderViewToStringAsync("~/Views/LineEvents/Message/NotifyToContractPayment.cshtml", item);
+            jsonData.PushLineMessage();
+
+            ViewBag.ViewModel = new QueryViewModel
+            {
+                UrlAction = Url.Action("MyContract", "CornerKick"),
+            };
+            return View("~/Views/CornerKick/Shared/ViewModelCommitted.cshtml");
+        }
+
+        [Authorize]
+        public async Task<ActionResult> ConfirmGDPRWithSignatureAsync(CourseContractViewModel viewModel, CourseContractSignatureViewModel signatureViewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            var profile = await HttpContext.GetUserAsync();
+
+            if (viewModel.KeyID != null)
+            {
+                viewModel.ContractID = viewModel.DecryptKeyValue();
+            }
+
+            CourseContract item = models.GetTable<CourseContract>().Where(c => c.ContractID == viewModel.ContractID).FirstOrDefault();
+
+            if (item == null)
+            {
+                ModelState.AddModelError("Message", "合約資料錯誤!!");
+                ViewBag.AlertError = true;
+                ViewBag.ModelState = this.ModelState;
+                return View("~/Views/CornerKick/Shared/ReportInputError.cshtml");
+            }
+
+            if (item.InstallmentID.HasValue)
+            {
+                foreach (var c in models.GetTable<CourseContract>().Where(c => c.InstallmentID == item.InstallmentID))
                 {
                     var contract = await commitSignatureAsync(viewModel, signatureViewModel, c);
                     if (contract == null)
@@ -862,6 +959,10 @@ namespace WebHome.Controllers
             if (item.CourseContractRevision != null)
             {
                 return await viewModel.ConfirmContractServiceSignatureAsync(this, item.CourseContractRevision);
+            }
+            else if (signatureViewModel.NextStep == true)
+            {
+                return item;
             }
             else
             {

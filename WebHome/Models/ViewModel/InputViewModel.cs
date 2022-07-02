@@ -158,6 +158,7 @@ namespace WebHome.Models.ViewModel
     {
         public int? ContractID { get; set; }
         public String SignatureName { get; set; }
+        public bool? NextStep { get; set; }
     }
 
     public class LessonPriceQueryViewModel : LessonPriceViewModel

@@ -1,0 +1,102 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using WebHome.Properties
+@using WebHome.Helper.BusinessOperation
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    CourseContract _model;
+    CourseContractMember _owner;
+
+    CourseContractViewModel _viewModel = (CourseContractViewModel)ViewBag.ViewModel;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _model = (CourseContract)this.Model;
+    _owner = _model.CourseContractMember.Where(m => m.UID == _model.OwnerID).First();
+    var item = _model.CourseContractLevel.Where(l => l.LevelID == (int)Naming.CourseContractStatus.待審核).FirstOrDefault();
+
+}
+<table class="table">
+    <tbody>
+        <tr>
+            <td>
+                <h4 class="text-center" style="@(_viewModel?.Pdf=="1" ? "margin:0;padding:0;" : "")"><b>Beyond
+                        Fitness<br />蒐集、處理及利用個人資料告知事項暨同意書</b></h4>
+                Beyond Fitness
+                即超越體能顧問有限公司（下稱「BF」）<b><u>基於建立、維繫和履行與台端間體能顧問服務(包含但不限於私人教練、運動防護、運動恢復、營養諮詢等服務以及課程履約保證)之需要</u></b>，而蒐集、處理、利用及國際傳輸台端之各項個人及往來等資料，<b>BF將尊重台端隱私權益，依誠實信用原則及正當合理方法而為之</b>。茲依個人資料保護法第8、9、19、20、54條規定，並參照法務部頒佈之「個人資料保護法之特定目的及個人資料之類別」，謹告知下列事項：
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <ol>
+                    <li>
+                        <b>集個人資料之特定目的<br />為BF之企業營運管理、委託他人處理相關事務及其他法令所准許或要求之目的；包括下列項目：</b><br />063依法定義務所進行者、069契約、類似契約或其他法律關係事務、090客戶管理與服務、116場所進出安全管理、143
+                        運動休閒業務、157調查、統計與研究分析、158 學員資料管理 、181其他經營合於營業登記項目或組織章程所定之業務。
+                    </li>
+                    <li>
+                        <b>蒐集個人資料之類別<br />以BF所實際蒐集者為準；包括下列項目：</b>
+                        <ol>
+                            <li>識別類C001至C003，例如姓名、地址、相片、電話、行動、電郵、金融帳戶、身分證正面影本等。</li>
+                            <li>特徵類C011至014，例如年齡、性別、生日、身高、體重、血型、煙酒習慣、個性等特徵描述。</li>
+                            <li>家庭情形C021及C024，例如婚姻、家庭成員間之關係、其他社會關係等。</li>
+                            <li>社會情況C033至C035、C039至C041，例如工作許可、居留證明、休閒活動及興趣、意外事故等。</li>
+                            <li>受僱情形C061,CO62,CO64及C066，例如過去及現行之受僱情形、工作經驗、職業疾病、安全、意外紀錄等。</li>
+                            <li>健康與其他C111，例如體檢報告、診斷紀錄等。</li>
+                            <li>其他資訊C132，例如無法歸類之電子郵件等。</li>
+                        </ol>
+                    </li>
+                    <li>
+                        <b>利用個人資料之期間、地區、對象及方式</b>
+                        <ol>
+                            <li>期間：與BF間權利義務關係之約定或法定存續期間及其後5年，以較長者為準。</li>
+                            <li>對象：BF、受BF委託處理事務者、與BF有業務往來者、政府機關、司法機關及其他有法定調查權之機關。</li>
+                            <li>地區：上述利用對象之國內及國外所在地。</li>
+                            <li>方式：符合個人資料保護相關法令，以電話、傳真、電子郵件、紙本或其他自動化或非自動化之適當方式。</li>
+                        </ol>
+                    </li>
+                    <li>
+                        <b>就自己之個人資料，台端得依法行使下列權利：</b>
+                        <ol>
+                            <li>查詢或請求閱覽或請求製給複製本。惟依法BF得酌收必要費用；</li>
+                            <li>請求補充或更正，惟應為適當之釋明；及</li>
+                            <li>請求停止蒐集、處理、利用及請求刪除。但該資料係BF依法令或與台端間之合約，為執行職務或業務所必須者，或經台端書面同意者 不在此限。</li>
+                            <li>台端若擬行使上述任一權利，須檢附證明以書面提出請求，BF將即於法定期限內回覆處理決定。</li>
+                        </ol>
+                    </li>
+                    <li>
+                        <b>BF向台端預收之部分費用，依法令規定須交付銀行（即信託業者）開立信託專戶管理，以辦理履約保證，以保障學員權益。故學員同意BF得於管理學員信託專戶之目的內，永久保存學員之真實姓名、連絡電話、聯絡地址及身分證字號等資訊。</b>
+                    </li>
+                    <li>
+                        <b>台端得自由選擇是否提供各項個人資料，惟若選擇不提供時，台端
+                            <u>@(_model.ContractOwner.RealName)</u>明確認知，此將可能影響與BF間權利義務關係之建立、維繫或履行。</b>
+                    </li>
+                </ol>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @if (_model.Status < (int)Naming.CourseContractStatus.待審核)
+                {
+                    <label class="fancy-checkbox custom-bgcolor-pink">
+                        <input type="checkbox" name="GDPRAgree">
+                        <span>就上開告知內容本人已受告知、並已充分知悉，本人同意BF得依本告知暨同意書之內容蒐集、處理、利用及國際傳輸本人之個人資料。就其中有關本人家屬和親友之個人資料，由本人負責告知，並使其充分知悉和同意本告知暨同意書之內容。</span>
+                    </label>
+                }
+                else
+                {
+                    <b
+                    style="font-size:20px">☑</b><b>就上開告知內容本人已受告知、並已充分知悉，本人同意BF得依本告知暨同意書之內容蒐集、處理、利用及國際傳輸本人之個人資料。就其中有關本人家屬和親友之個人資料，由本人負責告知，並使其充分知悉和同意本告知暨同意書之內容。</b>
+                }
+            </td>
+        </tr>
+    </tbody>
+</table>
