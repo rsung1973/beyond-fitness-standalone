@@ -114,15 +114,6 @@
                                     <div class="tab-pane" id="TSTab">
                                     <ul class="mail_list list-group list-unstyled">
                                         @{
-                                            var attendedCheck = models.GetTable<LessonTime>()
-                                                .Join(models.GetTable<GroupingLesson>()
-                                                    .Join(models.GetTable<RegisterLesson>()
-                                                        .Where(r => r.UID == _model.UID),
-                                                    g => g.GroupID, r => r.RegisterGroupID, (g, r) => g),
-                                                l => l.GroupID, g => g.GroupID, (l, g) => l);
-                                        }
-                                        @if (!attendedCheck.Any() || _model.UserProfileExtension.CurrentTrial.HasValue)
-                                        {
                                             await Html.RenderPartialAsync("~/Views/ConsoleEvent/EventModal/BookingTrialLesson2022.cshtml", _model);
                                         }
                                         @{

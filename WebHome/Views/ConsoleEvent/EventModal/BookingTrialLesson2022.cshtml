@@ -24,10 +24,16 @@
     _viewModel = (CalendarEventViewModel)ViewBag.ViewModel;
     _profile = await Context.GetUserAsync();
     LessonPriceType price = models.CurrentTrialLessonPrice();
+    var attendedCheck = models.GetTable<LessonTime>()
+        .Join(models.GetTable<GroupingLesson>()
+        .Join(models.GetTable<RegisterLesson>()
+        .Where(r => r.UID == _model.UID),
+        g => g.GroupID, r => r.RegisterGroupID, (g, r) => g),
+        l => l.GroupID, g => g.GroupID, (l, g) => l);
 }
 
 @{
-    if (price != null)
+    if (price != null && (!attendedCheck.Any() || _model.UserProfileExtension.CurrentTrial.HasValue))
     {
         var trialLesson = models.GetTable<RegisterLesson>()
                 .Where(r => r.UID == _model.UID)
