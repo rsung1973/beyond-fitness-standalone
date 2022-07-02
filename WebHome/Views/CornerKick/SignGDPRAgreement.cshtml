@@ -165,11 +165,11 @@
 
             var viewModel = $('input,select,textArea').serializeObject();
             viewModel.Signature = $("#signature").jSignature("getData");
-            viewModel.SignatureName = 'Signature';
+            viewModel.SignatureName = 'SignatureGDPR';
             viewModel.SignatureCount = @(_item.ContractType == (int)CourseContractType.ContractTypeDefinition.CFA
-            || _item.ContractType == (int)CourseContractType.ContractTypeDefinition.CGF
-            || _item.ContractType == (int)CourseContractType.ContractTypeDefinition.CVF
-            ? 2 : 1);
+                || _item.ContractType == (int)CourseContractType.ContractTypeDefinition.CGF
+                || _item.ContractType == (int)CourseContractType.ContractTypeDefinition.CVF
+                ? 2 : 1);
             viewModel.Extension = true;
             viewModel.Booking = true;
             viewModel.Agree = true;

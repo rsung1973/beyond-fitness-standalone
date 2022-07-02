@@ -380,7 +380,17 @@ namespace WebHome.Helper.BusinessOperation
                 ModelState.AddModelError("BranchID", "請選擇上課場所");
             }
 
-            if(!draftOnly)
+            if (viewModel.SignOnline == true)
+            {
+                var extension = models.GetTable<UserProfileExtension>()
+                    .Where(u => u.UID == viewModel.OwnerID).FirstOrDefault();
+                if (extension != null && extension.LineID == null)
+                {
+                    ModelState.AddModelError("SignOnline", "主簽約人未綁定Line ID");
+                }
+            }
+
+            if (!draftOnly)
             {
                 //請選擇上課時間長度
                 if (!viewModel.Renewal.HasValue)
