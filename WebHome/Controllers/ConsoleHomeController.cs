@@ -1211,6 +1211,32 @@ namespace WebHome.Controllers
                 viewModel.DateTo = idx;
             }
 
+            if (viewModel.ChartType == 2 && viewModel.SessionType == null)
+            {
+                if(coachItem.ServingCoach.UserProfile.IsHealthCare())
+                {
+                    viewModel.SessionType = new Naming.SessionTypeDefinition[]
+                    {
+                        Naming.SessionTypeDefinition.AT,
+                        Naming.SessionTypeDefinition.TS,
+                        Naming.SessionTypeDefinition.ST,
+                        Naming.SessionTypeDefinition.SR,
+                        Naming.SessionTypeDefinition.SD,
+                    };
+                }
+                else
+                {
+                    viewModel.SessionType = new Naming.SessionTypeDefinition[]
+                    {
+                        Naming.SessionTypeDefinition.PT,
+                        Naming.SessionTypeDefinition.PI,
+                        Naming.SessionTypeDefinition.AT,
+                        Naming.SessionTypeDefinition.TS,
+                        Naming.SessionTypeDefinition.ST,
+                    };
+                }
+            }
+
             ViewBag.DataItem = coachItem;
 
             var profile = await HttpContext.GetUserAsync();
