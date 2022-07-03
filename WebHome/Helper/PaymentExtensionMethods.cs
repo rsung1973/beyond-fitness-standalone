@@ -243,9 +243,15 @@ namespace WebHome.Helper
             else
             {
                 items = items
-                    .Where(l => ((l.BranchStore.Status & (int)BranchStore.StatusDefinition.VirtualClassroom) == (int)BranchStore.StatusDefinition.VirtualClassroom
+                    .Where(l => (( !l.BranchID.HasValue
+                                    || (l.BranchStore.Status & (int)BranchStore.StatusDefinition.VirtualClassroom) == (int)BranchStore.StatusDefinition.VirtualClassroom)
                                 && l.AttendingCoach == profile.UID)
                             || l.BranchID == viewModel.BranchID);
+
+                //items = items
+                //    .Where(l => ((l.BranchStore.Status & (int)BranchStore.StatusDefinition.VirtualClassroom) == (int)BranchStore.StatusDefinition.VirtualClassroom
+                //                && l.AttendingCoach == profile.UID)
+                //            || l.BranchID == viewModel.BranchID);
             }
 
             return items;

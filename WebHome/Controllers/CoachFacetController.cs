@@ -534,7 +534,7 @@ namespace WebHome.Controllers
                 }
             }
 
-            var priceType = models.CurrentTrialLessonPrice();
+            var priceType = models.CurrentTrialLessonPrice(isVirtual: false, priceID: viewModel.PriceID);
 
             lesson = new RegisterLesson
             {
