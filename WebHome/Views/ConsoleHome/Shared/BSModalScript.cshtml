@@ -59,7 +59,11 @@
         if ($global.hideAllModal === undefined) {
             $global.hideAllModal = function () {
                 for (var id in $global.appliedDialog) {
-                    $global.appliedDialog[id].modal('hide');
+                    try {
+                        $global.appliedDialog[id].modal('hide');
+                    } catch (ex) {
+                        console.log(ex);
+                    }
                 }
             };
         }

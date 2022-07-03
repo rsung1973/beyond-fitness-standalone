@@ -18,7 +18,7 @@
     models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
     _modelState = ViewContext.ModelState;
     _viewModel = (MonthlyCoachRevenueIndicatorQueryViewModel)ViewBag.ViewModel;
-    String _dialogID = $"chartModal{DateTime.Now.Ticks}";
+    String _dialogID = _viewModel.DialogID ?? $"chartModal{DateTime.Now.Ticks}";
     ViewBag.ReuseModal = true;
 }
 <div class="modal modal-mini fade" tabindex="-1" role="dialog" id="@(_dialogID)">
