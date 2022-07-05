@@ -386,7 +386,7 @@ namespace WebHome.Helper.BusinessOperation
                     .Where(u => u.UID == viewModel.OwnerID).FirstOrDefault();
                 if (extension != null && extension.LineID == null)
                 {
-                    ModelState.AddModelError("SignOnline", "主簽約人未綁定Line ID");
+                    ModelState.AddModelError("SignOnline", "主簽約人無綁定Line，無法使用學生線上簽名");
                 }
             }
 
