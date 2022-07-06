@@ -239,7 +239,34 @@
         //搜尋體能顧問
         this.showSearchCoach = function() {
             $("#searchCoachModal").modal('show');
-        };        
+        };
+        
+        this.sendToSign = function(keyID) {
+            $global.closeAllModal();
+            showLoading();
+            $.post('@Html.Raw(Url.Action("NotifyLearnerToSignContract","ContractConsole"))', { 'keyID': keyID }, function(data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    if (data.result) {
+                        Swal.fire({
+                            title: "訊息已重送!",
+                            text: "重新發送Line推播 Bye!",
+                            icon: "success",
+                        });
+                    } else {
+                        Swal.fire(
+                            'Oops 訊息重送失敗...',
+                            data.message,
+                            'error'
+                        )
+                    }
+                }
+                else {
+                    $(data).appendTo($('body'));
+                }
+            });
+        };
+
     </script>
 
 
