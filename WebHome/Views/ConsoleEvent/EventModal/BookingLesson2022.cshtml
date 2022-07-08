@@ -101,10 +101,10 @@
                     <div class="row clearfix">
                         <div class="col-12">
                             <ul class="nav nav-tabs-new2 p-t-0" id="pointTabs" onclick="javascript:clearBooking();">
-                                <li class="nav-item"><a class="nav-link" data-toggle="tab" data-id="basicTab" href="#TSTab">Testing Session</a></li>
+                                <li class="nav-item"><a class="nav-link" data-toggle="tab" data-id="basicTab" href="#TSTab">Trail Session</a></li>
                                 <li class="nav-item"><a class="nav-link active" data-toggle="tab" data-id="basicTab" href="#PTTab">P.T Session</a></li>
                                 <li class="nav-item"><a class="nav-link" data-toggle="tab" data-id="loginTab" href="#PITab">P.I Session</a></li>
-                                <li class="nav-item"><a class="nav-link" data-toggle="tab" data-id="coachListTab" href="#HSTab">Health Session</a></li>
+                                <li class="nav-item"><a class="nav-link" data-toggle="tab" data-id="coachListTab" href="#HSTab">Healthy Session</a></li>
                             </ul>
                         </div>
                     </div>
@@ -343,12 +343,23 @@
 
         });
     </script>
-    @if(_profile.IsHealthCare())
+    @if (_model.IsTrialLearner())
     {
-        <script>
-            $(function() {
-                $('#@(_dialogID) a[href="#HSTab"]').tab('show');
-            });
-        </script>
+            <script>
+                $(function () {
+                    $('#@(_dialogID) a[href="#TSTab"]').tab('show');
+                });
+            </script>
+    }
+    else
+    {
+        if(_profile.IsHealthCare())
+        {
+            <script>
+                $(function() {
+                    $('#@(_dialogID) a[href="#HSTab"]').tab('show');
+                });
+            </script>
+        }
     }
 </div>
