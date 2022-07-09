@@ -161,6 +161,54 @@
             });
         }
 
+        items = totalItems.Where(l => l.RegisterLesson.LessonPriceType.Status == (int)Naming.LessonPriceStatus.營養課程);
+        if (items.Count() > 0)
+        {
+            totalItems = totalItems.Except(items).ToList();
+            _result.Add(new CalendarEvent
+            {
+                id = "course",
+                title = items.Count().ToString(),
+                start = g.Key.ToString("yyyy-MM-dd"),
+                description = "S.D",
+                allDay = true,
+                //className = !items.Any(l => l.LessonAttendance == null) ? new string[] { "b-l b-2x b-CoachPI" } : new string[] { "b-l b-2x b-finish" },
+                className = new string[] { "b-l b-2x b-PT" },
+            });
+        }
+
+        items = totalItems.Where(l => l.RegisterLesson.LessonPriceType.Status == (int)Naming.LessonPriceStatus.運動防護課程);
+        if (items.Count() > 0)
+        {
+            totalItems = totalItems.Except(items).ToList();
+            _result.Add(new CalendarEvent
+            {
+                id = "course",
+                title = items.Count().ToString(),
+                start = g.Key.ToString("yyyy-MM-dd"),
+                description = "A.T",
+                allDay = true,
+                //className = !items.Any(l => l.LessonAttendance == null) ? new string[] { "b-l b-2x b-CoachPI" } : new string[] { "b-l b-2x b-finish" },
+                className = new string[] { "b-l b-2x b-PT" },
+            });
+        }
+
+        items = totalItems.Where(l => l.RegisterLesson.LessonPriceType.Status == (int)Naming.LessonPriceStatus.運動恢復課程);
+        if (items.Count() > 0)
+        {
+            totalItems = totalItems.Except(items).ToList();
+            _result.Add(new CalendarEvent
+            {
+                id = "course",
+                title = items.Count().ToString(),
+                start = g.Key.ToString("yyyy-MM-dd"),
+                description = "S.R",
+                allDay = true,
+                //className = !items.Any(l => l.LessonAttendance == null) ? new string[] { "b-l b-2x b-CoachPI" } : new string[] { "b-l b-2x b-finish" },
+                className = new string[] { "b-l b-2x b-PT" },
+            });
+        }
+
         if (totalItems.Count > 0)
         {
             _result.Add(new CalendarEvent

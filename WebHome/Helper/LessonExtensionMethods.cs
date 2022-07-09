@@ -85,9 +85,7 @@ namespace WebHome.Helper
 
             var items = dataItems
                 .Where(t => !t.TrainingBySelf.HasValue || t.TrainingBySelf == 0)
-                .Where(t => t.RegisterLesson.LessonPriceType.Status == (int)Naming.DocumentLevelDefinition.正常
-                    || t.RegisterLesson.LessonPriceType.Status == (int)Naming.DocumentLevelDefinition.已刪除
-                    || t.RegisterLesson.LessonPriceType.Status == (int)Naming.DocumentLevelDefinition.點數兌換課程)
+                .Where(t => PTScope.Contains(t.RegisterLesson.LessonPriceType.Status))
                 .Where(t => t.RegisterLesson.GroupingMemberCount == 1)
                 .Select(g => new CalendarEvent
                 {

@@ -390,9 +390,7 @@ namespace WebHome.Helper
 
             items = items.Concat(dataItems
                 .Where(t => !t.TrainingBySelf.HasValue || t.TrainingBySelf == 0)
-                .Where(t => t.RegisterLesson.LessonPriceType.Status == (int)Naming.DocumentLevelDefinition.正常
-                    || t.RegisterLesson.LessonPriceType.Status == (int)Naming.DocumentLevelDefinition.已刪除
-                    || t.RegisterLesson.LessonPriceType.Status == (int)Naming.DocumentLevelDefinition.點數兌換課程)
+                .Where(t => LessonExtensionMethods.PTScope.Contains(t.RegisterLesson.LessonPriceType.Status))
                 .GroupBy(t => t.ClassTime.Value.Date)
                 .Select(g => new CalendarEvent
                 {
@@ -510,9 +508,7 @@ namespace WebHome.Helper
             dataItems = sourceItems.Where(l => l.RegisterLesson.RegisterLessonEnterprise == null);
             items = items.Concat(dataItems
                 .Where(t => !t.TrainingBySelf.HasValue || t.TrainingBySelf == 0)
-                .Where(t => t.RegisterLesson.LessonPriceType.Status == (int)Naming.DocumentLevelDefinition.正常
-                    || t.RegisterLesson.LessonPriceType.Status == (int)Naming.DocumentLevelDefinition.已刪除
-                    || t.RegisterLesson.LessonPriceType.Status == (int)Naming.DocumentLevelDefinition.點數兌換課程)
+                .Where(t => LessonExtensionMethods.PTScope.Contains(t.RegisterLesson.LessonPriceType.Status))
                 .Select(g => new CalendarEvent
                 {
                     id = g.LessonID.ToString(),
