@@ -894,6 +894,15 @@ namespace WebHome.Controllers
                 return View("~/Views/CornerKick/Shared/ReportInputError.cshtml");
             }
 
+            viewModel.SignerPIN = viewModel.SignerPIN.GetEfficientString();
+            if (viewModel.SignerPIN == null)
+            {
+                ModelState.AddModelError("SignerPIN", "動態密碼輸入錯誤，請確認後再重新輸入");
+                ViewBag.AlertError = true;
+                ViewBag.ModelState = this.ModelState;
+                return View("~/Views/CornerKick/Shared/ReportInputError.cshtml");
+            }
+
             if (viewModel.KeyID != null)
             {
                 viewModel.ContractID = viewModel.DecryptKeyValue();
@@ -904,6 +913,14 @@ namespace WebHome.Controllers
             if (item == null)
             {
                 ModelState.AddModelError("Message", "合約資料錯誤!!");
+                ViewBag.AlertError = true;
+                ViewBag.ModelState = this.ModelState;
+                return View("~/Views/CornerKick/Shared/ReportInputError.cshtml");
+            }
+
+            if (viewModel.SignerPIN != item.CourseContractExtension.SignerPIN)
+            {
+                ModelState.AddModelError("SignerPIN", "動態密碼輸入錯誤，請確認後再重新輸入");
                 ViewBag.AlertError = true;
                 ViewBag.ModelState = this.ModelState;
                 return View("~/Views/CornerKick/Shared/ReportInputError.cshtml");

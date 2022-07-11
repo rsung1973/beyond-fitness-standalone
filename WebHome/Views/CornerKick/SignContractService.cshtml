@@ -78,8 +78,15 @@
             <li>
                 <div class="list_tb tb2">
                     <div class="list_tr">
+                        <div class="list_td hd">截至@($"{_item.ContractDate:yyyy/MM/dd}")合約課堂數資訊</div>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="list_tb tb2">
+                    <div class="list_tr">
                         <div class="list_td hd">購買堂數</div>
-                        <div class="list_td rt">@(originalContract.Lessons ?? originalContract.LessonPriceType?.ExpandActualLessonCount(models))</div>
+                        <div class="list_td rt">@(originalContract.Lessons)</div>
                     </div>
                 </div>
             </li>
@@ -130,7 +137,66 @@
                 </li>
             }
         </ul>
+            @{
+                if (_item.ContractType == (int)CourseContractType.ContractTypeDefinition.CGA
+                    || _item.ContractType == (int)CourseContractType.ContractTypeDefinition.CGB
+                    || _item.ContractType == (int)CourseContractType.ContractTypeDefinition.CGC
+                    || _item.ContractType == (int)CourseContractType.ContractTypeDefinition.CGF)
+                {
+                    <ul class="mb_list">
+                        <li class="tit"><i class="zmdi zmdi-folder-star-alt"></i> 複合式服務合約資訊</li>
+                        @{
+                            foreach (var rc in originalContract.RegisterLessonContract.OrderBy(c=>c.Title))
+                            {
+                                var registerItem = rc.RegisterLesson;
+                                var priceItem = registerItem.LessonPriceType;
+                                if(registerItem.RegisterLessonSharing!=null
+                                    && registerItem.RegisterLessonSharing.ShareID!=registerItem.RegisterID)
+                                {
+                                    continue;
+                                }
+                                <li>
+                                    <div class="list_tb tb2">
+                                        <div class="list_tr">
+                                            <div class="list_td hd">
+                                                <span class="f-red">@(rc.Title)</span>
+                                                @{
+                                                    switch((Naming.LessonPriceStatus?)priceItem.Status)
+                                                    {
+                                                        case Naming.LessonPriceStatus.營養課程:
+                                                            <text>S.D Session《一個月》</text>
+                                                            break;
+                                                        case Naming.LessonPriceStatus.運動恢復課程:
+                                                            <text>S.R Session《@(priceItem.DurationInMinutes)分鐘》</text>
+                                                            break;
+                                                        case Naming.LessonPriceStatus.運動防護課程:
+                                                            <text>A.T Session《@(priceItem.DurationInMinutes)分鐘》</text>
+                                                            break;
+                                                        default:
+                                                            <text>P.T Session《@(priceItem.DurationInMinutes)分鐘》</text>
+                                                            break;
+                                                    }
+                                                }
+                                            </div>
+                                            <div class="list_td rt"><span class="col-red">@(registerItem.RemainedLessonCount()/(priceItem.BundleCount??1))</span> / @(registerItem.Lessons/(priceItem.BundleCount??1))</div>
+                                        </div>
+                                    </div>
+                                </li>
+                            }
+                        }
+                </ul>
+                }
+            }
         <div class="tearms-content-extend">
+            <div class="row">
+                <div class="input-field col s12">
+                    <i class="livicon-evo prefix"
+                       data-options="name: unlock.svg; size: 30px; style: lines; strokeColor:#05232d; autoPlay:true"></i>
+                    <input value="@($"{_item.CourseContractExtension.SignerPIN?.Substring(0,3)}")" name="SignerPIN" type="text" class="validate" maxlength="10" data-length="10" />
+                    <label class="active" for="nickname">請輸入動態密碼</label>
+                    @*<span class="help-error-text">動態密碼輸入錯誤，請確認後再重新輸入</span>*@
+                </div>
+            </div>
             <div class="row">
                 <div class="col s12">
                     <input type="checkbox" id="agree1" name="Extension" value="true" />
