@@ -138,7 +138,7 @@
                                     <text>（@(_contract.Remark)）。</text>
                                 }
                             <p style="margin-left:70px;margin-bottom: 0px;">
-                                截至當日結算實際未完成上課堂數如下：<br/>
+                                截至 @(String.Format("{0:yyyy/MM/dd}", _signatureDate)) 結算實際未完成上課堂數如下：<br/>
                                 @{
                                     foreach (var rc in _original.RegisterLessonContract.OrderBy(c=>c.Title))
                                     {
@@ -154,7 +154,7 @@
                                         case Naming.LessonPriceStatus.營養課程:
                                         <text>
                                             ●
-                                            @(rc.Title)營養諮詢(S.D)@(registerItem.Lessons/priceItem.BundleCount)個月，未完成服務@(registerItem.RemainedLessonCount()/priceItem.BundleCount)月。<br />
+                                            @(rc.Title)營養諮詢(S.D)@(registerItem.Lessons/priceItem.BundleCount)個月，未完成服務@(registerItem.RemainedLessonCount()/priceItem.BundleCount)個月(@(priceItem.BundleCount)堂)。<br />
                                         </text>
                                         break;
                                         case Naming.LessonPriceStatus.運動恢復課程:
