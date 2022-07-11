@@ -164,6 +164,29 @@
                       "flex": 5
                     }
                   ]
+                },
+                {
+                  "type": "box",
+                  "layout": "baseline",
+                  "spacing": "sm",
+                  "contents": [
+                    {
+                      "type": "text",
+                      "text": "動態密碼",
+                      "color": "#aaaaaa",
+                      "size": "sm",
+                      "flex": 3,
+                      "wrap": true
+                    },
+                    {
+                      "type": "text",
+                      "text": "@Html.Raw(models.CreatePIN(item.CourseContractExtension))",
+                      "wrap": true,
+                      "color": "#666666",
+                      "size": "sm",
+                      "flex": 5
+                    }
+                  ]
                 }
               ]
             }

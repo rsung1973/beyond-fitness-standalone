@@ -45,6 +45,10 @@
                     else if (_model.IsServiceSignable(models, _profile))
                     {
                         <a href="@(Url.Action("SignContractService","ConsoleHome",new { KeyID = _model.ContractID.EncryptKey() }))" class="list-group-item">學生簽名</a>
+                        if (_model.CourseContractExtension.SignOnline == true)
+                        {
+                            <a href="javascript:sendToSign('@_model.ContractID.EncryptKey()');" class="list-group-item">重新發送Line推播<i class="zmdi zmdi-arrow-right"></i>學生</a>
+                        }
                         hasItem = true;
                     }
                     @if (_model.Status == (int)Naming.CourseContractStatus.已生效)

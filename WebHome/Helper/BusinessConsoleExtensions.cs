@@ -248,6 +248,14 @@ namespace WebHome.Helper
                     (int)Naming.LessonPriceStatus.團體學員課程,
         };
 
+        public static readonly int?[] HSSessionScope = new int?[]
+        {
+                    (int)Naming.LessonPriceStatus.運動恢復課程,
+                    (int)Naming.LessonPriceStatus.運動防護課程,
+                    (int)Naming.LessonPriceStatus.營養課程,
+        };
+
+
         public static IQueryable<Payment> UpdateVoidShare(this GenericManager<BFDataContext> models, DateTime startDate, DateTime endExclusiveDate)
         {
 
