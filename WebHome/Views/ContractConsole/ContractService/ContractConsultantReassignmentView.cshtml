@@ -8,14 +8,17 @@
 @using WebHome.Models.DataEntity
 @using WebHome.Controllers
 @using Microsoft.AspNetCore.Mvc.ModelBinding
+@using WebHome.Helper.BusinessOperation
+
 @{
 
     ModelStateDictionary _modelState;
     ModelSource<UserProfile> models;
     CourseContractRevision _model;
     CourseContractMember _owner;
-    CourseContract _contract;
+    CourseContract _contract;    
     DateTime? _signatureDate;
+    CourseContract _original;
 
     CourseContractViewModel _viewModel = (CourseContractViewModel)ViewBag.ViewModel;
 
@@ -23,6 +26,7 @@
     models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
     _model = (CourseContractRevision)this.Model;
     _contract = _model.CourseContract;
+    _original = _model.SourceContract;
     _owner = _contract.CourseContractMember.Where(m => m.UID == _contract.OwnerID).First();
     var item = _contract.CourseContractLevel.Where(l => l.LevelID == (int)Naming.CourseContractStatus.待審核).FirstOrDefault();
     if (item != null)
@@ -34,75 +38,171 @@
         _signatureDate = DateTime.Now;
     }
 }
-<div class="row" style="margin-top: 20px; margin-bottom: 20px;">
-    <div class="col-md-12">
-        <div class="p-t-0" style="@(_viewModel.Pdf=="1" ? "width: 21.5cm; height: 28cm" : "")">
-            <h1 class="text-center"><b>學員服務申請表</b></h1>
-            <div class="@(_viewModel.Pdf=="1" ? "seal" : "")">
-                <table class="table" style="font-size: 16px">
-                    <tbody>
-                        <tr>
-                            <td colspan="2">合約編號：@(_contract.ContractNo())</td>
-                        </tr>
-                        <tr>
-                            <td>姓名：@(_contract.ContractOwner.RealName)</td>
-                            <td>聯絡電話：@(_contract.ContractOwner.Phone)</td>
-                        </tr>
-                    </tbody>
-                    <tbody>
-                        <tr>
-                            <td colspan="2">
-                                申請項目：
-                                @if (_contract.Status == (int)Naming.ContractServiceStatus.已生效)
-                                {
-                                    <text>☑ 轉讓體能顧問</text>
-                                }
-                                else
-                                {
-                                    <label class="fancy-checkbox">
-                                        <input type="checkbox" name="extension" checked="checked" disabled="disabled">
-                                        <span>轉讓體能顧問</span>
-                                    </label>
-                                }
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2">申請日期：@(String.Format("{0:yyyy/MM/dd}", _contract.ContractDate))</td>
-                        </tr>
-                        <tr>
-                        <tr>
-                            <td colspan="2">
-                                @{ var original = _model.SourceContract;}
-
-                                申請內容：體能顧問由@(_model.CourseContractRevisionItem.ServingCoach.UserProfile.FullName())轉換為<span class="col-red">@(_contract.ServingCoach.UserProfile.FullName())</span>負責本合約相關後續事宜。
-                            </td>
-                        </tr>
-                        <tr style="@(_viewModel.Pdf=="1" ? "height: 14cm" : "height: 2cm")">
-                            <td colspan="2">其他更多說明：@(_contract.Remark)</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <table class="table" style="font-size: 15px">
+<div class="row">
+    <div class="col-md-12"  style="@(_viewModel.Pdf=="1" ? "margin:0;padding:0;" : "")">
+        <h4 class="text-center"  style="@(_viewModel.Pdf=="1" ? "margin:0;padding:0;" : "")"><b>Beyond Fitness 顧問服務轉換體能顧問申請書</b></h4>
+             <table  class="table" style="@(_viewModel.Pdf=="1" ? "margin:0;padding:0;" : "")">
+                <tbody>
                     <tr>
-                        <td colspan="2">日期：@(String.Format("{0:yyyy/MM/dd}", _signatureDate))</td>
-                        <td>超越體能顧問有限公司</td>
+                        <td colspan="2">合約編號：@(_contract.ContractNo())</td>
+                    </tr>
+                    <tr style="border-width: 1px; border-top-style: dashed;background-color: #f2f2f2;">
+                        <td colspan="2"><b>學員資料</b></td>
+                    </tr>
+                    @{
+                        IEnumerable<CourseContractMember> items;
+                    }
+                    @if (_original.ContractType == (int)CourseContractType.ContractTypeDefinition.CFA
+                        || _original.ContractType == (int)CourseContractType.ContractTypeDefinition.CGF
+                        || _original.ContractType == (int)CourseContractType.ContractTypeDefinition.CVF)
+                    {
+                        items = _original.CourseContractMember.Where(m => m.UID == _original.OwnerID); 
+                    }
+                    else
+                    {
+                        items = _original.CourseContractMember;
+                    }
+                    @foreach (var m in items)
+                    {
+                        <tr>
+                            <td>姓名：@(m.UserProfile.RealName)</td>
+                            <td>聯絡電話：@(m.UserProfile.Phone)</td>
+                        </tr>                                                             
+                    }                             
+                    <tr style="border-width: 1px; border-top-style: dashed;background-color: #f2f2f2;">
+                        <td colspan="2"><b>原合約內容</b></td>
                     </tr>
                     <tr>
-                        <td></td>
-                        <td></td>
+                        <td>名稱：@(_original.CourseContractType.TypeName)(@(_original.LessonPriceType.DurationInMinutes)分鐘)</td>
                         <td>
-                            主管簽約代表：
-                            <img src="@(ViewBag.Supervisor != null ? ((UserProfile)ViewBag.Supervisor).UserProfileExtension.Signature :_contract.Supervisor?.UserProfileExtension.Signature)" width="200px" class="modifySignDialog_link">
+                            @if (_original.LessonPriceType.BranchStore?.IsVirtualClassroom() == true
+                                    || _original.CourseContractExtension.CourseBranch?.IsVirtualClassroom() == true)
+                            {
+                                <text>上課場所/簽約分店：遠距/@(_original.CourseContractExtension.BranchStore.BranchName)</text>
+                            }
+                            else
+                            {
+                                <text>上課場所：@(_original.CourseContractExtension.BranchStore.BranchName)</text>
+                            }
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table" style="margin:0;padding:0;">
+                <tbody>
+                    <tr>
+                        <td width="100px">購買堂數：</td>
+                        <td>
+                        @if (_original.ContractType == (int)CourseContractType.ContractTypeDefinition.CGA
+                                  || _original.ContractType == (int)CourseContractType.ContractTypeDefinition.CGB
+                                  || _original.ContractType == (int)CourseContractType.ContractTypeDefinition.CGC
+                                  || _original.ContractType == (int)CourseContractType.ContractTypeDefinition.CGF
+                                  || _original.ContractType == (int)CourseContractType.ContractTypeDefinition.CVA
+                                  || _original.ContractType == (int)CourseContractType.ContractTypeDefinition.CVB
+                                  || _original.ContractType == (int)CourseContractType.ContractTypeDefinition.CVF)
+                        {
+                            <text>共 @(_original.Lessons)堂。</text> <br />
+                            @Html.Raw(String.Join("<br/>", _original.ExpandContractLessonDetails(models, "● ")))                                               
+                        }
+                        else
+                        {
+                            <text>@(_original.Lessons) 堂</text>
+                        }                            
+                        </td>
+                     </tr>
+                </tbody>    
+            </table>
+            <table class="table" style="margin:0;padding:0;">
+                <tbody>                                              
+                    <tr>
+                        <td colspan="2">顧問服務使用期限：自 @(String.Format("{0:yyyy/MM/dd}", _original.ValidFrom)) 起，至 @(String.Format("{0:yyyy/MM/dd}", _original.Expiration)) 止。</td>                        
+                    </tr>
+                    <tr style="border-width: 1px; border-top-style: dashed;background-color: #f2f2f2;">
+                        <td colspan="2"><b>服務申請內容：</b></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">申請日期：@(String.Format("{0:yyyy/MM/dd}", _contract.ContractDate))</td>                        
+                    </tr>                    
+                    <tr>
+                        <td>項目：轉換體能顧問</td>                     
+                    </tr>    
+                    <tr>
+                        <td colspan="2">
+                            申請說明：將以下實際未完成上課堂數於 @(String.Format("{0:yyyy/MM/dd}", _signatureDate)) 轉換體能顧問，體能顧問由@(_model.CourseContractRevisionItem.ServingCoach.UserProfile.FullName())轉換為<span class="col-red">@(_contract.ServingCoach.UserProfile.FullName())</span>負責本合約相關後續事宜。
+                                @if (_contract.Remark !=null)
+                                {
+                                    <text>（@(_contract.Remark)）。</text>
+                                }
+                            <p style="margin-left:70px;margin-bottom: 0px;">
+                                截至當日結算實際未完成上課堂數如下：<br/>
+                                @{
+                                    foreach (var rc in _original.RegisterLessonContract.OrderBy(c=>c.Title))
+                                    {
+                                        var registerItem = rc.RegisterLesson;
+                                        var priceItem = registerItem.LessonPriceType;
+                                        if(registerItem.RegisterLessonSharing!=null
+                                        && registerItem.RegisterLessonSharing.ShareID!=registerItem.RegisterID)
+                                        {
+                                        continue;
+                                        }
+                                        switch((Naming.LessonPriceStatus?)priceItem.Status)
+                                        {
+                                        case Naming.LessonPriceStatus.營養課程:
+                                        <text>
+                                            ●
+                                            @(rc.Title)營養諮詢(S.D)@(registerItem.Lessons/priceItem.BundleCount)個月，未完成服務@(registerItem.RemainedLessonCount()/priceItem.BundleCount)月。<br />
+                                        </text>
+                                        break;
+                                        case Naming.LessonPriceStatus.運動恢復課程:
+                                        <text>
+                                            ●
+                                            @(rc.Title)運動恢復(S.R)@(registerItem.Lessons/priceItem.BundleCount)堂，未完成服務@(registerItem.RemainedLessonCount())堂。<br />
+                                        </text>
+                                        break;
+                                        case Naming.LessonPriceStatus.運動防護課程:
+                                        <text>
+                                            ●
+                                            @(rc.Title)運動防護(A.T)@(registerItem.Lessons/priceItem.BundleCount)堂，未完成服務@(registerItem.RemainedLessonCount())堂。<br />
+                                        </text>
+                                        break;
+                                        default:
+                                        <text>
+                                            ●
+                                            @(rc.Title)私人教練(P.T)@(registerItem.Lessons/priceItem.BundleCount)堂，未完成服務@(registerItem.RemainedLessonCount())堂。<br />
+                                        </text>
+                                        break;
+                                        }
+                                    }
+                                }
+                            </p>                        
+                        </td>
+                    </tr>                                        
+                </tbody>
+            </table>                 
+            <table class="table"  style="@(_viewModel.Pdf=="1" ? "margin:0;padding:0;" : "")">
+                <tbody>
+                    <tr>
+                        <td class="p-t-0"></td>
+                        <td class="p-0">Beyond Fitness超越體能顧問有限公司</td>
+                        @if (_viewModel.Pdf == "1")
+                        {
+                            <td rowspan="3" width="150px" class="p-0 text-right"><img src="images/sign/seal.png" width="150px" /></td>
+                        }
+                    </tr>
+                    <tr>
+                        <td class="p-t-0"> </td>
+                        <td class="p-0">
+                            主管簽核代表：<img src="@(ViewBag.Supervisor != null ? ((UserProfile)ViewBag.Supervisor).UserProfileExtension.Signature :_contract.Supervisor?.UserProfileExtension.Signature)" width="150px" height="50px" class="modifySignDialog_link">                            
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="2"></td>
-                        <td>簽約體能顧問：<img src="@(_contract.ServingCoach.UserProfile.UserProfileExtension.Signature)" width="200px" class="modifySignDialog_link" /></td>
+                        <td class="p-t-0"></td>
+                        <td class="p-0">簽約體能顧問：<img src="@(_contract.ServingCoach.UserProfile.UserProfileExtension.Signature)" width="150px" height="50px" class="modifySignDialog_link" /></td>
                     </tr>
+                    <tr>
+                        <td class="p-t-0">日期：@(String.Format("{0:yyyy/MM/dd}", _signatureDate))</td>
+                        <td class="p-0">日期：@(String.Format("{0:yyyy/MM/dd}", _signatureDate))</td>
+                    </tr>                   
                 </table>
-            </div>
-        </div>
     </div>
 </div>
-
-

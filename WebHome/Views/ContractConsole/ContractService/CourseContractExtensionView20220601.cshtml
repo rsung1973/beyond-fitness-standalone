@@ -131,11 +131,55 @@
                         }                       
                     </tr>    
                     <tr>
-                        <td colspan="2">申請說明：合約到期日由 @(String.Format("{0:yyyy/MM/dd}", _original.Expiration))  ，展延至 <sapn class="col-red">@(String.Format("{0:yyyy/MM/dd}", _contract.Expiration))</sapn> 止
-                        @if (_contract.Remark !=null)
-                        {
-                            <text>（@(_contract.Remark)）。</text>
-                        }</td>
+                        <td colspan="2">
+                            申請說明：合約經雙方同意將以下實際未完成上課堂數於 @(String.Format("{0:yyyy/MM/dd}", _signatureDate)) 展延，將合約到期日由 @(String.Format("{0:yyyy/MM/dd}", _original.Expiration)) ，展延至 <sapn class="col-red">@(String.Format("{0:yyyy/MM/dd}", _contract.Expiration))</sapn> 止
+                                @if (_contract.Remark !=null)
+                                {
+                                    <text>（@(_contract.Remark)）。</text>
+                                }
+                            <p style="margin-left:70px;margin-bottom: 0px;">
+                                截至當日結算實際未完成上課堂數如下：<br/>
+                                @{
+                                    foreach (var rc in _original.RegisterLessonContract.OrderBy(c=>c.Title))
+                                    {
+                                        var registerItem = rc.RegisterLesson;
+                                        var priceItem = registerItem.LessonPriceType;
+                                        if(registerItem.RegisterLessonSharing!=null
+                                        && registerItem.RegisterLessonSharing.ShareID!=registerItem.RegisterID)
+                                        {
+                                        continue;
+                                        }
+                                        switch((Naming.LessonPriceStatus?)priceItem.Status)
+                                        {
+                                        case Naming.LessonPriceStatus.營養課程:
+                                        <text>
+                                            ●
+                                            @(rc.Title)營養諮詢(S.D)@(registerItem.Lessons/priceItem.BundleCount)個月，未完成服務@(registerItem.RemainedLessonCount()/priceItem.BundleCount)月。<br />
+                                        </text>
+                                        break;
+                                        case Naming.LessonPriceStatus.運動恢復課程:
+                                        <text>
+                                            ●
+                                            @(rc.Title)運動恢復(S.R)@(registerItem.Lessons/priceItem.BundleCount)堂，未完成服務@(registerItem.RemainedLessonCount())堂。<br />
+                                        </text>
+                                        break;
+                                        case Naming.LessonPriceStatus.運動防護課程:
+                                        <text>
+                                            ●
+                                            @(rc.Title)運動防護(A.T)@(registerItem.Lessons/priceItem.BundleCount)堂，未完成服務@(registerItem.RemainedLessonCount())堂。<br />
+                                        </text>
+                                        break;
+                                        default:
+                                        <text>
+                                            ●
+                                            @(rc.Title)私人教練(P.T)@(registerItem.Lessons/priceItem.BundleCount)堂，未完成服務@(registerItem.RemainedLessonCount())堂。<br />
+                                        </text>
+                                        break;
+                                        }
+                                    }
+                                }
+                            </p>                        
+                        </td>
                     </tr>
                     <tr>
                         <td colspan="2" style="height: 1.5cm;">
