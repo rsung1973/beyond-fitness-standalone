@@ -70,6 +70,7 @@ body.theme-nero {
 
 .theme-nero table.DTFC_Cloned tr {
     background-color: rgba(25, 29, 37, .97);
+    color: white;
 }
 
 .theme-nero .btn-darkteal {
