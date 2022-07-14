@@ -575,7 +575,7 @@ namespace WebHome.Helper
         public static IEnumerable<PaymentMonthlyReportItem> CreateMonthlyPaymentReportForFeeCharge(this PaymentQueryViewModel viewModel, GenericManager<BFDataContext> models)
         {
 
-            IQueryable<Payment> items = models.GetTable<Payment>().Where(p => p.TransactionType == (int)Naming.PaymentTransactionType.手續費);
+            IQueryable<Payment> items = models.GetTable<Payment>().Where(p => p.TransactionType == (int)Naming.PaymentTransactionType.終止手續費);
 
             IEnumerable<PaymentMonthlyReportItem> details = items
                 .Where(p => p.PayoffDate >= viewModel.PayoffDateFrom && p.PayoffDate < viewModel.PayoffDateTo)

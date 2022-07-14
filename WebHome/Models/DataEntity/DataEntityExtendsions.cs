@@ -693,7 +693,7 @@ namespace WebHome.Models.DataEntity
                     : String.Concat(((Naming.PaymentTransactionType)this.TransactionType).ToString(),
                         this.TransactionType == (int)Naming.PaymentTransactionType.運動商品
                             || this.TransactionType == (int)Naming.PaymentTransactionType.食飲品
-                            || this.TransactionType == (int)Naming.PaymentTransactionType.教育訓練
+                            || this.TransactionType == (int)Naming.PaymentTransactionType.各項費用
                         ? String.Join("/", this.PaymentTransaction.PaymentOrder.Select(p => p.MerchandiseWindow.ProductName))
                         : null);
     }

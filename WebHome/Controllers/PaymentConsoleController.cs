@@ -435,7 +435,7 @@ namespace WebHome.Controllers
 
             if (contract == null)
             {
-                ModelState.AddModelError("ContractID", "請選擇手續費收款!!");
+                ModelState.AddModelError("ContractID", "請選擇終止手續費收款!!");
             }
             else
             {
@@ -462,7 +462,7 @@ namespace WebHome.Controllers
             viewModel.ItemRemark = new string[] { $"合約{contract?.ContractNo()}終止手續費" };
             viewModel.InvoiceType = Naming.InvoiceTypeDefinition.一般稅額計算之電子發票;
             viewModel.CarrierId1 = viewModel.CarrierId1.GetEfficientString();
-            viewModel.TransactionType = (int)Naming.PaymentTransactionType.手續費;
+            viewModel.TransactionType = (int)Naming.PaymentTransactionType.終止手續費;
 
             if (viewModel.CarrierId1 != null)
             {

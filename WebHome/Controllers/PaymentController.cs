@@ -1046,7 +1046,7 @@ namespace WebHome.Controllers
                                            LessonTime ON LessonAttendance.LessonID = LessonTime.LessonID
                             WHERE   (LessonTime.RegisterID = {0})", item.Payment.TuitionInstallment.IntuitionCharge.RegisterLesson.RegisterID);
             }
-            else if (item.Payment.TransactionType == (int)Naming.PaymentTransactionType.手續費)
+            else if (item.Payment.TransactionType == (int)Naming.PaymentTransactionType.終止手續費)
             {
                 var revision = item.Payment.PaymentTransaction.PaymentContractTermination?.CourseContractTermination.CourseContractRevision;
                 if (revision != null)

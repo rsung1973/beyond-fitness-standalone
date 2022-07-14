@@ -21,7 +21,7 @@
 }
 <script>
     $(function () {
-        $('').launchDownload('@Html.Raw(Url.Action("EditPaymentForTerminationCharge","ConsoleHome",new { TransactionType = (int)Naming.PaymentTransactionType.手續費}))',
+        $('').launchDownload('@Html.Raw(Url.Action("EditPaymentForTerminationCharge","ConsoleHome",new { TransactionType = (int)Naming.PaymentTransactionType.終止手續費}))',
             @Html.Raw((new CourseContractQueryViewModel
                 {
                     ContractID = _model.ContractID,

@@ -31,7 +31,7 @@
             var PIShare = PIShareItems.Sum(p => p.ShareAmount) ?? 0;
             var othersShare = items.Where(p => p.TransactionType == (int)Naming.PaymentTransactionType.運動商品 
                 || p.TransactionType == (int)Naming.PaymentTransactionType.食飲品
-                || p.TransactionType == (int)Naming.PaymentTransactionType.手續費).GetPaymentAchievement(models, coachItems).Sum(p => p.ShareAmount) ?? 0;
+                || p.TransactionType == (int)Naming.PaymentTransactionType.終止手續費).GetPaymentAchievement(models, coachItems).Sum(p => p.ShareAmount) ?? 0;
         }
         P.T：<a href="#" onclick='showPaymentList(@Html.Raw(JsonConvert.SerializeObject(
             new
@@ -54,7 +54,7 @@
                 CompoundType = new Naming.PaymentTransactionType?[] {
                     Naming.PaymentTransactionType.運動商品,
                     Naming.PaymentTransactionType.食飲品,
-                    Naming.PaymentTransactionType.手續費
+                    Naming.PaymentTransactionType.終止手續費
                 },
                 ShareFor = _viewModel.RelatedID,
             })));'>@($"{othersShare:##,###,###,##0}")</a>
