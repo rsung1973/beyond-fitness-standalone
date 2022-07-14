@@ -86,6 +86,14 @@
             <li>
                 <div class="list_tb tb2">
                     <div class="list_tr">
+                        <div class="list_td hd">剩餘堂數</div>
+                        <div class="list_td rt">@(originalContract.RemainedLessonCount())</div>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="list_tb tb2">
+                    <div class="list_tr">
                         <div class="list_td hd">截至@($"{_item.ContractDate:yyyy/MM/dd}")剩餘堂數</div>
                         <div class="list_td rt">@(originalContract.RemainedLessonCount())</div>
                     </div>
