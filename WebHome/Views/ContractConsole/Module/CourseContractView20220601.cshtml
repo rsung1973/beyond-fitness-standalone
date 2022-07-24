@@ -131,7 +131,8 @@
                         }
                         else
                         {
-                            <text>@(_model.Lessons) 堂</text>
+                            var orderItem = _model.CourseContractOrder.FirstOrDefault();
+                            <text>@(_model.Lessons) 堂(每堂購買單價 @(String.Format("{0:##,###,###,###}", orderItem?.LessonPriceType.ListPrice)) 元)。</text>
                         }                            
                         </td>
                      </tr>

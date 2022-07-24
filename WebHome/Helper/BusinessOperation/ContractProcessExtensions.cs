@@ -1748,13 +1748,13 @@ namespace WebHome.Helper.BusinessOperation
             switch ((Naming.LessonPriceStatus?)item.Status)
             {
                 case Naming.LessonPriceStatus.營養課程:
-                    return $"{prefix}{(order.SeqNo > 0 ? "加購" : null)}營養諮詢(S.D){order.Lessons}個月{order.Lessons * (item.BundleCount ?? 1)}堂";
+                    return $"{prefix}{(order.SeqNo > 0 ? "加購" : null)}營養諮詢(S.D){order.Lessons}個月{order.Lessons * (item.BundleCount ?? 1)}堂(購買一個月單價{item.ListPrice*item.BundleCount:##,###,####,###}元)。";
                 case Naming.LessonPriceStatus.運動恢復課程:
-                    return $"{prefix}{(order.SeqNo > 0 ? "加購" : null)}運動恢復(S.R){item.DurationInMinutes}分鐘{order.Lessons * (item.BundleCount ?? 1)}堂";
+                    return $"{prefix}{(order.SeqNo > 0 ? "加購" : null)}運動恢復(S.R){item.DurationInMinutes}分鐘{order.Lessons * (item.BundleCount ?? 1)}堂(購買每堂單價{item.ListPrice:##,###,####,###}元)。";
                 case Naming.LessonPriceStatus.運動防護課程:
-                    return $"{prefix}{(order.SeqNo > 0 ? "加購" : null)}運動防護(A.T){item.DurationInMinutes}分鐘{order.Lessons * (item.BundleCount ?? 1)}堂";
+                    return $"{prefix}{(order.SeqNo > 0 ? "加購" : null)}運動防護(A.T){item.DurationInMinutes}分鐘{order.Lessons * (item.BundleCount ?? 1)}堂(購買每堂單價{item.ListPrice:##,###,####,###}元)。";
                 default:
-                    return $"{prefix}{(order.SeqNo > 0 ? "加購" : null)}私人教練(P.T){item.DurationInMinutes}分鐘{order.Lessons * (item.BundleCount ?? 1)}堂";
+                    return $"{prefix}{(order.SeqNo > 0 ? "加購" : null)}私人教練(P.T){item.DurationInMinutes}分鐘{order.Lessons * (item.BundleCount ?? 1)}堂(購買每堂單價{item.ListPrice:##,###,####,###}元)。";
             }
         }
 
