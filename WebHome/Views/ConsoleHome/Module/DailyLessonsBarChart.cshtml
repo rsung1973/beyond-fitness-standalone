@@ -8,10 +8,8 @@
 @using WebHome.Controllers
 @using Microsoft.AspNetCore.Mvc.ModelBinding
 
-@using Newtonsoft.Json
-@{
-    Layout = "~/Views/BusinessConsole/Module2021/InitMultipleEchartsTemplate.cshtml";
 
+@{
     ModelStateDictionary _modelState;
     ModelSource<UserProfile> models;
     UserProfile _model;
@@ -23,11 +21,17 @@
     _viewModel = (LessonTimeBookingViewModel)ViewBag.ViewModel;
 }
 
-@section ChartOption
-{
-    @{
-        await Html.RenderPartialAsync("~/Views/ConsoleHome/Module/TodayLessonsBarEChartOption.cshtml");
-    }
+@{
+    await Html.RenderPartialAsync("~/Views/ConsoleHome/Module/TodayLessonsBarEChartOption.cshtml", _model);
+    await Html.RenderPartialAsync("~/Views/ConsoleHome/Module/MonthlyLessonHeatmapOption.cshtml", _model);
 }
-
-
+<script>
+    $(function() {
+        if ($global.echarts.showChart['lessonsBar']) {
+            $global.echarts.showChart['lessonsBar']();
+        }
+        if ($global.echarts.showChart['lessonsHeatmap']) {
+            $global.echarts.showChart['lessonsHeatmap']();
+        }
+    });
+</script>

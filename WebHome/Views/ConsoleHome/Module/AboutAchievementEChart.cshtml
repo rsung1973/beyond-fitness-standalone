@@ -24,7 +24,7 @@
 
 <div class="container-fluid">
     <div class="row clearfix">
-        <h4 class="card-outbound-header m-l-15">我的分店一覽</h4>
+        <h4 class="card-outbound-header m-l-15">當日分店一覽</h4>
         <div class="col-lg-12 col-md-12">
             <div class="row clearfix">
                 <div class="col-12">
@@ -59,10 +59,20 @@
                             </ul>
                         </div>
                         <div class="body">
-                            @{
-                                await Html.RenderPartialAsync("~/Views/BusinessConsole/Module2021/InitEcharts.cshtml");
-                                await Html.RenderPartialAsync("~/Views/ConsoleHome/Module/TodayLessonsBarEChart.cshtml", _model);
-                            }
+                            <div class="row clearfix">
+                                <div class="col-md-8 col-sm-12 col-12">
+                                    @{
+                                        ViewBag.ChartID = "lessonsBar";
+                                        await Html.RenderPartialAsync("~/Views/ConsoleHome/Module/TodayLessonsBarEChart.cshtml", _model);
+                                    }
+                                </div>
+                                <div class="col-md-4 col-sm-12 col-12">
+                                    @{
+                                        ViewBag.ChartID = "lessonsHeatmap";
+                                        await Html.RenderPartialAsync("~/Views/ConsoleHome/Module/MonthlyLessonHeatmap.cshtml", _model);
+                                    }                                
+                                </div>
+                            </div>
                         </div>
                         <script>
                             $(function () {

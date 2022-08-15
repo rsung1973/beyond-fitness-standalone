@@ -686,13 +686,13 @@ namespace WebHome.Helper
                         void clearSubtotal(RegisterLesson lesson)
                         {
 
-                            models.ExecuteCommand(@"UPDATE RegisterLesson
-                                SET        Lessons = {0}
-                                FROM     RegisterLesson INNER JOIN
-                                               RegisterLessonSharing ON RegisterLesson.RegisterID = RegisterLessonSharing.RegisterID
-                                WHERE   (RegisterLessonSharing.ShareID = {1})", lesson.RemainedLessonCount(), lesson.RegisterID);
+                            //models.ExecuteCommand(@"UPDATE RegisterLesson
+                            //    SET        Lessons = {0}
+                            //    FROM     RegisterLesson INNER JOIN
+                            //                   RegisterLessonSharing ON RegisterLesson.RegisterID = RegisterLessonSharing.RegisterID
+                            //    WHERE   (RegisterLessonSharing.ShareID = {1})", lesson.RemainedLessonCount(), lesson.RegisterID);
 
-                                    models.ExecuteCommand(@"DELETE FROM RegisterLessonBooking
+                            models.ExecuteCommand(@"DELETE FROM RegisterLessonBooking
                                 FROM     RegisterLessonSharing INNER JOIN
                                                RegisterLessonBooking ON RegisterLessonSharing.RegisterID = RegisterLessonBooking.RegisterID
                                 WHERE   (RegisterLessonSharing.ShareID = {0}) AND (RegisterLessonBooking.LessonID IS NULL)", lesson.RegisterID);
@@ -727,7 +727,11 @@ namespace WebHome.Helper
                             {
                                 int resetCount = register.Lessons + ((exchangeItem.TargetSubtotal ?? 0) - register.RemainedLessonCount());
                                 clearSubtotal(register);
-                                resetSubtotal(register, resetCount);
+                                foreach(var l in register.RegisterLessonSharing.LessonRefernece.SharingReference
+                                    .Select(r => r.RegisterLesson).ToList())
+                                {
+                                    resetSubtotal(l, resetCount);
+                                }
                             }
                             else
                             {

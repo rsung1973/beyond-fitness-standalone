@@ -300,6 +300,7 @@ namespace WebHome.Helper
                 r[13] = item.Count();
                 if (item.Key.SettlementID.HasValue)
                     r[14] = item.Key.SettlementID;
+                r[16] = coach.CoachID;
 
                 table.Rows.Add(r);
             }
@@ -335,6 +336,7 @@ namespace WebHome.Helper
                 r[13] = 1;
                 if (item.SettlementID.HasValue)
                     r[14] = item.SettlementID;
+                r[16] = coach.CoachID;
 
                 table.Rows.Add(r);
             }
@@ -713,9 +715,9 @@ namespace WebHome.Helper
         static readonly int[] AttendingLessonIndex = new int[] { 142, 132, 122, 112, 92 };
         static readonly decimal[] ShareRatioIncrementForAttendance = new decimal[] { 2m, 1.5m, 1.25m, 1m, 0.5m };
         static readonly int[][] HealthCareBonusIndex = new int[][] {
-            new int[]{33 ,350  ,380   ,400   ,21000},
-            new int[]{34 ,400  ,430   ,450   ,23000},
-            new int[]{35 ,450  ,480   ,500   ,26000}
+            new int[]{33 ,175  ,190   ,200   ,21000},
+            new int[]{34 ,200  ,215   ,225   ,23000},
+            new int[]{35 ,225  ,240   ,250   ,26000}
         };
         static readonly int[] ManagerAttendanceIndex = { 76, 71, 66, 61, 56, 51, 46, 41, 36, 31, 26, 21, 16, 11 };
         static readonly int[] ManagerAttendanceBonus = { 42500, 40500, 37000, 34000, 31000, 27500, 24000, 21000, 18000, 15000, 12000, 9000, 6000, 3000 };
@@ -1081,33 +1083,48 @@ namespace WebHome.Helper
                 void calcHealthCareBonus()
                 {
                     var currentPTItems = PTItems.Where(v => v.AttendingCoach == coach.CoachID);
-                    salary.PTAttendanceCount = helper.FilterByWholeOne(currentPTItems).Count()
-                        + helper.FilterByHalfCount(currentPTItems).Count() / 2;
+                    salary.PTAttendanceCount = currentPTItems.Count() * 2;
+
+                    var tsItems = helper.LessonItems
+                            .Where(v => v.PriceStatus == (int)Naming.LessonPriceStatus.體驗課程)
+                            .Where(v => v.AttendingCoach == coach.CoachID);
+                    salary.PTAttendanceCount += tsItems.Count();
+
+                    var srItems = helper.LessonItems
+                            .Where(v => v.PriceStatus == (int)Naming.LessonPriceStatus.運動恢復課程)
+                            .Where(v => v.AttendingCoach == coach.CoachID);
+                    salary.PTAttendanceCount += srItems.Count();
+
+                    var atItems = helper.LessonItems
+                            .Where(v => v.PriceStatus == (int)Naming.LessonPriceStatus.運動防護課程)
+                            .Where(v => v.AttendingCoach == coach.CoachID);
+                    salary.PTAttendanceCount += atItems.Count() * 2;
+
+                    var sdItems = helper.LessonItems
+                            .Where(v => v.PriceStatus == (int)Naming.LessonPriceStatus.營養課程)
+                            .Where(v => v.AttendingCoach == coach.CoachID);
+                    salary.PTAttendanceCount += sdItems.Count() * 2;
 
                     salary.AttendanceBonus = 0;
 
                     var bonusIdx = HealthCareBonusIndex.Where(i => i[0] == coach.LevelID).FirstOrDefault();
                     if (bonusIdx != null)
                     {
-                        var calcCount = salary.PTAttendanceCount - 20;
-                        if (calcCount >= 1 && calcCount <= 35)
+                        var calcCount = salary.PTAttendanceCount;
+                        if (calcCount >= 1 && calcCount <= 70)
                         {
                             salary.PTAverageUnitPrice = bonusIdx[1];
-                            salary.AttendanceBonus = bonusIdx[1] * calcCount;
+                            salary.AttendanceBonus = bonusIdx[1] * (calcCount - 20);
                         }
-                        else if (calcCount >= 36 && calcCount <= 45)
+                        else if (calcCount >= 71 && calcCount <= 90)
                         {
                             salary.PTAverageUnitPrice = bonusIdx[2];
-                            salary.AttendanceBonus = bonusIdx[2] * calcCount;
+                            salary.AttendanceBonus = bonusIdx[2] * (calcCount - 20);
                         }
-                        else if (calcCount >= 46 && calcCount <= 50)
+                        else if (calcCount > 90)
                         {
                             salary.PTAverageUnitPrice = bonusIdx[3];
-                            salary.AttendanceBonus = bonusIdx[3] * calcCount;
-                        }
-                        else if (calcCount > 50)
-                        {
-                            salary.AttendanceBonus = bonusIdx[4];
+                            salary.AttendanceBonus = bonusIdx[3] * (calcCount - 20);
                         }
                     }
 

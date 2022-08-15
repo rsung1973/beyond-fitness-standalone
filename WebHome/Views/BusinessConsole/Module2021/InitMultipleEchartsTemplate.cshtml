@@ -42,7 +42,7 @@
                 } else {
                     style = 'macarons';
                 }
-                $global.echarts.myChart[chartID] = echarts.init(document.getElementById(chartID), style, { height: 400, /*width: 662,*/ locale: "EN" });
+                $global.echarts.myChart[chartID] = echarts.init(document.getElementById(chartID), style, { height: 400, /*width: 662,*/ locale: "EN", renderer: "canvas", useDirtyRect: false });
 
                 // 使用剛指定的配置項和資料顯示圖表。
                 $global.echarts.myChart[chartID].setOption($global.echarts.option[chartID]);

@@ -648,7 +648,7 @@ namespace WebHome.Controllers
             var profile = await HttpContext.GetUserAsync();
             if (chartType == "Echart")
             {
-                return View("~/Views/ConsoleHome/Module/TodayLessonsBarEChart.cshtml", profile.LoadInstance(models));
+                return View("~/Views/ConsoleHome/Module/DailyLessonsBarChart.cshtml", profile.LoadInstance(models));
             }
             else
             {

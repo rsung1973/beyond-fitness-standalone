@@ -48,7 +48,8 @@
             </div>
             <div class="row">
                 @foreach (var item in models.GetTable<BonusAwardingItem>().Where(b => !b.Status.HasValue || b.Status != 0)
-                        .OrderBy(b => b.PointValue))
+                        .OrderBy(b => b.OrderIndex.HasValue ? b.OrderIndex : 10000)
+                        .ThenBy(b => b.PointValue))
                 {
                     <!-- ＩＭＧ -->
                     <div class="img-block col s12 m6 l6">

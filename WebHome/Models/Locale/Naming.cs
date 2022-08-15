@@ -80,6 +80,7 @@ namespace WebHome.Models.Locale
 
         public enum LessonPriceFeature
         {
+            一般課程 = 1,
             自主訓練 = 103,
             自由教練預約 = 1004,
             教練PI = 1005,

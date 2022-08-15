@@ -71,32 +71,32 @@
             _pageModel.HasChoice = true;
             //_currentDisabled = true;
         }
-        <li class="list-group-item">
-            <div class="media">
-                <div class="pull-left">
-                    <div class="controls">
-                        <label class="fancy-checkbox">
-                            <input type="checkbox" id="Other@(item.RegisterID)" name="RegisterID" @(bookable ? null : "disabled") value="@(bookable ? item.RegisterID : -1)" onclick="selectBooking(this, '@((int)Naming.LessonPriceStatus.點數兌換課程)');">
-                            <span></span>
-                            @if (bookable)
+    <li class="list-group-item">
+                    <div class="media">
+                        <div class="pull-left">
+                            <div class="controls">
+                                <label class="fancy-checkbox">
+                                    <input type="checkbox" id="Other@(item.RegisterID)" name="RegisterID" @(bookable ? null : "disabled") value="@(bookable ? item.RegisterID : -1)" onclick="selectBooking(this, '@((int)Naming.LessonPriceStatus.點數兌換課程)');">
+                                    <span></span>
+                                    @if (bookable)
                             {
-                                <script>
-                                    $(function () {
-                                        $('#Other@(item.RegisterID)').click();
-                                    });
-                                </script>
+                                        <script>
+                                            $(function () {
+                                                $('#Other@(item.RegisterID)').click();
+                                            });
+                                        </script>
                             }
-                        </label>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="media-body">
+                            <div class="media-heading">
+                                <a class="m-r-10">@(item.LessonPriceType.SimpleDescription)</a>
+                                <small class="float-right text-muted"><time>@(remainedCount)/@(item.Lessons)</time></small>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="media-body">
-                    <div class="media-heading">
-                        <a class="m-r-10">@(item.LessonPriceType.SimpleDescription)</a>
-                        <small class="float-right text-muted"><time>@(remainedCount)/@(item.Lessons)</time></small>
-                    </div>
-                </div>
-            </div>
-        </li>
+    </li>
     }
 }
 @foreach (var item in contractLessons.OrderBy(r => r.RegisterLessonContract.ContractID))
@@ -197,10 +197,12 @@
 }
 
 @foreach (var item in lessons
-    .Where(r => r.LessonPriceType.Status == (int)Naming.LessonPriceStatus.點數兌換課程)
-    .Where(r => !models.GetTable<ObjectiveLessonPrice>()
-        .Any(c => c.CatalogID == (int)ObjectiveLessonCatalog.CatalogDefinition.OnLineFeedback
-            && c.PriceID == r.ClassLevel)))
+   .Where(r => r.LessonPriceType.Status == (int)Naming.LessonPriceStatus.點數兌換課程)
+   .Where(r => !models.GetTable<ObjectiveLessonPrice>()
+       .Any(c => c.CatalogID == (int)ObjectiveLessonCatalog.CatalogDefinition.OnLineFeedback
+           && c.PriceID == r.ClassLevel))
+   .Where(r => models.GetTable<LessonPriceProperty>().Where(p => p.PropertyID == (int)Naming.LessonPriceFeature.一般課程)
+       .Any(p => p.PriceID == r.ClassLevel)))
 {
     var remainedCount = item.RemainedLessonCount();
     bool bookable = remainedCount > 0 && !_profile.IsHealthCare();
@@ -213,7 +215,7 @@
             <div class="pull-left">
                 <div class="controls">
                     <label class="fancy-checkbox">
-                        <input type="checkbox" id="Other@(item.RegisterID)" name="RegisterID" @(bookable && !_currentDisabled ? null : "disabled") value="@(bookable ? item.RegisterID : -1)" onclick="selectBooking(this, '@(item.LessonPriceType.IsWelfareGiftLesson != null ? (int)Naming.LessonPriceStatus.一般課程 : (int)Naming.LessonPriceStatus.點數兌換課程)');">
+                        <input type="checkbox" id="Other@(item.RegisterID)" name="RegisterID" disabled="@(!bookable || _currentDisabled)" value="@(bookable ? item.RegisterID : -1)" onclick="selectBooking(this, '@(item.LessonPriceType.IsWelfareGiftLesson != null ? (int)Naming.LessonPriceStatus.一般課程 : (int)Naming.LessonPriceStatus.點數兌換課程)');">
                         <span></span>
                     </label>
                 </div>

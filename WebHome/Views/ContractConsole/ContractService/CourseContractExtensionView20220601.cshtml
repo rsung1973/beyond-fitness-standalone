@@ -132,7 +132,7 @@
                     </tr>    
                     <tr>
                         <td colspan="2">
-                            申請說明：合約經雙方同意將以下實際未完成上課堂數於 @(String.Format("{0:yyyy/MM/dd}", _signatureDate)) 展延，將合約到期日由 @(String.Format("{0:yyyy/MM/dd}", _original.Expiration)) ，展延至 <sapn class="col-red">@(String.Format("{0:yyyy/MM/dd}", _contract.Expiration))</sapn> 止
+                            申請說明：合約經雙方同意將以下實際未完成上課堂數於 @(String.Format("{0:yyyy/MM/dd}", _signatureDate)) 展延，將合約到期日由 @(String.Format("{0:yyyy/MM/dd}", _contract.Expiration.Value.AddMonths(-_contract.CourseContractRevision.MonthExtension.Value))) ，展延至 <sapn class="col-red">@(String.Format("{0:yyyy/MM/dd}", _contract.Expiration))</sapn> 止
                                 @if (_contract.Remark !=null)
                                 {
                                     <text>（@(_contract.Remark)）。</text>

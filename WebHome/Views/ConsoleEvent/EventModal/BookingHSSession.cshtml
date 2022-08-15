@@ -164,3 +164,36 @@
 }
 
 
+@foreach (var item in lessons
+   .Where(r => r.LessonPriceType.Status == (int)Naming.LessonPriceStatus.點數兌換課程)
+   .Where(r => models.GetTable<LessonPriceProperty>()
+       .Where(p => p.PropertyID == (int)Naming.LessonPriceFeature.營養課程
+            || p.PropertyID == (int)Naming.LessonPriceFeature.運動恢復課程
+            || p.PropertyID == (int)Naming.LessonPriceFeature.運動防護課程)
+       .Any(p => p.PriceID == r.ClassLevel)))
+{
+    var remainedCount = item.RemainedLessonCount();
+    bool bookable = remainedCount > 0;
+    if (bookable)
+    {
+        _pageModel.HasChoice = true && !_currentDisabled;
+    }
+    <li class="list-group-item">
+        <div class="media">
+            <div class="pull-left">
+                <div class="controls">
+                    <label class="fancy-checkbox">
+                        <input type="checkbox" id="Other@(item.RegisterID)" name="RegisterID" disabled="@(!bookable || _currentDisabled)" value="@(bookable ? item.RegisterID : -1)" onclick="selectBooking(this, '@((int)Naming.LessonPriceStatus.點數兌換課程)');">
+                        <span></span>
+                    </label>
+                </div>
+            </div>
+            <div class="media-body">
+                <div class="media-heading">
+                    <a class="m-r-10">@(item.LessonPriceType.SimpleDescription)</a>
+                    <small class="float-right text-muted"><time>@(remainedCount)/@(item.Lessons)</time></small>
+                </div>
+            </div>
+        </div>
+    </li>
+}
