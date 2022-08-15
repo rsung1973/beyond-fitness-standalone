@@ -46,7 +46,7 @@
           visualMap: [
             {
               min: 0,
-              max: 200,
+              max: 100,
               calculable: true,
               seriesIndex: [0],
               orient: "horizontal",
@@ -57,18 +57,23 @@
           calendar: [
             {
               orient: "vertical",
+              left: 20,
               yearLabel: {
+                show: true,
                 margin: 40,
               },
               monthLabel: {
+                show: true,
+                align: 'right',
                 margin: 20,
+                position: 'end',
+                nameMap: 'cn'
               },
               dayLabel: {
                 firstDay: 1,
                 nameMap: "cn",
               },
               cellSize: 40,
-              left: 20,
               range: "@($"{start:yyyy-MM}")",
             },
           ],
@@ -82,7 +87,7 @@
                     color: '#000'
                 },              
               symbolSize: function (val) {
-                return val[1] / 10;
+                return val[1] / 2.5;
               },
               data: @Html.Raw(dataItems.JsonStringify()),
             },
