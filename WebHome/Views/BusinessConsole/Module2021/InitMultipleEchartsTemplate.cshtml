@@ -1,5 +1,4 @@
-﻿
-@using System.IO
+﻿@using System.IO
 @using System.Linq.Expressions
 
 @using WebHome.Helper
@@ -13,61 +12,77 @@
     ModelStateDictionary _modelState;
     ModelSource<UserProfile> models;
     _modelState = ViewContext.ModelState;
-    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
 
     String _chartID = ViewBag.ChartID as String ?? $"myChart{DateTime.Now.Ticks}";
 
+    bool init = (bool?)TempData["InitEcharts"] ?? true;
+    if (init)
+    {
+        TempData["InitEcharts"] = false;
+    }
+
 }
 <div id="@(_chartID)" class="echarts"></div>
-<script>
-    if ($global.echarts === undefined) {
-        $global.echarts = {
-            myChart: {},
-            showChart: {},
-            option: {}
-        };
-
-        $global.onChangeTheme = function () { };
-
-        $global.echarts.initializeChart = function (chartID) {
-
-            $global.echarts.showChart[chartID] = function () {
-                // 基於準備好的dom，初始化echarts例項
-                if ($global.echarts.myChart[chartID] != null) {
-                    $global.echarts.myChart[chartID].dispose();
-                }
-                var style;
-                if ($global.currentTheme == 'theme-nero') {
-                    style = 'macarons_nero';
-                } else {
-                    style = 'macarons';
-                }
-                $global.echarts.myChart[chartID] = echarts.init(document.getElementById(chartID), style, { height: 400, /*width: 662,*/ locale: "EN", renderer: "canvas", useDirtyRect: false });
-
-                // 使用剛指定的配置項和資料顯示圖表。
-                $global.echarts.myChart[chartID].setOption($global.echarts.option[chartID]);
-
+@if (init)
+{
+    <script>
+        if ($global.echarts === undefined) {
+            $global.echarts = {
+                myChart: {},
+                showChart: {},
+                option: {},
+                useStyle: {}
             };
 
-            var tmp = $global.onChangeTheme;
-            $global.onChangeTheme = function () {
-                tmp();
-                $global.echarts.showChart[chartID]();
-            }
-        };
+            $global.onChangeTheme = function() { };
 
-        $global.echarts.displayChart = function (chartID) {
-            if ($global.echarts.showChart[chartID] === undefined) {
-                $global.echarts.initializeChart(chartID);
-            } 
-            $global.echarts.showChart[chartID]();
-        };
-    }
-</script>
+            $global.echarts.initializeChart = function(chartID,style) {
+
+                $global.echarts.useStyle[chartID] = style;
+
+                $global.echarts.showChart[chartID] = function() {
+                    // 基於準備好的dom，初始化echarts例項
+                    if ($global.echarts.myChart[chartID] != null) {
+                        $global.echarts.myChart[chartID].dispose();
+                    }
+
+                    $global.echarts.myChart[chartID] = echarts.init(document.getElementById(chartID), $global.echarts.useStyle[chartID], { height: 400, /*width: 662,*/ locale: "EN", renderer: "canvas", useDirtyRect: false });
+
+                    // 使用剛指定的配置項和資料顯示圖表。
+                    $global.echarts.myChart[chartID].setOption($global.echarts.option[chartID]);
+
+                };
+
+                var tmp = $global.onChangeTheme;
+                $global.onChangeTheme = function() {
+                    tmp();
+                    $global.echarts.showChart[chartID]();
+                }
+            };
+
+            $global.echarts.displayChart = function(chartID) {
+                if ($global.echarts.showChart[chartID] === undefined) {
+                    $global.echarts.initializeChart(chartID);
+                }
+                $global.echarts.showChart[chartID]();
+            };
+        }
+    </script>
+
+}
+
 <script>
 
-    $(function () {
-        $global.echarts.initializeChart('@(_chartID)');
+    $(function() {
+        var style;
+        if ($global.currentTheme == 'theme-nero') {
+            style = 'macarons_nero';
+        } else {
+            style = 'macarons';
+        }
+
+        $global.echarts.initializeChart('@(_chartID)', @((bool?)ViewBag.UseStyle!=false?"style":"null"));
     });
 
 </script>
@@ -75,17 +90,19 @@
 @RenderSection("ChartOption", true)
 
 <script>
-    $(function () {
+    $(function() {
 
         $global.echarts.showChart['@(_chartID)']();
 
-        setTimeout(function () {
+        setTimeout(function() {
             if ($global.echarts.myChart['@(_chartID)'] != null) {
                 $global.echarts.myChart['@(_chartID)'].resize();
             }
         }, 500);
 
-        window.onresize = function () {
+        var tmp = window.onresize || function() { };
+        window.onresize = function() {
+            tmp();
             $global.echarts.myChart['@(_chartID)'].resize();
         };
 

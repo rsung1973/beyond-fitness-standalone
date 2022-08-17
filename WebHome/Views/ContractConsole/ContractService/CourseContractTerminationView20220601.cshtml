@@ -202,16 +202,16 @@
                                     <text>
                                         <br/>以上按未完成服務堂數之購買單價計算應退還餘額@($"{remained:##,###,###,###}")元，
                                     </text>
-                                    if (_model.CauseForEnding == (int)Naming.CauseForEnding.合約到期轉新約
+                                    if (_model.CauseForEnding == (int)Naming.CauseForEnding.不宜運動 || _original.CourseContractAction.Any(a => a.ActionID == (int)CourseContractAction.ActionType.免收手續費))
+                                    {
+                                        returnAmt = remained;
+                                        <text>並減免手續費。</text>
+                                    }
+                                    else if (_model.CauseForEnding == (int)Naming.CauseForEnding.合約到期轉新約
                                         || _model.CauseForEnding == (int)Naming.CauseForEnding.轉讓第三人)
                                     {
                                         returnAmt = remained;
                                         <text>並另外收取手續費新台幣300元整。</text>
-                                    }
-                                    else if (_model.CauseForEnding == (int)Naming.CauseForEnding.不宜運動 || _original.CourseContractAction.Any(a => a.ActionID == (int)CourseContractAction.ActionType.免收手續費))
-                                    {
-                                        returnAmt = remained;
-                                        <text>並減免手續費。</text>
                                     }
                                     else
                                     {
