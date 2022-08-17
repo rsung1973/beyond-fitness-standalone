@@ -46,7 +46,7 @@
           visualMap: [
             {
               min: 0,
-              max: @(_viewModel.BranchID.HasValue ? 100 : 200),
+              max: @(_viewModel.BranchID.HasValue ? 30 : 200),
               calculable: true,
               seriesIndex: [0],
               orient: "horizontal",
@@ -58,10 +58,15 @@
             {
               orient: "vertical",
               yearLabel: {
-                margin: 40,
+                show: true,
+                margin: 40
               },
               monthLabel: {
+                show: true,
+                align: 'right',
                 margin: 20,
+                position: 'end',
+                nameMap: 'cn'
               },
               dayLabel: {
                 firstDay: 1,
