@@ -319,6 +319,10 @@
                     @if(_viewModel.Pdf == "1")
                     {
                         <tr>
+                            <td>發票號碼：xxx</td>
+                            <td colspan="2">折讓單號碼：xxx</td>
+                        </tr>
+                        <tr>
                             <td>發票折讓日期：@($"{allowance?.AllowanceDate:yyyy/MM/dd}")</td>
                             <td colspan="2">發票開立日期：@($"{invoice?.InvoiceDate:yyyy/MM/dd}")</td>
                         </tr>
