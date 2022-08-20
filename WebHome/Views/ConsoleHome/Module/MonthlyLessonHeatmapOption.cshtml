@@ -27,10 +27,15 @@
 
 @{
     DateTime start = _viewModel.ClassTimeStart.Value.FirstDayOfMonth();
-    var items = models.GetTable<LessonTime>().Where(l => l.ClassTime >= start && l.ClassTime < start.AddMonths(1));
+    var items = models.GetTable<LessonTime>()
+                        .Where(l => l.ClassTime >= start && l.ClassTime < start.AddMonths(1));
     if (_viewModel.BranchID.HasValue)
     {
         items = items.Where(l => l.BranchID == _viewModel.BranchID);
+    }
+    else
+    {
+        items = items.Where(l => l.BranchID.HasValue);
     }
 
     var dataItems = items.ToList()

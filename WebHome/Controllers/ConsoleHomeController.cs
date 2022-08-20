@@ -656,6 +656,18 @@ namespace WebHome.Controllers
             }
         }
 
+        public async Task<ActionResult> WeeklyLessonsBarChartAsync(LessonTimeBookingViewModel viewModel, String chartType)
+        {
+            ViewBag.ViewModel = viewModel;
+            if (!viewModel.ClassTimeStart.HasValue)
+            {
+                viewModel.ClassTimeStart = DateTime.Today;
+            }
+
+            var profile = await HttpContext.GetUserAsync();
+            return View("~/Views/ConsoleHome/Module/DailyLessonsBarChart.cshtml", profile.LoadInstance(models));
+        }
+
         public async Task<ActionResult> ShowLessonSummaryAsync(LessonTimeBookingViewModel viewModel)
         {
             ViewBag.ViewModel = viewModel;

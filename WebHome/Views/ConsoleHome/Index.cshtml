@@ -89,6 +89,7 @@
     @if (!_model.IsServitor())
     {
         await Html.RenderPartialAsync("~/Views/ConsoleHome/Module/AboutAchievementEChart.cshtml", _model);
+        await Html.RenderPartialAsync("~/Views/ConsoleHome/Module/AboutAchievementEChartWeekly.cshtml", _model);
     }
 
     <!--專業文章&我的比賽-->

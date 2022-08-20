@@ -24,22 +24,17 @@
 
 <div class="container-fluid">
     <div class="row clearfix">
-        <h4 class="card-outbound-header m-l-15">當日分店一覽</h4>
+        <h4 class="card-outbound-header m-l-15">每週分店一覽</h4>
         <div class="col-lg-12 col-md-12">
             <div class="row clearfix">
                 <div class="col-12">
                     <div class="card">
                         <div class="header">
-                            <h2 id="branchName">
-                                @*@for (int idx = 0; idx < 3; idx++)
-                                {
-                                    var dayIdx = DateTime.Today.AddDays(idx);
-                                    <a href="#lessonSummary" onclick="inquireDailyBarChart('@($"{dayIdx:yyyy-MM-dd}")',event);" class="btn btn-simple btn-sm inquireDaily @(_viewModel.ClassTimeStart == dayIdx ? "disabled" : null)">@($"{dayIdx:yyyy/MM/dd}")</a>
-                                }*@
+                            <h2 id="branchNameWeekly">
                                 @{
-                                    <a href="#lessonSummary" onclick="inquireDailyBarChart('@($"{DateTime.Today:yyyy-MM-dd}")',event);" class="btn btn-simple btn-sm inquireDaily disabled">今</a>
+                                    <a href="#lessonSummary" onclick="inquireWeeklyBarChart('@($"{DateTime.Today:yyyy-MM-dd}")',event);" class="btn btn-simple btn-sm inquireWeekly disabled">今</a>
                                 }
-                                <input type="text" class="btn btn-simple btn-sm inquireDaily" data-date-format="yyyy/mm/dd" readonly="readonly" value="" size="12" placeholder="自選日期..." />
+                                <input type="text" class="btn btn-simple btn-sm inquireWeekly" data-date-format="yyyy/mm/dd" readonly="readonly" value="" size="12" placeholder="自選日期..." />
                                 @{
                                     ViewBag.Other = "全部";
                                     await Html.RenderPartialAsync("~/Views/Common/BranchStoreWithOther.cshtml", models.GetTable<BranchStore>().Where(b => b.BranchID == _viewModel.BranchID).FirstOrDefault());
@@ -49,10 +44,10 @@
                                 <li class="dropdown">
                                     <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class="zmdi zmdi-swap"></i> </a>
                                     <ul class="dropdown-menu dropdown-menu-right slideUp float-right">
-                                        <li><a href="#lessonSummary" onclick="inquireLessonsBarChart();">全部</a></li>
+                                        <li><a href="#lessonSummary" onclick="inquireLessonsBarChartWeekly();">全部</a></li>
                                         @foreach (var b in models.GetTable<BranchStore>())
                                         {
-                                            <li><a href="#lessonSummary" onclick="inquireLessonsBarChart(@(b.BranchID));">@(b.BranchName)</a></li>
+                                            <li><a href="#lessonSummary" onclick="inquireLessonsBarChartWeekly(@(b.BranchID));">@(b.BranchName)</a></li>
                                         }
                                     </ul>
                                 </li>
@@ -60,23 +55,17 @@
                         </div>
                         <div class="body">
                             <div class="row clearfix">
-                                <div class="col-lg-8 col-md-6 col-sm-12 col-12">
+                                <div class="col-sm-12 col-12">
                                     @{
-                                        ViewBag.ChartID = "lessonsBar";
-                                        await Html.RenderPartialAsync("~/Views/ConsoleHome/Module/TodayLessonsBarEChart.cshtml", _model);
+                                        ViewBag.ChartID = "lessonsAxisChart";
+                                        await Html.RenderPartialAsync("~/Views/ConsoleHome/Module/WeeklyLessonAxisChart.cshtml", _model);
                                     }
-                                </div>
-                                <div class="col-lg-4 col-md-6 col-sm-12 col-12">
-                                    @{
-                                        ViewBag.ChartID = "lessonsHeatmap";
-                                        await Html.RenderPartialAsync("~/Views/ConsoleHome/Module/MonthlyLessonHeatmap.cshtml", _model);
-                                    }                                
                                 </div>
                             </div>
                         </div>
                         <script>
                             $(function () {
-                                var $input = $('input.inquireDaily');
+                                var $input = $('input.inquireWeekly');
                                 $input.datetimepicker({
                                     language: 'zh-TW',
                                     format: 'yyyy/mm/dd',
@@ -91,65 +80,38 @@
                                     defaultView: 2,
                                     forceParse: 0,
                                 }).on('changeDate', function (ev) {
-                                    $('a.inquireDaily').removeClass('disabled');
+                                    $('a.inquireWeekly').removeClass('disabled');
                                     $global.viewModel.ClassTimeStart = $input.val();
-                                    drawLessonsBarChart();
+                                    drawLessonsBarChartWeekly();
                                 });
 
                             });
-                            function inquireLessonsBarChart(branchID) {
+                            function inquireLessonsBarChartWeekly(branchID) {
                                 var event = event || window.event;
                                 var branchName = $(event.target).text();
                                 $global.viewModel.BranchID = branchID;
                                 $global.viewModel.BranchName = branchName;
-                                drawLessonsBarChart();
-                                showLessonSummary();
-                                showBranchStore($('#branchName'));
+                                drawLessonsBarChartWeekly();
+                                showBranchStore($('#branchNameWeekly'));
                             }
 
-                            function inquireDailyBarChart(daily, event) {
+                            function inquireWeeklyBarChart(daily, event) {
                                 var event = event || window.event;
-                                $('a.inquireDaily').removeClass('disabled');
+                                $('a.inquireWeekly').removeClass('disabled');
                                 $(event.target).addClass('disabled');
                                 $global.viewModel.ClassTimeStart = daily;
-                                drawLessonsBarChart();
+                                drawLessonsBarChartWeekly();
                             }
 
-                            function drawLessonsBarChart() {
+                            function drawLessonsBarChartWeekly() {
                                 $global.viewModel.chartType = 'Echart';
                                 showLoading();
-                                $.post('@Url.Action("DailyLessonsBarChart", "ConsoleHome")', $global.viewModel, function (data) {
+                                $.post('@Url.Action("WeeklyLessonsBarChart", "ConsoleHome")', $global.viewModel, function (data) {
                                     hideLoading();
                                     if ($.isPlainObject(data)) {
                                         alert(data.message);
                                     } else {
                                         $(data).appendTo($('body'));
-                                    }
-                                });
-                            }
-
-                            function showLessonSummary() {
-                                $('#lessonSummary').empty();
-                                showLoading();
-                                $.post('@Url.Action("ShowLessonSummary", "ConsoleHome")', $global.viewModel, function (data) {
-                                    hideLoading();
-                                    if ($.isPlainObject(data)) {
-                                        alert(data.message);
-                                    } else {
-                                        $(data).appendTo($('#lessonSummary'));
-                                    }
-                                });
-                            }
-
-                            function showBranchStore($branchName) {
-                                $branchName.find('span').remove();
-                                showLoading();
-                                $.post('@Url.Action("ViewBranchStore", "CommonHelper")', $global.viewModel, function (data) {
-                                    hideLoading();
-                                    if ($.isPlainObject(data)) {
-                                        alert(data.message);
-                                    } else {
-                                        $(data).appendTo($branchName);
                                     }
                                 });
                             }

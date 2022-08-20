@@ -32,12 +32,25 @@
                 myChart: {},
                 showChart: {},
                 option: {},
-                useStyle: {}
+                useStyle: {},
+                'selectStyle': function(defaultStyle) {
+                    if (defaultStyle == '') {
+                        return null;
+                    }
+
+                    var style;
+                    if ($global.currentTheme == 'theme-nero') {
+                        style = 'macarons_nero';
+                    } else {
+                        style = 'macarons';
+                    }
+                    return style;
+                }
             };
 
             $global.onChangeTheme = function() { };
 
-            $global.echarts.initializeChart = function(chartID,style) {
+            $global.echarts.initializeChart = function(chartID, style) {
 
                 $global.echarts.useStyle[chartID] = style;
 
@@ -47,7 +60,7 @@
                         $global.echarts.myChart[chartID].dispose();
                     }
 
-                    $global.echarts.myChart[chartID] = echarts.init(document.getElementById(chartID), $global.echarts.useStyle[chartID], { height: 400, /*width: 662,*/ locale: "EN", renderer: "canvas", useDirtyRect: false });
+                    $global.echarts.myChart[chartID] = echarts.init(document.getElementById(chartID), $global.echarts.selectStyle($global.echarts.useStyle[chartID]), { height: 400, /*width: 662,*/ locale: "EN", renderer: "canvas", useDirtyRect: false });
 
                     // 使用剛指定的配置項和資料顯示圖表。
                     $global.echarts.myChart[chartID].setOption($global.echarts.option[chartID]);
@@ -75,14 +88,7 @@
 <script>
 
     $(function() {
-        var style;
-        if ($global.currentTheme == 'theme-nero') {
-            style = 'macarons_nero';
-        } else {
-            style = 'macarons';
-        }
-
-        $global.echarts.initializeChart('@(_chartID)', @((bool?)ViewBag.UseStyle!=false?"style":"null"));
+        $global.echarts.initializeChart('@(_chartID)', @Html.Raw(ViewBag.UseStyle!=null ? $"'{ViewBag.useStyle}'" : "null"));
     });
 
 </script>
