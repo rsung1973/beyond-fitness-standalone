@@ -47,7 +47,12 @@
                     d, 
                     h,  
                     dataItems.Where(g => g.Key.DateIdx == d && g.Key.Hour == h)
-                        .FirstOrDefault()?.Count() ?? 0
+                        .FirstOrDefault()?.PTLesson().Count() ?? 0,
+                    dataItems.Where(g => g.Key.DateIdx == d && g.Key.Hour == h)
+                        .FirstOrDefault()?.Where(l => l.TrainingBySelf == 1).Count() ?? 0,
+                    dataItems.Where(g => g.Key.DateIdx == d && g.Key.Hour == h)
+                        .FirstOrDefault()?.TrialLesson().Count() ?? 0,
+                    
                 })).ToArray();
 
 }
@@ -94,8 +99,9 @@
                         fontWeight: 800,
                     },
                     formatter: function(params) {
-                        if (params.value[1] > 0) {
-                            return params.value[1];
+                        var result = params.value[1] + params.value[2] + params.value[3];
+                        if (result > 0) {
+                            return result;
                         } else {
                             return "";
                         }
@@ -109,12 +115,25 @@
         });
     });
     data.forEach(function(dataItem) {
-        series[dataItem[0]].data.push([dataItem[1]-7, dataItem[2]]);
+        series[dataItem[0]].data.push([dataItem[1]-7, dataItem[2], dataItem[3], dataItem[4]]);
     });
 
     $global.echarts.option['@(_chartID)'] = {
         tooltip: {
             position: "top",
+            formatter: function (params,tickets) {
+                var str = "";
+                  if (params.value[1] > 0) {
+                      str = str + ' P.T:' + params.value[1];
+                  } 
+                  if (params.value[2] > 0) {
+                      str = str + ' P.I:' + params.value[2];
+                  } 
+                  if (params.value[3] > 0) {
+                      str = str + ' T.S:' + params.value[3];
+                  } 
+                return str;
+            }
         },
         title: title,
         singleAxis: singleAxis,
