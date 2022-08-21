@@ -110,7 +110,7 @@
             },
             data: [],
             symbolSize: function(dataItem) {
-                return dataItem[1] * 4;
+                return (dataItem[1] + dataItem[2] + dataItem[3]) * 2;
             },
         });
     });
@@ -123,15 +123,17 @@
             position: "top",
             formatter: function (params,tickets) {
                 var str = "";
-                  if (params.value[1] > 0) {
-                      str = str + ' P.T:' + params.value[1];
+                  @* if (params.value[1] > 0) {
+                      str = str + ' P.T:' + params.value[1] +'<br/>'; 
                   } 
                   if (params.value[2] > 0) {
-                      str = str + ' P.I:' + params.value[2];
+                      str = str + ' P.I:' + params.value[2] +'<br/>';
                   } 
                   if (params.value[3] > 0) {
                       str = str + ' T.S:' + params.value[3];
-                  } 
+                  }  *@
+
+                  str = ' P.T:' + params.value[1] +'<br/>' + ' P.I:' + params.value[2] +'<br/>' + ' T.S:' + params.value[3] ; 
                 return str;
             }
         },
