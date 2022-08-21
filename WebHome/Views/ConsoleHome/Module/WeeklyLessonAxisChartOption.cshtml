@@ -57,16 +57,16 @@
 
 }
 <script>
-    const hours = @Html.Raw(_hourIdx.Select(h=>$"{h:00}").JsonStringify());
+    $global.echarts.hours = @Html.Raw(_hourIdx.Select(h=>$"{h:00}").JsonStringify());
     // prettier-ignore
-    const days = @Html.Raw(_dateIdx.Select(d=>$"{start.AddDays(d):yyyy/MM/dd}").JsonStringify());
+    $global.echarts.days = @Html.Raw(_dateIdx.Select(d=>$"{start.AddDays(d):yyyy/MM/dd}").JsonStringify());
     // prettier-ignore
-    const data = @Html.Raw(result.JsonStringify());
-    const title = [];
-    const singleAxis = [];
-    const series = [];
-    days.forEach(function(day, idx) {
-        title.push({
+    $global.echarts.data = @Html.Raw(result.JsonStringify());
+    $global.echarts.title = [];
+    $global.echarts.singleAxis = [];
+    $global.echarts.series = [];
+    $global.echarts.days.forEach(function(day, idx) {
+        $global.echarts.title.push({
             textBaseline: "middle",
             top: ((idx + 0.5) * 100) / 7 + "%",
             text: day,
@@ -74,11 +74,11 @@
                 fontSize: 12,
             },
         });
-        singleAxis.push({
+        $global.echarts.singleAxis.push({
             left: 100,
             type: "category",
             boundaryGap: false,
-            data: hours,
+            data: $global.echarts.hours,
             top: (idx * 100) / 7 + 5 + "%",
             height: 100 / 7 - 10 + "%",
             axisLabel: {
@@ -86,7 +86,7 @@
                 //rotate: 45
             },
         });
-        series.push({
+        $global.echarts.series.push({
             singleAxisIndex: idx,
             coordinateSystem: "singleAxis",
             type: "scatter",
@@ -110,12 +110,12 @@
             },
             data: [],
             symbolSize: function(dataItem) {
-                return (dataItem[1] + dataItem[2] + dataItem[3]) * 2;
+                return (dataItem[1] + dataItem[2] + dataItem[3]) * @(_viewModel.BranchID.HasValue ? 3 : 2);
             },
         });
     });
-    data.forEach(function(dataItem) {
-        series[dataItem[0]].data.push([dataItem[1]-7, dataItem[2], dataItem[3], dataItem[4]]);
+    $global.echarts.data.forEach(function(dataItem) {
+        $global.echarts.series[dataItem[0]].data.push([dataItem[1]-7, dataItem[2], dataItem[3], dataItem[4]]);
     });
 
     $global.echarts.option['@(_chartID)'] = {
@@ -137,9 +137,9 @@
                 return str;
             }
         },
-        title: title,
-        singleAxis: singleAxis,
-        series: series,
+        title: $global.echarts.title,
+        singleAxis: $global.echarts.singleAxis,
+        series: $global.echarts.series,
     };
 
 </script>

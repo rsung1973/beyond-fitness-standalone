@@ -665,7 +665,7 @@ namespace WebHome.Controllers
             }
 
             var profile = await HttpContext.GetUserAsync();
-            return View("~/Views/ConsoleHome/Module/WeeklyLessonAxisChartOption.cshtml", profile.LoadInstance(models));
+            return View("~/Views/ConsoleHome/Module/WeeklyLessonsBarChart.cshtml", profile.LoadInstance(models));
         }
 
         public async Task<ActionResult> ShowLessonSummaryAsync(LessonTimeBookingViewModel viewModel)
