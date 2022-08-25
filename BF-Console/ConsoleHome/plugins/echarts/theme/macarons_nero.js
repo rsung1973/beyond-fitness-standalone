@@ -249,7 +249,7 @@
                 "show": true,
                 "lineStyle": {
                     "color": "#444d55",
-                    "type": "dashed"
+                    //"type": "dashed"
                 }
             },
             "axisTick": {
@@ -278,7 +278,7 @@
                 "areaStyle": {
                     "color": [
                         "rgba(0,0,0,0)",
-                        "rgba(0,0,0,0)"
+                        "rgba(50, 60, 78, 0.3)"
                     ]
                 }
             }
