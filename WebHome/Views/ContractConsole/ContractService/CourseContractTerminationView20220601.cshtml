@@ -322,8 +322,9 @@
                                 @{
                                     var payment = _original.ContractPayment.FirstOrDefault()?.Payment;
                                 }
+                            <td>合約編號：@(_original.ContractNo)</td>
                             <td>發票號碼：@(payment.InvoiceItem.TrackCode)@(payment.InvoiceItem.No)</td>
-                            <td colspan="2">折讓單號碼：@(payment.InvoiceAllowance?.AllowanceNumber)</td>
+                            <td>折讓單號碼：@(payment.InvoiceAllowance?.AllowanceNumber)</td>
                         </tr>
                         <tr>
                             <td>發票折讓日期：@($"{allowance?.AllowanceDate:yyyy/MM/dd}")</td>

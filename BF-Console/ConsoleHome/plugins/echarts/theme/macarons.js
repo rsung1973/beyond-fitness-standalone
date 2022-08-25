@@ -67,17 +67,17 @@
 
     var theme = {
         color: colorPalette,
-
         title: {
             textStyle: {
                 fontWeight: 'normal',
                 color: '#008acd',
+                
             }           
         },
 
         visualMap: {
             itemWidth: 15,
-            color: ['#5ab1ef', '#e0ffff']
+            color: ['#bf444c', '#d88273', '#f6efa6'],            
         },
 
         toolbox: {
@@ -256,7 +256,41 @@
             pointer: {
                 width: 5
             }
-        }
+        },
+
+        calendar: {
+            itemStyle: {
+                normal: {
+                    color: '#ddd',
+                    borderWidth: 1,
+                    borderColor: '#1a1a1a'
+                },                
+            },
+            splitLine: {
+                show: true,
+                lineStyle: {
+                    color: [
+                        '#000'
+                    ],
+                    'type': 'dashed'
+                }
+            },
+            'monthLabel': {
+                show: true,
+                color: '#000',
+                nameMap: [
+                    '一月', '二月', '三月',
+                    '四月', '五月', '六月',
+                    '七月', '八月', '九月',
+                    '十月', '十月', '十二月'
+                ]
+            },
+            "dayLabel": {
+                "show": true,
+                "color": "#000",
+                "nameMap": "cn",
+            },
+        },
     };
 
     echarts.registerTheme('macarons', theme);
