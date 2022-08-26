@@ -60,13 +60,13 @@
                         </div>
                         <div class="body">
                             <div class="row clearfix">
-                                <div class="col-lg-8 col-md-6 col-sm-12 col-12">
+                                <div class="col-lg-6 col-md-12 col-sm-12 col-12">
                                     @{
                                         ViewBag.ChartID = "lessonsBar";
                                         await Html.RenderPartialAsync("~/Views/ConsoleHome/Module/TodayLessonsBarEChart.cshtml", _model);
                                     }
                                 </div>
-                                <div class="col-lg-4 col-md-6 col-sm-12 col-12">
+                                <div class="col-lg-6 col-md-12 col-sm-12 col-12">
                                     @{
                                         ViewBag.ChartID = "lessonsHeatmap";
                                         await Html.RenderPartialAsync("~/Views/ConsoleHome/Module/MonthlyLessonHeatmap.cshtml", _model);

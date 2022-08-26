@@ -6,7 +6,7 @@
 @using WebHome.Models.ViewModel
 @using WebHome.Models.DataEntity
 @using WebHome.Controllers
-@using CommonLib.Utility 
+@using CommonLib.Utility
 @using Microsoft.AspNetCore.Mvc.ModelBinding
 
 @using Newtonsoft.Json
@@ -22,13 +22,13 @@
     models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
     _model = (UserProfile)this.Model;
     _hourIdx = Enumerable.Range(7, 16);
+    var _dateIdx = Enumerable.Range(0, 7);
     _viewModel = (LessonTimeBookingViewModel)ViewBag.ViewModel;
 }
 
 @{
-    DateTime start = _viewModel.ClassTimeStart.Value.FirstDayOfMonth();
-    var items = models.GetTable<LessonTime>()
-                        .Where(l => l.ClassTime >= start && l.ClassTime < start.AddMonths(1));
+    DateTime start = _viewModel.ClassTimeStart.Value;
+    var items = models.GetTable<LessonTime>().Where(l => l.ClassTime >= start && l.ClassTime < start.AddDays(7));
     if (_viewModel.BranchID.HasValue)
     {
         items = items.Where(l => l.BranchID == _viewModel.BranchID);
@@ -39,61 +39,93 @@
     }
 
     var dataItems = items.ToList()
-        .GroupBy(l => l.ClassTime.Value.ToString("yyyy-MM-dd"))
-        .Select(g => new Object[] { g.Key, g.Count() })
-        .ToArray();
+        .GroupBy(l => new { DateIdx = (l.ClassTime.Value.Date - start).Days, Hour = l.ClassTime.Value.Hour });
+
+    var result = _dateIdx.SelectMany(d =>
+        _hourIdx.Select(h => new int[]
+                {
+                    d,
+                    h,
+                    dataItems.Where(g => g.Key.DateIdx == d && g.Key.Hour == h)
+                        .FirstOrDefault()?.PTLesson().Count() ?? 0,
+                    dataItems.Where(g => g.Key.DateIdx == d && g.Key.Hour == h)
+                        .FirstOrDefault()?.Where(l => l.TrainingBySelf == 1).Count() ?? 0,
+                    dataItems.Where(g => g.Key.DateIdx == d && g.Key.Hour == h)
+                        .FirstOrDefault()?.TrialLesson().Count() ?? 0,
+
+                })).ToArray();
+
 }
 <script>
+    $global.echarts.hours = @Html.Raw(_hourIdx.Select(h=>$"{h:00}").JsonStringify());
+    // prettier-ignore
+    $global.echarts.days = @Html.Raw(_dateIdx.Select(d=>$"{start.AddDays(d):yyyy/MM/dd}").JsonStringify());
+    // prettier-ignore
+    $global.echarts.data = @Html.Raw(result.JsonStringify());
+    $global.echarts.data = $global.echarts.data.map(function(item) {
+        return [item[1] - 7, item[0], item[2] + item[3] + item[4] || '-', item[2], item[3], item[4], item[2] + item[3] + item[4] || '-'];
+    });
+
     $global.echarts.option['@(_chartID)'] = {
-          tooltip: {
-            position: "top",
-          },
-          visualMap: [
+        tooltip: {
+            position: 'top',
+            formatter: function(params, tickets) {
+                var str = "";
+    @* if (params.value[1] > 0) {
+                    str = str + ' P.T:' + params.value[1] +'<br/>';
+                    }
+                    if (params.value[2] > 0) {
+                    str = str + ' P.I:' + params.value[2] +'<br/>';
+                    }
+                    if (params.value[3] > 0) {
+                    str = str + ' T.S:' + params.value[3];
+                    }  *@
+
+                    str = ' P.T:' + params.value[3] + '<br/>' + ' P.I:' + params.value[4] + '<br/>' + ' T.S:' + params.value[5];
+                return str;
+            }
+        },
+        grid: {
+            // height: '80%',
+            top: '20%'
+        },
+        xAxis: {
+            type: 'category',
+            data: $global.echarts.hours,
+            splitArea: {
+                show: true
+            }
+        },
+        yAxis: {
+            type: 'category',
+            data: $global.echarts.days,
+            splitArea: {
+                show: true
+            }
+        },
+        visualMap: {
+            min: 0,
+            max: @((result.Select(v=>v[2]+v[3]+v[4]).OrderByDescending(v=>v).First()+9)/10*10),
+            calculable: true,
+            orient: "horizontal",
+            left: 'center',
+            top: 0
+        },
+        series: [
             {
-              min: 0,
-              max: @(_viewModel.BranchID.HasValue ? 30 : 200),
-              calculable: true,
-              seriesIndex: [0],
-              orient: "horizontal",
-              right: 0,
-              bottom: 20,
-            },
-          ],
-          calendar: [
-            {
-              orient: "vertical",
-              yearLabel: {
-                show: true,
-                margin: 40
-              },
-              monthLabel: {
-                show: true,
-                align: 'right',
-                margin: 20,
-                position: 'end'
-              },
-              dayLabel: {
-                firstDay: 1,
-              },
-              cellSize: 45,
-              left: 20,
-              range: "@($"{start:yyyy-MM}")",
-            },
-          ],
-          series: [
-            {
-              type: "effectScatter",
-              coordinateSystem: "calendar",
-              calendarIndex: 0,
-              label: {
-                    show: true,
-              },              
-              symbolSize: function (val) {
-                return val[1] / @(_viewModel.BranchID.HasValue ? 4 : 8);
-              },
-              data: @Html.Raw(dataItems.JsonStringify()),
-            },
-          ],
+                type: 'heatmap',
+                data: $global.echarts.data,
+                label: {
+                    show: true
+                },
+                emphasis: {
+                    itemStyle: {
+                        shadowBlur: 20,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
+                }
+            }
+        ]
     };
 
 </script>
