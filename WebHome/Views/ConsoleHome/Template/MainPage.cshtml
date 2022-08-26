@@ -339,22 +339,8 @@
                     </li>*@
                 }
                 <li>
-                    <a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-search-replace"></i><span>價格詢問球</span> </a>
-                    <ul class="ml-menu">
-                        <li>
-                            <a href="@(Url.Action("PricingList","MainActivity",new { branchName = "Nanjing" }))" class="waves-effect waves-block" target="_blank"><i class="zmdi zmdi-label col-red"></i><span>南京</span></a>
-                        </li>
-                        <li>
-                            <a href="@(Url.Action("PricingList","MainActivity",new { branchName = "Xinyi" }))" class="waves-effect waves-block" target="_blank"><i class="zmdi zmdi-label col-purple"></i><span>信義</span></a>
-                        </li>
-                        <li>
-                            <a href="@(Url.Action("PricingList","MainActivity",new { branchName = "Zhongxiao" }))" class="waves-effect waves-block" target="_blank"><i class="zmdi zmdi-label col-blue"></i><span>忠孝</span></a>
-                        </li>
-                        <li>
-                            <a href="@(Url.Action("PricingList","MainActivity",new { branchName = "Dongmen" }))" class="waves-effect waves-block" target="_blank"><i class="zmdi zmdi-label col-tiffany"></i><span>東門</span></a>
-                        </li>
-                    </ul>
-                </li>
+                    <a href="@(Url.Action("PricingList","MainActivity",new { branchName = "Nanjing" }))"><i class="zmdi zmdi-search-replace"></i><span>價格詢問球</span> </a>
+                </li>                
                 @if (_model.IsCoach() || _model.IsAssistant() || _model.IsSysAdmin())
                 {
                     <li class="header hidden-md-up">更多搜尋</li>
