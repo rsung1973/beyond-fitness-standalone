@@ -70,7 +70,7 @@
     }
     $global.echarts.hours['@(_chartID)'] = @Html.Raw(_hourIdx.Select(h=>$"{h:00}").JsonStringify());
     // prettier-ignore
-    $global.echarts.days['@(_chartID)'] = @Html.Raw(_dateIdx.Select(d=>$"{start.AddDays(d):MM/dd (ddd)}").JsonStringify());
+    $global.echarts.days['@(_chartID)'] = @Html.Raw(_dateIdx.Select(d=> BuildDateInfo(start.AddDays(d))).JsonStringify());
     // prettier-ignore
     $global.echarts.data['@(_chartID)'] = @Html.Raw(result.JsonStringify())
         .map(function(item) {
@@ -141,4 +141,10 @@
 
 </script>
 
-
+@functions
+{
+    String BuildDateInfo(DateTime d)
+    {
+        return $"{d:MM/dd} ({Naming.DayOfWeek[(int)d.DayOfWeek]})";
+    }
+}
