@@ -57,15 +57,24 @@
 
 }
 <script>
-    $global.echarts.hours = @Html.Raw(_hourIdx.Select(h=>$"{h:00}").JsonStringify());
+    if ($global.echarts.hours === undefined) {
+        $global.echarts.hours = [];
+    }
+    if ($global.echarts.days === undefined) {
+        $global.echarts.days = [];
+    }
+    if ($global.echarts.data === undefined) {
+        $global.echarts.data = [];
+    }
+    $global.echarts.hours['@(_chartID)'] = @Html.Raw(_hourIdx.Select(h=>$"{h:00}").JsonStringify());
     // prettier-ignore
-    $global.echarts.days = @Html.Raw(_dateIdx.Select(d=>$"{start.AddDays(d):yyyy/MM/dd}").JsonStringify());
+    $global.echarts.days['@(_chartID)'] = @Html.Raw(_dateIdx.Select(d=>$"{start.AddDays(d):yyyy/MM/dd}").JsonStringify());
     // prettier-ignore
-    $global.echarts.data = @Html.Raw(result.JsonStringify());
+    $global.echarts.data['@(_chartID)'] = @Html.Raw(result.JsonStringify());
     $global.echarts.title = [];
     $global.echarts.singleAxis = [];
     $global.echarts.series = [];
-    $global.echarts.days.forEach(function(day, idx) {
+    $global.echarts.days['@(_chartID)'].forEach(function(day, idx) {
         $global.echarts.title.push({
             textBaseline: "middle",
             top: ((idx + 0.5) * 100) / 7 + "%",
@@ -78,7 +87,7 @@
             left: 100,
             type: "category",
             boundaryGap: false,
-            data: $global.echarts.hours,
+            data: $global.echarts.hours['@(_chartID)'],
             top: (idx * 100) / 7 + 5 + "%",
             height: 100 / 7 - 10 + "%",
             axisLabel: {
@@ -115,7 +124,7 @@
             },
         });
     });
-    $global.echarts.data.forEach(function(dataItem) {
+    $global.echarts.data['@(_chartID)'].forEach(function(dataItem) {
         $global.echarts.series[dataItem[0]].data.push([dataItem[1]-7, dataItem[2], dataItem[3], dataItem[4]]);
     });
 

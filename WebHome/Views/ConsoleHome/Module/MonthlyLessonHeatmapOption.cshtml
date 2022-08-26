@@ -22,7 +22,8 @@
     models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
     _model = (UserProfile)this.Model;
     _hourIdx = Enumerable.Range(7, 16);
-    var _dateIdx = Enumerable.Range(0, 7);
+    var _dateIdx = Enumerable.Range(0, 7)
+                    .OrderByDescending(d => d);
     _viewModel = (LessonTimeBookingViewModel)ViewBag.ViewModel;
 }
 
@@ -53,17 +54,27 @@
                     dataItems.Where(g => g.Key.DateIdx == d && g.Key.Hour == h)
                         .FirstOrDefault()?.TrialLesson().Count() ?? 0,
 
-                })).ToArray();
+                }))
+                .ToArray();
 
 }
 <script>
-    $global.echarts.hours = @Html.Raw(_hourIdx.Select(h=>$"{h:00}").JsonStringify());
+    if ($global.echarts.hours === undefined) {
+        $global.echarts.hours = [];
+    }
+    if ($global.echarts.days === undefined) {
+        $global.echarts.days = [];
+    }
+    if ($global.echarts.data === undefined) {
+        $global.echarts.data = [];
+    }
+    $global.echarts.hours['@(_chartID)'] = @Html.Raw(_hourIdx.Select(h=>$"{h:00}").JsonStringify());
     // prettier-ignore
-    $global.echarts.days = @Html.Raw(_dateIdx.Select(d=>$"{start.AddDays(d):yyyy/MM/dd}").JsonStringify());
+    $global.echarts.days['@(_chartID)'] = @Html.Raw(_dateIdx.Select(d=>$"{start.AddDays(d):yyyy/MM/dd}").JsonStringify());
     // prettier-ignore
-    $global.echarts.data = @Html.Raw(result.JsonStringify());
-    $global.echarts.data = $global.echarts.data.map(function(item) {
-        return [item[1] - 7, item[0], item[2] + item[3] + item[4] || '-', item[2], item[3], item[4], item[2] + item[3] + item[4] || '-'];
+    $global.echarts.data['@(_chartID)'] = @Html.Raw(result.JsonStringify())
+        .map(function(item) {
+            return [item[1] - 7, 6 - item[0], item[2] + item[3] + item[4] || '-', item[2], item[3], item[4], item[2] + item[3] + item[4] || '-'];
     });
 
     $global.echarts.option['@(_chartID)'] = {
@@ -91,14 +102,14 @@
         },
         xAxis: {
             type: 'category',
-            data: $global.echarts.hours,
+            data: $global.echarts.hours['@(_chartID)'],
             splitArea: {
                 show: true
             }
         },
         yAxis: {
             type: 'category',
-            data: $global.echarts.days,
+            data: $global.echarts.days['@(_chartID)'],
             splitArea: {
                 show: true
             }
@@ -114,7 +125,7 @@
         series: [
             {
                 type: 'heatmap',
-                data: $global.echarts.data,
+                data: $global.echarts.data['@(_chartID)'],
                 label: {
                     show: true
                 },
