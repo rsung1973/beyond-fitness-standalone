@@ -1083,7 +1083,8 @@ namespace WebHome.Helper
                 void calcHealthCareBonus()
                 {
                     var currentPTItems = PTItems.Where(v => v.AttendingCoach == coach.CoachID);
-                    salary.PTAttendanceCount = currentPTItems.Count() * 2;
+                    salary.PTAttendanceCount = currentPTItems.Count() * 2 
+                        - helper.FilterByBonusExchangedSRSession(currentPTItems).Count();
 
                     var tsItems = helper.LessonItems
                             .Where(v => v.PriceStatus == (int)Naming.LessonPriceStatus.體驗課程)

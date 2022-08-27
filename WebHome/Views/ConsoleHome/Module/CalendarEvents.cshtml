@@ -91,6 +91,8 @@
 
     }
 
+    IQueryable<LessonPriceProperty> SR = models.GetTable<LessonPriceProperty>().Where(p => p.PropertyID == (int)Naming.LessonPriceFeature.運動恢復課程);
+
     foreach (var g in _model.Where(v => v.EventItem is LessonTime)
         .Select(i => (LessonTime)i.EventItem)
         .Where(l => l.PreferredLessonTime == null || l.PreferredLessonTime.ApproverID.HasValue)
@@ -203,6 +205,23 @@
                 title = items.Count().ToString(),
                 start = g.Key.ToString("yyyy-MM-dd"),
                 description = "S.R",
+                allDay = true,
+                //className = !items.Any(l => l.LessonAttendance == null) ? new string[] { "b-l b-2x b-CoachPI" } : new string[] { "b-l b-2x b-finish" },
+                className = new string[] { "b-l b-2x b-PT" },
+            });
+        }
+
+        items = totalItems.Where(l => l.RegisterLesson.LessonPriceType.Status == (int)Naming.LessonPriceStatus.點數兌換課程)
+                    .Where(l => SR.Any(r => r.PriceID == l.RegisterLesson.ClassLevel));
+        if (items.Count() > 0)
+        {
+            totalItems = totalItems.Except(items).ToList();
+            _result.Add(new CalendarEvent
+            {
+                id = "course",
+                title = items.Count().ToString(),
+                start = g.Key.ToString("yyyy-MM-dd"),
+                description = "S.R(點數兌換)",
                 allDay = true,
                 //className = !items.Any(l => l.LessonAttendance == null) ? new string[] { "b-l b-2x b-CoachPI" } : new string[] { "b-l b-2x b-finish" },
                 className = new string[] { "b-l b-2x b-PT" },

@@ -92,5 +92,14 @@ namespace WebHome.Helper
             return items.Where(v => halfCount.Any(p => p.PriceID == v.PriceID));
         }
 
+        public IQueryable<V_Tuition> FilterByBonusExchangedSRSession(IQueryable<V_Tuition> items)
+        {
+            IQueryable<LessonPriceProperty> SR = models.GetTable<LessonPriceProperty>().Where(p => p.PropertyID == (int)Naming.LessonPriceFeature.運動恢復課程);
+            return items
+                .Where(v => v.PriceStatus == (int)Naming.LessonPriceStatus.點數兌換課程)
+                .Where(v => SR.Any(p => p.PriceID == v.PriceID));
+        }
+
+
     }
 }
