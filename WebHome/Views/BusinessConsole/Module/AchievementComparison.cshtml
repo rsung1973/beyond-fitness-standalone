@@ -33,8 +33,8 @@
 
             int[] totalAmt = new int[]
             {
-                last.Sum(b => b.ActualSharedAchievement + b.ActualLessonAchievement) ?? 1,
-                current.Sum(b => b.ActualSharedAchievement + b.ActualLessonAchievement) ?? 1
+                Math.Max(last.Sum(b => ((b.ActualSharedAchievement ?? 0) + (b.ATAchievement ?? 0) + (b.ActualLessonAchievement ?? 0) + (b.SRAchievement ?? 0) + (b.SDAchievement ?? 0))),1),
+                Math.Max(current.Sum(b => ((b.ActualSharedAchievement ?? 0) + (b.ATAchievement ?? 0) + (b.ActualLessonAchievement ?? 0) + (b.SRAchievement ?? 0) + (b.SDAchievement ?? 0))),1)
                                                     };
             int[] achievement = new int[]
             {
@@ -43,8 +43,8 @@
                                                     };
             int[] tuition = new int[]
             {
-                last.Sum(b => b.ActualLessonAchievement) ?? 1,
-                current.Sum(b => b.ActualLessonAchievement) ?? 1
+                Math.Max(last.Sum(b => ((b.ATAchievement ?? 0) + (b.ActualLessonAchievement ?? 0) + (b.SRAchievement ?? 0) + (b.SDAchievement ?? 0))),1),
+                Math.Max(current.Sum(b => ((b.ATAchievement ?? 0) + (b.ActualLessonAchievement ?? 0) + (b.SRAchievement ?? 0) + (b.SDAchievement ?? 0))),1)
                                                     };
             <tr>
                 <td><i class="zmdi zmdi-dot-circle"></i> 收款業績@{compare(achievement[0], achievement[1]); }</td>

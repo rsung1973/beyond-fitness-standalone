@@ -54,16 +54,24 @@
         <tr onclick="javascript:achievementReview();">
             <td>課數 <small class="col-grey">@(indicator.CompleteLessonsGoal)堂</small></td>
             @{
-                decimal lessonCount = (indicator.ActualCompleteLessonCount ?? 0);   // + (indicator.ActualCompleteTSCount ?? 0);
+                decimal lessonCount = (indicator.ActualCompleteLessonCount ?? 0)
+                    + (indicator.ATCount ?? 0)
+                    + (indicator.SRCount ?? 0)
+                    + (indicator.SDCount ?? 0);   // + (indicator.ActualCompleteTSCount ?? 0);
             }
-            <td>@(Math.Round(lessonCount*100M / (indicator.CompleteLessonsGoal ?? 1)))% <small class="col-green">@(lessonCount)堂</small></td>
+            <td>
+                @if (indicator.CompleteLessonsGoal > 0)
+                {
+                    <text>@(Math.Round(lessonCount*100M / (indicator.CompleteLessonsGoal ?? 1)))%</text>
+                }
+                <small class="col-green">@(lessonCount)堂</small></td>
         </tr>
         <tr onclick="javascript:achievementReview();">
             <td>上課業績 <small class="col-grey">@($"{indicator.LessonTuitionGoal:##,###,###,###}")</small></td>
             <td>
                 @(indicator.LessonTuitionGoal>0
-                ? Math.Round((indicator.ActualLessonAchievement ?? 0) * 100M / (indicator.LessonTuitionGoal ?? 1))
-                : 0)% <small class="col-green">@($"{indicator.ActualLessonAchievement:##,###,###,###}")</small>
+                ? Math.Round(((indicator.ActualLessonAchievement ?? 0) + (indicator.ATAchievement ?? 0) + (indicator.SRAchievement ?? 0) + (indicator.SDAchievement ?? 0)) * 100M / (indicator.LessonTuitionGoal ?? 1))
+                : 0)% <small class="col-green">@($"{((indicator.ActualLessonAchievement ?? 0) + (indicator.ATAchievement ?? 0) + (indicator.SRAchievement ?? 0) + (indicator.SDAchievement ?? 0)):##,###,###,###}")</small>
             </td>
         </tr>
         <tr onclick="javascript:achievementReview();">

@@ -32,7 +32,7 @@
 
     var achievement = items.Select(c => new
     {
-        ActualLessonAchievement =  c.ActualLessonAchievement ?? 0,
+        ActualLessonAchievement =  (c.ActualLessonAchievement ?? 0) + (c.ATAchievement ?? 0) + (c.SRAchievement ?? 0) + (c.SDAchievement ?? 0),
         PaymentAchievement = c.MonthlyIndicator.GetPaymentAchievementSummary(models, c.CoachID),
     }).ToArray();
 }

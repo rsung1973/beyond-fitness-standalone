@@ -24,7 +24,11 @@
 @{
     MonthlyIndicatorQueryViewModel _viewModel = (MonthlyIndicatorQueryViewModel)ViewBag.ViewModel;
     MonthlyBranchRevenueGoal revenueGoal = (MonthlyBranchRevenueGoal)TempData["RevenueGoal"];
-    int totalRevenue = (revenueGoal.ActualLessonAchievement + revenueGoal.ActualSharedAchievement) ?? 0;;
+    int totalRevenue = (revenueGoal?.ActualLessonAchievement ?? 0)
+                                        + (revenueGoal?.ActualSharedAchievement ?? 0)
+                                        + (revenueGoal?.ATAchievement ?? 0)
+                                        + (revenueGoal?.SRAchievement ?? 0)
+                                        + (revenueGoal?.SDAchievement ?? 0);
 }
     <table class="table table-black table-hover m-b-0">
         <thead>

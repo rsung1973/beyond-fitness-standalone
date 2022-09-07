@@ -37,6 +37,9 @@
 
     var attendanceCount = (indicators.Sum(i => i.ActualCompleteLessonCount) ?? 0)
                         + (indicators.Sum(i => i.ActualCompleteTSCount) ?? 0)
+                        + (indicators.Sum(i => i.SRCount) ?? 0)
+                        + (indicators.Sum(i => i.SDCount) ?? 0)
+                        + (indicators.Sum(i => i.ATCount) ?? 0)
                         + (indicators.Sum(i => i.ActualCompletePICount) ?? 0) / 2M;
 
     var tuition = models.GetTuitionAchievement(_item.CoachID, quarterStart, ref quarterEnd, null, false);

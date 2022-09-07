@@ -1269,6 +1269,9 @@ namespace WebHome.Helper
 
             var attendanceCount = (indicators.Sum(i => i.ActualCompleteLessonCount) ?? 0)
                                 + (indicators.Sum(i => i.ActualCompleteTSCount) ?? 0)
+                                + (indicators.Sum(i => i.STCount) ?? 0)
+                                + (indicators.Sum(i => i.SDCount) ?? 0)
+                                + (indicators.Sum(i => i.SRCount) ?? 0)
                                 + (indicators.Sum(i => i.ActualCompletePICount) ?? 0) / 2;
 
             var tuition = models.GetTuitionAchievement(item.CoachID, quarterStart, ref quarterEnd, null);

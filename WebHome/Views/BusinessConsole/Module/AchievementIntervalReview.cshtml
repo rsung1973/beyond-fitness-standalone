@@ -44,9 +44,9 @@
         .OrderBy(g => g.Key).ToArray();
 
 
-    var totalAmt = groups.Select(g => Math.Round((g.Sum(b => b.ActualSharedAchievement + b.ActualLessonAchievement) ?? 0) / 10000M, 1)).ToArray();
+    var totalAmt = groups.Select(g => Math.Round(g.Sum(b => ((b.ActualSharedAchievement ?? 0) + (b.ActualLessonAchievement ?? 0) + (b.ATAchievement ?? 0) + (b.SRAchievement ?? 0) + (b.SDAchievement ?? 0))) / 10000M, 1)).ToArray();
     var achievement = groups.Select(g => (object)Math.Round((g.Sum(b => b.ActualSharedAchievement) ?? 0) / 10000M, 1)).ToList();
-    var tuition = groups.Select(g => (object)Math.Round((g.Sum(b => b.ActualLessonAchievement) ?? 0) / 10000M, 1)).ToList();
+    var tuition = groups.Select(g => (object)Math.Round(g.Sum(b => ((b.ActualLessonAchievement ?? 0) + (b.ATAchievement ?? 0) + (b.SRAchievement ?? 0) + (b.SDAchievement ?? 0))) / 10000M, 1)).ToList();
 
     int idx = 0;
     var achievementRatio = totalAmt.Select(a => (object)Math.Round(a * 100 / revenueGoal[idx++], 2)).ToList();
@@ -87,7 +87,7 @@
                         @{
                             maxItem = groups.ElementAt(tuition.IndexOf(tuition.Max(r => r)));
                         }
-                        @(maxItem.Key.Year)年@($"{maxItem.Key.Month:00}")月上課業績最高($@($"{maxItem.Sum(b => b.ActualLessonAchievement):##,###,###,###}"))
+                        @(maxItem.Key.Year)年@($"{maxItem.Key.Month:00}")月上課業績最高($@($"{maxItem.Sum(b => (b.ActualLessonAchievement ?? 0) + (b.ATAchievement ?? 0) + (b.SRAchievement ?? 0) + (b.SDAchievement ?? 0)):##,###,###,###}"))
                     </span>
                 </li>
             </ul>

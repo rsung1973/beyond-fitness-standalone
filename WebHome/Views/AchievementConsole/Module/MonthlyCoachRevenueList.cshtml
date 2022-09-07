@@ -41,7 +41,7 @@
             <tr>
                 <td>@($"{item.MonthlyIndicator.StartDate:yyyyMM}")</td>
                 <td>@(item.AttendanceCount)</td>
-                <td>@($"{item.ActualLessonAchievement:##,###,###,##0}")</td>
+                <td>@($"{((item.ActualLessonAchievement ?? 0) + (item.ATAchievement ?? 0) + (item.SRAchievement ?? 0) + (item.SDAchievement ?? 0)):##,###,###,##0}")</td>
                 <td>@($"{item.MonthlyIndicator.GetPaymentAchievementSummary(models, item.CoachID):##,###,###,##0}")</td>
                 <td>@($"{(voidItems.Sum(t=>t.VoidShare) ?? 0):##,###,###,##0}")</td>
                 @*<td>@($"{item.AverageLessonPrice:##,###,###,##0}")</td>*@

@@ -38,8 +38,8 @@
 
     //var totalAmt = groups.Select(g => Math.Round((g.Sum(b => b.ActualSharedAchievement + b.ActualLessonAchievement) ?? 0) / 10000M, 1)).ToArray();
     //var achievement = groups.Select(g => Math.Round((g.Sum(b => b.ActualSharedAchievement) ?? 0) / 10000M, 1)).ToList();
-    var tuition = groups.Select(g => Math.Round((g.Sum(b => b.ActualLessonAchievement ?? 0)) / 10000M, 2)).ToArray();
-    var attendance = groups.Select(g => g.Sum(b => b.ActualCompleteLessonCount ?? 0)).ToArray();
+    var tuition = groups.Select(g => Math.Round((g.Sum(b => (b.ActualLessonAchievement ?? 0) + (b.ATAchievement ?? 0) + (b.SRAchievement ?? 0) + (b.SDAchievement ?? 0))) / 10000M, 2)).ToArray();
+    var attendance = groups.Select(g => g.Sum(b => b.ActualCompleteLessonCount ?? 0) + g.Sum(b => b.ATCount ?? 0) + g.Sum(b => b.SDCount ?? 0) + g.Sum(b => b.SRCount ?? 0)).ToArray();
 }
 <script>
 

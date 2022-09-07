@@ -197,6 +197,7 @@ namespace WebHome.Helper
                 {
                     t.AttendingCoach,
                     t.ContractID,
+                    t.PriceID,
                     t.BranchID,
                     t.SettlementID,
                 });
@@ -207,6 +208,7 @@ namespace WebHome.Helper
             {
                 CourseContract contract = models.GetTable<CourseContract>().Where(u => u.ContractID == item.Key.ContractID).First();
                 ServingCoach coach = models.GetTable<ServingCoach>().Where(c => c.CoachID == item.Key.AttendingCoach).First();
+                LessonPriceType price = models.GetTable<LessonPriceType>().Where(u => u.PriceID == item.Key.PriceID).FirstOrDefault();
                 var branch = branchItems.Where(b => b.BranchID == item.Key.BranchID).First();
 
                 var r = table.NewRow();
@@ -237,9 +239,9 @@ namespace WebHome.Helper
                     : contract.Entrusted == false
                         ? "否"
                         : "";
-                if (contract.LessonPriceType.Status.HasValue)
+                if (price != null)
                 {
-                    r[11] = contract.LessonPriceType.Status.Value;
+                    r[11] = price.Status.Value;
                 }
 
                 var sample = item.First();
@@ -330,7 +332,14 @@ namespace WebHome.Helper
                 {
                     r[8] = branch.BranchName;
                 }
-                r[11] = item.PriceStatus;
+                
+                r[11] = item.PriceStatus == (int)Naming.LessonPriceStatus.點數兌換課程
+                        ? models.GetTable<LessonPriceProperty>()
+                            .Where(p => p.PropertyID == (int)Naming.LessonPriceFeature.運動恢復課程)
+                            .Where(p => p.PriceID == item.PriceID).Any()
+                                ? (int)Naming.LessonPriceStatus.運動恢復課程
+                                : (int)Naming.LessonPriceStatus.點數兌換課程
+                        : item.PriceStatus;
                 r[12] = branchItems.Where(b => b.BranchID == item.CoachWorkPlace)
                             .Select(b => b.BranchName).FirstOrDefault() ?? "其他";
                 r[13] = 1;
@@ -765,7 +774,7 @@ namespace WebHome.Helper
             var salaryTable = models.GetTable<CoachMonthlySalary>();
             var countableItems = helper.PerformanceCountableLesson;
             var PTItems = helper.PTSession;
-            var PTItemsAchievement = helper.PTSessionForAchievement;
+            //var PTItemsAchievement = helper.PTSessionForAchievement;
 
             var paymentItems = models.GetTable<Payment>().Where(p => p.PayoffDate >= settlement.StartDate && p.PayoffDate < settlement.EndExclusiveDate);
             //.FilterByEffective();
@@ -931,12 +940,22 @@ namespace WebHome.Helper
 
                         if (item != null)
                         {
-                            branchBonus.BranchTotalPTCount = item.ActualCompleteLessonCount;
-                            branchBonus.BranchTotalPTTuition = item.ActualLessonAchievement;
+                            branchBonus.BranchTotalPTCount = 
+                                (item.ActualCompleteLessonCount ?? 0) 
+                                + (item.SRCount ?? 0)
+                                + (item.SDCount ?? 0)
+                                + (item.ATCount ?? 0);
+
+                            var tuitionSubtotal = 
+                            branchBonus.BranchTotalPTTuition =
+                                (item.ActualLessonAchievement ?? 0)
+                                + (item.SRAchievement ?? 0)
+                                + (item.SDAchievement ?? 0)
+                                + (item.ATAchievement ?? 0);
 
                             decimal indicatorAmt = (decimal)item.MonthlyBranchRevenueIndicator.RevenueGoal;
                             decimal basePercentage = item.MonthlyBranchRevenueIndicator.MonthlyRevenueGrade.IndicatorPercentage;
-                            int totalAchievementAmt = (item.ActualLessonAchievement + item.ActualSharedAchievement - (item.VoidShare ?? 0)) ?? 0;
+                            int totalAchievementAmt = (tuitionSubtotal + item.ActualSharedAchievement - (item.VoidShare ?? 0)) ?? 0;
 
                             achievementRatio = Math.Round(totalAchievementAmt * basePercentage / indicatorAmt);
                             bonusIdx = 0;
@@ -950,7 +969,7 @@ namespace WebHome.Helper
 
                             if (bonusIdx < SpecialBonusIndex.Length)
                             {
-                                salary.SpecialBonus = (int)(item.ActualLessonAchievement * ManagerSpecialBonusRatio[bonusIdx] / 1.05M + 0.5M);
+                                salary.SpecialBonus = (int)(tuitionSubtotal * ManagerSpecialBonusRatio[bonusIdx] / 1.05M + 0.5M);
                             }
                         }
                     }
@@ -1006,12 +1025,21 @@ namespace WebHome.Helper
 
                         if (item != null)
                         {
-                            branchBonus.BranchTotalPTCount = item.ActualCompleteLessonCount;
-                            branchBonus.BranchTotalPTTuition = item.ActualLessonAchievement;
+                            branchBonus.BranchTotalPTCount =
+                                (item.ActualCompleteLessonCount ?? 0)
+                                + (item.SRCount ?? 0)
+                                + (item.SDCount ?? 0)
+                                + (item.ATCount ?? 0);
+                            var tuitionSubtotal =
+                            branchBonus.BranchTotalPTTuition =
+                                (item.ActualLessonAchievement ?? 0)
+                                + (item.SRAchievement ?? 0)
+                                + (item.SDAchievement ?? 0)
+                                + (item.ATAchievement ?? 0);
 
                             decimal indicatorAmt = (decimal)item.MonthlyBranchRevenueIndicator.RevenueGoal;
                             decimal basePercentage = item.MonthlyBranchRevenueIndicator.MonthlyRevenueGrade.IndicatorPercentage;
-                            int totalAchievementAmt = (item.ActualLessonAchievement + item.ActualSharedAchievement - (item.VoidShare ?? 0)) ?? 0;
+                            int totalAchievementAmt = (tuitionSubtotal + item.ActualSharedAchievement - (item.VoidShare ?? 0)) ?? 0;
 
                             achievementRatio = Math.Round(totalAchievementAmt * basePercentage / indicatorAmt);
                             bonusIdx = 0;
@@ -1025,7 +1053,7 @@ namespace WebHome.Helper
 
                             if (bonusIdx < SpecialBonusIndex.Length)
                             {
-                                salary.SpecialBonus = (int)(item.ActualLessonAchievement * ViceManagerSpecialBonusRatio[bonusIdx] / 1.05M + 0.5M);
+                                salary.SpecialBonus = (int)(tuitionSubtotal * ViceManagerSpecialBonusRatio[bonusIdx] / 1.05M + 0.5M);
                             }
                         }
                     }

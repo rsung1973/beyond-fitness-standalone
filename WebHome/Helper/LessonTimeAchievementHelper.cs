@@ -65,9 +65,6 @@ namespace WebHome.Helper
                     .Where(l => l.CoachAttendance.HasValue
                         || (!l.CoachAttendance.HasValue && !(l.PriceStatus==(int)Naming.LessonPriceFeature.體驗課程 || l.ELStatus == (int)Naming.LessonPriceFeature.體驗課程)));
 
-        public IQueryable<V_Tuition> PTSessionForAchievement => LessonItems
-                    .Where(t => BusinessConsoleExtensions.SessionScopeForAchievement.Contains(t.PriceStatus)
-                            || BusinessConsoleExtensions.SessionScopeForAchievement.Contains(t.ELStatus));
         public IQueryable<V_Tuition> PTSession => LessonItems
                     .Where(t => BusinessConsoleExtensions.SessionScopeForComleteLessonCount.Contains(t.PriceStatus)
                             || BusinessConsoleExtensions.SessionScopeForComleteLessonCount.Contains(t.ELStatus));

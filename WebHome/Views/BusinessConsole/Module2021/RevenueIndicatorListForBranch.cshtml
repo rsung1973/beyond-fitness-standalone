@@ -22,7 +22,11 @@
 
         decimal indicatorAmt = (decimal)(indicator.CustomRevenueGoal ?? indicator.MonthlyBranchRevenueIndicator.RevenueGoal);
         decimal basePercentage = (decimal)(indicator.CustomIndicatorPercentage ?? indicator.MonthlyBranchRevenueIndicator.MonthlyRevenueGrade.IndicatorPercentage);
-        totalAchievementAmt = (indicator.ActualLessonAchievement + indicator.ActualSharedAchievement) ?? 0;
+        totalAchievementAmt = (indicator.ActualLessonAchievement ?? 0) 
+                    + (indicator.ActualSharedAchievement ?? 0) 
+                    + (indicator.ATAchievement ?? 0) 
+                    + (indicator.SRAchievement ?? 0) 
+                    + (indicator.SDAchievement ?? 0);
 
         decimal achievementRatio = totalAchievementAmt * basePercentage / indicatorAmt;
         return Math.Round(achievementRatio, 2);

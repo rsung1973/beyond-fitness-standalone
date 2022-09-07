@@ -248,6 +248,18 @@ namespace WebHome.Helper
                     (int)Naming.LessonPriceStatus.團體學員課程,
         };
 
+        public static readonly int?[] SessionScopeForAveragePrice = new int?[]
+        {
+                    (int)Naming.LessonPriceStatus.一般課程,
+                    (int)Naming.LessonPriceStatus.已刪除,
+                    (int)Naming.LessonPriceStatus.點數兌換課程,
+                    (int)Naming.LessonPriceStatus.員工福利課程,
+                    (int)Naming.LessonPriceStatus.團體學員課程,
+                    (int)Naming.LessonPriceStatus.運動恢復課程,
+                    (int)Naming.LessonPriceStatus.運動防護課程,
+                    (int)Naming.LessonPriceStatus.營養課程,
+        };
+
         public static readonly int?[] HSSessionScope = new int?[]
         {
                     (int)Naming.LessonPriceStatus.運動恢復課程,
@@ -609,11 +621,11 @@ namespace WebHome.Helper
             IQueryable<V_Tuition> tuitionItems = lessonItems;
             int lessonAchievement;
             var coachTuitionItems = tuitionItems.Where(t => t.AttendingCoach == coachID);
-            lessonAchievement = coachTuitionItems.Where(t => SessionScopeForComleteLessonCount.Contains(t.PriceStatus)).Sum(t => t.ListPrice * t.GroupingMemberCount * t.PercentageOfDiscount / 100) ?? 0;
-            lessonAchievement += (coachTuitionItems.Where(t => SessionScopeForComleteLessonCount.Contains(t.ELStatus)).Sum(l => l.EnterpriseListPrice * l.GroupingMemberCount * l.PercentageOfDiscount / 100) ?? 0);
+            lessonAchievement = coachTuitionItems.Where(t => SessionScopeForAveragePrice.Contains(t.PriceStatus)).Sum(t => t.ListPrice * t.GroupingMemberCount * t.PercentageOfDiscount / 100) ?? 0;
+            lessonAchievement += (coachTuitionItems.Where(t => SessionScopeForAveragePrice.Contains(t.ELStatus)).Sum(l => l.EnterpriseListPrice * l.GroupingMemberCount * l.PercentageOfDiscount / 100) ?? 0);
 
-            var completeLessonCount = Math.Max(coachTuitionItems.Where(t => SessionScopeForComleteLessonCount.Contains(t.PriceStatus)).Count()
-                                    + coachTuitionItems.Where(t => SessionScopeForComleteLessonCount.Contains(t.ELStatus)).Count(), 1);
+            var completeLessonCount = Math.Max(coachTuitionItems.Where(t => SessionScopeForAveragePrice.Contains(t.PriceStatus)).Count()
+                                    + coachTuitionItems.Where(t => SessionScopeForAveragePrice.Contains(t.ELStatus)).Count(), 1);
 
             return (lessonAchievement + completeLessonCount - 1) / completeLessonCount;
         }

@@ -28,14 +28,14 @@
     if (_viewModel.BranchID.HasValue)
     {
         MonthlyBranchRevenueGoal indicator = (MonthlyBranchRevenueGoal)TempData["RevenueGoal"];
-        lessonAchievementAmt = indicator?.ActualLessonAchievement ?? 0;
+        lessonAchievementAmt = (indicator?.ActualLessonAchievement ?? 0) + (indicator?.ATAchievement ?? 0) + (indicator?.SRAchievement ?? 0) + (indicator?.SDAchievement ?? 0);
         tuitionAchievementAmt = indicator?.ActualSharedAchievement ?? 0;
         totalAchievementAmt = Math.Max(tuitionAchievementAmt + lessonAchievementAmt, 1);
     }
     else
     {
         MonthlyRevenueGoal indicator = (MonthlyRevenueGoal)TempData["RevenueGoal"];
-        lessonAchievementAmt = indicator?.ActualLessonAchievement ?? 0;
+        lessonAchievementAmt = (indicator?.ActualLessonAchievement ?? 0) + (indicator?.ATAchievement ?? 0) + (indicator?.SRAchievement ?? 0) + (indicator?.SDAchievement ?? 0);
         tuitionAchievementAmt = indicator?.ActualSharedAchievement ?? 0;
         totalAchievementAmt = Math.Max(tuitionAchievementAmt + lessonAchievementAmt, 1);
     }

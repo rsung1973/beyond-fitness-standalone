@@ -39,7 +39,7 @@
 
         decimal indicatorAmt = (decimal)(indicator.CustomRevenueGoal ?? indicator.MonthlyBranchRevenueIndicator.RevenueGoal);
         decimal basePercentage = (decimal)(indicator.CustomIndicatorPercentage ?? indicator.MonthlyBranchRevenueIndicator.MonthlyRevenueGrade.IndicatorPercentage);
-        decimal totalAchievementAmt = (indicator.ActualLessonAchievement + indicator.ActualSharedAchievement) ?? 0;
+        decimal totalAchievementAmt = (indicator.ActualLessonAchievement ?? 0) + (indicator.ActualSharedAchievement ?? 0) + (indicator.ATAchievement ?? 0) + (indicator.SRAchievement ?? 0) + (indicator.SDAchievement ?? 0);
 
         decimal achievementRatio = totalAchievementAmt * basePercentage / indicatorAmt;
         return Math.Round(achievementRatio, 2);
@@ -51,7 +51,7 @@
             .Select(m => grouping.Where(g => g.MonthlyBranchRevenueIndicator.MonthlyIndicator.Month == m).FirstOrDefault())
             .Select(i => i == null
                             ? 0M
-                            : Math.Round(((i.ActualLessonAchievement + i.ActualSharedAchievement) ?? 0M) / 10000M, 2));
+                            : Math.Round(((i.ActualLessonAchievement ?? 0) + (i.ActualSharedAchievement ?? 0) + (i.ATAchievement ?? 0) + (i.SRAchievement ?? 0) + (i.SDAchievement ?? 0)) / 10000M, 2));
         return result;
     }
 
