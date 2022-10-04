@@ -329,6 +329,7 @@
       <Association Name="ServingCoach_CoachMonthlySalary" Member="CoachMonthlySalaries" ThisKey="CoachID" OtherKey="CoachID" Type="CoachMonthlySalary" />
       <Association Name="ServingCoach_TuitionAchievement" Member="TuitionAchievement" ThisKey="CoachID" OtherKey="CoachID" Type="TuitionAchievement" />
       <Association Name="ServingCoach_MonthlyCoachRevenueIndicator" Member="MonthlyCoachRevenueIndicator" ThisKey="CoachID" OtherKey="CoachID" Type="MonthlyCoachRevenueIndicator" />
+      <Association Name="ServingCoach_CoachYearlyAdditionalPay" Member="CoachYearlyAdditionalPay" ThisKey="CoachID" OtherKey="CoachID" Type="CoachYearlyAdditionalPay" />
       <Association Name="UserProfile_ServingCoach" Member="UserProfile" ThisKey="CoachID" OtherKey="UID" Type="UserProfile" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
       <Association Name="ProfessionalLevel_ServingCoach" Member="ProfessionalLevel" ThisKey="LevelID" OtherKey="LevelID" Type="ProfessionalLevel" IsForeignKey="true" />
     </Type>
@@ -750,6 +751,7 @@
       <Association Name="ProfessionalLevel_MonthlyCoachRevenueIndicator" Member="MonthlyCoachRevenueIndicator" ThisKey="LevelID" OtherKey="LevelID" Type="MonthlyCoachRevenueIndicator" />
       <Association Name="ProfessionalLevel_ProfessionalLevelBasicSalary" Member="ProfessionalLevelBasicSalary" ThisKey="LevelID" OtherKey="LevelID" Type="ProfessionalLevelBasicSalary" Cardinality="One" />
       <Association Name="ProfessionalLevel_ProfessionalLevelBasicSalary1" Member="ProfessionalLevelBasicSalary1" ThisKey="LevelID" OtherKey="LevelID" Type="ProfessionalLevelBasicSalary1" Cardinality="One" />
+      <Association Name="ProfessionalLevel_CoachYearlyAdditionalPay" Member="CoachYearlyAdditionalPay" ThisKey="LevelID" OtherKey="LevelID" Type="CoachYearlyAdditionalPay" />
       <Association Name="LevelExpression_ProfessionalLevel" Member="LevelExpression" ThisKey="CategoryID" OtherKey="LevelID" Type="LevelExpression" IsForeignKey="true" />
     </Type>
   </Table>
@@ -995,6 +997,7 @@
       <Association Name="BranchStore_BranchMonthlySummary" Member="BranchMonthlySummary" ThisKey="BranchID" OtherKey="BranchID" Type="BranchMonthlySummary" />
       <Association Name="BranchStore_CourseContractExtension" Member="CourseContractExtension" ThisKey="BranchID" OtherKey="BranchID" Type="CourseContractExtension" />
       <Association Name="BranchStore_CourseContractExtension1" Member="WhereCourseOccur" Storage="_CourseContractExtension1" ThisKey="BranchID" OtherKey="CoursePlace" Type="CourseContractExtension" />
+      <Association Name="BranchStore_CoachYearlyAdditionalPay" Member="CoachYearlyAdditionalPay" ThisKey="BranchID" OtherKey="WorkPlace" Type="CoachYearlyAdditionalPay" />
       <Association Name="UserProfile_BranchStore" Member="Manager" ThisKey="ManagerID" OtherKey="UID" Type="UserProfile" IsForeignKey="true" />
       <Association Name="UserProfile_BranchStore1" Member="ViceManager" ThisKey="ViceManagerID" OtherKey="UID" Type="UserProfile" IsForeignKey="true" />
       <Association Name="Organization_BranchStore" Member="Organization" ThisKey="BranchID" OtherKey="CompanyID" Type="Organization" IsForeignKey="true" />
@@ -1430,21 +1433,6 @@
       <Association Name="VoidPayment_VoidPaymentLevel" Member="VoidPayment" ThisKey="VoidID" OtherKey="VoidID" Type="VoidPayment" IsForeignKey="true" />
     </Type>
   </Table>
-  <Table Name="dbo.Settlement" Member="Settlement">
-    <Type Name="Settlement">
-      <Column Name="SettlementID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="SettlementDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="StartDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="EndExclusiveDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="Status" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Association Name="Settlement_ContractTrustSettlement" Member="ContractTrustSettlement" ThisKey="SettlementID" OtherKey="SettlementID" Type="ContractTrustSettlement" />
-      <Association Name="Settlement_ContractTrustTrack" Member="ContractTrustTrack" ThisKey="SettlementID" OtherKey="SettlementID" Type="ContractTrustTrack" />
-      <Association Name="Settlement_CoachMonthlySalary" Member="CoachMonthlySalaries" ThisKey="SettlementID" OtherKey="SettlementID" Type="CoachMonthlySalary" />
-      <Association Name="Settlement_LessonTimeSettlement" Member="LessonTimeSettlements" ThisKey="SettlementID" OtherKey="SettlementID" Type="LessonTimeSettlement" />
-      <Association Name="Settlement_BranchMonthlySummary" Member="BranchMonthlySummary" ThisKey="SettlementID" OtherKey="SettlementID" Type="BranchMonthlySummary" />
-      <Association Name="Settlement_MonthlySalaryDetails" Member="MonthlySalaryDetails" ThisKey="SettlementID" OtherKey="SettlementID" Type="MonthlySalaryDetails" />
-    </Type>
-  </Table>
   <Table Name="dbo.CourseContractTrust" Member="CourseContractTrust">
     <Type Name="CourseContractTrust">
       <Column Name="ContractID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -1463,7 +1451,7 @@
       <Column Name="CurrentLiableAmount" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Association Name="ContractTrustSettlement_CourseContractTrust" Member="CourseContractTrust" ThisKey="ContractID,SettlementID" OtherKey="ContractID,CurrentSettlement" Type="CourseContractTrust" />
       <Association Name="CourseContract_ContractTrustSettlement" Member="CourseContract" ThisKey="ContractID" OtherKey="ContractID" Type="CourseContract" IsForeignKey="true" />
-      <Association Name="Settlement_ContractTrustSettlement" Member="Settlement" ThisKey="SettlementID" OtherKey="SettlementID" Type="Settlement" IsForeignKey="true" />
+      <Association Name="Settlement_ContractTrustSettlement" Member="Settlement" ThisKey="SettlementID" OtherKey="SettlementID" Type="Settlement" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
   <Table Name="dbo.EnterpriseCoursePayment" Member="EnterpriseCoursePayment">
@@ -1685,10 +1673,10 @@
       <Column Name="VoidID" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="ReturnAmount" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Association Name="CourseContract_ContractTrustTrack" Member="CourseContract" ThisKey="ContractID" OtherKey="ContractID" Type="CourseContract" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
-      <Association Name="Settlement_ContractTrustTrack" Member="Settlement" ThisKey="SettlementID" OtherKey="SettlementID" Type="Settlement" IsForeignKey="true" DeleteRule="SET NULL" />
       <Association Name="VoidPayment_ContractTrustTrack" Member="VoidPayment" ThisKey="VoidID" OtherKey="VoidID" Type="VoidPayment" IsForeignKey="true" />
       <Association Name="Payment_ContractTrustTrack" Member="Payment" ThisKey="PaymentID" OtherKey="PaymentID" Type="Payment" IsForeignKey="true" DeleteRule="CASCADE" />
       <Association Name="LessonTime_ContractTrustTrack" Member="LessonTime" ThisKey="LessonID" OtherKey="LessonID" Type="LessonTime" IsForeignKey="true" DeleteRule="CASCADE" />
+      <Association Name="Settlement_ContractTrustTrack" Member="Settlement" ThisKey="SettlementID" OtherKey="SettlementID" Type="Settlement" IsForeignKey="true" DeleteRule="SET NULL" />
     </Type>
   </Table>
   <Table Name="dbo.EmployeeWelfare" Member="EmployeeWelfare">
@@ -2629,6 +2617,7 @@
       <Column Name="PermanentWage" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="ApprenticeWage" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="CommissionGrade" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Column Name="AnnualGrade" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
       <Association Name="SalaryDetails_ProfessionalLevelBasicSalary" Member="ProfessionalLevelBasicSalary" ThisKey="SalaryID" OtherKey="SalaryID" Type="ProfessionalLevelBasicSalary" />
       <Association Name="SalaryDetails_ProfessionalLevelBasicSalary1" Member="ProfessionalLevelBasicSalary1" ThisKey="SalaryID" OtherKey="SalaryID" Type="ProfessionalLevelBasicSalary1" />
     </Type>
@@ -2705,8 +2694,8 @@
       <Column Name="HealthInsurranceByEmployer" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="Pension" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Association Name="MonthlySalary_MonthlySalaryDetails" Member="MonthlySalary" ThisKey="SalaryID" OtherKey="SalaryID" Type="MonthlySalary" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
-      <Association Name="Settlement_MonthlySalaryDetails" Member="Settlement" ThisKey="SettlementID" OtherKey="SettlementID" Type="Settlement" IsForeignKey="true" />
       <Association Name="UserProfile_MonthlySalaryDetails" Member="UserProfile" ThisKey="UID" OtherKey="UID" Type="UserProfile" IsForeignKey="true" />
+      <Association Name="Settlement_MonthlySalaryDetails" Member="Settlement" ThisKey="SettlementID" OtherKey="SettlementID" Type="Settlement" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.UserRelationship" Member="UserRelationships">
@@ -2825,6 +2814,73 @@
       <Column Name="EventID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="CommitmentDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Association Name="UserEvent_UserEventCommitment" Member="UserEvent" ThisKey="EventID" OtherKey="EventID" Type="UserEvent" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Settlement" Member="Settlement">
+    <Type Name="Settlement">
+      <Column Name="SettlementID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="SettlementDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="StartDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="EndExclusiveDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Status" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Year" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Settlement_ContractTrustSettlement" Member="ContractTrustSettlement" ThisKey="SettlementID" OtherKey="SettlementID" Type="ContractTrustSettlement" />
+      <Association Name="Settlement_ContractTrustTrack" Member="ContractTrustTrack" ThisKey="SettlementID" OtherKey="SettlementID" Type="ContractTrustTrack" />
+      <Association Name="Settlement_CoachMonthlySalary" Member="CoachMonthlySalary" ThisKey="SettlementID" OtherKey="SettlementID" Type="CoachMonthlySalary" />
+      <Association Name="Settlement_LessonTimeSettlement" Member="LessonTimeSettlement" ThisKey="SettlementID" OtherKey="SettlementID" Type="LessonTimeSettlement" />
+      <Association Name="Settlement_BranchMonthlySummary" Member="BranchMonthlySummary" ThisKey="SettlementID" OtherKey="SettlementID" Type="BranchMonthlySummary" />
+      <Association Name="Settlement_MonthlySalaryDetails" Member="MonthlySalaryDetails" ThisKey="SettlementID" OtherKey="SettlementID" Type="MonthlySalaryDetails" />
+      <Association Name="YearlySettlement_Settlement" Member="YearlySettlement" ThisKey="Year" OtherKey="Year" Type="YearlySettlement" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.YearlySettlement" Member="YearlySettlement">
+    <Type Name="YearlySettlement">
+      <Column Name="Year" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="YearlySettlement_Settlement" Member="Settlement" ThisKey="Year" OtherKey="Year" Type="Settlement" />
+      <Association Name="YearlySettlement_CoachYearlyAdditionalPay" Member="CoachYearlyAdditionalPay" ThisKey="Year" OtherKey="Year" Type="CoachYearlyAdditionalPay" />
+    </Type>
+  </Table>
+  <Table Name="dbo.V_BranchYearlySummary" Member="V_BranchYearlySummary">
+    <Type Name="V_BranchYearlySummary">
+      <Column Name="Year" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="BranchID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DataCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="AchievementRatio" Type="System.Decimal" DbType="Decimal(38,6)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.V_YearlyReview" Member="V_YearlyReview">
+    <Type Name="V_YearlyReview">
+      <Column Name="Year" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CoachID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DataCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PerformanceAchievement" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="AchievementShareRatio" Type="System.Decimal" DbType="Decimal(38,6)" CanBeNull="true" />
+      <Column Name="VoidShare" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PTAttendanceCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PTAverageUnitPrice" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Tuition" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="AchievementAttendanceCount" Type="System.Decimal" DbType="Decimal(38,2)" CanBeNull="true" />
+      <Column Name="BranchTotalAttendanceCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="BranchTotalTuition" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="BranchTotalPTCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="BranchTotalPTTuition" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="Report.CoachYearlyAdditionalPay" Member="CoachYearlyAdditionalPay">
+    <Type Name="CoachYearlyAdditionalPay">
+      <Column Name="Year" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CoachID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="WorkPlace" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="LevelID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="GradeIndex" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Column Name="ManagerBonus" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SpecialBonus" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="AttendanceBonus" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="AchievementBonus" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="BranchStore_CoachYearlyAdditionalPay" Member="BranchStore" ThisKey="WorkPlace" OtherKey="BranchID" Type="BranchStore" IsForeignKey="true" />
+      <Association Name="ProfessionalLevel_CoachYearlyAdditionalPay" Member="ProfessionalLevel" ThisKey="LevelID" OtherKey="LevelID" Type="ProfessionalLevel" IsForeignKey="true" />
+      <Association Name="ServingCoach_CoachYearlyAdditionalPay" Member="ServingCoach" ThisKey="CoachID" OtherKey="CoachID" Type="ServingCoach" IsForeignKey="true" />
+      <Association Name="YearlySettlement_CoachYearlyAdditionalPay" Member="YearlySettlement" ThisKey="Year" OtherKey="Year" Type="YearlySettlement" IsForeignKey="true" />
     </Type>
   </Table>
   <Function Name="dbo.InquireVacantNo" Method="InquireVacantNo">

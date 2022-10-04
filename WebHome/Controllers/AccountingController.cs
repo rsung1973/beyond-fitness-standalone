@@ -724,6 +724,21 @@ namespace WebHome.Controllers
             return Json(new { result = true });
         }
 
+        public async Task<ActionResult> ExecuteYearlyPerformanceReviewAsync(int? year, String forRole)
+        {
+            if (!year.HasValue)
+            {
+                year = DateTime.Today.Year;
+            }
+
+            await Task.Run(() =>
+            {
+                models.ExecuteYearlyPerformanceReview(year.Value, forRole);
+            });
+
+            return Json(new { result = true });
+        }
+
         public ActionResult InitializeTrust()
         {
             var items = models.GetTable<RegisterLesson>().Where(r => r.AttendedLessons > 0)
@@ -1670,6 +1685,21 @@ namespace WebHome.Controllers
             分店業績達成率百分比 = 12,
         }
 
+        enum ManagerYearlyBonusFields
+        {
+            姓名 = 0,
+            所屬分店 = 1,
+            職級 = 2,
+            個人上課數 = 3,
+            分店總上課數 = 4,
+            分店上課金額 = 5,
+            總獎金 = 6,
+            管理獎金 = 7,
+            特別獎金 = 8,
+            上課獎金 = 9,
+            分店業績達成率百分比 = 10,
+        }
+
         //  
 
         enum CoachBonusFields
@@ -1691,6 +1721,25 @@ namespace WebHome.Controllers
             月中上課加業績獎金 = 14,
             上課獎金 = 15,
             業績獎金 = 16,
+        }
+
+        enum CoachYearlyBonusFields
+        {
+            姓名 = 0,
+            所屬分店 = 1,
+            PT_Level = 2,
+            總上課數 = 3,
+            上課平均抽成單價 = 4,
+            PT_Session課數 = 5,
+            上課獎金抽成百分比 = 6,
+            業績金額 = 7,
+            業績獎金平均抽成百分比 = 8,
+            總獎金 = 9,
+            管理獎金 = 10,
+            特別獎金 = 11,
+            年終上課加業績獎金 = 12,
+            上課獎金 = 13,
+            業績獎金 = 14,
         }
 
         public async Task<ActionResult> CreateMonthlyBonusXlsx2022Async(AchievementQueryViewModel viewModel)
@@ -2628,6 +2677,233 @@ namespace WebHome.Controllers
             ViewResult result = (ViewResult)await InquireTuitionAchievementAsync(viewModel);
             result.ViewName = "~/Views/Accounting/Module/TuitionAchievementShares.ascx";
             return result;
+        }
+
+        public async Task<ActionResult> CreateYearlyBonusXlsxAsync(AchievementQueryViewModel viewModel)
+        {
+            if (!viewModel.Year.HasValue)
+            {
+                viewModel.Year = DateTime.Today.Year; 
+            }
+
+            IQueryable<CoachYearlyAdditionalPay> items =
+                models.GetTable<CoachYearlyAdditionalPay>()
+                    .Where(p => p.Year == viewModel.Year);
+
+            IEnumerable<CoachYearlyAdditionalPay> salaryItems = (IEnumerable<CoachYearlyAdditionalPay>)items;
+            var branchItems = models.GetTable<BranchStore>().ToArray();
+
+            DataTable buildManagerBonusList()
+            {
+                DataTable table = new DataTable();
+                table.Columns.Add(new DataColumn(ManagerYearlyBonusFields.姓名.ToString(), typeof(String)));
+                table.Columns.Add(new DataColumn(ManagerYearlyBonusFields.所屬分店.ToString(), typeof(String)));
+                table.Columns.Add(new DataColumn(ManagerYearlyBonusFields.職級.ToString(), typeof(String)));
+                table.Columns.Add(new DataColumn(ManagerYearlyBonusFields.個人上課數.ToString(), typeof(decimal)));
+                table.Columns.Add(new DataColumn(ManagerYearlyBonusFields.分店總上課數.ToString(), typeof(int)));
+                table.Columns.Add(new DataColumn(ManagerYearlyBonusFields.分店上課金額.ToString(), typeof(decimal)));
+                table.Columns.Add(new DataColumn(ManagerYearlyBonusFields.總獎金.ToString(), typeof(int)));
+                table.Columns.Add(new DataColumn(ManagerYearlyBonusFields.管理獎金.ToString(), typeof(int)));
+                table.Columns.Add(new DataColumn(ManagerYearlyBonusFields.特別獎金.ToString(), typeof(int)));
+                table.Columns.Add(new DataColumn(ManagerYearlyBonusFields.上課獎金.ToString(), typeof(int)));
+                table.Columns.Add(new DataColumn(ManagerYearlyBonusFields.分店業績達成率百分比.ToString(), typeof(decimal)));
+
+                DataRow r;
+
+                var coachItems = salaryItems.Where(s => s.ProfessionalLevel.CategoryID == (int)Naming.ProfessionalCategory.Special
+                                    || s.ProfessionalLevel.CategoryID == (int)Naming.ProfessionalCategory.FM
+                                    || s.ProfessionalLevel.CategoryID == (int)Naming.ProfessionalCategory.AFM
+                                    || s.ProfessionalLevel.CategoryID == (int)Naming.ProfessionalCategory.FES);
+
+                foreach (var g in coachItems.OrderBy(c => c.WorkPlace))
+                {
+                    r = table.NewRow();
+
+                    var reviewItem = models.GetTable<V_YearlyReview>()
+                                        .Where(s => s.Year == g.Year)
+                                        .Where(s => s.CoachID == g.CoachID)
+                                        .FirstOrDefault();
+
+                    r[(int)ManagerYearlyBonusFields.姓名] = g.ServingCoach.UserProfile.FullName();
+                    r[(int)ManagerYearlyBonusFields.所屬分店] = g.BranchStore?.BranchName ?? "其他";
+                    r[(int)ManagerYearlyBonusFields.職級] = g.ProfessionalLevel.LevelName;
+                    r[(int)ManagerYearlyBonusFields.個人上課數] = reviewItem?.AchievementAttendanceCount;
+                    r[(int)ManagerYearlyBonusFields.分店總上課數] = reviewItem?.BranchTotalPTCount ?? 0;
+                    r[(int)ManagerYearlyBonusFields.分店上課金額] = (int)((reviewItem?.BranchTotalPTTuition ?? 0M) / 1.05M + 0.5M);
+                    r[(int)ManagerYearlyBonusFields.管理獎金] = g.ManagerBonus ?? 0;
+                    r[(int)ManagerYearlyBonusFields.特別獎金] = g.SpecialBonus ?? 0;
+
+                    r[(int)ManagerYearlyBonusFields.上課獎金] = g.AttendanceBonus ?? 0;
+                    if (g.ProfessionalLevel.CategoryID == (int)Naming.ProfessionalCategory.FM
+                            || g.ProfessionalLevel.CategoryID == (int)Naming.ProfessionalCategory.AFM)
+                    {
+                        var branchSummary = models.GetTable<V_BranchYearlySummary>()
+                                                .Where(s => s.Year == g.Year)
+                                                .Where(s => s.BranchID == g.WorkPlace)
+                                                .FirstOrDefault();
+                        if (branchSummary!=null)
+                        {
+                            r[(int)ManagerYearlyBonusFields.分店業績達成率百分比] = branchSummary.AchievementRatio;
+                        }
+                    }
+
+                    r[(int)ManagerYearlyBonusFields.總獎金] = (int)r[(int)ManagerYearlyBonusFields.上課獎金]
+                        + (int)r[(int)ManagerYearlyBonusFields.管理獎金]
+                        + (int)r[(int)ManagerYearlyBonusFields.特別獎金];
+
+                    table.Rows.Add(r);
+                }
+                return table;
+            }
+
+            DataTable buildCoachBonusList()
+            {
+                //														
+                DataTable table = new DataTable();
+                table.Columns.Add(new DataColumn(CoachYearlyBonusFields.姓名.ToString(), typeof(String)));
+                table.Columns.Add(new DataColumn(CoachYearlyBonusFields.所屬分店.ToString(), typeof(String)));
+                table.Columns.Add(new DataColumn(CoachYearlyBonusFields.PT_Level.ToString(), typeof(String)));
+                table.Columns.Add(new DataColumn(CoachYearlyBonusFields.總上課數.ToString(), typeof(int)));
+                table.Columns.Add(new DataColumn(CoachYearlyBonusFields.上課平均抽成單價.ToString(), typeof(int)));
+                table.Columns.Add(new DataColumn(CoachYearlyBonusFields.PT_Session課數.ToString(), typeof(int)));
+                table.Columns.Add(new DataColumn(CoachYearlyBonusFields.上課獎金抽成百分比.ToString(), typeof(decimal)));
+                table.Columns.Add(new DataColumn(CoachYearlyBonusFields.業績金額.ToString(), typeof(int)));
+                table.Columns.Add(new DataColumn(CoachYearlyBonusFields.業績獎金平均抽成百分比.ToString(), typeof(decimal)));
+                table.Columns.Add(new DataColumn(CoachYearlyBonusFields.總獎金.ToString(), typeof(int)));
+                table.Columns.Add(new DataColumn(CoachYearlyBonusFields.管理獎金.ToString(), typeof(int)));
+                table.Columns.Add(new DataColumn(CoachYearlyBonusFields.特別獎金.ToString(), typeof(int)));
+                table.Columns.Add(new DataColumn(CoachYearlyBonusFields.年終上課加業績獎金.ToString(), typeof(int)));
+                table.Columns.Add(new DataColumn(CoachYearlyBonusFields.上課獎金.ToString(), typeof(int)));
+                table.Columns.Add(new DataColumn(CoachYearlyBonusFields.業績獎金.ToString(), typeof(int)));
+
+                DataRow r;
+
+                var coachItems = salaryItems.Where(s => s.ProfessionalLevel.CategoryID != (int)Naming.ProfessionalCategory.Special
+                                    && s.ProfessionalLevel.CategoryID != (int)Naming.ProfessionalCategory.FM
+                                    && s.ProfessionalLevel.CategoryID != (int)Naming.ProfessionalCategory.AFM
+                                    && s.ProfessionalLevel.CategoryID != (int)Naming.ProfessionalCategory.FES);
+
+                List<int> taxCol = new List<int>
+                {
+                    (int)CoachYearlyBonusFields.上課平均抽成單價,
+                };
+
+                List<DataRow> rows = new List<DataRow>();
+                foreach (var g in coachItems)
+                {
+                    r = table.NewRow();
+
+                    var reviewItem = models.GetTable<V_YearlyReview>()
+                                        .Where(s => s.Year == g.Year)
+                                        .Where(s => s.CoachID == g.CoachID)
+                                        .FirstOrDefault();
+
+                    r[(int)CoachYearlyBonusFields.姓名] = g.ServingCoach.UserProfile.FullName();
+                    r[(int)CoachYearlyBonusFields.所屬分店] = g.BranchStore?.BranchName ?? "其他";
+                    r[(int)CoachYearlyBonusFields.PT_Level] = g.ProfessionalLevel.LevelName;
+                    r[(int)CoachYearlyBonusFields.總上課數] = reviewItem?.AchievementAttendanceCount;
+                    r[(int)CoachYearlyBonusFields.上課平均抽成單價] = reviewItem?.PTAverageUnitPrice ?? 0;
+                    r[(int)CoachYearlyBonusFields.PT_Session課數] = reviewItem.PTAttendanceCount ?? 0;
+                    r[(int)CoachYearlyBonusFields.上課獎金抽成百分比] = g.GradeIndex;
+                    r[(int)CoachYearlyBonusFields.業績金額] = (int)Math.Max(((reviewItem?.PerformanceAchievement - reviewItem?.VoidShare) ?? 0M) / 1.05M + 0.5M, 0);
+                    r[(int)CoachYearlyBonusFields.業績獎金平均抽成百分比] = reviewItem?.AchievementShareRatio ?? 0;
+                    r[(int)CoachYearlyBonusFields.管理獎金] = g.ManagerBonus ?? 0;
+                    r[(int)CoachYearlyBonusFields.特別獎金] = g.SpecialBonus ?? 0;
+
+                    r[(int)CoachYearlyBonusFields.上課獎金] = g.AttendanceBonus ?? 0;
+                    r[(int)CoachYearlyBonusFields.業績獎金] = g.AchievementBonus ?? 0;
+                    r[(int)CoachYearlyBonusFields.年終上課加業績獎金] = (int)r[(int)CoachYearlyBonusFields.上課獎金] + (int)r[(int)CoachYearlyBonusFields.業績獎金];
+
+                    if (g.ProfessionalLevel.CategoryID != (int)Naming.ProfessionalCategory.Health)
+                    {
+                        eliminateTax(r, taxCol);
+                    }
+
+                    rows.Add(r);
+                }
+
+
+                foreach (var t in rows)
+                {
+                    t[(int)CoachYearlyBonusFields.總獎金] = (int)t[(int)CoachYearlyBonusFields.管理獎金] + (int)t[(int)CoachYearlyBonusFields.特別獎金] + (int)t[(int)CoachYearlyBonusFields.年終上課加業績獎金];
+                }
+                //rows.RemoveAll(t => (int)t[(int)CoachYearlyBonusFields.總獎金] == 0);
+
+                foreach (var t in rows.OrderBy(t => t[(int)CoachYearlyBonusFields.所屬分店]))
+                {
+                    table.Rows.Add(t);
+                }
+
+                return table;
+            }
+
+            DataTable buildCoachBranchSummary(DataTable source)
+            {
+                //		
+                DataTable table = new DataTable();
+                table.Columns.Add(new DataColumn("上課場所", typeof(String)));
+                table.Columns.Add(new DataColumn("業績獎金（含稅）", typeof(int)));
+                table.Columns.Add(new DataColumn("業績獎金（未稅）", typeof(int)));
+
+                DataRow r;
+                var rowItems = source.Rows.Cast<DataRow>();
+                foreach (var g in branchItems)
+                {
+                    r = table.NewRow();
+
+                    r[0] = g.BranchName;
+                    r[2] = rowItems.Where(t => (String)t[1] == g.BranchName).Sum(t => (int)t[(int)CoachYearlyBonusFields.業績獎金]);
+                    r[1] = Math.Round((int)r[2] * 1.05);
+                    table.Rows.Add(r);
+                }
+                r = table.NewRow();
+
+                r[0] = "總計";
+                var data = table.Rows.Cast<DataRow>();
+                foreach (int idx in (new int[] { 1, 2 }))
+                {
+                    r[idx] = data.Where(d => d[idx] != DBNull.Value)
+                        .Sum(d => (int)d[idx]);
+                }
+                table.Rows.Add(r);
+
+                return table;
+            }
+
+            void eliminateTax(DataRow row, IEnumerable<int> colIdx)
+            {
+                foreach (int i in colIdx)
+                {
+                    if (row[i] == DBNull.Value)
+                    {
+                        row[i] = 0;
+                    }
+                    else
+                    {
+                        row[i] = Math.Round((int)row[i] / 1.05);
+                    }
+                }
+            }
+
+            using (DataSet ds = new DataSet())
+            {
+                var table = buildManagerBonusList();
+                table.TableName = $"{viewModel.AchievementDateFrom:yyyyMM} 年終獎金清單 - 主管(未稅)";
+                ds.Tables.Add(table);
+
+                var details = buildCoachBonusList();
+                details.TableName = $"{viewModel.AchievementDateFrom:yyyyMM} 年終獎金清單 - 教練(未稅)";
+                ds.Tables.Add(details);
+
+                table = buildCoachBranchSummary(details);
+                table.TableName = $"{viewModel.AchievementDateFrom:yyyyMM} 年終業績獎金彙總 - 教練所屬分店";
+                ds.Tables.Add(table);
+
+                await ds.SaveAsExcelAsync(Response, String.Format("attachment;filename={0}({1:yyyy-MM-dd HH-mm-ss}).xlsx", HttpUtility.UrlEncode("AnnualAchievementBonusList"), DateTime.Now), viewModel.FileDownloadToken);
+
+            }
+
+            return new EmptyResult();
         }
 
 

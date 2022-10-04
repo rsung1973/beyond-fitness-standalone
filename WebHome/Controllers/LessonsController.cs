@@ -545,9 +545,12 @@ namespace WebHome.Controllers
                         return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: "學員上課堂數已滿!!");
                     }
 
-                    if (contract.TotalCost / contract.Lessons * lessonCount > contract.ContractPayment.Sum(c => c.Payment.PayoffAmount))
+                    if (lesson.ClassLevel == contract.PriceID)
                     {
-                        return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: "學員繳款餘額不足!!");
+                        if (contract.TotalCost / contract.Lessons * lessonCount > contract.ContractPayment.Sum(c => c.Payment.PayoffAmount))
+                        {
+                            return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: "學員繳款餘額不足!!");
+                        }
                     }
                 }
             }

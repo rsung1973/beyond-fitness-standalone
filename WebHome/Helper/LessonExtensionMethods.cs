@@ -1375,10 +1375,13 @@ namespace WebHome.Helper
                         return null;
                     }
 
-                    if (contract.TotalCost / contract.Lessons * lessonCount > contract.ContractPayment.Sum(c => c.Payment.PayoffAmount))
+                    if (lesson.ClassLevel == contract.PriceID)
                     {
-                        ModelState.AddModelError("Message", "學員繳款餘額不足!!");
-                        return null;
+                        if (contract.TotalCost / contract.Lessons * lessonCount > contract.ContractPayment.Sum(c => c.Payment.PayoffAmount))
+                        {
+                            ModelState.AddModelError("Message", "學員繳款餘額不足!!");
+                            return null;
+                        }
                     }
                 }
             }

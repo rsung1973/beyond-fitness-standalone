@@ -2266,6 +2266,13 @@ namespace WebHome.Helper
                 models.GetTable<Settlement>().InsertOnSubmit(settlement);
                 models.SubmitChanges();
 
+                if (!models.GetTable<YearlySettlement>().Any(y => y.Year == startDate.Year))
+                {
+                    models.ExecuteCommand(@"INSERT INTO YearlySettlement (Year) VALUES ({0}) ", startDate.Year);
+                }
+                settlement.Year = startDate.Year;
+                models.SubmitChanges();
+
                 if (lastSettlementID.HasValue)
                 {
                     models.ExecuteCommand(@"INSERT INTO ContractTrustSettlement

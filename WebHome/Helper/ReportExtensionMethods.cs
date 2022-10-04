@@ -227,7 +227,7 @@ namespace WebHome.Helper
 
                 r[4] = contract.CourseContractType.TypeName
                     + " (" + contract.LessonPriceType.DurationInMinutes + " 分鐘)";
-                r[5] = contract.LessonPriceType.ListPrice;
+                r[5] = price?.ListPrice;
 
                 r[6] = item.Where(l => l.CoachAttendance.HasValue).Count();     //item.Where(l => l.AchievementIndex == 1m).Count();
                 r[7] = item.Join(models.GetTable<Settlement>(), l => l.SettlementID, s => s.SettlementID, (l, s) => new { l.CommitAttendance, s.SettlementDate })
@@ -1143,7 +1143,7 @@ namespace WebHome.Helper
                         if (calcCount >= 1 && calcCount <= 70)
                         {
                             salary.PTAverageUnitPrice = bonusIdx[1];
-                            salary.AttendanceBonus = bonusIdx[1] * (calcCount - 20);
+                            salary.AttendanceBonus = bonusIdx[1] * Math.Max(calcCount.Value - 20, 0);
                         }
                         else if (calcCount >= 71 && calcCount <= 90)
                         {
@@ -1326,8 +1326,163 @@ namespace WebHome.Helper
             }
         }
 
-        public static void ExecuteVoidShareSettlement(this GenericManager<BFDataContext> models, DateTime startDate, DateTime endExclusiveDate)
+        public static void ExecuteYearlyPerformanceReview(this GenericManager<BFDataContext> models, int year, String forRole = null)
+        {
+            var settlement = models.GetTable<YearlySettlement>().Where(s => s.Year == year).FirstOrDefault();
+            if (settlement == null)
+                return;
 
+            forRole = forRole?.GetEfficientString()?.ToLower();
+
+            var countableItems = models.GetTable<V_YearlyReview>().Where(v => v.Year == year)
+                                    .Join(models.PromptEffectiveCoach(), 
+                                        r => r.CoachID, c => c.CoachID, (r, c) => r);
+            var yearlyPay = models.GetTable<CoachYearlyAdditionalPay>();
+
+            foreach (var reviewItem in countableItems)
+            {
+                var coach = models.GetTable<ServingCoach>().Where(c => c.CoachID == reviewItem.CoachID).First();
+                var salary = yearlyPay.Where(s => s.CoachID == coach.CoachID && s.Year == year).FirstOrDefault();
+                if (salary == null)
+                {
+                    salary = new CoachYearlyAdditionalPay
+                    {
+                        CoachID = coach.CoachID,
+                        Year = year,
+                    };
+                    yearlyPay.InsertOnSubmit(salary);
+                }
+
+                if (coach.CoachWorkplace.Count == 1)
+                {
+                    salary.WorkPlace = coach.CoachWorkplace.First().BranchID;
+                }
+
+                CoachMonthlySalary monthlySalary = settlement.Settlement
+                    .OrderByDescending(s => s.SettlementID)
+                    .FirstOrDefault()?.CoachMonthlySalary
+                        .Where(c => c.CoachID == coach.CoachID)
+                        .FirstOrDefault();
+
+                salary.LevelID = monthlySalary?.LevelID ?? coach.LevelID ?? 0;
+
+                models.SubmitChanges();
+
+                void calcCoachBonus()
+                {
+                    var netAchievement = (int)Math.Max((reviewItem.PerformanceAchievement.Value - reviewItem.VoidShare.Value) / 1.05M + 0.5M, 0);
+                    var monthlyAchievement = (int)Math.Max(netAchievement / reviewItem.DataCount.Value + 0.5M, 0);
+                    var attendanceCount = (int)(reviewItem.AchievementAttendanceCount / reviewItem.DataCount.Value + 0.5M);
+
+                    decimal shareRatio = 3m;
+                    for (int i = 0; i < PerformanceAchievementIndex.Length; i++)
+                    {
+                        if (monthlyAchievement >= PerformanceAchievementIndex[i])
+                        {
+                            shareRatio = ShareRatioIncrementForPerformance[i];
+                            break;
+                        }
+                    }
+                    for (int i = 0; i < AttendingLessonIndex.Length; i++)
+                    {
+                        if (attendanceCount >= AttendingLessonIndex[i])
+                        {
+                            shareRatio += ShareRatioIncrementForAttendance[i];
+                            break;
+                        }
+                    }
+
+                    salary.GradeIndex = monthlySalary?.ProfessionalLevel?.ProfessionalLevelBasicSalary?.SalaryDetails.AnnualGrade ?? 0;
+
+                    salary.AttendanceBonus = (int?)(
+                            Math.Max(reviewItem.PTAttendanceCount.Value - 120, 0)
+                            * (int?)(reviewItem.PTAverageUnitPrice / 1.05M + 0.5M)
+                            * salary.GradeIndex / 100M * 0.05M + 0.5M
+                        ) ?? 0;
+
+                    salary.AchievementBonus = (int?)(netAchievement * shareRatio / 100M * 0.05M + 0.5M );
+
+                    models.SubmitChanges();
+                }
+
+                void calcManagerBonus()
+                {
+
+                }
+
+                void calcViceManagerBonus()
+                {
+
+                }
+
+                void calcFESBonus()
+                {
+
+                }
+
+                void calcHealthCareBonus()
+                {
+                    var netAchievement = (int)Math.Max((reviewItem.PerformanceAchievement.Value - reviewItem.VoidShare.Value) / reviewItem.DataCount.Value / 1.05M + 0.5M, 0);
+
+                    salary.AchievementBonus = (int?)(netAchievement * 0.03M + 0.5M);
+
+                    models.SubmitChanges();
+                }
+
+                if (coach.UserProfile.IsOfficer())
+                {
+                    //if (forRole != "officer")
+                    //{
+                    //    continue;
+                    //}
+                }
+                else if (coach.UserProfile.IsFES())
+                {
+                    //if (forRole != "fes")
+                    //{
+                    //    continue;
+                    //}
+                    calcFESBonus();
+                }
+                else if (coach.UserProfile.IsManager())
+                {
+                    //if (forRole != "manager")
+                    //{
+                    //    continue;
+                    //}
+
+                    calcManagerBonus();
+                }
+                else if (coach.UserProfile.IsViceManager())
+                {
+                    //if (forRole != "vicemanager")
+                    //{
+                    //    continue;
+                    //}
+
+                    calcViceManagerBonus();
+                }
+                else if (coach.UserProfile.IsHealthCare())
+                {
+                    //if (forRole != "health")
+                    //{
+                    //    continue;
+                    //}
+                    calcHealthCareBonus();
+                }
+                else
+                {
+                    //if (forRole != "coach")
+                    //{
+                    //    continue;
+                    //}
+
+                    calcCoachBonus();
+                }
+            }
+        }
+
+        public static void ExecuteVoidShareSettlement(this GenericManager<BFDataContext> models, DateTime startDate, DateTime endExclusiveDate)
         {
             var settlement = models.GetTable<Settlement>().Where(s => startDate <= s.SettlementDate && endExclusiveDate > s.SettlementDate).FirstOrDefault();
             if (settlement == null)

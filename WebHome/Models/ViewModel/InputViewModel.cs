@@ -324,6 +324,7 @@ namespace WebHome.Models.ViewModel
         public bool? BypassCondition { get; set; }
         public bool? DetailsOnly { get; set; }
         public bool? IgnoreAttendance { get; set; }
+        public int? Year { get; set; }
     }
 
     public class CoachBonusViewModel : QueryViewModel
