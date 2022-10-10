@@ -28,8 +28,9 @@
             </div>
             <div class="modal-popmenu-body">
                 <div class="list-group">
-                    <a href="javascript:showLoading();$('').launchDownload('@Html.Raw(Url.Action("ContractIndex","ConsoleHome"))', { 'keyID': '@Html.Raw(_model.CoachID.EncryptKey())'});" class="list-group-item">我的合約</a>
-                    <a href="javascript:showLoading();$('').launchDownload('@Html.Raw(Url.Action("CoachAchievement","ConsoleHome"))', { 'keyID': '@Html.Raw(_model.CoachID.EncryptKey())'});" class="list-group-item">我的個人業績</a>
+                    <a href="javascript:showLoading();$('').launchDownload('@Html.Raw(Url.Action("ContractIndex","ConsoleHome"))', { 'keyID': '@Html.Raw(_model.CoachID.EncryptKey())'});" class="list-group-item">個人合約</a>
+                    <a href="javascript:showLoading();$('').launchDownload('@Html.Raw(Url.Action("CoachAchievement","ConsoleHome"))', { 'keyID': '@Html.Raw(_model.CoachID.EncryptKey())'});" class="list-group-item">個人業績</a>
+                    <a href="javascript:showLoading();$('').launchDownload('@Html.Raw(Url.Action("LessonIndex","ConsoleHome"))', { 'keyID': '@Html.Raw(_model.CoachID.EncryptKey())'});" class="list-group-item">每月上課概況</a>
                 </div>
             </div>
         </div>
