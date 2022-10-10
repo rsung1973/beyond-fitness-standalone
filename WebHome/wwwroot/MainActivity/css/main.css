@@ -3018,8 +3018,8 @@ fieldset[disabled] .btn-link.active {
     right: 15px;
     bottom: 6px;
     min-height: 18px;
-    font-size: 11px;
-    color: rgba(253, 92, 99, 0.8) !important;
+    font-size: 12px !important;
+    color: rgba(253, 92, 99, 1) !important;
 /*    background-color: rgba(222, 222, 222, 0.1);*/
     float: right;
 }
@@ -3990,8 +3990,11 @@ body {
 }
 
 .nav.nav-tabs-new > li > a.active {
-    border: 1px solid #052333;
+    /* border: 1px solid #052333; */
     color: #052333;
+    border: 0px;
+    border-bottom: 1px solid #888;
+    color: #888;
 }
 
 .nav.nav-tabs-new2 {
@@ -23802,7 +23805,8 @@ section.content {
 
 .media .media-body {
     color: #616161;
-    font-size: 14px
+    font-size: 14px;
+    text-align: left;
 }
 
 .media .media-body .media-heading {
@@ -24549,7 +24553,7 @@ section.content {
 }
 
 .page-calendar .b-PTDistance {
-    background: linear-gradient(270deg, #ff5f6d, #ffc371);
+    background: linear-gradient(90deg, rgba(254, 245, 231, 0.8) 0%, rgba(254, 245, 231, 0.8) 100%);
     border-color: #F5A623 !important
 }
 
@@ -26022,8 +26026,12 @@ section.content {
      border-radius: .55rem .55rem 0 0
 }
 
+.member-card .sessionbody {
+    padding: 20px;
+}
+
 .member-card .header {
-    min-height: 150px;   
+    min-height: 120px;   
 }
 
 .member-card .member-img {
@@ -28716,4 +28724,41 @@ ul.checked-style li.closed::before {
 
 ul.checked-style li.closed {    
     color: #ec3b57;
+}
+
+
+.scroll-container {
+  width: 100%;
+  height: 33em;
+  margin: 0;
+  padding: 0 0 0 5px;
+  overflow-y: auto;
+  background-color: #e6e6e6;
+  scrollbar-color: #D4AA70 #e4e4e4;
+  scrollbar-width: thin;
+  border-radius: 15px;
+}
+
+.scroll-container::-webkit-scrollbar {
+  width: 10px;
+}
+.scroll-container::-webkit-scrollbar-thumb {
+  border-radius: 15px;
+  /* background-image:linear-gradient(45deg, #49cdd0, #ab9ae5); */
+  background-color: #999999;
+  box-shadow: inset 2px 2px 5px 0 rgba(#fff, 0.5);
+}
+
+.scroll-container:hover, .scroll-container:focus {
+  overflow-y: auto;
+}
+
+.scroll-container .scrollDown {
+    background-image: url(../images/down.png);
+    position: absolute;
+    bottom: 50px;
+    right: 20px;
+    width: 38px;
+    height: 38px;
+    z-index: 1;
 }

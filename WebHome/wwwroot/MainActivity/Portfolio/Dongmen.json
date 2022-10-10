@@ -16,9 +16,9 @@
       "scenarioPhoto": [ "Scenario1.jpg" ]
     },
     {
-      "coachName": "戴悟修",
-      "nickname": "Bryant",
-      "prologue": "舒適圈就是失敗圈，成功者永遠走在恐懼的邊緣。",
+      "coachName": "黃政浩",
+      "nickname": "Bill",
+      "prologue": "You are how you behave！",
       "scenarioPhoto": [ "Scenario1.jpg" ]
     },
     {
@@ -27,12 +27,6 @@
       "prologue": "不一定要等到很厲害才能開始 ，但是要先開始才會變的很厲害",
       "scenarioPhoto": [ "Scenario1.jpg" ]
     },
-    {
-      "coachName": "黃政浩",
-      "nickname": "Bill",
-      "prologue": "You are how you behave！",
-      "scenarioPhoto": [ "Scenario1.jpg" ]
-    },    
     {
       "coachName": "陳芷榆",
       "nickname": "Genie",
@@ -67,12 +61,6 @@
       "coachName": "陳柏瑋",
       "nickname": "Nick",
       "prologue": "征服畏懼、建立自信的最快的方法，就是去做你害怕的事， 直到你獲得成功的經驗。",
-      "scenarioPhoto": []
-    },
-    {
-      "coachName": "洪翎容",
-      "nickname": "Tanya",
-      "prologue": "克服憂慮，就從思考跟計畫開始吧！",
       "scenarioPhoto": []
     }
   ]

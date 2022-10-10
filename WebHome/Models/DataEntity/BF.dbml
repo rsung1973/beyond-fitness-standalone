@@ -206,6 +206,7 @@
       <Association Name="UserProfile_MonthlySalaryDetails" Member="MonthlySalaryDetails" ThisKey="UID" OtherKey="UID" Type="MonthlySalaryDetails" />
       <Association Name="UserProfile_UserRelationship" Member="UserRelationship" ThisKey="UID" OtherKey="LeaderID" Type="UserRelationship" />
       <Association Name="UserProfile_UserRelationship1" Member="AsRelationship" ThisKey="UID" OtherKey="UID" Type="UserRelationship" />
+      <Association Name="UserProfile_LearnerCoachProperty" Member="LearnerCoachProperty" ThisKey="UID" OtherKey="UID" Type="LearnerCoachProperty" />
       <Association Name="Attachment_UserProfile" Member="Attachment" ThisKey="PictureID" OtherKey="AttachmentID" Type="Attachment" IsForeignKey="true" />
       <Association Name="LevelExpression_UserProfile" Member="LevelExpression" ThisKey="LevelID" OtherKey="LevelID" Type="LevelExpression" IsForeignKey="true" />
       <Association Name="UserProfile_UserProfile" Member="UserProfile1" ThisKey="Creator" OtherKey="UID" Type="UserProfile" IsForeignKey="true" />
@@ -316,7 +317,8 @@
       <Column Name="Description" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
       <Column Name="LevelID" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="EmploymentDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
-      <Association Name="ServingCoach_RegisterLesson" Member="RegisterLesson" ThisKey="CoachID" OtherKey="AdvisorID" Type="RegisterLesson" />
+		<Column Name="LeavedDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+		<Association Name="ServingCoach_RegisterLesson" Member="RegisterLesson" ThisKey="CoachID" OtherKey="AdvisorID" Type="RegisterLesson" />
       <Association Name="ServingCoach_CoachWorkplace" Member="CoachWorkplace" ThisKey="CoachID" OtherKey="CoachID" Type="CoachWorkplace" />
       <Association Name="ServingCoach_CoachCertificate" Member="CoachCertificate" ThisKey="CoachID" OtherKey="CoachID" Type="CoachCertificate" />
       <Association Name="ServingCoach_CoachRating" Member="CoachRating" ThisKey="CoachID" OtherKey="CoachID" Type="CoachRating" />
@@ -330,6 +332,7 @@
       <Association Name="ServingCoach_TuitionAchievement" Member="TuitionAchievement" ThisKey="CoachID" OtherKey="CoachID" Type="TuitionAchievement" />
       <Association Name="ServingCoach_MonthlyCoachRevenueIndicator" Member="MonthlyCoachRevenueIndicator" ThisKey="CoachID" OtherKey="CoachID" Type="MonthlyCoachRevenueIndicator" />
       <Association Name="ServingCoach_CoachYearlyAdditionalPay" Member="CoachYearlyAdditionalPay" ThisKey="CoachID" OtherKey="CoachID" Type="CoachYearlyAdditionalPay" />
+      <Association Name="ServingCoach_LearnerCoachProperty" Member="LearnerCoachProperty" ThisKey="CoachID" OtherKey="CoachID" Type="LearnerCoachProperty" />
       <Association Name="UserProfile_ServingCoach" Member="UserProfile" ThisKey="CoachID" OtherKey="UID" Type="UserProfile" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
       <Association Name="ProfessionalLevel_ServingCoach" Member="ProfessionalLevel" ThisKey="LevelID" OtherKey="LevelID" Type="ProfessionalLevel" IsForeignKey="true" />
     </Type>
@@ -2658,7 +2661,8 @@
     <Type Name="ForEmployee">
       <Column Name="UID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="EmploymentDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
-      <Association Name="UserProfile_ForEmployee" Member="UserProfile" ThisKey="UID" OtherKey="UID" Type="UserProfile" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+		<Column Name="LeavedDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+		<Association Name="UserProfile_ForEmployee" Member="UserProfile" ThisKey="UID" OtherKey="UID" Type="UserProfile" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
   <Table Name="Report.MonthlySalary" Member="MonthlySalary">
@@ -2881,6 +2885,16 @@
       <Association Name="ProfessionalLevel_CoachYearlyAdditionalPay" Member="ProfessionalLevel" ThisKey="LevelID" OtherKey="LevelID" Type="ProfessionalLevel" IsForeignKey="true" />
       <Association Name="ServingCoach_CoachYearlyAdditionalPay" Member="ServingCoach" ThisKey="CoachID" OtherKey="CoachID" Type="ServingCoach" IsForeignKey="true" />
       <Association Name="YearlySettlement_CoachYearlyAdditionalPay" Member="YearlySettlement" ThisKey="Year" OtherKey="Year" Type="YearlySettlement" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.LearnerCoachProperty" Member="LearnerCoachProperty">
+    <Type Name="LearnerCoachProperty">
+      <Column Name="UID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CoachID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="PropertyID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(64)" CanBeNull="true" />
+      <Association Name="ServingCoach_LearnerCoachProperty" Member="ServingCoach" ThisKey="CoachID" OtherKey="CoachID" Type="ServingCoach" IsForeignKey="true" />
+      <Association Name="UserProfile_LearnerCoachProperty" Member="UserProfile" ThisKey="UID" OtherKey="UID" Type="UserProfile" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
   <Function Name="dbo.InquireVacantNo" Method="InquireVacantNo">

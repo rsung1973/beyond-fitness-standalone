@@ -2,7 +2,13 @@
   "branchName": "信義安和店",
   "arenaView": "images/landing/360/101.jpg",
   "scenarioPhoto": [ "xinyi-01.jpg", "xinyi-02.jpg", "xinyi-03.jpg", "xinyi-04.jpg" ],
-  "coachItems": [    
+  "coachItems": [
+    {
+      "coachName": "戴悟修",
+      "nickname": "Bryant",
+      "prologue": "舒適圈就是失敗圈，成功者永遠走在恐懼的邊緣。",
+      "scenarioPhoto": [ "Scenario1.jpg" ]
+    },
     {
       "coachName": "黃伊婷",
       "nickname": "Doreen",
@@ -26,12 +32,6 @@
       "nickname": "Candy",
       "prologue": "我們不是因為事情困難而不敢行動，我們是因為不敢行動，而產生了事情困難的藉口。",
       "scenarioPhoto": [ "Scenario1.jpg" ]
-    },
-    {
-      "coachName": "黃涴資",
-      "nickname": "Anna",
-      "prologue": "朝著方向前進，做對的事，就算道路崎嶇，但我知道終點在等著我，因為我看著終點衝刺著。",
-      "scenarioPhoto": []
     },
     {
       "coachName": "李瑞傑",
@@ -61,24 +61,6 @@
       "coachName": "曾瀚聞",
       "nickname": "Hanson",
       "prologue": "我們必須非常努力，才能看起來毫不費力。",
-      "scenarioPhoto": []
-    },
-    {
-      "coachName": "陳晧宇",
-      "nickname": "Hogan",
-      "prologue": "開始行動，成為自己都會崇拜的自己。",
-      "scenarioPhoto": []
-    },
-    {
-      "coachName": "謝承軒",
-      "nickname": "James",
-      "prologue": "Nothing will work unless you do.",
-      "scenarioPhoto": []
-    },
-    {
-      "coachName": "趙昱穎",
-      "nickname": "Frank",
-      "prologue": "改變習慣，就能改變人生。",
       "scenarioPhoto": []
     }
   ]

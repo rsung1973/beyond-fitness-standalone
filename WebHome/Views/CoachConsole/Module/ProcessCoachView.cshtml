@@ -1,0 +1,45 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    ServingCoach _model;
+    String _dialogID = $"coachProcess{DateTime.Now.Ticks}";
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (ServingCoach)this.Model;
+}
+<div class="modal fade" id="@(_dialogID)" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="title">請選擇執行功能</h6>
+                <a class="closebutton" data-dismiss="modal"></a>
+            </div>
+            <div class="modal-popmenu-body">
+                <div class="list-group">
+                    <a href="javascript:showLoading();$('').launchDownload('@Html.Raw(Url.Action("ContractIndex","ConsoleHome"))', { 'keyID': '@Html.Raw(_model.CoachID.EncryptKey())'});" class="list-group-item">我的合約</a>
+                    <a href="javascript:showLoading();$('').launchDownload('@Html.Raw(Url.Action("CoachAchievement","ConsoleHome"))', { 'keyID': '@Html.Raw(_model.CoachID.EncryptKey())'});" class="list-group-item">我的個人業績</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    @{ await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/BSModalScript.cshtml", model: _dialogID);}
+
+    <script>
+        $(function () {
+
+        });
+    </script>
+</div>
+

@@ -1,0 +1,270 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@using CommonLib.Utility
+
+@functions
+{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    CoachQueryViewModel _viewModel;
+    DateTime idx = DateTime.Today.FirstDayOfMonth();
+    DateTime monthIdx = DateTime.Today.FirstDayOfMonth();
+}
+@{
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];
+
+    _viewModel = (CoachQueryViewModel)ViewBag.ViewModel;
+
+}
+
+@{
+    IQueryable<ServingCoach> coachItems = models.PromptEffectiveCoach();
+
+    if (_viewModel.Employed == false)
+    {
+        coachItems = models.GetTable<ServingCoach>()
+                        .Where(c => c.LeavedDate.HasValue);
+    }
+    else if (_viewModel.Employed == true)
+    {
+        coachItems = coachItems.Where(c => !c.LeavedDate.HasValue);
+    }
+
+    if (_viewModel.BranchID.HasValue)
+    {
+        coachItems = coachItems.Join(models.GetTable<V_WorkPlace>().Where(w => w.WorkPlace == _viewModel.BranchID),
+                        c => c.CoachID, w => w.CoachID, (c, w) => c);
+    }
+
+}
+
+<table class="table table-striped table-custom nowrap dataTable-coach" style="width:100%">
+    <thead class="bg-darkteal">
+        <tr>
+            <th>姓名</th>
+            <th>Level</th>
+            <th>本季升級業績達成率</th>
+            <th>本季升級課數達成率</th>
+            <th>本月業績達成率</th>
+            <th>本月課數達成率</th>
+            <th>所屬學生數</th>
+            <th>生效中合約</th>
+            <th>過期合約</th>
+            <th>到職日</th>
+            <th>隸屬分店</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            foreach (var item in coachItems)
+            {
+                var profile = item.UserProfile;
+                <tr onclick="processCoachView('@Html.Raw(item.CoachID.EncryptKey())');">
+                    <td>
+                        <span class="list-icon">
+                            @{
+                                ViewBag.ProfileClass = "patients-img";
+                                await Html.RenderPartialAsync("~/Views/Common/ProfileImage.cshtml", profile);
+                            }
+                        </span>
+                        <span class="hidden-sm-down">
+                            @(
+                            profile.FullName()
+                            )
+                        </span>
+                    </td>
+                    <td>@(
+                        item.ProfessionalLevel?.LevelName
+                        )</td>
+                    @if (item.IsLeaved)
+                    {
+                        <td>--</td>
+                        <td>--</td>
+                        <td>--</td>
+                        <td>--</td>
+                    }
+                    else
+                    {
+                        ShowQuarterPerformance(item);
+                        ShowMonthlyPerformance(item);
+                    }
+                    <td>
+                        @(
+                        item.LearnerFitnessAdvisor.Count()
+                            )
+                    </td>
+                    <td>
+                        @(
+                        models.PromptEffectiveContract()
+                        .Where(c => c.FitnessConsultant == profile.UID).Count()
+                            )
+                    </td>
+                    <td>
+                        @(
+                        models.PromptRegisterLessonContract()
+                        .FilterByExpired(models)
+                        .Where(c => c.FitnessConsultant == profile.UID).Count()
+                        )
+                    </td>
+                    <td>
+                        @($"{item.EmploymentDate:yyyy/MM/dd}")
+                    </td>
+                    <td>@(item.WorkPlace())</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+@functions
+{
+    void ShowQuarterPerformance(ServingCoach coach)
+    {
+        MonthlyCoachRevenueIndicator coachItem = models.GetTable<MonthlyIndicator>()
+                .Where(m => m.StartDate == idx)
+                .Join(models.GetTable<MonthlyCoachRevenueIndicator>().Where(c => c.CoachID == coach.CoachID),
+                    m => m.PeriodID, c => c.PeriodID, (m, c) => c)
+                .FirstOrDefault();
+
+        if (coachItem == null)
+        {
+            <td>--</td>
+            <td>--</td>
+            return;
+        }
+
+        MonthlyIndicator indicator = coachItem.MonthlyIndicator;
+
+        DateTime? quarterEnd = null;
+        DateTime quarterStart = new DateTime(indicator.StartDate.Year, (indicator.StartDate.Month - 1) / 3 * 3 + 1, 1);
+        quarterEnd = quarterStart.AddMonths(3);
+
+        var indicators = models.GetTable<MonthlyIndicator>().Where(i => i.StartDate >= quarterStart && i.StartDate < quarterEnd)
+                            .Join(models.GetTable<MonthlyCoachRevenueIndicator>().Where(c => c.CoachID == coachItem.CoachID),
+                                i => i.PeriodID, c => c.PeriodID, (i, c) => c);
+
+
+        var attendanceCount = (indicators.Sum(i => i.ActualCompleteLessonCount) ?? 0)
+                            + (indicators.Sum(i => i.ActualCompleteTSCount) ?? 0)
+                            + (indicators.Sum(i => i.SRCount) ?? 0)
+                            + (indicators.Sum(i => i.SDCount) ?? 0)
+                            + (indicators.Sum(i => i.ATCount) ?? 0)
+                            + (indicators.Sum(i => i.ActualCompletePICount) ?? 0) / 2M;
+
+        var tuition = models.GetTuitionAchievement(coachItem.CoachID, quarterStart, ref quarterEnd, null, false);
+        var summary = tuition.Sum(t => t.ShareAmount) ?? 0;
+
+        var review = coachItem.ServingCoach.ProfessionalLevel.ProfessionalLevelReview;
+        //折讓收款
+        var voidItems = models.GetVoidTuition(coachItem.CoachID, quarterStart, ref quarterEnd, null);
+        var voidShare = voidItems.Sum(t => t.VoidShare) ?? 0;
+
+        if (!coach.LevelID.HasValue || review == null)
+        {
+            <td>--</td>
+            <td>--</td>
+        }
+        else
+        {
+            <td>@(Math.Round((summary - voidShare) * 100M / (review.PromotionAchievement ?? review.NormalAchievement ?? int.MaxValue),1)) %</td>
+            <td>@(Math.Round(attendanceCount * 100M / (review.PromotionAttendanceCount ?? review.NormalAttendanceCount ?? int.MaxValue),1)) %</td>
+        }
+    }
+
+    void ShowMonthlyPerformance(ServingCoach coach)
+    {
+        var coachItem = models.GetTable<MonthlyIndicator>()
+            .Where(m => m.StartDate == monthIdx)
+            .Join(models.GetTable<MonthlyCoachRevenueIndicator>().Where(c => c.CoachID == coach.CoachID),
+                m => m.PeriodID, c => c.PeriodID, (m, c) => c)
+            .FirstOrDefault();
+
+        if (coachItem == null)
+        {
+            <td>--</td>
+            <td>--</td>
+            return;
+        }
+
+        MonthlyIndicator indicator = coachItem.MonthlyIndicator;
+        decimal actualCount = coachItem.AttendanceCount;
+        var shareSummary = indicator.GetPaymentAchievementSummary(models, coachItem.CoachID);
+        var voidItems = indicator.GetVoidShare(models, coachItem.CoachID);
+
+        <td>
+            @(coachItem.AchievementGoal > 0
+                ? Math.Round((shareSummary - (voidItems.Sum(t => t.VoidShare) ?? 0)) * 100M / coachItem.AchievementGoal.Value,1).ToString() + " %"
+                : "--")
+        </td>
+        <td>
+            @(coachItem.CompleteLessonsGoal > 0
+                ? Math.Round(actualCount * 100M / coachItem.CompleteLessonsGoal.Value,1).ToString() + " %"
+                : "--")
+        </td>
+
+    }
+
+}
+
+<script>
+
+    $(function () {
+
+        if ($global.dtCoach != undefined) {
+            $global.dtCoach.destroy();
+        }
+
+        $global.dtCoach = $('.dataTable-coach').DataTable({
+            "order": [
+                [1, 'asc']
+            ],
+            "bPaginate": false, //翻頁功能
+            "bInfo": true,//頁尾資訊
+            "searching": false,  //搜尋框，不顯示
+            "language": {
+                "lengthMenu": "每頁顯示 _MENU_ 筆資料",
+                "zeroRecords": "沒有資料也是種福氣",
+                "info": "共 _TOTAL_ 筆，目前顯示第 _START_ 至 _END_筆資料",
+                "infoEmpty": "顯示 0 筆的資料",
+                "infoFiltered": "(總共從 _MAX_ 筆資料過濾)",
+                "loadingRecords": "快馬加鞭處理中...",
+                "processing": "快馬加鞭處理中...",
+                "search": "快速搜尋：",
+                "paginate": {
+                    "first": "第一頁",
+                    "last": "最後一頁",
+                    "next": "下一頁",
+                    "previous": "前一頁"
+                },
+            },
+            scrollX: true,
+            scrollCollapse: true,
+            fixedColumns: {
+                leftColumns: 1,
+            },
+            "columnDefs": [
+                {
+                    targets: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                    className: "align-center more"
+                },
+                {
+                    targets: [0],
+                    className: "more"
+                }
+            ],
+        });
+
+        $('.dataTable-coach').resize();
+
+    });
+
+</script>

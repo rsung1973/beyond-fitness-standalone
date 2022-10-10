@@ -106,7 +106,7 @@
         "scatter": {
             "itemStyle": {
                 "borderWidth": "0",
-                "borderColor": "#ccc"
+                "borderColor": "#ccc",
             }
         },
         "boxplot": {
@@ -243,16 +243,17 @@
                     }
                 }
             }
-        },
-        "categoryAxis": {
+        },               
+        "categoryAxis": {                        
             "axisLine": {
                 "show": true,
                 "lineStyle": {
-                    "color": "#999999"
+                    "color": "#444d55",
+                    //"type": "dashed"
                 }
             },
             "axisTick": {
-                "show": true,
+                "show": false,
                 "lineStyle": {
                     "color": "#cccccc"
                 }
@@ -277,7 +278,7 @@
                 "areaStyle": {
                     "color": [
                         "rgba(0,0,0,0)",
-                        "rgba(0,0,0,0)"
+                        "rgba(50, 60, 78, 0.3)"
                     ]
                 }
             }
@@ -464,9 +465,13 @@
             }
         },
         "visualMap": {
+            "textStyle": {
+                "color": "#fff"
+            },
             "color": [
-                "#5ab1ef",
-                "#e0ffff"
+                "#bf444c",
+                "#d88273",
+                "#f6efa6"
             ]
         },
         "dataZoom": {
@@ -479,6 +484,13 @@
                 "color": "#333333"
             }
         },
+        grid: {
+            borderColor: '#eee',
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
         "markPoint": {
             "label": {
                 "color": "#eeeeee"
@@ -488,6 +500,39 @@
                     "color": "#eeeeee"
                 }
             }
-        }
+        },
+        "calendar": {
+            "itemStyle": {
+                "normal": {
+                    "color": "#1c222c",
+                    "borderWidth": 1,
+                    "borderColor": "#fff"
+                },                
+            },
+            "splitLine": {
+                "show": true,
+                "lineStyle": {
+                    "color": [
+                        "#444d55"
+                    ],
+                    "type": "dashed"
+                }
+            },
+            "monthLabel": {
+                "show": true,
+                "color": "#fff",
+                "nameMap": [
+                    "一月", "二月", "三月",
+                    "四月", "五月", "六月",
+                    "七月", "八月", "九月",
+                    "十月", "十月", "十二月"
+                ]
+            },
+            "dayLabel": {
+                "show": true,
+                "color": "#eeeeee",
+                "nameMap": "cn",
+            },
+        },
     });
 }));

@@ -1970,6 +1970,13 @@ pre code {
     .container {
         width: 750px
     }
+
+    .section-header {
+        /* padding: 160px 0 50px; */
+/*        height: 100vh;*/
+        padding: 100px 0 50px;
+    }
+
 }
 
 @media (min-width: 992px) {
@@ -4418,7 +4425,7 @@ fieldset[disabled] .btn-link:focus {
 
 .btn-block {
     display: block;
-    width: 100%
+    width: 100%    
 }
 
 .btn-block + .btn-block {
@@ -10563,7 +10570,7 @@ fieldset[disabled] .btn-link:focus,
 fieldset[disabled] .btn-link.focus,
 fieldset[disabled] .btn-link:active,
 fieldset[disabled] .btn-link.active {
-    background-color: transparent
+    background-color: transparent;    
 }
 
 .btn-lg,
@@ -11973,7 +11980,8 @@ body {
 }
 
 .bg-default {
-    background-color: #888 !important
+    background-color: #1A1A1A !important;
+    color: #F6D3B0;
 }
 
 .bg-primary {
@@ -13358,7 +13366,7 @@ img {
 .section-contact .copyright {
     font-size: 8px;
     padding-top: 20px;
-    color: ##777777;
+    color: #9e9e9e;
 }
 
 .footer .copyright {
@@ -17993,20 +18001,8 @@ textarea:focus {
     right: 4px
 }
 
-.section-header {
-    padding: 150px 0 50px;
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-size: cover;
-    position: relative;
-    overflow: hidden;
-    text-align: center;
-/*    height: 100vh;*/
-    background: #1A1A1A !important;
-/*
-    background: linear-gradient(#1A1A1A 90%, #fff 0);
-    color: #FFF;
-*/
+.section-header.white{   
+    background: #fff !important;
 }
 
 .section-header.dark {
@@ -18021,12 +18017,12 @@ textarea:focus {
 .section-header .container:after {
     position: absolute;
     width: 100%;
-    height: 100%;
+    /* height: 100%; */
     left: 0;
     top: 0;
     z-index: 1;
     /*    background: url("../images/banner_background.jpg") center center no-repeat;*/
-    background: linear-gradient(#1A1A1A, #1A1A1A), linear-gradient(to bottom, rgba(255, 255, 255, 0.5), rgba(0, 0, 0, 0.5)) !important;
+    /* background: linear-gradient(#1A1A1A, #1A1A1A), linear-gradient(to bottom, rgba(255, 255, 255, 0.5), rgba(0, 0, 0, 0.5)) !important; */
     content: '';
     background-size: cover;
     opacity: 0.8
@@ -18243,9 +18239,16 @@ textarea:focus {
 }
 
 .section-features {
-    padding: 100px 0;
+    padding: 0 0 50px;
     background: 1A1A1A;
     color: #fff
+}
+
+.section-features img {    
+    max-width: 50%;
+    margin-left: -4px;
+    /* margin-top: 0px; */
+    /* vertical-align:top;    */
 }
 
 .section-features .features-item {
@@ -18294,16 +18297,10 @@ textarea:focus {
     color: #fff
 }
 
-.section-features .features-item .icon i {
-    font-size: 42px;
-    width: 42px;
-    display: inline-block;
-    height: 42px;
-    color: #49c5b6;
-}
-
-.section-features .features-content {
-    padding: 10px;
+.section-features .more {
+    color: #F6D3B0;
+    display: block;
+    padding: 50px 0 0 0;
 }
 
 .features-btm {
@@ -18412,7 +18409,7 @@ textarea:focus {
 }
 
 .section-vedio {
-    padding: 30px 0;
+    padding: 60px 0 60px;
     color: #f4f6f9;
 }
 
@@ -18421,7 +18418,7 @@ textarea:focus {
 }
 
 .section-vedio.bg-white {
-    padding: 50px 0;
+    padding: 100px 0;
     background: #fff;
     color: #001226;
 }
@@ -18431,7 +18428,7 @@ textarea:focus {
 }
 
 .section-vedio h1 {
-    margin: 0.67em 0.67em;
+     margin: 0.67em 0em;
 }
 
 .section-vedio .popup-gallery {
@@ -18444,7 +18441,11 @@ textarea:focus {
     width: 100%;
     height: auto;
     transition: all 0.25s ease-in-out;
-    border-radius: 6px;
+    /* border-radius: 6px; */
+}
+
+.section-vedio .popup-gallery img.small{ 
+    width: 10%;
 }
 
 .section-vedio .popup-gallery span.eye-wrapper {
@@ -18538,6 +18539,7 @@ textarea:focus {
 .section-fun-facts.nopadding {
     width: 100%;
     padding: 0;
+    max-width: 1170px;
 }
 
 .section-fun-facts {
@@ -18550,7 +18552,8 @@ textarea:focus {
     background-attachment: fixed;
     background-size: cover;
     margin: 0 auto;
-    background: #fff;
+    /* background: #fff; */
+    color: #fff;
 }
 
 .section-fun-facts .fun-facts-box {
@@ -18600,7 +18603,7 @@ textarea:focus {
 
 
 .section-onlinesession {
-    padding: 150px 0 60px;
+    padding: 100px 0 60px;
     background: #fff;
 }
 
@@ -18844,9 +18847,17 @@ textarea:focus {
 }
 
 .section-contact {
-    padding: 100px 0;
+    padding: 100px 0 0;
     background: #fafafa;
 }
+
+/* .section-contact h1 {
+    color: #fff;
+}
+
+.section-contact .lead {
+    color: #fff;
+} */
 
 .section-contact p.small {
     font-weight: 400;
@@ -18878,6 +18889,23 @@ textarea:focus {
     transition: all .5s ease-in-out;
     -moz-transition: all .25s ease-in-out;
     -webkit-transition: all .25s ease-in-out
+}
+
+.clients {
+    padding: 30px 0 80px;
+    background: #f4f7f6;
+}
+
+
+.clients .section-title {
+    color: #585b60;
+    font-size: 34px;
+    text-align: center;
+    letter-spacing: 1px;
+    line-height: 1;
+    margin-bottom: 20px;
+    padding: 0 10px;
+    position: relative;
 }
 
 .section-faq {
@@ -19141,6 +19169,7 @@ textarea:focus {
     padding-bottom: 5px;
     display: block
 }
+
 
 .section-blog .blog-single .reference p {
     font-size: 12px;
@@ -19642,7 +19671,7 @@ textarea:focus {
         top: 41px
     }
 
-    .section-features,
+    /* .section-features, */
     .features-btm,
     #services,
     .section-fun-facts,
@@ -19663,6 +19692,7 @@ textarea:focus {
     .section-features .feature {
         padding: 0px 0px
     }
+    
 
     .section-features .feature .f-icon {
         margin-bottom: 48px
@@ -19704,7 +19734,8 @@ textarea:focus {
 
     .section-faq .header_image,
     .section-header .header_iphone {
-        width: 100%
+        width: 100%;
+        margin-right: 10px;
     }
     
     .section-faq {
@@ -19875,8 +19906,9 @@ textarea:focus {
 
 @media only screen and (max-width: 575px) {
     .section-header {
-        padding: 160px 0 50px;
+        /* padding: 160px 0 50px; */
 /*        height: 100vh;*/
+        padding: 100px 0 50px;
         background: #1A1A1A !important;
     }
 
@@ -19912,7 +19944,7 @@ textarea:focus {
         padding: 0px 15px;
         margin: 0 auto;
         float: none
-    }    
+    }
 
     .section-onlinesession .icon-wrapper {
         width: 40px;

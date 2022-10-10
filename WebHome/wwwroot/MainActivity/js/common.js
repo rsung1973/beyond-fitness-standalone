@@ -3,7 +3,7 @@ var loading = 0;
 function showLoading() {
     //$('.page-loader-wrapper').css('display', 'block');
     var current = (new Date()).getTime();
-    if ((current-loading) > 3000) {
+    if ((current - loading) > 3000) {
         $('.page-loader-wrapper').fadeIn();
         loading = current;
     }
@@ -48,7 +48,7 @@ function deleteData(doDelete, options) {
         cancelButtonText: "不, 點錯了",
         closeOnConfirm: false,
         closeOnCancel: false,
-        confirmed: ['刪除成功!', '資料已經刪除 Bye!','OK'],
+        confirmed: ['刪除成功!', '資料已經刪除 Bye!', 'OK'],
         cancelled: ['取消成功', '你的資料現在非常安全 :)', 'OK'],
         afterConfirmed: null,
     };
@@ -132,7 +132,7 @@ $.fn.launchDownload = function (url, params, target, loading) {
         form.attr('target', target);
         if (window.frames[target] == null) {
             $('<iframe>')
-                .css('display','none')
+                .css('display', 'none')
                 .attr('name', target).appendTo($('body'));
         }
     }
@@ -162,6 +162,24 @@ $.fn.launchDownload = function (url, params, target, loading) {
     //send request
     form.appendTo('body').submit().remove();
 };
+
+$.fn.loadContent = function (url, viewModel) {
+    var $element = this;
+    showLoading();
+    $.post(url, viewModel, function (data) {
+        hideLoading();
+        if ($.isPlainObject(data)) {
+            Swal.fire(
+                'Oops...',
+                data.message,
+                'warning'
+            );
+        } else {
+            $element.empty()
+                .append($(data));
+        }
+    });
+}
 
 function finishDownload() {
     window.clearInterval(fileDownloadCheckTimer);
@@ -201,7 +219,12 @@ function showDialog(url, jsonData) {
     });
 }
 
-
+function selectSingleCheckBox() {
+    var $element = $(event.target);
+    var current = $element.is(':checked');
+    $('input:checkbox[name=' + $element.attr('name') + ']').prop('checked', false);
+    $element.prop('checked', current);
+}
 
 
 var $global = {

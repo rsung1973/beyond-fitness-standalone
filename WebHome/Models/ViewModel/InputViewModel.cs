@@ -564,7 +564,6 @@ namespace WebHome.Models.ViewModel
         public int? PeriodID { get; set; }
         public int? Year { get; set; }
         public int? Month { get; set; }
-        public int? BranchID { get; set; }
         public int? ChartType { get; set; }
         public Naming.SessionTypeDefinition[] SessionType { get; set; }
 

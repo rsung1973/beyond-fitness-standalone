@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31424.327
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32922.545
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebHome", "WebHome\WebHome.csproj", "{8AF3ADC7-B4C2-4DCE-88DC-359891D05F8C}"
 EndProject
@@ -12,6 +12,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommonLib.PlugInAdapter", "CommonLib.PlugInAdapter\CommonLib.PlugInAdapter.csproj", "{F8C5F564-8EEF-4FA5-8B8E-C03B211A7CEA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommonLib.Utility", "CommonLib.Utility\CommonLib.Utility.csproj", "{21CDED93-7D5D-45F8-8198-9744496969A4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "System.Data.Linq", "DotNetLib\System.Data.Linq\System.Data.Linq.csproj", "{6A0335C0-0865-4606-A67C-DA053C8EA26A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExternalPdfWrapper", "ExternalPdfWrapper\ExternalPdfWrapper.csproj", "{3149B05B-1F1E-4944-B33E-62051A0EF6E5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +43,14 @@ Global
 		{21CDED93-7D5D-45F8-8198-9744496969A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{21CDED93-7D5D-45F8-8198-9744496969A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{21CDED93-7D5D-45F8-8198-9744496969A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A0335C0-0865-4606-A67C-DA053C8EA26A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A0335C0-0865-4606-A67C-DA053C8EA26A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A0335C0-0865-4606-A67C-DA053C8EA26A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A0335C0-0865-4606-A67C-DA053C8EA26A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3149B05B-1F1E-4944-B33E-62051A0EF6E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3149B05B-1F1E-4944-B33E-62051A0EF6E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3149B05B-1F1E-4944-B33E-62051A0EF6E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3149B05B-1F1E-4944-B33E-62051A0EF6E5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

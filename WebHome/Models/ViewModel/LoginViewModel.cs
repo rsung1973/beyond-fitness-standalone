@@ -643,13 +643,12 @@ namespace WebHome.Models.ViewModel
         public String QueryType { get; set; } = "default";
     }
 
-    public class LessonQueryViewModel : QueryViewModel
+    public class LessonQueryViewModel : CoachQueryViewModel
     {
         private DateTime? dateTo;
         private DateTime? classTime;
         private DateTime? dateFrom;
 
-        public int? CoachID { get; set; }
         public DateTime? DateFrom { get => dateFrom?.CurrentLocalTime(); set => dateFrom = value; }
         public DateTime? ClassTime { get => classTime?.CurrentLocalTime(); set => classTime = value; }
         public int? LearnerID { get; set; }
@@ -660,6 +659,14 @@ namespace WebHome.Models.ViewModel
             get;
             set;
         }
+    }
+
+    public class CoachQueryViewModel : QueryViewModel
+    {
+
+        public int? CoachID { get; set; }
+        public int? BranchID { get; set; }
+        public bool? Employed { get; set; }
     }
 
     public class LessonTimeBookingViewModel : QueryViewModel

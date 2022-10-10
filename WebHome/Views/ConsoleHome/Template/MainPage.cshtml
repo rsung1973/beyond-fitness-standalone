@@ -319,6 +319,13 @@
                             <a href="javascript:$('').launchDownload('@Html.Raw(Url.Action("AchievementOverview", "ConsoleHome",new { BranchID = models.GetTable<V_WorkPlace>().Where(v=>v.CoachID==_model.UID).FirstOrDefault()?.WorkPlace }))', { });"><i class="zmdi zmdi-file-text"></i><span>我的分店業績</span> </a>
                         </li>
                     }
+                    if (_model.IsAuthorizedSysAdmin() || _model.IsAssistant() || _model.IsOfficer() || _model.IsManager() || _model.IsViceManager())
+                    {
+                        <li>
+                            <a href="javascript:$('').launchDownload('@Html.Raw(Url.Action("CoachOverview", "ConsoleHome",new { BranchID = models.GetTable<V_WorkPlace>().Where(v=>v.CoachID==_model.UID).FirstOrDefault()?.WorkPlace }))', { });"><i class="zmdi zmdi-file-text"></i><span>我的教練</span> </a>
+                        </li>
+                    }
+
                 }
                 @if (_model.IsAssistant() || _model.IsAuthorizedSysAdmin() || _model.IsServitor())
                 {

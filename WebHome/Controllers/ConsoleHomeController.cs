@@ -128,8 +128,17 @@ namespace WebHome.Controllers
             viewModel.ContractDateFrom = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
             viewModel.ContractDateTo = viewModel.ContractDateFrom.Value.AddMonths(1).AddDays(-1);
 
-            var profile = await HttpContext.GetUserAsync();
-            viewModel.KeyID = profile.UID.EncryptKey();
+            UserProfile profile = null;
+            if (viewModel.KeyID != null)
+            {
+                var uid = viewModel.DecryptKeyValue();
+                profile = models.GetTable<UserProfile>().Where(u => u.UID == uid).FirstOrDefault();
+            }
+            if(profile==null)
+            {
+                profile = await HttpContext.GetUserAsync();
+                viewModel.KeyID = profile.UID.EncryptKey();
+            }
             return View(profile.LoadInstance(models));
         }
 
@@ -1364,6 +1373,49 @@ namespace WebHome.Controllers
             return Json(new { result = true, message = profile.UID.EncryptKey() });
         }
 
+        public async Task<ActionResult> CoachOverviewAsync(LessonQueryViewModel viewModel)
+        {
+            if (viewModel.KeyID != null)
+            {
+                viewModel.BranchID = viewModel.DecryptKeyValue();
+            }
+
+            BranchStore item = null;
+            if(viewModel.BranchID.HasValue)
+            {
+                item = models.GetTable<BranchStore>().Where(b => b.BranchID == viewModel.BranchID)
+                        .FirstOrDefault();
+            }
+           
+
+            ViewBag.ViewModel = viewModel;
+            ViewBag.DataItem = item;
+
+            var profile = await HttpContext.GetUserAsync();
+            return View("~/Views/CoachConsole/CoachOverview.cshtml", profile.LoadInstance(models));
+        }
+
+        public async Task<ActionResult> LearnerOverviewAsync(LessonQueryViewModel viewModel)
+        {
+            if (viewModel.KeyID != null)
+            {
+                viewModel.BranchID = viewModel.DecryptKeyValue();
+            }
+
+            BranchStore item = null;
+            if (viewModel.BranchID.HasValue)
+            {
+                item = models.GetTable<BranchStore>().Where(b => b.BranchID == viewModel.BranchID)
+                        .FirstOrDefault();
+            }
+
+
+            ViewBag.ViewModel = viewModel;
+            ViewBag.DataItem = item;
+
+            var profile = await HttpContext.GetUserAsync();
+            return View("~/Views/CoachConsole/CoachOverview.cshtml", profile.LoadInstance(models));
+        }
 
     }
 }

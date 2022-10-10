@@ -508,5 +508,16 @@ namespace WebHome.Models.Locale
             SD = 7,
         }
 
+        public static readonly string[] LevelName =
+        {
+            "實習期",
+            "P.T 1",
+            "P.T 2",
+            "P.T 3",
+            "P.T 4",
+            "P.T 5",
+            "P.T 6",
+        };
+
     }
 }

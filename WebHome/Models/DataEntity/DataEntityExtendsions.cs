@@ -867,4 +867,17 @@ namespace WebHome.Models.DataEntity
         }
     }
 
+    public partial class LearnerCoachProperty
+    {
+        public enum PropertyType
+        {
+            PrimaryCoach = 1,
+        }
+    }
+
+    public partial class ServingCoach
+    {
+        public bool IsLeaved => LeavedDate.HasValue;
+    }
+
 }

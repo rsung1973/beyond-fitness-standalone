@@ -1,0 +1,63 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@using CommonLib.Utility
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    LessonQueryViewModel _viewModel;
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];
+
+    _viewModel = (LessonQueryViewModel)ViewBag.ViewModel;
+
+}
+
+@{
+    var coachItems = models.PromptEffectiveCoach()
+                        .Where(c => Naming.LevelName.Contains(c.ProfessionalLevel.LevelName));
+
+    if (_viewModel.BranchID.HasValue)
+    {
+        coachItems = coachItems.Where(c => c.CoachWorkplace.Any(w => w.BranchID == _viewModel.BranchID));
+    }
+
+    var data = coachItems.GroupBy(c => c.ProfessionalLevel.LevelName)
+                .ToList();
+    var totalCount = coachItems.Count();
+
+}
+<table class="table m-t-15 m-b-0">
+    <thead>
+        <tr>
+            <td>等級</td>
+            <td>人數</td>
+            <td>佔比</td>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            foreach (var level in Naming.LevelName)
+            {
+                var item = data.Where(g => g.Key == level).FirstOrDefault();
+                if (item != null)
+                {
+                    <tr>
+                        <td>@(level)</td>
+                        <td>@(item.Count())</td>
+                        <td>@Math.Round((item.Count() * 100M ) / totalCount)%</td>
+                    </tr>
+                }
+            }
+        }
+    </tbody>
+</table>
+
+

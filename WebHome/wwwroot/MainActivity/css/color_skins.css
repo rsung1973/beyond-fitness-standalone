@@ -42,6 +42,10 @@ body.theme-nero {
     background-color: black;
 }
 
+.theme-nero .card.white .table-custom.table tbody tr:hover {
+    background-color: #ced7e4;
+}
+
 .theme-nero .table-custom.table tbody tr:hover {
     background-color: #1A1A1A;
 }
@@ -68,8 +72,14 @@ body.theme-nero {
     border-top: 0px;
 }
 
+.theme-nero .card.white table.DTFC_Cloned tr {
+    background-color: inherit;
+    color: inherit;
+}
+
 .theme-nero table.DTFC_Cloned tr {
     background-color: rgba(25, 29, 37, .97);
+    color: white;
 }
 
 .theme-nero .btn-darkteal {
@@ -327,6 +337,11 @@ body.theme-nero {
     border-color: #1A1A1A
 }
 
+.theme-nero .member-card textarea.form-control {    
+    border: none;
+    border-bottom: 1px solid #1A1A1A !important;    
+}
+
 .theme-nero textarea.form-control {
     /*    border-bottom: 1px solid #888;*/
     border: 1px solid #373b41;
@@ -338,6 +353,7 @@ body.theme-nero {
     border-bottom-color: #1A1A1A;
     font-weight: 800;
 }
+
 
 .theme-nero .card textarea.form-control:focus {
     background-color: transparent;
@@ -409,6 +425,21 @@ body.theme-nero {
 
 .theme-nero .media .media-body .media-heading small {
     color: antiquewhite;
+}
+
+.theme-nero .member-card .inbox .mail_list .list-group-item .media-heading a {
+    color: #555 !important;
+}
+
+.theme-nero .member-card .inbox .mail_list .list-group-item {
+	background: #eceeef !important;
+    border-bottom: 1px solid #eee !important;
+    border-top: none;
+}
+
+.theme-nero .member-card .inbox .mail_list .list-group-item:hover {
+	background: #e8f7fc !important;
+    font-weight: 800 !important;
 }
 
 /**
@@ -487,6 +518,10 @@ body.theme-nero {
 
 .theme-nero .nav.nav-tabs-new2 {
     border-bottom-color: #1A1A1A;
+}
+
+.theme-nero .member-card .nav.nav-tabs-new2 {
+    border-bottom-color: #eee !important;
 }
 
 .theme-nero .nav.nav-tabs-new2 > li > a:hover,

@@ -59,33 +59,15 @@
       "scenarioPhoto": [ "Scenario1.jpg" ]
     },
     {
-      "coachName": "黃瀚誼",
-      "nickname": "Alice",
-      "prologue": "Ever tried, ever failed. No matter. Try again, fail again. FAIL BETTER.",
-      "scenarioPhoto": []
-    },
-    {
       "coachName": "謝宇傑",
       "nickname": "Jay",
       "prologue": "今天你做了別人不想做的事，以後你可以做到別人做不到的事。",
       "scenarioPhoto": []
     },
     {
-      "coachName": "兵逸慈",
-      "nickname": "Liza",
-      "prologue": "為了成長，我們必須盡可能同時接納滿足和失望。",
-      "scenarioPhoto": []
-    },
-    {
       "coachName": "張書瑋",
       "nickname": "Jeff",
       "prologue": "在你想要放棄的那一刻時，想想為什麼當初堅持走到了這裡。",
-      "scenarioPhoto": []
-    },
-    {
-      "coachName": "馮冠瑜",
-      "nickname": "Walker",
-      "prologue": "身體就像一面鏡子，印照著最真實的自己。",
       "scenarioPhoto": []
     }
   ]

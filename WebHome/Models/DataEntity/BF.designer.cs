@@ -654,6 +654,9 @@ namespace WebHome.Models.DataEntity
     partial void InsertCoachYearlyAdditionalPay(CoachYearlyAdditionalPay instance);
     partial void UpdateCoachYearlyAdditionalPay(CoachYearlyAdditionalPay instance);
     partial void DeleteCoachYearlyAdditionalPay(CoachYearlyAdditionalPay instance);
+    partial void InsertLearnerCoachProperty(LearnerCoachProperty instance);
+    partial void UpdateLearnerCoachProperty(LearnerCoachProperty instance);
+    partial void DeleteLearnerCoachProperty(LearnerCoachProperty instance);
     #endregion
 		
 		public BFDataContext() : 
@@ -2427,6 +2430,14 @@ namespace WebHome.Models.DataEntity
 			get
 			{
 				return this.GetTable<CoachYearlyAdditionalPay>();
+			}
+		}
+		
+		public System.Data.Linq.Table<LearnerCoachProperty> LearnerCoachProperty
+		{
+			get
+			{
+				return this.GetTable<LearnerCoachProperty>();
 			}
 		}
 		
@@ -5423,6 +5434,8 @@ namespace WebHome.Models.DataEntity
 		
 		private EntitySet<UserRelationship> _AsRelationship;
 		
+		private EntitySet<LearnerCoachProperty> _LearnerCoachProperty;
+		
 		private EntityRef<Attachment> _Attachment;
 		
 		private EntityRef<LevelExpression> _LevelExpression;
@@ -5534,6 +5547,7 @@ namespace WebHome.Models.DataEntity
 			this._MonthlySalaryDetails = new EntitySet<MonthlySalaryDetails>(new Action<MonthlySalaryDetails>(this.attach_MonthlySalaryDetails), new Action<MonthlySalaryDetails>(this.detach_MonthlySalaryDetails));
 			this._UserRelationship = new EntitySet<UserRelationship>(new Action<UserRelationship>(this.attach_UserRelationship), new Action<UserRelationship>(this.detach_UserRelationship));
 			this._AsRelationship = new EntitySet<UserRelationship>(new Action<UserRelationship>(this.attach_AsRelationship), new Action<UserRelationship>(this.detach_AsRelationship));
+			this._LearnerCoachProperty = new EntitySet<LearnerCoachProperty>(new Action<LearnerCoachProperty>(this.attach_LearnerCoachProperty), new Action<LearnerCoachProperty>(this.detach_LearnerCoachProperty));
 			this._Attachment = default(EntityRef<Attachment>);
 			this._LevelExpression = default(EntityRef<LevelExpression>);
 			this._UserProfile1 = default(EntityRef<UserProfile>);
@@ -6794,6 +6808,19 @@ namespace WebHome.Models.DataEntity
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserProfile_LearnerCoachProperty", Storage="_LearnerCoachProperty", ThisKey="UID", OtherKey="UID")]
+		public EntitySet<LearnerCoachProperty> LearnerCoachProperty
+		{
+			get
+			{
+				return this._LearnerCoachProperty;
+			}
+			set
+			{
+				this._LearnerCoachProperty.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Attachment_UserProfile", Storage="_Attachment", ThisKey="PictureID", OtherKey="AttachmentID", IsForeignKey=true)]
 		public Attachment Attachment
 		{
@@ -7488,6 +7515,18 @@ namespace WebHome.Models.DataEntity
 		{
 			this.SendPropertyChanging();
 			entity.AsRelated = null;
+		}
+		
+		private void attach_LearnerCoachProperty(LearnerCoachProperty entity)
+		{
+			this.SendPropertyChanging();
+			entity.UserProfile = this;
+		}
+		
+		private void detach_LearnerCoachProperty(LearnerCoachProperty entity)
+		{
+			this.SendPropertyChanging();
+			entity.UserProfile = null;
 		}
 	}
 	
@@ -9740,6 +9779,8 @@ namespace WebHome.Models.DataEntity
 		
 		private System.Nullable<System.DateTime> _EmploymentDate;
 		
+		private System.Nullable<System.DateTime> _LeavedDate;
+		
 		private EntitySet<RegisterLesson> _RegisterLesson;
 		
 		private EntitySet<CoachWorkplace> _CoachWorkplace;
@@ -9768,6 +9809,8 @@ namespace WebHome.Models.DataEntity
 		
 		private EntitySet<CoachYearlyAdditionalPay> _CoachYearlyAdditionalPay;
 		
+		private EntitySet<LearnerCoachProperty> _LearnerCoachProperty;
+		
 		private EntityRef<UserProfile> _UserProfile;
 		
 		private EntityRef<ProfessionalLevel> _ProfessionalLevel;
@@ -9784,6 +9827,8 @@ namespace WebHome.Models.DataEntity
     partial void OnLevelIDChanged();
     partial void OnEmploymentDateChanging(System.Nullable<System.DateTime> value);
     partial void OnEmploymentDateChanged();
+    partial void OnLeavedDateChanging(System.Nullable<System.DateTime> value);
+    partial void OnLeavedDateChanged();
     #endregion
 		
 		public ServingCoach()
@@ -9802,6 +9847,7 @@ namespace WebHome.Models.DataEntity
 			this._TuitionAchievement = new EntitySet<TuitionAchievement>(new Action<TuitionAchievement>(this.attach_TuitionAchievement), new Action<TuitionAchievement>(this.detach_TuitionAchievement));
 			this._MonthlyCoachRevenueIndicator = new EntitySet<MonthlyCoachRevenueIndicator>(new Action<MonthlyCoachRevenueIndicator>(this.attach_MonthlyCoachRevenueIndicator), new Action<MonthlyCoachRevenueIndicator>(this.detach_MonthlyCoachRevenueIndicator));
 			this._CoachYearlyAdditionalPay = new EntitySet<CoachYearlyAdditionalPay>(new Action<CoachYearlyAdditionalPay>(this.attach_CoachYearlyAdditionalPay), new Action<CoachYearlyAdditionalPay>(this.detach_CoachYearlyAdditionalPay));
+			this._LearnerCoachProperty = new EntitySet<LearnerCoachProperty>(new Action<LearnerCoachProperty>(this.attach_LearnerCoachProperty), new Action<LearnerCoachProperty>(this.detach_LearnerCoachProperty));
 			this._UserProfile = default(EntityRef<UserProfile>);
 			this._ProfessionalLevel = default(EntityRef<ProfessionalLevel>);
 			OnCreated();
@@ -9891,6 +9937,26 @@ namespace WebHome.Models.DataEntity
 					this._EmploymentDate = value;
 					this.SendPropertyChanged("EmploymentDate");
 					this.OnEmploymentDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LeavedDate", DbType="Date")]
+		public System.Nullable<System.DateTime> LeavedDate
+		{
+			get
+			{
+				return this._LeavedDate;
+			}
+			set
+			{
+				if ((this._LeavedDate != value))
+				{
+					this.OnLeavedDateChanging(value);
+					this.SendPropertyChanging();
+					this._LeavedDate = value;
+					this.SendPropertyChanged("LeavedDate");
+					this.OnLeavedDateChanged();
 				}
 			}
 		}
@@ -10074,6 +10140,19 @@ namespace WebHome.Models.DataEntity
 			set
 			{
 				this._CoachYearlyAdditionalPay.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ServingCoach_LearnerCoachProperty", Storage="_LearnerCoachProperty", ThisKey="CoachID", OtherKey="CoachID")]
+		public EntitySet<LearnerCoachProperty> LearnerCoachProperty
+		{
+			get
+			{
+				return this._LearnerCoachProperty;
+			}
+			set
+			{
+				this._LearnerCoachProperty.Assign(value);
 			}
 		}
 		
@@ -10328,6 +10407,18 @@ namespace WebHome.Models.DataEntity
 		}
 		
 		private void detach_CoachYearlyAdditionalPay(CoachYearlyAdditionalPay entity)
+		{
+			this.SendPropertyChanging();
+			entity.ServingCoach = null;
+		}
+		
+		private void attach_LearnerCoachProperty(LearnerCoachProperty entity)
+		{
+			this.SendPropertyChanging();
+			entity.ServingCoach = this;
+		}
+		
+		private void detach_LearnerCoachProperty(LearnerCoachProperty entity)
 		{
 			this.SendPropertyChanging();
 			entity.ServingCoach = null;
@@ -61077,6 +61168,8 @@ namespace WebHome.Models.DataEntity
 		
 		private System.Nullable<System.DateTime> _EmploymentDate;
 		
+		private System.Nullable<System.DateTime> _LeavedDate;
+		
 		private EntityRef<UserProfile> _UserProfile;
 		
     #region Extensibility Method Definitions
@@ -61087,6 +61180,8 @@ namespace WebHome.Models.DataEntity
     partial void OnUIDChanged();
     partial void OnEmploymentDateChanging(System.Nullable<System.DateTime> value);
     partial void OnEmploymentDateChanged();
+    partial void OnLeavedDateChanging(System.Nullable<System.DateTime> value);
+    partial void OnLeavedDateChanged();
     #endregion
 		
 		public ForEmployee()
@@ -61135,6 +61230,26 @@ namespace WebHome.Models.DataEntity
 					this._EmploymentDate = value;
 					this.SendPropertyChanged("EmploymentDate");
 					this.OnEmploymentDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LeavedDate", DbType="Date")]
+		public System.Nullable<System.DateTime> LeavedDate
+		{
+			get
+			{
+				return this._LeavedDate;
+			}
+			set
+			{
+				if ((this._LeavedDate != value))
+				{
+					this.OnLeavedDateChanging(value);
+					this.SendPropertyChanging();
+					this._LeavedDate = value;
+					this.SendPropertyChanged("LeavedDate");
+					this.OnLeavedDateChanged();
 				}
 			}
 		}
@@ -65888,6 +66003,222 @@ namespace WebHome.Models.DataEntity
 						this._Year = default(int);
 					}
 					this.SendPropertyChanged("YearlySettlement");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.LearnerCoachProperty")]
+	public partial class LearnerCoachProperty : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _UID;
+		
+		private int _CoachID;
+		
+		private int _PropertyID;
+		
+		private string _Description;
+		
+		private EntityRef<ServingCoach> _ServingCoach;
+		
+		private EntityRef<UserProfile> _UserProfile;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnUIDChanging(int value);
+    partial void OnUIDChanged();
+    partial void OnCoachIDChanging(int value);
+    partial void OnCoachIDChanged();
+    partial void OnPropertyIDChanging(int value);
+    partial void OnPropertyIDChanged();
+    partial void OnDescriptionChanging(string value);
+    partial void OnDescriptionChanged();
+    #endregion
+		
+		public LearnerCoachProperty()
+		{
+			this._ServingCoach = default(EntityRef<ServingCoach>);
+			this._UserProfile = default(EntityRef<UserProfile>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int UID
+		{
+			get
+			{
+				return this._UID;
+			}
+			set
+			{
+				if ((this._UID != value))
+				{
+					if (this._UserProfile.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnUIDChanging(value);
+					this.SendPropertyChanging();
+					this._UID = value;
+					this.SendPropertyChanged("UID");
+					this.OnUIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CoachID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int CoachID
+		{
+			get
+			{
+				return this._CoachID;
+			}
+			set
+			{
+				if ((this._CoachID != value))
+				{
+					if (this._ServingCoach.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnCoachIDChanging(value);
+					this.SendPropertyChanging();
+					this._CoachID = value;
+					this.SendPropertyChanged("CoachID");
+					this.OnCoachIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PropertyID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int PropertyID
+		{
+			get
+			{
+				return this._PropertyID;
+			}
+			set
+			{
+				if ((this._PropertyID != value))
+				{
+					this.OnPropertyIDChanging(value);
+					this.SendPropertyChanging();
+					this._PropertyID = value;
+					this.SendPropertyChanged("PropertyID");
+					this.OnPropertyIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Description", DbType="NVarChar(64)")]
+		public string Description
+		{
+			get
+			{
+				return this._Description;
+			}
+			set
+			{
+				if ((this._Description != value))
+				{
+					this.OnDescriptionChanging(value);
+					this.SendPropertyChanging();
+					this._Description = value;
+					this.SendPropertyChanged("Description");
+					this.OnDescriptionChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ServingCoach_LearnerCoachProperty", Storage="_ServingCoach", ThisKey="CoachID", OtherKey="CoachID", IsForeignKey=true)]
+		public ServingCoach ServingCoach
+		{
+			get
+			{
+				return this._ServingCoach.Entity;
+			}
+			set
+			{
+				ServingCoach previousValue = this._ServingCoach.Entity;
+				if (((previousValue != value) 
+							|| (this._ServingCoach.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._ServingCoach.Entity = null;
+						previousValue.LearnerCoachProperty.Remove(this);
+					}
+					this._ServingCoach.Entity = value;
+					if ((value != null))
+					{
+						value.LearnerCoachProperty.Add(this);
+						this._CoachID = value.CoachID;
+					}
+					else
+					{
+						this._CoachID = default(int);
+					}
+					this.SendPropertyChanged("ServingCoach");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserProfile_LearnerCoachProperty", Storage="_UserProfile", ThisKey="UID", OtherKey="UID", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public UserProfile UserProfile
+		{
+			get
+			{
+				return this._UserProfile.Entity;
+			}
+			set
+			{
+				UserProfile previousValue = this._UserProfile.Entity;
+				if (((previousValue != value) 
+							|| (this._UserProfile.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._UserProfile.Entity = null;
+						previousValue.LearnerCoachProperty.Remove(this);
+					}
+					this._UserProfile.Entity = value;
+					if ((value != null))
+					{
+						value.LearnerCoachProperty.Add(this);
+						this._UID = value.UID;
+					}
+					else
+					{
+						this._UID = default(int);
+					}
+					this.SendPropertyChanged("UserProfile");
 				}
 			}
 		}
