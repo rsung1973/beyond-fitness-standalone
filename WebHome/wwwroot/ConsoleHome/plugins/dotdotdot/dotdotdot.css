@@ -1,0 +1,73 @@
+.dotdotdot {
+/*
+	box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+	background: #222538;
+	background: -webkit-linear-gradient(bottom left, #222538, #46454d);
+	background: linear-gradient(to top right, #222538, #46454d);
+*/
+	color: #052333 !important;
+	margin-top: 1rem;
+    margin-bottom: 1rem;
+	overflow: hidden;
+}
+
+.dotdotdot>div {
+	max-height: 200px;
+}
+
+.dotdotdot>div p {
+ line-height: 1.21rem;   
+}
+
+/* readable pathnames */
+
+.dotdotdot ul,
+.dotdotdot ol,
+.dotdotdot li {
+	display: block;
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.dotdotdot li {
+	height: 35px;
+	padding: 7px 0;
+}
+
+.dotdotdot li+li {
+	border-top: 1px solid rgba( 255, 255, 255, 0.2);
+}
+
+
+/* toggle full story */
+
+.dotdotdot>.full-story {
+	max-height: initial;
+}
+
+.dotdotdot .toggle:before {
+	content: '全部顯示';
+    font-size: 12px;
+}
+
+.dotdotdot>.full-story .toggle:before {
+	content: '部分顯示';
+}
+
+.oldbrowser {
+	display: none;
+}
+
+@media screen and (min-width:0\0) {
+	.oldbrowser {
+		background: red;
+		color: white;
+		font-weight: bold;
+		font-size: 20px;
+		line-height: 1.5;
+		display: block;
+		padding: 50px;
+		margin: 50px -50px;
+	}
+}

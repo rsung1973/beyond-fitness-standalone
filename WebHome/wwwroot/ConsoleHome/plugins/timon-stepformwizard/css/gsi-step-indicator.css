@@ -1,0 +1,2423 @@
+/* --------------------------------
+
+Common
+
+-------------------------------- */
+.gsi-show-number .number {
+    display: block !important;
+}
+
+.gsi-hide-number .number {
+    display: none !important;
+}
+
+.gsi-show-subtext .desc span {
+    display: block !important;
+}
+
+.gsi-hide-subtext .desc span {
+    display: none !important;
+}
+
+.gsi-number-circle li a:hover {
+    background-color: #2c3f4c;
+    color: #fff;
+}
+
+.gsi-number-circle li a:hover .number {
+    color: #2c3f4c;
+}
+
+.gsi-number-circle li > * .number {
+    font-size: 24px;
+    padding: 5px;
+    background-color: #fff;
+    border: 1px solid #2c3f4c;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    text-align: center;
+}
+
+.gsi-number-circle li > * .desc {
+    padding-left: 10px;
+}
+
+.gsi-number-circle li.visited > * .number,
+.gsi-number-circle li.current > * .number {
+    color: #2c3f4c;
+}
+
+.gsi-step-no-available li.current ~ li > *,
+.gsi-step-no-available li.current ~ li > *:hover {
+    background-color: #E5E5E5 !important;
+    border-color: #E5E5E5;
+    cursor: not-allowed;
+    color: #2c3f4c !important;
+    border-width: 0 !important;
+}
+
+.gsi-step-no-available li.current ~ li > * .desc label,
+.gsi-step-no-available li.current ~ li > *:hover .desc label {
+    cursor: not-allowed !important;
+}
+
+.gsi-step-no-available li.current ~ li > * .number:before,
+.gsi-step-no-available li.current ~ li > *:hover .number:before {
+    border-left-color: #E5E5E5 !important;
+}
+
+.gsi-step-no-available-all li:not(.current) > *,
+.gsi-step-no-available-all li:not(.current) > *:hover {
+    background-color: #E5E5E5 !important;
+    border-color: #E5E5E5 !important;
+    cursor: not-allowed;
+    color: #2c3f4c !important;
+    border-width: 0 !important;
+}
+
+.gsi-step-no-available-all li:not(.current) > * .desc label,
+.gsi-step-no-available-all li:not(.current) > *:hover .desc label {
+    cursor: not-allowed !important;
+}
+
+.gsi-step-no-available-all li:not(.current) > * .number:before,
+.gsi-step-no-available-all li:not(.current) > *:hover .number:before {
+    border-left-color: #E5E5E5 !important;
+}
+
+.gsi-step-no-available-after-current li.current ~ li > *,
+.gsi-step-no-available-after-current li.current ~ li > *:hover {
+    background-color: #E5E5E5 !important;
+    border-color: #E5E5E5;
+    cursor: not-allowed !important;
+    color: #2c3f4c !important;
+    border-width: 0 !important;
+}
+
+.gsi-step-no-available-after-current li.current ~ li > * .desc label,
+.gsi-step-no-available-after-current li.current ~ li > *:hover .desc label {
+    cursor: not-allowed !important;
+}
+
+.gsi-step-no-available-after-current li.current ~ li > * .number:before,
+.gsi-step-no-available-after-current li.current ~ li > *:hover .number:before {
+    border-left-color: #E5E5E5 !important;
+}
+
+.gsi-step-no-available-before-current li:not(.current) > *,
+.gsi-step-no-available-before-current li:not(.current) > *:hover {
+    background-color: #E5E5E5 !important;
+    border-color: #E5E5E5 !important;
+    cursor: not-allowed !important;
+    color: #2c3f4c !important;
+    border-width: 0 !important;
+}
+
+.gsi-step-no-available-before-current li:not(.current) > * .desc label,
+.gsi-step-no-available-before-current li:not(.current) > *:hover .desc label {
+    cursor: not-allowed !important;
+}
+
+.gsi-step-no-available-before-current li:not(.current) > * .number:before,
+.gsi-step-no-available-before-current li:not(.current) > *:hover .number:before {
+    border-left-color: #E5E5E5 !important;
+}
+
+.gsi-step-no-available-before-current li.current ~ li > *,
+.gsi-step-no-available-before-current li.current ~ li > *:hover {
+    background-color: #edeff0 !important;
+    border-color: #edeff0 !important;
+    cursor: not-allowed !important;
+    color: #2c3f4c !important;
+    border-width: 0 !important;
+}
+
+.gsi-step-no-available-before-current li.current ~ li > * .desc label,
+.gsi-step-no-available-before-current li.current ~ li > *:hover .desc label {
+    cursor: pointer !important;
+}
+
+.gsi-step-no-available-before-current li.current ~ li > * .number:before,
+.gsi-step-no-available-before-current li.current ~ li > *:hover .number:before {
+    border-left-color: #E5E5E5 !important;
+}
+
+.gsi-transition li > * {
+    -webkit-transition: background-color 0.6s ease, border-color 0.6s ease;
+    -moz-transition: background-color 0.6s ease, border-color 0.6s ease;
+    -o-transition: background-color 0.6s ease, border-color 0.6s ease;
+    transition: background-color 0.6s ease, border-color 0.6s ease;
+}
+
+.gsi-transition li > * .number,
+.gsi-transition li > * .number:before {
+    -webkit-transition: background-color 0.6s ease, border-color 0.6s ease;
+    -moz-transition: background-color 0.6s ease, border-color 0.6s ease;
+    -o-transition: background-color 0.6s ease, border-color 0.6s ease;
+    transition: background-color 0.6s ease, border-color 0.6s ease;
+}
+
+.gsi-vertical {
+    /*width: 100% !important;*/
+    margin: 0 0 10px 15px !important;
+    width: 85% !important;
+}
+
+.gsi-vertical li {
+    min-width: 150px;
+    margin-top: 10px;
+    display: block !important;
+}
+
+.gsi-vertical li > *,
+.gsi-vertical li.current > * {
+    padding: 1em .8em 0.8em 1em !important;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+
+.gsi-step-indicator {
+    width: 100%;
+    padding: 0 1.2em;
+    margin: 1em auto;
+    background-color: #edeff0;
+    border-radius: .25em;
+}
+
+.gsi-step-indicator li {
+    display: inline-block;
+    float: left;
+    margin: 1.2em 0;
+}
+
+.gsi-step-indicator li .number {
+    font-size: 2em;
+}
+
+.gsi-step-indicator li .desc {
+    padding-top: 10px;
+    padding-left: 10px;
+    vertical-align: super;
+}
+
+.gsi-step-indicator li .desc label {
+    font-size: 1.1em;
+}
+
+.gsi-step-indicator li .desc span {
+    font-size: 14px;
+    display: block;
+}
+
+.gsi-step-indicator li::after {
+    display: inline-block;
+    content: '\00bb';
+    margin: 0 1em;
+    color: #959fa5;
+}
+
+.gsi-step-indicator li:last-of-type::after {
+    display: none;
+}
+
+.gsi-step-indicator li > * {
+    display: flex;
+    font-size: 1.4rem;
+    color: #2c3f4c;
+}
+
+.gsi-step-indicator li.current > * {
+    color: #96c03d;
+}
+
+.gsi-step-indicator a:hover {
+    color: #96c03d;
+}
+
+.gsi-step-indicator a {
+    text-decoration: none !important;
+}
+
+.gsi-step-indicator:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.gsi-step-indicator.triangle {
+    background-color: transparent;
+    padding: 0;
+}
+
+.gsi-step-indicator.triangle li {
+    position: relative;
+    padding: 0;
+    margin: 4px 4px 4px 0;
+}
+
+.gsi-step-indicator.triangle li:last-of-type {
+    margin-right: 0;
+}
+
+.gsi-step-indicator.triangle li > * {
+    position: relative;
+    padding: 1em .8em 0.8em 2.5em;
+    color: #2c3f4c;
+    background-color: #edeff0;
+    border-color: #edeff0;
+}
+
+.gsi-step-indicator.triangle li.current > * {
+    color: #ffffff;
+    background-color: #96c03d;
+    border-color: #96c03d;
+}
+
+.gsi-step-indicator.triangle li:first-of-type > * {
+    border-radius: .25em 0 0 .25em;
+}
+
+.gsi-step-indicator.triangle li:last-of-type > * {
+    padding-right: 1.6em;
+    border-radius: 0 .25em .25em 0;
+}
+
+.gsi-step-indicator.triangle a:hover {
+    color: #ffffff;
+    background-color: #2c3f4c;
+    border-color: #2c3f4c;
+}
+
+.gsi-step-indicator.triangle li::after,
+.gsi-step-indicator.triangle li > *::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 100%;
+    height: 0;
+    width: 0;
+    border: 31px solid transparent;
+    border-right-width: 0;
+    border-left-width: 20px;
+}
+
+.gsi-step-indicator.triangle li::after {
+    z-index: 1;
+    -webkit-transform: translateX(4px);
+    -moz-transform: translateX(4px);
+    -ms-transform: translateX(4px);
+    -o-transform: translateX(4px);
+    transform: translateX(4px);
+    border-left-color: #ffffff;
+    margin: 0;
+}
+
+.gsi-step-indicator.triangle li > *::after {
+    z-index: 2;
+    border-left-color: inherit;
+}
+
+.gsi-step-indicator.triangle .triangle li:last-of-type::after,
+.gsi-step-indicator.triangle li:last-of-type > *::after {
+    display: none;
+}
+
+.gsi-step-indicator.triangle.gsi-arrow-left li::after,
+.gsi-step-indicator.triangle.gsi-arrow-left li > *::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: -20px;
+    height: 0;
+    width: 0;
+    border: 31px solid transparent;
+    border-right-width: 20px;
+    border-left-width: 0;
+}
+
+.gsi-step-indicator.triangle.gsi-arrow-left li > *::after {
+    z-index: 2;
+    border-right-color: inherit;
+}
+
+/* --------------------------------
+
+Basic Style
+
+-------------------------------- */
+.gsi-step-indicator.gsi-vertical li {
+    float: inherit !important;
+    display: block;
+}
+
+.gsi-style-1 li .desc {
+    padding-top: 9px !important;
+}
+
+.gsi-style-1 li .desc label {
+    padding-bottom: 10px;
+}
+
+.gsi-style-1 li .desc span {
+    display: none;
+}
+
+.gsi-style-2 li .desc {
+    padding-top: 0;
+}
+
+.gsi-style-3 li .number {
+    font-size: 24px;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    height: 36px;
+    width: 36px;
+    background-color: #fff;
+    border: 1px solid #2c3f4c;
+    text-align: center;
+    display: inline-block;
+}
+
+.gsi-style-3 li .desc {
+    padding-top: 0;
+}
+
+.gsi-style-3 li:hover .number,
+.gsi-style-3 li.current .number {
+    color: #2c3f4c;
+}
+
+.gsi-style-4 {
+    width: 100%;
+    padding: 0 1.2em;
+    margin: 1em auto;
+}
+
+.gsi-style-4 li {
+    display: inline-block;
+}
+
+.gsi-style-4 li a {
+    background-color: #edeff0;
+    color: #2c3f4c;
+}
+
+.gsi-style-4 li a .number:before {
+    border-left-color: #EDEFF0;
+}
+
+.gsi-style-4 li a:hover {
+    background-color: #2c3f4c;
+    color: #fff;
+}
+
+.gsi-style-4 li a:hover .number:before {
+    border-left-color: #2c3f4c;
+}
+
+.gsi-style-4 li > * {
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    padding: 16px 14px 14px 10px;
+    display: flex;
+}
+
+.gsi-style-4 li > * .number {
+    font-size: 24px;
+    position: relative;
+    padding-right: 5px;
+}
+
+.gsi-style-4 li > * .number:after,
+.gsi-style-4 li > * .number:before {
+    -webkit-transform: translateX(3px);
+    -moz-transform: translateX(3px);
+    -ms-transform: translateX(3px);
+    -o-transform: translateX(3px);
+    transform: translateX(3px);
+    margin: 0;
+    content: '';
+    position: absolute;
+    top: -15px;
+    border: 34px solid transparent;
+    border-left-width: 12px;
+}
+
+.gsi-style-4 li > * .number:after {
+    z-index: 1;
+    left: 100%;
+    border-left-color: #fff;
+}
+
+.gsi-style-4 li > * .number:before {
+    z-index: 2;
+    left: 85%;
+}
+
+.gsi-style-4 li > * .desc {
+    padding-top: 5px;
+    padding-left: 20px;
+}
+
+.gsi-style-4 li > * .desc label {
+    font-size: 1.1em;
+}
+
+.gsi-style-4 li > * .desc span {
+    font-size: 14px;
+    display: block;
+}
+
+.gsi-style-4 li.current > * {
+    background-color: #96c03d;
+    color: #fff;
+}
+
+.gsi-style-4 li.current > * .number:before {
+    border-left-color: #96c03d;
+}
+
+.gsi-style-5 {
+    width: 100%;
+    padding: 0 1.2em;
+    margin: 1em auto;
+}
+
+.gsi-style-5 li {
+    margin: 5px 0 5px 5px;
+    display: inline-block;
+}
+
+.gsi-style-5 li a {
+    background-color: #edeff0;
+    color: #2c3f4c;
+}
+
+.gsi-style-5 li a:hover {
+    background-color: #2c3f4c;
+    color: #fff;
+}
+
+.gsi-style-5 li > * {
+    display: flex;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    padding: 16px 14px 14px 10px;
+}
+
+.gsi-style-5 li > * .number {
+    font-size: 19px;
+    padding-right: 5px;
+}
+
+.gsi-style-5 li > * .desc {
+    padding-left: 20px;
+}
+
+.gsi-style-5 li > * .desc label {
+    font-size: 1.1em;
+}
+
+.gsi-style-5 li > * .desc span {
+    font-size: 14px;
+    display: block;
+}
+
+.gsi-style-5 li.current > * {
+    background-color: #96c03d;
+    color: #fff;
+}
+
+.gsi-style-6 {
+    width: 100%;
+    padding: 0 1.2em;
+    margin: 1em auto;
+}
+
+.gsi-style-6 li {
+    margin-left: 5px;
+    display: inline-block;
+}
+
+.gsi-style-6 li a {
+    color: #2c3f4c;
+}
+
+.gsi-style-6 li a:hover .number {
+    background-color: #2c3f4c;
+    color: #fff;
+}
+
+.gsi-style-6 li > * {
+    display: flex;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    padding: 16px 14px 14px 10px;
+}
+
+.gsi-style-6 li > * .number {
+    font-size: 20px;
+    height: 36px;
+    width: 36px;
+    text-align: center;
+    padding: 5px;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    background-color: #edeff0;
+}
+
+.gsi-style-6 li > * .desc {
+    padding-left: 20px;
+}
+
+.gsi-style-6 li > * .desc label {
+    font-size: 1.1em;
+}
+
+.gsi-style-6 li > * .desc span {
+    font-size: 14px;
+    display: block;
+}
+
+.gsi-style-6 li.current > * .number {
+    background-color: #96c03d;
+    color: #fff;
+}
+
+.gsi-style-6.gsi-step-no-available li.current ~ li > * .number,
+.gsi-style-6.gsi-step-no-available li.current ~ li > *:hover .number {
+    background-color: #edeff0 !important;
+    color: #2c3f4c !important;
+}
+
+.gsi-style-7 {
+    width: 100%;
+    padding: 0 1.2em;
+    margin: 1em auto;
+}
+
+.gsi-style-7 li {
+    margin-left: 5px;
+    display: inline-block;
+    margin-bottom: 10px;
+    min-width: 215px;
+}
+
+.gsi-style-7 li a:hover {
+    background-color: #2c3f4c;
+    color: #fff;
+}
+
+.gsi-style-7 li > * {
+    display: flex;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    padding: 16px 14px 14px 10px;
+    background-color: #edeff0;
+    color: #2c3f4c;
+}
+
+.gsi-style-7 li > * .number {
+    font-size: 20px;
+    padding-left: 5px;
+}
+
+.gsi-style-7 li > * .desc {
+    font-weight: normal;
+    padding-left: 15px;
+}
+
+.gsi-style-7 li > * .desc label {
+    font-size: 1.1em;
+}
+
+.gsi-style-7 li > * .desc span {
+    font-size: 14px;
+    display: block;
+}
+
+.gsi-style-7 li.current:hover > * {
+    background-color: #96c03d;
+    color: #fff;
+}
+
+.gsi-style-7.border-left li a {
+    border-left: 10px solid #2c3f4c;
+}
+
+.gsi-style-7.border-left li.current > * {
+    border-left: 10px solid #96c03d;
+}
+
+.gsi-style-7.border-right li a {
+    border-right: 10px solid #2c3f4c;
+}
+
+.gsi-style-7.border-right li.current > * {
+    border-right: 10px solid #96c03d;
+}
+
+.gsi-style-7.border-top li a {
+    border-top: 10px solid #2c3f4c;
+}
+
+.gsi-style-7.border-top li.current > * {
+    border-top: 10px solid #96c03d;
+}
+
+.gsi-style-7.border-bottom li a {
+    border-bottom: 10px solid #2c3f4c;
+}
+
+.gsi-style-7.border-bottom li.current > * {
+    border-bottom: 10px solid #96c03d;
+}
+
+.gsi-style-8 {
+    width: 100%;
+    padding: 0 1.2em;
+    margin: 1em auto;
+}
+
+.gsi-style-8 li {
+    position: relative;
+    margin-left: 40px;
+    display: inline-block;
+}
+
+.gsi-style-8 li a {
+    background-color: #edeff0;
+    color: #2c3f4c;
+}
+
+.gsi-style-8 li a:hover {
+    background-color: #2c3f4c;
+    color: #fff;
+}
+
+.gsi-style-8 li:not(:last-child):after {
+    position: absolute;
+    content: '';
+    height: 5px;
+    background: #edeff0;
+    margin: 0;
+    width: 100%;
+    top: 50%;
+    left: 100%;
+}
+
+.gsi-style-8 li > * {
+    display: flex;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    padding: 16px 14px 14px 10px;
+}
+
+.gsi-style-8 li > * .number {
+    font-size: 19px;
+    padding-right: 5px;
+}
+
+.gsi-style-8 li > * .desc {
+    padding-left: 20px;
+}
+
+.gsi-style-8 li > * .desc label {
+    font-size: 1.1em;
+}
+
+.gsi-style-8 li > * .desc span {
+    font-size: 14px;
+    display: block;
+}
+
+.gsi-style-8 li.visited > *,
+.gsi-style-8 li.current > * {
+    background-color: #96c03d;
+    color: #fff;
+}
+
+.gsi-style-8 li.visited:after {
+    background-color: #96c03d !important;
+}
+
+.gsi-style-8.gsi-vertical li {
+    margin-top: 20px;
+}
+
+.gsi-style-8.gsi-vertical li:not(:last-child):after {
+    position: absolute;
+    content: '';
+    height: 100%;
+    background: #edeff0;
+    margin: 0;
+    width: 5px;
+    top: 100%;
+    left: 10%;
+}
+
+.gsi-style-9 {
+    width: 100%;
+    padding: 0 1.2em;
+    margin: 1em auto;
+}
+
+.gsi-style-9 li {
+    position: relative;
+    margin-left: 40px;
+    display: inline-block;
+}
+
+.gsi-style-9 li a {
+    color: #2c3f4c;
+}
+
+.gsi-style-9 li a:hover {
+    color: #96c03d;
+}
+
+.gsi-style-9 li:not(:last-child):after {
+    position: absolute;
+    content: '';
+    height: 5px;
+    background: #edeff0;
+    margin: 0;
+    width: 150%;
+    top: 50%;
+    left: 50%;
+}
+
+.gsi-style-9 li > * {
+    display: flex;
+}
+
+.gsi-style-9 li > * .number {
+    display: none;
+}
+
+.gsi-style-9 li > * .desc {
+    margin-top: -23%;
+    padding-bottom: 33px;
+}
+
+.gsi-style-9 li > * .desc span {
+    display: none;
+}
+
+.gsi-style-9 li.visited > *,
+.gsi-style-9 li.current > * {
+    color: #96c03d;
+}
+
+.gsi-style-9 li.visited:after {
+    background-color: #96c03d;
+}
+
+.gsi-style-9 li > *:after {
+    position: absolute;
+    content: '';
+    margin: 0;
+    width: 20px;
+    height: 20px;
+    background-color: #edeff0;
+    left: 33%;
+    top: 30%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+}
+
+.gsi-style-9 li.visited > *:after,
+.gsi-style-9 li.current > *:after {
+    background-color: #96c03d;
+    z-index: 3;
+}
+
+.gsi-style-9.gsi-vertical li {
+    padding-left: 15px;
+}
+
+.gsi-style-9.gsi-vertical li:not(:last-child):after {
+    height: 100%;
+    width: 5px;
+    top: 77%;
+    left: 8px;
+}
+
+.gsi-style-9.gsi-vertical li > * {
+    display: block;
+}
+
+.gsi-style-9.gsi-vertical li > * .desc {
+    padding-left: 10px;
+}
+
+.gsi-style-9.gsi-vertical li > *:after {
+    left: 0;
+    top: 36%;
+}
+
+.gsi-style-10 {
+    width: 100%;
+    padding: 0 1.2em;
+    margin: 1em auto;
+}
+
+.gsi-style-10 li {
+    position: relative;
+    margin-left: 40px;
+    display: inline-block;
+}
+
+.gsi-style-10 li a {
+    color: #2c3f4c;
+}
+
+.gsi-style-10 li a:hover {
+    color: #96c03d;
+}
+
+.gsi-style-10 li a:hover:before {
+    position: absolute;
+    content: '';
+    margin: 0;
+    width: 26px;
+    height: 26px;
+    background-color: #b2b2b2;
+    left: 29%;
+    top: 24%;
+    z-index: 1;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    opacity: 0.2;
+    filter: alpha(opacity=20);
+}
+
+.gsi-style-10 li:first-child a:hover:before,
+.gsi-style-10 li:last-child a:hover:before {
+    left: 28%;
+    top: 23%;
+}
+
+.gsi-style-10 li:not(:last-child):after {
+    position: absolute;
+    content: '';
+    height: 5px;
+    background: #edeff0;
+    margin: 0;
+    width: 150%;
+    top: 50%;
+    left: 50%;
+}
+
+.gsi-style-10 li > * {
+    display: flex;
+}
+
+.gsi-style-10 li > * .number {
+    display: none;
+}
+
+.gsi-style-10 li > * .desc {
+    margin-top: -23%;
+    padding-bottom: 33px;
+}
+
+.gsi-style-10 li > * .desc span {
+    display: none;
+}
+
+.gsi-style-10 li.visited > *,
+.gsi-style-10 li.current > * {
+    color: #96c03d;
+}
+
+.gsi-style-10 li.visited:after {
+    background-color: #96c03d;
+}
+
+.gsi-style-10 li.visited a:hover:before {
+    background-color: #96c03d;
+}
+
+.gsi-style-10 li > *:after {
+    position: absolute;
+    content: '';
+    margin: 0;
+    width: 20px;
+    height: 20px;
+    background-color: #edeff0;
+    left: 33%;
+    top: 30%;
+    z-index: 2;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+}
+
+.gsi-style-10 li.visited > *:after,
+.gsi-style-10 li.current > *:after {
+    background-color: #96c03d;
+}
+
+.gsi-style-10.gsi-vertical li {
+    padding-left: 15px;
+}
+
+.gsi-style-10.gsi-vertical li a:hover:before {
+    left: -3px;
+    top: 28%;
+}
+
+.gsi-style-10.gsi-vertical li:not(:last-child):after {
+    height: 100%;
+    width: 5px;
+    top: 77%;
+    left: 8px;
+}
+
+.gsi-style-10.gsi-vertical li > * {
+    display: block;
+}
+
+.gsi-style-10.gsi-vertical li > *:after {
+    left: 0;
+    top: 36%;
+}
+
+.gsi-style-11 {
+    width: 100%;
+    padding: 0 1.2em;
+    margin: 2em auto;
+}
+
+.gsi-style-11 li {
+    position: relative;
+    margin-left: 40px;
+    display: inline-block;
+}
+
+.gsi-style-11 li a {
+    color: #2c3f4c;
+}
+
+.gsi-style-11 li a:hover {
+    color: #96c03d;
+}
+
+.gsi-style-11 li a:hover:before {
+    position: absolute;
+    content: '';
+    margin: 0;
+    width: 26px;
+    height: 26px;
+    background-color: #b2b2b2;
+    left: 27%;
+    top: 88%;
+    z-index: 1;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    opacity: 0.2;
+    filter: alpha(opacity=20);
+}
+
+.gsi-style-11 li:not(:first-child):before,
+.gsi-style-11 li:not(:last-child):after {
+    position: absolute;
+    content: '';
+    height: 5px;
+    background: #edeff0;
+    margin: 0;
+    width: 75%;
+    top: 141%;
+}
+
+.gsi-style-11 li:not(:last-child):after {
+    left: 50%;
+}
+
+.gsi-style-11 li:not(:first-child):before {
+    right: 60%;
+}
+
+.gsi-style-11 li > * {
+    display: block;
+}
+
+.gsi-style-11 li > * .number {
+    display: none;
+}
+
+.gsi-style-11 li > * .desc span {
+    display: none;
+}
+
+.gsi-style-11 li.visited > *,
+.gsi-style-11 li.current > * {
+    color: #96c03d;
+}
+
+.gsi-style-11 li.current:before,
+.gsi-style-11 li.current:after,
+.gsi-style-11 li.visited:before,
+.gsi-style-11 li.visited:after {
+    background-color: #96c03d;
+}
+
+.gsi-style-11 li.visited a:hover:before {
+    background-color: #96c03d;
+}
+
+.gsi-style-11 li > *:after {
+    position: absolute;
+    content: '';
+    margin: 0;
+    width: 20px;
+    height: 20px;
+    background-color: #edeff0;
+    left: 33%;
+    top: 100%;
+    z-index: 2;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+}
+
+.gsi-style-11 li.visited > *:after,
+.gsi-style-11 li.current > *:after {
+    background-color: #96c03d;
+}
+
+.gsi-style-11.gsi-vertical li {
+    padding-left: 15px;
+}
+
+.gsi-style-11.gsi-vertical li a:hover:before {
+    left: -3px;
+    top: 28%;
+}
+
+.gsi-style-11.gsi-vertical li:not(:last-child):after {
+    height: 100%;
+    width: 5px;
+    top: 77%;
+    left: 8px;
+}
+
+.gsi-style-11.gsi-vertical li:not(:first-child):before {
+    height: 75%;
+    width: 5px;
+    top: 0;
+    left: 8px;
+    right: 0;
+}
+
+.gsi-style-11.gsi-vertical li > * {
+    display: block;
+}
+
+.gsi-style-11.gsi-vertical li > *:after {
+    left: 0;
+    top: 36%;
+}
+
+.gsi-style-12 {
+    width: 100%;
+    padding: 0 1.2em 2em 1.2em;
+    margin: 1em auto;
+    counter-reset: step;
+}
+
+.gsi-style-12 li {
+    position: relative;
+    margin-left: 40px;
+    display: inline-block;
+    counter-increment: step;
+}
+
+.gsi-style-12 li a {
+    color: #2c3f4c;
+}
+
+.gsi-style-12 li a:hover {
+    color: #96c03d;
+}
+
+.gsi-style-12 li a:hover:before {
+    position: absolute;
+    content: '';
+    margin: 0;
+    width: 26px;
+    height: 26px;
+    background-color: #b2b2b2;
+    left: 28%;
+    top: 108%;
+    z-index: 1;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    opacity: 0.2;
+    filter: alpha(opacity=20);
+}
+
+.gsi-style-12 li:not(:first-child):before,
+.gsi-style-12 li:not(:last-child):after {
+    position: absolute;
+    content: '';
+    height: 5px;
+    background: #edeff0;
+    margin: 0;
+    width: 75%;
+    top: 165%;
+}
+
+.gsi-style-12 li:not(:last-child):after {
+    left: 50%;
+}
+
+.gsi-style-12 li:not(:first-child):before {
+    right: 60%;
+}
+
+.gsi-style-12 li > * {
+    display: block;
+}
+
+.gsi-style-12 li > * .number {
+    display: none;
+}
+
+.gsi-style-12 li > * .desc span {
+    display: none;
+}
+
+.gsi-style-12 li.visited > *,
+.gsi-style-12 li.current > * {
+    color: #96c03d;
+}
+
+.gsi-style-12 li.current:before,
+.gsi-style-12 li.current:after,
+.gsi-style-12 li.visited:before,
+.gsi-style-12 li.visited:after {
+    background-color: #96c03d;
+}
+
+.gsi-style-12 li.visited a:hover:before {
+    background-color: #96c03d;
+}
+
+.gsi-style-12 li > *:after {
+    position: absolute;
+    content: counter(step);
+    margin: 0;
+    width: 20px;
+    height: 20px;
+    background-color: #edeff0;
+    left: 33%;
+    top: 125%;
+    z-index: 2;
+    text-align: center;
+    color: #2c3f4c;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+}
+
+.gsi-style-12 li.visited > *:after,
+.gsi-style-12 li.current > *:after {
+    background-color: #96c03d;
+    color: #fff;
+}
+
+.gsi-style-12.gsi-vertical li {
+    padding-left: 15px;
+}
+
+.gsi-style-12.gsi-vertical li a:hover:before {
+    left: -3px;
+    top: 28%;
+}
+
+.gsi-style-12.gsi-vertical li:not(:last-child):after {
+    height: 100%;
+    width: 5px;
+    top: 77%;
+    left: 8px;
+}
+
+.gsi-style-12.gsi-vertical li:not(:first-child):before {
+    height: 75%;
+    width: 5px;
+    top: 0;
+    left: 8px;
+    right: 0;
+}
+
+.gsi-style-12.gsi-vertical li > * {
+    display: block;
+}
+
+.gsi-style-12.gsi-vertical li > *:after {
+    left: 0;
+    top: 36%;
+}
+
+.gsi-style-13 {
+    width: 100%;
+    padding: 0 1.2em;
+    margin: 1em auto;
+}
+
+.gsi-style-13 li {
+    position: relative;
+    margin-left: 40px;
+    display: inline-block;
+    margin-bottom: 40px;
+}
+
+.gsi-style-13 li a {
+    position: relative;
+    background-color: #edeff0;
+    color: #2c3f4c;
+}
+
+.gsi-style-13 li a:hover {
+    background-color: #2c3f4c;
+    color: #fff;
+}
+
+.gsi-style-13 li:not(:last-child):after {
+    position: absolute;
+    content: '';
+    height: 5px;
+    background: #edeff0;
+    margin: 0;
+    width: 100%;
+    top: 50%;
+    left: 100%;
+}
+
+.gsi-style-13 li > * {
+    display: flex;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    padding: 10px 25px 25px 25px;
+}
+
+.gsi-style-13 li > * .number {
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    width: 50px;
+    height: 42px;
+    font-size: 28px;
+    padding-top: 8px;
+    text-align: center;
+    top: 65%;
+    left: 29%;
+    position: absolute;
+    border: 2px solid #EDEFF0;
+    background-color: #fff;
+    color: #2c3f4c;
+}
+
+.gsi-style-13 li > * .desc {
+    padding-bottom: 10px;
+    font-size: 22px;
+}
+
+.gsi-style-13 li > * .desc label {
+    font-size: 1.1em;
+}
+
+.gsi-style-13 li > * .desc span {
+    font-size: 14px;
+    display: block;
+}
+
+.gsi-style-13 li.visited > *,
+.gsi-style-13 li.current > * {
+    background-color: #96c03d;
+    color: #fff;
+}
+
+.gsi-style-13 li.visited > * .number,
+.gsi-style-13 li.current > * .number {
+    border: 2px solid #96C03D;
+    background-color: #fff;
+    color: #96C03D;
+}
+
+.gsi-style-13 li.visited:after {
+    background-color: #96c03d;
+}
+
+.gsi-style-13.gsi-vertical li {
+    margin-bottom: 50px;
+}
+
+.gsi-style-13.gsi-vertical li:not(:last-child):after {
+    height: 100%;
+    width: 5px;
+    top: 100%;
+    left: 48%;
+}
+
+.gsi-style-13.gsi-vertical li > * {
+    text-align: center;
+}
+
+.gsi-style-13.gsi-vertical li > * .number {
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    width: 50px;
+    height: 42px;
+    font-size: 28px;
+    padding-top: 8px;
+    text-align: center;
+    top: 65%;
+    left: 38%;
+    position: absolute;
+    border: 2px solid #EDEFF0;
+    background-color: #fff;
+    color: #2c3f4c;
+    z-index: 1;
+}
+
+.gsi-style-13.gsi-vertical li > * .desc {
+    padding-bottom: 10px;
+    font-size: 22px;
+    width: 100%;
+}
+
+.gsi-style-13.gsi-vertical li > * .desc label {
+    font-size: 1.1em;
+}
+
+.gsi-style-13.gsi-vertical li > * .desc span {
+    font-size: 14px;
+    display: block;
+}
+
+.gsi-style-13.gsi-vertical li.visited > *,
+.gsi-style-13.gsi-vertical li.current > * {
+    background-color: #96c03d;
+    color: #fff;
+}
+
+.gsi-style-13.gsi-vertical li.visited > * .number,
+.gsi-style-13.gsi-vertical li.current > * .number {
+    border: 2px solid #96C03D;
+    background-color: #fff;
+    color: #96C03D;
+}
+
+.gsi-style-13.gsi-vertical li.visited:after {
+    background-color: #96c03d;
+}
+
+@media only screen and (min-width: 317px) and (max-width: 480px) {
+    .gsi-step-indicator {
+        width: 100%;
+        padding: 0;
+    }
+
+    .gsi-step-indicator li {
+        float: inherit !important;
+        display: block;
+    }
+
+    .gsi-step-indicator li .number {
+        display: none;
+        font-size: 24px;
+    }
+
+    .gsi-step-indicator li .desc {
+        padding-top: 0;
+        padding-left: 4px;
+        vertical-align: super;
+    }
+
+    .gsi-step-indicator li .desc label {
+        font-size: 1.1em;
+    }
+
+    .gsi-step-indicator li .desc span {
+        font-size: 14px;
+        display: block;
+    }
+
+    .gsi-step-indicator li::after {
+        display: inline-block;
+        content: '\00bb';
+        margin: 0 1em;
+        color: #959fa5;
+    }
+
+    .gsi-step-indicator li:last-of-type::after {
+        display: none;
+    }
+
+    .gsi-step-indicator li > * {
+        display: flex;
+        font-size: 16px;
+        color: #2c3f4c;
+    }
+
+    .gsi-step-indicator.triangle {
+        background-color: transparent;
+        padding: 0;
+    }
+
+    .gsi-step-indicator.triangle li {
+        margin: 4px 4px 4px 0;
+    }
+
+    .gsi-step-indicator.triangle li > * {
+        padding: 6px 6px 6px 13px;
+    }
+
+    .gsi-step-indicator.triangle li:first-of-type > * {
+        border-radius: .25em 0 0 .25em;
+    }
+
+    .gsi-step-indicator.triangle li:last-of-type > * {
+        padding-right: 1.6em;
+        border-radius: 0 .25em .25em 0;
+    }
+
+    .gsi-step-indicator.triangle li::after,
+    .gsi-step-indicator.triangle li > *::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 100%;
+        height: 0;
+        width: 0;
+        border: 16px solid transparent;
+        border-right-width: 0;
+        border-left-width: 12px;
+    }
+
+    .gsi-step-indicator.triangle li::after {
+        z-index: 1;
+        -webkit-transform: translateX(4px);
+        -moz-transform: translateX(4px);
+        -ms-transform: translateX(4px);
+        -o-transform: translateX(4px);
+        transform: translateX(4px);
+        border-left-color: #ffffff;
+        margin: 0;
+    }
+
+    .gsi-step-indicator.triangle li > *::after {
+        z-index: 2;
+        border-left-color: inherit;
+    }
+
+    .gsi-step-indicator.triangle .triangle li:last-of-type::after,
+    .gsi-step-indicator.triangle li:last-of-type > *::after {
+        display: none;
+    }
+
+    .gsi-vertical {
+        width: 100% !important;
+    }
+
+    .gsi-vertical li {
+        margin-right: 10px;
+    }
+
+    .gsi-vertical li > *,
+    .gsi-vertical li.current > * {
+        padding: 8px 7px 7px 5px !important;
+    }
+
+    .gsi-number-circle li {
+        display: block;
+        margin: 5px 0;
+    }
+
+    .gsi-number-circle li > * .number {
+        padding: 2px 4px 4px 4px;
+        width: 18px;
+        height: 18px;
+        font-size: 16px;
+    }
+
+    .gsi-number-circle li > * .desc {
+        padding-left: 10px;
+    }
+
+    .gsi-style-2.triangle li .desc {
+        padding-top: 0;
+    }
+
+    .gsi-style-2.triangle li::after,
+    .gsi-style-2.triangle li > *::after {
+        border-Width: 24px !important;
+        border-right-width: 0 !important;
+        border-left-width: 13px !important;
+    }
+
+    .gsi-style-4 {
+        display: inline-block;
+        padding: 0;
+        margin: 1em auto;
+    }
+
+    .gsi-style-4 li {
+        display: block;
+        margin-bottom: 3px;
+        margin-top: 3px;
+    }
+
+    .gsi-style-4 li > * {
+        padding: 8px 7px 7px 7px;
+        display: flex;
+    }
+
+    .gsi-style-4 li > * .number {
+        font-size: 18px;
+        padding-right: 5px;
+    }
+
+    .gsi-style-4 li > * .number:after,
+    .gsi-style-4 li > * .number:before {
+        top: -8px;
+        border: 19px solid transparent;
+        border-left-width: 9px;
+    }
+
+    .gsi-style-4 li > * .number:after {
+        z-index: 1;
+        left: 65%;
+        border-left-color: #fff;
+    }
+
+    .gsi-style-4 li > * .number:before {
+        z-index: 2;
+        left: 54%;
+    }
+
+    .gsi-style-4 li > * .desc {
+        padding-top: 0;
+        padding-left: 10px;
+    }
+
+    .gsi-style-4 li > * .desc label {
+        font-size: 14px;
+    }
+
+    .gsi-style-4 li > * .desc span {
+        font-size: 12px;
+    }
+
+    .gsi-style-4 li.current > * {
+        background-color: #96c03d;
+        color: #fff;
+    }
+
+    .gsi-style-4 li.current > * .number:before {
+        border-left-color: #96c03d;
+    }
+
+    .gsi-style-5 {
+        padding: 0;
+        width: 100%;
+    }
+
+    .gsi-style-5 li {
+        margin: 5px 0;
+        display: block;
+    }
+
+    .gsi-style-5 li > * {
+        padding: 8px 7px 7px 5px;
+    }
+
+    .gsi-style-5 li > * .number {
+        font-size: 16px;
+        padding-right: 3px;
+        padding-left: 3px;
+    }
+
+    .gsi-style-5 li > * .desc {
+        padding-left: 5px;
+    }
+
+    .gsi-style-5 li > * .desc label {
+        font-size: 16px;
+    }
+
+    .gsi-style-5 li > * .desc span {
+        font-size: 12px;
+        display: block;
+    }
+
+    .gsi-style-6 {
+        width: 100%;
+        padding: 0;
+    }
+
+    .gsi-style-6 li {
+        display: block;
+    }
+
+    .gsi-style-6 li > * {
+        padding: 8px 7px 7px 5px;
+    }
+
+    .gsi-style-6 li > * .number {
+        font-size: 20px;
+        height: 26px;
+        width: 26px;
+        padding: 3px;
+    }
+
+    .gsi-style-6 li > * .desc {
+        padding-left: 10px;
+    }
+
+    .gsi-style-6 li > * .desc label {
+        font-size: 16px;
+    }
+
+    .gsi-style-6 li > * .desc span {
+        font-size: 12px;
+    }
+
+    .gsi-style-7 {
+        width: 100%;
+        padding: 0;
+    }
+
+    .gsi-style-7 li {
+        margin-left: 5px;
+        display: block;
+        margin-bottom: 10px;
+        min-width: 215px;
+    }
+
+    .gsi-style-8 {
+        width: 100%;
+        padding: 0;
+    }
+
+    .gsi-style-8 li {
+        margin: 10px 0;
+        display: block;
+    }
+
+    .gsi-style-8 li:not(:last-child):after {
+        width: 5px;
+        height: 100%;
+        top: 100%;
+        left: 10%;
+    }
+
+    .gsi-style-8 li > * .desc {
+        padding-left: 10px;
+    }
+
+    .gsi-style-8 li > * .desc label {
+        font-size: 16px;
+    }
+
+    .gsi-style-8 li > * .desc span {
+        font-size: 12px;
+    }
+
+    .gsi-style-9 {
+        width: 100%;
+        padding: 0;
+    }
+
+    .gsi-style-9 li,
+    .gsi-style-9 li:not(:first-child) {
+        margin-left: 0;
+    }
+
+    .gsi-style-9 li > * .desc {
+        font-size: 14px;
+    }
+
+    .gsi-style-9 li:not(:last-child):after {
+        width: 100%;
+        left: 70%;
+    }
+
+    .gsi-style-10 {
+        width: 100%;
+        padding: 0;
+    }
+
+    .gsi-style-10 li {
+        margin-left: 0;
+    }
+
+    .gsi-style-10 li:not(:first-child) {
+        margin-left: 0;
+    }
+
+    .gsi-style-10 li:not(:last-child):after {
+        width: 100%;
+    }
+
+    .gsi-style-10.gsi-vertical li {
+        margin-left: 0;
+    }
+
+    .gsi-style-10.gsi-vertical li > * .desc {
+        padding-left: 10px;
+    }
+
+    .gsi-style-11 {
+        width: 100%;
+        padding: 0;
+    }
+
+    .gsi-style-11 li {
+        margin-left: 0;
+    }
+
+    .gsi-style-11 li:not(:first-child) {
+        margin-left: 5px;
+    }
+
+    .gsi-style-11 li > * .desc {
+        font-size: 14px;
+    }
+
+    .gsi-style-11 li:not(:first-child):before,
+    .gsi-style-11 li:not(:last-child):after {
+        width: 50%;
+    }
+
+    .gsi-style-11.gsi-vertical li {
+        margin-left: 0;
+    }
+
+    .gsi-style-11.gsi-vertical li:not(:first-child) {
+        margin-left: 0;
+    }
+
+    .gsi-style-11.gsi-vertical li > * .desc {
+        padding-top: 6px;
+        padding-left: 5px;
+        display: inline-block;
+    }
+
+    .gsi-style-12 {
+        width: 100%;
+        padding: 0;
+    }
+
+    .gsi-style-12 li {
+        margin-left: 0;
+    }
+
+    .gsi-style-12 li:not(:first-child) {
+        margin-left: 0;
+    }
+
+    .gsi-style-12 li:not(:first-child):before,
+    .gsi-style-12 li:not(:last-child):after {
+        width: 44%;
+    }
+
+    .gsi-style-12 li.current:before,
+    .gsi-style-12 li.current:after,
+    .gsi-style-12 li.visited:before,
+    .gsi-style-12 li.visited:after {
+        background-color: #96c03d;
+    }
+
+    .gsi-style-12.gsi-vertical li {
+        margin-left: 0;
+    }
+
+    .gsi-style-12.gsi-vertical li > * .desc {
+        display: inline-block;
+        padding: 5px;
+        padding-top: 5px;
+    }
+
+    .gsi-style-13 {
+        width: 100%;
+        padding: 0;
+    }
+
+    .gsi-style-13 li {
+        margin-left: 0;
+        margin-bottom: 10px;
+    }
+
+    .gsi-style-13 li:not(:first-child) {
+        margin-left: 5px;
+    }
+
+    .gsi-style-13 li:not(:last-child):after {
+        display: none;
+    }
+
+    .gsi-style-13 li > * {
+        padding: 6px 7px 0 7px;
+    }
+
+    .gsi-style-13 li > * .number {
+        display: none;
+    }
+
+    .gsi-style-13 li > * .desc {
+        padding-bottom: 10px;
+        font-size: 12px;
+    }
+
+    .gsi-style-13 li > * .desc label {
+        font-size: 1.1em;
+    }
+
+    .gsi-style-13 li > * .desc span {
+        font-size: 14px;
+        display: block;
+    }
+
+    .gsi-style-13.gsi-vertical li {
+        margin-bottom: 10px;
+        margin-left: 0;
+    }
+
+    .gsi-style-13.gsi-vertical li:not(:first-child) {
+        margin-left: 0;
+    }
+
+    .gsi-style-13.gsi-vertical li:not(:last-child):after {
+        display: block;
+    }
+
+    .gsi-style-13.gsi-vertical li > * {
+        text-align: center;
+    }
+
+    .gsi-style-13.gsi-vertical li > * .number {
+        left: 44%;
+    }
+}
+
+@media only screen and (min-width: 480px) and (max-width: 768px) {
+    .gsi-step-indicator {
+        width: 100%;
+        padding: 0;
+    }
+
+    .gsi-step-indicator li .number {
+        font-size: 24px;
+    }
+
+    .gsi-step-indicator li .desc {
+        padding-top: 6px;
+        /*padding-left: 5px;*/
+        vertical-align: super;
+    }
+
+    .gsi-step-indicator li .desc label {
+        font-size: 1.1em;
+    }
+
+    .gsi-step-indicator li .desc span {
+        font-size: 14px;
+        display: block;
+    }
+
+    .gsi-step-indicator li::after {
+        /*display: inline-block;*/
+        display: none;
+        content: '\00bb';
+        margin: 0 1em;
+        color: #959fa5;
+    }
+
+    .gsi-step-indicator li:last-of-type::after {
+        display: none;
+    }
+
+    .gsi-step-indicator li > * {
+        display: flex;
+        font-size: 1.6rem;
+        color: #2c3f4c;
+    }
+
+    .gsi-step-indicator.triangle {
+        background-color: transparent;
+        padding: 0;
+    }
+
+    .gsi-step-indicator.triangle li {
+        margin: 4px 4px 4px 0;
+        display: block;
+        float: none;
+    }
+
+    .gsi-step-indicator.triangle li > * {
+        padding: 6px 6px 6px 14px;
+    }
+
+    .gsi-step-indicator.triangle li:first-of-type > * {
+        border-radius: .25em 0 0 .25em;
+    }
+
+    .gsi-step-indicator.triangle li:last-of-type > * {
+        padding-right: 1.6em;
+        border-radius: 0 .25em .25em 0;
+    }
+
+    .gsi-step-indicator.triangle li::after,
+    .gsi-step-indicator.triangle li > *::after {
+        display: none !important;
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 100%;
+        height: 0;
+        width: 0;
+        border: 21px solid transparent;
+        border-right-width: 0;
+        border-left-width: 13px;
+    }
+
+    .gsi-step-indicator.triangle li::after {
+        z-index: 1;
+        -webkit-transform: translateX(4px);
+        -moz-transform: translateX(4px);
+        -ms-transform: translateX(4px);
+        -o-transform: translateX(4px);
+        transform: translateX(4px);
+        border-left-color: #ffffff;
+        margin: 0;
+    }
+
+    .gsi-step-indicator.triangle li > *::after {
+        z-index: 2;
+        border-left-color: inherit;
+    }
+
+    .gsi-step-indicator.triangle .triangle li:last-of-type::after,
+    .gsi-step-indicator.triangle li:last-of-type > *::after {
+        display: none;
+    }
+
+    .gsi-vertical {
+        width: 100% !important;
+    }
+
+    .gsi-vertical li {
+        margin-right: 10px;
+    }
+
+    .gsi-vertical li > *,
+    .gsi-vertical li.current > * {
+        padding: 8px 14px 8px 15px !important;
+    }
+
+    .gsi-number-circle li > * .number {
+        padding: 2px 4px 4px 4px;
+        width: 18px;
+        height: 18px;
+        font-size: 16px;
+    }
+
+    .gsi-number-circle li > * .desc {
+        padding-left: 10px;
+    }
+
+    .gsi-style-3.triangle li::after,
+    .gsi-style-3.triangle li > *::after {
+        border-Width: 28px !important;
+        border-right-width: 0 !important;
+        border-left-width: 13px !important;
+    }
+
+    .gsi-style-2.triangle li .desc {
+        padding-top: 0;
+    }
+
+    .gsi-style-2.triangle li::after,
+    .gsi-style-2.triangle li > *::after {
+        border-Width: 24px !important;
+        border-right-width: 0 !important;
+        border-left-width: 13px !important;
+    }
+
+    .gsi-style-4 {
+        display: inline-block;
+        padding: 0;
+        margin: 1em auto;
+    }
+
+    .gsi-style-4 li > * {
+        padding: 8px 7px 7px 7px;
+        display: flex;
+    }
+
+    .gsi-style-4 li > * .number {
+        font-size: 18px;
+        padding-right: 5px;
+    }
+
+    .gsi-style-4 li > * .number:after,
+    .gsi-style-4 li > * .number:before {
+        top: -8px;
+        border: 19px solid transparent;
+        border-left-width: 9px;
+    }
+
+    .gsi-style-4 li > * .number:after {
+        z-index: 1;
+        left: 65%;
+        border-left-color: #fff;
+    }
+
+    .gsi-style-4 li > * .number:before {
+        z-index: 2;
+        left: 54%;
+    }
+
+    .gsi-style-4 li > * .desc {
+        padding-top: 0;
+        padding-left: 10px;
+    }
+
+    .gsi-style-4 li > * .desc label {
+        font-size: 14px;
+    }
+
+    .gsi-style-4 li > * .desc span {
+        font-size: 12px;
+    }
+
+    .gsi-style-4 li.current > * {
+        background-color: #96c03d;
+        color: #fff;
+    }
+
+    .gsi-style-4 li.current > * .number:before {
+        border-left-color: #96c03d;
+    }
+
+    .gsi-style-5 {
+        padding: 0;
+        width: 100%;
+    }
+
+    .gsi-style-5 li {
+        margin-left: 5px;
+        margin-top: 5px;
+        margin-bottom: 5px;
+        display: inline-block;
+    }
+
+    .gsi-style-5 li > * {
+        padding: 8px 7px 7px 5px;
+    }
+
+    .gsi-style-5 li > * .number {
+        font-size: 16px;
+        padding-right: 3px;
+        padding-left: 3px;
+    }
+
+    .gsi-style-5 li > * .desc {
+        padding-left: 5px;
+    }
+
+    .gsi-style-5 li > * .desc label {
+        font-size: 16px;
+    }
+
+    .gsi-style-5 li > * .desc span {
+        font-size: 12px;
+        display: block;
+    }
+
+    .gsi-style-6 {
+        width: 100%;
+        padding: 0;
+    }
+
+    .gsi-style-6 li {
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+
+    .gsi-style-6 li > * {
+        padding: 8px 7px 7px 5px;
+    }
+
+    .gsi-style-6 li > * .number {
+        font-size: 20px;
+        height: 26px;
+        width: 26px;
+        padding: 3px;
+    }
+
+    .gsi-style-6 li > * .desc {
+        padding-left: 10px;
+    }
+
+    .gsi-style-6 li > * .desc label {
+        font-size: 16px;
+    }
+
+    .gsi-style-6 li > * .desc span {
+        font-size: 12px;
+    }
+
+    .gsi-style-7 {
+        width: 100%;
+        padding: 0;
+    }
+
+    .gsi-style-7 li {
+        margin-left: 5px;
+        display: block;
+        margin-bottom: 10px;
+        min-width: 215px;
+    }
+
+    .gsi-style-8 {
+        width: 100%;
+        padding: 0;
+    }
+
+    .gsi-style-8 li {
+        margin: 10px 0;
+        display: block;
+    }
+
+    .gsi-style-8 li:not(:last-child):after {
+        width: 5px;
+        height: 100%;
+        top: 100%;
+        left: 10%;
+    }
+
+    .gsi-style-8 li > * .desc {
+        padding-left: 10px;
+    }
+
+    .gsi-style-8 li > * .desc label {
+        font-size: 16px;
+    }
+
+    .gsi-style-8 li > * .desc span {
+        font-size: 12px;
+    }
+
+    .gsi-style-9 {
+        width: 100%;
+        padding: 0;
+    }
+
+    .gsi-style-9 li {
+        margin-left: 0;
+    }
+
+    .gsi-style-9 li:not(:first-child) {
+        margin-left: 30px;
+    }
+
+    .gsi-style-9.gsi-vertical li {
+        padding-left: 15px;
+        margin-left: 0;
+    }
+
+    .gsi-style-9.gsi-vertical li:not(:last-child):after {
+        height: 100%;
+        width: 5px;
+        top: 94%;
+        left: 8px;
+    }
+
+    .gsi-style-9.gsi-vertical li > * {
+        display: block;
+    }
+
+    .gsi-style-9.gsi-vertical li > *:after {
+        left: 0;
+        top: 36%;
+    }
+
+    .gsi-style-10 {
+        width: 100%;
+        padding: 0;
+    }
+
+    .gsi-style-10 li {
+        margin-left: 0;
+    }
+
+    .gsi-style-10 li:not(:first-child) {
+        margin-left: 20px;
+    }
+
+    .gsi-style-10 li:not(:last-child):after {
+        width: 120%;
+    }
+
+    .gsi-style-10.gsi-vertical li {
+        margin-left: 0;
+    }
+
+    .gsi-style-11 {
+        width: 100%;
+        padding: 0;
+    }
+
+    .gsi-style-11 li {
+        margin-left: 0;
+    }
+
+    .gsi-style-11 li:not(:first-child) {
+        margin-left: 20px;
+    }
+
+    .gsi-style-11 li:not(:first-child):before,
+    .gsi-style-11 li:not(:last-child):after {
+        width: 61%;
+        top: 141%;
+    }
+
+    .gsi-style-11 li:not(:last-child):after {
+        left: 61%;
+    }
+
+    .gsi-style-11 li:not(:first-child):before {
+        right: 61%;
+    }
+
+    .gsi-style-11.gsi-vertical li {
+        margin-left: 0;
+    }
+
+    .gsi-style-11.gsi-vertical li:not(:first-child) {
+        margin-left: 0;
+    }
+
+    .gsi-style-11.gsi-vertical li > * .desc {
+        padding-top: 6px;
+        padding-left: 5px;
+        display: inline-block;
+    }
+
+    .gsi-style-12 {
+        width: 100%;
+        padding: 0;
+    }
+
+    .gsi-style-12 li {
+        margin-left: 0;
+    }
+
+    .gsi-style-12 li:not(:first-child) {
+        margin-left: 20px;
+    }
+
+    .gsi-style-12 li:not(:first-child):before,
+    .gsi-style-12 li:not(:last-child):after {
+        width: 61%;
+    }
+
+    .gsi-style-12 li.current:before,
+    .gsi-style-12 li.current:after,
+    .gsi-style-12 li.visited:before,
+    .gsi-style-12 li.visited:after {
+        background-color: #96c03d;
+    }
+
+    .gsi-style-12.gsi-vertical li {
+        margin-left: 0;
+    }
+
+    .gsi-style-12.gsi-vertical li > * .desc {
+        display: inline-block;
+        padding: 5px;
+        padding-top: 5px;
+    }
+
+    .gsi-style-13 {
+        width: 100%;
+        padding: 0;
+    }
+
+    .gsi-style-13 li {
+        margin-left: 0;
+    }
+
+    .gsi-style-13 li:not(:first-child) {
+        margin-left: 20px;
+    }
+
+    .gsi-style-13 li:not(:last-child):after {
+        width: 28%;
+    }
+
+    .gsi-style-13 li > * {
+        padding: 6px 7px 10px 7px;
+    }
+
+    .gsi-style-13 li > * .number {
+        width: 35px;
+        height: 29px;
+        font-size: 19px;
+        padding-top: 7px;
+        left: 26%;
+    }
+
+    .gsi-style-13 li > * .desc {
+        padding-bottom: 10px;
+        font-size: 18px;
+    }
+
+    .gsi-style-13 li > * .desc label {
+        font-size: 1.1em;
+    }
+
+    .gsi-style-13 li > * .desc span {
+        font-size: 14px;
+        display: block;
+    }
+
+    .gsi-style-13.gsi-vertical li {
+        margin-bottom: 50px;
+        margin-left: 0;
+    }
+
+    .gsi-style-13.gsi-vertical li:not(:first-child) {
+        margin-left: 0;
+    }
+
+    .gsi-style-13.gsi-vertical li > * {
+        text-align: center;
+    }
+
+    .gsi-style-13.gsi-vertical li > * .number {
+        left: 44%;
+    }
+}
