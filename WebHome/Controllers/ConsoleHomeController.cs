@@ -1327,6 +1327,12 @@ namespace WebHome.Controllers
             }
 
             var profile = await HttpContext.GetUserAsync();
+
+            if(viewModel.KeyID!=null)
+            {
+                viewModel.CoachID = viewModel.DecryptKeyValue();
+            }
+
             if (!viewModel.CoachID.HasValue)
             {
                 viewModel.CoachID = profile.UID;

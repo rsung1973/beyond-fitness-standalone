@@ -793,6 +793,7 @@ namespace WebHome.Helper
                     {
                         CoachID = coach.CoachID,
                         SettlementID = settlement.SettlementID,
+                        Year = settlement.Year,
                     };
                     salaryTable.InsertOnSubmit(salary);
                 }
@@ -1332,6 +1333,8 @@ namespace WebHome.Helper
             if (settlement == null)
                 return;
 
+            var currentSettlementCount = settlement.Settlement.Count;
+
             forRole = forRole?.GetEfficientString()?.ToLower();
 
             var countableItems = models.GetTable<V_YearlyReview>().Where(v => v.Year == year)
@@ -1395,7 +1398,7 @@ namespace WebHome.Helper
                     salary.GradeIndex = monthlySalary?.ProfessionalLevel?.ProfessionalLevelBasicSalary?.SalaryDetails.AnnualGrade ?? 0;
 
                     salary.AttendanceBonus = (int?)(
-                            Math.Max(reviewItem.PTAttendanceCount.Value - 120, 0)
+                            Math.Max(reviewItem.PTAttendanceCount.Value - 10 * (currentSettlementCount == reviewItem.DataCount ? currentSettlementCount : reviewItem.DataCount.Value - 1), 0)
                             * (int?)(reviewItem.PTAverageUnitPrice / 1.05M + 0.5M)
                             * salary.GradeIndex / 100M * 0.05M + 0.5M
                         ) ?? 0;
@@ -1522,6 +1525,7 @@ namespace WebHome.Helper
                     {
                         CoachID = coach.CoachID,
                         SettlementID = settlement.SettlementID,
+                        Year = settlement.Year,
                     };
                     salaryTable.InsertOnSubmit(salary);
                 }
