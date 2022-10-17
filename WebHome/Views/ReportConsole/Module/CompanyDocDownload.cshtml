@@ -1,0 +1,137 @@
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    UserProfile _model;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = ViewContext.ModelState;
+    _model = (UserProfile)this.Model;
+
+}
+
+<div class="row clearfix">
+    <div class="col-12">
+        <h4 class="card-outbound-header">懶人包</h4>
+    </div>
+    <div class="col-lg-2 col-md-3 col-sm-6">
+        <div class="card">
+            <div class="file">
+                <a href="download/EmployeeManual.zip" target="_blank">
+                    <div class="icon">
+                        <i class="zmdi zmdi-folder-star zmdi-hc-4x"></i>
+                    </div>
+                    <div class="file-name">
+                        <p class="m-b-5">員工手冊懶人包</p>
+                        <small>2022/10/04 <span class="date text-muted">壓縮檔(含附件)</span></small>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>    
+    <div class="col-lg-2 col-md-3 col-sm-6">
+        <div class="card">
+            <div class="file">
+                <a href="download/EmployeeWelfare.zip" target="_blank">
+                    <div class="icon">
+                        <i class="zmdi zmdi-folder-star zmdi-hc-4x"></i>
+                    </div>
+                    <div class="file-name">
+                        <p class="m-b-5">員工福利實施辦法懶人包</p>
+                        <small>2022/10/04 <span class="date text-muted">壓縮檔(含附件)</span></small>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-2 col-md-3 col-sm-6">
+        <div class="card">
+            <div class="file">
+                <a href="download/JobAgency.zip" target="_blank">
+                    <div class="icon">
+                        <i class="zmdi zmdi-folder-star zmdi-hc-4x"></i>
+                    </div>
+                    <div class="file-name">
+                        <p class="m-b-5">職務代理及授權管理辦法懶人包</p>
+                        <small>2022/10/04 <span class="date text-muted">壓縮檔(含附件)</span></small>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row clearfix">
+    <div class="col-12">
+        <h4 class="card-outbound-header">內部文件</h4>
+    </div>
+    <div class="col-lg-2 col-md-3 col-sm-6">
+        <div class="card">
+            <div class="file">
+                <a href="download/WorkRules.pdf" target="_blank">
+                    <div class="icon">
+                        <i class="zmdi zmdi-collection-pdf zmdi-hc-4x"></i>
+                    </div>
+                    <div class="file-name">
+                        <p class="m-b-5">工作規則手冊</p>
+                        <small>2022/01 <span class="date text-muted">PDF</span></small>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-2 col-md-3 col-sm-6">
+        <div class="card">
+            <div class="file">
+                <a href="download/EmployeeManual.pdf" target="_blank">
+                    <div class="icon">
+                        <i class="zmdi zmdi-collection-pdf zmdi-hc-4x"></i>
+                    </div>
+                    <div class="file-name">
+                        <p class="m-b-5">員工手冊</p>
+                        <small>2022/10/04 <span class="date text-muted">PDF</span></small>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>    
+    <div class="col-lg-2 col-md-3 col-sm-6">
+        <div class="card">
+            <div class="file">
+                <a href="download/EmployeeWelfare.pdf" target="_blank">
+                    <div class="icon">
+                        <i class="zmdi zmdi-collection-pdf zmdi-hc-4x"></i>
+                    </div>
+                    <div class="file-name">
+                        <p class="m-b-5">員工福利實施辦法</p>
+                        <small>2022/10/04 <span class="date text-muted">PDF</span></small>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-2 col-md-3 col-sm-6">
+        <div class="card">
+            <div class="file">
+                <a href="download/JobAgency.pdf" target="_blank">
+                    <div class="icon">
+                        <i class="zmdi zmdi-collection-pdf zmdi-hc-4x"></i>
+                    </div>
+                    <div class="file-name">
+                        <p class="m-b-5">職務代理及授權管理辦法</p>
+                        <small>2022/10/04 <span class="date text-muted">PDF</span></small>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
