@@ -58,6 +58,7 @@
                             <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#trust">信託</a></li>
                             <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#inventory">盤點</a></li>
                         }
+                        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#doc">內部文件</a></li>
                     </ul>
                 </div>
                 <div class="tab-content">
@@ -78,6 +79,9 @@
                     </div>
                     <div class="tab-pane" id="inventory">
                         @{ await Html.RenderPartialAsync("~/Views/ReportConsole/Module/InventoryReport.cshtml", _model);}
+                    </div>
+                    <div class="tab-pane" id="doc">
+                        @{ await Html.RenderPartialAsync("~/Views/ReportConsole/Module/CompanyDocDownload.cshtml", _model);}
                     </div>
                 </div>
             </div>
