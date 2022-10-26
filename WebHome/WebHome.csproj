@@ -132,6 +132,7 @@
     <Folder Include="Models\Resources\" />
     <Folder Include="Views\CommonHelper\" />
     <Folder Include="Views\ContractConsole\Items\" />
+    <Folder Include="Views\MyTest\" />
     <Folder Include="Views\SystemInfo\" />
   </ItemGroup>
 

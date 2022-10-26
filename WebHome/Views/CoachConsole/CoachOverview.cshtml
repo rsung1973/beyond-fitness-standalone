@@ -277,7 +277,7 @@
                         await Html.RenderPartialAsync("~/Views/Common/ProfileImage.cshtml", coach);
                     }
                 </a>
-                <p class="text-muted">@((Naming.ProfessionalCategory?)coach.ServingCoach?.ProfessionalLevel?.CategoryID)</p>
+                <p class="text-muted">@(coach.ServingCoach?.ProfessionalLevel?.LevelName)</p>
                 <hr>
             </div>
             <div class="body">

@@ -373,6 +373,13 @@ namespace WebHome.Controllers
                     LevelID = coach.LevelID,
                 };
                 models.GetTable<MonthlyCoachRevenueIndicator>().InsertOnSubmit(item);
+
+                models.GetTable<MonthlyCoachLearnerReview>()
+                    .InsertOnSubmit(new MonthlyCoachLearnerReview
+                    {
+                        PeriodID = indicator.PeriodID,
+                        CoachID = viewModel.CoachID.Value,
+                    });
             }
 
             item.AchievementGoal = viewModel.AchievementGoal;
@@ -583,7 +590,6 @@ namespace WebHome.Controllers
             }
 
         }
-
 
     }
 }

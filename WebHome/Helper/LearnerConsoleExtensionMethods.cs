@@ -83,5 +83,21 @@ namespace WebHome.Helper
             return models.GetTable<CourseContract>().Any(c => c.OwnerID == profile.UID && c.Status == (int) Naming.ContractQueryStatus.生效中);
         }
 
+        public static IQueryable<UserProfile> PromptLearnerWithEffectiveContract(this GenericManager<BFDataContext> models, IQueryable<UserProfile> items = null)
+
+        {
+            var effectiveItems = models.PromptEffectiveContract();
+            var effectiveLearners = models.GetTable<CourseContractMember>()
+                                        .Join(effectiveItems, m => m.ContractID, c => c.ContractID, (m, c) => m);
+
+            if (items == null)
+            {
+                items = models.GetTable<UserProfile>();
+            }
+            return items.Where(u => effectiveLearners.Any(l => l.UID == u.UID));
+
+        }
+
+
     }
 }

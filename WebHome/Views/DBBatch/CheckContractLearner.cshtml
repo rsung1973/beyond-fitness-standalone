@@ -1,0 +1,119 @@
+@using System.IO
+@using System.Linq.Expressions
+
+@using Microsoft.AspNetCore.Http
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@functions
+{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    MonthlyIndicatorQueryViewModel _viewModel;
+    MonthlyIndicator _model;
+
+    IQueryable<CourseContract> effectiveItems;
+    IQueryable<CourseContractMember> effectiveLearners;
+
+    void UpdateCoachLearnerReview(MonthlyCoachLearnerReview reviewItem)
+    {
+        var learners = models.GetTable<LearnerFitnessAdvisor>().Where(l => l.CoachID == reviewItem.CoachID);
+        var conductingItems = models.GetTable<LearnerCoachProperty>()
+                    .Where(p => p.PropertyID == (int)LearnerCoachProperty.PropertyType.PrimaryCoach)
+                    .Where(p => p.CoachID == reviewItem.CoachID);
+
+        reviewItem.AdvisingCountWithContract = learners.Count(l => effectiveLearners.Any(f => f.UID == l.UID));
+        reviewItem.AdvisingCountNoContract = learners.Count(l => !effectiveLearners.Any(f => f.UID == l.UID));
+        reviewItem.ConductingCount = conductingItems.Count();
+        reviewItem.AttendanceRate = 0;
+
+        models.SubmitChanges();
+
+        if (reviewItem.ConductingCount > 0)
+        {
+            var attendanceItems = models.GetTable<MonthlyLearnerReview>()
+                    .Where(l => l.PeriodID == _model.PeriodID)
+                    .Where(l => l.Attendance == true)
+                    .Where(l => conductingItems.Any(c => c.UID == l.UID));
+
+            reviewItem.AttendanceRate = Math.Round(attendanceItems.Count() * 100M / reviewItem.ConductingCount.Value);
+            models.SubmitChanges();
+        }
+    }
+}
+
+@{
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = ViewContext.ModelState;
+    _model = (MonthlyIndicator)this.Model;
+    _viewModel = (MonthlyIndicatorQueryViewModel)ViewBag.ViewModel;
+
+    effectiveItems = models.PromptEffectiveContract();
+    effectiveLearners = models.GetTable<CourseContractMember>()
+                                .Join(effectiveItems, m => m.ContractID, c => c.ContractID, (m, c) => m);
+
+
+}
+@{
+    DateTime endDate = _model.StartDate.AddMonths(-1);
+
+    foreach (var v in models.GetTable<V_ContractLearnerStatus>().Where(v => v.NotAfter >= endDate))
+    {
+        if (!models.GetTable<UserProfile>()
+            .Where(u => u.UID == v.UID)
+            .Where(u => !u.CreateTime.HasValue || u.CreateTime >= _model.StartDate)
+            .Any())
+        {
+            continue;
+        }
+
+        var item = models.GetTable<MonthlyLearnerReview>()
+                    .Where(l => l.UID == v.UID)
+                    .Where(l => l.PeriodID == _model.PeriodID)
+                    .FirstOrDefault();
+        if (item == null)
+        {
+            item = new MonthlyLearnerReview
+                    {
+                        UID = v.UID,
+                        PeriodID = _model.PeriodID
+                    };
+            models.GetTable<MonthlyLearnerReview>().InsertOnSubmit(item);
+        }
+
+        item.Attendance = models.GetTable<V_Tuition>()
+                            .Where(t => t.ClassTime >= _model.StartDate)
+                            .Where(t => t.ClassTime < _model.EndExclusiveDate)
+                            .Join(models.GetTable<GroupingLesson>(), t => t.GroupID, g => g.GroupID, (t, g) => g)
+                            .Join(models.GetTable<RegisterLesson>().Where(r => r.UID == v.UID), g => g.GroupID, r => r.RegisterGroupID, (g, r) => r)
+                            .Any();
+
+        models.SubmitChanges();
+
+    }
+
+    foreach(var c in _model.MonthlyCoachRevenueIndicator)
+    {
+        var item = models.GetTable<MonthlyCoachLearnerReview>()
+                        .Where(r => r.CoachID == c.CoachID)
+                        .Where(r => r.PeriodID == _model.PeriodID).FirstOrDefault();
+        if (item == null)
+        {
+            item = new MonthlyCoachLearnerReview
+                    {
+                        PeriodID = _model.PeriodID,
+                        CoachID = c.CoachID,
+                    };
+            models.GetTable<MonthlyCoachLearnerReview>().InsertOnSubmit(item);
+        }
+
+        UpdateCoachLearnerReview(item);
+
+    }
+}
+<div>DB Batch OK...</div>

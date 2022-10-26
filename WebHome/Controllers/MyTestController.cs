@@ -221,6 +221,12 @@ namespace WebHome.Controllers
         [AllowAnonymous]
         public ActionResult HandleUnknownAction(string actionName, IFormCollection forms, QueryViewModel viewModel)
         {
+            //if (actionName == "DBBatch")
+            //{
+            //    viewModel = new MonthlyIndicatorQueryViewModel { };
+            //    var result = await this.TryUpdateModelAsync<MonthlyIndicatorQueryViewModel>((MonthlyIndicatorQueryViewModel)viewModel);
+            //}
+
             ViewBag.ViewModel = viewModel;
             return View(actionName, forms);
             //this.View(actionName).ExecuteResult(this.ControllerContext);

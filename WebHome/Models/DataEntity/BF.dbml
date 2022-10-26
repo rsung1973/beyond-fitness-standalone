@@ -207,6 +207,7 @@
       <Association Name="UserProfile_UserRelationship" Member="UserRelationship" ThisKey="UID" OtherKey="LeaderID" Type="UserRelationship" />
       <Association Name="UserProfile_UserRelationship1" Member="AsRelationship" ThisKey="UID" OtherKey="UID" Type="UserRelationship" />
       <Association Name="UserProfile_LearnerCoachProperty" Member="LearnerCoachProperty" ThisKey="UID" OtherKey="UID" Type="LearnerCoachProperty" />
+      <Association Name="UserProfile_MonthlyLearnerReview" Member="MonthlyLearnerReview" ThisKey="UID" OtherKey="UID" Type="MonthlyLearnerReview" />
       <Association Name="Attachment_UserProfile" Member="Attachment" ThisKey="PictureID" OtherKey="AttachmentID" Type="Attachment" IsForeignKey="true" />
       <Association Name="LevelExpression_UserProfile" Member="LevelExpression" ThisKey="LevelID" OtherKey="LevelID" Type="LevelExpression" IsForeignKey="true" />
       <Association Name="UserProfile_UserProfile" Member="UserProfile1" ThisKey="Creator" OtherKey="UID" Type="UserProfile" IsForeignKey="true" />
@@ -333,6 +334,7 @@
       <Association Name="ServingCoach_CoachYearlyAdditionalPay" Member="CoachYearlyAdditionalPay" ThisKey="CoachID" OtherKey="CoachID" Type="CoachYearlyAdditionalPay" />
       <Association Name="ServingCoach_LearnerCoachProperty" Member="LearnerCoachProperty" ThisKey="CoachID" OtherKey="CoachID" Type="LearnerCoachProperty" />
       <Association Name="ServingCoach_CoachMonthlySalary" Member="CoachMonthlySalary" ThisKey="CoachID" OtherKey="CoachID" Type="CoachMonthlySalary" />
+      <Association Name="ServingCoach_MonthlyCoachLearnerReview" Member="MonthlyCoachLearnerReview" ThisKey="CoachID" OtherKey="CoachID" Type="MonthlyCoachLearnerReview" />
       <Association Name="UserProfile_ServingCoach" Member="UserProfile" ThisKey="CoachID" OtherKey="UID" Type="UserProfile" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
       <Association Name="ProfessionalLevel_ServingCoach" Member="ProfessionalLevel" ThisKey="LevelID" OtherKey="LevelID" Type="ProfessionalLevel" IsForeignKey="true" />
     </Type>
@@ -2309,6 +2311,8 @@
       <Association Name="MonthlyIndicator_MonthlyBranchIndicator" Member="MonthlyBranchIndicator" ThisKey="PeriodID" OtherKey="PeriodID" Type="MonthlyBranchIndicator" />
       <Association Name="MonthlyIndicator_MonthlyRevenueIndicator" Member="MonthlyRevenueIndicator" ThisKey="PeriodID" OtherKey="PeriodID" Type="MonthlyRevenueIndicator" />
       <Association Name="MonthlyIndicator_MonthlyCoachRevenueIndicator" Member="MonthlyCoachRevenueIndicator" ThisKey="PeriodID" OtherKey="PeriodID" Type="MonthlyCoachRevenueIndicator" />
+      <Association Name="MonthlyIndicator_MonthlyCoachLearnerReview" Member="MonthlyCoachLearnerReview" ThisKey="PeriodID" OtherKey="PeriodID" Type="MonthlyCoachLearnerReview" />
+      <Association Name="MonthlyIndicator_MonthlyLearnerReview" Member="MonthlyLearnerReview" ThisKey="PeriodID" OtherKey="PeriodID" Type="MonthlyLearnerReview" />
     </Type>
   </Table>
   <Table Name="KPI.MonthlyBranchIndicator" Member="MonthlyBranchIndicator">
@@ -2830,24 +2834,6 @@
       <Column Name="AchievementRatio" Type="System.Decimal" DbType="Decimal(38,6)" CanBeNull="true" />
     </Type>
   </Table>
-  <Table Name="dbo.V_YearlyReview" Member="V_YearlyReview">
-    <Type Name="V_YearlyReview">
-      <Column Name="Year" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="CoachID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="DataCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="PerformanceAchievement" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="AchievementShareRatio" Type="System.Decimal" DbType="Decimal(38,6)" CanBeNull="true" />
-      <Column Name="VoidShare" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="PTAttendanceCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="PTAverageUnitPrice" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="Tuition" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="AchievementAttendanceCount" Type="System.Decimal" DbType="Decimal(38,2)" CanBeNull="true" />
-      <Column Name="BranchTotalAttendanceCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="BranchTotalTuition" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="BranchTotalPTCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="BranchTotalPTTuition" Type="System.Int32" DbType="Int" CanBeNull="true" />
-    </Type>
-  </Table>
   <Table Name="Report.CoachYearlyAdditionalPay" Member="CoachYearlyAdditionalPay">
     <Type Name="CoachYearlyAdditionalPay">
       <Column Name="Year" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -2859,6 +2845,7 @@
       <Column Name="SpecialBonus" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="AttendanceBonus" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="AchievementBonus" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="AchievementShareRatio" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
       <Association Name="BranchStore_CoachYearlyAdditionalPay" Member="BranchStore" ThisKey="WorkPlace" OtherKey="BranchID" Type="BranchStore" IsForeignKey="true" />
       <Association Name="ProfessionalLevel_CoachYearlyAdditionalPay" Member="ProfessionalLevel" ThisKey="LevelID" OtherKey="LevelID" Type="ProfessionalLevel" IsForeignKey="true" />
       <Association Name="ServingCoach_CoachYearlyAdditionalPay" Member="ServingCoach" ThisKey="CoachID" OtherKey="CoachID" Type="ServingCoach" IsForeignKey="true" />
@@ -2892,12 +2879,61 @@
       <Column Name="AttendanceBonus" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="AchievementBonus" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="Year" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="AvgFlag" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
       <Association Name="CoachMonthlySalary_CoachBranchMonthlyBonus" Member="CoachBranchMonthlyBonus" ThisKey="CoachID,SettlementID" OtherKey="CoachID,SettlementID" Type="CoachBranchMonthlyBonus" />
       <Association Name="BranchStore_CoachMonthlySalary" Member="BranchStore" ThisKey="WorkPlace" OtherKey="BranchID" Type="BranchStore" IsForeignKey="true" />
       <Association Name="ProfessionalLevel_CoachMonthlySalary" Member="ProfessionalLevel" ThisKey="LevelID" OtherKey="LevelID" Type="ProfessionalLevel" IsForeignKey="true" />
       <Association Name="ServingCoach_CoachMonthlySalary" Member="ServingCoach" ThisKey="CoachID" OtherKey="CoachID" Type="ServingCoach" IsForeignKey="true" />
       <Association Name="Settlement_CoachMonthlySalary" Member="Settlement" ThisKey="SettlementID" OtherKey="SettlementID" Type="Settlement" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
       <Association Name="YearlySettlement_CoachMonthlySalary" Member="YearlySettlement" ThisKey="Year" OtherKey="Year" Type="YearlySettlement" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="KPI.MonthlyCoachLearnerReview" Member="MonthlyCoachLearnerReview">
+    <Type Name="MonthlyCoachLearnerReview">
+      <Column Name="PeriodID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CoachID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="AdvisingCountWithContract" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="AdvisingCountNoContract" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ConductingCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="AttendanceRate" Type="System.Decimal" DbType="Decimal(6,2)" CanBeNull="true" />
+      <Association Name="MonthlyIndicator_MonthlyCoachLearnerReview" Member="MonthlyIndicator" ThisKey="PeriodID" OtherKey="PeriodID" Type="MonthlyIndicator" IsForeignKey="true" />
+      <Association Name="ServingCoach_MonthlyCoachLearnerReview" Member="ServingCoach" ThisKey="CoachID" OtherKey="CoachID" Type="ServingCoach" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.V_YearlyReview" Member="V_YearlyReview">
+    <Type Name="V_YearlyReview">
+      <Column Name="Year" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CoachID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DataCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PerformanceAchievement" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PerformanceAchievementAVG" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="AchievementShareRatio" Type="System.Decimal" DbType="Decimal(38,6)" CanBeNull="true" />
+      <Column Name="VoidShare" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="VoidShareAVG" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PTAttendanceCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PTAttendanceCountAVG" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PTAverageUnitPrice" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Tuition" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="AchievementAttendanceCount" Type="System.Decimal" DbType="Decimal(38,2)" CanBeNull="true" />
+      <Column Name="BranchTotalAttendanceCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="BranchTotalTuition" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="BranchTotalPTCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="BranchTotalPTTuition" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="KPI.MonthlyLearnerReview" Member="MonthlyLearnerReview">
+    <Type Name="MonthlyLearnerReview">
+      <Column Name="PeriodID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="UID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Attendance" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="MonthlyIndicator_MonthlyLearnerReview" Member="MonthlyIndicator" ThisKey="PeriodID" OtherKey="PeriodID" Type="MonthlyIndicator" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="UserProfile_MonthlyLearnerReview" Member="UserProfile" ThisKey="UID" OtherKey="UID" Type="UserProfile" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.V_ContractLearnerStatus" Member="V_ContractLearnerStatus">
+    <Type Name="V_ContractLearnerStatus">
+      <Column Name="UID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="NotAfter" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
     </Type>
   </Table>
   <Function Name="dbo.InquireVacantNo" Method="InquireVacantNo">

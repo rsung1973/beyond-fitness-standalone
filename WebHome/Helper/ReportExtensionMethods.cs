@@ -794,6 +794,7 @@ namespace WebHome.Helper
                         CoachID = coach.CoachID,
                         SettlementID = settlement.SettlementID,
                         Year = settlement.Year,
+                        AvgFlag = true,
                     };
                     salaryTable.InsertOnSubmit(salary);
                 }
@@ -1404,7 +1405,7 @@ namespace WebHome.Helper
                         ) ?? 0;
 
                     salary.AchievementBonus = (int?)(netAchievement * shareRatio / 100M * 0.05M + 0.5M );
-
+                    salary.AchievementShareRatio = shareRatio;
                     models.SubmitChanges();
                 }
 
@@ -1425,7 +1426,7 @@ namespace WebHome.Helper
 
                 void calcHealthCareBonus()
                 {
-                    var netAchievement = (int)Math.Max((reviewItem.PerformanceAchievement.Value - reviewItem.VoidShare.Value) / reviewItem.DataCount.Value / 1.05M + 0.5M, 0);
+                    var netAchievement = (int)Math.Max((reviewItem.PerformanceAchievement.Value - reviewItem.VoidShare.Value) / 1.05M + 0.5M, 0);
 
                     salary.AchievementBonus = (int?)(netAchievement * 0.03M + 0.5M);
 
@@ -1526,6 +1527,7 @@ namespace WebHome.Helper
                         CoachID = coach.CoachID,
                         SettlementID = settlement.SettlementID,
                         Year = settlement.Year,
+                        AvgFlag = true,
                     };
                     salaryTable.InsertOnSubmit(salary);
                 }

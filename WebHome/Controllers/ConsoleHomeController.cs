@@ -1405,22 +1405,22 @@ namespace WebHome.Controllers
         {
             if (viewModel.KeyID != null)
             {
-                viewModel.BranchID = viewModel.DecryptKeyValue();
+                viewModel.CoachID = viewModel.DecryptKeyValue();
             }
-
-            BranchStore item = null;
-            if (viewModel.BranchID.HasValue)
-            {
-                item = models.GetTable<BranchStore>().Where(b => b.BranchID == viewModel.BranchID)
-                        .FirstOrDefault();
-            }
-
-
             ViewBag.ViewModel = viewModel;
+
+            ServingCoach item = models.GetTable<ServingCoach>().Where(b => b.CoachID == viewModel.CoachID)
+                        .FirstOrDefault();
+
+            if (item == null)
+            {
+                return View("~/Views/ConsoleHome/Shared/JsGoback.cshtml", model: "教練不存在!!");
+            }
+
             ViewBag.DataItem = item;
 
             var profile = await HttpContext.GetUserAsync();
-            return View("~/Views/CoachConsole/CoachOverview.cshtml", profile.LoadInstance(models));
+            return View("~/Views/LearnerConsole/LearnerOverview.cshtml", profile.LoadInstance(models));
         }
 
     }

@@ -169,6 +169,13 @@ namespace WebHome.Helper
                         AverageLessonPrice = sampleItem.CalculateAverageLessonPrice(models, c.CoachID),
                     };
                     newItem.LessonTuitionGoal = newItem.CompleteLessonsGoal * newItem.AverageLessonPrice;
+
+                    models.GetTable<MonthlyCoachLearnerReview>()
+                        .InsertOnSubmit(new MonthlyCoachLearnerReview
+                        {
+                            PeriodID = item.PeriodID,
+                            CoachID = c.CoachID,
+                        });
                 }
             }
 
@@ -671,5 +678,6 @@ namespace WebHome.Helper
                 models.SubmitChanges();
             }
         }
+
     }
 }

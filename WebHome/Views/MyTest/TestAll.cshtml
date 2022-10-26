@@ -1,0 +1,36 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+
+@using Microsoft.AspNetCore.Http
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+@using Newtonsoft.Json
+
+@{
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = ViewContext.ModelState;
+    _viewModel = (QueryViewModel)ViewBag.ViewModel;
+    _model = this.Model as IFormCollection;
+    Test01();
+}
+
+@functions
+{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    QueryViewModel _viewModel;
+    IFormCollection _model;
+
+    void Test01()
+    {
+        var indicator = models.GetTable<MonthlyIndicator>().Where(i => i.PeriodID == int.Parse(_model["PeriodID"])).First();
+        var av = indicator.CalculateAverageLessonPrice(models, int.Parse(_model["CoachID"]));
+        <div>@(av)</div>
+    }
+}
+

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using CommonLib.Utility;
 using WebHome.Models.DataEntity;
 using WebHome.Models.Locale;
 
@@ -25,6 +26,22 @@ namespace WebHome.Models.ViewModel
         {
             return (QueryViewModel)this.MemberwiseClone();
         }
+
+        public T Deserialize<T>()
+            where T : QueryViewModel
+        {
+            if (KeyID != null)
+            {
+                return JsonConvert.DeserializeObject<T>(KeyID.DecryptKey());
+            }
+            return null;
+        }
+
+        public String Serialize()
+        {
+            return this.JsonStringify().EncryptKey();
+        }
+
         public String CustomQuery { get; set; }
         public Naming.DataOperationMode? DataOperation { get; set; }
         public String ViewID { get; set; }
@@ -667,6 +684,15 @@ namespace WebHome.Models.ViewModel
         public int? CoachID { get; set; }
         public int? BranchID { get; set; }
         public bool? Employed { get; set; }
+    }
+
+    public class CoachLearnerQueryViewModel : CoachQueryViewModel
+    {
+        public int? UID { get; set; }
+        public bool? ForPrimary { get; set; }
+        public bool? ForAdvisor { get; set; }
+        public bool? WithContract { get; set; }
+        public int?[] LearnerID { get; set; }
     }
 
     public class LessonTimeBookingViewModel : QueryViewModel
