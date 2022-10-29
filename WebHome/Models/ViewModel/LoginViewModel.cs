@@ -690,7 +690,6 @@ namespace WebHome.Models.ViewModel
     {
         public int? UID { get; set; }
         public bool? ForPrimary { get; set; }
-        public bool? ForAdvisor { get; set; }
         public bool? WithContract { get; set; }
         public int?[] LearnerID { get; set; }
     }

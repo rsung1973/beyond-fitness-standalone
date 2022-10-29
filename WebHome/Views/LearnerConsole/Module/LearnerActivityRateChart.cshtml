@@ -13,11 +13,11 @@
 @{
     ModelStateDictionary _modelState;
     ModelSource<UserProfile> models;
-    LessonQueryViewModel _viewModel;
+    CoachLearnerQueryViewModel _viewModel;
     _modelState = ViewContext.ModelState;
     models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];
 
-    _viewModel = (LessonQueryViewModel)ViewBag.ViewModel;
+    _viewModel = (CoachLearnerQueryViewModel)ViewBag.ViewModel;
     ServingCoach coach = ViewBag.DataItem as ServingCoach;
 
 }

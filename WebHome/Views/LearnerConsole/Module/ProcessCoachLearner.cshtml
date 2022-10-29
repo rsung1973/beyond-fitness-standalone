@@ -18,6 +18,8 @@
     models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
 
     CoachLearnerQueryViewModel _viewModel = ViewBag.ViewModel as CoachLearnerQueryViewModel;
+    var profile = await Context.GetUserAsync();
+
 }
 <div class="modal fade" id="@(_dialogID)" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-sm" role="document">
@@ -28,17 +30,20 @@
             </div>
             <div class="modal-popmenu-body">
                 <div class="list-group">
-                    @if(models.GetTable<LearnerCoachProperty>()
-                        .Where(p => p.PropertyID == (int)LearnerCoachProperty.PropertyType.PrimaryCoach)
-                        .Where(p => p.UID == _viewModel.UID)
-                        .Where(p => p.CoachID == _viewModel.CoachID)
-                        .Any())
+                    @if (profile.IsAuthorizedSysAdmin() || profile.IsAssistant() || profile.IsOfficer() || profile.IsManager() || profile.IsViceManager())
                     {
-                        <a href="javascript:deletePrimaryCoach('@Html.Raw((new CoachLearnerQueryViewModel { CoachID = _viewModel.CoachID,UID = _viewModel.UID }).Serialize())');" class="list-group-item">解除主教練</a>
-                    }
-                    else
-                    {
-                        <a href="javascript:commitPrimaryCoach('@Html.Raw((new CoachLearnerQueryViewModel { CoachID = _viewModel.CoachID,UID = _viewModel.UID }).Serialize())');" class="list-group-item">認領主教練</a>
+                        if (models.GetTable<LearnerCoachProperty>()
+                            .Where(p => p.PropertyID == (int)LearnerCoachProperty.PropertyType.PrimaryCoach)
+                            .Where(p => p.UID == _viewModel.UID)
+                            .Where(p => p.CoachID == _viewModel.CoachID)
+                            .Any())
+                        {
+                            <a href="javascript:deletePrimaryCoach('@Html.Raw((new CoachLearnerQueryViewModel { CoachID = _viewModel.CoachID,UID = _viewModel.UID }).Serialize())');" class="list-group-item">解除主教練</a>
+                        }
+                        else
+                        {
+                            <a href="javascript:commitPrimaryCoach('@Html.Raw((new CoachLearnerQueryViewModel { CoachID = _viewModel.CoachID,UID = _viewModel.UID }).Serialize())');" class="list-group-item">認領主教練</a>
+                        }
                     }
 
                     @if (models.GetTable<LearnerFitnessAdvisor>()

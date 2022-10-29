@@ -619,7 +619,7 @@ namespace WebHome.Models.DataEntity
         {
             get
             {
-                return this.UserRole[0];
+                return this.UserRole.Count>0 ? this.UserRole[0] : null;
             }
         }
 

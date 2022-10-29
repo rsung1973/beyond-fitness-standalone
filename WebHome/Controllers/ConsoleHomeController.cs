@@ -128,17 +128,17 @@ namespace WebHome.Controllers
             viewModel.ContractDateFrom = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
             viewModel.ContractDateTo = viewModel.ContractDateFrom.Value.AddMonths(1).AddDays(-1);
 
-            UserProfile profile = null;
+            UserProfile currentCoach = null;
             if (viewModel.KeyID != null)
             {
                 var uid = viewModel.DecryptKeyValue();
-                profile = models.GetTable<UserProfile>().Where(u => u.UID == uid).FirstOrDefault();
+                currentCoach = models.GetTable<UserProfile>().Where(u => u.UID == uid).FirstOrDefault();
             }
-            if(profile==null)
-            {
-                profile = await HttpContext.GetUserAsync();
-                viewModel.KeyID = profile.UID.EncryptKey();
-            }
+
+            ViewBag.CurrentCoach = currentCoach;
+
+            UserProfile profile = await HttpContext.GetUserAsync();
+            viewModel.KeyID = profile.UID.EncryptKey();
             return View(profile.LoadInstance(models));
         }
 
@@ -1401,7 +1401,7 @@ namespace WebHome.Controllers
             return View("~/Views/CoachConsole/CoachOverview.cshtml", profile.LoadInstance(models));
         }
 
-        public async Task<ActionResult> LearnerOverviewAsync(LessonQueryViewModel viewModel)
+        public async Task<ActionResult> LearnerOverviewAsync(CoachLearnerQueryViewModel viewModel)
         {
             if (viewModel.KeyID != null)
             {

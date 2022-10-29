@@ -1,5 +1,3 @@
-
-
 @using System.IO
 @using System.Linq.Expressions
 
@@ -11,22 +9,36 @@
 @using Microsoft.AspNetCore.Mvc.ModelBinding
 
 @using Newtonsoft.Json
-@{
+@functions
+{
     ModelSource<UserProfile> models;
     ModelStateDictionary _modelState;
     UserProfile _model;
     CourseContractQueryViewModel _viewModel;
     IQueryable<CourseContract> _effectiveItems;
+}
+
+@{
 
     Layout = "~/Views/ConsoleHome/Template/MainPage.cshtml";
 
-    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
     _modelState = ViewContext.ModelState;
     _model = (UserProfile)this.Model;
     _viewModel = (CourseContractQueryViewModel)ViewBag.ViewModel;
 
-    _effectiveItems = models.PromptEffectiveContract()
-        .Where(c => c.FitnessConsultant == _model.UID);
+    UserProfile coachItem = ViewBag.CurrentCoach as UserProfile;
+
+    if (coachItem != null)
+    {
+        _effectiveItems = models.PromptEffectiveContract()
+            .Where(c => c.FitnessConsultant == coachItem.UID);
+    }
+    else
+    {
+        _effectiveItems = models.PromptEffectiveContract()
+            .Where(c => c.FitnessConsultant == _model.UID);
+    }
 }
 @section CustomHeader {
     <!-- JQuery DataTable Css -->
@@ -34,87 +46,44 @@
     <link href="plugins/jquery-datatable/Responsive-2.2.2/css/responsive.bootstrap4.min.css" rel="stylesheet">
     <link href="plugins/jquery-datatable/FixedColumns-3.2.5/css/fixedColumns.bootstrap4.min.css" rel="stylesheet">
     <!-- Bootstrap Datetimepick -->
-    
+
     <link href="css/smartcalendar-2.css" rel="stylesheet" />
 
     <!-- Custom Css -->
     <link rel="stylesheet" href="css/customelist.css?2.0" />
 }
 
-<!-- Main Content -->
-<section class="content">
-    @{ ViewBag.BlockHeader = "我的合約";
-        await Html.RenderPartialAsync("~/Views/ConsoleHome/Module/BlockHeader.cshtml", _model);}
-
-
-    @if (_model.IsCoach())
-    {
-        <!--我的合約-->
-        <div class="container-fluid">
-            <div class="card widget_3">
-                <ul class="row clearfix list-unstyled m-b-0">
-                    <li class="col-lg-3 col-md-6 col-sm-12">
-                        @{ await Html.RenderPartialAsync("~/Views/ContractConsole/Module/AboutExpiringByCoach.cshtml", _model);}
-
-                    </li>
-                    <li class="col-lg-3 col-md-6 col-sm-12">
-                        @{ await Html.RenderPartialAsync("~/Views/ContractConsole/Module/AboutNewContractsByCoach.cshtml", _model);}
-
-                    </li>
-                    <li class="col-lg-3 col-md-6 col-sm-12">
-                        @{ await Html.RenderPartialAsync("~/Views/ContractConsole/Module/AboutContractServicesByCoach.cshtml", _model);}
-
-                    </li>
-                    <li class="col-lg-3 col-md-6 col-sm-12">
-                        @{ await Html.RenderPartialAsync("~/Views/ContractConsole/Module/AboutPaymentByCoach.cshtml", _model);}
-                    </li>
-                </ul>
-                <ul class="row clearfix list-unstyled m-b-0">
-                    @{ var newContracts = _effectiveItems
-                             .Where(c => c.Expiration >= DateTime.Today)
-                             .Where(c => !c.Renewal.HasValue || c.Renewal == false);
-                        var renewContracts = _effectiveItems
-                            .Where(c => c.Expiration >= DateTime.Today)
-                            .Where(c => c.Renewal.HasValue && c.Renewal == true);}
-
-                    @*<li class="col-lg-3 col-md-3 col-sm-6">
-                        @{ await Html.RenderPartialAsync("~/Views/ContractConsole/Module/ToRenewByCoach.cshtml", _model);}
-
-                    </li>*@
-                    <li class="col-lg-4 col-md-4 col-sm-6">
-                        <div class="body">
-                            <div class="row">
-                                <div class="col-12 text-center">
-                                    <div class="sparkline-pie">@(newContracts.Count()),@(renewContracts.Count())</div>
-                                    <h6 class="m-t-20">新約 V.S. 續約</h6>
-                                    <p class="displayblock m-b-0"><span class="col-tiffany">@(newContracts.Count())</span> / @(renewContracts.Count())</p>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="col-lg-4 col-md-4 col-sm-6">
-                        @{ await Html.RenderPartialAsync("~/Views/ContractConsole/Module/AboutInstallment.cshtml", _effectiveItems);}
-
-                    </li>
-                    <li class="col-lg-4 col-md-4 col-sm-6">
-                        @{ await Html.RenderPartialAsync("~/Views/ContractConsole/Module/AboutReceivablesByCoach.cshtml", _model);}
-
-                    </li>
-                </ul>
-            </div>
-        </div>
+    <!-- Main Content -->
+    <section class="content">
+        @{
+        ViewBag.BlockHeader = "我的合約";
+        await Html.RenderPartialAsync("~/Views/ConsoleHome/Module/BlockHeader.cshtml", _model);
     }
 
-    @if (_model.IsViceManager() || _model.IsManager())
+    @if (coachItem != null)
     {
-        await Html.RenderPartialAsync("~/Views/ContractConsole/Module/ContractByBranch.cshtml", _model);
+        await ShowMyContractAsync(coachItem);
+        await Html.RenderPartialAsync("~/Views/ContractConsole/Module/ContractDetails.cshtml", coachItem);
     }
-    else if (_model.IsOfficer() || _model.IsAssistant() || _model.IsAuthorizedSysAdmin() || _model.IsServitor())
+    else
     {
-        await Html.RenderPartialAsync("~/Views/ContractConsole/Module/ContractByOfficer.cshtml", _model);
+        if (_model.IsCoach())
+        {
+            await ShowMyContractAsync(_model);
+        }
+
+        if (_model.IsViceManager() || _model.IsManager())
+        {
+            await Html.RenderPartialAsync("~/Views/ContractConsole/Module/ContractByBranch.cshtml", _model);
+        }
+        else if (_model.IsOfficer() || _model.IsAssistant() || _model.IsAuthorizedSysAdmin() || _model.IsServitor())
+        {
+            await Html.RenderPartialAsync("~/Views/ContractConsole/Module/ContractByOfficer.cshtml", _model);
+        }
+
+        await Html.RenderPartialAsync("~/Views/ContractConsole/Module/ContractDetails.cshtml", _model);
     }
 
-    @{ await Html.RenderPartialAsync("~/Views/ContractConsole/Module/ContractDetails.cshtml", _model);}
 
 </section>
 
@@ -128,13 +97,15 @@
     <script src="plugins/jquery-datatable/Responsive-2.2.2/js/dataTables.responsive.min.js"></script>
     <script src="plugins/jquery-datatable/FixedColumns-3.2.5/js/dataTables.fixedColumns.min.js"></script>
 
-    @{ await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/KnobJS.cshtml");}
+    @{
+        await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/KnobJS.cshtml");
+    }
 
 
     <script type="text/javascript">
         var dtLearner;
         var dtPaymentList;
-        $(function() {
+        $(function () {
             $.scrollUp({
                 animation: 'fade',
                 scrollImg: {
@@ -165,19 +136,19 @@
             todayHighlight: 1,
             startView: 2,
             forceParse: 0,
-            startDate: '@(String.Format("{0:yyyy-MM-dd}",DateTime.Today))'
+            startDate: '@(String.Format("{0:yyyy-MM-dd}", DateTime.Today))'
         });
 
 
         //點選合約詳細資料更多
-        $('.mb_colsble').on('click', function(event) {
+        $('.mb_colsble').on('click', function (event) {
             var $collapseArea = $('.mb_colsble');
             var $list = $collapseArea.find('.mb_list');
             console.log($list);
             var $titleArea = $collapseArea.find('.tit');
-            $titleArea.on('click', function(e) {
+            $titleArea.on('click', function (e) {
                 if ($collapseArea.hasClass('open')) {
-                    $list.slideToggle(undefined, function() {
+                    $list.slideToggle(undefined, function () {
                         $collapseArea.toggleClass('open');
                     });
                 } else {
@@ -189,7 +160,7 @@
         });
 
         //點選刪除功能
-        this.deleteData = function(keyID) {
+        this.deleteData = function (keyID) {
             Swal.fire({
                 title: '確定刪除?',
                 text: "刪除後資料將無法回覆",
@@ -237,14 +208,14 @@
         };
 
         //搜尋體能顧問
-        this.showSearchCoach = function() {
+        this.showSearchCoach = function () {
             $("#searchCoachModal").modal('show');
         };
-        
-        this.sendToSign = function(keyID) {
+
+        this.sendToSign = function (keyID) {
             $global.closeAllModal();
             showLoading();
-            $.post('@Html.Raw(Url.Action("NotifyLearnerToSignContract","ContractConsole"))', { 'keyID': keyID }, function(data) {
+            $.post('@Html.Raw(Url.Action("NotifyLearnerToSignContract","ContractConsole"))', { 'keyID': keyID }, function (data) {
                 hideLoading();
                 if ($.isPlainObject(data)) {
                     if (data.result) {
@@ -283,8 +254,81 @@
                 }
             });
         }
-        //
+                //
     </script>
 }
 
+@functions
+{
+    async Task ShowMyContractAsync(UserProfile profile)
+    {
+        <div class="container-fluid">
+            <div class="card widget_3">
+                <ul class="row clearfix list-unstyled m-b-0">
+                    <li class="col-lg-3 col-md-6 col-sm-12">
+                        @{
+                            await Html.RenderPartialAsync("~/Views/ContractConsole/Module/AboutExpiringByCoach.cshtml", profile);
+                        }
 
+                    </li>
+                    <li class="col-lg-3 col-md-6 col-sm-12">
+                        @{
+                            await Html.RenderPartialAsync("~/Views/ContractConsole/Module/AboutNewContractsByCoach.cshtml", profile);
+                        }
+
+                    </li>
+                    <li class="col-lg-3 col-md-6 col-sm-12">
+                        @{
+                            await Html.RenderPartialAsync("~/Views/ContractConsole/Module/AboutContractServicesByCoach.cshtml", profile);
+                        }
+
+                    </li>
+                    <li class="col-lg-3 col-md-6 col-sm-12">
+                        @{
+                            await Html.RenderPartialAsync("~/Views/ContractConsole/Module/AboutPaymentByCoach.cshtml", profile);
+                        }
+                    </li>
+                </ul>
+                <ul class="row clearfix list-unstyled m-b-0">
+                    @{
+                        var newContracts = _effectiveItems
+                        .Where(c => c.Expiration >= DateTime.Today)
+                        .Where(c => !c.Renewal.HasValue || c.Renewal == false);
+                        var renewContracts = _effectiveItems
+                        .Where(c => c.Expiration >= DateTime.Today)
+                        .Where(c => c.Renewal.HasValue && c.Renewal == true);
+                    }
+
+                    @*<li class="col-lg-3 col-md-3 col-sm-6">
+            @{ await Html.RenderPartialAsync("~/Views/ContractConsole/Module/ToRenewByCoach.cshtml", _model);}
+
+            </li>*@
+                    <li class="col-lg-4 col-md-4 col-sm-6">
+                        <div class="body">
+                            <div class="row">
+                                <div class="col-12 text-center">
+                                    <div class="sparkline-pie">@(newContracts.Count()),@(renewContracts.Count())</div>
+                                    <h6 class="m-t-20">新約 V.S. 續約</h6>
+                                    <p class="displayblock m-b-0"><span class="col-tiffany">@(newContracts.Count())</span> / @(renewContracts.Count())</p>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="col-lg-4 col-md-4 col-sm-6">
+                        @{
+                            await Html.RenderPartialAsync("~/Views/ContractConsole/Module/AboutInstallment.cshtml", _effectiveItems);
+                        }
+
+                    </li>
+                    <li class="col-lg-4 col-md-4 col-sm-6">
+                        @{
+                            await Html.RenderPartialAsync("~/Views/ContractConsole/Module/AboutReceivablesByCoach.cshtml", profile);
+                        }
+
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    }
+}

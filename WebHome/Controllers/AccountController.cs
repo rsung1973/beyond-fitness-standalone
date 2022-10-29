@@ -270,7 +270,7 @@ namespace WebHome.Controllers
                 return Redirect($"~{Startup.Properties["LoginUrl"]}");
             }
 
-            if (profile.CurrentUserRole.RoleID == (int)Naming.RoleID.Learner)
+            if (profile.CurrentUserRole?.RoleID == (int)Naming.RoleID.Learner)
                 return View("ViewLearner", profile);
             else
                 return View("ViewCoach", profile);

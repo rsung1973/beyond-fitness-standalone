@@ -27,6 +27,7 @@ using WebHome.Security.Authorization;
 using WebHome.Properties;
 using System.Data;
 using Microsoft.Extensions.Logging;
+using DocumentFormat.OpenXml.Office2010.Excel;
 
 namespace WebHome.Controllers
 {
@@ -354,6 +355,10 @@ namespace WebHome.Controllers
             if (viewModel.DataOperation == Naming.DataOperationMode.Delete)
             {
                 models.DeleteAny<LearnerFitnessAdvisor>(a => a.UID == viewModel.UID && a.CoachID == viewModel.CoachID);
+                models.ExecuteCommand(@"DELETE  LearnerCoachProperty
+                                                    WHERE   (CoachID = {0}) AND (UID = {1}) AND (PropertyID = {2})",
+                                                   viewModel.CoachID, viewModel.UID,
+                                                   (int)LearnerCoachProperty.PropertyType.PrimaryCoach);
             }
             else
             {

@@ -228,25 +228,25 @@ namespace WebHome.Helper
 
         public static bool IsFreeAgent(this UserProfile profile)
         {
-            return profile != null && profile.CurrentUserRole.RoleID == (int)Naming.RoleID.FreeAgent;
+            return profile != null && profile.CurrentUserRole?.RoleID == (int)Naming.RoleID.FreeAgent;
         }
 
         public static bool IsOfficer(this UserProfile profile)
         {
-            return profile != null && (profile.CurrentUserRole.RoleID == (int)Naming.RoleID.Officer ||
+            return profile != null && (profile.CurrentUserRole?.RoleID == (int)Naming.RoleID.Officer ||
                 profile.UserRoleAuthorization.Any(r => r.RoleID == (int)Naming.RoleID.Officer));
         }
 
         public static bool IsSysAdmin(this UserProfile profile)
         {
-            return profile != null && (profile.CurrentUserRole.RoleID == (int)Naming.RoleID.Administrator ||
+            return profile != null && (profile.CurrentUserRole?.RoleID == (int)Naming.RoleID.Administrator ||
                 profile.UserRoleAuthorization.Any(r => r.RoleID == (int)Naming.RoleID.Administrator));
         }
 
         public static bool IsCoach(this UserProfile profile)
         {
             return profile != null
-                && (profile.CurrentUserRole.RoleID == (int)Naming.RoleID.Coach
+                && (profile.CurrentUserRole?.RoleID == (int)Naming.RoleID.Coach
                     || profile.UserRoleAuthorization.Any(r => r.RoleID == (int)Naming.RoleID.Coach 
                         || r.RoleID == (int)Naming.RoleID.Manager
                         || r.RoleID == (int)Naming.RoleID.ViceManager));
@@ -254,29 +254,29 @@ namespace WebHome.Helper
         public static bool IsAssistant(this UserProfile profile)
         {
             return profile != null
-                && (profile.CurrentUserRole.RoleID == (int)Naming.RoleID.Assistant
+                && (profile.CurrentUserRole?.RoleID == (int)Naming.RoleID.Assistant
                     || profile.UserRoleAuthorization.Any(r => r.RoleID == (int)Naming.RoleID.Assistant));
         }
 
         public static bool IsLearner(this UserProfile profile)
         {
-            return profile != null && (profile.CurrentUserRole.RoleID == (int)Naming.RoleID.Learner || profile.UserRoleAuthorization.Any(r => r.RoleID == (int)Naming.RoleID.Learner));
+            return profile != null && (profile.CurrentUserRole?.RoleID == (int)Naming.RoleID.Learner || profile.UserRoleAuthorization.Any(r => r.RoleID == (int)Naming.RoleID.Learner));
         }
 
         public static bool IsServitor(this UserProfile profile)
         {
-            return profile != null && (profile.CurrentUserRole.RoleID == (int)Naming.RoleID.Servitor || profile.UserRoleAuthorization.Any(r => r.RoleID == (int)Naming.RoleID.Servitor));
+            return profile != null && (profile.CurrentUserRole?.RoleID == (int)Naming.RoleID.Servitor || profile.UserRoleAuthorization.Any(r => r.RoleID == (int)Naming.RoleID.Servitor));
         }
 
         public static bool IsHealthCare(this UserProfile profile)
         {
-            return profile != null && (profile.CurrentUserRole.RoleID == (int)Naming.RoleID.HealthCare ||
+            return profile != null && (profile.CurrentUserRole?.RoleID == (int)Naming.RoleID.HealthCare ||
                 profile.UserRoleAuthorization.Any(r => r.RoleID == (int)Naming.RoleID.HealthCare));
         }
 
         public static bool IsFES(this UserProfile profile)
         {
-            return profile != null && (profile.CurrentUserRole.RoleID == (int)Naming.RoleID.FES ||
+            return profile != null && (profile.CurrentUserRole?.RoleID == (int)Naming.RoleID.FES ||
                 profile.UserRoleAuthorization.Any(r => r.RoleID == (int)Naming.RoleID.FES));
         }
 
@@ -288,24 +288,24 @@ namespace WebHome.Helper
 
         public static bool IsAccounting(this UserProfile profile)
         {
-            return profile != null && (profile.CurrentUserRole.RoleID == (int)Naming.RoleID.Accounting ||
+            return profile != null && (profile.CurrentUserRole?.RoleID == (int)Naming.RoleID.Accounting ||
                 profile.UserRoleAuthorization.Any(r => r.RoleID == (int)Naming.RoleID.Accounting));
         }
 
         public static bool IsManager(this UserProfile profile)
         {
-            return profile != null && (profile.CurrentUserRole.RoleID == (int)Naming.RoleID.Manager ||
+            return profile != null && (profile.CurrentUserRole?.RoleID == (int)Naming.RoleID.Manager ||
                 profile.UserRoleAuthorization.Any(r => r.RoleID == (int)Naming.RoleID.Manager));
         }
         public static bool IsViceManager(this UserProfile profile)
         {
-            return profile != null && (profile.CurrentUserRole.RoleID == (int)Naming.RoleID.ViceManager ||
+            return profile != null && (profile.CurrentUserRole?.RoleID == (int)Naming.RoleID.ViceManager ||
                 profile.UserRoleAuthorization.Any(r => r.RoleID == (int)Naming.RoleID.ViceManager));
         }
 
         public static bool IsAuthorized(this UserProfile profile,int[] roleID)
         {
-            return profile != null && (roleID.Contains(profile.CurrentUserRole.RoleID)
+            return profile != null && ((profile.CurrentUserRole != null && roleID.Contains(profile.CurrentUserRole.RoleID))
                 || profile.UserRoleAuthorization.Any(r => roleID.Contains(r.RoleID)));
         }
 
