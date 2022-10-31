@@ -310,22 +310,22 @@
                 </li>
                 @if (!_model.IsServitor())
                 {
+                    if (_model.IsCoach())
+                    {
+                            <li>
+                                <a href="javascript:$('').launchDownload('@Html.Raw(Url.Action("LearnerOverview", "ConsoleHome",new { KeyID = _model.UID.EncryptKey() }))', { });">
+                                    <i class="zmdi zmdi-accounts-list"></i><span>我的學生</span>
+                                </a>
+                            </li>
+                    }
                     if (_model.IsAuthorizedSysAdmin() || _model.IsAssistant() || _model.IsOfficer() || _model.IsManager() || _model.IsViceManager())
                     {
                         <li>
                             <a href="javascript:$('').launchDownload('@Html.Raw(Url.Action("CoachOverview", "ConsoleHome",new { BranchID = models.GetTable<V_WorkPlace>().Where(v=>v.CoachID==_model.UID).FirstOrDefault()?.WorkPlace }))', { });">
-                                <i class="zmdi zmdi-accounts-alt"></i><span>我的教練</span>
+                                <i class="zmdi zmdi-accounts"></i><span>我的教練</span>
                             </a>
                         </li>
-                    }
-                    if (_model.IsCoach())
-                    {
-                        <li>
-                            <a href="javascript:$('').launchDownload('@Html.Raw(Url.Action("LearnerOverview", "ConsoleHome",new { KeyID = _model.UID.EncryptKey() }))', { });">
-                                <i class="zmdi zmdi-accounts-alt"></i><span>我的學生</span>
-                            </a>
-                        </li>
-                    }
+                    }                   
                     if (!_model.IsOfficer())
                     {
                         if (_model.IsCoach() || _model.IsManager() || _model.IsViceManager())

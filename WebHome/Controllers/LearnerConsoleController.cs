@@ -316,7 +316,7 @@ namespace WebHome.Controllers
                     ds.Tables.Add(table);
                 }
 
-                await ds.SaveAsExcelAsync(Response, String.Format("attachment;filename={0}({1:yyyy-MM-dd HH-mm-ss}).xlsx", HttpUtility.UrlEncode($"{coach?.UserProfile.RealName}的學生詳細資料"), DateTime.Now), viewModel.FileDownloadToken);
+                await ds.SaveAsExcelAsync(Response, String.Format("attachment;filename={0}({1:yyyy-MM-dd HH-mm-ss}).xlsx", HttpUtility.UrlEncode($"{coach?.UserProfile.Nickname}LeanerList"), DateTime.Now), viewModel.FileDownloadToken);
             }
 
             return new EmptyResult();
@@ -354,7 +354,7 @@ namespace WebHome.Controllers
                 r[4] = item.YearsOld();
                 r[5] = String.Join("、", item.LearnerFitnessAdvisor.ToList().Select(a => a.ServingCoach.UserProfile.FullName()));
                 r[6] = String.Join("、", item.LearnerCoachProperty.Where(p => p.PropertyID == (int)LearnerCoachProperty.PropertyType.PrimaryCoach).ToList().Select(c => c.ServingCoach.UserProfile.FullName()));
-                r[7] = item.CreateTime?.ToString("yyyy/MM/dd") ?? "2018之前";
+                r[7] = item.CreateTime?.ToString("yyyy/MM/dd") ?? "";
                 r[8] = contracts.Where(c => contractMember.Any(m => m.UID == item.UID && m.ContractID == c.ContractID)).Count();
 
                 table.Rows.Add(r);
