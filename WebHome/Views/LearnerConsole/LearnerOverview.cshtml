@@ -82,7 +82,7 @@
                     <div class="header">
                         <ul class="header-dropdown">
                             <li>
-                                <a href="javascript:$('').launchDownload('@Html.Raw(Url.Action("CreateCoachLearnerXlsx","LearnerConsole"))',{ 'KeyID' : '@Html.Raw(_item.CoachID.EncryptKey())'},'report',true);"><i class="zmdi zmdi-search-for"></i></a>
+                                <a href="javascript:$('').launchDownload('@Html.Raw(Url.Action("CreateCoachLearnerXlsx","LearnerConsole"))',{ 'KeyID' : '@Html.Raw(_item.CoachID.EncryptKey())'},'report',true);"><i class="zmdi zmdi-download"></i></a>
                             </li>
                         </ul>
                     </div>
@@ -316,41 +316,41 @@
         var learners = models.GetTable<LearnerFitnessAdvisor>().Where(l => l.CoachID == coach.UID);
 
     <div class="card member-card">
-                                                                    <div class="header bg-darkteal">
-                                                                        <h4 class="m-t-10">@(coach.FullName())</h4>
-                                                                    </div>
-                                                                    <div class="member-img">
-                                                                        <a href="javascript:void(0);">
-                                                                            @{
+                        <div class="header bg-darkteal">
+                            <h4 class="m-t-10">@(coach.FullName())</h4>
+                        </div>
+                        <div class="member-img">
+                            <a href="javascript:void(0);">
+                                @{
                         ViewBag.ProfileClass = "rounded-circle small";
                         await Html.RenderPartialAsync("~/Views/Common/ProfileImage.cshtml", coach);
-                                                                            }
-                                                                        </a>
-                                                                        <p class="text-muted">@(coach.ServingCoach?.ProfessionalLevel?.LevelName)</p>
-                                                                        <hr>
-                                                                    </div>
-                                                                    <div class="body">
-                                                                        <div class="row">
-                                                                            <div class="col-4" onclick='showCoachLearnerList(@Html.Raw((new CoachLearnerQueryViewModel{ KeyID = coach.UID.EncryptKey(), WithContract=true }).JsonStringify()));'>
-                                                                                <h5>@(learners.Count(l => effectiveLearners.Any(f => f.UID == l.UID)))</h5>
-                                                                                <small>所屬學生(合約)</small>
-                                                                            </div>
-                                                                            <div class="col-4" onclick='showCoachLearnerList(@Html.Raw((new CoachLearnerQueryViewModel{ KeyID = coach.UID.EncryptKey(), ForPrimary = true }).JsonStringify()));'>
-                                                                                <h5>
-                                                                                    @(models.GetTable<LearnerCoachProperty>()
+                                }
+                            </a>
+                            <p class="text-muted">@(coach.ServingCoach?.ProfessionalLevel?.LevelName)</p>
+                            <hr>
+                        </div>
+                        <div class="body">
+                            <div class="row">
+                                <div class="col-4" onclick='showCoachLearnerList(@Html.Raw((new CoachLearnerQueryViewModel{ KeyID = coach.UID.EncryptKey(), WithContract=true }).JsonStringify()));'>
+                                    <h5>@(learners.Count(l => effectiveLearners.Any(f => f.UID == l.UID)))</h5>
+                                    <small>所屬學生(合約)</small>
+                                </div>
+                                <div class="col-4" onclick='showCoachLearnerList(@Html.Raw((new CoachLearnerQueryViewModel{ KeyID = coach.UID.EncryptKey(), ForPrimary = true }).JsonStringify()));'>
+                                    <h5>
+                                        @(models.GetTable<LearnerCoachProperty>()
                             .Where(p => p.PropertyID == (int)LearnerCoachProperty.PropertyType.PrimaryCoach)
                             .Where(p => p.CoachID == coach.UID)
                             .Where(p => effectiveLearners.Any(l => l.UID == p.UID))
                             .Count())
-                                                                                </h5>
-                                                                                <small>主教練學生(合約)</small>
-                                                                            </div>
-                                                                            <div class="col-4" onclick='showCoachLearnerList(@Html.Raw((new CoachLearnerQueryViewModel{ KeyID = coach.UID.EncryptKey(), WithContract=false }).JsonStringify()));'>
-                                                                                <h5>@(learners.Count(l => !effectiveLearners.Any(f => f.UID == l.UID)))</h5>
-                                                                                <small>所屬學生(無合約)</small>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
+                                    </h5>
+                                    <small>主教練學生(合約)</small>
+                                </div>
+                                <div class="col-4" onclick='showCoachLearnerList(@Html.Raw((new CoachLearnerQueryViewModel{ KeyID = coach.UID.EncryptKey(), WithContract=false }).JsonStringify()));'>
+                                    <h5>@(learners.Count(l => !effectiveLearners.Any(f => f.UID == l.UID)))</h5>
+                                    <small>所屬學生(無合約)</small>
+                                </div>
+                            </div>
+                        </div>
     </div>
     }
 }

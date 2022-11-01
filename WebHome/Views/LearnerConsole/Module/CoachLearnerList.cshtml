@@ -39,7 +39,7 @@
                     <span></span>
                 </label>
             </th>
-            <th>編號</th>
+            <th class="align-center">編號</th>
             <th class="align-center">學生</th>
             <th class="align-center">狀態</th>
             <th class="align-center">性別</th>
@@ -54,44 +54,44 @@
         @{
             foreach (var item in _model)
             {
-                                    <tr onclick="processCoachLearner('@Html.Raw((new CoachLearnerQueryViewModel { CoachID = coach.CoachID,UID = item.UID }).Serialize())');">
-                                        <td style="width: 50px;">
-                                            <label class="fancy-checkbox">
-                                                <input style="z-index:1000;" class="checkbox-tick" type="checkbox" name="LearnerID" value="@(item.UID)" onclick="event.stopPropagation();" />
-                                                <span onclick="event.stopPropagation();"></span>
-                                            </label>
-                                        </td>
-                                        <td>@(item.MemberCode)</td>
-                                        <td>@(item.FullName())</td>
-                                        <td>
-                                            @if (item.LevelID == (int)Naming.MemberStatusDefinition.Anonymous)
+                <tr onclick="processCoachLearner('@Html.Raw((new CoachLearnerQueryViewModel { CoachID = coach.CoachID,UID = item.UID }).Serialize())');">
+                    <td style="width: 50px;">
+                        <label class="fancy-checkbox">
+                            <input style="z-index:1000;" class="checkbox-tick" type="checkbox" name="LearnerID" value="@(item.UID)" onclick="event.stopPropagation();" />
+                            <span onclick="event.stopPropagation();"></span>
+                        </label>
+                    </td>
+                    <td>@(item.MemberCode)</td>
+                    <td>@(item.FullName())</td>
+                    <td>
+                        @if (item.LevelID == (int)Naming.MemberStatusDefinition.Anonymous)
                         {
-                                                <text>幽靈</text>
+                            <text>幽靈</text>
                         }
                         else
                         {
-                                                <text>正式</text>
+                            <text>正式</text>
                         }
-                                        </td>
-                                        <td>@(item.UserProfileExtension.Gender == "F" ? "女" : "男")</td>
-                                        <td>@(item.YearsOld())</td>
-                                        <td>
-                                            @foreach (var advisor in item.LearnerFitnessAdvisor)
+                    </td>
+                    <td>@(item.UserProfileExtension.Gender == "F" ? "女" : "男")</td>
+                    <td>@(item.YearsOld())</td>
+                    <td>
+                        @foreach (var advisor in item.LearnerFitnessAdvisor)
                         {
-                                                <text>@(advisor.ServingCoach.UserProfile.FullName())</text>
-                                                <br />
+                            <text>@(advisor.ServingCoach.UserProfile.FullName())</text>
+                            <br />
                         }
-                                        </td>
-                                        <td>
-                                            @foreach (var p in item.LearnerCoachProperty.Where(p => p.PropertyID == (int)LearnerCoachProperty.PropertyType.PrimaryCoach))
+                    </td>
+                    <td>
+                        @foreach (var p in item.LearnerCoachProperty.Where(p => p.PropertyID == (int)LearnerCoachProperty.PropertyType.PrimaryCoach))
                         {
-                                                <text>@(p.ServingCoach.UserProfile.FullName())</text>
-                                                <br />
+                            <text>@(p.ServingCoach.UserProfile.FullName())</text>
+                            <br />
                         }
-                                        </td>
-                                        <td>@(item.CreateTime?.ToString("yyyy/MM/dd") ?? "2018之前") </td>
-                                        <td>@(contracts.Where(c => contractMember.Any(m => m.UID == item.UID && m.ContractID == c.ContractID)).Count())</td>
-                                    </tr>
+                    </td>
+                    <td>@(item.CreateTime?.ToString("yyyy/MM/dd") ?? "") </td>
+                    <td>@(contracts.Where(c => contractMember.Any(m => m.UID == item.UID && m.ContractID == c.ContractID)).Count())</td>
+                </tr>
             }
         }
     </tbody>
@@ -136,7 +136,7 @@
                 leftColumns: 3
             },
             "columnDefs": [{
-                targets: [1, 2, 3, 4, 5, 7, 8, 9],
+                targets: [1, 3, 4, 5, 7, 8, 9],
                 className: "align-center more"
             },
             {
