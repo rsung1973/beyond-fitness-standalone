@@ -321,7 +321,7 @@
                     if (_model.IsCoach())
                     {
                         <li>
-                            <a href="javascript:$('').launchDownload('@Html.Raw(Url.Action("LearnerOverview", "ConsoleHome",new { KeyID = _model.UID.EncryptKey() }))', { });">
+                            <a href="javascript:$('').launchDownload('@Html.Raw(Url.Action("LearnerOverview", "ConsoleHome"))', { 'keyID': '@Html.Raw(_model.UID.EncryptKey())'});">
                                 <i class="zmdi zmdi-accounts-alt"></i><span>我的學生</span>
                             </a>
                         </li>

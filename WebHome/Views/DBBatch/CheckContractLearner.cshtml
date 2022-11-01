@@ -25,22 +25,23 @@
         var conductingItems = models.GetTable<LearnerCoachProperty>()
                     .Where(p => p.PropertyID == (int)LearnerCoachProperty.PropertyType.PrimaryCoach)
                     .Where(p => p.CoachID == reviewItem.CoachID);
+        var effectiveAdvisedLearner = learners.Where(l => effectiveLearners.Any(f => f.UID == l.UID));
 
-        reviewItem.AdvisingCountWithContract = learners.Count(l => effectiveLearners.Any(f => f.UID == l.UID));
+        reviewItem.AdvisingCountWithContract = effectiveAdvisedLearner.Count();
         reviewItem.AdvisingCountNoContract = learners.Count(l => !effectiveLearners.Any(f => f.UID == l.UID));
         reviewItem.ConductingCount = conductingItems.Count();
         reviewItem.AttendanceRate = 0;
 
         models.SubmitChanges();
 
-        if (reviewItem.ConductingCount > 0)
+        if (reviewItem.AdvisingCountWithContract > 0)
         {
             var attendanceItems = models.GetTable<MonthlyLearnerReview>()
                     .Where(l => l.PeriodID == _model.PeriodID)
                     .Where(l => l.Attendance == true)
-                    .Where(l => conductingItems.Any(c => c.UID == l.UID));
+                    .Where(l => effectiveAdvisedLearner.Any(c => c.UID == l.UID));
 
-            reviewItem.AttendanceRate = Math.Round(attendanceItems.Count() * 100M / reviewItem.ConductingCount.Value);
+            reviewItem.AttendanceRate = Math.Round(attendanceItems.Count() * 100M / reviewItem.AdvisingCountWithContract.Value);
             models.SubmitChanges();
         }
     }
