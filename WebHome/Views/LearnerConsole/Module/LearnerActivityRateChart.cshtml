@@ -46,6 +46,10 @@
     $global.echarts.option = 
     {
         tooltip: {},
+        title: {            
+            left: 'center',
+            text: '每月活動率'
+        },
         xAxis: {
             max: maxData,
             splitLine: { show: false },
@@ -57,7 +61,7 @@
             },
             axisLabel: {
                 margin: 10,
-                fontSize: 14,
+                fontSize: 12,
                 formatter: '{value}%'
             }
         },
@@ -69,7 +73,7 @@
             axisLabel: {
                 margin: 10,
                 // color: '#999',
-                fontSize: 16,
+                fontSize: 14,
             }
         },
         grid: {
@@ -124,7 +128,7 @@
                     offset: [10, 0],
                     opacity: 1,
                     color: 'green',
-                    fontSize: 18
+                    fontSize: 14
                 },
                 animationDuration: 0,
                 symbolRepeat: 'fixed',
