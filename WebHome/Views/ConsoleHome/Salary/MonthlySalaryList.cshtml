@@ -56,6 +56,24 @@
                         + (coachSalary.AchievementBonus ?? 0));
                 }
             }
+            else if(item.MonthlySalary.SalaryType == (int)MonthlySalary.SalaryTypeEnum.AnnualBonus)
+            {
+                if (item.Settlement != null)
+                {
+                    var bonus = models.GetTable<CoachYearlyAdditionalPay>()
+                                    .Where(c => c.CoachID == item.UID)
+                                    .Where(c => c.Year == item.Settlement.Year)
+                                    .FirstOrDefault();
+
+                    if (bonus != null)
+                    {
+                        salary += ((bonus.ManagerBonus ?? 0)
+                            + (bonus.SpecialBonus ?? 0)
+                            + (bonus.AttendanceBonus ?? 0)
+                            + (bonus.AchievementBonus ?? 0));
+                    }
+                }
+            }
             else
             {
                 salary += (item.SpecialBonus ?? 0);

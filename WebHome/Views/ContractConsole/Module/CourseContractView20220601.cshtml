@@ -87,7 +87,7 @@
                         <td colspan="3"><b>課程內容</b></td>
                     </tr>
                     <tr>
-                        <td>名稱：@(_model.CourseContractType.TypeName)(@(_model.LessonPriceType.DurationInMinutes)分鐘)</td>
+                    <td>名稱：@(_model.CourseContractType.TypeName)(@(_model.CurrentPrice.DurationInMinutes)分鐘)</td>
                         <td colspan="2">
                             @if (_model.LessonPriceType.BranchStore?.IsVirtualClassroom() == true
                                     || _model.CourseContractType.ForVirtaulClass)

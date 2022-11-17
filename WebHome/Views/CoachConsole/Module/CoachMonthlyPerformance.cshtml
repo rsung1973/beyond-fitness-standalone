@@ -57,6 +57,7 @@
             <th>本月業績達成率</th>
             <th>本月課數達成率</th>
             <th>所屬學生數</th>
+            <th>主教練學生數</th>
             <th>生效中合約</th>
             <th>過期合約</th>
             <th>到職日</th>
@@ -91,6 +92,7 @@
                         <td>--</td>
                         <td>--</td>
                         <td>--</td>
+                        <td>--</td>
                     }
                     else
                     {
@@ -100,6 +102,11 @@
                     <td>
                         @(
                         item.LearnerFitnessAdvisor.Count()
+                            )
+                    </td>
+                    <td>
+                        @(
+                        item.LearnerCoachProperty.Where(p => p.PropertyID == (int)LearnerCoachProperty.PropertyType.PrimaryCoach).Count()
                             )
                     </td>
                     <td>
@@ -253,7 +260,7 @@
             },
             "columnDefs": [
                 {
-                    targets: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                    targets: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
                     className: "align-center more"
                 },
                 {

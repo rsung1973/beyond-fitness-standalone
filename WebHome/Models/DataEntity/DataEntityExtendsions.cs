@@ -299,7 +299,7 @@ namespace WebHome.Models.DataEntity
 
         public static String ContractName(this CourseContract item)
         {
-            return $"{item.CourseContractType.TypeName}({item.LessonPriceType.DurationInMinutes}分鐘)";
+            return $"{item.CourseContractType.TypeName}({item.CurrentPrice.DurationInMinutes}分鐘)";
         }
 
         public static String ContractLearner(this CourseContract item, String separator = "/")
@@ -878,6 +878,14 @@ namespace WebHome.Models.DataEntity
     public partial class ServingCoach
     {
         public bool IsLeaved => LeavedDate.HasValue;
+    }
+
+    public partial class CourseContract
+    {
+        public LessonPriceType CurrentPrice 
+        { 
+            get => this.CourseContractOrder?.Count == 1 ? CourseContractOrder[0].LessonPriceType : this.LessonPriceType ;
+        }
     }
 
 }

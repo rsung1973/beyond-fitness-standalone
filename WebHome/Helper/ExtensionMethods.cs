@@ -18,6 +18,7 @@ using WebHome.Models.Locale;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Extensions.Logging;
 using MessagingToolkit.QRCode.Codec;
+using WebHome.Properties;
 
 namespace WebHome.Helper
 {
@@ -73,9 +74,15 @@ namespace WebHome.Helper
                         message.Body = client.DownloadString((notifyUrl ?? Startup.Properties["HostDomain"] + VirtualPathUtility.ToAbsolute("~/Account/NotifyResetPassword")) + "?resetID=" + item.ResetID);
                     }
 
-                        //message.Body = body.ToString();
+                    //message.Body = body.ToString();
 
-                    SmtpClient smtpclient = new SmtpClient(Startup.Properties["SmtpServer"]);
+                    using SmtpClient smtpclient = new SmtpClient(AppSettings.Default.Smtp.Host, AppSettings.Default.Smtp.Port);
+                    smtpclient.EnableSsl = AppSettings.Default.Smtp.EnableSsl;
+                    //smtpclient.UseDefaultCredentials = false;
+                    if(AppSettings.Default.Smtp.UserName != null)
+                    {
+                        smtpclient.Credentials = new NetworkCredential(AppSettings.Default.Smtp.UserName, AppSettings.Default.Smtp.Password);
+                    }
                     //smtpclient.Credentials = CredentialCache.DefaultNetworkCredentials;
                     smtpclient.Send(message);
                 }

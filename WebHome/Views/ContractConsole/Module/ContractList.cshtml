@@ -58,7 +58,7 @@
                 </td>
                 <td>@(item.ServingCoach.UserProfile.FullName())</td>
                 <td>@(item.ContractNo())</td>
-                <td>@(item.CourseContractType.TypeName)(@(item.LessonPriceType.DurationInMinutes)分鐘)</td>
+                <td>@(item.CourseContractType.TypeName)(@(item.CurrentPrice.DurationInMinutes)分鐘)</td>
                 <td>
                     @(item.CourseContractRevision != null
                                         ? item.CourseContractRevision.OperationMode.HasValue

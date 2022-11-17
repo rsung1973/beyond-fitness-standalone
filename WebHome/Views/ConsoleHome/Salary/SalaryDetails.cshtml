@@ -19,10 +19,23 @@
     _modelState = ViewContext.ModelState;
     _viewModel = (CoachBonusViewModel)ViewBag.ViewModel;
     MonthlySalaryDetails _model = (MonthlySalaryDetails)this.Model;
-    CoachMonthlySalary _salary = models.GetTable<CoachMonthlySalary>()
-            .Where(s => s.SettlementID == _model.SettlementID)
-            .Where(s => s.CoachID == _model.UID)
-            .FirstOrDefault();
+
+    ISalary _salary;
+    if (_model.MonthlySalary.SalaryType == (int)MonthlySalary.SalaryTypeEnum.AnnualBonus)
+    {
+        _salary = models.GetTable<CoachYearlyAdditionalPay>()
+                .Where(s => s.Year == _model.Settlement.Year)
+                .Where(s => s.CoachID == _model.UID)
+                .FirstOrDefault();
+    }
+    else
+    {
+        _salary = models.GetTable<CoachMonthlySalary>()
+                .Where(s => s.SettlementID == _model.SettlementID)
+                .Where(s => s.CoachID == _model.UID)
+                .FirstOrDefault();
+    }
+
 
     ViewBag.SalaryItem = _salary;
 
@@ -182,13 +195,17 @@
     </div>
     @if (_salary != null)
     {
-        if (_salary.ServingCoach.UserProfile.IsHealthCare())
+        if(_salary is CoachMonthlySalary)
         {
-            await Html.RenderPartialAsync("~/Views/ConsoleHome/Salary/AchievementBonusForHealthCare.cshtml", _model);
-        }
-        else if (_salary.PTAverageUnitPrice > 0)
-        {
-            await Html.RenderPartialAsync("~/Views/ConsoleHome/Salary/AchievementBonusForCoach.cshtml", _model);
+            CoachMonthlySalary salaryItem = (CoachMonthlySalary)_salary;
+            if (salaryItem.ServingCoach.UserProfile.IsHealthCare())
+            {
+                await Html.RenderPartialAsync("~/Views/ConsoleHome/Salary/AchievementBonusForHealthCare.cshtml", _model);
+            }
+            else if (salaryItem.PTAverageUnitPrice > 0)
+            {
+                await Html.RenderPartialAsync("~/Views/ConsoleHome/Salary/AchievementBonusForCoach.cshtml", _model);
+            }
         }
     }
     <div class="panel">

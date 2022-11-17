@@ -506,8 +506,13 @@ namespace WebHome.Controllers
 
                     message.Body = HttpUtility.HtmlDecode(comment);
 
-                    System.Net.Mail.SmtpClient smtpclient = new System.Net.Mail.SmtpClient(Startup.Properties["SmtpServer"]);
-                    //smtpclient.Credentials = CredentialCache.DefaultNetworkCredentials;
+                    using System.Net.Mail.SmtpClient smtpclient = new System.Net.Mail.SmtpClient(AppSettings.Default.Smtp.Host, AppSettings.Default.Smtp.Port);
+                    smtpclient.EnableSsl = AppSettings.Default.Smtp.EnableSsl;
+                    //smtpclient.UseDefaultCredentials = false;
+                    if(AppSettings.Default.Smtp.UserName != null)
+                    {
+                        smtpclient.Credentials = new NetworkCredential(AppSettings.Default.Smtp.UserName, AppSettings.Default.Smtp.Password);
+                    }
                     smtpclient.Send(message);
                 }
                 catch (Exception ex)

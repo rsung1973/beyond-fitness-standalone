@@ -1032,7 +1032,6 @@ namespace WebHome.Helper
                     {
                         ClassDate = s.Date,
                         Hour = s.Hour,
-                        RegisterID = lesson.RegisterID,
                         LessonID = lessonItem.LessonID,
                     };
 

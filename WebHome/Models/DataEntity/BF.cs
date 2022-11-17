@@ -24,6 +24,30 @@ namespace WebHome.Models.DataEntity
         {
             RegularPay = 1,
             Additional = 2,
+            AnnualBonus = 3,
         }
     }
+
+    public interface ISalary
+    {
+        int? AchievementBonus { get; set; }
+        decimal? AchievementShareRatio { get; set; }
+        int? AttendanceBonus { get; set; }
+        int CoachID { get; set; }
+        decimal GradeIndex { get; set; }
+        int LevelID { get; set; }
+        int? ManagerBonus { get; set; }
+        int? SpecialBonus { get; set; }
+    }
+
+    public partial class CoachMonthlySalary : ISalary
+    {
+
+    }
+
+    public partial class CoachYearlyAdditionalPay : ISalary
+    {
+
+    }
+
 }

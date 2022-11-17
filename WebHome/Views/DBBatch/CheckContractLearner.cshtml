@@ -65,13 +65,13 @@
 
     foreach (var v in models.GetTable<V_ContractLearnerStatus>().Where(v => v.NotAfter >= endDate))
     {
-        if (!models.GetTable<UserProfile>()
-            .Where(u => u.UID == v.UID)
-            .Where(u => !u.CreateTime.HasValue || u.CreateTime >= _model.StartDate)
-            .Any())
+        var profile = models.GetTable<UserProfile>()
+                .Where(u => u.UID == v.UID).First();
+        if (profile.CreateTime > _model.StartDate)
         {
             continue;
         }
+
 
         var item = models.GetTable<MonthlyLearnerReview>()
                     .Where(l => l.UID == v.UID)

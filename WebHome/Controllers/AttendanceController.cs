@@ -58,9 +58,7 @@ namespace WebHome.Controllers
             if (item != null)
             {
                 model = models.GetTable<LessonTimeExpansion>()
-                    .Where(l => l.ClassDate == item.ClassDate
-                        && l.RegisterID == item.RegisterID
-                        && l.Hour == item.Hour).FirstOrDefault();
+                    .Where(l =>  l.ExpansionID == item.ExpansionID).FirstOrDefault();
             }
 
             if (model == null)
@@ -280,7 +278,7 @@ namespace WebHome.Controllers
             }
 
             HttpContext.RemoveCache("Training");
-            return RedirectToAction("Coach", "Account", new { lessonDate = item.ClassDate, hour = item.Hour, registerID = item.RegisterID, lessonID = item.LessonID });
+            return RedirectToAction("Coach", "Account", new { lessonDate = item.ClassDate, hour = item.Hour, registerID = item.LessonTime.RegisterID, lessonID = item.LessonID });
         }
 
 

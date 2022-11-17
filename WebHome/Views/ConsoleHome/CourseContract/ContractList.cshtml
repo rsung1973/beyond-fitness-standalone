@@ -40,7 +40,7 @@
         {
             <tr onclick="processContract('@Html.Raw(item.ContractID.EncryptKey())');">
                 <td>@(item.ContractNo())</td>
-                <td>@(item.CourseContractType.TypeName)(@(item.LessonPriceType.DurationInMinutes)分鐘)</td>
+                <td>@(item.CourseContractType.TypeName)(@(item.CurrentPrice.DurationInMinutes)分鐘)</td>
                 <td>@(item.Lessons)</td>
                 <td>
                     @(item.RemainedLessonCount())

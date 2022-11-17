@@ -139,7 +139,7 @@ namespace WebHome.Controllers
                 {
                     合約編號 = item.ContractNo(),
                     合約名稱 = String.Concat(item.CourseContractType.TypeName,
-                        "(", item.LessonPriceType.DurationInMinutes, " 分鐘)"),
+                        "(", item.CurrentPrice.DurationInMinutes, " 分鐘)"),
                     簽約場所 = item.CourseContractExtension.BranchStore.BranchName,
                     合約體能顧問 = item.ServingCoach.UserProfile.FullName(),
                     學生 = item.CourseContractType.IsGroup == true

@@ -534,7 +534,7 @@ namespace WebHome.Controllers
                     r[0] = item.ContractNo();
                     r[1] = item.ContractLearner();
                     r[2] = $"{g.Key.Year:0000}{g.Key.Month:00}";
-                    r[3] = item.LessonPriceType.ListPrice;
+                    r[3] = item.CurrentPrice.ListPrice;
                     var count = g.Count();
                     r[4] = count;
                     r[5] = g.Sum(l => l.RegisterLesson.LessonPriceType.ListPrice) * item.CourseContractType.GroupingMemberCount * item.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount / 100;

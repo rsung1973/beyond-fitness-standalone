@@ -2,6 +2,9 @@
 @using System.Linq.Expressions
 
 @using Microsoft.AspNetCore.Http
+@using System.Net.Mail
+@using System.Net
+@using System.Text
 @using WebHome.Helper
 @using WebHome.Models.Locale
 @using WebHome.Models.ViewModel
@@ -10,13 +13,14 @@
 @using Microsoft.AspNetCore.Mvc.ModelBinding
 
 @using Newtonsoft.Json
+@using WebHome.Properties
 
 @{
     models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
     _modelState = ViewContext.ModelState;
     _viewModel = (QueryViewModel)ViewBag.ViewModel;
     _model = this.Model as IFormCollection;
-    Test01();
+    TestGmail();
 }
 
 @functions
@@ -31,6 +35,37 @@
         var indicator = models.GetTable<MonthlyIndicator>().Where(i => i.PeriodID == int.Parse(_model["PeriodID"])).First();
         var av = indicator.CalculateAverageLessonPrice(models, int.Parse(_model["CoachID"]));
         <div>@(av)</div>
+    }
+
+    void TestGmail()
+    {
+        MailMessage message = new MailMessage();
+        message.ReplyToList.Add(Startup.Properties["WebMaster"]);
+        message.From = new MailAddress("rsung1973@gmail.com");
+        message.To.Add("rsung1973@gmail.com");
+        message.Subject = "Beyond-fitness會員密碼重設通知";
+        message.IsBodyHtml = true;
+
+        //body.Append("您好，請由下列連結重設您的密碼，謝謝。<br/>")
+        //    .Append("<a href=").Append(Startup.Properties["HostDomain"]).Append(VirtualPathUtility.ToAbsolute("~/Account/ResetPass"))
+        //    .Append("/").Append(item.ResetID)
+        //    .Append(">會員重設密碼</a>");
+
+        using (WebClient client = new WebClient())
+        {
+            client.Encoding = Encoding.UTF8;
+            String url = (Startup.Properties["HostDomain"] + VirtualPathUtility.ToAbsolute("~/CornerKick/NotifyResetPassword")) + "?resetID=2091";
+            message.Body = client.DownloadString(url);
+        }
+
+        //message.Body = body.ToString();
+
+        SmtpClient smtpclient = new SmtpClient(AppSettings.Default.Smtp.Host, AppSettings.Default.Smtp.Port);
+        smtpclient.EnableSsl = AppSettings.Default.Smtp.EnableSsl;
+        //smtpclient.UseDefaultCredentials = false;
+        smtpclient.Credentials = new NetworkCredential(AppSettings.Default.Smtp.UserName, AppSettings.Default.Smtp.Password);
+
+        smtpclient.Send(message);
     }
 }
 

@@ -999,7 +999,7 @@ namespace WebHome.Controllers
             r[4] = String.Format("{0:yyyy/MM/dd}", item.EffectiveDate);
             r[5] = String.Format("{0:yyyy/MM/dd}", item.Expiration);
             r[6] = item.CourseContractType.TypeName + "("
-                + item.LessonPriceType.DurationInMinutes + " 分鐘)";
+                + item.CurrentPrice.DurationInMinutes + " 分鐘)";
             if (item.SequenceNo == 0)
             {
                 if (item.Status >= (int)Naming.CourseContractStatus.已生效)
@@ -1013,8 +1013,8 @@ namespace WebHome.Controllers
             //    r[9] =  item.TotalCost;
 
             var originalPrice = item.OriginalSeriesPrice();
-            r[10] = originalPrice != null ? originalPrice.ListPrice : item.LessonPriceType.ListPrice;
-            r[11] = item.LessonPriceType.ListPrice;
+            r[10] = originalPrice != null ? originalPrice.ListPrice : item.CurrentPrice.ListPrice;
+            r[11] = item.CurrentPrice.ListPrice;
             var revision = item.CourseContractRevision;
             r[12] = revision == null ? "新合約" : revision.Reason;
             r[13] = ((Naming.ContractQueryStatus)item.Status).ToString();

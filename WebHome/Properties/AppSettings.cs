@@ -10,6 +10,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using WebHome.Models.ViewModel;
+using CommonLib.Utility;
 
 namespace WebHome.Properties
 {
@@ -48,7 +49,9 @@ namespace WebHome.Properties
             T currentSettings;
             //String fileName = $"{Assembly.GetExecutingAssembly().GetName()}.settings.json";
             String fileName = "App.settings.json";
-            String filePath = Path.Combine(AppRoot, "App_Data", fileName);
+            String path = Path.Combine(AppRoot, "App_Data");
+            path.CheckStoredPath();
+            String filePath = Path.Combine(path, fileName);
             if (File.Exists(filePath))
             {
                 _Settings = (JObject)JsonConvert.DeserializeObject(File.ReadAllText(filePath));
@@ -109,6 +112,12 @@ namespace WebHome.Properties
             get;
             set;
         }
+
+        public SmtpSettings Smtp
+        {
+            get;
+            set;
+        } = new SmtpSettings { };
     }
 
     public class Settings
@@ -118,5 +127,14 @@ namespace WebHome.Properties
         public static Settings Default => _default;
         public String BFDbConnection => Startup.GlobalConfiguration.GetConnectionString("BFDbConnection");
 
+    }
+
+    public class SmtpSettings
+    {
+        public String Host { get; set; } = "localhost";
+        public int Port { get; set; } = 25;
+        public bool EnableSsl { get; set; } = false;
+        public String UserName { get; set; }
+        public String Password { get; set; }
     }
 }
