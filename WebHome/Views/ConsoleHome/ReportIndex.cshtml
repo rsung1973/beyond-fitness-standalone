@@ -49,11 +49,13 @@
                             <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#payment">收款</a></li>
                             <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#learner">學生</a></li>
                             <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#achivement">業績</a></li>
-                        } else if (_model.IsCoach()) {
+                        } 
+                        else if (_model.IsCoach()) 
+                        {
                             <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#payment">收款</a></li>
                             <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#learner">學生</a></li>
                         }
-                        @if (_model.IsAssistant() || _model.IsAuthorizedSysAdmin())
+                        @if (_model.IsAssistant() || _model.IsAuthorizedSysAdmin() || _model.IsAccounting())
                         {
                             <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#trust">信託</a></li>
                             <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#inventory">盤點</a></li>

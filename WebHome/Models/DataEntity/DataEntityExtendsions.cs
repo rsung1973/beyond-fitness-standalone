@@ -640,6 +640,8 @@ namespace WebHome.Models.DataEntity
         public enum VipStatusDefinition
         {
             VVIP = 1,
+            PIOnly = 2,
+            LimitedAccount = 4,
         }
     }
 

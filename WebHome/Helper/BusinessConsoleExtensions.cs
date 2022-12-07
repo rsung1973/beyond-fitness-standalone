@@ -173,7 +173,7 @@ namespace WebHome.Helper
                     models.GetTable<MonthlyCoachLearnerReview>()
                         .InsertOnSubmit(new MonthlyCoachLearnerReview
                         {
-                            PeriodID = item.PeriodID,
+                            MonthlyIndicator = item,
                             CoachID = c.CoachID,
                         });
                 }
@@ -323,7 +323,7 @@ namespace WebHome.Helper
             }
             else if (item.StartDate == DateTime.Today.FirstDayOfMonth())
             {
-                lessonItems = lessonItems.Where(l => l.ClassTime < DateTime.Today);
+                lessonItems = lessonItems.Where(l => l.ClassTime < DateTime.Today.AddDays(1));
             }
             else
             {
