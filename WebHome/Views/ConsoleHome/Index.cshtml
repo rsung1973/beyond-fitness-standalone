@@ -63,7 +63,7 @@
     }
 
     <!--我的合約與當日行事曆-->
-    @if (_model.IsAssistant() || _model.IsServitor())
+    @if (_model.IsAssistant())
     {
         await Html.RenderPartialAsync("~/Views/ConsoleHome/Index/Admin/Part_1.cshtml", _model);
     }
@@ -79,6 +79,10 @@
     {
         await Html.RenderPartialAsync("~/Views/ConsoleHome/Index/Admin/Part_1.cshtml", _model);
     }
+    else if (_model.IsServitor())
+    {
+        await Html.RenderPartialAsync("~/Views/ConsoleHome/Index/Admin/Part_1.cshtml", _model);
+    }
 
     <!--我的發票卡片-->
     @if (_model.IsAssistant() || _model.IsAuthorizedSysAdmin())
@@ -86,7 +90,7 @@
         await Html.RenderPartialAsync("~/Views/ConsoleHome/Module/AboutInvoice.cshtml", _model);
     }
     <!--我的分店業績卡片-->
-    @if (!_model.IsServitor())
+    @if (_model.IsAssistant() || _model.IsCoach())
     {
         await Html.RenderPartialAsync("~/Views/ConsoleHome/Module/AboutAchievementEChart.cshtml", _model);
         @* await Html.RenderPartialAsync("~/Views/ConsoleHome/Module/AboutAchievementEChartWeekly.cshtml", _model); *@

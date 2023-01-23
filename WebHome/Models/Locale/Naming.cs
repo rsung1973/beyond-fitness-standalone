@@ -94,6 +94,8 @@ namespace WebHome.Models.Locale
             一對一課程 = 1015,
             BundlePackage = 1016,
             特別專案 = 1017,
+			BEYOND推廣課 = 1018,
+            單堂現場付款 = 1019,
         }
 
         public enum LessonSeriesStatus
@@ -222,6 +224,7 @@ namespace WebHome.Models.Locale
             AFM = 1107,
             FES = 1108,
             Health = 1109,
+            Health_SD = 1110,
         }
 
         public static readonly ProfessionalCategory[] ManagerialLevel = new ProfessionalCategory[]

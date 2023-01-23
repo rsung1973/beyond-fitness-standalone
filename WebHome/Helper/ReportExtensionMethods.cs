@@ -190,6 +190,7 @@ namespace WebHome.Helper
             table.Columns.Add(new DataColumn("SettlementID", typeof(int)));	//	14
             table.Columns.Add(new DataColumn("簽約體能顧問", typeof(String)));	//	15
             table.Columns.Add(new DataColumn("CoachID", typeof(int)));	//	16
+            table.Columns.Add(new DataColumn("主教練", typeof(String)));	//	17
 
 
             var details = items.Where(t => t.ContractID.HasValue)
@@ -200,6 +201,7 @@ namespace WebHome.Helper
                     t.PriceID,
                     t.BranchID,
                     t.SettlementID,
+                    t.RegisterID,
                 });
 
             var branchItems = models.GetTable<BranchStore>().ToArray();
@@ -210,6 +212,7 @@ namespace WebHome.Helper
                 ServingCoach coach = models.GetTable<ServingCoach>().Where(c => c.CoachID == item.Key.AttendingCoach).First();
                 LessonPriceType price = models.GetTable<LessonPriceType>().Where(u => u.PriceID == item.Key.PriceID).FirstOrDefault();
                 var branch = branchItems.Where(b => b.BranchID == item.Key.BranchID).First();
+                var lesson = models.GetTable<RegisterLesson>().Where(g => g.RegisterID == item.Key.RegisterID).First();
 
                 var r = table.NewRow();
                 r[0] = contract.ContractNo();
@@ -218,11 +221,18 @@ namespace WebHome.Helper
 
                 if (contract.CourseContractType.IsGroup == true)
                 {
-                    r[3] = String.Join("/", contract.CourseContractMember.Select(m => m.UserProfile).ToArray().Select(m => m.FullName()));
+                    var learners = contract.CourseContractMember.Select(m => m.UserProfile).ToArray();
+                    r[3] = String.Join("/", learners.Select(m => m.FullName()));
+                    r[17] = learners.Select(u => u.LearnerCoachProperty
+                                        .Where(p => p.PropertyID == (int)LearnerCoachProperty.PropertyType.PrimaryCoach)
+                                        .Select(p => p.ServingCoach.UserProfile.FullName()).Concatenate("/")).Concatenate("\r\n");
                 }
                 else
                 {
-                    r[3] = contract.ContractOwner.FullName();
+                    r[3] = lesson.UserProfile.FullName();
+                    r[17] = lesson.UserProfile.LearnerCoachProperty
+                                        .Where(p => p.PropertyID == (int)LearnerCoachProperty.PropertyType.PrimaryCoach)
+                                        .Select(p => p.ServingCoach.UserProfile.FullName()).Concatenate("/");
                 }
 
                 r[4] = contract.CourseContractType.TypeName
@@ -280,11 +290,18 @@ namespace WebHome.Helper
 
                 if (lesson.GroupingMemberCount > 1)
                 {
-                    r[3] = String.Join("/", lesson.GroupingLesson.RegisterLesson.Select(s => s.UserProfile).ToArray().Select(m => m.FullName()));
+                    var learners = lesson.GroupingLesson.RegisterLesson.Select(s => s.UserProfile).ToArray();
+                    r[3] = String.Join("/", learners.Select(m => m.FullName()));
+                    r[17] = learners.Select(u => u.LearnerCoachProperty
+                                        .Where(p => p.PropertyID == (int)LearnerCoachProperty.PropertyType.PrimaryCoach)
+                                        .Select(p => p.ServingCoach.UserProfile.FullName()).Concatenate("/")).Concatenate("\r\n");
                 }
                 else
                 {
                     r[3] = lesson.UserProfile.FullName();
+                    r[17] = lesson.UserProfile.LearnerCoachProperty
+                                        .Where(p => p.PropertyID == (int)LearnerCoachProperty.PropertyType.PrimaryCoach)
+                                        .Select(p => p.ServingCoach.UserProfile.FullName()).Concatenate("/");
                 }
 
                 r[4] = contract.Subject;
@@ -321,6 +338,9 @@ namespace WebHome.Helper
                     r[2] = branch.BranchName;
 
                 r[3] = lesson.UserProfile.FullName();
+                r[17] = lesson.UserProfile.LearnerCoachProperty
+                                        .Where(p => p.PropertyID == (int)LearnerCoachProperty.PropertyType.PrimaryCoach)
+                                        .Select(p => p.ServingCoach.UserProfile.FullName()).Concatenate("/");
 
                 r[4] = lesson.LessonPriceType.Description
                     + " (" + lesson.LessonPriceType.DurationInMinutes + " 分鐘)";
@@ -454,14 +474,6 @@ namespace WebHome.Helper
         public static IEnumerable<PaymentMonthlyReportItem> CreateMonthlyPaymentReportForPISession(this PaymentQueryViewModel viewModel, GenericManager<BFDataContext> models)
             
         {
-
-            //IQueryable<RegisterLesson> lessons = models.GetTable<RegisterLesson>()
-            //        .Join(models.GetTable<LessonTime>().FilterByReceivableTrainingSession(), r => r.RegisterID, l => l.RegisterID, (r, l) => r);
-            //IQueryable<Payment> items = models.GetTable<Payment>().Join(models.GetTable<TuitionInstallment>()
-            //        .Join(lessons,
-            //            t => t.RegisterID, r => r.RegisterID, (t, r) => t),
-            //    p => p.PaymentID, t => t.InstallmentID, (p, t) => p);
-
             IQueryable<Payment> items = models.GetTable<Payment>()
                     .Where(p => p.TransactionType == (int)Naming.PaymentTransactionType.自主訓練);
 
@@ -723,11 +735,7 @@ namespace WebHome.Helper
         //static readonly decimal[] ShareRatioIncrementForAttendance = new decimal[] { 2m, 1.5m, 1.25m, 1m, 0.5m };
         static readonly int[] AttendingLessonIndex = new int[] { 142, 132, 122, 112, 92 };
         static readonly decimal[] ShareRatioIncrementForAttendance = new decimal[] { 2m, 1.5m, 1.25m, 1m, 0.5m };
-        static readonly int[][] HealthCareBonusIndex = new int[][] {
-            new int[]{33 ,175  ,190   ,200   ,21000},
-            new int[]{34 ,200  ,215   ,225   ,23000},
-            new int[]{35 ,225  ,240   ,250   ,26000}
-        };
+
         static readonly int[] ManagerAttendanceIndex = { 76, 71, 66, 61, 56, 51, 46, 41, 36, 31, 26, 21, 16, 11 };
         static readonly int[] ManagerAttendanceBonus = { 42500, 40500, 37000, 34000, 31000, 27500, 24000, 21000, 18000, 15000, 12000, 9000, 6000, 3000 };
         static readonly int[] ViceManagerAttendanceIndex = { 91, 86, 81, 76, 71, 66, 61, 56, 51, 46, 41, 36, 31, 26, 21, 16, 11 };
@@ -743,6 +751,58 @@ namespace WebHome.Helper
             var settlement = models.GetTable<Settlement>().Where(s => startDate <= s.SettlementDate && endExclusiveDate > s.SettlementDate).FirstOrDefault();
             if (settlement == null)
                 return;
+
+            Dictionary<int, int[][]> DietitianBonusIndex = new Dictionary<int, int[][]>
+                    {
+                        {
+                            37,
+                            new[]
+                            {
+                                new int[] { 46, 500 },
+                                new int[] { 16, 350 },
+                            }
+                        },
+                        {
+                            38,
+                            new[]
+                            {
+                                new int[] { 46, 550 },
+                                new int[] { 16, 400 },
+                            }
+                        },
+                    };
+
+            Dictionary<int, int[][]> HealthCareBonusIndex = new Dictionary<int, int[][]>
+            {
+                { 36,   //  level 0
+                    new []
+                    {
+                        new int[] { 101, 300,20 },
+                        new int[] { 21, 200,20},
+                    }
+                },
+                { 33,   //  level 1
+                    new []
+                    {
+                        new int[] { 101, 300,40 },
+                        new int[] { 41, 250,40},
+                    }
+                },
+                { 34,   //  level 2
+                    new []
+                    {
+                        new int[] { 101, 350 ,40},
+                        new int[] { 21, 280,40},
+                    }
+                },
+                { 35,   //  level 3
+                    new []
+                    {
+                        new int[] { 101, 380,40 },
+                        new int[] { 21, 300, 40 },
+                    }
+                },
+            };
 
             //models.ExecuteCommand(@"UPDATE Report.MonthlySalaryDetails
             //    SET SettlementID = {0} where SettlementID is null", settlement.SettlementID);
@@ -889,7 +949,7 @@ namespace WebHome.Helper
                             ? (int?)(PTItems.Where(v => v.AttendingCoach == coach.CoachID).CalcTuition(models) / (decimal?)salary.PTAttendanceCount + 0.5M)
                             : 0;
 
-                    if (/*coach.CoachID == 29445 || */coach.CoachID == 24032)
+                    if (/*coach.CoachID == 29445 || coach.CoachID == 24032*/ coach.CoachID == -1)
                     {
                         salary.GradeIndex = 31;
                     }
@@ -1112,50 +1172,43 @@ namespace WebHome.Helper
 
                 void calcHealthCareBonus()
                 {
-                    var currentPTItems = PTItems.Where(v => v.AttendingCoach == coach.CoachID);
-                    salary.PTAttendanceCount = currentPTItems.Count() * 2 
-                        - helper.FilterByBonusExchangedSRSession(currentPTItems).Count();
-
-                    var tsItems = helper.LessonItems
-                            .Where(v => v.PriceStatus == (int)Naming.LessonPriceStatus.體驗課程)
-                            .Where(v => v.AttendingCoach == coach.CoachID);
-                    salary.PTAttendanceCount += tsItems.Count();
-
-                    var srItems = helper.LessonItems
-                            .Where(v => v.PriceStatus == (int)Naming.LessonPriceStatus.運動恢復課程)
-                            .Where(v => v.AttendingCoach == coach.CoachID);
-                    salary.PTAttendanceCount += srItems.Count();
-
-                    var atItems = helper.LessonItems
-                            .Where(v => v.PriceStatus == (int)Naming.LessonPriceStatus.運動防護課程)
-                            .Where(v => v.AttendingCoach == coach.CoachID);
-                    salary.PTAttendanceCount += atItems.Count() * 2;
-
-                    var sdItems = helper.LessonItems
-                            .Where(v => v.PriceStatus == (int)Naming.LessonPriceStatus.營養課程)
-                            .Where(v => v.AttendingCoach == coach.CoachID);
-                    salary.PTAttendanceCount += sdItems.Count() * 2;
+                    salary.PTAttendanceCount = helper.LessonItems
+                            .Where(v => v.PriceStatus == (int)Naming.LessonPriceStatus.運動恢復課程
+                                    || v.PriceStatus == (int)Naming.LessonPriceStatus.體驗課程
+                                    || v.PriceStatus == (int)Naming.LessonPriceStatus.點數兌換課程)
+                            .Where(v => v.AttendingCoach == coach.CoachID).Count();
 
                     salary.AttendanceBonus = 0;
 
-                    var bonusIdx = HealthCareBonusIndex.Where(i => i[0] == coach.LevelID).FirstOrDefault();
-                    if (bonusIdx != null)
+                    if (coach.LevelID.HasValue && HealthCareBonusIndex.ContainsKey(coach.LevelID.Value))
                     {
-                        var calcCount = salary.PTAttendanceCount;
-                        if (calcCount >= 1 && calcCount <= 70)
+                        var bonusLevel = HealthCareBonusIndex[coach.LevelID.Value];
+                        var bonusIdx = bonusLevel.Where(i => salary.PTAttendanceCount >= i[0]).FirstOrDefault();
+                        if (bonusIdx != null)
                         {
-                            salary.PTAverageUnitPrice = bonusIdx[1];
-                            salary.AttendanceBonus = bonusIdx[1] * Math.Max(calcCount.Value - 20, 0);
+                            salary.AttendanceBonus = (salary.PTAttendanceCount - bonusIdx[2]) * bonusIdx[1];
                         }
-                        else if (calcCount >= 71 && calcCount <= 90)
+                    }
+
+                    models.SubmitChanges();
+                }
+
+                void calcDietitianBonus()
+                {
+                    salary.PTAttendanceCount = helper.LessonItems
+                            .Where(v => v.PriceStatus == (int)Naming.LessonPriceStatus.營養課程
+                                    || v.PriceStatus == (int)Naming.LessonPriceStatus.點數兌換課程)
+                            .Where(v => v.AttendingCoach == coach.CoachID).Count();
+
+                    salary.AttendanceBonus = 0;
+
+                    if (coach.LevelID.HasValue && DietitianBonusIndex.ContainsKey(coach.LevelID.Value))
+                    {
+                        var bonusLevel = DietitianBonusIndex[coach.LevelID.Value];
+                        var bonusIdx = bonusLevel.Where(i => salary.PTAttendanceCount >= i[0]).FirstOrDefault();
+                        if (bonusIdx != null)
                         {
-                            salary.PTAverageUnitPrice = bonusIdx[2];
-                            salary.AttendanceBonus = bonusIdx[2] * (calcCount - 20);
-                        }
-                        else if (calcCount > 90)
-                        {
-                            salary.PTAverageUnitPrice = bonusIdx[3];
-                            salary.AttendanceBonus = bonusIdx[3] * (calcCount - 20);
+                            salary.AttendanceBonus = (salary.PTAttendanceCount -15) * bonusIdx[1];
                         }
                     }
 
@@ -1200,15 +1253,46 @@ namespace WebHome.Helper
                     calcGeneralAchievement();
 
                 }
-                else if (/*coach.CoachID == 29445 || */coach.CoachID == 24032)
+                else if (/*coach.CoachID == 29445 || coach.CoachID == 24032*/ coach.CoachID == -1)
                 {
-                    if (forRole != "coach")
+                    if (forRole == "coach" || forRole== "vicemanager")
                     {
-                        continue;
-                    }
+                        calcGeneralAchievement();
+                        calcCoachBonus();
 
-                    calcGeneralAchievement();
-                    calcCoachBonus();
+                        branch = models.GetTable<BranchStore>().Where(b => b.ViceManagerID == coach.CoachID).FirstOrDefault();
+
+                        branch ??= coach.CurrentWorkBranch();
+
+                        CoachBranchMonthlyBonus branchBonus = null;
+                        if (branch != null)
+                        {
+                            branchBonus = salary.CoachBranchMonthlyBonus.Where(b => b.BranchID == branch.BranchID).FirstOrDefault();
+                        }
+
+                        var indicator = models.GetTable<MonthlyIndicator>().Where(s => s.StartDate <= settlement.StartDate && s.EndExclusiveDate > settlement.StartDate).FirstOrDefault();
+                        if (indicator != null && branchBonus != null)
+                        {
+                            MonthlyBranchRevenueGoal item = indicator.MonthlyBranchRevenueIndicator.Where(r => r.BranchID == branch.BranchID)
+                                .Where(r => r.MonthlyBranchRevenueGoal != null)
+                                .Select(r => r.MonthlyBranchRevenueGoal).FirstOrDefault();
+
+                            if (item != null)
+                            {
+                                branchBonus.BranchTotalPTCount =
+                                    (item.ActualCompleteLessonCount ?? 0)
+                                    + (item.SRCount ?? 0)
+                                    + (item.SDCount ?? 0)
+                                    + (item.ATCount ?? 0);
+                                var tuitionSubtotal =
+                                branchBonus.BranchTotalPTTuition =
+                                    (item.ActualLessonAchievement ?? 0)
+                                    + (item.SRAchievement ?? 0)
+                                    + (item.SDAchievement ?? 0)
+                                    + (item.ATAchievement ?? 0);
+                            }
+                        }
+                    }
                 }
                 else if (coach.UserProfile.IsFES())
                 {
@@ -1313,7 +1397,16 @@ namespace WebHome.Helper
                         continue;
                     }
                     calcGeneralAchievement();
-                    calcHealthCareBonus();
+
+                    if (coach.ProfessionalLevel.CategoryID == (int)Naming.ProfessionalCategory.Health_SD)
+                    {
+                        calcDietitianBonus();
+                    }
+                    else
+                    {
+                        calcHealthCareBonus();
+                    }
+
                 }
                 else
                 {

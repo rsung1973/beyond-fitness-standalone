@@ -625,8 +625,10 @@ namespace WebHome.Models.DataEntity
 
         public int? DailyQuestionID { get; set; }
 
-        public bool IsVIP { get => UserProfileExtension?.VipStatus == (int)UserProfileExtension.VipStatusDefinition.VVIP; }
-        
+        public bool IsVIP { get => ((UserProfileExtension?.VipStatus ?? 0) & (int)UserProfileExtension.VipStatusDefinition.VVIP) > 0; }
+        public bool IsAnonymous { get => ((UserProfileExtension?.VipStatus ?? 0) & (int)UserProfileExtension.VipStatusDefinition.Anonymous) > 0; }
+        public bool IsRegular { get => ((UserProfileExtension?.VipStatus ?? 0) & (int)UserProfileExtension.VipStatusDefinition.RegularCustomer) > 0; }
+
     }
 
     public class CourseContractPayment
@@ -642,6 +644,8 @@ namespace WebHome.Models.DataEntity
             VVIP = 1,
             PIOnly = 2,
             LimitedAccount = 4,
+            Anonymous = 8,
+            RegularCustomer = 16,
         }
     }
 
@@ -708,6 +712,9 @@ namespace WebHome.Models.DataEntity
         public bool IsDistanceLesson => this?.ObjectiveLessonPrice.Any(p => p.CatalogID == (int)ObjectiveLessonCatalog.CatalogDefinition.OnLine) == true;
         public bool IsCombination => this?.ObjectiveLessonPrice.Any(p => p.CatalogID == (int)ObjectiveLessonCatalog.CatalogDefinition.CustomCombination) == true;
         public bool IsOneByOne => this?.LessonPriceProperty.Any(p => p.PropertyID == (int)Naming.LessonPriceFeature.一對一課程) == true;
+        public bool ForDietary => this?.Status == (int)Naming.LessonPriceStatus.營養課程
+            || this?.LessonPriceProperty.Any(p => p.PropertyID == (int)Naming.LessonPriceFeature.營養課程) == true;
+        public bool IsSingleCharge => this?.LessonPriceProperty.Any(p => p.PropertyID == (int)Naming.LessonPriceFeature.單堂現場付款) == true;
     }
 
     public partial class RegisterLesson

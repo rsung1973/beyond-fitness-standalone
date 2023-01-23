@@ -280,7 +280,8 @@
       <Column Name="AttendedLessons" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="BranchID" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="MasterRegistration" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Association Name="RegisterLesson_IntuitionCharge" Member="IntuitionCharge" ThisKey="RegisterID" OtherKey="RegisterID" Type="IntuitionCharge" Cardinality="One" />
+		<Column Name="Expiration" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+		<Association Name="RegisterLesson_IntuitionCharge" Member="IntuitionCharge" ThisKey="RegisterID" OtherKey="RegisterID" Type="IntuitionCharge" Cardinality="One" />
       <Association Name="RegisterLesson_LessonFeedBack" Member="LessonFeedBack" ThisKey="RegisterID" OtherKey="RegisterID" Type="LessonFeedBack" />
       <Association Name="RegisterLesson_RegisterLessonContract" Member="RegisterLessonContract" ThisKey="RegisterID" OtherKey="RegisterID" Type="RegisterLessonContract" Cardinality="One" />
       <Association Name="RegisterLesson_RegisterLessonEnterprise" Member="RegisterLessonEnterprise" ThisKey="RegisterID" OtherKey="RegisterID" Type="RegisterLessonEnterprise" Cardinality="One" />

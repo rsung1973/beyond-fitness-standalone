@@ -26,6 +26,9 @@ namespace WebHome.Helper.Jobs
                                FROM CourseContractRevision
                                WHERE (CourseContract.ContractID = RevisionID)))",
                         (int)Naming.CourseContractStatus.已過期, (int)Naming.CourseContractStatus.已生效, DateTime.Today);
+
+                    models.ExecuteCommand(@"UPDATE RegisterLesson
+                            SET        Attended = {0} WHERE   (Expiration < {1})", (int)Naming.LessonStatus.課程結束, DateTime.Today);
                 }
                 catch (Exception ex)
                 {

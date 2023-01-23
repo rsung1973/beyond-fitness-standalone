@@ -37,7 +37,7 @@
             <a href="javascript:gtag('event', '我的合約', {  'event_category': '大頭貼點擊',  'event_label': '漢堡選單'});window.location.href = '@(Url.Action("MyContract","CornerKick"))';">
                 <span class="white-text name">
                     @(_model.UserName ?? _model.RealName)
-                    @{ await Html.RenderPartialAsync("~/Views/CornerKick/Module/LessonCount.cshtml", _model);}
+                    @{ await Html.RenderPartialAsync("~/Views/CornerKick/Module/LessonCount2022.cshtml", _model);}
 
                 </span>
             </a>

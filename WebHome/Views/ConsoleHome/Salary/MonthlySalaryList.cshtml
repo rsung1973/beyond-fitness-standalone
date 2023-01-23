@@ -68,9 +68,7 @@
                     if (bonus != null)
                     {
                         salary += ((bonus.ManagerBonus ?? 0)
-                            + (bonus.SpecialBonus ?? 0)
-                            + (bonus.AttendanceBonus ?? 0)
-                            + (bonus.AchievementBonus ?? 0));
+                            + (item.SpecialBonus ?? 0));
                     }
                 }
             }

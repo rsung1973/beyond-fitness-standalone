@@ -44,12 +44,12 @@
                                 }
                                 @if (item.IsTrialLearner())
                                 {
-                                    <h6 class="users_name">@(item.UserProfileExtension.VipStatus==(int)UserProfileExtension.VipStatusDefinition.VVIP ? item.RealName.MaskedName() : item.RealName)@(item.Nickname!=null?$"({item.Nickname})":null)</h6>
+                                    <h6 class="users_name">@(item.IsVIP ? item.RealName.MaskedName() : item.RealName)@(item.Nickname!=null?$"({item.Nickname})":null)</h6>
                                     <small class="join_date">體驗學生</small>
                                 }
                                 else
                                 {
-                                    <h6 class="users_name">@(item.UserProfileExtension.VipStatus == (int)UserProfileExtension.VipStatusDefinition.VVIP ? item.RealName.MaskedName() : item.RealName)</h6>
+                                    <h6 class="users_name">@(item.IsVIP ? item.RealName.MaskedName() : item.RealName)</h6>
                                     <small class="join_date">@(item.Nickname)</small>
                                 }
                             </a>

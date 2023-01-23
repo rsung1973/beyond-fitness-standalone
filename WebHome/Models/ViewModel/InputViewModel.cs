@@ -617,4 +617,13 @@ namespace WebHome.Models.ViewModel
         public int? WorkPlace { get; set; }
     }
 
+    public class RegisterLessonViewModel : QueryViewModel
+    {
+        public int[] UID { get; set; }    
+        public Naming.LessonPriceFeature? FeatureID { get; set;}
+        public int? Month { get; set; }
+		public int? Lessons { get; set; }
+		public int? AdvisorID { get; set; }
+	}
+
 }

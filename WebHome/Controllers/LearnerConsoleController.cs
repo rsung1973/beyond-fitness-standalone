@@ -92,6 +92,11 @@ namespace WebHome.Controllers
                 return View("~/Views/ConsoleHome/Shared/AlertMessage.cshtml", model: "資料錯誤!!");
             }
 
+            models.ExecuteCommand(@"DELETE  LearnerCoachProperty
+                                    WHERE   (UID = {0}) AND (PropertyID = {1})",
+                                viewModel.UID,
+                                (int)LearnerCoachProperty.PropertyType.PrimaryCoach);
+
             var result = models.ExecuteCommand(@"INSERT INTO LearnerCoachProperty
                                                    (CoachID, UID, PropertyID)
                                     SELECT  {0} AS CoachID, {1} AS UID, {2} AS PropertyID
@@ -122,6 +127,11 @@ namespace WebHome.Controllers
             int result = 0;
             foreach(var id in viewModel.LearnerID)
             {
+                models.ExecuteCommand(@"DELETE  LearnerCoachProperty
+                                    WHERE   (UID = {0}) AND (PropertyID = {1})",
+                                    id,
+                                    (int)LearnerCoachProperty.PropertyType.PrimaryCoach);
+
                 result += models.ExecuteCommand(@"INSERT INTO LearnerCoachProperty
                                                    (CoachID, UID, PropertyID)
                                     SELECT  {0} AS CoachID, {1} AS UID, {2} AS PropertyID

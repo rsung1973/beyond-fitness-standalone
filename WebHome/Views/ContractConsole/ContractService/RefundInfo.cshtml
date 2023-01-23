@@ -193,7 +193,7 @@ else
     else if (_viewModel.CauseForEnding == Naming.CauseForEnding.合約到期轉新約
             || _viewModel.CauseForEnding == Naming.CauseForEnding.轉讓第三人)
     {
-        processingFee = 300;
+        processingFee = 0;  // 300不在這裡收，是另外收
         <div class="alert xl-pink col-darkteal" role="alert">
             <div class="container">
                 <div class="alert-icon">
@@ -205,7 +205,7 @@ else
                     <div class="alert-icon">
                         <i class="zmdi zmdi-notifications"></i>
                     </div>
-                    手續費 @(String.Format("{0:##,###,###,###}", processingFee))元：額外付款
+                    手續費 @(String.Format("{0:##,###,###,###}", 300))元：額外付款
             </div>        
             <div class="container col-pink">
                 <div class="alert-icon">

@@ -402,7 +402,7 @@ namespace WebHome.Controllers
 
                 if (timeItem.IsPISession())
                 {
-                    models.AttendLesson(lesson.LessonTime.First(), profile);
+                    models.AttendLesson(timeItem, profile);
                 }
 
                 if (invoice.InvoiceCarrier != null && viewModel.MyCarrier == true)

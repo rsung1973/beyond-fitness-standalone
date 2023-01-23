@@ -396,7 +396,26 @@ namespace WebHome.Controllers
                 }
                 else if(lesson.LessonPriceType.Status == (int)Naming.LessonPriceStatus.點數兌換課程)
                 {
-                    return await CommitBonusLessonAsync(viewModel);
+                    var result = await CommitBonusLessonAsync(viewModel);
+                    var item = ViewBag.LessonItem as LessonTime;
+                    if (item != null)
+                    {
+                        if (item.RegisterLesson.LessonPriceType.ForDietary == true)
+                        {
+                            viewModel.ClassDate = viewModel.ClassDate.Value.AddMonths(1);
+                            result = await CommitBonusLessonAsync(viewModel);
+                            LessonTime nextItem = ViewBag.LessonItem as LessonTime;
+
+                            if (nextItem == null)
+                            {
+                                models.ExecuteCommand("delete LessonTime where LessonID = {0}", item.LessonID);
+                                return Json(new { result = false, message = "預約未完成，請重新預約!!" });
+                            }
+
+                        }
+                    }
+
+                    return result;
                 }
             }
 
@@ -658,10 +677,25 @@ namespace WebHome.Controllers
 
         public ActionResult CommitCourseContractBookingByCoach2022(LessonTimeViewModel viewModel)
         {
-            LessonTime item = viewModel.CommitCourseContractBookingByCoach(this);
+            LessonTime item;
+            LessonPriceType priceType = null;
+            if (viewModel.SessionStatus.HasValue)
+            {
+                priceType = models.CurrentSessionPrice(viewModel.SessionStatus.Value, viewModel.PriceID);
+            }
+
+            if(priceType.IsSingleCharge)
+            {
+                item = viewModel.CommitSingleCourseBookingByCoach(this, priceType);
+            }
+            else
+            {
+                item = viewModel.CommitCourseContractBookingByCoach(this);
+            }
+
             if (item != null)
             {
-                if (item.RegisterLesson.LessonPriceType.Status == (int)Naming.LessonPriceStatus.營養課程)
+                if (item.RegisterLesson.LessonPriceType.ForDietary == true)
                 {
                     viewModel.ClassDate = viewModel.ClassDate.Value.AddMonths(1);
                     LessonTime nextItem = viewModel.CommitCourseContractBookingByCoach(this);
@@ -771,6 +805,7 @@ namespace WebHome.Controllers
         public async Task<ActionResult> CommitBonusLessonAsync(LessonTimeViewModel viewModel)
         {
             ViewBag.ViewModel = viewModel;
+            ViewBag.LessonItem = null;
             var profile = await HttpContext.GetUserAsync();
 
             ValidateCommonBooking(viewModel, out ServingCoach coach, out BranchStore branch);
@@ -883,7 +918,7 @@ namespace WebHome.Controllers
                 return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: "預約未完成，請重新預約!!");
             }
 
-
+            ViewBag.LessonItem = timeItem;
 
             return Json(new { result = true, message = "上課時間預約完成!!" });
         }

@@ -8657,6 +8657,8 @@ namespace WebHome.Models.DataEntity
 		
 		private System.Nullable<bool> _MasterRegistration;
 		
+		private System.Nullable<System.DateTime> _Expiration;
+		
 		private EntityRef<IntuitionCharge> _IntuitionCharge;
 		
 		private EntitySet<LessonFeedBack> _LessonFeedBack;
@@ -8723,6 +8725,8 @@ namespace WebHome.Models.DataEntity
     partial void OnBranchIDChanged();
     partial void OnMasterRegistrationChanging(System.Nullable<bool> value);
     partial void OnMasterRegistrationChanged();
+    partial void OnExpirationChanging(System.Nullable<System.DateTime> value);
+    partial void OnExpirationChanged();
     #endregion
 		
 		public RegisterLesson()
@@ -9013,6 +9017,26 @@ namespace WebHome.Models.DataEntity
 					this._MasterRegistration = value;
 					this.SendPropertyChanged("MasterRegistration");
 					this.OnMasterRegistrationChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Expiration", DbType="DateTime")]
+		public System.Nullable<System.DateTime> Expiration
+		{
+			get
+			{
+				return this._Expiration;
+			}
+			set
+			{
+				if ((this._Expiration != value))
+				{
+					this.OnExpirationChanging(value);
+					this.SendPropertyChanging();
+					this._Expiration = value;
+					this.SendPropertyChanged("Expiration");
+					this.OnExpirationChanged();
 				}
 			}
 		}

@@ -12,6 +12,11 @@ using WebHome.Models.DataEntity;
 using WebHome.Models.Locale;
 using WebHome.Models.ViewModel;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
+using static WebHome.Models.Locale.Naming;
+using LineMessagingAPISDK.Models;
 
 namespace WebHome.Helper
 {
@@ -201,116 +206,154 @@ namespace WebHome.Helper
             }
         }
 
-        //public static void RegisterRemoteFeedbackLesson(this GenericManager<BFDataContext> models,IQueryable<LessonTime> items = null)
-        //    
-        //{
-        //    var catalog = models.GetTable<ObjectiveLessonCatalog>().Where(c => c.CatalogID == (int)ObjectiveLessonCatalog.CatalogDefinition.OnLineFeedback)
-        //            .FirstOrDefault();
+		public static GroupingLesson RegisterEnterpriseLesson(this GenericManager<BFDataContext> models, RegisterLessonViewModel viewModel)
+		{
 
-        //    var price = catalog?.ObjectiveLessonPrice.FirstOrDefault();
+            var priceItem = models.GetTable<LessonPriceType>().Where(p => p.Status == (int)Naming.LessonPriceStatus.點數兌換課程)
+                                .Where(p => p.LessonPriceProperty.Any(p => p.PropertyID == (int)Naming.LessonPriceFeature.BEYOND推廣課))
+                                .Where(p => p.LessonPriceProperty.Any(p => p.PropertyID == (int?)viewModel.FeatureID))
+                                .FirstOrDefault();
 
-        //    if (price == null)
-        //    {
-        //        return;
-        //    }
+            if (priceItem == null) 
+            {
+                return null;
+            }
 
-        //    var exceptive = models.GetTable<UserRole>().Where(r => r.RoleID == (int)Naming.RoleID.Dietitian);
-        //    var exceptivePrice = models.GetTable<ObjectiveLessonPrice>()
-        //            .Where(b => b.CatalogID == (int)ObjectiveLessonCatalog.CatalogDefinition.OnLineFeedback
-        //                || b.CatalogID == (int)ObjectiveLessonCatalog.CatalogDefinition.OnLine)
-        //            .Select(b => b.PriceID)
-        //            .ToArray();
+            GroupingLesson grouping = new GroupingLesson { };
+            var table = models.GetTable<RegisterLesson>();
 
-        //    if (items == null)
-        //    {
-        //        items = models.GetTable<LessonTime>();
-        //    }
+            foreach(var id in viewModel.UID) 
+            {
+                var lesson = new RegisterLesson
+                {
+                    RegisterDate = DateTime.Now,
+                    ClassLevel = priceItem.PriceID,
+                    Lessons = viewModel.Lessons ?? 0,
+                    UID = id,
+                    AdvisorID = viewModel.AdvisorID ?? Startup.Properties.GetValue<int?>("DefaultCoach"),
+                    Attended = (int)Naming.LessonStatus.準備上課,
+                    GroupingLesson = grouping,
+					GroupingMemberCount = viewModel.UID.Length,
+                    Expiration = DateTime.Today.AddMonths(viewModel.Month ?? 6)
+                };
 
-        //    items = items
-        //        .Where(l => !exceptive.Any(x => x.UID == l.AttendingCoach))
-        //        .Join(models.PromptVirtualClassOccurrence(),
-        //            l => l.BranchID, b => b.BranchID, (l, b) => l);
+                table.InsertOnSubmit(lesson);
+			}
 
-        //    items = items
-        //            .Join(models.GetTable<V_LessonTime>()
-        //                .Where(t => t.CoachAttendance.HasValue)
-        //                .Where(t => t.CommitAttendance.HasValue)
-        //                .Where(t => !exceptivePrice.Contains(t.PriceID))
-        //                .Where(t => SessionScopeForRemoteFeedback.Contains(t.PriceStatus)),
-        //            l => l.LessonID, t => t.LessonID, (l, t) => l);
+			models.SubmitChanges();
+            return grouping;
+		}
 
-        //    var calcItems = items.GroupBy(l => l.GroupID);
-        //    var table = models.GetTable<RegisterLesson>();
+		//public static void RegisterRemoteFeedbackLesson(this GenericManager<BFDataContext> models,IQueryable<LessonTime> items = null)
+		//    
+		//{
+		//    var catalog = models.GetTable<ObjectiveLessonCatalog>().Where(c => c.CatalogID == (int)ObjectiveLessonCatalog.CatalogDefinition.OnLineFeedback)
+		//            .FirstOrDefault();
 
-        //    var groupingCount = calcItems.Select(g => new
-        //    {
-        //        g.First().GroupingLesson,
-        //        UID = g.First().GroupingLesson.RegisterLesson.Select(r => r.UID).OrderBy(u => u).ToArray(),
-        //        TotalCount = g.Count()
-        //    })
-        //        .ToList()
-        //        .GroupBy(g => g.UID.JsonStringify())
-        //        .Select(g => new
-        //        {
-        //            g.First().GroupingLesson,
-        //            UID = g.Key,
-        //            TotalCount = g.Sum(v => v.TotalCount),
-        //        });
+		//    var price = catalog?.ObjectiveLessonPrice.FirstOrDefault();
 
-        //    foreach (var g in groupingCount)
-        //    {
-        //        var lesson = g.GroupingLesson;
-        //        var item = lesson.RegisterLesson.First();
-        //        GroupingLesson groupLesson = null;
-        //        foreach (var uid in JsonConvert.DeserializeObject<int[]>(g.UID))
-        //        {
-        //            var currentFeedback = table
-        //                .Where(r => r.ClassLevel == price.PriceID)
-        //                .Where(r => r.UID == uid)
-        //                .FirstOrDefault();
+		//    if (price == null)
+		//    {
+		//        return;
+		//    }
 
-        //            if (currentFeedback == null)
-        //            {
-        //                if (groupLesson == null)
-        //                {
-        //                    groupLesson = new GroupingLesson { };
-        //                }
+		//    var exceptive = models.GetTable<UserRole>().Where(r => r.RoleID == (int)Naming.RoleID.Dietitian);
+		//    var exceptivePrice = models.GetTable<ObjectiveLessonPrice>()
+		//            .Where(b => b.CatalogID == (int)ObjectiveLessonCatalog.CatalogDefinition.OnLineFeedback
+		//                || b.CatalogID == (int)ObjectiveLessonCatalog.CatalogDefinition.OnLine)
+		//            .Select(b => b.PriceID)
+		//            .ToArray();
 
-        //                currentFeedback = new RegisterLesson
-        //                {
-        //                    UID = uid,
-        //                    RegisterDate = DateTime.Now,
-        //                    BranchID = item.BranchID,
-        //                    GroupingMemberCount = item.GroupingMemberCount,
-        //                    ClassLevel = price.PriceID,
-        //                    IntuitionCharge = new IntuitionCharge
-        //                    {
-        //                        ByInstallments = 1,
-        //                        Payment = "Cash",
-        //                        FeeShared = 0
-        //                    },
-        //                    Attended = (int)Naming.LessonStatus.準備上課,
-        //                    AdvisorID = item.AdvisorID,
-        //                    AttendedLessons = 0,
-        //                    GroupingLesson = groupLesson,
-        //                };
+		//    if (items == null)
+		//    {
+		//        items = models.GetTable<LessonTime>();
+		//    }
 
-        //                table.Add(currentFeedback);
-        //            }
+		//    items = items
+		//        .Where(l => !exceptive.Any(x => x.UID == l.AttendingCoach))
+		//        .Join(models.PromptVirtualClassOccurrence(),
+		//            l => l.BranchID, b => b.BranchID, (l, b) => l);
 
-        //            if (currentFeedback.Lessons < g.TotalCount)
-        //            {
-        //                currentFeedback.Lessons = g.TotalCount;
-        //                currentFeedback.Attended = (int)Naming.LessonStatus.準備上課;
-        //            }
+		//    items = items
+		//            .Join(models.GetTable<V_LessonTime>()
+		//                .Where(t => t.CoachAttendance.HasValue)
+		//                .Where(t => t.CommitAttendance.HasValue)
+		//                .Where(t => !exceptivePrice.Contains(t.PriceID))
+		//                .Where(t => SessionScopeForRemoteFeedback.Contains(t.PriceStatus)),
+		//            l => l.LessonID, t => t.LessonID, (l, t) => l);
 
-        //            models.SubmitChanges();
+		//    var calcItems = items.GroupBy(l => l.GroupID);
+		//    var table = models.GetTable<RegisterLesson>();
 
-        //        }
-        //    }
-        //}
+		//    var groupingCount = calcItems.Select(g => new
+		//    {
+		//        g.First().GroupingLesson,
+		//        UID = g.First().GroupingLesson.RegisterLesson.Select(r => r.UID).OrderBy(u => u).ToArray(),
+		//        TotalCount = g.Count()
+		//    })
+		//        .ToList()
+		//        .GroupBy(g => g.UID.JsonStringify())
+		//        .Select(g => new
+		//        {
+		//            g.First().GroupingLesson,
+		//            UID = g.Key,
+		//            TotalCount = g.Sum(v => v.TotalCount),
+		//        });
 
-        public static bool ValidateMeetingRoom(this String url, BranchStore branch, GenericManager<BFDataContext> models)
+		//    foreach (var g in groupingCount)
+		//    {
+		//        var lesson = g.GroupingLesson;
+		//        var item = lesson.RegisterLesson.First();
+		//        GroupingLesson groupLesson = null;
+		//        foreach (var uid in JsonConvert.DeserializeObject<int[]>(g.UID))
+		//        {
+		//            var currentFeedback = table
+		//                .Where(r => r.ClassLevel == price.PriceID)
+		//                .Where(r => r.UID == uid)
+		//                .FirstOrDefault();
+
+		//            if (currentFeedback == null)
+		//            {
+		//                if (groupLesson == null)
+		//                {
+		//                    groupLesson = new GroupingLesson { };
+		//                }
+
+		//                currentFeedback = new RegisterLesson
+		//                {
+		//                    UID = uid,
+		//                    RegisterDate = DateTime.Now,
+		//                    BranchID = item.BranchID,
+		//                    GroupingMemberCount = item.GroupingMemberCount,
+		//                    ClassLevel = price.PriceID,
+		//                    IntuitionCharge = new IntuitionCharge
+		//                    {
+		//                        ByInstallments = 1,
+		//                        Payment = "Cash",
+		//                        FeeShared = 0
+		//                    },
+		//                    Attended = (int)Naming.LessonStatus.準備上課,
+		//                    AdvisorID = item.AdvisorID,
+		//                    AttendedLessons = 0,
+		//                    GroupingLesson = groupLesson,
+		//                };
+
+		//                table.Add(currentFeedback);
+		//            }
+
+		//            if (currentFeedback.Lessons < g.TotalCount)
+		//            {
+		//                currentFeedback.Lessons = g.TotalCount;
+		//                currentFeedback.Attended = (int)Naming.LessonStatus.準備上課;
+		//            }
+
+		//            models.SubmitChanges();
+
+		//        }
+		//    }
+		//}
+
+		public static bool ValidateMeetingRoom(this String url, BranchStore branch, GenericManager<BFDataContext> models)
         {
             bool check = false;
             var branchID = branch.BranchID;

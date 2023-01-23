@@ -262,7 +262,7 @@
 
                 case '@((int)Naming.LessonPriceStatus.體驗課程)':
                     $formData.trainingBySelf = @((int)LessonTime.SelfTrainingDefinition.體驗課程);
-                    $.post('@Html.Raw(Url.Action("CommitTrialLesson","CoachFacet",new { CoachID = _model.UID }))', $formData, function (data) {
+                    $.post('@Html.Raw(Url.Action("CommitTrialLesson","CoachFacet"))', $formData, function (data) {
                         if ($.isPlainObject(data)) {
                             if (data.result) {
                                 $global.closeAllModal();

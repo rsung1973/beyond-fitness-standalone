@@ -25,17 +25,18 @@ namespace CommonLib.Utility
     {
         public static String Concatenate(this IEnumerable<String> strArray, string separator)
         {
-            StringBuilder sb = new StringBuilder();
-            foreach (var str in strArray)
-            {
-                sb.Append(str).Append(separator);
-            }
+            //StringBuilder sb = new StringBuilder();
+            //foreach (var str in strArray)
+            //{
+            //    sb.Append(str).Append(separator);
+            //}
 
-            if (sb.Length > 0)
-            {
-                sb.Remove(sb.Length - separator.Length, separator.Length);
-            }
-            return sb.ToString();
+            //if (sb.Length > 0)
+            //{
+            //    sb.Remove(sb.Length - separator.Length, separator.Length);
+            //}
+            //return sb.ToString();
+            return String.Join(separator, strArray);
         }
 
         public static void WriteTo(this Stream srcStream, Stream toStream)

@@ -729,9 +729,9 @@ namespace WebHome.Controllers
                 tmpID = viewModel.DecryptKeyValue();
             }
 
-            var item = ViewBag.DataItem = models.GetTable<UserProfile>().Where(u => u.UID == tmpID).First();
+            UserProfile item = ViewBag.DataItem = models.GetTable<UserProfile>().Where(u => u.UID == tmpID).First();
 
-            if (item.UserProfileExtension.VipStatus == (int)UserProfileExtension.VipStatusDefinition.VVIP)
+            if (item.IsVIP)
             {
                 viewModel.AuthCode = viewModel.AuthCode.GetEfficientString();
                 if (viewModel.AuthCode == null)

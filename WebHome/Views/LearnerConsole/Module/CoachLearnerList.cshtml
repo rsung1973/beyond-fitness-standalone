@@ -46,6 +46,7 @@
             <th class="align-center">年齡</th>
             <th class="align-center">所屬教練</th>
             <th class="align-center">主教練</th>
+            <th class="align-center">主教練上課率</th>
             <th class="align-center">建檔日</th>
             <th class="align-center">生效中合約</th>
         </tr>
@@ -88,6 +89,13 @@
                             <text>@(p.ServingCoach.UserProfile.FullName())</text>
                             <br />
                         }
+                    </td>
+                    <td>
+                        @{
+                            var items = models.GetTable<V_Tuition>()
+                                    .Where(t => t.ClassTime < DateTime.Today.AddDays(1))
+                                    .Where(t => t.ClassTime >= DateTime.Today.AddMonths(-6))
+                    }
                     </td>
                     <td>@(item.CreateTime?.ToString("yyyy/MM/dd") ?? "") </td>
                     <td>@(contracts.Where(c => contractMember.Any(m => m.UID == item.UID && m.ContractID == c.ContractID)).Count())</td>

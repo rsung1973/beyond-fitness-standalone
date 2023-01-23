@@ -72,13 +72,39 @@
             </div>
         </li>
     }
-    <li class="list-group-item">
+
+    price = models.GetTable<LessonPriceType>()
+                                    .Where(p => p.Status == (int)Naming.LessonPriceStatus.體驗課程)
+                                    .Where(p => p.LessonPriceProperty.Any(t => t.PropertyID == (int)Naming.LessonPriceFeature.運動恢復課程))
+                                    .Where(p => p.LessonPriceProperty.Any(t => t.PropertyID == (int)Naming.LessonPriceFeature.單堂現場付款))
+                                    .FirstOrDefault();
+    if(price!=null)
+    {
+        BuildPriceItem(price, "S.R Session");
+    }
+
+    price = models.GetTable<LessonPriceType>()
+                                .Where(p => p.Status == (int)Naming.LessonPriceStatus.體驗課程)
+                                .Where(p => p.LessonPriceProperty.Any(t => t.PropertyID == (int)Naming.LessonPriceFeature.營養課程))
+                                .Where(p => p.LessonPriceProperty.Any(t => t.PropertyID == (int)Naming.LessonPriceFeature.單堂現場付款))
+                                .FirstOrDefault();
+    if (price != null)
+    {
+        BuildPriceItem(price, "S.D Session");
+    }
+
+}
+@functions
+{
+    void BuildPriceItem(LessonPriceType price, String description)
+    {
+        <li class="list-group-item">
             <div class="media">
                 <div class="pull-left">
                     <div class="controls">
                         <label class="fancy-checkbox">
-                            <input type="checkbox" name="RegisterID" value=""
-                                onclick="selectBooking(this, '@((int)Naming.LessonPriceStatus.體驗課程)',385);">
+                            <input type="checkbox" name="RegisterID" value="" data-version="@((int)Naming.ContractVersion.Ver2022)" data-location="@(price.ForDietary ? "option.virtual-store" : "")"
+                               onclick="selectBooking(this, '@(price.Status)',@(price.PriceID));">
                             <span></span>
                         </label>
                     </div>
@@ -86,9 +112,9 @@
                 <div class="media-body">
                     <div class="media-heading">
                         <a class="m-r-10">
-                            S.R Session(40分鐘)
+                            @($"{description}({price.DurationInMinutes}分鐘)")
                         </a>
-                        <small class="float-right text-muted"><time>NT 300</time></small>
+                        <small class="float-right text-muted"><time>NT @(price.ListPrice)</time></small>
                         <div class="msg">
                             <span class="float-right">
                                 <span class="badge bg-blue"><i class="zmdi zmdi-pin"></i> 現場</span>
@@ -97,5 +123,6 @@
                     </div>
                 </div>
             </div>
-    </li>
+        </li>
+    }
 }

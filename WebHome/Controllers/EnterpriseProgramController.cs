@@ -588,5 +588,35 @@ namespace WebHome.Controllers
             }
         }
 
-    }
+		[RoleAuthorize(new int[] { (int)Naming.RoleID.Administrator, (int)Naming.RoleID.Assistant, (int)Naming.RoleID.Officer, (int)Naming.RoleID.Coach })]
+		public ActionResult RegisterEnterpriseLesson(RegisterLessonViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+
+            if (viewModel.UID == null && viewModel.UID.Length == 0)
+            {
+                ModelState.AddModelError("UID", "未指定學員!!");
+            }
+
+            if(!viewModel.Lessons.HasValue || viewModel.Lessons<=0)
+            {
+				ModelState.AddModelError("Lessons", "未指定堂數!!");
+			}
+
+			if (!viewModel.FeatureID.HasValue)
+			{
+				ModelState.AddModelError("FeatureID", "未指定上課類型!!");
+			}
+
+
+			if (!ModelState.IsValid) 
+            {
+                return Json(new { result = false, message = ModelState.ErrorMessage() });
+
+			}
+
+			var grouping = models.RegisterEnterpriseLesson(viewModel);
+            return Json(new { result = grouping != null });
+        }
+	}
 }

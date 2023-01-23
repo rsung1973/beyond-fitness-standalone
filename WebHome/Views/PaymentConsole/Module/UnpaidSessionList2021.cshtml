@@ -34,7 +34,7 @@
 }
 <div class="card square inbox">
     <div class="cover">
-        <h6 class="m-t-20 m-l-20">T.S/P.I Session 尚未收款清單如下：</h6>
+        <h6 class="m-t-20 m-l-20">T.S/P.I/P.T Session 尚未收款清單如下：</h6>
         <ul class="mail_list list-group list-unstyled">
             @foreach (var item in items)
             {
@@ -44,6 +44,15 @@
                 items = _viewModel.GetUnpaidTrialSession(models, _profile)
                                         .OrderBy(l => l.BranchID)
                                         .ThenBy(l => l.ClassTime);
+                foreach (var item in items)
+                {
+                    await BuildItem(item);
+                }
+            }
+            @{
+                items = _viewModel.GetUnpaidPTSession(models, _profile)
+                .OrderBy(l => l.BranchID)
+                .ThenBy(l => l.ClassTime);
                 foreach (var item in items)
                 {
                     await BuildItem(item);

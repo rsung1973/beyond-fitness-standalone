@@ -31,7 +31,7 @@
                 <div class="modal-popmenu-body">
                     <div class="list-group">
                         <a href="javascript:$('').launchDownload('@Html.Raw(Url.Action("LessonTrainingContent", "ConsoleHome"))', {'keyID': '@Html.Raw(_model.LessonID.EncryptKey())' });" class="list-group-item">編輯課表</a>
-                        @if (!_model.LessonPlan.CommitAttendance.HasValue && (_profile.IsSysAdmin() || _profile.IsAssistant()))
+                        @if (!_model.LessonPlan.CommitAttendance.HasValue && (_profile.IsSysAdmin() || _profile.IsAssistant() || _profile.IsServitor()))
                         {
                             <a class="list-group-item checkAttendance">學生打卡</a>
                         }

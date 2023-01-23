@@ -72,6 +72,10 @@
                 {
                     <span class="social_icon bg-amber">VIP</span>
                 }
+                @if (_model.IsAnonymous)
+                {
+                    <span class="social_icon bg-darkteal">幽</span>
+                }
                 </div>
                 @* <span class="social_icon bg-amber">BR</span> *@
                 <a class="closebutton" data-dismiss="modal"></a>

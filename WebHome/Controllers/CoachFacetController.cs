@@ -505,7 +505,6 @@ namespace WebHome.Controllers
                 return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: "此時段不允許跨店預約!!");
             }
 
-            RegisterLesson lesson;
             if (!viewModel.UID.HasValue)
             {
                 newTrialLearner.RealName = newTrialLearner.RealName.GetEfficientString();
@@ -536,6 +535,7 @@ namespace WebHome.Controllers
 
             var priceType = models.CurrentTrialLessonPrice(isVirtual: false, priceID: viewModel.PriceID);
 
+            RegisterLesson lesson;
             lesson = new RegisterLesson
             {
                 UID = viewModel.UID.Value,

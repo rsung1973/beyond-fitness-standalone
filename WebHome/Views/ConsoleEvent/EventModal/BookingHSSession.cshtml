@@ -49,7 +49,7 @@
                             .Where(r => r.UID == _model.UID)
                             .Where(r => r.Attended != (int)Naming.LessonStatus.課程結束);
 
-    List<int> installmentID = new List<int>();
+    List<KeyValuePair<int, int>> installmentID = new List<KeyValuePair<int, int>>();
 
     var lessons = models.GetTable<RegisterLesson>()
                     .Where(r => r.UID == _model.UID)
@@ -58,6 +58,52 @@
 }
 @{
     _currentDisabled = _profile.IsHealthCare() == false;
+}
+@{
+    LessonPriceType price = null;
+    var singleChargeItems = models.GetTable<LessonPriceType>()
+                                    .Where(p => p.Status == (int)Naming.LessonPriceStatus.運動恢復課程)
+                                    .Where(p => p.LessonPriceProperty.Any(t => t.PropertyID == (int)Naming.LessonPriceFeature.單堂現場付款));
+    if (_model.IsRegular)
+    {
+        price = singleChargeItems.Where(p => p.LessonPriceProperty.Any(t => t.PropertyID == (int)Naming.LessonPriceFeature.舊會員續約))
+                    .FirstOrDefault();
+    }
+
+    if (price == null)
+    {
+        price = singleChargeItems.FirstOrDefault();
+    }
+
+    if (price != null)
+    {
+        <li class="list-group-item">
+            <div class="media">
+                <div class="pull-left">
+                    <div class="controls">
+                        <label class="fancy-checkbox">
+                            <input type="checkbox" name="RegisterID" value="" disabled="@(_currentDisabled)" data-version="@((int)Naming.ContractVersion.Ver2022)"
+                               onclick="selectBooking(this, '@(price.Status)',@(price.PriceID));">
+                            <span></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="media-body">
+                    <div class="media-heading">
+                        <a class="m-r-10">
+                            @(price.SimpleDescription)《單堂現場付款》
+                        </a>
+                        <small class="float-right text-muted"><time>NT @(price.ListPrice)</time></small>
+                        <div class="msg">
+                            <span class="float-right">
+                                <span class="badge bg-blue"><i class="zmdi zmdi-pin"></i> 現場</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </li>
+    }
 }
 @foreach (var item in contractLessons
     .Where(r => r.LessonPriceType.Status == (int)Naming.LessonPriceStatus.營養課程
@@ -90,13 +136,13 @@
         {
             if (contract.InstallmentID.HasValue)
             {
-                if (installmentID.Contains(contract.InstallmentID.Value))
+                if (installmentID.Any(v => v.Key == contract.InstallmentID && v.Value == item.LessonPriceType.Status))
                 {
                     bookable = false;
                 }
                 else
                 {
-                    installmentID.Add(contract.InstallmentID.Value);
+                    installmentID.Add(new KeyValuePair<int, int>(contract.InstallmentID.Value, item.LessonPriceType.Status.Value));
                 }
             }
         }
@@ -110,7 +156,7 @@
                 <div class="pull-left">
                     <div class="controls">
                         <label class="fancy-checkbox">
-                            <input type="checkbox" id="PTSession@(item.RegisterID)" disabled="@(!(bookable && !_currentDisabled))"  name="RegisterID" value="@(item.RegisterID)" onclick="selectBooking(this, '@((int)Naming.LessonPriceStatus.一般課程)');" data-version="@(contract.CourseContractExtension.Version)" data-location="@(item.LessonPriceType.Status==(int)Naming.LessonPriceStatus.營養課程 ? "option.virtual-store" : "")"/>
+                            <input type="checkbox" id="PTSession@(item.RegisterID)" disabled="@(!(bookable && !_currentDisabled))"  name="RegisterID" value="@(item.RegisterID)" onclick="selectBooking(this, '@((int)Naming.LessonPriceStatus.一般課程)');" data-version="@(contract.CourseContractExtension.Version)" data-location="@(item.LessonPriceType.ForDietary ? "option.virtual-store" : "")"/>
                             <span></span>
                         </label>
                     </div>
@@ -193,6 +239,12 @@
                     <a class="m-r-10">@(item.LessonPriceType.SimpleDescription)</a>
                     <small class="float-right text-muted"><time>@(remainedCount)/@(item.Lessons)</time></small>
                 </div>
+                @if(item.Expiration.HasValue)
+                {
+                    <p class="msg col-blue">
+                        <i class="zmdi zmdi-alarm-check"></i> 課程迄日：@($"{item.Expiration:yyyy/MM/dd}")
+                    </p>
+                }
             </div>
         </div>
     </li>

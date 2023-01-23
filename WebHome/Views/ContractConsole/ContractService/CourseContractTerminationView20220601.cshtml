@@ -237,10 +237,11 @@
                                     else if (_model.CauseForEnding == (int)Naming.CauseForEnding.合約到期轉新約
                                             || _model.CauseForEnding == (int)Naming.CauseForEnding.轉讓第三人)
                                     {
-                                        returnAmt = totalPaid - (_model.ProcessingFee ?? 0);
+                                        returnAmt = totalPaid;
                                         <text>
-                                            合約簽訂後逾七日未使用所約定服務(課程)而解除合約，已繳服務總費用新台幣@(String.Format("{0:##,###,###,###}", totalPaid))元整，將從退費金額內收取手續費新台幣300元整，退還剩餘款項新台幣@($"{returnAmt:##,###,###,###}")元整。
+                                            合約簽訂後逾七日未使用所約定服務(課程)而解除合約，已繳服務總費用新台幣@(String.Format("{0:##,###,###,###}", totalPaid))元整，退還剩餘款項新台幣@($"{returnAmt:##,###,###,###}")元整，
                                         </text>
+                                        <text>並另外收取手續費新台幣300元整。</text>
                                     }
                                     else
                                     {

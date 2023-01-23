@@ -172,11 +172,12 @@ namespace WebHome.Helper
         public static IQueryable<LessonTime> GetUnpaidPISession(this PaymentQueryViewModel viewModel, GenericManager<BFDataContext> models)
             
         {
-            var unpaid = models.FilterByUnpaidLesson();
+            var unpaid = models.FilterByUnpaidLesson()
+                            .Join(models.GetTable<LessonPriceType>().Where(p => p.Status == (int)Naming.LessonPriceStatus.自主訓練),
+                                r => r.ClassLevel, p => p.PriceID, (r, p) => r);
 
             var items = models.GetTable<LessonTime>()
                 .Where(r => r.ClassTime < DateTime.Today.AddDays(1))
-                .Where(r => r.RegisterLesson.LessonPriceType.Status == (int)Naming.DocumentLevelDefinition.自主訓練)
                 .Where(r => unpaid.Any(l => l.RegisterID == r.RegisterID));
 
             if (viewModel.BranchID.HasValue)
@@ -205,33 +206,44 @@ namespace WebHome.Helper
                 items = models.GetTable<RegisterLesson>();
             }
 
-            IQueryable<IntuitionCharge> intuitionItems = models.GetTable<IntuitionCharge>()
-                    .Join(models.GetTable<TuitionInstallment>(), c => c.RegisterID, t => t.RegisterID, (c, t) => c);
-            var voidItems = models.GetTable<VoidPayment>()
-                    .Where(v => v.Status == (int)Naming.CourseContractStatus.已生效);
-            IQueryable<IntuitionCharge> paidItems = models.GetTable<Payment>().Where(p => !voidItems.Any(v => v.VoidID == p.PaymentID))
-                    .Join(models.GetTable<TuitionInstallment>(), p => p.PaymentID, t => t.InstallmentID, (p, t) => t)
-                    .Join(models.GetTable<IntuitionCharge>(), t => t.RegisterID, c => c.RegisterID, (t, c) => c);
+            var receivable = models.GetTable<LessonPriceType>()
+                                .Where(p => p.LessonPriceProperty.Any(t => t.PropertyID == (int)Naming.LessonPriceFeature.單堂現場付款));
 
-            //return items.Where(r => r.IntuitionCharge.TuitionInstallment.Count == 0
-            //        || !r.IntuitionCharge.TuitionInstallment.Any(t => t.Payment.VoidPayment == null || t.Payment.VoidPayment.Status != (int)Naming.CourseContractStatus.已生效));
-            return items.Where(r => !intuitionItems.Any(c => c.RegisterID == r.RegisterID)
-                            || !paidItems.Any(v => v.RegisterID == r.RegisterID));
-        }
+            items = items.Where(r => receivable.Any(p => r.ClassLevel == p.PriceID))
+                        .Where(r => !models.GetTable<RegisterLessonContract>().Any(c => c.RegisterID == r.RegisterID));
 
-        public static IQueryable<RegisterLesson> PropmptReceivableTrialLesson(this GenericManager<BFDataContext> models)
-            
-        {
-            var price = models.GetTable<LessonPriceType>().Where(p => p.ListPrice > 0 && p.Status == (int)Naming.DocumentLevelDefinition.體驗課程);
-            return models.GetTable<RegisterLesson>().Where(r => price.Any(p => p.PriceID == r.ClassLevel));
+            var voidPayment = models.GetTable<VoidPayment>()
+                                .Where(v => v.Status == (int)Naming.CourseContractStatus.已生效);
+
+            var effectivePayment = models.GetTable<Payment>()
+                                    .Where(p => !voidPayment.Any(v => v.VoidID == p.PaymentID));
+
+            var installment = models.GetTable<TuitionInstallment>()
+                                .Where(t => effectivePayment.Any(p => p.PaymentID == t.InstallmentID));
+
+            return items.Where(r => !installment.Any(t => t.RegisterID == r.RegisterID));
+
+            //IQueryable<IntuitionCharge> intuitionItems = models.GetTable<IntuitionCharge>()
+            //        .Join(models.GetTable<TuitionInstallment>(), c => c.RegisterID, t => t.RegisterID, (c, t) => c);
+            //var voidItems = models.GetTable<VoidPayment>()
+            //        .Where(v => v.Status == (int)Naming.CourseContractStatus.已生效);
+            //IQueryable<IntuitionCharge> paidItems = models.GetTable<Payment>().Where(p => !voidItems.Any(v => v.VoidID == p.PaymentID))
+            //        .Join(models.GetTable<TuitionInstallment>(), p => p.PaymentID, t => t.InstallmentID, (p, t) => t)
+            //        .Join(models.GetTable<IntuitionCharge>(), t => t.RegisterID, c => c.RegisterID, (t, c) => c);
+
+            ////return items.Where(r => r.IntuitionCharge.TuitionInstallment.Count == 0
+            ////        || !r.IntuitionCharge.TuitionInstallment.Any(t => t.Payment.VoidPayment == null || t.Payment.VoidPayment.Status != (int)Naming.CourseContractStatus.已生效));
+            //return items.Where(r => !intuitionItems.Any(c => c.RegisterID == r.RegisterID)
+            //                || !paidItems.Any(v => v.RegisterID == r.RegisterID));
         }
 
 
         public static IQueryable<LessonTime> GetUnpaidTrialSession(this PaymentQueryViewModel viewModel, GenericManager<BFDataContext> models, UserProfile profile)
             
         {
-            var registerItems = models.PropmptReceivableTrialLesson();
-            var unpaid = models.FilterByUnpaidLesson(registerItems);
+            var unpaid = models.FilterByUnpaidLesson()
+                            .Join(models.GetTable<LessonPriceType>().Where(p => p.Status == (int)Naming.LessonPriceStatus.體驗課程),
+                                r => r.ClassLevel, p => p.PriceID, (r, p) => r);
 
             var items = models.GetTable<LessonTime>()
                 .Where(r => unpaid.Any(l => l.RegisterID == r.RegisterID));
@@ -257,6 +269,31 @@ namespace WebHome.Helper
             return items;
         }
 
+        public static IQueryable<LessonTime> GetUnpaidPTSession(this PaymentQueryViewModel viewModel, GenericManager<BFDataContext> models, UserProfile profile)
+
+        {
+            var unpaid = models.FilterByUnpaidLesson()
+                            .Join(models.GetTable<LessonPriceType>().Where(p => p.Status == (int)Naming.LessonPriceStatus.一般課程),
+                                r => r.ClassLevel, p => p.PriceID, (r, p) => r);
+
+            var items = models.GetTable<LessonTime>()
+                .Where(r => unpaid.Any(l => l.RegisterID == r.RegisterID));
+
+            if (profile.IsAssistant() || profile.IsOfficer())
+            {
+
+            }
+            else
+            {
+                items = items
+                    .Where(l => ((!l.BranchID.HasValue
+                                    || (l.BranchStore.Status & (int)BranchStore.StatusDefinition.VirtualClassroom) == (int)BranchStore.StatusDefinition.VirtualClassroom)
+                                && l.AttendingCoach == profile.UID)
+                            || l.BranchID == viewModel.BranchID);
+            }
+
+            return items;
+        }
 
     }
 }
