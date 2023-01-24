@@ -85,6 +85,7 @@
                 <div class="media-body">
                     <div class="media-heading">
                         <a class="m-r-10">@($"{item.ClassTime:yyyy/MM/dd hh:mm}") - @(item.RegisterLesson.UserProfile.FullName())</a>
+                        <small class="float-right text-muted"><time>NT @(item.RegisterLesson.LessonPriceType.ListPrice)</time></small>
                         <div class="msg">
                             @(item.RegisterLesson.LessonPriceType?.SimpleDescription)
                             <span class="float-right">
