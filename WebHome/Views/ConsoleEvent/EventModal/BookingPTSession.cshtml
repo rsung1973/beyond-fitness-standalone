@@ -88,12 +88,12 @@
                 <div class="media-body">
                     <div class="media-heading">
                         <a class="m-r-10">
-                            @(price.SimpleDescription)
+                            《單堂購買》P.T Session ((@price.DurationInMinutes)分鐘)
                         </a>
                         <small class="float-right text-muted"><time>NT @(price.ListPrice)</time></small>
                         <div class="msg">
                             <span class="float-right">
-                                <span class="badge bg-blue"><i class="zmdi zmdi-pin"></i> 現場付款</span>
+                                <span class="badge bg-blue"><i class="zmdi zmdi-money"></i> 現場付款</span>
                             </span>
                         </div>
                     </div>
@@ -316,7 +316,7 @@
             </div>
             <div class="media-body">
                 <div class="media-heading">
-                    <a class="m-r-10">員工福利</a>
+                    <a class="m-r-10">《員工福利》P.T Session((@price.DurationInMinutes)分鐘)</a>
                     <small class="float-right text-muted"><time>@(remainedCount)/@(item.Lessons)</time></small>
                 </div>
             </div>
