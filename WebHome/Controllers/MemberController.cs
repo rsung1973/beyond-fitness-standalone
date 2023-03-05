@@ -18,6 +18,9 @@ using Microsoft.AspNetCore.Authorization;
 using System.Text.RegularExpressions;
 using WebHome.Security.Authorization;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Http;
+using CommonLib.Core.Utility;
+using Newtonsoft.Json;
 
 namespace WebHome.Controllers
 {
@@ -72,7 +75,7 @@ namespace WebHome.Controllers
         }
 
         [HttpPost]
-        [RoleAuthorize(new int[] { (int)Naming.RoleID.Administrator, (int)Naming.RoleID.Assistant, (int)Naming.RoleID.Officer })]
+        //[RoleAuthorize(new int[] { (int)Naming.RoleID.Administrator, (int)Naming.RoleID.Assistant, (int)Naming.RoleID.Officer })]
         public ActionResult CommitLearner(LearnerViewModel viewModel)
         {
             if (!this.ModelState.IsValid)
@@ -423,7 +426,7 @@ namespace WebHome.Controllers
 
         }
 
-        [RoleAuthorize(new int[] { (int)Naming.RoleID.Administrator, (int)Naming.RoleID.Assistant, (int)Naming.RoleID.Officer })]
+        [RoleAuthorize(new int[] { (int)Naming.RoleID.Administrator, (int)Naming.RoleID.Assistant, (int)Naming.RoleID.Officer, (int)Naming.RoleID.Manager, (int)Naming.RoleID.ViceManager })]
         public ActionResult EditCoachCertificate(int uid)
         {
 
@@ -451,7 +454,7 @@ namespace WebHome.Controllers
         }
 
 
-        [RoleAuthorize(new int[] { (int)Naming.RoleID.Administrator, (int)Naming.RoleID.Assistant, (int)Naming.RoleID.Officer })]
+        //[RoleAuthorize(new int[] {(int)Naming.RoleID.Administrator, (int)Naming.RoleID.Assistant, (int)Naming.RoleID.Officer, (int)Naming.RoleID.Manager, (int)Naming.RoleID.ViceManager })]
         public ActionResult AddCoachCertificate(int uid)
         {
 
@@ -466,15 +469,32 @@ namespace WebHome.Controllers
 
         }
 
-        [RoleAuthorize(new int[] { (int)Naming.RoleID.Administrator, (int)Naming.RoleID.Assistant, (int)Naming.RoleID.Officer })]
-        public ActionResult CommitCoachCertificate(CoachCertificateViewModel viewModel)
+        //[RoleAuthorize(new int[] {(int)Naming.RoleID.Administrator, (int)Naming.RoleID.Assistant, (int)Naming.RoleID.Officer, (int)Naming.RoleID.Manager, (int)Naming.RoleID.ViceManager })]
+        public ActionResult CommitCoachCertificate(CoachCertificateViewModel viewModel, IFormFile attachment)
         {
             ViewBag.ViewModel = viewModel;
 
-            var coach = models.GetTable<ServingCoach>().Where(u => u.CoachID == viewModel.UID).FirstOrDefault();
+            if (viewModel.KeyID != null)
+            {
+                viewModel.CoachID = viewModel.DecryptKeyValue();
+            }
+
+            var coach = models.GetTable<ServingCoach>().Where(u => u.CoachID == viewModel.CoachID).FirstOrDefault();
             if (coach == null)
             {
-                return View("~/Views/Shared/JsAlert.cshtml", model: "資料錯誤!!");
+                return Json(new { result = false, message = "資料錯誤!!" });
+            }
+
+            String storedPath = null;
+            if (attachment != null)
+            {
+
+                storedPath = Path.Combine(FileLogger.Logger.LogDailyPath, Guid.NewGuid().ToString() + Path.GetExtension(attachment.FileName));
+                attachment.SaveAs(storedPath);
+            }
+            else
+            {
+                ModelState.AddModelError("attachment", "請上傳證照照片!!");
             }
 
             if (!viewModel.CertificateID.HasValue)
@@ -490,7 +510,7 @@ namespace WebHome.Controllers
             if (!ModelState.IsValid)
             {
                 ViewBag.ModelState = ModelState;
-                return View("~/Views/Shared/ReportInputError.ascx");
+                return View("~/Views/ConsoleHome/Shared/ReportInputError.cshtml");
             }
 
             var item = coach.CoachCertificate.Where(c => c.CertificateID == viewModel.CertificateID).FirstOrDefault();
@@ -504,18 +524,35 @@ namespace WebHome.Controllers
             }
 
             item.Expiration = viewModel.Expiration;
+            if (coach.UserProfile.IsManager() || coach.UserProfile.IsOfficer())
+            {
+
+            }
+            else
+            {
+                item.Status = (int)CoachCertificate.CertificateStatusDefinition.待審核;
+            }
+            item.Attachment = new Attachment
+            {
+                StoredPath = storedPath
+            };
 
             models.SubmitChanges();
             return Json(new { result = true });
 
         }
 
-        [RoleAuthorize(new int[] { (int)Naming.RoleID.Administrator, (int)Naming.RoleID.Assistant, (int)Naming.RoleID.Officer })]
+        //[RoleAuthorize(new int[] { (int)Naming.RoleID.Administrator, (int)Naming.RoleID.Assistant, (int)Naming.RoleID.Officer, (int)Naming.RoleID.Manager, (int)Naming.RoleID.ViceManager })]
         public ActionResult DeleteCoachCertificate(CoachCertificateViewModel viewModel)
         {
             ViewBag.ViewModel = viewModel;
 
-            var item = models.DeleteAny<CoachCertificate>(c => c.CoachID == viewModel.UID && c.CertificateID == viewModel.CertificateID);
+            if (viewModel.KeyID != null)
+            {
+                viewModel = JsonConvert.DeserializeObject<CoachCertificateViewModel>(viewModel.KeyID.DecryptKey());
+            }
+
+            var item = models.DeleteAny<CoachCertificate>(c => c.CoachID == viewModel.CoachID && c.CertificateID == viewModel.CertificateID);
 
             if (item == null)
             {
@@ -525,16 +562,6 @@ namespace WebHome.Controllers
             return Json(new { result = true });
 
         }
-
-
-        [RoleAuthorize(new int[] { (int)Naming.RoleID.Administrator, (int)Naming.RoleID.Assistant, (int)Naming.RoleID.Officer })]
-        public ActionResult CoachCertificateList(int uid, bool? viewOnly)
-        {
-            var items = models.GetTable<CoachCertificate>().Where(c => c.CoachID == uid);
-            ViewBag.ViewOnly = viewOnly;
-            return View("~/Views/Member/Module/CoachCertificateList.ascx", items);
-        }
-
 
 
         public async Task<ActionResult> DeleteLessonsAsync(int id)

@@ -73,19 +73,111 @@
                         <div class="row">
                             <div class="col-12">
                                 <p class="text-small">
-                                    <ul class="checked-style">
-                                        @foreach (var c in _item.ServingCoach.CoachCertificate.OrderBy(f => f.Expiration))
-                                        {
-                                            if (c.Expiration < DateTime.Today)
-                                            {
-                                                <li class="closed">@(c.ProfessionalCertificate.Description)：@($"{c.Expiration:yyyy/MM/dd}")（已過期）</li>
-                                            }
-                                            else
-                                            {
-                                                <li>@(c.ProfessionalCertificate.Description)：@($"{c.Expiration:yyyy/MM/dd}")</li>
-                                            }
+                                    <ul id="certList" class="checked-style">
+                                        @{
+                                            await Html.RenderPartialAsync("~/Views/CoachConsole/Module/CoachCertificateList.cshtml", _item.ServingCoach);
                                         }
                                     </ul>
+                                    <button class="btn btn-icon btn-icon-mini btn-round waves-effect float-right"
+                                            onclick="javascript:createCertificate();">
+                                        <i class="zmdi zmdi-plus"></i>
+                                    </button>
+                                    <script>
+                                        function createCertificate() {
+                                            var viewModel = {};
+                                            viewModel.KeyID = '@Html.Raw(_item.CoachID.EncryptKey())';
+                                            $global.onDone = function() {
+                                                loadCertificate();
+                                            };
+                                            showLoading();
+                                            $.post('@Html.Raw(Url.Action("AddCoachCertificate","CoachConsole"))', viewModel, function (data) {
+                                                hideLoading();
+                                                if ($.isPlainObject(data)) {
+                                                    Swal.fire(
+                                                        'Oops...',
+                                                        data.message,
+                                                        'warning'
+                                                    )
+                                                } else {
+                                                    $(data).appendTo($('body'));
+                                                }
+                                            });
+                                        }
+
+                                        function loadCertificate() {
+                                            var viewModel = {};
+                                            viewModel.KeyID = '@Html.Raw(_item.CoachID.EncryptKey())';
+                                            showLoading();
+                                            $.post('@Html.Raw(Url.Action("LoadCoachCertificate","CoachConsole"))', viewModel, function (data) {
+                                                hideLoading();
+                                                if ($.isPlainObject(data)) {
+                                                    Swal.fire(
+                                                        'Oops...',
+                                                        data.message,
+                                                        'warning'
+                                                    )
+                                                } else {
+                                                    $('#certList').empty()
+                                                        .append($(data));
+                                                }
+                                            });
+                                        }
+
+                                        function deleteCertificate(keyID) {
+                                            Swal.fire({
+                                                title: "不後悔?",
+                                                text: "刪除後資料將無法回覆!",
+                                                icon: "warning",
+                                                showCancelButton: true,
+                                                confirmButtonColor: "#DD6B55",
+                                                confirmButtonText: "確定, 不後悔",
+                                                cancelButtonText: "不, 點錯了",
+                                            }).then((result) => {
+                                                if (result.isConfirmed) {
+                                                    showLoading();
+                                                    $.post('@Html.Raw(Url.Action("DeleteCoachCertificate", "Member"))', {'keyID': keyID}, function (data) {
+                                                        hideLoading();
+                                                        if ($.isPlainObject(data)) {
+                                                            if (data.result) {
+                                                                Swal.fire(
+                                                                    '刪除成功!',
+                                                                    '資料已經刪除 Bye!',
+                                                                    'success'
+                                                                );
+                                                                loadCertificate();
+                                                            } else {
+                                                                Swal.fire(
+                                                                    'Oops 刪除失敗...',
+                                                                    data.message,
+                                                                    'error'
+                                                                );
+                                                            }
+                                                        } else {
+                                                            $(data).appendTo($('body'));
+                                                        }
+                                                    });
+                                                } else {
+                                                    Swal.fire(
+                                                        '取消成功',
+                                                        '你的資料現在非常安全 :)',
+                                                        'info'
+                                                    );
+                                                }
+                                            });
+                                        }
+
+                                        function showCoachCertificate(keyID) {
+                                            showLoading();
+                                            $.post('@Html.Raw(Url.Action("ShowCoachCertificate", "CoachConsole"))', { 'keyID': keyID }, function (data) {
+                                                hideLoading();
+                                                if ($.isPlainObject(data)) {
+                                                    alert(data.message);
+                                                } else {
+                                                    $(data).appendTo($('body'));
+                                                }
+                                            });
+                                        }
+                                    </script>
                                 </p>
                             </div>
                         </div>

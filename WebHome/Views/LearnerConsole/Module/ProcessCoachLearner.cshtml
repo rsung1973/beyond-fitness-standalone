@@ -38,11 +38,11 @@
                             .Where(p => p.CoachID == _viewModel.CoachID)
                             .Any())
                         {
-                            <a href="javascript:deletePrimaryCoach('@Html.Raw((new CoachLearnerQueryViewModel { CoachID = _viewModel.CoachID,UID = _viewModel.UID }).Serialize())');" class="list-group-item">解除主教練</a>
+                            <a href="javascript:processCoachReview('@Html.Raw((new CoachLearnerQueryViewModel { CoachID = _viewModel.CoachID,UID = _viewModel.UID }).Serialize())');" class="list-group-item">解除主教練</a>
                         }
                         else
                         {
-                            <a href="javascript:commitPrimaryCoach('@Html.Raw((new CoachLearnerQueryViewModel { CoachID = _viewModel.CoachID,UID = _viewModel.UID }).Serialize())');" class="list-group-item">認領主教練</a>
+                            <a href="javascript:processCoachReview('@Html.Raw((new CoachLearnerQueryViewModel { CoachID = _viewModel.CoachID,UID = _viewModel.UID }).Serialize())');" class="list-group-item">認領主教練</a>
                         }
                     }
 

@@ -20,6 +20,7 @@ using WebHome.Models.DataEntity;
 using WebHome.Models.Locale;
 using WebHome.Models.Timeline;
 using WebHome.Models.ViewModel;
+using DocumentFormat.OpenXml.Wordprocessing;
 
 
 namespace WebHome.Helper
@@ -68,6 +69,9 @@ namespace WebHome.Helper
         public IQueryable<V_Tuition> PTSession => LessonItems
                     .Where(t => BusinessConsoleExtensions.SessionScopeForComleteLessonCount.Contains(t.PriceStatus)
                             || BusinessConsoleExtensions.SessionScopeForComleteLessonCount.Contains(t.ELStatus));
+
+        public IQueryable<V_TuitionCoach> PTTuitionCoach => PTSession.Join(models.GetTable<V_TuitionCoach>(), p => p.LessonID, t => t.LessonID, (p, t) => t);
+
         public IQueryable<V_Tuition> HSSession => LessonItems
             .Where(t => BusinessConsoleExtensions.HSSessionScope.Contains(t.PriceStatus));
 
@@ -95,6 +99,37 @@ namespace WebHome.Helper
             return items
                 .Where(v => v.PriceStatus == (int)Naming.LessonPriceStatus.點數兌換課程)
                 .Where(v => SR.Any(p => p.PriceID == v.PriceID));
+        }
+
+        public int?[] SessionScopeForPrimary { get; } = new int?[]
+        {
+                    (int)Naming.LessonPriceStatus.一般課程,
+                    (int)Naming.LessonPriceStatus.已刪除,
+                    (int)Naming.LessonPriceStatus.點數兌換課程,
+                    (int)Naming.LessonPriceStatus.員工福利課程,
+                    (int)Naming.LessonPriceStatus.團體學員課程,
+                    (int)Naming.LessonPriceStatus.自主訓練,
+                    (int)Naming.LessonPriceStatus.體驗課程,
+        };
+
+        public int?[] ExclusivePropertiesFromSessionScopeForPrimary { get; } = new int?[]
+        {
+                    (int)Naming.LessonPriceFeature.營養課程,
+                    (int)Naming.LessonPriceFeature.運動防護課程,
+                    (int)Naming.LessonPriceFeature.運動恢復課程,
+        };
+
+        public IQueryable<V_Tuition> SessionForPrimaryCoach
+        {
+            get
+            {
+                IQueryable<LessonPriceProperty> exclusive = models.GetTable<LessonPriceProperty>()
+                        .Where(p => ExclusivePropertiesFromSessionScopeForPrimary.Contains(p.PropertyID));
+
+                return LessonItems.Where(t => SessionScopeForPrimary.Contains(t.PriceStatus)
+                                            || SessionScopeForPrimary.Contains(t.ELStatus))
+                                    .Where(t => !exclusive.Any(p => p.PriceID == t.PriceID));
+            }
         }
 
 

@@ -1,0 +1,151 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@using CommonLib.Utility
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    String _dialogID = $"coachReview{DateTime.Now.Ticks}";
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+
+    CoachLearnerQueryViewModel _viewModel = ViewBag.ViewModel as CoachLearnerQueryViewModel;
+
+
+    LessonTimeAchievementHelper helper = new LessonTimeAchievementHelper(models)
+            {
+                LessonItems = models.GetTable<V_Tuition>()
+                                                        .Where(l => l.ClassTime >= DateTime.Today.AddMonths(-6))
+                                                        .Where(l => l.ClassTime < DateTime.Today.AddDays(1)),
+            };
+
+    var grouping = models.GetTable<GroupingLesson>()
+                        .Join(models.GetTable<RegisterLesson>().Where(r => r.UID == _viewModel.UID),
+                            t => t.GroupID, r => r.RegisterGroupID, (t, r) => t);
+
+    var lessons = helper.SessionForPrimaryCoach
+            .Where(t => grouping.Any(g => g.GroupID == t.GroupID));
+
+    int totalCount = lessons.Count();
+    var users = models.GetTable<UserProfile>();
+
+    var dataItems = lessons.GroupBy(t => t.AttendingCoach)
+                        .Select(g => new
+                        {
+                            value = g.Count() * 100 / totalCount,
+                            name = users.Where(u => u.UID == g.Key).First().RealName
+                        })
+                        .ToList();
+
+}
+<div class="modal fade" id="@(_dialogID)" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5>近6個月上課教練比例圓餅圖</h5>
+                <a class="closebutton" data-dismiss="modal"></a>
+            </div>
+            <div class="modal-body">
+                <div class="row clearfix">
+                    <div class="col-12">
+                        @{
+                            await Html.RenderPartialAsync("~/Views/BusinessConsole/Module2021/InitEcharts2023.cshtml");
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                @if (models.GetTable<LearnerCoachProperty>()
+                        .Where(p => p.PropertyID == (int)LearnerCoachProperty.PropertyType.PrimaryCoach)
+                        .Where(p => p.UID == _viewModel.UID)
+                        .Where(p => p.CoachID == _viewModel.CoachID)
+                        .Any())
+                {
+                    <button type="button" class="btn btn-danger btn-round btn-simple btn-round waves-effect waves-red btnDelete">解除主教練</button>
+                    <script>
+                        $(function () {
+
+                            $('#@(_dialogID) .btnDelete').on('click', function (event) {
+                                clearErrors();
+                                showLoading();
+                                deletePrimaryCoach('@Html.Raw((new CoachLearnerQueryViewModel { CoachID = _viewModel.CoachID,UID = _viewModel.UID }).Serialize())');
+                            });
+                        });
+                    </script>
+                }
+                else
+                {
+                    <button type="button" class="btn btn-darkteal btn-round waves-effect btnConfirm">設定主教練</button>
+                    <script>
+                        $(function () {
+
+                            $('#@(_dialogID) .btnConfirm').on('click', function (event) {
+                                clearErrors();
+                                showLoading();
+                                commitPrimaryCoach('@Html.Raw((new CoachLearnerQueryViewModel { CoachID = _viewModel.CoachID,UID = _viewModel.UID }).Serialize())');
+                            });
+
+                        });
+                    </script>
+                }
+                
+            </div>
+        </div>
+    </div>
+    @{ 
+        await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/BSModalScript.cshtml", model: _dialogID);
+    }
+
+    <script>
+
+        $global.echarts.option = {
+            title: {
+                text: '查詢條件：近6個月',
+                left: 'center'
+            },
+            tooltip: {
+                trigger: 'item',
+                formatter: '{a} <br/>{b} : {c} ({d}%)'
+            },
+            legend: {
+                bottom: 10,
+                left: 'center'
+            },
+            series: [
+                {
+                    name: '教練比例',
+                    type: 'pie',
+                    radius: '50%',
+                    // center: ['50%', '50%'],
+                    data: @Html.Raw(dataItems.JsonStringify()),
+                    emphasis: {
+                        itemStyle: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ],
+            //color:['rgb(254, 173, 188)', 'rgb(254, 203, 160)','rgb(255, 227, 170)','rgb(162, 219, 218)','rgb(153, 202, 242)'],
+            emphasis: {
+                itemStyle: {
+                    shadowBlur: 10,
+                    shadowOffsetX: 0,
+                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                }
+            }
+        };
+
+    </script>
+</div>
+

@@ -14,6 +14,7 @@
     ModelStateDictionary _modelState;
     UserProfile _model;
     LessonQueryViewModel _viewModel;
+    IQueryable<ServingCoach> coachItems;
 }
 @{
 
@@ -23,6 +24,15 @@
     _modelState = ViewContext.ModelState;
     _model = (UserProfile)this.Model;
     _viewModel = (LessonQueryViewModel)ViewBag.ViewModel;
+
+     coachItems = models.PromptEffectiveCoach()
+                    .Where(c => !c.LeavedDate.HasValue);
+
+    if (_viewModel.BranchID.HasValue)
+    {
+        coachItems = coachItems.Join(models.GetTable<V_WorkPlace>().Where(w => w.WorkPlace == _viewModel.BranchID),
+            c => c.CoachID, w => w.CoachID, (c, w) => c);
+    }
 
 }
 @{
@@ -45,53 +55,82 @@
 
     <!-- Main Content -->
     <section class="content">
-        @{
+    @{
         ViewBag.BlockHeader = "我的教練";
         await Html.RenderPartialAsync("~/Views/ConsoleHome/Module/BlockHeader.cshtml", _model);
     }
     <!--目標與達成率-->
     <div class="container-fluid">
         <div class="row clearfix">
-            @if (_item == null)
-            {
-                var items = models.PromptEffectiveCoach()
-                .Join(models.GetTable<V_WorkPlace>().Where(w => !w.WorkPlace.HasValue),
-                c => c.CoachID, w => w.CoachID, (c, w) => c)
-                .ToList();
-                foreach (var coach in items)
-                {
-                    <div class="col-lg-3 col-md-6 col-sm-4">
-                        @{
-                            await ShowBranchManager(coach.UserProfile);
-                        }
+            <div class="col-lg-4 col-md-4 col-sm-12">
+                <div class="card">
+                    <div class="body">
+                        <div class="row">
+                            <div class="card top_counter">
+                                <div class="col-sm-12">
+                                    <div class="body p-10">
+                                        <div class="icon">
+                                            <i class="zmdi livicon-evo" data-options="name: legal.svg; size: 30px; style: original; autoPlay:true"></i>
+                                        </div>
+                                        <div class="content">
+                                            <div class="text col-red">證照待審</div>
+                                            <h5 class="number col-red"><a id="certCount" href="javascript:showCertList();">@((_item?.BranchID).CoachCertificateToApproveByBranch(models).Count())</a></h5>
+                                            <script>
+                                                function showCertList() {
+                                                    showLoading();
+                                                    $.post('@Html.Raw(Url.Action("ShowCoachCertificateReady", "CoachConsole"))', $global.viewModel, function (data) {
+                                                        hideLoading();
+                                                        if ($.isPlainObject(data)) {
+                                                            alert(data.message);
+                                                        } else {
+                                                            $('#dataList').empty()
+                                                                .append($(data));
+                                                        }
+                                                    });
+                                                }
+                                            </script>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card top_counter">
+                                <div class="col-lg-12 col-md-12 col-sm-12">
+                                    <div class="body p-10">
+                                        <div class="icon">
+                                            <i class="zmdi livicon-evo"
+                                               data-options="name: users.svg; size: 30px; style: original; autoPlay:true"></i>
+                                        </div>
+                                        <div class="content">
+                                            <div class="text">分店教練</div>
+                                            <h5 class="number"><a href="javascript:showCoachList();">@(coachItems.Count())</a></h5>
+                                            <script>
+                                                function showCoachList() {
+                                                    showLoading();
+                                                    $.post('@Html.Raw(Url.Action("ShowCoachMonthlyPerformance", "CoachConsole"))', $global.viewModel, function (data) {
+                                                        hideLoading();
+                                                        if ($.isPlainObject(data)) {
+                                                            alert(data.message);
+                                                        } else {
+                                                            $('#dataList').empty()
+                                                                .append($(data));
+                                                        }
+                                                    });
+                                                }
+                                            </script>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card top_counter">
+                                @{
+                                    ShowBranchLearner();
+                                }
+                            </div>
+                        </div>
                     </div>
-                }
-                if (items.Count % 2 == 1)
-                {
-                    <div class="col-lg-3 col-md-6 col-sm-4">
-                    </div>
-                }
-            }
-            else
-            {
-                var manager = _item?.Manager;
-                <div class="col-lg-3 col-md-6 col-sm-4">
-                    @if (manager != null)
-                    {
-                        await ShowBranchManager(manager);
-                    }
                 </div>
-
-                var vicemanager = _item?.ViceManager;
-                <div class="col-lg-3 col-md-6 col-sm-4">
-                    @if (vicemanager != null)
-                    {
-                        await ShowBranchManager(vicemanager);
-                    }
-                </div>
-            }
-
-            <div class="col-lg-6 col-md-12 col-sm-12">
+            </div>
+            <div class="col-lg-8 col-md-8 col-sm-12">
                 <div class="card">
                     <div class="header">
                         <h2><strong>P.T Level</strong></h2>
@@ -136,47 +175,8 @@
     <div class="container-fluid">
         <div class="row clearfix">
             <h4 class="card-outbound-header m-l-15">詳細資料</h4>
-            <div class="col-lg-12">
-                <div class="card patients-list">
-                    <div class="header">
-                        <ul class="header-dropdown">
-                            <li class="dropdown">
-                                <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                                   aria-expanded="false"> <i class="zmdi zmdi-swap"></i> </a>
-                                <ul class="dropdown-menu dropdown-menu-right slideUp float-right">
-                                    <li><a href="javascript:showCoachPerformanceList(true);">在職</a></li>
-                                    <li><a href="javascript:showCoachPerformanceList(false);">離職</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="body">
-                        <div class="table-responsive" id="coachList">
-                            @{
-                                await Html.RenderPartialAsync("~/Views/CoachConsole/Module/CoachMonthlyPerformance.cshtml");
-                            }
-                        </div>
-                        <script>
-                            function showCoachPerformanceList(employed) {
-                                showLoading();
-                                var $formData = $.extend({}, $global.viewModel);
-                                $formData.Employed = employed;
-                                $.post('@Html.Raw(Url.Action("ShowCoachPerformanceList", "CoachConsole"))', $formData, function (data) {
-                                    hideLoading();
-                                    if ($.isPlainObject(data)) {
-                                        Swal.fire(
-                                            'Oops...',
-                                            data.message,
-                                            'warning'
-                                        );
-                                    } else {
-                                        $('#coachList').empty().append($(data));
-                                    }
-                                });
-                            }
-                        </script>
-                    </div>
-                </div>
+            <div class="col-lg-12" id="dataList">
+                @RenderSection("DataList")
             </div>
         </div>
         <!-- #END# Basic Examples -->
@@ -192,6 +192,18 @@
         function processCoachView(keyID) {
             showLoading();
             $.post('@Html.Raw(Url.Action("ProcessCoachView", "CoachConsole"))', { 'keyID': keyID }, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    alert(data.message);
+                } else {
+                    $(data).appendTo($('body'));
+                }
+            });
+        }
+
+        function processCoachCertificate(keyID) {
+            showLoading();
+            $.post('@Html.Raw(Url.Action("ProcessCoachCertificateView", "CoachConsole"))', { 'keyID': keyID }, function (data) {
                 hideLoading();
                 if ($.isPlainObject(data)) {
                     alert(data.message);
@@ -259,46 +271,51 @@
 
 @functions
 {
-    async Task ShowBranchManager(UserProfile coach)
+    void ShowBranchLearner()
     {
         var effectiveItems = models.PromptEffectiveContract();
         var effectiveLearners = models.GetTable<CourseContractMember>()
                                     .Join(effectiveItems, m => m.ContractID, c => c.ContractID, (m, c) => m);
-        var learners = models.GetTable<LearnerFitnessAdvisor>().Where(l => l.CoachID == coach.UID);
+        var learners = models.GetTable<LearnerFitnessAdvisor>().Where(l => coachItems.Any(c => c.CoachID == l.CoachID));
 
-        <div class="card member-card">
-            <div class="@(coach.UserProfileExtension.Gender == "M" ? "header l-cyan-2" : "header l-blush")">
-                <h4 class="m-t-10">@(coach.FullName())</h4>
-            </div>
-            <div class="member-img">
-                <a href="javascript:void(0);">
-                    @{
-                        ViewBag.ProfileClass = "rounded-circle";
-                        await Html.RenderPartialAsync("~/Views/Common/ProfileImage.cshtml", coach);
-                    }
-                </a>
-                <p class="text-muted">@(coach.ServingCoach?.ProfessionalLevel?.LevelName)</p>
-                <hr>
-            </div>
-            <div class="body">
-                <div class="row">
-                    <div class="col-4">
-                        <h5>@(learners.Count(l => effectiveLearners.Any(f => f.UID == l.UID)))</h5>
-                        <small>所屬學生(合約)</small>
-                    </div>
-                    <div class="col-4">
-                        <h5>
-                            @(models.GetTable<LearnerCoachProperty>()
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="body p-10">
+                <div class="icon">
+                    <i class="zmdi livicon-evo"
+                   data-options="name: star.svg; size: 30px; style: original; autoPlay:true"></i>
+                </div>
+                <div class="content">
+                    <div class="text">主教練學生<small>(合約)</small></div>
+                    <h5 class="number">
+                        @(models.GetTable<LearnerCoachProperty>()
                             .Where(p => effectiveLearners.Any(f => f.UID == p.UID))
                             .Where(p => p.PropertyID == (int)LearnerCoachProperty.PropertyType.PrimaryCoach)
-                            .Where(p => p.CoachID == coach.UID).Count())
-                        </h5>
-                        <small>主教練學生(合約)</small>
-                    </div>
-                    <div class="col-4">
-                        <h5>@(learners.Count(l => !effectiveLearners.Any(f => f.UID == l.UID)))</h5>
-                        <small>所屬學生(無合約)</small>
-                    </div>
+                            .Where(p => coachItems.Any(c=>c.CoachID == p.CoachID)).Count())
+                    </h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="body p-10">
+                <div class="icon">
+                    <i class="zmdi livicon-evo"
+                   data-options="name: star-half.svg; size: 30px; style: original; autoPlay:true"></i>
+                </div>
+                <div class="content">
+                    <div class="text">所屬學生<small>(合約)</small></div>
+                    <h5 class="number">@(learners.Count(l => effectiveLearners.Any(f => f.UID == l.UID)))</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="body p-10">
+                <div class="icon">
+                    <i class="zmdi livicon-evo"
+                   data-options="name: lightning.svg; size: 30px; style: original; autoPlay:true"></i>
+                </div>
+                <div class="content">
+                    <div class="text">所屬學生<small>(無)</small></div>
+                    <h5 class="number">@(learners.Count(l => !effectiveLearners.Any(f => f.UID == l.UID)))</h5>
                 </div>
             </div>
         </div>

@@ -117,7 +117,14 @@
                         <small class="float-right text-muted"><time>NT @(price.ListPrice)</time></small>
                         <div class="msg">
                             <span class="float-right">
-                                <span class="badge bg-blue"><i class="zmdi zmdi-pin"></i> 現場</span>
+                                @if (price.IsDistanceLesson)
+                                {
+                                    <span class="badge bg-green"><i class="zmdi zmdi-pin"></i> 遠距</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-blue"><i class="zmdi zmdi-pin"></i> 現場</span>
+                                }
                             </span>
                         </div>
                     </div>

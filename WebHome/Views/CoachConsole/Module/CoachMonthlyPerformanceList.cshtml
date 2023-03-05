@@ -1,0 +1,60 @@
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@functions
+{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+}
+@{
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = ViewContext.ModelState;
+}
+
+<div class="card patients-list">
+    <div class="header">
+        <ul class="header-dropdown">
+            <li class="dropdown">
+                <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                   aria-expanded="false"> <i class="zmdi zmdi-swap"></i> </a>
+                <ul class="dropdown-menu dropdown-menu-right slideUp float-right">
+                    <li><a href="javascript:showCoachPerformanceList(true);">在職</a></li>
+                    <li><a href="javascript:showCoachPerformanceList(false);">離職</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div class="body">
+        <div class="table-responsive" id="coachList">
+            @{
+                await Html.RenderPartialAsync("~/Views/CoachConsole/Module/CoachMonthlyPerformance.cshtml");
+            }
+        </div>
+        <script>
+            window.showCoachPerformanceList = function(employed) {
+                showLoading();
+                var $formData = $.extend({}, $global.viewModel);
+                $formData.Employed = employed;
+                $.post('@Html.Raw(Url.Action("ShowCoachPerformanceList", "CoachConsole"))', $formData, function (data) {
+                    hideLoading();
+                    if ($.isPlainObject(data)) {
+                        Swal.fire(
+                            'Oops...',
+                            data.message,
+                            'warning'
+                        );
+                    } else {
+                        $('#coachList').empty().append($(data));
+                    }
+                });
+            };
+        </script>
+    </div>
+</div>

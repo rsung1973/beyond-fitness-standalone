@@ -1,0 +1,124 @@
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    ServingCoach _model = (ServingCoach)this.Model;
+    String _dialogID = $"certificate{DateTime.Now.Ticks}";
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+}
+
+<div class="modal fade" id="@(_dialogID)" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5>新增證照</h5>
+                <a class="closebutton" data-dismiss="modal"></a>
+            </div>
+            <div class="modal-body">
+                <div class="row clearfix">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+                        <select class="form-control show-tick" name="CertificateID">
+                            <option value="">-- 請選擇證照 --</option>
+                            @foreach(var cert in models.GetTable<ProfessionalCertificate>())
+                            {
+                                <option value="@(cert.CertificateID)">@(cert.Description)</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+                        <div class="input-group">
+                            <input type="text" class="form-control date" data-date-format="yyyy/mm/dd" readonly="readonly"
+                                   placeholder="請選到期日" name="Expiration" />
+                            <span class="input-group-addon">
+                                <i class="zmdi zmdi-time"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row clearfix">
+                    <div class="col-12">
+                        <h5 class="m-t-0">證照照片(請上傳清楚可辨別證照到期日之 png, jpg, jpeg等）</h5>
+                    </div>
+                    <div class="col-12">
+                        <form enctype="multipart/form-data" method="post">
+                            @{
+                                ViewBag.DropifyExtension = "gif jpg jpeg png";
+                                await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/DropifyFileUpload.cshtml", model: "attachment");
+                            }
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-darkteal btn-round waves-effect btnConfirm">確定，不後悔</button>
+            </div>
+        </div>
+    </div>
+    @{ await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/BSModalScript.cshtml", model: _dialogID);}
+
+    <script>
+
+        $(function () {
+
+            $('#@(_dialogID) .date').datetimepicker({
+                language: 'zh-TW',
+                weekStart: 1,
+                todayBtn: 1,
+                clearBtn: 1,
+                autoclose: 1,
+                todayHighlight: 1,
+                startView: 2,
+                minView: 2,
+                defaultView: 2,
+                forceParse: 0,
+                startDate: '@(String.Format("{0:yyyy-MM-dd}", DateTime.Today))',
+            });
+
+            $('#@(_dialogID) button.btnConfirm').on('click', function (event) {
+                var viewModel = $('#@(_dialogID) input,textarea,select').serializeObject();
+                viewModel.KeyID = '@Html.Raw(_model.CoachID.EncryptKey())';
+                clearErrors();
+                $('#@(_dialogID) form').ajaxForm({
+                    url: '@Html.Raw(Url.Action("CommitCoachCertificate", "Member"))',
+                    data: viewModel,
+                    beforeSubmit: function () {
+                        showLoading();
+                    },
+                    success: function (data) {
+                        hideLoading();
+                        if ($.isPlainObject(data)) {
+                            if(data.result) {
+                                $('#@(_dialogID)').modal('hide');
+                                $global.onDone();
+                            } else {
+                                Swal.fire(
+                                    'Oops...',
+                                    data.message,
+                                    'warning'
+                                );
+                            }
+                        }
+                        else {
+                            $(data).appendTo($('body'));
+                        }
+                    },
+                    error: function () {
+                        hideLoading();
+                    }
+                }).submit();
+            });
+        });
+    </script>
+</div>

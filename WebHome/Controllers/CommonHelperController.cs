@@ -99,6 +99,7 @@ namespace WebHome.Controllers
                 viewModel.AuthCode = $"{DateTime.Now.Ticks % 100000000:00000000}";
             }
             AppSettings.Default.AuthorizationCode = viewModel.AuthCode;
+            AppSettings.Default.Save();
             return Content(new { result = true, viewModel.AuthCode }.JsonStringify(), "application/json");
         }
     }

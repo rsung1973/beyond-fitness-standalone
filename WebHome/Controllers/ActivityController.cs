@@ -328,7 +328,10 @@ namespace WebHome.Controllers
             {
                 if (item.PDQQuestionExtension != null)
                 {
-                    taskItem.PDQTaskBonus = new PDQTaskBonus { };
+                    taskItem.PDQTaskBonus = new PDQTaskBonus 
+                    {
+                        BonusPoint = item.PDQQuestionExtension.BonusPoint ?? 1,
+                    };
                     models.SubmitChanges();
 
                     return Json(new { result = true, message = item.PDQQuestionExtension.BonusPoint.ToString() });

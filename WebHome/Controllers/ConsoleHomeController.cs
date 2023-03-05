@@ -1398,7 +1398,14 @@ namespace WebHome.Controllers
             ViewBag.DataItem = item;
 
             var profile = await HttpContext.GetUserAsync();
-            return View("~/Views/CoachConsole/CoachOverview.cshtml", profile.LoadInstance(models));
+            return View("~/Views/CoachConsole/CoachOverview2023.cshtml", profile.LoadInstance(models));
+        }
+
+        public async Task<ActionResult> CoachCertificateReadyAsync(LessonQueryViewModel viewModel)
+        {
+            ViewResult result = await CoachOverviewAsync(viewModel) as ViewResult;
+            result.ViewName = "~/Views/CoachConsole/CoachCertificateReady.cshtml";
+            return result;
         }
 
         public async Task<ActionResult> LearnerOverviewAsync(CoachLearnerQueryViewModel viewModel)

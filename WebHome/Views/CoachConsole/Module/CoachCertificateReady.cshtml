@@ -1,0 +1,113 @@
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@using CommonLib.Utility
+@functions
+{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+}
+@{
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = ViewContext.ModelState;
+    UserProfile _model = this.Model as UserProfile;
+    var branch = models.GetTable<BranchStore>().Where(b => b.ManagerID == _model.UID || b.ViceManagerID == _model.UID)
+                    .FirstOrDefault();
+    var items = (branch?.BranchID).CoachCertificateToApproveByBranch(models);
+}
+
+<table class="table table-striped table-custom nowrap dataTable-cert" style="width:100%">
+    <thead class="bg-darkteal">
+        <tr>
+            <th>姓名</th>
+            <th>證照名稱</th>
+            <th>迄日</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            foreach (var item in items)
+            {
+                var profile = item.ServingCoach.UserProfile;
+                <tr onclick="processCoachCertificate('@Html.Raw((new {item.CoachID,item.CertificateID}).JsonStringify().EncryptKey())');">
+                    <td>
+                        @(profile.FullName())
+                    </td>
+                    <td>
+                        @(item.ProfessionalCertificate.Description)
+                    </td>
+                    <td>
+                        @($"{item.Expiration:yyyy/MM/dd}")
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+<script>
+
+    $(function () {
+        $('#certCount').text(@(items.Count()));
+        if ($global.dtCert != undefined) {
+            $global.dtCert.destroy();
+        }
+
+        $global.dtCert = $('.dataTable-cert').DataTable({
+            "order": [
+                [0, 'asc']
+            ],
+            "pageLength": 30,
+            "lengthMenu": [
+                [30, 50, 100, -1],
+                [30, 50, 100, "全部"]
+            ],
+            "language": {
+                "lengthMenu": "每頁顯示 _MENU_ 筆資料",
+                "zeroRecords": "沒有資料也是種福氣",
+                "info": "共 _TOTAL_ 筆，目前顯示第 _START_ 至 _END_筆資料",
+                "infoEmpty": "顯示 0 筆的資料",
+                "infoFiltered": "(總共從 _MAX_ 筆資料過濾)",
+                "loadingRecords": "快馬加鞭處理中...",
+                "processing": "快馬加鞭處理中...",
+                "search": "快速搜尋：",
+                "paginate": {
+                    "first": "第一頁",
+                    "last": "最後一頁",
+                    "next": "下一頁",
+                    "previous": "前一頁"
+                },
+            },
+            scrollX: true,
+            scrollCollapse: true,
+            fixedColumns: {
+                leftColumns: 1,
+            },
+            "columnDefs": [{
+                    targets: [1, 2],
+                    className: "align-center more"
+                },
+                {
+                    targets: [0],
+                    className: "more"
+                }
+            ],
+        });
+
+        setTimeout(function () {
+            var $btnSelect = $('.dataTables_length div.btn-group.bootstrap-select.form-control.form-control-sm');
+            var $menu = $btnSelect.find('select');
+            $btnSelect.before($menu);
+            $btnSelect.remove();
+        }, 1000);
+
+        $('.dataTable-cert').resize();
+    });
+
+</script>

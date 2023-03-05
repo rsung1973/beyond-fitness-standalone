@@ -29,13 +29,13 @@
     if (price != null)
     {
         //_pageModel.HasChoice = true;
-
+        bool bookable = !_profile.IsHealthCare();
         <li class="list-group-item">
             <div class="media">
                 <div class="pull-left">
                     <div class="controls">
                         <label class="fancy-checkbox">
-                            <input type="checkbox" name="RegisterID" id="trialRemote" value="" onclick="selectBooking(this, '@((int)Naming.LessonPriceStatus.體驗課程)', @(price.PriceID));" data-location="option.virtual-store" />
+                            <input type="checkbox" name="RegisterID" id="trialRemote" value="" onclick="selectBooking(this, '@((int)Naming.LessonPriceStatus.體驗課程)', @(price.PriceID));" disabled="@(!bookable)" data-location="option.virtual-store" />
                             <span></span>
                         </label>
                     </div>

@@ -1,0 +1,48 @@
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@functions
+{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+}
+@{
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = ViewContext.ModelState;
+}
+
+<div class="card">
+    <div class="body">
+        <div class="table-responsive" id="certList">
+            @{
+                await Html.RenderPartialAsync("~/Views/CoachConsole/Module/CoachCertificateReady.cshtml");
+            }
+        </div>
+        <script>
+            window.showCoachCertficateReadyList = function () {
+                showLoading();
+                var $formData = $.extend({}, $global.viewModel);
+                $.post('@Html.Raw(Url.Action("ShowCoachCertificateReadyList", "CoachConsole"))', $formData, function (data) {
+                    hideLoading();
+                    if ($.isPlainObject(data)) {
+                        Swal.fire(
+                            'Oops...',
+                            data.message,
+                            'warning'
+                        );
+                    } else {
+                        $('#certList').empty().append($(data));
+                    }
+                });
+            };
+        </script>
+
+    </div>
+</div>

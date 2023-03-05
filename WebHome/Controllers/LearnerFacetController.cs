@@ -105,15 +105,18 @@ namespace WebHome.Controllers
             models.GetTable<LearnerAward>().InsertOnSubmit(award);
 
             int usedPoints = item.PointValue;
-            foreach(var bounsItem in profile.BonusPointList(models))
+            foreach(var bonusItem in profile.BonusPointList(models))
             {
                 if (usedPoints <= 0)
                     break;
                 award.BonusExchange.Add(new BonusExchange
                 {
-                    TaskID = bounsItem.TaskID
+                    TaskID = bonusItem.TaskID
                 });
-                usedPoints -= bounsItem.PDQTask.PDQQuestion.PDQQuestionExtension.BonusPoint.Value;
+                int currentUsed = Math.Min(usedPoints, bonusItem.BonusPoint.Value);
+                usedPoints -= currentUsed;
+                bonusItem.BonusPoint -= currentUsed;
+                //usedPoints -= bounsItem.PDQTask.PDQQuestion.PDQQuestionExtension.BonusPoint.Value;
             }
 
             ///兌換課程

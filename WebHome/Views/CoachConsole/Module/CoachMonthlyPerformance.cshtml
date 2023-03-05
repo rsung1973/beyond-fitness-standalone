@@ -45,6 +45,11 @@
                         c => c.CoachID, w => w.CoachID, (c, w) => c);
     }
 
+    var effectiveItems = models.PromptEffectiveContract();
+    var effectiveLearners = models.GetTable<CourseContractMember>()
+                                .Join(effectiveItems, m => m.ContractID, c => c.ContractID, (m, c) => m);
+
+
 }
 
 <table class="table table-striped table-custom nowrap dataTable-coach" style="width:100%">
@@ -106,12 +111,15 @@
                     </td>
                     <td>
                         @(
-                        item.LearnerCoachProperty.Where(p => p.PropertyID == (int)LearnerCoachProperty.PropertyType.PrimaryCoach).Count()
+                        item.LearnerCoachProperty
+                        .Where(p => p.PropertyID == (int)LearnerCoachProperty.PropertyType.PrimaryCoach)
+                        .Where(p => effectiveLearners.Any(l => l.UID == p.UID))
+                        .Count()
                             )
                     </td>
                     <td>
                         @(
-                        models.PromptEffectiveContract()
+                        effectiveItems
                         .Where(c => c.FitnessConsultant == profile.UID).Count()
                             )
                     </td>
@@ -235,6 +243,10 @@
                 [1, 'asc']
             ],
             "pageLength": 30,
+            "lengthMenu": [
+                [30, 50, 100, -1],
+                [30, 50, 100, "全部"]
+            ],
             "bInfo": true,//頁尾資訊
             "searching": true,  //搜尋框，不顯示
             "language": {
@@ -269,6 +281,13 @@
                 }
             ],
         });
+
+        setTimeout(function () {
+            var $btnSelect = $('.dataTables_length div.btn-group.bootstrap-select.form-control.form-control-sm');
+            var $menu = $btnSelect.find('select');
+            $btnSelect.before($menu);
+            $btnSelect.remove();
+        }, 1000);
 
         $('.dataTable-coach').resize();
 

@@ -1,0 +1,52 @@
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@using CommonLib.Utility
+
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    ServingCoach _model = (ServingCoach)this.Model;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+}
+
+@foreach (var c in _model.CoachCertificate.OrderBy(f => f.Expiration))
+{
+    if (c.Expiration < DateTime.Today)
+    {
+        <li class="closed">
+            @if(c.AttachmentID.HasValue)
+            {
+                <a href="javascript:showCoachCertificate('@Html.Raw((new CoachCertificateViewModel { CoachID = c.CoachID,CertificateID=c.CertificateID }).JsonStringify().EncryptKey())');">@(c.ProfessionalCertificate.Description)：@($"{c.Expiration:yyyy/MM/dd}")（已過期）</a>
+            }
+            else
+            {
+                <text>@(c.ProfessionalCertificate.Description)：@($"{c.Expiration:yyyy/MM/dd}")（已過期）</text>
+            }
+            <a href="javascript:deleteCertificate('@Html.Raw((new CoachCertificateViewModel { CoachID = c.CoachID,CertificateID=c.CertificateID }).JsonStringify().EncryptKey())');"><i class="zmdi zmdi-delete col-red"></i></a>
+        </li>
+    }
+    else
+    {
+        <li class="@(c.Status == (int)CoachCertificate.CertificateStatusDefinition.待審核 ? "upload" : null)">
+            @if(c.AttachmentID.HasValue)
+            {
+                <a href="javascript:showCoachCertificate('@Html.Raw((new CoachCertificateViewModel { CoachID = c.CoachID,CertificateID=c.CertificateID }).JsonStringify().EncryptKey())');">@(c.ProfessionalCertificate.Description)：@($"{c.Expiration:yyyy/MM/dd}")</a>
+            }
+            else
+            {
+                <text>@(c.ProfessionalCertificate.Description)：@($"{c.Expiration:yyyy/MM/dd}")</text>
+            }
+            <a href="javascript:deleteCertificate('@Html.Raw((new CoachCertificateViewModel { CoachID = c.CoachID,CertificateID=c.CertificateID }).JsonStringify().EncryptKey())');"><i class="zmdi zmdi-delete col-red"></i></a>
+        </li>
+    }
+}

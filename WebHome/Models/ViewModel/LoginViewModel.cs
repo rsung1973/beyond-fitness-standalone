@@ -778,13 +778,13 @@ namespace WebHome.Models.ViewModel
 
     }
 
-    public class CoachCertificateViewModel
+    public class CoachCertificateViewModel : QueryViewModel
     {
         private DateTime? expiration;
 
         public int? CertificateID { get; set; }
         public DateTime? Expiration { get => expiration?.CurrentLocalTime(); set => expiration = value; }
-        public int? UID { get; set; }
+        public int? CoachID { get; set; }
 
     }
 

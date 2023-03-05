@@ -832,7 +832,12 @@ namespace WebHome.Controllers
                     if (item.CourseContract.ValidTo.HasValue
                             && item.CourseContract.ValidTo < validTo
                             && item.RemainedAmount == 0)
+                    {
+                        models.ExecuteCommand("delete CourseContractAction where ActionID = {0} and ContractID = {1}",
+                                (int)CourseContractAction.ActionType.盤點,
+                                item.ContractID);
                         continue;
+                    }
                 }
 
                 var r = table.NewRow();
@@ -1683,6 +1688,9 @@ namespace WebHome.Controllers
             特別獎金 = 10,
             上課獎金 = 11,
             分店業績達成率百分比 = 12,
+            滾動式堂數 = 13,
+            滾動式平均單價 = 14,
+            滾動式抽成 = 15,
         }
 
         enum ManagerYearlyBonusFields
@@ -1721,6 +1729,9 @@ namespace WebHome.Controllers
             月中上課加業績獎金 = 14,
             上課獎金 = 15,
             業績獎金 = 16,
+            滾動式堂數 = 17,
+            滾動式平均單價 = 18,
+            滾動式抽成 = 19,
         }
 
         enum CoachYearlyBonusFields
@@ -1776,6 +1787,9 @@ namespace WebHome.Controllers
                 table.Columns.Add(new DataColumn(ManagerBonusFields.特別獎金.ToString()	, typeof(int)));
                 table.Columns.Add(new DataColumn(ManagerBonusFields.上課獎金.ToString(), typeof(int)));
                 table.Columns.Add(new DataColumn(ManagerBonusFields.分店業績達成率百分比.ToString(), typeof(decimal)));
+                table.Columns.Add(new DataColumn(ManagerBonusFields.滾動式堂數.ToString(), typeof(int)));
+                table.Columns.Add(new DataColumn(ManagerBonusFields.滾動式平均單價.ToString(), typeof(int)));
+                table.Columns.Add(new DataColumn(ManagerBonusFields.滾動式抽成.ToString(), typeof(int)));
 
                 DataRow r;
 
@@ -1824,6 +1838,9 @@ namespace WebHome.Controllers
                         + (int)r[(int)ManagerBonusFields.管理獎金] 
                         + (int)r[(int)ManagerBonusFields.特別獎金];
 
+                    r[(int)ManagerBonusFields.滾動式堂數] = g.AttendedByOther ?? 0;
+                    r[(int)ManagerBonusFields.滾動式平均單價] = g.AttendedByOtherAvgPrice ?? 0;
+                    r[(int)ManagerBonusFields.滾動式抽成] = g.AttendedShare ?? 0;
 
                     table.Rows.Add(r);
                 }
@@ -1851,6 +1868,9 @@ namespace WebHome.Controllers
                 table.Columns.Add(new DataColumn(CoachBonusFields.月中上課加業績獎金.ToString()			, typeof(int)));
                 table.Columns.Add(new DataColumn(CoachBonusFields.上課獎金.ToString(), typeof(int)));
                 table.Columns.Add(new DataColumn(CoachBonusFields.業績獎金.ToString(), typeof(int)));
+                table.Columns.Add(new DataColumn(CoachBonusFields.滾動式堂數.ToString(), typeof(int)));
+                table.Columns.Add(new DataColumn(CoachBonusFields.滾動式平均單價.ToString(), typeof(int)));
+                table.Columns.Add(new DataColumn(CoachBonusFields.滾動式抽成.ToString(), typeof(int)));
 
                 DataRow r;
 
@@ -1893,6 +1913,9 @@ namespace WebHome.Controllers
                     r[(int)CoachBonusFields.上課抽成單價] = g.PTAverageUnitPrice ?? 0;
                     r[(int)CoachBonusFields.PT_Session課數] = g.PTAttendanceCount ?? 0;
                     r[(int)CoachBonusFields.業績獎金] = g.AchievementBonus ?? 0;
+                    r[(int)CoachBonusFields.滾動式堂數] = g.AttendedByOther ?? 0;
+                    r[(int)CoachBonusFields.滾動式平均單價] = g.AttendedByOtherAvgPrice ?? 0;
+                    r[(int)CoachBonusFields.滾動式抽成] = g.AttendedShare ?? 0;
 
                     if (g.ProfessionalLevel.CategoryID != (int)Naming.ProfessionalCategory.Health)
                     {
@@ -2085,17 +2108,24 @@ namespace WebHome.Controllers
 
             var tableItems = detailsTable.Rows.Cast<DataRow>()
                                 .Where(l => !l.IsNull(14));
+            var otherItems = tableItems.Where(l => !l.IsNull(18));
 
-            //var tableItems = detailsTable.Rows.Cast<DataRow>()
-            //                    .Where(l => !l.IsNull(14))
-            //                    .Where(l => (int)l[6] > 0
-            //                        || ((int)l[7] > 0 && !l[11].Equals((int)Naming.LessonPriceStatus.體驗課程)));
-            //foreach (var item in tableItems
-            //                        .Where(l => l[11].Equals((int)Naming.LessonPriceStatus.員工福利課程)
-            //                            || l[11].Equals((int)Naming.LessonPriceStatus.點數兌換課程)))
-            //{
-            //    item[5] = item[9] = 0;
-            //}
+            var given = models.GetTable<LessonPriceType>().Where(p => p.Status == (int)Naming.LessonPriceStatus.點數兌換課程);
+            var givenPT = given.Where(p => p.LessonPriceProperty.Any(r => r.PropertyID == (int)Naming.LessonPriceFeature.一般課程))
+                            .ToArray();
+            var givenSR = given.Where(p => p.LessonPriceProperty.Any(r => r.PropertyID == (int)Naming.LessonPriceFeature.運動恢復課程))
+                            .ToArray(); 
+            var givenSD = given.Where(p => p.LessonPriceProperty.Any(r => r.PropertyID == (int)Naming.LessonPriceFeature.營養課程))
+                            .ToArray();
+
+            var ts = models.GetTable<LessonPriceType>().Where(p => p.Status == (int)Naming.LessonPriceStatus.體驗課程);
+            var tsPT = ts.Where(p => p.LessonPriceProperty.Any(r => r.PropertyID == (int)Naming.LessonPriceFeature.一般課程))
+                            .ToArray();
+            var tsSR = ts.Where(p => p.LessonPriceProperty.Any(r => r.PropertyID == (int)Naming.LessonPriceFeature.運動恢復課程))
+                            .ToArray();
+            var tsSD = ts.Where(p => p.LessonPriceProperty.Any(r => r.PropertyID == (int)Naming.LessonPriceFeature.營養課程))
+                            .ToArray();
+
 
             DateTime? idx = viewModel.AchievementDateFrom?.FirstDayOfMonth();
 
@@ -2119,14 +2149,18 @@ namespace WebHome.Controllers
                 table.Columns.Add(new DataColumn("H.S上課總數", typeof(int)));	    //	14
                 table.Columns.Add(new DataColumn("H.S上課金額(含稅)", typeof(int))); //	15
                 table.Columns.Add(new DataColumn("C.S上課金額(含稅)", typeof(int)));      //	16
-
-
+                table.Columns.Add(new DataColumn("活動贈品S.R上課總數", typeof(int)));      //	17
+                table.Columns.Add(new DataColumn("活動贈品S.D上課總數", typeof(int)));      //	18
+                table.Columns.Add(new DataColumn("T.S (P.T)上課總數", typeof(int)));      //	19
+                table.Columns.Add(new DataColumn("T.S (S.R)上課總數", typeof(int)));      //	20
+                table.Columns.Add(new DataColumn("T.S (S.D)上課總數", typeof(int)));      //	21
 
                 DataRow r;
 
                 foreach (var branch in models.GetTable<BranchStore>())
                 {
                     var branchItems = tableItems.Where(l => (String)l[8] == branch.BranchName);
+                    var branchOthers = otherItems.Where(l => (String)l[8] == branch.BranchName);
                     r = table.NewRow();
                     r[0] = branch.BranchName;
 
@@ -2135,7 +2169,8 @@ namespace WebHome.Controllers
                     r[2] = dataItems.Sum(l => (int)l[9]);
                     r[16] = r[2];
 
-                    dataItems = branchItems.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.點數兌換課程);
+                    //dataItems = branchItems.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.點數兌換課程);
+                    dataItems = branchOthers.Where(l => givenPT.Any(p => p.PriceID == (int)l[18]));
                     r[3] = dataItems.Sum(l => (int)l[6]);
                     r[16] = (int)r[16] + dataItems.Sum(l => (int)l[9]);
 
@@ -2162,6 +2197,18 @@ namespace WebHome.Controllers
                     r[12] = dataItems.Sum(l => (int)l[6]);
                     r[13] = dataItems.Sum(l => (int)l[9]);
 
+                    dataItems = branchOthers.Where(l => givenSR.Any(p => p.PriceID == (int)l[18]));
+                    r[17] = dataItems.Sum(l => (int)l[6]);
+                    dataItems = branchOthers.Where(l => givenSD.Any(p => p.PriceID == (int)l[18]));
+                    r[18] = dataItems.Sum(l => (int)l[6]);
+
+                    dataItems = branchOthers.Where(l => tsPT.Any(p => p.PriceID == (int)l[18]));
+                    r[19] = dataItems.Sum(l => (int)l[6]);
+                    dataItems = branchOthers.Where(l => tsSR.Any(p => p.PriceID == (int)l[18]));
+                    r[20] = dataItems.Sum(l => (int)l[6]);
+                    dataItems = branchOthers.Where(l => tsSD.Any(p => p.PriceID == (int)l[18]));
+                    r[21] = dataItems.Sum(l => (int)l[6]);
+
                     //P.T + 點數 + 員工
                     r[14] = (int)r[8] + (int)r[10] + (int)r[12];
                     r[5] = (int)r[1] + (int)r[3] + (int)r[4] + (int)r[14];
@@ -2174,7 +2221,7 @@ namespace WebHome.Controllers
                 r = table.NewRow();
                 r[0] = "總計";
                 var data = table.Rows.Cast<DataRow>();
-                for (int idx = 1; idx <= 16; idx++)
+                for (int idx = 1; idx <= 21; idx++)
                 {
                     r[idx] = data.Sum(d => (int)d[idx]);
                 }
@@ -2183,6 +2230,11 @@ namespace WebHome.Controllers
                 table.Columns[5].SetOrdinal(15);
                 table.Columns[6].SetOrdinal(16);
                 table.Columns[6].SetOrdinal(16);
+                table.Columns[17].SetOrdinal(13);
+                table.Columns[18].SetOrdinal(14);
+                table.Columns[19].SetOrdinal(5);
+                table.Columns[20].SetOrdinal(6);
+                table.Columns[21].SetOrdinal(7);
 
                 return table;
             }
@@ -2208,12 +2260,15 @@ namespace WebHome.Controllers
                 table.Columns.Add(new DataColumn("H.S上課總數", typeof(int)));         //	14
                 table.Columns.Add(new DataColumn("H.S上課金額(含稅)", typeof(int)));	   //	15
                 table.Columns.Add(new DataColumn("C.S上課金額(含稅)", typeof(int)));      //	16
+                table.Columns.Add(new DataColumn("活動贈品S.R上課總數", typeof(int)));      //	17
+                table.Columns.Add(new DataColumn("活動贈品S.D上課總數", typeof(int)));      //	18
 
                 DataRow r;
 
                 foreach (var branch in models.GetTable<BranchStore>())
                 {
                     var branchItems = tableItems.Where(l => (String)l[2] == branch.BranchName);
+                    var branchOthers = otherItems.Where(l => (String)l[8] == branch.BranchName);
                     r = table.NewRow();
                     r[0] = branch.BranchName;
 
@@ -2222,7 +2277,8 @@ namespace WebHome.Controllers
                     r[2] = dataItems.Sum(l => (int)l[9]);
                     r[16] = r[2];
 
-                    dataItems = branchItems.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.點數兌換課程);
+                    //dataItems = branchItems.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.點數兌換課程);
+                    dataItems = branchOthers.Where(l => givenPT.Any(p => p.PriceID == (int)l[18]));
                     r[3] = dataItems.Sum(l => (int)l[6]);
                     r[16] = (int)r[16] + dataItems.Sum(l => (int)l[9]);
 
@@ -2248,6 +2304,11 @@ namespace WebHome.Controllers
                     r[12] = dataItems.Sum(l => (int)l[6]);
                     r[13] = dataItems.Sum(l => (int)l[9]);
 
+                    dataItems = branchOthers.Where(l => givenSR.Any(p => p.PriceID == (int)l[18]));
+                    r[17] = dataItems.Sum(l => (int)l[6]);
+                    dataItems = branchOthers.Where(l => givenSD.Any(p => p.PriceID == (int)l[18]));
+                    r[18] = dataItems.Sum(l => (int)l[6]);
+
                     //P.T + 點數 + 員工
                     r[14] = (int)r[8] + (int)r[10] + (int)r[12];
                     r[5] = (int)r[1] + (int)r[3] + (int)r[4] + (int)r[14];
@@ -2260,7 +2321,7 @@ namespace WebHome.Controllers
                 r = table.NewRow();
                 r[0] = "總計";
                 var data = table.Rows.Cast<DataRow>();
-                for (int idx = 1; idx <= 16; idx++)
+                for (int idx = 1; idx <= 18; idx++)
                 {
                     r[idx] = data.Sum(d => (int)d[idx]);
                 }
@@ -2268,6 +2329,8 @@ namespace WebHome.Controllers
 
                 table.Columns[6].SetOrdinal(16);
                 table.Columns[6].SetOrdinal(16);
+                table.Columns[17].SetOrdinal(14);
+                table.Columns[18].SetOrdinal(15);
 
                 return table;
             }
@@ -2296,6 +2359,11 @@ namespace WebHome.Controllers
                 table.Columns.Add(new DataColumn("上課總數達成率(%)", typeof(int)));      //	18
                 table.Columns.Add(new DataColumn("目標上課金額", typeof(int)));      //	19
                 table.Columns.Add(new DataColumn("上課金額達成率(%)", typeof(int)));      //	20
+                table.Columns.Add(new DataColumn("活動贈品S.R上課總數", typeof(int)));      //	21
+                table.Columns.Add(new DataColumn("活動贈品S.D上課總數", typeof(int)));      //	22
+                table.Columns.Add(new DataColumn("T.S (P.T)上課總數", typeof(int)));      //	23
+                table.Columns.Add(new DataColumn("T.S (S.R)上課總數", typeof(int)));      //	24
+                table.Columns.Add(new DataColumn("T.S (S.D)上課總數", typeof(int)));      //	25
 
 
                 DataRow r;
@@ -2310,6 +2378,7 @@ namespace WebHome.Controllers
                 foreach (var branch in branchList)
                 {
                     var branchItems = tableItems.Where(l => (String)l[12] == branch.Value);
+                    var branchOthers = otherItems.Where(l => (String)l[12] == branch.Value);
                     r = table.NewRow();
                     r[0] = branch.Value;
 
@@ -2318,7 +2387,8 @@ namespace WebHome.Controllers
                     r[2] = dataItems.Sum(l => (int)l[9]);
                     r[16] = r[2];
 
-                    dataItems = branchItems.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.點數兌換課程);
+                    //dataItems = branchItems.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.點數兌換課程);
+                    dataItems = branchOthers.Where(l => givenPT.Any(p => p.PriceID == (int)l[18]));
                     r[3] = dataItems.Sum(l => (int)l[6]);
                     r[16] = (int)r[16] + dataItems.Sum(l => (int)l[9]);
 
@@ -2343,6 +2413,18 @@ namespace WebHome.Controllers
                     dataItems = branchItems.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.營養課程);
                     r[12] = dataItems.Sum(l => (int)l[6]);
                     r[13] = dataItems.Sum(l => (int)l[9]);
+
+                    dataItems = branchOthers.Where(l => givenSR.Any(p => p.PriceID == (int)l[18]));
+                    r[21] = dataItems.Sum(l => (int)l[6]);
+                    dataItems = branchOthers.Where(l => givenSD.Any(p => p.PriceID == (int)l[18]));
+                    r[22] = dataItems.Sum(l => (int)l[6]);
+
+                    dataItems = branchOthers.Where(l => tsPT.Any(p => p.PriceID == (int)l[18]));
+                    r[23] = dataItems.Sum(l => (int)l[6]);
+                    dataItems = branchOthers.Where(l => tsSR.Any(p => p.PriceID == (int)l[18]));
+                    r[24] = dataItems.Sum(l => (int)l[6]);
+                    dataItems = branchOthers.Where(l => tsSD.Any(p => p.PriceID == (int)l[18]));
+                    r[25] = dataItems.Sum(l => (int)l[6]);
 
                     //P.T + 點數 + 員工
                     r[14] = (int)r[8] + (int)r[10] + (int)r[12];
@@ -2382,11 +2464,20 @@ namespace WebHome.Controllers
                 {
                     r[idx] = data.Sum(d => (int)d[idx]);
                 }
+                for (int idx = 21; idx <= 25; idx++)
+                {
+                    r[idx] = data.Sum(d => (int)d[idx]);
+                }
                 table.Rows.Add(r);
 
                 table.Columns[5].SetOrdinal(15);
                 table.Columns[6].SetOrdinal(16);
                 table.Columns[6].SetOrdinal(16);
+                table.Columns[21].SetOrdinal(16);
+                table.Columns[22].SetOrdinal(17);
+                table.Columns[23].SetOrdinal(5);
+                table.Columns[24].SetOrdinal(6);
+                table.Columns[25].SetOrdinal(7);
 
                 return table;
             }
@@ -2416,6 +2507,11 @@ namespace WebHome.Controllers
                 table.Columns.Add(new DataColumn("上課總數達成率(%)", typeof(int)));      //	19
                 table.Columns.Add(new DataColumn("目標上課金額", typeof(int)));      //	20
                 table.Columns.Add(new DataColumn("上課金額達成率(%)", typeof(int)));      //	21
+                table.Columns.Add(new DataColumn("活動贈品S.R上課總數", typeof(int)));      //	22
+                table.Columns.Add(new DataColumn("活動贈品S.D上課總數", typeof(int)));      //	23
+                table.Columns.Add(new DataColumn("T.S (P.T)上課總數", typeof(int)));      //	24
+                table.Columns.Add(new DataColumn("T.S (S.R)上課總數", typeof(int)));      //	25
+                table.Columns.Add(new DataColumn("T.S (S.D)上課總數", typeof(int)));      //	26
 
 
                 DataRow r;
@@ -2424,6 +2520,7 @@ namespace WebHome.Controllers
                                     .OrderBy(g => g.First()[12]);
                 foreach (var coach in coachItems)
                 {
+                    var coachOthers = otherItems.Where(l => (String)l[1] == coach.Key);
                     r = table.NewRow();
                     r[0] = coach.Key;
                     r[1] = (String)coach.First()[12];
@@ -2432,7 +2529,8 @@ namespace WebHome.Controllers
                     r[3] = dataItems.Sum(l => (int)l[9]);
                     r[17] = r[3];
 
-                    dataItems = coach.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.點數兌換課程);
+                    //dataItems = coach.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.點數兌換課程);
+                    dataItems = coachOthers.Where(l => givenPT.Any(p => p.PriceID == (int)l[18]));
                     r[4] = dataItems.Sum(l => (int)l[6]);
                     r[17] = (int)r[17] + dataItems.Sum(l => (int)l[9]);
 
@@ -2458,6 +2556,18 @@ namespace WebHome.Controllers
                     dataItems = coach.Where(l => (int?)l[11] == (int)Naming.LessonPriceStatus.營養課程);
                     r[13] = dataItems.Sum(l => (int)l[6]);
                     r[14] = dataItems.Sum(l => (int)l[9]);
+
+                    dataItems = coachOthers.Where(l => givenSR.Any(p => p.PriceID == (int)l[18]));
+                    r[22] = dataItems.Sum(l => (int)l[6]);
+                    dataItems = coachOthers.Where(l => givenSD.Any(p => p.PriceID == (int)l[18]));
+                    r[23] = dataItems.Sum(l => (int)l[6]);
+
+                    dataItems = coachOthers.Where(l => tsPT.Any(p => p.PriceID == (int)l[18]));
+                    r[24] = dataItems.Sum(l => (int)l[6]);
+                    dataItems = coachOthers.Where(l => tsSR.Any(p => p.PriceID == (int)l[18]));
+                    r[25] = dataItems.Sum(l => (int)l[6]);
+                    dataItems = coachOthers.Where(l => tsSD.Any(p => p.PriceID == (int)l[18]));
+                    r[26] = dataItems.Sum(l => (int)l[6]);
 
                     //P.T + 點數 + 員工
                     r[15] = (int)r[9] + (int)r[11] + (int)r[13];
@@ -2496,11 +2606,20 @@ namespace WebHome.Controllers
                 {
                     r[idx] = data.Sum(d => (int)d[idx]);
                 }
+                for (int idx = 22; idx <= 26; idx++)
+                {
+                    r[idx] = data.Sum(d => (int)d[idx]);
+                }
                 table.Rows.Add(r);
 
                 table.Columns[6].SetOrdinal(16);
                 table.Columns[7].SetOrdinal(17);
                 table.Columns[7].SetOrdinal(17);
+                table.Columns[22].SetOrdinal(17);
+                table.Columns[23].SetOrdinal(18);
+                table.Columns[24].SetOrdinal(6);
+                table.Columns[25].SetOrdinal(7);
+                table.Columns[26].SetOrdinal(8);
 
                 return table;
             }
@@ -2523,6 +2642,7 @@ namespace WebHome.Controllers
                 table.TableName = $"{viewModel.AchievementDateFrom:yyyyMM} 體能顧問彙總";
                 ds.Tables.Add(table);
 
+                detailsTable.Columns.RemoveAt(18);
                 detailsTable.Columns.RemoveAt(14);
                 detailsTable.Columns.RemoveAt(15);
                 ds.Tables.Add(detailsTable);

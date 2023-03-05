@@ -17,15 +17,15 @@
     ModelStateDictionary _modelState;
     UserProfile _model;
 
-    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
     _modelState = ViewContext.ModelState;
     _model = (UserProfile)this.Model;
 
     LessonOverviewQueryViewModel viewModel = new LessonOverviewQueryViewModel
-    {
-        Year = DateTime.Today.Year,
-        Month = DateTime.Today.Month,
-    };
+            {
+                Year = DateTime.Today.Year,
+                Month = DateTime.Today.Month,
+            };
     ViewBag.ViewModel = viewModel;
 
     var items = viewModel.InquireLesson(models);
@@ -34,13 +34,13 @@
 }
 
 @section Part_1
-{
+    {
     <div class="icon"><i class="zmdi zmdi-shield-check"></i> </div>
     <div class="content">
         @{
             int count = _model.PreferredLessonTimeToApprove(models).Count();
         }
-        <div class="text">跨店待審</div>
+        <div class="text">跨店/證照待審</div>
         <h5 class="number">
             @if (count > 0)
             {
@@ -49,6 +49,18 @@
             else
             {
                 <text>0</text>
+            }
+            /
+            @{
+                count = _model.CoachCertificateToApprove(models).Count();
+                if (count > 0)
+                {
+                    <a href="javascript:void(0);" onclick="showLoading(); window.location.href='@Html.Raw(Url.Action("CoachCertificateReady","ConsoleHome"))';">@(count)</a>
+                }
+                else
+                {
+                    <text>0</text>
+                }
             }
         </h5>
     </div>

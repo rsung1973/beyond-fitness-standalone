@@ -59,6 +59,14 @@ namespace WebHome.Controllers
             }
         }
 
+        public async Task<ActionResult> ShowCoachCertificateReadyListAsync(CoachQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+
+            var profile = await HttpContext.GetUserAsync();
+            return View("~/Views/CoachConsole/Module/CoachCertificateReady.cshtml", profile.LoadInstance(models));
+        }
+
         public ActionResult ProcessCoachView(CoachQueryViewModel viewModel)
         {
             if (viewModel.KeyID != null)
@@ -73,6 +81,115 @@ namespace WebHome.Controllers
             }
 
             return View("~/Views/CoachConsole/Module/ProcessCoachView.cshtml", item);
+        }
+
+        public ActionResult ProcessCoachCertificateView(CoachCertificateViewModel viewModel)
+        {
+            CoachCertificateViewModel tmpModel = ViewBag.ViewModel = viewModel;
+            if (viewModel.KeyID != null)
+            {
+                tmpModel = JsonConvert.DeserializeObject<CoachCertificateViewModel>(viewModel.KeyID.DecryptKey());
+            }
+
+            var item = models.GetTable<CoachCertificate>()
+                    .Where(c => c.CoachID == tmpModel.CoachID)
+                    .Where(c=>c.CertificateID == tmpModel.CertificateID)
+                    .FirstOrDefault();
+
+            if (item == null)
+            {
+                return View("~/Views/ConsoleHome/Shared/AlertMessage.cshtml", model: "資料錯誤!!");
+            }
+
+            return View("~/Views/CoachConsole/Module/ProcessCoachCertificateView.cshtml", item);
+        }
+
+        public ActionResult ShowCoachCertificate(CoachCertificateViewModel viewModel)
+        {
+            ViewResult result = (ViewResult)ProcessCoachCertificateView(viewModel);
+            CoachCertificate model = result.Model as CoachCertificate;
+            if (model != null) 
+            {
+                result.ViewName = "~/Views/CoachConsole/Module/CoachCertificateView.cshtml";
+            }
+            return result;
+        }
+
+
+        public ActionResult AddCoachCertificate(CoachCertificateViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+
+            if (viewModel.KeyID != null)
+            {
+                viewModel.CoachID = viewModel.DecryptKeyValue();
+            }
+
+            var coach = models.GetTable<ServingCoach>().Where(c => c.CoachID == viewModel.CoachID).FirstOrDefault();
+            if (coach == null) 
+            {
+                return Json(new { result = false, message = "資料錯誤!!" });
+            }
+
+            return View("~/Views/CoachConsole/Module/AddCoachCertificate.cshtml", coach);
+        }
+
+        public ActionResult LoadCoachCertificate(CoachCertificateViewModel viewModel)
+        {
+            ActionResult result = AddCoachCertificate(viewModel);
+
+            if (result is ViewResult)
+            {
+                ((ViewResult)result).ViewName = "~/Views/CoachConsole/Module/CoachCertificateList.cshtml";
+            }
+
+            return result;
+        }
+
+        [RoleAuthorize(new int[] { (int)Naming.RoleID.Administrator, (int)Naming.RoleID.Assistant, (int)Naming.RoleID.Officer, (int)Naming.RoleID.Manager, (int)Naming.RoleID.ViceManager })]
+        public async Task<ActionResult> ApproveCoachCertificateAsync(CoachCertificateViewModel viewModel)
+        {
+            CoachCertificateViewModel tmpModel = ViewBag.ViewModel = viewModel;
+            if (viewModel.KeyID != null)
+            {
+                tmpModel = JsonConvert.DeserializeObject<CoachCertificateViewModel>(viewModel.KeyID.DecryptKey());
+            }
+
+            var item = models.GetTable<CoachCertificate>()
+                    .Where(c => c.CoachID == tmpModel.CoachID)
+                    .Where(c => c.CertificateID == tmpModel.CertificateID)
+                    .FirstOrDefault();
+
+            if (item == null) 
+            {
+                return Json(new { result = false, message = "資料錯誤!!" });
+            }
+
+            var profile = await HttpContext.GetUserAsync();
+            item.Status = (int)CoachCertificate.CertificateStatusDefinition.已核准;
+            item.ApprovedBy = profile.UID;
+            item.ApprovedDate = DateTime.Now;
+            models.SubmitChanges();
+
+            return Json(new { result = true });
+
+        }
+
+
+        public async Task<ActionResult> ShowCoachMonthlyPerformanceAsync(CoachQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+
+            var profile = await HttpContext.GetUserAsync();
+            return View("~/Views/CoachConsole/Module/CoachMonthlyPerformanceList.cshtml", profile.LoadInstance(models));
+        }
+
+        public async Task<ActionResult> ShowCoachCertificateReadyAsync(CoachQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+
+            var profile = await HttpContext.GetUserAsync();
+            return View("~/Views/CoachConsole/Module/CoachCertificateReadyList.cshtml", profile.LoadInstance(models));
         }
     }
 }

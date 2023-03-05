@@ -28,42 +28,72 @@
         _viewModel.BranchID = models.GetTable<CoachWorkplace>().Where(c => c.CoachID == _profile.UID)
                                 .FirstOrDefault()?.BranchID;
     }
-    IQueryable<LessonTime> items = _viewModel.GetUnpaidPISession(models)
-                                        .OrderBy(l => l.BranchID)
-                                        .ThenBy(l => l.ClassTime);
+    IQueryable<LessonTime> items = null;
 }
-<div class="card square inbox">
-    <div class="cover">
-        <h6 class="m-t-20 m-l-20">T.S/P.I/P.T Session 尚未收款清單如下：</h6>
-        <ul class="mail_list list-group list-unstyled">
-            @foreach (var item in items)
-            {
-                await BuildItem(item);
-            }
-            @{
-                items = _viewModel.GetUnpaidTrialSession(models, _profile)
+@{
+    items = _viewModel.GetUnpaidTrialSession(models, _profile)
+                        .OrderBy(l => l.BranchID)
+                        .ThenBy(l => l.ClassTime);
+    if(items.Any())
+    {
+        <div class="card square inbox">
+            <div class="cover">
+                <h6 class="m-t-20 m-l-20">T.S Session 尚未收款清單如下：</h6>
+                <ul class="mail_list list-group list-unstyled">
+                    @{
+                        foreach (var item in items)
+                        {
+                            await BuildItem(item);
+                        }
+                    }
+                </ul>
+            </div>
+        </div>
+    }
+
+    items = _viewModel.GetUnpaidPISession(models)
                                         .OrderBy(l => l.BranchID)
                                         .ThenBy(l => l.ClassTime);
-                foreach (var item in items)
-                {
-                    await BuildItem(item);
-                }
-            }
-            @{
-                items = _viewModel.GetUnpaidPTSession(models, _profile)
-                .OrderBy(l => l.BranchID)
-                .ThenBy(l => l.ClassTime);
-                foreach (var item in items)
-                {
-                    await BuildItem(item);
-                }
-            }
-        </ul>
-    </div>
-</div>
+    if(items.Any())
+    {
+        <div class="card square inbox">
+            <div class="cover">
+                <h6 class="m-t-20 m-l-20">P.I Session 尚未收款清單如下：</h6>
+                <ul class="mail_list list-group list-unstyled">
+                    @foreach (var item in items)
+                    {
+                        await BuildItem(item);
+                    }
+                </ul>
+            </div>
+        </div>
+    }
+
+    items = _viewModel.GetUnpaidPTSession(models, _profile)
+        .OrderBy(l => l.BranchID)
+        .ThenBy(l => l.ClassTime);
+
+    if(items.Any())
+    {
+        <div class="card square inbox">
+            <div class="cover">
+                <h6 class="m-t-20 m-l-20">P.T Session 尚未收款清單如下：</h6>
+                <ul class="mail_list list-group list-unstyled">
+                    @{
+                        foreach (var item in items)
+                        {
+                            await BuildItem(item, "《單堂購買》P.T Session");
+                        }
+                    }
+                </ul>
+            </div>
+        </div>
+    }
+}
+
 
 @{
-    async Task BuildItem(LessonTime item)
+    async Task BuildItem(LessonTime item, String itemName = null)
     {
         <li class="list-group-item">
             <div class="media">
@@ -84,13 +114,15 @@
                 </div>
                 <div class="media-body">
                     <div class="media-heading">
-                        <a class="m-r-10">@($"{item.ClassTime:yyyy/MM/dd hh:mm}") - @(item.RegisterLesson.UserProfile.FullName())</a>
+                        <a class="m-r-10">@($"{item.ClassTime:yyyy/MM/dd HH:mm}") - @(item.RegisterLesson.UserProfile.FullName())</a>
                         <small class="float-right text-muted"><time>NT @(item.RegisterLesson.LessonPriceType.ListPrice)</time></small>
                         <div class="msg">
-                            @(item.RegisterLesson.LessonPriceType?.SimpleDescription)
+                            @(itemName ?? item.RegisterLesson.LessonPriceType?.SimpleDescription)
                             <span class="float-right">
                                 <small><time>@(item.AsAttendingCoach.UserProfile.FullName())</time></small>
-                                @{ await Html.RenderPartialAsync("~/Views/Common/BranchStoreName.cshtml", item.BranchStore); }
+                                @{ 
+                                    await Html.RenderPartialAsync("~/Views/Common/BranchStoreName.cshtml", item.BranchStore); 
+                                }
                             </span>
                         </div>
                     </div>

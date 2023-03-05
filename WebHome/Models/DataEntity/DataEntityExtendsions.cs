@@ -821,6 +821,7 @@ namespace WebHome.Models.DataEntity
             轉換課程堂數 = 1,
             合約終止手續費 = 2,
             免收手續費 = 3,
+            盤點 = 4,
         }
 
     }
@@ -894,6 +895,15 @@ namespace WebHome.Models.DataEntity
         public LessonPriceType CurrentPrice 
         { 
             get => this.CourseContractOrder?.Count == 1 ? CourseContractOrder[0].LessonPriceType : this.LessonPriceType ;
+        }
+    }
+
+    public partial class CoachCertificate
+    {
+        public enum CertificateStatusDefinition
+        {
+            已核准 = 1,
+            待審核 = 2,
         }
     }
 

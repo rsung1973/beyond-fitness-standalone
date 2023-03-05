@@ -236,49 +236,6 @@
             $("#moreActionModal").modal('show');
         });
 
-        //編輯完成上課結語
-        this.attendLesson = function () {
-
-            showLoading();
-            $.post('@Html.Raw(Url.Action("CheckLessonEmphasis", "Attendance"))', { 'keyID': '@Html.Raw(lessonItem.LessonID.EncryptKey())' }, function (data) {
-                hideLoading();
-                if ($.isPlainObject(data)) {
-                    if (data.result) {
-                        Swal.fire({
-                            title: "@Html.Raw(learner.FullName())的家庭聯絡簿",
-                            html: '<span class=\"col-blue font-bold\">範例：昨天喝酒精神狀況不好<br/>今天第一次學甩壺鈴<br/>今天沒吃飯就運動狀況不好，下次記得提前吃飽喔</span>',
-                            input: "text",
-                            confirmButtonColor: "#DD6B55",
-                            confirmButtonText: "完成上課",
-                            inputPlaceholder: "請輸入20個中英文字",
-                            allowEnterKey: false,
-                            inputValidator: (value) => {
-                                if (!value) {
-                                    return '你忘了輸入文字嗎!?';
-                                } else {
-                                    if (value.length > 20) {
-                                        return '最多僅能輸入20個內的中英文字';
-                                    }
-                                }
-                            },
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                commitAttendance(result.value);
-                            }
-                        });
-                    } else {
-                        Swal.fire(
-                            'Oops...',
-                            data.message,
-                            'warning'
-                        )
-                    }
-                } else {
-                    $(data).appendTo($('body'));
-                }
-            });
-        };
-
         function commitAttendance(remark) {
             showLoading();
             $.post('@Html.Raw(Url.Action("AttendLesson", "Attendance",new { QuestionnaireGroupID = (int)Naming.QuestionnaireGroup.身體心靈密碼 }))', { 'keyID': '@Html.Raw(lessonItem.LessonID.EncryptKey())', 'remark': remark }, function (data) {
@@ -609,6 +566,76 @@
             };
         </script>
     }
+
+    @if(lessonItem.RegisterLesson.LessonPriceType.IsSingleCharge && !lessonItem.RegisterLesson.IsPaid)
+    {
+        <script>
+            this.attendLesson = function() {
+                Swal.fire({
+                    title: "單堂購買尚未收款",
+                    text: "請您完成收款後即可繼續編輯",
+                    icon: "warning",
+                    showCancelButton: false,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "前往我的收款→",
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = '@Html.Raw(Url.Action("EditPaymentForSession","ConsoleHome"))';
+                    }
+                });
+            };
+        </script>
+    }
+    else
+    {
+        <script>
+            //編輯完成上課結語
+            this.attendLesson = function () {
+
+                showLoading();
+                $.post('@Html.Raw(Url.Action("CheckLessonEmphasis", "Attendance"))', { 'keyID': '@Html.Raw(lessonItem.LessonID.EncryptKey())' }, function (data) {
+                    hideLoading();
+                    if ($.isPlainObject(data)) {
+                        if (data.result) {
+                            Swal.fire({
+                                title: "@Html.Raw(learner.FullName())的家庭聯絡簿",
+                                html: '<span class=\"col-blue font-bold\">範例：昨天喝酒精神狀況不好<br/>今天第一次學甩壺鈴<br/>今天沒吃飯就運動狀況不好，下次記得提前吃飽喔</span>',
+                                input: "text",
+                                confirmButtonColor: "#DD6B55",
+                                confirmButtonText: "完成上課",
+                                inputPlaceholder: "請輸入20個中英文字",
+                                allowEnterKey: false,
+                                inputValidator: (value) => {
+                                    if (!value) {
+                                        return '你忘了輸入文字嗎!?';
+                                    } else {
+                                        if (value.length > 20) {
+                                            return '最多僅能輸入20個內的中英文字';
+                                        }
+                                    }
+                                },
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    commitAttendance(result.value);
+                                }
+                            });
+                        } else {
+                            Swal.fire(
+                                'Oops...',
+                                data.message,
+                                'warning'
+                            )
+                        }
+                    } else {
+                        $(data).appendTo($('body'));
+                    }
+                });
+            };
+        </script>
+    }
+
 
 }
 

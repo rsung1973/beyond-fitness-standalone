@@ -273,7 +273,7 @@ namespace WebHome.Helper
 
         {
             var unpaid = models.FilterByUnpaidLesson()
-                            .Join(models.GetTable<LessonPriceType>().Where(p => p.Status == (int)Naming.LessonPriceStatus.一般課程),
+                            .Join(models.GetTable<LessonPriceType>().Where(p => BusinessConsoleExtensions.SessionScopeForPTSingleCharge.Contains(p.Status)),
                                 r => r.ClassLevel, p => p.PriceID, (r, p) => r);
 
             var items = models.GetTable<LessonTime>()

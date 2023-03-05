@@ -776,29 +776,27 @@ namespace WebHome.Helper
 
 
         public static int? BonusPoint(this UserProfile item, GenericManager<BFDataContext> models)
-
         {
             return models.GetTable<PDQTaskBonus>()
+                .Where(b => b.BonusPoint > 0)
                 .Where(t => t.PDQTask.UID == item.UID)
-                .Where(t => !t.BonusExchange.Any())
-                .Sum(x => x.PDQTask.PDQQuestion.PDQQuestionExtension.BonusPoint);
+                .Sum(x => x.BonusPoint);
         }
 
         public static int? AwardedPoint(this UserProfile item, GenericManager<BFDataContext> models)
-
         {
             return models.GetTable<PDQTaskBonus>()
+                .Where(b => b.BonusPoint > 0)
                 .Where(t => t.PDQTask.UID == item.UID)
-                .Sum(x => x.PDQTask.PDQQuestion.PDQQuestionExtension.BonusPoint);
+                .Sum(x => x.BonusPoint);
         }
 
 
         public static IEnumerable<PDQTaskBonus> BonusPointList(this UserProfile item, GenericManager<BFDataContext> models)
-
         {
             return models.GetTable<PDQTaskBonus>()
-                .Where(t => t.PDQTask.UID == item.UID)
-                .Where(t => !t.BonusExchange.Any());
+                .Where(b => b.BonusPoint > 0)
+                .Where(t => t.PDQTask.UID == item.UID);
         }
 
         public static IQueryable<LessonTime> GetLessonAttendance(this GenericManager<BFDataContext> models, int? coachID, DateTime? dateFrom, ref DateTime? dateTo, int? month, int? branchID)
@@ -2516,10 +2514,14 @@ namespace WebHome.Helper
                                     WHERE        (SettlementDate = {0})", calcDate);
 
             var table = models.GetTable<ContractMonthlySummary>();
+            //var items = models.GetTable<CourseContract>()
+            //        .Where(c => c.CourseContractRevision == null)
+            //        .Where(c => c.EffectiveDate < calcDate)
+            //        .Where(c => c.Status >= (int)Naming.CourseContractStatus.已生效);
+            var actionItems = models.GetTable<CourseContractAction>()
+                                .Where(a => a.ActionID == (int)CourseContractAction.ActionType.盤點);
             var items = models.GetTable<CourseContract>()
-                    .Where(c => c.CourseContractRevision == null)
-                    .Where(c => c.EffectiveDate < calcDate)
-                    .Where(c => c.Status >= (int)Naming.CourseContractStatus.已生效);
+                            .Where(c => actionItems.Any(a => a.ContractID == c.ContractID));
 
             foreach (var c in items)
             {

@@ -78,6 +78,23 @@ namespace WebHome.Controllers
             return View("~/Views/LearnerConsole/Module/ProcessCoachLearner.cshtml");
         }
 
+        public ActionResult ProcessPrimaryCoachReview(CoachLearnerQueryViewModel viewModel)
+        {
+            if (viewModel.KeyID != null)
+            {
+                viewModel = viewModel.Deserialize<CoachLearnerQueryViewModel>();
+            }
+
+            ViewBag.ViewModel = viewModel;
+
+            if (!viewModel.CoachID.HasValue || !viewModel.UID.HasValue)
+            {
+                return View("~/Views/ConsoleHome/Shared/AlertMessage.cshtml", model: "資料錯誤!!");
+            }
+
+            return View("~/Views/LearnerConsole/Module/ProcessPrimaryCoachReview.cshtml");
+        }
+
         public ActionResult CommitPrimaryCoach(CoachLearnerQueryViewModel viewModel)
         {
             if (viewModel.KeyID != null)

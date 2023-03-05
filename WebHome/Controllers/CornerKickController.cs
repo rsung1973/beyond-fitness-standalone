@@ -265,7 +265,10 @@ namespace WebHome.Controllers
                         QuestionID = quest.QuestionID,
                         UID = item.UID,
                         TaskDate = DateTime.Now,
-                        PDQTaskBonus = new PDQTaskBonus { },
+                        PDQTaskBonus = new PDQTaskBonus 
+                        {
+                            BonusPoint = quest.PDQQuestionExtension.BonusPoint ?? 1,
+                        },
                     };
                     models.GetTable<PDQTask>().InsertOnSubmit(taskItem);
                     models.SubmitChanges();
@@ -1026,7 +1029,10 @@ namespace WebHome.Controllers
             {
                 if (item.PDQQuestionExtension != null)
                 {
-                    taskItem.PDQTaskBonus = new PDQTaskBonus { };
+                    taskItem.PDQTaskBonus = new PDQTaskBonus 
+                    {
+                        BonusPoint = item.PDQQuestionExtension.BonusPoint ?? 1,
+                    };
                     models.SubmitChanges();
                 }
             }
@@ -1592,15 +1598,18 @@ namespace WebHome.Controllers
             models.GetTable<LearnerAward>().InsertOnSubmit(award);
 
             int usedPoints = item.PointValue;
-            foreach (var bounsItem in profile.BonusPointList(models))
+            foreach (var bonusItem in profile.BonusPointList(models))
             {
                 if (usedPoints <= 0)
                     break;
                 award.BonusExchange.Add(new BonusExchange
                 {
-                    TaskID = bounsItem.TaskID
+                    TaskID = bonusItem.TaskID
                 });
-                usedPoints -= bounsItem.PDQTask.PDQQuestion.PDQQuestionExtension.BonusPoint.Value;
+                int currentUsed = Math.Min(usedPoints, bonusItem.BonusPoint.Value);
+                usedPoints -= currentUsed;
+                bonusItem.BonusPoint -= currentUsed;
+                //usedPoints -= bounsItem.PDQTask.PDQQuestion.PDQQuestionExtension.BonusPoint.Value;
             }
 
             ///兌換課程

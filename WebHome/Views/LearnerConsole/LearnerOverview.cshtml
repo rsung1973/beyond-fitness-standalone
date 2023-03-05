@@ -168,6 +168,18 @@
             });
         }
 
+        function processCoachReview(keyID) {
+            showLoading();
+            $.post('@Html.Raw(Url.Action("ProcessPrimaryCoachReview", "LearnerConsole"))', { 'keyID': keyID }, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    alert(data.message);
+                } else {
+                    $(data).appendTo($('body'));
+                }
+            });
+        }
+
         function commitPrimaryCoach(keyID) {
             showLoading();
             $.post('@Html.Raw(Url.Action("CommitPrimaryCoach", "LearnerConsole"))', { 'keyID': keyID }, function (data) {

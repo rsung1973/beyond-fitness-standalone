@@ -18,6 +18,7 @@
     CoachQueryViewModel _viewModel;
     DateTime idx = DateTime.Today.FirstDayOfMonth();
     DateTime monthIdx = DateTime.Today.FirstDayOfMonth();
+
 }
 @{
     _modelState = ViewContext.ModelState;
@@ -99,15 +100,17 @@
                     </td>
                     <td>
                         @{
-                            var lessons = helper.PTSession
-                                                        .Join(models.GetTable<RegisterLesson>().Where(r => r.UID == item.UID),
-                                                            t => t.RegisterID, r => r.RegisterID, (t, r) => t);
+                            var grouping = models.GetTable<GroupingLesson>()
+                                                .Join(models.GetTable<RegisterLesson>().Where(r => r.UID == item.UID),
+                                                    t => t.GroupID, r => r.RegisterGroupID, (t, r) => t);
+                            var lessons = helper.SessionForPrimaryCoach
+                                    .Where(t => grouping.Any(g => g.GroupID == t.GroupID));
                             if (lessons.Any())
                             {
                                 int totalCount = lessons.Count();
                                 foreach (var p in item.LearnerCoachProperty.Where(p => p.PropertyID == (int)LearnerCoachProperty.PropertyType.PrimaryCoach))
                                 {
-                                    <text>@($"{lessons.Where(t => t.AttendingCoach == p.CoachID).Count() * 100M / totalCount:.##}")</text>
+                                    <text>@($"{lessons.Where(t => t.AttendingCoach == p.CoachID).Count() * 100M / totalCount:.##}%")</text>
                                     <br />
                                 }
                             }

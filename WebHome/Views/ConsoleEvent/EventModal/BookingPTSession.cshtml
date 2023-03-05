@@ -74,12 +74,14 @@
 
     if (price != null)
     {
+        bool bookable = !_profile.IsHealthCare()
+                            && _model.LearnerFitnessAdvisor.Any(a => a.CoachID == _profile.UID);
         <li class="list-group-item">
             <div class="media">
                 <div class="pull-left">
                     <div class="controls">
                         <label class="fancy-checkbox">
-                            <input type="checkbox" name="RegisterID" value="" data-version="@((int)Naming.ContractVersion.Ver2022)"
+                            <input type="checkbox" name="RegisterID" value="" data-version="@((int)Naming.ContractVersion.Ver2022)" disabled="@(!bookable)"
                                onclick="selectBooking(this, '@(price.Status)',@(price.PriceID));">
                             <span></span>
                         </label>
@@ -88,7 +90,7 @@
                 <div class="media-body">
                     <div class="media-heading">
                         <a class="m-r-10">
-                            《單堂購買》P.T Session ((@price.DurationInMinutes)分鐘)
+                            《單堂購買》P.T Session (@(price.DurationInMinutes)分鐘)
                         </a>
                         <small class="float-right text-muted"><time>NT @(price.ListPrice)</time></small>
                         <div class="msg">
@@ -97,6 +99,10 @@
                             </span>
                         </div>
                     </div>
+                    @if (!_model.LearnerFitnessAdvisor.Any(a => a.CoachID == _profile.UID))
+                    {
+                        <p class="msg col-red"><i class="zmdi zmdi-info-outline"></i>你不是所屬教練，你沒有認領學生</p>
+                    }
                 </div>
             </div>
         </li>

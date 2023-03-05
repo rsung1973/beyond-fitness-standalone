@@ -191,6 +191,7 @@ namespace WebHome.Helper
             table.Columns.Add(new DataColumn("簽約體能顧問", typeof(String)));	//	15
             table.Columns.Add(new DataColumn("CoachID", typeof(int)));	//	16
             table.Columns.Add(new DataColumn("主教練", typeof(String)));	//	17
+            table.Columns.Add(new DataColumn("PriceID", typeof(int)));	//	18
 
 
             var details = items.Where(t => t.ContractID.HasValue)
@@ -324,7 +325,7 @@ namespace WebHome.Helper
                 table.Rows.Add(r);
             }
 
-            var others = items.Where(t => !t.ContractID.HasValue&& !t.EnterpriseRegisterID.HasValue);
+            var others = items.Where(t => !t.ContractID.HasValue && !t.EnterpriseRegisterID.HasValue);
             foreach (var item in others)
             {
                 ServingCoach coach = models.GetTable<ServingCoach>().Where(c => c.CoachID == item.AttendingCoach).First();
@@ -352,20 +353,22 @@ namespace WebHome.Helper
                 {
                     r[8] = branch.BranchName;
                 }
-                
-                r[11] = item.PriceStatus == (int)Naming.LessonPriceStatus.點數兌換課程
-                        ? models.GetTable<LessonPriceProperty>()
-                            .Where(p => p.PropertyID == (int)Naming.LessonPriceFeature.運動恢復課程)
-                            .Where(p => p.PriceID == item.PriceID).Any()
-                                ? (int)Naming.LessonPriceStatus.運動恢復課程
-                                : (int)Naming.LessonPriceStatus.點數兌換課程
-                        : item.PriceStatus;
+
+                r[11] = item.PriceStatus;
+                //r[11] = item.PriceStatus == (int)Naming.LessonPriceStatus.點數兌換課程
+                //        ? models.GetTable<LessonPriceProperty>()
+                //            .Where(p => p.PropertyID == (int)Naming.LessonPriceFeature.運動恢復課程)
+                //            .Where(p => p.PriceID == item.PriceID).Any()
+                //                ? (int)Naming.LessonPriceStatus.運動恢復課程
+                //                : (int)Naming.LessonPriceStatus.點數兌換課程
+                //        : item.PriceStatus;
                 r[12] = branchItems.Where(b => b.BranchID == item.CoachWorkPlace)
                             .Select(b => b.BranchName).FirstOrDefault() ?? "其他";
                 r[13] = 1;
                 if (item.SettlementID.HasValue)
                     r[14] = item.SettlementID;
                 r[16] = coach.CoachID;
+                r[18] = item.PriceID;
 
                 table.Rows.Add(r);
             }
@@ -917,6 +920,32 @@ namespace WebHome.Helper
 
                         models.SubmitChanges();
                     }
+
+                    salary.PTAttendanceCount = PTItems.Where(v => v.AttendingCoach == coach.CoachID).Count();
+                    salary.PTAverageUnitPrice = salary.PTAttendanceCount > 0
+                            ? (int?)(PTItems.Where(v => v.AttendingCoach == coach.CoachID).CalcTuition(models) / (decimal?)salary.PTAttendanceCount + 0.5M)
+                            : 0;
+
+                    var tuitionCoach = helper.PTTuitionCoach
+                                        .Where(t => t.AttendingCoach != t.PrimaryCoach)
+                                        .Where(t => t.PrimaryCoach == coach.CoachID);
+                    
+                    salary.AttendedByOther = tuitionCoach.Count();
+                    if (salary.AttendedByOther > 0)
+                    {
+                        var lessonAchievement = tuitionCoach.Sum(t => t.ListPrice * t.GroupingMemberCount * t.PercentageOfDiscount / 100) ?? 0M;
+                        lessonAchievement += (tuitionCoach.Sum(l => l.EnterpriseListPrice * l.GroupingMemberCount * l.PercentageOfDiscount / 100) ?? 0M);
+                        salary.AttendedByOtherAvgPrice = (int)(lessonAchievement / salary.AttendedByOther + 0.5M);
+                        var ratio = salary.AttendedByOther > 29 ? 5 : 4;
+                        salary.AttendedShare = (Math.Max(salary.AttendedByOther.Value - (10 - Math.Min(salary.PTAttendanceCount.Value, 10)), 0) * salary.AttendedByOtherAvgPrice * ratio + 50) / 100;
+                    }
+                    else
+                    {
+                        salary.AttendedByOtherAvgPrice = 0;
+                        salary.AttendedShare = 0;
+                    }
+
+                    models.SubmitChanges();
                 }
 
                 void calcCoachBonus()
@@ -943,11 +972,6 @@ namespace WebHome.Helper
                     }
 
                     salary.AchievementShareRatio = shareRatio;
-
-                    salary.PTAttendanceCount = PTItems.Where(v => v.AttendingCoach == coach.CoachID).Count();
-                    salary.PTAverageUnitPrice = salary.PTAttendanceCount > 0
-                            ? (int?)(PTItems.Where(v => v.AttendingCoach == coach.CoachID).CalcTuition(models) / (decimal?)salary.PTAttendanceCount + 0.5M)
-                            : 0;
 
                     if (/*coach.CoachID == 29445 || coach.CoachID == 24032*/ coach.CoachID == -1)
                     {
@@ -1253,7 +1277,7 @@ namespace WebHome.Helper
                     calcGeneralAchievement();
 
                 }
-                else if (/*coach.CoachID == 29445 || coach.CoachID == 24032*/ coach.CoachID == -1)
+                else if (/*coach.CoachID == 29445 ||*/ coach.CoachID == 24032 /*coach.CoachID == -1*/)
                 {
                     if (forRole == "coach" || forRole== "vicemanager")
                     {

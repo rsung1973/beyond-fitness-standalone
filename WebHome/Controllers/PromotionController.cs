@@ -346,7 +346,10 @@ namespace WebHome.Controllers
                 QuestionID = quest.QuestionID,
                 UID = viewModel.UID.Value,
                 TaskDate = DateTime.Now,
-                PDQTaskBonus = new PDQTaskBonus { },
+                PDQTaskBonus = new PDQTaskBonus 
+                {
+                    BonusPoint = quest.PDQQuestionExtension.BonusPoint ?? 1,
+                },
             };
             models.GetTable<PDQTask>().InsertOnSubmit(taskItem);
             models.SubmitChanges();

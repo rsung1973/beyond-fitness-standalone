@@ -34,7 +34,7 @@ namespace WebHome.Properties
 
         }
 
-        protected void Save()
+        public void Save()
         {
             String fileName = "App.settings.json";
             String filePath = Path.Combine(AppRoot, "App_Data", fileName);

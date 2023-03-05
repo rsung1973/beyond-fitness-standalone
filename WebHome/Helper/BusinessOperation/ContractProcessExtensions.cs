@@ -1787,6 +1787,8 @@ namespace WebHome.Helper.BusinessOperation
             if (!item.ExecuteContractStatus(profile, Naming.CourseContractStatus.已生效, fromStatus))
                 return null;
 
+            FileLogger.Logger.Debug($"contract,{item.ContractNo},member count:{item.CourseContractMember.ToList().Count}");
+
             if(item.CourseContractOrder.Any())
             {
                 foreach (var order in item.CourseContractOrder.OrderBy(o => o.SeqNo))
@@ -1820,6 +1822,15 @@ namespace WebHome.Helper.BusinessOperation
 
                 models.ExecuteCommand(@"
                         update UserProfileExtension set CurrentTrial = null where UID = {0}", m.UID);
+            }
+
+            if (!item.CourseContractAction.Any(a => a.ActionID == (int)CourseContractAction.ActionType.盤點))
+            {
+                item.CourseContractAction.Add(new CourseContractAction
+                {
+                    ActionID = (int)CourseContractAction.ActionType.盤點
+                });
+                models.SubmitChanges();
             }
 
             var pdfFile = item.CreateContractPDF();
