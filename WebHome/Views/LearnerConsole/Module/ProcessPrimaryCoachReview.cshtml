@@ -109,16 +109,20 @@
 
         $global.echarts.option = {
             title: {
-                text: '查詢條件：近6個月',
+                text: '學生姓名：',
                 left: 'center'
             },
             tooltip: {
                 trigger: 'item',
-                formatter: '{a} <br/>{b} : {c} ({d}%)'
+                formatter: '{a} <br/>{b}：{d}%'
             },
             legend: {
                 bottom: 10,
                 left: 'center'
+            },
+            label: {
+                normal: 'show',
+                formatter: '{b}：{d}%'
             },
             series: [
                 {
