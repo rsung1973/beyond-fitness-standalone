@@ -513,7 +513,7 @@ namespace WebHome.Models.Locale
 
         public static readonly string[] LevelName =
         {
-            "實習期",
+            "P.T 0",
             "P.T 1",
             "P.T 2",
             "P.T 3",

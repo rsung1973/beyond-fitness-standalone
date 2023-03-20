@@ -184,12 +184,39 @@ namespace WebHome.Controllers
             return View("~/Views/CoachConsole/Module/CoachMonthlyPerformanceList.cshtml", profile.LoadInstance(models));
         }
 
-        public async Task<ActionResult> ShowCoachCertificateReadyAsync(CoachQueryViewModel viewModel)
+        public ActionResult CommitMonthlyAssessment(MonthlyAssessmentViewModel viewModel)
         {
-            ViewBag.ViewModel = viewModel;
+            if (viewModel.KeyID != null)
+            {
+                viewModel.PeriodID = viewModel.DecryptKeyValue();
+            }
 
-            var profile = await HttpContext.GetUserAsync();
-            return View("~/Views/CoachConsole/Module/CoachCertificateReadyList.cshtml", profile.LoadInstance(models));
+            var indicator = models.GetTable<MonthlyIndicator>()
+                            .Where(m => m.PeriodID == viewModel.PeriodID)
+                            .FirstOrDefault();
+
+            if (indicator == null)
+            {
+                return View("~/Views/Shared/JsAlert.cshtml", model: "資料錯誤!!");
+            }
+
+            if (viewModel.PersonID != null)
+            {
+                for (int i = 0; i < viewModel.PersonID.Length; i++)
+                {
+                    var coachID = viewModel.PersonID[i];
+                    var item = indicator.MonthlyCoachRevenueIndicator.Where(m => m.CoachID == coachID)
+                                    .FirstOrDefault();
+                    if (item != null)
+                    {
+                        item.AcademicGrades = viewModel.AcademicGrades[i];
+                        item.TechnicalGrades = viewModel.TechnicalGrades[i];
+                    }
+                }
+                models.SubmitChanges();
+            }
+
+            return Json(new { result = true });
         }
     }
 }

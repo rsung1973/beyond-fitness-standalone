@@ -1,0 +1,82 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using CommonLib.Utility
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+@using Newtonsoft.Json
+@functions
+{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+}
+@{
+    string _chartID = ViewBag.ChartID as String;
+    MonthlyIndicatorQueryViewModel _viewModel;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _viewModel = (MonthlyIndicatorQueryViewModel)ViewBag.ViewModel;
+}
+
+@{
+
+    object[][] dataIdx = (object[][])ViewContext.HttpContext.Items["AcademicGrades"];
+    var result = dataIdx.Select(h => new
+    {
+        value = h[3],
+        name = h[0]
+    }).ToArray();
+}
+<script>
+
+    $global.echarts.option['@(_chartID)'] = {
+        tooltip: {
+            trigger: 'item',
+            formatter: '{b} :{d}%'
+        },
+        title: {
+            left: 'center',
+            text: '學科成績比例'
+        },
+        legend: {
+            bottom: 10,
+            left: 'center'
+        },
+        label: {
+            normal: 'show',
+            formatter: '{b}：{d}%'
+        },
+        series: [
+            {
+                type: 'pie',
+
+                radius: '50%',
+                // center: ['50%', '50%'],
+                data: @Html.Raw(result.JsonStringify()),
+                emphasis: {
+                    itemStyle: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
+                }
+            }
+        ],
+        emphasis: {
+            itemStyle: {
+                shadowBlur: 10,
+                shadowOffsetX: 0,
+                shadowColor: 'rgba(0, 0, 0, 0.5)'
+            }
+        }
+    };
+
+</script>
+
+

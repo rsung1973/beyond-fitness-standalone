@@ -39,7 +39,7 @@
                 <td>
                     @if (_model != null)
                     {
-                        var paymentItem = _model?.RegisterLesson.LessonPriceType.SimpleDescription;
+                        var paymentItem = _model.RegisterLesson.LessonPriceType.SimpleDescription;
                         Write(paymentItem);
                         <script>
                             $(function () {

@@ -1,0 +1,256 @@
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    UserProfile _model;
+    MonthlyIndicatorQueryViewModel _viewModel;
+
+    Layout = "~/Views/ConsoleHome/Template/MainPage.cshtml";
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = ViewContext.ModelState;
+    _model = (UserProfile)this.Model;
+    _viewModel = (MonthlyIndicatorQueryViewModel)ViewBag.ViewModel;
+
+}
+@{
+    MonthlyIndicator _item = (MonthlyIndicator)ViewBag.DataItem;
+}
+@section CustomHeader {
+    <!-- JQuery DataTable Css -->
+    <link href="plugins/jquery-datatable/DataTables-1.10.18/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link href="plugins/jquery-datatable/Responsive-2.2.2/css/responsive.bootstrap4.min.css" rel="stylesheet">
+    <link href="plugins/jquery-datatable/FixedColumns-3.2.5/css/fixedColumns.bootstrap4.min.css" rel="stylesheet">
+    <!-- Bootstrap Datetimepick -->
+    <link href="css/smartcalendar-2.css" rel="stylesheet" />
+    <!-- Custom Css -->
+    <link rel="stylesheet" href="css/customelist.css?2.0" />
+    <!-- charts-c3 -->
+    <link href="plugins/charts-c3/plugin.css?2.0" rel="stylesheet">
+    <!-- dotdotdot JS -->
+    <link href="plugins/dotdotdot/dotdotdot.css?2.0" rel="stylesheet" />
+}
+
+<!-- Main Content -->
+<section class="content">
+    @{
+        ViewBag.BlockHeader = "我的考核";
+        await Html.RenderPartialAsync("~/Views/ConsoleHome/Module/BlockHeader.cshtml", _model);
+    }
+    <!--學科術科統計資訊-->
+    <div class="container-fluid">
+        @if (_item != null)
+        {
+            <h4 class="card-outbound-header m-l-15">
+                @(_item.Year)年@(_item.Month)月
+                <a href="javascript:selectMonth();"><i class="zmdi zmdi-calendar zmdi-hc-lg"></i></a>
+                @{
+                    ViewBag.Other = "全部";
+                    await Html.RenderPartialAsync("~/Views/Common/BranchStoreWithOther.cshtml", models.GetTable<BranchStore>().Where(b => b.BranchID == _viewModel.BranchID).FirstOrDefault());
+                }
+            </h4>
+            <script>
+                function selectMonth() {
+                    //showLoading();
+                    $.post('@Html.Raw(Url.Action("SelectMonth", "BusinessConsole"))', null, function (data) {
+                        //hideLoading();
+                        if ($.isPlainObject(data)) {
+                            Swal.fire(
+                                'Oops...',
+                                data.message,
+                                'warning'
+                            )
+                        } else {
+                            $(data).appendTo($('body'));
+                        }
+                    });
+                }
+
+                $(function () {
+                    $global.doSelect = function (year, month) {
+                        $('').launchDownload('@Html.Raw(Url.Action("AssessmentOverview", "ConsoleHome"))', { 'year': year, 'month': month, 'branchID': '@(_viewModel.BranchID)' });
+                    };
+                });
+            </script>
+            <div class="row clearfix">
+                <div class="col-lg-6 col-md-12 col-sm-12 col-12">
+                    <div class="card">
+                        <div class="body">
+                            <div class="row clearfix">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                            @{
+                                                await Html.RenderPartialAsync("~/Views/CoachConsole/Module/AssessmentReview.cshtml", _item);
+                                                await Html.RenderPartialAsync("~/Views/CoachConsole/Module/AcademicGradesReview.cshtml", _item);
+                                                ViewBag.ChartID = "academicChart";
+                                                await Html.RenderPartialAsync("~/Views/CoachConsole/Module/AcademicGradesReviewChart.cshtml");
+                                            }
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                            @{
+                                                await Html.RenderPartialAsync("~/Views/CoachConsole/Module/TechnicalGradesReview.cshtml", _item);
+                                                ViewBag.ChartID = "techChart";
+                                                await Html.RenderPartialAsync("~/Views/CoachConsole/Module/TechnicalGradesReviewChart.cshtml");
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                            @{
+                                                await Html.RenderPartialAsync("~/Views/CoachConsole/Module/AcademicGradesReviewList.cshtml");
+                                            }
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                            @{
+                                                await Html.RenderPartialAsync("~/Views/CoachConsole/Module/TechnicalGradesReviewList.cshtml");
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-12 col-sm-12 col-12">
+                    <div class="card">
+                        <div class="header">
+                            <ul class="header-dropdown">
+                                <li class="dropdown">
+                                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class="zmdi zmdi-swap"></i> </a>
+                                    <ul class="dropdown-menu dropdown-menu-right slideUp float-right">
+                                        <li><a href="javascript:showAssessmentOverview();">全部</a></li>
+                                        @foreach (var branch in models.GetTable<BranchStore>())
+                                        {
+                                            <li><a href="javascript:showAssessmentOverview(@(branch.BranchID));">@(branch.BranchName)</a></li>
+                                        }
+                                    </ul>
+                                </li>
+                            </ul>
+                            <script>
+                                function showAssessmentOverview(branchID) {
+                                    $('').launchDownload('@Html.Raw(Url.Action("AssessmentOverview", "ConsoleHome"))', { 'year': @(_viewModel.Year), 'month': @(_viewModel.Month), 'branchID': branchID });
+                                }
+                            </script>
+                        </div>
+                        <div class="body">
+                            <div class="row clearfix">
+                                <div class="col-12">
+                                    @{
+                                        ViewBag.ChartID = "pyramidChart";
+                                        await Html.RenderPartialAsync("~/Views/CoachConsole/Module/AssessmentPyramidChart.cshtml");
+                                    }
+                                </div>
+                            </div>
+                            <div class="row clearfix">
+                                <div class="col-12">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <!--詳細資料-->
+    <div class="container-fluid">
+        <div class="row clearfix">
+            <h4 class="card-outbound-header m-l-15">詳細資料</h4>
+            <div class="col-lg-12">
+                <div class="card patients-list">
+                    <div class="p-15">
+                        <span class="m-r-20"><i class="zmdi zmdi-label col-green m-r-5"></i>5 通過</span>
+                        <span class="m-r-20"><i class="zmdi zmdi-label col-blue m-r-5"></i>4 產後</span>
+                        <span class="m-r-20"><i class="zmdi zmdi-label col-amber m-r-5"></i>3 受傷</span>
+                        <span class="m-r-20"><i class="zmdi zmdi-label col-pink m-r-5"></i>0 不通過</span>
+                    </div>
+                    <div class="body">
+                        <div class="table-responsive" id="coachList">
+                            @{
+                                await Html.RenderPartialAsync("~/Views/CoachConsole/Module/CoachMonthlyAssessment.cshtml", _item);
+                            }
+                        </div>
+                        <button type="button" class="btn btn-warning btn-round waves-effect" onclick="commitAssessment();">更新成績</button>
+                        <script>
+                            function commitAssessment() {
+                                var viewModel = $('#coachList').find('input,select,textArea').serializeObject();
+                                viewModel.BranchID = '@(_viewModel.BranchID)';
+                                viewModel.KeyID = '@Html.Raw(_item.PeriodID.EncryptKey())';
+                                clearErrors();
+                                showLoading();
+                                $.post('@Html.Raw(Url.Action("CommitMonthlyAssessment", "CoachConsole"))', viewModel, function (data) {
+                                    hideLoading();
+                                    if ($.isPlainObject(data)) {
+                                        if (data.result) {
+                                            Swal.fire(
+                                                '幹得好!',
+                                                '更新完成!!',
+                                                'success'
+                                            ).then((result) => {
+                                                showLoading();
+                                                $('').launchDownload('@Html.Raw(Url.Action("AssessmentOverview", "ConsoleHome"))', { 'KeyID': viewModel.KeyID, 'branchID': viewModel.BranchID });
+                                            });
+                                        } else {
+                                            Swal.fire(
+                                                'Oops...',
+                                                data.message,
+                                                'warning'
+                                            );
+                                        }
+                                    }
+                                    else {
+                                        $(data).appendTo($('body'));
+                                    }
+                                });
+                            }
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+
+@section TailPageJavaScriptInclude {
+    <!-- Echart Js -->
+    <script src="plugins/echarts/echarts.min.js"></script>
+    <!-- Echart Template Js -->
+    <script src="plugins/echarts/theme/macarons.js"></script>
+    <script src="plugins/echarts/theme/macarons_nero.js"></script>
+    <!--Sparkline Plugin Js-->
+    <script src="plugins/jquery-sparkline/jquery.sparkline.js"></script>
+    <!-- SweetAlert Plugin Js -->
+    <script src="plugins/sweetalert/sweetalert.min.js"></script>
+    <!-- Jquery DataTable Plugin Js -->
+    <script src="bundles/datatablescripts.bundle.js"></script>
+    <script src="plugins/jquery-datatable/Responsive-2.2.2/js/dataTables.responsive.min.js"></script>
+    <script src="plugins/jquery-datatable/FixedColumns-3.2.5/js/dataTables.fixedColumns.min.js"></script>
+    <!--Gauge Plugin Js-->
+    <script src="plugins/gauge/gauge.min.js"></script>
+    <!-- dotdotodt Js -->
+    <script src="plugins/dotdotdot/dotdotdot.js"></script>
+    <!-- ChartC3 Js -->
+    <script src="bundles/cs.bundles.js"></script>
+
+    @{
+        await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/KnobJS.cshtml");
+    }
+
+    <script>
+    </script>
+
+}
+

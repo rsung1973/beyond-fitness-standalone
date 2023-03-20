@@ -1373,6 +1373,167 @@ namespace WebHome.Helper
 
         }
 
+        public static void CheckProfessionalLevel2023(this GenericManager<BFDataContext> models, ServingCoach item)
+        {
+            if (!item.LevelID.HasValue || item.ProfessionalLevel.ProfessionalLevelReview == null)
+                return;
+
+            DateTime? quarterEnd = new DateTime(DateTime.Today.Year, (DateTime.Today.Month - 1) / 3 * 3 + 1, 1);
+            DateTime quarterStart = quarterEnd.Value.AddMonths(-3);
+
+            if (models.GetTable<CoachRating>().Any(g => g.CoachID == item.CoachID && g.RatingDate >= quarterEnd))
+                return;
+
+            var indicators = models.GetTable<MonthlyIndicator>().Where(i => i.StartDate >= quarterStart && i.StartDate < quarterEnd)
+                                .Join(models.GetTable<MonthlyCoachRevenueIndicator>().Where(c => c.CoachID == item.CoachID),
+                                    i => i.PeriodID, c => c.PeriodID, (i, c) => c);
+
+            var indicator = indicators.OrderByDescending(i => i.PeriodID)
+                                .FirstOrDefault();
+
+            var attendanceCount = (indicators.Sum(i => i.ActualCompleteLessonCount) ?? 0)
+                                + (indicators.Sum(i => i.ActualCompleteTSCount) ?? 0)
+                                + (indicators.Sum(i => i.STCount) ?? 0)
+                                + (indicators.Sum(i => i.SDCount) ?? 0)
+                                + (indicators.Sum(i => i.SRCount) ?? 0)
+                                + (indicators.Sum(i => i.ActualCompletePICount) ?? 0) / 2;
+
+            var tuition = models.GetTuitionAchievement(item.CoachID, quarterStart, ref quarterEnd, null);
+            var summary = (tuition.Sum(t => t.ShareAmount) ?? 0)
+                            - (tuition.Sum(t => t.VoidShare) ?? 0);
+            var certCount = item.CoachCertificate.Count(c => c.Expiration >= quarterStart);
+
+            CoachRating ratingItem = new CoachRating
+            {
+                AttendanceCount = attendanceCount,
+                CoachID = item.CoachID,
+                RatingDate = DateTime.Now,
+                TuitionSummary = summary,
+                LevelID = item.LevelID.Value,
+            };
+            item.CoachRating.Add(ratingItem);
+
+            var review = item.ProfessionalLevel.ProfessionalLevelReview;
+
+            if(indicator == null
+                || indicator.AcademicGrades.HasValue == false
+                || indicator.TechnicalGrades.HasValue == false)
+            {
+                ratingItem.LevelID = item.LevelID.Value;
+            }
+            else if (review.CheckLevel == (int)Naming.ProfessionalLevelCheck.PT_1)
+            {
+                if (attendanceCount >= review.PromotionAttendanceCount
+                        && summary >= review.PromotionAchievement
+                        && indicator?.AcademicGrades >= review.PromotionAcademicGrades
+                        && indicator?.TechnicalGrades >= review.PromotionTechnicalGrades)
+                {
+                    ratingItem.LevelID = review.PromotionID.Value;
+                }
+            }
+            else if (review.CheckLevel == (int)Naming.ProfessionalLevelCheck.PT_2)
+            {
+                if (attendanceCount >= review.PromotionAttendanceCount 
+                    && summary >= review.PromotionAchievement
+                    && certCount >= review.PromotionCertificateCount
+                    && indicator?.AcademicGrades >= review.PromotionAcademicGrades
+                    && indicator?.TechnicalGrades >= review.PromotionTechnicalGrades)
+                {
+                    ratingItem.LevelID = review.PromotionID.Value;
+                }
+                else if (!(attendanceCount >= review.NormalAttendanceCount 
+                            && summary >= review.NormalAchievement
+                            && certCount >= review.NormalCertificateCount
+                            && indicator?.AcademicGrades >= review.NormalAcademicGrades))
+                {
+                    ratingItem.LevelID = review.DemotionID.Value;
+                }
+
+            }
+            else if (review.CheckLevel == (int)Naming.ProfessionalLevelCheck.PT_6)
+            {
+                if (!(attendanceCount >= review.NormalAttendanceCount 
+                        && summary >= review.NormalAchievement
+                        && certCount >= review.NormalCertificateCount
+                        && indicator?.AcademicGrades >= review.NormalAcademicGrades))
+                {
+                    ratingItem.LevelID = review.DemotionID.Value;
+                }
+            }
+            else if (review.CheckLevel == (int)Naming.ProfessionalLevelCheck.PT_5)
+            {
+                if (attendanceCount >= review.PromotionAttendanceCount 
+                    && summary >= review.PromotionAchievement
+                    && certCount >= review.PromotionCertificateCount
+                    && indicator?.AcademicGrades >= review.PromotionAcademicGrades
+                    && indicator?.TechnicalGrades >= review.PromotionTechnicalGrades)
+                {
+                    ratingItem.LevelID = review.PromotionID.Value;
+                }
+                else if (!(attendanceCount >= review.NormalAttendanceCount 
+                            && summary >= review.NormalAchievement
+                            && certCount >= review.NormalCertificateCount
+                            && indicator?.AcademicGrades >= review.NormalAcademicGrades
+                            && indicator?.TechnicalGrades >= review.NormalTechnicalGrades))
+                {
+                    ratingItem.LevelID = review.DemotionID.Value;
+                }
+            }
+            else if (review.CheckLevel == (int)Naming.ProfessionalLevelCheck.PT_4)
+            {
+                if (attendanceCount >= review.PromotionAttendanceCount 
+                    && summary >= review.PromotionAchievement
+                    && certCount >= review.PromotionCertificateCount
+                    && indicator?.AcademicGrades >= review.PromotionAcademicGrades
+                    && indicator?.TechnicalGrades >= review.PromotionTechnicalGrades)
+                {
+                    ratingItem.LevelID = review.PromotionID.Value;
+                }
+                else if (!(attendanceCount >= review.NormalAttendanceCount 
+                            && summary >= review.NormalAchievement
+                            && certCount >= review.NormalCertificateCount
+                            && indicator?.AcademicGrades >= review.NormalAcademicGrades
+                            && indicator?.TechnicalGrades >= review.NormalTechnicalGrades))
+                {
+                    ratingItem.LevelID = review.DemotionID.Value;
+                }
+            }
+            else if (review.CheckLevel == (int)Naming.ProfessionalLevelCheck.PT_3)
+            {
+                if (attendanceCount >= review.PromotionAttendanceCount 
+                    && summary >= review.PromotionAchievement
+                    && certCount >= review.PromotionCertificateCount
+                    && indicator?.AcademicGrades >= review.PromotionAcademicGrades
+                    && indicator?.TechnicalGrades >= review.PromotionTechnicalGrades)
+                {
+                    ratingItem.LevelID = review.PromotionID.Value;
+                }
+                else if (!(attendanceCount >= review.NormalAttendanceCount 
+                            && summary >= review.NormalAchievement
+                            && certCount >= review.NormalCertificateCount
+                            && indicator?.AcademicGrades >= review.NormalAcademicGrades
+                            && indicator?.TechnicalGrades >= review.NormalTechnicalGrades))
+                {
+                    ratingItem.LevelID = review.DemotionID.Value;
+                }
+            }
+            else
+            {
+                ratingItem.LevelID = item.LevelID.Value;
+            }
+
+            models.SubmitChanges();
+            models.ExecuteCommand("update ServingCoach set LevelID={0} where CoachID={1}", ratingItem.LevelID, item.CoachID);
+            models.ExecuteCommand(@"
+                UPDATE       LessonTimeSettlement
+                SET                ProfessionalLevelID = ServingCoach.LevelID, MarkedGradeIndex = ProfessionalLevel.GradeIndex
+                FROM            LessonTime INNER JOIN
+                                            LessonTimeSettlement ON LessonTime.LessonID = LessonTimeSettlement.LessonID INNER JOIN
+                                            ServingCoach ON LessonTime.AttendingCoach = ServingCoach.CoachID INNER JOIN
+                                            ProfessionalLevel ON ServingCoach.LevelID = ProfessionalLevel.LevelID
+                WHERE        (LessonTime.ClassTime >= {0}) AND (ServingCoach.CoachID = {1}) ", quarterEnd, item.CoachID);
+
+        }
 
         //public static void CheckProfessionalLevel2020(this GenericManager<BFDataContext> models, ServingCoach item)
         //    

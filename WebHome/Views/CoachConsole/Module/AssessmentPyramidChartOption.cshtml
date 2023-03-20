@@ -1,0 +1,172 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using CommonLib.Utility
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+@using Newtonsoft.Json
+@functions
+{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    int totalCount = 0;
+    int passCount = 0;
+
+    void DataCount(IQueryable<MonthlyCoachRevenueIndicator> items, String levelName,int?[] index)
+    {
+        var levelItems = models.GetTable<ProfessionalLevel>()
+                .Where(p => p.LevelName == levelName);
+
+        var resultItems = items.Join(levelItems, m => m.LevelID, r => r.LevelID, (m, r) => m);
+        totalCount += resultItems.Count();
+
+        var academicResult = resultItems.Where(r => r.AcademicGrades >= r.ServingCoach.ProfessionalLevel.ProfessionalLevelReview.NormalAcademicGrades);
+        index[0] = academicResult.Count();
+
+        var techResult = resultItems.Where(s => !s.ServingCoach.ProfessionalLevel.ProfessionalLevelReview.NormalTechnicalGrades.HasValue
+                                        || s.TechnicalGrades >= s.ServingCoach.ProfessionalLevel.ProfessionalLevelReview.NormalTechnicalGrades);
+        index[1] = techResult.Count();
+
+        var passcResult = resultItems.Where(m => levelItems.Any(l => l.LevelID == m.LevelID))
+                        .Join(models.GetTable<ProfessionalLevelReview>(), m => m.LevelID, r => r.LevelID,
+                            (m, r) => new { m.AcademicGrades, m.TechnicalGrades, r.NormalAcademicGrades, r.NormalTechnicalGrades })
+                        .Where(r => r.AcademicGrades >= r.NormalAcademicGrades)
+                        .Where(r => !r.NormalTechnicalGrades.HasValue || r.TechnicalGrades >= r.NormalTechnicalGrades);
+
+        passCount += passcResult.Count();
+    }
+}
+@{
+    string _chartID = ViewBag.ChartID as String;
+    MonthlyIndicatorQueryViewModel _viewModel;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _viewModel = (MonthlyIndicatorQueryViewModel)ViewBag.ViewModel;
+}
+
+@{
+    IQueryable<MonthlyCoachRevenueIndicator> dataItems = (IQueryable<MonthlyCoachRevenueIndicator>)ViewContext.HttpContext.Items["AssessmentReview"];
+
+    int?[][] dataIdx = Naming.LevelName.Select(n => new int?[] { 0, 0 })
+                            .ToArray();
+
+    for(int i=0;i<Naming.LevelName.Length;i++)
+    {
+        DataCount(dataItems, Naming.LevelName[i], dataIdx[i]);
+    }
+}
+<script>
+
+    $global.echarts.option['@(_chartID)'] = {
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+            },
+            formatter: function (datas) {
+                var res = datas[0].name + '<br/>'
+                for (var i = 0, length = datas.length; i < length; i++) {
+                    res += datas[i].seriesName + '：'
+                        + Math.abs(datas[i].value) + '<br/>'
+                }
+                return res
+            }
+        },
+        legend: {
+            bottom: 10,
+            left: 'center'
+        },
+        title: {
+            left: 'center',
+            text: '@Html.Raw($"考核通過率：{(totalCount>0 ? passCount*100/totalCount : 0 )}%")'
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '10%',
+            containLabel: true
+        },
+        xAxis: [
+            {
+                name: '人數',
+                type: 'value',
+                max: 12,
+                min: -12,
+                axisLabel: {
+                    formatter: (function (v) {
+                        return Math.abs(v);
+                    })
+                }
+            }
+        ],
+        yAxis: [
+            {
+                type: 'category',
+                axisTick: {
+                    show: false
+                },
+                data: @Html.Raw(Naming.LevelName.JsonStringify())
+            },
+            {
+                axisTick: {
+                    show: false
+                },
+                data: @Html.Raw(Naming.LevelName.JsonStringify())
+            }
+        ],
+        series: [
+            {
+                name: '學科通過',
+                type: 'bar',
+                stack: 'grade',
+                label: {
+                    normal: {
+                        show: true,
+                        position: 'left',
+                        formatter: function (v) {
+                            return Math.abs(v.value);
+                        }
+                    },
+                    formatter: function (v) {
+                        return Math.abs(v.value);
+                    }
+                },
+                emphasis: {
+                    focus: 'series'
+                },
+                data: @Html.Raw(dataIdx.Select(d=>d[0]).ToArray().JsonStringify())
+            },
+            {
+                name: '術科通過',
+                type: 'bar',
+                stack: 'pass',
+                yAxisIndex: 1,
+                label: {
+                    normal: {
+                        show: true,
+                        position: 'right',
+                        formatter: function (v) {
+                            return v.value;
+                        }
+                    },
+                    formatter: function (v) {
+                        return v.value;
+                    }
+                },
+                emphasis: {
+                    focus: 'series'
+                },
+                data: @Html.Raw(dataIdx.Select(d=>d[1]).ToArray().JsonStringify())
+            }
+        ]
+    };
+
+</script>
+
+

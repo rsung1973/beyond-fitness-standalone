@@ -1430,5 +1430,43 @@ namespace WebHome.Controllers
             return View("~/Views/LearnerConsole/LearnerOverview.cshtml", profile.LoadInstance(models));
         }
 
+        public async Task<ActionResult> AssessmentOverviewAsync(MonthlyIndicatorQueryViewModel viewModel)
+        {
+            if (viewModel.KeyID != null)
+            {
+                viewModel.PeriodID = viewModel.DecryptKeyValue();
+            }
+
+            if (!viewModel.Year.HasValue || !viewModel.Month.HasValue)
+            {
+                viewModel.Year = DateTime.Today.Year;
+                viewModel.Month = DateTime.Today.Month;
+            }
+
+            var item = viewModel.GetAlmostMonthlyIndicator(models, true);
+
+            if (item == null)
+            {
+                return View("~/Views/ConsoleHome/Shared/JsGoback.cshtml", model: "資料尚未設定!!");
+            }
+
+            //if (item == null)
+            //{
+            //    item = models.InitializeMonthlyIndicator(viewModel.Year.Value, viewModel.Month.Value);
+            //}
+
+            //if (viewModel.Year == DateTime.Today.Year && viewModel.Month == DateTime.Today.Month)
+            //{
+            //    item.UpdateMonthlyAchievement(this);
+            //    item.UpdateMonthlyAchievementGoal(models);
+            //}
+
+            ViewBag.ViewModel = viewModel;
+            ViewBag.DataItem = item;
+
+            var profile = await HttpContext.GetUserAsync();
+            return View("~/Views/CoachConsole/AssessmentOverview.cshtml", profile.LoadInstance(models));
+        }
+
     }
 }

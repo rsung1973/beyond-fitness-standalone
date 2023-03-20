@@ -569,6 +569,13 @@ namespace WebHome.Models.ViewModel
 
     }
 
+    public class MonthlyAssessmentViewModel : MonthlyIndicatorQueryViewModel
+    {
+        public int?[] PersonID { get; set; }
+        public int?[] AcademicGrades { get; set; }
+        public int?[] TechnicalGrades { get; set; }
+    }
+
     public class MonthlySelectorViewModel
     {
         public int? RecentCount { get; set; }

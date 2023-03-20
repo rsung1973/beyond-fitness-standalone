@@ -1,0 +1,58 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using CommonLib.Utility
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+@using Newtonsoft.Json
+@functions
+{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+}
+@{
+    MonthlyIndicatorQueryViewModel _viewModel;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _viewModel = (MonthlyIndicatorQueryViewModel)ViewBag.ViewModel;
+}
+
+@{
+
+    object[][] dataIdx = (object[][])ViewContext.HttpContext.Items["AcademicGrades"];
+
+}
+<table class="table table-striped table-custom nowrap dtTestAssessment"
+       style="width:100%">
+    <thead class="bg-darkteal">
+        <tr>
+            <th class="text-center">分數</th>
+            <th class="text-center">人數</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="text-center">@(dataIdx[0][0])</td>
+            <td class="text-center col-red">@(dataIdx[0][3])</td>
+        </tr>
+
+        @for (int i = 1; i < dataIdx.Length; i++)
+        {
+            var item = dataIdx[i];
+            <tr>
+                <td class="text-center">@(item[0])</td>
+                <td class="text-center">@(item[3])</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
+

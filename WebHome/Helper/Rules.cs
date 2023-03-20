@@ -38,12 +38,5 @@ namespace WebHome.Helper
                     (int)Naming.LessonPriceStatus.運動防護課程,
                     (int)Naming.LessonPriceStatus.營養課程,
         };
-
-        public static readonly int?[] SessionScopeForPTSingleCharge = new int?[]
-        {
-                    (int)Naming.LessonPriceStatus.一般課程,
-                    (int)Naming.LessonPriceStatus.運動恢復課程,
-                    (int)Naming.LessonPriceStatus.運動防護課程,
-        };
     }
 }

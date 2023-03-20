@@ -750,15 +750,14 @@
       <Column Name="DisplayName" Type="System.String" DbType="NVarChar(16)" CanBeNull="true" />
       <Association Name="ProfessionalLevel_ServingCoach" Member="ServingCoach" ThisKey="LevelID" OtherKey="LevelID" Type="ServingCoach" />
       <Association Name="ProfessionalLevel_CoachRating" Member="CoachRating" ThisKey="LevelID" OtherKey="LevelID" Type="CoachRating" />
-      <Association Name="ProfessionalLevel_ProfessionalLevelReview" Member="ProfessionalLevelReview" ThisKey="LevelID" OtherKey="LevelID" Type="ProfessionalLevelReview" Cardinality="One" />
-      <Association Name="ProfessionalLevel_ProfessionalLevelReview1" Member="PromotingFrom" ThisKey="LevelID" OtherKey="PromotionID" Type="ProfessionalLevelReview" />
-      <Association Name="ProfessionalLevel_ProfessionalLevelReview2" Member="DemotingFrom" ThisKey="LevelID" OtherKey="DemotionID" Type="ProfessionalLevelReview" />
       <Association Name="ProfessionalLevel_LessonTimeSettlement" Member="LessonTimeSettlements" ThisKey="LevelID" OtherKey="ProfessionalLevelID" Type="LessonTimeSettlement" />
       <Association Name="ProfessionalLevel_MonthlyCoachRevenueIndicator" Member="MonthlyCoachRevenueIndicator" ThisKey="LevelID" OtherKey="LevelID" Type="MonthlyCoachRevenueIndicator" />
       <Association Name="ProfessionalLevel_ProfessionalLevelBasicSalary" Member="ProfessionalLevelBasicSalary" ThisKey="LevelID" OtherKey="LevelID" Type="ProfessionalLevelBasicSalary" Cardinality="One" />
-      <Association Name="ProfessionalLevel_ProfessionalLevelBasicSalary1" Member="ProfessionalLevelBasicSalary1" ThisKey="LevelID" OtherKey="LevelID" Type="ProfessionalLevelBasicSalary1" Cardinality="One" />
       <Association Name="ProfessionalLevel_CoachYearlyAdditionalPay" Member="CoachYearlyAdditionalPay" ThisKey="LevelID" OtherKey="LevelID" Type="CoachYearlyAdditionalPay" />
       <Association Name="ProfessionalLevel_CoachMonthlySalary" Member="CoachMonthlySalary" ThisKey="LevelID" OtherKey="LevelID" Type="CoachMonthlySalary" />
+      <Association Name="ProfessionalLevel_ProfessionalLevelReview" Member="ProfessionalLevelReview" ThisKey="LevelID" OtherKey="LevelID" Type="ProfessionalLevelReview" Cardinality="One" />
+      <Association Name="ProfessionalLevel_ProfessionalLevelReview1" Member="ProfessionalLevelReview1" ThisKey="LevelID" OtherKey="PromotionID" Type="ProfessionalLevelReview" />
+      <Association Name="ProfessionalLevel_ProfessionalLevelReview2" Member="ProfessionalLevelReview2" ThisKey="LevelID" OtherKey="DemotionID" Type="ProfessionalLevelReview" />
       <Association Name="LevelExpression_ProfessionalLevel" Member="LevelExpression" ThisKey="CategoryID" OtherKey="LevelID" Type="LevelExpression" IsForeignKey="true" />
     </Type>
   </Table>
@@ -1716,21 +1715,6 @@
       <Association Name="InvoiceNoIntervalGroup_InvoiceNoInterval" Member="InvoiceNoInterval" ThisKey="GroupID" OtherKey="GroupID" Type="InvoiceNoInterval" />
     </Type>
   </Table>
-  <Table Name="dbo.ProfessionalLevelReview" Member="ProfessionalLevelReview">
-    <Type Name="ProfessionalLevelReview">
-      <Column Name="LevelID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="PromotionID" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="DemotionID" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="CheckLevel" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="NormalAttendanceCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="NormalAchievement" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="PromotionAttendanceCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="PromotionAchievement" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Association Name="ProfessionalLevel_ProfessionalLevelReview" Member="ProfessionalLevel" ThisKey="LevelID" OtherKey="LevelID" Type="ProfessionalLevel" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
-      <Association Name="ProfessionalLevel_ProfessionalLevelReview1" Member="PromotionLevel" ThisKey="PromotionID" OtherKey="LevelID" Type="ProfessionalLevel" IsForeignKey="true" />
-      <Association Name="ProfessionalLevel_ProfessionalLevelReview2" Member="DemotionLevel" ThisKey="DemotionID" OtherKey="LevelID" Type="ProfessionalLevel" IsForeignKey="true" />
-    </Type>
-  </Table>
   <Table Name="dbo.Payment" Member="Payment">
     <Type Name="Payment">
       <Column Name="PaymentID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -2331,6 +2315,8 @@
       <Column Name="SRAchievement" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="SDCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="SDAchievement" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="AcademicGrades" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="TechnicalGrades" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Association Name="BranchStore_MonthlyCoachRevenueIndicator" Member="BranchStore" ThisKey="BranchID" OtherKey="BranchID" Type="BranchStore" IsForeignKey="true" />
       <Association Name="MonthlyIndicator_MonthlyCoachRevenueIndicator" Member="MonthlyIndicator" ThisKey="PeriodID" OtherKey="PeriodID" Type="MonthlyIndicator" IsForeignKey="true" />
       <Association Name="ProfessionalLevel_MonthlyCoachRevenueIndicator" Member="ProfessionalLevel" ThisKey="LevelID" OtherKey="LevelID" Type="ProfessionalLevel" IsForeignKey="true" />
@@ -2528,7 +2514,6 @@
       <Column Name="CommissionGrade" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
       <Column Name="AnnualGrade" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
       <Association Name="SalaryDetails_ProfessionalLevelBasicSalary" Member="ProfessionalLevelBasicSalary" ThisKey="SalaryID" OtherKey="SalaryID" Type="ProfessionalLevelBasicSalary" />
-      <Association Name="SalaryDetails_ProfessionalLevelBasicSalary1" Member="ProfessionalLevelBasicSalary1" ThisKey="SalaryID" OtherKey="SalaryID" Type="ProfessionalLevelBasicSalary1" />
     </Type>
   </Table>
   <Table Name="dbo.ProfessionalLevelBasicSalary" Member="ProfessionalLevelBasicSalary">
@@ -2537,14 +2522,6 @@
       <Column Name="SalaryID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Association Name="ProfessionalLevel_ProfessionalLevelBasicSalary" Member="ProfessionalLevel" ThisKey="LevelID" OtherKey="LevelID" Type="ProfessionalLevel" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
       <Association Name="SalaryDetails_ProfessionalLevelBasicSalary" Member="SalaryDetails" ThisKey="SalaryID" OtherKey="SalaryID" Type="SalaryDetails" IsForeignKey="true" />
-    </Type>
-  </Table>
-  <Table Name="dbo.ProfessionalLevelBasicSalary" Member="ProfessionalLevelBasicSalary1">
-    <Type Name="ProfessionalLevelBasicSalary1">
-      <Column Name="LevelID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="SalaryID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Association Name="ProfessionalLevel_ProfessionalLevelBasicSalary1" Member="ProfessionalLevel" ThisKey="LevelID" OtherKey="LevelID" Type="ProfessionalLevel" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
-      <Association Name="SalaryDetails_ProfessionalLevelBasicSalary1" Member="SalaryDetails" ThisKey="SalaryID" OtherKey="SalaryID" Type="SalaryDetails" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="Report.EmployeeSalaryExtension" Member="EmployeeSalaryExtension">
@@ -2984,6 +2961,27 @@
       <Association Name="ProfessionalCertificate_CoachCertificate" Member="ProfessionalCertificate" ThisKey="CertificateID" OtherKey="CertificateID" Type="ProfessionalCertificate" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
       <Association Name="ServingCoach_CoachCertificate" Member="ServingCoach" ThisKey="CoachID" OtherKey="CoachID" Type="ServingCoach" IsForeignKey="true" />
       <Association Name="UserProfile_CoachCertificate" Member="UserProfile" ThisKey="ApprovedBy" OtherKey="UID" Type="UserProfile" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ProfessionalLevelReview" Member="ProfessionalLevelReview">
+    <Type Name="ProfessionalLevelReview">
+      <Column Name="LevelID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="PromotionID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DemotionID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CheckLevel" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="NormalAttendanceCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="NormalAchievement" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PromotionAttendanceCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PromotionAchievement" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="NormalAcademicGrades" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PromotionAcademicGrades" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="NormalTechnicalGrades" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PromotionTechnicalGrades" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="NormalCertificateCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PromotionCertificateCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="ProfessionalLevel_ProfessionalLevelReview" Member="ProfessionalLevel" ThisKey="LevelID" OtherKey="LevelID" Type="ProfessionalLevel" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="ProfessionalLevel_ProfessionalLevelReview1" Member="PromotionLevel" ThisKey="PromotionID" OtherKey="LevelID" Type="ProfessionalLevel" IsForeignKey="true" />
+      <Association Name="ProfessionalLevel_ProfessionalLevelReview2" Member="DemotionLevel" ThisKey="DemotionID" OtherKey="LevelID" Type="ProfessionalLevel" IsForeignKey="true" />
     </Type>
   </Table>
   <Function Name="dbo.InquireVacantNo" Method="InquireVacantNo">

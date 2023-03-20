@@ -706,7 +706,9 @@ namespace WebHome.Models.DataEntity
 
     public partial class LessonPriceType
     {
-        public String SimpleDescription => Description?.Substring(Description.IndexOf('】') + 1);
+        public String SimpleDescription => IsSingleCharge && SessionScopeForPTSingleCharge.Contains(this?.Status)
+                                            ? "《單堂購買》P.T Session"
+                                            : Description?.Substring(Description.IndexOf('】') + 1);
         public bool IsPackagePrice => this?.ObjectiveLessonPrice.Any(p => p.CatalogID == (int)ObjectiveLessonCatalog.CatalogDefinition.LessonPackage) == true;
         public bool IsDietaryConsult => this?.ObjectiveLessonPrice.Any(p => p.CatalogID == (int)ObjectiveLessonCatalog.CatalogDefinition.DietaryConsult) == true;
         public bool IsDistanceLesson => this?.ObjectiveLessonPrice.Any(p => p.CatalogID == (int)ObjectiveLessonCatalog.CatalogDefinition.OnLine) == true;
@@ -715,12 +717,22 @@ namespace WebHome.Models.DataEntity
         public bool ForDietary => this?.Status == (int)Naming.LessonPriceStatus.營養課程
             || this?.LessonPriceProperty.Any(p => p.PropertyID == (int)Naming.LessonPriceFeature.營養課程) == true;
         public bool IsSingleCharge => this?.LessonPriceProperty.Any(p => p.PropertyID == (int)Naming.LessonPriceFeature.單堂現場付款) == true;
+
+        public static readonly int?[] SessionScopeForPTSingleCharge = new int?[]
+        {
+                    (int)Naming.LessonPriceStatus.一般課程,
+                    (int)Naming.LessonPriceStatus.運動恢復課程,
+                    (int)Naming.LessonPriceStatus.運動防護課程,
+        };
     }
 
     public partial class RegisterLesson
     {
         public bool IsPaid => IntuitionCharge?.TuitionInstallment?
             .Any(t => t.Payment.VoidPayment == null || t.Payment.VoidPayment.Status != (int)Naming.CourseContractStatus.已生效) == true;
+
+        public bool IsSingleCharge => this?.RegisterLessonContract == null && this?.LessonPriceType.IsSingleCharge == true;
+
     }
 
     public partial class LessonTime

@@ -19,7 +19,7 @@
     models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
 
     CoachLearnerQueryViewModel _viewModel = ViewBag.ViewModel as CoachLearnerQueryViewModel;
-
+    var learner = models.GetTable<UserProfile>().Where(u => u.UID == _viewModel.UID).FirstOrDefault();
 
     LessonTimeAchievementHelper helper = new LessonTimeAchievementHelper(models)
             {
@@ -109,12 +109,12 @@
 
         $global.echarts.option = {
             title: {
-                text: '學生姓名：',
+                text: '@Html.Raw($"學生姓名：{learner?.RealName}")',
                 left: 'center'
             },
             tooltip: {
                 trigger: 'item',
-                formatter: '{a} <br/>{b}：{d}%'
+                formatter: '{a} <br/>{b} :{d}%'
             },
             legend: {
                 bottom: 10,

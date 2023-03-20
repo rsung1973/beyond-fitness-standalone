@@ -433,7 +433,7 @@ namespace WebHome.Helper
 
         public static bool IsReceivableSession(this LessonTime item)
         {
-            return item.RegisterLesson.LessonPriceType.IsSingleCharge;
+            return item.RegisterLesson.IsSingleCharge;
         }
 
         public static bool IsSTSession(this LessonTime item)
@@ -730,7 +730,7 @@ namespace WebHome.Helper
             var registerLesson = item.RegisterLesson;
             if (item.IsCoachPISession() 
                 || (item.IsTrialLesson() && !(item.BranchStore?.IsVirtualClassroom()==true))
-                || registerLesson.LessonPriceType.IsSingleCharge)
+                || registerLesson.IsSingleCharge)
             {
                 if (item.RegisterLesson.MasterRegistration == true)
                 {
