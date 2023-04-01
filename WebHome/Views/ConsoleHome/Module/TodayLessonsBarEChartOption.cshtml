@@ -72,7 +72,7 @@
         },
         legend: {
             left: 'center',
-            data: ['P.T', 'P.I', 'T.S']
+            data: ["P.T", "T.S", "P.I", "S.R", "S.D"],
         },
         xAxis: [
             {
@@ -138,7 +138,7 @@
                 data: @Html.Raw(JsonConvert.SerializeObject(getDistribution(TrialLessons, _hourIdx).ToArray())),
             }
         ],
-        color: ['#ffb980', '#2ec7c9', '#d87a80'],
+        color: ['#ffe599', '#b6d7a8', '#f3c4b6', '#c6d9f1', '#d9d9d9'],
         emphasis: {
             itemStyle: {
                 shadowBlur: 10,
