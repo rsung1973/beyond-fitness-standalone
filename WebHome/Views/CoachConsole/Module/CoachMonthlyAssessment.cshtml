@@ -43,6 +43,7 @@
         <tr>
             <th>姓名</th>
             <th>分店</th>
+            <th>Level</th>
             <th>學科成績</th>
             <th>術科成績</th>
         </tr>
@@ -71,6 +72,11 @@
                         @(coach.CoachWorkplace.Count == 1
                         ? coach.CoachWorkplace.First().BranchStore.BranchName
                         : "")
+                    </td>
+                    <td>
+                        @(
+                        item.ProfessionalLevel?.LevelName
+                            )
                     </td>
                     <td>
                         <div class="input-group">
@@ -110,6 +116,7 @@
             "order": [
                 [2, 'asc']
             ],
+            "paging": false,
             "pageLength": 30,
             "lengthMenu": [
                 [30, 50, 100, -1],

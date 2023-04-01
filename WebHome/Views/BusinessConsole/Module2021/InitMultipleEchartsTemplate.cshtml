@@ -16,10 +16,10 @@
 
     String _chartID = ViewBag.ChartID as String ?? $"myChart{DateTime.Now.Ticks}";
 
-    bool init = (bool?)TempData["InitEcharts"] ?? true;
+    bool init = (bool?)ViewContext.HttpContext.Items["InitEcharts"] ?? true;
     if (init)
     {
-        TempData["InitEcharts"] = false;
+        ViewContext.HttpContext.Items["InitEcharts"] = false;
     }
 
 }

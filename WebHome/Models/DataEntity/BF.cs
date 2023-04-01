@@ -1,7 +1,13 @@
 namespace WebHome.Models.DataEntity
 {
-    partial class BFDataContext
+    public partial class BFDataContext
     {
+        public BFDataContext() :
+            base(global::WebHome.Properties.Settings.Default.BFDbConnection, mappingSource)
+        {
+            OnCreated();
+        }
+
         partial void OnCreated()
         {
             this.CommandTimeout = 300;

@@ -92,15 +92,39 @@
                                             @{
                                                 await Html.RenderPartialAsync("~/Views/CoachConsole/Module/AssessmentReview.cshtml", _item);
                                                 await Html.RenderPartialAsync("~/Views/CoachConsole/Module/AcademicGradesReview.cshtml", _item);
-                                                ViewBag.ChartID = "academicChart";
-                                                await Html.RenderPartialAsync("~/Views/CoachConsole/Module/AcademicGradesReviewChart.cshtml");
+                                                IQueryable<MonthlyCoachRevenueIndicator> dataItems = (IQueryable<MonthlyCoachRevenueIndicator>)ViewContext.HttpContext.Items["AssessmentReview"];
+                                                if (dataItems.Any(c => c.AcademicGrades.HasValue))
+                                                {
+                                                    ViewBag.ChartID = "academicChart";
+                                                    await Html.RenderPartialAsync("~/Views/CoachConsole/Module/AcademicGradesReviewChart.cshtml");
+                                                }
+                                                else
+                                                {
+                                                    <div class="pie_chart">
+                                                        <div class="pie_light">
+                                                            目前沒有<br /><span>相關累計考核資訊</span>
+                                                        </div>
+                                                    </div>
+                                                }
+
                                             }
                                         </div>
                                         <div class="col-lg-6 col-md-6 col-sm-12 col-12">
                                             @{
                                                 await Html.RenderPartialAsync("~/Views/CoachConsole/Module/TechnicalGradesReview.cshtml", _item);
-                                                ViewBag.ChartID = "techChart";
-                                                await Html.RenderPartialAsync("~/Views/CoachConsole/Module/TechnicalGradesReviewChart.cshtml");
+                                                if (dataItems.Any(c => c.TechnicalGrades.HasValue))
+                                                {
+                                                    ViewBag.ChartID = "techChart";
+                                                    await Html.RenderPartialAsync("~/Views/CoachConsole/Module/TechnicalGradesReviewChart.cshtml");
+                                                }
+                                                else
+                                                {
+                                                    <div class="pie_chart">
+                                                        <div class="pie_light">
+                                                            目前沒有<br /><span>相關累計考核資訊</span>
+                                                        </div>
+                                                    </div>
+                                                }
                                             }
                                         </div>
                                     </div>

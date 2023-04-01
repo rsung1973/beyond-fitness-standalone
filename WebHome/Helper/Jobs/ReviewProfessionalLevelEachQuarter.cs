@@ -25,7 +25,7 @@ namespace WebHome.Helper.Jobs
                 {
                     try
                     {
-                        models.CheckProfessionalLevel2020(item);
+                        models.CheckProfessionalLevel2023(item);
                     }
                     catch(Exception ex)
                     {

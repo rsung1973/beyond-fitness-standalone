@@ -1,5 +1,4 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="BeyondFitnessProd2" Class="BFDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="AppSettings" ConnectionString="Data Source=VM-Titan\sqlexpress,1433;Initial Catalog=BeyondFitnessProd2;Integrated Security=True" SettingsObjectName="WebHome.Properties.Settings" SettingsPropertyName="BFDbConnection" Provider="System.Data.SqlClient" />
   <Table Name="dbo.UserRoleDefinition" Member="UserRoleDefinitions">
     <Type Name="UserRoleDefinition">
       <Column Name="RoleID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -759,13 +758,6 @@
       <Association Name="ProfessionalLevel_ProfessionalLevelReview1" Member="ProfessionalLevelReview1" ThisKey="LevelID" OtherKey="PromotionID" Type="ProfessionalLevelReview" />
       <Association Name="ProfessionalLevel_ProfessionalLevelReview2" Member="ProfessionalLevelReview2" ThisKey="LevelID" OtherKey="DemotionID" Type="ProfessionalLevelReview" />
       <Association Name="LevelExpression_ProfessionalLevel" Member="LevelExpression" ThisKey="CategoryID" OtherKey="LevelID" Type="LevelExpression" IsForeignKey="true" />
-    </Type>
-  </Table>
-  <Table Name="dbo.ProfessionalCertificate" Member="ProfessionalCertificate">
-    <Type Name="ProfessionalCertificate">
-      <Column Name="CertificateID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="Description" Type="System.String" DbType="NVarChar(64)" CanBeNull="true" />
-      <Association Name="ProfessionalCertificate_CoachCertificate" Member="CoachCertificate" ThisKey="CertificateID" OtherKey="CertificateID" Type="CoachCertificate" />
     </Type>
   </Table>
   <Table Name="dbo.CoachRating" Member="CoachRating">
@@ -2958,9 +2950,9 @@
       <Column Name="ApprovedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="ApprovedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Association Name="Attachment_CoachCertificate" Member="Attachment" ThisKey="AttachmentID" OtherKey="AttachmentID" Type="Attachment" IsForeignKey="true" />
-      <Association Name="ProfessionalCertificate_CoachCertificate" Member="ProfessionalCertificate" ThisKey="CertificateID" OtherKey="CertificateID" Type="ProfessionalCertificate" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
       <Association Name="ServingCoach_CoachCertificate" Member="ServingCoach" ThisKey="CoachID" OtherKey="CoachID" Type="ServingCoach" IsForeignKey="true" />
       <Association Name="UserProfile_CoachCertificate" Member="UserProfile" ThisKey="ApprovedBy" OtherKey="UID" Type="UserProfile" IsForeignKey="true" />
+      <Association Name="ProfessionalCertificate_CoachCertificate" Member="ProfessionalCertificate" ThisKey="CertificateID" OtherKey="CertificateID" Type="ProfessionalCertificate" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
   <Table Name="dbo.ProfessionalLevelReview" Member="ProfessionalLevelReview">
@@ -2982,6 +2974,17 @@
       <Association Name="ProfessionalLevel_ProfessionalLevelReview" Member="ProfessionalLevel" ThisKey="LevelID" OtherKey="LevelID" Type="ProfessionalLevel" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
       <Association Name="ProfessionalLevel_ProfessionalLevelReview1" Member="PromotionLevel" ThisKey="PromotionID" OtherKey="LevelID" Type="ProfessionalLevel" IsForeignKey="true" />
       <Association Name="ProfessionalLevel_ProfessionalLevelReview2" Member="DemotionLevel" ThisKey="DemotionID" OtherKey="LevelID" Type="ProfessionalLevel" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ProfessionalCertificate" Member="ProfessionalCertificate">
+    <Type Name="ProfessionalCertificate">
+      <Column Name="CertificateID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(64)" CanBeNull="true" />
+      <Column Name="Statement" Type="System.String" DbType="NVarChar(256)" CanBeNull="true" />
+      <Column Name="Status" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SampleUrl" Type="System.String" DbType="NVarChar(256)" CanBeNull="true" />
+      <Column Name="CategoryID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="ProfessionalCertificate_CoachCertificate" Member="CoachCertificate" ThisKey="CertificateID" OtherKey="CertificateID" Type="CoachCertificate" />
     </Type>
   </Table>
   <Function Name="dbo.InquireVacantNo" Method="InquireVacantNo">

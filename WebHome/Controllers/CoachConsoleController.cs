@@ -218,5 +218,15 @@ namespace WebHome.Controllers
 
             return Json(new { result = true });
         }
+
+        public ActionResult SelectCertificate(CoachCertificateViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            IQueryable<ProfessionalCertificate> items = models.GetTable<ProfessionalCertificate>()
+                    .Where(c => !c.Status.HasValue || c.Status != (int)ProfessionalCertificate.ProfessionalCertificateStatus.已下架);
+
+            return View("~/Views/CoachConsole/Module/SelectCertificate.cshtml", items);
+        }
+
     }
 }

@@ -25,18 +25,19 @@
         var resultItems = items.Join(levelItems, m => m.LevelID, r => r.LevelID, (m, r) => m);
         totalCount += resultItems.Count();
 
-        var academicResult = resultItems.Where(r => r.AcademicGrades >= r.ServingCoach.ProfessionalLevel.ProfessionalLevelReview.NormalAcademicGrades);
-        index[0] = academicResult.Count();
+        var academicResult = resultItems.Where(r => r.AcademicGrades >= r.ServingCoach.ProfessionalLevel.ProfessionalLevelReview.NormalAcademicGrades
+                                            || r.AcademicGrades >= r.ServingCoach.ProfessionalLevel.ProfessionalLevelReview.PromotionAcademicGrades);
+        index[0] = -academicResult.Count();
 
-        var techResult = resultItems.Where(s => !s.ServingCoach.ProfessionalLevel.ProfessionalLevelReview.NormalTechnicalGrades.HasValue
+        var techResult = resultItems.Where(s => (!s.ServingCoach.ProfessionalLevel.ProfessionalLevelReview.NormalTechnicalGrades.HasValue && s.TechnicalGrades.HasValue)
                                         || s.TechnicalGrades >= s.ServingCoach.ProfessionalLevel.ProfessionalLevelReview.NormalTechnicalGrades);
         index[1] = techResult.Count();
 
         var passcResult = resultItems.Where(m => levelItems.Any(l => l.LevelID == m.LevelID))
                         .Join(models.GetTable<ProfessionalLevelReview>(), m => m.LevelID, r => r.LevelID,
-                            (m, r) => new { m.AcademicGrades, m.TechnicalGrades, r.NormalAcademicGrades, r.NormalTechnicalGrades })
-                        .Where(r => r.AcademicGrades >= r.NormalAcademicGrades)
-                        .Where(r => !r.NormalTechnicalGrades.HasValue || r.TechnicalGrades >= r.NormalTechnicalGrades);
+                            (m, r) => new { m.AcademicGrades, m.TechnicalGrades, r.NormalAcademicGrades, r.PromotionAcademicGrades, r.NormalTechnicalGrades })
+                        .Where(r => r.AcademicGrades >= r.NormalAcademicGrades || r.AcademicGrades >= r.PromotionAcademicGrades)
+                        .Where(r => (!r.NormalTechnicalGrades.HasValue && r.TechnicalGrades.HasValue) || r.TechnicalGrades >= r.NormalTechnicalGrades);
 
         passCount += passcResult.Count();
     }

@@ -29,13 +29,9 @@
             <div class="modal-body">
                 <div class="row clearfix">
                     <div class="col-lg-6 col-md-6 col-sm-6 col-12">
-                        <select class="form-control show-tick" name="CertificateID">
-                            <option value="">-- 請選擇證照 --</option>
-                            @foreach(var cert in models.GetTable<ProfessionalCertificate>())
-                            {
-                                <option value="@(cert.CertificateID)">@(cert.Description)</option>
-                            }
-                        </select>
+                        <input type="text" name="Description" class="form-control" readonly="readonly"
+                               placeholder="請選擇證照" onclick="javascript:selectCertificate();" />
+                        <input type="hidden" name="CertificateID" />
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6 col-12">
                         <div class="input-group">
@@ -119,6 +115,34 @@
                     }
                 }).submit();
             });
+
+            $global.commitSelection = function (item) {
+                $('#@(_dialogID) input[name="CertificateID"]').val(item.CertificateID);
+                $('#@(_dialogID) input[name="Description"]').val(item.Description);
+            };
+
+            if ($global.appliedDialog && $global.appliedDialog['selectCertDialog']) {
+                $global.appliedDialog['selectCertDialog'].modal('show');
+                return;
+            }
+
         });
+
+        function selectCertificate() {
+
+            showLoading();
+            $.post('@Html.Raw(Url.Action("SelectCertificate", "CoachConsole"))', null, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    Swal.fire(
+                        'Oops...',
+                        data.message,
+                        'warning'
+                    );
+                } else {
+                    $(data).appendTo($('body'));
+                }
+            });
+        }//
     </script>
 </div>

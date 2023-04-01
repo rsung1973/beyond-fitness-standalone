@@ -919,4 +919,12 @@ namespace WebHome.Models.DataEntity
         }
     }
 
+    public partial class ProfessionalCertificate 
+    {
+        public enum ProfessionalCertificateStatus 
+        {
+            已下架 = 0,
+            正常 = 1,
+        }
+    }
 }

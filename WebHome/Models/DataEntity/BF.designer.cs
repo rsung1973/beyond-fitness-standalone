@@ -201,9 +201,6 @@ namespace WebHome.Models.DataEntity
     partial void InsertProfessionalLevel(ProfessionalLevel instance);
     partial void UpdateProfessionalLevel(ProfessionalLevel instance);
     partial void DeleteProfessionalLevel(ProfessionalLevel instance);
-    partial void InsertProfessionalCertificate(ProfessionalCertificate instance);
-    partial void UpdateProfessionalCertificate(ProfessionalCertificate instance);
-    partial void DeleteProfessionalCertificate(ProfessionalCertificate instance);
     partial void InsertCoachRating(CoachRating instance);
     partial void UpdateCoachRating(CoachRating instance);
     partial void DeleteCoachRating(CoachRating instance);
@@ -660,13 +657,10 @@ namespace WebHome.Models.DataEntity
     partial void InsertProfessionalLevelReview(ProfessionalLevelReview instance);
     partial void UpdateProfessionalLevelReview(ProfessionalLevelReview instance);
     partial void DeleteProfessionalLevelReview(ProfessionalLevelReview instance);
+    partial void InsertProfessionalCertificate(ProfessionalCertificate instance);
+    partial void UpdateProfessionalCertificate(ProfessionalCertificate instance);
+    partial void DeleteProfessionalCertificate(ProfessionalCertificate instance);
     #endregion
-		
-		public BFDataContext() : 
-				base(global::WebHome.Properties.Settings.Default.BFDbConnection, mappingSource)
-		{
-			OnCreated();
-		}
 		
 		public BFDataContext(string connection) : 
 				base(connection, mappingSource)
@@ -1153,14 +1147,6 @@ namespace WebHome.Models.DataEntity
 			get
 			{
 				return this.GetTable<ProfessionalLevel>();
-			}
-		}
-		
-		public System.Data.Linq.Table<ProfessionalCertificate> ProfessionalCertificate
-		{
-			get
-			{
-				return this.GetTable<ProfessionalCertificate>();
 			}
 		}
 		
@@ -2465,6 +2451,14 @@ namespace WebHome.Models.DataEntity
 			get
 			{
 				return this.GetTable<ProfessionalLevelReview>();
+			}
+		}
+		
+		public System.Data.Linq.Table<ProfessionalCertificate> ProfessionalCertificate
+		{
+			get
+			{
+				return this.GetTable<ProfessionalCertificate>();
 			}
 		}
 		
@@ -19599,120 +19593,6 @@ namespace WebHome.Models.DataEntity
 		{
 			this.SendPropertyChanging();
 			entity.DemotionLevel = null;
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ProfessionalCertificate")]
-	public partial class ProfessionalCertificate : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _CertificateID;
-		
-		private string _Description;
-		
-		private EntitySet<CoachCertificate> _CoachCertificate;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnCertificateIDChanging(int value);
-    partial void OnCertificateIDChanged();
-    partial void OnDescriptionChanging(string value);
-    partial void OnDescriptionChanged();
-    #endregion
-		
-		public ProfessionalCertificate()
-		{
-			this._CoachCertificate = new EntitySet<CoachCertificate>(new Action<CoachCertificate>(this.attach_CoachCertificate), new Action<CoachCertificate>(this.detach_CoachCertificate));
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CertificateID", DbType="Int NOT NULL", IsPrimaryKey=true)]
-		public int CertificateID
-		{
-			get
-			{
-				return this._CertificateID;
-			}
-			set
-			{
-				if ((this._CertificateID != value))
-				{
-					this.OnCertificateIDChanging(value);
-					this.SendPropertyChanging();
-					this._CertificateID = value;
-					this.SendPropertyChanged("CertificateID");
-					this.OnCertificateIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Description", DbType="NVarChar(64)")]
-		public string Description
-		{
-			get
-			{
-				return this._Description;
-			}
-			set
-			{
-				if ((this._Description != value))
-				{
-					this.OnDescriptionChanging(value);
-					this.SendPropertyChanging();
-					this._Description = value;
-					this.SendPropertyChanged("Description");
-					this.OnDescriptionChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ProfessionalCertificate_CoachCertificate", Storage="_CoachCertificate", ThisKey="CertificateID", OtherKey="CertificateID")]
-		public EntitySet<CoachCertificate> CoachCertificate
-		{
-			get
-			{
-				return this._CoachCertificate;
-			}
-			set
-			{
-				this._CoachCertificate.Assign(value);
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_CoachCertificate(CoachCertificate entity)
-		{
-			this.SendPropertyChanging();
-			entity.ProfessionalCertificate = this;
-		}
-		
-		private void detach_CoachCertificate(CoachCertificate entity)
-		{
-			this.SendPropertyChanging();
-			entity.ProfessionalCertificate = null;
 		}
 	}
 	
@@ -67116,11 +66996,11 @@ namespace WebHome.Models.DataEntity
 		
 		private EntityRef<Attachment> _Attachment;
 		
-		private EntityRef<ProfessionalCertificate> _ProfessionalCertificate;
-		
 		private EntityRef<ServingCoach> _ServingCoach;
 		
 		private EntityRef<UserProfile> _UserProfile;
+		
+		private EntityRef<ProfessionalCertificate> _ProfessionalCertificate;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -67145,9 +67025,9 @@ namespace WebHome.Models.DataEntity
 		public CoachCertificate()
 		{
 			this._Attachment = default(EntityRef<Attachment>);
-			this._ProfessionalCertificate = default(EntityRef<ProfessionalCertificate>);
 			this._ServingCoach = default(EntityRef<ServingCoach>);
 			this._UserProfile = default(EntityRef<UserProfile>);
+			this._ProfessionalCertificate = default(EntityRef<ProfessionalCertificate>);
 			OnCreated();
 		}
 		
@@ -67341,40 +67221,6 @@ namespace WebHome.Models.DataEntity
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ProfessionalCertificate_CoachCertificate", Storage="_ProfessionalCertificate", ThisKey="CertificateID", OtherKey="CertificateID", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		public ProfessionalCertificate ProfessionalCertificate
-		{
-			get
-			{
-				return this._ProfessionalCertificate.Entity;
-			}
-			set
-			{
-				ProfessionalCertificate previousValue = this._ProfessionalCertificate.Entity;
-				if (((previousValue != value) 
-							|| (this._ProfessionalCertificate.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._ProfessionalCertificate.Entity = null;
-						previousValue.CoachCertificate.Remove(this);
-					}
-					this._ProfessionalCertificate.Entity = value;
-					if ((value != null))
-					{
-						value.CoachCertificate.Add(this);
-						this._CertificateID = value.CertificateID;
-					}
-					else
-					{
-						this._CertificateID = default(int);
-					}
-					this.SendPropertyChanged("ProfessionalCertificate");
-				}
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ServingCoach_CoachCertificate", Storage="_ServingCoach", ThisKey="CoachID", OtherKey="CoachID", IsForeignKey=true)]
 		public ServingCoach ServingCoach
 		{
@@ -67439,6 +67285,40 @@ namespace WebHome.Models.DataEntity
 						this._ApprovedBy = default(Nullable<int>);
 					}
 					this.SendPropertyChanged("UserProfile");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ProfessionalCertificate_CoachCertificate", Storage="_ProfessionalCertificate", ThisKey="CertificateID", OtherKey="CertificateID", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public ProfessionalCertificate ProfessionalCertificate
+		{
+			get
+			{
+				return this._ProfessionalCertificate.Entity;
+			}
+			set
+			{
+				ProfessionalCertificate previousValue = this._ProfessionalCertificate.Entity;
+				if (((previousValue != value) 
+							|| (this._ProfessionalCertificate.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._ProfessionalCertificate.Entity = null;
+						previousValue.CoachCertificate.Remove(this);
+					}
+					this._ProfessionalCertificate.Entity = value;
+					if ((value != null))
+					{
+						value.CoachCertificate.Add(this);
+						this._CertificateID = value.CertificateID;
+					}
+					else
+					{
+						this._CertificateID = default(int);
+					}
+					this.SendPropertyChanged("ProfessionalCertificate");
 				}
 			}
 		}
@@ -67958,6 +67838,216 @@ namespace WebHome.Models.DataEntity
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ProfessionalCertificate")]
+	public partial class ProfessionalCertificate : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _CertificateID;
+		
+		private string _Description;
+		
+		private string _Statement;
+		
+		private System.Nullable<int> _Status;
+		
+		private string _SampleUrl;
+		
+		private System.Nullable<int> _CategoryID;
+		
+		private EntitySet<CoachCertificate> _CoachCertificate;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnCertificateIDChanging(int value);
+    partial void OnCertificateIDChanged();
+    partial void OnDescriptionChanging(string value);
+    partial void OnDescriptionChanged();
+    partial void OnStatementChanging(string value);
+    partial void OnStatementChanged();
+    partial void OnStatusChanging(System.Nullable<int> value);
+    partial void OnStatusChanged();
+    partial void OnSampleUrlChanging(string value);
+    partial void OnSampleUrlChanged();
+    partial void OnCategoryIDChanging(System.Nullable<int> value);
+    partial void OnCategoryIDChanged();
+    #endregion
+		
+		public ProfessionalCertificate()
+		{
+			this._CoachCertificate = new EntitySet<CoachCertificate>(new Action<CoachCertificate>(this.attach_CoachCertificate), new Action<CoachCertificate>(this.detach_CoachCertificate));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CertificateID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int CertificateID
+		{
+			get
+			{
+				return this._CertificateID;
+			}
+			set
+			{
+				if ((this._CertificateID != value))
+				{
+					this.OnCertificateIDChanging(value);
+					this.SendPropertyChanging();
+					this._CertificateID = value;
+					this.SendPropertyChanged("CertificateID");
+					this.OnCertificateIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Description", DbType="NVarChar(64)")]
+		public string Description
+		{
+			get
+			{
+				return this._Description;
+			}
+			set
+			{
+				if ((this._Description != value))
+				{
+					this.OnDescriptionChanging(value);
+					this.SendPropertyChanging();
+					this._Description = value;
+					this.SendPropertyChanged("Description");
+					this.OnDescriptionChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Statement", DbType="NVarChar(256)")]
+		public string Statement
+		{
+			get
+			{
+				return this._Statement;
+			}
+			set
+			{
+				if ((this._Statement != value))
+				{
+					this.OnStatementChanging(value);
+					this.SendPropertyChanging();
+					this._Statement = value;
+					this.SendPropertyChanged("Statement");
+					this.OnStatementChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Status", DbType="Int")]
+		public System.Nullable<int> Status
+		{
+			get
+			{
+				return this._Status;
+			}
+			set
+			{
+				if ((this._Status != value))
+				{
+					this.OnStatusChanging(value);
+					this.SendPropertyChanging();
+					this._Status = value;
+					this.SendPropertyChanged("Status");
+					this.OnStatusChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SampleUrl", DbType="NVarChar(256)")]
+		public string SampleUrl
+		{
+			get
+			{
+				return this._SampleUrl;
+			}
+			set
+			{
+				if ((this._SampleUrl != value))
+				{
+					this.OnSampleUrlChanging(value);
+					this.SendPropertyChanging();
+					this._SampleUrl = value;
+					this.SendPropertyChanged("SampleUrl");
+					this.OnSampleUrlChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CategoryID", DbType="Int")]
+		public System.Nullable<int> CategoryID
+		{
+			get
+			{
+				return this._CategoryID;
+			}
+			set
+			{
+				if ((this._CategoryID != value))
+				{
+					this.OnCategoryIDChanging(value);
+					this.SendPropertyChanging();
+					this._CategoryID = value;
+					this.SendPropertyChanged("CategoryID");
+					this.OnCategoryIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ProfessionalCertificate_CoachCertificate", Storage="_CoachCertificate", ThisKey="CertificateID", OtherKey="CertificateID")]
+		public EntitySet<CoachCertificate> CoachCertificate
+		{
+			get
+			{
+				return this._CoachCertificate;
+			}
+			set
+			{
+				this._CoachCertificate.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_CoachCertificate(CoachCertificate entity)
+		{
+			this.SendPropertyChanging();
+			entity.ProfessionalCertificate = this;
+		}
+		
+		private void detach_CoachCertificate(CoachCertificate entity)
+		{
+			this.SendPropertyChanging();
+			entity.ProfessionalCertificate = null;
 		}
 	}
 	

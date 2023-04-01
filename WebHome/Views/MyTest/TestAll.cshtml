@@ -20,7 +20,15 @@
     _modelState = ViewContext.ModelState;
     _viewModel = (QueryViewModel)ViewBag.ViewModel;
     _model = this.Model as IFormCollection;
-    TestGmail();
+
+    var item = models.GetTable<CourseContract>().Where(c => c.ContractNo == "CNA202212222702").FirstOrDefault();
+    var original = item;
+    var totalPaid = original.TotalPaidAmount();
+    if (totalPaid > 0)
+    {
+        int returnAmt = original.CalculateReturnAmount(totalPaid, out int processingFee);
+        Write(returnAmt);
+    }
 }
 
 @functions
