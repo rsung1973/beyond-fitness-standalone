@@ -1,0 +1,104 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+
+@using CommonLib.Utility
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    IQueryable<ProfessionalCertificate> _model;
+    CoachCertificateViewModel _viewModel = ViewBag.ViewModel as CoachCertificateViewModel;
+    String _dialogID = _viewModel.DialogID ?? $"selectCert{DateTime.Now.Ticks}";
+    int _allotment;
+    int _allotmentCoach;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (IQueryable<ProfessionalCertificate>)this.Model;
+    _allotment = _viewModel?.Allotment ?? 1;
+    _allotmentCoach = _viewModel?.AllotmentCoach ?? 3;
+}
+
+<div class="modal fade" id="@(_dialogID)" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="@(_allotmentCoach== 3 ? "modal-dialog" : "modal-dialog modal-lg")" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="" class="closebutton" data-dismiss="modal"></a>
+            </div>
+            <div class="modal-body">
+                <div class="row clearfix">
+                    <div class="@($"col-sm-{12 / _allotment} col-{12 / _allotment}")">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="搜尋名稱" name="KeyWord" />
+                            <span class="input-group-addon">
+                                <i class="zmdi zmdi-search"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <ul class="new_friend_list list-unstyled row">
+                    @foreach (var item in _model.OrderBy(u => u.Description))
+                    {
+                        <li class="@($"col-sm-{12 / _allotmentCoach} col-6")">
+                            <a href='javascript:commitSelection(@Html.Raw((new { CertificateID = item.CertificateID, Description = item.Description}).JsonStringify()));'>
+                                @{
+                                    ViewBag.ProfileClass = "img-thumbnail popfit";
+                                    await Html.RenderPartialAsync("~/Views/Common/SampleImage.cshtml", item.SampleUrl ?? "Images/certificate/default.png");
+                                }
+                                <h6 class="users_name">@(item.Description)</h6>
+                                <small class="join_date">@(item.Statement)</small>
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+@{
+    await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/BSModalScript.cshtml", model: _dialogID);
+}
+
+<script>
+    $(function () {
+        $('#@(_dialogID) input[name="KeyWord"]').keypress(function (event) {
+            var event = event || window.event;
+            var userName = $(event.target).val();
+            var keycode = (event.keyCode ? event.keyCode : event.which);
+            if (keycode == '13') {
+                if (userName.length < 1) {
+                    $('#@(_dialogID) li').each(function (idx, element) {
+                        $(this).css('display', 'block');
+                    });
+                } else {
+                    var regex = new RegExp(userName, 'i');
+                    $('#@(_dialogID) li').each(function (idx, element) {
+                        var $this = $(this);
+                        if ($this.text().search(regex) >= 0) {
+                            $this.css('display', 'block');
+                        } else {
+                            $this.css('display', 'none');
+                        }
+                    });
+                }
+            }
+        });
+
+    });
+
+    function commitSelection(item) {
+        if ($global.commitSelection) {
+            $global.commitSelection(item);
+            $global.appliedDialog['@(_dialogID)'].modal('hide');
+        }
+    }
+
+</script>

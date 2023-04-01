@@ -778,7 +778,7 @@ namespace WebHome.Models.ViewModel
 
     }
 
-    public class CoachCertificateViewModel : QueryViewModel
+    public class CoachCertificateViewModel : SelectItemQueryViewModel
     {
         private DateTime? expiration;
 

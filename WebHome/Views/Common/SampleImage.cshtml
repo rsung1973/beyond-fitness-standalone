@@ -1,0 +1,20 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    String _model;
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = this.Model as String;
+}
+<img src="@(_model!=null ? VirtualPathUtility.ToAbsolute(_model) : null)"
+        class="@(ViewBag.ProfileClass)" />

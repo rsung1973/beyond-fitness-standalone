@@ -615,12 +615,17 @@ namespace WebHome.Models.ViewModel
 
     }
 
-    public class ServingCoachQueryViewModel : QueryViewModel
+    public class SelectItemQueryViewModel : QueryViewModel
     {
         public int? Allotment { get; set; }
         public int? AllotmentCoach { get; set; }
         public bool? SelectAll { get; set; }
         public String SelectablePartial { get; set; }
+
+    }
+
+    public class ServingCoachQueryViewModel : SelectItemQueryViewModel
+    {
         public int? WorkPlace { get; set; }
     }
 

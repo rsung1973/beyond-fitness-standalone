@@ -324,6 +324,9 @@
                                 <i class="zmdi zmdi-accounts"></i><span>我的教練</span>
                             </a>
                         </li>
+                    }
+                    if (_model.IsAuthorizedSysAdmin() || _model.IsAssistant() || _model.IsOfficer() || _model.IsManager() || _model.IsViceManager() || _model.IsFES())
+                    {
                         <li>
                             <a href="javascript:$('').launchDownload('@Html.Raw(Url.Action("AssessmentOverview", "ConsoleHome",new { BranchID = models.GetTable<V_WorkPlace>().Where(v=>v.CoachID==_model.UID).FirstOrDefault()?.WorkPlace }))', { });">
                                 <i class="zmdi zmdi-accounts"></i><span>我的考核</span>

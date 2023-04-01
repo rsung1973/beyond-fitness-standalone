@@ -880,12 +880,12 @@ namespace WebHome.Controllers
             {
                 foreach (var item in models.PromptEffectiveCoach())
                 {
-                    models.CheckProfessionalLevel2020(item);
+                    models.CheckProfessionalLevel2023(item);
                 }
             }
             else
             {
-                models.CheckProfessionalLevel2020(coach);
+                models.CheckProfessionalLevel2023(coach);
             }
             return new EmptyResult();
         }
