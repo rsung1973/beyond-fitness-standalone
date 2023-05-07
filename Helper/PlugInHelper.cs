@@ -62,9 +62,9 @@ namespace CommonLib.Core.Helper
                     }
                 }
             }
-            catch
+            catch(Exception ex)
             {
-
+                FileLogger.Logger.Error(ex);
             }
         }
 

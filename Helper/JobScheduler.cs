@@ -167,7 +167,7 @@ namespace CommonLib.Core.Helper
             if (_instance == null)
                 StartUp();
             var type = Type.GetType(item.AssemblyQualifiedName);
-            if (type.GetInterface("CommonLib.Helper.IJob") != null)
+            if (type.GetInterface("CommonLib.Core.Helper.IJob") != null)
             {
                 _instance._jobItems.Add(item);
                 _instance.saveJob();
