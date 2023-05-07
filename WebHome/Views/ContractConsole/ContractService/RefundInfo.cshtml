@@ -77,6 +77,7 @@ else if (attendedCount > 0)
     if (_viewModel.CauseForEnding == Naming.CauseForEnding.合約到期轉新約
         || _viewModel.CauseForEnding == Naming.CauseForEnding.轉讓第三人
         || _viewModel.CauseForEnding == Naming.CauseForEnding.不宜運動
+        || _viewModel.CauseForEnding == Naming.CauseForEnding.更改合約類型
         || _model.CourseContractAction.Any(a => a.ActionID == (int)CourseContractAction.ActionType.免收手續費))
     {
         processingFee = 0;
@@ -101,7 +102,8 @@ else if (attendedCount > 0)
         else 
         {
             if ((_viewModel.CauseForEnding == Naming.CauseForEnding.合約到期轉新約
-                    || _viewModel.CauseForEnding == Naming.CauseForEnding.轉讓第三人)
+                    || _viewModel.CauseForEnding == Naming.CauseForEnding.轉讓第三人
+                    || _viewModel.CauseForEnding == Naming.CauseForEnding.更改合約類型)
                 && !_model.CourseContractAction.Any(a => a.ActionID == (int)CourseContractAction.ActionType.免收手續費))
             {                
                 <div class="container col-pink">
@@ -191,7 +193,8 @@ else
         </div>
     }
     else if (_viewModel.CauseForEnding == Naming.CauseForEnding.合約到期轉新約
-            || _viewModel.CauseForEnding == Naming.CauseForEnding.轉讓第三人)
+            || _viewModel.CauseForEnding == Naming.CauseForEnding.轉讓第三人
+            || _viewModel.CauseForEnding == Naming.CauseForEnding.更改合約類型)
     {
         processingFee = 0;  // 300不在這裡收，是另外收
         <div class="alert xl-pink col-darkteal" role="alert">

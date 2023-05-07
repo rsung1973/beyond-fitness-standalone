@@ -1,0 +1,66 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    UserProfile _model;
+    String _viewID = $"consultant{DateTime.Now.Ticks}";
+    CourseContractQueryViewModel _viewModel;
+    ServingCoach _fitnessConsultant;
+
+
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (UserProfile)this.Model;
+    _viewModel = (CourseContractQueryViewModel)ViewBag.ViewModel;
+    _fitnessConsultant = models.GetTable<ServingCoach>().Where(c => c.CoachID == _viewModel.FitnessConsultant).FirstOrDefault();
+
+}
+<h2><span id="fitnessConsultant">@(_fitnessConsultant?.UserProfile.FullName())</span></h2>
+<!--分店主管/副主管提供切換-->
+@if (_model.IsManager() || _model.IsViceManager())
+{
+    <ul class="header-dropdown">
+        <li>
+            <a href="javascript:selectCoach();"><i class="zmdi zmdi-swap"></i></a>
+        </li>
+    </ul>
+}
+<script>
+
+    $(function () {
+        $global.commitCoach = function (coachID, coachName) {
+            $global.viewModel.FitnessConsultant = coachID;
+            $('#fitnessConsultant').text(coachName);
+            if ($global.viewModel.ManagerID && $global.viewModel.ManagerID != coachID) {
+                $('button.save').prop('disabled', true);
+            } else {
+                $('button.save').prop('disabled', false);
+            }
+        };
+    });
+
+    function selectCoach() {
+        showLoading();
+        $.post('@Html.Raw(Url.Action("SelectCoach", "ContractConsole"))', {}, function (data) {
+            hideLoading();
+            if ($.isPlainObject(data)) {
+                alert(data.message);
+            } else {
+                $(data).appendTo($('body'));
+            }
+        });
+    }//
+</script>
+
+

@@ -70,8 +70,8 @@
       <Association Name="Attachment_UserProfile" Member="UserProfile" ThisKey="AttachmentID" OtherKey="PictureID" Type="UserProfile" />
       <Association Name="Attachment_Article" Member="Article" ThisKey="AttachmentID" OtherKey="Illustration" Type="Article" />
       <Association Name="Attachment_CourseContractTermination" Member="CourseContractTermination" ThisKey="AttachmentID" OtherKey="AccountInfo" Type="CourseContractTermination" />
-      <Association Name="Attachment_CourseContractExtension" Member="CourseContractExtension" ThisKey="AttachmentID" OtherKey="AttachmentID" Type="CourseContractExtension" />
       <Association Name="Attachment_CoachCertificate" Member="CoachCertificate" ThisKey="AttachmentID" OtherKey="AttachmentID" Type="CoachCertificate" />
+      <Association Name="Attachment_CourseContractExtension" Member="CourseContractExtension" ThisKey="AttachmentID" OtherKey="AttachmentID" Type="CourseContractExtension" />
       <Association Name="Document_Attachment" Member="Document" ThisKey="DocID" OtherKey="DocID" Type="Document" IsForeignKey="true" />
     </Type>
   </Table>
@@ -209,6 +209,8 @@
       <Association Name="UserProfile_LearnerCoachProperty" Member="LearnerCoachProperty" ThisKey="UID" OtherKey="UID" Type="LearnerCoachProperty" />
       <Association Name="UserProfile_MonthlyLearnerReview" Member="MonthlyLearnerReview" ThisKey="UID" OtherKey="UID" Type="MonthlyLearnerReview" />
       <Association Name="UserProfile_CoachCertificate" Member="CoachCertificate" ThisKey="UID" OtherKey="ApprovedBy" Type="CoachCertificate" />
+      <Association Name="UserProfile_CourseContractExtension" Member="LearnerBRContract" ThisKey="UID" OtherKey="BRByLearner" Type="CourseContractExtension" />
+      <Association Name="UserProfile_CourseContractExtension1" Member="CoachBRContract" ThisKey="UID" OtherKey="BRByCoach" Type="CourseContractExtension" />
       <Association Name="Attachment_UserProfile" Member="Attachment" ThisKey="PictureID" OtherKey="AttachmentID" Type="Attachment" IsForeignKey="true" />
       <Association Name="LevelExpression_UserProfile" Member="LevelExpression" ThisKey="LevelID" OtherKey="LevelID" Type="LevelExpression" IsForeignKey="true" />
       <Association Name="UserProfile_UserProfile" Member="UserProfile1" ThisKey="Creator" OtherKey="UID" Type="UserProfile" IsForeignKey="true" />
@@ -336,6 +338,7 @@
       <Association Name="ServingCoach_CoachMonthlySalary" Member="CoachMonthlySalary" ThisKey="CoachID" OtherKey="CoachID" Type="CoachMonthlySalary" />
       <Association Name="ServingCoach_MonthlyCoachLearnerReview" Member="MonthlyCoachLearnerReview" ThisKey="CoachID" OtherKey="CoachID" Type="MonthlyCoachLearnerReview" />
       <Association Name="ServingCoach_CoachCertificate" Member="CoachCertificate" ThisKey="CoachID" OtherKey="CoachID" Type="CoachCertificate" />
+      <Association Name="ServingCoach_ServingCoachProperty" Member="ServingCoachProperty" ThisKey="CoachID" OtherKey="CoachID" Type="ServingCoachProperty" />
       <Association Name="UserProfile_ServingCoach" Member="UserProfile" ThisKey="CoachID" OtherKey="UID" Type="UserProfile" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
       <Association Name="ProfessionalLevel_ServingCoach" Member="ProfessionalLevel" ThisKey="LevelID" OtherKey="LevelID" Type="ProfessionalLevel" IsForeignKey="true" />
     </Type>
@@ -983,10 +986,10 @@
       <Association Name="BranchStore_MonthlyCoachRevenueIndicator" Member="MonthlyCoachRevenueIndicator" ThisKey="BranchID" OtherKey="BranchID" Type="MonthlyCoachRevenueIndicator" />
       <Association Name="BranchStore_ObjectiveLessonLocation" Member="ObjectiveLessonLocation" ThisKey="BranchID" OtherKey="BranchID" Type="ObjectiveLessonLocation" />
       <Association Name="BranchStore_BranchMonthlySummary" Member="BranchMonthlySummary" ThisKey="BranchID" OtherKey="BranchID" Type="BranchMonthlySummary" />
-      <Association Name="BranchStore_CourseContractExtension" Member="CourseContractExtension" ThisKey="BranchID" OtherKey="BranchID" Type="CourseContractExtension" />
-      <Association Name="BranchStore_CourseContractExtension1" Member="WhereCourseOccur" Storage="_CourseContractExtension1" ThisKey="BranchID" OtherKey="CoursePlace" Type="CourseContractExtension" />
       <Association Name="BranchStore_CoachYearlyAdditionalPay" Member="CoachYearlyAdditionalPay" ThisKey="BranchID" OtherKey="WorkPlace" Type="CoachYearlyAdditionalPay" />
       <Association Name="BranchStore_CoachMonthlySalary" Member="CoachMonthlySalary" ThisKey="BranchID" OtherKey="WorkPlace" Type="CoachMonthlySalary" />
+      <Association Name="BranchStore_CourseContractExtension" Member="CourseContractExtension" ThisKey="BranchID" OtherKey="BranchID" Type="CourseContractExtension" />
+      <Association Name="BranchStore_CourseContractExtension1" Member="CourseContractExtension1" ThisKey="BranchID" OtherKey="CoursePlace" Type="CourseContractExtension" />
       <Association Name="UserProfile_BranchStore" Member="Manager" ThisKey="ManagerID" OtherKey="UID" Type="UserProfile" IsForeignKey="true" />
       <Association Name="UserProfile_BranchStore1" Member="ViceManager" ThisKey="ViceManagerID" OtherKey="UID" Type="UserProfile" IsForeignKey="true" />
       <Association Name="Organization_BranchStore" Member="Organization" ThisKey="BranchID" OtherKey="CompanyID" Type="Organization" IsForeignKey="true" />
@@ -2658,28 +2661,6 @@
       <Association Name="CourseContractRevision_CourseContractTermination" Member="CourseContractRevision" ThisKey="RevisionID" OtherKey="RevisionID" Type="CourseContractRevision" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
-  <Table Name="dbo.CourseContractExtension" Member="CourseContractExtension">
-    <Type Name="CourseContractExtension">
-      <Column Name="ContractID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="BranchID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="RevisionTrackingID" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="SettlementPrice" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="PaymentMethod" Type="System.String" DbType="NVarChar(64)" CanBeNull="true" />
-      <Column Name="Version" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="AttachmentID" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="SignOnline" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="UnitPriceID" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="UnitPriceAdjustmentType" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="CoursePlace" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="SignerPIN" Type="System.String" DbType="NVarChar(64)" CanBeNull="true" />
-      <Association Name="Attachment_CourseContractExtension" Member="Attachment" ThisKey="AttachmentID" OtherKey="AttachmentID" Type="Attachment" IsForeignKey="true" DeleteRule="SET NULL" />
-      <Association Name="BranchStore_CourseContractExtension" Member="BranchStore" ThisKey="BranchID" OtherKey="BranchID" Type="BranchStore" IsForeignKey="true" />
-      <Association Name="BranchStore_CourseContractExtension1" Member="CourseBranch" Storage="_BranchStore1" ThisKey="CoursePlace" OtherKey="BranchID" Type="BranchStore" IsForeignKey="true" />
-      <Association Name="CourseContract_CourseContractExtension" Member="CourseContract" ThisKey="ContractID" OtherKey="ContractID" Type="CourseContract" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
-      <Association Name="CourseContractRevision_CourseContractExtension" Member="CourseContractRevision" ThisKey="RevisionTrackingID" OtherKey="RevisionID" Type="CourseContractRevision" IsForeignKey="true" />
-      <Association Name="LessonPriceType_CourseContractExtension" Member="LessonPriceType" ThisKey="UnitPriceID" OtherKey="PriceID" Type="LessonPriceType" IsForeignKey="true" />
-    </Type>
-  </Table>
   <Table Name="dbo.PaymentContractTermination" Member="PaymentContractTermination">
     <Type Name="PaymentContractTermination">
       <Column Name="PaymentID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -2985,6 +2966,40 @@
       <Column Name="SampleUrl" Type="System.String" DbType="NVarChar(256)" CanBeNull="true" />
       <Column Name="CategoryID" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Association Name="ProfessionalCertificate_CoachCertificate" Member="CoachCertificate" ThisKey="CertificateID" OtherKey="CertificateID" Type="CoachCertificate" />
+    </Type>
+  </Table>
+  <Table Name="dbo.CourseContractExtension" Member="CourseContractExtension">
+    <Type Name="CourseContractExtension">
+      <Column Name="ContractID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="BranchID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="RevisionTrackingID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SettlementPrice" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PaymentMethod" Type="System.String" DbType="NVarChar(64)" CanBeNull="true" />
+      <Column Name="Version" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="AttachmentID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SignOnline" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="UnitPriceID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UnitPriceAdjustmentType" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CoursePlace" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SignerPIN" Type="System.String" DbType="NVarChar(64)" CanBeNull="true" />
+      <Column Name="BRByLearner" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="BRByCoach" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Attachment_CourseContractExtension" Member="Attachment" ThisKey="AttachmentID" OtherKey="AttachmentID" Type="Attachment" IsForeignKey="true" DeleteRule="SET NULL" />
+      <Association Name="BranchStore_CourseContractExtension" Member="BranchStore" ThisKey="BranchID" OtherKey="BranchID" Type="BranchStore" IsForeignKey="true" />
+      <Association Name="BranchStore_CourseContractExtension1" Member="CourseBranch" Storage="_BranchStore1" ThisKey="CoursePlace" OtherKey="BranchID" Type="BranchStore" IsForeignKey="true" />
+      <Association Name="CourseContract_CourseContractExtension" Member="CourseContract" ThisKey="ContractID" OtherKey="ContractID" Type="CourseContract" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="CourseContractRevision_CourseContractExtension" Member="CourseContractRevision" ThisKey="RevisionTrackingID" OtherKey="RevisionID" Type="CourseContractRevision" IsForeignKey="true" />
+      <Association Name="LessonPriceType_CourseContractExtension" Member="LessonPriceType" ThisKey="UnitPriceID" OtherKey="PriceID" Type="LessonPriceType" IsForeignKey="true" />
+      <Association Name="UserProfile_CourseContractExtension" Member="BRLearner" ThisKey="BRByLearner" OtherKey="UID" Type="UserProfile" IsForeignKey="true" />
+      <Association Name="UserProfile_CourseContractExtension1" Member="BRCoach" ThisKey="BRByCoach" OtherKey="UID" Type="UserProfile" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ServingCoachProperty" Member="ServingCoachProperties">
+    <Type Name="ServingCoachProperty">
+      <Column Name="CoachID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="PropertyID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(64)" CanBeNull="true" />
+      <Association Name="ServingCoach_ServingCoachProperty" Member="ServingCoach" ThisKey="CoachID" OtherKey="CoachID" Type="ServingCoach" IsForeignKey="true" />
     </Type>
   </Table>
   <Function Name="dbo.InquireVacantNo" Method="InquireVacantNo">

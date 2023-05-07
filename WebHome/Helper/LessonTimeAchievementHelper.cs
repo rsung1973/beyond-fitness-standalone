@@ -41,6 +41,30 @@ namespace WebHome.Helper
                     .Where(l => l.PriceStatus != (int)Naming.LessonPriceStatus.自主訓練)
                     .Where(l => !l.ELStatus.HasValue || l.ELStatus != (int)Naming.LessonPriceStatus.自主訓練);
 
+        public IQueryable<V_Tuition> PILesson => LessonItems
+                    .Where(l => l.PriceStatus == (int)Naming.LessonPriceStatus.自主訓練
+                        || l.ELStatus == (int)Naming.LessonPriceStatus.自主訓練);
+
+        //public IQueryable<V_Tuition> SRSession
+        //{
+        //    get
+        //    {
+        //        IQueryable<LessonPriceProperty> SR = models.GetTable<LessonPriceProperty>().Where(p => p.PropertyID == (int)Naming.LessonPriceFeature.運動恢復課程);
+        //        return LessonItems
+        //            .Where(v => SR.Any(p => p.PriceID == v.PriceID));
+        //    }
+        //}
+
+        //public IQueryable<V_Tuition> SDSession
+        //{
+        //    get
+        //    {
+        //        IQueryable<LessonPriceProperty> SD = models.GetTable<LessonPriceProperty>().Where(p => p.PropertyID == (int)Naming.LessonPriceFeature.營養課程);
+        //        return LessonItems
+        //            .Where(v => SD.Any(p => p.PriceID == v.PriceID));
+        //    }
+        //}
+
         public IQueryable<V_Tuition> SettlementFullAchievement => ExclusivePILesson
             .Where(t => t.CoachAttendance.HasValue && t.CommitAttendance.HasValue);
 

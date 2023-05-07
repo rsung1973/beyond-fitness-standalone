@@ -38,7 +38,7 @@
             $('#@(_dialogID)').modal('hide');
             if (closeModal) {
                 closeModal();
-                $global.closeAllModal = null;
+                $global.closeAllModal = function() { };
             }
         };
 

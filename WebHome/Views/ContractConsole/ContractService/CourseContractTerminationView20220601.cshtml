@@ -208,7 +208,8 @@
                                         <text>並減免手續費。</text>
                                     }
                                     else if (_model.CauseForEnding == (int)Naming.CauseForEnding.合約到期轉新約
-                                        || _model.CauseForEnding == (int)Naming.CauseForEnding.轉讓第三人)
+                                        || _model.CauseForEnding == (int)Naming.CauseForEnding.轉讓第三人
+                                        || _model.CauseForEnding == (int)Naming.CauseForEnding.更改合約類型)
                                     {
                                         returnAmt = remained;
                                         <text>並另外收取手續費新台幣300元整。</text>
@@ -235,7 +236,8 @@
                                         </text>
                                     }
                                     else if (_model.CauseForEnding == (int)Naming.CauseForEnding.合約到期轉新約
-                                            || _model.CauseForEnding == (int)Naming.CauseForEnding.轉讓第三人)
+                                            || _model.CauseForEnding == (int)Naming.CauseForEnding.轉讓第三人
+                                            || _model.CauseForEnding == (int)Naming.CauseForEnding.更改合約類型)
                                     {
                                         returnAmt = totalPaid;
                                         <text>
@@ -363,7 +365,8 @@
                         </tr>
                     }
                     @if ( !(_model.CauseForEnding == (int)Naming.CauseForEnding.轉讓第三人
-                        || _model.CauseForEnding == (int)Naming.CauseForEnding.合約到期轉新約))
+                        || _model.CauseForEnding == (int)Naming.CauseForEnding.合約到期轉新約
+                       || _model.CauseForEnding == (int)Naming.CauseForEnding.更改合約類型))
                     {
                         <tr>
                             <td>退款銀行帳號：@(_model.CourseContractTermination?.BankID)/@(_model.CourseContractTermination?.BankAccount)</td>

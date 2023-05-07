@@ -84,7 +84,7 @@
                     私人原因（工作、搬家、懷孕、受傷）
                 </option>
                 <option value="@((int)Naming.CauseForEnding.更改合約類型)">
-                    更改合約類型（個人合約改家庭合約）
+                    更改合約內容（不退費：更改類型/購買堂數等）
                 </option>
                 <option value="@((int)Naming.CauseForEnding.學生簽約後反悔)">學生簽約後反悔</option>
                 <option value="@((int)Naming.CauseForEnding.所屬教練離職)">所屬教練離職</option>
@@ -215,6 +215,7 @@ function buildRefundInfo(totalPaid) {
 
         if($formData.CauseForEnding == '@((int)Naming.CauseForEnding.合約到期轉新約)'
             || $formData.CauseForEnding == '@((int)Naming.CauseForEnding.轉讓第三人)'
+            || $formData.CauseForEnding == '@((int)Naming.CauseForEnding.更改合約類型)' 
             || totalPaid <= 0) {
             $('.byCause').css('display','none');
         } else {

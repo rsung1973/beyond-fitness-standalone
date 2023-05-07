@@ -49,8 +49,7 @@ namespace WebHome.Properties
             T currentSettings;
             //String fileName = $"{Assembly.GetExecutingAssembly().GetName()}.settings.json";
             String fileName = "App.settings.json";
-            String path = Path.Combine(AppRoot, "App_Data");
-            path.CheckStoredPath();
+            String path = Path.Combine(AppRoot, "App_Data").CheckStoredPath();
             String filePath = Path.Combine(path, fileName);
             if (File.Exists(filePath))
             {
@@ -112,6 +111,8 @@ namespace WebHome.Properties
             get;
             set;
         }
+
+        public String Language { get; set; } = "zh-TW";
 
         public SmtpSettings Smtp
         {

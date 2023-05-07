@@ -123,12 +123,12 @@
   <data name="FindUs" xml:space="preserve">
     <value>分店一覽</value>
   </data>
- <data name="OnLine" xml:space="preserve">
+  <data name="OnLine" xml:space="preserve">
     <value>專屬服務</value>
-  </data>   
+  </data>
   <data name="Service" xml:space="preserve">
     <value>專屬服務</value>
-  </data>  
+  </data>
   <data name="FAQ" xml:space="preserve">
     <value>常見問題</value>
   </data>
@@ -194,7 +194,7 @@
   </data>
   <data name="IndexPartnerTitle" xml:space="preserve">
     <value>合作夥伴</value>
-  </data>  
+  </data>
   <data name="IndexSlick1Desc" xml:space="preserve">
     <value>專業是細心且提升客戶的保障，Beyond 運動與物理治療的配合是有效的</value>
   </data>
@@ -341,14 +341,14 @@
   </data>
   <data name="JoinUsJob2" xml:space="preserve">
     <value>防護教練</value>
-  </data>  
+  </data>
   <data name="JoinUsJob2Desc" xml:space="preserve">
     <value />
   </data>
   <data name="JoinUsJob3" xml:space="preserve">
     <value>恢復教練</value>
   </data>
-    <data name="JoinUsJob4" xml:space="preserve">
+  <data name="JoinUsJob4" xml:space="preserve">
     <value>營養教練</value>
   </data>
   <data name="OpportunityBannerTitle" xml:space="preserve">
@@ -406,7 +406,7 @@
     <value>立即預約</value>
   </data>
   <data name="Features1Desc" xml:space="preserve">
-    <value>&lt;p&gt;Beyond Fitness提供以下承諾&lt;/p&gt;&lt;ul class="features-list"&gt;&lt;li&gt;客製化課程內容，學習更安全，同時讓您得到顯著的運動效果&lt;/li&gt;&lt;li&gt;專業教練帶領下，清楚了解自己的身體狀況與運動進度&lt;/li&gt;&lt;li&gt;透過與您互相討論課程內容，強化掌握運動時的每個環節&lt;/li&gt;&lt;li&gt;固定時間評估並分析身體狀況與課程內容，隨時替您把關上課品質&lt;/li&gt;&lt;/ul&gt;</value>
+    <value>&lt;p&gt;Beyond Fitness提供以下承諾&lt;/p&gt;&lt;ul class="features-list"&gt;&lt;li&gt;客製化課程內容，學習更安全，同時讓您得到顯著的運動效果&lt;/li&gt;&lt;li&gt;專業教練帶領下，清楚了解自己的身體狀況與運動進度&lt;/li&gt;&lt;li&gt;透過與您互相討論課程內容，強化掌握運動時的每個環節&lt;/li&gt;&lt;li&gt;固定時間評估並分析身體狀況與課程內容，隨時替您把關上課品質&lt;/li&gt;&lt;li&gt;&lt;a href="download/trust.pdf" target="_blank"&gt;信託聲明書&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;&lt;div class="col-grey p-l-20 p-b-10"&gt;相關運動成效與所需時間因人而異，建議與教練共同討論，確保相關品質&lt;/div&gt;</value>
   </data>
   <data name="Features2Desc" xml:space="preserve">
     <value>&lt;p&gt;Beyond Fitness 團隊是業界擁有最多國際級六大專業證照的機構，讓您在專業及安全的環境下運動&lt;/p&gt;&lt;ul class="features-list"&gt;&lt;li&gt;ACE   美國運動委員會&lt;/li&gt;&lt;li&gt;ACSM  美國運動醫學會&lt;/li&gt;&lt;li&gt;NCAA  國家委員會授證機構&lt;/li&gt;&lt;li&gt;NSCA  美國肌力體能協會&lt;/li&gt;&lt;li&gt;NASM  美國國家運動醫學會&lt;/li&gt;&lt;li&gt;CrossFit   美國混合健身系統&lt;/li&gt;&lt;li&gt;EXOS-XPS   美國最大私人運動員機構&lt;/li&gt;&lt;li&gt;CPR+AED    中華民國紅十字會&lt;/li&gt;&lt;/ul&gt;</value>
@@ -527,7 +527,7 @@
   </data>
   <data name="PersonalTrainer" xml:space="preserve">
     <value>一對一私人教練</value>
-  </data>  
+  </data>
   <data name="NutritionCoach" xml:space="preserve">
     <value>一對一營養教練</value>
   </data>
@@ -536,10 +536,10 @@
   </data>
   <data name="OnlinePTSlogon" xml:space="preserve">
     <value>像好友一樣的，&lt;br /&gt;體能顧問！</value>
-  </data>  
+  </data>
   <data name="OnlineNCTitle" xml:space="preserve">
     <value>BEYOND &lt;br/&gt;陪您好食?</value>
-  </data> 
+  </data>
   <data name="OnlineNCSlogon" xml:space="preserve">
     <value>把吃東西的習慣，&lt;br /&gt;改變吧！</value>
   </data>

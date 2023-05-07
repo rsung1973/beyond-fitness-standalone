@@ -717,6 +717,8 @@ namespace WebHome.Models.DataEntity
         public bool ForDietary => this?.Status == (int)Naming.LessonPriceStatus.營養課程
             || this?.LessonPriceProperty.Any(p => p.PropertyID == (int)Naming.LessonPriceFeature.營養課程) == true;
         public bool IsSingleCharge => this?.LessonPriceProperty.Any(p => p.PropertyID == (int)Naming.LessonPriceFeature.單堂現場付款) == true;
+        public bool IsATSession => this?.Status == (int)Naming.LessonPriceStatus.運動防護課程
+            || this?.LessonPriceProperty.Any(p => p.PropertyID == (int)Naming.LessonPriceFeature.運動防護課程) == true;
 
         public static readonly int?[] SessionScopeForPTSingleCharge = new int?[]
         {
@@ -851,7 +853,7 @@ namespace WebHome.Models.DataEntity
                 case Naming.CauseForEnding.私人原因:
                     return "私人原因（工作、搬家、懷孕、受傷）";
                 case Naming.CauseForEnding.更改合約類型:
-                    return "更改合約類型（個人合約改家庭合約）";
+                    return "更改合約內容（不退費：更改類型/購買堂數等）";
                 case Naming.CauseForEnding.學生簽約後反悔:
                     return "學生簽約後反悔";
                 case Naming.CauseForEnding.所屬教練離職:
@@ -925,6 +927,14 @@ namespace WebHome.Models.DataEntity
         {
             已下架 = 0,
             正常 = 1,
+        }
+    }
+
+    public partial class ServingCoachProperty
+    {
+        public enum PropertyDefinition
+        {
+            Apprentice = 1,
         }
     }
 }

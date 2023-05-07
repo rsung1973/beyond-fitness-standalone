@@ -1184,7 +1184,8 @@ namespace WebHome.Controllers
                     r[10] = dataItems.Sum(t => (int)t[2]);
 
                     dataItems = branchItems.Where(p => (String)p[3] == Naming.PaymentTransactionType.運動商品.ToString()
-                                                || (String)p[3] == Naming.PaymentTransactionType.食飲品.ToString());
+                                                || (String)p[3] == Naming.PaymentTransactionType.食飲品.ToString()
+                                                || (String)p[3] == Naming.PaymentTransactionType.終止手續費.ToString());
                     r[12] = dataItems.Sum(t => (int)t[2]);
 
                     decimal total = Math.Max((int)r[2], 1);
@@ -1266,7 +1267,8 @@ namespace WebHome.Controllers
                     r[10] = dataItems.Sum(t => (int)t[2]);
 
                     dataItems = branchItems.Where(p => (String)p[3] == Naming.PaymentTransactionType.運動商品.ToString()
-                                                || (String)p[3] == Naming.PaymentTransactionType.食飲品.ToString());
+                                                || (String)p[3] == Naming.PaymentTransactionType.食飲品.ToString()
+                                                || (String)p[3] == Naming.PaymentTransactionType.終止手續費.ToString());
                     r[12] = dataItems.Sum(t => (int)t[2]);
 
                     decimal total = Math.Max((int)r[2], 1);
@@ -1349,7 +1351,8 @@ namespace WebHome.Controllers
                     r[11] = dataItems.Sum(t => (int)t[2]);
 
                     dataItems = g.Where(p => (String)p[3] == Naming.PaymentTransactionType.運動商品.ToString()
-                                                || (String)p[3] == Naming.PaymentTransactionType.食飲品.ToString());
+                                                || (String)p[3] == Naming.PaymentTransactionType.食飲品.ToString()
+                                                || (String)p[3] == Naming.PaymentTransactionType.終止手續費.ToString());
                     r[13] = dataItems.Sum(t => (int)t[2]);
 
                     decimal total = Math.Max((int)r[3], 1);

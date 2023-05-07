@@ -25,24 +25,41 @@
 }
 
 @{
-    var items = models.GetTable<LessonTime>().Where(l => l.ClassTime >= _viewModel.ClassTimeStart && l.ClassTime < _viewModel.ClassTimeStart.Value.AddDays(1))
-                    .ToList();
+    var items = models.GetTable<V_Tuition>().Where(l => l.ClassTime >= _viewModel.ClassTimeStart && l.ClassTime < _viewModel.ClassTimeStart.Value.AddDays(1));
     if (_viewModel.BranchID.HasValue)
     {
-        items = items.Where(l => l.BranchID == _viewModel.BranchID)
-                    .ToList();
+        items = items.Where(l => l.BranchID == _viewModel.BranchID);
     }
 
-    var PTLessons = items.PTLesson()
-            .Select(l => new { Hour = l.ClassTime.Value.Hour, Persons = l.GroupingLesson.RegisterLesson.Count })
-            .GroupBy(h => h.Hour)
-            .Select(g => new _Counting { Hour = g.Key, Count = g.Sum(p => p.Persons) })
-            .ToList();
-    var PILessons = items.Where(l => l.TrainingBySelf == 1)
+    LessonTimeAchievementHelper helper = new LessonTimeAchievementHelper(models)
+            {
+                LessonItems = items
+            };
+
+    var SRLessons = items.Where(t => t.PriceStatus == (int)Naming.LessonPriceStatus.運動恢復課程)
             .Select(l => l.ClassTime.Value.Hour)
             .GroupBy(h => h)
             .Select(g => new _Counting { Hour = g.Key, Count = g.Count() })
             .ToList();
+
+    var SDLessons = items.Where(t => t.PriceStatus == (int)Naming.LessonPriceStatus.營養課程)
+            .Select(l => l.ClassTime.Value.Hour)
+            .GroupBy(h => h)
+            .Select(g => new _Counting { Hour = g.Key, Count = g.Count() })
+            .ToList();
+
+    var PTLessons = helper.PTSession
+            .Select(l => new { Hour = l.ClassTime.Value.Hour, Persons = l.GroupingMemberCount })
+            .GroupBy(h => h.Hour)
+            .Select(g => new _Counting { Hour = g.Key, Count = g.Sum(p => p.Persons) })
+            .ToList();
+
+    var PILessons = helper.PILesson
+            .Select(l => l.ClassTime.Value.Hour)
+            .GroupBy(h => h)
+            .Select(g => new _Counting { Hour = g.Key, Count = g.Count() })
+            .ToList();
+
     var TrialLessons = items.TrialLesson()
             .Select(l => l.ClassTime.Value.Hour)
             .GroupBy(h => h)
@@ -60,6 +77,16 @@
     {
         totalData[i] += tempData[i];
     }
+    tempData = getDistribution(SRLessons, _hourIdx).ToArray();
+    for (int i = 0; i < totalData.Length; i++)
+    {
+        totalData[i] += tempData[i];
+    }
+    tempData = getDistribution(SDLessons, _hourIdx).ToArray();
+    for (int i = 0; i < totalData.Length; i++)
+    {
+        totalData[i] += tempData[i];
+    }
 }
 <script>
 
@@ -72,7 +99,7 @@
         },
         legend: {
             left: 'center',
-            data: ['P.T', 'P.I', 'T.S']
+            data: ["P.T", "T.S", "P.I", "S.R", "S.D"],            
         },
         xAxis: [
             {
@@ -120,6 +147,15 @@
                 data: @Html.Raw(JsonConvert.SerializeObject(getDistribution(PTLessons, _hourIdx).ToArray())),
             },
             {
+                name: 'T.S',
+                type: 'bar',
+                stack: 'total',
+                label: {
+                    show: false,
+                },
+                data: @Html.Raw(JsonConvert.SerializeObject(getDistribution(TrialLessons, _hourIdx).ToArray())),
+            },
+            {
                 name: 'P.I',
                 type: 'bar',
                 stack: 'total',
@@ -129,16 +165,25 @@
                 data: @Html.Raw(JsonConvert.SerializeObject(getDistribution(PILessons, _hourIdx).ToArray())),
             },
             {
-                name: 'T.S',
+                name: 'S.R',
                 type: 'bar',
                 stack: 'total',
                 label: {
                     show: false,
                 },
-                data: @Html.Raw(JsonConvert.SerializeObject(getDistribution(TrialLessons, _hourIdx).ToArray())),
+                data: @Html.Raw(JsonConvert.SerializeObject(getDistribution(SRLessons, _hourIdx).ToArray())),
+            },
+            {
+                name: 'S.D',
+                type: 'bar',
+                stack: 'total',
+                label: {
+                    show: false,
+                },
+                data: @Html.Raw(JsonConvert.SerializeObject(getDistribution(SDLessons, _hourIdx).ToArray())),
             }
         ],
-        color: ['#ffb980', '#2ec7c9', '#d87a80'],
+        color: ['#ffe599', '#f3c4b6', '#b6d7a8', '#c6d9f1', '#d9d9d9'],
         emphasis: {
             itemStyle: {
                 shadowBlur: 10,

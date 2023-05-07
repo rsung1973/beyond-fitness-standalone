@@ -92,6 +92,10 @@ namespace WebHome.Models.ViewModel
         public String BankID { get; set; }
         public String BankAccount { get; set; }
         public String SignerPIN { get; set; }
+        public bool? CheckBRLearner { get; set; }
+        public bool? CheckBRCoach { get; set; }
+        public int? BRLearner { get; set; }
+        public int? BRCoach { get; set; }
 
     }
 
@@ -183,6 +187,7 @@ namespace WebHome.Models.ViewModel
         public int? BirthIncomingDays { get; set; } = 14;
         public bool? IncludeTrial { get; set; }
         public DateTime? BirthDate { get; set; }
+        public String WriteoffCode { get; set; }
     }
 
     public class PaymentViewModel : InvoiceViewModel

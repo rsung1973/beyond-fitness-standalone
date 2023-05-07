@@ -270,6 +270,19 @@ namespace WebHome.Helper.BusinessOperation
             item.Remark = viewModel.Remark;
             item.FitnessConsultant = viewModel.FitnessConsultant.Value;
             item.Renewal = viewModel.Renewal;
+            item.CourseContractExtension.BRByCoach = null;
+            item.CourseContractExtension.BRByLearner = null;
+            if (item.Renewal == false)
+            {
+                if (viewModel.CheckBRCoach == true)
+                {
+                    item.CourseContractExtension.BRByCoach = viewModel.BRCoach;
+                }
+                if (viewModel.CheckBRLearner == true)
+                {
+                    item.CourseContractExtension.BRByLearner = viewModel.BRLearner;
+                }
+            }
             item.CourseContractExtension.PaymentMethod = paymentMethod;
             item.CourseContractExtension.Version = (int?)viewModel.Version;
             item.CourseContractExtension.SignOnline = viewModel.SignOnline;
@@ -396,6 +409,24 @@ namespace WebHome.Helper.BusinessOperation
                 if (!viewModel.Renewal.HasValue)
                 {
                     ModelState.AddModelError("Renewal", "請選擇是否為VIP續約");
+                }
+                else if (viewModel.Renewal == false)
+                {
+                    if (viewModel.CheckBRCoach == true)
+                    {
+                        if (!viewModel.BRCoach.HasValue)
+                        {
+                            ModelState.AddModelError("CheckBRCoach", "請選擇BR教練");
+                        }
+                    }
+
+                    if (viewModel.CheckBRLearner == true)
+                    {
+                        if (!viewModel.BRLearner.HasValue)
+                        {
+                            ModelState.AddModelError("CheckBRLearner", "請選擇BR學員");
+                        }
+                    }
                 }
 
                 if (viewModel.InstallmentPlan == true)
@@ -2161,17 +2192,22 @@ namespace WebHome.Helper.BusinessOperation
                     if (!item.SourceContract.CourseContractAction.Any(a => a.ActionID == (int)CourseContractAction.ActionType.免收手續費))
                     {
                         if (item.CauseForEnding == (int)Naming.CauseForEnding.轉讓第三人
-                            || item.CauseForEnding == (int)Naming.CauseForEnding.合約到期轉新約)
+                            || item.CauseForEnding == (int)Naming.CauseForEnding.合約到期轉新約
+                            || item.CauseForEnding == (int)Naming.CauseForEnding.更改合約類型)
                         {
-                            if (!item.CourseContract.CourseContractAction.Any(c => c.ActionID == (int)CourseContractAction.ActionType.合約終止手續費))
+                            if (item.SourceContract.AttendedLessonCount() > 0
+                                || (DateTime.Today - item.SourceContract.ValidFrom.Value).TotalDays > 7)
                             {
-                                item.CourseContract.CourseContractAction
-                                    .Add(
-                                        new CourseContractAction
-                                        {
-                                            ActionID = (int)CourseContractAction.ActionType.合約終止手續費
-                                        });
-                                models.SubmitChanges();
+                                if (!item.CourseContract.CourseContractAction.Any(c => c.ActionID == (int)CourseContractAction.ActionType.合約終止手續費))
+                                {
+                                    item.CourseContract.CourseContractAction
+                                        .Add(
+                                            new CourseContractAction
+                                            {
+                                                ActionID = (int)CourseContractAction.ActionType.合約終止手續費
+                                            });
+                                    models.SubmitChanges();
+                                }
                             }
                         }
                     }
@@ -2357,6 +2393,7 @@ namespace WebHome.Helper.BusinessOperation
 
                     if (!(viewModel.CauseForEnding == Naming.CauseForEnding.轉讓第三人
                         || viewModel.CauseForEnding == Naming.CauseForEnding.合約到期轉新約
+                        || viewModel.CauseForEnding == Naming.CauseForEnding.更改合約類型 
                         || item.TotalPaidAmount() <= 0))
                     {
                         viewModel.BankID = viewModel.BankID.GetEfficientString();

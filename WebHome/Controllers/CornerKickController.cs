@@ -454,8 +454,14 @@ namespace WebHome.Controllers
 
         public async Task<ActionResult> CheckAttendanceAsync(RegisterViewModel viewModel)
         {
+            UserProfile item = await HttpContext.GetUserAsync();
+            if (item != null)
+            {
+                return View("CheckAttendance", item.LoadInstance(models));
+            }
+
             ViewResult result = (ViewResult)await NoticeAsync(viewModel);
-            UserProfile item = result.Model as UserProfile;
+            item = result.Model as UserProfile;
 
             if(item!=null)
             {
@@ -500,6 +506,67 @@ namespace WebHome.Controllers
             return View("CheckAttendance",profile);
 
         }
+
+        [Authorize]
+        public async Task<ActionResult> ConfirmAttendanceAsync(LearnerQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            var profile = (await HttpContext.GetUserAsync()).LoadInstance(models);
+
+            int? lessonID = viewModel?.LessonID?[0];
+            if (viewModel.KeyID != null)
+            {
+                lessonID = viewModel.DecryptKeyValue();
+            }
+
+            var item = models.GetTable<LessonTime>().Where(l => l.LessonID == lessonID)
+                    .FirstOrDefault();
+            if (item != null)
+            {
+                ViewBag.DataItem = item;
+                return View("ConfirmAttendance", profile);
+            }
+
+            return View("CheckAttendance", profile);
+
+        }
+
+        [Authorize]
+        public async Task<ActionResult> WriteOffAttendanceAsync(LearnerQueryViewModel viewModel)
+        {
+            ViewResult result = await ConfirmAttendanceAsync(viewModel) as ViewResult;
+            LessonTime item = ViewBag.DataItem as LessonTime;
+
+            if (item == null)
+            {
+                return result;
+            }
+
+            viewModel.WriteoffCode = viewModel.WriteoffCode.GetEfficientString();
+            if (item.AsAttendingCoach.UserProfile.Phone != viewModel.WriteoffCode)
+            {
+                ModelState.AddModelError("WriteoffCode", "兌換核銷密碼欄位資料錯誤，請確認後再重新輸入");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                ViewBag.ModelState = this.ModelState;
+                return View("~/Views/CornerKick/Shared/ReportInputError.cshtml");
+            }
+
+            item.LessonPlan.CommitAttendance = DateTime.Now;
+            item.LessonPlan.Remark = $"{item.AsAttendingCoach.UserProfile.FullName()}治療完成";
+            var execution = item.TrainingPlan.FirstOrDefault()?.TrainingExecution;
+            if (execution != null)
+            {
+                execution.Emphasis = "AT課程";
+            }
+            models.SubmitChanges();
+
+            models.AttendLesson(item, item.AsAttendingCoach.UserProfile);
+            return Json(new { result = true });
+        }
+
 
         [Authorize]
         public async Task<ActionResult> CommitCurrentUserEventAsync(UserEventViewModel viewModel)

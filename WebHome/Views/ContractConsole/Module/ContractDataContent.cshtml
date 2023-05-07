@@ -162,6 +162,25 @@
         </div>
     </div>
 </li>
+@if(_model.Renewal!=true)
+{
+    <li>
+        <div class="list_tb tb2">
+            <div class="list_tr">
+                <div class="list_td hd">教練BR</div>
+                <div class="list_td rt">@(_model.CourseContractExtension?.BRCoach?.FullName())</div>
+            </div>
+        </div>
+    </li>
+    <li>
+        <div class="list_tb tb2">
+            <div class="list_tr">
+                <div class="list_td hd">學生BR</div>
+                <div class="list_td rt">@(_model.CourseContractExtension?.BRLearner?.RealName)</div>
+            </div>
+        </div>
+    </li>
+}
 <li>
     <div class="list_tb tb2">
         <div class="list_tr">

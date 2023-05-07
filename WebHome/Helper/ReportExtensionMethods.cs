@@ -973,7 +973,7 @@ namespace WebHome.Helper
 
                     salary.AchievementShareRatio = shareRatio;
 
-                    if (/*coach.CoachID == 29445 || coach.CoachID == 24032*/ coach.CoachID == -1)
+                    if (coach.ServingCoachProperty.Any(p => p.PropertyID == (int)ServingCoachProperty.PropertyDefinition.Apprentice))
                     {
                         salary.GradeIndex = 31;
                     }
@@ -986,7 +986,14 @@ namespace WebHome.Helper
                         * (int?)(salary.PTAverageUnitPrice / 1.05M + 0.5M)
                         * salary.GradeIndex / 100M + 0.5M) ?? 0;
 
-                    salary.AchievementBonus = (int?)(netAchievement * salary.AchievementShareRatio / 100M + 0.5M ?? 0);
+                    if (coach.ServingCoachProperty.Any(p => p.PropertyID == (int)ServingCoachProperty.PropertyDefinition.Apprentice))
+                    {
+                        salary.SpecialBonus = (int?)(netAchievement * salary.AchievementShareRatio / 100M + 0.5M ?? 0);
+                    }
+                    else
+                    {
+                        salary.AchievementBonus = (int?)(netAchievement * salary.AchievementShareRatio / 100M + 0.5M ?? 0);
+                    }
 
                     models.SubmitChanges();
                 }
@@ -1221,7 +1228,8 @@ namespace WebHome.Helper
                 {
                     salary.PTAttendanceCount = helper.LessonItems
                             .Where(v => v.PriceStatus == (int)Naming.LessonPriceStatus.營養課程
-                                    || v.PriceStatus == (int)Naming.LessonPriceStatus.點數兌換課程)
+                                    || v.PriceStatus == (int)Naming.LessonPriceStatus.點數兌換課程
+                                    || v.PriceStatus == (int)Naming.LessonPriceStatus.體驗課程)
                             .Where(v => v.AttendingCoach == coach.CoachID).Count();
 
                     salary.AttendanceBonus = 0;
@@ -1276,47 +1284,6 @@ namespace WebHome.Helper
 
                     calcGeneralAchievement();
 
-                }
-                else if (/*coach.CoachID == 29445 ||*/ coach.CoachID == 24032 /*coach.CoachID == -1*/)
-                {
-                    if (forRole == "coach" || forRole== "vicemanager")
-                    {
-                        calcGeneralAchievement();
-                        calcCoachBonus();
-
-                        branch = models.GetTable<BranchStore>().Where(b => b.ViceManagerID == coach.CoachID).FirstOrDefault();
-
-                        branch ??= coach.CurrentWorkBranch();
-
-                        CoachBranchMonthlyBonus branchBonus = null;
-                        if (branch != null)
-                        {
-                            branchBonus = salary.CoachBranchMonthlyBonus.Where(b => b.BranchID == branch.BranchID).FirstOrDefault();
-                        }
-
-                        var indicator = models.GetTable<MonthlyIndicator>().Where(s => s.StartDate <= settlement.StartDate && s.EndExclusiveDate > settlement.StartDate).FirstOrDefault();
-                        if (indicator != null && branchBonus != null)
-                        {
-                            MonthlyBranchRevenueGoal item = indicator.MonthlyBranchRevenueIndicator.Where(r => r.BranchID == branch.BranchID)
-                                .Where(r => r.MonthlyBranchRevenueGoal != null)
-                                .Select(r => r.MonthlyBranchRevenueGoal).FirstOrDefault();
-
-                            if (item != null)
-                            {
-                                branchBonus.BranchTotalPTCount =
-                                    (item.ActualCompleteLessonCount ?? 0)
-                                    + (item.SRCount ?? 0)
-                                    + (item.SDCount ?? 0)
-                                    + (item.ATCount ?? 0);
-                                var tuitionSubtotal =
-                                branchBonus.BranchTotalPTTuition =
-                                    (item.ActualLessonAchievement ?? 0)
-                                    + (item.SRAchievement ?? 0)
-                                    + (item.SDAchievement ?? 0)
-                                    + (item.ATAchievement ?? 0);
-                            }
-                        }
-                    }
                 }
                 else if (coach.UserProfile.IsFES())
                 {
@@ -1378,41 +1345,81 @@ namespace WebHome.Helper
                         continue;
                     }
 
-                    branch = models.GetTable<BranchStore>().Where(b => b.ViceManagerID == coach.CoachID).FirstOrDefault();
-
-                    if (branch == null)
+                    if (coach.ServingCoachProperty.Any(p => p.PropertyID == (int)ServingCoachProperty.PropertyDefinition.Apprentice))
                     {
-                        branch = coach.CurrentWorkBranch();
-                    }
+                        calcGeneralAchievement();
+                        calcCoachBonus();
 
-                    CoachBranchMonthlyBonus branchBonus = null;
-                    if (branch != null)
-                    {
-                        branchBonus = salary.CoachBranchMonthlyBonus.Where(b => b.BranchID == branch.BranchID).FirstOrDefault();
-                        if (branchBonus == null)
+                        branch = models.GetTable<BranchStore>().Where(b => b.ViceManagerID == coach.CoachID).FirstOrDefault();
+                        branch ??= coach.CurrentWorkBranch();
+
+                        CoachBranchMonthlyBonus branchBonus = null;
+                        if (branch != null)
                         {
-                            branchBonus = new CoachBranchMonthlyBonus
-                            {
-                                CoachMonthlySalary = salary,
-                                BranchID = branch.BranchID
-                            };
-                            salary.CoachBranchMonthlyBonus.Add(branchBonus);
+                            branchBonus = salary.CoachBranchMonthlyBonus.Where(b => b.BranchID == branch.BranchID).FirstOrDefault();
                         }
-                        var branchItems = countableItems.Where(w => w.WorkPlace == branch.BranchID);
-                        branchBonus.BranchTotalAttendanceCount = branchItems.Count();
-                        branchBonus.BranchTotalTuition = branchItems.CalcTuition(models);
 
-                        var branchVoidTuition = voidPayment
-                            .Join(models.GetTable<PaymentTransaction>().Where(t => t.BranchID == branch.BranchID), p => p.PaymentID, t => t.PaymentID, (p, t) => p)
-                            .Join(models.GetTable<TuitionAchievement>(), p => p.PaymentID, t => t.InstallmentID, (p, t) => t);
+                        var indicator = models.GetTable<MonthlyIndicator>().Where(s => s.StartDate <= settlement.StartDate && s.EndExclusiveDate > settlement.StartDate).FirstOrDefault();
+                        if (indicator != null && branchBonus != null)
+                        {
+                            MonthlyBranchRevenueGoal item = indicator.MonthlyBranchRevenueIndicator.Where(r => r.BranchID == branch.BranchID)
+                                .Where(r => r.MonthlyBranchRevenueGoal != null)
+                                .Select(r => r.MonthlyBranchRevenueGoal).FirstOrDefault();
 
-                        branchBonus.VoidShare = branchVoidTuition.Sum(t => t.VoidShare) ?? 0;
-
-                        models.SubmitChanges();
+                            if (item != null)
+                            {
+                                branchBonus.BranchTotalPTCount =
+                                    (item.ActualCompleteLessonCount ?? 0)
+                                    + (item.SRCount ?? 0)
+                                    + (item.SDCount ?? 0)
+                                    + (item.ATCount ?? 0);
+                                var tuitionSubtotal =
+                                branchBonus.BranchTotalPTTuition =
+                                    (item.ActualLessonAchievement ?? 0)
+                                    + (item.SRAchievement ?? 0)
+                                    + (item.SDAchievement ?? 0)
+                                    + (item.ATAchievement ?? 0);
+                            }
+                        }
                     }
+                    else
+                    {
+                        branch = models.GetTable<BranchStore>().Where(b => b.ViceManagerID == coach.CoachID).FirstOrDefault();
 
-                    calcGeneralAchievement();
-                    calcViceManagerBonus(branch, branchBonus);
+                        if (branch == null)
+                        {
+                            branch = coach.CurrentWorkBranch();
+                        }
+
+                        CoachBranchMonthlyBonus branchBonus = null;
+                        if (branch != null)
+                        {
+                            branchBonus = salary.CoachBranchMonthlyBonus.Where(b => b.BranchID == branch.BranchID).FirstOrDefault();
+                            if (branchBonus == null)
+                            {
+                                branchBonus = new CoachBranchMonthlyBonus
+                                {
+                                    CoachMonthlySalary = salary,
+                                    BranchID = branch.BranchID
+                                };
+                                salary.CoachBranchMonthlyBonus.Add(branchBonus);
+                            }
+                            var branchItems = countableItems.Where(w => w.WorkPlace == branch.BranchID);
+                            branchBonus.BranchTotalAttendanceCount = branchItems.Count();
+                            branchBonus.BranchTotalTuition = branchItems.CalcTuition(models);
+
+                            var branchVoidTuition = voidPayment
+                                .Join(models.GetTable<PaymentTransaction>().Where(t => t.BranchID == branch.BranchID), p => p.PaymentID, t => t.PaymentID, (p, t) => p)
+                                .Join(models.GetTable<TuitionAchievement>(), p => p.PaymentID, t => t.InstallmentID, (p, t) => t);
+
+                            branchBonus.VoidShare = branchVoidTuition.Sum(t => t.VoidShare) ?? 0;
+
+                            models.SubmitChanges();
+                        }
+
+                        calcGeneralAchievement();
+                        calcViceManagerBonus(branch, branchBonus);
+                    }
                 }
                 else if (coach.UserProfile.IsHealthCare())
                 {

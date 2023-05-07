@@ -17,6 +17,8 @@
 
     _modelState = (ModelStateDictionary) ViewBag.ModelState;
     models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];
+
+    (ViewBag.Lang as String).SelectUICulture();
 }
 
 <section class="section-contact">

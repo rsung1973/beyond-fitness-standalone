@@ -82,7 +82,9 @@
 </section>
 }
     <!-- // 聯絡我們 -->
-    @{ await Html.RenderPartialAsync("~/Views/MainActivity/Module/ContactItem.cshtml");}
+    @{ 
+        await Html.RenderPartialAsync("~/Views/MainActivity/Module/ContactItem.cshtml");
+    }
 
 
     @section TailPageJavaScriptInclude {

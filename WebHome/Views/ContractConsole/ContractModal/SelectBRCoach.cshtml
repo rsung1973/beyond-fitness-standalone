@@ -1,0 +1,41 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    IQueryable<UserProfile> _model;
+    QueryViewModel _viewModel;
+    String _dialogID = $"attendee{DateTime.Now.Ticks}";
+
+
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _model = (IQueryable<UserProfile>)this.Model;
+    _viewModel = (QueryViewModel)ViewBag.ViewModel;
+}
+@{
+    ViewBag.SelectMember = (Func<UserProfile, String>)(item =>
+    {
+        return $"selectBRCoach({item.UID},\"{item.RealName}\");";
+    });
+    ViewBag.ShowPhone = false;
+    await Html.RenderPartialAsync("~/Views/ConsoleEvent/EventModal/MemberSelector.cshtml", _model);
+}
+
+<script>
+    function selectBRCoach(uid,name) {
+        $global.viewModel.BRCoach = uid;
+        $global.$searchInput.val(name);
+        $global.closeAllModal();
+    }
+</script>
+

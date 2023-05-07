@@ -18,6 +18,7 @@
 
     models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
     _modelState = ViewContext.ModelState;
+    (ViewBag.Lang as String).SelectUICulture();
 
 }
 <!DOCTYPE html>

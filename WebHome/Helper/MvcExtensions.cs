@@ -14,6 +14,8 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using System.Data;
 using Microsoft.AspNetCore.Http;
 using CommonLib.Core.Utility;
+using System.Globalization;
+using System.Threading;
 
 namespace WebHome.Helper
 {
@@ -139,5 +141,14 @@ namespace WebHome.Helper
 
         }
 
+        public static void SelectUICulture(this string lang)
+        {
+            if (lang != null)
+            {
+                var cultureInfo = new CultureInfo(lang);
+                Thread.CurrentThread.CurrentUICulture = cultureInfo;
+                Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture(cultureInfo.Name);
+            }
+        }
     }
 }

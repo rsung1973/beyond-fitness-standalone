@@ -9,6 +9,10 @@ using WebHome.Models;
 using WebHome.Models.DataEntity;
 using WebHome.Models.ViewModel;
 using CommonLib.Utility;
+using WebHome.Security.Authorization;
+using WebHome.Models.Locale;
+using WebHome.Properties;
+using System.Threading;
 
 namespace WebHome.Controllers
 {
@@ -44,6 +48,16 @@ namespace WebHome.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        [AuthorizedSysAdmin]
+        public ActionResult AllSettings()
+        {
+            return Json(new
+            {
+                AppSettings = AppSettings.Default,
+                TimerCount = Timer.ActiveCount
+            });
         }
     }
 }

@@ -261,6 +261,10 @@ namespace WebHome.Controllers
                 viewModel.Status = item.Status;
                 viewModel.UID = item.CourseContractMember.Select(m => m.UID).ToArray();
                 viewModel.Renewal = item.Renewal;
+                viewModel.CheckBRCoach = item.CourseContractExtension.BRByCoach.HasValue;
+                viewModel.BRCoach = item.CourseContractExtension.BRByCoach;
+                viewModel.CheckBRLearner = item.CourseContractExtension.BRByLearner.HasValue;
+                viewModel.BRLearner = item.CourseContractExtension.BRByLearner;
                 viewModel.TotalCost = item.TotalCost;
                 if (item.InstallmentID.HasValue)
                 {
@@ -290,7 +294,7 @@ namespace WebHome.Controllers
                 viewModel.ManagerID = profile.UID;
             }
             ViewBag.ViewModel = viewModel;
-            return View("~/Views/ConsoleHome/EditCourseContract2022.cshtml", profile.LoadInstance(models));
+            return View("~/Views/ConsoleHome/EditCourseContract2023.cshtml", profile.LoadInstance(models));
         }
 
         [RoleAuthorize(new int[] { (int)Naming.RoleID.Administrator, (int)Naming.RoleID.Assistant, (int)Naming.RoleID.Officer, (int)Naming.RoleID.Coach, (int)Naming.RoleID.Servitor })]

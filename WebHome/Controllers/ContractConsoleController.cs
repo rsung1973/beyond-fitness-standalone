@@ -575,6 +575,34 @@ namespace WebHome.Controllers
                 return View("~/Views/ConsoleHome/Shared/AlertMessage.cshtml", model: "Opps！您確定您輸入的資料正確嗎！？");
         }
 
+        public ActionResult SearchBRLearner(String userName)
+        {
+            ViewResult result = SearchContractMember(userName) as ViewResult;
+            IQueryable<UserProfile> items = result.Model as IQueryable<UserProfile>;
+            if (items == null)
+            {
+                return result;
+            }
+
+            result.ViewName = "~/Views/ContractConsole/ContractModal/SelectBRLearner.cshtml";
+            return result;
+        }
+
+        public ActionResult SearchBRCoach(String userName)
+        {
+            IQueryable<UserProfile> items = userName.PromptUserProfileByName(models);
+            var coaches = models.PromptEffectiveCoach(); 
+            var employee = models.GetTable<ForEmployee>();
+
+            items = items.Where(u => coaches.Any(c => c.CoachID == u.UID)
+                            || employee.Any(e => e.UID == u.UID));
+
+            if (items.Count() > 0)
+                return View("~/Views/ContractConsole/ContractModal/SelectBRCoach.cshtml", items);
+            else
+                return View("~/Views/ConsoleHome/Shared/AlertMessage.cshtml", model: "Opps！您確定您輸入的資料正確嗎！？");
+        }
+
         public ActionResult ProcessContractMember(int uid)
         {
             return View("~/Views/ContractConsole/ContractModal/ProcessContractMember.cshtml", uid);

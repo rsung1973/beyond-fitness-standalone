@@ -102,6 +102,8 @@ namespace WebHome.Controllers
                     累計收款金額 = i.TotalPaidAmount(),
                     累計收款次數 = i.TotalPayoffCount(),
                     遠距 = i.LessonPriceType.BranchStore?.IsVirtualClassroom() == true || i.CourseContractExtension.CourseBranch?.IsVirtualClassroom() == true ? "是" : "",
+                    教練BR = i.CourseContractExtension.BRByCoach.HasValue ? i.CourseContractExtension.BRCoach.FullName(false) : null,
+                    學生BR = i.CourseContractExtension.BRByLearner.HasValue ? i.CourseContractExtension.BRLearner.RealName : null,
                 });
 
 

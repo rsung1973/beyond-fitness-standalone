@@ -754,12 +754,13 @@ namespace CommonLib.Utility
         }
 
 
-        public static void CheckStoredPath(this String fullPath)
+        public static String CheckStoredPath(this String fullPath)
         {
             if (!Directory.Exists(fullPath))
             {
                 Directory.CreateDirectory(fullPath);
             }
+            return fullPath;
         }
 
         public static void Save(this XmlNode doc, String path)

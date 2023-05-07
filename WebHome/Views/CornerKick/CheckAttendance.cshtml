@@ -59,7 +59,7 @@
     <link rel="apple-touch-icon-precomposed" sizes="144x144" href="favicons/favicon_144x144.png">
     <link rel="apple-touch-icon-precomposed" sizes="180x180" href="favicons/favicon_180x180.png">
 
-    <link href="css/style.css?1.5" type="text/css" rel="stylesheet" media="screen,projection" />
+    <link href="css/style.css?1.6" type="text/css" rel="stylesheet" media="screen,projection" />
 </head>
 <body class="light-gray">
     <!--//預設值為藍色 / 若要設定女生 請加上 mode-girls /  全版 full-fixed / 背景色 light-gray-->
@@ -106,13 +106,36 @@
                                         {
                                             hasItem = true;
                                         }
-                                        <li>
-                                            <input type="checkbox" name="LessonID" value="@(item.LessonID)" id="lesson@(item.LessonID)" @(item.ClassTime >= tomorrow ? "disabled" : null) />
-                                            <label for="lesson@(item.LessonID)">
-                                                <span class="@(tagClass)">@(item.LessonTypeStatus().Replace(".session","").Replace("課程",""))</span> @($"{item.ClassTime:yyyy/MM/dd HH:mm}")-@($"{item.ClassTime.Value.AddMinutes(item.DurationInMinutes.Value):HH:mm}")
-                                                <span class="help-text"> 體能顧問：@(item.AsAttendingCoach.UserProfile.FullName())</span>
-                                            </label>
-                                        </li>
+
+                                        if (item.RegisterLesson.LessonPriceType?.IsATSession == true)
+                                        {
+                                            <li onclick="javascript:confirmAttendance('@Html.Raw(item.ClassTime < tomorrow ? item.LessonID.EncryptKey() : "")');">
+                                                @if (item.ClassTime < tomorrow)
+                                                {
+                                                    <a href="#">
+                                                        <i class="livicon-evo prefix"
+                                                           data-options="name: angle-wide-right-alt.svg; size: 30px; autoPlay:true"></i>
+                                                    </a>
+                                                }
+                                                <label for="@($"lesson{item.LessonID}")">
+                                                    <span class="tag-blue badge">A.T</span>
+                                                    @($"{item.ClassTime:yyyy/MM/dd HH:mm}")-@($"{item.ClassTime.Value.AddMinutes(item.DurationInMinutes.Value):HH:mm}")
+                                                    <span class="help-text"> 體能顧問：@(item.AsAttendingCoach.UserProfile.FullName())</span>
+                                                </label>
+                                            </li>
+                                        }
+                                        else
+                                        {
+                                            <li>
+                                                <input type="checkbox" name="LessonID" value="@(item.LessonID)" id="lesson@(item.LessonID)" disabled="@(item.ClassTime >= tomorrow)" />
+                                                <label for="@($"lesson{item.LessonID}")">
+                                                    <span class="@(tagClass)">@(item.LessonTypeStatus().Replace(".session", "").Replace("課程", ""))</span> 
+                                                    @($"{item.ClassTime:yyyy/MM/dd HH:mm}")-@($"{item.ClassTime.Value.AddMinutes(item.DurationInMinutes.Value):HH:mm}")
+                                                    <span class="help-text"> 體能顧問：@(item.AsAttendingCoach.UserProfile.FullName())</span>
+                                                </label>
+                                            </li>
+                                        }
+
                                     }
                                 </ul>
                             </form>
@@ -189,6 +212,17 @@
             $('form').submit();
         } else {
             alert('請勾選課程!!');
+        }
+    }
+
+    function confirmAttendance(keyID) {
+        if (keyID!=null && keyID!='') {
+            gtag('event', '完成打卡', {
+                'event_category': '按鈕點擊',
+                'event_label': '上課打卡'
+            });
+            showLoading();
+            $('').launchDownload('@Html.Raw(Url.Action("ConfirmAttendance","CornerKick"))', {'KeyID':keyID});
         }
     }
 </script>

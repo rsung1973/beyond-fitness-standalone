@@ -203,15 +203,45 @@
 <!--勾選同意與簽名區塊-->
 <div class="row">
     <div class="col-md-12" style="@(_viewModel.Pdf=="1" ? "margin:0;padding:0;" : "")">
-        @if (_model.Status == (int)Naming.CourseContractStatus.待審核 && _model.CourseContractExtension.SignOnline == true)
+        @if (_model.Status == (int)Naming.CourseContractStatus.待審核)
         {
-            <table class="table">
+@*            if ( _model.CourseContractExtension.SignOnline == true
+                || _model.CourseContractExtension.BRByCoach.HasValue
+                || _model.CourseContractExtension.BRByLearner.HasValue)
+            {
+                
+            }
+*@            <table class="table">
                 <tbody>
                     <tr>
                         <td>
                             <label class="fancy-checkbox  custom-bgcolor-green">
-                                <input type="checkbox" checked="checked" disabled="disabled" />
+                                <input type="checkbox" checked="@(_model.CourseContractExtension.SignOnline==true)" disabled="disabled" />
                                 <span class="col-green">學生端線上簽名</span>
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="fancy-checkbox custom-bgcolor-pink">
+                                <input type="checkbox" checked="@(_model.Renewal!=true)" disabled="disabled" />
+                                <span class="col-pink">新約</span>
+                            </label>
+                            <label class="fancy-checkbox custom-bgcolor-green">
+                                <input type="checkbox" checked="@(_model.Renewal==true)" disabled="disabled" />
+                                <span class="col-green">續約</span>
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="fancy-checkbox custom-bgcolor-pink">
+                                <input type="checkbox" checked="@(_model.CourseContractExtension.BRByCoach.HasValue)" disabled="disabled" />
+                                <span class="col-pink">教練BR：@(_model.CourseContractExtension.BRCoach?.RealName)</span>
+                            </label>
+                            <label class="fancy-checkbox custom-bgcolor-pink">
+                                <input type="checkbox" checked="@(_model.CourseContractExtension.BRByLearner.HasValue)" disabled="disabled" />
+                                <span class="col-pink">學生BR：@(_model.CourseContractExtension.BRLearner?.RealName)</span>
                             </label>
                         </td>
                     </tr>

@@ -16,6 +16,8 @@ using System.Threading.Tasks;
 using System.Web;
 using WebHome.Models.DataEntity;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using WebHome.Properties;
+using WebHome.Helper;
 
 namespace WebHome.Controllers
 {
@@ -66,13 +68,7 @@ namespace WebHome.Controllers
             HttpContext.Items["Models"] = DataSource;
 
             var lang = Request.Cookies["cLang"];
-            if (lang != null)
-            {
-                var cultureInfo = new CultureInfo(lang);
-                Thread.CurrentThread.CurrentUICulture = cultureInfo;
-                Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture(cultureInfo.Name);
-                ViewBag.Lang = lang;
-            }
+            lang.SelectUICulture();
         }
 
         private IViewRenderService _viewRenderService;

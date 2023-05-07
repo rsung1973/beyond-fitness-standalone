@@ -65,16 +65,16 @@ namespace WebHome.Helper.Jobs
             //    });
             //}
 
-            if (jobList == null || !jobList.Any(j => j.AssemblyQualifiedName == typeof(ReviewProfessionalLevelEachQuarter).AssemblyQualifiedName))
-            {
-                JobScheduler.AddJob(new JobItem
-                {
-                    AssemblyQualifiedName = typeof(ReviewProfessionalLevelEachQuarter).AssemblyQualifiedName,
-                    Description = "檢查教練等級",
-                    Schedule = (new DateTime(DateTime.Today.Year, (DateTime.Today.Month - 1) / 3 * 3 + 1, 16)).AddMonths(3).Add(new TimeSpan(0, 10, 0)),
-                    Pending = true,
-                });
-            }
+            //if (jobList == null || !jobList.Any(j => j.AssemblyQualifiedName == typeof(ReviewProfessionalLevelEachQuarter).AssemblyQualifiedName))
+            //{
+            //    JobScheduler.AddJob(new JobItem
+            //    {
+            //        AssemblyQualifiedName = typeof(ReviewProfessionalLevelEachQuarter).AssemblyQualifiedName,
+            //        Description = "檢查教練等級",
+            //        Schedule = (new DateTime(DateTime.Today.Year, (DateTime.Today.Month - 1) / 3 * 3 + 1, 16)).AddMonths(3).Add(new TimeSpan(0, 10, 0)),
+            //        Pending = true,
+            //    });
+            //}
 
             if (jobList == null || !jobList.Any(j => j.AssemblyQualifiedName == typeof(CheckInvoiceDispatch).AssemblyQualifiedName))
             {

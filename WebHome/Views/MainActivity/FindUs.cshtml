@@ -28,6 +28,27 @@
         content="位於台北市中心的私人教練商家，台北市推薦健身房健身課程，適合年長者、孕婦、女性，專長於私人教練與營養諮詢，鄰近捷運站，東門站，忠孝復興站，忠孝新生站，忠孝敦化站，信義安和站，台北小巨蛋的私人教練健身課程，松山區健身、信義區健身、大安區健身體能訓練中心。" />
 
 }
+<section class="section-branch second">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <h1>
+                    @Html.Raw(NamingItem.FindZhongxiaoBranch)
+                    <a href="tel://+886-2-2776-9932" class="tel">(02)2776-9932</a>
+                </h1>
+                <a href="https://maps.google.com/?q=台北市大安區大安路一段75巷21號B1" target="_blank" class="add">
+                    @Html.Raw(NamingItem.FindZhongxiaoBranchAdd)
+                </a>
+                <p>@Html.Raw(NamingItem.FindZhongxiaoBranchDesc1)</p>
+                <p>@Html.Raw(NamingItem.FindZhongxiaoBranchDesc2)</p>
+                <a href="javascript:$('').launchDownload('@(Url.Action("Team", "MainActivity"))', {'branchName':'Zhongxiao'});bindTrackingCode('專業團隊_忠孝');" class="more">@Html.Raw(NamingItem.OurTeam)<i class="pl-1 fa fa-angle-right"></i></a>
+            </div>
+            <div class="col-sm-6 p-t-20">
+                <div id="map-sogo" class="map-canvas small"></div>
+            </div>
+        </div>
+    </div>
+</section>
 <section class="section-branch">
     <div class="container">
         <div class="row">
@@ -84,27 +105,6 @@
             </div>
         </div>
     </div>
-</section>
-<section class="section-branch second">
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-6">
-                <h1>
-                    @Html.Raw(NamingItem.FindZhongxiaoBranch)
-                <a href="tel://+886-2-2776-9932" class="tel">(02)2776-9932</a>
-            </h1>
-            <a href="https://maps.google.com/?q=台北市大安區大安路一段75巷21號B1" target="_blank" class="add">
-                @Html.Raw(NamingItem.FindZhongxiaoBranchAdd)
-            </a>
-            <p>@Html.Raw(NamingItem.FindZhongxiaoBranchDesc1)</p>
-            <p>@Html.Raw(NamingItem.FindZhongxiaoBranchDesc2)</p>
-            <a href="javascript:$('').launchDownload('@(Url.Action("Team", "MainActivity"))', {'branchName':'Zhongxiao'});bindTrackingCode('專業團隊_忠孝');" class="more">@Html.Raw(NamingItem.OurTeam)<i class="pl-1 fa fa-angle-right"></i></a>
-        </div>
-        <div class="col-sm-6 p-t-20">
-            <div id="map-sogo" class="map-canvas small"></div>
-        </div>
-    </div>
-</div>
 </section>
 <!-- // 聯絡我們 -->
 @{ await Html.RenderPartialAsync("~/Views/MainActivity/Module/ContactItem.cshtml");}

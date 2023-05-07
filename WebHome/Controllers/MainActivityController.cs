@@ -30,6 +30,8 @@ using WebHome.Models.ViewModel;
 
 using WebHome.Security.Authorization;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Mvc.Filters;
+using WebHome.Properties;
 
 namespace WebHome.Controllers
 {
@@ -40,6 +42,19 @@ namespace WebHome.Controllers
         public MainActivityController(IServiceProvider serviceProvider) : base(serviceProvider)
         {
 
+        }
+
+        public override void OnActionExecuting(ActionExecutingContext context)
+        {
+            base.OnActionExecuting(context);
+
+            var lang = Request.Cookies["cLang"];
+            if (lang == null)
+            {
+                lang = AppSettings.Default.Language;
+                lang.SelectUICulture();
+            }
+            ViewBag.Lang = lang;
         }
         // GET: MainActivity
         public ActionResult Index()
