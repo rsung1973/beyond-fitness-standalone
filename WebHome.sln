@@ -17,6 +17,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExternalPdfWrapper", "Exter
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "System.Data.Linq", "DotNetLib\System.Data.Linq\System.Data.Linq.csproj", "{391DFB5D-04B6-47CA-945A-0845FD07A3A7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestConsole", "TestConsole\TestConsole.csproj", "{582C53DF-4867-416A-976D-A8CB3ABAA66F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{391DFB5D-04B6-47CA-945A-0845FD07A3A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{391DFB5D-04B6-47CA-945A-0845FD07A3A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{391DFB5D-04B6-47CA-945A-0845FD07A3A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{582C53DF-4867-416A-976D-A8CB3ABAA66F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{582C53DF-4867-416A-976D-A8CB3ABAA66F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{582C53DF-4867-416A-976D-A8CB3ABAA66F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{582C53DF-4867-416A-976D-A8CB3ABAA66F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

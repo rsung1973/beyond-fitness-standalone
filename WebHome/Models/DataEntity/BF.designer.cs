@@ -33735,6 +33735,10 @@ namespace WebHome.Models.DataEntity
 		
 		private string _SampleUrl;
 		
+		private System.Nullable<System.DateTime> _ListingDate;
+		
+		private System.Nullable<System.DateTime> _RemovalDate;
+		
 		private EntitySet<MerchandiseTransaction> _MerchandiseTransaction;
 		
 		private EntitySet<PaymentOrder> _PaymentOrder;
@@ -33755,6 +33759,10 @@ namespace WebHome.Models.DataEntity
     partial void OnStatusChanged();
     partial void OnSampleUrlChanging(string value);
     partial void OnSampleUrlChanged();
+    partial void OnListingDateChanging(System.Nullable<System.DateTime> value);
+    partial void OnListingDateChanged();
+    partial void OnRemovalDateChanging(System.Nullable<System.DateTime> value);
+    partial void OnRemovalDateChanged();
     #endregion
 		
 		public MerchandiseWindow()
@@ -33865,6 +33873,46 @@ namespace WebHome.Models.DataEntity
 					this._SampleUrl = value;
 					this.SendPropertyChanged("SampleUrl");
 					this.OnSampleUrlChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ListingDate", DbType="DateTime")]
+		public System.Nullable<System.DateTime> ListingDate
+		{
+			get
+			{
+				return this._ListingDate;
+			}
+			set
+			{
+				if ((this._ListingDate != value))
+				{
+					this.OnListingDateChanging(value);
+					this.SendPropertyChanging();
+					this._ListingDate = value;
+					this.SendPropertyChanged("ListingDate");
+					this.OnListingDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RemovalDate", DbType="DateTime")]
+		public System.Nullable<System.DateTime> RemovalDate
+		{
+			get
+			{
+				return this._RemovalDate;
+			}
+			set
+			{
+				if ((this._RemovalDate != value))
+				{
+					this.OnRemovalDateChanging(value);
+					this.SendPropertyChanging();
+					this._RemovalDate = value;
+					this.SendPropertyChanged("RemovalDate");
+					this.OnRemovalDateChanged();
 				}
 			}
 		}

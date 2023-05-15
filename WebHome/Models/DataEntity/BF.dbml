@@ -1376,6 +1376,8 @@
       <Column Name="UnitPrice" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="Status" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="SampleUrl" Type="System.String" DbType="NVarChar(256)" CanBeNull="true" />
+      <Column Name="ListingDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="RemovalDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Association Name="MerchandiseWindow_MerchandiseTransaction" Member="MerchandiseTransaction" ThisKey="ProductID" OtherKey="ProductID" Type="MerchandiseTransaction" />
       <Association Name="MerchandiseWindow_PaymentOrder" Member="PaymentOrder" ThisKey="ProductID" OtherKey="ProductID" Type="PaymentOrder" />
       <Association Name="LevelExpression_MerchandiseWindow" Member="LevelExpression" ThisKey="Status" OtherKey="LevelID" Type="LevelExpression" IsForeignKey="true" />
