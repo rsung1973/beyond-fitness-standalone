@@ -32,6 +32,8 @@ using WebHome.Security.Authorization;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Mvc.Filters;
 using WebHome.Properties;
+using System.Net.Http;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace WebHome.Controllers
 {
@@ -71,6 +73,12 @@ namespace WebHome.Controllers
             Response.Cookies.Append("cLang", lang);
             return Json(new { result = true, message = System.Globalization.CultureInfo.CurrentCulture.Name });
         }
+
+        public ActionResult CommitGDPR()
+        {
+            Response.Cookies.Append("GDPR", "agree");
+            return Json(new { result = true, GDPR = true});
+        }        
 
         public ActionResult HandleUnknownAction(string actionName)
         {
@@ -352,6 +360,145 @@ namespace WebHome.Controllers
 
         }
 
+        public async Task<ActionResult> CommitTrialLearner(TrialLearnerViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            ModelState.Clear();
+
+            viewModel.UserName = viewModel.UserName.GetEfficientString();
+            if (viewModel.UserName == null)
+            {
+                ModelState.AddModelError("UserName", "請輸入姓名");
+            }
+
+            viewModel.Phone = viewModel.Phone.GetEfficientString();
+            if (viewModel.Phone == null)
+            {
+                ModelState.AddModelError("Phone", "請輸入聯絡人電話");
+            }
+
+            viewModel.Gender = viewModel.Gender.GetEfficientString();
+            if (viewModel.Gender == null)
+            {
+                ModelState.AddModelError("Gender", "請選擇性別");
+            }
+
+            viewModel.Email = viewModel.Email.GetEfficientString();
+            if (viewModel.Email == null)
+            {
+                ModelState.AddModelError("Email", "請輸入Email");
+            }
+
+            if (viewModel.HelpID?.Any(d => d.HasValue) != true)
+            {
+                ModelState.AddModelError("Message", "請勾選希望 Beyond Fitness 幫您解決什麼問題");
+            }
+
+            if (viewModel.TimeID?.Any(d => d.HasValue) != true)
+            {
+                ModelState.AddModelError("Message", "請勾選您方便聯絡的時間");
+            }
+
+            if (viewModel.Agree != true)
+            {
+                ModelState.AddModelError("Message", "請同意了解聲明");
+            }
+
+            if (!viewModel.BranchID.HasValue)
+            {
+                ModelState.AddModelError("BranchID", "請選擇門市");
+            }
+
+            viewModel.gRecaptchaResponse = viewModel.gRecaptchaResponse.GetEfficientString();
+            if (viewModel.gRecaptchaResponse == null)
+            {
+                ModelState.AddModelError("Message", "請驗證我不是機器人");
+            }
+            else
+            {
+                var parameters = new Dictionary<string, string>
+                {
+                    { "secret", AppSettings.Default.ReCaptcha.SecretKey },
+                    { "response", viewModel.gRecaptchaResponse }
+                };
+
+                IHttpClientFactory httpClientFactory = ServiceProvider.GetRequiredService<IHttpClientFactory>();
+                var client = httpClientFactory.CreateClient();
+
+                var response = await client.PostAsync(AppSettings.Default.ReCaptcha.UrlVerification, new FormUrlEncodedContent(parameters));
+                var responseBody = await response.Content.ReadAsStringAsync();
+
+                dynamic captchaResult = JsonConvert.DeserializeObject(responseBody);
+
+                if (captchaResult.success == true)
+                {
+                    // reCAPTCHA 驗證通過，繼續處理您的業務邏輯
+                }
+                else
+                {
+                    // reCAPTCHA 驗證失敗，返回錯誤頁面或相應的處理邏輯
+                    ModelState.AddModelError("Message", "驗證失敗");
+                }
+            }
+
+            if (!ModelState.IsValid)
+            {
+                ViewBag.AlertError = true;
+                return View("~/Views/MainActivity/Shared/ReportInputError.cshtml", model: ModelState.ErrorMessage());
+            }
+
+            if (viewModel.KeyID != null)
+            {
+                viewModel.UID = viewModel.DecryptKeyValue();
+            }
+
+            TrialLearner profileItem = null;
+            if (!viewModel.UID.HasValue)
+            {
+                profileItem = models.GetTable<TrialLearner>().Where(u => u.UID == viewModel.UID).FirstOrDefault();
+            }
+
+            if (profileItem == null)
+            {
+                profileItem = new TrialLearner
+                {
+
+                };
+
+                models.GetTable<TrialLearner>().InsertOnSubmit(profileItem);
+            }
+            else
+            {
+                models.ExecuteCommand(@"DELETE FROM tmp.TrialLearnerPurpose
+                            WHERE   (UID = {0})", profileItem.UID);
+
+                models.ExecuteCommand(@"DELETE FROM tmp.ContactTime
+                            WHERE   (UID = {0})", profileItem.UID);
+            }
+
+            profileItem.UserName = viewModel.UserName;
+            profileItem.Gender = viewModel.Gender;
+            profileItem.Phone = viewModel.Phone;
+            profileItem.Email = viewModel.Email;
+            profileItem.BranchID = viewModel.BranchID.Value;
+            profileItem.Question = viewModel.Question.GetEfficientString();
+
+            profileItem.TrialLearnerPurposes
+                .AddRange(viewModel.HelpID.Where(d => d.HasValue).Select(d => new TrialLearnerPurpose
+                {
+                    HelpID = d.Value,
+                }));
+
+            profileItem.ContactTimes
+                .AddRange(viewModel.TimeID.Where(d => d.HasValue).Select(d => new ContactTime
+                {
+                    TimeID = d.Value,
+                }));
+
+            models.SubmitChanges();
+
+            return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", "資料已更新!!");
+        }
 
     }
 }

@@ -663,6 +663,18 @@ namespace WebHome.Models.DataEntity
     partial void InsertServingCoachProperty(ServingCoachProperty instance);
     partial void UpdateServingCoachProperty(ServingCoachProperty instance);
     partial void DeleteServingCoachProperty(ServingCoachProperty instance);
+    partial void InsertBeyondHelp(BeyondHelp instance);
+    partial void UpdateBeyondHelp(BeyondHelp instance);
+    partial void DeleteBeyondHelp(BeyondHelp instance);
+    partial void InsertTrialLearnerPurpose(TrialLearnerPurpose instance);
+    partial void UpdateTrialLearnerPurpose(TrialLearnerPurpose instance);
+    partial void DeleteTrialLearnerPurpose(TrialLearnerPurpose instance);
+    partial void InsertContactTime(ContactTime instance);
+    partial void UpdateContactTime(ContactTime instance);
+    partial void DeleteContactTime(ContactTime instance);
+    partial void InsertTrialLearner(TrialLearner instance);
+    partial void UpdateTrialLearner(TrialLearner instance);
+    partial void DeleteTrialLearner(TrialLearner instance);
     #endregion
 		
 		public BFDataContext(string connection) : 
@@ -2470,6 +2482,38 @@ namespace WebHome.Models.DataEntity
 			get
 			{
 				return this.GetTable<ServingCoachProperty>();
+			}
+		}
+		
+		public System.Data.Linq.Table<BeyondHelp> BeyondHelps
+		{
+			get
+			{
+				return this.GetTable<BeyondHelp>();
+			}
+		}
+		
+		public System.Data.Linq.Table<TrialLearnerPurpose> TrialLearnerPurposes
+		{
+			get
+			{
+				return this.GetTable<TrialLearnerPurpose>();
+			}
+		}
+		
+		public System.Data.Linq.Table<ContactTime> ContactTimes
+		{
+			get
+			{
+				return this.GetTable<ContactTime>();
+			}
+		}
+		
+		public System.Data.Linq.Table<TrialLearner> TrialLearners
+		{
+			get
+			{
+				return this.GetTable<TrialLearner>();
 			}
 		}
 		
@@ -24513,6 +24557,8 @@ namespace WebHome.Models.DataEntity
 		
 		private EntitySet<CourseContractExtension> _CourseContractExtension1;
 		
+		private EntitySet<TrialLearner> _TrialLearners;
+		
 		private EntityRef<UserProfile> _Manager;
 		
 		private EntityRef<UserProfile> _ViceManager;
@@ -24563,6 +24609,7 @@ namespace WebHome.Models.DataEntity
 			this._CoachMonthlySalary = new EntitySet<CoachMonthlySalary>(new Action<CoachMonthlySalary>(this.attach_CoachMonthlySalary), new Action<CoachMonthlySalary>(this.detach_CoachMonthlySalary));
 			this._CourseContractExtension = new EntitySet<CourseContractExtension>(new Action<CourseContractExtension>(this.attach_CourseContractExtension), new Action<CourseContractExtension>(this.detach_CourseContractExtension));
 			this._CourseContractExtension1 = new EntitySet<CourseContractExtension>(new Action<CourseContractExtension>(this.attach_CourseContractExtension1), new Action<CourseContractExtension>(this.detach_CourseContractExtension1));
+			this._TrialLearners = new EntitySet<TrialLearner>(new Action<TrialLearner>(this.attach_TrialLearners), new Action<TrialLearner>(this.detach_TrialLearners));
 			this._Manager = default(EntityRef<UserProfile>);
 			this._ViceManager = default(EntityRef<UserProfile>);
 			this._Organization = default(EntityRef<Organization>);
@@ -25001,6 +25048,19 @@ namespace WebHome.Models.DataEntity
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="BranchStore_TrialLearner", Storage="_TrialLearners", ThisKey="BranchID", OtherKey="BranchID")]
+		public EntitySet<TrialLearner> TrialLearners
+		{
+			get
+			{
+				return this._TrialLearners;
+			}
+			set
+			{
+				this._TrialLearners.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserProfile_BranchStore", Storage="_Manager", ThisKey="ManagerID", OtherKey="UID", IsForeignKey=true)]
 		public UserProfile Manager
 		{
@@ -25361,6 +25421,18 @@ namespace WebHome.Models.DataEntity
 		{
 			this.SendPropertyChanging();
 			entity.CourseBranch = null;
+		}
+		
+		private void attach_TrialLearners(TrialLearner entity)
+		{
+			this.SendPropertyChanging();
+			entity.BranchStore = this;
+		}
+		
+		private void detach_TrialLearners(TrialLearner entity)
+		{
+			this.SendPropertyChanging();
+			entity.BranchStore = null;
 		}
 	}
 	
@@ -68472,6 +68544,718 @@ namespace WebHome.Models.DataEntity
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="tmp.BeyondHelp")]
+	public partial class BeyondHelp : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _HelpID;
+		
+		private string _Achievement;
+		
+		private EntitySet<TrialLearnerPurpose> _TrialLearnerPurposes;
+		
+    #region 擴充性方法定義
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnHelpIDChanging(int value);
+    partial void OnHelpIDChanged();
+    partial void OnAchievementChanging(string value);
+    partial void OnAchievementChanged();
+    #endregion
+		
+		public BeyondHelp()
+		{
+			this._TrialLearnerPurposes = new EntitySet<TrialLearnerPurpose>(new Action<TrialLearnerPurpose>(this.attach_TrialLearnerPurposes), new Action<TrialLearnerPurpose>(this.detach_TrialLearnerPurposes));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_HelpID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int HelpID
+		{
+			get
+			{
+				return this._HelpID;
+			}
+			set
+			{
+				if ((this._HelpID != value))
+				{
+					this.OnHelpIDChanging(value);
+					this.SendPropertyChanging();
+					this._HelpID = value;
+					this.SendPropertyChanged("HelpID");
+					this.OnHelpIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Achievement", DbType="NVarChar(128) NOT NULL", CanBeNull=false)]
+		public string Achievement
+		{
+			get
+			{
+				return this._Achievement;
+			}
+			set
+			{
+				if ((this._Achievement != value))
+				{
+					this.OnAchievementChanging(value);
+					this.SendPropertyChanging();
+					this._Achievement = value;
+					this.SendPropertyChanged("Achievement");
+					this.OnAchievementChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="BeyondHelp_TrialLearnerPurpose", Storage="_TrialLearnerPurposes", ThisKey="HelpID", OtherKey="HelpID")]
+		public EntitySet<TrialLearnerPurpose> TrialLearnerPurposes
+		{
+			get
+			{
+				return this._TrialLearnerPurposes;
+			}
+			set
+			{
+				this._TrialLearnerPurposes.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_TrialLearnerPurposes(TrialLearnerPurpose entity)
+		{
+			this.SendPropertyChanging();
+			entity.BeyondHelp = this;
+		}
+		
+		private void detach_TrialLearnerPurposes(TrialLearnerPurpose entity)
+		{
+			this.SendPropertyChanging();
+			entity.BeyondHelp = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="tmp.TrialLearnerPurpose")]
+	public partial class TrialLearnerPurpose : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _UID;
+		
+		private int _HelpID;
+		
+		private EntityRef<BeyondHelp> _BeyondHelp;
+		
+		private EntityRef<TrialLearner> _TrialLearner;
+		
+    #region 擴充性方法定義
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnUIDChanging(int value);
+    partial void OnUIDChanged();
+    partial void OnHelpIDChanging(int value);
+    partial void OnHelpIDChanged();
+    #endregion
+		
+		public TrialLearnerPurpose()
+		{
+			this._BeyondHelp = default(EntityRef<BeyondHelp>);
+			this._TrialLearner = default(EntityRef<TrialLearner>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int UID
+		{
+			get
+			{
+				return this._UID;
+			}
+			set
+			{
+				if ((this._UID != value))
+				{
+					if (this._TrialLearner.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnUIDChanging(value);
+					this.SendPropertyChanging();
+					this._UID = value;
+					this.SendPropertyChanged("UID");
+					this.OnUIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_HelpID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int HelpID
+		{
+			get
+			{
+				return this._HelpID;
+			}
+			set
+			{
+				if ((this._HelpID != value))
+				{
+					if (this._BeyondHelp.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnHelpIDChanging(value);
+					this.SendPropertyChanging();
+					this._HelpID = value;
+					this.SendPropertyChanged("HelpID");
+					this.OnHelpIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="BeyondHelp_TrialLearnerPurpose", Storage="_BeyondHelp", ThisKey="HelpID", OtherKey="HelpID", IsForeignKey=true)]
+		public BeyondHelp BeyondHelp
+		{
+			get
+			{
+				return this._BeyondHelp.Entity;
+			}
+			set
+			{
+				BeyondHelp previousValue = this._BeyondHelp.Entity;
+				if (((previousValue != value) 
+							|| (this._BeyondHelp.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._BeyondHelp.Entity = null;
+						previousValue.TrialLearnerPurposes.Remove(this);
+					}
+					this._BeyondHelp.Entity = value;
+					if ((value != null))
+					{
+						value.TrialLearnerPurposes.Add(this);
+						this._HelpID = value.HelpID;
+					}
+					else
+					{
+						this._HelpID = default(int);
+					}
+					this.SendPropertyChanged("BeyondHelp");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TrialLearner_TrialLearnerPurpose", Storage="_TrialLearner", ThisKey="UID", OtherKey="UID", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public TrialLearner TrialLearner
+		{
+			get
+			{
+				return this._TrialLearner.Entity;
+			}
+			set
+			{
+				TrialLearner previousValue = this._TrialLearner.Entity;
+				if (((previousValue != value) 
+							|| (this._TrialLearner.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._TrialLearner.Entity = null;
+						previousValue.TrialLearnerPurposes.Remove(this);
+					}
+					this._TrialLearner.Entity = value;
+					if ((value != null))
+					{
+						value.TrialLearnerPurposes.Add(this);
+						this._UID = value.UID;
+					}
+					else
+					{
+						this._UID = default(int);
+					}
+					this.SendPropertyChanged("TrialLearner");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="tmp.ContactTime")]
+	public partial class ContactTime : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _UID;
+		
+		private int _TimeID;
+		
+		private EntityRef<TrialLearner> _TrialLearner;
+		
+    #region 擴充性方法定義
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnUIDChanging(int value);
+    partial void OnUIDChanged();
+    partial void OnTimeIDChanging(int value);
+    partial void OnTimeIDChanged();
+    #endregion
+		
+		public ContactTime()
+		{
+			this._TrialLearner = default(EntityRef<TrialLearner>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int UID
+		{
+			get
+			{
+				return this._UID;
+			}
+			set
+			{
+				if ((this._UID != value))
+				{
+					if (this._TrialLearner.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnUIDChanging(value);
+					this.SendPropertyChanging();
+					this._UID = value;
+					this.SendPropertyChanged("UID");
+					this.OnUIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TimeID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int TimeID
+		{
+			get
+			{
+				return this._TimeID;
+			}
+			set
+			{
+				if ((this._TimeID != value))
+				{
+					this.OnTimeIDChanging(value);
+					this.SendPropertyChanging();
+					this._TimeID = value;
+					this.SendPropertyChanged("TimeID");
+					this.OnTimeIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TrialLearner_ContactTime", Storage="_TrialLearner", ThisKey="UID", OtherKey="UID", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public TrialLearner TrialLearner
+		{
+			get
+			{
+				return this._TrialLearner.Entity;
+			}
+			set
+			{
+				TrialLearner previousValue = this._TrialLearner.Entity;
+				if (((previousValue != value) 
+							|| (this._TrialLearner.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._TrialLearner.Entity = null;
+						previousValue.ContactTimes.Remove(this);
+					}
+					this._TrialLearner.Entity = value;
+					if ((value != null))
+					{
+						value.ContactTimes.Add(this);
+						this._UID = value.UID;
+					}
+					else
+					{
+						this._UID = default(int);
+					}
+					this.SendPropertyChanged("TrialLearner");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="tmp.TrialLearner")]
+	public partial class TrialLearner : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _UID;
+		
+		private string _Gender;
+		
+		private string _UserName;
+		
+		private string _Email;
+		
+		private string _Phone;
+		
+		private int _BranchID;
+		
+		private string _Question;
+		
+		private EntitySet<TrialLearnerPurpose> _TrialLearnerPurposes;
+		
+		private EntitySet<ContactTime> _ContactTimes;
+		
+		private EntityRef<BranchStore> _BranchStore;
+		
+    #region 擴充性方法定義
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnUIDChanging(int value);
+    partial void OnUIDChanged();
+    partial void OnGenderChanging(string value);
+    partial void OnGenderChanged();
+    partial void OnUserNameChanging(string value);
+    partial void OnUserNameChanged();
+    partial void OnEmailChanging(string value);
+    partial void OnEmailChanged();
+    partial void OnPhoneChanging(string value);
+    partial void OnPhoneChanged();
+    partial void OnBranchIDChanging(int value);
+    partial void OnBranchIDChanged();
+    partial void OnQuestionChanging(string value);
+    partial void OnQuestionChanged();
+    #endregion
+		
+		public TrialLearner()
+		{
+			this._TrialLearnerPurposes = new EntitySet<TrialLearnerPurpose>(new Action<TrialLearnerPurpose>(this.attach_TrialLearnerPurposes), new Action<TrialLearnerPurpose>(this.detach_TrialLearnerPurposes));
+			this._ContactTimes = new EntitySet<ContactTime>(new Action<ContactTime>(this.attach_ContactTimes), new Action<ContactTime>(this.detach_ContactTimes));
+			this._BranchStore = default(EntityRef<BranchStore>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int UID
+		{
+			get
+			{
+				return this._UID;
+			}
+			set
+			{
+				if ((this._UID != value))
+				{
+					this.OnUIDChanging(value);
+					this.SendPropertyChanging();
+					this._UID = value;
+					this.SendPropertyChanged("UID");
+					this.OnUIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Gender", DbType="NVarChar(8)")]
+		public string Gender
+		{
+			get
+			{
+				return this._Gender;
+			}
+			set
+			{
+				if ((this._Gender != value))
+				{
+					this.OnGenderChanging(value);
+					this.SendPropertyChanging();
+					this._Gender = value;
+					this.SendPropertyChanged("Gender");
+					this.OnGenderChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserName", DbType="NVarChar(40)")]
+		public string UserName
+		{
+			get
+			{
+				return this._UserName;
+			}
+			set
+			{
+				if ((this._UserName != value))
+				{
+					this.OnUserNameChanging(value);
+					this.SendPropertyChanging();
+					this._UserName = value;
+					this.SendPropertyChanged("UserName");
+					this.OnUserNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Email", DbType="NVarChar(64) NOT NULL", CanBeNull=false)]
+		public string Email
+		{
+			get
+			{
+				return this._Email;
+			}
+			set
+			{
+				if ((this._Email != value))
+				{
+					this.OnEmailChanging(value);
+					this.SendPropertyChanging();
+					this._Email = value;
+					this.SendPropertyChanged("Email");
+					this.OnEmailChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Phone", DbType="NVarChar(32)")]
+		public string Phone
+		{
+			get
+			{
+				return this._Phone;
+			}
+			set
+			{
+				if ((this._Phone != value))
+				{
+					this.OnPhoneChanging(value);
+					this.SendPropertyChanging();
+					this._Phone = value;
+					this.SendPropertyChanged("Phone");
+					this.OnPhoneChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BranchID", DbType="Int NOT NULL")]
+		public int BranchID
+		{
+			get
+			{
+				return this._BranchID;
+			}
+			set
+			{
+				if ((this._BranchID != value))
+				{
+					if (this._BranchStore.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnBranchIDChanging(value);
+					this.SendPropertyChanging();
+					this._BranchID = value;
+					this.SendPropertyChanged("BranchID");
+					this.OnBranchIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Question", DbType="NVarChar(MAX)")]
+		public string Question
+		{
+			get
+			{
+				return this._Question;
+			}
+			set
+			{
+				if ((this._Question != value))
+				{
+					this.OnQuestionChanging(value);
+					this.SendPropertyChanging();
+					this._Question = value;
+					this.SendPropertyChanged("Question");
+					this.OnQuestionChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TrialLearner_TrialLearnerPurpose", Storage="_TrialLearnerPurposes", ThisKey="UID", OtherKey="UID")]
+		public EntitySet<TrialLearnerPurpose> TrialLearnerPurposes
+		{
+			get
+			{
+				return this._TrialLearnerPurposes;
+			}
+			set
+			{
+				this._TrialLearnerPurposes.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TrialLearner_ContactTime", Storage="_ContactTimes", ThisKey="UID", OtherKey="UID")]
+		public EntitySet<ContactTime> ContactTimes
+		{
+			get
+			{
+				return this._ContactTimes;
+			}
+			set
+			{
+				this._ContactTimes.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="BranchStore_TrialLearner", Storage="_BranchStore", ThisKey="BranchID", OtherKey="BranchID", IsForeignKey=true)]
+		public BranchStore BranchStore
+		{
+			get
+			{
+				return this._BranchStore.Entity;
+			}
+			set
+			{
+				BranchStore previousValue = this._BranchStore.Entity;
+				if (((previousValue != value) 
+							|| (this._BranchStore.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._BranchStore.Entity = null;
+						previousValue.TrialLearners.Remove(this);
+					}
+					this._BranchStore.Entity = value;
+					if ((value != null))
+					{
+						value.TrialLearners.Add(this);
+						this._BranchID = value.BranchID;
+					}
+					else
+					{
+						this._BranchID = default(int);
+					}
+					this.SendPropertyChanged("BranchStore");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_TrialLearnerPurposes(TrialLearnerPurpose entity)
+		{
+			this.SendPropertyChanging();
+			entity.TrialLearner = this;
+		}
+		
+		private void detach_TrialLearnerPurposes(TrialLearnerPurpose entity)
+		{
+			this.SendPropertyChanging();
+			entity.TrialLearner = null;
+		}
+		
+		private void attach_ContactTimes(ContactTime entity)
+		{
+			this.SendPropertyChanging();
+			entity.TrialLearner = this;
+		}
+		
+		private void detach_ContactTimes(ContactTime entity)
+		{
+			this.SendPropertyChanging();
+			entity.TrialLearner = null;
 		}
 	}
 	

@@ -96,6 +96,11 @@
     <Compile Update="Models\MIG3_1\E0501.cs">
       <DependentUpon>E0501.xsd</DependentUpon>
     </Compile>
+    <Compile Update="Models\Resources\NamingItem2023.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>NamingItem2023.resx</DependentUpon>
+    </Compile>
     <Compile Update="Models\Schemas\SiteMap\sitemap.cs">
       <DependentUpon>sitemap.xsd</DependentUpon>
     </Compile>
@@ -143,6 +148,13 @@
 
   <ItemGroup>
     <None Include="Views\Shared\Materialize\ReportInputError.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Models\Resources\NamingItem2023.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>NamingItem2023.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

@@ -7,6 +7,7 @@ using System.Web;
 using CommonLib.Utility;
 using WebHome.Models.DataEntity;
 using WebHome.Models.Locale;
+using Microsoft.AspNetCore.Mvc;
 
 namespace WebHome.Models.ViewModel
 {
@@ -718,13 +719,16 @@ namespace WebHome.Models.ViewModel
         }
     }
 
-    public class TrialLearnerViewModel
+    public class TrialLearnerViewModel : UserProfileViewModel
     {
-        [Display(Name = "真實姓名")]
-        public string RealName { get; set; }
-        [Display(Name = "電話")]
-        public string Phone { get; set; }
-        public String Gender { get; set; }
+        public string UserName { get; set; }
+        public int?[] HelpID { get; set; }
+        public int?[] TimeID { get; set; }
+        public int? BranchID { get; set; }
+        [BindProperty(Name = "g-recaptcha-response")]
+        public String gRecaptchaResponse { get; set; }
+        public bool? Agree { get; set; }
+        public String Question { get; set; }
 
     }
 

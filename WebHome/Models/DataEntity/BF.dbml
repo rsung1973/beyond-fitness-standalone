@@ -990,6 +990,7 @@
       <Association Name="BranchStore_CoachMonthlySalary" Member="CoachMonthlySalary" ThisKey="BranchID" OtherKey="WorkPlace" Type="CoachMonthlySalary" />
       <Association Name="BranchStore_CourseContractExtension" Member="CourseContractExtension" ThisKey="BranchID" OtherKey="BranchID" Type="CourseContractExtension" />
       <Association Name="BranchStore_CourseContractExtension1" Member="CourseContractExtension1" ThisKey="BranchID" OtherKey="CoursePlace" Type="CourseContractExtension" />
+      <Association Name="BranchStore_TrialLearner" Member="TrialLearners" ThisKey="BranchID" OtherKey="BranchID" Type="TrialLearner" />
       <Association Name="UserProfile_BranchStore" Member="Manager" ThisKey="ManagerID" OtherKey="UID" Type="UserProfile" IsForeignKey="true" />
       <Association Name="UserProfile_BranchStore1" Member="ViceManager" ThisKey="ViceManagerID" OtherKey="UID" Type="UserProfile" IsForeignKey="true" />
       <Association Name="Organization_BranchStore" Member="Organization" ThisKey="BranchID" OtherKey="CompanyID" Type="Organization" IsForeignKey="true" />
@@ -3002,6 +3003,42 @@
       <Column Name="PropertyID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="Description" Type="System.String" DbType="NVarChar(64)" CanBeNull="true" />
       <Association Name="ServingCoach_ServingCoachProperty" Member="ServingCoach" ThisKey="CoachID" OtherKey="CoachID" Type="ServingCoach" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="tmp.BeyondHelp" Member="BeyondHelps">
+    <Type Name="BeyondHelp">
+      <Column Name="HelpID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Achievement" Type="System.String" DbType="NVarChar(128) NOT NULL" CanBeNull="false" />
+      <Association Name="BeyondHelp_TrialLearnerPurpose" Member="TrialLearnerPurposes" ThisKey="HelpID" OtherKey="HelpID" Type="TrialLearnerPurpose" />
+    </Type>
+  </Table>
+  <Table Name="tmp.TrialLearnerPurpose" Member="TrialLearnerPurposes">
+    <Type Name="TrialLearnerPurpose">
+      <Column Name="UID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="HelpID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="BeyondHelp_TrialLearnerPurpose" Member="BeyondHelp" ThisKey="HelpID" OtherKey="HelpID" Type="BeyondHelp" IsForeignKey="true" />
+      <Association Name="TrialLearner_TrialLearnerPurpose" Member="TrialLearner" ThisKey="UID" OtherKey="UID" Type="TrialLearner" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="tmp.ContactTime" Member="ContactTimes">
+    <Type Name="ContactTime">
+      <Column Name="UID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="TimeID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="TrialLearner_ContactTime" Member="TrialLearner" ThisKey="UID" OtherKey="UID" Type="TrialLearner" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="tmp.TrialLearner" Member="TrialLearners">
+    <Type Name="TrialLearner">
+      <Column Name="UID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Gender" Type="System.String" DbType="NVarChar(8)" CanBeNull="true" />
+      <Column Name="UserName" Type="System.String" DbType="NVarChar(40)" CanBeNull="true" />
+      <Column Name="Email" Type="System.String" DbType="NVarChar(64) NOT NULL" CanBeNull="false" />
+      <Column Name="Phone" Type="System.String" DbType="NVarChar(32)" CanBeNull="true" />
+      <Column Name="BranchID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Question" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Association Name="TrialLearner_TrialLearnerPurpose" Member="TrialLearnerPurposes" ThisKey="UID" OtherKey="UID" Type="TrialLearnerPurpose" />
+      <Association Name="TrialLearner_ContactTime" Member="ContactTimes" ThisKey="UID" OtherKey="UID" Type="ContactTime" />
+      <Association Name="BranchStore_TrialLearner" Member="BranchStore" ThisKey="BranchID" OtherKey="BranchID" Type="BranchStore" IsForeignKey="true" />
     </Type>
   </Table>
   <Function Name="dbo.InquireVacantNo" Method="InquireVacantNo">

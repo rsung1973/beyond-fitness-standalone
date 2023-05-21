@@ -119,6 +119,10 @@ namespace WebHome.Properties
             get;
             set;
         } = new SmtpSettings { };
+
+        public ReCaptchaSettings ReCaptcha { get; set; } 
+            = new ReCaptchaSettings { };
+
     }
 
     public class Settings
@@ -137,5 +141,12 @@ namespace WebHome.Properties
         public bool EnableSsl { get; set; } = false;
         public String UserName { get; set; }
         public String Password { get; set; }
+    }
+
+    public class ReCaptchaSettings
+    {
+        public String SiteKey { get; set; } = "6LdVot4jAAAAAH_ST-lvJBJLM3gdWAId2DnlLBz_";
+        public String SecretKey { get; set; } = "6LdVot4jAAAAAKfJuBeP_35ZeNy7lvi0D3Pghdu1";
+        public String UrlVerification { get; set; } = "https://www.google.com/recaptcha/api/siteverify";
     }
 }
