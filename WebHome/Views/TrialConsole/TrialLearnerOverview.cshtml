@@ -1,0 +1,230 @@
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using CommonLib.Utility
+@using Newtonsoft.Json
+@functions
+{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    UserProfile _model;
+    TrialLearnerQueryViewModel _viewModel;
+}
+
+@{
+
+    Layout = "~/Views/ConsoleHome/Template/MainPage.cshtml";
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = ViewContext.ModelState;
+    _model = (UserProfile)this.Model;
+    _viewModel = (TrialLearnerQueryViewModel)ViewBag.ViewModel;
+
+    UserProfile coachItem = _model;
+
+}
+@section CustomHeader {
+    <!-- JQuery DataTable Css -->
+    <link href="plugins/jquery-datatable/DataTables-1.10.18/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link href="plugins/jquery-datatable/Responsive-2.2.2/css/responsive.bootstrap4.min.css" rel="stylesheet">
+    <link href="plugins/jquery-datatable/FixedColumns-3.2.5/css/fixedColumns.bootstrap4.min.css" rel="stylesheet">
+    <!-- Bootstrap Datetimepick -->
+
+    <link href="css/smartcalendar-2.css" rel="stylesheet" />
+
+    <!-- Custom Css -->
+    <link rel="stylesheet" href="css/customelist.css?2.0" />
+}
+
+    <!-- Main Content -->
+<section class="content">
+    @{
+        ViewBag.BlockHeader = "我的詢問體驗";
+        await Html.RenderPartialAsync("~/Views/ConsoleHome/Module/BlockHeader.cshtml", _model);
+    }
+
+    <!--本月詢問表單總數-->
+    <h4 class="card-outbound-header m-l-15">
+        @(_viewModel.Year)年@(_viewModel.Month)月
+        <a href="javascript:selectMonth();"><i class="zmdi zmdi-calendar zmdi-hc-lg"></i></a>
+        <script>
+            function selectMonth() {
+                //showLoading();
+                $.post('@Html.Raw(Url.Action("SelectMonth", "BusinessConsole"))', null, function (data) {
+                    //hideLoading();
+                    if ($.isPlainObject(data)) {
+                        Swal.fire(
+                            'Oops...',
+                            data.message,
+                            'warning'
+                        )
+                    } else {
+                        $(data).appendTo($('body'));
+                    }
+                });
+            }
+
+            $(function () {
+                $global.doSelect = function (year, month) {
+                    $('').launchDownload('@Html.Raw(Url.Action("TrialLearnerIndex", "ConsoleHome"))', { 'year': year, 'month': month, 'branchID': '@(_viewModel.BranchID)' });
+                };
+            });
+        </script>
+    </h4>
+
+    @if (coachItem.IsAssistant() || coachItem.IsOfficer() || coachItem.IsManager() || coachItem.IsViceManager())
+    {
+        if (_viewModel.BranchID.HasValue)
+        {
+            await Html.RenderPartialAsync("~/Views/TrialConsole/Module/OverviewForManager.cshtml");
+        }
+        else
+        {
+            await Html.RenderPartialAsync("~/Views/TrialConsole/Module/OverviewForOfficer.cshtml");
+        }
+    }
+    else
+    {
+        await Html.RenderPartialAsync("~/Views/TrialConsole/Module/OverviewForCoach.cshtml");
+    }
+
+</section>
+
+@section TailPageJavaScriptInclude {
+    <!--Sparkline Plugin Js-->
+    <script src="plugins/jquery-sparkline/jquery.sparkline.js"></script>
+    <!-- SweetAlert Plugin Js -->
+    <script src="plugins/sweetalert/sweetalert.min.js"></script>
+    <!-- Jquery DataTable Plugin Js -->
+    <script src="bundles/datatablescripts.bundle.js"></script>
+    <script src="plugins/jquery-datatable/Responsive-2.2.2/js/dataTables.responsive.min.js"></script>
+    <script src="plugins/jquery-datatable/FixedColumns-3.2.5/js/dataTables.fixedColumns.min.js"></script>
+
+    @{
+        await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/KnobJS.cshtml");
+    }
+
+
+    <script type="text/javascript">
+        var dtLearner;
+        var dtPaymentList;
+        $(function () {
+            $.scrollUp({
+                animation: 'fade',
+                scrollImg: {
+                    active: true,
+                    type: 'background',
+                    src: 'images/top.png'
+                }
+            });
+            //$(".ls-toggle-btn").click();
+        });
+
+        //合約新開立與續約比例
+        $('.sparkline-pie').sparkline('html', {
+            type: 'pie',
+            offset: 90,
+            width: '100px',
+            height: '100px',
+            sliceColors: ['#64c8c0', '#1B2C48']
+        })
+
+        //開啟小日曆
+        $('.date').datetimepicker({
+            language: 'zh-TW',
+            weekStart: 0,
+            todayBtn: 1,
+            clearBtn: 1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 2,
+            forceParse: 0,
+            startDate: '@(String.Format("{0:yyyy-MM-dd}", DateTime.Today))'
+        });
+
+        function showTrialLearnerList(viewModel, alertCount) {
+            var event = window.event;
+            if (event) {
+                event.cancelBubble = true;
+                if ($(event.target).text() == '0') {
+                    return false;
+                }
+            }
+
+            if (alertCount == 0)
+                return;
+            clearErrors();
+            showLoading();
+            $.post('@Url.Action("InquireTrialLearner", "TrialConsole")', viewModel, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    Swal.fire(
+                        'Oops...',
+                        data.message,
+                        'warning'
+                    );
+                } else {
+                    $('#trialList').empty()
+                        .append(data);
+                }
+            });
+        }
+    </script>
+
+
+    <script>
+
+        function processTrial(keyID) {
+            showLoading();
+            $.post('@Html.Raw(Url.Action("ProcessTrial", "TrialConsole"))', { 'keyID': keyID }, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    Swal.fire(
+                        'Oops...',
+                        data.message,
+                        'warning'
+                    );
+                } else {
+                    $(data).appendTo($('body'));
+                }
+            });
+        }
+
+        function updateTrial(viewModel, callback) {
+            showLoading();
+            $.post('@Html.Raw(Url.Action("UpdateTrialLearner", "TrialConsole"))', viewModel, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    if (data.result) {
+                        Swal.fire(
+                            '存檔完成!',
+                            '資料已經更新 Bye!',
+                            'success'
+                        ).then((result) => {
+                            if (callback) {
+                                callback(data);
+                            }
+                        });
+                    } else {
+                        Swal.fire(
+                            'Oops...',
+                            data.message,
+                            'warning'
+                        );
+                    }
+                } else {
+                    $(data).appendTo($('body'));
+                }
+            });
+
+        }
+                //
+    </script>
+}
+

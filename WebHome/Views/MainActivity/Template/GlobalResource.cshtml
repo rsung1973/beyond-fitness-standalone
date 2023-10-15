@@ -1,0 +1,53 @@
+﻿
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
+@using WebHome.Models.Resources
+
+@functions
+{
+    static void Initialize()
+    {
+        _Resource = new JObject();
+        JObject branch = JObject.Parse(File.ReadAllText(Startup.MapPath("~/Official/Portfolio/Branch.json")));
+        branch["ja"] = JObject.Parse(File.ReadAllText(Startup.MapPath("~/Official/Portfolio/Branch.ja.json")));
+        branch["en-US"] = JObject.Parse(File.ReadAllText(Startup.MapPath("~/Official/Portfolio/Branch.en-US.json")));
+        _Resource["Branch"] = branch;
+    }
+
+    static JObject _Resource;
+
+    public static JObject Items
+    {
+        get
+        {
+            if (_Resource == null)
+            {
+                lock (typeof(SampleController<UserProfile>))
+                {
+                    Initialize();
+                }
+            }
+            return _Resource;
+        }
+    }
+}
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = ViewContext.ModelState;
+
+    ViewContext.HttpContext.Items["GlobalResource"] = Items;
+}

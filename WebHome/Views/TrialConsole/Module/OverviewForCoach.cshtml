@@ -1,0 +1,120 @@
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+@using Newtonsoft.Json
+@functions
+{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    UserProfile _model;
+    TrialLearnerQueryViewModel _viewModel;
+
+    IQueryable<TrialLearner> monthlyItems;
+}
+
+@{
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = ViewContext.ModelState;
+    _model = (UserProfile)this.Model;
+    _viewModel = (TrialLearnerQueryViewModel)ViewBag.ViewModel;
+
+    UserProfile coachItem = _model;
+    DateTime start = new DateTime(_viewModel.Year.Value, _viewModel.Month.Value, 1);
+
+    monthlyItems = models.GetTable<TrialLearner>()
+                            .Where(t => t.SubmitDate >= start)
+                            .Where(t => t.SubmitDate < start.AddMonths(1));
+
+    var assignedItems = monthlyItems
+                            .Where(t => t.AssigneeID == _model.UID);
+    var attendingItems = monthlyItems
+                            .Where(t => t.AttendingCoach == _model.UID);
+}
+
+<!--本月詢問體驗卡片-->
+<div class="container-fluid">
+    <div class="row clearfix">
+        <div class="col-lg-6 col-md-6 col-sm-12">
+            <div class="card bg-darkteal">
+                <div class="body">
+                    <div class="font-20 align-center">
+                        @{
+                            var count = assignedItems.Count();
+                        }
+                        本月分派聯繫/體驗：<a href="#" onclick='showTrialLearnerList(@Html.Raw(JsonConvert.SerializeObject(
+                                    new TrialLearnerQueryViewModel
+                                    {
+                                        AssigneeID = _model.UID,
+                                        Year = start.Year,
+                                        Month = start.Month,
+                                    })));'><span class="col-lime counto" data-to="@(count)">@(count)</span></a> / 
+                        @{ 
+                            count = attendingItems.Count();
+                        }
+                        <a href="#" onclick='showTrialLearnerList(@Html.Raw(JsonConvert.SerializeObject(
+                                    new TrialLearnerQueryViewModel
+                                    {
+                                        AttendingCoach = _model.UID,
+                                        Year = start.Year,
+                                        Month = start.Month,
+                                    })));'><span class="col-lime counto" data-to="@(count)">@(count)</span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12">
+            <div class="card bg-darkteal">
+                <div class="body">
+                    <div class="font-20 align-center">
+                        @{ 
+                            count = models.GetTable<TrialLearner>()
+                                            .Where(t => !t.IsClosed.HasValue || t.IsClosed == false)
+                                            .Where(t => t.AssigneeID == _model.UID)
+                                            .Count();
+                        }
+                        全部未結案：<a href="#" onclick='showTrialLearnerList(@Html.Raw(JsonConvert.SerializeObject(
+                                    new TrialLearnerQueryViewModel
+                                    {
+                                        AssigneeID = _model.UID,
+                                        IsClosed = false,
+                                    })));'><span class="col-lime counto" data-to="@(count)">@(count)</span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--詳細資料-->
+<div class="container-fluid">
+    <div class="row clearfix">
+        <h4 class="card-outbound-header m-l-15">詳細資料</h4>
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="header">
+                    <ul class="header-dropdown">
+                        <li class="dropdown">
+                            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class="zmdi zmdi-download"></i> </a>
+                            <ul class="dropdown-menu dropdown-menu-right slideUp float-right">
+                                <li><a href="download/BranchNo_(2018-10-29).csv" target="_blank">下載檔案</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="body">
+                    <div class="table-responsive" id="trialList">
+                        @{
+                            await Html.RenderPartialAsync("~/Views/TrialConsole/Module/TrialLearnerList.cshtml", monthlyItems.Where(t => t.AssigneeID == _model.UID || t.AttendingCoach == _model.UID));
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

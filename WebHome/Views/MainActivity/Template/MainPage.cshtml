@@ -10,15 +10,18 @@
 @using WebHome.Controllers
 @using Microsoft.AspNetCore.Mvc.ModelBinding
 @using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
 @using WebHome.Models.Resources
 
 @{
     ModelSource<UserProfile> models;
     ModelStateDictionary _modelState;
 
-    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
     _modelState = ViewContext.ModelState;
+
     (ViewBag.Lang as String).SelectUICulture();
+    await Html.RenderPartialAsync("~/Views/MainActivity/Template/GlobalResource.cshtml");
 
 }
 <!DOCTYPE html>

@@ -350,9 +350,18 @@ namespace WebHome.Controllers
         }
 
         [AllowAnonymous]
-        public async Task<ActionResult> GetResourceAsync(int id, bool? stretch = false)
+        public async Task<ActionResult> GetResourceAsync(QueryViewModel viewModel, bool? stretch = false)
         {
-            var item = models.GetTable<Attachment>().Where(a => a.AttachmentID == id).FirstOrDefault();
+            if (viewModel.KeyID != null)
+            {
+                viewModel.id = viewModel.DecryptKeyValue();
+            }
+            else if (viewModel.HKeyID != null)
+            {
+                viewModel.id = viewModel.DecryptHexKeyValue();
+            }
+
+            var item = models.GetTable<Attachment>().Where(a => a.AttachmentID == viewModel.id).FirstOrDefault();
             if (item != null)
             {
                 if (System.IO.File.Exists(item.StoredPath))
@@ -405,6 +414,23 @@ namespace WebHome.Controllers
                 if (System.IO.File.Exists(item.StoredPath))
                 {
                     new FileExtensionContentTypeProvider().TryGetContentType(item.StoredPath, out string contentType);
+                    if (contentType == null)
+                    {
+                        try
+                        {
+                            using(Image img = Image.FromFile(item.StoredPath))
+                            {
+                                if (img != null)
+                                {
+                                    contentType = $"image/{img.RawFormat}";
+                                }
+                            }
+                        }
+                        catch(Exception ex)
+                        {
+                            FileLogger.Logger.Warn(ex);
+                        }
+                    }
                     return new PhysicalFileResult(item.StoredPath, contentType ?? "application/octet-stream");
                 }
             }

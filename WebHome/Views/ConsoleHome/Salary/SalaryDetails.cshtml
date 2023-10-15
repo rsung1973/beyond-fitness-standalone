@@ -15,7 +15,7 @@
     ModelStateDictionary _modelState;
     CoachBonusViewModel _viewModel;
 
-    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
     _modelState = ViewContext.ModelState;
     _viewModel = (CoachBonusViewModel)ViewBag.ViewModel;
     MonthlySalaryDetails _model = (MonthlySalaryDetails)this.Model;
@@ -43,7 +43,7 @@
 <div class="panel-group full-body" id="accordionDetail_salary" role="tablist" aria-multiselectable="true">
     <div class="panel">
         <div class="panel-heading" role="tab" id="headingDetailSalary">
-            <h4 class="panel-title"> <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordionDetail_salary" href="#collapseDetail_contract" aria-expanded="false" aria-controls="collapseDetail_contract"> <i class="material-icons">subject</i> 薪資詳細資訊 </a> </h4>
+            <h4 class="panel-title"> <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordionDetail_salary" href="#collapseDetail_contract" aria-expanded="false" aria-controls="collapseDetail_contract"> <i class="material-icons">subject</i> @Html.Raw(_salary is CoachYearlyAdditionalPay ? "年終獎金詳細資訊" : "薪資詳細資訊")  </a> </h4>
         </div>
         <div id="collapseDetail_salary" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="headingDetailSalary">
             <div class="panel-body no-padding">
@@ -51,32 +51,35 @@
                     <div class="col-md-6 col-sm-6 col-12">
                         <ul class="mb_list">
                             <li class="tit"><i class="zmdi zmdi-folder-star-alt"></i> 薪資獎金</li>
-                            <li>
-                                <div class="list_tb tb2">
-                                    <div class="list_tr">
-                                        <div class="list_td hd">薪資</div>
-                                        <div class="list_td rt">@($"{_model.Salary:##,###,###,###}")</div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="list_tb tb2">
-                                    <div class="list_tr">
-                                        <div class="list_td hd">伙食津貼（免稅）</div>
-                                        <div class="list_td rt">@($"{_model.Subsistence:##,###,###,###}")</div>
-                                    </div>
-                                </div>
-                            </li>
-                            @if(_model.SalaryDutyAllowance>0)
+                            @if (_salary is CoachMonthlySalary)
                             {
-                            <li>
-                                <div class="list_tb tb2">
-                                    <div class="list_tr">
-                                        <div class="list_td hd">職務加給</div>
-                                        <div class="list_td rt">@($"{_model.SalaryDutyAllowance:##,###,###,###}")</div>
+                                <li>
+                                    <div class="list_tb tb2">
+                                        <div class="list_tr">
+                                            <div class="list_td hd">薪資</div>
+                                            <div class="list_td rt">@($"{_model.Salary:##,###,###,###}")</div>
+                                        </div>
                                     </div>
-                                </div>
-                            </li>
+                                </li>
+                                <li>
+                                    <div class="list_tb tb2">
+                                        <div class="list_tr">
+                                            <div class="list_td hd">伙食津貼（免稅）</div>
+                                            <div class="list_td rt">@($"{_model.Subsistence:##,###,###,###}")</div>
+                                        </div>
+                                    </div>
+                                </li>
+                            }
+                            @if (_model.SalaryDutyAllowance > 0)
+                            {
+                                <li>
+                                    <div class="list_tb tb2">
+                                        <div class="list_tr">
+                                            <div class="list_td hd">職務加給</div>
+                                            <div class="list_td rt">@($"{_model.SalaryDutyAllowance:##,###,###,###}")</div>
+                                        </div>
+                                    </div>
+                                </li>
                             }
                             <li>
                                 <div class="list_tb tb2">
@@ -94,6 +97,22 @@
                                     </div>
                                 </div>
                             </li>
+                            @if (_salary is CoachYearlyAdditionalPay)
+                            {
+                                CoachYearlyAdditionalPay payItem = (CoachYearlyAdditionalPay)_salary;
+                                var reviewItem = models.GetTable<V_YearlyReview>()
+                                                                    .Where(s => s.Year == payItem.Year)
+                                                                    .Where(s => s.CoachID == payItem.CoachID)
+                                                                    .FirstOrDefault();
+                                <li>
+                                    <div class="list_tb tb2">
+                                        <div class="list_tr">
+                                            <div class="list_td hd">滾動式業績獎金</div>
+                                            <div class="list_td rt">@($"{reviewItem?.AttendedShare ?? 0:##,###,###,###}")</div>
+                                        </div>
+                                    </div>
+                                </li>
+                            }
                             <li>
                                 <div class="list_tb tb2">
                                     <div class="list_tr">
@@ -150,35 +169,38 @@
                             <li>
                                 <div class="list_tb tb2">
                                     <div class="list_tr">
-                                        <div class="list_td hd">補充保費</div>
+                                        <div class="list_td hd">二代健保</div>
                                         <div class="list_td rt">@($"{_model.HealthSupplement:##,###,###,###}")</div>
                                     </div>
                                 </div>
                             </li>
-                            <li>
-                                <div class="list_tb tb2">
-                                    <div class="list_tr">
-                                        <div class="list_td hd">病假(半薪)</div>
-                                        <div class="list_td rt">@($"{_model.SickLeave:##,###,###,###}")</div>
+                            @if (_salary is CoachMonthlySalary)
+                            {
+                                <li>
+                                    <div class="list_tb tb2">
+                                        <div class="list_tr">
+                                            <div class="list_td hd">病假(半薪)</div>
+                                            <div class="list_td rt">@($"{_model.SickLeave:##,###,###,###}")</div>
+                                        </div>
                                     </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="list_tb tb2">
-                                    <div class="list_tr">
-                                        <div class="list_td hd">事假(無薪)</div>
-                                        <div class="list_td rt">@($"{_model.PersonalLeave:##,###,###,###}")</div>
+                                </li>
+                                <li>
+                                    <div class="list_tb tb2">
+                                        <div class="list_tr">
+                                            <div class="list_td hd">事假(無薪)</div>
+                                            <div class="list_td rt">@($"{_model.PersonalLeave:##,###,###,###}")</div>
+                                        </div>
                                     </div>
-                                </div>
-                            </li>
-                            <li>
+                                </li>
+                            }
+                            @*<li>
                                 <div class="list_tb tb2">
                                     <div class="list_tr">
                                         <div class="list_td hd">防疫假</div>
                                         <div class="list_td rt">@($"{_model.EpidemicPL:##,###,###,###}")</div>
                                     </div>
                                 </div>
-                            </li>
+                            </li>*@
                             <li>
                                 <div class="list_tb tb2">
                                     <div class="list_tr">
@@ -195,52 +217,53 @@
     </div>
     @if (_salary != null)
     {
-        if(_salary is CoachMonthlySalary)
+        if (_salary is CoachMonthlySalary)
         {
             CoachMonthlySalary salaryItem = (CoachMonthlySalary)_salary;
             if (salaryItem.ServingCoach.UserProfile.IsHealthCare())
             {
                 await Html.RenderPartialAsync("~/Views/ConsoleHome/Salary/AchievementBonusForHealthCare.cshtml", _model);
             }
-            else if (salaryItem.PTAverageUnitPrice > 0)
+            else if (salaryItem.PTAverageUnitPrice > 0 && !(salaryItem.ServingCoach.UserProfile.IsManager() || salaryItem.ServingCoach.UserProfile.IsViceManager() || salaryItem.ServingCoach.UserProfile.IsFES()))
             {
                 await Html.RenderPartialAsync("~/Views/ConsoleHome/Salary/AchievementBonusForCoach.cshtml", _model);
             }
+            <div class="panel">
+                <div class="panel-heading" role="tab" id="headingCompanyPay">
+                    <h4 class="panel-title material-icons"> <a role="button" data-toggle="collapse" data-parent="#accordionDetail_companypay" href="#collapseCompanypay" aria-expanded="true" aria-controls="collapseCompanypay"> <i class="material-icons">subject</i> 公司提撥明細 </a> </h4>
+                </div>
+                <div id="collapseCompanypay" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingCompanyPay">
+                    <div class="panel-body no-padding">
+                        <ul class="mb_list">
+                            <li>
+                                <div class="list_tb tb2">
+                                    <div class="list_tr">
+                                        <div class="list_td hd">勞保</div>
+                                        <div class="list_td rt">@($"{_model.LaborInsurranceByEmployer:##,###,###,###}")</div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="list_tb tb2">
+                                    <div class="list_tr">
+                                        <div class="list_td hd">健保</div>
+                                        <div class="list_td rt">@($"{_model.HealthInsurranceByEmployer:##,###,###,###}")</div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="list_tb tb2">
+                                    <div class="list_tr">
+                                        <div class="list_td hd">退休金</div>
+                                        <div class="list_td rt">@($"{_model.Pension:##,###,###,###}")</div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         }
     }
-    <div class="panel">
-        <div class="panel-heading" role="tab" id="headingCompanyPay">
-            <h4 class="panel-title material-icons"> <a role="button" data-toggle="collapse" data-parent="#accordionDetail_companypay" href="#collapseCompanypay" aria-expanded="true" aria-controls="collapseCompanypay"> <i class="material-icons">subject</i> 公司提撥明細 </a> </h4>
-        </div>
-        <div id="collapseCompanypay" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingCompanyPay">
-            <div class="panel-body no-padding">
-                <ul class="mb_list">
-                    <li>
-                        <div class="list_tb tb2">
-                            <div class="list_tr">
-                                <div class="list_td hd">勞保</div>
-                                <div class="list_td rt">@($"{_model.LaborInsurranceByEmployer:##,###,###,###}")</div>
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="list_tb tb2">
-                            <div class="list_tr">
-                                <div class="list_td hd">健保</div>
-                                <div class="list_td rt">@($"{_model.HealthInsurranceByEmployer:##,###,###,###}")</div>
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="list_tb tb2">
-                            <div class="list_tr">
-                                <div class="list_td hd">退休金</div>
-                                <div class="list_td rt">@($"{_model.Pension:##,###,###,###}")</div>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
+
 </div>

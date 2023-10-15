@@ -1,0 +1,450 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@using CommonLib.Utility
+@functions
+{
+    static readonly String[] ContactTimeDesc =
+        {
+            "",
+            "上午十點到十二點",
+            "中午十二點至下午一點",
+            "下午一點到六點",
+            "晚間六點到九點",
+        };
+
+}
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    TrialLearner _model;
+    String _dialogID = $"trialProcess{DateTime.Now.Ticks}";
+    UserProfile _profile;
+    TrialLearnerQueryViewModel _viewModel = ViewBag.ViewModel as TrialLearnerQueryViewModel;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];
+    _model = (TrialLearner)this.Model;
+    _profile = (await Context.GetUserAsync()).LoadInstance(models);
+    _viewModel.KeyID = _model.UID.EncryptKey();
+    _viewModel.Status = (TrialLearner.TrialStatusDefinition?)_model.Status;
+    _viewModel.AssigneeID = _model.AssigneeID;
+    _viewModel.AttendingCoach = _model.AttendingCoach;
+    _viewModel.MediaID = _model.HowToKnow.Select(t => t.MediaID).ToArray();
+    _viewModel.HID = _model.ReferralFrom.Select(t => t.HID).ToArray();
+
+}
+<div class="modal fade" id="@(_dialogID)" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5>@Html.Raw(_model.UserName)的預約表單</h5>
+                <button type="button" class="btn bg-orange btn-round waves-effect btnFinish">
+                    @Html.Raw(_model.IsClosed == true ? "取消結案" : "結案")
+                </button>
+                <a class="closebutton" data-dismiss="modal"></a>
+            </div>
+            <div class="modal-body">
+                <div class="panel-group full-body" id="accordionDetail_contract" role="tablist"
+                     aria-multiselectable="true">
+                    <div class="panel">
+                        <div class="panel-heading" role="tab" id="headingDetailInquiry">
+                            <h4 class="panel-title material-icons">
+                                <a role="button" data-toggle="collapse"
+                                   data-parent="#accordionDetail_inquiry" href="#collapseDetail_inquiry"
+                                   aria-expanded="true" aria-controls="collapseDetail_inquiry">
+                                    <i class="material-icons">subject</i> 客戶填寫資訊
+                                </a>
+                            </h4>
+                            <span class="badge bg-red status" id="unassigned" style="display:none;">未分派</span>
+                            <span class="badge bg-amber status" id="assigned" style="display:none;">已分派聯繫</span>
+                            <span class="badge bg-blue status" id="reserved" style="display:none;">已分派體驗</span>
+                            <span class="badge bg-green status" id="finished" style="display:none;">已結案</span>
+                        </div>
+                        <div id="collapseDetail_inquiry" class="panel-collapse collapse show" role="tabpanel"
+                             aria-labelledby="headingDetailInquiry">
+                            <div class="panel-body no-padding">
+                                <ul class="mb_list">
+                                    <li>
+                                        <div class="list_tb tb2">
+                                            <div class="list_tr">
+                                                <div class="list_td hd">填寫表單日期</div>
+                                                <div class="list_td rt">@(_model.SubmitDate)</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="list_tb tb2 Fixed_w">
+                                            <div class="list_tr">
+                                                <div class="list_td hd">姓名</div>
+                                                <div class="list_td rt">@(_model.UserName)</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="list_tb tb2">
+                                            <div class="list_tr">
+                                                <div class="list_td hd">性別</div>
+                                                <div class="list_td rt">@(_model.Gender)</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="list_tb tb2">
+                                            <div class="list_tr">
+                                                <div class="list_td hd">聯絡人電話</div>
+                                                <div class="list_td rt">@(_model.Phone)</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="list_tb tb2">
+                                            <div class="list_tr">
+                                                <div class="list_td hd">電子郵件</div>
+                                                <div class="list_td rt">@(_model.Email)</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="list_tb tb2">
+                                            <div class="list_tr">
+                                                <div class="list_td hd">方便聯絡的時間</div>
+                                                <div class="list_td rt">
+                                                    @foreach (var c in _model.ContactTime)
+                                                    {
+                                                        <text>@Html.Raw(ContactTimeDesc[c.TimeID])</text><br />
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="list_tb tb2">
+                                            <div class="list_tr">
+                                                <div class="list_td hd">解決什麼問題</div>
+                                                <div class="list_td rt">
+                                                    @foreach (var c in _model.TrialLearnerPurpose)
+                                                    {
+                                                        <text>@Html.Raw(c.BeyondHelp?.Achievement)</text><br />
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    @*<li>
+                                            <div class="list_tb tb2">
+                                                <div class="list_tr">
+                                                    <div class="list_td hd">運動目標</div>
+                                                    <div class="list_td rt">
+                                                        增肌<br />減脂<br />運動表現<br />健康
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>*@
+                                    <li>
+                                        <div class="list_tb tb2">
+                                            <div class="list_tr">
+                                                <div class="list_td hd">疑問與其他需求</div>
+                                                <div class="list_td rt">
+                                                    @Html.Raw(_model.Question)
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel">
+                        <div class="panel-heading" role="tab" id="headingContact">
+                            <h4 class="panel-title material-icons">
+                                <a role="button" data-toggle="collapse"
+                                   data-parent="#accordionDetail_contact" href="#collapseDetail_contact"
+                                   aria-expanded="true" aria-controls="collapseDetail_contact">
+                                    <i class="material-icons">subject</i> 聯繫資訊
+                                </a>
+                            </h4>
+                            <span class="badge bg-lime" id="assigned">@Html.Raw(TrialConsoleController.Assigned.Any(s => s == _model.Status) ? (TrialLearner.TrialStatusDefinition?)_model.Status : null)</span>
+                            <button type="button"
+                                    class="btn btn-danger btn-sm btn-round btn-simple waves-effect float-right btnAssign">
+                                更新聯繫資訊
+                            </button>
+                        </div>
+                        <div id="collapseDetail_contact" class="panel-collapse collapse show" role="tabpanel"
+                             aria-labelledby="headingContaheadingContactct">
+                            <div class="panel-body no-padding">
+                                <ul class="mb_list">
+                                    <li>
+                                        <div class="list_tb tb2">
+                                            <div class="list_tr">
+                                                <div class="list_td hd">聯繫教練</div>
+                                                <div class="list_td rt">
+                                                    @Html.Raw(_model.Assignee?.FullName())
+                                                </div>
+                                            </div>
+                                            <div class="list_tr">
+                                                <div class="list_td hd"></div>
+                                                <div class="list_td rt">
+                                                    <div class="input-group">
+                                                        @{
+                                                            ViewBag.SearchAction = Url.Action("SearchAssignee", "TrialConsole", new { DialogID = _dialogID });
+                                                            ViewBag.SearchItem = "搜尋教練...";
+                                                            ViewBag.LessThanTwo = "你忘了教練的姓名嗎？!(至少2個中、英文字)";
+                                                            ViewBag.DataNotFound = "你確定有這個教練？!";
+                                                            await Html.RenderPartialAsync("~/Views/ConsoleEvent/Module/SearchInput.cshtml");
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="list_tb tb2">
+                                            <div class="list_tr">
+                                                <div class="list_td hd">分派聯繫時間</div>
+                                                <div class="list_td rt" id="assignDate">@(_model.AssignDate)</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="list_tb tb2">
+                                            <div class="list_tr">
+                                                <div class="list_td hd">從何得知 Beyond Fitness 呢</div>
+                                                <div class="list_td rt"></div>
+                                            </div>
+                                            <div class="list_tr">
+                                                <div class="list_td hd"></div>
+                                                <div class="list_td rt">
+                                                    @{
+                                                        var mediaItems = models.GetTable<MediaPlatform>().ToArray();
+                                                        for (int idx = 0; idx < mediaItems.Length;)
+                                                        {
+                                                            <div class="fancy-checkbox custom-bgcolor-blue">
+                                                                @for (int col = 0; col < 3 && idx < mediaItems.Length; col++, idx++)
+                                                                {
+                                                                    var media = mediaItems[idx];
+                                                                    <label>
+                                                                        <input name="MediaID" value="@(media.MediaID)" checked="@(_model.HowToKnow.Any(n => n.MediaID == media.MediaID))"
+                                                                               type="checkbox" />
+                                                                        <span><i></i>@Html.Raw(media.Platform)</span>
+                                                                    </label>
+                                                                }
+                                                            </div>
+                                                        }
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="list_tb tb2">
+                                            <div class="list_tr">
+                                                <div class="list_td hd">醫療轉介</div>
+                                                <div class="list_td rt">
+                                                    @{
+                                                        var healthItems = models.GetTable<HealthcareInstitution>().ToArray();
+                                                        for (int idx = 0; idx < healthItems.Length;)
+                                                        {
+                                                            <div class="fancy-checkbox custom-bgcolor-green">
+                                                                @for (int col = 0; col < 3 && idx < healthItems.Length; col++, idx++)
+                                                                {
+                                                                    var health = healthItems[idx];
+                                                                    <label>
+                                                                        <input name="HID" value="@(health.HID)" checked="@(_model.ReferralFrom.Any(n => n.HID == health.HID))"
+                                                                               type="checkbox" />
+                                                                        <span><i></i>@Html.Raw(health.Institution)</span>
+                                                                    </label>
+                                                                }
+                                                            </div>
+                                                        }
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="list_tb tb2">
+                                            <div class="list_tr">
+                                                <div class="list_td hd">聯繫狀態</div>
+                                                <div class="list_td rt">
+                                                    @foreach (var trial in TrialConsoleController.Assigned)
+                                                    {
+                                                        <label class="fancy-radio custom-color-darkteal">
+                                                            <input name="Status" value="@(trial)" type="radio" checked="@(_model.Status == trial || (!_model.Status.HasValue && trial == (int)TrialLearner.TrialStatusDefinition.尚未聯繫))" />
+                                                            <span><i></i>@((TrialLearner.TrialStatusDefinition)trial)</span>
+                                                        </label>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel">
+                        <div class="panel-heading" role="tab" id="headingTrail">
+                            <h4 class="panel-title material-icons">
+                                <a role="button" data-toggle="collapse"
+                                   data-parent="#accordionDetail_trail" href="#collapseDetail_trail"
+                                   aria-expanded="true" aria-controls="collapseDetail_trail">
+                                    <i class="material-icons">subject</i> 體驗資訊
+                                </a>
+                            </h4>
+                            <span class="badge bg-secondary" id="reservation">@Html.Raw(TrialConsoleController.AssignedTrial.Any(s => s == _model.Status) ? (TrialLearner.TrialStatusDefinition?)_model.Status : null)</span>
+                            <button type="button"
+                                    class="btn btn-danger btn-sm btn-round btn-simple waves-effect float-right btnReserve">
+                                更新體驗資訊
+                            </button>
+                        </div>
+                        <div id="collapseDetail_trail" class="panel-collapse collapse show" role="tabpanel"
+                             aria-labelledby="headingContaheadingContactct">
+                            <div class="panel-body no-padding">
+                                <ul class="mb_list">
+                                    <li>
+                                        <div class="list_tb tb2">
+                                            <div class="list_tr">
+                                                <div class="list_td hd">體驗教練</div>
+                                                <div class="list_td rt">@Html.Raw(_model.ServingCoach?.UserProfile.FullName())</div>
+                                            </div>
+                                            <div class="list_tr">
+                                                <div class="list_td hd"></div>
+                                                <div class="list_td rt">
+                                                    <div class="input-group">
+                                                        @{
+                                                            ViewBag.SearchAction = Url.Action("SearchAttendingCoach", "TrialConsole", new { DialogID = _dialogID });
+                                                            ViewBag.SearchItem = "搜尋教練...";
+                                                            ViewBag.LessThanTwo = "你忘了教練的姓名嗎？!(至少2個中、英文字)";
+                                                            ViewBag.DataNotFound = "你確定有這個教練？!";
+                                                            await Html.RenderPartialAsync("~/Views/ConsoleEvent/Module/SearchInput.cshtml");
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="list_tb tb2">
+                                            <div class="list_tr">
+                                                <div class="list_td hd">分派體驗時間</div>
+                                                <div class="list_td rt">@(_model.ReserveDate)</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="list_tb tb2">
+                                            <div class="list_tr">
+                                                <div class="list_td hd">體驗狀態</div>
+                                                <div class="list_td rt">
+                                                    @foreach (var trial in TrialConsoleController.AssignedTrial)
+                                                    {
+                                                        <label class="fancy-radio custom-color-darkteal">
+                                                            <input name="Status" value="@(trial)" type="radio" checked="@(_model.Status == trial)" />
+                                                            <span><i></i>@((TrialLearner.TrialStatusDefinition)trial)</span>
+                                                        </label>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @{
+        await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/BSModalScript.cshtml", model: _dialogID);
+    }
+
+<script>
+        $(function () {
+
+            var viewModel = @Html.Raw(_viewModel.JsonStringify());
+
+            $global.viewScope = { };
+            $global.viewScope['@(_dialogID)'] = viewModel;
+
+            function showStatus(status) {
+
+                $('#@(_dialogID) span.status').css('display', 'none');
+
+                if (status === undefined) {
+                    $('#unassigned').css('display', '');
+                    return;
+                }
+                var assigned = @Html.Raw(TrialConsoleController.Assigned.JsonStringify());
+                if (assigned.indexOf(status) >= 0) {
+                    $('#unassigned').css('display', '');
+                    return;
+                }
+
+                var reserved = @Html.Raw(TrialConsoleController.AssignedTrial.JsonStringify());
+                if (reserved.indexOf(status) >= 0) {
+                    $('#reserved').css('display', '');
+                    return;
+                }
+            }
+
+            function isClosed(status) {
+                if (status == true) {
+                    $('#finished').css('display', '');
+                    return;
+                }
+            }
+
+            showStatus(@(_model.Status));
+            isClosed(@(_model.IsClosed == true ? "true" : "false"));
+
+            $('#@(_dialogID) button.btnFinish').on('click', function (event) {
+                var $this = $(this);
+                viewModel.UpdateMethod = @((int)TrialLearnerViewModel.UpdateWhat.Close);
+                updateTrial(viewModel, function () {
+                    window.location.reload();
+                });
+            });
+
+            $('#@(_dialogID) button.btnAssign').on('click', function (event) {
+                var $this = $(this);
+                var $scope = $this.closest('div.panel');
+                var formData = $scope.find('input,select,textarea').serializeObject();
+
+                formData = $.extend({}, viewModel, formData);
+                formData.UpdateMethod = @((int)TrialLearnerViewModel.UpdateWhat.Contact);
+
+                updateTrial(formData, function (data) {
+                    $('#assignDate').text(data.AssignDate);
+                    $('#assigned').text(data.Status);
+                    window.location.reload();
+                });
+            });
+
+            $('#@(_dialogID) button.btnReserve').on('click', function (event) {
+                var $this = $(this);
+                var $scope = $this.closest('div.panel');
+                var formData = $scope.find('input,select,textarea').serializeObject();
+
+                formData = $.extend({}, viewModel, formData);
+                formData.UpdateMethod = @((int)TrialLearnerViewModel.UpdateWhat.Reservation);
+
+                updateTrial(formData, function (data) {
+                    $('#reserveDate').text(data.ReserveDate);
+                    $('#reservation').text(data.Status);
+                    window.location.reload();
+                });
+            });
+        });
+</script>
+</div>
+

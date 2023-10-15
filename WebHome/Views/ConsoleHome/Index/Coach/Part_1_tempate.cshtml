@@ -43,6 +43,36 @@
                     </div>
                     <div class="collapse-xs collapse-sm collapse" id="open-events">
                         <div class="card top_counter">
+                            @{
+                                var items = models.GetTable<TrialLearner>()
+                                            .Where(t => !t.IsClosed.HasValue || t.IsClosed == false);
+
+                                UserProfile coachItem = _model;
+                                if (coachItem.IsManager() || coachItem.IsViceManager())
+                                {
+                                    var branchID = coachItem.ServingCoach.WorkBranchID();
+                                    items = items.Where(t => t.BranchID == branchID);
+                                }
+                                else if(coachItem.IsCoach())
+                                {
+                                    items = items.Where(t => t.AssigneeID == coachItem.UID);
+                                }
+                            }
+                            <div class="col-sm-12">
+                                <div class="body p-10">
+                                    <div class="icon bg-red">
+                                        <i class="zmdi zmdi-headset-mic"></i>
+                                    </div>
+                                    <div class="content">
+                                        <div class="text col-red">未結案詢問表單</div>
+                                        <a href="@Url.Action("TrialLearnerOverview","ConsoleHome")">
+                                            <h5 class="number col-red">@(items.Count())</h5>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card top_counter">
                             @RenderSection("LearnerBirthInfo")
                         </div>
                         <div class="card top_counter">

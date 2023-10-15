@@ -116,160 +116,7 @@
   </resheader>
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </resheader>
-  <!--功能Menu-->
-  <data name="Home" xml:space="preserve">
-    <value>首頁</value>
-  </data>
-  <data name="AboutUs" xml:space="preserve">
-    <value>關於我們</value>
-  </data>
-  <data name="FindUs" xml:space="preserve">
-    <value>分店一覽</value>
-  </data>
-  <data name="Service" xml:space="preserve">
-    <value>專屬服務</value>
-  </data>
-  <data name="FAQ" xml:space="preserve">
-    <value>常見問題</value>
-  </data>
-  <data name="Blog" xml:space="preserve">
-    <value>知識分享</value>
-  </data>
-  <data name="JoinUs" xml:space="preserve">
-    <value>加入我們</value>
-  </data>
-  <data name="Book" xml:space="preserve">
-    <value>預約體驗</value>
-  </data>
-  <data name="BookNow" xml:space="preserve">
-    <value>立即預約體驗</value>
-  </data>
-  <data name="LearnMore" xml:space="preserve">
-    <value>了解更多</value>
-  </data>
-  <data name="TEL" xml:space="preserve">
-    <value>電話</value>
-  </data>
-
-  <!--分店資訊-->
-  <data name="BranchName_Nanjing" xml:space="preserve">
-    <value>南京</value>
-  </data>
-  <data name="BranchName_XinyiAnhe" xml:space="preserve">
-    <value>信義安和</value>
-  </data>
-  <data name="BranchName_Zhongxiao" xml:space="preserve">
-    <value>忠孝</value>
-  </data>
-  <data name="BranchName_Dongmen" xml:space="preserve">
-    <value>東門</value>
-  </data>
-  <data name="BranchAdd_Nanjing" xml:space="preserve">
-    <value>台北市松山區南京東路四段17號B1</value>
-  </data>
-  <data name="BranchAdd_XinyiAnhe" xml:space="preserve">
-    <value>台北市大安區安和路二段81號B1</value>
-  </data>
-  <data name="BranchAdd_Zhongxiao" xml:space="preserve">
-    <value>台北市大安區大安路一段75巷21號1F/B1</value>
-  </data>
-  <data name="BranchAdd_Dongmen" xml:space="preserve">
-    <value>台北市大安區信義路二段28號</value>
-  </data>
-   <data name="BranchMRT_Nanjing" xml:space="preserve">
-    <value>松山新店線-台北小巨蛋站1號出口</value>
-  </data>
-  <data name="BranchMRT_XinyiAnhe" xml:space="preserve">
-    <value>淡水信義線-信義安和2A號出口</value>
-  </data>
-  <data name="BranchMRT_Zhongxiao" xml:space="preserve">
-    <value>板南線-忠孝復興站3號出口（地下街14號）/B1</value>
-  </data>
-  <data name="BranchMRT_Dongmen" xml:space="preserve">
-    <value>淡水信義線-東門站3號出口</value>
-  </data>
-  <data name="BranchTEL_Nanjing" xml:space="preserve">
-    <value>(02)2715-2733</value>
-  </data>
-  <data name="BranchTEL_XinyiAnhe" xml:space="preserve">
-    <value>(02)2720-0530</value>
-  </data>
-  <data name="BranchTEL_Zhongxiao" xml:space="preserve">
-    <value>(02)2776-9932</value>
-  </data>
-  <data name="BranchTEL_Dongmen" xml:space="preserve">
-    <value>(02)2396-0776</value>
-  </data>
-  <data name="BranchDesc1_Nanjing" xml:space="preserve">
-    <value>位於台北小巨蛋正對面，鄰近微風百貨，小巨蛋商圈，捷運台北小巨蛋站1號出口，走路1分鐘即可抵達。</value>
-  </data>
-  <data name="BranchDesc2_Nanjing" xml:space="preserve">
-    <value>擁有超過百坪的專業場地，結合多樣化訓練設備，提供您在運動的同時不受一般場地侷限，讓您的訓練品質最佳化。</value>
-  </data>
-  <data name="BranchDesc1_XinyiAnhe" xml:space="preserve">
-    <value>位於捷運信義安和捷運站2A號出口，走路約3分鐘即可抵達。座落於敦化安和重點區域，比鄰國際立人國中小學校區。</value>
-  </data>
-  <data name="BranchDesc2_XinyiAnhe" xml:space="preserve">
-    <value>挑高4米超過220坪的私人運動環境，擁有25米活動草皮區、獨立團課訓練場地、運動按摩恢復室，與舒適獨立淋浴室，您可以享受到最專業運動的場地與服務，我們能確保您更能在此得到真正放心及最優質的服務。</value>
-  </data>
-  <data name="BranchDesc1_Zhongxiao" xml:space="preserve">
-    <value>位於頂好名店城後方大樓1F/B1，捷運忠孝復興站3號(地下街14號)出口，走路2分鐘即可抵達。</value>
-  </data>
-  <data name="BranchDesc2_Zhongxiao" xml:space="preserve">
-    <value>少數擁有室內挑高私人教練場地，明亮採光的運動空間，結合多樣化訓練設備，提供乾濕分離衛浴設備，方便您更舒適換穿衣物及梳洗。</value>
-  </data>
-  <data name="BranchDesc1_Dongmen" xml:space="preserve">
-    <value>位於捷運東門捷運站3號出口，走路約3分鐘即可抵達。永康商圈一樓旗艦店，規劃寬敞明亮、百坪訓練空間。</value>
-  </data>  
-  <data name="BranchDesc2_Dongmen" xml:space="preserve">
-    <value>客製化訓練場地整合：伸展重訓區與室內草皮結合，引進小型體操訓練場地，豐富訓練多樣化。在專業教練細心指導下，享有隱私安全，且時尚舒適的運動環境。</value>
-  </data>    
-
-  <!--聯絡我們-->
-  <data name="ContactItemTitle" xml:space="preserve">
-    <value>開始您的第一步</value>
-  </data>
-  <data name="ContactItemSubTitle" xml:space="preserve">
-    <value>我們隨時提供協助。</value>
-  </data>
-  <data name="JoinItemContactTitle" xml:space="preserve">
-    <value>把握一展長才的機會</value>
-  </data>
-  <data name="JoinItemContactDesc" xml:space="preserve">
-    <value>請向Beyond自我介紹，&lt;br class=&quot;hidden-sm-up&quot; /&gt;如果有適合你的職缺，&lt;br /&gt;我們會與您聯繫。</value>
-  </data>
-
-  <!--隱私權保護政策-->  
-  <data name="Cookies" xml:space="preserve">
-    <value>我們使用 cookies 來確保您在網站上能獲得良好的體驗。如果您繼續使用本網站，我們將認定您接受並理解我們的隱私政策和服務條款。</value>
-  </data>
-  <data name="PrivacyPolicy" xml:space="preserve">
-    <value>隱私權保護政策</value>
-  </data>
-  <data name="Agree" xml:space="preserve">
-    <value>同意</value>
-  </data>
-
-  <!--首頁-->
-  <data name="HomeSlogon1" xml:space="preserve">
-    <value>專屬於您的私人教練</value>
-  </data>
-   <data name="HomeSlogon2" xml:space="preserve">
-    <value>全方位照顧您的健康</value>
-  </data>
-  <data name="HomeSlogon3" xml:space="preserve">
-    <value>PRO. BEYOND.</value>
-  </data>
-  <data name="HomeSlogon3SubDesc" xml:space="preserve">
-    <value>超越自己，挑戰極限</value>
-  </data>
-  <data name="HomeFindBeyond" xml:space="preserve">
-    <value>找尋更多 BEYOND</value>
-  </data>
-  <data name="HomeFindPartner" xml:space="preserve">
-    <value>合作夥伴 OUR PARTNER</value>
-  </data>
+  </resheader> 
 
   <!--常見問題-->
   <data name="FAQBannerSlogn" xml:space="preserve">
@@ -408,17 +255,20 @@
   <data name="JoinUsJobSlogon" xml:space="preserve">
     <value>找到適合你的團隊&lt;BR /&gt;自己的精彩故事由&amp;nbsp;BEYOND&amp;nbsp;開始</value>
   </data>  
+   <data name="JobOpening" xml:space="preserve">
+    <value>OPENING 關於職缺</value>
+  </data> 
 
   <!--私人教練職缺介紹-->
   <data name="JoinUsCoachSlogon" xml:space="preserve">
-    <value>我們最喜歡挑戰&lt;br class=&quot;hidden-sm-up&quot; /&gt;「不可能」</value>
+    <value>我們最喜歡挑戰&lt;br class=&quot;hidden-sm-up&quot; /&gt;&lt;span class=&quot;mark-text-underline&quot;  padding-width=&quot;0.1&quot; bottom-width=&quot;0.1&quot;&gt;不可能&lt;/span&gt;</value>
   </data>
   <data name="JoinUsCoachDesc" xml:space="preserve">
     <value>Beyond Fitness 創立於 2014 年，致力於發展專業一對一私人教練。Beyond Fitness從南京小巨蛋發跡，成立以來陸續拓展了信義安和、忠孝、東門等分店，在這些的背後，是一群想用行動與專業實踐理想的夥伴，與背後願意相信 我們的客戶們。我們相信，教育應該是個別化的，訓練也應該是，我們針對個人化的需求去客製最符合「人」的訓練模式，進而引領客戶走向更美好的生活為目標。</value>
   </data>
   <!--運動按摩師職缺介紹-->
   <data name="JoinUsTherapistSlogon" xml:space="preserve">
-    <value>提供個人化恢復方案的健身專家</value>
+    <value>提供&lt;span class=&quot;mark-text-underline&quot;  padding-width=&quot;0&quot; bottom-width=&quot;0.1&quot;&gt;個人化&lt;/span&gt;恢復方案的健身專家</value>
   </data>
   <data name="JoinUsTherapistDesc" xml:space="preserve">
     <value>Beyond Fitness 除了專注於設計客製化的運動計劃和提供專業指導，我們更為您提供綜合性的運動恢復方案。我們的恢復教練具有豐富的專業知識和經驗，能夠協助您在運動後瞬間修復體力，預防受傷，並制定出恰當的運動計劃，確保您的身體達到最佳狀態。不論是想要塑造健美體態，還是為了改善健康狀況，我們都能夠為您提供最專業的健身服務和最全面的恢復指導。</value>
@@ -449,21 +299,63 @@
 
   <!--關於我們-->
   <data name="AboutUsBannerSlogn" xml:space="preserve">
-    <value>Beyond的價值理念</value>
+    <value>摯愛運動，&lt;br/&gt;&lt;span class=&quot;multicolor-text-underline&quot;&gt;快樂始於Beyond&lt;/span&gt;</value>
   </data>
   <data name="AboutUsBannerSlognDesc" xml:space="preserve">
-    <value>WHO WE ARE</value>
+    <value>在歡愉的時光中運動，&lt;br class=&quot;hidden-sm-up&quot;&gt;為您締造與眾不同的體驗</value>
+  </data>
+  <data name="AboutUsBrandSlogon" xml:space="preserve">
+    <value>品牌信念</value>
+  </data>
+  <data name="AboutUsBrandSlogonDesc" xml:space="preserve">
+    <value>對 Beyond 來說，&lt;br class=&quot;hidden-sm-up&quot;/&gt;運動是一件認真的事情</value>
+  </data>
+  <data name="AboutUsBelieve" xml:space="preserve">
+    <value>我們相信</value>
+  </data>
+  <data name="AboutUsBelieveDesc" xml:space="preserve">
+    <value>「若能幫助您成功的改變生活、邁向健康，自然而然可透過運動創造屬於您的人本價值及生活品質。」</value>
+  </data>
+  <data name="AboutUsCompanyDesc1" xml:space="preserve">
+    <value>Beyond自2014年始於台北小巨蛋，至今陸續擴展至信義安和、忠孝和東門等四家分店，以超過50位專業團隊成員擁有完整組織架構，為您提供個人客製化訓練、營養諮詢、運動按摩恢復、運動傷害防護、企業團隊健康策略、專業運動教育培訓以及企業健康顧問等多元服務，並為全台最大的運動客製化訓練中心。</value>
+  </data>
+  <data name="AboutUsCompanyDesc2" xml:space="preserve">
+    <value>我們以熱情和專業之心，為您打造獨一無二的運動體驗。無論您的目標是什麼，我們相信每個時刻都應該充滿動力與樂趣。除了定期舉辦精彩的Game Day和團隊活動，還提供移地訓練和帶領偏鄉朋友一起享受運動的機會。因為對我們來說，運動不僅是認真的事情，更是在歡愉的時光中創造價值的機會。</value>
   </data>
 
   <!--預約體驗-->
   <data name="BookNowBannerSlogn" xml:space="preserve">
-    <value>預約60分鐘體驗</value>
+    <value>預約60分鐘&lt;br class=&quot;hidden-lg-up&quot;/&gt;&lt;span class=&quot;mark-text-underline&quot; padding-width=&quot;0.1&quot; bottom-width=&quot;0.1&quot;&gt;免費體驗&lt;/span&gt;</value>
   </data>
   <data name="BookNowBannerSlognDesc" xml:space="preserve">
     <value>專業1對1私人教練 立即免費預約</value>
   </data>
+  <data name="BookNowStep1" xml:space="preserve">
+    <value>預約</value>
+  </data>
+  <data name="BookNowStep1Desc" xml:space="preserve">
+    <value>線上填表單或電話與我們聯繫</value>
+  </data>  
+  <data name="BookNowStep2" xml:space="preserve">
+    <value>諮詢</value>
+  </data>
+  <data name="BookNowStep2Desc" xml:space="preserve">
+    <value>仔細詢問您的健康狀況與喜好</value>
+  </data>  
+  <data name="BookNowStep3" xml:space="preserve">
+    <value>親身體驗</value>
+  </data>
+  <data name="BookNowStep3Desc" xml:space="preserve">
+    <value>針對您的狀況提供與規劃適合的訓練</value>
+  </data>  
+   <data name="BookNowStep4" xml:space="preserve">
+    <value>量身定做訓練方案</value>
+  </data>
+  <data name="BookNowStep4Desc" xml:space="preserve">
+    <value>精心打造的個人化訓練內容</value>
+  </data>  
   <data name="BookNowFormDesc" xml:space="preserve">
-    <value>Beyond Fitnessがお客様の目標達成をサポートするために、このアンケートをご提供しております。このアンケートを通じて、お客様のニーズを初歩的に把握させていただきます。ご提出いただいたフォームを受けて、トレーナーがお客様に連絡し、体験の日程を確認させていただきます。</value>
+    <value>為了讓 Beyond Fitness 幫助您達成目標，此問券可以讓我們初步了解您的需求，&lt;br class=&quot;hidden-md-down&quot; /&gt;教練將會在收到表單後與您聯絡並確認安排體驗時間。</value>
   </data>
   <data name="BookNowFormColumn1" xml:space="preserve">
     <value>如何稱呼您？ (姓名)</value>

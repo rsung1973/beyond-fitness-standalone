@@ -28,7 +28,7 @@
     <div class="col-12">
         <h4 class="card-outbound-header">懶人包</h4>
     </div>
-    @if (_model.IsOfficer() || _model.IsAssistant() || _model.IsAuthorizedSysAdmin())
+    @if (_model.IsOfficer() /*|| _model.IsAssistant()*/ || _model.IsAuthorizedSysAdmin())
     {
         <div class="col-lg-2 col-md-3 col-sm-6">
             <div class="card">
@@ -96,7 +96,7 @@
         <div class="col-12">
             <h4 class="card-outbound-header">自訂條件</h4>
         </div>
-        @if (_model.IsOfficer() || _model.IsAssistant() || _model.IsAuthorizedSysAdmin())
+        @if (_model.IsOfficer() /*|| _model.IsAssistant()*/ || _model.IsAuthorizedSysAdmin())
         {
         <div class="col-lg-2 col-md-3 col-sm-6">
             <div class="card">

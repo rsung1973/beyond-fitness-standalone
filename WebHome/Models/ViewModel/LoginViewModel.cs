@@ -729,7 +729,29 @@ namespace WebHome.Models.ViewModel
         public String gRecaptchaResponse { get; set; }
         public bool? Agree { get; set; }
         public String Question { get; set; }
+        public TrialLearner.TrialStatusDefinition? Status { get; set; }
+        public UpdateWhat? UpdateMethod { get; set; }
+        public enum UpdateWhat
+        {
+            Status = 1,
+            Contact = 2,
+            Reservation = 3,
+            Close = 4,
+        }
+        public int? AssigneeID { get; set; }
+        public int? AttendingCoach { get; set; }
+        public int[] MediaID { get; set; }
+        public int[] HID { get; set; }
+        public int? Step { get; set; }
+    }
 
+    public class TrialLearnerQueryViewModel : TrialLearnerViewModel
+    {
+        public int? Year { get; set; }
+        public int? Month { get; set; }
+        public int[] ByStatus { get; set; }
+        public bool? NotAssigned { get; set; }
+        public bool? IsClosed { get; set; }
     }
 
     public class UserEventViewModel : QueryViewModel

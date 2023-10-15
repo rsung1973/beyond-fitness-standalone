@@ -17,7 +17,11 @@
     _modelState = ViewContext.ModelState;
     models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
     _viewModel = (ContractMemberViewModel)ViewBag.ViewModel;
-    var renewal = models.GetTable<CourseContractMember>().Any(m => m.UID == _viewModel.OwnerID);
+    var renewal = models.GetTable<CourseContractMember>()
+        .Where(m => models.GetTable<CourseContract>()
+                        .Where(c => c.Status >= (int)Naming.CourseContractStatus.¤w¥Í®Ä)
+                        .Any(c => m.ContractID == c.ContractID))
+        .Any(m => m.UID == _viewModel.OwnerID);
 }
 
 <script>

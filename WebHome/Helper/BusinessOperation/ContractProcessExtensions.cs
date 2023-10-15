@@ -274,11 +274,11 @@ namespace WebHome.Helper.BusinessOperation
             item.CourseContractExtension.BRByLearner = null;
             if (item.Renewal == false)
             {
-                if (viewModel.CheckBRCoach == true)
+                if (viewModel.CheckBRCoach == true && !installmentID.HasValue)
                 {
                     item.CourseContractExtension.BRByCoach = viewModel.BRCoach;
                 }
-                if (viewModel.CheckBRLearner == true)
+                if (viewModel.CheckBRLearner == true && !installmentID.HasValue)
                 {
                     item.CourseContractExtension.BRByLearner = viewModel.BRLearner;
                 }
@@ -2259,7 +2259,7 @@ namespace WebHome.Helper.BusinessOperation
                 case "終止":
                     if (item.OperationMode == (int)Naming.OperationMode.快速終止)
                     {
-                        item.ProcessContractQuickTermination(profile);
+                        item.ProcessContractQuickTermination2022(profile);
                     }
                     else
                     {

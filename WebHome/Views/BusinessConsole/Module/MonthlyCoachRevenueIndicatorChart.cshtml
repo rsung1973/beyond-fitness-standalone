@@ -1,0 +1,161 @@
+﻿
+@using System.IO
+@using System.Linq.Expressions
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using WebHome.Helper.BusinessOperation
+@using CommonLib.Utility
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    MonthlyIndicator _model;
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _model = (MonthlyIndicator)this.Model;
+}
+@{
+    MonthlyIndicatorQueryViewModel _viewModel = (MonthlyIndicatorQueryViewModel)ViewBag.ViewModel;
+    IQueryable<MonthlyCoachRevenueIndicator> items = models.GetTable<MonthlyCoachRevenueIndicator>().Where(r => r.PeriodID == _model.PeriodID);
+
+    if (_viewModel.BranchID.HasValue)
+    {
+        items = items.Where(r => r.BranchID == _viewModel.BranchID);
+    }
+
+    items = items.OrderBy(m => m.ServingCoach.ProfessionalLevel.LevelName);
+
+}
+@{
+    await Html.RenderPartialAsync("~/Views/BusinessConsole/Module2021/InitEcharts2023.cshtml");
+}
+<script>
+
+    $global.echarts.option = {
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'cross',
+                crossStyle: {
+                    color: '#999'
+                }
+            }
+        },
+        toolbox: {
+            feature: {
+                magicType: { show: true, type: ['line', 'bar'] },
+                restore: { show: true },
+                saveAsImage: { show: true }
+            }
+        },
+        legend: {
+            data: ['上課業績', '收款業績', '上課數']
+        },
+        xAxis: [
+            {
+                type: 'category',
+                data: @Html.Raw(items.Select(m=>m.ServingCoach.UserProfile.RealName).ToArray().JsonStringify()),
+                axisPointer: {
+                    type: 'shadow'
+                }
+            }
+        ],
+        yAxis: [
+            {
+                type: 'value',
+                name: '金額',
+                min: 0,
+                max: 100,
+                axisLabel: {
+                    formatter: '{value} 萬元'
+                }
+            },
+            {
+                type: 'value',
+                name: '上課數',
+                min: 0,
+                axisLabel: {
+                    formatter: '{value} 堂'
+                }
+            }
+        ],
+        series: [
+            {
+                name: '上課業績',
+                type: 'bar',
+                stack: 'achivement',
+                label: {
+                    normal: {
+                        formatter: function (v) {
+                            if (v.value <= 0) {
+                                return "";
+                            } else {
+                                var str = v.value.toString();
+                                let reg = str.indexOf(".") > -1 ? /(\d)(?=(\d{3})+\.)/g : /(\d)(?=(?:\d{3})+$)/g;
+                                return str.replace(reg, "$1,");
+                            }
+                        }
+                    },
+                    formatter: function (v) {
+                        if (v.value <= 0) {
+                            return "";
+                        } else {
+                            var str = v.value.toString();
+                            let reg = str.indexOf(".") > -1 ? /(\d)(?=(\d{3})+\.)/g : /(\d)(?=(?:\d{3})+$)/g;
+                            return str.replace(reg, "$1,");
+                        }
+                    }
+                },
+                data: @Html.Raw(items.Select(m=>m.LessonTuitionGoal).ToArray().Select(v=>Math.Round((v ?? 0)/10000M,2)).JsonStringify())
+            },
+            {
+                name: '收款業績',
+                type: 'bar',
+                stack: 'achivement',
+                label: {
+                    normal: {
+                        formatter: function (v) {
+                            if (v.value <= 0) {
+                                return "";
+                            } else {
+                                var str = v.value.toString();
+                                let reg = str.indexOf(".") > -1 ? /(\d)(?=(\d{3})+\.)/g : /(\d)(?=(?:\d{3})+$)/g;
+                                return str.replace(reg, "$1,");
+                            }
+                        }
+                    },
+                    formatter: function (v) {
+                        if (v.value <= 0) {
+                            return "";
+                        } else {
+                            var str = v.value.toString();
+                            let reg = str.indexOf(".") > -1 ? /(\d)(?=(\d{3})+\.)/g : /(\d)(?=(?:\d{3})+$)/g;
+                            return str.replace(reg, "$1,");
+                        }
+                    }
+                },
+                data: @Html.Raw(items.Select(m=>m.AchievementGoal).ToArray().Select(v=>Math.Round((v ?? 0)/10000M,2)).JsonStringify())
+            },
+            {
+                name: '上課數',
+                type: 'line',
+                yAxisIndex: 1,
+                formatter: function (v) {
+                    if (v.value <= 0) {
+                        return "";
+                    } else {
+                        return v.value;
+                    }
+                },
+                data: @Html.Raw(items.Select(m=>m.CompleteLessonsGoal).ToArray().Select(v=>(v ?? 0)).JsonStringify())
+            }
+        ],
+    };
+
+</script>
+

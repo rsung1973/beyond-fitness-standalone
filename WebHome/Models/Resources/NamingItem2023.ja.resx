@@ -116,159 +116,7 @@
   </resheader>
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </resheader>
-    <data name="Home" xml:space="preserve">
-    <value>トップページ</value>
-  </data>
-  <data name="AboutUs" xml:space="preserve">
-    <value>会社概要</value>
-  </data>
-  <data name="FindUs" xml:space="preserve">
-    <value>店舗を探す</value>
-  </data>
-  <data name="Service" xml:space="preserve">
-    <value>Beyondの特長</value>
-  </data>
-  <data name="FAQ" xml:space="preserve">
-    <value>よくある質問</value>
-  </data>
-  <data name="Blog" xml:space="preserve">
-    <value>知識分享</value>
-  </data>
-  <data name="JoinUs" xml:space="preserve">
-    <value>採用情報</value>
-  </data>
-  <data name="Book" xml:space="preserve">
-    <value>体験予約</value>
-  </data>
-  <data name="BookNow" xml:space="preserve">
-    <value>すぐに体験予約する</value>
-  </data>
-  <data name="LearnMore" xml:space="preserve">
-    <value>詳細はこちら</value>
-  </data>
-  <data name="TEL" xml:space="preserve">
-    <value>電話番号</value>
-  </data>     
-
-  <!--分店資訊-->
-  <data name="BranchName_Nanjing" xml:space="preserve">
-    <value>南京</value>
-  </data>
-  <data name="BranchName_XinyiAnhe" xml:space="preserve">
-    <value>信義安和</value>
-  </data>
-  <data name="BranchName_Zhongxiao" xml:space="preserve">
-    <value>忠孝</value>
-  </data>
-  <data name="BranchName_Dongmen" xml:space="preserve">
-    <value>東門</value>
-  </data>
-  <data name="BranchAdd_Nanjing" xml:space="preserve">
-    <value>台北市松山区南京東路４段１７号Ｂ１</value>
-  </data>
-  <data name="BranchAdd_XinyiAnhe" xml:space="preserve">
-    <value>台北市大安区安和路２段８１号Ｂ１</value>
-  </data>
-  <data name="BranchAdd_Zhongxiao" xml:space="preserve">
-    <value>台北市大安区大安路１段７５巷２１号１F/Ｂ１</value>
-  </data>
-  <data name="BranchAdd_Dongmen" xml:space="preserve">
-    <value>台北市大安区信義路２段２８号</value>
-  </data>
-   <data name="BranchMRT_Nanjing" xml:space="preserve">
-    <value>松山新店線（グリーンライン）-　G17 台北アリーナ駅出口1 </value>
-  </data>
-  <data name="BranchMRT_XinyiAnhe" xml:space="preserve">
-    <value>淡水信義線（赤いライン）-信義安和駅出口2A</value>
-  </data>
-  <data name="BranchMRT_Zhongxiao" xml:space="preserve">
-    <value>板南線（ブルーライン）-忠孝復興駅出口３（地下街14号）/B1</value>
-  </data>
-  <data name="BranchMRT_Dongmen" xml:space="preserve">
-    <value>淡水信義線（赤いライン）-東門駅出口３</value>
-  </data>
-  <data name="BranchTEL_Nanjing" xml:space="preserve">
-    <value>(02)2715-2733</value>
-  </data>
-  <data name="BranchTEL_XinyiAnhe" xml:space="preserve">
-    <value>(02)2720-0530</value>
-  </data>
-  <data name="BranchTEL_Zhongxiao" xml:space="preserve">
-    <value>(02)2776-9932</value>
-  </data>
-  <data name="BranchTEL_Dongmen" xml:space="preserve">
-    <value>(02)2396-0776</value>
-  </data>
-  <data name="BranchDesc1_Nanjing" xml:space="preserve">
-    <value>台北アリーナ正面に位置し、近くには微風百貨や小巨蛋商圈があります。また、地下鉄台北小巨蛋駅の1番出口から徒歩1分で到着できます。</value>
-  </data>
-  <data name="BranchDesc2_Nanjing" xml:space="preserve">
-    <value>広々とした100坪以上の専門施設を備え、多様なトレーニング設備を組み合わせています。通常の場所の制約を受けることなく、運動中も最高のトレーニング品質を実現します。専門施設の広さや設備の特徴により、様々なトレーニングニーズに対応することができます。例えば、パワーリフティングやエアロビクス、お好みの運動スタイルを選択してトレーニングを行うことができます。さらに、最新のトレーニング機器やウェイトトレーニングエリアも備えており、より効果的なトレーニングをサポートします。私たちは、個々の目標やニーズに合わせたトレーニングプログラムを提供し、メンバーの健康とフィットネスの向上に全力で取り組んでいます。</value>
-  </data>
-  <data name="BranchDesc1_XinyiAnhe" xml:space="preserve">
-    <value>地下鉄の信義安和駅2A出口から徒歩約3分の場所に位置しています。敦化安和エリアに位置し、国際立人中学校および小学校に隣接しています。</value>
-  </data>
-  <data name="BranchDesc2_XinyiAnhe" xml:space="preserve">
-    <value>挑高4米超天井高4メートル以上、220坪を超えるプライベートな運動環境をご用意しています。広々としたスペースには、多彩なトレーニング設備が完備されており、一般の施設では制約されることなく、最高品質のトレーニングを実現することができます。25メートルの活動用芝生エリアや専用のグループトレーニングスペースも備えており、自由な動きと快適な環境でトレーニングを楽しむことができます。また、運動後のリカバリーには専用のマッサージルームをご利用いただけます。さらに、個別のシャワールームも完備しており、トレーニングの後はリラックスしてシャワーを浴びることができます。私たちは、最高のプロフェッショナルなサービスと共に、安心してご利用いただける環境をお約束いたします。</value>
-  </data>
-  <data name="BranchDesc1_Zhongxiao" xml:space="preserve">
-    <value>頂好名店城の裏に位置する1F/B1のビルにあります。地下鉄忠孝復興駅3番(地下街14番)出口から徒歩2分で到着できます。</value>
-  </data>
-  <data name="BranchDesc2_Zhongxiao" xml:space="preserve">
-    <value>稀な室内の天井が高いプライベートトレーニングスペースで、明るい自然光が差し込む運動エリアです。さまざまなトレーニング機器を備え、乾湿分離されたシャワールームも完備しており、着替えや身の回りのお手入れも快適に行えます。</value>
-  </data>
-  <data name="BranchDesc1_Dongmen" xml:space="preserve">
-    <value>東門駅の3番出口から徒歩約3分の距離に位置しています。永康商圈にある1階の旗艦店は、広々とした明るい100坪のトレーニングスペースを提供しています。</value>
-  </data>  
-  <data name="BranchDesc2_Dongmen" xml:space="preserve">
-    <value>お客様のニーズに合わせたカスタマイズされたトレーニング環境を整えております。ストレッチや重量トレーニングエリアと屋内の芝生エリアを組み合わせ、さらには小型の体操トレーニングエリアも導入しています。これにより、トレーニングの多様性を豊かにしました。プロのトレーナーによる細やかな指導のもと、プライバシーと安全を確保した、スタイリッシュで快適な運動環境を提供しています。</value>
-  </data>    
-
-  <!--聯絡我們-->
-  <data name="ContactItemTitle" xml:space="preserve">
-    <value>はじめの一歩を踏み出す</value>
-  </data>
-  <data name="ContactItemSubTitle" xml:space="preserve">
-    <value>いつでもお手伝いいたします。</value>
-  </data>
-  <data name="JoinItemContactTitle" xml:space="preserve">
-    <value>条件をお知らせください。</value>
-  </data>
-  <data name="JoinItemContactDesc" xml:space="preserve">
-    <value>あなたから提供された情報に基づいて、&lt;br class=&quot;hidden-sm-down&quot; /&gt;条件に合う職種がありましたら、Beyondの採用担当者から&lt;br class=&quot;hidden-sm-up&quot; /&gt;ご連絡させていただきます。 </value>
-  </data>
-
-    <!--隱私權保護政策-->  
-  <data name="Cookies" xml:space="preserve">
-    <value>当サイトでは、お客様が快適な体験を得るためにCookieを使用しています。本サイトをご利用いただくことで、お客様が当社のプライバシーポリシーと利用規約を受け入れ、理解されたものとみなします。</value>
-  </data>
-  <data name="PrivacyPolicy" xml:space="preserve">
-    <value>プライバシー</value>
-  </data>
-  <data name="Agree" xml:space="preserve">
-    <value>同意する</value>
-  </data>    
-
-  <!--首頁-->
-   <data name="HomeSlogon1" xml:space="preserve">
-    <value>あなた専用のパーソナルトレーナー</value>
-  </data>
-   <data name="HomeSlogon2" xml:space="preserve">
-    <value>あなたの健康をトータルケア</value>
-  </data>
-  <data name="HomeSlogon3" xml:space="preserve">
-    <value>PRO. BEYOND.</value>
-  </data>
-  <data name="HomeSlogon3SubDesc" xml:space="preserve">
-    <value>自己を超えて、限界に挑戦する</value>
-  </data>
-  <data name="HomeFindBeyond" xml:space="preserve">
-    <value>BEYOND（ビヨンド）公式 </value>
-  </data>
-  <data name="HomeFindPartner" xml:space="preserve">
-    <value>パートナー</value>
-  </data>
+  </resheader> 
   
   <!--常見問題-->
   <data name="FAQBannerSlogn" xml:space="preserve">
@@ -310,10 +158,10 @@
     <value>トレーニング体験の内容は以下の通りです</value>
   </data>
   <data name="FAQAnsDesc1_2_1" xml:space="preserve">
-    <value>あなたの体調についての相談サービスを提供します</value>
+    <value>お客様の体調についての相談サービスを提供します</value>
   </data>
   <data name="FAQAnsDesc1_2_2" xml:space="preserve">
-    <value>コーチはあなたの運動状況やライフスタイルを丁寧に理解します</value>
+    <value>コーチはお客様の運動状況やライフスタイルを丁寧に理解します</value>
   </data>
   <data name="FAQAnsDesc1_2_3" xml:space="preserve">
     <value>リモートレッスンでは、プロのコーチが事前にハードウェアや通信機器のビデオチェックを行います</value>
@@ -335,7 +183,7 @@
     <value>個別指導のカスタムトレーニングはセッション数に基づいて料金が設定されます。目標、トレーニングの時間と回数によって価格が異なりますが、おおよそ1700〜1900台湾ドル程度です。</value>
   </data>
   <data name="FAQAnsDesc2_1_4" xml:space="preserve">
-    <value>オンラインコースの料金は、栄養相談のプランニング、スポーツ傷害予防、ストレッチやマッサージなどのサービスは、あなたの実際のニーズや運動状況に合わせて調整されます。最大の成功を達成するためにお手伝いします。</value>
+    <value>オンラインコースの料金は、栄養相談のプランニング、スポーツ傷害予防、ストレッチやマッサージなどのサービスは、お客様の実際のニーズや運動状況に合わせて調整されます。最大の成功を達成するためにお手伝いします。</value>
   </data>
    <data name="FAQAnsDesc2_2_1" xml:space="preserve">
     <value>月会費や入会費、手数料の支払いは必要ですか？</value>
@@ -348,7 +196,7 @@
     <value>營養サービスは、自分の健康管理を重視する方、減量を必要とする方、免疫力を向上させたい方、生活習慣病の方、筋肉量を増やしたい方など、Beyondの營養課程は、効果的で充実したサービスを提供いたします。</value>
   </data>
    <data name="FAQAnsDesc3_2" xml:space="preserve">
-    <value>スポーツガードは、全身の関節や筋肉の状態を確認する絶対に欠かせないんだよ，もしスポーツ障害をしたり、関節や筋肉に問題があったりしたら、スポーツケアトレーナーが一番大切な存在で、あなたの正常な状態に戻るのをサポートしますよ。</value>
+    <value>スポーツガードは、全身の関節や筋肉の状態を確認する絶対に欠かせないんだよ，もしスポーツ障害をしたり、関節や筋肉に問題があったりしたら、スポーツケアトレーナーが一番大切な存在で、お客様の正常な状態に戻るのをサポートしますよ。</value>
   </data>
    <data name="FAQAnsDesc3_3" xml:space="preserve">
     <value>長時間肩こりや腰痛、または長時間座っているなどの痛みや不快感を抱える方々にとって、運動マッサージやストレッチは本当に助かるんですよ。ストレス解消にも確実に役立つんです。絶対に、私たちのリカバリーチームは、あなたに一番元気で快適な笑顔を取り戻してくれるんだよ。。</value>
@@ -391,6 +239,9 @@
   <data name="JoinUsActiviySlogonDesc" xml:space="preserve">
     <value>人生は自己を超えて、限界に挑戦する</value>
   </data> 
+  <data name="JobOpening" xml:space="preserve">
+    <value>求人一覧</value>
+  </data> 
   <data name="PrivateCoach" xml:space="preserve">
     <value>パーソナルトレーナー</value>
   </data>
@@ -408,17 +259,17 @@
   </data>    
   <!--私人教練職缺介紹-->
   <data name="JoinUsCoachSlogon" xml:space="preserve">
-    <value>私たちは「不可能」に&lt;br class=&quot;hidden-sm-down&quot; /&gt;挑戦することが&lt;br class=&quot;hidden-sm-up&quot; /&gt;好きです。</value>
+    <value>私たちは&lt;span class=&quot;mark-text-underline&quot; padding-width=&quot;0&quot; bottom-width=&quot;0.1&quot;&gt;不可能&lt;/span&gt;に&lt;br class=&quot;hidden-sm-down&quot; /&gt;挑戦することが&lt;br class=&quot;hidden-sm-up&quot; /&gt;好きです。</value>
   </data> 
   <data name="JoinUsCoachDesc" xml:space="preserve">
     <value>Beyond Fitnessは2014年に設立されました。１人のお客様に対して１人のトレーナーが専属でサポートしながらトレーニングを行うジムのことです。南京小巨蛋から始まり、それ以来、信義安和、忠孝、東門などの支店を順次展開してきました。教育は個別化されるべきであり、トレーニングも同様になるべきだと思います。一人一人に合ったトレーニングをBeyondの中で実現した、最も「人間らしい」トレーニング方法をカスタマイズしています。これにより、お客様がより良い人生を歩むことを目指しています。</value>
   </data>  
   <!--運動按摩師職缺介紹-->
   <data name="JoinUsTherapistSlogon" xml:space="preserve">
-    <value>個別の回復ソリューションを提供するフィットネス専門家</value>
+    <value>&lt;span class=&quot;mark-text-underline&quot;  padding-width=&quot;0&quot; bottom-width=&quot;0.1&quot;&gt;個別の回復&lt;/span&gt;ソリューションを提供するフィットネス専門家</value>
   </data>
   <data name="JoinUsTherapistDesc" xml:space="preserve">
-    <value>Beyond Fitnessは、オーダーメイドのエクササイズプランを作り上げ、プロフェッショナルなガイダンスを提供するだけでなく、総合的なスポーツリカバリーソリューションもお届けしています。私たちのスポーツセラピストは、幅広い専門知識と経験を備えており、運動後の即座の体力回復やケガの予防、適切な運動計画の立案にお手伝いします。あなたの体を最高の状態に導くことを目指しています。美しいボディラインを手に入れたい方や健康状態を改善したい方に、最高のフィットネスサービスと包括的なリカバリーガイダンスを提供いたします。</value>
+    <value>Beyond Fitnessは、オーダーメイドのエクササイズプランを作り上げ、プロフェッショナルなガイダンスを提供するだけでなく、総合的なスポーツリカバリーソリューションもお届けしています。私たちのスポーツセラピストは、幅広い専門知識と経験を備えており、運動後の即座の体力回復やケガの予防、適切な運動計画の立案にお手伝いします。お客様の体を最高の状態に導くことを目指しています。美しいボディラインを手に入れたい方や健康状態を改善したい方に、最高のフィットネスサービスと包括的なリカバリーガイダンスを提供いたします。</value>
   </data>    
   <!--營養諮詢師職缺介紹-->
   <data name="JoinUsDietitianSlogon" xml:space="preserve">
@@ -444,20 +295,64 @@
 
   <!--關於我們-->
   <data name="AboutUsBannerSlogn" xml:space="preserve">
-    <value>Beyondのこだわり</value>
+    <value>スポーツを愛し、&lt;br/&gt;&lt;span class=&quot;multicolor-text-underline&quot;&gt;幸せは BEYOND で始まる&lt;/span&gt;</value>
   </data>
   <data name="AboutUsBannerSlognDesc" xml:space="preserve">
-    <value>WHO WE ARE</value>
+    <value>楽しく運動し、&lt;br class=&quot;hidden-sm-up&quot;&gt;他とは異なる体験を創造します。</value>
   </data>  
+  <data name="AboutUsBrandSlogon" xml:space="preserve">
+    <value>ブランドの信念</value>
+  </data>
+  <data name="AboutUsBrandSlogonDesc" xml:space="preserve">
+    <value>BEYONDにとって、運動は重要な事柄です。</value>
+  </data>
+  <data name="AboutUsBelieve" xml:space="preserve">
+    <value>私たちは信じています</value>
+  </data>
+  <data name="AboutUsBelieveDesc" xml:space="preserve">
+    <value>「私たちは、あなたが健康への道を歩み、生活を変えることをサポートできることを信じています。運動を通じて、あなた自身の人生における真の価値と生活の質を創造するお手伝いができれば幸いです。」</value>
+  </data>
+  <data name="AboutUsCompanyDesc1" xml:space="preserve">
+    <value>BEYOND は2014年を始め、台北小巨蛋から、現在まで信義安和、忠孝、東門などの4つの店舗を展開しています。50人以上の専門チームメンバーを擁し、完全な組織体制を持ち、個別のトレーニング、栄養相談、スポーツマッサージの回復、スポーツ傷害防護、企業のチームヘルス戦略、プロのスポーツ教育トレーニング、企業の健康相談など、多様なサービスを提供しています。また、全台最大のカスタマイズされたスポーツトレーニングセンターを目指しています。</value>
+  </data>
+  <data name="AboutUsCompanyDesc2" xml:space="preserve">
+    <value>私たちは情熱と専門知識を持ち、あなたに特別なトレーニング体験を提供します。目標が何であろうとも、私たちはすべての瞬間が活力と楽しみに満ちているべきだと信じています。定期的なゲームデーとチームイベントの開催に加えて、地域外でのトレーニングや地方の友人たちと一緒にスポーツを楽しむ機会も提供しています。私たちにとって、スポーツは真剣な事だけでなく、楽しみの時に価値を創造するチャンスです。</value>
+  </data>
+
   <!--預約體驗-->
   <data name="BookNowBannerSlogn" xml:space="preserve">
-    <value>60分間の体験予約</value>
+    <value>&lt;span class=&quot;mark-text-underline&quot; padding-width=&quot;0&quot;
+                  bottom-width=&quot;0.1&quot;&gt;無料&lt;/span&gt;60分間の&lt;br class=&quot;hidden-lg-up&quot;/&gt;体験予約</value>
   </data>
   <data name="BookNowBannerSlognDesc" xml:space="preserve">
     <value>専属トレーナー 無料トレーニング体驗</value>
   </data>
+  <data name="BookNowStep1" xml:space="preserve">
+    <value>体験予約</value>
+  </data>
+  <data name="BookNowStep1Desc" xml:space="preserve">
+    <value>オンラインでフォームを記入するか、お電話でお問い合わせください</value>
+  </data>  
+  <data name="BookNowStep2" xml:space="preserve">
+    <value>直接相談</value>
+  </data>
+  <data name="BookNowStep2Desc" xml:space="preserve">
+    <value>丁寧にお客様の健康状態やご希望をお伺いいたします</value>
+  </data>  
+  <data name="BookNowStep3" xml:space="preserve">
+    <value>トレーニング体驗</value>
+  </data>
+  <data name="BookNowStep3Desc" xml:space="preserve">
+    <value>お客様の状況に合わせて適切なトレーニングを提供し、計画します</value>
+  </data>  
+   <data name="BookNowStep4" xml:space="preserve">
+    <value>最適なプランのご提案</value>
+  </data>
+  <data name="BookNowStep4Desc" xml:space="preserve">
+    <value>個別に合わせたトレーニングプラン</value>
+  </data>  
   <data name="BookNowFormDesc" xml:space="preserve">
-    <value>為了讓 Beyond Fitness 幫助您達成目標，此問券可以讓我們初步了解您的需求，&lt;br class=&quot;hidden-md-down&quot; /&gt;教練將會在收到表單後與您聯絡並確認安排體驗時間。</value>
+    <value>Beyond Fitnessがお客様の目標達成をサポートするために、このアンケートをご提供しております。このアンケートを通じて、お客様のニーズを初歩的に把握させていただきます。ご提出いただいたフォームを受けて、トレーナーがお客様に連絡し、体験の日程を確認させていただきます。</value>
   </data>
   <data name="BookNowFormColumn1" xml:space="preserve">
     <value>お客様の名前（漢字）</value>
@@ -475,28 +370,28 @@
     <value>どのような問題を解決してほしいですか？（複数選択可）</value>
   </data>
   <data name="BookNowFormColumn5Option1" xml:space="preserve">
-    <value>飲食管理（栄養士のサポートが必要）</value>
+    <value>飲食管理(栄養士のサポート)</value>
   </data>
   <data name="BookNowFormColumn5Option2" xml:space="preserve">
-    <value>健康向上（体力・精神・痛みの改善）</value>
+    <value>健康向上(体力/精神/痛みの改善)</value>
   </data>
   <data name="BookNowFormColumn5Option3" xml:space="preserve">
-    <value>筋肉を増やす（ボディスカルプティング）</value>
+    <value>ボディスカルプティング</value>
   </data>
   <data name="BookNowFormColumn5Option4" xml:space="preserve">
-    <value>ダイエット（脂肪減少）</value>
+    <value>ダイエット(脂肪減少)</value>
   </data>
   <data name="BookNowFormColumn5Option5" xml:space="preserve">
     <value>妊婦の妊娠前後の運動</value>
   </data>
   <data name="BookNowFormColumn5Option6" xml:space="preserve">
-    <value>矯正トレーニングとリハビリトレーニング</value>
+    <value>リハビリテーション</value>
   </data>
   <data name="BookNowFormColumn5Option7" xml:space="preserve">
-    <value>専門競技のパフォーマンス向上（個人の飛躍）</value>
+    <value>専門競技のパフォーマンス向上</value>
   </data>
   <data name="BookNowFormColumn5Option8" xml:space="preserve">
-    <value>運動習慣の育成（コーチのサポート）</value>
+    <value>運動習慣の育成(コーチのサポート)</value>
   </data>
   <data name="BookNowFormColumn6" xml:space="preserve">
     <value>ご都合の良い連絡時間は何時ですか？（複数選択可）</value>
@@ -520,16 +415,16 @@
     <value>選択肢</value>
   </data>  
   <data name="BookNowFormColumn7Option1" xml:space="preserve">
-    <value>南京店 02-2715.2733（地下鉄G17-台北アリーナ駅出口1）</value>
+    <value>南京店 02-2715-2733（地下鉄G17-台北アリーナ駅出口1）</value>
   </data>
   <data name="BookNowFormColumn7Option2" xml:space="preserve">
-    <value>信義安和店 02-2720.0530（地下鉄R04-信義安和駅出口2A）</value>
+    <value>信義安和店 02-2720-0530（地下鉄R04-信義安和駅出口2A）</value>
   </data>
   <data name="BookNowFormColumn7Option3" xml:space="preserve">
-    <value>忠孝店 02-2776.9932（地下鉄BL15-忠孝復興駅出口３（地下街14号））</value>
+    <value>忠孝店 02-2776-9932（地下鉄BL15-忠孝復興駅出口３（地下街14号））</value>
   </data>
   <data name="BookNowFormColumn7Option4" xml:space="preserve">
-    <value>東門店 02-2396.0776（地下鉄R07-東門駅出口３）</value>
+    <value>東門店 02-2396-0776（地下鉄R07-東門駅出口３）</value>
   </data>
   <data name="BookNowFormColumn8" xml:space="preserve">
     <value>お問い合わせ</value>

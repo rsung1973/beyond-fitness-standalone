@@ -571,7 +571,15 @@ namespace WebHome.Models.ViewModel
         public int? Month { get; set; }
         public int? ChartType { get; set; }
         public Naming.SessionTypeDefinition[] SessionType { get; set; }
+        public DateQueryInterval? ByInterval { get; set; }
+    }
 
+    public enum DateQueryInterval
+    {
+        ByMonth = 1,
+        ByQuarter = 2,
+        ByHalfYear = 3,
+        ByYear = 4,
     }
 
     public class MonthlyAssessmentViewModel : MonthlyIndicatorQueryViewModel

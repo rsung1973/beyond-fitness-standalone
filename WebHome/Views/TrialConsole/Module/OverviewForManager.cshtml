@@ -1,0 +1,395 @@
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+@using Newtonsoft.Json
+@functions
+{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    UserProfile _model;
+    TrialLearnerQueryViewModel _viewModel;
+
+    IQueryable<TrialLearner> monthlyItems;
+    IQueryable<TrialLearner> lastMonthlyItems;
+}
+
+@{
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = ViewContext.ModelState;
+    _model = (UserProfile)this.Model;
+    _viewModel = (TrialLearnerQueryViewModel)ViewBag.ViewModel;
+
+    UserProfile coachItem = _model;
+    DateTime start = new DateTime(_viewModel.Year.Value, _viewModel.Month.Value, 1);
+
+    monthlyItems = models.GetTable<TrialLearner>()
+                            .Where(t => t.SubmitDate >= start)
+                            .Where(t => t.SubmitDate < start.AddMonths(1));
+
+    lastMonthlyItems = models.GetTable<TrialLearner>()
+                            .Where(t => t.SubmitDate >= start.AddMonths(-1))
+                            .Where(t => t.SubmitDate < start);
+
+    var branches = models.GetTable<BranchStore>()
+                    .ToList()
+                    .Where(b => !b.IsVirtualClassroom());
+    BranchStore focused = null;
+    if (_viewModel.BranchID.HasValue)
+    {
+        focused = branches.Where(b => b.BranchID == _viewModel.BranchID).First();
+    }
+    else
+    {
+        focused = branches.First();
+    }
+
+    var branchItems = monthlyItems.Where(t => t.BranchID == focused.BranchID);
+    var branchItemsLastMonth = lastMonthlyItems.Where(t => t.BranchID == focused.BranchID);
+
+}
+
+<div class="container-fluid">
+    <div class="row clearfix">
+        <div class="col-lg-6 col-md-6 col-sm-12">
+            <div class="card bg-darkteal">
+                <div class="body">
+                    @{
+                        int count = branchItems.Count();
+                    }
+                    <div class="font-20 align-center">
+                        詢問人數：<span class="col-lime counto" data-to="@(count)">@(count)</span>人
+                        @if (count < branchItemsLastMonth.Count())
+                        {
+                            <i class="zmdi zmdi-caret-down zmdi-hc-2x text-success"></i>
+                        }
+                        else
+                        {
+                            <i class="zmdi zmdi-caret-up zmdi-hc-2x text-danger"></i>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12">
+            <div class="card bg-darkteal">
+                <div class="body">
+                    <div class="font-20 align-center">
+                        @{
+                            var normalItems = branchItems.Where(t => t.NormalUID.HasValue);
+                            count = normalItems.Count();
+                        }
+                        體驗人數：<span class="col-lime counto" data-to="@(count)">@(count)</span>人
+                        @if (count < branchItemsLastMonth.Where(t => t.NormalUID.HasValue).Count())
+                        {
+                            <i class="zmdi zmdi-caret-down zmdi-hc-2x text-success"></i>
+                        }
+                        else
+                        {
+                            <i class="zmdi zmdi-caret-up zmdi-hc-2x text-danger"></i>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--本月詢問體驗卡片-->
+<div class="container-fluid">
+    <h4 class="card-outbound-header">我的分店詢問數</h4>
+    <div class="card">
+        <div class="header">
+            <ul class="header-dropdown">
+                <li class="dropdown">
+                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class="zmdi zmdi-swap"></i> </a>
+                    <ul class="dropdown-menu dropdown-menu-right slideUp float-right">
+                        <li><a href="javascript:showTrialOverview();">全部</a></li>
+                        @foreach (var branch in branches)
+                        {
+                            <li><a href="javascript:showTrialOverview(@(branch.BranchID));">@(branch.BranchName)</a></li>
+                        }
+                    </ul>
+                </li>
+            </ul>
+            <script>
+                function showTrialOverview(branchID) {
+                    $('').launchDownload('@Html.Raw(Url.Action("TrialLearnerIndex", "ConsoleHome"))', { 'year': @(_viewModel.Year), 'month': @(_viewModel.Month), 'branchID': branchID });
+                }
+            </script>
+        </div>
+        @{
+
+        }
+        @{
+            var branchAll = models.GetTable<TrialLearner>().Where(t => t.BranchID == focused.BranchID);
+        }
+        <ul class="row clearfix list-unstyled m-b-0 widget_2">
+            <li class="col-lg-4 col-md-12 col-sm-12">
+                <div class="body">
+                    <div class="row">
+                        <div class="col-8">
+                            <h5 class="m-t-0">@Html.Raw(focused.BranchName)</h5>
+                            <p class="text-small">
+                                未分派：<a href="#" onclick='showTrialLearnerList(@Html.Raw(JsonConvert.SerializeObject(
+                                    new TrialLearnerQueryViewModel
+                                    {
+                                        BranchID = focused.BranchID,
+                                        NotAssigned = true,
+                                    })));'>@(branchAll.Where(t=>!t.Status.HasValue).Count())</a>
+                                <br />
+                                @*已分派聯繫：@(branchItems.Where(t=>Assigned.Contains(t.Status)).Count())<br />
+        已分派體驗：@(branchItems.Where(t => AssignedTrial.Contains(t.Status)).Count())<br />*@
+                                已結案：<a href="#" onclick='showTrialLearnerList(@Html.Raw(JsonConvert.SerializeObject(
+                                    new TrialLearnerQueryViewModel
+                                    {
+                                        BranchID = _viewModel.BranchID,
+                                        Year = _viewModel.Year,
+                                        Month = _viewModel.Month,
+                                        IsClosed = true,
+                                    })));'>@(branchItems.Where(t => t.IsClosed == true).Count())</a>
+                                
+                            </p>
+                        </div>
+                        <div class="col-4 text-right">
+                            <h2>
+                                <a href="#" onclick='showTrialLearnerList(@Html.Raw(JsonConvert.SerializeObject(
+                                    new TrialLearnerQueryViewModel
+                                    {
+                                        BranchID = focused.BranchID,
+                                        Year = _viewModel.Year,
+                                        Month = _viewModel.Month,
+                                        ByStatus = new int[] {},
+                                    })));'>@(branchItems.Count())</a>
+                            </h2>
+                            <small class="info">總詢問數</small>
+                        </div>
+                        <div class="col-12">
+                            @{
+                                decimal ratio = branchItems.Where(t => t.IsClosed == true).Count() * 100M / Math.Max(branchItems.Count(), 1);
+                            }
+                            <div class="progress m-t-20">
+                                <div class="progress-bar l-amber" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100"
+                                     style="@($"width:{ratio}%")"></div>
+                            </div>
+                            <small class="info">結案完成 @($"{ratio}%")</small>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li class="col-lg-4 col-md-6 col-sm-12">
+                <div class="body">
+                    <div class="row">
+                        <div class="col-8">
+                            <h5 class="m-t-0">已分派聯繫</h5>
+                            <p class="text-small">
+                                尚未聯繫：<a href="#" onclick='showTrialLearnerList(@Html.Raw(JsonConvert.SerializeObject(
+                                    new TrialLearnerQueryViewModel
+                                    {
+                                        BranchID = _viewModel.BranchID,
+                                        Year = _viewModel.Year,
+                                        Month = _viewModel.Month,
+                                        ByStatus = new int[] { (int)TrialLearner.TrialStatusDefinition.尚未聯繫 },
+                                    })));'>@(branchItems.Where(t=>t.Status==(int)TrialLearner.TrialStatusDefinition.尚未聯繫).Count())</a><br />
+                                已PARQ：<a href="#" onclick='showTrialLearnerList(@Html.Raw(JsonConvert.SerializeObject(
+                                    new TrialLearnerQueryViewModel
+                                    {
+                                        BranchID = _viewModel.BranchID,
+                                        Year = _viewModel.Year,
+                                        Month = _viewModel.Month,
+                                        ByStatus = new int[] { (int)TrialLearner.TrialStatusDefinition.已PARQ },
+                                    })));'>@(branchItems.Where(t => t.Status == (int)TrialLearner.TrialStatusDefinition.已PARQ).Count())</a><br />
+                                不需要：<a href="#" onclick='showTrialLearnerList(@Html.Raw(JsonConvert.SerializeObject(
+                                    new TrialLearnerQueryViewModel
+                                    {
+                                        BranchID = _viewModel.BranchID,
+                                        Year = _viewModel.Year,
+                                        Month = _viewModel.Month,
+                                        ByStatus = new int[] { (int)TrialLearner.TrialStatusDefinition.不需要 },
+                                    })));'>@(branchItems.Where(t => t.Status == (int)TrialLearner.TrialStatusDefinition.不需要).Count())</a><br />
+                                聯繫不上：<a href="#" onclick='showTrialLearnerList(@Html.Raw(JsonConvert.SerializeObject(
+                                    new TrialLearnerQueryViewModel
+                                    {
+                                        BranchID = _viewModel.BranchID,
+                                        Year = _viewModel.Year,
+                                        Month = _viewModel.Month,
+                                        ByStatus = new int[] { (int)TrialLearner.TrialStatusDefinition.聯繫不上 },
+                                    })));'>@(branchItems.Where(t => t.Status == (int)TrialLearner.TrialStatusDefinition.聯繫不上).Count())</a><br />
+                                電話空號：<a href="#" onclick='showTrialLearnerList(@Html.Raw(JsonConvert.SerializeObject(
+                                    new TrialLearnerQueryViewModel
+                                    {
+                                        BranchID = _viewModel.BranchID,
+                                        Year = _viewModel.Year,
+                                        Month = _viewModel.Month,
+                                        ByStatus = new int[] { (int)TrialLearner.TrialStatusDefinition.電話空號 },
+                                    })));'>@(branchItems.Where(t => t.Status == (int)TrialLearner.TrialStatusDefinition.電話空號).Count())</a><br />
+                            </p>
+                        </div>
+                        <div class="col-4 text-right">
+                            <h2>
+                                <a href="#" onclick='showTrialLearnerList(@Html.Raw(JsonConvert.SerializeObject(
+                                    new TrialLearnerQueryViewModel
+                                    {
+                                        BranchID = _viewModel.BranchID,
+                                        Year = _viewModel.Year,
+                                        Month = _viewModel.Month,
+                                        ByStatus = TrialConsoleController.Assigned,
+                                    })));'>@(branchItems.Where(t => TrialConsoleController.Assigned.Contains((int)t.Status)).Count())</a>
+                            </h2>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li class="col-lg-4 col-md-6 col-sm-12">
+                <div class="body">
+                    <div class="row">
+                        <div class="col-8">
+                            <h5 class="m-t-0">已分派體驗</h5>
+                            <p class="text-small">
+                                時間確認中：<a href="#" onclick='showTrialLearnerList(@Html.Raw(JsonConvert.SerializeObject(
+                                    new TrialLearnerQueryViewModel
+                                    {
+                                        BranchID = _viewModel.BranchID,
+                                        Year = _viewModel.Year,
+                                        Month = _viewModel.Month,
+                                        ByStatus = new int[] { (int)TrialLearner.TrialStatusDefinition.時間確認中 },
+                                    })));'>@(branchItems.Where(t => t.Status == (int)TrialLearner.TrialStatusDefinition.時間確認中).Count())</a><br />
+                                已約好準備體驗：<a href="#" onclick='showTrialLearnerList(@Html.Raw(JsonConvert.SerializeObject(
+                                    new TrialLearnerQueryViewModel
+                                    {
+                                        BranchID = _viewModel.BranchID,
+                                        Year = _viewModel.Year,
+                                        Month = _viewModel.Month,
+                                        ByStatus = new int[] { (int)TrialLearner.TrialStatusDefinition.已約好準備體驗 },
+                                    })));'>@(branchItems.Where(t => t.Status == (int)TrialLearner.TrialStatusDefinition.已約好準備體驗).Count())</a><br />
+                                完成體驗：<a href="#" onclick='showTrialLearnerList(@Html.Raw(JsonConvert.SerializeObject(
+                                    new TrialLearnerQueryViewModel
+                                    {
+                                        BranchID = _viewModel.BranchID,
+                                        Year = _viewModel.Year,
+                                        Month = _viewModel.Month,
+                                        ByStatus = new int[] { (int)TrialLearner.TrialStatusDefinition.完成體驗 },
+                                    })));'>@(branchItems.Where(t => t.Status == (int)TrialLearner.TrialStatusDefinition.完成體驗).Count())</a>
+                            </p>
+                        </div>
+                        <div class="col-4 text-right">
+                            <h2>
+                                <a href="#" onclick='showTrialLearnerList(@Html.Raw(JsonConvert.SerializeObject(
+                                    new TrialLearnerQueryViewModel
+                                    {
+                                        BranchID = _viewModel.BranchID,
+                                        Year = _viewModel.Year,
+                                        Month = _viewModel.Month,
+                                        ByStatus = TrialConsoleController.AssignedTrial,
+                                    })));'>@(branchItems.Where(t => TrialConsoleController.AssignedTrial.Contains((int)t.Status)).Count())</a>
+                            </h2>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="card">
+        <ul class="row clearfix list-unstyled m-b-0 widget_2">
+            @foreach (var branch in branches.Where(b => b.BranchID != focused.BranchID))
+            {
+                BuildBranchView(branch);
+            }
+        </ul>
+    </div>
+</div>
+<!--詳細資料-->
+<div class="container-fluid">
+    <div class="row clearfix">
+        <h4 class="card-outbound-header m-l-15">詳細資料</h4>
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="header">
+                    <ul class="header-dropdown">
+                        <li class="dropdown">
+                            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class="zmdi zmdi-download"></i> </a>
+                            <ul class="dropdown-menu dropdown-menu-right slideUp float-right">
+                                <li><a href="download/BranchNo_(2018-10-29).csv" target="_blank">下載檔案</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="body">
+                    <div class="table-responsive" id="trialList">
+                        @{ 
+                            await Html.RenderPartialAsync("~/Views/TrialConsole/Module/TrialLearnerList.cshtml", branchItems);
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@functions
+{
+    void BuildBranchView(BranchStore branch)
+    {
+        var branchAll = models.GetTable<TrialLearner>().Where(t => t.BranchID == branch.BranchID);
+        var branchItems = monthlyItems.Where(t => t.BranchID == branch.BranchID);
+        <li class="col-lg-4 col-md-6 col-sm-12">
+            <div class="body">
+                <div class="row">
+                    <div class="col-8">
+                        <h5 class="m-t-0">@Html.Raw(branch.BranchName)</h5>
+                        <p class="text-small">
+                            未分派：<a href="#" onclick='showTrialLearnerList(@Html.Raw(JsonConvert.SerializeObject(
+                                    new TrialLearnerQueryViewModel
+                                    {
+                                        BranchID = branch.BranchID,
+                                        NotAssigned = true,
+                                    })));'>@(branchAll.Where(t => !t.Status.HasValue).Count())</a><br />
+                            已分派聯繫：<a href="#" onclick='showTrialLearnerList(@Html.Raw(JsonConvert.SerializeObject(
+                                    new TrialLearnerQueryViewModel
+                                    {
+                                        BranchID = branch.BranchID,
+                                        Year = _viewModel.Year,
+                                        Month = _viewModel.Month,
+                                        ByStatus = TrialConsoleController.Assigned,
+                                    })));'>@(branchItems.Where(t => TrialConsoleController.Assigned.Contains((int)t.Status)).Count())</a><br />
+                            已分派體驗：<a href="#" onclick='showTrialLearnerList(@Html.Raw(JsonConvert.SerializeObject(
+                                    new TrialLearnerQueryViewModel
+                                    {
+                                        BranchID = branch.BranchID,
+                                        Year = _viewModel.Year,
+                                        Month = _viewModel.Month,
+                                        ByStatus = TrialConsoleController.AssignedTrial,
+                                    })));'>@(branchItems.Where(t => TrialConsoleController.AssignedTrial.Contains((int)t.Status)).Count())</a><br />
+                            已結案：<a href="#" onclick='showTrialLearnerList(@Html.Raw(JsonConvert.SerializeObject(
+                                    new TrialLearnerQueryViewModel
+                                    {
+                                        BranchID = branch.BranchID,
+                                        Year = _viewModel.Year,
+                                        Month = _viewModel.Month,
+                                        IsClosed = true,
+                                    })));'>@(branchItems.Where(t => t.IsClosed == true).Count())</a>
+                        </p>
+                    </div>
+                    <div class="col-4 text-right">
+                        <h2>
+                            <a href="#" onclick='showTrialLearnerList(@Html.Raw(JsonConvert.SerializeObject(
+                                    new TrialLearnerQueryViewModel
+                                    {
+                                        BranchID = branch.BranchID,
+                                        Year = _viewModel.Year,
+                                        Month = _viewModel.Month,
+                                        ByStatus = new int[] { },
+                                    })));'>@(branchItems.Count())</a>
+                        </h2>
+                        <small class="info">總詢問數</small>
+                    </div>
+                </div>
+            </div>
+        </li>
+    }
+}

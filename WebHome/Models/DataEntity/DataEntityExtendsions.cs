@@ -437,7 +437,9 @@ namespace WebHome.Models.DataEntity
                     case (int)Naming.LessonPriceStatus.教練PI:
                         return "Coach P.I";
                     case (int)Naming.LessonPriceStatus.體驗課程:
-                        return "T.S";
+                        return item.RegisterLesson.LessonPriceType.LessonPriceProperty.Any(p=>p.PropertyID==(int)Naming.LessonPriceFeature.BR體驗)
+                                ? "T.S - BR"
+                                : "T.S - 檢測";
                     case (int)Naming.LessonPriceStatus.點數兌換課程:
                         return item.RegisterLesson.LessonPriceType.SimpleDescription;
                     case (int)Naming.LessonPriceStatus.營養課程:
@@ -935,6 +937,21 @@ namespace WebHome.Models.DataEntity
         public enum PropertyDefinition
         {
             Apprentice = 1,
+        }
+    }
+
+    public partial class TrialLearner
+    {
+        public enum TrialStatusDefinition
+        {
+            尚未聯繫 = 1,
+            已PARQ = 2,
+            不需要 = 3,
+            聯繫不上 = 4,
+            電話空號 = 5,
+            時間確認中 = 6,
+            已約好準備體驗 = 7,
+            完成體驗 = 8,
         }
     }
 }

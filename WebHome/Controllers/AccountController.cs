@@ -873,19 +873,19 @@ namespace WebHome.Controllers
         }
 
         [Authorize]
-        public ActionResult CheckProfessionalLevel(int? coachID)
+        public ActionResult CheckProfessionalLevel(int? coachID, DateTime? ratingDate)
         {
             var coach = models.GetTable<ServingCoach>().Where(s => s.CoachID == coachID).FirstOrDefault();
             if (coach == null)
             {
                 foreach (var item in models.PromptEffectiveCoach())
                 {
-                    models.CheckProfessionalLevel2023(item);
+                    models.CheckProfessionalLevel2023(item, ratingDate);
                 }
             }
             else
             {
-                models.CheckProfessionalLevel2023(coach);
+                models.CheckProfessionalLevel2023(coach, ratingDate);
             }
             return new EmptyResult();
         }

@@ -1,0 +1,102 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    LessonTime _model;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _model = (LessonTime)this.Model;
+    String _viewID = (String)ViewBag.ViewID;
+}
+@{
+    UserProfile learner = (UserProfile)ViewBag.Learner;
+    var plan = _model.LessonPlan;
+}
+
+@if ((bool?)ViewBag.ViewOnly != true)
+{
+    <div>
+        <form enctype="multipart/form-data" method="post">
+            @{
+                ViewBag.DropifyExtension = "gif jpg jpeg png";
+                await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/DropifyFileUpload.cshtml", model: "attachment");
+            }
+        </form>
+        <script>
+        $(function () {
+            $global.uploadFile = function ($file, done) {
+                var viewModel = { 'KeyID': '@Html.Raw(_model.LessonID.EncryptKey())' };
+                $('form').ajaxForm({
+                    url: '@Html.Raw(Url.Action("CommitDietaryReport", "LessonConsole"))',
+                    data: viewModel,
+                    beforeSubmit: function () {
+                        showLoading();
+                    },
+                    success: function (data) {
+                        hideLoading();
+                        if (data.result) {
+                            Swal.fire({
+                                title: "上傳成功",
+                                text: "",
+                                icon: "success",
+                                showCancelButton: false,
+                                confirmButtonColor: "#DD6B55",
+                                confirmButtonText: "確定",
+                                closeOnConfirm: true
+                            }).then((result) => {
+                                showLoading();
+                                refreshTrainingContent();
+                                @*$.post('@Html.Raw(Url.Action("ShowDietaryReport","LessonConsole"))', viewModel, function (data) {
+                                    hideLoading();
+                                    $('#dietaryReport').empty();
+                                    if ($.isPlainObject(data)) {
+                                        hideLoading();
+                                        Swal.fire(
+                                            'Oops...',
+                                            data.message,
+                                            'warning'
+                                        );
+                                    } else {
+                                        $(data).appendTo($('#dietaryReport'));
+                                    }
+                                });*@
+                            });
+                        } else {
+                            Swal.fire(
+                                'Oops...',
+                                data.message,
+                                'warning'
+                            );
+                        }
+                    },
+                    error: function () {
+                        hideLoading();
+                    }
+                }).submit();
+            }
+
+            $('#dietaryReport').lightGallery({
+                thumbnail: true,
+                selector: 'a'
+            });
+        });
+        </script>
+    </div>
+}
+
+<div id="@((bool?)ViewBag.ViewOnly != true ? "dietaryReport" : "")" class="list-unstyled text-center">
+    @{
+        await Html.RenderPartialAsync("~/Views/LearnerProfile/Module/LessonDietaryReport.cshtml", _model);
+    }
+</div>
+

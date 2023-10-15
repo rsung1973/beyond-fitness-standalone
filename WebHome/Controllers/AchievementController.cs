@@ -230,10 +230,11 @@ namespace WebHome.Controllers
             }
 
             items = items.PTLesson();
-
+            var ip = HttpContext.Connection.RemoteIpAddress?.ToString();
             foreach (var item in items)
             {
                 item.LessonPlan.CommitAttendance = DateTime.Now;
+                item.LessonPlan.CommitAttendanceIP = ip;
             }
 
             models.SubmitChanges();

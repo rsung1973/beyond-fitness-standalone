@@ -1,0 +1,30 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    LessonTime _model;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _model = (LessonTime)this.Model;
+}
+@{
+    var plan = _model.LessonPlan;
+}
+
+@if (plan?.AttachmentID.HasValue == true)
+{
+    <a href="@Html.Raw(Url.Action("GetResourceWithMime", "Information", new { HKeyID = plan.AttachmentID.Value.EncryptHexKey() }))" target="_blank">
+        <img class="img-fluid img-thumbnail" src="@Html.Raw(Url.Action("GetResourceWithMime", "Information", new { HKeyID = plan.AttachmentID.Value.EncryptHexKey() }))" alt="" />
+    </a>
+}
+

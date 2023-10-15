@@ -32,6 +32,7 @@ using WebHome.Security.Authorization;
 using WebHome.Properties;
 using System.Data.Linq;
 using Microsoft.Extensions.DependencyInjection;
+using System.Runtime.Caching;
 
 namespace WebHome.Controllers
 {
@@ -1471,6 +1472,63 @@ namespace WebHome.Controllers
             var profile = await HttpContext.GetUserAsync();
             return View("~/Views/CoachConsole/AssessmentOverview.cshtml", profile.LoadInstance(models));
         }
+
+        public async Task<ActionResult> TrialLearnerOverviewAsync(TrialLearnerQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+
+            if (!viewModel.Year.HasValue || !viewModel.Month.HasValue)
+            {
+                viewModel.Year = DateTime.Today.Year;
+                viewModel.Month = DateTime.Today.Month;
+            }
+
+            UserProfile profile = await HttpContext.GetUserAsync();
+            profile = profile.LoadInstance(models);
+            if (profile.IsCoach())
+            {
+                viewModel.BranchID = profile.ServingCoach.WorkBranchID();
+            }
+            return View("~/Views/TrialConsole/TrialLearnerOverview.cshtml", profile.LoadInstance(models));
+        }
+
+        public async Task<ActionResult> TrialLearnerIndexAsync(TrialLearnerQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+
+            if (!viewModel.Year.HasValue || !viewModel.Month.HasValue)
+            {
+                viewModel.Year = DateTime.Today.Year;
+                viewModel.Month = DateTime.Today.Month;
+            }
+
+            UserProfile profile = await HttpContext.GetUserAsync();
+            return View("~/Views/TrialConsole/TrialLearnerOverview.cshtml", profile.LoadInstance(models));
+        }
+
+        public async Task<ActionResult> AchievementRankingOverviewAsync(MonthlyIndicatorQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+
+            if (viewModel.KeyID != null)
+            {
+                viewModel.BranchID = viewModel.DecryptKeyValue();
+            }
+
+            if(!viewModel.Year.HasValue)
+            {
+                viewModel.Year = DateTime.Today.Year;
+            }
+
+            if(!viewModel.Month.HasValue)
+            {
+                viewModel.Month = DateTime.Today.Month;
+            }
+
+            var profile = await HttpContext.GetUserAsync();
+            return View("~/Views/AchievementConsole/AchievementRankingOverview.cshtml", profile.LoadInstance(models));
+        }
+
 
     }
 }

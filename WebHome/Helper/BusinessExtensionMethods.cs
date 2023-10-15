@@ -324,17 +324,30 @@ namespace WebHome.Helper
                 return false;
             }
 
-            bool result = true;
             if (lessonItem.IsCoachPISession())
             {
-                result = !models.GetEffectiveQuestionnaireRequest(lessonItem.RegisterLesson.UserProfile, Naming.QuestionnaireGroup.身體心靈密碼).Any();
+                if(models.GetEffectiveQuestionnaireRequest(lessonItem.RegisterLesson.UserProfile, Naming.QuestionnaireGroup.身體心靈密碼).Any())
+                {
+                    return false;
+                }
             }
             else
             {
-                result = !lessonItem.GetEffectiveQuestionnaireRequest(models, Naming.QuestionnaireGroup.身體心靈密碼).Any();
+                if(lessonItem.GetEffectiveQuestionnaireRequest(models, Naming.QuestionnaireGroup.身體心靈密碼).Any())
+                {
+                    return false;
+                }
+
+                if(lessonItem.RegisterLesson?.LessonPriceType.ForDietary == true)
+                {
+                    if (!lessonItem.LessonPlan.AttachmentID.HasValue)
+                    {
+                        return false;
+                    }
+                }
             }
 
-            return result;
+            return true;
         }
 
 
@@ -1373,12 +1386,17 @@ namespace WebHome.Helper
 
         }
 
-        public static void CheckProfessionalLevel2023(this GenericManager<BFDataContext> models, ServingCoach item)
+        public static void CheckProfessionalLevel2023(this GenericManager<BFDataContext> models, ServingCoach item, DateTime? ratingDate = null)
         {
             if (!item.LevelID.HasValue || item.ProfessionalLevel.ProfessionalLevelReview == null)
                 return;
 
-            DateTime? quarterEnd = new DateTime(DateTime.Today.Year, (DateTime.Today.Month - 1) / 3 * 3 + 1, 1);
+            if (!ratingDate.HasValue)
+            {
+                ratingDate = DateTime.Today;
+            }
+
+            DateTime? quarterEnd = new DateTime(ratingDate.Value.Year, (ratingDate.Value.Month - 1) / 3 * 3 + 1, 1);
             DateTime quarterStart = quarterEnd.Value.AddMonths(-3);
 
             if (models.GetTable<CoachRating>().Any(g => g.CoachID == item.CoachID && g.RatingDate >= quarterEnd))
@@ -2389,6 +2407,24 @@ namespace WebHome.Helper
                 items = items.Where(l => models.GetTable<ObjectiveLessonPrice>()
                                 .Any(t => t.CatalogID == (int)ObjectiveLessonCatalog.CatalogDefinition.OnLine && t.PriceID == l.PriceID));
             }
+            return items.FirstOrDefault();
+        }
+
+        public static LessonPriceType CurrentTrialLessonPriceForExamination(this GenericManager<BFDataContext> models)
+        {
+            IQueryable<LessonPriceType> items = models.GetTable<LessonPriceType>()
+                .Where(p => p.Status == (int)Naming.DocumentLevelDefinition.體驗課程)
+                .Where(p => p.LessonPriceProperty.Any(r => r.PropertyID == (int)Naming.LessonPriceFeature.一般課程));
+
+            return items.FirstOrDefault();
+        }
+
+        public static LessonPriceType CurrentTrialLessonPriceForBR(this GenericManager<BFDataContext> models)
+        {
+            IQueryable<LessonPriceType> items = models.GetTable<LessonPriceType>()
+                .Where(p => p.Status == (int)Naming.DocumentLevelDefinition.體驗課程)
+                .Where(p => p.LessonPriceProperty.Any(r => r.PropertyID == (int)Naming.LessonPriceFeature.BR體驗));
+
             return items.FirstOrDefault();
         }
 

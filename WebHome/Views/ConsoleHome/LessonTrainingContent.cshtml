@@ -6,7 +6,7 @@
 @using WebHome.Models.ViewModel
 @using WebHome.Models.DataEntity
 @using WebHome.Controllers
-@using CommonLib.Utility 
+@using CommonLib.Utility
 @using Microsoft.AspNetCore.Mvc.ModelBinding
 
 @using Newtonsoft.Json
@@ -18,7 +18,7 @@
 
     Layout = "~/Views/ConsoleHome/Template/MainPage.cshtml";
 
-    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
     _modelState = ViewContext.ModelState;
     _model = (UserProfile)this.Model;
     _viewModel = (DailyBookingQueryViewModel)ViewBag.ViewModel;
@@ -33,7 +33,7 @@
 
     bool alertUndone = countToCommit > 0 && lessonItem.ClassTime >= DateTime.Today;
 
-    if (questionnaire != null)
+    if (questionnaire != null && !(lessonItem.RegisterLesson?.LessonPriceType.ForDietary == true))
     {
         ViewBag.ViewOnly = true;
     }
@@ -50,6 +50,8 @@
     <link rel="stylesheet" href="plugins/nestable/jquery-nestable.css" />
     <!-- Custom Css -->
     <link rel="stylesheet" href="css/customelist.css?2.0" />
+    <!-- Light Gallery Plugin Css -->
+    <link rel="stylesheet" href="plugins/light-gallery/css/lightgallery.css">
 
 }
 
@@ -192,6 +194,8 @@
     <script src="plugins/jquery-sparkline/jquery.sparkline.js"></script>
     <!-- Jquery Nestable -->
     <script src="plugins/nestable/jquery.nestable.js"></script>
+    <!-- Light Gallery Plugin Js -->
+    <script src="plugins/light-gallery/js/lightgallery-all.min.js"></script>
     <script>
 
         function refreshTrainingContent() {
@@ -246,14 +250,15 @@
                             '幹得好!',
                             '更新家庭聯絡簿成功!',
                             'success'
-                        )
-                        refreshTrainingContent();
+                        ).then((result) => {
+                            refreshTrainingContent();
+                        });
                     } else {
                         Swal.fire(
                             'Oops...',
                             data.message,
                             'warning'
-                        )
+                        );
                     }
                 } else {
                     $(data).appendTo($('body'));
@@ -283,8 +288,9 @@
                                     '同步成功!',
                                     '資料已經同步 Bye!',
                                     'success'
-                                )
-                                refreshTrainingContent();
+                                ).then((result) => {
+                                    refreshTrainingContent();
+                                });
                             } else {
                                 Swal.fire(
                                     'Oops 同步失敗...',
@@ -365,8 +371,9 @@
                                     '同步成功!',
                                     '資料已經同步 Bye!',
                                     'success'
-                                )
-                                refreshTrainingContent();
+                                ).then((result) => {
+                                    refreshTrainingContent();
+                                });
                             } else {
                                 Swal.fire(
                                     'Oops 同步失敗...',
@@ -464,7 +471,7 @@
                         return '你忘了輸入網址嗎!?';
                     } else if (value === '') {
                         return '你忘了輸入網址嗎!?';
-                    } 
+                    }
                 }
             }).then((result) => {
                 if (result.isConfirmed) {
@@ -530,7 +537,7 @@
                     confirmButtonColor: "#DD6B55",
                     confirmButtonText: '確定',
                     cancelButtonText: '取消',
-                    focusCancel: true     
+                    focusCancel: true
                 }).then((result) => {
                     if (result.isConfirmed) {
                         showLoading();
@@ -542,9 +549,10 @@
                                         '複製課表!',
                                         '資料已經同步 Bye!',
                                         'success'
-                                    )
-                                    refreshTrainingContent();
-                                } else {                                   
+                                    ).then((result) => {
+                                        refreshTrainingContent();
+                                    });
+                                } else {
                                     Swal.fire(
                                         'Oops 複製失敗...',
                                         data.message,
@@ -567,7 +575,7 @@
         </script>
     }
 
-    @if(lessonItem.RegisterLesson.IsSingleCharge && !lessonItem.RegisterLesson.IsPaid)
+    @if (lessonItem.RegisterLesson.IsSingleCharge && !lessonItem.RegisterLesson.IsPaid)
     {
         <script>
             this.attendLesson = function() {
@@ -643,7 +651,7 @@
 {
     @if (alertUndone)
     {
-<script>
+        <script>
 
             $(function () {
                 checkUnfinishLesson();
@@ -669,6 +677,6 @@
                     }
                 });
             }
-</script>
+        </script>
     }
 }

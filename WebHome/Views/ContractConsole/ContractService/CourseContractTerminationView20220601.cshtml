@@ -41,7 +41,7 @@
 }
 <div class="row">
     <div class="col-md-12" style="@(_viewModel.Pdf=="1" ? "margin:0;padding:0;" : "")">
-        <div style="@(_viewModel.Pdf=="1" ? "margin:0;padding:0;" : "")">
+        <div style="@(_viewModel.Pdf=="1" ? "margin:0;padding:0;height:72%;" : "")">
             <h4 class="text-center" style="@(_viewModel.Pdf=="1" ? "margin:0;padding:0;" : "")"><b>Beyond Fitness 顧問服務終止申請書</b></h4>
             <table class="table" style="@(_viewModel.Pdf=="1" ? "margin:0;padding:0;" : "")">
                 <tbody>
@@ -306,7 +306,7 @@
             </table>
             }            
         </div>
-        <div style="@(_viewModel.Pdf=="1" ? "page-break-before:always;margin:0;padding:0;" : "")">            
+        <div style="@(_viewModel.Pdf=="1" ? "/*page-break-before:always;*/margin:0;padding:0;" : "")">            
             @{
                 var invoice = _original.ContractPayment.FirstOrDefault()?.Payment.InvoiceItem;
                 var allowance = _original.ContractPayment.FirstOrDefault()?.Payment.InvoiceAllowance;

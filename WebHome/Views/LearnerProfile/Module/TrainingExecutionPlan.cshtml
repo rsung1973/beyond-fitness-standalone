@@ -41,7 +41,19 @@
                 {
                     <a href="javascript:void(0);" class="col-red"> <i class="@(plan.FavoriteLesson.Any(f => f.UID == profile.UID) ? "myfavaroit like" : "myfavaroit")"></i> <span>@(plan.FavoriteLesson.Count > 0 ? plan.FavoriteLesson.Count.ToString() : null)</span> </a>
                 }
-                @{
+                @if (_model.RegisterLesson.LessonPriceType?.ForDietary == true)
+                {
+                    <ul class="list-unstyled team-info margin-0 float-right inlineblock">
+                        <li>
+                            @{
+                                ViewBag.ProfileClass = "popfit";
+                                await Html.RenderPartialAsync("~/Views/Common/ProfileImage.cshtml", _model.AsAttendingCoach.UserProfile);
+                            }
+                        </li>
+                    </ul>
+                }
+                else
+                {
                     await Html.RenderPartialAsync("~/Views/LearnerProfile/Module/LessonContentSparkline.cshtml", _model);
                 }
                 @if (_model.IsCoachPISession())
@@ -83,7 +95,8 @@
                     await Html.RenderPartialAsync("~/Views/LearnerProfile/Module/LessonEmphasis.cshtml", _model);
                 }
             </li>
-            @if (_model.BranchStore?.IsVirtualClassroom() == true)
+            @if (_model.BranchStore?.IsVirtualClassroom() == true
+                || _model.RegisterLesson.LessonPriceType?.ForDietary == true)
             {
                 <li>
                     <a href="javascript:editOnlineUrl('@Html.Raw($"{_model.LessonID.EncryptKey()}")',$('#onlineUrl').text());">

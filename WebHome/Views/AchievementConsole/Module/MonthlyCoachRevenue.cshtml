@@ -78,9 +78,13 @@
     });
 
     var dtAchivement;
-    function showAchivementList(itemCount) {
+    function showAchivementList(itemCount,colsAlignCenter) {
         if (dtAchivement != undefined) {
             dtAchivement.destroy();
+        }
+
+        if (colsAlignCenter == undefined) {
+            colsAlignCenter = [0];
         }
 
         var columns = [];
@@ -118,7 +122,7 @@
             },
             "columnDefs": [
                 {
-                    targets: [0],
+                    targets: colsAlignCenter,
                     className: "align-center"
                 },
                 {

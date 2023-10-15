@@ -96,6 +96,11 @@
     <Compile Update="Models\MIG3_1\E0501.cs">
       <DependentUpon>E0501.xsd</DependentUpon>
     </Compile>
+    <Compile Update="Models\Resources\CommitTrialLearner.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CommitTrialLearner.resx</DependentUpon>
+    </Compile>
     <Compile Update="Models\Resources\NamingItem2023.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -140,7 +145,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\Resources\" />
     <Folder Include="Views\ContractConsole\Items\" />
     <Folder Include="Views\MyTest\" />
     <Folder Include="Views\SystemInfo\" />
@@ -151,6 +155,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Update="Models\Resources\CommitTrialLearner.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>CommitTrialLearner.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Update="Models\Resources\NamingItem2023.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>NamingItem2023.Designer.cs</LastGenOutput>

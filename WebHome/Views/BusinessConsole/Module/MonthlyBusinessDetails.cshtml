@@ -64,7 +64,8 @@
                 {
                     <text>@(Math.Round(lessonCount*100M / (indicator.CompleteLessonsGoal ?? 1)))%</text>
                 }
-                <small class="col-green">@(lessonCount)堂</small></td>
+                <small class="col-green">@(lessonCount)堂</small>
+            </td>
         </tr>
         <tr onclick="javascript:achievementReview();">
             <td>上課業績 <small class="col-grey">@($"{indicator.LessonTuitionGoal:##,###,###,###}")</small></td>
@@ -83,16 +84,94 @@
             </td>
         </tr>
         <tr onclick="javascript:showSoldDetail();">
-            <td>BR <small class="col-grey">@(coachIndicatorItems.Sum(c=>c.BRCount) ?? 0)堂</small></td>
-            <td><small class="col-grey">敬請期待</small></td>
+            <td>
+                BR開發率
+                <small class="col-grey">
+                    @{
+                        var BRSubtotal = coachIndicatorItems.Sum(c => c.BRCount);
+                    }
+                    @( BRSubtotal ?? 0)堂
+                </small>
+            </td>
+            <td>
+                @{
+                    var actualBRSubtotal = coachIndicatorItems.Sum(c => c.ActualBRCount);
+                }
+                @if (BRSubtotal > 0)
+                {
+                    <text>@(Math.Round((actualBRSubtotal ?? 0M) / BRSubtotal.Value * 100M,2))%</text>
+                    <small class="col-green">@($"{actualBRSubtotal:##,###,###,###}")張</small>
+                }
+                else if (actualBRSubtotal == 0)
+                {
+                    <text>0%</text>
+                    <small class="col-green">0</small>
+                }
+                else
+                {
+                    <text>N/A</text>
+                }
+            </td>
         </tr>
         <tr onclick="javascript:showSoldDetail();">
-            <td>BR簽約率 <small class="col-grey"></small></td>
-            <td><small class="col-grey">敬請期待</small></td>
+            <td>
+                BR成交率
+                <small class="col-grey">
+                    @{
+                        var BRTrialSubtotal = coachIndicatorItems.Sum(c => c.BRTrialCount);
+                    }
+                    @( BRTrialSubtotal ?? 0)堂
+                </small>
+            </td>
+            <td>
+                @{
+                    var dealedBRSubtotal = coachIndicatorItems.Sum(c => c.DealedCountWithBR);
+                }
+                @if (BRTrialSubtotal > 0)
+                {
+                    <text>@(Math.Round((dealedBRSubtotal ?? 0M) / BRTrialSubtotal.Value * 100M,2))%</text>
+                <small class="col-green">@($"{dealedBRSubtotal:##,###,###,###}")張</small>
+                }
+                else if (dealedBRSubtotal == 0)
+                {
+                    <text>0%</text>
+                    <small class="col-green">0</small>
+                }
+                else
+                {
+                    <text>N/A</text>
+                }
+            </td>
         </tr>
         <tr onclick="javascript:showSoldDetail();">
-            <td>TS簽約率</td>
-            <td><small class="col-grey">敬請期待</small></td>
+            <td>
+                檢測成交率
+                <small class="col-grey">
+                    @{
+                        var trialSubtotal = coachIndicatorItems.Sum(c => c.ExamTrialCount);
+                    }
+                    @( trialSubtotal ?? 0)堂
+                </small>
+            </td>
+            <td>
+                @{
+                    var trialDealedSubtotal = coachIndicatorItems.Sum(c => c.TrialDealedCount);
+                }
+                @if (trialSubtotal > 0)
+                {
+                    <text>@(Math.Round((trialDealedSubtotal ?? 0M) / trialSubtotal.Value * 100M,2))%</text>
+                    <small class="col-green">@($"{trialDealedSubtotal:##,###,###,###}")張</small>
+                }
+                else if (trialDealedSubtotal == 0)
+                {
+                    <text>0%</text>
+                    <small class="col-green">0</small>
+                }
+                else
+                {
+                    <text>N/A</text>
+                }
+            </td>
         </tr>
     </tbody>
 </table>

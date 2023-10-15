@@ -17,6 +17,7 @@
     CoachQueryViewModel _viewModel;
     DateTime idx = DateTime.Today.FirstDayOfMonth();
     DateTime monthIdx = DateTime.Today.FirstDayOfMonth();
+    MonthlyCoachRevenueIndicator _currentItem;
 }
 @{
     _modelState = ViewContext.ModelState;
@@ -61,6 +62,9 @@
             <th>本季升級課數達成率</th>
             <th>本月業績達成率</th>
             <th>本月課數達成率</th>
+            <th>本月BR開發率</th>
+            <th>本月BR成交率</th>
+            <th>本月檢測成交率</th>
             <th>所屬學生數</th>
             <th>主教練學生數</th>
             <th>生效中合約</th>
@@ -88,12 +92,13 @@
                             )
                         </span>
                     </td>
-                    <td>@(
+                    <td>
+                        @(
                         item.ProfessionalLevel?.LevelName
-                        )</td>
+                        )
+                    </td>
                     @if (item.IsLeaved)
                     {
-                        <td>--</td>
                         <td>--</td>
                         <td>--</td>
                         <td>--</td>
@@ -105,16 +110,63 @@
                         ShowMonthlyPerformance(item);
                     }
                     <td>
+                        @if (_currentItem?.BRCount > 0)
+                        {
+                            <text>@(Math.Round((_currentItem.ActualBRCount ?? 0M) / _currentItem.BRCount.Value * 100M,2)) %</text>
+                        }
+                        else if (_currentItem?.ActualBRCount == 0)
+                        {
+                            <text>0 %</text>
+                        }
+                        else
+                        {
+                            <text>N/A</text>
+                        }
+                    </td>
+                    <td>
+                        @if (_currentItem?.BRTrialCount > 0)
+                        {
+                            <text>@(Math.Round((_currentItem.DealedCountWithBR ?? 0M) / _currentItem.BRTrialCount.Value * 100M,2)) %</text>
+                        }
+                        else if (_currentItem?.DealedCountWithBR == 0)
+                        {
+                            <text>0 %</text>
+                        }
+                        else
+                        {
+                            <text>N/A</text>
+                        }
+                    </td>
+                    <td>
+                        @if (_currentItem?.ExamTrialCount > 0)
+                        {
+                            <text>@(Math.Round((_currentItem.TrialDealedCount ?? 0M) / _currentItem.ExamTrialCount.Value * 100M,2)) %</text>
+                        }
+                        else if (_currentItem?.TrialDealedCount == 0)
+                        {
+                            <text>0 %</text>
+                        }
+                        else
+                        {
+                            <text>N/A</text>
+                        }
+                    </td>
+                    <td>
                         @(
                         item.LearnerFitnessAdvisor.Count()
                             )
                     </td>
                     <td>
                         @(
-                        item.LearnerCoachProperty
-                        .Where(p => p.PropertyID == (int)LearnerCoachProperty.PropertyType.PrimaryCoach)
-                        .Where(p => effectiveLearners.Any(l => l.UID == p.UID))
-                        .Count()
+                        //item.LearnerCoachProperty
+                        //.Where(p => p.PropertyID == (int)LearnerCoachProperty.PropertyType.PrimaryCoach)
+                        //.Where(p => effectiveLearners.Any(l => l.UID == p.UID))
+                        //.Count()
+                        models.GetTable<LearnerCoachProperty>()
+                                    .Where(p => p.CoachID == item.CoachID)
+                                    .Where(p => p.PropertyID == (int)LearnerCoachProperty.PropertyType.PrimaryCoach)
+                                    .Join(effectiveLearners, p => p.UID, m => m.UID, (p, m) => p)
+                                    .Count()
                             )
                     </td>
                     <td>
@@ -202,6 +254,8 @@
             .Join(models.GetTable<MonthlyCoachRevenueIndicator>().Where(c => c.CoachID == coach.CoachID),
                 m => m.PeriodID, c => c.PeriodID, (m, c) => c)
             .FirstOrDefault();
+
+        _currentItem = coachItem;
 
         if (coachItem == null)
         {

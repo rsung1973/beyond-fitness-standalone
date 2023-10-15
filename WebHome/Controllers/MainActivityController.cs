@@ -34,6 +34,8 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using WebHome.Properties;
 using System.Net.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Http;
+using Validation = WebHome.Models.Resources.CommitTrialLearner;
 
 namespace WebHome.Controllers
 {
@@ -80,9 +82,10 @@ namespace WebHome.Controllers
             return Json(new { result = true, GDPR = true});
         }        
 
-        public ActionResult HandleUnknownAction(string actionName)
+        public ActionResult HandleUnknownAction(string actionName, IFormCollection forms, QueryViewModel viewModel)
         {
-            return View(actionName);
+            ViewBag.ViewModel = viewModel;
+            return View(actionName, forms);
             //this.View(actionName).ExecuteResult(this.ControllerContext);
         }
 
@@ -368,51 +371,52 @@ namespace WebHome.Controllers
             viewModel.UserName = viewModel.UserName.GetEfficientString();
             if (viewModel.UserName == null)
             {
-                ModelState.AddModelError("UserName", "請輸入姓名");
+                ModelState.AddModelError("UserName", Validation.InvalidUserName);
             }
 
             viewModel.Phone = viewModel.Phone.GetEfficientString();
-            if (viewModel.Phone == null)
+            if (viewModel.Phone == null || !Regex.IsMatch(viewModel.Phone, "^[0-9]{10}$"))
             {
-                ModelState.AddModelError("Phone", "請輸入聯絡人電話");
+                ModelState.AddModelError("Phone", Validation.InvalidPhone);
             }
 
             viewModel.Gender = viewModel.Gender.GetEfficientString();
             if (viewModel.Gender == null)
             {
-                ModelState.AddModelError("Gender", "請選擇性別");
+                ModelState.AddModelError("Gender", Validation.InvalidGender);
             }
 
             viewModel.Email = viewModel.Email.GetEfficientString();
-            if (viewModel.Email == null)
+            if (viewModel.Email == null || !Regex.IsMatch(viewModel.Email, "\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*"))
             {
-                ModelState.AddModelError("Email", "請輸入Email");
+                ModelState.AddModelError("Email", Validation.InvalidEmail);
             }
 
             if (viewModel.HelpID?.Any(d => d.HasValue) != true)
             {
-                ModelState.AddModelError("Message", "請勾選希望 Beyond Fitness 幫您解決什麼問題");
+                ModelState.AddModelError("Message", Validation.InvalidHelpID);
             }
 
             if (viewModel.TimeID?.Any(d => d.HasValue) != true)
             {
-                ModelState.AddModelError("Message", "請勾選您方便聯絡的時間");
+                ModelState.AddModelError("Message", Validation.InvalidTimeID);
             }
 
             if (viewModel.Agree != true)
             {
-                ModelState.AddModelError("Message", "請同意了解聲明");
+                ModelState.AddModelError("Message", Validation.InvalidAgreement);
             }
 
             if (!viewModel.BranchID.HasValue)
             {
-                ModelState.AddModelError("BranchID", "請選擇門市");
+                ModelState.AddModelError("BranchID", Validation.InvalidBranch);
             }
 
             viewModel.gRecaptchaResponse = viewModel.gRecaptchaResponse.GetEfficientString();
             if (viewModel.gRecaptchaResponse == null)
             {
-                ModelState.AddModelError("Message", "請驗證我不是機器人");
+                return Json(new { result = false, message = Validation.UseCaptcha });
+                //ModelState.AddModelError("Message", Validation.UseCaptcha);
             }
             else
             {
@@ -437,13 +441,14 @@ namespace WebHome.Controllers
                 else
                 {
                     // reCAPTCHA 驗證失敗，返回錯誤頁面或相應的處理邏輯
-                    ModelState.AddModelError("Message", "驗證失敗");
+                    return Json(new { result = false, message = Validation.InvalidCaptcha });
+                    //ModelState.AddModelError("Message", Validation.InvalidCaptcha);
                 }
             }
 
             if (!ModelState.IsValid)
             {
-                ViewBag.AlertError = true;
+                ViewBag.AlertError = false;
                 return View("~/Views/MainActivity/Shared/ReportInputError.cshtml", model: ModelState.ErrorMessage());
             }
 
@@ -462,7 +467,7 @@ namespace WebHome.Controllers
             {
                 profileItem = new TrialLearner
                 {
-
+                    SubmitDate = DateTime.Now,
                 };
 
                 models.GetTable<TrialLearner>().InsertOnSubmit(profileItem);
@@ -483,13 +488,13 @@ namespace WebHome.Controllers
             profileItem.BranchID = viewModel.BranchID.Value;
             profileItem.Question = viewModel.Question.GetEfficientString();
 
-            profileItem.TrialLearnerPurposes
+            profileItem.TrialLearnerPurpose
                 .AddRange(viewModel.HelpID.Where(d => d.HasValue).Select(d => new TrialLearnerPurpose
                 {
                     HelpID = d.Value,
                 }));
 
-            profileItem.ContactTimes
+            profileItem.ContactTime
                 .AddRange(viewModel.TimeID.Where(d => d.HasValue).Select(d => new ContactTime
                 {
                     TimeID = d.Value,
@@ -497,7 +502,111 @@ namespace WebHome.Controllers
 
             models.SubmitChanges();
 
-            return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", "資料已更新!!");
+            return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", Validation.Success);
+        }
+
+        public async Task<ActionResult> ValidateTrialLearner(TrialLearnerViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            ModelState.Clear();
+
+            if (!viewModel.Step.HasValue || viewModel.Step == 1)
+            {
+                viewModel.UserName = viewModel.UserName.GetEfficientString();
+                if (viewModel.UserName == null)
+                {
+                    ModelState.AddModelError("UserName", Validation.InvalidUserName);
+                }
+
+                viewModel.Phone = viewModel.Phone.GetEfficientString();
+                if (viewModel.Phone == null || !Regex.IsMatch(viewModel.Phone, "^[0-9]{10}$"))
+                {
+                    ModelState.AddModelError("Phone", Validation.InvalidPhone);
+                }
+
+                viewModel.Gender = viewModel.Gender.GetEfficientString();
+                if (viewModel.Gender == null)
+                {
+                    ModelState.AddModelError("Gender", Validation.InvalidGender);
+                }
+
+                //viewModel.Email = viewModel.Email.GetEfficientString();
+                //if (viewModel.Email == null || !Regex.IsMatch(viewModel.Email, "\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*"))
+                //{
+                //    ModelState.AddModelError("Email", Validation.InvalidEmail);
+                //}
+
+                if (viewModel.TimeID?.Any(d => d.HasValue) != true)
+                {
+                    ModelState.AddModelError("Message", Validation.InvalidTimeID);
+                }
+            }
+            else if (viewModel.Step == 2)
+            {
+                if (viewModel.HelpID?.Any(d => d.HasValue) != true)
+                {
+                    ModelState.AddModelError("Message", Validation.InvalidHelpID);
+                }
+
+            }
+            else if (viewModel.Step == 3)
+            {
+
+                if (!viewModel.BranchID.HasValue)
+                {
+                    ModelState.AddModelError("BranchID", Validation.InvalidBranch);
+                }
+            }
+            else
+            {
+                if (viewModel.Agree != true)
+                {
+                    ModelState.AddModelError("Message", Validation.InvalidAgreement);
+                }
+
+                viewModel.gRecaptchaResponse = viewModel.gRecaptchaResponse.GetEfficientString();
+                if (viewModel.gRecaptchaResponse == null)
+                {
+                    return Json(new { result = false, message = Validation.UseCaptcha });
+                    //ModelState.AddModelError("Message", Validation.UseCaptcha);
+                }
+                else
+                {
+                    var parameters = new Dictionary<string, string>
+                    {
+                        { "secret", AppSettings.Default.ReCaptcha.SecretKey },
+                        { "response", viewModel.gRecaptchaResponse }
+                    };
+
+                    IHttpClientFactory httpClientFactory = ServiceProvider.GetRequiredService<IHttpClientFactory>();
+                    var client = httpClientFactory.CreateClient();
+
+                    var response = await client.PostAsync(AppSettings.Default.ReCaptcha.UrlVerification, new FormUrlEncodedContent(parameters));
+                    var responseBody = await response.Content.ReadAsStringAsync();
+
+                    dynamic captchaResult = JsonConvert.DeserializeObject(responseBody);
+
+                    if (captchaResult.success == true)
+                    {
+                        // reCAPTCHA 驗證通過，繼續處理您的業務邏輯
+                    }
+                    else
+                    {
+                        // reCAPTCHA 驗證失敗，返回錯誤頁面或相應的處理邏輯
+                        return Json(new { result = false, message = Validation.InvalidCaptcha });
+                        //ModelState.AddModelError("Message", Validation.InvalidCaptcha);
+                    }
+                }
+            }
+                
+            if (!ModelState.IsValid)
+            {
+                //ViewBag.AlertError = false;
+                //return View("~/Views/MainActivity/Shared/ReportInputError.cshtml", model: ModelState.ErrorMessage());
+                return Json(new { result = false, message = ModelState.ErrorMessage() });
+            }
+
+            return Json(new { result = true });
         }
 
     }

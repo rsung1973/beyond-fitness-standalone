@@ -26,7 +26,14 @@
 <div id="@(_viewID)">
     @{
         ViewBag.ViewID = _viewID;
-        await Html.RenderPartialAsync("~/Views/LearnerProfile/Module/LessonTrainingExecution.cshtml", _model);
+        if(_model.RegisterLesson.LessonPriceType?.ForDietary == true)
+        {
+            await Html.RenderPartialAsync("~/Views/LearnerProfile/Module/LessonDietaryPlan.cshtml", _model);
+        }
+        else
+        {
+            await Html.RenderPartialAsync("~/Views/LearnerProfile/Module/LessonTrainingExecution.cshtml", _model);
+        }
     }
 </div>
 

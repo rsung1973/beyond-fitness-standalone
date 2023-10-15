@@ -61,16 +61,7 @@ namespace WebHome.Models.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 關於我們.
-        /// </summary>
-        public static string AboutUs {
-            get {
-                return ResourceManager.GetString("AboutUs", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Beyond的價值理念.
+        ///   Looks up a localized string similar to 摯愛運動，&lt;br/&gt;&lt;span class=&quot;multicolor-text-underline&quot;&gt;快樂始於Beyond&lt;/span&gt;.
         /// </summary>
         public static string AboutUsBannerSlogn {
             get {
@@ -79,7 +70,7 @@ namespace WebHome.Models.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to WHO WE ARE.
+        ///   Looks up a localized string similar to 在歡愉的時光中運動，&lt;br class=&quot;hidden-sm-up&quot;&gt;為您締造與眾不同的體驗.
         /// </summary>
         public static string AboutUsBannerSlognDesc {
             get {
@@ -88,43 +79,61 @@ namespace WebHome.Models.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 同意.
+        ///   Looks up a localized string similar to 我們相信.
         /// </summary>
-        public static string Agree {
+        public static string AboutUsBelieve {
             get {
-                return ResourceManager.GetString("Agree", resourceCulture);
+                return ResourceManager.GetString("AboutUsBelieve", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 知識分享.
+        ///   Looks up a localized string similar to 「若能幫助您成功的改變生活、邁向健康，自然而然可透過運動創造屬於您的人本價值及生活品質。」.
         /// </summary>
-        public static string Blog {
+        public static string AboutUsBelieveDesc {
             get {
-                return ResourceManager.GetString("Blog", resourceCulture);
+                return ResourceManager.GetString("AboutUsBelieveDesc", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 預約體驗.
+        ///   Looks up a localized string similar to 品牌信念.
         /// </summary>
-        public static string Book {
+        public static string AboutUsBrandSlogon {
             get {
-                return ResourceManager.GetString("Book", resourceCulture);
+                return ResourceManager.GetString("AboutUsBrandSlogon", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 立即預約體驗.
+        ///   Looks up a localized string similar to 對 Beyond 來說，&lt;br class=&quot;hidden-sm-up&quot;/&gt;運動是一件認真的事情.
         /// </summary>
-        public static string BookNow {
+        public static string AboutUsBrandSlogonDesc {
             get {
-                return ResourceManager.GetString("BookNow", resourceCulture);
+                return ResourceManager.GetString("AboutUsBrandSlogonDesc", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 預約60分鐘體驗.
+        ///   Looks up a localized string similar to Beyond自2014年始於台北小巨蛋，至今陸續擴展至信義安和、忠孝和東門等四家分店，以超過50位專業團隊成員擁有完整組織架構，為您提供個人客製化訓練、營養諮詢、運動按摩恢復、運動傷害防護、企業團隊健康策略、專業運動教育培訓以及企業健康顧問等多元服務，並為全台最大的運動客製化訓練中心。.
+        /// </summary>
+        public static string AboutUsCompanyDesc1 {
+            get {
+                return ResourceManager.GetString("AboutUsCompanyDesc1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 我們以熱情和專業之心，為您打造獨一無二的運動體驗。無論您的目標是什麼，我們相信每個時刻都應該充滿動力與樂趣。除了定期舉辦精彩的Game Day和團隊活動，還提供移地訓練和帶領偏鄉朋友一起享受運動的機會。因為對我們來說，運動不僅是認真的事情，更是在歡愉的時光中創造價值的機會。.
+        /// </summary>
+        public static string AboutUsCompanyDesc2 {
+            get {
+                return ResourceManager.GetString("AboutUsCompanyDesc2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 預約60分鐘&lt;br class=&quot;hidden-lg-up&quot;/&gt;&lt;span class=&quot;mark-text-underline&quot; padding-width=&quot;0.1&quot; bottom-width=&quot;0.1&quot;&gt;免費體驗&lt;/span&gt;.
         /// </summary>
         public static string BookNowBannerSlogn {
             get {
@@ -385,7 +394,7 @@ namespace WebHome.Models.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Beyond Fitnessがお客様の目標達成をサポートするために、このアンケートをご提供しております。このアンケートを通じて、お客様のニーズを初歩的に把握させていただきます。ご提出いただいたフォームを受けて、トレーナーがお客様に連絡し、体験の日程を確認させていただきます。.
+        ///   Looks up a localized string similar to 為了讓 Beyond Fitness 幫助您達成目標，此問券可以讓我們初步了解您的需求，&lt;br class=&quot;hidden-md-down&quot; /&gt;教練將會在收到表單後與您聯絡並確認安排體驗時間。.
         /// </summary>
         public static string BookNowFormDesc {
             get {
@@ -403,245 +412,74 @@ namespace WebHome.Models.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 台北市大安區信義路二段28號.
+        ///   Looks up a localized string similar to 預約.
         /// </summary>
-        public static string BranchAdd_Dongmen {
+        public static string BookNowStep1 {
             get {
-                return ResourceManager.GetString("BranchAdd_Dongmen", resourceCulture);
+                return ResourceManager.GetString("BookNowStep1", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 台北市松山區南京東路四段17號B1.
+        ///   Looks up a localized string similar to 線上填表單或電話與我們聯繫.
         /// </summary>
-        public static string BranchAdd_Nanjing {
+        public static string BookNowStep1Desc {
             get {
-                return ResourceManager.GetString("BranchAdd_Nanjing", resourceCulture);
+                return ResourceManager.GetString("BookNowStep1Desc", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 台北市大安區安和路二段81號B1.
+        ///   Looks up a localized string similar to 諮詢.
         /// </summary>
-        public static string BranchAdd_XinyiAnhe {
+        public static string BookNowStep2 {
             get {
-                return ResourceManager.GetString("BranchAdd_XinyiAnhe", resourceCulture);
+                return ResourceManager.GetString("BookNowStep2", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 台北市大安區大安路一段75巷21號1F/B1.
+        ///   Looks up a localized string similar to 仔細詢問您的健康狀況與喜好.
         /// </summary>
-        public static string BranchAdd_Zhongxiao {
+        public static string BookNowStep2Desc {
             get {
-                return ResourceManager.GetString("BranchAdd_Zhongxiao", resourceCulture);
+                return ResourceManager.GetString("BookNowStep2Desc", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 位於捷運東門捷運站3號出口，走路約3分鐘即可抵達。永康商圈一樓旗艦店，規劃寬敞明亮、百坪訓練空間。.
+        ///   Looks up a localized string similar to 親身體驗.
         /// </summary>
-        public static string BranchDesc1_Dongmen {
+        public static string BookNowStep3 {
             get {
-                return ResourceManager.GetString("BranchDesc1_Dongmen", resourceCulture);
+                return ResourceManager.GetString("BookNowStep3", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 位於台北小巨蛋正對面，鄰近微風百貨，小巨蛋商圈，捷運台北小巨蛋站1號出口，走路1分鐘即可抵達。.
+        ///   Looks up a localized string similar to 針對您的狀況提供與規劃適合的訓練.
         /// </summary>
-        public static string BranchDesc1_Nanjing {
+        public static string BookNowStep3Desc {
             get {
-                return ResourceManager.GetString("BranchDesc1_Nanjing", resourceCulture);
+                return ResourceManager.GetString("BookNowStep3Desc", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 位於捷運信義安和捷運站2A號出口，走路約3分鐘即可抵達。座落於敦化安和重點區域，比鄰國際立人國中小學校區。.
+        ///   Looks up a localized string similar to 量身定做訓練方案.
         /// </summary>
-        public static string BranchDesc1_XinyiAnhe {
+        public static string BookNowStep4 {
             get {
-                return ResourceManager.GetString("BranchDesc1_XinyiAnhe", resourceCulture);
+                return ResourceManager.GetString("BookNowStep4", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 位於頂好名店城後方大樓1F/B1，捷運忠孝復興站3號(地下街14號)出口，走路2分鐘即可抵達。.
+        ///   Looks up a localized string similar to 精心打造的個人化訓練內容.
         /// </summary>
-        public static string BranchDesc1_Zhongxiao {
+        public static string BookNowStep4Desc {
             get {
-                return ResourceManager.GetString("BranchDesc1_Zhongxiao", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 客製化訓練場地整合：伸展重訓區與室內草皮結合，引進小型體操訓練場地，豐富訓練多樣化。在專業教練細心指導下，享有隱私安全，且時尚舒適的運動環境。.
-        /// </summary>
-        public static string BranchDesc2_Dongmen {
-            get {
-                return ResourceManager.GetString("BranchDesc2_Dongmen", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 擁有超過百坪的專業場地，結合多樣化訓練設備，提供您在運動的同時不受一般場地侷限，讓您的訓練品質最佳化。.
-        /// </summary>
-        public static string BranchDesc2_Nanjing {
-            get {
-                return ResourceManager.GetString("BranchDesc2_Nanjing", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 挑高4米超過220坪的私人運動環境，擁有25米活動草皮區、獨立團課訓練場地、運動按摩恢復室，與舒適獨立淋浴室，您可以享受到最專業運動的場地與服務，我們能確保您更能在此得到真正放心及最優質的服務。.
-        /// </summary>
-        public static string BranchDesc2_XinyiAnhe {
-            get {
-                return ResourceManager.GetString("BranchDesc2_XinyiAnhe", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 少數擁有室內挑高私人教練場地，明亮採光的運動空間，結合多樣化訓練設備，提供乾濕分離衛浴設備，方便您更舒適換穿衣物及梳洗。.
-        /// </summary>
-        public static string BranchDesc2_Zhongxiao {
-            get {
-                return ResourceManager.GetString("BranchDesc2_Zhongxiao", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 淡水信義線-東門站3號出口.
-        /// </summary>
-        public static string BranchMRT_Dongmen {
-            get {
-                return ResourceManager.GetString("BranchMRT_Dongmen", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 松山新店線-台北小巨蛋站1號出口.
-        /// </summary>
-        public static string BranchMRT_Nanjing {
-            get {
-                return ResourceManager.GetString("BranchMRT_Nanjing", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 淡水信義線-信義安和2A號出口.
-        /// </summary>
-        public static string BranchMRT_XinyiAnhe {
-            get {
-                return ResourceManager.GetString("BranchMRT_XinyiAnhe", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 板南線-忠孝復興站3號出口（地下街14號）/B1.
-        /// </summary>
-        public static string BranchMRT_Zhongxiao {
-            get {
-                return ResourceManager.GetString("BranchMRT_Zhongxiao", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 東門.
-        /// </summary>
-        public static string BranchName_Dongmen {
-            get {
-                return ResourceManager.GetString("BranchName_Dongmen", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 南京.
-        /// </summary>
-        public static string BranchName_Nanjing {
-            get {
-                return ResourceManager.GetString("BranchName_Nanjing", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 信義安和.
-        /// </summary>
-        public static string BranchName_XinyiAnhe {
-            get {
-                return ResourceManager.GetString("BranchName_XinyiAnhe", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 忠孝.
-        /// </summary>
-        public static string BranchName_Zhongxiao {
-            get {
-                return ResourceManager.GetString("BranchName_Zhongxiao", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to (02)2396-0776.
-        /// </summary>
-        public static string BranchTEL_Dongmen {
-            get {
-                return ResourceManager.GetString("BranchTEL_Dongmen", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to (02)2715-2733.
-        /// </summary>
-        public static string BranchTEL_Nanjing {
-            get {
-                return ResourceManager.GetString("BranchTEL_Nanjing", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to (02)2720-0530.
-        /// </summary>
-        public static string BranchTEL_XinyiAnhe {
-            get {
-                return ResourceManager.GetString("BranchTEL_XinyiAnhe", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to (02)2776-9932.
-        /// </summary>
-        public static string BranchTEL_Zhongxiao {
-            get {
-                return ResourceManager.GetString("BranchTEL_Zhongxiao", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 我們隨時提供協助。.
-        /// </summary>
-        public static string ContactItemSubTitle {
-            get {
-                return ResourceManager.GetString("ContactItemSubTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 開始您的第一步.
-        /// </summary>
-        public static string ContactItemTitle {
-            get {
-                return ResourceManager.GetString("ContactItemTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 我們使用 cookies 來確保您在網站上能獲得良好的體驗。如果您繼續使用本網站，我們將認定您接受並理解我們的隱私政策和服務條款。.
-        /// </summary>
-        public static string Cookies {
-            get {
-                return ResourceManager.GetString("Cookies", resourceCulture);
+                return ResourceManager.GetString("BookNowStep4Desc", resourceCulture);
             }
         }
         
@@ -651,15 +489,6 @@ namespace WebHome.Models.Resources {
         public static string Dietitian {
             get {
                 return ResourceManager.GetString("Dietitian", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 常見問題.
-        /// </summary>
-        public static string FAQ {
-            get {
-                return ResourceManager.GetString("FAQ", resourceCulture);
             }
         }
         
@@ -970,15 +799,6 @@ namespace WebHome.Models.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 分店一覽.
-        /// </summary>
-        public static string FindUs {
-            get {
-                return ResourceManager.GetString("FindUs", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to 門市一覽.
         /// </summary>
         public static string FindUsBannerSlogn {
@@ -997,92 +817,11 @@ namespace WebHome.Models.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 首頁.
+        ///   Looks up a localized string similar to OPENING 關於職缺.
         /// </summary>
-        public static string Home {
+        public static string JobOpening {
             get {
-                return ResourceManager.GetString("Home", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 找尋更多 BEYOND.
-        /// </summary>
-        public static string HomeFindBeyond {
-            get {
-                return ResourceManager.GetString("HomeFindBeyond", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 合作夥伴 OUR PARTNER.
-        /// </summary>
-        public static string HomeFindPartner {
-            get {
-                return ResourceManager.GetString("HomeFindPartner", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 專屬於您的私人教練.
-        /// </summary>
-        public static string HomeSlogon1 {
-            get {
-                return ResourceManager.GetString("HomeSlogon1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 全方位照顧您的健康.
-        /// </summary>
-        public static string HomeSlogon2 {
-            get {
-                return ResourceManager.GetString("HomeSlogon2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to PRO. BEYOND..
-        /// </summary>
-        public static string HomeSlogon3 {
-            get {
-                return ResourceManager.GetString("HomeSlogon3", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 超越自己，挑戰極限.
-        /// </summary>
-        public static string HomeSlogon3SubDesc {
-            get {
-                return ResourceManager.GetString("HomeSlogon3SubDesc", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 請向Beyond自我介紹，&lt;br class=&quot;hidden-sm-up&quot; /&gt;如果有適合你的職缺，&lt;br /&gt;我們會與您聯繫。.
-        /// </summary>
-        public static string JoinItemContactDesc {
-            get {
-                return ResourceManager.GetString("JoinItemContactDesc", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 把握一展長才的機會.
-        /// </summary>
-        public static string JoinItemContactTitle {
-            get {
-                return ResourceManager.GetString("JoinItemContactTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 加入我們.
-        /// </summary>
-        public static string JoinUs {
-            get {
-                return ResourceManager.GetString("JoinUs", resourceCulture);
+                return ResourceManager.GetString("JobOpening", resourceCulture);
             }
         }
         
@@ -1132,7 +871,7 @@ namespace WebHome.Models.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 我們最喜歡挑戰&lt;br class=&quot;hidden-sm-up&quot; /&gt;「不可能」.
+        ///   Looks up a localized string similar to 我們最喜歡挑戰&lt;br class=&quot;hidden-sm-up&quot; /&gt;&lt;span class=&quot;mark-text-underline&quot;  padding-width=&quot;0.1&quot; bottom-width=&quot;0.1&quot;&gt;不可能&lt;/span&gt;.
         /// </summary>
         public static string JoinUsCoachSlogon {
             get {
@@ -1177,29 +916,11 @@ namespace WebHome.Models.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 提供個人化恢復方案的健身專家.
+        ///   Looks up a localized string similar to 提供&lt;span class=&quot;mark-text-underline&quot;  padding-width=&quot;0&quot; bottom-width=&quot;0.1&quot;&gt;個人化&lt;/span&gt;恢復方案的健身專家.
         /// </summary>
         public static string JoinUsTherapistSlogon {
             get {
                 return ResourceManager.GetString("JoinUsTherapistSlogon", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 了解更多.
-        /// </summary>
-        public static string LearnMore {
-            get {
-                return ResourceManager.GetString("LearnMore", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 隱私權保護政策.
-        /// </summary>
-        public static string PrivacyPolicy {
-            get {
-                return ResourceManager.GetString("PrivacyPolicy", resourceCulture);
             }
         }
         
@@ -1209,15 +930,6 @@ namespace WebHome.Models.Resources {
         public static string PrivateCoach {
             get {
                 return ResourceManager.GetString("PrivateCoach", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 專屬服務.
-        /// </summary>
-        public static string Service {
-            get {
-                return ResourceManager.GetString("Service", resourceCulture);
             }
         }
         
@@ -1245,15 +957,6 @@ namespace WebHome.Models.Resources {
         public static string SportTherapist {
             get {
                 return ResourceManager.GetString("SportTherapist", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 電話.
-        /// </summary>
-        public static string TEL {
-            get {
-                return ResourceManager.GetString("TEL", resourceCulture);
             }
         }
     }

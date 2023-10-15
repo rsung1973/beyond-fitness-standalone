@@ -246,6 +246,9 @@
                                                 var voidItems = _indicator.GetVoidShare(models, _item.CoachID);
                                             }
                                             實際收款業績：<sapn class="col-blue">@($"{shareSummary - (voidItems.Sum(t=>t.VoidShare) ?? 0):##,###,###,##0}")元</sapn> / @($"{_item.AchievementGoal:##,###,###,##0}")元 <br />
+                                            BR開發成交數 / BR開發數 <sapn class="col-blue">@(_item.ActualBRCount?.ToString() ?? "N/A" )</sapn> /  @(_item.BRCount?.ToString() ?? "N/A") <br />
+                                            BR體驗成交數 / BR體驗數 <sapn class="col-blue">@(_item.DealedCountWithBR?.ToString() ?? "N/A")</sapn> / <span class="col-blue">@(_item.BRTrialCount?.ToString() ?? "N/A")</span> <br />
+                                            檢測體驗成交數 / 檢測體驗數：<sapn class="col-blue">@(_item.TrialDealedCount?.ToString() ?? "N/A")</sapn> / <span class="col-blue">@(_item.ExamTrialCount?.ToString() ?? "N/A")</span> <br />
                                             @{
                                                 List<String> info = new List<string>();
                                                 if (_item.CompleteLessonsGoal > actualCount)

@@ -78,5 +78,16 @@
             };
         }
 
+        if ($global.closeModal === undefined) {
+            $global.closeModal = function (dialogID) {
+                var pos = $global.dialogStack.indexOf(dialogID);
+                if (pos >= 0) {
+                    $global.appliedDialog[dialogID].modal('hide');
+                    delete $global.appliedDialog[dialogID];
+                    $global.dialogStack.splice(pos, 1);
+                }
+            }
+        }
+
     });
 </script>

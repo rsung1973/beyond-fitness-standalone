@@ -96,6 +96,7 @@ namespace WebHome.Models.Locale
             特別專案 = 1017,
 			BEYOND推廣課 = 1018,
             單堂現場付款 = 1019,
+            BR體驗 = 1020,
         }
 
         public enum LessonSeriesStatus

@@ -493,11 +493,13 @@ namespace WebHome.Controllers
 
             if(viewModel.LessonID!=null && viewModel.LessonID.Length>0)
             {
+                var ip = HttpContext.Connection.RemoteIpAddress?.ToString();
                 foreach (var item in models.GetTable<LessonTime>().Where(l => viewModel.LessonID.Contains(l.LessonID)))
                 {
                     if (item.GroupingLesson.RegisterLesson.Any(r => r.UID == profile.UID))
                     {
                         item.LessonPlan.CommitAttendance = DateTime.Now;
+                        item.LessonPlan.CommitAttendanceIP = ip;
                         models.SubmitChanges();
                     }
                 }
@@ -555,6 +557,7 @@ namespace WebHome.Controllers
             }
 
             item.LessonPlan.CommitAttendance = DateTime.Now;
+            item.LessonPlan.CommitAttendanceIP = HttpContext.Connection.RemoteIpAddress?.ToString();
             item.LessonPlan.Remark = $"{item.AsAttendingCoach.UserProfile.FullName()}治療完成";
             var execution = item.TrainingPlan.FirstOrDefault()?.TrainingExecution;
             if (execution != null)

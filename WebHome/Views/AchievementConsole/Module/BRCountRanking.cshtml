@@ -1,0 +1,65 @@
+
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    List<decimal?[]> _model;
+    MonthlyIndicatorQueryViewModel _viewModel;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = ViewContext.ModelState;
+    _model = (List<decimal?[]>)this.Model;
+    _viewModel = (MonthlyIndicatorQueryViewModel)ViewBag.ViewModel;
+
+    var items = _model;
+}
+<div class="pricing-item">
+    @{
+        ViewBag.Terms = "INFLUENCER";
+        await Html.RenderPartialAsync("~/Views/AchievementConsole/Module/ShowAchievementRanking.cshtml", items);
+        <button class="pricing-action bg-darkteal" onclick="javascript:showBRCountRankingList();">BR戰況</button>
+    }
+    @if (items.Any())
+    {
+        <script>
+            function showBRCountRankingList() {
+                if ($('#BRCountRanking').length > 0) {
+                    $('#BRCountRanking').modal('show');
+                    return;
+                }
+
+                $global.viewModel.DialogID = 'BRCountRanking';
+                showLoading();
+                $.post('@Html.Raw(Url.Action("ShowBRCountRankingList", "AchievementConsole"))', $global.viewModel, function (data) {
+                    hideLoading();
+                    if ($.isPlainObject(data)) {
+                        Swal.fire(
+                            'Oops...',
+                            data.message,
+                            'warning'
+                        );
+                    } else {
+                        $(data).appendTo($('body'));
+                    }
+                });
+            }
+        </script>
+    }
+    else
+    {
+        <script>
+            function showBRCountRankingList() {
+            }
+        </script>
+    }
+</div>

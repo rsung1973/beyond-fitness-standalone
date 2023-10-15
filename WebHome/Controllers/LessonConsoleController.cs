@@ -29,6 +29,7 @@ using WebHome.Models.ViewModel;
 
 using WebHome.Security.Authorization;
 using Microsoft.Extensions.Logging;
+using CommonLib.Core.Utility;
 
 namespace WebHome.Controllers
 {
@@ -484,6 +485,66 @@ namespace WebHome.Controllers
             models.SubmitChanges();
 
             return Json(new { result = true });
+        }
+
+        public ActionResult CommitDietaryReport(DailyBookingQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+
+            if (viewModel.KeyID != null)
+            {
+                viewModel.LessonID = viewModel.DecryptKeyValue();
+            }
+
+            var item = models.GetTable<LessonPlan>().Where(l => l.LessonID == viewModel.LessonID)
+                            .FirstOrDefault();
+
+            if (item == null)
+            {
+                return Json(new { result = false, message = "資料錯誤!!" });
+            }
+
+            String storePath = Path.Combine(FileLogger.Logger.LogDailyPath, Guid.NewGuid().ToString() + ".dat");
+            if (Request.Form.Files.Count > 0)
+            {
+                Request.Form.Files[0].SaveAs(storePath);
+            }
+            else
+            {
+                return Json(new { result = false, message = "請選擇圖像檔!!" });
+            }
+
+            if (item.Attachment == null)
+            {
+                item.Attachment = new Attachment
+                {
+                };
+            }
+
+            item.Attachment.StoredPath = storePath;
+            models.SubmitChanges();
+
+            return Json(new { result = true, pictureID = item.AttachmentID });
+        }
+
+        public ActionResult ShowDietaryReport(DailyBookingQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+
+            if (viewModel.KeyID != null)
+            {
+                viewModel.LessonID = viewModel.DecryptKeyValue();
+            }
+
+            var item = models.GetTable<LessonTime>().Where(l => l.LessonID == viewModel.LessonID)
+                            .FirstOrDefault();
+
+            if (item == null)
+            {
+                return Json(new { result = false, message = "資料錯誤!!" });
+            }
+
+            return View("~/Views/LearnerProfile/Module/LessonDietaryReport.cshtml", item);
         }
 
     }

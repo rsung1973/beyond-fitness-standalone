@@ -59,7 +59,7 @@
     <!--本月運動時間-->
     @if (!_model.IsOfficer() || _model.IsCoach())
     {
-        await Html.RenderPartialAsync("~/Views/LearnerProfile/Module/ExerciseSummary.cshtml", _model);
+        await Html.RenderPartialAsync("~/Views/LearnerProfile/Module/PromotionBanner.cshtml", _model);
     }
 
     <!--我的合約與當日行事曆-->

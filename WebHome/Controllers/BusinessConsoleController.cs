@@ -351,7 +351,7 @@ namespace WebHome.Controllers
 
             if (!viewModel.BRCount.HasValue)
             {
-                ModelState.AddModelError("BRCount", "請輸BR堂數");
+                ModelState.AddModelError("BRCount", "請輸BR開發數");
             }
 
             if(!ModelState.IsValid)

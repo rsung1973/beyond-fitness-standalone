@@ -1,0 +1,307 @@
+@using System.IO
+@using System.Linq.Expressions
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@using CommonLib.Utility
+@functions
+{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    UserProfile _model;
+    MonthlyIndicatorQueryViewModel _viewModel;
+    IQueryable<ServingCoach> coachItems;
+    List<decimal?[]> countableBase;
+    int baseCount;
+
+    void CalcScores(List<decimal?[]> items)
+    {
+        int index = 0;
+        foreach (var g in items.GroupBy(s => s[1]).OrderByDescending(g => g.Key))
+        {
+            if (g.Key > 0)
+            {
+                foreach (var item in g)
+                {
+                    item[2] = Math.Max(10 - index, 0);
+                }
+                //index += g.Count();
+                index++;
+            }
+            else
+            {
+                break;
+            }
+        }
+
+    }
+
+    decimal? CalcAverage(decimal? coachID,decimal? dataValue)
+    {
+        var baseItem = countableBase.Where(b => b[0] == coachID).FirstOrDefault();
+        var result = dataValue / (baseItem?[1] ?? baseCount);
+        if(result.HasValue)
+        {
+            return Math.Round(result.Value, 2);
+        }
+        return result;
+    }
+
+    void MergeScores(List<decimal?[]> fromItems, List<decimal?[]> toItems)
+    {
+        foreach(var s in fromItems)
+        {
+            var target = toItems.Where(t => t[0] == s[0]).FirstOrDefault();
+            if(target!=null)
+            {
+                target[2] += s[2];
+                if (s[1]>0)
+                {
+                    target[1] = s[1];
+                }
+            }
+            else
+            {
+                toItems.Add(s);
+            }
+        }
+    }
+
+}
+@{
+    Layout = "~/Views/ConsoleHome/Template/MainPage.cshtml";
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = ViewContext.ModelState;
+    _model = (UserProfile)this.Model;
+    _viewModel = (MonthlyIndicatorQueryViewModel)ViewBag.ViewModel;
+
+    //Settlement lastItem = models.GetTable<Settlement>()
+    //    .OrderByDescending(s => s.SettlementID).FirstOrDefault();
+
+    DateTime limitedStart = new DateTime(2023, 1, 1);
+
+    if(!_viewModel.DateFrom.HasValue)
+    {
+        _viewModel.DateFrom = new DateTime(_viewModel.Year.Value, _viewModel.Month.Value, 1);
+    }
+
+    if (_viewModel.DateFrom < limitedStart)
+    {
+        _viewModel.DateFrom = limitedStart;
+        _viewModel.Year = _viewModel.DateFrom.Value.Year;
+        _viewModel.Month = _viewModel.DateFrom.Value.Month;
+    }
+    //else if (_viewModel.DateFrom > lastItem?.StartDate)
+    //{
+    //    _viewModel.DateFrom = lastItem.StartDate;
+    //    _viewModel.Year = _viewModel.DateFrom.Value.Year;
+    //    _viewModel.Month = _viewModel.DateFrom.Value.Month;
+    //}
+
+    if (!_viewModel.DateTo.HasValue)
+    {
+        _viewModel.DateTo = _viewModel.DateFrom.Value.AddMonths(1);
+    }
+
+    //if (_viewModel.DateTo > lastItem?.EndExclusiveDate)
+    //{
+    //    _viewModel.DateTo = lastItem.EndExclusiveDate;
+    //}
+
+    if(!_viewModel.ByInterval.HasValue)
+    {
+        _viewModel.ByInterval = DateQueryInterval.ByMonth;
+    }
+
+    DateTime seasonStart = new DateTime(_viewModel.Year.Value, (_viewModel.Month.Value - 1) / 3 * 3 + 1, 1);
+    DateTime yearStart = new DateTime(_viewModel.Year.Value, 1, 1);
+
+
+    var items = _viewModel.InquireDataForCoachRanking(models, out IQueryable<MonthlyIndicator> indicators);
+    baseCount = indicators.Count();
+
+    var settlementItems = models.GetTable<Settlement>()
+                .Where(s => s.StartDate >= _viewModel.DateFrom)
+                .Where(s => s.StartDate < _viewModel.DateTo);
+    var countableSalaryItems = models.GetTable<CoachMonthlySalary>()
+                .Where(c => settlementItems.Any(s => c.SettlementID == s.SettlementID))
+                .Where(c => c.AvgFlag == true);
+    countableBase = countableSalaryItems.GroupBy(c => c.CoachID)
+                .Select(g => new decimal?[] { g.Key, g.Count() })
+                .ToList();
+
+    //int?[][3] { CoachID, Subtotal, Scores }
+    var lessonCountRanking = items.GroupBy(c => c.CoachID)
+                        .Select(g => new { CoachID = g.Key, Subtotal = g.Sum(c => c.PTCount) })
+                        .Select(s => new decimal?[] { s.CoachID, CalcAverage(s.CoachID, s.Subtotal), 0 }).ToList();
+    CalcScores(lessonCountRanking);
+
+    var achievementRanking = items.GroupBy(c => c.CoachID)
+                        .Select(g => new { CoachID = g.Key, Subtotal = g.Sum(c => c.InstallmentAchievement) })
+                        .Select(s => new decimal?[] { s.CoachID, CalcAverage(s.CoachID, s.Subtotal), 0 }).ToList();
+    CalcScores(achievementRanking);
+
+    var PIRanking = items.GroupBy(c => c.CoachID)
+                        .Select(g => new { CoachID = g.Key, Subtotal = g.Sum(c => c.ActualCompletePICount) })
+                        .OrderByDescending(s => s.Subtotal)
+                        .Select(s => new decimal?[] { s.CoachID, s.Subtotal, 0 }).ToList();
+    CalcScores(PIRanking);
+
+    var BRRanking = items.GroupBy(c => c.CoachID)
+                        .Select(g => new { CoachID = g.Key, Subtotal = g.Sum(c => c.ActualBRCount) })
+                        .OrderByDescending(s => s.Subtotal)
+                        .Select(s => new decimal?[] { s.CoachID, s.Subtotal, 0 }).ToList();
+    CalcScores(BRRanking);
+
+
+}
+@section CustomHeader {
+    <!-- JQuery DataTable Css -->
+    <link href="plugins/jquery-datatable/DataTables-1.10.18/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link href="plugins/jquery-datatable/Responsive-2.2.2/css/responsive.bootstrap4.min.css" rel="stylesheet">
+    <link href="plugins/jquery-datatable/FixedColumns-3.2.5/css/fixedColumns.bootstrap4.min.css" rel="stylesheet">
+    <!-- Bootstrap Datetimepick -->
+    <link href="css/smartcalendar-2.css" rel="stylesheet" />
+    <!-- Custom Css -->
+    <link rel="stylesheet" href="css/customelist.css?2.0" />
+    <!-- charts-c3 -->
+    <link href="plugins/charts-c3/plugin.css?2.0" rel="stylesheet">
+    <!-- dotdotdot JS -->
+    <link href="plugins/dotdotdot/dotdotdot.css?2.0" rel="stylesheet" />
+}
+    <!-- Main Content -->
+<section class="content">
+    @{
+        ViewBag.BlockHeader = "Beyond 績效排行榜";
+        await Html.RenderPartialAsync("~/Views/ConsoleHome/Module/BlockHeader.cshtml", _model);
+    }
+    <div class="container-fluid">
+        <div class="row clearfix">
+            <div class="col-lg-12 text-center m-b-20">
+                <div class="btn-group " role="group" aria-label="Large button group">
+                    <button type="button" class="@(_viewModel.ByInterval == DateQueryInterval.ByMonth ? "btn btn-primary" : "btn btn-secondary")" onclick="selectCurrentMonth();">@(_viewModel.Year)/@($"{_viewModel.Month:00}")月</button>
+                    <button type="button" class="@(_viewModel.ByInterval == DateQueryInterval.ByQuarter ? "btn btn-primary" : "btn btn-secondary")" onclick="selectSeason();">@(seasonStart.Year)第@((seasonStart.Month+2)/3)季</button>
+                    <button type="button" class="@(_viewModel.ByInterval == DateQueryInterval.ByYear ? "btn btn-primary" : "btn btn-secondary")" onclick="selectYear();">@(yearStart.Year)年</button>
+                </div>
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn" onclick="javascript:selectMonth();"><i class="zmdi zmdi-calendar"></i> 月份</button>
+                    <script>
+                        function selectMonth() {
+                            //showLoading();
+                            $.post('@Html.Raw(Url.Action("SelectMonth", "BusinessConsole"))', null, function (data) {
+                                //hideLoading();
+                                if ($.isPlainObject(data)) {
+                                    Swal.fire(
+                                        'Oops...',
+                                        data.message,
+                                        'warning'
+                                    );
+                                } else {
+                                    $(data).appendTo($('body'));
+                                }
+                            });
+                        }
+                        $(function () {
+                            $global.doSelect = function (year, month) {
+                                if (year + '' + month < '202301') {
+                                    Swal.fire(
+                                        'Oops...',
+                                        '僅提供2023年01月之後的排行資料',
+                                        'warning'
+                                    );
+                                } else {
+                                    $('').launchDownload('@Html.Raw(Url.Action("AchievementRankingOverview", "ConsoleHome"))', { 'year': year, 'month': month, 'branchID': '@(_viewModel.BranchID)', 'ByInterval': @((int)DateQueryInterval.ByMonth) });
+                                }
+                            };
+                        });
+
+                        function selectCurrentMonth() {
+                            $('').launchDownload('@Html.Raw(Url.Action("AchievementRankingOverview", "ConsoleHome"))', @Html.Raw((new {_viewModel.Year,_viewModel.Month,_viewModel.BranchID, ByInterval = (int)DateQueryInterval.ByMonth}).JsonStringify()));
+                        }
+
+                        function selectSeason() {
+                            $('').launchDownload('@Html.Raw(Url.Action("AchievementRankingOverview", "ConsoleHome"))', @Html.Raw((new {_viewModel.Year,_viewModel.Month,DateFrom = seasonStart,DateTo = seasonStart.AddMonths(3),_viewModel.BranchID, ByInterval = (int)DateQueryInterval.ByQuarter}).JsonStringify()));
+                        }
+                        function selectYear() {
+                            $('').launchDownload('@Html.Raw(Url.Action("AchievementRankingOverview", "ConsoleHome"))', @Html.Raw((new {_viewModel.Year,_viewModel.Month,DateFrom = yearStart,DateTo = yearStart.AddYears(1), _viewModel.BranchID, ByInterval = (int)DateQueryInterval.ByYear }).JsonStringify()));
+                        }
+                    </script>
+                    <button id="location" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                        @{
+                            var currentBranch = models.GetTable<BranchStore>().Where(b => b.BranchID == _viewModel.BranchID).FirstOrDefault();
+                            <i class="zmdi zmdi-pin"></i> <text>@Html.Raw(currentBranch?.BranchName ?? "全部")</text>
+                        }
+                    </button>
+                    <div class="dropdown-menu dark col-white dropdown-menu-right slideUp" aria-labelledby="location">
+                        <a class="dropdown-item" href="javascript:showAchievementRankingOverview();">全部</a>
+                        @foreach (var branch in models.GetTable<BranchStore>())
+                        {
+                            <a class="dropdown-item" href="javascript:showAchievementRankingOverview(@(branch.BranchID));">@(branch.BranchName)</a>
+                        }
+                    </div>
+                    <script>
+                        function showAchievementRankingOverview(branchID) {
+                            $('').launchDownload('@Html.Raw(Url.Action("AchievementRankingOverview", "ConsoleHome"))', { 'year': @(_viewModel.Year), 'month': @(_viewModel.Month), 'branchID': branchID });
+                        }
+                    </script>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="pricing pricing-palden">
+                    @{
+                        ViewBag.BlockClassName = "l-amber";
+                        await Html.RenderPartialAsync("~/Views/AchievementConsole/Module/TotalLessonCountRanking.cshtml", lessonCountRanking);
+                        ViewBag.BlockClassName = "l-coral";
+                        await Html.RenderPartialAsync("~/Views/AchievementConsole/Module/AchievementRanking.cshtml", achievementRanking);
+
+                        List<decimal?[]> finalItems = new List<decimal?[]>();
+                        finalItems.AddRange(lessonCountRanking);
+                        MergeScores(achievementRanking, finalItems);
+                        MergeScores(PIRanking, finalItems);
+                        MergeScores(BRRanking, finalItems);
+                        ViewBag.BlockClassName = "l-cyan-2";
+                        await Html.RenderPartialAsync("~/Views/AchievementConsole/Module/FinalsRanking.cshtml", finalItems);
+
+                        ViewBag.BlockClassName = "l-seagreen";
+                        await Html.RenderPartialAsync("~/Views/AchievementConsole/Module/PICountRanking.cshtml", PIRanking);
+
+                        ViewBag.BlockClassName = "l-parpl";
+                        await Html.RenderPartialAsync("~/Views/AchievementConsole/Module/BRCountRanking.cshtml", BRRanking);
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@section TailPageJavaScriptInclude {
+    <!-- Echart Js -->
+    <script src="plugins/echarts/echarts.min.js"></script>
+    <!-- Echart Template Js -->
+    <script src="plugins/echarts/theme/macarons.js"></script>
+    <script src="plugins/echarts/theme/macarons_nero.js"></script>
+    <!--Sparkline Plugin Js-->
+    <script src="plugins/jquery-sparkline/jquery.sparkline.js"></script>
+    <!-- SweetAlert Plugin Js -->
+    <script src="plugins/sweetalert/sweetalert.min.js"></script>
+    <!-- Jquery DataTable Plugin Js -->
+    <script src="bundles/datatablescripts.bundle.js"></script>
+    <script src="plugins/jquery-datatable/Responsive-2.2.2/js/dataTables.responsive.min.js"></script>
+    <script src="plugins/jquery-datatable/FixedColumns-3.2.5/js/dataTables.fixedColumns.min.js"></script>
+    <!--Gauge Plugin Js-->
+    <script src="plugins/gauge/gauge.min.js"></script>
+    <!-- dotdotodt Js -->
+    <script src="plugins/dotdotdot/dotdotdot.js"></script>
+    <!-- ChartC3 Js -->
+    <script src="bundles/cs.bundles.js"></script>
+    @{
+        await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/KnobJS.cshtml");
+    }
+}
+@functions
+{
+}

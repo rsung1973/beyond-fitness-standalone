@@ -22,6 +22,8 @@
 @{
     LessonQueryViewModel _viewModel = (LessonQueryViewModel)ViewBag.ViewModel;
     String encTargetID = (_viewModel.ExceptionalID ?? 0).EncryptKey();
+    var exceptional = models.GetTable<LessonTime>().Where(l => l.LessonID == _viewModel.ExceptionalID)
+            .FirstOrDefault();
     IQueryable<LessonTime> items = _model.OrderByDescending(l => l.ClassTime);
     if (_viewModel.CurrentIndex.HasValue)
     {
@@ -79,11 +81,18 @@
                     </h3>
                     @if (item.LessonID != _viewModel.ExceptionalID && execution.TrainingItem.Count() > 0)
                     {
-                        <ul class="header-dropdown">
-                            <li class="dropdown"><a href="javascript:copyTrainingPlan(@item.LessonID);"><i class="zmdi zmdi-copy"></i></a></li>
-                        </ul>
+                        if (exceptional?.RegisterLesson.LessonPriceType?.ForDietary == true)
+                        {
+
+                        }
+                        else
+                        {
+                            <ul class="header-dropdown">
+                                <li class="dropdown"><a href="javascript:copyTrainingPlan(@item.LessonID);"><i class="zmdi zmdi-copy"></i></a></li>
+                            </ul>
+                        }
                     }
-                                    </div>
+                </div>
                 <h4><a href="javascript:viewTraining('@Html.Raw(item.LessonID.EncryptKey())','@(encTargetID)');">@(execution.Emphasis ?? "Unfinished")</a></h4>
                 @if (item.LessonPlan.Remark != null)
                 {

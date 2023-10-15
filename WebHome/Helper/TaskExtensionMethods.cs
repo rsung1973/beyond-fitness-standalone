@@ -700,8 +700,8 @@ namespace WebHome.Helper
 
                         void resetSubtotal(RegisterLesson lesson, int lessons)
                         {
-                            models.ExecuteCommand("update RegisterLesson set Lessons = {0} where RegisterID = {1}",
-                                    lessons, lesson.RegisterID);
+                            models.ExecuteCommand("update RegisterLesson set Lessons = {0}, Attended = {1} where RegisterID = {2}",
+                                    lessons, (int)Naming.LessonStatus.準備上課, lesson.RegisterID);
 
                             if (lesson.SharingReference.Any())
                             {

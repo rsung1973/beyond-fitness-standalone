@@ -20,6 +20,7 @@ using WebHome.Models.ViewModel;
 
 using WebHome.Helper.BusinessOperation;
 using WebHome.Controllers;
+using System.Runtime.Caching;
 
 namespace WebHome.Helper
 {
@@ -161,7 +162,7 @@ namespace WebHome.Helper
                         AchievementGoal = c.AchievementGoal,
                         CompleteLessonsGoal = c.CompleteLessonsGoal,
                         LessonTuitionGoal = c.LessonTuitionGoal,
-                        BRCount = c.BRCount,
+                        //BRCount = c.BRCount,
                         LevelID = c.ServingCoach.LevelID,
                         //AverageLessonPrice = actualCount > 0
                         //    ? (c.ActualLessonAchievement + c.ActualCompleteLessonCount - 1) / actualCount
@@ -528,15 +529,33 @@ namespace WebHome.Helper
 
                     coachIndicator.ActualCompleteLessonCount = coachTuitionItems.Where(t => SessionScopeForComleteLessonCount.Contains(t.PriceStatus)).Count()
                                     + coachTuitionItems.Where(t => SessionScopeForComleteLessonCount.Contains(t.ELStatus)).Count();
+                    coachIndicator.PTCount = coachTuitionItems.Where(t => BusinessConsoleExtensions.SessionScopeForComleteLessonCount.Contains(t.PriceStatus)
+                            || BusinessConsoleExtensions.SessionScopeForComleteLessonCount.Contains(t.ELStatus)).Count();
                     coachIndicator.ActualLessonAchievement = lessonAchievement;
                     coachIndicator.ActualRenewContractAchievement = coachRenewContractAchievementItems.Sum(t => t.ShareAmount) ?? 0;
                     coachIndicator.ActualNewContractAchievement = coachNewContractAchievementItems.Sum(t => t.ShareAmount) ?? 0;
                     coachIndicator.ActualCompleteTSCount = coachTuitionItems.Where(t => t.PriceStatus == (int)Naming.LessonPriceStatus.體驗課程).Count()
                                     + coachTuitionItems.Where(t => t.ELStatus == (int)Naming.LessonPriceStatus.體驗課程).Count();
+
+                    var property = models.GetTable<LessonPriceProperty>().Where(p => p.PropertyID == (int)Naming.LessonPriceFeature.一般課程);
+                    coachIndicator.ExamTrialCount = coachTuitionItems
+                                    .Where(t => t.PriceStatus == (int)Naming.LessonPriceStatus.體驗課程)
+                                    .Where(t => property.Any(p => t.PriceID == p.PriceID))
+                                    .Count();
+
+                    property = models.GetTable<LessonPriceProperty>().Where(p => p.PropertyID == (int)Naming.LessonPriceFeature.BR體驗);
+                    coachIndicator.BRTrialCount = coachTuitionItems
+                                    .Where(t => t.PriceStatus == (int)Naming.LessonPriceStatus.體驗課程)
+                                    .Where(t => property.Any(p => t.PriceID == p.PriceID))
+                                    .Count();
+
                     coachIndicator.ActualCompletePICount = coachTuitionItems.Where(t => t.PriceStatus == (int)Naming.LessonPriceStatus.自主訓練).Count()
                                     + coachTuitionItems.Where(t => t.ELStatus == (int)Naming.LessonPriceStatus.自主訓練).Count();
 
-                    coachIndicator.InstallmentAchievement = coachInstallmentContractAchievementItems.Sum(t => t.ShareAmount) ?? 0;
+                    var shareSummary = item.GetPaymentAchievementSummary(models, coachIndicator.CoachID);
+                    var voidItems = item.GetVoidShare(models, coachIndicator.CoachID);
+                    coachIndicator.InstallmentAchievement = shareSummary - (voidItems.Sum(t => t.VoidShare) ?? 0);
+
                     coachIndicator.RenewContractCount = coachNonInstallmentItems.Where(t => t.Renewal == true).Count();
                     coachIndicator.NewContractCount = coachNonInstallmentItems.Count() - coachIndicator.RenewContractCount;
                     coachIndicator.RenewContractSubtotal = coachNonInstallmentItems.Where(c => c.Renewal == true).Sum(c => c.TotalCost) ?? 0;
@@ -559,7 +578,18 @@ namespace WebHome.Helper
                     coachIndicator.SRAchievement = coachTuitionItems.Where(t => t.PriceStatus == (int)Naming.LessonPriceStatus.運動恢復課程).Sum(t => t.ListPrice) ?? 0;
                     coachIndicator.SDCount = coachTuitionItems.Where(t => t.PriceStatus == (int)Naming.LessonPriceStatus.營養課程).Count();
                     coachIndicator.SDAchievement = coachTuitionItems.Where(t => t.PriceStatus == (int)Naming.LessonPriceStatus.營養課程).Sum(t => t.ListPrice) ?? 0;
-
+                    var extensionItems = models.GetTable<CourseContractExtension>()
+                                            .Where(n => n.BRByCoach == coachIndicator.CoachID);
+                    coachIndicator.ActualBRCount = contractItems.Count(c => extensionItems.Any(n => n.ContractID == c.ContractID));
+                    extensionItems = models.GetTable<CourseContractExtension>()
+                                                                .Where(n => n.BRByCoach.HasValue);
+                    coachIndicator.DealedCountWithBR = coachContractItems.Count(c => extensionItems.Any(n => n.ContractID == c.ContractID));
+                    extensionItems = models.GetTable<CourseContractExtension>()
+                                                                .Where(n => !n.BRByCoach.HasValue);
+                    coachIndicator.TrialDealedCount = coachContractItems
+                                    .Where(c => c.Renewal == false)
+                                    .Where(c => extensionItems.Any(n => n.ContractID == c.ContractID))
+                                    .Count();
                     models.SubmitChanges();
                 }
             }

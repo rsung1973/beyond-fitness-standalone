@@ -19,27 +19,30 @@
     BookingLessonPageModel _pageModel = (BookingLessonPageModel)ViewBag.PageModel;
 
     _modelState = ViewContext.ModelState;
-    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
     _model = (UserProfile)this.Model;
     _viewModel = (CalendarEventViewModel)ViewBag.ViewModel;
     _profile = await Context.GetUserAsync();
-    LessonPriceType price = models.CurrentTrialLessonPrice();
+    LessonPriceType price = models.CurrentTrialLessonPriceForExamination();
     var attendedCheck = models.GetTable<LessonTime>()
         .Join(models.GetTable<GroupingLesson>()
         .Join(models.GetTable<RegisterLesson>()
         .Where(r => r.UID == _model.UID),
         g => g.GroupID, r => r.RegisterGroupID, (g, r) => g),
         l => l.GroupID, g => g.GroupID, (l, g) => l);
+
+    LessonPriceType priceBR = models.CurrentTrialLessonPriceForBR();
 }
 
 @{
-    if (price != null /*&& (!attendedCheck.Any() || _model.UserProfileExtension.CurrentTrial.HasValue)*/)
+    if (price != null && priceBR != null /*&& (!attendedCheck.Any() || _model.UserProfileExtension.CurrentTrial.HasValue)*/)
     {
+
         var trialLesson = models.GetTable<RegisterLesson>()
-                .Where(r => r.UID == _model.UID)
-                .Where(r => r.ClassLevel == price.PriceID);
-                //.Where(r => r.LessonPriceType.Status == (int)Naming.LessonPriceStatus.體驗課程)
-                //.Where(r => !r.BranchStore.Status.HasValue || (r.BranchStore.Status & (int)BranchStore.StatusDefinition.VirtualClassroom) == 0);
+        .Where(r => r.UID == _model.UID)
+        .Where(r => r.ClassLevel == price.PriceID || r.ClassLevel == priceBR.PriceID);
+        //.Where(r => r.LessonPriceType.Status == (int)Naming.LessonPriceStatus.體驗課程)
+        //.Where(r => !r.BranchStore.Status.HasValue || (r.BranchStore.Status & (int)BranchStore.StatusDefinition.VirtualClassroom) == 0);
         var trialLessonItem = trialLesson.FirstOrDefault();
         var trialBookable = trialLessonItem == null;
 
@@ -53,14 +56,37 @@
                 <div class="pull-left">
                     <div class="controls">
                         <label class="fancy-checkbox">
-                            <input type="checkbox" @(trialBookable ? null : "disabled") name="RegisterID" id="trialLesson" value="" onclick="selectBooking(this, '@((int)Naming.LessonPriceStatus.體驗課程)', @(price?.PriceID ?? -1));">
+                            <input type="checkbox" disabled="@(trialBookable==false)" name="RegisterID" id="trialLesson" value="" onclick="selectBooking(this, '@((int)Naming.LessonPriceStatus.體驗課程)', @(price?.PriceID ?? -1));">
                             <span></span>
                         </label>
                     </div>
                 </div>
                 <div class="media-body">
                     <div class="media-heading">
-                        <a class="m-r-10">P.T Session(60分鐘)</a>
+                        <a class="m-r-10">P.T Session(60分鐘) - 檢測</a>
+                        <small class="float-right text-muted"><time>@(trialBookable ? 1 : 0)/1</time></small>
+                        <div class="msg">
+                            <span class="float-right">
+                                <span class="badge bg-blue"><i class="zmdi zmdi-pin"></i> 現場</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </li>
+        <li class="list-group-item">
+            <div class="media">
+                <div class="pull-left">
+                    <div class="controls">
+                        <label class="fancy-checkbox">
+                            <input type="checkbox" disabled="@(trialBookable==false)" name="RegisterID" id="trialLesson" value="" onclick="selectBooking(this, '@((int)Naming.LessonPriceStatus.體驗課程)', @(priceBR.PriceID));">
+                            <span></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="media-body">
+                    <div class="media-heading">
+                        <a class="m-r-10">P.T Session(60分鐘) - BR</a>
                         <small class="float-right text-muted"><time>@(trialBookable ? 1 : 0)/1</time></small>
                         <div class="msg">
                             <span class="float-right">
@@ -78,7 +104,7 @@
                                     .Where(p => p.LessonPriceProperty.Any(t => t.PropertyID == (int)Naming.LessonPriceFeature.運動恢復課程))
                                     .Where(p => p.LessonPriceProperty.Any(t => t.PropertyID == (int)Naming.LessonPriceFeature.單堂現場付款))
                                     .FirstOrDefault();
-    if(price!=null)
+    if (price != null)
     {
         BuildPriceItem(price, "S.R Session");
     }
@@ -104,7 +130,7 @@
                     <div class="controls">
                         <label class="fancy-checkbox">
                             <input type="checkbox" name="RegisterID" value="" data-version="@((int)Naming.ContractVersion.Ver2022)" data-location="@(price.ForDietary ? "option.virtual-store" : "")"
-                               onclick="selectBooking(this, '@(price.Status)',@(price.PriceID));">
+                                   onclick="selectBooking(this, '@(price.Status)',@(price.PriceID));">
                             <span></span>
                         </label>
                     </div>

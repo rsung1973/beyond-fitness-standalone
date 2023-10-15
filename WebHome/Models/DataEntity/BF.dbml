@@ -72,6 +72,7 @@
       <Association Name="Attachment_CourseContractTermination" Member="CourseContractTermination" ThisKey="AttachmentID" OtherKey="AccountInfo" Type="CourseContractTermination" />
       <Association Name="Attachment_CoachCertificate" Member="CoachCertificate" ThisKey="AttachmentID" OtherKey="AttachmentID" Type="CoachCertificate" />
       <Association Name="Attachment_CourseContractExtension" Member="CourseContractExtension" ThisKey="AttachmentID" OtherKey="AttachmentID" Type="CourseContractExtension" />
+      <Association Name="Attachment_LessonPlan" Member="LessonPlan" ThisKey="AttachmentID" OtherKey="AttachmentID" Type="LessonPlan" />
       <Association Name="Document_Attachment" Member="Document" ThisKey="DocID" OtherKey="DocID" Type="Document" IsForeignKey="true" />
     </Type>
   </Table>
@@ -211,6 +212,8 @@
       <Association Name="UserProfile_CoachCertificate" Member="CoachCertificate" ThisKey="UID" OtherKey="ApprovedBy" Type="CoachCertificate" />
       <Association Name="UserProfile_CourseContractExtension" Member="LearnerBRContract" ThisKey="UID" OtherKey="BRByLearner" Type="CourseContractExtension" />
       <Association Name="UserProfile_CourseContractExtension1" Member="CoachBRContract" ThisKey="UID" OtherKey="BRByCoach" Type="CourseContractExtension" />
+      <Association Name="UserProfile_TrialLearner" Member="TrialLearner" ThisKey="UID" OtherKey="NormalUID" Type="TrialLearner" />
+      <Association Name="UserProfile_TrialLearner1" Member="DealedTrial" Storage="_TrialLearner1" ThisKey="UID" OtherKey="AssigneeID" Type="TrialLearner" />
       <Association Name="Attachment_UserProfile" Member="Attachment" ThisKey="PictureID" OtherKey="AttachmentID" Type="Attachment" IsForeignKey="true" />
       <Association Name="LevelExpression_UserProfile" Member="LevelExpression" ThisKey="LevelID" OtherKey="LevelID" Type="LevelExpression" IsForeignKey="true" />
       <Association Name="UserProfile_UserProfile" Member="UserProfile1" ThisKey="Creator" OtherKey="UID" Type="UserProfile" IsForeignKey="true" />
@@ -339,6 +342,7 @@
       <Association Name="ServingCoach_MonthlyCoachLearnerReview" Member="MonthlyCoachLearnerReview" ThisKey="CoachID" OtherKey="CoachID" Type="MonthlyCoachLearnerReview" />
       <Association Name="ServingCoach_CoachCertificate" Member="CoachCertificate" ThisKey="CoachID" OtherKey="CoachID" Type="CoachCertificate" />
       <Association Name="ServingCoach_ServingCoachProperty" Member="ServingCoachProperty" ThisKey="CoachID" OtherKey="CoachID" Type="ServingCoachProperty" />
+      <Association Name="ServingCoach_TrialLearner" Member="TrialLearner" ThisKey="CoachID" OtherKey="AttendingCoach" Type="TrialLearner" />
       <Association Name="UserProfile_ServingCoach" Member="UserProfile" ThisKey="CoachID" OtherKey="UID" Type="UserProfile" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
       <Association Name="ProfessionalLevel_ServingCoach" Member="ProfessionalLevel" ThisKey="LevelID" OtherKey="LevelID" Type="ProfessionalLevel" IsForeignKey="true" />
     </Type>
@@ -362,19 +366,6 @@
       <Column Name="RoleID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Association Name="UserProfile_UserRoleAuthorization" Member="UserProfile" ThisKey="UID" OtherKey="UID" Type="UserProfile" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
       <Association Name="UserRoleDefinition_UserRoleAuthorization" Member="UserRoleDefinition" ThisKey="RoleID" OtherKey="RoleID" Type="UserRoleDefinition" IsForeignKey="true" />
-    </Type>
-  </Table>
-  <Table Name="dbo.LessonPlan" Member="LessonPlan">
-    <Type Name="LessonPlan">
-      <Column Name="LessonID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="Remark" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
-      <Column Name="Warming" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
-      <Column Name="RecentStatus" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
-      <Column Name="EndingOperation" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
-      <Column Name="FeedBack" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
-      <Column Name="FeedBackDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Column Name="CommitAttendance" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Association Name="LessonTime_LessonPlan" Member="LessonTime" ThisKey="LessonID" OtherKey="LessonID" Type="LessonTime" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
   <Table Name="dbo.TrainingExecution" Member="TrainingExecution">
@@ -990,7 +981,7 @@
       <Association Name="BranchStore_CoachMonthlySalary" Member="CoachMonthlySalary" ThisKey="BranchID" OtherKey="WorkPlace" Type="CoachMonthlySalary" />
       <Association Name="BranchStore_CourseContractExtension" Member="CourseContractExtension" ThisKey="BranchID" OtherKey="BranchID" Type="CourseContractExtension" />
       <Association Name="BranchStore_CourseContractExtension1" Member="CourseContractExtension1" ThisKey="BranchID" OtherKey="CoursePlace" Type="CourseContractExtension" />
-      <Association Name="BranchStore_TrialLearner" Member="TrialLearners" ThisKey="BranchID" OtherKey="BranchID" Type="TrialLearner" />
+      <Association Name="BranchStore_TrialLearner" Member="TrialLearner" ThisKey="BranchID" OtherKey="BranchID" Type="TrialLearner" />
       <Association Name="UserProfile_BranchStore" Member="Manager" ThisKey="ManagerID" OtherKey="UID" Type="UserProfile" IsForeignKey="true" />
       <Association Name="UserProfile_BranchStore1" Member="ViceManager" ThisKey="ViceManagerID" OtherKey="UID" Type="UserProfile" IsForeignKey="true" />
       <Association Name="Organization_BranchStore" Member="Organization" ThisKey="BranchID" OtherKey="CompanyID" Type="Organization" IsForeignKey="true" />
@@ -1908,7 +1899,6 @@
       <Column Name="Place" Type="System.String" DbType="NVarChar(512)" CanBeNull="true" />
       <Association Name="LessonTime_FitnessAssessment" Member="FitnessAssessment" ThisKey="LessonID" OtherKey="LessonID" Type="FitnessAssessment" Cardinality="One" />
       <Association Name="LessonTime_LessonTrend" Member="LessonTrend" ThisKey="LessonID" OtherKey="LessonID" Type="LessonTrend" Cardinality="One" />
-      <Association Name="LessonTime_LessonPlan" Member="LessonPlan" ThisKey="LessonID" OtherKey="LessonID" Type="LessonPlan" Cardinality="One" />
       <Association Name="LessonTime_LessonFeedBack" Member="LessonFeedBack" ThisKey="LessonID" OtherKey="LessonID" Type="LessonFeedBack" />
       <Association Name="LessonTime_LessonFitnessAssessment" Member="LessonFitnessAssessment" ThisKey="LessonID" OtherKey="LessonID" Type="LessonFitnessAssessment" />
       <Association Name="LessonTime_ContractTrustTrack" Member="ContractTrustTrack" ThisKey="LessonID" OtherKey="LessonID" Type="ContractTrustTrack" />
@@ -1918,6 +1908,7 @@
       <Association Name="LessonTime_LessonAttendance" Member="LessonAttendance" ThisKey="LessonID" OtherKey="LessonID" Type="LessonAttendance" Cardinality="One" />
       <Association Name="LessonTime_RegisterLessonBooking" Member="RegisterLessonBooking" ThisKey="LessonID" OtherKey="LessonID" Type="RegisterLessonBooking" />
       <Association Name="LessonTime_LessonTimeExpansion" Member="LessonTimeExpansion" ThisKey="LessonID" OtherKey="LessonID" Type="LessonTimeExpansion" />
+      <Association Name="LessonTime_LessonPlan" Member="LessonPlan" ThisKey="LessonID" OtherKey="LessonID" Type="LessonPlan" Cardinality="One" />
       <Association Name="BranchStore_LessonTime" Member="BranchStore" ThisKey="BranchID" OtherKey="BranchID" Type="BranchStore" IsForeignKey="true" />
       <Association Name="DailyWorkingHour_LessonTime" Member="DailyWorkingHour" ThisKey="HourOfClassTime" OtherKey="Hour" Type="DailyWorkingHour" IsForeignKey="true" />
       <Association Name="GroupingLesson_LessonTime" Member="GroupingLesson" ThisKey="GroupID" OtherKey="GroupID" Type="GroupingLesson" IsForeignKey="true" />
@@ -2315,6 +2306,12 @@
       <Column Name="SDAchievement" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="AcademicGrades" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="TechnicalGrades" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ActualBRCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PTCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DealedCountWithBR" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="TrialDealedCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="BRTrialCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ExamTrialCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Association Name="BranchStore_MonthlyCoachRevenueIndicator" Member="BranchStore" ThisKey="BranchID" OtherKey="BranchID" Type="BranchStore" IsForeignKey="true" />
       <Association Name="MonthlyIndicator_MonthlyCoachRevenueIndicator" Member="MonthlyIndicator" ThisKey="PeriodID" OtherKey="PeriodID" Type="MonthlyIndicator" IsForeignKey="true" />
       <Association Name="ProfessionalLevel_MonthlyCoachRevenueIndicator" Member="ProfessionalLevel" ThisKey="LevelID" OtherKey="LevelID" Type="ProfessionalLevel" IsForeignKey="true" />
@@ -2781,27 +2778,6 @@
       <Association Name="ServingCoach_MonthlyCoachLearnerReview" Member="ServingCoach" ThisKey="CoachID" OtherKey="CoachID" Type="ServingCoach" IsForeignKey="true" />
     </Type>
   </Table>
-  <Table Name="dbo.V_YearlyReview" Member="V_YearlyReview">
-    <Type Name="V_YearlyReview">
-      <Column Name="Year" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="CoachID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="DataCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="PerformanceAchievement" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="PerformanceAchievementAVG" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="AchievementShareRatio" Type="System.Decimal" DbType="Decimal(38,6)" CanBeNull="true" />
-      <Column Name="VoidShare" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="VoidShareAVG" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="PTAttendanceCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="PTAttendanceCountAVG" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="PTAverageUnitPrice" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="Tuition" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="AchievementAttendanceCount" Type="System.Decimal" DbType="Decimal(38,2)" CanBeNull="true" />
-      <Column Name="BranchTotalAttendanceCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="BranchTotalTuition" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="BranchTotalPTCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="BranchTotalPTTuition" Type="System.Int32" DbType="Int" CanBeNull="true" />
-    </Type>
-  </Table>
   <Table Name="KPI.MonthlyLearnerReview" Member="MonthlyLearnerReview">
     <Type Name="MonthlyLearnerReview">
       <Column Name="PeriodID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -3027,7 +3003,7 @@
       <Association Name="TrialLearner_ContactTime" Member="TrialLearner" ThisKey="UID" OtherKey="UID" Type="TrialLearner" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
-  <Table Name="tmp.TrialLearner" Member="TrialLearners">
+  <Table Name="tmp.TrialLearner" Member="TrialLearner">
     <Type Name="TrialLearner">
       <Column Name="UID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="Gender" Type="System.String" DbType="NVarChar(8)" CanBeNull="true" />
@@ -3036,9 +3012,90 @@
       <Column Name="Phone" Type="System.String" DbType="NVarChar(32)" CanBeNull="true" />
       <Column Name="BranchID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="Question" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
-      <Association Name="TrialLearner_TrialLearnerPurpose" Member="TrialLearnerPurposes" ThisKey="UID" OtherKey="UID" Type="TrialLearnerPurpose" />
-      <Association Name="TrialLearner_ContactTime" Member="ContactTimes" ThisKey="UID" OtherKey="UID" Type="ContactTime" />
+      <Column Name="SubmitDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="NormalUID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="AssigneeID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="AttendingCoach" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Status" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="AssignDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="ReserveDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="IsClosed" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="TrialLearner_TrialLearnerPurpose" Member="TrialLearnerPurpose" ThisKey="UID" OtherKey="UID" Type="TrialLearnerPurpose" />
+      <Association Name="TrialLearner_ContactTime" Member="ContactTime" ThisKey="UID" OtherKey="UID" Type="ContactTime" />
+      <Association Name="TrialLearner_HowToKnow" Member="HowToKnow" ThisKey="UID" OtherKey="UID" Type="HowToKnow" />
+      <Association Name="TrialLearner_ReferralFrom" Member="ReferralFrom" ThisKey="UID" OtherKey="UID" Type="ReferralFrom" />
       <Association Name="BranchStore_TrialLearner" Member="BranchStore" ThisKey="BranchID" OtherKey="BranchID" Type="BranchStore" IsForeignKey="true" />
+      <Association Name="ServingCoach_TrialLearner" Member="ServingCoach" ThisKey="AttendingCoach" OtherKey="CoachID" Type="ServingCoach" IsForeignKey="true" />
+      <Association Name="UserProfile_TrialLearner" Member="UserProfile" ThisKey="NormalUID" OtherKey="UID" Type="UserProfile" IsForeignKey="true" DeleteRule="SET NULL" />
+      <Association Name="UserProfile_TrialLearner1" Member="Assignee" Storage="_UserProfile1" ThisKey="AssigneeID" OtherKey="UID" Type="UserProfile" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="tmp.MediaPlatform" Member="MediaPlatform">
+    <Type Name="MediaPlatform">
+      <Column Name="MediaID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Platform" Type="System.String" DbType="NVarChar(64) NOT NULL" CanBeNull="false" />
+      <Association Name="MediaPlatform_HowToKnow" Member="HowToKnow" ThisKey="MediaID" OtherKey="MediaID" Type="HowToKnow" />
+    </Type>
+  </Table>
+  <Table Name="tmp.HowToKnow" Member="HowToKnow">
+    <Type Name="HowToKnow">
+      <Column Name="UID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="MediaID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="MediaPlatform_HowToKnow" Member="MediaPlatform" ThisKey="MediaID" OtherKey="MediaID" Type="MediaPlatform" IsForeignKey="true" />
+      <Association Name="TrialLearner_HowToKnow" Member="TrialLearner" ThisKey="UID" OtherKey="UID" Type="TrialLearner" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="tmp.ReferralFrom" Member="ReferralFrom">
+    <Type Name="ReferralFrom">
+      <Column Name="UID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="HID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="TrialLearner_ReferralFrom" Member="TrialLearner" ThisKey="UID" OtherKey="UID" Type="TrialLearner" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="HealthcareInstitution_ReferralFrom" Member="HealthcareInstitution" ThisKey="HID" OtherKey="HID" Type="HealthcareInstitution" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="tmp.HealthcareInstitution" Member="HealthcareInstitution">
+    <Type Name="HealthcareInstitution">
+      <Column Name="HID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Institution" Type="System.String" DbType="NVarChar(64) NOT NULL" CanBeNull="false" />
+      <Association Name="HealthcareInstitution_ReferralFrom" Member="ReferralFrom" ThisKey="HID" OtherKey="HID" Type="ReferralFrom" />
+    </Type>
+  </Table>
+  <Table Name="dbo.LessonPlan" Member="LessonPlan">
+    <Type Name="LessonPlan">
+      <Column Name="LessonID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Remark" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Warming" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="RecentStatus" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="EndingOperation" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="FeedBack" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="FeedBackDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="CommitAttendance" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="AttachmentID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CommitAttendanceIP" Type="System.String" DbType="NVarChar(32)" CanBeNull="true" />
+      <Association Name="Attachment_LessonPlan" Member="Attachment" ThisKey="AttachmentID" OtherKey="AttachmentID" Type="Attachment" IsForeignKey="true" DeleteRule="SET NULL" />
+      <Association Name="LessonTime_LessonPlan" Member="LessonTime" ThisKey="LessonID" OtherKey="LessonID" Type="LessonTime" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.V_YearlyReview" Member="V_YearlyReview">
+    <Type Name="V_YearlyReview">
+      <Column Name="Year" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CoachID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DataCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PerformanceAchievement" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PerformanceAchievementAVG" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="AchievementShareRatio" Type="System.Decimal" DbType="Decimal(38,6)" CanBeNull="true" />
+      <Column Name="VoidShare" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="VoidShareAVG" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PTAttendanceCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PTAttendanceCountAVG" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PTAverageUnitPrice" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Tuition" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="AchievementAttendanceCount" Type="System.Decimal" DbType="Decimal(38,2)" CanBeNull="true" />
+      <Column Name="BranchTotalAttendanceCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="BranchTotalTuition" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="BranchTotalPTCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="BranchTotalPTTuition" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="AttendedShare" Type="System.Int32" DbType="Int" CanBeNull="true" />
     </Type>
   </Table>
   <Function Name="dbo.InquireVacantNo" Method="InquireVacantNo">

@@ -1709,6 +1709,7 @@ namespace WebHome.Controllers
             特別獎金 = 8,
             上課獎金 = 9,
             分店業績達成率百分比 = 10,
+            滾動式抽成 = 11,
         }
 
         //  
@@ -1757,6 +1758,7 @@ namespace WebHome.Controllers
             上課獎金 = 15,
             業績獎金 = 16,
             工作月數 = 17,
+            滾動式抽成 = 18,
         }
 
         public async Task<ActionResult> CreateMonthlyBonusXlsx2022Async(AchievementQueryViewModel viewModel)
@@ -2128,6 +2130,8 @@ namespace WebHome.Controllers
                             .ToArray();
             var tsSD = ts.Where(p => p.LessonPriceProperty.Any(r => r.PropertyID == (int)Naming.LessonPriceFeature.營養課程))
                             .ToArray();
+            var tsBR = ts.Where(p => p.LessonPriceProperty.Any(r => r.PropertyID == (int)Naming.LessonPriceFeature.BR體驗))
+                            .ToArray();
 
 
             DateTime? idx = viewModel.AchievementDateFrom?.FirstDayOfMonth();
@@ -2154,9 +2158,10 @@ namespace WebHome.Controllers
                 table.Columns.Add(new DataColumn("C.S上課金額(含稅)", typeof(int)));      //	16
                 table.Columns.Add(new DataColumn("活動贈品S.R上課總數", typeof(int)));      //	17
                 table.Columns.Add(new DataColumn("活動贈品S.D上課總數", typeof(int)));      //	18
-                table.Columns.Add(new DataColumn("T.S (P.T)上課總數", typeof(int)));      //	19
+                table.Columns.Add(new DataColumn("T.S (P.T-檢測)上課總數", typeof(int)));      //	19
                 table.Columns.Add(new DataColumn("T.S (S.R)上課總數", typeof(int)));      //	20
                 table.Columns.Add(new DataColumn("T.S (S.D)上課總數", typeof(int)));      //	21
+                table.Columns.Add(new DataColumn("T.S (P.T-BR)上課總數", typeof(int)));      //	22
 
                 DataRow r;
 
@@ -2211,9 +2216,11 @@ namespace WebHome.Controllers
                     r[20] = dataItems.Sum(l => (int)l[6]);
                     dataItems = branchOthers.Where(l => tsSD.Any(p => p.PriceID == (int)l[18]));
                     r[21] = dataItems.Sum(l => (int)l[6]);
+                    dataItems = branchOthers.Where(l => tsBR.Any(p => p.PriceID == (int)l[18]));
+                    r[22] = dataItems.Sum(l => (int)l[6]);
 
                     //P.T + 點數 + 員工
-                    r[14] = (int)r[8] + (int)r[10] + (int)r[12];
+                    r[14] = (int)r[8] + (int)r[10] + (int)r[12] + (int)r[17] + (int)r[18];
                     r[5] = (int)r[1] + (int)r[3] + (int)r[4] + (int)r[14];
                     r[15] = (int)r[9] + (int)r[11] + (int)r[13];
                     r[16] = (int)r[15] + (int)r[16];
@@ -2224,7 +2231,7 @@ namespace WebHome.Controllers
                 r = table.NewRow();
                 r[0] = "總計";
                 var data = table.Rows.Cast<DataRow>();
-                for (int idx = 1; idx <= 21; idx++)
+                for (int idx = 1; idx <= 22; idx++)
                 {
                     r[idx] = data.Sum(d => (int)d[idx]);
                 }
@@ -2238,6 +2245,7 @@ namespace WebHome.Controllers
                 table.Columns[19].SetOrdinal(5);
                 table.Columns[20].SetOrdinal(6);
                 table.Columns[21].SetOrdinal(7);
+                table.Columns[22].SetOrdinal(6);
 
                 return table;
             }
@@ -2313,7 +2321,7 @@ namespace WebHome.Controllers
                     r[18] = dataItems.Sum(l => (int)l[6]);
 
                     //P.T + 點數 + 員工
-                    r[14] = (int)r[8] + (int)r[10] + (int)r[12];
+                    r[14] = (int)r[8] + (int)r[10] + (int)r[12] + (int)r[17] + (int)r[18];
                     r[5] = (int)r[1] + (int)r[3] + (int)r[4] + (int)r[14];
                     r[15] = (int)r[9] + (int)r[11] + (int)r[13];
                     r[16] = (int)r[15] + (int)r[16];
@@ -2364,9 +2372,10 @@ namespace WebHome.Controllers
                 table.Columns.Add(new DataColumn("上課金額達成率(%)", typeof(int)));      //	20
                 table.Columns.Add(new DataColumn("活動贈品S.R上課總數", typeof(int)));      //	21
                 table.Columns.Add(new DataColumn("活動贈品S.D上課總數", typeof(int)));      //	22
-                table.Columns.Add(new DataColumn("T.S (P.T)上課總數", typeof(int)));      //	23
+                table.Columns.Add(new DataColumn("T.S (P.T-檢測)上課總數", typeof(int)));      //	23
                 table.Columns.Add(new DataColumn("T.S (S.R)上課總數", typeof(int)));      //	24
                 table.Columns.Add(new DataColumn("T.S (S.D)上課總數", typeof(int)));      //	25
+                table.Columns.Add(new DataColumn("T.S (P.T-BR)上課總數", typeof(int)));      //	26
 
 
                 DataRow r;
@@ -2428,9 +2437,11 @@ namespace WebHome.Controllers
                     r[24] = dataItems.Sum(l => (int)l[6]);
                     dataItems = branchOthers.Where(l => tsSD.Any(p => p.PriceID == (int)l[18]));
                     r[25] = dataItems.Sum(l => (int)l[6]);
+                    dataItems = branchOthers.Where(l => tsBR.Any(p => p.PriceID == (int)l[18]));
+                    r[26] = dataItems.Sum(l => (int)l[6]);
 
                     //P.T + 點數 + 員工
-                    r[14] = (int)r[8] + (int)r[10] + (int)r[12];
+                    r[14] = (int)r[8] + (int)r[10] + (int)r[12] + (int)r[21] + (int)r[22];
                     r[5] = (int)r[1] + (int)r[3] + (int)r[4] + (int)r[14];
                     r[15] = (int)r[9] + (int)r[11] + (int)r[13];
                     r[16] = (int)r[15] + (int)r[16];
@@ -2467,7 +2478,7 @@ namespace WebHome.Controllers
                 {
                     r[idx] = data.Sum(d => (int)d[idx]);
                 }
-                for (int idx = 21; idx <= 25; idx++)
+                for (int idx = 21; idx <= 26; idx++)
                 {
                     r[idx] = data.Sum(d => (int)d[idx]);
                 }
@@ -2481,6 +2492,7 @@ namespace WebHome.Controllers
                 table.Columns[23].SetOrdinal(5);
                 table.Columns[24].SetOrdinal(6);
                 table.Columns[25].SetOrdinal(7);
+                table.Columns[26].SetOrdinal(6);
 
                 return table;
             }
@@ -2512,9 +2524,10 @@ namespace WebHome.Controllers
                 table.Columns.Add(new DataColumn("上課金額達成率(%)", typeof(int)));      //	21
                 table.Columns.Add(new DataColumn("活動贈品S.R上課總數", typeof(int)));      //	22
                 table.Columns.Add(new DataColumn("活動贈品S.D上課總數", typeof(int)));      //	23
-                table.Columns.Add(new DataColumn("T.S (P.T)上課總數", typeof(int)));      //	24
+                table.Columns.Add(new DataColumn("T.S (P.T-檢測)上課總數", typeof(int)));      //	24
                 table.Columns.Add(new DataColumn("T.S (S.R)上課總數", typeof(int)));      //	25
                 table.Columns.Add(new DataColumn("T.S (S.D)上課總數", typeof(int)));      //	26
+                table.Columns.Add(new DataColumn("T.S (P.T-BR)上課總數", typeof(int)));      //	27
 
 
                 DataRow r;
@@ -2571,9 +2584,11 @@ namespace WebHome.Controllers
                     r[25] = dataItems.Sum(l => (int)l[6]);
                     dataItems = coachOthers.Where(l => tsSD.Any(p => p.PriceID == (int)l[18]));
                     r[26] = dataItems.Sum(l => (int)l[6]);
+                    dataItems = coachOthers.Where(l => tsBR.Any(p => p.PriceID == (int)l[18]));
+                    r[27] = dataItems.Sum(l => (int)l[6]);
 
                     //P.T + 點數 + 員工
-                    r[15] = (int)r[9] + (int)r[11] + (int)r[13];
+                    r[15] = (int)r[9] + (int)r[11] + (int)r[13] + (int)r[22] + (int)r[23];
                     r[6] = (int)r[2] + (int)r[4] + (int)r[5] + (int)r[15];
                     r[16] = (int)r[10] + (int)r[12] + (int)r[14];
                     r[17] = (int)r[16] + (int)r[17];
@@ -2609,7 +2624,7 @@ namespace WebHome.Controllers
                 {
                     r[idx] = data.Sum(d => (int)d[idx]);
                 }
-                for (int idx = 22; idx <= 26; idx++)
+                for (int idx = 22; idx <= 27; idx++)
                 {
                     r[idx] = data.Sum(d => (int)d[idx]);
                 }
@@ -2623,6 +2638,7 @@ namespace WebHome.Controllers
                 table.Columns[24].SetOrdinal(6);
                 table.Columns[25].SetOrdinal(7);
                 table.Columns[26].SetOrdinal(8);
+                table.Columns[27].SetOrdinal(7);
 
                 return table;
             }
@@ -2833,6 +2849,7 @@ namespace WebHome.Controllers
                 table.Columns.Add(new DataColumn(ManagerYearlyBonusFields.特別獎金.ToString(), typeof(int)));
                 table.Columns.Add(new DataColumn(ManagerYearlyBonusFields.上課獎金.ToString(), typeof(int)));
                 table.Columns.Add(new DataColumn(ManagerYearlyBonusFields.分店業績達成率百分比.ToString(), typeof(decimal)));
+                table.Columns.Add(new DataColumn(ManagerYearlyBonusFields.滾動式抽成.ToString(), typeof(int)));
 
                 DataRow r;
 
@@ -2872,13 +2889,18 @@ namespace WebHome.Controllers
                             r[(int)ManagerYearlyBonusFields.分店業績達成率百分比] = Math.Round(branchSummary.AchievementRatio ?? 0M, 2);
                         }
                     }
+                    r[(int)ManagerYearlyBonusFields.滾動式抽成] = reviewItem?.AttendedShare ?? 0;
 
                     r[(int)ManagerYearlyBonusFields.總獎金] = (int)r[(int)ManagerYearlyBonusFields.上課獎金]
                         + (int)r[(int)ManagerYearlyBonusFields.管理獎金]
-                        + (int)r[(int)ManagerYearlyBonusFields.特別獎金];
+                        + (int)r[(int)ManagerYearlyBonusFields.特別獎金]
+                        + (int)r[(int)ManagerYearlyBonusFields.滾動式抽成];
 
                     table.Rows.Add(r);
                 }
+
+                table.Columns[(int)ManagerYearlyBonusFields.滾動式抽成].SetOrdinal((int)ManagerYearlyBonusFields.分店業績達成率百分比);
+
                 return table;
             }
 
@@ -2904,6 +2926,7 @@ namespace WebHome.Controllers
                 table.Columns.Add(new DataColumn(CoachYearlyBonusFields.上課獎金.ToString(), typeof(int)));
                 table.Columns.Add(new DataColumn(CoachYearlyBonusFields.業績獎金.ToString(), typeof(int)));
                 table.Columns.Add(new DataColumn(CoachYearlyBonusFields.工作月數.ToString(), typeof(int)));
+                table.Columns.Add(new DataColumn(CoachYearlyBonusFields.滾動式抽成.ToString(), typeof(int)));
 
                 DataRow r;
 
@@ -2930,7 +2953,7 @@ namespace WebHome.Controllers
                     r[(int)CoachYearlyBonusFields.姓名] = g.ServingCoach.UserProfile.FullName();
                     r[(int)CoachYearlyBonusFields.所屬分店] = g.BranchStore?.BranchName ?? "其他";
                     r[(int)CoachYearlyBonusFields.PT_Level] = g.ProfessionalLevel.LevelName;
-                    r[(int)CoachYearlyBonusFields.總上課數] = reviewItem?.AchievementAttendanceCount;
+                    r[(int)CoachYearlyBonusFields.總上課數] = reviewItem?.AchievementAttendanceCount ?? 0;
                     r[(int)CoachYearlyBonusFields.上課平均抽成單價] = reviewItem?.PTAverageUnitPrice ?? 0;
                     r[(int)CoachYearlyBonusFields.PT_Session課數] = reviewItem.PTAttendanceCount ?? 0;
                     r[(int)CoachYearlyBonusFields.每月平均PT_Session課數] = reviewItem.PTAttendanceCountAVG ?? 0;
@@ -2945,6 +2968,7 @@ namespace WebHome.Controllers
                     r[(int)CoachYearlyBonusFields.業績獎金] = g.AchievementBonus ?? 0;
                     r[(int)CoachYearlyBonusFields.年終上課加業績獎金] = (int)r[(int)CoachYearlyBonusFields.上課獎金] + (int)r[(int)CoachYearlyBonusFields.業績獎金];
                     r[(int)CoachYearlyBonusFields.工作月數] = reviewItem.DataCount ?? 0;
+                    r[(int)CoachYearlyBonusFields.滾動式抽成] = reviewItem?.AttendedShare ?? 0;
 
                     if (g.ProfessionalLevel.CategoryID != (int)Naming.ProfessionalCategory.Health)
                     {
@@ -2957,7 +2981,7 @@ namespace WebHome.Controllers
 
                 foreach (var t in rows)
                 {
-                    t[(int)CoachYearlyBonusFields.總獎金] = (int)t[(int)CoachYearlyBonusFields.管理獎金] + (int)t[(int)CoachYearlyBonusFields.特別獎金] + (int)t[(int)CoachYearlyBonusFields.年終上課加業績獎金];
+                    t[(int)CoachYearlyBonusFields.總獎金] = (int)t[(int)CoachYearlyBonusFields.管理獎金] + (int)t[(int)CoachYearlyBonusFields.特別獎金] + (int)t[(int)CoachYearlyBonusFields.年終上課加業績獎金] + (int)t[(int)CoachYearlyBonusFields.滾動式抽成];
                 }
                 //rows.RemoveAll(t => (int)t[(int)CoachYearlyBonusFields.總獎金] == 0);
 
@@ -2965,6 +2989,8 @@ namespace WebHome.Controllers
                 {
                     table.Rows.Add(t);
                 }
+
+                table.Columns[(int)CoachYearlyBonusFields.滾動式抽成].SetOrdinal((int)CoachYearlyBonusFields.工作月數);
 
                 return table;
             }

@@ -319,10 +319,10 @@ namespace WebHome.Controllers
             return result;
         }
 
-        public ActionResult selectAchievementCatelog(QueryViewModel viewModel)
+        public ActionResult SelectAchievementCatelog(QueryViewModel viewModel)
         {
             ViewBag.ViewModel = viewModel;
-            return View("~/Views/BusinessConsole/Module2021/selectAchievementCatelog.cshtml");
+            return View("~/Views/BusinessConsole/Module2021/SelectAchievementCatelog.cshtml");
         }
 
         public ActionResult InquireBreakEvent(MonthlyIndicatorQueryViewModel viewModel)
@@ -338,6 +338,42 @@ namespace WebHome.Controllers
         {
             ViewBag.ViewModel = viewModel;
             return View("~/Views/BusinessConsole/Module2021/SelectBreakEventCondition.cshtml");
+        }
+
+        public ActionResult ShowAchievementRankingList(MonthlyIndicatorQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            IQueryable<MonthlyCoachRevenueIndicator> items = viewModel.InquireDataForCoachRanking(models, out IQueryable<MonthlyIndicator> indicators);
+            ViewBag.Indicators = indicators;
+            return View("~/Views/AchievementConsole/Module/ShowAchievementRankingList.cshtml", items);
+        }
+
+        public ActionResult ShowLessonCountRankingList(MonthlyIndicatorQueryViewModel viewModel)
+        {
+            ViewResult result = (ViewResult)ShowAchievementRankingList(viewModel);
+            result.ViewName = "~/Views/AchievementConsole/Module/ShowLessonCountRankingList.cshtml";
+            return result;
+        }
+
+        public ActionResult ShowPICountRankingList(MonthlyIndicatorQueryViewModel viewModel)
+        {
+            ViewResult result = (ViewResult)ShowAchievementRankingList(viewModel);
+            result.ViewName = "~/Views/AchievementConsole/Module/ShowPICountRankingList.cshtml";
+            return result;
+        }
+
+        public ActionResult ShowBRCountRankingList(MonthlyIndicatorQueryViewModel viewModel)
+        {
+            ViewResult result = (ViewResult)ShowAchievementRankingList(viewModel);
+            result.ViewName = "~/Views/AchievementConsole/Module/ShowBRCountRankingList.cshtml";
+            return result;
+        }
+
+        public ActionResult ShowFinalsRankingList(MonthlyIndicatorQueryViewModel viewModel)
+        {
+            ViewResult result = (ViewResult)ShowAchievementRankingList(viewModel);
+            result.ViewName = "~/Views/AchievementConsole/Module/ShowFinalsRankingList.cshtml";
+            return result;
         }
 
 

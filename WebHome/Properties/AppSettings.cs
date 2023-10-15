@@ -123,6 +123,8 @@ namespace WebHome.Properties
         public ReCaptchaSettings ReCaptcha { get; set; } 
             = new ReCaptchaSettings { };
 
+        public String BFDbConnection { get; set; }
+
     }
 
     public class Settings
@@ -130,7 +132,7 @@ namespace WebHome.Properties
         static Settings _default = new Settings { };
 
         public static Settings Default => _default;
-        public String BFDbConnection => Startup.GlobalConfiguration.GetConnectionString("BFDbConnection");
+        public String BFDbConnection => Startup.GlobalConfiguration.GetConnectionString("BFDbConnection") ?? AppSettings.Default.BFDbConnection;
 
     }
 

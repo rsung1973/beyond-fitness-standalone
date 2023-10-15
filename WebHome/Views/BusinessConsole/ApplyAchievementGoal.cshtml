@@ -18,7 +18,7 @@
 
     Layout = "~/Views/ConsoleHome/Template/MainPage.cshtml";
 
-    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
     _modelState = ViewContext.ModelState;
     _model = (UserProfile)this.Model;
     _viewModel = (MonthlyIndicatorQueryViewModel)ViewBag.ViewModel;
@@ -59,10 +59,26 @@
             </div>
         }
     </div>
-
+    <!--體能顧問交叉分析-->
+    <div class="container-fluid">
+        <div class="row clearfix">
+            <div class="col-12">
+                <div class="card">
+                    @{
+                        await Html.RenderPartialAsync("~/Views/BusinessConsole/Module/MonthlyCoachRevenueIndicatorChart.cshtml", _item);
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
 
 @section TailPageJavaScriptInclude {
+    <!-- Echart Js -->
+    <script src="plugins/echarts/echarts.min.js"></script>
+    <!-- Echart Template Js -->
+    <script src="plugins/echarts/theme/macarons.js"></script>
+    <script src="plugins/echarts/theme/macarons_nero.js"></script>
     <!--Sparkline Plugin Js-->
     <script src="plugins/jquery-sparkline/jquery.sparkline.js"></script>
     <!-- SweetAlert Plugin Js -->

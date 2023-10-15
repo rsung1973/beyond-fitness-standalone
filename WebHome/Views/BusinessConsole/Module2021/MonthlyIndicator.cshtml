@@ -7,6 +7,7 @@
 @using WebHome.Models.ViewModel
 @using WebHome.Models.DataEntity
 @using WebHome.Controllers
+@using CommonLib.Utility 
 @using Microsoft.AspNetCore.Mvc.ModelBinding
 @using Newtonsoft.Json
 @{
@@ -55,7 +56,7 @@
                     </div>
                     @if (_viewModel.BranchID.HasValue)
                     {
-                        <button class="btn btn-default btn-round btn-sm waves-effect float-right" onclick="javascript:showDialog('@Url.Action("BranchCoachAchievement","BusinessConsole")',@JsonConvert.SerializeObject(new { KeyID = _model.PeriodID.EncryptKey(),_viewModel.BranchID }));">詳細資料</button>
+                        <button class="btn btn-default btn-round btn-sm waves-effect float-right" onclick="javascript:showDialog('@Url.Action("BranchCoachAchievement","BusinessConsole")',@((new { KeyID = _model.PeriodID.EncryptKey(),_viewModel.BranchID }).JsonStringify()));">詳細資料</button>
                     }
                     else
                     {

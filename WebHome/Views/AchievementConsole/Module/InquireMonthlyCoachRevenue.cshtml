@@ -22,7 +22,8 @@
     _viewModel = (MonthlyCoachRevenueIndicatorQueryViewModel)ViewBag.ViewModel;
     _model = (IQueryable<MonthlyCoachRevenueIndicator>)this.Model;
 
-    bool enlarge = _viewModel.DateFrom?.AddMonths(9) <= _viewModel.DateTo;
+    bool enlarge = _viewModel.DateFrom?.AddMonths(9) <= _viewModel.DateTo
+                    || _viewModel.ChartType == 4;
 }
 <script>
     if ($global.echarts === undefined) {
@@ -52,6 +53,7 @@
 
     $(function () {
         var enlarge = @(enlarge ? "true":"false");
+        var chartType = @(_viewModel.ChartType ?? 0);
         var $div = $('#myChart').parent();
         var $div1 = $div.next();
         $div.removeClass('col-lg-7').removeClass('col-lg-12');
@@ -61,7 +63,9 @@
             .removeClass('col-md-offset-3');
         if (enlarge) {
             $div.addClass('col-lg-12');
-            $div1.addClass('col-lg-6 col-lg-offset-3 col-md-offset-3');
+            if (chartType != 4) {
+                $div1.addClass('col-lg-6 col-lg-offset-3 col-md-offset-3');
+            }
         } else {
             $div.addClass('col-lg-7');
             $div1.addClass('col-lg-5');
@@ -84,6 +88,11 @@
         case 3:
             await Html.RenderPartialAsync("~/Views/AchievementConsole/Module/MonthlyCoachRevenueList.cshtml", _model);
             await Html.RenderPartialAsync("~/Views/AchievementConsole/Module/ShowMonthlyCoachRevenueStackChart.cshtml", _model);
+            break;
+
+        case 4:
+            await Html.RenderPartialAsync("~/Views/AchievementConsole/Module/MonthlyCoachTSRateList.cshtml", _model);
+            await Html.RenderPartialAsync("~/Views/AchievementConsole/Module/ShowMonthlyCoachTSRateCurve.cshtml", _model);
             break;
     }
 

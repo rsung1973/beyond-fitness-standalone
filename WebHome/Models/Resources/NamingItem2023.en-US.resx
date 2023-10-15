@@ -116,159 +116,7 @@
   </resheader>
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </resheader>
-  <data name="Home" xml:space="preserve">
-    <value>Home</value>
-  </data>
-  <data name="AboutUs" xml:space="preserve">
-    <value>About Beyond</value>
-  </data>
-  <data name="FindUs" xml:space="preserve">
-    <value>Find Beyond</value>
-  </data>
-  <data name="Service" xml:space="preserve">
-    <value>Service</value>
-  </data>
-  <data name="FAQ" xml:space="preserve">
-    <value>FAQ</value>
-  </data>
-  <data name="Blog" xml:space="preserve">
-    <value>Blog</value>
-  </data>
-  <data name="JoinUs" xml:space="preserve">
-    <value>Join Beyond</value>
-  </data>
-  <data name="Book" xml:space="preserve">
-    <value>Booking</value>
-  </data>
-  <data name="BookNow" xml:space="preserve">
-    <value>Booking Now</value>
-  </data>
-  <data name="LearnMore" xml:space="preserve">
-    <value>了解更多</value>
-  </data>
-   <data name="TEL" xml:space="preserve">
-    <value>Tel</value>
-  </data>  
-
-  <!--分店資訊-->
-  <data name="BranchName_Nanjing" xml:space="preserve">
-    <value>Nanjing</value>
-  </data>
-  <data name="BranchName_XinyiAnhe" xml:space="preserve">
-    <value>XinyiAnhe</value>
-  </data>
-  <data name="BranchName_Zhongxiao" xml:space="preserve">
-    <value>Zhongxiao</value>
-  </data>
-  <data name="BranchName_Dongmen" xml:space="preserve">
-    <value>Dongmen</value>
-  </data>
-  <data name="BranchAdd_Nanjing" xml:space="preserve">
-    <value>B1, No.17, Sec. 4, Nanjing E. Rd., Songshan Dist., Taipei City 105, Taiwan</value>
-  </data>
-  <data name="BranchAdd_XinyiAnhe" xml:space="preserve">
-    <value>B1, No. 81, Sec. 2, Anhe Rd., Da’an Dist., Taipei City 106, Taiwan</value>
-  </data>
-  <data name="BranchAdd_Zhongxiao" xml:space="preserve">
-    <value>B1, No.21, Ln. 75, Sec. 1, Da’an Rd., Da’an Dist., Taipei City 106, Taiwan</value>
-  </data>
-  <data name="BranchAdd_Dongmen" xml:space="preserve">
-    <value>No.28, Sec. 2, Xinyi Rd., Da’an Dist., Taipei City 106, Taiwan</value>
-  </data>
-   <data name="BranchMRT_Nanjing" xml:space="preserve">
-    <value>Green line( Songshan–Xindian) MRT Taipei Arena Station Exit 1</value>
-  </data>
-  <data name="BranchMRT_XinyiAnhe" xml:space="preserve">
-    <value>Red line (Tamsui–Xinyi) MRT Xinyi Anhe Station Exit 2A</value>
-  </data>
-  <data name="BranchMRT_Zhongxiao" xml:space="preserve">
-    <value>Blue line (Bannan) MRT Zongxiao Fuxing station Exit 3 (or Exit 14 of East Metro Mall)</value>
-  </data>
-  <data name="BranchMRT_Dongmen" xml:space="preserve">
-    <value>Red line (Tamsui–Xinyi) MRT Dongmen station Exit 3</value>
-  </data>
-  <data name="BranchTEL_Nanjing" xml:space="preserve">
-    <value>(02)2715-2733</value>
-  </data>
-  <data name="BranchTEL_XinyiAnhe" xml:space="preserve">
-    <value>(02)2720-0530</value>
-  </data>
-  <data name="BranchTEL_Zhongxiao" xml:space="preserve">
-    <value>(02)2776-9932</value>
-  </data>
-  <data name="BranchTEL_Dongmen" xml:space="preserve">
-    <value>(02)2396-0776</value>
-  </data>
-  <data name="BranchDesc1_Nanjing" xml:space="preserve">
-    <value>Across from the Taipei Arena, close to the Breeze Center, Taipei Arena shopping district, and 1 minute walk from the MRT Taipei Arena Station Exit 1.</value>
-  </data>
-  <data name="BranchDesc2_Nanjing" xml:space="preserve">
-    <value>With more than 300 square meters of professional fitness space combined with a variety of training equipment, you can optimize your training by exercising without restrictions.</value>
-  </data>
-  <data name="BranchDesc1_XinyiAnhe" xml:space="preserve">
-    <value>XinyiAnhe Branch is a 3 mins walk from MRT XinyiAnhe Station exit 2A.Located in the key area of Dunhua-Anhe, adjacent to the Lih-Jen international Private Elementary &amp; Middle School.</value>
-  </data>
-  <data name="BranchDesc2_XinyiAnhe" xml:space="preserve">
-    <value>The private training space with 4m high celling and over 727 square meters, provides 25m sports lawn, individual group class venue, sports recovery rooms and comfortable separate shower room, where you are able to enjoy the professional training and service.</value>
-  </data>
-  <data name="BranchDesc1_Zhongxiao" xml:space="preserve">
-    <value>Located at B1 of the building behind Dinghao Market, 2 minute walk from MRT Zongxiao Fuxing station Exit 3 (or Exit 14 of East Metro Mall)</value>
-  </data>
-  <data name="BranchDesc2_Zhongxiao" xml:space="preserve">
-    <value>Rarely seen high-ceiling indoor personal training venue, bright lighting space, combined with a variety of training equipment, separate bath and shower, allowing you to freshen up more comfortably.</value>
-  </data>
-  <data name="BranchDesc1_Dongmen" xml:space="preserve">
-    <value>Dongmen Branch is a 3 mins walk from MRT Dongmen Station exit 3, with ample space and natural sunlight.</value>
-  </data>  
-  <data name="BranchDesc2_Dongmen" xml:space="preserve">
-    <value>The customized training space integrates stretching, artificial turf and weight training areas providing a dynamic training environment. Under the professional guidance of Beyond Fitness trainers, a safe, comfortable and private training environment is provided.</value>
-  </data>    
- 
-  <!--聯絡我們-->
-  <data name="ContactItemTitle" xml:space="preserve">
-    <value>Take your first step!</value>
-  </data>
-  <data name="ContactItemSubTitle" xml:space="preserve">
-    <value>We’re always here to help.</value>
-  </data>
-  <data name="JoinItemContactTitle" xml:space="preserve">
-    <value>Get discovered!</value>
-  </data>
-  <data name="JoinItemContactDesc" xml:space="preserve">
-    <value>Introduce yourself, &lt;br class=&quot;hidden-sm-up&quot; /&gt;and we’ll get in touch if there’s a role that seems like a good match.</value>
-  </data>  
-
-  <!--隱私權保護政策-->  
-  <data name="Cookies" xml:space="preserve">
-    <value>We use cookies to ensure that you have a great experience on our website. By continuing to use this site, we will assume that you accept and understand our privacy policy and terms of service.</value>
-  </data>
-  <data name="PrivacyPolicy" xml:space="preserve">
-    <value>Privacy Policy</value>
-  </data>
-  <data name="Agree" xml:space="preserve">
-    <value>Save and close</value>
-  </data>  
-
-  <!--首頁-->
-   <data name="HomeSlogon1" xml:space="preserve">
-    <value>Your Personal Coach, Tailored for You</value>
-  </data>
-   <data name="HomeSlogon2" xml:space="preserve">
-    <value>Total Care for Your Wellness</value>
-  </data>
-  <data name="HomeSlogon3" xml:space="preserve">
-    <value>PRO. BEYOND.</value>
-  </data>
-  <data name="HomeSlogon3SubDesc" xml:space="preserve">
-    <value>Surpass Yourself, Conquer Limits</value>
-  </data>
-  <data name="HomeFindBeyond" xml:space="preserve">
-    <value>Find More BEYOND</value>
-  </data>
-  <data name="HomeFindPartner" xml:space="preserve">
-    <value>OUR PARTNER</value>
-  </data>
+  </resheader> 
 
   <!--常見問題-->
   <data name="FAQBannerSlogn" xml:space="preserve">
@@ -404,20 +252,23 @@
   <data name="FindJobs" xml:space="preserve">
     <value>See Beyond jobs</value>
   </data>
+  <data name="JobOpening" xml:space="preserve">
+    <value>Job Opening</value>
+  </data> 
   <data name="JoinUsJobSlogon" xml:space="preserve">
     <value>Find your team, start your own extraordinary story with BEYOND.</value>
   </data>  
 
   <!--私人教練職缺介紹-->
   <data name="JoinUsCoachSlogon" xml:space="preserve">
-    <value>We love to challenge &lt;br class=&quot;hidden-sm-up&quot; /&gt;“IMPOSSIBLE“.</value>
+    <value>We love to challenge&lt;br class=&quot;hidden-sm-up&quot; /&gt;&lt;span class=&quot;mark-text-underline&quot;  padding-width=&quot;0.1&quot; bottom-width=&quot;0.1&quot;&gt; IMPOSSIBLE &lt;/span&gt;</value>
   </data>  
   <data name="JoinUsCoachDesc" xml:space="preserve">
     <value>Founded in 2014, Beyond Fitness is devoted to developing professional one-on-one personal trainers. Beyond Fitness was established at Nanjing E. Road, by Taipei Arena and has since expanded to Xinyi (Anhe), Zhongxiao and Dongmen branches in three years. Behind all this, we are just a group of partners who want to let action and professional practice speak louder than words; and most importantly, provide service to the clients who have faith in us. We believe that education should be personalized so as training. We should customize accordingly to individuals’ need that is most suitable for "people", guiding customers to live a better life.</value>
   </data>  
   <!--運動按摩師職缺介紹-->
   <data name="JoinUsTherapistSlogon" xml:space="preserve">
-    <value>Personalized recovery solutions delivered by fitness experts.</value>
+    <value>&lt;span class=&quot;mark-text-underline&quot;  padding-width=&quot;0&quot; bottom-width=&quot;0.1&quot;&gt;Personalized&lt;/span&gt; recovery solutions delivered by fitness experts</value>
   </data>
   <data name="JoinUsTherapistDesc" xml:space="preserve">
     <value>Beyond Fitness is not only dedicated to designing customized exercise programs and providing professional guidance, but we also offer comprehensive sports recovery solutions. Our recovery coaches possess extensive expertise and experience to help you instantly restore your physical energy, prevent injuries, and develop appropriate exercise plans to ensure your body is in its optimal state. Whether you aim to shape a fit physique or improve your overall health, we are committed to providing you with the most professional fitness services and comprehensive recovery guidance.</value>
@@ -448,19 +299,61 @@
 
   <!--關於我們-->
   <data name="AboutUsBannerSlogn" xml:space="preserve">
-    <value>Beyond Values</value>
+    <value>Ignite your Passion for Sport&lt;br/&gt;&lt;span class=&quot;multicolor-text-underline&quot;&gt;Discover Joy IN Beyond&lt;/span&gt;</value>
   </data>
   <data name="AboutUsBannerSlognDesc" xml:space="preserve">
-    <value>WHO WE ARE</value>
+    <value>Experience the Joy of Movement&lt;br class=&quot;hidden-sm-up&quot;&gt;Uniquely Crafted for You</value>
+  </data>  
+    <data name="AboutUsBrandSlogon" xml:space="preserve">
+    <value>Believe in the Brand</value>
+  </data>
+  <data name="AboutUsBrandSlogonDesc" xml:space="preserve">
+    <value>Beyond believes that fitness is more than just a casual pursuit—it's a commitment to excellence.</value>
+  </data>
+  <data name="AboutUsBelieve" xml:space="preserve">
+    <value>WE BELIEVE</value>
+  </data>
+  <data name="AboutUsBelieveDesc" xml:space="preserve">
+    <value>「if we help you change your lifestyle and lead you to a healthier life, you will naturally find the value and quality of your life.」</value>
+  </data>
+  <data name="AboutUsCompanyDesc1" xml:space="preserve">
+    <value>Since 2014, Beyond has emerged from Taipei Arena and expanded to four branches including Xinyi Anhe, Zhongxiao, and Dongmen. With over 50 dedicated team members, we possess a comprehensive organizational structure, providing you with personalized training, nutrition consultation, sports massage recovery, injury prevention, corporate team health strategies, professional sports education and training, and corporate health consulting. We proudly stand as the largest center for customized sports training in Taiwan.</value>
+  </data>
+  <data name="AboutUsCompanyDesc2" xml:space="preserve">
+    <value>With passion and professionalism, we strive to create a unique and unparalleled tranining experience for you. No matter what your goals may be, we believe that every moment should be filled with energy and enjoyment. In addition to exciting Game Day events and team activities, we offer off-site training and opportunities to share the joy of sports with friends from rural areas. Because to us, sports is not just a serious endeavor, but a chance to create value in moments of delight and pleasure.</value>
   </data>  
 
   <!--預約體驗-->
   <data name="BookNowBannerSlogn" xml:space="preserve">
-    <value>Book a 60-minute trial session.</value>
+    <value>Reserve 60-Min Trail Session &lt;br class=&quot;hidden-lg-up&quot;/&gt;&lt;span class=&quot;mark-text-underline&quot; padding-width=&quot;0.1&quot; bottom-width=&quot;0.1&quot;&gt;FOR FREE&lt;/span&gt;</value>
   </data>
   <data name="BookNowBannerSlognDesc" xml:space="preserve">
     <value>Professional 1-on-1 personal training.Reserve Now for Free.</value>
   </data>
+  <data name="BookNowStep1" xml:space="preserve">
+    <value>Reserve</value>
+  </data>
+  <data name="BookNowStep1Desc" xml:space="preserve">
+    <value>Fill out the form online or give us a call to get in touch.</value>
+  </data>  
+  <data name="BookNowStep2" xml:space="preserve">
+    <value>Consultant</value>
+  </data>
+  <data name="BookNowStep2Desc" xml:space="preserve">
+    <value>Carefully inquire about your health condition and preferences.</value>
+  </data>  
+  <data name="BookNowStep3" xml:space="preserve">
+    <value>Try it</value>
+  </data>
+  <data name="BookNowStep3Desc" xml:space="preserve">
+    <value>Design the right training program for you based on your current condition.</value>
+  </data>  
+   <data name="BookNowStep4" xml:space="preserve">
+    <value>Customized</value>
+  </data>
+  <data name="BookNowStep4Desc" xml:space="preserve">
+    <value>Exquisitely crafted, tailored training content just for you.</value>
+  </data>  
   <data name="BookNowFormDesc" xml:space="preserve">
     <value>To help Beyond Fitness assist you in reaching your goals, this questionnaire allows us to understand your needs.&lt;br class=&quot;hidden-md-down&quot; /&gt;Our coaches will contact you upon receiving the form to confirm and arrange your trial session.</value>
   </data>
@@ -525,16 +418,16 @@
     <value>Please choose</value>
   </data>  
   <data name="BookNowFormColumn7Option1" xml:space="preserve">
-    <value>Nanjing 02-2715.2733（MRT G17-Taipei Arena Exit 1）</value>
+    <value>Nanjing 02-2715-2733（MRT G17-Taipei Arena Exit 1）</value>
   </data>
   <data name="BookNowFormColumn7Option2" xml:space="preserve">
-    <value>XinyiAnhe 02-2720.0530（MRT R04-Xinyi Anhe Exit 2A）</value>
+    <value>XinyiAnhe 02-2720-0530（MRT R04-Xinyi Anhe Exit 2A）</value>
   </data>
   <data name="BookNowFormColumn7Option3" xml:space="preserve">
-    <value>Zhongxiao 02-2776.9932（MRT BL15-Zhongxiao Fuxing Exit 3, Exit 14 of the underground mall）</value>
+    <value>Zhongxiao 02-2776-9932（MRT BL15-Zhongxiao Fuxing Exit 3, Exit 14 of the underground mall）</value>
   </data>
   <data name="BookNowFormColumn7Option4" xml:space="preserve">
-    <value>Dongmen 02-2396.0776（MRT R07-Dongmen Exit 3）</value>
+    <value>Dongmen 02-2396-0776（MRT R07-Dongmen Exit 3）</value>
   </data>
   <data name="BookNowFormColumn8" xml:space="preserve">
     <value>What questions or other requirements do you have?</value>
