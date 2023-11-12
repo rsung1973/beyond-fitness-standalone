@@ -27,11 +27,11 @@
         <div class="body">
             <div class="row clearfox">
                 <div class="col-lg-8 col-md-6 col-sm-12">
-                    @{ 
-    await Html.RenderPartialAsync("~/Views/BusinessConsole/Module/MonthlyAchievementStatus.cshtml", _model);
+                    @{
+                        await Html.RenderPartialAsync("~/Views/BusinessConsole/Module/MonthlyAchievementStatus.cshtml", _model);
                     }
-                    @{ 
-    await Html.RenderPartialAsync("~/Views/BusinessConsole/Module/MonthlyBranchBusiness.cshtml", _model);
+                    @{
+                        await Html.RenderPartialAsync("~/Views/BusinessConsole/Module/MonthlyBranchBusiness.cshtml", _model);
                     }
                 </div>
                 <div class="col-lg-4 col-md-6 col-sm-12">
@@ -68,7 +68,7 @@
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12">
                     <div class="table-responsive">
-                        @{ 
+                        @{
                             await Html.RenderPartialAsync("~/Views/BusinessConsole/Module/MonthlyBusinessDetails.cshtml", _model);
                         }
                     </div>
@@ -76,7 +76,7 @@
             </div>
         </div>
     </li>
-    <li class="col-lg-3 col-md-3 col-sm-6">
+    <li class="col-lg-4 col-md-4 col-sm-6">
         <div class="body">
             <div class="info-box-2">
                 <div class="content">
@@ -87,7 +87,7 @@
             </div>
         </div>
     </li>
-    <li class="col-lg-3 col-md-3 col-sm-6">
+    <li class="col-lg-4 col-md-4 col-sm-6">
         <div class="body">
             <div class="info-box-2">
                 <div class="content">
@@ -98,7 +98,18 @@
             </div>
         </div>
     </li>
-    <li class="col-lg-3 col-md-3 col-sm-6">
+    <li class="col-lg-4 col-md-4 col-sm-6">
+        <div class="body">
+            <div class="info-box-2">
+                <div class="content">
+                    @{
+                        await Html.RenderPartialAsync("~/Views/BusinessConsole/Module/MonthlyContractTypeSparkline.cshtml", _model);
+                    }
+                </div>
+            </div>
+        </div>
+    </li>
+    @*<li class="col-lg-4 col-md-4 col-sm-6">
         <div class="body">
             <div class="info-box-2">
                 <div class="content">
@@ -108,11 +119,25 @@
                 </div>
             </div>
         </div>
-    </li>
-    <li class="col-lg-3 col-md-3 col-sm-6">
+    </li>*@
+    <li class="col-lg-4 col-md-4 col-sm-6">
         <div class="body text-center m-t-30">
             @{
-                await Html.RenderPartialAsync("~/Views/BusinessConsole/Module/MonthlyAveragePrice.cshtml", _model);
+                await Html.RenderPartialAsync("~/Views/BusinessConsole/Module/MonthlyAveragePTPrice.cshtml", _model);
+            }
+        </div>
+    </li>
+    <li class="col-lg-4 col-md-4 col-sm-6">
+        <div class="body text-center m-t-30">
+            @{
+                await Html.RenderPartialAsync("~/Views/BusinessConsole/Module/MonthlyAverageSDPrice.cshtml", _model);
+            }
+        </div>
+    </li>
+    <li class="col-lg-4 col-md-4 col-sm-6">
+        <div class="body text-center m-t-30">
+            @{
+                await Html.RenderPartialAsync("~/Views/BusinessConsole/Module/MonthlyAverageSRPrice.cshtml", _model);
             }
         </div>
     </li>

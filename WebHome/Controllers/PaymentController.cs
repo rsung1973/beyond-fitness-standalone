@@ -1934,6 +1934,7 @@ namespace WebHome.Controllers
 
             details = details.Concat(viewModel.CreateMonthlyPaymentReportForPISession(models))
                         .Concat(viewModel.CreateMonthlyPaymentReportForSale(models))
+                        .Concat(viewModel.CreateMonthlyPaymentReportForCustom(models))
                         .Concat(viewModel.CreateMonthlyPaymentReportForFeeCharge(models))
                         .OrderBy(d => d.日期)
                         .ThenBy(d => d.發票號碼);
@@ -2117,6 +2118,7 @@ namespace WebHome.Controllers
 
             details = details.Concat(viewModel.CreateMonthlyPaymentReportForPISession(models))
                         .Concat(viewModel.CreateMonthlyPaymentReportForSale(models))
+                        .Concat(viewModel.CreateMonthlyPaymentReportForCustom(models))
                         .Concat(viewModel.CreateMonthlyPaymentReportForFeeCharge(models))
                         .OrderBy(d => d.日期)
                         .ThenBy(d => d.發票號碼);

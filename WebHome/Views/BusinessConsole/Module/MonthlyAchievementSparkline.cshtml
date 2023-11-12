@@ -14,7 +14,7 @@
     ModelSource<UserProfile> models;
     MonthlyIndicator _model;
     _modelState = ViewContext.ModelState;
-    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
     _model = (MonthlyIndicator)this.Model;
 }
 @{
@@ -44,6 +44,10 @@
 @if (totalAchievementAmt > 1)
 {
     <div class="m-t-20 inlineblock" id="@(_viewID)">@(Math.Round(tuitionAchievementAmt * 100D / totalAchievementAmt, 1)), @(Math.Round(lessonAchievementAmt * 100D / totalAchievementAmt, 1))</div>
+    <p class="m-t-20">
+        <i class="zmdi livicon-evo" data-options="name: morph-checkbox-4.svg; size: 30px; style: filled; strokeStyle:round; fillColor:#C2454F; strokeColor:#C2454F; strokeWidth:2px; autoPlay:true;"></i> 收款業績 @(Math.Round(tuitionAchievementAmt * 100D / totalAchievementAmt, 1))%<br />
+        <i class="zmdi livicon-evo" data-options="name: morph-checkbox-4.svg; size: 30px; style: filled; strokeStyle:round; fillColor:#F1A139; strokeColor:#F1A139; strokeWidth:2px; autoPlay:true;"></i> 上課業績 @(Math.Round(lessonAchievementAmt * 100D / totalAchievementAmt, 1))%
+    </p>
 }
 else
 {
@@ -54,10 +58,7 @@ else
         </div>
     </div>
 }
-    <p class="m-t-20">
-        <i class="zmdi livicon-evo" data-options="name: morph-checkbox-4.svg; size: 30px; style: filled; strokeStyle:round; fillColor:#C2454F; strokeColor:#C2454F; strokeWidth:2px; autoPlay:true;"></i> 收款業績 @(Math.Round(tuitionAchievementAmt * 100D / totalAchievementAmt, 1))%<br />
-                                                                                                                                                                                                                                                                                    <i class="zmdi livicon-evo" data-options="name: morph-checkbox-4.svg; size: 30px; style: filled; strokeStyle:round; fillColor:#F1A139; strokeColor:#F1A139; strokeWidth:2px; autoPlay:true;"></i> 上課業績 @(Math.Round(lessonAchievementAmt * 100D / totalAchievementAmt, 1))%
-    </p>
+
 <script>
     $(function () {
         //收款業績與上課業績比例

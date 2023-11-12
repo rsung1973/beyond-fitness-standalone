@@ -1,0 +1,95 @@
+/*Overright 外掛套件 royalSlider*/
+.royalSlider {
+	width: 100%;
+	-webkit-perspective: 500px;
+	perspective: 500px;
+	-webkit-transform-style: preserve-3d;
+	transform-style: preserve-3d;
+	-webkit-transform-origin: 0% 50%;
+	transform-origin: 0% 50%;
+/*
+	border-radius: 4px;
+	box-shadow: 0 2px 2px 0 #DCDCDC;    
+*/
+	border-radius: .55rem;
+	box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.1)     
+}
+
+.rsDefault .rsOverflow {
+	height: 400px !important;
+	border-radius: .55rem;
+}
+
+.parallax-img-card .rsTextSlide h3 {
+	color: #ffffff;
+	font-size: 16px;
+	font-weight: 800;
+	text-align: left;
+	margin: 0;
+	letter-spacing: 3px;
+	position: absolute;
+	top: 0;
+	left: 0;
+	padding: 20px;
+}
+
+.rsTextSlide .valign-wrapper {
+	margin: 150px 0;
+}
+
+.rsTextSlide h3.bottommask {
+    font-weight: 800;
+    font-size: 18px;
+    position: absolute;
+    top: 0;
+    padding: 20px;
+    bottom: 0px;    
+    background: rgba(30, 30, 30, 0.5);
+    width: 100%;
+    -webkit-mask-image: linear-gradient(to bottom, rgba(30, 30, 30, .9), rgba(30, 30, 30, .9));
+}
+
+img.rsImg {
+	object-fit: cover;
+	width: 100%;
+    object-fit: cover;
+	-webkit-border-radius: .55rem;
+	-moz-border-radius: .55rem;
+	-ms-border-radius: .55rem;
+	border-radius: .55rem;
+	vertical-align: bottom !important;
+	border: 1px solid #f4f6f9;    
+}
+
+/*Overright 外掛套件 royalSlider*/
+
+.rsClass {
+	background: #fff;
+	color: #000;    
+}
+
+/*Overright 外掛套件royalSlider - rsDefault*/
+
+.rsDefault,
+.rsDefault .rsOverflow,
+.rsDefault .rsSlide,
+.rsDefault .rsVideoFrameHolder,
+.rsDefault .rsThumbs {
+	background: #fff;
+	color: #000;    
+/*
+	background-color: #05232d;
+	color: #fff
+*/
+}
+
+.rsDefault .rsTabs {
+    position: absolute;
+    bottom: 20px;
+}
+
+.rsDefault .rsTmb {
+    font-weight: 800;
+}
+
+/*Overright 外掛套件royalSlider - rsDefault*/

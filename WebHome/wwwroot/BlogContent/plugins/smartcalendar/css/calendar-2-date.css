@@ -1,0 +1,288 @@
+/*
+|----------------------------------------------------------------------------
+	SmartCalendar - Multipurpose Date Time Picker Calendar
+	Author: MGScoder
+	Author URL: https://codecanyon.net/user/mgscoder
+	Version: 1.5
+|----------------------------------------------------------------------------
+*/
+
+/*
+|------------------------------------------------------------------
+	[Table of contents]:
+
+	1. FONTS
+	2. FORM STYLE
+	3. CALENDAR STYLE	
+|-------------------------------------------------------------------
+*/
+
+/*
+|----------------------------------------------------------------------------
+	1. FONTS: Google Font
+|----------------------------------------------------------------------------
+*/
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,400i,700,700i');
+
+
+
+/*
+|----------------------------------------------------------------------------
+	2. FORM STYLE
+|----------------------------------------------------------------------------
+*/
+#reservation-form-section .reservation-form-note {
+    text-align: center;
+    color: #ff0000;
+    font-size: 18px;
+    margin: 30px 0;
+}
+#reservation-form-section .reservation-form-title {
+    font-size: 38px;
+    color: #fb9902;
+    text-align: center;
+    border-bottom: 5px solid;
+    font-weight: bold;
+}
+#reservation-form-section {
+	padding: 100px 0;
+}
+#reservation-form-section .text-center {
+	text-align: center;
+}
+#reservation-form-section.nonbootstrapForm #reservationForm {
+	width: 520px;
+	max-width: 100%;
+	margin: 0 auto;
+}
+#reservation-form-section.nonbootstrapForm #reservationForm input.form-control {
+	width: 90%;
+	height: 40px;
+	padding-left: 10px;
+}
+#reservationForm {
+	font-family: 'Roboto', sans-serif;
+}
+#reservationForm .heading-title {
+	color: #fb9902;
+}
+#reservationForm h3 {
+    margin: 100px 0 0;
+}
+#reservation-form-section.reservation-form-section form#reservationForm.reservation-form p > strong {
+    padding: 2px 4px;
+    font-size: 16px;
+    color: #c7254e;
+    background-color: #f9f2f4;
+    border-radius: 4px;
+}
+#reservationForm .form-group label {
+	font-weight: bold;
+	color: #039;
+}
+#reservationForm .form-group {
+	display: table;
+    position: relative;
+	width: 100%;
+    margin: 0 0 30px;
+}
+#reservationForm .form-control {
+    background-color: transparent;
+    border: 1px solid #fb9902;
+    padding-left: 10px;
+	max-width: 400px;
+	height: 40px;
+}
+#reservationForm .form-control:focus {
+	box-shadow: 0 1px 1px rgba(251, 153, 2, 0.075) inset, 0 0 8px rgba(251, 153, 2, 0.6);
+}
+
+/*
+|----------------------------------------------------------------------------
+	3. CALENDAR STYLE
+|----------------------------------------------------------------------------
+*/
+.datepicker.datepicker-dropdown {
+	font-family: 'Roboto', sans-serif;
+    width: 360px;
+    max-width: 100%;
+	padding: 15px 3px;
+	line-height: 1.4;
+	margin-top: 25px;
+}
+.datepicker.datepicker-dropdown table.table-condensed {
+    width: 100%;
+	border-spacing: 1px;
+	border-collapse: separate;
+}
+.datetimepicker.dropdown-menu table.table-condensed tr > td, .datetimepicker.dropdown-menu table.table-condensed tr > th,
+.datepicker.dropdown-menu table.table-condensed tr > td, .datepicker.dropdown-menu table.table-condensed tr > th {
+	padding: 5px;
+}
+.datepicker.datepicker-dropdown table.table-condensed .datepicker-title {
+    text-transform: uppercase;
+}
+.datepicker.datepicker-dropdown .datepicker-switch {
+    background-color: #fb9902;
+    color: #fff;
+    font-size: 20px;
+}
+.datepicker.datepicker-dropdown .datepicker-switch:hover {
+    background-color: rgba(251,153,2,.5);
+    color: #000;
+}
+.datepicker.datepicker-dropdown table.table-condensed th.next, .datepicker.datepicker-dropdown table.table-condensed th.prev {
+    color: #fb9902;
+    font-size: 48px;
+	padding: 0 5px 5px;
+	border-radius: 50%;
+}
+
+.datepicker.datepicker-dropdown table.table-condensed thead > tr:nth-child(2) {
+    height: 50px;
+}
+.datepicker.datepicker-dropdown table.table-condensed thead tr:nth-child(3) {
+    background-color: #3e3e3e;
+	color: #fff;
+}
+.datepicker.datepicker-dropdown table.table-condensed thead tr:nth-child(3) th {
+    border-radius: 0;
+}
+.datepicker.datepicker-dropdown tbody > tr {
+    background-color: #f5f5f5;
+}
+.datepicker.datepicker-dropdown .datepicker-months tbody > tr, .datepicker.datepicker-dropdown .datepicker-years tbody > tr {
+    background-color: #fff;
+}
+.datepicker.datepicker-dropdown tfoot th.today {
+    background-color: rgba(251,153,2,.8);
+    font-size: 16px;
+	text-transform: uppercase;
+}
+.datepicker.datepicker-dropdown tfoot th.today:hover {
+    background-color: #fb9902;
+    color: #fff;
+}
+.datepicker.datepicker-dropdown tfoot tr th.clear:hover {
+    background: #ff0000;
+    color: #fff;
+}
+.datepicker.datepicker-dropdown td.available:hover, .datepicker.datepicker-dropdown th.available:hover,
+.datepicker.datepicker-dropdown table tr td span:hover, .datepicker.datepicker-dropdown table tr td.day:hover {
+    background-color: rgba(251,153,2,.8);
+    color: #fff;
+}
+.datepicker.datepicker-dropdown table tr td.disabled, .datepicker.datepicker-dropdown table tr td.day.disabled:hover {
+	background-color: #fff;
+}
+.datepicker.datepicker-dropdown table tr td span {
+	background-color: rgba(251,153,2,.5);
+}
+.datepicker.datepicker-dropdown table tr td.range {
+	background-color: rgba(251,153,2,.3);
+}
+.datepicker.datepicker-dropdown table tr td.disabled:hover,
+.datepicker.datepicker-dropdown table tr td span.disabled, .datepicker.datepicker-dropdown table tr td span.disabled:hover {
+	background-color: rgba(251,153,2,.1);
+}
+.datepicker.datepicker-dropdown table tr td.disabled, .datepicker.datepicker-dropdown table tr td.disabled:hover,
+.datepicker.datepicker-dropdown table tr td span.disabled, .datepicker.datepicker-dropdown table tr td span.disabled:hover {
+	cursor: not-allowed;
+    color: #999;
+}
+.datepicker.datepicker-dropdown table tr td.active:active, .datepicker.datepicker-dropdown table tr td.active:hover:active, .datepicker.datepicker-dropdown table tr td.active.disabled:active, .datepicker.datepicker-dropdown table tr td.active.disabled:hover:active, .datepicker.datepicker-dropdown table tr td.active.active, .datepicker.datepicker-dropdown table tr td.active.active:hover, .datepicker.datepicker-dropdown table tr td.active.disabled.active, .datepicker.datepicker-dropdown table tr td.active.disabled.active:hover,
+.datepicker.datepicker-dropdown table tr td.active .datepicker.datepicker-dropdown table tr td.active:hover, .datepicker.datepicker-dropdown table tr td.active.disabled, .datepicker.datepicker-dropdown table tr td.active.disabled:hover,
+.datepicker.datepicker-dropdown table tr td span.active:active, .datepicker.datepicker-dropdown table tr td span.active:hover:active, .datepicker.datepicker-dropdown table tr td span.active.disabled:active, .datepicker.datepicker-dropdown table tr td span.active.disabled:hover:active, .datepicker.datepicker-dropdown table tr td span.active.active, .datepicker.datepicker-dropdown table tr td span.active.active:hover, .datepicker.datepicker-dropdown table tr td span.active.disabled.active, .datepicker.datepicker-dropdown table tr td span.active.disabled.active:hover,
+.datepicker.datepicker-dropdown table tr td span.focused, .datepicker.datepicker-dropdown table tr td.selected, .datepicker.datepicker-dropdown table tr td.selected.highlighted, .datepicker.datepicker-dropdown table tr td span.active, .datepicker.datepicker-dropdown table tr td span.active:hover, .datepicker.datepicker-dropdown table tr td span.active.disabled, .datepicker.datepicker-dropdown table tr td span.active.disabled:hover {
+	background-color: #fb9902;
+	background-image: none;
+}
+.datepicker.datepicker-dropdown table tr td.active, .datepicker.datepicker-dropdown table tr td.range-start, .datepicker.datepicker-dropdown table tr td.range, .datepicker.datepicker-dropdown table tr td.range-end {
+	font-weight: bold;
+	font-size: 20px;
+}
+.datepicker.datepicker-dropdown table tr td.today.disabled, .datepicker.datepicker-dropdown table tr td.today.disabled:hover {
+	background-color: rgba(251,153,2,.1);
+	background-image: none;
+}
+.datepicker.datepicker-dropdown table tr td.today {
+    background-color: #fde19a;
+    background-image: linear-gradient(to bottom,#fdd49a,#fdf59a);
+	background-repeat: repeat-x;
+}
+
+#reservationForm .fa.fa-calander::before {
+    content: "\f073";
+}
+.icon-arrow-left:before{content:"\e091"}
+.icon-arrow-right:before{content:"\e092"}
+
+
+@font-face {
+  font-family: 'Glyphicons Halflings';
+
+  src: url('../fonts/glyphicons-halflings-regular.eot');
+  src: url('../fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('../fonts/glyphicons-halflings-regular.woff2') format('woff2'), url('../fonts/glyphicons-halflings-regular.woff') format('woff'), url('../fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('../fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
+}
+.glyphicon {
+  position: relative;
+  top: 1px;
+  display: inline-block;
+  font-family: 'Glyphicons Halflings';
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.glyphicon-arrow-left:before{content:"\e091"}
+.glyphicon-arrow-right:before{content:"\e092"}
+
+.form-control {
+  display: block;
+  width: 100%;
+  height: 34px;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #555;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+          box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+  -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+       -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+          transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+}
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  display: none;
+  float: left;
+  min-width: 160px;
+  padding: 5px 0;
+  margin: 2px 0 0;
+  font-size: 14px;
+  text-align: left;
+  list-style: none;
+  background-color: #fff;
+  -webkit-background-clip: padding-box;
+          background-clip: padding-box;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, .15);
+  border-radius: 4px;
+  -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+          box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+}
+
+@media screen and (max-width: 360px) {
+	.datepicker.datepicker-dropdown {
+		width: 90%;
+		max-width: 100%;
+	}
+}

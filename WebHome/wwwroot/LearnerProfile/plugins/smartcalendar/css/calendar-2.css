@@ -1,0 +1,278 @@
+/*
+|----------------------------------------------------------------------------
+	SmartCalendar - Multipurpose Date Time Picker Calendar
+	Author: MGScoder
+	Author URL: https://codecanyon.net/user/mgscoder
+	Version: 1.5
+|----------------------------------------------------------------------------
+*/
+
+/*
+|------------------------------------------------------------------
+	[Table of contents]:
+
+	1. FONTS
+	2. FORM STYLE
+	3. CALENDAR STYLE	
+|-------------------------------------------------------------------
+*/
+
+/*
+|----------------------------------------------------------------------------
+	1. FONTS: Google Font
+|----------------------------------------------------------------------------
+*/
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,400i,700,700i');
+
+
+
+/*
+|----------------------------------------------------------------------------
+	2. FORM STYLE
+|----------------------------------------------------------------------------
+*/
+#reservation-form-section .reservation-form-note {
+    text-align: center;
+    color: #ff0000;
+    font-size: 18px;
+    margin: 30px 0;
+}
+#reservation-form-section .reservation-form-title {
+    font-size: 38px;
+    color: #fb9902;
+    text-align: center;
+    border-bottom: 5px solid;
+    font-weight: bold;
+}
+#reservation-form-section {
+	padding: 100px 0;
+}
+#reservation-form-section .text-center {
+	text-align: center;
+}
+#reservation-form-section.nonbootstrapForm #reservationForm {
+	width: 520px;
+	max-width: 100%;
+	margin: 0 auto;
+}
+#reservation-form-section.nonbootstrapForm #reservationForm input.form-control {
+	width: 90%;
+	height: 40px;
+	padding-left: 10px;
+}
+#reservationForm {
+	font-family: 'Roboto', sans-serif;
+}
+#reservationForm .heading-title {
+	color: #fb9902;
+}
+#reservationForm h3 {
+    margin: 100px 0 0;
+}
+#reservation-form-section.reservation-form-section form#reservationForm.reservation-form p > strong {
+    padding: 2px 4px;
+    font-size: 16px;
+    color: #c7254e;
+    background-color: #f9f2f4;
+    border-radius: 4px;
+}
+#reservationForm .form-group label {
+	font-weight: bold;
+	color: #039;
+}
+#reservationForm .form-group {
+	display: table;
+    position: relative;
+	width: 100%;
+    margin: 0 0 30px;
+}
+#reservationForm .form-control {
+    background-color: transparent;
+    border: 1px solid #fb9902;
+    padding-left: 10px;
+	max-width: 400px;
+	height: 40px;
+}
+#reservationForm .form-control:focus {
+	box-shadow: 0 1px 1px rgba(251, 153, 2, 0.075) inset, 0 0 8px rgba(251, 153, 2, 0.6);
+}
+
+/*
+|----------------------------------------------------------------------------
+	3. CALENDAR STYLE
+|----------------------------------------------------------------------------
+*/
+.datetimepicker.dropdown-menu {
+	font-family: 'Roboto', sans-serif;
+    width: 360px;
+    max-width: 100%;
+	padding: 15px 3px;
+	line-height: 1.4;
+}
+.datetimepicker.dropdown-menu table.table-condensed {
+    width: 100%;
+	border-spacing: 1px;
+	border-collapse: separate;
+}
+.datetimepicker.dropdown-menu table.table-condensed tr > td, .datetimepicker.dropdown-menu table.table-condensed tr > th,
+.datepicker.dropdown-menu table.table-condensed tr > td, .datepicker.dropdown-menu table.table-condensed tr > th {
+	padding: 5px;
+}
+.datetimepicker.dropdown-menu .switch {
+    background-color: #fb9902;
+    color: #fff;
+    font-size: 20px;
+}
+.datetimepicker.dropdown-menu .switch:hover {
+    background-color: rgba(251,153,2,.5);
+    color: #000;
+}
+.datetimepicker.dropdown-menu .glyphicon {
+    color: #fb9902;
+    font-size: 48px;
+}
+
+.datetimepicker.dropdown-menu .table-condensed th.next, .datetimepicker.dropdown-menu .table-condensed th.prev {
+	border-radius: 50%;
+	padding: 10px 0;
+}
+.datetimepicker.dropdown-menu .table-condensed thead > tr:first-child {
+    height: 50px;
+}
+.datetimepicker.dropdown-menu .table-condensed thead tr:nth-child(2) {
+    background-color: #3e3e3e;
+	color: #fff;
+}
+.datetimepicker.dropdown-menu .table-condensed thead tr:nth-child(2) th {
+    border-radius: 0;
+}
+.datetimepicker.dropdown-menu tbody > tr {
+    background-color: #f5f5f5;
+}
+.datetimepicker.dropdown-menu .datetimepicker-months tbody > tr, .datetimepicker.dropdown-menu .datetimepicker-years tbody > tr {
+    background-color: #fff;
+}
+.datetimepicker.dropdown-menu tfoot th.today {
+    background-color: rgba(251,153,2,.8);
+    font-size: 16px;
+	text-transform: uppercase;
+}
+.datetimepicker.dropdown-menu tfoot th.today:hover {
+    background-color: #fb9902;
+    color: #fff;
+}
+.datetimepicker.dropdown-menu tfoot tr th.clear:hover {
+    background: #ff0000;
+    color: #fff;
+}
+.datetimepicker.dropdown-menu td.available:hover, .datetimepicker.dropdown-menu th.available:hover,
+.datetimepicker.dropdown-menu table tr td span:hover, .datetimepicker.dropdown-menu table tr td.day:hover {
+    background-color: rgba(251,153,2,.8);
+    color: #fff;
+}
+.datetimepicker.dropdown-menu table tr td.disabled, .datetimepicker.dropdown-menu table tr td.day.disabled:hover {
+	background-color: #fff;
+}
+.datetimepicker.dropdown-menu table tr td span {
+	background-color: rgba(251,153,2,.5);
+}
+.datetimepicker.dropdown-menu table tr td.disabled:hover,
+.datetimepicker.dropdown-menu table tr td span.disabled, .datetimepicker.dropdown-menu table tr td span.disabled:hover {
+	background-color: rgba(251,153,2,.1);
+}
+.datetimepicker.dropdown-menu table tr td.disabled, .datetimepicker.dropdown-menu table tr td.disabled:hover,
+.datetimepicker.dropdown-menu table tr td span.disabled, .datetimepicker.dropdown-menu table tr td span.disabled:hover {
+	cursor: not-allowed;
+    color: #999;
+}
+
+.datetimepicker.dropdown-menu table tr td.active:active, .datetimepicker.dropdown-menu table tr td.active:hover:active, .datetimepicker.dropdown-menu table tr td.active.disabled:active, .datetimepicker.dropdown-menu table tr td.active.disabled:hover:active, .datetimepicker.dropdown-menu table tr td.active.active, .datetimepicker.dropdown-menu table tr td.active.active:hover, .datetimepicker.dropdown-menu table tr td.active.disabled.active, .datetimepicker.dropdown-menu table tr td.active.disabled.active:hover,
+.datetimepicker.dropdown-menu table tr td.active, .datetimepicker.dropdown-menu table tr td.active:hover, .datetimepicker.dropdown-menu table tr td.active.disabled, .datetimepicker.dropdown-menu table tr td.active.disabled:hover,
+.datetimepicker.dropdown-menu table tr td span.active:active, .datetimepicker.dropdown-menu table tr td span.active:hover:active, .datetimepicker.dropdown-menu table tr td span.active.disabled:active, .datetimepicker.dropdown-menu table tr td span.active.disabled:hover:active, .datetimepicker.dropdown-menu table tr td span.active.active, .datetimepicker.dropdown-menu table tr td span.active.active:hover, .datetimepicker.dropdown-menu table tr td span.active.disabled.active, .datetimepicker.dropdown-menu table tr td span.active.disabled.active:hover,
+.datetimepicker.dropdown-menu table tr td span.active, .datetimepicker.dropdown-menu table tr td span.active:hover, .datetimepicker.dropdown-menu table tr td span.active.disabled, .datetimepicker.dropdown-menu table tr td span.active.disabled:hover {
+	background-color: #fb9902;
+	background-image: none;
+}
+.datetimepicker.dropdown-menu table tr td.active {
+	font-weight: bold;
+	font-size: 20px;
+}
+.datetimepicker.dropdown-menu table tr td.today.active.disabled, .datetimepicker.dropdown-menu table tr td.today.active.disabled:hover {
+	background-color: rgba(251,153,2,.1);
+}
+
+#reservationForm .fa.fa-calander::before {
+    content: "\f073";
+}
+.icon-arrow-left:before{content:"\e091"}
+.icon-arrow-right:before{content:"\e092"}
+
+
+@font-face {
+  font-family: 'Glyphicons Halflings';
+
+  src: url('../fonts/glyphicons-halflings-regular.eot');
+  src: url('../fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('../fonts/glyphicons-halflings-regular.woff2') format('woff2'), url('../fonts/glyphicons-halflings-regular.woff') format('woff'), url('../fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('../fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
+}
+.glyphicon {
+  position: relative;
+  top: 1px;
+  display: inline-block;
+  font-family: 'Glyphicons Halflings';
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.glyphicon-arrow-left:before{content:"\e091"}
+.glyphicon-arrow-right:before{content:"\e092"}
+
+.form-control {
+  display: block;
+  width: 100%;
+  height: 34px;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #555;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+          box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+  -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+       -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+          transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+}
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  display: none;
+  float: left;
+  min-width: 160px;
+  padding: 5px 0;
+  margin: 2px 0 0;
+  font-size: 14px;
+  text-align: left;
+  list-style: none;
+  background-color: #fff;
+  -webkit-background-clip: padding-box;
+          background-clip: padding-box;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, .15);
+  border-radius: 4px;
+  -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+          box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+}
+
+@media screen and (max-width: 360px) {
+	.datetimepicker.dropdown-menu {
+		width: 90%;
+		max-width: 100%;
+	}
+}

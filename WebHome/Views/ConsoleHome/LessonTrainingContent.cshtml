@@ -52,6 +52,8 @@
     <link rel="stylesheet" href="css/customelist.css?2.0" />
     <!-- Light Gallery Plugin Css -->
     <link rel="stylesheet" href="plugins/light-gallery/css/lightgallery.css">
+    <!-- jSignature -->
+    <link rel="stylesheet" href="css/jsignature.css">
 
 }
 
@@ -104,6 +106,54 @@
                             {
                                 hasSlideItem = true;
                                 <li><a href="javascript:attendLesson();">完成上課</a></li>
+                            }
+                            @if (learner.UserProfileExtension?.AttendanceSignature == true && !lessonItem.LessonPlan.CommitAttendance.HasValue)
+                            {
+                                hasSlideItem = true;
+                                <li>
+                                    <a href="javascript:signaturePanel();">學生現場打卡簽名</a>
+                                    <script>
+                                        function signaturePanel() {
+                                            $global.commitSignature = function (sigData) {
+                                                showLoading();
+                                                var viewModel = {
+                                                    keyID: '@Html.Raw(lessonItem.LessonID.EncryptKey())',
+                                                    Signature: sigData
+                                                };
+                                                $.post('@Html.Raw(Url.Action("LearnerAttendLesson", "Attendance"))', viewModel, function (data) {
+                                                    hideLoading();
+                                                    if ($.isPlainObject(data)) {
+                                                        if (data.result) {
+                                                            Swal.fire({
+                                                                title: "全部打卡成功!",
+                                                                text: "資料已經完成打卡 Bye!",
+                                                                icon: "success",
+                                                                showCancelButton: false,
+                                                                closeOnConfirm: true
+                                                            }).then((result) => {
+                                                                refreshTrainingContent();
+                                                            });
+                                                        } else {
+                                                            Swal.fire(
+                                                                'Oops...',
+                                                                data.message,
+                                                                'warning'
+                                                            );
+                                                        }
+                                                    } else {
+                                                        $(data).appendTo($('body'));
+                                                    }
+                                                });
+                                            };
+
+                                            showLoading();
+                                            $.post('@Html.Raw(Url.Action("SignaturePanel","LessonConsole"))', { }, function (data) {
+                                                hideLoading();
+                                                $(data).appendTo($('body'));
+                                            });
+                                        }
+                                    </script>
+                                </li>
                             }
                             @if (!hasSlideItem)
                             {
@@ -196,6 +246,13 @@
     <script src="plugins/nestable/jquery.nestable.js"></script>
     <!-- Light Gallery Plugin Js -->
     <script src="plugins/light-gallery/js/lightgallery-all.min.js"></script>
+
+    <script src="plugins/jSignature/jSignature.js"></script>
+    <script src="plugins/jSignature/plugins/jSignature.CompressorBase30.js"></script>
+    <script src="plugins/jSignature/plugins/jSignature.CompressorSVG.js"></script>
+    <script src="plugins/jSignature/plugins/jSignature.UndoButton.js"></script>
+    <script src="plugins/jSignature/plugins/signhere/jSignature.SignHere.js"></script>
+
     <script>
 
         function refreshTrainingContent() {

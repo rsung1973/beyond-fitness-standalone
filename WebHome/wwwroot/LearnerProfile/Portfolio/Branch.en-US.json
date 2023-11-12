@@ -1,0 +1,44 @@
+{
+    "Items": [
+        {
+            "BranchName": "Nanjing",
+            "Tel": "(02)2715-2733",
+            "AddLong": "B1, No.17, Sec. 4, Nanjing E. Rd., Songshan Dist., Taipei City 105, Taiwan",
+            "AddSeciton":"Songshan Dist., Taipei City 105, Taiwan",
+            "AddShort": "B1, No.17, Sec. 4, Nanjing E. Rd.",
+            "MRT":"Green line( Songshan–Xindian) MRT Taipei Arena Station Exit 1",
+            "Desc1": "Across from the Taipei Arena, close to the Breeze Center, Taipei Arena shopping district, and 1 minute walk from the MRT Taipei Arena Station Exit 1.",
+            "Desc2": "With more than 300 square meters of professional fitness space combined with a variety of training equipment, you can optimize your training by exercising without restrictions."
+        },
+        {
+            "BranchName": "XinyiAnhe",
+            "Tel": "(02)2720-0530",
+            "AddLong": "B1, No. 81, Sec. 2, Anhe Rd., Da’an Dist., Taipei City 106, Taiwan",
+            "AddSeciton":"Da’an Dist., Taipei City 106, Taiwan",
+            "AddShort": "B1, No. 81, Sec. 2, Anhe Rd.",
+            "MRT":"Red line (Tamsui–Xinyi) MRT Xinyi Anhe Station Exit 2A",
+            "Desc1": "XinyiAnhe Branch is a 3 mins walk from MRT XinyiAnhe Station exit 2A.Located in the key area of Dunhua-Anhe, adjacent to the Lih-Jen international Private Elementary &amp; Middle School.",
+            "Desc2": "The private training space with 4m high celling and over 727 square meters, provides 25m sports lawn, individual group class venue, sports recovery rooms and comfortable separate shower room, where you are able to enjoy the professional training and service."
+        },
+        {
+            "BranchName": "Zhongxiao",
+            "Tel": "(02)2776-9932",
+            "AddLong": "B1, No.21, Ln. 75, Sec. 1, Da’an Rd., Da’an Dist., Taipei City 106, Taiwan/B1",
+            "AddSeciton":"Da’an Dist., Taipei City 106, Taiwan",
+            "AddShort": "B1, No.21, Ln. 75, Sec. 1, Da’an Rd.",
+            "MRT":"Blue line (Bannan) MRT Zongxiao Fuxing station Exit 3 (or Exit 14 of East Metro Mall)",
+            "Desc1": "Located at B1 of the building behind Dinghao Market, 2 minute walk from MRT Zongxiao Fuxing station Exit 3 (or Exit 14 of East Metro Mall)",
+            "Desc2": "Rarely seen high-ceiling indoor personal training venue, bright lighting space, combined with a variety of training equipment, separate bath and shower, allowing you to freshen up more comfortably."
+        },
+        {
+            "BranchName": "Dongmen",
+            "Tel": "(02)2396-0776",
+            "AddLong": "No.28, Sec. 2, Xinyi Rd., Da’an Dist., Taipei City 106, Taiwan",
+            "AddSeciton":"Da’an Dist., Taipei City 106, Taiwan",
+            "AddShort": "No.28, Sec. 2, Xinyi Rd.",
+            "MRT":"Red line (Tamsui–Xinyi) MRT Dongmen station Exit 3",
+            "Desc1": "Dongmen Branch is a 3 mins walk from MRT Dongmen Station exit 3, with ample space and natural sunlight.",
+            "Desc2": "The customized training space integrates stretching, artificial turf and weight training areas providing a dynamic training environment. Under the professional guidance of Beyond Fitness trainers, a safe, comfortable and private training environment is provided."
+        }
+    ]
+}

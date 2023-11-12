@@ -598,6 +598,68 @@ namespace WebHome.Helper
 
             return details;
         }
+        public static IEnumerable<PaymentMonthlyReportItem> CreateMonthlyPaymentReportForCustom(this PaymentQueryViewModel viewModel, GenericManager<BFDataContext> models)
+        {
+
+            IQueryable<Payment> items = models.GetTable<Payment>()
+                    .Where(p => p.TransactionType == (int)Naming.PaymentTransactionType.各項費用)
+                    .Where(p => !models.GetTable<PaymentOrder>().Any(o => o.PaymentID == p.PaymentID));
+
+            IEnumerable<PaymentMonthlyReportItem> details = items
+                .Where(p => p.PayoffDate >= viewModel.PayoffDateFrom && p.PayoffDate < viewModel.PayoffDateTo)
+                .ToArray()
+                    .Select(i => new PaymentMonthlyReportItem
+                    {
+                        日期 = $"{i.PayoffDate:yyyyMMdd}",
+                        發票號碼 = i.InvoiceID.HasValue ? i.InvoiceItem.TrackCode + i.InvoiceItem.No : null,
+                        分店 = i.PaymentTransaction.BranchStore.BranchName,
+                        買受人統編 = i.InvoiceID.HasValue
+                                  ? i.InvoiceItem.InvoiceBuyer.IsB2C() ? "--" : i.InvoiceItem.InvoiceBuyer.ReceiptNo
+                                  : "--",
+                        //姓名 = null,
+                        //合約編號 = null,
+                        信託 = null,
+                        摘要 = $"銷貨收入-{i.InvoiceItem?.InvoiceDetails.FirstOrDefault()?.InvoiceProduct.Brief}({i.PaymentType})",
+                        退款金額_含稅 = null,
+                        收款金額_含稅 = i.PayoffAmount,
+                        借方金額 = null,
+                        貸方金額 = (int?)Math.Round(i.PayoffAmount.Value / 1.05m, MidpointRounding.AwayFromZero),
+                    });
+
+            //作廢或折讓
+            details = details.Concat(
+                    items.Join(models.GetTable<VoidPayment>()
+                                .Where(v => v.VoidDate >= viewModel.PayoffDateFrom && v.VoidDate < viewModel.PayoffDateTo),
+                            p => p.PaymentID, v => v.VoidID, (p, v) => p)
+                        .ToArray()
+                            .Select(i => new PaymentMonthlyReportItem
+                            {
+                                日期 = $"{i.VoidPayment.VoidDate:yyyyMMdd}",
+                                發票號碼 = i.InvoiceID.HasValue ? i.InvoiceItem.TrackCode + i.InvoiceItem.No : null,
+                                分店 = i.PaymentTransaction.BranchStore.BranchName,
+                                買受人統編 = i.InvoiceID.HasValue
+                                          ? i.InvoiceItem.InvoiceBuyer.IsB2C() ? "--" : i.InvoiceItem.InvoiceBuyer.ReceiptNo
+                                          : "--",
+                                //姓名 = null,
+                                //合約編號 = null,
+                                信託 = null,
+                                摘要 = i.InvoiceItem.InvoiceCancellation != null
+                                        ? $"(沖:{i.PayoffDate:yyyyMMdd}-作廢)銷貨收入-{(Naming.PaymentTransactionType?)i.TransactionType}-{i.InvoiceItem?.InvoiceDetails.FirstOrDefault()?.InvoiceProduct.Brief}"
+                                        //(沖:20190104-作廢)課程顧問費用-CFA201810091870-00-林妍君
+                                        : $"(沖:{i.PayoffDate:yyyyMMdd}-折讓)銷貨收入-{(Naming.PaymentTransactionType?)i.TransactionType}-{i.InvoiceItem?.InvoiceDetails.FirstOrDefault()?.InvoiceProduct.Brief}",
+                                退款金額_含稅 = i.AllowanceID.HasValue
+                                                ? (int?)(i.InvoiceAllowance.TotalAmount + i.InvoiceAllowance.TaxAmount)
+                                                : i.PayoffAmount,
+                                收款金額_含稅 = null,
+                                借方金額 = i.AllowanceID.HasValue
+                                                ? (int?)(i.InvoiceAllowance.TotalAmount)
+                                                : (int?)Math.Round(i.PayoffAmount.Value / 1.05m, MidpointRounding.AwayFromZero),
+                                貸方金額 = null,
+                            }
+                                ));
+
+            return details;
+        }
         public static IEnumerable<PaymentMonthlyReportItem> CreateMonthlyPaymentReportForFeeCharge(this PaymentQueryViewModel viewModel, GenericManager<BFDataContext> models)
         {
 

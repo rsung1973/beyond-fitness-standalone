@@ -699,10 +699,13 @@ namespace WebHome.Models.DataEntity
                         ? this.TuitionInstallment.IntuitionCharge.RegisterLesson.LessonPriceType.SimpleDescription
                         : "T.S/P.I"
                     : String.Concat(((Naming.PaymentTransactionType)this.TransactionType).ToString(),
+                        "-",
                         this.TransactionType == (int)Naming.PaymentTransactionType.運動商品
                             || this.TransactionType == (int)Naming.PaymentTransactionType.食飲品
                             || this.TransactionType == (int)Naming.PaymentTransactionType.各項費用
-                        ? String.Join("/", this.PaymentTransaction.PaymentOrder.Select(p => p.MerchandiseWindow.ProductName))
+                        ? this.PaymentTransaction.PaymentOrder.Any()
+                            ? String.Join("/", this.PaymentTransaction.PaymentOrder.Select(p => p.MerchandiseWindow.ProductName))
+                            : String.Join("/", this.InvoiceItem?.InvoiceDetails.Select(d => d.InvoiceProduct.Brief))
                         : null);
     }
 

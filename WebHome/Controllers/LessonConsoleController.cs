@@ -547,5 +547,11 @@ namespace WebHome.Controllers
             return View("~/Views/LearnerProfile/Module/LessonDietaryReport.cshtml", item);
         }
 
+        public ActionResult SignaturePanel(QueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            return View("~/Views/LessonConsole/ProcessModal/SignaturePanel.cshtml");
+        }
+
     }
 }

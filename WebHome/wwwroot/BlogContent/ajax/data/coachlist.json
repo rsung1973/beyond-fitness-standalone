@@ -1,0 +1,104 @@
+{
+  "data": [
+    [
+      "<span class='list-icon'><img class='patients-img' src='images/avatar/noname.png'></span> <span class='hidden-sm-down'>賴威丞(Frank Lai)</span>",
+      "P.T 1",
+      "",
+      "2",
+      "18",
+      "<div class='sparkline-pie'>13,5</div>",
+      "<div class='sparkline-pie2'>25,23</div>",
+      "南京"
+    ],[
+      "<span class='list-icon'><img class='patients-img' src='images/avatar/ben.jpg'></span> <span class='hidden-sm-down'>楊秉峯(Ben Yang)</span>",
+      "P.T 1",
+      "",
+      "0",
+      "5",
+      "<div class='sparkline-pie'>1,4</div>",
+      "<div class='sparkline-pie2'>28,29</div>",
+      "南京"
+    ],[
+      "<span class='list-icon'><img class='patients-img' src='images/avatar/alan.jpg'></span> <span class='hidden-sm-down'>黃宇承(Alan Huang)</span>",
+      "P.T 1",
+      "",
+      "0",
+      "20",
+      "<div class='sparkline-pie'>10,10</div>",
+      "<div class='sparkline-pie2'>12,8</div>",        
+      "南京"
+    ],[
+      "<span class='list-icon'><img class='patients-img' src='images/avatar/hardy.jpg'></span> <span class='hidden-sm-down'>曹育翔(Hardy Tsao)</span>",
+      "P.T 4",
+      "",
+      "2",
+      "18",
+      "<div class='sparkline-pie'>8,10</div>",
+      "<div class='sparkline-pie2'>25,23</div>",
+      "南京"
+    ],[
+      "<span class='list-icon'><img class='patients-img' src='images/avatar/peter.jpg'></span> <span class='hidden-sm-down'>胡志達(Peter Hu)</span>",
+      "P.T 5",
+      "是",
+      "2",
+      "68",
+      "<div class='sparkline-pie'>33,35</div>",
+      "<div class='sparkline-pie2'>17,15</div>",
+      "南京"
+    ],[
+      "<span class='list-icon'><img class='patients-img' src='images/avatar/sam.jpg'></span> <span class='hidden-sm-down'>李瑞傑(Sam Lee)</span>",
+      "P.T 5",
+      "",
+      "2",
+      "57",
+      "<div class='sparkline-pie'>20,37</div>",
+      "<div class='sparkline-pie2'>25,23</div>",
+      "南京"
+    ],[
+      "<span class='list-icon'><img class='patients-img' src='images/avatar/sammie.jpg'></span> <span class='hidden-sm-down'>蔡雅欣(Sammie Tsai)</span>",
+      "P.T 5",
+      "",
+      "2",
+      "45",
+      "<div class='sparkline-pie'>23,22</div>",
+      "<div class='sparkline-pie2'>25,23</div>",
+      "南京"
+    ],[
+      "<span class='list-icon'><img class='patients-img' src='images/avatar/joei.jpg'></span> <span class='hidden-sm-down'>林哲儀(Joei Lin)</span>",
+      "P.T 5",
+      "是",
+      "2",
+      "79",
+      "<div class='sparkline-pie'>34,45</div>",
+      "<div class='sparkline-pie2'>25,23</div>",
+      "南京"
+    ],[
+      "<span class='list-icon'><img class='patients-img' src='images/avatar/noname.png'></span> <span class='hidden-sm-down'>陳嫻蓁(Lucy Chen)</span>",
+      "P.T 5",
+      "是",
+      "2",
+      "56",
+      "<div class='sparkline-pie'>20,36</div>",
+      "<div class='sparkline-pie2'>25,23</div>",
+      "南京"
+    ],[
+      "<span class='list-icon'><img class='patients-img' src='images/avatar/noname.png'></span> <span class='hidden-sm-down'>崔芳瑜</span>",
+      "實習期",
+      "",
+      "0",
+      "0",
+      "",
+      "<div class='sparkline-pie2'>25,23</div>",
+      "南京"
+    ],[
+      "<span class='list-icon'><img class='patients-img' src='images/avatar/noname.png'></span> <span class='hidden-sm-down'>蔡恆易</span>",
+      "實習期",
+      "",
+      "0",
+      "0",
+      "",
+      "",
+      "南京"
+    ]
+  ]
+}

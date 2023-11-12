@@ -65,7 +65,19 @@
         </div>
         <script>
             $(".achivementRank").on("click", function (event) {
-                $('').launchDownload('@Html.Raw(Url.Action("AchievementRankingOverview", "ConsoleHome"))');
+                @*$('').launchDownload('@Html.Raw(Url.Action("AchievementRankingOverview", "ConsoleHome"))');*@
+                Swal.fire({
+                    title: "想知道你的排名嗎？",
+                    text: "春酒就揭曉！",
+                    icon: "warning",
+                    // showCancelButton: false,
+                    // confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "敬請期待!",
+                }).then((result) => {
+                    // if (result.isConfirmed) {
+                    //   $("#editActionModal").modal('show');
+                    // }
+                });
             });
         </script>
     </div>

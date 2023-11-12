@@ -1,0 +1,40 @@
+{
+    "Items": [
+        {
+            "link": "http://www.cmp.com.tw/",
+            "imgSrc": "images/partner/partner-1.png"
+        },
+        {
+            "link": "https://www.pj.com.tw/tw",
+            "imgSrc": "images/partner/partner-2.png"
+        },
+        {
+            "link": "http://www.sanlien.com.tw",
+            "imgSrc": "images/partner/partner-3.png"
+        },
+        {
+            "link": "https://landseedsports-medicine.com/",
+            "imgSrc": "images/partner/partner-4.png"
+        },
+        {
+            "link": "https://www.facebook.com/KeepGoingWithGoodThings/",
+            "imgSrc": "images/partner/partner-5.png"
+        },
+        {
+            "link": "https://www.aicarept.com",
+            "imgSrc": "images/partner/partner-6.png"
+        },        
+        {
+            "link": "https://plcfootball.com/",
+            "imgSrc": "images/partner/partner-7.png"
+        },        
+        {
+            "link": "https://www.ninenine.org",
+            "imgSrc": "images/partner/partner-8.png"
+        },        
+        {
+            "link": "https://inbodyhome.tw",
+            "imgSrc": "images/partner/partner-9.png"
+        }
+    ]
+}

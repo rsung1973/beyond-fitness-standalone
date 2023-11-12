@@ -1,0 +1,117 @@
+﻿
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    MonthlyIndicator _model;
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (MonthlyIndicator)this.Model;
+}
+@{
+    String _viewID = $"cst{DateTime.Now.Ticks}";
+    MonthlyIndicatorQueryViewModel _viewModel = (MonthlyIndicatorQueryViewModel)ViewBag.ViewModel;
+}
+@{
+    var contractItems = models.PromptEffectiveContract()
+                            .Where(c => c.EffectiveDate >= _model.StartDate)
+                            .Where(c => c.EffectiveDate < _model.EndExclusiveDate);
+    if (_viewModel.BranchID.HasValue)
+    {
+        contractItems = contractItems
+            .Where(c => models
+                        .GetTable<CourseContractExtension>()
+                        .Where(t => t.BranchID == _viewModel.BranchID)
+                        .Where(t => t.ContractID == c.ContractID)
+                        .Any());
+    }
+}
+@if (contractItems.Any())
+{
+    int totalAmt = contractItems.Sum(c => c.TotalCost) ?? int.MaxValue;
+    int[] familyType = new int[]
+        {
+            (int)CourseContractType.ContractTypeDefinition.CFA,
+            (int)CourseContractType.ContractTypeDefinition.CGF,
+            (int)CourseContractType.ContractTypeDefinition.CVF,
+        };
+
+    int[] oneByOne = new int[]
+    {
+        (int)CourseContractType.ContractTypeDefinition.CPA,
+        //(int)CourseContractType.ContractTypeDefinition.CNA,
+        //(int)CourseContractType.ContractTypeDefinition.CRA,
+        (int)CourseContractType.ContractTypeDefinition.CGA,
+        (int)CourseContractType.ContractTypeDefinition.CVA,
+    };
+
+    int[] oneByTwo = new int[]
+    {
+        (int)CourseContractType.ContractTypeDefinition.CPB,
+        (int)CourseContractType.ContractTypeDefinition.CGB,
+        (int)CourseContractType.ContractTypeDefinition.CVB,
+    };
+
+    int familyAmt = contractItems.Where(c => familyType.Contains(c.ContractType)).Sum(c => c.TotalCost) ?? 0,
+            familyCount = contractItems.Where(c => familyType.Contains(c.ContractType)).Count(),
+            srAmt = contractItems.Where(c => c.ContractType == (int)CourseContractType.ContractTypeDefinition.CRA).Sum(c => c.TotalCost) ?? 0,
+            srCount = contractItems.Where(c => c.ContractType == (int)CourseContractType.ContractTypeDefinition.CRA).Count(),
+            sdAmt = contractItems.Where(c => c.ContractType == (int)CourseContractType.ContractTypeDefinition.CNA).Sum(c => c.TotalCost) ?? 0,
+            sdCount = contractItems.Where(c => c.ContractType == (int)CourseContractType.ContractTypeDefinition.CNA).Count(),
+            oneAmt = contractItems.Where(c => oneByOne.Contains(c.ContractType)).Sum(c => c.TotalCost) ?? 0,
+            oneCount = contractItems.Where(c => oneByOne.Contains(c.ContractType)).Count(),
+            twoAmt = contractItems.Where(c => oneByTwo.Contains(c.ContractType)).Sum(c => c.TotalCost) ?? 0,
+            twoCount = contractItems.Where(c => oneByTwo.Contains(c.ContractType)).Count();
+
+    <div class="sparkline-pie m-t-20" id="@(_viewID)">
+        @(Math.Round((familyAmt) * 100M / totalAmt, 1)),
+        @(Math.Round((oneAmt) * 100M / totalAmt, 1)),
+        @(Math.Round((twoAmt) * 100M / totalAmt, 1)),
+        @(Math.Round((srAmt) * 100M / totalAmt, 1)),
+        @(Math.Round((sdAmt) * 100M / totalAmt, 1))
+    </div>
+    <p class="m-t-20">
+        <i class="zmdi livicon-evo" data-options="name: morph-checkbox-4.svg; size: 30px; style: filled; strokeStyle:round; fillColor:#4B4453; strokeColor:#4B4453; strokeWidth:2px; autoPlay:true;"></i> 複合式家庭合約 @(Math.Round((familyAmt) * 100M / totalAmt, 1))% (@($"{familyAmt:##,###,###,##0}") / @(familyCount)張) <br />
+        <i class="zmdi livicon-evo" data-options="name: morph-checkbox-4.svg; size: 30px; style: filled; strokeStyle:round; fillColor:#72668D; strokeColor:#72668D; strokeWidth:2px; autoPlay:true;"></i> 複合式一對一合約 @(Math.Round((oneAmt) * 100M / totalAmt, 1))% (@($"{oneAmt:##,###,###,##0}") / @(oneCount)張) <br />
+        <i class="zmdi livicon-evo"
+           data-options="name: morph-checkbox-4.svg; size: 30px; style: filled; strokeStyle:round; fillColor:#9887AC; strokeColor:#9887AC; strokeWidth:2px; autoPlay:true;"></i>
+        複合式一對二合約 @(Math.Round((twoAmt) * 100M / totalAmt, 1))% (@($"{twoAmt:##,###,###,##0}") / @(twoCount)張) <br />
+        <i class="zmdi livicon-evo"
+           data-options="name: morph-checkbox-4.svg; size: 30px; style: filled; strokeStyle:round; fillColor:#BDB2D1; strokeColor:#BDB2D1; strokeWidth:2px; autoPlay:true;"></i>
+        一對一S.R合約 @(Math.Round((srAmt) * 100M / totalAmt, 1))% (@($"{srAmt:##,###,###,##0}") / @(srCount)張) <br />
+        <i class="zmdi livicon-evo"
+           data-options="name: morph-checkbox-4.svg; size: 30px; style: filled; strokeStyle:round; fillColor:#E2DFF0; strokeColor:#E2DFF0; strokeWidth:2px; autoPlay:true;"></i>
+        一對一S.D合約 @(Math.Round((sdAmt) * 100M / totalAmt, 1))% (@($"{sdAmt:##,###,###,##0}") / @(sdCount)張) <br />
+    </p>
+}
+else
+{
+    <div class="pie">
+        <div class="pie_light small">
+            <br />目前沒有<br />
+            <span>相關合約張數</span>
+        </div>
+    </div>
+}
+
+<script>
+    $(function () {
+        //收款業績與上課業績比例
+        $('#@(_viewID)').sparkline('html', {
+            type: 'pie',
+            offset: 90,
+            width: '100px',
+            height: '100px',
+            sliceColors: ['#4B4453', '#72668D', '#9887AC', '#BDB2D1', '#E2DFF0']
+        });
+    });
+</script>

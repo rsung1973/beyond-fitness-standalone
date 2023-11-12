@@ -37,7 +37,11 @@
 @if (totalCount > 1)
 {
     <div class="sparkline-pie m-t-20" id="@(_viewID)">@(Math.Round((indicator.NewContractSubtotal ?? 0) * 100M / totalCount, 1)), @(Math.Round((indicator.RenewContractSubtotal ?? 0) * 100M / totalCount, 1)), @(Math.Round((indicator.InstallmentSubtotal ?? 0) * 100M / totalCount, 1))</div>
-}
+    <p class="m-t-20">
+        <i class="zmdi livicon-evo" data-options="name: morph-checkbox-4.svg; size: 30px; style: filled; strokeStyle:round; fillColor:#296073; strokeColor:#296073; strokeWidth:2px; autoPlay:true;"></i> 新單 @(Math.Round((indicator.NewContractSubtotal ?? 0) * 100M / totalCount, 1))% <br />
+        <i class="zmdi livicon-evo" data-options="name: morph-checkbox-4.svg; size: 30px; style: filled; strokeStyle:round; fillColor:#3596B5; strokeColor:#3596B5; strokeWidth:2px; autoPlay:true;"></i> 續約 @(Math.Round((indicator.RenewContractSubtotal ?? 0) * 100M / totalCount, 1))% <br />
+        <i class="zmdi livicon-evo" data-options="name: morph-checkbox-4.svg; size: 30px; style: filled; strokeStyle:round; fillColor:#ADC5CF; strokeColor:#ADC5CF; strokeWidth:2px; autoPlay:true;"></i> 分期 @(Math.Round((indicator.InstallmentSubtotal ?? 0) * 100M / totalCount, 1))% <br />
+    </p>}
 else
 {
     <div class="pie">
@@ -47,11 +51,7 @@ else
         </div>
     </div>
 }
-<p class="m-t-20">
-    <i class="zmdi livicon-evo" data-options="name: morph-checkbox-4.svg; size: 30px; style: filled; strokeStyle:round; fillColor:#296073; strokeColor:#296073; strokeWidth:2px; autoPlay:true;"></i> 新單 @(Math.Round((indicator.NewContractSubtotal ?? 0) * 100M / totalCount, 1))% <br />
-    <i class="zmdi livicon-evo" data-options="name: morph-checkbox-4.svg; size: 30px; style: filled; strokeStyle:round; fillColor:#3596B5; strokeColor:#3596B5; strokeWidth:2px; autoPlay:true;"></i> 續約 @(Math.Round((indicator.RenewContractSubtotal ?? 0) * 100M / totalCount, 1))% <br />
-    <i class="zmdi livicon-evo" data-options="name: morph-checkbox-4.svg; size: 30px; style: filled; strokeStyle:round; fillColor:#ADC5CF; strokeColor:#ADC5CF; strokeWidth:2px; autoPlay:true;"></i> 分期 @(Math.Round((indicator.InstallmentSubtotal ?? 0) * 100M / totalCount, 1))% <br />
-</p>
+
 <script>
     $(function () {
         //收款業績與上課業績比例

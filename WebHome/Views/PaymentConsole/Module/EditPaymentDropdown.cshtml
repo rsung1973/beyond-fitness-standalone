@@ -12,7 +12,8 @@
     ModelStateDictionary _modelState;
     ModelSource<UserProfile> models;
     _modelState = ViewContext.ModelState;
-    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];
+    var profile = await Context.GetUserAsync();
 }
 <ul class="header-dropdown">
     <li class="dropdown">
@@ -23,6 +24,10 @@
             <li><a href="@Html.Raw(Url.Action("EditPaymentForShopping","ConsoleHome",new { TransactionType = (int)Naming.PaymentTransactionType.運動商品}))">收款 - 運動商品</a></li>
             <li><a href="@Html.Raw(Url.Action("EditPaymentForShopping","ConsoleHome",new { TransactionType = (int)Naming.PaymentTransactionType.各項費用}))">收款 - 各項費用</a></li>
             <li><a href="@Html.Raw(Url.Action("EditPaymentForTerminationCharge","ConsoleHome",new { TransactionType = (int)Naming.PaymentTransactionType.終止手續費}))">收款 - 終止手續費</a></li>
+            @if (profile.IsSysAdmin() || profile.IsAssistant())
+            {
+                <li><a href="@Html.Raw(Url.Action("EditPaymentForCustom","ConsoleHome",new { TransactionType = (int)Naming.PaymentTransactionType.各項費用}))">收款 - 其他</a></li>
+            }
         </ul>
     </li>
 </ul>

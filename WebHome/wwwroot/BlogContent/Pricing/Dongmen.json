@@ -1,0 +1,51 @@
+﻿{
+  "branchName": "東門店",
+  "durationItems": [
+    {
+      "unit": "60",
+      "priceItems": [
+        {
+          "priceName": "單堂",
+          "price": "2500",
+          "desc": "短程規劃。",
+          "promote": "false"
+        },
+        {
+          "priceName": "25堂",
+          "price": "1900",
+          "desc": "中程規劃。",
+          "promote": "true"
+        },
+        {
+          "priceName": "50堂",
+          "price": "1700",
+          "desc": "長程規劃。",
+          "promote": "false"
+        }
+      ]
+    },
+    {
+      "unit": "90",
+      "priceItems": [
+        {
+          "priceName": "單堂",
+          "price": "3700",
+          "desc": "短程規劃。",
+          "promote": "false"
+        },
+        {
+          "priceName": "25堂",
+          "price": "2700",
+          "desc": "中程規劃。",
+          "promote": "true"
+        },
+        {
+          "priceName": "50堂",
+          "price": "2500",
+          "desc": "長程規劃。",
+          "promote": "false"
+        }
+      ]
+    }
+  ]
+}

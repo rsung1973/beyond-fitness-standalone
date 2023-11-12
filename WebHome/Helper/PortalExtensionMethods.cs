@@ -251,10 +251,12 @@ namespace WebHome.Helper
 
         {
             var items = models.GetTable<UserEvent>()
-                    .Where(v => v.StartDate <= DateTime.Today && v.UID == profile.UID)
+                    .Where(v => v.UID == profile.UID)
                     .Where(v => !models.GetTable<UserEventCommitment>().Any(c => c.EventID == v.EventID))
                     .Join(models.GetTable<SystemEventBulletin>()
-                                .Where(s => s.EventID == (int)SystemEventBulletin.BulletinEventType.系統公告), v => v.SystemEventID, b => b.EventID, (v, b) => v);
+                                    .Where(s => s.StartDate <= DateTime.Today)
+                                    .Where(s => s.EndDate > DateTime.Today)
+                                /*.Where(s => s.EventID == (int)SystemEventBulletin.BulletinEventType.系統公告)*/, v => v.SystemEventID, b => b.EventID, (v, b) => v);
 
             var item = items.FirstOrDefault();
             if (item != null)

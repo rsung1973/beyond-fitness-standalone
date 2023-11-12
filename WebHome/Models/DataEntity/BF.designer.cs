@@ -25531,6 +25531,8 @@ namespace WebHome.Models.DataEntity
 		
 		private System.Nullable<System.DateTime> _PINExpiration;
 		
+		private System.Nullable<bool> _AttendanceSignature;
+		
 		private EntityRef<UserProfile> _UserProfile;
 		
     #region 擴充性方法定義
@@ -25573,6 +25575,8 @@ namespace WebHome.Models.DataEntity
     partial void OnPINChanged();
     partial void OnPINExpirationChanging(System.Nullable<System.DateTime> value);
     partial void OnPINExpirationChanged();
+    partial void OnAttendanceSignatureChanging(System.Nullable<bool> value);
+    partial void OnAttendanceSignatureChanged();
     #endregion
 		
 		public UserProfileExtension()
@@ -25941,6 +25945,26 @@ namespace WebHome.Models.DataEntity
 					this._PINExpiration = value;
 					this.SendPropertyChanged("PINExpiration");
 					this.OnPINExpirationChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AttendanceSignature", DbType="Bit")]
+		public System.Nullable<bool> AttendanceSignature
+		{
+			get
+			{
+				return this._AttendanceSignature;
+			}
+			set
+			{
+				if ((this._AttendanceSignature != value))
+				{
+					this.OnAttendanceSignatureChanging(value);
+					this.SendPropertyChanging();
+					this._AttendanceSignature = value;
+					this.SendPropertyChanged("AttendanceSignature");
+					this.OnAttendanceSignatureChanged();
 				}
 			}
 		}
@@ -47571,6 +47595,8 @@ namespace WebHome.Models.DataEntity
 		
 		private string _BlogID;
 		
+		private System.Nullable<System.DateTime> _NotAfter;
+		
 		private EntitySet<BlogTag> _BlogTag;
 		
 		private EntityRef<Document> _Document;
@@ -47591,6 +47617,8 @@ namespace WebHome.Models.DataEntity
     partial void OnSubtitleChanged();
     partial void OnBlogIDChanging(string value);
     partial void OnBlogIDChanged();
+    partial void OnNotAfterChanging(System.Nullable<System.DateTime> value);
+    partial void OnNotAfterChanged();
     #endregion
 		
 		public BlogArticle()
@@ -47705,6 +47733,26 @@ namespace WebHome.Models.DataEntity
 					this._BlogID = value;
 					this.SendPropertyChanged("BlogID");
 					this.OnBlogIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NotAfter", DbType="DateTime")]
+		public System.Nullable<System.DateTime> NotAfter
+		{
+			get
+			{
+				return this._NotAfter;
+			}
+			set
+			{
+				if ((this._NotAfter != value))
+				{
+					this.OnNotAfterChanging(value);
+					this.SendPropertyChanging();
+					this._NotAfter = value;
+					this.SendPropertyChanged("NotAfter");
+					this.OnNotAfterChanged();
 				}
 			}
 		}
@@ -69934,6 +69982,8 @@ namespace WebHome.Models.DataEntity
 		
 		private string _CommitAttendanceIP;
 		
+		private string _Signature;
+		
 		private EntityRef<Attachment> _Attachment;
 		
 		private EntityRef<LessonTime> _LessonTime;
@@ -69962,6 +70012,8 @@ namespace WebHome.Models.DataEntity
     partial void OnAttachmentIDChanged();
     partial void OnCommitAttendanceIPChanging(string value);
     partial void OnCommitAttendanceIPChanged();
+    partial void OnSignatureChanging(string value);
+    partial void OnSignatureChanged();
     #endregion
 		
 		public LessonPlan()
@@ -70175,6 +70227,26 @@ namespace WebHome.Models.DataEntity
 					this._CommitAttendanceIP = value;
 					this.SendPropertyChanged("CommitAttendanceIP");
 					this.OnCommitAttendanceIPChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Signature", DbType="NVarChar(MAX)")]
+		public string Signature
+		{
+			get
+			{
+				return this._Signature;
+			}
+			set
+			{
+				if ((this._Signature != value))
+				{
+					this.OnSignatureChanging(value);
+					this.SendPropertyChanging();
+					this._Signature = value;
+					this.SendPropertyChanged("Signature");
+					this.OnSignatureChanged();
 				}
 			}
 		}

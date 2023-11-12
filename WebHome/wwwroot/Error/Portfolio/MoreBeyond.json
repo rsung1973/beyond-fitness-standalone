@@ -1,0 +1,22 @@
+{
+    "Items": [
+        {
+            "link": "https://www.facebook.com/beyond.fitness.pro/",
+            "imgSrc": "images/social/facebook.png",
+            "title": "Facebook",
+            "alt": "BeyondFitness|Facebook"
+        },
+        {
+            "link": "https://www.instagram.com/beyond_ft/",
+            "imgSrc": "images/social/instagram.png",
+            "title": "Instagram",
+            "alt": "BeyondFitness|Instagram"
+        },
+        {
+            "link": "https://www.youtube.com/@@BeyondFitnessProfessional",
+            "imgSrc": "images/social/youtube.png",
+            "title": "Youtube",
+            "alt": "BeyondFitness|Youtube"
+        }
+    ]
+}

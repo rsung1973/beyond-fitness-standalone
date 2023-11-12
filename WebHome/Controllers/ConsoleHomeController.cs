@@ -964,8 +964,12 @@ namespace WebHome.Controllers
             result.ViewName = "~/Views/PaymentConsole/EditPaymentForShopping.cshtml";
             return result;
         }
-
-
+        public async Task<ActionResult> EditPaymentForCustomAsync(PaymentQueryViewModel viewModel)
+        {
+            ViewResult result = (ViewResult)(await PaymentIndexAsync(viewModel));
+            result.ViewName = "~/Views/PaymentConsole/EditPaymentForCustom.cshtml";
+            return result;
+        }
 
         public async Task<ActionResult> PaymentIndexAsync(PaymentQueryViewModel viewModel)
         {

@@ -535,6 +535,8 @@ namespace WebHome.Models.ViewModel
         public DateTime? LessonDate { get => lessonDate?.CurrentLocalTime(); set => lessonDate = value; }
         public DateTime? EndQueryDate { get => endQueryDate?.CurrentLocalTime(); set => endQueryDate = value; }
         public String Category { get; set; }
+        public String Signature { get; set; }
+
     }
 
     public class LessonPriceViewModel

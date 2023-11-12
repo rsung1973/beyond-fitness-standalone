@@ -1,0 +1,95 @@
+@charset "UTF-8";
+/* Slider */
+/* line 3, /Users/garfaild/Documents/BeyondFitness/02.需求分析/01.UI/03.靜態網頁/20181121-Front-end/plugins/slick/slick.scss */
+.slick-slider {
+  position: relative;
+  display: block;
+  box-sizing: border-box;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -ms-touch-action: pan-y;
+  touch-action: pan-y;
+  -webkit-tap-highlight-color: transparent; }
+
+/* line 17, /Users/garfaild/Documents/BeyondFitness/02.需求分析/01.UI/03.靜態網頁/20181121-Front-end/plugins/slick/slick.scss */
+.slick-list {
+  position: relative;
+  overflow: hidden;
+  display: block;
+  margin: 0;
+  padding: 0; }
+  /* line 24, /Users/garfaild/Documents/BeyondFitness/02.需求分析/01.UI/03.靜態網頁/20181121-Front-end/plugins/slick/slick.scss */
+  .slick-list:focus {
+    outline: none; }
+  /* line 28, /Users/garfaild/Documents/BeyondFitness/02.需求分析/01.UI/03.靜態網頁/20181121-Front-end/plugins/slick/slick.scss */
+  .slick-list.dragging {
+    cursor: pointer;
+    cursor: hand; }
+
+/* line 33, /Users/garfaild/Documents/BeyondFitness/02.需求分析/01.UI/03.靜態網頁/20181121-Front-end/plugins/slick/slick.scss */
+.slick-slider .slick-track,
+.slick-slider .slick-list {
+  -webkit-transform: translate3d(0, 0, 0);
+  -moz-transform: translate3d(0, 0, 0);
+  -ms-transform: translate3d(0, 0, 0);
+  -o-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0); }
+
+/* line 42, /Users/garfaild/Documents/BeyondFitness/02.需求分析/01.UI/03.靜態網頁/20181121-Front-end/plugins/slick/slick.scss */
+.slick-track {
+  position: relative;
+  left: 0;
+  top: 0;
+  display: block;
+  margin-left: auto;
+  margin-right: auto; }
+  /* line 50, /Users/garfaild/Documents/BeyondFitness/02.需求分析/01.UI/03.靜態網頁/20181121-Front-end/plugins/slick/slick.scss */
+  .slick-track:before, .slick-track:after {
+    content: "";
+    display: table; }
+  /* line 56, /Users/garfaild/Documents/BeyondFitness/02.需求分析/01.UI/03.靜態網頁/20181121-Front-end/plugins/slick/slick.scss */
+  .slick-track:after {
+    clear: both; }
+  /* line 60, /Users/garfaild/Documents/BeyondFitness/02.需求分析/01.UI/03.靜態網頁/20181121-Front-end/plugins/slick/slick.scss */
+  .slick-loading .slick-track {
+    visibility: hidden; }
+
+/* line 64, /Users/garfaild/Documents/BeyondFitness/02.需求分析/01.UI/03.靜態網頁/20181121-Front-end/plugins/slick/slick.scss */
+.slick-slide {
+  float: left;
+  height: 100%;
+  min-height: 1px;
+  display: none; }
+  /* line 68, /Users/garfaild/Documents/BeyondFitness/02.需求分析/01.UI/03.靜態網頁/20181121-Front-end/plugins/slick/slick.scss */
+  [dir="rtl"] .slick-slide {
+    float: right; }
+  /* line 71, /Users/garfaild/Documents/BeyondFitness/02.需求分析/01.UI/03.靜態網頁/20181121-Front-end/plugins/slick/slick.scss */
+  .slick-slide img {
+    display: block; }
+  /* line 74, /Users/garfaild/Documents/BeyondFitness/02.需求分析/01.UI/03.靜態網頁/20181121-Front-end/plugins/slick/slick.scss */
+  .slick-slide.slick-loading img {
+    display: none; }
+  /* line 80, /Users/garfaild/Documents/BeyondFitness/02.需求分析/01.UI/03.靜態網頁/20181121-Front-end/plugins/slick/slick.scss */
+  .slick-slide.dragging img {
+    pointer-events: none; }
+  /* line 84, /Users/garfaild/Documents/BeyondFitness/02.需求分析/01.UI/03.靜態網頁/20181121-Front-end/plugins/slick/slick.scss */
+  .slick-initialized .slick-slide {
+    display: block; }
+  /* line 88, /Users/garfaild/Documents/BeyondFitness/02.需求分析/01.UI/03.靜態網頁/20181121-Front-end/plugins/slick/slick.scss */
+  .slick-loading .slick-slide {
+    visibility: hidden; }
+  /* line 92, /Users/garfaild/Documents/BeyondFitness/02.需求分析/01.UI/03.靜態網頁/20181121-Front-end/plugins/slick/slick.scss */
+  .slick-vertical .slick-slide {
+    display: block;
+    height: auto;
+    border: 1px solid transparent; }
+
+/* line 98, /Users/garfaild/Documents/BeyondFitness/02.需求分析/01.UI/03.靜態網頁/20181121-Front-end/plugins/slick/slick.scss */
+.slick-arrow.slick-hidden {
+  display: none; }
+
+/*# sourceMappingURL=slick.css.map */

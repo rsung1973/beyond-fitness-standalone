@@ -169,11 +169,11 @@ namespace WebHome.Controllers
             }
 
             var item = models.GetTable<BlogArticle>().Where(b => b.DocID == viewModel.DocID).FirstOrDefault();
-            if (item == null)
+            if (item == null || item.NotAfter < DateTime.Today)
             {
                 return View("Index");
             }
-            return View(item);
+            return View("~/Views/MainActivity/BlogSingle2024.cshtml", item);
         }
 
         public ActionResult DropifyUpload()
@@ -363,7 +363,7 @@ namespace WebHome.Controllers
 
         }
 
-        public async Task<ActionResult> CommitTrialLearner(TrialLearnerViewModel viewModel)
+        public async Task<ActionResult> CommitTrialLearnerAsync(TrialLearnerViewModel viewModel)
         {
             ViewBag.ViewModel = viewModel;
             ModelState.Clear();
@@ -505,7 +505,7 @@ namespace WebHome.Controllers
             return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", Validation.Success);
         }
 
-        public async Task<ActionResult> ValidateTrialLearner(TrialLearnerViewModel viewModel)
+        public async Task<ActionResult> ValidateTrialLearnerAsync(TrialLearnerViewModel viewModel)
         {
             ViewBag.ViewModel = viewModel;
             ModelState.Clear();
@@ -516,18 +516,21 @@ namespace WebHome.Controllers
                 if (viewModel.UserName == null)
                 {
                     ModelState.AddModelError("UserName", Validation.InvalidUserName);
+                    return Json(new { result = false, message = ModelState.ErrorMessage() });
                 }
 
                 viewModel.Phone = viewModel.Phone.GetEfficientString();
                 if (viewModel.Phone == null || !Regex.IsMatch(viewModel.Phone, "^[0-9]{10}$"))
                 {
                     ModelState.AddModelError("Phone", Validation.InvalidPhone);
+                    return Json(new { result = false, message = ModelState.ErrorMessage() });
                 }
 
                 viewModel.Gender = viewModel.Gender.GetEfficientString();
                 if (viewModel.Gender == null)
                 {
                     ModelState.AddModelError("Gender", Validation.InvalidGender);
+                    return Json(new { result = false, message = ModelState.ErrorMessage() });
                 }
 
                 //viewModel.Email = viewModel.Email.GetEfficientString();
@@ -539,6 +542,7 @@ namespace WebHome.Controllers
                 if (viewModel.TimeID?.Any(d => d.HasValue) != true)
                 {
                     ModelState.AddModelError("Message", Validation.InvalidTimeID);
+                    return Json(new { result = false, message = ModelState.ErrorMessage() });
                 }
             }
             else if (viewModel.Step == 2)
@@ -546,6 +550,7 @@ namespace WebHome.Controllers
                 if (viewModel.HelpID?.Any(d => d.HasValue) != true)
                 {
                     ModelState.AddModelError("Message", Validation.InvalidHelpID);
+                    return Json(new { result = false, message = ModelState.ErrorMessage() });
                 }
 
             }
@@ -555,6 +560,7 @@ namespace WebHome.Controllers
                 if (!viewModel.BranchID.HasValue)
                 {
                     ModelState.AddModelError("BranchID", Validation.InvalidBranch);
+                    return Json(new { result = false, message = ModelState.ErrorMessage() });
                 }
             }
             else
@@ -562,6 +568,7 @@ namespace WebHome.Controllers
                 if (viewModel.Agree != true)
                 {
                     ModelState.AddModelError("Message", Validation.InvalidAgreement);
+                    return Json(new { result = false, message = ModelState.ErrorMessage() });
                 }
 
                 viewModel.gRecaptchaResponse = viewModel.gRecaptchaResponse.GetEfficientString();
