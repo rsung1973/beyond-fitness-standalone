@@ -36,6 +36,7 @@ using System.Net.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Http;
 using Validation = WebHome.Models.Resources.CommitTrialLearner;
+using CommonLib.Core.Utility;
 
 namespace WebHome.Controllers
 {
@@ -173,7 +174,7 @@ namespace WebHome.Controllers
             {
                 return View("Index");
             }
-            return View("~/Views/MainActivity/BlogSingle2024.cshtml", item);
+            return View("~/Views/MainActivity/BlogSingle.cshtml", item);
         }
 
         public ActionResult DropifyUpload()
@@ -387,10 +388,10 @@ namespace WebHome.Controllers
             }
 
             viewModel.Email = viewModel.Email.GetEfficientString();
-            if (viewModel.Email == null || !Regex.IsMatch(viewModel.Email, "\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*"))
-            {
-                ModelState.AddModelError("Email", Validation.InvalidEmail);
-            }
+            //if (viewModel.Email == null || !Regex.IsMatch(viewModel.Email, "\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*"))
+            //{
+            //    ModelState.AddModelError("Email", Validation.InvalidEmail);
+            //}
 
             if (viewModel.HelpID?.Any(d => d.HasValue) != true)
             {
@@ -500,9 +501,17 @@ namespace WebHome.Controllers
                     TimeID = d.Value,
                 }));
 
-            models.SubmitChanges();
-
-            return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", Validation.Success);
+            try
+            {
+                models.SubmitChanges();
+                //return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", Validation.Success);
+                return Json(new { result = true });
+            }
+            catch (Exception ex)
+            {
+                FileLogger.Logger.Error(ex);
+                return Json(new { result = false, message = ex.Message });
+            }
         }
 
         public async Task<ActionResult> ValidateTrialLearnerAsync(TrialLearnerViewModel viewModel)
@@ -571,39 +580,39 @@ namespace WebHome.Controllers
                     return Json(new { result = false, message = ModelState.ErrorMessage() });
                 }
 
-                viewModel.gRecaptchaResponse = viewModel.gRecaptchaResponse.GetEfficientString();
-                if (viewModel.gRecaptchaResponse == null)
-                {
-                    return Json(new { result = false, message = Validation.UseCaptcha });
-                    //ModelState.AddModelError("Message", Validation.UseCaptcha);
-                }
-                else
-                {
-                    var parameters = new Dictionary<string, string>
-                    {
-                        { "secret", AppSettings.Default.ReCaptcha.SecretKey },
-                        { "response", viewModel.gRecaptchaResponse }
-                    };
+                //viewModel.gRecaptchaResponse = viewModel.gRecaptchaResponse.GetEfficientString();
+                //if (viewModel.gRecaptchaResponse == null)
+                //{
+                //    return Json(new { result = false, message = Validation.UseCaptcha });
+                //    //ModelState.AddModelError("Message", Validation.UseCaptcha);
+                //}
+                //else
+                //{
+                //    var parameters = new Dictionary<string, string>
+                //    {
+                //        { "secret", AppSettings.Default.ReCaptcha.SecretKey },
+                //        { "response", viewModel.gRecaptchaResponse }
+                //    };
 
-                    IHttpClientFactory httpClientFactory = ServiceProvider.GetRequiredService<IHttpClientFactory>();
-                    var client = httpClientFactory.CreateClient();
+                //    IHttpClientFactory httpClientFactory = ServiceProvider.GetRequiredService<IHttpClientFactory>();
+                //    var client = httpClientFactory.CreateClient();
 
-                    var response = await client.PostAsync(AppSettings.Default.ReCaptcha.UrlVerification, new FormUrlEncodedContent(parameters));
-                    var responseBody = await response.Content.ReadAsStringAsync();
+                //    var response = await client.PostAsync(AppSettings.Default.ReCaptcha.UrlVerification, new FormUrlEncodedContent(parameters));
+                //    var responseBody = await response.Content.ReadAsStringAsync();
 
-                    dynamic captchaResult = JsonConvert.DeserializeObject(responseBody);
+                //    dynamic captchaResult = JsonConvert.DeserializeObject(responseBody);
 
-                    if (captchaResult.success == true)
-                    {
-                        // reCAPTCHA 驗證通過，繼續處理您的業務邏輯
-                    }
-                    else
-                    {
-                        // reCAPTCHA 驗證失敗，返回錯誤頁面或相應的處理邏輯
-                        return Json(new { result = false, message = Validation.InvalidCaptcha });
-                        //ModelState.AddModelError("Message", Validation.InvalidCaptcha);
-                    }
-                }
+                //    if (captchaResult.success == true)
+                //    {
+                //        // reCAPTCHA 驗證通過，繼續處理您的業務邏輯
+                //    }
+                //    else
+                //    {
+                //        // reCAPTCHA 驗證失敗，返回錯誤頁面或相應的處理邏輯
+                //        return Json(new { result = false, message = Validation.InvalidCaptcha });
+                //        //ModelState.AddModelError("Message", Validation.InvalidCaptcha);
+                //    }
+                //}
             }
                 
             if (!ModelState.IsValid)

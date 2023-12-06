@@ -204,7 +204,10 @@ namespace WebHome.Controllers
                 return Json(new { result = false, message = "未登記此上課時間!!" });
 
             item.LessonPlan.CommitAttendance = DateTime.Now;
-            //item.LessonPlan.CommitAttendanceIP = HttpContext.Connection.RemoteIpAddress?.ToString();
+            if (viewModel.Signature != null)
+            {
+                item.LessonPlan.CommitAttendanceIP = HttpContext.Connection.RemoteIpAddress?.ToString();
+            }
             item.LessonPlan.Signature = viewModel.Signature;
             models.SubmitChanges();
 

@@ -53,6 +53,8 @@
     <link href="plugins/sweetalert2/sweetalert2.min.css" rel="stylesheet">
     <!-- SmartCalendar Datetimepick -->
     <link href="plugins/smartcalendar/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+    <!-- Light Gallery Plugin Css -->
+    <link rel="stylesheet" href="plugins/light-gallery/css/lightgallery.css">
 
 
     @RenderSection("CustomHeader", false)
@@ -82,6 +84,8 @@
     <!-- SweetAlert Plugin Js -->
     <script src="plugins/sweetalert2/sweetalert2.min.js?1.0"></script>
     <!-- SmartCalendar -->
+    <!-- Light Gallery Plugin Js -->
+    <script src="plugins/light-gallery/js/lightgallery-all.min.js"></script>
     <script src="plugins/smartcalendar/js/bootstrap-datetimepicker.min.js"></script>
     <script src="plugins/smartcalendar/js/locales-datetimepicker/bootstrap-datetimepicker.zh-TW.js"></script>
     <script src="plugins/jquery-form/jquery-form.min.js"></script>
@@ -368,8 +372,8 @@
                         <a href="@(Url.Action("Index","CoachFacet"))"><i class="zmdi zmdi-time-restore"></i><span>時光機</span> </a>
                     </li>*@
                 }
-                <li>
-                    <a href="@(Url.Action("PricingList","MainActivity"))" target="_blank"><i class="zmdi zmdi-search-replace"></i><span>價格詢問球</span> </a>
+                <li class="price-thumbnials">
+                    <a href="images/price/p-202306.png" target="_blank"><i class="zmdi zmdi-search-replace"></i><span>價格詢問球</span> </a>
                 </li>                
                 @if (_model.IsCoach() || _model.IsAssistant() || _model.IsSysAdmin())
                 {
@@ -415,6 +419,15 @@
 
             $(".ls-toggle-btn").click();
 
+            $('.price-thumbnials').lightGallery({
+                thumbnail: true,
+                selector: 'a',
+                download: false,
+                enableDrag: false,
+                zoom: false,
+                hash: false,
+                fullScreen: true
+            });   
         });
 
         function equipDatetimePicker(param) {

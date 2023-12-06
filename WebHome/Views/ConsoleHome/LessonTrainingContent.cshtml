@@ -50,8 +50,6 @@
     <link rel="stylesheet" href="plugins/nestable/jquery-nestable.css" />
     <!-- Custom Css -->
     <link rel="stylesheet" href="css/customelist.css?2.0" />
-    <!-- Light Gallery Plugin Css -->
-    <link rel="stylesheet" href="plugins/light-gallery/css/lightgallery.css">
     <!-- jSignature -->
     <link rel="stylesheet" href="css/jsignature.css">
 
@@ -107,7 +105,8 @@
                                 hasSlideItem = true;
                                 <li><a href="javascript:attendLesson();">完成上課</a></li>
                             }
-                            @if (learner.UserProfileExtension?.AttendanceSignature == true && !lessonItem.LessonPlan.CommitAttendance.HasValue)
+                            @if (learner.UserProfileExtension?.AttendanceSignature == true && !lessonItem.LessonPlan.CommitAttendance.HasValue
+                                  && DateTime.Now.AddHours(1) >= lessonItem.ClassTime)
                             {
                                 hasSlideItem = true;
                                 <li>
@@ -147,7 +146,7 @@
                                             };
 
                                             showLoading();
-                                            $.post('@Html.Raw(Url.Action("SignaturePanel","LessonConsole"))', { }, function (data) {
+                                            $.post('@Html.Raw(Url.Action("SignaturePanel", "LessonConsole"))', { }, function (data) {
                                                 hideLoading();
                                                 $(data).appendTo($('body'));
                                             });
@@ -244,8 +243,6 @@
     <script src="plugins/jquery-sparkline/jquery.sparkline.js"></script>
     <!-- Jquery Nestable -->
     <script src="plugins/nestable/jquery.nestable.js"></script>
-    <!-- Light Gallery Plugin Js -->
-    <script src="plugins/light-gallery/js/lightgallery-all.min.js"></script>
 
     <script src="plugins/jSignature/jSignature.js"></script>
     <script src="plugins/jSignature/plugins/jSignature.CompressorBase30.js"></script>

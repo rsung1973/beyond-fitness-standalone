@@ -47597,6 +47597,8 @@ namespace WebHome.Models.DataEntity
 		
 		private System.Nullable<System.DateTime> _NotAfter;
 		
+		private string _Youtube;
+		
 		private EntitySet<BlogTag> _BlogTag;
 		
 		private EntityRef<Document> _Document;
@@ -47619,6 +47621,8 @@ namespace WebHome.Models.DataEntity
     partial void OnBlogIDChanged();
     partial void OnNotAfterChanging(System.Nullable<System.DateTime> value);
     partial void OnNotAfterChanged();
+    partial void OnYoutubeChanging(string value);
+    partial void OnYoutubeChanged();
     #endregion
 		
 		public BlogArticle()
@@ -47753,6 +47757,26 @@ namespace WebHome.Models.DataEntity
 					this._NotAfter = value;
 					this.SendPropertyChanged("NotAfter");
 					this.OnNotAfterChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Youtube", DbType="NVarChar(256)")]
+		public string Youtube
+		{
+			get
+			{
+				return this._Youtube;
+			}
+			set
+			{
+				if ((this._Youtube != value))
+				{
+					this.OnYoutubeChanging(value);
+					this.SendPropertyChanging();
+					this._Youtube = value;
+					this.SendPropertyChanged("Youtube");
+					this.OnYoutubeChanged();
 				}
 			}
 		}
@@ -68879,7 +68903,7 @@ namespace WebHome.Models.DataEntity
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Email", DbType="NVarChar(64) NOT NULL", CanBeNull=false)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Email", DbType="NVarChar(64)")]
 		public string Email
 		{
 			get
