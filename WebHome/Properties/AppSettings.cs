@@ -125,6 +125,8 @@ namespace WebHome.Properties
 
         public String BFDbConnection { get; set; }
 
+        public String GA_Key { get; set; } = "G-HX15C1DBGK";
+
     }
 
     public class Settings

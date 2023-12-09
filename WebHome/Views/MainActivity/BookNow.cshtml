@@ -2,14 +2,16 @@
 
 @using System.IO
 @using System.Linq.Expressions
+@using Microsoft.AspNetCore.Mvc.ModelBinding
 
 @using WebHome.Helper
 @using WebHome.Models.Locale
 @using WebHome.Models.ViewModel
 @using WebHome.Models.DataEntity
 @using WebHome.Controllers
-@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using CommonLib.Utility
 @using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
 @using WebHome.Models.Resources
 
 @{
@@ -18,45 +20,674 @@
 
     models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
     _modelState = ViewContext.ModelState;
+    ViewBag.MainClass = "booking";
+    ViewBag.MenuDark = false;
 
     Layout = "~/Views/MainActivity/Template/MainPage.cshtml";
+
+   await Html.RenderPartialAsync("~/Views/MainActivity/Template/GlobalResource.cshtml");
+   dynamic globalResource = ViewContext.HttpContext.Items["GlobalResource"] as dynamic;
+   dynamic bookNowAll = globalResource["BookNow"][ViewBag.Lang ?? "zh-TW"] as dynamic;
+   dynamic commonAll = globalResource["Common"][ViewBag.Lang ?? "zh-TW"] as dynamic;
+   dynamic findUsAll = globalResource["FindUs"][ViewBag.Lang ?? "zh-TW"] as dynamic;
 
 }
 
 @section CustomHeader {
 <meta name="description"
     content="預約體驗教練課程，直接透過線上訊息，電話，E-Mail 預約體驗時間以及了解更多內容。專業教練暖心指導、安全的訓練環境、物理治療、營養規劃、運動防護一次包辦! 個人健康分析資料庫+雲端數據化紀錄,更有效率的為您增進心肺、肌力與體能,新手也能達成理想的體態與健康目標。" />
-
+   <!-- Stepper CSS -->
+   <link id="skinCSS" rel="stylesheet" href="plugins/dynamic-survey-quiz/dist/style.css">
+   <!-- CheckBox CSS -->
+   <link id="skinCSS" rel="stylesheet" href="plugins/checkbox-group-styled-as-tiles/dist/style.css">
+   <!-- Radio CSS -->
+   <link id="skinCSS" rel="stylesheet" href="plugins/chippy-checkbox-inputs/dist/style.css">
+   <!-- Radio CSS -->
+   <link id="skinCSS" rel="stylesheet" href="plugins/radio-button-vs-card/dist/style.css">
+   <!-- Sweetalert -->
+   <link href="plugins/sweetalert2/sweetalert2.min.css" rel="stylesheet">
 }
-
-<section class="section-flow">
-    <div class="container">
-        <div class="row">
-            <h1 class="align-center">@Html.Raw(NamingItem.BookNowTitle)</h1>
-            <div class="col-md-4 align-center">
-                <div class="wow fadeIn p-t-20" data-wow-delay="0.15s">
-                    <div class="image">
-                        <img src="images/landing/contact.png">
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-8">
-                <hr />
-                <ul class="list-style2">
-                    <li>@Html.Raw(NamingItem.BookNowStep1)</li>
-                    <li>@Html.Raw(NamingItem.BookNowStep2)</li>
-                    <li>@Html.Raw(NamingItem.BookNowStep3)</li>
-                    <li>@Html.Raw(NamingItem.BookNowStep4)</li>
-                </ul>
-                <div class="col-grey p-l-30 p-b-10">@Html.Raw(NamingItem.Disclaimer)</div>
-                <a href="javascript:bindTrackingCode('立即預約', 'AddToPaymentInfo', 'https://forms.gle/SLZx5NCwCDa15Q5t5', '_blank')" class="btn btn-default btn-round wow fadeInUp animated" data-wow-delay=".6s" data-effect="mfp-zoom-in">@Html.Raw(NamingItem.Reservation)</a>
-            </div>
-        </div>
-    </div>
+<!--Banner-->
+<section class="section border-0 m-0 p-0 banner container-background">
+   <div class="container pt-5 h-100 handwriting-title">
+      <a href="#main"
+         class="slider-scroll-button slider-scroll-button-light position-absolute bottom-10 left-50pct transform3dx-n50"
+         data-hash="" data-hash-offset="0" data-hash-offset-lg="80" alt="BeyondFitness|捲起來">Sroll
+         To Bottom</a>
+   </div>
 </section>
-<!-- // 公告事項 -->
-@*@{ await Html.RenderPartialAsync("~/Views/MainActivity/Module/DeclarationItem.cshtml");}*@
+<!--改變從哪裡發生-->
+<section class="section bg-color-dark section-text-light section-center my-0 border-0 p-relative overflow-hidden py-5"
+   id="main">
+   <div class="container container-xl-custom container-xxl-custom pt-5 mt-5">
+      <div class="row">
+         <div class="col-12">           
+            <h3 class="word-rotator letters type type-clean-light appear-animation font-weight-bold line-height-5"
+               data-appear-animation="fadeIn" data-appear-animation-delay="300">
+               <span>@Html.Raw(bookNowAll.FirstStepSlogan)</span><br>
+               <span class="word-rotator-words waiting">
+                  <b class="is-visible">@Html.Raw(bookNowAll.FirstStepSlogan2)</b>
+               </span>
+            </h3>     
+            <h4 class="font-weight-semi-bold text-color-tertiary mb-2 positive-ls-5 mt-5">
+               @Html.Raw(bookNowAll.FirstStepDesc)
+            </h4>
+            <h3 class="font-weight-bold mb-0">@Html.Raw(bookNowAll.FirstStep)</h3>
+            <div class="divider divider-tertiary divider-small divider-small-center divider-xxs py-4">
+               <hr class="my-0" style="width: 50px; height: 3px;">
+            </div>
+         </div>
+      </div>
+   </div>
+   <div class="row pb-5">
+      <div
+         class="col-12 col-xl-4 col-lg-3 col-md-12 d-flex justify-content-center justify-content-lg-end align-self-center my-5 my-lg-0 my-md-5">
+         <img src="images/booking/change-01.png" alt="BeyondFitness|預約體驗" class="custom-change-img1">
+      </div>
+      <div class="col-12 col-xl-4 col-lg-5 col-md-12 px-3 px-lg-0 px-md-5">
+         <p class="px-5 px-xl-5 px-lg-4 px-md-5 py-5 py-xl-5 py-lg-4 py-md-5">
+            @Html.Raw(bookNowAll.FirstStepMessage)
+         </p>
+      </div>
+      <div
+         class="col-12 col-xl-4 col-lg-4 col-md-12 d-flex justify-content-center justify-content-xl-start justify-content-lg-center align-self-center hidden-md-down">
+         <img src="images/booking/change-02.png" alt="BeyondFitness|預約體驗" class="custom-change-img2">
+      </div>
+   </div>   
+</section>
+<!--改變圖-->
+<section
+   class="section section-no-background border-0 my-0 py-0 position-relative z-index-1 custom-change-container hidden-lg-up">
+   <img src="images/booking/change-02.png" alt="BeyondFitness|預約體驗" class="custom-change-img2">
+</section>
+<!--小小的改變-->
+<section class="section section-no-background section-text-light my-0 py-5 border-0 p-relative overflow-hidden pb-5">
+   <div class="container container-xl-custom container-xxl-custom pt-5 pt-lg-0 pt-md-0">
+      <div class="row">
+         <div
+            class="col-lg-6 col-md-12 gx-0 d-flex align-self-center justify-content-center order-2 order-lg-1 order-md-2 position-relative">
+            <div class="owl-carousel owl-theme pe-0 pe-lg-5 pt-5 pt-lg-0 pt-md-0"
+               data-plugin-options="{'items': 1, 'loop': true, 'nav': false, 'dots': true,'margin': 50, 'autoplay': false}">
+               <div class="d-flex justify-content-center align-items-center">
+                  <img src="images/booking/carasoul-01.png" alt="BeyondFitness|預約體驗" class="custom-carousel-img">
+               </div>
+               <div class="d-flex justify-content-center align-items-center">
+                  <img src="images/booking/carasoul-02.png" alt="BeyondFitness|預約體驗" class="custom-carousel-img">
+               </div>
+               <div class="d-flex justify-content-center align-items-center">
+                  <img src="images/booking/carasoul-03.png" alt="BeyondFitness|預約體驗" class="custom-carousel-img">
+               </div>
+            </div>
+         </div>
+         <div class="col-lg-6 col-md-12 order-1 order-lg-2 order-md-1">
+            <div class="pb-5">
+               <h4
+                  class="text-color-tertiary mb-2 positive-ls-5 d-flex justify-content-center justify-content-lg-start justify-content-md-center">
+                  @Html.Raw(bookNowAll.Achieve)
+               </h4>
+               <h3 class="font-weight-bold line-height-5 text-center text-lg-start">
+                  @Html.Raw(bookNowAll.AchieveSlogan)
+               </h3>
 
+               <div class="divider divider-tertiary divider-small divider-xxs py-4 hidden-md-down">
+                  <hr class="my-0" style="width: 50px; height: 3px;">
+               </div>
+
+               <div class="divider divider-tertiary divider-small divider-small-center divider-xxs py-4 hidden-lg-up">
+                  <hr class="my-0" style="width: 50px; height: 3px;">
+               </div>
+               <p class="py-3 px-5 px-lg-0 px-md-5 text-lg-start">
+                  @Html.Raw(bookNowAll.AchieveMessage)
+               </p>
+               <div class="py-3 px-5 px-lg-0 px-md-5">
+                  <a href="@Html.Raw($"../Official/BlogSingle?{(new { DocID = bookNowAll.ArticalLink }).JsonStringify().EncryptKeyNormal().UrlEncodeBase64String()}")"
+                     class="btn btn-default btn-rounded fst-italic font-weight-normal text-2">@Html.Raw(commonAll.ReadMore)</a>
+               </div>
+            </div>           
+         </div>
+      </div>
+   </div>
+</section>
+<!--預約表單-->
+<section class="section bg-light section-text-dark border-0 mt-0 mb-0 py-5">
+   <div class="container container-xl-custom container-xl-custom py-5">
+      <div class="row py-5">
+         <div class="col-12 col-lg-5 col-md-12 px-0">
+            <div class="row">
+               <div class="col-12 px-3 px-lg-5 px-md-5">
+                  <h2
+                     class="text-color-tertiary font-weight-semi-bold mb-2 positive-ls-5 text-uppercase text-center text-lg-start">
+                     @Html.Raw(bookNowAll.Reservation)
+                  </h2>
+                  <span
+                     class="text-3-4 font-weight-medium positive-ls-10 d-block text-center text-lg-start text-color-dark">@Html.Raw(bookNowAll.ReservationDesc)</span>
+                  <div class="divider divider-tertiary divider-small divider-xxs py-4 hidden-md-down">
+                     <hr class="my-0" style="width: 50px; height: 3px;">
+                  </div>
+                  <div
+                     class="divider divider-tertiary divider-small divider-small-center divider-xxs py-4 hidden-lg-up">
+                     <hr class="my-0" style="width: 50px; height: 3px;">
+                  </div>
+                  <h3 class="font-weight-bold line-height-5 text-center text-lg-start">
+                     @Html.Raw(bookNowAll.ReservationSlogan)
+                  </h3>
+               </div>
+               <div class="col-12 px-3 px-lg-5 px-md-5">
+                  <p class="px-3 px-lg-0 px-md-5 text-center text-lg-start">
+                     <span class="font-weight-medium">@Html.Raw(bookNowAll.ReservationTo)</span>
+                  </p>
+                  <p class="px-5 px-lg-0 px-md-5 text-lg-start">
+                     @Html.Raw(bookNowAll.ReservationMessage)
+                  </p>
+               </div>
+            </div>
+            <div class="row flex-column flex-md-row text-center text-lg-start">
+               <div class="col-12 ps-3 pe-3 pe-lg-0 px-lg-5 px-md-5 order-2 order-lg-1 order-md-2 py-5 py-lg-3 py-md-5">
+                  <p class="px-3 px-lg-0 px-md-3 text-center text-lg-start">
+                     <span class="font-weight-medium">@Html.Raw(bookNowAll.ReservationFrom)</span>
+                  </p>
+                  <a href="javascript:showForm();"
+                     class="btn btn-default btn-rounded fst-italic hidden-lg-up showform mt-3">@Html.Raw(commonAll.BookNow2)</a>
+               </div>
+               <div class="col-12 pe-5 pe-lg-0 ps-5 ps-lg-4 ps-md-5 text-center order-1 order-lg-2 order-md-1">
+                  <div class="row justify-content-center justify-content-lg-start">
+                     <div class="col-6 col-md-auto appear-animation px-2 px-lg-1 py-2"
+                        data-appear-animation="fadeInRightShorterPlus" data-appear-animation-delay="100">
+                        <div class="d-flex flex-column align-items-end text-center">
+                           <img src="images/booking/Step1.svg" alt="BeyondFitenss|預約" data-icon
+                              data-plugin-options="{'onlySVG': true, 'extraClass': 'custom-step-icon'}" />
+                        </div>
+                     </div>
+                     <div
+                        class="col-6 col-md-auto custom-steps-connect appear-animation d-flex align-items-center hidden-sm-down"
+                        data-appear-animation="fadeInRightShorterPlus" data-appear-animation-delay="400">
+                        <img width="15" src="images/icons/arrow-gold.svg" alt="BeyondFitenss|預約步驟" data-icon
+                           data-plugin-options="{'onlySVG': true}" />
+                     </div>
+                     <div class="col-6 col-md-auto appear-animation px-2 px-lg-1 py-2"
+                        data-appear-animation="fadeInRightShorterPlus" data-appear-animation-delay="100">
+                        <div class="d-flex flex-column align-items-start text-center">
+                           <img src="images/booking/Step2.svg" alt="BeyondFitenss|諮詢" data-icon
+                              data-plugin-options="{'onlySVG': true, 'extraClass': 'custom-step-icon'}" />
+                        </div>
+                     </div>
+                     <div
+                        class="col-6 col-md-auto custom-steps-connect appear-animation d-flex align-items-center hidden-sm-down"
+                        data-appear-animation="fadeInRightShorterPlus" data-appear-animation-delay="400">
+                        <img width="15" src="images/icons/arrow-gold.svg" alt="BeyondFitenss|預約步驟" data-icon
+                           data-plugin-options="{'onlySVG': true}" />
+                     </div>
+                     <div class="col-6 col-md-auto appear-animation px-2 px-lg-1 py-2"
+                        data-appear-animation="fadeInRightShorterPlus" data-appear-animation-delay="100">
+                        <div class="d-flex flex-column align-items-end text-center">
+                           <img src="images/booking/Step3.svg" alt="BeyondFitenss|親身體驗" data-icon
+                              data-plugin-options="{'onlySVG': true, 'extraClass': 'custom-step-icon'}" />
+                        </div>
+                     </div>
+                     <div
+                        class="col-6 col-md-auto custom-steps-connect appear-animation d-flex align-items-center hidden-sm-down"
+                        data-appear-animation="fadeInRightShorterPlus" data-appear-animation-delay="400">
+                        <img width="15" src="images/icons/arrow-gold.svg" alt="BeyondFitenss|預約步驟" data-icon
+                           data-plugin-options="{'onlySVG': true}" />
+                     </div>
+                     <div class="col-6 col-md-auto appear-animation px-2 px-lg-1 py-2"
+                        data-appear-animation="fadeInRightShorterPlus" data-appear-animation-delay="100">
+                        <div class="d-flex flex-column align-items-start text-center">
+                           <img src="images/booking/Step4.svg" alt="BeyondFitenss|量身定制" data-icon
+                              data-plugin-options="{'onlySVG': true, 'extraClass': 'custom-step-icon'}" />
+                        </div>
+                     </div>
+                  </div>                  
+               </div>
+            </div>
+         </div>
+         <div class="col-auto d-none d-lg-block px-3 hidden-md-down">
+            <!-- <svg class="mb-4" width="15" height="700" viewBox="0 0 10 600" data-appear-animation-svg="true">
+                        <line x1="5" x2="5" y1="1" y2="700" stroke="#dfd1b7" stroke-width="1" class="appear-animation"
+                           data-appear-animation="customSVGLineAnim"></line>
+                     </svg> -->
+            <svg class="mb-4 hidden-sm-down" width="15" height="100%">
+               <line x1="5" x2="5" y1="1" y2="100%" stroke="#dfd1b7" stroke-width="1"></line>
+            </svg>
+         </div>
+         <div class="col-12 col-lg-6 col-md-12 ps-4 pe-0 py-3">
+            <form class="contact-form beyond-form form-fields-rounded hidden-sm-down" id="booking-form" method="POST">
+               <div class="mm-survey">
+                  <div class="mm-survey-progress-bar mm-progress"></div>
+                  <div class="mm-survey-progress"></div>
+                  <div class="mm-survey-results">
+                     <div class="mm-survey-results-container">
+                        <h4 class="text-5 mt-3 text-center">@Html.Raw(bookNowAll.FormSuccessHeader)</h4>
+                        <h1 class="mt-5 text-center">@Html.Raw(bookNowAll.FormSuccessResponse)</h1>
+                        <p class="text-center px-5">@Html.Raw(bookNowAll.FormSuccessResponse2)</p>
+                     </div>
+                  </div>
+                  <div class="mm-survey-bottom">
+                     <div class="mm-survey-container">
+                        <div class="mm-survey-page active" data-page="1">
+                           <div class="mm-survery-content">
+                              <div class="mm-survey-question">
+                                 <div class="mm-survey-question">
+                                    <div class="d-flex align-items-center">
+                                       <span
+                                          class="badge bg-color-dark badge-md rounded-circle d-flex text-color-secondary justify-content-center align-items-center text-5 px-3 py-2 mt-2"
+                                          style="width: 40px; height: 40px;">A</span>
+                                       <h4 class="font-weight-bold ps-3 my-0 align-items-center mt-2">
+                                          @Html.Raw(bookNowAll.SurveyPage1)</h4>
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="row mt-5">
+                                 <div class="form-group col-12 col-lg-6">
+                                    <label class="form-label">@Html.Raw(bookNowAll.FormColumn1)*</label>
+                                    <input type="text" value="" maxlength="30" class="form-control text-3 h-auto py-2"
+                                       name="UserName" placeholder="@Html.Raw(bookNowAll.InputRequired)">
+                                 </div>
+                                 <div class="form-group col-12 col-lg-6">
+                                    <label class="form-label">@Html.Raw(bookNowAll.FormColumn2)*</label>
+                                    <ul class="ks-cboxtags mb-0 p-0">
+                                       <li>
+                                          <input type="checkbox" name="Gender" id="Mael" value="M"
+                                             class="mm-survey-item" onclick="javascript:selectSingleCheckBox();"><label
+                                             for="Mael">@Html.Raw(bookNowAll.FormColumn2Option1)</label>
+                                       </li>
+                                       <li class="ms-2">
+                                          <input type="checkbox" name="Gender" id="Femael" value="F"
+                                             class="mm-survey-item" onclick="javascript:selectSingleCheckBox();"><label
+                                             for="Femael">@Html.Raw(bookNowAll.FormColumn2Option2)</label>
+                                       </li>
+                                    </ul>
+                                 </div>
+                                 @* <div class="form-group col-12">
+                                 <label class="form-label">@Html.Raw(bookNowAll.FormColumn3)</label>
+                                 <input type="email" value="" maxlength="100"
+                                 class="form-control text-3 h-auto py-2" name="Email">
+                                 </div> *@
+                                 <div class="form-group col-12">
+                                    <label class="form-label">@Html.Raw(bookNowAll.FormColumn4)*</label>
+                                    <input type="digits" value="" maxlength="10" class="form-control text-3 h-auto py-2"
+                                       name="Phone" placeholder="@Html.Raw(bookNowAll.InputRequired)">
+                                 </div>
+                                 <div class="form-group col-12">
+                                    <label class="form-label">@Html.Raw(bookNowAll.FormColumn5)*</label>
+                                    <ul class="ks-cboxtags mb-0 ps-0">
+                                       <li><input type="checkbox" id="contactTime1" name="TimeID" value="1"
+                                             class="mm-survey-item"><label
+                                             for="contactTime1">@Html.Raw(bookNowAll.FormColumn5Option1)</label></li>
+                                       <li class="ms-2 ps-lg-2 ps-md-3"><input type="checkbox" id="contactTime2"
+                                             name="TimeID" value="2" class="mm-survey-item"><label
+                                             for="contactTime2">@Html.Raw(bookNowAll.FormColumn5Option2)</label></li>
+                                    </ul>
+                                    <ul class="ks-cboxtags mb-0 ps-0 mt-3">
+                                       <li><input type="checkbox" id="contactTime3" name="TimeID" value="3"
+                                             class="mm-survey-item"><label
+                                             for="contactTime3">@Html.Raw(bookNowAll.FormColumn5Option3)</label></li>
+                                       <li class="ms-2 ps-lg-2 ps-md-3"><input type="checkbox" id="contactTime4"
+                                             name="TimeID" value="4" class="mm-survey-item"><label
+                                             for="contactTime4">@Html.Raw(bookNowAll.FormColumn5Option4)</label></li>
+                                    </ul>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="mm-survey-page" data-page="2">
+                           <div class="mm-survery-content">
+                              <div class="mm-survey-question">
+                                 <div class="d-flex align-items-center">
+                                    <span
+                                       class="badge bg-color-dark badge-md rounded-circle d-flex text-color-secondary justify-content-center align-items-center text-5 px-3 py-2 mt-2"
+                                       style="width: 40px; height: 40px;">B</span>
+                                    <h4 class="font-weight-bold ps-3 my-0 align-items-center mt-2">
+                                       @Html.Raw(bookNowAll.SurveyPage2)</h4>
+                                 </div>
+                                 <h4 class="my-1 mt-2 text-3-4 font-weight-normal ps-5">
+                                    @Html.Raw(bookNowAll.FormColumn6)</h4>
+                              </div>
+                              <div class="checkbox-group pe-lg-0 ps-lg-2 pe-md-4 ps-md-4 pe-sm-1 ps-sm-1">
+                                 <div class="row row-gutter-sm me-0">
+                                    <div class="col-6 col-lg-4 col-md-6">
+                                       <div class="checkbox">
+                                          <label class="checkbox-wrapper">
+                                             <input type="checkbox" name="HelpID" class="checkbox-input mm-survey-item"
+                                                value="1" />
+                                             <span class="checkbox-tile">
+                                                <span class="checkbox-icon">
+                                                   <img class="img-fluid mt-3"
+                                                      src="images/icons/consulting/nutrition.svg" width="60"
+                                                      alt="BeyondFitness|預約體驗" data-icon
+                                                      data-plugin-options="{'onlySVG': false, 'animated': false, 'strokeBased': true}">
+                                                </span>                                                
+                                                <span
+                                                   class="checkbox-label">@Html.Raw(bookNowAll.FormColumn6Option1)</span>
+                                                </span>
+                                             </span>
+                                          </label>
+                                       </div>
+                                    </div>
+                                    <div class="col-6 col-lg-4 col-md-6">
+                                       <div class="checkbox">
+                                          <label class="checkbox-wrapper">
+                                             <input type="checkbox" name="HelpID" class="checkbox-input mm-survey-item" value="2"/>
+                                             <span class="checkbox-tile">
+                                                <span class="checkbox-icon">
+                                                   <img class="img-fluid mt-3" src="images/icons/consulting/healthy.svg"
+                                                      width="60" alt="BeyondFitness|預約體驗" data-icon
+                                                      data-plugin-options="{'onlySVG': false, 'animated': false, 'strokeBased': true}">
+                                                </span>                                               
+                                                <span
+                                                   class="checkbox-label">@Html.Raw(bookNowAll.FormColumn6Option2)</span>
+                                                </span>
+                                             </span>
+                                          </label>
+                                       </div>
+                                    </div>
+                                    <div class="col-6 col-lg-4 col-md-6">
+                                       <div class="checkbox">
+                                          <label class="checkbox-wrapper">
+                                             <input type="checkbox" name="HelpID"  class="checkbox-input mm-survey-item" value="3"/>
+                                             <span class="checkbox-tile">
+                                                <span class="checkbox-icon">
+                                                   <img class="img-fluid mt-3"
+                                                      src="images/icons/consulting/bodyshaping.svg" width="60"
+                                                      alt="BeyondFitness|預約體驗" data-icon
+                                                      data-plugin-options="{'onlySVG': false, 'animated': false, 'strokeBased': true}">
+                                                </span>                                                
+                                                <span
+                                                   class="checkbox-label">@Html.Raw(bookNowAll.FormColumn6Option3)</span>
+                                                </span>
+                                             </span>
+                                          </label>
+                                       </div>
+                                    </div>
+                                    <div class="col-6 col-lg-4 col-md-6">
+                                       <div class="checkbox">
+                                          <label class="checkbox-wrapper">
+                                             <input type="checkbox" name="HelpID" class="checkbox-input mm-survey-item" value="4"/>
+                                             <span class="checkbox-tile">
+                                                <span class="checkbox-icon">
+                                                   <img class="img-fluid mt-3"
+                                                      src="images/icons/consulting/pregnancy.svg" width="60"
+                                                      alt="BeyondFitness|預約體驗" data-icon
+                                                      data-plugin-options="{'onlySVG': false, 'animated': false, 'strokeBased': true}">
+                                                </span>                                                
+                                                <span
+                                                      class="checkbox-label">@Html.Raw(bookNowAll.FormColumn6Option4)</span>
+                                                </span>
+                                             </span>
+                                          </label>
+                                       </div>
+                                    </div>
+                                    <div class="col-6 col-lg-4 col-md-6">
+                                       <div class="checkbox">
+                                          <label class="checkbox-wrapper">
+                                             <input type="checkbox" name="HelpID" class="checkbox-input mm-survey-item" value="5"/>
+                                             <span class="checkbox-tile">
+                                                <span class="checkbox-icon">
+                                                   <img class="img-fluid mt-3"
+                                                      src="images/icons/consulting/athletic.svg" width="60"
+                                                      alt="BeyondFitness|預約體驗" data-icon
+                                                      data-plugin-options="{'onlySVG': false, 'animated': false, 'strokeBased': true}">
+                                                </span>                                                
+                                                <span
+                                                   class="checkbox-label">@Html.Raw(bookNowAll.FormColumn6Option5)</span>
+                                                </span>
+                                             </span>
+                                          </label>
+                                       </div>
+                                    </div>
+                                    <div class="col-6 col-lg-4 col-md-6">
+                                       <div class="checkbox">
+                                          <label class="checkbox-wrapper">
+                                             <input type="checkbox" name="HelpID" class="checkbox-input mm-survey-item" value="6"/>
+                                             <span class="checkbox-tile">
+                                                <span class="checkbox-icon">
+                                                   <img class="img-fluid mt-3" src="images/icons/consulting/joint.svg"
+                                                      width="60" alt="BeyondFitness|預約體驗" data-icon
+                                                      data-plugin-options="{'onlySVG': false, 'animated': false, 'strokeBased': true}">
+                                                </span>                                                
+                                                <span
+                                                      class="checkbox-label">@Html.Raw(bookNowAll.FormColumn6Option6)</span>
+                                                </span>
+                                             </span>
+                                          </label>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="mm-survey-page" data-page="3">
+                           <div class="mm-survery-content">
+                              <div class="mm-survey-question">
+                                 <div class="d-flex align-items-center">
+                                    <span
+                                       class="badge bg-color-dark badge-md rounded-circle d-flex text-color-secondary justify-content-center align-items-center text-5 px-3 py-2 mt-2"
+                                       style="width: 40px; height: 40px;">C</span>
+                                    <h4 class="font-weight-bold ps-3 my-0 align-items-center mt-2">
+                                       @Html.Raw(bookNowAll.SurveyPage3)</h4>
+                                 </div>
+                              </div>
+                              <div class="checkbox-group pe-lg-2 ps-lg-0 pe-sm-1 ps-sm-1 mt-5">
+                                 <div class="row row-gutter-sm me-0">
+                                    @{
+                                       dynamic branches = findUsAll.BranchItems;
+                                       if (branches != null)
+                                       {
+                                          JArray branch = branches as JArray;
+                                          dynamic[] item = branch.ToArray();
+                                          for (int i = 0; i < item.Length; i++)
+                                          {
+                                             <div class="col-12 col-lg-6">
+                                                <label class="card-radio-btn p-0">
+                                                   <input type="radio" name="branchID"
+                                                      class="card-input-element d-none mm-survey-item"
+                                                      value="@Html.Raw(item[i].ID)">
+                                                   <div class="card card-body py-3 px-2">
+                                                      <div class="content_head">@Html.Raw(item[i].Name)</div>
+                                                      <div
+                                                         class="d-inline-block divider divider-tertiary divider-small py-0 mt-1 mb-1">
+                                                         <hr class="my-0 appear-animation"
+                                                            data-appear-animation="customLineProgressAnim"
+                                                            data-appear-animation-delay="600" style="width: 150px; height: 2px;">
+                                                      </div>
+                                                      <div class="content_sub"><a href="tel:@Html.Raw(item[i].TelDial)"
+                                                            class="text-color-dark">@Html.Raw(item[i].Tel)</a>
+                                                      </div>
+                                                      <div class="content_sub">@Html.Raw(item[i].MRTShort)</div>
+                                                   </div>
+                                                </label>
+                                             </div>
+                                          }
+                                       }
+                                    }
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="mm-survey-page" data-page="4">
+                           <div class="mm-survery-content">
+                              <div class="mm-survey-question">
+                                 <div class="d-flex align-items-center">
+                                    <span
+                                       class="badge bg-color-dark badge-md rounded-circle d-flex text-color-secondary justify-content-center align-items-center text-5 px-3 py-2 mt-2"
+                                       style="width: 40px; height: 40px;">D</span>
+                                    <h4 class="font-weight-bold ps-3 my-0 align-items-center mt-2">
+                                       @Html.Raw(bookNowAll.SurveyPage4)</h4>
+                                 </div>
+                                 <h4 class="my-1 mt-2 text-3-4 font-weight-normal ps-5">
+                                    @Html.Raw(bookNowAll.FormColumn8)</h4>
+                              </div>
+                              <div class="row">
+                                 <div class="form-group col-12">
+                                    <textarea maxlength="100" rows="4" class="form-control text-3 h-auto py-2"
+                                       name="Question" placeholder="@Html.Raw(bookNowAll.FormColumn8Desc)"></textarea>
+                                 </div>
+                                 <p class="font-weight-medium px-4">@Html.Raw(bookNowAll.FormSendPreDesc)</p>
+                              </div>
+                              <div class="row px-3">
+                                 <div class="form-group col-12">
+                                    <div class="form-check fancy-checkbox custom-bgcolor-gold ps-0">
+                                       <input class="fancy-checkbox form-check-input mm-survey-item" type="checkbox"
+                                          value="True" name="Agree" id="Agree"
+                                          data-msg-required="@Html.Raw(bookNowAll.FormAgreeDesc)" required>
+                                       <label class="form-check-label form-qestion" for="Agree">
+                                          @Html.Raw(bookNowAll.FormAgree)
+                                       </label>
+                                    </div>
+                                 </div>
+                                 <div class="form-group col-12">
+                                    <div class="g-recaptcha" data-sitekey="6LdVot4jAAAAAH_ST-lvJBJLM3gdWAId2DnlLBz_">
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                     </div>
+                     
+                     <div class="mm-survey-controller ps-5 ps-lg-5 ps-md-5 pe-5 pe-lg-0 pe-md-5">
+                        <div class="mm-next-btn">
+                           <a class="btn bg-color-dark text-color-secondary btn-circle btn-lg"><i
+                                 class="fa-solid fa-chevron-right"></i></a>
+                           <span class="d-block text-center text-color-dark">Next</span>
+                        </div>
+                           <div class="mm-finish-btn">
+                           <a class="btn bg-color-dark text-color-secondary btn-circle btn-lg"><i
+                                 class="fa-solid fa-chevron-right"></i></a>
+                           <span class="d-block text-center text-color-dark">Send</span>
+                        </div>
+                        <div class="mm-prev-btn">
+                           <a
+                              class="btn btn-3d btn-effect-1 border-color-secondary text-color-tertiary btn-circle btn-lg"><i
+                                 class="fa-solid fa-chevron-left"></i></a>
+                           <span class="d-block text-center text-color-dark">Back</span>
+                        </div>
+                     </div>
+                  </div>
+            </form>
+         </div>
+      </div>
+</section>
 @section TailPageJavaScriptInclude {
+   <!-- SweetAlert Plugin Js -->
+   <script src="plugins/sweetalert2/sweetalert2.min.js"></script>
+	<script type="text/javascript">
 
+      //顯示手機表單資訊
+      function showForm() {
+         // $(".contact-form").slideDown();
+         if (jQuery('.contact-form').hasClass('hidden-sm-down')) {
+            jQuery('.contact-form').removeClass('hidden-sm-down').slideDown();
+            jQuery('.showform').hide();
+         }
+         // 讓捲軸用動畫的方式移動到 #header 的 top 位置並加入動畫效果             
+         $([document.documentElement, document.body]).animate({
+            scrollTop: jQuery('.contact-form').offset().top - 10
+         }, 500);
+      }	   
+	   var onloadCallback = function () {
+	      alert("grecaptcha is ready!");
+	   };
+	</script>
+	<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+   <!-- dynamic-wizard Files -->
+   <script src="plugins/dynamic-survey-quiz/dist/script.js"></script>
+   <script>
+      function checkGotoNext() {
+         if( jQuery('.mm-survey').hasClass('okay') ) {
+				goToSlide(x);
+				getCount();
+				current = x + 1;
+				var g = current/count;
+				buildProgress(g);
+				var y = (count + 1);
+				getButtons();
+				jQuery('.mm-survey-page').removeClass('active');
+				jQuery('.mm-page-'+current).addClass('active');
+				getCurrentSlide();
+				checkStatus();
+				if( jQuery('.mm-page-'+count).hasClass('active') ){
+					if( jQuery('.mm-page-'+count).hasClass('pass') ) {
+						jQuery('.mm-finish-btn').addClass('active');
+					}
+					else {
+						jQuery('.mm-page-'+count+' .mm-survery-content .mm-survey-item').on('click', function() {
+							jQuery('.mm-finish-btn').addClass('active');
+						});
+					}
+				}
+				else {
+					jQuery('.mm-finish-btn').removeClass('active');
+					if( jQuery('.mm-page-'+current).hasClass('pass') ) {
+						jQuery('.mm-survey-container').addClass('good');
+						jQuery('.mm-survey').addClass('okay');
+					}
+					else {
+						jQuery('.mm-survey-container').removeClass('good');
+						jQuery('.mm-survey').removeClass('okay');
+					}
+				}
+				buttonConfig();
+				// 讓捲軸用動畫的方式移動到 #header 的 top 位置並加入動畫效果             
+				$([document.documentElement, document.body]).animate({
+					scrollTop: jQuery('.mm-survey-container').offset().top - 80
+				}, 500);	
+			}
+      }
+
+      $(function () {
+         var btnNext = $('.mm-next-btn');
+         btnNext.off("click");
+         btnNext.on('click', function () {
+            clearErrors();
+            showLoading();
+            var viewModel = $('form').serializeObject();
+            viewModel.Step = current;
+            $.post('@Html.Raw(Url.Action("ValidateTrialLearner", "MainActivity"))', viewModel, function (data) {
+               hideLoading();
+               if ($.isPlainObject(data)) {
+                  if (data.result) {
+                     checkGotoNext();
+                  } else {
+                     Swal.fire(
+                        'Oops...',
+                        data.message,
+                        'warning'
+                     );
+                  }
+               } else {
+                  $(data).appendTo($('body'));
+               }
+            });
+         });
+
+         var btnFinish = $('.mm-finish-btn');
+         btnFinish.off("click");
+         btnFinish.on('click', function () {
+            clearErrors();
+            showLoading();
+            var viewModel = $('form').serializeObject();
+            viewModel.Step = current;
+            $.post('@Html.Raw(Url.Action("CommitTrialLearner", "MainActivity"))', viewModel, function (data) {
+               hideLoading();
+               if ($.isPlainObject(data)) {
+                  if (data.result) {
+                     collectData();
+                     jQuery('.mm-survey-bottom').slideUp();
+                     jQuery('.mm-survey-results').slideDown();
+                  } else {
+                     Swal.fire(
+                        'Oops...',
+                        data.message,
+                        'warning'
+                     );
+                      grecaptcha.reset();
+                  }
+               } else {
+                  $(data).appendTo($('body'));
+               }
+            });
+         });
+
+      });
+   </script>
 }

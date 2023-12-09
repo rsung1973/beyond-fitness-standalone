@@ -1,5 +1,6 @@
 @using System.IO
 @using System.Linq.Expressions
+@using System.Web
 
 @using WebHome.Helper
 @using WebHome.Models.Locale
@@ -24,7 +25,7 @@
 {
     <script>
         $(function () {
-            console.log('@Html.Raw(_modelState.ErrorMessage())');
+            console.log('@Html.Raw(HttpUtility.JavaScriptStringEncode(_modelState.ErrorMessage()))');
             @if (ViewBag.AlertError == true)
                 {
                 <text>

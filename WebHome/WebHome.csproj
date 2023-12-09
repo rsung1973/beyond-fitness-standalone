@@ -10,9 +10,45 @@
 
   <ItemGroup>
     <Compile Remove="Views\CommonHelper\**" />
+    <Compile Remove="wwwroot\BlogContent\**" />
+    <Compile Remove="wwwroot\CommonHelper\**" />
+    <Compile Remove="wwwroot\ConsoleHome\**" />
+    <Compile Remove="wwwroot\ContractConsole\**" />
+    <Compile Remove="wwwroot\CornerKick\**" />
+    <Compile Remove="wwwroot\Error\**" />
+    <Compile Remove="wwwroot\LearnerProfile\**" />
+    <Compile Remove="wwwroot\MainActivity\**" />
+    <Compile Remove="wwwroot\Official\**" />
     <Content Remove="Views\CommonHelper\**" />
+    <Content Remove="wwwroot\BlogContent\**" />
+    <Content Remove="wwwroot\CommonHelper\**" />
+    <Content Remove="wwwroot\ConsoleHome\**" />
+    <Content Remove="wwwroot\ContractConsole\**" />
+    <Content Remove="wwwroot\CornerKick\**" />
+    <Content Remove="wwwroot\Error\**" />
+    <Content Remove="wwwroot\LearnerProfile\**" />
+    <Content Remove="wwwroot\MainActivity\**" />
+    <Content Remove="wwwroot\Official\**" />
     <EmbeddedResource Remove="Views\CommonHelper\**" />
+    <EmbeddedResource Remove="wwwroot\BlogContent\**" />
+    <EmbeddedResource Remove="wwwroot\CommonHelper\**" />
+    <EmbeddedResource Remove="wwwroot\ConsoleHome\**" />
+    <EmbeddedResource Remove="wwwroot\ContractConsole\**" />
+    <EmbeddedResource Remove="wwwroot\CornerKick\**" />
+    <EmbeddedResource Remove="wwwroot\Error\**" />
+    <EmbeddedResource Remove="wwwroot\LearnerProfile\**" />
+    <EmbeddedResource Remove="wwwroot\MainActivity\**" />
+    <EmbeddedResource Remove="wwwroot\Official\**" />
     <None Remove="Views\CommonHelper\**" />
+    <None Remove="wwwroot\BlogContent\**" />
+    <None Remove="wwwroot\CommonHelper\**" />
+    <None Remove="wwwroot\ConsoleHome\**" />
+    <None Remove="wwwroot\ContractConsole\**" />
+    <None Remove="wwwroot\CornerKick\**" />
+    <None Remove="wwwroot\Error\**" />
+    <None Remove="wwwroot\LearnerProfile\**" />
+    <None Remove="wwwroot\MainActivity\**" />
+    <None Remove="wwwroot\Official\**" />
   </ItemGroup>
 
   <ItemGroup>

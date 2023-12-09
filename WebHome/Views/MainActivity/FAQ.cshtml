@@ -1,15 +1,15 @@
-
-
 @using System.IO
 @using System.Linq.Expressions
+@using Microsoft.AspNetCore.Mvc.ModelBinding
 
 @using WebHome.Helper
 @using WebHome.Models.Locale
 @using WebHome.Models.ViewModel
 @using WebHome.Models.DataEntity
 @using WebHome.Controllers
-@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using CommonLib.Utility
 @using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
 @using WebHome.Models.Resources
 
 @{
@@ -20,7 +20,15 @@
     _modelState = ViewContext.ModelState;
 
     Layout = "~/Views/MainActivity/Template/MainPage.cshtml";
+   ViewBag.MainClass = "faq";
+   ViewBag.MenuDark = false;
 
+   await Html.RenderPartialAsync("~/Views/MainActivity/Template/GlobalResource.cshtml");
+   dynamic globalResource = ViewContext.HttpContext.Items["GlobalResource"] as dynamic;
+   dynamic findUsAll = globalResource["FindUs"][ViewBag.Lang ?? "zh-TW"] as dynamic;
+   dynamic faqAll = globalResource["Faq"][ViewBag.Lang ?? "zh-TW"] as dynamic;   
+   dynamic commonAll = globalResource["Common"][ViewBag.Lang ?? "zh-TW"] as dynamic;
+   dynamic[] item = ((JArray)(faqAll.QuestionItmes)).ToArray();
 }
 
 @section CustomHeader {
@@ -28,111 +36,564 @@
         content="免費體驗課預約諮詢，透過電話、電子郵件、社群平台發問與我們聯繫完成，預約體驗課程，體驗包含健康諮詢、了解您的生活狀態，提供遠端課程服務，達成減重目標。" />
 
 }
-
-<!-- // Banner -->
-<section class="section-faq">
-    <div class="container">
-        <div class="row">
-        </div>
-    </div>
+<!--Banner-->
+<section class="section border-0 m-0 p-0 banner container-background">   
 </section>
-<!-- // 常見問題 -->
-<section class="section-faq-content">
-    <div class="container">
-        <ul class="accordion">
-            <li class="accordion-item">
-                <input id="q1" class="hide" type="checkbox">
-                <label for="q1" class="accordion-label">@Html.Raw(NamingItem.FAQQestion1)</label>
-                <ul class="accordion-child accordion sub">
-                    <li class="accordion-item">
-                        <input id="q11" class="hide" type="checkbox">
-                        <label for="q11" class="accordion-label sub">@Html.Raw(NamingItem.FAQQestion11)</label>
-                        <ul class="accordion-child list-style3">
-                            @Html.Raw(NamingItem.FAQAnswer11)
-                            <br />
-                            <li>
-                                @Html.Raw(NamingItem.Tel)
-                                <span>@Html.Raw(NamingItem.FindNanjingBranch)：<a href="tel://+886-2-2715-2733" class="more">(02)-2715-2733</a></span>
-                                <span>@Html.Raw(NamingItem.FindAnheBranch)：<a href="tel://+886-2-2720-0530" class="more">(02)2720-0530</a></span>
-                                <span>@Html.Raw(NamingItem.FindZhongxiaoBranch)：<a href="tel://+886-2-2776-9932" class="more">(02)2776-9932</a></span>
-                                <span>@Html.Raw(NamingItem.FindDongmenBranch)：<a href="tel://+886-2-2396-0776" class="more">(02)2396-0776</a></span>
-                            </li>
-                            <li>Facebook：<a href="https://www.facebook.com/beyond.fitness.pro/" target="_blank" class="more">@Html.Raw(NamingItem.Go)<i class="pl-1 fa fa-angle-right"></i></a></li>
-                            <li>@Html.Raw(NamingItem.OnlineReservation)：<a href="@(Url.Action("BookNow", "MainActivity"))" class="more">@Html.Raw(NamingItem.BookNow)<i class="pl-1 fa fa-angle-right"></i></a></li>
-                        </ul>
-                    </li>
-                    <li class="accordion-item">
-                        <input id="q12" class="hide" type="checkbox">
-                        <label for="q12" class="accordion-label sub">@Html.Raw(NamingItem.FAQQestion12)</label>
-                        <ul class="accordion-child list-style3">@Html.Raw(NamingItem.FAQAnswer12)</ul>
-                    </li>
-                </ul>
-            </li>
-            <li class="accordion-item">
-                <input id="q2" class="hide" type="checkbox">
-                <label for="q2" class="accordion-label">@Html.Raw(NamingItem.FAQQestion2)</label>
-                <ul class="accordion-child accordion sub">
-                    <li class="accordion-item">
-                        <input id="q21" class="hide" type="checkbox">
-                        <label for="q21" class="accordion-label sub">@Html.Raw(NamingItem.FAQQestion21)</label>
-                        <ul class="accordion-child list-style1">@Html.Raw(NamingItem.FAQAnswer21)</ul>
-                    </li>                    
-                    <li class="accordion-item">
-                        <input id="q22" class="hide" type="checkbox">
-                        <label for="q22" class="accordion-label sub">@Html.Raw(NamingItem.FAQQestion22)</label>
-                        <p class="accordion-child">@Html.Raw(NamingItem.FAQAnswer22)</p>
-                    </li>
-                </ul>
-            </li>
-            <li class="accordion-item">
-                <input id="q7" class="hide" type="checkbox">
-                <label for="q7" class="accordion-label">@Html.Raw(NamingItem.FAQQestion7)</label>
-                <ul class="accordion-child list-style1">@Html.Raw(NamingItem.FAQAnswer7)</ul>
-            </li>
-            <li class="accordion-item">
-                <input id="q3" class="hide" type="checkbox">
-                <label for="q3" class="accordion-label">@Html.Raw(NamingItem.FAQQestion3)</label>
-                <p class="accordion-child">@Html.Raw(NamingItem.FAQAnswer3)</p>
-            </li>
-            <li class="accordion-item">
-                <input id="q4" class="hide" type="checkbox">
-                <label for="q4" class="accordion-label">@Html.Raw(NamingItem.FAQQestion4)</label>
-                <p class="accordion-child">@Html.Raw(NamingItem.FAQAnswer4)</p>
-            </li>
-            <li class="accordion-item">
-                <input id="q5" class="hide" type="checkbox">
-                <label for="q5" class="accordion-label">@Html.Raw(NamingItem.FAQQestion5)</label>
-                <p class="accordion-child">@Html.Raw(NamingItem.FAQAnswer5)</p>
-            </li>
-            <li class="accordion-item">
-                <input id="q6" class="hide" type="checkbox">
-                <label for="q6" class="accordion-label">@Html.Raw(NamingItem.FAQQestion6)</label>
-                <ul class="accordion-child list-style3">
-                    @Html.Raw(NamingItem.FAQAnswer6)
-                    <br />
-                    <li>
-                        @Html.Raw(NamingItem.Walk)
-                        <span>@Html.Raw(NamingItem.FindNanjingBranch)：<a href="https://maps.google.com/?q=台北市大安區大安路一段75巷21號B1" target="_blank" class="more">@Html.Raw(NamingItem.FindNanjingBranchAdd)</a></span>
-                        <span>@Html.Raw(NamingItem.FindAnheBranch)：<a href="https://maps.google.com/?q=台北市大安區安和路二段81號B1" target="_blank" class="more">@Html.Raw(NamingItem.FindAnheBranchAdd)</a></span>
-                        <span>@Html.Raw(NamingItem.FindZhongxiaoBranch)：<a href="https://maps.google.com/?q=台北市大安區大安路一段75巷21號B1" target="_blank" class="more">@Html.Raw(NamingItem.FindZhongxiaoBranchAdd)</a></span>
-                        <span>@Html.Raw(NamingItem.FindDongmenBranch)：<a href="https://maps.google.com/?q=台北市大安區信義路二段28號" target="_blank" class="more">@Html.Raw(NamingItem.FindDongmenBranchAdd)</a></span>
-                    </li>
-                    <li>
-                        @Html.Raw(NamingItem.MRT)
-                        <span>@Html.Raw(NamingItem.FindNanjingBranch)：@Html.Raw(NamingItem.NanjingMRT)</span>
-                        <span>@Html.Raw(NamingItem.FindAnheBranch)：@Html.Raw(NamingItem.AnheMRT)</a></span>
-                        <span>@Html.Raw(NamingItem.FindZhongxiaoBranch)：@Html.Raw(NamingItem.ZhongxiaoMRT)</a></span>
-                        <span>@Html.Raw(NamingItem.FindDongmenBranch)：@Html.Raw(NamingItem.DongmenMRT)</a></span>
-                    </li>
-                </ul>
-            </li>
-        </ul>
-    </div>
-</section>
-<!-- // 聯絡我們 -->
-@{ await Html.RenderPartialAsync("~/Views/MainActivity/Module/ContactItem.cshtml");}
+<!--常見問題-->
+<div class="container position-relative custom-el-pos-1" id="main">
+   <div class="row px-4 py-5">
+      <div class="col-12 col-lg-2 mb-5 mb-lg-0">
+         <h2
+            class="text-color-tertiary font-weight-semi-bold mb-2 positive-ls-5 text-uppercase d-flex justify-content-center justify-content-lg-start justify-content-md-center">
+            @Html.Raw(faqAll.FAQ)
+         </h2>
+         <span
+            class="text-3-4 font-weight-medium positive-ls-10 d-block d-flex justify-content-center justify-content-lg-start justify-content-md-center">@Html.Raw(faqAll.FAQDesc)</span>
+         <div class="divider divider-tertiary divider-small divider-xxs py-4 hidden-md-down">
+            <hr class="my-0" style="width: 50px; height: 3px;">
+         </div>
+      </div>
+      <div class="col-12 col-lg-10">
+         <div class="row">            
+            @{
+               for (int i = 0; i < item.Length; i++)
+               {
+                  <div class="col-12 col-lg-6 col-md-6 py-2">
+                     <a class="card qa-card" href="@Html.Raw($"#{item[i].ID}")">
+                        <div class="card-body">
+                           <img src="@Html.Raw(item[i].Icon)" alt="BeyondFitenss|常見問題" data-icon
+                              data-plugin-options="{'onlySVG': true, 'fadeIn': false, 'delay': 0, 'extraClass': 'pe-3'}"
+                              width="40" />
+                           <p>@Html.Raw(item[i].Question)</p>
+                        </div>
+                     </a>
+                  </div>
+               }
+            }                        
+         </div>        
+      </div>
+   </div>
+</div>
+<!--答案內容-->
+<div class="container-fluid bg-color-light px-0 h-min-700px py-5">
+   <div class="owl-carousel owl-theme nav-bottom"
+      data-plugin-options="{'loop': false, 'nav': false, 'dots': false, 'items': 1, 'autoHeight': true, 'margin': 0, 'URLhashListener':true}">
+      <div data-hash="Q1">
+         @{
+            dynamic content1 = ((JArray)(item[0].Answer)).FirstOrDefault();
+         }
+         <section
+            class="section section-no-background section-text-dark section-center border-0 py-0 mt-0 mb-0 my-0 px-0 px-xl-5 px-lg-5 px-md-5 mx-0 mx-xl-5">
+            <div class="row h-min-700px pt-5">
+               <div
+                  class="col-12 col-lg-4 align-self-center py-3 py-lg-0 py-md-3 my-3 my-lg-0 my-md-3 px-5 px-xl-4 px-lg-3 px-md-2 pe-lg-0">
+                  <div class="px-3 px-xl-5 px-lg-4 px-md-5 ps-lg-0 pt-3">
+                     <h3 class="font-weight-semi-bold mb-2 text-capitalize line-height-5 text-center text-lg-start">
+                        @Html.Raw(item[0].Question)
+                     </h3>
+                     <div class="divider divider-tertiary divider-small divider-xxs py-4 hidden-md-down">
+                        <hr class="my-0" style="width: 50px; height: 3px;">
+                     </div>
+                     <div
+                        class="divider divider-tertiary divider-small divider-small-center divider-xxs py-4 hidden-lg-up">
+                        <hr class="my-0" style="width: 50px; height: 3px;">
+                     </div>
+                     <p>
+                        @Html.Raw(content1.Desc)
+                     </p>
+                  </div>
+               </div>
+               <div class="col-12 col-lg-8 d-flex px-5 px-xl-4 px-lg-3 px-md-1">
+                  <table class="table py-0 my-5 diff-table align-self-center px-0 py-0 hidden-sm-down border-0">
+                     <thead class="border-0">
+                        <tr class="bg-color-dark text-color-primary">
+                           <th colspan="9" class="text-center text-color-secondary text-5 py-3">
+                              @Html.Raw(content1.Table)
+                              <span class="float float-end px-3 text-color-light text-1">
+                                 @Html.Raw(content1.TableNote)</span>
+                           </th>
+                        </tr>
+                        <tr class="text-4">
+                           <th class="bg-gold-01"></th>
+                           <th class="text-center bg-gold-03">
+                              @Html.Raw(content1.TableColumn1)
+                           </th>
+                           <th class="text-center bg-gold-02">
+                              @Html.Raw(content1.TableColumn2)
+                           </th>
+                           <th class="text-center bg-gold-03">
+                              @Html.Raw(content1.TableColumn3)
+                           </th>
+                           <th class="text-center bg-gold-02">
+                              @Html.Raw(content1.TableColumn4)
+                           </th>
+                           <th class="text-center bg-gold-03">
+                              @Html.Raw(content1.TableColumn5)
+                           </th>
+                           <th class="text-center bg-gold-02">
+                              @Html.Raw(content1.TableColumn6)
+                           </th>
+                           <th class="text-center bg-gold-03">
+                              @Html.Raw(content1.TableColumn7)
+                           </th>
+                           <th class="text-center bg-gold-02">
+                              @Html.Raw(content1.TableColumn8)
+                           </th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <tr>
+                           <td class="text-center bg-pink-01 text-4 font-weight-medium">
+                              @Html.Raw(content1.TableRow1)</td>
+                           <td class="text-center bg-pink-03"><i
+                                 class="fa-solid fa-check fa-2xl text-color-tertiary my-5"></i>
+                           </td>
+                           <td class="text-center bg-pink-02"><i
+                                 class="fa-solid fa-check fa-2xl text-color-tertiary my-5"></i>
+                           </td>
+                           <td class="text-center bg-pink-03"><i
+                                 class="fa-solid fa-check fa-2xl text-color-tertiary my-5"></i>
+                           </td>
+                           <td class="text-center bg-pink-02"><i
+                                 class="fa-solid fa-check fa-2xl text-color-tertiary my-5"></i>
+                           </td>
+                           <td class="text-center bg-pink-03"><i
+                                 class="fa-solid fa-check fa-2xl text-color-tertiary my-5"></i>
+                           </td>
+                           <td class="text-center bg-pink-02"><i
+                                 class="fa-solid fa-check fa-2xl text-color-tertiary my-5"></i>
+                           </td>
+                           <td class="text-center bg-pink-03"><i
+                                 class="fa-solid fa-check fa-2xl text-color-tertiary my-5"></i>
+                           </td>
+                           <td class="text-center bg-pink-02"><i
+                                 class="fa-solid fa-check fa-2xl text-color-tertiary my-5"></i>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="text-center bg-gold-01 text-4 font-weight-medium">
+                              @Html.Raw(content1.TableRow2)
+                           </td>
+                           <td class="text-center"><span
+                                 class="text-8 font-weight-black text-color-dark opacity-8">△</span>
+                           </td>
+                           <td class="text-center bg-gold-03"><i
+                                 class="fa-solid fa-xmark fa-2xl my-5 text-color-dark opacity-8"></i>
+                           </td>
+                           <td class="text-center"><i
+                                 class="fa-solid fa-xmark fa-2xl my-5 text-color-dark opacity-8"></i>
+                           </td>
+                           <td class="text-center bg-gold-03"><i
+                                 class="fa-solid fa-xmark fa-2xl my-5 text-color-dark opacity-8"></i>
+                           </td>
+                           <td class="text-center"><span
+                                 class="text-8 font-weight-black text-color-dark opacity-8">△</span>
+                           </td>
+                           <td class="text-center bg-gold-03"><span
+                                 class="text-8 font-weight-black text-color-dark opacity-8">△</span>
+                           </td>
+                           <td class="text-center"><span
+                                 class="text-8 font-weight-black text-color-dark opacity-8">△</span>
+                           </td>
+                           <td class="text-center bg-gold-03"><span
+                                 class="text-8 font-weight-black text-color-dark opacity-8">△</span>
+                           </td>
+                        </tr>
+                     </tbody>
+                  </table>
 
-
+                  <table class="table py-0 my-5 diff-table align-self-center px-0 py-0 hidden-sm-up">
+                     <thead>
+                        <tr class="bg-color-dark text-color-primary">
+                           <th colspan="3" class="text-center text-color-secondary text-5 py-3">
+                              @Html.Raw(content1.Table)
+                           </th>
+                        </tr>
+                        <tr class="text-4">
+                           <th class="bg-gold-01" width="40%"></th>
+                           <th class="text-center bg-pink-01 py-2" width="30%">
+                              @Html.Raw(content1.TableRow1)</th>
+                           <th class="text-center bg-gold-01" width="30%">@Html.Raw(content1.TableRow2)</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <tr>
+                           <td class="text-center text-4 font-weight-medium bg-gold-03">
+                              @Html.Raw(content1.TableColumn1)
+                           </td>
+                           <td class="text-center bg-pink-03"><i
+                                 class="fa-solid fa-check fa-2xl text-color-tertiary my-4"></i>
+                           </td>
+                           <td class="text-center"><span
+                                 class="text-8 font-weight-black text-color-dark opacity-8">△</span>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="text-center text-4 font-weight-medium bg-gold-02">
+                              @Html.Raw(content1.TableColumn2)
+                           </td>
+                           <td class="text-center bg-pink-02"><i
+                                 class="fa-solid fa-check fa-2xl text-color-tertiary my-4"></i>
+                           </td>
+                           <td class="text-center bg-gold-03"><i
+                                 class="fa-solid fa-xmark fa-2xl my-4 text-color-dark opacity-8"></i>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="text-center text-4 font-weight-medium bg-gold-03">
+                              @Html.Raw(content1.TableColumn3)
+                           </td>
+                           <td class="text-center bg-pink-03"><i
+                                 class="fa-solid fa-check fa-2xl text-color-tertiary my-4"></i>
+                           </td>
+                           <td class="text-center"><i
+                                 class="fa-solid fa-xmark fa-2xl my-4 text-color-dark opacity-8"></i>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="text-center text-4 font-weight-medium bg-gold-02">
+                              @Html.Raw(content1.TableColumn4)
+                           </td>
+                           <td class="text-center bg-pink-02"><i
+                                 class="fa-solid fa-check fa-2xl text-color-tertiary my-4"></i>
+                           </td>
+                           <td class="text-center bg-gold-03"><span
+                                 class="text-8 font-weight-black text-color-dark opacity-8">△</span
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="text-center text-4 font-weight-medium bg-gold-03">
+                              @Html.Raw(content1.TableColumn5)
+                           </td>
+                           <td class="text-center bg-pink-03"><i
+                                 class="fa-solid fa-check fa-2xl text-color-tertiary my-4"></i>
+                           </td>
+                           <td class="text-center"><span
+                                 class="text-8 font-weight-black text-color-dark opacity-8">△</span>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="text-center text-4 font-weight-medium bg-gold-02">
+                              @Html.Raw(content1.TableColumn6)
+                           </td>
+                           <td class="text-center bg-pink-02"><i
+                                 class="fa-solid fa-check fa-2xl text-color-tertiary my-4"></i>
+                           </td>
+                           <td class="text-center bg-gold-03"><span
+                                 class="text-8 font-weight-black text-color-dark opacity-8">△</span>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="text-center text-4 font-weight-medium bg-gold-03">
+                              @Html.Raw(content1.TableColumn7)
+                           </td>
+                           <td class="text-center bg-pink-03"><i
+                                 class="fa-solid fa-check fa-2xl text-color-tertiary my-4"></i>
+                           </td>
+                           <td class="text-center"><span
+                                 class="text-8 font-weight-black text-color-dark opacity-8">△</span>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="text-center text-4 font-weight-medium bg-gold-02">
+                              @Html.Raw(content1.TableColumn8)
+                           </td>
+                           <td class="text-center bg-pink-02"><i
+                                 class="fa-solid fa-check fa-2xl text-color-tertiary my-4"></i>
+                           </td>
+                           <td class="text-center bg-color-primary"><span
+                                 class="text-8 font-weight-black text-color-dark opacity-8">△</span>
+                           </td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </div>
+            </div>
+         </section>
+      </div>
+      <div data-hash="Q2">
+         @{
+            dynamic content2 = ((JArray)(item[1].Answer)).FirstOrDefault();
+         }
+         <section class="section section-no-background section-text-dark border-0 mt-0 mb-0 py-0 my-0">
+            <div class="container container-xl-custom container-xxl-custom">
+               <div class="row px-0 h-min-700px align-self-center">
+                  <div class="col-12 col-lg-5 col-md-12 px-0 d-flex align-self-center justify-content-lg-end justify-content-md-center justify-content-center">
+								<img class="appear-animation appear-animation-visible pi-img mt-5 mt-lg-0 mt-md-5" src="images/faq/PISession.png"
+									data-appear-animation="fadeInLeftShorter" data-plugin-options="{'accY': -400}" alt="BeyondFitness|自己到健身房運動">
+						</div>
+                  <div class="col-12 col-lg-7 col-md-12 align-self-center py-2 py-lg-0 py-md-5 my-5 my-lg-0 my-md-5">
+                     <div
+                        class="w-xl-75pct w-lg-100pct px-4 align-self-center px-0 px-lg-5 py-5 py-xl-0 py-lg-5 py-md-5">
+                        <h3 class="font-weight-semi-bold mb-2 text-capitalize line-height-5 text-center text-lg-start">
+                           @Html.Raw(content2.Subject)
+                        </h3>
+                        <div class="divider divider-tertiary divider-small divider-xxs py-4 hidden-md-down">
+                           <hr class="my-0" style="width: 50px; height: 3px;">
+                        </div>
+                        <div
+                           class="divider divider-tertiary divider-small divider-small-center divider-xxs py-4 hidden-lg-up">
+                           <hr class="my-0" style="width: 50px; height: 3px;">
+                        </div>
+                        <p class="px-5 ps-lg-0">@Html.Raw(content2.Desc)</p>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </section>
+      </div>
+      <div data-hash="Q3">
+         @{
+            dynamic content3 = ((JArray)(item[2].Answer)).FirstOrDefault();
+         }
+         <section class="section section-no-background section-text-dark border-0 mt-0 mb-0 py-0 my-0">
+            <div class="container container-xl-custom container-xxl-custom">
+               <div class="row h-min-700px pt-5">
+                  <div
+                     class="col-12 col-lg-auto align-self-center py-5 py-lg-0 py-md-5 px-0 px-xl-5 px-xl-5 px-lg-3 px-md-0">
+                     <h3 class="font-weight-semi-bold mb-2 text-capitalize line-height-5 text-center text-lg-start">
+                        Beyond，<br />@Html.Raw(item[2].Question)
+                     </h3>
+                     <div class="divider divider-tertiary divider-small divider-xxs py-4 hidden-md-down">
+                        <hr class="my-0" style="width: 50px; height: 3px;">
+                     </div>
+                     <div
+                        class="divider divider-tertiary divider-small divider-small-center divider-xxs py-4 hidden-lg-up">
+                        <hr class="my-0" style="width: 50px; height: 3px;">
+                     </div>
+                     <div
+                        class="d-flex justify-content-center justify-content-xl-start justify-content-lg-center justify-content-md-center">
+                        <div class="w-auto">
+                           @{
+                              dynamic item3 = content3.Items;
+                              if (item3 != null)
+                              {
+                                 <ul class="text-4-5 ps-2 list-unstyled text-center text-lg-start text-md-center text-color-dark">
+                                    @{
+                                       dynamic[] itemContent = ((JArray)item3).ToArray();
+                                       for (int i = 0; i < itemContent.Length; i++)
+                                       {
+                                          <li class="line-height-9">•<span class="ps-1">@Html.Raw(itemContent[i].Content)</span></li>
+                                       }
+                                    }
+                                 </ul>
+                              }
+                           }
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-12 col-lg-8 px-5 px-xl-5 px-lg-3 px-md-5 pt-5 pt-lg-0 pt-md-5 align-self-center">                    
+                     <div class="row">
+                     @{
+                        dynamic types = content3.Types;
+                        if (types != null)
+                        {
+                           dynamic[] typeContent = ((JArray)types).ToArray();
+                           for (int i = 0; i < typeContent.Length; i++)
+                           {
+                              <div class="col-12 col-lg-6 col-md-6 px-0 pe-xl-4 pe-lg-3 ps-lg-3 pe-md-4">
+                                 <div class="w-auto d-flex align-items-center justify-content-center">
+                                    <div class="card fee-card w-100pct">
+                                       <div class="card-body d-flex justify-content-center">
+                                          <span>@Html.Raw(typeContent[i].ID)</span>
+                                          <p>@Html.Raw(typeContent[i].Name)</p>
+                                       </div>
+                                    </div>
+                                 </div>                                
+                                 @Html.Raw(typeContent[i].Content)
+                              </div>
+                           }
+                        }
+                     }                         
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </section>
+      </div>
+      <div data-hash="Q4">
+         @{
+            dynamic content4 = ((JArray)(item[3].Answer)).FirstOrDefault();
+            dynamic branches = findUsAll.BranchItems;          
+         }
+         <section class="section section-no-background section-text-dark border-0 mt-0 mb-0 py-0 my-0">
+				<div class="container container-xl-custom container-xxl-custom">
+               <div class="row h-min-700px pt-5">
+                  <div class="col-12 align-self-center py-5 py-lg-0 py-md-5 my-5 my-lg-0 my-md-5">
+                     <div class="row">
+                        <div class="col-12">
+									<h3 class="font-weight-semi-bold mb-2 text-capitalize line-height-5 text-center pt-5">
+										@Html.Raw(content4.Subject)
+									</h3>
+                           <div class="divider divider-tertiary divider-small divider-small-center divider-xxs py-4">
+											<hr class="my-0" style="width: 50px; height: 3px;">
+									</div>
+								</div>
+                        
+                     </div>
+                     <div class="col-12 pt-3">
+                        <div class="row px-5 px-xl-5 px-lg-0 px-md-5">
+                           <div class="col-12 col-lg-6 col-md-6">
+                              <div
+                                 class="w-auto d-flex align-items-center justify-content-center  justify-content-lg-end  justify-content-md-center px-0 px-xl-0 px-lg-0 px-md-3 pe-xl-5 pe-lg-3">
+                                 <div class="card fee-card">
+                                    <div class="card-body d-flex justify-content-center">
+                                       <span>A</span>
+                                       <p>@Html.Raw(content4.TypeA)</p>
+                                    </div>
+                                 </div>
+                              </div>
+                              <div
+                                 class="d-flex justify-content-center justify-content-lg-end  justify-content-md-center py-5 px-4 px-xl-4 px-lg-3">
+                                 <div class="w-100pct w-xl-75pct w-lg-100pct px-0 px-xl-5 px-lg-4 px-md-3">
+                                    @{
+                                       if (branches != null)
+                                       {
+                                          <ul class="text-4 ps-2 text-color-dark">
+                                          @{
+                                             JArray branch = branches as JArray;
+                                             dynamic[] branchitem = branch.ToArray();
+                                             for (int i = 0; i < branchitem.Length; i++)
+                                             {  
+                                                <li class="line-height-9 py-1">
+                                                   <span class="font-weight-medium text-4 pe-2">@Html.Raw(branchitem[i].Name)</span><br />
+                                                   <a href="@Html.Raw(branchitem[i].GoogleMap)" target="_blank"
+                                                      class="text-color-dark">@Html.Raw(branchitem[i].AddLong)</a>
+                                                </li>
+                                             }                                             
+                                          }
+                                          </ul>
+                                       }
+                                    }                                   
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="col-12 col-lg-6 col-md-6">
+                              <div
+                                 class="w-auto d-flex align-items-center justify-content-center  justify-content-lg-start  justify-content-md-center px-0 px-xl-0 px-lg-0 px-md-3 pe-lg-3">
+                                 <div class="card fee-card">
+                                    <div class="card-body d-flex justify-content-center">
+                                       <span>B</span>
+                                       <p>@Html.Raw(content4.TypeB)</p>
+                                    </div>
+                                 </div>
+                              </div>
+                              <div
+                                 class="d-flex justify-content-center  justify-content-lg-start  justify-content-md-cente py-5 px-4 px-xl-4 px-lg-3">
+                                 <div class="w-100pct w-xl-75pct w-lg-100pct px-0 px-xl-5 px-lg-4 px-md-3">
+                                 @{
+                                       if (branches != null)
+                                       {
+                                          <ul class="text-4 ps-2 text-color-dark">
+                                          @{
+                                             JArray branch = branches as JArray;
+                                             dynamic[] branchitem = branch.ToArray();
+                                             for (int i = 0; i < branchitem.Length; i++)
+                                             {  
+                                                <li class="line-height-9 py-1"><span class="font-weight-medium text-4 pe-2">@Html.Raw(branchitem[i].Name)</span><br />
+                                                @Html.Raw(branchitem[i].MRT)
+                                                </li>                                              
+                                             }                                             
+                                          }
+                                          </ul>
+                                       }
+                                    }                                                                             
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+						</div>							
+               </div>               								
+				</div>
+			</section>	         
+      </div>
+      <div data-hash="Q5">
+         @{
+            dynamic content5 = ((JArray)(item[4].Answer)).FirstOrDefault();
+         }         
+         <section class="section section-no-background section-text-dark border-0 mt-0 mb-0 py-0 my-0">
+            <div class="container container-xl-custom container-xxl-custom">
+               <div class="row h-min-700px py-5 py-lg-0 py-md-5 my-5 my-lg-0 my-md-5">
+                  <div class="col-12 col-lg-4 align-self-center">
+                        <h3 class="font-weight-semi-bold mb-2 text-capitalize line-height-5 text-center text-lg-start">
+                           @Html.Raw(content5.Subject)
+                        </h3>
+                        <div class="divider divider-tertiary divider-small divider-xxs py-4 hidden-md-down">
+                           <hr class="my-0" style="width: 50px; height: 3px;">
+                        </div>
+                        <div class="divider divider-tertiary divider-small divider-small-center divider-xxs py-4 hidden-lg-up">
+                           <hr class="my-0" style="width: 50px; height: 3px;">
+                        </div>
+                        <p class="px-5 ps-lg-0">
+                           @Html.Raw(content5.Desc)
+                        </p>
+                  </div>
+                  <div class="col-12 col-lg-8 px-5 px-xl-5 px-lg-0 px-md-5 align-self-center">
+                     @{
+                        dynamic item5 = content5.Items;
+                        if (item5 != null)
+                        {                     
+                        <div class="row">    
+                           @{
+                              dynamic[] itemContent = ((JArray)item5).ToArray();
+                              for (int i = 0; i < itemContent.Length; i++)
+                              {
+                                 <div class="col-12 col-lg-6 col-md-6 pt-5 pt-lg-0 pt-md-5 align-self-center">
+                                    <div class="card artical-card">
+                                          <div class="card-body">
+                                             <div class="row align-items-center pt-4 text-center">
+                                                <div class="col-12">
+                                                      <div class="overflow-hidden">
+                                                         <h4 class="font-weight-normal">@Html.Raw(itemContent[i].Author)</h4>
+                                                         <h4>@Html.Raw(itemContent[i].Subject)<br /><br class="hidden-lg-up"/></h4>
+                                                         <p class="px-0 px-xl-5 px-lg-2 px-md-5 text-4 hidden-lg-down">@Html.Raw(itemContent[i].Content)<br /><br class="hidden-lg-up"/></p>
+                                                      </div>
+                                                </div>
+                                                <div class="col-12">                                                   
+                                                      <a href="@Html.Raw($"../Official/BlogSingle?{(new { DocID = itemContent[i].LinkID }).JsonStringify().EncryptKeyNormal().UrlEncodeBase64String()}")" class="btn bg-dark text-color-primary btn-rounded font-weight-normal px-4 fst-italic">@Html.Raw(commonAll.ReadMore)</a>
+                                                </div>
+                                             </div>
+                                          </div>
+                                    </div>
+                                 </div>       
+                              }
+                           }                                                                                                                                                                                             
+                        </div>
+                         }
+                     }   
+                  </div>
+               </div>
+            </div>
+         </section>
+      </div>      
+   </div>
+   <div class="row py-5">
+      <div class="col-12 text-center">
+			<a href="#main" class="btn border-color-dark text-color-dark btn-rounded fst-italic font-weight-normal text-2 positive-ls-3">更多常見問題</a>
+		</div>
+	</div>
+</div>
+<!-- // Slogan -->
+@{
+   await Html.RenderPartialAsync("~/Views/MainActivity/Module/ContactItem.cshtml");
+}
 @section TailPageJavaScriptInclude {
-
+<script>
+		$(window).on('icon.rendered', function () {
+			$('a.card.qa-card').on('click', function (event) {
+				var event = event || window.event;
+				$('div.active').removeClass('active');
+				$('a.card.qa-card').removeClass('active');
+				$(event.target).addClass('active');
+				 $(".owl-carousel")[0].scrollIntoView();
+			});
+			$('.owl-carousel').on('changed.owl.carousel', function (event) {
+				$('div.active').removeClass('active');
+				$('a.card.qa-card').removeClass('active');
+				$('a.card.qa-card').eq((event.item.index) % event.item.count).addClass('active');
+				$('a.card.qa-card').eq((event.item.index) % event.item.count + 5).addClass('active');
+			});
+		});
+	</script>
 }

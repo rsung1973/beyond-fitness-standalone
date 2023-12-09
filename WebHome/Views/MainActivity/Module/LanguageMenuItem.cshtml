@@ -1,0 +1,61 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@using WebHome.Models.Resources
+
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    String naviClass = "text-color-light";
+    if (ViewBag.MenuDark == true)
+    {
+        naviClass = "text-color-dark";
+    }
+
+    await Html.RenderPartialAsync("~/Views/MainActivity/Template/GlobalResource.cshtml");
+    dynamic globalResource = ViewContext.HttpContext.Items["GlobalResource"] as dynamic;
+    dynamic commonAll = globalResource["Common"][ViewBag.Lang ?? "zh-TW"] as dynamic;
+
+}
+<a class="nav-link text-decoration-none @(naviClass)" href="#" role="button" id="dropdownLanguage"
+    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <img src="images/blank.gif" alt="English" /><i class="fa-solid fa-globe"></i> EN
+    <i class="fas fa-angle-down"></i>
+</a>
+<div class="dropdown-menu" aria-labelledby="dropdownLanguage">
+    <a class="dropdown-item"
+        href="javascript:bindTrackingCode('null', 'null', null, null);changeLanguage('en-US');"><img
+            src="images/blank.gif" alt="English" /> English</a>
+    <a class="dropdown-item"
+        href="javascript:bindTrackingCode('null', 'null', null, null);changeLanguage('zh-TW');"><img
+            src="images/blank.gif" alt="繁體中文" /> 繁體中文</a>
+    <a class="dropdown-item" href="javascript:bindTrackingCode('null', 'null', null, null);changeLanguage('ja');"><img
+            src="images/blank.gif" alt="Japan" /> 日本語</a>
+</div>
+<script>
+    var reloadPage;
+    function changeLanguage(lang) {
+        $.post('@(Url.Action("ChangeLanguage", "Official"))', { 'lang': lang }, function (data) {
+            if ($.isPlainObject(data)) {
+                if (data.result) {
+                    if (reloadPage) {
+                        reloadPage();
+                    } else {
+                        window.location.reload();
+                    }
+                }
+            } else {
+                $(data).appendTo($('body'));
+            }
+        });
+    }
+</script>

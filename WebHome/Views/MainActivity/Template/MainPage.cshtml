@@ -1,6 +1,4 @@
-﻿
-
-@using System.IO
+﻿@using System.IO
 @using System.Linq.Expressions
 
 @using WebHome.Helper
@@ -8,6 +6,7 @@
 @using WebHome.Models.ViewModel
 @using WebHome.Models.DataEntity
 @using WebHome.Controllers
+@using CommonLib.Utility
 @using Microsoft.AspNetCore.Mvc.ModelBinding
 @using Newtonsoft.Json
 @using Newtonsoft.Json.Linq
@@ -19,83 +18,97 @@
 
     models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
     _modelState = ViewContext.ModelState;
-
     (ViewBag.Lang as String).SelectUICulture();
-    await Html.RenderPartialAsync("~/Views/MainActivity/Template/GlobalResource.cshtml");
 
+    var Request = Context.Request;
+    var Response = Context.Response;
+
+    await Html.RenderPartialAsync("~/Views/MainActivity/Template/GlobalResource.cshtml");
+    dynamic globalResource = ViewContext.HttpContext.Items["GlobalResource"] as dynamic;
+    dynamic commonAll = globalResource["Common"][ViewBag.Lang ?? "zh-TW"] as dynamic;
+    dynamic findUsAll = globalResource["FindUs"][ViewBag.Lang ?? "zh-TW"] as dynamic;
 }
 <!DOCTYPE html>
-<html lang="@(ViewBag.Lang ?? "zh-TW")">
+<html class="side-header-overlay-full-screen" lang="en">
+
 <head>
-    <!-- Google Tag Manager -->
+    <!-- Google tag (gtag.js) -->
+    <script async src="@Html.Raw($"https://www.googletagmanager.com/gtag/js?id={WebHome.Properties.AppSettings.Default.GA_Key}")"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
 
-        //gtag('config', 'GTM-T5GQNTV');
-        gtag('config', '@WebHome.Startup.Properties["GA_ID_Frontend"]');
-
-        (function (w, d, s, l, i) {
-            w[l] = w[l] || []; w[l].push({
-                'gtm.start':
-                    new Date().getTime(), event: 'gtm.js'
-            }); var f = d.getElementsByTagName(s)[0],
-                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
-                    'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
-        })(window, document, 'script', 'dataLayer', 'GTM-T5GQNTV');
+        gtag('config', '@Html.Raw(WebHome.Properties.AppSettings.Default.GA_Key)');
     </script>
     <!-- End Google Tag Manager -->
-    <meta charset="utf-8" />
-    <meta HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE" />
-    <meta name="facebook-domain-verification" content="cb5tm38nnyzmpxesv7fscpdctpj2fa" />
-    <title>Beyond Fitness | 專業與科學化的私人教練</title>
-    <!-- Favicon-->
-    <link rel="icon" href="favicons/favicon_96x96.png" />
+
+    <!-- Basic -->
+    <meta charset="utf-8">
+    <!-- Mobile Metas -->
+    <!-- Mobile Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, shrink-to-fit=no">
+    <meta HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
+    <title>Beyond Fitness</title>
+
+    <meta name="keywords" content="WebSite Template" />
+    <meta name="description"
+        content="BeyondFitness透過一對一專業教練暖心指導並提供安全的訓練環境，上課內容包含專業訓練、增肌減脂，運動傷害、物理治療、營養規劃與運動防護一次包辦！透過科學化方法創造人性化之專屬個人健康分析資料庫+雲端數據化紀錄，保證更有效率的為您增進心肺、肌力與體能，即使為新手初學者也能達成理想的體態與健康目標。台北各區皆設有分店：台北小巨蛋、東門、台北東區與信義安和分店歡迎您隨時來免費體驗。">
+    <meta name="author" content="beyond-fitness.com.tw">
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="app/icons/favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="app/icons/icon-96x96.png">
     <!-- Specifying a Webpage Icon for Web Clip -->
-    <link rel="apple-touch-icon-precomposed" href="favicons/favicon_57x57.png" />
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="favicons/favicon_72x72.png" />
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="favicons/favicon_114x114.png" />
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="favicons/favicon_144x144.png" />
-    <link rel="apple-touch-icon-precomposed" sizes="180x180" href="favicons/favicon_180x180.png" />
+    <link rel="apple-touch-icon" href="app/icons/icon-72x72.png">
+    <link rel="apple-touch-icon-precomposed" href="app/icons/icon-72x72.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="app/icons/icon-72x72.png">
+    <link rel="apple-touch-icon-precomposed" sizes="96x96" href="app/icons/icon-96x96.png">
+    <link rel="apple-touch-icon-precomposed" sizes="128x128" href="app/icons/icon-128x128.png">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="app/icons/icon-144x144.png">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="app/icons/icon-152x152.png">
+    <link rel="apple-touch-icon-precomposed" sizes="192x192" href="app/icons/icon-192x192.png">
+    <link rel="apple-touch-icon-precomposed" sizes="384x384" href="app/icons/icon-384x384.png">
+    <link rel="apple-touch-icon-precomposed" sizes="512x512" href="app/icons/icon-512x512.png">
+
+    <link rel="manifest" href="_manifest.json" data-pwa-version="set_in_manifest_and_pwa_js">
     <!-- IE可能不見得有效 -->
     <meta HTTP-EQUIV="EXPIRES" CONTENT="0" />
-    <!-- 設定成馬上就過期 -->
-    <meta HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE" />
-    <!-- Mobile Meta -->
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <!-- Favicon -->
-    <link rel="shortcut icon" href="images/favicon.ico" />
-    <!-- Font Awesome CSS -->
-    <link href="fonts/fontawesome-v5.3.1/css/all.css" rel="stylesheet" />
-    <link href="fonts/fontawesome-v5.3.1/css/v4-shims.css" rel="stylesheet" />
-    <!-- CSS reset -->
-    <link rel="stylesheet" href="css/normalize.css" type="text/css" />
-    <!-- Font Icon -->
-    <link rel="stylesheet" href="css/material-font.min.css" type="text/css" />
-    <!-- Animate -->
-    <link rel="stylesheet" href="css/animate.css" type="text/css" />
-    <!-- Slick -->
-    <link href="plugins/slick/slick.css" rel="stylesheet" type="text/css" />
-    <link href="plugins/slick/slick-theme.css?1.1" rel="stylesheet" type="text/css" />
-    <!-- Magnific Popup -->
-    <link href="plugins/magnific-popup/magnific-popup.css" rel="stylesheet" type="text/css" />
-    <!-- Magnific Popup -->
-    <link href="css/main-landing.css?2.2" type="text/css" rel="stylesheet" />
+
+    <!-- Web Fonts  -->
+    <link id="googleFonts" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap"
+        rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Infant:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Noto+Sans+TC:wght@100&display=swap"
+        rel="stylesheet">
+
+    <!-- plugins CSS -->
+	<link rel="stylesheet" href="plugins/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+	<link rel="stylesheet" href="plugins/animate/animate.compat.css">
+	<link rel="stylesheet" href="plugins/simple-line-icons/css/simple-line-icons.min.css">
+	<link rel="stylesheet" href="plugins/owl.carousel/assets/owl.carousel.min.css">
+	<link rel="stylesheet" href="plugins/owl.carousel/assets/owl.theme.default.min.css">
+    <link rel="stylesheet" href="plugins/magnific-popup/magnific-popup.min.css">
+	<!-- Revolution Slider CSS -->
+	<link rel="stylesheet" href="plugins/rs-plugin/css/settings.css">
+	<link rel="stylesheet" href="plugins/rs-plugin/css/layers.css">
+	<link rel="stylesheet" href="plugins/rs-plugin/css/navigation.css">
+
+	<!-- Theme CSS -->
+	<link rel="stylesheet" href="styles/theme.css?1.0">
+	<link rel="stylesheet" href="styles/theme-elements.css?1.0">
+
+	<!-- Skin CSS -->
+	<link id="skinCSS" rel="stylesheet" href="styles/skin-beyond.css?1.0">
+
+	<!-- Theme Custom CSS -->
+	<link rel="stylesheet" href="styles/custom.css?1.0">
+    <!-- Head Libs -->
+    <script src="plugins/modernizr/modernizr.min.js"></script>
 
     @RenderSection("CustomHeader", false)
 
-    <script src="bundles/libscripts.bundle.js"></script>
-    <script src="bundles/vendorscripts.bundle.js"></script>
-    <!-- Slick carousel javascript -->
-    <script src="plugins/slick/slick.min.js"></script>
-    <!-- Magnific Popup -->
-    <script src="plugins/magnific-popup/jquery.magnific-popup.min.js"></script>
-    <!-- WOW Plugin -->
-    <script src="js/wow.js"></script>
-    <!-- Main Script -->
-    <script src="js/main-landing.js?2.0"></script>
-    <script src="js/common.js?2.2"></script>
+
     <!-- Facebook Pixel Code -->
     <script>
         (function (f, b, e, v, n, t, s) {
@@ -118,83 +131,237 @@
             'https://connect.facebook.net/en_US/fbevents.js');
         fbq('init', '139380543390363');
         fbq('track', 'PageView');</script>
-    <script type="application/javascript">(function(w,d,t,r,u){w[u]=w[u]||[];w[u].push({'projectId':'10000','properties':{'pixelId':'10056180'}});var s=d.createElement(t);s.src=r;s.async=true;s.onload=s.onreadystatechange=function(){var y,rs=this.readyState,c=w[u];if(rs&&rs!="complete"&&rs!="loaded"){return}try{y=YAHOO.ywa.I13N.fireBeacon;w[u]=[];w[u].push=function(p){y([p])};y(c)}catch(e){}};var scr=d.getElementsByTagName(t)[0],par=scr.parentNode;par.insertBefore(s,scr)})(window,document,"script","https://s.yimg.com/wi/ytc.js","dotq");</script>
+    <script
+        type="application/javascript">(function (w, d, t, r, u) { w[u] = w[u] || []; w[u].push({ 'projectId': '10000', 'properties': { 'pixelId': '10056180' } }); var s = d.createElement(t); s.src = r; s.async = true; s.onload = s.onreadystatechange = function () { var y, rs = this.readyState, c = w[u]; if (rs && rs != "complete" && rs != "loaded") { return } try { y = YAHOO.ywa.I13N.fireBeacon; w[u] = []; w[u].push = function (p) { y([p]) }; y(c) } catch (e) { } }; var scr = d.getElementsByTagName(t)[0], par = scr.parentNode; par.insertBefore(s, scr) })(window, document, "script", "https://s.yimg.com/wi/ytc.js", "dotq");</script>
     <!-- End Facebook Pixel Code -->
 </head>
 
-<body>
-    <!-- Google Tag Manager (noscript) -->
-    <noscript>
-        <img height="1" width="1" src="https://www.facebook.com/tr?id=139380543390363&ev=PageView&noscript=1" />
-        <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T5GQNTV"
-                height="0" width="0" style="display:none;visibility:hidden"></iframe>
-    </noscript>
-    <!-- End Google Tag Manager (noscript) -->
-    <!-- //Main Nav -->
-    <header id="main-nav">
-        <div class="container">
-            <a id="navigation" href="javascript:void(0);" class="hidden-md-up"><i class="zmdi zmdi-apps"></i></a>
-            <div id="slide_out_menu">
-                <a href="javascript:void(0);" class="menu-close"><i class="zmdi zmdi-close"></i></a>
-                <div class="logo"><a href="javascript:bindTrackingCode('首頁', null, '@(VirtualPathUtility.ToAbsolute("~/Official/Index"))', null)"><img src="images/logo.png" alt="BeyondFitness"></a></div>
-                <ul>
-                    @{ await Html.RenderPartialAsync("~/Views/MainActivity/Module/MobileMenuItem.cshtml");}
-
+<body class="loading-overlay-showing" data-loading-overlay
+    data-plugin-options="{'hideDelay': 500, 'effect': 'floatBars'}">
+    <div class="loading-overlay">
+        <div class="bounce-loader">
+            <div class="cssload-float-bars-container">
+                <ul class="cssload-float-bars-flex-container">
+                    <li><span class="cssload-float-bars-loading"></span></li>
                 </ul>
-                <div class="slide_out_menu_footer">
-                    <ul class="socials">
-                        <li><a href="javascript:bindTrackingCode('Facebook', null, 'https://www.facebook.com/beyond.fitness.pro/', '_blank')"><i class="zmdi zmdi-facebook"></i></a></li>
-                        <li><a href="javascript:bindTrackingCode('Instagram', null, 'https://www.instagram.com/beyond_ft/', '_blank')"><i class="zmdi zmdi-instagram"></i></a></li>
-                        <li><a href="javascript:bindTrackingCode('Youtube', null, 'https://www.youtube.com/channel/UCPIcjPGaFFB1o8cFDUrT-4g', '_blank')"><i class="zmdi zmdi-youtube-play"></i></a></li>
-                        <li><a href="javascript:bindTrackingCode('Line', null, '@("line://ti/p/@itj9410x")', '_blank')"><i class="fab fa-line"></i></a></li>
-                    </ul>
-                </div>
             </div>
-            <div class="row">
-                <div class="col-md-2 col-sm-2 col-xs-12 text-center">
-                    <a href="javascript:bindTrackingCode('首頁', null, '@(VirtualPathUtility.ToAbsolute("~/Official/Index"))')" class="logo"><img src="images/logo.png" alt="BeyondFitness"></a>
-                </div>
-                <div class="col-md-10 col-sm-10 col-xs-12">
-                    <ul class="left nav-active">
-                        @{ await Html.RenderPartialAsync("~/Views/MainActivity/Module/MenuItem.cshtml");}
-                    </ul>
-                    <script>
-                        var reloadPage;
-                        function changeLanguage(lang) {
-                            $.post('@(Url.Action("ChangeLanguage", "Official"))', { 'lang': lang }, function (data) {
-                                if ($.isPlainObject(data)) {
-                                    if (data.result) {
-                                        if (reloadPage) {
-                                            reloadPage();
-                                        } else {
-                                            window.location.reload();
+        </div>
+    </div>
+
+    <!-- GDPR Bar -->
+    @if (Request.Cookies["GDPR"] == null)
+    {
+        <div class="gdpr-bar" data-plugin-gdpr>
+            <div class="gdpr-bar-description">
+                <p class="text-3 opacity-7 mb-0 line-height-2">@Html.Raw(commonAll.Cookies)</p>
+            </div>
+            <div class="gdpr-bar-actions">
+                <a 
+                    class="text-3 text-decoration-none">@Html.Raw(commonAll.PrivacyPolicy)</a>
+                <a href="#" onclick="javascript:commitGDPR();"
+                    class="gdpr-agree-trigger text-decoration-none btn btn-default">@Html.Raw(commonAll.Agree)</a>
+                <script>
+                    function commitGDPR() {
+                        $.post('@(Url.Action("CommitGDPR", "MainActivity"))', null, function (data) {
+                            if ($.isPlainObject(data)) {
+                                console.log(data);
+                            } else {
+                                $(data).appendTo($('body'));
+                            }
+                        });
+                    }
+                </script>
+            </div>
+        </div>      
+    }
+
+    <div class="body">
+         @{
+            await Html.RenderPartialAsync("~/Views/MainActivity/Module/MenuItem.cshtml");
+        }
+
+        @{
+            await Html.RenderPartialAsync("~/Views/MainActivity/Module/MobileMenuItem.cshtml");
+        }
+        
+        <!-- Main Content -->
+        <div role="main" class="main @Html.Raw(ViewBag.MainClass)">
+            @RenderBody()
+        </div>
+
+        <footer id="footer" class="mt-0 border-0">
+            <div class="container">
+                <div class="row pt-5 pb-2">
+                    <div class="col-12  col-lg-4 col-md-12 mb-2 mb-lg-0">
+                        <div class="row">
+                            <div
+                                class="col-12 d-flex align-items-center justify-content-center justify-content-lg-start pb-3 pb-lg-0 pb-md-0">
+                                <a href="javascript:bindTrackingCode(null, null, '@(VirtualPathUtility.ToAbsolute("~/Official/Index"))')"
+                                    class="logo pe-0 pe-lg-3">
+                                    <img alt="BeyondFitness" src="images/logo-default-slim-gold.svg" width="50"
+										alt="BeyondFitness|超越體能顧問有限公司" class="pe-1">
+									<img alt="BeyondFitness" src="images/logo-default-gold.svg" width="150" alt="BeyondFitness|超越體能顧問有限公司">
+                                </a>
+                            </div>
+                            <div
+                                class="col-12 d-flex align-items-center justify-content-center justify-content-lg-start hidden-sm-down">
+                                <ul class="footer-social-icons social-icons social-icons-transparent m-3">
+                                    @{
+                                    dynamic socials = commonAll.SocialItem;
+                                        if (socials != null)
+                                        {
+                                            JArray social = socials as JArray;
+                                            dynamic[] item = social.ToArray();
+                                            for (int i = 0; i < item.Length; i++)
+                                            {
+                                                 <li class="social-icons-@Html.Raw(item[i].Name) mx-2"><a href="@Html.Raw(item[i].Link)"
+                                                                    title="@Html.Raw(item[i].Name)" target="_blank"><img class="img-fluid" src="images/icons/social/@Html.Raw(item[i].ImgName)"
+                                                            width="15" alt="BeyondFitness|社群" data-icon
+                                                            data-plugin-options="{'onlySVG': false, 'animated': false, 'strokeBased': true}"></a>
+                                                </li>                                                                                             
+                                            }
+                                        }
+                                    }                          
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-4 col-md-12 mb-2 mb-lg-0 hidden-md-down">
+                        <h4
+                            class="text-5 text-color-secondary fst-italic font-weight-normal d-flex align-items-center justify-content-center justify-content-md-start">
+                            Contact US</h4>
+                        <div class="row">
+                            <div
+                                class="col-12">
+                                @{
+                                    dynamic branches = findUsAll.BranchItems;
+                                    if (branches != null)
+                                    {
+                                        JArray branch = branches as JArray;
+                                        dynamic[] item = branch.ToArray();
+                                        for (int i = 0; i < item.Length; i++)
+                                        {
+                                            String branchName = item[i].SubClass;
+                                            <div class="row mb-1">
+                                                <div class="col-5">
+                                                    •<b class="ms-2 text-4"><a href="javascript:bindTrackingCode('null', 'null', '@(Url.Action("BranchInfo", "Official", new { Branch = branchName }))', null)">@Html.Raw(item[i].Name)</a></b>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <a href="tel:@Html.Raw(item[i].TelDial)"
+                                                        class="link-hover-style-1 ms-1 fst-italic text-4">@Html.Raw(item[i].Tel)</a>
+                                                </div>
+                                            </div>
                                         }
                                     }
-                                } else {
-                                    $(data).appendTo($('body'));
                                 }
-                            });
-                        }
-                    </script>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-4 col-md-12 mb-2 mb-lg-0">
+                        <h4
+                            class="text-5 text-color-secondary fst-italic font-weight-normal d-flex align-items-center justify-content-center justify-content-lg-start justify-content-md-center hidden-sm-down">
+                            Link</h4>
+                        <div class="row">
+                            <div class="col-6 col-lg-auto col-md-6 col-sm-6 d-flex justify-content-end">
+                                <ul class="list list-icons list-icons-sm ps-0">
+                                    <li class="ps-0 text-4"><a
+                                            href="javascript:bindTrackingCode('null', 'null', '@(Url.Action("AboutUs", "Official"))', null)"
+                                            class="link-hover-style-1 ms-1">@Html.Raw(commonAll.AboutUs)</a>
+                                    </li>
+                                    <li class="ps-0 text-4"><a
+                                            href="javascript:bindTrackingCode('null', 'null', '@(Url.Action("Service", "Official"))', null)"
+                                            class="link-hover-style-1 ms-1">@Html.Raw(commonAll.Service)</a>
+                                    </li>
+                                    <li class="ps-0 text-4"><a
+                                            href="javascript:bindTrackingCode('null', 'null', '@(Url.Action("Session", "Official"))', null)"
+                                            class="link-hover-style-1 ms-1">@Html.Raw(commonAll.Session)</a></li>
+                                    <li class="ps-0 text-4"><a
+                                            href="javascript:bindTrackingCode('null', 'null', '@(Url.Action("FindUs", "Official"))', null)"
+                                            class="link-hover-style-1 ms-1">@Html.Raw(commonAll.FindUs)</a></li>
+                                    <li class="ps-0 text-4"><a
+                                            href="javascript:bindTrackingCode('null', 'null', '@(Url.Action("FAQ", "Official"))', null)"
+                                            class="link-hover-style-1 ms-1">@Html.Raw(commonAll.FAQ)</a></li>
+                                </ul>
+                            </div>
+                            <div class="col-6 col-lg-auto col-md-6 col-sm-6 ps-0">
+                                <ul class="list list-icons list-icons-sm ps-0">
+                                    <li class="ps-0 text-4"><a
+                                            href="javascript:bindTrackingCode('null', 'null', '@(Url.Action("BookNow", "Official"))', null)"
+                                            class="link-hover-style-1 ms-1">@Html.Raw(commonAll.Booking)</a>
+                                    </li>
+                                    <li class="ps-0 text-4"><a
+                                            href="javascript:bindTrackingCode('null', 'null', '@(Url.Action("JoinUs", "Official"))', null)"
+                                            class="link-hover-style-1 ms-1">@Html.Raw(commonAll.JoinUs)</a></li>
+                                    <li class="ps-0 text-4"><a
+                                            href="@Html.Raw($"../Official/BlogSingle?{(new { DocID = 81295 }).JsonStringify().EncryptKeyNormal().UrlEncodeBase64String()}")"
+                                            class="link-hover-style-1 ms-1">@Html.Raw(commonAll.Blog)</a></li>
+                                    <li class="ps-0 text-4"><a
+                                            href="@(Url.Action("PartnerInfo", "Official"))"
+                                            class="simple-ajax-popup link-hover-style-1 ms-1">@Html.Raw(commonAll.PartnerMenu)</a>
+                                    </li>
+                                    <li class="ps-0 text-4"><a
+                                            class="link-hover-style-1 ms-1">@Html.Raw(commonAll.PrivacyPolicy)</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div
+                                class="col-12 d-flex align-items-center justify-content-center justify-content-lg-start hidden-sm-up">
+                                <ul class="footer-social-icons social-icons social-icons-transparent m-3">
+                                    @{
+                                        if (socials != null)
+                                        {
+                                            JArray social = socials as JArray;
+                                            dynamic[] item = social.ToArray();
+                                            for (int i = 0; i < item.Length; i++)
+                                            {
+                                                 <li class="social-icons-@Html.Raw(item[i].Name) mx-2 text-4"><a href="@Html.Raw(item[i].Link)"
+                                                        title="@Html.Raw(item[i].Name)"><img class="img-fluid" src="images/icons/social/@Html.Raw(item[i].ImgName)"
+                                                            width="15" alt="BeyondFitness|社群" data-icon
+                                                            data-plugin-options="{'onlySVG': false, 'animated': false, 'strokeBased': true}"></a>
+                                                </li>                                                                                             
+                                            }
+                                        }
+                                    }    
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </header>
-    <!-- Main Content -->
-    @RenderBody()
+            <div class="footer-copyright container bg-transparent text-center">
+                <div class="row pb-5">
+                    <div class="col-12 m-0">
+                        <hr class="bg-primary opacity-1 mt-5 mb-4 hidden-sm-down">
+                        <p class="text-3 text-center line-height-9">© Copyright 2023 BEYOND FITNESS.
+                            <br class="hidden-sm-up" />All Rights Reserved.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Plugin -->
+    <script src="plugins/plugins/js/plugins.min.js"></script>
+    <!-- SweetAlert Plugin Js -->
+    <script src="plugins/sweetalert2/sweetalert2.min.js?1.0"></script>
+
+    <!-- Theme Base, Components and Settings -->
+    <script src="scripts/theme.js"></script>
+
+    <!-- Circle Flip Slideshow Script -->
+    <script src="plugins/circle-flip-slideshow/js/jquery.flipshow.min.js"></script>
+    <!-- Current Page Views -->
+    <script src="scripts/views/view.home.js"></script>
+    <!-- LighBox -->
+    <script src="scripts/examples/examples.lightboxes.js"></script>
+
+    <!-- Theme Initialization Files -->
+    <script src="scripts/theme.init.js"></script>
+    <script src="scripts/common.js?1.0"></script>
+    
     @RenderSection("TailPageJavaScriptInclude", false)
-    <!-- // Footer -->
-    <footer id="footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12 text-center">
-                </div>
-            </div>
-        </div>
-    </footer>
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    @*<script async src="https://www.googletagmanager.com/gtm.js?id=GTM-T5GQNTV"></script>*@
-    <script async src="@($"https://www.googletagmanager.com/gtag/js?id={WebHome.Startup.Properties["GA_ID_Frontend"]}")"></script>
+
     <script type="text/javascript">
 
         this.bindTrackingCode = function (gaEventName, fbEventName, linkURL, linkType) {
@@ -214,12 +381,11 @@
                 }
             }
         }
+
+        function gotoVoicePage(viewModel) {
+            $('').launchDownload('@Html.Raw(Url.Action("Voice", "Official"))', viewModel);
+        }        
     </script>
-    <!-- Google Tag Manager (noscript) -->
-    <noscript>
-        <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T5GQNTV"
-                height="0" width="0" style="display:none;visibility:hidden"></iframe>
-    </noscript>
-    <!-- End Google Tag Manager (noscript) -->
 </body>
+
 </html>

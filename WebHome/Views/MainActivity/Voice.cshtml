@@ -1,0 +1,381 @@
+
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
+@using WebHome.Models.Resources
+@using CommonLib.Utility
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _modelState = ViewContext.ModelState;
+
+    Layout = "~/Views/MainActivity/Template/MainPage.cshtml";
+    ViewBag.MainClass = "voice";
+    ViewBag.MenuDark = false;
+
+   await Html.RenderPartialAsync("~/Views/MainActivity/Template/GlobalResource.cshtml");
+   dynamic globalResource = ViewContext.HttpContext.Items["GlobalResource"] as dynamic;
+   dynamic joinUsAll = globalResource["JoinUs"][ViewBag.Lang ?? "zh-TW"] as dynamic;
+   dynamic commonAll = globalResource["Common"][ViewBag.Lang ?? "zh-TW"] as dynamic;
+   dynamic findUsAll = globalResource["FindUs"][ViewBag.Lang ?? "zh-TW"] as dynamic;
+   dynamic homeAll = globalResource["Home"][ViewBag.Lang ?? "zh-TW"] as dynamic;
+
+    JObject coach = ViewContext.HttpContext.Items["RequestCoach"] as JObject;
+    JObject branch = ViewContext.HttpContext.Items["RequestBranch"] as JObject;
+    JObject voice = ((JArray)coach["Voice"]).FirstOrDefault() as JObject;
+    Boolean isShowVoice = true;
+    if (!String.IsNullOrEmpty((String)coach["JobType"]) && ((String)coach["JobType"]) == "Dietitian")
+    {
+        isShowVoice = false;
+    }
+}
+@section CustomHeader {
+    <meta name="description"
+        content="關於公司徵才及人才招募教練培訓訊息，超越體能顧問有限公司團隊是業界擁有最多國際級六大專業證照的機構，讓您在專業及安全的環境下工作，ACE、ACSM、NCAA、NSCA、NASM、CrossFit、EXOS-XPS、CPR+AE，制度，除了良好的工作環境、也提供學習（培訓）及成長的空間，歡迎真正擁有熱忱以及想學習的朋友一起加入超越體能顧問有限公司的工作行列。" />
+}
+<!--Banner-->
+<section class="section border-0 m-0 p-0 banner container-background pt-5">
+    <div class="container container-xl-custom container-xxl-custom pt-5 h-100">
+        <div class="row align-items-center pt-5 h-100 text-center px-0 ">
+            <div class="col-12 py-5 px-0">
+                <h1
+                    class="text-12 text-color-tertiary font-weight-light my-5 positive-ls-10 line-height-4 text-uppercase fst-italic text-center">
+                    @Html.Raw(homeAll.Voice)
+                </h1>
+                <h1 class="mb-4 mb-md-5 text-10 text-start text-lg-center text-md-center px-4 px-lg-0 px-md-0"><span
+                        class="text-color-tertiary">「</span>@Html.Raw(voice["AboutDefCoach"])<span
+                        class="text-color-tertiary">」</span></h1>
+            </div>
+        </div>
+    </div>
+</section>
+<!--簡介-->
+<section class="section border-0 mt-0 mb-0 py-0 interviewee-background @Html.Raw(coach["NameDesc"])">
+    <div class="container py-5 h-100">
+        <div class="row text-lg-start align-items-center h-100">
+            @{
+                if ((String)voice["BriefPosition"] == "left")
+                {
+                    <!--左-->
+                    <div class="col-lg-6 col-md-6 col-12 hidden-sm-down pe-5">
+                        <div class="w-100pct w-xl-75pct w-lg-75pct w-md-75pct">
+                            <h1 class="text-10 font-weight-semi-bold text-uppercase mb-3  @Html.Raw(voice["NameColor"])">
+                                @Html.Raw(coach["NameDesc"])</h1>
+                            <h4 class="font-weight-medium @Html.Raw(voice["BriefColor"])">@Html.Raw(branch["Name"]) <span
+                                    class="text-color-tertiary">/</span>
+                                @Html.Raw(coach["JobTitle"])</h4>
+                            <p class="@Html.Raw(voice["BriefColor"])">@Html.Raw(voice["BriefInfo"])</p>
+                        </div>
+                    </div>
+                } else {
+                    <!--右-->
+                    <div class="col-lg-push-6 col-lg-6 col-md-push-6 col-md-6 col-12 hidden-sm-down ps-5">
+                        <div class="w-100pct w-xl-75pct w-lg-75pct w-md-75pct">
+                            <h1 class="text-10 font-weight-semi-bold text-uppercase mb-3 @Html.Raw(voice["NameColor"])">
+                                @Html.Raw(coach["NameDesc"])</h1>
+                            <h4 class="font-weight-medium @Html.Raw(voice["BriefColor"])">@Html.Raw(branch["Name"]) <span
+                                    class="text-color-tertiary">/ </span>@Html.Raw(coach["JobTitle"])</h4>
+                            <p class="@Html.Raw(voice["BriefColor"])">@Html.Raw(voice["BriefInfo"])</p>
+                        </div>
+                    </div>
+                }
+            }            
+        </div>
+    </div>
+</section>
+<!--簡介-->
+<section class="section bg-light section-text-dark border-0 mt-0 mb-0 py-5 hidden-sm-up">
+    <div class="container py-5 h-100">
+        <div class="row text-lg-start mx-4">
+            <div class="col-12">
+                <h1 class="text-10 font-weight-semi-bold text-uppercase">@Html.Raw(coach["NameDesc"])</h1>
+                <h4 class="font-weight-medium">@Html.Raw(branch["Name"]) <span class="text-color-tertiary"> / </span>@Html.Raw(coach["JobTitle"])
+                </h4>
+                <p class="text-color-dark">@Html.Raw(voice["BriefInfo"])</p>
+                <hr class="bg-color-secondary mt-5">
+            </div>
+        </div>
+    </div>
+</section>
+<!--訪談內容-->
+<section class="section bg-light section-text-dark border-0 mt-0 mb-0 py-0 py-lg-5 py-md-5">
+    <div class="container container-xl-custom container-xxl-custom py-0 py-lg-5 py-md-5">
+        <div class="row px-0 px-xl-3 px-lg-0 px-md-3">
+            <div class="col-12 col-lg-4 col-md-12 py-5 py-lg-5 py-md-5 px-5 px-lg-0 ps-lg-0 pe-lg-5 px-md-5">
+                <div class="w-100pct w-xl-75pct w-lg-100pct w-md-100pct">
+                    <h2
+                        class="text-color-tertiary font-weight-semi-bold mb-2 positive-ls-5 text-uppercase d-flex justify-content-start">
+                        @Html.Raw(joinUsAll.Talk)
+                    </h2>
+                    <span
+                        class="text-3-4 font-weight-medium positive-ls-10 text-color-dark d-block d-flex justify-content-start">@Html.Raw(joinUsAll.TalkDesc)
+                    </span>
+                    <div class="divider divider-tertiary divider-small divider-xxs py-4">
+                        <hr class="my-0" style="width: 50px; height: 3px;">
+                    </div>
+                    @{
+                        if (isShowVoice)
+                        {
+                            <h3 class="font-weight-bold line-height-5">@Html.Raw(voice["TalkSlogan"])</h3>
+                            <p>@Html.Raw(voice["TalkMessage"])</p>                            
+                        } else {
+                            <img class="img-fluid mb-5 ps-3 hidden-md-down" src="images/avatars/@Html.Raw(coach["NameDesc"])/Voice/Cover.jpg" alt="BeyondFitness|團隊成員" width="200">
+                            <h3 class="font-weight-bold line-height-5 text-capitalize">@Html.Raw(coach["Slogan"])</h3>
+                            <p class="font-weight-medium">@Html.Raw(coach["SloganDesc"])</p>									
+                                <div class="row">
+                                    <!--擅長運動項目-->
+                                    <div class="col-12 ">
+                                        <div class="pt-1 pb-5">
+                                            @{
+                                                dynamic sports = coach["Sports"];
+                                                if (sports != null)
+                                                {
+                                                    var sport = ((JArray) sports).OrderBy(a => a["nAME"]).ToArray();
+                                                        
+                                                    for (int i = 0; i < sport.Length; i++)
+                                                    {      
+                                                        <object data="images/icons/sports/@Html.Raw($"{sport[i]["Name"]}.svg")" type="image/svg+xml" height="50" class="px-1 py-1"></object>
+                                                    }
+                                                }
+                                            }   
+								        </div>		
+                                    </div>
+                                    <!--擅長職務-->
+									<div class="col-12 col-lg-12 col-md-6">
+                                        <div class="d-flex" style="height: 25px">
+                                            <svg class="mb-4" width="15" height="100%">
+                                                <line x1="5" x2="5" y1="30" stroke="#E76751" stroke-width="4"></line>
+                                        </svg>
+                                        <h4 class="font-weight-semi-bold text-uppercase px-1 mb-0">@Html.Raw(commonAll.Expertise)</h4>
+                                        </div>
+                                        <p>
+                                        @{
+                                            dynamic expertises = (JArray) coach["Expertise"];
+                                            if (expertises != null)
+                                            {
+                                            <ul class="text-color-dark text-4">
+                                                @{                                       
+                                                    for (int i = 0; i < expertises.Count; i++)
+                                                    {   
+                                                        <li class="line-height-9">@Html.Raw(expertises[i]["Item"])</li>   
+                                                    
+                                                    }                                            
+                                                }
+                                            </ul>
+                                            }                                   
+                                        } 								
+                                        </p>
+                                    </div>
+                                    <!--證照-->
+                                    <div class="col-12 col-lg-12 col-md-6">
+                                        <div class="d-flex mt-4" style="height: 25px">
+                                            <svg class="mb-4" width="15" height="100%">
+                                                <line x1="5" x2="5" y1="30" stroke="#E76751" stroke-width="4"></line>
+                                            </svg>
+                                        <h4 class="font-weight-semi-bold text-uppercase px-1 mb-0">@Html.Raw(commonAll.LicenseDesc)</h4>
+                                        </div>
+                                        <p>
+                                        @{
+                                            dynamic licenses = coach["License"];
+                                            if (licenses != null)
+                                            {
+                                            <ul class="text-color-dark text-4">
+                                                @{
+                                                    var license = ((JArray) licenses).OrderBy(a => a["Name"]).ToArray();                                            
+                                                    for (int i = 0; i < license.Length; i++)
+                                                    {   
+                                                        <li class="line-height-9">@Html.Raw(license[i]["Name"])</li>   
+                                                    
+                                                    }                                            
+                                                }
+                                            </ul>
+                                            }                                   
+                                        }   
+                                        </p>      
+                                    </div>
+                                </div>																					                                                  
+                        }
+                    }
+                </div>
+            </div>
+            <div class="col-12 px-0 hidden-sm-up">
+                <img src="images/avatars/@Html.Raw(coach["NameDesc"])/Voice/people.jpg" alt="BeyondFitenss|夥伴之聲"
+                    class="img-fluid" />
+            </div>
+            <div class="col-12 col-lg-8 col-md-12 py-0 pb-5 py-lg-5 py-md-0 px-0 px-lg-0 ps-lg-5 px-md-3">
+                @{
+                    dynamic interviews = voice["Interviews"];
+                    if (interviews != null)
+                    {
+                        <div class="toggle toggle-service mx-5 mx-lg-0 mx-md-0 my-4" data-plugin-toggle
+                            data-plugin-options="{ 'isAccordion': true }">
+                        @{
+                            JArray interview = interviews as JArray;
+                            var activeClass = "";
+                            for (int i = 0; i < interview.Count; i++)
+                            {      
+                                if (i == 0) {
+                                    activeClass = "active";
+                                } else {
+                                    activeClass = "";
+                                }
+                                 <section class="toggle @Html.Raw(activeClass)">
+                                    <a class="toggle-title">
+                                        <div class="d-inline-flex ps-3">
+                                                <span class="fst-italic me-2">@Html.Raw($"Q{i+1}.")</span>
+                                                @Html.Raw(interview[i]["Question"])
+                                        </div>
+                                    </a>
+                                    <div class="toggle-content my-5">
+                                        <div class="row">
+                                            <div class="col-auto hidden-sm-down">
+                                                <svg class="mb-4" width="15" height="90%">
+                                                    <line x1="5" x2="5" y1="1" y2="100%" stroke="#E76751" stroke-width="1"></line>
+                                                </svg>
+                                            </div>
+                                            <div class="col-12 col-lg-11 col-md-11 px-5 px-lg-4 px-md-4">
+                                                    @Html.Raw(interview[i]["Answers"])
+                                            </div>                                            
+                                        </div>
+                                    </div>                                    
+                                </section>                                
+                            }
+                        }
+                       </div>
+                    }   
+                }
+            </div>
+        </div>
+    </div>
+    <div class="container container-xl-custom container-xxl-custom py-5 blank_container">
+    </div>
+</section>
+<!--照片Demo-->
+<section class="section bg-color-dark section-text-dark border-0 m-0 position-relative pt-5 pb-0 demo-img">
+    <div class="container container-xl-custom container-xxl-custom p-relative z-index-1 custom-el-pos-1 px-0">
+        <img class="img-fluid @Html.Raw(coach["NameDesc"])" src="images/shape/wave.png" alt="BeyondFitness|夥伴之聲">
+    </div>
+</section>
+<!--Slogan-->
+<section
+    class="section section-text-light bg-color-dark p-0 mt-0 mb-0 border-0 d-flex align-items-center pb-5 pt-5 pt-lg-0 pt-md-3 slogan_container">
+    <div class="container container-xl-custom container-xl-custom h-100 pt-5 pt-lg-0 pt-md-3">
+        <div class="row justify-content-start">
+            <div class="col-12 col-lg-9 col-md-12 px-5">
+                <div>
+                    <img class="custom-svg-1 icon-animated mt-3" width="40" src="images/icons/double_quotes.svg"
+                        alt="BeyondFitness|私人教練是什麼" data-icon
+                        data-plugin-options="{'onlySVG': false, 'color': '#EBD7BF', 'animated': false, 'strokeBased': true, 'svgStyle': 'fill:#EBD7BF'}" />
+                    <h3 class="mt-5 line-height-9"><span
+                            class="text-color-tertiary pe-2">「</span>@Html.Raw(voice["Conclusion"])<span
+                            class="text-color-tertiary pe-2">」</span></h3>
+                    <p class="text-color-grey">@Html.Raw(joinUsAll.InviteMessage)</p>
+                    <a href="javascript:bindTrackingCode('null', 'null', '@(Url.Action("JoinUs", "Official"))', null)"
+                        class="btn bg-color-dark border-color-light text-color-light btn-rounded fst-italic mt-5 px-5">@Html.Raw(commonAll.JoinUsGo)</a>
+                </div>
+            </div>
+            <div
+                class="col-12 col-lg-3 col-md-12 d-flex justify-content-end justify-content-lg-center justify-content-md-end align-items-end pb-5 pb-lg-0 pb-md-5 mb-5 mb-lg-0 mb-md-5 pt-5 pt-lg-0 pt-md-5 px-5">
+                <h1 class="text-uppercase"> -<span class="fst-italic">@Html.Raw(coach["NameDesc"])</span></h1>
+            </div>
+        </div>
+    </div>
+</section>
+<!--員工之聲-->
+<section class="section section-text-dark bg-color-primary border-0 mt-0 mb-0 section-center py-5 joinus">
+    <div class="row py-5 my-5">
+        <div class="col-12 col-xl-5 col-lg-4 col-md-12 px-0 py-5 py-lg-5 py-md-5">
+            <div class="w-xl-50pct w-lg-75pct w-md-100pct pe-0 float-none float-lg-end align-items-center">
+                <h2 class="text-color-tertiary font-weight-semi-bold mb-2 positive-ls-5 text-uppercase">
+                    @Html.Raw(joinUsAll.OtherVoice)
+                </h2>
+                <span class="text-3-4 font-weight-medium positive-ls-10 d-block">@Html.Raw(joinUsAll.OtherVoiceDesc)</span>
+                <div
+                    class="divider divider-tertiary divider-small divider-small-center divider-xxs py-4 hidden-sm-down">
+                    <hr class="my-0" style="width: 50px; height: 3px;">
+                </div>
+                <h3 class="font-weight-bold line-height-5 hidden-sm-down">@Html.Raw(joinUsAll.OtherVoiceSlogan)</h3>
+            </div>
+        </div>
+        <div class="col-12 col-xl-7 col-lg-8 col-md-12 px-3 px-lg-5 px-md-5 ps-lg-0 pt-2 pt-lg-0 pt-md-0">
+            <div class="w-xl-75pct w-lg-100pct">
+                @{
+                    var targetItems = ((JArray)joinUsAll.VoiceItem).Where(c => c.Value<String>("MemberCode") == (String)coach["MemberCode"]);
+                    var otherVoices = ((JArray)joinUsAll.VoiceItem).Except(targetItems);
+                    if (otherVoices.Any())
+                    {
+                        <div class="owl-carousel owl-theme"
+                            data-plugin-options="{'loop': false, 'nav': false, 'dots': true, 'responsive': {'0': {'items': 1}, '479': {'items': 1}, '768': {'items': 3}, '979': {'items': 3}, '1199': {'items': 3}, '1399': {'items': 4}}, 'autoHeight': true, 'margin': 20, 'animateOut': 'slideOutRight', 'animateIn': 'flipInY'}">
+                            @{
+                                dynamic[] item = otherVoices.ToArray();
+                                for (int i = 0; i < item.Length; i++)
+                                {
+                                    JObject otherBranch = ((JArray)findUsAll["BranchItems"]).Where(c => c["ID"] ==
+                                    item[i].BranchID).FirstOrDefault() as JObject;
+                                    if (branch != null)
+                                    {
+                                        JObject otherCoach = ((JArray)otherBranch["Coaches"]).Where(c => c["MemberCode"] ==
+                                        item[i].MemberCode).FirstOrDefault() as JObject;
+                                        if (otherCoach != null)
+                                        {
+                                                var viewModel = new
+                                            {
+                                                BranchID = (int?)otherBranch["ID"],
+                                                MemberCode = (String)otherCoach["MemberCode"]
+                                            };
+                                            <div class="d-flex justify-content-center">
+                                                <div class="card border-color-secondary custom-squareround-card"
+                                                    onclick='gotoVoicePage(@Html.Raw(viewModel.JsonStringify()));'>
+                                                    <div class="card-body p-3">
+                                                        @{
+                                                            if ((i%2) == 0)
+                                                            {
+                                                                <img src="images/avatars/@Html.Raw(otherCoach["NameDesc"])/Voice/Cover.jpg"
+                                                                    class="avatar-img" alt="BeyondFitness|員工之聲">
+                                                            }
+                                                        }
+                                                        <div class="row text-center pt-5">
+                                                            <div class="col-12">
+                                                                <h5 class="mb-2">@Html.Raw(otherCoach["Name"])/@Html.Raw(otherCoach["JobTitle"])
+                                                                    <h4>@Html.Raw(otherCoach["NameDesc"])</h4>
+                                                            </div>
+                                                        </div>
+                                                        @{
+                                                            if ((i%2) == 1)
+                                                            {
+                                                                <img src="images/avatars/@Html.Raw(otherCoach["NameDesc"])/Voice/Cover.jpg"
+                                                                    class="avatar-img" alt="BeyondFitness|員工之聲">
+                                                            }
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+                                }
+                            }
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+        <div class="col-12 hidden-sm-up">
+            <h3 class="font-weight-bold line-height-5">@Html.Raw(joinUsAll.OtherVoiceSlogan)</h3>
+        </div>
+    </div>
+</section>
+@section TailPageJavaScriptInclude {
+
+}

@@ -1,0 +1,501 @@
+﻿
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using WebHome.Models.Resources
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Microsoft.AspNetCore.Http
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
+@using CommonLib.Utility
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = ViewContext.ModelState;
+    IFormCollection _model = this.Model as IFormCollection;
+    Layout = "~/Views/MainActivity/Template/MainPage.cshtml";
+    ViewBag.MainClass = "findus";
+    ViewBag.MenuDark = false;
+
+    await Html.RenderPartialAsync("~/Views/MainActivity/Template/GlobalResource.cshtml");
+    dynamic globalResource = ViewContext.HttpContext.Items["GlobalResource"] as dynamic;
+    dynamic findUsAll = globalResource["FindUs"][ViewBag.Lang ?? "zh-TW"] as dynamic;
+    dynamic commonAll = globalResource["Common"][ViewBag.Lang ?? "zh-TW"] as dynamic;
+    dynamic homeAll = globalResource["Home"][ViewBag.Lang ?? "zh-TW"] as dynamic;
+
+
+    var request = ViewContext.HttpContext.Request;
+    String subClass = request.Query["Branch"];
+
+    dynamic branch = ((JArray) findUsAll.BranchItems).Where(c => (String)c["SubClass"] == subClass).FirstOrDefault();
+    
+    int bannerImgCnt = branch.BannerImgCount;
+    bool autoPlay = false;
+    if (bannerImgCnt > 1) {
+        autoPlay = true;
+    }
+
+    ViewBag.SubClass = subClass;
+
+}
+@functions
+{
+    void Shuffle(int[] position,int group = 4)
+    {
+        Random rand = new Random((int)DateTime.Now.Ticks & 0x0000FFFF);
+        for (int i = 0; i < position.Length; i+=group)
+        {
+            var target = i + group + rand.Next(position.Length);
+            if (target != i)
+            {
+                for (int j = 0; j < group && (i + j) < position.Length; j++)
+                {
+                    SwapItem(position, (i + j) % position.Length, (target + j) % position.Length);
+                }
+            }
+        }
+    }
+
+    void SwapItem(int[] position,int i,int target)
+    {
+        int tmp = position[i];
+        position[i] = position[target];
+        position[target] = tmp;
+    }
+}
+
+@section CustomHeader {
+    <meta name="description"
+          content="位於台北市中心的私人教練商家，台北市推薦健身房健身課程，適合年長者、孕婦、女性，專長於私人教練與營養諮詢，鄰近捷運站，東門站，忠孝復興站，忠孝新生站，忠孝敦化站，信義安和站，台北小巨蛋的私人教練健身課程，松山區健身、信義區健身、大安區健身體能訓練中心。" />
+    <script>   
+		function createAvatarImage(coachDimArray) {
+			const svgObject = (event || window.event).target;
+			svgObject.setAttribute('id', coachDimArray[1] + 'Image');
+			//console.log(svgObject);
+
+			const svgDoc = svgObject.contentDocument;
+			// const hrefElement = svgDoc.querySelector('#coach_pic a');
+			// hrefElement.setAttribute('href', 'coach-info.html');
+
+			const imageElement = svgDoc.querySelector('#coach_pic image');
+			imageElement.setAttribute('xlink:href', '../avatars/' + coachDimArray[1] + '/' + coachDimArray[0]);
+			imageElement.setAttribute('x', coachDimArray[5]);
+			imageElement.setAttribute('y', coachDimArray[6]);
+
+			imageElement.addEventListener('click', function (event) {
+				//這裡執行點擊區域1後的操作，例如重定向到不同的網頁
+				$(event.target.parentElement).magnificPopup({
+					type: 'ajax',
+					alignTop: true,
+					overflowY: 'scroll' // as we know that popup content is tall we set scroll overflow by default to avoid jump
+				});
+			});
+
+			const nameTextElement = svgDoc.querySelector('#coach_name text');
+			nameTextElement.setAttribute('transform', coachDimArray[3])
+			nameTextElement.querySelector('tspan').textContent = coachDimArray[1];
+
+			const titleTextElement = svgDoc.querySelector('#coach_title text');
+			titleTextElement.setAttribute('transform', coachDimArray[4]);
+			titleTextElement.querySelector('tspan').textContent = coachDimArray[2];
+
+		}
+    </script>
+}
+<!--Banner-->
+<div class="banner owl-carousel owl-theme owl-carousel-light owl-carousel-light-init-fadeIn manual dots-inside dots-horizontal-center show-dots-xs show-dots-sm show-dots-md dots-light nav-with-transparency nav-md nav-font-size-sm mb-0 custom-nav-arrows-1"
+    data-plugin-options="{'loop': true, 'nav':false, 'autoplayTimeout': 7000, 'autoplay': @Html.Raw(autoPlay.ToString().ToLower())}"
+    style="height: 100vh;">
+    <div class="owl-stage-outer">
+        <div class="owl-stage">
+            <!-- Carousel Slide  -->
+            @{
+                for (int i = 0; i < bannerImgCnt; i++) {
+                    <div class="owl-item position-relative pt-5 @Html.Raw(subClass+'-'+(i+1))">
+                        <div class="container position-relative z-index-3 pb-5 h-100">
+                            <div class="row align-items-center pb-5 h-100 px-4">
+                                <div class="col">
+                                    @{
+                                        if (branch.NameDesc != "") 
+                                        {
+                                            <h1 class="font-weight-extra-bold text-8 line-height-1 line-height-sm-3 mb-1 branch"
+                                                data-plugin-options="{'minWindowWidth': 0}">@Html.Raw(branch.Name)<br><span
+                                                class="text-7 text-color-secondary text-uppercase">@Html.Raw(branch.NameDesc)</span> 
+                                            </h1>                                                                                                                         
+                                        } else {
+                                            <h1 class="font-weight-extra-bold text-8 line-height-1 line-height-sm-3 mb-1 branch"
+                                                data-plugin-options="{'minWindowWidth': 0}"><span
+                                                class="text-7 text-color-secondary text-uppercase">@Html.Raw(branch.Name)</span> 
+                                            </h1>    
+                                        }
+                                    }                                     
+                                        <h3 class="mb-0 branch"><a
+                                                href="tel:@Html.Raw(branch.TelDial)">@Html.Raw(branch.Tel)</a></h3>
+                                </div>
+                            </div>
+                        </div>                       
+                    </div>
+                }
+            }
+           
+        </div>
+    </div>
+    @{
+        if (bannerImgCnt> 1) {
+            <div class="owl-dots mb-5">
+                @{
+                    for (int i = 0; i < bannerImgCnt; i++) {
+                        <button role="button" class="owl-dot"><span></span></button>
+                    }
+                }
+            </div>
+        }
+    }   
+</div>
+<section id="main"
+    class="parallax section section-parallax section-center section-text-light border-0 mt-0 mb-0 py-0 position-relative">
+    <!-- 行銷短文+輪播 -->
+    <div class="row">        
+        <div class="col-12 d-flex justify-content-lg-start justify-content-md-center JU">
+			<img class="slogan-img mb-5 @Html.Raw(subClass)" alt="BeyondFitness|@Html.Raw(branch.Name)">						
+		</div>        
+        <div class="col-12 col-lg-5 px-5 pe-xl-5 pe-lg-0">
+            <div
+                class="w-xl-75pct w-lg-100pct w-md-100pct w-sm-100pct float-none float-lg-end px-0 px-lg-0 px-md-5 ps-0 ps-lg-5 ps-md-5">
+                <h3 class="font-weight-bold line-height-5 text-start text-capitalize">@Html.Raw(branch.Slogan)</h3>
+                @Html.Raw(branch.SloganMessage)
+            </div>
+        </div>
+        <div class="col-12 col-lg-7 d-flex align-self-center ps-0 ps-lg-5 ps-md-0">
+            @{
+                dynamic demoImgs = branch.DemoImgItems;
+                if (demoImgs != null)
+                {
+                <div class="owl-carousel owl-theme nav-bottom bg-dark"
+                    data-plugin-options="{'loop': false, 'nav': false, 'dots': true, 'autoplay': true, 'autoplayTimeout': 7000, 'responsive': {'0': {'items': 1}, '479': {'items': 1}, '768': {'items': 2}, '979': {'items': 1}, '1199': {'items': 2}}, 'margin': 0, 'animateOut': 'slideOutLeft'}">                    
+                    @{
+                        JArray demoImg = demoImgs as JArray;
+                        dynamic[] item = demoImg.ToArray();
+                        for (int i = 0; i < item.Length; i++)
+                        {
+                            <div>
+                                <img src="images/findus/@Html.Raw(subClass)/@Html.Raw(item[i].FileName)" class="img-fluid" alt="BeyondFitness|@Html.Raw(branch.Name)" />
+                            </div>
+                        }
+                    }
+                </div>
+                }
+            }           
+        </div>
+    </div>
+    <!-- OUR Team-->
+    <div class="row justify-content-start align-items-cente py-5 my-5">
+        <div class="col-12 text-center">
+            <h2 class="text-color-tertiary font-weight-semi-bold mb-2 positive-ls-5 text-uppercase">@Html.Raw(branch.Team)</h2>
+            <div class="divider divider-tertiary divider-small divider-small-center divider-xxs py-4">
+                <hr class="my-0" style="width: 50px; height: 3px;">
+            </div>
+            <h3 class="font-weight-bold line-height-5">@Html.Raw(branch.TeamSlogan)</h3>
+        </div>
+        <div class="col-12 text-center px-1 position-relative py-5">
+            <div class="col-12 text-center px-1 position-relative py-5">
+                @{
+                    dynamic coaches = branch.Coaches;
+                    if (coaches != null)
+                    {
+                        <div class="owl-carousel owl-theme"
+                            data-plugin-options="{'stagePadding': 40, 'loop': false, 'nav': false, 'dots': true, 'responsive': {'0': {'items': 1}, '479': {'items': 1}, '768': {'items': 3}, '979': {'items': 4}, '1199': {'items': 7}}, 'autoHeight': false, 'margin': 35}">
+                        @{
+                            JArray coach = coaches as JArray;
+                            dynamic[] item = coach.ToArray();
+                            var position = Enumerable.Range(0, item.Length).ToArray();
+                            Shuffle(position);
+                            for (int i = 0; i < item.Length; i++)
+                            {
+                                dynamic coverInfo = ((JArray) item[position[i]].CoverInfo).FirstOrDefault();
+                                if (coverInfo != null) {
+                                    String[] coachDimArray = new string[] {
+                                        "Cover-sm.jpg",
+                                        item[position[i]].NameDesc,
+                                        item[position[i]].JobTitle,
+                                        coverInfo.NamePosition,
+                                        coverInfo.JobPosition,
+                                        coverInfo.ImgXShifting,
+                                        coverInfo.ImgYShifting
+                                    };
+                                    
+                                    if (!String.IsNullOrEmpty((String)item[position[i]].JobType) && ((String)item[position[i]].JobType) == "Dietitian")
+                                    {
+                                        var viewModel = new
+                                        {
+                                            BranchID = (String)branch.ID,
+                                            MemberCode = (String)item[position[i]].MemberCode
+                                         };
+                                        <div>
+                                            <object data="images/shape/@Html.Raw(coverInfo.Shape)" type="image/svg+xml"
+                                                onload='createAvatarImage(@Html.Raw(coachDimArray.JsonStringify()));'></object>
+                                            <div style="position: absolute;top: 0; width: 100%; height: 100%;" onclick='javascript:gotoVoicePage(@Html.Raw(viewModel.JsonStringify()));'></div>
+                                        </div>     
+                                    } else {
+                                        var url = Url.Action("CoachDetails", "Official", new { BranchID = (int?)branch.ID, MemberCode = (String)item[position[i]].MemberCode });
+                                        <div>
+                                            <object data="images/shape/@Html.Raw(coverInfo.Shape)" type="image/svg+xml"
+                                                onload='createAvatarImage(@Html.Raw(coachDimArray.JsonStringify()));'></object>
+
+                                            <div style="position: absolute;top: 0; width: 100%; height: 100%;" class="simple-ajax-popup"
+                                                href="@Html.Raw(url)"></div>
+                                        </div>                                         
+                                    }           
+                                }
+                            }
+                        }
+                        </div>
+                    }
+                }               
+            </div>
+        </div>
+    </div>
+    <!--營業資訊-->
+    <div class="container container-xl-custom container-xl-custom bg-dark pt-5 pb-5">
+        <div class="row">
+            <div class="col-12 col-lg-7 col-md-12 text-start px-3 px-lg-0 px-md-4">
+                <div class="row px-4 px-lg-0">
+                    <div class="col-12">
+                        <h2 class="text-color-tertiary font-weight-semi-bold mb-2 positive-ls-5 text-uppercase">
+                            @Html.Raw(findUsAll.Info)
+                        </h2>
+                        <span
+                            class="text-3-4 font-weight-medium positive-ls-10 d-block">@Html.Raw(findUsAll.InfoDesc)</span>
+                        <div class="divider divider-tertiary divider-small divider-xxs py-4">
+                            <hr class="my-0" style="width: 50px; height: 3px;">
+                        </div>
+                    </div>
+                </div>
+                <div class="row px-4 px-lg-0">
+                    <div class="col-auto pe-0 pe-xl-5 pe-lg-3 pe-md-0 me-0 me-xl-5 me-lg-0 me-md-0">
+                        <h3 class="font-weight-semi-bold positive-ls-5 mb-2">@Html.Raw(branch.Name)</h3>
+                        <a href="tel:@Html.Raw(branch.TelDial)">
+                            <p class="d-flex mb-2">@Html.Raw(branch.Tel)</p>
+                        </a>
+                        <ul class="social-icons social-icons-transparent">
+                            @{
+                                dynamic socials = commonAll.SocialItem;
+                                if (socials != null)
+                                {
+                                    JArray social = socials as JArray;
+                                    dynamic[] item = social.ToArray();
+                                    for (int i = 0; i < item.Length; i++)
+                                    {
+                                        <li class="social-icons-@Html.Raw(item[i].Name) mx-1"><a href="@Html.Raw(item[i].Link)"
+                                                title="@Html.Raw(item[i].Name)" target="_blank"><img class="img-fluid"
+                                                    src="images/icons/social/@Html.Raw(item[i].ImgName)" width="15"
+                                                    alt="BeyondFitness|社群" data-icon
+                                                    data-plugin-options="{'onlySVG': false, 'animated': false, 'strokeBased': true}"></a>
+                                        </li>
+                                    }
+                                }
+                            }
+                        </ul>
+                    </div>
+                    <div class="col-auto d-none d-lg-block px-3">
+                        <svg class="mb-4" width="15" height="300" viewBox="0 0 10 200" data-appear-animation-svg="true">
+                            <line x1="5" x2="5" y1="1" y2="300" stroke="#E76751" stroke-width="1" class="appear-animation"
+                                data-appear-animation="customSVGLineAnim"></line>
+                        </svg>
+                    </div>
+                    <div class="col-12 col-lg-7 col-md-12 mt-3 mt-lg-0 mt-md-5">
+                        <div class="row mt-2">
+                            <div class="col-auto">
+                                <div class="d-flex align-items-center">
+                                    <img width="26" src="images/icons/location.svg" alt="BeyondFitness|分店地址" />
+                                    <p class="my-1 d-inline-flex ps-2 line-height-3">
+                                        <a href="@Html.Raw(branch.GoogleMap)" target="_blank">@Html.Raw(branch.AddLong)</a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-2 mb-4">
+                            <div class="col-auto">
+                                <div class="d-flex align-items-start">
+                                    <img width="25" src="images/icons/clock.svg" alt="BeyondFitness|分店地址" class="mt-1" />
+                                    <p class="mb-1 mb-0 ps-2 line-height-7">
+                                        @Html.Raw(findUsAll.WeekDays)<span
+                                            class="text-color-tertiary px-3 px-lg-2">/</span>@Html.Raw(branch.InfoWeekDaysTime)<br />
+                                        @Html.Raw(findUsAll.Holiday)<span
+                                            class="text-color-tertiary px-3 px-lg-2">/</span>@Html.Raw(branch.InfoHolidayTime)
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        @{
+                            dynamic features = branch.FeatureItems;
+                            if (features != null)
+                            {
+                                JArray feture = features as JArray;
+                                dynamic[] item = feture.ToArray();
+                                for (int i = 0; i < item.Length; i++)
+                                {
+                                    <div class="row mt-2">
+                                        <div class="col-auto">
+                                            <div class="d-flex align-items-start ps-1">
+                                                <span
+                                                    class="badge bg-color-secondary badge-md rounded-circle d-flex text-color-dark justify-content-center align-items-center text-4 px-2 py-2 mt-2"
+                                                    style="width: 20px; height: 20px;">@Html.Raw(i + 1)</span>
+                                                <p class="mb-1 d-inline-flex ps-2">@Html.Raw(item[i].Content)</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-lg-5 col-md-12 align-self-center mt-5">
+                <a href="@Html.Raw(branch.GoogleMap)" target="_blank">
+                    <img src="images/findus/@Html.Raw(subClass)/map.svg" data-icon data-plugin-options="{'onlySVG': true}" alt="BeyondFitness|地圖" class="map-img">
+                </a>
+            </div>
+        </div>
+    </div>
+    <!--切換分店-->
+    <div class="container bg-color-dark container-xl-custom container-xl-custom py-5 my-5 hidden-sm-down">
+        <div class="row">
+            <div class="col-12 col-xl-push-1 col-xl-2 col-lg-2 col-md-12 mb-5 text-center text-lg-start text-md-center">
+                <h2 class="text-color-tertiary font-weight-normal mb-2 positive-ls-5 text-uppercase">@Html.Raw(findUsAll.Others)</h2>
+                <span class="text-3-4 font-weight-medium positive-ls-10 d-block ">@Html.Raw(findUsAll.OthersDesc)</span>
+                <div class="divider divider-tertiary divider-small divider-xxs py-4 hidden-md-down">
+                    <hr class="my-0" style="width: 50px; height: 3px;">
+                </div>
+                <div class="divider divider-tertiary divider-small divider-small-center divider-xxs py-4 hidden-lg-up">
+                    <hr class="my-0" style="width: 50px; height: 3px;">
+                </div>
+            </div>
+            <div class="col-12 col-xl-8 col-lg-10 col-md-12"> 
+                @{
+                    var targetItems = ((JArray)findUsAll.BranchItems).Where(c => c.Value<String>("ID") == (String)branch.ID);
+                    var otherBranches = ((JArray)findUsAll.BranchItems).Except(targetItems);
+                    if (otherBranches != null) {
+                        <div class="row">
+                            @{
+                                dynamic[] item2 = otherBranches.ToArray();
+                                for (int i = 0; i < item2.Length; i++)
+                                {
+                                    String branchName = item2[i].SubClass;
+                                    <div class="col-12 col-xl-4 col-lg-4 col-md-4 mt-2 px-5 px-xl-0 px-lg-5 px-md-4 pb-3 pb-lg-0 pb-md-0">
+                                        <div class="featured-boxes featured-boxes-style-7 text-start text-lg-start text-md-center">
+                                            <div class="box-content">
+                                                <h4 class="font-weight-semi-bold mb-1">@Html.Raw(item2[i].Name)</h4>
+                                                <p class="text-lg-start text-md-center"><a href="tel:@Html.Raw(item2[i].TelDial)">@Html.Raw(item2[i].Tel)</a></p>
+                                                <a href="javascript:bindTrackingCode('null', 'null', '@(Url.Action("BranchInfo", "Official", new {Branch=branchName}))', null)"
+                                                    class="btn btn-default btn-rounded fst-italic font-weight-normal text-2">@Html.Raw(commonAll.ReadMore)</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }                        
+                            }
+                        </div>
+                    }
+                }                                    
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- // Slogan -->
+@{
+    await Html.RenderPartialAsync("~/Views/MainActivity/Module/ContactItem.cshtml");
+}
+<!--Location-->
+<section class="section section-center section-no-background border-0 mt-0 mb-0 py-5 hidden-sm-up">
+    <div class="container py-5">
+        <div class="row px-5">
+            <div class="col-12">
+                <h2
+                    class="text-color-tertiary font-weight-semi-bold mb-2 positive-ls-5 text-uppercase d-flex justify-content-center">
+                    @Html.Raw(homeAll.Location)
+                </h2>
+                <span
+                    class="text-3-4 font-weight-medium positive-ls-10 d-block d-flex justify-content-center">@Html.Raw(homeAll.LocationDesc)</span>
+                <div class="divider divider-tertiary divider-small divider-small-center divider-xxs py-4 ">
+                    <hr class="my-0" style="width: 50px; height: 3px;">
+                </div>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-12">
+                <img src="images/home/beyond-map-sm.svg" alt="BeyondFitness|分店一覽" data-icon
+                        data-plugin-options="{'onlySVG': true, 'animated': false, 'delay': 0, 'fadeIn': false}" />
+            </div>
+        </div>
+
+    </div>
+</section>
+@section TailPageJavaScriptInclude {
+    <script>
+            $(window).on('icon.rendered', function () {
+                var branches = $('.homemap-branch');
+
+                branches.each(function (index, element) {
+                    element.addEventListener('click', function (event) {
+                        //這裡執行點擊區域1後的操作，例如重定向到不同的網頁		
+        
+                    window.location.href = '@Html.Raw(Url.Action("BranchInfo", "Official"))'+'?Branch=' + element.id;
+                    });
+
+                    element.addEventListener('mouseover', function (event) {
+                        //游標移到後背景變色					
+                        if (event.target.tagName == 'path') {
+                            event.target.style.fill = '#fff';
+                            var text = event.target.parentElement.querySelector('text');
+                            if (text != null) {
+                                text.style.fill = '#282828';
+                            }
+                        }
+                        if (event.target.tagName == 'tspan') {
+                            var text = event.target.parentElement;
+                            if (text != null) {
+                                text.style.fill = '#282828';
+                            }
+                            var path = text.parentElement.querySelector('path');
+                            if (path != null) {
+                                path.style.fill = '#fff';
+                            }
+                        }
+                    });
+
+                    element.addEventListener('mouseout', function (event) {
+                        //游標移到後背景變色
+                        if (event.target.tagName == 'path') {
+                            event.target.style.fill = '#282828';
+                            var text = event.target.parentElement.querySelector('text');
+                            if (text != null) {
+                                text.style.fill = '#fff';
+                            }
+                        }
+                        if (event.target.tagName == 'tspan') {
+                            var text = event.target.parentElement;
+                            if (text != null) {
+                                text.style.fill = '#fff';
+                            }
+                            var path = text.parentElement.querySelector('path');
+                            if (path != null) {
+                                path.style.fill = '#282828';
+                            }
+                        }
+                    });
+                });
+
+            });	
+        </script>
+
+}

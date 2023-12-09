@@ -37,16 +37,17 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Http;
 using Validation = WebHome.Models.Resources.CommitTrialLearner;
 using CommonLib.Core.Utility;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
 
 namespace WebHome.Controllers
 {
     public class MainActivityController : SampleController<UserProfile>
     {
         public const String DefaultLanguage = "zh-TW";
-
+        private readonly ICompositeViewEngine _viewEngine;
         public MainActivityController(IServiceProvider serviceProvider) : base(serviceProvider)
         {
-
+            _viewEngine = serviceProvider.GetService<ICompositeViewEngine>();
         }
 
         public override void OnActionExecuting(ActionExecutingContext context)
@@ -86,7 +87,23 @@ namespace WebHome.Controllers
         public ActionResult HandleUnknownAction(string actionName, IFormCollection forms, QueryViewModel viewModel)
         {
             ViewBag.ViewModel = viewModel;
-            return View(actionName, forms);
+
+            //string viewName = "YourViewName"; // 替换为你要检查的视图名称
+            //string viewPath = "/Views/YourFolder/" + viewName + ".cshtml"; // 替换为你的视图路径
+
+            ViewEngineResult viewResult = _viewEngine.GetView("~/", $"/Views/MainActivity/{actionName}.cshtml", isMainPage: false);
+
+            if (viewResult.Success)
+            {
+                // 视图存在
+                return View(actionName, forms);
+            }
+            else
+            {
+                // 视图不存在
+                return View("~/Views/MainActivity/Index.cshtml");
+            }
+
             //this.View(actionName).ExecuteResult(this.ControllerContext);
         }
 

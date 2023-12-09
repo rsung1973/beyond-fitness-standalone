@@ -2,73 +2,259 @@
 
 @using System.IO
 @using System.Linq.Expressions
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
 
 @using WebHome.Helper
 @using WebHome.Models.Locale
 @using WebHome.Models.ViewModel
 @using WebHome.Models.DataEntity
 @using WebHome.Controllers
-@using Microsoft.AspNetCore.Mvc.ModelBinding
-@using Newtonsoft.Json
 @using WebHome.Models.Resources
+@using CommonLib.Utility
 
 @{
     ModelSource<UserProfile> models;
     ModelStateDictionary _modelState;
     CoachItem _viewModel;
 
-    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
     _modelState = ViewContext.ModelState;
     _viewModel = (CoachItem)ViewBag.ViewModel;
 
-    Layout = "~/Views/MainActivity/Template/MainPage.cshtml";
+    await Html.RenderPartialAsync("~/Views/MainActivity/Template/GlobalResource.cshtml");
+    dynamic globalResource = ViewContext.HttpContext.Items["GlobalResource"] as dynamic;
+    dynamic commonAll = globalResource["Common"][ViewBag.Lang ?? "zh-TW"] as dynamic;
+    dynamic joinUsAll = globalResource["JoinUs"][ViewBag.Lang ?? "zh-TW"] as dynamic;
+    JObject findUsAll = globalResource["FindUs"][ViewBag.Lang ?? "zh-TW"] as JObject;
+
+    JObject coach = ViewContext.HttpContext.Items["RequestCoach"] as JObject;
+    JObject branch = ViewContext.HttpContext.Items["RequestBranch"] as JObject;
+    var NotShowArtical = ViewContext.HttpContext.Request.Query["NotShowArtical"];    
+    JObject voice = null;
+    if (coach["Voice"] != null) {
+        voice = ((JArray)coach["Voice"]).FirstOrDefault() as JObject;
+    }
 
 }
-
-@section CustomHeader { 
- 
-}
-
-<!-- // 個人介紹 -->
-    <section class="section-portfolio full-width-section">
-        <div class="text-center">
-                <img src="@($"images/landing/portfolio/{ _viewModel.nickname}/Cover.png")" alt="私人教練">
-            </div>
-            <div class="full-text-container bg-light-gray">
-                <h1 class="text-center">@(_viewModel.coachName) <small>@(_viewModel.nickname)</small></h1>
-                <div class="testimonials">
-                    <div class="body">
-                        <i class="fa fa-quote-left"></i><h2>@Html.Raw(_viewModel.prologue)</h2>
-                    </div>                    
-                </div>                
-            </div>
-    </section>
-    <!-- // 教學照片 -->
-    @if (_viewModel.scenarioPhoto != null && _viewModel.scenarioPhoto.Count > 0)
-        {
-    <section class="section-slick nopadding">
-        <div class="testimonials-slick-slide">
-            @foreach (var photo in _viewModel.scenarioPhoto)
-                {
-            <div class="row">
-                <div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3">
-                    <img class="fullwidth" src="@($"images/landing/portfolio/{ _viewModel.nickname}/{photo}")" alt="私人教練"/>                   
+<div id="custom-content" class="white-popup-block bg-transparent white-popup-block-lg coach-info">
+    <div class="row">
+        <div class="col">
+            <div class="card cover-card">
+                <div class="card-body pb-0 px-0 px-lg-5 px-md-3">
+                    <div class="row">
+                        <div
+                            class="col-12 col-lg-5 col-md-6 px-0 d-flex justify-content-center justify-content-lg-end justify-content-md-end align-self-end">
+                            <img class="cover-img"
+                                src="images/avatars/@Html.Raw(coach["NameDesc"])/Cover-lg.png" alt="BeyondFitess|私人教練">
+                        </div>
+                        <div class="col-12 col-lg-7 col-md-6 py-0 pt-4 px-5 px-lg-4 px-md-4 d-flex align-items-end">
+                            <div>                               
+                                <span
+                                    class="text-3-4 font-weight-medium positive-ls-5 d-block text-lg-start">@Html.Raw(branch["Name"])/@Html.Raw(coach["JobTitle"])</span>
+                                <h2 class="font-weight-bold mb-2 positive-ls-2 text-capitalize text-lg-start">@Html.Raw(coach["NameDesc"])</h2>
+                                <div class="divider divider-tertiary divider-small divider-xxs pt-2 pb-4">
+                                    <hr class="my-0" style="width: 50px; height: 3px;">
+                                </div>
+                                <h4 class="text-capitalize positive-ls-1 hidden-sm-down">
+                                    @Html.Raw(coach["Slogan"])</h4>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <p>
+                                            @Html.Raw(coach["Desc"])</p>
+                                    </div>
+                                    <div class="col-12 pb-5">
+                                       @{
+                                            dynamic sports = coach["Sports"];
+                                            if (sports != null)
+                                            {
+                                                var sport = ((JArray) sports).OrderBy(a => a["nAME"]).ToArray();
+                                                
+                                                for (int i = 0; i < sport.Length; i++)
+                                                {      
+                                                    <object data="images/icons/sports/@Html.Raw($"{sport[i]["Name"]}.svg")" type="image/svg+xml" height="50" class="px-1 py-1"></object>
+                                                }
+                                            }
+                                        }    
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            }
+            <div class="card mt-3 mt-lg-0 mt-md-0 pt-3">
+				<div class="card-body pb-0 pe-0 pe-lg-5 pe-md-5 ps-4">
+					<div class="row px-1 px-lg-4 px-md-4">
+						<div class="col-12 col-lg-6 col-md-6 pe-0 pb-0 ex-bg">
+							<div class="row">
+                                <div class="col-12">
+                                    <h4 class="font-weight-bold">
+                                        @Html.Raw(commonAll.Experience)<small
+                                            class="ps-2 font-weight-medium">@Html.Raw(commonAll.ExperienceDesc)</small>
+                                    </h4>
+                                    <div class="divider divider-tertiary divider-small divider-xxs pb-3">
+                                        <hr class="my-0" style="width: 50px; height: 3px;">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+								<div class="col-12 pb-5 pe-5">
+                                    <p>@Html.Raw(coach["Experience"])</p>
+                                </div>
+                            </div>
+                        </div>
+                       <div class="col-12 col-lg-6 col-md-6 pe-4 ps-3 ps-lg-4 ps-md-3 pb-5 pb-lg-0 pb-mb-0">
+							<div class="row">
+								<div class="col-12">
+                                    <h4 class="font-weight-bold">
+                                        @Html.Raw(commonAll.License)<small
+                                            class="ps-2 font-weight-medium">@Html.Raw(commonAll.LicenseDesc)</small>
+                                    </h4>
+                                    <div class="divider divider-tertiary divider-small divider-xxs pb-3">
+                                        <hr class="my-0" style="width: 50px; height: 3px;">
+                                    </div>
+                                </div>
+                            </div>
+                           <div class="row ps-1 ps-lg-4 ps-md-4 pt-4">
+                                @{
+                                    dynamic licenses = coach["License"];
+                                    if (licenses != null)
+                                    {
+                                        var license = ((JArray) licenses).OrderBy(a => a["Name"]).ToArray();
+                                        
+                                        for (int i = 0; i < license.Length; i++)
+                                        {      
+                                            <div class="col-4 col-lg-3 col-md-3 align-items-center text-center pb-3 px-1">     
+                                                <object data="images/icons/licence/@Html.Raw($"{license[i]["Name"]}.svg")" type="image/svg+xml" height="70"></object>		                                             
+                                                @* <img src="images/icons/licence/@Html.Raw($"{license[i]["Name"]}.svg")"
+                                                    alt="BeyondFitess|專業證照" width="70"> *@
+                                            </div>
+                                        }
+                                    }
+                                }                                                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </section>
+    </div>    
+    @if (coach != null && NotShowArtical != "NA")
+    {
+        var coachItem = models.GetTable<UserProfile>().Where(u => u.MemberCode == coach.Value<String>("MemberCode"))
+                            .FirstOrDefault()?.ServingCoach;
+        if (coachItem != null)
+        {
+            var blog = models.GetTable<BlogArticle>()
+                                .Where(b => !b.NotAfter.HasValue || b.NotAfter >= DateTime.Today)
+                                .Where(b => b.AuthorID == coachItem.CoachID)
+                                .OrderByDescending(b => b.BlogID)
+                                .FirstOrDefault();
+            var showContent = 0;
+            var showClass = "col-12";
+            if (blog != null && voice != null) {
+                showContent = 2;
+                showClass = "col-12 col-lg-6 col-md-6";
+            }
+            else if (blog != null || voice != null) 
+            { 
+                showContent = 1;
+            }
+
+            if (showContent>0)
+            {                
+                <div class="row">
+                    @{
+                        if (voice != null)
+                        {
+                            var viewModel = new
+                            {
+                                BranchID = (int?)branch["ID"],
+                                MemberCode = (String)coach["MemberCode"]
+                            };
+                            <div class="@Html.Raw(showClass) pt-3">
+                                <div class="card">				
+                                    <div class="card-body p-0">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <img class="img-thumbnail img-thumbnail-no-borders card-img-bottom"
+                                                    src="images/avatars/@Html.Raw(coach["NameDesc"])/Voice/people.jpg"
+                                                    alt="BeyondFitess|員工之聲">
+                                            </div>		
+                                            <div class="col-12">
+                                                <div class="row pt-5 px-4 px-lg-5 px-md-5 pb-2">
+                                                    <div class="col-12">									
+                                                        <h4 class="font-weight-bold">
+                                                            @Html.Raw(commonAll.Voice)<small
+                                                                class="ps-2 font-weight-medium">@Html.Raw(commonAll.VoiceDesc)</small>
+                                                        </h4>
+                                                        <div class="divider divider-tertiary divider-small divider-xxs pb-3">
+                                                            <hr class="my-0" style="width: 50px; height: 3px;">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <h4>@Html.Raw(voice["TalkSlogan"])</h4>
+                                                        <p class="overflow-ellipsis"><span
+                                                                class="text-color-tertiary pe-2">「</span>@Html.Raw(voice["Conclusion"])<span
+                                                                class="text-color-tertiary pe-2">」</span></p>                                                        
+                                                        <p class="date">@Html.Raw(voice["Date"])
+                                                            <a class="read-more text-color-dark font-weight-semibold text-2 float float-end fst-italic"
+                                                                href="@Html.Raw(Url.Action("Voice", "Official", viewModel))">@Html.Raw(commonAll.ReadMore)<i
+                                                                    class="fas fa-angle-right position-relative pb-4 ms-1"></i></a>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>					
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                    @{
+                        if (blog != null) {
+                            <div class="@Html.Raw(showClass) pt-3">
+                                <div class="card">
+                                    <div class="card-body p-0">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="row pt-5 px-4 px-lg-5 px-md-5 pb-2">
+                                                    <div class="col-12">
+                                                        <h4 class="font-weight-bold">
+                                                            @Html.Raw(commonAll.Artical)<small
+                                                                class="ps-2 font-weight-medium">@Html.Raw(commonAll.ArticalDesc)</small>
+                                                        </h4>
+                                                        <div class="divider divider-tertiary divider-small divider-xxs pb-3">
+                                                            <hr class="my-0" style="width: 50px; height: 3px;">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <h4 class="py-3">@Html.Raw(blog.Title)</h4>
+                                                        <p class="overflow-ellipsis">
+                                                            @Html.Raw(blog.Subtitle)
+                                                        </p>                                                        
+                                                        <p class="date">@($"{blog.BlogID[0..4]}.{blog.BlogID[4..6]}.{blog.BlogID[6..8]}")
+                                                            <a class="read-more text-color-dark font-weight-semibold text-2 float float-end fst-italic"
+                                                                href="@Html.Raw($"{Url.Action("BlogSingle", "Official")}?{(new { blog.DocID }).JsonStringify().EncryptKeyNormal().UrlEncodeBase64String()}")">@Html.Raw(commonAll.ReadMore)<i
+                                                                    class="fas fa-angle-right position-relative ms-1"></i>
+                                                            </a>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <img class="card-img-bottom" src="@Html.Raw($"../BlogContent/Blog/{blog.BlogID}/images/Title.jpg")"
+                                            alt="BeyondFitness|精選文章" />
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            }
+        }
     }
-    <!-- // 聯絡我們 -->
-    @{ await Html.RenderPartialAsync("~/Views/MainActivity/Module/ContactItem.cshtml");}
 
-
-@section TailPageJavaScriptInclude { 
-<script>
-        $(function () {
-            reloadPage = function () {
-                $('').launchDownload('@(Url.Action("CoachDetails", "MainActivity"))', @Html.Raw(JsonConvert.SerializeObject(_viewModel)));
-            };
-        });
-    </script> 
-}
+</div>

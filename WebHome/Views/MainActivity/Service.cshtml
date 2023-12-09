@@ -1,5 +1,4 @@
-﻿
-@using System.IO
+﻿@using System.IO
 @using System.Linq.Expressions
 
 @using WebHome.Helper
@@ -9,51 +8,350 @@
 @using WebHome.Controllers
 @using Microsoft.AspNetCore.Mvc.ModelBinding
 @using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
 @using WebHome.Models.Resources
 
 @{
-    ModelSource<UserProfile> models;
-    ModelStateDictionary _modelState;
+   ModelSource<UserProfile> models;
+   ModelStateDictionary _modelState;
 
-    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
-    _modelState = ViewContext.ModelState;
+   models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+   _modelState = ViewContext.ModelState;
+   ViewBag.MainClass = "service";
+   ViewBag.MenuDark = true;
 
-    Layout = "~/Views/MainActivity/Template/MainPage.cshtml";
+   Layout = "~/Views/MainActivity/Template/MainPage.cshtml";
+
+   await Html.RenderPartialAsync("~/Views/MainActivity/Template/GlobalResource.cshtml");
+   dynamic globalResource = ViewContext.HttpContext.Items["GlobalResource"] as dynamic;
+   dynamic serviceAll = globalResource["Service"][ViewBag.Lang ?? "zh-TW"] as dynamic;
+   dynamic commonAll = globalResource["Common"][ViewBag.Lang ?? "zh-TW"] as dynamic;
+   dynamic[] serviceItems = ((JArray)(serviceAll.ServiceItems)).ToArray();
 }
 
 @section CustomHeader {
-    <meta name="description"
-        content="提供女性、年長者、孕婦、新手初學者達成健康體能、增肌減脂、減重、運動傷害復原、提升運動表現目標！館內還有運動按摩師、營養師、與聯新運醫物理治療專業團隊全方位的服務您所有需求。" />
+   <meta name="description"
+      content="提供女性、年長者、孕婦、新手初學者達成健康體能、增肌減脂、減重、運動傷害復原、提升運動表現目標！館內還有運動按摩師、營養師、與聯新運醫物理治療專業團隊全方位的服務您所有需求。" />
 
 }
-<section class="section-service hidden-sm-down">
-    <div class="container">
+<!--Banner-->
+<section class="section border-0 m-0 p-0 banner container-background">
+   <div class="container pt-5 h-100 handwriting-title">     
+      <a href="#main"
+         class="slider-scroll-button slider-scroll-button-light position-absolute bottom-10 left-50pct transform3dx-n50"
+         data-hash="" data-hash-offset="0" data-hash-offset-lg="80" alt="BeyondFitness|捲起來">Sroll
+         To Bottom</a>
+   </div>
+</section>
+<!--私人教練-->
+<section id="main" class="section bg-light section-text-dark border-0 py-5 my-0">
+    <div class="container container-xl-custom py-5 my-0">
         <div class="row">
-            <div class="col-md-12">
-                <img src="images/landing/service/pc-0.png" alt="私人教練"></a>
-                <img src="images/landing/service/pc-1.png" alt="私人教練"></a>
-                <img src="images/landing/service/pc-2.png" alt="私人教練"></a>
-                <img src="images/landing/service/pc-3.png" alt="私人教練"></a>
-                <img src="images/landing/service/pc-4.png" alt="私人教練"></a>
-                <a href="javascript:bindTrackingCode('預約諮詢', 'AddToWishlist', '@(Url.Action("BookNow", "MainActivity"))', null)"><img src="images/landing/service/pc-5.png" alt="私人教練"></a></a>
+            <div class="col-12 col-lg-4 col-12 col-sm-12 pt-5 text-center">
+                <h2 class="text-color-tertiary font-weight-semi-bold mb-2 positive-ls-5 text-uppercase">
+                    @Html.Raw(serviceAll.PT)
+                </h2>
+                <span class="text-3-4 font-weight-medium positive-ls-10 d-block text-color-dark">@Html.Raw(serviceAll.PTDesc)</span>
+                <div class="divider divider-tertiary divider-small divider-small-center divider-xxs py-4">
+                    <hr class="my-0" style="width: 50px; height: 3px;">
+                </div>
+                <img src="images/icons/youtube.svg" alt="BeyondFitness|youtube" width="60"/>
+                <span
+                    class="text-3-4 custom-font-secondary font-weight-medium fst-italic d-block line-height-2 mt-2 text-color-dark">@Html.Raw(serviceAll.BFYoutube)</span>
+                <img class="img-fluid appear-animation appear-animation-visible hidden-sm-up mt-2" src="images/service/line-05.png" alt="BeyondFitness|youtube"
+								alt="BeyondFitness|youtube" data-appear-animation="fadeInDown" data-plugin-options="{'accY': -400}">
+            </div>
+            <div class="col-12 col-lg-8 col-12 col-sm-12 ps-md-5 pt-5 px-5">
+                <h3
+                    class="font-weight-bold line-height-5 d-flex justify-content-center justify-content-lg-start justify-content-md-center">@Html.Raw(serviceAll.PTSlogan)</h3>
+                 @Html.Raw(serviceAll.PTMessage)
+            </div>
+        </div>
+        <div class="row hidden-md-down">
+            <div class="col-12 col-lg-4 col-12 col-sm-12 text-center">
+                <!-- <img class="img-fluid appear-animation appear-animation-visible" src="images/service/line-03.svg" width="44" alt="BeyondFitness|youtube" data-appear-animation="fadeInDown" data-plugin-options="{'accY': -400}"> -->
+                <img src="images/service/line-03.svg" alt="BeyondFitness|youtube" width="50"
+                    class="img-fluid appear-animation appear-animation-visible ms-4 mt-3" data-appear-animation="fadeInDown"
+                    data-plugin-options="{'accY': -400}" />
+            </div>
+            <div class="col-12 col-lg-8 col-12 col-sm-12 ps-md-5 pt-5 px-5">
+                <img class="img-fluid d-block align-self-center appear-animation appear-animation-visible"
+                    src="images/service/line-04.svg" width="80%" alt="BeyondFitness|youtube"
+                    data-appear-animation="fadeInDown" data-appear-animation-delay="200"
+                    data-appear-animation-duration="5s">
             </div>
         </div>
     </div>
 </section>
-<section class="section-service hidden-md-up">
-    <div class="container">
+<!--影片區-->
+<section class="parallax section bg-light section-text-light border-0 py-5 my-0 youtube container-background">
+    <section class="container-fluid">
         <div class="row">
-            <div class="col-md-12">
-                <img src="images/landing/service/m-0.png" alt="私人教練"></a>
-                <img src="images/landing/service/m-1.png" alt="私人教練"></a>
-                <img src="images/landing/service/m-2.png" alt="私人教練"></a>
-                <img src="images/landing/service/m-3.png" alt="私人教練"></a>
-                <img src="images/landing/service/m-4.png" alt="私人教練"></a>
-                <a href="javascript:bindTrackingCode('預約諮詢', 'AddToWishlist', '@(Url.Action("BookNow", "MainActivity"))', null)"><img src="images/landing/service/m-5.png" alt="私人教練"></a></a>
-            </div>
-        </div>
-    </div>
-</section>
+            <div class="col-12 col-lg-6 col-md-12 text-center">
+                <div class="h-min-300px popup-youtube" style="cursor: pointer;"
+                    href="@Html.Raw(serviceAll.YoutubeLink1)">
 
+                </div>
+            </div>
+            <div class="col-12 col-lg-6 col-md-12 hidden-md-down">
+                <div class="h-min-300px popup-youtube" style="cursor: pointer;"
+                    href="@Html.Raw(serviceAll.YoutubeLink2)">
+                </div>
+            </div>
+        </div>
+    </section>
+</section>
+<section class="parallax section section-parallax bg-color-dark border-0 py-5 my-0">
+   <!--標題-->
+   <div class="container container-xl-custom container-xl-custom py-5 text-center">
+      <div class="container py-5">
+         <div class="row">
+               <div class="col-12 col-lg-4 col-md-4 align-self-end hidden-sm-down">
+                  <img class="img-fluid appear-animation appear-animation-visible pt-5 ps-0 ps-md-5" alt="BeyondFitness"
+                     src="images/service/line-02.svg" data-appear-animation="fadeInRight"
+                     data-appear-animation-delay="200" data-appear-animation-duration="5s">
+               </div>
+               <div class="col-12 col-lg-4 col-md-4 align-self-center mt-2">
+                  <h2 class="text-color-tertiary font-weight-semi-bold mb-2 positive-ls-5 text-uppercase">@Html.Raw(serviceAll.Service)
+                  </h2>
+                  <span class="text-3-4 font-weight-medium positive-ls-10 d-block">@Html.Raw(serviceAll.ServiceDesc)</span>
+                  <div class="divider divider-tertiary divider-small divider-small-center divider-xxs py-4">
+                     <hr class="my-0 appear-animation" data-appear-animation="customLineProgressAnim"
+                           data-plugin-options="{'accY': -400}" style="width: 50px; height: 3px;">
+                  </div>
+               </div>
+               <div class="col-12 col-lg-4 col-md-4 align-self-start text-start hidden-sm-down">
+                  <img class="appear-animation appear-animation-visible" alt="BeyondFitness"
+                     src="images/service/line-01.svg" data-appear-animation="fadeInDown"
+                     data-plugin-options="{'accY': -400}" width="43">
+               </div>
+         </div>
+         <div class="row">
+               <div class="col-12">
+                  <h3 class="font-weight-bold line-height-5 text-color-light">@Html.Raw(serviceAll.ServiceSlogan)</h3>
+               </div>
+         </div>
+      </div>
+   </div>   
+   <!--科學化訓練-->
+   <div class="container container-xl-custom container-xxl-custom py-5" id="scientific_container">
+      <div class="row py-5">
+         <div class="col-12 col-lg-6 col-md-12 mb-3 mb-lg-0 mb-md-3">
+            <div class="row">
+               <div class="col-12 col-xl-3 col-lg-2 col-md-2 p-1 m-0">
+                     <h1
+                        class="text-20 font-weight-normal text-color-secondary mt-2 mt-lg-2 mt-md-4 mb-4 d-flex justify-content-center justify-content-lg-start justify-content-md-start positive-ls-10">
+                        01</h1>
+                     <h4
+                        class="font-weight-normal text-color-tertiary d-flex justify-content-center justify-content-lg-start justify-content-md-start positive-ls-2">@Html.Raw(serviceItems[0].Name)</h4>
+               </div>
+               <div class="col-12 col-xl-9 col-lg-10 col-md-10 mt-5 mt-lg-0 mt-md-3">
+                     <div class="px-5 px-xl-4 px-lg-5 px-md-3 w-xl-75pct w-lg-100pct w-md-75pct w-sm-100pct">
+                        <h4
+                           class="text-5 font-weight-bold text-color-secondary positive-ls-5 d-flex justify-content-center justify-content-lg-start justify-content-md-start">@Html.Raw(serviceItems[0].NameDesc)</h4>
+                        <p>@Html.Raw(serviceItems[0].Desc)</p>
+                     </div>
+                     <div
+                        class="w-xl-75pct w-lg-100pct w-md-75pct w-sm-100pct ps-5 ps-xl-4 ps-lg-5 ps-md-4 pe-5 pe-xl-0 pe-lg-0 pe-md-4">
+                        @{
+                           dynamic items1 = ((JArray)(serviceItems[0].Items));
+                           if (items1 != null) {
+                              <div class="accordion py-2 py-lg-4 py-2" id="scientific">
+                              @{
+                                    JArray item1 = items1 as JArray;
+                                    dynamic[] content1 = item1.ToArray();
+                                    dynamic cssStyle = "me-5";
+                                    for (int i = 0; i < content1.Length; i++)
+                                    {
+                                       if ((i%2 == 0)) {
+                                          cssStyle = "ms-5";
+                                       } else {
+                                          cssStyle = "me-5";
+                                       }
+                                       <div class="card card-default border-radius-20 @Html.Raw(cssStyle) mt-3 bg-color-primary">
+                                          <div class="card-header" id="@Html.Raw($"heading{content1[i].ID}")">
+                                             <h4 class="card-title m-0">
+                                                <a class="accordion-toggle text-color-dark  collapsed py-2 px-4 font-weight-medium"
+                                                   data-bs-toggle="collapse" data-bs-target="@Html.Raw($"#{content1[i].ID}")" aria-expanded="false"
+                                                   aria-controls="@Html.Raw($"heading{content1[i].ID}")">@Html.Raw(content1[i].Name)<img class="float-end mt-2" src="images/service/item-01-arrow.svg" width="34">
+                                                </a>
+                                             </h4>
+                                          </div>
+                                          <div id="@Html.Raw(content1[i].ID)" class="collapse" aria-labelledby="@Html.Raw($"heading{content1[i].ID}")" data-bs-parent="#scientific">
+                                             <div class="card-body p-2">
+                                                <p class="text-4 px-3 mb-0 line-height-8 text-color-dark">@Html.Raw(content1[i].Desc)</p>
+                                                @{
+                                                   if (!String.IsNullOrEmpty((String)content1[i].Link)) 
+                                                   {
+                                                      <a href="javascript:bindTrackingCode('null', 'null', '@(Url.Action($"{content1[i].Link}", "Official"))', null)" class="read-more text-color-dark font-weight-semibold text-2 fst-italic float float-end my-3 mx-4">Read More <i
+																         class="fas fa-angle-right position-relative top-1 ms-1"></i></a>
+                                                   }
+                                                }
+                                             </div>
+                                          </div>
+                                       </div>
+                                    }
+                              }
+                              </div>
+                           }
+                        }  
+                     </div>
+               </div>
+            </div>
+         </div>
+         <div class="col-12 col-lg-6 col-md-12 mt-3 mt-lg-0 mt-md-3 align-self-center">
+            <img class="item-01-img appear-animation appear-animation-visible position-relative hidden-sm-down"
+               alt="BeyondFitness|科學化訓練" src="images/service/item-01-show-lg.png">
+            <img class="item-01-img appear-animation appear-animation-visible position-relative hidden-sm-up"
+               alt="BeyondFitness|科學化訓練" src="images/service/item-01-show-sm.png">
+         </div>
+      </div>
+   </div>
+   <!--健康團隊陪伴-->
+   <div class="container container-xl-custom container-xxl-custom py-5" id="healthy_container">
+      <div class="row py-5">
+         <div class="col-12 col-lg-6 col-md-12 mb-3 mb-lg-0 mb-md-3 align-self-center">
+            <div class="row">
+               <div class="col-12 col-xl-3 col-lg-3 col-md-2 p-1 m-0">
+                  <h1 class="text-20 font-weight-normal text-color-secondary mt-2 mt-lg-2 mt-md-4 mb-4 d-flex justify-content-center justify-content-lg-start justify-content-md-start positive-ls-4">02</h1>
+                  <h4 class="font-weight-normal text-color-tertiary d-flex justify-content-center justify-content-lg-start justify-content-md-start positive-ls-2"> @Html.Raw(serviceItems[1].Name)</h4>
+               </div>
+               <div class="col-12 col-xl-9 col-lg-9 col-md-10 mt-3 mt-lg-0 mt-md-3">
+                  <div class="px-5 px-xl-4 px-lg-5 px-md-3 w-xl-75pct w-lg-100pct w-md-75pct w-sm-100pct">
+                        <h4 class="text-5 font-weight-bold text-color-secondary positive-ls-5 d-flex justify-content-center justify-content-lg-start justify-content-md-start">@Html.Raw(serviceItems[1].NameDesc)</h4>
+                        <p>@Html.Raw(serviceItems[1].Desc)</p>
+                  </div>
+                  <div class="w-xl-75pct w-lg-100pct w-md-75pct w-sm-100pct ps-5 ps-xl-4 ps-lg-5 ps-md-4 pe-5 pe-xl-0 pe-lg-0 pe-md-4">	                        
+                  @{
+                     dynamic items2 = ((JArray)(serviceItems[1].Items));
+                     if (items2 != null)
+                     {
+                        <div class="accordion py-2 py-lg-4 py-2" id="healthy">
+                              @{
+                                 JArray item2 = items2 as JArray;
+                                 dynamic[] content2 = item2.ToArray();
+                                 dynamic cssStyle = "ms-5";
+                                 for (int i = 0; i < content2.Length; i++)
+                                 {
+                                    if ((i % 2 == 0))
+                                    {
+                                          cssStyle = "me-5";
+                                    }
+                                    else
+                                    {
+                                          cssStyle = "ms-5";
+                                    }
+                                    <div class="card card-default border-radius-20 @Html.Raw(cssStyle) mt-3 bg-color-primary">
+                                          <div class="card-header" id="@Html.Raw($"heading{content2[i].ID}")">
+                                             <h4 class="card-title m-0">
+                                                <a class="accordion-toggle text-color-dark  collapsed py-2 px-4 font-weight-medium"
+                                                      data-bs-toggle="collapse" data-bs-target="@Html.Raw($"#{content2[i].ID}")" aria-expanded="false"
+                                                      aria-controls="@Html.Raw($"heading{content2[i].ID}")">@Html.Raw(content2[i].Name)<img
+                                                         class="float-end mt-2" src="images/service/item-01-arrow.svg" width="34">
+                                                </a>
+                                             </h4>
+                                          </div>
+                                          <div id="@Html.Raw(content2[i].ID)" class="collapse" aria-labelledby="@Html.Raw($"heading{content2[i].ID}")"
+                                             data-bs-parent="#healthy">
+                                             <div class="card-body p-2">
+                                                <p class="text-4 px-3 mb-0 line-height-8 text-color-dark">@Html.Raw(content2[i].Desc)</p>                                                
+                                             </div>
+                                          </div>
+                                    </div>
+                                 }
+                              }
+                        </div>
+                     }
+                  }                  
+                  </div>
+               </div>
+            </div>
+         </div>  
+         <div class="col-12 col-lg-6 col-md-12 mt-5 mt-lg-0 mt-md-5 align-self-start">
+               <img class="item-02-img appear-animation appear-animation-visible position-relative hidden-md-down"
+								alt="BeyondFitness|科學化訓練" src="images/service/item-02-show-lg.png" >
+            <div class="owl-carousel owl-theme hidden-lg-up"
+               data-plugin-options="{'loop': true, 'nav': false, 'dots': true, 'responsive': {'479': {'items': 1}, '768': {'items': 3}, '979': {'items': 3}, '1199': {'items': 3}}, 'margin': 35}">
+               <img src="images/service/item-02-fg-01.png" class="img-fluid" alt="BeyondFitness|健康團隊" />
+               <img src="images/service/item-02-fg-02.png" class="img-fluid" alt="BeyondFitness|健康團隊" />
+               <img src="images/service/item-02-fg-03.png" class="img-fluid" alt="BeyondFitness|健康團隊" />
+            </div>
+         </div>       
+      </div>
+   </div>
+</section>
+<!--安心承諾&Slogan-->
+<section class="section section-text-light border-0 my-0 p-0 pb-5 slogan container-background" id="guarantee_container">
+    <!--安心承諾-->
+    <div class="container py-5">
+        <div class="row py-5">
+            <div class="col-12 col-lg-6 col-md-12 px-5 px-lg-0 px-md-0 pb-3 mt-5 mt-lg-0 mt-md-5">
+                <div class="row">
+
+                    <div class="w-xl-75pct w-lg-75pct w-md-100pct w-sm-100pct mb-1">
+                        <h4
+                            class="font-weight-normal text-color-tertiary d-flex justify-content-center justify-content-lg-start justify-content-md-center positive-ls-2">@Html.Raw(serviceItems[2].Name)</h4>
+                        <h1
+                            class="text-20 font-weight-normal text-color-secondary mt-4 d-flex justify-content-center justify-content-lg-start justify-content-md-center positive-ls-4">
+                            03</h1>
+                        <h4
+                            class="text-5 font-weight-bold text-color-secondary positive-ls-5 mt-5 d-flex justify-content-center justify-content-lg-start justify-content-md-center">@Html.Raw(serviceItems[2].NameDesc)</h4>
+                        <p class="pt-4 px-4 px-lg-0 px-md-5 pt-0">@Html.Raw(serviceItems[2].Desc)</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-lg-6 col-md-12">
+               @{
+                  dynamic items3 = ((JArray)(serviceItems[2].Items));
+                  if (items1 != null) {
+                     <div class="toggle toggle-commitment mx-5 mx-lg-0 mx-md-0 my-4" data-plugin-toggle
+								data-plugin-options="{ 'isAccordion': true }">
+                        @{
+                           JArray item3 = items3 as JArray;
+                           dynamic[] content3 = item3.ToArray();
+                           for (int i = 0; i < content3.Length; i++)
+                           {
+                              <section class="toggle">
+                                 <a class="toggle-title text-color-light"><i class="fa-solid fa-circle-check">&nbsp;@Html.Raw(content3[i].Name)</i></a>
+                                 <div class="toggle-content">
+                                    <p>@Html.Raw(content3[i].Desc) 
+                                    @{
+                                       if (!String.IsNullOrEmpty((String)content3[i].Link)) {
+                                          if ((String) content3[i].LinkType == "URL") {
+                                             <br/><a class="btn btn-default btn-rounded fst-italic positive-ls-3 mt-3" href="javascript:bindTrackingCode('null', 'null', '@(Url.Action($"{content3[i].Link}", "Official"))', null)">@Html.Raw(content3[i].LinkName)</a>
+                                          } else if ((String) content3[i].LinkType == "IMG") {
+                                             <br/><a class="btn btn-default btn-rounded fst-italic positive-ls-3 mt-3 lightbox" href="@Html.Raw(content3[i].Link)" data-plugin-options="{'type':'image'}">@Html.Raw(content3[i].LinkName)</a>
+                                          } else {
+                                             <br/><a class="btn btn-default btn-rounded fst-italic positive-ls-3 mt-3" href="@Html.Raw(content3[i].Link)" target="_blank">@Html.Raw(content3[i].LinkName)</a>
+                                          }                                                      
+                                       }
+                                    }  
+                                    </p>                                                                     
+                                 </div>
+                              </section>                              
+                           }
+                        }
+                     </div>
+                  }
+               }
+            </div>
+        </div>
+    </div>
+    <!--預約體驗Slogan-->
+    <div class="container container-xl-custom container-xl-custom pt-5 text-center">
+        <div class="row py-5">
+            <div class="col-12 px-0">
+                <img class="custom-svg-1 icon-animated mt-3" width="40" src="images/icons/double_quotes.svg"
+                    alt="BeyondFitness|私人教練是什麼" data-icon
+                    data-plugin-options="{'onlySVG': false, 'color': '#EBD7BF', 'animated': false, 'strokeBased': true, 'svgStyle': 'fill:#EBD7BF'}" />
+                <h2 class="pt-3 mb-4 custom-font-secondary fst-italic font-weight-bold">@Html.Raw(commonAll.Slogan)</h2>
+                <h3 class="mb-5 font-weight-bold" data-plugin-animated-letters
+                    data-plugin-options="{'startDelay': 1500, 'minWindowWidth': 0, 'animationSpeed': 50}">@Html.Raw(commonAll.SloganDesc)</h3>
+                <a href="javascript:bindTrackingCode('null', 'null', '@(Url.Action("BookNow", "Official"))', null)"
+                    class="btn btn-3d bg-color-light text-color-dark btn-rounded fst-italic positive-ls-3">@Html.Raw(commonAll.BookNow)</a>
+            </div>
+        </div>
+    </div>
+</section>
 @section TailPageJavaScriptInclude {
 }

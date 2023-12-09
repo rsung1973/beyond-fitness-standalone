@@ -19,23 +19,23 @@
     _modelState = (ModelStateDictionary) ViewBag.ModelState;
     models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
 
+   await Html.RenderPartialAsync("~/Views/MainActivity/Template/GlobalResource.cshtml");
+   dynamic globalResource = ViewContext.HttpContext.Items["GlobalResource"] as dynamic;
+   dynamic commonAll = globalResource["Common"][ViewBag.Lang ?? "zh-TW"] as dynamic;
 }
 
-<section class="section-contact">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12 text-center">
-                <h1>@Html.Raw(NamingItem.JoinUsContactTitle)</h1>
-                <p class="lead">@Html.Raw(NamingItem.JoinUsContactDesc)</p>
-                <a href="javascript:bindTrackingCode('立即行動', null, 'https://goo.gl/forms/58gaS4bpPBkrPX9E3', '_blank')" class="more" target="_blank">@Html.Raw(NamingItem.HereWeGo)<i class="pl-1 fa fa-angle-right"></i></a>
-                <ul class="contact_social">
-                    <li><a href="javascript:bindTrackingCode('Facebook', null, 'https://www.facebook.com/beyond.fitness.pro/', '_blank')"><i class="zmdi zmdi-facebook"></i></a></li>
-                    <li><a href="javascript:bindTrackingCode('Instagram', null, 'https://www.instagram.com/beyond_ft/', '_blank')"><i class="zmdi zmdi-instagram"></i></a></li>
-                    <li><a href="javascript:bindTrackingCode('Youtube', null, 'https://www.youtube.com/channel/UCPIcjPGaFFB1o8cFDUrT-4g', '_blank')"><i class="zmdi zmdi-youtube-play"></i></a></li>
-                    <li><a href="javascript:bindTrackingCode('Line', null, '@("line://ti/p/@itj9410x")', '_blank')" target="_blank"><i class="fab fa-line"></i></a></li>
-                </ul>
-                <div class="copyright">Copyright © 2018 Beyond Fitness. All Rights Reserved</div>
-            </div>
-        </div>
-    </div>
+<section class="section section-text-light section-center p-0 mt-0 mb-0 border-0 py-5 slogan container-background">
+   <div class="container container-xl-custom container-xl-custom py-5 h-100">
+      <div class="row justify-content-center align-items-center h-100">
+         <div class="col-12 px-0">
+            <img class="mt-3" width="40" src="images/icons/double_quotes.svg"
+               alt="BeyondFitness|私人教練是什麼" data-icon
+               data-plugin-options="{'onlySVG': false, 'color': '#EBD7BF', 'animated': false, 'strokeBased': true, 'svgStyle': 'fill:#EBD7BF'}" />
+            <h2 class="pt-3 mb-4 custom-font-secondary fst-italic font-weight-bold">@Html.Raw(commonAll.Slogan)</h2>
+            <h3 class="mb-5 font-weight-bold" data-plugin-animated-letters data-plugin-options="{'startDelay': 300, 'minWindowWidth': 0, 'animationSpeed': 50}">@Html.Raw(commonAll.SloganDesc)</h3>
+            <a href="https://www.104.com.tw/company/1a2x6bk27x?jobsource=checkc&fbclid=IwAR0fUKUHzTgOxnUlQxbopGBDF8I_AOTz8rRhsWz_v4V9XlQYhjw2QCbzGyk"
+               target="_blank" class="btn btn-3d bg-color-light btn-rounded fst-italic positive-ls-3">@Html.Raw(commonAll.ViewJobs)</a>
+         </div>
+      </div>
+   </div>
 </section>

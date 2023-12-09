@@ -9,6 +9,7 @@
 @using WebHome.Controllers
 @using Microsoft.AspNetCore.Mvc.ModelBinding
 @using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
 @using WebHome.Models.Resources
 
 @{
@@ -16,25 +17,134 @@
     ModelStateDictionary _modelState;
     ModelSource<UserProfile> models;
 
-    _modelState = ViewContext.ModelState;
-    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    await Html.RenderPartialAsync("~/Views/MainActivity/Template/GlobalResource.cshtml");
+    dynamic globalResource = ViewContext.HttpContext.Items["GlobalResource"] as dynamic;
+    dynamic commonAll = globalResource["Common"][ViewBag.Lang ?? "zh-TW"] as dynamic;
+    dynamic findUsAll = globalResource["FindUs"][ViewBag.Lang ?? "zh-TW"] as dynamic;
 
 }
+<header id="header" class="side-header-overlay-full-screen side-header-hide"
+    data-plugin-options="{'stickyEnabled': false}">
 
-<li><a href="javascript:bindTrackingCode('關於我們', 'ViewContent', '@(Url.Action("AboutUs", "Official"))', null)">@Html.Raw(NamingItem.AboutUs)</a></li>
-<li><a href="javascript:bindTrackingCode('分店一覽', 'Search', '@(Url.Action("FindUs", "Official"))', null)">@Html.Raw(NamingItem.FindUs)</a></li>
-<li><a href="javascript:bindTrackingCode('專屬服務', null, '@(Url.Action("Service", "Official"))', null)">@Html.Raw(NamingItem.Service)</a></li>
-<li><a href="javascript:bindTrackingCode('常見問題', 'AddToCart', '@(Url.Action("FAQ", "Official"))', null)">@Html.Raw(NamingItem.FAQ)</a></li>
-<li><a href="javascript:bindTrackingCode('知識分享_列表分類', 'CompleteRegistration', '@(Url.Action("BlogList", "Official"))', null)">@Html.Raw(NamingItem.Blog)</a></li>
-<li><a href="javascript:bindTrackingCode('加入團隊', null, '@(Url.Action("JoinUs", "Official"))', null)">@Html.Raw(NamingItem.JoinUs)</a></li>
-@if (ViewBag.Lang == null || ViewBag.Lang == "zh-TW")
-{
-    <li><a href="javascript:bindTrackingCode('切換語系_EN', 'Search', null, null);changeLanguage('en-US');" class="btn-link2">EN <i class="zmdi zmdi-globe-alt"></i></a></li>
-}
-else
-{
-    <li><a href="javascript:bindTrackingCode('切換語系_繁中', 'Search', null, null);changeLanguage('zh-TW');" class="btn-link2">繁 <i class="zmdi zmdi-globe-alt"></i></a></li>
-}
-@* <li>
-    <a href="javascript:bindTrackingCode('預約諮詢', 'AddToWishlist', '@(Url.Action("BookNow", "MainActivity"))', null)" class="btn btn-default btn-round">@Html.Raw(NamingItem.BookNow)</a>
-</li> *@
+    <button
+        class="hamburguer-btn hamburguer-btn-light hamburguer-btn-side-header hamburguer-btn-side-header-overlay me-xl-5 active"
+        data-set-active="false">
+        <span class="close">
+            <span></span>
+            <span></span>
+        </span>
+    </button>
+
+    <div class="header-body bg-transparent d-flex h-100">
+        <div class="header-column flex-row flex-lg-column justify-content-center h-100">
+            <div class="header-container container d-flex h-100">
+                <div class="header-row header-row-side-header flex-row h-100 pb-5">
+                    <div class="side-header-scrollable scrollable colored-slider h-75" data-plugin-scrollable>
+                        <div class="scrollable-content">
+                            <div
+                                class="header-nav header-nav-light-text header-nav-links header-nav-links-side-header header-nav-links-vertical header-nav-links-vertical-expand header-nav-click-to-open align-self-start">
+                                <div
+                                    class="header-nav-main header-nav-main-square header-nav-main-dropdown-no-borders header-nav-main-effect-4 header-nav-main-sub-effect-1">
+                                    <nav>
+                                        <ul class="nav nav-pills" id="mainNav">
+                                            <li>
+                                                <a href="index.html" class="logo pe-0 pe-lg-3">
+                                                    <img alt="Beyond Fitness" width="100"
+                                                        src="images/logo-default-slim-gold.svg">
+                                                    <h5
+                                                        class="text-color-tertiary font-weight0-bold mb-0 positive-ls-3 text-uppercase mt-3 d-flex justify-content-center">
+                                                        BEYOND FITNESS
+                                                    </h5>
+                                                </a>
+                                            </li>
+                                            <li class="mt-4">
+                                                <a class="toggle-side-header text-6" data-hash data-hash-offset="0"
+                                                    data-hash-offset-lg="0"
+                                                    href="javascript:bindTrackingCode('null', 'null', '@(Url.Action("AboutUs", "Official"))', null)">@Html.Raw(commonAll.AboutUs)</a>
+                                            </li>
+                                            <li>
+                                                <a class="toggle-side-header text-6" data-hash data-hash-offset="0"
+                                                    data-hash-offset-lg="0"
+                                                    href="javascript:bindTrackingCode('null', 'null', '@(Url.Action("FindUs", "Official"))', null)">@Html.Raw(commonAll.FindUs)</a>
+                                                <p class="text-center">
+                                                    @{
+                                                        dynamic branches = findUsAll.BranchItems;
+                                                        if (branches != null)
+                                                        {
+                                                            JArray branch = branches as JArray;
+                                                            dynamic[] item = branch.ToArray();
+                                                            for (int i = 0; i < item.Length; i++)
+                                                            {
+                                                                String branchName = item[i].SubClass;
+                                                                <a href="javascript:bindTrackingCode('null', 'null',
+                                                                                    '@(Url.Action("BranchInfo", "Official", new { Branch = branchName }))',
+                                                                                        null)"
+                                                                    class="text-3 text-color-grey px-0">@Html.Raw(item[i].Name)</a>
+                                                                if (i < (item.Length - 1))
+                                                                {
+                                                                    <span class="text-color-tertiary">/</span>
+                                                                }
+                                                                                                                              
+                                                            }
+                                                        }
+                                                    }                                                    
+                                                </p>
+                                            </li>
+                                            <li>
+                                                <a class="toggle-side-header text-6"
+                                                    href="javascript:bindTrackingCode('null', 'null', '@(Url.Action("Service", "Official"))', null)"
+                                                    data-hash-offset="0"
+                                                    data-hash-offset-lg="0">@Html.Raw(commonAll.Service)</a>
+                                            </li>
+                                            <li>
+                                                <a class="toggle-side-header text-6"
+                                                    href="javascript:bindTrackingCode('null', 'null', '@(Url.Action("Session", "Official"))', null)"
+                                                    data-hash-offset="0"
+                                                    data-hash-offset-lg="0">@Html.Raw(commonAll.Session)</a>
+                                            </li>
+                                            <li>
+                                                <a class="toggle-side-header text-6"
+                                                    href="javascript:bindTrackingCode('null', 'null', '@(Url.Action("FAQ", "Official"))', null)"
+                                                    data-hash-offset="0"
+                                                    data-hash-offset-lg="0">@Html.Raw(commonAll.FAQ)</a>
+                                            </li>
+                                            <li>
+                                                <a class="toggle-side-header text-6"
+                                                    href="javascript:bindTrackingCode('null', 'null', '@(Url.Action("JoinUs", "Official"))', null)"
+                                                    data-hash-offset="0"
+                                                    data-hash-offset-lg="0">@Html.Raw(commonAll.JoinUs)</a>
+                                            </li>
+                                            <li>
+                                                <a class="toggle-side-header text-6"
+                                                    href="javascript:bindTrackingCode('null', 'null', '@(Url.Action("BookNow", "Official"))', null)"
+                                                    data-hash-offset="0"
+                                                    data-hash-offset-lg="0">@Html.Raw(commonAll.Booking)</a>
+                                            </li>
+                                            <li class="mt-3">
+                                                @{
+                                                dynamic socials = commonAll.SocialItem;
+                                                    if (socials != null)
+                                                    {
+                                                        JArray social = socials as JArray;
+                                                        dynamic[] item = social.ToArray();
+                                                        for (int i = 0; i < item.Length; i++)
+                                                        {
+                                                           <a href="@Html.Raw(item[i].Link)"
+                                                                    title="@Html.Raw(item[i].Name)" class="mx-3"><img class="img-fluid" src="images/icons/social/@Html.Raw(item[i].ImgName)"
+                                                                        width="15" alt="BeyondFitness|社群" data-icon
+                                                                        data-plugin-options="{'onlySVG': false, 'animated': false, 'strokeBased': true}"></a>                                                                                           
+                                                        }
+                                                    }
+                                                }  
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>

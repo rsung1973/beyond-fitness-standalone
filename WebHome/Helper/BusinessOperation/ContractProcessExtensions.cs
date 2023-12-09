@@ -1260,7 +1260,7 @@ namespace WebHome.Helper.BusinessOperation
                     ModelState.AddModelError("IDNo", "請輸入身分證字號/護照號碼");
                 }
             }
-            else if (Regex.IsMatch(viewModel.IDNo, "[A-Za-z]\\d{9}") && !viewModel.IDNo.CheckIDNo())
+            else if (!Regex.IsMatch(viewModel.IDNo, "[A-Za-z]\\d{9}") || !viewModel.IDNo.CheckIDNo())
             {
                 ModelState.AddModelError("IDNo", "身份證字號格式錯誤!!");
             }

@@ -1,0 +1,263 @@
+﻿
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using WebHome.Models.Resources
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Microsoft.AspNetCore.Http
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = ViewContext.ModelState;
+    IFormCollection _model = this.Model as IFormCollection;
+    Layout = "~/Views/MainActivity/Template/MainPage.cshtml";
+    ViewBag.MainClass = "session";    
+    ViewBag.MenuDark = false;
+
+    await Html.RenderPartialAsync("~/Views/MainActivity/Template/GlobalResource.cshtml");
+    dynamic globalResource = ViewContext.HttpContext.Items["GlobalResource"] as dynamic;
+    dynamic beyondSession = globalResource["BeyondSession"][ViewBag.Lang ?? "zh-TW"] as dynamic;
+    dynamic commonAll = globalResource["Common"][ViewBag.Lang ?? "zh-TW"] as dynamic;
+}
+
+@section CustomHeader {
+    <meta name="description" content="BeyondFitness透過一對一專業教練暖心指導並提供安全的訓練環境，上課內容包含專業訓練、增肌減脂，運動傷害、物理治療、營養規劃與運動防護一次包辦！透過科學化方法創造人性化之專屬個人健康分析資料庫+雲端數據化紀錄，保證更有效率的為您增進心肺、肌力與體能，即使為新手初學者也能達成理想的體態與健康目標。台北各區皆設有分店：台北小巨蛋、東門、台北東區與信義安和分店歡迎您隨時來免費體驗。">
+
+}
+<!--Banner-->
+<section class="section border-0 m-0 p-0 banner container-background">
+    <div class="container pt-5 h-100 handwriting-title">
+        <a href="#main"
+            class="slider-scroll-button slider-scroll-button-light position-absolute bottom-10 left-50pct transform3dx-n50"
+            data-hash="" data-hash-offset="0" data-hash-offset-lg="80" alt="BeyondFitness|捲起來">Sroll
+            To Bottom</a>
+    </div>
+</section>
+<!--標題-->
+<section class="section section-no-background section-center border-0 mt-0 mb-0 py-0">
+    <div class="container py-5">
+        <div class="row px-5">
+            <div class="col-12">
+                <h2 class="text-color-tertiary font-weight-semi-bold mb-2 positive-ls-5 text-uppercase d-flex justify-content-center justify-content-lg-start justify-content-md-center">@Html.Raw(beyondSession.Professional)</h2>
+				<span class="text-3-4 font-weight-medium positive-ls-10 d-block d-flex justify-content-center justify-content-lg-start justify-content-md-center">@Html.Raw(beyondSession.ProfessionalDesc)</span>
+				<div class="divider divider-tertiary divider-small divider-xxs py-4 hidden-md-down">
+				    <hr class="my-0" style="width: 50px; height: 3px;">
+				</div>
+			</div>
+		</div>	
+	</div>	
+</section>
+<!--專業訓練項目內容-->
+<section class="parallax section section-parallax section-centerborder-0 mt-0 mb-0 py-0 showcontent">
+    <div class="container">
+        <div class="row px-5 px-lg-5 px-md-0 pb-5 mb-5">
+            <div class="col-12 col-lg-4 col-md-4">
+                <div class="card bg-color-dark">
+                    <div class="card-body p-0">
+                        <div class="row d-flex text-center text-lg-start">
+                            <div class="col-12">
+                                @* <img src="images/icons/session-function.svg" alt="BeyondFitenss|訓練課程" data-icon
+                                    data-plugin-options="{'onlySVG': true}" width="200" data-src="Icon" /> *@
+                                <object data="images/icons/session/function.svg" type="image/svg+xml" width="80" data-src="ID"></object>
+                                <h4 class="text-color-tertiary text-capitalize mt-3" data-bind="NameDesc"></h4>
+                                <h3 class="text-color-light" data-bind="Name"></h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-lg-1 col-md-1">
+                <svg class="mb-4 hidden-sm-down" width="15" height="100%">
+                    <line x1="5" x2="5" y1="1" y2="100%" stroke="#dfd1b7" stroke-width=".2"></line>
+                </svg>
+                <svg width="100%" height="40" xmlns="http://www.w3.org/2000/svg" class="my-5 hidden-md-up">
+                    <line x1="0" y1="10" x2="100%" y2="10" stroke="#dfd1b7" stroke-width=".2" />
+                </svg>
+            </div>
+            <div class="col-12 col-lg-7 col-md-7">
+                <p class="text-color-tertiary text-capitalize fst-italic text-center">@Html.Raw(beyondSession.TraningItem)</p>
+                <p class="text-center" data-bind="Items"></p>
+                <p class="pt-3" data-bind="Desc"></p>
+            </div>
+        </div>
+    </div>
+    <div class="row demo-image px-0">
+        <div class="col-12" data-class="ID">
+            <div class="owl-carousel owl-theme custom-nav-arrows-1 px-0"
+                data-plugin-options="{'loop': true, 'nav': false, 'dots': true, 'items': 1, 'autoplay': 'true', 'autoplayTimeout': 7000, 'autoHeight': true, 'margin': 0, 'lazyLoad':true, 'animateOut': 'slideOutLeft'}">
+                @* <div class="demo-item">
+                    <img src="images/session/demo.jpg" class="img-thumbnail img-thumbnail-no-borders demo01-img" alt="BeyondFitness|專業訓練">
+                </div>    
+                <div class="demo-item">
+                    <img src="images/session/demo.jpg" class="img-thumbnail img-thumbnail-no-borders demo02-img" alt="BeyondFitness|專業訓練">
+                </div>            *@
+            </div>
+        </div>
+    </div>
+    <div class="container pt-5 mt-5">
+        <div class="row ps-0 ps-lg-5 ps-md-0">
+            <div class="col-12">
+                <h2
+                    class="text-color-tertiary font-weight-semi-bold mb-5 positive-ls-5 text-uppercase d-flex justify-content-center justify-content-lg-start justify-content-md-center align-items-center">
+                    @Html.Raw(beyondSession.Project)
+                    <svg width="100%" height="20" xmlns="http://www.w3.org/2000/svg" class="ps-2 hidden-md-down">
+                        <line x1="0" y1="10" x2="100%" y2="10" stroke="#666666" stroke-width=".8" />
+                    </svg>
+                </h2>
+            </div>
+        </div>
+    </div>
+</section>
+<!--專業訓練項目列表-->
+<section id="main" class="section section-no-background section-center section-text-light border-0 mt-0 mb-0 pb-5">
+    <div class="container pb-5">
+        <div class="row">
+            <div class="col-12"> 
+            @{
+                dynamic tranings = beyondSession.TraningItems;
+                if (tranings != null)
+                {
+                    <div class="owl-carousel owl-theme dots-morphing"
+                        data-plugin-options="{'responsive': {'0': {'items': 2}, '479': {'items': 2}, '768': {'items': 3}, '979': {'items': 4}}, 'loop': true, 'dots': true, 'margin': 30}">
+                    @{
+                        JArray traning = tranings as JArray;
+                        dynamic[] traning1 = traning.Where(c => (int)c["PlaceOrder"] == 1).ToArray();
+                        dynamic[] traning2 = traning.Where(c => (int)c["PlaceOrder"] == 2).ToArray();
+                        for (int i = 0; i < Math.Max(traning1.Length, traning2.Length); i++)
+                        {
+                            <div>
+                                <div class="card professional-card" onclick="javascript:showContent(@(i));">
+                                    <div class="card-body">
+                                        <div class="row align-items-center text-center">
+                                            <div class="col-12">
+                                                <h4>@Html.Raw(traning1[i].Name)</h4>
+                                                @* <img src="images/icons/catagory/@Html.Raw($"{traning1[i].ID}.svg")" alt="BeyondFitenss|@Html.Raw(traning1[i].Name)"
+                                                    data-icon
+                                                    data-plugin-options="{'onlySVG': true, 'animated': false, 'delay': 0, 'fadeIn': false}"
+                                                    width="80" /> *@
+                                                <object data="images/icons/session/@Html.Raw($"{traning1[i].ID}.svg")" type="image/svg+xml" width="80" class="pt-2"></object>
+												<div style="position: absolute;top: 0; width: 100%; height: 100%;" href="javascript:showContent(@(i));">
+												</div>
+                                                <p class="text-color-tertiary line-height-2 text-center text-3 mb-0 pt-2">@Html.Raw(traning1[i].NameDesc)</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="py-5"></div>
+                                <div class="card professional-card" onclick="javascript:showContent(@(i+4));">
+                                    <div class="card-body">
+                                        <div class="row align-items-center text-center">
+                                            <div class="col-12">
+                                                 <h4>@Html.Raw(traning2[i].Name)</h4>
+                                                @* <img src="images/icons/catagory/@Html.Raw(traning1[i].ID)" alt="BeyondFitenss|@Html.Raw(traning2[i].Name)"
+                                                    data-icon
+                                                    data-plugin-options="{'onlySVG': true, 'animated': false, 'delay': 0, 'fadeIn': false}"
+                                                    width="80" /> *@
+                                                <object data="images/icons/session/@Html.Raw($"{traning2[i].ID}.svg")" type="image/svg+xml" width="80" class="pt-2"></object>
+												<div style="position: absolute;top: 0; width: 100%; height: 100%;" href="javascript:showContent(@(i+4));">
+												</div>
+                                                <p class="text-color-tertiary line-height-2 text-center text-3 mb-0 pt-2">@Html.Raw(traning2[i].NameDesc)</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }  
+                    </div>                  
+                }
+            }                                                                  
+            </div>
+        </div>
+    </div>
+</section>
+
+@section TailPageJavaScriptInclude {
+	<script>
+		$(function () {
+			$(".showcontent").hide();
+		});
+
+		//顯示訓練內容
+		function showContent(idx) {
+            $.post('@Html.Raw(Url.Action("TrainingItemData", "Official"))', { 'idx':idx}, function (data) {
+                //hideLoading();
+                if ($.isPlainObject(data)) {
+                    //console.log(data);
+
+                    $('.showcontent').find('[data-bind]').each(function (idx, element) {
+                        var $this = $(this);
+                        $this.html(data[$this.attr('data-bind')]);
+                    });
+
+                    $('.showcontent').find('[data-src]').each(function (idx, element) {
+                        var $this = $(this);
+                        $this.attr('data','images/icons/session/'+data[$this.attr('data-src')]+'.svg');
+                    });
+
+                    $('.showcontent').find('[data-class]').each(function (idx, element) {
+                        var $this = $(this);
+                        $this.attr('class','row px-0 ' + data[$this.attr('data-class')]);
+
+                        var $div = $this.find('div.owl-carousel');
+                        $div.owlCarousel('destroy');
+                        $div.remove();
+                        var newOwl = $('<div class="owl-carousel owl-theme custom-nav-arrows-1 px-0 pt-5 pt-lg-0 pt-md-0">');
+                         for (i=0; i<data["DemoImgCnt"]; i++) {
+                            var imgClass = 'demo0' + (i+1) + '-img';
+                            console.log(imgClass);
+                            newOwl.append('<div class="demo-item" width="100%"><img src="images/shape/rectangle.jpg" class="img-fluid ' + imgClass +'" alt="BeyondFitness|專業訓練"></div>');
+                        }                                                     
+                        $this.append(newOwl);    
+                        newOwl.owlCarousel({
+                            // Owl Carousel options go here
+                            loop: true,
+                            nav: false,
+                            margin: 0,
+                            dots: true,
+                            items: 1,
+                            autoHeight: false,
+                            autoWidth: false,
+                            autoplay: true,
+                            autoplayTimeout: 7000,
+                            lazyLoad: true,
+                            stageOuterClass: 'owl-stage-outer owl-stage gx-0',
+                            animateOut: 'slideOutLeft'
+                        });        
+                        @* var $owl = $(data); 
+                        $.post('@Html.Raw(Url.Action("TrainingCarouselItem", "Official"))', { 'idx':idx}, 
+                                function(data) {
+                                    var $owl = $(data);
+                                    $this.append($owl);                                    
+                                    $owl.owlCarousel({'loop': true, 'nav': false, 'dots': true, 'items': 1, 'autoplay': 'true', 'autoplayTimeout': 4000, 'autoHeight': true, 'margin': 0, 'lazyLoad':true,});
+                                    $(".showcontent").slideDown();			
+                                    // 讓捲軸用動畫的方式移動到 #header 的 top 位置並加入動畫效果
+                                    $([document.documentElement, document.body]).animate({
+                                        scrollTop: $(".showcontent").offset().top
+                                    }, 4000);
+                        }); *@
+                    });
+
+                    $(".showcontent").slideDown();			
+                    // 讓捲軸用動畫的方式移動到 #header 的 top 位置並加入動畫效果
+                    $([document.documentElement, document.body]).animate({
+                        scrollTop: $(".showcontent").offset().top - 90
+                    }, 2000);
+                } else {
+                    $(data).appendTo($('body'));
+                }
+            });            
+		}		
+	</script>
+}

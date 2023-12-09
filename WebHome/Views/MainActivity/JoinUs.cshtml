@@ -10,7 +10,9 @@
 @using WebHome.Controllers
 @using Microsoft.AspNetCore.Mvc.ModelBinding
 @using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
 @using WebHome.Models.Resources
+@using CommonLib.Utility
 
 @{
     ModelSource<UserProfile> models;
@@ -18,9 +20,17 @@
 
     models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
     _modelState = ViewContext.ModelState;
+   ViewBag.MainClass = "joinus";
+   ViewBag.MenuDark = true;
 
     Layout = "~/Views/MainActivity/Template/MainPage.cshtml";
 
+   await Html.RenderPartialAsync("~/Views/MainActivity/Template/GlobalResource.cshtml");   
+   dynamic globalResource = ViewContext.HttpContext.Items["GlobalResource"] as dynamic;
+   dynamic commonAll = globalResource["Common"][ViewBag.Lang ?? "zh-TW"] as dynamic;
+   dynamic joinUsAll = globalResource["JoinUs"][ViewBag.Lang ?? "zh-TW"] as dynamic;
+   dynamic findUsAll = globalResource["FindUs"][ViewBag.Lang ?? "zh-TW"] as dynamic;
+   dynamic tranings = joinUsAll.TraningItem;
 }
 
 @section CustomHeader {
@@ -28,97 +38,360 @@
     content="關於公司徵才及人才招募教練培訓訊息，超越體能顧問有限公司團隊是業界擁有最多國際級六大專業證照的機構，讓您在專業及安全的環境下工作，ACE、ACSM、NCAA、NSCA、NASM、CrossFit、EXOS-XPS、CPR+AE，制度，除了良好的工作環境、也提供學習（培訓）及成長的空間，歡迎真正擁有熱忱以及想學習的朋友一起加入超越體能顧問有限公司的工作行列。" />
 
 }
-
-<!-- // 加入執行團隊 -->
-<section class="section-features">
-    <div class="container">
-        <div class="row mb-30">
-            <div class="col-md-12">
-                <h1 class="text-center">@Html.Raw(NamingItem.JoinUsTitle)</h1>
-                <p>@Html.Raw(NamingItem.JoinUsDesc)</p>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-10 col-md-offset-1 col-sm-12">
-                <div class="row">
-                    <div class="col-md-6 col-sm-6 features-item left wow zoomIn" data-wow-delay=".3s">
-                        <div class="icon-wrapper">
-                            <img src="images/landing/smile.png" alt="微笑">
-                        </div>
-                        <h3>@Html.Raw(NamingItem.JoinUsFeature1)<small>@Html.Raw(NamingItem.JoinUsFeature1Desc)</small></h3>
-                    </div>
-                    <div class="col-md-6 col-sm-6 features-item left wow zoomIn" data-wow-delay=".6s">
-                        <div class="icon-wrapper">
-                            <img src="images/landing/inspire.png" alt="啟發">
-                        </div>
-                        <h3>@Html.Raw(NamingItem.JoinUsFeature2)<small>@Html.Raw(NamingItem.JoinUsFeature2Desc)</small></h3>
-                    </div>
-                    <div class="col-md-6 col-sm-6 features-item left wow zoomIn" data-wow-delay=".9s">
-                        <div class="icon-wrapper">
-                            <img src="images/landing/warm.png" alt="溫暖">
-                        </div>
-                        <h3>@Html.Raw(NamingItem.JoinUsFeature3)<small>@Html.Raw(NamingItem.JoinUsFeature3Desc)</small></h3>
-                    </div>
-                    <div class="col-md-6 col-sm-6 features-item left wow zoomIn" data-wow-delay="1.2s">
-                        <div class="icon-wrapper">
-                            <img src="images/landing/upright.png" alt="正直">
-                        </div>
-                        <h3>@Html.Raw(NamingItem.JoinUsFeature4)<small>@Html.Raw(NamingItem.JoinUsFeature4Desc)</small></h3>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </div>
+<!--Banner-->
+<section class="section border-0 m-0 p-0 banner container-background">
+   <div class="container pt-5 h-100 handwriting-title">      
+      <a href="#main"
+         class="slider-scroll-button slider-scroll-button-light position-absolute bottom-10 left-50pct transform3dx-n50"
+         data-hash="" data-hash-offset="0" data-hash-offset-lg="80">Sroll To Bottom</a>
+   </div>
 </section>
-<section class="section-job">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-10 col-md-offset-1">
-                <div class="row clearfix">
-                    <div class="col-md-6 col-sm-6">
-                        <div class="features-box">
-                            <div class="features-icon title"><i class="fas fa-user-tag"></i> @Html.Raw(NamingItem.JoinUsJob1)</div>
-                            <div class="features-content">
-                                <a href="javascript:bindTrackingCode('工作機會', null, '@(Url.Action("Opportunity", "MainActivity"))', null)" class="more">@Html.Raw(NamingItem.LearnMore)<i class="pl-1 fa fa-angle-right"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-sm-6">
-                        <div class="features-box">
-                            <div class="features-icon title"><i class="fas fa-user-tag"></i> @Html.Raw(NamingItem.JoinUsJob2)</div>
-                            <div class="features-content">
-                                <a href="javascript:bindTrackingCode('工作機會', null, '@(Url.Action("Opportunity", "MainActivity"))', null)" class="more">@Html.Raw(NamingItem.LearnMore)<i class="pl-1 fa fa-angle-right"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row clearfix">
-                    <div class="col-md-6 col-sm-6">
-                        <div class="features-box">
-                            <div class="features-icon title"><i class="fas fa-user-tag"></i> @Html.Raw(NamingItem.JoinUsJob3)</div>
-                            <div class="features-content">
-                                <a href="javascript:bindTrackingCode('工作機會', null, '@(Url.Action("Opportunity", "MainActivity"))', null)" class="more">@Html.Raw(NamingItem.LearnMore)<i class="pl-1 fa fa-angle-right"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-sm-6">
-                        <div class="features-box">
-                            <div class="features-icon title"><i class="fas fa-user-tag"></i> @Html.Raw(NamingItem.JoinUsJob4)</div>
-                            <div class="features-content">
-                                <a href="javascript:bindTrackingCode('工作機會', null, '@(Url.Action("Opportunity", "MainActivity"))', null)" class="more">@Html.Raw(NamingItem.LearnMore)<i class="pl-1 fa fa-angle-right"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+<!--Message-->
+<section class="section section-no-background section-text-dark my-0 py-5 border-0 p-relative overflow-hidden py-5"
+   id="main">
+   <div class="container container-xl-custom container-xxl-custom py-5">
+      <div class="row">
+         <div class="col-12 col-lg-5 col-12 col-sm-12 pt-5">
+            <div class="w-lg-75pct w-md-100pct w-sm-100pct pe-0 float-none float-lg-end">
+               <h2
+                  class="text-color-tertiary font-weight-semi-bold mb-2 positive-ls-5 text-uppercase d-flex justify-content-center justify-content-lg-start">
+                  @Html.Raw(joinUsAll.Message)
+               </h2>
+               <span
+                  class="text-3-4 font-weight-medium positive-ls-10 d-block d-flex justify-content-lg-start justify-content-center">@Html.Raw(joinUsAll.MessageDesc)</span>
+               <div class="divider divider-tertiary divider-small divider-xxs py-4 hidden-md-down">
+                  <hr class="my-0" style="width: 50px; height: 3px;">
+               </div>
+
+               <div class="divider divider-tertiary divider-small divider-small-center divider-xxs py-4 hidden-lg-up">
+                  <hr class="my-0" style="width: 50px; height: 3px;">
+               </div>
+               <h3 class="font-weight-bold line-height-5 d-flex justify-content-center justify-content-lg-start">
+                  @Html.Raw(joinUsAll.MessageSlogan)</h3>
             </div>
-        </div>
-    </div>
+         </div>
+         <div class="col-12 p-0 hidden-lg-up">
+            <img src="images/joinus/message.png" class="message-img appear-animation"
+               data-appear-animation="fadeInRightShorter" data-appear-animation-delay="200"
+               data-appear-animation-duration="2.5s">
+         </div>
+         <div class="col-12 col-lg-7 col-12 col-sm-12 ps-md-5 pt-5 px-5 px-lg-0 z-index-2">
+            <p class="mb-4">
+               @Html.Raw(joinUsAll.MessageContent1)
+            </p>
+            <div class="row mb-4">
+               <div class="col-12 col-lg-6 col-md-7 col-sm-12">
+                  <p class="font-weight-semi-bold">@Html.Raw(joinUsAll.MessageContent2)</p>
+               </div>
+               <div class="col-12 col-lg-6 col-md-5 col-sm-12 text-end">
+                  <img src="images/handwriting/beyond.svg" class="img-fluid appear-animation" width="150px"
+                     data-appear-animation="fadeInLeftShorter" data-plugin-options="{'accY': -100}" alt="BeyondFitness">
+               </div>
+               <div class="col-12 text-end">
+                  @Html.Raw(joinUsAll.MessageFrom)
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
 </section>
-<!-- // 聯絡我們 -->
-@{ await Html.RenderPartialAsync("~/Views/MainActivity/Module/JoinItem.cshtml");}
-
-
+<section class="section bg-color-primary section-text-dark border-0 m-0 position-relative hidden-md-down">
+   <div class="container container-xl-custom container-xxl-custom p-relative z-index-1 custom-el-pos-1">
+      <div class="row">
+         <div class="col-lg-2">
+            <img src="images/joinus/message.png" class="message-img position-absolute appear-animation"
+               data-appear-animation="fadeInRightShorter" data-appear-animation-delay="200"
+               data-appear-animation-duration="2.5s"              alt="BeyondFitness|成就自己">
+         </div>
+      </div>
+   </div>
+</section>
+<!--員工之聲-->
+<section class="section section-text-dark bg-color-primary border-0 mt-0 mb-0 section-center py-5">
+   <div class="row">
+      <div class="col-12 col-lg-5 col-12 col-sm-12 px-0">
+         <div class="w-xl-50pct w-lg-75pct w-md-100pct pe-0 float-none float-lg-end">
+            <h2 class="text-color-tertiary font-weight-semi-bold mb-2 positive-ls-5 text-uppercase">
+               @Html.Raw(joinUsAll.Voice)
+            </h2>
+            <span class="text-3-4 font-weight-medium positive-ls-10 d-block">@Html.Raw(joinUsAll.VoiceDesc)</span>
+            <div class="divider divider-tertiary divider-small divider-small-center divider-xxs py-4 hidden-sm-down">
+               <hr class="my-0" style="width: 50px; height: 3px;">
+            </div>
+            <h3 class="font-weight-bold line-height-5 hidden-sm-down">@Html.Raw(joinUsAll.VoiceSlogan1)</h3>
+            <h3 class="font-weight-bold line-height-5 hidden-sm-down">@Html.Raw(joinUsAll.VoiceSlogan2)</h3>
+            <p class="text-color-grey text-center mb-5 hidden-sm-down">@Html.Raw(joinUsAll.VoiceMessage)</p>
+         </div>
+      </div>
+      <div class="col-12 col-lg-7 col-12 col-sm-12 px-3 px-lg-5 px-md-5 ps-lg-0 pt-5 pt-lg-0 pt-md-0">
+         <div class="w-xl-75pct w-lg-100pct">
+            @{
+               dynamic voices = joinUsAll.VoiceItem;
+               if (voices != null)
+               {
+                  <div class="owl-carousel owl-theme"
+                     data-plugin-options="{'loop': false, 'nav': false, 'dots': true, 'responsive': {'0': {'items': 1}, '479': {'items': 1}, '768': {'items': 3}, '979': {'items': 3}, '1199': {'items': 3}, '1399': {'items': 4}}, 'autoHeight': true, 'margin': 20, 'animateOut': 'slideOutRight', 'animateIn': 'flipInY'}">
+                     @{
+                        JArray voice = voices as JArray;
+                        dynamic[] item = voice.ToArray();
+                        for (int i = 0; i < item.Length; i++)
+                        {
+                           JObject branch = ((JArray)findUsAll["BranchItems"]).Where(c => c["ID"] == item[i].BranchID).FirstOrDefault() as JObject;
+                           if (branch != null)
+                           {
+                              JObject coach = ((JArray)branch["Coaches"]).Where(c => c["MemberCode"] == item[i].MemberCode).FirstOrDefault() as JObject;
+                              if (coach != null) {
+                                 var viewModel = new
+                                 {
+                                    BranchID = (int?)branch["ID"],
+                                    MemberCode = (String)coach["MemberCode"]
+                                 };
+                                 <div class="d-flex justify-content-center">
+                                    <div class="card border-color-secondary custom-squareround-card"
+                                       onclick='gotoVoicePage(@Html.Raw(viewModel.JsonStringify()));'>
+                                       <div class="card-body p-3">
+                                          @{
+                                             if ((i % 2) == 0)
+                                             {
+                                                <img src="images/avatars/@Html.Raw(coach["NameDesc"])/Voice/Cover.jpg" class="avatar-img"
+                                                   alt="BeyondFitness|員工之聲">
+                                             }
+                                          }
+                                          <div class="row text-center pt-5">
+                                             <div class="col-12">
+                                                <h5 class="mb-2">@Html.Raw(branch["Name"])/@Html.Raw(coach["JobTitle"])</h5>
+                                                <h4>@Html.Raw(coach["NameDesc"])</h4>
+                                             </div>
+                                          </div>
+                                          @{
+                                             if ((i % 2) == 1)
+                                             {
+                                                <img src="images/avatars/@Html.Raw(coach["NameDesc"])/Voice/Cover.jpg" class="avatar-img"
+                                                   alt="BeyondFitness|員工之聲">
+                                             }
+                                          }
+                                       </div>
+                                    </div>
+                                 </div>
+                              }                                                           
+                           }                           
+                        }
+                     }
+                  </div>
+               }
+            }
+         </div>
+      </div>
+      <div class="col-12 hidden-sm-up">
+         <h3 class="font-weight-bold line-height-5">@Html.Raw(joinUsAll.VoiceSlogan1)</h3>
+         <h3 class="font-weight-bold line-height-5">@Html.Raw(joinUsAll.VoiceSlogan2)</h3>
+         <p class="text-color-grey text-center">@Html.Raw(joinUsAll.VoiceMessage)</p>
+      </div>
+   </div>
+</section>
+<!--研修制度-->
+<section class="section section-no-background section-text-dark border-0 mt-0 mb-0 py-5" id="traning_container">
+   <div class="container-fluid py-5">
+      <div class="row">
+         <div class="col-lg-6 col-md-12 pt-5">
+            <h2
+               class="text-color-tertiary font-weight-semi-bold mb-2 positive-ls-5 text-uppercase  d-flex justify-content-center hidden-lg-up">
+               @Html.Raw(joinUsAll.Traning)
+            </h2>
+            <span
+               class="text-3-4 font-weight-medium positive-ls-10 d-flex justify-content-center hidden-lg-up">@Html.Raw(joinUsAll.TraningDesc)</span>
+            <img class="training-img appear-animation appear-animation-visible pt-3 pe-3"
+               src="images/joinus/traning.png" data-appear-animation="fadeInRightShorter"
+               data-plugin-options="{'accY': -400}" alt="BeyondFitness|研修制度">
+         </div>
+         <div class="col-lg-6 col-md-12 p-0">
+            <div class="row m-0">
+               <div class="col-half-section col-half-section-left py-5">
+                  <div class="py-3">
+                     <div class="row">
+                        <h2
+                           class="text-color-tertiary font-weight-semi-bold mb-2 positive-ls-5 text-uppercase d-flex justify-content-center justify-content-lg-start justify-content-md-center hidden-md-down">
+                           @Html.Raw(joinUsAll.Traning)
+                        </h2>
+                        <span
+                           class="text-3-4 font-weight-medium positive-ls-10 d-block d-flex justify-content-center justify-content-lg-start justify-content-md-center hidden-md-down">@Html.Raw(joinUsAll.TraningDesc)</span>
+                        <div class="divider divider-tertiary divider-small divider-xxs py-4 hidden-md-down">
+                           <hr class="my-0" style="width: 50px; height: 3px;">
+                        </div>
+                        <h3
+                           class="font-weight-bold line-height-5 d-flex justify-content-center justify-content-lg-start">@Html.Raw(joinUsAll.TraningSlogan)</h3>
+                     </div>
+                     <div class="row">
+                        <div class="col-12">
+                           <p class="px-4 px-lg-0 px-md-0">
+                              @Html.Raw(joinUsAll.TraningMessage)
+                           </p>
+                        </div>
+                     </div>
+                     <div class="row pt-5">
+                        <div class="col-12 col-lg-6 col-md-6 col-sm-12 pb-3">
+                           <div
+                              class="accordion accordion-modern-status accordion-modern2-status-borders accordion-modern2-status-arrow"
+                              id="traning1">
+                              @{                                 
+                                 if (tranings != null)
+                                 {
+                                    JArray traning = tranings as JArray;
+                                    dynamic[] item = traning.Where(c => (int)c["PlaceOrder"] == 1).ToArray();
+                                    for (int i = 0; i < item.Length; i++)
+                                    {
+                                    <div class="card card-default border-radius-20">
+                                          <div class="card-header" id="@Html.Raw($"heading{item[i].ID}")">
+                                          <h4 class="card-title m-0">
+                                             <a class="accordion-toggle collapsed py-2 px-4 font-weight-medium text-color-dark"
+                                                   data-bs-toggle="collapse" data-bs-target="@Html.Raw($"#{item[i].ID}")"
+                                                   aria-controls="@Html.Raw(item[i].ID)">
+                                                   <i class="fa-solid fa-check text-color-tertiary pe-2"></i>@Html.Raw(item[i].Name)
+                                             </a>
+                                          </h4>
+                                       </div>
+                                          @{
+                                             JArray contents = item[i].List as JArray;
+                                             if (contents != null)
+                                             {
+                                                <div id="@Html.Raw(item[i].ID)" class="collapse"
+                                                   aria-labelledby="@Html.Raw($"heading{item[i].ID}")"                                             data-bs-parent="#traning1">
+                                                   <div class="card-body p-2">
+                                                      <ul class="list text-4 mb-0">
+                                                         @{
+                                                            dynamic[] content = contents.ToArray();
+                                                            for (int j = 0; j < content.Length; j++)
+                                                            {
+                                                               <li>@Html.Raw(content[j].Content)</li>
+                                                            }
+                                                         }
+                                                      </ul>
+                                                   </div>
+                                                </div>                                               
+                                             }
+                                          }
+                                    </div>                                     
+                                    }
+                                 }    
+                              }
+                           </div>
+                        </div>
+                        <div class="col-12 col-lg-6 col-md-6 col-sm-12">
+                           <div
+                              class="accordion accordion-modern-status accordion-modern2-status-borders accordion-modern2-status-arrow"
+                              id="traning2">
+                              @{
+                                 if (tranings != null)
+                                 {
+                                    JArray traning = tranings as JArray;
+                                    dynamic[] item = traning.Where(c => (int)c["PlaceOrder"] == 2).ToArray();
+                                    for (int i = 0; i < item.Length; i++)
+                                    {
+                                       <div class="card card-default border-radius-20">
+                                          <div class="card-header" id="@Html.Raw($"heading{item[i].ID}")">
+                                             <h4 class="card-title m-0">
+                                                <a class="accordion-toggle collapsed py-2 px-4 font-weight-medium text-color-dark"
+                                                   data-bs-toggle="collapse" data-bs-target="@Html.Raw($"#{item[i].ID}")"
+                                                   aria-controls="@Html.Raw(item[i].ID)">
+                                                   <i
+                                                      class="fa-solid fa-check text-color-tertiary pe-2"></i>@Html.Raw(item[i].Name)
+                                                </a>
+                                             </h4>
+                                          </div>
+                                          @{
+                                             JArray contents = item[i].List as JArray;
+                                             if (contents != null)
+                                             {
+                                                <div id="@Html.Raw(item[i].ID)" class="collapse"
+                                                   aria-labelledby="@Html.Raw($"heading{item[i].ID}")" data-bs-parent="#traning2">
+                                                   <div class="card-body p-2">
+                                                      <ul class="list text-4 mb-0">
+                                                         @{
+                                                            dynamic[] content = contents.ToArray();
+                                                            for (int j = 0; j < content.Length; j++)
+                                                            {
+                                                               <li>@Html.Raw(content[j].Content)</li>
+                                                            }
+                                                         }
+                                                      </ul>
+                                                   </div>
+                                                </div>
+                                             }
+                                          }
+                                       </div>
+                                    }
+                                 }
+                              }
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</section>
+<!-- // Slogan -->
+@{
+   await Html.RenderPartialAsync("~/Views/MainActivity/Module/JoinItem.cshtml");
+}
+<!--Opening職缺-->
+<section class="section bg-color-primary section-text-dark border-0 section-center py-5 my-0">
+   <div class="container py-5">
+      <div class="row">
+         <div class="col-12">
+            <h2 class="text-color-tertiary font-weight-semi-bold mb-2 positive-ls-5 text-uppercase">
+               @Html.Raw(joinUsAll.Opening)
+            </h2>
+            <span class="text-3-4 font-weight-medium positive-ls-10 d-block">@Html.Raw(joinUsAll.OpeningDesc)</span>
+            <div class="divider divider-tertiary divider-small divider-small-center divider-xxs py-4">
+               <hr class="my-0" style="width: 50px; height: 3px;">
+            </div>
+         </div>
+      </div>
+      <div class="row mt-5">
+         <div class="col-12">
+            @{
+               dynamic openings = joinUsAll.OpeningItem;
+               if (openings != null)
+               {
+               <div class="owl-carousel owl-theme"
+                  data-plugin-options="{'loop': true, 'nav': false, 'dots': true, 'responsive': {'0': {'items': 1}, '479': {'items': 1}, '768': {'items': 2}, '979': {'items': 3}, '1199': {'items': 3}}, 'autoHeight': true, 'margin': 40, 'animateOut': 'slideOutDown', 'animateIn': 'flipInY'}">               
+                  @{
+                     JArray opening = openings as JArray;
+                     dynamic[] item = opening.ToArray();
+                     for (int i = 0; i < item.Length; i++)
+                     {
+                           <div class="card bg-color-primary custom-shape-card left">
+                        <div class="card-body py-5 rounded-circle">
+                           <div class="row align-items-center pt-4 text-center">
+                              <div class="col-12">
+                                 <div class="overflow-hidden">
+                                          <h4 class="text-4 font-weight-normal positive-ls-2 mb-4">@Html.Raw(item[i].JobTitle)</h4>
+                                    <p class="text-4-5 font-weight-medium text-center">@Html.Raw(item[i].JobSlogan)</p>
+                                 </div>
+                              </div>
+                              <div class="col-12">
+                                 <a href="@Html.Raw(item[i].Link)" target="_blank" class="btn btn-default btn-rounded font-weight-normal px-4 fst-italic ">@Html.Raw(commonAll.JoinUsGo)</a>
+                              </div>
+                           </div>
+                        </div>
+                     </div>                        
+                     }
+                  }
+               </div>
+               }
+            }   
+         </div>
+      </div>
+   </div>
+</section>
 @section TailPageJavaScriptInclude {
+   <script>
 
+      function gotoVoicePage(viewModel) {
+         $('').launchDownload('@Html.Raw(Url.Action("Voice", "Official"))', viewModel);
+      }
+   </script>
 }

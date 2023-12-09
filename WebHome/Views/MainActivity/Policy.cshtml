@@ -1,0 +1,98 @@
+
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@using WebHome.Models.Resources
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _modelState = ViewContext.ModelState;
+    ViewBag.Personal = true;
+
+    Layout = "~/Views/MainActivity/Template/MainPage.cshtml";
+
+   await Html.RenderPartialAsync("~/Views/MainActivity/Template/GlobalResource.cshtml");
+   dynamic globalResource = ViewContext.HttpContext.Items["GlobalResource"] as dynamic;
+   dynamic commonAll = globalResource["Common"][ViewBag.Lang ?? "zh-TW"] as dynamic;
+
+}
+
+@section CustomHeader {
+<meta name="description"
+    content="關於公司徵才及人才招募教練培訓訊息，超越體能顧問有限公司團隊是業界擁有最多國際級六大專業證照的機構，讓您在專業及安全的環境下工作，ACE、ACSM、NCAA、NSCA、NASM、CrossFit、EXOS-XPS、CPR+AE，制度，除了良好的工作環境、也提供學習（培訓）及成長的空間，歡迎真正擁有熱忱以及想學習的朋友一起加入超越體能顧問有限公司的工作行列。" />
+
+}
+
+<section class="section section-no-background border-0 mt-0 mb-0 pt-0 section-policy">
+   <div class="container container-xxl-custom">
+      <div class="row">
+         <div class="row mt-5">
+            <div class="col">
+               <div class="row">
+                  <div class="col-sm-12 col-md-4 col-lg-4">
+                     <div class="tabs tabs-vertical tabs-right tabs-navigation tabs-navigation-simple hidden-sm-down">
+                        <ul class="nav nav-tabs col-sm-3">
+                           <li class="nav-item">
+                              <a class="nav-link active text-color-grey" href="#privacyPolicy"
+                                 data-bs-toggle="tab">@Html.Raw(commonAll.PrivacyPolicy)</a>
+                           </li>
+                           <li class="nav-item">
+                              <a class="nav-link text-color-grey" href="#cookiePolicy"
+                                 data-bs-toggle="tab">@Html.Raw(commonAll.CookiePolicy)</a>
+                           </li>
+                           <li class="nav-item">
+                              <a class="nav-link text-color-grey" href="#termcondition"
+                                 data-bs-toggle="tab">@Html.Raw(commonAll.Terms)</a>
+                           </li>
+                        </ul>
+                     </div>
+                     <div class="tabs tabs-bottom tabs-center tabs-simple hidden-sm-up">
+                        <ul class="nav nav-tabs">
+                           <li class="nav-item">
+                              <a class="nav-link active text-color-grey" href="#privacyPolicy"
+                                 data-bs-toggle="tab">@Html.Raw(commonAll.PrivacyPolicy)</a>
+                           </li>
+                           <li class="nav-item">
+                              <a class="nav-link text-color-grey" href="#cookiePolicy"
+                                 data-bs-toggle="tab">@Html.Raw(commonAll.CookiePolicy)</a>
+                           </li>
+                           <li class="nav-item">
+                              <a class="nav-link text-color-grey" href="#termcondition"
+                                 data-bs-toggle="tab">@Html.Raw(commonAll.Terms)</a>
+                           </li>
+                        </ul>
+                     </div>
+                  </div>
+                  <div class="col-sm-12 col-md-8 col-lg-8 ps-5">
+                     <div class="tab-pane tab-pane-navigation active" id="privacyPolicy">
+                        @Html.Raw(commonAll.PrivacyPolicyContent)
+                     </div>
+                     <div class="tab-pane tab-pane-navigation" id="cookiePolicy">
+                        @Html.Raw(commonAll.CookiePolicyContent)
+                     </div>
+                     <div class="tab-pane tab-pane-navigation" id="termcondition">
+                        @Html.Raw(commonAll.TermsContent)
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</section>
+
+
+@section TailPageJavaScriptInclude {
+
+}

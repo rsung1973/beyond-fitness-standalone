@@ -2,6 +2,7 @@
 
 @using System.IO
 @using System.Linq.Expressions
+@using Microsoft.AspNetCore.Http
 
 @using WebHome.Helper
 @using WebHome.Models.Locale
@@ -17,11 +18,73 @@
 {
     static void Initialize()
     {
+
         _Resource = new JObject();
-        JObject branch = JObject.Parse(File.ReadAllText(Startup.MapPath("~/Official/Portfolio/Branch.json")));
-        branch["ja"] = JObject.Parse(File.ReadAllText(Startup.MapPath("~/Official/Portfolio/Branch.ja.json")));
-        branch["en-US"] = JObject.Parse(File.ReadAllText(Startup.MapPath("~/Official/Portfolio/Branch.en-US.json")));
-        _Resource["Branch"] = branch;
+        JObject common =
+            JObject.Parse(File.ReadAllText(Startup.MapPath("~/Official/Portfolio/Common.json")));
+        common["ja"] =
+            JObject.Parse(File.ReadAllText(Startup.MapPath("~/Official/Portfolio/Common.ja.json")));
+        common["en-US"] =
+            JObject.Parse(File.ReadAllText(Startup.MapPath("~/Official/Portfolio/Common.en-US.json")));
+        common["zh-TW"] = common;
+        _Resource["Common"] = common;
+
+        JObject findus =
+        JObject.Parse(File.ReadAllText(Startup.MapPath("~/Official/Portfolio/FindUs.json")));
+        findus["ja"] =
+        JObject.Parse(File.ReadAllText(Startup.MapPath("~/Official/Portfolio/FindUs.ja.json")));
+        findus["en-US"] =
+        JObject.Parse(File.ReadAllText(Startup.MapPath("~/Official/Portfolio/FindUs.en-US.json")));
+        findus["zh-TW"] = findus;
+        _Resource["FindUs"] = findus;
+
+        JObject home =
+            JObject.Parse(File.ReadAllText(Startup.MapPath("~/Official/Portfolio/Home.json")));
+        home["ja"] =
+            JObject.Parse(File.ReadAllText(Startup.MapPath("~/Official/Portfolio/Home.ja.json")));
+        home["en-US"] =
+            JObject.Parse(File.ReadAllText(Startup.MapPath("~/Official/Portfolio/Home.en-US.json")));
+        home["zh-TW"] = home;
+        _Resource["Home"] = home;
+
+        JObject service =
+            JObject.Parse(File.ReadAllText(Startup.MapPath("~/Official/Portfolio/Service.json")));
+        service["ja"] =
+            JObject.Parse(File.ReadAllText(Startup.MapPath("~/Official/Portfolio/Service.ja.json")));
+        service["en-US"] =
+            JObject.Parse(File.ReadAllText(Startup.MapPath("~/Official/Portfolio/Service.en-US.json")));
+        service["zh-TW"] = service;
+        _Resource["Service"] = service;
+
+        JObject bookNow = JObject.Parse(File.ReadAllText(Startup.MapPath("~/Official/Portfolio/BookNow.json")));
+        bookNow["ja"] = JObject.Parse(File.ReadAllText(Startup.MapPath("~/Official/Portfolio/BookNow.ja.json")));
+        bookNow["en-US"] = JObject.Parse(File.ReadAllText(Startup.MapPath("~/Official/Portfolio/BookNow.en-US.json")));
+        bookNow["zh-TW"] = bookNow;
+        _Resource["BookNow"] = bookNow;
+
+        JObject joinUs = JObject.Parse(File.ReadAllText(Startup.MapPath("~/Official/Portfolio/JoinUs.json")));
+        joinUs["ja"] = JObject.Parse(File.ReadAllText(Startup.MapPath("~/Official/Portfolio/JoinUs.ja.json")));
+        joinUs["en-US"] = JObject.Parse(File.ReadAllText(Startup.MapPath("~/Official/Portfolio/JoinUs.en-US.json")));
+        joinUs["zh-TW"] = joinUs;
+        _Resource["JoinUs"] = joinUs;
+
+        JObject aboutUs = JObject.Parse(File.ReadAllText(Startup.MapPath("~/Official/Portfolio/AboutUs.json")));
+        aboutUs["ja"] = JObject.Parse(File.ReadAllText(Startup.MapPath("~/Official/Portfolio/AboutUs.ja.json")));
+        aboutUs["en-US"] = JObject.Parse(File.ReadAllText(Startup.MapPath("~/Official/Portfolio/AboutUs.en-US.json")));
+        aboutUs["zh-TW"] = aboutUs;
+        _Resource["AboutUs"] = aboutUs;
+
+        JObject beyondSession = JObject.Parse(File.ReadAllText(Startup.MapPath("~/Official/Portfolio/Session.json")));
+        beyondSession["ja"] = JObject.Parse(File.ReadAllText(Startup.MapPath("~/Official/Portfolio/Session.ja.json")));
+        beyondSession["en-US"] = JObject.Parse(File.ReadAllText(Startup.MapPath("~/Official/Portfolio/Session.en-US.json")));
+        beyondSession["zh-TW"] = beyondSession;
+        _Resource["BeyondSession"] = beyondSession;
+
+        JObject faq = JObject.Parse(File.ReadAllText(Startup.MapPath("~/Official/Portfolio/Faq.json")));
+        faq["ja"] = JObject.Parse(File.ReadAllText(Startup.MapPath("~/Official/Portfolio/Faq.ja.json")));
+        faq["en-US"] = JObject.Parse(File.ReadAllText(Startup.MapPath("~/Official/Portfolio/Faq.en-US.json")));
+        faq["zh-TW"] = faq;
+        _Resource["Faq"] = faq;
     }
 
     static JObject _Resource;
@@ -40,6 +103,23 @@
             return _Resource;
         }
     }
+
+    Microsoft.AspNetCore.Http.HttpRequest request;
+
+    void GetRequestValues(String branchID,String memberCode)
+    {
+        JObject findUsAll = _Resource["FindUs"][ViewBag.Lang ?? "zh-TW"] as JObject;
+        JObject branch = ((JArray)findUsAll["BranchItems"]).Where(c => c.Value<String>("ID") == branchID).FirstOrDefault() as JObject;
+        if (branch != null)
+        {
+            ViewContext.HttpContext.Items["RequestBranch"] = branch;
+            JObject coach = ((JArray)branch["Coaches"]).Where(c => c.Value<String>("MemberCode") == memberCode).FirstOrDefault() as JObject;
+            if (coach != null)
+            {
+                ViewContext.HttpContext.Items["RequestCoach"] = coach;
+            }
+        }
+    }
 }
 
 @{
@@ -49,5 +129,33 @@
     models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
     _modelState = ViewContext.ModelState;
 
+    bool? reload = ViewBag.Reload as bool?;
+    if (reload == true)
+    {
+        lock (typeof(SampleController<UserProfile>))
+        {
+            Initialize();
+        }
+    }
+
     ViewContext.HttpContext.Items["GlobalResource"] = Items;
+
+    request = ViewContext.HttpContext.Request;
+    IFormCollection forms = this.Model as IFormCollection;
+
+    if (request.ContentType != null)
+    {
+        if(forms.ContainsKey("BranchID"))
+        {
+            GetRequestValues(forms["BranchID"], forms["MemberCode"]);
+        }
+    }
+    else
+    {
+        if(request.Query.ContainsKey("BranchID"))
+        {
+            GetRequestValues((String)request.Query["BranchID"], (String)request.Query["MemberCode"]);
+        }
+    }
+
 }

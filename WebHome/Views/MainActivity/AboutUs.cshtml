@@ -18,8 +18,14 @@
 
     models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
     _modelState = ViewContext.ModelState;
+   ViewBag.MainClass = "aboutus";
+   ViewBag.MenuDark = true;
 
-    Layout = "~/Views/MainActivity/Template/MainPage.cshtml";
+   Layout = "~/Views/MainActivity/Template/MainPage.cshtml";
+   await Html.RenderPartialAsync("~/Views/MainActivity/Template/GlobalResource.cshtml");
+   dynamic globalResource = ViewContext.HttpContext.Items["GlobalResource"] as dynamic;
+   dynamic commonAll = globalResource["Common"][ViewBag.Lang ?? "zh-TW"] as dynamic;
+   dynamic aboutusAll = globalResource["AboutUs"][ViewBag.Lang ?? "zh-TW"] as dynamic;
 
 }
 
@@ -27,61 +33,135 @@
 <meta name="description"
     content="Beyond Fitness 提供個人客製化運動表現，一對一健身課程,科學健身、專業健身教、營養規劃、增肌減脂、運動表現、體能訓練服務、營養諮詢，運動按摩恢復，銀髮健身、孕婦健身、運動傷害防護，企業團隊健康策略，專業運動教育培訓，與企業健康顧問等服務。" />
 }
+<!--Banner-->
+<section class="section border-0 m-0 p-0 banner container-background">
+   <div class="container pt-5 h-100 handwriting-title">
+      <a href="#main"
+         class="slider-scroll-button slider-scroll-button-light position-absolute bottom-10 left-50pct transform3dx-n50"
+         data-hash="" data-hash-offset="0" data-hash-offset-lg="80">Sroll To Bottom</a>
+   </div>
+</section>
+<!--信念-->
+<section class="section section-no-background section-text-dark py-5" id="main">
+   <div class="row py-5">
+      <div class="col-12 text-center py-5">
+         <h2
+            class="text-color-tertiary font-weight-semi-bold mb-2 positive-ls-5 text-uppercase d-flex justify-content-center">
+            @Html.Raw(aboutusAll.Philosophy)
+         </h2>
+         <span
+            class="text-3-4 font-weight-medium positive-ls-10 d-block d-flex justify-content-center">@Html.Raw(aboutusAll.PhilosophyDesc)</span>
 
-<!-- // Banner -->
-<section class="section-header">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2 text-center">
-                <h1 class="wow fadeInUp animated" data-wow-delay=".3s" data-effect="mfp-zoom-in">@Html.Raw(NamingItem.AboutBannerTitle)</h1>
-                <h2 class="wow fadeInUp animated col-white" data-wow-delay=".3s" data-effect="mfp-zoom-in">@Html.Raw(NamingItem.AboutBannerSubTitle)</h2>
-                <a href="@(Url.Action("BookNow", "MainActivity"))" class="btn btn-default btn-round fadeInUp animated hidden-md-up" data-wow-delay=".6s" data-effect="mfp-zoom-in">@Html.Raw(NamingItem.BookNow)</a>
+         <div class="divider divider-tertiary divider-small divider-small-center divider-xxs py-4 ">
+            <hr class="my-0" style="width: 50px; height: 3px;">
+         </div>
+
+      </div>
+      <div class="col-12 col-xl-5 col-lg-6">
+         <div class="w-xl-75pct w-lg-100pct float-none float-lg-end px-0 px-xl-0 px-lg-5 px-md-5 pe-xl-0 pe-lg-2">
+            <div class="px-0 px-lg-5 px-md-0">
+               <h3 class="font-weight-bold line-height-6 text-center text-lg-start">
+                  @Html.Raw(aboutusAll.PhilosophySlogan)
+               </h3>
+               <p class="px-5 px-lg-0 px-md-5">
+                  @Html.Raw(aboutusAll.PhilosophyMessage1)
+               </p>
+               <p class="px-5 px-lg-0 px-md-5 font-weight-medium text-center text-lg-start">
+                  @Html.Raw(aboutusAll.PhilosophyMessage2)
+               </p>
+               <div class="d-flex justify-content-center justify-content-lg-start justify-content-md-center">
+                  <a href="javascript:bindTrackingCode('null', 'null', '@(Url.Action("BookNow", "Official"))', null)"
+                     class="btn border-color-dark btn-rounded fst-italic font-weight-normal text-2 mt-3">@Html.Raw(commonAll.BookNow)</a>
+               </div>
             </div>
-            <!-- iPhone -->
-            <div class="col-md-8 col-md-offset-2 text-center">
-                <img class="header_iphone wow fadeInUp animated" src="images/landing/banner/banner-about.jpg" alt="私人教練" data-wow-delay=".3s" data-effect="mfp-zoom-in">
-            </div>
-            <!-- //iPhone -->
-        </div>
-    </div>
+         </div>
+      </div>
+      <div class="col-12 col-xl-7 col-lg-6 p-0 align-self-center">
+         <img class="philosophy-img position-relative mt-lg-0 mt-md-5" alt="BeyondFitness|信念"
+            src="images/aboutus/philosophy-lg.png">   
+      </div>
+   </div>
 </section>
-<section class="section-vedio bg-white tall">
-    <div class="container">
-        <div class="row">
-            <h1>@Html.Raw(NamingItem.AboutVedioTitle)</h1>
-            <hr />
-            <div class="col-md-6">
-                <p class="col-dark-grey">@Html.Raw(NamingItem.AboutVedioDesc1)</p>
-                <p class="col-dark-grey">@Html.Raw(NamingItem.AboutVedioDesc2)</p><br />
-                <p class="col-dark-grey">@Html.Raw(NamingItem.AboutVedioDesc3)</p><br />
-                <p class="col-dark-grey">@Html.Raw(NamingItem.AboutVedioDesc4)</p>
+<!--發展脈絡-->
+<section class="section section-no-background section-text-dark  pb-5 pt-0 pt-lg-5 pt-md-0 mb-0 mb-lg-0 mb-md-5">
+   <div class="row pb-5 pt-0 pt-lg-5 pt-md-0 mb-5">
+      <div
+         class="col-12 col-xl-6 col-lg-5 p-0 d-flex align-self-start hidden-sm-down order-2 order-lg-1 order-md-2 pe-0 pe-lg-0 pe-md-5">
+         <img class="business-img appear-animation appear-animation-visible position-relative pe-0 pe-lg-0 pe-md-5 mt-5"
+            alt="BeyondFitness|加入我們" src="images/aboutus/business.png" data-appear-animation="fadeInRightShorter"
+            data-appear-animation-delay="200" data-appear-animation-duration="2.5s">
+
+      </div>
+      <div class="col-12 col-xl-6 col-lg-7 col-md-12 order-1 order-lg-2 order-md-1">
+         <div class="w-xl-75pct w-lg-100pct px-0 px-xl-0 px-lg-5 px-md-5 ps-xl-0 ps-lg-2 ps-md-0">
+            <div class="px-0 px-lg-5 px-md-0">
+               <h2
+                  class="text-color-tertiary font-weight-semi-bold mb-2 positive-ls-5 text-uppercase text-center text-lg-start">
+                  @Html.Raw(aboutusAll.Business)
+               </h2>
+               <span
+                  class="text-3-4 font-weight-medium positive-ls-10 d-block text-center text-lg-start">@Html.Raw(aboutusAll.BusinessDesc)</span>
+               <div class="divider divider-tertiary divider-small divider-xxs py-4 hidden-md-down">
+                  <hr class="my-0" style="width: 50px; height: 3px;">
+               </div>
+               <div class="divider divider-tertiary divider-small divider-small-center divider-xxs py-4 hidden-lg-up">
+                  <hr class="my-0" style="width: 50px; height: 3px;">
+               </div>
+               <h3 class="font-weight-bold line-height-5 text-center text-lg-start">
+                  @Html.Raw(aboutusAll.BusinessSlogan)
+               </h3>
+               <p class="px-5 px-lg-0 px-md-5">
+                  @Html.Raw(aboutusAll.BusinessMessage)
+               </p>
+               <div class="d-flex justify-content-center justify-content-lg-start justify-content-md-center">
+                  <a href="javascript:bindTrackingCode('null', 'null', '@(Url.Action("JoinUs", "Official"))', null)"
+                     class="btn border-color-dark btn-rounded fst-italic font-weight-normal text-2">@Html.Raw(commonAll.JoinUsGo)</a>
+               </div>
             </div>
-            <div class="col-md-6">
-                <div class="wow fadeIn p-t-20" data-wow-delay="0.15s">
-                    <div class="popup-gallery">
-                        <a class="popup-youtube" href="https://www.youtube-nocookie.com/embed/q-XoF1jUM20?autoplay=1" onclick="javascript:bindTrackingCode('影片播放_叔叔溫暖篇')">
-                            <img src="images/landing/video/about-1.jpg" alt="大安區健身">
-                            <span class="eye-wrapper">
-                                <i class="zmdi zmdi-youtube-play"></i>
-                            </span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+
+         </div>
+      </div>
+   </div>
 </section>
-<section class="section-vedio">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12 text-center">
-                <div class="wow fadeIn" data-wow-delay="0.3s">
-                    <h1><i class="fas fa-hands"></i> @Html.Raw(NamingItem.AboutVedioDeclaration1)</h1>
-                    <h1>@Html.Raw(NamingItem.AboutVedioDeclaration2)</h1>
-                </div>
+<!-- // Slogan -->
+@{
+    await Html.RenderPartialAsync("~/Views/MainActivity/Module/ContactItem.cshtml");
+}
+<!--Vision願景-->
+<section class="section bg-color-primary section-text-dark border-0 p-0 mt-0 mb-0 border-0 py-0 py-lg-5 py-md-5">
+   <div class="row pt-5">
+      <div class="col-12 pt-5">
+         <h2
+            class="text-color-tertiary font-weight-semi-bold mb-2 positive-ls-5 text-uppercase d-flex justify-content-center">
+            @Html.Raw(aboutusAll.Vision)
+         </h2>
+         <span class="text-3-4 font-weight-medium positive-ls-10 d-block d-flex justify-content-center">
+            @Html.Raw(aboutusAll.VisionDesc)</span>
+
+
+         <div class="divider divider-tertiary divider-small divider-small-center divider-xxs py-4 ">
+            <hr class="my-0" style="width: 50px; height: 3px;">
+         </div>
+      </div>
+   </div>
+   <div class="row py-0 py-lg-5 py-md-5 px-0 px-lg-5 px-md-5">
+      <div class="col-12 col-lg-6 col-md-12 pb-5">
+         <div class="w-xl-75pct w-lg-100pct w-md-100pct float-none float-lg-end px-0 px-xl-5 px-lg-4 px-md-0">
+            <h3 class="font-weight-bold line-height-5 text-center text-lg-start">
+               @Html.Raw(aboutusAll.VisionSlogan)
+            </h3>
+            <div class="px-5 px-lg-0 px-md-5">
+               @Html.Raw(aboutusAll.VisionMessage)
             </div>
-        </div>
-    </div>
+         </div>
+      </div>
+      <div class="col-12 col-lg-6 col-md-12 text-center yotube container-background">
+         <div class="container container-xl-custom h-100 popup-youtube" style="cursor: pointer;"
+            href="https://www.youtube.com/watch?v=dJj8pUK14HI">
+
+         </div>
+      </div>
+   </div>
 </section>
 
 @section TailPageJavaScriptInclude {

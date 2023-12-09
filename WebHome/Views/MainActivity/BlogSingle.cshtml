@@ -1,30 +1,51 @@
 
-
 @using System.IO
 @using System.Linq.Expressions
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Microsoft.AspNetCore.Http.Extensions
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
 
 @using WebHome.Helper
 @using WebHome.Models.Locale
 @using WebHome.Models.ViewModel
 @using WebHome.Models.DataEntity
 @using WebHome.Controllers
-@using Microsoft.AspNetCore.Mvc.ModelBinding
-@using Microsoft.AspNetCore.Http.Extensions 
-@using Newtonsoft.Json
-
+@using CommonLib.Utility
 @{
     ModelSource<UserProfile> models;
     ModelStateDictionary _modelState;
     BlogArticle _model;
-
-    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
     _modelState = ViewContext.ModelState;
     _model = (BlogArticle)this.Model;
+    Layout = "~/Views/MainActivity/Template/MainPage.cshtml";
+    ViewBag.MainClass = "blog-post";
+    ViewBag.MenuDark = false;
 
-    Layout = "~/Views/MainActivity/Template/BlogPage.cshtml";
+    await Html.RenderPartialAsync("~/Views/MainActivity/Template/GlobalResource.cshtml");
+    JObject globalResource = ViewContext.HttpContext.Items["GlobalResource"] as JObject;
+    JObject findUs = globalResource["FindUs"][ViewBag.Lang ?? "zh-TW"];
 
+    var branch = _model.UserProfile.ServingCoach?.CurrentWorkBranch();
+    var coachItem = ((findUs?["BranchItems"] as JArray)?.Where(b => b.Value<int>("ID") == branch?.BranchID)
+            .FirstOrDefault()?["Coaches"] as JArray)?
+            .Where(c => c.Value<String>("MemberCode") == _model.UserProfile.MemberCode)
+            .FirstOrDefault();
+
+    var availableItems = models.GetTable<BlogArticle>().Where(b => !b.NotAfter.HasValue || b.NotAfter >= DateTime.Today);
+    
+    var coachInfoURL = "";
+    if (coachItem != null){
+        coachInfoURL = Url.Action("CoachDetails", "Official", new
+        {
+            BranchID = (int?)branch.BranchID,
+            MemberCode =
+        (String)_model.UserProfile.MemberCode,
+            NotShowArtical = "NA"
+        });
+    }
 }
-
 @section CustomHeader {
     <!-- og -->
     <meta property="og:title" content="@Html.Raw(_model.Title)" />
@@ -35,15 +56,187 @@
     <meta property="og:description" content="@Html.Raw(_model.Subtitle)" />
     <meta property="fb:app_id" content="1729720864007103" />
 }
+<!--Banner-->
+<section class="section border-0 m-0 p-0 banner container-background pt-5">
+    <div class="container pt-5 h-100">
+        <div class="row align-items-center pt-5 h-100 text-center px-0 px-lg-5 px-md-0">
+            <div class="col-12 py-5 px-0 px-lg-5">                
+                <h2 class="text-color-tertiary font-weight-semi-bold mt-5 mb-2 positive-ls-5 text-uppercase d-flex justify-content-center">
+                    Orange Generation•
+                </h2>
+                <p class="text-color-light text-center positive-ls-10">
+                    <span class="text-color-grey">精選文章/</span>
+                    @{ 
+                        var currentTag = _model.BlogTag.FirstOrDefault();
+                    }
+                    @Html.Raw(currentTag?.BlogCategoryDefinition.Category)
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+<!--文章內文-->
+<section class="section section-no-background border-0 m-0 p-0 pb-5">
+    <div class="container px-0 px-lg-5">
+        <div class="card">
+            @if (_model.Youtube != null)
+            {
+                <a class="text-decoration-none popup-youtube" href="@Html.Raw(_model.Youtube)">
+                    <span class="thumb-info thumb-info-lighten border-radius-0">
+                        <span class="thumb-info-wrapper border-radius-0">
+                            <img class="card-img-top" alt="BeyondFitness|精選文章" src="@($"../BlogContent/Blog/{_model.BlogID}/images/Title.jpg")" />
+                            <span class="thumb-info-title bg-transparent justify-content-center">
+                                <img class="custom-svg-1 icon-animated" width="40" src="images/icons/play-button_f.svg" alt="BeyondFitness|youtube"
+                                     data-icon data-plugin-options="{'color': '#EBD7BF', 'animated': true, 'delay': 600, 'strokeBased': true, 'extraClass': 'player'}" />
+                            </span>
+                        </span>
+                    </span>
+                </a>
+            }
+            else
+            {
+                 <img class="card-img-top" alt="BeyondFitness|精選文章" src="@($"../BlogContent/Blog/{_model.BlogID}/images/Title.jpg")" />	                	                         
+            }
+            <div class="card-body">
+                <h2 class="subject-title">@Html.Raw(_model.Title)</h2>
+                <div class="artical-info">
+                    <span class="author">作者：@Html.Raw(_model.UserProfile.RealName)</span>
+                    <span class="date">@($"{_model.Document.DocDate:yyyy/MM/dd}")</span>
+                </div>
+                <hr class="bg-color-secondary mt-3 mb-4">
 
-<!-- Main Content -->
-<div id="content" />
-<script>
-    $("#content").load("@Html.Raw($"../BlogContent/blog/{_model.BlogID}/content.html")", function (data) {
-        bindTrackingCode('@Html.Raw($"文章_{_model.Title}")');
-    });
-</script>
+                <div id="artical-content">
+                    @{
+                        String blogContent = Startup.MapPath($"~/BlogContent/Blog/{_model.BlogID}/content.html");
+                        if (File.Exists(blogContent))
+                        {
+                            Output.Write(File.ReadAllText(blogContent));
+                        }
+                    }
+                </div>
+
+                <hr class="bg-color-secondary mt-3 mb-4">
+                <div class="row">
+                    <div class="col-12 d-flex align-items-center">
+                        @{
+                            if (coachInfoURL != "") {
+                                <a href="@Html.Raw(coachInfoURL)" class="simple-ajax-popup">
+                                    <img class="img-fluid bg-color-primary rounded-circle"
+                                        src="@(coachItem != null ? $"images/avatars/{coachItem["NameDesc"]}/Cover-xs.png" : "app/icons/icon-192x192.png")"
+                                        alt="BeyondFitness|團隊成員" width="120" />
+                                </a>
+                                <div class="author-info mx-4">
+                                    <span class="jobtitle"> @Html.Raw(branch?.BranchName) @Html.Raw(coachItem?["JobTitle"])</span>
+                                    @* <a href="@Html.Raw(coachInfoURL)" class="text-color-dark simple-ajax-popup"><span
+                                            class="author-name">@Html.Raw(coachItem?["NameDesc"]) <i class="fas fa-angle-right position-relative top-1 ms-1"></i></span></a> *@
+
+                                    <span class="author-name">@Html.Raw(coachItem?["NameDesc"])</span>
+                                    <span class="introduce mt-2 mt-lg-3 mt-md-3">@Html.Raw(coachItem?["SloganDesc"])</span>
+
+                                    <a class="read-more text-color-dark font-weight-semibold text-2 simple-ajax-popup"
+                                        href="@Html.Raw(coachInfoURL)">Read More <i class="fas fa-angle-right position-relative top-1 ms-1"></i></a>
+                                    
+                                </div>
+                            } else {
+                                <img class="img-fluid bg-color-primary rounded-circle"
+                                    src="@(coachItem != null ? $"images/avatars/{coachItem["NameDesc"]}/Cover-xs.png" : "app/icons/icon-192x192.png")"
+                                    alt="BeyondFitness|團隊成員" width="120" />
+                                <div class="author-info mx-4">
+                                    <span class="jobtitle">字海漫遊小編</span>
+                                    <span class="author-name">Beyond Fitness</span>
+                                    <span class="introduce">未來屬於那些相信自己美夢的人</span>
+                                </div>
+                            }
+                        }                                             
+                    </div>
+                </div>
+                <hr class="bg-color-secondary mt-3 mb-4">
+                @{
+                    var moreItems = availableItems
+                        .Where(b => b.DocID != _model.DocID)
+                        .Where(b => b.AuthorID == _model.AuthorID).OrderByDescending(b => b.BlogID)
+                        .Take(3);
+                }
+                @if (moreItems.Any())
+                {
+                    <div class="row">
+                        <div class="col-12">
+                            <h5>延伸閱讀 Related Post</h5>
+                            <ul>
+                                @foreach (var b in moreItems)
+                                {
+                                    <li><a href="@Html.Raw($"{Url.Action("BlogSingle", "Official")}?{(new { b.DocID }).JsonStringify().EncryptKeyNormal().UrlEncodeBase64String()}")" class="text-color-dark">@Html.Raw(b.Title)</a></li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="row mt-5 text-center text-4 px-5">
+            @{
+                IQueryable<BlogTag> tags = models.GetTable<BlogTag>();
+                @* if (currentTag != null)
+                {
+                    tags = tags.Where(b => b.CategoryID == currentTag.CategoryID);
+                } *@
+
+                var blogs = availableItems.Where(a => tags.Any(t => t.DocID == a.DocID));
+
+                var prevItem = blogs.Where(b => String.Compare(b.BlogID, _model.BlogID) < 0).OrderByDescending(b => b.BlogID).FirstOrDefault();
+                var nextItem = blogs.Where(b => String.Compare(b.BlogID, _model.BlogID) > 0).OrderBy(b => b.BlogID).FirstOrDefault();
+
+                if(prevItem == null)
+                {
+                    prevItem = blogs.OrderByDescending(b => b.BlogID).FirstOrDefault();
+                }
+                if(nextItem == null)
+                {
+                    nextItem = blogs.OrderBy(b => b.BlogID).FirstOrDefault();
+                }
+
+            }
+            @if (prevItem != null)
+            {
+                <div class="col-12 col-lg-5 col-md-5" onclick="window.location.href = '@Html.Raw($"{Url.Action("BlogSingle", "Official")}?{(new { prevItem.DocID }).JsonStringify().EncryptKeyNormal().UrlEncodeBase64String()}")';" style="cursor: pointer;">
+                    <div class="row d-flex justify-content-center">
+                        <div class="col-auto">
+                            <i class="fa-solid fa-chevron-left text-color-tertiary"></i>
+                        </div>
+                        <div class="col-10 text-start positive-ls-3">
+                            <span class="text-color-secondary">上一篇</span><span class="text-color-secondary ms-3">Previous Articale</span>
+                            <div class="mt-1">
+                                @Html.Raw(prevItem.Title)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            <div class="col-2 hidden-sm-down">
+                <svg class="mb-4 hidden-sm-down" width="15" height="30%">
+                    <line x1="5" x2="5" y1="1" y2="100%" stroke="#dfd1b7" stroke-width="2"></line>
+                </svg>
+            </div>
+            @if (nextItem != null)
+            {
+                <div class="col-12 col-lg-5 col-md-5 mt-5 mt-lg-0 mt-md-0" onclick="window.location.href = '@Html.Raw($"{Url.Action("BlogSingle", "Official")}?{(new { nextItem.DocID }).JsonStringify().EncryptKeyNormal().UrlEncodeBase64String()}")';" style="cursor: pointer;">
+                    <div class="row d-flex justify-content-center">
+                        <div class="col-10 text-end positive-ls-3 ">
+                            <span class="text-color-secondary">下一篇</span>
+                            <span class="text-color-secondary ms-3">Next Articale</span>
+                            <div class="mt-1">
+                                @Html.Raw(nextItem.Title)
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fa-solid fa-chevron-right text-color-tertiary"></i>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
 
 @section TailPageJavaScriptInclude {
-
 }
