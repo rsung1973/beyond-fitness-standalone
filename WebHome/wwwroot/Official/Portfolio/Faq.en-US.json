@@ -12,7 +12,7 @@
                     "Table": "服務差異表",
                     "TableNote": "※△：少數有",
                     "TableRow1": "Beyond<br />Fitness",
-                    "TableRow1": "其他",
+                    "TableRow2": "其他",
                     "TableColumn1": "國際<br />證照保障",
                     "TableColumn2": "客戶<br />專屬系統",
                     "TableColumn3": "健康<br />部門服務",
@@ -96,13 +96,13 @@
                             "Author": "Sabrina",
                             "Subject": "「我以為的適合，<br/>真的適合我嗎？」",
                             "Content": "我們常常以為某選擇適合自己，但真正的適合不經一番體驗，難以知道是否正確...",
-                            "LinkID": "80847",
+                            "LinkID": "81296",
                         },
                         {
                             "Author": "Bill",
                             "Subject": "能夠看懂你的問題，<br />比解決你的問題更重要！",
                             "Content": "在這個快節奏的世界中，我們常常急於解決困難，卻忽略了真正的需求重要性....",
-                            "LinkID": "80846",
+                            "LinkID": "81297",
                         },
                     ]
                 }

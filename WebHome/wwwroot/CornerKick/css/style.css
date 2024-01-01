@@ -623,17 +623,7 @@ img.responsive-img.nodata {
 	color: rgba(255, 255, 255, .9);
 }
 
-.parallax-container.cover {
-	width: 100%;
-	min-height: 400px;
-	line-height: 0;
-	height: auto;
-	color: rgba(255, 255, 255, .9);
-	background: rgba(26, 26, 26, .2);
-}
-
 .parallax-min {
-	/* min-height: 175px; */
 	min-height: 175px;
 }
 
@@ -1284,16 +1274,6 @@ img.rsImg {
 	background: linear-gradient(#052333, #052333), linear-gradient(to bottom, rgba(255, 255, 255, 0.5), rgba(0, 0, 0, 0.5));
 }
 
-.parallax-container h3 {
-	position: absolute;
-	top: inherit;
-	top: 20px;
-	left: 0;
-	width: 100%;
-	padding: 0 10px;
-	color: #1A1A1A !important;
-}
-
 .parallax-container ul.text-area {
 	position: absolute;
 	top: inherit;
@@ -1460,11 +1440,6 @@ img.rsImg {
 .checkin-wrap form ul li {
 	padding: 20px 30px;
 	border-bottom: 1px solid #eee;
-}
-
-.checkin-wrap form ul li i {
-	display: inline-block;
-	float: right;
 }
 
 .personal-info {
@@ -3613,8 +3588,7 @@ footer.page-footer {
 		margin: -26% 0 0 0;
 	}
 	.parallax-min {
-		/* min-height: 175px; */
-		min-height: 230px;
+		min-height: 175px;
 	}
 	.carousel.carousel-slider .carousel-fixed-item.with-indicators {
 		top: 40%;
