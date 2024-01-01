@@ -1449,56 +1449,12 @@
                     "Content": "位於頂好名店城後方大樓1F/B1"
                 }
             ],
-            "Coaches": [
-                {
-                    "MemberCode": "IN34377928",
-                    "Name": "黃伊涵",
-                    "NameDesc": "Sabrina",
-                    "JobTitle": "經理",
-                    "CoverInfo":[
-                        {
-                            "Shape": "avatar-right.svg",
-                            "NamePosition": "translate(60.31 184.4)",
-                            "JobPosition": "translate(60.31 154.46)",
-                            "ImgXShifting": -60,
-                            "ImgYShifting": -30,
-                        }                        
-                    ],
-                    "Slogan": "The value of life is determined by oneself.",
-                    "SloganDesc": "「我」的價值由我自己決定！",
-                    "Desc": "我相信，溫柔的關懷和細心的傾聽能在人際關係中建立深厚聯繫，讓每個人感受到被重視和支持。",
-                    "License":[
-                        {
-                            "Name": "ACE",
-                        },
-                        {
-                            "Name": "KBC",
-                        },
-                        {
-                            "Name": "EXOS",
-                        },
-                        {
-                            "Name": "PTAG",
-                        }, 
-                        {
-                            "Name": "CPRAED"
-                        }                         
-                    ],
-                    "Sports":[
-                        {
-                            "Name":"dance",
-                        },
-                        {
-                            "Name":"hiking",
-                        }
-                    ],
-                    "Experience": "<ul><li>印尼第二高火山林賈尼火山</li><li>友尚及茂世公司尾牙舞蹈老師</li><li>Lexus Model</li></ul>"                    
-                },
+            "Coaches": [                
                 {
                     "MemberCode": "FL62099639",
                     "Name": "陳詩綺",
                     "NameDesc": "Iron",
-                    "JobTitle": "副理",
+                    "JobTitle": "經理",
                     "CoverInfo":[
                         {
                             "Shape": "avatar-full.svg",
@@ -1568,11 +1524,54 @@
                         }                    
                     ]
                 },
+
+                {
+                    "MemberCode": "BV7219179",
+                    "Name": "劉家瑜",
+                    "NameDesc": "Peter",
+                    "JobTitle": "副理",                                
+                    "CoverInfo":[
+                        {
+                            "Shape": "avatar-right.svg",
+                            "NamePosition": "translate(65.09 184.4)",
+                            "JobPosition": "translate(65.09 154.46)",
+                            "ImgXShifting": -70,
+                            "ImgYShifting": -30,
+                        }     
+
+                    ],
+                    "Slogan": "A crisis can be an opportunity.",
+                    "SloganDesc": "危機就是轉機，你的選擇比努力更重要。",
+                    "Desc": "運動超越運動本身！它是我克服低谷，重拾生活的伙伴。對我來說運動不僅僅只是訓練，而是找到更自信的”我”。",
+                    "License":[
+                        {
+                            "Name": "ACE",
+                        },
+                        {
+                            "Name": "NASM",
+                        },
+                        {
+                            "Name": "EXOS",
+                        }, 
+                        {
+                            "Name": "CPRAED"
+                        }                
+                    ],
+                    "Sports":[
+                        {
+                            "Name":"taekwondo",
+                        },
+                        {
+                            "Name":"weightlifting",
+                        }
+                    ],
+                    "Experience": "<h4>2022</h4><ul><li>Beyond月內訓講師</li><li>Beyond Fitness Responsibility Award 冠軍</li></ul><h4>~2021</h4><ul><li>跆拳道品勢全國賽</li><li>波恩體能顧問私人教練</li></ul>"                                    
+                },
                 {
                     "MemberCode": "KK31237994",
                     "Name": "侯炫竹",
                     "NameDesc": "Ted",
-                    "JobTitle": "培訓經理",
+                    "JobTitle": "私人教練",
                     "CoverInfo":[
                         {
                             "Shape": "avatar-left.svg",
@@ -1660,48 +1659,6 @@
                     "Experience": "<ul><li>保加利亞國際邀請賽-田徑</li><li>俄羅斯奧林匹克青少年-田徑</li><li>游泳教練&救生員</li></ul>"                    
                 },
                 {
-                    "MemberCode": "BV7219179",
-                    "Name": "劉家瑜",
-                    "NameDesc": "Peter",
-                    "JobTitle": "私人教練",                                
-                    "CoverInfo":[
-                        {
-                            "Shape": "avatar-right.svg",
-                            "NamePosition": "translate(65.09 184.4)",
-                            "JobPosition": "translate(65.09 154.46)",
-                            "ImgXShifting": -70,
-                            "ImgYShifting": -30,
-                        }     
-
-                    ],
-                    "Slogan": "A crisis can be an opportunity.",
-                    "SloganDesc": "危機就是轉機，你的選擇比努力更重要。",
-                    "Desc": "運動超越運動本身！它是我克服低谷，重拾生活的伙伴。對我來說運動不僅僅只是訓練，而是找到更自信的”我”。",
-                    "License":[
-                        {
-                            "Name": "ACE",
-                        },
-                        {
-                            "Name": "NASM",
-                        },
-                        {
-                            "Name": "EXOS",
-                        }, 
-                        {
-                            "Name": "CPRAED"
-                        }                
-                    ],
-                    "Sports":[
-                        {
-                            "Name":"taekwondo",
-                        },
-                        {
-                            "Name":"weightlifting",
-                        }
-                    ],
-                    "Experience": "<h4>2022</h4><ul><li>Beyond月內訓講師</li><li>Beyond Fitness Responsibility Award 冠軍</li></ul><h4>~2021</h4><ul><li>跆拳道品勢全國賽</li><li>波恩體能顧問私人教練</li></ul>"                                    
-                },
-                {
                     "MemberCode": "HT51228765",
                     "Name": "林雅婷",
                     "NameDesc": "Arika",
@@ -1724,7 +1681,10 @@
                         },
                         {
                             "Name": "TRX",
-                        },                   
+                        }, 
+                        {
+                            "Name": "CPRAED"
+                        }                   
                     ],
                     "Sports":[
                         {
@@ -1919,63 +1879,48 @@
             ],
             "Coaches": [
                 {
-                    "MemberCode": "UA66087177",
-                    "Name": "蔡雅欣",                    
-                    "NameDesc": "Sammie",
+                    "MemberCode": "IN34377928",
+                    "Name": "黃伊涵",
+                    "NameDesc": "Sabrina",
                     "JobTitle": "經理",
                     "CoverInfo":[
                         {
                             "Shape": "avatar-right.svg",
-                            "NamePosition": "translate(242.31 184.4)",
-                            "JobPosition": "translate(242.31 154.46)",
-                            "ImgXShifting": -90,
-                            "ImgYShifting": -40,
+                            "NamePosition": "translate(60.31 184.4)",
+                            "JobPosition": "translate(60.31 154.46)",
+                            "ImgXShifting": -60,
+                            "ImgYShifting": -30,
                         }                        
                     ],
-                    "Slogan": "Be the change that you wish to see in the world.",
-                    "SloganDesc": "Be the change that you wish to see in the world.",
-                    "Desc": "總是尋找新的挑戰，並樂於嘗試各種不同的運動，同時透過熱情感染著身邊的人，並激勵著大家一同參與冒險和運動。",
+                    "Slogan": "The value of life is determined by oneself.",
+                    "SloganDesc": "「我」的價值由我自己決定！",
+                    "Desc": "我相信，溫柔的關懷和細心的傾聽能在人際關係中建立深厚聯繫，讓每個人感受到被重視和支持。",
                     "License":[
                         {
                             "Name": "ACE",
                         },
                         {
-                            "Name": "TRX",
+                            "Name": "KBC",
                         },
                         {
                             "Name": "EXOS",
-                        }, 
-                        {
-                            "Name": "CrossFit",
                         },
                         {
                             "Name": "PTAG",
-                        },
-                        {
-                            "Name": "Z-TSCA",
                         }, 
-                        {
-                            "Name": "PADI",
-                        },
                         {
                             "Name": "CPRAED"
                         }                         
                     ],
                     "Sports":[
                         {
-                            "Name":"swimming",
+                            "Name":"dance",
                         },
                         {
-                            "Name":"basketball",
-                        },
-                        {
-                            "Name":"badminton",
-                        },
-                        {
-                            "Name":"handstand",
+                            "Name":"hiking",
                         }
                     ],
-                    "Experience": "<h4>2023</h4><ul><li>Challenge Taiwan 51.5KM</li><li>百岳攀登 #雪山主峰 #雪山東峰</li><li>Beyond 新人培訓 教官</li><li>Beyond 月內訓 講師</li></ul><h4>2022</h4><ul><li>一日北高360 挑戰賽</li>"                    
+                    "Experience": "<ul><li>印尼第二高火山林賈尼火山</li><li>友尚及茂世公司尾牙舞蹈老師</li><li>Lexus Model</li></ul>"                    
                 },
                 {
                     "MemberCode": "UX92868239",
@@ -2155,7 +2100,7 @@
                             "NameColor": "text-color-secondary",
                             "BriefInfo": "於2021年加入Beyond<br>就讀輔大體育系，曾擔任游泳教練、Beyond月內訓講師，現擔任Beyond Fitness私人教練",
                             "TalkSlogan": "點燃熱情的魔法秘訣",
-                            "TalkMessage": "Tanya說自己成為教練的初心，是因為阿嬤。但卻因此在這份職涯裡，與學生互動所產生的連結，為自己找到了想投注的熱情與動力。<br/><br/>如何讓工作中的熱情與動力，能夠源源不絕。Tanya有一套自己的魔法說。不仿一起來看看Tany的秘訣是什麼吧！",
+                            "TalkMessage": "Tanya說自己成為教練的初心，是因為阿嬤。但卻因此在這份職涯裡，與學生互動所產生的連結，為自己找到了想投注的熱情與動力。<br/><br/>如何讓工作中的熱情與動力，能夠源源不絕。Tanya有一套自己的魔法說。不仿一起來看看Tanya的秘訣是什麼吧！",
                             "Interviews":[
                                 {
                                     "Question":"是什麼原因讓你想要追求成為私人教練？",
@@ -2436,7 +2381,7 @@
                         }
 
                     ],
-                    "Experience": "<ul><li>Beyond X Lulu Lemon 品牌合作跑步恢復講堂講師</li></ul>"           
+                    "Experience": "<ul><li>Beyond X Lulu Lemon 品牌合作跑步恢復講堂講師</li></ul>"                    
                 },
                 {
                     "MemberCode": "XJ27703577",
@@ -2476,6 +2421,66 @@
 
                     ],
                     "Experience": "<ul><li>2021 Challenge Taiwan 113接力 跑步21K</li><li>2019 北濱 75K</li></ul>"                    
+                },
+
+                {
+                    "MemberCode": "UA66087177",
+                    "Name": "蔡雅欣",                    
+                    "NameDesc": "Sammie",
+                    "JobTitle": "",
+                    "CoverInfo":[
+                        {
+                            "Shape": "avatar-right.svg",
+                            "NamePosition": "translate(242.31 184.4)",
+                            "JobPosition": "translate(242.31 154.46)",
+                            "ImgXShifting": -90,
+                            "ImgYShifting": -40,
+                        }                        
+                    ],
+                    "Slogan": "Be the change that you wish to see in the world.",
+                    "SloganDesc": "Be the change that you wish to see in the world.",
+                    "Desc": "總是尋找新的挑戰，並樂於嘗試各種不同的運動，同時透過熱情感染著身邊的人，並激勵著大家一同參與冒險和運動。",
+                    "License":[
+                        {
+                            "Name": "ACE",
+                        },
+                        {
+                            "Name": "TRX",
+                        },
+                        {
+                            "Name": "EXOS",
+                        }, 
+                        {
+                            "Name": "CrossFit",
+                        },
+                        {
+                            "Name": "PTAG",
+                        },
+                        {
+                            "Name": "Z-TSCA",
+                        }, 
+                        {
+                            "Name": "PADI",
+                        },
+                        {
+                            "Name": "CPRAED"
+                        }                         
+                    ],
+                    "Sports":[
+                        {
+                            "Name":"swimming",
+                        },
+                        {
+                            "Name":"basketball",
+                        },
+                        {
+                            "Name":"badminton",
+                        },
+                        {
+                            "Name":"handstand",
+                        }
+                    ],
+                    "Experience": "<h4>2023</h4><ul><li>Challenge Taiwan 51.5KM</li><li>百岳攀登 #雪山主峰 #雪山東峰</li><li>Beyond 新人培訓 教官</li><li>Beyond 月內訓 講師</li></ul><h4>2022</h4><ul><li>一日北高360 挑戰賽</li>"                    
                 },
             ]
         }

@@ -1,6 +1,7 @@
 /**Theme-Nero #1A1A1A */
 body.theme-nero {
-    background-color: #191f28;
+    /* background-color: #191f28; */
+    background-color: #1a1a1a;
     font-family: "Ubuntu", sans-serif;
     font-size: 14px;
     color: #999
@@ -39,7 +40,8 @@ body.theme-nero {
 */
 
 .theme-nero .table-custom.table th {
-    background-color: black;
+    background-color: #1A1A1A;
+    color: #EBD7B4;
 }
 
 .theme-nero .card.white .table-custom.table tbody tr:hover {
@@ -55,7 +57,8 @@ body.theme-nero {
 }
 
 .theme-nero .table thead th {
-    border-bottom-color: #111111
+    /* border-bottom-color: #111111 */
+    border-bottom-color: #000000
 }
 
 .theme-nero table.DTFC_Cloned th {
@@ -64,7 +67,8 @@ body.theme-nero {
 
 .theme-nero .table td,
 .table th {
-    border-top: 1px solid #111111;
+    /* border-top: 1px solid #111111; */
+    border-top: 1px solid #000000;
 }
 
 .theme-nero .card.white .table td,
@@ -78,13 +82,15 @@ body.theme-nero {
 }
 
 .theme-nero table.DTFC_Cloned tr {
-    background-color: rgba(25, 29, 37, .97);
-    color: white;
+    background-color: rgba(26, 26, 26, .97);
+    color: white;   
 }
 
 .theme-nero .btn-darkteal {
-    background-color: #1A1A1A;
-    color: white;
+    /* background-color: #1A1A1A; */
+    background-color: #282828;
+    /* color: white; */
+    color: #ECE8E2;
 }
 
 .theme-nero .btn-darkteal.disabled,
@@ -111,17 +117,21 @@ body.theme-nero {
 .theme-nero fieldset[disabled] .btn-darkteal.focus,
 .theme-nero fieldset[disabled] .btn-darkteal:active,
 .theme-nero fieldset[disabled] .btn-darkteal.active {
-    background-color: #1A1A1A;
+    /* background-color: #1A1A1A; */
+    background-color: #282828;
     border-color: #1A1A1A
 }
 
 .theme-nero .btn-darkteal.btn-simple {
-    color: #1A1A1A;
+    /* color: #1A1A1A;
+    border-color: #1A1A1A */
+    color: #282828;
     border-color: #1A1A1A
 }
 
 .theme-nero .btn-darkteal.btn-link {
-    color: #1A1A1A
+    /* color: #1A1A1A */
+    color: #282828
 }
 
 
@@ -406,7 +416,8 @@ body.theme-nero {
 * 行事曆預約上課Mail_List清單
 */
 .theme-nero .inbox .mail_list .list-group-item {
-    background: #1c222c;
+    /* background: #1c222c; */
+    background: #282828;
     border-bottom: 1px solid #1A1A1A;
     border-top: 1px solid #373b41;
 }
@@ -478,7 +489,9 @@ body.theme-nero {
 .theme-nero .pagination.pagination-darkteal .page-item.active > .page-link,
 .theme-nero .pagination.pagination-darkteal .page-item.active > .page-link:focus,
 .theme-nero .pagination.pagination-darkteal .page-item.active > .page-link:hover {
-    background-color: #1A1A1A;
+    /* background-color: #1A1A1A;
+    border-color: #1A1A1A */
+    background-color: #282828;
     border-color: #1A1A1A
 }
 
@@ -560,7 +573,8 @@ body.theme-nero {
 }
 
 .theme-nero .navbar-nav .dropdown-menu:before {
-    color: #191f28;
+    /* color: #191f28; */
+    color: #1a1a1a
 }
 
 .theme-nero .navbar-nav .dropdown-menu {
@@ -572,7 +586,8 @@ body.theme-nero {
     position: absolute;
     right: 0;
     left: auto;
-    border: 1px solid #191f28;
+    /* border: 1px solid #191f28; */
+    border: 1px solid #1a1a1a;
     border-radius: .55rem;
 }
 
@@ -584,7 +599,8 @@ body.theme-nero {
 * 側邊Menu
 */
 .theme-nero .sidebar {
-    background: #191f28;
+    /* background: #191f28; */
+    background: #282828;
 }
 
 .theme-nero .sidebar .menu .list a:hover {
@@ -634,31 +650,37 @@ body.theme-nero {
 }
 
 .theme-nero .navbar {
-    background: #191f28;
+    /* background: #191f28; */
+    background: #282828;
 }
 
 .theme-nero .block-header .breadcrumb a {
-    color: #1A1A1A;
+    /* color: #1A1A1A; */
+    color: #282828;
 }
 
 .theme-nero .bg-grey {
-    color: #1A1A1A
+    /* color: #1A1A1A */
+    color: #282828
 }
 
 .theme-nero .bg-grey .content .text,
 .theme-nero .bg-grey .content .number {
-    color: #1A1A1A !important
+    /* color: #1A1A1A !important */
+    color: #282828 !important
 }
 
 .theme-nero .bg-darkteal {
-       background: linear-gradient(rgb(26, 26, 26), rgb(26, 26, 26)), linear-gradient(to bottom, rgba(255, 255, 255, 0.5), rgba(0, 0, 0, 0.5)) !important;
+       /* background: linear-gradient(rgb(26, 26, 26), rgb(26, 26, 26)), linear-gradient(to bottom, rgba(255, 255, 255, 0.5), rgba(0, 0, 0, 0.5)) !important; */
+    background: linear-gradient(rgb(40, 40, 40), rgb(40, 40, 40)), linear-gradient(to bottom, rgba(255, 255, 255, 0.5), rgba(0, 0, 0, 0.5)) !important;
     /* background: rgb(26, 26, 26) !important; */
     /* background: #1A1A1A !important; */
     color: darkgray;
 }
 
 .theme-nero .col-darkteal {
-    color: #1A1A1A !important
+    /* color: #1A1A1A !important */
+    color: #282828 !important
 }
 
 .theme-nero .col-tiffany {
@@ -671,11 +693,13 @@ body.theme-nero {
 }
 
 .theme-nero .card .bg-grey small {
-    color: #1A1A1A !important
+    /* color: #1A1A1A !important */
+    color: #282828 !important
 }
 
 .theme-nero .card .header .header-dropdown li .dropdown-menu {
-    background: #17191c;
+    /* background: #17191c; */
+    background: #1A1A1A;
 }
 
 .theme-nero .card .header .header-dropdown li .dropdown-menu li a {
@@ -709,15 +733,18 @@ body.theme-nero {
 }
 
 .theme-nero .chat-widget li.right .chat-info {
-    background: #191f28;
+    /* background: #191f28; */
+    background: #282828;
 }
 
 .theme-nero .chat-widget li.right .chat-info:before {
-    border-left-color: #191f28;
+    /* border-left-color: #191f28; */
+    border-left-color: #1A1A1A;
 }
 
 .theme-nero .sr-only {
-    color: #1A1A1A;
+    /* color: #1A1A1A; */
+    color: #282828;
 }
 
 /**
@@ -728,7 +755,8 @@ body.theme-nero {
 }
 
 .theme-nero .page-calendar .event-name:hover {
-    background: #1A1A1A;
+    /* background: #1A1A1A; */
+    background: #282828;
 }
 
 .theme-nero .page-calendar .event-name h6 address {
@@ -740,37 +768,43 @@ body.theme-nero {
 }
 
 .theme-nero .page-calendar .b-PT {
-    background: #191f28;
+    /* background: #191f28; */
+    background: #282828;
     /* border-left: 10px solid #F5A623 !important */
     border-left: 10px solid #fad79e !important;
 }
 
 .theme-nero .page-calendar .b-PI {
-    background: #191f28;
+    /* background: #191f28; */
+    background: #282828;
     /* border-left: 10px solid #7ED321 !important */
     border-left: 10px solid #cdf1a7 !important
 }
 
 .theme-nero .page-calendar .b-ST {
-    background: #191f28;
+    /* background: #191f28; */
+    background: #282828;
     /* border-left: 10px solid #464147 !important */
     border-left: 10px solid #eaa0f8 !important
 }
 
 .theme-nero .page-calendar .b-CoachPI {
-    background: #191f28;
+    /* background: #191f28; */
+    background: #282828;
     /* border-left: 10px solid #c47b3b !important */
     border-left: 10px solid #623d1d !important
 }
 
 .theme-nero .page-calendar .b-PE {
-    background: #191f28;
+    /* background: #191f28; */
+    background: #282828;
     /* border-left: 10px solid #F00A68 !important */
     border-left: 10px solid #fb9dc4 !important
 }
 
 .theme-nero .page-calendar .b-custom {
-    background: #191f28;
+    /* background: #191f28; */
+    background: #282828;
     /* border-left: 10px solid #4A90E2 !important */
     border-left: 10px solid #a7caf1 !important
 }
@@ -781,7 +815,8 @@ body.theme-nero {
 }
 
 .theme-nero .page-calendar .b-approve {
-    background: #191f28;
+    /* background: #191f28; */
+    background: #282828;
     border-left: 10px solid #fff !important;
     opacity: .8;
 }
@@ -877,7 +912,9 @@ body.theme-nero {
 }
 
 .theme-nero .leaner_profile_state {
-    background: #1c222c;
+    /* background: #1c222c; */
+    background: #1A1A1A;
+    
 }
 
 .theme-nero .profile_state li:hover {
@@ -906,14 +943,15 @@ body.theme-nero {
 * 全系統卡片
 */
 .theme-nero .card {
-    background: #1c222c;
+    /* background: #1c222c; */
+    background: #282828;
     transition: .5s;
     border: 0;
     margin-bottom: 0px;
     border-radius: .55rem;
     position: relative;
     width: 100%;
-    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .theme-nero .card.square {
@@ -957,11 +995,13 @@ body.theme-nero {
 * 任意門數字資訊卡
 */
 .theme-nero .card .top_counter {
-    background: #1c222c;
+    /* background: #1c222c; */
+    background: #1a1a1a;
 }
 
 .theme-nero .top_counter .icon {
-    background: #1A1A1A;
+    /* background: #1A1A1A; */
+    background: #282828;
 }
 
 /**
@@ -1033,7 +1073,8 @@ body.theme-nero {
 
 .theme-nero .c3 svg {
     font: 12px sans-serif;
-    background: #1c222c;
+    /* background: #1c222c; */
+    background: #282828;
     border-radius: 0px;
 }
 
@@ -1154,7 +1195,8 @@ body.theme-nero {
 .theme-nero .rsDefault .rsSlide,
 .theme-nero .rsDefault .rsVideoFrameHolder,
 .theme-nero .rsDefault .rsThumbs {
-    background: #1c222c;
+    /* background: #1c222c; */
+    background: #282828;
 }
 
 /**
@@ -1167,7 +1209,8 @@ body.theme-nero {
 }
 
 .theme-nero .modal-content .modal-header {
-    background: #1c222c;
+    /* background: #1c222c; */
+    background: #282828;
 }
 
 .theme-nero .modal-content .modal-popmenu-body {
@@ -1203,7 +1246,8 @@ body.theme-nero {
     z-index: 102;
     width: 28px;
     height: 25px;
-    background: #1c222c url(../images/icon_close.png) no-repeat 6px 4px;
+    /* background: #1c222c url(../images/icon_close.png) no-repeat 6px 4px; */
+    background: #282828 url(../images/icon_close.png) no-repeat 6px 4px;
     background-size: 15px;
     border-radius: 0 0 3px 3px;
 }
@@ -1307,8 +1351,10 @@ body.theme-nero {
 */
 
 .theme-nero .product_item {
-    background-color: #1A1A1A;
-    border: 2px solid #111111;
+    /* background-color: #1A1A1A; */
+    background-color: #282828;
+    border: 1px solid #1a1a1a;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     margin-bottom: 30px;
 }
 
@@ -1321,7 +1367,8 @@ body.theme-nero {
 ** panel-group
 */
 .theme-nero .panel-group .panel-primary .panel-title {
-    background: #1c222c;
+    /* background: #1c222c; */
+    background: #282828;
     border-bottom: 1px solid #1A1A1A;
     border-top: 1px solid #373b41;
     color: #888;
@@ -1418,4 +1465,26 @@ body.theme-nero {
 
 .theme-nero .blog-page .single_post h3 a {
     color: white;
+}
+
+.theme-nero .col-green {
+    color: #C4B45E !important;
+}
+
+.theme-nero .col-pink {
+    color: #E76751 !important;
+}
+
+.theme-nero .col-blue {
+    color: #8DA4CF !important;
+}
+
+.theme-nero .btn-primary {
+    background-color: #8DA4CF;
+    color: #fff;
+}
+
+.theme-nero .widget_3 h2,
+.theme-nero .widget_2 h2 {
+    color: #EBD7B4;
 }
