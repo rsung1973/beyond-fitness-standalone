@@ -126,11 +126,8 @@ namespace WebHome.Helper
                             q => q.QuestionID, t => t.QuestionID, (q, t) => q);
         }
 
-
         public static PDQQuestion PromptLearnerDailyQuestion(this GenericManager<BFDataContext> models, UserProfile profile)
-                    
         {
-
             if (models.GetTable<PDQTask>().Any(t => t.UID == profile.UID
                  && t.TaskDate >= DateTime.Today && t.TaskDate < DateTime.Today.AddDays(1)
                  && t.PDQQuestion.GroupID == 6))
@@ -138,21 +135,44 @@ namespace WebHome.Helper
                 return null;
             }
 
-            if (models.GetTable<PDQTask>().Count(t => t.UID == profile.UID && t.PDQQuestion.GroupID == 6) >=
-                models.GetTable<RegisterLesson>()
-                    .Where(r => r.UID == profile.UID)
-                    .Where(r => r.LessonPriceType.Status != (int)Naming.LessonPriceStatus.在家訓練)
-                    .Where(r => r.LessonPriceType.Status != (int)Naming.LessonPriceStatus.教練PI)
-                    .Where(r => r.LessonPriceType.Status != (int)Naming.LessonPriceStatus.點數兌換課程)
-                    .Join(models.GetTable<GroupingLesson>(), r => r.RegisterGroupID, g => g.GroupID, (r, g) => g)
-                    .Join(models.GetTable<LessonTime>(), g => g.GroupID, l => l.GroupID, (g, l) => l)
-                    .Where(l => l.LessonPlan.CommitAttendance.HasValue || l.LessonAttendance != null).Count())
+            var promptItems = models.GetTable<PromptLessonQuestion>()
+                .Where(p => !p.TaskID.HasValue)
+                .Where(t => t.UID == profile.UID);
+
+            if (!promptItems.Any())
             {
                 return null;
             }
 
+            bool hasPrompt = false;
+            foreach (var promptItem in promptItems)
+            {
+                if (!models.GetTable<PromptLessonRequirement>().Any(p => p.PriceID == promptItem.LessonTime.RegisterLesson.ClassLevel))
+                {
+                    hasPrompt = true;
+                    break;
+                }
+            }
+
+            if (!hasPrompt)
+            {
+                var groupItems = promptItems.GroupBy(l => l.LessonTime.RegisterLesson.LessonPriceType.PromptLessonRequirement);
+                foreach (var g in groupItems)
+                {
+                    if (g.Count() >= g.Key.RequiredCount)
+                    {
+                        hasPrompt = true;
+                        break;
+                    }
+                }
+                if (!hasPrompt)
+                {
+                    return null;
+                }
+            }
+
             IQueryable<PDQQuestion> questItems = models.PromptDailyQuestion()
-                .Join(models.GetTable<UserProfile>().Where(u => u.LevelID == (int)Naming.MemberStatusDefinition.Checked), 
+                .Join(models.GetTable<UserProfile>().Where(u => u.LevelID == (int)Naming.MemberStatusDefinition.Checked),
                     q => q.AskerID, u => u.UID, (q, u) => q);
             int[] items = questItems
                 .Select(q => q.QuestionID)
@@ -169,6 +189,49 @@ namespace WebHome.Helper
             var item = models.GetTable<PDQQuestion>().Where(q => q.QuestionID == profile.DailyQuestionID).FirstOrDefault();
             return item;
         }
+
+        //public static PDQQuestion PromptLearnerDailyQuestion(this GenericManager<BFDataContext> models, UserProfile profile)
+
+        //{
+
+        //    if (models.GetTable<PDQTask>().Any(t => t.UID == profile.UID
+        //         && t.TaskDate >= DateTime.Today && t.TaskDate < DateTime.Today.AddDays(1)
+        //         && t.PDQQuestion.GroupID == 6))
+        //    {
+        //        return null;
+        //    }
+
+        //    if (models.GetTable<PDQTask>().Count(t => t.UID == profile.UID && t.PDQQuestion.GroupID == 6) >=
+        //        models.GetTable<RegisterLesson>()
+        //            .Where(r => r.UID == profile.UID)
+        //            .Where(r => r.LessonPriceType.Status != (int)Naming.LessonPriceStatus.在家訓練)
+        //            .Where(r => r.LessonPriceType.Status != (int)Naming.LessonPriceStatus.教練PI)
+        //            .Where(r => r.LessonPriceType.Status != (int)Naming.LessonPriceStatus.點數兌換課程)
+        //            .Join(models.GetTable<GroupingLesson>(), r => r.RegisterGroupID, g => g.GroupID, (r, g) => g)
+        //            .Join(models.GetTable<LessonTime>(), g => g.GroupID, l => l.GroupID, (g, l) => l)
+        //            .Where(l => l.LessonPlan.CommitAttendance.HasValue || l.LessonAttendance != null).Count())
+        //    {
+        //        return null;
+        //    }
+
+        //    IQueryable<PDQQuestion> questItems = models.PromptDailyQuestion()
+        //        .Join(models.GetTable<UserProfile>().Where(u => u.LevelID == (int)Naming.MemberStatusDefinition.Checked), 
+        //            q => q.AskerID, u => u.UID, (q, u) => q);
+        //    int[] items = questItems
+        //        .Select(q => q.QuestionID)
+        //        .Where(q => !models.GetTable<PDQTask>().Where(t => t.UID == profile.UID).Select(t => t.QuestionID).Contains(q)).ToArray();
+
+        //    if (items.Length == 0)
+        //    {
+        //        items = questItems
+        //        .Select(q => q.QuestionID).ToArray();
+        //    }
+
+        //    profile.DailyQuestionID = items[DateTime.Now.Ticks % items.Length];
+
+        //    var item = models.GetTable<PDQQuestion>().Where(q => q.QuestionID == profile.DailyQuestionID).FirstOrDefault();
+        //    return item;
+        //}
 
         //public static IQueryable<CourseContract> PromptContract(this GenericManager<BFDataContext> models)
         //    
@@ -436,6 +499,31 @@ namespace WebHome.Helper
             return item;
 
         }
+
+        public static int RemainedLearnerDailyQuestionCount(this GenericManager<BFDataContext> models, UserProfile profile)
+        {
+            int count = 0;
+            var promptItems = models.GetTable<PromptLessonQuestion>()
+                .Where(p => !p.TaskID.HasValue)
+                .Where(t => t.UID == profile.UID);
+
+            var groupItems = promptItems.GroupBy(l => l.LessonTime.RegisterLesson.ClassLevel);
+            foreach (var g in groupItems)
+            {
+                var require = models.GetTable<LessonPriceType>().Where(p => p.PriceID == g.Key)
+                                    .First().PromptLessonRequirement;
+                if (require?.RequiredCount > 0)
+                {
+                    count += (g.Count() / require.RequiredCount.Value);
+                }
+                else
+                {
+                    count += g.Count();
+                }
+            }
+            return count;
+        }
+
     }
-    
+
 }

@@ -183,7 +183,7 @@
                                                 @{
                                                    if (!String.IsNullOrEmpty((String)content1[i].Link)) 
                                                    {
-                                                      <a href="javascript:bindTrackingCode('null', 'null', '@(Url.Action($"{content1[i].Link}", "Official"))', null)" class="read-more text-color-dark font-weight-semibold text-2 fst-italic float float-end my-3 mx-4">Read More <i
+                                                      <a href="@(Url.Action($"{content1[i].Link}", "Official"))" class="read-more text-color-dark font-weight-semibold text-2 fst-italic float float-end my-3 mx-4">Read More <i
 																         class="fas fa-angle-right position-relative top-1 ms-1"></i></a>
                                                    }
                                                 }
@@ -318,11 +318,11 @@
                                     @{
                                        if (!String.IsNullOrEmpty((String)content3[i].Link)) {
                                           if ((String) content3[i].LinkType == "URL") {
-                                             <br/><a class="btn btn-default btn-rounded fst-italic positive-ls-3 mt-3" href="javascript:bindTrackingCode('null', 'null', '@(Url.Action($"{content3[i].Link}", "Official"))', null)">@Html.Raw(content3[i].LinkName)</a>
+                                             <br/><a class="btn btn-default btn-rounded fst-italic positive-ls-3 mt-3" href="javascript:gotoPage('@Url.Action($"{content3[i].Link}", "Official")', null)">@Html.Raw(content3[i].LinkName)</a>
                                           } else if ((String) content3[i].LinkType == "IMG") {
                                              <br/><a class="btn btn-default btn-rounded fst-italic positive-ls-3 mt-3 lightbox" href="@Html.Raw(content3[i].Link)" data-plugin-options="{'type':'image'}">@Html.Raw(content3[i].LinkName)</a>
                                           } else {
-                                             <br/><a class="btn btn-default btn-rounded fst-italic positive-ls-3 mt-3" href="@Html.Raw(content3[i].Link)" target="_blank">@Html.Raw(content3[i].LinkName)</a>
+                                             <br/><a class="btn btn-default btn-rounded fst-italic positive-ls-3 mt-3" href="javascript:gotoPage('@Url.Action($"{content3[i].Link}", "Official")', '_blank')">@Html.Raw(content3[i].LinkName)</a>
                                           }                                                      
                                        }
                                     }  
@@ -347,7 +347,7 @@
                 <h2 class="pt-3 mb-4 custom-font-secondary fst-italic font-weight-bold">@Html.Raw(commonAll.Slogan)</h2>
                 <h3 class="mb-5 font-weight-bold" data-plugin-animated-letters
                     data-plugin-options="{'startDelay': 1500, 'minWindowWidth': 0, 'animationSpeed': 50}">@Html.Raw(commonAll.SloganDesc)</h3>
-                <a href="javascript:bindTrackingCode('null', 'null', '@(Url.Action("BookNow", "Official"))', null)"
+                <a href="@(Url.Action("BookNow", "Official"))"
                     class="btn btn-3d bg-color-light text-color-dark btn-rounded fst-italic positive-ls-3">@Html.Raw(commonAll.BookNow)</a>
             </div>
         </div>

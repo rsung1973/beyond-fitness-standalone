@@ -133,6 +133,7 @@ namespace WebHome.Models.ViewModel
         public bool? IncludeTotalUnpaid { get; set; }
         public int? AlarmCount { get; set; }
         public bool? BypassCondition { get; set; }
+        public Naming.SessionTypeDefinition? SessionType { get; set; }
     }
 
 

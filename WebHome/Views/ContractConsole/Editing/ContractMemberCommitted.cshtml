@@ -1,4 +1,4 @@
-
+ï»¿
 @using System.IO
 @using System.Linq.Expressions
 
@@ -19,7 +19,7 @@
     _viewModel = (ContractMemberViewModel)ViewBag.ViewModel;
     var renewal = models.GetTable<CourseContractMember>()
         .Where(m => models.GetTable<CourseContract>()
-                        .Where(c => c.Status >= (int)Naming.CourseContractStatus.¤w¥Í®Ä)
+                        .Where(c => c.Status >= (int)Naming.CourseContractStatus.å·²ç”Ÿæ•ˆ)
                         .Any(c => m.ContractID == c.ContractID))
         .Any(m => m.UID == _viewModel.OwnerID);
 }

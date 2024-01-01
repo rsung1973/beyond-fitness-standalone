@@ -91,6 +91,22 @@ namespace WebHome.Helper
                 }
             }
 
+            //if (lesson.LessonPriceType.Status != (int)Naming.LessonPriceStatus.在家訓練
+            //        && lesson.LessonPriceType.Status != (int)Naming.LessonPriceStatus.教練PI
+            //        && lesson.LessonPriceType.Status != (int)Naming.LessonPriceStatus.點數兌換課程)
+            //{
+            //    if (!models.GetTable<PromptLessonQuestion>().Any(p => p.LessonID == item.LessonID))
+            //    {
+            //        models.GetTable<PromptLessonQuestion>().InsertAllOnSubmit(item.GroupingLesson.RegisterLesson
+            //            .Select(r => new PromptLessonQuestion
+            //            {
+            //                LessonID = item.LessonID,
+            //                UID = r.UID
+            //            }));
+
+            //        models.SubmitChanges();
+            //    }
+            //}
         }
 
         //public static void CheckLearnerQuestionnaireRequest(this GenericManager<BFDataContext> models, RegisterLesson item)

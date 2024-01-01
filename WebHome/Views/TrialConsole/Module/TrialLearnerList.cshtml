@@ -37,9 +37,9 @@
         @foreach (var item in _model)
         {
             <tr onclick="processTrial('@Html.Raw(item.UID.EncryptKey())');">
-                <td>@Html.Raw(item.SubmitDate)</td>
+                <td>@Html.Raw($"{item.SubmitDate:yyyy/MM/dd HH:mm:ss}")</td>
                 <td>@Html.Raw(item.UserName)</td>
-                <td>@Html.Raw(item.Gender)</td>
+                <td>@Html.Raw(item.Gender == "F" ? "女" : "男")</td>
                 <td>@(item.Status.HasValue 
                         ? $"{(TrialLearner.TrialStatusDefinition)item.Status}"
                         : "未分派")</td>

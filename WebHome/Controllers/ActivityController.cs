@@ -290,57 +290,57 @@ namespace WebHome.Controllers
             return View("~/Views/Shared/JsAlert.cshtml", model: "問與答資料錯誤!!");
         }
 
-        public async Task<ActionResult> AnswerDailyQuestion(DailyQuestionViewModel viewModel)
-        {
+        //public async Task<ActionResult> AnswerDailyQuestion(DailyQuestionViewModel viewModel)
+        //{
 
-            ViewBag.ViewModel = viewModel;
-            var profile = await HttpContext.GetUserAsync();
+        //    ViewBag.ViewModel = viewModel;
+        //    var profile = await HttpContext.GetUserAsync();
 
-            var item = models.GetTable<PDQQuestion>().Where(q => q.QuestionID == viewModel.QuestionID).FirstOrDefault();
-            if (item == null)
-            {
-                return Json(new { result = false, message = "回答題目錯誤！！" });
-            }
+        //    var item = models.GetTable<PDQQuestion>().Where(q => q.QuestionID == viewModel.QuestionID).FirstOrDefault();
+        //    if (item == null)
+        //    {
+        //        return Json(new { result = false, message = "回答題目錯誤！！" });
+        //    }
 
-            if (models.GetTable<PDQTask>().Any(t => t.UID == profile.UID
-                 && t.TaskDate >= DateTime.Today && t.TaskDate < DateTime.Today.AddDays(1)
-                 && t.PDQQuestion.GroupID == 6))
-            {
-                return Json(new { result = false, message = "很抱歉，您今日已答過題嘍！！" });
-            }
+        //    if (models.GetTable<PDQTask>().Any(t => t.UID == profile.UID
+        //         && t.TaskDate >= DateTime.Today && t.TaskDate < DateTime.Today.AddDays(1)
+        //         && t.PDQQuestion.GroupID == 6))
+        //    {
+        //        return Json(new { result = false, message = "很抱歉，您今日已答過題嘍！！" });
+        //    }
 
-            if(String.IsNullOrEmpty(viewModel.Question) || !item.Question.StartsWith(viewModel.Question))
-            {
-                return View("~/Views/Html/Module/LearnerDailyQuestion.ascx", item);
-            }
+        //    if(String.IsNullOrEmpty(viewModel.Question) || !item.Question.StartsWith(viewModel.Question))
+        //    {
+        //        return View("~/Views/Html/Module/LearnerDailyQuestion.ascx", item);
+        //    }
 
-            var taskItem = new PDQTask
-            {
-                QuestionID = item.QuestionID,
-                SuggestionID = viewModel.SuggestionID,
-                UID = profile.UID,
-                TaskDate = DateTime.Now
-            };
-            models.GetTable<PDQTask>().InsertOnSubmit(taskItem);
-            models.SubmitChanges();
+        //    var taskItem = new PDQTask
+        //    {
+        //        QuestionID = item.QuestionID,
+        //        SuggestionID = viewModel.SuggestionID,
+        //        UID = profile.UID,
+        //        TaskDate = DateTime.Now
+        //    };
+        //    models.GetTable<PDQTask>().InsertOnSubmit(taskItem);
+        //    models.SubmitChanges();
 
-            if (item.PDQSuggestion.Any(s => s.SuggestionID == viewModel.SuggestionID && s.RightAnswer == true))
-            {
-                if (item.PDQQuestionExtension != null)
-                {
-                    taskItem.PDQTaskBonus = new PDQTaskBonus 
-                    {
-                        BonusPoint = item.PDQQuestionExtension.BonusPoint ?? 1,
-                    };
-                    models.SubmitChanges();
+        //    if (item.PDQSuggestion.Any(s => s.SuggestionID == viewModel.SuggestionID && s.RightAnswer == true))
+        //    {
+        //        if (item.PDQQuestionExtension != null)
+        //        {
+        //            taskItem.PDQTaskBonus = new PDQTaskBonus 
+        //            {
+        //                BonusPoint = item.PDQQuestionExtension.BonusPoint ?? 1,
+        //            };
+        //            models.SubmitChanges();
 
-                    return Json(new { result = true, message = item.PDQQuestionExtension.BonusPoint.ToString() });
-                }
-            }
+        //            return Json(new { result = true, message = item.PDQQuestionExtension.BonusPoint.ToString() });
+        //        }
+        //    }
 
-            return Json(new { result = false });
+        //    return Json(new { result = false });
 
-        }
+        //}
 
         [CoachOrAssistantAuthorize]
         public async Task<ActionResult> EditDailyQuestion(PDQQuestionViewModel viewModel)

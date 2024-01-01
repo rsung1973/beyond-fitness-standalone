@@ -27,15 +27,16 @@
     var answerCount = answers.Count();
     var rightAns = answers.Where(t => t.SuggestionID.HasValue && t.PDQSuggestion.RightAnswer == true);
 
-    var remainCount = models.GetTable<RegisterLesson>()
-                        .Where(r => r.UID == _model.UID)
-                        .Where(r => r.LessonPriceType.Status != (int)Naming.LessonPriceStatus.在家訓練)
-                        .Where(r => r.LessonPriceType.Status != (int)Naming.LessonPriceStatus.教練PI)
-                        .Where(r => r.LessonPriceType.Status != (int)Naming.LessonPriceStatus.點數兌換課程)
-                        .Join(models.GetTable<GroupingLesson>(), r => r.RegisterGroupID, g => g.GroupID, (r, g) => g)
-                        .Join(models.GetTable<LessonTime>(), g => g.GroupID, l => l.GroupID, (g, l) => l)
-                        .Where(l => l.LessonPlan.CommitAttendance.HasValue || l.LessonAttendance != null).Count()
-                    - answerCount;
+    var remainCount = models.RemainedLearnerDailyQuestionCount(_model);
+    //models.GetTable<RegisterLesson>()
+    //                .Where(r => r.UID == _model.UID)
+    //                .Where(r => r.LessonPriceType.Status != (int)Naming.LessonPriceStatus.在家訓練)
+    //                .Where(r => r.LessonPriceType.Status != (int)Naming.LessonPriceStatus.教練PI)
+    //                .Where(r => r.LessonPriceType.Status != (int)Naming.LessonPriceStatus.點數兌換課程)
+    //                .Join(models.GetTable<GroupingLesson>(), r => r.RegisterGroupID, g => g.GroupID, (r, g) => g)
+    //                .Join(models.GetTable<LessonTime>(), g => g.GroupID, l => l.GroupID, (g, l) => l)
+    //                .Where(l => l.LessonPlan.CommitAttendance.HasValue || l.LessonAttendance != null).Count()
+    //            - answerCount;
 
 }
 

@@ -70,7 +70,7 @@
                   @Html.Raw(aboutusAll.PhilosophyMessage2)
                </p>
                <div class="d-flex justify-content-center justify-content-lg-start justify-content-md-center">
-                  <a href="javascript:bindTrackingCode('null', 'null', '@(Url.Action("BookNow", "Official"))', null)"
+                  <a href="@(Url.Action("BookNow", "Official"))"
                      class="btn border-color-dark btn-rounded fst-italic font-weight-normal text-2 mt-3">@Html.Raw(commonAll.BookNow)</a>
                </div>
             </div>
@@ -114,7 +114,7 @@
                   @Html.Raw(aboutusAll.BusinessMessage)
                </p>
                <div class="d-flex justify-content-center justify-content-lg-start justify-content-md-center">
-                  <a href="javascript:bindTrackingCode('null', 'null', '@(Url.Action("JoinUs", "Official"))', null)"
+                  <a href="@(Url.Action("JoinUs", "Official"))"
                      class="btn border-color-dark btn-rounded fst-italic font-weight-normal text-2">@Html.Raw(commonAll.JoinUsGo)</a>
                </div>
             </div>

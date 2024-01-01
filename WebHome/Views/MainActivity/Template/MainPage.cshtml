@@ -32,16 +32,23 @@
 <html class="side-header-overlay-full-screen" lang="en">
 
 <head>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','@Html.Raw(WebHome.Properties.AppSettings.Default.GTM_Key)');</script>
+    <!-- End Google Tag Manager -->  
     <!-- Google tag (gtag.js) -->
-    <script async src="@Html.Raw($"https://www.googletagmanager.com/gtag/js?id={WebHome.Properties.AppSettings.Default.GA_Key}")"></script>
+    @* <script async src="@Html.Raw($"https://www.googletagmanager.com/gtag/js?id={WebHome.Properties.AppSettings.Default.GA_Key}")"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
 
         gtag('config', '@Html.Raw(WebHome.Properties.AppSettings.Default.GA_Key)');
-    </script>
-    <!-- End Google Tag Manager -->
+    </script> *@
+    <!-- Google Tag Manager -->
 
     <!-- Basic -->
     <meta charset="utf-8">
@@ -102,7 +109,7 @@
 	<link id="skinCSS" rel="stylesheet" href="styles/skin-beyond.css?1.0">
 
 	<!-- Theme Custom CSS -->
-	<link rel="stylesheet" href="styles/custom.css?1.0">
+	<link rel="stylesheet" href="styles/custom.css?1.1">
     <!-- Head Libs -->
     <script src="plugins/modernizr/modernizr.min.js"></script>
 
@@ -110,7 +117,7 @@
 
 
     <!-- Facebook Pixel Code -->
-    <script>
+    @* <script>
         (function (f, b, e, v, n, t, s) {
             if (f.fbq) return;
             n = f.fbq = function () {
@@ -132,12 +139,15 @@
         fbq('init', '139380543390363');
         fbq('track', 'PageView');</script>
     <script
-        type="application/javascript">(function (w, d, t, r, u) { w[u] = w[u] || []; w[u].push({ 'projectId': '10000', 'properties': { 'pixelId': '10056180' } }); var s = d.createElement(t); s.src = r; s.async = true; s.onload = s.onreadystatechange = function () { var y, rs = this.readyState, c = w[u]; if (rs && rs != "complete" && rs != "loaded") { return } try { y = YAHOO.ywa.I13N.fireBeacon; w[u] = []; w[u].push = function (p) { y([p]) }; y(c) } catch (e) { } }; var scr = d.getElementsByTagName(t)[0], par = scr.parentNode; par.insertBefore(s, scr) })(window, document, "script", "https://s.yimg.com/wi/ytc.js", "dotq");</script>
+        type="application/javascript">(function (w, d, t, r, u) { w[u] = w[u] || []; w[u].push({ 'projectId': '10000', 'properties': { 'pixelId': '10056180' } }); var s = d.createElement(t); s.src = r; s.async = true; s.onload = s.onreadystatechange = function () { var y, rs = this.readyState, c = w[u]; if (rs && rs != "complete" && rs != "loaded") { return } try { y = YAHOO.ywa.I13N.fireBeacon; w[u] = []; w[u].push = function (p) { y([p]) }; y(c) } catch (e) { } }; var scr = d.getElementsByTagName(t)[0], par = scr.parentNode; par.insertBefore(s, scr) })(window, document, "script", "https://s.yimg.com/wi/ytc.js", "dotq");</script> *@
     <!-- End Facebook Pixel Code -->
 </head>
 
-<body class="loading-overlay-showing" data-loading-overlay
-    data-plugin-options="{'hideDelay': 500, 'effect': 'floatBars'}">
+<body class="loading-overlay-showing" data-loading-overlay data-plugin-options="{'hideDelay': 500, 'effect': 'floatBars'}">
+    <!-- Google Tag Manager (noscript) -->    
+    <noscript><iframe src="@Html.Raw($"https://www.googletagmanager.com/ns.html?id={WebHome.Properties.AppSettings.Default.GA_Key}")"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
     <div class="loading-overlay">
         <div class="bounce-loader">
             <div class="cssload-float-bars-container">
@@ -147,7 +157,6 @@
             </div>
         </div>
     </div>
-
     <!-- GDPR Bar -->
     @if (Request.Cookies["GDPR"] == null)
     {
@@ -196,7 +205,7 @@
                         <div class="row">
                             <div
                                 class="col-12 d-flex align-items-center justify-content-center justify-content-lg-start pb-3 pb-lg-0 pb-md-0">
-                                <a href="javascript:bindTrackingCode(null, null, '@(VirtualPathUtility.ToAbsolute("~/Official/Index"))')"
+                                <a href="@(VirtualPathUtility.ToAbsolute("~/Official/Index"))"
                                     class="logo pe-0 pe-lg-3">
                                     <img alt="BeyondFitness" src="images/logo-default-slim-gold.svg" width="50"
 										alt="BeyondFitness|超越體能顧問有限公司" class="pe-1">
@@ -244,7 +253,7 @@
                                             String branchName = item[i].SubClass;
                                             <div class="row mb-1">
                                                 <div class="col-5">
-                                                    •<b class="ms-2 text-4"><a href="javascript:bindTrackingCode('null', 'null', '@(Url.Action("BranchInfo", "Official", new { Branch = branchName }))', null)">@Html.Raw(item[i].Name)</a></b>
+                                                    •<b class="ms-2 text-4"><a href="@(Url.Action("BranchInfo", "Official", new { Branch = branchName }))">@Html.Raw(item[i].Name)</a></b>
                                                 </div>
                                                 <div class="col-auto">
                                                     <a href="tel:@Html.Raw(item[i].TelDial)"
@@ -265,32 +274,32 @@
                             <div class="col-6 col-lg-auto col-md-6 col-sm-6 d-flex justify-content-end">
                                 <ul class="list list-icons list-icons-sm ps-0">
                                     <li class="ps-0 text-4"><a
-                                            href="javascript:bindTrackingCode('null', 'null', '@(Url.Action("AboutUs", "Official"))', null)"
+                                            href="@(Url.Action("AboutUs", "Official"))"
                                             class="link-hover-style-1 ms-1">@Html.Raw(commonAll.AboutUs)</a>
                                     </li>
                                     <li class="ps-0 text-4"><a
-                                            href="javascript:bindTrackingCode('null', 'null', '@(Url.Action("Service", "Official"))', null)"
+                                            href="@(Url.Action("Service", "Official"))"
                                             class="link-hover-style-1 ms-1">@Html.Raw(commonAll.Service)</a>
                                     </li>
                                     <li class="ps-0 text-4"><a
-                                            href="javascript:bindTrackingCode('null', 'null', '@(Url.Action("Session", "Official"))', null)"
+                                            href="@(Url.Action("Session", "Official"))"
                                             class="link-hover-style-1 ms-1">@Html.Raw(commonAll.Session)</a></li>
                                     <li class="ps-0 text-4"><a
-                                            href="javascript:bindTrackingCode('null', 'null', '@(Url.Action("FindUs", "Official"))', null)"
+                                            href="@(Url.Action("FindUs", "Official"))"
                                             class="link-hover-style-1 ms-1">@Html.Raw(commonAll.FindUs)</a></li>
                                     <li class="ps-0 text-4"><a
-                                            href="javascript:bindTrackingCode('null', 'null', '@(Url.Action("FAQ", "Official"))', null)"
+                                            href="@(Url.Action("FAQ", "Official"))"
                                             class="link-hover-style-1 ms-1">@Html.Raw(commonAll.FAQ)</a></li>
                                 </ul>
                             </div>
                             <div class="col-6 col-lg-auto col-md-6 col-sm-6 ps-0">
                                 <ul class="list list-icons list-icons-sm ps-0">
                                     <li class="ps-0 text-4"><a
-                                            href="javascript:bindTrackingCode('null', 'null', '@(Url.Action("BookNow", "Official"))', null)"
+                                            href="@(Url.Action("BookNow", "Official"))"
                                             class="link-hover-style-1 ms-1">@Html.Raw(commonAll.Booking)</a>
                                     </li>
                                     <li class="ps-0 text-4"><a
-                                            href="javascript:bindTrackingCode('null', 'null', '@(Url.Action("JoinUs", "Official"))', null)"
+                                            href="@(Url.Action("JoinUs", "Official"))"
                                             class="link-hover-style-1 ms-1">@Html.Raw(commonAll.JoinUs)</a></li>
                                     <li class="ps-0 text-4"><a
                                             href="@Html.Raw($"../Official/BlogSingle?{(new { DocID = 81295 }).JsonStringify().EncryptKeyNormal().UrlEncodeBase64String()}")"
@@ -365,13 +374,13 @@
     <script type="text/javascript">
 
         this.bindTrackingCode = function (gaEventName, fbEventName, linkURL, linkType) {
-            if (gaEventName && typeof gaEventName != "undefined") {
+            @* if (gaEventName && typeof gaEventName != "undefined") {
                 gtag("event", gaEventName, { event_category: "連結點擊", event_label: "官方網站" });
-            }
+            } *@
 
-            if (fbEventName && typeof fbEventName != "undefined") {
+            @* if (fbEventName && typeof fbEventName != "undefined") {
                 fbq('track', fbEventName);
-            }
+            } *@
 
             if (linkURL && typeof linkURL != "undefined") {
                 if (linkType && linkType == '_blank') {
@@ -384,7 +393,17 @@
 
         function gotoVoicePage(viewModel) {
             $('').launchDownload('@Html.Raw(Url.Action("Voice", "Official"))', viewModel);
-        }        
+        }       
+
+        function gotoPage(linkURL, linkType) {
+            if (linkURL && typeof linkURL != "undefined") {
+                if (linkType && linkType == '_blank') {
+                    window.open(linkURL);
+                } else {
+                    window.location.href = linkURL;
+                }
+            }            
+        } 
     </script>
 </body>
 

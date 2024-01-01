@@ -146,7 +146,7 @@
                     <tr>
                         <td colspan="2">
                               申請說明：合約經雙方同意於 @(String.Format("{0:yyyy/MM/dd}", _signatureDate)) 終止服務
-                              <p style="margin-left:70px;margin-bottom: 0px;">
+                            <p style="margin-left:70px;margin-bottom: 0px;">
                                 @{
                                     var totalPaid = _original.TotalPaidAmount();
                                     var attendedCount = _original.AttendedLessonCount();
@@ -155,52 +155,61 @@
                                 @if (totalPaid == 0)
                                 {
                                     <text>合約簽訂未繳納服務總費用新台幣 @(String.Format("{0:##,###,###,###}", _original.TotalCost)) 元整，退還學員費用 0 元。</text>
+                                    if ((_contract.ContractDate.Value - _original.ValidFrom.Value).TotalDays > 7)
+                                    {
+                                        if (_model.CauseForEnding == (int)Naming.CauseForEnding.合約到期轉新約
+                                                                                    || _model.CauseForEnding == (int)Naming.CauseForEnding.轉讓第三人
+                                                                                    || _model.CauseForEnding == (int)Naming.CauseForEnding.更改合約類型)
+                                        {
+                                            <text>並另外收取手續費新台幣300元整。</text>
+                                        }
+                                    }
                                 }
                                 else if (attendedCount > 0)
                                 {
                                     var remained = _original.CalculateReturnAmount(totalPaid, out int processingFee);
 
-                                    <text>@(_model.CauseForEnding == (int)Naming.CauseForEnding.轉讓第三人 ? "轉讓予第三人" : null)截至當日結算實際上課堂數如下：<br/></text>
-                                    foreach (var rc in _original.RegisterLessonContract.OrderBy(c=>c.Title))
+                                    <text>@(_model.CauseForEnding == (int)Naming.CauseForEnding.轉讓第三人 ? "轉讓予第三人" : null)截至當日結算實際上課堂數如下：<br /></text>
+                                    foreach (var rc in _original.RegisterLessonContract.OrderBy(c => c.Title))
                                     {
                                         var registerItem = rc.RegisterLesson;
                                         var priceItem = registerItem.LessonPriceType;
-                                        if(registerItem.RegisterLessonSharing!=null
-                                            && registerItem.RegisterLessonSharing.ShareID!=registerItem.RegisterID)
+                                        if (registerItem.RegisterLessonSharing != null
+                                            && registerItem.RegisterLessonSharing.ShareID != registerItem.RegisterID)
                                         {
                                             continue;
                                         }
-                                        switch((Naming.LessonPriceStatus?)priceItem.Status)
+                                        switch ((Naming.LessonPriceStatus?)priceItem.Status)
                                         {
-                                        case Naming.LessonPriceStatus.營養課程:
-                                            <text>
-                                                ● 
-                                                @(rc.Title)營養諮詢(S.D)@(registerItem.Lessons/priceItem.BundleCount)個月，未完成服務@(registerItem.RemainedLessonCount()/priceItem.BundleCount)月(購買一個月單價 @($"{priceItem.ListPrice*priceItem.BundleCount:##,###,####,###}") 元)。<br />
-                                            </text>
-                                            break;
+                                            case Naming.LessonPriceStatus.營養課程:
+                                                <text>
+                                                    ●
+                                                    @(rc.Title)營養諮詢(S.D)@(registerItem.Lessons/priceItem.BundleCount)個月，未完成服務@(registerItem.RemainedLessonCount()/priceItem.BundleCount)月(購買一個月單價 @($"{priceItem.ListPrice*priceItem.BundleCount:##,###,####,###}") 元)。<br />
+                                                </text>
+                                                break;
                                             case Naming.LessonPriceStatus.運動恢復課程:
-                                            <text>
-                                                ● 
-                                                @(rc.Title)運動恢復(S.R)@(registerItem.Lessons/priceItem.BundleCount)堂，未完成服務@(registerItem.RemainedLessonCount())堂(購買每堂單價 @($"{priceItem.ListPrice:##,###,####,###}") 元)。<br />
-                                            </text>
-                                            break;
+                                                <text>
+                                                    ●
+                                                    @(rc.Title)運動恢復(S.R)@(registerItem.Lessons/priceItem.BundleCount)堂，未完成服務@(registerItem.RemainedLessonCount())堂(購買每堂單價 @($"{priceItem.ListPrice:##,###,####,###}") 元)。<br />
+                                                </text>
+                                                break;
                                             case Naming.LessonPriceStatus.運動防護課程:
-                                            <text>
-                                                ● 
-                                                @(rc.Title)運動防護(A.T)@(registerItem.Lessons/priceItem.BundleCount)堂，未完成服務@(registerItem.RemainedLessonCount())堂(購買每堂單價 @($"{priceItem.ListPrice:##,###,####,###}") 元)。<br />
-                                            </text>
-                                            break;
+                                                <text>
+                                                    ●
+                                                    @(rc.Title)運動防護(A.T)@(registerItem.Lessons/priceItem.BundleCount)堂，未完成服務@(registerItem.RemainedLessonCount())堂(購買每堂單價 @($"{priceItem.ListPrice:##,###,####,###}") 元)。<br />
+                                                </text>
+                                                break;
                                             default:
-                                            <text>
-                                                ● 
-                                                @(rc.Title)私人教練(P.T)@(registerItem.Lessons/priceItem.BundleCount)堂，未完成服務@(registerItem.RemainedLessonCount())堂(購買每堂單價 @($"{priceItem.ListPrice:##,###,####,###}") 元)。<br />
-                                            </text>
-                                            break;
+                                                <text>
+                                                    ●
+                                                    @(rc.Title)私人教練(P.T)@(registerItem.Lessons/priceItem.BundleCount)堂，未完成服務@(registerItem.RemainedLessonCount())堂(購買每堂單價 @($"{priceItem.ListPrice:##,###,####,###}") 元)。<br />
+                                                </text>
+                                                break;
                                         }
                                     }
 
                                     <text>
-                                        <br/>以上按未完成服務堂數之購買單價計算應退還餘額@($"{remained:##,###,###,###}")元，
+                                        <br />以上按未完成服務堂數之購買單價計算應退還餘額@($"{remained:##,###,###,###}")元，
                                     </text>
                                     if (_model.CauseForEnding == (int)Naming.CauseForEnding.不宜運動 || _original.CourseContractAction.Any(a => a.ActionID == (int)CourseContractAction.ActionType.免收手續費))
                                     {
@@ -216,7 +225,7 @@
                                     }
                                     else
                                     {
-                                        returnAmt = remained-(_model.ProcessingFee ?? 0);
+                                        returnAmt = remained - (_model.ProcessingFee ?? 0);
                                         <text>並扣除手續費以退還餘額之20%計算(最高9,000)為@($"{_model.ProcessingFee:##,###,###,###}")元，實際退還剩餘款項為新台幣 @($"{returnAmt:##,###,###,###}")元整。</text>
                                     }
                                 }
@@ -229,7 +238,7 @@
                                 else
                                 {
                                     if (_model.CauseForEnding == (int)Naming.CauseForEnding.不宜運動 || _original.CourseContractAction.Any(a => a.ActionID == (int)CourseContractAction.ActionType.免收手續費))
-                                    {                                        
+                                    {
                                         returnAmt = totalPaid;
                                         <text>
                                             合約簽訂後逾七日未使用所約定服務(課程)而解除合約，已繳服務總費用新台幣@(String.Format("{0:##,###,###,###}", totalPaid))元整，並減免手續費，全額退還學員已繳費用。
@@ -252,9 +261,9 @@
                                             合約簽訂後逾七日未使用所約定服務(課程)而解除合約，已繳服務總費用新台幣@(String.Format("{0:##,###,###,###}", totalPaid))元整，將從退費金額內收取退費金額5%（新台幣@($"{_model.ProcessingFee:##,###,###,###}")元整）作為手續費，退還剩餘款項新台幣@($"{returnAmt:##,###,###,###}")元整。
                                         </text>
                                     }
-                                    
+
                                 }
-                              </p>
+                            </p>
                            </td>
                     </tr>
                     <tr>

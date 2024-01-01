@@ -1,0 +1,135 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    IQueryable<LessonTime> _model;
+    CourseContractQueryViewModel _viewModel;
+
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    _model = (IQueryable<LessonTime>)this.Model;
+    _viewModel = ViewBag.ViewModel as CourseContractQueryViewModel;
+
+    IQueryable<LessonPriceProperty> SR = models.GetTable<LessonPriceProperty>().Where(p => p.PropertyID == (int)Naming.LessonPriceFeature.運動恢復課程);
+    IQueryable<LessonPriceProperty> SD = models.GetTable<LessonPriceProperty>().Where(p => p.PropertyID == (int)Naming.LessonPriceFeature.營養課程);
+
+    IEnumerable<IGrouping<Naming.SessionTypeDefinition, LessonTime>> items =
+        _model.ToList().GroupBy(l =>
+        {
+            var price = l.RegisterLesson.LessonPriceType;
+            if(price.Status==(int)Naming.LessonPriceStatus.自主訓練)
+            {
+                return Naming.SessionTypeDefinition.PI;
+            }
+            else if (price.Status == (int)Naming.LessonPriceStatus.營養課程
+                || SD.Any(s => price.PriceID == s.PriceID))
+            {
+                return Naming.SessionTypeDefinition.SD;
+            }
+            else if (price.Status == (int)Naming.LessonPriceStatus.運動恢復課程
+                || SR.Any(s => price.PriceID == s.PriceID))
+            {
+                return Naming.SessionTypeDefinition.SR;
+            }
+
+            return Naming.SessionTypeDefinition.PT;
+
+        });
+}
+<table class="table table-striped table-custom nowrap questionDT" style="width: 100%">
+    <thead>
+        <tr>
+            <th>類型</th>
+            <th>總上課數</th>
+            <th>學生完成打卡</th>
+            <th>可回答小學堂</th>
+            <th>已完成小學堂</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in items)
+        {
+            <tr>
+                <td>@(item.Key)</td>
+                <td>@(item.Count())</td>
+                <td>@(item.Where(l=>l.LessonPlan.CommitAttendance.HasValue).Count())</td>
+                <td>
+                    @(item.Where(l=>l.PromptLessonQuestion.Any()).Count())
+                </td>
+                <td>
+                    @(item.Where(l=>l.PromptLessonQuestion.Any(q=>q.TaskID.HasValue && q.UID==_viewModel.MemberID)).Count())
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+
+    $(function () {
+
+        if ($global.dtQuestion != undefined) {
+            $global.dtQuestion.destroy();
+        }
+
+        $global.dtQuestion = $('.questionDT').DataTable({
+            "filter": false,
+            "bPaginate": false,
+            "info": false,
+            "order": [
+            ],
+            "language": {
+                "lengthMenu": "每頁顯示 _MENU_ 筆資料",
+                "zeroRecords": "沒有資料也是種福氣",
+                "info": "共 _TOTAL_ 筆，目前顯示第 _START_ 至 _END_筆資料",
+                "infoEmpty": "顯示 0 筆的資料",
+                "infoFiltered": "(總共從 _MAX_ 筆資料過濾)",
+                "loadingRecords": "快馬加鞭處理中...",
+                "processing": "快馬加鞭處理中...",
+                "search": "快速搜尋：",
+                "paginate": {
+                    "first": "第一頁",
+                    "last": "最後一頁",
+                    "next": "下一頁",
+                    "previous": "前一頁"
+                },
+            },
+            "columnDefs": [{
+                targets: [0, 1, 2, 3, 4],
+                className: "align-center"
+            }],
+            scrollX: true,
+            scrollCollapse: true,
+            fixedColumns: {
+                leftColumns: 1,
+            },
+        });
+
+        setTimeout(function () {
+            var $btnSelect = $('.dataTables_length div.btn-group.bootstrap-select.form-control.form-control-sm');
+            var $menu = $btnSelect.find('select');
+            $btnSelect.before($menu);
+            $btnSelect.remove();
+        }, 1000);
+
+        $('.questionDT').resize();
+    });
+
+</script>
+
+
+
+
+

@@ -59,8 +59,8 @@
 
     @RenderSection("CustomHeader", false)
     <!-- Custom Css -->
-    <link rel="stylesheet" href="css/main.css?3.3">
-    <link rel="stylesheet" href="css/color_skins.css?2.8">
+    <link rel="stylesheet" href="css/main.css?3.4">
+    <link rel="stylesheet" href="css/color_skins.css?2.9">
     <!-- Jquery Core Js -->
     <script src="bundles/libscripts.bundle.js"></script>
     <!-- Lib Scripts Plugin Js -->
@@ -128,7 +128,7 @@
                 </li>
             </ul>
             <a class="navbar-brand" href="@(Url.Action("Main","ConsoleHome"))">
-                <img src="images/logo.png" width="80" alt="BeyondFitness">
+                <img src="images/logo.svg" width="90" alt="BeyondFitness">
             </a>
             <ul class="nav navbar-nav navbar-right">
                 @if (_model.IsCoach() || _model.IsAssistant() || _model.IsSysAdmin())

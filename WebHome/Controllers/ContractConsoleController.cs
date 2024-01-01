@@ -618,6 +618,7 @@ namespace WebHome.Controllers
             }
 
             viewModel.Gender = item.UserProfileExtension.Gender;
+            viewModel.CountryCode = item.UserProfileExtension.CountryCode ?? "TW";
             viewModel.EmergencyContactPhone = item.UserProfileExtension.EmergencyContactPhone;
             viewModel.EmergencyContactPerson = item.UserProfileExtension.EmergencyContactPerson;
             viewModel.Relationship = item.UserProfileExtension.Relationship;
@@ -986,9 +987,34 @@ namespace WebHome.Controllers
             ViewBag.ViewModel = viewModel;
             var profile = models.GetTable<UserProfile>().Where(u => u.UID == viewModel.MemberID)
                 .FirstOrDefault() ?? new UserProfile { UID = -1 };
-            _ = profile.RemainedLessonCount2022(models, out int remainedCount, out IQueryable<RegisterLesson> remainedLessons);
+            _ = profile.RemainedLessonCount2024(models, out int remainedCount, out IQueryable<RegisterLesson> remainedLessons,out List<RegisterLesson> remainedPTItems, out List<RegisterLesson> remainedSRItems, out List<RegisterLesson> remainedSDItems);
 
-            return View("~/Views/ConsoleHome/CourseContract/RemainedLessonListModal2022.cshtml", remainedLessons);
+            List<RegisterLesson> model = viewModel.SessionType == Naming.SessionTypeDefinition.SR
+                ? remainedSRItems 
+                : viewModel.SessionType == Naming.SessionTypeDefinition.SD
+                    ? remainedSDItems
+                    : remainedPTItems;
+
+            return View("~/Views/ConsoleHome/CourseContract/RemainedLessonListModal2024.cshtml", model);
+        }
+
+        public ActionResult ShowLessonQuestionList(CourseContractQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            var profile = models.GetTable<UserProfile>().Where(u => u.UID == viewModel.MemberID)
+                .FirstOrDefault() ?? new UserProfile { UID = -1 };
+
+            var exclusivePrice = models.GetTable<LessonPriceType>()
+                    .Where(p => p.Status == (int)Naming.LessonPriceStatus.在家訓練
+                                || p.Status == (int)Naming.LessonPriceStatus.教練PI
+                                || p.Status == (int)Naming.LessonPriceStatus.點數兌換課程);
+
+            var lessons = models.GetTable<RegisterLesson>().Where(r => r.UID == profile.UID)
+                            .Where(r => !exclusivePrice.Any(p => r.ClassLevel == p.PriceID));
+
+            var items = lessons.Join(models.GetTable<LessonTime>(), r => r.RegisterGroupID, l => l.GroupID, (r, l) => l);
+
+            return View("~/Views/ConsoleHome/CourseContract/LessonQuestionListModal.cshtml", items);
         }
 
         public async Task<ActionResult> NotifyLearnerToSignContractAsync(CourseContractViewModel viewModel)

@@ -549,7 +549,7 @@
                                  class="fa-solid fa-chevron-right"></i></a>
                            <span class="d-block text-center text-color-dark">Next</span>
                         </div>
-                           <div class="mm-finish-btn">
+                           <div class="mm-finish-btn" onclick="javascript:CommitTrialLearner();">
                            <a class="btn bg-color-dark text-color-secondary btn-circle btn-lg"><i
                                  class="fa-solid fa-chevron-right"></i></a>
                            <span class="d-block text-center text-color-dark">Send</span>
@@ -662,7 +662,7 @@
 
          var btnFinish = $('.mm-finish-btn');
          btnFinish.off("click");
-         btnFinish.on('click', function () {
+         @* btnFinish.on('click', function () {
             clearErrors();
             showLoading();
             var viewModel = $('form').serializeObject();
@@ -686,8 +686,34 @@
                   $(data).appendTo($('body'));
                }
             });
-         });
+         }); *@
 
       });
+
+      function CommitTrialLearner()  {
+         clearErrors();
+         showLoading();
+         var viewModel = $('form').serializeObject();
+         viewModel.Step = current;
+         $.post('@Html.Raw(Url.Action("CommitTrialLearner", "MainActivity"))', viewModel, function (data) {
+            hideLoading();
+            if ($.isPlainObject(data)) {
+               if (data.result) {
+                  collectData();
+                  jQuery('.mm-survey-bottom').slideUp();
+                  jQuery('.mm-survey-results').slideDown();
+               } else {
+                  Swal.fire(
+                     'Oops...',
+                     data.message,
+                     'warning'
+                  );
+                  grecaptcha.reset();
+               }
+            } else {
+               $(data).appendTo($('body'));
+            }
+         });
+      }
    </script>
 }

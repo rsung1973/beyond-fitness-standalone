@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 464.83 88.3">
+  <defs>
+    <style>
+      .line04-1 {
+        fill: none;
+        stroke: #e76751;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 3px;
+      }
+    </style>
+  </defs>
+  <polyline class="line04-1" points="425.87 69.16 444.03 86.8 463.33 68.76"/>
+  <path class="line04-1" d="m444.34,85.52v-42.52c0-22.88-18.62-41.5-41.5-41.5H1.5"/>
+</svg>

@@ -60,12 +60,12 @@
                                             <li class="mt-4">
                                                 <a class="toggle-side-header text-6" data-hash data-hash-offset="0"
                                                     data-hash-offset-lg="0"
-                                                    href="javascript:bindTrackingCode('null', 'null', '@(Url.Action("AboutUs", "Official"))', null)">@Html.Raw(commonAll.AboutUs)</a>
+                                                    href="@(Url.Action("AboutUs", "Official"))">@Html.Raw(commonAll.AboutUs)</a>
                                             </li>
                                             <li>
                                                 <a class="toggle-side-header text-6" data-hash data-hash-offset="0"
                                                     data-hash-offset-lg="0"
-                                                    href="javascript:bindTrackingCode('null', 'null', '@(Url.Action("FindUs", "Official"))', null)">@Html.Raw(commonAll.FindUs)</a>
+                                                    href="@(Url.Action("FindUs", "Official"))">@Html.Raw(commonAll.FindUs)</a>
                                                 <p class="text-center">
                                                     @{
                                                         dynamic branches = findUsAll.BranchItems;
@@ -76,9 +76,7 @@
                                                             for (int i = 0; i < item.Length; i++)
                                                             {
                                                                 String branchName = item[i].SubClass;
-                                                                <a href="javascript:bindTrackingCode('null', 'null',
-                                                                                    '@(Url.Action("BranchInfo", "Official", new { Branch = branchName }))',
-                                                                                        null)"
+                                                                <a href="@(Url.Action("BranchInfo", "Official", new { Branch = branchName }))"
                                                                     class="text-3 text-color-grey px-0">@Html.Raw(item[i].Name)</a>
                                                                 if (i < (item.Length - 1))
                                                                 {
@@ -92,31 +90,31 @@
                                             </li>
                                             <li>
                                                 <a class="toggle-side-header text-6"
-                                                    href="javascript:bindTrackingCode('null', 'null', '@(Url.Action("Service", "Official"))', null)"
+                                                    href="@(Url.Action("Service", "Official"))"
                                                     data-hash-offset="0"
                                                     data-hash-offset-lg="0">@Html.Raw(commonAll.Service)</a>
                                             </li>
                                             <li>
                                                 <a class="toggle-side-header text-6"
-                                                    href="javascript:bindTrackingCode('null', 'null', '@(Url.Action("Session", "Official"))', null)"
+                                                    href="@(Url.Action("Session", "Official"))"
                                                     data-hash-offset="0"
                                                     data-hash-offset-lg="0">@Html.Raw(commonAll.Session)</a>
                                             </li>
                                             <li>
                                                 <a class="toggle-side-header text-6"
-                                                    href="javascript:bindTrackingCode('null', 'null', '@(Url.Action("FAQ", "Official"))', null)"
+                                                    href="@(Url.Action("FAQ", "Official"))"
                                                     data-hash-offset="0"
                                                     data-hash-offset-lg="0">@Html.Raw(commonAll.FAQ)</a>
                                             </li>
                                             <li>
                                                 <a class="toggle-side-header text-6"
-                                                    href="javascript:bindTrackingCode('null', 'null', '@(Url.Action("JoinUs", "Official"))', null)"
+                                                    href="@(Url.Action("JoinUs", "Official"))"
                                                     data-hash-offset="0"
                                                     data-hash-offset-lg="0">@Html.Raw(commonAll.JoinUs)</a>
                                             </li>
                                             <li>
                                                 <a class="toggle-side-header text-6"
-                                                    href="javascript:bindTrackingCode('null', 'null', '@(Url.Action("BookNow", "Official"))', null)"
+                                                    href="@(Url.Action("BookNow", "Official"))"
                                                     data-hash-offset="0"
                                                     data-hash-offset-lg="0">@Html.Raw(commonAll.Booking)</a>
                                             </li>
@@ -129,7 +127,7 @@
                                                         dynamic[] item = social.ToArray();
                                                         for (int i = 0; i < item.Length; i++)
                                                         {
-                                                           <a href="@Html.Raw(item[i].Link)"
+                                                           <a href="@Html.Raw(item[i].Link)" target="_blank"
                                                                     title="@Html.Raw(item[i].Name)" class="mx-3"><img class="img-fluid" src="images/icons/social/@Html.Raw(item[i].ImgName)"
                                                                         width="15" alt="BeyondFitness|社群" data-icon
                                                                         data-plugin-options="{'onlySVG': false, 'animated': false, 'strokeBased': true}"></a>                                                                                           

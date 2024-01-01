@@ -185,6 +185,7 @@ namespace WebHome.Models.ViewModel
         public int? UID { get; set; }
 
         public String Gender { get; set; }
+        public String CountryCode { get; set; }
 
         public int? LevelID { get; set; }
         public bool IsAdult => Birthday.HasValue && Birthday <= DateTime.Today.AddYears(-18);

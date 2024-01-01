@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="_圖層_1" data-name="圖層 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 43.83 42.5">
+  <defs>
+    <style>
+      .line03-1 {
+        fill: none;
+        stroke: #e76751;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 3px;
+      }
+    </style>
+  </defs>
+  <path class="line03-1" d="m1.5,1.5v20c0,10.75,8.75,19.5,19.5,19.5h21.33"/>
+</svg>

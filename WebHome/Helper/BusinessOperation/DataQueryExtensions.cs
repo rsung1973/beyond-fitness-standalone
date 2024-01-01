@@ -1108,7 +1108,7 @@ namespace WebHome.Helper.BusinessOperation
             return items;
         }
 
-        public static IQueryable<CourseContract> RemainedLessonCount2022(this UserProfile profile, GenericManager<BFDataContext> models, out int remainedCount,out IQueryable<RegisterLesson> remainedItems, bool onlyAttended = false)
+        public static IQueryable<CourseContract> RemainedLessonCount2022(this UserProfile profile, GenericManager<BFDataContext> models, out int remainedCount,out IQueryable<RegisterLesson> remainedItems, out IQueryable<RegisterLesson> contractLessons, out IQueryable<RegisterLesson> individualLessons, bool onlyAttended = false)
             
         {
             var items = models.GetTable<RegisterLesson>()
@@ -1124,15 +1124,50 @@ namespace WebHome.Helper.BusinessOperation
 
             var contractItems = models.GetTable<CourseContract>().Where(c => lessonContract.Any(a => a.ContractID == c.ContractID));
 
-            var contractLessons = currentLessons.Join(models.GetTable<RegisterLessonSharing>(), r => r.RegisterID, s => s.RegisterID, (r, s) => s)
+            contractLessons = currentLessons.Join(models.GetTable<RegisterLessonSharing>(), r => r.RegisterID, s => s.RegisterID, (r, s) => s)
                                     .Join(models.GetTable<RegisterLesson>(), s => s.ShareID, r => r.RegisterID, (s, r) => r);
 
-            var individualLessons = currentLessons.Where(r => !models.GetTable<RegisterLessonSharing>().Any(s => s.RegisterID == r.RegisterID));
+            individualLessons = currentLessons.Where(r => !models.GetTable<RegisterLessonSharing>().Any(s => s.RegisterID == r.RegisterID));
 
             remainedCount = contractLessons.ToList().Sum(r => r.RemainedLessonCount(onlyAttended))
                     + individualLessons.ToList().Sum(r => r.RemainedLessonCount(onlyAttended));
 
             return contractItems;
+        }
+
+        public static IQueryable<CourseContract> RemainedLessonCount2024(this UserProfile profile, GenericManager<BFDataContext> models, out int remainedCount, out IQueryable<RegisterLesson> remainedItems, out List<RegisterLesson> remainedPTItems, out List<RegisterLesson> remainedSRItems, out List<RegisterLesson> remainedSDItems, bool onlyAttended = false)
+        {
+            remainedPTItems = new List<RegisterLesson>();
+            remainedSDItems = new List<RegisterLesson>();
+            remainedSRItems = new List<RegisterLesson>();
+
+            var result = profile.RemainedLessonCount2022(models, out remainedCount, out remainedItems, out IQueryable<RegisterLesson> contractLessons, out IQueryable<RegisterLesson> individualLessons, onlyAttended);
+
+            var contractLessonItems = contractLessons.ToList();
+            var individualLessonItems = individualLessons.ToList();
+
+            IQueryable<LessonPriceProperty> SR = models.GetTable<LessonPriceProperty>().Where(p => p.PropertyID == (int)Naming.LessonPriceFeature.運動恢復課程);
+            IQueryable<LessonPriceProperty> SD = models.GetTable<LessonPriceProperty>().Where(p => p.PropertyID == (int)Naming.LessonPriceFeature.營養課程);
+
+            foreach (var r in contractLessonItems.Union(individualLessonItems))
+            {
+                if(r.LessonPriceType.Status == (int)Naming.LessonPriceStatus.營養課程
+                    || SD.Any(s=>r.ClassLevel==s.PriceID))
+                {
+                    remainedSDItems.Add(r);
+                }
+                else if (r.LessonPriceType.Status == (int)Naming.LessonPriceStatus.運動恢復課程
+                    || SR.Any(s => r.ClassLevel == s.PriceID))
+                {
+                    remainedSRItems.Add(r);
+                }
+                else
+                {
+                    remainedPTItems.Add(r);
+                }
+            }
+
+            return result;
         }
 
         //public static IQueryable<CourseContract> RemainedLessonCount(this UserProfile profile, GenericManager<BFDataContext> models, out int remainedCount, out IQueryable<RegisterLesson> remainedItems, bool onlyAttended = false)

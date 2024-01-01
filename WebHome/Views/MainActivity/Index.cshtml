@@ -68,7 +68,7 @@
                 <p class="text-center px-3 hidden-sm-up">@Html.Raw(homeAll.CentralAxisDescSm)</p>
             </div>
             <div class="col-12 py-5">
-                <a href="javascript:bindTrackingCode('null', 'null', '@(Url.Action("Aboutus", "Official"))', null)"
+                <a href="@(Url.Action("Aboutus", "Official"))"
                     class="btn btn-default btn-rounded fst-italic font-weight-normal text-2">@Html.Raw(commonAll.ReadMore)</a>
             </div>
         </div>
@@ -109,7 +109,7 @@
                         <p class="text-color-tertiary text-3 mb-0 line-height-8 pt-2">
                             @Html.Raw(homeAll.KeyPoint_1_Subject)</p>
                         <h4 class="font-weight-semi-bold pb-2">@Html.Raw(homeAll.KeyPoint_1)</h4>
-                        <a href="javascript:bindTrackingCode('null', 'null', '@(Url.Action("Service#scientific_container", "Official"))', null)"
+                        <a href="@(Url.Action("Service", "Official"))#scientific_container"
                             class="btn btn-default btn-rounded fst-italic font-weight-normal text-2">@Html.Raw(commonAll.ReadMore)</a>
                     </div>
                 </div>
@@ -123,7 +123,7 @@
                         <p class="text-color-tertiary text-3 mb-0 line-height-8 pt-2">
                             @Html.Raw(homeAll.KeyPoint_2_Subject)</p>
                         <h4 class="font-weight-semi-bold pb-2">@Html.Raw(homeAll.KeyPoint_2)</h4>
-                        <a href="javascript:bindTrackingCode('null', 'null', '@(Url.Action("Service#healthy_container", "Official"))', null)"
+                        <a href="@(Url.Action("Service", "Official"))#healthy_container"
                             class="btn btn-default btn-rounded fst-italic font-weight-normal text-2">@Html.Raw(commonAll.ReadMore)</a>
                     </div>
                 </div>
@@ -137,7 +137,7 @@
                         <p class="text-color-tertiary text-3 mb-0 line-height-8 pt-2">
                             @Html.Raw(homeAll.KeyPoint_3_Subject)</p>
                         <h4 class="font-weight-semi-bold pb-2">@Html.Raw(homeAll.KeyPoint_3)</h4>
-                        <a href="javascript:bindTrackingCode('null', 'null', '@(Url.Action("Service#guarantee_container", "Official"))', null)"
+                        <a href="@(Url.Action("Service", "Official"))#guarantee_container"
                             class="btn btn-default btn-rounded fst-italic font-weight-normal text-2">@Html.Raw(commonAll.ReadMore)</a>
                     </div>
                 </div>
@@ -282,7 +282,7 @@
                 </div>
                 <p>@Html.Raw(homeAll.BookDesc1)</p>
                 <p class="font-weight-medium">@Html.Raw(homeAll.BookDesc2)</p>
-                <a href="javascript:bindTrackingCode('null', 'null', '@(Url.Action("BookNow", "Official"))', null)"
+                <a href="@(Url.Action("BookNow", "Official"))"
                     class="btn bg-color-light text-color-dark btn-rounded fst-italic mt-5">@Html.Raw(commonAll.BookNow2)</a>
             </div>
         </div>
@@ -301,7 +301,7 @@
                 </div>
                 <p>@Html.Raw(homeAll.BookDesc1)</p>
                 <p class="font-weight-medium">@Html.Raw(homeAll.BookDesc2)</p>
-                <a href="javascript:bindTrackingCode('null', 'null', '@(Url.Action("BookNow", "Official"))', null)"
+                <a href="@(Url.Action("BookNow", "Official"))"
                     class="btn bg-color-light btn-rounded fst-italic mt-5">@Html.Raw(commonAll.BookNow2)</a>
             </div>
         </div>
@@ -365,13 +365,22 @@
                             data-plugin-options="{'dots':false, 'responsive': {'0': {'items': 1}, '479': {'items': 1}, '768': {'items': 4}, '979': {'items': 5}, '1199': {'items': 5}}, 'loop': true, 'autoHeight': false, 'autoWidth': false, 'margin': 50}">
                             @{
                                 JArray partner = partners as JArray;
-                                dynamic[] item =  partner.ToArray();
+                                dynamic[] item = partner.ToArray().SelectMany(b => b["Items"]).OrderBy(c => c["Order"]).ToArray();
                                 for (int i = 0; i < item.Length; i++)
-                                {
-                                    <a href="@Html.Raw(item[i].link)" target="_blank">
+                                {                                    
+                                    if (String.IsNullOrEmpty((String) item[i].link))
+                                    {
                                         <img width="150" src="@Html.Raw(item[i].LogoIcon)" alt="BeyondFitness|合作夥伴" data-icon
                                             data-plugin-options="{'onlySVG': false, 'color': '#5E5E5E', 'animated': false, 'delay': 0, 'fadeIn': false, 'strokeBased': true, 'svgStyle': 'fill:#5E5E5E'}" />
-                                    </a>
+                                    }
+                                    else
+                                    {
+                                        <a href="@Html.Raw(item[i].link)" target="_blank">
+                                            <img width="150" src="@Html.Raw(item[i].LogoIcon)" alt="BeyondFitness|合作夥伴" data-icon
+                                                data-plugin-options="{'onlySVG': false, 'color': '#5E5E5E', 'animated': false, 'delay': 0, 'fadeIn': false, 'strokeBased': true, 'svgStyle': 'fill:#5E5E5E'}" />
+                                        </a>
+                                    }
+                                    
                                 }
                             }                            
                         </div>

@@ -41,72 +41,46 @@
                         class="text-3-4 font-weight-medium positive-ls-10 d-block d-flex justify-content-center">@Html.Raw(commonAll.PartnerDesc)</span>
                      <p class="mt-3"> @Html.Raw(commonAll.PartnerMessage)</p>
                   </div>
-                  <div class="col-12 pt-5">
-                     <h4 class="catagory-title">@Html.Raw(commonAll.Related)</h4>
-                     <h4 class="catagory-title-zh">@Html.Raw(commonAll.RelatedDesc)</h4>
-                     <div class="row d-flex justify-content-center">
-                        @{                           
-                           if (partners != null)
-                           {
-                              JArray partner = partners as JArray;
-
-                              dynamic[] item = partner.Where(c => (int)c["PlaceOrder"] == 1).ToArray();
-                              for (int i = 0; i < item.Length; i++)
-                              {
-                                 <div class="col-6 col-lg-auto col-md-auto">
-                                    <a href="@Html.Raw(item[i].link)" target="_blank">
-                                       <img width="120" src="@Html.Raw(item[i].LogoIconC)" alt="BeyondFitness|合作夥伴" />
-                                    </a>
-                                 </div>
-                              }
-                           }
-                        }                                             
-                     </div>
-                  </div>
-                  <div class="col-12 pt-5">
-                     <h4 class="catagory-title">@Html.Raw(commonAll.Medical)</h4>
-                     <h4 class="catagory-title-zh">@Html.Raw(commonAll.MedicalDesc)</h4>
-                     <div class="row d-flex justify-content-center">                        
-                        @{
-                           if (partners != null)
-                           {
-                              JArray partner = partners as JArray;
-
-                              dynamic[] item = partner.Where(c => (int)c["PlaceOrder"] == 2).ToArray();
-                              for (int i = 0; i < item.Length; i++)
-                              {
-                                 <div class="col-6 col-lg-auto col-md-auto">
-                                    <a href="@Html.Raw(item[i].link)" target="_blank">
-                                       <img width="120" src="@Html.Raw(item[i].LogoIconC)" alt="BeyondFitness|合作夥伴" />
-                                    </a>
-                                 </div>
-                              }
-                           }
+                  @{
+                     if (partners != null)
+                     {
+                        JArray partner = partners as JArray;
+                        dynamic[] catagories = partner.ToArray();
+                        for (int i = 0; i < catagories.Length; i++)
+                        {
+                           <div class="col-12 pt-5">
+                              <h4 class="catagory-title">@Html.Raw(catagories[i].Catagory)</h4>
+                              <h4 class="catagory-title-zh">@Html.Raw(catagories[i].Desc)</h4>
+                              <div class="row d-flex justify-content-center">
+                                 @{
+                                    JArray items = catagories[i].Items as JArray;
+                                    dynamic[] item = items.ToArray();
+                                    if (item != null)
+                                    {
+                                       for (int j = 0; j < item.Length; j++)
+                                       {
+                                          <div class="col-6 col-lg-auto col-md-auto align-self-center">
+                                             @{
+                                                if (String.IsNullOrEmpty((String)item[j].link))
+                                                {
+                                                   <img width="120" src="@Html.Raw(item[j].LogoIconC)" alt="BeyondFitness|合作夥伴" />
+                                                }
+                                                else
+                                                {
+                                                   <a href="@Html.Raw(item[j].link)" target="_blank">
+                                                      <img width="120" src="@Html.Raw(item[j].LogoIconC)" alt="BeyondFitness|合作夥伴" />
+                                                   </a>
+                                                }
+                                             }
+                                          </div>
+                                       }
+                                    }
+                                 }
+                              </div>
+                           </div>
                         }
-                     </div>
-                  </div>
-                  <div class="col-12 pt-5">
-                     <h4 class="catagory-title">@Html.Raw(commonAll.PublicGroup)</h4>
-                     <h4 class="catagory-title-zh">@Html.Raw(commonAll.PublicGroupDesc)</h4>
-                     <div class="row  d-flex justify-content-center">
-                        @{
-                           if (partners != null)
-                           {
-                              JArray partner = partners as JArray;
-
-                              dynamic[] item = partner.Where(c => (int)c["PlaceOrder"] == 3).ToArray();
-                              for (int i = 0; i < item.Length; i++)
-                              {
-                                 <div class="col-6 col-lg-auto col-md-auto">
-                                    <a href="@Html.Raw(item[i].link)" target="_blank">
-                                       <img width="120" src="@Html.Raw(item[i].LogoIconC)" alt="BeyondFitness|合作夥伴" />
-                                    </a>
-                                 </div>
-                              }
-                           }
-                        }
-                     </div>
-                  </div>
+                     }
+                  }                 
                </div>
             </div>
          </div>

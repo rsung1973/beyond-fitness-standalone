@@ -1252,6 +1252,15 @@ namespace WebHome.Helper.BusinessOperation
 
             ViewBag.ViewModel = viewModel;
 
+            viewModel.CountryCode = viewModel.CountryCode.GetEfficientString();
+            if (viewModel.CountryCode == null)
+            {
+                if (viewModel.CurrentTrial != 1 && viewModel.IsAdult)
+                {
+                    ModelState.AddModelError("CountryCode", "請選擇是否為本國人");
+                }
+            }
+
             viewModel.IDNo = viewModel.IDNo.GetEfficientString();
             if (viewModel.IDNo == null)
             {
@@ -1260,7 +1269,7 @@ namespace WebHome.Helper.BusinessOperation
                     ModelState.AddModelError("IDNo", "請輸入身分證字號/護照號碼");
                 }
             }
-            else if (!Regex.IsMatch(viewModel.IDNo, "[A-Za-z]\\d{9}") || !viewModel.IDNo.CheckIDNo())
+            else if (viewModel.CountryCode == "TW" && (!Regex.IsMatch(viewModel.IDNo, "[A-Za-z]\\d{9}") || !viewModel.IDNo.CheckIDNo()))
             {
                 ModelState.AddModelError("IDNo", "身份證字號格式錯誤!!");
             }
@@ -1421,6 +1430,7 @@ namespace WebHome.Helper.BusinessOperation
             item.Birthday = viewModel.Birthday;
             item.Nickname = viewModel.Nickname;
             item.UserProfileExtension.Gender = viewModel.Gender;
+            item.UserProfileExtension.CountryCode = viewModel.CountryCode;
             item.UserProfileExtension.AthleticLevel = viewModel.AthleticLevel;
 
             item.UserProfileExtension.EmergencyContactPhone = viewModel.EmergencyContactPhone;
@@ -2196,7 +2206,7 @@ namespace WebHome.Helper.BusinessOperation
                             || item.CauseForEnding == (int)Naming.CauseForEnding.更改合約類型)
                         {
                             if (item.SourceContract.AttendedLessonCount() > 0
-                                || (DateTime.Today - item.SourceContract.ValidFrom.Value).TotalDays > 7)
+                                || (item.CourseContract.ContractDate.Value - item.SourceContract.ValidFrom.Value).TotalDays > 7)
                             {
                                 if (!item.CourseContract.CourseContractAction.Any(c => c.ActionID == (int)CourseContractAction.ActionType.合約終止手續費))
                                 {

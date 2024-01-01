@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 395 395">
+  <defs>
+    <style>
+      .cls-1 {
+        clip-path: url(#clippath);        
+      }
+
+      .cls-2 {
+        fill: #fff;
+        stroke-width: 0px;
+      }
+
+      .cls-3 {
+        font-family: Poppins-Medium, Poppins, 微軟正黑體, 新細明體, Arial, sans-serif;
+        font-size: 23.4px;
+        font-weight: 600;
+        letter-spacing: .07em;
+      }
+
+      .cls-3, .cls-4 {
+        fill: #282828;
+      }
+
+      .cls-4 {
+        font-family: Poppins-Medium, Poppins, 微軟正黑體, 新細明體, Arial, sans-serif;
+        font-size: 16.2px;
+        font-weight: 400;
+        letter-spacing: .07em;
+      }
+
+    </style>
+    <clipPath id="clippath">
+      <path class="cls-2" d="m205.86,0c64.67,1.26,116.95,27.73,157.12,78.09,10.36,13,18.11,27.33,22.78,43.12,8.89,30.03,3.6,58-14.17,83.62-16.73,24.12-33.76,48.02-50.69,72-18.54,26.26-36.85,52.69-55.75,78.69-15.96,21.96-38.12,34.59-64.98,38.26-29.33,4.01-57.26-2.11-83.64-14.77-40.38-19.37-69.44-50.17-89.41-89.68-15.8-31.25-23.39-64.45-21.95-99.38,1.67-40.5,14.69-77.23,39.14-109.86C73.83,40.73,112.99,16.04,160.93,4.87,175.64,1.45,190.64-.04,205.86,0"/>
+    </clipPath>
+  </defs>
+  <g id="coach_pic">
+    <g class="cls-1">
+      <image width="600" height="600" transform="translate(-.5 -1) scale(.88)" xlink:href="" x="0" y="0"/>  
+    </g>
+  </g>
+  <g id="coach_name">
+    <text class="cls-3" transform=""><tspan x="0" y="0"></tspan></text>
+  </g>
+  <g id="coach_title">
+    <text class="cls-4" transform=""><tspan x="0" y="0"></tspan></text>
+  </g>
+</svg>

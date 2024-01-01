@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 91.69 398.43">
+  <defs>
+    <style>
+      .item03-1 {
+        fill: none;
+        stroke: #e76751;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 5px;
+      }
+    </style>
+  </defs>
+  <polyline class="item03-1" points="32.63 284.57 32.63 273.51 32.63 11.1"/>
+  <path class="item03-1" d="m32.72,302.6v58.56c0,10.75,8.75,19.5,19.5,19.5h20.82"/>
+  <path class="item03-1" d="m41.76,293.58c0-4.97-4.05-9.02-9.02-9.02s-9.02,4.04-9.02,9.02,4.05,9.02,9.02,9.02,9.02-4.04,9.02-9.02Z"/>
+</svg>

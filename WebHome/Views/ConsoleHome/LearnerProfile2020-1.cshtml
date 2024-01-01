@@ -133,18 +133,65 @@
                                     @{
                                         int remainedCount;
                                         IQueryable<RegisterLesson> remainedLessons;
-                                        var remainedItems = _learner.RemainedLessonCount2022(models, out remainedCount, out remainedLessons);
+                                        var remainedItems = _learner.RemainedLessonCount2024(models, out remainedCount, out remainedLessons, out List<RegisterLesson> remainedPTItems, out List<RegisterLesson> remainedSRItems, out List<RegisterLesson> remainedSDItems);
+                                        remainedCount = remainedPTItems.Sum(r => r.RemainedLessonCount(false));
                                     }
-                                    <li class="col-lg-6 col-6" onclick='showRemainedLessons(@Html.Raw(JsonConvert.SerializeObject(
-                                                new
-                                                {
-                                                    MemberID = _learner.UID,
-                                                    ContractQueryMode = Naming.ContractServiceMode.ContractOnly,
-                                                    Status = (int)Naming.CourseContractStatus.已生效,
-                                                })),@(remainedCount),true);'>
+                                    <li class="col-lg-4 col-6" onclick='showRemainedLessons(@Html.Raw(JsonConvert.SerializeObject(
+                                            new
+                                            {
+                                                MemberID = _learner.UID,
+                                                ContractQueryMode = Naming.ContractServiceMode.ContractOnly,
+                                                Status = (int)Naming.CourseContractStatus.已生效,
+                                                SessionType = (int)Naming.SessionTypeDefinition.PT,
+                                            })),@(remainedCount),true);'>
                                         <div class="body">
                                             <h5 class="m-b-0 number count-to" data-from="0" data-to="@(remainedCount)" data-speed="1000" data-fresh-interval="700">@(remainedCount)</h5>
-                                            <small>剩餘堂數</small>
+                                            <small>P.T剩餘堂數</small>
+                                        </div>
+                                    </li>
+                                    @{ 
+                                        remainedCount = remainedSRItems.Sum(r => r.RemainedLessonCount(false));
+                                    }
+                                    <li class="col-lg-4 col-6" onclick='showRemainedLessons(@Html.Raw(JsonConvert.SerializeObject(
+                                            new
+                                            {
+                                                MemberID = _learner.UID,
+                                                ContractQueryMode = Naming.ContractServiceMode.ContractOnly,
+                                                Status = (int)Naming.CourseContractStatus.已生效,
+                                                SessionType = (int)Naming.SessionTypeDefinition.SR,
+                                            })),@(remainedCount),true);'>
+                                        <div class="body">
+                                            <h5 class="m-b-0 number count-to" data-from="0" data-to="@(remainedSRItems.Count)" data-speed="1000" data-fresh-interval="700">@(remainedCount)</h5>
+                                            <small>S.R剩餘堂數</small>
+                                        </div>
+                                    </li>
+                                    @{ 
+                                        remainedCount = remainedSDItems.Sum(r => r.RemainedLessonCount(false));
+                                    }
+                                    <li class="col-lg-4 col-6" onclick='showRemainedLessons(@Html.Raw(JsonConvert.SerializeObject(
+                                            new
+                                            {
+                                                MemberID = _learner.UID,
+                                                ContractQueryMode = Naming.ContractServiceMode.ContractOnly,
+                                                Status = (int)Naming.CourseContractStatus.已生效,
+                                                SessionType = (int)Naming.SessionTypeDefinition.SD,
+                                            })),@(remainedCount),true);'>
+                                        <div class="body">
+                                            <h5 class="m-b-0 number count-to" data-from="0" data-to="@(remainedSDItems.Count)" data-speed="1000" data-fresh-interval="700">@(remainedCount)</h5>
+                                            <small>S.D剩餘堂數</small>
+                                        </div>
+                                    </li>
+                                    @{ 
+                                        remainedCount = models.RemainedLearnerDailyQuestionCount(_learner);
+                                    }
+                                    <li class="col-lg-6 col-12" onclick='showLessonQuestion(@Html.Raw(JsonConvert.SerializeObject(
+                                            new
+                                            {
+                                                MemberID = _learner.UID,
+                                            })),@(remainedCount),true);'>
+                                        <div class="body">
+                                            <h5 class="m-b-0 number count-to col-green" data-from="0" data-to="@(remainedCount)" data-speed="1000" data-fresh-interval="700">@(remainedCount)</h5>
+                                            <small>運動小學堂剩餘答題數</small>
                                         </div>
                                     </li>
                                     <li class="col-lg-6 col-6" onclick='showContractList(@Html.Raw(JsonConvert.SerializeObject(
@@ -240,7 +287,31 @@
                 event.cancelBubble = true;
             }
 
+            if (alertCount == 0)
+                return;
+
             $.post('@Html.Raw(Url.Action("ShowRemainedLessonList", "ContractConsole"))', viewModel, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    Swal.fire(
+                        'Oops...',
+                        data.message,
+                        'warning'
+                    )
+                } else {
+                    $('body').append(data);
+                }
+            });
+
+        }
+
+        function showLessonQuestion(viewModel, alertCount, popupModal) {
+            var event = window.event;
+            if (event) {
+                event.cancelBubble = true;
+            }
+
+            $.post('@Html.Raw(Url.Action("ShowLessonQuestionList", "ContractConsole"))', viewModel, function (data) {
                 hideLoading();
                 if ($.isPlainObject(data)) {
                     Swal.fire(

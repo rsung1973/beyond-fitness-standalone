@@ -24,7 +24,7 @@
 @{ 
     int remainedCount;
     IQueryable<RegisterLesson> remainedLessons;
-    var remainedItems = _model.RemainedLessonCount2022(models, out remainedCount, out remainedLessons);
+    var remainedItems = _model.RemainedLessonCount2022(models, out remainedCount, out remainedLessons, out IQueryable<RegisterLesson> contractLessons, out IQueryable<RegisterLesson> individualLessons);
 
 }
     @(remainedCount)

@@ -153,7 +153,8 @@ MagnificPopup.prototype = {
 	 * Opens popup
 	 * @param  data [description]
 	 */
-	open: function(data) {        
+	open: function(data) {
+
 		var i;
 
 		if(data.isObj === false) { 
@@ -638,6 +639,7 @@ MagnificPopup.prototype = {
 		}
 
 		var disableOn = options.disableOn !== undefined ? options.disableOn : $.magnificPopup.defaults.disableOn;
+
 		if(disableOn) {
 			if($.isFunction(disableOn)) {
 				if( !disableOn.call(mfp) ) {
@@ -1565,6 +1567,7 @@ var IFRAME_NS = 'iframe',
 	};
 
 $.magnificPopup.registerModule(IFRAME_NS, {
+
 	options: {
 		markup: '<div class="mfp-iframe-scaler">'+
 					'<div class="mfp-close"></div>'+
@@ -1572,12 +1575,13 @@ $.magnificPopup.registerModule(IFRAME_NS, {
 				'</div>',
 
 		srcAction: 'iframe_src',
+
 		// we don't care and support only one default type of URL by default
 		patterns: {
 			youtube: {
 				index: 'youtube.com',
 				id: 'v=',
-				src: '//www.youtube.com/embed/%id%?autoplay=1&rel=0&showinfo=0&loop=1'
+				src: '//www.youtube.com/embed/%id%?autoplay=1'
 			},
 			vimeo: {
 				index: 'vimeo.com/',

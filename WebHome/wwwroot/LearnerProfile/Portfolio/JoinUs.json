@@ -1,0 +1,186 @@
+{
+    // "BannerSlogon": "加入我們，盡展自我",
+    // "BannerSlogonDesc": "超越自己，挑戰極限",
+    // "InspireSlogon": "成為我們的一員",
+    // "InspireSlogonDesc": "激盪彼此的火花",
+    // "OpportunityHeader": "OPENING 關於職缺",
+    // "PrivateCoach": "私人教練",
+    // "Therapist": "運動按摩師",
+    // "Dietitian": "營養諮詢師",   
+    // "OpportunityCoachBannerSlogon": "我們最喜歡挑戰<br class=\"hidden-sm-up\" /><span class=\"mark-text-underline\"  padding-width=\"0.1\" bottom-width=\"0.1\">不可能</span>",
+    // "OpportunityCoachDesc": "Beyond Fitness 創立於 2014 年，致力於發展專業一對一私人教練。從南京小巨蛋發跡成立以來陸續拓展了三家分店，是透過專業與行動力一步腳印實踐夢想，並擁有許多相同理念的夥伴與朋友鼓勵著我們持續前進。Beyond相信以人為本才是最好的訓練，我們傾聽客戶的聲音並設計出最符合每個人量身定制的課程內容，陪伴幫助在Beyond的每個成員走向更美好的生活。",
+    // "OpportunityPowerSlogon": "找到適合你的團隊<BR />自己的精彩故事由 BEYOND 開始",
+    // "OpportunityTherapistBannerSlogon": "發揮您的按摩技巧時刻到了，<br/>與我們<span class=\"mark-text-underline\" padding-width=\"0.1\" bottom-width=\"0.1\">一同啟程</span>！",
+    // "OpportunityTherapistDesc": "在我們的團隊裡，你不僅可以展現你的按摩技巧，還能體驗充滿活力和創新的企業文化。我們非常重視每位成員的專業成長和幸福感，並提供持續的培訓和發展機會。讓我們攜手為客戶提供卓越的按摩療法，實現你的職業夢想，創造健康和喜悅的環境。成為我們團隊中不可或缺的一員，讓熱情和目標融為一體吧。",
+    // "OpportunityDietitianBannerSlogon": "與我們<span class=\"mark-text-underline\" padding-width=\"0\" bottom-width=\"0.1\">一同開創</span><br class=\"hidden-sm-up\"/>營養的新時代",
+    // "OpportunityDietitianDesc": "如果你擁有豐富的營養知識和專業技能，並且熱衷於幫助他人實現健康目標，那麼你就是我們正在尋找的人才！在我們的團隊中，你將有機會和我們共同創造出卓越的營養方案，改善人們的生活品質。我們重視每一位成員的專業成長，並提供持續的培訓和發展機會。加入我們，一起為客戶提供優質的營養諮詢服務，為他們實現健康的未來！"
+    "Message":"Message·",
+    "MessageDesc":"訊息",
+    "MessageSlogan":"成就自己，<br />也改變世界。",
+    "MessageContent1": "<b>親愛的朋友：</b><br /><br />這是一封誠摯的邀請函。<br /><br />是的，我們正在尋找，能夠透過幫助他人成長、改善他人的健康狀態，並在無數人的生命之中，留下深刻印記的信念夥伴。<br /><br />Beyond是一家充滿專注、認真和歡樂氛圍的公司。在這裡，我們不僅僅是工作同事，更是彼此的支持者和朋友。我們締造一個開放、包容且充滿挑戰的工作環境，培養解決問題的能力，創造與人溝通的良好氛圍，同時也能深耕並綻放工作與生活的共同意義。<br /><br />我們真誠地邀請您加入&nbsp;BEYOND&nbsp;團隊，成為這個大家庭中不可或缺的一員。您的專業和信念將被認真重視，在這裡得到最大的發揮，同時相信您也可以在團隊中，找到自己的歸屬感。讓我們攜手並肩，共同成就更多的偉大時刻。",
+    "MessageContent2": "期待我們很快可以相見！<br /> See you soon !",
+    "MessageFrom": "Beyond 全體夥伴",
+    "Voice": "Voice·",
+    "VoiceDesc": "夥伴之聲",
+    "VoiceSlogan1": "「人生變得更美好。」",
+    "VoiceSlogan2": "我們感到自豪，<br />可以讓客戶閃閃發光。",
+    "VoiceMessage":"聽聽每一位夥伴的真實心聲",
+    "VoiceItem": [
+        {
+            "MemberCode": "BD56192749",
+            "BranchID": 1
+        },
+        {
+            "MemberCode": "FL62099639",
+            "BranchID": 3
+        },
+        {
+            "MemberCode": "RX14099392",
+            "BranchID": 4
+        },
+        {
+            "MemberCode": "ZP85915197",
+            "BranchID": 2
+        },
+        {
+            "MemberCode": "CL74347383",
+            "BranchID": 1
+        }
+    ],
+    "Traning": "Traning·",
+    "TraningDesc": "研修制度",
+    "TraningMessageSlogan": "只要你帶著熱忱而來，<br />我們必能展開雙臂迎接。",
+    "TraningMessage": " 在台灣的健身市場上，許多的教練並沒有妥善的更新證照、固定教育訓練、並且遵守法規的簽立符合消費者的定型化契約，而導致這個產業時常出現許多的糾紛與潛在的風險。<br /><br />「專業教練」這個職業，應該是更具備條理、準則與價值的。而能夠真正針對專業私人教練穩定培養的機構其實非常少見。Beyond Fitness是台灣第一間真正投入其中的業者。我們的目標是將私人教練機構發展成能夠協助社會的健康企業。<br /><br />除了上述願景和投入，我們同時是非常有趣好玩，而且願意溝通互動的團隊。在工作中透過不斷學習、創造且具有挑戰的環境，而達到自我實現。我們共同內訓、考核、訓練、做公益、並共同歡笑與成長。",
+    "TraningItem":[
+        {
+            "ID": "Week",
+            "Name": "週內訓",
+            "List":[
+                {
+                    "Content": "案例訓練研討",
+                },
+                {
+                    "Content": "團練",
+                },
+                {
+                    "Content": "運動科學討論",
+                },
+            ],
+            "PlaceOrder": 1
+        },
+        {
+            "ID": "Month",
+            "Name": "月內訓",
+            "List":[
+                {
+                    "Content": "各項運動科學訓練法",
+                },
+                {
+                    "Content": "實務應用與實作",
+                }
+            ],
+            "PlaceOrder": 1
+        },
+        {
+            "ID": "Season",
+            "Name": "季內訓",
+            "List":[
+                {
+                    "Content": "運動心理學",
+                },
+                {
+                    "Content": "運動營養學",
+                },
+                {
+                    "Content": "運動解剖學",
+                },
+                {
+                    "Content": "物理治療",
+                },
+                {
+                    "Content": "營養學",
+                }
+            ],
+            "PlaceOrder": 1
+        },
+        {
+            "ID": "Testing",
+            "Name": "季考核",
+            "List":[
+                {
+                    "Content": "學科考核（選擇、申論題）",
+                },
+                {
+                    "Content": "術科考核（各項場地、器材與體能考核）",
+                },
+                {
+                    "Content": "大眾運動考核",
+                }
+            ],
+            "PlaceOrder": 2
+        },
+        {
+            "ID": "Year",
+            "Name": "年內訓",
+            "List":[
+                {
+                    "Content": "生活與健康趨勢",
+                },
+                {
+                    "Content": "管理與相關業界講師",
+                }
+            ],
+            "PlaceOrder": 2
+        },
+        {
+            "ID": "Outside",
+            "Name": "移地訓練",
+            "List":[
+                {
+                    "Content": "團隊訓練",
+                },
+                {
+                    "Content": "團隊凝聚",
+                },
+                {
+                    "Content": "1對1訓練模擬",
+                },
+                {
+                    "Content": "大眾運動訓練",
+                },
+                {
+                    "Content": "障礙賽",
+                },
+                {
+                    "Content": "長距離跑步",
+                }
+            ],
+            "PlaceOrder": 2
+        },
+    ],
+    "Opening": "Opening·",
+    "OpeningDesc": "相關職缺",
+    "OpeningItem":[
+        {
+            "JobTitle": "運動按摩師",
+            "JobSlogan": "“ 我們需要你的力量，<br />一起成為健康的推手 ”",
+            "Link": "https://www.104.com.tw/company/1a2x6bk27x?jobsource=checkc&fbclid=IwAR0fUKUHzTgOxnUlQxbopGBDF8I_AOTz8rRhsWz_v4V9XlQYhjw2QCbzGyk#info06"
+        },
+        {
+            "JobTitle": "私人教練",
+            "JobSlogan": "“ 你會在這裡，找到很棒的生活態度與朋友 ”",
+            "Link": "https://www.104.com.tw/company/1a2x6bk27x?jobsource=checkc&fbclid=IwAR0fUKUHzTgOxnUlQxbopGBDF8I_AOTz8rRhsWz_v4V9XlQYhjw2QCbzGyk#info06"
+        },
+        {
+            "JobTitle": "營養諮詢師",
+            "JobSlogan": "“ 營養不只膳食與熱量，<br />更重視整全身心健康。”",
+            "Link": "https://www.104.com.tw/company/1a2x6bk27x?jobsource=checkc&fbclid=IwAR0fUKUHzTgOxnUlQxbopGBDF8I_AOTz8rRhsWz_v4V9XlQYhjw2QCbzGyk#info06"
+        },
+    ],
+    "Talk":"Talk·",
+    "TalkDesc": "人物專訪", 
+    "InviteMessage": "如果您也嚮往，成為一名充滿影響力的私人教練，加入我們的行列吧！",
+    "OtherVoice":"Other<br />Voice·",
+    "OtherVoiceDesc":"其他夥伴之聲",
+    "OtherVoiceSlogan": "還有更多故事，<br />等著與您分享。"
+}

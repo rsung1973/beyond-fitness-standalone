@@ -40,8 +40,7 @@
             <div class="row py-3 pe-3 px-xl-5 px-lg-3 px-md-5 justify-content-between align-items-center">
                 <div class="col-7 col-lg-1 col-md-2 col-sm-7">
                     <div class="py-4">
-                        <a
-                            href="javascript:bindTrackingCode(null, null, '@(VirtualPathUtility.ToAbsolute("~/Official/Index"))')">
+                        <a href="@(VirtualPathUtility.ToAbsolute("~/Official/Index"))">
                             <img alt="Beyond Fitness" width="80" height="38" src="images/@(logoImg)">
                         </a>
                     </div>
@@ -51,31 +50,31 @@
                         <div class="pe-3">
                             <ul class="list-inline mt-3 me-lg-3 me-md-3">
                                 <li class="list-inline-item me-xl-5 me-lg-4 me-md-3">
-                                    <a href="javascript:bindTrackingCode('null', 'null', '@(Url.Action("Aboutus", "Official"))', null)"
+                                    <a href="@(Url.Action("Aboutus", "Official"))"
                                         class="btn btn-link-effect-1 btn-link-underline-1 px-0 py-0 @(menuClass) border-0  font-weight-semi-bold text-decoration-none">@Html.Raw(commonAll.AboutUs)</a>
                                 </li>
                                 <li class="list-inline-item me-xl-5 me-lg-4 me-md-3">
-                                    <a href="javascript:bindTrackingCode('null', 'null', '@(Url.Action("FindUs", "Official"))', null)"
+                                    <a href="@(Url.Action("FindUs", "Official"))"
                                         class="btn btn-link-effect-1 btn-link-underline-1 px-0 py-0 @(menuClass) border-0  font-weight-semi-bold text-decoration-none">@Html.Raw(commonAll.FindUs)</a>
                                 </li>
                                 <li class="list-inline-item me-xl-5 me-lg-4 me-md-3">
-                                    <a href="javascript:bindTrackingCode('null', 'null', '@(Url.Action("Service", "Official"))', null)"
+                                    <a href="@(Url.Action("Service", "Official"))"
                                         class="btn btn-link-effect-1 btn-link-underline-1 px-0 py-0 @(menuClass) border-0  font-weight-semi-bold text-decoration-none">@Html.Raw(commonAll.Service)</a>
                                 </li>
                                 <li class="list-inline-item me-xl-5 me-lg-4 me-md-3">
-                                    <a href="javascript:bindTrackingCode('null', 'null', '@(Url.Action("Session", "Official"))', null)"
+                                    <a href="@(Url.Action("Session", "Official"))"
                                         class="btn btn-link-effect-1 btn-link-underline-1 px-0 py-0 @(menuClass) border-0  font-weight-semi-bold text-decoration-none">@Html.Raw(commonAll.Session)</a>
                                 </li>
                                 <li class="list-inline-item me-xl-5 me-lg-4 me-md-3">
-                                    <a href="javascript:bindTrackingCode('null', 'null', '@(Url.Action("FAQ", "Official"))', null)"
+                                    <a href="@(Url.Action("FAQ", "Official"))"
                                         class="btn btn-link-effect-1 btn-link-underline-1 px-0 py-0 @(menuClass) border-0  font-weight-semi-bold text-decoration-none">@Html.Raw(commonAll.FAQ)</a>
                                 </li>
                                 <li class="list-inline-item me-xl-5 me-lg-4 me-md-3">
-                                    <a href="javascript:bindTrackingCode('null', 'null', '@(Url.Action("JoinUs", "Official"))', null)"
+                                    <a href="@(Url.Action("JoinUs", "Official"))"
                                         class="btn btn-link-effect-1 btn-link-underline-1 px-0 py-0 @(menuClass) border-0  font-weight-semi-bold text-decoration-none">@Html.Raw(commonAll.JoinUs)</a>
                                 </li>
                                 <li class="list-inline-item me-xl-5 me-lg-4 me-md-3">
-                                    <a href="javascript:bindTrackingCode('null', 'null', '@(Url.Action("BookNow", "Official"))', null)"
+                                    <a href="@(Url.Action("BookNow", "Official"))"
                                         class="btn btn-link-effect-1 btn-link-underline-1 px-0 py-0 @(menuClass) border-0  font-weight-semi-bold text-decoration-none">@Html.Raw(commonAll.Booking)</a>
                                 </li>
                                 @* <li class="list-inline-item">

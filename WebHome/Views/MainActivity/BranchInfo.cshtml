@@ -396,7 +396,7 @@
                                             <div class="box-content">
                                                 <h4 class="font-weight-semi-bold mb-1">@Html.Raw(item2[i].Name)</h4>
                                                 <p class="text-lg-start text-md-center"><a href="tel:@Html.Raw(item2[i].TelDial)">@Html.Raw(item2[i].Tel)</a></p>
-                                                <a href="javascript:bindTrackingCode('null', 'null', '@(Url.Action("BranchInfo", "Official", new {Branch=branchName}))', null)"
+                                                <a href="@(Url.Action("BranchInfo", "Official", new {Branch=branchName}))"
                                                     class="btn btn-default btn-rounded fst-italic font-weight-normal text-2">@Html.Raw(commonAll.ReadMore)</a>
                                             </div>
                                         </div>

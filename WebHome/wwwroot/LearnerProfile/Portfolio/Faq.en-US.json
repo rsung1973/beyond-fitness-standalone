@@ -1,0 +1,113 @@
+{
+    "FAQ": "FAQ•",
+    "FAQDesc": "Q&A",
+    "QuestionItmes": [
+        {
+            "ID": "Q1",
+            "Icon": "images/icons/why.svg",
+            "Question": "為什麼要選擇Beyond？",
+            "Answer":[
+                {
+                    "Desc": "不僅為客戶提供專業的訓練課程，全面性關心您的營養攝取與身體相關指數等，提供適合您的客製化訓練與放鬆，並以信託做履約保證......。這些優點使Beyond成為選擇私人教練的理想選擇。",
+                    "Table": "服務差異表",
+                    "TableNote": "※△：少數有",
+                    "TableRow1": "Beyond<br />Fitness",
+                    "TableRow1": "其他",
+                    "TableColumn1": "國際<br />證照保障",
+                    "TableColumn2": "客戶<br />專屬系統",
+                    "TableColumn3": "健康<br />部門服務",
+                    "TableColumn4": "系統化<br />客製課表",
+                    "TableColumn5": "場內<br />人數控管",
+                    "TableColumn6": "信託<br />法律保障",
+                    "TableColumn7": "教練<br />專業考評",
+                    "TableColumn8": "公司<br />定期進修"
+                }
+            ]
+
+        },
+        {
+            "ID": "Q2",
+            "Icon": "images/icons/clock.svg",
+            "Question": "除了教練之外，平時也可以去 Beyond 運動嗎？",
+            "Answer": [
+                {
+                    "Subject": "除了教練課，<br class=\"hidden-sm-down\" />其他時段<br class=\"hidden-sm-up\" />也可以到Beyond運動。",
+                    "Desc": "為了提供客戶最好的運動品質，Beyond會進行場地人數的管控。只要您是Beyond Fitness的客戶，都可以在非教練課程的其他時段，與教練事先進行預約登記。並且搭配為您規劃的專業自主訓練P.I Session課表，隨時讓您享受運動帶來的樂趣。"
+                }
+            ],
+        }, 
+        {
+            "ID": "Q3",
+            "Icon": "images/icons/money.svg",
+            "Question": "服務收費方式？",
+            "Answer": [
+                {
+                    "Items": [
+                        {
+                            "Content": "私人運動訓練(實體\\遠端)"
+                        },
+                        {
+                            "Content": "營養諮詢與規劃"
+                        },
+                        {
+                            "Content": "運動傷害防護"
+                        },
+                        {
+                            "Content": "運動按摩與恢復"
+                        }
+                    ],
+                    "Types": [
+                        {
+                            "ID": "A",
+                            "Name": "實體「一對一」私人訓練",
+                            "Content": "<p class=\"bg-color-primary border-radius-10 py-2 my-4 text-center mx-4 mx-xl-5 mx-lg-3 mx-md-4\">約＄1,800~$1,900 NT / 單堂</p><p class=\"px-4 px-xl-5 px-lg-2 mx-md-2\">一對一客製化訓練課程價格，會依照您的目標、規劃時間長短及堂數而有所不同。</p>" 
+                        },
+                        {
+                            "ID": "B",
+                            "Name": "其他服務收費方式",
+                            "Content": "<p class=\"py-4 px-4 px-xl-4 px-lg-3\">「遠端訓練課程」、「營養諮詢規劃」、「運動傷害防護」與「運動按摩與恢復」等服務，則會依照您的實際需求與運動狀況，作費用相關調整，協助您達到最大的成功。</p>" 
+                        },
+                    ]
+                },
+            ],
+        },          
+        {
+            "ID": "Q4",
+            "Icon": "images/icons/location.svg",
+            "Question": "如何前往Beyond？",
+            "Answer":[
+                {
+                    "Subject": "前往Beyond的方式",
+                    "TypeA":"開車徒步",
+                    "TypeB": "捷運"
+                }
+            ]
+        },
+        {
+            "ID": "Q5",
+            "Icon": "images/icons/coach.svg",
+            "Question": "可不可以指定教練？",
+            "Answer": [
+                {
+                    "Subject": "Beyond協助您，<br />找到合適的私人教練",
+                    "Desc": "Beyond的使命是協助您找到那位與您志同道合、能夠提供最佳指導的私人教練。無論是運動或者生活上的目標，Beyond都會為您提供最專業、個人化的教練服務。",
+                    "Items": [
+                        {
+                            "Author": "Sabrina",
+                            "Subject": "「我以為的適合，<br/>真的適合我嗎？」",
+                            "Content": "我們常常以為某選擇適合自己，但真正的適合不經一番體驗，難以知道是否正確...",
+                            "LinkID": "81296",
+                        },
+                        {
+                            "Author": "Bill",
+                            "Subject": "能夠看懂你的問題，<br />比解決你的問題更重要！",
+                            "Content": "在這個快節奏的世界中，我們常常急於解決困難，卻忽略了真正的需求重要性....",
+                            "LinkID": "81297",
+                        },
+                    ]
+                }
+            ]
+
+        }
+    ]
+}

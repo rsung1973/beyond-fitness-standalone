@@ -125,7 +125,9 @@ namespace WebHome.Properties
 
         public String BFDbConnection { get; set; }
 
-        public String GA_Key { get; set; } = "G-HX15C1DBGK";
+        public String GA_Key { get; set; } = "G-Y4MTSQRG5E";
+
+        public String GTM_Key { get; set; } = "GTM-MPFS89SL";
 
     }
 

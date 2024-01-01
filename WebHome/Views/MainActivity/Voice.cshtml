@@ -282,7 +282,7 @@
                             class="text-color-tertiary pe-2">「</span>@Html.Raw(voice["Conclusion"])<span
                             class="text-color-tertiary pe-2">」</span></h3>
                     <p class="text-color-grey">@Html.Raw(joinUsAll.InviteMessage)</p>
-                    <a href="javascript:bindTrackingCode('null', 'null', '@(Url.Action("JoinUs", "Official"))', null)"
+                    <a href="@(Url.Action("JoinUs", "Official"))"
                         class="btn bg-color-dark border-color-light text-color-light btn-rounded fst-italic mt-5 px-5">@Html.Raw(commonAll.JoinUsGo)</a>
                 </div>
             </div>

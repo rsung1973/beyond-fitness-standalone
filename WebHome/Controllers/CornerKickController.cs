@@ -501,6 +501,24 @@ namespace WebHome.Controllers
                         item.LessonPlan.CommitAttendance = DateTime.Now;
                         item.LessonPlan.CommitAttendanceIP = ip;
                         models.SubmitChanges();
+
+                        var lesson = item.RegisterLesson;
+                        if (lesson.LessonPriceType.Status != (int)Naming.LessonPriceStatus.在家訓練
+                                            && lesson.LessonPriceType.Status != (int)Naming.LessonPriceStatus.教練PI
+                                            && lesson.LessonPriceType.Status != (int)Naming.LessonPriceStatus.點數兌換課程)
+                        {
+                            if (!models.GetTable<PromptLessonQuestion>().Any(p => p.LessonID == item.LessonID))
+                            {
+                                models.GetTable<PromptLessonQuestion>().InsertAllOnSubmit(item.GroupingLesson.RegisterLesson
+                                    .Select(r => new PromptLessonQuestion
+                                    {
+                                        LessonID = item.LessonID,
+                                        UID = r.UID
+                                    }));
+
+                                models.SubmitChanges();
+                            }
+                        }
                     }
                 }
             }
@@ -1092,6 +1110,43 @@ namespace WebHome.Controllers
                 UID = profile.UID,
                 TaskDate = DateTime.Now
             };
+
+            var promptItems = models.GetTable<PromptLessonQuestion>()
+                .Where(p => !p.TaskID.HasValue)
+                .Where(t => t.UID == profile.UID);
+
+            if (promptItems.Any())
+            {
+                bool hasPrompt = false;
+                foreach (var promptItem in promptItems)
+                {
+                    if (!models.GetTable<PromptLessonRequirement>().Any(p => p.PriceID == promptItem.LessonTime.RegisterLesson.ClassLevel))
+                    {
+                        hasPrompt = true;
+                        promptItem.PDQTask = taskItem;
+                        break;
+                    }
+                }
+
+                if (!hasPrompt)
+                {
+                    var groupItems = promptItems.GroupBy(l => l.LessonTime.RegisterLesson.LessonPriceType.PromptLessonRequirement);
+                    foreach (var g in groupItems)
+                    {
+                        if (g.Count() >= g.Key.RequiredCount)
+                        {
+                            hasPrompt = true;
+                            g.Take(g.Key.RequiredCount.Value).ToList()
+                                .ForEach(p =>
+                                {
+                                    p.PDQTask = taskItem;
+                                });
+                            break;
+                        }
+                    }
+                }
+            }
+
             models.GetTable<PDQTask>().InsertOnSubmit(taskItem);
             models.SubmitChanges();
 

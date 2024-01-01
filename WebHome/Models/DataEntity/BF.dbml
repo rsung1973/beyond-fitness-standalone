@@ -433,6 +433,7 @@
       <Column Name="QuestionnaireID" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Association Name="PDQTask_PDQTaskBonus" Member="PDQTaskBonus" ThisKey="TaskID" OtherKey="TaskID" Type="PDQTaskBonus" Cardinality="One" />
       <Association Name="PDQTask_PDQTaskItem" Member="PDQTaskItem" ThisKey="TaskID" OtherKey="TaskID" Type="PDQTaskItem" />
+      <Association Name="PDQTask_PromptLessonQuestion" Member="PromptLessonQuestion" ThisKey="TaskID" OtherKey="TaskID" Type="PromptLessonQuestion" />
       <Association Name="PDQQuestion_PDQTask" Member="PDQQuestion" ThisKey="QuestionID" OtherKey="QuestionID" Type="PDQQuestion" IsForeignKey="true" />
       <Association Name="PDQSuggestion_PDQTask" Member="PDQSuggestion" ThisKey="SuggestionID" OtherKey="SuggestionID" Type="PDQSuggestion" IsForeignKey="true" DeleteRule="CASCADE" />
       <Association Name="UserProfile_PDQTask" Member="UserProfile" ThisKey="UID" OtherKey="UID" Type="UserProfile" IsForeignKey="true" />
@@ -851,6 +852,7 @@
       <Association Name="LessonPriceType_LessonPriceExchange1" Member="AsExchangedPriceItem" ThisKey="PriceID" OtherKey="TargetID" Type="LessonPriceExchange" />
       <Association Name="LessonPriceType_CourseContractLessonExchange" Member="CourseContractLessonExchange" ThisKey="PriceID" OtherKey="TargetPriceID" Type="CourseContractLessonExchange" />
       <Association Name="LessonPriceType_CourseContractExtension" Member="CourseContractExtension" ThisKey="PriceID" OtherKey="UnitPriceID" Type="CourseContractExtension" />
+      <Association Name="LessonPriceType_PromptLessonRequirement" Member="PromptLessonRequirement" ThisKey="PriceID" OtherKey="PriceID" Type="PromptLessonRequirement" Cardinality="One" />
       <Association Name="LessonPriceSeries_LessonPriceType" Member="CurrentPriceSeries" Storage="_PriceSeries" ThisKey="SeriesID" OtherKey="PriceID" Type="LessonPriceSeries" IsForeignKey="true" />
       <Association Name="LevelExpression_LessonPriceType" Member="LevelExpression" ThisKey="Status" OtherKey="LevelID" Type="LevelExpression" IsForeignKey="true" />
       <Association Name="BranchStore_LessonPriceType" Member="BranchStore" ThisKey="BranchID" OtherKey="BranchID" Type="BranchStore" IsForeignKey="true" />
@@ -1016,6 +1018,7 @@
       <Column Name="PIN" Type="System.String" DbType="NVarChar(64)" CanBeNull="true" />
       <Column Name="PINExpiration" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Column Name="AttendanceSignature" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="CountryCode" Type="System.String" DbType="NVarChar(8)" CanBeNull="true" />
       <Association Name="UserProfile_UserProfileExtension" Member="UserProfile" ThisKey="UID" OtherKey="UID" Type="UserProfile" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
@@ -1910,6 +1913,7 @@
       <Association Name="LessonTime_RegisterLessonBooking" Member="RegisterLessonBooking" ThisKey="LessonID" OtherKey="LessonID" Type="RegisterLessonBooking" />
       <Association Name="LessonTime_LessonTimeExpansion" Member="LessonTimeExpansion" ThisKey="LessonID" OtherKey="LessonID" Type="LessonTimeExpansion" />
       <Association Name="LessonTime_LessonPlan" Member="LessonPlan" ThisKey="LessonID" OtherKey="LessonID" Type="LessonPlan" Cardinality="One" />
+      <Association Name="LessonTime_PromptLessonQuestion" Member="PromptLessonQuestion" ThisKey="LessonID" OtherKey="LessonID" Type="PromptLessonQuestion" />
       <Association Name="BranchStore_LessonTime" Member="BranchStore" ThisKey="BranchID" OtherKey="BranchID" Type="BranchStore" IsForeignKey="true" />
       <Association Name="DailyWorkingHour_LessonTime" Member="DailyWorkingHour" ThisKey="HourOfClassTime" OtherKey="Hour" Type="DailyWorkingHour" IsForeignKey="true" />
       <Association Name="GroupingLesson_LessonTime" Member="GroupingLesson" ThisKey="GroupID" OtherKey="GroupID" Type="GroupingLesson" IsForeignKey="true" />
@@ -3100,6 +3104,22 @@
       <Column Name="BranchTotalPTCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="BranchTotalPTTuition" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="AttendedShare" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="Report.PromptLessonQuestion" Member="PromptLessonQuestion">
+    <Type Name="PromptLessonQuestion">
+      <Column Name="LessonID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="UID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="TaskID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="LessonTime_PromptLessonQuestion" Member="LessonTime" ThisKey="LessonID" OtherKey="LessonID" Type="LessonTime" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="PDQTask_PromptLessonQuestion" Member="PDQTask" ThisKey="TaskID" OtherKey="TaskID" Type="PDQTask" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="Report.PromptLessonRequirement" Member="PromptLessonRequirement">
+    <Type Name="PromptLessonRequirement">
+      <Column Name="PriceID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="RequiredCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="LessonPriceType_PromptLessonRequirement" Member="LessonPriceType" ThisKey="PriceID" OtherKey="PriceID" Type="LessonPriceType" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
   <Function Name="dbo.InquireVacantNo" Method="InquireVacantNo">

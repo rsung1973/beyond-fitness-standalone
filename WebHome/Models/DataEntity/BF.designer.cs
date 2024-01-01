@@ -687,6 +687,12 @@ namespace WebHome.Models.DataEntity
     partial void InsertLessonPlan(LessonPlan instance);
     partial void UpdateLessonPlan(LessonPlan instance);
     partial void DeleteLessonPlan(LessonPlan instance);
+    partial void InsertPromptLessonQuestion(PromptLessonQuestion instance);
+    partial void UpdatePromptLessonQuestion(PromptLessonQuestion instance);
+    partial void DeletePromptLessonQuestion(PromptLessonQuestion instance);
+    partial void InsertPromptLessonRequirement(PromptLessonRequirement instance);
+    partial void UpdatePromptLessonRequirement(PromptLessonRequirement instance);
+    partial void DeletePromptLessonRequirement(PromptLessonRequirement instance);
     #endregion
 		
 		public BFDataContext(string connection) : 
@@ -2558,6 +2564,22 @@ namespace WebHome.Models.DataEntity
 			get
 			{
 				return this.GetTable<V_YearlyReview>();
+			}
+		}
+		
+		public System.Data.Linq.Table<PromptLessonQuestion> PromptLessonQuestion
+		{
+			get
+			{
+				return this.GetTable<PromptLessonQuestion>();
+			}
+		}
+		
+		public System.Data.Linq.Table<PromptLessonRequirement> PromptLessonRequirement
+		{
+			get
+			{
+				return this.GetTable<PromptLessonRequirement>();
 			}
 		}
 		
@@ -12499,6 +12521,8 @@ namespace WebHome.Models.DataEntity
 		
 		private EntitySet<PDQTaskItem> _PDQTaskItem;
 		
+		private EntitySet<PromptLessonQuestion> _PromptLessonQuestion;
+		
 		private EntityRef<PDQQuestion> _PDQQuestion;
 		
 		private EntityRef<PDQSuggestion> _PDQSuggestion;
@@ -12533,6 +12557,7 @@ namespace WebHome.Models.DataEntity
 		{
 			this._PDQTaskBonus = default(EntityRef<PDQTaskBonus>);
 			this._PDQTaskItem = new EntitySet<PDQTaskItem>(new Action<PDQTaskItem>(this.attach_PDQTaskItem), new Action<PDQTaskItem>(this.detach_PDQTaskItem));
+			this._PromptLessonQuestion = new EntitySet<PromptLessonQuestion>(new Action<PromptLessonQuestion>(this.attach_PromptLessonQuestion), new Action<PromptLessonQuestion>(this.detach_PromptLessonQuestion));
 			this._PDQQuestion = default(EntityRef<PDQQuestion>);
 			this._PDQSuggestion = default(EntityRef<PDQSuggestion>);
 			this._UserProfile = default(EntityRef<UserProfile>);
@@ -12758,6 +12783,19 @@ namespace WebHome.Models.DataEntity
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PDQTask_PromptLessonQuestion", Storage="_PromptLessonQuestion", ThisKey="TaskID", OtherKey="TaskID")]
+		public EntitySet<PromptLessonQuestion> PromptLessonQuestion
+		{
+			get
+			{
+				return this._PromptLessonQuestion;
+			}
+			set
+			{
+				this._PromptLessonQuestion.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PDQQuestion_PDQTask", Storage="_PDQQuestion", ThisKey="QuestionID", OtherKey="QuestionID", IsForeignKey=true)]
 		public PDQQuestion PDQQuestion
 		{
@@ -12921,6 +12959,18 @@ namespace WebHome.Models.DataEntity
 		}
 		
 		private void detach_PDQTaskItem(PDQTaskItem entity)
+		{
+			this.SendPropertyChanging();
+			entity.PDQTask = null;
+		}
+		
+		private void attach_PromptLessonQuestion(PromptLessonQuestion entity)
+		{
+			this.SendPropertyChanging();
+			entity.PDQTask = this;
+		}
+		
+		private void detach_PromptLessonQuestion(PromptLessonQuestion entity)
 		{
 			this.SendPropertyChanging();
 			entity.PDQTask = null;
@@ -20998,6 +21048,8 @@ namespace WebHome.Models.DataEntity
 		
 		private EntitySet<CourseContractExtension> _CourseContractExtension;
 		
+		private EntityRef<PromptLessonRequirement> _PromptLessonRequirement;
+		
 		private EntityRef<LessonPriceSeries> _PriceSeries;
 		
 		private EntityRef<LevelExpression> _LevelExpression;
@@ -21064,6 +21116,7 @@ namespace WebHome.Models.DataEntity
 			this._AsExchangedPriceItem = new EntitySet<LessonPriceExchange>(new Action<LessonPriceExchange>(this.attach_AsExchangedPriceItem), new Action<LessonPriceExchange>(this.detach_AsExchangedPriceItem));
 			this._CourseContractLessonExchange = new EntitySet<CourseContractLessonExchange>(new Action<CourseContractLessonExchange>(this.attach_CourseContractLessonExchange), new Action<CourseContractLessonExchange>(this.detach_CourseContractLessonExchange));
 			this._CourseContractExtension = new EntitySet<CourseContractExtension>(new Action<CourseContractExtension>(this.attach_CourseContractExtension), new Action<CourseContractExtension>(this.detach_CourseContractExtension));
+			this._PromptLessonRequirement = default(EntityRef<PromptLessonRequirement>);
 			this._PriceSeries = default(EntityRef<LessonPriceSeries>);
 			this._LevelExpression = default(EntityRef<LevelExpression>);
 			this._BranchStore = default(EntityRef<BranchStore>);
@@ -21702,6 +21755,35 @@ namespace WebHome.Models.DataEntity
 			set
 			{
 				this._CourseContractExtension.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="LessonPriceType_PromptLessonRequirement", Storage="_PromptLessonRequirement", ThisKey="PriceID", OtherKey="PriceID", IsUnique=true, IsForeignKey=false)]
+		public PromptLessonRequirement PromptLessonRequirement
+		{
+			get
+			{
+				return this._PromptLessonRequirement.Entity;
+			}
+			set
+			{
+				PromptLessonRequirement previousValue = this._PromptLessonRequirement.Entity;
+				if (((previousValue != value) 
+							|| (this._PromptLessonRequirement.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._PromptLessonRequirement.Entity = null;
+						previousValue.LessonPriceType = null;
+					}
+					this._PromptLessonRequirement.Entity = value;
+					if ((value != null))
+					{
+						value.LessonPriceType = this;
+					}
+					this.SendPropertyChanged("PromptLessonRequirement");
+				}
 			}
 		}
 		
@@ -25533,6 +25615,8 @@ namespace WebHome.Models.DataEntity
 		
 		private System.Nullable<bool> _AttendanceSignature;
 		
+		private string _CountryCode;
+		
 		private EntityRef<UserProfile> _UserProfile;
 		
     #region 擴充性方法定義
@@ -25577,6 +25661,8 @@ namespace WebHome.Models.DataEntity
     partial void OnPINExpirationChanged();
     partial void OnAttendanceSignatureChanging(System.Nullable<bool> value);
     partial void OnAttendanceSignatureChanged();
+    partial void OnCountryCodeChanging(string value);
+    partial void OnCountryCodeChanged();
     #endregion
 		
 		public UserProfileExtension()
@@ -25965,6 +26051,26 @@ namespace WebHome.Models.DataEntity
 					this._AttendanceSignature = value;
 					this.SendPropertyChanged("AttendanceSignature");
 					this.OnAttendanceSignatureChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CountryCode", DbType="NVarChar(8)")]
+		public string CountryCode
+		{
+			get
+			{
+				return this._CountryCode;
+			}
+			set
+			{
+				if ((this._CountryCode != value))
+				{
+					this.OnCountryCodeChanging(value);
+					this.SendPropertyChanging();
+					this._CountryCode = value;
+					this.SendPropertyChanged("CountryCode");
+					this.OnCountryCodeChanged();
 				}
 			}
 		}
@@ -45074,6 +45180,8 @@ namespace WebHome.Models.DataEntity
 		
 		private EntityRef<LessonPlan> _LessonPlan;
 		
+		private EntitySet<PromptLessonQuestion> _PromptLessonQuestion;
+		
 		private EntityRef<BranchStore> _BranchStore;
 		
 		private EntityRef<DailyWorkingHour> _DailyWorkingHour;
@@ -45128,6 +45236,7 @@ namespace WebHome.Models.DataEntity
 			this._RegisterLessonBooking = new EntitySet<RegisterLessonBooking>(new Action<RegisterLessonBooking>(this.attach_RegisterLessonBooking), new Action<RegisterLessonBooking>(this.detach_RegisterLessonBooking));
 			this._LessonTimeExpansion = new EntitySet<LessonTimeExpansion>(new Action<LessonTimeExpansion>(this.attach_LessonTimeExpansion), new Action<LessonTimeExpansion>(this.detach_LessonTimeExpansion));
 			this._LessonPlan = default(EntityRef<LessonPlan>);
+			this._PromptLessonQuestion = new EntitySet<PromptLessonQuestion>(new Action<PromptLessonQuestion>(this.attach_PromptLessonQuestion), new Action<PromptLessonQuestion>(this.detach_PromptLessonQuestion));
 			this._BranchStore = default(EntityRef<BranchStore>);
 			this._DailyWorkingHour = default(EntityRef<DailyWorkingHour>);
 			this._GroupingLesson = default(EntityRef<GroupingLesson>);
@@ -45633,6 +45742,19 @@ namespace WebHome.Models.DataEntity
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="LessonTime_PromptLessonQuestion", Storage="_PromptLessonQuestion", ThisKey="LessonID", OtherKey="LessonID")]
+		public EntitySet<PromptLessonQuestion> PromptLessonQuestion
+		{
+			get
+			{
+				return this._PromptLessonQuestion;
+			}
+			set
+			{
+				this._PromptLessonQuestion.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="BranchStore_LessonTime", Storage="_BranchStore", ThisKey="BranchID", OtherKey="BranchID", IsForeignKey=true)]
 		public BranchStore BranchStore
 		{
@@ -45924,6 +46046,18 @@ namespace WebHome.Models.DataEntity
 		}
 		
 		private void detach_LessonTimeExpansion(LessonTimeExpansion entity)
+		{
+			this.SendPropertyChanging();
+			entity.LessonTime = null;
+		}
+		
+		private void attach_PromptLessonQuestion(PromptLessonQuestion entity)
+		{
+			this.SendPropertyChanging();
+			entity.LessonTime = this;
+		}
+		
+		private void detach_PromptLessonQuestion(PromptLessonQuestion entity)
 		{
 			this.SendPropertyChanging();
 			entity.LessonTime = null;
@@ -70693,6 +70827,325 @@ namespace WebHome.Models.DataEntity
 				{
 					this._AttendedShare = value;
 				}
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="Report.PromptLessonQuestion")]
+	public partial class PromptLessonQuestion : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _LessonID;
+		
+		private int _UID;
+		
+		private System.Nullable<int> _TaskID;
+		
+		private EntityRef<LessonTime> _LessonTime;
+		
+		private EntityRef<PDQTask> _PDQTask;
+		
+    #region 擴充性方法定義
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnLessonIDChanging(int value);
+    partial void OnLessonIDChanged();
+    partial void OnUIDChanging(int value);
+    partial void OnUIDChanged();
+    partial void OnTaskIDChanging(System.Nullable<int> value);
+    partial void OnTaskIDChanged();
+    #endregion
+		
+		public PromptLessonQuestion()
+		{
+			this._LessonTime = default(EntityRef<LessonTime>);
+			this._PDQTask = default(EntityRef<PDQTask>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LessonID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int LessonID
+		{
+			get
+			{
+				return this._LessonID;
+			}
+			set
+			{
+				if ((this._LessonID != value))
+				{
+					if (this._LessonTime.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnLessonIDChanging(value);
+					this.SendPropertyChanging();
+					this._LessonID = value;
+					this.SendPropertyChanged("LessonID");
+					this.OnLessonIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int UID
+		{
+			get
+			{
+				return this._UID;
+			}
+			set
+			{
+				if ((this._UID != value))
+				{
+					this.OnUIDChanging(value);
+					this.SendPropertyChanging();
+					this._UID = value;
+					this.SendPropertyChanged("UID");
+					this.OnUIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TaskID", DbType="Int")]
+		public System.Nullable<int> TaskID
+		{
+			get
+			{
+				return this._TaskID;
+			}
+			set
+			{
+				if ((this._TaskID != value))
+				{
+					if (this._PDQTask.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnTaskIDChanging(value);
+					this.SendPropertyChanging();
+					this._TaskID = value;
+					this.SendPropertyChanged("TaskID");
+					this.OnTaskIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="LessonTime_PromptLessonQuestion", Storage="_LessonTime", ThisKey="LessonID", OtherKey="LessonID", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public LessonTime LessonTime
+		{
+			get
+			{
+				return this._LessonTime.Entity;
+			}
+			set
+			{
+				LessonTime previousValue = this._LessonTime.Entity;
+				if (((previousValue != value) 
+							|| (this._LessonTime.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._LessonTime.Entity = null;
+						previousValue.PromptLessonQuestion.Remove(this);
+					}
+					this._LessonTime.Entity = value;
+					if ((value != null))
+					{
+						value.PromptLessonQuestion.Add(this);
+						this._LessonID = value.LessonID;
+					}
+					else
+					{
+						this._LessonID = default(int);
+					}
+					this.SendPropertyChanged("LessonTime");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PDQTask_PromptLessonQuestion", Storage="_PDQTask", ThisKey="TaskID", OtherKey="TaskID", IsForeignKey=true)]
+		public PDQTask PDQTask
+		{
+			get
+			{
+				return this._PDQTask.Entity;
+			}
+			set
+			{
+				PDQTask previousValue = this._PDQTask.Entity;
+				if (((previousValue != value) 
+							|| (this._PDQTask.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._PDQTask.Entity = null;
+						previousValue.PromptLessonQuestion.Remove(this);
+					}
+					this._PDQTask.Entity = value;
+					if ((value != null))
+					{
+						value.PromptLessonQuestion.Add(this);
+						this._TaskID = value.TaskID;
+					}
+					else
+					{
+						this._TaskID = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("PDQTask");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="Report.PromptLessonRequirement")]
+	public partial class PromptLessonRequirement : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _PriceID;
+		
+		private System.Nullable<int> _RequiredCount;
+		
+		private EntityRef<LessonPriceType> _LessonPriceType;
+		
+    #region 擴充性方法定義
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnPriceIDChanging(int value);
+    partial void OnPriceIDChanged();
+    partial void OnRequiredCountChanging(System.Nullable<int> value);
+    partial void OnRequiredCountChanged();
+    #endregion
+		
+		public PromptLessonRequirement()
+		{
+			this._LessonPriceType = default(EntityRef<LessonPriceType>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PriceID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int PriceID
+		{
+			get
+			{
+				return this._PriceID;
+			}
+			set
+			{
+				if ((this._PriceID != value))
+				{
+					if (this._LessonPriceType.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnPriceIDChanging(value);
+					this.SendPropertyChanging();
+					this._PriceID = value;
+					this.SendPropertyChanged("PriceID");
+					this.OnPriceIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RequiredCount", DbType="Int")]
+		public System.Nullable<int> RequiredCount
+		{
+			get
+			{
+				return this._RequiredCount;
+			}
+			set
+			{
+				if ((this._RequiredCount != value))
+				{
+					this.OnRequiredCountChanging(value);
+					this.SendPropertyChanging();
+					this._RequiredCount = value;
+					this.SendPropertyChanged("RequiredCount");
+					this.OnRequiredCountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="LessonPriceType_PromptLessonRequirement", Storage="_LessonPriceType", ThisKey="PriceID", OtherKey="PriceID", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public LessonPriceType LessonPriceType
+		{
+			get
+			{
+				return this._LessonPriceType.Entity;
+			}
+			set
+			{
+				LessonPriceType previousValue = this._LessonPriceType.Entity;
+				if (((previousValue != value) 
+							|| (this._LessonPriceType.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._LessonPriceType.Entity = null;
+						previousValue.PromptLessonRequirement = null;
+					}
+					this._LessonPriceType.Entity = value;
+					if ((value != null))
+					{
+						value.PromptLessonRequirement = this;
+						this._PriceID = value.PriceID;
+					}
+					else
+					{
+						this._PriceID = default(int);
+					}
+					this.SendPropertyChanged("LessonPriceType");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
 		}
 	}
