@@ -94,6 +94,8 @@ h1 {
 }
 li {
   letter-spacing: 1px;
+  hyphens: auto;
+  text-align: justify;
 }
 section.section.section-text-light p {
   color: #FFF;

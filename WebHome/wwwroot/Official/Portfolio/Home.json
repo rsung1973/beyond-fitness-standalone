@@ -8,7 +8,7 @@
     // "FindHeader1": "找尋更多 BEYOND",
     // "FindHeader2": "合作夥伴 OUR PARTNER",
     "CentralAxisSlogan": "Beyond陪伴您<br class=\"hidden-sm-up\" />找到心中的自己",
-    "CentralAxisSloganDesc": "用心，認真看待每一個人，<br />是我們堅持的專業精神。",
+    "CentralAxisSloganDesc": "用心，認真看待每一個人，<br />是<span class=\"text-color-tertiary px-1\">Beyond</span>堅持的專業精神。",
     "CentralAxisDescLg": "專注傾聽您的需求<Br />協助您一步一步找到心中所屬的方向。<Br />當您變得閃閃發亮時，是我們再自豪不過的事。<br />我們將以熱情與專業之心，為您打造獨一無二的運動體驗。",
     "CentralAxisDescSm": "專注傾聽您的需求<Br />協助您一步一步<Br />找到心中所屬的方向<Br /><Br />當您變得閃閃發亮時，<Br />是我們再自豪不過的事。<br />我們將以熱情與專業之心，<br />為您打造獨一無二的運動體驗。",
     "YoutubeSlogan": "Beyond <br />Personal Coach",
@@ -23,6 +23,7 @@
     "KeyPoint_3_Subject": "Our Commitment",    
     "Voice": "VOICE•",
     "VoiceDesc": "我們的聲音",
+    "VoiceSlogan": "找到一位<br />讓你喜歡自己，<br />並更了解自己的教練。",
     "VoiceItem": [
         {
             "Type": "Blog",
@@ -76,9 +77,10 @@
     ],
     "News": "News•",    
     "NewsDesc": "最新文章",
-    "BookSlogan": "您在這裡，<br />因為.....",
-    "BookDesc1": "您有理想的生活目標或夢想嗎？<br />當您決定踏進健身房，面對著陌生不安的感覺，<br />是否也在疑惑：「我真的能夠改變嗎？」",
-    "BookDesc2": "即刻前往預約體驗，<br />讓Beyond成為與您一起實現改變之旅的最佳夥伴！",
+    "BookSlogan": "選擇<span class=\"text-color-tertiary ps-2\">Byoned</span>，<br />你的最佳夥伴。",
+    "BookDesc1": "當您決定踏進健身房，面對著陌生不安的感覺，<br class=\"hidden-md-down\" />是否也在疑惑：「我真的能夠改變嗎？」",
+    "BookDesc2": "即刻前往預約體驗 ， <br class=\"d-block d-lg-block d-md-none\" />讓Beyond成為與您一起<br class=\"d-block d-lg-none d-md-none\" />實現改變之旅的最佳夥伴！",
+    "BookButton": "Let's get start!",
     "Location": "Location•",
     "LocationDesc": "分店資訊"
 }
