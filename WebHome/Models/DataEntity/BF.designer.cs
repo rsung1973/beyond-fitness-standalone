@@ -582,9 +582,6 @@ namespace WebHome.Models.DataEntity
     partial void InsertBranchMonthlySummary(BranchMonthlySummary instance);
     partial void UpdateBranchMonthlySummary(BranchMonthlySummary instance);
     partial void DeleteBranchMonthlySummary(BranchMonthlySummary instance);
-    partial void InsertForEmployee(ForEmployee instance);
-    partial void UpdateForEmployee(ForEmployee instance);
-    partial void DeleteForEmployee(ForEmployee instance);
     partial void InsertMonthlySalary(MonthlySalary instance);
     partial void UpdateMonthlySalary(MonthlySalary instance);
     partial void DeleteMonthlySalary(MonthlySalary instance);
@@ -693,6 +690,9 @@ namespace WebHome.Models.DataEntity
     partial void InsertPromptLessonRequirement(PromptLessonRequirement instance);
     partial void UpdatePromptLessonRequirement(PromptLessonRequirement instance);
     partial void DeletePromptLessonRequirement(PromptLessonRequirement instance);
+    partial void InsertForEmployee(ForEmployee instance);
+    partial void UpdateForEmployee(ForEmployee instance);
+    partial void DeleteForEmployee(ForEmployee instance);
     #endregion
 		
 		public BFDataContext(string connection) : 
@@ -2239,14 +2239,6 @@ namespace WebHome.Models.DataEntity
 			}
 		}
 		
-		public System.Data.Linq.Table<ForEmployee> ForEmployee
-		{
-			get
-			{
-				return this.GetTable<ForEmployee>();
-			}
-		}
-		
 		public System.Data.Linq.Table<MonthlySalary> MonthlySalary
 		{
 			get
@@ -2580,6 +2572,14 @@ namespace WebHome.Models.DataEntity
 			get
 			{
 				return this.GetTable<PromptLessonRequirement>();
+			}
+		}
+		
+		public System.Data.Linq.Table<ForEmployee> ForEmployee
+		{
+			get
+			{
+				return this.GetTable<ForEmployee>();
 			}
 		}
 		
@@ -5624,8 +5624,6 @@ namespace WebHome.Models.DataEntity
 		
 		private EntityRef<EmployeeSalaryExtension> _EmployeeSalaryExtension;
 		
-		private EntityRef<ForEmployee> _ForEmployee;
-		
 		private EntitySet<MonthlySalaryDetails> _MonthlySalaryDetails;
 		
 		private EntitySet<UserRelationship> _UserRelationship;
@@ -5645,6 +5643,8 @@ namespace WebHome.Models.DataEntity
 		private EntitySet<TrialLearner> _TrialLearner;
 		
 		private EntitySet<TrialLearner> _TrialLearner1;
+		
+		private EntitySet<ForEmployee> _ForEmployee;
 		
 		private EntityRef<Attachment> _Attachment;
 		
@@ -5753,7 +5753,6 @@ namespace WebHome.Models.DataEntity
 			this._CreatedQuestionnaire = new EntitySet<QuestionnaireRequest>(new Action<QuestionnaireRequest>(this.attach_CreatedQuestionnaire), new Action<QuestionnaireRequest>(this.detach_CreatedQuestionnaire));
 			this._LessonAttendance = new EntitySet<LessonAttendance>(new Action<LessonAttendance>(this.attach_LessonAttendance), new Action<LessonAttendance>(this.detach_LessonAttendance));
 			this._EmployeeSalaryExtension = default(EntityRef<EmployeeSalaryExtension>);
-			this._ForEmployee = default(EntityRef<ForEmployee>);
 			this._MonthlySalaryDetails = new EntitySet<MonthlySalaryDetails>(new Action<MonthlySalaryDetails>(this.attach_MonthlySalaryDetails), new Action<MonthlySalaryDetails>(this.detach_MonthlySalaryDetails));
 			this._UserRelationship = new EntitySet<UserRelationship>(new Action<UserRelationship>(this.attach_UserRelationship), new Action<UserRelationship>(this.detach_UserRelationship));
 			this._AsRelationship = new EntitySet<UserRelationship>(new Action<UserRelationship>(this.attach_AsRelationship), new Action<UserRelationship>(this.detach_AsRelationship));
@@ -5764,6 +5763,7 @@ namespace WebHome.Models.DataEntity
 			this._CoachBRContract = new EntitySet<CourseContractExtension>(new Action<CourseContractExtension>(this.attach_CoachBRContract), new Action<CourseContractExtension>(this.detach_CoachBRContract));
 			this._TrialLearner = new EntitySet<TrialLearner>(new Action<TrialLearner>(this.attach_TrialLearner), new Action<TrialLearner>(this.detach_TrialLearner));
 			this._TrialLearner1 = new EntitySet<TrialLearner>(new Action<TrialLearner>(this.attach_TrialLearner1), new Action<TrialLearner>(this.detach_TrialLearner1));
+			this._ForEmployee = new EntitySet<ForEmployee>(new Action<ForEmployee>(this.attach_ForEmployee), new Action<ForEmployee>(this.detach_ForEmployee));
 			this._Attachment = default(EntityRef<Attachment>);
 			this._LevelExpression = default(EntityRef<LevelExpression>);
 			this._UserProfile1 = default(EntityRef<UserProfile>);
@@ -6956,35 +6956,6 @@ namespace WebHome.Models.DataEntity
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserProfile_ForEmployee", Storage="_ForEmployee", ThisKey="UID", OtherKey="UID", IsUnique=true, IsForeignKey=false)]
-		public ForEmployee ForEmployee
-		{
-			get
-			{
-				return this._ForEmployee.Entity;
-			}
-			set
-			{
-				ForEmployee previousValue = this._ForEmployee.Entity;
-				if (((previousValue != value) 
-							|| (this._ForEmployee.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._ForEmployee.Entity = null;
-						previousValue.UserProfile = null;
-					}
-					this._ForEmployee.Entity = value;
-					if ((value != null))
-					{
-						value.UserProfile = this;
-					}
-					this.SendPropertyChanged("ForEmployee");
-				}
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserProfile_MonthlySalaryDetails", Storage="_MonthlySalaryDetails", ThisKey="UID", OtherKey="UID")]
 		public EntitySet<MonthlySalaryDetails> MonthlySalaryDetails
 		{
@@ -7112,6 +7083,19 @@ namespace WebHome.Models.DataEntity
 			set
 			{
 				this._TrialLearner1.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserProfile_ForEmployee", Storage="_ForEmployee", ThisKey="UID", OtherKey="UID")]
+		public EntitySet<ForEmployee> ForEmployee
+		{
+			get
+			{
+				return this._ForEmployee;
+			}
+			set
+			{
+				this._ForEmployee.Assign(value);
 			}
 		}
 		
@@ -7893,6 +7877,18 @@ namespace WebHome.Models.DataEntity
 		{
 			this.SendPropertyChanging();
 			entity.Assignee = null;
+		}
+		
+		private void attach_ForEmployee(ForEmployee entity)
+		{
+			this.SendPropertyChanging();
+			entity.UserProfile = this;
+		}
+		
+		private void detach_ForEmployee(ForEmployee entity)
+		{
+			this.SendPropertyChanging();
+			entity.UserProfile = null;
 		}
 	}
 	
@@ -58575,6 +58571,8 @@ namespace WebHome.Models.DataEntity
 		
 		private System.Nullable<decimal> _AnnualGrade;
 		
+		private System.Nullable<int> _EmploymentGradeIndex;
+		
 		private EntitySet<ProfessionalLevelBasicSalary> _ProfessionalLevelBasicSalary;
 		
     #region 擴充性方法定義
@@ -58593,6 +58591,8 @@ namespace WebHome.Models.DataEntity
     partial void OnCommissionGradeChanged();
     partial void OnAnnualGradeChanging(System.Nullable<decimal> value);
     partial void OnAnnualGradeChanged();
+    partial void OnEmploymentGradeIndexChanging(System.Nullable<int> value);
+    partial void OnEmploymentGradeIndexChanged();
     #endregion
 		
 		public SalaryDetails()
@@ -58717,6 +58717,26 @@ namespace WebHome.Models.DataEntity
 					this._AnnualGrade = value;
 					this.SendPropertyChanged("AnnualGrade");
 					this.OnAnnualGradeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EmploymentGradeIndex", DbType="Int")]
+		public System.Nullable<int> EmploymentGradeIndex
+		{
+			get
+			{
+				return this._EmploymentGradeIndex;
+			}
+			set
+			{
+				if ((this._EmploymentGradeIndex != value))
+				{
+					this.OnEmploymentGradeIndexChanging(value);
+					this.SendPropertyChanging();
+					this._EmploymentGradeIndex = value;
+					this.SendPropertyChanged("EmploymentGradeIndex");
+					this.OnEmploymentGradeIndexChanged();
 				}
 			}
 		}
@@ -59254,157 +59274,6 @@ namespace WebHome.Models.DataEntity
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ForEmployee")]
-	public partial class ForEmployee : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _UID;
-		
-		private System.Nullable<System.DateTime> _EmploymentDate;
-		
-		private System.Nullable<System.DateTime> _LeavedDate;
-		
-		private EntityRef<UserProfile> _UserProfile;
-		
-    #region 擴充性方法定義
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnUIDChanging(int value);
-    partial void OnUIDChanged();
-    partial void OnEmploymentDateChanging(System.Nullable<System.DateTime> value);
-    partial void OnEmploymentDateChanged();
-    partial void OnLeavedDateChanging(System.Nullable<System.DateTime> value);
-    partial void OnLeavedDateChanged();
-    #endregion
-		
-		public ForEmployee()
-		{
-			this._UserProfile = default(EntityRef<UserProfile>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UID", DbType="Int NOT NULL", IsPrimaryKey=true)]
-		public int UID
-		{
-			get
-			{
-				return this._UID;
-			}
-			set
-			{
-				if ((this._UID != value))
-				{
-					if (this._UserProfile.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnUIDChanging(value);
-					this.SendPropertyChanging();
-					this._UID = value;
-					this.SendPropertyChanged("UID");
-					this.OnUIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EmploymentDate", DbType="Date")]
-		public System.Nullable<System.DateTime> EmploymentDate
-		{
-			get
-			{
-				return this._EmploymentDate;
-			}
-			set
-			{
-				if ((this._EmploymentDate != value))
-				{
-					this.OnEmploymentDateChanging(value);
-					this.SendPropertyChanging();
-					this._EmploymentDate = value;
-					this.SendPropertyChanged("EmploymentDate");
-					this.OnEmploymentDateChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LeavedDate", DbType="Date")]
-		public System.Nullable<System.DateTime> LeavedDate
-		{
-			get
-			{
-				return this._LeavedDate;
-			}
-			set
-			{
-				if ((this._LeavedDate != value))
-				{
-					this.OnLeavedDateChanging(value);
-					this.SendPropertyChanging();
-					this._LeavedDate = value;
-					this.SendPropertyChanged("LeavedDate");
-					this.OnLeavedDateChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserProfile_ForEmployee", Storage="_UserProfile", ThisKey="UID", OtherKey="UID", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		public UserProfile UserProfile
-		{
-			get
-			{
-				return this._UserProfile.Entity;
-			}
-			set
-			{
-				UserProfile previousValue = this._UserProfile.Entity;
-				if (((previousValue != value) 
-							|| (this._UserProfile.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._UserProfile.Entity = null;
-						previousValue.ForEmployee = null;
-					}
-					this._UserProfile.Entity = value;
-					if ((value != null))
-					{
-						value.ForEmployee = this;
-						this._UID = value.UID;
-					}
-					else
-					{
-						this._UID = default(int);
-					}
-					this.SendPropertyChanged("UserProfile");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="Report.MonthlySalary")]
 	public partial class MonthlySalary : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -59593,6 +59462,8 @@ namespace WebHome.Models.DataEntity
 		
 		private System.Nullable<int> _Pension;
 		
+		private System.Nullable<int> _StaffWelfareFund;
+		
 		private EntityRef<MonthlySalary> _MonthlySalary;
 		
 		private EntityRef<UserProfile> _UserProfile;
@@ -59647,6 +59518,8 @@ namespace WebHome.Models.DataEntity
     partial void OnHealthInsurranceByEmployerChanged();
     partial void OnPensionChanging(System.Nullable<int> value);
     partial void OnPensionChanged();
+    partial void OnStaffWelfareFundChanging(System.Nullable<int> value);
+    partial void OnStaffWelfareFundChanged();
     #endregion
 		
 		public MonthlySalaryDetails()
@@ -60105,6 +59978,26 @@ namespace WebHome.Models.DataEntity
 					this._Pension = value;
 					this.SendPropertyChanged("Pension");
 					this.OnPensionChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StaffWelfareFund", DbType="Int")]
+		public System.Nullable<int> StaffWelfareFund
+		{
+			get
+			{
+				return this._StaffWelfareFund;
+			}
+			set
+			{
+				if ((this._StaffWelfareFund != value))
+				{
+					this.OnStaffWelfareFundChanging(value);
+					this.SendPropertyChanging();
+					this._StaffWelfareFund = value;
+					this.SendPropertyChanged("StaffWelfareFund");
+					this.OnStaffWelfareFundChanged();
 				}
 			}
 		}
@@ -63603,6 +63496,14 @@ namespace WebHome.Models.DataEntity
 		
 		private System.Nullable<int> _AttendedShare;
 		
+		private System.Nullable<int> _EmploymentDurationGradeIndex;
+		
+		private System.Nullable<int> _TSAttendanceCount;
+		
+		private System.Nullable<decimal> _ManagementBonusGrade;
+		
+		private System.Nullable<int> _JobTenureInDays;
+		
 		private EntitySet<CoachBranchMonthlyBonus> _CoachBranchMonthlyBonus;
 		
 		private EntityRef<BranchStore> _BranchStore;
@@ -63657,6 +63558,14 @@ namespace WebHome.Models.DataEntity
     partial void OnAttendedByOtherAvgPriceChanged();
     partial void OnAttendedShareChanging(System.Nullable<int> value);
     partial void OnAttendedShareChanged();
+    partial void OnEmploymentDurationGradeIndexChanging(System.Nullable<int> value);
+    partial void OnEmploymentDurationGradeIndexChanged();
+    partial void OnTSAttendanceCountChanging(System.Nullable<int> value);
+    partial void OnTSAttendanceCountChanged();
+    partial void OnManagementBonusGradeChanging(System.Nullable<decimal> value);
+    partial void OnManagementBonusGradeChanged();
+    partial void OnJobTenureInDaysChanging(System.Nullable<int> value);
+    partial void OnJobTenureInDaysChanged();
     #endregion
 		
 		public CoachMonthlySalary()
@@ -64066,6 +63975,86 @@ namespace WebHome.Models.DataEntity
 					this._AttendedShare = value;
 					this.SendPropertyChanged("AttendedShare");
 					this.OnAttendedShareChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EmploymentDurationGradeIndex", DbType="Int")]
+		public System.Nullable<int> EmploymentDurationGradeIndex
+		{
+			get
+			{
+				return this._EmploymentDurationGradeIndex;
+			}
+			set
+			{
+				if ((this._EmploymentDurationGradeIndex != value))
+				{
+					this.OnEmploymentDurationGradeIndexChanging(value);
+					this.SendPropertyChanging();
+					this._EmploymentDurationGradeIndex = value;
+					this.SendPropertyChanged("EmploymentDurationGradeIndex");
+					this.OnEmploymentDurationGradeIndexChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TSAttendanceCount", DbType="Int")]
+		public System.Nullable<int> TSAttendanceCount
+		{
+			get
+			{
+				return this._TSAttendanceCount;
+			}
+			set
+			{
+				if ((this._TSAttendanceCount != value))
+				{
+					this.OnTSAttendanceCountChanging(value);
+					this.SendPropertyChanging();
+					this._TSAttendanceCount = value;
+					this.SendPropertyChanged("TSAttendanceCount");
+					this.OnTSAttendanceCountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ManagementBonusGrade", DbType="Decimal(6,4)")]
+		public System.Nullable<decimal> ManagementBonusGrade
+		{
+			get
+			{
+				return this._ManagementBonusGrade;
+			}
+			set
+			{
+				if ((this._ManagementBonusGrade != value))
+				{
+					this.OnManagementBonusGradeChanging(value);
+					this.SendPropertyChanging();
+					this._ManagementBonusGrade = value;
+					this.SendPropertyChanged("ManagementBonusGrade");
+					this.OnManagementBonusGradeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_JobTenureInDays", DbType="Int")]
+		public System.Nullable<int> JobTenureInDays
+		{
+			get
+			{
+				return this._JobTenureInDays;
+			}
+			set
+			{
+				if ((this._JobTenureInDays != value))
+				{
+					this.OnJobTenureInDaysChanging(value);
+					this.SendPropertyChanging();
+					this._JobTenureInDays = value;
+					this.SendPropertyChanged("JobTenureInDays");
+					this.OnJobTenureInDaysChanged();
 				}
 			}
 		}
@@ -68912,6 +68901,10 @@ namespace WebHome.Models.DataEntity
 		
 		private System.Nullable<bool> _IsClosed;
 		
+		private string _ContactSupplement;
+		
+		private string _AssignmentSupplement;
+		
 		private EntitySet<TrialLearnerPurpose> _TrialLearnerPurpose;
 		
 		private EntitySet<ContactTime> _ContactTime;
@@ -68962,6 +68955,10 @@ namespace WebHome.Models.DataEntity
     partial void OnReserveDateChanged();
     partial void OnIsClosedChanging(System.Nullable<bool> value);
     partial void OnIsClosedChanged();
+    partial void OnContactSupplementChanging(string value);
+    partial void OnContactSupplementChanged();
+    partial void OnAssignmentSupplementChanging(string value);
+    partial void OnAssignmentSupplementChanged();
     #endregion
 		
 		public TrialLearner()
@@ -69289,6 +69286,46 @@ namespace WebHome.Models.DataEntity
 					this._IsClosed = value;
 					this.SendPropertyChanged("IsClosed");
 					this.OnIsClosedChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ContactSupplement", DbType="NVarChar(512)")]
+		public string ContactSupplement
+		{
+			get
+			{
+				return this._ContactSupplement;
+			}
+			set
+			{
+				if ((this._ContactSupplement != value))
+				{
+					this.OnContactSupplementChanging(value);
+					this.SendPropertyChanging();
+					this._ContactSupplement = value;
+					this.SendPropertyChanged("ContactSupplement");
+					this.OnContactSupplementChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AssignmentSupplement", DbType="NVarChar(512)")]
+		public string AssignmentSupplement
+		{
+			get
+			{
+				return this._AssignmentSupplement;
+			}
+			set
+			{
+				if ((this._AssignmentSupplement != value))
+				{
+					this.OnAssignmentSupplementChanging(value);
+					this.SendPropertyChanging();
+					this._AssignmentSupplement = value;
+					this.SendPropertyChanged("AssignmentSupplement");
+					this.OnAssignmentSupplementChanged();
 				}
 			}
 		}
@@ -71125,6 +71162,181 @@ namespace WebHome.Models.DataEntity
 						this._PriceID = default(int);
 					}
 					this.SendPropertyChanged("LessonPriceType");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ForEmployee")]
+	public partial class ForEmployee : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _LogID;
+		
+		private int _UID;
+		
+		private System.Nullable<System.DateTime> _EmploymentDate;
+		
+		private System.Nullable<System.DateTime> _LeavedDate;
+		
+		private EntityRef<UserProfile> _UserProfile;
+		
+    #region 擴充性方法定義
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnLogIDChanging(int value);
+    partial void OnLogIDChanged();
+    partial void OnUIDChanging(int value);
+    partial void OnUIDChanged();
+    partial void OnEmploymentDateChanging(System.Nullable<System.DateTime> value);
+    partial void OnEmploymentDateChanged();
+    partial void OnLeavedDateChanging(System.Nullable<System.DateTime> value);
+    partial void OnLeavedDateChanged();
+    #endregion
+		
+		public ForEmployee()
+		{
+			this._UserProfile = default(EntityRef<UserProfile>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LogID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int LogID
+		{
+			get
+			{
+				return this._LogID;
+			}
+			set
+			{
+				if ((this._LogID != value))
+				{
+					this.OnLogIDChanging(value);
+					this.SendPropertyChanging();
+					this._LogID = value;
+					this.SendPropertyChanged("LogID");
+					this.OnLogIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UID", DbType="Int NOT NULL")]
+		public int UID
+		{
+			get
+			{
+				return this._UID;
+			}
+			set
+			{
+				if ((this._UID != value))
+				{
+					if (this._UserProfile.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnUIDChanging(value);
+					this.SendPropertyChanging();
+					this._UID = value;
+					this.SendPropertyChanged("UID");
+					this.OnUIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EmploymentDate", DbType="Date")]
+		public System.Nullable<System.DateTime> EmploymentDate
+		{
+			get
+			{
+				return this._EmploymentDate;
+			}
+			set
+			{
+				if ((this._EmploymentDate != value))
+				{
+					this.OnEmploymentDateChanging(value);
+					this.SendPropertyChanging();
+					this._EmploymentDate = value;
+					this.SendPropertyChanged("EmploymentDate");
+					this.OnEmploymentDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LeavedDate", DbType="Date")]
+		public System.Nullable<System.DateTime> LeavedDate
+		{
+			get
+			{
+				return this._LeavedDate;
+			}
+			set
+			{
+				if ((this._LeavedDate != value))
+				{
+					this.OnLeavedDateChanging(value);
+					this.SendPropertyChanging();
+					this._LeavedDate = value;
+					this.SendPropertyChanged("LeavedDate");
+					this.OnLeavedDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserProfile_ForEmployee", Storage="_UserProfile", ThisKey="UID", OtherKey="UID", IsForeignKey=true)]
+		public UserProfile UserProfile
+		{
+			get
+			{
+				return this._UserProfile.Entity;
+			}
+			set
+			{
+				UserProfile previousValue = this._UserProfile.Entity;
+				if (((previousValue != value) 
+							|| (this._UserProfile.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._UserProfile.Entity = null;
+						previousValue.ForEmployee.Remove(this);
+					}
+					this._UserProfile.Entity = value;
+					if ((value != null))
+					{
+						value.ForEmployee.Add(this);
+						this._UID = value.UID;
+					}
+					else
+					{
+						this._UID = default(int);
+					}
+					this.SendPropertyChanged("UserProfile");
 				}
 			}
 		}

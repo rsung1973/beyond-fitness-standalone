@@ -54,7 +54,7 @@ namespace WebHome.Models.ViewModel
 
         public static String EncryptKeyNormal(this byte[] data)
         {
-            return Convert.ToBase64String(AppResource.Instance.EncryptSalted(data));
+            return Convert.ToBase64String(AppResource.Instance.EncryptNormal(data));
         }
 
 

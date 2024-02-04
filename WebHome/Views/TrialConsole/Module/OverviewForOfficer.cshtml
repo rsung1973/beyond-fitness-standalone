@@ -1,13 +1,13 @@
 @using System.IO
 @using System.Linq.Expressions
+@using Microsoft.AspNetCore.Mvc.ModelBinding
 
 @using WebHome.Helper
 @using WebHome.Models.Locale
 @using WebHome.Models.ViewModel
 @using WebHome.Models.DataEntity
 @using WebHome.Controllers
-@using Microsoft.AspNetCore.Mvc.ModelBinding
-
+@using CommonLib.Utility
 @using Newtonsoft.Json
 @functions
 {
@@ -122,33 +122,41 @@
                         <div class="col-8">
                             <h5 class="m-t-0">全部</h5>
                             <p class="text-small">
-                                未分派：<a href="#" onclick='showTrialLearnerList(@Html.Raw(JsonConvert.SerializeObject(
+                                未分派：<a href="#" onclick='showTrialLearnerList(@Html.Raw((
                                     new TrialLearnerQueryViewModel
                                     {
                                         NotAssigned = true,
-                                    })));'>@(allTrial.Where(t=>!t.Status.HasValue).Count())</a>
+                                    }).JsonStringify()));'>@(allTrial.Where(t=>!t.Status.HasValue).Count())</a>
                                 <br />
                                 @*已分派聯繫：@(monthlyItems.Where(t=>TrialConsoleController.Assigned.Contains(t.Status)).Count())<br />
-                                    已分派體驗：@(monthlyItems.Where(t => TrialConsoleController.AssignedTrial.Contains(t.Status)).Count())<br />*@
-                                已結案：<a href="#" onclick='showTrialLearnerList(@Html.Raw(JsonConvert.SerializeObject(
+        已分派體驗：@(monthlyItems.Where(t => TrialConsoleController.AssignedTrial.Contains(t.Status)).Count())<br />*@
+                                未結案：<a href="#" onclick='showTrialLearnerList(@Html.Raw((
+                                    new TrialLearnerQueryViewModel
+                                    {
+                                        Year = _viewModel.Year,
+                                        Month = _viewModel.Month,
+                                        IsClosed = false,
+                                    }).JsonStringify()));'>@(monthlyItems.Where(t => !t.IsClosed.HasValue || t.IsClosed == false).Count())</a>
+                                <br />
+                                已結案：<a href="#" onclick='showTrialLearnerList(@Html.Raw((
                                     new TrialLearnerQueryViewModel
                                     {
                                         Year = _viewModel.Year,
                                         Month = _viewModel.Month,
                                         IsClosed = true,
-                                    })));'>@(monthlyItems.Where(t => t.IsClosed == true).Count())</a>
+                                    }).JsonStringify()));'>@(monthlyItems.Where(t => t.IsClosed == true).Count())</a>
 
                             </p>
                         </div>
                         <div class="col-4 text-right">
                             <h2>
-                                <a href="#" onclick='showTrialLearnerList(@Html.Raw(JsonConvert.SerializeObject(
+                                <a href="#" onclick='showTrialLearnerList(@Html.Raw((
                                     new TrialLearnerQueryViewModel
                                     {
                                         Year = _viewModel.Year,
                                         Month = _viewModel.Month,
                                         ByStatus = new int[] {},
-                                    })));'>@(monthlyItems.Count())</a>
+                                    }).JsonStringify()));'>@(monthlyItems.Count())</a>
                             </h2>
                             <small class="info">總詢問數</small>
                         </div>

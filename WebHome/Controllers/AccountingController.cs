@@ -1694,6 +1694,8 @@ namespace WebHome.Controllers
             滾動式堂數 = 13,
             滾動式平均單價 = 14,
             滾動式抽成 = 15,
+            管理獎金抽成 = 16,
+            任職總年資 = 17,
         }
 
         enum ManagerYearlyBonusFields
@@ -1736,6 +1738,8 @@ namespace WebHome.Controllers
             滾動式堂數 = 17,
             滾動式平均單價 = 18,
             滾動式抽成 = 19,
+            任職總年資 = 20,
+            任職年資抽成百分比 = 21,
         }
 
         enum CoachYearlyBonusFields
@@ -1795,6 +1799,8 @@ namespace WebHome.Controllers
                 table.Columns.Add(new DataColumn(ManagerBonusFields.滾動式堂數.ToString(), typeof(int)));
                 table.Columns.Add(new DataColumn(ManagerBonusFields.滾動式平均單價.ToString(), typeof(int)));
                 table.Columns.Add(new DataColumn(ManagerBonusFields.滾動式抽成.ToString(), typeof(int)));
+                table.Columns.Add(new DataColumn(ManagerBonusFields.管理獎金抽成.ToString(), typeof(decimal)));
+                table.Columns.Add(new DataColumn(ManagerBonusFields.任職總年資.ToString(), typeof(decimal)));
 
                 DataRow r;
 
@@ -1846,6 +1852,8 @@ namespace WebHome.Controllers
                     r[(int)ManagerBonusFields.滾動式堂數] = g.AttendedByOther ?? 0;
                     r[(int)ManagerBonusFields.滾動式平均單價] = g.AttendedByOtherAvgPrice ?? 0;
                     r[(int)ManagerBonusFields.滾動式抽成] = g.AttendedShare ?? 0;
+                    r[(int)ManagerBonusFields.管理獎金抽成] = g.ManagementBonusGrade ?? 0M;
+                    r[(int)ManagerBonusFields.任職總年資] = Math.Round((g.JobTenureInDays ?? 0M) / 365M, 1);
 
                     table.Rows.Add(r);
                 }
@@ -1876,6 +1884,8 @@ namespace WebHome.Controllers
                 table.Columns.Add(new DataColumn(CoachBonusFields.滾動式堂數.ToString(), typeof(int)));
                 table.Columns.Add(new DataColumn(CoachBonusFields.滾動式平均單價.ToString(), typeof(int)));
                 table.Columns.Add(new DataColumn(CoachBonusFields.滾動式抽成.ToString(), typeof(int)));
+                table.Columns.Add(new DataColumn(CoachBonusFields.任職總年資.ToString(), typeof(decimal)));
+                table.Columns.Add(new DataColumn(CoachBonusFields.任職年資抽成百分比.ToString(), typeof(decimal)));
 
                 DataRow r;
 
@@ -1921,6 +1931,8 @@ namespace WebHome.Controllers
                     r[(int)CoachBonusFields.滾動式堂數] = g.AttendedByOther ?? 0;
                     r[(int)CoachBonusFields.滾動式平均單價] = g.AttendedByOtherAvgPrice ?? 0;
                     r[(int)CoachBonusFields.滾動式抽成] = g.AttendedShare ?? 0;
+                    r[(int)CoachBonusFields.任職總年資] = Math.Round((g.JobTenureInDays ?? 0) / 365M,1);
+                    r[(int)CoachBonusFields.任職年資抽成百分比] = g.EmploymentDurationGradeIndex / 10M ?? 0M;
 
                     if (g.ProfessionalLevel.CategoryID != (int)Naming.ProfessionalCategory.Health)
                     {
@@ -1935,6 +1947,7 @@ namespace WebHome.Controllers
                 {
                     t[(int)CoachBonusFields.月中上課加業績獎金] = (int)t[(int)CoachBonusFields.上課獎金] + (int)t[(int)CoachBonusFields.業績獎金];
                     t[(int)CoachBonusFields.總獎金] = (int)t[(int)CoachBonusFields.管理獎金] + (int)t[(int)CoachBonusFields.特別獎金] + (int)t[(int)CoachBonusFields.月中上課加業績獎金];
+                    t[(int)CoachBonusFields.上課獎金抽成百分比] = (decimal)t[(int)CoachBonusFields.上課獎金抽成百分比] + (decimal)t[(int)CoachBonusFields.任職年資抽成百分比];
                 }
                 //rows.RemoveAll(t => (int)t[(int)CoachBonusFields.總獎金] == 0);
 
@@ -1942,6 +1955,8 @@ namespace WebHome.Controllers
                 {
                     table.Rows.Add(t);
                 }
+
+                table.Columns.RemoveAt((int)CoachBonusFields.任職年資抽成百分比);
 
                 return table;
             }

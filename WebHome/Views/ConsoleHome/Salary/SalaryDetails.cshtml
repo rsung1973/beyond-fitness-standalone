@@ -193,14 +193,25 @@
                                     </div>
                                 </li>
                             }
-                            @*<li>
+                            @if (_model.EpidemicPL > 0)
+                            {
+                                <li>
+                                    <div class="list_tb tb2">
+                                        <div class="list_tr">
+                                            <div class="list_td hd">防疫假</div>
+                                            <div class="list_td rt">@($"{_model.EpidemicPL:##,###,###,###}")</div>
+                                        </div>
+                                    </div>
+                                </li>
+                            }
+                            <li>
                                 <div class="list_tb tb2">
                                     <div class="list_tr">
-                                        <div class="list_td hd">防疫假</div>
-                                        <div class="list_td rt">@($"{_model.EpidemicPL:##,###,###,###}")</div>
+                                        <div class="list_td hd">職工福利金</div>
+                                        <div class="list_td rt">@($"{_model.StaffWelfareFund:##,###,###,##0}")</div>
                                     </div>
                                 </div>
-                            </li>*@
+                            </li>
                             <li>
                                 <div class="list_tb tb2">
                                     <div class="list_tr">
@@ -224,7 +235,7 @@
             {
                 await Html.RenderPartialAsync("~/Views/ConsoleHome/Salary/AchievementBonusForHealthCare.cshtml", _model);
             }
-            else if (salaryItem.PTAverageUnitPrice > 0 && !(salaryItem.ServingCoach.UserProfile.IsManager() || salaryItem.ServingCoach.UserProfile.IsViceManager() || salaryItem.ServingCoach.UserProfile.IsFES()))
+            else if (salaryItem.PTAverageUnitPrice > 0 && !(salaryItem.ProfessionalLevel.IsManager() || salaryItem.ProfessionalLevel.IsViceManager() || salaryItem.ProfessionalLevel.IsFES()))
             {
                 await Html.RenderPartialAsync("~/Views/ConsoleHome/Salary/AchievementBonusForCoach.cshtml", _model);
             }

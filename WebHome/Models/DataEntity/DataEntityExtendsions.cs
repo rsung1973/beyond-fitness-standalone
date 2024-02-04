@@ -613,6 +613,41 @@ namespace WebHome.Models.DataEntity
             return sb.ToString();
         }
 
+        public static bool IsOfficer(this ProfessionalLevel level)
+        {
+            return level?.CategoryID == (int)Naming.ProfessionalCategory.Special;
+        }
+
+        public static bool IsManager(this ProfessionalLevel level)
+        {
+            return level?.CategoryID == (int)Naming.ProfessionalCategory.FM;
+        }
+
+        public static bool IsViceManager(this ProfessionalLevel level)
+        {
+            return level?.CategoryID == (int)Naming.ProfessionalCategory.AFM;
+        }
+
+        public static bool IsFES(this ProfessionalLevel level)
+        {
+            return level?.CategoryID == (int)Naming.ProfessionalCategory.FES;
+        }
+
+        public static bool IsHealthCare(this ProfessionalLevel level)
+        {
+            return level?.CategoryID == (int)Naming.ProfessionalCategory.Health;
+        }
+
+        public static bool IsDietitian(this ProfessionalLevel level)
+        {
+            return level?.CategoryID == (int)Naming.ProfessionalCategory.Health_SD;
+        }
+
+        public static bool IsCoach(this ProfessionalLevel level)
+        {
+            return level?.CategoryID == (int)Naming.ProfessionalCategory.Senior
+                    || level?.CategoryID == (int)Naming.ProfessionalCategory.Junior;
+        }
     }
 
     public partial class UserProfile

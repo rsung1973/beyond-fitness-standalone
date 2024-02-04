@@ -40,6 +40,8 @@
     _viewModel.AttendingCoach = _model.AttendingCoach;
     _viewModel.MediaID = _model.HowToKnow.Select(t => t.MediaID).ToArray();
     _viewModel.HID = _model.ReferralFrom.Select(t => t.HID).ToArray();
+    _viewModel.ContactSupplement = _model.ContactSupplement;
+    _viewModel.AssignmentSupplement = _model.AssignmentSupplement;
 
 }
 <div class="modal fade" id="@(_dialogID)" tabindex="-1" role="dialog">
@@ -273,6 +275,18 @@
                                     <li>
                                         <div class="list_tb tb2">
                                             <div class="list_tr">
+                                                <div class="list_td hd">聯繫後補充事項</div>
+                                                <div class="list_td rt">
+                                                    <div class="form-group">
+                                                        <textarea name="ContactSupplement" rows="2" class="form-control no-resize" placeholder="請輸入任何想補充的事項..." spellcheck="false" data-ms-editor="true">@Html.Raw(_model.ContactSupplement)</textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>                                    
+                                    <li>
+                                        <div class="list_tb tb2">
+                                            <div class="list_tr">
                                                 <div class="list_td hd">聯繫狀態</div>
                                                 <div class="list_td rt">
                                                     @foreach (var trial in TrialConsoleController.Assigned)
@@ -340,6 +354,17 @@
                                         </div>
                                     </li>
                                     <li>
+                                        <div class="list_tb tb2">
+                                            <div class="list_tr">
+                                                <div class="list_td hd">安排體驗補充事項</div>
+                                                <div class="list_td rt">
+                                                    <div class="form-group">
+                                                        <textarea rows="2" name="AssignmentSupplement" class="form-control no-resize" placeholder="請輸入任何想補充的事項..." spellcheck="false" data-ms-editor="true">@Html.Raw(_model.AssignmentSupplement)</textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>                                    <li>
                                         <div class="list_tb tb2">
                                             <div class="list_tr">
                                                 <div class="list_td hd">體驗狀態</div>

@@ -746,6 +746,9 @@ namespace WebHome.Models.ViewModel
         public int[] MediaID { get; set; }
         public int[] HID { get; set; }
         public int? Step { get; set; }
+        public String ContactSupplement { get; set; }
+        public String AssignmentSupplement { get; set; }
+
     }
 
     public class TrialLearnerQueryViewModel : TrialLearnerViewModel

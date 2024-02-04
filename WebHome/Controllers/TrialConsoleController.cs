@@ -210,6 +210,15 @@ namespace WebHome.Controllers
                         MediaID = m,
                     }));
                 }
+                item.ReferralFrom = new EntitySet<ReferralFrom>();
+                if (viewModel.HID != null)
+                {
+                    item.ReferralFrom.AddRange(viewModel.HID.Select(m => new ReferralFrom
+                    {
+                        HID = m,
+                    }));
+                }
+                item.ContactSupplement = viewModel.ContactSupplement.GetEfficientString();
             }
             else if (viewModel.UpdateMethod == TrialLearnerViewModel.UpdateWhat.Reservation)
             {
@@ -226,6 +235,7 @@ namespace WebHome.Controllers
                 item.Status = (int?)viewModel.Status;
                 item.AttendingCoach = viewModel.AttendingCoach;
                 item.ReserveDate = DateTime.Now;
+                item.AssignmentSupplement = viewModel.AssignmentSupplement.GetEfficientString();
             }
 
             models.SubmitChanges();

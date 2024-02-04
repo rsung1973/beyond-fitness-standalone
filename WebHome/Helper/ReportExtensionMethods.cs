@@ -794,6 +794,21 @@ namespace WebHome.Helper
             public int G { get; set; }
         };
 
+        public static int PromptEmploymentDurationInDays(this GenericManager<BFDataContext> models, int uid)
+        {
+            var items = models.GetTable<ForEmployee>().Where(p => p.UID == uid)
+                            .OrderBy(p => p.LogID);
+            int days = 0;
+            foreach(var item in items)
+            {
+                if(item.EmploymentDate.HasValue)
+                {
+                    days += ((int)((item.LeavedDate ?? DateTime.Today) - item.EmploymentDate.Value).TotalDays + 1);
+                }
+            }
+            return days;
+        }
+
         static readonly int[] PerformanceAchievementIndex = new int[] { 304762, 238095, 179048 };
         static readonly decimal[] ShareRatioIncrementForPerformance = new decimal[] { 5.3m, 4.5m, 3.7m };
         //static readonly int[] AttendingLessonIndex = new int[] { 152, 142, 132, 112, 92 };
@@ -804,13 +819,27 @@ namespace WebHome.Helper
         static readonly int[] ManagerAttendanceIndex = { 76, 71, 66, 61, 56, 51, 46, 41, 36, 31, 26, 21, 16, 11 };
         static readonly int[] ManagerAttendanceBonus = { 42500, 40500, 37000, 34000, 31000, 27500, 24000, 21000, 18000, 15000, 12000, 9000, 6000, 3000 };
         static readonly int[] ViceManagerAttendanceIndex = { 91, 86, 81, 76, 71, 66, 61, 56, 51, 46, 41, 36, 31, 26, 21, 16, 11 };
-        static readonly int[] ViceManagerAttendanceBonus = { 44500, 42500, 39000, 36000, 33000, 30000, 27500, 25000, 22500, 20000, 17500, 15000, 12500, 10000, 7500, 5000, 2500 };
+        static readonly int[] ViceManagerAttendanceBonus = { 47000, 44500, 42000, 39500, 37000, 34500, 32000, 29500, 27000, 24500, 22000, 19500, 17000, 14500, 12000, 9500, 7000 };
         static readonly int[] EducatorAttendanceIndex = { 91, 86, 81, 76, 71, 66, 61, 56, 51, 46, 41, 36, 31, 26, 21, 16, 11 };
-        static readonly int[] EducatorAttendanceBonus = { 44500, 42500, 39000, 36000, 33000, 30000, 27500, 25000, 22500, 20000, 17500, 15000, 12500, 10000, 7500, 5000, 2500 };
+        static readonly int[] EducatorAttendanceBonus = { 47500, 45000, 42500, 40000, 37000, 34000, 31500, 29000, 26500, 24000, 21500, 19000, 16500, 14000, 11500, 9000, 6500 };
 
-        static readonly int[] SpecialBonusIndex = { 130, 120, 110, 100 };
-        static readonly decimal[] ManagerSpecialBonusRatio = { 0.03M, 0.02M, 0.015M, 0.01M };
-        static readonly decimal[] ViceManagerSpecialBonusRatio = { 0.01M, 0.008M, 0.006M, 0.005M };
+        static readonly int[] ManagerManagementBonusIndex = { 130, 120, 110, 100 };
+        static readonly decimal[] ManagerManagementBonusRatio = { 0.03M, 0.02M, 0.015M, 0.01M };
+        static readonly decimal[] ViceManagerManagementBonusRatio = { 0.01M, 0.008M, 0.006M, 0.005M };
+        static readonly decimal[] ApprenticeManagementBonusRatio = { 0.005M, 0.004M, 0.003M, 0.002M };
+        static readonly int[][] EmploymentDurationYearIndex =
+            {
+                new int[]{5,8,10,11 },
+                new int[]{5,8,10,11 },
+                new int[]{5,8,10,11 }
+            };
+        static readonly int[][] EmploymentDurationGradeThousandth =
+            {
+                new int[]{2,6,10,10 },
+                new int[]{3,7,11,11 },
+                new int[]{4,8,12,12 }
+            };
+
         public static void ExecuteLessonPerformanceSettlement(this GenericManager<BFDataContext> models, DateTime startDate, DateTime endExclusiveDate, String forRole=null)
         {
             var settlement = models.GetTable<Settlement>().Where(s => startDate <= s.SettlementDate && endExclusiveDate > s.SettlementDate).FirstOrDefault();
@@ -823,48 +852,103 @@ namespace WebHome.Helper
                             37,
                             new[]
                             {
-                                new int[] { 46, 500 },
-                                new int[] { 16, 350 },
+                                new int[] { 36, 250 },
+                                new int[] { 16, 200 },
                             }
                         },
                         {
                             38,
                             new[]
                             {
-                                new int[] { 46, 550 },
+                                new int[] { 46, 350 },
+                                new int[] { 36, 300 },
+                                new int[] { 16, 250 },
+                            }
+                        },
+                        {
+                            42,
+                            new[]
+                            {
+                                new int[] { 51, 400 },
+                                new int[] { 36, 350 },
+                                new int[] { 16, 300 },
+                            }
+                        },
+                        {
+                            43,
+                            new[]
+                            {
+                                new int[] { 56, 550 },
+                                new int[] { 36, 400 },
+                                new int[] { 16, 350 },
+                            }
+                        },
+                        {
+                            44,
+                            new[]
+                            {
+                                new int[] { 61, 600 },
+                                new int[] { 36, 450 },
                                 new int[] { 16, 400 },
                             }
                         },
-                    };
+            };
 
             Dictionary<int, int[][]> HealthCareBonusIndex = new Dictionary<int, int[][]>
             {
                 { 36,   //  level 0
                     new []
                     {
-                        new int[] { 101, 300,20 },
-                        new int[] { 21, 200,20},
+                        new int[] { 101, 180,12 },
+                        new int[] { 13, 180,12 },
                     }
                 },
                 { 33,   //  level 1
                     new []
                     {
-                        new int[] { 101, 300,40 },
-                        new int[] { 41, 250,40},
+                        new int[] { 111, 230,20 },
+                        new int[] { 101, 200,20 },
+                        new int[] { 21, 180,20},
                     }
                 },
                 { 34,   //  level 2
                     new []
                     {
-                        new int[] { 101, 350 ,40},
-                        new int[] { 21, 280,40},
+                        new int[] { 121, 250 ,40},
+                        new int[] { 101, 230 ,40},
+                        new int[] { 41, 200,40},
                     }
                 },
                 { 35,   //  level 3
                     new []
                     {
+                        new int[] { 131, 300,40 },
+                        new int[] { 101, 280,40 },
+                        new int[] { 41, 230, 40 },
+                    }
+                },
+                { 39,   //  level 4
+                    new []
+                    {
+                        new int[] { 141, 330,40 },
+                        new int[] { 101, 300,40 },
+                        new int[] { 41, 250, 40 },
+                    }
+                },
+                { 40,   //  level 5
+                    new []
+                    {
+                        new int[] { 151, 380,40 },
+                        new int[] { 101, 330,40 },
+                        new int[] { 41, 280, 40 },
+                    }
+                },
+                { 41,   //  level 6
+                    new []
+                    {
+                        new int[] { 161, 400,40 },
                         new int[] { 101, 380,40 },
-                        new int[] { 21, 300, 40 },
+                        new int[] { 41, 300, 40 },
                     }
                 },
             };
@@ -974,7 +1058,8 @@ namespace WebHome.Helper
                         };
 
                         branchBonus.AchievementAttendanceCount = branchHelper.LessonItems.Count()
-                                - branchHelper.SettlementPILesson.Count() / 2m;
+                                - branchHelper.SettlementPILesson.Count() / 2m
+                                - branchHelper.TSSRSession.Count() / 2m;
 
                         branchBonus.Tuition = branchHelper.LessonItems.CalcTuition(models);
 
@@ -1007,6 +1092,8 @@ namespace WebHome.Helper
                         salary.AttendedShare = 0;
                     }
 
+                    salary.JobTenureInDays = models.PromptEmploymentDurationInDays(coach.CoachID);
+
                     models.SubmitChanges();
                 }
 
@@ -1037,16 +1124,51 @@ namespace WebHome.Helper
 
                     if (coach.ServingCoachProperty.Any(p => p.PropertyID == (int)ServingCoachProperty.PropertyDefinition.Apprentice))
                     {
-                        salary.GradeIndex = 31;
+                        salary.GradeIndex = 30;
                     }
                     else
                     {
                         salary.GradeIndex = salary.ProfessionalLevel?.ProfessionalLevelBasicSalary?.SalaryDetails.CommissionGrade ?? 0;
                     }
 
+                    if (salary.ProfessionalLevel?.ProfessionalLevelBasicSalary?.SalaryDetails.EmploymentGradeIndex >= 0
+                            && salary.ProfessionalLevel?.ProfessionalLevelBasicSalary?.SalaryDetails.EmploymentGradeIndex < EmploymentDurationYearIndex.Length)
+                    {
+
+                        int durationYears = (salary.JobTenureInDays ?? 0) / 365;
+
+                        bool hasDurationGrade = false;
+                        int gradeIndex;
+                        int[] indexArray = EmploymentDurationYearIndex[salary.ProfessionalLevel.ProfessionalLevelBasicSalary.SalaryDetails.EmploymentGradeIndex.Value];
+
+                        for (gradeIndex = indexArray.Length-1; gradeIndex >=0 ; gradeIndex--)
+                        {
+                            if (durationYears >= indexArray[gradeIndex])
+                            {
+                                hasDurationGrade = true;
+                                break;
+                            }
+                        }
+
+                        if(hasDurationGrade)
+                        {
+                            if (gradeIndex == indexArray.Length - 1)
+                            {
+                                salary.EmploymentDurationGradeIndex =
+                                    Math.Min(EmploymentDurationGradeThousandth[salary.ProfessionalLevel.ProfessionalLevelBasicSalary.SalaryDetails.EmploymentGradeIndex.Value][indexArray.Length - 1]
+                                            + (durationYears - indexArray.Last()), 20);
+                            }
+                            else
+                            {
+                                salary.EmploymentDurationGradeIndex = EmploymentDurationGradeThousandth[salary.ProfessionalLevel.ProfessionalLevelBasicSalary.SalaryDetails.EmploymentGradeIndex.Value][gradeIndex];
+                            }
+                        }
+                    }
+
                     salary.AttendanceBonus = (int?)(Math.Max(salary.PTAttendanceCount.Value - 10, 0)
                         * (int?)(salary.PTAverageUnitPrice / 1.05M + 0.5M)
-                        * salary.GradeIndex / 100M + 0.5M) ?? 0;
+                        * (salary.GradeIndex / 100M + ((salary.EmploymentDurationGradeIndex ?? 0) / 1000M)) 
+                        + 0.5M) ?? 0;
 
                     if (coach.ServingCoachProperty.Any(p => p.PropertyID == (int)ServingCoachProperty.PropertyDefinition.Apprentice))
                     {
@@ -1083,7 +1205,7 @@ namespace WebHome.Helper
                         salary.AttendanceBonus = 0;
                     }
 
-                    salary.SpecialBonus = 0;
+                    salary.ManagerBonus = 0;
                     decimal achievementRatio = 0;
 
                     var indicator = models.GetTable<MonthlyIndicator>().Where(s => s.StartDate <= settlement.StartDate && s.EndExclusiveDate > settlement.StartDate).FirstOrDefault();
@@ -1114,17 +1236,18 @@ namespace WebHome.Helper
 
                             achievementRatio = Math.Round(totalAchievementAmt * basePercentage / indicatorAmt);
                             bonusIdx = 0;
-                            for (; bonusIdx < SpecialBonusIndex.Length; bonusIdx++)
+                            for (; bonusIdx < ManagerManagementBonusIndex.Length; bonusIdx++)
                             {
-                                if (achievementRatio >= SpecialBonusIndex[bonusIdx])
+                                if (achievementRatio >= ManagerManagementBonusIndex[bonusIdx])
                                 {
                                     break;
                                 }
                             }
 
-                            if (bonusIdx < SpecialBonusIndex.Length)
+                            if (bonusIdx < ManagerManagementBonusIndex.Length)
                             {
-                                salary.SpecialBonus = (int)(tuitionSubtotal * ManagerSpecialBonusRatio[bonusIdx] / 1.05M + 0.5M);
+                                salary.ManagementBonusGrade = ManagerManagementBonusRatio[bonusIdx];
+                                salary.ManagerBonus = (int)(tuitionSubtotal * ManagerManagementBonusRatio[bonusIdx] / 1.05M + 0.5M);
                             }
                         }
                     }
@@ -1170,7 +1293,7 @@ namespace WebHome.Helper
 
                     var indicator = models.GetTable<MonthlyIndicator>().Where(s => s.StartDate <= settlement.StartDate && s.EndExclusiveDate > settlement.StartDate).FirstOrDefault();
                     decimal achievementRatio = 0;
-                    salary.SpecialBonus = 0;
+                    salary.ManagerBonus = 0;
 
                     if (indicator != null)
                     {
@@ -1198,17 +1321,18 @@ namespace WebHome.Helper
 
                             achievementRatio = Math.Round(totalAchievementAmt * basePercentage / indicatorAmt);
                             bonusIdx = 0;
-                            for (; bonusIdx < SpecialBonusIndex.Length; bonusIdx++)
+                            for (; bonusIdx < ManagerManagementBonusIndex.Length; bonusIdx++)
                             {
-                                if (achievementRatio >= SpecialBonusIndex[bonusIdx])
+                                if (achievementRatio >= ManagerManagementBonusIndex[bonusIdx])
                                 {
                                     break;
                                 }
                             }
 
-                            if (bonusIdx < SpecialBonusIndex.Length)
+                            if (bonusIdx < ManagerManagementBonusIndex.Length)
                             {
-                                salary.SpecialBonus = (int)(tuitionSubtotal * ViceManagerSpecialBonusRatio[bonusIdx] / 1.05M + 0.5M);
+                                salary.ManagerBonus = (int)(tuitionSubtotal * ViceManagerManagementBonusRatio[bonusIdx] / 1.05M + 0.5M);
+                                salary.ManagementBonusGrade = ViceManagerManagementBonusRatio[bonusIdx];
                             }
                         }
                     }
@@ -1267,19 +1391,23 @@ namespace WebHome.Helper
                 {
                     salary.PTAttendanceCount = helper.LessonItems
                             .Where(v => v.PriceStatus == (int)Naming.LessonPriceStatus.運動恢復課程
-                                    || v.PriceStatus == (int)Naming.LessonPriceStatus.體驗課程
                                     || v.PriceStatus == (int)Naming.LessonPriceStatus.點數兌換課程)
+                            .Where(v => v.AttendingCoach == coach.CoachID).Count();
+
+                    salary.TSAttendanceCount = helper.LessonItems
+                            .Where(v => v.PriceStatus == (int)Naming.LessonPriceStatus.體驗課程)
                             .Where(v => v.AttendingCoach == coach.CoachID).Count();
 
                     salary.AttendanceBonus = 0;
 
-                    if (coach.LevelID.HasValue && HealthCareBonusIndex.ContainsKey(coach.LevelID.Value))
+                    if (HealthCareBonusIndex.ContainsKey(salary.LevelID))
                     {
-                        var bonusLevel = HealthCareBonusIndex[coach.LevelID.Value];
-                        var bonusIdx = bonusLevel.Where(i => salary.PTAttendanceCount >= i[0]).FirstOrDefault();
+                        decimal totalCount = salary.PTAttendanceCount.Value + salary.TSAttendanceCount.Value / 2M;
+                        var bonusLevel = HealthCareBonusIndex[salary.LevelID];
+                        var bonusIdx = bonusLevel.Where(i => totalCount >= i[0]).FirstOrDefault();
                         if (bonusIdx != null)
                         {
-                            salary.AttendanceBonus = (salary.PTAttendanceCount - bonusIdx[2]) * bonusIdx[1];
+                            salary.AttendanceBonus = (int)((totalCount - bonusIdx[2]) * bonusIdx[1]);
                         }
                     }
 
@@ -1310,7 +1438,7 @@ namespace WebHome.Helper
                 }
 
                 BranchStore branch;
-                if (coach.UserProfile.IsOfficer())
+                if (coach.ProfessionalLevel.IsOfficer())
                 {
                     if(forRole != "officer")
                     {
@@ -1347,7 +1475,7 @@ namespace WebHome.Helper
                     calcGeneralAchievement();
 
                 }
-                else if (coach.UserProfile.IsFES())
+                else if (coach.ProfessionalLevel.IsFES())
                 {
                     if (forRole != "fes")
                     {
@@ -1356,7 +1484,7 @@ namespace WebHome.Helper
                     calcGeneralAchievement();
                     calcFESBonus();
                 }
-                else if (coach.UserProfile.IsManager())
+                else if (coach.ProfessionalLevel.IsManager())
                 {
                     if (forRole != "manager")
                     {
@@ -1400,7 +1528,7 @@ namespace WebHome.Helper
                     calcGeneralAchievement();
                     calcManagerBonus(branch, branchBonus);
                 }
-                else if (coach.UserProfile.IsViceManager())
+                else if (coach.ProfessionalLevel.IsViceManager())
                 {
                     if (forRole != "vicemanager")
                     {
@@ -1422,6 +1550,10 @@ namespace WebHome.Helper
                         }
 
                         var indicator = models.GetTable<MonthlyIndicator>().Where(s => s.StartDate <= settlement.StartDate && s.EndExclusiveDate > settlement.StartDate).FirstOrDefault();
+                        decimal achievementRatio = 0;
+                        salary.ManagerBonus = 0;
+                        int bonusIdx = 0;
+
                         if (indicator != null && branchBonus != null)
                         {
                             MonthlyBranchRevenueGoal item = indicator.MonthlyBranchRevenueIndicator.Where(r => r.BranchID == branch.BranchID)
@@ -1441,6 +1573,27 @@ namespace WebHome.Helper
                                     + (item.SRAchievement ?? 0)
                                     + (item.SDAchievement ?? 0)
                                     + (item.ATAchievement ?? 0);
+
+                                decimal indicatorAmt = (decimal)item.MonthlyBranchRevenueIndicator.RevenueGoal;
+                                decimal basePercentage = item.MonthlyBranchRevenueIndicator.MonthlyRevenueGrade.IndicatorPercentage;
+                                int totalAchievementAmt = (tuitionSubtotal + item.ActualSharedAchievement - (item.VoidShare ?? 0)) ?? 0;
+
+                                achievementRatio = Math.Round(totalAchievementAmt * basePercentage / indicatorAmt);
+                                bonusIdx = 0;
+                                for (; bonusIdx < ManagerManagementBonusIndex.Length; bonusIdx++)
+                                {
+                                    if (achievementRatio >= ManagerManagementBonusIndex[bonusIdx])
+                                    {
+                                        break;
+                                    }
+                                }
+
+                                if (bonusIdx < ManagerManagementBonusIndex.Length)
+                                {
+                                    salary.ManagerBonus = (int)(tuitionSubtotal * ApprenticeManagementBonusRatio[bonusIdx] / 1.05M + 0.5M);
+                                    salary.ManagementBonusGrade = ApprenticeManagementBonusRatio[bonusIdx];
+                                }
+                                models.SubmitChanges();
                             }
                         }
                     }
@@ -1483,23 +1636,25 @@ namespace WebHome.Helper
                         calcViceManagerBonus(branch, branchBonus);
                     }
                 }
-                else if (coach.UserProfile.IsHealthCare())
+                else if (coach.ProfessionalLevel.IsHealthCare())
                 {
                     if (forRole != "health")
                     {
                         continue;
                     }
+
                     calcGeneralAchievement();
-
-                    if (coach.ProfessionalLevel.CategoryID == (int)Naming.ProfessionalCategory.Health_SD)
+                    calcHealthCareBonus();
+                }
+                else if (coach.ProfessionalLevel.IsDietitian())
+                {
+                    if (forRole != "health")
                     {
-                        calcDietitianBonus();
-                    }
-                    else
-                    {
-                        calcHealthCareBonus();
+                        continue;
                     }
 
+                    calcGeneralAchievement();
+                    calcDietitianBonus();
                 }
                 else
                 {

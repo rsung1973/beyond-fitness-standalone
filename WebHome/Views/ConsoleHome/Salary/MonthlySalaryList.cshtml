@@ -67,8 +67,16 @@
 
                     if (bonus != null)
                     {
+                        var reviewItem = models.GetTable<V_YearlyReview>()
+                                                            .Where(s => s.Year == bonus.Year)
+                                                            .Where(s => s.CoachID == bonus.CoachID)
+                                                            .FirstOrDefault();
+
                         salary += ((bonus.ManagerBonus ?? 0)
-                            + (item.SpecialBonus ?? 0));
+                        + (bonus.AttendanceBonus ?? 0)
+                        + (bonus.AchievementBonus ?? 0)
+                        + (reviewItem?.AttendedShare ?? 0)
+                        + (item.SpecialBonus ?? 0));
                     }
                 }
             }
@@ -84,6 +92,7 @@
                     + (item.SickLeave ?? 0)
                     + (item.EpidemicPL ?? 0)
                     + (item.PersonalLeave ?? 0)
+                    + (item.StaffWelfareFund ?? 0)
                     + (item.WillingContribution ?? 0);
 
         <tr onclick="showSalaryDetails('@Html.Raw((new { item.SalaryID,item.UID }).JsonStringify().EncryptKey())');">

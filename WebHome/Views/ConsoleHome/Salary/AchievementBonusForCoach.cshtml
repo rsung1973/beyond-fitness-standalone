@@ -41,7 +41,7 @@
                     <div class="list_tb tb2">
                         <div class="list_tr">
                             <div class="list_td hd">抽成比例</div>
-                            <div class="list_td rt">@(_salary.ProfessionalLevel?.ProfessionalLevelBasicSalary?.SalaryDetails.CommissionGrade)%</div>
+                            <div class="list_td rt">@((_salary.GradeIndex + ((_salary.EmploymentDurationGradeIndex ?? 0) / 10M)))%</div>
                         </div>
                     </div>
                 </li>

@@ -94,6 +94,20 @@ namespace WebHome.Helper
                     .Where(t => BusinessConsoleExtensions.SessionScopeForComleteLessonCount.Contains(t.PriceStatus)
                             || BusinessConsoleExtensions.SessionScopeForComleteLessonCount.Contains(t.ELStatus));
 
+        public IQueryable<V_Tuition> TSSession => LessonItems
+                    .Where(t => t.PriceStatus == (int)Naming.LessonPriceStatus.體驗課程);
+
+
+        public IQueryable<V_Tuition> TSSRSession
+        {
+            get
+            {
+                IQueryable<LessonPriceProperty> SR = models.GetTable<LessonPriceProperty>().Where(p => p.PropertyID == (int)Naming.LessonPriceFeature.運動恢復課程);
+                return TSSession
+                    .Where(v => SR.Any(p => p.PriceID == v.PriceID));
+            }
+        }
+
         public IQueryable<V_TuitionCoach> PTTuitionCoach => PTSession.Join(models.GetTable<V_TuitionCoach>(), p => p.LessonID, t => t.LessonID, (p, t) => t);
 
         public IQueryable<V_Tuition> HSSession => LessonItems

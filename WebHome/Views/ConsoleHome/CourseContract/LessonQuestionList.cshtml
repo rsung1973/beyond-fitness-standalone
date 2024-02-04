@@ -66,10 +66,16 @@
                 <td>@(item.Count())</td>
                 <td>@(item.Where(l=>l.LessonPlan.CommitAttendance.HasValue).Count())</td>
                 <td>
-                    @(item.Where(l=>l.PromptLessonQuestion.Any()).Count())
+                    @{ 
+                        var completeCount = item.Where(l => l.PromptLessonQuestion.Any(q => q.TaskID.HasValue && q.UID == _viewModel.MemberID)).Count();
+                        var incompleteCount = item
+                                .Where(l => l.LessonPlan.CommitAttendance.HasValue)
+                                .Where(l => !l.PromptLessonQuestion.Any(q => q.TaskID.HasValue && q.UID == _viewModel.MemberID)).Count();
+                    }
+                    @(completeCount + (incompleteCount / (item.First().RegisterLesson.LessonPriceType.PromptLessonRequirement?.RequiredCount ?? 1)))
                 </td>
                 <td>
-                    @(item.Where(l=>l.PromptLessonQuestion.Any(q=>q.TaskID.HasValue && q.UID==_viewModel.MemberID)).Count())
+                    @(completeCount)
                 </td>
             </tr>
         }
