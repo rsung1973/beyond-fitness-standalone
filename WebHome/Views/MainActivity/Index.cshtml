@@ -28,6 +28,8 @@
     dynamic homeAll = globalResource["Home"][ViewBag.Lang ?? "zh-TW"] as dynamic;
     dynamic serviceAll = globalResource["Service"][ViewBag.Lang ?? "zh-TW"] as dynamic;
     dynamic commonAll = globalResource["Common"][ViewBag.Lang ?? "zh-TW"] as dynamic;
+    dynamic joinUsAll = globalResource["JoinUs"][ViewBag.Lang ?? "zh-TW"] as dynamic;
+    dynamic findUsAll = globalResource["FindUs"][ViewBag.Lang ?? "zh-TW"] as dynamic;
 }
 
 @section CustomHeader {
@@ -50,7 +52,7 @@
 <!--中心主軸-->
 <section class="section section-no-background section-text-light section-center border-0 mt-0 mb-0 py-5" id="main">
     <div class="container py-5">
-        <div class="row px-2 px-lg-5">
+        <div class="row px-1 px-lg-5 px-md-5">
             <div class="col-12">
                 <img class="custom-svg-1 icon-animated mt-3" width="40" src="images/icons/double_quotes.svg"
                     alt="BeyondFitness|私人教練是什麼" data-icon
@@ -60,12 +62,12 @@
                     @Html.Raw(homeAll.CentralAxisSlogan)
                 </h1>
                 <h3 class="font-weight-bold line-height-5 pt-5">@Html.Raw(homeAll.CentralAxisSloganDesc)</h3>
-                <div
+                @* <div
                     class="divider divider-tertiary divider-small divider-small-center divider-xxs py-4 hidden-sm-down">
                     <hr class="my-0" style="width: 50px; height: 3px;">
                 </div>
                 <p class="text-center hidden-sm-down">@Html.Raw(homeAll.CentralAxisDescLg)</p>
-                <p class="text-center px-3 hidden-sm-up">@Html.Raw(homeAll.CentralAxisDescSm)</p>
+                <p class="text-center px-3 hidden-sm-up">@Html.Raw(homeAll.CentralAxisDescSm)</p> *@
             </div>
             <div class="col-12 py-5">
                 <a href="@(Url.Action("Aboutus", "Official"))"
@@ -95,7 +97,7 @@
 <!--3Key Point服務特色-->
 <section class="section section-no-background section-text-light p-0 mt-0 mb-0 border-0 py-5 hidden-md-down">
     <div class="container py-5">
-        <div class="row">
+        <div class="row pt-5">
             <div class="col-12 col-lg-3 col-md-3">
                 <h2 class="text-color-tertiary font-weight-normal mb-2 positive-ls-5 text-uppercase mt-2">@Html.Raw(homeAll.KeyPoint)</h2>
                 <span class="text-3-4 font-weight-medium positive-ls-10 d-block">@Html.Raw(homeAll.KeyPointDesc)</span>
@@ -146,7 +148,7 @@
     </div>
 </section>
 <!--聲音與文章-->
-<section class="section section-no-background section-text-light p-0 mt-0 mb-0 border-0 py-5">
+@* <section class="section section-no-background section-text-light p-0 mt-0 mb-0 border-0 py-5">
     <div class="container py-5">
         <div class="row">
             <div class="col-12 col-lg-6 col-md-6 px-0 pe-lg-5 pe-md-3">
@@ -267,9 +269,76 @@
             </div>
         </div>
     </div>
+</section> *@
+<section class="section bg-color-dark section-text-dark p-0 mt-0 mb-0 border-0 py-5 pt-lg-0">
+    <div class="container-fluid">
+        <div class="row pt-5 pb-1 hidden-lg-up">
+            <div class="text-center">
+                <h2 class="text-color-tertiary font-weight-semi-bold mb-2 positive-ls-5 text-uppercase">
+                    @Html.Raw(homeAll.News)
+                </h2>
+                <span
+                    class="text-3-4 font-weight-medium positive-ls-10 d-block text-color-light">@Html.Raw(homeAll.NewsDesc)</span>
+            </div>
+        </div>
+        <div class="row py-5 px-0">
+            <div class="owl-carousel owl-theme rounded-nav nav-dark nav-icon-1 nav-size-md nav-position-1 owl-loaded owl-drag owl-carousel-init mt-4 px-0"
+                data-plugin-options="{'items': 1, 'margin': 20, 'loop': false, 'nav': true, 'dots': true}">                    
+                    @{
+                        var tags = models.GetTable<BlogTag>().Where(t=>t.CategoryID == 9);
+                        var articleItems = models.GetTable<BlogArticle>()
+                                .Where(b=>!b.NotAfter.HasValue || b.NotAfter >= DateTime.Today)
+                                .Where(b=>!tags.Any(t=>t.DocID == b.DocID))
+                                .Where(a => a.Document.DocDate < DateTime.Now)
+                                //.Where(a => a.Document.CurrentStep == (int)Naming.DocumentLevelDefinition.正常)
+                                .OrderByDescending(a => a.Document.DocDate)
+                                .Take(5).ToList();                       
+                        foreach (var article in articleItems)
+                        {
+                        <div class="row bg-color-light">
+                            <div class="col-12 col-lg-6 col-md-12 p-0">
+                                <img src="../Official/blog/@(article.BlogID)/images/Cover.jpg" height="100%" alt="BeyondFitness|精選文章">
+                            </div>
+                            <div class="col-12 col-lg-6 col-md-12 p-0 align-self-center">
+                                <div class="text-center pt-5 hidden-md-down">
+                                    <h2 class="text-color-tertiary font-weight-semi-bold mb-2 positive-ls-5 text-uppercase">
+                                        @Html.Raw(homeAll.News)
+                                    </h2>
+                                    <span
+                                        class="text-3-4 font-weight-medium positive-ls-10 d-block text-color-dark">@Html.Raw(homeAll.NewsDesc)</span>
+                                </div>
+                                <div class="w-auto w-xl-75pct px-5 py-5 py-lg-5 py-md-5 mx-auto">
+                                    <h2 class="font-weight-semi-bold mb-2 positive-ls-5 justify-content-start pb-3">
+                                        @Html.Raw(article.Title)
+                                    </h2>
+                                    <p class="overflow-ellipsis text-color-dark">@Html.Raw(article.Subtitle)</p>
+                                    <div class="row pt-4">
+                                        <div class="col-6">
+                                            @if (article.Youtube != null)
+                                            {
+                                                <a class="popup-youtube" href="@Html.Raw(article.Youtube)"><img
+                                                        src="images/icons/youtube.svg" alt="BeyondFitenss|youtube"
+                                                        class="youtube-img" />
+                                                </a>
+                                            }                                       
+                                        </div>
+                                        <div class="col-6 d-flex align-items-end justify-content-end">
+                                            <a href="@Html.Raw($"../Official/BlogSingle?{(new { DocID = article.DocID }).JsonStringify().EncryptKeyNormal().UrlEncodeBase64String()}")"
+                                                class="read-more text-color-dark font-weight-semibold text-2 fst-italic">@Html.Raw(commonAll.ReadMore)<i
+                                                    class="fas fa-angle-right position-relative top-1 ms-1"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        }
+                    }
+            </div>
+        </div>
+    </div>
 </section>
 <!--預約體驗-->
-<section class="section section-text-light p-0 mt-0 mb-0 border-0 reservation container-background">
+@* <section class="section section-text-light p-0 mt-0 mb-0 border-0 reservation container-background">
     <div class="container container-xl-custom container-xl-custom py-5 h-100 hidden-md-down">
         <div class="row justify-content-start align-items-center h-100">
             <div class="col-7">
@@ -306,6 +375,141 @@
             </div>
         </div>
     </div>
+</section> *@
+<!--夥伴之聲-->
+<section class="section section-no-background border-0 mt-0 mb-0 section-center py-5 joinus">
+    <div class="row py-5">
+        <div class="col-12 col-lg-5 col-12 col-sm-12 px-0">
+            <div class="w-xl-50pct w-lg-75pct w-md-100pct pe-0 float-none float-lg-end pe-0 pe-lg-5 pe-md-0">
+                <h2
+                    class="text-color-tertiary font-weight-semi-bold mb-2 positive-ls-5 text-uppercase text-center text-lg-start text-md-center">
+                    @Html.Raw(homeAll.Voice)
+                </h2>
+                <span
+                    class="text-3-4 font-weight-medium positive-ls-10 d-block text-color-light text-center text-lg-start text-md-center">夥伴之聲</span>
+                <div class="divider divider-tertiary divider-small divider-xxs py-4 hidden-md-down">
+                    <hr class="my-0" style="width: 50px; height: 3px;">
+                </div>
+                <h3
+                    class="font-weight-bold line-height-5 hidden-md-down text-color-light text-center text-lg-start text-md-center">
+                    @Html.Raw(homeAll.VoiceSlogan)</h3>
+            </div>
+        </div>
+        <div class="col-12 col-lg-7 col-12 col-sm-12 px-3 px-lg-5 px-md-5 ps-lg-0 pt-5 pt-lg-0 pt-md-5">
+            <div class="w-xl-75pct w-lg-100pct">
+                @{
+                    dynamic voices = joinUsAll.VoiceItem;
+                    if (voices != null)
+                    {
+                        <div class="owl-carousel owl-theme"
+                            data-plugin-options="{'loop': false, 'nav': false, 'dots': true, 'responsive': {'0': {'items': 1}, '479': {'items': 1}, '768': {'items': 3}, '979': {'items': 3}, '1199': {'items': 3}, '1399': {'items': 4}}, 'autoHeight': true, 'margin': 20, 'animateOut': 'slideOutRight', 'animateIn': 'flipInY'}">
+                            @{
+                                JArray voice = voices as JArray;
+                                dynamic[] item = voice.ToArray();
+                                for (int i = 0; i < item.Length; i++)
+                                {
+                                    JObject branch = ((JArray)findUsAll["BranchItems"]).Where(c => c["ID"] ==
+                                    item[i].BranchID).FirstOrDefault() as JObject;
+                                    if (branch != null)
+                                    {
+                                        JObject coach = ((JArray)branch["Coaches"]).Where(c => c["MemberCode"] ==
+                                        item[i].MemberCode).FirstOrDefault() as JObject;
+                                        if (coach != null)
+                                        {
+                                            var viewModel = new
+                                            {
+                                                BranchID = (int?)branch["ID"],
+                                                MemberCode = (String)coach["MemberCode"]
+                                            };
+                                            <div class="d-flex justify-content-center">
+                                                <div class="card border-color-secondary custom-squareround-card"
+                                                    onclick='gotoVoicePage(@Html.Raw(viewModel.JsonStringify()));'>
+                                                    <div class="card-body p-3">
+                                                        @{
+                                                            if ((i % 2) == 0)
+                                                            {
+                                                                <img src="images/avatars/@Html.Raw(coach["NameDesc"])/Voice/Cover.jpg"
+                                                                    class="avatar-img" alt="BeyondFitness|員工之聲">
+                                                            }
+                                                        }
+                                                        <div class="row text-center pt-5">
+                                                            <div class="col-12">
+                                                                <h5 class="mb-2">@Html.Raw(branch["Name"])/@Html.Raw(coach["JobTitle"])</h5>
+                                                                <h4>@Html.Raw(coach["NameDesc"])</h4>
+                                                            </div>
+                                                        </div>
+                                                        @{
+                                                            if ((i % 2) == 1)
+                                                            {
+                                                                <img src="images/avatars/@Html.Raw(coach["NameDesc"])/Voice/Cover.jpg"
+                                                                    class="avatar-img" alt="BeyondFitness|員工之聲">
+                                                            }
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+                                }
+                            }
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+        <div class="col-12 hidden-lg-up">
+            <h3 class="font-weight-bold line-height-5 text-color-light">@Html.Raw(homeAll.VoiceSlogan)</h3>
+        </div>
+    </div>
+</section>
+<section class="section bg-color-dark-charcoal section-text-light p-0 mt-0 mb-0 border-0 py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-lg-5 col-md-5 px-5 px-lg-0 px-md-0">
+                <div class="w-xl-auto w-lg-auto w-md-auto pe-0 float-center float-lg-end float-md-end">
+                    <img class="custom-svg-1 icon-animated mt-3" width="40" src="images/icons/double_quotes.svg"
+                        alt="BeyondFitness|私人教練是什麼" data-icon
+                        data-plugin-options="{'onlySVG': false, 'color': '#E76751', 'animated': false, 'strokeBased': true, 'svgStyle': 'fill:#E76751'}" />
+
+                    <h2 class="font-weight-medium mt-5 mb-3">
+                        @Html.Raw(homeAll.BookSlogan)
+                    </h2>
+                </div>
+            </div>
+            <div class="col-auto ps-3 pe-4 hidden-sm-down">
+                <svg class="mb-4" width="15" height="250" viewBox="0 0 10 220" data-appear-animation-svg="true">
+                    <line x1="5" x2="5" y1="1" y2="250" stroke="#E76751" stroke-width="1" class="appear-animation"
+                        data-appear-animation="customSVGLineAnim"></line>
+                </svg>
+            </div>
+            <div class="col-12 col-lg-6 col-md-6 px-5 px-lg-0 px-md-0">
+                <p class="hidden-sm-down">@Html.Raw(homeAll.BookDesc1)</p>
+                <p class="font-weight-medium pt-5 pt-lg-0 pt-md-0">@Html.Raw(homeAll.BookDesc2)</p>
+                <a href="@(Url.Action("BookNow", "Official"))"
+                    class="btn bg-color-light text-color-dark btn-rounded fst-italic mt-3">@Html.Raw(homeAll.BookButton)</a>
+            </div>
+        </div>
+    </div>
+</section>
+<!--最新活動Banner-->
+<section class="section section-no-background section-text-light p-0 mt-0 mb-0 border-0 py-5 event">
+    <div class="container py-5">
+        <div class="row py-5">
+            <div class="col-12 px-0">
+                <div class="owl-carousel owl-theme custom-nav-arrows-1 px-0 dots-morphing"
+                    data-plugin-options="{'loop': true, 'nav': false, 'dots': true, 'items': 1, 'autoplay': false, 'autoplayTimeout': 7000, 'autoHeight': true, 'margin': 0, 'animateOut': 'slideOutLeft'}">
+                    <div class="event-item">
+                        <img src="images/shape/rectangle.jpg" class="img-thumbnail img-thumbnail-no-borders event01-img"
+                            alt="BeyondFitness|活動專區">
+                    </div>
+                    @* <div class="event-item">
+                        <img src="images/shape/rectangle.jpg" class="img-thumbnail img-thumbnail-no-borders event02-img"
+                            alt="BeyondFitness|活動專區">
+                    </div> *@
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
 <!--Location-->
 <section class="section section-center section-no-background border-0 mt-0 mb-0 py-5">
@@ -339,6 +543,7 @@
 
     </div>
 </section>
+
 <!--合作夥伴-->
 <section class="section section-center section-no-background border-0 mt-0 mb-0 py-5 hidden-sm-down">
     <div class="container py-5">

@@ -1,4 +1,9 @@
 @charset "UTF-8";
+/**背景顏色**/
+.bg-color-dark-charcoal {
+  background-color: #333333 !important;
+}
+
 .custom-el-pos-1 {
   margin-top: -300px;
 }
@@ -146,6 +151,9 @@ u {
 }
 
 /*首頁*/
+.home {
+  /*活動專區*/
+}
 .home .banner {
   /*Banner背景照片*/
 }
@@ -196,6 +204,9 @@ u {
 }
 .home .youtube .player .st0 {
   fill: #EBD7BF;
+}
+.home .youtube-img {
+  width: 30px !important;
 }
 .home .card {
   /* 設定卡片寬度 */
@@ -250,9 +261,6 @@ u {
     height: 250px;
   }
 }
-.home .card .youtube-img {
-  width: 30px !important;
-}
 @media (max-width: 767px) {
   .home .card {
     border-radius: 0px;
@@ -289,6 +297,39 @@ u {
 }
 .home .player .st0 {
   fill: #EBD7BF;
+}
+.home .event .event-item .event01-img {
+  border-radius: 25px;
+  content: url("../images/events/event01-lg.png");
+  /*手機版*/
+}
+@media (max-width: 767px) {
+  .home .event .event-item .event01-img {
+    border-radius: 0px;
+    content: url("../images/events/event01-sm.png");
+  }
+}
+.home .event .event-item .event02-img {
+  border-radius: 25px;
+  content: url("../images/events/event02-lg.jpg");
+  /*手機版*/
+}
+@media (max-width: 767px) {
+  .home .event .event-item .event02-img {
+    border-radius: 0px;
+    content: url("../images/events/event02-sm.png");
+  }
+}
+.home .event .event-item .event03-img {
+  border-radius: 25px;
+  content: url("../images/events/event03-lg.png");
+  /*手機版*/
+}
+@media (max-width: 767px) {
+  .home .event .event-item .event03-img {
+    border-radius: 0px;
+    content: url("../images/events/event03-sm.png");
+  }
 }
 
 /*專屬服務相關使用*/

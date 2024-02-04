@@ -1,31 +1,31 @@
 {
     "Home": "Home",
-    "AboutUs": "About",
-    "FindUs": "Find Beyond",
-    "Service": "Service",
-    "Session": "Session",
+    "AboutUs": "About Us",
+    "FindUs": "Find Us",
+    "Service": "Services",
+    "Session": "Programs",
     "FAQ": "FAQ",
-    "JoinUs": "Join Beyond",
-    "Booking": "Booking",
-    "Blog": "Blog",
+    "JoinUs": "Join Us",
+    "Booking": "Book",
+    "Blog": "Articles",
 
     "PartnerMenu": "Partner",
     "Partner": "Partner•",
     "PartnerDesc": "",
-    "PartnerMessage": "在Beyond運動不僅是一瞬間，而是一生的身體養成。為實現這一目標，我們建立了多個夥伴合作關係，這些合作夥伴協助我們提供更全面的服務，幫助我們的學生實現自身與幫助他人的健康和運動目標。",
+    "PartnerMessage": "At Beyond, we believe in exercise as a lifelong commitment to physical fitness. We collaborate with multiple partners to provide comprehensive services that empower our customers to reach their health and fitness aspirations.",
 
-    "BookNow": "Booking Now!",
-    "BookNow2": "Take action NOW!",
+    "BookNow": "Book now!",
+    "BookNow2": "Take action now and book an appointment!",
     "JoinUsGo": "Join Us!",
     "ViewJobs": "View Job Openings",
 
     "TEL": "Tel",
     "ReadMore": "Read More",
     
-    "Cookies": "Our site uses cookies and other technologies to give you the best possible experience. By using this site you are consenting to their use and accept our policies.",
+    "Cookies": "Beyond Fitness uses website analytics to provide you with high-quality content. If you do not click \"I agree\" and continue to browse this website, you are deemed to have agreed to the privacy policy of this site.",
     "PrivacyPolicy": "Privacy Policy",
     "CookiePolicy": "Cookie Policy",
-    "Terms": "Terms and Conditions",
+    "Terms": "Terms of Use and Disclaimer",
     "Agree": "Agree",
 
     "SocialItem": [
