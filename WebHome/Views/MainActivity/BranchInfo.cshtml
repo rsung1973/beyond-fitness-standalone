@@ -124,7 +124,7 @@
                         <div class="container position-relative z-index-3 pb-5 h-100">
                             <div class="row align-items-center pb-5 h-100 px-4">
                                 <div class="col">
-                                    @{
+                                    @* @{
                                         if (branch.NameDesc != "") 
                                         {
                                             <h1 class="font-weight-extra-bold text-8 line-height-1 line-height-sm-3 mb-1 branch"
@@ -137,7 +137,11 @@
                                                 class="text-7 text-color-secondary text-uppercase">@Html.Raw(branch.Name)</span> 
                                             </h1>    
                                         }
-                                    }                                     
+                                    }                                      *@
+                                        <h1 class="font-weight-extra-bold text-8 line-height-1 line-height-sm-3 mb-1 branch"
+                                                data-plugin-options="{'minWindowWidth': 0}"><span
+                                                class="text-7 text-color-secondary text-uppercase">@Html.Raw(branch.Name)</span> 
+                                            </h1>    
                                         <h3 class="mb-0 branch"><a
                                                 href="tel:@Html.Raw(branch.TelDial)">@Html.Raw(branch.Tel)</a></h3>
                                 </div>
@@ -200,11 +204,11 @@
     <!-- OUR Team-->
     <div class="row justify-content-start align-items-cente py-5 my-5">
         <div class="col-12 text-center">
-            <h2 class="text-color-tertiary font-weight-semi-bold mb-2 positive-ls-5 text-uppercase">@Html.Raw(branch.Team)</h2>
+            <h2 class="text-color-tertiary font-weight-semi-bold mb-2 positive-ls-5 text-uppercase">@Html.Raw(findUsAll.Team)</h2>
             <div class="divider divider-tertiary divider-small divider-small-center divider-xxs py-4">
                 <hr class="my-0" style="width: 50px; height: 3px;">
             </div>
-            <h3 class="font-weight-bold line-height-5">@Html.Raw(branch.TeamSlogan)</h3>
+            <h3 class="font-weight-bold line-height-5">@Html.Raw(findUsAll.TeamSlogan)</h3>
         </div>
         <div class="col-12 text-center px-1 position-relative py-5">
             <div class="col-12 text-center px-1 position-relative py-5">

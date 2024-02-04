@@ -4,7 +4,9 @@
     "WeekDays": "平日",
     "Holiday": "假日",
     "Others": "Others•",
-    "OthersDesc": "其他分店",    
+    "OthersDesc": "其他分店",                               
+    "Team": "OUR TEAM",   
+    "TeamSlogan": "全力協助您<br class=\"hidden-sm-up\" />一同踏上健康之旅",            
     "BranchItems": [
         {
             "ID": 1,
@@ -40,9 +42,7 @@
                 {
                     "FileName": "Demo06.png"
                 }
-            ],                         
-            "Team": "OUR TEAM",
-            "TeamSlogan": "全力協助您<br class=\"hidden-sm-up\" />一同踏上健康之旅",            
+            ],           
             "InfoWeekDaysTime": "AM 09:00- PM 22:00",
             "InfoHolidayTime": "AM 08:00- PM 22:00",
             "FeatureItems":[
@@ -53,30 +53,39 @@
                     "Content": "位於台北小巨蛋正對面，鄰近微風百貨。"
                 }
             ],   
-            "Coaches": [
-                {
-                    "MemberCode": "HE71446932",
-                    "Name": "游念儒",                    
-                    "NameDesc": "Vic",
+            "Coaches": [      
+            {
+                    "MemberCode": "CZ24609828",
+                    "Name": "黃伊婷",
+                    "NameDesc": "Doreen",
                     "JobTitle": "經理",
                     "CoverInfo":[
                         {
                             "Shape": "avatar-right.svg",
-                            "NamePosition": "translate(255.31 184.4)",
-                            "JobPosition": "translate(255.31 154.46)",
-                            "ImgXShifting": -90,
+                            "NamePosition": "translate(242.31 184.4)",
+                            "JobPosition": "translate(242.31 154.46)",
+                            "ImgXShifting": -100,
                             "ImgYShifting": -40,
                         }                        
                     ],
-                    "Slogan": "If you really want to achieve the goal, just do it.",
-                    "SloganDesc": "做任何事沒有能不能，只有想不想，如果真的想達成某個目標，那就全力以赴吧！",
-                    "Desc": "平易近人謹言慎行，內斂卻不缺乏熱情。熱愛透過文字和攝影讓深刻地觀察和體驗生活，也喜歡用它們分享自己的視角和感受。",
+                    "Slogan": "You just have to change your desires, some changes won't be the same.",
+                    "SloganDesc": "你不改變並不會怎麼樣。但你改變了，肯定會變得不一樣！",
+                    "Desc": "透過關心身邊的人，隨時留意他們的需求與想法並且樂於用同理心進行溝通，建立真正心與心的連結，讓彼此感受到真誠的支持和理解。",
                     "License":[
                         {
                             "Name": "ACE",
                         },
                         {
-                            "Name": "CrossFit",
+                            "Name": "TRX",
+                        },
+                        {
+                            "Name": "KBC",
+                        }, 
+                        {
+                            "Name": "Z-TSCA",
+                        },
+                        {
+                            "Name": "PTAG",
                         },
                         {
                             "Name": "CPRAED",
@@ -84,17 +93,17 @@
                     ],
                     "Sports":[
                         {
-                            "Name":"basketball",
+                            "Name":"kettlebell",
                         },
                         {
-                            "Name":"soccer",
+                            "Name":"dance",
                         },
                         {
-                            "Name":"gymnastics",
+                            "Name":"tabletennis",
                         }
                     ],
-                    "Experience": "<ul><li>2022中正盃五人制足球賽</li><li>企業公益活動講師</li><li>Beyond月內訓講師</li></ul>"                    
-                },
+                    "Experience": "<h4>2022</h4><ul><li>BEYOND新人培訓 教官</li><li>偏鄉兒童足球活動指導</li></ul>"                    
+                },          
                 {
                     "MemberCode": "CJ29229466",
                     "Name": "蔡恆易",
@@ -146,7 +155,7 @@
                             "Shape": "avatar-left.svg",
                             "NamePosition": "translate(80.31 183.4)",
                             "JobPosition": "translate(85.31 153.46)",
-                            "ImgXShifting": -50,
+                            "ImgXShifting": -40,
                             "ImgYShifting": -40,
                         }                        
                     ],
@@ -631,9 +640,7 @@
                 {
                     "FileName": "Demo06.png"
                 }
-            ],                         
-            "Team": "OUR TEAM",
-            "TeamSlogan": "全力協助您<br class=\"hidden-sm-up\" />一同踏上健康之旅",
+            ],                    
             "InfoWeekDaysTime": "AM 09:00- PM 22:00",
             "InfoHolidayTime": "AM 08:00- PM 22:00",
             "FeatureItems":[
@@ -707,7 +714,7 @@
                         {
                             "Shape": "avatar-full.svg",
                             "NamePosition": "translate(62.76 184.4)",
-                            "JobPosition": "translate(72.76 154.46)",
+                            "JobPosition": "translate(62.76 154.46)",
                             "ImgXShifting": -60,
                             "ImgYShifting": -50,
                         }                        
@@ -1396,7 +1403,83 @@
                         }
                     ],
                     "Experience": "<ul><li>2022大專盃一般組男籃北二區第六名</li><li>南湖高中運動中心TRX團課教練</li><li>2023 TRX Summit Taiwan</li></ul>"                    
-                },              
+                },    
+                {
+                    "MemberCode": "LA73559663",
+                    "Name": "何秉睿",
+                    "NameDesc": "Ray",
+                    "JobTitle": "私人教練",
+                    "CoverInfo":[
+                        {
+                            "Shape": "avatar-half.svg",
+                            "NamePosition": "translate(92.31 183.4)",
+                            "JobPosition": "translate(70.31 153.46)",
+                            "ImgXShifting": -60,
+                            "ImgYShifting": -40,
+                        }                        
+                    ],
+                    "Slogan": "Start, Be different.",
+                    "SloganDesc": "開始，不一樣  ",
+                    "Desc": "個性陽光活潑，充滿溫暖與貼心，致力於認真訓練。同時，我總是喜歡以幽默和風趣的方式與人互動，讓每個瞬間充滿愉快。",
+                    "License":[
+                        {
+                            "Name": "ACE",
+                        } ,
+                        {
+                            "Name": "CPRAED",
+                        }         
+                    ],
+                    "Sports":[
+                        {
+                            "Name":"soccer",
+                        },
+                        {
+                            "Name":"golf",
+                        },
+                        {
+                            "Name":"ski",
+                        }
+                    ],
+                    "Experience": "<ul><li>前世青賽滑雪選手</li><li>前世錦賽滑雪選手</li><li>前冬亞運滑雪選手</li><li>前冬奧運滑雪選手</li></ul>"                        
+                },       
+                {
+                    "MemberCode": "UD60058637",
+                    "Name": "潘紫瑄",
+                    "NameDesc": "Phoebe",
+                    "JobTitle": "私人教練",
+                    "CoverInfo":[
+                        {
+                            "Shape": "avatar-right.svg",
+                            "NamePosition": "translate(230.31 183.4)",
+                            "JobPosition": "translate(230.31 153.46)",
+                            "ImgXShifting": -120,
+                            "ImgYShifting": -40,
+                        }                        
+                    ],
+                    "Slogan": "Persistence is the closest path to one's dreams.",
+                    "SloganDesc": "有夢就不怕遠，唯有堅持，與夢想的距離最近！",
+                    "Desc": "以溫柔陪伴，毫無壓力的方式，細緻入微地與人相處，樂於接受不同的意見。",
+                    "License":[
+                        {
+                            "Name": "ACE",
+                        },
+                        {
+                            "Name": "CPRAED",
+                        }               
+                    ],
+                    "Sports":[
+                        {
+                            "Name":"judo",
+                        },
+                        {
+                            "Name":"swimming",
+                        },
+                        {
+                            "Name":"diving",
+                        }
+                    ],
+                    "Experience": "<ul><li>全國柔道錦標賽銀牌</li><li>新莊國中游泳教練</li></ul>"                    
+                },          
             ]
         },
         {
@@ -1437,8 +1520,6 @@
                     "FileName": "demo07.png"
                 },
             ],      
-            "Team": "OUR TEAM",
-            "TeamSlogan": "全力協助您<br class=\"hidden-sm-up\" />一同踏上健康之旅",
             "InfoWeekDaysTime": "AM 09:00- PM 22:00",
             "InfoHolidayTime": "AM 08:00- PM 22:00",
             "FeatureItems":[
@@ -1457,7 +1538,7 @@
                     "JobTitle": "經理",
                     "CoverInfo":[
                         {
-                            "Shape": "avatar-full.svg",
+                            "Shape": "avatar-right.svg",
                             "NamePosition": "translate(282.76 184.4)",
                             "JobPosition": "translate(282.76 154.46)",
                             "ImgXShifting": -100,
@@ -1532,7 +1613,7 @@
                     "JobTitle": "副理",                                
                     "CoverInfo":[
                         {
-                            "Shape": "avatar-right.svg",
+                            "Shape": "avatar-full.svg",
                             "NamePosition": "translate(65.09 184.4)",
                             "JobPosition": "translate(65.09 154.46)",
                             "ImgXShifting": -70,
@@ -1659,6 +1740,47 @@
                     "Experience": "<ul><li>保加利亞國際邀請賽-田徑</li><li>俄羅斯奧林匹克青少年-田徑</li><li>游泳教練&救生員</li></ul>"                    
                 },
                 {
+                    "MemberCode": "HE71446932",
+                    "Name": "游念儒",                    
+                    "NameDesc": "Vic",
+                    "JobTitle": "私人教練",
+                    "CoverInfo":[
+                        {
+                            "Shape": "avatar-right.svg",
+                            "NamePosition": "translate(255.31 184.4)",
+                            "JobPosition": "translate(255.31 154.46)",
+                            "ImgXShifting": -90,
+                            "ImgYShifting": -40,
+                        }                        
+                    ],
+                    "Slogan": "If you really want to achieve the goal, just do it.",
+                    "SloganDesc": "做任何事沒有能不能，只有想不想，如果真的想達成某個目標，那就全力以赴吧！",
+                    "Desc": "平易近人謹言慎行，內斂卻不缺乏熱情。熱愛透過文字和攝影讓深刻地觀察和體驗生活，也喜歡用它們分享自己的視角和感受。",
+                    "License":[
+                        {
+                            "Name": "ACE",
+                        },
+                        {
+                            "Name": "CrossFit",
+                        },
+                        {
+                            "Name": "CPRAED",
+                        }                        
+                    ],
+                    "Sports":[
+                        {
+                            "Name":"basketball",
+                        },
+                        {
+                            "Name":"soccer",
+                        },
+                        {
+                            "Name":"gymnastics",
+                        }
+                    ],
+                    "Experience": "<ul><li>2022中正盃五人制足球賽</li><li>企業公益活動講師</li><li>Beyond月內訓講師</li></ul>"                    
+                },
+                {
                     "MemberCode": "HT51228765",
                     "Name": "林雅婷",
                     "NameDesc": "Arika",
@@ -1701,9 +1823,9 @@
                     "CoverInfo":[
                         {
                             "Shape": "avatar-full.svg",
-                            "NamePosition": "translate(272.88 184.4)",
-                            "JobPosition": "translate(272.88 154.46)",
-                            "ImgXShifting": -100,
+                            "NamePosition": "translate(55.88 184.4)",
+                            "JobPosition": "translate(55.88 154.46)",
+                            "ImgXShifting": -20,
                             "ImgYShifting": -30,
                         }                        
                     ],
@@ -1781,48 +1903,49 @@
                     ],
                     "Experience": "<ul><li>台北市市長盃高中校際游泳代表</li><li>台東活水湖鐵人三項</li><li>WNBF國際自然健美公開邀請賽</li></ul>"                    
                 },
-                // {
-                //     "MemberCode": "BS21353217",
-                //     "Name": "蔡承翰",
-                //     "NameDesc": "John",
-                //     "JobTitle": "私人教練",
-                //     "CoverInfo":[
-                //         {
-                //             "FileName": "Cover.jpg",
-                //             "CircleBg": "avatar-right.svg",
-                //             "NamePosition": "translate(242.76 184.4)",
-                //             "JobPosition": "translate(242.76 154.46)",
-                //             "ImgXShifting": -100,
-                //             "ImgYShifting": -50,
-                //         }                        
-                //     ],
-                //     "Slogan": "Pursue hard and believe that there will be good results in the future.",
-                //     "Desc": "熱心真誠的我勇往直前，不論遇到多少挫折都不會輕言放棄。即使面對各種挑戰也可以用笑容燃克服困難，讓生活充滿熱情和歡樂。",
-                //     "License":[
-                //         {
-                //             "Name": "ACE",
-                //         }                 
-                //     ],
-                //     "Sports":[
-                //         {
-                //             "ID": "Swimming",
-                //             "Name": "游泳",
-                //         },
-                //         {
-                //             "ID": "Baseball",
-                //             "Name": "棒球",
-                //         },
-                //         {
-                //             "ID": "Boxing",
-                //             "Name": "拳擊",
-                //         },
-                //         {
-                //             "ID": "Running",
-                //             "Name": "跑步",
-                //         },                     
-                //     ],
-                //     "Experience": ""                    
-                // },
+                {
+                    "MemberCode": "BS21353217",
+                    "Name": "蔡承翰",
+                    "NameDesc": "John",
+                    "JobTitle": "私人教練",
+                    "CoverInfo":[
+                        {
+                            "Shape": "avatar-half.svg",
+                            "NamePosition": "translate(82.76 184.4)",
+                            "JobPosition": "translate(82.76 154.46)",
+                            "ImgXShifting": -50,
+                            "ImgYShifting": -20,
+                        }                        
+                    ],
+                    "Slogan": "Pursue hard and believe that there will be good results in the future.",
+                    "Desc": "熱心真誠的我勇往直前，不論遇到多少挫折都不會輕言放棄。即使面對各種挑戰也可以用笑容燃克服困難，讓生活充滿熱情和歡樂。",
+                    "License":[
+                        {
+                            "Name": "ACE",
+                        }, 
+                        {
+                            "Name": "Z-ROCHEA",
+                        }, 
+                        {
+                            "Name": "CPRAED"
+                        }               
+                    ],
+                    "Sports":[
+                        {
+                            "Name":"swimming",
+                        },
+                        {
+                            "Name":"baseball",
+                        },
+                        {
+                            "Name":"boxing",
+                        },
+                        {
+                            "Name":"running",
+                        }                   
+                    ],
+                    "Experience": "<ul><li>2015半馬賽事</li><li>2016 10K跑步</li><li>2023 3200m長泳</li></ul>"                    
+                },
             ]
         },
         {
@@ -1862,9 +1985,7 @@
                 {
                     "FileName": "demo07.png"
                 },
-            ],                         
-            "Team": "OUR TEAM",
-            "TeamSlogan": "全力協助您<br class=\"hidden-sm-up\" />一同踏上健康之旅",
+            ],   
             "InfoWeekDaysTime": "AM 09:00- PM 22:00",
             "InfoHolidayTime": "AM 08:00- PM 22:00",          
             "FeatureItems":[

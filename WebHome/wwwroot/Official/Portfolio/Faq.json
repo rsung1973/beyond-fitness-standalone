@@ -28,7 +28,7 @@
         {
             "ID": "Q2",
             "Icon": "images/icons/clock.svg",
-            "Question": "除了教練之外，平時也可以去 Beyond 運動嗎？",
+            "Question": "除了教練課之外，平時也可以去 Beyond 運動嗎？",
             "Answer": [
                 {
                     "Subject": "除了教練課，<br class=\"hidden-sm-down\" />其他時段<br class=\"hidden-sm-up\" />也可以到Beyond運動。",
