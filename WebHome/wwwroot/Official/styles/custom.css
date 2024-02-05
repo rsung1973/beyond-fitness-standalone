@@ -300,13 +300,13 @@ u {
 }
 .home .event .event-item .event01-img {
   border-radius: 25px;
-  content: url("../images/events/event01-lg.png");
+  content: url("../images/events/event01-lg.jpg");
   /*手機版*/
 }
 @media (max-width: 767px) {
   .home .event .event-item .event01-img {
     border-radius: 0px;
-    content: url("../images/events/event01-sm.png");
+    content: url("../images/events/event01-sm.jpg");
   }
 }
 .home .event .event-item .event02-img {

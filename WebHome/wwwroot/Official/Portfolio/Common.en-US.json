@@ -175,9 +175,6 @@
     "Voice": "Voice",
     "VoiceDesc": "",    
     "Expertise": "Expertise",
-
-    // "ContactHeader": "Take your first step!",
-    // "ContactHeaderDesc": "We’re always here to help.",
     
     "JoinUsHeader": "Get discovered!",
     "JoinUsHeaderDesc": "Introduce yourself, <br class=\"hidden-sm-up\"/>and we’ll get in touch if there’s a role that seems like a good match.",

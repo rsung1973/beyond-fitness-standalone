@@ -53,30 +53,39 @@
                     "Content": "位於台北小巨蛋正對面，鄰近微風百貨。"
                 }
             ],   
-            "Coaches": [
-                {
-                    "MemberCode": "HE71446932",
-                    "Name": "游念儒",                    
-                    "NameDesc": "Vic",
+            "Coaches": [      
+            {
+                    "MemberCode": "CZ24609828",
+                    "Name": "黃伊婷",
+                    "NameDesc": "Doreen",
                     "JobTitle": "經理",
                     "CoverInfo":[
                         {
                             "Shape": "avatar-right.svg",
-                            "NamePosition": "translate(255.31 184.4)",
-                            "JobPosition": "translate(255.31 154.46)",
-                            "ImgXShifting": -90,
+                            "NamePosition": "translate(242.31 184.4)",
+                            "JobPosition": "translate(242.31 154.46)",
+                            "ImgXShifting": -100,
                             "ImgYShifting": -40,
                         }                        
                     ],
-                    "Slogan": "If you really want to achieve the goal, just do it.",
-                    "SloganDesc": "做任何事沒有能不能，只有想不想，如果真的想達成某個目標，那就全力以赴吧！",
-                    "Desc": "平易近人謹言慎行，內斂卻不缺乏熱情。熱愛透過文字和攝影讓深刻地觀察和體驗生活，也喜歡用它們分享自己的視角和感受。",
+                    "Slogan": "You just have to change your desires, some changes won't be the same.",
+                    "SloganDesc": "你不改變並不會怎麼樣。但你改變了，肯定會變得不一樣！",
+                    "Desc": "透過關心身邊的人，隨時留意他們的需求與想法並且樂於用同理心進行溝通，建立真正心與心的連結，讓彼此感受到真誠的支持和理解。",
                     "License":[
                         {
                             "Name": "ACE",
                         },
                         {
-                            "Name": "CrossFit",
+                            "Name": "TRX",
+                        },
+                        {
+                            "Name": "KBC",
+                        }, 
+                        {
+                            "Name": "Z-TSCA",
+                        },
+                        {
+                            "Name": "PTAG",
                         },
                         {
                             "Name": "CPRAED",
@@ -84,17 +93,17 @@
                     ],
                     "Sports":[
                         {
-                            "Name":"basketball",
+                            "Name":"kettlebell",
                         },
                         {
-                            "Name":"soccer",
+                            "Name":"dance",
                         },
                         {
-                            "Name":"gymnastics",
+                            "Name":"tabletennis",
                         }
                     ],
-                    "Experience": "<ul><li>2022中正盃五人制足球賽</li><li>企業公益活動講師</li><li>Beyond月內訓講師</li></ul>"                    
-                },
+                    "Experience": "<h4>2022</h4><ul><li>BEYOND新人培訓 教官</li><li>偏鄉兒童足球活動指導</li></ul>"                    
+                },          
                 {
                     "MemberCode": "CJ29229466",
                     "Name": "蔡恆易",
@@ -1729,6 +1738,47 @@
                         }
                     ],
                     "Experience": "<ul><li>保加利亞國際邀請賽-田徑</li><li>俄羅斯奧林匹克青少年-田徑</li><li>游泳教練&救生員</li></ul>"                    
+                },
+                {
+                    "MemberCode": "HE71446932",
+                    "Name": "游念儒",                    
+                    "NameDesc": "Vic",
+                    "JobTitle": "私人教練",
+                    "CoverInfo":[
+                        {
+                            "Shape": "avatar-right.svg",
+                            "NamePosition": "translate(255.31 184.4)",
+                            "JobPosition": "translate(255.31 154.46)",
+                            "ImgXShifting": -90,
+                            "ImgYShifting": -40,
+                        }                        
+                    ],
+                    "Slogan": "If you really want to achieve the goal, just do it.",
+                    "SloganDesc": "做任何事沒有能不能，只有想不想，如果真的想達成某個目標，那就全力以赴吧！",
+                    "Desc": "平易近人謹言慎行，內斂卻不缺乏熱情。熱愛透過文字和攝影讓深刻地觀察和體驗生活，也喜歡用它們分享自己的視角和感受。",
+                    "License":[
+                        {
+                            "Name": "ACE",
+                        },
+                        {
+                            "Name": "CrossFit",
+                        },
+                        {
+                            "Name": "CPRAED",
+                        }                        
+                    ],
+                    "Sports":[
+                        {
+                            "Name":"basketball",
+                        },
+                        {
+                            "Name":"soccer",
+                        },
+                        {
+                            "Name":"gymnastics",
+                        }
+                    ],
+                    "Experience": "<ul><li>2022中正盃五人制足球賽</li><li>企業公益活動講師</li><li>Beyond月內訓講師</li></ul>"                    
                 },
                 {
                     "MemberCode": "HT51228765",
