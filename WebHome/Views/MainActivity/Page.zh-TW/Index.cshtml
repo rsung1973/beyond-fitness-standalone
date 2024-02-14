@@ -54,7 +54,7 @@
     <div class="container py-5">
         <div class="row px-1 px-lg-5 px-md-5">
             <div class="col-12">
-                <img class="custom-svg-1 icon-animated mt-3" width="40" src="images/icons/double_quotes.svg"
+                <img class="custom-svg-1 icon-animated mt-3" width="40" src="../images/icons/double_quotes.svg"
                     alt="BeyondFitness|私人教練是什麼" data-icon
                     data-plugin-options="{'onlySVG': false, 'color': '#EBD7BF', 'animated': false, 'strokeBased': true, 'svgStyle': 'fill:#EBD7BF'}" />
 
@@ -82,7 +82,7 @@
         <div class="row justify-content-center align-items-center h-100">
             <div class="col-12">
                 <a class="text-decoration-none popup-youtube" href="@Html.Raw(homeAll.YoutubeLink)">
-                    <img class="custom-svg-1 icon-animated" width="90" src="images/icons/play-button_f.svg"
+                    <img class="custom-svg-1 icon-animated" width="90" src="../images/icons/play-button_f.svg"
                         alt="BeyondFitness|youtube" data-icon
                         data-plugin-options="{'color': '#EBD7BF', 'animated': true, 'delay': 600, 'strokeBased': true, 'extraClass': 'player'}" />
                 </a>
@@ -105,7 +105,7 @@
             <div class="col-12 col-lg-3 col-md-3">
                 <div class="featured-boxes featured-boxes-style-7">
                     <div class="box-content">
-                        <img class="custom-svg-1 icon-animated" width="70" src="images/icons/keypoint/item-01.svg"
+                        <img class="custom-svg-1 icon-animated" width="70" src="../images/icons/keypoint/item-01.svg"
                             alt="BeyondFitness|科學訓練" data-icon
                             data-plugin-options="{'onlySVG': false, 'animated': false, 'strokeBased': true}" />
                         <p class="text-color-tertiary text-3 mb-0 line-height-8 pt-2">
@@ -119,7 +119,7 @@
             <div class="col-12 col-lg-3 col-md-3">
                 <div class="featured-boxes featured-boxes-style-7">
                     <div class="box-content">
-                        <img class="custom-svg-1 icon-animated mt-3" width="70" src="images/icons/keypoint/item-02.svg"
+                        <img class="custom-svg-1 icon-animated mt-3" width="70" src="../images/icons/keypoint/item-02.svg"
                             alt="BeyondFitness|健康團隊" data-icon
                             data-plugin-options="{'onlySVG': false, 'animated': false, 'strokeBased': true}" />
                         <p class="text-color-tertiary text-3 mb-0 line-height-8 pt-2">
@@ -133,7 +133,7 @@
             <div class="col-12 col-lg-3 col-md-3">
                 <div class="featured-boxes featured-boxes-style-7">
                     <div class="box-content hidden-sm-down">
-                        <img class="custom-svg-1 icon-animated mt-3" width="70" src="images/icons/keypoint/item-03.svg"
+                        <img class="custom-svg-1 icon-animated mt-3" width="70" src="../images/icons/keypoint/item-03.svg"
                             alt="BeyondFitness|安心承諾" data-icon
                             data-plugin-options="{'onlySVG': false, 'animated': false, 'strokeBased': true}" />
                         <p class="text-color-tertiary text-3 mb-0 line-height-8 pt-2">
@@ -175,7 +175,7 @@
                                         if (item[i].Type == "Blog") {
                                             <img class="card-img-top" src="Blog/@Html.Raw(((String)item[i].Date).Replace(".", ""))/images/Cover.jpg" alt="BeyondFitness|我們的聲音" />
                                         } else {
-                                                <img class="card-img-top" src="images/avatars/@Html.Raw(item[i].Author)/Voice/people.jpg"
+                                                <img class="card-img-top" src="../images/avatars/@Html.Raw(item[i].Author)/Voice/people.jpg"
                                                     alt="BeyondFitness|我們的聲音" />
                                         }
                                     }                                        
@@ -193,7 +193,7 @@
                                                         if (!String.IsNullOrEmpty((String)item[i].Youtube))
                                                         {
                                                             <a class="popup-youtube" href="@Html.Raw(item[i].Youtube)">
-                                                                <img src="images/icons/youtube.svg" alt="BeyondFitenss|youtube" class="youtube-img"/>
+                                                                <img src="../images/icons/youtube.svg" alt="BeyondFitenss|youtube" class="youtube-img"/>
                                                             </a>	                                                            
                                                         }
                                                     }											
@@ -297,7 +297,7 @@
                         {
                         <div class="row bg-color-light">
                             <div class="col-12 col-lg-6 col-md-12 p-0">
-                                <img src="../Official/blog/@(article.BlogID)/images/Cover.jpg" height="100%" alt="BeyondFitness|精選文章">
+                                <img src="@VirtualPathUtility.ToAbsolute($"~/BlogContent/blog/{article.BlogID}/images/Cover.jpg")" height="100%" alt="BeyondFitness|精選文章">
                             </div>
                             <div class="col-12 col-lg-6 col-md-12 p-0 align-self-center">
                                 <div class="text-center pt-5 hidden-md-down">
@@ -317,13 +317,13 @@
                                             @if (article.Youtube != null)
                                             {
                                                 <a class="popup-youtube" href="@Html.Raw(article.Youtube)"><img
-                                                        src="images/icons/youtube.svg" alt="BeyondFitenss|youtube"
+                                                        src="../images/icons/youtube.svg" alt="BeyondFitenss|youtube"
                                                         class="youtube-img" />
                                                 </a>
                                             }                                       
                                         </div>
                                         <div class="col-6 d-flex align-items-end justify-content-end">
-                                            <a href="@Html.Raw($"../Official/BlogSingle?{(new { DocID = article.DocID }).JsonStringify().EncryptKeyNormal().UrlEncodeBase64String()}")"
+                                            <a href="@Html.Raw($"{VirtualPathUtility.ToAbsolute("~/Official/BlogSingle")}?{(new { DocID = article.DocID }).JsonStringify().EncryptKeyNormal().UrlEncodeBase64String()}")"
                                                 class="read-more text-color-dark font-weight-semibold text-2 fst-italic">@Html.Raw(commonAll.ReadMore)<i
                                                     class="fas fa-angle-right position-relative top-1 ms-1"></i></a>
                                         </div>
@@ -342,7 +342,7 @@
     <div class="container container-xl-custom container-xl-custom py-5 h-100 hidden-md-down">
         <div class="row justify-content-start align-items-center h-100">
             <div class="col-7">
-                <img class="custom-svg-1 icon-animated mt-3" width="40" src="images/icons/double_quotes.svg"
+                <img class="custom-svg-1 icon-animated mt-3" width="40" src="../images/icons/double_quotes.svg"
                     alt="BeyondFitness|私人教練是什麼" data-icon
                     data-plugin-options="{'onlySVG': true, 'animated': false, 'strokeBased': true}" />
                 <h1 class="mt-3 font-weight-bold mb-0">@Html.Raw(homeAll.BookSlogan)</h1>
@@ -361,7 +361,7 @@
     <div class="container container-xl-custom container-xl-custom py-5 px-5">
         <div class="row">
             <div class="col-12">
-                <img class="custom-svg-1 icon-animated mt-3" width="40" src="images/icons/double_quotes.svg"
+                <img class="custom-svg-1 icon-animated mt-3" width="40" src="../images/icons/double_quotes.svg"
                     alt="BeyondFitness|私人教練是什麼" data-icon
                     data-plugin-options="{'onlySVG': true, 'animated': false, 'strokeBased': true}" />
                 <h1 class="mt-3 font-weight-bold mb-0">@Html.Raw(homeAll.BookSlogan)</h1>
@@ -428,7 +428,7 @@
                                                         @{
                                                             if ((i % 2) == 0)
                                                             {
-                                                                <img src="images/avatars/@Html.Raw(coach["NameDesc"])/Voice/Cover.jpg"
+                                                                <img src="../images/avatars/@Html.Raw(coach["NameDesc"])/Voice/Cover.jpg"
                                                                     class="avatar-img" alt="BeyondFitness|員工之聲">
                                                             }
                                                         }
@@ -441,7 +441,7 @@
                                                         @{
                                                             if ((i % 2) == 1)
                                                             {
-                                                                <img src="images/avatars/@Html.Raw(coach["NameDesc"])/Voice/Cover.jpg"
+                                                                <img src="../images/avatars/@Html.Raw(coach["NameDesc"])/Voice/Cover.jpg"
                                                                     class="avatar-img" alt="BeyondFitness|員工之聲">
                                                             }
                                                         }
@@ -467,7 +467,7 @@
         <div class="row">
             <div class="col-12 col-lg-5 col-md-5 px-5 px-lg-0 px-md-0">
                 <div class="w-xl-auto w-lg-auto w-md-auto pe-0 float-center float-lg-end float-md-end">
-                    <img class="custom-svg-1 icon-animated mt-3" width="40" src="images/icons/double_quotes.svg"
+                    <img class="custom-svg-1 icon-animated mt-3" width="40" src="../images/icons/double_quotes.svg"
                         alt="BeyondFitness|私人教練是什麼" data-icon
                         data-plugin-options="{'onlySVG': false, 'color': '#E76751', 'animated': false, 'strokeBased': true, 'svgStyle': 'fill:#E76751'}" />
 
@@ -499,11 +499,11 @@
                 <div class="owl-carousel owl-theme custom-nav-arrows-1 px-0 dots-morphing"
                     data-plugin-options="{'loop': true, 'nav': false, 'dots': true, 'items': 1, 'autoplay': false, 'autoplayTimeout': 7000, 'autoHeight': true, 'margin': 0, 'animateOut': 'slideOutLeft'}">
                     <div class="event-item">
-                        <img src="images/shape/rectangle.jpg" class="img-thumbnail img-thumbnail-no-borders event01-img"
+                        <img src="../images/shape/rectangle.jpg" class="img-thumbnail img-thumbnail-no-borders event01-img"
                             alt="BeyondFitness|活動專區">
                     </div>
                     @* <div class="event-item">
-                        <img src="images/shape/rectangle.jpg" class="img-thumbnail img-thumbnail-no-borders event02-img"
+                        <img src="../images/shape/rectangle.jpg" class="img-thumbnail img-thumbnail-no-borders event02-img"
                             alt="BeyondFitness|活動專區">
                     </div> *@
                 </div>
@@ -530,12 +530,12 @@
         <div class="row mt-3">
             <div class="col-12">
                 <div class="home-map hidden-sm-down">
-                    <img src="images/home/beyond-map-lg.svg" alt="BeyondFitness|分店一覽" data-icon
+                    <img src="../images/home/beyond-map-lg.svg" alt="BeyondFitness|分店一覽" data-icon
                         data-plugin-options="{'onlySVG': true, 'animated': false, 'delay': 0, 'fadeIn': false}"
                         width="700" />
                 </div>
                 <div class="home-map hidden-md-up">
-                    <img src="images/home/beyond-map-sm.svg" alt="BeyondFitness|分店一覽" data-icon
+                    <img src="../images/home/beyond-map-sm.svg" alt="BeyondFitness|分店一覽" data-icon
                         data-plugin-options="{'onlySVG': true, 'animated': false, 'delay': 0, 'fadeIn': false}" />
                 </div>
             </div>

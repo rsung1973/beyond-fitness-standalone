@@ -63,19 +63,19 @@
         content="BeyondFitness透過一對一專業教練暖心指導並提供安全的訓練環境，上課內容包含專業訓練、增肌減脂，運動傷害、物理治療、營養規劃與運動防護一次包辦！透過科學化方法創造人性化之專屬個人健康分析資料庫+雲端數據化紀錄，保證更有效率的為您增進心肺、肌力與體能，即使為新手初學者也能達成理想的體態與健康目標。台北各區皆設有分店：台北小巨蛋、東門、台北東區與信義安和分店歡迎您隨時來免費體驗。">
     <meta name="author" content="beyond-fitness.com.tw">
     <!-- Favicon -->
-    <link rel="shortcut icon" href="app/icons/favicon.ico" type="image/x-icon" />
-    <link rel="icon" href="app/icons/icon-96x96.png">
+    <link rel="shortcut icon" href="../app/icons/favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="../app/icons/icon-96x96.png">
     <!-- Specifying a Webpage Icon for Web Clip -->
-    <link rel="apple-touch-icon" href="app/icons/icon-72x72.png">
-    <link rel="apple-touch-icon-precomposed" href="app/icons/icon-72x72.png">
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="app/icons/icon-72x72.png">
-    <link rel="apple-touch-icon-precomposed" sizes="96x96" href="app/icons/icon-96x96.png">
-    <link rel="apple-touch-icon-precomposed" sizes="128x128" href="app/icons/icon-128x128.png">
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="app/icons/icon-144x144.png">
-    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="app/icons/icon-152x152.png">
-    <link rel="apple-touch-icon-precomposed" sizes="192x192" href="app/icons/icon-192x192.png">
-    <link rel="apple-touch-icon-precomposed" sizes="384x384" href="app/icons/icon-384x384.png">
-    <link rel="apple-touch-icon-precomposed" sizes="512x512" href="app/icons/icon-512x512.png">
+    <link rel="apple-touch-icon" href="../app/icons/icon-72x72.png">
+    <link rel="apple-touch-icon-precomposed" href="../app/icons/icon-72x72.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../app/icons/icon-72x72.png">
+    <link rel="apple-touch-icon-precomposed" sizes="96x96" href="../app/icons/icon-96x96.png">
+    <link rel="apple-touch-icon-precomposed" sizes="128x128" href="../app/icons/icon-128x128.png">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../app/icons/icon-144x144.png">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../app/icons/icon-152x152.png">
+    <link rel="apple-touch-icon-precomposed" sizes="192x192" href="../app/icons/icon-192x192.png">
+    <link rel="apple-touch-icon-precomposed" sizes="384x384" href="../app/icons/icon-384x384.png">
+    <link rel="apple-touch-icon-precomposed" sizes="512x512" href="../app/icons/icon-512x512.png">
 
     <link rel="manifest" href="_manifest.json" data-pwa-version="set_in_manifest_and_pwa_js">
     <!-- IE可能不見得有效 -->
@@ -102,14 +102,14 @@
 	<link rel="stylesheet" href="../plugins/rs-plugin/css/navigation.css">
 
 	<!-- Theme CSS -->
-	<link rel="stylesheet" href="@Html.Raw($"../styles/{lang}/theme.css?1.0")" />
-	<link rel="stylesheet" href="@Html.Raw($"../styles/{lang}/theme-elements.css?1.0")" />
+	<link rel="stylesheet" href="@Html.Raw($"../styles/theme.css?1.0")" />
+	<link rel="stylesheet" href="@Html.Raw($"../styles/theme-elements.css?1.0")" />
 
 	<!-- Skin CSS -->
 	<link id="skinCSS" rel="stylesheet" href="@Html.Raw($"../styles/{lang}/skin-beyond.css?1.0")" />
 
 	<!-- Theme Custom CSS -->
-	<link rel="stylesheet" href="@Html.Raw($"../styles/{lang}/custom.css?1.2")" />
+	<link rel="stylesheet" href="@Html.Raw($"../styles/custom.css?1.2")" />
     <!-- Head Libs -->
     <script src="../plugins/modernizr/modernizr.min.js"></script>
 
@@ -207,9 +207,9 @@
                                 class="col-12 d-flex align-items-center justify-content-center justify-content-lg-start pb-3 pb-lg-0 pb-md-0">
                                 <a href="@(VirtualPathUtility.ToAbsolute("~/Official/Index"))"
                                     class="logo pe-0 pe-lg-3">
-                                    <img src="images/logo-default-slim-gold.svg" width="50"
+                                    <img src="../images/logo-default-slim-gold.svg" width="50"
 										alt="BeyondFitness|超越體能顧問有限公司" class="pe-1">
-									<img src="images/logo-default-gold.svg" width="150" alt="BeyondFitness|超越體能顧問有限公司">
+									<img src="../images/logo-default-gold.svg" width="150" alt="BeyondFitness|超越體能顧問有限公司">
                                 </a>
                             </div>
                             <div
@@ -224,7 +224,7 @@
                                             for (int i = 0; i < item.Length; i++)
                                             {
                                                  <li class="social-icons-@Html.Raw(item[i].Name) mx-2"><a href="@Html.Raw(item[i].Link)"
-                                                                    title="@Html.Raw(item[i].Name)" target="_blank"><img class="img-fluid" src="images/icons/social/@Html.Raw(item[i].ImgName)"
+                                                                    title="@Html.Raw(item[i].Name)" target="_blank"><img class="img-fluid" src="../images/icons/social/@Html.Raw(item[i].ImgName)"
                                                             width="15" alt="BeyondFitness|社群" data-icon
                                                             data-plugin-options="{'onlySVG': false, 'animated': false, 'strokeBased': true}"></a>
                                                 </li>                                                                                             
@@ -302,7 +302,7 @@
                                             href="@(Url.Action("JoinUs", "Official"))"
                                             class="link-hover-style-1 ms-1">@Html.Raw(commonAll.JoinUs)</a></li>
                                     <li class="ps-0 text-4"><a
-                                            href="@Html.Raw($"../Official/BlogSingle?{(new { DocID = 81295 }).JsonStringify().EncryptKeyNormal().UrlEncodeBase64String()}")"
+                                            href="@Html.Raw($"{VirtualPathUtility.ToAbsolute("~/Official/BlogSingle")}?{(new { DocID = 81295 }).JsonStringify().EncryptKeyNormal().UrlEncodeBase64String()}")"
                                             class="link-hover-style-1 ms-1">@Html.Raw(commonAll.Blog)</a></li>
                                     <li class="ps-0 text-4"><a
                                             href="@(Url.Action("PartnerInfo", "Official"))"
@@ -324,7 +324,7 @@
                                             for (int i = 0; i < item.Length; i++)
                                             {
                                                  <li class="social-icons-@Html.Raw(item[i].Name) mx-2 text-4"><a href="@Html.Raw(item[i].Link)"
-                                                        title="@Html.Raw(item[i].Name)"><img class="img-fluid" src="images/icons/social/@Html.Raw(item[i].ImgName)"
+                                                        title="@Html.Raw(item[i].Name)"><img class="img-fluid" src="../images/icons/social/@Html.Raw(item[i].ImgName)"
                                                             width="15" alt="BeyondFitness|社群" data-icon
                                                             data-plugin-options="{'onlySVG': false, 'animated': false, 'strokeBased': true}"></a>
                                                 </li>                                                                                             
@@ -356,18 +356,18 @@
     <script src="../plugins/sweetalert2/sweetalert2.min.js?1.0"></script>
 
     <!-- Theme Base, Components and Settings -->
-    <script src="scripts/theme.js"></script>
+    <script src="../scripts/theme.js"></script>
 
     <!-- Circle Flip Slideshow Script -->
     <script src="../plugins/circle-flip-slideshow/js/jquery.flipshow.min.js"></script>
     <!-- Current Page Views -->
-    <script src="scripts/views/view.home.js"></script>
+    <script src="../scripts/views/view.home.js"></script>
     <!-- LighBox -->
-    <script src="scripts/examples/examples.lightboxes.js"></script>
+    <script src="../scripts/examples/examples.lightboxes.js"></script>
 
     <!-- Theme Initialization Files -->
-    <script src="scripts/theme.init.js"></script>
-    <script src="scripts/common.js?1.0"></script>
+    <script src="../scripts/theme.init.js"></script>
+    <script src="../scripts/common.js?1.0"></script>
     
     @RenderSection("TailPageJavaScriptInclude", false)
 

@@ -131,7 +131,7 @@
                             <h3 class="font-weight-bold line-height-5">@Html.Raw(voice["TalkSlogan"])</h3>
                             <p>@Html.Raw(voice["TalkMessage"])</p>                            
                         } else {
-                            <img class="img-fluid mb-5 ps-3 hidden-md-down" src="images/avatars/@Html.Raw(coach["NameDesc"])/Voice/Cover.jpg" alt="BeyondFitness|團隊成員" width="200">
+                            <img class="img-fluid mb-5 ps-3 hidden-md-down" src="../images/avatars/@Html.Raw(coach["NameDesc"])/Voice/Cover.jpg" alt="BeyondFitness|團隊成員" width="200">
                             <h3 class="font-weight-bold line-height-5 text-capitalize">@Html.Raw(coach["Slogan"])</h3>
                             <p class="font-weight-medium">@Html.Raw(coach["SloganDesc"])</p>									
                                 <div class="row">
@@ -211,7 +211,7 @@
                 </div>
             </div>
             <div class="col-12 px-0 hidden-sm-up">
-                <img src="images/avatars/@Html.Raw(coach["NameDesc"])/Voice/people.jpg" alt="BeyondFitenss|夥伴之聲"
+                <img src="../images/avatars/@Html.Raw(coach["NameDesc"])/Voice/people.jpg" alt="BeyondFitenss|夥伴之聲"
                     class="img-fluid" />
             </div>
             <div class="col-12 col-lg-8 col-md-12 py-0 pb-5 py-lg-5 py-md-0 px-0 px-lg-0 ps-lg-5 px-md-3">
@@ -265,7 +265,7 @@
 <!--照片Demo-->
 <section class="section bg-color-dark section-text-dark border-0 m-0 position-relative pt-5 pb-0 demo-img">
     <div class="container container-xl-custom container-xxl-custom p-relative z-index-1 custom-el-pos-1 px-0">
-        <img class="img-fluid @Html.Raw(coach["NameDesc"])" src="images/shape/wave.png" alt="BeyondFitness|夥伴之聲">
+        <img class="img-fluid @Html.Raw(coach["NameDesc"])" src="../images/shape/wave.png" alt="BeyondFitness|夥伴之聲">
     </div>
 </section>
 <!--Slogan-->
@@ -275,7 +275,7 @@
         <div class="row justify-content-start">
             <div class="col-12 col-lg-9 col-md-12 px-5">
                 <div>
-                    <img class="custom-svg-1 icon-animated mt-3" width="40" src="images/icons/double_quotes.svg"
+                    <img class="custom-svg-1 icon-animated mt-3" width="40" src="../images/icons/double_quotes.svg"
                         alt="BeyondFitness|私人教練是什麼" data-icon
                         data-plugin-options="{'onlySVG': false, 'color': '#EBD7BF', 'animated': false, 'strokeBased': true, 'svgStyle': 'fill:#EBD7BF'}" />
                     <h3 class="mt-5 line-height-9"><span
@@ -342,7 +342,7 @@
                                                         @{
                                                             if ((i%2) == 0)
                                                             {
-                                                                <img src="images/avatars/@Html.Raw(otherCoach["NameDesc"])/Voice/Cover.jpg"
+                                                                <img src="../images/avatars/@Html.Raw(otherCoach["NameDesc"])/Voice/Cover.jpg"
                                                                     class="avatar-img" alt="BeyondFitness|員工之聲">
                                                             }
                                                         }
@@ -355,7 +355,7 @@
                                                         @{
                                                             if ((i%2) == 1)
                                                             {
-                                                                <img src="images/avatars/@Html.Raw(otherCoach["NameDesc"])/Voice/Cover.jpg"
+                                                                <img src="../images/avatars/@Html.Raw(otherCoach["NameDesc"])/Voice/Cover.jpg"
                                                                     class="avatar-img" alt="BeyondFitness|員工之聲">
                                                             }
                                                         }

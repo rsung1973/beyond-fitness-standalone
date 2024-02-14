@@ -84,9 +84,9 @@
                 <a class="text-decoration-none popup-youtube" href="@Html.Raw(_model.Youtube)">
                     <span class="thumb-info thumb-info-lighten border-radius-0">
                         <span class="thumb-info-wrapper border-radius-0">
-                            <img class="card-img-top" alt="BeyondFitness|精選文章" src="@($"../BlogContent/Blog/{_model.BlogID}/images/Title.jpg")" />
+                            <img class="card-img-top" alt="BeyondFitness|精選文章" src="@VirtualPathUtility.ToAbsolute($"~/BlogContent/Blog/{_model.BlogID}/images/Title.jpg")" />
                             <span class="thumb-info-title bg-transparent justify-content-center">
-                                <img class="custom-svg-1 icon-animated" width="40" src="images/icons/play-button_f.svg" alt="BeyondFitness|youtube"
+                                <img class="custom-svg-1 icon-animated" width="40" src="../images/icons/play-button_f.svg" alt="BeyondFitness|youtube"
                                      data-icon data-plugin-options="{'color': '#EBD7BF', 'animated': true, 'delay': 600, 'strokeBased': true, 'extraClass': 'player'}" />
                             </span>
                         </span>
@@ -95,7 +95,7 @@
             }
             else
             {
-                 <img class="card-img-top" alt="BeyondFitness|精選文章" src="@($"../BlogContent/Blog/{_model.BlogID}/images/Title.jpg")" />	                	                         
+                 <img class="card-img-top" alt="BeyondFitness|精選文章" src="@VirtualPathUtility.ToAbsolute($"~/BlogContent/Blog/{_model.BlogID}/images/Title.jpg")" />	                	                         
             }
             <div class="card-body">
                 <h2 class="subject-title">@Html.Raw(_model.Title)</h2>
@@ -122,7 +122,7 @@
                             if (coachInfoURL != "") {
                                 <a href="@Html.Raw(coachInfoURL)" class="simple-ajax-popup">
                                     <img class="img-fluid bg-color-primary rounded-circle"
-                                        src="@(coachItem != null ? $"images/avatars/{coachItem["NameDesc"]}/Cover-xs.png" : "app/icons/icon-192x192.png")"
+                                        src="@(coachItem != null ? $"images/avatars/{coachItem["NameDesc"]}/Cover-xs.png" : "../app/icons/icon-192x192.png")"
                                         alt="BeyondFitness|團隊成員" width="120" />
                                 </a>
                                 <div class="author-info mx-4">
@@ -139,7 +139,7 @@
                                 </div>
                             } else {
                                 <img class="img-fluid bg-color-primary rounded-circle"
-                                    src="@(coachItem != null ? $"images/avatars/{coachItem["NameDesc"]}/Cover-xs.png" : "app/icons/icon-192x192.png")"
+                                    src="@(coachItem != null ? $"images/avatars/{coachItem["NameDesc"]}/Cover-xs.png" : "../app/icons/icon-192x192.png")"
                                     alt="BeyondFitness|團隊成員" width="120" />
                                 <div class="author-info mx-4">
                                     <span class="jobtitle">字海漫遊小編</span>

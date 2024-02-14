@@ -67,7 +67,7 @@
                     <div class="card-body p-0">
                         <div class="row d-flex text-center text-lg-start">
                             <div class="col-12">
-                                @* <img src="images/icons/session-function.svg" alt="BeyondFitenss|訓練課程" data-icon
+                                @* <img src="../images/icons/session-function.svg" alt="BeyondFitenss|訓練課程" data-icon
                                     data-plugin-options="{'onlySVG': true}" width="200" data-src="Icon" /> *@
                                 <object data="images/icons/session/function.svg" type="image/svg+xml" width="80" data-src="ID"></object>
                                 <h4 class="text-color-tertiary text-capitalize mt-3" data-bind="NameDesc"></h4>
@@ -97,10 +97,10 @@
             <div class="owl-carousel owl-theme custom-nav-arrows-1 px-0"
                 data-plugin-options="{'loop': true, 'nav': false, 'dots': true, 'items': 1, 'autoplay': 'true', 'autoplayTimeout': 7000, 'autoHeight': true, 'margin': 0, 'lazyLoad':true, 'animateOut': 'slideOutLeft'}">
                 @* <div class="demo-item">
-                    <img src="images/session/demo.jpg" class="img-thumbnail img-thumbnail-no-borders demo01-img" alt="BeyondFitness|專業訓練">
+                    <img src="../images/session/demo.jpg" class="img-thumbnail img-thumbnail-no-borders demo01-img" alt="BeyondFitness|專業訓練">
                 </div>    
                 <div class="demo-item">
-                    <img src="images/session/demo.jpg" class="img-thumbnail img-thumbnail-no-borders demo02-img" alt="BeyondFitness|專業訓練">
+                    <img src="../images/session/demo.jpg" class="img-thumbnail img-thumbnail-no-borders demo02-img" alt="BeyondFitness|專業訓練">
                 </div>            *@
             </div>
         </div>
@@ -142,7 +142,7 @@
                                         <div class="row align-items-center text-center">
                                             <div class="col-12">
                                                 <h4>@Html.Raw(traning1[i].Name)</h4>
-                                                @* <img src="images/icons/catagory/@Html.Raw($"{traning1[i].ID}.svg")" alt="BeyondFitenss|@Html.Raw(traning1[i].Name)"
+                                                @* <img src="../images/icons/catagory/@Html.Raw($"{traning1[i].ID}.svg")" alt="BeyondFitenss|@Html.Raw(traning1[i].Name)"
                                                     data-icon
                                                     data-plugin-options="{'onlySVG': true, 'animated': false, 'delay': 0, 'fadeIn': false}"
                                                     width="80" /> *@
@@ -160,7 +160,7 @@
                                         <div class="row align-items-center text-center">
                                             <div class="col-12">
                                                  <h4>@Html.Raw(traning2[i].Name)</h4>
-                                                @* <img src="images/icons/catagory/@Html.Raw(traning1[i].ID)" alt="BeyondFitenss|@Html.Raw(traning2[i].Name)"
+                                                @* <img src="../images/icons/catagory/@Html.Raw(traning1[i].ID)" alt="BeyondFitenss|@Html.Raw(traning2[i].Name)"
                                                     data-icon
                                                     data-plugin-options="{'onlySVG': true, 'animated': false, 'delay': 0, 'fadeIn': false}"
                                                     width="80" /> *@
@@ -217,7 +217,7 @@
                          for (i=0; i<data["DemoImgCnt"]; i++) {
                             var imgClass = 'demo0' + (i+1) + '-img';
                             console.log(imgClass);
-                            newOwl.append('<div class="demo-item" width="100%"><img src="images/shape/rectangle.jpg" class="img-fluid ' + imgClass +'" alt="BeyondFitness|專業訓練"></div>');
+                            newOwl.append('<div class="demo-item" width="100%"><img src="../images/shape/rectangle.jpg" class="img-fluid ' + imgClass +'" alt="BeyondFitness|專業訓練"></div>');
                         }                                                     
                         $this.append(newOwl);    
                         newOwl.owlCarousel({

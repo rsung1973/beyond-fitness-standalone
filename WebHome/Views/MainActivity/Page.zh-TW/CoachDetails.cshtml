@@ -47,7 +47,7 @@
                         <div
                             class="col-12 col-lg-5 col-md-6 px-0 d-flex justify-content-center justify-content-lg-end justify-content-md-end align-self-end">
                             <img class="cover-img"
-                                src="images/avatars/@Html.Raw(coach["NameDesc"])/Cover-lg.png" alt="BeyondFitess|私人教練">
+                                src="../images/avatars/@Html.Raw(coach["NameDesc"])/Cover-lg.png" alt="BeyondFitess|私人教練">
                         </div>
                         <div class="col-12 col-lg-7 col-md-6 py-0 pt-4 px-5 px-lg-4 px-md-4 d-flex align-items-end">
                             <div>                               
@@ -128,7 +128,7 @@
                                         {      
                                             <div class="col-4 col-lg-3 col-md-3 align-items-center text-center pb-3 px-1">     
                                                 <object data="images/icons/licence/@Html.Raw($"{license[i]["Name"]}.svg")" type="image/svg+xml" height="70"></object>		                                             
-                                                @* <img src="images/icons/licence/@Html.Raw($"{license[i]["Name"]}.svg")"
+                                                @* <img src="../images/icons/licence/@Html.Raw($"{license[i]["Name"]}.svg")"
                                                     alt="BeyondFitess|專業證照" width="70"> *@
                                             </div>
                                         }
@@ -180,7 +180,7 @@
                                         <div class="row">
                                             <div class="col-12">
                                                 <img class="img-thumbnail img-thumbnail-no-borders card-img-bottom"
-                                                    src="images/avatars/@Html.Raw(coach["NameDesc"])/Voice/people.jpg"
+                                                    src="../images/avatars/@Html.Raw(coach["NameDesc"])/Voice/people.jpg"
                                                     alt="BeyondFitess|員工之聲">
                                             </div>		
                                             <div class="col-12">
@@ -245,7 +245,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <img class="card-img-bottom" src="@Html.Raw($"../BlogContent/Blog/{blog.BlogID}/images/Title.jpg")"
+                                        <img class="card-img-bottom" src="@VirtualPathUtility.ToAbsolute($"~/BlogContent/Blog/{blog.BlogID}/images/Title.jpg")"
                                             alt="BeyondFitness|精選文章" />
                                     </div>
                                 </div>

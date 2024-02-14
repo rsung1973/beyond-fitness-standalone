@@ -192,7 +192,7 @@
                         for (int i = 0; i < item.Length; i++)
                         {
                             <div>
-                                <img src="images/findus/@Html.Raw(subClass)/@Html.Raw(item[i].FileName)" class="img-fluid" alt="BeyondFitness|@Html.Raw(branch.Name)" />
+                                <img src="../images/findus/@Html.Raw(subClass)/@Html.Raw(item[i].FileName)" class="img-fluid" alt="BeyondFitness|@Html.Raw(branch.Name)" />
                             </div>
                         }
                     }
@@ -301,7 +301,7 @@
                                     {
                                         <li class="social-icons-@Html.Raw(item[i].Name) mx-1"><a href="@Html.Raw(item[i].Link)"
                                                 title="@Html.Raw(item[i].Name)" target="_blank"><img class="img-fluid"
-                                                    src="images/icons/social/@Html.Raw(item[i].ImgName)" width="15"
+                                                    src="../images/icons/social/@Html.Raw(item[i].ImgName)" width="15"
                                                     alt="BeyondFitness|社群" data-icon
                                                     data-plugin-options="{'onlySVG': false, 'animated': false, 'strokeBased': true}"></a>
                                         </li>
@@ -320,7 +320,7 @@
                         <div class="row mt-2">
                             <div class="col-auto">
                                 <div class="d-flex align-items-center">
-                                    <img width="26" src="images/icons/location.svg" alt="BeyondFitness|分店地址" />
+                                    <img width="26" src="../images/icons/location.svg" alt="BeyondFitness|分店地址" />
                                     <p class="my-1 d-inline-flex ps-2 line-height-3">
                                         <a href="@Html.Raw(branch.GoogleMap)" target="_blank">@Html.Raw(branch.AddLong)</a>
                                     </p>
@@ -330,7 +330,7 @@
                         <div class="row mt-2 mb-4">
                             <div class="col-auto">
                                 <div class="d-flex align-items-start">
-                                    <img width="25" src="images/icons/clock.svg" alt="BeyondFitness|分店地址" class="mt-1" />
+                                    <img width="25" src="../images/icons/clock.svg" alt="BeyondFitness|分店地址" class="mt-1" />
                                     <p class="mb-1 mb-0 ps-2 line-height-7">
                                         @Html.Raw(findUsAll.WeekDays)<span
                                             class="text-color-tertiary px-3 px-lg-2">/</span>@Html.Raw(branch.InfoWeekDaysTime)<br />
@@ -366,7 +366,7 @@
             </div>
             <div class="col-12 col-lg-5 col-md-12 align-self-center mt-5">
                 <a href="@Html.Raw(branch.GoogleMap)" target="_blank">
-                    <img src="images/findus/@Html.Raw(subClass)/map.svg" data-icon data-plugin-options="{'onlySVG': true}" alt="BeyondFitness|地圖" class="map-img">
+                    <img src="../images/findus/@Html.Raw(subClass)/map.svg" data-icon data-plugin-options="{'onlySVG': true}" alt="BeyondFitness|地圖" class="map-img">
                 </a>
             </div>
         </div>
@@ -437,7 +437,7 @@
         </div>
         <div class="row mt-3">
             <div class="col-12">
-                <img src="images/home/beyond-map-sm.svg" alt="BeyondFitness|分店一覽" data-icon
+                <img src="../images/home/beyond-map-sm.svg" alt="BeyondFitness|分店一覽" data-icon
                         data-plugin-options="{'onlySVG': true, 'animated': false, 'delay': 0, 'fadeIn': false}" />
             </div>
         </div>

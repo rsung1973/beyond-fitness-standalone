@@ -74,7 +74,7 @@ namespace WebHome.Controllers
         public ActionResult Index()
         {
             ViewEngineResult viewResult = CheckView("Index");
-            return View(viewResult.ViewName);
+            return CheckLanguageRoute() ?? View(viewResult.ViewName);
         }
         public ActionResult Main()
         {
@@ -103,6 +103,23 @@ namespace WebHome.Controllers
             return viewResult;
         }
 
+        protected ActionResult CheckLanguageRoute()
+        {
+            if (RouteData.Values.ContainsKey("lang") != true)
+            {
+                var acceptLang = Request.Headers.AcceptLanguage.Contains("zh")
+                                    ? "tw"
+                                    : Request.Headers.AcceptLanguage.Contains("en")
+                                        ? "en"
+                                        : Request.Headers.AcceptLanguage.Contains("ja")
+                                            ? "ja"
+                                            : "tw";
+                return Redirect($"~/Official/{acceptLang}/{RouteData.Values["actionName"]}");
+            }
+
+            return null;
+        }
+
         public ActionResult HandleUnknownAction(string actionName, IFormCollection forms, QueryViewModel viewModel)
         {
             ViewBag.ViewModel = viewModel;
@@ -116,12 +133,19 @@ namespace WebHome.Controllers
             if (viewResult.Success)
             {
                 // 视图存在
-                return View(viewResult.ViewName, forms);
+                return CheckLanguageRoute() ?? View(viewResult.ViewName, forms);
             }
             else
             {
-                // 视图不存在
-                return Index();
+                if (actionName != null && System.IO.Path.GetExtension(actionName).Length > 0)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    // 视图不存在
+                    return Index();
+                }
             }
 
             //this.View(actionName).ExecuteResult(this.ControllerContext);
@@ -132,7 +156,7 @@ namespace WebHome.Controllers
             ViewBag.ViewModel = viewModel;
             ViewEngineResult viewResult = CheckView("CoachDetails");
 
-            return View(viewResult.ViewName);
+            return CheckLanguageRoute() ?? View(viewResult.ViewName);
         }
 
         public ActionResult Team(String branchName)
@@ -154,7 +178,7 @@ namespace WebHome.Controllers
             {
                 ViewEngineResult viewResult = CheckView("Team");
 
-                return View(viewResult.ViewName,model);
+                return CheckLanguageRoute() ?? View(viewResult.ViewName, model);
             }
         }
 
