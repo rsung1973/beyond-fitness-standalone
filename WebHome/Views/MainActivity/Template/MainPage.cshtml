@@ -22,11 +22,11 @@
 
     var Request = Context.Request;
     var Response = Context.Response;
-
+    String lang = ViewBag.Lang ?? "zh-TW";
     await Html.RenderPartialAsync("~/Views/MainActivity/Template/GlobalResource.cshtml");
     dynamic globalResource = ViewContext.HttpContext.Items["GlobalResource"] as dynamic;
-    dynamic commonAll = globalResource["Common"][ViewBag.Lang ?? "zh-TW"] as dynamic;
-    dynamic findUsAll = globalResource["FindUs"][ViewBag.Lang ?? "zh-TW"] as dynamic;
+    dynamic commonAll = globalResource["Common"][lang] as dynamic;
+    dynamic findUsAll = globalResource["FindUs"][lang] as dynamic;
 }
 <!DOCTYPE html>
 <html class="side-header-overlay-full-screen" lang="en">
@@ -89,29 +89,29 @@
         rel="stylesheet">
 
     <!-- plugins CSS -->
-	<link rel="stylesheet" href="plugins/bootstrap/css/bootstrap.min.css">
-	<link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-	<link rel="stylesheet" href="plugins/animate/animate.compat.css">
-	<link rel="stylesheet" href="plugins/simple-line-icons/css/simple-line-icons.min.css">
-	<link rel="stylesheet" href="plugins/owl.carousel/assets/owl.carousel.min.css">
-	<link rel="stylesheet" href="plugins/owl.carousel/assets/owl.theme.default.min.css">
-    <link rel="stylesheet" href="plugins/magnific-popup/magnific-popup.min.css">
+	<link rel="stylesheet" href="../plugins/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="../plugins/fontawesome-free/css/all.min.css">
+	<link rel="stylesheet" href="../plugins/animate/animate.compat.css">
+	<link rel="stylesheet" href="../plugins/simple-line-icons/css/simple-line-icons.min.css">
+	<link rel="stylesheet" href="../plugins/owl.carousel/assets/owl.carousel.min.css">
+	<link rel="stylesheet" href="../plugins/owl.carousel/assets/owl.theme.default.min.css">
+    <link rel="stylesheet" href="../plugins/magnific-popup/magnific-popup.min.css">
 	<!-- Revolution Slider CSS -->
-	<link rel="stylesheet" href="plugins/rs-plugin/css/settings.css">
-	<link rel="stylesheet" href="plugins/rs-plugin/css/layers.css">
-	<link rel="stylesheet" href="plugins/rs-plugin/css/navigation.css">
+	<link rel="stylesheet" href="../plugins/rs-plugin/css/settings.css">
+	<link rel="stylesheet" href="../plugins/rs-plugin/css/layers.css">
+	<link rel="stylesheet" href="../plugins/rs-plugin/css/navigation.css">
 
 	<!-- Theme CSS -->
-	<link rel="stylesheet" href="styles/theme.css?1.0">
-	<link rel="stylesheet" href="styles/theme-elements.css?1.0">
+	<link rel="stylesheet" href="@Html.Raw($"../styles/{lang}/theme.css?1.0")" />
+	<link rel="stylesheet" href="@Html.Raw($"../styles/{lang}/theme-elements.css?1.0")" />
 
 	<!-- Skin CSS -->
-	<link id="skinCSS" rel="stylesheet" href="styles/skin-beyond.css?1.0">
+	<link id="skinCSS" rel="stylesheet" href="@Html.Raw($"../styles/{lang}/skin-beyond.css?1.0")" />
 
 	<!-- Theme Custom CSS -->
-	<link rel="stylesheet" href="styles/custom.css?1.2">
+	<link rel="stylesheet" href="@Html.Raw($"../styles/{lang}/custom.css?1.2")" />
     <!-- Head Libs -->
-    <script src="plugins/modernizr/modernizr.min.js"></script>
+    <script src="../plugins/modernizr/modernizr.min.js"></script>
 
     @RenderSection("CustomHeader", false)
 
@@ -207,9 +207,9 @@
                                 class="col-12 d-flex align-items-center justify-content-center justify-content-lg-start pb-3 pb-lg-0 pb-md-0">
                                 <a href="@(VirtualPathUtility.ToAbsolute("~/Official/Index"))"
                                     class="logo pe-0 pe-lg-3">
-                                    <img alt="BeyondFitness" src="images/logo-default-slim-gold.svg" width="50"
+                                    <img src="images/logo-default-slim-gold.svg" width="50"
 										alt="BeyondFitness|超越體能顧問有限公司" class="pe-1">
-									<img alt="BeyondFitness" src="images/logo-default-gold.svg" width="150" alt="BeyondFitness|超越體能顧問有限公司">
+									<img src="images/logo-default-gold.svg" width="150" alt="BeyondFitness|超越體能顧問有限公司">
                                 </a>
                             </div>
                             <div
@@ -351,15 +351,15 @@
     </div>
 
     <!-- Plugin -->
-    <script src="plugins/plugins/js/plugins.min.js"></script>
+    <script src="../plugins/plugins/js/plugins.min.js"></script>
     <!-- SweetAlert Plugin Js -->
-    <script src="plugins/sweetalert2/sweetalert2.min.js?1.0"></script>
+    <script src="../plugins/sweetalert2/sweetalert2.min.js?1.0"></script>
 
     <!-- Theme Base, Components and Settings -->
     <script src="scripts/theme.js"></script>
 
     <!-- Circle Flip Slideshow Script -->
-    <script src="plugins/circle-flip-slideshow/js/jquery.flipshow.min.js"></script>
+    <script src="../plugins/circle-flip-slideshow/js/jquery.flipshow.min.js"></script>
     <!-- Current Page Views -->
     <script src="scripts/views/view.home.js"></script>
     <!-- LighBox -->

@@ -219,20 +219,8 @@ namespace WebHome.Controllers
                 ViewBag.DataItem = item;
                 viewModel.AgentID = item.AgentID;
                 viewModel.KeyID = item.ContractID.EncryptKey();
-                if(item.CourseContractType.IsCombination)
-                {
-                    viewModel.ContractType = CourseContractType.ContractTypeDefinition.CGA_Aux;
-                    viewModel.ContractTypeAux = (CourseContractType.ContractTypeDefinition?)item.ContractType;
-                }
-                else if (item.CourseContractType.IsVirtualCourse)
-                {
-                    viewModel.ContractType = CourseContractType.ContractTypeDefinition.CVA_Aux;
-                    viewModel.ContractTypeAux = (CourseContractType.ContractTypeDefinition?)(item.ContractType - CourseContractType.OffsetFromCGA2CVA);
-                }
-                else
-                {
-                    viewModel.ContractType = (CourseContractType.ContractTypeDefinition?)item.ContractType;
-                }
+
+                viewModel.ContractType = (CourseContractType.ContractTypeDefinition?)item.ContractType;
                 viewModel.PriceAdjustment = (CourseContractExtension.UnitPriceAdjustmentDefinition?)item.CourseContractExtension.UnitPriceAdjustmentType;
                 viewModel.ContractDate = item.ContractDate;
                 viewModel.Subject = item.Subject;

@@ -33,7 +33,6 @@ namespace WebHome.Models.ViewModel
 
         public int? ContractID { get; set; }
         public CourseContractType.ContractTypeDefinition? ContractType { get; set; } /*= CourseContractType.ContractTypeDefinition.CPA;*/
-        public CourseContractType.ContractTypeDefinition? ContractTypeAux { get; set; }
         public DateTime? ContractDate { get => contractDate?.CurrentLocalTime(); set => contractDate = value; }
         public String Subject { get; set; }
         public DateTime? ValidFrom { get => validFrom?.CurrentLocalTime(); set => validFrom = value; }

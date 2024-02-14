@@ -54,6 +54,7 @@
                 }
                 @if (_original.ContractType == (int)CourseContractType.ContractTypeDefinition.CFA
                 || _original.ContractType == (int)CourseContractType.ContractTypeDefinition.CGF
+                || _original.ContractType == (int)CourseContractType.ContractTypeDefinition.CRF
                 || _original.ContractType == (int)CourseContractType.ContractTypeDefinition.CVF)
                 {
                     items = _original.CourseContractMember.Where(m => m.UID == _original.OwnerID);
@@ -98,6 +99,7 @@
                         || _original.ContractType == (int)CourseContractType.ContractTypeDefinition.CGB
                         || _original.ContractType == (int)CourseContractType.ContractTypeDefinition.CGC
                         || _original.ContractType == (int)CourseContractType.ContractTypeDefinition.CGF
+                        || _original.ContractType == (int)CourseContractType.ContractTypeDefinition.CRF
                         || _original.ContractType == (int)CourseContractType.ContractTypeDefinition.CVA
                         || _original.ContractType == (int)CourseContractType.ContractTypeDefinition.CVB
                         || _original.ContractType == (int)CourseContractType.ContractTypeDefinition.CVF)

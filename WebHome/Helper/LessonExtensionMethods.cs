@@ -756,7 +756,8 @@ namespace WebHome.Helper
                 }
                 if (contract != null && (contract.ContractType == (int)CourseContractType.ContractTypeDefinition.CFA
                         || contract.ContractType == (int)CourseContractType.ContractTypeDefinition.CGF
-                        || contract.ContractType == (int)CourseContractType.ContractTypeDefinition.CVF))
+                        || contract.ContractType == (int)CourseContractType.ContractTypeDefinition.CVF
+                        || contract.ContractType == (int)CourseContractType.ContractTypeDefinition.CRF))
                 {
                     models.ExecuteCommand(@"UPDATE RegisterLesson
                     SET                Attended = {2}

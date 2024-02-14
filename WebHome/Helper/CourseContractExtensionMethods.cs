@@ -377,10 +377,12 @@ namespace WebHome.Helper
         {
             var c0 = items.Where(c => c.ContractType == (int)CourseContractType.ContractTypeDefinition.CFA 
                                     || c.ContractType == (int)CourseContractType.ContractTypeDefinition.CGF
-                                    || c.ContractType == (int)CourseContractType.ContractTypeDefinition.CVF);
+                                    || c.ContractType == (int)CourseContractType.ContractTypeDefinition.CVF
+                                    || c.ContractType == (int)CourseContractType.ContractTypeDefinition.CRF);
             var c1 = items.Where(c => c.ContractType != (int)CourseContractType.ContractTypeDefinition.CFA
                                     && c.ContractType != (int)CourseContractType.ContractTypeDefinition.CGF
-                                    && c.ContractType != (int)CourseContractType.ContractTypeDefinition.CVF);
+                                    && c.ContractType != (int)CourseContractType.ContractTypeDefinition.CVF
+                                    && c.ContractType != (int)CourseContractType.ContractTypeDefinition.CRF);
 
             var c2 = c0.Select(c => new { Contract = c, RemainedCount = c.RemainedLessonCount(false) })
                         .Concat(c1.Select(c => new { Contract = c, RemainedCount = c.RemainedLessonCount(false) }));
@@ -473,18 +475,8 @@ namespace WebHome.Helper
             totalCost = 0;
 
             CourseContractType typeItem;
-            if (viewModel.ContractType == CourseContractType.ContractTypeDefinition.CGA_Aux)
-            {
-                typeItem = models.GetTable<CourseContractType>().Where(t => t.TypeID == (int?)viewModel.ContractTypeAux).FirstOrDefault();
-            }
-            else if (viewModel.ContractType == CourseContractType.ContractTypeDefinition.CVA_Aux)
-            {
-                typeItem = models.GetTable<CourseContractType>().Where(t => t.TypeID == ((int?)viewModel.ContractTypeAux + CourseContractType.OffsetFromCGA2CVA)).FirstOrDefault();
-            }
-            else
-            {
-                typeItem = models.GetTable<CourseContractType>().Where(t => t.TypeID == (int?)viewModel.ContractType).FirstOrDefault();
-            }
+
+            typeItem = models.GetTable<CourseContractType>().Where(t => t.TypeID == (int?)viewModel.ContractType).FirstOrDefault();
 
             bool isNullOrEmpty = items == null || items.Count == 0;
             if (items == null)

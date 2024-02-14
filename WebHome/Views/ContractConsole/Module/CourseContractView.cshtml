@@ -55,6 +55,7 @@
                     }
                     @if (_model.ContractType == (int)CourseContractType.ContractTypeDefinition.CFA
                         || _model.ContractType == (int)CourseContractType.ContractTypeDefinition.CGF
+                        || _model.ContractType == (int)CourseContractType.ContractTypeDefinition.CRF
                         || _model.ContractType == (int)CourseContractType.ContractTypeDefinition.CVF)
             {
                 items = _model.CourseContractMember.Where(m => m.UID == _model.OwnerID);
@@ -404,6 +405,7 @@
 </div>
 @if (_model.ContractType == (int)CourseContractType.ContractTypeDefinition.CFA
     || _model.ContractType == (int)CourseContractType.ContractTypeDefinition.CGF
+    || _model.ContractType == (int)CourseContractType.ContractTypeDefinition.CRF
     || _model.ContractType == (int)CourseContractType.ContractTypeDefinition.CVF)
 {
 <div class="row" style="margin-top: 30px; margin-bottom: 20px;">

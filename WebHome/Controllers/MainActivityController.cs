@@ -62,10 +62,19 @@ namespace WebHome.Controllers
             }
             ViewBag.Lang = lang;
         }
+
+        protected String Lang 
+        { 
+            get
+            {
+                return ViewBag.Lang ?? "zh-TW";
+            } 
+        }
         // GET: MainActivity
         public ActionResult Index()
         {
-            return View("~/Views/MainActivity/Index.cshtml");
+            ViewEngineResult viewResult = CheckView("Index");
+            return View(viewResult.ViewName);
         }
         public ActionResult Main()
         {
@@ -82,7 +91,17 @@ namespace WebHome.Controllers
         {
             Response.Cookies.Append("GDPR", "agree");
             return Json(new { result = true, GDPR = true});
-        }        
+        }
+
+        protected ViewEngineResult CheckView(String actionName)
+        {
+            ViewEngineResult viewResult = _viewEngine.GetView("~/", $"/Views/MainActivity/Page.{Lang}/{actionName}.cshtml", isMainPage: false);
+            if(!viewResult.Success)
+            {
+                viewResult = _viewEngine.GetView("~/", $"/Views/MainActivity/Page.zh-TW/{actionName}.cshtml", isMainPage: false);
+            }
+            return viewResult;
+        }
 
         public ActionResult HandleUnknownAction(string actionName, IFormCollection forms, QueryViewModel viewModel)
         {
@@ -91,17 +110,18 @@ namespace WebHome.Controllers
             //string viewName = "YourViewName"; // 替换为你要检查的视图名称
             //string viewPath = "/Views/YourFolder/" + viewName + ".cshtml"; // 替换为你的视图路径
 
-            ViewEngineResult viewResult = _viewEngine.GetView("~/", $"/Views/MainActivity/{actionName}.cshtml", isMainPage: false);
+            //ViewEngineResult viewResult = _viewEngine.GetView("~/", $"/Views/MainActivity/{actionName}.cshtml", isMainPage: false);
+            ViewEngineResult viewResult = CheckView(actionName);
 
             if (viewResult.Success)
             {
                 // 视图存在
-                return View(actionName, forms);
+                return View(viewResult.ViewName, forms);
             }
             else
             {
                 // 视图不存在
-                return View("~/Views/MainActivity/Index.cshtml");
+                return Index();
             }
 
             //this.View(actionName).ExecuteResult(this.ControllerContext);
@@ -110,7 +130,9 @@ namespace WebHome.Controllers
         public ActionResult CoachDetails(CoachItem viewModel)
         {
             ViewBag.ViewModel = viewModel;
-            return View();
+            ViewEngineResult viewResult = CheckView("CoachDetails");
+
+            return View(viewResult.ViewName);
         }
 
         public ActionResult Team(String branchName)
@@ -130,7 +152,9 @@ namespace WebHome.Controllers
             }
             else
             {
-                return View(model);
+                ViewEngineResult viewResult = CheckView("Team");
+
+                return View(viewResult.ViewName,model);
             }
         }
 
@@ -155,7 +179,9 @@ namespace WebHome.Controllers
             // {
             //     return View(model);
             // }
-            return View("~/Views/MainActivity/PricingList.cshtml");
+            ViewEngineResult viewResult = CheckView("PricingList");
+
+            return View(viewResult.ViewName);
         }
 
         public ActionResult BlogArticleList(BlogArticleQueryViewModel viewModel)
@@ -163,7 +189,9 @@ namespace WebHome.Controllers
             ViewBag.ViewModel = viewModel;
             var items = models.GetTable<BlogArticle>()
                 .Where(b => b.BlogTag.Any(c => c.CategoryID == viewModel.CategoryID));
-            return View(items);
+            ViewEngineResult viewResult = CheckView("BlogArticleList");
+
+            return View(viewResult.ViewName,items);
         }
 
         public ActionResult BlogSingle(BlogArticleQueryViewModel viewModel)
@@ -189,9 +217,11 @@ namespace WebHome.Controllers
             var item = models.GetTable<BlogArticle>().Where(b => b.DocID == viewModel.DocID).FirstOrDefault();
             if (item == null || item.NotAfter < DateTime.Today)
             {
-                return View("Index");
+                return Index();
             }
-            return View("~/Views/MainActivity/BlogSingle.cshtml", item);
+            ViewEngineResult viewResult = CheckView("BlogSingle");
+
+            return View(viewResult.ViewName, item);
         }
 
         public ActionResult DropifyUpload()

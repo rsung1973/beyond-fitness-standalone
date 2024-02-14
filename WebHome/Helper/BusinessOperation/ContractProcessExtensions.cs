@@ -238,13 +238,10 @@ namespace WebHome.Helper.BusinessOperation
                 LevelID = item.Status
             });
 
-            item.ContractType = viewModel.ContractType == CourseContractType.ContractTypeDefinition.CGA_Aux
-                        ? (int)viewModel.ContractTypeAux.Value
-                        : viewModel.ContractType == CourseContractType.ContractTypeDefinition.CVA_Aux
-                            ? (int)viewModel.ContractTypeAux.Value + CourseContractType.OffsetFromCGA2CVA
-                            : (int)viewModel.ContractType.Value;
+            item.ContractType = (int)viewModel.ContractType.Value;
 
-            if(branch.IsVirtualClassOccurrence(models))
+
+            if (branch.IsVirtualClassOccurrence(models))
             {
                 item.CourseContractExtension.BranchID = branch.IsVirtualClassroom()
                     ? profile.ServingCoach.PreferredBranchID().Value
@@ -377,14 +374,14 @@ namespace WebHome.Helper.BusinessOperation
             {
                 ModelState.AddModelError("ContractType", "請選擇合約類型");
             }
-            else if (viewModel.ContractType == CourseContractType.ContractTypeDefinition.CGA_Aux
-                    || viewModel.ContractType == CourseContractType.ContractTypeDefinition.CVA_Aux)
-            {
-                if ( !viewModel.ContractTypeAux.HasValue)
-                {
-                    ModelState.AddModelError("ContractTypeAux", "請選擇人數");
-                }
-            }
+            //else if (viewModel.ContractType == CourseContractType.ContractTypeDefinition.CGA_Aux
+            //        || viewModel.ContractType == CourseContractType.ContractTypeDefinition.CVA_Aux)
+            //{
+            //    if ( !viewModel.ContractTypeAux.HasValue)
+            //    {
+            //        ModelState.AddModelError("ContractTypeAux", "請選擇人數");
+            //    }
+            //}
 
             lessonPrice = viewModel.ValidateTotalCost(controller);
 
@@ -450,23 +447,12 @@ namespace WebHome.Helper.BusinessOperation
             //{
 
             //}
-            else if (viewModel.ContractType == CourseContractType.ContractTypeDefinition.CGA_Aux
-                    || viewModel.ContractType == CourseContractType.ContractTypeDefinition.CVA_Aux)
+            else if (viewModel.ContractType == CourseContractType.ContractTypeDefinition.CFA
+                    || viewModel.ContractType == CourseContractType.ContractTypeDefinition.CGF
+                    || viewModel.ContractType == CourseContractType.ContractTypeDefinition.CRF
+                    || viewModel.ContractType == CourseContractType.ContractTypeDefinition.CVF)
             {
-                if (viewModel.ContractTypeAux == CourseContractType.ContractTypeDefinition.CGF)
-                {
 
-                }
-                else
-                {
-                    var contractType = models.GetTable<CourseContractType>().Where(t => t.TypeID == (int?)viewModel.ContractTypeAux)
-                                        .FirstOrDefault();
-
-                    if (contractType?.GroupingMemberCount != viewModel.UID.Length)
-                    {
-                        ModelState.AddModelError("OwnerID", "請再次確認一次合約人數與合約類型是否相符");
-                    }
-                }
             }
             else
             {
@@ -1921,7 +1907,8 @@ namespace WebHome.Helper.BusinessOperation
 
                 if (item.ContractType == (int)CourseContractType.ContractTypeDefinition.CFA
                     || item.ContractType == (int)CourseContractType.ContractTypeDefinition.CGF
-                    || item.ContractType == (int)CourseContractType.ContractTypeDefinition.CVF)
+                    || item.ContractType == (int)CourseContractType.ContractTypeDefinition.CVF
+                    || item.ContractType == (int)CourseContractType.ContractTypeDefinition.CRF)
                 {
                     lesson.GroupingMemberCount = 1;
                     lesson.GroupingLesson = new GroupingLesson { };

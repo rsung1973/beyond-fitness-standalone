@@ -55,6 +55,7 @@
                     }
                     @if (_model.ContractType == (int)CourseContractType.ContractTypeDefinition.CFA
                         || _model.ContractType == (int)CourseContractType.ContractTypeDefinition.CGF
+                        || _model.ContractType == (int)CourseContractType.ContractTypeDefinition.CRF
                         || _model.ContractType == (int)CourseContractType.ContractTypeDefinition.CVF)
                     {
                         items = _model.CourseContractMember.Where(m => m.UID == _model.OwnerID);
@@ -111,6 +112,7 @@
                                    || _model.ContractType == (int)CourseContractType.ContractTypeDefinition.CGB
                                    || _model.ContractType == (int)CourseContractType.ContractTypeDefinition.CGC
                                    || _model.ContractType == (int)CourseContractType.ContractTypeDefinition.CGF
+                                   || _model.ContractType == (int)CourseContractType.ContractTypeDefinition.CRF
                                    || _model.ContractType == (int)CourseContractType.ContractTypeDefinition.CVA
                                    || _model.ContractType == (int)CourseContractType.ContractTypeDefinition.CVB
                                    || _model.ContractType == (int)CourseContractType.ContractTypeDefinition.CVF)
@@ -369,6 +371,7 @@
 <!--家庭合約/附表學員名單-->
 @if (_model.ContractType == (int)CourseContractType.ContractTypeDefinition.CFA
     || _model.ContractType == (int)CourseContractType.ContractTypeDefinition.CGF
+    || _model.ContractType == (int)CourseContractType.ContractTypeDefinition.CRF
     || _model.ContractType == (int)CourseContractType.ContractTypeDefinition.CVF)
 {
         <div class="row" style="@(_viewModel.Pdf=="1" ? "page-break-before:always;" : "")">

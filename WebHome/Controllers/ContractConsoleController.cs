@@ -366,12 +366,12 @@ namespace WebHome.Controllers
             {
                 ModelState.AddModelError("ContractType", "請選擇合約類型");
             }
-            else if ((viewModel.ContractType == CourseContractType.ContractTypeDefinition.CGA_Aux 
-                        || viewModel.ContractType == CourseContractType.ContractTypeDefinition.CVA_Aux)
-                && !viewModel.ContractTypeAux.HasValue)
-            {
-                ModelState.AddModelError("ContractTypeAux", "請選擇人數");
-            }
+            //else if ((viewModel.ContractType == CourseContractType.ContractTypeDefinition.CGA_Aux 
+            //            || viewModel.ContractType == CourseContractType.ContractTypeDefinition.CVA_Aux)
+            //    && !viewModel.ContractTypeAux.HasValue)
+            //{
+            //    ModelState.AddModelError("ContractTypeAux", "請選擇人數");
+            //}
 
 
             //if (!viewModel.DurationInMinutes.HasValue)
@@ -402,7 +402,8 @@ namespace WebHome.Controllers
                     .Where(p => p.BranchID == viewModel.BranchID || !p.BranchID.HasValue)
                     .Where(p => p.Status == (int)Naming.LessonPriceStatus.營養課程);
             }
-            else if (viewModel.ContractType == CourseContractType.ContractTypeDefinition.CRA)
+            else if (viewModel.ContractType == CourseContractType.ContractTypeDefinition.CRA
+                        || viewModel.ContractType == CourseContractType.ContractTypeDefinition.CRF)
             {
                 items = models.GetTable<LessonPriceType>()
                     .Where(l => !l.DurationInMinutes.HasValue
@@ -426,7 +427,10 @@ namespace WebHome.Controllers
                 items = models.PromptEffectiveLessonPrice()
                     .Where(l => !l.DurationInMinutes.HasValue || l.DurationInMinutes == viewModel.DurationInMinutes);
 
-                if (viewModel.ContractType == CourseContractType.ContractTypeDefinition.CVA_Aux)
+                if (viewModel.ContractType is CourseContractType.ContractTypeDefinition.CVA
+                    or CourseContractType.ContractTypeDefinition.CVB
+                    or CourseContractType.ContractTypeDefinition.CVC
+                    or CourseContractType.ContractTypeDefinition.CVF)
                 {
                     items = items.Where(p => p.BranchID == viewModel.BranchID);
                 }
@@ -509,12 +513,12 @@ namespace WebHome.Controllers
             {
                 ModelState.AddModelError("ContractType", "請選擇合約類型");
             }
-            else if ((viewModel.ContractType == CourseContractType.ContractTypeDefinition.CGA_Aux
-                        || viewModel.ContractType == CourseContractType.ContractTypeDefinition.CVA_Aux)
-                && !viewModel.ContractTypeAux.HasValue)
-            {
-                ModelState.AddModelError("ContractTypeAux", "請選擇人數");
-            }
+            //else if ((viewModel.ContractType == CourseContractType.ContractTypeDefinition.CGA_Aux
+            //            || viewModel.ContractType == CourseContractType.ContractTypeDefinition.CVA_Aux)
+            //    && !viewModel.ContractTypeAux.HasValue)
+            //{
+            //    ModelState.AddModelError("ContractTypeAux", "請選擇人數");
+            //}
 
             var item = viewModel.ValidateTotalCost(this);
 

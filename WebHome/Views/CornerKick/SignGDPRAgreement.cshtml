@@ -168,6 +168,7 @@
             viewModel.SignatureName = 'SignatureGDPR';
             viewModel.SignatureCount = @(_item.ContractType == (int)CourseContractType.ContractTypeDefinition.CFA
                 || _item.ContractType == (int)CourseContractType.ContractTypeDefinition.CGF
+                || _item.ContractType == (int)CourseContractType.ContractTypeDefinition.CRF
                 || _item.ContractType == (int)CourseContractType.ContractTypeDefinition.CVF
                 ? 2 : 1);
             viewModel.Extension = true;

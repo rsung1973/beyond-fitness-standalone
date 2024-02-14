@@ -37,6 +37,7 @@
                          _currentLessons.Join(models.GetTable<RegisterLessonContract>()
                                         .Where(c => c.CourseContract.ContractType == (int)CourseContractType.ContractTypeDefinition.CFA
                                             || c.CourseContract.ContractType == (int)CourseContractType.ContractTypeDefinition.CGF
+                                            || c.CourseContract.ContractType == (int)CourseContractType.ContractTypeDefinition.CRF
                                             || c.CourseContract.ContractType == (int)CourseContractType.ContractTypeDefinition.CVF), r => r.RegisterID, c => c.RegisterID, (r, c) => c)
                              .Join(models.GetTable<RegisterLessonContract>(), c => c.ContractID, r => r.ContractID, (c, r) => r)
                              .Join(models.GetTable<RegisterLesson>(), c => c.RegisterID, r => r.RegisterID, (c, r) => r);
@@ -49,6 +50,7 @@
     var exceptFamily = _currentLessons.Where(r => r.RegisterLessonContract == null 
                                             || (r.RegisterLessonContract.CourseContract.ContractType != (int)CourseContractType.ContractTypeDefinition.CFA
                                                 && r.RegisterLessonContract.CourseContract.ContractType != (int)CourseContractType.ContractTypeDefinition.CGF
+                                                && r.RegisterLessonContract.CourseContract.ContractType != (int)CourseContractType.ContractTypeDefinition.CRF
                                                 && r.RegisterLessonContract.CourseContract.ContractType != (int)CourseContractType.ContractTypeDefinition.CVF));
     @(totalLessons
                     - (exceptFamily.Sum(c=>c.AttendedLessons) ?? 0)
