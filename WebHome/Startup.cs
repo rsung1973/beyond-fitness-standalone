@@ -155,6 +155,36 @@ namespace WebHome
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
+                    name: "OfficialTWAction",
+                    pattern: "Official/tw/{action}",
+                    defaults: new { controller = "MainActivity", action = "Index", lang = "tw" });
+
+                endpoints.MapControllerRoute(
+                    name: "OfficialENAction",
+                    pattern: "Official/en/{action}",
+                    defaults: new { controller = "MainActivity", action = "Index", lang = "en" });
+
+                endpoints.MapControllerRoute(
+                    name: "OfficialJAAction",
+                    pattern: "Official/ja/{action}",
+                    defaults: new { controller = "MainActivity", action = "Index", lang = "ja" });
+
+                endpoints.MapControllerRoute(
+                    name: "OfficialTW",
+                    pattern: "Official/tw/{*actionName}",
+                    defaults: new { controller = "MainActivity", action = "HandleUnknownAction", lang = "tw" });
+
+                endpoints.MapControllerRoute(
+                    name: "OfficialEN",
+                    pattern: "Official/en/{*actionName}",
+                    defaults: new { controller = "MainActivity", action = "HandleUnknownAction", lang = "en" });
+
+                endpoints.MapControllerRoute(
+                    name: "OfficialJA",
+                    pattern: "Official/ja/{*actionName}",
+                    defaults: new { controller = "MainActivity", action = "HandleUnknownAction", lang = "ja" });
+
+                endpoints.MapControllerRoute(
                         name: "Official",
                         pattern: "Official/{action}/{id?}/{keyID?}",
                         defaults: new { controller = "MainActivity", action = "Index" }
