@@ -69,7 +69,7 @@
                             <div class="col-12">
                                 @* <img src="../images/icons/session-function.svg" alt="BeyondFitenss|訓練課程" data-icon
                                     data-plugin-options="{'onlySVG': true}" width="200" data-src="Icon" /> *@
-                                <object data="images/icons/session/function.svg" type="image/svg+xml" width="80" data-src="ID"></object>
+                                <object data="../images/icons/session/function.svg" type="image/svg+xml" width="80" data-src="ID"></object>
                                 <h4 class="text-color-tertiary text-capitalize mt-3" data-bind="NameDesc"></h4>
                                 <h3 class="text-color-light" data-bind="Name"></h3>
                             </div>
@@ -146,7 +146,7 @@
                                                     data-icon
                                                     data-plugin-options="{'onlySVG': true, 'animated': false, 'delay': 0, 'fadeIn': false}"
                                                     width="80" /> *@
-                                                <object data="images/icons/session/@Html.Raw($"{traning1[i].ID}.svg")" type="image/svg+xml" width="80" class="pt-2"></object>
+                                                <object data="../images/icons/session/@Html.Raw($"{traning1[i].ID}.svg")" type="image/svg+xml" width="80" class="pt-2"></object>
 												<div style="position: absolute;top: 0; width: 100%; height: 100%;" href="javascript:showContent(@(i));">
 												</div>
                                                 <p class="text-color-tertiary line-height-2 text-center text-3 mb-0 pt-2">@Html.Raw(traning1[i].NameDesc)</p>
@@ -164,7 +164,7 @@
                                                     data-icon
                                                     data-plugin-options="{'onlySVG': true, 'animated': false, 'delay': 0, 'fadeIn': false}"
                                                     width="80" /> *@
-                                                <object data="images/icons/session/@Html.Raw($"{traning2[i].ID}.svg")" type="image/svg+xml" width="80" class="pt-2"></object>
+                                                <object data="../images/icons/session/@Html.Raw($"{traning2[i].ID}.svg")" type="image/svg+xml" width="80" class="pt-2"></object>
 												<div style="position: absolute;top: 0; width: 100%; height: 100%;" href="javascript:showContent(@(i+4));">
 												</div>
                                                 <p class="text-color-tertiary line-height-2 text-center text-3 mb-0 pt-2">@Html.Raw(traning2[i].NameDesc)</p>
@@ -203,7 +203,7 @@
 
                     $('.showcontent').find('[data-src]').each(function (idx, element) {
                         var $this = $(this);
-                        $this.attr('data','images/icons/session/'+data[$this.attr('data-src')]+'.svg');
+                        $this.attr('data','../images/icons/session/'+data[$this.attr('data-src')]+'.svg');
                     });
 
                     $('.showcontent').find('[data-class]').each(function (idx, element) {

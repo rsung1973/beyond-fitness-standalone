@@ -54,62 +54,62 @@
     "PartnerItem": [
         {
             "Catagory": "Related Companies",
-            "Desc": "関係企業",  
+            "Desc": "關係企業",  
             "Items": [
                 {
                     "Name": "CMP",
                     "link": "http://www.cmp.com.tw/",
-                    "LogoIcon": "images/partner/CMP.svg",
-                    "LogoIconC": "images/partner/CMP-c.svg",
+                    "LogoIcon": "CMP.svg",
+                    "LogoIconC": "CMP-c.svg",
                     "Order": 1
                 },
                 {
                     "Name": "Sanlien",
                     "link": "http://www.sanlien.com.tw",
-                    "LogoIcon": "images/partner/Sanlien.svg",
-                    "LogoIconC": "images/partner/Sanlien-c.svg",
+                    "LogoIcon": "Sanlien.svg",
+                    "LogoIconC": "Sanlien-c.svg",
                     "Order": 2
                 },
                 {
                     "Name": "PJ",
                     "link": "https://www.pj.com.tw/tw",
-                    "LogoIcon": "images/partner/Pujen.svg",
-                    "LogoIconC": "images/partner/Pujen-c.svg",
+                    "LogoIcon": "Pujen.svg",
+                    "LogoIconC": "Pujen-c.svg",
                     "Order": 3
                 }              
             ]       
         },
         {
             "Catagory": "Medical Cooperation",
-            "Desc": "医療協力",
+            "Desc": "醫療合作",
             "Items": [
                 {
                     "Name": "LandSeedSports",
                     "link": "https://landseedsports-medicine.com/",
-                    "LogoIcon": "images/partner/Landseed.svg",
-                    "LogoIconC": "images/partner/Landseed-c.svg",
+                    "LogoIcon": "Landseed.svg",
+                    "LogoIconC": "Landseed-c.svg",
                     "Order": 5
                 },        
                 {
                     "Name": "Aicarept",
                     "link": "https://www.aicarept.com",
-                    "LogoIcon": "images/partner/Aicarept.svg",
-                    "LogoIconC": "images/partner/Aicarept-c.svg"
+                    "LogoIcon": "Aicarept.svg",
+                    "LogoIconC": "Aicarept-c.svg"
                     ,
                     "Order": 6
                 },        
                 {
                     "Name": "Ajwkptc",
                     "link": "https://www.ajwkptc.com",
-                    "LogoIcon": "images/partner/Ajwkptc.svg",
-                    "LogoIconC": "images/partner/Ajwkptc-c.svg",
+                    "LogoIcon": "Ajwkptc.svg",
+                    "LogoIconC": "Ajwkptc-c.svg",
                     "Order": 7
                 },                  
                 {
                     "Name": "InBody",
                     "link": "https://inbodyhome.tw",
-                    "LogoIcon": "images/partner/Inbody.svg",
-                    "LogoIconC": "images/partner/Inbody-c.svg",
+                    "LogoIcon": "Inbody.svg",
+                    "LogoIconC": "Inbody-c.svg",
                     "Order": 8
                 } 
             ]
@@ -121,42 +121,42 @@
                 {
                     "Name": "Sigma",
                     "link": "",
-                    "LogoIcon": "images/partner/Sigma.svg",
-                    "LogoIconC": "images/partner/Sigma-c.svg",
+                    "LogoIcon": "Sigma.svg",
+                    "LogoIconC": "Sigma-c.svg",
                     "Order": 4
                 },  
                 {
                     "Name": "PLC",
                     "link": "https://plcfootball.com/",
-                    "LogoIcon": "images/partner/PLC.svg",
-                    "LogoIconC": "images/partner/PLC-c.svg",
+                    "LogoIcon": "PLC.svg",
+                    "LogoIconC": "PLC-c.svg",
                     "Order": 9
                 }        
             ]  
         },
         {
             "Catagory": "Public Interset Group",
-            "Desc": "公益団体",
+            "Desc": "公益團體",
             "Items": [
                 {
                     "Name": "KeepGoing",
                     "link": "https://www.facebook.com/KeepGoingWithGoodThings/",
-                    "LogoIcon": "images/partner/KeepGoing.svg",
-                    "LogoIconC": "images/partner/KeepGoing-c.svg",
+                    "LogoIcon": "KeepGoing.svg",
+                    "LogoIconC": "KeepGoing-c.svg",
                     "Order": 10
                 },     
                 {
                     "Name": "NineNine",
                     "link": "https://www.ninenine.org",
-                    "LogoIcon": "images/partner/Ninenine.svg",
-                    "LogoIconC": "images/partner/Ninenine-c.svg",
+                    "LogoIcon": "Ninenine.svg",
+                    "LogoIconC": "Ninenine-c.svg",
                     "Order": 11
                 },        
                 {
                     "Name": "DFC",
                     "link": "https://tycaa.dfctaiwan.org",
-                    "LogoIcon": "images/partner/DFC.svg",
-                    "LogoIconC": "images/partner/DFC-c.svg",
+                    "LogoIcon": "DFC.svg",
+                    "LogoIconC": "DFC-c.svg",
                     "Order": 12
                 }  
             ]        

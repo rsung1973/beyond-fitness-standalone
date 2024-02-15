@@ -245,14 +245,14 @@
                                             MemberCode = (String)item[position[i]].MemberCode
                                          };
                                         <div>
-                                            <object data="images/shape/@Html.Raw(coverInfo.Shape)" type="image/svg+xml"
+                                            <object data="../images/shape/@Html.Raw(coverInfo.Shape)" type="image/svg+xml"
                                                 onload='createAvatarImage(@Html.Raw(coachDimArray.JsonStringify()));'></object>
                                             <div style="position: absolute;top: 0; width: 100%; height: 100%;" onclick='javascript:gotoVoicePage(@Html.Raw(viewModel.JsonStringify()));'></div>
                                         </div>     
                                     } else {
                                         var url = Url.Action("CoachDetails", "Official", new { BranchID = (int?)branch.ID, MemberCode = (String)item[position[i]].MemberCode });
                                         <div>
-                                            <object data="images/shape/@Html.Raw(coverInfo.Shape)" type="image/svg+xml"
+                                            <object data="../images/shape/@Html.Raw(coverInfo.Shape)" type="image/svg+xml"
                                                 onload='createAvatarImage(@Html.Raw(coachDimArray.JsonStringify()));'></object>
 
                                             <div style="position: absolute;top: 0; width: 100%; height: 100%;" class="simple-ajax-popup"

@@ -63,12 +63,12 @@
                                              @{
                                                 if (String.IsNullOrEmpty((String)item[j].link))
                                                 {
-                                                   <img width="120" src="@Html.Raw(item[j].LogoIconC)" alt="BeyondFitness|合作夥伴" />
+                                                   <img width="120" src="../images/partner/@Html.Raw(item[j].LogoIconC)" alt="BeyondFitness|合作夥伴" />
                                                 }
                                                 else
                                                 {
                                                    <a href="@Html.Raw(item[j].link)" target="_blank">
-                                                      <img width="120" src="@Html.Raw(item[j].LogoIconC)" alt="BeyondFitness|合作夥伴" />
+                                                      <img width="120" src="../images/partner/@Html.Raw(item[j].LogoIconC)" alt="BeyondFitness|合作夥伴" />
                                                    </a>
                                                 }
                                              }
