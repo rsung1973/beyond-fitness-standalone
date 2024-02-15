@@ -18,14 +18,20 @@
 
     models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
     _modelState = ViewContext.ModelState;
-   ViewBag.MainClass = "aboutus";
-   ViewBag.MenuDark = true;
+    ViewBag.MainClass = "aboutus";
+    ViewBag.MenuDark = true;
 
-   Layout = "~/Views/MainActivity/Template/MainPage.cshtml";
-   await Html.RenderPartialAsync("~/Views/MainActivity/Template/GlobalResource.cshtml");
-   dynamic globalResource = ViewContext.HttpContext.Items["GlobalResource"] as dynamic;
-   dynamic commonAll = globalResource["Common"][ViewBag.Lang ?? "zh-TW"] as dynamic;
-   dynamic aboutusAll = globalResource["AboutUs"][ViewBag.Lang ?? "zh-TW"] as dynamic;
+    Layout = "~/Views/MainActivity/Template/MainPage.cshtml";
+    await Html.RenderPartialAsync("~/Views/MainActivity/Template/GlobalResource.cshtml");
+    String lang = ViewBag.Lang ?? "zh-TW";
+    var langPath = lang == "zh-TW"
+        ? "tw"
+        : lang == "en-US"
+            ? "en"
+            : "ja";
+    dynamic globalResource = ViewContext.HttpContext.Items["GlobalResource"] as dynamic;
+    dynamic commonAll = globalResource["Common"][lang] as dynamic;
+    dynamic aboutusAll = globalResource["AboutUs"][lang] as dynamic;
 
 }
 
@@ -70,7 +76,7 @@
                   @Html.Raw(aboutusAll.PhilosophyMessage2)
                </p>
                <div class="d-flex justify-content-center justify-content-lg-start justify-content-md-center">
-                  <a href="@(Url.Action("BookNow", "Official"))"
+                  <a href="@(VirtualPathUtility.ToAbsolute($"~/Official/{langPath}/BookNow"))"
                      class="btn border-color-dark btn-rounded fst-italic font-weight-normal text-2 mt-3">@Html.Raw(commonAll.BookNow)</a>
                </div>
             </div>
@@ -114,7 +120,7 @@
                   @Html.Raw(aboutusAll.BusinessMessage)
                </p>
                <div class="d-flex justify-content-center justify-content-lg-start justify-content-md-center">
-                  <a href="@(Url.Action("JoinUs", "Official"))"
+                  <a href="@(VirtualPathUtility.ToAbsolute($"~/Official/{langPath}/JoinUs"))"
                      class="btn border-color-dark btn-rounded fst-italic font-weight-normal text-2">@Html.Raw(commonAll.JoinUsGo)</a>
                </div>
             </div>

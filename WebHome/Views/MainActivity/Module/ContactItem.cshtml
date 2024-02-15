@@ -19,10 +19,15 @@
     models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];
 
     (ViewBag.Lang as String).SelectUICulture();
-    
+    String lang = ViewBag.Lang ?? "zh-TW";
+    var langPath = lang == "zh-TW"
+        ? "tw"
+        : lang == "en-US"
+            ? "en"
+            : "ja";
     await Html.RenderPartialAsync("~/Views/MainActivity/Template/GlobalResource.cshtml");
     dynamic globalResource = ViewContext.HttpContext.Items["GlobalResource"] as dynamic;
-    dynamic commonAll = globalResource["Common"][ViewBag.Lang ?? "zh-TW"] as dynamic;
+    dynamic commonAll = globalResource["Common"][lang] as dynamic;
 }
 
 <section
@@ -35,7 +40,7 @@
                     data-plugin-options="{'onlySVG': false, 'color': '#EBD7BF', 'animated': false, 'strokeBased': true, 'svgStyle': 'fill:#EBD7BF'}" />
                 <h2 class="pt-3 mb-4 custom-font-secondary fst-italic font-weight-bold">@Html.Raw(commonAll.Slogan)</h2>
                 <h3 class="mb-5 font-weight-bold" data-plugin-animated-letters data-plugin-options="{'startDelay': 300, 'minWindowWidth': 0, 'animationSpeed': 50}">@Html.Raw(commonAll.SloganDesc)</h3>
-                <a href="@(Url.Action("BookNow", "Official"))"
+                <a href="@(VirtualPathUtility.ToAbsolute($"~/Official/{langPath}/BookNow"))"
                     class="btn btn-3d bg-color-light text-color-dark btn-rounded fst-italic positive-ls-3">@Html.Raw(commonAll.BookNow)</a>
             </div>
         </div>

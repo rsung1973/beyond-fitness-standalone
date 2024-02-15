@@ -22,14 +22,19 @@
     Layout = "~/Views/MainActivity/Template/MainPage.cshtml";
     ViewBag.MainClass = "home";
     ViewBag.MenuDark = false;
-
+    String lang = ViewBag.Lang ?? "zh-TW";
+    var langPath = lang == "zh-TW"
+        ? "tw"
+        : lang == "en-US"
+            ? "en"
+            : "ja";
     await Html.RenderPartialAsync("~/Views/MainActivity/Template/GlobalResource.cshtml");
     dynamic globalResource = ViewContext.HttpContext.Items["GlobalResource"] as dynamic;
-    dynamic homeAll = globalResource["Home"][ViewBag.Lang ?? "zh-TW"] as dynamic;
-    dynamic serviceAll = globalResource["Service"][ViewBag.Lang ?? "zh-TW"] as dynamic;
-    dynamic commonAll = globalResource["Common"][ViewBag.Lang ?? "zh-TW"] as dynamic;
-    dynamic joinUsAll = globalResource["JoinUs"][ViewBag.Lang ?? "zh-TW"] as dynamic;
-    dynamic findUsAll = globalResource["FindUs"][ViewBag.Lang ?? "zh-TW"] as dynamic;
+    dynamic homeAll = globalResource["Home"][lang] as dynamic;
+    dynamic serviceAll = globalResource["Service"][lang] as dynamic;
+    dynamic commonAll = globalResource["Common"][lang] as dynamic;
+    dynamic joinUsAll = globalResource["JoinUs"][lang] as dynamic;
+    dynamic findUsAll = globalResource["FindUs"][lang] as dynamic;
 }
 
 @section CustomHeader {
@@ -70,7 +75,7 @@
                 <p class="text-center px-3 hidden-sm-up">@Html.Raw(homeAll.CentralAxisDescSm)</p> *@
             </div>
             <div class="col-12 py-5">
-                <a href="@(Url.Action("Aboutus", "Official"))"
+                <a href="@(VirtualPathUtility.ToAbsolute($"~/Official/{langPath}/Aboutus")))"
                     class="btn btn-default btn-rounded fst-italic font-weight-normal text-2">@Html.Raw(commonAll.ReadMore)</a>
             </div>
         </div>
@@ -111,7 +116,7 @@
                         <p class="text-color-tertiary text-3 mb-0 line-height-8 pt-2">
                             @Html.Raw(homeAll.KeyPoint_1_Subject)</p>
                         <h4 class="font-weight-semi-bold pb-2">@Html.Raw(homeAll.KeyPoint_1)</h4>
-                        <a href="@(Url.Action("Service", "Official"))#scientific_container"
+                        <a href="@(VirtualPathUtility.ToAbsolute($"~/Official/{langPath}/Service"))#scientific_container"
                             class="btn btn-default btn-rounded fst-italic font-weight-normal text-2">@Html.Raw(commonAll.ReadMore)</a>
                     </div>
                 </div>
@@ -125,7 +130,7 @@
                         <p class="text-color-tertiary text-3 mb-0 line-height-8 pt-2">
                             @Html.Raw(homeAll.KeyPoint_2_Subject)</p>
                         <h4 class="font-weight-semi-bold pb-2">@Html.Raw(homeAll.KeyPoint_2)</h4>
-                        <a href="@(Url.Action("Service", "Official"))#healthy_container"
+                        <a href="@(VirtualPathUtility.ToAbsolute($"~/Official/{langPath}/Service"))#healthy_container"
                             class="btn btn-default btn-rounded fst-italic font-weight-normal text-2">@Html.Raw(commonAll.ReadMore)</a>
                     </div>
                 </div>
@@ -139,7 +144,7 @@
                         <p class="text-color-tertiary text-3 mb-0 line-height-8 pt-2">
                             @Html.Raw(homeAll.KeyPoint_3_Subject)</p>
                         <h4 class="font-weight-semi-bold pb-2">@Html.Raw(homeAll.KeyPoint_3)</h4>
-                        <a href="@(Url.Action("Service", "Official"))#guarantee_container"
+                        <a href="@(VirtualPathUtility.ToAbsolute($"~/Official/{langPath}/Service"))#guarantee_container"
                             class="btn btn-default btn-rounded fst-italic font-weight-normal text-2">@Html.Raw(commonAll.ReadMore)</a>
                     </div>
                 </div>
@@ -323,7 +328,7 @@
                                             }                                       
                                         </div>
                                         <div class="col-6 d-flex align-items-end justify-content-end">
-                                            <a href="@Html.Raw($"{VirtualPathUtility.ToAbsolute("~/Official/tw/BlogSingle")}?{(new { DocID = article.DocID }).JsonStringify().EncryptKeyNormal().UrlEncodeBase64String()}")"
+                                            <a href="@Html.Raw($"{VirtualPathUtility.ToAbsolute($"~/Official/tw/BlogSingle")}?{(new { DocID = article.DocID }).JsonStringify().EncryptKeyNormal().UrlEncodeBase64String()}")"
                                                 class="read-more text-color-dark font-weight-semibold text-2 fst-italic">@Html.Raw(commonAll.ReadMore)<i
                                                     class="fas fa-angle-right position-relative top-1 ms-1"></i></a>
                                         </div>
@@ -485,7 +490,7 @@
             <div class="col-12 col-lg-6 col-md-6 px-5 px-lg-0 px-md-0">
                 <p class="hidden-sm-down">@Html.Raw(homeAll.BookDesc1)</p>
                 <p class="font-weight-medium pt-5 pt-lg-0 pt-md-0">@Html.Raw(homeAll.BookDesc2)</p>
-                <a href="@(Url.Action("BookNow", "Official"))"
+                <a href="@(VirtualPathUtility.ToAbsolute($"~/Official/{langPath}/BookNow"))"
                     class="btn bg-color-light text-color-dark btn-rounded fst-italic mt-3">@Html.Raw(homeAll.BookButton)</a>
             </div>
         </div>
@@ -593,7 +598,7 @@
                 }               
             </div>
             <div class="col-12 pt-5">
-                <a href="@(Url.Action("PartnerInfo", "Official"))"
+                <a href="@(VirtualPathUtility.ToAbsolute($"~/Official/{langPath}/PartnerInfo"))"
                     class="btn btn-default btn-rounded fst-italic font-weight-normal text-2 simple-ajax-popup">More
                     Partner</a>
             </div>
@@ -610,7 +615,7 @@
                     element.addEventListener('click', function (event) {
                         //這裡執行點擊區域1後的操作，例如重定向到不同的網頁		
         
-                    window.location.href = '@Html.Raw(Url.Action("BranchInfo", "Official"))'+'?Branch=' + element.id;
+                    window.location.href = '@Html.Raw(VirtualPathUtility.ToAbsolute($"~/Official/{langPath}/BranchInfo"))'+'?Branch=' + element.id;
                     });
 
                     element.addEventListener('mouseover', function (event) {

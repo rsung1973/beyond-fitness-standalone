@@ -27,9 +27,15 @@
 
    await Html.RenderPartialAsync("~/Views/MainActivity/Template/GlobalResource.cshtml");   
    dynamic globalResource = ViewContext.HttpContext.Items["GlobalResource"] as dynamic;
-   dynamic commonAll = globalResource["Common"][ViewBag.Lang ?? "zh-TW"] as dynamic;
-   dynamic joinUsAll = globalResource["JoinUs"][ViewBag.Lang ?? "zh-TW"] as dynamic;
-   dynamic findUsAll = globalResource["FindUs"][ViewBag.Lang ?? "zh-TW"] as dynamic;
+    String lang = ViewBag.Lang ?? "zh-TW";
+    String langPath = lang == "zh-TW"
+        ? "tw"
+        : lang == "en-US"
+            ? "en"
+            : "ja";
+   dynamic commonAll = globalResource["Common"][lang] as dynamic;
+   dynamic joinUsAll = globalResource["JoinUs"][lang] as dynamic;
+   dynamic findUsAll = globalResource["FindUs"][lang] as dynamic;
    dynamic tranings = joinUsAll.TraningItem;
 }
 
@@ -391,7 +397,7 @@
    <script>
 
       function gotoVoicePage(viewModel) {
-         $('').launchDownload('@Html.Raw(Url.Action("Voice", "Official"))', viewModel);
+         $('').launchDownload('@Html.Raw(VirtualPathUtility.ToAbsolute($"~/Official/{langPath}/Voice"))', viewModel);
       }
    </script>
 }

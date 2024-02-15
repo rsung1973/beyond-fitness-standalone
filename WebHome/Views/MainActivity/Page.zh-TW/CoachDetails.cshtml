@@ -23,15 +23,21 @@
     _modelState = ViewContext.ModelState;
     _viewModel = (CoachItem)ViewBag.ViewModel;
 
+    String lang = ViewBag.Lang ?? "zh-TW";
+    var langPath = lang == "zh-TW"
+        ? "tw"
+        : lang == "en-US"
+            ? "en"
+            : "ja";
     await Html.RenderPartialAsync("~/Views/MainActivity/Template/GlobalResource.cshtml");
     dynamic globalResource = ViewContext.HttpContext.Items["GlobalResource"] as dynamic;
-    dynamic commonAll = globalResource["Common"][ViewBag.Lang ?? "zh-TW"] as dynamic;
-    dynamic joinUsAll = globalResource["JoinUs"][ViewBag.Lang ?? "zh-TW"] as dynamic;
-    JObject findUsAll = globalResource["FindUs"][ViewBag.Lang ?? "zh-TW"] as JObject;
+    dynamic commonAll = globalResource["Common"][lang] as dynamic;
+    dynamic joinUsAll = globalResource["JoinUs"][lang] as dynamic;
+    JObject findUsAll = globalResource["FindUs"][lang] as JObject;
 
     JObject coach = ViewContext.HttpContext.Items["RequestCoach"] as JObject;
     JObject branch = ViewContext.HttpContext.Items["RequestBranch"] as JObject;
-    var NotShowArtical = ViewContext.HttpContext.Request.Query["NotShowArtical"];    
+    var NotShowArtical = ViewContext.HttpContext.Request.Query["NotShowArtical"];
     JObject voice = null;
     if (coach["Voice"] != null) {
         voice = ((JArray)coach["Voice"]).FirstOrDefault() as JObject;
@@ -237,7 +243,7 @@
                                                         </p>                                                        
                                                         <p class="date">@($"{blog.BlogID[0..4]}.{blog.BlogID[4..6]}.{blog.BlogID[6..8]}")
                                                             <a class="read-more text-color-dark font-weight-semibold text-2 float float-end fst-italic"
-                                                                href="@Html.Raw($"{VirtualPathUtility.ToAbsolute("~/Official/tw/BlogSingle")}?{(new { blog.DocID }).JsonStringify().EncryptKeyNormal().UrlEncodeBase64String()}")">@Html.Raw(commonAll.ReadMore)<i
+                                                                href="@Html.Raw($"{VirtualPathUtility.ToAbsolute($"~/Official/tw/BlogSingle")}?{(new { blog.DocID }).JsonStringify().EncryptKeyNormal().UrlEncodeBase64String()}")">@Html.Raw(commonAll.ReadMore)<i
                                                                     class="fas fa-angle-right position-relative ms-1"></i>
                                                             </a>
                                                         </p>

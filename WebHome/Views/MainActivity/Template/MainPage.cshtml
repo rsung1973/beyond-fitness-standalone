@@ -23,6 +23,11 @@
     var Request = Context.Request;
     var Response = Context.Response;
     String lang = ViewBag.Lang ?? "zh-TW";
+    var langPath = lang == "zh-TW"
+        ? "tw"
+        : lang == "en-US"
+            ? "en"
+            : "ja";
     await Html.RenderPartialAsync("~/Views/MainActivity/Template/GlobalResource.cshtml");
     dynamic globalResource = ViewContext.HttpContext.Items["GlobalResource"] as dynamic;
     dynamic commonAll = globalResource["Common"][lang] as dynamic;
@@ -253,7 +258,7 @@
                                             String branchName = item[i].SubClass;
                                             <div class="row mb-1">
                                                 <div class="col-5">
-                                                    •<b class="ms-2 text-4"><a href="@(Url.Action("BranchInfo", "Official", new { Branch = branchName }))">@Html.Raw(item[i].Name)</a></b>
+                                                    •<b class="ms-2 text-4"><a href="@(VirtualPathUtility.ToAbsolute($"~/Official/{langPath}/BranchInfo?Branch={branchName}"))">@Html.Raw(item[i].Name)</a></b>
                                                 </div>
                                                 <div class="col-auto">
                                                     <a href="tel:@Html.Raw(item[i].TelDial)"
@@ -274,38 +279,38 @@
                             <div class="col-6 col-lg-auto col-md-6 col-sm-6 d-flex justify-content-end">
                                 <ul class="list list-icons list-icons-sm ps-0">
                                     <li class="ps-0 text-4"><a
-                                            href="@(Url.Action("AboutUs", "Official"))"
+                                            href="@(VirtualPathUtility.ToAbsolute($"~/Official/{langPath}/AboutUs"))"
                                             class="link-hover-style-1 ms-1">@Html.Raw(commonAll.AboutUs)</a>
                                     </li>
                                     <li class="ps-0 text-4"><a
-                                            href="@(Url.Action("Service", "Official"))"
+                                            href="@(VirtualPathUtility.ToAbsolute($"~/Official/{langPath}/Service"))"
                                             class="link-hover-style-1 ms-1">@Html.Raw(commonAll.Service)</a>
                                     </li>
                                     <li class="ps-0 text-4"><a
-                                            href="@(Url.Action("Session", "Official"))"
+                                            href="@(VirtualPathUtility.ToAbsolute($"~/Official/{langPath}/Session"))"
                                             class="link-hover-style-1 ms-1">@Html.Raw(commonAll.Session)</a></li>
                                     <li class="ps-0 text-4"><a
-                                            href="@(Url.Action("FindUs", "Official"))"
+                                            href="@(VirtualPathUtility.ToAbsolute($"~/Official/{langPath}/FindUs"))"
                                             class="link-hover-style-1 ms-1">@Html.Raw(commonAll.FindUs)</a></li>
                                     <li class="ps-0 text-4"><a
-                                            href="@(Url.Action("FAQ", "Official"))"
+                                            href="@(VirtualPathUtility.ToAbsolute($"~/Official/{langPath}/FAQ"))"
                                             class="link-hover-style-1 ms-1">@Html.Raw(commonAll.FAQ)</a></li>
                                 </ul>
                             </div>
                             <div class="col-6 col-lg-auto col-md-6 col-sm-6 ps-0">
                                 <ul class="list list-icons list-icons-sm ps-0">
                                     <li class="ps-0 text-4"><a
-                                            href="@(Url.Action("BookNow", "Official"))"
+                                            href="@(VirtualPathUtility.ToAbsolute($"~/Official/{langPath}/BookNow"))"
                                             class="link-hover-style-1 ms-1">@Html.Raw(commonAll.Booking)</a>
                                     </li>
                                     <li class="ps-0 text-4"><a
-                                            href="@(Url.Action("JoinUs", "Official"))"
+                                            href="@(VirtualPathUtility.ToAbsolute($"~/Official/{langPath}/JoinUs"))"
                                             class="link-hover-style-1 ms-1">@Html.Raw(commonAll.JoinUs)</a></li>
                                     <li class="ps-0 text-4"><a
                                             href="@Html.Raw($"{VirtualPathUtility.ToAbsolute("~/Official/tw/BlogSingle")}?{(new { DocID = 81295 }).JsonStringify().EncryptKeyNormal().UrlEncodeBase64String()}")"
                                             class="link-hover-style-1 ms-1">@Html.Raw(commonAll.Blog)</a></li>
                                     <li class="ps-0 text-4"><a
-                                            href="@(Url.Action("PartnerInfo", "Official"))"
+                                            href="@(VirtualPathUtility.ToAbsolute($"~/Official/{langPath}/PartnerInfo"))"
                                             class="simple-ajax-popup link-hover-style-1 ms-1">@Html.Raw(commonAll.PartnerMenu)</a>
                                     </li>
                                     <li class="ps-0 text-4"><a
@@ -392,7 +397,7 @@
         }
 
         function gotoVoicePage(viewModel) {
-            $('').launchDownload('@Html.Raw(Url.Action("Voice", "Official"))', viewModel);
+            $('').launchDownload('@Html.Raw(VirtualPathUtility.ToAbsolute($"~/Official/{langPath}/Voice"))', viewModel);
         }       
 
         function gotoPage(linkURL, linkType) {

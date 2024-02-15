@@ -22,13 +22,18 @@
     _modelState = ViewContext.ModelState;
     IFormCollection _model = this.Model as IFormCollection;
     Layout = "~/Views/MainActivity/Template/MainPage.cshtml";
-    ViewBag.MainClass = "session";    
+    ViewBag.MainClass = "session";
     ViewBag.MenuDark = false;
-
+    String lang = ViewBag.Lang ?? "zh-TW";
+    var langPath = lang == "zh-TW"
+        ? "tw"
+        : lang == "en-US"
+            ? "en"
+            : "ja";
     await Html.RenderPartialAsync("~/Views/MainActivity/Template/GlobalResource.cshtml");
     dynamic globalResource = ViewContext.HttpContext.Items["GlobalResource"] as dynamic;
-    dynamic beyondSession = globalResource["BeyondSession"][ViewBag.Lang ?? "zh-TW"] as dynamic;
-    dynamic commonAll = globalResource["Common"][ViewBag.Lang ?? "zh-TW"] as dynamic;
+    dynamic beyondSession = globalResource["BeyondSession"][lang] as dynamic;
+    dynamic commonAll = globalResource["Common"][lang] as dynamic;
 }
 
 @section CustomHeader {
@@ -191,7 +196,7 @@
 
 		//顯示訓練內容
 		function showContent(idx) {
-            $.post('@Html.Raw(Url.Action("TrainingItemData", "Official"))', { 'idx':idx}, function (data) {
+            $.post('@Html.Raw(VirtualPathUtility.ToAbsolute($"~/Official/{langPath}/TrainingItemData"))', { 'idx':idx}, function (data) {
                 //hideLoading();
                 if ($.isPlainObject(data)) {
                     //console.log(data);

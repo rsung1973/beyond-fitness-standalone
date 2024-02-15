@@ -24,8 +24,14 @@
     ViewBag.MenuDark = false;
 
     await Html.RenderPartialAsync("~/Views/MainActivity/Template/GlobalResource.cshtml");
+    String lang = ViewBag.Lang ?? "zh-TW";
+    var langPath = lang == "zh-TW"
+        ? "tw"
+        : lang == "en-US"
+            ? "en"
+            : "ja";
     JObject globalResource = ViewContext.HttpContext.Items["GlobalResource"] as JObject;
-    JObject findUs = globalResource["FindUs"][ViewBag.Lang ?? "zh-TW"];
+    JObject findUs = (JObject)globalResource["FindUs"][lang];
 
     var branch = _model.UserProfile.ServingCoach?.CurrentWorkBranch();
     var coachItem = ((findUs?["BranchItems"] as JArray)?.Where(b => b.Value<int>("ID") == branch?.BranchID)
@@ -34,7 +40,7 @@
             .FirstOrDefault();
 
     var availableItems = models.GetTable<BlogArticle>().Where(b => !b.NotAfter.HasValue || b.NotAfter >= DateTime.Today);
-    
+
     var coachInfoURL = "";
     if (coachItem != null){
         coachInfoURL = Url.Action("CoachDetails", "Official", new
@@ -165,7 +171,7 @@
                             <ul>
                                 @foreach (var b in moreItems)
                                 {
-                                    <li><a href="@Html.Raw($"{VirtualPathUtility.ToAbsolute("~/Official/tw/BlogSingle")}?{(new { b.DocID }).JsonStringify().EncryptKeyNormal().UrlEncodeBase64String()}")" class="text-color-dark">@Html.Raw(b.Title)</a></li>
+                                    <li><a href="@Html.Raw($"{VirtualPathUtility.ToAbsolute($"~/Official/tw/BlogSingle")}?{(new { b.DocID }).JsonStringify().EncryptKeyNormal().UrlEncodeBase64String()}")" class="text-color-dark">@Html.Raw(b.Title)</a></li>
                                 }
                             </ul>
                         </div>
@@ -198,7 +204,7 @@
             }
             @if (prevItem != null)
             {
-                <div class="col-12 col-lg-5 col-md-5" onclick="window.location.href = '@Html.Raw($"{VirtualPathUtility.ToAbsolute("~/Official/tw/BlogSingle")}?{(new { prevItem.DocID }).JsonStringify().EncryptKeyNormal().UrlEncodeBase64String()}")';" style="cursor: pointer;">
+                <div class="col-12 col-lg-5 col-md-5" onclick="window.location.href = '@Html.Raw($"{VirtualPathUtility.ToAbsolute($"~/Official/tw/BlogSingle")}?{(new { prevItem.DocID }).JsonStringify().EncryptKeyNormal().UrlEncodeBase64String()}")';" style="cursor: pointer;">
                     <div class="row d-flex justify-content-center">
                         <div class="col-auto">
                             <i class="fa-solid fa-chevron-left text-color-tertiary"></i>
@@ -219,7 +225,7 @@
             </div>
             @if (nextItem != null)
             {
-                <div class="col-12 col-lg-5 col-md-5 mt-5 mt-lg-0 mt-md-0" onclick="window.location.href = '@Html.Raw($"{VirtualPathUtility.ToAbsolute("~/Official/tw/BlogSingle")}?{(new { nextItem.DocID }).JsonStringify().EncryptKeyNormal().UrlEncodeBase64String()}")';" style="cursor: pointer;">
+                <div class="col-12 col-lg-5 col-md-5 mt-5 mt-lg-0 mt-md-0" onclick="window.location.href = '@Html.Raw($"{VirtualPathUtility.ToAbsolute($"~/Official/tw/BlogSingle")}?{(new { nextItem.DocID }).JsonStringify().EncryptKeyNormal().UrlEncodeBase64String()}")';" style="cursor: pointer;">
                     <div class="row d-flex justify-content-center">
                         <div class="col-10 text-end positive-ls-3 ">
                             <span class="text-color-secondary">下一篇</span>

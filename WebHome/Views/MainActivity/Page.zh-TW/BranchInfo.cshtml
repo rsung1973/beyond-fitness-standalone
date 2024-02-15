@@ -25,19 +25,24 @@
     Layout = "~/Views/MainActivity/Template/MainPage.cshtml";
     ViewBag.MainClass = "findus";
     ViewBag.MenuDark = false;
-
+    String lang = ViewBag.Lang ?? "zh-TW";
+    var langPath = lang == "zh-TW"
+        ? "tw"
+        : lang == "en-US"
+            ? "en"
+            : "ja";
     await Html.RenderPartialAsync("~/Views/MainActivity/Template/GlobalResource.cshtml");
     dynamic globalResource = ViewContext.HttpContext.Items["GlobalResource"] as dynamic;
-    dynamic findUsAll = globalResource["FindUs"][ViewBag.Lang ?? "zh-TW"] as dynamic;
-    dynamic commonAll = globalResource["Common"][ViewBag.Lang ?? "zh-TW"] as dynamic;
-    dynamic homeAll = globalResource["Home"][ViewBag.Lang ?? "zh-TW"] as dynamic;
+    dynamic findUsAll = globalResource["FindUs"][lang] as dynamic;
+    dynamic commonAll = globalResource["Common"][lang] as dynamic;
+    dynamic homeAll = globalResource["Home"][lang] as dynamic;
 
 
     var request = ViewContext.HttpContext.Request;
     String subClass = request.Query["Branch"];
 
     dynamic branch = ((JArray) findUsAll.BranchItems).Where(c => (String)c["SubClass"] == subClass).FirstOrDefault();
-    
+
     int bannerImgCnt = branch.BannerImgCount;
     bool autoPlay = false;
     if (bannerImgCnt > 1) {
@@ -400,7 +405,7 @@
                                             <div class="box-content">
                                                 <h4 class="font-weight-semi-bold mb-1">@Html.Raw(item2[i].Name)</h4>
                                                 <p class="text-lg-start text-md-center"><a href="tel:@Html.Raw(item2[i].TelDial)">@Html.Raw(item2[i].Tel)</a></p>
-                                                <a href="@(Url.Action("BranchInfo", "Official", new {Branch=branchName}))"
+                                                <a href="@(VirtualPathUtility.ToAbsolute($"~/Official/{langPath}/BranchInfo?Branch={branchName}"))"
                                                     class="btn btn-default btn-rounded fst-italic font-weight-normal text-2">@Html.Raw(commonAll.ReadMore)</a>
                                             </div>
                                         </div>
@@ -453,7 +458,7 @@
                     element.addEventListener('click', function (event) {
                         //這裡執行點擊區域1後的操作，例如重定向到不同的網頁		
         
-                    window.location.href = '@Html.Raw(Url.Action("BranchInfo", "Official"))'+'?Branch=' + element.id;
+                    window.location.href = '@Html.Raw(VirtualPathUtility.ToAbsolute($"~/Official/{langPath}/BranchInfo"))'+'?Branch=' + element.id;
                     });
 
                     element.addEventListener('mouseover', function (event) {

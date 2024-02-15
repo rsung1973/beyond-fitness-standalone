@@ -20,10 +20,15 @@
     {
         naviClass = "text-color-dark";
     }
-
+    String lang = ViewBag.Lang ?? "zh-TW";
+    var langPath = lang == "zh-TW"
+        ? "tw"
+        : lang == "en-US"
+            ? "en"
+            : "ja";
     await Html.RenderPartialAsync("~/Views/MainActivity/Template/GlobalResource.cshtml");
     dynamic globalResource = ViewContext.HttpContext.Items["GlobalResource"] as dynamic;
-    dynamic commonAll = globalResource["Common"][ViewBag.Lang ?? "zh-TW"] as dynamic;
+    dynamic commonAll = globalResource["Common"][lang] as dynamic;
 
 }
 <a class="nav-link text-decoration-none @(naviClass)" href="#" role="button" id="dropdownLanguage"

@@ -18,10 +18,15 @@
 
     _modelState = (ModelStateDictionary) ViewBag.ModelState;
     models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
-
-   await Html.RenderPartialAsync("~/Views/MainActivity/Template/GlobalResource.cshtml");
-   dynamic globalResource = ViewContext.HttpContext.Items["GlobalResource"] as dynamic;
-   dynamic commonAll = globalResource["Common"][ViewBag.Lang ?? "zh-TW"] as dynamic;
+    String lang = ViewBag.Lang ?? "zh-TW";
+    var langPath = lang == "zh-TW"
+        ? "tw"
+        : lang == "en-US"
+            ? "en"
+            : "ja";
+    await Html.RenderPartialAsync("~/Views/MainActivity/Template/GlobalResource.cshtml");
+    dynamic globalResource = ViewContext.HttpContext.Items["GlobalResource"] as dynamic;
+    dynamic commonAll = globalResource["Common"][lang] as dynamic;
 }
 
 <section class="section section-text-light section-center p-0 mt-0 mb-0 border-0 py-5 slogan container-background">

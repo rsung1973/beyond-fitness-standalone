@@ -21,17 +21,22 @@
 
     String menuClass = "bg-transparent bg-color-before-light text-color-light";
     String hamburguerClass = "hamburguer-btn-light";
-    String logoImg = "logo-default-slim.svg";    
-    
+    String logoImg = "logo-default-slim.svg";
+
     if (ViewBag.MenuDark == true) {
         menuClass = "bg-color-before-dark text-color-dark";
         hamburguerClass = "";
         logoImg = "logo-default-slim-dark.svg";
     }
-
+    String lang = ViewBag.Lang ?? "zh-TW";
+    var langPath = lang == "zh-TW"
+        ? "tw"
+        : lang == "en-US"
+            ? "en"
+            : "ja";
     await Html.RenderPartialAsync("~/Views/MainActivity/Template/GlobalResource.cshtml");
     dynamic globalResource = ViewContext.HttpContext.Items["GlobalResource"] as dynamic;
-    dynamic commonAll = globalResource["Common"][ViewBag.Lang ?? "zh-TW"] as dynamic;
+    dynamic commonAll = globalResource["Common"][lang] as dynamic;
 
 }
 <div class="sticky-wrapper sticky-wrapper-transparent p-absolute">
@@ -50,31 +55,31 @@
                         <div class="pe-3">
                             <ul class="list-inline mt-3 me-lg-3 me-md-3">
                                 <li class="list-inline-item me-xl-5 me-lg-4 me-md-3">
-                                    <a href="@(Url.Action("Aboutus", "Official"))"
+                                    <a href="@(VirtualPathUtility.ToAbsolute($"~/Official/{langPath}/Aboutus"))"
                                         class="btn btn-link-effect-1 btn-link-underline-1 px-0 py-0 @(menuClass) border-0  font-weight-semi-bold text-decoration-none">@Html.Raw(commonAll.AboutUs)</a>
                                 </li>
                                 <li class="list-inline-item me-xl-5 me-lg-4 me-md-3">
-                                    <a href="@(Url.Action("FindUs", "Official"))"
+                                    <a href="@(VirtualPathUtility.ToAbsolute($"~/Official/{langPath}/FindUs"))"
                                         class="btn btn-link-effect-1 btn-link-underline-1 px-0 py-0 @(menuClass) border-0  font-weight-semi-bold text-decoration-none">@Html.Raw(commonAll.FindUs)</a>
                                 </li>
                                 <li class="list-inline-item me-xl-5 me-lg-4 me-md-3">
-                                    <a href="@(Url.Action("Service", "Official"))"
+                                    <a href="@(VirtualPathUtility.ToAbsolute($"~/Official/{langPath}/Service"))"
                                         class="btn btn-link-effect-1 btn-link-underline-1 px-0 py-0 @(menuClass) border-0  font-weight-semi-bold text-decoration-none">@Html.Raw(commonAll.Service)</a>
                                 </li>
                                 <li class="list-inline-item me-xl-5 me-lg-4 me-md-3">
-                                    <a href="@(Url.Action("Session", "Official"))"
+                                    <a href="@(VirtualPathUtility.ToAbsolute($"~/Official/{langPath}/Session"))"
                                         class="btn btn-link-effect-1 btn-link-underline-1 px-0 py-0 @(menuClass) border-0  font-weight-semi-bold text-decoration-none">@Html.Raw(commonAll.Session)</a>
                                 </li>
                                 <li class="list-inline-item me-xl-5 me-lg-4 me-md-3">
-                                    <a href="@(Url.Action("FAQ", "Official"))"
+                                    <a href="@(VirtualPathUtility.ToAbsolute($"~/Official/{langPath}/FAQ"))"
                                         class="btn btn-link-effect-1 btn-link-underline-1 px-0 py-0 @(menuClass) border-0  font-weight-semi-bold text-decoration-none">@Html.Raw(commonAll.FAQ)</a>
                                 </li>
                                 <li class="list-inline-item me-xl-5 me-lg-4 me-md-3">
-                                    <a href="@(Url.Action("JoinUs", "Official"))"
+                                    <a href="@(VirtualPathUtility.ToAbsolute($"~/Official/{langPath}/JoinUs"))"
                                         class="btn btn-link-effect-1 btn-link-underline-1 px-0 py-0 @(menuClass) border-0  font-weight-semi-bold text-decoration-none">@Html.Raw(commonAll.JoinUs)</a>
                                 </li>
                                 <li class="list-inline-item me-xl-5 me-lg-4 me-md-3">
-                                    <a href="@(Url.Action("BookNow", "Official"))"
+                                    <a href="@(VirtualPathUtility.ToAbsolute($"~/Official/{langPath}/BookNow"))"
                                         class="btn btn-link-effect-1 btn-link-underline-1 px-0 py-0 @(menuClass) border-0  font-weight-semi-bold text-decoration-none">@Html.Raw(commonAll.Booking)</a>
                                 </li>
                                 @* <li class="list-inline-item">

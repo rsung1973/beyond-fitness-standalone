@@ -16,11 +16,16 @@
 
     ModelStateDictionary _modelState;
     ModelSource<UserProfile> models;
-
+    String lang = ViewBag.Lang ?? "zh-TW";
+    var langPath = lang == "zh-TW"
+        ? "tw"
+        : lang == "en-US"
+            ? "en"
+            : "ja";
     await Html.RenderPartialAsync("~/Views/MainActivity/Template/GlobalResource.cshtml");
     dynamic globalResource = ViewContext.HttpContext.Items["GlobalResource"] as dynamic;
-    dynamic commonAll = globalResource["Common"][ViewBag.Lang ?? "zh-TW"] as dynamic;
-    dynamic findUsAll = globalResource["FindUs"][ViewBag.Lang ?? "zh-TW"] as dynamic;
+    dynamic commonAll = globalResource["Common"][lang] as dynamic;
+    dynamic findUsAll = globalResource["FindUs"][lang] as dynamic;
 
 }
 <header id="header" class="side-header-overlay-full-screen side-header-hide"
@@ -60,12 +65,12 @@
                                             <li class="mt-4">
                                                 <a class="toggle-side-header text-6" data-hash data-hash-offset="0"
                                                     data-hash-offset-lg="0"
-                                                    href="@(Url.Action("AboutUs", "Official"))">@Html.Raw(commonAll.AboutUs)</a>
+                                                    href="@(VirtualPathUtility.ToAbsolute($"~/Official/{langPath}/AboutUs"))">@Html.Raw(commonAll.AboutUs)</a>
                                             </li>
                                             <li>
                                                 <a class="toggle-side-header text-6" data-hash data-hash-offset="0"
                                                     data-hash-offset-lg="0"
-                                                    href="@(Url.Action("FindUs", "Official"))">@Html.Raw(commonAll.FindUs)</a>
+                                                    href="@(VirtualPathUtility.ToAbsolute($"~/Official/{langPath}/FindUs"))">@Html.Raw(commonAll.FindUs)</a>
                                                 <p class="text-center">
                                                     @{
                                                         dynamic branches = findUsAll.BranchItems;
@@ -76,7 +81,7 @@
                                                             for (int i = 0; i < item.Length; i++)
                                                             {
                                                                 String branchName = item[i].SubClass;
-                                                                <a href="@(Url.Action("BranchInfo", "Official", new { Branch = branchName }))"
+                                                                <a href="@(VirtualPathUtility.ToAbsolute($"~/Official/{langPath}/BranchInfo?Branch={branchName}"))"
                                                                     class="text-3 text-color-grey px-0">@Html.Raw(item[i].Name)</a>
                                                                 if (i < (item.Length - 1))
                                                                 {
@@ -90,31 +95,31 @@
                                             </li>
                                             <li>
                                                 <a class="toggle-side-header text-6"
-                                                    href="@(Url.Action("Service", "Official"))"
+                                                    href="@(VirtualPathUtility.ToAbsolute($"~/Official/{langPath}/Service"))"
                                                     data-hash-offset="0"
                                                     data-hash-offset-lg="0">@Html.Raw(commonAll.Service)</a>
                                             </li>
                                             <li>
                                                 <a class="toggle-side-header text-6"
-                                                    href="@(Url.Action("Session", "Official"))"
+                                                    href="@(VirtualPathUtility.ToAbsolute($"~/Official/{langPath}/Session"))"
                                                     data-hash-offset="0"
                                                     data-hash-offset-lg="0">@Html.Raw(commonAll.Session)</a>
                                             </li>
                                             <li>
                                                 <a class="toggle-side-header text-6"
-                                                    href="@(Url.Action("FAQ", "Official"))"
+                                                    href="@(VirtualPathUtility.ToAbsolute($"~/Official/{langPath}/FAQ"))"
                                                     data-hash-offset="0"
                                                     data-hash-offset-lg="0">@Html.Raw(commonAll.FAQ)</a>
                                             </li>
                                             <li>
                                                 <a class="toggle-side-header text-6"
-                                                    href="@(Url.Action("JoinUs", "Official"))"
+                                                    href="@(VirtualPathUtility.ToAbsolute($"~/Official/{langPath}/JoinUs"))"
                                                     data-hash-offset="0"
                                                     data-hash-offset-lg="0">@Html.Raw(commonAll.JoinUs)</a>
                                             </li>
                                             <li>
                                                 <a class="toggle-side-header text-6"
-                                                    href="@(Url.Action("BookNow", "Official"))"
+                                                    href="@(VirtualPathUtility.ToAbsolute($"~/Official/{langPath}/BookNow"))"
                                                     data-hash-offset="0"
                                                     data-hash-offset-lg="0">@Html.Raw(commonAll.Booking)</a>
                                             </li>

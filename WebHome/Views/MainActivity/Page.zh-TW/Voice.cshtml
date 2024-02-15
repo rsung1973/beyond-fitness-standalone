@@ -24,13 +24,18 @@
     Layout = "~/Views/MainActivity/Template/MainPage.cshtml";
     ViewBag.MainClass = "voice";
     ViewBag.MenuDark = false;
-
-   await Html.RenderPartialAsync("~/Views/MainActivity/Template/GlobalResource.cshtml");
-   dynamic globalResource = ViewContext.HttpContext.Items["GlobalResource"] as dynamic;
-   dynamic joinUsAll = globalResource["JoinUs"][ViewBag.Lang ?? "zh-TW"] as dynamic;
-   dynamic commonAll = globalResource["Common"][ViewBag.Lang ?? "zh-TW"] as dynamic;
-   dynamic findUsAll = globalResource["FindUs"][ViewBag.Lang ?? "zh-TW"] as dynamic;
-   dynamic homeAll = globalResource["Home"][ViewBag.Lang ?? "zh-TW"] as dynamic;
+    String lang = ViewBag.Lang ?? "zh-TW";
+    var langPath = lang == "zh-TW"
+        ? "tw"
+        : lang == "en-US"
+            ? "en"
+            : "ja";
+    await Html.RenderPartialAsync("~/Views/MainActivity/Template/GlobalResource.cshtml");
+    dynamic globalResource = ViewContext.HttpContext.Items["GlobalResource"] as dynamic;
+    dynamic joinUsAll = globalResource["JoinUs"][lang] as dynamic;
+    dynamic commonAll = globalResource["Common"][lang] as dynamic;
+    dynamic findUsAll = globalResource["FindUs"][lang] as dynamic;
+    dynamic homeAll = globalResource["Home"][lang] as dynamic;
 
     JObject coach = ViewContext.HttpContext.Items["RequestCoach"] as JObject;
     JObject branch = ViewContext.HttpContext.Items["RequestBranch"] as JObject;
@@ -282,7 +287,7 @@
                             class="text-color-tertiary pe-2">「</span>@Html.Raw(voice["Conclusion"])<span
                             class="text-color-tertiary pe-2">」</span></h3>
                     <p class="text-color-grey">@Html.Raw(joinUsAll.InviteMessage)</p>
-                    <a href="@(Url.Action("JoinUs", "Official"))"
+                    <a href="@(VirtualPathUtility.ToAbsolute($"~/Official/{langPath}/JoinUs"))"
                         class="btn bg-color-dark border-color-light text-color-light btn-rounded fst-italic mt-5 px-5">@Html.Raw(commonAll.JoinUsGo)</a>
                 </div>
             </div>
@@ -348,7 +353,7 @@
                                                         }
                                                         <div class="row text-center pt-5">
                                                             <div class="col-12">
-                                                                <h5 class="mb-2">@Html.Raw(otherCoach["Name"])/@Html.Raw(otherCoach["JobTitle"])
+                                                                <h5 class="mb-2">@Html.Raw(otherCoach["Name"])/@Html.Raw(otherCoach["JobTitle"])</h5>
                                                                     <h4>@Html.Raw(otherCoach["NameDesc"])</h4>
                                                             </div>
                                                         </div>
