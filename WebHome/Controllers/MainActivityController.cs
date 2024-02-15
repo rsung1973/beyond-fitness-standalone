@@ -105,19 +105,18 @@ namespace WebHome.Controllers
 
         protected ActionResult CheckLanguageRoute()
         {
-            if (RouteData.Values.ContainsKey("lang") != true)
-            {
-                var acceptLang = Request.Headers.AcceptLanguage.Contains("zh")
-                                    ? "tw"
-                                    : Request.Headers.AcceptLanguage.Contains("en")
-                                        ? "en"
-                                        : Request.Headers.AcceptLanguage.Contains("ja")
-                                            ? "ja"
-                                            : "tw";
-                return Redirect($"~/Official/{acceptLang}/{RouteData.Values["actionName"]}");
-            }
+            var lang = RouteData.Values["lang"] as String;
+            if (lang == "tw" || lang == "en" || lang == "ja")
+                return null;
 
-            return null;
+            lang = Request.Headers.AcceptLanguage.Contains("zh")
+                                ? "tw"
+                                : Request.Headers.AcceptLanguage.Contains("en")
+                                    ? "en"
+                                    : Request.Headers.AcceptLanguage.Contains("ja")
+                                        ? "ja"
+                                        : "tw";
+            return Redirect($"~/Official/{lang}/{RouteData.Values["actionName"] ?? RouteData.Values["action"]}{Request.QueryString}");
         }
 
         public ActionResult HandleUnknownAction(string actionName, IFormCollection forms, QueryViewModel viewModel)
@@ -215,7 +214,7 @@ namespace WebHome.Controllers
                 .Where(b => b.BlogTag.Any(c => c.CategoryID == viewModel.CategoryID));
             ViewEngineResult viewResult = CheckView("BlogArticleList");
 
-            return View(viewResult.ViewName,items);
+            return CheckLanguageRoute() ?? View(viewResult.ViewName,items);
         }
 
         public ActionResult BlogSingle(BlogArticleQueryViewModel viewModel)
@@ -245,7 +244,7 @@ namespace WebHome.Controllers
             }
             ViewEngineResult viewResult = CheckView("BlogSingle");
 
-            return View(viewResult.ViewName, item);
+            return CheckLanguageRoute() ?? View(viewResult.ViewName, item);
         }
 
         public ActionResult DropifyUpload()

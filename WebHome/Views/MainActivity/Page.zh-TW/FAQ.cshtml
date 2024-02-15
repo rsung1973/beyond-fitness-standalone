@@ -551,7 +551,7 @@
                                                       </div>
                                                 </div>
                                                 <div class="col-12">                                                   
-                                                      <a href="@Html.Raw($"../Official/BlogSingle?{(new { DocID = itemContent[i].LinkID }).JsonStringify().EncryptKeyNormal().UrlEncodeBase64String()}")" class="btn bg-dark text-color-primary btn-rounded font-weight-normal px-4 fst-italic">@Html.Raw(commonAll.ReadMore)</a>
+                                                      <a href="@Html.Raw($"{VirtualPathUtility.ToAbsolute("~/tw/Official/BlogSingle")}?{(new { DocID = itemContent[i].LinkID }).JsonStringify().EncryptKeyNormal().UrlEncodeBase64String()}")" class="btn bg-dark text-color-primary btn-rounded font-weight-normal px-4 fst-italic">@Html.Raw(commonAll.ReadMore)</a>
                                                 </div>
                                              </div>
                                           </div>

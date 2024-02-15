@@ -237,7 +237,7 @@
                                                         </p>                                                        
                                                         <p class="date">@($"{blog.BlogID[0..4]}.{blog.BlogID[4..6]}.{blog.BlogID[6..8]}")
                                                             <a class="read-more text-color-dark font-weight-semibold text-2 float float-end fst-italic"
-                                                                href="@Html.Raw($"{Url.Action("BlogSingle", "Official")}?{(new { blog.DocID }).JsonStringify().EncryptKeyNormal().UrlEncodeBase64String()}")">@Html.Raw(commonAll.ReadMore)<i
+                                                                href="@Html.Raw($"{VirtualPathUtility.ToAbsolute("~/tw/Official/BlogSingle")}?{(new { blog.DocID }).JsonStringify().EncryptKeyNormal().UrlEncodeBase64String()}")">@Html.Raw(commonAll.ReadMore)<i
                                                                     class="fas fa-angle-right position-relative ms-1"></i>
                                                             </a>
                                                         </p>
