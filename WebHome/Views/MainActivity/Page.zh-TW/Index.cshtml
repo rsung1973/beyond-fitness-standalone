@@ -497,25 +497,37 @@
     </div>
 </section>
 <!--最新活動Banner-->
-<section class="section section-no-background section-text-light p-0 mt-0 mb-0 border-0 py-5 event">
-    <div class="container py-5">
-        <div class="row py-5">
-            <div class="col-12 px-0">
-                <div class="owl-carousel owl-theme custom-nav-arrows-1 px-0 dots-morphing"
-                    data-plugin-options="{'loop': true, 'nav': false, 'dots': true, 'items': 1, 'autoplay': false, 'autoplayTimeout': 7000, 'autoHeight': true, 'margin': 0, 'animateOut': 'slideOutLeft'}">
-                    <div class="event-item">
-                        <img src="../images/shape/rectangle.jpg" class="img-thumbnail img-thumbnail-no-borders event01-img"
-                            alt="BeyondFitness|活動專區">
+@{
+    dynamic news = homeAll.NewsItem;
+    if (news != null)
+    {
+        JArray showNews = news as JArray;
+        dynamic[] item = showNews.ToArray();
+        if (item.Length > 0) {
+            <section class="section section-no-background section-text-light p-0 mt-0 mb-0 border-0 py-5 event">
+                <div class="container py-5">
+                    <div class="row py-5">
+                        <div class="col-12 px-0">
+                            <div class="owl-carousel owl-theme custom-nav-arrows-1 px-0 dots-morphing"
+                                data-plugin-options="{'loop': true, 'nav': false, 'dots': true, 'items': 1, 'autoplay': false, 'autoplayTimeout': 7000, 'autoHeight': true, 'margin': 0, 'animateOut': 'slideOutLeft'}">
+                                @{
+                                    for (int i = 0; i < item.Length; i++)
+                                    {
+                                        <div class="event-item">
+                                            <img src="../images/shape/rectangle.jpg"
+                                                class="img-thumbnail img-thumbnail-no-borders @item[i].ImgName" alt="BeyondFitness|活動專區">
+                                        </div>
+                                    }
+                                }
+                            </div>
+                        </div>
                     </div>
-                    @* <div class="event-item">
-                        <img src="../images/shape/rectangle.jpg" class="img-thumbnail img-thumbnail-no-borders event02-img"
-                            alt="BeyondFitness|活動專區">
-                    </div> *@
                 </div>
-            </div>
-        </div>
-    </div>
-</section>
+            </section>
+
+        }
+    }
+}
 <!--Location-->
 <section class="section section-center section-no-background border-0 mt-0 mb-0 py-5">
     <div class="container py-5">
@@ -580,15 +592,16 @@
                                 {                                    
                                     if (String.IsNullOrEmpty((String) item[i].link))
                                     {
-                                        <img width="150" src="@Html.Raw(item[i].LogoIcon)" alt="BeyondFitness|合作夥伴" data-icon
-                                            data-plugin-options="{'onlySVG': false, 'color': '#5E5E5E', 'animated': false, 'delay': 0, 'fadeIn': false, 'strokeBased': true, 'svgStyle': 'fill:#5E5E5E'}" />
+                                        <img width="150" src="../images/partner/@Html.Raw(item[i].LogoIcon)" alt="BeyondFitness|合作夥伴"
+                                            data-icon data-plugin-options="{'onlySVG': false, 'color': '#5E5E5E', 'animated': false, 'delay': 0, 'fadeIn': false, 'strokeBased': true, 'svgStyle': 'fill:#5E5E5E'}" />
                                     }
                                     else
-                                    {
+                                    {                                                
                                         <a href="@Html.Raw(item[i].link)" target="_blank">
-                                            <img width="150" src="@Html.Raw(item[i].LogoIcon)" alt="BeyondFitness|合作夥伴" data-icon
-                                                data-plugin-options="{'onlySVG': false, 'color': '#5E5E5E', 'animated': false, 'delay': 0, 'fadeIn': false, 'strokeBased': true, 'svgStyle': 'fill:#5E5E5E'}" />
+                                            <img width="150" src="../images/partner/@Html.Raw(item[i].LogoIcon)" alt="BeyondFitness|合作夥伴"
+                                                data-icon data-plugin-options="{'onlySVG': false, 'color': '#5E5E5E', 'animated': false, 'delay': 0, 'fadeIn': false, 'strokeBased': true, 'svgStyle': 'fill:#5E5E5E'}" />
                                         </a>
+                                       
                                     }
                                     
                                 }

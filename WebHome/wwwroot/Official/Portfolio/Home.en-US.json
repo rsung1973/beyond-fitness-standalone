@@ -73,4 +73,10 @@
     "BookDesc2": "Make an appointment now and let Beyond be your best partner in your journey of change!",
     "Location": "Location•",
     "LocationDesc": "",   
+    "NewsItem": [
+        // {
+        //     "ImgName": "event01-img",
+        //     "Link": "",
+        // }
+    ]    
 }

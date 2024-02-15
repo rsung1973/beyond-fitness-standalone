@@ -81,6 +81,12 @@
     "BookDesc1": "理想の人生目標や夢はお持ちですか？<br />ジームーに足を踏み入れ、<br />未知の不安に向き合うとき、<br />「私は変われるか？」",
     "BookDesc2": "今すぐ体験予約へ進み、<br />Beyondがあなたの変革の旅の<br />最高のパートナーになりましょう！",
     "Location": "Location•",
-    "LocationDesc": "店舗一覧"
+    "LocationDesc": "店舗一覧",
+    "NewsItem": [
+        // {
+        //     "ImgName": "event01-img",
+        //     "Link": "",
+        // }
+    ]    
 
 }

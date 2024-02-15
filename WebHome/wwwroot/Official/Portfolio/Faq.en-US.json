@@ -4,7 +4,7 @@
     "QuestionItmes": [
         {
             "ID": "Q1",
-            "Icon": "images/icons/why.svg",
+            "Icon": "why.svg",
             "Question": "Why Beyond?",
             "Answer":[
                 {
@@ -27,7 +27,7 @@
         },
         {
             "ID": "Q2",
-            "Icon": "images/icons/clock.svg",
+            "Icon": "clock.svg",
             "Question": "Apart from the training lessons, can I go to Beyond to excise?",
             "Answer": [
                 {
@@ -38,7 +38,7 @@
         }, 
         {
             "ID": "Q3",
-            "Icon": "images/icons/money.svg",
+            "Icon": "money.svg",
             "Question": "Service charges",
             "Answer": [
                 {
@@ -73,7 +73,7 @@
         },          
         {
             "ID": "Q4",
-            "Icon": "images/icons/location.svg",
+            "Icon": "location.svg",
             "Question": "How do you get to Beyond?",
             "Answer":[
                 {
@@ -85,7 +85,7 @@
         },
         {
             "ID": "Q5",
-            "Icon": "images/icons/coach.svg",
+            "Icon": "coach.svg",
             "Question": "可不可以指定教練？",
             "Answer": [
                 {
