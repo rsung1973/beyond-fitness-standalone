@@ -55,7 +55,7 @@
                     @{ var imgUrl = $"blog/{item.BlogID}/images/Title.jpg";}
 
                     <img class="rsImg" src="images/blog/DefaultTitle.jpg" onload="@(System.IO.File.Exists(WebHome.Startup.MapPath(imgUrl)) ? $"this.onload = null;this.src = '{imgUrl}';" : null)" data-rsh="" data-rsw="" />
-                    <a href="@Html.Raw($"{VirtualPathUtility.ToAbsolute("~/tw/Official/BlogSingle")}?{(new { item.DocID }).JsonStringify().EncryptKeyNormal().UrlEncodeBase64String()}")" target="_blank">
+                    <a href="@Html.Raw($"{VirtualPathUtility.ToAbsolute("~/Official/tw/BlogSingle")}?{(new { item.DocID }).JsonStringify().EncryptKeyNormal().UrlEncodeBase64String()}")" target="_blank">
                         <h3 class="bottommask">@(item.Title)</h3>
                     </a>
                 </div>

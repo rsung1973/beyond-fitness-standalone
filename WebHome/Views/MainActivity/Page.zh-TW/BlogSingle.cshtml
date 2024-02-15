@@ -165,7 +165,7 @@
                             <ul>
                                 @foreach (var b in moreItems)
                                 {
-                                    <li><a href="@Html.Raw($"{VirtualPathUtility.ToAbsolute("~/tw/Official/BlogSingle")}?{(new { b.DocID }).JsonStringify().EncryptKeyNormal().UrlEncodeBase64String()}")" class="text-color-dark">@Html.Raw(b.Title)</a></li>
+                                    <li><a href="@Html.Raw($"{VirtualPathUtility.ToAbsolute("~/Official/tw/BlogSingle")}?{(new { b.DocID }).JsonStringify().EncryptKeyNormal().UrlEncodeBase64String()}")" class="text-color-dark">@Html.Raw(b.Title)</a></li>
                                 }
                             </ul>
                         </div>
@@ -198,7 +198,7 @@
             }
             @if (prevItem != null)
             {
-                <div class="col-12 col-lg-5 col-md-5" onclick="window.location.href = '@Html.Raw($"{VirtualPathUtility.ToAbsolute("~/tw/Official/BlogSingle")}?{(new { prevItem.DocID }).JsonStringify().EncryptKeyNormal().UrlEncodeBase64String()}")';" style="cursor: pointer;">
+                <div class="col-12 col-lg-5 col-md-5" onclick="window.location.href = '@Html.Raw($"{VirtualPathUtility.ToAbsolute("~/Official/tw/BlogSingle")}?{(new { prevItem.DocID }).JsonStringify().EncryptKeyNormal().UrlEncodeBase64String()}")';" style="cursor: pointer;">
                     <div class="row d-flex justify-content-center">
                         <div class="col-auto">
                             <i class="fa-solid fa-chevron-left text-color-tertiary"></i>
@@ -219,7 +219,7 @@
             </div>
             @if (nextItem != null)
             {
-                <div class="col-12 col-lg-5 col-md-5 mt-5 mt-lg-0 mt-md-0" onclick="window.location.href = '@Html.Raw($"{VirtualPathUtility.ToAbsolute("~/tw/Official/BlogSingle")}?{(new { nextItem.DocID }).JsonStringify().EncryptKeyNormal().UrlEncodeBase64String()}")';" style="cursor: pointer;">
+                <div class="col-12 col-lg-5 col-md-5 mt-5 mt-lg-0 mt-md-0" onclick="window.location.href = '@Html.Raw($"{VirtualPathUtility.ToAbsolute("~/Official/tw/BlogSingle")}?{(new { nextItem.DocID }).JsonStringify().EncryptKeyNormal().UrlEncodeBase64String()}")';" style="cursor: pointer;">
                     <div class="row d-flex justify-content-center">
                         <div class="col-10 text-end positive-ls-3 ">
                             <span class="text-color-secondary">下一篇</span>
