@@ -57,7 +57,13 @@ namespace WebHome.Controllers
             var lang = Request.Cookies["cLang"];
             if (lang == null)
             {
-                lang = AppSettings.Default.Language;
+                lang = Request.Headers.AcceptLanguage.Contains("zh")
+                                ? "zh-TW"
+                                : Request.Headers.AcceptLanguage.Contains("en")
+                                    ? "en-US"
+                                    : Request.Headers.AcceptLanguage.Contains("ja")
+                                        ? "ja"
+                                        : AppSettings.Default.Language;
                 lang.SelectUICulture();
             }
             ViewBag.Lang = lang;
@@ -84,6 +90,7 @@ namespace WebHome.Controllers
         public ActionResult ChangeLanguage(String lang)
         {
             Response.Cookies.Append("cLang", lang);
+            Response.Cookies.Append("setLang", lang);
             return Json(new { result = true, message = System.Globalization.CultureInfo.CurrentCulture.Name });
         }
 
@@ -107,15 +114,47 @@ namespace WebHome.Controllers
         {
             var lang = RouteData.Values["lang"] as String;
             if (lang == "tw" || lang == "en" || lang == "ja")
-                return null;
-
-            lang = Request.Headers.AcceptLanguage.Contains("zh")
+            {
+                if ((ViewBag.Lang as String).Contains(lang))
+                {
+                    return null;
+                }
+                else
+                {
+                    if (Request.Cookies["setLang"] != null)
+                    {
+                        Response.Cookies.Delete("setLang");
+                        lang = ViewBag.Lang == "zh-TW"
                                 ? "tw"
-                                : Request.Headers.AcceptLanguage.Contains("en")
+                                : ViewBag.Lang == "en-US"
                                     ? "en"
-                                    : Request.Headers.AcceptLanguage.Contains("ja")
-                                        ? "ja"
-                                        : "tw";
+                                    : "ja";
+                    }
+                    else
+                    {
+                        ViewBag.Lang = lang == "tw"
+                                ? "zh-TW"
+                                : lang == "en"
+                                    ? "en-US"
+                                    : "ja";
+                        Response.Cookies.Append("cLang", (String)ViewBag.Lang);
+
+                        return null;
+                    }
+                }
+            }
+            else
+            {
+                lang = Request.Headers.AcceptLanguage.Contains("zh")
+                                    ? "tw"
+                                    : Request.Headers.AcceptLanguage.Contains("en")
+                                        ? "en"
+                                        : Request.Headers.AcceptLanguage.Contains("ja")
+                                            ? "ja"
+                                            : "tw";
+
+            }
+
             return Redirect($"~/Official/{lang}/{RouteData.Values["actionName"] ?? RouteData.Values["action"]}{Request.QueryString}");
         }
 
