@@ -317,18 +317,18 @@ u {
 @media (max-width: 767px) {
   .home .event .event-item .event02-img {
     border-radius: 0px;
-    content: url("../images/events/event02-sm.png");
+    content: url("../images/events/event02-sm.jpg");
   }
 }
 .home .event .event-item .event03-img {
   border-radius: 25px;
-  content: url("../images/events/event03-lg.png");
+  content: url("../images/events/event03-lg.jpg");
   /*手機版*/
 }
 @media (max-width: 767px) {
   .home .event .event-item .event03-img {
     border-radius: 0px;
-    content: url("../images/events/event03-sm.png");
+    content: url("../images/events/event03-sm.jpg");
   }
 }
 
