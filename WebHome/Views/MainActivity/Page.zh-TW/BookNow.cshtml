@@ -152,8 +152,8 @@
                   @Html.Raw(bookNowAll.AchieveMessage)
                </p>
                <div class="py-3 px-5 px-lg-0 px-md-5">
-                  <a href="@Html.Raw($"{VirtualPathUtility.ToAbsolute($"~/Official/tw/BlogSingle")}?{(new { DocID = bookNowAll.ArticalLink }).JsonStringify().EncryptKeyNormal().UrlEncodeBase64String()}")"
-                     class="btn btn-default btn-rounded fst-italic font-weight-normal text-2">@Html.Raw(commonAll.ReadMore)</a>
+                  <a href="@Html.Raw($"{VirtualPathUtility.ToAbsolute($"~/Official/{langPath}/BlogSingle")}?{(new { DocID = bookNowAll.ArticalLink }).JsonStringify().EncryptKeyNormal().UrlEncodeBase64String()}")"
+                     class="btn btn-default btn-rounded fst-italic font-weight-normal text-3">@Html.Raw(commonAll.ReadMore)</a>
                </div>
             </div>           
          </div>
@@ -199,7 +199,7 @@
                      <span class="font-weight-medium">@Html.Raw(bookNowAll.ReservationFrom)</span>
                   </p>
                   <a href="javascript:showForm();"
-                     class="btn btn-default btn-rounded fst-italic hidden-lg-up showform mt-3">@Html.Raw(commonAll.BookNow2)</a>
+                     class="btn btn-default btn-rounded fst-italic hidden-lg-up showform mt-3">@Html.Raw(commonAll.BookNow)</a>
                </div>
                <div class="col-12 pe-5 pe-lg-0 ps-5 ps-lg-4 ps-md-5 text-center order-1 order-lg-2 order-md-1">
                   <div class="row justify-content-center justify-content-lg-start">

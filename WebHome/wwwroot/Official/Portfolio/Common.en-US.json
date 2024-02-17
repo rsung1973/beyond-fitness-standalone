@@ -12,10 +12,9 @@
     "PartnerMenu": "Partner",
     "Partner": "Partner•",
     "PartnerDesc": "",
-    "PartnerMessage": "At Beyond, we believe in exercise as a lifelong commitment to physical fitness. We collaborate with multiple partners to provide comprehensive services that empower our customers to reach their health and fitness aspirations.",
+    "PartnerMessage": "At Beyond, we believe in exercise as a lifelong commitment to physical fitness. We collaborate with multiple partners to provide comprehensive services that empower our customers to reach their health and fitness aspirations.",    
 
     "BookNow": "Let's get Start!",
-    "BookNow2": "Take action now and book an appointment!",
     "JoinUsGo": "Join Us!",
     "ViewJobs": "View Job Openings",
 
@@ -170,11 +169,15 @@
     "ExperienceDesc": "",
     "License": "License",
     "LicenseDesc": "",
+    "Author": "Author",
     "Artical": "Artical",
     "ArticalDesc": "",   
     "Voice": "Voice",
     "VoiceDesc": "",    
     "Expertise": "Expertise",
+
+    "Next": "Next Articale",
+    "Previous": "Previous Articale",    
     
     "JoinUsHeader": "Get discovered!",
     "JoinUsHeaderDesc": "Introduce yourself, <br class=\"hidden-sm-up\"/>and we’ll get in touch if there’s a role that seems like a good match.",

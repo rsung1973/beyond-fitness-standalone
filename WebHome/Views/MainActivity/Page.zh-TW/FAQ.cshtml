@@ -29,6 +29,13 @@
    dynamic faqAll = globalResource["Faq"][ViewBag.Lang ?? "zh-TW"] as dynamic;   
    dynamic commonAll = globalResource["Common"][ViewBag.Lang ?? "zh-TW"] as dynamic;
    dynamic[] item = ((JArray)(faqAll.QuestionItmes)).ToArray();
+
+   String lang = ViewBag.Lang ?? "zh-TW";
+    var langPath = lang == "zh-TW"
+        ? "tw"
+        : lang == "en-US"
+            ? "en"
+            : "ja";
 }
 
 @section CustomHeader {
@@ -551,7 +558,7 @@
                                                       </div>
                                                 </div>
                                                 <div class="col-12">                                                   
-                                                      <a href="@Html.Raw($"{VirtualPathUtility.ToAbsolute($"~/Official/tw/BlogSingle")}?{(new { DocID = itemContent[i].LinkID }).JsonStringify().EncryptKeyNormal().UrlEncodeBase64String()}")" class="btn bg-dark text-color-primary btn-rounded font-weight-normal px-4 fst-italic">@Html.Raw(commonAll.ReadMore)</a>
+                                                      <a href="@Html.Raw($"{VirtualPathUtility.ToAbsolute($"~/Official/{langPath}/BlogSingle")}?{(new { DocID = itemContent[i].LinkID }).JsonStringify().EncryptKeyNormal().UrlEncodeBase64String()}")" class="btn bg-dark text-color-primary btn-rounded font-weight-normal px-4 fst-italic">@Html.Raw(commonAll.ReadMore)</a>
                                                 </div>
                                              </div>
                                           </div>

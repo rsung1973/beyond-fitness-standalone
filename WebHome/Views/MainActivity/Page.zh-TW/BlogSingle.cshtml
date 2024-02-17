@@ -51,6 +51,8 @@
             NotShowArtical = "NA"
         });
     }
+
+    dynamic commonAll = globalResource["Common"][ViewBag.Lang ?? "zh-TW"] as dynamic;
 }
 @section CustomHeader {
     <!-- og -->
@@ -71,7 +73,7 @@
                     Orange Generation•
                 </h2>
                 <p class="text-color-light text-center title-tag-ls">
-                    <span class="text-color-grey">精選文章/</span>
+                    <span class="text-color-grey">@Html.Raw(commonAll.Artical) /</span>
                     @{ 
                         var currentTag = _model.BlogTag.FirstOrDefault();
                     }
@@ -106,7 +108,7 @@
             <div class="card-body">
                 <h2 class="subject-title">@Html.Raw(_model.Title)</h2>
                 <div class="artical-info">
-                    <span class="author">作者：@Html.Raw(_model.UserProfile.RealName)</span>
+                    <span class="author">@Html.Raw(commonAll.Author)：@Html.Raw(_model.UserProfile.RealName)</span>
                     <span class="date">@($"{_model.Document.DocDate:yyyy/MM/dd}")</span>
                 </div>
                 <hr class="bg-color-secondary mt-3 mb-4">
@@ -210,7 +212,7 @@
                             <i class="fa-solid fa-chevron-left text-color-tertiary"></i>
                         </div>
                         <div class="col-10 text-start positive-ls-3">
-                            <span class="text-color-secondary">上一篇</span><span class="text-color-secondary ms-3">Previous Articale</span>
+                            <span class="text-color-secondary">@Html.Raw(commonAll.Previous)</span>
                             <div class="mt-1">
                                 @Html.Raw(prevItem.Title)
                             </div>
@@ -228,8 +230,7 @@
                 <div class="col-12 col-lg-5 col-md-5 mt-5 mt-lg-0 mt-md-0" onclick="window.location.href = '@Html.Raw($"{VirtualPathUtility.ToAbsolute($"~/Official/tw/BlogSingle")}?{(new { nextItem.DocID }).JsonStringify().EncryptKeyNormal().UrlEncodeBase64String()}")';" style="cursor: pointer;">
                     <div class="row d-flex justify-content-center">
                         <div class="col-10 text-end positive-ls-3 ">
-                            <span class="text-color-secondary">下一篇</span>
-                            <span class="text-color-secondary ms-3">Next Articale</span>
+                            <span class="text-color-secondary">@Html.Raw(commonAll.Next)</span>
                             <div class="mt-1">
                                 @Html.Raw(nextItem.Title)
                             </div>

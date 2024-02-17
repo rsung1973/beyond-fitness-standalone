@@ -15,7 +15,6 @@
     "PartnerMessage": "Beyond運動は一瞬だけでなく、一生涯の身体鍛錬です。この目標を達成するために、私たちは様々なパートナーシップを築いており、これらのパートナーが私たちの学生の自己実現と他者の健康や運動目標の達成をサポートするために、より包括的なサービスを提供しています。",
 
     "BookNow": "すぐに予約しよう！",
-    "BookNow2": "すぐに行動し、予約へ進む!",
     "JoinUsGo": "Join Us!",
     "ViewJobs": "トレーナーの求人一覧",
     
@@ -170,12 +169,16 @@
     "ExperienceDesc": "Experience",
     "License": "専門資格",
     "LicenseDesc": "License",
-    "Artical": "専門論文",
+    "Author": "作者",
+    "Artical": "厳選記事",
     "ArticalDesc": "Artical",    
     "Voice": "スタッフの声",
     "VoiceDesc": "Voice",     
     "Expertise": "Expertise",
     
+    "Next": "前ページ<span class=\"ps-3\">Next Articale</span>",
+    "Previous": "次ページ<span class=\"ps-3\">Previous Articale</span>",
+
     // "ContactHeader": "はじめの一歩を踏み出す",
     // "ContactHeaderDesc": "いつでもお手伝いいたします。",
     
