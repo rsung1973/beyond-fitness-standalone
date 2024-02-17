@@ -48,7 +48,7 @@
    <!-- Radio CSS -->
    <link id="skinCSS" rel="stylesheet" href="../plugins/chippy-checkbox-inputs/dist/style.css">
    <!-- Radio CSS -->
-   <link id="skinCSS" rel="stylesheet" href="../plugins/radio-button-vs-card/dist/style.css">
+   <link id="skinCSS" rel="stylesheet" href="../plugins/radio-button-vs-card/dist/style.css?1.2">
    <!-- Sweetalert -->
    <link href="../plugins/sweetalert2/sweetalert2.min.css" rel="stylesheet">
 }
@@ -73,7 +73,14 @@
                <span class="word-rotator-words waiting">
                   <b class="is-visible">@Html.Raw(bookNowAll.FirstStepSlogan2)</b>
                </span>
-            </h3>     
+            </h3>                 
+            @* <h3 class="word-rotator letters type type-clean-light appear-animation font-weight-bold line-height-5"
+               data-appear-animation="fadeIn" data-appear-animation-delay="300">
+               <span class="word-rotator-words waiting">
+                  <b class="is-visible">@Html.Raw(bookNowAll.FirstStepSlogan)</b>
+               </span>
+            </h3> *@
+
             <h4 class="font-weight-semi-bold text-color-tertiary mb-2 positive-ls-5 mt-5">
                @Html.Raw(bookNowAll.FirstStepDesc)
             </h4>
@@ -161,11 +168,11 @@
             <div class="row">
                <div class="col-12 px-3 px-lg-5 px-md-5">
                   <h2
-                     class="text-color-tertiary font-weight-semi-bold mb-2 positive-ls-5 text-uppercase text-center text-lg-start">
+                     class="text-color-tertiary font-weight-semi-bold mb-2 text-uppercase text-center text-lg-start">
                      @Html.Raw(bookNowAll.Reservation)
                   </h2>
                   <span
-                     class="text-3-4 font-weight-medium positive-ls-10 d-block text-center text-lg-start text-color-dark">@Html.Raw(bookNowAll.ReservationDesc)</span>
+                     class="text-3-4 font-weight-medium title-tag-ls d-block text-center text-lg-start text-color-dark">@Html.Raw(bookNowAll.ReservationDesc)</span>
                   <div class="divider divider-tertiary divider-small divider-xxs py-4 hidden-md-down">
                      <hr class="my-0" style="width: 50px; height: 3px;">
                   </div>

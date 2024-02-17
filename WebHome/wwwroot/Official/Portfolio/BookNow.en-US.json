@@ -1,6 +1,7 @@
 {
-    "FirstStepDesc": "First Step",
-    "FirstStepSlogan": "「People can change.<br class=\"hidden-sm-up\"/>Let's show it!」",
+    "FirstStep": "First Step",
+    "FirstStepDesc": "Take",    
+    "FirstStepSlogan": "People can change.<br class=\"hidden-sm-up\"/>Let's show it!",
     "FirstStepQuestion": "When you made the decision to step into the gym, facing the unfamiliarity and anxiety, <br class=\"hidden-sm-down\" />did you ever wonder in your heart, \"Can I do this?\"",
     "FirstStepMessage": "Maybe you are worrying about whether you are strong and fit enough, or if you can stick to it. These worries are precisely why you need a good trainer to guide you. A trainer can help you create a personalized plan based on your current condition and goals. By gradually seeing your progress through guidance, your confidence will also increase.<br /><br /><b>And this decision will allow you to realize that you have the power to change.</b>。",    
     "Achieve": "Achieve Your Dreams",

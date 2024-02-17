@@ -60,11 +60,11 @@
          <div class="col-12 col-lg-5 col-12 col-sm-12 pt-5">
             <div class="w-lg-75pct w-md-100pct w-sm-100pct pe-0 float-none float-lg-end">
                <h2
-                  class="text-color-tertiary font-weight-semi-bold mb-2 positive-ls-5 text-uppercase d-flex justify-content-center justify-content-lg-start">
+                  class="text-color-tertiary font-weight-semi-bold mb-2 text-uppercase d-flex justify-content-center justify-content-lg-start">
                   @Html.Raw(joinUsAll.Message)
                </h2>
                <span
-                  class="text-3-4 font-weight-medium positive-ls-10 d-block d-flex justify-content-lg-start justify-content-center">@Html.Raw(joinUsAll.MessageDesc)</span>
+                  class="text-3-4 font-weight-medium title-tag-ls d-block d-flex justify-content-lg-start justify-content-center">@Html.Raw(joinUsAll.MessageDesc)</span>
                <div class="divider divider-tertiary divider-small divider-xxs py-4 hidden-md-down">
                   <hr class="my-0" style="width: 50px; height: 3px;">
                </div>
@@ -86,10 +86,10 @@
                @Html.Raw(joinUsAll.MessageContent1)
             </p>
             <div class="row mb-4">
-               <div class="col-12 col-lg-6 col-md-7 col-sm-12">
+               <div class="col-12 col-lg-7 col-md-7 col-sm-12">
                   <p class="font-weight-semi-bold">@Html.Raw(joinUsAll.MessageContent2)</p>
                </div>
-               <div class="col-12 col-lg-6 col-md-5 col-sm-12 text-end">
+               <div class="col-12 col-lg-5 col-md-5 col-sm-12 text-end">
                   <img src="../images/handwriting/beyond.svg" class="img-fluid appear-animation" width="150px"
                      data-appear-animation="fadeInLeftShorter" data-plugin-options="{'accY': -100}" alt="BeyondFitness">
                </div>
@@ -117,10 +117,10 @@
    <div class="row">
       <div class="col-12 col-lg-5 col-12 col-sm-12 px-0">
          <div class="w-xl-50pct w-lg-75pct w-md-100pct pe-0 float-none float-lg-end">
-            <h2 class="text-color-tertiary font-weight-semi-bold mb-2 positive-ls-5 text-uppercase">
+            <h2 class="text-color-tertiary font-weight-semi-bold mb-2 text-uppercase">
                @Html.Raw(joinUsAll.Voice)
             </h2>
-            <span class="text-3-4 font-weight-medium positive-ls-10 d-block">@Html.Raw(joinUsAll.VoiceDesc)</span>
+            <span class="text-3-4 font-weight-medium title-tag-ls d-block">@Html.Raw(joinUsAll.VoiceDesc)</span>
             <div class="divider divider-tertiary divider-small divider-small-center divider-xxs py-4 hidden-sm-down">
                <hr class="my-0" style="width: 50px; height: 3px;">
             </div>
@@ -201,11 +201,11 @@
       <div class="row">
          <div class="col-lg-6 col-md-12 pt-5">
             <h2
-               class="text-color-tertiary font-weight-semi-bold mb-2 positive-ls-5 text-uppercase  d-flex justify-content-center hidden-lg-up">
+               class="text-color-tertiary font-weight-semi-bold mb-2 text-uppercase  d-flex justify-content-center hidden-lg-up">
                @Html.Raw(joinUsAll.Traning)
             </h2>
             <span
-               class="text-3-4 font-weight-medium positive-ls-10 d-flex justify-content-center hidden-lg-up">@Html.Raw(joinUsAll.TraningDesc)</span>
+               class="text-3-4 font-weight-medium title-tag-ls d-flex justify-content-center hidden-lg-up">@Html.Raw(joinUsAll.TraningDesc)</span>
             <img class="training-img appear-animation appear-animation-visible pt-3 pe-3"
                src="../images/joinus/traning.png" data-appear-animation="fadeInRightShorter"
                data-plugin-options="{'accY': -400}" alt="BeyondFitness|研修制度">
@@ -252,7 +252,11 @@
                                              <a class="accordion-toggle collapsed py-2 px-4 font-weight-medium text-color-dark"
                                                    data-bs-toggle="collapse" data-bs-target="@Html.Raw($"#{item[i].ID}")"
                                                    aria-controls="@Html.Raw(item[i].ID)">
-                                                   <i class="fa-solid fa-check text-color-tertiary pe-2"></i>@Html.Raw(item[i].Name)
+                                                   <div class="d-inline-flex ps-3">
+                                                      <i
+                                                         class="fa-solid fa-check text-color-tertiary pe-2 align-self-center"></i><span
+                                                         class="ls-0">@Html.Raw(item[i].Name)</span>
+                                                   </div>
                                              </a>
                                           </h4>
                                        </div>
@@ -262,7 +266,7 @@
                                              {
                                                 <div id="@Html.Raw(item[i].ID)" class="collapse"
                                                    aria-labelledby="@Html.Raw($"heading{item[i].ID}")"                                             data-bs-parent="#traning1">
-                                                   <div class="card-body p-2">
+                                                   <div class="card-body py-2 px-4">
                                                       <ul class="list text-4 mb-0">
                                                          @{
                                                             dynamic[] content = contents.ToArray();
@@ -299,8 +303,11 @@
                                                 <a class="accordion-toggle collapsed py-2 px-4 font-weight-medium text-color-dark"
                                                    data-bs-toggle="collapse" data-bs-target="@Html.Raw($"#{item[i].ID}")"
                                                    aria-controls="@Html.Raw(item[i].ID)">
-                                                   <i
-                                                      class="fa-solid fa-check text-color-tertiary pe-2"></i>@Html.Raw(item[i].Name)
+                                                   <div class="d-inline-flex ps-3">
+                                                      <i
+                                                         class="fa-solid fa-check text-color-tertiary pe-2 align-self-center"></i><span
+                                                         class="beyond-toggle-title">@Html.Raw(item[i].Name)</span>
+                                                   </div>
                                                 </a>
                                              </h4>
                                           </div>
@@ -310,7 +317,7 @@
                                              {
                                                 <div id="@Html.Raw(item[i].ID)" class="collapse"
                                                    aria-labelledby="@Html.Raw($"heading{item[i].ID}")" data-bs-parent="#traning2">
-                                                   <div class="card-body p-2">
+                                                   <div class="card-body py-2 px-4">
                                                       <ul class="list text-4 mb-0">
                                                          @{
                                                             dynamic[] content = contents.ToArray();
@@ -347,10 +354,10 @@
    <div class="container py-5">
       <div class="row">
          <div class="col-12">
-            <h2 class="text-color-tertiary font-weight-semi-bold mb-2 positive-ls-5 text-uppercase">
+            <h2 class="text-color-tertiary font-weight-semi-bold mb-2 text-uppercase">
                @Html.Raw(joinUsAll.Opening)
             </h2>
-            <span class="text-3-4 font-weight-medium positive-ls-10 d-block">@Html.Raw(joinUsAll.OpeningDesc)</span>
+            <span class="text-3-4 font-weight-medium title-tag-ls d-block">@Html.Raw(joinUsAll.OpeningDesc)</span>
             <div class="divider divider-tertiary divider-small divider-small-center divider-xxs py-4">
                <hr class="my-0" style="width: 50px; height: 3px;">
             </div>

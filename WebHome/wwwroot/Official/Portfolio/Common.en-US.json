@@ -1,20 +1,20 @@
 {
     "Home": "Home",
-    "AboutUs": "About Us",
-    "FindUs": "Find Us",
+    "AboutUs": "About",
+    "FindUs": "Branches",
     "Service": "Services",
-    "Session": "Programs",
-    "FAQ": "FAQ",
+    "Session": "Traning",
+    "FAQ": "FAQs",
     "JoinUs": "Join Us",
-    "Booking": "Book",
-    "Blog": "Articles",
+    "Booking": "Reservation",
+    "Blog": "Blog",
 
     "PartnerMenu": "Partner",
     "Partner": "Partner•",
     "PartnerDesc": "",
     "PartnerMessage": "At Beyond, we believe in exercise as a lifelong commitment to physical fitness. We collaborate with multiple partners to provide comprehensive services that empower our customers to reach their health and fitness aspirations.",
 
-    "BookNow": "Book now!",
+    "BookNow": "Let's get Start!",
     "BookNow2": "Take action now and book an appointment!",
     "JoinUsGo": "Join Us!",
     "ViewJobs": "View Job Openings",
@@ -54,7 +54,7 @@
     "PartnerItem": [
         {
             "Catagory": "Related Companies",
-            "Desc": "關係企業",  
+            "Desc": "",  
             "Items": [
                 {
                     "Name": "CMP",
@@ -81,7 +81,7 @@
         },
         {
             "Catagory": "Medical Cooperation",
-            "Desc": "醫療合作",
+            "Desc": "",
             "Items": [
                 {
                     "Name": "LandSeedSports",
@@ -116,7 +116,7 @@
         },
         {
             "Catagory": "Professional Partnership",
-            "Desc": "專業合作",
+            "Desc": "",
             "Items": [
                 {
                     "Name": "Sigma",
@@ -136,7 +136,7 @@
         },
         {
             "Catagory": "Public Interset Group",
-            "Desc": "公益團體",
+            "Desc": "",
             "Items": [
                 {
                     "Name": "KeepGoing",

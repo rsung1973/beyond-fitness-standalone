@@ -53,10 +53,10 @@
     <div class="container container-xl-custom py-5 my-0">
         <div class="row">
             <div class="col-12 col-lg-4 col-12 col-sm-12 pt-5 text-center">
-                <h2 class="text-color-tertiary font-weight-semi-bold mb-2 positive-ls-5 text-uppercase">
+                <h2 class="text-color-tertiary font-weight-semi-bold mb-2 text-uppercase">
                     @Html.Raw(serviceAll.PT)
                 </h2>
-                <span class="text-3-4 font-weight-medium positive-ls-10 d-block text-color-dark">@Html.Raw(serviceAll.PTDesc)</span>
+                <span class="text-3-4 font-weight-medium title-tag-ls d-block text-color-dark">@Html.Raw(serviceAll.PTDesc)</span>
                 <div class="divider divider-tertiary divider-small divider-small-center divider-xxs py-4">
                     <hr class="my-0" style="width: 50px; height: 3px;">
                 </div>
@@ -117,9 +117,9 @@
                      data-appear-animation-delay="200" data-appear-animation-duration="5s">
                </div>
                <div class="col-12 col-lg-4 col-md-4 align-self-center mt-2">
-                  <h2 class="text-color-tertiary font-weight-semi-bold mb-2 positive-ls-5 text-uppercase">@Html.Raw(serviceAll.Service)
+                  <h2 class="text-color-tertiary font-weight-semi-bold mb-2 text-uppercase">@Html.Raw(serviceAll.Service)
                   </h2>
-                  <span class="text-3-4 font-weight-medium positive-ls-10 d-block">@Html.Raw(serviceAll.ServiceDesc)</span>
+                  <span class="text-3-4 font-weight-medium title-tag-ls d-block">@Html.Raw(serviceAll.ServiceDesc)</span>
                   <div class="divider divider-tertiary divider-small divider-small-center divider-xxs py-4">
                      <hr class="my-0 appear-animation" data-appear-animation="customLineProgressAnim"
                            data-plugin-options="{'accY': -400}" style="width: 50px; height: 3px;">
@@ -175,7 +175,7 @@
                                        }
                                        <div class="card card-default border-radius-20 @Html.Raw(cssStyle) mt-3 bg-color-primary">
                                           <div class="card-header" id="@Html.Raw($"heading{content1[i].ID}")">
-                                             <h4 class="card-title m-0">
+                                             <h4 class="card-title m-0 beyond-toggle-title">
                                                 <a class="accordion-toggle text-color-dark  collapsed py-2 px-4 font-weight-medium"
                                                    data-bs-toggle="collapse" data-bs-target="@Html.Raw($"#{content1[i].ID}")" aria-expanded="false"
                                                    aria-controls="@Html.Raw($"heading{content1[i].ID}")">@Html.Raw(content1[i].Name)<img class="float-end mt-2" src="../images/service/item-01-arrow.svg" width="34">
@@ -248,7 +248,7 @@
                                     }
                                     <div class="card card-default border-radius-20 @Html.Raw(cssStyle) mt-3 bg-color-primary">
                                           <div class="card-header" id="@Html.Raw($"heading{content2[i].ID}")">
-                                             <h4 class="card-title m-0">
+                                             <h4 class="card-title m-0 beyond-toggle-title">
                                                 <a class="accordion-toggle text-color-dark  collapsed py-2 px-4 font-weight-medium"
                                                       data-bs-toggle="collapse" data-bs-target="@Html.Raw($"#{content2[i].ID}")" aria-expanded="false"
                                                       aria-controls="@Html.Raw($"heading{content2[i].ID}")">@Html.Raw(content2[i].Name)<img
@@ -317,9 +317,14 @@
                            for (int i = 0; i < content3.Length; i++)
                            {
                               <section class="toggle">
-                                 <a class="toggle-title text-color-light"><i class="fa-solid fa-circle-check">&nbsp;@Html.Raw(content3[i].Name)</i></a>
+                                 <a class="toggle-title text-color-light">
+                                   <div class="d-inline-flex ps-1">
+                                       <i class="fa-solid fa-circle-check pt-2"></i>
+                                       <span class="ls-0 pe-1">@Html.Raw(content3[i].Name)</span>											
+                                    </div>
+                                 </a>
                                  <div class="toggle-content">
-                                    <p>@Html.Raw(content3[i].Desc) 
+                                    <p class="ps-4">@Html.Raw(content3[i].Desc) 
                                     @{
                                        if (!String.IsNullOrEmpty((String)content3[i].Link)) {
                                           if ((String) content3[i].LinkType == "URL") {

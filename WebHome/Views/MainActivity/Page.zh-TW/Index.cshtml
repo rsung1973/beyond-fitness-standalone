@@ -63,7 +63,7 @@
                     alt="BeyondFitness|私人教練是什麼" data-icon
                     data-plugin-options="{'onlySVG': false, 'color': '#EBD7BF', 'animated': false, 'strokeBased': true, 'svgStyle': 'fill:#EBD7BF'}" />
 
-                <h1 class="text-color-tertiary font-weight-medium mt-5 mb-3 positive-ls-10 text-uppercase fst-italic">
+                <h1 class="text-color-tertiary font-weight-medium mt-5 mb-3 title-tag-ls fst-italic">
                     @Html.Raw(homeAll.CentralAxisSlogan)
                 </h1>
                 <h3 class="font-weight-bold line-height-5 pt-5">@Html.Raw(homeAll.CentralAxisSloganDesc)</h3>
@@ -74,13 +74,14 @@
                 <p class="text-center hidden-sm-down">@Html.Raw(homeAll.CentralAxisDescLg)</p>
                 <p class="text-center px-3 hidden-sm-up">@Html.Raw(homeAll.CentralAxisDescSm)</p> *@
             </div>
-            <div class="col-12 py-5">
+            @* <div class="col-12 py-5">
                 <a href="@(VirtualPathUtility.ToAbsolute($"~/Official/{langPath}/Aboutus")))"
                     class="btn btn-default btn-rounded fst-italic font-weight-normal text-2">@Html.Raw(commonAll.ReadMore)</a>
-            </div>
+            </div> *@
         </div>
     </div>
 </section>
+
 <!--私人教練是什麼-->
 <section class="section section-center section-text-light p-0 mt-0 mb-0 border-0 py-5 youtube container-background">
     <div class="container container-xl-custom container-xl-custom py-5 h-100">
@@ -92,7 +93,7 @@
                         data-plugin-options="{'color': '#EBD7BF', 'animated': true, 'delay': 600, 'strokeBased': true, 'extraClass': 'player'}" />
                 </a>
                 <h1
-                    class="text-12 font-weight-light my-5 positive-ls-10 line-height-4 text-uppercase fst-italic text-center hidden-sm-down mb-0">
+                    class="text-12 font-weight-light my-5 title-tag-ls line-height-4 text-uppercase fst-italic text-center hidden-sm-down mb-0">
                     @Html.Raw(homeAll.YoutubeSlogan)
                 </h1>
             </div>
@@ -104,8 +105,8 @@
     <div class="container py-5">
         <div class="row pt-5">
             <div class="col-12 col-lg-3 col-md-3">
-                <h2 class="text-color-tertiary font-weight-normal mb-2 positive-ls-5 text-uppercase mt-2">@Html.Raw(homeAll.KeyPoint)</h2>
-                <span class="text-3-4 font-weight-medium positive-ls-10 d-block">@Html.Raw(homeAll.KeyPointDesc)</span>
+                <h2 class="text-color-tertiary font-weight-semi-bold mb-2 text-uppercase mt-2">@Html.Raw(homeAll.KeyPoint)</h2>
+                <span class="text-3-4 font-weight-medium title-tag-ls d-block">@Html.Raw(homeAll.KeyPointDesc)</span>
             </div>
             <div class="col-12 col-lg-3 col-md-3">
                 <div class="featured-boxes featured-boxes-style-7">
@@ -279,11 +280,11 @@
     <div class="container-fluid">
         <div class="row pt-5 pb-1 hidden-lg-up">
             <div class="text-center">
-                <h2 class="text-color-tertiary font-weight-semi-bold mb-2 positive-ls-5 text-uppercase">
+                <h2 class="text-color-tertiary font-weight-semi-bold mb-2 text-uppercase">
                     @Html.Raw(homeAll.News)
                 </h2>
                 <span
-                    class="text-3-4 font-weight-medium positive-ls-10 d-block text-color-light">@Html.Raw(homeAll.NewsDesc)</span>
+                    class="text-3-4 font-weight-medium title-tag-ls d-block text-color-light">@Html.Raw(homeAll.NewsDesc)</span>
             </div>
         </div>
         <div class="row py-5 px-0">
@@ -306,14 +307,14 @@
                             </div>
                             <div class="col-12 col-lg-6 col-md-12 p-0 align-self-center">
                                 <div class="text-center pt-5 hidden-md-down">
-                                    <h2 class="text-color-tertiary font-weight-semi-bold mb-2 positive-ls-5 text-uppercase">
+                                    <h2 class="text-color-tertiary font-weight-semi-bold mb-2 text-uppercase">
                                         @Html.Raw(homeAll.News)
                                     </h2>
                                     <span
-                                        class="text-3-4 font-weight-medium positive-ls-10 d-block text-color-dark">@Html.Raw(homeAll.NewsDesc)</span>
+                                        class="text-3-4 font-weight-medium title-tag-ls d-block text-color-dark">@Html.Raw(homeAll.NewsDesc)</span>
                                 </div>
                                 <div class="w-auto w-xl-75pct px-5 py-5 py-lg-5 py-md-5 mx-auto">
-                                    <h2 class="font-weight-semi-bold mb-2 positive-ls-5 justify-content-start pb-3">
+                                    <h2 class="font-weight-semi-bold mb-2 justify-content-start pb-3">
                                         @Html.Raw(article.Title)
                                     </h2>
                                     <p class="overflow-ellipsis text-color-dark">@Html.Raw(article.Subtitle)</p>
@@ -387,11 +388,11 @@
         <div class="col-12 col-lg-5 col-12 col-sm-12 px-0">
             <div class="w-xl-50pct w-lg-75pct w-md-100pct pe-0 float-none float-lg-end pe-0 pe-lg-5 pe-md-0">
                 <h2
-                    class="text-color-tertiary font-weight-semi-bold mb-2 positive-ls-5 text-uppercase text-center text-lg-start text-md-center">
+                    class="text-color-tertiary font-weight-semi-bold mb-2 text-uppercase text-center text-lg-start text-md-center">
                     @Html.Raw(homeAll.Voice)
                 </h2>
                 <span
-                    class="text-3-4 font-weight-medium positive-ls-10 d-block text-color-light text-center text-lg-start text-md-center">夥伴之聲</span>
+                    class="text-3-4 font-weight-medium title-tag-ls d-block text-color-light text-center text-lg-start text-md-center">@Html.Raw(homeAll.VoiceDesc)</span>
                 <div class="divider divider-tertiary divider-small divider-xxs py-4 hidden-md-down">
                     <hr class="my-0" style="width: 50px; height: 3px;">
                 </div>
@@ -491,7 +492,7 @@
                 <p class="hidden-sm-down">@Html.Raw(homeAll.BookDesc1)</p>
                 <p class="font-weight-medium pt-5 pt-lg-0 pt-md-0">@Html.Raw(homeAll.BookDesc2)</p>
                 <a href="@(VirtualPathUtility.ToAbsolute($"~/Official/{langPath}/BookNow"))"
-                    class="btn bg-color-light text-color-dark btn-rounded fst-italic mt-3">@Html.Raw(homeAll.BookButton)</a>
+                    class="btn bg-color-light text-color-dark btn-rounded fst-italic mt-3">@Html.Raw(commonAll.BookNow)</a>
             </div>
         </div>
     </div>
@@ -534,11 +535,11 @@
         <div class="row px-5">
             <div class="col-12">
                 <h2
-                    class="text-color-tertiary font-weight-semi-bold mb-2 positive-ls-5 text-uppercase d-flex justify-content-center">
+                    class="text-color-tertiary font-weight-semi-bold mb-2 text-uppercase d-flex justify-content-center">
                     @Html.Raw(homeAll.Location)
                 </h2>
                 <span
-                    class="text-3-4 font-weight-medium positive-ls-10 d-block d-flex justify-content-center">@Html.Raw(homeAll.LocationDesc)</span>
+                    class="text-3-4 font-weight-medium title-tag-ls d-block d-flex justify-content-center">@Html.Raw(homeAll.LocationDesc)</span>
                 <div class="divider divider-tertiary divider-small divider-small-center divider-xxs py-4 ">
                     <hr class="my-0" style="width: 50px; height: 3px;">
                 </div>
@@ -567,11 +568,11 @@
         <div class="row px-5">
             <div class="col-12">
                 <h2
-                    class="text-color-tertiary font-weight-semi-bold mb-2 positive-ls-5 text-uppercase d-flex justify-content-center">
+                    class="text-color-tertiary font-weight-semi-bold mb-2 text-uppercase d-flex justify-content-center">
                     @Html.Raw(commonAll.Partner)
                 </h2>
                 <span
-                    class="text-3-4 font-weight-medium positive-ls-10 d-block d-flex justify-content-center">@Html.Raw(commonAll.PartnerDesc)</span>
+                    class="text-3-4 font-weight-medium title-tag-ls d-block d-flex justify-content-center">@Html.Raw(commonAll.PartnerDesc)</span>
                 <div class="divider divider-tertiary divider-small divider-small-center divider-xxs py-4 ">
                     <hr class="my-0" style="width: 50px; height: 3px;">
                 </div>

@@ -6,10 +6,10 @@
     "MessageContent2": "We look forward to meeting you!<br /> See you soon !",
     "MessageFrom": "All members of the Beyond team",
     "Voice": "Voice·",
-    "VoiceDesc": "",
-    "VoiceSlogan1": "Life becomes better.",
+    "VoiceDesc": "Partner",
+    "VoiceSlogan1": "「Life becomes better」",
     "VoiceSlogan2": "We are proud to help our customers shine.",
-    "VoiceMessage":"Listen to the genuine thoughts of our team member.",
+    "VoiceMessage":"Listen to the genuine <br class=\"d-block d-lg-block d-md-none\" />thoughts of our team member.",
     "VoiceItem": [
         {
             "MemberCode": "BD56192749",
@@ -33,7 +33,7 @@
         }
     ],
     "Traning": "Traning·",
-    "TraningDesc": "Training system",
+    "TraningDesc": "System",
     "TraningMessageSlogan": "If you are enthusiastic, we will welcome you with open arms",
     "TraningMessage": " In the Taiwanese fitness market, many trainers lack updated certifications, consistent regular training, and compliance with regulations regarding standardized consumer-friendly contracts. This has led to frequent disputes and potential risks within the industry.<br /><br />As a profession, trainers should be more organized, regulated, and valued. However, institutions that truly and consistently cultivate professional personal trainers are rare. Beyond Fitness is the first company in Taiwan to truly invest in this area. Our goal is to develop a personal trainer institution that can help society.<br /><br />In addition to our vision and dedication to our work, we are also a fun and interactive team. We are open to communication and collaboration. We achieve self-realization through continuous learning in creative and challenging environments. We work together on in-house training, assessments, training programs, and public service initiatives. We share laughter and grow together.",
     "TraningItem":[
@@ -102,7 +102,7 @@
                     "Content": "Practical assessment (Field, equipment and physical fitness assessment)",
                 },
                 {
-                    "Content": "Mass sports assessment",
+                    "Content": "General exercise assessment",
                 }
             ],
             "PlaceOrder": 2
@@ -122,7 +122,7 @@
         },
         {
             "ID": "Outside",
-            "Name": "移地訓練",
+            "Name": "Out side traning",
             "List":[
                 {
                     "Content": "Team training",
@@ -147,7 +147,7 @@
         },
     ],
     "Opening": "Opening·",
-    "OpeningDesc": "",
+    "OpeningDesc": "Jobs",
     "OpeningItem":[
         {
             "JobTitle": "Sports massager",

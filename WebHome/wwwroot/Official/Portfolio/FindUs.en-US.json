@@ -1,10 +1,10 @@
 {
     "Info": "Information·",
-    "InfoDesc": "",
+    "InfoDesc": "Branch Info",
     "WeekDays": "WeekDays",
-    "Holiday": "Weekends & Holidays",    
+    "Holiday": "Holidays",    
     "Others": "Others•",
-    "OthersDesc": "",                                   
+    "OthersDesc": "Branches",                                   
     "Team": "OUR TEAM",   
     "TeamSlogan": "We are here to help you <br class=\"hidden-lg-up\" />on your journey to health.",    
     "BranchItems": [
@@ -601,7 +601,7 @@
             "ID": 2,
             "CircleBg": "full",
             "SubClass": "xinyianhe",
-            "Name": "Xinyi Anhe",
+            "Name": "XinyiAnhe",
             "NameDesc": "Branch",
             "Tel": "(02)2720-0530",
             "TelDial": "+886227200530",
@@ -1191,7 +1191,7 @@
                     "MemberCode": "PS66550899",
                     "Name": "趙昱穎",
                     "NameDesc": "Frank",
-                    "JobTitle": "Recovery Coach",
+                    "JobTitle": "Sports Massager",
                     "CoverInfo":[
                         {
                             "Shape": "avatar-half.svg",
@@ -1477,7 +1477,7 @@
             "ID": 3,
             "CircleBg": "left",
             "SubClass": "zhongxiao",            
-            "Name": "Zhong xiao",
+            "Name": "ZhongXiao",
             "NameDesc": "Branch",
             "Tel": "(02)2776-9932",
             "TelDial": "+886227769932",
@@ -2360,7 +2360,7 @@
                     "MemberCode": "WF96233308",
                     "Name": "吳浩瑋",
                     "NameDesc": "Howard",
-                    "JobTitle": "私人教練",
+                    "JobTitle": "Coach",
                     "CoverInfo":[
                         {
                             "Shape": "avatar-full.svg",
@@ -2401,13 +2401,13 @@
                     "MemberCode": "MH1035328",
                     "Name": "陳寬毅",
                     "NameDesc": "Kuan",
-                    "JobTitle": "Recovery Coach",
+                    "JobTitle": "Sports Massager",
                     "CoverInfo":[
                         {
                             "Shape": "avatar-left.svg",
-                            "NamePosition": "translate(260.06 183.4)",
-                            "JobPosition": "translate(260.06 153.46)",
-                            "ImgXShifting": -105,
+                            "NamePosition": "translate(235.06 183.4)",
+                            "JobPosition": "translate(235.06 153.46)",
+                            "ImgXShifting": -130,
                             "ImgYShifting": -40,
                         }                        
                     ],
@@ -2458,7 +2458,7 @@
                     "MemberCode": "XJ27703577",
                     "Name": "陳芷榆",
                     "NameDesc": "Genie",
-                    "JobTitle": "Executive Manager",
+                    "JobTitle": "Manager",
                     "CoverInfo":[
                         {
                             "Shape": "avatar-half.svg",

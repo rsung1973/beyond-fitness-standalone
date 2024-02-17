@@ -1,13 +1,13 @@
 {   
     "PT": "Personal<BR />Traniner·",
-    "PTDesc": "",
+    "PTDesc": "Craftsman",
     "BFYoutube": "Beyond Fitness<Br />Youtube",
     "PTSlogan": "A listening personal trainer is your best exercise partner.",
     "PTMessage": "<p>Beyond Personal Trainers dive deep into your life, understanding your personality, habits, and desires. Then, using their knowledge of exercise science, psychology, physiology and kinesiology, they craft a custom program that's not just right for your body, but right for you. </p><p class=\"font-weight-semibold\">As you push towards your goals, they're there every step of the way, guiding you to become the strongest, happiest version of yourself.</p>",
     "YoutubeLink1": "https://www.youtube.com/watch?v=SCLtJ4ONi7I",
     "YoutubeLink2": "https://www.youtube.com/watch?v=Igj6BP0ak9w",
     "Service": "Service·",
-    "ServiceDesc": "",
+    "ServiceDesc": "Personalized",
     "ServiceSlogan": "We <span class=\"text-color-tertiary\">care about</span> your health and well-being, <br />both in and out of the gym.",
     "ServiceItems": [
         {
@@ -17,13 +17,13 @@
             "Items":[
                 {
                     "ID": "Plan",
-                    "Name": "Personalized Training Program",
+                    "Name": "Personalized Training",
                     "Desc": "With personalized training tailored to your specific needs and goals, fine adjustments and watchful guidance fuel your journey to exceptional performance.",
                     "Link": "Session#main"
                 },
                 {
                     "ID": "Artical",
-                    "Name": "Practical Professional Articles",
+                    "Name": "Professional Articles",
                     "Desc": "Explore practical professional articles to keep your knowledge of exercise and health up-to-date. With our accurate and up-to-date information, you will always be at the forefront of the times.",
                     "Link": ""
                 },

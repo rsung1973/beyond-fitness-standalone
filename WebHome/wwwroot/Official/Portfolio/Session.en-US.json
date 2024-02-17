@@ -1,12 +1,12 @@
 {
     "Professional": "PROFESSIONAL•",
-    "ProfessionalDesc": "",
+    "ProfessionalDesc": "Programs",
     "Project": "Project",
     "TraningItem": "Traning Items",
     "TraningItems": [
         {
             "ID": "function",
-            "Name": "",
+            "Name": "Functional",
             "NameDesc": "Functional <br />Training",
             "Desc": "Exercise is not just about sculpting the body and burning fat, it also improves the quality of life and athletic performance. Born to meet this demand, functional training sculpts muscles and enhances coordination, agility, explosive power and overall athleticism.<br/><br/>We champion the harmony between muscles and movements. This not only minimizes fatigue and amplifies coordination, but also unlocks a transformative experience where you truly feel the change of your body.",
             "Items": "反應燈訓練 \\ Wall Ball \\ 風車",
@@ -16,7 +16,7 @@
         },
         {
             "ID": "cardio",
-            "Name": "",
+            "Name": "Cardiorespiratory",
             "NameDesc": "Cardiorespiratory <br />Training",
             "Desc": "Within your vital organs, the heart and lungs hold the key to daily performance. Through targeted cardiorespiratory training, you strengthen them. This strength enhances your body's oxygen delivery, conquers fatigue, and unleashes a surge of physical and mental resilience. Equipping you to face any challenge with newfound stamina and focus.",
             "Items": "戰繩 \\ 划船機 \\ <br class=\"hidden-sm-up\"/>登階機 \\ 跑步機",
@@ -26,7 +26,7 @@
         }, 
         {
             "ID": "athletic",
-            "Name": "",
+            "Name": "Athletic",
             "NameDesc": "Athletic Performance <br />Improvement",
             "Desc": "Strengthening sporting ability has two dimensions: improving performance and preventing injury. This is essential for athletes and sports enthusiasts. By working with a professional, you can effectively train your speed, strength, power, agility, coordination, balance, reaction time, and range of motion. To achieve this, it requires a properly planned training schedule, so that you can improve performance and minimize injury risk for your specific sport.",
             "Items": "各式壺鈴動作 \\  跳小跨欄  \\ <br class=\"hidden-sm-up\"/>藥球側拋",
@@ -36,7 +36,7 @@
         },          
         {
             "ID": "joint",
-            "Name": "",
+            "Name": "Joint",
             "NameDesc": "Joint and Connective Tissue Conditioning",            
             "Desc": "Long-term poor posture or joint injuries can lead to pain, stiffness, and limited range of motion. Effective muscle, joint, and fascial training provided by a qualified professional can address chronic pain and discomfort, while also enhancing athletic performance. This helps to improve range of motion, reduce pain, and promote the recovery and progression of athletic outcomes.",
             "Items": "彈力帶肩關節鬆動術 \\ <br class=\"hidden-sm-up\"/>肋木架側線伸展",
@@ -46,7 +46,7 @@
         },
         {
             "ID": "trx",
-            "Name": "",
+            "Name": "TRX",
             "NameDesc": "Suspension <br />Training",
             "Desc": "Suspension training (TXR) is a multi-functional training method that uses the instability of suspension to enable a wider range of core and full-body movements. This makes TXR ideal for improving overall fitness, core strength, and flexibility, and it's suitable for all fitness levels. Whether you're a beginner or an experienced athlete, TRX suspension training can provide more comprehensive choices and variations in your training routine.",
             "Items": "弓箭步伸展 \\ 划船 \\ 棒式",
@@ -56,7 +56,7 @@
         },         
         {
             "ID": "core",
-            "Name": "",
+            "Name": "Core",
             "NameDesc": "Core Muscle <br />Training",
             "Desc": "Core muscle training is vital for both body stability and athletic performance, but often neglected. People tend to focus on limb exercises while overlooking the importance of strengthening their core.<br/><br/>Core muscle training can create a balanced figure and strengthen the foundation of your training. Effective core training can not only reduce discomfort in the waist and hips, but also increase exercise effectiveness.",
             "Items": "俄羅斯扭轉 \\ 農夫走路 \\ <br class=\"hidden-sm-up\"/>瑜珈球棒式",
@@ -65,7 +65,7 @@
         },
         {
             "ID": "freeweight",
-            "Name": "",
+            "Name": "Free-Weight",
             "NameDesc": "Free-Weight <br />Training",
             "Desc": "Free-weight training is versatile and adaptable, allowing you to adjust the difficulty, range of motion, and training weight according to your body weight. It emphasizes functional strength, core stability, and personalized progression. No matter your training goals, free-weight training can help you achieve them.",
             "Items": "ViPR 肩推 \\ <br class=\"hidden-sm-up\"/>曲體划船",
@@ -75,7 +75,7 @@
         }, 
         {
             "ID": "pregnancy",
-            "Name": "",
+            "Name": "Pregnancy",
             "NameDesc": "Pregnancy and Postpartum Exercise",
             "Desc": "Medical experts point out that pregnant women need professional exercise guidance during pregnancy and the postpartum period to help them go through the transition smoothly. Professional training can effectively control the weight and blood sugar levels of pregnant women. It can also effectively relieve back pain, swelling, imbalance, digestion, and labor pain during pregnancy. In addition, it can strengthen the pelvic and core muscles of pregnant women to reduce urinary incontinence, and help postpartum mothers to accelerate the process to regain their healthy figure.",
             "Items": "",
