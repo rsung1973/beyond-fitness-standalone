@@ -118,36 +118,36 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="InvalidAgreement" xml:space="preserve">
-    <value>Please check Agree</value>
+    <value>Please Check Agree</value>
   </data>
   <data name="InvalidBranch" xml:space="preserve">
-    <value>LOCATION?</value>
+    <value>Please Choose Preferred Branch!</value>
   </data>
   <data name="InvalidCaptcha" xml:space="preserve">
     <value>Rober Check Fail.</value>
   </data>
   <data name="InvalidEmail" xml:space="preserve">
-    <value>EMAIL?</value>
+    <value>Plese Input your Contact Email!</value>
   </data>
   <data name="InvalidGender" xml:space="preserve">
-    <value>SEX?</value>
+    <value>Plese Choose your Biological Gender!</value>
   </data>
   <data name="InvalidHelpID" xml:space="preserve">
-    <value>What problems would you like Beyond Fitness to help you solve?</value>
+    <value>Do you have any further questions or other requirement?(Multiple Choices)</value>
   </data>
   <data name="InvalidPhone" xml:space="preserve">
-    <value>CELLPHONE?</value>
+    <value>Please Input Correct Cellphone!</value>
   </data>
   <data name="InvalidTimeID" xml:space="preserve">
-    <value>CONTACT TIME?</value>
+    <value>Please Choose Preferred Reachable Time!</value>
   </data>
   <data name="InvalidUserName" xml:space="preserve">
-    <value>NAME?</value>
+    <value>Please Input Correct Name!</value>
   </data>
   <data name="Success" xml:space="preserve">
-    <value>BEYOND FITNESS representative will contact you within 3 days to have a more in-depth understanding of your situation and discuss any questions you may have. This will ensure that you can participate in the experience program with peace of mind. Please kindly pay attention to any missed calls or messages.</value>
+    <value>We will contact you within 3 days. Please be sure to check your missed calls/text messages.</value>
   </data>
   <data name="UseCaptcha" xml:space="preserve">
-    <value>Please CHECK I'M NOT Rober!</value>
+    <value>Please Check I'M NOT Rober!</value>
   </data>
 </root>
