@@ -4,9 +4,9 @@
     "WeekDays": "WeekDays",
     "Holiday": "Holidays",    
     "Others": "Others•",
-    "OthersDesc": "Branches",                                   
+    "OthersDesc": "",                                   
     "Team": "OUR TEAM",   
-    "TeamSlogan": "We are here to help you <br class=\"hidden-lg-up\" />on your journey to health.",    
+    "TeamSlogan": "We are here to help you.",    
     "BranchItems": [
         {
             "ID": 1,
@@ -21,8 +21,8 @@
             "MRTShort":"MRT Taipei Arena Station Exit <b>1</b>",
             "GoogleMap": "https://maps.app.goo.gl/UMrv2D7zM9JpiGWEA",
             "BannerImgCount": 1,  
-            "Slogan": "",
-            "SloganMessage": "<p>We believe that exercise is more than just a physical activity. It is a way of life, a way of loving and caring for ourselves.</p><p class=\"hidden-lg-down\">Training is not just about getting fit. It's about finding joy in life and appreciating the little things. We believe that health is the key to happiness.</p><p>Beyond provides professional and systematic training that makes exercise effective and enjoyable. We want our students to be happy, healthy, and to truly enjoy their time with us. The little joys of life are found in every workout.</p>",
+            "Slogan": "We believe that exercise is more than just a physical activity.",
+            "SloganMessage": "<p class=\"hidden-lg-down\">Training is not just about getting fit. It's about finding joy in life and appreciating the little things. We believe that health is the key to happiness.</p><p>Beyond provides professional and systematic training that makes exercise effective and enjoyable. We want our students to be happy, healthy, and to truly enjoy their time with us. The little joys of life are found in every workout.</p>",
             "DemoImgItems":[
                 {
                     "FileName": "Demo01.png"
@@ -47,10 +47,10 @@
             "InfoHolidayTime": "AM 08:00- PM 22:00",
             "FeatureItems":[
                 {
-                    "Content": "Exit 1 of Taipei Arena MRT Station is within a 1-minute walk."
+                    "Content": "Exit 1 of MRT Taipei Arena "
                 },
                 {
-                    "Content": "Located opposite Taipei Arena, near Breeze Center."
+                    "Content": "Near Breeze Center"
                 }
             ],   
             "Coaches": [
@@ -610,7 +610,7 @@
             "MRTShort":"MRT Xinyi Anhe Station Exit <b>2A</b>",
             "GoogleMap": "https://maps.app.goo.gl/znEV7bS5twQZKwKo7",
             "BannerImgCount": 1,  
-            "Slogan": "Beyond is an extension of your home, <br class=\"hidden-md-down\" />where exercise is always there for us.",
+            "Slogan": "Beyond is an extension of your home.",
             "SloganMessage": "<p>Beyond believes that exercise is more than just a physical activity. It is a way of life, a way of loving and caring for ourselves. For modern working professionals, Beyond offers a unique space to combine exercise with style.<br /><br />This is not just a gym, it is a sanctuary after work, a place where the mind and body can resonate. At here, exercise is no longer a burden, but a pleasure, like working out at home.<br /><br /></p><p class=\"hidden-lg-down\">Through personalized training, cutting-edge equipment, and a vibrant community, we empower you to carve out balance in your work-filled days. Let your confidence blossom, your energy ignite. Let exercise become your sanctuary, your fuel, your limitless potential. Beyond awaits, ready to unlock your best self.</p>",
             "DemoImgItems":[
                 {
@@ -636,13 +636,13 @@
             "InfoHolidayTime": "AM 08:00- PM 22:00",
             "FeatureItems":[
                 {
-                    "Content": "It takes about 3 minutes to walk from Exit 2A of the MRT Xinyi Anhe Station."
+                    "Content": "Exit 2A of the MRT Xinyi Anhe"
                 },
                 {
-                    "Content": "Located across from the Mega International Commercial Bank Anhe Branch."
+                    "Content": "Mega International Commercial Bank"
                 },
                 {
-                    "Content": "Located near the Lih-Jen International Private School campus."
+                    "Content": "Lih-Jen International Private School campus."
                 }
             ],
             "Coaches": [
@@ -1515,10 +1515,10 @@
             "InfoHolidayTime": "AM 08:00- PM 22:00",
             "FeatureItems":[
                 {
-                    "Content": "Exit 3 (B14) of MRT Zhongxiao Fuxing Station is a 2-minute walk away."
+                    "Content": "Exit 3 (B14) of MRT Zhongxiao Fuxing"
                 },
                 {
-                    "Content": "Located on the 1st and B1 floors of the building behind Ding-hao Shopping Center."
+                    "Content": "Ding-hao Shopping Center"
                 }
             ],
             "Coaches": [                
@@ -1942,10 +1942,10 @@
             "InfoHolidayTime": "AM 08:00- PM 22:00",        
             "FeatureItems":[
                 {
-                    "Content": "Exit 3 of MRT Dongmen Station, towards Zhongzheng Memorial Hall, is a 3-minute walk away."
+                    "Content": "Exit 3 of MRT Dongmen"
                 },
                 {
-                    "Content": "Located next to Jinou Girls High School."
+                    "Content": "Jinou Girls High School"
                 }
             ],
             "Coaches": [

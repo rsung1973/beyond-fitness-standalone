@@ -206,7 +206,7 @@
                                                                 class="text-color-tertiary pe-2">「</span>@Html.Raw(voice["Conclusion"])<span
                                                                 class="text-color-tertiary pe-2">」</span></p>                                                        
                                                         <p class="date">@Html.Raw(voice["Date"])
-                                                            <a class="read-more text-color-dark font-weight-semibold text-2 float float-end fst-italic"
+                                                            <a class="read-more text-color-dark font-weight-semibold text-3 float float-end fst-italic"
                                                                 href="@Html.Raw(Url.Action("Voice", "Official", viewModel))">@Html.Raw(commonAll.ReadMore)<i
                                                                     class="fas fa-angle-right position-relative pb-4 ms-1"></i></a>
                                                         </p>
@@ -242,7 +242,7 @@
                                                             @Html.Raw(blog.Subtitle)
                                                         </p>                                                        
                                                         <p class="date">@($"{blog.BlogID[0..4]}.{blog.BlogID[4..6]}.{blog.BlogID[6..8]}")
-                                                            <a class="read-more text-color-dark font-weight-semibold text-2 float float-end fst-italic"
+                                                            <a class="read-more text-color-dark font-weight-semibold text-3 float float-end fst-italic"
                                                                 href="@Html.Raw($"{VirtualPathUtility.ToAbsolute($"~/Official/tw/BlogSingle")}?{(new { blog.DocID }).JsonStringify().EncryptKeyNormal().UrlEncodeBase64String()}")">@Html.Raw(commonAll.ReadMore)<i
                                                                     class="fas fa-angle-right position-relative ms-1"></i>
                                                             </a>

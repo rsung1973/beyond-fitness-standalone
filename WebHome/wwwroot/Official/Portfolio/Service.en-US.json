@@ -23,13 +23,13 @@
                 },
                 {
                     "ID": "Artical",
-                    "Name": "Professional Articles",
+                    "Name": "Practical Articles",
                     "Desc": "Explore practical professional articles to keep your knowledge of exercise and health up-to-date. With our accurate and up-to-date information, you will always be at the forefront of the times.",
                     "Link": ""
                 },
                 {
                     "ID": "Puzzle",
-                    "Name": "Fun Sports Academy",
+                    "Name": "Sports Academy",
                     "Desc": "Explore the Fun Sports Academy to bring you a pleasant interactive experience after exercise. Let exercise become your moment of joy, full of vitality and endless possibilities.",
                     "Link": ""
                 },
@@ -53,7 +53,7 @@
                 },
                 {
                     "ID": "Medical",
-                    "Name": "One-stop Medical Support ",
+                    "Name": "One-stop Medical",
                     "Desc": "We collaborate with LANDSEED SPORTS MEDICINE and multiple physical therapy clinics to provide comprehensive care and ensure you receive the best possible medical support."
                 },
             ]

@@ -171,10 +171,10 @@
     }   
 </div>
 <section id="main"
-    class="parallax section section-parallax section-center section-text-light border-0 mt-0 mb-0 py-0 position-relative">
+    class="parallax section section-parallax section-text-light border-0 mt-0 mb-0 py-0 position-relative">
     <!-- 行銷短文+輪播 -->
     <div class="row">        
-        <div class="col-12 d-flex justify-content-lg-start justify-content-md-center JU">
+        <div class="col-12 d-flex justify-content-lg-start justify-content-md-center">
 			<img class="slogan-img mb-5 @Html.Raw(subClass)" alt="BeyondFitness|@Html.Raw(branch.Name)">						
 		</div>        
         <div class="col-12 col-lg-5 px-5 pe-xl-5 pe-lg-0">
@@ -406,7 +406,7 @@
                                                 <h4 class="font-weight-semi-bold mb-1">@Html.Raw(item2[i].Name)</h4>
                                                 <p class="text-lg-start text-md-center"><a href="tel:@Html.Raw(item2[i].TelDial)">@Html.Raw(item2[i].Tel)</a></p>
                                                 <a href="@(VirtualPathUtility.ToAbsolute($"~/Official/{langPath}/BranchInfo?Branch={branchName}"))"
-                                                    class="btn btn-default btn-rounded fst-italic font-weight-normal text-2">@Html.Raw(commonAll.ReadMore)</a>
+                                                    class="btn btn-default btn-rounded fst-italic font-weight-normal text-3">@Html.Raw(commonAll.ReadMore)</a>
                                             </div>
                                         </div>
                                     </div>

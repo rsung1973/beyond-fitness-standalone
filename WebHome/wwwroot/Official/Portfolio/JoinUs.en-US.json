@@ -1,12 +1,12 @@
 {    
     "Message":"Message·",
     "MessageDesc":"",
-    "MessageSlogan":"Accomplish yourself and make a difference in the world.",
+    "MessageSlogan":"Accomplish yourself <br class=\"d-block d-lg-block d-md-none\"/>& make a difference <br/>in the world.",
     "MessageContent1": "<b>Dear friend,</b><br /><br />This is a sincere invitation.<br /><br />Yes, we are looking for a team member who is passionate about helping others grow, improving their health, and making a positive impact on their lives.<br /><br />Beyond is a company that is focused, dedicated, and exudes joyful vibes. Here, we are more than just colleagues; we are each other's supporters and friends. We create an open, inclusive, and challenging work environment that fosters problem-solving skills, communication, and a sense of purpose in both work and life.<br /><br />We sincerely invite you to join the Beyond team and become an integral part of this family. Your expertise and passion will be valued and appreciated here, and you will find a sense of belonging. Let's work together to achieve greatness.",
     "MessageContent2": "We look forward to meeting you!<br /> See you soon !",
     "MessageFrom": "All members of the Beyond team",
     "Voice": "Voice·",
-    "VoiceDesc": "Partner",
+    "VoiceDesc": "About US",
     "VoiceSlogan1": "「Life becomes better」",
     "VoiceSlogan2": "We are proud to help our customers shine.",
     "VoiceMessage":"Listen to the genuine <br class=\"d-block d-lg-block d-md-none\" />thoughts of our team member.",
@@ -39,7 +39,7 @@
     "TraningItem":[
         {
             "ID": "Week",
-            "Name": "Weekly in-house training",
+            "Name": "Weekly training",
             "List":[
                 {
                     "Content": "Case study workshop",
@@ -55,7 +55,7 @@
         },
         {
             "ID": "Month",
-            "Name": "Monthly in-house training",
+            "Name": "Monthly training",
             "List":[
                 {
                     "Content": "Sports science training method ",
@@ -68,7 +68,7 @@
         },
         {
             "ID": "Season",
-            "Name": "Seasonal in-house training",
+            "Name": "Seasonal training",
             "List":[
                 {
                     "Content": "Sports psychology",
@@ -80,7 +80,7 @@
                     "Content": "Sports anatomy",
                 },
                 {
-                    "Content": "哲學思辨",
+                    "Content": "Philosophical Speculation",
                 },
                 {
                     "Content": "Physical therapy",
@@ -109,7 +109,7 @@
         },
         {
             "ID": "Year",
-            "Name": "Yearly in-house training",
+            "Name": "Yearly training",
             "List":[
                 {
                     "Content": "Lifestyle and health trends",

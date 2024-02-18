@@ -6,7 +6,7 @@
     "YoutubeSlogan": "Beyond <br />Personal Coach",
     "YoutubeLink": "https://www.youtube.com/watch?v=vOM38-QHzEU",
     "KeyPoint": "3&nbsp;Key<br />Point•",
-    "KeyPointDesc": "Features",
+    "KeyPointDesc": "Service",
     "KeyPoint_1": "Scientific",
     "KeyPoint_2": "One-Stop Medical",
     "KeyPoint_3": "Commitment",
@@ -14,7 +14,7 @@
     "KeyPoint_2_Subject": "Healthy Supervision",
     "KeyPoint_3_Subject": "Declaration of Trust",     
     "Voice": "VOICE•",
-    "VoiceDesc": "",
+    "VoiceDesc": "About US",
     "VoiceSlogan": "Find the personal coach <br /> who makes you love yourself and understand yourself.",
     // "VoiceItem": [
     //     {
@@ -73,7 +73,7 @@
     "BookDesc1": "When you step into a gym, does the unfamiliar and uncertain environment make you doubt, \"Can I do this?",
     "BookDesc2": "Make an appointment now and let Beyond be your best partner in your journey of change!",
     "Location": "Location•",
-    "LocationDesc": "",   
+    "LocationDesc": "Branch",   
     "NewsItem": [
         // {
         //     "ImgName": "event01-img",
