@@ -63543,6 +63543,10 @@ namespace WebHome.Models.DataEntity
 		
 		private System.Nullable<int> _JobTenureInDays;
 		
+		private System.Nullable<int> _BasicWage;
+		
+		private System.Nullable<int> _StaffWelfareFund;
+		
 		private EntitySet<CoachBranchMonthlyBonus> _CoachBranchMonthlyBonus;
 		
 		private EntityRef<BranchStore> _BranchStore;
@@ -63605,6 +63609,10 @@ namespace WebHome.Models.DataEntity
     partial void OnManagementBonusGradeChanged();
     partial void OnJobTenureInDaysChanging(System.Nullable<int> value);
     partial void OnJobTenureInDaysChanged();
+    partial void OnBasicWageChanging(System.Nullable<int> value);
+    partial void OnBasicWageChanged();
+    partial void OnStaffWelfareFundChanging(System.Nullable<int> value);
+    partial void OnStaffWelfareFundChanged();
     #endregion
 		
 		public CoachMonthlySalary()
@@ -64094,6 +64102,46 @@ namespace WebHome.Models.DataEntity
 					this._JobTenureInDays = value;
 					this.SendPropertyChanged("JobTenureInDays");
 					this.OnJobTenureInDaysChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BasicWage", DbType="Int")]
+		public System.Nullable<int> BasicWage
+		{
+			get
+			{
+				return this._BasicWage;
+			}
+			set
+			{
+				if ((this._BasicWage != value))
+				{
+					this.OnBasicWageChanging(value);
+					this.SendPropertyChanging();
+					this._BasicWage = value;
+					this.SendPropertyChanged("BasicWage");
+					this.OnBasicWageChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StaffWelfareFund", DbType="Int")]
+		public System.Nullable<int> StaffWelfareFund
+		{
+			get
+			{
+				return this._StaffWelfareFund;
+			}
+			set
+			{
+				if ((this._StaffWelfareFund != value))
+				{
+					this.OnStaffWelfareFundChanging(value);
+					this.SendPropertyChanging();
+					this._StaffWelfareFund = value;
+					this.SendPropertyChanged("StaffWelfareFund");
+					this.OnStaffWelfareFundChanged();
 				}
 			}
 		}

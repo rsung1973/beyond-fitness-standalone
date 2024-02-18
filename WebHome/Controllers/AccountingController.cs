@@ -1696,6 +1696,7 @@ namespace WebHome.Controllers
             滾動式抽成 = 15,
             管理獎金抽成 = 16,
             任職總年資 = 17,
+            職工薪資扣繳福利金 = 18,
         }
 
         enum ManagerYearlyBonusFields
@@ -1740,6 +1741,7 @@ namespace WebHome.Controllers
             滾動式抽成 = 19,
             任職總年資 = 20,
             任職年資抽成百分比 = 21,
+            職工薪資扣繳福利金 = 22,
         }
 
         enum CoachYearlyBonusFields
@@ -1787,8 +1789,8 @@ namespace WebHome.Controllers
                 table.Columns.Add(new DataColumn(ManagerBonusFields.所屬分店.ToString()	, typeof(String)));
                 table.Columns.Add(new DataColumn(ManagerBonusFields.職級.ToString(), typeof(String)));
                 table.Columns.Add(new DataColumn(ManagerBonusFields.個人上課數.ToString(), typeof(decimal)));
-                table.Columns.Add(new DataColumn(ManagerBonusFields.底薪.ToString(), typeof(decimal)));
-                table.Columns.Add(new DataColumn(ManagerBonusFields.職務加給.ToString(), typeof(decimal)));
+                table.Columns.Add(new DataColumn(ManagerBonusFields.底薪.ToString(), typeof(int)));
+                table.Columns.Add(new DataColumn(ManagerBonusFields.職務加給.ToString(), typeof(int)));
                 table.Columns.Add(new DataColumn(ManagerBonusFields.分店總上課數.ToString()		, typeof(int)));
                 table.Columns.Add(new DataColumn(ManagerBonusFields.分店上課金額.ToString(), typeof(decimal)));
                 table.Columns.Add(new DataColumn(ManagerBonusFields.總獎金.ToString(), typeof(int)));
@@ -1801,6 +1803,7 @@ namespace WebHome.Controllers
                 table.Columns.Add(new DataColumn(ManagerBonusFields.滾動式抽成.ToString(), typeof(int)));
                 table.Columns.Add(new DataColumn(ManagerBonusFields.管理獎金抽成.ToString(), typeof(decimal)));
                 table.Columns.Add(new DataColumn(ManagerBonusFields.任職總年資.ToString(), typeof(decimal)));
+                table.Columns.Add(new DataColumn(ManagerBonusFields.職工薪資扣繳福利金.ToString(), typeof(int)));
 
                 DataRow r;
 
@@ -1854,9 +1857,19 @@ namespace WebHome.Controllers
                     r[(int)ManagerBonusFields.滾動式抽成] = g.AttendedShare ?? 0;
                     r[(int)ManagerBonusFields.管理獎金抽成] = g.ManagementBonusGrade ?? 0M;
                     r[(int)ManagerBonusFields.任職總年資] = Math.Round((g.JobTenureInDays ?? 0M) / 365M, 1);
+                    r[(int)ManagerBonusFields.職工薪資扣繳福利金] = (int)Math.Round(((int)r[(int)ManagerBonusFields.底薪] + (int)r[(int)ManagerBonusFields.總獎金] + (int)r[(int)ManagerBonusFields.職務加給]) * 0.005M);
+
+                    if (salaryDetails != null)
+                    {
+                        salaryDetails.StaffWelfareFund = (int)r[(int)ManagerBonusFields.職工薪資扣繳福利金];
+                        models.SubmitChanges();
+                    }
 
                     table.Rows.Add(r);
                 }
+
+                table.Columns[ManagerBonusFields.職工薪資扣繳福利金.ToString()].SetOrdinal((int)ManagerBonusFields.分店總上課數);
+
                 return table;
             }
 
@@ -1886,6 +1899,7 @@ namespace WebHome.Controllers
                 table.Columns.Add(new DataColumn(CoachBonusFields.滾動式抽成.ToString(), typeof(int)));
                 table.Columns.Add(new DataColumn(CoachBonusFields.任職總年資.ToString(), typeof(decimal)));
                 table.Columns.Add(new DataColumn(CoachBonusFields.任職年資抽成百分比.ToString(), typeof(decimal)));
+                table.Columns.Add(new DataColumn(CoachBonusFields.職工薪資扣繳福利金.ToString(), typeof(int)));
 
                 DataRow r;
 
@@ -1934,6 +1948,17 @@ namespace WebHome.Controllers
                     r[(int)CoachBonusFields.任職總年資] = Math.Round((g.JobTenureInDays ?? 0) / 365M,1);
                     r[(int)CoachBonusFields.任職年資抽成百分比] = g.EmploymentDurationGradeIndex / 10M ?? 0M;
 
+                    r[(int)CoachBonusFields.月中上課加業績獎金] = (int)r[(int)CoachBonusFields.上課獎金] + (int)r[(int)CoachBonusFields.業績獎金];
+                    r[(int)CoachBonusFields.總獎金] = (int)r[(int)CoachBonusFields.管理獎金] + (int)r[(int)CoachBonusFields.特別獎金] + (int)r[(int)CoachBonusFields.月中上課加業績獎金];
+                    r[(int)CoachBonusFields.上課獎金抽成百分比] = (decimal)r[(int)CoachBonusFields.上課獎金抽成百分比] + (decimal)r[(int)CoachBonusFields.任職年資抽成百分比];
+                    r[(int)CoachBonusFields.職工薪資扣繳福利金] = (int)Math.Round(((int)r[(int)CoachBonusFields.底薪] + (int)r[(int)CoachBonusFields.總獎金] + (int)r[(int)CoachBonusFields.職務加給]) * 0.005M);
+
+                    if (salaryDetails != null)
+                    {
+                        salaryDetails.StaffWelfareFund = (int)r[(int)CoachBonusFields.職工薪資扣繳福利金];
+                        models.SubmitChanges();
+                    }
+
                     if (g.ProfessionalLevel.CategoryID != (int)Naming.ProfessionalCategory.Health)
                     {
                         eliminateTax(r, taxCol);
@@ -1943,12 +1968,13 @@ namespace WebHome.Controllers
                 }
 
 
-                foreach (var t in rows)
-                {
-                    t[(int)CoachBonusFields.月中上課加業績獎金] = (int)t[(int)CoachBonusFields.上課獎金] + (int)t[(int)CoachBonusFields.業績獎金];
-                    t[(int)CoachBonusFields.總獎金] = (int)t[(int)CoachBonusFields.管理獎金] + (int)t[(int)CoachBonusFields.特別獎金] + (int)t[(int)CoachBonusFields.月中上課加業績獎金];
-                    t[(int)CoachBonusFields.上課獎金抽成百分比] = (decimal)t[(int)CoachBonusFields.上課獎金抽成百分比] + (decimal)t[(int)CoachBonusFields.任職年資抽成百分比];
-                }
+                //foreach (var t in rows)
+                //{
+                //    t[(int)CoachBonusFields.月中上課加業績獎金] = (int)t[(int)CoachBonusFields.上課獎金] + (int)t[(int)CoachBonusFields.業績獎金];
+                //    t[(int)CoachBonusFields.總獎金] = (int)t[(int)CoachBonusFields.管理獎金] + (int)t[(int)CoachBonusFields.特別獎金] + (int)t[(int)CoachBonusFields.月中上課加業績獎金];
+                //    t[(int)CoachBonusFields.上課獎金抽成百分比] = (decimal)t[(int)CoachBonusFields.上課獎金抽成百分比] + (decimal)t[(int)CoachBonusFields.任職年資抽成百分比];
+                //    t[(int)CoachBonusFields.職工薪資扣繳福利金] = Math.Round(((int)t[(int)CoachBonusFields.底薪] + (int)t[(int)CoachBonusFields.總獎金] + (int)t[(int)CoachBonusFields.職務加給]) * 0.005M, 1);
+                //}
                 //rows.RemoveAll(t => (int)t[(int)CoachBonusFields.總獎金] == 0);
 
                 foreach (var t in rows.OrderBy(t => t[(int)CoachBonusFields.所屬分店]))
@@ -1957,6 +1983,7 @@ namespace WebHome.Controllers
                 }
 
                 table.Columns.RemoveAt((int)CoachBonusFields.任職年資抽成百分比);
+                table.Columns[CoachBonusFields.職工薪資扣繳福利金.ToString()].SetOrdinal((int)CoachBonusFields.總上課數);
 
                 return table;
             }

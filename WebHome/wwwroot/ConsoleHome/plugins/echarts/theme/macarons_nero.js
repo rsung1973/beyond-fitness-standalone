@@ -43,7 +43,7 @@
             "#6f5553",
             "#c14089"
         ],
-        "backgroundColor": "#282828",
+        "backgroundColor": "#1c222c",
         "textStyle": {},
         "title": {
             "textStyle": {
